@@ -1,5 +1,10 @@
 # Daily earnings research pipeline
 
+> **Setup is not finished.** The six Routines exist but are **paused**: this repository
+> still has to be attached to each of them as a source before they can publish anything.
+> See [the setup section in `docs/ROUTINES.md`](docs/ROUTINES.md#before-any-of-this-works-attach-the-repository).
+
+
 An automated five-stage research pipeline over US companies reporting earnings between
 today's close and tomorrow's open. It runs itself on a schedule, does the expensive work
 with parallel Opus subagents, and archives every run in this repository.

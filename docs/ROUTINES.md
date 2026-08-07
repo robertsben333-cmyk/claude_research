@@ -73,6 +73,35 @@ Turn these knobs in `config/pipeline.yaml`, in this order:
 Stage 3 also sheds scope on its own when the run log shows earlier stages ran long, and
 records what it dropped in `degradations_applied`.
 
+## Before any of this works: attach the repository
+
+**The six Routines are currently paused, and they must stay paused until this repository
+is attached to each of them.** Their names carry a `[PAUSED — attach repo]` suffix as a
+reminder.
+
+A Routine fires a fresh session that only has the repositories configured as its
+*sources*. A Routine created programmatically — via the `create_trigger` MCP tool —
+has no way to set that field, so its sessions start with no repository at all. They
+then do the research, find nothing to publish into, and the work is lost when the
+container is reclaimed.
+
+This was verified twice, not assumed. A stage 0 run with no repo attached burned roughly
+four million tokens and pushed nothing. A second run, scoped to nothing but
+`git clone` plus an empty commit, ran for ten minutes and also pushed nothing.
+
+To fix it, for each of the six Routines in the claude.ai Routines UI:
+
+1. Open the Routine.
+2. Add `robertsben333-cmyk/claude_research` as its repository/source.
+3. Set the output branch to `main`.
+4. Re-enable it and drop the `[PAUSED — attach repo]` suffix from the name.
+
+Then verify with one cheap firing of stage 0 before trusting the expensive stages: use
+`fire_trigger` on the stage 0 Routine and confirm a `stage 0: universe for <date>`
+commit appears on `main`. If that commit does not appear, nothing downstream will work
+either — stop and fix it rather than letting stages 2 and 3 spend 31 Opus/high
+subagents on output that cannot be saved.
+
 ## Environment
 
 The Routines target the environment with **full network access**. This matters: the
