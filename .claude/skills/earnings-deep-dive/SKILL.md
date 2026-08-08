@@ -48,6 +48,19 @@ Give each subagent exactly:
 Do **not** give a researcher another company's dossier, another researcher's findings,
 or your own view of the name. Each dossier must stand on its own evidence.
 
+**Publish after each dossier completes, not once at the end of the batch.** As soon as
+a researcher returns and its `.md` and `.json` are both on disk, commit and push that
+one name:
+
+```bash
+scripts/publish.sh "stage 2 batch <k>: dossier for <YYYY-MM-DD> (<TICKER>) [in progress]"
+```
+
+Five Opus/high researchers is a long, heavy session, and sessions do run out. A real run
+died partway through batch 1 with two names still unwritten — the three that had already
+been pushed survived, and they only survived because they had been pushed. A commit per
+dossier costs seconds and is the difference between losing one name and losing five.
+
 ## 3. Handle failures
 
 A subagent that returns without writing both files has failed. Retry it **once**. If it
@@ -104,8 +117,9 @@ python3 scripts/update_index.py
 scripts/publish.sh "stage 2 batch <k>: dossiers for <YYYY-MM-DD> (<tickers>)"
 ```
 
-**Publish at the end of every batch, not once at the end of the day.** A session that
-dies with five unpublished dossiers has burned the most expensive stage for nothing.
+This is the batch's closing commit; the per-dossier pushes in step 2 have already
+saved the research itself. A session that dies holding unpublished dossiers has burned
+the most expensive stage in the pipeline for nothing.
 
 ## 6. Report
 

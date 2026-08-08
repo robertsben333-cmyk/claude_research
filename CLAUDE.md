@@ -71,7 +71,9 @@ python3 scripts/update_index.py
 scripts/publish.sh "stage <n>: <what> for <YYYY-MM-DD>"
 ```
 
-Stage 2 publishes after *each* batch, not once at the end.
+Stage 2 publishes after *each dossier*, not once per batch and not once at the end. A
+run really did die partway through a batch; the names already pushed survived and the
+rest were lost.
 
 **Append to `_run-log.md`, never rewrite it.** Each stage adds its own section. The run
 log is how a later stage — and you, tomorrow — finds out that something upstream went
