@@ -73,34 +73,46 @@ Turn these knobs in `config/pipeline.yaml`, in this order:
 Stage 3 also sheds scope on its own when the run log shows earlier stages ran long, and
 records what it dropped in `degradations_applied`.
 
-## Before any of this works: attach the repository
-
-**The six Routines are currently paused, and they must stay paused until this repository
-is attached to each of them.** Their names carry a `[PAUSED — attach repo]` suffix as a
-reminder.
+## Each Routine must have this repository attached
 
 A Routine fires a fresh session that only has the repositories configured as its
-*sources*. A Routine created programmatically — via the `create_trigger` MCP tool —
-has no way to set that field, so its sessions start with no repository at all. They
-then do the research, find nothing to publish into, and the work is lost when the
-container is reclaimed.
+*sources*. Attaching this repo to each of the six is what makes the pipeline work at
+all — without it a session does the research, finds nothing to publish into, and loses
+everything when the container is reclaimed.
 
-This was verified twice, not assumed. A stage 0 run with no repo attached burned roughly
-four million tokens and pushed nothing. A second run, scoped to nothing but
-`git clone` plus an empty commit, ran for ten minutes and also pushed nothing.
+This is not theoretical. Before the repo was attached, a stage 0 firing burned roughly
+four million tokens and pushed nothing, and a second firing scoped to nothing but a
+clone plus an empty commit ran ten minutes and also pushed nothing. After attaching it,
+the same Routine published cleanly on the first try.
 
-To fix it, for each of the six Routines in the claude.ai Routines UI:
+A Routine created programmatically through the `create_trigger` MCP tool has no field
+for sources, so **any Routine added that way later must have its repository attached by
+hand in the claude.ai Routines UI** before being enabled.
 
-1. Open the Routine.
-2. Add `robertsben333-cmyk/claude_research` as its repository/source.
-3. Set the output branch to `main`.
-4. Re-enable it and drop the `[PAUSED — attach repo]` suffix from the name.
+### The outcome branch is overridden on purpose
 
-Then verify with one cheap firing of stage 0 before trusting the expensive stages: use
-`fire_trigger` on the stage 0 Routine and confirm a `stage 0: universe for <date>`
-commit appears on `main`. If that commit does not appear, nothing downstream will work
-either — stop and fix it rather than letting stages 2 and 3 spend 31 Opus/high
+Each Routine is assigned an auto-generated outcome branch — `claude/funny-shannon`,
+`claude/dreamy-turing`, and so on. Left alone, that would scatter the five stages across
+five different branches, and stage 1 would never see what stage 0 wrote.
+
+`scripts/publish.sh` checks out `main` explicitly and pushes there, which overrides the
+assigned branch. Verified: the stage 0 test run started on
+`claude/funny-shannon-rgagyj` and still published to `main`, leaving no stray branch
+behind. Do not "fix" the checkout in `publish.sh` to use the current branch — the shared
+`main` is what lets the stages hand files to each other.
+
+### Verifying after any change
+
+Fire stage 0 and confirm a `stage 0: universe for <date>` commit appears on `main`. It
+is the cheapest stage and exercises the whole path: repo access, network, the fetch
+script, the run log, the index, and the push. If that commit does not appear, nothing
+downstream will work either — fix it before letting stages 2 and 3 spend 31 Opus/high
 subagents on output that cannot be saved.
+
+**Verified working 2026-08-08:** stage 0 fetched 48 companies from the Nasdaq feed,
+qualified 27, correctly rolled the Saturday reference date to Monday's open (0 AMC,
+48 BMO), and published to `main`. This environment has real network access — the feed
+is not degraded to search snippets.
 
 ## Environment
 

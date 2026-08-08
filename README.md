@@ -1,8 +1,9 @@
 # Daily earnings research pipeline
 
-> **Setup is not finished.** The six Routines exist but are **paused**: this repository
-> still has to be attached to each of them as a source before they can publish anything.
-> See [the setup section in `docs/ROUTINES.md`](docs/ROUTINES.md#before-any-of-this-works-attach-the-repository).
+> **Live since 2026-08-08.** All six Routines are enabled and verified end to end: the
+> stage 0 test run fetched 48 companies from the Nasdaq feed, qualified 27, and
+> published to `main` on the first try. See [`docs/ROUTINES.md`](docs/ROUTINES.md) for
+> the schedule and how to change it.
 
 
 An automated five-stage research pipeline over US companies reporting earnings between
