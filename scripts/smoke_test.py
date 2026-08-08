@@ -299,6 +299,60 @@ def main():
         check("pending rows are excluded from the hit rate",
               build_predictions.summarise(pend)["panelled_direction_hit_rate"] is None)
 
+    print("\nPublishing under a moving remote")
+    # Reproduces the failure that lost a whole stage-2 batch: the remote branch
+    # moves while a stage is running, and the stage still has to land its work.
+    with tempfile.TemporaryDirectory() as tmp:
+        def git(cwd, *args, check=True):
+            return subprocess.run(["git", "-C", cwd, *args],
+                                  capture_output=True, text=True, check=check)
+
+        bare = os.path.join(tmp, "origin.git")
+        stage = os.path.join(tmp, "stage")     # the Routine session
+        other = os.path.join(tmp, "other")     # someone else pushing meanwhile
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "main", bare], check=True)
+
+        subprocess.run(["git", "clone", "-q", bare, stage], check=True)
+        os.makedirs(os.path.join(stage, "scripts"))
+        os.makedirs(os.path.join(stage, "research"))
+        for f in ("INDEX.md", "LEDGER.md"):
+            open(os.path.join(stage, f), "w").write("seed\n")
+        subprocess.run(["cp", os.path.join(REPO, "scripts", "publish.sh"),
+                        os.path.join(stage, "scripts")], check=True)
+        git(stage, "config", "user.email", "t@example.com")
+        git(stage, "config", "user.name", "T")
+        git(stage, "add", "-A")
+        git(stage, "commit", "-qm", "seed")
+        git(stage, "push", "-q", "origin", "main")
+
+        # Someone else pushes to main, touching a tracked file the stage also writes.
+        subprocess.run(["git", "clone", "-q", bare, other], check=True)
+        git(other, "config", "user.email", "o@example.com")
+        git(other, "config", "user.name", "O")
+        open(os.path.join(other, "INDEX.md"), "w").write("rebuilt by someone else\n")
+        open(os.path.join(other, "OTHER.md"), "w").write("their work\n")
+        git(other, "add", "-A")
+        git(other, "commit", "-qm", "concurrent change")
+        git(other, "push", "-q", "origin", "main")
+
+        # The stage finishes: it wrote research output and regenerated INDEX.md.
+        os.makedirs(os.path.join(stage, "research", "2026", "08", "2026-08-10"))
+        open(os.path.join(stage, "research", "2026", "08", "2026-08-10",
+                          "02-dossiers.md"), "w").write("expensive research\n")
+        open(os.path.join(stage, "INDEX.md"), "w").write("rebuilt by the stage\n")
+
+        p = subprocess.run(["bash", os.path.join(stage, "scripts", "publish.sh"),
+                            "stage 2 batch 1: dossiers"],
+                           capture_output=True, text=True)
+        check("publish.sh succeeds when the remote moved mid-run",
+              p.returncode == 0, (p.stdout + p.stderr).strip()[-300:])
+
+        files = git(stage, "ls-tree", "-r", "--name-only", "origin/main").stdout.split()
+        check("the stage's research reached the remote",
+              "research/2026/08/2026-08-10/02-dossiers.md" in files, str(files))
+        check("the concurrent change was not clobbered",
+              "OTHER.md" in files, str(files))
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:
