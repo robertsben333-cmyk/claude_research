@@ -13,14 +13,14 @@ simply finds an empty universe and stops cheaply.
 | Time | Stage | Skill | Subagents | Cost |
 | --- | --- | --- | --- | --- |
 | 07:12 | 0 · Universe | `earnings-universe` | 0 | negligible |
-| 09:38 | 1 · Triage | `earnings-triage` | ≤6 Sonnet/medium | low |
-| 11:52 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 5 Opus/high | **high** |
-| 14:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 5 Opus/high | **high** |
-| 17:37 | 3 · Panel & advice | `earnings-panel-advice` | 21 Opus/high | **highest** |
-| 08:20 | 4 · Calibration | `earnings-calibration` | 0 | low |
+| 08:20 | 4 · Calibration (of yesterday) | `earnings-calibration` | 0 | low |
+| 08:38 | 1 · Triage | `earnings-triage` | ≤6 Sonnet/medium | low |
+| 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 5 Opus/high | **high** |
+| 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 5 Opus/high | **high** |
+| 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 21 Opus/high | **highest** |
 
-Stage 3 starts at 17:37 to deliver the advice note by roughly **19:30**, which is
-13:30 New York time — the US session is live, so positioning and implied-move data are
+Stage 3 starts at 17:52 to deliver the advice note by roughly **19:30**, which is
+11:52 New York time — the US session is live, so positioning and implied-move data are
 current, and after-close reporters have not printed yet.
 
 ### Cron expressions
@@ -31,11 +31,11 @@ summer set from late March to late October and the winter set otherwise.
 | Stage | Summer (CEST, UTC+2) | Winter (CET, UTC+1) |
 | --- | --- | --- |
 | 0 | `12 5 * * 1-5` | `12 6 * * 1-5` |
-| 1 | `38 7 * * 1-5` | `38 8 * * 1-5` |
-| 2A | `52 9 * * 1-5` | `52 10 * * 1-5` |
-| 2B | `22 12 * * 1-5` | `22 13 * * 1-5` |
-| 3 | `37 15 * * 1-5` | `37 16 * * 1-5` |
 | 4 | `20 6 * * 1-5` | `20 7 * * 1-5` |
+| 1 | `38 6 * * 1-5` | `38 7 * * 1-5` |
+| 2A | `22 8 * * 1-5` | `22 9 * * 1-5` |
+| 2B | `22 10 * * 1-5` | `22 11 * * 1-5` |
+| 3 | `52 15 * * 1-5` | `52 16 * * 1-5` |
 
 Switching over is one `update_trigger` call per Routine changing `cron_expression`.
 Nothing else moves. Ignoring the switch is not fatal either — every stage runs an hour
@@ -46,18 +46,64 @@ the platform piles up.
 
 ## How the day is spaced, and why
 
-The spacing is the usage-limit design, not a convenience.
+The spacing is the usage-limit design, not a convenience. The pipeline's expensive work
+is 31 Opus/high subagents, and 21 of them are stage 3 alone.
 
-Usage is enforced over a **rolling five-hour window** plus a weekly cap. The pipeline's
-expensive work is 31 Opus/high subagents; running them together would spike one window
-badly. Spread as above, the five-hour window ending with stage 3 contains **stage 2B
-(5 agents) and stage 3 (21 agents)** — stage 2A and stage 1 have already aged out.
+Usage is enforced over a **five-hour window** plus a weekly cap
+([docs](https://code.claude.com/docs/en/costs#claude-for-teams-and-enterprise): the
+allowance "resets on a rolling five-hour window"). There are two accounts of how that
+window is bounded, and they imply different schedules:
 
-That is why the deep dives are split into two batches at all. One firing of ten deep
-researchers would be simpler to write and considerably worse to live with.
+- **Anchored** — the window starts when you send the day's first message and runs five
+  hours from there. The reset time moves with your behaviour.
+- **Truly sliding** — usage from more than five hours ago ages out continuously, and
+  what matters is the peak load in any five-hour span.
+
+The schedule above is built to be correct under **both**, so it does not depend on
+settling that question:
+
+| | Anchored (day anchored by stage 0 at 07:12) | Sliding (worst five-hour span) |
+| --- | --- | --- |
+| Window 1 | 07:12–12:12 — stages 0, 4, 1, 2A → **5 Opus** | 10:22–15:22 — 2A + 2B → **10 Opus** |
+| Window 2 | 12:12–17:12 — stage 2B → **5 Opus** | |
+| Window 3 | 17:12–22:12 — stage 3 → **21 Opus, alone** | 12:52–17:52 onward — stage 3 only → **21 Opus** |
+
+Two properties do the work:
+
+- **Stage 0 at 07:12 anchors the day.** Under the anchored model, that single cheap
+  firing decides where every boundary falls. It places stage 3 twenty minutes into a
+  fresh window with four and a half hours of headroom.
+- **Stage 2B ends more than five hours before stage 3 begins** (12:22 → 17:52). Under
+  the sliding model, batch 2's ten researchers have aged out before the panel starts.
+
+That is also why the deep dives are split into two batches at all. One firing of ten
+deep researchers would be simpler to write and considerably worse to live with.
+
+### Do not let another Routine anchor the day first
+
+Under the anchored model, **any earlier activity on the account moves every boundary**,
+including a Routine for an unrelated project, and including a deliberate "wake up" ping.
+A 03:00 wake-up, for instance, puts the boundaries at 08:00 / 13:00 / 18:00 — which
+lands stage 3 (17:52) eight minutes before a window closes, so the most expensive stage
+of the day straddles the boundary and can be cut off mid-panel.
+
+If you keep wake-up Routines for other projects, schedule them **after 07:12**, or move
+them to 07:05–07:10 so they anchor where stage 0 would anyway. Do not leave one in the
+small hours.
 
 The other consequence of the spacing: **each stage's output is on disk and pushed before
 the next stage starts.** A session that dies mid-stage costs one stage, not the day.
+
+### The cost of moving the deep dives earlier
+
+Stage 2A at 10:22 and 2B at 12:22 are 04:22 and 06:22 New York time — both well before
+the open, so their spot prices and implied moves come from the prior close. That is a
+real loss of freshness, bought deliberately for the usage separation.
+
+It is mitigated, not ignored: stage 3 re-sources spot and implied move before building
+the persona anchor packet, so the panel always sizes its move against live data. The
+dossiers' own anchors carry their original timestamps, so the staleness is visible
+rather than silently inherited.
 
 ### If you hit limits anyway
 

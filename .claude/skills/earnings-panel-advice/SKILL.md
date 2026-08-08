@@ -184,8 +184,13 @@ and having the session cut off mid-stage means the day produces nothing at all.
 
 ```bash
 python3 scripts/update_index.py
+python3 scripts/build_predictions.py
 scripts/publish.sh "stage 3: advice for <YYYY-MM-DD> (<tickers>)"
 ```
+
+`build_predictions.py` folds today's calls into `PREDICTIONS.csv`/`.json`, the flat
+table of every prediction the pipeline has ever made. Today's rows land with
+`outcome_status: pending` until stage 4 scores them tomorrow.
 
 Publish before you write your reply. The note in the repo is the deliverable; the chat
 message is a summary of it.

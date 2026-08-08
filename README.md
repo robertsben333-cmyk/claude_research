@@ -63,6 +63,7 @@ research/           the archive: research/<YYYY>/<MM>/<YYYY-MM-DD>/
 docs/ROUTINES.md    the schedule, the cost table, and how to change either
 INDEX.md            generated archive index
 LEDGER.md           rolling forecast-accuracy ledger
+PREDICTIONS.csv     every prediction ever made, one flat row each — generated
 CLAUDE.md           what a fresh Routine session needs to know
 ```
 

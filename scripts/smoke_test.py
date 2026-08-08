@@ -240,6 +240,65 @@ def main():
         ok, out = run(["scripts/validate_stage.py", "advice", p4])
         check("valid advice passes", ok, out)
 
+    print("\nConsolidated predictions table")
+    with tempfile.TemporaryDirectory() as tmp:
+        # A synthetic run day whose files are spread across four stages, which is
+        # exactly the join build_predictions.py has to get right.
+        day_dir = os.path.join(tmp, "2026", "08", "2026-08-10")
+        os.makedirs(os.path.join(day_dir, "02-dossiers"))
+        os.makedirs(os.path.join(day_dir, "03-panel"))
+        good, _ = synth(tmp, [62, 55, 70, 48, 58, 40, 66], confidence="High")
+
+        json.dump({"run_date": "2026-08-10", "shortlist": [
+            {"ticker": "TEST", "session": "amc", "change_expectation": 78, "ai_edge": 64}]},
+            open(os.path.join(day_dir, "01-shortlist.json"), "w"))
+        json.dump({"ticker": "TEST", "company": "Test Corp", "session": "amc",
+                   "event_date": "2026-08-10", "preliminary_direction_score": 25,
+                   "evidence_completeness": 82, "event_implied_move_pct": 9.2},
+                  open(os.path.join(day_dir, "02-dossiers", "TEST.json"), "w"))
+        json.dump({"ticker": "TEST", "synthesis": good},
+                  open(os.path.join(day_dir, "03-panel", "TEST.json"), "w"))
+        json.dump({"run_date": "2026-08-10", "ranked_names": [
+            {"ticker": "TEST", "panelled": True, "call": "Lean Up"}]},
+            open(os.path.join(day_dir, "04-advice.json"), "w"))
+        json.dump({"run_date": "2026-08-10", "names": [
+            {"ticker": "TEST", "actual_move": 6.8, "direction_hit": True,
+             "magnitude_error": 2.6, "band_hit": True}]},
+            open(os.path.join(day_dir, "05-outcome.json"), "w"))
+
+        sys.path.insert(0, os.path.join(REPO, "scripts"))
+        import build_predictions  # noqa: E402
+        build_predictions.RESEARCH = tmp
+        pred = build_predictions.collect()
+
+        check("one row per prediction", len(pred) == 1, f"got {len(pred)}")
+        if pred:
+            r = pred[0]
+            check("pulls the call from the advice file", r["call"] == "Lean Up", r["call"])
+            check("pulls triage scores from the shortlist",
+                  r["change_expectation"] == 78 and r["ai_edge"] == 64)
+            check("pulls the preliminary read from the dossier",
+                  r["preliminary_direction_score"] == 25)
+            check("pulls synthesis numbers from the panel file",
+                  r["disparity"] == good["disparity"]
+                  and r["signed_estimated_move"] == good["signed_estimated_move"])
+            check("pulls the realised move from the outcome file",
+                  r["actual_move"] == 6.8 and r["direction_hit"] is True)
+            check("flattens the move band into two columns",
+                  r["band_low"] == good["move_band_low_high"][0]
+                  and r["band_high"] == good["move_band_low_high"][1])
+        s = build_predictions.summarise(pred)
+        check("summary counts a scored panelled call",
+              s["predictions_scored"] == 1 and s["panelled_direction_hit_rate"] == 1.0, str(s))
+
+        # An unscored day must read as pending, not as a miss.
+        os.remove(os.path.join(day_dir, "05-outcome.json"))
+        pend = build_predictions.collect()
+        check("unscored prediction reads as pending",
+              pend[0]["outcome_status"] == "pending" and pend[0]["direction_hit"] is None)
+        check("pending rows are excluded from the hit rate",
+              build_predictions.summarise(pend)["panelled_direction_hit_rate"] is None)
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:

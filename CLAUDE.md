@@ -38,9 +38,22 @@ research/<YYYY>/<MM>/<YYYY-MM-DD>/
   04-advice.md  04-advice.json          stage 3, the day's deliverable
   05-outcome.md 05-outcome.json         stage 4
   _run-log.md                           appended by every stage
-INDEX.md    rolling archive index (generated — never hand-edit)
-LEDGER.md   rolling forecast accuracy ledger
+INDEX.md         rolling archive index (generated — never hand-edit)
+LEDGER.md        rolling forecast accuracy ledger
+PREDICTIONS.csv  every prediction ever made, one row per (day, ticker) — generated
+PREDICTIONS.json same data plus a summary block — generated
 ```
+
+`PREDICTIONS.csv` is the file to open when the question is "what did we call, and what
+happened". It joins the triage scores, the dossier's preliminary read, the panel
+synthesis, and the realised outcome into one flat table. Regenerate it with:
+
+```bash
+python3 scripts/build_predictions.py
+```
+
+Stages 3 and 4 do this as part of publishing. It is derived state — safe to delete and
+rebuild.
 
 Never invent a path. Always resolve with:
 

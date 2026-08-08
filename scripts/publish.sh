@@ -30,7 +30,8 @@ else
   git checkout -B "$BRANCH"
 fi
 
-git add -A research INDEX.md 2>/dev/null || git add -A research
+git add -A research INDEX.md LEDGER.md PREDICTIONS.csv PREDICTIONS.json 2>/dev/null \
+  || git add -A research
 
 if git diff --cached --quiet; then
   echo "publish: nothing to commit"

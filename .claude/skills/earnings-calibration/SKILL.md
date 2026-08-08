@@ -108,8 +108,15 @@ updated after good days is worse than no ledger.
 
 ```bash
 python3 scripts/update_index.py
+python3 scripts/build_predictions.py
 scripts/publish.sh "stage 4: outcomes for <YYYY-MM-DD>"
 ```
+
+`build_predictions.py` rewrites `PREDICTIONS.csv`/`.json`, flipping the rows you just
+scored from `pending` to their realised numbers. Its printed summary — total
+predictions, how many are scored, the panelled direction hit rate — is a useful
+cross-check against the figures you wrote into `LEDGER.md`. If the two disagree, the
+ledger is wrong, because the table is derived straight from the per-day files.
 
 ## 7. Report
 
