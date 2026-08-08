@@ -34,3 +34,33 @@
   two should be explicit about how much of the move is genuinely forecastable.
 - No fabricated data: all `expected_move_hint` fields are null (no options-implied
   move sourced by either scout within its time budget)
+
+## Stage 2 — deep dive (halted, 16:50 CEST)
+
+**This run stopped early: the account hit its monthly spend limit.** The failing
+session reported `You've hit your org's monthly spend limit`. This is a billing
+ceiling, not a pipeline fault — see claude.ai/settings/usage.
+
+Completed and published (4 of 10): AXSM, CEVA, MNDY, SGRY.
+
+Not researched (6 of 10): BW, LINC, BTDR, KEEL, AIOT, CAMT.
+
+- Batch 1 first attempt researched five names but published only three before the
+  session ended mid-batch; AXSM was left with a `.md` and no `.json`, and BW was
+  never written. A follow-up run completed AXSM.
+- Two separate attempts at BW returned without publishing. The second returned in
+  three and a half minutes on ~180k tokens, which in hindsight was the spend limit
+  already biting rather than a research failure.
+- Batch 2 (LINC, BTDR, KEEL, AIOT, CAMT) failed outright on the spend limit after
+  roughly 2M input tokens, publishing nothing.
+
+No `02-ranking.json` was produced, so **stage 3 has no ranking to read and should not
+run for this date.** Four dossiers is too thin a field to pick a top three from
+honestly, and the six missing names include the two the triage flagged as most
+questionable (BW, KEEL) — their absence biases what is left.
+
+A defect found and fixed during this run: `scripts/publish.sh` destroyed a stage's
+work whenever the remote branch moved mid-run. Three stacked causes, all fixed in
+commit `bf8e2a6`, with a regression test in `scripts/smoke_test.py` that reproduces
+the scenario against a throwaway remote. Stage 2 now publishes after each dossier
+rather than per batch, which is why three of the five first-attempt dossiers survived.
