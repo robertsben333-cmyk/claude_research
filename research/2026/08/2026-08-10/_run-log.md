@@ -29,3 +29,23 @@
   inspection, consistent with the 2026-08-08 run's approach.
   75 eligible names exceeds the stage-1 skip threshold (`triage.skip_if_universe_at_or_below: 10`),
   so stage 1 (triage) will run normally at 11:08 CEST.
+
+## Stage 1 — triage (11:08 CEST)
+- Mode: scouted (75 eligible names exceeds the skip threshold of 10)
+- Funnel: 144 universe -> 75 eligible -> 68 timing/tradeable-confirmed -> 53 cleared floors -> 10 shortlisted
+- Scouts: 5 subagents (sonnet/medium), batches of 15, run in parallel
+- Session mix: 6 AMC / 4 BMO
+- Shortlist (priority_score desc): SE (77.5), RKLB (73.8), HIMS (73.0), UPWK (68.8), DSP (67.8),
+  ONON (67.8), LIF (66.4), LEGN (65.7), VSTS (64.6), HROW (64.4)
+- Dropped for unconfirmed timing/no tradeable options market (7): AMTM, CIB, EROK, IHRT, SMC
+  (conflicting date/session across sources — flag if they resurface in a future universe run),
+  ALMR, IMSR (no real options market per scout). Note: stage 0 had spot-checked EROK and IMSR as
+  tradeable via WebSearch; the stage-1 scouts flagged EROK on timing (not tradeability) and
+  reversed the IMSR tradeability call. Worth a second look before trusting either verdict blindly.
+- Dropped for failing a hard floor (15): mostly two clusters — (a) mega-cap/BDC/REIT formality
+  prints with change_expectation <35 (ACM, MIDD, ARMK, CAH, ALC, SPG, BCSF, NHI, KBDC, PFLT) and
+  (b) hyped small-caps with ai_edge <30 (USAR, QUBT, IAUX, BCAX, HUYA) — big potential moves but
+  no researchable public thesis (meme/lottery-ticket profile or binary biotech readouts).
+- Evidence quality: only SE and HIMS carry a sourced options-implied move (`evidence: good`); the
+  other 8 shortlisted names are `evidence: thin` — stage 2 should independently source implied
+  move and consensus estimates rather than trusting the scout read.
