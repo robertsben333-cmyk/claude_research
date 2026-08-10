@@ -64,3 +64,27 @@
   may be running ahead of Europe/Amsterdam wall time). If stage 1 has genuinely not run
   by the time stage 3 (panel, 18:07 CEST) fires, stage 3 will also have nothing to work
   from — worth fixing before then rather than discovering it a third time downstream.
+
+## Stage 3 — panel & advice (17:54 CEST) — BLOCKED
+- Confirmed the exact failure stage 2 flagged twice today: `01-shortlist.json` still does
+  not exist for 2026-08-10. `02-dossiers/` and `03-panel/` are both empty. There is no
+  `02-ranking.json`. Checked `git log --all` for any commit touching
+  `research/2026/08/2026-08-10/01-shortlist.json` on any branch — none exists. Stage 1
+  (triage, due 11:08 CEST) never fired or never published, over 6.5 hours after it was
+  due and at essentially the same moment stage 3 itself is due (18:07 CEST).
+- Per the `earnings-panel-advice` skill, step 1: "If nothing is eligible, skip to step 6
+  and write an advice note that says so, with the ranked dossier summaries as the day's
+  output." That contingency assumes a `02-ranking.json` exists with zero *panel-eligible*
+  names. Today there is no ranking at all — zero names were even deep-dived — so there
+  are no ranked dossier summaries to fall back on either.
+  `scripts/validate_stage.py advice` requires `ranked_names` to be a non-empty list;
+  an advice note with an empty list would fail validation, and fabricating placeholder
+  rows would violate CLAUDE.md's "never fabricate a number" rule at the final,
+  user-facing stage of the pipeline.
+- No persona subagents were spawned. No `03-panel/*`, no `04-advice.md`/`.json` were
+  written. Nothing published beyond this log entry.
+- Root cause is upstream of this stage: stage 1 (triage) has not run for 2026-08-10 for
+  three consecutive firings' worth of evidence (both stage 2 batches, now stage 3). This
+  needs a human to check the stage-1 Routine configuration/firing history directly —
+  three stages independently blocking on the same missing file is past the point where
+  another stage retrying is likely to self-heal it.
