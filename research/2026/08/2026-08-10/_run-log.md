@@ -29,3 +29,17 @@
   inspection, consistent with the 2026-08-08 run's approach.
   75 eligible names exceeds the stage-1 skip threshold (`triage.skip_if_universe_at_or_below: 10`),
   so stage 1 (triage) will run normally at 11:08 CEST.
+
+## Stage 2 — deep dive, batch 1 (attempted 10:25 CEST) — BLOCKED
+- `01-shortlist.json` / `01-shortlist.md` do not exist yet for 2026-08-10 — only
+  `00-universe.*` has been published. Stage 1 (triage) fires at 11:08 CEST; this firing
+  landed at ~10:25 CEST, ~45 minutes before stage 1 is due to produce the shortlist.
+- No deep-dive work was done. Per CLAUDE.md ("never fabricate a number") and the
+  `earnings-deep-dive` skill (which reads `01-shortlist.json` as its required input),
+  there is nothing to spawn researchers against — inventing a shortlist to unblock this
+  firing would corrupt every downstream stage.
+- Checked `02-dossiers/`: empty, consistent with stage 1 not having run.
+- No action taken beyond this log entry. Flagging the ordering: either this Routine's
+  fire time needs to move later than 11:08+buffer CEST, or stage 1 needs to run before
+  this firing is dispatched. Recommend re-running stage 2 batch 1 after stage 1 publishes
+  `01-shortlist.json` for 2026-08-10.
