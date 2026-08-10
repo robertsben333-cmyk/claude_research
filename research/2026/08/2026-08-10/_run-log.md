@@ -43,3 +43,24 @@
   fire time needs to move later than 11:08+buffer CEST, or stage 1 needs to run before
   this firing is dispatched. Recommend re-running stage 2 batch 1 after stage 1 publishes
   `01-shortlist.json` for 2026-08-10.
+
+## Stage 2 — deep dive, batch 2 (attempted 12:24 CEST) — BLOCKED
+- `01-shortlist.json` / `01-shortlist.md` still do not exist for 2026-08-10. Stage 1
+  (triage, due 11:08 CEST) has not published — confirmed via `git log` on `main`: the
+  only commits for today are stage 0 (universe, 07:12 CEST) and the stage 2 batch 1
+  blocked-entry. No shortlist commit landed in between.
+- Checked `02-dossiers/`: empty, consistent with stage 1 not having run and batch 1
+  having done no work.
+- Per the `earnings-deep-dive` skill, batch 2 should cover both halves if batch 1 failed
+  entirely — but that only applies once a shortlist exists to split into halves. With no
+  shortlist at all, there are zero tickers to assign to either batch; there is nothing to
+  resume or restart, and inventing a shortlist would violate CLAUDE.md's "never fabricate
+  a number" rule at the worst possible point in the pipeline (it would corrupt every
+  downstream stage: dossiers, ranking, panel, advice, calibration).
+- No research subagents were spawned. No action taken beyond this log entry.
+- Recommend: check why stage 1's 11:08 CEST Routine firing did not publish (Routine
+  misconfiguration, session failure, or timing skew — batch 1's own firing landed at
+  10:25 CEST, well before stage 1 was due, which suggests this account's Routine clock
+  may be running ahead of Europe/Amsterdam wall time). If stage 1 has genuinely not run
+  by the time stage 3 (panel, 18:07 CEST) fires, stage 3 will also have nothing to work
+  from — worth fixing before then rather than discovering it a third time downstream.
