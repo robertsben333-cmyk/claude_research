@@ -33,3 +33,27 @@
   floor even if the feed had populated it, so no correction was chased.
   53 eligible names exceeds the stage-1 skip threshold (`triage.skip_if_universe_at_or_below: 10`),
   so stage 1 (triage) will run normally at 11:08 CEST.
+
+## Stage 1 — triage (10:47 CEST)
+- Mode: scouted (53 eligible > skip threshold of 10)
+- Funnel: 112 universe -> 53 eligible -> 35 cleared floors -> 10 shortlisted
+- Scouts: 4 subagents (sonnet/medium), batches of 14/14/14/11 tickers
+- Session mix: 7 AMC / 3 BMO — tilted AMC; noted in 01-shortlist.md, not corrected
+  beyond one tie-break (LQDA kept over BORR, tied at priority 62.75, to add a third
+  BMO name)
+- Dropped for timing/tradeability (11): QNT, FRVO, AADX, ELE, UAMY, EROC
+  (not_tradeable — recent IPO/thin float/no real options market/implausible data);
+  TGLS, IMOS, EVLV, WYFI, MLYS (timing_unconfirmed — stale/conflicting dates or
+  session mismatch)
+- Dropped below floors (7): ALT (chg 92, edge 20 — Phase 2b binary readout paired
+  with the print, textbook high-move/no-edge case), FNV, AMCR, HRB, PFGC, BGSI, ITRN
+  (formulaic, slow, well-covered prints)
+- Note for stage 2 / auditability: stage 0's due-diligence pass confirmed a real
+  listed-options market for QNT, FRVO, AADX, and ELE at the universe stage. The
+  triage scouts still marked them `tradeable: false` here — their objection is thin
+  float / recency / one-quarter-of-history making the *setup* hard to research and
+  act on, not literal options-market absence. Flagging the discrepancy rather than
+  silently reconciling it; if any of these move sharply tomorrow, this is where to
+  look.
+- No warnings triggered stage 2 scope reduction; budget (`triage.max_subagents: 6`)
+  not exceeded (4 of 6 scouts used).
