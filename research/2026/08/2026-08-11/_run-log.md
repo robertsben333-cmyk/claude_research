@@ -57,3 +57,30 @@
   look.
 - No warnings triggered stage 2 scope reduction; budget (`triage.max_subagents: 6`)
   not exceeded (4 of 6 scouts used).
+
+## Stage 3 — panel & advice (17:53 CEST) — BLOCKED
+- Checked state before starting, per CLAUDE.md's "resume, do not restart": `02-dossiers/`
+  and `03-panel/` are both empty, and `02-ranking.json` does not exist for 2026-08-11.
+  Stage 2 (deep dive, due 14:22 and 16:22 CEST) never published a single dossier —
+  not even a partial batch. CLAUDE.md requires stage 2 to publish after each dossier,
+  so zero committed dossiers means stage 2 never ran, or started and failed before
+  completing its first name.
+- Confirmed via `git log --all -- research/2026/08/2026-08-11/*` on all branches
+  (`main`, `claude/kind-tesla-pvp8nl`, `claude/earnings-analysis-routines-92vvv4`,
+  `claude/dreamy-turing-av8j6z`): only stage 0 and stage 1 commits exist for today.
+  No stage 2 work in progress anywhere.
+- Per the `earnings-panel-advice` skill, step 1: "If nothing is eligible, skip to step 6
+  and write an advice note that says so, with the ranked dossier summaries as the day's
+  output." That contingency assumes `02-ranking.json` exists with zero panel-eligible
+  names. Today there is no ranking at all, so there are no ranked dossier summaries to
+  fall back on. `scripts/validate_stage.py advice` requires a non-empty `ranked_names`
+  list; fabricating placeholder rows would violate CLAUDE.md's "never fabricate a
+  number" rule at the pipeline's final, user-facing stage.
+- No persona subagents were spawned. No `03-panel/*`, no `04-advice.md`/`.json` were
+  written. Nothing published beyond this log entry.
+- Root cause is upstream: stage 1 (triage) published cleanly at 10:47 CEST with a
+  10-name shortlist above the eligible floor, so stage 2 had valid input and simply
+  did not fire, or fired and produced nothing. This is the second consecutive day
+  (2026-08-10, 2026-08-11) that stage 3 has blocked on an upstream stage never
+  publishing — worth a human checking the stage-2 (`earnings-deep-dive`) Routine's
+  firing history directly rather than assuming another day's retry will self-heal it.
