@@ -130,19 +130,46 @@ def validate_panel(doc, problems):
             )
 
 
+ADVICE_STATUS = {"ok", "no_names", "blocked"}
+
+
 def validate_advice(doc, problems):
-    ranked = doc.get("ranked_names")
-    if not isinstance(ranked, list) or not ranked:
-        problems.append("root: 'ranked_names' must be a non-empty list")
+    if not doc.get("run_date"):
+        problems.append("root: missing 'run_date'")
+
+    # A day where the pipeline genuinely has nothing to say still has to publish
+    # something. The skill says so ("write an advice note that says so"), but this
+    # validator used to require a non-empty `ranked_names` unconditionally, so the
+    # only way to satisfy it on an empty day was to fabricate rows — which
+    # CLAUDE.md forbids at exactly the stage where it would do the most damage.
+    # The result was four consecutive days that produced no deliverable at all.
+    # An empty day is now representable, but it must say why.
+    status = doc.get("status", "ok")
+    if status not in ADVICE_STATUS:
+        problems.append(f"root: 'status' must be one of {sorted(ADVICE_STATUS)}")
         return
+
+    ranked = doc.get("ranked_names")
+    if status == "ok":
+        if not isinstance(ranked, list) or not ranked:
+            problems.append(
+                "root: 'ranked_names' must be a non-empty list when status is 'ok' "
+                "(use status 'no_names' or 'blocked' for a day with nothing to rank)"
+            )
+            return
+    else:
+        if not doc.get("status_reason"):
+            problems.append(f"root: status '{status}' requires a 'status_reason'")
+        if ranked and not isinstance(ranked, list):
+            problems.append("root: 'ranked_names' must be a list when present")
+        if not isinstance(ranked, list):
+            return
     for i, n in enumerate(ranked):
         w = f"ranked_names[{i}]"
         if not n.get("ticker"):
             problems.append(f"{w}: missing 'ticker'")
         if n.get("panelled") and n.get("call") not in CALLS:
             problems.append(f"{w}: panelled name needs a valid 'call'")
-    if not doc.get("run_date"):
-        problems.append("root: missing 'run_date'")
 
 
 VALIDATORS = {

@@ -21,7 +21,12 @@ triage:
   # Stage 1 only earns its cost when the universe is crowded. Below this many
   # eligible names, every name goes straight through to the deep stage.
   skip_if_universe_at_or_below: 10
-  shortlist_size: 10
+  # Cut from 10 to 6 on 2026-08-13. Ten dossiers a day never once completed: the
+  # deep dive died mid-fan-out on every run between 08-08 and 08-12 and published
+  # nothing at all. Six names is three per batch, which is a spike the plan
+  # actually survives. Raise it again only after several consecutive days where
+  # stage 2 publishes a full batch.
+  shortlist_size: 6
   batch_size: 15                  # tickers per triage-scout subagent
   max_scouts: 6
   # priority = w_change * change_expectation + w_edge * ai_edge
@@ -31,17 +36,29 @@ triage:
   min_ai_edge: 30                 # hard floor: a name nobody can forecast is not worth a dossier
 
 deep_dive:
-  # 10 dossiers, split into two firings so the token burn lands in two different
+  # 6 dossiers, split into two firings so the token burn lands in two different
   # rolling usage windows instead of one spike.
   batches: 2
-  max_concurrent_subagents: 6     # platform cap is 20; stay well under it
+  # Researchers go out in waves of this size, and the batch publishes after every
+  # wave. This is the difference between losing one wave and losing the batch:
+  # launching a whole batch in parallel means nothing is on disk until the first
+  # agent returns, so a session killed during the fan-out leaves no trace at all.
+  # That is exactly what happened on 08-11 and 08-12 — a valid shortlist sat
+  # ready and stage 2 committed nothing, not even a blocked marker.
+  wave_size: 2
+  max_concurrent_subagents: 2     # = wave_size; platform cap is 20, but the
+                                  # binding constraint here is the usage plan
   model: opus
   effort: high
 
 panel:
   # Full seven-persona independent panel. This is the most expensive stage:
   # names x 7 opus/high subagents.
-  names: 3                        # top N from the deep-dive ranking
+  # Cut from 3 to 2 on 2026-08-13 — first step of `budget.degrade_order`. Stage 3
+  # is 7 opus/high agents per name; at 3 names it was 21 of the day's 31, and the
+  # pipeline has never yet got far enough to spend them. Restore to 3 once stage 2
+  # is reliably completing.
+  names: 2                        # top N from the deep-dive ranking
   personas: 7
   max_concurrent_subagents: 7     # one full panel at a time
   model: opus
@@ -64,8 +81,8 @@ budget:
   # records that it did so rather than silently running long.
   max_subagents_per_stage:
     triage: 6
-    deep_dive_batch: 6
-    panel: 21
+    deep_dive_batch: 3
+    panel: 14
   degrade_order:
     - reduce_panel_names_to_2
     - reduce_panel_names_to_1

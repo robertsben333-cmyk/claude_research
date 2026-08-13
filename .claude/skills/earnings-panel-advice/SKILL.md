@@ -29,11 +29,26 @@ python3 scripts/run_paths.py --json
 
 Read `02-ranking.json`, `01-shortlist.json`, and `config/pipeline.yaml`.
 
-Take the top `panel.names` (default 3) **panel-eligible** names from the ranking. If
+Take the top `panel.names` (default 2) **panel-eligible** names from the ranking. If
 fewer are eligible, run fewer — never promote an ineligible name to fill a slot.
 
 If nothing is eligible, skip to step 6 and write an advice note that says so, with the
 ranked dossier summaries as the day's output. That is a legitimate result.
+
+**If there is no `02-ranking.json` at all, you still publish.** Stage 2 dying is the
+pipeline's most common failure — it happened on four consecutive days in August 2026 —
+and on every one of those days stage 3 wrote a run-log entry and no deliverable, so the
+archive records the outage only in prose. Instead:
+
+- If some dossiers exist but no ranking, **build the ranking yourself** from
+  `02-dossiers/*.json` using `panel.rank_by`; that is cheap and unblocks the panel.
+- If there are no dossiers either, write `04-advice.md` and `04-advice.json` with
+  `"status": "blocked"` and a `status_reason` naming the stage that failed, an empty
+  `ranked_names`, and the shortlist as "researched: none". The validator accepts this;
+  it does **not** accept invented rows.
+
+Then say so plainly at the top of the note. A day the pipeline could not produce a call
+is information, and it belongs in the archive alongside the days it could.
 
 ## 2. Build the Phase-0 anchor packet
 
@@ -146,9 +161,10 @@ Also write `04-advice.json`:
 {
   "schema_version": 1,
   "run_date": "2026-08-10",
+  "status": "ok",
   "window_covered": "...",
-  "names_researched": 10,
-  "names_panelled": 3,
+  "names_researched": 6,
+  "names_panelled": 2,
   "ranked_names": [
     {"ticker": "TTWO", "panelled": true, "call": "Lean Up", "signed_estimated_move": 4.2,
      "prob_direction": 63.0, "certainty_tier": "Med", "reversal_risk_tier": "Med",
@@ -157,6 +173,10 @@ Also write `04-advice.json`:
   "degradations_applied": []
 }
 ```
+
+`status` is `"ok"`, `"no_names"` (ranking existed, nothing cleared eligibility), or
+`"blocked"` (an upstream stage produced nothing). The latter two require a
+`status_reason` and permit an empty `ranked_names`; `"ok"` requires a non-empty one.
 
 ```bash
 python3 scripts/validate_stage.py advice <run_dir>/04-advice.json

@@ -240,6 +240,47 @@ def main():
         ok, out = run(["scripts/validate_stage.py", "advice", p4])
         check("valid advice passes", ok, out)
 
+        # A day where stage 2 died has nothing to rank, but must still publish a
+        # deliverable rather than fabricate rows to satisfy the validator.
+        blocked = {"schema_version": 1, "run_date": "2026-08-10", "status": "blocked",
+                   "status_reason": "stage 2 published no dossiers",
+                   "ranked_names": []}
+        p4b = os.path.join(tmp, "04-advice-blocked.json")
+        json.dump(blocked, open(p4b, "w"))
+        ok, out = run(["scripts/validate_stage.py", "advice", p4b])
+        check("a blocked day can publish an empty advice note", ok, out)
+
+        json.dump({k: v for k, v in blocked.items() if k != "status_reason"},
+                  open(p4b, "w"))
+        ok, out = run(["scripts/validate_stage.py", "advice", p4b], expect=1)
+        check("a blocked day without a reason is rejected", ok, out)
+
+        json.dump({"schema_version": 1, "run_date": "2026-08-10", "ranked_names": []},
+                  open(p4b, "w"))
+        ok, out = run(["scripts/validate_stage.py", "advice", p4b], expect=1)
+        check("an empty advice note still needs a status", ok, out)
+
+    print("\nRun-log heartbeat")
+    with tempfile.TemporaryDirectory() as tmp:
+        log = os.path.join(tmp, "_run-log.md")
+        sys.path.insert(0, os.path.join(REPO, "scripts"))
+        from run_log import append_section
+
+        append_section(log, "2026-08-10", "Stage 2 — batch 1 — STARTED",
+                       ["Tickers: AAA, BBB"])
+        first = open(log, encoding="utf-8").read()
+        check("heartbeat creates the log with its date header",
+              first.startswith("# Run log — 2026-08-10"), first[:60])
+        check("heartbeat records the plan", "Tickers: AAA, BBB" in first, first)
+
+        append_section(log, "2026-08-10", "Stage 2 — batch 1 — FINISHED",
+                       ["Researched: AAA"])
+        second = open(log, encoding="utf-8").read()
+        check("appending never drops the earlier section",
+              "STARTED" in second and "FINISHED" in second, second)
+        check("only one date header after two appends",
+              second.count("# Run log —") == 1, second)
+
     print("\nConsolidated predictions table")
     with tempfile.TemporaryDirectory() as tmp:
         # A synthetic run day whose files are spread across four stages, which is

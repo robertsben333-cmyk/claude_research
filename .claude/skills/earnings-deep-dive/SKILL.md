@@ -29,12 +29,40 @@ that already has both a `.md` and a `.json`.** Routines get re-run, sessions get
 retried, and re-researching a finished name is pure waste. If batch 1 failed entirely,
 batch 2 should notice the gap and cover both batches — say so in the log if you do.
 
-## 2. Spawn the researchers
+If `01-shortlist.json` does not exist, stage 1 has not published. Do not invent a
+shortlist. Log the block (step 1a) and stop — but check first whether stage 1's Routine
+simply has not fired yet, and if the shortlist is merely late, prefer running the
+`earnings-triage` skill yourself over losing the day.
 
-One `earnings-deep-researcher` subagent per ticker, up to
-`deep_dive.max_concurrent_subagents` at a time (default 6; the platform cap is 20 but
-crowding it makes every agent slower and the failure mode is a hard error). Launch them
-in parallel within a batch.
+## 1a. Leave a heartbeat before spending anything
+
+**Do this before spawning a single researcher, and publish it.**
+
+```bash
+python3 scripts/run_log.py --heading "Stage 2 — deep dive, batch <k> — STARTED" \
+  --line "Shortlist: <n> names; this batch: <tickers>" \
+  --line "Already on disk, skipping: <tickers or none>" \
+  --line "Plan: waves of <wave_size> opus/high researchers, publish after each wave"
+scripts/publish.sh "stage 2 batch <k>: started for <YYYY-MM-DD>"
+```
+
+This costs one cheap commit and it is the only reason tomorrow's you can tell a
+Routine that never fired from a session that fired and died on its first researcher.
+Those two have completely different fixes. Between 2026-08-08 and 2026-08-12 the deep
+dive published *nothing at all* on four consecutive days, and because there was no
+heartbeat, stage 3 could only record "stage 2 never ran, or ran and failed before
+completing its first name" — which is not a diagnosis.
+
+## 2. Spawn the researchers, in waves
+
+One `earnings-deep-researcher` subagent per ticker — but **not the whole batch at
+once**. Launch them in waves of `deep_dive.wave_size` (default 2), and publish after
+every wave before starting the next.
+
+Launching a batch in parallel looks faster and is strictly worse. Nothing is on disk
+until the first agent returns, so a session killed during the fan-out — usage limit,
+container reclaim — leaves no dossier, no log line, nothing. A wave that completes is
+banked; a wave that dies costs one wave.
 
 Give each subagent exactly:
 
@@ -56,10 +84,23 @@ one name:
 scripts/publish.sh "stage 2 batch <k>: dossier for <YYYY-MM-DD> (<TICKER>) [in progress]"
 ```
 
-Five Opus/high researchers is a long, heavy session, and sessions do run out. A real run
-died partway through batch 1 with two names still unwritten — the three that had already
-been pushed survived, and they only survived because they had been pushed. A commit per
-dossier costs seconds and is the difference between losing one name and losing five.
+Opus/high researchers are long and heavy, and sessions do run out. A real run died
+partway through batch 1 with two names still unwritten — the three that had already been
+pushed survived, and they only survived because they had been pushed. A commit per
+dossier costs seconds and is the difference between losing one name and losing the batch.
+
+**If a wave returns nothing at all, stop the batch.** Two researchers that both come
+back empty — or a wave that returns in a couple of minutes on an implausible token
+count — is the usage limit biting, not a research failure. Starting the next wave in
+that state burns the rest of the day's allowance for nothing. Record it and go to
+step 5:
+
+```bash
+python3 scripts/run_log.py --heading "Stage 2 — deep dive, batch <k> — HALTED" \
+  --line "Completed before halting: <tickers or none>" \
+  --line "Not researched: <tickers>" \
+  --line "Reason: <what the failure actually said>"
+```
 
 ## 3. Handle failures
 
@@ -103,14 +144,18 @@ If batch 1 is running, skip this step; only the final batch ranks.
 Append to `_run-log.md` (one section per batch, do not overwrite the other batch's):
 
 ```markdown
-## Stage 2 — deep dive, batch <k> (<HH:MM> CET)
+## Stage 2 — deep dive, batch <k> — FINISHED (<HH:MM> UTC)
 - Researched: <tickers>
 - Skipped (already done): <tickers or none>
 - Failed: <ticker (reason) or none>
-- Subagents: <n> opus/high
+- Subagents: <n> opus/high, in <w> waves of <wave_size>
 - Median evidence completeness: <n>/100
 - Panel-eligible after this batch: <tickers>       # final batch only
 ```
+
+Timestamp in **UTC**. Sessions have repeatedly guessed their own local time wrong and
+written a CEST time that is an hour or two off, which makes the log useless for working
+out what ran when. `scripts/run_log.py` stamps UTC for you.
 
 ```bash
 python3 scripts/update_index.py

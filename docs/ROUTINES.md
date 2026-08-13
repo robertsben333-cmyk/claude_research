@@ -15,9 +15,13 @@ simply finds an empty universe and stops cheaply.
 | 07:12 | 0 · Universe | `earnings-universe` | 0 | negligible |
 | 08:20 | 4 · Calibration (of yesterday) | `earnings-calibration` | 0 | low |
 | 08:38 | 1 · Triage | `earnings-triage` | ≤6 Sonnet/medium | low |
-| 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 5 Opus/high | **high** |
-| 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 5 Opus/high | **high** |
-| 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 21 Opus/high | **highest** |
+| 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
+| 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
+| 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
+
+Subagent counts were cut on 2026-08-13 (10 dossiers → 6, 3 panels → 2) after the
+pipeline failed to deliver on four consecutive days. See "What actually went wrong,
+2026-08-08 to 08-12" below before raising them back.
 
 Stage 3 starts at 17:52 to deliver the advice note by roughly **19:30**, which is
 11:52 New York time — the US session is live, so positioning and implied-move data are
@@ -91,6 +95,13 @@ If you keep wake-up Routines for other projects, schedule them **after 07:12**, 
 them to 07:05–07:10 so they anchor where stage 0 would anyway. Do not leave one in the
 small hours.
 
+Two such Routines exist on this account — "Wake up" (`0 4 * * 1-5`) and "wake - up 2"
+(`5 8 * * *`, seventeen minutes before stage 2A). Both appear paused as of 2026-08-13:
+their `next_run_at` is in the past and neither has fired since 08-07/08-08. Leave them
+paused, or delete them. Re-enabling "Wake up" would anchor the day at 04:00 and put the
+boundaries at 09:00 / 14:00 / 19:00, which drops stage 2A's fan-out 38 minutes before a
+window close — the exact shape of failure this schedule was built to avoid.
+
 The other consequence of the spacing: **each stage's output is on disk and pushed before
 the next stage starts.** A session that dies mid-stage costs one stage, not the day.
 
@@ -105,15 +116,70 @@ the persona anchor packet, so the panel always sizes its move against live data.
 dossiers' own anchors carry their original timestamps, so the staleness is visible
 rather than silently inherited.
 
+## What actually went wrong, 2026-08-08 to 08-12
+
+Five scheduled days, zero advice notes. The Routines were never the problem: all six
+existed, were enabled, had the repo attached, pointed at the full-network environment,
+and fired on time — `last_fired_at` confirms every one. Stage 0 published all five days
+and stage 1 published four of five. **Stage 2 published nothing on any of them.**
+
+Three distinct faults, which is why it looked intermittent:
+
+1. **The fan-out was all-or-nothing.** Stage 2 launched its whole batch of five
+   Opus/high researchers in parallel. Nothing reaches disk until the first agent
+   returns, so a session killed during the fan-out leaves *no dossier and no log line*.
+   On 08-08 the account hit its monthly spend limit and batch 2 died after roughly 2M
+   input tokens having published nothing; 08-11 and 08-12 show the identical signature —
+   a valid 10-name shortlist sitting ready, the Routine fired, and not one commit.
+   Fixed by `deep_dive.wave_size` (waves of 2, publish after each wave) plus a
+   published heartbeat *before* any researcher is spawned.
+
+2. **The day's budget was never survivable.** 31 Opus/high subagents across stage 2 and
+   stage 3, on a plan that had already tripped a monthly ceiling. The documented
+   `degrade_order` existed but nothing ever applied it, because the stage that was
+   supposed to apply it was the stage that kept dying. Applied by hand instead:
+   shortlist 10 → 6, panel names 3 → 2. That is 31 Opus/high agents down to 20.
+
+3. **A failed day published nothing, so the archive recorded the outage only in prose.**
+   `validate_stage.py advice` required a non-empty `ranked_names`, so on a day with no
+   ranking the only way to publish was to invent rows — which CLAUDE.md forbids. Stage 3
+   correctly refused, four days running, and wrote a run-log entry instead of a
+   deliverable. Advice notes now carry a `status` of `ok` / `no_names` / `blocked`, and
+   a blocked day publishes an empty note with a stated reason.
+
+A fourth, smaller fault made all of this harder to see: **`CLAUDE.md`'s schedule table
+was stale**, still showing the pre-08-08 times (11:08 / 14:22 / 16:22 / 18:07) after
+commit `27cdf99` retimed everything. Every fresh session reads that table first. It led
+a stage 2 session to conclude the platform clock was "running ahead of Europe/Amsterdam
+wall time", and stage 3 sessions to report stage 2 as due at 14:22 and 16:22 when it had
+actually fired at 10:22 and 12:22. Sessions also wrote local timestamps into the run log
+that were an hour or two wrong; run-log entries are UTC now, via `scripts/run_log.py`.
+
+### The heartbeat is the diagnostic
+
+Nothing in this environment exposes a failed Routine session's transcript, so "the
+session died" had to be inferred from absence. It should not have to be. Stage 2 now
+publishes a `— STARTED` section naming the tickers and the plan before it spends
+anything, so from here on the archive distinguishes:
+
+- no `— STARTED` section → the Routine did not fire, or died before reaching the skill
+- `— STARTED` with no dossiers → it fired and was killed during research (usage limit)
+- `— STARTED` plus a `— HALTED` section → it detected the failure and stopped cleanly
+
 ### If you hit limits anyway
 
-Turn these knobs in `config/pipeline.yaml`, in this order:
+Turn these knobs in `config/pipeline.yaml`, in this order. The first two are already
+applied — the remaining headroom is below them:
 
-1. `panel.names: 3` → `2` — removes 7 Opus/high agents, the single biggest saving.
-2. `triage.shortlist_size: 10` → `8` — removes 2 deep researchers.
-3. `deep_dive.batches: 2` → `3` — same total cost, spread across three windows.
+1. ~~`panel.names: 3` → `2`~~ — **applied 2026-08-13**. Removes 7 Opus/high agents.
+2. ~~`triage.shortlist_size: 10` → `6`~~ — **applied 2026-08-13**. Removes 4 deep
+   researchers.
+3. `deep_dive.wave_size: 2` → `1` — fully serial. Slowest, but the finest-grained
+   recovery: a kill costs one dossier.
+4. `panel.names: 2` → `1` — removes another 7 Opus/high agents.
+5. `deep_dive.batches: 2` → `3` — same total cost, spread across three windows.
    Requires a third stage-2 Routine.
-4. `panel.personas` — leave this alone. Cutting personas does not save much and it
+6. `panel.personas` — leave this alone. Cutting personas does not save much and it
    directly degrades the disparity measure that the whole calibration rests on.
 
 Stage 3 also sheds scope on its own when the run log shows earlier stages ran long, and

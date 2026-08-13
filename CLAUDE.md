@@ -12,13 +12,20 @@ If you are a Routine session, read this whole file before doing anything.
 | # | Skill | Fires | What it does |
 | --- | --- | --- | --- |
 | 0 | `earnings-universe` | 07:12 | Fetch and qualify the day's earnings universe |
-| 1 | `earnings-triage` | 11:08 | Screen it down to ~10 names worth researching |
-| 2 | `earnings-deep-dive` | 14:22 & 16:22 | One deep Opus/high dossier per name, in two batches |
-| 3 | `earnings-panel-advice` | 18:07 | Seven-persona panel on the top names → the advice note |
-| 4 | `earnings-calibration` | 08:20 next day | Score yesterday's calls, update the ledger |
+| 4 | `earnings-calibration` | 08:20 | Score *yesterday's* calls, update the ledger |
+| 1 | `earnings-triage` | 08:38 | Screen it down to ~6 names worth researching |
+| 2 | `earnings-deep-dive` | 10:22 & 12:22 | One deep Opus/high dossier per name, in two batches |
+| 3 | `earnings-panel-advice` | 17:52 | Seven-persona panel on the top names → the advice note |
 
-Times are Europe/Amsterdam. See `docs/ROUTINES.md` for the cron expressions and the
-reasoning behind the spacing.
+Times are Europe/Amsterdam, and they are the **actual cron times** — check them against
+`list_triggers` before trusting them, not the other way round. This table was stale for
+five days (it still showed a pre-2026-08-08 schedule of 11:08 / 14:22 / 16:22 / 18:07)
+and cost real runs: a stage 2 session concluded the platform clock was "running ahead"
+and a stage 3 session reported stage 2 as overdue when it had in fact fired hours
+earlier. If you find this table disagreeing with `docs/ROUTINES.md` or with the Routines
+themselves, fix it in the same commit as whatever else you are doing.
+
+See `docs/ROUTINES.md` for the cron expressions and the reasoning behind the spacing.
 
 Invoke the stage skill named in your Routine prompt. Do not improvise a different
 workflow — later stages read the files earlier stages wrote, in the shapes the skills
@@ -75,9 +82,27 @@ Stage 2 publishes after *each dossier*, not once per batch and not once at the e
 run really did die partway through a batch; the names already pushed survived and the
 rest were lost.
 
-**Append to `_run-log.md`, never rewrite it.** Each stage adds its own section. The run
-log is how a later stage — and you, tomorrow — finds out that something upstream went
-wrong.
+**Leave a heartbeat before you spend anything.** Any stage that is about to spawn
+subagents first appends a `— STARTED` section to the run log and publishes it:
+
+```bash
+python3 scripts/run_log.py --heading "Stage <n> — <name> — STARTED" --line "<the plan>"
+scripts/publish.sh "stage <n>: started for <YYYY-MM-DD>"
+```
+
+One cheap commit, and it is the only thing that distinguishes *a Routine that never
+fired* from *a session that fired and was killed on its first subagent*. Those have
+completely different fixes. Stage 2 published nothing on four consecutive days
+(08-08 through 08-12) and, with no heartbeat, the most stage 3 could conclude was
+"stage 2 never ran, or ran and failed before completing its first name."
+
+**Append to `_run-log.md`, never rewrite it.** Each stage adds its own section, and
+`scripts/run_log.py` is the safe way to do it. The run log is how a later stage — and
+you, tomorrow — finds out that something upstream went wrong.
+
+**Timestamp in UTC.** Sessions guess their local offset wrong: run-log entries have
+claimed 11:08 CEST for work that committed at 08:45 CEST. `scripts/run_log.py` stamps
+UTC for you.
 
 **Resume, do not restart.** Routines get re-run and sessions get retried. Before doing
 expensive work, check whether the output already exists and skip it.
