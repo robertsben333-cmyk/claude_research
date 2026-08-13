@@ -20,9 +20,18 @@ python3 scripts/run_paths.py --json
 
 Read `01-shortlist.json` and `config/pipeline.yaml`.
 
+**Take at most `triage.shortlist_size` names, highest `priority_score` first.** A
+shortlist published before a budget change can be longer than the current cap — on
+2026-08-13 a 10-name shortlist was sitting in front of a config that had been cut to 6 —
+and quietly researching all of them puts back exactly the spike the cap was meant to
+remove. Record in the run log any name you dropped for this reason.
+
 Determine which batch you are: the routine prompt says `batch 1` or `batch 2`. Batch 1
-takes shortlist positions 1…N, batch 2 takes N+1…end, where N = ceil(len(shortlist) /
+takes capped positions 1…N, batch 2 takes N+1…end, where N = ceil(capped_len /
 `deep_dive.batches`).
+
+If you are covering both halves because the other batch failed, the cap still applies to
+the day as a whole: research up to `triage.shortlist_size` names total, not per batch.
 
 Before starting, check `02-dossiers/` for dossiers that already exist. **Skip any ticker
 that already has both a `.md` and a `.json`.** Routines get re-run, sessions get
