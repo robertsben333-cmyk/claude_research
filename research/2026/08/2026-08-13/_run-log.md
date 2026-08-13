@@ -14,3 +14,10 @@
 - Session mix: 9 AMC / 1 BMO — top-10 priority scores fell almost entirely on AMC names; noted as a tilt rather than corrected by swap, since the next-best BMO alternatives (USAS 49.9, TMS 44.65, RLX 43.75) were materially lower-scored, not close calls
 - Notable drops: BLTE (ai_edge 25, biotech binary readout — unforecastable), TMC (unconfirmed timing — sources conflict Aug 13 vs Aug 17, would also have failed ai_edge floor), SPRY (unconfirmed timing — session conflict bmo/amc, otherwise clears both floors comfortably), SIND/MFP/RMIX (untradeable — thin recent listings, unconfirmed options liquidity)
 - Warning for stage 2: all 23 scouted names returned `evidence: "thin"` and no sourced `expected_move_hint` — Phase-0 anchors (spot, implied move, historical realised moves) still need to be sourced from scratch in the deep dive. NMAX (ai_edge 35) and NKTR (ai_edge 30) sit at or just above the floor and deserve extra scrutiny on whether the dossier slot is worth it. TMC's earnings-date conflict is worth re-checking at tomorrow's stage 0 run.
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-08-13 11:51 UTC
+- Catch-up run fired ~11:50 UTC; batch 1 never fired today (no run-log entry, 02-dossiers/ empty) — batch 2 covers both halves.
+- Shortlist: 10 names published, but triage.shortlist_size cap is 6 as of today's config change; taking top 6 by priority_score for the day: GLOB, DLO, STNE, AMAT, HAWK, SGML. Dropped for cap: GLAS, NMAX, ETON, NKTR.
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2), publish after each wave/dossier. Halt and log if any wave returns empty.
