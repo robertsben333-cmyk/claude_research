@@ -17,3 +17,10 @@
 - Session mix: 1 AMC (FN) / 5 BMO (VNET, KLAR, PONY, BIDU, AS) -- real tilt, not corrected, flagged for stage 2
 - Notable drops (cleared floors, cut on rank): IQ (50.80), XP (49.50), YALA (49.15), HD (47.85), RNW (42.25)
 - Evidence quality: thin across the board; no expected_move_hint could be sourced for any name -- left null, not fabricated
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-08-17 10:24 UTC
+- Batch 1 never ran today: no 02-dossiers/ files and no Stage 2 batch 1 section in the run log. Covering both halves per fallback rule.
+- Tickers (all 6, priority order): FN, VNET, KLAR, PONY, BIDU, AS
+- Plan: 3 waves of 2 opus/high researchers (FN+VNET, KLAR+PONY, BIDU+AS), publish after each wave and after each dossier
+- Cap: shortlist_size=6 for the day as a whole -- researching all 6 does not exceed it
