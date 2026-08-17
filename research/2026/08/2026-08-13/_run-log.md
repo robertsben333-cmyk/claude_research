@@ -21,3 +21,12 @@
 - Shortlist: 10 names published, but triage.shortlist_size cap is 6 as of today's config change; taking top 6 by priority_score for the day: GLOB, DLO, STNE, AMAT, HAWK, SGML. Dropped for cap: GLAS, NMAX, ETON, NKTR.
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2), publish after each wave/dossier. Halt and log if any wave returns empty.
+
+## Stage 2 — deep dive, batch 2 — HALTED (recorded retrospectively 2026-08-17)
+- Logged at 2026-08-17 09:16 UTC
+- Completed and published: GLOB, DLO (wave 1). Both dossiers have .md and .json on main.
+- Not researched: STNE, AMAT, HAWK, SGML (wave 2 onward). Dropped for the shortlist_size cap: GLAS, NMAX, ETON, NKTR.
+- No 02-ranking.json was written, so 2026-08-13 has no panel and no advice note. Stage 3's 15:52 UTC slot did not fire that day either.
+- The session published GLOB at 12:10 UTC and nothing afterwards. It left no HALTED entry of its own, so it was killed rather than stopping cleanly — the wave-2 researchers never returned.
+- This entry is written retrospectively by the diagnosis session; it is not a claim about anything observed live after 12:10 UTC.
+- What this run does establish: the heartbeat and per-wave publishing work. Wave 1 was banked and survived, where four previous days lost everything.
