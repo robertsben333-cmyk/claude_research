@@ -102,9 +102,12 @@ you, tomorrow — finds out that something upstream went wrong.
 
 **Timestamp in UTC.** Sessions guess their local offset wrong: run-log entries have
 claimed 11:08 CEST for work that committed at 08:45 CEST. `scripts/run_log.py` stamps
-UTC for you. Do not trust the container clock either — on 2026-08-17 it was running four
-days behind the platform. When the date matters, take it from `list_triggers` or from
-the timestamps git puts on the remote's commits, not from `date`.
+UTC for you. `date` inside the container is reliable; what is *not* reliable is a long
+session's own sense of what day it is. A session can be interrupted and resumed days
+later in a fresh container, and the date it was told at startup goes stale without
+anything announcing it — that happened here across 08-13 to 08-17 and produced a
+confidently wrong timeline. Re-read the clock whenever the date matters, and
+cross-check it against `list_triggers` before concluding a stage is late.
 
 **A missing day is not always a failed stage.** If a whole day is absent from
 `research/`, check `list_triggers` before reading anything in this repo: on 08-14 and

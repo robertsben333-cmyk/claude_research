@@ -190,6 +190,13 @@ Recovery is `fire_trigger` per stage, oldest first, and it works: firing stage 0
 on 08-17 updated `last_fired_at` immediately, which also proves dispatch is healthy and
 points the finger at scheduling rather than execution.
 
+One trap while diagnosing this. `next_run_at` is the *next* scheduled fire, so once a
+slot is missed it rolls forward and the Routine looks normally scheduled — the evidence
+of the miss is only in `last_fired_at` being older than the day you are asking about.
+Compare the two, never read either alone. And give a manually fired stage its real
+running time before calling it dead: stage 0 takes four to five minutes to publish, and
+a session spanning several days makes it very easy to misjudge how long ago you fired it.
+
 ### The heartbeat is the diagnostic
 
 Nothing in this environment exposes a failed Routine session's transcript, so "the
