@@ -102,7 +102,14 @@ you, tomorrow — finds out that something upstream went wrong.
 
 **Timestamp in UTC.** Sessions guess their local offset wrong: run-log entries have
 claimed 11:08 CEST for work that committed at 08:45 CEST. `scripts/run_log.py` stamps
-UTC for you.
+UTC for you. Do not trust the container clock either — on 2026-08-17 it was running four
+days behind the platform. When the date matters, take it from `list_triggers` or from
+the timestamps git puts on the remote's commits, not from `date`.
+
+**A missing day is not always a failed stage.** If a whole day is absent from
+`research/`, check `list_triggers` before reading anything in this repo: on 08-14 and
+08-17 the Routines did not fire at all, and a Routine that never fires leaves no
+heartbeat, no log, and no directory to find. See `docs/ROUTINES.md`, "The fourth fault".
 
 **Resume, do not restart.** Routines get re-run and sessions get retried. Before doing
 expensive work, check whether the output already exists and skip it.

@@ -155,6 +155,41 @@ wall time", and stage 3 sessions to report stage 2 as due at 14:22 and 16:22 whe
 actually fired at 10:22 and 12:22. Sessions also wrote local timestamps into the run log
 that were an hour or two wrong; run-log entries are UTC now, via `scripts/run_log.py`.
 
+### The fourth fault: the Routines stopped firing altogether (08-14 to 08-17)
+
+Everything above is about a stage that fires and fails. On 2026-08-14 and again on
+2026-08-17 a different thing happened: **nothing fired at all.** No universe, no
+shortlist, no run log, no directory — on `main` or on any other branch. Every earnings
+Routine sat at `enabled: true` with the right cron, the right environment and the repo
+attached, and simply did not run. `last_fired_at` on all six stayed at 2026-08-13 while
+`next_run_at` rolled forward to 2026-08-18, skipping two trading days.
+
+This is invisible from inside the repo, because a Routine that never fires leaves
+nothing behind — not even the heartbeat, which is the whole point of the heartbeat's
+absence being meaningful. **The archive cannot tell you about this failure; only
+`list_triggers` can.** So when a day is missing, check in this order:
+
+```
+list_triggers                      # last_fired_at vs next_run_at, per Routine
+```
+
+- `last_fired_at` older than the missing day → the Routine never fired. Nothing in the
+  repo will explain it; the cause is account- or platform-level.
+- `last_fired_at` on the missing day, no `— STARTED` in the run log → it fired and died
+  before reaching the skill.
+- `— STARTED` but no dossiers → it fired and was killed during research.
+
+The likeliest cause of an outright stop, given this account tripped a monthly spend
+limit on 08-08, is an account-level usage or billing pause: the Routines stay enabled
+and stop being dispatched. That is a claude.ai settings question
+([usage](https://claude.ai/settings/usage)), not something any change in this repo can
+fix. Verify it before spending time on the pipeline — five days of work went into
+diagnosing a stage that fires and fails, and none of it helps on a day nothing fires.
+
+Recovery is `fire_trigger` per stage, oldest first, and it works: firing stage 0 by hand
+on 08-17 updated `last_fired_at` immediately, which also proves dispatch is healthy and
+points the finger at scheduling rather than execution.
+
 ### The heartbeat is the diagnostic
 
 Nothing in this environment exposes a failed Routine session's transcript, so "the
