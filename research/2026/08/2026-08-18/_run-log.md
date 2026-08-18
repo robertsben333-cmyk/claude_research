@@ -14,3 +14,8 @@
 - Session mix: 2 AMC (MRCY, TOL) / 4 BMO (OPRA, VIK, WB, FLNG)
 - Notable drops: TGT (68/62, highest raw score in the batch, timing_confirmed false), ZIM (70/45, largest change_expectation in the universe, timing_confirmed false), EL (65/55, timing_confirmed false), LOW (45/50, timing_confirmed false), KC (60/25, not tradeable + ai_edge below floor), LU (60/30, timing_confirmed false, conflicting date sources), JKHY (25/30, both scores weakest in the batch)
 - Warning for stage 2: OPRA, WB, and FLNG all came back `evidence: thin` from the scout pass — deep-dive researchers should expect real sourcing legwork rather than scout citations. TGT and ZIM were the two largest raw movers in the entire universe and were dropped purely on unconfirmed timing, not on merit.
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-08-18 08:23 UTC
+- Tickers: OPRA, MRCY, VIK (shortlist positions 1-3 of 6, priority_score order)
+- Plan: 2 waves (wave 1: OPRA+MRCY, wave 2: VIK), opus/high, publish after each dossier
