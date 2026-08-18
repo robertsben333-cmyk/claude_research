@@ -19,3 +19,10 @@
 - Logged at 2026-08-18 08:23 UTC
 - Tickers: OPRA, MRCY, VIK (shortlist positions 1-3 of 6, priority_score order)
 - Plan: 2 waves (wave 1: OPRA+MRCY, wave 2: VIK), opus/high, publish after each dossier
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-08-18 10:23 UTC
+- Tickers: VIK, TOL, WB, FLNG
+- Batch 2 own half (positions 4-6): TOL, WB, FLNG. Also covering VIK (position 3), which batch 1 started but never completed — only OPRA and MRCY landed both files; VIK has no dossier on disk.
+- Day total after this batch: 6/6 shortlist names (cap = triage.shortlist_size), highest priority_score first
+- Plan: 2 waves of 2 opus/high researchers (wave 1: VIK+TOL, wave 2: WB+FLNG), publish after each wave
