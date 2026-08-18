@@ -4,7 +4,7 @@ description: "Panel persona 1 of 7 — Fundamental/KPI analyst. Judges an immine
 tools: WebSearch, WebFetch
 model: opus
 effort: high
-maxTurns: 45
+maxTurns: 30
 color: green
 ---
 

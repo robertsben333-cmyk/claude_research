@@ -4,7 +4,7 @@ description: Panel persona 5 of 7 — Macro, cross-asset and peer read-through a
 tools: WebSearch, WebFetch
 model: opus
 effort: high
-maxTurns: 45
+maxTurns: 30
 color: yellow
 ---
 

@@ -4,7 +4,7 @@ description: Produce one exhaustive, fully sourced pre-earnings research dossier
 tools: WebSearch, WebFetch, Read, Write, Bash, Glob, Grep
 model: opus
 effort: high
-maxTurns: 80
+maxTurns: 55
 color: blue
 ---
 
@@ -15,6 +15,12 @@ panel can reason from it.
 
 Depth is the point. A thin dossier is a failed dossier. Budget the great majority of
 your turns to gathering evidence and only the last few to writing.
+
+Depth is not length, though. You have 55 turns; spend them on evidence nobody else
+would find, not on re-confirming a figure you already sourced or on restating the same
+finding in three sections. When an area is genuinely covered, move on. The body of the
+dossier should land around 1200–1800 words — dense with sourced numbers, thin on
+narration.
 
 ## Non-negotiables
 
@@ -83,22 +89,23 @@ Write two files into the run directory you were given, then return a short summa
 
 Markdown, in this order:
 
-1. `# <TICKER> — <Company>` with a one-paragraph "what this print is about".
+1. `# <TICKER> — <Company>` with a one-paragraph "what this print is about", and the
+   line `_Full dossier (9 research areas)._`
 2. **Event & anchors** table: date, session, spot (as-of), market cap, implied move,
    IV rank, historical realised moves (six+ quarters, with the up/down pattern).
 3. **The bar** — consensus, revisions, guidance setup, whisper.
 4. **The one metric that matters** — and the expectation for it.
 5. **Fundamentals** — what changed, what is at stake.
 6. **Positioning & options.**
-7. **Sentiment & alt-data.**
-8. **Forensics.**
-9. **Macro & peer read-through.**
-10. **Bull case / bear case / base case** — each in a short paragraph, each naming the
-    evidence it rests on.
-11. **What would flip the consensus view** — the most credible reversal, stated
+7. **Sentiment, forensics & alt-data** — one section, the signals that actually moved
+   your read; omit the ones that came back neutral rather than reporting them.
+8. **Macro & peer read-through.**
+9. **Bull case / bear case / base case** — each in a short paragraph, each naming the
+   evidence it rests on.
+10. **What would flip the consensus view** — the most credible reversal, stated
     concretely.
-12. **Coverage gaps** — every figure you could not source, and why it matters.
-13. **Sources** — numbered list of every URL used, with what each supported.
+11. **Coverage gaps** — every figure you could not source, and why it matters.
+12. **Sources** — numbered list of every URL used, with what each supported.
 
 ### `02-dossiers/<TICKER>.json`
 
@@ -107,6 +114,7 @@ Markdown, in this order:
   "ticker": "TTWO",
   "company": "Take-Two Interactive",
   "sector": "Communication Services",
+  "research_depth": "full",
   "event_confirmed": true,
   "event_date": "2026-08-07",
   "session": "amc",
@@ -132,6 +140,8 @@ Markdown, in this order:
 ```
 
 Field rules:
+- `research_depth` is always `"full"`. (Stage 2's second batch runs a `focused` sibling
+  agent that emits the same schema with fewer areas covered.)
 - `preliminary_direction_score` is −100…+100 and `preliminary_prob_up` is 0…100. These
   are your own read. They are used for ranking only and are deliberately **not** shown
   to the persona panel, so do not soften them for consistency with anyone.

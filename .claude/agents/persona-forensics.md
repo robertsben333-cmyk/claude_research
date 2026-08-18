@@ -4,7 +4,7 @@ description: Panel persona 7 of 7 — Insider, communication and alt-data forens
 tools: WebSearch, WebFetch
 model: opus
 effort: high
-maxTurns: 45
+maxTurns: 30
 color: pink
 ---
 

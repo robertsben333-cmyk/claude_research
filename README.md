@@ -87,9 +87,11 @@ today."* Stages are resumable and skip work already on disk, so re-running one i
 
 ## Cost
 
-31 Opus/high subagents per trading day, deliberately spread across four firings so no
-single rolling usage window absorbs all of it. `docs/ROUTINES.md` has the cost table and
-the knobs to turn — `panel.names` is the big one.
+22 Opus subagents per trading day — 4 full-depth researchers, 4 focused ones, and a
+14-seat panel — deliberately spread across four firings so no single rolling usage
+window absorbs all of it. Stage 2's second batch runs a narrower five-area brief on the
+shortlist's lower half; research stays on Opus at both depths. `docs/ROUTINES.md` has
+the cost table and the knobs to turn — `panel.names` is the big one.
 
 ## Does it work?
 
@@ -99,6 +101,7 @@ tracks direction hit rate, magnitude error, band hit rate, and — the one that 
 most — whether High-certainty calls actually hit more often than Low-certainty ones. If
 they do not, the certainty tiering is decorative and the synthesis needs fixing.
 
-It also scores the ten deep dossiers' preliminary reads separately from the three panel
-calls. That comparison is the evidence for whether the seven-persona panel earns its
+It also scores the eight deep dossiers' preliminary reads separately from the two panel
+calls, and carries each dossier's `research_depth` into `PREDICTIONS.csv` so full and
+focused dossiers can be compared directly. That comparison is the evidence for whether the seven-persona panel earns its
 cost over a single deep researcher. If it does not, stage 3 should be cut.

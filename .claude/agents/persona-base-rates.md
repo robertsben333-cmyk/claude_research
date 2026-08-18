@@ -4,7 +4,7 @@ description: Panel persona 4 of 7 — Outside-view base-rate statistician. Judge
 tools: WebSearch, WebFetch
 model: opus
 effort: high
-maxTurns: 45
+maxTurns: 30
 color: cyan
 ---
 

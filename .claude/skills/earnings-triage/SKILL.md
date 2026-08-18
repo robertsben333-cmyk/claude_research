@@ -1,12 +1,12 @@
 ---
 name: earnings-triage
-description: Stage 1 of the daily earnings pipeline. Screens the day's qualified earnings universe down to roughly ten names, scoring each on how much the print could move the stock and on whether deep AI research would add anything. Use when asked to run stage 1, triage the earnings universe, or build the day's shortlist.
+description: Stage 1 of the daily earnings pipeline. Screens the day's qualified earnings universe down to roughly eight names, scoring each on how much the print could move the stock and on whether deep AI research would add anything. Use when asked to run stage 1, triage the earnings universe, or build the day's shortlist.
 ---
 
 # Stage 1 — Triage to a shortlist
 
-Stage 0 produced a universe. Stage 2 can afford about ten deep dossiers. This stage
-picks which ten, on two axes at once:
+Stage 0 produced a universe. Stage 2 can afford about eight dossiers — four at full
+depth and four focused. This stage picks which eight, on two axes at once:
 
 - **`change_expectation`** — how much could this print move the stock?
 - **`ai_edge`** — can careful research actually say something useful about it?
@@ -27,7 +27,7 @@ run the `earnings-universe` skill first, then come back.
 ## 2. Decide whether to run at all
 
 Read `config/pipeline.yaml`. If eligible names ≤ `triage.skip_if_universe_at_or_below`
-(default 10), **skip the screen entirely**. Write all eligible names straight to
+(default 8), **skip the screen entirely**. Write all eligible names straight to
 `01-shortlist.json` with `change_expectation` and `ai_edge` set to `null`,
 `"triage_mode": "skipped_small_universe"`, and a `selection_rationale` of
 `"universe at or below the triage threshold — all eligible names carried forward"`.
@@ -65,12 +65,18 @@ Then apply, in order:
 2. **Drop** anything below `min_change_expectation` or below `min_ai_edge`. These are
    hard floors, not tiebreakers — a name that fails either is not worth a dossier
    regardless of how well it scores on the other axis.
-3. Sort by `priority_score` descending and take `triage.shortlist_size` (default 10).
+3. Sort by `priority_score` descending and take `triage.shortlist_size` (default 8).
 
-**If fewer than ten names clear the floors, take fewer.** Do not backfill from below the
+**If fewer than eight names clear the floors, take fewer.** Do not backfill from below the
 floor to reach a round number. A six-name shortlist of genuinely researchable setups
-beats a ten-name list padded with four names nobody can call. Record the shortfall and
+beats an eight-name list padded with three names nobody can call. Record the shortfall and
 why.
+
+**The order of the shortlist now decides how deeply each name is researched.** Stage 2
+gives its top half full nine-area dossiers and its bottom half focused five-area ones, so
+`priority_score` is no longer only a cut-off — it routes research budget. Rank carefully
+at the boundary, and if two names are effectively tied across it, put the one whose call
+is harder to make without deep work on top.
 
 Prefer a mix of AMC and BMO reporters when the scores are close — a shortlist that is
 all after-close names leaves the next morning's window unexamined. Note the tilt if one

@@ -31,7 +31,7 @@ COLUMNS = [
     "band_low", "band_high", "event_implied_move",
     "consensus_score", "disparity", "panel_alignment",
     "reversal_risk", "reversal_risk_tier",
-    "preliminary_direction_score", "evidence_completeness",
+    "preliminary_direction_score", "evidence_completeness", "research_depth",
     "change_expectation", "ai_edge",
     "actual_move", "direction_hit", "magnitude_error", "band_hit",
     "implied_move_broken", "reversal_fired", "outcome_status",
@@ -116,6 +116,10 @@ def collect(since=None):
                 "preliminary_direction_score": dossier.get("preliminary_direction_score"),
                 "evidence_completeness": _get(name, "evidence_completeness",
                                               default=dossier.get("evidence_completeness")),
+                # Stage 2 batch 2 writes focused dossiers; keeping the depth here is how
+                # the ledger can eventually ask whether they called worse.
+                "research_depth": _get(name, "research_depth",
+                                       default=dossier.get("research_depth")),
                 "change_expectation": t.get("change_expectation"),
                 "ai_edge": t.get("ai_edge"),
                 "actual_move": o.get("actual_move"),

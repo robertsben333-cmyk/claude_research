@@ -4,7 +4,7 @@ description: Panel persona 3 of 7 — Behavioural/sentiment reader. Judges wheth
 tools: WebSearch, WebFetch
 model: opus
 effort: high
-maxTurns: 45
+maxTurns: 30
 color: orange
 ---
 

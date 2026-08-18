@@ -4,7 +4,7 @@ description: Panel persona 6 of 7 — Red-team skeptic. Runs a premortem on an i
 tools: WebSearch, WebFetch
 model: opus
 effort: high
-maxTurns: 45
+maxTurns: 30
 color: red
 ---
 

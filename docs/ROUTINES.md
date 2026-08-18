@@ -15,9 +15,9 @@ simply finds an empty universe and stops cheaply.
 | 07:12 | 0 · Universe | `earnings-universe` | 0 | negligible |
 | 08:20 | 4 · Calibration (of yesterday) | `earnings-calibration` | 0 | low |
 | 08:38 | 1 · Triage | `earnings-triage` | ≤6 Sonnet/medium | low |
-| 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 5 Opus/high | **high** |
-| 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 5 Opus/high | **high** |
-| 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 21 Opus/high | **highest** |
+| 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 4 Opus/high (full dossiers) | **high** |
+| 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 4 Opus/medium (focused dossiers) | moderate |
+| 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
 
 Stage 3 starts at 17:52 to deliver the advice note by roughly **19:30**, which is
 11:52 New York time — the US session is live, so positioning and implied-move data are
@@ -47,7 +47,7 @@ the platform piles up.
 ## How the day is spaced, and why
 
 The spacing is the usage-limit design, not a convenience. The pipeline's expensive work
-is 31 Opus/high subagents, and 21 of them are stage 3 alone.
+is 22 Opus subagents, and 14 of them are stage 3 alone.
 
 Usage is enforced over a **five-hour window** plus a weekly cap
 ([docs](https://code.claude.com/docs/en/costs#claude-for-teams-and-enterprise): the
@@ -64,9 +64,9 @@ settling that question:
 
 | | Anchored (day anchored by stage 0 at 07:12) | Sliding (worst five-hour span) |
 | --- | --- | --- |
-| Window 1 | 07:12–12:12 — stages 0, 4, 1, 2A → **5 Opus** | 10:22–15:22 — 2A + 2B → **10 Opus** |
-| Window 2 | 12:12–17:12 — stage 2B → **5 Opus** | |
-| Window 3 | 17:12–22:12 — stage 3 → **21 Opus, alone** | 12:52–17:52 onward — stage 3 only → **21 Opus** |
+| Window 1 | 07:12–12:12 — stages 0, 4, 1, 2A → **4 Opus/high** | 10:22–15:22 — 2A + 2B → **4 high + 4 medium** |
+| Window 2 | 12:12–17:12 — stage 2B → **4 Opus/medium** | |
+| Window 3 | 17:12–22:12 — stage 3 → **14 Opus, alone** | 12:52–17:52 onward — stage 3 only → **14 Opus** |
 
 Two properties do the work:
 
@@ -76,7 +76,7 @@ Two properties do the work:
 - **Stage 2B ends more than five hours before stage 3 begins** (12:22 → 17:52). Under
   the sliding model, batch 2's ten researchers have aged out before the panel starts.
 
-That is also why the deep dives are split into two batches at all. One firing of ten
+That is also why the deep dives are split into two batches at all. One firing of eight
 deep researchers would be simpler to write and considerably worse to live with.
 
 ### Do not let another Routine anchor the day first
@@ -107,14 +107,39 @@ rather than silently inherited.
 
 ### If you hit limits anyway
 
-Turn these knobs in `config/pipeline.yaml`, in this order:
+The 2026-08 pass already spent the easy savings: shortlist 10 → 8, panel 3 names → 2,
+batch 2 dropped from full to focused dossiers, and turn caps cut on every research and
+persona agent (researcher 80 → 55, focused 40, personas 45 → 30). That took the day from
+31 Opus/high subagents to 4 Opus/high + 4 Opus/medium + 14 Opus/high, and shortened what
+each one writes. What is left, in order:
 
-1. `panel.names: 3` → `2` — removes 7 Opus/high agents, the single biggest saving.
-2. `triage.shortlist_size: 10` → `8` — removes 2 deep researchers.
-3. `deep_dive.batches: 2` → `3` — same total cost, spread across three windows.
+1. `panel.names: 2` → `1` — removes 7 Opus/high agents, still the single biggest saving,
+   and still the one that costs the most output.
+2. `triage.shortlist_size: 8` → `6` — removes one researcher from each batch.
+3. `deep_dive.batch_depth: {1: focused, 2: focused}` — every dossier focused. Do this
+   before cutting the shortlist further if you would rather keep breadth than depth.
+4. `deep_dive.batches: 2` → `3` — same total cost, spread across three windows.
    Requires a third stage-2 Routine.
-4. `panel.personas` — leave this alone. Cutting personas does not save much and it
+5. `panel.personas` — leave this alone. Cutting personas does not save much and it
    directly degrades the disparity measure that the whole calibration rests on.
+
+Going the other way — if there is headroom — raise `panel.names` back to 3 before
+restoring batch 2 to full depth. A third panelled name is worth more than a deeper
+dossier on the shortlist's eighth-best name.
+
+### What batch 2 gives up
+
+The focused dossier covers the event, the anchors, the bar and the one metric,
+positioning, and the reversal case. It skips full segment fundamentals, alt-data,
+filing-language forensics and the macro/peer survey, and runs at `effort: medium` on the
+same Opus model — research was never delegated to a cheaper model.
+
+The bet is that the shortlist's bottom half rarely reaches the panel, and that when it
+does, the panel works from Phase-0 anchors the focused dossier sources just as carefully.
+`research_depth` is carried through `02-ranking.json`, `04-advice.json` and
+`PREDICTIONS.csv` precisely so the bet is checkable: if focused names start showing
+materially worse direction hit rates in `LEDGER.md`, that is the signal to put batch 2
+back to full depth rather than to argue about it.
 
 Stage 3 also sheds scope on its own when the run log shows earlier stages ran long, and
 records what it dropped in `degradations_applied`.
@@ -152,7 +177,7 @@ behind. Do not "fix" the checkout in `publish.sh` to use the current branch — 
 Fire stage 0 and confirm a `stage 0: universe for <date>` commit appears on `main`. It
 is the cheapest stage and exercises the whole path: repo access, network, the fetch
 script, the run log, the index, and the push. If that commit does not appear, nothing
-downstream will work either — fix it before letting stages 2 and 3 spend 31 Opus/high
+downstream will work either — fix it before letting stages 2 and 3 spend 22 Opus
 subagents on output that cannot be saved.
 
 **Verified working 2026-08-08:** stage 0 fetched 48 companies from the Nasdaq feed,

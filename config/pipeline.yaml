@@ -20,8 +20,8 @@ universe:
 triage:
   # Stage 1 only earns its cost when the universe is crowded. Below this many
   # eligible names, every name goes straight through to the deep stage.
-  skip_if_universe_at_or_below: 10
-  shortlist_size: 10
+  skip_if_universe_at_or_below: 8
+  shortlist_size: 8
   batch_size: 15                  # tickers per triage-scout subagent
   max_scouts: 6
   # priority = w_change * change_expectation + w_edge * ai_edge
@@ -31,21 +31,49 @@ triage:
   min_ai_edge: 30                 # hard floor: a name nobody can forecast is not worth a dossier
 
 deep_dive:
-  # 10 dossiers, split into two firings so the token burn lands in two different
+  # 8 dossiers, split into two firings so the token burn lands in two different
   # rolling usage windows instead of one spike.
+  #
+  # The two batches are no longer equal. Batch 1 takes the top half of the shortlist
+  # and gets the full nine-area dossier; batch 2 takes the bottom half and gets a
+  # focused five-area dossier from the same Opus model at lower effort. Batch 2's names
+  # are the ones triage already ranked lower, and in practice they were rarely the ones
+  # that reached the panel — paying full price for them was the pipeline's worst-value
+  # spend. Research stays on Opus in both batches; what changes is scope.
   batches: 2
-  max_concurrent_subagents: 6     # platform cap is 20; stay well under it
-  model: opus
-  effort: high
+  max_concurrent_subagents: 4     # platform cap is 20; stay well under it
+  model: opus                     # both depths — research is not delegated to a cheaper model
+  batch_depth:
+    1: full
+    2: focused
+  depth:
+    full:
+      agent: earnings-deep-researcher
+      effort: high
+      research_areas: 9
+    focused:
+      agent: earnings-deep-researcher-focused
+      effort: medium
+      research_areas: 5
+  # `evidence_completeness` is scored against whichever checklist the agent was given,
+  # so a focused dossier at 80 means "80% of the five areas", not "80% of nine". The
+  # eligibility floor below therefore applies unchanged to both depths, and
+  # `research_depth` is carried into the ranking and the advice note so a focused
+  # dossier reaching the panel is visible rather than silent.
+  panel_eligibility_min_evidence: 50
 
 panel:
-  # Full seven-persona independent panel. This is the most expensive stage:
-  # names x 7 opus/high subagents.
-  names: 3                        # top N from the deep-dive ranking
+  # Full seven-persona independent panel. This is still the most expensive stage:
+  # names x 7 opus subagents. Personas are never cut — the disparity between them is
+  # the signal the whole calibration rests on — so the cost knob here is `names`.
+  names: 2                        # top N from the deep-dive ranking
   personas: 7
   max_concurrent_subagents: 7     # one full panel at a time
   model: opus
   effort: high
+  # Personas are capped at 30 turns each (set in the agent definitions). They research
+  # one lens against a thin anchor packet; past ~30 turns they were re-confirming
+  # figures they already had rather than finding new ones.
   # Ranking input for which names get a panel.
   rank_by:
     preliminary_conviction: 0.45  # |preliminary_direction_score| from the dossier
@@ -64,9 +92,9 @@ budget:
   # records that it did so rather than silently running long.
   max_subagents_per_stage:
     triage: 6
-    deep_dive_batch: 6
-    panel: 21
+    deep_dive_batch: 4
+    panel: 14
   degrade_order:
-    - reduce_panel_names_to_2
     - reduce_panel_names_to_1
+    - run_batch_1_at_focused_depth
     - skip_lowest_ranked_dossiers

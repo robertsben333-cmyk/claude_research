@@ -12,8 +12,8 @@ If you are a Routine session, read this whole file before doing anything.
 | # | Skill | Fires | What it does |
 | --- | --- | --- | --- |
 | 0 | `earnings-universe` | 07:12 | Fetch and qualify the day's earnings universe |
-| 1 | `earnings-triage` | 11:08 | Screen it down to ~10 names worth researching |
-| 2 | `earnings-deep-dive` | 14:22 & 16:22 | One deep Opus/high dossier per name, in two batches |
+| 1 | `earnings-triage` | 11:08 | Screen it down to ~8 names worth researching |
+| 2 | `earnings-deep-dive` | 14:22 & 16:22 | One Opus dossier per name — full depth in batch 1, focused in batch 2 |
 | 3 | `earnings-panel-advice` | 18:07 | Seven-persona panel on the top names → the advice note |
 | 4 | `earnings-calibration` | 08:20 next day | Score yesterday's calls, update the ledger |
 

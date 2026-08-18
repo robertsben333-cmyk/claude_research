@@ -29,8 +29,20 @@ python3 scripts/run_paths.py --json
 
 Read `02-ranking.json`, `01-shortlist.json`, and `config/pipeline.yaml`.
 
-Take the top `panel.names` (default 3) **panel-eligible** names from the ranking. If
+Take the top `panel.names` (default 2) **panel-eligible** names from the ranking. If
 fewer are eligible, run fewer — never promote an ineligible name to fill a slot.
+
+Two names is the standing setting, down from three. The panel is 7 Opus subagents per
+name and was the pipeline's single largest cost; a third name added a call that was, by
+construction, the day's least convincing one. If the ranking shows the second and third
+names effectively tied and the budget guard in step 7 is clear, running a third is a
+legitimate judgement call — record it in `degradations_applied` as `panel_names_3` so
+the choice is visible.
+
+Names ranked from a **focused** stage 2 dossier (`research_depth: "focused"`) are fully
+eligible. The panel never reads the dossier anyway — it works from the Phase-0 anchors,
+which the focused dossier sources just as carefully. Note the depth in the advice note's
+ranked field so a reader can see which calls stood on a narrower base.
 
 If nothing is eligible, skip to step 6 and write an advice note that says so, with the
 ranked dossier summaries as the day's output. That is a legitimate result.
@@ -62,7 +74,8 @@ will anchor on it, and seven anchored analysts produce one opinion wearing seven
 ## 3. Run the panel
 
 For each name, spawn all seven personas in parallel — one panel at a time
-(`panel.max_concurrent_subagents`, default 7):
+(`panel.max_concurrent_subagents`, default 7). Each persona is capped at 30 turns; that
+is a deliberate budget, not a target to fill:
 
 `persona-fundamental`, `persona-options-positioning`, `persona-sentiment`,
 `persona-base-rates`, `persona-macro-peers`, `persona-red-team`, `persona-forensics`
@@ -132,9 +145,9 @@ context and prose, because the panel has already voted and can no longer be cont
 2. **The calls** — one compact block per panelled name: ticker, call, signed move or
    unsigned band, P(direction), certainty, one-line reason, one-line caveat, and a link
    to its dossier.
-3. **Ranked field** — a table of all ~10 deep-researched names with implied move,
-   preliminary read, evidence completeness, and whether it was panelled. This is what
-   makes the other seven dossiers worth having.
+3. **Ranked field** — a table of all ~8 deep-researched names with implied move,
+   preliminary read, evidence completeness, research depth (full/focused), and whether
+   it was panelled. This is what makes the un-panelled dossiers worth having.
 4. **What would change these calls** — the reversal drivers that cut across names.
 5. **Coverage and caveats** — thin evidence, unreachable sources, empty panel seats,
    any degradation applied for budget.
@@ -147,12 +160,13 @@ Also write `04-advice.json`:
   "schema_version": 1,
   "run_date": "2026-08-10",
   "window_covered": "...",
-  "names_researched": 10,
-  "names_panelled": 3,
+  "names_researched": 8,
+  "names_panelled": 2,
   "ranked_names": [
     {"ticker": "TTWO", "panelled": true, "call": "Lean Up", "signed_estimated_move": 4.2,
      "prob_direction": 63.0, "certainty_tier": "Med", "reversal_risk_tier": "Med",
-     "unsigned_expected_move": 8.6, "evidence_completeness": 82}
+     "unsigned_expected_move": 8.6, "evidence_completeness": 82,
+     "research_depth": "full"}
   ],
   "degradations_applied": []
 }
@@ -165,11 +179,11 @@ python3 scripts/validate_stage.py advice <run_dir>/04-advice.json
 ## 7. Budget guard
 
 Before starting, read the earlier `_run-log.md` sections. If stage 2 already shed scope
-or ran long, apply `budget.degrade_order` from the config — drop to two panelled names,
-then one — and record it in `degradations_applied` and in the run log.
+or ran long, apply `budget.degrade_order` from the config — drop to one panelled name —
+and record it in `degradations_applied` and in the run log.
 
-Shedding a panel is the correct response to a tight budget. Running all three panels
-and having the session cut off mid-stage means the day produces nothing at all.
+Shedding a panel is the correct response to a tight budget. Running both panels and
+having the session cut off mid-stage means the day produces nothing at all.
 
 ## 8. Log and publish
 
@@ -177,7 +191,7 @@ and having the session cut off mid-stage means the day produces nothing at all.
 ## Stage 3 — panel & advice (<HH:MM> CET)
 - Panelled: <tickers>
 - Calls: <TICKER Lean Up +4.2% (Med)>, ...
-- Panel seats filled: <21/21 or note the gaps>
+- Panel seats filled: <14/14 or note the gaps>
 - Chair overrides: <none | ticker + reason>
 - Degradations: <none | what was shed and why>
 ```

@@ -4,7 +4,7 @@ description: Panel persona 2 of 7 — Options & positioning strategist. Judges h
 tools: WebSearch, WebFetch
 model: opus
 effort: high
-maxTurns: 45
+maxTurns: 30
 color: purple
 ---
 

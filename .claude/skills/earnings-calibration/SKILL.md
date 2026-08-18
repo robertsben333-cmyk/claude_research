@@ -100,6 +100,13 @@ block at the top:
   Low-certainty ones?** If they do not, the certainty tiering is decorative and the
   synthesis needs fixing.
 - how often the red-team reversal case fired
+- **full versus focused dossiers** — direction hit rate of names researched at
+  `research_depth: "full"` against those researched `focused`, once there are enough of
+  each to mean anything (say 15 apiece; below that, report the counts and no rate). Stage
+  2 runs its second batch at focused depth on the bet that a narrower brief on
+  lower-ranked names costs little accuracy. This line is the check on that bet: a
+  persistent gap is the reason to put batch 2 back to full depth in
+  `deep_dive.batch_depth`.
 
 Report these plainly whether or not they flatter the pipeline. A ledger that only gets
 updated after good days is worse than no ledger.
