@@ -13,3 +13,8 @@
 - Scouts: 2 subagents (sonnet/medium), batch 1 = 15 names, batch 2 = 7 names
 - Session mix: 3 AMC / 3 BMO
 - Notable drops: AEG (change_expectation 20, formality print), ATHM/SCSC/JBSS (below change_expectation floor, low-drama prints), LYTS (below ai_edge floor, too little public info despite large prior-year move), BULL/IOND/ATAT/DAO/RERE/DDL (marked not tradeable — thin US options liquidity on recent listings or China ADRs, despite BULL and IOND scoring well on change_expectation)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-08-19 08:22 UTC
+- Tickers: WOLF, BABA, BILL
+- Plan: 2 waves (wave 1: WOLF, BABA; wave 2: BILL), publish after each wave and after each dossier
