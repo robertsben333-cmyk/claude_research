@@ -32,7 +32,7 @@ batch 2 should notice the gap and cover both batches — say so in the log if yo
 ## 2. Spawn the researchers
 
 One `earnings-deep-researcher` subagent per ticker, up to
-`deep_dive.max_concurrent_subagents` at a time (default 6; the platform cap is 20 but
+`deep_dive.max_concurrent_subagents` at a time (default 3; the platform cap is 20 but
 crowding it makes every agent slower and the failure mode is a hard error). Launch them
 in parallel within a batch.
 

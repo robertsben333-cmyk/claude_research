@@ -64,8 +64,8 @@ settling that question:
 
 | | Anchored (day anchored by stage 0 at 07:12) | Sliding (worst five-hour span) |
 | --- | --- | --- |
-| Window 1 | 07:12–12:12 — stages 0, 4, 1, 2A → **5 Opus** | 10:22–15:22 — 2A + 2B → **10 Opus** |
-| Window 2 | 12:12–17:12 — stage 2B → **5 Opus** | |
+| Window 1 | 07:12–12:12 — stages 0, 4, 1, 2A → **3 Opus** | 10:22–15:22 — 2A + 2B → **5 Opus** |
+| Window 2 | 12:12–17:12 — stage 2B → **2 Opus** | |
 | Window 3 | 17:12–22:12 — stage 3 → **21 Opus, alone** | 12:52–17:52 onward — stage 3 only → **21 Opus** |
 
 Two properties do the work:
@@ -74,10 +74,10 @@ Two properties do the work:
   firing decides where every boundary falls. It places stage 3 twenty minutes into a
   fresh window with four and a half hours of headroom.
 - **Stage 2B ends more than five hours before stage 3 begins** (12:22 → 17:52). Under
-  the sliding model, batch 2's ten researchers have aged out before the panel starts.
+  the sliding model, batch 2's researchers have aged out before the panel starts.
 
-That is also why the deep dives are split into two batches at all. One firing of ten
-deep researchers would be simpler to write and considerably worse to live with.
+That is also why the deep dives are split into two batches at all. One firing of the
+whole shortlist would be simpler to write and considerably worse to live with.
 
 ### Do not let another Routine anchor the day first
 
@@ -110,7 +110,7 @@ rather than silently inherited.
 Turn these knobs in `config/pipeline.yaml`, in this order:
 
 1. `panel.names: 3` → `2` — removes 7 Opus/high agents, the single biggest saving.
-2. `triage.shortlist_size: 10` → `8` — removes 2 deep researchers.
+2. `triage.shortlist_size: 5` → `4` — removes 1 deep researcher.
 3. `deep_dive.batches: 2` → `3` — same total cost, spread across three windows.
    Requires a third stage-2 Routine.
 4. `panel.personas` — leave this alone. Cutting personas does not save much and it

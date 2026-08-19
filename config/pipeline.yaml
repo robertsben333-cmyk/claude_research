@@ -2,7 +2,8 @@
 #
 # Change values here rather than editing the skills. The two that actually move
 # your usage bill are `shortlist_size` and `panel.names`; see docs/ROUTINES.md
-# for the cost table before raising either.
+# for the cost table before raising either. `shortlist_size` is capped at 5
+# deliberately — larger runs were getting cut off mid-stage.
 
 timezone: Europe/Amsterdam        # all wall-clock times in the docs are this zone
 data_branch: main                 # branch the routines commit research output to
@@ -20,8 +21,8 @@ universe:
 triage:
   # Stage 1 only earns its cost when the universe is crowded. Below this many
   # eligible names, every name goes straight through to the deep stage.
-  skip_if_universe_at_or_below: 10
-  shortlist_size: 10
+  skip_if_universe_at_or_below: 5
+  shortlist_size: 5
   batch_size: 15                  # tickers per triage-scout subagent
   max_scouts: 6
   # priority = w_change * change_expectation + w_edge * ai_edge
@@ -31,10 +32,10 @@ triage:
   min_ai_edge: 30                 # hard floor: a name nobody can forecast is not worth a dossier
 
 deep_dive:
-  # 10 dossiers, split into two firings so the token burn lands in two different
-  # rolling usage windows instead of one spike.
+  # 5 dossiers, split into two firings (3 then 2) so the token burn lands in two
+  # different rolling usage windows instead of one spike.
   batches: 2
-  max_concurrent_subagents: 6     # platform cap is 20; stay well under it
+  max_concurrent_subagents: 3     # platform cap is 20; stay well under it
   model: opus
   effort: high
 
@@ -64,7 +65,7 @@ budget:
   # records that it did so rather than silently running long.
   max_subagents_per_stage:
     triage: 6
-    deep_dive_batch: 6
+    deep_dive_batch: 3
     panel: 21
   degrade_order:
     - reduce_panel_names_to_2

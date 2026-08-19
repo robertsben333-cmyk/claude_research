@@ -132,9 +132,10 @@ context and prose, because the panel has already voted and can no longer be cont
 2. **The calls** — one compact block per panelled name: ticker, call, signed move or
    unsigned band, P(direction), certainty, one-line reason, one-line caveat, and a link
    to its dossier.
-3. **Ranked field** — a table of all ~10 deep-researched names with implied move,
-   preliminary read, evidence completeness, and whether it was panelled. This is what
-   makes the other seven dossiers worth having.
+3. **Ranked field** — a table of all deep-researched names (up to
+   `triage.shortlist_size`, default 5) with implied move, preliminary read, evidence
+   completeness, and whether it was panelled. This is what makes the un-panelled
+   dossiers worth having.
 4. **What would change these calls** — the reversal drivers that cut across names.
 5. **Coverage and caveats** — thin evidence, unreachable sources, empty panel seats,
    any degradation applied for budget.
