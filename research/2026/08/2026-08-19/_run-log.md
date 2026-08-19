@@ -24,3 +24,12 @@
 - Batch 2 scope: BILL, HOV, COTY, FUTU
 - Note: batch 1 (WOLF, BABA, BILL) completed WOLF and BABA but BILL was never researched (no failure log, no batch-1 close section) — covering it here since this is the last chance today; total for the day stays at the shortlist cap of 6.
 - Plan: 2 waves of 2 opus/high researchers (wave 1: BILL, HOV; wave 2: COTY, FUTU), publish after each wave
+
+## Stage 3 — panel & advice (18:09 CEST)
+- Logged at 2026-08-19 16:09 UTC
+- Panelled: WOLF
+- Calls: WOLF Neutral / No Edge, unsigned band 7.7-24.6% (Med certainty, reversal risk High 68.9)
+- Panel seats filled: 7/7
+- Chair overrides: none
+- Degradations: 02-ranking.json rebuilt by stage 3 (stage 2 batch 2 never wrote one, and never researched COTY/FUTU); panel.names reduced from config default 2 to 1 (next step of budget.degrade_order) because stage 2 shed scope with no closing log entry
+- Anchor refresh: WOLF spot updated from stage-2's stale $31.46 to $27.91 (-11.3% intraday) after chair WebSearch could not resolve it cleanly but two independent personas did (stockanalysis.com)
