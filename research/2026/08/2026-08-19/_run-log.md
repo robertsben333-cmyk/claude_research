@@ -18,3 +18,9 @@
 - Logged at 2026-08-19 08:22 UTC
 - Tickers: WOLF, BABA, BILL
 - Plan: 2 waves (wave 1: WOLF, BABA; wave 2: BILL), publish after each wave and after each dossier
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-08-19 10:23 UTC
+- Batch 2 scope: BILL, HOV, COTY, FUTU
+- Note: batch 1 (WOLF, BABA, BILL) completed WOLF and BABA but BILL was never researched (no failure log, no batch-1 close section) — covering it here since this is the last chance today; total for the day stays at the shortlist cap of 6.
+- Plan: 2 waves of 2 opus/high researchers (wave 1: BILL, HOV; wave 2: COTY, FUTU), publish after each wave
