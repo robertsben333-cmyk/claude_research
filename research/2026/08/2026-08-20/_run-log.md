@@ -25,3 +25,8 @@
 - Logged at 2026-08-20 08:23 UTC
 - Tickers: ROST, BEKE, BJ (positions 1-3 of 6 in shortlist; no priority_score to rank by, triage was skipped for small universe, so shortlist order used)
 - Plan: 2 waves of ROST+BEKE, then BJ solo, publish after each wave; per-dossier publish inside each wave
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-08-20 10:25 UTC
+- Tickers: BJ, OSIS, BKE (BJ was batch 1's position 3 but never got a dossier — batch 1 published ROST and BEKE only, no closing log section, so BJ is treated as unresearched; FLO (position 6, lowest shortlist priority) is shed to stay within budget.max_subagents_per_stage.deep_dive_batch (3))
+- Plan: 2 waves — wave 1 = BJ+OSIS, wave 2 = BKE solo — publishing after each wave and after each dossier
