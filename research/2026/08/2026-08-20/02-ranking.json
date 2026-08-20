@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "run_date": "2026-08-20",
+  "note": "Built by stage 3, not stage 2. Stage 2 batch 1 logged STARTED for ROST, BEKE, BJ but published only ROST and BEKE; BJ was never researched, no FINISHED/HALTED run-log entry was written, and batch 2 (OSIS, BKE, FLO) never fired. Ranked here from the 2 dossiers that exist, using panel.rank_by from config/pipeline.yaml.",
+  "formula": "panel_priority = 0.45*|preliminary_direction_score| + 0.35*evidence_completeness + 0.20*change_expectation",
+  "formula_note": "change_expectation is null for every name: stage 1 was skipped for a small universe (6 eligible <= threshold 10), so no triage scores exist. The 0.20 term is therefore dropped rather than imputed, and panel_priority is the sum of the first two terms only. Ordering is unaffected — the term is missing identically for both names.",
+  "names": [
+    {
+      "ticker": "ROST",
+      "company": "Ross Stores, Inc.",
+      "preliminary_direction_score": 18,
+      "evidence_completeness": 82,
+      "change_expectation": null,
+      "panel_priority": 36.8,
+      "event_confirmed": true,
+      "event_implied_move_pct": 6.9,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "BEKE",
+      "company": "KE Holdings Inc",
+      "preliminary_direction_score": -10,
+      "evidence_completeness": 80,
+      "change_expectation": null,
+      "panel_priority": 32.5,
+      "event_confirmed": true,
+      "event_implied_move_pct": 5.2,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    }
+  ],
+  "not_researched": [
+    {"ticker": "BJ", "company": "BJ's Wholesale Club Holdings, Inc.", "reason": "stage 2 batch 1 listed it in the STARTED entry but the batch stalled after wave 1 (ROST, BEKE); no dossier written"},
+    {"ticker": "OSIS", "company": "OSI Systems, Inc.", "reason": "stage 2 batch 2 never fired"},
+    {"ticker": "BKE", "company": "Buckle, Inc. (The)", "reason": "stage 2 batch 2 never fired"},
+    {"ticker": "FLO", "company": "Flowers Foods, Inc.", "reason": "stage 2 batch 2 never fired"}
+  ]
+}
