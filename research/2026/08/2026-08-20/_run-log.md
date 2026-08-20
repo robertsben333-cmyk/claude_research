@@ -20,3 +20,8 @@
 - Session mix: 3 AMC / 3 BMO
 - Notable drops: none by triage (stage 0 already excluded ZKH, ICG, FLUX below market cap floor)
 - Note: fixed a bug in scripts/validate_stage.py — it required change_expectation/ai_edge/priority_score even in skipped_small_universe mode, contradicting the skill's documented null-score behavior for skip mode. Now only required when triage_mode != "skipped_small_universe". Ran scripts/smoke_test.py after the change; all checks passed.
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-08-20 08:23 UTC
+- Tickers: ROST, BEKE, BJ (positions 1-3 of 6 in shortlist; no priority_score to rank by, triage was skipped for small universe, so shortlist order used)
+- Plan: 2 waves of ROST+BEKE, then BJ solo, publish after each wave; per-dossier publish inside each wave
