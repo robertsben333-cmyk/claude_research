@@ -38,6 +38,10 @@ def validate_shortlist(doc, problems):
     if not isinstance(names, list) or not names:
         problems.append("root: 'shortlist' must be a non-empty list")
         return
+    # Skipped-screen runs (universe at or below the triage threshold) carry every
+    # eligible name forward with null scores by design — see earnings-triage's
+    # skip-mode step. Only scored runs require the scores to be present.
+    scores_required = doc.get("triage_mode") != "skipped_small_universe"
     seen = set()
     for i, n in enumerate(names):
         w = f"shortlist[{i}]"
@@ -48,9 +52,9 @@ def validate_shortlist(doc, problems):
         if t in seen:
             problems.append(f"{w}: duplicate ticker '{t}'")
         seen.add(t)
-        _num(problems, n, "change_expectation", 0, 100, w)
-        _num(problems, n, "ai_edge", 0, 100, w)
-        _num(problems, n, "priority_score", 0, 100, w)
+        _num(problems, n, "change_expectation", 0, 100, w, required=scores_required)
+        _num(problems, n, "ai_edge", 0, 100, w, required=scores_required)
+        _num(problems, n, "priority_score", 0, 100, w, required=scores_required)
         if n.get("session") not in ("amc", "bmo"):
             problems.append(f"{w}: 'session' must be 'amc' or 'bmo'")
 
