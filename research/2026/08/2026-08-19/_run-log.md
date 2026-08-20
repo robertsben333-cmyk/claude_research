@@ -33,3 +33,12 @@
 - Chair overrides: none
 - Degradations: 02-ranking.json rebuilt by stage 3 (stage 2 batch 2 never wrote one, and never researched COTY/FUTU); panel.names reduced from config default 2 to 1 (next step of budget.degrade_order) because stage 2 shed scope with no closing log entry
 - Anchor refresh: WOLF spot updated from stage-2's stale $31.46 to $27.91 (-11.3% intraday) after chair WebSearch could not resolve it cleanly but two independent personas did (stockanalysis.com)
+
+## Stage 4 — calibration — DEFERRED
+- Logged at 2026-08-20 06:25 UTC
+- Attempted at 2026-08-20 06:25 UTC (08:25 CEST), on schedule.
+- 04-advice.json exists (WOLF panelled Neutral/No Edge; BILL, BABA, HOV non-panelled). No 05-outcome.md.
+- Cannot score yet: measurement convention is close-before-print to close-after-first-full-session-following. WOLF and BILL reported amc 2026-08-19, so the first full session following is today's (2026-08-20) regular session; BABA and HOV report bmo 2026-08-20, so their first full session is also today's session. All four need the 2026-08-20 close, and NYSE has not opened yet at this run time (opens 13:30 UTC, closes 20:00 UTC) -- confirmed via WebSearch (market status: pre-open).
+- Not fabricating an intraday quote as a close. Deferring: the next stage-4 firing (2026-08-21 08:20 CEST) is the earliest time 2026-08-20's close is known, so it should pick this run up on the next attempt.
+- Flag for schedule review: stage 4 at 08:20 'of yesterday' cannot generally close out a run whose window extends to a bmo print or an amc print the prior evening, because both resolve on the *current* day's close, which has not happened yet at 08:20. LEDGER.md still shows no runs scored as of this attempt.
+- No LEDGER.md change made; no 05-outcome.md written.
