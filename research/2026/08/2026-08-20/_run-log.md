@@ -12,3 +12,11 @@
   Foods); none flagged for OTC/SPAC-remnant/thin-trading exclusion. Eligible count (6)
   is at or below `triage.skip_if_universe_at_or_below` (10), so per config stage 1
   (triage) will be skipped and all 6 eligible names go straight to stage 2 (deep dive).
+
+## Stage 1 — triage (08:55 CET)
+- Mode: skipped (universe eligible 6 <= threshold 10)
+- Funnel: 9 universe -> 6 eligible -> 6 shortlisted (screen skipped, no floor cut)
+- Scouts: 0 (skip mode)
+- Session mix: 3 AMC / 3 BMO
+- Notable drops: none by triage (stage 0 already excluded ZKH, ICG, FLUX below market cap floor)
+- Note: fixed a bug in scripts/validate_stage.py — it required change_expectation/ai_edge/priority_score even in skipped_small_universe mode, contradicting the skill's documented null-score behavior for skip mode. Now only required when triage_mode != "skipped_small_universe". Ran scripts/smoke_test.py after the change; all checks passed.
