@@ -15,3 +15,9 @@
 - Scouts: 0 subagents (screen skipped, no scouting cost)
 - Session mix: 0 AMC / 3 BMO
 - Notable drops: none — all eligible names carried forward; the only exclusions (XYF, NCTY, GGR) happened upstream at stage 0 on market-cap floor.
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-08-21 08:23 UTC
+- Tickers: PDD, XPEV (shortlist positions 1-2 of 3; N = ceil(3/2) = 2 per batch)
+- Plan: 1 wave of 2 opus/high researchers (PDD, XPEV), publish after the wave completes
+- Batch 2 will take the remainder: NSSC
