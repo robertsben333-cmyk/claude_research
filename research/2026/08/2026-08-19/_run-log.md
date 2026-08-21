@@ -42,3 +42,11 @@
 - Not fabricating an intraday quote as a close. Deferring: the next stage-4 firing (2026-08-21 08:20 CEST) is the earliest time 2026-08-20's close is known, so it should pick this run up on the next attempt.
 - Flag for schedule review: stage 4 at 08:20 'of yesterday' cannot generally close out a run whose window extends to a bmo print or an amc print the prior evening, because both resolve on the *current* day's close, which has not happened yet at 08:20. LEDGER.md still shows no runs scored as of this attempt.
 - No LEDGER.md change made; no 05-outcome.md written.
+
+## Stage 4 — calibration — SCORED
+- Logged at 2026-08-21 (retried after the 2026-08-20 deferral; picked up as the oldest unscored run)
+- Closes sourced via WebSearch/WebFetch (stockanalysis.com history + quote pages, cross-checked against investing.com and news coverage of the print): WOLF $29.09 -> $26.35 (-9.42%), BILL $47.71 -> $47.40 (-0.65%), BABA $128.90 -> $130.53 (+1.26%, intraday low ~4-5% below prior close before reversing), HOV $127.67 -> $118.13 (-7.47%, intraday low $108.25 / -15.2% before recovering).
+- WOLF (panelled, Neutral/No Edge): direction_hit = true under the below-expected-move convention (|9.42%| < 15.4% expected, inside the 7.7-24.6% band); implied move not broken; red-team reversal case (squeeze repeats May) did NOT fire. Preliminary score (-20) called the actual direction; the panel hedged to no edge -- first data point on panel-vs-preliminary, n=1.
+- BILL, BABA, HOV (non-panelled): scored against preliminary_direction_score only, per the skill. BILL prelim (+10) missed the sign on a near-flat move despite a clean EPS/revenue beat; BABA (+10) and HOV (-15) both called the correct closing direction, including through material intraday reversals in both names.
+- No `not_reported` names this run -- all 4 shortlisted-and-researched tickers reported on schedule.
+- Wrote 05-outcome.md / 05-outcome.json. Updated LEDGER.md summary + certainty-tier table + Runs table. Ran `scripts/update_index.py` and `scripts/build_predictions.py`.
