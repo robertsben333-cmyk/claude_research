@@ -8,3 +8,10 @@
 - Eligible: PDD ($128.39B), XPEV ($11.46B), NSSC ($1.35B) — all BMO, confirmed for Monday 2026-08-24
 - Qualification checks: BMO/AMC timing cross-checked via WebSearch against 3-4 independent sources per eligible name (Nasdaq feed, company IR/GlobeNewswire, StockTitan, TipRanks/Barchart/MarketScreener, Yahoo Finance); no conflicting timing found. Listed-options markets confirmed present for all three via option-chain listings (Nasdaq/Webull/Moomoo/TradingView).
 - Notes: Friday run — feed correctly rolled the before-open side to Monday 2026-08-24, skipping the weekend. No after-close names today. Eligible count (3) is at/below `triage.skip_if_universe_at_or_below` (10), so stage 1 (triage) will be skipped per config — all 3 eligible names should pass straight through to stage 2 (deep dive).
+
+## Stage 1 — triage (07:38 CEST)
+- Mode: skipped (universe eligible 3 <= threshold 10)
+- Funnel: 6 universe -> 3 eligible -> 3 cleared floors (screen skipped) -> 3 shortlisted
+- Scouts: 0 subagents (screen skipped, no scouting cost)
+- Session mix: 0 AMC / 3 BMO
+- Notable drops: none — all eligible names carried forward; the only exclusions (XYF, NCTY, GGR) happened upstream at stage 0 on market-cap floor.
