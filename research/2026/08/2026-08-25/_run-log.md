@@ -34,3 +34,10 @@
 - This batch (positions 1-3 of 6, highest priority_score first): KSS, ANF, SMTC
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (wave 1: KSS, ANF; wave 2: SMTC), publish after each wave
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-08-25 10:23 UTC
+- Batch 2 own half (positions 4-6, highest priority_score first): JKS, NCNO, QFIN
+- Batch 1 gap: KSS and ANF published; SMTC (position 3) never completed — no SMTC.md/.json on disk despite batch 1's log stating it was planned for wave 2. Batch 1 did not fail entirely, but this is the last chance to research SMTC today, and covering it plus our own half (4 names total) stays within the day's shortlist_size cap of 6 (2 already done + 4 here = 6). Adding SMTC to this batch.
+- Full plan this batch: SMTC, JKS, NCNO, QFIN — 4 names, 2 waves of 2 opus/high researchers (wave 1: SMTC, JKS; wave 2: NCNO, QFIN), publishing after each wave
+- Already on disk, skipping: KSS, ANF
