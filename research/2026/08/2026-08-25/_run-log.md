@@ -27,3 +27,10 @@
   2026-08-22 through 2026-08-24 (gap between "stage 1: shortlist for 2026-08-21"
   and today's stage 0). Not a stage-1 blocker, but stage 2/3 owners should be aware
   the pipeline had a multi-day silent gap before today.
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-08-25 08:23 UTC
+- Shortlist: 6 names, all within triage.shortlist_size cap (6); no drops needed
+- This batch (positions 1-3 of 6, highest priority_score first): KSS, ANF, SMTC
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers (wave 1: KSS, ANF; wave 2: SMTC), publish after each wave
