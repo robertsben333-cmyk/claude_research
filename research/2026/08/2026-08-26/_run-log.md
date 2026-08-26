@@ -51,3 +51,9 @@
 - Batch 1 status: partial — OKTA and STDN dossiers exist, URBN (position 3) is missing and batch 1 has no closing run-log section (likely killed before its second wave). Not treated as 'batch 1 failed entirely' since 2/3 completed, so batch 2 sticks to its own assigned half per the cap; URBN gap flagged for stage 3 awareness.
 - Plan: 2 waves of opus/high researchers (wave 1: DLTR+NTNX, wave 2: CRWD), publish after each dossier and after each wave
 - This batch is the day's final batch: will also write 02-ranking.json from whatever dossiers exist (OKTA, STDN + this batch's).
+
+## Stage 2 — deep dive, batch 2 — wave 1 complete
+- Logged at 2026-08-26 10:44 UTC
+- DLTR: published, implied move ±9.2%, direction -10, evidence completeness 84
+- NTNX: published, implied move ±14.49%, direction -10, evidence completeness 84
+- Starting wave 2: CRWD
