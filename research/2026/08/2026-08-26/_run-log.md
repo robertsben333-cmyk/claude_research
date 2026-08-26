@@ -77,3 +77,11 @@
 - Panel: 7/7 seats filled, no retries needed
 - Synthesis: consensus +5.4, call Neutral / No Edge, certainty High (84.8), reversal risk Med (59.7 consensus / 60.0 red-team)
 - Chair: no override; added early_prediction, red_team_survival_note, chair_independence_note
+
+## Stage 3 — panel & advice — FINISHED
+- Logged at 2026-08-26 16:13 UTC
+- Panelled: OKTA, DLTR
+- Calls: OKTA Neutral / No Edge (unsigned band 6.7-31.6%, certainty High, reversal High), DLTR Neutral / No Edge (unsigned band 4.9-23.3%, certainty High, reversal Med)
+- Panel seats filled: 14/14 (7/7 both names), no retries needed
+- Chair overrides: none (both syntheses accepted as computed; chair added early_prediction/red_team_survival_note/chair_independence_note only)
+- Degradations: 02-ranking.json rebuilt by this stage from 4 dossiers (stage 2 stalled after wave 1 in both batches, URBN and CRWD never researched); panel.names held at config default of 2 rather than cut to 1, since both panels completed and published before this note was written -- see 04-advice.md Coverage for the full reasoning
