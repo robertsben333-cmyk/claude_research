@@ -71,3 +71,9 @@
 - Panel: 7/7 seats filled, no retries needed
 - Synthesis: consensus -1.4, call Neutral / No Edge, certainty High (80.6), reversal risk High (60.5 consensus / 62 red-team)
 - Chair: no override; added early_prediction, red_team_survival_note, chair_independence_note
+
+## Stage 3 — panel & advice — DLTR complete
+- Logged at 2026-08-26 16:11 UTC
+- Panel: 7/7 seats filled, no retries needed
+- Synthesis: consensus +5.4, call Neutral / No Edge, certainty High (84.8), reversal risk Med (59.7 consensus / 60.0 red-team)
+- Chair: no override; added early_prediction, red_team_survival_note, chair_independence_note
