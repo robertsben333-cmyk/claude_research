@@ -39,3 +39,8 @@
   "Everpure." LOT (Lotus Technology) — timing confirmed but flagged not tradeable, thin
   ADS liquidity.
 - Shortlist: OKTA (68.8), STDN (68.75), URBN (67.9), DLTR (67.7), NTNX (66.4), CRWD (65.7)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-08-26 08:23 UTC
+- Tickers: OKTA, STDN, URBN
+- Plan: 2 waves (OKTA+STDN, then URBN) of opus/high researchers, publish after each dossier and after each wave
