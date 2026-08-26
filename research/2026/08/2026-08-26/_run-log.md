@@ -57,3 +57,11 @@
 - DLTR: published, implied move ±9.2%, direction -10, evidence completeness 84
 - NTNX: published, implied move ±14.49%, direction -10, evidence completeness 84
 - Starting wave 2: CRWD
+
+## Stage 3 — panel & advice — STARTED
+- Logged at 2026-08-26 15:56 UTC
+- Stage 2 never wrote 02-ranking.json (batch 2 stalled after wave 1: DLTR, NTNX published, CRWD never researched; batch 1 also left URBN unpublished). Built 02-ranking.json myself from the 4 dossiers on disk (OKTA, STDN, DLTR, NTNX) using panel.rank_by.
+- Panel eligibility: OKTA, DLTR, NTNX eligible; STDN excluded (no implied move, no historical move history — thin post-IPO trading record).
+- Ranking (panel_priority): OKTA 49.1, DLTR 48.7, NTNX 47.9, STDN 44.45 (excluded).
+- Not researched at all: URBN, CRWD — flagged for the ranked field and coverage section.
+- config panel.names=2 (already at first budget.degrade_order step from 2026-08-13). Taking top 2 eligible: OKTA, DLTR. No further degradation applied — panel budget cap (14 = 2x7) matches this exactly.
