@@ -18,3 +18,24 @@
   prior run log — stray scaffolding, not resumed state; left in place since stages 2/3 will use
   them anyway. 32 eligible names is well above `triage.skip_if_universe_at_or_below: 10`, so
   stage 1 will run today.
+
+## Stage 1 — triage (09:12 CEST)
+- Mode: scouted (32 eligible names, above the 10-name skip threshold)
+- Funnel: 40 universe -> 32 eligible -> 22 cleared floors -> 6 shortlisted
+- Scouts: 3 subagents (sonnet/medium), batches of 11/11/10
+- Session mix: 5 AMC / 1 BMO — shortlist tilts to after-close reporters. CSIQ (65.0) and
+  BURL (64.35) were the closest BMO alternatives but scored below the AMC names actually
+  taken; not swapped in, noted as a tilt for stage 2/3 awareness of Thursday's BMO window.
+- Dropped for floors (7): RY, TD, CM (mega-cap banks, Δ-exp 24-26, formulaic prints),
+  HMY (AI edge 28 — pre-announced guidance, gold-price/rand driven), HRL (Δ-exp 32 —
+  low-volatility packaged foods), PURR (AI edge 25 — GAAP dominated by unrealized HYPE
+  mark-to-market, not an analyzable operating story), LUCK (Δ-exp 30 — low-volatility
+  bowling roll-up).
+- Dropped for timing/tradeability (3): DG — scout found a conflicting report-date source
+  (28 Aug vs the 27 Aug used in the universe file); would have scored well enough to
+  shortlist (Δ-exp 60 / AI edge 55) had timing been confirmed — worth re-checking before
+  stage 2. P ("Everpure, Inc.") — likely a universe-stage data-quality error; the only
+  filing findable under this ticker/cap belongs to Pure Storage, not an entity called
+  "Everpure." LOT (Lotus Technology) — timing confirmed but flagged not tradeable, thin
+  ADS liquidity.
+- Shortlist: OKTA (68.8), STDN (68.75), URBN (67.9), DLTR (67.7), NTNX (66.4), CRWD (65.7)
