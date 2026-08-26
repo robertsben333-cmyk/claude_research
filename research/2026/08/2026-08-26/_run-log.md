@@ -65,3 +65,9 @@
 - Ranking (panel_priority): OKTA 49.1, DLTR 48.7, NTNX 47.9, STDN 44.45 (excluded).
 - Not researched at all: URBN, CRWD — flagged for the ranked field and coverage section.
 - config panel.names=2 (already at first budget.degrade_order step from 2026-08-13). Taking top 2 eligible: OKTA, DLTR. No further degradation applied — panel budget cap (14 = 2x7) matches this exactly.
+
+## Stage 3 — panel & advice — OKTA complete
+- Logged at 2026-08-26 16:07 UTC
+- Panel: 7/7 seats filled, no retries needed
+- Synthesis: consensus -1.4, call Neutral / No Edge, certainty High (80.6), reversal risk High (60.5 consensus / 62 red-team)
+- Chair: no override; added early_prediction, red_team_survival_note, chair_independence_note
