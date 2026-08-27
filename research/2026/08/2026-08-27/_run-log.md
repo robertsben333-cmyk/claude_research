@@ -19,3 +19,8 @@
 - Session mix: 6 AMC / 0 BMO — full AMC tilt, see 01-shortlist.md warning
 - Notable drops (ranked out, none floor-failed): GAP (63.25), ULTA (60.50), PD (58.85),
   FRO (57.25, best BMO candidate), HAFN (57.25)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-08-27 08:23 UTC
+- Tickers: AFRM, S, MRVL
+- Plan: 2 waves (wave 1: AFRM, S; wave 2: MRVL), 2 opus/high researchers per wave, publish after each wave
