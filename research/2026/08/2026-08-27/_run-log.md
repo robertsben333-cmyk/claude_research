@@ -40,3 +40,10 @@
 - Shortlist: 6 names; this batch: RBRK, ESTC, IREN
 - Already on disk, skipping: AFRM, S, MRVL (batch 1)
 - Plan: 2 waves (wave 1: RBRK, ESTC; wave 2: IREN), 2 opus/high researchers per wave, publish after each wave
+
+## Stage 3 — panel prep: ranking recovered (STARTED)
+- Logged at 2026-08-27 15:54 UTC
+- Stage 2 batch 2 never closed: logged STARTED (RBRK, ESTC, IREN) but no FINISHED/HALTED entry; IREN dossier missing.
+- Built 02-ranking.json from the 5 dossiers that exist (AFRM, S, MRVL, RBRK, ESTC) per panel.rank_by; all 5 panel-eligible.
+- Ranked: ESTC 53.4, AFRM 52.8, S 51.75, MRVL 51.5, RBRK 49.85
+- panel.names=2 (config default, already at first degrade_order step) -> panelling ESTC, AFRM
