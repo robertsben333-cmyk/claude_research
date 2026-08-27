@@ -24,3 +24,13 @@
 - Logged at 2026-08-27 08:23 UTC
 - Tickers: AFRM, S, MRVL
 - Plan: 2 waves (wave 1: AFRM, S; wave 2: MRVL), 2 opus/high researchers per wave, publish after each wave
+
+## Stage 2 — deep dive, batch 1
+- Logged at 2026-08-27 08:52 UTC
+- Researched: AFRM, S, MRVL
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high (2 waves: AFRM+S, then MRVL), published per-dossier
+- Median evidence completeness: 84/100 (AFRM 82, S 84, MRVL 85)
+- Note: S researcher flags the triage selection_rationale's PANW read-through as wrong — PANW reports 2026-09-01, after S; the live peer read is CRWD and OKTA (both reported 2026-08-26 amc)
+- Panel-eligible after this batch: not computed — ranking runs after the final batch (batch 2)
