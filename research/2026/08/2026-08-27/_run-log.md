@@ -34,3 +34,9 @@
 - Median evidence completeness: 84/100 (AFRM 82, S 84, MRVL 85)
 - Note: S researcher flags the triage selection_rationale's PANW read-through as wrong — PANW reports 2026-09-01, after S; the live peer read is CRWD and OKTA (both reported 2026-08-26 amc)
 - Panel-eligible after this batch: not computed — ranking runs after the final batch (batch 2)
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-08-27 10:23 UTC
+- Shortlist: 6 names; this batch: RBRK, ESTC, IREN
+- Already on disk, skipping: AFRM, S, MRVL (batch 1)
+- Plan: 2 waves (wave 1: RBRK, ESTC; wave 2: IREN), 2 opus/high researchers per wave, publish after each wave
