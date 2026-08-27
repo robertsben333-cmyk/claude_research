@@ -57,3 +57,8 @@
 - Panel seats filled: 14/14 (7/7 each, no retries needed)
 - Chair overrides: none
 - Degradations: none beyond the already-configured panel.names=2 default
+
+## Stage 3 — advice published
+- Logged at 2026-08-27 16:10 UTC
+- 04-advice.md / .json written: ESTC Neutral/No Edge (High certainty, High reversal risk), AFRM Neutral/No Edge (Med certainty, High reversal risk)
+- Ranked field includes S, MRVL, RBRK (deep-dived but not panelled) plus a not_researched entry for IREN
