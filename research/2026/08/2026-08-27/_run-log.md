@@ -11,3 +11,11 @@
   Alpha/Webull/etc.), so none excluded on that basis. No conflicting BMO/AMC timing
   found — only one source (nasdaq) was needed since it returned complete data for both
   sides of the window, so there was nothing to cross-check across.
+
+## Stage 1 — triage (11:08 CET)
+- Mode: scouted (universe 18 > threshold 10)
+- Funnel: 21 universe -> 18 eligible -> 18 cleared floors -> 6 shortlisted
+- Scouts: 2 subagents (sonnet/medium), 9 tickers each
+- Session mix: 6 AMC / 0 BMO — full AMC tilt, see 01-shortlist.md warning
+- Notable drops (ranked out, none floor-failed): GAP (63.25), ULTA (60.50), PD (58.85),
+  FRO (57.25, best BMO candidate), HAFN (57.25)
