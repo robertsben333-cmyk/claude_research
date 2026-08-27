@@ -85,3 +85,26 @@
 - Panel seats filled: 14/14 (7/7 both names), no retries needed
 - Chair overrides: none (both syntheses accepted as computed; chair added early_prediction/red_team_survival_note/chair_independence_note only)
 - Degradations: 02-ranking.json rebuilt by this stage from 4 dossiers (stage 2 stalled after wave 1 in both batches, URBN and CRWD never researched); panel.names held at config default of 2 rather than cut to 1, since both panels completed and published before this note was written -- see 04-advice.md Coverage for the full reasoning
+
+## Stage 4 — calibration — DEFERRED
+- Logged at 2026-08-27 (attempted on schedule)
+- 04-advice.json exists (OKTA and DLTR panelled Neutral/No Edge; NTNX non-panelled with a
+  preliminary read; STDN non-panelled and panel-ineligible). No 05-outcome.md.
+- Cannot score yet: measurement convention is close-before-print to
+  close-after-first-full-session-following. OKTA reported amc 2026-08-26, so its first full
+  session is today's (2026-08-27) regular session; DLTR reports bmo 2026-08-27, so its first
+  full session is also today's session. Both need the 2026-08-27 close.
+- Confirmed via WebSearch this is the same gap logged on 2026-08-20: today (2026-08-27) is a
+  normal trading day with no holiday, but DLTR's bmo print and reaction have not resolved yet
+  (search results for DLTR still show pre-earnings expectations, not a reported outcome), and
+  OKTA's Thursday close is not yet in — only Wednesday's after-hours move is known. Not
+  fabricating an intraday or after-hours quote as a close.
+- Deferring: the next stage-4 firing (2026-08-28 08:20 CEST) is the earliest time
+  2026-08-27's close is known for both names, so it should pick this run up on the next
+  attempt. Recorded here per the standing flag from 2026-08-20: stage 4's 08:20 "of
+  yesterday" slot cannot generally close out a run whose window extends to a bmo print or a
+  same-evening amc print, because both resolve on the *current* day's close — this is not a
+  one-off, it is the second such deferral on record (2026-08-20, and now 2026-08-27), so the
+  schedule itself likely needs an extra day of lag rather than each occurrence being treated
+  as a fluke.
+- No LEDGER.md change made; no 05-outcome.md written.
