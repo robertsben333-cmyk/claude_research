@@ -47,3 +47,13 @@
 - Built 02-ranking.json from the 5 dossiers that exist (AFRM, S, MRVL, RBRK, ESTC) per panel.rank_by; all 5 panel-eligible.
 - Ranked: ESTC 53.4, AFRM 52.8, S 51.75, MRVL 51.5, RBRK 49.85
 - panel.names=2 (config default, already at first degrade_order step) -> panelling ESTC, AFRM
+
+## Stage 3 — panel & advice (17:5x CEST)
+- Logged at 2026-08-27 16:09 UTC
+- Panelled: ESTC, AFRM (top 2 of 5 eligible per rebuilt 02-ranking.json; panel.names=2)
+- Refreshed price anchors before panelling: ESTC spot 79.25->84.66 (+6.83% intraday), implied move kept at stage-2's derived 12.9% (could not re-derive the two-expiry decomposition intraday; raw monthly re-check 17.54%). AFRM spot 76.46->76.99, implied move re-confirmed unchanged at 10.55%.
+- ESTC: aligned panel (disparity 8.7), consensus -20.7 -> Neutral / No Edge (just short of Lean Down), certainty High, reversal risk High (72, red-team).
+- AFRM: split panel (disparity 28.0, 4 up/3 down), consensus -0.1 -> Neutral / No Edge, certainty Med, reversal risk High (65, red-team).
+- Panel seats filled: 14/14 (7/7 each, no retries needed)
+- Chair overrides: none
+- Degradations: none beyond the already-configured panel.names=2 default
