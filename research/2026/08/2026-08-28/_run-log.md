@@ -19,3 +19,9 @@
 - Scouts: 0 subagents (screen skipped)
 - Session mix: 0 AMC / 1 BMO
 - Notable drops: none by triage (SY, LX, BLRX already excluded at stage 0 for below_market_cap_floor)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-08-28 08:23 UTC
+- Tickers: SAIC (Science Applications International Corporation, bmo, 2026-08-31)
+- Batch split: shortlist has 1 name; N = ceil(1/2) = 1, so batch 1 takes SAIC and batch 2 will have nothing to do
+- Plan: 1 wave of 1 opus/high researcher, publish after the wave completes
