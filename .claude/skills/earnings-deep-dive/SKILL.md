@@ -1,6 +1,6 @@
 ---
 name: earnings-deep-dive
-description: Stage 2 of the daily earnings pipeline. Spawns one deep-research subagent per shortlisted company (Opus, high effort) to produce a fully sourced pre-earnings dossier, then ranks the results for the persona panel. Runs in two batches per day. Use when asked to run stage 2, run the deep dives, or research the shortlist.
+description: Stage 2 of the daily earnings pipeline. Spawns one deep-research subagent per shortlisted company (Opus, high effort) to produce a fully sourced pre-earnings dossier, then ranks the results for the persona panel. Use when asked to run stage 2, run the deep dives, or research the shortlist.
 ---
 
 # Stage 2 — Deep dossiers
@@ -8,9 +8,12 @@ description: Stage 2 of the daily earnings pipeline. Spawns one deep-research su
 Ten companies, ten independent deep-research subagents, one exhaustive sourced dossier
 each. This is where the pipeline's research actually happens.
 
-It runs as **two batches at different times of day**. That is not an implementation
-detail — it is the main reason the pipeline fits inside a usage plan. Five Opus/high
-research agents in one firing is a large but survivable spike; ten is not.
+How many firings this takes is `deep_dive.batches`, and it is a usage decision, not an
+implementation detail. **It is currently 1**: one research group of three names, run in
+waves, in a single firing. The two-batch split it replaced was meant to spread the load
+over two usage windows; in practice it gave the day two chances to be killed instead of
+one, and the second batch took them. Split into batches again only above roughly five
+researchers a day.
 
 ## 1. Load state
 
@@ -26,17 +29,23 @@ shortlist published before a budget change can be longer than the current cap �
 and quietly researching all of them puts back exactly the spike the cap was meant to
 remove. Record in the run log any name you dropped for this reason.
 
-Determine which batch you are: the routine prompt says `batch 1` or `batch 2`. Batch 1
-takes capped positions 1…N, batch 2 takes N+1…end, where N = ceil(capped_len /
-`deep_dive.batches`).
+Determine which batch you are: the routine prompt says `batch <k>`. Batch *k* takes
+capped positions (k−1)·N+1…k·N, where N = ceil(capped_len / `deep_dive.batches`).
+
+**At the current setting, `deep_dive.batches` is 1** — there is one stage-2 firing and
+batch 1 is the entire capped shortlist. A prompt that says `batch 2` under this setting
+is a Routine that should have been paused: it has nothing assigned to it, so verify the
+dossiers exist, do the ranking if it is missing, and say so in the log rather than
+re-researching anything.
 
 If you are covering both halves because the other batch failed, the cap still applies to
 the day as a whole: research up to `triage.shortlist_size` names total, not per batch.
 
 Before starting, check `02-dossiers/` for dossiers that already exist. **Skip any ticker
 that already has both a `.md` and a `.json`.** Routines get re-run, sessions get
-retried, and re-researching a finished name is pure waste. If batch 1 failed entirely,
-batch 2 should notice the gap and cover both batches — say so in the log if you do.
+retried, and re-researching a finished name is pure waste. If an earlier batch failed
+entirely, a later one should notice the gap and cover both — say so in the log if you
+do.
 
 If `01-shortlist.json` does not exist, stage 1 has not published. Do not invent a
 shortlist. Log the block (step 1a) and stop — but check first whether stage 1's Routine
@@ -146,7 +155,12 @@ Exclude from panel eligibility any name with:
 Write `02-ranking.json` with every name's scores, its panel eligibility, and — for the
 excluded ones — the reason. Stage 3 reads this file and does not re-derive it.
 
-If batch 1 is running, skip this step; only the final batch ranks.
+Only the **final** batch ranks — batch *k* where *k* equals `deep_dive.batches`. At the
+current setting of 1, batch 1 *is* the final batch and must produce the ranking. If an
+earlier batch is running, skip this step.
+
+Stage 3 cannot run without `02-ranking.json`. A day that produces dossiers and no
+ranking has paid for the research and thrown away the deliverable.
 
 ## 5. Log and publish
 

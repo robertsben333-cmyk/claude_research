@@ -13,9 +13,17 @@ If you are a Routine session, read this whole file before doing anything.
 | --- | --- | --- | --- |
 | 0 | `earnings-universe` | 07:12 | Fetch and qualify the day's earnings universe |
 | 4 | `earnings-calibration` | 08:20 | Score *yesterday's* calls, update the ledger |
-| 1 | `earnings-triage` | 08:38 | Screen it down to ~6 names worth researching |
-| 2 | `earnings-deep-dive` | 10:22 & 12:22 | One deep Opus/high dossier per name, in two batches |
-| 3 | `earnings-panel-advice` | 17:52 | Seven-persona panel on the top names → the advice note |
+| 1 | `earnings-triage` | 08:38 | Screen it down to the 3 names worth researching |
+| 2 | `earnings-deep-dive` | 10:22 | One deep Opus/high dossier per name, one firing, in waves of 2 |
+| 3 | `earnings-panel-advice` | 17:52 | Seven-persona panel on the top name → the advice note |
+
+**The pipeline is deliberately running small.** Repeated usage limits truncated whole
+days — most recently 08-26 and 08-27, where the second deep-dive batch was killed
+mid-run and each time lost a dossier the day had already paid for. As of 2026-08-28 it
+is one research group of 3 and one panel: 10 Opus/high agents a day, down from 31, and
+stage 2 fires **once** (the 12:22 batch-2 Routine is paused). Read the sizes from
+`config/pipeline.yaml` — never assume the old ten-dossier, three-panel shape.
+`docs/ROUTINES.md` holds the order to scale back up in, and the bar to clear first.
 
 Times are Europe/Amsterdam, and they are the **actual cron times** — check them against
 `list_triggers` before trusting them, not the other way round. This table was stale for

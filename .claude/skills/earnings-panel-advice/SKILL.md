@@ -29,7 +29,7 @@ python3 scripts/run_paths.py --json
 
 Read `02-ranking.json`, `01-shortlist.json`, and `config/pipeline.yaml`.
 
-Take the top `panel.names` (default 2) **panel-eligible** names from the ranking. If
+Take the top `panel.names` (currently **1**) **panel-eligible** names from the ranking. If
 fewer are eligible, run fewer — never promote an ineligible name to fill a slot.
 
 If nothing is eligible, skip to step 6 and write an advice note that says so, with the
@@ -147,7 +147,7 @@ context and prose, because the panel has already voted and can no longer be cont
 2. **The calls** — one compact block per panelled name: ticker, call, signed move or
    unsigned band, P(direction), certainty, one-line reason, one-line caveat, and a link
    to its dossier.
-3. **Ranked field** — a table of all ~10 deep-researched names with implied move,
+3. **Ranked field** — a table of every deep-researched name with implied move,
    preliminary read, evidence completeness, and whether it was panelled. This is what
    makes the other seven dossiers worth having.
 4. **What would change these calls** — the reversal drivers that cut across names.
@@ -164,7 +164,7 @@ Also write `04-advice.json`:
   "status": "ok",
   "window_covered": "...",
   "names_researched": 6,
-  "names_panelled": 2,
+  "names_panelled": 1,
   "ranked_names": [
     {"ticker": "TTWO", "panelled": true, "call": "Lean Up", "signed_estimated_move": 4.2,
      "prob_direction": 63.0, "certainty_tier": "Med", "reversal_risk_tier": "Med",
@@ -185,11 +185,13 @@ python3 scripts/validate_stage.py advice <run_dir>/04-advice.json
 ## 7. Budget guard
 
 Before starting, read the earlier `_run-log.md` sections. If stage 2 already shed scope
-or ran long, apply `budget.degrade_order` from the config — drop to two panelled names,
-then one — and record it in `degradations_applied` and in the run log.
+or ran long, apply `budget.degrade_order` from the config and record what you shed in
+`degradations_applied` and in the run log.
 
-Shedding a panel is the correct response to a tight budget. Running all three panels
-and having the session cut off mid-stage means the day produces nothing at all.
+At `panel.names: 1` there is no second panel to drop, so the budget guard has one job
+left: **do not let the single panel become two.** Seven personas on one name, finished
+and published, is the day's deliverable. A stage that runs wide and gets cut off
+mid-panel means the day produces nothing at all.
 
 ## 8. Log and publish
 

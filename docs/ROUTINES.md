@@ -14,14 +14,22 @@ simply finds an empty universe and stops cheaply.
 | --- | --- | --- | --- | --- |
 | 07:12 | 0 · Universe | `earnings-universe` | 0 | negligible |
 | 08:20 | 4 · Calibration (of yesterday) | `earnings-calibration` | 0 | low |
-| 08:38 | 1 · Triage | `earnings-triage` | ≤6 Sonnet/medium | low |
-| 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
-| 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
-| 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
+| 08:38 | 1 · Triage | `earnings-triage` | ≤3 Sonnet/medium | low |
+| 10:22 | 2 · Deep dive (one group) | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
+| ~~12:22~~ | ~~2B · Deep dive, batch 2~~ | *paused 2026-08-28* | — | — |
+| 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 7 Opus/high | **highest** |
 
-Subagent counts were cut on 2026-08-13 (10 dossiers → 6, 3 panels → 2) after the
-pipeline failed to deliver on four consecutive days. See "What actually went wrong,
-2026-08-08 to 08-12" below before raising them back.
+Subagent counts were cut on 2026-08-13 (10 dossiers → 6, 3 panels → 2), and cut again on
+2026-08-28 (6 dossiers → 3 in **one** firing, 2 panels → 1). The day is now **10
+Opus/high agents**, down from 31. See "What actually went wrong, 2026-08-08 to 08-12"
+and "Scaling back up" below before raising them.
+
+**One research group.** Stage 2 is a single firing again. Splitting six names across two
+firings was supposed to halve the spike; what it did was give the day two chances to be
+killed, and batch 2 took both — killed mid-run on 08-26 (URBN lost) and again on 08-27
+(IREN lost, no closing log). Three names in waves of two, in one firing, is sized so the
+whole stage lands. The 2B Routine is **paused, not deleted**, so going back to two
+batches is one `update_trigger` call plus `deep_dive.batches: 2`.
 
 Stage 3 starts at 17:52 to deliver the advice note by roughly **19:30**, which is
 11:52 New York time — the US session is live, so positioning and implied-move data are
@@ -37,8 +45,8 @@ summer set from late March to late October and the winter set otherwise.
 | 0 | `12 5 * * 1-5` | `12 6 * * 1-5` |
 | 4 | `20 6 * * 1-5` | `20 7 * * 1-5` |
 | 1 | `38 6 * * 1-5` | `38 7 * * 1-5` |
-| 2A | `22 8 * * 1-5` | `22 9 * * 1-5` |
-| 2B | `22 10 * * 1-5` | `22 11 * * 1-5` |
+| 2 | `22 8 * * 1-5` | `22 9 * * 1-5` |
+| 2B *(paused)* | `22 10 * * 1-5` | `22 11 * * 1-5` |
 | 3 | `52 15 * * 1-5` | `52 16 * * 1-5` |
 
 Switching over is one `update_trigger` call per Routine changing `cron_expression`.
@@ -51,7 +59,10 @@ the platform piles up.
 ## How the day is spaced, and why
 
 The spacing is the usage-limit design, not a convenience. The pipeline's expensive work
-is 31 Opus/high subagents, and 21 of them are stage 3 alone.
+is now 10 Opus/high subagents — 3 in the deep dive and 7 in the panel. The spacing below
+was designed for the original 31-agent shape. It is kept unchanged because it costs
+nothing to keep and it is what the schedule returns to as the sizes go back up; at the
+current sizes every window has a great deal of slack.
 
 Usage is enforced over a **five-hour window** plus a weekly cap
 ([docs](https://code.claude.com/docs/en/costs#claude-for-teams-and-enterprise): the
@@ -65,6 +76,16 @@ window is bounded, and they imply different schedules:
 
 The schedule above is built to be correct under **both**, so it does not depend on
 settling that question:
+
+At the **current** sizes, with 2B paused:
+
+| | Anchored (day anchored by stage 0 at 07:12) | Sliding (worst five-hour span) |
+| --- | --- | --- |
+| Window 1 | 07:12–12:12 — stages 0, 4, 1, 2 → **3 Opus** | 10:22–15:22 — stage 2 only → **3 Opus** |
+| Window 2 | 12:12–17:12 — nothing | |
+| Window 3 | 17:12–22:12 — stage 3 → **7 Opus, alone** | 12:52 onward — stage 3 only → **7 Opus** |
+
+At the **original** sizes the same schedule gave:
 
 | | Anchored (day anchored by stage 0 at 07:12) | Sliding (worst five-hour span) |
 | --- | --- | --- |
@@ -80,8 +101,10 @@ Two properties do the work:
 - **Stage 2B ends more than five hours before stage 3 begins** (12:22 → 17:52). Under
   the sliding model, batch 2's ten researchers have aged out before the panel starts.
 
-That is also why the deep dives are split into two batches at all. One firing of ten
-deep researchers would be simpler to write and considerably worse to live with.
+That is also why the deep dives were split into two batches *at the original size*. One
+firing of ten deep researchers would be simpler to write and considerably worse to live
+with. Three in waves of two is a different matter, which is why the split is off for now
+— see "One research group" above.
 
 ### Do not let another Routine anchor the day first
 
@@ -96,10 +119,10 @@ them to 07:05–07:10 so they anchor where stage 0 would anyway. Do not leave on
 small hours.
 
 Two such Routines exist on this account — "Wake up" (`0 4 * * 1-5`) and "wake - up 2"
-(`5 8 * * *`, seventeen minutes before stage 2A). Both appear paused as of 2026-08-13:
+(`5 8 * * *`, seventeen minutes before stage 2). Both appear paused as of 2026-08-13:
 their `next_run_at` is in the past and neither has fired since 08-07/08-08. Leave them
 paused, or delete them. Re-enabling "Wake up" would anchor the day at 04:00 and put the
-boundaries at 09:00 / 14:00 / 19:00, which drops stage 2A's fan-out 38 minutes before a
+boundaries at 09:00 / 14:00 / 19:00, which drops stage 2's fan-out 38 minutes before a
 window close — the exact shape of failure this schedule was built to avoid.
 
 The other consequence of the spacing: **each stage's output is on disk and pushed before
@@ -107,7 +130,7 @@ the next stage starts.** A session that dies mid-stage costs one stage, not the 
 
 ### The cost of moving the deep dives earlier
 
-Stage 2A at 10:22 and 2B at 12:22 are 04:22 and 06:22 New York time — both well before
+Stage 2 at 10:22 (and 2B at 12:22 when it runs) is 04:22 New York time — well before
 the open, so their spot prices and implied moves come from the prior close. That is a
 real loss of freshness, bought deliberately for the usage separation.
 
@@ -210,22 +233,61 @@ anything, so from here on the archive distinguishes:
 
 ### If you hit limits anyway
 
-Turn these knobs in `config/pipeline.yaml`, in this order. The first two are already
-applied — the remaining headroom is below them:
+Turn these knobs in `config/pipeline.yaml`, in this order. Everything above step 3 is
+already applied — the remaining headroom is what is left:
 
 1. ~~`panel.names: 3` → `2`~~ — **applied 2026-08-13**. Removes 7 Opus/high agents.
 2. ~~`triage.shortlist_size: 10` → `6`~~ — **applied 2026-08-13**. Removes 4 deep
    researchers.
-3. `deep_dive.wave_size: 2` → `1` — fully serial. Slowest, but the finest-grained
+3. ~~`panel.names: 2` → `1`~~ — **applied 2026-08-28**. Removes another 7.
+4. ~~`triage.shortlist_size: 6` → `3`, `deep_dive.batches: 2` → `1`~~ — **applied
+   2026-08-28**. Removes 3 more researchers and one whole firing.
+5. `deep_dive.wave_size: 2` → `1` — fully serial. Slowest, but the finest-grained
    recovery: a kill costs one dossier.
-4. `panel.names: 2` → `1` — removes another 7 Opus/high agents.
-5. `deep_dive.batches: 2` → `3` — same total cost, spread across three windows.
-   Requires a third stage-2 Routine.
-6. `panel.personas` — leave this alone. Cutting personas does not save much and it
-   directly degrades the disparity measure that the whole calibration rests on.
+6. `triage.shortlist_size: 3` → `2`, then `1`. Below that stage 2 has no field to rank
+   and the panel has no choice to make.
+7. Pause stages 2 and 3 and keep 0, 1 and 4 running. You keep the daily universe,
+   shortlist and ledger for a rounding error in tokens, and the archive stays
+   continuous — which is what calibration needs.
+8. `panel.personas` — leave this alone at any size. Cutting personas does not save much
+   and it directly degrades the disparity measure that the whole calibration rests on.
 
 Stage 3 also sheds scope on its own when the run log shows earlier stages ran long, and
 records what it dropped in `degradations_applied`.
+
+## Scaling back up
+
+The current sizes are a floor chosen to guarantee a finished day, not a judgement that
+three dossiers and one panel is the right amount of research. Widen **one step at a
+time**, and only after **five consecutive weekdays complete cleanly** — every stage
+published, `02-ranking.json` present, `04-advice.json` written, and no run-log section
+carrying a `— HALTED` heading or a usage/spend limit. One good day is not evidence: the
+pipeline had good days on 08-08 and 08-28 and failed everything in between.
+
+| Step | Change in `config/pipeline.yaml` | Opus/high per day |
+| --- | --- | --- |
+| *(now)* | `shortlist_size: 3`, `batches: 1`, `panel.names: 1` | 10 |
+| 1 | `panel.names: 1` → `2` | 17 |
+| 2 | `shortlist_size: 3` → `4` | 18 |
+| 3 | `shortlist_size: 4` → `6` **and** `batches: 1` → `2`, re-enabling the 2B Routine | 20 |
+| 4 | `panel.names: 2` → `3` | 27 |
+| 5 | `shortlist_size: 6` → `10` | 31 — the original shape |
+
+Notes on the order:
+
+- **Panel names before shortlist size.** A second panel adds far more to the deliverable
+  than a fourth dossier does. The panel is what produces a call; extra dossiers only
+  widen the ranked field behind it.
+- **Re-split the deep dives at step 3, not before.** Above roughly five researchers a
+  day, one firing is the failure mode the two-batch design exists to avoid. Setting
+  `batches: 2` and re-enabling the paused 2B Routine go together — either one alone
+  leaves half the shortlist unresearched, or six researchers in a single firing.
+- **Raise `triage.skip_if_universe_at_or_below` with `shortlist_size`.** They are the
+  same number for a reason: the skip path writes *every* eligible name to the shortlist,
+  so leaving the threshold high while the shortlist is small hands stage 2 a list longer
+  than its cap on any thin day.
+- **When a step fails, go back one step and stay there for a week.** Record it in the
+  run log so the next attempt does not rediscover it.
 
 ## Each Routine must have this repository attached
 
@@ -260,8 +322,8 @@ behind. Do not "fix" the checkout in `publish.sh` to use the current branch — 
 Fire stage 0 and confirm a `stage 0: universe for <date>` commit appears on `main`. It
 is the cheapest stage and exercises the whole path: repo access, network, the fetch
 script, the run log, the index, and the push. If that commit does not appear, nothing
-downstream will work either — fix it before letting stages 2 and 3 spend 31 Opus/high
-subagents on output that cannot be saved.
+downstream will work either — fix it before letting stages 2 and 3 spend the day's
+Opus/high subagents on output that cannot be saved.
 
 **Verified working 2026-08-08:** stage 0 fetched 48 companies from the Nasdaq feed,
 qualified 27, correctly rolled the Saturday reference date to Monday's open (0 AMC,
@@ -299,7 +361,7 @@ delete_trigger  trigger_id=...     # remove it
 stages are resumable and skip work that is already on disk.
 
 To pause the pipeline for a week, set `enabled: false` on all five. To stop the cost
-without losing the archive, pause stages 2A, 2B and 3 and leave 0, 1 and 4 running:
+without losing the archive, pause stages 2 and 3 and leave 0, 1 and 4 running:
 you keep the daily universe and shortlist for a rounding error in tokens.
 
 ## Running a stage by hand

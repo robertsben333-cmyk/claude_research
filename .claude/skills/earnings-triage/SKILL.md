@@ -1,12 +1,12 @@
 ---
 name: earnings-triage
-description: Stage 1 of the daily earnings pipeline. Screens the day's qualified earnings universe down to roughly ten names, scoring each on how much the print could move the stock and on whether deep AI research would add anything. Use when asked to run stage 1, triage the earnings universe, or build the day's shortlist.
+description: Stage 1 of the daily earnings pipeline. Screens the day's qualified earnings universe down to the handful of names stage 2 can afford to research, scoring each on how much the print could move the stock and on whether deep AI research would add anything. Use when asked to run stage 1, triage the earnings universe, or build the day's shortlist.
 ---
 
 # Stage 1 — Triage to a shortlist
 
-Stage 0 produced a universe. Stage 2 can afford about ten deep dossiers. This stage
-picks which ten, on two axes at once:
+Stage 0 produced a universe. Stage 2 can afford `triage.shortlist_size` deep dossiers —
+currently **3**. This stage picks which ones, on two axes at once:
 
 - **`change_expectation`** — how much could this print move the stock?
 - **`ai_edge`** — can careful research actually say something useful about it?
@@ -65,11 +65,11 @@ Then apply, in order:
 2. **Drop** anything below `min_change_expectation` or below `min_ai_edge`. These are
    hard floors, not tiebreakers — a name that fails either is not worth a dossier
    regardless of how well it scores on the other axis.
-3. Sort by `priority_score` descending and take `triage.shortlist_size` (default 10).
+3. Sort by `priority_score` descending and take `triage.shortlist_size` (currently 3).
 
-**If fewer than ten names clear the floors, take fewer.** Do not backfill from below the
-floor to reach a round number. A six-name shortlist of genuinely researchable setups
-beats a ten-name list padded with four names nobody can call. Record the shortfall and
+**If fewer names clear the floors than that, take fewer.** Do not backfill from below the
+floor to reach a round number. A one-name shortlist of a genuinely researchable setup
+beats a three-name list padded with names nobody can call. Record the shortfall and
 why.
 
 Prefer a mix of AMC and BMO reporters when the scores are close — a shortlist that is
