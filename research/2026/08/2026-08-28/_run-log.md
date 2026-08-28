@@ -58,3 +58,8 @@
 - Subagents: 1 opus/high (1 wave of 1 — shortlist had only 1 name total)
 - Median evidence completeness: 80/100
 - Note: batch 2 will have nothing left to research (shortlist length 1, N=ceil(1/2)=1 already covers it all in batch 1); batch 2 should still run the ranking step since it is the final batch
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-08-28 10:23 UTC
+- Tickers: none — shortlist has 1 name total (SAIC); N = ceil(1/2) = 1, so batch 1 already covered the entire shortlist
+- Plan: no researchers to spawn; verify SAIC.md + SAIC.json exist, then run the final-batch ranking step (02-ranking.json)
