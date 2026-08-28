@@ -49,3 +49,12 @@
 - Biggest gap: **IV rank / percentile is null** — no historical IV series obtainable. Substituted the
   46.4% front vs 37.4% three-month term-structure inversion and IV30 41.9% vs 20d realised 21.5%.
   Second gap: no 30/60/90-day estimate-revision table (Zacks blocked; two search snippets conflict).
+
+## Stage 2 — deep dive, batch 1 (08:42 CEST)
+- Logged at 2026-08-28 08:43 UTC
+- Researched: SAIC
+- Skipped (already done): none
+- Failed: none
+- Subagents: 1 opus/high (1 wave of 1 — shortlist had only 1 name total)
+- Median evidence completeness: 80/100
+- Note: batch 2 will have nothing left to research (shortlist length 1, N=ceil(1/2)=1 already covers it all in batch 1); batch 2 should still run the ranking step since it is the final batch
