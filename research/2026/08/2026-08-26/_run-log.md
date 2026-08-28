@@ -108,3 +108,31 @@
   schedule itself likely needs an extra day of lag rather than each occurrence being treated
   as a fluke.
 - No LEDGER.md change made; no 05-outcome.md written.
+
+## Stage 4 — calibration — FINISHED
+- Logged at 2026-08-28 (scheduled run)
+- 2026-08-27's close is now known for both OKTA (amc 8/26) and DLTR (bmo 8/27); scored
+  this run in full.
+- OKTA: +28.63% (close $134.42 -> $172.91), a miss for the Neutral call under the
+  below-expected-move convention (28.63% >> 13.4% expected) though inside its 6.7-31.6%
+  band; broke the 13.0% implied move by >2x. Preliminary read (+10) called direction
+  right; panel hedged to Neutral and had no view.
+- DLTR: -3.92% (close $132.18 -> $127.00), a hit for the Neutral call (3.92% < 9.9%
+  expected) but the move landed below the low end of its own 4.9-23.3% band. Gapped down
+  ~9% at the open on weak Q3 guidance before recovering to close -3.92% -- the red-team's
+  specific reversal mechanism (beat overshadowed by cautious guide) fired; only its -10%
+  magnitude overshot. Preliminary read (-10) called direction right.
+- NTNX (non-panelled, prelim -10): +6.81%, preliminary miss.
+- STDN (non-panelled, panel-ineligible, prelim -15): +4.45%, preliminary miss.
+- Third straight panelled run where the panel converged to Neutral / No Edge on every
+  panelled name (WOLF 08-19, OKTA+DLTR 08-26) while the stage-2 preliminary read called
+  direction correctly on all three -- flagged in 05-outcome.md as a pattern worth
+  checking against `scripts/synthesize.py`'s Neutral threshold, not yet a fourth
+  coincidence.
+- Wrote 05-outcome.md / 05-outcome.json. Updated LEDGER.md, rebuilt PREDICTIONS.csv/json.
+- 2026-08-27 run (ESTC, AFRM, S, MRVL, RBRK, all amc 2026-08-27) still cannot be scored:
+  its first full session following is 2026-08-28's close, which has not happened yet at
+  this firing. Left for the next stage-4 run once that close exists -- same schedule-lag
+  issue flagged on 2026-08-20 and 2026-08-27, now a third occurrence. Recommend the
+  routine schedule build in the extra day of lag rather than relying on stage 4 to defer
+  and retry each time.
