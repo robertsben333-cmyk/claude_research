@@ -1,6 +1,7 @@
 # The Routines — schedule, cost, and setup
 
-Five Routines run the pipeline. Each fires a **fresh session** in a cloud environment,
+Six Routines run the pipeline — the five stages, with stage 2 split into two batches.
+Each fires a **fresh session** in a cloud environment,
 which clones this repo, reads `CLAUDE.md`, invokes one stage skill, and pushes its
 output back before dying.
 
@@ -246,8 +247,8 @@ hand in the claude.ai Routines UI** before being enabled.
 ### The outcome branch is overridden on purpose
 
 Each Routine is assigned an auto-generated outcome branch — `claude/funny-shannon`,
-`claude/dreamy-turing`, and so on. Left alone, that would scatter the five stages across
-five different branches, and stage 1 would never see what stage 0 wrote.
+`claude/dreamy-turing`, and so on. Left alone, that would scatter the six Routines across
+six different branches, and stage 1 would never see what stage 0 wrote.
 
 `scripts/publish.sh` checks out `main` explicitly and pushes there, which overrides the
 assigned branch. Verified: the stage 0 test run started on
@@ -298,7 +299,7 @@ delete_trigger  trigger_id=...     # remove it
 `fire_trigger` is the right way to test a stage or to catch up after a failure — the
 stages are resumable and skip work that is already on disk.
 
-To pause the pipeline for a week, set `enabled: false` on all five. To stop the cost
+To pause the pipeline for a week, set `enabled: false` on all six. To stop the cost
 without losing the archive, pause stages 2A, 2B and 3 and leave 0, 1 and 4 running:
 you keep the daily universe and shortlist for a rounding error in tokens.
 
