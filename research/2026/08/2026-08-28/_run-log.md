@@ -12,3 +12,10 @@
   single-sourced. SAIC has an active listed-options market. Eligible universe of 1 is well below
   `triage.skip_if_universe_at_or_below: 10`, so stage 1 (triage) will be skipped — the single
   eligible name goes straight to stage 2.
+
+## Stage 1 — triage (11:08 CEST)
+- Mode: skipped (universe <= threshold — 1 eligible <= 10)
+- Funnel: 4 universe -> 1 eligible -> 1 cleared floors (screen skipped) -> 1 shortlisted
+- Scouts: 0 subagents (screen skipped)
+- Session mix: 0 AMC / 1 BMO
+- Notable drops: none by triage (SY, LX, BLRX already excluded at stage 0 for below_market_cap_floor)
