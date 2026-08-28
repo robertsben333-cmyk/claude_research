@@ -63,3 +63,13 @@
 - Logged at 2026-08-28 10:23 UTC
 - Tickers: none — shortlist has 1 name total (SAIC); N = ceil(1/2) = 1, so batch 1 already covered the entire shortlist
 - Plan: no researchers to spawn; verify SAIC.md + SAIC.json exist, then run the final-batch ranking step (02-ranking.json)
+
+## Stage 2 — deep dive, batch 2 (10:2x CEST)
+- Logged at 2026-08-28 10:24 UTC
+- Researched: none — shortlist length 1, already fully covered by batch 1 (SAIC)
+- Skipped (already done): SAIC (both SAIC.md and SAIC.json present from batch 1)
+- Failed: none
+- Subagents: 0 opus/high (nothing left to research)
+- Median evidence completeness: 80/100 (SAIC, the only dossier)
+- Ranking: wrote 02-ranking.json (final batch) — SAIC panel_priority 31.6, panel_eligible true (change_expectation term dropped, triage was skipped for this small universe)
+- Panel-eligible after this batch: SAIC
