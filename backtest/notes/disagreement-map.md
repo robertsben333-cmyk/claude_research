@@ -15,7 +15,9 @@ that names the thing a research method has to get right.
 | --- | --- | --- | --- |
 | A naive | **Lean Up** (+20) | 7.5% | |
 | B plan-first | **Lean Down** (−18) | 8.0% | |
-| C skill | *pending* | | **+17.26%** close-to-close, +13.8% to the open |
+| C skill | **Lean Up** (+12) | 7.5% | **+17.26%** close-to-close, +13.8% to the open |
+
+**A and C right, B wrong.**
 
 Both arms cited **the same two facts**:
 
@@ -38,21 +40,47 @@ with Earnings ESP at zero, consensus unrevised, and JPMorgan already stepped asi
 Both are good arguments. Both are supported by the corpus. They are not reconcilable, and
 the difference was worth **±14%** on a single event.
 
+### The same principle, applied in opposite directions
+
+C's reasoning contains the sharpest line the experiment has produced:
+
+> the legible read -- beats get sold in the AI-power complex -- is exactly the narrative
+> every document in this corpus repeats, and a narrative that widely told is already in a
+> 22% four-week drawdown and a 12% implied move
+
+That is **B's own stated method**. B's rule is to discount legible narrative as already
+priced and weight the observed sector reaction function heavily. Both arms held the same
+principle; they disagreed about **which of the two competing stories was the legible one**.
+
+- B treated the sector reaction function as the hard signal and the washout as noise.
+- C treated the sector narrative as the thing everyone had already read, and the washout
+  as what it had produced.
+
+C was right, and the reason is checkable rather than lucky: PWR is 82% regulated-utility
+electric infrastructure, so the AI-hardware unwind that drove the de-rating was
+sympathetic rather than fundamental. The two peers that reported first -- GE Vernova
+orders +88% organic, Comfort Systems backlog +73% -- delivered demand data that was
+strongly positive *even where their stocks fell*.
+
+**"Is it already priced?" is not a rule you can apply mechanically.** It requires knowing
+which story the market has actually absorbed, and that is a judgement, not a procedure.
+This is the single most transferable observation so far, and it argues that the value of
+a method is not the rule it states but whether it identifies the right object to apply the
+rule to.
+
 ### What this case actually shows
 
 1. **The disagreement is not about evidence, it is about which frame dominates.**
    Positioning-washout versus sector-reaction-function. Neither arm lacked information;
    they weighted the same information oppositely. More research would not have resolved
    it.
-2. **Both got the size roughly right in rank terms and badly wrong in level.** 7.5% and
-   8.0% against a realised 17.26%. Both comfortably beat the 3.85% proxy — they knew this
+2. **All three got the size roughly right in rank terms and badly wrong in level.** 7.5%,
+   8.0% and 7.5% against a realised 17.26%. Both comfortably beat the 3.85% proxy — they knew this
    was a big one — but both landed at less than half the actual move. If that
    underestimation is systematic it matters more than the direction call, because it is
    correctable.
-3. **B's method actively argued against itself here.** Its stated rule discounts "legible
-   narrative … as already priced" and weights "the observed sector reaction function"
-   heavily. The washout *was* the illegible, non-consensus read, and the rule pushed B
-   away from it.
+3. **B's method actively argued against itself here** -- see above. The washout was the
+   illegible, non-consensus read, and B's own anti-legibility rule pushed it away.
 4. **The implied move was in the corpus after all.** Both arms recovered 11.96% from a
    news body, despite `anchors.json` marking implied move unavailable. Worth checking how
    often that happens across the sample — if news articles routinely carry the implied
