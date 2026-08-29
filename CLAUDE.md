@@ -16,6 +16,18 @@ If you are a Routine session, read this whole file before doing anything.
 | 1 | `earnings-triage` | 08:38 | Screen it down to ~6 names worth researching |
 | 2 | `earnings-deep-dive` | 10:22 & 12:22 | One deep Opus/high dossier per name, in two batches |
 | 3 | `earnings-panel-advice` | 17:52 | Seven-persona panel on the top names → the advice note |
+| C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
+
+Stage C is not part of the daily advice pipeline and nothing downstream reads it. It
+builds the forward corpus the backtest needs, and it is the only stage whose work cannot
+be redone tomorrow — the day will have moved. See `backtest/scripts/capture.py`.
+
+**The five pipeline Routines do not currently exist.** `RemoteTrigger list` on
+2026-08-29 returned six routines on this account — a disabled SFNL tender monitor, three
+spent one-shot wakers, and two trivial `hey` jobs. None of stages 0 through 4 is among
+them. The times in the table above therefore describe an intended schedule, not a
+running one, which is a far better explanation for missing days than any code path in
+this repo. Stage C (`trig_01K1ZTiK4qQayC9aLvaK2Gyn`) is real and enabled.
 
 Times are Europe/Amsterdam, and they are the **actual cron times** — check them against
 `list_triggers` before trusting them, not the other way round. This table was stale for

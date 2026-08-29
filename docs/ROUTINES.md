@@ -18,6 +18,34 @@ simply finds an empty universe and stops cheaply.
 | 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
+| 17:03 | C · Forward capture | `earnings-capture` | 0 (script) + ≤6 Sonnet | low |
+
+## Stage C — forward capture
+
+Separate from the advice pipeline. Nothing downstream reads it; it builds the Track B
+corpus for the backtest, capturing the run-in to upcoming prints while the outcome still
+does not exist.
+
+Cheap by construction. The sweep is a script — HTTP and text extraction, no model
+tokens — and filings are indexed as pointers rather than fetched, so a name costs a few
+requests. Only the agent layer that formulates search queries for the largest six names
+spends anything, and Sonnet is enough because it is discovery, not analysis.
+
+Cron `3 15 * * *` (summer) / `3 16 * * *` (winter), and **daily rather than weekdays**.
+A Monday BMO print's last useful capture is Sunday's run; a weekday-only schedule would
+skip the whole weekend run-in and, firing Monday at 17:03 CEST, land six hours after the
+print. The trade-off left in place is that a BMO print is captured about twenty hours
+ahead rather than the evening before — 17:03 CEST is 11:03 ET, before the US close, so
+it is the last capture before an AMC print and the evening-before capture for BMO.
+
+Routine id `trig_01K1ZTiK4qQayC9aLvaK2Gyn`, created 2026-08-29.
+
+**Stages 0 through 4 have no Routine.** A `RemoteTrigger list` on 2026-08-29 found six
+routines on the account and none of them is a pipeline stage. Everything below about
+their spacing describes the schedule they *should* run on if they are recreated. Check
+with `RemoteTrigger list` before concluding that a stage failed — a stage that was never
+scheduled leaves exactly the same evidence as one that died, which is the fourth fault
+this document already warns about.
 
 Subagent counts were cut on 2026-08-13 (10 dossiers → 6, 3 panels → 2) after the
 pipeline failed to deliver on four consecutive days. See "What actually went wrong,
