@@ -83,6 +83,10 @@ resolve_generated() {
 # which left INDEX.md modified-but-unstaged and blocked the rebase below.
 paths=()
 [[ -d research ]] && paths+=(research)
+# Forward capture writes here. Named explicitly rather than staging `backtest/`,
+# which also holds the retrospective corpus and work in progress that a capture
+# run has no business committing.
+[[ -d backtest/captures ]] && paths+=(backtest/captures)
 for f in "${GENERATED[@]}" LEDGER.md; do
   [[ -e "$f" ]] && paths+=("$f")
 done

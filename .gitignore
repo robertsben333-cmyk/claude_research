@@ -9,3 +9,8 @@ __pycache__/
 # FINNHUB_API_KEY through the environment's variables instead.
 .env
 .claude/settings.local.json
+
+# Filing bodies rehydrated from EDGAR on demand. capture.py stores pointers
+# only — bodies were ~99% of an event's bytes and EDGAR is immutable, so this
+# is a local cache, never corpus state. scripts/rehydrate.py rebuilds it.
+backtest/captures/events/*/filings_text/
