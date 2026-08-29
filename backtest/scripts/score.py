@@ -38,6 +38,19 @@ def _band(cap):
     return "large" if cap >= 50e9 else "mid" if cap >= 10e9 else "small"
 
 
+def load_trade_prices(run):
+    """Returns under the specified scheme, frozen at collection time.
+
+    buy 14:00 ET (20:00 CET) on the last session before the print; exit next open
+    (primary) or next close. Long on Up, short on Down, flat on Neutral.
+    """
+    p = ROOT / "runs" / run / "trade_prices.json"
+    if not p.exists():
+        return {}
+    d = json.loads(p.read_text(encoding="utf-8"))
+    return {r["ticker"]: r for r in d["prices"] if not r.get("error")}
+
+
 def load_truth_and_anchors(run):
     draw = json.loads((ROOT / "runs" / run / "draw.json").read_text(encoding="utf-8"))
     meta = {}
@@ -88,6 +101,55 @@ def coin_interval(n, trials=20000, seed=7):
     random.seed(seed)
     xs = sorted(sum(random.choice([True, False]) for _ in range(n)) / n for _ in range(trials))
     return xs[int(0.05 * trials)], xs[int(0.95 * trials)]
+
+
+def trade_stats(preds, meta, px, exit_key="ret_to_open_pct"):
+    """Equal-weight long/short book. Neutral abstains."""
+    rets, traded, skipped = [], [], []
+    forced = []           # what the same signs would have made if Neutral traded too
+    for t, p in preds.items():
+        if t not in px or t not in meta:
+            continue
+        s = CALL_SIGN.get(p.get("call"))
+        if s is None:
+            continue
+        r = px[t][exit_key]
+        if s == 0:
+            skipped.append(r)
+            # a Neutral forced to trade takes the sign of its direction_score
+            fs = 1 if (p.get("direction_score") or 0) >= 0 else -1
+            forced.append(fs * r)
+        else:
+            rets.append(s * r)
+            traded.append(t)
+            forced.append(s * r)
+    return {"n_traded": len(rets), "n_skipped": len(skipped),
+            "mean_ret": statistics.mean(rets) if rets else None,
+            "median_ret": statistics.median(rets) if rets else None,
+            "total_ret": sum(rets) if rets else 0.0,
+            "mean_if_forced": statistics.mean(forced) if forced else None,
+            "abs_move_neutral": statistics.mean([abs(x) for x in skipped]) if skipped else None,
+            "abs_move_traded": statistics.mean([abs(px[t][exit_key]) for t in traded]) if traded else None,
+            "rets": rets}
+
+
+def bootstrap_ci(xs, n=5000, seed=11):
+    if len(xs) < 3:
+        return None, None
+    random.seed(seed)
+    ms = sorted(statistics.mean(random.choices(xs, k=len(xs))) for _ in range(n))
+    return ms[int(.05 * n)], ms[int(.95 * n)]
+
+
+def baseline_trade(meta, px, rule):
+    rets = []
+    for t, m in meta.items():
+        if t not in px:
+            continue
+        s = rule(m)
+        if s:
+            rets.append(s * px[t]["ret_to_open_pct"])
+    return statistics.mean(rets) if rets else None
 
 
 def score(arm_name, preds, meta):
@@ -179,6 +241,46 @@ def report(run="pilot-40", arms=("arm-a-naive", "arm-b-planfirst", "arm-c-skill"
             h, t = r["by_coverage"].get(c, [0, 0])
             parts.append(f"{c} {h}/{t}" + (f" ({h/t:.0%})" if t else ""))
         print(f"  {r['arm']:<18}{'  '.join(parts)}")
+
+    # ---- the trading scheme -------------------------------------------------
+    px = load_trade_prices(run)
+    if px:
+        print("\nTRADING SCHEME - buy 14:00 ET before the print, equal weight, long/short")
+        for exit_key, label in (("ret_to_open_pct", "exit NEXT OPEN (primary)"),
+                                ("ret_to_close_pct", "exit next close")):
+            print(f"\n  {label}")
+            print(f"    {'arm':<18}{'traded':>7}{'skip':>6}{'mean':>9}{'median':>9}{'total':>9}{'90% CI':>18}")
+            for a in arms:
+                pr = load_arm(run, a)
+                if not pr:
+                    continue
+                ts = trade_stats(pr, meta, px, exit_key)
+                lo, hi = bootstrap_ci(ts["rets"])
+                ci = f"{lo:+.2f} .. {hi:+.2f}" if lo is not None else "n/a"
+                mr = f"{ts['mean_ret']:+.2f}%" if ts["mean_ret"] is not None else "n/a"
+                md = f"{ts['median_ret']:+.2f}%" if ts["median_ret"] is not None else "n/a"
+                print(f"    {a:<18}{ts['n_traded']:7}{ts['n_skipped']:6}{mr:>9}{md:>9}"
+                      f"{ts['total_ret']:+8.1f}%{ci:>18}")
+            if exit_key == "ret_to_open_pct":
+                ad = baseline_trade(meta, px, lambda m: -1)
+                au = baseline_trade(meta, px, lambda m: 1)
+                print(f"    {'always_down':<18}{len(px):7}{0:6}{ad:+8.2f}%")
+                print(f"    {'always_up':<18}{len(px):7}{0:6}{au:+8.2f}%")
+                print("    -> an arm must beat always_down, not zero. This sample skews down.")
+
+        print("\n  ABSTENTION - do Neutral-called events actually move less?")
+        for a in arms:
+            pr = load_arm(run, a)
+            if not pr:
+                continue
+            ts = trade_stats(pr, meta, px)
+            nz = f"{ts['abs_move_neutral']:.2f}%" if ts["abs_move_neutral"] is not None else "n/a"
+            tz = f"{ts['abs_move_traded']:.2f}%" if ts["abs_move_traded"] is not None else "n/a"
+            fz = f"{ts['mean_if_forced']:+.2f}%" if ts["mean_if_forced"] is not None else "n/a"
+            mr = f"{ts['mean_ret']:+.2f}%" if ts["mean_ret"] is not None else "n/a"
+            print(f"    {a:<18}|move| on Neutral {nz:>7}  vs traded {tz:>7}   "
+                  f"per-trade {mr:>7} vs forced-to-trade-all {fz:>7}")
+        print("    -> if Neutral events do not move less, Neutral is a hedge, not a signal.")
 
     (ROOT / "runs" / run / "scores.json").write_text(
         json.dumps([{k: v for k, v in r.items() if k != "signed"} for r in results],
