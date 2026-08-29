@@ -5,8 +5,8 @@
  "window_days": 14,
  "from": "2026-07-24",
  "to": "2026-08-07",
- "fence_utc": "2026-08-07T10:33:16Z",
- "margin_hours": 1.0,
+ "fence_utc": "2026-08-07T08:33:16Z",
+ "margin_hours": 3.0,
  "provider_clock_note": "finnhub timestamps corrected ET->UTC; see et_wallclock_to_utc",
  "providers": [
   {
@@ -26,25 +26,27 @@
  "orphan_files": [],
  "documents": [
   {
-   "url": "https://finnhub.io/api/news?id=140cc6a479bf44ec44f10ff7cbf62ef4cf786ed7b09bafd0feedcfb37a9e360c",
+   "url": "<withheld: see backtest/_audit/>",
    "provider": "finnhub",
    "source": "ChartMill",
    "provider_published_utc": "2026-08-07T17:21:52Z",
    "status": "rejected: provider timestamp at/after fence 2026-08-07T10:33:16Z"
   },
   {
-   "url": "https://finnhub.io/api/news?id=9bd54f66fcbb30cdfbfe539a351029e028e30aee6694ac63e1a0669a50875a27",
+   "url": "<withheld: see backtest/_audit/>",
    "provider": "finnhub",
    "source": "Benzinga",
    "provider_published_utc": "2026-08-07T11:37:45Z",
    "status": "rejected: provider timestamp at/after fence 2026-08-07T10:33:16Z"
   },
   {
-   "url": "https://finnhub.io/api/news?id=4e541321ce821bc3e5c63e739d4b692415cd02fe1f717554b3f765f74cce3e3f",
+   "url": "<withheld: see backtest/_audit/>",
    "provider": "finnhub",
    "source": "Benzinga",
    "provider_published_utc": "2026-08-07T11:32:29Z",
    "status": "rejected: provider timestamp at/after fence 2026-08-07T10:33:16Z"
   }
- ]
+ ],
+ "margin_rationale": "3h, not 1h. Measured: the earnings press release crosses the wire 63-65 minutes BEFORE EDGAR accepts the 8-K (CL 10:55:21Z vs an 11:58:00Z acceptance; TILE 09:31:36Z vs 10:36:41Z). A 1h margin let both through by minutes.",
+ "urls_withheld": "URLs are stripped from the sealed corpus. A rejected document is still described here, and its slug alone can name the result. Full URLs live in backtest/_audit/ for provenance checking."
 }

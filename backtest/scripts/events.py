@@ -42,7 +42,18 @@ def parse_cap(s):
 
 
 def session_from_edgar(cik, day):
-    """Exact session for the earnings 8-K filed on/around `day`. None if absent."""
+    """Exact session for the FIRST results disclosure on/around `day`.
+
+    Two rules learned the hard way:
+
+    * Take the EARLIEST disclosure, not the latest. FCN filed its 10-Q at 07:30 ET
+      on 2026-07-30 and a second 8-K carrying item 2.02 at 16:31 ET on 07-31.
+      Choosing the latest labelled it amc 07-31, so the "forecast window" began two
+      sessions after the news had already been traded. VG had the same shape,
+      12.5h out. 2 of 40 events were mis-dated this way.
+    * A 10-Q counts as a results disclosure. Some companies put the numbers in the
+      10-Q first and the 8-K second, so an 8-K-only rule silently misses the event.
+    """
     try:
         sub = submissions(cik)
     except Exception:
@@ -50,7 +61,8 @@ def session_from_edgar(cik, day):
     r = sub["filings"]["recent"]
     best = None
     for i, form in enumerate(r["form"]):
-        if form != "8-K" or "2.02" not in (r["items"][i] or ""):
+        is_results = (form == "8-K" and "2.02" in (r["items"][i] or "")) or form in ("10-Q", "10-K")
+        if not is_results:
             continue
         acc = r["acceptanceDateTime"][i]
         dt = datetime.fromisoformat(acc.replace("Z", "+00:00")).astimezone(ET)
@@ -58,7 +70,7 @@ def session_from_edgar(cik, day):
         if abs((dt.date() - date.fromisoformat(day)).days) > 1:
             continue
         cand = {"accepted_et": dt.isoformat(), "filing_date": r["filingDate"][i],
-                "accession": r["accessionNumber"][i]}
+                "accession": r["accessionNumber"][i], "disclosure_form": form}
         hhmm = dt.hour * 60 + dt.minute
         if hhmm >= 16 * 60:
             cand |= {"session": "amc", "event_date": dt.date().isoformat()}
@@ -66,7 +78,8 @@ def session_from_edgar(cik, day):
             cand |= {"session": "bmo", "event_date": dt.date().isoformat()}
         else:
             cand |= {"session": "intraday", "event_date": dt.date().isoformat()}
-        if best is None or cand["accepted_et"] > best["accepted_et"]:
+        # EARLIEST wins -- see the docstring
+        if best is None or cand["accepted_et"] < best["accepted_et"]:
             best = cand
     return best
 
