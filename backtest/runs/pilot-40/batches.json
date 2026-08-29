@@ -1,0 +1,503 @@
+{
+ "scheme": "one batch per event date",
+ "rationale": "Every event in a batch shares an event date, so an agent cannot carry a later event's market context backward into an earlier forecast -- the failure mode that made interleaved 10-event batches unsound, where batch 3 spanned 30 days and its earliest event could see a month of its own future through a neighbour's legitimately-fenced corpus.",
+ "within_batch_order": "by exact cutoff instant, earliest first. Same-date events still differ by up to ten hours -- a bmo print clears around 06:30 ET and an amc print around 16:05 ET -- so date alone is not a tight enough fence.",
+ "batches": [
+  {
+   "batch": 1,
+   "event_date": "2026-07-28",
+   "tickers": [
+    "CORZ",
+    "FCF"
+   ],
+   "events": [
+    {
+     "ticker": "CORZ",
+     "company": "Core Scientific, Inc.",
+     "session": "bmo",
+     "event_date": "2026-07-28",
+     "cutoff": "2026-07-28T07:06:14-04:00",
+     "dir": "backtest/events/CORZ-2026-07-28"
+    },
+    {
+     "ticker": "FCF",
+     "company": "First Commonwealth Financial Corporation",
+     "session": "amc",
+     "event_date": "2026-07-28",
+     "cutoff": "2026-07-28T17:02:27-04:00",
+     "dir": "backtest/events/FCF-2026-07-28"
+    }
+   ]
+  },
+  {
+   "batch": 2,
+   "event_date": "2026-07-29",
+   "tickers": [
+    "FTV"
+   ],
+   "events": [
+    {
+     "ticker": "FTV",
+     "company": "Fortive Corporation",
+     "session": "bmo",
+     "event_date": "2026-07-29",
+     "cutoff": "2026-07-29T07:33:10-04:00",
+     "dir": "backtest/events/FTV-2026-07-29"
+    }
+   ]
+  },
+  {
+   "batch": 3,
+   "event_date": "2026-07-30",
+   "tickers": [
+    "AGIO",
+    "PWR"
+   ],
+   "events": [
+    {
+     "ticker": "AGIO",
+     "company": "Agios Pharmaceuticals, Inc.",
+     "session": "bmo",
+     "event_date": "2026-07-30",
+     "cutoff": "2026-07-30T06:32:37-04:00",
+     "dir": "backtest/events/AGIO-2026-07-30"
+    },
+    {
+     "ticker": "PWR",
+     "company": "Quanta Services, Inc.",
+     "session": "bmo",
+     "event_date": "2026-07-30",
+     "cutoff": "2026-07-30T06:58:06-04:00",
+     "dir": "backtest/events/PWR-2026-07-30"
+    }
+   ]
+  },
+  {
+   "batch": 4,
+   "event_date": "2026-07-31",
+   "tickers": [
+    "CL",
+    "BEN",
+    "FCN"
+   ],
+   "events": [
+    {
+     "ticker": "CL",
+     "company": "Colgate-Palmolive Company",
+     "session": "bmo",
+     "event_date": "2026-07-31",
+     "cutoff": "2026-07-31T07:58:00-04:00",
+     "dir": "backtest/events/CL-2026-07-31"
+    },
+    {
+     "ticker": "BEN",
+     "company": "Franklin Templeton, Inc.",
+     "session": "bmo",
+     "event_date": "2026-07-31",
+     "cutoff": "2026-07-31T08:36:53-04:00",
+     "dir": "backtest/events/BEN-2026-07-31"
+    },
+    {
+     "ticker": "FCN",
+     "company": "FTI Consulting, Inc.",
+     "session": "amc",
+     "event_date": "2026-07-31",
+     "cutoff": "2026-07-31T16:31:12-04:00",
+     "dir": "backtest/events/FCN-2026-07-31"
+    }
+   ]
+  },
+  {
+   "batch": 5,
+   "event_date": "2026-08-03",
+   "tickers": [
+    "UCTT",
+    "BSM"
+   ],
+   "events": [
+    {
+     "ticker": "UCTT",
+     "company": "Ultra Clean Holdings, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-03",
+     "cutoff": "2026-08-03T16:14:37-04:00",
+     "dir": "backtest/events/UCTT-2026-08-03"
+    },
+    {
+     "ticker": "BSM",
+     "company": "Black Stone Minerals, L.P.",
+     "session": "amc",
+     "event_date": "2026-08-03",
+     "cutoff": "2026-08-03T18:34:43-04:00",
+     "dir": "backtest/events/BSM-2026-08-03"
+    }
+   ]
+  },
+  {
+   "batch": 6,
+   "event_date": "2026-08-04",
+   "tickers": [
+    "ENTG",
+    "BKNG",
+    "DNTH",
+    "OGS",
+    "IPAR"
+   ],
+   "events": [
+    {
+     "ticker": "ENTG",
+     "company": "Entegris, Inc.",
+     "session": "bmo",
+     "event_date": "2026-08-04",
+     "cutoff": "2026-08-04T07:02:24-04:00",
+     "dir": "backtest/events/ENTG-2026-08-04"
+    },
+    {
+     "ticker": "BKNG",
+     "company": "Booking Holdings Inc.",
+     "session": "amc",
+     "event_date": "2026-08-04",
+     "cutoff": "2026-08-04T16:03:14-04:00",
+     "dir": "backtest/events/BKNG-2026-08-04"
+    },
+    {
+     "ticker": "DNTH",
+     "company": "Dianthus Therapeutics, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-04",
+     "cutoff": "2026-08-04T16:05:21-04:00",
+     "dir": "backtest/events/DNTH-2026-08-04"
+    },
+    {
+     "ticker": "OGS",
+     "company": "ONE Gas, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-04",
+     "cutoff": "2026-08-04T16:18:06-04:00",
+     "dir": "backtest/events/OGS-2026-08-04"
+    },
+    {
+     "ticker": "IPAR",
+     "company": "Interparfums, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-04",
+     "cutoff": "2026-08-04T16:30:42-04:00",
+     "dir": "backtest/events/IPAR-2026-08-04"
+    }
+   ]
+  },
+  {
+   "batch": 7,
+   "event_date": "2026-08-05",
+   "tickers": [
+    "DUOL",
+    "TLN",
+    "LEU"
+   ],
+   "events": [
+    {
+     "ticker": "DUOL",
+     "company": "Duolingo, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-05",
+     "cutoff": "2026-08-05T16:04:09-04:00",
+     "dir": "backtest/events/DUOL-2026-08-05"
+    },
+    {
+     "ticker": "TLN",
+     "company": "Talen Energy Corporation",
+     "session": "amc",
+     "event_date": "2026-08-05",
+     "cutoff": "2026-08-05T16:07:49-04:00",
+     "dir": "backtest/events/TLN-2026-08-05"
+    },
+    {
+     "ticker": "LEU",
+     "company": "Centrus Energy Corp.",
+     "session": "amc",
+     "event_date": "2026-08-05",
+     "cutoff": "2026-08-05T16:37:30-04:00",
+     "dir": "backtest/events/LEU-2026-08-05"
+    }
+   ]
+  },
+  {
+   "batch": 8,
+   "event_date": "2026-08-06",
+   "tickers": [
+    "AVNT",
+    "CW"
+   ],
+   "events": [
+    {
+     "ticker": "AVNT",
+     "company": "Avient Corporation",
+     "session": "bmo",
+     "event_date": "2026-08-06",
+     "cutoff": "2026-08-06T06:01:30-04:00",
+     "dir": "backtest/events/AVNT-2026-08-06"
+    },
+    {
+     "ticker": "CW",
+     "company": "Curtiss-Wright Corporation",
+     "session": "bmo",
+     "event_date": "2026-08-06",
+     "cutoff": "2026-08-06T07:30:37-04:00",
+     "dir": "backtest/events/CW-2026-08-06"
+    }
+   ]
+  },
+  {
+   "batch": 9,
+   "event_date": "2026-08-07",
+   "tickers": [
+    "TILE",
+    "VST",
+    "AD",
+    "CLMT"
+   ],
+   "events": [
+    {
+     "ticker": "TILE",
+     "company": "Interface, Inc.",
+     "session": "bmo",
+     "event_date": "2026-08-07",
+     "cutoff": "2026-08-07T06:36:41-04:00",
+     "dir": "backtest/events/TILE-2026-08-07"
+    },
+    {
+     "ticker": "VST",
+     "company": "Vistra Corp.",
+     "session": "bmo",
+     "event_date": "2026-08-07",
+     "cutoff": "2026-08-07T07:00:25-04:00",
+     "dir": "backtest/events/VST-2026-08-07"
+    },
+    {
+     "ticker": "AD",
+     "company": "Array Digital Infrastructure, Inc.",
+     "session": "bmo",
+     "event_date": "2026-08-07",
+     "cutoff": "2026-08-07T07:33:16-04:00",
+     "dir": "backtest/events/AD-2026-08-07"
+    },
+    {
+     "ticker": "CLMT",
+     "company": "Calumet, Inc",
+     "session": "bmo",
+     "event_date": "2026-08-07",
+     "cutoff": "2026-08-07T08:05:14-04:00",
+     "dir": "backtest/events/CLMT-2026-08-07"
+    }
+   ]
+  },
+  {
+   "batch": 10,
+   "event_date": "2026-08-10",
+   "tickers": [
+    "KEEL",
+    "ORKA",
+    "AAON",
+    "NHI"
+   ],
+   "events": [
+    {
+     "ticker": "KEEL",
+     "company": "Keel Infrastructure Corp.",
+     "session": "bmo",
+     "event_date": "2026-08-10",
+     "cutoff": "2026-08-10T06:51:59-04:00",
+     "dir": "backtest/events/KEEL-2026-08-10"
+    },
+    {
+     "ticker": "ORKA",
+     "company": "Oruka Therapeutics, Inc.",
+     "session": "bmo",
+     "event_date": "2026-08-10",
+     "cutoff": "2026-08-10T07:00:41-04:00",
+     "dir": "backtest/events/ORKA-2026-08-10"
+    },
+    {
+     "ticker": "AAON",
+     "company": "AAON, Inc.",
+     "session": "bmo",
+     "event_date": "2026-08-10",
+     "cutoff": "2026-08-10T07:12:15-04:00",
+     "dir": "backtest/events/AAON-2026-08-10"
+    },
+    {
+     "ticker": "NHI",
+     "company": "National Health Investors, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-10",
+     "cutoff": "2026-08-10T16:10:58-04:00",
+     "dir": "backtest/events/NHI-2026-08-10"
+    }
+   ]
+  },
+  {
+   "batch": 11,
+   "event_date": "2026-08-11",
+   "tickers": [
+    "VG",
+    "MANE",
+    "IMNM",
+    "MLYS"
+   ],
+   "events": [
+    {
+     "ticker": "VG",
+     "company": "Venture Global, Inc.",
+     "session": "bmo",
+     "event_date": "2026-08-11",
+     "cutoff": "2026-08-11T06:31:19-04:00",
+     "dir": "backtest/events/VG-2026-08-11"
+    },
+    {
+     "ticker": "MANE",
+     "company": "Veradermics, Incorporated",
+     "session": "bmo",
+     "event_date": "2026-08-11",
+     "cutoff": "2026-08-11T08:15:58-04:00",
+     "dir": "backtest/events/MANE-2026-08-11"
+    },
+    {
+     "ticker": "IMNM",
+     "company": "Immunome, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-11",
+     "cutoff": "2026-08-11T16:05:17-04:00",
+     "dir": "backtest/events/IMNM-2026-08-11"
+    },
+    {
+     "ticker": "MLYS",
+     "company": "Mineralys Therapeutics, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-11",
+     "cutoff": "2026-08-11T16:08:44-04:00",
+     "dir": "backtest/events/MLYS-2026-08-11"
+    }
+   ]
+  },
+  {
+   "batch": 12,
+   "event_date": "2026-08-13",
+   "tickers": [
+    "AMAT"
+   ],
+   "events": [
+    {
+     "ticker": "AMAT",
+     "company": "Applied Materials, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-13",
+     "cutoff": "2026-08-13T16:03:36-04:00",
+     "dir": "backtest/events/AMAT-2026-08-13"
+    }
+   ]
+  },
+  {
+   "batch": 13,
+   "event_date": "2026-08-19",
+   "tickers": [
+    "NDSN"
+   ],
+   "events": [
+    {
+     "ticker": "NDSN",
+     "company": "Nordson Corporation",
+     "session": "amc",
+     "event_date": "2026-08-19",
+     "cutoff": "2026-08-19T16:32:10-04:00",
+     "dir": "backtest/events/NDSN-2026-08-19"
+    }
+   ]
+  },
+  {
+   "batch": 14,
+   "event_date": "2026-08-20",
+   "tickers": [
+    "AAP"
+   ],
+   "events": [
+    {
+     "ticker": "AAP",
+     "company": "Advance Auto Parts Inc.",
+     "session": "bmo",
+     "event_date": "2026-08-20",
+     "cutoff": "2026-08-20T06:31:32-04:00",
+     "dir": "backtest/events/AAP-2026-08-20"
+    }
+   ]
+  },
+  {
+   "batch": 15,
+   "event_date": "2026-08-25",
+   "tickers": [
+    "BOX",
+    "DCI"
+   ],
+   "events": [
+    {
+     "ticker": "BOX",
+     "company": "Box, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-25",
+     "cutoff": "2026-08-25T16:06:15-04:00",
+     "dir": "backtest/events/BOX-2026-08-25"
+    },
+    {
+     "ticker": "DCI",
+     "company": "Donaldson Company, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-25",
+     "cutoff": "2026-08-25T17:35:47-04:00",
+     "dir": "backtest/events/DCI-2026-08-25"
+    }
+   ]
+  },
+  {
+   "batch": 16,
+   "event_date": "2026-08-26",
+   "tickers": [
+    "WSM",
+    "A"
+   ],
+   "events": [
+    {
+     "ticker": "WSM",
+     "company": "Williams-Sonoma, Inc.",
+     "session": "bmo",
+     "event_date": "2026-08-26",
+     "cutoff": "2026-08-26T08:03:35-04:00",
+     "dir": "backtest/events/WSM-2026-08-26"
+    },
+    {
+     "ticker": "A",
+     "company": "Agilent Technologies, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-26",
+     "cutoff": "2026-08-26T16:06:25-04:00",
+     "dir": "backtest/events/A-2026-08-26"
+    }
+   ]
+  },
+  {
+   "batch": 17,
+   "event_date": "2026-08-27",
+   "tickers": [
+    "RBRK"
+   ],
+   "events": [
+    {
+     "ticker": "RBRK",
+     "company": "Rubrik, Inc.",
+     "session": "amc",
+     "event_date": "2026-08-27",
+     "cutoff": "2026-08-27T16:06:19-04:00",
+     "dir": "backtest/events/RBRK-2026-08-27"
+    }
+   ]
+  }
+ ]
+}

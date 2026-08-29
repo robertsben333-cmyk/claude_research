@@ -1,7 +1,7 @@
 ---
 name: backtest-arm-c-skill
 description: Backtest arm C. Applies the live pipeline's own research method - the nine-area structured dossier and its hard-won calibration rules - to a sealed point-in-time corpus. The arm that represents current practice.
-tools: Read, Grep, Glob
+tools: Read, Grep, Glob, Write
 model: opus
 effort: high
 maxTurns: 50
@@ -81,3 +81,10 @@ Your final message is the return value. Emit **only** this JSON, no prose around
 
 `direction_score` is -100 to +100. `prob_up` is 0-100. `expected_abs_move_pct` is the
 size of the move regardless of direction. `evidence_quality` is 0-100.
+
+## Persisting your answer
+
+If the caller gives you an output path, write the JSON array there with `Write` **and**
+return it as your final message. `Write` is on your allowlist only so you can save your
+own output; it grants you no information and does not widen what you may read. Everything
+you may read is still only what is inside the event directory.

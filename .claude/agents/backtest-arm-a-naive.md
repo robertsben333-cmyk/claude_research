@@ -1,7 +1,7 @@
 ---
 name: backtest-arm-a-naive
 description: Backtest arm A. Predicts a post-earnings move from a sealed point-in-time corpus with no methodology supplied. The control arm - what the model does unaided.
-tools: Read, Grep, Glob
+tools: Read, Grep, Glob, Write
 model: opus
 effort: high
 maxTurns: 40
@@ -59,3 +59,10 @@ Your final message is the return value. Emit **only** this JSON, no prose around
 `direction_score` is -100 (certain down) to +100 (certain up). `prob_up` is 0-100.
 `expected_abs_move_pct` is the size of the move you expect regardless of direction.
 `evidence_quality` is 0-100 for how well-sourced this particular call is.
+
+## Persisting your answer
+
+If the caller gives you an output path, write the JSON array there with `Write` **and**
+return it as your final message. `Write` is on your allowlist only so you can save your
+own output; it grants you no information and does not widen what you may read. Everything
+you may read is still only what is inside the event directory.
