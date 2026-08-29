@@ -1,0 +1,166 @@
+HACKER NEWS  Colgate-Palmolive Company
+FENCE: strictly before 2026-07-31T10:58:00Z
+ITEMS: 39
+
+------------------------------------------------------------------------
+
+2026-07-17T15:26:51Z  (comment)  https://news.ycombinator.com/item?id=48948552
+  CL also has pretty much arbitrarily extensible syntax:<p>- <a href="https:&#x2F;&#x2F;sr.ht&#x2F;~dieggsy&#x2F;whisper&#x2F;" rel="nofollow">https:&#x2F;&#x2F;sr.ht&#x2F;~dieggsy&#x2F;whisper&#x2F;</a><p>- <a href="https:&#x2F;&#x2F;dieggsy.com&#x2F;json-literals.html" rel="nofollow">https:&#x2F;&#x2F;dieggsy.com&#x2F;json-literals.html</a><p>And could also be used to build languages, supporting more modern programming paradigms (though yes, I believe Racket does make this easier):<p>- <a href="https:&#x2F;&#x2F;coalton-lang.github.io&#x2F;" rel="nofollow">https:&#x2F;&#x2F;coalton-lang.github.io&#x2F;</a><p>I also might have written the Common Lisp example using reduce as well, which is in the standard library, but that&#x27;s preference. Nice to have the option though:<p><pre><code>  (defun calculate (instructions)
+    (reduce
+     (lambda (result op-value)
+       (destructuring-bind (operation value) op-value
+         (case operation
+           (:add (+ result value))
+           (:subtract (- result value))
+           (:multiply (* result value)))))
+     instructions
+     :initial-value 0))
+
+  (calculate &#x27;((:add 5) (:multiply 3) (:subtract 4))) ;; =&gt; 11</code></pre>
+
+2026-07-17T15:39:03Z  (comment)  https://news.ycombinator.com/item?id=48948676
+  (Disclaimer: CL weenie) A decent and balanced writeup IMO. But it should really have contained the following:<p>Warning about the issues that come with ANSI CL&#x27;s frozen spec (threads&#x2F;sockets&#x2F;unicode&#x2F;extensible sequences&#x2F;gray streams&#x2F;etc... as extensions with a varying amount of support with compatibility layers often available to write portable-ish code, &quot;bolted-on&quot; CLOS never fully integrated) and its various rust spots, not just the good points.<p>Mention that CL has provisions for gradual typing (with limits) which are exploited by SBCL.<p>Scheme, obviously, along with the same warning as CL about pain of writing portable code that interacts with the OS (does it have compatibility layers like CL?) amplified by the R6RS vs unfinished R7RS-large mess.<p>A few words about the build system&#x2F;third-party packaging situation and alternative implementations.
+
+2026-07-17T15:46:14Z  (comment)  https://news.ycombinator.com/item?id=48948754
+  Oh yeah, way more fun :) I just kinda saw CL in the Clojure and was trying to make it look like that.
+
+2026-07-17T16:21:05Z  (comment)  https://news.ycombinator.com/item?id=48949153
+  &gt; I find a procedural style of programming so much easier to reason about, both when writing and reading.<p>Then do that.<p>There&#x27;s nothing stopping you from using pretty much any style of programming that you like. Or mix and match. Or evolve over time.<p>Loops, lists, arrays, structures. Simple iteration: dotimes, dolist, loop. If those are your bread and butter, then feast! CL will happily do that. That&#x27;s what I do. I just don&#x27;t think &quot;functionally&quot; when I do CL code, I&#x27;m just not there yet, so its unnatural for me, and not what comes spewing out of my fingers when I write code.<p>And it&#x27;s &quot;OK&quot;.<p>You don&#x27;t have to use the other features of the language, but they&#x27;re there if you want to dip your toe into it.<p>With CL, also, I tend to be really wordy on variable and function names. I&#x27;m really fond of kabob-case-for-identifers.
+
+2026-07-17T16:33:56Z  (comment)  https://news.ycombinator.com/item?id=48949294
+  Yes, but it existed before then (from 1984 on), and a large amount of code written for CL pre-standardization still runs without alteration or with minimal updates.
+
+2026-07-17T18:01:53Z  (comment)  https://news.ycombinator.com/item?id=48950287
+  There is also MLs that have the same idea, but with less implementation, as a lisp is something you hack in a weekend. An working ML not, as it takes way more effort.<p>Lisps have many fantastic ideas, but are really hard to read. Lisp code is what we had before perl guys went &quot;hold my beer&quot;.<p>I know its just syntax, and it usually does not matter, untill it does. I did some clojure a long time ago, and before that some CL, and god, i cant understand my own old code. Contrast that to some language that has syntax i can read it still, years later. Go being the prime example of write once, read a  decade later.
+
+2026-07-17T18:38:20Z  (comment)  https://news.ycombinator.com/item?id=48950781
+  I&#x27;m surprised there&#x27;s no call out highlighting Common Lisp and Clojure&#x27;s &quot;liveness&quot; compared to Racket (and Scheme). Racket is &quot;batch compiled&quot; wherein CL and Clojure you&#x27;re editing a live image.
+
+2026-07-17T19:42:49Z  (comment)  https://news.ycombinator.com/item?id=48951484
+  You&#x27;re really misrepresenting Lisp macros here, being able to rewrite syntax is only one (admittedly important) facet of these.<p>The real thing with CL is that the entire language is available during parsing and macro expansion and that users can hook into these steps to influence them. No artificial limitations like you get in C++&#x27;s consteval, you can do everything and anything without having to use a crappy DSL to do it.<p>Also, I&#x27;ve never found SBCL slow to compile. Have you?
+
+2026-07-18T08:46:44Z  (comment)  https://news.ycombinator.com/item?id=48956290
+  I think OCICL will meet your expectations more readily than Quicklisp. QL does things more the CPAN way (think Gems if you&#x27;re more into Ruby than Perl).<p>&gt; <i>a baked in way to run some sort of unit test suite. Have dozens of options if you want, but what is the &quot;cargo test&quot;?</i><p>That actually is ASDF, to be more specific:<p><pre><code>  (asdf:test-system system &amp;rest keys &amp;key force force-not verbose version &amp;allow-other-keys)
+</code></pre>
+Although if we&#x27;re honest, the real way to run a test suite in CL is to open the REPL, load your system, and just type something like <i>(run-test-suite)</i>.
+
+2026-07-18T23:37:07Z  (comment)  https://news.ycombinator.com/item?id=48963534
+  Did you know CL allows keywords to be function names?<p><pre><code>  [1]&gt; (setf (symbol-function :add) (function +))
+  #&lt;SYSTEM-FUNCTION +&gt;
+  [2]&gt; (setf (symbol-function :subtract) (function -))
+  #&lt;SYSTEM-FUNCTION -&gt;
+  [3]&gt; (setf (symbol-function :multiply) (function *))
+  #&lt;SYSTEM-FUNCTION *&gt;
+  [4]&gt; (setf (symbol-function :divide) (function &#x2F;))
+  #&lt;SYSTEM-FUNCTION &#x2F;&gt;
+  [5]&gt; (reduce (lambda (x y) (funcall (car y) x (cadr y))) &#x27;((:add 5) (:multiply 3) (:subtract 4)) :initial-value 0)
+  11
+</code></pre>
+This is actually a small benefit of the two namespaces. Keywords can&#x27;t be variables because they evaluate to themselves, but that is not relevant to the operator position that does not resolve variables.
+
+2026-07-19T17:10:22Z  (comment)  https://news.ycombinator.com/item?id=48969847
+  Huh, I guess I &quot;knew&quot; since keywords are just regular symbols in the KEYWORD package in this situation, but it never occurred to me to do something that cursed. Very cool!<p>But this made me realize there&#x27;s no way in CL (even with PROGV shenanigans) to temporarily bind the function value of a symbol, unlike the variable one through a simple LET =(<p>So this turns in this horrible (and incorrect, since this doesn&#x27;t <i>restore</i> the previous FDEFINITIONs) thing when you want to use this hack &quot;properly&quot;:<p><pre><code>  (defun calculate (instructions)
+    (setf (symbol-function :add)      #&#x27;+
+          (symbol-function :subtract) #&#x27;-
+          (symbol-function :multiply) #&#x27;*)
+    (unwind-protect
+         (reduce
+          (lambda (result op-value)
+            (funcall (car op-value) result (cadr op-value)))
+          instructions
+          :initial-value 0)
+      (fmakunbound :add)
+      (fmakunbound :subtract)
+      (fmakunbound :multiply)))</code></pre>
+
+2026-07-23T12:39:06Z  (comment)  https://news.ycombinator.com/item?id=49020626
+  You can see what the code looked like before the bug was added, and in many cases, just change it back to how it used to be?<p>The most obvious use case for history is &quot;roll back this entire CL, it&#x27;s broken&quot;.
+
+2026-07-23T20:29:25Z  (comment)  https://news.ycombinator.com/item?id=49027605
+  What do you mean by &quot;richer ecosystem&quot;? Have you ever seen GitHub language stats - there&#x27;s so much Elisp on GitHub alone, it&#x27;s absolute bananas. The amount of Elisp in the wild probably surpasses the amount of Clojure, CL and Racket combined. And mind that it isn&#x27;t &quot;a general use&quot; PL - it exists for one and single purpose.<p>Lem is great and I&#x27;m happy there&#x27;s finally something out there to challenge Emacs&#x27; hegemony, yet pragmatically, unless someone builds a way to run Elisp in Lem, it&#x27;s unlikely to overthrow Emacs anytime soon, and that&#x27;s just not gonna happen.<p>Org-mode, Magit, and thousands of packages aren&#x27;t just &quot;Elisp code&quot; - they depend on Emacs&#x27; specific buffer model, text properties, overlays, markers, the display engine, process handling, and countless quirks packages rely on (intentionally or not). A Lem Elisp interpreter that didn&#x27;t also reimplement all of that faithfully would run trivial `.el` files and choke on anything real. At that point you&#x27;ve reimplemented Emacs inside Lem.<p>Elisp is not the biggest point here and Neovim proves that with pivoting to Lua; the crux is the runtime and the corpus, and reimplementing those is the actual mountain. That is real ecosystem for whatever reason you&#x27;re choosing to simply ignore.
+
+2026-07-23T21:26:12Z  (comment)  https://news.ycombinator.com/item?id=49028262
+  Emacs has cl-lib and most CL users can get into Emacs in seconds (if they are not already proficient enough, most of them btw).
+
+2026-07-24T05:47:52Z  (comment)  https://news.ycombinator.com/item?id=49031624
+  I&#x27;m not coming at this cold, I&#x27;ve worked on the skill for PR (CL) creation in the Google monorepo. I&#x27;m not talking about raw LLM outputs here. It&#x27;s a hard problem that is fairly fundamental to the training material being used for LLMs today.<p>I&#x27;m sure we can improve things, I&#x27;m sure it will get better over time, but I&#x27;d say we&#x27;re a small fraction of the way towards where we need to be, and trending in the wrong direction with long trajectory development creating bigger changes on average.
+
+2026-07-24T20:47:35Z  (comment)  https://news.ycombinator.com/item?id=49041382
+  I might be wrong - I investigated Pike just once, a long time ago - but I think Pike dropped a lot of the &quot;liveness&quot; that LPC provided (ie. reloading objects from a (changed) source at runtime while keeping their identity and updating clones). It&#x27;s still probably a good fit for a lot of more advanced MUDs, but it&#x27;s even more niche than CL and Smalltalk, so again, not much of an advantage over a home-grown solution. Plus, I&#x27;ve been recently looking more closely at MOOs, and for that, even LPC would not be enough (too much of a separation between code and data) - LPC&#x2F;LPMUDs weren&#x27;t really built for persistence as much as MOOs were.<p>Still, I can&#x27;t disagree that, out of the box, LPC and Pike are probably a (much) better fit for a mudlib language compared to Lua, Python, or JavaScript :)
+
+2026-07-25T23:32:49Z  (comment)  https://news.ycombinator.com/item?id=49052911
+  &gt; “We’re private citizens; we don’t need this stuff,” Gunn told CL. “And they’re reporting now that the Chinese have already picked up all of our voter registrations. They’re picking up more information on us, on how we live, and you know there’s a reason for it.”<p>This is the kind of comment that makes me think that a person is old - and therefore has had their values shaped by the concerns of the mid-20th-century - gets most of their information about the world via cable news, and isn&#x27;t thinking very carefully about what is and is not likely to be a problem in their life. My dad, of similar age to this person, constantly gets angry about the Chinese getting some kind of information about ordinary American citizens, while being unable to clearly articulate exactly what this information is and why specifically this is a problem.
+
+2026-07-28T18:15:10Z  (comment)  https://news.ycombinator.com/item?id=49087793
+  Great to see the project is still going strong, I kinda want to try CL but I always feel like I don&#x27;t have a great use-case.
+
+2026-07-28T18:24:46Z  (comment)  https://news.ycombinator.com/item?id=49087912
+  CL can be used pretty much anywhere nowadays, even on the web with ECL wasm compilation.
+
+2026-07-28T19:18:14Z  (comment)  https://news.ycombinator.com/item?id=49088605
+  Lisp&#x27;s been around for 70 years at this point and hordes of developers tried it and said: lovely, but I ain&#x27;t using it at work.<p>I&#x27;m strongly convinced, having used Scheme, CL, Racket, Clojure that Lisp is doomed to be (mostly) a hobby language.<p>The very power of Lisp, macros, dynamic programming, reflection lead to a mess of an ecosystem where every single developer reinvents the wheel and nobody can understand yet another DSL invented by the next developer next to them.<p>Racket&#x27;s theme of being a &quot;programming language for building programming languages&quot; is just the poster child of this naivety: I don&#x27;t want even more friction.<p>What scales and works is simple and boring.<p>That&#x27;s by the way why also Haskell has struggled forever. Beyond its dreadful DX, poor tooling and unacceptable compilation times, the language is just plagued by compiler extensions and every single developer reinventing its own abstractions.<p>There was the simple haskell movement to just standardize around a set of extensions and conventions, but nope, these languages unavoidably attract people that want to stay in the ivory tower.<p>Really, I love both lisps and haskell, but I would take a dreadful php over them every single day at work. No contest.
+
+2026-07-28T19:30:46Z  (comment)  https://news.ycombinator.com/item?id=49088765
+  &gt;&gt; said: lovely, but I ain&#x27;t using it at work.<p>Says who, you? Wrong. I use Common Lisp at work.<p>edit: and not just use as in a side toy, design and writing software in CL is my primary responsibility. FWIW, at a FAANG!
+
+2026-07-28T21:48:01Z  (comment)  https://news.ycombinator.com/item?id=49090365
+  On the contrary, CLI, TUI, and desktop GUI apps are basically the only kinds of apps that benefit from CL and can live with its shortcomings. The startup time of a tool written in CL is short: you just need to load the image into RAM, run some hooks (if configured), and you&#x27;re good to go. If you don&#x27;t include loads of dependencies, the dumped image is also not too big, so loading it from an SSD is almost instantaneous. The startup is of course nowhere near that of a small C or Zig binary, but for larger tools it will be tolerable. For TUIs and GUIs, you can work on them interactively and see the changes in the source immediately reflected in the interface of a running instance.<p>Web services need either cooperative concurrency or M:N concurrency due to the &quot;10k problem&quot;. CL only supports threads (OS-level) and promises; everything else is incomplete (eg., delimited continuations, which could be used to build coroutines) due to missing parts in the spec and some language features (eg., conditions and restarts). Of course it can be done, but it won&#x27;t be as pleasant as using Elixir and Phoenix.<p>A game engine would work, most likely, unless it was for an MMO (again, concurrency handling). I personally never worked on one, but I see examples of game engines in CL, and they tend to look nice.<p>In general, single-user desktop (CLI, TUI, GUI) apps are still a good fit for CL, even today (you need to put some work into packaging the app for different platforms, but it tends to be easier to set up than it is for C or C++; harder than Go or Rust, though). It&#x27;s unfortunately not as good a fit for the backend, at least not until an implementation with good support for concurrency appears. It&#x27;s nice as an extension language in a larger app (through ECL), and as far as dynamic languages go, it&#x27;s quite performant, so some computation-heavy apps can benefit from using CL (with SBCL). On the other hand, the ecosystem is quite small, which m
+
+2026-07-28T22:24:41Z  (comment)  https://news.ycombinator.com/item?id=49090802
+  I think you have very little insight to what you&#x27;re talking about. The modern Lisp landscape is nothing like what it was in the 90s or even 2000s. The amount of practical shit Lispers been quietly building these days is genuinely impressive.<p>Have you ever seen GitHub language stats? Elisp there in the list a few points behind Lua, Elixir, OCaml and Haskell. The amount of Emacs Lisp on GitHub alone should be at least surprising. There&#x27;s so much Elisp in the wild - the amount of it probably exceeds Clojure, CL and Racket combined. And let me remind you that it isn&#x27;t a &quot;general-purpose PL&quot; - it&#x27;s meant for one and only purpose.<p>Look at the number of package for AI-coding in Emacs¹ - 35 and counting. Mind that emacs has no central curated marketplace with the same discoverability as VSCode&#x27;s. Packages live across MELPA, GNU&#x2F;NonGNU ELPA, and countless personal repos, so a hand-counted 35 from a Reddit roundup is almost certainly an undercount of what exists in the wild.<p>And that&#x27;s just one of the observable axes of Lisp. Anyone can join Clojurians Slack and scroll through #news-and-articles, just out of curiosity. It is hard to find a problem space today or a runtime where Lisp has not proliferated. Why? Because Lisp is enormously practical. Just because you convinced yourself it isn&#x27;t, doesn&#x27;t change a thing about reality.<p>---<p>¹ <a href="https:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;emacs&#x2F;comments&#x2F;1uwm3c0&#x2F;the_state_of_agentic_coding_tools_in_emacs_2026&#x2F;" rel="nofollow">https:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;emacs&#x2F;comments&#x2F;1uwm3c0&#x2F;the_state_of...</a>
+
+2026-07-29T03:30:40Z  (comment)  https://news.ycombinator.com/item?id=49093101
+  I bet you do, or you will.  In my case, I had been getting movie recommendations from friends and also randomly.  I&#x27;d look up the flick on IMDB, metacritic, and rotten tomatoes and I&#x27;d guess whether I would like it.<p>I wanted something more &#x27;algorithmic&#x27; - and more accurate.<p>So me and Claude build an sbcl-based Film Recommendation system.  Type in a new film name, it goes to open film database OMDB, grabs the scores, and then, using films I have already rated and with a built-in tiny Neural Net, gives me a personal recommendation.  It uses the OMDB data and an algo that weights those with my personal values (in half a dozen areas: overall, acting, cinematography, etc), along with a &#x27;comments&#x27; box to note for friends &#x2F; others.<p>The code is very well-done CL, heavily commented.  The film &amp; ratings database is stored as S-exprs, naturally, all in one file.   I don&#x27;t use a database as I only have a few hundred films, but maybe later I will.   And that&#x27;s the point -- this is a living chunk of code that I from time to time bolt in new features, or try new things  (e.g. the UI is localhost:8080)<p>I fretted about having a &#x27;real&#x27; project to really dig into CL for a long time, and finally, found a meaty-enough project that ends up being really useful &amp; quite a learning (continuing learning) experience.  I start it up inside emacs&#x2F;sly like this:<p><pre><code>  (ql:quickload &#x27;(:hunchentoot :dexador :yason))
+  (load &quot;s:&#x2F;filmrec.lisp&quot;)
+  (filmrec:start)
+</code></pre>
+I have to set the omdb key:<p><pre><code>  (setf filmrec:*omdb-api-key* &quot;fxxxx70&quot;)
+</code></pre>
+Then, every so often, I retrain the NN:<p><pre><code>  (filmrec:retrain)
+</code></pre>
+Good Luck, you&#x27;ll find a project.  And with an LLM buddy, you&#x27;ll succeed.
+
+2026-07-29T04:36:58Z  (comment)  https://news.ycombinator.com/item?id=49093465
+  But then again, why would I use CL for this when I can use Elixir? I’m not the original commenter but I too can’t find a use case for CL.
+
+2026-07-29T07:46:04Z  (comment)  https://news.ycombinator.com/item?id=49094527
+  It is my understanding that easing bootstrap was the original motivation of the fork of CMU CL.  I&#x27;m a bit confused about that, since CMU CL supports compilation to byte-code (which should make a port to a new architecture comparatively easy), a feature which was dropped in SBCL.
+
+2026-07-29T10:07:13Z  (comment)  https://news.ycombinator.com/item?id=49095417
+  The sane bootstrap is not about porting to new architecture, but about building the compiler from source in the first place. CMU CL effectively requires that you use the same version of CMU CL to build it, IIRC, which in practice meant you had to first load the changes into older CMU CL image - overwriting core components, and then use that image to compile new version.<p>The difference with SBCL is that it can compile so long as you have any CL implementation that handles certain broad, but not complete, subset of ANSI CL.<p>It does it by being able to compile itself in sort-of sandboxed state hosted within another CL image, and then using that compiler to build itself, without requiring to modify the host compiler like CMU<p>As for the bytecode, as far as I recall CMU CL did not have bytecode compiler at all - it had evaluator option, which was indeed dropped for a long time from SBCL but was recently reintroduced, partially to support efforts such as porting Kandria [1] to Nintendo Switch<p>[1] <a href="https:&#x2F;&#x2F;kandria.com&#x2F;" rel="nofollow">https:&#x2F;&#x2F;kandria.com&#x2F;</a>
+
+2026-07-29T10:39:40Z  (comment)  https://news.ycombinator.com/item?id=49095661
+  One of the cleanest examples in the book is the CL-PPCRE library for regular expressions.<p>Without macros, regular expressions are strings at compile time and then at runtime objects are created based on the strings to evaluate them.<p>With macros, regular expressions are expanded at compile time into Common Lisp code that implements the evaluation.<p>There&#x27;s a similar idea with an ORM library.<p>Without macros, the object-relational mapping is defined at compile time and any dynamic SQL is generated at run time.<p>With macros, the object-relational mapping is used at compile time to expand the query macros into Common Lisp code that includes the actual SQL.<p>Then also remember that the compiler is available at runtime in a lisp, so the distinction only matters when comparing it to non-lisps.
+
+2026-07-29T11:27:57Z  (comment)  https://news.ycombinator.com/item?id=49096040
+  IIRC, the criticism is of syntax-rules and syntax-case kind of macros in Scheme; I don&#x27;t recall (happy to be proved wrong) LoL directly mentioning syntax-parse that&#x27;s specific to Racket. syntax-parse is no less powerful than defmacro; it&#x27;s just (much) more structured and featureful. It&#x27;s a difference between hand-rolling a recursive-descent parser and using a (really robust) PEG library.<p>Racket&#x27;s define-syntax&#x2F;syntax-parse has escape hatches into procedural generation (through which you can easily break the hygiene), and the equivalent of CL&#x27;s &amp;environment contains more information and allows more operations in Racket. Racket also supports reader extensions but often doesn&#x27;t need them because it has a macro-based API for module definitions (a feature completely absent from, or even alien to, Common Lisp; OTOH, Elixir borrows some of Racket&#x27;s ideas in this space).<p>For a practical example, Coalton and Typed Racket implementations show that both systems are capable of large-scale language extensions. I never studied their respective codebases, so I can&#x27;t say anything about relative ease of introducing those extensions, but they are possible in both cases, at least.
+
+2026-07-29T12:03:43Z  (comment)  https://news.ycombinator.com/item?id=49096350
+  CL-PPCRE actually doesn&#x27;t really do what most people think it does, cf <a href="https:&#x2F;&#x2F;applied-langua.ge&#x2F;posts&#x2F;omrn-compiler.html#orgd52b4ab" rel="nofollow">https:&#x2F;&#x2F;applied-langua.ge&#x2F;posts&#x2F;omrn-compiler.html#orgd52b4a...</a> (which instead does).<p>A small tidbit: you don&#x27;t actually need full syntactic macros to get compile time computation in CL, compiler macros (<a href="https:&#x2F;&#x2F;www.lispworks.com&#x2F;documentation&#x2F;HyperSpec&#x2F;Body&#x2F;03_bba.htm" rel="nofollow">https:&#x2F;&#x2F;www.lispworks.com&#x2F;documentation&#x2F;HyperSpec&#x2F;Body&#x2F;03_bb...</a>) suffice.
+
+2026-07-29T14:22:33Z  (comment)  https://news.ycombinator.com/item?id=49097921
+  I know Racket was reworked to build upon Chez Scheme several years ago. If the HN migration to CL was due to performance reasons, I wonder if sticking it out and waiting for the Chez version of Racket would have paid off.
+
+2026-07-29T15:15:21Z  (comment)  https://news.ycombinator.com/item?id=49098620
+  &gt; As for the bytecode, as far as I recall CMU CL did not have bytecode compiler at all<p>The byte code compilation option is described in CMUCL documentation, section 5.9 Byte Coded Compilation: <a href="https:&#x2F;&#x2F;cmucl.org&#x2F;docs&#x2F;cmu-user&#x2F;html&#x2F;Byte-Coded-Compilation.html" rel="nofollow">https:&#x2F;&#x2F;cmucl.org&#x2F;docs&#x2F;cmu-user&#x2F;html&#x2F;Byte-Coded-Compilation....</a>
+
+2026-07-29T18:36:22Z  (comment)  https://news.ycombinator.com/item?id=49101295
+  GToolkit[1] - a Smalltalk environment that&#x27;s based on Pharo but replaces the UI framework and some other parts of the stack. It uses Rust through FFI to interface with and bundle native dependencies.<p>I don&#x27;t remember the exact numbers, but when I checked, the GT+Pharo ecosystem (available packages, number of people in Discord, tools with support for the language, etc.) was ~2x smaller than Common Lisp&#x27;s. It also comes with its own problems, some of which CL doesn&#x27;t suffer from (the GIL, performance, startup time). But it&#x27;s very fun to use and play with, which is the most important quality for me in my hobby&#x2F;side-projects. :)<p>[1] <a href="https:&#x2F;&#x2F;gtoolkit.com&#x2F;" rel="nofollow">https:&#x2F;&#x2F;gtoolkit.com&#x2F;</a>
+
+2026-07-29T23:25:36Z  (comment)  https://news.ycombinator.com/item?id=49104378
+  I mean, both Scheme and CL have good libraries and a set of standards.
+
+2026-07-29T23:26:46Z  (comment)  https://news.ycombinator.com/item?id=49104382
+  I know both CL and Scheme, thanks. And both philosophies overlap a lot. Heck, there&#x27;s an Scheme interpreter in PAIP as en exercise...<p>I&#x27;d woudn&#x27;t consider SICP negative, the same with all the good CL books (Intro to Symbolic Computation, Paradigms of AI Programming...)<p>Both are the ur-examples on how to grasp the basic of CS <i>well</i>.
+
+2026-07-30T05:13:20Z  (comment)  https://news.ycombinator.com/item?id=49106314
+  Consider sidecar-only mode, and use whatever external organizing tool you like.  This is not documented as such, rather it&#x27;s the CL option<p><pre><code>  --library &#x27;:memory:&#x27;</code></pre>
+
+2026-07-30T16:05:16Z  (comment)  https://news.ycombinator.com/item?id=49111950
+  I was expecting to learn something new from this article, instead I got a bunch of numbers and a careful number of deaths from smoke &#x27;by the end of the century&#x27; prediction.<p>What end of the century ? The way things are going, these cities (in Europe) are going to be unlivable by the end of this decade. They already are. And the fires..<p>Numbers, percentages, increases, excess, estimated.. We&#x27;ve constructed this abstract parallel universe in which we comfortably live in front of the screens.. and then wonder why the world around us is burning.<p>Climate change.. Such a comfortable word behind which we can all hide and dispel the responsibility for a life of copious comfort and pleasure.<p>It&#x27;s the avocado toasts, the leather jackets, the 1-click-checkouts, the weekend flight to Barcelona, the CL=F price, the bonuses, the &#x27;natural resources&#x27; there for us to use and exploit in infinite amounts..<p>The whole fucking system. That&#x27;s why the world is burning.<p>Yeah, I&#x27;m guilty of all of the above too. And I have no solution. Just blowing out the smoke from those fires.
+
+2026-07-30T20:25:46Z  (comment)  https://news.ycombinator.com/item?id=49115290
+  Yes, it&#x27;s a stretch to believe that UEFA is objecting strictly on a point of principle.<p>UEFA seems to think people have forgotten that they tried to buy off top teams from the national organizations into a European super league.<p>In effect they did it anyway with CL.
+
+2026-07-30T20:41:29Z  (comment)  https://news.ycombinator.com/item?id=49115471
+  The super league wasn&#x27;t UEFA&#x27;s doing at all. The top clubs themselves tried to break away and self-organize, and they ultimately won some concessions from UEFA (new CL format, more CL money to the big teams)
