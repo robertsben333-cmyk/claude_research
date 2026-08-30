@@ -196,6 +196,44 @@ def reaction(rows, event_date, session):
     return round((a / b - 1) * 100, 2)
 
 
+def plausibility(hist, event_date):
+    """Does an event on this date fit the company's own filing cadence?
+
+    A calendar row is a claim, not a schedule. Aggregators project the last known
+    cadence forward, so a company that changed how it reports -- or stopped
+    reporting altogether -- keeps generating future "earnings dates" that nobody
+    has confirmed. The check is cheap: compare the gap since the last real
+    earnings filing against the median gap between the ones before it.
+    """
+    if len(hist) < 3:
+        return {"verdict": "unknown", "reason": "fewer than 3 prior prints to infer a cadence from"}
+    ds = [date.fromisoformat(h["event_date"]) for h in hist]     # newest first
+    gaps = [(ds[i] - ds[i + 1]).days for i in range(len(ds) - 1)]
+    typical = statistics.median(gaps)
+    since = (date.fromisoformat(event_date) - ds[0]).days
+    out = {"days_since_last_print": since,
+           "median_gap_days": round(typical, 1),
+           "ratio": round(since / typical, 2) if typical else None,
+           "last_print": hist[0]["event_date"]}
+    if not typical:
+        out["verdict"] = "unknown"
+        out["reason"] = "cannot infer a cadence"
+    elif since < 0.5 * typical:
+        out["verdict"] = "suspect"
+        out["reason"] = (f"an event {since} days after the last print does not fit a "
+                         f"{typical:.0f}-day cadence; the calendar row may be stale")
+    elif since > 1.8 * typical:
+        out["verdict"] = "suspect"
+        out["reason"] = (f"{since} days since the last earnings filing against a "
+                         f"{typical:.0f}-day cadence; the company may have changed or "
+                         "stopped its reporting, which would also make the reaction "
+                         "history above describe a regime that no longer exists")
+    else:
+        out["verdict"] = "fits_cadence"
+        out["reason"] = f"{since} days since the last print against a {typical:.0f}-day cadence"
+    return out
+
+
 # ---------------------------------------------------------------- options
 
 def _ncdf(x):
@@ -418,6 +456,18 @@ def build(ticker, event_date, session):
         "up_count": sum(1 for h in hist if h["move_pct"] > 0),
     }
 
+    # Does an event on this date fit the company's own filing cadence?
+    #
+    # AIV, first live run: the calendar said 2026-08-31, the baseline reported six
+    # prior reactions and tier `partial`, and all of it was wrong. Aimco has been in
+    # liquidation since a shareholder vote on 2026-02-06, filed its Q2 10-Q on
+    # 2026-08-07 with no accompanying item 2.02 8-K, and has issued no earnings
+    # release since 2026-03-02. The six reactions came from a reporting regime the
+    # company had abandoned, and the date was an aggregator projecting the old
+    # cadence forward. It cost an opus/high hunter to discover that, and it should
+    # have cost a subtraction.
+    doc["event_plausibility"] = plausibility(hist, event_date)
+
     doc["options"] = options(ticker, event_date, spot,
                              tp.get("realised_vol_20d_annualised_pct"))
 
@@ -446,16 +496,26 @@ def build(ticker, event_date, session):
 
     # One place downstream can look to decide whether this name is researchable.
     have = doc["options"].get("status") == "ok"
+    suspect = doc["event_plausibility"].get("verdict") == "suspect"
+    usable_hist = 0 if suspect else len(absm)
+    tier = ("full" if have and usable_hist >= 4
+            else "partial" if (have or usable_hist >= 4)
+            else "thin")
     doc["baseline_quality"] = {
         "options_usable": have,
         "history_events": len(absm),
+        "history_usable": usable_hist,
+        "event_plausibility": doc["event_plausibility"].get("verdict"),
         "priced_direction_available": doc["options"].get("skew_25d_vol_points") is not None,
-        "tier": ("full" if have and len(absm) >= 4
-                 else "partial" if (have or len(absm) >= 4)
-                 else "thin"),
+        "tier": tier,
         "note": "thin means there is no reliable statement of what the market priced, so "
                 "a confident call on this name cannot be justified by the baseline.",
     }
+    if suspect:
+        doc["baseline_quality"]["history_discount_note"] = (
+            "reaction history is present but not counted toward the tier: the event date "
+            "does not fit this company's own filing cadence, so the history may describe "
+            "a reporting regime it no longer follows")
     doc["status"] = "ok"
     return doc
 
