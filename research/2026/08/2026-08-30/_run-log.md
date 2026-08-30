@@ -48,3 +48,10 @@
 - 40 queries, 267 candidate URLs seen, 40 fetch-listed, 19 bodies stored, 15 skipped (fetch failures).
 - TRIPWIRE: stocktwits.com/symbol/AVGO/sentiment matched 'stock fell' regex -- embedded Benzinga feed item explicitly headlined 'Why Is Broadcom Stock Sliding Ahead of Earnings?' (tariff/supply-chain concern, Aug 28), unambiguously pre-print. Cleared, no upstream issue.
 - Coverage gap: forensics area (8) thin -- no auditor/restatement issue, only routine CFO/board transitions; consensus EPS diverges across sources ($2.83 GAAP task figure vs $3.21-3.24 non-GAAP cited elsewhere), recorded not reconciled.
+
+## Capture - 2026-08-30 - DELL agent layer, 1 tripwire investigated, date discrepancy flagged
+- Logged at 2026-08-30 15:44 UTC
+- 36 queries, 280 candidate URLs seen, 41 fetch-listed, 19 bodies stored, 14 skipped (fetch failures).
+- TRIPWIRE: regardsofwallstreet.com preview article matched 'stock rose' and 'post-earnings' regexes -- both are stale: 'stock rose 39%' refers to the PRIOR quarter's May 2026 CNBC-reported reaction, and 'post-earnings' appears only in generic site-nav boilerplate ('EPS beats and post-earnings moves for any ticker'). Cleared, no leakage of the Sept print itself.
+- CALENDAR FLAG (not a tripwire, worth downstream attention): the same article and Yahoo Finance both date DELL's print September 3, 2026, while the tracked calendar row and most other sources (Dell IR, Businesswire, StockTitan) say September 1 AMC. Recorded as-is per capture-only scope; FINDINGS.md sec30/31 show this class of mis-dating has bitten before -- whoever seals this event should re-check the calendar row before trusting Sept 1.
+- Coverage gaps: no whisper number found, no explicit options skew/term-structure numbers, no recent auditor/restatement red flag beyond historical 2006-07 item.
