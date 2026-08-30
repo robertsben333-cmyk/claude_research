@@ -16,3 +16,11 @@
 ## Capture - 2026-08-30 - STARTED
 - Logged at 2026-08-30 15:03 UTC
 - Plan: script-only sweep of forward window (--horizon-days 15, no cap floor), then agent-layer nine-area capture for the 6 largest names reporting within 3 days, publishing after each name.
+
+## Capture - 2026-08-30 - script sweep done
+- Logged at 2026-08-30 15:10 UTC
+- Universe swept: 229 scheduled US names, horizon 15 days, no market-cap floor.
+- 140 new documents captured across filings/quotes/social.
+- No tripwires fired.
+- Errors: GTEN stocktwits 404 (symbol not on StockTwits), BF.A/BF.B edgar 'no cik' (dual-class CIK sharing per FINDINGS.md sec3) + quote 404.
+- Next: agent-layer nine-area capture for top 6 by market cap reporting within 3 days: AVGO, PANW, DELL, MDT, SNOW, HPE.
