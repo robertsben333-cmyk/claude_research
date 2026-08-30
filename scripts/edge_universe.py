@@ -20,7 +20,7 @@ import argparse
 import json
 import re
 import urllib.request
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
@@ -48,39 +48,57 @@ def fetch(d):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--date", required=True, help="event date YYYY-MM-DD")
+    ap.add_argument("--date", help="event date YYYY-MM-DD")
     ap.add_argument("--session", default="bmo", choices=["bmo", "amc", "all"])
+    ap.add_argument("--window", action="store_true",
+                    help="the pipeline's actual window: today's amc plus the next "
+                         "trading day's bmo, merged. What a daily routine wants.")
     ap.add_argument("--include-unknown", action="store_true",
                     help="also take rows Nasdaq left as time-not-supplied")
     ap.add_argument("--min-market-cap", type=float, default=0.0)
     ap.add_argument("-o", "--out")
     a = ap.parse_args()
 
-    rows = fetch(a.date)
-    out = []
-    for r in rows:
-        sess = SESSION.get(r.get("time"), "unknown")
-        cap = money(r.get("marketCap"))
-        if a.session != "all" and sess != a.session:
-            if not (sess == "unknown" and a.include_unknown):
+    if a.window:
+        today = date.today()
+        nxt = today + timedelta(days=1)
+        while nxt.weekday() >= 5:                 # skip the weekend
+            nxt += timedelta(days=1)
+        plan = [(today.isoformat(), "amc"), (nxt.isoformat(), "bmo")]
+    elif a.date:
+        plan = [(a.date, a.session)]
+    else:
+        sys.exit("give --date or --window")
+
+    rows, out = [], []
+    for d, want in plan:
+        day_rows = fetch(d)
+        rows.extend(day_rows)
+        for r in day_rows:
+            sess = SESSION.get(r.get("time"), "unknown")
+            cap = money(r.get("marketCap"))
+            if want != "all" and sess != want:
+                if not (sess == "unknown" and a.include_unknown):
+                    continue
+            if cap is not None and cap < a.min_market_cap:
                 continue
-        if cap is not None and cap < a.min_market_cap:
-            continue
-        out.append({
-            "ticker": r.get("symbol"),
-            "company": (r.get("name") or "").strip(),
-            "session": sess,
-            "session_source": "nasdaq calendar" if sess != "unknown" else "unresolved",
-            "market_cap_usd": cap,
-            "eps_forecast": r.get("epsForecast") or None,
-            "n_estimates": r.get("noOfEsts") or None,
-            "last_year_eps": r.get("lastYearEPS") or None,
-        })
+            out.append({
+                "ticker": r.get("symbol"),
+                "company": (r.get("name") or "").strip(),
+                "event_date": d,
+                "session": sess,
+                "session_source": "nasdaq calendar" if sess != "unknown" else "unresolved",
+                "market_cap_usd": cap,
+                "eps_forecast": r.get("epsForecast") or None,
+                "n_estimates": r.get("noOfEsts") or None,
+                "last_year_eps": r.get("lastYearEPS") or None,
+            })
     out.sort(key=lambda x: -(x["market_cap_usd"] or 0))
 
     doc = {
-        "event_date": a.date,
-        "session_filter": a.session,
+        "event_date": a.date or plan[0][0],
+        "window": [{"date": d, "session": s} for d, s in plan] if a.window else None,
+        "session_filter": "window" if a.window else a.session,
         "resolved_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": "api.nasdaq.com/api/calendar/earnings",
         "rows_on_calendar": len(rows),
@@ -95,11 +113,12 @@ def main():
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
         Path(a.out).write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
 
-    print(f"{a.date} {a.session}: {len(out)} of {len(rows)} calendar rows"
+    label = " + ".join(f"{d} {s}" for d, s in plan)
+    print(f"{label}: {len(out)} of {len(rows)} calendar rows"
           f" ({doc['unknown_session_count']} unresolved session)")
     for x in out:
         cap = f"${x['market_cap_usd']/1e9:.2f}bn" if x["market_cap_usd"] else "cap n/a"
-        print(f"  {x['ticker']:8s}{x['session']:9s}{cap:>12s}  "
+        print(f"  {x['ticker']:8s}{x['event_date']} {x['session']:9s}{cap:>12s}  "
               f"est={x['eps_forecast'] or '-':>8s} nEst={x['n_estimates'] or '-'}  "
               f"{x['company'][:36]}")
     print(",".join(x["ticker"] for x in out))
