@@ -18,7 +18,43 @@ simply finds an empty universe and stops cheaply.
 | 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
+| 16:04 | E · Edge hunt | `earnings-edge-hunt` | 1 sweep + ≤8 hunters + ≤6 adversaries, Opus/high | **high** |
 | 17:03 | C · Forward capture | `earnings-capture` | 0 (script) + ≤6 Sonnet | low |
+
+## Stage E — edge hunt
+
+Cron `4 14 * * 1-5` (summer) / `4 15 * * 1-5` (winter). Routine id
+`trig_01CvGQJWoKeNLXWCxiffM3ED`, created 2026-08-30, enabled.
+
+**16:04 Amsterdam is 10:04 New York, about half an hour into the US session, and that
+is the point.** This is the only stage whose input includes a live option chain. The
+sealed baseline reads the front expiry's ATM straddle and 25-delta skew, and both are
+worthless on stale quotes: the first run was snapshotted on a Sunday and SAIC's ATM
+spread came back at 41% of mid, wide enough that the guard nearly discarded a good
+number. Mid-session the book is two-sided and tight. Moving this run earlier than the
+US open, or later than the close, throws away the one input no other stage has.
+
+The window is today's **amc** plus the next trading day's **bmo**, resolved by
+`edge_universe.py --window`. Firing at 16:04 means today's bmo prints have already
+happened and are correctly out of scope.
+
+Weekdays only. `--window` skips the weekend when it looks for the next trading day, so a
+Friday run covers Friday amc plus Monday bmo, and no Saturday run is needed to catch a
+Monday morning print.
+
+Cost sits between stage 2 and stage 3, and the shape matters more than the count. The
+first run spent 24 agents on twelve names and **eight of them had no earnings event at
+all** — each burning a full Opus/high budget to establish a fact one filing lookup
+settles. The sweep agent exists to make that mistake once. What is deliberately not
+economised is two independent hunters on the top two names: on that same run the two SY
+hunters returned opposite numbers from the same sealed baseline and the same disclosed
+table, and that disagreement was the most informative output of the day. It exists only
+because neither could see the other.
+
+Nothing downstream reads stage E, and it overlaps stage N on purpose. N forecasts every
+name it looks at; E scores whether the market has missed something and ranks the day on
+one signed number. If E's ranking carries no information N's does not, that is worth
+finding out cheaply.
 
 ## Stage C — forward capture
 
