@@ -35,3 +35,10 @@
 - Logged at 2026-08-30 15:28 UTC
 - 30 queries, 233 candidate URLs seen, 40 fetch-listed, 14 bodies stored, 16 skipped (fetch failures), 0 tripwires.
 - Coverage gaps: no IV rank/percentile resolvable, no crowd whisper number, Google Trends alt-data returned nothing usable, stale short-interest figure only.
+
+## Capture - 2026-08-30 - MDT agent layer, 2 tripwires investigated
+- Logged at 2026-08-30 15:31 UTC
+- 32 queries, 234 candidate URLs seen, 40 fetch-listed, 18 bodies stored, 16 skipped (fetch failures).
+- TRIPWIRE 1: ad-hoc-news.de article matched 'beat consensus' regex -- read in context it is an analyst's forward-looking prediction ('expectations that Medtronic will beat consensus... when it reports... results on September 1, 2026'), not a report of an actual result. Cleared, no upstream issue.
+- TRIPWIRE 2: stocktwits.com/symbol/MDT/sentiment matched 'stock fell' regex -- the match is a Benzinga feed snippet embedded in the page describing an ordinary pre-earnings trading day ('Stock fell 2.2% to $89.97 on Aug. 27'), not a post-earnings reaction. Cleared, no upstream issue.
+- Coverage gaps: no short-interest/days-to-cover number, no IV term structure detail, alt-data (Trends/app ranks/job postings) essentially empty.
