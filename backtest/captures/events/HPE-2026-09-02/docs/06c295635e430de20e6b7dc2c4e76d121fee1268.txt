@@ -1,0 +1,861 @@
+SOURCE: https://optioncharts.io/options/HPE/unusual-options
+PROVIDER: agent-websearch
+AREA: 6
+HEADLINE: HPE: Hewlett Packard Enterprise Co Unusual Options
+WHY: Additional independent unusual-options tracker to cross-check MarketBeat/Fintel signals.
+QUERY: HPE unusual options activity put call ratio August 2026
+FETCHED_UTC: 2026-08-30T15:24:55Z
+
+ 
+ 
+ 
+   
+   
+   
+   
+   HPE: Hewlett Packard Enterprise Co Unusual Options | OptionCharts 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+   
+   
+   
+   
+   
+
+   
+ 
+  
+
+   
+    
+   
+   
+    
+
+
+    
+
+    
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+     
+        $(document).ready(function () {
+            window.Highcharts = Highcharts;
+            setHighchartsGlobalOptions()
+        })
+     
+
+   
+    
+    
+
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+
+   
+   
+// 
+ 
+
+   
+      
+ 
+
+ 
+    
+   
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+          dataLayer.push(arguments);
+      }
+
+      gtag('js', new Date());
+
+      gtag('config', 'G-P278089W54');
+   
+ 
+
+ 
+ 
+
+ 
+  
+  
+
+ 
+ 
+
+    
+
+   
+     
+       
+         
+           
+         
+         
+       
+
+       
+       
+           
+     
+       SPY 
+       SPDR S&amp;P 500 ETF Trust 
+     
+   
+   
+     
+       $SPX 
+       S&amp;P 500 Index 
+     
+   
+   
+     
+       TSLA 
+       Tesla Inc 
+     
+   
+   
+     
+       NVDA 
+       NVIDIA Corp 
+     
+   
+   
+     
+       AAPL 
+       Apple Inc 
+     
+   
+   
+     
+       GOOG 
+       Alphabet Inc 
+     
+   
+   
+     
+       MSFT 
+       Microsoft Corporation 
+     
+   
+
+
+       
+
+     
+   
+ 
+
+
+ 
+
+    function initializeSearchModal() {
+        const SEARCH_TRIGGER_BUTTON_IDS = ['search-icon-header', 'search-icon-header2', 'add-ticker-to-watchlist-btn', "search-form-landing-page-id"];
+        const SEARCH_TRIGGER_SELECTOR = '#' + SEARCH_TRIGGER_BUTTON_IDS.join(', #');
+
+        const searchInput = document.getElementById('search-combobox');
+
+        if (!window.searchModalDocumentListenersAttached) {
+            // Show the modal when 'Cmd + K (mac)' , or 'Ctrl + k (windows)' is pressed
+            document.addEventListener('keydown', function (event) {
+                if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+                    event.preventDefault();
+                    showSearchModal();
+                }
+            });
+
+            // show the modal when the button is clicked
+            document.addEventListener('click', function (event) {
+                const clickedElement = event.target.closest(SEARCH_TRIGGER_SELECTOR);
+                if (clickedElement) {
+                    triggeredByBtnId = clickedElement.id;
+                    //console.log('searchModal triggered open by btn: ' + clickedElement.id);
+                    showSearchModal();
+                }
+            });
+
+            // Close the modal when Esc is pressed
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    const modal = document.getElementById('search-dialog-id');
+                    if (!modal) return;
+                    modal.classList.remove('tw-block');
+                    modal.classList.add('tw-hidden');
+                }
+            });
+
+            // Close the modal when clicking outside of it
+            document.addEventListener('click', function (event) {
+                const modal = document.getElementById('search-dialog-id');
+                if (!modal) return;
+                if ((modal.style.display === 'block' || modal.classList.contains('tw-block'))
+                    && !modal.querySelector('.tw-mx-auto').contains(event.target)) {
+
+                    // do not close modal if search button was clicked
+                    if (event.target.closest(SEARCH_TRIGGER_SELECTOR)) {
+                        return;
+                    }
+                    modal.classList.remove('tw-block');
+                    modal.classList.add('tw-hidden');
+                }
+            });
+
+            window.searchModalDocumentListenersAttached = true;
+        }
+
+        // Add listeners to select search results with keyboard - ArrowDown, ArrowUp, Enter
+        let currentIndex = -1;
+
+        function handleKeyDownOnSearchResults(event) {
+            const options = document.getElementById('search-results').querySelectorAll('li');
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                if (currentIndex   0) {
+                    currentIndex--;
+                    updateHighlight(currentIndex, options);
+                }
+            } else if (event.key === 'Enter') {
+                event.preventDefault();
+                if (currentIndex >= 0 && currentIndex   0) {
+                    // if no option is selected, submit the first option
+                    submitOption(options[0]);
+                }
+            }
+        }
+
+        if (!searchInput.isKeyDownListenerAdded) {
+            searchInput.addEventListener('keydown', handleKeyDownOnSearchResults);
+            searchInput.isKeyDownListenerAdded = true;
+        }
+    }
+
+    function updateHighlight(currentIndex, options) {
+        options.forEach((option, index) => {
+            if (index === currentIndex) {
+                option.classList.add('tw-bg-gray-200');
+                option.setAttribute('aria-selected', 'true');
+            } else {
+                option.classList.remove('tw-bg-gray-200');
+                option.removeAttribute('aria-selected');
+            }
+        });
+    }
+
+    function submitOption(option) {
+        const tickerSymbolFromInput = option.querySelector('.tw-text-sm.tw-font-medium').textContent;
+        console.log('submitting to search for ticker symbol: ' + tickerSymbolFromInput);
+        GoogleAnalyticsHelpers.sendSearchEvent(tickerSymbolFromInput);
+        runLoadingSpinner();
+
+        // Handles the case when adding an item to the watchlist. Instead of navigating to the ticker page, the item is added to the watchlist, and then the user is redirected back to the watchlist show page.
+        if (triggeredByBtnId === 'add-ticker-to-watchlist-btn') {
+            // console.log('adding to watchlist...');
+            // console.log('tickerSymbolFromInput: ' + tickerSymbolFromInput);
+            const button = document.getElementById('add-ticker-to-watchlist-btn');
+            const watchlistId = button.getAttribute('data-watchlist-id');
+            console.log('watchlistId: ' + watchlistId);
+            // make ajax request to add tickers to watchlist.
+            $.ajax({
+                url: '/async/watchlists/add_ticker',
+                method: 'POST',
+                data: {
+                    ticker: tickerSymbolFromInput,
+                    watchlist_id: watchlistId
+                },
+                success: function (response) {
+                    console.log('Ticker added to watchlist successfully:', response);
+                    const params = new URLSearchParams(window.location.search);
+                    const qs = new URLSearchParams();
+                    if (params.get('sort')) qs.set('sort', params.get('sort'));
+                    if (params.get('columns')) qs.set('columns', params.get('columns'));
+                    const qsStr = qs.toString();
+                    window.location.href = `/watchlist/${watchlistId}` + (qsStr ? `?${qsStr}` : '');
+                },
+                error: function (error) {
+                    console.warn('Error adding ticker to watchlist:', error);
+                    const params = new URLSearchParams(window.location.search);
+                    const qs = new URLSearchParams();
+                    qs.set('error_adding_to_watchlist', 'true');
+                    qs.set('error_ticker', tickerSymbolFromInput);
+                    if (params.get('sort')) qs.set('sort', params.get('sort'));
+                    if (params.get('columns')) qs.set('columns', params.get('columns'));
+                    window.location.href = `/watchlist/${watchlistId}?${qs.toString()}`;
+                }
+            });
+            return;
+        }
+
+        // default behavior
+        window.location.href = `/search?ticker_search=${tickerSymbolFromInput}`;
+    }
+
+    function showSearchModal() {
+        // close the mobile menu if it is open
+        if (!document.getElementById('header-mobile-menu').classList.contains('tw-hidden')) {
+            console.log('closing mobile menu...');
+            document.getElementById('header-mobile-menu').classList.add('tw-hidden');
+        }
+        let searchModal = document.getElementById('search-dialog-id');
+        if (!searchModal) {
+            console.warn('searchModal NOT found in DOM.');
+        }
+
+        // show the modal
+        searchModal.classList.remove('tw-hidden');
+        searchModal.classList.add('tw-block');
+
+        const searchCombobox = document.getElementById('search-combobox');
+        searchCombobox.focus();
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeSearchModal);
+    let triggeredByBtnId = null;
+
+    // After each key press, update the search results
+    // makes sure to only add this listener once
+    if (typeof window.htmxAfterSwapListenerAttachedForSearchDialog === 'undefined') {
+        window.htmxAfterSwapListenerAttachedForSearchDialog = false;
+    }
+    if (!window.htmxAfterSwapListenerAttachedForSearchDialog) {
+        document.addEventListener('htmx:afterSwap', function (event) {
+            if (event.detail.target.id === 'search-dialog-id') {
+                //console.log('htmx:afterSwap event detected...');
+                initializeSearchModal();
+            }
+        });
+        window.htmxAfterSwapListenerAttachedForSearchDialog = true;
+    }
+ 
+
+
+ 
+      
+   
+   
+     
+       
+         
+       
+     
+     
+       Home 
+       Features -->
+       Pricing 
+       Market
+        Trends 
+
+       
+       
+         
+          Resources
+           
+             
+           
+         
+
+         
+           Knowledge
+            base 
+           FAQ 
+           Blog 
+         
+         
+            // js for dropdown menu functionality
+            document.addEventListener('DOMContentLoaded', () => {
+                const resourcesButton = document.getElementById('resources-dropdown-button');
+                const resourcesMenu = document.getElementById('resources-dropdown-menu');
+                let isOpen = false;
+
+                function toggleMenu() {
+                    isOpen = !isOpen;
+                    resourcesButton.setAttribute('aria-expanded', isOpen);
+
+                    if (isOpen) {
+                        resourcesMenu.classList.remove('tw-hidden');
+                        setTimeout(() => {
+                            resourcesMenu.classList.add('tw-transition', 'tw-ease-out', 'tw-duration-200');
+                            resourcesMenu.classList.remove('tw-opacity-0', 'tw-translate-y-1');
+                            resourcesMenu.classList.add('tw-opacity-100', 'tw-translate-y-0');
+                        }, 10);
+                    } else {
+                        resourcesMenu.classList.add('tw-transition', 'tw-ease-in', 'tw-duration-150');
+                        resourcesMenu.classList.remove('tw-opacity-100', 'tw-translate-y-0');
+                        resourcesMenu.classList.add('tw-opacity-0', 'tw-translate-y-1');
+                        setTimeout(() => {
+                            resourcesMenu.classList.add('tw-hidden');
+                        }, 150);
+                    }
+                }
+
+                resourcesButton.addEventListener('click', toggleMenu);
+
+                // Close the menu when clicking outside
+                document.addEventListener('click', (event) => {
+                    if (isOpen && !resourcesButton.contains(event.target) && !resourcesMenu.contains(event.target)) {
+                        toggleMenu();
+                    }
+                });
+            });
+         
+       
+
+       
+       
+         
+           
+         
+       
+
+     
+
+     
+       
+
+       
+       
+         
+           
+         
+       
+
+       
+         
+          Log in
+         
+
+       
+         
+          Upgrade
+         
+     
+
+     
+     
+       
+         Open main menu 
+         
+           
+         
+       
+     
+   
+
+
+   
+   
+     
+      
+     
+       
+         
+         
+           
+         
+
+           
+            Upgrade
+           
+         
+           Close menu 
+           
+             
+           
+         
+       
+       
+         
+           
+             Home 
+             Pricing 
+             Market
+              Trends 
+             
+             
+               
+                Resources
+                 
+                   
+                 
+               
+               
+                 Knowledge
+                  base 
+                 FAQ 
+                 Blog 
+               
+             
+             
+                // Mobile Resources dropdown functionality
+                document.addEventListener('DOMContentLoaded', () => {
+                    const mobileResourcesButton = document.getElementById('mobile-resources-dropdown-button');
+                    const mobileResourcesMenu = document.getElementById('mobile-resources-dropdown-menu');
+                    mobileResourcesButton.addEventListener('click', () => {
+                        mobileResourcesMenu.classList.toggle('tw-hidden');
+                        const expandedState = mobileResourcesMenu.classList.contains('tw-hidden') ? 'false' : 'true';
+                        mobileResourcesButton.setAttribute('aria-expanded', expandedState);
+                    });
+                });
+             
+           
+
+             
+               
+                Log in
+               
+               
+                Sign up
+               
+             
+         
+       
+     
+   
+ 
+
+ 
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('header-open-menu-button-id').addEventListener('click', () => {
+            document.getElementById('header-mobile-menu').classList.toggle('tw-hidden');
+        });
+
+        document.getElementById('header-close-menu-button-id').addEventListener('click', () => {
+            // close the mobile menu
+            document.getElementById('header-mobile-menu').classList.toggle('tw-hidden');
+        });
+    });
+ 
+
+   
+   
+
+
+
+ 
+
+   
+
+
+   
+     
+     
+
+   
+
+
+
+   
+
+
+   
+
+     
+       
+         
+              {
+                  const tabContainer = document.getElementById('option-charts-main-tabs');
+                  SharedUtils.centerElementInContainer(event.target, tabContainer);
+                }, 10);
+                "
+               
+            >
+              Overview
+             
+              {
+                  const tabContainer = document.getElementById('option-charts-main-tabs');
+                  SharedUtils.centerElementInContainer(event.target, tabContainer);
+                }, 10);
+                "
+               
+            >
+              Profit &amp; Loss Chart
+             
+              {
+                  const tabContainer = document.getElementById('option-charts-main-tabs');
+                  SharedUtils.centerElementInContainer(event.target, tabContainer);
+                }, 10);
+                "
+               aria-selected=true
+            >
+              Option Charts
+             
+              {
+                  const tabContainer = document.getElementById('option-charts-main-tabs');
+                  SharedUtils.centerElementInContainer(event.target, tabContainer);
+                }, 10);
+                "
+               
+            >
+              Option Chain
+             
+              {
+                  const tabContainer = document.getElementById('option-charts-main-tabs');
+                  SharedUtils.centerElementInContainer(event.target, tabContainer);
+                }, 10);
+                "
+               
+            >
+              Option Contract
+             
+              {
+                  const tabContainer = document.getElementById('option-charts-main-tabs');
+                  SharedUtils.centerElementInContainer(event.target, tabContainer);
+                }, 10);
+                "
+               
+            >
+              Historical Data
+             
+         
+       
+     
+   
+   
+
+
+   
+     
+       
+       
+          // loads spinner while waiting for content to load
+          $(document).ready(function () {
+              loadLocalSpinner('option-charts-main-content-container');
+
+              // Center the active tab on page load for mobile devices
+              setTimeout(() => {
+                  const tabContainer = document.getElementById('option-charts-main-tabs');
+                  const activeTab = tabContainer.querySelector('[aria-selected="true"]');
+                  if (activeTab && tabContainer) {
+                      SharedUtils.centerElementInContainer(activeTab, tabContainer);
+                  }
+              }, 100);
+          });
+       
+     
+
+ 
+
+   
+
+ 
+   Footer 
+   
+     
+       
+         
+         Elevate your option trading. 
+
+         
+           
+             X 
+             
+               
+             
+           
+         
+
+       
+       
+         
+           
+             Company 
+             
+               
+                 Home 
+               
+               
+                 Pricing 
+               
+               
+                 Blog 
+               
+               
+                 Wall of Love 
+               
+             
+           
+           
+             Support 
+             
+               
+                 Knowledge
+                  base 
+               
+               
+                 FAQ 
+               
+               
+                 Contact 
+               
+             
+           
+         
+         
+           
+             Legal 
+             
+               
+                 Privacy 
+               
+               
+                 Terms 
+               
+               
+                 Disclaimer 
+               
+             
+           
+         
+       
+     
+     -->
+     
+       &copy; 2026 OptionCharts, LLC. All rights
+        reserved. 
+     
+   
+ 
+
+ 
+
+
+
+   
+
+
+ 
+ 
+   
+     
+       
+           
+           
+              
+           
+         
+             
+     
+
+       Unlock the full power of OptionCharts 
+       
+        Upgrade to access all charts and indicators, real-time options data, ad-free browsing, full-screen charts, data downloads, and more.
+       
+       
+         
+           Upgrade now 
+         
+       
+     
+   
+
+
+
+         
+       
+
+     
+   
+ 
+
+
+
+
+   
+
+
+ 
+ 
+   
+     
+       
+           
+           
+              
+           
+         
+           
+   
+     
+        
+     
+
+
+     Upgrade to unlock this feature 
+     
+      Upgrade to access all charts and indicators, real-time options data, ad-free browsing, full-screen charts, data downloads, and more.
+     
+     
+       
+         Upgrade now 
+       
+     
+   
+ 
+
+         
+       
+
+     
+   
+ 
+
+
+
+
+ 
+ 
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+ 
+     
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+    });
+ 
+
+
+ 
+ 

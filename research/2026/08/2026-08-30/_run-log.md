@@ -24,3 +24,9 @@
 - No tripwires fired.
 - Errors: GTEN stocktwits 404 (symbol not on StockTwits), BF.A/BF.B edgar 'no cik' (dual-class CIK sharing per FINDINGS.md sec3) + quote 404.
 - Next: agent-layer nine-area capture for top 6 by market cap reporting within 3 days: AVGO, PANW, DELL, MDT, SNOW, HPE.
+
+## Capture - 2026-08-30 - HPE agent layer
+- Logged at 2026-08-30 15:25 UTC
+- 24 queries, 267 candidate URLs seen n/a (see plan), 44 fetch-listed, 23 bodies stored, 0 tripwires.
+- 13 skipped fetches (dead/blocked links), errors=none.
+- Coverage gap: area 9 macro/peers thin -- WebSearch budget exhausted before dedicated peer-read-through queries ran.
