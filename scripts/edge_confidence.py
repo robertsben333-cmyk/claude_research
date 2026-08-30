@@ -125,13 +125,31 @@ def score_name(ticker, baseline, hunts, verdicts, threshold):
         if x["direction"] in weight:
             weight[x["direction"]] += x["survival_weight"]
     total_w = weight["up"] + weight["down"]
-    if total_w <= 0:
+
+    # A finding list is not a call, and an abstention is not an absence of one.
+    # Both SAIC hunters on 2026-08-31 abstained explicitly, each saying the finding
+    # they had was real but agreed with a skew already paying for downside. Voting
+    # their findings anyway produced "down" at 65 confidence -- a called position
+    # neither hunter was willing to take, manufactured by machinery from evidence
+    # both had judged insufficient. The hunters' own abstentions bind.
+    hunter_calls = [(h.get("direction") or "").lower() for _, h in hunts]
+    directional_hunters = [c for c in hunter_calls if c in ("up", "down")]
+
+    if not directional_hunters:
+        direction = "abstain"
+        if findings:
+            reasons.append("every hunter abstained; findings exist but no hunter would "
+                           "stand behind a direction")
+    elif total_w <= 0:
         direction = "abstain"
     else:
         direction = "up" if weight["up"] > weight["down"] else "down"
         if abs(weight["up"] - weight["down"]) < 0.25 * total_w:
             direction = "abstain"
             reasons.append("surviving findings point both ways with no clear balance")
+        elif direction not in directional_hunters:
+            direction = "abstain"
+            reasons.append(f"findings vote {direction} but no hunter called that side")
 
     live = [x for x in findings
             if x["direction"] == direction and x["survival_weight"] > 0]
@@ -153,8 +171,7 @@ def score_name(ticker, baseline, hunts, verdicts, threshold):
         reasons.append(f"{k} independent source domain(s) behind the call")
 
     # --- 2. hunter agreement (0-20) --------------------------------------
-    calls = [(h.get("direction") or "").lower() for _, h in hunts]
-    voting = [c for c in calls if c in ("up", "down")]
+    voting = directional_hunters
     if not voting:
         agree_pts, agree_frac = 0.0, 0.0
     else:
@@ -228,7 +245,7 @@ def score_name(ticker, baseline, hunts, verdicts, threshold):
         },
         "why": reasons,
         "findings": findings,
-        "hunter_calls": calls,
+        "hunter_calls": hunter_calls,
     }
 
 
