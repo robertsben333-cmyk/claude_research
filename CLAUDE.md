@@ -17,6 +17,17 @@ If you are a Routine session, read this whole file before doing anything.
 | 2 | `earnings-deep-dive` | 10:22 & 12:22 | One deep Opus/high dossier per name, in two batches |
 | 3 | `earnings-panel-advice` | 17:52 | Seven-persona panel on the top names → the advice note |
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
+| E | `earnings-edge-hunt` | not scheduled | Seal what the market priced, hunt for what it did not, call direction only where the evidence earns it |
+
+Stage E is an experiment running alongside stages 1-3 rather than inside them, and
+nothing downstream reads it either. It exists because of a pattern the archive is now
+explicit about: every panelled call in `LEDGER.md` so far is `Neutral / No Edge`, while
+the model's own self-rated `evidence_quality` sorted outcomes at exactly 50/50 across
+33 scored arm calls in `backtest/runs/pilot-40`. Stage E replaces the averaged
+direction score with individually surviving findings, and replaces self-rated certainty
+with a confidence derived from source counts and adversary outcomes. Its claim — that
+accuracy rises as coverage falls — is falsifiable by `scripts/edge_resolve.py`, and
+until several runs have resolved it should not be treated as better than the panel.
 
 Stage C is not part of the daily advice pipeline and nothing downstream reads it. It
 builds the forward corpus the backtest needs, and it is the only stage whose work cannot

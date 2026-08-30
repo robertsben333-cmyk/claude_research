@@ -69,6 +69,31 @@ panel:
     evidence_completeness: 0.35   # a thin dossier makes for a worthless panel
     change_expectation: 0.20      # from triage
 
+edge_hunt:
+  # Stage E. Deliberately unlike every stage above it: the search is unconstrained
+  # and only the output contract is fixed. Do not add a research checklist here.
+  #
+  # No market-cap floor, on purpose. FINDINGS.md §27 measured news coverage as a
+  # near-monotonic function of market cap, so filtering the small names out would
+  # turn every result into a statement about mega-caps.
+  min_market_cap_usd: 0
+  hunters_per_name:
+    full: 2                       # usable option chain AND 4+ prior reactions
+    partial: 2                    # one of the two
+    thin: 1                       # neither; capped at 50% confidence in code anyway
+  wave_size: 4
+  max_concurrent_subagents: 4
+  model: opus
+  effort: high
+  # Findings judged by the priced-in adversary, highest-conviction names first.
+  # Anything unjudged scores as partially priced, so a skipped pass costs
+  # confidence rather than granting it free.
+  max_adversary_agents: 12
+  # Selection threshold. Applied to a table containing EVERY name in the universe,
+  # never to a set an agent chose to report -- that is what keeps the risk-coverage
+  # curve honest. Retune only from a resolved curve, never from a single day.
+  confidence_threshold: 55
+
 output:
   disclaimer: >-
     This is research, not financial advice. Earnings reactions are highly uncertain
@@ -83,7 +108,15 @@ budget:
     triage: 6
     deep_dive_batch: 3
     panel: 14
+    edge_hunt: 26                 # hunters + adversaries, whole stage
   degrade_order:
     - reduce_panel_names_to_2
     - reduce_panel_names_to_1
     - skip_lowest_ranked_dossiers
+  # Shed in this order when the edge hunt would exceed its cap. Hunters go before
+  # adversaries: an unhunted name scores zero and drops out cleanly, while an
+  # unjudged finding still carries partial weight into a call.
+  edge_degrade_order:
+    - one_hunter_on_partial_names
+    - drop_thin_names_entirely
+    - adversary_on_top_conviction_names_only
