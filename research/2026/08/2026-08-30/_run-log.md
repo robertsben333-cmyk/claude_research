@@ -60,3 +60,14 @@
 - Logged at 2026-08-30 15:47 UTC
 - 39 queries, 269 candidate URLs seen, 43 fetch-listed, 17 bodies stored, 12 skipped (fetch failures), 0 tripwires.
 - Coverage gaps: no whisper number, no usable options open-interest/max-pain for the Sept expiry, no Google Trends signal, no Check Point peer earnings read-through; implied-move figures disagree across sources (8.6% vs 10.53% vs 11%), recorded not reconciled.
+
+## Capture - 2026-08-30 - DONE
+- Logged at 2026-08-30 15:48 UTC
+- Window: 2026-08-30 -> 2026-09-14 (horizon 15 days).
+- Script-only sweep: 229 scheduled US events, no cap floor, 140 new documents (filings/quotes/social).
+- Agent layer (top 6 by market cap reporting within 3 days: AVGO, PANW, DELL, MDT, SNOW, HPE): 201 queries issued, 110 new document bodies stored, 0 snippet-only.
+- Errors (script sweep, non-tripwire): GTEN stocktwits 404 (not on StockTwits), BF.A/BF.B edgar 'no cik' + quote 404 (dual-class CIK sharing, known class per FINDINGS.md sec3).
+- 4 tripwires fired (MDT x2, AVGO x1, DELL x1), all investigated and cleared as false positives -- regex matches on forward-looking analyst language ('will beat consensus... when it reports'), stale prior-quarter reaction language, or generic site-nav boilerplate. None indicated a stale calendar row or wrong event date for the ticker in question.
+- One genuine calendar discrepancy flagged (not a tripwire): DELL's print is dated Sept 3 by two sources (Yahoo Finance, regardsofwallstreet) vs Sept 1 by the tracked calendar row and most others -- recorded for whoever seals this event.
+- No names skipped. Coverage was thinnest on: options skew/term-structure detail, whisper numbers, and alt-data (Trends/app ranks/job postings) across all 6 agent-layer names -- consistent with FINDINGS.md sec27's finding that the informal layer is generally thin even for mega-caps on these specific data types.
+- Total new documents today: 250 (140 script-only + 110 agent-layer).
