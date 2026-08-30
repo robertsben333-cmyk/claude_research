@@ -42,3 +42,9 @@
 - TRIPWIRE 1: ad-hoc-news.de article matched 'beat consensus' regex -- read in context it is an analyst's forward-looking prediction ('expectations that Medtronic will beat consensus... when it reports... results on September 1, 2026'), not a report of an actual result. Cleared, no upstream issue.
 - TRIPWIRE 2: stocktwits.com/symbol/MDT/sentiment matched 'stock fell' regex -- the match is a Benzinga feed snippet embedded in the page describing an ordinary pre-earnings trading day ('Stock fell 2.2% to $89.97 on Aug. 27'), not a post-earnings reaction. Cleared, no upstream issue.
 - Coverage gaps: no short-interest/days-to-cover number, no IV term structure detail, alt-data (Trends/app ranks/job postings) essentially empty.
+
+## Capture - 2026-08-30 - AVGO agent layer, 1 tripwire investigated
+- Logged at 2026-08-30 15:37 UTC
+- 40 queries, 267 candidate URLs seen, 40 fetch-listed, 19 bodies stored, 15 skipped (fetch failures).
+- TRIPWIRE: stocktwits.com/symbol/AVGO/sentiment matched 'stock fell' regex -- embedded Benzinga feed item explicitly headlined 'Why Is Broadcom Stock Sliding Ahead of Earnings?' (tariff/supply-chain concern, Aug 28), unambiguously pre-print. Cleared, no upstream issue.
+- Coverage gap: forensics area (8) thin -- no auditor/restatement issue, only routine CFO/board transitions; consensus EPS diverges across sources ($2.83 GAAP task figure vs $3.21-3.24 non-GAAP cited elsewhere), recorded not reconciled.
