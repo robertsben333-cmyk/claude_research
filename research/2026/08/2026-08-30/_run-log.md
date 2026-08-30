@@ -30,3 +30,8 @@
 - 24 queries, 267 candidate URLs seen n/a (see plan), 44 fetch-listed, 23 bodies stored, 0 tripwires.
 - 13 skipped fetches (dead/blocked links), errors=none.
 - Coverage gap: area 9 macro/peers thin -- WebSearch budget exhausted before dedicated peer-read-through queries ran.
+
+## Capture - 2026-08-30 - SNOW agent layer
+- Logged at 2026-08-30 15:28 UTC
+- 30 queries, 233 candidate URLs seen, 40 fetch-listed, 14 bodies stored, 16 skipped (fetch failures), 0 tripwires.
+- Coverage gaps: no IV rank/percentile resolvable, no crowd whisper number, Google Trends alt-data returned nothing usable, stale short-interest figure only.
