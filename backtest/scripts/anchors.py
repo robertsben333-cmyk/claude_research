@@ -11,17 +11,71 @@ the event date for bmo. The last usable bar is the one the market last closed
 on before that moment.
 """
 import argparse, json, sys, statistics
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from common import submissions, ticker_cik_map
 from truth import bars, move
 
+ET = ZoneInfo("America/New_York")
+
 
 def prior_event_dates(cik, before, n=8):
-    """Past earnings 8-Ks (item 2.02), newest first, all strictly before cutoff."""
+    """Past earnings events, newest first, all strictly before the cutoff.
+
+    Item 2.02 alone is NOT a reliable detector. Some filers tag the earnings
+    release 8-K with item 9.01 only: UCTT did exactly that for both its
+    2026-02-23 and 2026-04-28 prints, so an item-2.02 rule skipped nine months
+    and left a base rate missing the two most recent -- and most relevant --
+    quarters. Two arms independently noticed the gap and said the sample looked
+    like a downcycle artifact. 7 of 40 anchor sets were gapped this way, the
+    worst by 602 days.
+
+    Every quarterly filer files a 10-Q or 10-K, so periodic reports are the
+    reliable skeleton. An 8-K carrying item 2.02 within a few days of one gives
+    the precise hour; where none exists, the periodic report's own acceptance
+    time is used and the entry is marked so the imprecision stays visible.
+    """
     r = submissions(cik)["filings"]["recent"]
     out = []
+    # pass 1: collect both kinds of disclosure
+    periodic, releases = [], []
+    for i, form in enumerate(r["form"]):
+        items = r["items"][i] or ""
+        acc = r["acceptanceDateTime"][i]
+        if form in ("10-Q", "10-K"):
+            periodic.append((acc, form))
+        elif form == "8-K" and ("2.02" in items or "9.01" in items):
+            releases.append((acc, items))
+    # pass 2: one event per periodic report, timed by the nearest release 8-K
+    events = []
+    for acc, form in periodic:
+        pdt = datetime.fromisoformat(acc.replace("Z", "+00:00")).astimezone(ET)
+        best, bestgap = None, None
+        for racc, items in releases:
+            rdt = datetime.fromisoformat(racc.replace("Z", "+00:00")).astimezone(ET)
+            gap = abs((rdt - pdt).total_seconds())
+            # a release more than 4 days from the periodic report is a different event
+            if gap <= 4 * 86400 and (bestgap is None or gap < bestgap):
+                best, bestgap = rdt, gap
+        events.append((best or pdt, best is not None, form))
+    events.sort(reverse=True)
+
+    out = []
+    for dt, precise, form in events:
+        if dt.date().isoformat() >= before:
+            continue
+        hhmm = dt.hour * 60 + dt.minute
+        sess = "amc" if hhmm >= 16 * 60 else "bmo" if hhmm <= 9 * 60 + 30 else "intraday"
+        out.append({"event_date": dt.date().isoformat(), "session": sess,
+                    "timing": "8-K release" if precise else f"{form} acceptance (no release 8-K found)"})
+        if len(out) >= n:
+            break
+    return out
+
+
+def _unused_legacy(cik, before, n=8):
     for i, form in enumerate(r["form"]):
         if form != "8-K" or "2.02" not in (r["items"][i] or ""):
             continue

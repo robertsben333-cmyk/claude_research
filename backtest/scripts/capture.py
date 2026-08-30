@@ -449,6 +449,13 @@ def quote_bar(ticker):
 
 # -------------------------------------------------------------------- capture
 
+def days_to_event(ev):
+    try:
+        return (date.fromisoformat(ev["event_date"]) - now_utc().date()).days
+    except Exception:
+        return 999
+
+
 def capture_event(ev, root, plan=None, max_docs=40, skip_social=False):
     """One daily snapshot for one event. Idempotent: re-running the same day adds
     only what changed."""
@@ -532,6 +539,10 @@ def main():
     ap.add_argument("--plan", help="capture plan JSON written by the agent")
     ap.add_argument("--max-docs", type=int, default=40)
     ap.add_argument("--skip-social", action="store_true")
+    ap.add_argument("--social-within-days", type=int, default=5,
+                    help="only capture StockTwits for events this close. The "
+                         "universe is tracked far wider than social is captured "
+                         "-- see the note in main().")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--universe-only", action="store_true")
     a = ap.parse_args()
@@ -567,16 +578,26 @@ def main():
     tot_new = 0
     for i, ev in enumerate(uni, 1):
         p = plan if (not plan or plan.get("ticker", ev["ticker"]) == ev["ticker"]) else {}
+        # StockTwits is the only rate-limited layer and it decides the wall clock.
+        # FINDINGS.md section 21 measured unauthenticated limiting at ~200
+        # requests/hour; a 15-day horizon is 300-400 names at 1-3 requests each,
+        # so sweeping social across the whole window cannot finish and starts
+        # erroring partway. It also buys nothing: chatter two weeks out is thin,
+        # the sweep runs daily, and a name entering the social window simply
+        # starts accumulating then. Track the universe wide, capture social near.
+        near = days_to_event(ev) <= a.social_within_days
+        skip_social = a.skip_social or not near
         try:
-            s = capture_event(ev, root, p, a.max_docs, a.skip_social)
+            s = capture_event(ev, root, p, a.max_docs, skip_social)
         except Exception as e:
             print(f"  [{i}/{len(uni)}] {ev['ticker']:<6} FAILED {type(e).__name__}: {str(e)[:60]}")
             continue
         tot_new += s["n_new"]
         flag = "  TRIPWIRE" if s.get("tripwires") else ""
         errs = ",".join(s["errors"]) if s.get("errors") else "-"
-        print(f"  [{i}/{len(uni)}] {ev['ticker']:<6} q={s['n_queries']:<3} "
-              f"items={s['n_items']:<3} new={s['n_new']:<3} err={errs}{flag}")
+        print(f"  [{i}/{len(uni)}] {ev['ticker']:<6} d{days_to_event(ev):<3} "
+              f"q={s['n_queries']:<3} items={s['n_items']:<3} new={s['n_new']:<3} "
+              f"soc={'-' if skip_social else 'y'} err={errs}{flag}", flush=True)
     print(f"done: {tot_new} new documents under {root}")
     return 0
 
