@@ -539,7 +539,7 @@ def main():
     ap.add_argument("--plan", help="capture plan JSON written by the agent")
     ap.add_argument("--max-docs", type=int, default=40)
     ap.add_argument("--skip-social", action="store_true")
-    ap.add_argument("--social-within-days", type=int, default=5,
+    ap.add_argument("--social-within-days", type=int, default=2,
                     help="only capture StockTwits for events this close. The "
                          "universe is tracked far wider than social is captured "
                          "-- see the note in main().")
@@ -579,12 +579,20 @@ def main():
     for i, ev in enumerate(uni, 1):
         p = plan if (not plan or plan.get("ticker", ev["ticker"]) == ev["ticker"]) else {}
         # StockTwits is the only rate-limited layer and it decides the wall clock.
-        # FINDINGS.md section 21 measured unauthenticated limiting at ~200
-        # requests/hour; a 15-day horizon is 300-400 names at 1-3 requests each,
-        # so sweeping social across the whole window cannot finish and starts
-        # erroring partway. It also buys nothing: chatter two weeks out is thin,
-        # the sweep runs daily, and a name entering the social window simply
-        # starts accumulating then. Track the universe wide, capture social near.
+        # Measured on the 2026-08-30 sweep: 3.5s per event with social, 1.0s
+        # without, over a 229-event 15-day window. FINDINGS.md section 21 puts
+        # unauthenticated limiting near 200 requests/hour, and the window sizes
+        # out like this:
+        #
+        #     <=1d   14 near   42 reqs   4.4 min
+        #     <=2d   42 near  126 reqs   5.6 min     <- default
+        #     <=3d   83 near  249 reqs   7.3 min     over the ceiling
+        #     <=5d  147 near  441 reqs   9.9 min     cannot finish
+        #
+        # Two days costs nothing real. The sweep runs daily, so a name is still
+        # captured at D-2 and D-1, and an AMC name again on D because 17:03 CEST
+        # is 11:03 ET, before the close. Chatter two weeks out is thin anyway.
+        # Track the universe wide, capture social near.
         near = days_to_event(ev) <= a.social_within_days
         skip_social = a.skip_social or not near
         try:
