@@ -85,6 +85,16 @@ def get_json(url, sec=False, tries=3):
     raise last
 
 
+def fetch_text(url, limit=200000):
+    """Raw document text. SEC hosts get the compliant UA and the rate gap."""
+    sec = ".sec.gov/" in url
+    hdr = {"User-Agent": SEC_UA if sec else UA}
+    if sec:
+        time.sleep(0.15)
+    r = urllib.request.urlopen(urllib.request.Request(url, headers=hdr), timeout=30)
+    return r.read(limit).decode("utf-8", "replace")
+
+
 # ---------------------------------------------------------------- tape
 
 def bars(ticker, days=460):
@@ -196,10 +206,73 @@ def prior_prints(cik, before, n=8):
                     f"name before {identity_since}, so they belong to a predecessor "
                     "entity and are not this company's reaction history")
     if saw_6k:
-        return [], ("foreign private issuer: files 6-K, which carries no item codes and "
-                    "no usable document description, so earnings dates are not "
-                    "recoverable from EDGAR metadata")
+        return sixk_prints(cik, r, before, identity_since, n)
     return [], "no 8-K item 2.02 filings found before the cutoff"
+
+
+RESULT_WORDS = ("unaudited", "financial results", "quarterly results", "interim results",
+                "half-year", "half year", "first quarter", "second quarter",
+                "third quarter", "fourth quarter", "fiscal year", "annual results",
+                "reports first", "reports second", "reports third", "reports fourth")
+
+
+def sixk_prints(cik, recent, before, identity_since, n=8, scan=16):
+    """Earnings dates for a foreign private issuer, by reading the 6-K exhibits.
+
+    The first version gave up here and returned nothing, on the grounds that 6-K
+    carries no item codes and its metadata description is empty or the literal
+    string "6-K". That was true and the conclusion was still wrong. On the first
+    live run the SY bear hunter recovered the reaction history anyway -- three of
+    the last four prints down, every one beating the high end of guidance -- and it
+    was the single most decision-relevant fact about the name. The information was
+    in EDGAR the whole time, one layer down in the exhibit text, and the script
+    declined to open it.
+
+    Five of twelve names that day were foreign private issuers, so this is not an
+    edge case. Cost is a filing index plus one exhibit per 6-K scanned, capped.
+    """
+    from zoneinfo import ZoneInfo
+    c = str(int(cik))
+    out, looked = [], 0
+    for i, form in enumerate(recent["form"]):
+        if form != "6-K" or looked >= scan or len(out) >= n:
+            continue
+        dt = datetime.fromisoformat(recent["acceptanceDateTime"][i].replace("Z", "+00:00")) \
+            .astimezone(ZoneInfo("America/New_York"))
+        ed = dt.date().isoformat()
+        if ed >= before or (identity_since and ed < identity_since):
+            continue
+        looked += 1
+        acc = recent["accessionNumber"][i].replace("-", "")
+        try:
+            idx = get_json(f"https://www.sec.gov/Archives/edgar/data/{c}/{acc}/index.json",
+                           sec=True)
+            names = [it["name"] for it in idx["directory"]["item"]
+                     if it["name"].lower().endswith((".htm", ".html"))]
+        except Exception:
+            continue
+        hit = False
+        for name in names[:4]:
+            try:
+                body = fetch_text(
+                    f"https://www.sec.gov/Archives/edgar/data/{c}/{acc}/{name}")[:6000].lower()
+            except Exception:
+                continue
+            if any(w in body for w in RESULT_WORDS):
+                hit = True
+                break
+        if not hit:
+            continue
+        hhmm = dt.hour * 60 + dt.minute
+        out.append({"event_date": ed,
+                    "session": "amc" if hhmm >= 960 else ("bmo" if hhmm <= 570 else "intraday")})
+    if out:
+        return out, (f"6-K exhibit text matched results language ({looked} filings opened). "
+                     "Heuristic, not an item code: a 6-K carrying results language is very "
+                     "likely an earnings release but this is weaker than the 8-K item 2.02 path")
+    return [], (f"foreign private issuer: {looked} recent 6-K filings opened and none "
+                "carried results language in the first exhibits, so earnings dates "
+                "are not recoverable")
 
 
 def reaction(rows, event_date, session):

@@ -1,0 +1,912 @@
+{
+ "generated_utc": "2026-08-30T09:22:19+00:00",
+ "run": "research\\2026\\08\\2026-08-31\\edge",
+ "threshold": 55.0,
+ "names_scored": 12,
+ "names_called": 0,
+ "coverage_pct": 0.0,
+ "selection_note": "every name in the run is scored and listed. Calls are selected by thresholding this table, not by any agent choosing what to report, so the risk-coverage curve can be recomputed at any threshold after the fact.",
+ "calls": [
+  {
+   "ticker": "SY",
+   "direction": "down",
+   "called": false,
+   "confidence": 48.8,
+   "components": {
+    "independent_sources": {
+     "n": 7,
+     "points": 45,
+     "domains": [
+      "163.com",
+      "caifuhao.eastmoney.com",
+      "cn.investing.com",
+      "finance.sina.com.cn",
+      "nhsa.gov.cn",
+      "query1.finance.yahoo.com",
+      "sec.gov"
+     ]
+    },
+    "hunter_agreement": {
+     "fraction": 0.5,
+     "hunters_voting": 2,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.4,
+     "points": 10.0
+    },
+    "cuts_against_price": {
+     "points": 10,
+     "note": "cuts against the price, which leans up"
+    },
+    "baseline_quality": {
+     "tier": "partial",
+     "multiplier": 0.75
+    },
+    "raw_before_multiplier": 65.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": "up",
+    "run_up_20d_pct": 30.43,
+    "event_implied_move_pct": 15.05,
+    "deadband_pct": 3.17
+   },
+   "why": [
+    "no adversary pass ran on the surviving findings",
+    "baseline quality 'partial' caps confidence at 75%",
+    "held back: no finding survived the adversary outright"
+   ],
+   "findings": [
+    {
+     "hunter": "SY-h1",
+     "key": "SY-h1#0",
+     "direction": "down",
+     "finding": "Six branded aesthetic centers disappeared from So-Young's reported base in Q1 2026 - it had 49 centers at 2025-12-31, the Q1 table shows 11 centers in the 0-3 month ramp-up phase (avg age 2.1 months, so all opened in Q1), and the reported total at 2026-03-31 is 54, not 60; running the same reconciliation backwards gives 0 exits in Q3 2025 (29 + 10 = 39 reported) and 3 in Q4 2025 (39 + 13 = 52 vs 49 reported), so the attrition is accelerating and no city was dropped, meaning these were closures/mergers inside the existing footprint.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1758530/000110465926065372/tm2615455d1_ex99-1.htm",
+     "source_date": "2026-05-22",
+     "why_not_priced": "It only exists if you reconcile the phase-cohort tables across three consecutive 6-K press releases (2025-11-17, 2026-03-25, 2026-05-22); each release headlines only the gross center count and the words 'exceeding the high end of guidance', and the footnote added in Q3 2025 explicitly excludes centers that were relocated, merged, temporarily closed or 'converted to other uses' from the statistics, so the leakage never appears as a line. If it were priced, the two covering analysts would not carry a $7.37 average target on a $2.40 stock, the stock would not have run +30% in 20 sessions into the print on an expansion narrative, and the framing in coverage would be consolidation rather than growth. Q4'25 prior-period comparatives: https://www.sec.gov/Archives/edgar/data/1758530/000110465926034066/tm269793d1_ex99-1.htm ; Q3'25: https://www.sec.gov/Archives/edgar/data/1758530/000110465925112903/tm2531463d1_ex99-1.htm",
+     "independence": "CEO Jin Xing said on 2026-01-28 that the chain stood at 50 clinics in 16 cities and would add 'not fewer than 35 new stores' in 2026 - a target already cut from the earlier public plan of 120+ stores in 2026, and one that Q1's 11 openings turned into only +5 net. https://www.163.com/dy/article/KKFBF1GA0514A42S.html",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "SY-h1",
+     "key": "SY-h1#1",
+     "direction": "down",
+     "finding": "So-Young has fallen on three of its last four earnings prints - 2025-08-15 -22.7%, 2025-11-17 -8.5%, 2026-03-25 +9.6% (fully reversed -11.3% the next session), 2026-05-22 -16.5% - and in every one of those four quarters the release itself said aesthetic treatment revenue 'exceeded the high end of guidance', so beating the guide is not what the stock trades on.",
+     "source": "https://query1.finance.yahoo.com/v8/finance/chart/SY?range=2y&interval=1d",
+     "source_date": "2026-08-28",
+     "why_not_priced": "SY is a foreign private issuer filing 6-K, which carries no item codes and no usable document description, so automated earnings-reaction screens cannot recover the dates - the sealed baseline's own EDGAR pass returned n=0 moves for exactly this reason, which is direct evidence that the standard pipes miss it. The options book is the tell: 200 contracts of total open interest at a put/call OI ratio of 0.11, i.e. roughly 9:1 calls. If a 3-of-4-down record averaging -9.5% were priced, there would be put skew and a put/call ratio above 1, not 9:1 calls, and the stock would not be +30.4% over the 20 sessions into the event (2026-07-31 $1.84 to 2026-08-28 $2.40) on no news beyond a CFO appointment and the earnings-date notice.",
+     "independence": "Independent contemporaneous account of the reaction function at the last print: revenue beat, aesthetic revenue +185.8% and above guidance, loss widened from RMB31.5m to RMB46.6m, stock -12% premarket. https://cn.investing.com/news/earnings/article-93CH-3382131 (2026-05-22)",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "SY-h1",
+     "key": "SY-h1#2",
+     "direction": "down",
+     "finding": "So-Young ran without a permanent CFO for eight months - Hui Zhao resigned as director and CFO effective 2025-12-31 with CEO Xing Jin taking the seat on an interim basis, the Chief HR Officer resigned effective 2026-02-15, and a replacement CFO was only installed on 2026-08-03, four weeks before this print, by moving a sitting independent director (Nan Shen) off the audit, compensation and nominating committees and handing her finance, HR, legal and compliance together.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1758530/000110465925125375/tm2534568d1_6k.htm",
+     "source_date": "2025-12-31",
+     "why_not_priced": "These are 6-K governance items with no item code; the December CFO resignation was never picked up as a US wire story, and the August filing was reported only as a routine hire (stockanalysis.com's news list for SY shows exactly two items since July: the CFO appointment and the earnings-date notice). If an eight-month CFO vacancy ending four weeks before a print were priced, you would not see a 30% pre-print run-up on 100-300k shares a day, and you would not see two analysts carrying targets 200% above spot. A CFO in her first print, taken off the audit committee, is the setup for a conservative reset - impairments on the exiting centers, a lowered Q3 guide - not for the upside surprise the positioning is leaning on. CHRO resignation: https://www.sec.gov/Archives/edgar/data/1758530/000110465926014641/tm266153d1_6k.htm ; appointment: https://www.sec.gov/Archives/edgar/data/1758530/000110465926090491/tm2622166d1_ex99-1.htm",
+     "independence": "CEO Jin Xing publicly committed on 2026-07-28 to a single-quarter group profit by Q4 2026 and full-year group profit in 2027, while confirming that cumulative digitalisation/AI spend on the chain has passed RMB1bn and the investment period continues - a promise that has to be reconciled against Q2 numbers in this release. https://finance.sina.com.cn/tech/2026-07-28/doc-inikivui0383144.shtml",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "SY-h1",
+     "key": "SY-h1#3",
+     "direction": "down",
+     "finding": "Revenue per centre in the 4-12 month 'growth' cohort has fallen 26% across four quarters - RMB6.403m (Q2'25, 14 centres), RMB4.818m (Q3'25, 15), RMB4.682m (Q4'25, 19), RMB4.760m (Q1'26, 23) - so each new vintage ramps to a permanently lower plateau against RMB5-8m of capex per store, and the Q2 2026 guide of RMB307-317m implies per-centre revenue falls again given that the 11 Q1 ramp-up centres alone roll into the growth cohort at +RMB29m.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1758530/000110465925079005/tm2523620d1_ex99-1.htm",
+     "source_date": "2025-08-15",
+     "why_not_priced": "No aggregator carries a cohort series - it has to be assembled by hand from four separate press-release tables. Worse, the table's definition changed between the Q2 2025 release ('Phase (The length of time since establishment)', three columns, no footnote) and the Q3 2025 release ('Phase* (Operating duration)', with an added Average Center Age column and a footnote that excludes relocated, merged, temporarily-closed and converted centres) - the change lands in exactly the quarter the growth-cohort number dropped 25%, which makes the surviving series flatter than the underlying reality. If the market modelled revenue per centre rather than centre count, the sell-side targets would not sit ~200% above spot and the stock would not be bid into the print.",
+     "independence": "Industry-wide price deflation in Chinese light aesthetics through 2026 - photofacial reduced to a 99-yuan traffic product, collagen-stimulator injectables from ~RMB19,000 to RMB999 on group buy, and a 35% elimination rate among small and mid-sized clinics - which is the mechanism that caps per-centre revenue. https://caifuhao.eastmoney.com/news/20260525100349983277010 (2026-05-25)",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "SY-h2",
+     "key": "SY-h2#0",
+     "direction": "up",
+     "finding": "So-Young's clinic network stopped growing in Q2 2026: management stated 54 aesthetic centres in 16 cities as of 2026-03-31 (five added in Q1), and an independent Chinese trade piece written on 2026-06-23 still describes the network as exactly 54 clinics in 16 cities - versus +19 stores in H2 2025 - meaning the company is five stores into a stated 2026 plan of at least 35 new stores at the halfway point.",
+     "source": "https://www.ichaoqi.com/zhuanlan/2026/0623/82451.html",
+     "source_date": "2026-06-23",
+     "why_not_priced": "Every new clinic costs RMB 5-8m to build and runs unprofitably for its first 0-12 months, so opening pace is the loss line. If the market had registered that openings went to zero it would not still be reading the name off the Q1 headline of 'revenue +46%, loss +51%'; you would see at least one published note reconciling the store-count timeline (23 in Mar-2025, 31 in Jun-2025, 50 in Jan-2026, 54 in Mar-2026, 54 in Jun-2026) against the loss trajectory, and there is none. There is no sell-side model on the name, total front-expiry option open interest is 200 contracts on a put/call OI ratio of 0.11, and the stock sits 46% below its 52-week high while store count, profitable-store count and treatment revenue are all at record highs. A priced version of this looks like a re-rating on the January efficiency pivot, not a $2.40 tape.",
+     "independence": "The 54-store / 16-city figure is independently sourced to management on the Q1 call transcript (https://www.investing.com/news/transcripts/earnings-call-transcript-soyoung-q1-2026-reports-revenue-growth-93CH-4706611, 2026-05-22), and the earlier points of the timeline come from separate outlets: 50 stores / 16 cities at https://finance.sina.com.cn/roll/2026-01-30/doc-inhkauvi0516977.shtml (2026-01-30) and 31 stores at https://finance.ifeng.com/c/8kbZ6HqnAou (2025-06-30). Caveat I cannot eliminate: the June journalist may have lifted the 54 from the May release rather than re-counting, so this is an absence of any reported opening rather than a positive confirmation of none.",
+     "verdict": "already_priced",
+     "adversary_confidence": "High",
+     "adversary_argument": "The claim's central premise is contradicted by the company's own primary disclosure. On the Q1 2026 call (2026-05-22) So-Young stated 59 centres across 17 cities as of the call date, a net +10 versus 49/15 at year-end 2025, meaning five centres were added in Q1 and another five between 2026-03-31 and 2026-05-22 - roughly the same run-rate seven weeks into Q2. The network had not stopped growing when it was last actually counted. The 2026-06-23 ichaoqi piece is therefore not an independent recount: it asserts 54 clinics in 16 cities with no source and no as-of date, reproducing the March-31 quarter-end press-release figure verbatim and undercounting the company's own publicly stated position by five stores and one city a full month later. That is an absence of reporting, not evidence of a freeze - exactly the failure mode this hypothesis needed to clear. Separately, to the extent openings are slowing, management published it itself in the same release: 'while maintaining a measured expansion pace'. Finally the sign is not what the claimant assumes: their own mechanism (new clinics unprofitable for 0-12 months) makes fewer openings accretive to the Q2 loss line.",
+     "prior_publication": [
+      {
+       "url": "https://www.fool.com/earnings/call-transcripts/2026/05/22/so-young-sy-q1-2026-earnings-call-transcript/",
+       "date": "2026-05-22",
+       "what_it_says": "Management states 59 centres across 17 cities as of the call date versus 54 in 16 cities at March 31, directly refuting a post-Q1 store-count freeze."
+      },
+      {
+       "url": "https://www.prnewswire.com/news-releases/so-young-reports-unaudited-first-quarter-2026-financial-results-302779989.html",
+       "date": "2026-05-22",
+       "what_it_says": "Company release gives 54 centres in sixteen named cities at 2026-03-31, 41 profitable and 48 cash-flow positive, and says it will expand at a measured pace - publishing the deceleration itself."
+      },
+      {
+       "url": "https://www.nbd.com.cn/articles/2026-03-26/4310419.html",
+       "date": "2026-03-26",
+       "what_it_says": "Q4 2025 coverage establishing 49 centres in 15 cities at year-end and the announced plan to add at least 35 centres in 2026."
+      },
+      {
+       "url": "https://www.ichaoqi.com/zhuanlan/2026/0623/82451.html",
+       "date": "2026-06-23",
+       "what_it_says": "The claim's own source: an unsourced, undated assertion of 54 clinics in 16 cities matching the March-31 release and lagging the company's own 2026-05-22 statement by five stores and one city."
+      }
+     ],
+     "materiality": "immaterial, and partly wrong-signed - roughly five to ten deferred openings against a 59-centre base, where each deferred opening is a deferred cost; against Q2 guidance of RMB 307-317m and a Q1 net loss of RMB 49.2m a handful of unopened clinics does not move the print",
+     "reaches_this_print": true,
+     "survival_weight": 0.0
+    },
+    {
+     "hunter": "SY-h2",
+     "key": "SY-h2#1",
+     "direction": "up",
+     "finding": "So-Young's cash consumption collapsed to RMB 56.4m in Q1 2026 (cash, restricted cash, term deposits and short-term investments of RMB 880.0m at 2026-03-31 versus RMB 936.4m at 2025-12-31), against the RMB 300m-plus per quarter burn that the most widely circulated Chinese analysis of the name asserted three months earlier.",
+     "source": "https://www.investing.com/news/transcripts/earnings-call-transcript-soyoung-q1-2026-reports-revenue-growth-93CH-4706611",
+     "source_date": "2026-05-22",
+     "why_not_priced": "The dominant frame on this stock in Chinese media is a liquidity frame - 'betting the house', 'cash flow crisis', cash falling from RMB 1.253bn to RMB 943m while consuming over RMB 300m a quarter. At RMB 56m a quarter the runway is roughly fifteen quarters and the equity-raise tail that compresses the multiple is not live. If that had been absorbed you would not see the stock trade with a 91% ATM implied vol and an unfinanced-microcap discount into a print; the dilution premium would have come out of the price after 22 May and it did not - the 20-day run-up is +30% but the stock is still 46% below its 52-week high.",
+     "independence": "The stale burn figure it contradicts is at https://www.huxiu.com/article/4819818.html (2025-12-23), which reported cash falling to RMB 943m on 'over RMB 300m consumed quarterly'; the same stale liquidity frame is repeated at https://news.qq.com/rain/a/20251209A06YKT00 (2025-12-09).",
+     "verdict": "already_priced",
+     "adversary_confidence": "High",
+     "adversary_argument": "The exact figure the claim is built on - RMB880.0m of cash, restricted cash, term deposits and short-term investments at 2026-03-31 versus RMB936.4m at 2025-12-31 - is a verbatim line item in So-Young's own PR Newswire release of 2026-05-22, syndicated the same day to TradingView, Benzinga, TipRanks, Nasdaq and Investing.com. It has been public for one hundred days. Worse for the claim, the deceleration it purports to discover was already published two months earlier: the 2026-03-25 Q4/FY2025 release put the balance at RMB936.4m against RMB942.8m at 2025-09-30, i.e. Q4 2025 cash use of RMB6.4m. Against that series the Q1 2026 figure is not a collapse to a low run-rate, it is a quarter-on-quarter ACCELERATION of burn from 6.4m to 56.4m. The stale RMB300m-plus per quarter figure being refuted is a self-media arithmetic error: Huxiu took the RMB310m nine-month decline from 1,253.2m to 942.8m and captioned it as a single quarter. No wire, no sell-side note and no company document ever carried a 300m quarterly run-rate, so there is no priced belief for this finding to correct. And the market did react to this disclosure: SY traded down about 9.4% premarket on 2026-05-22 with the cash line in front of it. A fact that was published, that moved the price the wrong way, and whose direction the claim has inverted, is priced.",
+     "prior_publication": [
+      {
+       "url": "https://www.prnewswire.com/news-releases/so-young-reports-unaudited-first-quarter-2026-financial-results-302779989.html",
+       "date": "2026-05-22",
+       "what_it_says": "Company release states the claim's exact figures: RMB880.0m at 2026-03-31 versus RMB936.4m at 2025-12-31."
+      },
+      {
+       "url": "https://www.prnewswire.com/news-releases/so-young-reports-unaudited-fourth-quarter-and-fiscal-year-2025-financial-results-302724647.html",
+       "date": "2026-03-25",
+       "what_it_says": "Q4/FY2025 release gives RMB936.4m at 2025-12-31 which against RMB942.8m at 2025-09-30 implies Q4 2025 cash use of only RMB6.4m - the burn deceleration was public five months before this print, and makes Q1 2026 a worsening quarter."
+      },
+      {
+       "url": "https://news.qq.com/rain/a/20251209A06YKT00",
+       "date": "2025-12-09",
+       "what_it_says": "The Chinese piece cited as the stale counter-narrative in fact implies roughly RMB108m per quarter, not RMB300m."
+      },
+      {
+       "url": "https://www.huxiu.com/article/4819818.html",
+       "date": "2025-12-23",
+       "what_it_says": "Source of the RMB300m-plus single-quarter figure, which is the nine-month RMB310m decline mislabelled as one quarter - an arithmetic error, not a market belief."
+      }
+     ],
+     "materiality": "immaterial as an increment - the cash level is material (US$127.6m against a $240.9m market cap) but the incremental fact is the difference between RMB56.4m and a mis-derived RMB300m, both measured off balances the company published itself; the Q4 2025 comparator of RMB6.4m makes Q1 2026 a worsening quarter, so the claim's sign is wrong against the company's own numbers",
+     "reaches_this_print": true,
+     "survival_weight": 0.0
+    },
+    {
+     "hunter": "SY-h2",
+     "key": "SY-h2#2",
+     "direction": "up",
+     "finding": "At 2026-03-31, 41 of 54 clinics were profitable (up 15 quarter-on-quarter, three times the number of stores added) and 48 of 54 were operating-cash-flow positive (up 9), with aesthetic treatment services gross margin up 8.4 percentage points year-on-year to 27%; the disclosed cohort table (20 mature at ~RMB 7.5m/quarter, 23 growth at ~RMB 4.8m, 11 ramp-up at ~RMB 2.1m) means cohort maturation alone plausibly covers most of the RMB 307-317m Q2 revenue guidance without any new stores.",
+     "source": "https://www.investing.com/news/transcripts/earnings-call-transcript-soyoung-q1-2026-reports-revenue-growth-93CH-4706611",
+     "source_date": "2026-05-22",
+     "why_not_priced": "This cohort table exists only in the transcript of a nano-cap Chinese ADR call with no covering analyst; the figure that travelled into every subsequent write-up was the net loss of RMB 50.21m and the 294% jump in cost of services, not the 41-of-54 profitable-store count. A market that had done this arithmetic would not be paying a 15% event implied move symmetrically - you would see the call side bid, and instead put/call open interest is 0.11 on 200 total contracts, which is nobody positioning at all rather than anyone positioning for a beat.",
+     "independence": "Corroborating unit economics from a different source and an earlier period: the Beijing Poly flagship at RMB 4.7m monthly revenue and RMB 0.8m monthly profit, 17% store margin, 76% repurchase rate, https://www.cls.cn/detail/1990029 (2025-04-01).",
+     "verdict": "already_priced",
+     "adversary_confidence": "High",
+     "adversary_argument": "The claim's load-bearing premise - that the cohort table exists only in the transcript of a nano-cap ADR call - is factually wrong, verified by fetching the source. Every figure cited is in So-Young's own PR Newswire release of 2026-05-22 and therefore the 6-K: 41 centres profitable, 48 with positive quarterly operating cash flow, plus the full cohort table (11 ramp-up at RMB2.1m, 23 growth at RMB4.8m, 20 mature at RMB7.5m per centre per quarter). It also travelled: guancha.cn and ITBear reproduced the per-stage table verbatim in Chinese, and the transcript was syndicated by Motley Fool, Benzinga, Globe and Mail, Yahoo and AOL. Worse for the claim, the RMB307-317m Q2 guidance sits in that same release and is management's own forecast built off that same cohort plus the 59 centres open at report date - so 'cohort maturation covers most of guidance' is not a discovery, it is the assertion that the company will hit its published guidance, which is the consensus anchor for this print by definition. The market already adjudicated this trade-off once: on 2026-05-22 it had both the store-level profitability data and the widening loss in front of it and chose the loss, taking the stock down ~12% pre-market. Finally the mechanism does not reach the consolidated line: 41 of 54 stores were profitable in the very quarter attributable net loss widened to RMB49.2m from RMB33.1m while the high-margin legacy information-services segment fell 34.0% to RMB80.3m.",
+     "prior_publication": [
+      {
+       "url": "https://www.prnewswire.com/news-releases/so-young-reports-unaudited-first-quarter-2026-financial-results-302779989.html",
+       "date": "2026-05-22",
+       "what_it_says": "Company press release states 41 centres profitable and 48 OCF-positive, contains the full cohort table, and gives the RMB307.0-317.0m Q2 2026 guidance the claim says it implies."
+      },
+      {
+       "url": "https://www.guancha.cn/economy/2026_05_26_818430.shtml",
+       "date": "2026-05-26",
+       "what_it_says": "Chinese business press reproducing the 41/48 counts and the full per-store revenue-by-maturity-stage breakdown."
+      },
+      {
+       "url": "https://www.itbear.com.cn/html/2026-06/1375057.html",
+       "date": "2026-06",
+       "what_it_says": "Chinese trade write-up detailing the three-stage cohort split with per-centre quarterly revenue."
+      },
+      {
+       "url": "https://ca.investing.com/news/earnings/soyoung-shares-tumble-12-on-wider-loss-despite-revenue-beat-93CH-4655822",
+       "date": "2026-05-22",
+       "what_it_says": "Shares fell ~12% pre-market on the widening loss despite the revenue beat: the market saw the store-profitability disclosure and discounted it."
+      },
+      {
+       "url": "https://www.benzinga.com/insights/news/26/05/52770296/so-young-intl-reports-q1-2026-results-full-earnings-call-transcript",
+       "date": "2026-05-22",
+       "what_it_says": "Full transcript republished on a major US retail financial site, contradicting the claim that the call content had no distribution."
+      }
+     ],
+     "materiality": "material to the aesthetic treatment revenue line but immaterial as information, because that line is the published guidance itself; and immaterial to the consolidated result the market reacts to, since 41-of-54 store profitability coexisted with net loss widening to RMB49.2m from RMB33.1m and information services falling 34.0% to RMB80.3m",
+     "reaches_this_print": true,
+     "survival_weight": 0.0
+    },
+    {
+     "hunter": "SY-h2",
+     "key": "SY-h2#3",
+     "direction": "down",
+     "finding": "On 2026-06-09, fourteen ministries led by the National Health Commission and the healthcare security administration published the 2026 work plan for correcting malpractice in medical services, which for the first time names medical-aesthetics abuses explicitly - unqualified providers, illegal 'light medical aesthetics crash courses', and false commercial marketing - all three of which describe So-Young's rapid-scaling discount clinic chain, which had already been named at the March 2026 CCTV 3.15 gala over exosome listings.",
+     "source": "http://www.nhsa.gov.cn/art/2026/6/9/art_104_20892.html",
+     "source_date": "2026-06-09",
+     "why_not_priced": "It landed 18 days after the company last spoke, so no management commentary on it exists and it cannot be in any So-Young-specific model; the US holder base of a Nasdaq nano-cap ADR does not read NHSA notices. If it were priced you would see the skew paying up for downside protection into the print, and instead the put/call open interest ratio is 0.11. Set against that: this is an annual sector-level work plan rather than a company enforcement action, Chinese financial media did cover it, and it post-dates the quarter being reported - so it bears on H2 commentary, not on the Q2 numbers.",
+     "independence": "Independent coverage of the same notice with the medical-aesthetics clause spelled out: https://finance.sina.com.cn/roll/2026-06-10/doc-iniawxzx1335363.shtml (2026-06-10).",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    }
+   ],
+   "hunter_calls": [
+    "down",
+    "up"
+   ]
+  },
+  {
+   "ticker": "AIV",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": null,
+    "run_up_20d_pct": -5.2,
+    "event_implied_move_pct": null,
+    "deadband_pct": 1.5
+   },
+   "why": [
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [],
+   "hunter_calls": [
+    "abstain"
+   ]
+  },
+  {
+   "ticker": "BLRX",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": null,
+    "run_up_20d_pct": -7.8,
+    "event_implied_move_pct": null,
+    "deadband_pct": 4.16
+   },
+   "why": [
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [],
+   "hunter_calls": []
+  },
+  {
+   "ticker": "CBAT",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": "up",
+    "run_up_20d_pct": 86.0,
+    "event_implied_move_pct": null,
+    "deadband_pct": 7.74
+   },
+   "why": [
+    "every hunter abstained; findings exist but no hunter would stand behind a direction",
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [
+    {
+     "hunter": "CBAT-h1",
+     "key": "CBAT-h1#0",
+     "direction": "down",
+     "finding": "CBAK's own proxy for the redomicile states the successor Cayman entity will be 'exempt from filing quarterly reports on Form 10-Q under the Exchange Act with the SEC' and also exempt from Form 8-K, and the redomicile became effective 2026-06-23 \u2014 meaning Q2 2026, the quarter the 2026-08-31 calendar row refers to, is the first quarter for which no quarterly report is due at all.",
+     "source": "https://www.stocktitan.net/sec-filings/CBAT/def-14a-cbak-energy-technology-inc-definitive-proxy-statement-d770e9cc604e.html",
+     "source_date": "2026-01-16",
+     "why_not_priced": "This is not a price finding, it is an event finding: the calendar row exists only because aggregators extrapolated the pre-redomicile 10-Q cadence (Q2 2025 reported in August 2025) forward. If the change of reporting regime had been absorbed, the aggregators would agree on a date; instead TipRanks flagged 'CBAT Earnings this Week' for the week of 2026-08-17, Nasdaq shows 2026-08-31 with no session time, and stockanalysis.com shows 2026-09-01 \u2014 three different projected dates and no company confirmation behind any of them.",
+     "independence": "The redomicile completion release confirms the 2026-06-23 effective date and successor-issuer status under Rule 12g-3: https://www.globenewswire.com/news-release/2026/06/23/3316412/0/en/CBAK-Energy-Completes-Redomiciliation-to-the-Cayman-Islands.html",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "CBAT-h1",
+     "key": "CBAT-h1#1",
+     "direction": "down",
+     "finding": "CBAK invariably pre-announces its results date by press release with about six days' notice (e.g. 2026-03-24 release for the 2026-03-30 FY2025 print, 2023-08-02 release for the 2023-08-09 Q2 print), yet its IR newsroom shows releases on 2026-07-14, 08-10, 08-13, 08-20 and 08-25 with no results-date announcement, and its events page lists no earnings call for 31 August or 1 September.",
+     "source": "https://ir.cbak.com.cn/news-1/1.html",
+     "source_date": "2026-08-30",
+     "why_not_priced": "A confirmed print two sessions away would show a 'CBAK Energy to Report...' release dated roughly 2026-08-24 sitting between the 08-20 capacity release and the 08-25 order release; there is none. The last actual print was Q1 2026 on 2026-05-18, and the CFO's 2026-08-27 investor-conference deck still cited Q1 2026 revenue of $69.62m as the company's latest reported financials \u2014 behaviour inconsistent with a company two business days from releasing H1 numbers.",
+     "independence": "The events/webcast page independently lists no scheduled earnings call: https://ir.cbak.com.cn/Webcast_Presentations.html ; and the 2026-08-27 conference write-up shows Q1 2026 as the latest disclosed financials: https://www.investing.com/news/transcripts/cbak-energy-at-clean-energy-metals-conference-growth-meets-discount-93CH-4879738",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "CBAT-h1",
+     "key": "CBAT-h1#2",
+     "direction": "down",
+     "finding": "The baseline's own EDGAR pull found zero 8-K item 2.02 filings under the new CIK 0002086841, which is exactly what the FPI exemption from Form 8-K predicts \u2014 the earnings-release filing channel the aggregators' cadence was built on no longer exists for this issuer.",
+     "source": "https://www.stocktitan.net/news/CBAT/",
+     "source_date": "2026-08-30",
+     "why_not_priced": "The aggregator date survives because nobody re-derives cadence after a change of issuer entity; the StockTitan feed for CBAT for July and August 2026 carries four operational press releases and no 6-K, 20-F or results filing, so there is no filed document anywhere pointing at 31 August.",
+     "independence": "none",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    }
+   ],
+   "hunter_calls": [
+    "abstain"
+   ]
+  },
+  {
+   "ticker": "CHRN",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": "down",
+    "run_up_20d_pct": -14.93,
+    "event_implied_move_pct": null,
+    "deadband_pct": 5.61
+   },
+   "why": [
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [],
+   "hunter_calls": [
+    "abstain"
+   ]
+  },
+  {
+   "ticker": "CURR",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": null,
+    "run_up_20d_pct": -2.88,
+    "event_implied_move_pct": null,
+    "deadband_pct": 1.5
+   },
+   "why": [
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [],
+   "hunter_calls": [
+    "abstain"
+   ]
+  },
+  {
+   "ticker": "FRGT",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": "down",
+    "run_up_20d_pct": -50.68,
+    "event_implied_move_pct": null,
+    "deadband_pct": 3.42
+   },
+   "why": [
+    "every hunter abstained; findings exist but no hunter would stand behind a direction",
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [
+    {
+     "hunter": "FRGT-h1",
+     "key": "FRGT-h1#0",
+     "direction": "down",
+     "finding": "FRGT concluded on 2025-09-22 that it again qualifies as a foreign private issuer as of 2025-06-30 and would revert to Form 20-F and Form 6-K; it has filed no quarterly report of any kind since the 10-Q of 2025-08-18, filed no Q1 2026 report at all, and has furnished nothing to EDGAR since 2026-07-15 - so no Q2/H1 2026 report is due or scheduled on 2026-08-31.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1687542/000149315225014408/form8-k.htm",
+     "source_date": "2025-09-22",
+     "why_not_priced": "Both Nasdaq and stockanalysis.com still carry an FRGT earnings date and they disagree by a day (Aug 31 vs Sep 1), which is the signature of an algorithmically estimated date rolled twelve months forward from the 2025-08-21 10-Q reaction. If the calendars had absorbed the filer-status change they would show no date at all, the way they do for other 20-F/6-K filers. Nothing in the company's own press page or filings names a results date, and the wire has not written the story because a filer-status footnote in a September 2025 8-K is not news copy. A stock priced for a scheduled catalyst does not look like this: no options market opened, no pre-event volume build, and no preview coverage exists for the date.",
+     "independence": "The FY2025 annual report was filed as a Form 20-F, not a 10-K, on 2026-05-14 (https://www.sec.gov/Archives/edgar/data/1687542/000149315226023206/form20-f.htm), and an EDGAR full-text search across FRGT's entire filing history returns no document containing March 31, 2026 financial statements. The company's only FPI-era quarterly report, for the period ended 2025-09-30, was furnished on 2025-12-09, seventy days after period end (https://www.sec.gov/Archives/edgar/data/1687542/000149315225026794/ex99-1.htm); the same lag applied to 2026-06-30 lands in early September, not 2026-08-31.",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "FRGT-h1",
+     "key": "FRGT-h1#1",
+     "direction": "down",
+     "finding": "The Series C preferred shares FRGT is now funding itself with convert at a price reset off the lowest daily VWAP of the seven trading days before conversion, with a floor set at only 20% of the market price on the day before each tranche is issued - so every new tranche resets the dilution reference lower rather than anchoring it.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1687542/000149315226000910/form6-k.htm",
+     "source_date": "2026-01-08",
+     "why_not_priced": "The mechanic lives in a December 30, 2025 amendment to a British Virgin Islands memorandum and articles of association, furnished under a January 6-K about an annual meeting. The 2026-07-15 press release that actually used it described the transaction only as raising '$1.2 million through the issuance of additional Series C Preferred Shares' and never states the conversion formula or the floor. Coverage of that release repeated the headline dollar amount. If the floor mechanic were priced, the July raise would have been written up as a variable-rate convertible with a 20%-of-market floor and the shares would have repriced on 2026-07-15 rather than grinding down over the following six weeks. It also cannot be tracked: as an FPI, FRGT files no 8-K for share issuances and no 10-Q, so conversions are invisible on EDGAR until the next 20-F.",
+     "independence": "The auditor's opinion on the FY2025 financial statements contains substantial-doubt going-concern language, and the same 20-F discloses only 1,660,627 ordinary shares outstanding at 2025-12-31 against an unlimited authorised share count (https://www.sec.gov/Archives/edgar/data/1687542/000149315226023206/form20-f.htm, 2026-05-14). The 2026-07-15 release separately puts cash at approximately $285 thousand at 2026-06-30 against $2.5m of short-term debt (https://www.sec.gov/Archives/edgar/data/1687542/000149315226033294/ex99-1.htm), which is the condition that forces the tranches.",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "FRGT-h1",
+     "key": "FRGT-h1#2",
+     "direction": "down",
+     "finding": "FRGT holds a standing right to sell up to $1.0 billion of ordinary shares to a single institutional investor under an equity purchase facility signed 2025-10-28, against a company whose entire market capitalisation is now on the order of $1m to $8m depending on which vendor's share count you use.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1687542/000149315225019841/form6-k.htm",
+     "source_date": "2025-10-28",
+     "why_not_priced": "A commitment two to three orders of magnitude larger than the equity it would be sold into is a permanent ceiling on the stock, and if the market had priced it there would be no rallies on product press releases at all - yet the shares have repeatedly bid on Fleet Rocket announcements through July and August 2026. The facility was furnished in a 6-K that no wire service covered, and because FRGT is an FPI each advance is drawn without a filing, so there is no observable trail for a screener to attach the overhang to. Vendors cannot even agree on the current share count (5.49m, 614.8K and 332,125 all appear across sources as of late August 2026), which is itself evidence that the issuance flow is not being tracked by anyone pricing the stock.",
+     "independence": "A separate senior convertible note financing of $1,000,000 principal for $900,000 of proceeds, with interest payable in ordinary shares, was entered into on 2025-11-19 (https://www.sec.gov/Archives/edgar/data/1687542/000149315225024409/form6-k.htm), and on 2026-06-18 the company granted a perfected security interest over all assets of the parent and both operating subsidiaries to secure a $2.5m loan carrying a 10% prepayment premium (https://www.sec.gov/Archives/edgar/data/1687542/000149315226029831/form6-k.htm, 2026-06-23) - equity holders are now behind an all-asset lien.",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "FRGT-h1",
+     "key": "FRGT-h1#3",
+     "direction": "down",
+     "finding": "FRGT has effected four reverse splits inside twenty-three months - 1-for-25 effective 2024-09-25, 1-for-4 effective 2025-05-27, 1-for-5 effective 2025-12-15 and 1-for-5 effective 2026-05-18, a cumulative 2,500-to-1 - which under Nasdaq Rule 5810(c)(3)(A)(iv) makes it ineligible for any bid-price compliance period today, though the 1-for-25 rolls out of the two-year lookback around 2026-09-25 and drops the cumulative ratio back to 100-to-1.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1687542/000149315226022627/ex99-1.htm",
+     "source_date": "2026-05-13",
+     "why_not_priced": "The four split announcements were each covered individually as routine listing maintenance, and the company's own risk factor recites them as a list without ever computing the cumulative ratio or naming Rule 5810(c)(3)(A)(iv). No filing, press release or coverage connects the arithmetic to the consequence, which is that a bid-price failure now produces an immediate Staff Delisting Determination with no 180-day cure and no fifth reverse split available as the escape hatch that worked the previous four times. Had the market priced that, a stock forty-five cents above the $1.00 threshold with 116% annualised realised volatility would trade at a far wider discount than it does. I am flagging this as structurally live but not as an Aug 31 catalyst: a deficiency needs 30 consecutive closes below $1.00, which cannot both begin and complete before the lookback window shortens in late September.",
+     "independence": "The three earlier split announcements are separately filed: 1-for-25 at https://www.sec.gov/Archives/edgar/data/1687542/000149315224037769/form6-k.htm (2024-09-23), 1-for-4 at https://www.sec.gov/Archives/edgar/data/1687542/000164117225011996/ex99-1.htm (2025-05-22) and 1-for-5 at https://www.sec.gov/Archives/edgar/data/1687542/000149315225027170/ex99-1.htm (2025-12-11). The rule itself is summarised at https://www.nortonrosefulbright.com/en-us/knowledge/publications/5b2935b6/new-nasdaq-and-nyse-rules-on-use-of-reverse-stock-splits.",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    }
+   ],
+   "hunter_calls": [
+    "abstain"
+   ]
+  },
+  {
+   "ticker": "GASS",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": null,
+    "run_up_20d_pct": 6.39,
+    "event_implied_move_pct": null,
+    "deadband_pct": 1.93
+   },
+   "why": [
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [],
+   "hunter_calls": [
+    "abstain"
+   ]
+  },
+  {
+   "ticker": "GRFS",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": null,
+    "run_up_20d_pct": -2.29,
+    "event_implied_move_pct": null,
+    "deadband_pct": 2.03
+   },
+   "why": [
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [],
+   "hunter_calls": [
+    "abstain"
+   ]
+  },
+  {
+   "ticker": "LX",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": "down",
+    "run_up_20d_pct": -19.18,
+    "event_implied_move_pct": null,
+    "deadband_pct": 2.45
+   },
+   "why": [
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [],
+   "hunter_calls": []
+  },
+  {
+   "ticker": "SAIC",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "full",
+     "multiplier": 1.0
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": 6.86,
+    "priced_direction_lean": "down",
+    "run_up_20d_pct": 7.54,
+    "event_implied_move_pct": 9.39,
+    "deadband_pct": 4.39
+   },
+   "why": [
+    "every hunter abstained; findings exist but no hunter would stand behind a direction",
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured"
+   ],
+   "findings": [
+    {
+     "hunter": "SAIC-h1",
+     "key": "SAIC-h1#0",
+     "direction": "up",
+     "finding": "GSA exercised Option Period 6 on SAIC's incumbent USACE RITS task order (PIID 47QFCA21F0001) on 2026-06-05 with $35.4M of incremental funding and kept funding it through 2026-08-10, extending the period of performance on the contract SAIC 'lost' out to 2026-11-27 - seventeen days after GAO denied SAIC's protest of the CASTLE-NET award to Accenture.",
+     "source": "https://www.usaspending.gov/award/CONT_AWD_47QFCA21F0001_4732_47QTCK18D0001_4732",
+     "source_date": "2026-08-10",
+     "why_not_priced": "The public narrative on this contract is a loss, not a runway. SAIC cut FY27 revenue guidance ~5% in Feb 2026 citing this task order, and the trade press coverage of the 2026-05-19 GAO denial explicitly does not state when SAIC's incumbent work ends - the Washington Technology piece says only that the ruling 'clears the way for Accenture to begin work'. The transition tail lives only in FPDS modification records, which no sell-side note, wire story or screen aggregates at the transaction level. If it were priced, there would be a published estimate of the USACE step-down quarter, and coverage since February would distinguish award loss from revenue loss; instead every secondary source I found treats the two as simultaneous.",
+     "independence": "Washington Technology's account of the protest denial confirms the loss is final and non-appealable but leaves the runway unspecified, which is the gap the FPDS record fills: https://www.washingtontechnology.com/contracts/2026/05/saic-loses-protest-fight-over-14b-army-contract-it-once-held/413667/",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "SAIC-h1",
+     "key": "SAIC-h1#1",
+     "direction": "down",
+     "finding": "SAIC raised its MUFG receivables-factoring facility from $300M to $400M on 2026-08-14, seventeen days before the print, despite Note 9 of the Q1 FY27 10-Q showing it was using only $164M of the old $300M cap and had taken zero net operating-cash-flow benefit from factoring in Q1 (versus +$136M in the year-ago quarter).",
+     "source": "https://www.sec.gov/Archives/edgar/data/1571123/000157112326000123/saic-20260814.htm",
+     "source_date": "2026-08-14",
+     "why_not_priced": "Reading the 8-K alone tells you nothing; the signal only exists when it is set against the utilisation table buried in Note 9 of the 10-Q, and nobody pairs an Item 1.01 credit-facility housekeeping filing with a receivables footnote. Expanding a facility you are running at 55% of cap buys roughly $236M of incremental pull-forward capacity against a reaffirmed '>$600M' FY27 free-cash-flow guide - about 40% of the guide available as a one-time working-capital lever. If this were priced, the FCF guide would be discounted for factoring quality and at least one preview would flag DSO or facility utilisation; instead the coverage I found treats the >$600M reaffirmation as clean, and the 8-K drew no news pickup at all.",
+     "independence": "none",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "SAIC-h2",
+     "key": "SAIC-h2#0",
+     "direction": "down",
+     "finding": "On 2026-08-14 SAIC raised its MUFG Master Accounts Receivable Purchase facility from $300M to $400M - the first size increase since March 2020 and only the third time in six years it has filed an 8-K Item 1.01 on this facility - signed two weeks after fiscal Q2 closed on 31 July, so the extra capacity cannot touch the quarter being reported; at the last balance sheet date receivables had risen from $853M to $962M (+12.8%) in one quarter on roughly flat revenue, cash had fallen from $182M to $109M, and only $164M of the $300M cap was in use.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1571123/000157112326000123/saic-20260814.htm",
+     "source_date": null,
+     "why_not_priced": "SAIC's own non-GAAP definition explicitly subtracts MARPA cash flows from free cash flow (Q1 FY27 release, Schedule 6 note), so an expanded facility does nothing for the headline metric the stock is judged on - which is precisely why no sell-side note or wire story treats it as an earnings input. The only pickup was automated 8-K scrapers (StockTitan, TipRanks, TradingView) restating the headline number with no link to the receivables build. If this were priced, the 25-delta skew would not need to be the market's only directional statement: there would be a preview note on H1 cash conversion, and the stock would not be sitting 2.3% off its 52-week high after a +7.5% 20-day run-up. The tell that the market is reading SAIC purely off the February guidance reset and the August award press releases is that the run-up and the coverage are both entirely bookings-driven, with nothing on the balance sheet.",
+     "independence": "The Q1 FY27 10-Q corroborates the working-capital direction from a different document: receivables +$109M QoQ, cash -$73M, $203M SilverEdge acquisition funded from increased borrowings, and $201M of financing outflows including buybacks at $90-95/share - a balance sheet run deliberately tight. https://www.sec.gov/Archives/edgar/data/1571123/000157112326000079/saic-20260501.htm",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    }
+   ],
+   "hunter_calls": [
+    "abstain",
+    "abstain"
+   ]
+  },
+  {
+   "ticker": "SSL",
+   "direction": "abstain",
+   "called": false,
+   "confidence": 0.0,
+   "components": {
+    "independent_sources": {
+     "n": 0,
+     "points": 0,
+     "domains": []
+    },
+    "hunter_agreement": {
+     "fraction": 0.0,
+     "hunters_voting": 0,
+     "points": 0.0
+    },
+    "adversary_survival": {
+     "mean_weight": 0.0,
+     "points": 0.0
+    },
+    "cuts_against_price": {
+     "points": 0,
+     "note": "no directional statement in the price to test against"
+    },
+    "baseline_quality": {
+     "tier": "thin",
+     "multiplier": 0.5
+    },
+    "raw_before_multiplier": 0.0
+   },
+   "priced_in": {
+    "skew_25d_vol_points": null,
+    "priced_direction_lean": null,
+    "run_up_20d_pct": 1.03,
+    "event_implied_move_pct": null,
+    "deadband_pct": 2.61
+   },
+   "why": [
+    "every hunter abstained; findings exist but no hunter would stand behind a direction",
+    "0 independent source domain(s) behind the call",
+    "only one hunter returned a directional view; agreement unmeasured",
+    "baseline quality 'thin' caps confidence at 50%"
+   ],
+   "findings": [
+    {
+     "hunter": "SSL-h1",
+     "key": "SSL-h1#0",
+     "direction": "down",
+     "finding": "A steam-boiler failure took a downstream unit at Natref (63.64% Sasol) offline on 25-26 August 2026, leaving Sasol able to only partially supply jet fuel to OR Tambo, which Natref normally covers 70-80% of, with the repair and recommissioning programme reported to impair refinery production from around 6 September to 4 October 2026.",
+     "source": "https://www.tourismupdate.com/article/sa-faces-jet-fuel-supply-squeeze",
+     "source_date": "2026-08-28",
+     "why_not_priced": "Sasol handled this as a media release, not a SENS or 6-K, so it never reached the ADR tape through the PRNewswire channel that carries every other Sasol disclosure, and every article about it is framed as an airport logistics story about airlines tankering fuel rather than as an earnings item. If it were priced as an earnings item you would see a SENS, a sell-side note cutting FY27 refining volumes, and an ADR gap on 26-27 August distinct from the oil move; instead the 5-day ADR drawdown of -5.36% coincides with WTI falling back below $82 on Hormuz de-escalation on 25 August, which is a macro explanation that fully accounts for it. The bite is in the timing: the whole reported impact window sits in Q1 FY27, after the results date, in a period when Sasol's own trading statement says refining margins are more than 100% higher year on year, so the lost barrels are worth unusually much and management has to address it in the FY27 outlook on 1 September.",
+     "independence": "Independently reported by Eyewitness News on 2026-08-27 (https://www.ewn.co.za/2026/08/27/sasol-natref-refinery-shutdown-disrupts-jet-fuel-supply-to-or-tambo) and by African Insider on 2026-08-27 (https://www.africaninsider.com/business/sasol-outage-puts-or-tambo-jet-fuel-supplies-under-pressure/), and listed as 'Unplanned unit shutdown at Natref', 26 August 2026, on Sasol's own media releases index (https://www.sasol.com/media-centre/media-releases). The 6 September - 4 October window is carried by Moneyweb (https://www.moneyweb.co.za/news/industry/sa-airlines-scramble-as-jet-fuel-supply-is-disrupted/, 2026-08-26), which returns 403 to direct fetch, so that specific window is snippet_only.",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    },
+    {
+     "hunter": "SSL-h1",
+     "key": "SSL-h1#1",
+     "direction": "down",
+     "finding": "A FY26 dividend is arithmetically close to impossible: the dividend trigger is net debt excluding leases sustainably below US$3.0bn, net debt was US$3.8bn at 31 December 2025, and Sasol's own FY26 target is only 'below US$3.7bn', so the company would have to beat its own year-end target by US$700m to pay anything.",
+     "source": "https://www.prnewswire.com/news-releases/short-form-announcement-reviewed-financial-results-for-the-six-months-ended-31-december-2025-and-updated-business-outlook-302694361.html",
+     "source_date": "2026-02-23",
+     "why_not_priced": "This is disclosed, so it is weak by construction and I hold it at low weight. What may not be priced is the gap between the disclosure and the headline: the 5 August trading statement leads with EPS up 65-84% and adjusted EBITDA up 12-20% and says nothing at all about a distribution, which is exactly the shape that invites a US retail reader of the ADR to expect the dividend back. If the market had properly priced 'big earnings, still no dividend' you would see the ADR flat-to-down on the trading statement day rather than the 20-day run-up of +1.03% straddling it, and you would see the sell-side preview leading with net debt rather than with EPS growth.",
+     "independence": "The US$3.0bn trigger was set at the May 2025 Capital Markets Day (https://www.sasol.com/media-centre/media-releases/sasol-details-compelling-plan-strengthen-grow-and-transform-capital-markets-day); the FY26 earnings ranges with no dividend mention are in the trading statement (https://www.stocktitan.net/news/SSL/sasol-limited-trading-statement-for-the-year-ended-30-june-9evaxr05ei57.html, 2026-08-05).",
+     "verdict": "unjudged",
+     "survival_weight": 0.4
+    }
+   ],
+   "hunter_calls": [
+    "abstain"
+   ]
+  }
+ ]
+}
