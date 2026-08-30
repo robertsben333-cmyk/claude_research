@@ -35,6 +35,23 @@
    "reason": "BAD ANCHORS. The historical_earnings_moves set skipped 2026-02-23 and 2026-04-28 -- a 459-day gap -- because UCTT tags its earnings 8-K with item 9.01 and never item 2.02. Both arms built their central argument on '7 of 8 prints negative, mean -6.9%' from that gapped sample, and both flagged the gap themselves: 'the two 2026 prints are missing, exactly the regime that matters.'",
    "root_cause": "prior_event_dates() keyed on 8-K item 2.02; 7 of 40 anchor sets were gapped this way, worst by 602 days",
    "status": "re-runnable once anchors are rebuilt from periodic reports"
+  },
+  {
+   "ticker": "CW",
+   "event": "drawn as bmo 2026-08-06; TRUE session amc 2026-08-05",
+   "arms": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reason": "LEAK. The corpus held the Business Wire release itself -- 'Curtiss-Wright Corporation reports financial results for the second quarter ended June 30, 2026' with the highlights table. Arm C read it and said so, quoting sales $924M +5%, adjusted EPS $3.72, margin 19.4%, book-to-bill 1.16x, and the FY raise.",
+   "root_cause": "CW put its results on the wire at 2026-08-05 20:33 ET, ELEVEN HOURS before EDGAR accepted the 8-K at 2026-08-06 07:30 ET. The measured press-release-to-filing gap now ranges from 3 minutes (CL) to 11 hours (CW), so no fixed margin covers it. A 3h margin was not the fix it appeared to be.",
+   "arm_calls_before_void": {
+    "arm-a-naive": "Lean Down",
+    "arm-b-planfirst": "Lean Down",
+    "arm-c-skill": "Lean Up"
+   },
+   "status": "dropped from the sample; would need re-dating to amc 2026-08-05 and a full re-harvest"
   }
  ],
  "also_corrected": [
@@ -60,7 +77,9 @@
   "fence margin 1h -> 3h (measured press-release-to-8-K gap is 63-65 min)",
   "URLs stripped from every manifest inside events/; full manifests preserved in backtest/_audit/ for provenance",
   "events.py takes the EARLIEST results disclosure and counts a 10-Q as one",
-  "6 documents removed from 4 events on re-fence (AMAT 3, BKNG 1, NDSN 1, VST 1) -- these were pre-print in reality, removed as over-caution, so forecasts already made on them are not void"
+  "6 documents removed from 4 events on re-fence (AMAT 3, BKNG 1, NDSN 1, VST 1) -- these were pre-print in reality, removed as over-caution, so forecasts already made on them are not void",
+  "source URLs stripped from 2,099 DOCUMENT HEADERS -- the second place they leaked, after the manifests",
+  "tells extended with the results-wire pattern ('reports financial results', 'reported record Nth-quarter revenue'), past tense only so previews still pass"
  ],
  "bulk_void": {
   "when": "2026-08-29, after the anchor and filings rebuilds",
