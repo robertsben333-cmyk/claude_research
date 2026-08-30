@@ -55,3 +55,8 @@
 - TRIPWIRE: regardsofwallstreet.com preview article matched 'stock rose' and 'post-earnings' regexes -- both are stale: 'stock rose 39%' refers to the PRIOR quarter's May 2026 CNBC-reported reaction, and 'post-earnings' appears only in generic site-nav boilerplate ('EPS beats and post-earnings moves for any ticker'). Cleared, no leakage of the Sept print itself.
 - CALENDAR FLAG (not a tripwire, worth downstream attention): the same article and Yahoo Finance both date DELL's print September 3, 2026, while the tracked calendar row and most other sources (Dell IR, Businesswire, StockTitan) say September 1 AMC. Recorded as-is per capture-only scope; FINDINGS.md sec30/31 show this class of mis-dating has bitten before -- whoever seals this event should re-check the calendar row before trusting Sept 1.
 - Coverage gaps: no whisper number found, no explicit options skew/term-structure numbers, no recent auditor/restatement red flag beyond historical 2006-07 item.
+
+## Capture - 2026-08-30 - PANW agent layer
+- Logged at 2026-08-30 15:47 UTC
+- 39 queries, 269 candidate URLs seen, 43 fetch-listed, 17 bodies stored, 12 skipped (fetch failures), 0 tripwires.
+- Coverage gaps: no whisper number, no usable options open-interest/max-pain for the Sept expiry, no Google Trends signal, no Check Point peer earnings read-through; implied-move figures disagree across sources (8.6% vs 10.53% vs 11%), recorded not reconciled.
