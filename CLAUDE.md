@@ -17,6 +17,15 @@ If you are a Routine session, read this whole file before doing anything.
 | 2 | `earnings-deep-dive` | 10:22 & 12:22 | One deep Opus/high dossier per name, in two batches |
 | 3 | `earnings-panel-advice` | 17:52 | Seven-persona panel on the top names → the advice note |
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
+| N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
+
+Stage N is not part of the daily advice pipeline either. It is `backtest/` arm A promoted
+to production: the method that scored 72% direction and +0.90% per trade over 37 events
+while the pipeline's own stage-2 method (arm C) scored 55% and lost money. It writes to
+`claude_naive/` and reads nothing from `research/`. Its Routine is
+`trig_01XmfJNU2CM7q5uvdb5r4ydF` and it is enabled. See `claude_naive/README.md` for what
+that result does and does not establish — in short, the direction ranking is a lead and
+the magnitude finding is the part worth acting on.
 
 Stage C is not part of the daily advice pipeline and nothing downstream reads it. It
 builds the forward corpus the backtest needs, and it is the only stage whose work cannot

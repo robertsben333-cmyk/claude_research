@@ -40,6 +40,42 @@ it is the last capture before an AMC print and the evening-before capture for BM
 
 Routine id `trig_01K1ZTiK4qQayC9aLvaK2Gyn`, created 2026-08-29.
 
+## claude_naive — 19:30 CET, weekdays
+
+`earnings-naive-forecast`, Routine `trig_01XmfJNU2CM7q5uvdb5r4ydF`, created 2026-08-30,
+enabled, **Opus**, cron `30 17 * * 1-5`.
+
+Arm A of the `backtest/` study promoted to production. It scored 72% on direction and
++0.90% per trade at the open exit over 37 events, against the pipeline's own stage-2
+method at 55% and −1.16%. It won by being given no research method at all, which is why
+the skill says so explicitly and warns against porting the nine-area structure back in.
+
+**19:30 is not arbitrary.** The backtest priced a scheme that enters at 20:00 CET
+(14:00 ET) on the last session before the print. The forecast has to exist before the
+trade it describes, so it fires thirty minutes ahead.
+
+**Opus, not Sonnet.** The backtest arm ran on Opus. Running the live version on a
+different model would not be the same experiment, and the whole point of this Routine is
+to find out whether the backtest result transfers.
+
+### The DST trap this document already warned about
+
+Cron is UTC. `30 17 * * 1-5` is 19:30 Amsterdam **only while CEST is in effect**. On
+**2026-10-25** the Netherlands returns to CET and the same cron starts firing at 18:30
+local — half an hour *after* the 20:00 entry it is supposed to precede, which would
+silently invalidate every forecast after that date.
+
+**Change it to `30 18 * * 1-5` on or before 2026-10-25.** The capture Routine above
+carries the same summer/winter split for the same reason; this is the second Routine on
+the account that needs the switch, and neither switches itself.
+
+### What it writes
+
+`claude_naive/<date>/forecasts.json` and `entry-prices.json`. Nothing downstream in the
+daily pipeline reads it. `claude_naive/scripts/score_naive.py` scores it the morning
+after against the backtest's own trading scheme and appends to `claude_naive/LEDGER.md`,
+with every rate beside its floor.
+
 **Stages 0 through 4 have no Routine.** A `RemoteTrigger list` on 2026-08-29 found six
 routines on the account and none of them is a pipeline stage. Everything below about
 their spacing describes the schedule they *should* run on if they are recreated. Check
