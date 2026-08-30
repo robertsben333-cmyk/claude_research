@@ -97,6 +97,15 @@ one killed on its first subagent.
 Launch `unpriced-hunter` subagents. Two per `full`/`partial` name, one per `thin`
 name, all in parallel within the wave size in `config/pipeline.yaml`.
 
+**If `unpriced-hunter` comes back "agent type not found", it is not missing.** Agent
+definitions are read at session start, so a session that just created them cannot
+dispatch them. This happened on the first live run (2026-08-31). Do not stop and do
+not rewrite the definition — launch `general-purpose` instead and paste the body of
+`.claude/agents/unpriced-hunter.md` into the prompt, adding one line telling the
+agent not to read anything else under `edge/`, since `general-purpose` has file
+tools the hunter deliberately does not. Record in the run log that the run used the
+inlined form. A restarted session gets the real agent.
+
 Give each hunter exactly this and nothing more:
 
 - ticker, company name, event date and session
@@ -116,7 +125,8 @@ you one wave.
 
 For every finding in every hunt, launch `priced-in-adversary`. Give it the finding
 object, the baseline path, and the ticker. Never give it the hunter's `direction`,
-`conviction_note` or reasoning — it judges the claim, not the argument.
+`conviction_note` or reasoning — it judges the claim, not the argument. The same
+inlining fallback applies here as in step 4.
 
 Write each verdict to `<RUN>/edge/adversary/<TICKER>-<hunterstem>-<i>.json`, and
 add two fields the confidence script needs to join them up:
