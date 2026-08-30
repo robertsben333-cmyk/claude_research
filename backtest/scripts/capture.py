@@ -449,6 +449,13 @@ def quote_bar(ticker):
 
 # -------------------------------------------------------------------- capture
 
+def days_to_event(ev):
+    try:
+        return (date.fromisoformat(ev["event_date"]) - now_utc().date()).days
+    except Exception:
+        return 999
+
+
 def capture_event(ev, root, plan=None, max_docs=40, skip_social=False):
     """One daily snapshot for one event. Idempotent: re-running the same day adds
     only what changed."""
@@ -532,6 +539,10 @@ def main():
     ap.add_argument("--plan", help="capture plan JSON written by the agent")
     ap.add_argument("--max-docs", type=int, default=40)
     ap.add_argument("--skip-social", action="store_true")
+    ap.add_argument("--social-within-days", type=int, default=2,
+                    help="only capture StockTwits for events this close. The "
+                         "universe is tracked far wider than social is captured "
+                         "-- see the note in main().")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--universe-only", action="store_true")
     a = ap.parse_args()
@@ -567,16 +578,34 @@ def main():
     tot_new = 0
     for i, ev in enumerate(uni, 1):
         p = plan if (not plan or plan.get("ticker", ev["ticker"]) == ev["ticker"]) else {}
+        # StockTwits is the only rate-limited layer and it decides the wall clock.
+        # Measured on the 2026-08-30 sweep: 3.5s per event with social, 1.0s
+        # without, over a 229-event 15-day window. FINDINGS.md section 21 puts
+        # unauthenticated limiting near 200 requests/hour, and the window sizes
+        # out like this:
+        #
+        #     <=1d   14 near   42 reqs   4.4 min
+        #     <=2d   42 near  126 reqs   5.6 min     <- default
+        #     <=3d   83 near  249 reqs   7.3 min     over the ceiling
+        #     <=5d  147 near  441 reqs   9.9 min     cannot finish
+        #
+        # Two days costs nothing real. The sweep runs daily, so a name is still
+        # captured at D-2 and D-1, and an AMC name again on D because 17:03 CEST
+        # is 11:03 ET, before the close. Chatter two weeks out is thin anyway.
+        # Track the universe wide, capture social near.
+        near = days_to_event(ev) <= a.social_within_days
+        skip_social = a.skip_social or not near
         try:
-            s = capture_event(ev, root, p, a.max_docs, a.skip_social)
+            s = capture_event(ev, root, p, a.max_docs, skip_social)
         except Exception as e:
             print(f"  [{i}/{len(uni)}] {ev['ticker']:<6} FAILED {type(e).__name__}: {str(e)[:60]}")
             continue
         tot_new += s["n_new"]
         flag = "  TRIPWIRE" if s.get("tripwires") else ""
         errs = ",".join(s["errors"]) if s.get("errors") else "-"
-        print(f"  [{i}/{len(uni)}] {ev['ticker']:<6} q={s['n_queries']:<3} "
-              f"items={s['n_items']:<3} new={s['n_new']:<3} err={errs}{flag}")
+        print(f"  [{i}/{len(uni)}] {ev['ticker']:<6} d{days_to_event(ev):<3} "
+              f"q={s['n_queries']:<3} items={s['n_items']:<3} new={s['n_new']:<3} "
+              f"soc={'-' if skip_social else 'y'} err={errs}{flag}", flush=True)
     print(f"done: {tot_new} new documents under {root}")
     return 0
 

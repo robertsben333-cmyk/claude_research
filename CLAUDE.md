@@ -17,17 +17,32 @@ If you are a Routine session, read this whole file before doing anything.
 | 2 | `earnings-deep-dive` | 10:22 & 12:22 | One deep Opus/high dossier per name, in two batches |
 | 3 | `earnings-panel-advice` | 17:52 | Seven-persona panel on the top names → the advice note |
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
-| E | `earnings-edge-hunt` | not scheduled | Seal what the market priced, hunt for what it did not, call direction only where the evidence earns it |
+| N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
+| E | `earnings-edge-hunt` | 16:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 
-Stage E is an experiment running alongside stages 1-3 rather than inside them, and
-nothing downstream reads it either. It exists because of a pattern the archive is now
-explicit about: every panelled call in `LEDGER.md` so far is `Neutral / No Edge`, while
-the model's own self-rated `evidence_quality` sorted outcomes at exactly 50/50 across
-33 scored arm calls in `backtest/runs/pilot-40`. Stage E replaces the averaged
-direction score with individually surviving findings, and replaces self-rated certainty
-with a confidence derived from source counts and adversary outcomes. Its claim — that
-accuracy rises as coverage falls — is falsifiable by `scripts/edge_resolve.py`, and
-until several runs have resolved it should not be treated as better than the panel.
+Stage N is not part of the daily advice pipeline. It is `backtest/` arm A promoted to
+production: the method that scored 72% direction and +0.90% per trade over 37 events
+while the pipeline's own stage-2 method (arm C) scored 55% and lost money. It writes to
+`claude_naive/` and reads nothing from `research/`. Its Routine is
+`trig_01XmfJNU2CM7q5uvdb5r4ydF` and it is enabled. See `claude_naive/README.md` for what
+that result does and does not establish — in short, the direction ranking is a lead and
+the magnitude finding is the part worth acting on.
+
+Stage E is a second experiment alongside it, and nothing downstream reads it either. It
+asks a narrower question than stage N: not "what will this stock do" but **"is there
+anything here the market has missed, and how does that rank against the other names
+reporting today."** It emits one signed score per company on −100…+100 with no call, no
+threshold and no direction label, because the question being tested is whether the day's
+companies can be **ranked** — and that is only answerable at every cut if nothing was
+rounded into a bucket upstream. Its first live run (2026-08-31) found eight of twelve
+calendar rows had no earnings event at all, and produced no ranking worth the name; the
+categories it has since dropped are why. Falsifiable by `scripts/edge_resolve.py`, which
+reports Spearman rank correlation against the realised move with a permutation p-value.
+Until many days have pooled, it is not better than anything.
+
+Stage N and stage E overlap deliberately and must not be merged. N forecasts every name
+it looks at; E scores whether the market has missed something. If E's ranking turns out
+to carry no information that N's does not, that is a result worth having cheaply.
 
 Stage C is not part of the daily advice pipeline and nothing downstream reads it. It
 builds the forward corpus the backtest needs, and it is the only stage whose work cannot

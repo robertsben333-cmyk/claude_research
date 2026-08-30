@@ -629,3 +629,90 @@ Two consequences to build in:
 - **The starvation rate is itself a finding.** 20% of a randomly drawn universe cannot
   be researched from public news at all. That is worth knowing about the live
   pipeline, which currently writes a dossier regardless.
+
+---
+
+# Contamination round — 2026-08-29, found by the arms themselves
+
+Three bugs, all mine, all found because a research agent reported something that
+did not add up rather than quietly using it. None was found by reading code.
+
+## 28. The press release beats the 8-K by 63-65 minutes
+
+The fence used EDGAR 8-K acceptance minus a 1-hour margin, set in §19 for exactly
+this reason. It was three minutes too small.
+
+| | results wire | fence | 8-K cutoff |
+| --- | --- | --- | --- |
+| CL | 10:55:21Z | 10:58:00Z | 11:58:00Z |
+| TILE | 09:31:36Z | 09:36:41Z | 10:36:41Z |
+
+Margin raised to 3h. Six documents dropped from four events on re-fence; all were
+genuinely pre-print, so forecasts already made on them stand.
+
+## 29. The manifest leaked the answer through URL slugs
+
+The fence correctly refused CL's body — the fetch failed — but the manifest still
+recorded the URL:
+
+```
+benzinga.com/.../colgate-palmolive-q2-adj-eps-0-99-beats-0-95-estimate-sales-5-361b
+benzinga.com/.../interface-q2-adj-eps-0-88-beats-0-64-estimate-sales-395-700m
+```
+
+Agents are told to read manifests. **19 of 41 events carried a subject-company
+outcome in a manifest URL.** All three arms cited CL's leaked EPS *and said they
+were doing so*, which is the only reason it surfaced.
+
+URLs are now stripped from everything inside `events/`; full manifests live in
+`_audit/` for provenance.
+
+The lesson is narrower than "check for leaks" and worth stating exactly: **the leak
+audit checked document bodies and never checked the index describing them.** The
+corpus was clean. The catalogue was not.
+
+## 30. Two events mis-dated, because the latest 8-K won
+
+`session_from_edgar` took the **latest** 8-K carrying item 2.02 and ignored 10-Qs.
+FCN disclosed results in its 10-Q at 07:30 ET on 2026-07-30 and filed a second
+item-2.02 8-K on 07-31 at 16:31 ET; the draw labelled it amc 07-31, so the forecast
+window began two sessions after the news had been traded. VG the same, 12.5h out.
+
+Rule is now the **earliest** results disclosure, with a 10-Q counting as one. All
+three arms independently detected FCN's mis-dating — Arm C from three separate
+signals: the 10-Q date, the transcript date, and a StockTwits recap.
+
+## 31. Item 2.02 is not a reliable earnings detector
+
+The deeper version of §30. **UCTT tags its earnings 8-K with item 9.01 and never
+item 2.02**, so both its 2026-02-23 and 2026-04-28 prints were invisible to a
+2.02-keyed rule. Its anchor set skipped 459 days.
+
+**7 of 40 anchor sets were gapped this way** — ORKA by 602 days, CW 364, AAP 252,
+CL 189, FCF 182, KEEL down to a single prior event.
+
+This one bit hardest because *both* arms built their central UCTT argument on "7 of
+8 prints negative, mean −6.9%" drawn from the gapped sample — and both flagged it
+unprompted. Arm A: *"the reaction sample is gapped — the two 2026 prints are
+missing, exactly the regime that matters."*
+
+Fixed by treating **periodic reports as the skeleton**: every quarterly filer files
+a 10-Q or 10-K, so those define the events, and a nearby release 8-K supplies the
+precise hour. Where no release 8-K exists the periodic report's own acceptance time
+is used and the entry says so, rather than the event silently vanishing.
+
+## 32. What this round actually demonstrates
+
+Five silent bugs before this round, three more in it. Every one biased the corpus
+toward looking cleaner, thinner, or more negative than the truth. **None raised an
+error.**
+
+What changed here is who found them. §19, §20, §22 and §25 were caught by me
+checking a number against an independent source. §28-§31 were caught by the
+research agents noticing their own inputs were incoherent, and saying so in the
+output instead of working around it. An honest agent is not a substitute for a
+sound harness — CL was contaminated regardless — but it converts silent corruption
+into a visible defect, which is the difference between a wrong answer and no answer.
+
+Worth carrying into the live pipeline: a stage that reports "this input looks
+wrong" is doing something the calibration ledger cannot do afterwards.

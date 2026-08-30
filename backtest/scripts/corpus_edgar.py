@@ -86,8 +86,41 @@ def build(ticker, cik, cutoff_date, outdir, lookback_days=400, max_filings=40):
                      "accepted": r["acceptanceDateTime"][i],
                      "items": r["items"][i], "accession": r["accessionNumber"][i],
                      "primary": r["primaryDocument"][i]})
+    # Selecting purely by recency let Form 4s eat the budget: a median 29 of 41
+    # documents per event were Form 4s, and BEN and UCTT ended up with NO 10-Q or
+    # 10-K at all. Arm C found this the hard way -- "no 10-Q, no prior earnings
+    # 8-K (the 40-filing cap was consumed by Form 4s)" -- while the count still
+    # looked healthy at 39 filings. Volume is not substance.
+    #
+    # Budget by form instead. Periodic reports and 8-Ks are what a quarter turns
+    # on; Form 4s are repetitive and, as every arm keeps noting, usually 10b5-1
+    # with no signal in them.
+    def _tier(f):
+        if f in ("10-Q", "10-K"):
+            return 0
+        if f == "8-K":
+            return 1
+        if f == "4":
+            return 3
+        return 2
+
+    rows.sort(key=lambda x: (_tier(x["form"]), x["filing_date"]), reverse=False)
     rows.sort(key=lambda x: x["filing_date"], reverse=True)
-    rows = rows[:max_filings]
+    rows.sort(key=lambda x: _tier(x["form"]))
+    picked, budget = [], {0: 6, 1: 18, 2: 6, 3: 12}
+    used = {k: 0 for k in budget}
+    for x in rows:
+        t = _tier(x["form"])
+        if used[t] >= budget[t] or len(picked) >= max_filings:
+            continue
+        used[t] += 1
+        picked.append(x)
+    # anything left over goes to whoever still has candidates, most recent first
+    if len(picked) < max_filings:
+        rest = [x for x in rows if x not in picked]
+        rest.sort(key=lambda x: x["filing_date"], reverse=True)
+        picked += rest[:max_filings - len(picked)]
+    rows = picked
     manifest, exhibit_errors = [], []
     for x in rows:
         acc = x["accession"].replace("-", "")

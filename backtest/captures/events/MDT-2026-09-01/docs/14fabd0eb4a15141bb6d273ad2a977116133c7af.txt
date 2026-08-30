@@ -1,0 +1,10349 @@
+SOURCE: https://news.medtronic.com/2026-06-03-Medtronic-reports-fourth-quarter-and-full-year-fiscal-2026-results-delivers-highest-annual-revenue-growth-in-10-years
+PROVIDER: agent-websearch
+AREA: 5
+HEADLINE: Medtronic reports fourth quarter and full year fiscal 2026 results
+WHY: Official full-year results release with segment-level revenue and growth detail
+QUERY: Medtronic segment revenue mix cardiovascular diabetes neuroscience medsurg 2026
+FETCHED_UTC: 2026-08-30T09:18:32Z
+
+ 
+
+ 
+
+ 
+ 
+  
+ 
+		.wd_search_form .wd_input_datepicker {
+			margin-right: 2px;
+		}
+		.wd_search_type_checkbox {
+			margin-left: 20px;
+		}
+		 
+  
+  
+ 
+			function wd_toggle_search_form(link, advanced) {
+				var $ = webDriver.jQuery;
+				var $container = $(link).closest(".wd_search_form_container");
+				var basic_form = $container.find(".wd_search_form_basic");
+				var basic_query = basic_form.find('input[name="query"]');
+				var advanced_form = $container.find(".wd_search_form_advanced");
+				var advanced_query = advanced_form.find('input[name="query"]');
+
+				if (advanced) {
+					advanced_query.val(basic_query.val());
+					advanced_form.show();
+					basic_form.hide();
+				} else {
+					basic_query.val(advanced_query.val());
+					basic_form.show();
+					advanced_form.hide();
+				}
+			}
+
+			function wd_toggle_search_type_checkboxes(radio) {
+				var $ = webDriver.jQuery;
+				var $radio = $(radio);
+				var all = $radio.val() == "All" ? $radio.is(":checked") : !$radio.is(":checked");
+				var $checkboxes = $radio.closest(".wd_form_field").find(".wd_search_type_checkbox");
+				$checkboxes.find('input[type="checkbox"]').prop("disabled", all);
+				$checkboxes.toggle(!all);
+			}
+
+			webDriver.jQuery(function ($) {
+				$('.wd_search_type_radio input[type="radio"]').each(function() {wd_toggle_search_type_checkboxes(this);});
+			});
+		 
+ 
+						ul.wd_layout-inline {
+							display: inline-block;
+							list-style: none;
+							padding: 0;
+							margin: 0;
+						}
+						ul.wd_layout-inline li {
+							display: inline-block;
+							padding: 0;
+							margin: 0 0 0 1em;
+						}
+					 
+ webDriver.push_jQuery(); 
+  
+  
+ 
+ 
+ 
+(function($) {
+	webDriver.resizeModal = function() {
+		$(this).find(".wd_modal").wd_modal("resize");
+		return false;
+	}
+	
+	var modals = [];
+		
+	function _value(value, base) {
+		if (typeof value == "string" && value.indexOf("%") > 0) {
+			return  base * parseInt(value, 10) / 100;
+		} else {
+			return parseInt(value, 10);
+		}
+	}
+	
+	var wd_modal = function(element, options) {
+		this.init(element, options);
+	};
+	
+	wd_modal.prototype = {
+		init: function(element, options) {
+			var self = this;
+			
+			this.isOpen = false;
+			this.opener = null;
+			
+			this.$element = $(element);
+			this._options = {
+				autoOpen: false,
+				closeExisting: false,
+				closeOnEscape: true,
+				closeOnOverlayClick: true,
+				fadeDuration: null,
+				margin: "10%",
+				padding: 10
+			};
+			
+			this.options(options);
+			
+			this.$overlay = $(" ").addClass("wd_modal-overlay").attr("wd_resize","resizeModal").appendTo($("body")).hide();
+			this.$outer = $(" ").addClass("wd_modal-outer").appendTo(this.$overlay);
+			this.$inner = $(" ").addClass("wd_modal-inner").appendTo(this.$outer).append(this.$element);
+			// Hack because I can't figure out where the extra few pixels at the bottom of the content are coming from
+			this.$inner.css("overflow-y", "hidden");
+			this.$close = $("  Close Dialog  ")
+					.on("click", function(event) {self.close(); event.preventDefault();})
+					.appendTo(this.$outer);
+			this.$element.addClass("wd_modal");
+			
+			if (this._options.autoOpen)
+				this.open(this._options.closeExisting);
+		},
+		
+		options: function(options) {
+			if (options) {
+				$.extend(this._options, options);
+
+				this._options.fadeDuration = parseInt(this._options.fadeDuration, 10);
+				if (isNaN(this._options.fadeDuration))
+					this._options.fadeDuration = false;
+				
+				if (!$.isArray(this._options.margin))
+					this._options.margin = [this._options.margin];
+				if (this._options.margin.length   0) {
+				for (var i = modals.length - 1; i >= 0; --i)
+					modals[i].close(true, true);
+			}
+
+			this.$overlay.addClass("wd_modal-current");
+			$("body").append(this.$overlay);
+
+			if (!now && this._options.fadeDuration) {
+				this.$overlay.fadeIn(this._options.fadeDuration, function() {self.open(myCloseExisting, true);});
+			} else {
+				if (modals.length == 0) {
+					$("body").css("overflow","hidden");
+					$(document).on("keydown.wd_modal", function (event) {
+						var current = modals[modals.length - 1];
+						if ((event.which == 27 || event.keyCode == 27) && current._options.closeOnEscape) {
+							current.close();
+							event.stopImmediatePropagation();
+							event.preventDefault();
+						}
+					});
+				}
+
+				if (this._options.closeOnOverlayClick) {
+					this.$overlay.on("click.wd_modal", function (event) {
+						if (event.target == this) {
+							self.close();
+							event.preventDefault();
+						}
+					});
+				}
+
+				modals.push(this);
+				
+				this.$overlay.show();
+				
+				var $focus = this.$element.find(":focusable");
+				if ($focus.length > 0)
+					$focus[0].focus();
+				
+				this.isOpen = true;
+
+				this.$element.trigger("open");
+			}
+		},
+		
+		close: function(skipCurrent, now) {
+			if (!this.isOpen)
+				return;
+			
+			this.$element.trigger("beforeClose");
+			
+			// TODO: allow closing of lower modals
+			modals.pop();
+			
+			if (modals.length == 0) {
+				$("body").css("overflow","");
+				$(document).off("keydown.wd_modal");
+			}
+			
+			this.$overlay.off("click.wd_modal");
+			
+			if (this.opener) {
+				this.opener.focus();
+				this.opener = null;
+			}
+			
+			this.isOpen = false;
+			this.$overlay.removeClass("wd_modal-current").hide();
+			
+			if (!skipCurrent && modals.length > 0)
+				modals[modals.length-1].$overlay.addClass("wd_modal-current");
+			
+			this.$element.trigger("close");
+		},
+		
+		destroy: function() {
+			this.close(false, true);
+			$("body").append(this.$element);
+			this.$overlay.remove();
+		},
+		
+		resize: function() {
+			if (!this.isOpen)
+				return;
+			
+			var self = this;
+			var winWidth = $(window).width();
+			var winHeight = $(window).height();
+			
+			var margin = this._options.margin;
+			var padding = this._options.padding;
+			
+			var width = winWidth - _value(margin[1], winWidth) - _value(margin[3], winWidth) - _value(padding[1], winWidth) - _value(padding[1], winWidth);
+			var height = winHeight - _value(margin[0], winHeight) - _value(margin[2], winHeight) - _value(padding[0], winHeight) - _value(padding[2], winHeight);
+			
+			this.$inner.css("max-width", width);
+			this.$inner.css("max-height", height);
+			
+			$.each(["Top", "Right", "Bottom", "Left"], function(i, v) {
+				self.$outer.css("padding" + v, _value(padding[i])+"px");
+			});
+			
+			var fixed = this.$element.find("[wd_need_fixed_container]").is(":visible");
+			
+			this.$inner.css("width", width);
+			this.$inner.css("height", height);
+
+			webDriver.doResize(this.$inner);
+			
+			if (!fixed) {
+				this.$inner.css("width", "auto");
+				this.$inner.css("height", "auto");
+				if (this.$element.outerHeight() > height)
+					this.$inner.css("height", height);
+				if (this.$element.outerWidth() > width)
+					this.$inner.css("width", width);
+			}
+		}
+	};
+
+	$.fn.wd_modal = function(options) {
+		if (options == "exists") {
+			return !!$(this).data("wd_modal");
+		} else if (typeof options == "string") {
+            var instance = $(this).data("wd_modal");
+			if (!instance)
+				return null;
+			var args = Array.prototype.slice.call(arguments, 1);
+            return instance[options].apply(instance, args);
+        } else {
+            return this.each(function() {
+                var instance = $(this).data("wd_modal");
+                if (instance) {
+                    instance.reload(options);
+                } else {
+                    $(this).data("wd_modal", new wd_modal(this, options));
+                }
+            });
+        }
+    };
+})(webDriver.jQuery);
+ 
+  
+ 
+			(function($) {
+				var prev_group_id = "";
+				var prev_type_id = "";
+				var prev_item_id = "";
+				var prev_hash = false;
+				var on_close = "back";
+				function hash_update() {
+					var hash = window.location.hash || "#";
+					if (hash == prev_hash) return;
+
+					var type_id = "";
+					var item_id = ""
+					var group_id = "main";
+
+					var apos = hash.indexOf("assets_");
+					if (apos >= 0) {
+						type_id = hash.substr(apos+7);
+
+						var dpos = type_id.indexOf("-");
+						if (dpos >= 0) {
+							group_id = type_id.substr(0, dpos);
+							type_id = type_id.substr(dpos+1);
+						}
+
+						var cpos = type_id.indexOf(":");
+						if (cpos >= 0) {
+							item_id = type_id.substr(cpos+1);
+							type_id = type_id.substr(0, cpos);
+						}
+					}
+
+					if (type_id == "")
+						type_id = "all";
+
+					if ((type_id != prev_type_id || group_id != prev_group_id) && item_id == "") {
+						var $carousel = $(".wd_asset_carousel_"+group_id+"_list")
+						if ($carousel.length > 0)
+							$carousel.wd_carousel("filter", (type_id == "all") ? false : ".wd_asset_type_"+type_id);
+
+						var $slideshow = $(".wd_asset_slideshow_"+group_id+"_list")
+						if ($slideshow.length > 0)
+							$slideshow.wd_slideshow("filter", (type_id == "all") ? false : ".wd_asset_type_"+type_id);
+
+						$(".wd_asset_carousel_type_link").removeClass("wd_active");
+						$(".wd_asset_carousel_type_link.wd_asset_type_"+type_id).addClass("wd_active");
+
+						prev_type_id = type_id;
+						on_close = "back";
+					}
+
+					if (type_id != prev_type_id || item_id != prev_item_id || group_id != prev_group_id) {
+						if (item_id == "") {
+							var save_close = on_close;
+							on_close = false;
+							hide_asset_modal();
+							on_close = save_close;
+						} else {
+							load_asset_modal(group_id, type_id, item_id);
+						}
+						set_social_share_data();
+
+						prev_item_id = item_id;
+
+						if (prev_hash === false)
+							on_close = "reset";
+					}
+
+					prev_group_id = group_id;
+					prev_hash = hash;
+				}
+
+				hide_asset_modal = function() {
+					$(".wd_asset_modal").wd_modal("close");
+				}
+
+				load_asset_modal = function(group_id, type_id, item_id) {
+					var $modal = $(".wd_asset_modal_"+group_id);;
+					if ($modal.length == 0)
+						return;
+
+					if (!$modal.wd_modal("exists")) {
+						$modal.wd_modal({
+							autoOpen: false,
+						});
+
+						$modal.show();
+
+						$modal.on("close", function() {
+							if (on_close == "back") {
+								history.back();
+							} else if (on_close == "reset") {
+								var href = window.location.href;
+								href = href.replace(/#.*$/, "#assets_all");
+								window.location.replace(href);
+							}
+						});
+					}
+
+					$modal.wd_modal("open", true);
+					
+					var $slideshow = $(".wd_asset_slideshow_"+group_id+"_list");
+					if ($slideshow.length > 0) {
+						var $slideshow_item = $slideshow.find(".wd_asset_"+type_id+"-"+item_id).not(".wd_clone");
+						if ($slideshow_item.length > 0)
+							$slideshow.wd_slideshow("scrollToItem", $slideshow_item);
+					}
+
+					var $carousel = $(".wd_asset_carousel_"+group_id+"_list");
+					if ($carousel.length > 0) {
+						var $carousel_item = $carousel.find(".wd_asset_"+type_id+"-"+item_id).not(".wd_clone");
+						if ($carousel_item.length > 0)
+							$carousel.wd_carousel("scrollToItem", $carousel_item);
+					}
+				}
+				
+				set_social_share_data = function() {
+					var href = window.location.href.replace("#", "#!");
+					window.addthis_share = {
+						url: href
+					}
+				}
+				
+				$(function() {
+					setTimeout(hash_update, 10);
+					$(window).hashchange(hash_update);
+				});
+			})(webDriver.jQuery);
+		 
+ 
+			.wd_asset_modal .wd_captioned_image {
+				max-width: 100%;
+				max-height: 100%;
+			}
+			.wd_asset_modal img {
+				max-width: 100%;
+				max-height: 100%;
+			}
+			.wd_asset_modal div.wd_toolbar.wd_toolbar-asset_modal {
+				position: fixed;
+				background: transparent;
+				top: 5%;
+				left: 50%;
+				transform: translate(-50%,-50%);
+				border: none;
+				margin: 0;
+			}
+		 
+ 
+ 
+			.wd_asset_inline_list {
+				width: 50%;
+				float: right;
+				clear: right;
+				margin: 0 0 0 10px;
+			}
+			.wd_asset_inline {
+				background-color: #666666;
+			}
+			.wd_asset_inline_list div.wd_toolbar {
+				border: none;
+				font-size: 10px;
+				position: relative;
+			}
+			.wd_asset_inline_list span.wd_tool_icon a {
+				font-size: 10px;
+				width: 16px;
+				height: 16px;
+				padding: 3px;
+			}
+		 
+  
+  
+ 
+ 
+(function($, undefined) {
+	webDriver.resizeSlideshow = function() {
+		$(this).find(".wd_slideshow-list").wd_slideshow("resize");
+		return false;
+	}
+	
+	var wd_slideshow = function(element, options) {
+		this.init(element, options);
+	};
+	
+	wd_slideshow.prototype = {
+		init: function(element, options) {
+			var self = this;
+			
+			this.$element = $(element);
+			this._options = {
+				selector: "li",
+				preload: false,
+				"class": "",
+				resize: "container" // children, self, container
+			};
+			
+			this.options(options);
+			
+			this.$container = $(" ").addClass("wd_slideshow").attr("wd_resize","resizeSlideshow").attr("tabindex","-1").insertBefore(this.$element);
+			if (this._options["class"])
+				this.$container.addClass(this._options["class"]);
+			this.$cropper = $(" ").addClass("wd_slideshow-cropper").appendTo(this.$container);
+			this.$element
+					.addClass("wd_slideshow-list")
+					.appendTo(this.$cropper)
+			;
+			this.$prev = $("  Previous Item  ")
+					.on("click", function(event) {
+						self.prev();
+						event.preventDefault();
+					})
+					.appendTo(this.$container);
+			this.$next = $("  Next Item  ")
+					.on("click", function(event) {
+						self.next();
+						event.preventDefault();
+					})
+					.appendTo(this.$container);
+			
+			this.$container.on("keydown.wd_slideshow", function (event) {
+				var key = event.which || event.keyCode;
+				if (key == 37) {
+					self.prev();
+					event.stopImmediatePropagation();
+					event.preventDefault();
+				}
+				if (key == 39) {
+					self.next();
+					event.stopImmediatePropagation();
+					event.preventDefault();
+				}
+			});
+
+			this.$items = this.$element.children(this._options.selector);
+			this.$items.addClass("wd_slideshow-item");
+			
+			// Remove any non-items (e.g. unintended text nodes)
+			this.$element.empty();
+			this.$element.append(this.$items);
+
+			this.navEnabled = true;
+			this.currentIndex = 0;
+			this.$currentItem = this.$items.eq(0);
+			
+			if (this._options.preload)
+				this.load_next();
+		},
+		
+		options: function(options) {
+			if (options) {
+				$.extend(this._options, options);
+			} else {
+				return this._options;
+			}
+		},
+		
+		reload: function(options) {
+			if (options) {
+				this.options(options);
+			}
+			
+			this.reset();
+		},
+
+		reset: function() {
+			this.$items.data("wd_slideshow-index", null);
+			
+			var $children = this.$element.children();
+			this.itemCount = $children.length;
+			$children.each(function(index) {
+				$(this).data("wd_slideshow-index", index);
+			});
+
+			this.hideNav(this.itemCount   0 || !$item.attr("wd_ajax_url"));
+		},
+				
+		load_next: function() {
+			var self = this;
+			var next = null;
+			var $children = this.$element.children().not(".wd_clone");
+
+			var after = this.currentIndex;
+			var before = this.currentIndex;
+			while (after  = 0) {
+				if (after  = 0 && !this.item_loaded($children[before])) {
+					next = $children[before];
+					break;
+				}
+				--before;
+			}
+			
+			if (!next) {
+				var $filtered = this.$items.remove($children);
+
+				$filtered.each(function() {
+					if (!self.item_loaded(this)) {
+						next = this;
+						return false;
+					}
+				});
+			}
+			
+			if (next)
+				this.load_item(next, function() {self.load_next();});
+		},
+		
+		load_item: function(item, on_complete) {
+			var self = this;
+			var $item = $(item);
+			var complete = on_complete;
+			
+			if (!this.item_loaded($item)) {
+				$item.html(" Loading... ");
+				$item.addClass("wd_loading");
+				$item.load(
+					$item.attr("wd_ajax_url"),
+					function(response, status, xhr) {
+						if ($item.children().length == 0)
+							$item.append(" No content ");
+						webDriver.queueCallback(function() {
+							if ($item.hasClass("wd_slideshow-current"))
+								self.resize(self._options["resize"] == "container");
+							$item.removeClass("wd_loading");
+							if ($item.hasClass("wd_slideshow-current")) {
+								$item.wd_imagesloaded(
+									function() {
+										self.resize(self._options["resize"] == "container");
+									},
+									"size"
+								);
+							}
+						});
+
+						if (complete)
+							complete(response, status, xhr);
+					}
+				);
+			}
+		},
+				
+		next: function() {
+			return this.scrollBy(1);
+		},
+
+		prev: function() {
+			return this.scrollBy(-1);
+		},
+		
+		scrollBy: function(count) {
+			var index = this.currentIndex + count;
+			
+			return this.scrollToIndex(index, true);
+		},
+		
+		scrollToIndex: function(index, update_hash) {
+			var self = this;
+			var $children = this.$element.children().not(".wd_clone");
+			
+			var orig_index = index;
+			index = (index + $children.length) % $children.length;
+			var $child = $children.eq(index);
+			
+			if (update_hash && $child.attr("wd_item_hash")) {
+				var hash = "#"+$child.attr("wd_item_hash");
+				var current_hash = window.location.hash || "#";
+				if (hash != current_hash) {
+					var href = window.location.href+"#";
+					href = href.replace(/#.*$/, hash);
+					window.location.replace(href);
+					return;
+				}
+			}
+			
+			this.$element.find(".wd_slideshow-current").removeClass("wd_slideshow-current");
+			$child.addClass("wd_slideshow-current");
+			
+			if (!this.item_loaded($child))
+				this.load_item($child);
+			
+			this.$container[0].focus();
+
+			this.currentIndex = index;
+			this.$currentItem = $child;
+			
+			this.resize(this._options["resize"] == "container");
+		},
+				
+		scrollToItem: function(item) {
+			var index = $(item).data("wd_slideshow-index");
+			if (index !== null)
+				this.scrollToIndex(index, true);
+		},
+				
+		filter: function(selector) {
+			this.$element.children().detach();
+			var $items = this.$items;
+			if (selector)
+				$items = $items.filter(selector);
+			this.$element.append($items);
+			this.reset();
+		},
+		
+		destroy: function() {
+			this.filter(false);
+			this.$items
+				.removeClass("wd_slideshow-item")
+				.data("wd_slideshow-index", null)
+			;
+			this.$element
+				.removeClass("wd_slideshow-list")
+				.insertBefore(this.$container)
+			;
+			this.$container.remove();
+		},
+		
+		resize: function(resize_container) {
+			if (resize_container) {
+				webDriver.doResize(this.$container, "container");
+			} else if (this.$currentItem && !this.$currentItem.hasClass("wd_loading")) {
+				webDriver.doResize(this.$currentItem);
+			}
+		}
+	};
+
+	$.fn.wd_slideshow = function(options) {
+		var args = Array.prototype.slice.call(arguments, 1);
+		var result = this;
+		
+		this.each(function() {
+			var instance = $(this).data("wd_slideshow");
+			if (typeof options == "string") {
+				var res = instance[options].apply(instance, args);
+				if (typeof res != "undefined") {
+					result = res;
+					return false;
+				}
+			} else {
+                if (!instance) {
+					instance = new wd_slideshow(this, options);
+					$(this).data("wd_slideshow", instance);
+				}
+				
+                instance.reload(options);
+			}
+        });
+		
+		return result;
+    };
+})(webDriver.jQuery);
+ 
+ 
+						webDriver.jQuery(function($) {
+							$(".wd_layout-slideshow").each(function() {
+								var $slideshow = $(this);
+								$slideshow.wd_slideshow({
+									preload: true,
+									"class": "wd_asset_slideshow_wrapper wd_asset_slideshow_main_wrapper"
+								});
+							});
+						});
+					 
+  
+ 
+.wd_gallery_asset {
+	height: 100%;
+	width: 100%;
+	position: relative;
+	color: #ffffff;
+	min-height: 100px;
+}
+.wd_gallery_asset .wd_asset_image {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-moz-justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-moz-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	font-size: 0px;
+}
+.wd_gallery_asset .wd_asset_image > div {
+	width: 100%;
+	text-align: center;
+}
+.wd_gallery_asset .wd_asset_image img {
+	max-width: 100%;
+	max-height: none;
+	margin: 0;
+	float: none;
+	flex-shrink: 0;
+}
+.wd_gallery_asset .wd_icon_overlay {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .75) none center center no-repeat;
+	opacity: 0.0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-moz-justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-moz-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+.wd_gallery_asset .wd_icon_overlay .wd_link_underlay {
+	display: block;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+}
+.wd_gallery_asset .wd_icon_overlay a.wd_link_underlay:hover {
+	background-color: transparent;
+}
+.wd_gallery_asset .wd_icon_overlay .wd_icon_container {
+	font-size: 50px;
+	position: relative;
+	text-align: center;
+}
+.wd_gallery_asset .wd_icon_overlay .wd_icon_container > a,
+.wd_gallery_asset .wd_icon_overlay .wd_icon_container > a:link,
+.wd_gallery_asset .wd_icon_overlay .wd_icon_container > a:visited {
+	color: #cccccc;
+}
+.wd_gallery_asset .wd_icon_overlay .wd_icon_container > a:hover {
+	text-decoration: none;
+	background-color: transparent;
+}
+.wd_gallery_asset .wd_title_overlay {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 10px;
+	pointer-events: none;
+	opacity: 0.0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: start;
+	-webkit-justify-content: flex-start;
+	-moz-justify-content: flex-start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	-webkit-box-align: end;
+	-webkit-align-items: flex-end;
+	-moz-box-align: end;
+	-ms-flex-align: end;
+	align-items: flex-end;
+}
+.wd_gallery_asset:hover .wd_icon_overlay,
+.wd_gallery_asset:hover .wd_title_overlay,
+.wd_gallery_asset:focus-within .wd_icon_overlay,
+.wd_gallery_asset:focus-within .wd_title_overlay {
+	opacity: 1.0;
+} 
+  
+ 
+						webDriver.jQuery(function($) {
+							var $container = $(".wd_layout-masonry");
+							$container.wd_masonry({"minWidth":250});
+							$container.wd_imagesloaded(function() {
+								$(this).wd_masonry("reflow");
+							});
+							$container.on("wd_more_loaded", function() {
+								$(this).wd_masonry("reflow");
+							});
+						});
+					 
+ 
+						ul.wd_layout-masonry {
+							position: relative;
+							margin: 10px 0;
+							padding: 0;
+							list-style: none;
+						}
+					 
+ 
+				(function($) {
+					function wd_move_content() {
+						$("[wd_move_after]").each(function() {
+							var $this = $(this);
+							var selectors = $this.attr("wd_move_after").split("|");
+							for (var i = 0; i   0) {
+									$this.insertAfter($dest.eq(0));
+									break;
+								}
+							}
+						});
+					}
+					
+					$(function() {
+						wd_move_content();
+					});
+				})(webDriver.jQuery);
+			 
+ 
+	function view_printable() {
+		var loc = window.location;
+		var sep = (loc.search == "") ? "?" : "&";
+		var url = loc.protocol+"//"+loc.host+loc.pathname+loc.search+sep+"printable"+loc.hash;
+		window.open(url, "_blank", "");
+	}
+ 
+ 
+			div.wd_toolbar {
+				border-top: 1px solid #cccccc;
+				border-bottom: 1px solid #cccccc;
+				margin: 15px 0px 15px 0px;
+				padding: 5px;
+				line-height: 1;
+			}
+			div.wd_toolbar-page {
+				clear: both;
+			}
+			div.wd_toolbar ul.wd_tools {
+				display: inline-block;
+				width: 100%;
+				margin: 0;
+				padding: 5px 0;
+			}
+			div.wd_toolbar ul.wd_tools li.wd_tool {
+				display: block;
+				list-style-type: none;
+				margin-right: 5px;
+				padding: 0;
+				float: right;
+			}
+			span.wd_tool_icon > a:link,
+			span.wd_tool_icon > a:visited {
+				border-radius: 2px;
+				display: inline-block;
+				width: 30px;
+				height: 30px;
+				box-sizing: border-box;
+				margin: 0;
+				padding: 7px;
+				font-size: 16px;
+				line-height: 1;
+				text-align: center;
+				color: #ffffff;
+				background-color: #767676;
+			} 
+			span.wd_tool_icon > a:hover {
+				color: #ffffff;
+				background-color: #666666;
+				text-decoration: none;
+			}
+			div.wd_toolbar ul.wd_tools li.wd_tool-addthis {
+				float: left;
+			}
+		 
+ 
+(function($) {
+	webDriver.formatNews = function() {
+		var $news = $(this);
+		var print_url = $news.attr("wd_print_url");
+		$news.find("table").each(function() {
+			var $table = $(this);
+			var $parent = $table.parent();
+			if ($parent.innerWidth()  View News Release Full Screen ")
+						.addClass("fullscreen-button")
+						.on("click", function() {
+							if (print_url)
+								window.open(print_url, "_blank", "");
+							else
+								view_printable();
+						})
+					;
+
+					var $div = $("  )")
+						.addClass("wd_news_table")
+						.css("overflow-x", "auto")
+						.append($btn)
+					;
+
+					$table.replaceWith($div);
+					$div.append($table);
+				}
+			} else {
+				if ($parent.hasClass("wd_news_table"))
+					$parent.find(".fullscreen-button").hide();
+			}
+		});
+	}
+})(webDriver.jQuery);
+ 
+ .wd_title {
+	font-size: 1.3em;
+	font-weight: bold;
+}
+.wd_subtitle {
+	font-weight: bold;
+}
+table.wd_extimagetable {
+	border-style: none; 
+	border-spacing:0px;
+	clear: right; 
+	float: right; 
+}
+td.wd_extimagecell {
+	text-align: right; 
+	margin: 0px 0px 5px 5px;
+	padding:0px;
+}
+td.wd_extimagecell img {
+	padding-left:10px;
+	padding-bottom:10px;
+	border-style: none; 
+}
+blockquote.wd_pullquote {
+	font-style: italic;
+	width:200px;
+	margin:0 0 20px 20px;
+	line-height: 1.8em;
+	float: right;
+	clear: right;
+}
+blockquote.wd_pullquote:before {
+	content: "“ ";
+	font-size: xx-large;
+}
+blockquote.wd_pullquote:after {
+	content: " ”";
+	font-size: xx-large;
+	float: right;
+}
+.fullscreen-button {
+	border: 1px solid #d1d1d1;
+	background: #e3e3e3 url(images/webdriver/view_full_screen_button_background.png) no-repeat;
+	padding: 3px 3px 3px 30px;
+	margin: 5px 0px 5px 0px;
+	color: #727272;
+	width: 220px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.wd_contact {
+	margin: 1em 0;
+}
+.wd_release_data {
+	margin: 1em 0;
+}
+.wd_caption {
+	text-align: center;
+	font-size: 0.72em;
+	font-style: italic;
+	margin: 1em 0 0 0;
+}
+ 
+ webDriver.pop_jQuery(); 
+
+ 
+
+
+	     
+      
+      
+     
+    function OptanonWrapper() { }
+      -->
+     
+    
+ 
+
+ 
+
+    
+
+ var SITEPATH = "\/us\u002Den"; 
+
+	
+	
+ 
+ 		
+  
+ 
+
+
+  
+
+ 
+	if (self === top) {
+		var antiClickjack = document.getElementById("antiClickjack");
+		antiClickjack.parentNode.removeChild(antiClickjack);
+	} else {
+		top.location = self.location;
+	}
+ 	
+
+  
+
+ -->
+ if (typeof _satellite !== "undefined") { _satellite.setCookie("sat_track", "false"); } 
+
+
+ 
+
+
+ 
+ 
+
+ Medtronic reports fourth quarter and full year fiscal 2026 results; delivers highest annual revenue growth in 10 years - Jun 3, 2026 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+ 
+ 
+ 
+
+ 
+ 
+
+
+
+ 
+ 
+
+
+ 
+ 
+  
+ 
+	function OptanonWrapper() { }
+ 
+ 
+
+ 
+ 
+ 
+
+
+
+
+ 
+
+ 
+
+		
+	  
+	
+	 Skip to main content 
+
+	 
+
+		
+		 
+			  
+			 
+				
+				 
+					
+						 https://www.medtronic.com/us-en/index.html 
+					
+				 
+			 
+
+			
+			 
+				 
+					 Select Country / Region 
+					
+						 
+							Adriatic
+							
+						 
+						 
+							Arabia							
+						 
+						 
+							Argentina
+							
+						 
+					
+						 
+							Asia-Pacific
+							
+						 
+					
+						 
+							Australia and New Zealand
+							
+						 
+					
+						 
+							Bangladesh
+							
+						 
+					
+						 
+							Belgique (Belgium)
+							
+								- Français
+						 
+					
+						 
+							België (Belgium)
+							
+								- Nederlands
+						 
+					
+						 
+							Brasil (Brazil)
+							
+						 
+					
+						 
+							Bulgaria
+							
+						 
+					
+						 
+							Canada
+							
+								- English
+						 
+					
+						 
+							Canada
+							
+								- Français
+						 
+					
+						 
+							Česká republika (Czech Republic)
+							
+						 
+					
+						 
+							Chile
+							
+						 
+					
+						 
+							中国 (China)
+							
+						 
+					
+						 
+							Colombia
+							
+						 
+					
+						 
+							Costa Rica
+							
+						 
+					
+						 
+							Србија (Serbia)
+							
+						 
+					
+						 
+							Danmark (Denmark)
+							
+						 
+					
+						 
+							Deutschland (Germany)
+							
+						 
+					
+						 
+							Ecuador
+							
+						 
+					
+						 
+							España (Spain)
+							
+						 
+					
+						 
+							Europe
+							
+						 
+					
+						 
+							France
+							
+						 
+					
+						 
+							Ελλάδα (Greece)
+							
+						 
+					
+						 
+							香港特区 (Hong Kong SAR)
+							
+						 
+					
+						 
+							Indian Subcontinent
+							
+						 
+					
+						 
+							Ireland
+							
+						 
+					
+						 
+							Israel&nbsp;&nbsp;ישראל
+							
+						 
+					
+						 
+							Italia (Italy)
+							
+						 
+					
+						 
+							日本 (Japan)
+							
+						 
+					
+						 
+							Latinoamérica
+							
+						 
+					
+						 
+							Magyarország (Hungary)
+							
+						 
+					
+						 
+							México (Mexico)
+							
+						 
+					
+						 
+							Middle East and North Africa
+							
+						 
+					
+						 
+							Nederland (Netherlands)
+							
+						 
+					
+						 
+							Norge (Norway)
+							
+						 
+					
+						 
+							Österreich (Austria)
+							
+						 
+					
+						 
+							Panama
+							
+						 
+					
+						 
+							Portugal
+							
+						 
+					
+						 
+							Paraguay
+							
+						 
+					
+						 
+							Perú (Peru)
+							
+						 
+					
+						 
+							Polska (Poland)
+							
+						 
+					
+						 
+							Российская Федерация (Russia)
+							
+						 
+					
+						 
+							Puerto Rico
+							
+						 
+					
+						 
+							Romania
+							
+						 
+					
+						 
+							Schweiz (Switzerland)
+							
+								- Deutsch
+						 
+					
+						 
+							Slovenská republika (Slovak Republic)
+							
+						 
+					
+						 
+							Southeast Asia
+							
+						 
+					
+						 
+							South Africa and Sub-Sahara
+							
+						 
+					
+						 
+							대한민국 (South Korea)
+							
+						 
+					
+						 
+							Suisse (Switzerland)
+							
+								- Français
+						 
+					
+						 
+							Suomi (Finland)
+							
+						 
+					
+						 
+							Sverige (Sweden)
+							
+						 
+					
+						 
+							台湾地区 (Taiwan)
+							
+						 
+					
+						 
+							Türkiye (Turkey)
+							
+						 
+					
+						 
+							United Kingdom
+							
+						 
+					
+						 
+							United States
+							
+						 
+					
+						 
+							Uruguay
+							
+						 
+					
+						 
+							Україна (Ukraine)
+							
+						 
+					
+				 
+			 
+			 
+				
+					 Adriatic 
+				
+			
+					 Arabia 
+					 Argentina 
+				
+			
+				
+					 Asia-Pacific 
+				
+			
+				
+					 Australia and New Zealand 
+				
+			
+				
+					 Bangladesh 
+				
+			
+				
+					 Belgique (Belgium) 
+				
+			
+				
+					 België (Belgium) 
+				
+			
+				
+					 Brasil (Brazil) 
+				
+			
+				
+					 Bulgaria 
+				
+			
+				
+					 Canada 
+				
+			
+				
+					 Canada 
+				
+			
+				
+					 Česká republika (Czech Republic) 
+				
+			
+				
+					 Chile 
+				
+			
+				
+					 中国 (China) 
+				
+			
+				
+					 Colombia 
+				
+			
+				
+					 Costa Rica 
+				
+			
+				
+					 Србија (Serbia) 
+				
+			
+				
+					 Danmark (Denmark) 
+				
+			
+				
+					 Deutschland (Germany) 
+				
+			
+				
+					 Ecuador 
+				
+			
+				
+					 España (Spain) 
+				
+			
+				
+					 Europe 
+				
+			
+				
+					 France 
+				
+			
+				
+					 Ελλάδα (Greece) 
+				
+			
+				
+					 香港特区 (Hong Kong SAR) 
+				
+			
+				
+					 Indian Subcontinent 
+				
+			
+				
+					 Ireland 
+				
+			
+				
+					 Israel&nbsp;&nbsp;ישראל 
+				
+			
+				
+					 Italia (Italy) 
+				
+			
+				
+					 日本 (Japan) 
+				
+			
+				
+					 Latinoamérica 
+				
+			
+				
+					 Magyarország (Hungary) 
+				
+			
+				
+					 México (Mexico) 
+				
+			
+				
+					 Middle East and North Africa 
+				
+			
+				
+					 Nederland (Netherlands) 
+				
+			
+				
+					 Norge (Norway) 
+				
+			
+				
+					 Österreich (Austria) 
+				
+			
+				
+					 Panama 
+				
+			
+				
+					 Portugal 
+				
+			
+				
+					 Paraguay 
+				
+			
+				
+					 Perú (Peru) 
+				
+			
+				
+					 Polska (Poland) 
+				
+			
+				
+					 Российская Федерация (Russia) 
+				
+			
+				
+					 Puerto Rico 
+				
+			
+				
+					 Romania 
+				
+			
+				
+					 Schweiz (Switzerland) 
+				
+			
+				
+					 Slovenská republika (Slovak Republic) 
+				
+			
+				
+					 Southeast Asia 
+				
+			
+				
+					 South Africa and Sub-Sahara 
+				
+			
+				
+					 대한민국 (South Korea) 
+				
+			
+				
+					 Suisse (Switzerland) 
+				
+			
+				
+					 Suomi (Finland) 
+				
+			
+				
+					 Sverige (Sweden) 
+				
+			
+				
+					 台湾地区 (Taiwan) 
+				
+			
+				
+					 Türkiye (Turkey) 
+				
+			
+				
+					 United Kingdom 
+				
+			
+				
+					 United States 
+				
+			
+				
+					 Uruguay 
+				
+			
+				
+					 Україна (Ukraine) 
+				
+			 
+
+		 
+
+		 
+			 
+		 
+		
+	 
+ 
+		
+		 
+
+
+ 
+
+	
+
+
+
+	 
+	 
+
+		 
+			 Home 
+
+			
+
+
+	 
+		  	
+	 
+ Press releases 
+
+			 
+	 
+	      
+	 
+   
+
+			
+		
+			 About Medtronic 
+			
+	 
+	 
+	      
+	 
+   
+			 Citizenship  -->
+		 
+	 
+ 
+
+	 
+	
+	 
+    
+	   
+		  Toggle navigation 
+		  
+			 
+			     
+			 
+		  
+	   
+	   Newsroom 
+    
+    
+
+
+	 
+
+
+
+ 
+
+	    	 Home 
+
+	 
+
+
+
+
+ 
+
+	    	 Press releases 
+
+	
+	
+ 
+
+
+
+
+
+ 
+
+	    	 Business & regional news 
+
+	 
+
+
+
+
+ 
+
+			 
+               Stories               
+                        
+               
+         
+
+         
+
+
+ 
+
+	    	 Company news 
+
+	 
+
+
+
+
+ 
+
+	    	 Health & wellness 
+
+	 
+
+
+
+
+ 
+
+	    	 Innovation 
+
+	 
+
+
+
+
+ 
+
+	    	 Leadership perspectives 
+
+	 
+
+
+
+
+ 
+
+	    	 Our impact 
+
+	 
+
+
+
+
+ 
+
+	    	 See all stories 
+
+	 
+
+
+ 
+
+
+
+     
+
+
+
+
+ 
+
+			 
+               Medtronic.com               
+                        
+               
+         
+
+         
+
+
+ 
+
+	    	 Healthcare Professionals 
+
+	 
+
+
+
+
+ 
+
+	    	 Patients & Caregivers 
+
+	 
+
+
+
+
+ 
+
+	    	 Our Company 
+
+	 
+
+
+
+
+ 
+
+	    	 Our Impact 
+
+	 
+
+
+ 
+
+
+
+     
+
+
+
+
+ 
+
+			 
+               Media               
+                        
+               
+         
+
+         
+
+
+ 
+
+	    	 Media kits 
+
+	 
+
+
+
+
+ 
+
+	    	 Honors & awards 
+
+	 
+
+
+
+
+ 
+
+	    	 Leadership 
+
+	 
+
+
+
+
+ 
+
+	    	 In the news 
+
+	 
+
+
+
+
+ 
+
+	    	 Email alerts 
+
+	 
+
+
+ 
+
+
+
+     
+
+
+ 
+
+
+
+	 
+	       
+ 	 
+
+    
+ 
+
+ 
+
+
+ 
+
+
+
+
+			 
+					  						 
+							 
+						 
+						
+					 
+					  
+								  
+								 												 Press releases  
+											 
+										 
+																					 
+								    
+								   						   
+					 
+				   
+			  
+
+						 
+												 
+
+		 
+				
+					 
+					
+					 
+ 
+ 
+		 Jun 3, 2026 
+		 Medtronic reports fourth quarter and full year fiscal 2026 results; delivers highest annual revenue growth in 10 years 
+		
+                 
+			   Corporate   
+		 
+		
+ 
+
+
+
+ 
+			 
+				
+				 
+					 
+					 
+				
+					 
+					 
+				
+					 
+					 
+				 
+			 
+		
+			 
+				 
+					
+						 
+	 
+		 
+			 
+		 
+	 
+	 
+		  
+		 
+			     View File       Download File   
+			
+		 
+	 
+	 
+		Medtronic FY26Q4-Earnings-1pager
+	 
+ 
+
+					
+				 
+			
+				 
+					
+						 
+	 
+		 
+			 
+		 
+	 
+	 
+		  
+		 
+			     View File       Download File   
+			
+		 
+	 
+	 
+		Medtronic Earnings-Presentation-FY26Q4
+
+	 
+ 
+
+					
+				 
+			
+				 
+					
+						 
+	 
+		 
+			 
+		 
+	 
+	 
+		  
+		 
+			     View File       Download File   
+			
+		 
+	 
+	 
+		Medtronic Q4-FY26---Financial-Schedules
+
+	 
+ 
+
+					
+				 
+			 
+		 
+
+
+			
+		
+
+ 
+
+
+/* Style Definitions */
+span.prnews_span
+{
+font-size:8pt;
+font-family:"Arial";
+color:black;
+}
+a.prnews_a
+{
+color:blue;
+}
+li.prnews_li
+{
+font-size:8pt;
+font-family:"Arial";
+color:black;
+}
+p.prnews_p
+{
+font-size:0.62em;
+font-family:"Arial";
+color:black;
+margin:0in;
+}
+.prngen10{
+PADDING-RIGHT:0.83em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen19{
+PADDING-RIGHT:0.50em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen12{
+PADDING-RIGHT:0.83em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 0.5pt solid; BORDER-LEFT:black 1pt
+}
+.prngen11{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen16{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: TOP; TEXT-ALIGN: RIGHT; BORDER-TOP:black 0pt; BORDER-RIGHT:black 0pt; BORDER-BOTTOM:black 0pt; BORDER-LEFT:black 0pt
+}
+.prngen13{
+PADDING-RIGHT:0.83em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 3PT double; BORDER-LEFT:black 1pt
+}
+.prngen23{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen3{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: CENTER; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen2{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: TOP; TEXT-ALIGN: LEFT; BORDER-TOP:black 0pt; BORDER-RIGHT:black 0pt; BORDER-BOTTOM:black 0pt; BORDER-LEFT:black 0pt
+}
+.prngen25{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 0.5pt solid; BORDER-LEFT:black 1pt
+}
+.prngen20{
+PADDING-RIGHT:0.50em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 0.5pt solid; BORDER-LEFT:black 1pt
+}
+.prngen26{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 3PT double; BORDER-LEFT:black 1pt
+}
+.prngen29{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: CENTER; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 0.5pt solid; BORDER-LEFT:black 1pt
+}
+.prngen27{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 3PT double; BORDER-LEFT:black 1pt
+}
+.prngen5{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: CENTER; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 0.5pt solid; BORDER-LEFT:black 1pt
+}
+.prngen28{
+PADDING-RIGHT:0.50em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 3PT double; BORDER-LEFT:black 1pt
+}
+.prngen24{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: RIGHT; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 0.5pt solid; BORDER-LEFT:black 1pt
+}
+.prngen8{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: CENTER; BORDER-TOP:black 0.5pt solid; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 0.5pt solid; BORDER-LEFT:black 1pt
+}
+.prngen30{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; TEXT-ALIGN: CENTER; BORDER-TOP:black 0.5pt solid; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 0.5pt solid; BORDER-LEFT:black 1pt
+}
+.prngen4{
+PADDING-RIGHT:0.83em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; FONT-SIZE: 8PT; FONT-FAMILY: ARIAL; COLOR: BLACK; MARGIN:0em; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen6{
+PADDING-RIGHT:0.83em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; FONT-SIZE: 8PT; FONT-FAMILY: ARIAL; COLOR: BLACK; MARGIN:0em; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 0.5pt solid
+}
+.prngen14{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: TOP; FONT-SIZE: 8PT; FONT-FAMILY: ARIAL; COLOR: BLACK; MARGIN:0em; BORDER-TOP:black 0pt; BORDER-RIGHT:black 0pt; BORDER-BOTTOM:black 0pt; BORDER-LEFT:black 0pt
+}
+.prngen21{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; FONT-SIZE: 8PT; FONT-FAMILY: ARIAL; COLOR: BLACK; MARGIN:0em; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen17{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; BORDER-TOP:black 0pt; BORDER-RIGHT:black 0pt; BORDER-BOTTOM:black 0pt; BORDER-LEFT:black 0pt
+}
+.prngen9{
+PADDING-RIGHT:0.17em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; BORDER-TOP:black 1pt; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen7{
+PADDING-RIGHT:0.83em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; FONT-SIZE: 8PT; FONT-FAMILY: ARIAL; COLOR: BLACK; MARGIN:0em; BORDER-TOP:black 0.5pt solid; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prngen15{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; FONT-SIZE: 8PT; FONT-FAMILY: ARIAL; COLOR: BLACK; MARGIN:0em; BORDER-TOP:black 0pt; BORDER-RIGHT:black 0pt; BORDER-BOTTOM:black 0pt; BORDER-LEFT:black 0pt
+}
+.prngen22{
+PADDING-RIGHT:0.33em; PADDING-LEFT:0.17em; VERTICAL-ALIGN: BOTTOM; FONT-SIZE: 8PT; FONT-FAMILY: ARIAL; COLOR: BLACK; MARGIN:0em; BORDER-TOP:black 0.5pt solid; BORDER-RIGHT:black 1pt; BORDER-BOTTOM:black 1pt; BORDER-LEFT:black 1pt
+}
+.prnrbrb1{
+BORDER-RIGHT:black 1pt
+}
+.prnsblb1{
+BORDER-LEFT:black 1pt
+}
+.prnml4{
+MARGIN-TOP:0em; MARGIN-RIGHT:0em; MARGIN-BOTTOM:0em; MARGIN-LEFT:0.33em !IMPORTANT
+}
+.prnpl2{
+PADDING-LEFT:0.17em
+}
+.prnml20{
+MARGIN-TOP:0em; MARGIN-RIGHT:0em; MARGIN-BOTTOM:0em; MARGIN-LEFT:1.67em !IMPORTANT
+}
+.prntac{
+TEXT-ALIGN: CENTER
+}
+.prnml10{
+MARGIN-TOP:0em; MARGIN-RIGHT:0em; MARGIN-BOTTOM:0em; MARGIN-LEFT:0.83em !IMPORTANT
+}
+.prnvab{
+VERTICAL-ALIGN: BOTTOM
+}
+.prncbts{
+BORDER-TOP:black 0.5pt solid
+}
+.prnpr2{
+PADDING-RIGHT:0.17em
+}
+.prnbcc{
+BORDER-COLLAPSE: COLLAPSE; BORDER-TOP:1pt  black; BORDER-RIGHT:1pt  black; BORDER-BOTTOM:1pt  black; BORDER-LEFT:1pt  black
+}
+.prnml30{
+MARGIN-TOP:0em; MARGIN-RIGHT:0em; MARGIN-BOTTOM:0em; MARGIN-LEFT:2.50em !IMPORTANT
+}
+.prnsbbb1{
+BORDER-BOTTOM:black 1pt
+}
+
+
+					span.prnews_span{
+						font-size:inherit;
+						font-family:inherit;
+					}
+					li.prnews_li{
+						font-size: inherit;
+						font-family: inherit;           
+					}
+					p.prnews_p{
+						font-size: inherit;
+						font-family: inherit;           
+					}
+				
+					div.PRN_ImbeddedAssetReference{
+						display: none;
+					}
+					div[id^="prni_dvprne"]{
+						display: none;
+					}
+				 
+
+
+ 
+
+ 
+	                                    
+ 
+
+
+			
+		
+
+  Disciplined execution and portfolio strength position Medtronic for continued momentum into fiscal year 2027 GALWAY, Ireland, June 3, 2026 /PRNewswire/ -- Medtronic plc (NYSE: MDT), a global...  
+
+   Disciplined execution and portfolio strength position Medtronic for continued momentum into fiscal year 2027  
+
+  GALWAY, Ireland ,  June 3, 2026  / PRNewswire / -- Medtronic plc (NYSE: MDT), a global leader in healthcare technology, today announced financial results for its fourth quarter (Q4) and fiscal year 2026 (FY26), which ended April 24, 2026. 
+
+   Q4 Key Highlights   
+
+ 
+	 Revenue of $9.8 billion, increased 9.9% as reported and 6.6% organic, 90 basis points ahead of Q4 implied guidance 
+	 GAAP diluted EPS of $0.96; non-GAAP diluted EPS of $1.55, ahead of guidance 
+	 Cardiac Ablation Solutions revenue increased 78% globally, including 124% U.S. growth, gaining an additional 8 points of U.S. share 
+	 Cardiovascular grew 10.1%, led by mid-single-digit growth in Cardiac Rhythm Management driven by continued strength across Cardiac Pacing Therapies and Defibrillation Solutions, including mid-teens growth in Micra&trade; and a strong OmniaSecure&trade; U.S. launch 
+	 Medical Surgical reported strong performance, up 5.1%, led by Acute Care &amp; Monitoring and Endoscopy, which were up low-double-digits and high-single-digits, respectively 
+	 Filed submission to U.S. FDA for Hugo&trade; RAS for the general surgery and gynecologic indications, as well as LigaSure&trade; RAS vessel sealer; received FDA clearance for ProGrip&trade; Advanced 
+	 Secured FDA Clearance for Spine, Cranial and ENT indications and CE Mark for Spine and Cranial indications for Stealth AXiS&trade; Surgical System 
+	 Executed several tuck-in M&amp;A and venture capital transactions to strengthen portfolios, accelerate growth, and expand into high-growth adjacencies: completed CathWorks acquisition in Coronary and Renal Denervation; announced intention to acquire both Scientia Vascular in Neurovascular and SPR Therapeutics in Neuromodulation (in May); entered into agreements with Merit Medical Systems to offer ViaVerte&trade; system in Neuromodulation; and an investment in Pulnovo Medical in Cardiovascular 
+	 Dividend for Q1 FY27 increased to $0.72 per share, implying annual $2.88 per share; 49 th  consecutive year of dividend increases 
+ 
+
+   FY26 Key Highlights    
+
+ 
+	 FY26 revenue of $36.4 billion, adjusted revenue of $36.3 billion, increased 8.4% as reported and 5.8% organic 
+	 FY26 GAAP diluted EPS of $3.73 increased 3.3%; non-GAAP diluted EPS of $5.53 increased 0.7% 
+	 FY26 operating margin was flat year-over-year; FY26 non-GAAP operating margin decreased 130 basis points, or 150 basis points constant currency 
+	 FY26 operating profit of $6.467 billion increased 8.6%; FY26 non-GAAP operating profit of $8.856 billion increased 2.4%, and decreased 0.6% constant currency 
+	 FY26 cash from operations of $7.3 billion with free cash flow of $5.4 billion; closed FY26 with $9.2 billion cash and investments 
+	 Company returned $4.2 billion to shareholders in FY26 
+ 
+
+ &quot;Our performance reflects the strongest annual top-line growth Medtronic has delivered in 10 years, powered by disciplined execution across our portfolio and continued operational rigor,&quot; said Geoff Martha, Medtronic chairman and chief executive officer. &quot;These results represent the compounding impact of deliberate choices we&#39;ve made to strengthen our strategy, sharpen execution, and invest in the areas that will drive our future. We saw continued strength in some of our largest businesses like CRM, CST and Surgical, and we are building momentum in our highest growth opportunities, such as Affera, Symplicity, Hugo, Altaviva and Stealth AXiS. Together with the investments we&#39;re making in our pipeline, Medtronic is well positioned to deliver sustained growth and long-term value.&quot; 
+
+   Q4 Financial Results   
+Medtronic reported Q4 worldwide revenue of $9.807 billion, an increase of 9.9% as reported and 6.6% on an organic basis. The Q4 FY26 organic revenue growth comparison excludes: 
+
+ 
+	 Other revenue of $34 million in the current year versus $31 million in the prior year 
+	 Revenue from the Dutch Obesity Clinic (NOK) divestiture with no revenue in the current year and $17 million in the prior year 
+	 Foreign exchange benefit of $308 million on the remaining net sales 
+ 
+
+ Q4 revenue included: 
+
+ 
+	 Cardiovascular Portfolio revenue of $3.797 billion increased 13.8% as reported and 10.1% organic, with high-teens increase in Cardiac Rhythm &amp; Heart Failure, low-single digit increase in Structural Heart &amp; Aortic, and low-single digit increase in Coronary &amp; Peripheral Vascular, all on an organic basis 
+	 Neuroscience Portfolio revenue of $2.751 billion increased 5.0% reported and 3.0% organic, with low-single digit increase in Neuromodulation, Cranial &amp; Spinal Technologies, and Specialty Therapies, all on an organic basis 
+	 Medical Surgical Portfolio revenue of $2.388 billion increased 8.0% as reported and 5.1% organic, with low-single digit increase in Surgical &amp; Endoscopy, and low-double-digit increase in Acute Care &amp; Monitoring, all on an organic basis 
+	 Diabetes business revenue of $837 million increased 15.0% as reported and 8.1% organic 1  
+ 
+
+ Q4 GAAP operating profit and operating margin were $1.873 billion and 19.1%, respectively, an increase of 30.4% and 300 bps, respectively. As detailed in the financial schedules included at the end of the release, Q4 non-GAAP operating profit and operating margin were $2.500 billion and 25.5%, respectively, an increase of 0.6% and a decrease of 230 basis points, respectively. The operating margin includes impacts of 160 basis points from the MiniMed Blackstone payment and 80 basis points from tariffs. 
+
+ Q4 GAAP net income and diluted earnings per share (EPS) were $1.243 billion and $0.96, respectively, representing increases of 17.6% and 17.1%, respectively. As detailed in the financial schedules included at the end of this release, Q4 non-GAAP net income and non-GAAP diluted EPS were $1.998 billion and $1.55, respectively, representing decreases of 3.9% and 4.3%, respectively. 
+
+   FY26 Financial Results    
+
+ 
+	 Medtronic reported FY26 worldwide revenue of $36.364 billion and adjusted revenue of $36.325 billion, an increase of 8.4% as reported and 5.8% on an organic basis. The FY26 organic revenue growth comparison excludes:
+	 
+		 Other revenue of $174 million in the current year and $48 million in the prior year 
+		 Revenue from the Dutch Obesity Clinic (NOK) divestiture of $5 million in the current year and $48 million in the prior year; and 
+		 Foreign exchange benefit of $819 million on the remaining net sales 
+	 
+	 
+ 
+
+ FY26 GAAP operating profit and operating margin were $6.467 billion and 17.8%, respectively, an increase of 8.6% and flat year-over-year, respectively. As detailed in the financial schedules included at the end of the release, FY26 non-GAAP operating profit and operating margin were $8.856 billion and 24.4%, respectively, an increase of 2.4% and a decrease of 130 basis points, respectively. On a constant currency basis, FY26 non-GAAP operating profit and operating margin decreased 0.6% and 150 basis points, respectively. The operating margin includes impacts of 45 basis points from the MiniMed Blackstone payment and 50 basis points from tariffs. 
+
+ FY26 GAAP net income and diluted EPS were $4.801 billion and $3.73, respectively, representing increases of 3.0% and 3.3%, respectively. As detailed in the financial schedules included at the end of this release, FY26 non-GAAP net income and non-GAAP diluted EPS were $7.120 billion and $5.53, respectively, representing increases of 0.6% and 0.7%, respectively. Included in FY26 non-GAAP diluted EPS was a $0.15 impact from foreign currency. FY26 non-GAAP diluted EPS on a constant currency basis decreased 2.0%. 
+
+ FY26 cash from operations of $7.330 billion increased 4.1%. FY26 free cash flow of $5.426 billion increased 4.6%, representing free cash flow conversion from non-GAAP net earnings of 76%. 
+
+   Dividend Increase   
+The company today announced that effective June 3, 2026, the Medtronic board of directors approved an increase in Medtronic&#39;s cash dividend for the first quarter of fiscal year 2027, raising the quarterly amount to $0.72 per ordinary share. This would translate into an annual amount of $2.88 per ordinary share. Today&#39;s announcement marks the 49th consecutive year of an increase in the dividend payment. The dividend is payable on July 17, 2026, to shareholders of record at the close of business on June 26, 2026. 
+
+   Guidance   
+The company is guiding to FY27 organic revenue growth of 6.75% to 7.25%. FY27 organic revenue growth guidance includes the impact of the 53 rd  week as well as revenue from the Diabetes business for the full fiscal year. Consistent with prior quarters, the organic revenue growth guidance excludes the impact of foreign currency exchange and Other revenue. 
+
+ The company is guiding to FY27 diluted non-GAAP EPS in the range of $5.90 to $6.00, representing FY27 diluted non-GAAP EPS growth in the range of 6.7% to 8.5%. This guidance includes the benefit of the 53 rd  week, increased M&amp;A, as well as impacts from tariffs, interest, tax expense, and assumes consolidation of the Diabetes business for the full 12 months of FY27. This guidance also includes an estimated neutral to 1% accretive impact from foreign currency exchange based on recent rates. 
+
+ &quot;We are pleased to have delivered results ahead of expectations on both revenue and EPS,&quot;&nbsp;said Thierry Pi&eacute;ton, Medtronic chief financial officer. &quot;As we look to FY27, we are entering the year with strong momentum, a resilient operating foundation, and a clear path to deliver durable growth. With a uniquely robust pipeline, our tuck-in M&amp;A and investment strategy activated, and continued financial discipline, we are poised to build on our FY26 performance.&quot; 
+
+   Video Webcast Information   
+Medtronic will host a video webcast today, June 3, at 7:45 a.m. EST (6:45 a.m. CST) to provide information about its business for the public, investors, analysts, and news media. This webcast can be accessed by clicking on the Quarterly Earnings icon at  investorrelations.medtronic.com , and this earnings release will be archived at  news.medtronic.com . Within 24 hours of the webcast, a replay of the webcast and transcript of the company&#39;s prepared remarks will be available by clicking on the Past Events and Presentations link under the News &amp; Events drop-down at  investorrelations.medtronic.com . 
+
+   Financial Schedules and Earnings Presentation   
+The fourth quarter and full year financial schedules and non-GAAP reconciliations can be viewed by clicking on the Quarterly Earnings link at  investorrelations.medtronic.com . To view a printable PDF of the financial schedules and non-GAAP reconciliations,  click here . To view the earnings presentation,  click here . 
+
+   About Medtronic   
+Bold thinking. Bolder actions. We are Medtronic. Medtronic plc, headquartered in Galway, Ireland, is the leading global healthcare technology company that boldly attacks the most challenging health problems facing humanity by searching out and finding solutions. Our Mission &mdash; to alleviate pain, restore health, and extend life &mdash; unites a global team of 95,000+ passionate people across more than 150 countries. Our technologies and therapies treat 70 health conditions and include cardiac devices, surgical robotics, insulin pumps, surgical tools, patient monitoring systems, and more. Powered by our diverse knowledge, insatiable curiosity, and desire to help all those who need it, we deliver innovative technologies that transform the lives of two people every second, every hour, every day. Expect more from us as we empower insight-driven care, experiences that put people first, and better outcomes for our world. In everything we do, we are engineering the extraordinary. For more information on Medtronic (NYSE: MDT), visit  www.Medtronic.com  and follow on  LinkedIn . 
+
+   FORWARD LOOKING STATEMENTS   
+ This press release contains forward-looking statements within the meaning of the Private Securities Litigation Reform Act of 1995, which are subject to risks and uncertainties, including risks related to competitive factors, difficulties and delays inherent in the development, manufacturing, marketing and sale of medical products, government regulation, geopolitical conflicts, changing global trade policies, material acquisition and divestiture transactions, general economic conditions, and other risks and uncertainties described in the company&#39;s periodic reports on file with the U.S. Securities and Exchange Commission including the most recent Annual Report on Form 10-K of the company. In some cases, you can identify these statements by forward-looking words or expressions, such as &quot;anticipate,&quot; &quot;believe,&quot; &quot;could,&quot; &quot;estimate,&quot; &quot;expect,&quot; &quot;forecast,&quot; &quot;intend,&quot; &quot;looking ahead,&quot; &quot;may,&quot; &quot;plan,&quot; &quot;possible,&quot; &quot;potential,&quot; &quot;project,&quot; &quot;should,&quot; &quot;going to,&quot; &quot;will,&quot; and similar words or expressions, the negative or plural of such words or expressions and other comparable terminology. Actual results may differ materially from anticipated results. Medtronic does not undertake to update its forward-looking statements or any of the information contained in this press release, including to reflect future events or circumstances.  
+
+   NON-GAAP FINANCIAL MEASURES   
+ This press release contains guidance and financial measures, including adjusted net income, adjusted diluted EPS, and organic revenue, which are considered &quot;non-GAAP&quot; financial measures under applicable SEC rules and regulations. Certain information in this press release also includes calculations or figures that have been prepared internally and have not been reviewed or audited by our independent registered public accounting firm. Use of different methods for preparing, calculating or presenting information may lead to differences and such differences may be material.  
+
+  Medtronic management believes that non-GAAP financial measures provide information useful to investors in understanding the company&#39;s underlying operational performance and trends and to facilitate comparisons with the performance of other companies in the med tech industry. Non-GAAP net income and diluted EPS exclude the effect of certain charges or gains that contribute to or reduce earnings but that result from transactions or events that management believes may or may not recur with similar materiality or impact to operations in future periods (Non-GAAP Adjustments). Medtronic generally uses non-GAAP financial measures to facilitate management&#39;s review of the operational performance of the company and as a basis for strategic planning. Non-GAAP financial measures should be considered supplemental to and not a substitute for financial information prepared in accordance with U.S. generally accepted accounting principles (GAAP), and investors are cautioned that Medtronic may calculate non-GAAP financial measures in a way that is different from other companies. Management strongly encourages investors to review the company&#39;s consolidated financial statements and publicly filed reports in their entirety. Reconciliations of the non-GAAP financial measures to the most directly comparable GAAP financial measures are included in the financial schedules accompanying this press release.  
+
+  Medtronic calculates forward-looking non-GAAP financial measures based on internal forecasts that omit certain amounts that would be included in GAAP financial measures. For instance, forward-looking organic revenue growth guidance excludes the impact of foreign currency fluctuations, revenue in the current and prior year reported as &quot;Other&quot;, as well as significant acquisitions, divestitures, or other significant discrete items. Forward-looking diluted non-GAAP EPS guidance also excludes other potential charges or gains that would be recorded as Non-GAAP Adjustments to earnings during the fiscal year. Medtronic does not attempt to provide reconciliations of forward-looking non-GAAP EPS guidance to projected GAAP EPS guidance because the combined impact and timing of recognition of these potential charges or gains is inherently uncertain and difficult to predict and is unavailable without unreasonable efforts. In addition, the company believes such reconciliations would imply a degree of precision and certainty that could be confusing to investors. Such items could have a substantial impact on GAAP measures of financial performance.  
+
+   FINANCIAL COMPARISONS   
+ References to quarterly or annual figures increasing, decreasing, or remaining flat are in comparison to fiscal year 2025, and references to sequential changes are in comparison to the prior fiscal quarter. Unless stated otherwise, quarterly and annual rates and ranges are given on an organic basis. References to organic revenue growth exclude the impact of foreign currency, fourth quarter and full year revenue in the current and prior year reported as &quot;Other&quot;, as well as significant acquisitions, divestitures, or other significant discrete items. Unless stated otherwise, all references to share gains or losses are as of the most recently completed calendar quarter, on a revenue basis, and in comparison, to the same period in the prior year.  
+
+   TRANSACTION DETAILS   
+ The separation of our Diabetes business is expected to occur through a series of capital markets transactions, which may include a spin-off, split-off, offering, or combination thereof. While an offering and split-off is the company&#39;s current preferred separation structure, a final decision has not been reached at this time.  
+
+  Contacts:  
+Justin Paquette 
+Public Relations 
++1-612-271-7935 
+
+ Ingrid Goldberg 
+Investor Relations 
++1-763-505-2696 
+
+ 
+ 
+	 
+		 
+			 
+			  ____________________________________  
+			 
+		 
+		 
+			 
+			   1   
+			 
+			 
+			  The Diabetes results presented here may not correspond to the same financial statement information presented by&nbsp;MiniMed Group, Inc. (MiniMed) due to MiniMed&#39;s financials being prepared on a carve out basis through the date of the company&#39;s initial public offering (IPO) and on a standalone basis post IPO.&nbsp;  
+			 
+		 
+	 
+ 
+ 
+
+ &nbsp; 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   WORLD WIDE REVENUE (1)    
+			 
+		 
+		 
+			 
+			  (Unaudited)  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   FOURTH QUARTER   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   FISCAL YEAR   
+			 
+		 
+		 
+			 &nbsp; 
+			 
+			   REPORTED   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   ORGANIC   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   REPORTED   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   ORGANIC   
+			 
+		 
+		 
+			 
+			   (in millions)   
+			 
+			 
+			  FY26  
+			 
+			 &nbsp; 
+			 
+			  FY25  
+			 
+			 &nbsp; 
+			 
+			  Growth   
+			 
+			 &nbsp; 
+			 
+			  Currency 
+			Impact (5)   
+			 
+			 &nbsp; 
+			 
+			  FY26 (6)   
+			 
+			 &nbsp; 
+			 
+			  FY25 (6)   
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  FY26  
+			 
+			 &nbsp; 
+			 
+			  FY25  
+			 
+			 &nbsp; 
+			 
+			  Growth   
+			 
+			 &nbsp; 
+			 
+			  Currency 
+			Impact (5)   
+			 
+			 &nbsp; 
+			 
+			  FY26 (7)   
+			 
+			 &nbsp; 
+			 
+			  FY25 (7)   
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+		 
+		 
+			 
+			   Cardiovascular   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp; 3,797   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 3,336   
+			 
+			 &nbsp; 
+			 
+			   13.8&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 124   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 3,673   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 3,336   
+			 
+			 &nbsp; 
+			 
+			   10.1&nbsp;%   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 13,976   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 12,481   
+			 
+			 &nbsp; 
+			 
+			   12.0&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 337   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 13,639   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 12,481   
+			 
+			 &nbsp; 
+			 
+			   9.3&nbsp;%   
+			 
+		 
+		 
+			 
+			  Cardiac Rhythm &amp; Heart Failure  
+			 
+			 
+			  2,110  
+			 
+			 &nbsp; 
+			 
+			  1,733  
+			 
+			 &nbsp; 
+			 
+			  21.8  
+			 
+			 &nbsp; 
+			 
+			  62  
+			 
+			 &nbsp; 
+			 
+			  2,048  
+			 
+			 &nbsp; 
+			 
+			  1,733  
+			 
+			 &nbsp; 
+			 
+			  18.2  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  7,504  
+			 
+			 &nbsp; 
+			 
+			  6,392  
+			 
+			 &nbsp; 
+			 
+			  17.4  
+			 
+			 &nbsp; 
+			 
+			  169  
+			 
+			 &nbsp; 
+			 
+			  7,335  
+			 
+			 &nbsp; 
+			 
+			  6,392  
+			 
+			 &nbsp; 
+			 
+			  14.8  
+			 
+		 
+		 
+			 
+			  Structural Heart &amp; Aortic  
+			 
+			 
+			  1,002  
+			 
+			 &nbsp; 
+			 
+			  944  
+			 
+			 &nbsp; 
+			 
+			  6.2  
+			 
+			 &nbsp; 
+			 
+			  40  
+			 
+			 &nbsp; 
+			 
+			  963  
+			 
+			 &nbsp; 
+			 
+			  944  
+			 
+			 &nbsp; 
+			 
+			  2.0  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  3,817  
+			 
+			 &nbsp; 
+			 
+			  3,554  
+			 
+			 &nbsp; 
+			 
+			  7.4  
+			 
+			 &nbsp; 
+			 
+			  111  
+			 
+			 &nbsp; 
+			 
+			  3,706  
+			 
+			 &nbsp; 
+			 
+			  3,554  
+			 
+			 &nbsp; 
+			 
+			  4.3  
+			 
+		 
+		 
+			 
+			  Coronary &amp; Peripheral Vascular  
+			 
+			 
+			  685  
+			 
+			 &nbsp; 
+			 
+			  659  
+			 
+			 &nbsp; 
+			 
+			  4.0  
+			 
+			 &nbsp; 
+			 
+			  22  
+			 
+			 &nbsp; 
+			 
+			  663  
+			 
+			 &nbsp; 
+			 
+			  659  
+			 
+			 &nbsp; 
+			 
+			  0.6  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  2,656  
+			 
+			 &nbsp; 
+			 
+			  2,535  
+			 
+			 &nbsp; 
+			 
+			  4.8  
+			 
+			 &nbsp; 
+			 
+			  57  
+			 
+			 &nbsp; 
+			 
+			  2,598  
+			 
+			 &nbsp; 
+			 
+			  2,535  
+			 
+			 &nbsp; 
+			 
+			  2.5  
+			 
+		 
+		 
+			 
+			   Neuroscience   
+			 
+			 
+			   2,751   
+			 
+			 &nbsp; 
+			 
+			   2,620   
+			 
+			 &nbsp; 
+			 
+			   5.0   
+			 
+			 &nbsp; 
+			 
+			   52   
+			 
+			 &nbsp; 
+			 
+			   2,699   
+			 
+			 &nbsp; 
+			 
+			   2,620   
+			 
+			 &nbsp; 
+			 
+			   3.0   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   10,287   
+			 
+			 &nbsp; 
+			 
+			   9,846   
+			 
+			 &nbsp; 
+			 
+			   4.5   
+			 
+			 &nbsp; 
+			 
+			   133   
+			 
+			 &nbsp; 
+			 
+			   10,154   
+			 
+			 &nbsp; 
+			 
+			   9,846   
+			 
+			 &nbsp; 
+			 
+			   3.1   
+			 
+		 
+		 
+			 
+			  Cranial &amp; Spinal Technologies  
+			 
+			 
+			  1,403  
+			 
+			 &nbsp; 
+			 
+			  1,342  
+			 
+			 &nbsp; 
+			 
+			  4.6  
+			 
+			 &nbsp; 
+			 
+			  18  
+			 
+			 &nbsp; 
+			 
+			  1,385  
+			 
+			 &nbsp; 
+			 
+			  1,342  
+			 
+			 &nbsp; 
+			 
+			  3.3  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  5,222  
+			 
+			 &nbsp; 
+			 
+			  4,973  
+			 
+			 &nbsp; 
+			 
+			  5.0  
+			 
+			 &nbsp; 
+			 
+			  49  
+			 
+			 &nbsp; 
+			 
+			  5,173  
+			 
+			 &nbsp; 
+			 
+			  4,973  
+			 
+			 &nbsp; 
+			 
+			  4.0  
+			 
+		 
+		 
+			 
+			  Specialty Therapies  
+			 
+			 
+			  806  
+			 
+			 &nbsp; 
+			 
+			  759  
+			 
+			 &nbsp; 
+			 
+			  6.2  
+			 
+			 &nbsp; 
+			 
+			  21  
+			 
+			 &nbsp; 
+			 
+			  785  
+			 
+			 &nbsp; 
+			 
+			  759  
+			 
+			 &nbsp; 
+			 
+			  3.4  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  2,997  
+			 
+			 &nbsp; 
+			 
+			  2,940  
+			 
+			 &nbsp; 
+			 
+			  1.9  
+			 
+			 &nbsp; 
+			 
+			  49  
+			 
+			 &nbsp; 
+			 
+			  2,948  
+			 
+			 &nbsp; 
+			 
+			  2,940  
+			 
+			 &nbsp; 
+			 
+			  0.3  
+			 
+		 
+		 
+			 
+			  Neuromodulation  
+			 
+			 
+			  542  
+			 
+			 &nbsp; 
+			 
+			  520  
+			 
+			 &nbsp; 
+			 
+			  4.3  
+			 
+			 &nbsp; 
+			 
+			  13  
+			 
+			 &nbsp; 
+			 
+			  528  
+			 
+			 &nbsp; 
+			 
+			  520  
+			 
+			 &nbsp; 
+			 
+			  1.7  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  2,068  
+			 
+			 &nbsp; 
+			 
+			  1,932  
+			 
+			 &nbsp; 
+			 
+			  7.0  
+			 
+			 &nbsp; 
+			 
+			  36  
+			 
+			 &nbsp; 
+			 
+			  2,033  
+			 
+			 &nbsp; 
+			 
+			  1,932  
+			 
+			 &nbsp; 
+			 
+			  5.2  
+			 
+		 
+		 
+			 
+			   Medical Surgical   
+			 
+			 
+			   2,388   
+			 
+			 &nbsp; 
+			 
+			   2,212   
+			 
+			 &nbsp; 
+			 
+			   8.0   
+			 
+			 &nbsp; 
+			 
+			   81   
+			 
+			 &nbsp; 
+			 
+			   2,306   
+			 
+			 &nbsp; 
+			 
+			   2,195   
+			 
+			 &nbsp; 
+			 
+			   5.1   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   8,815   
+			 
+			 &nbsp; 
+			 
+			   8,407   
+			 
+			 &nbsp; 
+			 
+			   4.9   
+			 
+			 &nbsp; 
+			 
+			   210   
+			 
+			 &nbsp; 
+			 
+			   8,601   
+			 
+			 &nbsp; 
+			 
+			   8,359   
+			 
+			 &nbsp; 
+			 
+			   2.9   
+			 
+		 
+		 
+			 
+			  Surgical &amp; Endoscopy  
+			 
+			 
+			  1,820  
+			 
+			 &nbsp; 
+			 
+			  1,709  
+			 
+			 &nbsp; 
+			 
+			  6.5  
+			 
+			 &nbsp; 
+			 
+			  69  
+			 
+			 &nbsp; 
+			 
+			  1,750  
+			 
+			 &nbsp; 
+			 
+			  1,692  
+			 
+			 &nbsp; 
+			 
+			  3.5  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  6,764  
+			 
+			 &nbsp; 
+			 
+			  6,498  
+			 
+			 &nbsp; 
+			 
+			  4.1  
+			 
+			 &nbsp; 
+			 
+			  176  
+			 
+			 &nbsp; 
+			 
+			  6,585  
+			 
+			 &nbsp; 
+			 
+			  6,450  
+			 
+			 &nbsp; 
+			 
+			  2.1  
+			 
+		 
+		 
+			 
+			  Acute Care &amp; Monitoring  
+			 
+			 
+			  568  
+			 
+			 &nbsp; 
+			 
+			  503  
+			 
+			 &nbsp; 
+			 
+			  12.9  
+			 
+			 &nbsp; 
+			 
+			  12  
+			 
+			 &nbsp; 
+			 
+			  556  
+			 
+			 &nbsp; 
+			 
+			  503  
+			 
+			 &nbsp; 
+			 
+			  10.5  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  2,051  
+			 
+			 &nbsp; 
+			 
+			  1,909  
+			 
+			 &nbsp; 
+			 
+			  7.4  
+			 
+			 &nbsp; 
+			 
+			  34  
+			 
+			 &nbsp; 
+			 
+			  2,017  
+			 
+			 &nbsp; 
+			 
+			  1,909  
+			 
+			 &nbsp; 
+			 
+			  5.6  
+			 
+		 
+		 
+			 
+			   Total Reportable Segments   
+			 
+			 
+			   8,936   
+			 
+			 &nbsp; 
+			 
+			   8,168   
+			 
+			 &nbsp; 
+			 
+			   9.4   
+			 
+			 &nbsp; 
+			 
+			   258   
+			 
+			 &nbsp; 
+			 
+			   8,678   
+			 
+			 &nbsp; 
+			 
+			   8,151   
+			 
+			 &nbsp; 
+			 
+			   6.5   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   33,079   
+			 
+			 &nbsp; 
+			 
+			   30,734   
+			 
+			 &nbsp; 
+			 
+			   7.6   
+			 
+			 &nbsp; 
+			 
+			   680   
+			 
+			 &nbsp; 
+			 
+			   32,394   
+			 
+			 &nbsp; 
+			 
+			   30,686   
+			 
+			 &nbsp; 
+			 
+			   5.6   
+			 
+		 
+		 
+			 
+			   Diabetes  (2)     
+			 
+			 
+			   837   
+			 
+			 &nbsp; 
+			 
+			   728   
+			 
+			 &nbsp; 
+			 
+			   15.0   
+			 
+			 &nbsp; 
+			 
+			   50   
+			 
+			 &nbsp; 
+			 
+			   787   
+			 
+			 &nbsp; 
+			 
+			   728   
+			 
+			 &nbsp; 
+			 
+			   8.1   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   3,112   
+			 
+			 &nbsp; 
+			 
+			   2,755   
+			 
+			 &nbsp; 
+			 
+			   12.9   
+			 
+			 &nbsp; 
+			 
+			   140   
+			 
+			 &nbsp; 
+			 
+			   2,972   
+			 
+			 &nbsp; 
+			 
+			   2,755   
+			 
+			 &nbsp; 
+			 
+			   7.9   
+			 
+		 
+		 
+			 
+			   Other  (3)     
+			 
+			 
+			   34   
+			 
+			 &nbsp; 
+			 
+			   31   
+			 
+			 &nbsp; 
+			 
+			   10.0   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   174   
+			 
+			 &nbsp; 
+			 
+			   48   
+			 
+			 &nbsp; 
+			 
+			   NM  (4)     
+			 
+			 &nbsp; 
+			 
+			   4   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+		 
+		 
+			 
+			   TOTAL   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp; 9,807   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 8,927   
+			 
+			 &nbsp; 
+			 
+			   9.9&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 308   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 9,466   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 8,879   
+			 
+			 &nbsp; 
+			 
+			   6.6&nbsp;%   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 36,364   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 33,537   
+			 
+			 &nbsp; 
+			 
+			   8.4&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 824   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 35,366   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 33,441   
+			 
+			 &nbsp; 
+			 
+			   5.8&nbsp;%   
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  (1)  
+			 
+			 
+			  The data in this schedule has been intentionally rounded to the nearest million and, therefore, may not sum. Percentages have been calculated using actual, non-rounded figures and, therefore, may not recalculate precisely.  
+			 
+		 
+		 
+			 
+			  (2)  
+			 
+			 
+			  The Diabetes results presented here may not correspond to the same financial statement information presented by MiniMed Group, Inc. (MiniMed). The Diabetes Business as reported by Medtronic is prepared on a different basis than standalone Medtronic due to MiniMed&#39;s financials being prepared on a carve out basis through the date of the company&#39;s initial public offering (IPO) and on a standalone basis post IPO.  
+			 
+		 
+		 
+			 
+			  (3)  
+			 
+			 
+			  Includes the historical operations and ongoing transition agreements from businesses the Company has exited or divested, and for the year-to-date figures, adjustments to the Company&#39;s Italian payback accruals resulting from the two July 22, 2024 rulings by the Constitutional Court and the Legislative Decree published by the Italian government on June 30, 2025 for certain prior years since 2015.  
+			 
+		 
+		 
+			 
+			  (4)  
+			 
+			 
+			  Not meaningful (NM)  
+			 
+		 
+		 
+			 
+			  (5)  
+			 
+			 
+			  The currency impact to revenue measures the change in revenue between current and prior year periods using constant exchange rates.  
+			 
+		 
+		 
+			 
+			  (6)  
+			 
+			 
+			  The three months ended April 24, 2026 excludes $342 million of revenue adjustments related to $34 million of inorganic revenue for the transition activity noted in (2) and $308 million of favorable currency impact on the remaining net sales. The three months ended April 25, 2025 excludes $48 million of revenue adjustments related to $31 million of inorganic revenue for the transition activity noted in (2) and $17 million of inorganic revenue related to a sale of business in the Surgical and Endoscopy division.  
+			 
+		 
+		 
+			 
+			  (7)  
+			 
+			 
+			  The twelve months ended April 24, 2026 excludes $998 million of revenue adjustments, including $39 million reduction in the Italian payback accruals due to changes in estimates further described in note (2), $135 million of inorganic revenue for the transition activity noted in (2), $5 million of inorganic revenue related to a sale of business in the Surgical and Endoscopy division, and $819&nbsp;million of favorable currency impact on the remaining net sales. The twelve months ended April&nbsp;25, 2025 excludes $96&nbsp;million of revenue adjustments related to $90&nbsp;million of incremental Italian payback accruals further described in note (2), $137&nbsp;million of inorganic revenue for the transition activity noted in (2), and $48&nbsp;million of inorganic revenue related to a sale of business in the Surgical and Endoscopy division.  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   U.S.&nbsp;REVENUE (1)(2)    
+			 
+		 
+		 
+			 
+			  (Unaudited)  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   FOURTH QUARTER   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   FISCAL YEAR   
+			 
+		 
+		 
+			 &nbsp; 
+			 
+			   REPORTED   
+			 
+			 &nbsp; 
+			 
+			   ORGANIC   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   REPORTED   
+			 
+			 &nbsp; 
+			 
+			   ORGANIC   
+			 
+		 
+		 
+			 
+			   (in millions)   
+			 
+			 
+			  FY26  
+			 
+			 &nbsp; 
+			 
+			  FY25  
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+			 &nbsp; 
+			 
+			  FY26  
+			 
+			 &nbsp; 
+			 
+			  FY25  
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  FY26  
+			 
+			 &nbsp; 
+			 
+			  FY25  
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+			 &nbsp; 
+			 
+			  FY26  
+			 
+			 &nbsp; 
+			 
+			  FY25  
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+		 
+		 
+			 
+			   Cardiovascular   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp; 1,775   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 1,563   
+			 
+			 &nbsp; 
+			 
+			   13.6&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 1,775   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 1,563   
+			 
+			 &nbsp; 
+			 
+			   13.6&nbsp;%   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   $&nbsp; &nbsp; &nbsp;6,435   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp; &nbsp; &nbsp;5,804   
+			 
+			 &nbsp; 
+			 
+			   10.9&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp; &nbsp; &nbsp;6,435   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp; &nbsp; &nbsp;5,804   
+			 
+			 &nbsp; 
+			 
+			   10.9&nbsp;%   
+			 
+		 
+		 
+			 
+			  Cardiac Rhythm &amp; Heart Failure  
+			 
+			 
+			  1,105  
+			 
+			 &nbsp; 
+			 
+			  875  
+			 
+			 &nbsp; 
+			 
+			  26.3  
+			 
+			 &nbsp; 
+			 
+			  1,105  
+			 
+			 &nbsp; 
+			 
+			  875  
+			 
+			 &nbsp; 
+			 
+			  26.3  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  3,812  
+			 
+			 &nbsp; 
+			 
+			  3,184  
+			 
+			 &nbsp; 
+			 
+			  19.7  
+			 
+			 &nbsp; 
+			 
+			  3,812  
+			 
+			 &nbsp; 
+			 
+			  3,184  
+			 
+			 &nbsp; 
+			 
+			  19.7  
+			 
+		 
+		 
+			 
+			  Structural Heart &amp; Aortic  
+			 
+			 
+			  387  
+			 
+			 &nbsp; 
+			 
+			  404  
+			 
+			 &nbsp; 
+			 
+			  (4.0)  
+			 
+			 &nbsp; 
+			 
+			  387  
+			 
+			 &nbsp; 
+			 
+			  404  
+			 
+			 &nbsp; 
+			 
+			  (4.0)  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  1,515  
+			 
+			 &nbsp; 
+			 
+			  1,532  
+			 
+			 &nbsp; 
+			 
+			  (1.1)  
+			 
+			 &nbsp; 
+			 
+			  1,515  
+			 
+			 &nbsp; 
+			 
+			  1,532  
+			 
+			 &nbsp; 
+			 
+			  (1.1)  
+			 
+		 
+		 
+			 
+			  Coronary &amp; Peripheral Vascular  
+			 
+			 
+			  282  
+			 
+			 &nbsp; 
+			 
+			  284  
+			 
+			 &nbsp; 
+			 
+			  (0.6)  
+			 
+			 &nbsp; 
+			 
+			  282  
+			 
+			 &nbsp; 
+			 
+			  284  
+			 
+			 &nbsp; 
+			 
+			  (0.6)  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  1,107  
+			 
+			 &nbsp; 
+			 
+			  1,088  
+			 
+			 &nbsp; 
+			 
+			  1.7  
+			 
+			 &nbsp; 
+			 
+			  1,107  
+			 
+			 &nbsp; 
+			 
+			  1,088  
+			 
+			 &nbsp; 
+			 
+			  1.7  
+			 
+		 
+		 
+			 
+			   Neuroscience   
+			 
+			 
+			   1,812   
+			 
+			 &nbsp; 
+			 
+			   1,782   
+			 
+			 &nbsp; 
+			 
+			   1.7   
+			 
+			 &nbsp; 
+			 
+			   1,812   
+			 
+			 &nbsp; 
+			 
+			   1,782   
+			 
+			 &nbsp; 
+			 
+			   1.7   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   6,875   
+			 
+			 &nbsp; 
+			 
+			   6,713   
+			 
+			 &nbsp; 
+			 
+			   2.4   
+			 
+			 &nbsp; 
+			 
+			   6,875   
+			 
+			 &nbsp; 
+			 
+			   6,713   
+			 
+			 &nbsp; 
+			 
+			   2.4   
+			 
+		 
+		 
+			 
+			  Cranial &amp; Spinal Technologies  
+			 
+			 
+			  1,031  
+			 
+			 &nbsp; 
+			 
+			  999  
+			 
+			 &nbsp; 
+			 
+			  3.2  
+			 
+			 &nbsp; 
+			 
+			  1,031  
+			 
+			 &nbsp; 
+			 
+			  999  
+			 
+			 &nbsp; 
+			 
+			  3.2  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  3,864  
+			 
+			 &nbsp; 
+			 
+			  3,723  
+			 
+			 &nbsp; 
+			 
+			  3.8  
+			 
+			 &nbsp; 
+			 
+			  3,864  
+			 
+			 &nbsp; 
+			 
+			  3,723  
+			 
+			 &nbsp; 
+			 
+			  3.8  
+			 
+		 
+		 
+			 
+			  Specialty Therapies  
+			 
+			 
+			  431  
+			 
+			 &nbsp; 
+			 
+			  431  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  431  
+			 
+			 &nbsp; 
+			 
+			  431  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  1,635  
+			 
+			 &nbsp; 
+			 
+			  1,666  
+			 
+			 &nbsp; 
+			 
+			  (1.9)  
+			 
+			 &nbsp; 
+			 
+			  1,635  
+			 
+			 &nbsp; 
+			 
+			  1,666  
+			 
+			 &nbsp; 
+			 
+			  (1.9)  
+			 
+		 
+		 
+			 
+			  Neuromodulation  
+			 
+			 
+			  350  
+			 
+			 &nbsp; 
+			 
+			  352  
+			 
+			 &nbsp; 
+			 
+			  (0.6)  
+			 
+			 &nbsp; 
+			 
+			  350  
+			 
+			 &nbsp; 
+			 
+			  352  
+			 
+			 &nbsp; 
+			 
+			  (0.6)  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  1,376  
+			 
+			 &nbsp; 
+			 
+			  1,324  
+			 
+			 &nbsp; 
+			 
+			  3.9  
+			 
+			 &nbsp; 
+			 
+			  1,376  
+			 
+			 &nbsp; 
+			 
+			  1,324  
+			 
+			 &nbsp; 
+			 
+			  3.9  
+			 
+		 
+		 
+			 
+			   Medical Surgical   
+			 
+			 
+			   1,021   
+			 
+			 &nbsp; 
+			 
+			   946   
+			 
+			 &nbsp; 
+			 
+			   8.0   
+			 
+			 &nbsp; 
+			 
+			   1,021   
+			 
+			 &nbsp; 
+			 
+			   946   
+			 
+			 &nbsp; 
+			 
+			   8.0   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   3,778   
+			 
+			 &nbsp; 
+			 
+			   3,664   
+			 
+			 &nbsp; 
+			 
+			   3.1   
+			 
+			 &nbsp; 
+			 
+			   3,778   
+			 
+			 &nbsp; 
+			 
+			   3,664   
+			 
+			 &nbsp; 
+			 
+			   3.1   
+			 
+		 
+		 
+			 
+			  Surgical &amp; Endoscopy  
+			 
+			 
+			  694  
+			 
+			 &nbsp; 
+			 
+			  668  
+			 
+			 &nbsp; 
+			 
+			  3.9  
+			 
+			 &nbsp; 
+			 
+			  694  
+			 
+			 &nbsp; 
+			 
+			  668  
+			 
+			 &nbsp; 
+			 
+			  3.9  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  2,614  
+			 
+			 &nbsp; 
+			 
+			  2,595  
+			 
+			 &nbsp; 
+			 
+			  0.7  
+			 
+			 &nbsp; 
+			 
+			  2,614  
+			 
+			 &nbsp; 
+			 
+			  2,595  
+			 
+			 &nbsp; 
+			 
+			  0.7  
+			 
+		 
+		 
+			 
+			  Acute Care &amp; Monitoring  
+			 
+			 
+			  328  
+			 
+			 &nbsp; 
+			 
+			  278  
+			 
+			 &nbsp; 
+			 
+			  17.9  
+			 
+			 &nbsp; 
+			 
+			  328  
+			 
+			 &nbsp; 
+			 
+			  278  
+			 
+			 &nbsp; 
+			 
+			  17.9  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  1,164  
+			 
+			 &nbsp; 
+			 
+			  1,068  
+			 
+			 &nbsp; 
+			 
+			  9.0  
+			 
+			 &nbsp; 
+			 
+			  1,164  
+			 
+			 &nbsp; 
+			 
+			  1,068  
+			 
+			 &nbsp; 
+			 
+			  9.0  
+			 
+		 
+		 
+			 
+			   Total Reportable Segments   
+			 
+			 
+			   4,609   
+			 
+			 &nbsp; 
+			 
+			   4,291   
+			 
+			 &nbsp; 
+			 
+			   7.4   
+			 
+			 &nbsp; 
+			 
+			   4,609   
+			 
+			 &nbsp; 
+			 
+			   4,291   
+			 
+			 &nbsp; 
+			 
+			   7.4   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   17,088   
+			 
+			 &nbsp; 
+			 
+			   16,181   
+			 
+			 &nbsp; 
+			 
+			   5.6   
+			 
+			 &nbsp; 
+			 
+			   17,088   
+			 
+			 &nbsp; 
+			 
+			   16,181   
+			 
+			 &nbsp; 
+			 
+			   5.6   
+			 
+		 
+		 
+			 
+			   Diabetes  (3)     
+			 
+			 
+			   239   
+			 
+			 &nbsp; 
+			 
+			   240   
+			 
+			 &nbsp; 
+			 
+			   (0.2)   
+			 
+			 &nbsp; 
+			 
+			   239   
+			 
+			 &nbsp; 
+			 
+			   240   
+			 
+			 &nbsp; 
+			 
+			   (0.2)   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   934   
+			 
+			 &nbsp; 
+			 
+			   923   
+			 
+			 &nbsp; 
+			 
+			   1.2   
+			 
+			 &nbsp; 
+			 
+			   934   
+			 
+			 &nbsp; 
+			 
+			   923   
+			 
+			 &nbsp; 
+			 
+			   1.2   
+			 
+		 
+		 
+			 
+			   Other  (4)     
+			 
+			 
+			   21   
+			 
+			 &nbsp; 
+			 
+			   17   
+			 
+			 &nbsp; 
+			 
+			   27.6   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   81   
+			 
+			 &nbsp; 
+			 
+			   68   
+			 
+			 &nbsp; 
+			 
+			   19.4   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+		 
+		 
+			 
+			   TOTAL   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp; 4,869   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 4,547   
+			 
+			 &nbsp; 
+			 
+			   7.1&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 4,848   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 4,530   
+			 
+			 &nbsp; 
+			 
+			   7.0&nbsp;%   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 18,103   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 17,171   
+			 
+			 &nbsp; 
+			 
+			   5.4&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 18,022   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 17,104   
+			 
+			 &nbsp; 
+			 
+			   5.4&nbsp;%   
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  (1)  
+			 
+			 
+			  U.S. includes the United States and U.S. territories.  
+			 
+		 
+		 
+			 
+			  (2)  
+			 
+			 
+			  The data in this schedule has been intentionally rounded to the nearest million and, therefore, may not sum. Percentages have been calculated using actual, non-rounded figures and, therefore, may not recalculate precisely.  
+			 
+		 
+		 
+			 
+			  (3)  
+			 
+			 
+			  The Diabetes results presented here may not correspond to the same financial statement information presented by MiniMed Group, Inc. (MiniMed). The Diabetes Business as reported by Medtronic is prepared on a different basis than standalone Medtronic due to MiniMed&#39;s financials being prepared on a carve out basis through the date of the company&#39;s initial public offering (IPO) and on a standalone basis post IPO.  
+			 
+		 
+		 
+			 
+			  (4)  
+			 
+			 
+			  Includes the historical operations and ongoing transition agreements from businesses the Company has exited or divested.  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   INTERNATIONAL REVENUE (1)    
+			 
+		 
+		 
+			 
+			  (Unaudited)  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   FOURTH QUARTER   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   FISCAL YEAR   
+			 
+		 
+		 
+			 &nbsp; 
+			 
+			   REPORTED   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   ORGANIC   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   REPORTED   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   ORGANIC   
+			 
+		 
+		 
+			 
+			   (in millions)   
+			 
+			 
+			  FY26  
+			 
+			 &nbsp; 
+			 
+			  FY25  
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+			 &nbsp; 
+			 
+			  Currency 
+			Impact (5)   
+			 
+			 &nbsp; 
+			 
+			  FY26 (6)   
+			 
+			 &nbsp; 
+			 
+			  FY25 (6)   
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  FY26  
+			 
+			 &nbsp; 
+			 
+			  FY25  
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+			 &nbsp; 
+			 
+			  Currency 
+			Impact (5)   
+			 
+			 &nbsp; 
+			 
+			  FY26 (7)   
+			 
+			 &nbsp; 
+			 
+			  FY25 (7)   
+			 
+			 &nbsp; 
+			 
+			  Growth  
+			 
+		 
+		 
+			 
+			   Cardiovascular   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 2,023   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 1,773   
+			 
+			 &nbsp; 
+			 
+			   14.1&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 124   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 1,898   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 1,773   
+			 
+			 &nbsp; 
+			 
+			   7.1&nbsp;%   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 7,541   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 6,677   
+			 
+			 &nbsp; 
+			 
+			   12.9&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 337   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 7,204   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 6,677   
+			 
+			 &nbsp; 
+			 
+			   7.9&nbsp;%   
+			 
+		 
+		 
+			 
+			  Cardiac Rhythm &amp; Heart Failure  
+			 
+			 
+			  1,005  
+			 
+			 &nbsp; 
+			 
+			  858  
+			 
+			 &nbsp; 
+			 
+			  17.1  
+			 
+			 &nbsp; 
+			 
+			  62  
+			 
+			 &nbsp; 
+			 
+			  943  
+			 
+			 &nbsp; 
+			 
+			  858  
+			 
+			 &nbsp; 
+			 
+			  9.9  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  3,691  
+			 
+			 &nbsp; 
+			 
+			  3,208  
+			 
+			 &nbsp; 
+			 
+			  15.1  
+			 
+			 &nbsp; 
+			 
+			  169  
+			 
+			 &nbsp; 
+			 
+			  3,522  
+			 
+			 &nbsp; 
+			 
+			  3,208  
+			 
+			 &nbsp; 
+			 
+			  9.8  
+			 
+		 
+		 
+			 
+			  Structural Heart &amp; Aortic  
+			 
+			 
+			  615  
+			 
+			 &nbsp; 
+			 
+			  541  
+			 
+			 &nbsp; 
+			 
+			  13.8  
+			 
+			 &nbsp; 
+			 
+			  40  
+			 
+			 &nbsp; 
+			 
+			  575  
+			 
+			 &nbsp; 
+			 
+			  541  
+			 
+			 &nbsp; 
+			 
+			  6.4  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  2,301  
+			 
+			 &nbsp; 
+			 
+			  2,022  
+			 
+			 &nbsp; 
+			 
+			  13.8  
+			 
+			 &nbsp; 
+			 
+			  111  
+			 
+			 &nbsp; 
+			 
+			  2,190  
+			 
+			 &nbsp; 
+			 
+			  2,022  
+			 
+			 &nbsp; 
+			 
+			  8.3  
+			 
+		 
+		 
+			 
+			  Coronary &amp; Peripheral Vascular  
+			 
+			 
+			  403  
+			 
+			 &nbsp; 
+			 
+			  375  
+			 
+			 &nbsp; 
+			 
+			  7.5  
+			 
+			 &nbsp; 
+			 
+			  22  
+			 
+			 &nbsp; 
+			 
+			  380  
+			 
+			 &nbsp; 
+			 
+			  375  
+			 
+			 &nbsp; 
+			 
+			  1.6  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  1,549  
+			 
+			 &nbsp; 
+			 
+			  1,447  
+			 
+			 &nbsp; 
+			 
+			  7.0  
+			 
+			 &nbsp; 
+			 
+			  57  
+			 
+			 &nbsp; 
+			 
+			  1,491  
+			 
+			 &nbsp; 
+			 
+			  1,447  
+			 
+			 &nbsp; 
+			 
+			  3.1  
+			 
+		 
+		 
+			 
+			   Neuroscience   
+			 
+			 
+			   938   
+			 
+			 &nbsp; 
+			 
+			   838   
+			 
+			 &nbsp; 
+			 
+			   12.0   
+			 
+			 &nbsp; 
+			 
+			   52   
+			 
+			 &nbsp; 
+			 
+			   886   
+			 
+			 &nbsp; 
+			 
+			   838   
+			 
+			 &nbsp; 
+			 
+			   5.8   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   3,412   
+			 
+			 &nbsp; 
+			 
+			   3,133   
+			 
+			 &nbsp; 
+			 
+			   8.9   
+			 
+			 &nbsp; 
+			 
+			   133   
+			 
+			 &nbsp; 
+			 
+			   3,279   
+			 
+			 &nbsp; 
+			 
+			   3,133   
+			 
+			 &nbsp; 
+			 
+			   4.7   
+			 
+		 
+		 
+			 
+			  Cranial &amp; Spinal Technologies  
+			 
+			 
+			  372  
+			 
+			 &nbsp; 
+			 
+			  343  
+			 
+			 &nbsp; 
+			 
+			  8.6  
+			 
+			 &nbsp; 
+			 
+			  18  
+			 
+			 &nbsp; 
+			 
+			  354  
+			 
+			 &nbsp; 
+			 
+			  343  
+			 
+			 &nbsp; 
+			 
+			  3.3  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  1,358  
+			 
+			 &nbsp; 
+			 
+			  1,250  
+			 
+			 &nbsp; 
+			 
+			  8.6  
+			 
+			 &nbsp; 
+			 
+			  49  
+			 
+			 &nbsp; 
+			 
+			  1,309  
+			 
+			 &nbsp; 
+			 
+			  1,250  
+			 
+			 &nbsp; 
+			 
+			  4.7  
+			 
+		 
+		 
+			 
+			  Specialty Therapies  
+			 
+			 
+			  374  
+			 
+			 &nbsp; 
+			 
+			  328  
+			 
+			 &nbsp; 
+			 
+			  14.3  
+			 
+			 &nbsp; 
+			 
+			  21  
+			 
+			 &nbsp; 
+			 
+			  354  
+			 
+			 &nbsp; 
+			 
+			  328  
+			 
+			 &nbsp; 
+			 
+			  8.0  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  1,362  
+			 
+			 &nbsp; 
+			 
+			  1,274  
+			 
+			 &nbsp; 
+			 
+			  6.9  
+			 
+			 &nbsp; 
+			 
+			  49  
+			 
+			 &nbsp; 
+			 
+			  1,313  
+			 
+			 &nbsp; 
+			 
+			  1,274  
+			 
+			 &nbsp; 
+			 
+			  3.1  
+			 
+		 
+		 
+			 
+			  Neuromodulation  
+			 
+			 
+			  191  
+			 
+			 &nbsp; 
+			 
+			  167  
+			 
+			 &nbsp; 
+			 
+			  14.5  
+			 
+			 &nbsp; 
+			 
+			  13  
+			 
+			 &nbsp; 
+			 
+			  178  
+			 
+			 &nbsp; 
+			 
+			  167  
+			 
+			 &nbsp; 
+			 
+			  6.5  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  692  
+			 
+			 &nbsp; 
+			 
+			  608  
+			 
+			 &nbsp; 
+			 
+			  13.8  
+			 
+			 &nbsp; 
+			 
+			  36  
+			 
+			 &nbsp; 
+			 
+			  656  
+			 
+			 &nbsp; 
+			 
+			  608  
+			 
+			 &nbsp; 
+			 
+			  7.9  
+			 
+		 
+		 
+			 
+			   Medical Surgical   
+			 
+			 
+			   1,366   
+			 
+			 &nbsp; 
+			 
+			   1,266   
+			 
+			 &nbsp; 
+			 
+			   7.9   
+			 
+			 &nbsp; 
+			 
+			   81   
+			 
+			 &nbsp; 
+			 
+			   1,285   
+			 
+			 &nbsp; 
+			 
+			   1,249   
+			 
+			 &nbsp; 
+			 
+			   2.9   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   5,037   
+			 
+			 &nbsp; 
+			 
+			   4,744   
+			 
+			 &nbsp; 
+			 
+			   6.2   
+			 
+			 &nbsp; 
+			 
+			   210   
+			 
+			 &nbsp; 
+			 
+			   4,823   
+			 
+			 &nbsp; 
+			 
+			   4,695   
+			 
+			 &nbsp; 
+			 
+			   2.7   
+			 
+		 
+		 
+			 
+			  Surgical &amp; Endoscopy  
+			 
+			 
+			  1,126  
+			 
+			 &nbsp; 
+			 
+			  1,041  
+			 
+			 &nbsp; 
+			 
+			  8.2  
+			 
+			 &nbsp; 
+			 
+			  69  
+			 
+			 &nbsp; 
+			 
+			  1,057  
+			 
+			 &nbsp; 
+			 
+			  1,024  
+			 
+			 &nbsp; 
+			 
+			  3.2  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  4,151  
+			 
+			 &nbsp; 
+			 
+			  3,903  
+			 
+			 &nbsp; 
+			 
+			  6.3  
+			 
+			 &nbsp; 
+			 
+			  176  
+			 
+			 &nbsp; 
+			 
+			  3,971  
+			 
+			 &nbsp; 
+			 
+			  3,855  
+			 
+			 &nbsp; 
+			 
+			  3.0  
+			 
+		 
+		 
+			 
+			  Acute Care &amp; Monitoring  
+			 
+			 
+			  240  
+			 
+			 &nbsp; 
+			 
+			  225  
+			 
+			 &nbsp; 
+			 
+			  6.8  
+			 
+			 &nbsp; 
+			 
+			  12  
+			 
+			 &nbsp; 
+			 
+			  228  
+			 
+			 &nbsp; 
+			 
+			  225  
+			 
+			 &nbsp; 
+			 
+			  1.4  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  887  
+			 
+			 &nbsp; 
+			 
+			  841  
+			 
+			 &nbsp; 
+			 
+			  5.5  
+			 
+			 &nbsp; 
+			 
+			  34  
+			 
+			 &nbsp; 
+			 
+			  853  
+			 
+			 &nbsp; 
+			 
+			  841  
+			 
+			 &nbsp; 
+			 
+			  1.4  
+			 
+		 
+		 
+			 
+			   Total Reportable Segments   
+			 
+			 
+			   4,327   
+			 
+			 &nbsp; 
+			 
+			   3,877   
+			 
+			 &nbsp; 
+			 
+			   11.6   
+			 
+			 &nbsp; 
+			 
+			   258   
+			 
+			 &nbsp; 
+			 
+			   4,069   
+			 
+			 &nbsp; 
+			 
+			   3,860   
+			 
+			 &nbsp; 
+			 
+			   5.4   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   15,991   
+			 
+			 &nbsp; 
+			 
+			   14,553   
+			 
+			 &nbsp; 
+			 
+			   9.9   
+			 
+			 &nbsp; 
+			 
+			   680   
+			 
+			 &nbsp; 
+			 
+			   15,306   
+			 
+			 &nbsp; 
+			 
+			   14,505   
+			 
+			 &nbsp; 
+			 
+			   5.5   
+			 
+		 
+		 
+			 
+			   Diabetes  (2)     
+			 
+			 
+			   598   
+			 
+			 &nbsp; 
+			 
+			   489   
+			 
+			 &nbsp; 
+			 
+			   22.4   
+			 
+			 &nbsp; 
+			 
+			   50   
+			 
+			 &nbsp; 
+			 
+			   548   
+			 
+			 &nbsp; 
+			 
+			   489   
+			 
+			 &nbsp; 
+			 
+			   12.2   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   2,178   
+			 
+			 &nbsp; 
+			 
+			   1,832   
+			 
+			 &nbsp; 
+			 
+			   18.9   
+			 
+			 &nbsp; 
+			 
+			   140   
+			 
+			 &nbsp; 
+			 
+			   2,038   
+			 
+			 &nbsp; 
+			 
+			   1,832   
+			 
+			 &nbsp; 
+			 
+			   11.2   
+			 
+		 
+		 
+			 
+			   Other  (3)     
+			 
+			 
+			   13   
+			 
+			 &nbsp; 
+			 
+			   14   
+			 
+			 &nbsp; 
+			 
+			   (10.4)   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   93   
+			 
+			 &nbsp; 
+			 
+			   (20)   
+			 
+			 &nbsp; 
+			 
+			   NM  (4)     
+			 
+			 &nbsp; 
+			 
+			   4   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+			 &nbsp; 
+			 
+			   &mdash;   
+			 
+		 
+		 
+			 
+			   TOTAL   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 4,938   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 4,380   
+			 
+			 &nbsp; 
+			 
+			   12.8&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 308   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 4,618   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 4,348   
+			 
+			 &nbsp; 
+			 
+			   6.2&nbsp;%   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 18,261   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 16,365   
+			 
+			 &nbsp; 
+			 
+			   11.6&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 824   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 17,344   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 16,337   
+			 
+			 &nbsp; 
+			 
+			   6.2&nbsp;%   
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  (1)  
+			 
+			 
+			  The data in this schedule has been intentionally rounded to the nearest million and, therefore, may not sum. Percentages have been calculated using actual, non-rounded figures and, therefore, may not recalculate precisely.  
+			 
+		 
+		 
+			 
+			  (2)  
+			 
+			 
+			  The Diabetes results presented here may not correspond to the same financial statement information presented by MiniMed Group, Inc. (MiniMed). The Diabetes Business as reported by Medtronic is prepared on a different basis than standalone Medtronic due to MiniMed&#39;s financials being prepared on a carve out basis through the date of the company&#39;s initial public offering (IPO) and on a standalone basis post IPO.  
+			 
+		 
+		 
+			 
+			  (3)  
+			 
+			 
+			  Includes the historical operations and ongoing transition agreements from businesses the Company has exited and divested and for the year-to-date figures, adjustments to the Company&#39;s Italian payback accruals resulting from the two July 22, 2024 rulings by the Constitutional Court and the Legislative Decree published by the Italian government on June 30, 2025 for certain prior years since 2015.  
+			 
+		 
+		 
+			 
+			  (4)  
+			 
+			 
+			  Not meaningful (NM)  
+			 
+		 
+		 
+			 
+			  (5)  
+			 
+			 
+			  The currency impact to revenue measures the change in revenue between current and prior year periods using constant exchange rates.  
+			 
+		 
+		 
+			 
+			  (6)  
+			 
+			 
+			  The three months ended April 24, 2026 excludes $321 million of revenue adjustments, including $13 million of inorganic revenue for the transition activity noted in (2) and $308 million of favorable currency impact on the remaining net sales. The three months ended April 25, 2025 excludes $31 million of revenue adjustments related to $14 million of inorganic revenue for the transition activity noted in (2) and $17 million of inorganic revenue related to a sale of business in the Surgical and Endoscopy division.  
+			 
+		 
+		 
+			 
+			  (7)  
+			 
+			 
+			  The twelve months ended April 24, 2026 excludes $917 million of revenue adjustments, including $39 million reduction in the Italian payback accruals due to changes in estimates further described in note (2), $54 million of inorganic revenue for the transition activity noted in (2), $5 million of inorganic revenue related to a sale of business in the Surgical and Endoscopy division, and $819&nbsp;million of favorable currency impact on the remaining net sales. The twelve months ended April&nbsp;25, 2025 excludes $28&nbsp;million of revenue adjustments related to $90&nbsp;million of incremental Italian payback accruals further described in note (2), $70&nbsp;million of inorganic revenue for the transition activity noted in (2), and $48&nbsp;million of inorganic revenue related to a sale of business in the Surgical and Endoscopy division.  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   CONSOLIDATED STATEMENTS OF INCOME   
+			 
+		 
+		 
+			 
+			  (Unaudited)&nbsp;  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Three&nbsp;months&nbsp;ended   
+			 
+			 &nbsp; 
+			 
+			   Fiscal year ended   
+			 
+		 
+		 
+			 
+			   (in millions, except per share data)   
+			 
+			 
+			   April 24, 2026   
+			 
+			 &nbsp; 
+			 
+			   April 25, 2025   
+			 
+			 &nbsp; 
+			 
+			   April 24, 2026   
+			 
+			 &nbsp; 
+			 
+			   April 25, 2025   
+			 
+		 
+		 
+			 
+			   Net sales   
+			 
+			 
+			  $&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;9,807  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;8,927  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;36,364  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;33,537  
+			 
+		 
+		 
+			 
+			   Costs and expenses:   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Cost of products sold, excluding amortization of intangible assets  
+			 
+			 
+			  3,398  
+			 
+			 &nbsp; 
+			 
+			  3,147  
+			 
+			 &nbsp; 
+			 
+			  12,721  
+			 
+			 &nbsp; 
+			 
+			  11,632  
+			 
+		 
+		 
+			 
+			  Research and development expense  
+			 
+			 
+			  671  
+			 
+			 &nbsp; 
+			 
+			  684  
+			 
+			 &nbsp; 
+			 
+			  2,873  
+			 
+			 &nbsp; 
+			 
+			  2,732  
+			 
+		 
+		 
+			 
+			  Selling, general, and administrative expense  
+			 
+			 
+			  3,056  
+			 
+			 &nbsp; 
+			 
+			  2,721  
+			 
+			 &nbsp; 
+			 
+			  11,784  
+			 
+			 &nbsp; 
+			 
+			  10,849  
+			 
+		 
+		 
+			 
+			  Amortization of intangible assets  
+			 
+			 
+			  409  
+			 
+			 &nbsp; 
+			 
+			  564  
+			 
+			 &nbsp; 
+			 
+			  1,772  
+			 
+			 &nbsp; 
+			 
+			  1,807  
+			 
+		 
+		 
+			 
+			  Restructuring charges, net  
+			 
+			 
+			  118  
+			 
+			 &nbsp; 
+			 
+			  147  
+			 
+			 &nbsp; 
+			 
+			  249  
+			 
+			 &nbsp; 
+			 
+			  267  
+			 
+		 
+		 
+			 
+			  Certain litigation charges, net  
+			 
+			 
+			  23  
+			 
+			 &nbsp; 
+			 
+			  214  
+			 
+			 &nbsp; 
+			 
+			  113  
+			 
+			 &nbsp; 
+			 
+			  317  
+			 
+		 
+		 
+			 
+			  Other operating expense (income), net  
+			 
+			 
+			  260  
+			 
+			 &nbsp; 
+			 
+			  15  
+			 
+			 &nbsp; 
+			 
+			  386  
+			 
+			 &nbsp; 
+			 
+			  (23)  
+			 
+		 
+		 
+			 
+			   Operating profit   
+			 
+			 
+			  1,873  
+			 
+			 &nbsp; 
+			 
+			  1,436  
+			 
+			 &nbsp; 
+			 
+			  6,467  
+			 
+			 &nbsp; 
+			 
+			  5,955  
+			 
+		 
+		 
+			 
+			  Other non-operating expense (income), net  
+			 
+			 
+			  (138)  
+			 
+			 &nbsp; 
+			 
+			  1  
+			 
+			 &nbsp; 
+			 
+			  (384)  
+			 
+			 &nbsp; 
+			 
+			  (402)  
+			 
+		 
+		 
+			 
+			  Interest expense, net  
+			 
+			 
+			  176  
+			 
+			 &nbsp; 
+			 
+			  174  
+			 
+			 &nbsp; 
+			 
+			  715  
+			 
+			 &nbsp; 
+			 
+			  729  
+			 
+		 
+		 
+			 
+			   Income before income taxes   
+			 
+			 
+			  1,834  
+			 
+			 &nbsp; 
+			 
+			  1,261  
+			 
+			 &nbsp; 
+			 
+			  6,136  
+			 
+			 &nbsp; 
+			 
+			  5,628  
+			 
+		 
+		 
+			 
+			   Income tax provision   
+			 
+			 
+			  575  
+			 
+			 &nbsp; 
+			 
+			  199  
+			 
+			 &nbsp; 
+			 
+			  1,299  
+			 
+			 &nbsp; 
+			 
+			  936  
+			 
+		 
+		 
+			 
+			   Net income   
+			 
+			 
+			  1,259  
+			 
+			 &nbsp; 
+			 
+			  1,061  
+			 
+			 &nbsp; 
+			 
+			  4,837  
+			 
+			 &nbsp; 
+			 
+			  4,691  
+			 
+		 
+		 
+			 
+			   Net income attributable to noncontrolling interests   
+			 
+			 
+			  (16)  
+			 
+			 &nbsp; 
+			 
+			  (5)  
+			 
+			 &nbsp; 
+			 
+			  (37)  
+			 
+			 &nbsp; 
+			 
+			  (29)  
+			 
+		 
+		 
+			 
+			   Net income attributable to Medtronic   
+			 
+			 
+			  $&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1,243  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1,057  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4,801  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4,662  
+			 
+		 
+		 
+			 
+			   Basic earnings per share   
+			 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.97  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.82  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.75  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.63  
+			 
+		 
+		 
+			 
+			   Diluted earnings per share   
+			 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.96  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.82  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.73  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.61  
+			 
+		 
+		 
+			 
+			   Basic weighted average shares outstanding   
+			 
+			 
+			  1,281.5  
+			 
+			 &nbsp; 
+			 
+			  1,282.3  
+			 
+			 &nbsp; 
+			 
+			  1,281.8  
+			 
+			 &nbsp; 
+			 
+			  1,285.6  
+			 
+		 
+		 
+			 
+			   Diluted weighted average shares outstanding   
+			 
+			 
+			  1,288.2  
+			 
+			 &nbsp; 
+			 
+			  1,287.7  
+			 
+			 &nbsp; 
+			 
+			  1,288.1  
+			 
+			 &nbsp; 
+			 
+			  1,289.9  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			   The data in the schedule above has been intentionally rounded to the nearest million, and therefore, the quarterly amounts may not sum to the fiscal year-to-date amounts.   
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   GAAP TO NON-GAAP RECONCILIATIONS (1)    
+			 
+		 
+		 
+			 
+			  (Unaudited)&nbsp;  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Three months ended April 24, 2026   
+			 
+		 
+		 
+			 
+			   (in millions, except per share data)   
+			 
+			 
+			   Net 
+			Sales   
+			 
+			 &nbsp; 
+			 
+			   Cost of 
+			Products 
+			Sold   
+			 
+			 &nbsp; 
+			 
+			   Gross 
+			Margin 
+			Percent   
+			 
+			 &nbsp; 
+			 
+			   Operating 
+			Profit   
+			 
+			 &nbsp; 
+			 
+			   Operating 
+			Profit 
+			Percent   
+			 
+			 &nbsp; 
+			 
+			   Income 
+			Before 
+			Income 
+			Taxes   
+			 
+			 &nbsp; 
+			 
+			   Net Income 
+			attributable 
+			to 
+			Medtronic   
+			 
+			 &nbsp; 
+			 
+			   Diluted 
+			EPS   
+			 
+			 &nbsp; 
+			 
+			   Effective 
+			Tax Rate   
+			 
+		 
+		 
+			 
+			   GAAP   
+			 
+			 
+			   $&nbsp; 9,807   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 3,398   
+			 
+			 &nbsp; 
+			 
+			   65.4&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 1,873   
+			 
+			 &nbsp; 
+			 
+			   19.1&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 1,834   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,243   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 0.96   
+			 
+			 &nbsp; 
+			 
+			   31.3&nbsp;%   
+			 
+		 
+		 
+			 
+			  Non-GAAP adjustments:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Amortization of intangible assets  
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  409  
+			 
+			 &nbsp; 
+			 
+			  4.2  
+			 
+			 &nbsp; 
+			 
+			  409  
+			 
+			 &nbsp; 
+			 
+			  334  
+			 
+			 &nbsp; 
+			 
+			  0.26  
+			 
+			 &nbsp; 
+			 
+			  18.3  
+			 
+		 
+		 
+			 
+			  Restructuring and associated costs (2)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  118  
+			 
+			 &nbsp; 
+			 
+			  1.2  
+			 
+			 &nbsp; 
+			 
+			  118  
+			 
+			 &nbsp; 
+			 
+			  88  
+			 
+			 &nbsp; 
+			 
+			  0.07  
+			 
+			 &nbsp; 
+			 
+			  26.0  
+			 
+		 
+		 
+			 
+			  Acquisition and divestiture-related items (3)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (5)  
+			 
+			 &nbsp; 
+			 
+			  0.1  
+			 
+			 &nbsp; 
+			 
+			  77  
+			 
+			 &nbsp; 
+			 
+			  0.8  
+			 
+			 &nbsp; 
+			 
+			  77  
+			 
+			 &nbsp; 
+			 
+			  64  
+			 
+			 &nbsp; 
+			 
+			  0.05  
+			 
+			 &nbsp; 
+			 
+			  17.7  
+			 
+		 
+		 
+			 
+			  Certain litigation charges, net  
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  23  
+			 
+			 &nbsp; 
+			 
+			  0.2  
+			 
+			 &nbsp; 
+			 
+			  23  
+			 
+			 &nbsp; 
+			 
+			  17  
+			 
+			 &nbsp; 
+			 
+			  0.01  
+			 
+			 &nbsp; 
+			 
+			  27.3  
+			 
+		 
+		 
+			 
+			  (Gain)/loss on minority investments (4)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (15)  
+			 
+			 &nbsp; 
+			 
+			  (7)  
+			 
+			 &nbsp; 
+			 
+			  (0.01)  
+			 
+			 &nbsp; 
+			 
+			  50.0  
+			 
+		 
+		 
+			 
+			  Certain tax adjustments, net (5)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  259  
+			 
+			 &nbsp; 
+			 
+			  0.20  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			   Non-GAAP   
+			 
+			 
+			   $&nbsp; 9,807   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 3,392   
+			 
+			 &nbsp; 
+			 
+			   65.4&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 2,500   
+			 
+			 &nbsp; 
+			 
+			   25.5&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 2,447   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,998   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 1.55   
+			 
+			 &nbsp; 
+			 
+			   17.7&nbsp;%   
+			 
+		 
+		 
+			 
+			  Currency impact  
+			 
+			 
+			  (308)  
+			 
+			 &nbsp; 
+			 
+			  (28)  
+			 
+			 &nbsp; 
+			 
+			  (0.8)  
+			 
+			 &nbsp; 
+			 
+			  (91)  
+			 
+			 &nbsp; 
+			 
+			  (0.1)  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  (0.05)  
+			 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			   Currency Adjusted   
+			 
+			 
+			   $&nbsp; 9,499   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 3,364   
+			 
+			 &nbsp; 
+			 
+			   64.6&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 2,409   
+			 
+			 &nbsp; 
+			 
+			   25.4&nbsp;%   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 1.50   
+			 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Three months ended April 25, 2025   
+			 
+		 
+		 
+			 
+			   (in millions, except per share data)   
+			 
+			 
+			   Net 
+			Sales   
+			 
+			 &nbsp; 
+			 
+			   Cost of 
+			Products 
+			Sold   
+			 
+			 &nbsp; 
+			 
+			   Gross 
+			Margin 
+			Percent   
+			 
+			 &nbsp; 
+			 
+			   Operating 
+			Profit   
+			 
+			 &nbsp; 
+			 
+			   Operating 
+			Profit 
+			Percent   
+			 
+			 &nbsp; 
+			 
+			   Income 
+			Before 
+			Income 
+			Taxes   
+			 
+			 &nbsp; 
+			 
+			   Net Income 
+			attributable 
+			to 
+			Medtronic   
+			 
+			 &nbsp; 
+			 
+			   Diluted 
+			EPS   
+			 
+			 &nbsp; 
+			 
+			   Effective 
+			Tax Rate   
+			 
+		 
+		 
+			 
+			   GAAP   
+			 
+			 
+			   $&nbsp; 8,927   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 3,147   
+			 
+			 &nbsp; 
+			 
+			   64.7&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 1,436   
+			 
+			 &nbsp; 
+			 
+			   16.1&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 1,261   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,057   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 0.82   
+			 
+			 &nbsp; 
+			 
+			   15.8&nbsp;%   
+			 
+		 
+		 
+			 
+			  Non-GAAP adjustments:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Amortization of intangible assets (6)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  564  
+			 
+			 &nbsp; 
+			 
+			  6.3  
+			 
+			 &nbsp; 
+			 
+			  564  
+			 
+			 &nbsp; 
+			 
+			  455  
+			 
+			 &nbsp; 
+			 
+			  0.35  
+			 
+			 &nbsp; 
+			 
+			  19.3  
+			 
+		 
+		 
+			 
+			  Restructuring and associated costs (2)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (2)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  149  
+			 
+			 &nbsp; 
+			 
+			  1.7  
+			 
+			 &nbsp; 
+			 
+			  149  
+			 
+			 &nbsp; 
+			 
+			  114  
+			 
+			 &nbsp; 
+			 
+			  0.09  
+			 
+			 &nbsp; 
+			 
+			  23.5  
+			 
+		 
+		 
+			 
+			  Acquisition and divestiture-related items (3)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (21)  
+			 
+			 &nbsp; 
+			 
+			  0.2  
+			 
+			 &nbsp; 
+			 
+			  109  
+			 
+			 &nbsp; 
+			 
+			  1.2  
+			 
+			 &nbsp; 
+			 
+			  109  
+			 
+			 &nbsp; 
+			 
+			  97  
+			 
+			 &nbsp; 
+			 
+			  0.08  
+			 
+			 &nbsp; 
+			 
+			  11.0  
+			 
+		 
+		 
+			 
+			  Certain litigation charges, net  
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  214  
+			 
+			 &nbsp; 
+			 
+			  2.4  
+			 
+			 &nbsp; 
+			 
+			  214  
+			 
+			 &nbsp; 
+			 
+			  163  
+			 
+			 &nbsp; 
+			 
+			  0.13  
+			 
+			 &nbsp; 
+			 
+			  23.4  
+			 
+		 
+		 
+			 
+			  (Gain)/loss on minority investments (4)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  172  
+			 
+			 &nbsp; 
+			 
+			  170  
+			 
+			 &nbsp; 
+			 
+			  0.13  
+			 
+			 &nbsp; 
+			 
+			  0.6  
+			 
+		 
+		 
+			 
+			  Medical device regulations (7)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (10)  
+			 
+			 &nbsp; 
+			 
+			  0.1  
+			 
+			 &nbsp; 
+			 
+			  14  
+			 
+			 &nbsp; 
+			 
+			  0.2  
+			 
+			 &nbsp; 
+			 
+			  14  
+			 
+			 &nbsp; 
+			 
+			  12  
+			 
+			 &nbsp; 
+			 
+			  0.01  
+			 
+			 &nbsp; 
+			 
+			  21.4  
+			 
+		 
+		 
+			 
+			  Certain tax adjustments, net  
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  13  
+			 
+			 &nbsp; 
+			 
+			  0.01  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			   Non-GAAP   
+			 
+			 
+			   $&nbsp; 8,927   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 3,113   
+			 
+			 &nbsp; 
+			 
+			   65.1&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 2,486   
+			 
+			 &nbsp; 
+			 
+			   27.8&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 2,483   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2,080   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 1.62   
+			 
+			 &nbsp; 
+			 
+			   16.0&nbsp;%   
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			  See description of non-GAAP financial measures contained in the press release dated June 3, 2026.  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			  (1)  
+			 
+			 
+			  The data in this schedule has been intentionally rounded to the nearest million or $0.01 for EPS figures, and, therefore, may not sum.  
+			 
+		 
+		 
+			 
+			  (2)  
+			 
+			 
+			  The charges primarily relate to employee termination benefits, facility related and contract termination costs, and asset write offs.  
+			 
+		 
+		 
+			 
+			  (3)  
+			 
+			 
+			  The charges primarily include business combination costs, changes in fair value of contingent consideration, and exit of business-related charges. Exit of business-related charges primarily relate to the impending separation of the Diabetes Business, and for the three months ended April 24, 2026, costs associated with the Company&#39;s June 2021 decision to stop the distribution and sale of the Medtronic HVAD System.  
+			 
+		 
+		 
+			 
+			  (4)  
+			 
+			 
+			  We exclude unrealized and realized gains and losses on our minority investments as we do not believe that these components of income or expense have a direct correlation to our ongoing or future business operations.  
+			 
+		 
+		 
+			 
+			  (5)  
+			 
+			 
+			  The net charges primarily relates to the impact of an intercompany sale of intellectual property, the net tax charge as a result of the separation of the Diabetes Business, and amortization of previously established deferred tax assets arising from intercompany intellectual property transactions.  
+			 
+		 
+		 
+			 
+			  (6)  
+			 
+			 
+			  The Company recognized $151 million of accelerated amortization on certain intangible assets within the Cardiovascular Portfolio.  
+			 
+		 
+		 
+			 
+			  (7)  
+			 
+			 
+			  The charges represent incremental costs of complying with the new European Union (E.U.) medical device regulations for previously registered products and primarily include charges for contractors supporting the project and other direct third-party expenses. We consider these costs to be duplicative of previously incurred costs and/or one-time costs.  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   GAAP TO NON-GAAP RECONCILIATIONS (1)    
+			 
+		 
+		 
+			 
+			  (Unaudited)&nbsp;  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Fiscal year ended April 24, 2026   
+			 
+		 
+		 
+			 
+			   (in millions, except per share data)   
+			 
+			 
+			   Net 
+			Sales   
+			 
+			 &nbsp; 
+			 
+			   Cost of 
+			Products 
+			Sold   
+			 
+			 &nbsp; 
+			 
+			   Gross 
+			Margin 
+			Percent   
+			 
+			 &nbsp; 
+			 
+			   Operating 
+			Profit   
+			 
+			 &nbsp; 
+			 
+			   Operating 
+			Profit 
+			Percent   
+			 
+			 &nbsp; 
+			 
+			   Income 
+			Before 
+			Income 
+			Taxes   
+			 
+			 &nbsp; 
+			 
+			   Net Income 
+			attributable 
+			to&nbsp;Medtronic   
+			 
+			 &nbsp; 
+			 
+			   Diluted 
+			EPS   
+			 
+			 &nbsp; 
+			 
+			   Effective 
+			Tax Rate   
+			 
+		 
+		 
+			 
+			   GAAP   
+			 
+			 
+			   $&nbsp; 36,364   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp; 12,721   
+			 
+			 &nbsp; 
+			 
+			   65.0&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 6,467   
+			 
+			 &nbsp; 
+			 
+			   17.8&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 6,136   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4,801   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 3.73   
+			 
+			 &nbsp; 
+			 
+			   21.2&nbsp;%   
+			 
+		 
+		 
+			 
+			  Non-GAAP adjustments:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Amortization of intangible assets (2)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  1,772  
+			 
+			 &nbsp; 
+			 
+			  4.9  
+			 
+			 &nbsp; 
+			 
+			  1,772  
+			 
+			 &nbsp; 
+			 
+			  1,444  
+			 
+			 &nbsp; 
+			 
+			  1.12  
+			 
+			 &nbsp; 
+			 
+			  18.6  
+			 
+		 
+		 
+			 
+			  Restructuring and associated costs (3)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (106)  
+			 
+			 &nbsp; 
+			 
+			  0.3  
+			 
+			 &nbsp; 
+			 
+			  370  
+			 
+			 &nbsp; 
+			 
+			  1.0  
+			 
+			 &nbsp; 
+			 
+			  370  
+			 
+			 &nbsp; 
+			 
+			  290  
+			 
+			 &nbsp; 
+			 
+			  0.23  
+			 
+			 &nbsp; 
+			 
+			  21.6  
+			 
+		 
+		 
+			 
+			  Acquisition and divestiture-related items (4)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (27)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  173  
+			 
+			 &nbsp; 
+			 
+			  0.5  
+			 
+			 &nbsp; 
+			 
+			  173  
+			 
+			 &nbsp; 
+			 
+			  137  
+			 
+			 &nbsp; 
+			 
+			  0.11  
+			 
+			 &nbsp; 
+			 
+			  21.4  
+			 
+		 
+		 
+			 
+			  Certain litigation charges, net  
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  113  
+			 
+			 &nbsp; 
+			 
+			  0.3  
+			 
+			 &nbsp; 
+			 
+			  113  
+			 
+			 &nbsp; 
+			 
+			  89  
+			 
+			 &nbsp; 
+			 
+			  0.07  
+			 
+			 &nbsp; 
+			 
+			  20.4  
+			 
+		 
+		 
+			 
+			  (Gain)/loss on minority investments (5)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  131  
+			 
+			 &nbsp; 
+			 
+			  130  
+			 
+			 &nbsp; 
+			 
+			  0.10  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			  Other (6)   
+			 
+			 
+			  (39)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (39)  
+			 
+			 &nbsp; 
+			 
+			  (0.1)  
+			 
+			 &nbsp; 
+			 
+			  (39)  
+			 
+			 &nbsp; 
+			 
+			  (30)  
+			 
+			 &nbsp; 
+			 
+			  (0.02)  
+			 
+			 &nbsp; 
+			 
+			  20.5  
+			 
+		 
+		 
+			 
+			  Certain tax adjustments, net (7)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  260  
+			 
+			 &nbsp; 
+			 
+			  0.20  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			   Non-GAAP   
+			 
+			 
+			   $&nbsp; 36,325   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp; 12,589   
+			 
+			 &nbsp; 
+			 
+			   65.3&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 8,856   
+			 
+			 &nbsp; 
+			 
+			   24.4&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 8,656   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7,120   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 5.53   
+			 
+			 &nbsp; 
+			 
+			   17.3&nbsp;%   
+			 
+		 
+		 
+			 
+			  Currency impact  
+			 
+			 
+			  (821)  
+			 
+			 &nbsp; 
+			 
+			  (76)  
+			 
+			 &nbsp; 
+			 
+			  (0.6)  
+			 
+			 &nbsp; 
+			 
+			  (262)  
+			 
+			 &nbsp; 
+			 
+			  (0.2)  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			  (0.15)  
+			 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			   Currency Adjusted   
+			 
+			 
+			   $&nbsp; 35,504   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp; 12,512   
+			 
+			 &nbsp; 
+			 
+			   64.8&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 8,594   
+			 
+			 &nbsp; 
+			 
+			   24.2&nbsp;%   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 5.38   
+			 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Fiscal year ended April 25, 2025   
+			 
+		 
+		 
+			 
+			   (in millions, except per share data)   
+			 
+			 
+			   Net 
+			Sales   
+			 
+			 &nbsp; 
+			 
+			   Cost of 
+			Products 
+			Sold   
+			 
+			 &nbsp; 
+			 
+			   Gross 
+			Margin 
+			Percent   
+			 
+			 &nbsp; 
+			 
+			   Operating 
+			Profit   
+			 
+			 &nbsp; 
+			 
+			   Operating 
+			Profit 
+			Percent   
+			 
+			 &nbsp; 
+			 
+			   Income 
+			Before 
+			Income 
+			Taxes   
+			 
+			 &nbsp; 
+			 
+			   Net Income 
+			attributable 
+			to&nbsp;Medtronic   
+			 
+			 &nbsp; 
+			 
+			   Diluted 
+			EPS   
+			 
+			 &nbsp; 
+			 
+			   Effective 
+			Tax Rate   
+			 
+		 
+		 
+			 
+			   GAAP   
+			 
+			 
+			   $&nbsp; 33,537   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp; 11,632   
+			 
+			 &nbsp; 
+			 
+			   65.3&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 5,955   
+			 
+			 &nbsp; 
+			 
+			   17.8&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 5,628   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4,662   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 3.61   
+			 
+			 &nbsp; 
+			 
+			   16.6&nbsp;%   
+			 
+		 
+		 
+			 
+			  Non-GAAP adjustments:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Amortization of intangible assets (2)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  1,807  
+			 
+			 &nbsp; 
+			 
+			  5.3  
+			 
+			 &nbsp; 
+			 
+			  1,807  
+			 
+			 &nbsp; 
+			 
+			  1,471  
+			 
+			 &nbsp; 
+			 
+			  1.14  
+			 
+			 &nbsp; 
+			 
+			  18.5  
+			 
+		 
+		 
+			 
+			  Restructuring and associated costs (3)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (26)  
+			 
+			 &nbsp; 
+			 
+			  0.1  
+			 
+			 &nbsp; 
+			 
+			  303  
+			 
+			 &nbsp; 
+			 
+			  0.9  
+			 
+			 &nbsp; 
+			 
+			  303  
+			 
+			 &nbsp; 
+			 
+			  238  
+			 
+			 &nbsp; 
+			 
+			  0.18  
+			 
+			 &nbsp; 
+			 
+			  21.5  
+			 
+		 
+		 
+			 
+			  Acquisition and divestiture-related items (4)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (38)  
+			 
+			 &nbsp; 
+			 
+			  0.1  
+			 
+			 &nbsp; 
+			 
+			  124  
+			 
+			 &nbsp; 
+			 
+			  0.4  
+			 
+			 &nbsp; 
+			 
+			  124  
+			 
+			 &nbsp; 
+			 
+			  101  
+			 
+			 &nbsp; 
+			 
+			  0.08  
+			 
+			 &nbsp; 
+			 
+			  18.5  
+			 
+		 
+		 
+			 
+			  Certain litigation charges, net  
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  317  
+			 
+			 &nbsp; 
+			 
+			  0.9  
+			 
+			 &nbsp; 
+			 
+			  317  
+			 
+			 &nbsp; 
+			 
+			  249  
+			 
+			 &nbsp; 
+			 
+			  0.19  
+			 
+			 &nbsp; 
+			 
+			  21.5  
+			 
+		 
+		 
+			 
+			  (Gain)/loss on minority investments (5)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  213  
+			 
+			 &nbsp; 
+			 
+			  185  
+			 
+			 &nbsp; 
+			 
+			  0.14  
+			 
+			 &nbsp; 
+			 
+			  12.2  
+			 
+		 
+		 
+			 
+			  Medical device regulations (8)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (38)  
+			 
+			 &nbsp; 
+			 
+			  0.1  
+			 
+			 &nbsp; 
+			 
+			  52  
+			 
+			 &nbsp; 
+			 
+			  0.2  
+			 
+			 &nbsp; 
+			 
+			  52  
+			 
+			 &nbsp; 
+			 
+			  42  
+			 
+			 &nbsp; 
+			 
+			  0.03  
+			 
+			 &nbsp; 
+			 
+			  19.2  
+			 
+		 
+		 
+			 
+			  Other (6)   
+			 
+			 
+			  90  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  0.2  
+			 
+			 &nbsp; 
+			 
+			  90  
+			 
+			 &nbsp; 
+			 
+			  0.3  
+			 
+			 &nbsp; 
+			 
+			  90  
+			 
+			 &nbsp; 
+			 
+			  70  
+			 
+			 &nbsp; 
+			 
+			  0.05  
+			 
+			 &nbsp; 
+			 
+			  22.2  
+			 
+		 
+		 
+			 
+			  Certain tax adjustments, net (7)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  62  
+			 
+			 &nbsp; 
+			 
+			  0.05  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			   Non-GAAP   
+			 
+			 
+			   $&nbsp; 33,627   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp; 11,530   
+			 
+			 &nbsp; 
+			 
+			   65.7&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 8,648   
+			 
+			 &nbsp; 
+			 
+			   25.7&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 8,533   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7,079   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 5.49   
+			 
+			 &nbsp; 
+			 
+			   16.7&nbsp;%   
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			  See description of non-GAAP financial measures contained in the press release dated June 3, 2026.  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			  (1)  
+			 
+			 
+			  The data in this schedule has been intentionally rounded to the nearest million or $0.01 for EPS figures, and, therefore, may not sum.  
+			 
+		 
+		 
+			 
+			  (2)  
+			 
+			 
+			  The Company recognized $121 million and $151 million of accelerated amortization on certain intangible assets within the Cardiovascular Portfolio for the fiscal year ended April 24, 2026 and April 25, 2025, respectively.  
+			 
+		 
+		 
+			 
+			  (3)  
+			 
+			 
+			  The charges primarily relate to employee termination benefits, facility related and contract termination costs, and asset write offs.  
+			 
+		 
+		 
+			 
+			  (4)  
+			 
+			 
+			  The charges primarily include business combination costs, changes in fair value of contingent consideration, exit of business-related charges, and gains related to certain business or asset sales. Exit of business-related charges primarily relate to the impending separation of the Diabetes Business and costs associated with the Company&#39;s June 2021 decision to stop the distribution and sale of the Medtronic HVAD System.  
+			 
+		 
+		 
+			 
+			  (5)  
+			 
+			 
+			  We exclude unrealized and realized gains and losses on our minority investments as we do not believe that these components of income or expense have a direct correlation to our ongoing or future business operations.  
+			 
+		 
+		 
+			 
+			  (6)  
+			 
+			 
+			  Reflects adjustments to the Company&#39;s Italian payback accruals resulting from the two July 22, 2024 rulings by the Constitutional Court and the Legislative Decree published by the Italian government on June 30, 2025 for certain prior years since 2015.  
+			 
+		 
+		 
+			 
+			  (7)  
+			 
+			 
+			  The net charges for the fiscal year ended April 24, 2026 primarily relates to the impact of an intercompany sale of intellectual property, the net tax charge as a result of the separation of the Diabetes Business, and amortization of previously established deferred tax assets arising from intercompany intellectual property transactions, which were partially offset by a tax benefit recognized due to a change in estimate of accrued interest on uncertain tax positions. The charges for the fiscal year ended April 25, 2025 primarily includes amortization of previously established deferred tax assets from intercompany intellectual property transactions.  
+			 
+		 
+		 
+			 
+			  (8)  
+			 
+			 
+			  The charges represent incremental costs of complying with the new European Union (E.U.) medical device regulations for previously registered products and primarily include charges for contractors supporting the project and other direct third-party expenses. We consider these costs to be duplicative of previously incurred costs and/or one-time costs.  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   GAAP TO NON-GAAP RECONCILIATIONS (1)    
+			 
+		 
+		 
+			 
+			  (Unaudited)&nbsp;  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Three months ended April 24, 2026   
+			 
+		 
+		 
+			 
+			   (in millions)   
+			 
+			 
+			   Net Sales   
+			 
+			 &nbsp; 
+			 
+			   SG&amp;A 
+			Expense   
+			 
+			 &nbsp; 
+			 
+			   SG&amp;A 
+			Expense as 
+			a % of Net 
+			Sales   
+			 
+			 &nbsp; 
+			 
+			   R&amp;D 
+			Expense   
+			 
+			 &nbsp; 
+			 
+			   R&amp;D 
+			Expense 
+			as a % of 
+			Net Sales   
+			 
+			 &nbsp; 
+			 
+			   Other 
+			Operating 
+			Expense 
+			(Income), 
+			net   
+			 
+			 &nbsp; 
+			 
+			   Other 
+			Operating 
+			Exp./(Inc.), 
+			net as a % of 
+			Net Sales   
+			 
+			 &nbsp; 
+			 
+			   Other Non- 
+			Operating 
+			Expense 
+			(Income), net   
+			 
+		 
+		 
+			 
+			   GAAP   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9,807   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 3,056   
+			 
+			 &nbsp; 
+			 
+			   31.2&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 671   
+			 
+			 &nbsp; 
+			 
+			   6.8&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 260   
+			 
+			 &nbsp; 
+			 
+			   2.7&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (138)   
+			 
+		 
+		 
+			 
+			  Non-GAAP adjustments:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Acquisition and divestiture-related items (2)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (67)  
+			 
+			 &nbsp; 
+			 
+			  (0.7)  
+			 
+			 &nbsp; 
+			 
+			  (1)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (3)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			  (Gain)/loss on minority investments (3)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  15  
+			 
+		 
+		 
+			 
+			   Non-GAAP   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9,807   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp; 2,989   
+			 
+			 &nbsp; 
+			 
+			   30.5&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 670   
+			 
+			 &nbsp; 
+			 
+			   6.8&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 257   
+			 
+			 &nbsp; 
+			 
+			   2.6&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (123)   
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Fiscal year ended April 24, 2026   
+			 
+		 
+		 
+			 
+			   (in millions)   
+			 
+			 
+			   Net Sales   
+			 
+			 &nbsp; 
+			 
+			   SG&amp;A 
+			Expense   
+			 
+			 &nbsp; 
+			 
+			   SG&amp;A 
+			Expense as 
+			a % of Net 
+			Sales   
+			 
+			 &nbsp; 
+			 
+			   R&amp;D 
+			Expense   
+			 
+			 &nbsp; 
+			 
+			   R&amp;D 
+			Expense 
+			as a % of 
+			Net Sales   
+			 
+			 &nbsp; 
+			 
+			   Other 
+			Operating 
+			Expense 
+			(Income), 
+			net   
+			 
+			 &nbsp; 
+			 
+			   Other 
+			Operating 
+			Exp./(Inc.), 
+			net as a % of 
+			Net Sales   
+			 
+			 &nbsp; 
+			 
+			   Other Non- 
+			Operating 
+			Expense 
+			(Income), net   
+			 
+		 
+		 
+			 
+			   GAAP   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp; 36,364   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 11,784   
+			 
+			 &nbsp; 
+			 
+			   32.4&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 2,873   
+			 
+			 &nbsp; 
+			 
+			   7.9&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 386   
+			 
+			 &nbsp; 
+			 
+			   1.1&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (384)   
+			 
+		 
+		 
+			 
+			  Non-GAAP adjustments:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Restructuring and associated costs (4)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (15)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			  Acquisition and divestiture-related items (2)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (164)  
+			 
+			 &nbsp; 
+			 
+			  (0.5)  
+			 
+			 &nbsp; 
+			 
+			  (1)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  18  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			  Other (5)   
+			 
+			 
+			  (39)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			  (Gain)/loss on minority investments (3)   
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  (131)  
+			 
+		 
+		 
+			 
+			   Non-GAAP   
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp; 36,325   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp; 11,605   
+			 
+			 &nbsp; 
+			 
+			   31.9&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp; 2,872   
+			 
+			 &nbsp; 
+			 
+			   7.9&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 404   
+			 
+			 &nbsp; 
+			 
+			   1.1&nbsp;%   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (515)   
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			  See description of non-GAAP financial measures contained in the press release dated June 3, 2026.  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			  (1)  
+			 
+			 
+			  The data in this schedule has been intentionally rounded to the nearest million, and, therefore, may not sum.  
+			 
+		 
+		 
+			 
+			  (2)  
+			 
+			 
+			  The charges primarily include business combination costs, changes in fair value of contingent consideration, exit of business-related charges, and for the fiscal year ended April 24, 2026, gains related to certain business or asset sales. Exit of business-related charges primarily relate to the impending separation of the Diabetes Business and costs associated with the Company&#39;s June 2021 decision to stop the distribution and sale of the Medtronic HVAD System.  
+			 
+		 
+		 
+			 
+			  (3)  
+			 
+			 
+			  We exclude unrealized and realized gains and losses on our minority investments as we do not believe that these components of income or expense have a direct correlation to our ongoing or future business operations.  
+			 
+		 
+		 
+			 
+			  (4)  
+			 
+			 
+			  The charges primarily relate to employee termination benefits, facility related and contract termination costs, and asset write offs.  
+			 
+		 
+		 
+			 
+			  (5)  
+			 
+			 
+			  Reflects adjustments to the Company&#39;s Italian payback accruals resulting from the two July 22, 2024 rulings by the Constitutional Court and the Legislative Decree published by the Italian government on June 30, 2025 for certain prior years since 2015.  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   GAAP TO NON-GAAP RECONCILIATIONS (1)    
+			 
+		 
+		 
+			 
+			  (Unaudited)  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Fiscal Year   
+			 
+		 
+		 
+			 
+			   (in millions)   
+			 
+			 
+			   2026   
+			 
+			 &nbsp; 
+			 
+			   2025   
+			 
+			 &nbsp; 
+			 
+			   2024   
+			 
+		 
+		 
+			 
+			   Net cash provided by operating activities   
+			 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7,330  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7,044  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6,787  
+			 
+		 
+		 
+			 
+			  Additions to property, plant, and equipment  
+			 
+			 
+			  (1,904)  
+			 
+			 &nbsp; 
+			 
+			  (1,859)  
+			 
+			 &nbsp; 
+			 
+			  (1,587)  
+			 
+		 
+		 
+			 
+			   Free Cash Flow  (2)     
+			 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5,426   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5,185   
+			 
+			 &nbsp; 
+			 
+			   $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5,200   
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			  See description of non-GAAP financial measures contained in the press release dated June 3, 2026.  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			  (1)  
+			 
+			 
+			  The data in this schedule has been intentionally rounded to the nearest million, and therefore, may not sum.  
+			 
+		 
+		 
+			 
+			  (2)  
+			 
+			 
+			  Free cash flow represents operating cash flows less property, plant, and equipment additions.  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 
+			   MEDTRONIC PLC   
+			 
+		 
+		 
+			 
+			   CONSOLIDATED STATEMENTS OF CASH FLOWS   
+			 
+		 
+		 
+			 
+			  (Unaudited)  
+			 
+		 
+		 
+			 &nbsp; 
+		 
+		 
+			 &nbsp; 
+			 
+			   Fiscal Year   
+			 
+		 
+		 
+			 
+			   (in millions)   
+			 
+			 
+			   2026   
+			 
+			 &nbsp; 
+			 
+			   2025   
+			 
+			 &nbsp; 
+			 
+			   2024   
+			 
+		 
+		 
+			 
+			   Operating Activities:   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Net income  
+			 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4,837  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4,691  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3,705  
+			 
+		 
+		 
+			 
+			  Adjustments to reconcile net income to net cash provided by operating activities:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  &nbsp; Depreciation and amortization  
+			 
+			 
+			  2,958  
+			 
+			 &nbsp; 
+			 
+			  2,861  
+			 
+			 &nbsp; 
+			 
+			  2,647  
+			 
+		 
+		 
+			 
+			  &nbsp; Provision for credit losses  
+			 
+			 
+			  136  
+			 
+			 &nbsp; 
+			 
+			  123  
+			 
+			 &nbsp; 
+			 
+			  90  
+			 
+		 
+		 
+			 
+			  &nbsp; Deferred income taxes  
+			 
+			 
+			  51  
+			 
+			 &nbsp; 
+			 
+			  (316)  
+			 
+			 &nbsp; 
+			 
+			  (508)  
+			 
+		 
+		 
+			 
+			  &nbsp; Stock-based compensation  
+			 
+			 
+			  457  
+			 
+			 &nbsp; 
+			 
+			  429  
+			 
+			 &nbsp; 
+			 
+			  393  
+			 
+		 
+		 
+			 
+			  &nbsp; Asset impairments and related inventory write-downs  
+			 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  371  
+			 
+		 
+		 
+			 
+			  &nbsp; Other, net  
+			 
+			 
+			  314  
+			 
+			 &nbsp; 
+			 
+			  310  
+			 
+			 &nbsp; 
+			 
+			  573  
+			 
+		 
+		 
+			 
+			  &nbsp; Change in operating assets and liabilities, net of acquisitions and divestitures:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Accounts receivable, net  
+			 
+			 
+			  (200)  
+			 
+			 &nbsp; 
+			 
+			  (433)  
+			 
+			 &nbsp; 
+			 
+			  (391)  
+			 
+		 
+		 
+			 
+			  Inventories  
+			 
+			 
+			  (404)  
+			 
+			 &nbsp; 
+			 
+			  (292)  
+			 
+			 &nbsp; 
+			 
+			  (139)  
+			 
+		 
+		 
+			 
+			  Accounts payable and accrued liabilities  
+			 
+			 
+			  46  
+			 
+			 &nbsp; 
+			 
+			  209  
+			 
+			 &nbsp; 
+			 
+			  391  
+			 
+		 
+		 
+			 
+			  Other operating assets and liabilities  
+			 
+			 
+			  (865)  
+			 
+			 &nbsp; 
+			 
+			  (538)  
+			 
+			 &nbsp; 
+			 
+			  (345)  
+			 
+		 
+		 
+			 
+			   Net cash provided by operating activities   
+			 
+			 
+			  7,330  
+			 
+			 &nbsp; 
+			 
+			  7,044  
+			 
+			 &nbsp; 
+			 
+			  6,787  
+			 
+		 
+		 
+			 
+			   Investing Activities:   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Acquisitions, net of cash acquired  
+			 
+			 
+			  (406)  
+			 
+			 &nbsp; 
+			 
+			  (98)  
+			 
+			 &nbsp; 
+			 
+			  (211)  
+			 
+		 
+		 
+			 
+			  Additions to property, plant, and equipment  
+			 
+			 
+			  (1,904)  
+			 
+			 &nbsp; 
+			 
+			  (1,859)  
+			 
+			 &nbsp; 
+			 
+			  (1,587)  
+			 
+		 
+		 
+			 
+			  Purchases of investments  
+			 
+			 
+			  (8,725)  
+			 
+			 &nbsp; 
+			 
+			  (8,226)  
+			 
+			 &nbsp; 
+			 
+			  (7,748)  
+			 
+		 
+		 
+			 
+			  Sales and maturities of investments  
+			 
+			 
+			  8,105  
+			 
+			 &nbsp; 
+			 
+			  8,495  
+			 
+			 &nbsp; 
+			 
+			  7,441  
+			 
+		 
+		 
+			 
+			  Other investing activities, net  
+			 
+			 
+			  (4)  
+			 
+			 &nbsp; 
+			 
+			  (249)  
+			 
+			 &nbsp; 
+			 
+			  (261)  
+			 
+		 
+		 
+			 
+			   Net cash used in investing activities   
+			 
+			 
+			  (2,934)  
+			 
+			 &nbsp; 
+			 
+			  (1,937)  
+			 
+			 &nbsp; 
+			 
+			  (2,366)  
+			 
+		 
+		 
+			 
+			   Financing Activities:   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Change in current debt obligations, net  
+			 
+			 
+			  9  
+			 
+			 &nbsp; 
+			 
+			  (1,070)  
+			 
+			 &nbsp; 
+			 
+			  1,073  
+			 
+		 
+		 
+			 
+			  Issuance of long-term debt  
+			 
+			 
+			  1,747  
+			 
+			 &nbsp; 
+			 
+			  3,209  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			  Payments on long-term debt  
+			 
+			 
+			  (2,930)  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			  Dividends to shareholders  
+			 
+			 
+			  (3,639)  
+			 
+			 &nbsp; 
+			 
+			  (3,589)  
+			 
+			 &nbsp; 
+			 
+			  (3,666)  
+			 
+		 
+		 
+			 
+			  Issuance of ordinary shares  
+			 
+			 
+			  516  
+			 
+			 &nbsp; 
+			 
+			  508  
+			 
+			 &nbsp; 
+			 
+			  284  
+			 
+		 
+		 
+			 
+			  Repurchase of ordinary shares  
+			 
+			 
+			  (1,035)  
+			 
+			 &nbsp; 
+			 
+			  (3,235)  
+			 
+			 &nbsp; 
+			 
+			  (2,138)  
+			 
+		 
+		 
+			 
+			  Proceeds from MiniMed initial public offering  
+			 
+			 
+			  538  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+			 &nbsp; 
+			 
+			  &mdash;  
+			 
+		 
+		 
+			 
+			  Other financing activities, net  
+			 
+			 
+			  44  
+			 
+			 &nbsp; 
+			 
+			  (184)  
+			 
+			 &nbsp; 
+			 
+			  (3)  
+			 
+		 
+		 
+			 
+			   Net cash used in financing activities   
+			 
+			 
+			  (4,751)  
+			 
+			 &nbsp; 
+			 
+			  (4,361)  
+			 
+			 &nbsp; 
+			 
+			  (4,450)  
+			 
+		 
+		 
+			 
+			  Effect of exchange rate changes on cash and cash equivalents  
+			 
+			 
+			  85  
+			 
+			 &nbsp; 
+			 
+			  188  
+			 
+			 &nbsp; 
+			 
+			  (230)  
+			 
+		 
+		 
+			 
+			   Net change in cash and cash equivalents   
+			 
+			 
+			  (269)  
+			 
+			 &nbsp; 
+			 
+			  934  
+			 
+			 &nbsp; 
+			 
+			  (259)  
+			 
+		 
+		 
+			 
+			  Cash and cash equivalents at beginning of period  
+			 
+			 
+			  2,218  
+			 
+			 &nbsp; 
+			 
+			  1,284  
+			 
+			 &nbsp; 
+			 
+			  1,543  
+			 
+		 
+		 
+			 
+			   Cash and cash equivalents at end of period   
+			 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,949  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2,218  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,284  
+			 
+		 
+		 
+			 
+			   Supplemental Cash Flow Information   
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Cash paid for:  
+			 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+			 &nbsp; 
+		 
+		 
+			 
+			  Income taxes  
+			 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,942  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,819  
+			 
+			 &nbsp; 
+			 
+			  $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,622  
+			 
+		 
+		 
+			 
+			  Interest  
+			 
+			 
+			  774  
+			 
+			 &nbsp; 
+			 
+			  762  
+			 
+			 &nbsp; 
+			 
+			  826  
+			 
+		 
+	 
+ 
+ 
+
+ 
+ 
+	 
+		 
+			 &nbsp; 
+		 
+		 
+			 
+			   The data in this schedule has been intentionally rounded to the nearest million, and, therefore, may not sum.   
+			 
+		 
+	 
+ 
+ 
+
+ 
+     
+ 
+
+ 
+      
+
+      
+
+      
+ 
+
+ SOURCE Medtronic plc 
+ 
+
+ 
+
+
+
+ 
+				
+			
+
+ 
+
+ 
+ 		
+			 
+	 
+
+	
+	
+
+
+
+	
+
+
+ 
+
+
+ 
+
+	 
+
+	 
+		 
+			 
+
+			  
+		 
+
+
+			 
+		 
+	 
+
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+     
+         
+             
+                 
+                     
+                         
+                             
+                                 
+                                     
+                                         
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             Careers 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Contact &amp; Support 
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             Order Products 
+
+                                                                             (open in new window) 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Diabetes Supplies 
+
+                                                                             (open in new window) 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Product Manuals 
+
+                                                                             (open in new window) 
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             Product Security 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Information About Proposition 65 for
+                                                                                California Customers 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Digital Millennium Copyright Act (DMCA)
+                                                                                Notification 
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                             
+                                                 
+                                                     
+                                                          
+                                                     
+                                                 
+                                             
+                                         
+                                     
+                                 
+                                 
+                                     
+                                         
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                  
+                                                                 Engineering the extraordinary 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             
+                                                                                 Facebook 
+                                                                                  
+                                                                             
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             
+                                                                                 Youtube 
+                                                                                  
+                                                                             
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             
+                                                                                 Linkedin 
+                                                                                  
+                                                                             
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             Your Privacy Choices 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Privacy Notice 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Terms of Use 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Accessibility Statement 
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                         
+                                     
+                                 
+                                 
+                                     
+                                         
+                                             
+                                                 
+                                                     
+                                                         Operational Headquarters 
+                                                         710 Medtronic Parkway, Minneapolis, 
+                                                         MN 55432-5604 USA 
+                                                     
+                                                     
+                                                         L001-12022025: 2025-12 
+                                                         &copy; 2026 Medtronic 
+                                                     
+                                                 
+                                             
+                                         
+                                     
+                                 
+                             
+                         
+                     
+                 
+             
+         
+     
+ 
+
+
+ 
+
+	
+   
+
+
+
+	
+  
+	
+  
+  
+  	   
+	
+  
+
+
+
+ 
+
+  
+ 
+	//Latest JS needs to be scoped appropriately  
+	var $latest_j = jQuery.noConflict();
+     console.log("Version: "+$latest_j.fn.jquery);
+ 
+  
+
+  
+  
+
+  
+	 
+	//Latest JS needs to be scoped appropriately  
+	var $j11 = jQuery.noConflict();
+     console.log("Version: "+$j11.fn.jquery);
+ 
+	  
+
+	 
+        $j11(document).on('ready', function () {
+			$j11(".slick-carousel").slick({
+				infinite: true,
+				arrows: true,
+				prevArrow: '  ',
+				nextArrow: '  ',
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				responsive: [{
+					breakpoint: 960,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2,
+						infinite: true
+					}
+				}]
+			});
+
+
+        });
+   
+
+
+ 
+
+
+ _satellite.pageBottom(); 
+ 
+$(document).ready(function() {
+	// dataLayer content
+	window.appEventData = window.appEventData || [];
+
+	
+	$(window).load(function() {
+		window.appEventData.push({
+			"event": "Page Loaded",
+			"pageInfo":{
+				"pageName":"Medtronic reports fourth quarter and full year fiscal 2026 results; delivers highest annual revenue growth in 10 years - Jun 3, 2026",
+				"url":"https://news.medtronic.com/2026-06-03-Medtronic-reports-fourth-quarter-and-full-year-fiscal-2026-results-delivers-highest-annual-revenue-growth-in-10-years",
+				"path":"/2026-06-03-Medtronic-reports-fourth-quarter-and-full-year-fiscal-2026-results-delivers-highest-annual-revenue-growth-in-10-years",
+				"queryString":"",
+				"referrer":"https://www.bing.com/",
+				"title":"Medtronic reports fourth quarter and full year fiscal 2026 results; delivers highest annual revenue growth in 10 years - Jun 3, 2026",
+				"region":"US"
+			}
+		});
+	})
+	$('.nav-items__level-1--link, .wd_nav > li > a').click(function() {
+		window.appEventData.push({
+			"event": "Menu Click",
+			"eventInfo": {
+				"eventName": $(this).text().trim(),
+				"destinationUrl": $(this).attr('href'),
+				"eventLocation": "Header"
+			}
+		});
+	})
+	$('.single_slider_carousel .item a').click(function() {
+		var num = $(this).parents('.item').index() + 1;
+		var title = $(this).parents('.item').find('h4').text();
+		var url = $(this).attr('href');
+		
+		window.appEventData.push({
+			"event": "HP_Slider Click",
+			"eventInfo": {
+			"eventName": "Slider : "+num+" : "+title,
+				"destinationUrl": url,
+				"eventLocation": "Header"
+			}
+		});
+	})
+	setTimeout(function() {
+		$('.wd_featureboxes_alert .wd_featurebox .wd_image_tbl_pollyf a').click(function() {
+			var title = $(this).parents('.wd_featurebox_container').find('.wd_featurebox_title').text();
+			var url = $(this).attr('href');
+
+			window.appEventData.push({
+				"event": "Leaderboard banner Click",
+				"eventInfo": {
+					"eventName": title,
+					"destinationUrl": url,
+					"eventLocation": "Header"
+				}
+			});
+		})
+	}, 2000);
+	
+	setTimeout(function() {
+		$('.nav-items a:not(.has-submenu)').click(function() {
+			var parent = $(this).parents('.primary-nav-item').find('> a').text().trim();
+			if($(this).hasClass('nav-items__level-3--link')) {
+				parent += ':' + $(this).parents('.secondary-nav-item').find('> a').text().trim();
+			}
+			var title = $(this).text().trim();
+			var url = $(this).attr('href');
+
+			window.appEventData.push({
+			    "event": "Sub Menu Click",
+				"eventInfo": {
+					"eventName": parent+":"+title,
+					"destinationUrl": url,
+					"eventLocation": "Header"
+				}
+			});
+		})
+	}, 2000);
+
+	$('.wd_subnav a').click(function() {
+		var parent = $(this).closest('.dropdown').find('> a').text().trim();
+		var title = $(this).text().trim();
+		var url = $(this).attr('href');
+		
+		window.appEventData.push({
+		    "event": "Sub Menu Click",
+			"eventInfo": {
+				"eventName": parent+":"+title,
+				"destinationUrl": url,
+				"eventLocation": "Header"
+			}
+		});
+	})
+
+	setTimeout(function() {
+		$('.wd_feat_stories_wrap a, .wd_left_right_fb a, .wd_middle_fb a, .wd_bottom_fb a, .wd_main_content a').click(function() {
+			var url =$(this).attr('href');
+			var text;
+			if ($(this).find('img').length) {
+				if ($(this).parents('.wd_image_tbl_pollyf, .wd_featurebox').length) {
+					text = $(this).parents('.wd_featurebox_container').find('.wd_featurebox_title').text();
+				} else {
+					text = $(this).find('img').attr('alt');
+				}
+			} else {
+				text = $(this).text().trim();
+			}
+
+			if (text == undefined) {
+				text = 'No text available.';
+			}
+				
+			window.appEventData.push({
+				"event": "Link Click",
+				"eventInfo": {
+					"eventName": text,
+					"destinationUrl": url,
+					"eventLocation": "Body"
+				}
+			});
+		})
+	}, 2000);
+
+	$('footer a').click(function() {
+		var title = $(this).text().trim();
+		var url = $(this).attr('href');
+
+		window.appEventData.push({
+		    "event": "Footer Link Click",
+		    "eventInfo": {
+		        "eventName": title, 
+		        "destinationUrl": url,
+		        "eventLocation": 'Footer'
+		    }
+		});
+
+	})
+	$('.wd_featurebox-subscribe form').submit(function() {
+		var title = $(this).parents('.wd_featurebox_container').find('.wd_featurebox_title').text();
+		if($(this).find('.wd_form_field_error').length) {
+			var errorMsg = '';
+			var errorValidMsg = '';
+			var noneFilled = 'None of the Fields Filled';
+			var label;
+			$(this).find('.wd_form_field_error').each(function() {
+				label = $(this).parents('.wd_form_field').find('label').text();
+				label = label.replace('*', '').trim();
+				if (!$(this).next().val()) {
+					errorMsg += label + ', ';
+				} else {
+					errorValidMsg += label + ' Not Valid.';
+				}
+			})
+			$(this).find('input[type=text]').each(function() {
+				if ($(this).val()) {
+					noneFilled = '';
+					return false;
+				}
+			})
+			if (noneFilled != '') {
+				errorMsg = noneFilled;
+			} else if (errorMsg != '') {
+				errorMsg = errorMsg.replace(/,\s*$/, "");
+				errorMsg += ' Not Filled. ';
+			}
+
+			errorMsg += errorValidMsg;
+
+			errorMsg = errorMsg.trim();
+
+			window.appEventData.push({
+			    "event": "Form Error",
+			    "eventInfo": {
+			        "errorMessage": errorMsg, 
+			        "formName": title, 
+			        "eventLocation": 'Body'
+			    }
+			});
+		} else {
+
+			window.appEventData.push({
+			    "event": "Form Submit",
+			    "eventInfo": {
+			        "formName": title, 
+			        "eventLocation": 'Body'
+			    }
+			});
+		}
+
+	})
+	$('.wd_subscribe2 form').submit(function() {
+		if($(this).find('.wd_form_field_error').length) {
+			var errorMsg = '';
+			var errorValidMsg = '';
+			var noneFilled = 'None of the Fields Filled';
+			var label;
+			$(this).find('.wd_form_field_error').each(function() {
+				label = $(this).parents('.wd_form_field').find('label').text();
+				label = label.replace('*', '').trim();
+				if ($(this).parents('.wd_form_field').find('div[id*=recaptcha]').length) {
+					label = 'reCAPTCHA';
+				}
+				if (!$(this).next().val()) {
+					errorMsg += label + ', ';
+				} else {
+					errorValidMsg += label + ' Not Valid.';
+				}
+			})
+			$(this).find('input[type=text]').each(function() {
+				if ($(this).val()) {
+					noneFilled = '';
+					return false;
+				}
+			})
+			if (noneFilled != '') {
+				errorMsg = noneFilled;
+			} else if (errorMsg != '') {
+				errorMsg = errorMsg.replace(/,\s*$/, "");
+				errorMsg += ' Not Filled. ';
+			}
+
+			errorMsg += errorValidMsg;
+
+			errorMsg = errorMsg.trim();
+
+			window.appEventData.push({
+			    "event": "Form Error",
+			    "eventInfo": {
+			        "errorMessage": errorMsg, 
+			        "formName": "Email Alerts", 
+			        "eventLocation": 'Body'
+			    }
+			});
+		} else {
+
+			window.appEventData.push({
+			    "event": "Form Submit",
+			    "eventInfo": {
+			        "formName": "Email Alerts", 
+			        "eventLocation": 'Body'
+			    }
+			});
+		}
+
+	})
+
+	$('.twitter-tweet').addClass('wd_social-wrap');
+
+	$('.wd_featureboxes_featured_stories .wd_standard-teaser .item').each(function(){
+		$(this).find('img').parent('.itemlink').addClass('wd_image-link');
+		var hackedLink = $(this).find('.item_name a:nth-child(2)').attr('href');
+		console.log(hackedLink);
+		$(this).find('.itemlink').attr('href',hackedLink);
+		$(this).find('ul').addClass('wd_added-category item_summary');
+		$(this).find('.wd_image-link').insertBefore($(this).find('.item_name'));
+		$(this).find('.wd_added-category').insertBefore($(this).find('.item_name'));
+		$(this).find('.wd_added-category, .item_name').wrapAll(' ');
+		$(this).find('.wd_tile-wrap').append(' Read More ');
+	});
+
+	
+	//IN THE NEWS FEATUREBOX
+
+	// Wraps date, name, and summary in one div 
+	$('.wd_news_headlines-teaser .item').each(function() { 
+		$(this).find('.item_date, .item_name, .item_summary').wrapAll('  ');
+	});
+	
+});
+ 
+
+ 
+  
+ 
+ 
+  var _paq = _paq || [];
+
+  _paq.push(["setCustomVariable", 4, "News Release Feed ID", "202606030645PR_NEWS_USPR_____CG74147", "page"]);
+
+  _paq.push(["setCustomVariable", 1, "Content Type", "News Releases Feed", "page"]);
+
+  _paq.push(["setCustomVariable", 3, "Navigation Page", "Press releases", "page"]);
+
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+  (function() {
+    var u="//stats.drivetheweb.com/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", 6065]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+    g.type="text/javascript"; g.async=true; g.defer=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+ 
+ 
+	 
+ 
+ 
+		
+ 
+ (function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a332b56f3c80d66b',t:'MTc4ODA4MTUxMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();   

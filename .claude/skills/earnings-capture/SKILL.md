@@ -24,11 +24,22 @@ Three things follow, and they are the whole reason this stage is cheap:
   You do not need it. `seal.py` sets the fence after the print from the EDGAR 8-K
   acceptance time, which `backtest/FINDINGS.md` §3 established as exact.
 
+## 0. Two script directories, and they are not the same one
+
+This trips every fresh session, so read it once here rather than working it out:
+
+- `scripts/` at the **repo root** — `run_log.py`, `publish.sh`, `run_paths.py`. Shared
+  with the daily pipeline. Run these from the repo root.
+- `backtest/scripts/` — `capture.py`, `rehydrate.py`, and the rest of the backtest.
+  Run these from `backtest/`.
+
+`run_log.py` writes into `research/<Y>/<M>/<date>/_run-log.md` like every other stage, so
+the capture leaves its trace where you would look for it.
+
 ## 1. Resolve the working set
 
 ```bash
-cd backtest
-python3 scripts/capture.py --from-date <YYYY-MM-DD> --horizon-days 15 --universe-only
+cd backtest && python3 scripts/capture.py --from-date <YYYY-MM-DD> --horizon-days 15 --universe-only
 ```
 
 Writes `captures/universe.json`, merging new events into what is already tracked.
@@ -85,8 +96,7 @@ this capture was. Dropping the misses would make that number flattering and mean
 ## 4. Capture
 
 ```bash
-python3 scripts/capture.py --from-date <YYYY-MM-DD> --to-date <YYYY-MM-DD> \
-  --tickers <TICKER> --plan <scratch>/plan-<TICKER>.json
+cd backtest && python3 scripts/capture.py --from-date <YYYY-MM-DD> --to-date <YYYY-MM-DD> --tickers <TICKER> --plan <scratch>/plan-<TICKER>.json
 ```
 
 Per name the script adds: the planned URLs, new EDGAR filings since the last sweep,
@@ -103,9 +113,10 @@ pass over a day that never comes back.
 
 ## 5. Run log
 
+From the repo root, not from `backtest/`:
+
 ```bash
-python3 scripts/run_log.py --heading "Capture — <YYYY-MM-DD> — DONE" \
-  --line "<n> events swept, <q> queries, <d> documents, <t> tripwires"
+python3 scripts/run_log.py --heading "Capture — <YYYY-MM-DD> — DONE" --line "<n> events swept, <q> queries, <d> documents, <t> tripwires"
 ```
 
 Leave the `— STARTED` heartbeat before the first search, as every stage does. A capture
@@ -113,6 +124,8 @@ session killed on its first name and a capture that never fired need completely
 different fixes, and without a heartbeat they look identical.
 
 ## 6. Publish
+
+Also from the repo root. It stages `backtest/captures` and pushes to `main`:
 
 ```bash
 scripts/publish.sh "capture: <YYYY-MM-DD>, <n> events, <d> documents"

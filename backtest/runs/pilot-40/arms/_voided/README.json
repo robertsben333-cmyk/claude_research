@@ -1,22 +1,91 @@
 {
  "voided": [
-  {"ticker":"CL","event":"2026-07-31 bmo","arms":["A","B","C"],
-   "reason":"LEAK. A Benzinga URL slug recorded in news_manifest.json disclosed the result -- 'colgate-palmolive-q2-adj-eps-0-99-beats-0-95-estimate-sales-5-361b'. The fence correctly rejected the BODY (unavailable) but the manifest kept the URL, and the agents read manifests by design. All three arms cited the leaked EPS explicitly rather than using it quietly, which is the only reason this was caught.",
-   "root_cause":"two compounding bugs: (1) the earnings press release crosses the wire 63-65 minutes BEFORE EDGAR accepts the 8-K, so a 1h margin let the article through by 2m39s; (2) URLs were recorded in the sealed corpus at all.",
-   "status":"re-runnable -- corpus re-fenced at 3h and URLs stripped"},
-  {"ticker":"FCN","event":"2026-07-31 amc (WRONG)","arms":["A","B","C"],
-   "reason":"MIS-DATED. FCN reported 2026-07-30 bmo -- 10-Q filed 07:30 ET, results wire 07:31 ET, transcript dated 07-30. The forecast window began two sessions after the news and contained no catalyst.",
-   "root_cause":"session_from_edgar took the LATEST 8-K carrying item 2.02 rather than the earliest results disclosure, and ignored the 10-Q. A second 8-K on 07-31 at 16:31 ET won the tie.",
-   "status":"needs re-harvest at the corrected cutoff before it can be re-run",
-   "note":"all three arms independently detected the mis-dating and correctly collapsed to a post-earnings-drift call. Excluded from scoring anyway -- it is not an earnings event."}
+  {
+   "ticker": "CL",
+   "event": "2026-07-31 bmo",
+   "arms": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reason": "LEAK. A Benzinga URL slug recorded in news_manifest.json disclosed the result -- 'colgate-palmolive-q2-adj-eps-0-99-beats-0-95-estimate-sales-5-361b'. The fence correctly rejected the BODY (unavailable) but the manifest kept the URL, and the agents read manifests by design. All three arms cited the leaked EPS explicitly rather than using it quietly, which is the only reason this was caught.",
+   "root_cause": "two compounding bugs: (1) the earnings press release crosses the wire 63-65 minutes BEFORE EDGAR accepts the 8-K, so a 1h margin let the article through by 2m39s; (2) URLs were recorded in the sealed corpus at all.",
+   "status": "re-runnable -- corpus re-fenced at 3h and URLs stripped"
+  },
+  {
+   "ticker": "FCN",
+   "event": "2026-07-31 amc (WRONG)",
+   "arms": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reason": "MIS-DATED. FCN reported 2026-07-30 bmo -- 10-Q filed 07:30 ET, results wire 07:31 ET, transcript dated 07-30. The forecast window began two sessions after the news and contained no catalyst.",
+   "root_cause": "session_from_edgar took the LATEST 8-K carrying item 2.02 rather than the earliest results disclosure, and ignored the 10-Q. A second 8-K on 07-31 at 16:31 ET won the tie.",
+   "status": "needs re-harvest at the corrected cutoff before it can be re-run",
+   "note": "all three arms independently detected the mis-dating and correctly collapsed to a post-earnings-drift call. Excluded from scoring anyway -- it is not an earnings event."
+  },
+  {
+   "ticker": "UCTT",
+   "event": "2026-08-03 amc",
+   "arms": [
+    "A",
+    "B"
+   ],
+   "reason": "BAD ANCHORS. The historical_earnings_moves set skipped 2026-02-23 and 2026-04-28 -- a 459-day gap -- because UCTT tags its earnings 8-K with item 9.01 and never item 2.02. Both arms built their central argument on '7 of 8 prints negative, mean -6.9%' from that gapped sample, and both flagged the gap themselves: 'the two 2026 prints are missing, exactly the regime that matters.'",
+   "root_cause": "prior_event_dates() keyed on 8-K item 2.02; 7 of 40 anchor sets were gapped this way, worst by 602 days",
+   "status": "re-runnable once anchors are rebuilt from periodic reports"
+  },
+  {
+   "ticker": "CW",
+   "event": "drawn as bmo 2026-08-06; TRUE session amc 2026-08-05",
+   "arms": [
+    "A",
+    "B",
+    "C"
+   ],
+   "reason": "LEAK. The corpus held the Business Wire release itself -- 'Curtiss-Wright Corporation reports financial results for the second quarter ended June 30, 2026' with the highlights table. Arm C read it and said so, quoting sales $924M +5%, adjusted EPS $3.72, margin 19.4%, book-to-bill 1.16x, and the FY raise.",
+   "root_cause": "CW put its results on the wire at 2026-08-05 20:33 ET, ELEVEN HOURS before EDGAR accepted the 8-K at 2026-08-06 07:30 ET. The measured press-release-to-filing gap now ranges from 3 minutes (CL) to 11 hours (CW), so no fixed margin covers it. A 3h margin was not the fix it appeared to be.",
+   "arm_calls_before_void": {
+    "arm-a-naive": "Lean Down",
+    "arm-b-planfirst": "Lean Down",
+    "arm-c-skill": "Lean Up"
+   },
+   "status": "dropped from the sample; would need re-dating to amc 2026-08-05 and a full re-harvest"
+  }
  ],
  "also_corrected": [
-  {"ticker":"VG","issue":"mis-dated by 12.5h -- 10-Q at 2026-08-10 18:01 ET vs the chosen 8-K at 2026-08-11 06:31 ET","status":"not yet forecast; corpus needs re-harvest at the corrected cutoff"}
+  {
+   "ticker": "VG",
+   "issue": "mis-dated by 12.5h -- 10-Q at 2026-08-10 18:01 ET vs the chosen 8-K at 2026-08-11 06:31 ET",
+   "status": "not yet forecast; corpus needs re-harvest at the corrected cutoff"
+  },
+  {
+   "tickers": [
+    "ORKA",
+    "AAP",
+    "CW",
+    "CL",
+    "FCF",
+    "KEEL"
+   ],
+   "issue": "gapped anchor sets from the same item-2.02 bug (602d, 252d, 364d, 189d, 182d, n=1)",
+   "status": "rebuilt; only FCF had already been forecast, on a 7-event set missing one quarter"
+  }
  ],
  "systemic_fixes": [
   "fence margin 1h -> 3h (measured press-release-to-8-K gap is 63-65 min)",
   "URLs stripped from every manifest inside events/; full manifests preserved in backtest/_audit/ for provenance",
   "events.py takes the EARLIEST results disclosure and counts a 10-Q as one",
-  "6 documents removed from 4 events on re-fence (AMAT 3, BKNG 1, NDSN 1, VST 1) -- these were pre-print in reality, removed as over-caution, so forecasts already made on them are not void"
- ]
+  "6 documents removed from 4 events on re-fence (AMAT 3, BKNG 1, NDSN 1, VST 1) -- these were pre-print in reality, removed as over-caution, so forecasts already made on them are not void",
+  "source URLs stripped from 2,099 DOCUMENT HEADERS -- the second place they leaked, after the manifests",
+  "tells extended with the results-wire pattern ('reports financial results', 'reported record Nth-quarter revenue'), past tense only so previews still pass"
+ ],
+ "bulk_void": {
+  "when": "2026-08-29, after the anchor and filings rebuilds",
+  "what": "every forecast made before the rebuilds -- 12 events x 3 arms",
+  "why": "29 of 40 anchor sets changed once prior earnings events were derived from periodic reports instead of 8-K item 2.02. AMAT, A, RBRK, WSM, CL, FTV, IPAR, ORKA, TILE and CW were each missing their three most recent quarters, so the base rates every arm leans on were wrong. Separately, the filings corpus was a median 29-of-41 Form 4s, and two events had no periodic report at all.",
+  "distinction": "anchors were factually WRONG, which voids. Filings selection was merely suboptimal, which would not have voided on its own -- but rerunning everything on one set of rules avoids a corpus-construction confound that could not be disentangled afterwards.",
+  "kept": "the qualitative findings stand: PWR, CORZ, BKNG, AGIO and BSM had unchanged anchors, and the disagreement map records reasoning rather than scores"
+ }
 }
