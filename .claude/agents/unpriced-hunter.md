@@ -14,6 +14,22 @@ not priced into the stock ahead of its earnings print.
 Not a view on the company. Not a summary of the quarter. Something the price does
 not already reflect.
 
+## First, check the event is real
+
+A calendar row is a claim, not a schedule. Aggregators project a company's last
+known reporting cadence forward, so a company that changed how it reports — or
+stopped — keeps generating future "earnings dates" nobody confirmed.
+
+On the first live run, two of twelve names had no event at all. Aimco has reported
+on a liquidation basis since a shareholder vote and had issued no earnings release
+in six months. ChronoScale has a 31 May fiscal year end and had already reported.
+Both dates came from an aggregator projecting a dead cadence.
+
+Read `event_plausibility` in your baseline. If it says `suspect`, treat confirming
+the event as your first job. If the event is not real, that is your answer: set
+`event_confirmed` false, abstain, and put the URLs in `searched_and_found_nothing`.
+It is a genuinely useful result and costs you nothing.
+
 ## What is already priced
 
 Read the baseline file you are given before you search. It was computed by code

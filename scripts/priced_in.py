@@ -151,7 +151,21 @@ def prior_prints(cik, before, n=8):
     from zoneinfo import ZoneInfo
     j = get_json(f"https://data.sec.gov/submissions/CIK{cik}.json", sec=True)
     r = j["filings"]["recent"]
-    out, saw_6k = [], False
+
+    # A CIK outlives the company attached to it. CHRN, first live run: seven prior
+    # reactions returned, all of them prints by Ekso Bionics Holdings, which held
+    # this CIK from 2014 until a reverse merger on 2026-05-05 issued 138.2m new
+    # shares to a different business. Different company, different capital
+    # structure, different investor base -- and the history read as ChronoScale's
+    # own. `formerNames` says exactly when the identity changed and is free to
+    # check, so prints from before the change are excluded rather than pooled.
+    identity_since = None
+    for fn in (j.get("formerNames") or []):
+        to = (fn.get("to") or "")[:10]
+        if to and (identity_since is None or to > identity_since):
+            identity_since = to
+
+    out, saw_6k, dropped = [], False, 0
     for i, form in enumerate(r["form"]):
         if form == "6-K":
             saw_6k = True
@@ -162,13 +176,25 @@ def prior_prints(cik, before, n=8):
             .astimezone(ZoneInfo("America/New_York"))
         if dt.date().isoformat() >= before:
             continue
+        ed = dt.date().isoformat()
+        if identity_since and ed < identity_since:
+            dropped += 1
+            continue
         hhmm = dt.hour * 60 + dt.minute
-        out.append({"event_date": dt.date().isoformat(),
+        out.append({"event_date": ed,
                     "session": "amc" if hhmm >= 960 else ("bmo" if hhmm <= 570 else "intraday")})
         if len(out) >= n:
             break
     if out:
-        return out, "8-K item 2.02 acceptance times (exact)"
+        basis = "8-K item 2.02 acceptance times (exact)"
+        if dropped:
+            basis += (f"; {dropped} earlier print(s) excluded as filed under a former "
+                      f"name on this CIK before {identity_since}")
+        return out, basis
+    if dropped:
+        return [], (f"all {dropped} prior print(s) on this CIK were filed under a former "
+                    f"name before {identity_since}, so they belong to a predecessor "
+                    "entity and are not this company's reaction history")
     if saw_6k:
         return [], ("foreign private issuer: files 6-K, which carries no item codes and "
                     "no usable document description, so earnings dates are not "
