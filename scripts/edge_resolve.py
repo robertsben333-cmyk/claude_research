@@ -1,27 +1,35 @@
 #!/usr/bin/env python3
-"""Resolve an edge hunt against what the stock actually did, and plot the curve.
+"""Resolve a ranking against what the stocks actually did.
 
-The headline number is not the hit rate. It is the **risk-coverage curve**: how
-accuracy moves as the confidence threshold rises and fewer names get called. The
-claim this whole design rests on -- "predict direction where the system knows it
-has found something, abstain elsewhere" -- is true exactly when that curve slopes
-up, and decorative when it is flat. `LEDGER.md` has been asking the same question
-of its certainty tiers since it was created and has never had the sample to answer
-it.
+The question this answers is not "was the call right". It is **can these companies
+be ranked** — does sorting a day's names by `edge_score` put the ones that went up
+above the ones that went down.
 
-Because `edge_confidence.py` scores every name and not only the called ones, the
-curve can be recomputed at any threshold after the outcome is known without that
-being cherry-picking. Nothing was withheld to produce it.
+That is measured by rank correlation, which needs no threshold, no call and no
+abstention, and which every name in the day contributes to. The old version of
+this script plotted accuracy against a confidence threshold, which required the
+scorer to emit a binary call; on 2026-08-31 it emitted none and the curve was
+empty at every point.
 
-Direction is scored against a per-name deadband. A realised move inside the band
-had no direction in it and is recorded `no-direction`, neither hit nor miss. BILL
-on 2026-08-19 is the case that motivates this: a clean beat, a -0.65% close, and
-the ledger recorded a directional miss on what was statistically a flat day.
+Two correlations are reported and they answer different questions:
 
-    python3 scripts/edge_resolve.py --run research/2026/08/2026-08-31/edge
+  vs raw move          did the ranking sort the day's actual returns
+  vs move / implied    did it sort them after dividing out how much each name was
+                       ever going to move. This is the skill measure: getting a
+                       15%-implied biotech above a 2%-implied utility is easy and
+                       says nothing
+
+A single day of n names is far too small for either number to mean anything. They
+are recorded per day and pooled across days; the pooled figure is the result and
+one day is an anecdote.
+
+    python3 scripts/edge_resolve.py --run research/2026/09/2026-09-01/edge
+    python3 scripts/edge_resolve.py --pool research/2026/09/*/edge
 """
 import argparse
+import glob
 import json
+import math
 import random
 import statistics
 import urllib.request
@@ -32,7 +40,7 @@ UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 YQ = "https://query1.finance.yahoo.com"
 
 
-def bars(ticker, days=90):
+def bars(ticker, days=120):
     u = f"{YQ}/v8/finance/chart/{ticker}?range={days}d&interval=1d"
     j = json.loads(urllib.request.urlopen(
         urllib.request.Request(u, headers={"User-Agent": UA}), timeout=30).read())
@@ -62,124 +70,177 @@ def realised(ticker, event_date, session):
             "move_pct": round((a / b - 1) * 100, 2)}, None
 
 
-def curve(rows, thresholds):
-    """Accuracy as a function of the confidence threshold. The whole point."""
-    out = []
-    for t in thresholds:
-        sel = [r for r in rows
-               if r["direction"] in ("up", "down") and r["confidence"] >= t
-               and r["outcome"] == "scored"]
-        hits = sum(1 for r in sel if r["hit"])
-        out.append({
-            "threshold": t,
-            "names_called": len(sel),
-            "coverage_pct": round(100 * len(sel) / len(rows), 1) if rows else 0.0,
-            "hits": hits,
-            "accuracy_pct": round(100 * hits / len(sel), 1) if sel else None,
-        })
-    return out
+def _ranks(xs):
+    """Average ranks, so ties do not fabricate an ordering."""
+    order = sorted(range(len(xs)), key=lambda i: xs[i])
+    r = [0.0] * len(xs)
+    i = 0
+    while i < len(order):
+        j = i
+        while j + 1 < len(order) and xs[order[j + 1]] == xs[order[i]]:
+            j += 1
+        avg = (i + j) / 2.0 + 1.0
+        for k in range(i, j + 1):
+            r[order[k]] = avg
+        i = j + 1
+    return r
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__,
-                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--run", required=True)
-    ap.add_argument("--seed", type=int, default=20260831)
-    a = ap.parse_args()
+def spearman(xs, ys):
+    n = len(xs)
+    if n < 3:
+        return None
+    rx, ry = _ranks(xs), _ranks(ys)
+    mx, my = statistics.fmean(rx), statistics.fmean(ry)
+    num = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
+    dx = math.sqrt(sum((a - mx) ** 2 for a in rx))
+    dy = math.sqrt(sum((b - my) ** 2 for b in ry))
+    return round(num / (dx * dy), 3) if dx and dy else None
 
-    run = Path(a.run)
-    calls_doc = json.loads((run / "edge-calls.json").read_text(encoding="utf-8"))
+
+def permutation_p(xs, ys, seed, trials=20000):
+    """How often a random shuffle beats this correlation. n is small; say so."""
+    obs = spearman(xs, ys)
+    if obs is None:
+        return None, None
+    rnd = random.Random(seed)
+    ys2 = list(ys)
+    hits = 0
+    for _ in range(trials):
+        rnd.shuffle(ys2)
+        s = spearman(xs, ys2)
+        if s is not None and abs(s) >= abs(obs):
+            hits += 1
+    return obs, round(hits / trials, 4)
+
+
+def resolve_run(run, seed):
+    run = Path(run)
+    scores = json.loads((run / "edge-scores.json").read_text(encoding="utf-8"))
     baselines = {}
     for f in sorted((run / "baselines").glob("*.json")):
         d = json.loads(f.read_text(encoding="utf-8"))
         baselines[d["ticker"]] = d
 
     rows, pending = [], 0
-    for c in calls_doc["calls"]:
-        t = c["ticker"]
+    for r in scores["ranking"]:
+        t = r["ticker"]
         b = baselines.get(t, {})
-        ed, sess = b.get("event_date"), b.get("session", "bmo")
-        band = c["priced_in"].get("deadband_pct") or 2.0
-        r = {"ticker": t, "direction": c["direction"], "confidence": c["confidence"],
-             "called": c["called"], "deadband_pct": band}
-        if not ed:
-            r.update({"outcome": "no_baseline", "hit": None})
-            rows.append(r)
+        row = {"ticker": t, "rank": r.get("rank"), "rankable": r["rankable"],
+               "edge_score": r["edge_score"], "edge_pct": r["edge_pct"],
+               "confidence": r["confidence"],
+               "deadband_pct": b.get("deadband_pct"),
+               "implied_pct": ((b.get("options") or {}).get("event_implied_move_pct")
+                               or b.get("expected_move_pct"))}
+        if not r["rankable"] or not b.get("event_date"):
+            row["outcome"] = "not_ranked"
+            rows.append(row)
             continue
-        res, err = realised(t, ed, sess)
+        res, err = realised(t, b["event_date"], b.get("session", "bmo"))
         if err:
-            r.update({"outcome": "pending", "note": err, "hit": None})
+            row.update({"outcome": "pending", "note": err})
             pending += 1
-            rows.append(r)
+            rows.append(row)
             continue
-        mv = res["move_pct"]
-        r.update(res)
-        if abs(mv) < band:
-            r.update({"outcome": "no-direction", "hit": None,
-                      "note": f"|{mv}%| inside the {band}% deadband"})
-        elif r["direction"] == "abstain":
-            r.update({"outcome": "abstained", "hit": None,
-                      "note": f"moved {mv}% with no call made"})
+        row.update(res)
+        row["outcome"] = "resolved"
+        if row["implied_pct"]:
+            row["move_over_implied"] = round(res["move_pct"] / row["implied_pct"], 3)
+        rows.append(row)
+
+    live = [r for r in rows if r["outcome"] == "resolved"]
+    return {"run": str(run), "event_date": scores.get("ranking", [{}])[0] and
+            baselines.get(live[0]["ticker"], {}).get("event_date") if live else None,
+            "rows": rows, "live": live, "pending": pending}
+
+
+def stats_for(live, seed):
+    if len(live) < 3:
+        return {"n": len(live),
+                "note": "fewer than 3 resolved names; rank correlation not computed"}
+    e = [r["edge_score"] for r in live]
+    mv = [r["move_pct"] for r in live]
+    out = {"n": len(live)}
+    s, p = permutation_p(e, mv, seed)
+    out["spearman_vs_raw_move"] = s
+    out["p_permutation_raw"] = p
+    norm = [r for r in live if r.get("move_over_implied") is not None]
+    if len(norm) >= 3:
+        s2, p2 = permutation_p([r["edge_score"] for r in norm],
+                               [r["move_over_implied"] for r in norm], seed)
+        out["spearman_vs_move_over_implied"] = s2
+        out["p_permutation_normalised"] = p2
+        out["n_normalised"] = len(norm)
+    # Long the top third, short the bottom third. The ranking's payoff if you
+    # traded it, which is the only version of "does the order matter" that pays.
+    k = max(1, len(live) // 3)
+    srt = sorted(live, key=lambda r: -r["edge_score"])
+    top = statistics.fmean(r["move_pct"] for r in srt[:k])
+    bot = statistics.fmean(r["move_pct"] for r in srt[-k:])
+    out["top_third_mean_move_pct"] = round(top, 2)
+    out["bottom_third_mean_move_pct"] = round(bot, 2)
+    out["long_short_spread_pct"] = round(top - bot, 2)
+    out["k_per_side"] = k
+    return out
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--run")
+    ap.add_argument("--pool", nargs="*", help="several edge/ dirs, pooled")
+    ap.add_argument("--seed", type=int, default=20260901)
+    a = ap.parse_args()
+
+    runs = []
+    if a.run:
+        runs.append(a.run)
+    for pat in (a.pool or []):
+        runs.extend(sorted(glob.glob(pat)))
+    if not runs:
+        raise SystemExit("give --run or --pool")
+
+    all_live, per_day = [], []
+    for rp in runs:
+        r = resolve_run(rp, a.seed)
+        st = stats_for(r["live"], a.seed)
+        per_day.append({"run": r["run"], **st})
+        all_live.extend(r["live"])
+
+        print(f"\n=== {r['run']} ===")
+        print(f"{'#':>2} {'ticker':8s}{'edge':>7s}{'conf':>6s}{'move':>9s}"
+              f"{'m/impl':>8s}  outcome")
+        for row in r["rows"]:
+            mv = f"{row.get('move_pct'):+.2f}%" if row.get("move_pct") is not None else "   --"
+            mi = f"{row.get('move_over_implied'):+.2f}" if row.get("move_over_implied") is not None else "   --"
+            rk = f"{row['rank']:>2}" if row.get("rank") else "--"
+            print(f"{rk} {row['ticker']:8s}{row['edge_score']:>7.1f}{row['confidence']:>6.1f}"
+                  f"{mv:>9s}{mi:>8s}  {row['outcome']}")
+        if "spearman_vs_raw_move" in st:
+            print(f"  spearman vs raw move        {st['spearman_vs_raw_move']}"
+                  f"   (permutation p={st['p_permutation_raw']}, n={st['n']})")
+            if "spearman_vs_move_over_implied" in st:
+                print(f"  spearman vs move/implied    {st['spearman_vs_move_over_implied']}"
+                      f"   (p={st['p_permutation_normalised']}, n={st['n_normalised']})")
+            print(f"  long top third / short bottom third: "
+                  f"{st['long_short_spread_pct']:+.2f}pp  (k={st['k_per_side']})")
         else:
-            hit = (mv > 0) == (r["direction"] == "up")
-            r.update({"outcome": "scored", "hit": hit})
-        rows.append(r)
+            print(f"  {st.get('note')}")
 
-    scored = [r for r in rows if r["outcome"] == "scored"]
-    called = [r for r in scored if r["called"]]
-    missed_moves = [r for r in rows
-                    if r["outcome"] == "abstained" and abs(r.get("move_pct", 0)) >= r["deadband_pct"]]
-
-    # Baselines. A hit rate without the number a coin would have scored on the
-    # same events cannot be read at all.
-    rnd = random.Random(a.seed)
-    coin = [sum(1 for r in scored if rnd.random() < 0.5) for _ in range(20000)] if scored else []
-    coin_pct = [round(100 * c / len(scored), 1) for c in coin] if scored else []
-
-    doc = {
-        "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "run": str(run),
-        "names": len(rows),
-        "pending": pending,
-        "scored": len(scored),
-        "no_direction": sum(1 for r in rows if r["outcome"] == "no-direction"),
-        "abstained": sum(1 for r in rows if r["outcome"] == "abstained"),
-        "called_and_scored": len(called),
-        "accuracy_called_pct": round(100 * sum(1 for r in called if r["hit"]) / len(called), 1) if called else None,
-        "accuracy_all_directional_pct": round(100 * sum(1 for r in scored if r["hit"]) / len(scored), 1) if scored else None,
-        "baselines": {
-            "coin_mean_pct": round(statistics.fmean(coin_pct), 1) if coin_pct else None,
-            "coin_5_95_pct": [round(statistics.quantiles(coin_pct, n=20)[0], 1),
-                              round(statistics.quantiles(coin_pct, n=20)[18], 1)] if len(coin_pct) > 20 else None,
-            "always_up_pct": round(100 * sum(1 for r in scored if r["move_pct"] > 0) / len(scored), 1) if scored else None,
-            "n": len(scored),
-        },
-        "risk_coverage_curve": curve(rows, [0, 20, 30, 40, 50, 55, 60, 70, 80]),
-        "abstentions_that_moved": [
-            {"ticker": r["ticker"], "move_pct": r["move_pct"], "confidence": r["confidence"]}
-            for r in missed_moves],
-        "results": rows,
-    }
-    out = run / "edge-outcome.json"
+    doc = {"generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+           "runs": runs, "per_day": per_day,
+           "pooled": stats_for(all_live, a.seed) if len(runs) > 1 else per_day[0]}
+    out = Path(runs[0]) / "edge-outcome.json"
     out.write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
 
-    print(f"{doc['scored']} scored, {doc['no_direction']} inside deadband, "
-          f"{doc['abstained']} abstained, {doc['pending']} pending\n")
-    print(f"{'ticker':8s}{'dir':9s}{'conf':>6s}{'move':>9s}  outcome")
-    for r in sorted(rows, key=lambda x: -x["confidence"]):
-        mv = f"{r.get('move_pct'):+.2f}%" if r.get("move_pct") is not None else "  --  "
-        mark = "" if r["hit"] is None else ("  HIT" if r["hit"] else "  MISS")
-        print(f"{r['ticker']:8s}{r['direction']:9s}{r['confidence']:6.1f}{mv:>9s}  {r['outcome']}{mark}")
-    if doc["baselines"]["n"]:
-        print(f"\ncoin on the same {doc['baselines']['n']} events: "
-              f"{doc['baselines']['coin_mean_pct']}% "
-              f"(5-95: {doc['baselines']['coin_5_95_pct']})   "
-              f"always-up: {doc['baselines']['always_up_pct']}%")
-    print("\nrisk-coverage curve (the number that matters):")
-    print(f"  {'thresh':>7s}{'called':>8s}{'cover':>8s}{'acc':>8s}")
-    for p in doc["risk_coverage_curve"]:
-        acc = f"{p['accuracy_pct']}%" if p["accuracy_pct"] is not None else "  --"
-        print(f"  {p['threshold']:7.0f}{p['names_called']:8d}{p['coverage_pct']:7.1f}%{acc:>8s}")
+    if len(runs) > 1:
+        p = doc["pooled"]
+        print(f"\n=== POOLED over {len(runs)} days, n={p.get('n')} ===")
+        print(f"  spearman vs raw move     {p.get('spearman_vs_raw_move')}"
+              f"  (p={p.get('p_permutation_raw')})")
+        print(f"  spearman vs move/implied {p.get('spearman_vs_move_over_implied')}"
+              f"  (p={p.get('p_permutation_normalised')})")
+        print(f"  long/short spread        {p.get('long_short_spread_pct')}pp")
     print(f"\nwrote {out}")
 
 

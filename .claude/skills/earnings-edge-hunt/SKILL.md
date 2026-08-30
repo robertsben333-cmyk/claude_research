@@ -1,206 +1,167 @@
 ---
 name: earnings-edge-hunt
-description: Establishes what the market has already priced into an imminent earnings print, then sends free-roaming hunters to find information that is not in that price, has an adversary attack every finding, and emits a direction call only where the evidence structurally earns one. Use when asked to run the edge hunt, hunt for unpriced information, run the Monday BMO test, or produce direction calls for a day's earnings.
+description: Establishes what the market has already priced into each of the day's earnings prints, then sends free-roaming hunters to find information that is not in that price, has an adversary size how much of each finding is already in, and emits one signed number per company so the day's names can be ranked. Use when asked to run the edge hunt, rank the day's earnings names, hunt for unpriced information, or score companies reporting.
 ---
 
-# Edge hunt — call direction only where something unpriced was actually found
+# Edge hunt — one signed number per company, so the day can be ranked
 
-This stage answers a narrower question than the rest of the pipeline. Not "what
-will this stock do" for every name, but **"is there anything here the market has
-missed, and if so which way does it cut."** Most names get `abstain`, and that is
-the design working rather than the design failing.
+This stage produces, for every company reporting in the window, a single signed
+score on −100…+100. Sort on it and you have the day ranked from most-likely-up to
+most-likely-down.
+
+There is no call, no threshold and no direction label anywhere in the output. That
+is deliberate and it is the point: **the question being tested is whether these
+companies can be ranked at all**, and that question is answerable at every cut
+only if nothing has already been rounded into a bucket upstream.
 
 ## Why it looks like this
 
-Three things in this repository shaped every rule below, and they are worth
-carrying in your head while you run it.
+**Categories destroyed the first run.** On 2026-08-31 the adversary returned one
+of three verdicts, baseline quality was one of three tiers, and hunters returned
+up/down/abstain. Every judged finding landed in one of two verdict buckets and
+twelve companies collapsed to one non-zero score and eleven zeros. There was
+nothing to rank, and the bucketing did that rather than the evidence. Everything
+that was a category is now a number.
 
 **Self-rated confidence does not work.** Across 33 scored arm calls in
-`backtest/runs/pilot-40`, the model's own `evidence_quality` field split top-third
-and bottom-third accuracy at exactly 50/50. Nothing a hunter says about how sure
-it feels enters the score. Confidence is derived by `scripts/edge_confidence.py`
-from counts and adversary outcomes, and there is no field for an agent to assert
-it.
+`backtest/runs/pilot-40`, the model's own `evidence_quality` split top-third and
+bottom-third accuracy at exactly 50/50. No hunter's feeling about its own certainty
+enters the score. `scripts/edge_score.py` derives everything from sizes, source
+counts and adversary numbers.
 
-**The crux is "is it already priced", and there is no rule that settles it.** The
-PWR event in `backtest/notes/disagreement-map.md` had two analyses holding the
-same principle, reading the same corpus, disagreeing about which of two stories
-was the widely-told one, and landing 14% apart. That question does not get solved
-by methodology. It gets an adversary whose only job is to argue the other side.
-
-**Averaging disagreement produces nothing.** Every panelled call in `LEDGER.md`
-so far is `Neutral / No Edge` — three for three — while the cheap preliminary read
-called direction correctly on all three. Nothing here averages a direction score.
-Findings survive or die individually and the survivors vote.
+**The crux is "is it already priced", and no rule settles it.** The PWR event in
+`backtest/notes/disagreement-map.md` had two analyses holding the same principle,
+reading the same corpus, disagreeing about which story was the widely-told one, and
+landing 14% apart. That gets an adversary, not a heuristic.
 
 ## What is fixed and what is free
 
-Fixed absolutely: the priced-in baseline, the six-field finding contract, the
-sourcing rule, and the fact that every name in the universe gets scored and
-logged. Free absolutely: where hunters look, what they look for, what counts as
-interesting, and how they reason. Do not add a research checklist. The nine-area
-program belongs to stage 2 and importing it here would rebuild the thing this
-stage exists to replace.
+Fixed: the sealed baseline, the numeric output contracts, the sourcing rule, and
+that every name in the universe is scored. Free: where hunters look, what they look
+for, and how they reason. Do not add a research checklist — the nine-area program
+belongs to stage 2 and importing it here rebuilds the thing this stage replaces.
 
-## 1. Resolve the universe
+## 1. Universe and sealed baseline
 
 ```bash
-python3 scripts/edge_universe.py --date <YYYY-MM-DD> --session <bmo|amc> \
-  -o <RUN>/edge/universe.json
+python3 scripts/run_paths.py <YYYY-MM-DD> --json          # never invent a path
+python3 scripts/edge_universe.py --date <D> --session <bmo|amc> -o <RUN>/edge/universe.json
+python3 scripts/priced_in.py --tickers <T,...> --date <D> --session <s> -o <RUN>/edge/baselines/
 ```
 
-No market-cap floor. `--include-unknown` picks up rows Nasdaq left as
-`time-not-supplied`; use it when the confirmed list is thin, and record that you
-did.
+Drop `time-not-supplied` rows unless you are deliberately re-measuring the phantom
+rate — on 2026-08-31 **eight of eight** of them had no earnings event at all.
 
-Resolve the run directory with `python3 scripts/run_paths.py --json` and work
-inside `<run>/edge/`. Never invent a path.
-
-## 2. Snapshot what is already priced, before anything searches
+**Commit the baselines before launching anything.** A baseline written after a
+finding exists is one the finding has contaminated. Then heartbeat:
 
 ```bash
-python3 scripts/priced_in.py --tickers <T1,T2,...> --date <YYYY-MM-DD> \
-  --session <bmo|amc> -o <RUN>/edge/baselines/
+python3 scripts/run_log.py --date <D> --heading "Edge hunt — <D> <session> — STARTED" --line "<plan>"
+scripts/publish.sh "edge hunt: started for <D>"
 ```
 
-**Commit this before launching a single hunter.** The baseline is the thing the
-hunt has to beat, and a baseline written after the finding exists is a baseline
-the finding has already contaminated. Sealing it is one cheap commit and it is
-what keeps `why_not_priced` from being unfalsifiable.
+## 2. Sweep — one agent, all names
 
-Read the output before going on. `baseline_quality.tier` is the number that
-matters:
+Launch **one** `edge-sweep` agent for the entire universe. It confirms which
+companies are really reporting and gives each survivor a continuous
+`hunt_priority` plus a note on where an unpriced finding might live.
 
-| tier | meaning | what to do |
-| --- | --- | --- |
-| `full` | usable option chain and 4+ prior reactions | two hunters |
-| `partial` | one of the two | two hunters |
-| `thin` | neither | one hunter, and it will be capped at 50% confidence |
+This exists because the first run sent twelve names to twelve deep hunters and
+eight of them burned a full Opus/high budget establishing that no event existed.
+One cheap agent replaces those eight.
 
-A `thin` name has no defensible statement of what the market priced, so no finding
-about it can be confidently called unpriced. That cap is applied in code and is
-not yours to override.
+Write to `<RUN>/edge/sweep.json`. Publish it.
 
-## 3. Heartbeat before you spend anything
+## 3. Hunt — parallel only where independence is measured
+
+Launch `unpriced-hunter` on the confirmed names, ordered by `hunt_priority`:
+
+- **two hunters** on the top names, in parallel, isolated from each other
+- **one hunter** on the rest
+
+Two hunters on one name is the one place agent count must not be economised. On
+2026-08-31 the two SY hunters returned *opposite* numbers from the same sealed
+baseline and the same disclosed cohort table, and that disagreement was the most
+informative output of the run. It only exists because neither could see the other.
+
+Give each hunter exactly: ticker, company, event date and session, the absolute
+path to its `baselines/<TICKER>.json`, its output path, and its row from
+`sweep.json`. Nothing else — not your view, not the other names, not the other
+hunter.
+
+Publish after each wave, not at the end of the fan-out.
+
+## 4. Adversary — one agent per ticker, not per finding
+
+Launch `priced-in-adversary` **once per company**, with all of that company's
+findings in one brief. It returns `priced_in_pct` from 0 to 100 for each, plus its
+own independent `size_check_pct`.
+
+Batching here is free. The findings share a company, a baseline and a news record,
+and they often rest on the same document or mirror each other — judging them
+together costs less and sees the interaction. What must stay separate is the
+adversary from the hunters, not the adversary from itself.
+
+**Judge every finding, on both sides.** On the first run adversaries were launched
+against the bullish findings only; since an unjudged finding defaults to
+mostly-priced, that mechanically favoured whichever side went unattacked. Never
+give the adversary the hunter's own numbers or reasoning.
+
+Write to `<RUN>/edge/adversary/<TICKER>.json`.
+
+## 5. Score and rank
 
 ```bash
-python3 scripts/run_log.py --heading "Edge hunt — <date> <session> — STARTED" \
-  --line "<n> names, <k> full/partial, <m> thin; <h> hunters planned"
-scripts/publish.sh "edge hunt: started for <YYYY-MM-DD>"
+python3 scripts/edge_score.py --run <RUN>/edge
 ```
 
-One commit, and it is the only thing distinguishing a stage that never fired from
-one killed on its first subagent.
+Writes `edge-scores.json`: every name, with `edge_score` (−100…+100, the ranking
+key), `edge_pct` (the residual in points of spot), `confidence`, `uncertainty_pct`
+and the full component breakdown.
 
-## 4. Hunt
+Names whose event was not confirmed carry `rankable: false` and sit out of the
+ranking rather than sorting to the top on a 0.
 
-Launch `unpriced-hunter` subagents. Two per `full`/`partial` name, one per `thin`
-name, all in parallel within the wave size in `config/pipeline.yaml`.
+Do not filter this file and do not apply a cutoff. Selection is the reader's, made
+afterwards on a complete table, which is what keeps "can these be ranked" testable
+at every k.
 
-**If `unpriced-hunter` comes back "agent type not found", it is not missing.** Agent
-definitions are read at session start, so a session that just created them cannot
-dispatch them. This happened on the first live run (2026-08-31). Do not stop and do
-not rewrite the definition — launch `general-purpose` instead and paste the body of
-`.claude/agents/unpriced-hunter.md` into the prompt, adding one line telling the
-agent not to read anything else under `edge/`, since `general-purpose` has file
-tools the hunter deliberately does not. Record in the run log that the run used the
-inlined form. A restarted session gets the real agent.
+## 6. The note
 
-Give each hunter exactly this and nothing more:
+`<RUN>/edge/edge-note.md`, answer first: the ranked table, then for each of the top
+and bottom names the finding driving it, its URL, and what the price already says.
+Then the names that could not be ranked and why. End with the disclaimer from
+`config/pipeline.yaml`.
 
-- ticker, company name, event date and session
-- the absolute path to that name's `baselines/<TICKER>.json`
-- the output path `<RUN>/edge/hunts/<TICKER>-h<N>.json`
-
-**Hunters must not see each other.** Two hunts on the same name are two
-independent samples, and their agreement is a scored component. Tell one what the
-other found and you have destroyed the measurement while making the output look
-better. For the same reason, do not pass them your own view, the other names, or
-anything from stage 1 or 2.
-
-Publish after each wave, not at the end of the fan-out. A wave that dies has cost
-you one wave.
-
-## 5. Adversary pass
-
-For every finding in every hunt, launch `priced-in-adversary`. Give it the finding
-object, the baseline path, and the ticker. Never give it the hunter's `direction`,
-`conviction_note` or reasoning — it judges the claim, not the argument. The same
-inlining fallback applies here as in step 4.
-
-Write each verdict to `<RUN>/edge/adversary/<TICKER>-<hunterstem>-<i>.json`, and
-add two fields the confidence script needs to join them up:
-
-```json
-{"ticker": "TICK", "finding_key": "<TICKER>-h1#0", "...": "the agent's verdict"}
-```
-
-`finding_key` is `<hunter file stem>#<index of the finding in its array>`.
-
-If the finding count exceeds the adversary budget, judge the findings behind the
-highest-conviction names first and let the rest score as `unjudged` — which is
-weighted as partially priced, so skipping the pass costs confidence rather than
-granting it free. Record in the run log how many went unjudged.
-
-## 6. Score every name, then select by threshold
-
-```bash
-python3 scripts/edge_confidence.py --run <RUN>/edge --threshold 55
-```
-
-This writes `edge-calls.json` containing **every name in the universe**, called or
-not, with its confidence and the components that produced it.
-
-Do not filter this file. Do not report only the called names and drop the rest.
-Selection happens by thresholding a complete table, which is what makes the
-risk-coverage curve computable afterwards and what stops "I only call the ones I
-am sure about" from being an unfalsifiable claim. A hunt that reports three
-confident names and silently discards nine is indistinguishable from cherry
-picking, including to you.
-
-## 7. Write the note
-
-`<RUN>/edge/edge-note.md`, answer first:
-
-- the called names, each with its direction, confidence, the finding, and its URL
-- for each call, one line on what the price says and why the finding cuts against it
-- the abstentions, in a table with their confidence and why they were held back
-- coverage: `n called / n scored`, stated as a fraction, never as a bare hit count
-- the disclaimer from `config/pipeline.yaml`
-
-Then publish:
-
-```bash
-python3 scripts/update_index.py
-scripts/publish.sh "edge hunt: <n>/<m> called for <YYYY-MM-DD>"
-```
-
-## 8. Resolve, the day after the window closes
+## 7. Resolve, once the window closes
 
 ```bash
 python3 scripts/edge_resolve.py --run <RUN>/edge
+python3 scripts/edge_resolve.py --pool 'research/2026/*/*/edge'   # the real number
 ```
 
-Prints the risk-coverage curve, which is the only number worth reading. Accuracy
-should rise as the threshold rises and coverage falls. If it is flat, the
-confidence signal is decorative and the components in `edge_confidence.py` need
-changing — not the threshold.
+Reports Spearman rank correlation between `edge_score` and the realised move, both
+raw and divided by the implied move, with a permutation p-value; plus the spread
+from being long the top third and short the bottom third.
 
-Two things the resolver reports that are easy to look past. `no-direction` names
-moved less than their own deadband and are neither hit nor miss; scoring them as
-misses is what made BILL a recorded failure on a −0.65% day. `abstentions_that_moved`
-is the cost of caution, and if that list is long the system is not being selective,
-it is being blind.
+The normalised correlation is the skill measure. Sorting a 15%-implied biotech
+above a 2%-implied utility is easy and means nothing.
 
-## Honest limits, to state in every note
+**One day is an anecdote.** A single day of five to twelve names cannot produce a
+meaningful correlation, and the pooled figure across many days is the result. Say
+so in every note rather than letting a good first day read as a finding.
 
-One day of names is not an accuracy test. Five called names at 60% is a coin, and
-the curve needs many runs before its slope means anything. Say so in the note
-rather than letting a good first day read as a result.
-
-Coverage tracks market cap. A day of large caps will flatter the hunt relative to
-the small, high-change-expectation names the pipeline normally shortlists.
+## Standing rules
 
 Never fabricate a number. Every company-specific figure carries a source URL or is
-marked `unavailable`. A missing anchor correctly lowers confidence downstream; an
-invented one corrupts everything after it.
+marked unavailable — a missing anchor correctly lowers the score, an invented one
+corrupts the ranking.
+
+Coverage tracks market cap. `backtest/FINDINGS.md` §27 measured news coverage as a
+near-monotonic function of size, so a day of large caps flatters the hunt relative
+to the small, high-change-expectation names the pipeline normally shortlists.
+
+If an agent type comes back "not found", the definitions were written this session
+and are not registered yet. Launch `general-purpose` with the agent file's body
+pasted into the prompt, add a line forbidding it to read anything else under
+`edge/`, and record in the run log that the run used the inlined form.

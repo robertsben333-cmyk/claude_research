@@ -77,22 +77,30 @@ edge_hunt:
   # near-monotonic function of market cap, so filtering the small names out would
   # turn every result into a statement about mega-caps.
   min_market_cap_usd: 0
-  hunters_per_name:
-    full: 2                       # usable option chain AND 4+ prior reactions
-    partial: 2                    # one of the two
-    thin: 1                       # neither; capped at 50% confidence in code anyway
+  # One sweep agent screens the whole universe and kills stale calendar rows
+  # before any deep hunter is spawned. On 2026-08-31 twelve names went to twelve
+  # hunters and eight had no earnings event at all, each burning a full opus/high
+  # budget to establish a fact one filing lookup settles.
+  sweep_agents: 1
+  # Two hunters only on the top names by the sweep's hunt_priority. This is the
+  # one place agent count must not be economised: the two SY hunters returned
+  # opposite numbers from the same baseline and that disagreement was the most
+  # informative output of the first run.
+  double_hunt_top_n: 2
+  hunters_per_other_name: 1
   wave_size: 4
   max_concurrent_subagents: 4
   model: opus
   effort: high
-  # Findings judged by the priced-in adversary, highest-conviction names first.
-  # Anything unjudged scores as partially priced, so a skipped pass costs
-  # confidence rather than granting it free.
-  max_adversary_agents: 12
-  # Selection threshold. Applied to a table containing EVERY name in the universe,
-  # never to a set an agent chose to report -- that is what keeps the risk-coverage
-  # curve honest. Retune only from a resolved curve, never from a single day.
-  confidence_threshold: 55
+  # One adversary per TICKER, judging all of that name's findings together, not
+  # one per finding. They share a company, a baseline and a news record, and they
+  # often rest on the same document. What must stay separate is the adversary from
+  # the hunters, not the adversary from itself.
+  adversary_agents_per_ticker: 1
+  # No threshold and no call. edge_score.py emits one signed number per company on
+  # -100..+100 and the day is ranked on it; any cut is applied by the reader
+  # afterwards, which is what keeps "can these be ranked" answerable at every k.
+  # A threshold here would put a category back into the output.
 
 output:
   disclaimer: >-
@@ -108,7 +116,7 @@ budget:
     triage: 6
     deep_dive_batch: 3
     panel: 14
-    edge_hunt: 26                 # hunters + adversaries, whole stage
+    edge_hunt: 20                 # sweep + hunters + adversaries, whole stage
   degrade_order:
     - reduce_panel_names_to_2
     - reduce_panel_names_to_1
@@ -117,6 +125,6 @@ budget:
   # adversaries: an unhunted name scores zero and drops out cleanly, while an
   # unjudged finding still carries partial weight into a call.
   edge_degrade_order:
-    - one_hunter_on_partial_names
-    - drop_thin_names_entirely
-    - adversary_on_top_conviction_names_only
+    - single_hunter_on_every_name
+    - hunt_only_names_the_sweep_ranked_above_median_priority
+    - adversary_on_the_largest_findings_only
