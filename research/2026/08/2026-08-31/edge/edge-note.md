@@ -7,7 +7,8 @@
 Eight of the twelve names on the calendar are not reporting on 31 August at all. Of the
 four that are, one had both its hunters abstain, and the other three produced findings
 that the adversary showed were already published, already in the price, or arithmetically
-wrong.
+wrong — nine findings judged, eight `already_priced`, one `partially_priced`, none
+surviving outright.
 
 This is the first live run of stage E, and 0% coverage is the design working rather than
 the design failing. A day with four real events and no surviving unpriced information is a
@@ -59,7 +60,7 @@ deriving their case from the same disclosed cohort table. One read a frozen stor
 a maturing cohort compounding without new-store drag; the other read it as a shrinking
 network with accelerating closures and a 26% fall in revenue per centre.
 
-Six findings judged, four `already_priced` and one `partially_priced`. The bull case fell
+Six findings judged, five `already_priced` and one `partially_priced`. The bull case fell
 when management turned out to have stated **59 centres, not 54**, on the Q1 call — the
 trade-press source was reproducing the March-31 press release, not recounting. The bear
 case fell on arithmetic: the cohort buckets key on *operating duration*, so December-opened
@@ -74,7 +75,15 @@ a Wuhan Fenqile office where staff were given a collections-or-minimum-wage choi
 present only in Chinese commentary and corroborated across two outlets, against an offline
 inclusive-financing business management said was nearly half of Q1 originations. Plus the
 peer read-through that post-dates anything LX has said: FinVolution disclosed on 27 August
-that July China volume fell roughly 50%. Held at 32.5 under the thin-tier cap.
+that July China volume fell roughly 50%.
+
+The adversary broke it on timing rather than novelty. A July volume collapse and
+July-August funding costs are **Q3 events** and cannot be in the June quarter LX reports
+on the 31st, so they bear on guidance rather than the printed P&L. And LX fell 11.28% in
+the five sessions bracketing the XYF, QFIN and FinVolution prints, against FinVolution's
+32% twelve-month decline versus LX's 65% — the read-through had already executed in the
+tape, with the market discriminating between the names rather than missing the
+difference. Held at 32.5 under the thin-tier cap.
 
 **BLRX** — confirmed event and a mechanical finding: a $3.75m registered direct closing the
 morning of the print. The adversary broke it on three counts. The "140 sessions of ADV"
