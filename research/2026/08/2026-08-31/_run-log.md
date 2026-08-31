@@ -116,3 +116,7 @@
 ## Capture — 2026-08-31 — HPE agent layer
 - Logged at 2026-08-31 15:53 UTC
 - 15 queries (partial areas 1,3,4; areas 5,6,7,9 not run - session WebSearch budget exhausted early), 135 search results, 24 planned fetches, 11 documents stored (11 new, 0 snippet_only). 1 TRIPWIRE investigated, false positive: stockanalysis.com quote page trips 'stock rose' on an Aug 10 2026 Morgan Stanley upgrade reaction (unrelated to the Sept 2 print, dated 3 weeks pre-event) alongside the page's routine next-earnings-date boilerplate. Document kept. HPE is the thinnest of the six agent-layer captures - hit the shared session WebSearch budget wall earliest, before areas 5/6/7/9 could run at all.
+
+## Capture — 2026-08-31 — DONE
+- Logged at 2026-08-31 15:53 UTC
+- 235 events swept (script-only, 2026-08-31->2026-09-15), 840 new documents. Agent layer: 6 names (AVGO PANW DELL MDT SNOW HPE), 200 queries (hit shared session WebSearch cap exactly at 200 - see finding below), 1754 search results recorded, 183 planned fetches, 73 documents stored, 0 snippet_only. 5 tripwires fired, all investigated and confirmed false positives (prior-quarter beats / forward options-implied-move language / grammatical false-match co-occurring with the routine event-date mention) - documents kept, none indicate a calendar or date problem. Day total: 913 new documents.
