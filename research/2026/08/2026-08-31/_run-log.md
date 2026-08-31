@@ -112,3 +112,7 @@
 ## Capture — 2026-08-31 — SNOW agent layer
 - Logged at 2026-08-31 15:47 UTC
 - 24 queries (areas 1,3,4,5; areas 6,7,9 not run - session WebSearch budget exhausted), 217 search results, 22 planned fetches, 6 documents stored (6 new, 0 snippet_only). 1 TRIPWIRE investigated, false positive: 247wallst.com article (a related-headlines roundup page) trips 'beat expectations' describing SNOW's PRIOR quarter (Q1 FY2027, reported late May 2026), not the upcoming Sept 2 Q2 FY2027 print; the Sept 2 date elsewhere on the same page is a routine reference to the confirmed upcoming date. Document kept.
+
+## Capture — 2026-08-31 — HPE agent layer
+- Logged at 2026-08-31 15:53 UTC
+- 15 queries (partial areas 1,3,4; areas 5,6,7,9 not run - session WebSearch budget exhausted early), 135 search results, 24 planned fetches, 11 documents stored (11 new, 0 snippet_only). 1 TRIPWIRE investigated, false positive: stockanalysis.com quote page trips 'stock rose' on an Aug 10 2026 Morgan Stanley upgrade reaction (unrelated to the Sept 2 print, dated 3 weeks pre-event) alongside the page's routine next-earnings-date boilerplate. Document kept. HPE is the thinnest of the six agent-layer captures - hit the shared session WebSearch budget wall earliest, before areas 5/6/7/9 could run at all.
