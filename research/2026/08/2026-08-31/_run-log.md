@@ -51,3 +51,7 @@
 - The 6-K reaction-history fix is committed but NOT applied to this run. Counterfactual computed and recorded: with it LX moves from thin to partial, 32.5 to 48.8, still short of the 55 threshold. The bug did not cost a call. Applying it after the hunts would have been indistinguishable from tuning.
 - Six silent bugs found and fixed during the run, all flattering, all found by checking a number against an independent source rather than by reading code. That ratio is now seven for seven across this project including the five in backtest/FINDINGS.md.
 - For the next run: apply the 6-K fix from the start; drop time-not-supplied rows unless deliberately measuring the phantom rate again; and consider whether the adversary should be run on BOTH sides from the outset rather than as a symmetry correction noticed mid-run.
+
+## Edge hunt — 2026-08-31 amc + 2026-09-01 bmo — STARTED
+- Logged at 2026-08-31 14:08 UTC
+- Universe: 10 of 41 calendar rows resolved to an explicit session (0 unresolved, --include-unknown NOT passed after 8/8 phantom rate on first run). Names: MDT NIO MMED RZLV YEXT CANG HMR ZEPP RGS PXS. Baselines sealed and pushed at 14:12Z BEFORE any agent launched. Live-session timing worked: real chains on MDT (impl 4.92%, skew -0.21), NIO (10.18%, skew -9.44), RZLV (14.1%); 7 of 10 have no listed options. Plan: 1 edge-sweep over all 10, then unpriced-hunter (2 isolated on top-2 hunt_priority, 1 on the rest), then priced-in-adversary once per confirmed ticker with all findings on both sides. Budget cap 20 subagents.
