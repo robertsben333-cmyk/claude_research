@@ -128,3 +128,8 @@
 - Matches the standing known issue in CLAUDE.md/docs/ROUTINES.md: as of 2026-08-29 a RemoteTrigger list found none of stages 0-4 registered as Routines on this account, only stage C/E/N plus unrelated jobs. This session has no RemoteTrigger/list_triggers tool to re-check that list directly, but the file evidence for 2026-08-31 (no universe, no shortlist, no dossiers) is consistent with stages 0-2 still not firing, same as the 08-08..08-12 and 08-14/08-17 gaps already documented.
 - Per earnings-panel-advice skill step 1 (no ranking, no dossiers case): writing 04-advice.md/04-advice.json with status=blocked, status_reason naming stages 0-2, empty ranked_names, shortlist researched: none. No panel run, no subagents spent.
 - Recommend: confirm via RemoteTrigger/list_triggers (or the platform's routine admin) whether stage 0/1/2 Routines exist and are enabled, and recreate them per docs/ROUTINES.md cron table if not. This stage-3 session cannot create or repair those Routines itself.
+
+## claude_naive — 2026-08-31 — STARTED
+- Logged at 2026-08-31 17:38 UTC
+- Universe built: 10 calendar rows, 5 above the $500M floor (MDT, NIO, MMED, RZLV, YEXT); 5 microcaps below floor dropped.
+- Plan: verify each event is real, research each name freely, emit forecasts.json + entry-prices.json.
