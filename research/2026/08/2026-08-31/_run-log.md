@@ -104,3 +104,7 @@
 ## Capture — 2026-08-31 — DELL agent layer
 - Logged at 2026-08-31 15:42 UTC
 - 39 queries (areas 1,3,4,5,6,7; area 9 not run - session WebSearch budget exhausted), 346 search results, 30 planned fetches, 7 documents stored (7 new, 0 snippet_only) - most fetch attempts failed with no snippet fallback (empty snippets in plan). 0 tripwires. Agent flagged unresolved source disagreement (not adjudicated): event date cited as both Sep 1 and Sep 3 by different aggregators (universe.json / official IR confirm Sep 1 amc), short interest 2.17%/4.33%/7.32% of float, expected move 6.7% vs 11.4%, put/call 0.80 vs 1.26.
+
+## Capture — 2026-08-31 — MDT agent layer
+- Logged at 2026-08-31 15:44 UTC
+- 24 queries (areas 1,3,4,5; areas 6,7,9 not run - session WebSearch budget exhausted), 209 search results, 34 planned fetches, 17 documents stored (17 new, 0 snippet_only). 1 TRIPWIRE investigated, false positive: marketbeat.com article trips 'beats consensus' on MDT's PRIOR quarter (Jun 3 2026 release, EPS 1.55 vs 1.54 est) and 'post earnings' on a grammatical false-match ('analysts expect the company to post earnings of $1.39') rather than the results-recap adjective. Same document independently confirms the Sept 1 2026 BMO date/session for the upcoming print, matching the calendar; its own URL slug carries a stale 2026-08-25 (live-updating marketbeat page, publish-date artifact per FINDINGS.md §23), not a real date change. Event date/session cross-confirmed via Medtronic's own IR press release and stocktitan.net. Document kept.

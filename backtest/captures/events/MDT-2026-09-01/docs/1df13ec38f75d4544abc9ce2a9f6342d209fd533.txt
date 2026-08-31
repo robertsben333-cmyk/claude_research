@@ -1,0 +1,3115 @@
+SOURCE: https://investorrelations.medtronic.com/events-presentations
+PROVIDER: agent-websearch
+AREA: 1
+HEADLINE: Investor Relations | Medtronic - Events & Presentations
+WHY: IR events page, canonical live source for call time/webcast link
+QUERY: Medtronic investor relations earnings call schedule September 2026
+FETCHED_UTC: 2026-08-31T15:43:08Z
+
+ 
+ 
+
+ 
+ 
+ 
+div.wd_subscribe_link {
+	text-align: right;
+	margin: 10px 0;
+	padding: 0px;
+	border: 0px;
+}
+span.wd_subscribe_icon {
+	margin-left: 1em;
+}
+.wd_subscribe_link img {
+	vertical-align: middle;
+}
+ 
+  
+  
+  
+ webDriver.push_jQuery(); 
+  
+  
+ 
+ 
+ 
+(function($) {
+	webDriver.resizeModal = function() {
+		$(this).find(".wd_modal").wd_modal("resize");
+		return false;
+	}
+	
+	var modals = [];
+		
+	function _value(value, base) {
+		if (typeof value == "string" && value.indexOf("%") > 0) {
+			return  base * parseInt(value, 10) / 100;
+		} else {
+			return parseInt(value, 10);
+		}
+	}
+	
+	var wd_modal = function(element, options) {
+		this.init(element, options);
+	};
+	
+	wd_modal.prototype = {
+		init: function(element, options) {
+			var self = this;
+			
+			this.isOpen = false;
+			this.opener = null;
+			
+			this.$element = $(element);
+			this._options = {
+				autoOpen: false,
+				closeExisting: false,
+				closeOnEscape: true,
+				closeOnOverlayClick: true,
+				fadeDuration: null,
+				margin: "10%",
+				padding: 10
+			};
+			
+			this.options(options);
+			
+			this.$overlay = $(" ").addClass("wd_modal-overlay").attr("wd_resize","resizeModal").appendTo($("body")).hide();
+			this.$outer = $(" ").addClass("wd_modal-outer").appendTo(this.$overlay);
+			this.$inner = $(" ").addClass("wd_modal-inner").appendTo(this.$outer).append(this.$element);
+			// Hack because I can't figure out where the extra few pixels at the bottom of the content are coming from
+			this.$inner.css("overflow-y", "hidden");
+			this.$close = $("  Close Dialog  ")
+					.on("click", function(event) {self.close(); event.preventDefault();})
+					.appendTo(this.$outer);
+			this.$element.addClass("wd_modal");
+			
+			if (this._options.autoOpen)
+				this.open(this._options.closeExisting);
+		},
+		
+		options: function(options) {
+			if (options) {
+				$.extend(this._options, options);
+
+				this._options.fadeDuration = parseInt(this._options.fadeDuration, 10);
+				if (isNaN(this._options.fadeDuration))
+					this._options.fadeDuration = false;
+				
+				if (!$.isArray(this._options.margin))
+					this._options.margin = [this._options.margin];
+				if (this._options.margin.length   0) {
+				for (var i = modals.length - 1; i >= 0; --i)
+					modals[i].close(true, true);
+			}
+
+			this.$overlay.addClass("wd_modal-current");
+			$("body").append(this.$overlay);
+
+			if (!now && this._options.fadeDuration) {
+				this.$overlay.fadeIn(this._options.fadeDuration, function() {self.open(myCloseExisting, true);});
+			} else {
+				if (modals.length == 0) {
+					$("body").css("overflow","hidden");
+					$(document).on("keydown.wd_modal", function (event) {
+						var current = modals[modals.length - 1];
+						if ((event.which == 27 || event.keyCode == 27) && current._options.closeOnEscape) {
+							current.close();
+							event.stopImmediatePropagation();
+							event.preventDefault();
+						}
+					});
+				}
+
+				if (this._options.closeOnOverlayClick) {
+					this.$overlay.on("click.wd_modal", function (event) {
+						if (event.target == this) {
+							self.close();
+							event.preventDefault();
+						}
+					});
+				}
+
+				modals.push(this);
+				
+				this.$overlay.show();
+				
+				var $focus = this.$element.find(":focusable");
+				if ($focus.length > 0)
+					$focus[0].focus();
+				
+				this.isOpen = true;
+
+				this.$element.trigger("open");
+			}
+		},
+		
+		close: function(skipCurrent, now) {
+			if (!this.isOpen)
+				return;
+			
+			this.$element.trigger("beforeClose");
+			
+			// TODO: allow closing of lower modals
+			modals.pop();
+			
+			if (modals.length == 0) {
+				$("body").css("overflow","");
+				$(document).off("keydown.wd_modal");
+			}
+			
+			this.$overlay.off("click.wd_modal");
+			
+			if (this.opener) {
+				this.opener.focus();
+				this.opener = null;
+			}
+			
+			this.isOpen = false;
+			this.$overlay.removeClass("wd_modal-current").hide();
+			
+			if (!skipCurrent && modals.length > 0)
+				modals[modals.length-1].$overlay.addClass("wd_modal-current");
+			
+			this.$element.trigger("close");
+		},
+		
+		destroy: function() {
+			this.close(false, true);
+			$("body").append(this.$element);
+			this.$overlay.remove();
+		},
+		
+		resize: function() {
+			if (!this.isOpen)
+				return;
+			
+			var self = this;
+			var winWidth = $(window).width();
+			var winHeight = $(window).height();
+			
+			var margin = this._options.margin;
+			var padding = this._options.padding;
+			
+			var width = winWidth - _value(margin[1], winWidth) - _value(margin[3], winWidth) - _value(padding[1], winWidth) - _value(padding[1], winWidth);
+			var height = winHeight - _value(margin[0], winHeight) - _value(margin[2], winHeight) - _value(padding[0], winHeight) - _value(padding[2], winHeight);
+			
+			this.$inner.css("max-width", width);
+			this.$inner.css("max-height", height);
+			
+			$.each(["Top", "Right", "Bottom", "Left"], function(i, v) {
+				self.$outer.css("padding" + v, _value(padding[i])+"px");
+			});
+			
+			var fixed = this.$element.find("[wd_need_fixed_container]").is(":visible");
+			
+			this.$inner.css("width", width);
+			this.$inner.css("height", height);
+
+			webDriver.doResize(this.$inner);
+			
+			if (!fixed) {
+				this.$inner.css("width", "auto");
+				this.$inner.css("height", "auto");
+				if (this.$element.outerHeight() > height)
+					this.$inner.css("height", height);
+				if (this.$element.outerWidth() > width)
+					this.$inner.css("width", width);
+			}
+		}
+	};
+
+	$.fn.wd_modal = function(options) {
+		if (options == "exists") {
+			return !!$(this).data("wd_modal");
+		} else if (typeof options == "string") {
+            var instance = $(this).data("wd_modal");
+			if (!instance)
+				return null;
+			var args = Array.prototype.slice.call(arguments, 1);
+            return instance[options].apply(instance, args);
+        } else {
+            return this.each(function() {
+                var instance = $(this).data("wd_modal");
+                if (instance) {
+                    instance.reload(options);
+                } else {
+                    $(this).data("wd_modal", new wd_modal(this, options));
+                }
+            });
+        }
+    };
+})(webDriver.jQuery);
+ 
+ 
+			function spin_event_popup(url) {
+				var $modal = webDriver.jQuery("#wd_event_modal");
+				if (url && $modal.length == 0) {
+					$modal = webDriver.jQuery(' ');
+					$modal.wd_modal({
+						autoOpen: false,
+					});
+				}
+
+				if (url) {
+					$modal.html("Loading...");
+					$modal.wd_modal("open");
+					if (/^https?:\/\//.test(url)) {
+						$modal.load(url, function() {webDriver.queueCallback(function() {$modal.wd_modal("resize");});});
+					} else {
+						$modal.html(url);
+						$modal.wd_modal("resize");
+					}
+				} else if ($modal.length > 0) {
+					$modal.wd_modal("close");
+				}
+			}
+		 
+ 
+			var recaptcha2_loaded = false;
+
+			function wd_recaptcha2_init() {
+				if (recaptcha2_loaded) {
+					$(".wd_recaptcha2_needed").each(function() {
+						grecaptcha.render(this, {"sitekey": "6LdDmR8TAAAAAJ72DH_RtavsrDUlu6g6lzvajKsK"});
+						$(this).removeClass("wd_recaptcha2_needed");
+					});
+				}
+			}
+
+			function on_recaptcha2_loaded() {
+				recaptcha2_loaded = true;
+				wd_recaptcha2_init();
+			}
+		 
+ )
+			.g-recaptcha iframe {
+				vertical-align: bottom;
+			}
+		 
+ 
+			(function($) {
+				var direction = "auto";
+				var category = "";
+				var start_date = false;
+				var limit_year = 2026;
+				var limit_month = 8;
+				var groups = [];
+				var cnt=0;
+
+				function load_events(clear,cntval=0) {
+					if (clear) {
+						$(".wd_events_list").empty();
+						$(".wd_events_none").hide();
+					}
+
+					$(".wd_events_more").hide();
+					$(".wd_events_error").hide();
+					$(".wd_events_loading").show();
+					$(".wd_events_past_summary").toggle(direction=="auto");
+
+					var limit_date;
+					if (limit_year == 2026 && limit_month == 8) {
+						limit_date = "2026-08-31";
+					} else if (direction != "past") {
+						limit_date = limit_year+"-"+limit_month+"-01";
+					} else {
+						var month = limit_month + 1;
+						var new_limit_year = limit_year;
+						if (month > 12) {
+							month -= 12;
+							new_limit_year=limit_year + 1;
+						}
+						limit_date = new_limit_year+"-"+month+"-00";
+					}
+
+					var args = {
+						s: "19",
+						ajax: "ajax",
+						op: "list"
+					};
+					args.direction = (direction == "past") ? "past" : "future";
+					args.limit_date = limit_date;
+					if (start_date)
+						args.start_date = start_date;
+					if (category)
+						args.category = category;
+					for (var i = 0; i   0) {
+								if (direction == "auto")
+									direction = "future";
+
+								var $container = $(".wd_events_list");
+								for (var i = 0; i   ").attr("value", year).append(year);
+							$years.append($opt);
+						}
+						$years.val(selected_year);
+					}
+
+					var selected_year = $("#wd_events_input_year").val();
+					if (new_dir != prev_dir || (selected_year != prev_year && (selected_year == 2026 || prev_year == 2026))) {
+						var min_month, max_month;
+						if (selected_year != 2026) {
+							min_month = 1;
+							max_month = 12;
+						} else if (new_dir == "past") {
+							min_month = 1;
+							max_month = 8;
+						} else {
+							min_month = 8;
+							max_month = 12;
+						}
+
+						var $months = $("#wd_events_input_month");
+						var selected_month = Math.max(min_month, Math.min($months.val(), max_month));
+						$months.empty();
+						for (var month = min_month; month   ").attr("value", month).append(month_names[month]);
+							$months.append($opt);
+						}
+						$months.val(selected_month);
+					}
+
+					if (reset) {
+						$("#wd_events_input_year").val(limit_year);
+						$("#wd_events_input_month").val(limit_month);
+						$("#wd_events_input_category").val(category);
+						for (var i = 0; i   0 && parts[0]) ? parts[0] : "auto";
+					limit_year = (parts.length > 1 && parts[1]) ? parseInt(parts[1]) : "2026";
+					limit_month = (parts.length > 2 && parts[2]) ? parseInt(parts[2]) : "8";
+					category = (parts.length > 3) ? parts[3] : "";
+					groups = [];
+					for (var i = 4; i  = 0 && (!("documentMode" in document) || document.documentMode  
+  
+ 
+.wd_events_past_summary .wd_header {
+	margin: 10px 0 0 0;
+	padding: 5px 10px;
+	font-size: 125%;
+	font-weight: bold;
+	background: url("images/webdriver/events/tab_background.gif") repeat-x scroll 0 bottom #FFFFFF;
+	border: 1px solid #E1E1E1;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+}
+.wd_events_past_summary .wd_event {
+	margin: 0 0 0.25em;
+}
+.wd_asset_type_link_list {
+	display: inline-block;
+	margin: 10px 0 0 0;
+	padding: 2px;
+}
+ 
+ 
+	function view_printable() {
+		var loc = window.location;
+		var sep = (loc.search == "") ? "?" : "&";
+		var url = loc.protocol+"//"+loc.host+loc.pathname+loc.search+sep+"printable"+loc.hash;
+		window.open(url, "_blank", "");
+	}
+ 
+ 
+ 
+			div.wd_toolbar {
+				border-top: 1px solid #cccccc;
+				border-bottom: 1px solid #cccccc;
+				margin: 15px 0px 15px 0px;
+				padding: 5px;
+				line-height: 1;
+			}
+			div.wd_toolbar-page {
+				clear: both;
+			}
+			div.wd_toolbar ul.wd_tools {
+				display: inline-block;
+				width: 100%;
+				margin: 0;
+				padding: 5px 0;
+			}
+			div.wd_toolbar ul.wd_tools li.wd_tool {
+				display: block;
+				list-style-type: none;
+				margin-right: 5px;
+				padding: 0;
+				float: right;
+			}
+			span.wd_tool_icon > a:link,
+			span.wd_tool_icon > a:visited {
+				border-radius: 2px;
+				display: inline-block;
+				width: 30px;
+				height: 30px;
+				box-sizing: border-box;
+				margin: 0;
+				padding: 7px;
+				font-size: 16px;
+				line-height: 1;
+				text-align: center;
+				color: #ffffff;
+				background-color: #767676;
+			} 
+			span.wd_tool_icon > a:hover {
+				color: #ffffff;
+				background-color: #666666;
+				text-decoration: none;
+			}
+			div.wd_toolbar ul.wd_tools li.wd_tool-addthis {
+				float: left;
+			}
+		 
+ 
+.wd_events_inputs {
+	margin: 10px 0;
+	overflow: auto;
+}
+.wd_events_inputs select {
+	margin-right: 1ex;
+}
+ul.wd_events_tabs {
+	float: right;
+	overflow: hidden;
+	margin: 5px 0;
+	padding: 0px;
+}
+li.wd_events_tab {
+	float: left;
+	display: block;
+	margin: 0;
+	border: 1px solid #666666;
+	padding: 5px;
+	cursor: pointer;
+	border: 1px solid #E1E1E1;
+}
+.wd_events_tab_label {
+}
+.wd_events_tab_label.wd_events_tab_future {
+}
+.wd_events_tab_label.wd_events_tab_past {
+}
+li.wd_events_tab:first-child {
+	border-top-left-radius:4px;
+	border-bottom-left-radius:4px;
+	-webkit-border-top-left-radius:4px;
+	-webkit-border-bottom-left-radius:4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-bottomleft: 4px;
+}
+li.wd_events_tab:last-child {
+	border-top-right-radius:4px;
+	border-bottom-right-radius:4px;
+	-webkit-border-top-right-radius:4px;
+	-webkit-border-bottom-right-radius:4px;
+	-moz-border-radius-topright: 4px;
+	-moz-border-radius-bottomright: 4px;
+}
+li.wd_events_tab.active {
+	background: url("images/webdriver/events/tab_background.gif") repeat-x scroll 0 bottom #FFFFFF;
+	color: #333;
+	font-weight: bold;
+}
+.wd_events_more {
+	margin: 10px 0;
+	cursor: pointer;
+	padding: 0 0 0 20px;
+	border: none;
+}
+.wd_event {
+	margin: 15px 0 5px 0;
+	padding: 0;
+	overflow: auto;
+}
+.wd_events_list .wd_event {
+	padding-top: 24px;
+	background: transparent url(images/webdriver/events/shadow.png) center top / 100% 14px no-repeat;
+}
+.wd_events_list .wd_event:first-child {
+	padding-top: 10px;
+	background: none;
+}
+.wd_event_sidebar {
+	float: left;
+	margin: 0 1em 0 0;
+	padding: 0;
+	width: 250px;
+}
+.wd_events-detail .wd_event_sidebar {
+	padding-bottom: 24px;
+	background: transparent url(images/webdriver/events/shadow-narrow.png) center bottom / 100% 14px no-repeat;
+}
+.wd_event_sidebar_group {
+	margin: 2em 0 0 0;
+}
+.wd_event_sidebar_item {
+	margin: 0 0 5px 0;
+}
+@media(max-width:768px){
+	ul.wd_events_tabs {
+		float: none;
+	}
+}
+.wd_events_header_container {
+	border: 0px none;
+	margin: 0 0 5px 0;
+	padding: 0 0 14px;
+}
+.wd_events_month_header {
+	margin: 10px 0 0 0;
+	padding: 5px 10px;
+	font-size: 125%;
+	font-weight: bold;
+	background: url("images/webdriver/events/tab_background.gif") repeat-x scroll 0 bottom #FFFFFF;
+	border: 1px solid #E1E1E1;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+}
+.wd_event {
+	margin: 15px 0 5px 0;
+	padding: 0;
+	overflow: auto;
+}
+.wd_events_list .wd_event {
+	padding-top: 24px;
+	background: transparent url(images/webdriver/events/shadow.png) center top / 100% 14px no-repeat;
+}
+.wd_events_list .wd_event:first-child {
+	padding-top: 10px;
+	background: none;
+}
+.wd_event_sidebar {
+	float: left;
+	margin: 0 1em 0 0;
+	padding: 0;
+	width: 250px;
+}
+.wd_event_sidebar_group {
+	margin: 2em 0 0 0;
+}
+.wd_event_sidebar_item {
+	margin: 0 0 5px 0;
+	padding: 0 0 0 0px;
+}
+.wd_event_sidebar .wd_event_location {
+}
+.wd_event_sidebar .wd_event_location_url {
+}
+@media(max-width:768px){
+	.wd_event_sidebar {
+		float: none;
+		width: auto;
+		max-width: none;
+	}
+}
+ 
+ webDriver.pop_jQuery(); 
+
+ 
+
+
+			 
+		  
+		  
+		 
+		function OptanonWrapper() { }
+		  -->
+		 
+		
+	 
+
+	  
+
+	 
+
+	 
+	 
+	 
+
+	 
+	  
+	 
+	  
+
+	  
+
+	 
+		//Declare variables.
+			namespace = new function() {
+		
+				// The API key or search token to use to authenticate the HTTP requests.
+				this.accessToken = function() {
+					/* Could return a public API key granting only the Execute Queries and
+						 Usage Analytics - Edit privileges in the target Coveo Cloud
+						 organization, or call a server-side service to return a valid search
+						 token. */
+					return "xx61fa73d9-0425-43df-a9e6-e4df53bc112c";
+				}();
+		
+				// The name of a field that can map the current page to an index item.
+				this.contentIdKey = "@clickableuri";
+		
+				// The `contentIdKey` field value for the current page.
+				this.contentIdValue = window.location.href;
+		
+				// Optional. The type of content being tracked.
+				this.contentType = "pages";
+		
+				// Optional. Custom user context information.
+				/* this.userRole = function() {
+					 // Could return a value such as "employee" or "partner".
+				 }();*/
+				/*this.userTechnicalSkillLevel = function() {
+					// Could return a value such as "intermediate" or "advanced".
+				}();*/
+				// ... Additional custom user context ...
+		
+				// The unique identifier of the target Coveo organization.
+				this.organizationId = "medtronicprodywub19ew";
+			}
+		
+			// Record actions history and send view events.
+			coveoua("init", namespace.accessToken);
+			coveoua("send", "pageview", {
+				contentIdKey: namespace.contentIdKey,
+				contentIdValue: namespace.contentIdValue,
+				contentType: namespace.contentType
+				//context_userRole: namespace.userRole,
+				//context_userTechnicalSkillLevel: namespace.userTechnicalSkillLevel
+				// ... Additional custom user context ...
+			});
+	 
+
+	 
+	 
+
+	 
+
+	 
+	 
+
+	 
+	  -->
+	 
+
+	 
+
+	 
+
+	 
+	 
+	 
+	 
+	 
+	 
+
+	 
+	 
+	 
+	 
+
+	 
+
+	 
+	 
+
+	 
+		var SITEPATH = "";
+	 
+
+	 
+	 
+	 
+	 
+		Investor Relations | Medtronic - Events & Presentations	 
+	
+  
+  
+  
+  
+  
+	 
+	 
+		bazadebezolkohpepadr = "985100434"
+	 
+
+	 
+		iframe#_hjRemoteVarsFrame {
+				display: none !important;
+				width: 1px !important;
+				height: 1px !important;
+				opacity: 0 !important;
+				pointer-events: none !important;
+			}
+	 
+	 
+	 
+
+ 
+ 
+  
+ 
+	function OptanonWrapper() { }
+ 
+ 
+
+  
+ 
+ 
+ 
+
+ 
+
+	 
+		 
+			 
+			  Your browser is out of date  
+			 
+				With an updated browser, you will have a better Medtronic website experience.  Update my browser now. 
+			 
+			 
+				 × 
+			 
+			 
+		 
+	 
+
+ 
+ 
+	 
+		 
+			 Skip to
+				main content
+			 
+			 
+				 
+					  -->
+					 
+				 
+			 
+		 
+		 
+			 
+				 
+					 
+						 
+							 
+								 
+								 
+							  
+							 Menu
+							 
+							 Close
+							 
+						 
+					 
+					 
+						 
+							 
+								 
+									 
+										 
+										 
+										 
+										 
+									 
+								 
+							 
+							 
+								 
+								 
+							  
+							 Search
+							 
+							 Close
+							 
+						 
+					 
+				 
+			 
+			 
+				 
+					 
+						 
+							 
+								 
+								 
+									 
+									 
+									 
+									 
+									 
+									 
+												{ "searchUI": "medtronic" }
+									 
+								 
+								 
+								 
+							 
+						 
+						 
+						 
+						 
+						 
+						 
+							document.addEventListener("DOMContentLoaded", function() {
+								Coveo.SearchEndpoint.configureCloudV2Endpoint("",
+																															"xx5df8945c-e7a7-42a9-bf9a-bbb30cc35dff");
+								var root = Coveo.$$(document).find("#searchbox");
+								var currentURL = window.location.href;
+								var urlArray = window.location.pathname.split('/');
+								var langRegion = "";
+								var langRegionNew = "//";
+								var Audience = "";
+								var searchUI = "medtronic";
+								if ((currentURL.indexOf('/covidien/') !== -1) || (currentURL.indexOf(
+									'/mitg/') !== -1)) {
+									langRegion = "/" + urlArray[2] + "/";
+									var searchResultsPage = "search.html";
+								}
+								else if (urlArray[1] == "digitalcentral") {
+									langRegion = "/en-us/";
+									console.log("Publisher value = " + langRegion);
+									var searchResultsPage =
+											"https://www.medtronic.com/us-en/search-results.html";
+									if (searchResultsPage.includes("/content/medtronic-com")) {
+										searchResultsPage = searchResultsPage.replace(
+											"/content/medtronic-com", "");
+									}
+								}
+								else if (urlArray[1] == "uk-en") {
+									langRegion = "/en-gb/";
+									console.log("Publisher value = " + langRegion);
+									var searchResultsPage =
+											"https://www.medtronic.com/us-en/search-results.html";
+									if (searchResultsPage.includes("/content/medtronic-com")) {
+										searchResultsPage = searchResultsPage.replace(
+											"/content/medtronic-com", "");
+									}
+								}
+								else if (urlArray[2] == "medtronic-com") {
+									var localeStr = urlArray[3];
+									//Should test for DigitalCentral and UK this is for Author
+									if (localeStr == "digitalcentral") {
+										langRegion = "/en-us/";
+										console.log("Author value = " + langRegion);
+										var searchResultsPage =
+												"https://www.medtronic.com/us-en/search-results.html";
+									}
+									else if (localeStr == "uk-en") {
+										langRegion = "/en-gb/";
+										console.log("Author value = " + langRegion);
+										var searchResultsPage =
+												"https://www.medtronic.com/us-en/search-results.html";
+									}
+									else {
+										langRegion = "/" + localeStr.substring(3, 5) + "-" + localeStr
+											.substring(0, 2) + "/";
+										var searchResultsPage =
+												"https://www.medtronic.com/us-en/search-results.html";
+										console.log("Author value = " + langRegion);
+									}
+								}
+								else {
+									var localeStr = urlArray[1];
+									langRegion = "/" + localeStr.substring(3, 5) + "-" + localeStr
+										.substring(0, 2) + "/";
+									var searchResultsPage =
+											"https://www.medtronic.com/us-en/search-results.html";
+									console.log("Publisher value = " + langRegion);
+									if (searchResultsPage.includes("/content/medtronic-com")) {
+										searchResultsPage = searchResultsPage.replace(
+											"/content/medtronic-com", "");
+									}
+								}
+								var lang = langRegion.substring(1, 3);
+								if (lang == "es") {
+									lang = "es-es";
+								}
+								if (lang == "pt") {
+									lang = "pt-br";
+								}
+								if (lang == "zh") {
+									lang = "zh-cn";
+								}
+								if (lang != "en") {
+									$.getScript(
+										"https://static.cloud.coveo.com/searchui/v2.6459/js/cultures/" +
+										lang + ".js");
+								}
+								if (document.referrer.indexOf("patients") > -1) {
+									Audience = 'Patients & Caregivers'
+								}
+								if (document.referrer.indexOf("healthcare-professionals") > -1) {
+									Audience = 'Healthcare Professionals'
+								}
+								Coveo.$$(root).on('changeAnalyticsCustomData', function(e, args) {
+									args.language = lang.substring(0, 2);
+									if (args.type === 'ClickEvent' || args.type === 'CustomEvent') {
+										args.metaObject.context_locale = langRegion;
+										args.metaObject.context_searchUI = searchUI;
+										args.metaObject.context_audience = Audience;
+									}
+								}
+																 );
+								Coveo.$$(root).on('buildingQuery', function(e, args) {
+									args.queryBuilder.addContext({
+										'locale': langRegion,
+										'searchUI': searchUI,
+										'audience': Audience
+									}
+																							);
+								}
+																 );
+								Coveo.initSearchbox(root, searchResultsPage);
+							}
+																			 );
+							setTimeout(function() {
+								Coveo.$$(document.body).findAll(".CoveoSearchButton").forEach(function(element) {
+									element.addEventListener("keydown", function(event) {
+										if (event.keyCode === 13) {
+											element.click();
+										}
+									}
+																					)
+								}
+																																						 );
+							}
+												 , 1500);
+						  -->
+					 
+				 
+			 
+			 
+				 
+					 
+						 
+							 
+								 
+								 
+								 
+									 
+										Healthcare Professionals
+										 
+											 
+												 
+													 
+													 
+												 
+											 
+										 
+									 
+									 
+										 
+											 
+												 
+													 
+														 
+															 
+															 
+														 
+													  Back
+												 
+											 
+											 
+												 
+													Overview
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Products
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+												 
+													 
+														 
+															 
+																 
+																	 
+																		 
+																		 
+																	 
+																  Back to Products
+															 
+														 
+														 
+															 
+																Product Overview
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Advanced Surgical Technology
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Cardiac Rhythm
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Cardiovascular
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Diabetes
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Digestive &amp; Gastrointestinal
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Ear, Nose &amp; Throat
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																General Surgery
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Gynecological
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Neurological
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Oral &amp; Maxillofacial
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Patient Monitoring
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Renal Care
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Respiratory
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Spinal &amp; Orthopaedic
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Surgical Navigation &amp; Imaging
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Urological
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Product Manuals
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Product Ordering &amp; Inquiries
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Product Performance &amp; Advisories
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Therapies &amp; Procedures
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+												 
+													 
+														 
+															 
+																 
+																	 
+																		 
+																		 
+																	 
+																  Back to Therapies &amp; Procedures
+															 
+														 
+														 
+															 
+																Therapy Overview
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Cardiac Rhythm
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Cardiovascular
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Diabetes Management
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Digestive &amp; Gastrointestinal
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Ear, Nose &amp; Throat
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Gynecological
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Neurological
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Oral &amp; Maxillofacial
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Spinal &amp; Orthopaedic
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Stroke Care
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Urological
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Medical Specialties
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+												 
+													 
+														 
+															 
+																 
+																	 
+																		 
+																		 
+																	 
+																  Back to Medical Specialties
+															 
+														 
+														 
+															 
+																Cardiac Surgery
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Electrophysiology
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Gastroenterology
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Interventional Cardiology
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Spine Surgery
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Services &amp; Solutions
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+												 
+													 
+														 
+															 
+																 
+																	 
+																		 
+																		 
+																	 
+																  Back to Services &amp; Solutions
+															 
+														 
+														 
+															 
+																Ambulatory Surgery Center Resources
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+														 
+														 
+														 
+														 
+															 
+																Cardiac and Vascular Solutions
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Care Management Services
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Digital Connectivity IT Support
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Equipment Services &amp; Support
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Innovation Lab
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Neuroscience Solutions
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Office-Based Sinus Surgery
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													MRI Resources
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Reimbursement
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Clinical Research &amp; Trials
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+												 
+													 
+														 
+															 
+																 
+																	 
+																		 
+																		 
+																	 
+																  Back to Clinical Research &amp; Trials
+															 
+														 
+														 
+														 
+														 
+															 
+																External Research Program
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Education &amp; Training
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+										 
+									 
+								 
+								 
+									 
+										Patients &amp; Caregivers
+										 
+											 
+												 
+													 
+													 
+												 
+											 
+										 
+									 
+									 
+										 
+											 
+												 
+													 
+														 
+															 
+															 
+														 
+													  Back
+												 
+											 
+											 
+												 
+													Overview
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Conditions
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+												 
+													 
+														 
+															 
+																 
+																	 
+																		 
+																		 
+																	 
+																  Back to Conditions
+															 
+														 
+														 
+															 
+																Conditions Overview
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Airway &amp; Lung
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Brain
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Diabetes
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Digestive &amp; Gastrointestinal
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Ear, Nose &amp; Throat
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Heart &amp; Vascular
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Pain
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Spine &amp; Orthopaedic
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Urinary
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Women's Health
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Treatments &amp; Therapies
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+												 
+													 
+														 
+															 
+																 
+																	 
+																		 
+																		 
+																	 
+																  Back to Treatments &amp; Therapies
+															 
+														 
+														 
+															 
+																Treatments &amp; Therapies Overview
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Airway &amp; Lung
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Brain
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Diabetes
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Digestive &amp; Gastrointestinal
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Ear, Nose &amp; Throat
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Heart &amp; Vascular
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Mouth &amp; Dental
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Pain
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Spine &amp; Orthopaedic
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Urinary
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Weight Loss &amp; Obesity
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Women's Health
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Support
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+												 
+													 
+														 
+															 
+																 
+																	 
+																		 
+																		 
+																	 
+																  Back to Support
+															 
+														 
+														 
+															 
+																Contact Patient Services
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Electromagnetic Compatibility Guide for Cardiac
+																Devices
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+														 
+															 
+																Health Monitoring
+																 
+																	 
+																		 
+																		 
+																	 
+																 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Order Diabetes Supplies
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Update Device Registration
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													MRI Access
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+										 
+									 
+								 
+								 
+									 
+										Our Company
+										 
+											 
+												 
+													 
+													 
+												 
+											 
+										 
+									 
+									 
+										 
+											 
+												 
+													 
+														 
+															 
+															 
+														 
+													  Back to Our Company
+												 
+											 
+											 
+												 
+													Who We Are
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Mission
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Governance
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Leadership
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Investors
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Key Facts
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													History
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Locations
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													News
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Careers
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+										 
+									 
+								 
+								 
+									 
+										Our Impact
+										 
+											 
+												 
+													 
+													 
+												 
+											 
+										 
+									 
+									 
+										 
+											 
+												 
+													 
+														 
+															 
+															 
+														 
+													  Back to Our Impact
+												 
+											 
+											 
+												 
+													Our Impact
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Access
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Inclusion, Diversity &amp; Equity
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Planet
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+												 
+													Sustainability Report
+													 
+														 
+															 
+															 
+														 
+													 
+												 
+											 
+											 
+											 
+										 
+									 
+								 
+							 
+						 
+					 
+				 
+			  
+		 
+        
+
+
+
+		 
+			 
+				 
+					 Home 
+
+					 
+					  
+							  
+						  
+				 
+
+					 Our Company 
+				 
+			 
+		 
+
+ 
+
+			 
+				function lookforcookie() {
+								if (document.cookie.indexOf("legalcookie=true") >= 0) {
+									document.getElementById('addthisPrintBtn').href = "javascript:window.print();"
+									document.getElementById('addthisEmailBtn').href =
+										"javascript:window.location='mailto:?body='+ window.location;"
+								}
+							}
+							lookforcookie();
+			 
+
+		  -->
+
+					
+			 
+				
+				 
+					 
+						  Toggle navigation        
+						 Investors Menu 
+					 
+					 
+						 
+
+
+
+ 
+
+	    	 Overview 
+
+	 
+
+
+
+
+ 
+
+			 
+               News & Events               
+                         
+               
+         
+         
+
+
+	  News Releases  
+
+
+
+
+	  Business & Regional News  
+
+
+
+
+	  Upcoming Events & Presentations  
+
+
+
+
+	  Past Events & Presentations  
+
+
+
+
+	  General Manager Call Series  
+
+
+ 
+
+
+
+    
+	
+ 
+
+
+
+
+
+ 
+
+			 
+               Dividends               
+                        
+               
+         
+
+         
+
+
+	  Dividend History  
+
+
+
+
+	  Dividend Withholding Tax Information  
+
+
+ 
+
+
+
+     
+
+
+
+
+ 
+
+			 
+               Financials               
+                        
+               
+         
+
+         
+
+
+	  Quarterly Results  
+
+
+
+
+	  Fundamentals  
+
+
+
+
+	  Snapshot  
+
+
+
+
+	  Key Ratios  
+
+
+
+
+	  SEC Filings  
+
+
+
+
+	  Debt Agency Ratings  
+
+
+
+
+	  Analyst Coverage  
+
+
+
+
+	  Sustainability Reports  
+
+
+ 
+
+
+
+     
+
+
+
+
+ 
+
+			 
+               Stock Info               
+                        
+               
+         
+
+         
+
+
+	  Performance & Quote  
+
+
+
+
+	  Historical Price Lookup  
+
+
+
+
+	  Investment Calculator  
+
+
+
+
+	  Cost Basis Calculator  
+
+
+
+
+	  Medtronic Historical Share Data  
+
+
+ 
+
+
+
+     
+
+
+
+
+ 
+
+			 
+               Shareholder Services               
+                        
+               
+         
+
+         
+
+
+	  Annual Meeting & Reports  
+
+
+
+
+	  Direct Stock Purchase  
+
+
+
+
+	  Electronic Delivery of Proxy Materials  
+
+
+
+
+	  Stock Transfer Agent & Registrar  
+
+
+
+
+	  Investor FAQs  
+
+
+
+
+	  Investor Alerts  
+
+
+ 
+
+
+
+     
+
+
+
+
+ 
+
+			 
+               About Us               
+                        
+               
+         
+
+         
+
+
+	  Mission  
+
+
+
+
+	  History  
+
+
+
+
+	  Corporate Governance  
+
+
+
+
+	  Locations  
+
+
+ 
+
+
+
+     
+
+
+ 
+
+
+					 
+				 
+			 
+
+			 
+				  Events & Presentations 
+ Browse the calendar to view Investor related events and announcements.&nbsp; Webcasts and presentations that have been archived are available by viewing historical event details. 
+ 
+ 
+	 
+		 Investor Alerts    
+	 
+ 
+
+ 
+ 
+  2019 
+  2020 
+  2021 
+  2022 
+  2023 
+  2024 
+  2025 
+  2026 
+ 
+
+ 
+  January 
+  February 
+  March 
+  April 
+  May 
+  June 
+  July 
+  August 
+  September 
+  October 
+  November 
+  December 
+ 
+
+ 
+  All Categories 
+  General Manager Call Series 
+ 
+ GO     &nbsp; Upcoming Events     &nbsp; Past Events    
+   No events to display 
+ Loading Events...     &nbsp; Load More Events 
+  
+	 Past Events 
+ 
+
+	 
+		 
+			  &nbsp; Wednesday, June 3, 2026 
+		 
+		 
+			  Q4 FY26 Medtronic plc Earnings Conference Call  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Wednesday, March 11, 2026 
+		 
+		 
+			  Leerink Partners Global Healthcare Conference  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Tuesday, March 10, 2026 
+		 
+		 
+			  Barclays 28th Annual Global Healthcare Conference  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Tuesday, February 17, 2026 
+		 
+		 
+			  Q3 FY26 Medtronic plc Earnings Conference Call  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Monday, January 12, 2026 
+		 
+		 
+			  2026 J.P. Morgan Healthcare Conference  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Tuesday, November 18, 2025 
+		 
+		 
+			  Q2 FY26 Medtronic plc Earnings Conference Call  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Thursday, October 9, 2025 
+		 
+		 
+			  Management Call Featuring Altaviva™  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Wednesday, September 24, 2025 
+		 
+		 
+			  2025 Bank of America Global Healthcare Conference  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Wednesday, September 10, 2025 
+		 
+		 
+			  2025 Deutsche Bank Healthcare Summit  
+			
+		 
+	 
+
+	 
+		 
+			  &nbsp; Monday, September 8, 2025 
+		 
+		 
+			  2025 Morgan Stanley Healthcare Conference  
+			
+		 
+	 
+
+ 
+                            
+
+ 
+ 			 
+
+			
+ 
+
+ 
+     
+         
+             
+                 
+                     
+                         
+                             
+                                 
+                                     
+                                         
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             Careers 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Contact &amp; Support 
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             Order Products 
+
+                                                                             (open in new window) 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Diabetes Supplies 
+
+                                                                             (open in new window) 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Product Manuals 
+
+                                                                             (open in new window) 
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             Product Security 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Information About Proposition 65 for
+                                                                                California Customers 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Digital Millennium Copyright Act (DMCA)
+                                                                                Notification 
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                             
+                                                 
+                                                     
+                                                          
+                                                     
+                                                 
+                                             
+                                         
+                                     
+                                 
+                                 
+                                     
+                                         
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                  
+                                                                 Engineering the extraordinary 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                             
+                                                 
+                                                     
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             
+                                                                                 Facebook 
+                                                                                  
+                                                                             
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             
+                                                                                 Youtube 
+                                                                                  
+                                                                             
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             
+                                                                                 Linkedin 
+                                                                                  
+                                                                             
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                         
+                                                             
+                                                                 
+                                                                     
+                                                                         
+                                                                             Your Privacy Choices 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Privacy Notice 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Terms of Use 
+                                                                         
+                                                                     
+
+                                                                     
+                                                                         
+                                                                             Accessibility Statement 
+                                                                         
+                                                                     
+                                                                 
+                                                             
+                                                         
+                                                     
+                                                 
+                                             
+                                         
+                                     
+                                 
+                                 
+                                     
+                                         
+                                             
+                                                 
+                                                     
+                                                         Operational Headquarters 
+                                                         710 Medtronic Parkway, Minneapolis, 
+                                                         MN 55432-5604 USA 
+                                                     
+                                                     
+                                                         L001-12022025: 2025-12 
+                                                         &copy; 2026 Medtronic 
+                                                     
+                                                 
+                                             
+                                         
+                                     
+                                 
+                             
+                         
+                     
+                 
+             
+         
+     
+ 
+
+
+ 
+ 
+ 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+ 
+  
+ 
+ 
+  var _paq = _paq || [];
+
+  _paq.push(["setCustomVariable", 1, "Content Type", "Events", "page"]);
+
+  _paq.push(["setCustomVariable", 3, "Navigation Page", "News & Events : Events & Presentations", "page"]);
+
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+  (function() {
+    var u="//stats.drivetheweb.com/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", 6312]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+    g.type="text/javascript"; g.async=true; g.defer=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+ 
+ 
+	 
+ 
+ 
+		
+ 
+ (function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a33d262f9e04da37',t:'MTc4ODE5MDk4OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();  
+
+ 
