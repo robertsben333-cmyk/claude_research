@@ -295,6 +295,13 @@ def reaction(rows, event_date, session):
     return round((a / b - 1) * 100, 2)
 
 
+# No US quarterly or semi-annual reporter has an earnings cadence below this.
+# Quarterly is ~91 days and semi-annual ~182; a median gap under 70 days means the
+# filings matched as "earnings" are something else, so no verdict built on them is
+# usable. See the `cadence_implausible` branch in plausibility() for what this cost.
+MIN_CREDIBLE_CADENCE_DAYS = 70
+
+
 def plausibility(hist, event_date):
     """Does an event on this date fit the company's own filing cadence?
 
@@ -317,6 +324,34 @@ def plausibility(hist, event_date):
     if not typical:
         out["verdict"] = "unknown"
         out["reason"] = "cannot infer a cadence"
+    elif typical < MIN_CREDIBLE_CADENCE_DAYS:
+        # The inferred cadence is too short to be earnings, so the history is not
+        # measuring earnings and NEITHER verdict derived from it means anything.
+        #
+        # On 2026-08-31 this produced four wrong verdicts on one day. The 6-K text
+        # matcher was catching monthly operational updates as earnings filings:
+        # CANG's monthly bitcoin-production releases inferred a 16-day "earnings
+        # cadence" and NIO's monthly vehicle-delivery updates a 10-day one, with
+        # HMR at 49 and PXS at 51 from mixed matches. Three of those became
+        # `suspect` (because `since > 1.8 * typical` fires trivially against a
+        # nonsense denominator) and NIO became `fits_cadence`, which is worse --
+        # a confident verdict about the wrong events.
+        #
+        # It mattered because `edge_score.py` sets `rankable = False` on `suspect`
+        # and multiplies baseline_quality by 0.05, so three company-confirmed
+        # reporters were arithmetically incapable of ranking anywhere. Returning
+        # `unknown` here is the honest answer: the date may be fine, but this
+        # baseline cannot speak to it, and the reaction history below is describing
+        # something other than earnings.
+        out["verdict"] = "unknown"
+        out["cadence_implausible"] = True
+        out["reason"] = (
+            f"inferred cadence of {typical:.0f} days is too short to be an earnings "
+            f"cadence (quarterly is ~91, semi-annual ~182), so the {len(hist)} matched "
+            "filings are not earnings -- most likely monthly operational updates caught "
+            "by the 6-K text matcher. No cadence verdict is possible and the reaction "
+            "history above should not be used as an earnings base rate. Confirm the date "
+            "from a company source instead.")
     elif since < 0.5 * typical:
         out["verdict"] = "suspect"
         out["reason"] = (f"an event {since} days after the last print does not fit a "

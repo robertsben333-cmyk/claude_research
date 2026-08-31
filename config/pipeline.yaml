@@ -124,7 +124,29 @@ budget:
   # Shed in this order when the edge hunt would exceed its cap. Hunters go before
   # adversaries: an unhunted name scores zero and drops out cleanly, while an
   # unjudged finding still carries partial weight into a call.
+  # Shed NAMES before shedding rigour on the names you keep. A name dropped here
+  # sits out of the ranking as `rankable: false` with a stated reason, which is
+  # visible and honest; a name kept but measured worse corrupts the ranking silently.
+  #
+  # Reordered after 2026-08-31, when the first two entries of the previous order
+  # each contradicted a hard rule stated elsewhere and the run had to deviate and
+  # document the deviation:
+  #   - `single_hunter_on_every_name` was step 1, but both the skill and the routine
+  #     prompt forbid economising the two-hunter split -- it is the only place
+  #     independence is actually measured, and on run 1 it produced the most
+  #     informative output of the day.
+  #   - `adversary_on_the_largest_findings_only` reintroduced run 1's central flaw:
+  #     an unjudged finding defaults to mostly-priced, so judging only some findings
+  #     mechanically favours whichever side goes unattacked. Full adversary coverage
+  #     is now a floor, not a degradation step. It is also the cheapest part of the
+  #     stage -- one agent per ticker regardless of finding count.
   edge_degrade_order:
-    - single_hunter_on_every_name
+    - drop_unconfirmed_names_first          # the sweep could not source a date
+    - drop_lowest_hunt_priority_names       # fewest names, full rigour on each
     - hunt_only_names_the_sweep_ranked_above_median_priority
-    - adversary_on_the_largest_findings_only
+    - single_hunter_on_every_name           # LAST resort; record it in the run log
+  # Never degraded, at any budget: adversary coverage of every finding on both
+  # sides, and the sealed-baseline-before-launch ordering.
+  edge_never_degrade:
+    - adversary_judges_every_finding_both_sides
+    - baselines_sealed_and_committed_before_any_agent_launches

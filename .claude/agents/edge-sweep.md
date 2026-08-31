@@ -73,14 +73,34 @@ no prose around it.
       "actual_event_date": "YYYY-MM-DD or null if there is no event",
       "why": "one sentence — especially if the calendar row is wrong",
       "hunt_priority": 0,
+      "session_confirmed": true,
+      "session_evidence": "the call time or release hour that settles bmo vs amc, with a URL — or why it is unsettled",
+      "filer_type": "domestic | foreign_private_issuer | unknown",
+      "baseline_history_trustworthy": true,
       "where_to_look": ["specific places a hunter should try, most promising first"],
       "already_in_the_wire": ["what is plainly public, so nobody re-finds it"]
     }
   ],
   "confirmed": 0,
-  "phantom": 0
+  "phantom": 0,
+  "session_unsettled": 0
 }
 ```
+
+`session_confirmed` is separate from `event_confirmed` because a confirmed date with
+an unconfirmed hour does not tell you which trading session carries the reaction. On
+2026-08-31 three names needed this and none of it was in the calendar: CANG's IR page
+gave the date but not the hour and its previous call had been intraday at 12:30 ET,
+so the `amc` label was never established; YEXT and HMR were both company-confirmed
+**bmo** despite seven of eight and six of six prior prints respectively being `amc`.
+A hunter that assumes the calendar's session can size a finding against the wrong
+day, and `edge_resolve.py` measures the move over the session you name.
+
+`baseline_history_trustworthy` is false when the baseline's reaction history is
+measuring something other than earnings. `priced_in.py` matches 6-K text, so for a
+foreign private issuer it can catch monthly operational updates — bitcoin production,
+vehicle deliveries — and present them as prior prints with reactions. Set this false
+and say so in `why`; the hunter must not inherit those as an earnings base rate.
 
 `hunt_priority` is 0-100 and continuous. It is not a category and there is no
 threshold in it. Score it on how much room there is for something unpriced to
@@ -93,6 +113,21 @@ than either. A name with no event scores 0.
 Every claim about a date carries a URL. If you cannot source it, say the event is
 unconfirmed rather than guessing either way — an unconfirmed name still gets
 hunted, it just gets ranked lower.
+
+**Prefer the company over any aggregator, and say which you used.** On 2026-08-31
+nine of ten rows carried a company-sourced date — a press release, a 6-K or an IR
+page — and the phantom rate was zero, against eight of eight phantoms on the run
+before. The difference was that most companies pre-announce, so the confirmation is
+usually there to be found. When the only evidence is the calendar row itself, say
+exactly that in `why`: it is the single most useful thing you produce, because it
+tells the caller not to spend an Opus/high hunter on a print that may not exist.
+
+**Check dates on the URL path, not in the search snippet.** Search results relabel
+old articles with the current year. Verify from the URL or the document itself
+before a date claim rests on it.
+
+**Spread `hunt_priority` out.** It orders the hunt and decides which names get the
+two-hunter split, so ties waste the split. Do not cluster the numbers.
 
 Do not form a directional view. That is the hunters' job and yours would
 contaminate it.

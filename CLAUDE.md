@@ -34,11 +34,27 @@ anything here the market has missed, and how does that rank against the other na
 reporting today."** It emits one signed score per company on −100…+100 with no call, no
 threshold and no direction label, because the question being tested is whether the day's
 companies can be **ranked** — and that is only answerable at every cut if nothing was
-rounded into a bucket upstream. Its first live run (2026-08-31) found eight of twelve
-calendar rows had no earnings event at all, and produced no ranking worth the name; the
-categories it has since dropped are why. Falsifiable by `scripts/edge_resolve.py`, which
-reports Spearman rank correlation against the realised move with a permutation p-value.
-Until many days have pooled, it is not better than anything.
+rounded into a bucket upstream. Falsifiable by `scripts/edge_resolve.py`, which reports
+Spearman rank correlation against the realised move with a permutation p-value. Until
+many days have pooled, it is not better than anything.
+
+Two runs exist, both on 2026-08-31, and they are archived separately —
+`research/2026/08/2026-08-31/edge/_run1-bmo/` and `edge/`. Run 1 (that day's `bmo`,
+with `--include-unknown`) found eight of twelve calendar rows had no earnings event at
+all and produced no ranking worth the name: every judged finding fell into one of two
+verdict buckets and twelve names collapsed to one non-zero score and eleven zeros. The
+categories the stage has since dropped are why. Run 2 (the `--window` default: that
+day's `amc` plus the next `bmo`) had a **zero** phantom rate across ten names, nine of
+them confirmed from a company source, and produced eight rankable names with eight
+distinct scores. So the ordering problem is fixed; the open question is whether the
+order carries information, and one day of eight names cannot answer it.
+
+Run 2's own failures are written into the skill and the agent definitions rather than
+left in the run log: a same-directory collision between the two runs that would have
+pooled twelve stale zeros into run 2's ranking, a cadence heuristic in `priced_in.py`
+that flagged four company-confirmed reporters as non-events, an adversary agent with no
+`Write` tool, and two entries of `budget.edge_degrade_order` that each contradicted a
+hard rule stated elsewhere. All four are fixed.
 
 Stage N and stage E overlap deliberately and must not be merged. N forecasts every name
 it looks at; E scores whether the market has missed something. If E's ranking turns out

@@ -141,6 +141,50 @@ more than the implied move needs to be extraordinary.
 `why_not_priced` reads "the market has not focused on this" is not a finding — say
 what would be visibly different if the market had focused on it.
 
+## Check the date on the URL, not in the snippet
+
+Search results relabel old articles with today's year. On 2026-08-31 a hunter on a
+China-listed name lost three separate promising leads this way — a battery-pack
+price cut with retroactive vouchers, a set of weekly insurance registrations, and a
+round of European layoffs — all of which were August 2025 stories served as August
+2026. Each was caught only by reading the year out of the URL path (`/2025/08/`).
+
+So: before a finding rests on a dated fact, confirm the date from the URL path or
+from the document itself. A finding built on a misdated source is worse than no
+finding, because it is specific, checkable-looking and wrong.
+
+## Read your own findings as a set before you emit
+
+You size each finding alone, which is correct. But then check the set, because two
+failures only become visible there and both happened on 2026-08-31:
+
+**Double-counting one fact as two findings.** A hunter filed "missed June guidance"
+and "missed Q2 guidance" as separate evidence of eroding credibility. The adversary
+did the arithmetic: April 29,356 + May 37,705 = 67,061, and the Q2 guide of
+110,000–115,000 less that is 42,939–47,939 — precisely the "June guide" being
+missed. There was only ever one guidance range and one miss. Two findings resting on
+one number is one finding.
+
+**Using the same entity as evidence in both directions.** Another hunter argued a
+partnership announcement was hollow because the partner's documentation named
+Subsquid rather than the company — while a different finding in the same file
+treated that company's Subsquid holding as its own impaired balance-sheet asset. The
+company had acquired Subsquid ten months earlier, so the first finding was
+self-defeating and the file contradicted itself.
+
+If two findings share a document, say so in `independence` — the scorer collapses a
+source cluster to its largest residual precisely so that two readings of one
+document count once.
+
+## Nothing, and good news, are both real answers
+
+An empty `findings` list is a correct and complete result. So is a positive number.
+On 2026-08-31 six of eight hunts leaned negative, which is more plausibly an
+artefact of being asked to find what the market has missed into a print than a fact
+about those eight companies. You are not being scored on producing findings, and a
+hunt that concludes "the price already has all of this" in `baseline_tension` is
+worth more than a manufactured edge that an adversary will dismantle an hour later.
+
 ## Persisting your answer
 
 If the caller gives you an output path, write the JSON there with `Write` **and**
