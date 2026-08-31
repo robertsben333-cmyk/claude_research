@@ -77,3 +77,7 @@
 ## Capture — 2026-08-31 — STARTED
 - Logged at 2026-08-31 15:04 UTC
 - Plan: universe sweep --horizon-days 15 (script-only), then agent-layer deep search+capture on the 6 largest names reporting within 3 days.
+
+## Capture — 2026-08-31 — script sweep done
+- Logged at 2026-08-31 15:09 UTC
+- 235 events swept (2026-08-31 -> 2026-09-15, horizon 15d), 840 new documents (filings pointers + quote bars + near-term stocktwits), 0 tripwires. Errors: BF.A/BF.B edgar+quote failed (dual-class ticker, known EDGAR CIK-sharing issue per FINDINGS.md §3); GTEN/HTT/NBP/LKSP stocktwits lookup failed (transient).
