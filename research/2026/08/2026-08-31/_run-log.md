@@ -93,3 +93,6 @@
 - LIKELY ARTEFACT, FLAGGED NOT HIDDEN: six of eight hunts leaned negative before the adversary and all eight are <= +0.8 after it. A day of illiquid small caps into a print, with hunters instructed to find what the market missed, is biased toward finding problems. If this recurs the hunter prompt is generating pessimism rather than detecting it.
 - UNRANKED: RGS (only unconfirmed row of ten - no 8-K since 2026-05-13, 2026-09-01 is a vendor projection) and PXS (confirmed but shed for budget; 2.33% median / 4.87% max reaction leaves a finding nowhere to express itself). Both carry rankable:false rather than sorting to the top on 0.0.
 - DEFECT FOR THE NEXT RUN TO FIX: the priced-in-adversary agent definition grants only WebSearch/WebFetch/Read and NO Write, so none of the six adversaries could write its own output file. Each returned JSON in-message and was transcribed to edge/adversary/<TICKER>.json by the parent, marked with _persisted_by. The skill instructs the agent to write that path and the agent cannot. Fix the agent definition.
+## Capture — 2026-08-31 — AVGO agent layer
+- Logged at 2026-08-31 15:27 UTC
+- 48 queries (areas 1,3,4,5,6,7,9), 408 search results, 34 planned fetches, 15 documents stored (15 new, 0 snippet_only), 9 fetch failures with no snippet fallback (empty snippets in plan). 0 tripwires.
