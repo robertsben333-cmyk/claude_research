@@ -120,3 +120,11 @@
 ## Capture — 2026-08-31 — DONE
 - Logged at 2026-08-31 15:53 UTC
 - 235 events swept (script-only, 2026-08-31->2026-09-15), 840 new documents. Agent layer: 6 names (AVGO PANW DELL MDT SNOW HPE), 200 queries (hit shared session WebSearch cap exactly at 200 - see finding below), 1754 search results recorded, 183 planned fetches, 73 documents stored, 0 snippet_only. 5 tripwires fired, all investigated and confirmed false positives (prior-quarter beats / forward options-implied-move language / grammatical false-match co-occurring with the routine event-date mention) - documents kept, none indicate a calendar or date problem. Day total: 913 new documents.
+
+## Stage 3 — panel & advice — BLOCKED, upstream stages never ran
+- Logged at 2026-08-31 15:54 UTC
+- Checked research/2026/08/2026-08-31/ before starting: no 00-universe.json, no 01-shortlist.json, no 02-dossiers/*.json, no 02-ranking.json. Stages 0, 1 and 2 produced zero output today.
+- Not a network or tool outage in this session — the only work committed to main today (all before this run) is stage E (edge hunt) and stage C (capture), both independent tracks per CLAUDE.md. git log shows no stage 0/1/2 commits for 2026-08-31 at all.
+- Matches the standing known issue in CLAUDE.md/docs/ROUTINES.md: as of 2026-08-29 a RemoteTrigger list found none of stages 0-4 registered as Routines on this account, only stage C/E/N plus unrelated jobs. This session has no RemoteTrigger/list_triggers tool to re-check that list directly, but the file evidence for 2026-08-31 (no universe, no shortlist, no dossiers) is consistent with stages 0-2 still not firing, same as the 08-08..08-12 and 08-14/08-17 gaps already documented.
+- Per earnings-panel-advice skill step 1 (no ranking, no dossiers case): writing 04-advice.md/04-advice.json with status=blocked, status_reason naming stages 0-2, empty ranked_names, shortlist researched: none. No panel run, no subagents spent.
+- Recommend: confirm via RemoteTrigger/list_triggers (or the platform's routine admin) whether stage 0/1/2 Routines exist and are enabled, and recreate them per docs/ROUTINES.md cron table if not. This stage-3 session cannot create or repair those Routines itself.
