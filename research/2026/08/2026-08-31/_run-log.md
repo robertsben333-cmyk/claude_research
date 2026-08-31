@@ -142,3 +142,7 @@
 - Dropped: CANG, HMR, ZEPP, RGS, PXS — all below the $500M market-cap floor ($0.06B–$0.09B).
 - Magnitudes (raw / scaled): MDT 4.0/4.0, NIO 9.0/14.4, MMED 8.0/12.8, RZLV 16.0/32.0, YEXT 12.0/24.0. RZLV's 32% is the scaling rule at its most aggressive and is the day's best test of whether the correction generalises.
 - Network: WebSearch fine, Yahoo chart API reachable, entry_snapshot captured 5/5 spots. No blocked domains.
+
+## claude_naive — 2026-08-31 — publish.sh fix
+- Logged at 2026-08-31 17:45 UTC
+- publish.sh never staged claude_naive/ — it staged research/, backtest/captures and the generated files only. Stage N's forecasts.json and entry-prices.json were therefore committed nowhere and would have died with every container; the failure was silent because the run log lives under research/ and published normally on its own. Added claude_naive to the staged paths. smoke_test.py passes.
