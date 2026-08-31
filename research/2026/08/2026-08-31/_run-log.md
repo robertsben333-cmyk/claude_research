@@ -96,3 +96,7 @@
 ## Capture — 2026-08-31 — AVGO agent layer
 - Logged at 2026-08-31 15:27 UTC
 - 48 queries (areas 1,3,4,5,6,7,9), 408 search results, 34 planned fetches, 15 documents stored (15 new, 0 snippet_only), 9 fetch failures with no snippet fallback (empty snippets in plan). 0 tripwires.
+
+## Capture — 2026-08-31 — PANW agent layer
+- Logged at 2026-08-31 15:34 UTC
+- 50 queries (areas 1,3,4,5,6,7,9), 439 search results, 39 planned fetches, 17 documents stored (17 new, 0 snippet_only). 2 TRIPWIRES investigated, both false positives: ad-hoc-news.de article trips 'beats consensus' on PANW's PRIOR quarter (Jun 2 2026 release) and 'post-earnings move' on an options-implied-move mention, alongside a routine Sept-1 date reference in the same preview piece; 247wallst article trips 'beat estimates' on a historical stat ('PANW beat estimates six straight quarters... averaged -3.74% day-of drop') plus the event date. Neither document describes an outcome for the Sept 1 2026 print itself; event date/session independently confirmed by the search agent across multiple sources. Documents kept.
