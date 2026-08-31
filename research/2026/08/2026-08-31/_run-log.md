@@ -133,3 +133,12 @@
 - Logged at 2026-08-31 17:38 UTC
 - Universe built: 10 calendar rows, 5 above the $500M floor (MDT, NIO, MMED, RZLV, YEXT); 5 microcaps below floor dropped.
 - Plan: verify each event is real, research each name freely, emit forecasts.json + entry-prices.json.
+
+## claude_naive — 2026-08-31 — DONE
+- Logged at 2026-08-31 17:44 UTC
+- Universe: 10 calendar rows, 5 above the $500M floor, 5 forecast (cap is 8, so nothing shed for budget).
+- All five events independently confirmed real via company IR/PR — all BMO 2026-09-01: MDT, MMED, NIO, RZLV, YEXT. No phantom calendar rows today, unlike the edge-hunt run.
+- Calls: 1 up (MDT Lean Up), 2 down (NIO Lean Down, YEXT Lean Down), 2 neutral (MMED, RZLV). 3 of 5 directional.
+- Dropped: CANG, HMR, ZEPP, RGS, PXS — all below the $500M market-cap floor ($0.06B–$0.09B).
+- Magnitudes (raw / scaled): MDT 4.0/4.0, NIO 9.0/14.4, MMED 8.0/12.8, RZLV 16.0/32.0, YEXT 12.0/24.0. RZLV's 32% is the scaling rule at its most aggressive and is the day's best test of whether the correction generalises.
+- Network: WebSearch fine, Yahoo chart API reachable, entry_snapshot captured 5/5 spots. No blocked domains.
