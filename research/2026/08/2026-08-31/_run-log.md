@@ -100,3 +100,7 @@
 ## Capture — 2026-08-31 — PANW agent layer
 - Logged at 2026-08-31 15:34 UTC
 - 50 queries (areas 1,3,4,5,6,7,9), 439 search results, 39 planned fetches, 17 documents stored (17 new, 0 snippet_only). 2 TRIPWIRES investigated, both false positives: ad-hoc-news.de article trips 'beats consensus' on PANW's PRIOR quarter (Jun 2 2026 release) and 'post-earnings move' on an options-implied-move mention, alongside a routine Sept-1 date reference in the same preview piece; 247wallst article trips 'beat estimates' on a historical stat ('PANW beat estimates six straight quarters... averaged -3.74% day-of drop') plus the event date. Neither document describes an outcome for the Sept 1 2026 print itself; event date/session independently confirmed by the search agent across multiple sources. Documents kept.
+
+## Capture — 2026-08-31 — DELL agent layer
+- Logged at 2026-08-31 15:42 UTC
+- 39 queries (areas 1,3,4,5,6,7; area 9 not run - session WebSearch budget exhausted), 346 search results, 30 planned fetches, 7 documents stored (7 new, 0 snippet_only) - most fetch attempts failed with no snippet fallback (empty snippets in plan). 0 tripwires. Agent flagged unresolved source disagreement (not adjudicated): event date cited as both Sep 1 and Sep 3 by different aggregators (universe.json / official IR confirm Sep 1 amc), short interest 2.17%/4.33%/7.32% of float, expected move 6.7% vs 11.4%, put/call 0.80 vs 1.26.
