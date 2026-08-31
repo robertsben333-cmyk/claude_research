@@ -87,6 +87,11 @@ paths=()
 # which also holds the retrospective corpus and work in progress that a capture
 # run has no business committing.
 [[ -d backtest/captures ]] && paths+=(backtest/captures)
+# Stage N (`earnings-naive-forecast`) writes claude_naive/<date>/ and its ledger.
+# Omitted when that stage was added, so its forecasts were committed nowhere and
+# died with the container — the exact failure CLAUDE.md warns about, and silent
+# because the run log lives under research/ and published fine on its own.
+[[ -d claude_naive ]] && paths+=(claude_naive)
 for f in "${GENERATED[@]}" LEDGER.md; do
   [[ -e "$f" ]] && paths+=("$f")
 done
