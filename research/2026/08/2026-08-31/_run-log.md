@@ -108,3 +108,7 @@
 ## Capture — 2026-08-31 — MDT agent layer
 - Logged at 2026-08-31 15:44 UTC
 - 24 queries (areas 1,3,4,5; areas 6,7,9 not run - session WebSearch budget exhausted), 209 search results, 34 planned fetches, 17 documents stored (17 new, 0 snippet_only). 1 TRIPWIRE investigated, false positive: marketbeat.com article trips 'beats consensus' on MDT's PRIOR quarter (Jun 3 2026 release, EPS 1.55 vs 1.54 est) and 'post earnings' on a grammatical false-match ('analysts expect the company to post earnings of $1.39') rather than the results-recap adjective. Same document independently confirms the Sept 1 2026 BMO date/session for the upcoming print, matching the calendar; its own URL slug carries a stale 2026-08-25 (live-updating marketbeat page, publish-date artifact per FINDINGS.md §23), not a real date change. Event date/session cross-confirmed via Medtronic's own IR press release and stocktitan.net. Document kept.
+
+## Capture — 2026-08-31 — SNOW agent layer
+- Logged at 2026-08-31 15:47 UTC
+- 24 queries (areas 1,3,4,5; areas 6,7,9 not run - session WebSearch budget exhausted), 217 search results, 22 planned fetches, 6 documents stored (6 new, 0 snippet_only). 1 TRIPWIRE investigated, false positive: 247wallst.com article (a related-headlines roundup page) trips 'beat expectations' describing SNOW's PRIOR quarter (Q1 FY2027, reported late May 2026), not the upcoming Sept 2 Q2 FY2027 print; the Sept 2 date elsewhere on the same page is a routine reference to the confirmed upcoming date. Document kept.
