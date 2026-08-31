@@ -55,3 +55,7 @@
 ## Edge hunt — 2026-08-31 amc + 2026-09-01 bmo — STARTED
 - Logged at 2026-08-31 14:08 UTC
 - Universe: 10 of 41 calendar rows resolved to an explicit session (0 unresolved, --include-unknown NOT passed after 8/8 phantom rate on first run). Names: MDT NIO MMED RZLV YEXT CANG HMR ZEPP RGS PXS. Baselines sealed and pushed at 14:12Z BEFORE any agent launched. Live-session timing worked: real chains on MDT (impl 4.92%, skew -0.21), NIO (10.18%, skew -9.44), RZLV (14.1%); 7 of 10 have no listed options. Plan: 1 edge-sweep over all 10, then unpriced-hunter (2 isolated on top-2 hunt_priority, 1 on the rest), then priced-in-adversary once per confirmed ticker with all findings on both sides. Budget cap 20 subagents.
+
+## Edge hunt — run 2 — run-1 collision archived
+- Logged at 2026-08-31 14:12 UTC
+- Two edge hunts on the same date over different windows. Run 1 (2026-08-31 bmo, --include-unknown, 12 names, 0 called, 8 phantom) was already committed into research/2026/08/2026-08-31/edge/. edge_score.py reads baselines/hunts/adversary non-recursively, so run 1's names would have been pooled into run 2's ranking, and its old-contract findings (direction, no expected_impact_pct) would have entered as 0.0 zeros sorting above every negative name. Moved run 1 intact to edge/_run1-bmo/ with a README; load_dir does not recurse so this is sufficient. Nothing deleted. Cost: the resolve pool glob research/2026/*/*/edge no longer sees run 1, which loses nothing measurable since it produced no ranking.
