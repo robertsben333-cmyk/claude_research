@@ -38,3 +38,14 @@
 - This batch: DELL, CXM, GIII
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (wave_size=2) — wave 1: DELL+CXM, wave 2: GIII — publish after each wave
+
+## Stage 2 — deep dive, batch 2 — FINISHED (11:03 UTC)
+- Logged at 2026-09-01 11:10 UTC
+- Researched: DELL, CXM, GIII
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves of wave_size=2 (wave 1: DELL+CXM; wave 2: GIII)
+- Median evidence completeness (this batch): 84/100 (DELL 84, CXM 78, GIII 84)
+- 02-ranking.json written from all 6 dossiers (CRDO, MDB, GTLB, DELL, CXM, GIII); panel_priority = 0.45*|preliminary_direction_score| + 0.35*evidence_completeness + 0.20*change_expectation
+- Panel-eligible after this batch, rank order: DELL (50.0), CXM (49.55), GIII (49.4), GTLB (49.4, tiebreak loser vs GIII on evidence_completeness), MDB (48.9), CRDO (48.8) — all 6 pass event_confirmed/evidence_completeness>=50/has-anchor; none excluded
+- Notes for stage 3: CXM and GIII have no options-market implied move (both effectively illiquid options chains) — sized only off historical realised-move history (and, for GIII, a derived IV-term-structure inference flagged as such, not a market price); DELL's options-positioning read is thin (no IV rank/skew/borrow-fee, vendor APIs returned 403/503)
