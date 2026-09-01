@@ -73,3 +73,7 @@
 ## Capture — 2026-09-01 — DONE
 - Logged at 2026-09-01 15:42 UTC
 - 243 events swept (script-only, --horizon-days 15, 2026-09-01→09-16, no cap floor), 1120 new documents from the sweep + 184 agent-layer queries / 79 new documents across the 6 largest names reporting within 3 days (AVGO, PANW, DELL, MDT, SNOW, HPE). 10 tripwires fired, all investigated: 9 false positives (prior-quarter recaps, peer-company outcomes, forward-looking 'post-earnings IV crush' style language, one regex substring match on 'Slides' inside a related-articles widget) and 1 genuine leak — MDT, whose BMO print (8-K item 2.02, accepted 2026-09-01T06:47:19Z) had already happened before this session started at 15:04 UTC; see the dedicated tripwire section above for the full writeup and the recommendation to filter same-day BMO names out of future top-6 picks. Zero snippet-only documents across the agent layer (all fetches succeeded). Publishes this run: heartbeat, sweep, AVGO, DELL, MDT-tripwire-note, MDT, SNOW, PANW, HPE (9 total, one per stage as required).
+
+## Stage 3 — panel & advice — STARTED
+- Logged at 2026-09-01 15:54 UTC
+- Panel names=2 (config/pipeline.yaml). Top 2 panel-eligible by panel_priority: DELL (50.0), CXM (49.55). No budget degradation needed (stage 2 completed both batches, no scope shed). Plan: refresh spot/implied-move anchors for both, run 7 isolated personas per name (14 subagents total), synthesize, write panel files + dossiers + advice note.
