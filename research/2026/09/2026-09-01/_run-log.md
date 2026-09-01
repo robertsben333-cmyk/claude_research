@@ -7,3 +7,11 @@
 - Universe: 16 total (6 AMC, 10 BMO); 13 above the $500M market-cap floor; 12 eligible after qualification
 - Excluded: 4 — GASS/YSG/SPWH below_market_cap_floor; BF.A no_options_market (Class A voting shares carry no active listed-options chain; BF.B, the optionable class, is kept)
 - Notes: single-source fetch (nasdaq) succeeded on both legs with no network issues; no conflicting BMO/AMC timing observed to adjudicate. Verified options-market status for the six sub-$2B eligible names (CXM, FCEL, GIII, REX, DAKT) plus the BF.A/BF.B split via WebSearch since the API does not report it; all confirmed via option-chain listings. 12 eligible is above triage.skip_if_universe_at_or_below (10), so stage 1 will trigger.
+
+## Stage 1 — triage
+- Logged at 2026-09-01 06:43 UTC
+- Mode: scouted (1 scout, batch of 12 — universe fit within triage.batch_size of 15)
+- Funnel: 16 universe -> 12 eligible -> 10 tradeable -> 9 cleared floors -> 6 shortlisted
+- Scouts: 1 subagent (sonnet/medium)
+- Session mix: 4 AMC / 2 BMO
+- Notable drops: FCEL (ai_edge 25 < floor 30, high-beta but unforecastable), REX & DAKT (tradeable: false, thin options liquidity), PANW (tied 50.5 with GIII on priority_score, dropped for AMC/BMO balance), OLLI (47.25, below cut), BF.B (37.25, formulaic quarter)
