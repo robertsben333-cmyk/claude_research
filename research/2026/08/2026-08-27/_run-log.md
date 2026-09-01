@@ -62,3 +62,14 @@
 - Logged at 2026-08-27 16:10 UTC
 - 04-advice.md / .json written: ESTC Neutral/No Edge (High certainty, High reversal risk), AFRM Neutral/No Edge (Med certainty, High reversal risk)
 - Ranked field includes S, MRVL, RBRK (deep-dived but not panelled) plus a not_researched entry for IREN
+
+## Stage 4 — calibration — FINISHED
+- Logged at 2026-09-01 06:27 UTC
+- Logged at 2026-09-01 06:27 UTC (scheduled run, 2026-09-01)
+- Scored today. All 5 close prices sourced from stockanalysis.com history tables, cross-checked against at least one independent source (CNBC, TipRanks, Barchart, Seeking Alpha, StockStory) for direction/magnitude.
+- ESTC (panelled, High certainty): +19.31% (close $83.74 -> $99.91), a miss under the below-expected-move convention (19.31% >> 13.4% expected), inside its 6.7-27.8% band, broke the 12.9% implied move. Beat-and-raise -- the opposite of the beat-then-fall pattern the panel's red-team case leaned on. Preliminary read (-20) also wrong -- a rare case where both methods missed together.
+- AFRM (panelled, Med certainty): +0.35% (close $77.49 -> $77.76), a clean hit (0.35% < 10.8% expected); popped +8.34% after hours then faded to nearly flat, consistent with the panel's own split-panel logic that direction hinged on the credit/margin guide, not the near-certain beat. Preliminary read (-18) is a technical miss on a functionally flat print.
+- S (non-panelled, prelim -15): -5.15%, preliminary hit. MRVL (non-panelled, prelim -15/Lean Down): -10.28%, preliminary hit -- initial Alphabet-deal pop reversed to a priced-for-perfection selloff. RBRK (non-panelled, prelim -10): -13.05%, preliminary hit -- ran up into the print then sold the news hard.
+- IREN excluded (shortlisted but never researched -- stage 2 batch 2 stalled, logged 2026-08-27).
+- Certainty-tier signal is no longer a single data point: High-certainty calls are now 1/3 (OKTA miss, DLTR hit, ESTC miss) against Med-certainty 2/2 (WOLF, AFRM) -- two independent High-certainty misses share the same mechanism (certainty driven by alignment around a historical beat-then-X narrative that broke this quarter). Flagged prominently in LEDGER.md as a standing concern for scripts/synthesize.py's certainty scoring, not yet acted on.
+- Wrote 05-outcome.md / 05-outcome.json. Updated LEDGER.md (running totals: panelled 3/5, prelim 8/13). Rebuilt PREDICTIONS.csv/json (13 predictions, 13 scored, 60% panelled hit rate).
