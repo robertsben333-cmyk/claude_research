@@ -22,3 +22,12 @@
 - Batch 1 (top 3 by priority_score): CRDO (73.75), MDB (66.0), GTLB (57.5)
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (wave_size=2) — wave 1: CRDO+MDB, wave 2: GTLB — publish after each wave
+
+## Stage 2 — deep dive, batch 1 — FINISHED (08:54 UTC)
+- Logged at 2026-09-01 08:54 UTC
+- Researched: CRDO, MDB, GTLB
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves of wave_size=2 (wave 1: CRDO+MDB; wave 2: GTLB)
+- Median evidence completeness: 80/100 (CRDO 78, MDB 84, GTLB 80)
+- Panel-eligible after this batch: not computed — final batch only (batch 2 covers DELL, CXM, GIII)
