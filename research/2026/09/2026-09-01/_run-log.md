@@ -81,3 +81,7 @@
 ## Stage 3 — panel synthesis complete
 - Logged at 2026-09-01 16:10 UTC
 - DELL: consensus -10.1, call Neutral/No Edge, certainty overridden High->Med (5/7 personas shared one Fool.com margin-narrative source), reversal risk High (72). CXM: consensus -22.3 (all 7 negative, 2.7pts short of Lean Down), call Neutral/No Edge (not overridden -- score genuinely inside the band, overriding would be boundary-nudging), certainty overridden High->Med (stale spot anchor given to panel: 8.16 vs true ~7.79, a same-day -5.1% move personas caught themselves), reversal risk High (68) and uniquely corroborated -- all 7 personas named the same squeeze/reacceleration risk as their own top caveat, not only red-team's. Both panel files validated. Writing dossiers next.
+
+## Stage 3 — panel & advice — COMPLETE
+- Logged at 2026-09-01 16:13 UTC
+- Panelled: DELL, CXM (both Neutral/No Edge — DELL score -10.1 certainty Med, CXM score -22.3 certainty Med). 14/14 panel seats filled, no retries needed. Chair overrides: DELL certainty High->Med (5/7 personas shared one margin-narrative source, fool.com); CXM certainty High->Med (stale spot anchor given to panel: 8.16 vs corrected 7.79, a same-day -5.1% move 3 personas caught independently). Neither call was overridden -- both consensus scores genuinely fall inside the Neutral band and pushing them over the Lean-Down line would be the disallowed 'feels too strong' override. Degradations: none (stage 2 completed on schedule, no shedding). Dossiers, panel files, advice.md/json all validated. Publishing now.
