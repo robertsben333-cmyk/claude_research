@@ -1,0 +1,81 @@
+{
+  "ticker": "CXM",
+  "expected_move_pct": -4.0,
+  "conviction_note": "The baseline has history.n=0, so I rebuilt the reaction base rate myself from Yahoo daily bars bracketing the five SEC-confirmed 8-K item 2.02 dates (all pre-open): 2025-06-04 +5.96%, 2025-09-03 -10.00%, 2025-12-03 +3.05%, 2026-03-11 +6.05%, 2026-06-03 -3.03% (median |move| 5.96%, 3 up / 2 down). The two negatives are the two prints CXM entered near a high; the three positives are the prints it entered near a low. Today it enters at a 12-month closing high, +22.6% in 20 days, into its own guide of +1.2% YoY revenue and -21% YoY non-GAAP operating income, and the last print was a revenue/EPS/OI triple beat that still closed -3% because the FY guide was trimmed. I set -4.0, less than the naive sum of my findings (-7.0), because the findings correlate and because the software tape (IGV +7.7% on 2026-08-27) is a genuine offsetting tailwind.",
+  "findings": [
+    {
+      "finding": "CXM's own five prior prints moved +5.96%, -10.00%, +3.05%, +6.05%, -3.03% (close before to close of the print day, all pre-open releases) and the sign is conditioned on the run-in: the only double-digit decline, 2025-09-03, was the print it entered at $8.60 near its 52-week high, which is the same setup as today at $7.94-8.21 after +22.6% in 20 days.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -4.0,
+      "impact_high_pct": 1.0,
+      "source": "https://query1.finance.yahoo.com/v8/finance/chart/CXM?period1=1756339200&period2=1757289600&interval=1d",
+      "source_date": "2026-09-01",
+      "why_not_priced": "The sealed baseline records history.n = 0 and options total open interest of 413 contracts with an ATM bid-ask 143% of mid, i.e. there is literally no market-visible statement of an expected move on this name and nobody is positioned for one. If this conditional base rate were in the price, a 62.7% ATM vol name two sessions from a print would have a two-sided chain and bid puts; instead the only thing in the price is a 20-day run-up that the IGV melt-up explains on its own. The baseline generator itself discarded all 21 prints on CIK 0001569345 as belonging to a predecessor entity, so the reaction history is not even available to whoever built the calendar row.",
+      "independence": "Print dates independently confirmed from EDGAR 8-K item 2.02 filings (https://data.sec.gov/submissions/CIK0001569345.json — 8-Ks of 2025-06-04, 2025-12-03, 2026-03-11, 2026-06-03 and 2025-09-03), so the price windows are anchored to filings rather than to an aggregator. The 2026-06-03 -3.0% is corroborated by ChartMill's 'Falls on Soft Guidance Despite Q1 Beat' (-3.8% cited): https://www.chartmill.com/news/CXM/Chartmill-49384-Sprinklr-NYSECXM-Falls-on-Soft-Guidance-Despite-Q1-Beat"
+    },
+    {
+      "finding": "Sprinklr's FY27 non-GAAP operating income guide of $139-141m requires H2 operating income of ~$77-79m against H1 of ~$61.7m (Q1 actual $31.7m plus Q2 guide midpoint $30.0m) — a ~30% step-up in the quarterly run-rate that the CFO justified only as 'improve gradually in the second half of the year as we expect some efficiency gains' — and that FY OI guide had already been cut from $144-146m at the March print.",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 0.5,
+      "source": "https://www.sprinklr.com/newsroom/sprinklr-announces-first-quarter-fiscal-2027-results/",
+      "source_date": "2026-06-03",
+      "why_not_priced": "This is guidance arithmetic across two press releases and a transcript, and only 8 analysts cover the name — stockanalysis.com records that their price targets were last updated 2026-06-04, when CXM closed at $5.38, with one refresh since. If the H2 bar were in the price, the average target would not still sit at $7.88 below a $7.99 spot with the stock at a 12-month high; the sell-side has simply not re-underwritten the FY27 OI ramp since the guide was cut, so a second cut lands into unrevised models rather than into pre-positioned ones.",
+      "independence": "The March FY27 OI guide of $144-146m that was subsequently cut is in a different document: https://investors.sprinklr.com/news/press-releases/detail/249/sprinklr-announces-fourth-quarter-and-full-year-fiscal-2026 (2026-03-11). The CFO's H2 language is from the Q1 FY27 call transcript, https://www.fool.com/earnings/call-transcripts/2026/06/04/sprinklr-cxm-q1-2027-earnings-transcript/ — same source cluster as finding 3 below, which I flag there."
+    },
+    {
+      "finding": "The Q2 FY27 revenue guide implies professional services of only ~$20.5m (total $214-215m less subscription $193.5-194.5m) versus actual PS of $24.7m, $27.2m and $28.8m in the last three quarters, and Sprinklr beat its own implied PS guide by 25% in Q3 FY26 ($28.8m actual vs $23.0m implied) and 10% in Q1 FY27 ($24.7m vs $22.5m implied) — so a headline revenue beat of roughly 1.5-2.5% is mechanically likely, but at the -10% PS gross margin management guided it adds nothing to operating income.",
+      "expected_impact_pct": 0.5,
+      "impact_low_pct": -1.0,
+      "impact_high_pct": 2.0,
+      "source": "https://www.fool.com/earnings/call-transcripts/2026/06/04/sprinklr-cxm-q1-2027-earnings-transcript/",
+      "source_date": "2026-06-04",
+      "why_not_priced": "The wire carries 'Sprinklr poised to beat earnings estimates again' as an undifferentiated positive; what it does not carry is that the beat is structurally located in the one revenue line that runs a negative gross margin, so the headline and the margin move in opposite directions. If this were priced, the sell-side would model PS separately and the stock would not react to the total-revenue line — yet the 2026-06-03 print beat revenue, EPS and operating income and still closed down 3%, which is exactly what a market reading the total line and then the guide does.",
+      "independence": "Shares the Q1 FY27 transcript with finding 2, so treat as one source cluster on the guidance-quality point; the PS actuals are from three separate press releases (Q3 FY26 https://www.businesswire.com/news/home/20251203552368/en/Sprinklr-Announces-Third-Quarter-Fiscal-2026-Results, Q4 FY26 https://investors.sprinklr.com/news/press-releases/detail/249/sprinklr-announces-fourth-quarter-and-full-year-fiscal-2026, Q1 FY27 https://www.sprinklr.com/newsroom/sprinklr-announces-first-quarter-fiscal-2027-results/)."
+    },
+    {
+      "finding": "In the Q1 FY27 10-Q geographic disaggregation, Americas revenue FELL to $112.9m from $117.6m (-4.0% YoY) while 'Other' jumped to $29.6m from $15.9m (+86%), so 48.6% of revenue is now outside the Americas versus 42.8% a year earlier and 44% for FY26 — Sprinklr's home market is contracting and every dollar of growth is coming from the regions where the Middle East disruption and FX sit.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -4.0,
+      "impact_high_pct": 0.5,
+      "source": "https://www.sec.gov/Archives/edgar/data/1569345/000156934526000028/cxm-20260430.htm",
+      "source_date": "2026-06-04",
+      "why_not_priced": "This table is in a 6MB 10-Q note; it is not in the earnings press release, it was not raised on the Q1 call, and no wire copy on the name mentions it. If the market had focused on a declining US base at ~51% of revenue, the story on the tape would be 'domestic decline offset by emerging-market wins', not 'AI transformation and improving renewals' — and a stock whose largest region shrinks does not close at a 12-month high on a 22.6% 20-day run without one analyst refreshing a target since 2026-06-04.",
+      "independence": "The 10-K's own statement that 'during the years ended January 31, 2026 and 2025, we generated 44% and 41%, respectively, of our revenue outside the Americas' independently establishes the mix shift trend from a different filing: https://www.sec.gov/Archives/edgar/data/1569345/000156934526000015/cxm-20260131.htm. Caveat I cannot fully exclude: a segment reclassification between EMEA and Other, though comparatives in the same table should be restated on a like-for-like basis."
+    },
+    {
+      "finding": "The Q1 FY27 10-Q discloses that 'our operations in the Middle East have been affected by the 2026 Iran conflict, including disruptions to our business activities in the region and inaccessibility, and potential loss, of certain customer data in connection with a third-party data center infrastructure in the United Arab Emirates' and warns of 'significant and unanticipated expenses... emergency data transfers, temporary changes to data processing locations, increased infrastructure costs' — and the conflict's targeting of Gulf data centres was still live in July 2026, i.e. across the whole of the quarter being reported (1 May - 31 July 2026).",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -4.0,
+      "impact_high_pct": 0.5,
+      "source": "https://www.sec.gov/Archives/edgar/data/1569345/000156934526000028/cxm-20260430.htm",
+      "source_date": "2026-06-04",
+      "why_not_priced": "Management framed this on the Q1 call as a discrete quarter event — 54 customers 'moved on the fly' out of a damaged Middle East environment to Ireland and '$3 million to $4 million of slip deals' — and the market treated it as behind them: CXM bottomed at $4.91 on 2026-06-25 and then rose 67% with no company news. If the market had carried it forward into Q2 it would not have re-rated the stock 67% while the same conflict was still striking Gulf data centres in July, and the unquantified infrastructure and remediation costs would show up in sell-side gross-margin estimates that have not been revised since 2026-06-04.",
+      "independence": "RBC Capital Markets, 2026-07 (year confirmed in the URL path /2026/07/): https://www.rbccm.com/en/insights/2026/07/data-centers-become-the-new-battleground-in-iran-war establishes the data-centre campaign persisted into the quarter being reported. Origin of the outage independently dated 2026-03-03 by CNBC (year in URL path): https://www.cnbc.com/2026/03/03/iran-war-uae-drone-strikes-aws-data-centers.html"
+    },
+    {
+      "finding": "The scheduled termination date of Sprinklr's $125m variable-tenor accelerated share repurchase with Citibank is September 1, 2026 — today, the session before the print — after which the dealer's covering purchases (roughly $125m spread over ~115 sessions on a 2.76m-share ADV) stop, and only $75m of the $200m authorization remains through 15 March 2027.",
+      "expected_impact_pct": -1.0,
+      "impact_low_pct": -3.0,
+      "impact_high_pct": 1.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1569345/000156934526000028/cxm-20260430.htm",
+      "source_date": "2026-06-04",
+      "why_not_priced": "The termination date exists only in a 10-Q footnote: on the Q1 call management said only 'we repurchased 17.1 million shares' and '$75 million remaining', with no mention of the September 1 date or the pending final settlement, and no wire copy on the name mentions it. The baseline itself concedes that with no usable option chain 'what is priced' is INFERRED FROM THE RUN-UP — so a mechanical, price-insensitive buyer inside that run-up is precisely the contamination the baseline cannot see. If the market knew the bid ended today, the last four sessions would not have printed 3.2m/4.7m/4.2m/4.6m shares against a 1.7-2.4m ADV three weeks earlier on zero company news. The upper end of my band is real: with $502.5m of cash and $141.9m of FY26 free cash flow, a fresh or expanded authorisation announced with the print is the natural offset.",
+      "independence": "The ASR's initial delivery is visible in the tape itself and not just the footnote: on 2026-03-16, the date the 10-Q says Sprinklr paid Citibank and received 17,123,288 shares, CXM traded 18,312,900 shares against a 1.7-2.6m-share ADV in the surrounding sessions (https://query1.finance.yahoo.com/v8/finance/chart/CXM?period1=1772755200&period2=1773705600&interval=1d). Cash and FCF from https://investors.sprinklr.com/news/press-releases/detail/249/sprinklr-announces-fourth-quarter-and-full-year-fiscal-2026"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "A reported 'August 4, 2026' Sprinklr layoff of 15%/500 staff turned out to be the February 2025 reduction: the CX Today source is dated 2025-02-07 (https://www.cxtoday.com/contact-center/sprinklr-slashes-15-of-staff-but-keeps-hiring-in-prioritized-areas/). Dead lead, dropped.",
+    "layoffs.fyi has no entry at all for Sprinklr (https://layoffs.fyi/company/sprinklr/); no state WARN filing for Sprinklr found for 2026.",
+    "A 'Wall Street projections for CXM Q2' piece on Nasdaq that search served as current is dated 2024-08-29 (consensus revenue $194.58m, i.e. FY25) — discarded as a relabelled article (https://www.nasdaq.com/articles/insights-sprinklr-cxm-q2-wall-street-projections-key-metrics).",
+    "Jordi Ribas / Microsoft: the 2026-08-13 8-K is purely governance — Class II director, Nominating & Governance plus Strategy Committee, standard $200k initial RSU and $40k retainer, with Eileen Schloss removed from the Strategy Committee. No commercial Microsoft agreement found anywhere (https://www.sec.gov/Archives/edgar/data/1569345/000119312526347899/d40248d8k.htm). Microsoft is a named Sprinklr customer, so a governance-only read is the honest one.",
+    "Cause of the 2026-08-27 +6.29% move: no company news. It was the sector — IGV +7.74%, Salesforce +20%, Okta +22%, CrowdStrike +18% on Salesforce's beat-and-raise (https://www.cnbc.com/2026/08/27/salesforce-stock-soars-on-track-for-second-best-day-ever.html). CXM actually LAGGED the index that day, which kills the idea that the run-up is CXM-specific enthusiasm.",
+    "Insider activity is trivial and carries no signal: the only Form 144 in the run-up is officer Jacob Scott, 71,585 shares / $491,073, approximate sale date 2026-08-10 (https://www.sec.gov/Archives/edgar/data/1569345/000195004726007903/xsl144X01/primary_doc.xml). No Form 4 cluster.",
+    "Hiring: 84 open Sprinklr reqs on Built In including several CCaaS solution-architect and enterprise AE roles (https://builtin.com/company/sprinklr/jobs), but I could not obtain a prior-period req count, so the level is uninterpretable and I am not treating it as evidence in either direction. The Greenhouse board API 404s and sprinklr.com/careers/all-jobs/ 404s.",
+    "No federal contract award to Sprinklr found for 2026; the FedRAMP ATO material is from 2024.",
+    "No Sprinklr status-page incident record, app-store review trend, or customer-community thread found that bears on the May-July 2026 quarter.",
+    "No takeover process, 13D, or activist filing. The only M&A angle is a Citizens sell-side note calling CXM a possible target, which is wire coverage, and Hellman & Friedman's pre-existing ~45% voting position, which is not new."
+  ],
+  "baseline_tension": "It cuts against the run-up but the run-up is weaker evidence than the baseline can express: the baseline has no option chain (413 contracts open interest, ATM spread 143% of mid) so it has no skew and no implied move, and it therefore reads the +22.6% 20-day move as 'what is priced' — yet that move is mostly software beta (IGV +7.74% on 2026-08-27, CXM +6.29%, i.e. CXM lagged) plus, at the margin, a $125m ASR whose scheduled termination is today; and the '$7.88 average target below spot' framing is a stale-target artefact, since stockanalysis.com records the 8 targets as last updated 2026-06-04 when the stock closed at $5.38. So there is no positive skew agreeing with me and none disagreeing — the honest statement is that nothing in this price is a considered view on the print, and my -4.0 rests on CXM's own reaction history (which the baseline lacks entirely) conditioned on entering at a 12-month high.",
+  "sources_used": 26
+}
