@@ -15,3 +15,10 @@
 - Scouts: 1 subagent (sonnet/medium)
 - Session mix: 4 AMC / 2 BMO
 - Notable drops: FCEL (ai_edge 25 < floor 30, high-beta but unforecastable), REX & DAKT (tradeable: false, thin options liquidity), PANW (tied 50.5 with GIII on priority_score, dropped for AMC/BMO balance), OLLI (47.25, below cut), BF.B (37.25, formulaic quarter)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-01 08:24 UTC
+- Shortlist (6, cap=triage.shortlist_size=6, no names dropped for cap): CRDO, MDB, GTLB, DELL, CXM, GIII
+- Batch 1 (top 3 by priority_score): CRDO (73.75), MDB (66.0), GTLB (57.5)
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers (wave_size=2) — wave 1: CRDO+MDB, wave 2: GTLB — publish after each wave
