@@ -85,3 +85,15 @@
 ## Stage 3 — panel & advice — COMPLETE
 - Logged at 2026-09-01 16:13 UTC
 - Panelled: DELL, CXM (both Neutral/No Edge — DELL score -10.1 certainty Med, CXM score -22.3 certainty Med). 14/14 panel seats filled, no retries needed. Chair overrides: DELL certainty High->Med (5/7 personas shared one margin-narrative source, fool.com); CXM certainty High->Med (stale spot anchor given to panel: 8.16 vs corrected 7.79, a same-day -5.1% move 3 personas caught independently). Neither call was overridden -- both consensus scores genuinely fall inside the Neutral band and pushing them over the Lean-Down line would be the disallowed 'feels too strong' override. Degradations: none (stage 2 completed on schedule, no shedding). Dossiers, panel files, advice.md/json all validated. Publishing now.
+
+## claude_naive — 2026-09-01
+- Logged at 2026-09-01 17:42 UTC
+- Universe: 16 rows from nasdaq (6 AMC 2026-09-01 + 10 BMO 2026-09-02), 13 above the $500m floor, 8 forecast.
+- Forecast: PANW, DELL, CRDO, MDB, BF-B, GTLB, OLLI, CXM — top 8 by market cap after dropping BF.A.
+- Calls: 1 up (CRDO), 2 down (PANW, GTLB), 5 neutral (DELL, MDB, BF-B, OLLI, CXM). Directional rate 3/8, close to arm A's backtest 18/37.
+- Dropped: BF.A (duplicate share class of BF.B, same event — kept BF.B, which carries the EPS estimate and the liquidity); below the cap by market cap: FCEL, GIII, REX, DAKT, GASS, YSG, SPWH.
+- Ticker note: forecasts.json uses BF-B, not the calendar's BF.B. Yahoo returns a 200 with an empty chart for BF.B, which would have written a null spot and produced an unscorable row.
+- Tape context: the whole cohort fell today into the prints — PANW -5.9%, CRDO -6.5%, DELL -5.3%, OLLI -5.1%, CXM -4.5%, MDB -3.4%, GTLB -2.8%. Broad AI/software risk-off, not name-specific; noted because it lowers the bar on every AMC name and may swamp the reaction with beta.
+- entry_snapshot.py captured 8/8 spots at 17:5x UTC (~13:5x ET), ahead of the backtest's 14:00 ET entry.
+- Skill doc drift: SKILL.md §2 shows 'get_earnings.py --out <dir>'; the actual flag is --out-dir. Used --out-dir.
+- No research method was imposed and none of research/ was read, to keep this arm-A and not contaminated by today's stage 2/3 output on DELL and CXM.
