@@ -31,3 +31,10 @@
 - Subagents: 3 opus/high, in 2 waves of wave_size=2 (wave 1: CRDO+MDB; wave 2: GTLB)
 - Median evidence completeness: 80/100 (CRDO 78, MDB 84, GTLB 80)
 - Panel-eligible after this batch: not computed — final batch only (batch 2 covers DELL, CXM, GIII)
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-01 10:23 UTC
+- Shortlist: 6 names (cap=triage.shortlist_size=6, no names dropped for cap); batch 1 already covered CRDO, MDB, GTLB
+- This batch: DELL, CXM, GIII
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers (wave_size=2) — wave 1: DELL+CXM, wave 2: GIII — publish after each wave
