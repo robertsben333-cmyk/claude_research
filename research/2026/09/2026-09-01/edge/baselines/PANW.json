@@ -1,66 +1,73 @@
 {
- "ticker": "PANW",
- "event_date": "2026-09-01",
- "session": "amc",
- "as_of_utc": "2026-09-01T14:07:41+00:00",
- "sources": [
-  "yahoo chart v8 daily bars",
-  "yahoo options v7 front expiry (cookie+crumb)",
-  "sec edgar submissions api, 8-K item 2.02 acceptance times"
- ],
- "tape": {
-  "last_close_date": "2026-09-01",
-  "spot": 363.995,
-  "run_up_5d_pct": 3.73,
-  "run_up_20d_pct": 4.86,
-  "pct_from_52w_high": -8.08,
-  "pct_from_52w_low": 156.93,
-  "realised_vol_20d_annualised_pct": 63.0,
-  "avg_volume_20d": 5390048
- },
- "cik": "0001327567",
- "history": {
-  "moves": [],
-  "n": 0,
-  "basis": "all 28 prior print(s) on this CIK were filed under a former name before 2026-08-27, so they belong to a predecessor entity and are not this company's reaction history",
-  "median_abs_move_pct": null,
-  "max_abs_move_pct": null,
-  "up_count": 0
- },
- "event_plausibility": {
-  "verdict": "unknown",
-  "reason": "fewer than 3 prior prints to infer a cadence from"
- },
- "options": {
-  "status": "ok",
-  "expiry": "2026-09-04",
-  "days_to_expiry": 3,
-  "atm_strike": 365.0,
-  "atm_iv_pct": 108.2,
-  "straddle_implied_move_pct": 9.05,
-  "event_implied_move_pct": 7.77,
-  "event_implied_move_basis": "9.05% straddle over 3 calendar days less 5.81% of ordinary 20d-realised movement, subtracted in variance",
-  "skew_25d_vol_points": -17.1,
-  "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
-  "put_call_open_interest_ratio": 1.19,
-  "total_open_interest": 47385,
-  "atm_spread_frac_of_mid": 0.157,
-  "warnings": [],
-  "priced_direction_lean": "upside paid"
- },
- "deadband_pct": 3.97,
- "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
- "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
- "expected_move_pct": 7.77,
- "expected_move_basis": "option straddle net of ordinary vol, front expiry",
- "baseline_quality": {
-  "options_usable": true,
-  "history_events": 0,
-  "history_usable": 0,
-  "event_plausibility": "unknown",
-  "priced_direction_available": true,
-  "tier": "partial",
-  "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
- },
- "status": "ok"
+  "ticker": "PANW",
+  "event_date": "2026-09-01",
+  "session": "amc",
+  "as_of_utc": "2026-09-01T14:07:41+00:00",
+  "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+  ],
+  "tape": {
+    "last_close_date": "2026-09-01",
+    "spot": 363.995,
+    "run_up_5d_pct": 3.73,
+    "run_up_20d_pct": 4.86,
+    "pct_from_52w_high": -8.08,
+    "pct_from_52w_low": 156.93,
+    "realised_vol_20d_annualised_pct": 63.0,
+    "avg_volume_20d": 5390048
+  },
+  "cik": "0001327567",
+  "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "all 28 prior print(s) on this CIK were filed under a former name before 2026-08-27, so they belong to a predecessor entity and are not this company's reaction history",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0
+  },
+  "event_plausibility": {
+    "verdict": "fits_cadence",
+    "reason": "UPGRADE. Date and session confirmed by Palo Alto Networks' own press release for a 2026-09-01 after-close release (webcast 4:30 p.m. ET). The 'unknown' verdict came from history.n=0, and that zero is a RECORDS BUG, not a cadence problem: priced_in.py discarded all 28 prior prints on CIK 0001327567 as 'filed under a former name before 2026-08-27'. PANW has not changed its name. A company-issued scheduling release is stronger evidence the event exists than any cadence inference, so the event-existence flag goes to fits_cadence. The thin history is NOT forgiven by this: hist_q stays 0 and still costs the name 40% of baseline_quality in the right term.",
+    "amended_from": {
+      "verdict": "unknown",
+      "reason": "fewer than 3 prior prints to infer a cadence from"
+    },
+    "amended_utc": "2026-09-01T14:21:28+00:00",
+    "amended_by": "edge sweep, company-sourced; before any hunter launched",
+    "amended_source": "https://www.paloaltonetworks.com/company/press/2026/palo-alto-networks-to-announce-fiscal-fourth-quarter-and-fiscal-year-2026-financial-results-on-tuesday--september-1--2026"
+  },
+  "options": {
+    "status": "ok",
+    "expiry": "2026-09-04",
+    "days_to_expiry": 3,
+    "atm_strike": 365.0,
+    "atm_iv_pct": 108.2,
+    "straddle_implied_move_pct": 9.05,
+    "event_implied_move_pct": 7.77,
+    "event_implied_move_basis": "9.05% straddle over 3 calendar days less 5.81% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -17.1,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.19,
+    "total_open_interest": 47385,
+    "atm_spread_frac_of_mid": 0.157,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+  },
+  "deadband_pct": 3.97,
+  "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+  "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+  "expected_move_pct": 7.77,
+  "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+  "baseline_quality": {
+    "options_usable": true,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": true,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+  },
+  "status": "ok"
 }
