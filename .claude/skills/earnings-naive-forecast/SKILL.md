@@ -49,11 +49,22 @@ tomorrow, the entry is tonight and the print is tomorrow morning.
 ## 2. Build the universe
 
 ```bash
-python3 scripts/get_earnings.py --out claude_naive/$(date -u +%Y-%m-%d)
+python3 scripts/get_earnings.py --out-dir claude_naive/$(date -u +%Y-%m-%d)
 ```
 
 Take names reporting **after today's US close or before tomorrow's open**. Cap at
 **eight** names, highest market cap first. Record any you dropped.
+
+Two things the calendar will do to you:
+
+- **Dual share classes.** Brown-Forman appears as both `BF.A` and `BF.B` for the same
+  print. That is one event, not two — keep the liquid class and record the other as
+  dropped, or you spend a slot forecasting the same company twice.
+- **Quote symbols.** Yahoo wants `BF-B`, not `BF.B`, and for `BF.B` it returns HTTP 200
+  with an *empty* chart rather than an error. `entry_snapshot.py` and `score_naive.py`
+  both key off the `ticker` field, so a calendar symbol that does not resolve writes a
+  null spot and produces a row that can never be scored. Put the resolving symbol in
+  `ticker` and note the calendar symbol in `company`.
 
 If the universe script fails or returns nothing, say so in the run log and stop. Do not
 invent a universe.
