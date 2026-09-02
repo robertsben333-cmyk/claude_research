@@ -90,3 +90,9 @@
 ## Stage 3 — panel & advice — DONE
 - Logged at 2026-09-02 16:10 UTC
 - Panelled AI and SNOW, both Neutral / No Edge (AI consensus -10.0/High certainty/High reversal; SNOW consensus -1.0/High certainty/Med reversal). No chair overrides. Both panels ran full 7/7 seats. 04-advice.md/.json written and validated, status ok. update_index.py + build_predictions.py run (25 predictions across 5 days, 8 scored, 67% panelled direction hit rate to date). No budget degradation needed (panel.names=2 already the standing config value).
+
+## claude_naive — 2026-09-02 — STARTED
+- Logged at 2026-09-02 17:37 UTC
+- Universe: 32 calendar rows, 25 above the $500m floor. Top 8 by market cap taken: AVGO, SNOW, HPE, CIEN, NTAP, FIVE, TTC, CPB.
+- No dual-class collision in the top 8 (WLY/WLYB are the same company but both below the cut).
+- Researching now; entry is 18:00 UTC.
