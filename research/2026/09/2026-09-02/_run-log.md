@@ -25,3 +25,12 @@
 - Shortlist: 6 names; this batch: AVGO, SNOW, AI (top 3 of 6 by priority_score, cap=triage.shortlist_size=6, batches=2)
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2), publish after each wave and after each dossier
+
+## Stage 2 — deep dive, batch 1 — FINISHED (08:54 UTC)
+- Logged at 2026-09-02 08:55 UTC
+- Researched: AVGO, SNOW, AI
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves of 2 (wave 1: AVGO+SNOW, wave 2: AI)
+- Median evidence completeness: 84/100
+- Batch 2 covers NTAP, PVH, VSXY; ranking (02-ranking.json) deferred to that batch
