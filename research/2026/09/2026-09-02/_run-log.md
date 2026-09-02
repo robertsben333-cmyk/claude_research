@@ -86,3 +86,7 @@
 ## Stage 3 — SNOW panel done
 - Logged at 2026-09-02 16:09 UTC
 - SNOW: 7/7 personas filled. Consensus -1.0 (near dead flat, 4 personas mildly bullish vs 3 mildly bearish), disparity 30.0 (aligned), call Neutral / No Edge, certainty High (79), reversal risk Med (60). No chair override. Data caveat recorded: historical_moves_pct was mislabelled most-recent-last (actually most-recent-first); 5 personas independently caught it via their own sourcing and did not let it affect their calls; synthesize.py's stats are order-independent so unaffected. Dossier + panel file written and validated.
+
+## Stage 3 — panel & advice — DONE
+- Logged at 2026-09-02 16:10 UTC
+- Panelled AI and SNOW, both Neutral / No Edge (AI consensus -10.0/High certainty/High reversal; SNOW consensus -1.0/High certainty/Med reversal). No chair overrides. Both panels ran full 7/7 seats. 04-advice.md/.json written and validated, status ok. update_index.py + build_predictions.py run (25 predictions across 5 days, 8 scored, 67% panelled direction hit rate to date). No budget degradation needed (panel.names=2 already the standing config value).
