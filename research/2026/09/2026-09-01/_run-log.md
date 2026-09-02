@@ -97,3 +97,9 @@
 - entry_snapshot.py captured 8/8 spots at 17:5x UTC (~13:5x ET), ahead of the backtest's 14:00 ET entry.
 - Skill doc drift: SKILL.md §2 shows 'get_earnings.py --out <dir>'; the actual flag is --out-dir. Used --out-dir.
 - No research method was imposed and none of research/ was read, to keep this arm-A and not contaminated by today's stage 2/3 output on DELL and CXM.
+
+## Stage 4 — calibration — DEFERRED
+- Logged at 2026-09-02 06:28 UTC
+- Checked 2026-09-02 (02:24 ET) as part of a stage-4 pass that also scored 2026-08-27 and closed out the blocked 2026-08-31 run.
+- 04-advice.json exists for 2026-09-01 with 2 panelled names (DELL, CXM) and 4 non-panelled (GIII, GTLB, MDB, CRDO), but the outcome window has not resolved: DELL/MDB/GTLB/CRDO reported amc 2026-09-01, so their window closes on the 2026-09-02 close; CXM/GIII report bmo 2026-09-02, so their window also closes on the 2026-09-02 close. That close does not exist yet -- today's US session has not opened. Same schedule-lag pattern already flagged on 2026-08-20 and 2026-08-27 for OKTA/DLTR: the 08:20 CET fire time is well before the US close that resolves a same-day print.
+- Left unscored on purpose (not a fabricated 05-outcome.md) -- pick this run up on the next stage-4 pass, once 2026-09-02 has closed.
