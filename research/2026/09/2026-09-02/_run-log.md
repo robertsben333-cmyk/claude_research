@@ -19,3 +19,9 @@
 - Funnel: 31 universe -> 23 eligible -> 19 cleared floors -> 6 shortlisted
 - Session mix: 5 AMC / 1 BMO (VSXY swapped in for WOOF on session-mix grounds, 0.65pt gap)
 - Notable drops: NTSK (tradeable:false, thin options liquidity), DOO (timing_confirmed:false, conflicting date/listing), VBNK (tradeable:false, thin liquidity), BRC (change_expectation 30<35), HPE/CIEN (tied 8th at 60.50, just missed cut)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-02 08:26 UTC
+- Shortlist: 6 names; this batch: AVGO, SNOW, AI (top 3 of 6 by priority_score, cap=triage.shortlist_size=6, batches=2)
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2), publish after each wave and after each dossier
