@@ -8,3 +8,7 @@
 - Excluded: 8 (7 below_market_cap_floor: GCO, LE, MTRX, CHPT, DLTH, TLYS, AMBR; 1 no_options_market: WLYB — WebSearch-confirmed no listed-options chain, WLY class A kept)
 - Verified by WebSearch: GOLD is A-Mark Precious Metals' Dec-2025 NYSE rebrand (real listed name, not a data error); VSXY is Victoria's Secret & Co's post-rename ticker (was VSCO); VBNK, ZGN, NTSK, MEI, AGX all confirmed to have real listed-options markets; AGX's Sept 2 AMC timing confirmed by company press release
 - Notes: local main branch was behind origin/main by a full day of pipeline commits at session start (shallow-clone merge-base artifact, not a real divergence); fast-forwarded cleanly before starting this stage
+
+## Stage 1 — triage — STARTED
+- Logged at 2026-09-02 06:39 UTC
+- Screening 23 eligible names via 2 earnings-triage-scout subagents (batches of ~12), floors change_expectation>=35 / ai_edge>=30, shortlist_size 6
