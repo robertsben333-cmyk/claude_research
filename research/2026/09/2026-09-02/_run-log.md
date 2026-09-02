@@ -50,3 +50,7 @@
 - Median evidence completeness: 82/100
 - Ranking (02-ranking.json) built from all 6 dossiers (both batches): AI 55.0, SNOW 49.9, VSXY 49.8, AVGO 49.1, PVH 47.75, NTAP 47.6 — all panel-eligible
 - Panel-eligible after this batch: AI, SNOW, VSXY, AVGO, PVH, NTAP (all 6; top panel.names=2 per config are AI, SNOW)
+
+## Edge hunt — 2026-09-02 amc + 2026-09-03 bmo — STARTED
+- Logged at 2026-09-02 14:15 UTC
+- Window resolved 32 names from 98 calendar rows, 0 time-not-supplied (no --include-unknown needed). Baselines sealed for all 32 before any agent launch: 17 with a live option chain (straddle implied move present), 28 with >=5 EDGAR 8-K reaction history. 6 baselines returned event_plausibility=unknown, of which 4 carry cadence_implausible=true (DOO, PSNY, VBNK, ZGN - all foreign private issuers) plus GOLD and MEI. FIVE needed one retry after a bars HTTPError. Plan: 1 edge-sweep over all 32; shed to ~8 hunted names per budget.edge_degrade_order (cap 20 = 1 sweep + 10 hunters + 8 adversaries = 19); 2 isolated hunters on the top 2 by hunt_priority, 1 on the rest; 1 priced-in-adversary per ticker judging all findings both sides; edge_score.py then edge-note.md.
