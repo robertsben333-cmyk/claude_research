@@ -40,3 +40,13 @@
 - Shortlist: 6 names; this batch: NTAP, PVH, VSXY (positions 4-6 of 6 by priority_score, cap=triage.shortlist_size=6, batches=2)
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2) — wave 1: NTAP+PVH, wave 2: VSXY — publish after each wave and after each dossier
+
+## Stage 2 — deep dive, batch 2 — FINISHED (11:02 UTC)
+- Logged at 2026-09-02 11:02 UTC
+- Researched: NTAP, PVH, VSXY
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves (wave 1: NTAP+PVH; wave 2: VSXY)
+- Median evidence completeness: 82/100
+- Ranking (02-ranking.json) built from all 6 dossiers (both batches): AI 55.0, SNOW 49.9, VSXY 49.8, AVGO 49.1, PVH 47.75, NTAP 47.6 — all panel-eligible
+- Panel-eligible after this batch: AI, SNOW, VSXY, AVGO, PVH, NTAP (all 6; top panel.names=2 per config are AI, SNOW)
