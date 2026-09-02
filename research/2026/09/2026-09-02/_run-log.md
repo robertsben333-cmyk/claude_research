@@ -12,3 +12,10 @@
 ## Stage 1 — triage — STARTED
 - Logged at 2026-09-02 06:39 UTC
 - Screening 23 eligible names via 2 earnings-triage-scout subagents (batches of ~12), floors change_expectation>=35 / ai_edge>=30, shortlist_size 6
+
+## Stage 1 — triage (06:46 UTC)
+- Logged at 2026-09-02 06:43 UTC
+- Mode: scouted (2 subagents, sonnet/medium)
+- Funnel: 31 universe -> 23 eligible -> 19 cleared floors -> 6 shortlisted
+- Session mix: 5 AMC / 1 BMO (VSXY swapped in for WOOF on session-mix grounds, 0.65pt gap)
+- Notable drops: NTSK (tradeable:false, thin options liquidity), DOO (timing_confirmed:false, conflicting date/listing), VBNK (tradeable:false, thin liquidity), BRC (change_expectation 30<35), HPE/CIEN (tied 8th at 60.50, just missed cut)
