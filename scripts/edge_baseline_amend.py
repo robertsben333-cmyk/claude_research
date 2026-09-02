@@ -46,6 +46,76 @@ from pathlib import Path
 # on 2026-09-01 the 2026-08-31 table was still in place and did that. The guard
 # in main() now makes a fully stale table exit non-zero instead of looking clean.
 AMENDMENTS = {
+    "MEI": ("fits_cadence",
+            "UPGRADE. Date and session confirmed by Methode Electronics' own "
+            "GlobeNewswire release of 2026-08-26: Q1 FY2027 (period ended "
+            "2026-08-01) issued after the close on 2026-09-02, call the next "
+            "morning at 08:00 ET. The 'unknown' verdict came from history.n=0, and "
+            "that zero is the SAME RECORDS BUG as PANW and CXM: priced_in.py "
+            "discarded all 68 prior item 2.02 prints on CIK 0000065270 as 'filed "
+            "under a former name', and EDGAR's submissions API lists no former "
+            "name for Methode -- it has been METHODE ELECTRONICS INC since 1994. "
+            "Three registrants producing this artefact across three runs is a bug "
+            "in the former-name filter, not three records events. The thin history "
+            "is NOT forgiven here: hist_n stays 0, hist_q stays 0, and the name "
+            "still pays for it in baseline_quality. Hunters are told explicitly "
+            "that this baseline carries NO earnings base rate and that the absence "
+            "is an artefact, so they must not read it as a quiet history.",
+            "https://www.globenewswire.com/news-release/2026/08/26/3351719/0/en/methode-electronics-announces-first-quarter-fiscal-2027-results-conference-call.html"),
+    "GOLD": ("fits_cadence",
+             "UPGRADE. Date and session confirmed by the company's own "
+             "GlobeNewswire release of 2026-08-19: fiscal Q4 and full-year FY2026 "
+             "(year ended 2026-06-30) call on 2026-09-02 at 16:30 ET, results "
+             "issued before the call. Unlike MEI this was NOT a records bug -- the "
+             "history was correctly truncated to 2 prints because A-Mark Precious "
+             "Metals really did rename to Gold.com, Inc. on 2025-12-01 (former-name "
+             "record on CIK 0001591588). So the two surviving reactions are genuine "
+             "earnings reactions to this registrant and the sweep rates the history "
+             "trustworthy; there are simply only two of them, which hist_q already "
+             "prices. The event-existence flag was the only thing wrong.",
+             "https://www.globenewswire.com/news-release/2026/08/19/3347585/31746/en/gold-com-sets-fiscal-fourth-quarter-and-full-year-2026-earnings-call-for-wednesday-september-2-at-4-30-p-m-et.html"),
+    "WLYB": ("unknown",
+             "DOWNGRADE -- one of the two symmetric halves of this pass. WLYB is "
+             "John Wiley & Sons CLASS B and WLY is class A: one company, one CIK "
+             "(0000107140), one 8-K, one earnings event on 2026-09-03 bmo. The "
+             "calendar carries them as two rows with an identical market cap and an "
+             "identical year-ago EPS, which is the tell. 'fits_cadence' is therefore "
+             "true of the underlying company but false of this row as an independent "
+             "event, and the seven recorded 'reactions' are measured on a line that "
+             "trades 247 shares a day -- two of them are exactly 0.00%, i.e. an "
+             "unchanged last trade rather than a reaction. Downgraded to 'unknown' "
+             "rather than 'suspect': the event is real, this row just is not a "
+             "separate one and its history is not a price series.",
+             "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000107140&type=8-K"),
+    "AMBR": ("unknown",
+             "DOWNGRADE -- the other symmetric half. 'fits_cadence' rests on a "
+             "77-day median gap in 6-K text matches, but the only evidence for a "
+             "2026-09-03 print is the calendar row itself. Amber has always "
+             "pre-announced by 6-K (the 2026-05-21 6-K set the 2026-05-28 Q1 call), "
+             "and every 6-K on CIK 0001697818 since July -- 2026-07-28, 2026-08-10 "
+             "(leadership changes) and 2026-08-31 (the AMBR agentic-AI rebrand) -- "
+             "contains no results date, with the supposed print one day away. Last "
+             "year's comparable half-year report landed 2025-09-10, a week later "
+             "than the calendar's date. Not set to 'suspect', which would bar the "
+             "name from ranking on absence of evidence alone; 'unknown' states "
+             "exactly what is known, which is that the event is unestablished.",
+             "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001697818&type=6-K"),
+}
+
+# DELIBERATELY NOT AMENDED, and this is the judgement, not an oversight:
+# DOO, PSNY, VBNK and ZGN all carry cadence_implausible and all four are real,
+# company-confirmed events -- so the instinct is to upgrade them to fits_cadence.
+# They stay at 'unknown' (event_q 0.6) because in every one of the four the 6-K
+# text matcher caught NON-EARNINGS filings, exactly the CANG/NIO failure mode:
+# DOO's 7 matches are monthly 6-K wrappers, PSNY's 8 are monthly delivery updates
+# (one of them the scheduling release itself), VBNK's 8 are near-daily regulatory
+# and capital-ratio filings, and ZGN's 8 are quarterly revenue announcements plus
+# a 20-F notice. Their recorded medians are therefore not earnings base rates.
+# 'unknown' is the correct middle for "the event exists but its history does not
+# characterise it"; upgrading to fits_cadence would forgive the history defect and
+# hand each name a 1.0 multiplier it has not earned. Per-name history warnings go
+# to the hunters instead.
+_RETIRED_2026_09_01 = {
     "PANW": ("fits_cadence",
              "UPGRADE. Date and session confirmed by Palo Alto Networks' own press "
              "release for a 2026-09-01 after-close release (webcast 4:30 p.m. ET). "
