@@ -96,3 +96,12 @@
 - Universe: 32 calendar rows, 25 above the $500m floor. Top 8 by market cap taken: AVGO, SNOW, HPE, CIEN, NTAP, FIVE, TTC, CPB.
 - No dual-class collision in the top 8 (WLY/WLYB are the same company but both below the cut).
 - Researching now; entry is 18:00 UTC.
+
+## claude_naive — 2026-09-02
+- Logged at 2026-09-02 17:44 UTC
+- Universe: 32 calendar rows, 25 above the $500m floor, 8 forecast (cap) — AVGO, SNOW, HPE, CIEN, NTAP, FIVE, TTC, CPB, highest market cap first.
+- Calls: 2 up (AVGO Lean Up, CIEN Lean Up), 2 down (NTAP Lean Down, FIVE Lean Down), 4 neutral (SNOW, HPE, TTC, CPB). 4 of 8 abstentions, in line with the backtest's 19/37.
+- Dropped: 17 above-floor names below the cap (VSXY, NTSK, AGX, DOO, BRC, ZGN, PVH, WLY, WLYB, PSNY, AI, GOLD, WOOF, MOMO, PHR, MEI, VBNK) plus 7 below floor. No dual-class collision in the top 8; WLY/WLYB are one company but both below the cut.
+- Entry snapshot: 8/8 spots resolved, no null tickers, no unscoreable rows. Frozen 17:42 UTC, ahead of the 18:00 UTC / 14:00 ET entry.
+- ANCHOR FAILURE — the README's stated top transfer risk showed up on day 2. Frozen live quotes contradicted search-snippet prices on three names: CIEN $350.11 vs $479.50 quoted (simplywall.st), CPB $24.03 vs $21.46, SNOW $306.04 vs $319.80. AVGO/NTAP/FIVE agreed within 1%. Corrected the affected key_drivers and reasoning against the live feed and cut CIEN evidence_quality 70 -> 55. The CIEN error was material: it inverted a counter-argument, since B. Riley's $413 target sits above a $350 spot, not below it.
+- Method note: no research methodology applied, per the skill. WebSearch only; WebFetch not needed. No subagents.
