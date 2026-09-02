@@ -82,3 +82,7 @@
 ## Stage 3 — AI panel done
 - Logged at 2026-09-02 16:05 UTC
 - AI: 7/7 personas filled (forensics ran long, ~5min, but returned valid). Consensus -10.0, disparity 28.6 (aligned), call Neutral / No Edge, certainty High (80), reversal risk High (64). No chair override. Dossier + panel file written and validated.
+
+## Stage 3 — SNOW panel done
+- Logged at 2026-09-02 16:09 UTC
+- SNOW: 7/7 personas filled. Consensus -1.0 (near dead flat, 4 personas mildly bullish vs 3 mildly bearish), disparity 30.0 (aligned), call Neutral / No Edge, certainty High (79), reversal risk Med (60). No chair override. Data caveat recorded: historical_moves_pct was mislabelled most-recent-last (actually most-recent-first); 5 personas independently caught it via their own sourcing and did not let it affect their calls; synthesize.py's stats are order-independent so unaffected. Dossier + panel file written and validated.
