@@ -1,0 +1,10 @@
+# Run log — 2026-09-02
+
+## Stage 0 — universe (07:18 CEST / 05:18 UTC)
+- Logged at 2026-09-02 05:19 UTC
+- Window: After the US close on Wednesday 02 September 2026 through before the US open on Thursday 03 September 2026
+- Source: nasdaq (both after-close and before-open, single-source feed, status ok)
+- Universe: 31 total (16 AMC, 15 BMO); 24 above the $500M market-cap floor; 23 eligible after qualification
+- Excluded: 8 (7 below_market_cap_floor: GCO, LE, MTRX, CHPT, DLTH, TLYS, AMBR; 1 no_options_market: WLYB — WebSearch-confirmed no listed-options chain, WLY class A kept)
+- Verified by WebSearch: GOLD is A-Mark Precious Metals' Dec-2025 NYSE rebrand (real listed name, not a data error); VSXY is Victoria's Secret & Co's post-rename ticker (was VSCO); VBNK, ZGN, NTSK, MEI, AGX all confirmed to have real listed-options markets; AGX's Sept 2 AMC timing confirmed by company press release
+- Notes: local main branch was behind origin/main by a full day of pipeline commits at session start (shallow-clone merge-base artifact, not a real divergence); fast-forwarded cleanly before starting this stage
