@@ -51,3 +51,12 @@
 - Logged at 2026-09-03 10:40 UTC
 - Researched: LULU, ZS
 - Both event_confirmed; LULU evidence completeness 84 (no IV rank/skew found); ZS evidence completeness 80 (implied move figure six sessions stale, no IV rank found)
+
+## Stage 2 — deep dive, batch 2 — FINISHED
+- Logged at 2026-09-03 10:59 UTC
+- Researched: LULU, ZS, IOT
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves (LULU+ZS, then IOT), published individually and after each wave
+- Median evidence completeness: 84/100 (LULU 84, ZS 80, IOT 84)
+- Panel-eligible after this batch: PATH, PL, LULU, AMBA, IOT, ZS (all 6, rank order) -- panel.names=2 in config so stage 3 takes PATH and PL
