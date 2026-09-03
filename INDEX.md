@@ -8,7 +8,7 @@ Stage column reads `UTDPAO`: **U**niverse, **T**riage, **D**ossiers, **P**anel, 
 
 | Date | Stages | Universe | Shortlist | Dossiers | Panels | Top call |
 | --- | :---: | ---: | ---: | ---: | ---: | --- |
-| [2026-09-03](research/2026/09/2026-09-03/) | `UTD···` | 21 | 6 | 4 |  |  |
+| [2026-09-03](research/2026/09/2026-09-03/) | `UTD···` | 21 | 6 | 5 |  |  |
 | [2026-09-02](research/2026/09/2026-09-02/) | `UTDPA·` | 31 | 6 | 6 | 4 | `AI` Neutral / No Edge (High) |
 | [2026-09-01](research/2026/09/2026-09-01/) | `UTDPA·` | 16 | 6 | 6 | 4 | `DELL` Neutral / No Edge (Med) |
 | [2026-08-31](research/2026/08/2026-08-31/) | `····A·` |  |  |  |  |  |
