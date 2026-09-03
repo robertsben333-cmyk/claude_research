@@ -40,3 +40,9 @@
 - Median evidence completeness: 84/100 (PATH 84, PL 87, AMBA 82)
 - Notable: PATH and PL triage rationales both corrected on further evidence (see wave-1 log entry); AMBA's implied move (12.93%) reads as cheap vs its own 8Q realised-move mean (15.08%), opposite of triage's framing
 - Panel-eligible after this batch: n/a — final ranking happens after batch 2
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-03 10:25 UTC
+- Shortlist: 6 names (PATH, PL, AMBA, LULU, ZS, IOT); this batch: LULU, ZS, IOT (positions 4-6 of 6, cap unchanged)
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers (LULU+ZS, then IOT), publish after each dossier and after each wave
