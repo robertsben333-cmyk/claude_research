@@ -60,3 +60,7 @@
 - Subagents: 3 opus/high, in 2 waves (LULU+ZS, then IOT), published individually and after each wave
 - Median evidence completeness: 84/100 (LULU 84, ZS 80, IOT 84)
 - Panel-eligible after this batch: PATH, PL, LULU, AMBA, IOT, ZS (all 6, rank order) -- panel.names=2 in config so stage 3 takes PATH and PL
+
+## Edge hunt — 2026-09-03 amc + 2026-09-04 bmo — STARTED
+- Logged at 2026-09-03 14:10 UTC
+- Stage E. Universe: 21 of 68 calendar rows resolved to today's amc (20) plus next-day bmo (1: KNOP). No --include-unknown. Baselines sealed at 14:08 UTC for all 21 — every one returned event_plausibility ok, and 12 of 21 carry a live front-expiry option chain (ZS 13.15%, PL 18.23%, ASAN 18.20%, AMBA 14.44%, NX 14.23%, PATH 13.70%, SWBI 13.61%, GWRE 12.96%, IOT 11.27%, MAMA 11.55%, DOCU 10.62%, LULU 9.42% implied). The 16:04 Amsterdam firing did its job: ZS ATM spread is 9% of mid against 41% on the first run's weekend marks. Budget plan at the edge_hunt cap of 20: 1 sweep + 10 hunters (8 names, double-hunted top 2) + 8 adversaries = 19. 21 names does not fit, so the shed is planned now, not discovered later: shed per budget.edge_degrade_order — unconfirmed names first, then lowest hunt_priority — while deliberately keeping names with a live chain, so 'what the market priced' is measured rather than inferred from a run-up. Shed names sit in the table as rankable:false with a stated reason.
