@@ -19,3 +19,9 @@
 - Scouts: 1 subagent (sonnet/medium), all 13 eligible tickers in one batch
 - Session mix: 6 AMC / 0 BMO (all 13 eligible names in today's universe report AMC; no BMO name cleared the market-cap floor)
 - Notable drops: MAMA (tradeable: false, illiquid options), SWBI (timing_confirmed: false, one source says 09-04 not 09-03 -- would have ranked top-3 on score, worth a manual re-check before stage 2), DOCU (ranked 8th, already ran +17% into print), ASAN (ranked 7th, closest miss)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-03 08:26 UTC
+- Shortlist: 6 names (PATH, PL, AMBA, LULU, ZS, IOT); this batch: PATH, PL, AMBA (positions 1-3 of 6, cap unchanged)
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers (PATH+PL, then AMBA), publish after each dossier and after each wave
