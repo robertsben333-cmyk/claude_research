@@ -113,3 +113,14 @@
 - Coverage gap: a session-wide WebSearch budget (200/200) was exhausted mid-run for 4 of 6 names (LULU, ZS, GWRE, CIEN, running the six agents in parallel), blocking 3-8 queries each, concentrated in areas 7 (sentiment/alt-data) and 9 (macro/peers) -- both got thin-to-zero coverage on the affected names. IOT and CPRT ran clean. Recommend not running all 6 deep-researcher-style agents fully in parallel next time, or raising/tracking the per-session WebSearch budget.
 - Data-quality finding: CPRT's calendar carried a stale 2026-09-03 row (time-not-supplied) alongside a corrected 2026-09-10 row (time-after-hours, confirmed AMC via company release and SEC 8-K exhibit). Capture was redirected to the confirmed 09-10 date; the stale row no longer resolves on requery.
 - No name skipped. Publish-after-each-name followed throughout (10 publishes today).
+
+## claude_naive — 2026-09-03
+- Logged at 2026-09-03 17:44 UTC
+- Universe: 21 calendar rows, 13 above the $500m cap floor, 8 forecast (top 8 by market cap, all amc tonight). No dual-class collisions; all 8 calendar symbols resolve on Yahoo.
+- Dropped (above floor, below the 8-name cap): ASAN, NX, MAMA, SWBI, OXM.
+- Calls: 1 up (IOT), 3 down (ZS, LULU, PATH), 4 neutral (GWRE, DOCU, PL, AMBA). 50% abstention, in line with arm A's 19-of-37.
+- Magnitude anchors computed from 2y Yahoo daily bars rather than taken from search: PL 22.0% (prints of +49/+48/+35/-26/-28), AMBA 15.0%, ZS/IOT/PATH 12.0%, GWRE 11.0%, LULU 9.5%, DOCU 9.0%.
+- One source correction worth recording: a secondary source claimed AMBA had five consecutive negative print reactions averaging -9.8%. Recomputing from bars showed an alternating sequence including a +16.8%, so the streak does not exist. The AMBA call was moved from Lean Down to Neutral on that.
+- Highest-conviction call is LULU Lean Down (four consecutive negative prints of -14/-20/-19/-11, UBS expecting a second FY guidance cut, stock bounced ~5% into the event). Lowest is PATH, which rests on positioning (+42% in a month against 12% ARR growth) rather than anything specific to the quarter.
+- Entry prices frozen 8/8 at ~17:45 UTC, ~15 min before the 14:00 ET entry the backtest prices.
+- Network: WebSearch fine, Yahoo chart endpoint reachable from Bash. No blocked domains to report.
