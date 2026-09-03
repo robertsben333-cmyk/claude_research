@@ -1,0 +1,1338 @@
+SOURCE: https://www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/
+PROVIDER: agent-websearch
+AREA: 5
+HEADLINE: Everything (AI) Samsara Announced at Samsara Beyond 2026
+WHY: Independent recap of new product launches (Agent Studio, 360 Camera, Tracking Label, Wireless Link) that may be cited on the call as growth drivers.
+QUERY: Samsara AI physical operations announcements new products 2026
+FETCHED_UTC: 2026-09-03T15:18:49Z
+
+                        const o=new WeakMap,r=new Set,h=10,f=t=>{let e=0;for(const n of t.children)e=Math.max(e,n.offsetHeight);return e},w=t=>{const e=f(t);e (o.get(t)??0)&&(o.set(t,e),t.style.setProperty("min-height",`${e}px`,"important"))},u=1e3,i=new WeakMap,c=t=>{clearTimeout(i.get(t)),i.set(t,window.setTimeout(()=>w(t),u))},m=new ResizeObserver(t=>{for(const e of t)c(e.target)}),d=t=>{r.has(t)||(r.add(t),m.observe(t))},a=t=>{for(const e of t.querySelectorAll("[data-ad-slot]"))d(e)};a(document);new MutationObserver(t=>{for(const e of t)for(const n of e.addedNodes)n instanceof HTMLElement&&(n.matches("[data-ad-slot]")&&d(n),a(n))}).observe(document.body,{childList:!0,subtree:!0});let s=window.innerWidth;window.addEventListener("resize",()=>{if(window.innerWidth!==s){s=window.innerWidth;for(const t of r)o.delete(t),t.style.removeProperty("min-height"),c(t)}});   (function(){const domain = "theneuron.ai";
+const targeting = {"env":"prod","stage":"prod","url":"www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/","hostname":"www.theneuron.ai","edge_country":"US","cid":"everything-ai-samsara-announced-at-beyond-2026","path":"explainer-articles,everything-ai-samsara-announced-at-beyond-2026","kw":"samsara-beyond-2026,Samsara","category":"explainer-articles,blog","topic":"explainer-articles,blog","tax":"","ptype":"article","news":"no","author":"grant-harvey","post_id":"776008"};
+
+            window._vars = {
+                ...(window?._vars ?? {}),
+                domain,
+                targeting,
+            }
+        })();   
+    ;(() => {
+        // The sweep runs once the AY manager loads — well after first paint,
+        // so yanking the boxes out of the layout right there registers as
+        // CLS. Blank each box immediately (visibility keeps its space), and
+        // drop the space on the next discrete input, when the shift falls in
+        // the CLS input-exclusion window. Below-viewport boxes could collapse
+        // immediately without penalty, but one code path is enough.
+        let lastInput = -Infinity
+        const noteInput = () => {
+            lastInput = performance.now()
+        }
+        document.addEventListener("pointerdown", noteInput, {
+            capture: true,
+            passive: true,
+        })
+        document.addEventListener("keydown", noteInput, { capture: true })
+
+        const pendingRelease = []
+        const releaseAll = () => {
+            for (const release of pendingRelease.splice(0)) release()
+        }
+        document.addEventListener(
+            "pointerdown",
+            () => requestAnimationFrame(releaseAll),
+            { capture: true, passive: true },
+        )
+        document.addEventListener(
+            "keydown",
+            () => requestAnimationFrame(releaseAll),
+            { capture: true },
+        )
+
+        const releaseOnInput = (release) => {
+            if (performance.now() - lastInput   {
+            const ay = window.ayManagerEnv
+
+            if (!ay?.settings?.placements || !ay.tools?.getEnabledPlacements) {
+                return
+            }
+
+            const enabled = ay.tools.getEnabledPlacements()
+
+            for (const entry of ay.settings.placements) {
+                // Only placements AY renders *inside* their target. For
+                // beforebegin/afterend the target is a sibling anchor — real
+                // content that must not be hidden.
+                if (!["afterbegin", "beforeend"].includes(entry.position)) {
+                    continue
+                }
+
+                // Enabled: AY will request it and slotRenderEnded decides.
+                if (enabled.some(({ _id }) => _id === entry._id)) {
+                    continue
+                }
+
+                for (const el of document.querySelectorAll(entry.placement)) {
+                    // ...except when the wrapper _is_ the page
+                    if (["body", "html"].includes(el.tagName.toLowerCase())) {
+                        continue
+                    }
+
+                    if (el.hasAttribute("data-empty")) {
+                        continue
+                    }
+
+                    el.style.visibility = "hidden"
+                    releaseOnInput(() => {
+                        el.style.display = "none"
+                        el.setAttribute("data-empty", "")
+
+                        // The AY selector can target a wrapper around the slot
+                        // rather than the slot itself.
+                        for (const slot of el.querySelectorAll(
+                            "[data-ad-slot]",
+                        )) {
+                            slot.setAttribute("data-empty", "")
+                        }
+                    })
+                }
+            }
+        }
+
+        // Exposed so infinite scroll can re-sweep slots inserted after load.
+        window.collapseDisabledAdSlots = () =>
+            window.requestAnimationFrame(collapse)
+
+        window.ayManagerEnv = window.ayManagerEnv || { cmd: [] }
+        window.ayManagerEnv.cmd.push(() => window.collapseDisabledAdSlots())
+    })()
+   
+                  (function(){const targeting = {"env":"prod","stage":"prod","url":"www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/","hostname":"www.theneuron.ai","edge_country":"US","cid":"everything-ai-samsara-announced-at-beyond-2026","path":"explainer-articles,everything-ai-samsara-announced-at-beyond-2026","kw":"samsara-beyond-2026,Samsara","category":"explainer-articles,blog","topic":"explainer-articles,blog","tax":"","ptype":"article","news":"no","author":"grant-harvey","post_id":"776008"};
+const debug = false;
+
+            window.googletag = window.googletag || { cmd: [] };
+
+            // A wrapper can opt out of the global marking below with
+            // `data-ad-self-managed` when it owns its own fill lifecycle
+            // (e.g. a reserved band that must not collapse the instant GPT
+            // reports a render). Marking it here as well would fight that
+            // component and undo whatever it is holding.
+            const selfManaged = (wrapper) =>
+                wrapper.hasAttribute('data-ad-self-managed');
+
+            document.addEventListener('ay-ads-disabled', () => {
+                const allAdElements = Array.from(
+                    document.querySelectorAll('[data-ad-slot]')
+                ).filter((element) => !selfManaged(element));
+
+                allAdElements.forEach(element => {
+                    element.setAttribute('data-empty', '');
+                });
+                
+                if (debug) {
+                    console.log('[AY] ay-ads-disabled event: Marked ads as empty', {
+                        count: allAdElements.length,
+                        elements: allAdElements.map(el => ({
+                            selector: `[data-ad-slot="${el.getAttribute('data-ad-slot')}"]`,
+                            element: el
+                        }))
+                    });
+                }
+            });
+            
+            googletag.cmd.push(() => {
+                // Initialize googletag for targeting API (AY uses GPT API for targeting)
+                Object.entries(targeting).forEach(([key, value]) => {
+                    window.googletag.pubads().setTargeting(key, value);
+                });
+
+                // Global slotRenderEnded listener:
+                // All ad wrappers (AdSlot, SkyboxAd, CurtainAd) use `data-ad-slot` attribute.
+                // AY/GPT fires slotRenderEnded with slotElementId pointing at an AY-generated inner div.
+                // We walk up to our wrapper and mark it loaded or empty,
+                // unless the wrapper is self-managed (see above).
+                window.googletag
+                    .pubads()
+                    .addEventListener("slotRenderEnded", (event) => {
+                        const slotElementId = event.slot.getSlotElementId();
+                        const ayDiv = document.getElementById(slotElementId);
+                        if (!ayDiv) return;
+
+                        const wrapper = ayDiv.closest("[data-ad-slot]");
+                        if (!wrapper) return;
+                        if (selfManaged(wrapper)) return;
+
+                        if (event.isEmpty) {
+                            // Pulling a reserved box out of the layout mid-page
+                            // costs exactly as much CLS as the space it was
+                            // holding, and slots that reserve their creative's
+                            // real height (the article natives) hold a lot.
+                            // Blank it now — visibility keeps the space — and
+                            // drop the space on the next discrete input, where
+                            // the shift lands in the CLS input-exclusion
+                            // window. `data-empty` goes on with the space so
+                            // nothing reads the slot as collapsed early.
+                            const collapse = () => {
+                                // A refresh may have filled the slot while this
+                                // release sat in the queue waiting for input.
+                                if (wrapper.hasAttribute("data-loaded")) return;
+                                wrapper.style.visibility = "";
+                                wrapper.style.display = "none";
+                                wrapper.setAttribute("data-empty", "");
+                            };
+                            wrapper.style.visibility = "hidden";
+                            wrapper.removeAttribute("data-loaded");
+                            if (window.releaseAdSpaceOnInput) {
+                                window.releaseAdSpaceOnInput(collapse);
+                            } else {
+                                collapse();
+                            }
+                        } else {
+                            // A refresh can fill a slot that came back empty
+                            // last time, so undo the blanking above as well as
+                            // the collapse — a queued release would otherwise
+                            // hide a slot that now has an ad in it.
+                            wrapper.style.visibility = "";
+                            wrapper.style.display = "";
+                            wrapper.setAttribute("data-loaded", "");
+                            wrapper.removeAttribute("data-empty");
+                        }
+
+                        if (debug) {
+                            console.log("[AY] slotRenderEnded", {
+                                slotElementId,
+                                adSlot: wrapper.getAttribute("data-ad-slot"),
+                                isEmpty: event.isEmpty,
+                            });
+                        }
+                    });
+            });
+        })();  
+            @media (max-width: 767px) {
+                .cnx-pinned-wrapper {
+                    margin-top: 10px;
+                }
+            }
+
+            @media (min-width: 768px) {
+                .cnx-float.cnx-float-position-bottom {
+                    transform: translate(0, -100px) !important;
+                }
+            }
+
+            .cnx-main-container.cnx-in-desktop {
+                max-width: 640px;
+                max-height: 360px;
+            }
+          
+    (() => {
+        window.ngt = window.ngt || { cmd:[] };
+        window.ngt.cmd.push(function(){
+            window.googletag.cmd.push(() => {
+                window.googletag
+                    .pubads()
+                    .setTargeting(
+                        "user_agent",
+                        navigator?.userAgent ?? "Unknown User Agent",
+                    )
+                    .setTargeting(
+                        "ngt_company_size",
+                        (window.ngt.me.company?.company_size_range ?? "").replaceAll(
+                            ",",
+                            "",
+                        ),
+                    );
+    
+                const tags =
+                    window.ngt.me?.body?.me.tags?.map((tag) =>
+                        tag.toLowerCase().replaceAll("site.", ""),
+                    ) ?? [];
+    
+                [
+                    ["is_datacenter", ["is-datacenter"]],
+                    ["is_suspected_bot", ["suspected-bad-bot", "bad-bot"]],
+                    ["is_ta_user", ["ta-user-ip"]],
+                    ["is_crawler", ["user-agent-blocked"]],
+                    ["is_ad_blocked", ["ad-blocked-ip"]],
+                ]
+                    .filter(([tag, flags]) =>
+                        flags.some((flag) => tags.includes(flag)),
+                    )
+                    .reduce((acc, [tag, flags]) => [...acc, tag], [])
+                    .forEach((tag) =>
+                        window.googletag.pubads().setTargeting(tag, "true"),
+                    );
+            })
+        })
+    })();
+    (function(){const url = "https://cmp.inmobi.com/choice/vPn77x7pBG57Y/www.theneuron.ai/choice.js?tag_version=V3";
+const iabVendorsUrl = "https://cmp.inmobi.com/GVL-v3/vendor-list.json";
+const googleAtpUrl = "https://cmp.inmobi.com/tcfv2/google-atp-list.json";
+
+(function() {
+  var uspTries = 0;
+  var uspTriesLimit = 3;
+  
+  function makeStub() {
+    var TCF_LOCATOR_NAME = '__tcfapiLocator';
+    var queue = [];
+    var win = window;
+    var cmpFrame;
+
+    function addFrame() {
+      var doc = win.document;
+      var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+      if (!otherCMP) {
+        if (doc.body) {
+          var iframe = doc.createElement('iframe');
+
+          iframe.style.cssText = 'display:none';
+          iframe.name = TCF_LOCATOR_NAME;
+          doc.body.appendChild(iframe);
+        } else {
+          setTimeout(addFrame, 5);
+        }
+      }
+      return !otherCMP;
+    }
+
+    function tcfAPIHandler() {
+      var gdprApplies;
+      var args = arguments;
+
+      if (!args.length) {
+        return queue;
+      } else if (args[0] === 'setGdprApplies') {
+        if (
+          args.length > 3 &&
+          args[2] === 2 &&
+          typeof args[3] === 'boolean'
+        ) {
+          gdprApplies = args[3];
+          if (typeof args[2] === 'function') {
+            args[2]('set', true);
+          }
+        }
+      } else if (args[0] === 'ping') {
+        var retr = {
+          gdprApplies: gdprApplies,
+          cmpLoaded: false,
+          cmpStatus: 'stub'
+        };
+
+        if (typeof args[2] === 'function') {
+          args[2](retr);
+        }
+      } else {
+        if(args[0] === 'init' && typeof args[3] === 'object') {
+          args[3] = Object.assign(args[3], { tag_version: 'V3' });
+        }
+        queue.push(args);
+      }
+    }
+
+    function postMessageEventHandler(event) {
+      var msgIsString = typeof event.data === 'string';
+      var json = {};
+
+      try {
+        if (msgIsString) {
+          json = JSON.parse(event.data);
+        } else {
+          json = event.data;
+        }
+      } catch (ignore) {}
+
+      var payload = json.__tcfapiCall;
+
+      if (payload) {
+        window.__tcfapi(
+          payload.command,
+          payload.version,
+          function(retValue, success) {
+            var returnMsg = {
+              __tcfapiReturn: {
+                returnValue: retValue,
+                success: success,
+                callId: payload.callId
+              }
+            };
+            if (msgIsString) {
+              returnMsg = JSON.stringify(returnMsg);
+            }
+            if (event && event.source && event.source.postMessage) {
+              event.source.postMessage(returnMsg, '*');
+            }
+          },
+          payload.parameter
+        );
+      }
+    }
+
+    while (win) {
+      try {
+        if (win.frames[TCF_LOCATOR_NAME]) {
+          cmpFrame = win;
+          break;
+        }
+      } catch (ignore) {}
+
+      if (win === window.top) {
+        break;
+      }
+      win = win.parent;
+    }
+    if (!cmpFrame) {
+      addFrame();
+      win.__tcfapi = tcfAPIHandler;
+      win.addEventListener('message', postMessageEventHandler, false);
+    }
+  };
+
+  makeStub();
+
+  function makeGppStub() {
+    const CMP_ID = 10;
+    const SUPPORTED_APIS = [
+      '2:tcfeuv2',
+      '6:uspv1',
+      '7:usnatv1',
+      '8:usca',
+      '9:usvav1',
+      '10:uscov1',
+      '11:usutv1',
+      '12:usctv1'
+    ];
+
+    window.__gpp_addFrame = function (n) {
+      if (!window.frames[n]) {
+        if (document.body) {
+          var i = document.createElement("iframe");
+          i.style.cssText = "display:none";
+          i.name = n;
+          document.body.appendChild(i);
+        } else {
+          window.setTimeout(window.__gpp_addFrame, 10, n);
+        }
+      }
+    };
+    window.__gpp_stub = function () {
+      var b = arguments;
+      __gpp.queue = __gpp.queue || [];
+      __gpp.events = __gpp.events || [];
+
+      if (!b.length || (b.length == 1 && b[0] == "queue")) {
+        return __gpp.queue;
+      }
+
+      if (b.length == 1 && b[0] == "events") {
+        return __gpp.events;
+      }
+
+      var cmd = b[0];
+      var clb = b.length > 1 ? b[1] : null;
+      var par = b.length > 2 ? b[2] : null;
+      if (cmd === "ping") {
+        clb(
+          {
+            gppVersion: "1.1", // must be “Version.Subversion”, current: “1.1”
+            cmpStatus: "stub", // possible values: stub, loading, loaded, error
+            cmpDisplayStatus: "hidden", // possible values: hidden, visible, disabled
+            signalStatus: "not ready", // possible values: not ready, ready
+            supportedAPIs: SUPPORTED_APIS, // list of supported APIs
+            cmpId: CMP_ID, // IAB assigned CMP ID, may be 0 during stub/loading
+            sectionList: [],
+            applicableSections: [-1],
+            gppString: "",
+            parsedSections: {},
+          },
+          true
+        );
+      } else if (cmd === "addEventListener") {
+        if (!("lastId" in __gpp)) {
+          __gpp.lastId = 0;
+        }
+        __gpp.lastId++;
+        var lnr = __gpp.lastId;
+        __gpp.events.push({
+          id: lnr,
+          callback: clb,
+          parameter: par,
+        });
+        clb(
+          {
+            eventName: "listenerRegistered",
+            listenerId: lnr, // Registered ID of the listener
+            data: true, // positive signal
+            pingData: {
+              gppVersion: "1.1", // must be “Version.Subversion”, current: “1.1”
+              cmpStatus: "stub", // possible values: stub, loading, loaded, error
+              cmpDisplayStatus: "hidden", // possible values: hidden, visible, disabled
+              signalStatus: "not ready", // possible values: not ready, ready
+              supportedAPIs: SUPPORTED_APIS, // list of supported APIs
+              cmpId: CMP_ID, // list of supported APIs
+              sectionList: [],
+              applicableSections: [-1],
+              gppString: "",
+              parsedSections: {},
+            },
+          },
+          true
+        );
+      } else if (cmd === "removeEventListener") {
+        var success = false;
+        for (var i = 0; i   1) {
+              google_vendor_ids_arr = addtlConsentParts[1].split(".");
+            }
+            google_vendor_ids_arr &&
+              google_vendor_ids_arr.forEach(function (google_id) {
+                google_vendor_names_arr.push(
+                  google_vendors_arr[google_id],
+                );
+              });
+          }
+
+          // Non IAB Vendors
+          window.__tcfapi(
+            "getNonIABVendorConsents",
+            2,
+            function (nonIabConsent, nonIabSuccess) {
+              if (nonIabSuccess) {
+                if (nonIabConsent.gdprApplies) {
+                  // Create name & id arrays of non iab vendors with consent.
+                  nonIabConsent.nonIabVendorConsents &&
+                    Object.keys(
+                      nonIabConsent.nonIabVendorConsents,
+                    ).forEach(function (vendorId) {
+                      if (
+                        nonIabConsent
+                          .nonIabVendorConsents[
+                          vendorId
+                        ] ||
+                        !nonIabConsent.gdprApplies
+                      ) {
+                        non_iab_vendor_names_arr[
+                          vendorId
+                        ] =
+                          non_iab_vendors_arr[
+                            vendorId
+                          ];
+                        non_iab_vendor_ids_arr[
+                          vendorId
+                        ] = vendorId;
+                      }
+                    });
+                } else {
+                  // GDPR does not apply, add all non iab vendor names/ids
+                  non_iab_vendor_names_arr =
+                    non_iab_vendors_arr;
+                  non_iab_vendors_arr.forEach(
+                    function (vendorName, vendorId) {
+                      non_iab_vendor_ids_arr[vendorId] =
+                        vendorId;
+                    },
+                  );
+                }
+              }
+
+              // Join our array values, skipping empty items and joing them with a delimiter
+              iab_vendor_names = iab_vendor_names_arr
+                .filter(Boolean)
+                .join("|");
+              iab_vendor_ids = iab_vendor_ids_arr
+                .filter(Boolean)
+                .join(",");
+              google_vendor_names = google_vendor_names_arr
+                .filter(Boolean)
+                .join("|");
+              google_vendor_ids = google_vendor_ids_arr
+                .filter(Boolean)
+                .join("|");
+              non_iab_vendor_names = non_iab_vendor_names_arr
+                .filter(Boolean)
+                .join("|");
+              non_iab_vendor_ids = non_iab_vendor_ids_arr
+                .filter(Boolean)
+                .join(",");
+
+              // Push __cmpIABConsents signals to the data layer.
+              window.dataLayer.push({
+                event: "__cmpConsents",
+                __cmpConsents: {
+                  iabVendorConsentIds: iab_vendor_ids,
+                  iabVendorsWithConsent: iab_vendor_names,
+                  nonIABVendorConsentIds: non_iab_vendor_ids,
+                  nonIABVendorsWithConsent:
+                    non_iab_vendor_names,
+                  googleVendorConsentIds: google_vendor_ids,
+                  googleVendorsWithConsent:
+                    google_vendor_names,
+                  gdpr: tcData ? tcData.gdprApplies : false,
+                  publisherConsents: publisher_consents,
+                  publisherLegitimateInterests:
+                    publisher_legitimate_interests,
+                  purposeConsents: purpose_consents,
+                  purposeLegitimateInterests:
+                    purpose_legitimate_interests,
+                },
+              });
+            },
+          );
+        }
+      }, 100);
+    }
+
+    /**
+     * CCPA footer message.
+     */
+    function ccpa_footerMsg(tcData) {
+      window.__uspapi("uspPing", 1, function (obj, status) {
+        var footer_msg = document.getElementById("choice-footer-msg"); // get the footer container for our CCPA message
+
+        if (status && obj.mode.includes("USP") && footer_msg !== null) {
+          footer_msg.innerHTML =
+            footer_msg.innerHTML +
+            "We use cookies" +
+            " and other data collection technologies" +
+            " to provide the best experience for our customers. You may request" +
+            " that your data not be shared with third parties here: " +
+            ' Do Not Sell My Data " +
+            ".";
+
+          // Add the 'ccpa-msg-added' class to the container for post message add styling.
+          footer_msg.classList.add("ccpa-msg-added");
+
+          window.__uspapi("setUspDftData", 1, function (obj, status) {
+            if (!status) {
+              console.log("Error: USP string not updated!");
+            }
+          });
+        }
+      });
+    }
+
+    // Only get the IAB and Non-IAB vendor lists if the the Data layer push functionality
+    // is enabled, otherwise we do not need the vendor lists.
+    window.__tcfapi(
+      "addEventListener",
+      2,
+      function (getConfig, listenerSuccess) {
+        vendors_getIABVendorList(); // Get global IAB vendor list
+        vendors_getGoogleVendorList(); // Get google vendor list
+        vendors_getNonIABVendorList(); // Get UTID specific Non-IAB vendors
+      },
+    );
+
+    // CCPA
+    ccpa_footerMsg();
+
+    // Add our main listener.
+    window.__tcfapi(
+      "addEventListener",
+      2,
+      function (tcData, listenerSuccess) {
+        if (listenerSuccess) {
+          /**
+           * User Visits:
+           * 1st visit/no cookie = 'cmpuishown' called and then 'useractioncomplete' after user make their selection
+           * Repeat visit/has cookie = only 'tcloaded' is called as the UI does not show unless the user clicks to show
+           */
+
+          switch (tcData ? tcData.eventStatus : null) {
+            case "cmpuishown":
+              // Data Layer
+              dlSend_tcLoaded(tcData);
+              break;
+
+            case "tcloaded":
+              // Data Layer
+              if (tcData ? tcData.gdprApplies : false) {
+                dlSend_tcLoaded(tcData);
+                dlSend_consentData(tcData);
+              }
+              break;
+
+            case "useractioncomplete":
+              // Data Layer
+              dlSend_consentData(tcData);
+              break;
+          }
+        }
+      },
+    );
+  })();
+})();
+})();                   :root {
+    --theme-primary: #353a1e;
+    --theme-secondary: #596229;
+    --theme-tertiary: #f57227;
+    --theme-quaternary: ;
+    --theme-primary-foreground: #ffffff;
+    --theme-secondary-foreground: #ffffff;
+    --theme-tertiary-foreground: #ffffff;
+    --theme-quaternary-foreground: ;
+    --theme-foreground: black;
+}   window.__authProviders={"facebook":false,"linkedin":false}   {"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.theneuron.ai/#website","url":"https://www.theneuron.ai/","name":"The Neuron","description":"We help you use AI to supercharge your work. Get the latest tips, tutorials, AI tools and research to put you at the forefront of the AI revolution.","publisher":{"@id":"https://www.theneuron.ai/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.theneuron.ai/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"en-US"},{"@type":"Organization","@id":"https://www.theneuron.ai/#organization","name":"The Neuron","url":"https://www.theneuron.ai/","logo":{"@type":"ImageObject","inLanguage":"en-US","@id":"https://www.theneuron.ai/#/schema/logo/image/","url":"https://cdn.theneuron.ai/668d06e2badcb26b2789a6aa_logo.avif","contentUrl":"https://cdn.theneuron.ai/668d06e2badcb26b2789a6aa_logo.avif","width":80,"height":80,"caption":"The Neuron"},"image":{"@id":"https://www.theneuron.ai/#/schema/logo/image/"},"sameAs":["https://www.linkedin.com/company/theneurondaily/","https://www.instagram.com/theneurondaily/","https://x.com/theneurondaily","https://www.facebook.com/theneurondaily/","https://www.youtube.com/@theneuronai"],"parentOrganization":{"@type":"Organization","name":"TechnologyAdvice","url":"https://technologyadvice.com/"}}]}  (function(){const targeting = {"env":"prod","stage":"prod","url":"www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/","hostname":"www.theneuron.ai","edge_country":"US","cid":"everything-ai-samsara-announced-at-beyond-2026","path":"explainer-articles,everything-ai-samsara-announced-at-beyond-2026","kw":"samsara-beyond-2026,Samsara","category":"explainer-articles,blog","topic":"explainer-articles,blog","tax":"","ptype":"article","news":"no","author":"grant-harvey","post_id":"776008"};
+
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push(
+        Object.fromEntries(
+            Object.entries(targeting).map(([k, v]) => [`ad_${k}`, v]),
+        ),
+    )
+})();  
+    ;(() => {
+        const campaign = new URLSearchParams(window.location.search).get(
+            "adTargeting_campaign",
+        )
+        if (!campaign) return
+
+        window.googletag = window.googletag || { cmd: [] }
+        window.googletag.cmd.push(() => {
+            window.googletag.setConfig({ targeting: { campaign } })
+        })
+    })()
+  (function(){const sampleRate = 1;
+const debug = false;
+const targeting = {"env":"prod","stage":"prod","url":"www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/","hostname":"www.theneuron.ai","edge_country":"US","cid":"everything-ai-samsara-announced-at-beyond-2026","path":"explainer-articles,everything-ai-samsara-announced-at-beyond-2026","kw":"samsara-beyond-2026,Samsara","category":"explainer-articles,blog","topic":"explainer-articles,blog","tax":"","ptype":"article","news":"no","author":"grant-harvey","post_id":"776008"};
+
+        (() => {
+            // Same-origin, site-aware base (mirrors getSiteAwarePath): dev/preview
+            // serve sites under /sites/{domain}/…; prod serves each on its own host.
+            let base = "/api/ado";
+            if (location.pathname.startsWith("/sites/")) {
+                const p = location.pathname.split("/");
+                if (p.length >= 3) base = "/sites/" + p[2] + base;
+            }
+
+            const uuid = () =>
+                (crypto.randomUUID && crypto.randomUUID()) ||
+                String(Date.now()) + Math.random().toString(16).slice(2);
+
+            const pageviewId = uuid();
+            let sessionId;
+            try {
+                sessionId = sessionStorage.getItem("ado_sid");
+                if (!sessionId) {
+                    sessionId = uuid();
+                    sessionStorage.setItem("ado_sid", sessionId);
+                }
+            } catch (_) {
+                sessionId = "";
+            }
+
+            // --- Unified transport: buffer typed events, flush one batch. ---
+            // Trailing debounce: each event (re)arms a short idle timer, so a
+            // burst of N events coalesces into ONE sendBeacon fired shortly after
+            // the burst ends (e.g. 10 events over 5s → 1 request). A max-age cap
+            // guarantees a continuous stream still flushes at least every
+            // FLUSH_MAX_MS, a size cap guards the sendBeacon payload limit, and
+            // the buffer is always flushed on tab-hide/unload so nothing is lost.
+            const FLUSH_IDLE_MS = 1000; // flush this long after the last event
+            const FLUSH_MAX_MS = 5000; // never hold a buffered event longer
+            const MAX_BATCH = 20;
+            let buffer = [];
+            let timer = null;
+            let firstAt = 0;
+            const flush = () => {
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+                firstAt = 0;
+                if (!buffer.length) return;
+                const events = buffer;
+                buffer = [];
+                try {
+                    const body = new Blob([JSON.stringify({ events })], {
+                        type: "text/plain",
+                    });
+                    navigator.sendBeacon(base + "/collect/", body);
+                    if (debug) console.log("[ado] flush", events);
+                } catch (e) {
+                    if (debug) console.warn("[ado] flush failed", e);
+                }
+            };
+            const push = (event) => {
+                buffer.push(event);
+                if (buffer.length >= MAX_BATCH) {
+                    flush();
+                    return;
+                }
+                const now = Date.now();
+                if (!firstAt) firstAt = now;
+                // Idle debounce, clamped so total hold never exceeds FLUSH_MAX_MS.
+                const delay = Math.max(
+                    0,
+                    Math.min(FLUSH_IDLE_MS, FLUSH_MAX_MS - (now - firstAt)),
+                );
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(flush, delay);
+            };
+
+            window._ado = {
+                pageview_id: pageviewId,
+                session_id: sessionId,
+                push,
+                flush,
+            };
+
+            addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") flush();
+            });
+            addEventListener("pagehide", flush);
+
+            const canonical =
+                document.querySelector('link[rel="canonical"]')?.href ||
+                location.href;
+
+            // --- Framing detection -------------------------------------------
+            // Who, if anyone, has this page in an iframe — used to spot third
+            // parties embedding our content.
+            //
+            // `location.ancestorOrigins` is the browser's own list of ancestor
+            // frame origins (parent first, outermost last; Chromium + Safari).
+            // Unlike `document.referrer` it can't be blanked by the framer's
+            // Referrer-Policy and it does NOT drift to our own previous URL when
+            // the framed page navigates inside the frame. The referrer is only
+            // used to add path detail on top of an origin the ancestor list has
+            // already confirmed, or as the sole signal on Firefox, which has no
+            // ancestorOrigins. Sandboxed/opaque ancestors report "null".
+            let iframeReferrer = "";
+            try {
+                if (window.top !== window.self) {
+                    const ancestors = location.ancestorOrigins;
+                    const outermost =
+                        ancestors && ancestors.length
+                            ? ancestors[ancestors.length - 1]
+                            : "";
+                    const referrerOrigin = document.referrer
+                        ? new URL(document.referrer).origin
+                        : "";
+                    if (outermost && outermost !== "null") {
+                        iframeReferrer =
+                            referrerOrigin === outermost
+                                ? document.referrer
+                                : outermost;
+                    } else if (
+                        referrerOrigin &&
+                        referrerOrigin !== location.origin
+                    ) {
+                        // A same-origin referrer inside a frame is our own
+                        // previous page, not an embedder — never report it.
+                        iframeReferrer = document.referrer;
+                    }
+                    // Our own frames (self-embeds, previews) aren't embedding.
+                    if (iframeReferrer.indexOf(location.origin) === 0) {
+                        iframeReferrer = "";
+                    }
+                }
+            } catch (_) {
+                iframeReferrer = "";
+            }
+
+            // Same edge country the astro-proxy injected into the GPT
+            // `edge_country` targeting → keeps the event stream aligned with GAM.
+            let adoCountry = String(targeting.edge_country || "");
+            if (adoCountry.indexOf("{{") === 0) adoCountry = "";
+
+            const ctx = {
+                site: (window._vars && window._vars.domain) || location.hostname,
+                hostname: location.hostname,
+                path: location.pathname,
+                canonical_url: canonical,
+                post_id: String(targeting.post_id || ""),
+                category: String(targeting.category || ""),
+                country: adoCountry,
+            };
+
+            // Pageview (always sent).
+            push({
+                type: "pageview",
+                client_event_ts: Date.now(),
+                pageview_id: pageviewId,
+                session_id: sessionId,
+                page_type: String(targeting.ptype || ""),
+                referrer: document.referrer || "",
+                iframe_referrer: iframeReferrer,
+                ...ctx,
+            });
+
+            // Per-slot refresh counter.
+            const refreshCount = Object.create(null);
+
+            const adEvent = (eventType, event) => {
+                if (sampleRate  = sampleRate) return;
+                const slot = event.slot;
+                const elId = slot.getSlotElementId();
+                const size = Array.isArray(event.size)
+                    ? event.size.join("x")
+                    : event.size != null
+                      ? String(event.size)
+                      : "";
+                const resp = slot.getResponseInformation
+                    ? slot.getResponseInformation()
+                    : null;
+                const idx =
+                    eventType === "slot_render_ended"
+                        ? (refreshCount[elId] = (refreshCount[elId] || 0) + 1) - 1
+                        : refreshCount[elId]
+                          ? refreshCount[elId] - 1
+                          : 0;
+
+                push({
+                    type: "ad_event",
+                    event_type: eventType,
+                    client_event_ts: Date.now(),
+                    pageview_id: pageviewId,
+                    session_id: sessionId,
+                    ad_unit_path: slot.getAdUnitPath(),
+                    slot_element_id: elId,
+                    slot_size: size,
+                    is_empty: !!event.isEmpty,
+                    refresh_index: idx,
+                    line_item_id: resp ? String(resp.lineItemId ?? "") : "",
+                    creative_id: resp ? String(resp.creativeId ?? "") : "",
+                    advertiser_id: resp ? String(resp.advertiserId ?? "") : "",
+                    campaign_id: resp ? String(resp.campaignId ?? "") : "",
+                    ...ctx,
+                });
+            };
+
+            window.googletag = window.googletag || { cmd: [] };
+            window.googletag.cmd.push(() => {
+                window.googletag
+                    .pubads()
+                    .addEventListener("slotRenderEnded", (e) =>
+                        adEvent("slot_render_ended", e),
+                    );
+                window.googletag
+                    .pubads()
+                    .addEventListener("impressionViewable", (e) =>
+                        adEvent("impression_viewable", e),
+                    );
+            });
+        })();
+    })();   (function(){const heartbeatMs = 5000;
+const idleMs = 30000;
+const snapshotMs = 20000;
+const targeting = {"env":"prod","stage":"prod","url":"www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/","hostname":"www.theneuron.ai","edge_country":"US","cid":"everything-ai-samsara-announced-at-beyond-2026","path":"explainer-articles,everything-ai-samsara-announced-at-beyond-2026","kw":"samsara-beyond-2026,Samsara","category":"explainer-articles,blog","topic":"explainer-articles,blog","tax":"","ptype":"article","news":"no","author":"grant-harvey","post_id":"776008"};
+const debug = false;
+
+        (() => {
+            // Don't instrument headless/automation traffic.
+            if (navigator.webdriver) return;
+            // Requires the beacon's transport (same observability gate).
+            const ado = window._ado;
+            if (!ado || typeof ado.push !== "function") return;
+
+            const pageviewId = ado.pageview_id;
+            const sessionId = ado.session_id;
+            const uuid = () =>
+                (crypto.randomUUID && crypto.randomUUID()) ||
+                String(Date.now()) + Math.random().toString(16).slice(2);
+            const str = (v) => (v == null ? "" : String(v));
+
+            // --- Page context (stable for the pageview; per-segment path/post_id
+            // are tracked separately since they swap on infinite-scroll). ---
+            const canonical =
+                document.querySelector('link[rel="canonical"]')?.href ||
+                location.href;
+            let country = str(targeting.edge_country);
+            if (country.indexOf("{{") === 0) country = "";
+            const ctx = {
+                site: (window._vars && window._vars.domain) || location.hostname,
+                hostname: location.hostname,
+                canonical_url: canonical,
+                category: str(targeting.category),
+                country,
+            };
+            const referrer = document.referrer || "";
+
+            // --- Loyalty: durable, consent-gated visitor id. Respect Global
+            // Privacy Control; fall back to session-only when storage is blocked.
+            // (Wire to the site CMP here for finer-grained consent.) ---
+            let visitorId = "";
+            let isNewVisitor = 0;
+            try {
+                if (navigator.globalPrivacyControl !== true) {
+                    visitorId = localStorage.getItem("ado_vid") || "";
+                    if (!visitorId) {
+                        visitorId = uuid();
+                        localStorage.setItem("ado_vid", visitorId);
+                        isNewVisitor = 1;
+                    }
+                }
+            } catch (_) {
+                visitorId = "";
+            }
+
+            // --- Per-post segments. segment_id = `${pageview_id}:${post_id}`, so
+            // scrolling back into an earlier article RESUMES its segment. ---
+            const segments = new Map();
+            let activeSeg = null;
+            let activeSince = null; // ms timestamp while accruing, else null
+            let lastActivity = Date.now();
+            let sinceSnapshot = 0;
+
+            const accruing = () =>
+                document.visibilityState === "visible" &&
+                Date.now() - lastActivity   el.getBoundingClientRect().top + y;
+                const idx = headers.indexOf(header);
+                const breaks = document.querySelectorAll(
+                    "[data-type='infiniscroll-break']",
+                );
+                const bottomEl = breaks[idx] || headers[idx + 1];
+                const top = toY(header);
+                const bottom = bottomEl
+                    ? toY(bottomEl)
+                    : document.documentElement.scrollHeight;
+                let pct;
+                if (bottom - top   activeSeg.maxScrollPct) activeSeg.maxScrollPct = pct;
+                // End reached when the article's bottom boundary enters the viewport.
+                if (bottom   {
+                const d = (e && e.detail) || {};
+                switchTo(str(d.post_id), d.category, d.path);
+            });
+
+            // Activity + scroll.
+            const bump = () => {
+                const wasAccruing = activeSince !== null;
+                lastActivity = Date.now();
+                if (!wasAccruing && document.visibilityState === "visible") {
+                    setAccruing(true);
+                }
+            };
+            let scrollThrottled = false;
+            const onScroll = () => {
+                bump();
+                if (scrollThrottled) return;
+                scrollThrottled = true;
+                setTimeout(() => {
+                    scrollThrottled = false;
+                    measureActive();
+                }, 200);
+            };
+            addEventListener("scroll", onScroll, { passive: true });
+            ["pointermove", "keydown", "touchstart", "click"].forEach((ev) =>
+                addEventListener(ev, bump, { passive: true }),
+            );
+
+            // Visibility + bfcache lifecycle. Beacon also flushes on hide; we push
+            // the final engagement snapshot then force a flush so it isn't stranded.
+            function finalizeAndFlush() {
+                setAccruing(false);
+                if (activeSeg) snapshot(activeSeg);
+                if (typeof ado.flush === "function") ado.flush();
+            }
+            addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") {
+                    finalizeAndFlush();
+                } else {
+                    lastActivity = Date.now();
+                    setAccruing(accruing());
+                }
+            });
+            addEventListener("pagehide", finalizeAndFlush);
+            addEventListener("pageshow", (e) => {
+                if (e.persisted) {
+                    lastActivity = Date.now();
+                    setAccruing(accruing());
+                }
+            });
+
+            // Heartbeat: re-evaluate idle, remeasure, and drop an insurance
+            // snapshot so long single-article reads / crashes aren't lost.
+            setInterval(() => {
+                setAccruing(accruing());
+                measureActive();
+                sinceSnapshot += heartbeatMs;
+                if (sinceSnapshot >= snapshotMs && activeSeg) {
+                    sinceSnapshot = 0;
+                    flushAccrual();
+                    snapshot(activeSeg);
+                }
+            }, heartbeatMs);
+
+            // Seed the landing article's segment (post pages only).
+            const landingPid = str(targeting.post_id);
+            if (landingPid) {
+                switchTo(landingPid, ctx.category, location.pathname);
+            }
+        })();
+    })();   Everything (AI) Samsara Announced at Samsara Beyond 2026 | The Neuron                              {"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"Everything (AI) Samsara Announced at Samsara Beyond 2026","datePublished":"2026-06-24T20:49:25.750Z","dateModified":"2026-06-25T19:52:00.000Z","author":{"@type":"Person","name":"Grant Harvey","url":"https://www.theneuron.ai/author/grant-harvey/"},"publisher":{"@type":"Organization","name":"The Neuron","brand":{"@type":"Brand","name":"The Neuron"},"logo":"https://cdn.theneuron.ai/668d06e2badcb26b2789a6aa_logo.avif"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/"},"image":{"@type":"ImageObject","url":"https://cdn.theneuron.ai/samsara beyond 2026.jpg","contentUrl":"https://cdn.theneuron.ai/samsara beyond 2026.jpg","width":"4064","height":"2286"},"description":"Samsara Beyond 2026 brought Agent Studio, AI cameras, Tracking Labels, Shipment Center, maintenance AI, and a new community for operators.","wordCount":5049,"timeRequired":"PT21M","potentialAction":{"@type":"ReadAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/"}}}]}     {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.theneuron.ai/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://www.theneuron.ai/blog/"},{"@type":"ListItem","position":3,"name":"Explainer Articles","item":"https://www.theneuron.ai/explainer-articles/"}]}    
+ @media(max-width:767px){.cnx-pinned-wrapper{margin-top:10px}}@media(min-width:768px){.cnx-float.cnx-float-position-bottom{transform:translateY(-100px)!important}}.cnx-main-container.cnx-in-desktop{max-width:640px;max-height:360px}.instaread-player-slot[data-astro-cid-5riuvn2h]{height:160px;width:100%}@media only screen and (max-width:650px){.instaread-player-slot[data-astro-cid-5riuvn2h]{height:236px}}.article-contents[data-astro-cid-7jion4xf].gated{overflow:hidden;position:relative;.toc-container{display:none}}/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */.video-transcript-body p{margin-bottom:1em;line-height:1.6}.video-transcript-body p:last-child{margin-bottom:0}.video-transcript-note{opacity:.7;font-size:.8125rem;font-style:italic}.featured-video iframe{width:100%;height:100%}.sponsored>p,.sponsored>h2,.sponsored>h3,.sponsored>h4,.sponsored>h5,.sponsored>h6,.sponsored>ul,.sponsored>ol,.sponsored>dl,.sponsored>pre{padding-left:calc(var(--spacing,.25rem) * 10)}@media(min-width:64rem){.sponsored>p,.sponsored>h2,.sponsored>h3,.sponsored>h4,.sponsored>h5,.sponsored>h6,.sponsored>ul,.sponsored>ol,.sponsored>dl,.sponsored>pre{padding-left:calc(var(--spacing,.25rem) * 24)}}
+:root{--skybox-reserve: 18.75vw}@media(min-width:768px){:root{--skybox-reserve: 90px}}[data-ad-slot=skybox]{min-height:var(--skybox-reserve)}[data-ad-slot=skybox][data-loaded],[data-ad-slot=skybox][data-empty]{min-height:0}[data-ad-slot=skybox]:not([data-empty])~#main-navigation{top:var(--skybox-reserve)}
+ 
+ /*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-border-style:solid;--tw-shadow:0 0 #0000;--tw-shadow-color:initial;--tw-shadow-alpha:100%;--tw-inset-shadow:0 0 #0000;--tw-inset-shadow-color:initial;--tw-inset-shadow-alpha:100%;--tw-ring-color:initial;--tw-ring-shadow:0 0 #0000;--tw-inset-ring-color:initial;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-inset:initial;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-offset-shadow:0 0 #0000;--tw-font-weight:initial;--tw-content:"";--tw-tracking:initial}}}@layer components{.icp-widget .icp-product-card{gap:calc(var(--spacing,.25rem) * 4);border-radius:var(--radius-lg,.5rem);border-style:var(--tw-border-style);border-width:1px;border-color:var(--color-zinc-200,oklch(92% .004 286.32));padding:calc(var(--spacing,.25rem) * 4);--tw-shadow:0 1px 3px 0 var(--tw-shadow-color,#0000001a), 0 1px 2px -1px var(--tw-shadow-color,#0000001a);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow);background-color:var(--color-white,#fff);grid-template-columns:repeat(1,minmax(0,1fr));display:grid;container-type:inline-size}.icp-widget .icp-product-rank,.icp-widget .icp-product-name{--tw-font-weight:var(--font-weight-bold,700);font-weight:var(--font-weight-bold,700);color:var(--color-secondary)}.icp-widget .icp-product-rank:after{--tw-content:".";content:var(--tw-content)}.icp-widget .icp-link:hover .icp-product-rank,.icp-widget .icp-link:hover .icp-product-name{color:var(--color-primary)}.icp-widget .icp-product-logo{margin-inline:auto;margin-block:calc(var(--spacing,.25rem) * 2);border-radius:.25rem;justify-content:center;align-items:center;width:100%}.icp-widget .icp-product-logo.loaded{background-color:#0000;background-image:none;height:100px;display:flex}.icp-widget .icp-product-logo img{object-fit:contain;width:auto;height:100%}.icp-widget .icp-product-cta{justify-content:center;align-items:center;display:flex}.icp-widget .icp-product-cta .button{margin-block:calc(var(--spacing,.25rem) * 4);cursor:pointer;border-style:var(--tw-border-style);width:fit-content;height:min-content;min-height:30px;padding-inline:calc(var(--spacing,.25rem) * 4);padding-block:calc(var(--spacing,.25rem) * 2);font-family:var(--font-mono,"IBM Plex Mono", monospace);--tw-font-weight:var(--font-weight-semibold,600);font-size:12px;line-height:16px;font-weight:var(--font-weight-semibold,600);--tw-tracking:1.2px;letter-spacing:1.2px;text-transform:uppercase;transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,opacity,box-shadow,transform,translate,scale,rotate,filter,-webkit-backdrop-filter,backdrop-filter,display,content-visibility,overlay,pointer-events;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function,cubic-bezier(.4, 0, .2, 1)));transition-duration:var(--tw-duration,var(--default-transition-duration,.15s));border-width:1px;border-color:var(--color-primary);background-color:var(--color-primary);color:var(--color-primary-foreground);border-radius:3.40282e38px;justify-content:center;align-items:center;gap:10px}.icp-widget .icp-product-cta .button:hover{border-color:var(--color-tertiary);background-color:var(--color-tertiary)}.icp-widget .icp-product-cta .button.outline{border-style:var(--tw-border-style);border-width:1px;border-color:var(--color-primary);color:var(--color-primary);background-color:#0000}.icp-widget .icp-product-cta .button.outline:hover{border-color:var(--color-primary);background-color:var(--color-primary);color:var(--color-white,#fff)}.icp-widget .icp-product-attr{row-gap:calc(var(--spacing,.25rem) * 0);min-height:auto;font-size:var(--text-xs,.75em);line-height:var(--tw-leading,var(--text-xs--line-height,calc(1 / .75)));margin-top:auto}@media(min-width:48rem){.icp-widget .icp-product-attr{min-height:175px}}@container (min-width:600px){.icp-widget .icp-product-attr{min-height:calc(var(--spacing,.25rem) * 0)}}.icp-widget .icp-product-attr>div{column-gap:calc(var(--spacing,.25rem) * 2);border-bottom-style:var(--tw-border-style);border-bottom-width:1px;border-color:var(--color-gray-200,oklch(92.8% .006 264.531));padding-block:calc(var(--spacing,.25rem) * 1)}.icp-widget .icp-product-attr>div:last-child{border-bottom-style:var(--tw-border-style);border-bottom-width:0}.icp-widget .icp-product-attr>div dt{width:calc(var(--spacing,.25rem) * 26);--tw-font-weight:var(--font-weight-light,300);font-weight:var(--font-weight-light,300)}.icp-widget .icp-product-attr>div dd{color:var(--color-gray-700,oklch(37.3% .034 259.733))}.icp-widget .icp-widget-disclaimer .tooltip-label{margin-left:calc(var(--spacing,.25rem) * 2);font-size:var(--text-xs,.75em);line-height:var(--tw-leading,var(--text-xs--line-height,calc(1 / .75)));color:var(--color-gray-500,oklch(55.1% .027 264.364));flex-shrink:0}}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:" ";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:" ";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:" ";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-content{syntax:"*";inherits:false;initial-value:""}@property --tw-tracking{syntax:"*";inherits:false}
+ 
+ .checkbox input{margin-right:.75rem;cursor:pointer;-webkit-appearance:none;appearance:none;background-color:#fff;margin:2px;font:inherit;color:currentColor;width:1.5rem;height:1.5rem;min-width:1.5rem;min-height:1.5rem;border-radius:.4em;transform:translateY(-.075em);display:grid;place-content:center}.checkbox input:before{content:"";width:.65em;height:.65em;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%);transform:scale(0);transform-origin:bottom left;transition:.12s transform ease-in-out;box-shadow:inset 1em 1em var(--color-primary);background-color:CanvasText}.checkbox input:checked:before{transform:scale(1)}.checkbox input:focus{outline:max(2px,.15em) solid var(--color-primary);outline-offset:max(2px,.15em)}.expand-enter-active,.expand-leave-active{transition:all .3s ease-in-out;max-height:200px}.expand-enter-from,.expand-leave-to{max-height:0;padding-top:0;padding-bottom:0;opacity:0}.expand-enter-to,.expand-leave-from{max-height:200px;opacity:1}
+ 
+ @layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-font-weight:initial;--tw-border-style:solid;--tw-shadow:0 0 #0000;--tw-shadow-color:initial;--tw-shadow-alpha:100%;--tw-inset-shadow:0 0 #0000;--tw-inset-shadow-color:initial;--tw-inset-shadow-alpha:100%;--tw-ring-color:initial;--tw-ring-shadow:0 0 #0000;--tw-inset-ring-color:initial;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-inset:initial;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-offset-shadow:0 0 #0000}}}.icp-product-rank[data-astro-cid-574xbxas],.icp-product-name[data-astro-cid-574xbxas]{--tw-font-weight:var(--font-weight-normal,400);font-weight:var(--font-weight-normal,400);color:var(--color-primary)}.icp-product-rank[data-astro-cid-574xbxas]:after{display:none}.icp-link[data-astro-cid-574xbxas]:hover .icp-product-name{color:var(--color-tertiary)}.icp-product-card[data-astro-cid-574xbxas]{border-style:var(--tw-border-style);border-width:0;border-bottom-style:var(--tw-border-style);border-bottom-width:1px;border-color:var(--color-zinc-200,oklch(92% .004 286.32));padding-inline:calc(var(--spacing,.25rem) * 0);padding-block:calc(var(--spacing,.25rem) * 2);--tw-shadow:0 0 #0000;box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow);border-radius:0}.icp-product-card[data-astro-cid-574xbxas]:last-child{border-bottom-style:var(--tw-border-style);border-bottom-width:0}.icp-product-card[data-astro-cid-574xbxas] a[data-astro-cid-574xbxas]{align-items:center;gap:calc(var(--spacing,.25rem) * 2);display:flex}.icp-product-logo[data-astro-cid-574xbxas]{margin:calc(var(--spacing,.25rem) * 0);background-color:#0000;width:64px;height:64px}.icp-product-rank[data-astro-cid-574xbxas]{background-color:var(--color-primary);width:24px;height:24px;color:var(--color-primary-foreground);border-radius:3.40282e38px;justify-content:center;align-items:center;display:flex}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:" ";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:" ";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:" ";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-leading:initial;--tw-font-weight:initial;--tw-tracking:initial}}}.icp-widget-head[data-astro-cid-r2q5pr5m]{margin-bottom:calc(var(--spacing,.25rem) * 0);border-bottom:1px solid #0003;justify-content:space-between;align-items:center;position:relative}.icp-widget-headline[data-astro-cid-r2q5pr5m]{text-align:center;--tw-leading:var(--leading-normal,1.5);font-size:1rem;line-height:var(--leading-normal,1.5);--tw-font-weight:var(--font-weight-normal,400);font-weight:var(--font-weight-normal,400);--tw-tracking:1px;letter-spacing:1px;color:var(--color-primary-foreground);margin-inline:calc(var(--spacing,.25rem) * 4);margin-bottom:calc(var(--spacing,.25rem) * 0);border-top-left-radius:var(--radius-lg,.5rem);border-top-right-radius:var(--radius-lg,.5rem);background-color:var(--color-primary);width:100%;padding:calc(var(--spacing,.25rem) * 2);text-transform:capitalize}@property --tw-leading{syntax:"*";inherits:false}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-tracking{syntax:"*";inherits:false}
+ 
+ .slide-right-enter-active[data-v-1572bf39],.slide-right-leave-active[data-v-1572bf39]{transition:all .3s}.slide-right-enter-from[data-v-1572bf39],.slide-right-leave-to[data-v-1572bf39]{transform:translate(-100vw);opacity:0}.slide-left-enter-active[data-v-1572bf39],.slide-left-leave-active[data-v-1572bf39]{transition:all .3s}.slide-left-enter-from[data-v-1572bf39],.slide-left-leave-to[data-v-1572bf39]{transform:translate(100vw);opacity:0}.submenu-content [data-submenu][data-v-1572bf39]{display:none}.submenu-content [data-submenu].active[data-v-1572bf39]{display:block}#site-navigation:not([data-nav-computed]){visibility:hidden;animation:nav-fallback 0s 1.5s forwards}@keyframes nav-fallback{to{visibility:visible}}.slide-enter-active[data-v-53819b21],.slide-leave-active[data-v-53819b21]{transition:all .3s}.slide-enter-from[data-v-53819b21],.slide-leave-to[data-v-53819b21]{transform:translateY(20px);opacity:0}#main-navigation[data-astro-cid-sj5ssvhz]{transition:transform .3s ease-in-out,background-color .3s ease-in-out}[data-astro-cid-sj5ssvhz][data-rac-overlay] [data-astro-cid-sj5ssvhz]::-webkit-scrollbar{width:6px}[data-astro-cid-sj5ssvhz][data-rac-overlay] [data-astro-cid-sj5ssvhz]::-webkit-scrollbar-track{background:transparent}[data-astro-cid-sj5ssvhz][data-rac-overlay] [data-astro-cid-sj5ssvhz]::-webkit-scrollbar-thumb{background:#fff3;border-radius:3px}[data-astro-cid-sj5ssvhz][data-rac-overlay] [data-astro-cid-sj5ssvhz]::-webkit-scrollbar-thumb:hover{background:#fff6}[data-astro-cid-sj5ssvhz][data-rac-overlay]{scrollbar-color:rgba(255,255,255,.2) transparent;scrollbar-width:thin}
+#choice-footer-msg a{color:#fff!important}#choice-footer-msg a:hover{text-decoration:underline}.raconteur-net button,.raconteur-net button.rounded-none{border-radius:0}.raconteur-net button.rounded-sm{border-radius:var(--radius-sm, .125rem)}.raconteur-net button.rounded{border-radius:var(--radius, .25rem)}.raconteur-net button.rounded-md{border-radius:var(--radius-md, .375rem)}.raconteur-net button.rounded-lg{border-radius:var(--radius-lg, .5rem)}.raconteur-net button.rounded-xl{border-radius:var(--radius-xl, .75rem)}.raconteur-net button.rounded-2xl{border-radius:var(--radius-2xl, 1rem)}.raconteur-net button.rounded-3xl{border-radius:var(--radius-3xl, 1.5rem)}.raconteur-net button.rounded-full{border-radius:9999px}
+ 
+ /*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-outline-style:solid;--tw-content:"";--tw-border-style:solid;--tw-font-weight:initial;--tw-leading:initial}}}a[data-astro-cid-tdou77qi]:hover,a[data-astro-cid-tdou77qi]:focus{color:#2a6496;text-decoration-line:underline}a[data-astro-cid-tdou77qi]:active,a[data-astro-cid-tdou77qi]:hover{outline-style:var(--tw-outline-style);outline-width:0}#ftl-footer[data-astro-cid-tdou77qi]{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:Helvetica Neue,Helvetica,Arial,sans-serif!important}@media(min-width:768px){.container1[data-astro-cid-tdou77qi]{width:750px}}@media(min-width:992px){.container1[data-astro-cid-tdou77qi]{width:970px}}@media(min-width:1200px){.container1[data-astro-cid-tdou77qi]{width:1170px}}.container1[data-astro-cid-tdou77qi]:before{--tw-content:"";content:var(--tw-content);display:table}.container1[data-astro-cid-tdou77qi],.container-fluid[data-astro-cid-tdou77qi]{margin-inline:auto;padding-inline:15px}.container-fluid[data-astro-cid-tdou77qi]:before,.row[data-astro-cid-tdou77qi]:before{--tw-content:"";content:var(--tw-content);display:table}.container-fluid[data-astro-cid-tdou77qi]:after,.row[data-astro-cid-tdou77qi]:after{clear:both;--tw-content:"";content:var(--tw-content);display:table}.col-xs-12[data-astro-cid-tdou77qi]{float:left;width:100%}@media(min-width:768px){.col-sm-5[data-astro-cid-tdou77qi]{float:left;width:41.6667%}.col-sm-6[data-astro-cid-tdou77qi]{float:left;width:50%}.col-sm-7[data-astro-cid-tdou77qi]{float:left;width:58.3333%}}.col-xs-12[data-astro-cid-tdou77qi],.col-sm-6[data-astro-cid-tdou77qi],.col-sm-7[data-astro-cid-tdou77qi],.col-md-12[data-astro-cid-tdou77qi]{min-height:1px;padding-inline:15px;position:relative}@media(min-width:992px){.col-md-12[data-astro-cid-tdou77qi]{float:left;width:100%}}#ftl-footer[data-astro-cid-tdou77qi]{width:100%;overflow-x:hidden}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi]{margin-inline:-15px}#ftl-footer[data-astro-cid-tdou77qi] .footerContainer[data-astro-cid-tdou77qi]{max-width:1230px;padding-top:25px;padding-bottom:20px}#ftl-footer[data-astro-cid-tdou77qi] .footerWidget[data-astro-cid-tdou77qi]{margin-left:calc(var(--spacing,.25rem) * 0);width:100%}#ftl-footer[data-astro-cid-tdou77qi] .footerOuter[data-astro-cid-tdou77qi]{border-top-style:var(--tw-border-style);background-color:#292b31;border-top-width:0}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .left[data-astro-cid-tdou77qi]{padding-left:calc(var(--spacing,.25rem) * 0)}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .top-section[data-astro-cid-tdou77qi]{padding-left:calc(var(--spacing,.25rem) * 0);margin-bottom:10px}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .top-section[data-astro-cid-tdou77qi] div[data-astro-cid-tdou77qi],#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .bottom-section[data-astro-cid-tdou77qi],#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .bottom-section[data-astro-cid-tdou77qi] div[data-astro-cid-tdou77qi]{padding-left:calc(var(--spacing,.25rem) * 0)}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] div[data-astro-cid-tdou77qi] .section-header[data-astro-cid-tdou77qi]{margin-bottom:calc(var(--spacing,.25rem) * 0);--tw-font-weight:var(--font-weight-semibold,600);font-size:14px;font-weight:var(--font-weight-semibold,600);color:#737981;text-transform:none}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] div[data-astro-cid-tdou77qi] ul[data-astro-cid-tdou77qi]{padding-left:calc(var(--spacing,.25rem) * 0);--tw-leading:1.5em;--tw-font-weight:var(--font-weight-semibold,600);font-size:13px;line-height:1.5em;font-weight:var(--font-weight-semibold,600);color:#e9ebee;list-style-type:none}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] div[data-astro-cid-tdou77qi] ul[data-astro-cid-tdou77qi] li[data-astro-cid-tdou77qi] a[data-astro-cid-tdou77qi]{color:#e9ebee!important}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] div[data-astro-cid-tdou77qi] .bottom-top-list[data-astro-cid-tdou77qi]{margin-bottom:20px}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .social-media-icons[data-astro-cid-tdou77qi]{float:left;width:auto;padding:calc(var(--spacing,.25rem) * 0);margin-top:-10px;margin-left:-4px;display:none}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .social-media-icons[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi]{background-color:#0000;padding-block:20px;padding-inline:5px}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .social-media-icons[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi] li[data-astro-cid-tdou77qi]{margin-right:3px}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .social-media-icons[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi] li[data-astro-cid-tdou77qi]:last-of-type{margin-right:calc(var(--spacing,.25rem) * 0)}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .right[data-astro-cid-tdou77qi]{padding-inline:calc(var(--spacing,.25rem) * 0)}#ftl-footer[data-astro-cid-tdou77qi] .row[data-astro-cid-tdou77qi] .connect-text[data-astro-cid-tdou77qi]{float:left;--tw-font-weight:var(--font-weight-semibold,600);font-size:18px;font-weight:var(--font-weight-semibold,600);color:#29a8ff;text-transform:none;margin-right:10px;padding-top:10px;display:inline}#ftl-footer[data-astro-cid-tdou77qi] .footer-mobile[data-astro-cid-tdou77qi]{display:none!important}#ftl-footer[data-astro-cid-tdou77qi] .footer-wide[data-astro-cid-tdou77qi]{display:block!important}#ftl-footer[data-astro-cid-tdou77qi] .footer[data-astro-cid-tdou77qi]{border-top-style:var(--tw-border-style)!important;background-color:#292b31!important;border-top-width:0!important}#ftl-footer[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi]{margin:calc(var(--spacing,.25rem) * 0);cursor:pointer;padding-inline:5px;padding-block:calc(var(--spacing,.25rem) * 0);display:inline-block;position:relative}#ftl-footer[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi] li[data-astro-cid-tdou77qi]{text-align:center;--tw-leading:1.75;width:30px;height:30px;color:var(--color-white,#fff);border-radius:3.40282e38px;font-size:18px;line-height:1.75;list-style-type:none;display:inline-block}#ftl-footer[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi] .rss-icon[data-astro-cid-tdou77qi]{background-color:#f60}#ftl-footer[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi] .rss-icon[data-astro-cid-tdou77qi] a[data-astro-cid-tdou77qi]{color:var(--color-white,#fff)}#ftl-footer[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi] .twitter-icon[data-astro-cid-tdou77qi]{background-color:#00acec!important}#ftl-footer[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi] .facebook-icon[data-astro-cid-tdou77qi]{background-color:#3b5998!important}#ftl-footer[data-astro-cid-tdou77qi] .icons-only[data-astro-cid-tdou77qi] .linkedin-icon[data-astro-cid-tdou77qi]{background-color:#007bb5}@media screen and (max-width:400px){#ftl-footer[data-astro-cid-tdou77qi] .footer-mobile[data-astro-cid-tdou77qi]{display:block!important}#ftl-footer[data-astro-cid-tdou77qi] .footer-wide[data-astro-cid-tdou77qi]{display:none!important}#ftl-footer[data-astro-cid-tdou77qi] .social-media-icons[data-astro-cid-tdou77qi]{margin-bottom:20px}#ftl-footer[data-astro-cid-tdou77qi] .left[data-astro-cid-tdou77qi]{padding:calc(var(--spacing,.25rem) * 0)}}@media screen and (max-width:767px){#ftl-footer[data-astro-cid-tdou77qi] .connect-text[data-astro-cid-tdou77qi]{display:none!important}#ftl-footer[data-astro-cid-tdou77qi] .footerContainer[data-astro-cid-tdou77qi] .link-group[data-astro-cid-tdou77qi] li[data-astro-cid-tdou77qi]{margin-block:10px}}@property --tw-outline-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-content{syntax:"*";inherits:false;initial-value:""}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-leading{syntax:"*";inherits:false}
+ 
+ 
+ .ticker-text[data-v-34ac2891]{transition:transform .2s ease}.ticker-text.ticker-scrolling[data-v-34ac2891]{animation:ticker-scroll-34ac2891 .4s ease-in-out;animation-fill-mode:forwards}@keyframes ticker-scroll-34ac2891{0%{transform:translate(0)}to{transform:translate(var(--scroll-distance, 0))}}
+ 
+ 
+ .animate-ping-once[data-v-788e3fe6]{animation:ping-once-788e3fe6 .35s ease-out forwards}@keyframes ping-once-788e3fe6{0%{transform:scale(1)}40%{transform:scale(1.2)}70%{transform:scale(.95)}to{transform:scale(1)}}
+.promo-banner[data-astro-cid-lroifm73]{background:linear-gradient(to right,#fdf3e7,#fbe3d4 50%,#fdf3e7)}@keyframes bell-ring{0%,to{transform:rotate(0)}8%{transform:rotate(14deg)}16%{transform:rotate(-12deg)}24%{transform:rotate(10deg)}32%{transform:rotate(-8deg)}40%{transform:rotate(4deg)}48%{transform:rotate(0)}}@keyframes push-ping{0%{transform:scale(1);opacity:.6}75%,to{transform:scale(2.2);opacity:0}}@media(any-pointer:coarse){#push-close-btn[data-astro-cid-w7xjyvkx]{display:none}}@media(prefers-reduced-motion:reduce){#push-notification-prompt[data-astro-cid-w7xjyvkx],#push-notification-prompt[data-astro-cid-w7xjyvkx] [data-astro-cid-w7xjyvkx]{animation:none!important;transition:none!important}}
+.icp-product-card[data-astro-cid-wnzspaez]{container-type:inline-size}@container (min-width:600px){.icp-product-card[data-astro-cid-wnzspaez]{grid-template-columns:repeat(2,minmax(0,1fr))}}.icp-product-header[data-astro-cid-wnzspaez]{order:0}@container (min-width:600px){.icp-product-header[data-astro-cid-wnzspaez]{order:1}}.icp-product-rank[data-astro-cid-wnzspaez],.icp-product-name[data-astro-cid-wnzspaez]{min-height:56px}.icp-product-logo[data-astro-cid-wnzspaez]{order:0}@container (min-width:600px){.icp-product-logo[data-astro-cid-wnzspaez]{order:2;max-height:50px}}.icp-product-cta[data-astro-cid-wnzspaez]{flex-direction:column;order:0;display:flex}@container (min-width:600px){.icp-product-cta[data-astro-cid-wnzspaez]{order:4}}.icp-product-attr[data-astro-cid-wnzspaez]{order:0}@container (min-width:600px){.icp-product-attr[data-astro-cid-wnzspaez]{order:3}}.icp-product-logo[data-astro-cid-37va56x7]{justify-content:flex-start}.icp-product-logo[data-astro-cid-37va56x7] img{max-width:250px}.icp-product-cta[data-astro-cid-37va56x7]{justify-content:flex-start}/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */@media(min-width:48rem){.icp-product-rank[data-astro-cid-vqw45ux7],.icp-product-name[data-astro-cid-vqw45ux7]{min-height:56px}}.icp-link[data-astro-cid-vqw45ux7]:hover .icp-product-rank,.icp-link[data-astro-cid-vqw45ux7]:hover .icp-product-name{color:var(--color-secondary)}.icp-product-logo[data-astro-cid-vqw45ux7] img{max-width:200px}
+/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */.input{border:1px solid var(--color-zinc-300);border-radius:3.40282e38px}.input:focus{border-color:var(--color-primary)}html{scroll-padding-top:350px}@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+ 
+ /*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-font-weight:initial;--tw-tracking:initial;--tw-ordinal:initial;--tw-slashed-zero:initial;--tw-numeric-figure:initial;--tw-numeric-spacing:initial;--tw-numeric-fraction:initial}}}.review-widget-block{background-color:var(--color-white,#fff);border-bottom:1px solid #0f172a1f;position:relative;overflow:hidden}.review-widget-block:has(+astro-island){border-bottom:none}.review-widget-block+astro-island{margin-top:-1rem;display:block}.review-widget-block .rwb-accent{background-color:var(--color-tertiary);height:3px}.review-widget-block .rwb-header{align-items:flex-start;gap:calc(var(--spacing,.25rem) * 5);padding-block:calc(var(--spacing,.25rem) * 7);border-bottom:1px solid #0f172a14;display:flex}.review-widget-block .rwb-logo-frame{background-color:#0f172a05;border:1px solid #0f172a14;border-radius:2px;flex-shrink:0;justify-content:center;align-items:center;width:80px;height:80px;padding:12px;display:flex}.review-widget-block .rwb-logo-image{object-fit:contain;max-width:100%;max-height:100%;width:auto!important;height:auto!important}.review-widget-block .rwb-header-text{min-width:calc(var(--spacing,.25rem) * 0);flex:1}.review-widget-block .rwb-title{margin:calc(var(--spacing,.25rem) * 0);margin-bottom:calc(var(--spacing,.25rem) * 2);--tw-font-weight:var(--font-weight-bold,700);font-weight:var(--font-weight-bold,700);--tw-tracking:var(--tracking-tight,-.025em);letter-spacing:var(--tracking-tight,-.025em);color:var(--color-secondary);font-size:22px;line-height:28px}.review-widget-block .rwb-description{margin:calc(var(--spacing,.25rem) * 0);color:#71717a;font-size:14px;line-height:22px}.review-widget-block .rwb-price{margin-top:calc(var(--spacing,.25rem) * 3);align-items:center;gap:calc(var(--spacing,.25rem) * 2);flex-wrap:wrap;font-size:13px;display:flex}.review-widget-block .rwb-price-info{color:var(--color-secondary);font-weight:600}.review-widget-block .rwb-price-link{--tw-font-weight:var(--font-weight-semibold,600);font-size:11px;font-weight:var(--font-weight-semibold,600);text-transform:uppercase;letter-spacing:.12em;color:var(--color-tertiary);align-items:center;text-decoration-line:none;display:inline-flex;border:none!important}.review-widget-block .rwb-price-link:hover{text-decoration:underline;background:0 0!important}.review-widget-block .rwb-content-grid{grid-template-columns:1fr;display:grid}@media(min-width:768px){.review-widget-block .rwb-content-grid{grid-template-columns:1fr 1fr}.review-widget-block .rwb-ratings{border-right:1px solid #0f172a14}}.review-widget-block .rwb-ratings{padding-block:calc(var(--spacing,.25rem) * 6);padding-right:calc(var(--spacing,.25rem) * 6)}@media(min-width:48rem){.review-widget-block .rwb-ratings{padding-block:calc(var(--spacing,.25rem) * 7)}}.review-widget-block .rwb-ratings{border-bottom:1px solid #0f172a14}@media(min-width:768px){.review-widget-block .rwb-ratings{border-bottom:none}}.review-widget-block .rwb-overall{margin-bottom:calc(var(--spacing,.25rem) * 5);padding-bottom:calc(var(--spacing,.25rem) * 5);border-bottom:1px solid #0f172a0f;justify-content:space-between;align-items:baseline;display:flex}.review-widget-block .rwb-overall-label{--tw-font-weight:var(--font-weight-semibold,600);font-size:11px;font-weight:var(--font-weight-semibold,600);text-transform:uppercase;letter-spacing:.14em;color:#71717a}.review-widget-block .rwb-overall-value{align-items:baseline;gap:calc(var(--spacing,.25rem) * 3);display:flex}.review-widget-block .rwb-overall-number{--tw-font-weight:var(--font-weight-bold,700);font-weight:var(--font-weight-bold,700);--tw-tracking:var(--tracking-tight,-.025em);letter-spacing:var(--tracking-tight,-.025em);--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);color:var(--color-tertiary);font-size:32px}.review-widget-block .rwb-overall-stars{align-items:center;gap:calc(var(--spacing,.25rem) * .5);color:var(--color-tertiary);display:flex}.review-widget-block .rwb-other-ratings{gap:calc(var(--spacing,.25rem) * 3);flex-direction:column;display:flex}.review-widget-block .rwb-rating-row{align-items:center;gap:calc(var(--spacing,.25rem) * 3);grid-template-columns:1fr 80px 32px;display:grid}.review-widget-block .rwb-rating-label{--tw-font-weight:var(--font-weight-medium,500);font-size:12px;font-weight:var(--font-weight-medium,500);color:var(--color-secondary)}.review-widget-block .rwb-rating-track{height:calc(var(--spacing,.25rem) * 1);background:#0f172a0f;position:relative}.review-widget-block .rwb-rating-fill{top:calc(var(--spacing,.25rem) * 0);left:calc(var(--spacing,.25rem) * 0);background-color:var(--color-tertiary);height:100%;position:absolute}.review-widget-block .rwb-rating-value{text-align:right;--tw-font-weight:var(--font-weight-semibold,600);font-size:12px;font-weight:var(--font-weight-semibold,600);--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);color:var(--color-secondary)}.review-widget-block .rwb-proscons{gap:calc(var(--spacing,.25rem) * 6);padding-block:calc(var(--spacing,.25rem) * 6);padding-left:calc(var(--spacing,.25rem) * 6);flex-direction:column;display:flex}@media(min-width:48rem){.review-widget-block .rwb-proscons{padding-block:calc(var(--spacing,.25rem) * 7)}}.review-widget-block .rwb-procon{flex-direction:column;gap:12px;display:flex}.review-widget-block .rwb-procon-label{align-items:center;gap:calc(var(--spacing,.25rem) * 3);--tw-font-weight:var(--font-weight-semibold,600);font-size:11px;font-weight:var(--font-weight-semibold,600);text-transform:uppercase;letter-spacing:.18em;color:var(--color-secondary);display:flex}.review-widget-block .rwb-procon-rule{background-color:var(--color-tertiary);flex-shrink:0;width:18px;height:1px;display:block}.review-widget-block .rwb-procon-cons .rwb-procon-rule{background-color:#0f172a2e}.review-widget-block .rwb-procon-list{margin:calc(var(--spacing,.25rem) * 0);gap:calc(var(--spacing,.25rem) * 2);padding:calc(var(--spacing,.25rem) * 0);flex-direction:column;list-style-type:none;display:flex}.review-widget-block .rwb-procon-item{margin:calc(var(--spacing,.25rem) * 0);align-items:flex-start;gap:calc(var(--spacing,.25rem) * 3);padding:calc(var(--spacing,.25rem) * 0);color:var(--color-secondary);font-size:14px;line-height:20px;display:flex}.review-widget-block .rwb-procon-item:before{display:none!important}.review-widget-block .rwb-procon-icon{width:18px;height:18px;color:var(--color-tertiary);flex-shrink:0;justify-content:center;align-items:center;margin-top:1px;display:flex}.review-widget-block .rwb-procon-icon-cons{color:var(--color-gray-500)}.review-widget-block .rwb-body{padding-block:calc(var(--spacing,.25rem) * 6)}@media(min-width:48rem){.review-widget-block .rwb-body{padding-block:calc(var(--spacing,.25rem) * 7)}}.review-widget-block .rwb-body{border-top:1px solid #0f172a14}.review-widget-block .rwb-body-prose{color:var(--color-secondary);font-size:15px;line-height:24px}.review-widget-block .rwb-body-prose>:first-child{margin-top:0!important}.review-widget-block .rwb-body-prose>:last-child{margin-bottom:0!important}.review-widget-block .rwb-footer{align-items:center;gap:calc(var(--spacing,.25rem) * 3);padding-block:calc(var(--spacing,.25rem) * 4);border-top:1px solid #0f172a14;flex-direction:column;display:flex}.review-widget-block .rwb-footer-links{justify-content:center;align-items:center;gap:calc(var(--spacing,.25rem) * 3);flex-wrap:wrap;display:flex}@media(min-width:768px){.review-widget-block .rwb-footer{justify-content:space-between;align-items:center;gap:calc(var(--spacing,.25rem) * 4);flex-flow:wrap}.review-widget-block .rwb-footer:not(:has(.rwb-footer-links)){justify-content:flex-end}}.review-widget-block .rwb-link-divider{background:#0f172a2e;flex-shrink:0;align-self:center;width:1px;height:12px;display:block}.review-widget-block .rwb-additional-link{--tw-font-weight:var(--font-weight-semibold,600);font-size:11px;font-weight:var(--font-weight-semibold,600);text-transform:uppercase;letter-spacing:.12em;color:var(--color-tertiary);align-items:center;text-decoration-line:none;display:inline-flex;border:none!important}.review-widget-block .rwb-additional-link:hover{text-decoration:underline;background:0 0!important}.review-widget-block .rwb-footer-cta{align-items:center;gap:calc(var(--spacing,.25rem) * 1);flex-direction:column;display:flex}.review-widget-block .rwb-footer-note{text-align:center;color:#71717a;font-size:11px}@media(min-width:768px){.review-widget-block .rwb-footer-cta{align-items:flex-end;margin-left:auto}.review-widget-block .rwb-footer-note{text-align:right}}.review-widget-block .rwb-footer-link{align-items:center;gap:calc(var(--spacing,.25rem) * 2);--tw-font-weight:var(--font-weight-semibold,600);font-size:11px;font-weight:var(--font-weight-semibold,600);text-transform:uppercase;letter-spacing:.14em;color:var(--color-tertiary);text-decoration-line:none;transition:gap .15s;display:inline-flex;border:none!important}.review-widget-block .rwb-footer-link:hover{gap:12px;background:0 0!important}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-tracking{syntax:"*";inherits:false}@property --tw-ordinal{syntax:"*";inherits:false}@property --tw-slashed-zero{syntax:"*";inherits:false}@property --tw-numeric-figure{syntax:"*";inherits:false}@property --tw-numeric-spacing{syntax:"*";inherits:false}@property --tw-numeric-fraction{syntax:"*";inherits:false}
+ 
+ .glide{position:relative;width:100%;box-sizing:border-box}.glide *{box-sizing:inherit}.glide__track{overflow:hidden}.glide__slides{position:relative;width:100%;list-style:none;backface-visibility:hidden;transform-style:preserve-3d;touch-action:pan-Y;overflow:hidden;margin:0;padding:0;white-space:nowrap;display:flex;flex-wrap:nowrap;will-change:transform}.glide__slides--dragging{user-select:none}.glide__slide{width:100%;height:100%;flex-shrink:0;white-space:normal;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}.glide__slide a{user-select:none;-webkit-user-drag:none;-moz-user-select:none;-ms-user-select:none}.glide__arrows,.glide__bullets{-webkit-touch-callout:none;user-select:none}.glide--rtl{direction:rtl}
+.glide__arrow{position:absolute;display:block;top:50%;z-index:2;color:#fff;text-transform:uppercase;padding:9px 12px;background-color:transparent;border:2px solid rgba(255,255,255,.5);border-radius:4px;box-shadow:0 .25em .5em #0000001a;text-shadow:0 .25em .5em rgba(0,0,0,.1);opacity:1;cursor:pointer;transition:opacity .15s ease,border .3s ease-in-out;transform:translateY(-50%);line-height:1}.glide__arrow:focus{outline:none}.glide__arrow:hover{border-color:#fff}.glide__arrow--left{left:2em}.glide__arrow--right{right:2em}.glide__arrow--disabled{opacity:.33}.glide__bullets{position:absolute;z-index:2;bottom:2em;left:50%;display:inline-flex;list-style:none;transform:translate(-50%)}.glide__bullet{background-color:#ffffff80;width:9px;height:9px;padding:0;border-radius:50%;border:2px solid transparent;transition:all .3s ease-in-out;cursor:pointer;line-height:0;box-shadow:0 .25em .5em #0000001a;margin:0 .25em}.glide__bullet:focus{outline:none}.glide__bullet:hover,.glide__bullet:focus{border:2px solid #fff;background-color:#ffffff80}.glide__bullet--active{background-color:#fff}.glide--swipeable{cursor:grab;cursor:-moz-grab;cursor:-webkit-grab}.glide--dragging{cursor:grabbing;cursor:-moz-grabbing;cursor:-webkit-grabbing}/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */.glide[data-astro-cid-zs6k2ebs],.glide__track[data-astro-cid-zs6k2ebs]{width:100%}@media(prefers-reduced-motion:no-preference){.glide__track[data-astro-cid-zs6k2ebs]{transition:height .25s ease-out}}.glide__slide[data-astro-cid-zs6k2ebs]{flex:none!important;width:auto!important}.glide[data-astro-cid-zs6k2ebs] .glide__bullet--active[data-astro-cid-zs6k2ebs]>.bullet[data-astro-cid-zs6k2ebs]{background:var(--color-primary)}
+/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */.tab-active[data-astro-cid-y26hj7yi]{color:var(--color-white,#fff);background-color:var(--color-secondary)}.item-hidden[data-astro-cid-y26hj7yi]{display:none}[data-astro-cid-y26hj7yi][data-category-item] img+[data-blur]{opacity:1!important}[data-astro-cid-y26hj7yi][data-category-item] [data-blur]+img{z-index:1;position:absolute}
+.prose .sp-state{cursor:pointer}.prose .sp-state:hover :is(path,polygon),.prose .sp-state:focus-visible :is(path,polygon){fill:#1c7db1;transition:fill .15s ease}.prose .sp-state:focus-visible{outline:2px solid #1c7db1;outline-offset:2px}
+/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-border-style:solid;--tw-font-weight:initial}}}.accordion-item[data-astro-cid-pjbldbwd]{border-top-style:var(--tw-border-style);border-top-width:1px;border-color:var(--color-gray-400,oklch(70.7% .022 261.325));align-self:center;width:100%}.accordion-summary[data-astro-cid-pjbldbwd]{cursor:pointer;justify-content:space-between;align-items:center;gap:calc(var(--spacing,.25rem) * 4);width:100%;padding-block:calc(var(--spacing,.25rem) * 6);-webkit-user-select:none;user-select:none;list-style:none;display:flex}.accordion-summary[data-astro-cid-pjbldbwd]::-webkit-details-marker{display:none}.accordion-summary[data-astro-cid-pjbldbwd]:focus-visible{outline:2px solid var(--color-primary);outline-offset:4px}.accordion-title[data-astro-cid-pjbldbwd]{text-align:left;--tw-font-weight:var(--font-weight-bold,700);font-size:20px;font-weight:var(--font-weight-bold,700);text-transform:uppercase;color:var(--color-secondary);flex:1}.accordion-toggle[data-astro-cid-pjbldbwd]{color:var(--color-gray-600,oklch(44.6% .03 256.802));flex-shrink:0;justify-content:center;align-items:center;display:inline-flex}.accordion-item[data-astro-cid-pjbldbwd][open] .accordion-toggle[data-astro-cid-pjbldbwd]{transform:rotate(180deg)}.accordion-item[data-astro-cid-pjbldbwd]::details-content{content-visibility:visible}.accordion-panel[data-astro-cid-pjbldbwd]{visibility:hidden;grid-template-rows:0fr;display:grid}.accordion-item[data-astro-cid-pjbldbwd][open] .accordion-panel[data-astro-cid-pjbldbwd]{visibility:visible;grid-template-rows:1fr}.accordion-panel-inner[data-astro-cid-pjbldbwd]{padding-right:calc(var(--spacing,.25rem) * 4);min-height:0;overflow:hidden}.accordion-panel-pad[data-astro-cid-pjbldbwd]{padding-bottom:calc(var(--spacing,.25rem) * 4)}@media(prefers-reduced-motion:no-preference){.accordion-panel[data-astro-cid-pjbldbwd]{transition:grid-template-rows .3s ease-in-out,visibility .3s}.accordion-toggle[data-astro-cid-pjbldbwd]{transition:transform .3s}}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-font-weight{syntax:"*";inherits:false}
+.calc-label{font-family:var(--font-mono);font-size:11px;font-weight:600;line-height:1.4;text-transform:uppercase;letter-spacing:.09em;color:#71717a}.calc-field-label{font-family:var(--font-mono);font-size:13px;font-weight:600;line-height:1.4;color:#71717a}.calc-field{border-radius:8px;border:1px solid rgba(24,24,27,.14);background:#fff;padding:8px 12px;font-size:15px;color:var(--color-secondary);transition:border-color .15s ease,box-shadow .15s ease}.calc-field:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--color-primary) 35%,transparent)}.calc-table{width:100%;font-size:14px;line-height:22px;font-variant-numeric:tabular-nums lining-nums;border-collapse:collapse;border-bottom:1px solid #18181b}.calc-table thead th{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#71717a;padding:12px 16px;text-align:right;border-top:2px solid #18181b;border-bottom:1px solid #d4d4d8}.calc-table thead th:first-child{text-align:left}.calc-table tbody td{padding:9px 16px;text-align:right;color:#1f1f23;border-top:1px solid #f0f0f1}.calc-table tbody td:first-child{text-align:left;color:#71717a}.calc-table tbody tr:nth-child(odd) td{background:#fafaf9}.calc-table tbody tr:hover td{background:color-mix(in srgb,var(--color-primary) 5%,transparent)}.calc-table tfoot td{padding:12px 16px;text-align:right;font-weight:700;color:var(--color-secondary);border-top:2px solid #18181b}.calc-table tfoot td:first-child{text-align:left}.calc-reset{cursor:pointer;border-radius:9999px;border:2px solid var(--color-primary);background:transparent;color:var(--color-primary);font-family:var(--font-mono);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;padding:6px 16px;transition:background-color .15s ease,color .15s ease,transform .08s ease}.calc-reset:hover{background:var(--color-primary);color:var(--color-primary-foreground)}.calc-reset:active{transform:translateY(1px)}.calc-inputbox{transition:border-color .15s ease,box-shadow .15s ease}.calc-inputbox:focus-within{border-color:var(--color-primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--color-primary) 35%,transparent)}@media(prefers-reduced-motion:reduce){.calc-reset{transition:background-color .15s ease,color .15s ease}.calc-reset:active{transform:none}}
+.ta-galaxy{background-color:transparent;background-image:url("data:image/svg+xml,%3csvg%20width='374'%20height='374'%20viewBox='0%200%20374%20374'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3ccircle%20cx='187'%20cy='187'%20r='186'%20stroke='%2328874B'%20opacity='0.4'/%3e%3c/svg%3e"),url("data:image/svg+xml,%3csvg%20width='374'%20height='374'%20viewBox='0%200%20374%20374'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3ccircle%20cx='187'%20cy='187'%20r='186'%20stroke='%2328874B'%20stroke-dasharray='16%2020'%20opacity='0.4'/%3e%3c/svg%3e"),url("data:image/svg+xml,%3csvg%20width='77'%20height='78'%20viewBox='0%200%2077%2078'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20opacity='0.2'%20d='M16.5%2045C25.3366%2045%2032.5%2052.1634%2032.5%2061C32.5%2069.8366%2025.3366%2077%2016.5%2077C7.66345%2077%200.5%2069.8366%200.499999%2061C0.499999%2052.1634%207.66345%2045%2016.5%2045ZM60.5%2045C69.3365%2045%2076.5%2052.1634%2076.5%2061C76.5%2069.8365%2069.3365%2077%2060.5%2077C51.6634%2077%2044.5%2069.8366%2044.5%2061C44.5%2052.1634%2051.6634%2045%2060.5%2045ZM16.5%200.999999C25.3366%200.999999%2032.5%208.16345%2032.5%2017C32.5%2025.8366%2025.3366%2033%2016.5%2033C7.66345%2033%200.499998%2025.8366%200.499997%2017C0.499997%208.16345%207.66344%201%2016.5%200.999999ZM60.5%200.999997C69.3365%200.999997%2076.5%208.16345%2076.5%2017C76.5%2025.8366%2069.3365%2033%2060.5%2033C51.6634%2033%2044.5%2025.8366%2044.5%2017C44.5%208.16345%2051.6634%200.999998%2060.5%200.999997Z'%20stroke='%2393C953'/%3e%3c/svg%3e"),url("data:image/svg+xml,%3csvg%20width='93'%20height='92'%20viewBox='0%200%2093%2092'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cg%20clip-path='url(%23clip0_6262_32725)'%20opacity='0.4'%3e%3ccircle%20cx='1.5'%20cy='1'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='27.5'%20cy='1'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='53.5'%20cy='1'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='79.5'%20cy='1'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='1.5'%20cy='27'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='27.5'%20cy='27'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='53.5'%20cy='27'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='79.5'%20cy='27'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='1.5'%20cy='53'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='27.5'%20cy='53'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='53.5'%20cy='53'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='79.5'%20cy='53'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='1.5'%20cy='79'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='27.5'%20cy='79'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='53.5'%20cy='79'%20r='1'%20fill='%2328874B'/%3e%3ccircle%20cx='79.5'%20cy='79'%20r='1'%20fill='%2328874B'/%3e%3c/g%3e%3cdefs%3e%3cclipPath%20id='clip0_6262_32725'%3e%3crect%20width='92'%20height='92'/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e"),url("data:image/svg+xml,%3csvg%20width='190'%20height='190'%20viewBox='0%200%20190%20190'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3ccircle%20cx='95'%20cy='95'%20r='95'%20stroke='%2328874B'%20opacity='0.4'/%3e%3c/svg%3e"),radial-gradient(circle at 15% 90%,#332fff99 -50%,#332fff00 40%),radial-gradient(circle at 105% -10%,#2ee2e2cc -50%,#2ee2e200 30%),radial-gradient(closest-side,#141e2d,#141e2d);background-repeat:no-repeat;background-position:-35vh -30vh,80vw -15vh,78vw 104%,60% -4%,80vw 35%,center,center,center;background-blend-mode:exclusion}.ta-galaxy-inset{background-position:-15% 180%,980px -110px,78vw 104%,0% 0%,900px -150px,center,center,center}
+.slide-enter-active[data-v-53819b21],.slide-leave-active[data-v-53819b21]{transition:all .3s}.slide-enter-from[data-v-53819b21],.slide-leave-to[data-v-53819b21]{transform:translateY(20px);opacity:0}.slide-right-enter-active[data-v-1572bf39],.slide-right-leave-active[data-v-1572bf39]{transition:all .3s}.slide-right-enter-from[data-v-1572bf39],.slide-right-leave-to[data-v-1572bf39]{transform:translate(-100vw);opacity:0}.slide-left-enter-active[data-v-1572bf39],.slide-left-leave-active[data-v-1572bf39]{transition:all .3s}.slide-left-enter-from[data-v-1572bf39],.slide-left-leave-to[data-v-1572bf39]{transform:translate(100vw);opacity:0}.submenu-content [data-submenu][data-v-1572bf39]{display:none}.submenu-content [data-submenu].active[data-v-1572bf39]{display:block}
+/*! tailwindcss v4.3.0 | MIT License | https://tailwindcss.com */@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){[data-v-65bb584b],[data-v-65bb584b]:before,[data-v-65bb584b]:after,[data-v-65bb584b]::backdrop{--tw-font-weight:initial;--tw-border-style:solid}}}label[data-v-65bb584b]{margin-bottom:calc(var(--spacing,.25rem) * 4);--tw-font-weight:var(--font-weight-medium,500);font-weight:var(--font-weight-medium,500)}input[data-v-65bb584b],select[data-v-65bb584b]{margin-bottom:calc(var(--spacing,.25rem) * 2);height:calc(var(--spacing,.25rem) * 10);border-radius:var(--radius-md,.375rem);border-style:var(--tw-border-style);border-width:1px;border-color:var(--color-gray-400,oklch(70.7% .022 261.325));padding-inline:calc(var(--spacing,.25rem) * 4)}input[data-v-65bb584b]:last-of-type{margin-bottom:calc(var(--spacing,.25rem) * 10)}p[data-v-65bb584b]{margin-bottom:calc(var(--spacing,.25rem) * 6)}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}
+.message-enter-active[data-v-c9a6c818]{transition:all .3s ease-out}.message-enter-from[data-v-c9a6c818]{opacity:0;transform:translateY(20px)}.message-enter-to[data-v-c9a6c818]{opacity:1;transform:translateY(0)}.orb-enter-active[data-v-c9a6c818]{animation:orb-bounce-in-c9a6c818 .5s cubic-bezier(.34,1.56,.64,1)}.orb-leave-active[data-v-c9a6c818]{transition:all .2s ease-in}.orb-enter-from[data-v-c9a6c818],.orb-leave-to[data-v-c9a6c818]{opacity:0;transform:scale(0)}@keyframes orb-bounce-in-c9a6c818{0%{opacity:0;transform:scale(0)}50%{transform:scale(1.1)}to{opacity:1;transform:scale(1)}}.tooltip-enter-active[data-v-c9a6c818],.tooltip-leave-active[data-v-c9a6c818]{transition:all .2s ease-out}.tooltip-enter-from[data-v-c9a6c818],.tooltip-leave-to[data-v-c9a6c818]{opacity:0;transform:translateY(8px)}.chat-enter-active[data-v-c9a6c818]{animation:chat-expand-c9a6c818 .3s cubic-bezier(.34,1.56,.64,1)}.chat-leave-active[data-v-c9a6c818]{animation:chat-collapse-c9a6c818 .2s ease-in forwards}@keyframes chat-expand-c9a6c818{0%{opacity:0;transform:scale(.8) translateY(20px);transform-origin:bottom right}to{opacity:1;transform:scale(1) translateY(0)}}@keyframes chat-collapse-c9a6c818{0%{opacity:1;transform:scale(1) translateY(0)}to{opacity:0;transform:scale(.8) translateY(20px);transform-origin:bottom right}}
+.debug-bar[data-v-fbe2a48f] ::-webkit-scrollbar{width:4px}.debug-bar[data-v-fbe2a48f] ::-webkit-scrollbar-track{background:#374151}.debug-bar[data-v-fbe2a48f] ::-webkit-scrollbar-thumb{background:#6b7280;border-radius:2px}.debug-bar[data-v-fbe2a48f] ::-webkit-scrollbar-thumb:hover{background:#9ca3af}
+  astro-island,astro-slot,astro-static-slot{display:contents}  .inline-top:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 50px; }
+@media screen and (min-width: 768px) { .inline-top:not([data-loaded]) { min-width: 728px; max-width: 728px; min-height: 90px; max-height: 90px; } }
+@media screen and (min-width: 1240px) { .inline-top:not([data-loaded]) { min-width: 728px; max-width: 1000px; min-height: 90px; max-height: 250px; } }  .inline-article-native:not([data-loaded]) { width: 100%; height: 100%; }  .inline-article-display:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 250px; }
+@media screen and (min-width: 800px) { .inline-article-display:not([data-loaded]) { min-width: 728px; max-width: 728px; min-height: 90px; max-height: 90px; } }  .inline-article-native:not([data-loaded]) { width: 100%; height: 100%; }  .inline-article-display:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 250px; }
+@media screen and (min-width: 800px) { .inline-article-display:not([data-loaded]) { min-width: 728px; max-width: 728px; min-height: 90px; max-height: 90px; } }  .inline-article-native:not([data-loaded]) { width: 100%; height: 100%; }  .inline-article-display:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 250px; }
+@media screen and (min-width: 800px) { .inline-article-display:not([data-loaded]) { min-width: 728px; max-width: 728px; min-height: 90px; max-height: 90px; } }  .inline-article-native:not([data-loaded]) { width: 100%; height: 100%; }  .inline-article-display:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 250px; }
+@media screen and (min-width: 800px) { .inline-article-display:not([data-loaded]) { min-width: 728px; max-width: 728px; min-height: 90px; max-height: 90px; } }  .inline-article-native:not([data-loaded]) { width: 100%; height: 100%; }  .inline-article-display:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 250px; }
+@media screen and (min-width: 800px) { .inline-article-display:not([data-loaded]) { min-width: 728px; max-width: 728px; min-height: 90px; max-height: 90px; } }  .right-rail:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 250px; }
+@media screen and (min-width: 768px) { .right-rail:not([data-loaded]) { min-width: 160px; max-width: 300px; min-height: 250px; max-height: 600px; } }  .right-rail:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 250px; }
+@media screen and (min-width: 768px) { .right-rail:not([data-loaded]) { min-width: 160px; max-width: 300px; min-height: 250px; max-height: 600px; } }  .right-rail:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 250px; }
+@media screen and (min-width: 768px) { .right-rail:not([data-loaded]) { min-width: 160px; max-width: 300px; min-height: 250px; max-height: 600px; } }  .inline-bottom:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 50px; }
+@media screen and (min-width: 768px) { .inline-bottom:not([data-loaded]) { min-width: 728px; max-width: 728px; min-height: 90px; max-height: 90px; } }
+@media screen and (min-width: 1240px) { .inline-bottom:not([data-loaded]) { min-width: 728px; max-width: 1000px; min-height: 90px; max-height: 250px; } }  .sticky-footer:not([data-loaded]) { min-width: 300px; max-width: 320px; min-height: 50px; max-height: 50px; }
+@media screen and (min-width: 768px) { .sticky-footer:not([data-loaded]) { min-width: 728px; max-width: 728px; min-height: 90px; max-height: 90px; } }
+@media screen and (min-width: 1240px) { .sticky-footer:not([data-loaded]) { min-width: 728px; max-width: 1000px; min-height: 90px; max-height: 90px; } }       (()=>{const l=document.querySelector("[data-ad-slot='skybox']");if(!l)return;let m=-1/0;const p=()=>{m=performance.now()};document.addEventListener("pointerdown",p,{capture:!0,passive:!0}),document.addEventListener("keydown",p,{capture:!0});const w=a=>{if(performance.now()-m {};const s=()=>{i(),a()},i=()=>{document.removeEventListener("pointerdown",s,!0),document.removeEventListener("keydown",s,!0)};return document.addEventListener("pointerdown",s,{capture:!0,passive:!0}),document.addEventListener("keydown",s,{capture:!0}),i};let r=null;const c=()=>{r?.(),r=w(()=>{l.setAttribute("data-empty",""),document.dispatchEvent(new CustomEvent("skybox-ad-hidden"))})};setTimeout(()=>{!l.hasAttribute("data-loaded")&&!l.hasAttribute("data-empty")&&c()},4e3),window.googletag=window.googletag||{cmd:[]},window.googletag?.cmd.push(()=>{let a=!1,s=null;const i=e=>{const t=document.getElementById("main-navigation");t&&(t.style.top=`${e}px`)},v=300,E=4e3,y=10,b=(e,t,n,d)=>{if(!window.ResizeObserver)return n();let o;const g=window.setTimeout(()=>{clearTimeout(o),u.disconnect(),d()},E),f=()=>{clearTimeout(o),!(e.offsetHeight {clearTimeout(g),u.disconnect(),n()},v))},u=new ResizeObserver(f);u.observe(e),f()},h=e=>{if(a)return;a=!0;const t=e.closest("[data-ad-slot='skybox']");t&&(r?.(),r=null,t.removeAttribute("data-empty"),T(),b(e,()=>i(t.offsetHeight),()=>I(t,e),c))},I=(e,t)=>{r?.(),r=null,e.removeAttribute("data-empty"),e.setAttribute("data-loaded",""),window.ResizeObserver&&new ResizeObserver(()=>{t.offsetHeight===0&&c()}).observe(t),i(e.offsetHeight),document.dispatchEvent(new CustomEvent("skybox-ad-ready",{detail:{height:e.offsetHeight}})),window.ResizeObserver&&(s=new ResizeObserver(n=>{for(const d of n){const o=d.contentRect.height;i(o),document.dispatchEvent(new CustomEvent("skybox-ad-height-changed",{detail:{height:o}}))}}),s.observe(e))},T=()=>{const e=window.googletag.pubads().getSlots().find(n=>{const d=n.getSlotElementId(),o=document.getElementById(d);return o?o.closest(".inline-top")!==null:!1});if(!e)return;window.googletag?.destroySlots([e]);const t=document.querySelector(".inline-top");t&&(t.style.visibility="hidden",w(()=>{t.style.setProperty("display","none")}))};window.googletag.pubads().addEventListener("slotRenderEnded",e=>{if(e.isEmpty)return;const t=e.slot.getSlotElementId(),n=document.getElementById(t);!n||!n.closest("[data-ad-slot='skybox']")||h(n)})})})();  (()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();  (()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||" ",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();  function o(e){e.dataset.imageLoaded===void 0&&(e.dataset.imageLoaded="",window.requestAnimationFrame(()=>{e.style.opacity="1";const a=e.closest("[data-lazyimage]")?.querySelector("[data-blur]");a&&(a.style.opacity="0")}))}function t(e){if(e.dataset.imageLoaded!==void 0)return;(typeof e.decode=="function"?e.decode().catch(()=>{}):Promise.resolve()).finally(()=>o(e))}function d(e){!(e instanceof HTMLImageElement)||!e.matches("[data-image]")||t(e)}document.addEventListener("load",e=>d(e.target),!0);document.addEventListener("error",e=>d(e.target),!0);document.querySelectorAll("[data-lazyimage] [data-image]").forEach(e=>{e.complete&&t(e)});  (()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();  let c=[],d=0,l=!1;const u=()=>{const e=document.getElementById("main-navigation");e&&(e.style.top=`${d}px`)},a=()=>{const e=document.getElementById("main-navigation");if(!e)return;let t=d;l||(t+=e.offsetHeight),document.body.style.setProperty("--header-height",`${t}px`)},g=()=>{const e=document.getElementById("site-navigation");if(!e)return;const t=Array.from(e.querySelectorAll('[data-nav-type="category-posts"], [data-nav-type="category-subcategories"], [data-nav-type="static-category-posts"], [data-nav-type="static-posts"][data-nav-href], [data-nav-type="static"][data-collapsible="true"]'));t.forEach(n=>{n.style.display=""}),c=[];const o=e.getBoundingClientRect();for(let n=t.length-1;n>=0;n--){const i=t[0].getBoundingClientRect(),r=t[n].getBoundingClientRect();if(i.left>=o.left-1&&r.right {const e=document.getElementById("hidden-nav-items");if(!e)return;e.innerHTML="",c.slice().reverse().forEach(o=>{const n=o.querySelector("a.more-dropdown-link");if(n instanceof HTMLAnchorElement){const i=n.cloneNode(!0);e.appendChild(i)}});const t=document.querySelector("[data-nav-more-button]");t&&t.parentElement&&(c.length>0?t.parentElement.style.display="":t.parentElement.style.display="none")};requestAnimationFrame(()=>{g(),a()});window.addEventListener("resize",()=>{g(),a()});document.addEventListener("navigation-content-loaded",()=>{setTimeout(()=>{g()},100)});const p=e=>{d=e.detail?.height||0,u(),a()},v=e=>{d=e.detail?.height||0,u(),a()},E=()=>{d=0,u(),a()},b=()=>{const e=document.getElementById("main-navigation");if(!e){console.error("Navigation element not found");return}let t=0,o=!1;const n=10,i=()=>{const s=document.documentElement.scrollTop;if(s t;if(m&&s>100&&!o){const h=-(e.offsetHeight+d);e.style.transform=`translateY(${h}px)`,o=!0,l=!0,a()}else(!m&&o||s {r||(requestAnimationFrame(()=>{i(),r=!1}),r=!0)};document.addEventListener("scroll",f),i(),a()};document.addEventListener("skybox-ad-ready",p);document.addEventListener("skybox-ad-height-changed",v);document.addEventListener("skybox-ad-hidden",E);document.addEventListener("DOMContentLoaded",b);  document.addEventListener("click",t=>{const e=t.target;e instanceof Element&&e.closest("[data-newsletter-trigger]")&&(t.preventDefault(),window.dispatchEvent(new CustomEvent("open-newsletter-modal")))});  document.body.clientWidth {let i=!1;const l=()=>{if(i)return;i=!0;const t=document.createElement("div"),e=document.createElement("div"),n=`
+                        position: fixed;
+                        top: 0;
+                        bottom: 0;
+                        width: calc((100vw - 1200px) / 2);
+                        background: transparent;
+                        cursor: pointer;
+                    `;t.style.cssText=n+"left: 0;",e.style.cssText=n+"right: 0;",t.id="left-gutter",e.id="right-gutter";const d=()=>{const o=document.body?.dataset?.src;o&&(window.location.href=o)};t.addEventListener("click",d),e.addEventListener("click",d);const s=()=>{const o=window.innerWidth,r=1200;if(o>r){t.style.display="block",e.style.display="block";const c=(o-r)/2;t.style.width=`${c}px`,e.style.width=`${c}px`}else t.style.display="none",e.style.display="none"};document.body.appendChild(t),document.body.appendChild(e),s(),window.addEventListener("resize",s)};window.googletag.pubads().addEventListener("slotRenderEnded",t=>{if(t.isEmpty)return;const e=t.slot.getSlotElementId(),n=document.getElementById(e);!n||!n.closest("[data-ad-slot='curtain']")||l()})}));  document.querySelectorAll("a[data-share-link]").forEach(async e=>e.addEventListener("click",a=>navigator.canShare?.()?(a.preventDefault(),navigator.share({title:e.dataset.shareTitle,url:e.href}),!1):!0));  document.querySelectorAll('[href="#advertising-disclaimer"]').forEach(p=>{const n=p,e=document.createElement("div");e.className="advertising-disclaimer-tooltip",e.innerHTML="We are able to offer our services for free because some vendors may pay us for web traffic or other sales opportunities. Our mission is to help technology buyers make better purchasing decisions, so we provide you with information for all vendors — even those that don't pay us.",n.style.position="relative",n.appendChild(e),p.addEventListener("mouseenter",()=>{e.classList.add("show")}),p.addEventListener("mouseleave",()=>{e.classList.remove("show")})});document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".wp-block-ta-gazelle-blocks-comp-table").forEach(n=>{const e=n,t=e.querySelector(".is-layout-flex:first-child");if(!t)return;const i=t.children,o=i.length,l=[];e.style.setProperty("--cols",o.toString()),o {const d=a.children,m=o 0&&t.classList.add("hide-on-mobile")}),document.querySelectorAll(".prose .table-wrapper table").forEach(n=>{const e=(t,i)=>{const o=i.getBoundingClientRect(),l={el:i,bottom:o.bottom,left:o.left};return!t||l.bottom>t.bottom+1||l.left  class s extends HTMLElement{connectedCallback(){const e=this.querySelector(".gated");if(!e)return;const{articleId:n,gateThreshold:o}=e.dataset;if(!n||!o)return;const l=`content-gate-unlocked-${n}`;if(localStorage.getItem(l))return;const t=parseFloat(o);if(!Number.isFinite(t)||t =1)return;const r=()=>{e.style.maxHeight=`${e.scrollHeight*t}px`};r(),e.querySelectorAll("img").forEach(c=>{c.complete||c.addEventListener("load",r,{once:!0})})}}customElements.define("astro-article-contents",s);  class h extends HTMLElement{stuck=!1;spyObserver=null;linkMap=new Map;connectedCallback(){this.querySelector("[data-collapsible-trigger]")?.addEventListener("click",()=>this.toggleCollapse()),this.setupStuckObserver(),this.setupScrollspy(),this.setupLinkPreCollapse()}setupLinkPreCollapse(){this.querySelectorAll(".toc-list a[href^='#']").forEach(t=>{t.addEventListener("click",()=>{this.classList.contains("expanded")&&this.classList.remove("expanded")})})}disconnectedCallback(){this.spyObserver?.disconnect()}setupStuckObserver(){const t=this.closest(".toc-container");if(!t)return;const o=(()=>{const c=document.querySelectorAll("header, div");for(const n of c){if(n===t||t.contains(n)||getComputedStyle(n).position!=="fixed")continue;const a=n.getBoundingClientRect();if(a.top 200&&a.height>=40)return n}return null})(),s=()=>{const c=o?Math.max(0,o.getBoundingClientRect().bottom):0,n=c>0?c+8:16;return t.style.setProperty("--toc-sticky-offset",`${n}px`),n};let i=s(),e=!1;const l=()=>{e=!1,i=s();const c=this.stuck;this.stuck=t.getBoundingClientRect().top {e||(e=!0,requestAnimationFrame(l))},u=()=>{i=s(),d()};window.addEventListener("scroll",d,{passive:!0}),window.addEventListener("resize",u,{passive:!0}),l()}setupScrollspy(){const t=this.querySelectorAll(".toc-list a[href^='#']");if(t.length===0)return;const r=[];if(t.forEach(s=>{const i=decodeURIComponent(s.getAttribute("href")?.slice(1)??"");if(!i)return;this.linkMap.set(i,s);const e=document.getElementById(i);e&&r.push(e)}),r.length===0)return;const o=new Set;this.spyObserver=new IntersectionObserver(s=>{for(const e of s)e.isIntersecting?o.add(e.target.id):o.delete(e.target.id);let i=null;for(const e of r)if(o.has(e.id)){i=e.id;break}this.linkMap.forEach((e,l)=>{e.classList.toggle("active",l===i)})},{rootMargin:"-80px 0px -70% 0px",threshold:0}),r.forEach(s=>this.spyObserver.observe(s))}toggleCollapse(){this.classList.toggle("expanded")}}customElements.define("astro-collapsible",h);    class s extends HTMLElement{resizeObserver=null;connectedCallback(){this.updateHeightVar(),this.resizeObserver=new ResizeObserver(()=>{this.hasAttribute("data-collapsed")||this.updateHeightVar()}),this.resizeObserver.observe(this),this.querySelector("button")?.addEventListener("click",()=>{const e=this.toggleAttribute("data-collapsed");this.classList.toggle("translate-y-full",e);const t=this.querySelector(".chevron");t&&t.classList.toggle("rotate-180",e),e?document.documentElement.style.setProperty("--sticky-ad-height","0px"):this.updateHeightVar()})}disconnectedCallback(){this.resizeObserver?.disconnect(),document.documentElement.style.removeProperty("--sticky-ad-height")}updateHeightVar(){document.documentElement.style.setProperty("--sticky-ad-height",`${this.offsetHeight}px`)}}customElements.define("sticky-footer-ad",s);           (function(){const gtmId = "GTM-58GK9ZVX";
+
+    // Patched vs the stock GTM snippet: the gtm.js script-tag injection is
+    // pulled out of the IIFE and deferred to idle. window.dataLayer and gtm.start
+    // event are still created synchronously, so every dataLayer.push between
+    // now and load queues on the plain array and GTM drains it on boot —
+    // no events are lost, they arrive later.
+    //
+    // Why: gtm.js is ~177KB and lands mid-load alongside the ad stack, where it
+    // costs main thread we need for INP and competes with the LCP image for
+    // bandwidth. Nothing in the ad path depends on it (GPT is loaded by the
+    // Assertive Yield manager, not GTM).
+    ;(function (w, d, s, l, i) {
+        w[l] = w[l] || []
+        w[l].push({
+            "gtm.start": new Date().getTime(),
+            event: "gtm.js",
+        })
+
+        const load = function () {
+            const f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != "dataLayer" ? "&l=" + l : ""
+            j.async = true
+            j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl
+            f.parentNode.insertBefore(j, f)
+        }
+
+        // Cap the wait: ad-heavy pages can stay busy for many seconds and may
+        // never hit a true idle period.
+        if ("requestIdleCallback" in w) {
+            w.requestIdleCallback(load, { timeout: 4000 })
+        } else {
+            w.setTimeout(load, 2000)
+        }
+    })(window, document, "script", "dataLayer", gtmId)
+})();                               Academy        Podcast        Top Tools        Blog            Free AI Courses        Partner        Events         Newsletter               Back to Menu                  Related Topics       Digest    Explainer Articles    Guides    News    Robotics Insider               Articles     View All               Hover to load posts                                                      
+     
+   linkedin           Instagram     instagram           X     x           Facebook     facebook           YouTube     youtube           RSS     rss                 Newsletter                                             .more-dropdown-link]:hidden" data-nav-href="https://theneuronacademy.com?utm_source=website&utm_medium=module&utm_campaign=theneuron" data-nav-type="static" data-collapsible="false">   Academy     Academy     .more-dropdown-link]:hidden" data-nav-href="/podcasts/" data-nav-type="static" data-collapsible="false">   Podcast     Podcast     .more-dropdown-link]:hidden" data-nav-href="/top-tools/" data-nav-type="static" data-collapsible="false">   Top Tools     Top Tools         Blog    Blog                     Related Topics       Digest    Explainer Articles    Guides    News    Robotics Insider               Top Articles       View All                  Hover to load posts                         .more-dropdown-link]:hidden" data-nav-href="/courses/intro-to-chatgpt-training-course/" data-nav-type="static" data-collapsible="false">   Free AI Courses     Free AI Courses     .more-dropdown-link]:hidden" data-nav-href="https://solutions.technologyadvice.com/lp/advertise-with-the-neuron/" data-nav-type="static" data-collapsible="false">   Partner     Partner     .more-dropdown-link]:hidden" data-nav-href="/events/" data-nav-type="static" data-collapsible="false">   Events     Events                                                        Home            Blog            Explainer Articles                 SHARE          Facebook        X        Pinterest        WhatsApp                       Everything AI That Was Announced at Samsara Beyond 2026                              Samsara's Beyond 2026 keynote showed a company transforming its hardware network into an even more powerful AI operating layer for physical operations, from fleet safety and maintenance to cargo tracking and custom agents.         Written By                 Grant Harvey                 Published:  Jun 24, 2026      
+Updated:
+  Jun 25, 2026       
+·
+    21 minute read                      For most people, an AI agent still means something that lives in a browser, clicks through software, drafts emails, or writes code.  Samsara's Beyond 2026 keynote  put that idea somewhere messier: crowded yards, warehouse forklifts, airport ramp gear, stormy routes, and maintenance shops racing the morning shift.  That matters because physical operations fail loudly. A bad workflow in office software creates a missed handoff. A bad workflow in fleet operations can create a crash, a lost shipment, a stranded driver, a surprise repair bill, or a fuel budget that burns through millions faster than expected.  Samsara's pitch at Beyond was that physical operations already generate the data. The next step is using AI to spot the signal, recommend the move, and automate the tedious work fast enough to change what happens in the real world.  The cleanest version of the keynote was this:  see everything, then act on it at scale.      Contents         First up, the TL;DR    The headline announcement: Agent Studio for physical operations    Samsara expanded its camera system from dash cams to 360-degree visibility    AI ride-alongs and coaching priority move safety from events to patterns    Maintenance got the AI treatment too    The Tracking Label turns shipments into connected assets    Samsara Community turns operators into part of the product loop    Samsara also named its 2026 Connected Operations Award winners    The strategy underneath the announcements    The hard part is trust    What changes for operators    What Samsara clarified after the keynote    What to watch next             (function(){const id = "955774e7-2e40-47cd-9e47-a90bd2e6e6f2";
+const token = "955774e7-2e40-47cd-9e47-a90bd2e6e6f2";
+const cid = "9e857bcd-b137-450c-abcf-2838a1b053cb";
+const targetingKVPs = {"env":"prod","stage":"prod","url":"www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/","hostname":"www.theneuron.ai","edge_country":"US","cid":"everything-ai-samsara-announced-at-beyond-2026","path":"explainer-articles,everything-ai-samsara-announced-at-beyond-2026","kw":"samsara-beyond-2026,Samsara","category":"explainer-articles,blog","topic":"explainer-articles,blog","ptype":"article","news":"no","author":"grant-harvey","post_id":"776008"};
+const playerSrc = "https://cd.connatix.com/connatix.player.js?cid=9e857bcd-b137-450c-abcf-2838a1b053cb&pid=955774e7-2e40-47cd-9e47-a90bd2e6e6f2";
+
+    /*
+     * Skybox fill contract (keep in sync with src/components/ad/SkyboxAd.astro):
+     * Non-empty skybox sets data-loaded on [data-ad-slot='skybox']
+     * then dispatches skybox-ad-ready. We probe the DOM initially;
+     * if empty, we listen for that event so a late fill still suppresses Connatix.
+     */
+    function isSkyboxFilled() {
+        return Boolean(
+            document.querySelector("[data-ad-slot='skybox'][data-loaded]"),
+        )
+    }
+
+    const wrapper = document.querySelector(`[data-jwplayer-wrapper="${id}"]`)
+
+    let suppressed = false
+    let playerRequested = false
+
+    // The wrapper reserves its box via aspect-video, so deferring the player
+    // script costs no CLS. Load it only once the player is near the viewport
+    // (~940 KB of Connatix JS otherwise competes with everything at startup).
+    const loadPlayerScript = () => {
+        if (playerRequested || suppressed) return
+        playerRequested = true
+
+        const script = document.createElement("script")
+        script.async = true
+        script.src = playerSrc
+        document.head.appendChild(script)
+    }
+
+    const observer =
+        "IntersectionObserver" in window
+            ? new IntersectionObserver(
+                  (entries) => {
+                      if (entries.some((entry) => entry.isIntersecting)) {
+                          observer.disconnect()
+                          loadPlayerScript()
+                      }
+                  },
+                  { rootMargin: "300px 0px" },
+              )
+            : null
+
+    const suppressPlayer = () => {
+        if (suppressed) return
+
+        // Do not suppress player on desktop
+        if (window.innerWidth > 768) return
+
+        suppressed = true
+        observer?.disconnect()
+
+        if (wrapper) {
+            wrapper.remove()
+        }
+    }
+
+    if (isSkyboxFilled()) {
+        suppressPlayer()
+    } else {
+        // Try to suppress player on late skybox fill
+        document.addEventListener("skybox-ad-ready", suppressPlayer, {
+            once: true,
+        })
+
+        if (wrapper && observer) {
+            observer.observe(wrapper)
+        } else {
+            loadPlayerScript()
+        }
+
+        window.cnx = window.cnx || { cmd: [] }
+        window.cnx.cmd.push(function () {
+            // do not add the pixel if the player is suppressed
+            const mount = document.getElementById(id)
+            if (suppressed || !mount || !mount.isConnected) return
+
+            new Image().src =
+                "https://capi.connatix.com/tr/si?token=" + token + "&cid=" + cid
+            cnx({
+                playerId: token,
+                settings: {
+                    queryJsTargeting: targetingKVPs,
+                    advertising: { macros: targetingKVPs },
+                },
+            }).render(id)
+        })
+    }
+})();   First up, the TL;DR            Samsara wants AI to run the boring work behind physical operations.   Samsara used Beyond 2026 to make one argument: the next big AI workflow shift will happen outside the browser, and in the trucks, warehouses, worksites, yards, maintenance shops, and supply chains that keep the physical economy moving.  The company’s new announcements all point in the same direction. Samsara already has a network of cameras, sensors, vehicles, asset tags, scanners, phones, and operational systems. Now it wants to turn that network into an AI layer that can see what is happening, decide what needs attention, and automate the follow-up work.   Here’s what they announced:     Agent Studio , built on the  Samsara Platform , lets operations teams create AI agents for tasks like driver assistance, KPI reporting, maintenance digests, geofence alerts, and vehicle assignment. Think: less “chatbot that writes your email,” more “AI that notices a truck has an unknown driver and starts cleaning up the workflow.”  Samsara expanded its camera system with a new  360 Camera for operated equipment , upgraded  AI Multicam , and two-way voice through the dash cam. The practical pitch: give drivers and equipment operators fewer blind spots, especially during backing, lane changes, yard maneuvers, warehouse work, and airport ramp operations.  The company also showed a more AI-native  Driver Experience , including in-cab briefings, route updates, road intelligence, manager calls through the camera, and  commercial navigation  that can bring business-specific routing into a familiar interface.  Samsara introduced the  Tracking Label and Shipment Center , a disposable Bluetooth label for shipment visibility across carriers. It is basically an  Asset Tag  idea rebuilt for cargo: slap it on a box, scan it with the  Shipment App , and track the shipment through the Samsara Network.  Samsara launched the  Samsara Community , a customer hub for operators to trade practical advice, join product and industry groups, access resources, and help shape the roadmap.  It also announced the  2026 Connected Operations Awards , highlighting customers using AI and connected operations to cut fuel costs, reduce collisions, shrink insurance claims, digitize forms, and improve utilization.          
+Advertisement
+                       The through-line is simple:  Samsara is trying to move from “system of record for operations” to “system of action for operations.” As they put it, their goal is to  see everything, and then act on it, at scale.    That shift only works if the AI makes the workday quieter. Drivers already have too many alerts. Dispatchers already have too many calls. Maintenance teams already have too many fault codes they don't understand. Supply-chain teams already have too many missing updates.   Samsara’s bet is that AI can sit on top of its connected data and handle the first layer of triage, so humans spend less time hunting for problems and more time solving the ones that matter.  The tension is trust. Physical operations are high-consequence environments, and the people doing the work need to believe the system is there to help them, not bury them in more noise. That is the real test for everything Samsara announced: whether the AI can become a useful second set of eyes without turning into one more screen everyone learns to ignore. So far, feedback from early beta testers has concluded:  it is very much like having a second set of eyes.             You can watch the  full keynote below :          The headline announcement: Agent Studio for physical operations  The biggest software announcement was  Samsara's new Agent Studio , a control center where operations teams can discover, customize, and deploy AI agents. Samsara said the product is built on real-world data from millions of connected assets, including the 25 trillion data points the company says it captured across the Samsara Network in 2025.  In normal-human terms, Agent Studio is a workshop for building small operational assistants. A team can start with prebuilt templates or create an agent in plain English, then connect it to Samsara data, internal documents, company policies, and permission settings.  Samsara highlighted more than 15 prebuilt templates across safety and maintenance. The examples were less “book my vacation” and more “please make Tuesday morning less cursed”:   A driver assistant that answers parking, weigh-station, policy, and escalation questions using the driver's location and company rules.  A daily maintenance digest that gives an ops team the quick read on fleet health and vehicle inspection compliance.  A driver and vehicle assignment workflow that spots when a moving vehicle has an unknown driver and links the right truck to the right person.  A weekly KPI report agent that pulls operational data into the kind of Monday morning report managers usually build manually.  A geofence alert agent that can test plain-English logic before it goes live.          
+Advertisement
+                      The important bit is that Samsara is aiming these agents at the repetitive work that surrounds frontline operations: paperwork, vendor coordination, driver communication, weekly reporting, exception handling, and follow-up.  We have covered  what agent-native work looks like  in software teams. Samsara is applying that logic to companies where the work still depends on trucks, trailers, tools, shifts, routes, docks, yards, and job sites.  Samsara expanded its camera system from dash cams to 360-degree visibility  Samsara also announced a major expansion of its camera stack through the  Samsara 360 Camera, new AI Multicam features, and two-way voice through the dash cam .  The new 360 Camera is built for operated equipment, meaning the stuff that moves through places where mistakes get expensive fast: forklifts, excavators, baggage tugs, pushbacks, construction equipment, warehouse vehicles, and airport ramp gear.  Samsara said the single-module camera captures a full 360-degree view from one mount point, with interactive pan and zoom for reviewing incidents. The idea is simple: equipment operators get better visibility in real time, and safety teams can review what happened from more than one angle after an incident.           That is a big expansion from road vehicles into the weird, dense, high-risk places where traditional fleet cameras were never really built to live.  AI Multicam is also getting smarter for road fleets. Samsara showed:    Bird's Eye View , a top-down composite view that helps drivers maneuver through crowded yards, narrow spaces, and tight turns.   Rear Collision Warning , which gives audio and visual alerts while reversing.   Vehicle in Blind Spot Detection , which warns drivers during lane changes and other high-risk moments.   The strongest demo idea was that cameras are turning into an in-cab safety interface. The system can warn a driver about a risky intersection, a low bridge, weather conditions, towing restrictions, or a geofenced zone without someone in dispatch manually calling them.  Samsara also announced two-way voice through the dash cam. A manager can speak to a driver through the camera, and a driver can message back from the same channel. That matters because the phone is often the exact thing safety teams want drivers to stop touching.         
+Advertisement
+                      The keynote also showed more driver-facing ideas, including AI briefings, road intelligence, driver recognition, and a CarPlay-powered commercial navigation experience that can push routes into a familiar interface.  AI ride-alongs and coaching priority move safety from events to patterns  One of the more interesting safety ideas from the keynote was AI ride-alongs.  The human version of a ride-along is straightforward: a senior driver sits with another driver, observes the subtle stuff, and notes habits that may never trigger a single dramatic incident. Samsara's AI ride-along tries to scale that idea across millions of miles.  The company said it analyzed driving behavior across six safety principles and 22 behaviors that predict crash risk. The system can look across hard braking, mobile usage, inattentive driving, road conditions, weather, and other signals, then identify which drivers need human coaching first.  That last part matters. Safety teams already have dashboards. The hard part is knowing which alerts deserve attention.  Samsara's coaching priority feature groups drivers by risk so managers can focus human coaching on the highest-risk cases and use automatic follow-up for the lower-risk cases. In the keynote demo, the system surfaced a smaller group of drivers who were most likely to cause the next accident, which turns a giant queue into a manageable coaching list.           This is where the keynote kept returning to the same tension: AI has to reduce noise, because frontline operations already have too many beeps, screens, apps, checklists, texts, calls, and dashboards competing for attention.  Maintenance got the AI treatment too  Samsara also showed how AI could change maintenance workflows.  The pain here is familiar to anyone who has run a fleet. A check engine light appears. A fault code shows up. Someone has to decide whether it is informational, urgent, covered by warranty, or likely to become a bigger repair later.  The keynote demo showed Samsara turning that process into a more guided workflow. A maintenance lead could open a fleet status view, see which vehicles were critical, click into a vehicle, and have Samsara decode the fault code in plain language.  The system also showed context around what the code means, how serious it is, what it may turn into, what the repair might cost, and whether the truck can finish its route before being swapped.  That is a practical version of AI for operations: less mystery around cryptic codes, fewer unnecessary vehicle pull-ins, and faster decisions about which trucks need attention now.         
+Advertisement
+                      Samsara also demoed its assistant working with warranty documents. Upload the warranty information, ask about the repair, and the system can identify what should be covered, what documentation is needed, and what work order tasks need to be created.  The keynote framed this as two hours of diesel-mechanic-and-paperwork brain work compressed into a couple of minutes. The bigger use case is fleet-wide pattern detection. If one truck has a fault that usually spreads across a batch of vehicles, the assistant can look for other trucks showing the same signals and schedule that check automatically.  The Tracking Label turns shipments into connected assets  Samsara's supply-chain announcement may have been the most visually simple: a smart sticker.  The company introduced the  Samsara Tracking Label and Shipment Center , a single-use Bluetooth label that provides near-real-time shipment visibility across carriers.  The problem Samsara is attacking is that traditional shipment tracking often goes dark between scans. You may know a package left a facility and later arrived somewhere else. You may have very little visibility into what happened in between, which is a problem when the cargo is copper wire, GPUs, pharmaceuticals, enterprise hardware, or anything else people would love to steal.           Samsara said cargo theft costs U.S. businesses roughly  $35B annually , up 60% year over year. It designed the Tracking Label as a low-cost way to expand visibility without asking shippers to recover expensive tracking hardware at the end.  The label is adhesive-backed, flexible, paper-thin, and disposable. Samsara says it has a 45-day battery life after activation, contains no lithium or hazardous materials, and is cleared for air, ground, and rail shipments.  The key is the Samsara Network. The label uses Bluetooth, then gets picked up by millions of Samsara-connected devices, including trucks, trailers, buses, construction equipment, warehouse scanners, and phones. Samsara says that network covers 99% of major U.S. roads and tens of thousands of worksites.  The workflow is deliberately boring, which is exactly the point:   Scan the label with the Samsara Shipment App.  Link it to a bill of lading, carrier tracking number, warehouse license plate, or shipment ID.  Activate the Bluetooth radio.  Slap it on the shipment.  Track the shipment through Shipment Center.   Shipment Center is the dashboard layer for all of this. It lets teams manage by exception, meaning they can focus on shipments that are late, stalled, at risk from weather, crossing borders, or showing signs of trouble.         
+Advertisement
+                      The keynote demo showed DCL Logistics using tracking labels on shipments from Kentucky to Las Vegas. Continuous visibility changes the conversation from “where is it?” to “what should we do now?”  Samsara Community turns operators into part of the product loop  Samsara also launched the  Samsara Community , a dedicated online hub for physical operations professionals.  This is the least flashy announcement, but it fits the strategy. Samsara has customers across transportation, construction, field services, public sector, education, food and beverage, manufacturing, utilities, energy, healthcare, and more. A dispatcher at one company may be solving a problem that a safety manager in another industry is about to hit next month.  Community members can join product-specific forums, industry groups, and regional groups. They can also access Knowledge Base articles, Academy courses, virtual events, and programs that feed into Samsara's product roadmap.  Anyone with access to a Samsara dashboard, including trial users, can join. The Community is available now through the Samsara dashboard or community.samsara.com.  For a company trying to build AI around highly specific operational contexts, this matters. The hard-won tricks of real operators are training data of a different kind: practical, messy, field-tested, and often invisible from headquarters.  Samsara also named its 2026 Connected Operations Award winners  Alongside the product announcements, Samsara announced the  2026 Connected Operations Award winners , recognizing customers across safety, efficiency, sustainability, and innovation.  The winners included Utility Supply &amp; Construction Company, Massey Services, Enercare, Tyson Foods, Grupo Aralo, Sysco GB, Lanes Group, Renew Holdings, and individual driver and technology leaders across North America, Mexico, and EMEA.  The results Samsara highlighted were the useful part:   Utility Supply &amp; Construction Company reduced insurance claim costs by 98%, from a historical high of $1.4M to $22K midway through the current policy year.  Massey Services saved $1.3M in fuel costs in one year using centralized fuel reporting and idling alerts.  Enercare cut vehicle dormancy by 26% through better vehicle utilization.  Grupo Aralo dropped collision risk per mile by 70% and increased its Security Score by 164% in Mexico.  Lanes Group digitized 1.3M form submissions per year and reduced vehicle idling by 83%.   These are the receipts Samsara wants customers thinking about while it pitches the next layer of AI. The keynote was full of future-facing demos, but the awards were there to make the claim feel operational instead of theatrical.  The strategy underneath the announcements  Samsara is building an AI layer for companies that live in the physical world.  That sounds obvious until you remember how much of the AI conversation still assumes work happens inside a clean software environment. Physical operations are different. The data is scattered across vehicles, cameras, phones, scanners, trailers, yards, warehouses, fuel systems, maintenance logs, driver behavior, weather, road networks, and customer expectations.  Samsara's advantage is that it already has hardware in the field. Cameras, telematics, asset tags, apps, and connected devices create a network that can see parts of the operation many software-only systems never touch.  The Beyond 2026 keynote arranged that network into three layers:    Visibility:  cameras, AI Multicam, 360 Camera, Tracking Label, telematics, equipment status, shipment data, and fault codes.   Intelligence:  AI ride-alongs, coaching priority, maintenance prioritization, shipment exceptions, warehouse comparisons, and assistant-driven analysis.   Action:  Agent Studio, driver communication, automated reporting, warranty workflows, geofence alerts, Shipment Center, and follow-up tasks.   The thesis is powerful because operations teams spend a lot of time paying the “where is the thing?” tax. Where is the truck? Where is the trailer? Where is the shipment? Where is the driver? Where is the fault? Where is the report? Where is the proof that this delivery arrived?  Samsara is trying to turn those questions into live operational signals, then use agents to handle the first layer of action.  The hard part is trust  The counterargument is straightforward: more AI in physical operations can also mean more surveillance, more alerts, and more systems drivers feel are watching them instead of helping them.  Samsara clearly knows this. The keynote repeatedly came back to driver experience, phone-free communication, and practical coaching. UNFI's Tehzin Chadwick captured the point well during the customer conversation: if AI becomes part of the safety conversation, drivers need confidence that the tool is there to help them improve. Otherwise, they will tune it out.  That is the adoption test hiding under every demo.  A 2026 interview study on  agentic AI deployment barriers  found that companies often hit a gap between what agents can demonstrate experimentally and what they can trust in production. The researchers called out verification as the sticking point: when output cannot be reliably checked, human-in-the-loop review becomes the only trusted mechanism.  That problem gets sharper in physical operations. A bad office agent may create an annoying report. A bad fleet or maintenance agent can route attention away from the wrong vehicle, driver, shipment, or risk.  Samsara's product bet is that its connected data gives agents enough context to be useful and grounded. Its customer-experience challenge is making those agents feel like a second set of eyes, not another bossy screen.  What changes for operators  For safety teams, the new camera and ride-along tools could shift attention from isolated incidents toward patterns. Managers can see which drivers need coaching first, which maneuvers create the most risk, and which equipment environments create blind spots.  For drivers, the best version of these tools removes distractions instead of adding them. Navigation, route changes, road warnings, dispatch calls, and recognition can move into the cab without asking the driver to juggle a phone.  For maintenance teams, AI can turn fault codes into decisions. The useful question becomes: can this vehicle finish the route, what will happen if we wait, what will it cost, and can we recover the repair under warranty?  For supply-chain teams, Tracking Label and Shipment Center change tracking from milestone updates into continuous exception management. Teams can focus on the shipments at risk instead of manually checking every shipment one by one.  For executives, Agent Studio gives them a way to automate the reports and follow-ups that consume regional managers, dispatch teams, safety leads, and maintenance coordinators every week.  That is the promise, anyway.  The next proof will come from boring metrics: fewer crashes, fewer manual reports, fewer missed deliveries, fewer unnecessary maintenance pull-ins, fewer phone calls, lower fuel waste, faster claims, and better driver retention.  What Samsara clarified after the keynote  The keynote showed the products. The press Q&amp;A was more useful for understanding how Samsara expects customers to actually use them.  Samsara CEO Sanjit Biswas, Chief Product Officer Johan Land, and several customer speakers, Tehzin Chadwick, Chief Safety Officer at UNFI; Michael Keller from Pitney Bowes; and Dave/David Tu, President of DCL Logistics, spent most of the discussion circling one idea: physical operations teams want AI that removes work, while still leaving people in control.  Agent Studio is starting as a customer-guided beta, not a finished magic box  The first useful clarification was around Agent Studio.  Samsara positioned Agent Studio as a place where operations teams can build AI agents for multi-step tasks, like maintenance workflows, KPI reports, safety briefings, driver support, and geofence alerts. In the Q&amp;A, the team made clear that this is still early. Agent Studio is in open beta, and Samsara is learning with customers before pushing it into full general availability.  That matters because the hardest part of enterprise AI is rarely the demo. The hard part is change management.  Who gets access? Who can create an agent? Who approves what the agent can do? Which tasks need a human to review the answer first? Which actions can run automatically?  Samsara said customers will control that rollout. That means Agent Studio is being treated less like a consumer chatbot and more like an operational system with permissions, guardrails, and staged deployment.  That also explains why Samsara is keeping its engineers close to customers. One answer from Sanjit described the model as working backward from real operators, instead of handing customers a box of “AI Legos” and expecting them to build the whole thing alone.   Which, frankly, is a relief. Most companies have received enough random AI Legos to build a small nation of little AI widgets that nobody asked for.   Samsara sees outside AI tools as additive, not competitive  One question asked why customers would use Samsara’s AI tools instead of Claude, ChatGPT, Codex, Claude Code, MCP servers, or internal AI systems.  Samsara’s answer was basically: use both.  Customers can pull data in and out through open APIs. Some will build their own apps. Some will use external coding tools or AI assistants. Samsara’s argument is that its advantage comes from operational context that general-purpose tools do not automatically have.  The example that came up was fault-code intelligence. Samsara has years of fleet maintenance data, vehicle behavior, fault-code patterns, and operational history inside the platform. A horizontal AI tool can help you build software around that data. Samsara’s AI can operate directly inside the system where that data already lives.  That is a better framing than “our agent replaces your agent.” The real enterprise AI stack is going to be messy. Companies will use general-purpose models, internal tools, SaaS copilots, APIs, and workflow systems together. Samsara wants to own the layer where physical operations data turns into action.  The business model will likely follow completed work, not raw tokens  Samsara also hinted at where pricing may go.  The company talked about a consumption model tied to value and actions. In other words, the paying moment is less “how many tokens did this agent use?” and more “what useful operational work did it complete?”  That fits the product. A maintenance digest, warranty claim workflow, shipment exception alert, driver briefing, or weekly KPI report has value because it replaces manual labor, reduces risk, or speeds up a decision.  The model to watch is whether Samsara prices AI around completed workflows, usage volume, outcome categories, or some blend of platform subscription plus consumption.  This is where AI in physical operations may diverge from the software world. A token meter is an awkward way to price a workflow that might prevent a missed delivery, surface a warranty claim, or save a manager from building 52 weekly reports a year.  Tracking Labels are designed for the messy middle between RFID and GPS  The Tracking Label Q&amp;A was one of the more useful parts because it explained what the product is actually competing with.  Passive RFID works well in controlled environments, like warehouses, where you can install readers and keep the supply chain inside your own infrastructure. GPS and cellular trackers can work across wider areas, but they are more expensive and often too bulky or valuable to throw away.  Samsara is aiming for the middle: a disposable Bluetooth label with a small battery that can ride on shipments across carriers and get picked up by the Samsara Network.  The company described it as operationally focused at first, especially for customers with lots of things they want to track. That could mean high-value goods like GPUs, pharmaceuticals, artwork, and specialized tools. It could also mean lighter or lower-cost shipments where traditional trackers were too expensive to justify.  The pricing question is still open. Directionally, Samsara suggested volume will matter, and customers are still helping define which shipments are worth tracking. That is the right unknown. A label like this gets interesting when customers start discovering uses Samsara did not design around.  Samsara wants to keep its network closed, at least for now  Another good question: will non-Samsara devices be allowed onto the Samsara Network?  The answer leaned toward control.  Samsara’s view is that owning the full stack helps with security, reliability, and network quality. Opening the network could turn Samsara into more of a general service provider, which brings a different set of responsibilities.  That is a meaningful strategy choice. The more Samsara controls the devices, scanners, cameras, phones, vehicles, and software participating in the network, the more it can guarantee the experience. The tradeoff is that a closed network grows through Samsara adoption, not open ecosystem sprawl.  For Tracking Label, that may be fine. Samsara says its network already reaches major roads and worksites. The real test is whether that coverage is strong enough in the weird handoff points where shipments usually go dark.  Driver AI will need serious guardrails  The driver-facing AI discussion had the clearest trust considerations.  Samsara described AI briefings that can be configured inside Agent Studio. A company could make them short, trigger them at certain moments, tailor them to the organization, and customize the audio experience. There was even a more human idea floated: long-haul driving can be lonely, and the system could eventually feel like a co-driver or companion to ease the burden of long drives alone. That is useful, but it will also require a delicate balance.  An AI voice in a cab can share road intelligence, safety reminders, weather warnings, route changes, and company-specific updates. It can also become distracting, annoying, or legally complicated if it starts having open-ended conversations with a driver on a recorded line.  Samsara’s answer was guardrails. Customers need to set what the AI can say, when it should stop, and when it should hand the driver back to dispatch.  That may become one of the most important product surfaces in the whole platform. The interface for configuring the AI matters as much as the AI itself. A driver should feel supported, not managed by a talking dashboard. It seems to us like Samsara is taking the right approach here.   AI ride-alongs are about patterns, not one-off alerts  Samsara also clarified how AI ride-alongs differ from its existing safety detections.  The current system can detect specific events, like close following or harsh braking. Ride-alongs look at longer stretches of driving, roughly 10, 20, or 30 minutes, and try to capture a more representative view.  That creates a different kind of coaching tool. Instead of “this one thing happened,” a manager gets a fuller read on how someone drives over time.  Samsara said customers can decide whether ride-alongs are visible to drivers. They can schedule them manually or trigger them automatically, such as for high-risk drivers or new drivers during the first 30, 60, or 90 days after hire.  Tehzin Chadwick’s feedback: UNFI’s safety team and drivers participated in beta testing, challenged assumptions, and helped Samsara tune the tool for real conditions, including weather. Her point was simple: if a tool is meant to keep drivers safer, it has to earn driver confidence.  That line may be the difference between mass driver adoption and the quiet resistance that can come with new tracking tools ( employees often don't like these tools, but Tehzin said UNFI provides both automated and manual training to give drivers the option of what kind of feedback they prefer. Samsara also suggested that lots of drivers seem to prefer this system because it judges them over time, rewarding them for good behavior, not just penalizing them for the one-off mistake) .  Customers want consolidation, but not at the cost of quality  The customer feedback also made clear why Samsara’s platform story resonates.  Dave Tu of DCL Logistics talked about SaaS fatigue: too many vendors, too many meetings, too many systems, and too much time spent stitching platforms together. Michael Keller of Pitney Bowes pointed to the value of open APIs and track-and-trace data flowing into reports for stakeholders who may never log into Samsara.  The pattern is familiar. Operators want consolidation because fragmented systems are exhausting. They still need best-in-class tools because the work is too important for a low-quality bundle.  That is the tightrope Samsara is walking. If the platform keeps expanding while maintaining quality, customers get fewer logins and more connected workflows. If the platform expands faster than the products mature, it becomes another giant system everyone has to manage.  The Q&amp;A made Samsara’s ambition clearer. This is no longer only a fleet telematics story. Samsara is pushing outward in concentric circles: safety, maintenance, driver experience, shipment visibility, site operations, equipment, analytics, and eventually more of the distributed physical operations stack.  Samsara’s AI pitch works when it gives operators better visibility into assets, risks, workflows, and exceptions. It gets harder when the people doing the work feel like the product is watching them more than helping them.  That is the real post-keynote test. Samsara has the hardware, the network, and the operational data. Now it has to prove the AI can reduce friction without adding another layer of noise.  It seems to us like they're on the right track.    What to watch next  The most important Samsara announcements were less about any single gadget and more about the platform shape forming underneath them.  Samsara is turning its connected-device network into an action layer. Cameras see. Labels report back. Telematics reports. Maintenance systems interpret. Agents act. Managers review. Drivers keep moving.   A few questions from here will decide how big this gets:    Do drivers trust the system enough to treat AI coaching as help?  Do operations teams build useful custom agents after the template honeymoon ends?  Does AI reduce the amount of work, or does it move the burden into exception review?  Can Samsara keep the experience simple as the platform expands?   It seems like the answers to all of these are trending towards yes.   The keynote's best idea was also its most practical one: AI in physical operations should make the workday quieter. Less staring at dashboards. Less chasing people by phone. Less guessing which truck, driver, shipment, or repair needs attention.  That is what Samsara has to prove now. The future of operations will still run on people moving through the world. The AI wins if those people have fewer blind spots, fewer interruptions, and more time to do the work only humans can do.                                                            Grant Harvey           Grant Harvey is the Lead Writer of The Neuron, where he continues to lead the publication's daily coverage of AI news, tools, and trends.                                  Learn the AI news and tools that actually matter for your career (without doomscrolling all day).  A free 5-min daily email with the top AI news, tools, and tips. Written so you'll actually get it.      ENTER YOUR EMAIL   Join For Free     By subscribing, you agree to receive emails from The Neuron. You can unsubscribe at any time. View our  Terms  and  Privacy Policy .                         
+More From Grant Harvey    AI Skill of the Day Digest — August 2026 (Part 2)    Everything That Happened in AI Today (Wednesday, September 2, 2026)    OpenAI Builds Shutdown Controls as AI Agents Gain More Power    Claude Fable 5.1 LIVE: Testing Anthropic’s New AI Agent                                Recommended for you...                                             News         How Samsara Is Bringing AI Agents Into the Physical World     AI agents are moving beyond office workflows and into trucks, dispatch centers, maintenance shops, and field teams. Samsara CTO John Bicket explains what that shift could mean for safety, trust, and the physical economy.      Corey Noles   Jul 15, 2026                                Loading more content…     {"title":"Everything AI That Was Announced at Samsara Beyond 2026","path":"/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/","id":776008,"category":20,"ads":true,"adTargeting":{"env":"prod","stage":"prod","url":"www.theneuron.ai/explainer-articles/everything-ai-samsara-announced-at-beyond-2026/","hostname":"www.theneuron.ai","edge_country":"US","cid":"everything-ai-samsara-announced-at-beyond-2026","path":"explainer-articles,everything-ai-samsara-announced-at-beyond-2026","kw":["samsara-beyond-2026","Samsara"],"category":["explainer-articles","blog"],"topic":["explainer-articles","blog"],"tax":[],"ptype":"article","news":"no","author":"grant-harvey","post_id":"776008"}}          
+    ;(() => {
+        const el = document.querySelector("[data-ad-sidebar-selector]")
+        const sidebarSelector =
+            el?.getAttribute("data-ad-sidebar-selector") || ".content-sidebar"
+
+        // AY uses GPT under the hood, so slotRenderEnded events fire reliably
+        // Watch for right-rail ads filling and adjust sidebar height
+        window.googletag = window.googletag || { cmd: [] }
+        window.googletag.cmd.push(() => {
+            const articleContainer =
+                document.getElementById("article-container")
+            // Hosts render two ContentWithSidebar rows (title, body), so the
+            // first matching aside is the empty title-row one — take the
+            // aside that actually holds ad containers.
+            const aside = Array.from(
+                document.querySelectorAll(sidebarSelector),
+            ).find((el) => el.querySelector(".ad-container"))
+
+            if (!articleContainer || !aside) return
+
+            const getSidebarHeight = () =>
+                Array.from(aside.children).reduce(
+                    (acc, el) => acc + el.offsetHeight,
+                    0,
+                )
+
+            const adjustSidebarHeight = () => {
+                let ads = aside.querySelectorAll(".ad-container")
+                while (
+                    articleContainer.offsetHeight   0
+                ) {
+                    if (ads.item(ads.length - 1)) {
+                        ads.item(ads.length - 1).remove()
+                    }
+                    ads = aside.querySelectorAll(".ad-container")
+                }
+            }
+
+            window.googletag
+                .pubads()
+                .addEventListener("slotRenderEnded", (event) => {
+                    // Only process filled ads
+                    if (event.isEmpty) return
+
+                    const slotElementId = event.slot.getSlotElementId()
+                    const placement = document.getElementById(slotElementId)
+
+                    // Check if this is a right-rail ad (class-based identification)
+                    if (
+                        !placement ||
+                        !placement.classList.contains("right-rail")
+                    ) {
+                        return
+                    }
+
+                    // Ad filled, check if we need to remove ads to fit sidebar
+                    adjustSidebarHeight()
+                })
+        })
+    })()
+                                  Don't fall behind on AI. Get the AI trends &amp; tools you need to know. Join 700,000+ professionals from top companies like Microsoft, Apple, Salesforce and more.            
+     
+   linkedin           Instagram     instagram           X     x           Facebook     facebook           YouTube     youtube           RSS     rss                 Company       Contact us     Advertise with us     Newsletter    Free AI Courses    Write Anything (with AI)           Categories      Blog                        Property of TechnologyAdvice. ©  2026 TechnologyAdvice. All Rights Reserved     Advertiser Disclosure: Some of the products that appear on this site are from companies from which TechnologyAdvice receives compensation. This compensation may impact how and where products appear on this site including, for example, the order in which they appear. TechnologyAdvice does not include all companies or all types of products available in the marketplace.         Terms of Service     Privacy Policy     California - Do Not Sell My Information                                                                    
+Stay in the loop
+   
+Get notified when we publish new articles.
+       
+Enable
+   
+Later
+                            
