@@ -76,3 +76,7 @@
 ## Capture — 2026-09-03 — STARTED
 - Logged at 2026-09-03 15:07 UTC
 - Plan: universe sweep --horizon-days 15 script-only, then agent-layer nine-area search + capture.py --plan for the 6 largest names reporting within 3 days.
+
+## Capture — 2026-09-03 — LULU tripwire investigated
+- Logged at 2026-09-03 15:17 UTC
+- Doc 9cce7dbac9...027d53 (marketbeat Q1 FY26 transcript, June 2025) tripped the tells regex because it names 'September 3, 2026' as the upcoming Q2 call date while separately discussing the PRIOR quarter beating expectations. Confirmed false positive per FINDINGS.md's known class (prior-quarter recap naming the next event date); document is legitimate pre-print content and stands.
