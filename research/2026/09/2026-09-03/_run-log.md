@@ -46,3 +46,8 @@
 - Shortlist: 6 names (PATH, PL, AMBA, LULU, ZS, IOT); this batch: LULU, ZS, IOT (positions 4-6 of 6, cap unchanged)
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (LULU+ZS, then IOT), publish after each dossier and after each wave
+
+## Stage 2 — deep dive, batch 2 — wave 1 done
+- Logged at 2026-09-03 10:40 UTC
+- Researched: LULU, ZS
+- Both event_confirmed; LULU evidence completeness 84 (no IV rank/skew found); ZS evidence completeness 80 (implied move figure six sessions stale, no IV rank found)
