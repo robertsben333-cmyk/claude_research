@@ -80,3 +80,8 @@
 ## Capture — 2026-09-03 — LULU tripwire investigated
 - Logged at 2026-09-03 15:17 UTC
 - Doc 9cce7dbac9...027d53 (marketbeat Q1 FY26 transcript, June 2025) tripped the tells regex because it names 'September 3, 2026' as the upcoming Q2 call date while separately discussing the PRIOR quarter beating expectations. Confirmed false positive per FINDINGS.md's known class (prior-quarter recap naming the next event date); document is legitimate pre-print content and stands.
+
+## Capture — 2026-09-03 — CPRT date correction and tripwire
+- Logged at 2026-09-03 15:18 UTC
+- CPRT calendar carried two rows: a stale 2026-09-03 (time-not-supplied, first seen 2026-08-30) and a corrected 2026-09-10 (time-after-hours, first seen 2026-09-02). Requerying Nasdaq for 09-03 now returns 0 CPRT rows -- the stale row appears to have dropped out. Research plan was built against the agent's assigned 09-03 date; agent independently found conflicting evidence (stocktitan release, SEC 8-K exhibit) pointing to 09-10 AMC and flagged it unresolved. Redirected the capture to CPRT-2026-09-10, the confirmed date -- 15 new docs landed there instead.
+- CPRT-2026-09-10 also tripped the tells tripwire: doc 5c606a32...431306 is MarketBeat's evergreen earnings-history page (dateModified 2026-05-21) whose 'beat...estimates' language is from a historical quarters table; the same page text explicitly confirms 'Copart's Q4 2026 earnings is scheduled for Thursday, September 10, 2026' -- corroborating the date correction. False positive, same class as the LULU tripwire; document stands.
