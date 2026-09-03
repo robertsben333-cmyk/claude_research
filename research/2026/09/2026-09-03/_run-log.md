@@ -30,3 +30,13 @@
 - Logged at 2026-09-03 08:47 UTC
 - Researched: PATH, PL
 - Both event_confirmed; PATH triage rationale corrected (magnitude framing inverted, real catalyst is 09-22 Investor Day); PL triage rationale corrected (not a guidance-validation print, it's about ATM dilution/backlog)
+
+## Stage 2 — deep dive, batch 1 — FINISHED
+- Logged at 2026-09-03 09:05 UTC
+- Researched: PATH, PL, AMBA
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves (PATH+PL, then AMBA), published individually and after each wave
+- Median evidence completeness: 84/100 (PATH 84, PL 87, AMBA 82)
+- Notable: PATH and PL triage rationales both corrected on further evidence (see wave-1 log entry); AMBA's implied move (12.93%) reads as cheap vs its own 8Q realised-move mean (15.08%), opposite of triage's framing
+- Panel-eligible after this batch: n/a — final ranking happens after batch 2
