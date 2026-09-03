@@ -25,3 +25,8 @@
 - Shortlist: 6 names (PATH, PL, AMBA, LULU, ZS, IOT); this batch: PATH, PL, AMBA (positions 1-3 of 6, cap unchanged)
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (PATH+PL, then AMBA), publish after each dossier and after each wave
+
+## Stage 2 — deep dive, batch 1 — wave 1 done
+- Logged at 2026-09-03 08:47 UTC
+- Researched: PATH, PL
+- Both event_confirmed; PATH triage rationale corrected (magnitude framing inverted, real catalyst is 09-22 Investor Day); PL triage rationale corrected (not a guidance-validation print, it's about ATM dilution/backlog)
