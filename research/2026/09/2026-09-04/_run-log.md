@@ -32,3 +32,9 @@
 - Subagents: 1 opus/high, in 1 wave of 1
 - Median evidence completeness: 80/100
 - Panel-eligible after this batch: N/A (ranking runs after the final batch)
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-04 10:26 UTC
+- Shortlist: 2 names (ABM, UNFI); this batch: UNFI
+- Already on disk, skipping: ABM (batch 1 completed)
+- Plan: 1 wave of 1 opus/high researcher (UNFI), publish after the wave
