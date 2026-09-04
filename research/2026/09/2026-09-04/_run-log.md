@@ -81,3 +81,7 @@
 - ALSO FIXED FIRST, before the universe was built: edge_universe.py --window skipped weekends but not NYSE holidays, so the Friday before Labor Day resolved to Monday 2026-09-07 (market closed) and returned 0 of 19 rows — an empty universe indistinguishable from a thin day. Now uses next_trading_day() from get_earnings.py, which already knew the calendar.
 - Spend: 13 subagents of the 20 cap (1 sweep + 7 hunters + 5 adversaries). Nothing shed, no degradation step taken.
 - ONE DAY IS AN ANECDOTE: n=5 with two tied cannot produce a meaningful rank correlation. edge_resolve.py on this run alone will return noise. The pooled figure across many days is the result.
+
+## Capture - 2026-09-04 - STARTED
+- Logged at 2026-09-04 15:07 UTC
+- Plan: universe-only sweep via capture.py --horizon-days 15 (script-only, no cap floor), then agent-layer nine-area capture for the 6 largest names reporting within 3 days, publishing after each name.
