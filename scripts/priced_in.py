@@ -295,6 +295,65 @@ def reaction(rows, event_date, session):
     return round((a / b - 1) * 100, 2)
 
 
+def session_disagrees_with_volume(rows, event_date, session):
+    """Does the tape say the reaction landed on a different day than `session` implies?
+
+    THE FAILURE THIS EXISTS FOR, verified on 2026-09-04. GMHS's closest analogue --
+    the prior fiscal-year annual print of 2025-09-09 -- was recorded as **-18.78%**
+    when the actual overnight reaction was **+32.37%**. Gamehaus released at 06:00 ET
+    (bmo) but furnished its 6-K later the same day, so `prior_prints` read an
+    acceptance time at or after 16:00 and tagged the event `amc`. Under `amc` the
+    window becomes event-day close -> next close, i.e. 2.29 -> 1.86, which is the
+    day-after GIVE-BACK of a +32% pop (1.73 -> 2.29 on 22.5m shares against a
+    ~200-700k-share book). The recorded number was not the reaction; it was its
+    reversal, with the sign flipped.
+
+    That single row inverted the strongest base-rate argument in that day's hunt:
+    the hunter reasoned from "the one clean analogue was -18.78%, all three clean
+    earnings reactions negative" and ranked GMHS last of five.
+
+    EDGAR acceptance time is the FILING time, not the news time. For a foreign
+    private issuer the 6-K routinely follows the press release by hours, so the
+    tag is unreliable exactly where the 6-K text-match path is already weakest.
+    Rather than guess a press-release time we cannot see, flag the disagreement:
+    if the event date itself carries the volume spike, the market reacted ON that
+    date, which means the print was `bmo` whatever the acceptance clock says.
+
+    Returns None when there is nothing to say, else a dict describing the conflict.
+    Advisory only -- it changes no recorded move, it tells the reader not to trust
+    one.
+    """
+    idx = {r["date"]: i for i, r in enumerate(rows)}
+    dates = sorted(idx)
+    after = [d for d in dates if d > event_date]
+    if event_date not in idx or not after:
+        return None
+    i_ev = idx[event_date]
+    if i_ev < 20:
+        return None
+    v_ev = rows[i_ev]["volume"] or 0
+    v_next = rows[idx[after[0]]]["volume"] or 0
+    base = [rows[j]["volume"] or 0 for j in range(i_ev - 20, i_ev)]
+    med = statistics.median(base) if base else 0
+    if not med or not v_ev:
+        return None
+    # The event day must be a genuine spike AND clearly busier than the day after.
+    if v_ev < 5 * med or v_ev < 2 * max(v_next, 1):
+        return None
+    return {
+        "tagged_session": session,
+        "volume_says": "bmo",
+        "event_day_volume": v_ev,
+        "next_day_volume": v_next,
+        "median_20d_before": int(med),
+        "move_as_tagged_pct": reaction(rows, event_date, session),
+        "move_if_bmo_pct": reaction(rows, event_date, "bmo"),
+        "note": "the event date carries the volume spike, so the market reacted on "
+                "that date and the print was bmo. If tagged amc, the recorded move "
+                "is the day-after give-back and may carry the wrong sign.",
+    }
+
+
 # No US quarterly or semi-annual reporter has an earnings cadence below this.
 # Quarterly is ~91 days and semi-annual ~182; a median gap under 70 days means the
 # filings matched as "earnings" are something else, so no verdict built on them is
@@ -574,7 +633,12 @@ def build(ticker, event_date, session):
             for e in prints:
                 m = reaction(rows, e["event_date"], e["session"])
                 if m is not None:
-                    hist.append({**e, "move_pct": m})
+                    row = {**e, "move_pct": m}
+                    conflict = session_disagrees_with_volume(
+                        rows, e["event_date"], e["session"])
+                    if conflict:
+                        row["session_conflict"] = conflict
+                    hist.append(row)
         else:
             basis = "no CIK on EDGAR for this ticker"
     except Exception as e:
@@ -588,6 +652,11 @@ def build(ticker, event_date, session):
         "median_abs_move_pct": round(statistics.median(absm), 2) if absm else None,
         "max_abs_move_pct": round(max(absm), 2) if absm else None,
         "up_count": sum(1 for h in hist if h["move_pct"] > 0),
+        # Rows where the tape says the reaction landed on a different day than the
+        # EDGAR acceptance time implies. A non-zero count means the median, the
+        # up-count and the deadband are all computed over at least one move that
+        # may carry the wrong sign -- see session_disagrees_with_volume.
+        "session_conflicts": sum(1 for h in hist if h.get("session_conflict")),
     }
 
     # Does an event on this date fit the company's own filing cadence?
