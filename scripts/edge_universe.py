@@ -19,9 +19,13 @@ not be in the window and that is a fact about the day rather than a bug.
 import argparse
 import json
 import re
+import sys
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from get_earnings import next_trading_day    # NYSE calendar, holidays included
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 SESSION = {"time-pre-market": "bmo", "time-after-hours": "amc",
@@ -60,10 +64,11 @@ def main():
     a = ap.parse_args()
 
     if a.window:
-        today = date.today()
-        nxt = today + timedelta(days=1)
-        while nxt.weekday() >= 5:                 # skip the weekend
-            nxt += timedelta(days=1)
+        today = date.fromisoformat(a.date) if a.date else date.today()
+        # Skipping only the weekend resolved the Friday before Labor Day 2026
+        # (09-04) to Monday 09-07, a closed market: 19 calendar rows, zero in
+        # the window. `get_earnings.py` already knows the NYSE calendar.
+        nxt = next_trading_day(today)
         plan = [(today.isoformat(), "amc"), (nxt.isoformat(), "bmo")]
     elif a.date:
         plan = [(a.date, a.session)]

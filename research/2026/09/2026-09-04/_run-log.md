@@ -48,3 +48,11 @@
 - Median evidence completeness: 80/100
 - Ranking: 02-ranking.json written from both dossiers (ABM, UNFI); shortlist change_expectation was null for both (triage_mode skipped_small_universe), so the panel_priority formula's 0.20 change_expectation weight was dropped and the remaining two renormalized -- documented in the ranking file's note
 - Panel-eligible after this batch: ABM (45.13), UNFI (39.5) -- both eligible, both go to panel (panel.names=2, only 2 dossiers exist)
+
+## Stage E — edge hunt — 2026-09-04 amc + 2026-09-08 bmo — STARTED
+- Logged at 2026-09-04 14:11 UTC
+- Window resolved to 5 confirmed names, all 2026-09-08 bmo: ABM, UNFI, WDH, CAN, GMHS. Today's Friday amc contributed nothing — all 12 calendar rows were time-not-supplied and were dropped per the phantom-rate rule (--include-unknown withheld).
+- BUG FIXED FIRST: edge_universe.py --window skipped weekends but not NYSE holidays, so it resolved the Friday before Labor Day to Monday 2026-09-07 (market closed) and returned 0 of 19 rows. It now uses next_trading_day() from get_earnings.py, which already knew the calendar. Window is now 09-04 amc + 09-08 bmo.
+- Baselines sealed and committed before any agent launches. All 5 fits_cadence, all with 7-8 exact 8-K item 2.02 reaction histories, no cadence_implausible, no suspect verdicts — no amend pass needed.
+- Only 1 of 5 has a usable option chain (UNFI, event-implied 12.02%, but ATM spread 39% of mid = indicative only). ABM's chain exists but spread is 188% of mid = unusable. WDH/CAN/GMHS no chain. So 4 of 5 baselines infer what is priced from a 20d run-up rather than measuring it.
+- Plan: 1 edge-sweep over all 5, then 7 unpriced-hunters (2 each on top 2 by hunt_priority, 1 on the other 3), then 5 priced-in-adversaries, 1 per ticker judging all findings on both sides. Total 13 subagents against the edge_hunt cap of 20 — no shed needed.
