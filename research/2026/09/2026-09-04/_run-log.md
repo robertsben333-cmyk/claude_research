@@ -38,3 +38,13 @@
 - Shortlist: 2 names (ABM, UNFI); this batch: UNFI
 - Already on disk, skipping: ABM (batch 1 completed)
 - Plan: 1 wave of 1 opus/high researcher (UNFI), publish after the wave
+
+## Stage 2 — deep dive, batch 2 — FINISHED
+- Logged at 2026-09-04 10:43 UTC
+- Researched: UNFI
+- Skipped (already done): ABM (batch 1)
+- Failed: none
+- Subagents: 1 opus/high, in 1 wave of 1
+- Median evidence completeness: 80/100
+- Ranking: 02-ranking.json written from both dossiers (ABM, UNFI); shortlist change_expectation was null for both (triage_mode skipped_small_universe), so the panel_priority formula's 0.20 change_expectation weight was dropped and the remaining two renormalized -- documented in the ranking file's note
+- Panel-eligible after this batch: ABM (45.13), UNFI (39.5) -- both eligible, both go to panel (panel.names=2, only 2 dossiers exist)
