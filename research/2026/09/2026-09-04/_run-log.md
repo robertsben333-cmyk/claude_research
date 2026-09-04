@@ -144,3 +144,15 @@
 - Anchors refreshed for both names via WebFetch/WebSearch before panel launch: ABM spot 47.23->47.16 (stockanalysis.com, 2026-09-04T15:42Z), implied move 7.0%->8.26% (optionslam.com, supersedes stage 2's thin-chain derivation off only 88 contracts OI); UNFI spot 43.62->43.61 (stockanalysis.com, 2026-09-04T15:48Z), implied move 10.6%->10.7% (fresh CBOE ATM straddle, raw 13.6% term-structure-adjusted, confirms stage 2's figure was still valid).
 - Degradations: none.
 - Published incrementally: heartbeat before panel launch, then ABM panel+synthesis after its 7 personas completed, then this final commit with UNFI panel, both dossiers, and the advice note.
+
+## claude_naive — 2026-09-04
+- Logged at 2026-09-04 17:44 UTC
+- Universe: 5 calendar rows in the window (0 after today's close, 5 before the next open), 2 above the $500m cap floor, 2 forecast.
+- Window is holiday-extended: Monday 2026-09-07 is Labor Day, so the next trading day is Tuesday 2026-09-08 and today is the last session before both prints. Scored move is Fri close -> Tue close, a 4-day hold.
+- Calls: 0 up, 1 down (ABM, Lean Down, 6.5% raw / 10.4% scaled), 1 neutral (UNFI, 12.0% raw / 24.0% scaled).
+- Dropped: WDH ($359m), CAN ($303m), GMHS ($45m) — below the cap floor. Also excluded as outside the window: CASY, TTAN, BRZE, INNV, AVO (all time-after-hours on 09-08) and GME ($8.6bn, listed time-not-supplied; confirmed AMC 09-08 by search, so its entry is Tuesday not today).
+- ABM thesis is arithmetic: FY26 guide $3.85-4.15 reaffirmed twice while H1 adj EPS grew 0.6% ($1.73 vs $1.72), so H2 must do ~+17%; margin already guided to the low end at Q2; 6 of last 8 prints closed down, mean abs 7.1%.
+- UNFI abstained deliberately: Q4 print sets the first FY2027 frame, last 8 reactions run +30.6/+20.0/+11.6/-10.2/+18.5/-8.9/+8.2/-10.3 with no reliable sign. Magnitude is the confident part.
+- Anchors: Yahoo daily bars OK. Yahoo options endpoint returned HTTP 401 for both names, so no implied move — recorded as unavailable, not estimated.
+- Verified both event dates against company sources (ABM 08-25 GlobeNewswire, UNFI 08-10 Businesswire): both 2026-09-08 BMO, no phantom rows.
+- Note on a near-miss: a search hit titled 'ABM Industries 3Q 2026: Revenue $2.29B, EPS $0.73 — 10-Q Summary' looks like post-print leakage but is the Q2 FY26 10-Q filed 2026-06-05, mislabelled by the aggregator. Checked before use.
