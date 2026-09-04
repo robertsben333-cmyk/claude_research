@@ -110,3 +110,7 @@
 - Logged at 2026-09-04 15:45 UTC
 - Agent discovery: 45 queries across 9 areas, 37 URLs marked for fetch. Event NOT yet happened, but calendar date is WRONG: IMPP's own press release (GlobeNewswire 3356593, issued today) states the real Q2/6-months 2026 results date is 2026-09-10 BMO, call 10:00am ET -- 6 days later than the tracked 2026-09-04. Namesake-collision risk flagged: an unrelated 2013-2016 Indiana biodiesel-fraud 'Imperial Petroleum' SEC case and 'Imperial Oil' (IMO) both surface on generic queries and must not be conflated with NASDAQ:IMPP. Analyst price-target aggregators disagree wildly (2.13 vs .00 avg) -- data-quality flag, unresolved.
 - capture.py: 13 new documents, 1 tripwire (StockTwits symbol page, area 7). INVESTIGATED: confirmed FALSE POSITIVE, same exact root cause as NB (x2) and NRT (x1) earlier today -- identical embedded StockTwits sidebar/trending-widget JSON blob about an unrelated 'agentic AI' company, not about IMPP. Fourth occurrence of the identical string today; strengthens the script-design finding already logged under NRT's entry.
+
+## Stage 3 — panel & advice — STARTED
+- Logged at 2026-09-04 15:55 UTC
+- Panelling both panel-eligible names from 02-ranking.json: ABM (45.13) and UNFI (39.5) -- config panel.names=2, both eligible, no budget shedding (stage 2 completed both batches cleanly). Plan: refresh spot/implied-move anchors for both, run 7 isolated personas per name (14 subagents total), synthesize, write dossiers + advice note.
