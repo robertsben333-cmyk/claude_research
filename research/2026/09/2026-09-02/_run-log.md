@@ -105,3 +105,7 @@
 - Entry snapshot: 8/8 spots resolved, no null tickers, no unscoreable rows. Frozen 17:42 UTC, ahead of the 18:00 UTC / 14:00 ET entry.
 - ANCHOR FAILURE — the README's stated top transfer risk showed up on day 2. Frozen live quotes contradicted search-snippet prices on three names: CIEN $350.11 vs $479.50 quoted (simplywall.st), CPB $24.03 vs $21.46, SNOW $306.04 vs $319.80. AVGO/NTAP/FIVE agreed within 1%. Corrected the affected key_drivers and reasoning against the live feed and cut CIEN evidence_quality 70 -> 55. The CIEN error was material: it inverted a counter-argument, since B. Riley's $413 target sits above a $350 spot, not below it.
 - Method note: no research methodology applied, per the skill. WebSearch only; WebFetch not needed. No subagents.
+
+## Stage 4 — calibration — DONE
+- Logged at 2026-09-04 06:38 UTC
+- Scored 2026-09-02: panelled 1/2 (AI hit, SNOW miss), prelim 0/6 -- worst prelim day since scoring began. Panel and prelim now tied at 44% overall (n=9, n=25).

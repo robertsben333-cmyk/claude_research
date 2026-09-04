@@ -62,3 +62,7 @@
 - Logged at 2026-08-27 16:10 UTC
 - 04-advice.md / .json written: ESTC Neutral/No Edge (High certainty, High reversal risk), AFRM Neutral/No Edge (Med certainty, High reversal risk)
 - Ranked field includes S, MRVL, RBRK (deep-dived but not panelled) plus a not_researched entry for IREN
+
+## Stage 4 — calibration — DONE
+- Logged at 2026-09-04 06:38 UTC
+- Scored 2026-08-27: panelled 1/2 (AFRM hit, ESTC miss), prelim 3/5. IREN excluded (never researched).

@@ -97,3 +97,7 @@
 - entry_snapshot.py captured 8/8 spots at 17:5x UTC (~13:5x ET), ahead of the backtest's 14:00 ET entry.
 - Skill doc drift: SKILL.md §2 shows 'get_earnings.py --out <dir>'; the actual flag is --out-dir. Used --out-dir.
 - No research method was imposed and none of research/ was read, to keep this arm-A and not contaminated by today's stage 2/3 output on DELL and CXM.
+
+## Stage 4 — calibration — DONE
+- Logged at 2026-09-04 06:38 UTC
+- Scored 2026-09-01: panelled 0/2 (DELL miss, CXM miss -- red-team's soft-guide mechanism fired on CXM), prelim 3/6.
