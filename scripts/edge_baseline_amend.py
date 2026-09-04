@@ -46,6 +46,51 @@ from pathlib import Path
 # on 2026-09-01 the 2026-08-31 table was still in place and did that. The guard
 # in main() now makes a fully stale table exit non-zero instead of looking clean.
 AMENDMENTS = {
+    "WDH": ("unknown",
+            "DOWNGRADE, and on 2026-09-04 it is the ONLY amendment -- a pass whose "
+            "sole entry lowers a verdict, which is worth stating plainly because the "
+            "symmetry rule is usually invoked the other way round. Waterdrop's "
+            "2026-09-08 pre-open date IS confirmed by its own PR Newswire release of "
+            "2026-08-25 (call 8:00 a.m. ET), so the event is real. But the "
+            "'fits_cadence' verdict is an artefact: it rests on a median gap of 85 "
+            "days computed over a filing set that contains THREE 6-Ks inside one "
+            "quarter -- 2026-06-17, 2026-06-23 and 2026-07-24 -- where at most one "
+            "earnings release can exist. As a foreign private issuer Waterdrop files "
+            "no item 2.02, and it 6-Ks its buybacks, special dividends and AGM "
+            "material, all of which carry results-shaped language the text matcher "
+            "accepts. The verdict also reads 'last print 2026-07-24', 46 days ago, "
+            "which would make the 2026-09-08 event a second print inside the same "
+            "quarter. Only the five older entries (2025-03-12, 2025-06-05, "
+            "2025-09-04, 2025-12-03, 2026-03-25) form a clean quarterly chain, so "
+            "the 2.29% median and the 1.5% deadband derived from it rest on eight "
+            "rows of which at most six are earnings reactions. 'unknown' not "
+            "'suspect': the event is established, its history simply does not "
+            "characterise it.",
+            "https://en.prnasia.com/releases/global/waterdrop-inc-to-report-second-quarter-2026-financial-results-on-september-8-2026-545126.shtml"),
+}
+
+# DELIBERATELY NOT AMENDED on 2026-09-04, and this is the judgement, not an
+# oversight. CAN and GMHS both carry cadence_implausible with verdict 'unknown',
+# and both events are confirmed by the company's own press release with the hour
+# -- so the instinct is to upgrade them to fits_cadence. They stay at 'unknown'
+# (event_q 0.6) for exactly the DOO/PSNY/VBNK/ZGN reason below: in both names the
+# 6-K text matcher caught NON-EARNINGS filings, so the recorded reactions are not
+# earnings base rates and upgrading would forgive a history defect and hand each
+# name a 1.0 multiplier it has not earned.
+#   CAN: 8 filings at a 13-day median gap, including a 2026-07-14/07-15 pair one
+#        day apart. Canaan 6-Ks its monthly bitcoin-production and mining-fleet
+#        updates. No quarterly reporter has a 13-day cadence.
+#   GMHS: 8 filings at a 55-day median. On a 2026-06-30 fiscal year end the real
+#        prints are 2025-09-09, 2025-11-25, 2026-03-23 and 2026-06-24; the other
+#        three (2026-07-13, 07-14, 08-28) sit outside any reporting quarter. The
+#        2026-06-24 row is also tagged session 'intraday', so its +9.84% is not a
+#        clean overnight reaction. Usable base rate is 4 events, not 8.
+# ABM and UNFI are untouched: both domestic, both on exact 8-K item 2.02
+# acceptance times, both rated history-trustworthy by the sweep.
+#
+# Net effect of this pass: WDH loses the 1.0 event multiplier it had not earned,
+# and no name gains one. Per-name history warnings go to the hunters instead.
+_RETIRED_2026_09_02 = {
     "MEI": ("fits_cadence",
             "UPGRADE. Date and session confirmed by Methode Electronics' own "
             "GlobeNewswire release of 2026-08-26: Q1 FY2027 (period ended "
