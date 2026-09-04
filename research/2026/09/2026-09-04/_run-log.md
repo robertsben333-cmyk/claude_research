@@ -17,3 +17,9 @@
 - Session mix: 0 AMC / 2 BMO
 - Notable drops: none (stage 0 already excluded WDH, CAN, GMHS below market-cap floor)
 - Note: 01-shortlist.json was absent when this session started (~2h after stage 1's scheduled 08:38 CEST fire); ran earnings-triage inline per earnings-deep-dive step 1's guidance rather than block stage 2
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-04 08:29 UTC
+- Shortlist: 2 names (ABM, UNFI); this batch: ABM
+- Already on disk, skipping: none
+- Plan: 1 wave of 1 opus/high researcher (ABM), publish after the wave
