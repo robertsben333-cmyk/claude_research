@@ -90,3 +90,8 @@
 - Logged at 2026-09-04 15:18 UTC
 - capture.py --horizon-days 15 (no --universe-only): 168 events in window, 337 tracked total, 1080 new documents (mostly EDGAR filing pointers + refreshed 63-day price bars; StockTwits captured for d<=2 events).
 - Zero tripwires flagged by the script across all 168 events.
+
+## Capture — 2026-09-04 — NB
+- Logged at 2026-09-04 15:31 UTC
+- Agent discovery: 48 queries across 9 areas (skipping raw price/volume + Form4/8-K enumeration), 45 URLs marked for fetch. Event genuinely upcoming (no post-earnings evidence found) but calendar date looks WRONG: 5 independent sources (stockanalysis, nasdaq, earningswhispers, tipranks, wallstreetzen) converge on the real date being 2026-09-09/10 AMC, not 2026-09-04 -- consistent with NB's own FY-end cadence (FY25 annual print ~Sept 11 2025). Captured under the tracked 2026-09-04 event_date since that is what the universe carries; event has not happened, so no leak risk from the date being off.
+- capture.py: 30 new documents, 2 tripwires fired (both StockTwits pages, area 7 sentiment). INVESTIGATED: both tripwires are FALSE POSITIVES -- identical embedded JSON blob ('...post-earnings selloff as a manipulation-driven buying opportunity...', 'agentic AI', 'narrowing gross margins') is StockTwits sidebar/trending-widget boilerplate about a wholly unrelated company, not about NB (a rare-earth/scandium miner) or its own earnings. Confirmed by grepping both docs: identical string in both, describing a company profile (agentic AI pivot) that does not match NB at all. No corpus corruption; the 'stock jumped 7%' language in the other tripped doc is genuinely about a real, dated (Oct 2025 / Mar 2026 update) Lockheed Martin defense-contract catalyst, not an earnings reaction.
