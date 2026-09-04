@@ -23,3 +23,12 @@
 - Shortlist: 2 names (ABM, UNFI); this batch: ABM
 - Already on disk, skipping: none
 - Plan: 1 wave of 1 opus/high researcher (ABM), publish after the wave
+
+## Stage 2 — deep dive, batch 1 — FINISHED (08:50 UTC)
+- Logged at 2026-09-04 08:51 UTC
+- Researched: ABM
+- Skipped (already done): none
+- Failed: none
+- Subagents: 1 opus/high, in 1 wave of 1
+- Median evidence completeness: 80/100
+- Panel-eligible after this batch: N/A (ranking runs after the final batch)
