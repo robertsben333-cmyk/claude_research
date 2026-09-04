@@ -85,3 +85,8 @@
 ## Capture - 2026-09-04 - STARTED
 - Logged at 2026-09-04 15:07 UTC
 - Plan: universe-only sweep via capture.py --horizon-days 15 (script-only, no cap floor), then agent-layer nine-area capture for the 6 largest names reporting within 3 days, publishing after each name.
+
+## Capture — 2026-09-04 — script-only sweep done
+- Logged at 2026-09-04 15:18 UTC
+- capture.py --horizon-days 15 (no --universe-only): 168 events in window, 337 tracked total, 1080 new documents (mostly EDGAR filing pointers + refreshed 63-day price bars; StockTwits captured for d<=2 events).
+- Zero tripwires flagged by the script across all 168 events.
