@@ -65,3 +65,7 @@
 ## Capture — 2026-09-07 — SUNB tripwire investigated
 - Logged at 2026-09-07 15:27 UTC
 - Tripwire fired on stocktitan.net SUNB 10-K filing summary (area 5, sha f4dc54d8...): matched 'reported revenue of' regex. Investigated: the match is the company's FY2026 full-year revenue (year ended April 30, 2026, $11,154M) disclosed in the 10-K FAQ, i.e. the PRIOR fiscal year already reported in the annual report -- not the upcoming Sept 9, 2026 quarterly print. Document kept in corpus; false positive, no upstream bug found.
+
+## Capture — 2026-09-07 — COO coverage gap
+- Logged at 2026-09-07 15:29 UTC
+- COO's search agent exhausted its WebSearch call budget (200/200) partway through; areas 7 (sentiment/alt-data) and 9 (macro/peers) were never searched for this name. Areas 1,3,4,5,6 completed (25 queries, 38 URLs selected, 17 new docs captured). Recorded as a genuine coverage gap, not papered over.
