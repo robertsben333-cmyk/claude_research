@@ -57,3 +57,7 @@
 ## Capture — 2026-09-07 — STARTED
 - Logged at 2026-09-07 15:06 UTC
 - Sweep universe --horizon-days 15 script-only, then agent-layer capture for top 6 by market cap reporting within 3 days, per earnings-capture skill.
+
+## Capture — 2026-09-07 — ORCL tripwire investigated
+- Logged at 2026-09-07 15:26 UTC
+- Tripwire fired on stocktwits.com/symbol/ORCL/sentiment (area 7, sha fe85856e...): matched beat/estimates regex. Investigated: the match text is a SNOW (Snowflake) news blurb embedded in ORCL's stocktwits related-news widget ('SNOW's Q2 earnings and revenues beat estimates'), not ORCL post-earnings language. The same document's structured upcomingLatestData block independently confirms ORCL callDate=2026-09-10, callTime=after_market, resolving in favor of the Sept-10 AMC date over the stale Sept-8 calendar row. Document kept in corpus; false positive, no upstream bug found.
