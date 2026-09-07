@@ -53,3 +53,7 @@
 - Sweep also caught: DLNG announced this date TWICE -- 2026-09-01 said 09-07 amc, superseded 2026-09-02 by 09-08 bmo, almost certainly because 09-07 is Labor Day. A hunter on the first release would have had the wrong session. Dynagas holds no earnings call, so the session rests on company wording, not a call time.
 - Budget: 15 of the edge_hunt cap of 20 (1 sweep + 8 hunters + 6 adversaries). No shed; edge_degrade_order not invoked. Two-hunter split applied to UNFI (priority 78) and CAN (72). No option-chain deviation needed -- both names with any chain were already above median priority.
 - ONE DAY IS AN ANECDOTE: six names cannot produce a meaningful rank correlation. Stated in the note. The pooled figure from edge_resolve.py --pool is the result; this is one row of it.
+
+## Capture — 2026-09-07 — STARTED
+- Logged at 2026-09-07 15:06 UTC
+- Sweep universe --horizon-days 15 script-only, then agent-layer capture for top 6 by market cap reporting within 3 days, per earnings-capture skill.
