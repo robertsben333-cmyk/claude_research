@@ -15,3 +15,10 @@
 - Scouts: 0 subagents (screen not needed)
 - Session mix: 0 AMC / 2 BMO
 - Notable drops: none by this stage (4 names already excluded upstream at stage 0 on market cap: WDH, CAN, DLNG, GMHS)
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-07 10:24 UTC
+- Shortlist: 2 names (ABM, UNFI); cap 6, both within cap
+- Batch 1 published no heartbeat and no dossiers exist -- its half (ABM) is missing; covering both halves as batch 2
+- Already on disk, skipping: none
+- Plan: single wave of 2 opus/high researchers (ABM, UNFI), publish after each dossier
