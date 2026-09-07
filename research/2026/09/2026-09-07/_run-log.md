@@ -87,3 +87,13 @@
 - Panelling both panel-eligible names from 02-ranking.json: ABM (panel_priority 35.5), UNFI (panel_priority 33.35). panel.names=2, both fit, no degrade needed.
 - Note: same underlying event (ABM/UNFI report 2026-09-08 BMO) was already panelled on 2026-09-04, whose window rolled through the Sept 7 Labor Day to the same Sept 8 open. This run is a fresh, independent re-panel one day closer to the print, with anchors re-sourced today rather than reused.
 - Plan: refresh spot + implied move for both names, build Phase-0 anchor packets, spawn 7 persona subagents per name (14 total) in parallel, synthesize each, chair review, write panel files + dossiers + advice note, publish.
+
+## Stage 3 — panel & advice — FINISHED
+- Logged at 2026-09-07 16:12 UTC
+- Panelled: ABM, UNFI (both panel-eligible names; panel.names=2 default, no degrade needed).
+- Calls: ABM Neutral / No Edge (consensus -16.7, band 3.7-11.8%, certainty Med after chair override), UNFI Neutral / No Edge (consensus -11.7, band 5.2-24.2%, certainty Med).
+- Panel seats filled: 21/21 for each name (14 distinct personas x... no: 7 ABM + 7 UNFI = 14). One duplicate UNFI-sentiment subagent was launched by mistake during a concurrency-limited fan-out (8-concurrent-subagent cap forced serialized retries); the duplicate verdict was discarded, only one of the two independent runs used.
+- Chair overrides: ABM certainty_tier High -> Med (four of seven personas shared a single Ortex article for part of their bearish framing, discounting the panel's unusually tight 6.6-point disparity). None on UNFI.
+- Degradations: none. Both panel-eligible names fit within panel.names=2.
+- Note: same underlying event (ABM/UNFI 2026-09-08 BMO) already panelled 2026-09-04 (window rolled through the Labor Day holiday). This run is an independent re-panel one day closer to the print, not a correction; both notes preserved in the archive.
+- Anchors reconfirmed via CBOE options quotes + WebSearch; essentially unchanged from stage 2 since no trading session occurred between Friday 2026-09-04 close and today (weekend + Labor Day).
