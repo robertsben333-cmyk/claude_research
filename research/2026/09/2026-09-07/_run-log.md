@@ -69,3 +69,11 @@
 ## Capture — 2026-09-07 — COO coverage gap
 - Logged at 2026-09-07 15:29 UTC
 - COO's search agent exhausted its WebSearch call budget (200/200) partway through; areas 7 (sentiment/alt-data) and 9 (macro/peers) were never searched for this name. Areas 1,3,4,5,6 completed (25 queries, 38 URLs selected, 17 new docs captured). Recorded as a genuine coverage gap, not papered over.
+
+## Capture — 2026-09-07 — CASY tripwires investigated (2)
+- Logged at 2026-09-07 15:31 UTC
+- Two tripwires on CASY. (1) scanx.trade Q1 preview (sha ea14e24c...): matched miss/post-earnings regex, but text is a hypothetical preview question ('what could cause the company to MISS the consensus EPS estimate', 'could...lead to volatility POST-EARNINGS') -- speculative, not reported outcome. (2) trefis.com preview (sha ba3ca4ab...): 'stock rose/fell' match is a related-articles widget about OTHER tickers (Cadence, BridgeBio, Autodesk, CNH), not CASY; 'post-earnings' mentions are the article's historical-reaction-pattern methodology discussion (pre-event analytical content), not this print's outcome. Both false positives; documents kept in corpus.
+
+## Capture — 2026-09-07 — CASY coverage note
+- Logged at 2026-09-07 15:31 UTC
+- CASY search agent's WebSearch budget was exhausted mid-sweep: 30 of 35 planned queries executed, 5 not run (recorded as gaps in the plan, not fabricated). Consensus EPS shows source disagreement ($6.59 calendar vs $6.78/$6.81 aggregators), left unreconciled per no-analysis rule.
