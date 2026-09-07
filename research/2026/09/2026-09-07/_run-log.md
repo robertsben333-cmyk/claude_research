@@ -97,3 +97,14 @@
 - Degradations: none. Both panel-eligible names fit within panel.names=2.
 - Note: same underlying event (ABM/UNFI 2026-09-08 BMO) already panelled 2026-09-04 (window rolled through the Labor Day holiday). This run is an independent re-panel one day closer to the print, not a correction; both notes preserved in the archive.
 - Anchors reconfirmed via CBOE options quotes + WebSearch; essentially unchanged from stage 2 since no trading session occurred between Friday 2026-09-04 close and today (weekend + Labor Day).
+
+## claude_naive — 2026-09-07 — SKIPPED (US market holiday)
+- Logged at 2026-09-07 17:38 UTC
+- Universe: 6 qualified rows, 2 above the $500M floor, **0 forecast**. No forecasts.json written — see claude_naive/2026-09-07/SKIPPED.md.
+- Today was not a trading session: NYSE/Nasdaq closed for Labor Day. 00-universe.json carries reference_is_trading_day=false. The stage fires 30 min before a 14:00 ET entry; that entry bar does not exist today.
+- Every row in tonight's window prints BMO 2026-09-08. Both above-floor names (ABM, UNFI) were already forecast on 2026-09-04 — ABM Lean Down 6.5%, UNFI Neutral 12.0% — with entry prices frozen 2026-09-04T17:44Z.
+- Friday's run holds the correct entry: a bmo print enters on the prior session, and with Monday closed trade_prices.py resolves that to Friday's 14:00 ET bar. A 2026-09-07 row would be scored against identical entry/exit bars — one event counted twice in a ledger calibrating at N≈40. Skipped to avoid that.
+- Re-confirmed both dates from company sources rather than assuming Friday's forecast still valid: ABM Q3 FY26 08 Sep BMO (globenewswire 2026-08-25); UNFI Q4/FY26 08 Sep BMO (businesswire 2026-08-10). Both live and correctly timed.
+- Dropped: WDH, CAN, DLNG, GMHS — all below the $500M floor. DLNG is the only row new vs 09-04 and is 4x below the floor; no above-floor name is new.
+- entry_snapshot.py deliberately not run: market closed, it would freeze Friday's stale close under a Monday timestamp.
+- Stage 0 note (flagged, not fixed): get_earnings.py printed the window as 'After the US close on Monday 07 September 2026' on a day it had itself flagged as a non-trading day. Human-readable string only — the company set matches Friday's, which correctly skipped Monday.
