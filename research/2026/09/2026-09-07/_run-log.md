@@ -61,3 +61,7 @@
 ## Capture — 2026-09-07 — ORCL tripwire investigated
 - Logged at 2026-09-07 15:26 UTC
 - Tripwire fired on stocktwits.com/symbol/ORCL/sentiment (area 7, sha fe85856e...): matched beat/estimates regex. Investigated: the match text is a SNOW (Snowflake) news blurb embedded in ORCL's stocktwits related-news widget ('SNOW's Q2 earnings and revenues beat estimates'), not ORCL post-earnings language. The same document's structured upcomingLatestData block independently confirms ORCL callDate=2026-09-10, callTime=after_market, resolving in favor of the Sept-10 AMC date over the stale Sept-8 calendar row. Document kept in corpus; false positive, no upstream bug found.
+
+## Capture — 2026-09-07 — SUNB tripwire investigated
+- Logged at 2026-09-07 15:27 UTC
+- Tripwire fired on stocktitan.net SUNB 10-K filing summary (area 5, sha f4dc54d8...): matched 'reported revenue of' regex. Investigated: the match is the company's FY2026 full-year revenue (year ended April 30, 2026, $11,154M) disclosed in the 10-K FAQ, i.e. the PRIOR fiscal year already reported in the annual report -- not the upcoming Sept 9, 2026 quarterly print. Document kept in corpus; false positive, no upstream bug found.
