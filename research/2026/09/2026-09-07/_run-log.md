@@ -22,3 +22,12 @@
 - Batch 1 published no heartbeat and no dossiers exist -- its half (ABM) is missing; covering both halves as batch 2
 - Already on disk, skipping: none
 - Plan: single wave of 2 opus/high researchers (ABM, UNFI), publish after each dossier
+
+## Stage 2 — deep dive, batch 2 — FINISHED (10:45 UTC)
+- Logged at 2026-09-07 10:46 UTC
+- Researched: ABM, UNFI (batch 2 covered both halves -- batch 1 published no heartbeat and no dossier for its assigned name, ABM, existed when this batch started)
+- Skipped (already done): none
+- Failed: none
+- Subagents: 2 opus/high, in 1 wave of wave_size 2
+- Median evidence completeness: 85.5/100
+- Panel-eligible after this batch: ABM (panel_priority 35.5), UNFI (panel_priority 33.35) -- both eligible, ranked in 02-ranking.json
