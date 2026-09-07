@@ -21,3 +21,12 @@
 - Shortlist: 2 names (ABM, UNFI); this batch (first half, N=ceil(2/2)=1): ABM
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers, publish after each wave (only 1 name this batch, so a single wave of 1)
+
+## Stage 2 — deep dive, batch 1 — FINISHED
+- Logged at 2026-09-07 08:47 UTC
+- Researched: ABM
+- Skipped (already done): none
+- Failed: none
+- Subagents: 1 opus/high, in 1 wave of wave_size 2 (batch had only 1 name)
+- Median evidence completeness: 84/100
+- Panel-eligible after this batch: not computed — batch 1 of 2, ranking runs after the final batch (02-ranking.json). ABM: event_confirmed true, evidence_completeness 84 (>=50), implied move 7.5% (own derivation) present -- provisionally panel-eligible pending batch 2 and the full ranking pass.
