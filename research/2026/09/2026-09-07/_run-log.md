@@ -31,3 +31,11 @@
 - Subagents: 2 opus/high, in 1 wave of wave_size 2
 - Median evidence completeness: 85.5/100
 - Panel-eligible after this batch: ABM (panel_priority 35.5), UNFI (panel_priority 33.35) -- both eligible, ranked in 02-ranking.json
+
+## Stage E — edge hunt — STARTED
+- Logged at 2026-09-07 14:08 UTC
+- Window: 2026-09-07 amc + 2026-09-08 bmo -> edge_universe --window resolved 6 of 34 calendar rows, 0 unresolved-session rows (no --include-unknown needed). All six are 2026-09-08 bmo: ABM, UNFI, WDH, CAN, DLNG, GMHS.
+- Baselines sealed and pushed BEFORE any agent launch (commit cb92bbd): all 6 status=ok. Live option chains on 2 of 6 -- ABM impl 8.4%, UNFI impl 13.15% (skew 6.97). WDH/CAN/DLNG/GMHS have no listed options, so their expected_move_pct is a historical median, not a priced expectation.
+- Baseline event_plausibility: ABM fits_cadence (95d vs 86d), UNFI fits_cadence (91d vs 91d), WDH fits_cadence (46d vs 84d, ratio 0.55 -- early, flag for sweep). CAN/DLNG/GMHS all unknown + cadence_implausible (inferred cadences 13d/21d/55d) -- foreign private issuers whose 6-K operational updates were caught by the text matcher. Symmetric amendment from company sources only, after the sweep, before hunters.
+- Plan: 1 edge-sweep over all 6 -> unpriced-hunter with double_hunt_top_n=2 on the top two by hunt_priority + 1 on the rest -> 1 priced-in-adversary per ticker with findings, briefs built by edge_brief.py -> edge_score.py -> edge-note.md.
+- Budget arithmetic: 1 sweep + (6 confirmed + 2 double) 8 hunters + 6 adversaries = 15 of the edge_hunt cap of 20. Fits; no shed planned. If the sweep kills names, the hunter and adversary counts fall with it.
