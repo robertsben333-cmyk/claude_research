@@ -156,3 +156,9 @@
 - Anchors: Yahoo daily bars OK. Yahoo options endpoint returned HTTP 401 for both names, so no implied move — recorded as unavailable, not estimated.
 - Verified both event dates against company sources (ABM 08-25 GlobeNewswire, UNFI 08-10 Businesswire): both 2026-09-08 BMO, no phantom rows.
 - Note on a near-miss: a search hit titled 'ABM Industries 3Q 2026: Revenue $2.29B, EPS $0.73 — 10-Q Summary' looks like post-print leakage but is the Q2 FY26 10-Q filed 2026-06-05, mislabelled by the aggregator. Checked before use.
+
+## Stage 4 — calibration — deferred (event not yet printed)
+- Logged at 2026-09-07 06:25 UTC
+- Checked for scoring on 2026-09-07 (Labor Day, markets closed). Both panelled names' event_date is 2026-09-08 BMO (confirmed via company sources, see stage 2/3 anchors) -- the print has not happened yet, so no realised close-after-first-full-session price exists. Not scoring: would require fabricating the outcome.
+- No other unscored runs found (research/2026/09/2026-09-01 and 2026-09-02 both already scored; 2026-09-03 and 2026-09-07 never produced 04-advice.json).
+- Leaving 05-outcome.md/.json absent (not a stub) so this run keeps surfacing as unscored until it can actually be scored -- earliest eligible run is after 2026-09-08's close, i.e. stage 4 on or after 2026-09-09. LEDGER.md untouched this run.
