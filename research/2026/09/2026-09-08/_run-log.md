@@ -31,3 +31,9 @@
 - Subagents: 3 opus/high, in 2 waves (wave 1: TTAN, BRZE; wave 2: CHWY)
 - Median evidence completeness: 84/100
 - Notes: TTAN dossier corrects triage's EPS/analyst-count read (GAAP -$0.09 vs non-GAAP consensus $0.35; 15-18 analysts, not 5). CHWY dossier corrects triage's premise that Chewy 'missed EPS badly last print' -- Q1 was a +0.51% surprise, the selloff was a guidance cut. This is batch 1 of 2 -- ranking (02-ranking.json) deferred to batch 2 after SAIL, ASO, SIG are researched.
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-08 10:23 UTC
+- Shortlist: 6 names (TTAN, BRZE, CHWY, SAIL, ASO, SIG); this batch (2 of 2): SAIL, ASO, SIG
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers, publish after each wave -- wave 1: SAIL, ASO; wave 2: SIG
