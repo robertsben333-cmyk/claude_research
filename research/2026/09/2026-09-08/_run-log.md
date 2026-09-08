@@ -187,3 +187,14 @@
 - Universe built from scripts/get_earnings.py: 24 calendar rows, 7 amc (2026-09-08) + 17 bmo (2026-09-09), 15 above the $500M floor.
 - Taking the top 8 by market cap: SUNB, CASY, SAIL, CHWY, CNM, TTAN, JMKE, KFY. Dropped above-floor by the 8-cap: BRZE, SIG, ASO, INNV, AVO, ODD, CGNT.
 - Researching each live (no prescribed method — this is backtest arm A). Will emit forecasts.json + entry-prices.json and publish.
+
+## claude_naive — 2026-09-08 — DONE
+- Logged at 2026-09-08 17:48 UTC
+- Universe: 24 calendar rows (7 amc 2026-09-08 + 17 bmo 2026-09-09), 15 above the $500M floor, 8 forecast (top 8 by market cap).
+- Calls: 1 up (CASY Lean Up), 2 down (SAIL Lean Down, SUNB Lean Down), 5 neutral (CNM, TTAN, CHWY, JMKE, KFY). 3 of 8 directional — in line with arm A's 18-of-37 selectivity.
+- Dropped above the floor by the 8-name cap: BRZE ($3.92B), SIG ($3.35B), ASO ($2.79B), INNV ($1.46B), AVO ($1.12B), ODD ($0.78B), CGNT ($0.63B). Nine more dropped below the floor. No dual-class collisions and no unresolvable quote symbols — all 8 tickers returned a Yahoo spot.
+- All 8 event dates confirmed from a company or IR source, not the calendar alone. entry-prices.json captured 8/8 spots at 17:47Z.
+- ANCHOR DEFECT FOUND, not fixed. backtest/scripts/anchors.py resolves fiscal-year-end quarters to the 10-K acceptance date rather than the earnings release, because no 8-K item 2.02 falls near the periodic report. For CASY it returned '2026-06-24 -3.7%' in place of the real 2026-06-10 +20.3% reaction and dropped 2025-06-10 +11.6% entirely — i.e. it silently deleted the two largest moves in the series and put the median absolute move at 3.82% against a true ~5%. TTAN was worse: it returned a 2.61% proxy for a stock whose prints gap 12%. Reaction history for all 8 names was therefore rebuilt from SEC 8-K item 2.02 acceptance timestamps joined to Yahoo daily bars, and those are the numbers in forecasts.json. Left anchors.py unchanged — it is the sealed backtest harness and this stage has no business editing it — but stage 2 and the panel read the same file and would inherit the same understatement.
+- Macro noted at forecast time: an unexpectedly strong jobs report has pushed expectations toward a September rate hike with yields higher, oil up on Middle East tensions, mega-cap tech down ~2%. Treated as a headwind for the high-multiple software (SAIL, TTAN) and construction-levered (SUNB, CNM) names rather than as a directional signal.
+- SUNB tape is contaminated: 13.2M shares 08-28 and 28.4M 08-31 against a 6.3M 20-day average, then -7.2% on 09-01. Signature of an index event; the specific event could not be confirmed, so evidence_quality was cut to 55 and the 20-day drawdown was not read as informed selling.
+- No fetch was blocked this run. WebSearch and WebFetch both worked; SEC EDGAR and the Yahoo chart v8 endpoint were both reachable from Bash.
