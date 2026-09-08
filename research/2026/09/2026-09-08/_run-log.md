@@ -181,3 +181,9 @@
 - Anchors refreshed same-day for both names (spot + implied move), refresh_note recorded in each panel JSON.
 - Degradations: none. Stage 2 completed both batches in full; panel.names=2 is config's standing setting, not a fresh shed at this stage.
 - SAIL, BRZE, SIG, ASO not panelled -- shed by rank only, all evidence-complete in their own stage 2 dossiers.
+
+## claude_naive — 2026-09-08 — STARTED
+- Logged at 2026-09-08 17:38 UTC
+- Universe built from scripts/get_earnings.py: 24 calendar rows, 7 amc (2026-09-08) + 17 bmo (2026-09-09), 15 above the $500M floor.
+- Taking the top 8 by market cap: SUNB, CASY, SAIL, CHWY, CNM, TTAN, JMKE, KFY. Dropped above-floor by the 8-cap: BRZE, SIG, ASO, INNV, AVO, ODD, CGNT.
+- Researching each live (no prescribed method — this is backtest arm A). Will emit forecasts.json + entry-prices.json and publish.
