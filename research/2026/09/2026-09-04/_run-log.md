@@ -162,3 +162,10 @@
 - Checked for scoring on 2026-09-07 (Labor Day, markets closed). Both panelled names' event_date is 2026-09-08 BMO (confirmed via company sources, see stage 2/3 anchors) -- the print has not happened yet, so no realised close-after-first-full-session price exists. Not scoring: would require fabricating the outcome.
 - No other unscored runs found (research/2026/09/2026-09-01 and 2026-09-02 both already scored; 2026-09-03 and 2026-09-07 never produced 04-advice.json).
 - Leaving 05-outcome.md/.json absent (not a stub) so this run keeps surfacing as unscored until it can actually be scored -- earliest eligible run is after 2026-09-08's close, i.e. stage 4 on or after 2026-09-09. LEDGER.md untouched this run.
+
+## Stage 4 — calibration — deferred (event still not printed)
+- Logged at 2026-09-08 06:25 UTC
+- Checked for scoring on 2026-09-08, ~06:23 UTC (pre-market, well before typical BMO release). ABM and UNFI still both event_date 2026-09-08 BMO -- the print has not happened and today's session has not closed, so no realised close-after-first-full-session price exists yet. Not scoring: would require fabricating the outcome.
+- Second independent panel of the same event ran 2026-09-07 (see that day's advice + run log) -- a deliberate re-panel one day closer to the print, not a duplicate. Both 2026-09-04's and 2026-09-07's calls on ABM/UNFI will need scoring once the outcome exists; that comparison (does re-panelling closer to the print change the call or the accuracy?) is worth calling out explicitly when scored.
+- No other unscored runs found: 2026-09-01 and 2026-09-02 already scored; 2026-09-03 never produced 04-advice.json (stage 3 did not run that day, so nothing to score there either); 2026-09-08 itself is today's forward-looking universe for the 09-09 window, unrelated to the ABM/UNFI event.
+- Leaving 05-outcome.md/.json absent on both 2026-09-04 and 2026-09-07 (not stubs) so they keep surfacing as unscored until they can actually be scored -- earliest eligible run is after 2026-09-08's close, i.e. stage 4 on or after 2026-09-09. LEDGER.md untouched this run.
