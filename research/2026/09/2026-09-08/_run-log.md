@@ -110,3 +110,10 @@
 ## Capture - 2026-09-08 - STARTED
 - Logged at 2026-09-08 15:06 UTC
 - Plan: universe sweep --horizon-days 15 (script-only, no cap floor), then agent-layer capture plans for the 6 largest names reporting within 3 days, then publish per name.
+
+## Capture — CASY — 2026-09-08
+- Logged at 2026-09-08 15:29 UTC
+- Agent layer: 28 queries across 8 areas (2 skipped per skill), 40 URLs in fetch plan.
+- capture.py: 15 new documents stored, 0 snippet-only, 0 errors.
+- TRIPWIRE investigated: stocktwits.com news-article page (sha a197088...) tripped 'shares up/miss' tells. Body inspected: it is a genuine historical article ('Casey's General Stores Gets Analyst Upgrade Ahead of Q3 Earnings', Gordon Haskett upgrade, PT $410->$500, FY25/FY26 EPS forecasts) from roughly early-to-mid FY2025/FY2026, surfaced by a broad sentiment query ('CASY stock sentiment ... ahead of earnings'), not leakage about tonight's Q1 FY2027 print. False positive on the regex, not a calendar/date problem — document kept per policy (quarantine, not delete).
+- Also noted (not a tripwire, a data-quality note): an agent-surfaced Benzinga analyst-ratings aggregator page (benzinga.com/quote/casy/analyst-ratings) listed PT changes dated Sept 8/9 2026; page is live-updating so today's fetch reflects today's state — captured, flagged for date-plausibility, no tripwire fired on its stored body.

@@ -1,0 +1,550 @@
+SOURCE: https://apewisdom.io/stocks/CASY/
+PROVIDER: agent-websearch
+AREA: 7
+HEADLINE: CASY - Reddit sentiment and mention history
+WHY: Quantified Reddit mention-volume trend for alt-data sentiment section.
+QUERY: CASY stock sentiment retail investors Reddit stocktwits ahead of earnings
+FETCHED_UTC: 2026-09-08T15:28:12Z
+
+ 
+ 
+ 
+ CASY - , Reddit sentiment and mention history 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+
+ 
+function lightOn() {
+        document.body.classList.remove('dark');
+        document.cookie = 'darkmode=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.getElementById('logo-img').src='/apewisdom-logo.svg?v=1';
+
+        var assetLogos = document.querySelectorAll(".marketcap-table .company-logo");
+        for (i = 0; i  
+
+  
+
+ 
+ 
+
+
+	 
+		 
+			 
+			 
+				 
+				 APE 
+				 Wisdom 
+			 
+			 
+			 
+				 
+					  
+				 
+			 
+			 
+
+                                				 
+					 Charts 
+				 -->
+				 
+					 API 
+				 
+				 
+					 Data export 
+				 -->
+				 
+					 Methodology 
+				 
+
+								 
+                                         
+                                        	   Sign in
+                                         
+				 
+				
+				 
+					 
+						 Dark mode &nbsp; 
+						 
+						  
+						 
+					 
+					 
+						 Light mode &nbsp; 
+						 
+							  
+						 
+					 
+				 
+
+				 
+						 
+						 
+							 
+							 
+								        
+								      
+							 
+						 
+						 
+						 
+						 
+				 
+
+			 
+
+			 
+				 
+					 Stocks   9.9K  
+				 
+				 
+					 Cryptos   603  
+				 
+				 
+                                         All   10.5K  
+                                 
+				 
+                                         4chan   323  
+                                 
+			 
+			 
+											 
+		 
+		
+ 
+	  CASY    
+ 
+
+
+
+ 
+ 
+		 
+			 
+				 Summary 
+			 
+			 
+				 Mentions 
+			 
+			 
+				 Upvotes 
+			 
+                         
+                                 Users 
+                         
+                         
+                                 Sentiment 
+                         
+		 
+	 
+-->
+		 
+		 
+			 
+				 
+			 
+			 CASY Overall Summary (last 24h) 
+		 
+		 
+			 
+				 Mentions 
+				 0  
+			 
+			 
+				 Upvotes 
+				 0  
+			 
+			 
+				 mentioning users 
+				 0  
+			 
+			 
+				 Sentiment 
+				 0%    
+			 
+			  
+		 
+	 
+	 
+		 
+			 
+				 
+			 
+			 CASY Overall Sentiment 
+		 
+		 
+			 
+									Not enough data to calculate a sentiment
+						         
+		 
+		 
+			Nearby keywords:
+					 
+	 
+	 
+		 
+			 
+				 
+			 
+			 CASY Sentiment on  
+		 
+		 
+			 
+				                                        Not enough data to calculate a sentiment
+                                		         
+		 
+		 
+			Nearby keywords:
+                        		 
+	 
+	  
+
+	 
+		 
+			 
+				 
+			 
+			 CASY Overall mentions (last 24h) 
+			  
+		 
+	 
+	 
+		 
+			 
+				 
+			 
+			 CASY mentions on  (last 24h) 
+			  
+		 
+	 
+
+
+  
+  
+ 
+Chart.defaults.LineWithLine = Chart.defaults.line;
+Chart.controllers.LineWithLine = Chart.controllers.line.extend({
+   draw: function(ease) {
+      Chart.controllers.line.prototype.draw.call(this, ease);
+
+      if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
+         var activePoint = this.chart.tooltip._active[0],
+         ctx = this.chart.ctx,
+         x = activePoint.tooltipPosition().x,
+         topY = this.chart.legend.bottom,
+         bottomY = this.chart.chartArea.bottom;
+
+         // draw line
+         ctx.save();
+         ctx.beginPath();
+         ctx.moveTo(x, topY);
+         ctx.lineTo(x, bottomY);
+         ctx.lineWidth = 2;
+         ctx.strokeStyle = '#aaaaaa';
+         ctx.stroke();
+         ctx.restore();
+      }
+   }
+});
+
+
+
+new Chart(document.getElementById("chart-overall-mentions"), {
+  type: 'LineWithLine',
+  data: {
+    labels: [],
+    datasets: [{
+        data: [],
+        pointRadius: 0,
+        borderColor: "#666",
+        fill: true,
+        yAxisID:'yAxis1'
+      },
+    ]
+  },
+  options: {
+    tooltips: {
+      mode: 'index',
+      bodyFontSize: 18,
+      intersect: false,
+      titleFontSize: 16,
+    },
+    legend: {
+            display: false,
+    },
+    scales: {
+      xAxes: [{
+        type: 'time',
+         ticks: {
+		fontSize: 13,
+		autoSkip: true,
+		maxTicksLimit: 20
+	},
+	gridLines: {
+                display:false
+       },
+       time: {
+	    parser: function (utcMoment) {
+                return moment(utcMoment).utcOffset('+0300');
+            }
+       }
+      }],
+      yAxes: [{
+        id: 'yAxis1',
+        type: 'linear',
+        position: 'left',
+        ticks: {
+		fontSize: 13
+	},
+	gridLines: {
+                display:false
+       }
+      }
+      ]
+    }
+  },
+  responsive:true,
+  maintainAspectRatio: false
+});
+
+new Chart(document.getElementById("chart-secondary-mentions"), {
+  type: 'LineWithLine',
+  data: {
+    labels: [],
+    datasets: [{
+        data: [],
+        pointRadius: 0,
+        borderColor: "#666",
+        fill: true,
+        yAxisID:'yAxis1'
+      },
+    ]
+  },
+  options: {
+    tooltips: {
+      mode: 'index',
+      bodyFontSize: 18,
+      intersect: false,
+      titleFontSize: 16,
+    },
+    legend: {
+            display: false,
+    },
+    scales: {
+      xAxes: [{
+        type: 'time',
+         ticks: {
+		fontSize: 13,
+		autoSkip: true,
+		maxTicksLimit: 20
+	},
+	gridLines: {
+                display:false
+       },
+       time: {
+	    parser: function (utcMoment) {
+                return moment(utcMoment).utcOffset('+0300');
+            }
+       }
+      }],
+      yAxes: [{
+        id: 'yAxis1',
+        type: 'linear',
+        position: 'left',
+        ticks: {
+		fontSize: 13
+	},
+	gridLines: {
+                display:false
+       }
+      }
+      ]
+    }
+  },
+  responsive:true,
+  maintainAspectRatio: false
+});
+
+ 
+ 
+
+ 
+
+
+ 
+  
+  
+ 
+     (adsbygoogle = window.adsbygoogle || []).push({});
+ 
+ 
+
+	 
+		 
+			 
+				 
+					 What is ApeWisdom? 
+					 Apewisdom is a stock sentiment tracker that tracks the most popular stock and crypto boards on Reddit and 4Chan. 
+					 ApeWisdom is not only a WSB tracker, it tracks many different discussion boards including: 
+					 
+						 WallStreetBets (WSB) 
+						 r/stocks 
+						 r/investing 
+						 4chan /biz 
+						 and many more 
+					 
+				 
+				 
+					 Learn more 
+					 We also run  Companies Market Cap , a website that ranks companies by Market Cap, Earnings and Revenue. 
+					 For inquiries: hel (nospam) lo@8market (nospam) cap.com 
+
+					 Privacy 
+					 To learn more read our  Privacy-Policy . 
+				 
+			 
+		 
+	 
+
+	  
+	 
+		 
+		 
+			    
+		 
+		 Sign In 
+		 
+			  
+			 No account? &nbsp;   Sign Up →   
+			  E-Mail  
+			   
+			  Password  
+			   
+			  Forgot your Passwort?  
+			 
+					 Log in 
+			 
+
+			 
+				 OR 
+			 
+			 
+				 
+					   Continue with Google 
+				 
+			 
+
+		 
+	 
+	 
+
+	
+	  
+  
+ 
+  
+ 
+const countryTier = 0; 
+
+ 
+ubRecovered = false;
+function recoveUB() {
+        if(!ubRecovered) {
+                ubRecovered = true;
+                document.querySelectorAll('.recoverub-container').forEach(recoverContainer => {
+                        recoverContainer.classList.remove("hidden");
+                        						recoverContainer.innerHTML = ' Ad vertisement :   CoinWebSocket  – Real-time Bitcoin price spread comparison tool   ';
+			});
+        }
+}
+
+
+var ub0802dwds = 1;
+if(document.getElementById('Sssa9sanbOsnbq723')){
+        ub0802dwds = 0;
+} else {
+        recoveUB();
+}
+
+(function detectUB(callback) {
+  var flaggedURL = 'https://static.getclicky.com/js';
+
+        var request = new Request(flaggedURL, {
+        method: 'GET',
+        mode: 'no-cors',
+        });
+        fetch(request)
+        .then(function(response) {
+        if (response.status === 200 ) {
+                callback(false);
+        }
+        })
+        .catch(function(error) {
+                callback(true);
+        });
+        })(function(usingAdblock) {
+                if(usingAdblock) {
+                        ub0802dwds = 2;
+                        recoveUB();
+                        console.log('using adblock');
+                }
+        })
+
+	function ae6dd7anadbac(siteID) {
+		var uuid = '';
+		try {
+			if(localStorage.getItem("UUID-ae6dd7anadbac") == undefined) {
+				localStorage.setItem("UUID-ae6dd7anadbac", window.crypto.randomUUID());
+			}
+
+			uuid = localStorage.getItem("UUID-ae6dd7anadbac");
+		} catch(error) {}
+
+		var timeOffset = '';
+		try {
+			timeOffset = new Date().getTimezoneOffset()
+		} catch(error) {}
+
+		var userLang = ''; 
+		try {
+			userLang = navigator.language || navigator.userLanguage; 
+		} catch(error) {}
+
+		var payload = {
+			"siteID" : siteID,
+			"uuid" : uuid,
+			"referrer" : document.referrer,
+			"url" : window.location.href,
+			"screen_height": window.screen.height,
+			"screen_width": window.screen.width,
+			"timeOffset": timeOffset,
+			"userLang": userLang,
+			"blocker" : ub0802dwds
+		};
+
+		fetch("https://apewisdom.io/c/", {
+			method: "POST",
+			body: JSON.stringify(payload),
+			headers: {
+				"Content-type": "application/json; charset=UTF-8"
+			}
+		});
+	}
+
+	setTimeout("ae6dd7anadbac('APE')", 625);
+ 
+ 
