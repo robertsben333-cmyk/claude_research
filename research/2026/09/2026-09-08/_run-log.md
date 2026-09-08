@@ -170,3 +170,14 @@
 - Call: Neutral / No Edge -- consensus magnitude (15) falls short of the +25 Lean Up threshold despite tight cross-persona agreement on sign. Not a conviction-gate firing (conviction_gate_applied: false); this is the plain call-band mapping for a genuinely weak-but-coherent lean, reported honestly rather than promoted to Lean Up or hidden as an uncertain 50/50.
 - No chair override. Unsigned band 5.8-18.4% (implied 13.14%, refreshed today; blended expected move 11.5%).
 - CHWY panel launched (7 personas in parallel); event is tomorrow bmo so less time pressure than TTAN's tonight amc print.
+
+## Stage 3 — panel & advice — COMPLETE
+- Logged at 2026-09-08 16:14 UTC
+- Panelled: TTAN, CHWY (top 2 by panel_priority; panel.names=2 in config, no further degradation applied).
+- Calls: TTAN Neutral / No Edge, unsigned band 5.8-18.4% (implied 13.14% refreshed), P(up) 55.5%, certainty High, reversal 56 (Med). CHWY Neutral / No Edge, unsigned band 4.7-17.4% (implied 10.65% reconfirmed), P(down) 52.2%, certainty High, reversal 59 (Med).
+- Panel seats filled: 14/14 (7/7 both names), no retries needed.
+- Chair overrides: none. TTAN's consensus (+15, all seven personas positive, disparity 8.7 aligned) fell short of the +25 Lean Up threshold on magnitude alone -- reviewed against synthesis-chair.md's override criteria and left as-is: not a case of a stale anchor, shared-source double counting, or a verdict contradicting its own drivers, so the plain call-band Neutral/No Edge output stands, honestly labelled as a weak-but-coherent bullish tilt rather than promoted to Lean Up.
+- CHWY's panel was genuinely split (disparity 28.2, 5 negative vs 2 positive, P(direction) 52.2%) -- Neutral / No Edge is the clean mechanical read, no override considered.
+- Anchors refreshed same-day for both names (spot + implied move), refresh_note recorded in each panel JSON.
+- Degradations: none. Stage 2 completed both batches in full; panel.names=2 is config's standing setting, not a fresh shed at this stage.
+- SAIL, BRZE, SIG, ASO not panelled -- shed by rank only, all evidence-complete in their own stage 2 dossiers.
