@@ -11,3 +11,11 @@
 ## Stage 1 — triage — STARTED
 - Logged at 2026-09-08 06:39 UTC
 - 15 eligible names, above skip threshold (10). Spawning 1 earnings-triage-scout (batch_size=15 covers all 15 in one batch).
+
+## Stage 1 — triage (08:42 CEST / 06:42 UTC)
+- Logged at 2026-09-08 06:42 UTC
+- Mode: scouted (1 subagent, sonnet/medium, batch of 15)
+- Funnel: 24 universe -> 15 eligible -> 15 cleared floors -> 6 shortlisted
+- Scouts: 1 subagent
+- Session mix: 3 AMC / 3 BMO
+- Notable drops: TTAN (rank, thin track record), ASO (rank), SIG (rank, guidance already raised), JMKE (ai_edge=32, just above floor, 6 weeks public)
