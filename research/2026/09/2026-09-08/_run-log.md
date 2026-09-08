@@ -129,3 +129,8 @@
 - Agent layer: 34 queries across 8 areas, 40 URLs in fetch plan.
 - capture.py: 20 new documents stored, 0 errors.
 - TRIPWIRE investigated: stocktwits.com/symbol/ADBE/sentiment (sha 5e820ae7...) tripped on 'after the company reported'. Body inspected (it's a live JSON-embedded sentiment/news aggregator page): the matched phrase is inside an unrelated, dated Jul-29-2026 poll widget about Lemonade ($LMND) — 'Lemonade stock is down over 20% after the company reported Q2 2026 earnings' — a different company's already-reported quarter, syndicated onto ADBE's page as sidebar content, not ADBE's own outcome. Confirmed no leak of ADBE's own Sept-10 print: the page's own earningsFacts block shows ADBE's upcoming Q3'26 quarter (callDate 2026-09-10) with only an 'estimated' EPS (6.08) and no 'actual'/'result' field, while every prior quarter back to Q3'25 carries actual/BEAT data — exactly the pattern expected before a print. False positive from cross-ticker content on a shared aggregator page, not a calendar/date problem; document kept per policy.
+
+## Capture — KR — 2026-09-08
+- Logged at 2026-09-08 15:39 UTC
+- Agent layer: 38 queries across 8 areas, 37 URLs in fetch plan.
+- capture.py: 18 new documents stored, 0 errors, no tripwires. Social skipped (event 3 days out, beyond social-within-days=2 default).
