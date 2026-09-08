@@ -46,68 +46,99 @@ from pathlib import Path
 # on 2026-09-01 the 2026-08-31 table was still in place and did that. The guard
 # in main() now makes a fully stale table exit non-zero instead of looking clean.
 AMENDMENTS = {
-    "WDH": ("unknown",
-            "DOWNGRADE, and on 2026-09-07 it is again the ONLY amendment -- a pass "
-            "whose sole entry lowers a verdict, which is worth stating plainly "
-            "because the symmetry rule is usually invoked the other way round. "
-            "Waterdrop's 2026-09-08 pre-open date IS confirmed by its own PR "
-            "Newswire release of 2026-08-25 (call 8:00 a.m. ET), so the event is "
-            "real. But the 'fits_cadence' verdict is an artefact, and this run's "
-            "sweep re-derived it independently and found a second defect the "
-            "2026-09-04 pass had not: the verdict rests on a median gap of 84 days "
-            "over a filing set containing THREE 6-Ks inside one quarter -- "
-            "2026-06-17, 2026-06-23 and 2026-07-24 -- where at most one earnings "
-            "release can exist, AND the series carries a literal duplicate "
-            "(2025-12-03 appears twice with an identical +1.07%), so n=8 is really "
-            "seven distinct rows and the median is computed over a repeat. As a "
-            "foreign private issuer Waterdrop files no item 2.02, and it 6-Ks its "
-            "buybacks, special dividends and AGM material, all of which carry "
-            "results-shaped language the text matcher accepts. The verdict also "
-            "reads 'last print 2026-07-24', 46 days ago at ratio 0.55, which would "
-            "make the 2026-09-08 event a second print inside the same quarter. Only "
-            "the older entries (2025-06-05, 2025-09-04, 2025-12-03, 2026-03-25 and "
-            "one mid-June 2026 date) form a clean quarterly chain, so the 1.73% "
-            "median and the 1.5% deadband derived from it rest on eight rows of "
-            "which at most six are distinct earnings reactions. 'unknown' not "
-            "'suspect': the event is established, its history simply does not "
-            "characterise it.",
-            "https://en.prnasia.com/releases/global/waterdrop-inc-to-report-second-quarter-2026-financial-results-on-september-8-2026-545126.shtml"),
+    "YQ": ("unknown",
+           "UPGRADE off 'suspect', which is the amendment that matters today: "
+           "edge_score.py sets rankable=False on a suspect verdict and multiplies "
+           "baseline_quality by 0.05, so 17 Education would have been "
+           "arithmetically incapable of ranking anywhere despite a "
+           "company-confirmed event. The event is real: the company's own "
+           "GlobeNewswire release of 2026-09-02 states Q2 2026 unaudited results "
+           "after the close of US markets on 2026-09-08 with a 9:00pm ET call. "
+           "The 'suspect' verdict rests on a 5-day gap against a 78-day median, "
+           "and that 5-day gap is the 2026-09-03 6-K announcing a US$10m share "
+           "repurchase authorisation -- not an earnings print. As a foreign "
+           "private issuer YQ files no item 2.02, so the text matcher takes "
+           "buyback and corporate 6-Ks as prints. 'unknown' and NOT "
+           "'fits_cadence': the sweep rated the reaction history untrustworthy "
+           "for exactly the same reason, and the +74% 5-day / +42.5% 20-day "
+           "run-up in the baseline's tape is the market reacting to that buyback "
+           "6-K. Upgrading to fits_cadence would forgive a history defect and "
+           "hand the name a 1.0 event multiplier it has not earned; the event is "
+           "established, its recorded history simply does not characterise it.",
+           "https://www.globenewswire.com/news-release/2026/09/02/3354907/0/en/17-education-technology-group-inc-to-report-second-quarter-2026-unaudited-financial-results-on-september-8-2026.html"),
+    "SUNB": ("fits_cadence",
+             "UPGRADE off 'unknown'. Sunbelt Rentals Holdings is a brand-new SEC "
+             "registrant (CIK 0002083785) -- the former Ashtead Group, "
+             "redomiciled and renamed, now dual-listed NYSE/LSE as SUNB -- so the "
+             "baseline has only two prints on record and returned 'unknown' with "
+             "no median_gap_days at all. That zero-cadence is a consequence of "
+             "the registrant's age, NOT of the 6-K/text-matcher defect that keeps "
+             "ODD, NNOX and CGNT at 'unknown' below: SUNB is a domestic filer, "
+             "both recorded rows (2026-03-12 and 2026-06-23) are genuine 8-K item "
+             "2.02 prints on exact acceptance times, and the sweep rated the "
+             "history trustworthy. The event itself is confirmed with the hour by "
+             "the company's own IR release: Q1 FY2027 results posted to IR before "
+             "an 8:30am ET call on 2026-09-09. The thinness of two events stays "
+             "recorded in baseline_quality (tier=partial, history_events=2), so "
+             "correcting the event flag does not overstate the history.",
+             "https://ir.sunbeltrentals.com/news-events/press-releases/detail/151/sunbelt-rentals-to-announce-first-quarter-fiscal-year-2027-results-on-september-9-2026"),
+    "CRMT": ("suspect",
+             "DOWNGRADE off 'fits_cadence', and it is here to keep this pass "
+             "symmetric: two names gain and one loses. America's Car-Mart is the "
+             "one name of 24 the sweep could NOT confirm. Car-Mart pre-announces "
+             "every print with a GlobeNewswire 'Schedules ... Results and "
+             "Conference Call' release 7-14 days ahead (Q4 FY2026: released "
+             "2026-07-07 for a 2026-07-14 print), and as of 2026-09-08 no such "
+             "release exists for Q1 FY2027 and EDGAR carries no scheduling 8-K. "
+             "Vendors disagree with each other and with themselves -- MarketBeat "
+             "carries 2026-09-09 bmo, others the same date amc, TipRanks "
+             "2026-09-17 -- which is the classic signature of a vendor projection "
+             "rather than a schedule. The 'fits_cadence' verdict rests on a "
+             "57-day gap against a 91-day median (ratio 0.63), i.e. the baseline "
+             "itself is describing a sub-quarterly gap and calling it a fit. "
+             "'suspect' is the honest verdict: the cadence disagrees with the "
+             "calendar and no company source names the date. CRMT is dropped from "
+             "the hunt under budget.edge_degrade_order step 1, and this verdict is "
+             "what makes that loss visible in edge-scores.json rather than silent.",
+             "https://www.globenewswire.com/news-release/2026/07/07/3323618/0/en/america-s-car-mart-inc-schedules-fourth-quarter-fiscal-year-2026-results-and-conference-call.html"),
 }
 
-# DELIBERATELY NOT AMENDED on 2026-09-07, and this is the judgement, not an
-# oversight. CAN, DLNG and GMHS all carry cadence_implausible with verdict
+# DELIBERATELY NOT AMENDED on 2026-09-08, and this is the judgement, not an
+# oversight. ODD, NNOX and CGNT all carry cadence_implausible with verdict
 # 'unknown', and all three events are confirmed by the company's own press release
 # WITH the hour -- so the instinct is to upgrade them to fits_cadence. They stay at
-# 'unknown' (event_q 0.6) for exactly the DOO/PSNY/VBNK/ZGN reason below: in every
-# one the 6-K text matcher caught NON-EARNINGS filings, so the recorded reactions
-# are not earnings base rates, and upgrading would forgive a history defect and
-# hand each name a 1.0 multiplier it has not earned.
-#   CAN:  8 filings at a 13-day median gap, including a 2026-07-14/07-15 pair one
-#         day apart. Canaan 6-Ks its monthly bitcoin-production and mining-fleet
-#         updates. No quarterly reporter has a 13-day cadence. Real cadence is
-#         quarterly; the 4.5% median and 4-of-8 up-rate are not earnings figures.
-#   DLNG: 8 filings at a 21-day median gap. Dynagas 6-Ks its distribution
-#         declarations, charter and fleet updates and the results-date
-#         announcements themselves -- all of which contain the word "results".
-#         Real prints are quarterly (Q1 2026 was 2026-05-29). The 1.14% median
-#         and 3-of-8 up-rate are not earnings figures. Note also that Dynagas
-#         announced this date TWICE: the 2026-09-01 release said 2026-09-07 amc,
-#         superseded by the 2026-09-02 release saying 2026-09-08 bmo, almost
-#         certainly because 2026-09-07 is the Labor Day holiday. The window is
-#         right; a hunter reading only the first release would have the session
-#         wrong. Dynagas holds no earnings call, so "before the open" is the
-#         strongest hour statement available and there is no call time to confirm.
-#   GMHS: 8 filings at a 55-day median. On a 2026-06-30 fiscal year end the real
-#         prints are 2025-09-09, 2025-11-25, 2026-03-23 and 2026-06-24; the other
-#         three (2026-07-13, 07-14, 08-28) sit outside any reporting quarter. The
-#         2025-09-09 row additionally carries an unresolved session conflict whose
-#         sign flips from -18.78% to +32.37% depending on the session read. Usable
-#         base rate is 4 events at most, not 8.
-# ABM and UNFI are untouched: both domestic, both on exact 8-K item 2.02
-# acceptance times, both rated history-trustworthy by the sweep.
+# 'unknown' (event_q 0.6) for the CAN/DLNG/GMHS reason: in every one the 6-K text
+# matcher caught NON-EARNINGS filings, so the recorded reactions are not earnings
+# base rates, and upgrading would forgive a history defect and hand each name a 1.0
+# multiplier it has not earned. All three are Israeli foreign private issuers that
+# file no item 2.02.
+#   ODD:  8 filings at a 21-day median gap. ODDITY 6-Ks frequently; the two
+#         reactions that are almost certainly real earnings are -49.21% on
+#         2026-02-25 and -29.61% on 2026-06-02, and the option chain is pricing a
+#         third leg at ~20.7% event-implied on a 3-day expiry. The other six rows
+#         are not earnings and the 6.25% median is not an earnings base rate.
+#   NNOX: 8 filings at a 6-day median gap -- the densest 6-K stream on the list.
+#         The -44.0% on 2026-06-25 and -24.4% on 2026-04-20 are in there but so is
+#         everything else Nanox announces. No quarterly reporter has a 6-day
+#         cadence.
+#   CGNT: 8 filings at a 13-day median gap, including a 1-day gap that produced the
+#         'unknown'. The -20.57% on 2026-06-03 is probably the real Q1 FYE27
+#         print; the rows dated 2026-09-01 and 2026-09-08 are the date-announcement
+#         6-K and other corporate filings, not prints.
+# JMKE is not amended because there is nothing to amend: Jersey Mike's IPO'd in
+# 2026 and priced_in.py produced no baseline at all (28 usable bars, no options, no
+# reaction history), so it has no verdict, no spot and no priced-in measurement.
+# The event IS company-confirmed (2026-09-09, 8:30am ET call) and its hunt_priority
+# is 79.4, but "is this already priced" is unanswerable for it, so it is dropped
+# from the hunt as a visible loss rather than hunted against a baseline that does
+# not exist.
+# The remaining 19 names are untouched: all domestic, all on 8-K item 2.02
+# acceptance times, all rated history-trustworthy by the sweep.
 #
-# Net effect of this pass: WDH loses the 1.0 event multiplier it had not earned,
-# and no name gains one. Per-name history warnings go to the hunters instead.
+# Net effect of this pass: YQ becomes rankable at a 0.6 event multiplier instead of
+# being zeroed at 0.05, SUNB's new-registrant thinness stops being scored as an
+# event-existence doubt, and CRMT's unconfirmed row stops carrying a 1.0 multiplier
+# it had not earned. Per-name history warnings go to the hunters instead.
 _RETIRED_2026_09_04 = {
     "WDH": ("unknown",
             "Superseded by the 2026-09-07 entry above, which covers the same name "
