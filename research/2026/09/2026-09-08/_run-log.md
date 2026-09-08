@@ -47,3 +47,13 @@
 - Median evidence completeness: 82/100 (SAIL 84, ASO 82, SIG 80)
 - Corrections to triage vs primary sources: SAIL is 20-25 analysts not 5; ASO is 12-19 analysts not 4; SIG is 11 analysts / 12 ratings not 3 -- triage's coverage counts were wrong on all three names this batch, so the 'thin coverage' rationale in selection_rationale does not hold for any of them
 - Panel-eligible after this batch (full 6-name shortlist ranked): TTAN (54.65), CHWY (48.6), SAIL (48.5), BRZE (47.75), SIG (47.1), ASO (45.1) -- all 6 pass the exclusion floors (confirmed, evidence>=50, implied-move anchor); panel.names=2 selects TTAN and CHWY for stage 3
+
+## Stage E — edge hunt — STARTED
+- Logged at 2026-09-08 14:10 UTC
+- Window: 2026-09-08 amc + 2026-09-09 bmo. edge_universe.py --window resolved 24 of 73 calendar rows, 0 time-not-supplied (no --include-unknown).
+- Universe: CASY,SUNB,SAIL,CHWY,TTAN,CNM,JMKE,KFY,BRZE,SIG,ASO,INNV,AVO,ODD,CGNT,CAL,JILL,PPIH,OCC,NNOX,MIND,DXLG,YQ,CRMT
+- Baselines sealed and pushed BEFORE any agent launch (commit 89072b4). 23 of 24 ok; JMKE no baseline (only 28 usable bars, recent listing).
+- Option chains live on 12 of 24 (10:07 NY fire time worked): usable event-implied move on 9 — BRZE 15.0%, CASY 7.6%, CHWY 10.2%, CNM 9.2%, ODD 20.7%, SAIL 13.0%, SIG 10.1%, SUNB 9.8%, TTAN 10.1%. Tightest ATM spreads TTAN 0.17, SAIL 0.17, BRZE 0.20, CHWY 0.25 of mid.
+- Baseline event_plausibility: 19 fits_cadence; unknown x4 (CGNT, NNOX, ODD cadence_implausible — Israeli FPI 6-K guard; SUNB only 2 prior prints); suspect x1 (YQ, 5-day gap vs 78-day median). History untrustworthy as an earnings base rate for those five — hunters will be told.
+- Plan: 1 edge-sweep over all 24 -> shed to ~8 hunted names (budget cap 20 = 1 sweep + 10 hunters + 8 adversaries = 19) -> 2 isolated hunters on top-2 by hunt_priority, 1 on the rest -> 1 priced-in-adversary per ticker over all its findings, both sides -> edge_score.py -> edge-note.md.
+- Shed will follow budget.edge_degrade_order (unconfirmed first, then lowest hunt_priority), with the documented deviation of preferring names that have a live chain so 'what the market priced' is measured rather than inferred.
