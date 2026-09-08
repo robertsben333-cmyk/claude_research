@@ -106,3 +106,7 @@
 - The corrupted CNM.json that crashed --check mid-run is now handled in code rather than only recorded here: a JSONDecodeError or UnicodeDecodeError on an adversary file is caught per file, reported as 'UNREADABLE ADVERSARY FILE' with the parser's own message, and the findings it was meant to judge fall through to the UNJUDGED list where they belong. Exit code is 1, as for any incomplete join.
 - Verified both ways against this run's real data: with CNM.json corrupted it reports the file plus CNM#0..#3 unjudged and exits 1; restored, 34 of 34 joined and exits 0. scripts/smoke_test.py passes.
 - Why it mattered: a traceback looks nothing like the silent-drop failure --check exists to catch, and it hid the fact that one whole ticker's four verdicts were missing. The check's whole purpose is that '8 of 8 adversary files exist' is not the same statement as 'every finding carries a number'.
+
+## Capture - 2026-09-08 - STARTED
+- Logged at 2026-09-08 15:06 UTC
+- Plan: universe sweep --horizon-days 15 (script-only, no cap floor), then agent-layer capture plans for the 6 largest names reporting within 3 days, then publish per name.
