@@ -134,3 +134,9 @@
 - Logged at 2026-09-08 15:39 UTC
 - Agent layer: 38 queries across 8 areas, 37 URLs in fetch plan.
 - capture.py: 18 new documents stored, 0 errors, no tripwires. Social skipped (event 3 days out, beyond social-within-days=2 default).
+
+## Capture — SUNB — 2026-09-08
+- Logged at 2026-09-08 15:40 UTC
+- Agent layer: 36 queries across 8 areas, 40 URLs in fetch plan. Note: thin coverage confirmed for this recently-listed name (analyst counts diverging 4-38 across providers; agent flagged this as a data-quality issue rather than resolving it).
+- capture.py: 23 new documents stored, 0 errors.
+- TRIPWIRE investigated: stocktitan.net/overview/SUNB (sha 44d745e3...) tripped on 'reported revenue of'. Body inspected: the matched text is 'For FY2026, Sunbelt Rentals Holdings reported revenue of $11.2B ... diluted EPS $3.15' — this is the already-reported FULL FISCAL YEAR figure (a different, earlier reporting period than the Sept 9 2026 quarterly print this capture targets), not an outcome leak of the imminent quarter. Also noted: the same snippet's 'net income of $1K, net margin 0.0%' reads as a stocktitan data-parsing artifact (implausible for an $11.2B-revenue company) rather than a real figure — flagged, not corrected, since this capture does not edit source data. Not a calendar/date problem; document kept per policy.
