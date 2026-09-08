@@ -1,0 +1,976 @@
+SOURCE: https://opti-view.com/underlying/ORCL/implied-volatility
+PROVIDER: agent-websearch
+AREA: 2
+HEADLINE: ORCL Implied Volatility: IV Rank & History
+WHY: Gives specific IV rank (62) and IV percentile (76%) figures plus IV rank trend since Feb 2026.
+QUERY: ORCL IV rank implied volatility percentile earnings September 2026
+FETCHED_UTC: 2026-09-08T15:29:42Z
+
+ 
+ 
+ 
+  
+ 
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'granted',
+    'ad_user_data': 'granted',
+    'ad_personalization': 'granted',
+    'analytics_storage': 'granted',
+    'functionality_storage': 'granted',
+    'security_storage': 'granted',
+    'wait_for_update': 500
+  });
+  dataLayer.push({ page_source: 'edge_static' });
+ 
+ 
+  (function(w,d,s,l,i) {
+    var loaded = false;
+    var events = ['pointerdown','keydown','touchstart','scroll'];
+    function load() {
+      if (loaded) return;
+      loaded = true;
+      events.forEach(function(e){ d.removeEventListener(e, load); });
+      w[l] = w[l] || [];
+      w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+      var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l!='dataLayer'?'&l='+l:'';
+      j.async = true;
+      j.src = 'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+      f.parentNode.insertBefore(j,f);
+    }
+    events.forEach(function(e){ d.addEventListener(e, load, {passive: true, once: true}); });
+    w.addEventListener('load', function(){ setTimeout(load, 3500); });
+  })(window,document,'script','dataLayer','GTM-KGHBB85B');
+ 
+ 
+  (function(){
+    try {
+      var DID_KEY = 'ov_edge_did';
+      var did = localStorage.getItem(DID_KEY);
+      if (!did) {
+        did = 'edge-' + (window.crypto && crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
+        localStorage.setItem(DID_KEY, did);
+      }
+
+      // First-touch UTM attribution, captured once per browser and replayed
+      // on every event below so a signup weeks later still shows the
+      // campaign that first brought the visitor to an edge page.
+      var TOUCH_KEY = 'ov_edge_first_touch';
+      var firstTouch = null;
+      try { firstTouch = JSON.parse(localStorage.getItem(TOUCH_KEY) || 'null'); } catch (e) {}
+      if (!firstTouch) {
+        var qp = new URLSearchParams(location.search);
+        firstTouch = {
+          edge_utm_source: qp.get('utm_source') || '',
+          edge_utm_medium: qp.get('utm_medium') || '',
+          edge_utm_campaign: qp.get('utm_campaign') || '',
+          edge_utm_term: qp.get('utm_term') || '',
+          edge_utm_content: qp.get('utm_content') || '',
+          edge_landing_page: location.pathname
+        };
+        localStorage.setItem(TOUCH_KEY, JSON.stringify(firstTouch));
+      }
+
+      function send(eventName, extraProps) {
+        try {
+          fetch('/mp/track?ip=1', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify([{
+              event: eventName,
+              properties: Object.assign({
+                token: '99b1a87d7560b10cae7e5b6d55b677f7',
+                distinct_id: did,
+                source: 'edge_static',
+                page_path: location.pathname,
+                '$current_url': location.href,
+                '$referrer': document.referrer,
+                time: Math.floor(Date.now() / 1000)
+              }, firstTouch, extraProps || {})
+            }])
+          });
+        } catch (e) {}
+      }
+
+      send('edge_page_viewed');
+
+      // CTA click-through — every worker-rendered CTA shares these two classes
+      // (shell.js nav, underlyingDirectoryPage.js, underlying/related.js) and
+      // already encodes a ?source= query param, so we just read it back
+      // rather than hardcoding routes here.
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest && e.target.closest('a.btn-primary, a.btn-secondary');
+        if (!link) return;
+        var href;
+        try { href = new URL(link.href, location.href); } catch (err) { return; }
+        send('edge_cta_clicked', {
+          cta_label: (link.textContent || '').trim(),
+          cta_style: link.classList.contains('btn-primary') ? 'primary' : 'secondary',
+          cta_destination: href.pathname,
+          cta_source: href.searchParams.get('source') || ''
+        });
+      }, { capture: true });
+
+      // Scroll depth + time on page, sent once when the visitor navigates
+      // away or backgrounds the tab.
+      var maxScrollPct = 0;
+      var startTime = Date.now();
+      function sampleScroll() {
+        var doc = document.documentElement;
+        var scrollable = doc.scrollHeight - doc.clientHeight;
+        var pct = scrollable > 0 ? Math.round((window.scrollY / scrollable) * 100) : 100;
+        if (pct > maxScrollPct) maxScrollPct = Math.min(pct, 100);
+      }
+      window.addEventListener('scroll', sampleScroll, { passive: true });
+
+      var engagementSent = false;
+      function sendEngagement() {
+        if (engagementSent) return;
+        engagementSent = true;
+        sampleScroll();
+        send('edge_page_engaged', {
+          scroll_depth_pct: maxScrollPct,
+          time_on_page_sec: Math.round((Date.now() - startTime) / 1000)
+        });
+      }
+      document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'hidden') sendEngagement();
+      });
+      window.addEventListener('pagehide', sendEngagement);
+    } catch (e) {}
+  })();
+ 
+   
+   
+   ORCL Implied Volatility: IV Rank &amp; History | OptiView 
+   
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+*{box-sizing:border-box}
+:root{
+  color-scheme:light dark;
+  --bg:rgb(250,250,250);--surface:rgb(245,245,247);
+  --card:rgba(255,255,255,.82);--card-border:rgba(0,0,0,.05);
+  --accent:rgb(123,180,7);--accent-text:rgb(255,255,255);
+  --accent-soft:rgba(123,180,7,.1);--glow:rgba(123,180,7,.09);
+  --text:rgb(22,22,22);--text-2:rgb(100,100,100);--text-3:rgb(160,160,160);
+  --border:rgb(210,210,210);--blue:rgb(52,146,235);--green:#22c55e;--red:#ef4444;
+  --header-bg:rgba(255,255,255,.8);--header-border:rgb(229,231,235);
+  
+  --ov-text:var(--text);--ov-text-muted:var(--text-3);--ov-text-secondary:var(--text-2);
+  --ov-accent:var(--accent);--ov-border:var(--border);
+  --ov-surface:var(--surface);--ov-card:var(--card);--ov-card-border:var(--card-border);
+  --ov-accent-soft:var(--accent-soft);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:rgb(22,22,22);--surface:rgb(42,42,42);
+  --card:rgba(28,30,38,.82);--card-border:rgba(255,255,255,.10);
+  --accent:rgb(154,226,9);--accent-text:rgb(0,0,0);
+  --accent-soft:rgba(154,226,9,.1);--glow:rgba(154,226,9,.06);
+  --text:rgb(255,255,255);--text-2:rgb(180,180,180);--text-3:rgb(120,120,120);
+  --border:rgb(60,60,60);--blue:rgb(192,215,237);
+  --header-bg:rgba(22,24,31,.8);--header-border:rgba(255,255,255,.1);
+}}
+body{margin:0;padding-top:80px;min-height:100vh;display:flex;flex-direction:column;color:var(--text);
+  background:
+    radial-gradient(720px 420px at 12% 0,var(--glow),transparent 65%),
+    radial-gradient(720px 420px at 88% 0,var(--glow),transparent 65%),
+    var(--bg);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;height:80px;
+  display:flex;align-items:center;padding:0 24px;
+  background:var(--header-bg);border-bottom:1px solid var(--header-border);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.logo{margin:0 8px;flex-shrink:0}
+.logo img{width:120px;height:40px;display:block}
+.header-right{display:flex;flex:1;align-items:center;justify-content:flex-end;gap:24px}
+.site-nav{display:none;align-items:center;gap:40px}
+.site-nav a{font-size:14px;color:var(--text-2)}
+.site-nav a:hover{color:var(--accent);text-decoration:underline}
+.header-actions{display:flex;align-items:center;gap:16px}
+@media (min-width:768px){.site-header{padding:0 48px}.header-right{gap:48px}}
+@media (min-width:868px){.site-nav{display:flex}}
+@media (min-width:1024px){.site-header{padding:0 80px}.site-nav{gap:56px}.header-right{gap:80px}}
+@media (min-width:1280px){.header-right{gap:128px}}
+
+
+.btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;
+  min-width:112px;height:48px;padding:8px 16px;border-radius:24px;
+  font-size:14px;font-weight:500;transition:opacity .2s,background .2s}
+.btn-primary{background:var(--accent);color:var(--accent-text)!important;border:1px solid transparent}
+.btn-primary:hover{opacity:.9;text-decoration:none}
+.btn-secondary{background:transparent;color:var(--accent)!important;border:1px solid var(--accent)}
+.btn-secondary:hover{background:var(--accent-soft);text-decoration:none}
+
+main{flex:1;width:100%;max-width:960px;margin:0 auto;padding:16px 24px 48px}
+
+
+.page{flex:1;width:100%;max-width:960px;margin:0 auto;padding:16px 24px 48px;
+  display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"rail" "main";
+  gap:0 40px;align-items:start}
+.page main{flex:none;grid-area:main;max-width:none;margin:0;padding:0;min-width:0}
+
+.content-stack{display:flex;flex-direction:column;gap:36px}
+.page .content-stack>*{margin:0}
+.symbols-rail{grid-area:rail;margin:8px 0 4px}
+.symbols-rail h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--text-3);margin:0 0 8px}
+.symbols-rail .ov-chips{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-bottom:2px}
+.symbols-rail .ov-chips::-webkit-scrollbar{display:none}
+.symbols-rail .ov-chip{flex-shrink:0}
+.ov-chip--sym{gap:6px}
+.chip-logo{width:16px;height:16px;object-fit:contain;border-radius:50%;flex-shrink:0}
+@media (min-width:1360px){
+  .page{max-width:none;grid-template-columns:1fr minmax(0,912px) 1fr;
+    grid-template-areas:". main rail";gap:0 32px}
+  .symbols-rail{position:sticky;top:96px;margin:10px 0 0}
+  .symbols-rail .ov-chips{flex-wrap:wrap;overflow-x:visible;padding-bottom:0}
+}
+h1{font-size:28px;line-height:1.25;margin:10px 0 12px;letter-spacing:-.01em}
+.page-title-row{display:flex;align-items:center;gap:14px}
+.page-title-row h1{margin:0}
+.page-title-logo{width:40px;height:40px;object-fit:contain;border-radius:50%;flex-shrink:0}
+h2{font-size:20px;margin:0 0 12px}
+h3{font-size:16px;margin:18px 0 4px}
+section{margin-top:32px}
+section[id]{scroll-margin-top:96px}
+
+.lede{margin:0;font-size:16px}
+.asof{font-size:13px;color:var(--text-3);margin:10px 0 22px}
+table.metrics{width:100%;border-collapse:collapse;font-size:14px}
+.metrics td{padding:7px 4px;border-bottom:1px solid var(--border);vertical-align:top}
+.metrics td.k{color:var(--text-2)}
+.metrics td.v{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cols-2{display:grid;grid-template-columns:1fr;gap:6px 36px}
+@media (min-width:720px){.cols-2{grid-template-columns:1fr 1fr}}
+.note{font-size:14px;color:var(--text-2);margin:10px 0 12px}
+.prose{font-size:15px;margin:0}
+.chart{width:100%;height:auto;display:block;margin:6px 0 10px}
+.chart-caption{font-size:12px;color:var(--text-3);margin:0 0 12px}
+.cta-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:32px;padding:20px}
+.cta-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.section-divider{border:0;border-top:1px solid var(--border);margin:0}
+
+.faq-list{margin-top:12px}
+.faq-item{padding:18px 0;border-bottom:1px solid var(--border)}
+.faq-item:last-child{border-bottom:none}
+.faq-item h3{margin:0 0 8px;font-size:15px;font-weight:600;color:var(--text)}
+.faq-item p{margin:0;font-size:14px;color:var(--text-2);line-height:1.65}
+
+
+.topic-nav{margin:14px 0 4px}
+
+
+.tab-nav{margin:14px 0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-bottom:3px}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-nav .ov-tabs{min-width:max-content;margin-bottom:0}
+.tab-nav .ov-tab{white-space:nowrap}
+.tab-nav .ov-tab:hover{color:var(--accent)}
+
+
+.teasers{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+@media (min-width:720px){.teasers{grid-template-columns:1fr 1fr}}
+
+.teaser{display:block;padding:16px 18px;color:var(--text)!important}
+.teaser:hover{text-decoration:none;border-color:var(--accent)}
+.teaser h3{margin:0 0 2px;font-size:16px}
+.teaser .stat{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;margin:2px 0 4px}
+.teaser p{margin:0;font-size:13px;color:var(--text-2)}
+.teaser .more{display:inline-block;margin-top:8px;font-size:13px;font-weight:500;color:var(--blue)}
+.teaser.wide{grid-column:1/-1}
+
+
+.contracts-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0 4px}
+table.contracts{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+.contracts th{padding:7px 8px;text-align:right;font-weight:600;color:var(--text-2);
+  border-bottom:1px solid var(--border);white-space:nowrap}
+.contracts th:first-child,.contracts td:first-child{text-align:left}
+.contracts td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--border);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.contract-link{color:inherit;text-decoration:none;font-weight:inherit}
+.contract-link:hover{color:var(--accent);text-decoration:none}
+
+
+
+.dir-card{padding:16px 18px}
+.dir-card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dir-card-header h3{margin:0;font-size:16px}
+.dir-card-header h3 a{color:var(--text)}
+.dir-card-logo{width:28px;height:28px;object-fit:contain;border-radius:50%;flex-shrink:0}
+.symbol-list{list-style:none;margin:16px 0 0;padding:0;columns:1;column-gap:32px;font-size:14px}
+@media (min-width:600px){.symbol-list{columns:2}}
+@media (min-width:900px){.symbol-list{columns:3}}
+.symbol-list li{display:flex;align-items:center;gap:6px;padding:4px 0;break-inside:avoid}
+.symbol-list a{font-weight:600;font-variant-numeric:tabular-nums}
+.symbol-list span{color:var(--text-3);font-size:13px}
+.sym-logo{width:18px;height:18px;object-fit:contain;border-radius:50%;flex-shrink:0}
+
+
+.related-cards{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+@media (min-width:640px){.related-cards{grid-template-columns:1fr 1fr}}
+
+.related-card{display:flex;flex-direction:column;gap:8px;padding:14px 16px;
+  color:var(--text)!important;text-decoration:none!important;transition:border-color .2s}
+.related-card:hover{border-color:var(--accent)}
+.related-card-title{font-size:14px;font-weight:600;line-height:1.4;flex:1}
+.related-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.related-card-footer svg{color:var(--blue);flex-shrink:0}
+.fineprint{font-size:12px;color:var(--text-3);margin-top:32px;border-top:1px solid var(--border);padding-top:14px}
+.fineprint p{margin:6px 0}
+
+
+.site-footer{margin-top:48px;background:var(--accent);color:var(--accent-text);
+  border-radius:40px 40px 0 0;min-height:320px;padding:56px 24px 32px;
+  display:flex;flex-direction:column;align-items:center}
+.site-footer a{color:var(--accent-text)}
+.footer-inner{width:100%;max-width:1200px;display:flex;flex-direction:column;gap:32px}
+.footer-logo img{width:120px;height:40px;display:block}
+.footer-tagline{margin:0;font-size:14px}
+.footer-nav-row{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:32px}
+.footer-nav{display:none;align-items:center;gap:56px}
+.footer-nav a{font-size:14px;opacity:.6}
+.footer-nav a:hover{opacity:1;text-decoration:underline}
+.footer-social{display:flex;align-items:center;gap:32px}
+.footer-social svg{width:24px;height:24px;fill:var(--accent-text);display:block}
+@media (min-width:768px){.footer-nav{display:flex}.footer-nav-row{flex-direction:row;align-items:center}}
+.footer-divider{width:100%;border:0;border-top:1px solid var(--accent-text);margin:0}
+.footer-mail{display:inline-flex;align-items:center;gap:8px;font-size:14px;opacity:.8}
+.footer-mail:hover{opacity:1}
+.footer-mail svg{width:18px;height:18px}
+.footer-disclosure{font-size:12px;line-height:1.6;margin:24px 0 0}
+.footer-disclosure a{text-decoration:underline}
+.footer-legal-row{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:24px;margin-top:24px}
+.footer-legal{display:flex;align-items:center;flex-wrap:wrap}
+.footer-legal a{font-size:12px;padding:0 16px;border-right:1px solid var(--accent-text)}
+.footer-legal a:first-child{padding-left:0}
+.footer-legal a:last-child{border-right:0}
+.footer-copyright{font-size:12px}
+@media (min-width:768px){.footer-legal-row{flex-direction:row;align-items:center}}
+
+
+.symbol-search-wrap{position:relative;margin-bottom:12px}
+.symbol-search-box{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 10px}
+.symbol-search-icon{width:14px;height:14px;flex-shrink:0;color:var(--text-3)}
+.symbol-search{flex:1;border:none;background:transparent;color:var(--text);font-size:13px;outline:none;min-width:0}
+.symbol-search::placeholder{color:var(--text-3)}
+.symbol-search::-webkit-search-cancel-button,.symbol-search::-webkit-search-decoration{-webkit-appearance:none}
+.symbol-search-results{list-style:none;margin:4px 0 0;padding:0;position:absolute;left:0;right:0;z-index:50;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.symbol-search-item{padding:8px 12px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--border);transition:background .15s}
+.symbol-search-item:last-child{border-bottom:none}
+.symbol-search-item:hover,.symbol-search-item:focus{background:var(--surface);outline:none}
+.symbol-search-item strong{font-weight:600;color:var(--text);flex-shrink:0}
+.symbol-search-item span{color:var(--text-3);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+
+
+
+.ov-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--ov-text-muted);
+}
+.ov-breadcrumb a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ov-text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.ov-breadcrumb a:hover {
+  color: var(--ov-accent);
+  text-decoration: none;
+}
+
+.ov-breadcrumb > svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+
+.ov-breadcrumb a > svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.ov-breadcrumb a:hover > svg {
+  transform: translateX(-2px);
+}
+
+.ov-breadcrumb .current {
+  font-weight: 600;
+  color: var(--ov-text);
+}
+
+
+
+.ov-tabs {
+  display: flex;
+  flex-direction: row;
+  background: transparent;
+  padding: 0 4px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--ov-border);
+}
+.ov-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  font-size: 16px;
+  line-height: 2;
+  text-align: center;
+  color: var(--ov-text);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+.ov-tab:hover {
+  text-decoration: none;
+}
+.ov-tab--active {
+  font-weight: 600;
+}
+.ov-tab-label {
+  margin-right: 12px;
+}
+
+.ov-tab-indicator {
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--ov-accent);
+}
+
+
+
+@layer components {
+  .ov-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ov-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ov-text-secondary);
+    background: var(--ov-surface);
+    border: 1px solid var(--ov-border);
+    transition: border-color 0.2s, color 0.2s;
+    text-decoration: none;
+    user-select: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ov-chip:hover {
+    border-color: var(--ov-accent);
+    color: var(--ov-text);
+    text-decoration: none;
+  }
+
+  .ov-chip--selected,
+  .ov-chip[aria-current="page"] {
+    border-color: var(--ov-accent);
+    color: var(--ov-text);
+    background: var(--ov-accent-soft);
+  }
+}
+
+
+
+.ov-glass {
+  background: var(--ov-card, rgba(255, 255, 255, 0.82));
+  border: 1px solid var(--ov-card-border, rgba(0, 0, 0, 0.05));
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .ov-glass {
+  background: var(--ov-card, rgba(28, 30, 38, 0.82));
+  border-color: var(--ov-card-border, rgba(255, 255, 255, 0.10));
+}
+
+
+
+.ov-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 10px;
+}
+
+.ov-stat-cell {
+  background: var(--ov-surface);
+  border: 1px solid var(--ov-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  transition: border-color 0.2s;
+}
+
+.ov-stat-cell__label {
+  font-size: 12px;
+  color: var(--ov-text-secondary);
+}
+
+.ov-stat-cell__value {
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ov-text);
+  transition: color 0.2s;
+}
+
+
+.ov-stat-cell__sub {
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+
+.ov-stat-cell__gauge {
+  margin-top: 8px;
+}
+
+.ov-stat-cell__gauge-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ov-border);
+  overflow: hidden;
+}
+
+.ov-stat-cell__gauge-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.ov-stat-cell__gauge-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 3px;
+}
+
+
+.ov-stat-cell__range-bar {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ov-border);
+  margin-top: 8px;
+}
+
+.ov-stat-cell__range-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ov-accent);
+  box-shadow: 0 0 0 2px var(--ov-surface);
+}
+
+
+a.ov-stat-cell {
+  display: block;
+  text-decoration: none;
+}
+
+a.ov-stat-cell:hover {
+  border-color: var(--ov-accent);
+  text-decoration: none;
+}
+
+a.ov-stat-cell:hover .ov-stat-cell__value {
+  color: var(--ov-accent);
+}
+
+
+
+.ov-badge {
+  display: inline-block;
+  background: var(--ov-accent-soft);
+  color: var(--ov-accent);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+ 
+   {"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://opti-view.com/#website","url":"https://opti-view.com/","name":"OptiView","alternateName":["Opti-View","Opti View"],"publisher":{"@id":"https://opti-view.com/#organization"}},{"@type":"Organization","@id":"https://opti-view.com/#organization","name":"OptiView","alternateName":["Opti-View","Opti View"],"url":"https://opti-view.com/","logo":"https://opti-view.com/assets/img/platformBranding/favicon-512x512.png","contactPoint":{"@type":"ContactPoint","email":"support@opti-view.com","contactType":"customer support"},"sameAs":["https://www.youtube.com/@optiviewofficial","https://x.com/optiviewnews"],"parentOrganization":{"@type":"Organization","@id":"https://opti-view.com/#parent-org","name":"Torr.o GmbH","url":"https://torr-o.com/","sameAs":["https://www.linkedin.com/company/torr-o"]}},{"@type":"SoftwareApplication","@id":"https://opti-view.com/#software","name":"OptiView","alternateName":"Opti-View","applicationCategory":"FinanceApplication","operatingSystem":"Web, iOS, Android","description":"OptiView is an advanced options analytics and trading platform. Scan 5,000+ U.S. listed underlyings with OptiScan, visualize full P&L payoffs, optimize multi-leg strategies, and stress-test positions under different volatility regimes.","offers":[{"@type":"Offer","name":"Free Plan","price":"0","priceCurrency":"USD"},{"@type":"Offer","name":"Premium Plan","price":"39","priceCurrency":"USD"}],"publisher":{"@id":"https://opti-view.com/#organization"}}]} 
+   {"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://opti-view.com/underlying/ORCL/implied-volatility#webpage","url":"https://opti-view.com/underlying/ORCL/implied-volatility","name":"ORCL Implied Volatility: IV Rank & History | OptiView","description":"ORCL implied volatility today: ATM IV 78.3%, IV rank 64/100, 30-day HV 59.8%. IV rank, IV percentile, term structure, skew, and a 1-year IV history chart — updated every trading day.","dateModified":"2026-09-07T00:00:00.000Z","breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://opti-view.com/"},{"@type":"ListItem","position":2,"name":"Data Hub","item":"https://opti-view.com/underlying"},{"@type":"ListItem","position":3,"name":"ORCL Options Statistics","item":"https://opti-view.com/underlying/ORCL"},{"@type":"ListItem","position":4,"name":"ORCL Implied Volatility","item":"https://opti-view.com/underlying/ORCL/implied-volatility"}]},"publisher":{"@id":"https://opti-view.com/#organization"}},{"@type":"FAQPage","@id":"https://opti-view.com/underlying/ORCL/implied-volatility#faq","mainEntity":[{"@type":"Question","name":"What is the implied volatility of ORCL options?","acceptedAnswer":{"@type":"Answer","text":"ORCL options trade at a 30-day at-the-money implied volatility of 78.3% as of Sep 6, 2026. That is an IV rank of 64 out of 100, meaning implied volatility is elevated relative to its own 52-week range."}},{"@type":"Question","name":"Is ORCL implied volatility high or low right now?","acceptedAnswer":{"@type":"Answer","text":"By its own 52-week standards, ORCL implied volatility is currently moderate: IV rank is 64 out of 100 as of Sep 6, 2026. Compared with realized movement, the IV/HV ratio of 1.31 shows options pricing more movement than the stock has recently delivered."}},{"@type":"Question","name":"What move do ORCL options imply before the next expiration?","acceptedAnswer":{"@type":"Answer","text":"Front-expiration ORCL options imply a one-standard-deviation move of ±$27.49 (±17.4%) as of Sep 6, 2026, derived from at-the-money option prices."}},{"@type":"Question","name":"What is the difference between ORCL's IV rank and IV percentile?","acceptedAnswer":{"@type":"Answer","text":"IV rank (currently 64) measures where today's implied volatility sits between its 52-week low and high. IV percentile (currently 71%) counts the share of trading days in the past year with lower implied volatility than today. Percentile is less distorted by one-off volatility spikes."}}]}]} 
+ 
+ 
+    
+
+     
+       
+         
+           
+           
+         
+       
+       
+         
+           Platform  Data Hub  Help Center  Pricing  Blog 
+         
+         
+           Signup 
+           Login 
+         
+       
+     
+  
+
+     
+     
+     
+
+      
+     
+       
+          Overview    Implied volatility      Max pain    Open interest    Gamma exposure    Volume &amp; flow    Active contracts  
+       
+     
+  
+
+      
+     
+          Home     Data Hub     ORCL Options Statistics     Implied Volatility 
+     
+  
+       
+         
+         ORACLE CORP (ORCL) Implied Volatility 
+       
+       ORACLE CORP (ORCL) options trade at a 30-day at-the-money implied volatility of 78.3%, an IV rank of 64 out of 100 over the past year. This page breaks down ORCL&#39;s implied volatility in plain English: where it sits versus its own history, how it compares with realized movement, and what the term structure and skew are saying. 
+
+       
+        Data as of Sep 6, 2026, 8:00 PM ET · OPRA data 15 minutes delayed · For information only — not investment advice.
+       
+
+      
+     
+       
+     Last close 
+     $158.07 
+   
+       
+     52-week range 
+     $115.32 – $328.52 
+        
+   
+        ATM IV (30d)  78.3%  
+       
+     IV rank 
+     64 / 100 
+     
+          
+       Moderate 
+     
+   
+        Expected move  ±$27.49 (±17.4%)  
+       
+     Put/call OI 
+     0.87 
+    
+   
+       
+     Max pain 
+     $160 
+     ↑ 1.2% above close 
+   
+        Next earnings  Sep 13, 2026  
+     
+  
+
+       
+
+      
+        
+     
+       Implied Volatility &amp; Expected Move 
+         22%   41%   60%   79%   97%    Jan &#39;26  May &#39;26  Sep &#39;26  
+         ORCL 30-day at-the-money implied volatility, past year. 
+       
+            ATM IV — front expiration  78.3%    ATM IV — 2 month  63.9%    ATM IV — 3 month  61.1%    IV rank (1 year)  64 / 100    IV percentile (1 year)  71%    Expected move (front expiration)  ±$27.49 (±17.4%)    
+            Historical volatility — 10 day  51.1%    Historical volatility — 21 day  50.7%    Historical volatility — 30 day  59.8%    Historical volatility — 60 day  58.5%    IV / HV ratio  1.31    Term slope (front − 3M)  +17.3 pts    25Δ skew (front)  +6.4 pts    
+       
+       An IV rank of 64 places current implied volatility in the middle of its 52-week range. With an IV/HV ratio of 1.31, options currently price in more movement than the stock has recently realized. The term structure is in backwardation — front-month IV exceeds 3-month IV, a pattern often seen around near-term events. 
+     
+  
+        
+     
+       ORCL IV Rank History 
+         0   28   55   83   110    Feb &#39;26  Jun &#39;26  Sep &#39;26  
+       ORCL IV rank (0–100), past year. 
+       IV rank has fallen from 98 in Feb &#39;26 to 64 today. An IV percentile of 71% means implied volatility was lower than today on 71% of trading days in the past year. 
+     
+  
+      
+
+      
+     
+       
+         Explore the payoff profile of option on ORCL for free 
+         
+          Build multi-leg ORCL strategies, visualize payoffs, and scan the full US options
+          universe with OptiView.
+         
+       
+       
+         Open ORCL in the platform 
+         Scan options 
+       
+     
+  
+
+      
+     
+       ORCL Options FAQ 
+       
+        
+           
+             What is the implied volatility of ORCL options? 
+             ORCL options trade at a 30-day at-the-money implied volatility of 78.3% as of Sep 6, 2026. That is an IV rank of 64 out of 100, meaning implied volatility is elevated relative to its own 52-week range. 
+           
+        
+           
+             Is ORCL implied volatility high or low right now? 
+             By its own 52-week standards, ORCL implied volatility is currently moderate: IV rank is 64 out of 100 as of Sep 6, 2026. Compared with realized movement, the IV/HV ratio of 1.31 shows options pricing more movement than the stock has recently delivered. 
+           
+        
+           
+             What move do ORCL options imply before the next expiration? 
+             Front-expiration ORCL options imply a one-standard-deviation move of ±$27.49 (±17.4%) as of Sep 6, 2026, derived from at-the-money option prices. 
+           
+        
+           
+             What is the difference between ORCL&#39;s IV rank and IV percentile? 
+             IV rank (currently 64) measures where today&#39;s implied volatility sits between its 52-week low and high. IV percentile (currently 71%) counts the share of trading days in the past year with lower implied volatility than today. Percentile is less distorted by one-off volatility spikes. 
+           
+        
+       
+     
+  
+
+      
+     
+       Keep Reading 
+       Background on the concepts behind these ORCL statistics: 
+       
+        
+           
+             The volatility compression killer, and how it can ruin your options strategy. 
+             
+               Blog 
+                  
+             
+           
+        
+           
+             Why you&#39;re losing with options (I&#39;ve lost money so you don&#39;t have to). 
+             
+               Blog 
+                  
+             
+           
+        
+           
+             What Is IV Rank? Options Volatility Rank | OptiView 
+             
+               Help Center 
+                  
+             
+           
+        
+           
+             Volatility Risk Premium in Options Trading | OptiView 
+             
+               Help Center 
+                  
+             
+           
+        
+       
+     
+  
+
+       
+          Methodology.  IV rank compares the current 30-day at-the-money implied volatility with its highest and lowest values over the past 52 weeks. Max pain is the strike that minimizes the total payout to option holders at expiration. The call and put walls are the strikes carrying the largest call and put open interest across all expirations. Net gamma exposure (GEX) is measured from the dealer perspective. All statistics are derived from delayed OPRA options data. 
+         Options trading involves significant risk, and losses can exceed your initial investment. Always consult a licensed financial professional before making investment decisions. OptiView does not provide financial advice; all figures on this page are descriptive statistics, not recommendations. 
+       
+     
+     
+
+    
+     
+       More Symbols 
+       
+         
+              
+           
+         
+          
+       
+       
+          AAPL options   SPX options   GLD options   PYPL options   QQQ options   CEGX options   BMNU options   NDX options   OXY options   GPRO options   SPY options   SPCX options   XYZ options   NVDA options   BE options   FRVO options   OWL options   TSLA options   AAL options   MRVL options   RGTI options   SMCI options   BMNR options   BABA options   SPXW options 
+         All symbols → 
+       
+     
+     (function(){
+  var rail=document.getElementById('more-symbols');
+  if(!rail)return;
+  var topic=rail.dataset.topic||'';
+  var input=rail.querySelector('.symbol-search');
+  var list=rail.querySelector('.symbol-search-results');
+  if(!input||!list)return;
+  var timer;
+  function dest(sym){return'/underlying/'+encodeURIComponent(sym)+(topic?'/'+topic:'');}
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/ /g,'&gt;').replace(/"/g,'&quot;');}
+  function render(results){
+    if(!results||!results.length){list.hidden=true;input.setAttribute('aria-expanded','false');return;}
+    var h='';
+    for(var i=0;i '
+        +' '+esc(r.symbol)+' '
+        +(r.name?' '+esc(r.name)+' ':'')
+        +' ';
+    }
+    list.innerHTML=h;list.hidden=false;input.setAttribute('aria-expanded','true');
+  }
+  function hide(){list.hidden=true;input.setAttribute('aria-expanded','false');}
+  list.addEventListener('click',function(e){var it=e.target.closest('.symbol-search-item');if(it)location.href=it.dataset.href;});
+  input.addEventListener('input',function(){
+    clearTimeout(timer);var q=input.value.trim();
+    if(!q){hide();return;}
+    timer=setTimeout(function(){
+      fetch('/underlying/search?q='+encodeURIComponent(q))
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(d){render(d&&d.results);})
+        .catch(function(){hide();});
+    },180);
+  });
+  input.addEventListener('keydown',function(e){
+    var items=list.querySelectorAll('.symbol-search-item');
+    if(e.key==='ArrowDown'){e.preventDefault();if(items.length){items[0].focus();}}
+    else if(e.key==='Escape'){hide();}
+    else if(e.key==='Enter'&&!list.hidden&&items.length){location.href=items[0].dataset.href;}
+  });
+  list.addEventListener('keydown',function(e){
+    var items=list.querySelectorAll('.symbol-search-item');
+    var idx=Array.from(items).indexOf(document.activeElement);
+    if(e.key==='ArrowDown'){e.preventDefault();if(idx 0)items[idx-1].focus();else input.focus();}
+    else if(e.key==='Enter'&&idx>=0){location.href=items[idx].dataset.href;}
+    else if(e.key==='Escape'){hide();input.focus();}
+  });
+  document.addEventListener('click',function(e){if(!rail.contains(e.target))hide();});
+  input.setAttribute('role','combobox');input.setAttribute('aria-expanded','false');input.setAttribute('aria-autocomplete','list');
+})(); 
+  
+     
+  
+
+     
+       
+         
+           
+         
+         The next-gen platform for options analytics 
+         
+           
+             Platform  Data Hub  Help Center  Pricing  Blog 
+           
+           
+             
+                   
+                
+                   
+                
+                   
+                
+                   
+                
+                   
+               
+           
+         
+         
+         
+                 [email&#160;protected]   
+           
+            Options trading is not suitable for all investors due to its inherent high risk, which
+            can potentially result in significant losses. Please read
+             Characteristics and Risks of Standardized Options 
+            before investing in options.
+           
+           
+            OptiView is an educational platform to explore how financial models work. Outputs are
+            hypothetical and will almost certainly differ from actual market results. They are not
+            predictions and should not guide investment decisions. Options and other financial
+            products carry significant risk and may not be suitable for all investors. Past
+            performance does not guarantee future results. Trading is conducted solely through your
+            regulated brokerage.  Read Full Risk Disclosure .
+           
+           
+             
+               Terms and Conditions  Privacy Policy  Risk Disclosure 
+             
+             Copyright © 2026 Torr.o GmbH. All rights reserved. 
+           
+         
+       
+     
+  
+    
+ 
+ 

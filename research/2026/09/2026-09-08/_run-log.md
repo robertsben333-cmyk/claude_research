@@ -117,3 +117,9 @@
 - capture.py: 15 new documents stored, 0 snippet-only, 0 errors.
 - TRIPWIRE investigated: stocktwits.com news-article page (sha a197088...) tripped 'shares up/miss' tells. Body inspected: it is a genuine historical article ('Casey's General Stores Gets Analyst Upgrade Ahead of Q3 Earnings', Gordon Haskett upgrade, PT $410->$500, FY25/FY26 EPS forecasts) from roughly early-to-mid FY2025/FY2026, surfaced by a broad sentiment query ('CASY stock sentiment ... ahead of earnings'), not leakage about tonight's Q1 FY2027 print. False positive on the regex, not a calendar/date problem — document kept per policy (quarantine, not delete).
 - Also noted (not a tripwire, a data-quality note): an agent-surfaced Benzinga analyst-ratings aggregator page (benzinga.com/quote/casy/analyst-ratings) listed PT changes dated Sept 8/9 2026; page is live-updating so today's fetch reflects today's state — captured, flagged for date-plausibility, no tripwire fired on its stored body.
+
+## Capture — ORCL — 2026-09-08
+- Logged at 2026-09-08 15:30 UTC
+- Agent layer: 37 queries across 8 areas, 40 URLs in fetch plan.
+- capture.py: 19 new documents stored, 0 errors, no tripwires.
+- Data-quality note (not a tripwire): universe.json carries two ORCL calendar rows for the same fiscal quarter (Aug/2026) — 2026-09-08 (time-not-supplied, first seen 08-30) and 2026-09-10 (time-after-hours, first seen 09-04, higher-confidence). Used 2026-09-10 for this capture as the more recently confirmed date; the 09-08 stale row is still tracked separately in captures/events/ORCL-2026-09-08/ from the earlier script-only sweep and should be reconciled/dropped by whichever stage resolves the session.
