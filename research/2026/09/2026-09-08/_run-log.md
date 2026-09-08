@@ -37,3 +37,13 @@
 - Shortlist: 6 names (TTAN, BRZE, CHWY, SAIL, ASO, SIG); this batch (2 of 2): SAIL, ASO, SIG
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers, publish after each wave -- wave 1: SAIL, ASO; wave 2: SIG
+
+## Stage 2 — deep dive, batch 2 — FINISHED
+- Logged at 2026-09-08 10:59 UTC
+- Researched: SAIL, ASO, SIG
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves (wave 1: SAIL, ASO; wave 2: SIG)
+- Median evidence completeness: 82/100 (SAIL 84, ASO 82, SIG 80)
+- Corrections to triage vs primary sources: SAIL is 20-25 analysts not 5; ASO is 12-19 analysts not 4; SIG is 11 analysts / 12 ratings not 3 -- triage's coverage counts were wrong on all three names this batch, so the 'thin coverage' rationale in selection_rationale does not hold for any of them
+- Panel-eligible after this batch (full 6-name shortlist ranked): TTAN (54.65), CHWY (48.6), SAIL (48.5), BRZE (47.75), SIG (47.1), ASO (45.1) -- all 6 pass the exclusion floors (confirmed, evidence>=50, implied-move anchor); panel.names=2 selects TTAN and CHWY for stage 3
