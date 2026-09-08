@@ -82,12 +82,22 @@ def write_briefs(run, hunts):
 
 def check(run, hunts):
     """Did every finding actually get a verdict? Silent drops are the danger."""
-    judged, dupes = {}, []
+    judged, dupes, unreadable = {}, [], []
     d = run / "adversary"
     if not d.exists():
         sys.exit(f"no adversary directory at {d} -- nothing to check")
     for f in sorted(d.glob("*.json")):
-        doc = json.loads(f.read_text(encoding="utf-8"))
+        # An adversary file that will not parse must be REPORTED, not raised. On
+        # 2026-09-08 CNM.json came back with a corrupted escape (\u201j3 for
+        # –3) and this loop died on a traceback -- which looks nothing like
+        # the silent-drop failure the check exists to catch, and buries the fact
+        # that one whole ticker's verdicts are missing. Name the file and carry on
+        # so the unjudged findings underneath it show up in the same report.
+        try:
+            doc = json.loads(f.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError) as e:
+            unreadable.append((f.name, str(e)))
+            continue
         for v in (doc.get("verdicts") or [doc]):
             k = v.get("finding_key")
             if k is None:
@@ -103,6 +113,13 @@ def check(run, hunts):
 
     print(f"findings:        {len(all_keys)}")
     print(f"verdicts joined: {len(all_keys & set(judged))}")
+
+    if unreadable:
+        print(f"\nUNREADABLE ADVERSARY FILE ({len(unreadable)}) -- not parseable as "
+              "JSON, so every finding it was meant to judge is unjudged below")
+        for name, err in unreadable:
+            print(f"  {name}: {err}")
+
     for label, items, why in (
         ("UNJUDGED", missing,
          "will default to mostly-priced and silently cost that name edge"),
@@ -118,7 +135,7 @@ def check(run, hunts):
             for k in items:
                 print(f"  {k}")
 
-    bad = bool(missing or orphans or nulls or dupes)
+    bad = bool(missing or orphans or nulls or dupes or unreadable)
     print("\nJOIN CLEAN -- every finding carries an adversary number" if not bad
           else "\nJOIN INCOMPLETE -- fix before trusting edge_score.py output")
     return 1 if bad else 0

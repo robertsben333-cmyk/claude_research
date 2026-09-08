@@ -100,3 +100,9 @@
 - Also worth noting for a future run: edge_baseline_amend.py's AMENDMENTS table is per-run and shipped stale (2026-09-07's WDH entry). The guard worked — it exited non-zero rather than printing a clean 'nothing to amend'. Rewritten from this run's sweep before use.
 - Not hunted, all rankable=false with a stated reason: CRMT (unconfirmed, amended to suspect), JMKE (no baseline exists at all — 28 usable bars — despite priority 79.4 and a company-confirmed event), and 14 shed on budget. Visible cost of the measured-baseline deviation: SAIL went unhunted at priority 42.4 despite the joint-tightest chain of the day.
 - Resolve after both sessions close: python3 scripts/edge_resolve.py --run research/2026/09/2026-09-08/edge, then the pooled figure. Eight names is an anecdote and the note says so.
+
+## Stage E — edge_brief.py --check hardened
+- Logged at 2026-09-08 15:04 UTC
+- The corrupted CNM.json that crashed --check mid-run is now handled in code rather than only recorded here: a JSONDecodeError or UnicodeDecodeError on an adversary file is caught per file, reported as 'UNREADABLE ADVERSARY FILE' with the parser's own message, and the findings it was meant to judge fall through to the UNJUDGED list where they belong. Exit code is 1, as for any incomplete join.
+- Verified both ways against this run's real data: with CNM.json corrupted it reports the file plus CNM#0..#3 unjudged and exits 1; restored, 34 of 34 joined and exits 0. scripts/smoke_test.py passes.
+- Why it mattered: a traceback looks nothing like the silent-drop failure --check exists to catch, and it hid the fact that one whole ticker's four verdicts were missing. The check's whole purpose is that '8 of 8 adversary files exist' is not the same statement as 'every finding carries a number'.
