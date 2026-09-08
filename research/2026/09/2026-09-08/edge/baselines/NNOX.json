@@ -1,0 +1,124 @@
+{
+ "ticker": "NNOX",
+ "event_date": "2026-09-09",
+ "session": "bmo",
+ "as_of_utc": "2026-09-08T14:09:21+00:00",
+ "sources": [
+  "yahoo chart v8 daily bars",
+  "yahoo options v7 front expiry (cookie+crumb)",
+  "sec edgar submissions api, 8-K item 2.02 acceptance times"
+ ],
+ "tape": {
+  "last_close_date": "2026-09-08",
+  "spot": 0.8676,
+  "run_up_5d_pct": 7.51,
+  "run_up_20d_pct": -18.54,
+  "pct_from_52w_high": -80.93,
+  "pct_from_52w_low": 21.68,
+  "realised_vol_20d_annualised_pct": 85.4,
+  "avg_volume_20d": 1356145
+ },
+ "cik": "0001795251",
+ "history": {
+  "moves": [
+   {
+    "event_date": "2026-08-18",
+    "session": "bmo",
+    "move_pct": -5.03
+   },
+   {
+    "event_date": "2026-08-13",
+    "session": "amc",
+    "move_pct": 1.32
+   },
+   {
+    "event_date": "2026-08-07",
+    "session": "amc",
+    "move_pct": 0.47
+   },
+   {
+    "event_date": "2026-08-06",
+    "session": "bmo",
+    "move_pct": 2.0
+   },
+   {
+    "event_date": "2026-07-23",
+    "session": "amc",
+    "move_pct": -8.01
+   },
+   {
+    "event_date": "2026-07-23",
+    "session": "amc",
+    "move_pct": -8.01
+   },
+   {
+    "event_date": "2026-06-25",
+    "session": "bmo",
+    "move_pct": -44.01
+   },
+   {
+    "event_date": "2026-04-20",
+    "session": "bmo",
+    "move_pct": -24.39,
+    "session_conflict": {
+     "tagged_session": "bmo",
+     "volume_says": "bmo",
+     "event_day_volume": 8181900,
+     "next_day_volume": 1906800,
+     "median_20d_before": 780150,
+     "move_as_tagged_pct": -24.39,
+     "move_if_bmo_pct": -24.39,
+     "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+    }
+   }
+  ],
+  "n": 8,
+  "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+  "median_abs_move_pct": 6.52,
+  "max_abs_move_pct": 44.01,
+  "up_count": 3,
+  "session_conflicts": 1
+ },
+ "event_plausibility": {
+  "days_since_last_print": 22,
+  "median_gap_days": 6,
+  "ratio": 3.67,
+  "last_print": "2026-08-18",
+  "verdict": "unknown",
+  "cadence_implausible": true,
+  "reason": "inferred cadence of 6 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+ },
+ "options": {
+  "status": "unusable_chain",
+  "expiry": "2026-09-18",
+  "days_to_expiry": 10,
+  "atm_strike": 1.0,
+  "atm_iv_pct": null,
+  "straddle_implied_move_pct": null,
+  "event_implied_move_pct": null,
+  "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+  "skew_25d_vol_points": null,
+  "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+  "put_call_open_interest_ratio": 0.15,
+  "total_open_interest": 534,
+  "atm_spread_frac_of_mid": null,
+  "warnings": [
+   "ATM legs not two-sided; no live bid/ask to price a straddle from"
+  ]
+ },
+ "deadband_pct": 3.26,
+ "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+ "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+ "expected_move_pct": 6.52,
+ "expected_move_basis": "median historical reaction (no usable option chain)",
+ "baseline_quality": {
+  "options_usable": false,
+  "history_events": 8,
+  "history_usable": 8,
+  "event_plausibility": "unknown",
+  "priced_direction_available": false,
+  "tier": "partial",
+  "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+ },
+ "status": "ok"
+}
