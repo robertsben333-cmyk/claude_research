@@ -157,3 +157,9 @@
 - Data-quality notes (not tripwires): universe.json carries stale duplicate calendar rows for ORCL (09-08 vs 09-10) and CPRT (09-03 vs 09-10) -- used the later, higher-confidence row for agent-layer capture in both cases; the earlier stale row is still separately tracked from the script-only sweep and should be reconciled by whichever stage resolves session/date.
 - Errors: LEN.B (dual-class, shares CIK with LEN -- known FINDINGS.md §3 class of issue, 'no cik'/'parse: KeyError'). Occasional stocktwits fetch errors on thinly-followed names (GTEN, HTT, NBP, LKSP) during the script-only sweep -- not investigated further, consistent with rate limiting on obscure tickers.
 - No names skipped outright. All six agent-layer captures completed and each published individually per the skill's publish-after-each-name rule.
+
+## Stage 3 — panel & advice — STARTED
+- Logged at 2026-09-08 15:54 UTC
+- Panel-eligible ranking exists (6 names, all eligible). config panel.names=2 (already degraded from 3 to 2 on 2026-08-13 per pipeline.yaml comment).
+- Top 2 by panel_priority: TTAN (54.65, amc tonight 2026-09-08) and CHWY (48.6, bmo tomorrow 2026-09-09).
+- Plan: refresh spot/implied-move anchors for both, run 7 isolated persona subagents per name (2 panels sequential, panel.max_concurrent_subagents=7), synthesize.py per name, write dossiers + 04-advice.md/.json, publish after each panel synthesis and again at the end.
