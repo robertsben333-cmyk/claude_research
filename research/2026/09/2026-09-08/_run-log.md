@@ -16,3 +16,9 @@
 - Scouts: 1 subagent (sonnet/medium), single 15-ticker batch
 - Session mix: 2 AMC / 4 BMO (TTAN, BRZE amc; CHWY, SAIL, ASO, SIG bmo)
 - Notable drops: JMKE (ai_edge 25<30, brand-new IPO no history), KFY (change_expectation 30<35, slow grinder), ODD & CGNT (tradeable:false, thin sub-$1B ADRs with doubtful options depth)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-08 08:27 UTC
+- Shortlist: 6 names (TTAN, BRZE, CHWY, SAIL, ASO, SIG); this batch (1 of 2): TTAN, BRZE, CHWY
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers, publish after each wave -- wave 1: TTAN, BRZE; wave 2: CHWY
