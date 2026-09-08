@@ -123,3 +123,9 @@
 - Agent layer: 37 queries across 8 areas, 40 URLs in fetch plan.
 - capture.py: 19 new documents stored, 0 errors, no tripwires.
 - Data-quality note (not a tripwire): universe.json carries two ORCL calendar rows for the same fiscal quarter (Aug/2026) — 2026-09-08 (time-not-supplied, first seen 08-30) and 2026-09-10 (time-after-hours, first seen 09-04, higher-confidence). Used 2026-09-10 for this capture as the more recently confirmed date; the 09-08 stale row is still tracked separately in captures/events/ORCL-2026-09-08/ from the earlier script-only sweep and should be reconciled/dropped by whichever stage resolves the session.
+
+## Capture — ADBE — 2026-09-08
+- Logged at 2026-09-08 15:37 UTC
+- Agent layer: 34 queries across 8 areas, 40 URLs in fetch plan.
+- capture.py: 20 new documents stored, 0 errors.
+- TRIPWIRE investigated: stocktwits.com/symbol/ADBE/sentiment (sha 5e820ae7...) tripped on 'after the company reported'. Body inspected (it's a live JSON-embedded sentiment/news aggregator page): the matched phrase is inside an unrelated, dated Jul-29-2026 poll widget about Lemonade ($LMND) — 'Lemonade stock is down over 20% after the company reported Q2 2026 earnings' — a different company's already-reported quarter, syndicated onto ADBE's page as sidebar content, not ADBE's own outcome. Confirmed no leak of ADBE's own Sept-10 print: the page's own earningsFacts block shows ADBE's upcoming Q3'26 quarter (callDate 2026-09-10) with only an 'estimated' EPS (6.08) and no 'actual'/'result' field, while every prior quarter back to Q3'25 carries actual/BEAT data — exactly the pattern expected before a print. False positive from cross-ticker content on a shared aggregator page, not a calendar/date problem; document kept per policy.
