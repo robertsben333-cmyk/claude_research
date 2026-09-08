@@ -163,3 +163,10 @@
 - Panel-eligible ranking exists (6 names, all eligible). config panel.names=2 (already degraded from 3 to 2 on 2026-08-13 per pipeline.yaml comment).
 - Top 2 by panel_priority: TTAN (54.65, amc tonight 2026-09-08) and CHWY (48.6, bmo tomorrow 2026-09-09).
 - Plan: refresh spot/implied-move anchors for both, run 7 isolated persona subagents per name (2 panels sequential, panel.max_concurrent_subagents=7), synthesize.py per name, write dossiers + 04-advice.md/.json, publish after each panel synthesis and again at the end.
+
+## Stage 3 — TTAN panel synthesized and dossier written
+- Logged at 2026-09-08 16:05 UTC
+- TTAN: 7/7 seats filled, consensus +15 (all seven personas individually positive, range +8 to +20), disparity 8.7 (aligned), P(up) 55.5%, certainty High (93.9).
+- Call: Neutral / No Edge -- consensus magnitude (15) falls short of the +25 Lean Up threshold despite tight cross-persona agreement on sign. Not a conviction-gate firing (conviction_gate_applied: false); this is the plain call-band mapping for a genuinely weak-but-coherent lean, reported honestly rather than promoted to Lean Up or hidden as an uncertain 50/50.
+- No chair override. Unsigned band 5.8-18.4% (implied 13.14%, refreshed today; blended expected move 11.5%).
+- CHWY panel launched (7 personas in parallel); event is tomorrow bmo so less time pressure than TTAN's tonight amc print.
