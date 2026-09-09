@@ -103,3 +103,7 @@
 - Anchors refreshed: NAVN spot 26.64 (9/8 close) -> ~27.5-27.8 intraday (stockanalysis/CNN aggregators disagree by ~0.3, both up from stage-2 close); implied move refresh attempt found no fresher published number, keeping stage-2 self-derived 14.0% (investing.com, snippet_only, timestamp unchanged). WLTH spot 9.63 (9/8 close) -> ~9.45-9.85 intraday range across aggregators, using ~9.56-9.58 central; implied move still unavailable (Barchart/Yahoo/Benzinga/CNN all fail again on refresh), stays null per stage-2.
 - Plan: 7 personas per name, one panel at a time (NAVN then WLTH), synthesize.py per name, chair review, dossier + advice note.
 - PLATFORM NOTE: hit a genuine concurrent-write conflict publishing this heartbeat — Stage C (capture) was pushing to origin/main at the same moment and both sessions appended to this file's tail at the same point, which git cannot auto-merge (two independent EOF appends from the same base). Resolved by hand, keeping both sections in the order they were logged. Not a data problem, just worth knowing two stages can collide here.
+
+## Stage 3 — NAVN panel synthesized
+- Logged at 2026-09-09 16:12 UTC
+- NAVN: 7/7 seats filled. Consensus -5.6, disparity 32.6 (mixed), call Neutral / No Edge, certainty Med, reversal risk 61.6 (High, red-team 72). Panel split ~4 down (options -20, sentiment -18, macro -18, red-team -18) vs 3 up-ish (fundamental +14, forensics +14, base-rates +7) -- genuine disagreement, no chair override. Dossier written. WLTH panel in progress (4/7 seats back so far, all leaning down -22 to -32).
