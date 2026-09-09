@@ -1,0 +1,30 @@
+{
+  "ticker": "YEXT",
+  "expected_move_pct": 1.5,
+  "conviction_note": "YEXT's capture has zero news items, so everything here comes out of filings.json and one Stocktwits thread, and what they show is a July cluster nobody aggregated — a fresh Schedule 13D on 2026-07-09 and a director more than doubling his stake two days later — at a company six months past a withdrawn $9-per-share CEO buyout and levering up to buy back stock; against a 4.33% median reaction I size that at about a point and a half and no more, because the stock has already rallied 19% into the print.",
+  "findings": [
+    {
+      "finding": "A new SCHEDULE 13D — control or activist intent, not a passive 13G — was accepted 2026-07-09T21:02:45 by self-filer CIK 0001734341, sixteen minutes before a Form 4, two days after an item 5.02 8-K (2026-07-07T20:16), and four days before director Daniel Englander bought $398k of stock in a single open-market purchase that raised his holding 117%; after those Form 4s on 2026-07-13/14 the company then filed nothing at all for seven weeks until the print itself.",
+      "expected_impact_pct": 1.5,
+      "impact_low_pct": -3.0,
+      "impact_high_pct": 6.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1614178/000173434126000007/xslSCHEDULE_13D_X02/primary_doc.xml",
+      "source_date": "2026-07-09",
+      "corpus_ref": "filings.json accession 0001734341-26-000007 (SCHEDULE 13D), 0001628280-26-047812 and 0001628280-26-048066 (Form 4s), 0001628280-26-047499 (8-K item 5.02)",
+      "body_available": false,
+      "why_not_priced": "The capture contains zero news items for YEXT across five sweeps — the only external link in the entire corpus is a marketwirenews page announcing the earnings date — so no wire story, preview or sell-side note exists here to have carried it, and 13D bodies are not stored, meaning the holder, the size and the stated intent were never summarised anywhere a price could react to. Context that makes it matter: the CEO withdrew a $9-per-share take-private proposal on 2026-02-02 citing financing, the company simultaneously authorised a $150m buyback, and per the retail thread it borrowed $50m at 10.25% to fund repurchases that at the prevailing price would retire roughly a quarter of the shares. If a control-intent stake at a company 25% below a recently withdrawn bid were priced, the stock would not still be 26.1% below its 52-week high.",
+      "independence": "Corroborated from a different source in the corpus: the Stocktwits thread at docs/601a3e5ab27afe4e9bca5545757b06c38a19f530.txt (no URL; kind: social) independently flags the same purchase in an insider-buy roundup on 2026-07-14 ('$YEXT — $398K single buy by insider Daniel Englander, +117% stake increase (Jul 13)') with a link to https://filingtracker.ai/filing/1289438/0001628280-26-048066 , and separately describes the $50m 10.25% borrowing behind the buyback. That is retail paraphrase, so the independent leg is weaker than the filing metadata it confirms."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "the identity, size or stated purpose of the 13D holder: no body is stored, so I cannot tell an activist fund from a director crossing 5%, and that is the single biggest hole in this finding",
+    "a 13D/A follow-up or a second Form 4 in August: the filing index is completely empty between 2026-07-14 and the print, seven weeks of silence during a 19.2% twenty-day rally",
+    "a strategic-alternatives 8-K, a renewed buyout proposal or an item 1.01 agreement: nothing since the 2026-02-02 withdrawal, and no 8-K at all after 2026-07-07",
+    "a shelf or convert to fund the buyback: no S-3 and no 424B in the 400-day index, so the $50m borrowing is not visible as a registered security and I could not verify its terms from a filing",
+    "any news item, preview, consensus figure or ARR datapoint: zero news items were captured, so I have no read on what the Street expected",
+    "a read on the session switch: this print was accepted 2026-09-01T08:02 UTC (04:02 ET, bmo) whereas the last four prints (2026-06-02, 2026-03-09, 2025-12-08, 2025-09-08) were all amc; the only recent bmo release, 2025-08-18, produced +8.78% on nine times median volume, but two observations are not a base rate and I did not lean on it"
+  ],
+  "baseline_tension": "This cuts partly with and partly against the baseline: the +19.2% twenty-day run-in is consistent with someone accumulating behind the 13D, which is corroborating, but it also means the bar for this print is higher than usual on a name whose last six of eight reactions were negative — which is exactly why I kept the number inside the 2.17% deadband rather than sizing it to the 4.33% median.",
+  "corpus_limits": "No option chain, hence no implied move and no skew. No news sweep was run for YEXT (n_queries is 0 in every snapshot) so the entire hunt rests on filings.json plus one Stocktwits thread, and no filing body is stored — not the 13D, not the Form 4s, not the item 5.02 8-K, not the 2026-03-10 10-K. The print was accepted 2026-09-01T08:02 UTC (04:02 ET), so the 20260901T150605Z sweep is post-print and I excluded it, and I also declined to use the item codes that filings.json records against the print's own 8-K (accession 0001628280-26-059706, indexed 2026-09-01T15:06:06Z) even though they were visible, because that metadata postdates the release. The $9 withdrawn bid, the $150m buyback and the $50m 10.25% borrowing all come from retail paraphrase in the thread rather than from a filing body I could read. No document in this capture carried a tripwire flag.",
+  "sources_used": 3
+}
