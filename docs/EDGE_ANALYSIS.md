@@ -520,6 +520,67 @@ understates how far the tails travel.
 
 Read it as a conviction-weighted ranking that happens to be scaled in the right units.
 
+## Two things the pre-earnings drift and the naive arm do not do
+
+### (a) The two-day run-in does not predict whether the hunt is right
+
+Measured on the 37 de-duplicated events carrying a non-zero prediction, with the run-in
+taken from the close two sessions before the entry to the 14:00 ET entry price itself, so
+nothing after the trade is in it.
+
+| | rank correlation with sign-correct |
+| --- | --- |
+| signed 2-day run-in, exit open | −0.046 |
+| signed 2-day run-in, exit close | −0.041 |
+| \|2-day run-in\|, exit close | +0.148 |
+| signed 1-day run-in, exit close | −0.066 |
+
+Nothing. By bucket the hit rate reads 62% / 50% / 50% / 75% across run-ins below −3%,
+−3–0%, 0–3% and above +3% — no shape, and the top bucket holds four names.
+
+The one pattern with any size is agreement: where the run-in and the prediction point the
+same way the sign is right on 12 of 18 (67%, p=0.119) against 9 of 19 (47%) when they
+oppose, worth +4.80% against −1.00% per trade. But the same split on the **open** exit
+gives 50% against 58% — it reverses. A signal that flips when you change the exit by six
+hours is noise, and it is recorded here so nobody rediscovers it.
+
+As a standalone ranking the two-day run-in is worth ±0.017 against the realised move,
+against +0.335 for minus the **20-day** run-up on the same days. That contrast is the
+finding worth keeping: the reversal effect that does rank these days is a month-scale
+phenomenon and there is nothing usable at two days.
+
+### (b) The naive arm and the edge hunt are independent, and only one of them has signal here
+
+They overlap on 16 events — 42% of the edge sample, 52% of the scored naive sample —
+because they select differently: `claude_naive` takes the day's largest by market cap and
+the edge hunt takes the highest `hunt_priority`, which is close to a measure of obscurity.
+On the 16 shared events:
+
+| | signed forecast vs realised | median abs error | magnitude vs \|realised\| |
+| --- | --- | --- | --- |
+| edge `impact_sum` | pearson **+0.400** | 5.48pp | +0.318 |
+| naive `direction_score` × expected move | pearson −0.109 | 8.41pp | −0.108 |
+| 50/50 blend | +0.328 | 7.03pp | +0.152 |
+
+The two predictions correlate at only +0.163, so they genuinely see different things — but
+the blend is worse than the edge hunt alone, because on this subsample the naive arm's
+signal is not merely different, it is absent. There is nothing to combine with.
+
+Their errors correlate at +0.855, which looks damning and is mostly mechanical: the
+realised move has a standard deviation near 11 against forecast dispersions of 6.5 and
+below, so two under-dispersed forecasts share most of their error by construction. Read
+the +0.163 between the predictions, not the +0.855 between the errors.
+
+One caveat that cuts the other way. Over its own full 31 scored events the naive arm ran
+60% direction and +1.80% per trade; the −0.109 above is a 16-event slice chosen by the
+edge hunt's selection rule, not a verdict on the method. What the slice does establish is
+that **on the names the edge hunt picks, the naive arm adds nothing** — and it largely
+agrees, by abstaining: of the seven overlapping names above the conviction floor, naive
+called Neutral on four (CXM, DELL, PL, RZLV).
+
+So they are complementary in coverage and not in signal. Keep them separate, as
+`CLAUDE.md` already requires, and do not average them.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a
