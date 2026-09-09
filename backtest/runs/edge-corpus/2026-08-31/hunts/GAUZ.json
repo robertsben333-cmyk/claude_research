@@ -1,0 +1,42 @@
+{
+  "ticker": "GAUZ",
+  "expected_move_pct": -8.0,
+  "conviction_note": "The baseline's 2.95% median is built from 6-K reactions in a name now running 285% annualised vol on 14.6m shares a day against a $10.4m market cap, so it understates the event badly; I take the pre-print documents at face value - a court-supervised creditor arrangement with a 09-06 hearing plus a same-day shareholder vote to authorise reverse splits as deep as 1-for-1,000 - and put a negative number with a very wide band on it. IMPORTANT: this capture's quote.json leaked post-print bars (see corpus_limits), so this figure is deliberately my pre-print reasoning and not a clean out-of-sample forecast.",
+  "findings": [
+    {
+      "finding": "The shareholder meeting held on the print date 2026-08-31 was called to authorise the Board to effect one or more reverse share splits at an aggregate ratio anywhere in the range 1-for-2 to 1-for-1,000, an authorisation ceiling that is three orders of magnitude wider than a listing-compliance split needs and is the mechanical precondition for a recapitalisation that leaves existing holders with a rounding error.",
+      "expected_impact_pct": -5.0,
+      "impact_low_pct": -20.0,
+      "impact_high_pct": 6.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1781446/000121390026090837/ea0302469-6k_gauzy.htm",
+      "source_date": "2026-08-17",
+      "corpus_ref": "filings.json accession 0001213900-26-090837 (6-K, accepted 2026-08-17T21:27:38Z); proxy text quoted verbatim in docs/80023e5bcfe49d8556026b7f0c2a4f33a34b4537.txt, message of 2026-08-21T09:49:41Z, referencing the notice published 2026-08-04",
+      "body_available": false,
+      "why_not_priced": "Exactly one participant in 90 captured messages read the filing (the 08-21 bearish post); the rest of the flow on the same days is 'buck by friday', 'buyout news possibly', 'Pt of today is over 5$'. The stock closed up at 0.50 on 08-26 after the proxy, and the 20-day run-in is +42%: if a 1-for-1,000 authorisation were priced, a $0.39 share would not be rallying into the vote on 45m-share sessions. The ratio range itself is in the 6-K body, not in any wire copy in this capture - there is no news item, preview or analyst note on GAUZ anywhere in the 26 captured items.",
+      "independence": "Different corpus source pointing the same way: the FY2025 annual report is still not filed - NT 20-F of 2026-04-30 (https://www.sec.gov/Archives/edgar/data/1781446/000121390026050201/ea0288190-nt20f_gauzy.htm) with no 20-F anywhere in the 400-day filings index, followed by a SEC STAFF ACTION entry on 2026-05-27."
+    },
+    {
+      "finding": "The corpus shows the retail flow that is setting this $10m price reading the creditor process as debt relief - 'debt getting resolved today!! Then Sept 6', 'yeah debt settlement, clear skies ahead' - when the underlying 6-K is notice of creditor meetings on 2026-08-27 to vote on a proposed debt settlement with a court hearing on 2026-09-06, i.e. a court-supervised arrangement in which the creditors, not the shareholders, are being asked to approve the terms.",
+      "expected_impact_pct": -3.5,
+      "impact_low_pct": -18.0,
+      "impact_high_pct": 8.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1781446/000121390026093032/ea0303160-6k_gauzyltd.htm",
+      "source_date": "2026-08-24",
+      "corpus_ref": "filings.json accession 0001213900-26-093032 (6-K, accepted 2026-08-24T20:15:28Z); summarised and reacted to in docs/80023e5bcfe49d8556026b7f0c2a4f33a34b4537.txt, messages of 2026-08-24T20:28:11Z, 2026-08-24T20:50:40Z, 2026-08-26T20:27:26Z, 2026-08-27T12:59:35Z",
+      "body_available": false,
+      "why_not_priced": "The mispricing is legible in the capture itself: the same document that reports the creditor meeting is being quoted as bullish, and the stock rose from 0.33 on 08-20 to 0.50 on 08-26 across the notice. A market pricing a debt-for-equity arrangement in a company whose equity is worth $10m against >$100m of annual revenue and an IPO raise of ~$300m would be marking the stub down, not up 42% in twenty days. There is no sell-side coverage in the capture (n_estimates = 2, consensus EPS null) to correct the read.",
+      "independence": "Points the same way as, and is chronologically bracketed by, the reverse-split authorisation above; but note both findings are 6-K index entries whose bodies I could not open and whose content reaches me through the same stocktwits aggregate - treat them as one source cluster and count the larger residual only."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "the FY2025 20-F itself - never filed in the 400-day index, so no going-concern wording, no cash balance, no debt schedule was checkable",
+    "any Form 4, 144 or insider purchase in 2026 (the only 144 is 2025-10-14) despite a retail claim of 'personal share purchases' by management",
+    "any 13D or activist filing; the only holder filings are two 13G/A and one 13G, latest 2026-05-13",
+    "the terms of the proposed debt settlement - recovery rate, conversion price, new-share count - none of which is in any captured body",
+    "any news wire, transcript, preview or analyst note: the non-filing capture is three stocktwits pulls and nothing else",
+    "H1 2026 revenue or backlog figures, or any update on the Boeing / Mercedes / Yutong programmes retail cites"
+  ],
+  "baseline_tension": "Cuts hard against the run-up: the baseline shows +42% over 20 days and the corpus shows why (momentum plus a bullish misreading of the creditor notice), while every company-sourced document in the capture - late annual report, staff action, creditor vote, 1-for-1,000 split authority - points the other way.",
+  "corpus_limits": "MATERIAL LEAK, DECLARE AND DISCOUNT: this capture is filed under GAUZ-2026-09-02 because the calendar said 09-02, while the seal puts the print at 2026-08-31T13:10Z. As a result quote.json (fetched 2026-09-02T15:08Z) contains closes for 2026-08-31 and 2026-09-01, and two of the three stored bodies were fetched after the print (08-31T15:07Z and 09-02T15:08Z). I read the tail of quote.json before realising this and therefore saw post-print closes; I did not read the two post-print bodies at all, and the number above is deliberately the conclusion of the pre-print evidence (filings through 08-24 and the 08-30 stocktwits pull) rather than anything derived from the leaked bars. GAUZ should be treated as compromised for scoring purposes. Separately: no option chain, so no read on which way the market leaned; no filing body was stored, so the 6-K contents reach me only via retail restatement; the 08-28 bar the baseline uses for spot is absent from quote.json; and no document in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 4
+}

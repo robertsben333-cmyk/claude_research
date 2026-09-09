@@ -4,7 +4,7 @@ description: The priced-in adversary, restricted to a sealed capture directory i
 tools: Read, Grep, Glob, Write
 model: opus
 effort: high
-maxTurns: 45
+maxTurns: 200
 color: red
 ---
 
