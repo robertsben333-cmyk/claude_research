@@ -38,3 +38,10 @@
 - Median evidence completeness: 80/100 (COO 80, AVAV 84, NAVN 78)
 - Dropped from the day's cap: TEN (7th by market cap, capped out at shortlist_size=6; also flagged at stage 0 for unconfirmed options-chain data)
 - Batch 2 (M, AEO, WLTH) not yet run
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-09 10:24 UTC
+- Shortlist: 7 names, capped to 6 by shortlist order (market-cap descending); batch 1 already covered COO, AVAV, NAVN. TEN (7th, smallest cap) dropped from the day's cap.
+- This batch (2 of 2): M, AEO, WLTH
+- Already on disk, skipping: none
+- Plan: waves of deep_dive.wave_size=2 opus/high researchers (M+AEO, then WLTH alone), publish after each wave
