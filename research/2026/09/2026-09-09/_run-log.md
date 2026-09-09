@@ -57,3 +57,7 @@
 - 02-ranking.json written from all 6 dossiers. panel_priority = 0.45*|preliminary_direction_score| + 0.35*evidence_completeness (change_expectation term dropped: triage ran in skip mode, no scores exist for any name).
 - Panel-eligible after this batch: COO, AVAV, NAVN, M, AEO, WLTH (all 6; none excluded — all event_confirmed, all evidence_completeness>=68, WLTH's missing implied move is covered by 3 historical post-IPO reactions)
 - Top 2 by panel_priority for panel.names=2: NAVN (35.4), WLTH (35.05)
+
+## Data availability check — test data inventory
+- Logged at 2026-09-09 13:59 UTC
+- Scored all six claude_naive days for the first time (LEDGER.md created, 39 events, 18 directional). Pooled the edge hunt across 7 runs (n=51). No pipeline stage run.
