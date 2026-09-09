@@ -5,7 +5,7 @@
 Ranking key, as `edge-scores.json` names it in its own `ranking_key` field: **`impact_sum`**, in points of
 spot — the hunters' signed per-finding sizes, added up. Beside it travels `conviction` (its absolute value).
 
-**All 22 companies in the window were hunted.** 24 hunts, 88 findings, 22 of 22 rankable. This is the first
+**All 22 companies in the window were hunted.** 24 hunts, 89 findings, 22 of 22 rankable. This is the first
 run of this stage to cover its whole universe rather than a budget-selected subset.
 
 ---
@@ -95,7 +95,7 @@ That asymmetry matters because on the eight that were checked, the adversary bro
   source shows 9.30m shares on 13 March against 7.75m on 14 August. The same finding also re-reported four
   fields of the sealed baseline as though they were discoveries.
 
-Two factual breaks in 37 checked findings is roughly a 5% error rate. Applied to the 51 unchecked findings on
+Two factual breaks in 37 checked findings is roughly a 5% error rate. Applied to the 52 unchecked findings on
 the other fourteen names, the expectation is **two or three more errors of that kind sitting in this table
 undetected**. Nothing in the pipeline will find them. `diagnostics.residual_sum` reads `n/a` for those
 fourteen names for the same reason, and is not comparable across the two groups.
