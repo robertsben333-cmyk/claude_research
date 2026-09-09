@@ -1,0 +1,356 @@
+{
+ "generated_utc": "2026-09-09T15:13:08+00:00",
+ "run": "backtest/runs/edge-corpus/2026-08-31",
+ "legacy_rescore": false,
+ "names": 6,
+ "rankable": 6,
+ "note": "Every name carries a signed edge_score on -100..+100. There is no call and no threshold: rank on edge_score and cut wherever you like afterwards, which is what makes the ranking question answerable at every k.",
+ "ranking": [
+  {
+   "ticker": "IRS",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.089,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 1
+  },
+  {
+   "ticker": "SY",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -5.9,
+   "edge_pct": -0.296,
+   "confidence": 2.2,
+   "uncertainty_pct": 0.148,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -1.522,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 1.522,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "SY",
+     "key": "SY#0",
+     "finding": "So-Young's own guidance shows the flagship aesthetic treatment services segment decelerating hard: with Q4 2025 results on 2026-03-25 it guided Q1 2026 to RMB268-278m, +171.2% to +181.3% year on year; with Q1 2026 results on 2026-05-22 it guided Q2 2026 to RMB307-317m, +112.6% to +119.5% - a fifty-to-sixty point drop in the guided growth rate of the only line carrying the equity story, while consolidated revenue growth was +45.6% and the GAAP loss per share widened to -$0.48 from -$0.32 with a $7.1m quarterly net loss.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1758530/000110465926065372/tm2615455d1_6k.htm",
+     "source_date": "2026-05-22",
+     "expected_impact_pct": -4.25,
+     "cluster": "sec.gov",
+     "priced_in_pct": 75.0,
+     "adversary_note": "Both guidance ranges are company press-release language and both are published in this capture, verbatim, three months and five months before the print. docs/16f237a987976e363d3ffb5bd1184d3d09021011.txt, message of 2026-03-25T10:21:57Z: 'For the first quarter of 2026 ... aesthetic treatment services revenues to range between RMB268.0 million and RMB278.0 million, representing a 171.2% to 181.3% increase'; and 2026-05-22T10:12:04Z: 'For Q2 2026, So-Young expects aesthetic treatment services revenues to range from RMB307M to RMB317M, representing an 112.6% to 119.5% increase'. The widening loss and the +45.6% consolidated growth are in the same file on the same day. So the two-point series is published, not reachable-only; the side-by-side arithmetic is all that is added. And the arithmetic does not say what the finding says. RMB268-278m guided for Q1 against RMB307-317m guided for Q2 is roughly +14% *sequential* growth in the segment; the year-on-year rate falls only because the prior-year base rises, which the finding itself concedes ('the base effect that produced +170% is gone'). Characterising a segment guided up 14% quarter-on-quarter as 'decelerating hard' is a framing choice, not a discovery. Decisively, the market has already traded exactly this guide: the 2026-05-22 release that contained the RMB307-317m number, the +45.6% revenue and the -$0.48 EPS produced a -16.48% reaction per the baseline's own history block, and the corpus records the pre-market print at -9.4% with the headline 'posts 45.6% Q1 revenue jump as losses deepen'. The unpriced residual is the Q3 guide alone, which no source in or out of this corpus can supply.",
+     "adversary_size_pct": -6.0,
+     "size_disagreement_pct": 3.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -1.062
+    },
+    {
+     "hunter": "SY",
+     "key": "SY#1",
+     "finding": "The +30.4% twenty-day advance to $2.40 has no disclosure behind it: the last SEC filing of any kind is a 6-K accepted 2026-08-04T21:15:17Z, after which the shares ran from $1.99 to $2.4250 on ordinary volume (172k twenty-day average, only two sessions above 300k), and the capture's four sweeps returned zero news items, zero analyst notes and a social feed whose only 2026 August entries are two one-line earnings-calendar posts.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1758530/000110465926090491/tm2622166d1_6k.htm",
+     "source_date": "2026-08-04",
+     "expected_impact_pct": -3.0,
+     "cluster": "sec.gov",
+     "priced_in_pct": 72.0,
+     "adversary_note": "The observable content of this finding is the run-up, and the run-up is in the price by definition -- the baseline states it as run_up_20d_pct = 30.43 and quote.json shows the path from 1.99 on 2026-08-04 to 2.40 on 2026-08-28. There is no fact here to be published or unpublished; there is a price series and an inference from it. The inference's central evidence is also a capture artefact rather than a finding about the world: the finding argues from 'the capture's four sweeps returned zero news items', but every SY snapshot records n_queries = 0 (snapshots/20260830T083555Z.json, 20260830T084825Z.json, 20260830T150435Z.json, 20260830T150711Z.json). The capture never ran a news search on this name, so it could not have returned news items whether or not any existed. The 'disclosure vacuum' therefore has no evidentiary basis in this corpus. Nor is the run unexplained inside the corpus: the 2026-08-04 6-K (accepted 21:15:17Z) is followed by 1.99 -> 2.09 on 08-05, +5.0%, which the baseline itself scores as a +5.03% event reaction, and the finding concedes that unread body 'may well contain the reason for the whole advance'. The rest is a low-volume grind on 55k-315k shares with one +8.1% day on 08-19 that coincides with the earnings-date notice posted at 2026-08-19T10:13:27Z. Finally, 'the stock has run up so the print must justify it' is exactly the unsourced run-up argument that cannot be converted into an edge in either direction.",
+     "adversary_size_pct": -4.0,
+     "size_disagreement_pct": 2.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.84
+    }
+   ],
+   "rank": 2
+  },
+  {
+   "ticker": "SAIC",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -6.1,
+   "edge_pct": -0.303,
+   "confidence": 24.8,
+   "uncertainty_pct": 0.151,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.377,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.377,
+   "independent_clusters": 3,
+   "cluster_names": [
+    "AGGREGATOR",
+    "govconwire.com",
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "SAIC",
+     "key": "SAIC#0",
+     "finding": "SAIC went into the print trading above the sell side: the 2026-08-28 close of $125.96 is 3.5% above the $121.50 average target of 11 analysts polled by S&P Global, the consensus rating is Hold (2 Strong Buy / 8 Hold / 1 Strong Sell, unchanged since March), the single highest target is $137 and Goldman Sachs carries a Sell at $96 - and the street's FY27 modelled EPS of $10.18 is above the top of the company's own raised guidance of $9.90-$10.10 while modelled revenue of $7.19bn sits at the top of the $7.0-7.2bn guide.",
+     "source": "https://stockanalysis.com/stocks/saic/forecast/",
+     "source_date": "2026-08-28",
+     "expected_impact_pct": -3.25,
+     "cluster": "AGGREGATOR",
+     "priced_in_pct": 88.0,
+     "adversary_note": "This finding is a transcription of a public aggregator page that is stored in the capture. docs/5004436bd35a22d6c9aff2fa2f7924b1190feeff.txt is stockanalysis.com/stocks/saic/forecast/ fetched 2026-08-29T13:21:09Z and it prints, in the plainest possible form, 'Price Target: $121.5 (-3.54%)', 'Analyst Consensus: Hold', the month-by-month recommendation trend showing 2 Strong Buy / 8 Hold / 1 Strong Sell unchanged since March, the $93-$137 target range, and 'EPS This Year 10.18 / Revenue This Year 7.19B'. Every number in the claim is on a public page displaying it as of the last session before the print. Restating published consensus is the top of the scale. The magnitudes are also small once checked against the company's own numbers, which are equally published in the corpus: docs/ba0dd5634ed0f6fd2a668eee184d8dd96e842dbd.txt at 2026-06-01T11:25:27Z carries 'SAIC raises FY27 adjusted EPS view to $9.90-$10.10 from $9.50-$9.70, Consensus $9.63. Backs FY27 revenue view $7B-$7.2B, consensus $7.15B.' Street $10.18 against a $10.10 guide top is an 0.8% gap; $7.19bn against a $7.2bn guide top is 0.1%. Calling that 'above the top of guidance' is arithmetically true and economically trivial, and the CFO's own published framing (govconwire, 2026-06-01) is that revenue will 'trend toward or slightly above the midpoint'. Finally, the bear case is on the tape with a name and a number: Goldman Sachs Sell, target raised to $96 on 2026-06-11, 24% below spot, in the same stored document. And the finding's own tape evidence -- the 08-28 rejection of the 52-week high, -2.33% on 848k against a 407k average -- is an argument that the market was already de-risking into the print.",
+     "adversary_size_pct": -4.0,
+     "size_disagreement_pct": 1.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.39
+    },
+    {
+     "hunter": "SAIC",
+     "key": "SAIC#1",
+     "finding": "The Q1 FY27 beat that drove the +10.4% pop and the +37% re-rating from $92 was flattered by items the company itself identified as non-recurring: a $12 million gain from a venture investment's IPO that contributed 60 basis points to EBITDA margin and prompted the raise of full-year margin guidance to 10.1-10.3%, plus favourable timing of materials and an extension of the RITS program - while revenue guidance was left unchanged, organic growth was only 0.5%, and the lost RITS recompete is a stated $200 million revenue headwind in FY27.",
+     "source": "https://www.govconwire.com/articles/saic-19b-q1-revenue-fy27-earnings-outlook",
+     "source_date": "2026-06-01",
+     "expected_impact_pct": -2.75,
+     "cluster": "govconwire.com",
+     "priced_in_pct": 80.0,
+     "adversary_note": "The composition of the Q1 beat is published in the corpus in the very document the finding cites, and the finding concedes as much. docs/5cbc2f27afc1e9226bcbc8076c1167815b3896ee.txt is the govconwire piece of 2026-06-01, stored in full, and it states the $12 million venture-IPO gain, the 60 basis points of EBITDA margin it contributed, that this 'prompt[ed] SAIC to raise its full-year margin guidance to a range of 10.1 percent to 10.3 percent', the timing of materials, the RITS extension, organic growth of 0.5 percent and the CFO's statement that revenue guidance stays unchanged with a trend 'toward or slightly above the midpoint'. That is not a footnote -- it is the trade-press lead paragraph, three months old, on a name eleven analysts cover with a 10-Q filed the same day. The $200m RITS headwind is likewise published in the corpus at 2026-06-01T19:03:16Z, and so is the cautionary framing: the captured headline at 2026-06-01T17:40:49Z reads 'SAIC Stock Rockets After Upbeat Q1 - CFO Flags Caution On Uncertainties In A Dynamic Environment', which is the opposite of a wire that hid the caveats. Goldman's Sell at $96 was reiterated ten days after this release. What survives is only the forecast that Q2 guidance goes unchanged, and the finding's own tape point -- $92.68 on 05-12 to $125.96 on 08-28 -- is 'the market re-rated on a print whose contents were fully published', which cuts both ways.",
+     "adversary_size_pct": -4.0,
+     "size_disagreement_pct": 2.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.55
+    },
+    {
+     "hunter": "SAIC",
+     "key": "SAIC#2",
+     "finding": "An 8-K carrying items 1.01, 2.03 and 9.01 - entry into a material definitive agreement plus creation of a direct financial obligation, event-dated 2026-08-14 - was accepted 2026-08-19T20:03:23Z, seventeen days before the print, and nothing in this 108-item capture covers it; it sits inside a three-week cluster with an item 5.02 8-K accepted 2026-08-10T11:00:07Z and two new Form 3s accepted 2026-08-20T20:28, while management runs a portfolio review and a $400m buyback programme.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1571123/000157112326000123/saic-20260814.htm",
+     "source_date": "2026-08-19",
+     "expected_impact_pct": -1.0,
+     "cluster": "sec.gov",
+     "priced_in_pct": 38.0,
+     "adversary_note": "I concede the capture's twelve stored bodies say nothing about this 8-K -- I grepped the doc directory for '2.03', 'credit agreement', 'term loan', 'revolv' and 'financing' and the only hit is an unrelated options target zone. But three things hold it down. First, the filing is not hidden: it is a full public 8-K, accepted 2026-08-19T20:03:23Z, and it is *in this corpus* as an index row in filings.json and snapshots/20260829T131326Z.json, so it was reachable by anyone including every one of the eleven covering analysts. Second, it is routine for this issuer: the same index shows 8-Ks with the identical item triple 1.01, 2.03, 9.01 accepted 2025-09-25T20:36:07Z and 2025-10-01T20:06:03Z, eleven months earlier, which is the signature of scheduled credit-facility housekeeping rather than a structural action. Third, timing and size. SAIC's fiscal Q2 FY27 ended 2026-07-31; an agreement event-dated 2026-08-14 falls outside the quarter being reported and was already disclosed twelve days before the print, so it delivers no new information at the print itself. The two Form 3s of 2026-08-20 and the item-5.02 8-K of 2026-08-10 are officer-onboarding paperwork at a company that has filed four 5.02 items since October 2025, and none of it is sized. The bars show nothing: the 8-K landed after the close on 08-19 (that day closed 128.71) and 08-20 was 126.29, -1.9% on 446k against a 407k average -- inside normal noise for a 23% realised-vol name, and the stock made a new 52-week high six sessions later. The finding says itself it cannot be signed; I agree, and an unsigned unread filing that was public before the print is not an edge.",
+     "adversary_size_pct": -1.0,
+     "size_disagreement_pct": 0.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.62
+    }
+   ],
+   "rank": 3
+  },
+  {
+   "ticker": "GAUZ",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -8.3,
+   "edge_pct": -0.417,
+   "confidence": 1.6,
+   "uncertainty_pct": 0.208,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -2.109,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 2.109,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "GAUZ",
+     "key": "GAUZ#0",
+     "finding": "The shareholder meeting held on the print date 2026-08-31 was called to authorise the Board to effect one or more reverse share splits at an aggregate ratio anywhere in the range 1-for-2 to 1-for-1,000, an authorisation ceiling that is three orders of magnitude wider than a listing-compliance split needs and is the mechanical precondition for a recapitalisation that leaves existing holders with a rounding error.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1781446/000121390026090837/ea0302469-6k_gauzy.htm",
+     "source_date": "2026-08-17",
+     "expected_impact_pct": -7.5,
+     "cluster": "sec.gov",
+     "priced_in_pct": 80.0,
+     "adversary_note": "The exact fact -- including the exact ratio range -- is published inside the admissible corpus, twice, with a URL. docs/80023e5bcfe49d8556026b7f0c2a4f33a34b4537.txt, message of 2026-08-21T09:49:41Z, quotes the proxy verbatim: 'To authorize the Board to effect one or more reverse share splits at an aggregate ratio in the range of 1-for-2 to 1-for-1,000', names the 2026-08-31 meeting date, and links the filing. A second post on 2026-08-23T09:00:04Z restates that the SGM will vote to grant the Board authority to execute the split, and a third on 2026-08-23T02:03:46Z is headed 'Just so everyone understands EXACTLY what they are getting themselves into'. That is case-1 prior publication, not a footnote nobody read. The bars agree: after the 6-K was accepted 2026-08-17T21:27:38Z the stock went 0.380 -> 0.369 -> 0.367 -> 0.330, -13.2% in three sessions, and on the last admissible bar before the print it fell from 0.451 (08-27) to 0.391 (08-28), -13.3%, taking the 5-day run-in to -1.5%. The hunter's tape argument quotes the 0.50 close of 08-26 and the +42% twenty-day number and stops there; the session immediately before the vote is a 13% markdown, which is the opposite of 'rallying into the vote'. The claimed mechanism is also loose: a reverse split is proportional and does not by itself leave holders with a rounding error -- dilution would come from a subsequent issuance that nothing in the corpus describes.",
+     "adversary_size_pct": -10.0,
+     "size_disagreement_pct": 5.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -1.5
+    },
+    {
+     "hunter": "GAUZ",
+     "key": "GAUZ#1",
+     "finding": "The corpus shows the retail flow that is setting this $10m price reading the creditor process as debt relief - 'debt getting resolved today!! Then Sept 6', 'yeah debt settlement, clear skies ahead' - when the underlying 6-K is notice of creditor meetings on 2026-08-27 to vote on a proposed debt settlement with a court hearing on 2026-09-06, i.e. a court-supervised arrangement in which the creditors, not the shareholders, are being asked to approve the terms.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1781446/000121390026093032/ea0303160-6k_gauzyltd.htm",
+     "source_date": "2026-08-24",
+     "expected_impact_pct": -4.75,
+     "cluster": "sec.gov",
+     "priced_in_pct": 85.0,
+     "adversary_note": "The factual content of this finding was published in the corpus thirteen minutes after the 6-K was accepted. The 6-K was accepted 2026-08-24T20:15:28Z; docs/80023e5bcfe49d8556026b7f0c2a4f33a34b4537.txt carries, at 2026-08-24T20:28:11Z, a plain summary that states exactly what the hunter states: 'notifies creditors of scheduled meetings on Aug 27 to vote on its proposed debt settlement, with a court hearing set for Sep 6.' Nothing about the creditor-vote structure or the 09-06 hearing is withheld from the tape. The only residual is the interpretive claim that retail is misreading it as debt relief -- but the corpus is not one-sided even on that: the same document contains 'the company is done for though' (08-21), 'Final pump before REVERSE SPLIT vote' (08-21) and a post explicitly warning readers what they are getting into (08-23). More important, the price does not support the 'marked up not down' reading once the admissible window is respected: the stock fell 9.8% on 08-27, the creditor-meeting date itself, and a further 13.3% to 0.391 on 08-28. The market was marking the stub down through the creditor process, not rallying through it. The hunter also concedes this and #0 are one source cluster.",
+     "adversary_size_pct": -6.0,
+     "size_disagreement_pct": 2.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.713
+    }
+   ],
+   "rank": 4
+  },
+  {
+   "ticker": "CANG",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -10.0,
+   "edge_pct": -0.5,
+   "confidence": 8.3,
+   "uncertainty_pct": 0.25,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -2.423,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 2.423,
+   "independent_clusters": 2,
+   "cluster_names": [
+    "AGGREGATOR",
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "CANG",
+     "key": "CANG#0",
+     "finding": "Cango exited the March quarter with only US$7.2m of cash equivalents against ~US$100m of quarterly revenue and an active S21 fleet purchase programme, while an F-3 shelf filed 2025-12-17 went effective 2025-12-19 and has never been drawn in the capture window - a Q2 report is the natural venue for a raise into a stock that has just doubled off its low.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1725123/000110465925121786/cang-20241231xf3.htm",
+     "source_date": "2025-12-17",
+     "expected_impact_pct": -3.25,
+     "cluster": "sec.gov",
+     "priced_in_pct": 48.0,
+     "adversary_note": "Both halves of the evidence are already out. The US$7.2m cash figure is published inside this capture -- docs/268302313e584d370128e2c166dffdd85291a247.txt, message of 2026-06-01T00:57:27Z, quotes it verbatim ('cash equivalents decreased to US$7.2M') as a restatement of the company's own 2026-05-31 Q1 release, three months before this print -- and the F-3 shelf plus its EFFECT notice sit as index rows in filings.json (accessions 0001104659-25-121786 and 9999999995-25-003875). So the capacity and the cash position are both public and, on the hunter's own account, eight months old. What is genuinely unpublished is only the *timing* claim that a raise lands with this specific 6-K, which is a forecast, not a fact. And the funding-gap mechanism is materially weakened by a company number in the same corpus document: the April operational update (message of 2026-05-08T12:09:39Z) discloses a BTC treasury of 1,057.46 BTC, which a retail post on 2026-08-26 in the same file marks at ~US$80m against a ~US$80m market cap. A miner holding liquid coin worth roughly its entire equity value is not forced to issue at $2.39, so 'only $7.2m of cash' overstates the constraint. I concede the corpus never connects the shelf to this date and never sizes a raise, which is why this is not in the 70s.",
+     "adversary_size_pct": -3.5,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -1.69
+    },
+    {
+     "hunter": "CANG",
+     "key": "CANG#1",
+     "finding": "Company-published operating data show the June quarter running materially below the March quarter - hashrate 37.01 EH/s in Q1 falling to 31.58 EH/s in the April update with cash cost per coin held flat at US$68k, and the company's own weekly BTC output posts sliding from 55.2 to 45.6 by 2026-07-07 - while the stock's +48% 20-day move came on 4.14m shares on 08-21 (8x the 517k 20-day average) with zero SEC filings after 2026-07-21 to explain it.",
+     "source": "https://www.prnewswire.com/news-releases/cango-inc-announces-april-2026-operational-and-fleet-optimization-update-continuing-strategic-fleet-modernization-and-enhancing-production-efficiency-302766696.html?tc=eml_cleartime",
+     "source_date": "2026-05-08",
+     "expected_impact_pct": -4.25,
+     "cluster": "AGGREGATOR",
+     "priced_in_pct": 80.0,
+     "adversary_note": "Every number in this claim is company-published and every one of them is in the capture. The April update -- hashrate 31.58 EH/s, cash cost per coin US$68K, BTC treasury 1,057.46 BTC -- is quoted in full in docs/268302313e584d370128e2c166dffdd85291a247.txt (message of 2026-05-08T12:09:39Z) with the prnewswire URL attached; the weekly #WeeklyUpdate BTC output posts (53.7 on 04-24, 55.2 on 05-15, 52.0 on 05-22, 55.2 on 06-01, 45.6 on 07-07) are the company's own social disclosures, in the same file; and Q1's 37.01 EH/s, US$102M revenue and US$261.1M loss are in the 2026-06-01 recap. Cango publishes monthly operational updates as 6-Ks -- filings.json carries them on 06-02, 06-24, 07-10 and 07-21 -- so the production series is routine disclosure, not a discovery. The corpus even contains a research note doing the modelling the hunter says nobody does: message of 2026-06-04T04:25:53Z, 'Highlights of our updated CANG report ... Q1:26 Results Mostly As Expected / Operational Updates / Model Update / Maintaining Rating & Target', alongside a 06-04 trade piece headlined 'Cango Cleans House, Now Comes The Hard Part'. The price then did the work: -67% from 4.20 to 1.40 across the publication window. The claim also cherry-picks: the May and June monthly updates exist as unread 6-Ks in the index, so the 'declining hashrate' series is built on Q1 versus April while the intervening company data went unopened. Finally the 'loss 2.5x market cap' point restates a three-month-old published number.",
+     "adversary_size_pct": -6.0,
+     "size_disagreement_pct": 3.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.85
+    }
+   ],
+   "rank": 5
+  },
+  {
+   "ticker": "LX",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -11.4,
+   "edge_pct": -0.573,
+   "confidence": 4.5,
+   "uncertainty_pct": 0.286,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.959,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.959,
+   "independent_clusters": 2,
+   "cluster_names": [
+    "AGGREGATOR",
+    "otcmarkets.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "LX",
+     "key": "LX#0",
+     "finding": "LexinFintech suspended its share repurchase programme at the Q1 2026 call - after buying 441k shares at $6.37 in late Aug 2025, 1.79m at $5.87 in September and 1.28m at $4.31 in October per the buyback table on p.174 of the FY2025 20-F - and the long thesis visible across the capture is almost entirely a bet that a new, larger buyback plus a maintained dividend lands with this print ('this will fucking fly like crazy when the new buyback is announced', 'Monday with the new buyback I wouldn't be surprised LX flying 50%').",
+     "source": "https://www.otcmarkets.com/filing/html?id=19382032&guid=UxUXkWGmkE_ch3h#LX-20251231_HTM_item_13_defaults_dividend_arrearages_del",
+     "source_date": "2026-08-20",
+     "expected_impact_pct": -4.25,
+     "cluster": "otcmarkets.com",
+     "priced_in_pct": 72.0,
+     "adversary_note": "The suspension is published in the corpus and traces to a company source three months old. docs/577e46b84b8aa280f5960f5306d50aa466c89561.txt, message of 2026-08-26T21:47:17Z: 'Last earnings call they stopped the buyback program which to me is insane when you are trading at such lows'; corroborated on 2026-08-29T19:47:43Z ('QFIN and FINV appeared to still have active share buy back programs in the 2nd quarter', implying LX did not) and on 2026-08-20T14:24:38Z ('Buyback and smaller dividend or just a buyback. They have to do one or this will be in trouble'). The underlying event is the 2026-05-26 Q1 call, a company disclosure open to everyone since May. Two further items in the same file break the 'nobody is looking' premise: a Seeking Alpha Q2 preview posted 2026-08-19T14:56:10Z titled 'LexinFintech Q2 Earnings Preview: Low Valuation Meets Unclear Inflection Points', and a Refinitiv upgrade noted on 08-26. The positioning evidence is also mis-read: the corpus item that supplies the 10:9 call/put ratio (2026-08-17T19:44:26Z) explicitly describes the flow as 'Pre-earnings options volume in LexinFintech is normal' and gives a 10.4% implied move against a 3.1% eight-quarter median -- a balanced book with a fat implied move, not a market long a capital-return call option. And the tape refuses the 'bid up into the event' claim: -19.2% over 20 days, -11.3% over 5, an all-time low of 1.155 on 08-27, and the 08-28 close of 1.18 still below 08-25's 1.30. I concede the 20-F page-174 purchase prices are a genuinely obscure datum that nothing in the corpus aggregates -- but they are historical, not forward.",
+     "adversary_size_pct": -5.0,
+     "size_disagreement_pct": 1.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -1.19
+    },
+    {
+     "hunter": "LX",
+     "key": "LX#1",
+     "finding": "Every relevant peer reported in the ten days before LX and the corpus records the reaction function: FinVolution printed a beat on 2026-08-27 and reiterated full-year 2026 revenue guidance of RMB 11.5-12.9bn and still fell more than 15%, while Qifu's call 'read like the fall of an empire' - and the reason is on the record, that China lending volumes fell roughly 40-50% in August after the Juzi platform incident, with banks cutting lending lines and short-term risk rates up 20%, all of which falls in Q3 and none of which is in the June quarter LX is about to report.",
+     "source": "https://www.marketbeat.com/earnings/reports/2026-8-27-finvolution-group-stock/",
+     "source_date": "2026-08-28",
+     "expected_impact_pct": -2.75,
+     "cluster": "AGGREGATOR",
+     "priced_in_pct": 85.0,
+     "adversary_note": "This is the most public information in the whole capture. FinVolution's and Qifu's prints and their reactions are observable market events, and their content is reproduced in the corpus in detail: docs/577e46b84b8aa280f5960f5306d50aa466c89561.txt, message of 2026-08-28T03:42:02Z, publishes the exact figures the finding rests on -- 'China lending volumes fell roughly 40-50% in August following the Jizi platform incident ... Banks have cut lending lines, short-term risk rates have jumped 20%' -- with the marketbeat URL. The FINV note of 2026-08-28T00:35:04Z states both the reiterated RMB 11.5-12.9bn guidance and, explicitly, that 'management also flagged a considerable contraction in third-quarter China transaction volume'. The inference the finding says nobody drew is also in the corpus, from a holder, on 2026-08-26T15:50:48Z: 'the Q2 figures next week should be similar to Q1 since none of the damage in the lending industry occurred until after the quarter was done. The very big issue will be projections given what QFIN put out.' That is the finding's thesis, published five days early. And the finding's own independence note concedes the mechanism: the shock is 'arriving in the price'. It is: -19.2% over twenty days to an all-time low on 08-27, -8.5% on 08-26 on 2.4x volume, with no LX-specific filing since the 05-26 6-K. There is no residual left for the sector shock; what is genuinely unknown is only LX's own guide, which no one can source either way.",
+     "adversary_size_pct": -3.0,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.413
+    }
+   ],
+   "rank": 6
+  }
+ ]
+}

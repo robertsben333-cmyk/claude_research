@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-09-09T15:10:53+00:00",
+ "generated_utc": "2026-09-09T15:13:08+00:00",
  "run": "backtest/runs/edge-corpus/2026-09-09",
  "legacy_rescore": false,
  "names": 3,
@@ -148,10 +148,10 @@
    "ticker": "YQ",
    "rankable": false,
    "not_rankable_because": "event date does not fit the filing cadence",
-   "edge_score": -6.9,
-   "edge_pct": -0.346,
-   "confidence": 0.5,
-   "uncertainty_pct": 0.173,
+   "edge_score": -2.9,
+   "edge_pct": -0.144,
+   "confidence": 0.3,
+   "uncertainty_pct": 0.072,
    "baseline_quality": 0.02,
    "quality_parts": {
     "history": 1.0,
@@ -178,11 +178,14 @@
      "finding": "The September-2025 template has been repeated but unbundled: on 2025-09-03 YQ announced a $10m repurchase and printed Q2 results on 2025-09-04, and the baseline records that combined event as +19.02%; in 2026 the identical $10m repurchase was approved effective 2026-09-03 but the results 6-K is six sessions later, and the buyback leg alone has already produced +21.5% on 2026-09-03 and +93.4% over five sessions, taking the market cap from the $24.75m recorded in event.json to roughly $41m at the 2026-09-08 close of 3.79 against the ~$51m of cash the buyback release was being read against.",
      "source": "https://www.stocktitan.net/news/YQ/17-education-technology-group-inc-announces-new-share-repurchase-f1iq0q0t7jt6.html",
      "source_date": "2026-09-03",
-     "expected_impact_pct": -4.0,
+     "expected_impact_pct": -4.5,
      "cluster": "AGGREGATOR",
-     "priced_in_pct": 65.0,
-     "priced_in_basis": "unjudged; defaulted",
-     "residual_pct": -1.4
+     "priced_in_pct": 88.0,
+     "adversary_note": "This finding is a description of the price bars and the captured wire copy, and its own text says so - 'What is priced, violently, is the buyback and the cash-shell discount.' Every input is published in this corpus and dated before the print. The buyback release is in captured retail wire copy at docs/c64c6b6862121be1edca7d02c3f510e6f2384e9a.txt (item 1 of snapshots/20260907T150856Z.json): the 2026-09-03T10:21 message reads '17 Education & Technology Group Inc. approved a $10 million share repurchase program effective September 3, 2026, to be funded from existing cash. RTPR pushed this release out to users at 6:00:00 AM ET', with the StockTitan URL posted at 10:16 the same morning. The valuation argument is in the same body at 10:33 - 'They have $51M cash and a $24.75M market cap' - and so is the liquidity frame at 22:27 ('20-day average volume is ~7,300 shares. At $2.28 that's about $17K of daily liquidity') and the 7.51m float at 22:02. The prior-year template is in the same body too, at 2025-09-03T21:09: '$10M shares repurchase program'. And the tape has fully executed on it: quote.json goes 2.28 on 09-02 to 2.77 on 09-03 on 2,789,500 shares against a 20-day median of about 4,600, then 2.92 on 09-04 and a partial 3.4502 bar on 09-08 against the baseline's 3.79 close - +93.4% in five sessions on a 600x volume day. The discount-to-net-cash arithmetic the hunter runs is correct (about 51% on 09-03, about 20% by 09-08) but it is arithmetic on two numbers both published in the corpus and a price everyone can see. Nothing here is information the market lacks; the only unpublished element is the structural observation that last year's +19.02% bundled buyback and results while this year splits them six sessions apart, which is drawn from the baseline history and filings.json rather than from any captured commentary.",
+     "adversary_size_pct": -5.0,
+     "size_disagreement_pct": 1.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.54
     },
     {
      "hunter": "YQ",
@@ -192,9 +195,12 @@
      "source_date": "2026-06-17",
      "expected_impact_pct": -3.0,
      "cluster": "sec.gov",
-     "priced_in_pct": 65.0,
-     "priced_in_basis": "unjudged; defaulted",
-     "residual_pct": -1.05
+     "priced_in_pct": 84.0,
+     "adversary_note": "Both halves of this are published and both are visible in the bars. The +359% revenue headline is not merely reachable in the 2026-06-17 6-K; it was recirculating on the captured retail feed the evening before this print - docs/9d6fda9a47e9a1e05f7738d51d5c7827d0bacfcc.txt, item 1 of snapshots/20260908T150822Z.json, message timestamped 2026-09-07T21:38: 'Q1 2026 revenue +359% YoY to CNY 99.5M and driven by its AI learning product Yiqi Aixue', tagged Bullish. The same figure is in the older body at 2026-06-17T04:12: 'released its Q1 2026 unaudited results, showing revenue jumping 359% YoY and a narrowed net loss.' And the reaction is directly checkable in the capture's own bars rather than only in the baseline: quote.json closes 2.4000 on 2026-06-16 and 2.2900 on 2026-06-17, which is -4.583% - the baseline's -4.58% to three digits. So a triple-digit growth print being sold is a fact published twice in the corpus and printed in the price bars on the day it happened. The residual value of the claim is not new information but a base-rate reconstruction: separating the three results 6-Ks from the five non-results 6-Ks the text matcher caught. That is legitimate analytical work on a baseline that threw its history away, and I do not dispute it - but a company's own past reaction to its own past release is the market's memory, not something the market has failed to price. The reconstruction also thins out under scrutiny: it yields a sample of three, one of which (2026-03-25, 0.0%) is a zero on 8,500-share liquidity and one of which (2025-09-04, +19.02%) the claim itself sets aside as buyback-paired, leaving a single clean observation to carry the inference.",
+     "adversary_size_pct": -3.0,
+     "size_disagreement_pct": 0.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.48
     },
     {
      "hunter": "YQ",
@@ -202,11 +208,14 @@
      "finding": "The 'CEO is buying' stream that ran alongside the squeeze is twelve open-market purchases between 2026-07-20 and 2026-09-04 that together take Liu Chang from 35,149 to 113,070 shares - about 78,000 shares for roughly $170,000, i.e. under 0.7% of the market cap and about 1% of the 7.51m float, in individual tickets of $2,079 to $23,788 - and it stopped on 2026-09-04.",
      "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526382783/xslF345X06/ownership.xml",
      "source_date": "2026-09-04",
-     "expected_impact_pct": -1.5,
+     "expected_impact_pct": -1.25,
      "cluster": "sec.gov",
-     "priced_in_pct": 65.0,
-     "priced_in_basis": "unjudged; defaulted",
-     "residual_pct": -0.525
+     "priced_in_pct": 80.0,
+     "adversary_note": "The claim's own premise - 'nobody sums a Form 4 series, which is exactly why the corpus contains the twelve announcements and no total' - is wrong twice. First as a matter of the form: a Form 4 reports securities beneficially owned following the reported transaction, so the running total is on the face of every individual filing and no summation is required. Second, and decisively for this corpus: the captured ceo-buys.com messages in docs/c64c6b6862121be1edca7d02c3f510e6f2384e9a.txt each carry that running total explicitly - 'Liu Chang now owns 113,070 shares' (2026-09-04T13:45) and 'Liu Chang now owns 35,149 shares' (2026-07-20T12:40). The aggregate the hunter says nobody computes is a one-line subtraction between two numbers published in the same captured feed, and the eleven visible dollar tickets in that feed sum to about $135,000, so the sub-$200k scale is readable off the corpus directly. Every one of the underlying filings is also indexed in filings.json with its accession and date (2026-07-06 through 2026-09-04, thirteen Form 4 accessions, not twelve as the claim states). On magnitude the claim concedes its own case: about $170k against event.json's $24.75m market cap is 0.69%, roughly ten days of the $17k daily dollar liquidity the same feed quotes - immaterial by construction. The bearish tell that remains, 'it stopped on 2026-09-04', has a mundane published-calendar explanation: the results date was announced for September 8 on 2026-09-02 (same body, 18:30), so an insider going quiet in the days before a results release is the ordinary blackout pattern rather than a signal.",
+     "adversary_size_pct": -1.0,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.25
     }
    ],
    "rank": null
