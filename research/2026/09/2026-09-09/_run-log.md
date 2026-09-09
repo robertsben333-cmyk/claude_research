@@ -28,3 +28,13 @@
 ## Stage 2 — deep dive — NAVN
 - Logged at 2026-09-09 08:55 UTC
 - NAVN (Navan, Inc.) dossier complete. Event confirmed AMC 2026-09-09 (Q2 FY27, qtr ended 2026-07-31) via company BusinessWire release + MarketBeat/Benzinga/Ortex. Spot $26.64 (2026-09-08 close), mkt cap $6.78B, ~6.8x EV/FY27 guided sales. NO published implied move exists for this name (TipRanks week-of table covers 23 tickers incl. AVAV/AEO/COO/M but omits NAVN; Benzinga 403, MarketChameleon paywalled) — derived ~13-15% (pt est 14%) myself from the 18-Sep chain via investing.com; marked snippet_only. Only 3 post-IPO realised moves exist (IPO 2025-10-30): -7.8%, +42.5%, -1.0% (Bloomberg via Investing.com); mean_abs 17.1 is driven entirely by one outlier, median_abs 7.8. Key finding: usage yield compressed ~45-50bp YoY (FY26 ~7.03% -> Q1 FY27 6.52%) as GBV +50% outran usage revenue +41%, while the sourced Street pair ($2.86B GBV / $220.5M rev, Oppenheimer) implies a snap-back to 7.71%. Decisive precedent: the 10-Jun print beat revenue 7.3%, swung EPS positive and raised FY guide $25M above Street, popped ~19% AH and CLOSED -1.0%. Company has itself guided non-GAAP op margin DOWN 11%->6% this quarter. Macro hostile: 10y ~4.80% (highest since late 2023), Sept Fed a coin flip on a HIKE, CPI Friday, software sold two straight sessions on GPT-6 Astra agent fears (NAVN -4.10% on 09-08). Preliminary read -18 / prob_up 43 / conviction Low. Evidence completeness 78. Unreachable domains: businesswire, benzinga, optionstrat, daytraders, cnbc/quotes, nasdaq option-chain, yahoo quote+API, marketchameleon.
+
+## Stage 2 — deep dive, batch 1 — FINISHED (08:56 UTC)
+- Logged at 2026-09-09 08:56 UTC
+- Researched: COO, AVAV, NAVN
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves (COO+AVAV, then NAVN)
+- Median evidence completeness: 80/100 (COO 80, AVAV 84, NAVN 78)
+- Dropped from the day's cap: TEN (7th by market cap, capped out at shortlist_size=6; also flagged at stage 0 for unconfirmed options-chain data)
+- Batch 2 (M, AEO, WLTH) not yet run
