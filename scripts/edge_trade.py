@@ -82,10 +82,17 @@ def main():
                     help="percent per unit of capital per day, charged to every strategy")
     ap.add_argument("--min-dollar-vol", type=float, default=0.0,
                     help="drop names turning over less than this per day")
+    ap.add_argument("--drop-run", action="append", default=[],
+                    help="substring of a run path to exclude, e.g. 09-07 to drop the "
+                         "re-hunt of the 09-08 prints already covered on 09-04. Five "
+                         "names (ABM UNFI WDH CAN GMHS) appear on both days, so the "
+                         "43 rows are 38 events and pooling them counts five twice.")
     ap.add_argument("--out")
     a = ap.parse_args()
 
     days = json.loads(Path(a.rows).read_text())
+    for pat in a.drop_run:
+        days = [d for d in days if pat not in d[0]["run"]]
     if a.min_dollar_vol:
         days = [[r for r in d if (r.get("dollar_vol") or 0) >= a.min_dollar_vol]
                 for d in days]

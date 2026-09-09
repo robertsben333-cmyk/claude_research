@@ -206,3 +206,7 @@
 ## Stage E — edge hunt — TRADING CONSEQUENCE
 - Logged at 2026-09-09 12:58 UTC
 - scripts/edge_trade.py: each day's ranking run as a book, entry the close before the print. Gross, 6 days: edge_score L/S top-third +1.09%/day (t=0.51, CI [-2.72,+4.80], 4/6 up days) against +1.49%/day for shorting every name with no research. At 1.5%/day cost the edge_score book is -0.41%/day. The impact sum returns +5.73%/day and minus-20d-run-up +5.49%/day on 6/6 up days (sign test p=0.031). Capacity is unaddressed: the best single trade (DLTH +23.20%) turns over 170k dollars a day, and 6 of 22 positions were under 1m/day. See docs/EDGE_ANALYSIS.md.
+
+## Stage E — edge hunt — IMPACT SUM TRADED, DE-DUPLICATED
+- Logged at 2026-09-09 13:07 UTC
+- Five rows are duplicates (ABM, UNFI, WDH, CAN, GMHS hunted on both 09-04 and 09-07 for the same 09-08 prints), so edge_resolve.py --pool double-counts five events: 43 rows are 38. De-duplicated, edge_score L/S returns +0.09%/day and -0.1% cumulative - its whole positive result was the repeated day. Impact sum L/S holds at +5.66%/day (sd 6.48, t=1.95, CI [-0.21,+9.79], 4/5 up days) and +6.05%/day on names above 5m dollars turnover (sd 2.11, 5/5 up). Both legs work after removing day drift (long +7.04, short +4.41), so it is ordering and not the down-skew. Breakeven cost 5.73%/day. Above 20m turnover the edge disappears (+1.17%/day, t=0.44). Max-statistic test over the 13 candidates it was picked from: p=0.056. See docs/EDGE_ANALYSIS.md.

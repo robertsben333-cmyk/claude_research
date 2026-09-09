@@ -68,6 +68,15 @@ trade in the sample, DLTH +23.20%, turns over $170k a day: six of the ranking's 
 positions traded under $1m a day, and screening to names above $5m of turnover drops 14
 of 43 names. Nothing in the budget or the scorer notices capacity.
 
+**Five of the 43 rows are duplicates** — ABM, UNFI, WDH, CAN and GMHS were hunted on
+both 09-04 and 09-07 for the same 09-08 prints — so `edge_resolve.py --pool` double-counts
+five events and the real sample is 38 events over 5 independent days. De-duplicated,
+`edge_score`'s trading return goes to +0.09%/day and −0.1% cumulative: its entire positive
+result came from the repeated day. The raw impact sum survives at +5.66%/day (CI
+[−0.21, +9.79]) and at +6.05%/day on names above $5m turnover, but a max-statistic test
+over the thirteen candidates it was chosen from puts its ranking p at 0.056 — a lead to run
+forward, not a finding.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080

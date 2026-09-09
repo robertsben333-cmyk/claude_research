@@ -241,6 +241,66 @@ reason to fix the scorer before buying another day of hunts.
 Six days of 43 names in one regime is not a backtest, every figure here is gross of borrow
 and slippage, and none of it is advice.
 
+## Trading the raw impact sum
+
+First, a defect this exposed. Five names — ABM, UNFI, WDH, CAN, GMHS — appear on **two**
+edge days each: the 09-07 run re-hunts the same 09-08 prints the 09-04 run already
+covered. So 43 rows are 38 events, and `edge_resolve.py --pool` counts those five twice
+as if they were independent. Every figure below is given both ways.
+
+Gross, long/short top-third, one unit of capital:
+
+| | all 6 days (43 rows) | 5 independent days (38 events) |
+| --- | --- | --- |
+| impact sum | +5.73%/day, sd 5.80, t=2.42, CI [+0.90, +9.17], 5/6 up, cum +38.6% | +5.66%/day, sd 6.48, t=1.95, CI [−0.21, +9.79], 4/5 up, cum +30.6% |
+| `edge_score` | +1.09%/day, t=0.51, 4/6 up, cum +6.0% | **+0.09%/day, t=0.04, 3/5 up, cum −0.1%** |
+| minus run-up | +5.49%/day, sd 2.88, t=4.67, 6/6 up, cum +37.5% | +5.50%/day, sd 3.22, t=3.82, 5/5 up, cum +30.4% |
+| impact sum, >$5m turnover | +6.52%/day, sd 2.22, t=7.20, 6/6 up, cum +46.0% | **+6.05%/day, sd 2.11, t=6.41, 5/5 up, cum +34.0%** |
+
+`edge_score`'s entire positive return came from the duplicated day. The impact sum's
+survives de-duplication almost intact, but its confidence interval now touches zero.
+
+**The return is ordering, not the down-skew.** A top-third/bottom-third book is immune to
+the day's drift by construction: adding a constant to every move leaves
+`mean(long) − mean(short)` unchanged. Both legs contribute — after removing each day's own
+mean, the long leg is +7.04%/day and the short leg +4.41%/day. That is the answer to the
+`always short` null, which only looked competitive against `edge_score` because that
+strategy earns nothing.
+
+**Cost is not the binding constraint.** The impact-sum book breaks even at 5.73% per unit
+of capital per day, against 1.09% for `edge_score`. At a flat 1.5% it still returns
++4.23%/day.
+
+**Capacity is.** Under the $5m turnover screen the 18 positions have a median turnover of
+$20.6m/day. At 5% of a day's volume per name that is roughly $1.0m per position and a $4m
+book — real, and small. Push the screen to $20m and the edge disappears: +1.17%/day,
+t=0.44, on 18 names across 4 days. That may be sample loss rather than a capacity
+boundary, but on this evidence the return lives in the $5m–$20m band and nowhere above it.
+
+**It does not clearly beat the free control.** +5.66%/day against the run-up's +5.50%,
+with the run-up carrying lower volatility (sd 3.22 vs 6.48) and up on 5 of 5 days. Δρ is
++0.080 with a CI spanning zero, and 45% of the two strategies' positions are literally the
+same names. Averaging the two within-day rankings gives ρ=0.409 — no better than the
+impact sum alone — but +5.90%/day at sd 3.54 instead of 6.48. Same return, two-thirds the
+volatility. If anything here were to be run forward, that is the version.
+
+### The selection problem, priced honestly
+
+The impact sum was chosen as the best of thirteen candidates *after* seeing the outcomes.
+A max-statistic permutation test asks what the best of thirteen would reach by chance
+under the null (moves shuffled within days, 20k draws):
+
+| test | p |
+| --- | --- |
+| impact sum alone, two-sided | 0.017 |
+| impact sum alone, one-sided | 0.008 |
+| **best of 13 candidates ≥ 0.407, one-sided** | **0.056** |
+| best of 6 trading strategies ≥ +5.73%/day | 0.016 |
+
+Corrected for having gone looking, the ranking result sits just outside 0.05. It is a lead
+worth running forward, not a finding. Five independent days, 38 events, one regime, gross
+of borrow and slippage, and a strategy picked after the fact. None of it is advice.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a
