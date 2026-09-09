@@ -5,6 +5,13 @@ resolved — **43 names, 249 findings, 65 hunts**. The 09-08 run's eight names a
 the 2026-09-09 close. Run 1 of 08-31 (`edge/_run1-bmo/`) is excluded: its scores are a
 `--legacy` re-score built from substituted midpoints with only 9 of 28 findings judged.
 
+**Read "Every headline number here was measured under a double hunt on the day's top two
+names" before quoting anything below.** Every resolved run gave two hunters to its two
+highest-`hunt_priority` names and one to the rest, and the key is a sum, so those names
+carry mechanically the largest conviction. Restricted to the single-hunted names — the only
+subsample matching how the stage runs from 2026-09-09 — the conviction result falls from
+ρ=+0.514 (p=0.002) to +0.270 (p=0.29) and the ranking result from +0.407 to +0.042.
+
 ## How the pooling is done here, and why not the way the script does it
 
 `edge_resolve.py --pool` concatenates every `(edge_score, move_pct)` pair from every day
@@ -39,7 +46,9 @@ The difference is not cosmetic. The script's own pooled figure for `edge_score` 
 | `confidence` | −0.090 | 0.605 |
 | number of findings | −0.256 | 0.134 |
 
-Read the middle of the table as a pipeline. Raw impact 0.407 → after the adversary 0.376
+Every row in this table carries the double-hunt exposure described below: the two names each
+day with the highest `hunt_priority` were hunted twice, and on single-hunted names only the
+top row falls from +0.407 to +0.042. Read the middle of the table as a pipeline. Raw impact 0.407 → after the adversary 0.376
 → cluster-max 0.284 → ÷√k 0.279 → agreement discount and quality multiplier 0.243. Every
 step lowers ρ, and the raw inputs clear p=0.05 while the shipped score does not.
 
@@ -381,8 +390,11 @@ columns are measured from the 14:00 ET entry.
 ## Conviction is where the direction lives
 
 The observation that the effect concentrates in the larger predictions is correct, and it
-is the only result in this file that survives every robustness check I can run on 38
-events.
+survives every robustness check in this section. It does **not** survive the one added
+later: restricted to names hunted once, ρ falls to +0.270 (p=0.29) to the close and to zero
+to the open. Read this section together with "Every headline number here was measured under
+a double hunt on the day's top two names" below — the numbers here stand as measured, under
+a design that stopped on 2026-09-09.
 
 The right test is the one with **no threshold in it**: does the rank of `|impact sum|`
 correlate with whether the sign turned out right? One test, nothing chosen after the fact.
@@ -415,7 +427,7 @@ meaningless. Conditioning a directional call on conviction is what any forecasti
 with an abstain option does. That is also why the threshold-free rank test is the right
 test here, and it is the one that comes back at p=0.0015.
 
-### Four things it is not
+### Four things it is not — and one it may be
 
 **Not one lucky day.** The nine events above \|pred\| = 8 are spread over five hunt days;
 the five above 10 are one name on each of five different days.
@@ -429,6 +441,12 @@ say about are mid-small, but they are not the $170k-a-day tail.
 the return would rise while the hit rate stayed at 50%. The hit rate is what rises, and the
 \|pred\| ≥ 6 bucket has the *smallest* median realised move of the four (6.08% against
 7.05–9.00%).
+
+**But possibly the double hunt.** Ten of the 38 events were hunted twice, carry 2.6× the
+conviction of the rest by construction, and were sign-correct on 7 of 10 against 13 of 28.
+Dividing the key by hunter count keeps ρ=+0.442 at p=0.010, so the arithmetic alone does not
+explain it; restricting to single-hunted names takes it to +0.270 at p=0.29, so neither does
+anything else, on this sample. See the section below.
 
 **Not a property of the shipped score.** Run the identical test on `|edge_score|` and the
 rank correlation is +0.077 to the open and −0.003 to the close. The scorer's cluster-max,
@@ -463,10 +481,138 @@ diagnostic, and have `edge_resolve.py` report the threshold-free rank correlatio
 \|prediction\| and sign-correctness beside the ranking correlation it already reports. That
 number is the one to watch as days accumulate, because it needs no cut and no calibration.
 
-Still 38 events on six days in one regime, gross of borrow and slippage. But this is the
-first result in the stage that is significant on a test chosen before looking, robust to
-day-clustering, liquidity and volatility, and mechanically explicable. It is worth running
-forward properly.
+Still 38 events on six days in one regime, gross of borrow and slippage. It is significant on
+a test chosen before looking and robust to day-clustering, liquidity and volatility — but not
+to holding hunter count fixed by restriction, which is the check this section did not run and
+the next one does. Worth running forward properly, and worth quoting with that caveat
+attached.
+
+## Every headline number here was measured under a double hunt on the day's top two names
+
+Until `a109692` on 2026-09-09, `config/pipeline.yaml` set `double_hunt_top_n: 2`: the two
+names with the highest `hunt_priority` got two independent hunters, everything else got
+one. The key is a **sum** of signed per-finding sizes, so a second hunter adds findings and
+pushes the name further from zero for free. Across the 38 de-duplicated events, 10 were
+hunted twice:
+
+| | n | mean findings | mean \|impact\| | median \|impact\| | mean `hunt_priority` |
+| --- | --- | --- | --- | --- | --- |
+| double-hunted | 10 | 8.00 | 9.13 | 9.18 | 77.2 |
+| single-hunted | 28 | 3.71 | 3.53 | 2.80 | 59.9 |
+
+The double-hunted names carry 2.6× the conviction of a single-hunted one, and they are also
+the names the sweep judged most promising. So "high conviction predicts a correct sign",
+"the sweep's two favourites predict a correct sign" and "two hunters predict a correct
+sign" are three claims the sample cannot separate. `scripts/edge_hunter_control.py` runs
+every separation the data allows; `docs/edge-hunter-control.json` is its output.
+
+### The conviction test
+
+| variant | exit | ρ | permutation p | n |
+| --- | --- | --- | --- | --- |
+| **published: \|impact_sum\|, all events** | close | **+0.514** | 0.002 | 38 |
+| | open | +0.333 | 0.045 | 38 |
+| **single-hunted names only** | close | **+0.270** | **0.293** | 28 |
+| | open | −0.004 | 0.993 | 28 |
+| double-hunted names only | close | +0.798 | 0.183 | 10 |
+| `impact_sum` ÷ hunter count | close | +0.442 | 0.010 | 38 |
+| `impact_sum` ÷ finding count | close | +0.358 | 0.030 | 38 |
+| hunter count as the predictor | close | +0.208 | 0.222 | 38 |
+| partial ρ, controlling hunter count | close | +0.481 | — | 38 |
+| partial ρ, controlling finding count | close | +0.462 | — | 38 |
+| partial ρ, controlling `hunt_priority` | close | +0.477 | — | 38 |
+
+Dividing out the mechanical size doubling costs 0.07 of ρ and keeps p under 0.01, so the
+arithmetic of summing twice as many findings is **not** the whole effect. But restricting to
+the 28 single-hunted names — the only subsample drawn under the configuration that runs from
+now on — takes ρ to +0.270 at p=0.29 to the close and to zero at the open.
+
+The partial correlations barely move, and that is a property of the control rather than
+evidence of robustness: hunter count takes two values, 10 of 38 names sit at the second, and
+a partial correlation removes only what is linear in its rank. The restriction removes the
+group. Where the two disagree, believe the restriction.
+
+The reason they disagree is that the ten double-hunted names are not merely larger, they were
+also **more often right**: 7/10 = 70% sign-correct to the close against 13/28 = 46%. That gap
+is itself not significant (one-sided Fisher p=0.181), so it cannot be attributed to the second
+hunter either. Nothing in this sample can tell a second opinion apart from the sweep having
+picked well. That is the finding: the design confounds them, and the design is now gone.
+
+### The ranking test has the same exposure, and comes off worse
+
+`impact_sum` against the realised move, pooled within days:
+
+| variant | sample | ρ | permutation p | n |
+| --- | --- | --- | --- | --- |
+| **`impact_sum` (published)** | 43 names | **+0.407** | 0.016 | 43 |
+| | 38 de-duplicated | +0.360 | 0.045 | 37 |
+| | **single-hunted only** | **+0.042** | **0.873** | 27 |
+| `impact_sum` ÷ hunter count | 43 names | +0.376 | 0.028 | 43 |
+| `impact_sum` ÷ finding count | 43 names | +0.350 | 0.038 | 43 |
+| hunter count alone | 43 names | −0.093 | 0.589 | 43 |
+| `hunt_priority` alone | 43 names | −0.223 | 0.197 | 43 |
+| partial ρ, controlling hunter count | 43 names | +0.397 | — | 43 |
+| partial ρ, controlling `hunt_priority` | 43 names | +0.384 | — | 43 |
+
+Per day, with and without the double-hunted names:
+
+| day | n | ρ all | n single | ρ single |
+| --- | --- | --- | --- | --- |
+| 2026-08-31 | 8 | +0.548 | 6 | +0.257 |
+| 2026-09-01 | 8 | +0.095 | 6 | −0.086 |
+| 2026-09-02 | 8 | +0.667 | 6 | +0.257 |
+| 2026-09-03 | 8 | −0.024 | 6 | −0.371 |
+| 2026-09-04 | 5 | +1.000 | 3 | +1.000 |
+
+Take the double-hunted names out and the ranking correlation is +0.042 — nothing. It falls on
+four of the five days that have enough single-hunted names to rank. Every comparison this file
+makes against `edge_score` and against the free controls was run on a key whose ordering, in
+the single-hunt regime, has not been shown to exist.
+
+Two things keep this from being a refutation. Removing the top two names by `hunt_priority`
+also removes the widest predictions of the day, so the surviving spread is narrow and the test
+is low-powered: 27 rank pairs over five days. And the restriction is not random — it deletes
+exactly the names the hunt had most to say about. The correct reading is not "the ranking is
+worthless" but "the published ranking number is not evidence about how the stage now runs".
+
+### What it does to `conviction_floor`
+
+The floor of 3.0 was derived from 16/21 = 76% sign-correct at +6.37% per trade, t=2.74. On
+single-hunted names only:
+
+| threshold | n | share of names | sign (close) | ret/trade | bootstrap 95% CI | always-short |
+| --- | --- | --- | --- | --- | --- | --- |
+| all | 28 | 100% | 13/28 = 46% | −0.33% | [−4.60, +4.00] | +1.80% |
+| \|pred\| ≥ 1 | 23 | 82% | 12/23 = 52% | +0.84% | [−4.11, +5.85] | +1.75% |
+| \|pred\| ≥ 2 | 17 | 61% | 10/17 = 59% | +2.52% | [−3.58, +8.67] | +0.59% |
+| **\|pred\| ≥ 3** | 14 | 50% | **9/14 = 64%** | **+4.62%** | **[−1.62, +10.79]** | −0.78% |
+| \|pred\| ≥ 5 | 7 | 25% | 4/7 = 57% | +2.76% | [−7.52, +13.06] | −7.30% |
+| \|pred\| ≥ 8 | 3 | 11% | 2/3 | +7.74% | [−5.38, +25.14] | −5.43% |
+
+**The floor value survives; its evidence does not.** 3.0 is still the best of the six cuts on
+single-hunted names, it still beats always-short there, and its coverage transfers — it keeps
+14 of 28 single-hunted names, and 11 of the 22 names on the all-single 2026-09-09 run. So
+there is no case for moving it. But what stands behind it is 9 of 14 with a return CI that
+includes zero, not 16 of 21 at t=2.74. Anything downstream that treats the floor as a
+calibrated conviction threshold is treating a coin-flip-compatible result as established.
+
+### What is left
+
+- The conviction effect is not pure arithmetic: normalising by hunter count keeps ρ=+0.442 at
+  p=0.010, and hunter count on its own predicts sign-correctness at only +0.208 (p=0.222).
+- It is also not established in the regime that now runs. Single-hunted only: +0.270 (p=0.29)
+  to the close, zero to the open.
+- The ranking result is the more exposed of the two and does not survive the restriction at
+  all.
+- `hunt_priority` is not the explanation on its own either: among single-hunted names it
+  correlates with sign-correctness at +0.044, and as a ranker of moves it is negative.
+- Nothing here is fixable with more analysis of this sample. The double hunt stopped on
+  2026-09-09, so the separation can only come from days run under the new configuration —
+  or from deliberately re-running a double-hunt week, which `CLAUDE.md` already wants for a
+  different reason (nothing currently measures the key's reproducibility).
+
+Until then, both headline numbers should be quoted as measured under a design that no longer
+exists.
 
 ## What `impact_sum` is, precisely — and the sizing correction of 2026-09-09
 
@@ -674,3 +820,6 @@ day against eight gets there roughly two and a half times faster.
 6. Rename `spearman_vs_move_over_implied`, or restrict it to names with a chain.
 7. Stop presenting `confidence` and `baseline_quality` as reader guidance until they
    correlate with something.
+8. Re-measure both headline numbers on days run under `double_hunt_top_n: 0` before quoting
+   either as established. Nothing in the resolved sample can separate conviction from hunter
+   count, and the fix is days, not analysis.

@@ -145,8 +145,19 @@ edge_hunt:
   # a coin flip (53% to the next close), but the RANK of conviction predicts whether
   # the sign was right at rho=+0.514, permutation p=0.0015. |impact_sum| >= 3 gave
   # 16/21 and +6.37% per trade; >= 8 gave 8/9. Best-of-seven-thresholds still clears
-  # family-wise correction at p=0.034. Re-derive this from the pooled sample rather
-  # than treating 3.0 as settled.
+  # family-wise correction at p=0.034.
+  #
+  # ALL of that was measured under `double_hunt_top_n: 2`, which gave the day's two
+  # highest-hunt_priority names a second hunter and therefore, since the key is a
+  # sum, roughly twice the conviction. Ten of the 38 events. On the 28 single-hunted
+  # names -- the regime this config now runs -- the conviction correlation is +0.270
+  # (p=0.29) and the floor rests on 9/14 at +4.62%/trade, CI [-1.62, +10.79].
+  # scripts/edge_hunter_control.py, docs/EDGE_ANALYSIS.md.
+  #
+  # The value stays at 3.0: it is still the best of six cuts on single-hunted names,
+  # still beats always-short there, and still selects half the day (14 of 28; 11 of
+  # 22 on 2026-09-09). What changed is the confidence behind it, not the number.
+  # Re-derive it once days accumulate under double_hunt_top_n: 0.
   conviction_floor: 3.0
 
 output:

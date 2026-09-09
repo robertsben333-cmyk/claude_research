@@ -27,7 +27,12 @@ Three more numbers, added 2026-09-09 because without them a run cannot be judged
                        all 38 events of the first six runs the sign was a coin flip
                        (53%), but this correlation was +0.514 with a within-day
                        permutation p of 0.0015. It needs no cut and no calibration,
-                       which is why it is the number to watch as days pool
+                       which is why it is the number to watch as days pool.
+                       Those six runs double-hunted their top two names each, which
+                       doubles their conviction for free; on the single-hunted names
+                       alone the correlation is +0.270 (p=0.29). Days run under
+                       double_hunt_top_n: 0 are the only clean measurement of it --
+                       see scripts/edge_hunter_control.py
   the controls         -run_up_20d_pct and priced_lean_pct, both off the sealed
                        baseline before a subagent is spawned. The first ranked the
                        same six days at rho=0.335. A run that does not beat the

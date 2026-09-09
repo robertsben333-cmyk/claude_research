@@ -162,3 +162,11 @@
 - BASELINE DEFECT found independently by two hunters, worth fixing upstream: priced_in.py discarded 30 prior prints for AEO and 31 for DBI because EDGAR's formerNames carries an entry whose name string is IDENTICAL to the current name — a cosmetic registrant-record refresh, not a predecessor entity. Both names came back event_plausibility unknown with degraded baseline_quality as a direct result. A normalised string comparison before discarding history fixes it. SHOE's empty history is the legitimate case (genuine rename from Shoe Carnival 2026-06-11, 105 prints recoverable under SCVL). SHOE's hunter also reports the baseline's put/call OI of 26.6 on 28,591 contracts is a vendor artefact stitched across the ticker change.
 - Budget: ~33 subagents (1 sweep + 24 hunters + 8 adversaries) against the cap of 20, at explicit user instruction to cover the full universe. Under the config as it stands at the end of the run (hunted_names 19, no double hunt, no adversary) the same coverage would be 1 + 22 = 23. Concurrency cap is 8, not the 4 in config.
 - Sign balance 12 negative / 9 positive / 1 exactly zero across 22 names; 14 of 24 hunts leaned negative — milder than the 6-of-8 on 2026-08-31. Seven of 22 names have a live option chain, so two thirds of the ranking rests on inferred rather than measured priced-in. Only 8 of 22 clear $5m/day turnover and 10 trade under $1m; KEQU carries conviction 5.00 on $70k/day.
+
+## Stage E — confounding re-analysis (double hunt) — DONE
+- Logged at 2026-09-09 17:10 UTC
+- Re-analysed the six resolved edge runs for the double_hunt_top_n: 2 confound. scripts/edge_hunter_control.py (new) + docs/edge-hunter-control.json.
+- Conviction vs sign: published +0.514 (p=0.002) reproduced; single-hunted only +0.270 (p=0.29) close, -0.004 open; /hunter count +0.442 (p=0.010); partial controlling hunters +0.481.
+- Ranking impact_sum vs move: +0.407 all 43, +0.042 (p=0.87) on single-hunted names only.
+- conviction_floor stays 3.0 (best of six cuts on single-hunted names, keeps half the day) but rests on 9/14 at +4.62%, CI [-1.62,+10.79], not 16/21 at t=2.74.
+- Caveat written into CLAUDE.md, docs/EDGE_ANALYSIS.md, docs/edge-direction.html, config/pipeline.yaml, edge_score.py, edge_resolve.py, SKILL.md. No hunters or adversaries re-run.

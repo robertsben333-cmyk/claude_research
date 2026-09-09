@@ -94,6 +94,27 @@ too. See `docs/EDGE_ANALYSIS.md`, "Conviction is where the direction lives" — 
 sign of the impact sum over all 38 events is a coin flip (53%), so the conviction floor is
 the whole finding.
 
+**But every one of those numbers was measured under the double hunt, and neither survives
+its removal cleanly.** Until 2026-09-09 `double_hunt_top_n: 2` gave two hunters to the day's
+two highest-`hunt_priority` names and one to everything else. The key is a sum, so those ten
+of 38 events carry 2.6× the conviction of the rest by construction (mean \|impact\| 9.13
+against 3.53, 8.0 findings against 3.7) — and they were also right more often, 7/10 against
+13/28. `scripts/edge_hunter_control.py` separates what can be separated. Dividing the key by
+hunter count keeps the conviction result at ρ=+0.442, p=0.010, so the arithmetic alone is not
+it; hunter count on its own predicts sign-correctness at only +0.208 (p=0.222). But
+**restricted to the 28 single-hunted names — the regime that runs from now on — conviction
+falls to ρ=+0.270 (p=0.29) to the close and to zero to the open, and the ranking correlation
+falls from +0.407 to +0.042 (p=0.87)**, negative or near-zero on four of the five days that
+can be ranked. Partial correlations barely move (+0.481, +0.397), but hunter count takes two
+values and a partial removes only what is linear in its rank; where restriction and partial
+disagree, believe the restriction. The 7/10-against-13/28 gap is not itself significant
+(Fisher p=0.181), so a second opinion and a well-chosen name cannot be told apart here at
+all. `conviction_floor: 3.0` stays — it is still the best of six cuts on single-hunted names,
+still beats always-short there, and keeps half the names in both regimes — but what stands
+behind it is 9/14 at +4.62% with a CI of [−1.62, +10.79], not 16/21 at t=2.74. Do not quote
+either headline without this. The separation needs days run under the new config, not more
+analysis of these.
+
 **`impact_sum` sums the HUNTER's sizes, since 2026-09-09.** The 09-09 run caught that
 `edge_score.py` was re-sizing every finding to the mean of the hunter's number and the
 adversary's `size_check_pct`, so the ρ=0.407 above was measured on the average and every
