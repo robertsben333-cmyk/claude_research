@@ -1,0 +1,35 @@
+{
+ "ticker": "YQ",
+ "claims": [
+  {
+   "finding_key": "YQ#0",
+   "finding": "The September-2025 template has been repeated but unbundled: on 2025-09-03 YQ announced a $10m repurchase and printed Q2 results on 2025-09-04, and the baseline records that combined event as +19.02%; in 2026 the identical $10m repurchase was approved effective 2026-09-03 but the results 6-K is six sessions later, and the buyback leg alone has already produced +21.5% on 2026-09-03 and +93.4% over five sessions, taking the market cap from the $24.75m recorded in event.json to roughly $41m at the 2026-09-08 close of 3.79 against the ~$51m of cash the buyback release was being read against.",
+   "source": "https://www.stocktitan.net/news/YQ/17-education-technology-group-inc-announces-new-share-repurchase-f1iq0q0t7jt6.html",
+   "source_date": "2026-09-03",
+   "corpus_ref": "docs/c64c6b6862121be1edca7d02c3f510e6f2384e9a.txt (stocktwits body, snapshots/20260907T150856Z.json item 1) - the 2026-09-03T10:21 message carries the $10m/September 3 2026 approval and the 2025-09-03T21:09 message carries the identical prior-year '$10M shares repurchase program'; the 2026-09-03T10:33 message carries '$51M cash and a $24.75M market cap'; run-up and volume from quote.json and the baseline",
+   "body_available": true,
+   "why_not_priced": "The company has no consensus at all (event.json n_estimates N/A, consensus null), no analyst coverage, and a 7.51m-share float on ~$17k of normal daily liquidity, so nothing about the print itself is in a model anywhere. What is priced, violently, is the buyback and the cash-shell discount: the discount to net cash has gone from about 51% on 2026-09-03 to about 20% by 2026-09-08, so the specific valuation argument that was being posted as the reason to buy is roughly 60% consumed before the results even arrive. If the print itself were the driver, the volume spike would be sitting on 2026-09-09 rather than on 2026-09-03.",
+   "independence": "Shares a source document with finding 3, declared. Corroborated from a different file: the baseline's own session_conflict block for 2026-09-03 shows event_day_volume 2,789,500 against a median_20d_before of 4,600 - a 600x volume event six sessions before the print - and filings.json confirms the 2026-09-03 6-K (accession 0001193125-26-380968) is a separate filing from the 2026-09-09 results 6-K, so the two catalysts are genuinely distinct events this year."
+  },
+  {
+   "finding_key": "YQ#1",
+   "finding": "YQ has already printed a spectacular growth headline and been sold: the Q1 2026 6-K of 2026-06-17 showed revenue +359% year on year to CNY 99.5m on its AI learning product with a narrowed net loss, and the baseline records the reaction as -4.58%; the Q4 2025 print on 2026-03-25 was 0.0%.",
+   "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526273326/yq-6k-06-17-2026-q1.htm",
+   "source_date": "2026-06-17",
+   "corpus_ref": "filings.json accession 0001193125-26-273326; growth figure from the 2026-06-17T04:12 and 2026-09-07T21:38 messages in docs/c64c6b6862121be1edca7d02c3f510e6f2384e9a.txt and docs/9d6fda9a47e9a1e05f7738d51d5c7827d0bacfcc.txt; reaction from the baseline history",
+   "body_available": false,
+   "why_not_priced": "The baseline's history block is explicitly discounted (history_usable 0, tier thin, verdict suspect) because the event date does not fit the filing cadence, so the one statistic that actually matters here - that a triple-digit revenue growth print produced -4.58% at a lower price and with no run-up - is being thrown away rather than used. Separating the three real results 6-Ks (2025-09-04 +19.02%, 2026-03-25 0.0%, 2026-06-17 -4.58%) from the five non-results 6-Ks the text matcher caught is work nobody does, and it says the only up-print in the sample was the one paired with a buyback. Marked body_available false because the 6-K text itself is not stored; the growth figure reaches me only through two social bodies.",
+   "independence": "From a different source than finding 1's stocktitan/buyback line: the -4.58% and 0.0% reactions come out of the baseline file, and the filing dates that let me classify which 6-Ks were results and which were the auditor change (2026-05-28, dismissing Deloitte for Marcum Asia) and the buyback (2026-09-03) come out of filings.json."
+  },
+  {
+   "finding_key": "YQ#2",
+   "finding": "The 'CEO is buying' stream that ran alongside the squeeze is twelve open-market purchases between 2026-07-20 and 2026-09-04 that together take Liu Chang from 35,149 to 113,070 shares - about 78,000 shares for roughly $170,000, i.e. under 0.7% of the market cap and about 1% of the 7.51m float, in individual tickets of $2,079 to $23,788 - and it stopped on 2026-09-04.",
+   "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526382783/xslF345X06/ownership.xml",
+   "source_date": "2026-09-04",
+   "corpus_ref": "filings.json - twelve Form 4 accessions dated 2026-07-06, 07-20, 07-22, 07-31, 08-03, 08-10, 08-11, 08-14, 08-24, 08-28, 09-01, 09-03, 09-04; per-transaction sizes and the running holding from the twelve timestamped ceo-buys.com messages in docs/c64c6b6862121be1edca7d02c3f510e6f2384e9a.txt",
+   "body_available": false,
+   "why_not_priced": "Each individual Form 4 generated its own bullish headline - twelve of them, all tagged Bullish on the social feed, one roughly every five sessions - so the market has received twelve separate insider-buying signals and no aggregate. Totalled, it is a sub-$200k drip that is immaterial to a $25-41m company and is roughly the size of two normal days of dollar volume; the drumbeat was a headline generator, not a stake build. Nobody sums a Form 4 series, which is exactly why the corpus contains the twelve announcements and no total.",
+   "independence": "Shares the social body with finding 1 for the per-ticket dollar amounts, declared; the count, dates and existence of the twelve Form 4s are established independently from filings.json, and the float figure (7.51m shares) and $17k daily liquidity come from separate 2026-09-03T22:02 and 22:27 messages."
+  }
+ ]
+}
