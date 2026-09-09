@@ -135,9 +135,18 @@ def tape(rows, event_date, session):
 # ---------------------------------------------------------------- history
 
 def cik_for(ticker):
+    """CIK from SEC's own ticker map.
+
+    Class shares are the trap. EDGAR writes them with a hyphen -- BF-B, BRK-B --
+    while calendars and Yahoo hand out BF.A and BF.B. An exact match on the dotted
+    form returns None, and None means no reaction history, no cadence check and a
+    baseline that silently drops to thin. Both separators are tried.
+    """
     j = get_json("https://www.sec.gov/files/company_tickers.json", sec=True)
+    t = ticker.upper()
+    forms = {t, t.replace(".", "-"), t.replace("-", ".")}
     for row in j.values():
-        if row["ticker"].upper() == ticker.upper():
+        if row["ticker"].upper() in forms:
             return str(row["cik_str"]).zfill(10)
     return None
 
@@ -602,16 +611,52 @@ def options(ticker, event_date, spot, realised_vol_pct=None):
 
 # ---------------------------------------------------------------- assembly
 
-def build(ticker, event_date, session):
+def options_are_recoverable(event_date):
+    """Is the option chain for this event still the chain the market was holding?
+
+    Only while the event is in the future. Yahoo serves the chain as it stands
+    now, with no as-of parameter, so asking about a print that has already
+    happened returns an expiry that postdates it. On 2026-09-09 a baseline for
+    the CASY 2026-09-08 print came back with the 2026-09-18 expiry, a 25-delta
+    skew of 23.97 and `priced_direction_lean: "downside paid"` -- all of it
+    formed after the print it claimed to be pricing, all of it reaching
+    `priced_lean_pct()` and the `dir_q` term of `baseline_quality()` in
+    `edge_score.py`, and none of it raising an error. The baseline read
+    `status: ok`.
+
+    A backtest over already-reported captures is exactly the case that trips
+    this, so the guard lives here rather than in the caller.
+    """
+    try:
+        return date.fromisoformat(event_date) >= now_utc_date()
+    except ValueError:
+        return False
+
+
+def now_utc_date():
+    return datetime.now(timezone.utc).date()
+
+
+def build(ticker, event_date, session, allow_options=None):
+    """allow_options: None means decide from the date, which is what you want.
+    False forces the chain off. True is refused for a past event."""
     ticker = ticker.upper()
+    recoverable = options_are_recoverable(event_date)
+    if allow_options is None:
+        use_options = recoverable
+    elif allow_options and not recoverable:
+        use_options = False          # never honour an explicit yes into the past
+    else:
+        use_options = bool(allow_options)
     doc = {
         "ticker": ticker,
         "event_date": event_date,
         "session": session,
         "as_of_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "sources": ["yahoo chart v8 daily bars",
-                    "yahoo options v7 front expiry (cookie+crumb)",
-                    "sec edgar submissions api, 8-K item 2.02 acceptance times"],
+        "options_as_of_valid": recoverable,
+        "sources": ["yahoo chart v8 daily bars"]
+                   + (["yahoo options v7 front expiry (cookie+crumb)"] if use_options else [])
+                   + ["sec edgar submissions api, 8-K item 2.02 acceptance times"],
     }
     try:
         rows = bars(ticker)
@@ -671,8 +716,20 @@ def build(ticker, event_date, session):
     # have cost a subtraction.
     doc["event_plausibility"] = plausibility(hist, event_date)
 
-    doc["options"] = options(ticker, event_date, spot,
-                             tp.get("realised_vol_20d_annualised_pct"))
+    if use_options:
+        doc["options"] = options(ticker, event_date, spot,
+                                 tp.get("realised_vol_20d_annualised_pct"))
+    else:
+        doc["options"] = {
+            "status": "not_recoverable_retrospectively" if not recoverable else "suppressed",
+            "event_implied_move_pct": None,
+            "straddle_implied_move_pct": None,
+            "skew_25d_vol_points": None,
+            "atm_spread_frac_of_mid": None,
+            "note": ("the event date has passed; Yahoo serves only the current chain, "
+                     "which postdates the print and would be look-ahead"
+                     if not recoverable else "option chain suppressed by --no-options"),
+        }
 
     # The deadband: below this, the reaction had no direction in it and the event
     # is not scored. Preferred basis is the name's own reaction history; where
@@ -731,6 +788,8 @@ def main():
     ap.add_argument("--date", required=True, help="event date YYYY-MM-DD")
     ap.add_argument("--session", default="bmo", choices=["bmo", "amc"])
     ap.add_argument("-o", "--out", help="directory to write <TICKER>.json into")
+    ap.add_argument("--no-options", action="store_true",
+                    help="suppress the option chain even for a future event")
     a = ap.parse_args()
 
     names = [a.ticker] if a.ticker else [t.strip() for t in (a.tickers or "").split(",") if t.strip()]
@@ -741,7 +800,7 @@ def main():
     if outdir:
         outdir.mkdir(parents=True, exist_ok=True)
     for t in names:
-        doc = build(t, a.date, a.session)
+        doc = build(t, a.date, a.session, allow_options=False if a.no_options else None)
         if outdir:
             (outdir / f"{t.upper()}.json").write_text(
                 json.dumps(doc, indent=1) + "\n", encoding="utf-8")

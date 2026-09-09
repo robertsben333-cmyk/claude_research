@@ -755,9 +755,12 @@ tests the branch the live strategy uses most, at n=205 instead of n=51.
 3. **`session` is null on all 387 captures.** `capture.py` defers it to `seal.py`, which
    was never written. `truth.py` cannot compute a move without it. Derivable from the
    8-K item 2.02 acceptance time; an 8-K is present for 130 of the 205 past events.
-4. **`edge_resolve.py` normalises only on `options.event_implied_move_pct`**, so
-   `spearman vs move/implied` — the script's own skill measure — would be null for the
-   whole backtest. Needs a fallback to `expected_move_pct`.
+4. **`edge_resolve.py` does not record which denominator normalised each name.**
+   The fallback from the straddle to `expected_move_pct` was already there, so the
+   metric is not null as first written here — the defect is subtler and worse. The
+   anchor was never recorded, so a pooled `move/implied` figure silently mixes two
+   different denominators, and it is a mix in production: 51 straddle against 60 proxy
+   over 111 live baselines.
 
 ### The part with a deadline
 
@@ -765,3 +768,71 @@ The 182 unreported captures are the only events that can ever test the **options
 branch, because their chains are readable now and not afterwards. 47 report on 09-09 and
 48 on 09-10. Every day without a baseline snapshot converts roughly 45 of them into
 proxy-only events, permanently.
+
+## 34. Fixing those four, and what the seal found
+
+All four are fixed. Two of them turned up something the write-up above did not
+anticipate.
+
+**The as-of guard** (`scripts/priced_in.py`). `build()` now decides from the date
+whether an option chain may be read at all, and `--no-options` forces it off. A past
+event gets `options.status: not_recoverable_retrospectively` with the implied move and
+the skew explicitly null, and `options_as_of_valid: false` on the document. An explicit
+`allow_options=True` into the past is refused rather than honoured. Verified both ways:
+the CASY 2026-09-08 baseline now suppresses the chain and its tier drops from `full` to
+`partial`, which is the honest reading; a KR 2026-09-11 baseline still fetches the
+2026-09-18 expiry and reports a straddle.
+
+**The anchor mix** (`scripts/edge_resolve.py`). Each row now carries `implied_basis`,
+and the per-run and pooled reports print the composition and split the normalised
+correlation by anchor where both are present. Re-running the seven live runs shows why
+this mattered: the pooled `move/implied` of +0.043 is an average of **−0.174 on the 30
+straddle-anchored names and +0.293 on the 20 proxy-anchored ones**. Neither is
+significant and the two point opposite ways. The single pooled figure was the one
+number in the report that could look like a result without being one.
+
+**The seal** (`backtest/scripts/seal.py`, new). Resolves each capture's session from
+the 8-K item 2.02 acceptance time, with `priced_in.sixk_prints`' exhibit-reading
+approach as the fallback for foreign private issuers — which is 33 of the seals and
+most of the shortfall, not an edge case. Harness-side, like `truth.py`.
+
+It also answers a second question for free, and the answer is worse than expected.
+Over the 205 already-reported captures:
+
+| | |
+| --- | --- |
+| sealed and scorable | **111** (60 amc / 51 bmo) |
+| unconfirmed, domestic | 57 |
+| unconfirmed, foreign filer | 33 |
+| intraday acceptance, not scorable under the close-to-close convention | 4 |
+
+**Forty-four percent of the calendar rows are not earnings events.** The window was
+checked before that was believed: across ten sampled unconfirmed names the nearest item
+2.02 is between 108 and 750 days from the calendar date, and two have never filed one.
+ITP last reported in November 2024. AIV is the Aimco liquidation case a hunter
+discovered by hand on the first live run, at the cost of an opus/high budget. So this is
+not a tight window rejecting real prints, it is an aggregator projecting dead cadences
+onto microcaps, and the phantom rate matches what the edge hunt's own run 1 hit on
+2026-08-31. Zumiez was checked against its own press release as a control: the calendar
+said 2026-09-03, the company reported 2026-09-10.
+
+The scorable sample is therefore **111 events**, against the 51 the live edge hunt has
+pooled to date.
+
+**The corpus-only agents** (`.claude/agents/unpriced-hunter-corpus.md`,
+`priced-in-adversary-corpus.md`, new). Same output contracts as the live pair, with
+`WebSearch`/`WebFetch` removed and `Read`/`Grep`/`Glob` in their place. Two changes are
+substantive rather than mechanical. The hunter is told that the option branch of the
+baseline is null by design and not to manufacture a directional read out of the run-up
+to replace it. The adversary loses its main tool — it settles prior publication by
+searching, live — so it must now classify every verdict as `published in corpus`,
+`reachable but unconnected`, or `corpus silent`, and is told explicitly that silence is
+not evidence of non-publication, because a bounded capture is silent about everything
+its queries did not ask for. Without that field a backtested adversary's number cannot
+be told apart from a guess.
+
+**One thing fixed on the way** (`cik_for` in `scripts/priced_in.py`). EDGAR writes class
+shares with a hyphen and the calendars hand out dots, so `BF.A` and `BF.B` returned no
+CIK — and no CIK means no reaction history, no cadence check, and a baseline that drops
+to thin with no error. Both separators are now tried. This was hitting the live pipeline
+too, not only the backtest.

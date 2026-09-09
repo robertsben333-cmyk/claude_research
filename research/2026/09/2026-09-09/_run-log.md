@@ -65,3 +65,7 @@
 ## Backtest feasibility — edge hunt on the capture corpus
 - Logged at 2026-09-09 14:16 UTC
 - Checked whether the edge hunt can be backtested on backtest/captures (387 events, 205 sealed past). Yes on the expected-move proxy anchor, no on options. Four blockers written up in backtest/FINDINGS.md section 33, including a look-ahead options leak in scripts/priced_in.py.
+
+## Backtest blockers — all four fixed
+- Logged at 2026-09-09 14:36 UTC
+- as-of options guard in priced_in.py; seal.py written (111 of 205 captures scorable, 90 phantom calendar rows); implied_basis recorded in edge_resolve.py; corpus-only hunter and adversary agents. Plus cik_for class-share fix. smoke_test passes.

@@ -19,6 +19,14 @@ Two correlations are reported and they answer different questions:
                        15%-implied biotech above a 2%-implied utility is easy and
                        says nothing
 
+The denominator is the option straddle where one exists and the name's own median
+reaction where it does not, and which one was used is now recorded per row as
+`implied_basis` and reported as a mix. It is a mix in production -- 51 straddle
+against 60 proxy over 111 live baselines -- and a backtest over already-reported
+events is entirely proxy, because an option chain cannot be read as of a past
+date. The two denominators measure different things, so a pooled figure over a
+mixed anchor is reported alongside the per-anchor split, never instead of it.
+
 A single day of n names is far too small for either number to mean anything. They
 are recorded per day and pooled across days; the pooled figure is the result and
 one day is an anecdote.
@@ -129,9 +137,19 @@ def resolve_run(run, seed):
         row = {"ticker": t, "rank": r.get("rank"), "rankable": r["rankable"],
                "edge_score": r["edge_score"], "edge_pct": r["edge_pct"],
                "confidence": r["confidence"],
-               "deadband_pct": b.get("deadband_pct"),
-               "implied_pct": ((b.get("options") or {}).get("event_implied_move_pct")
-                               or b.get("expected_move_pct"))}
+               "deadband_pct": b.get("deadband_pct")}
+        # Which denominator normalised this name. The fallback to the reaction-history
+        # proxy has always been here, but the anchor it used was never recorded, so a
+        # pooled `move/implied` figure silently mixed two different denominators --
+        # and it is a mix in production: of 111 live baselines, 51 carried a straddle
+        # and 60 fell back to the proxy. The two are not interchangeable. A straddle
+        # is what the market paid; the proxy is what this company usually does. Both
+        # are legitimate scale factors and pooling them without saying so is not.
+        straddle = (b.get("options") or {}).get("event_implied_move_pct")
+        row["implied_pct"] = straddle or b.get("expected_move_pct")
+        row["implied_basis"] = ("straddle" if straddle
+                                else "history_proxy" if b.get("expected_move_pct")
+                                else None)
         if not r["rankable"] or not b.get("event_date"):
             row["outcome"] = "not_ranked"
             rows.append(row)
@@ -171,6 +189,25 @@ def stats_for(live, seed):
         out["spearman_vs_move_over_implied"] = s2
         out["p_permutation_normalised"] = p2
         out["n_normalised"] = len(norm)
+        mix = {}
+        for r in norm:
+            k = r.get("implied_basis") or "unknown"
+            mix[k] = mix.get(k, 0) + 1
+        out["normalised_anchor_mix"] = mix
+        # Where both anchors are present in strength, report them apart as well.
+        # A pooled figure over a mixed denominator is the one number here that can
+        # look like a result without being one.
+        if len(mix) > 1:
+            per = {}
+            for anchor in mix:
+                sub = [r for r in norm
+                       if (r.get("implied_basis") or "unknown") == anchor]
+                if len(sub) >= 3:
+                    sa, pa = permutation_p([r["edge_score"] for r in sub],
+                                           [r["move_over_implied"] for r in sub], seed)
+                    per[anchor] = {"spearman": sa, "p": pa, "n": len(sub)}
+            if per:
+                out["spearman_vs_move_over_implied_by_anchor"] = per
     # Long the top third, short the bottom third. The ranking's payoff if you
     # traded it, which is the only version of "does the order matter" that pays.
     k = max(1, len(live) // 3)
@@ -219,6 +256,9 @@ def main():
         if "spearman_vs_raw_move" in st:
             print(f"  spearman vs raw move        {st['spearman_vs_raw_move']}"
                   f"   (permutation p={st['p_permutation_raw']}, n={st['n']})")
+            if st.get("normalised_anchor_mix"):
+                print("  normalised on: " + ", ".join(
+                    f"{v} {k}" for k, v in sorted(st["normalised_anchor_mix"].items())))
             if "spearman_vs_move_over_implied" in st:
                 print(f"  spearman vs move/implied    {st['spearman_vs_move_over_implied']}"
                       f"   (p={st['p_permutation_normalised']}, n={st['n_normalised']})")
@@ -240,6 +280,11 @@ def main():
               f"  (p={p.get('p_permutation_raw')})")
         print(f"  spearman vs move/implied {p.get('spearman_vs_move_over_implied')}"
               f"  (p={p.get('p_permutation_normalised')})")
+        if p.get("normalised_anchor_mix"):
+            print("  normalised on:           " + ", ".join(
+                f"{v} {k}" for k, v in sorted(p["normalised_anchor_mix"].items())))
+        for anchor, d in (p.get("spearman_vs_move_over_implied_by_anchor") or {}).items():
+            print(f"    {anchor:14s} {d['spearman']:+.3f}  (p={d['p']}, n={d['n']})")
         print(f"  long/short spread        {p.get('long_short_spread_pct')}pp")
     print(f"\nwrote {out}")
 
