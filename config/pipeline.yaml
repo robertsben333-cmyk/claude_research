@@ -82,39 +82,48 @@ edge_hunt:
   # hunters and eight had no earnings event at all, each burning a full opus/high
   # budget to establish a fact one filing lookup settles.
   sweep_agents: 1
-  # Two hunters only on the top names by the sweep's hunt_priority. This is the
-  # one place agent count must not be economised: the two SY hunters returned
-  # opposite numbers from the same baseline and that disagreement was the most
-  # informative output of the first run.
-  double_hunt_top_n: 2
+  # ONE HUNTER PER NAME. The double hunt on the top two was removed 2026-09-09.
+  #
+  # Over six runs it paired twelve names. The disagreement is real and large --
+  # median gap 2.40 points on a key whose typical size is about 5, and FOUR OF THE
+  # TWELVE pairs came back with opposite signs -- but it predicts nothing: the gap
+  # against the eventual error ranks +0.203, against whether the sign was right
+  # +0.028, both at n=12. So it bought no signal, and it cost two of twenty slots.
+  #
+  # What was given up is the only ongoing measurement of how REPRODUCIBLE the key
+  # is. Run the same name twice and a third of the time you get the other sign.
+  # That caveat now applies to every ranking and nothing in the stage re-measures
+  # it. Re-run a double-hunt week occasionally rather than letting the number rot.
+  double_hunt_top_n: 0
   hunters_per_other_name: 1
   wave_size: 4
   max_concurrent_subagents: 4
   model: opus
   effort: high
-  # THE ADVERSARY IS NOW A WEEKLY AUDIT, NOT A DAILY PASS (2026-09-09).
+  # THE ADVERSARY IS REMOVED (2026-09-09). No daily pass, no weekly audit.
   #
-  # It produces two numbers and both were measured as subtractive over 215 findings
+  # It returned two numbers and both were measured as subtractive over 215 findings
   # on six resolved days. `size_check_pct`: summing the hunter's own size ranks at
   # rho=0.453 against 0.407 for the mean of the two. `priced_in_pct`: every way of
-  # letting it touch the ranking makes it worse, monotonically -- the haircut gives
-  # 0.325, dropping findings at priced_in>=90 gives 0.407, at >=80 gives 0.328, at
-  # >=70 gives 0.221. Its own summary, mean priced_in per name, ranks at +0.046.
-  # And since impact_sum became the key it reaches the output through neither
-  # channel: 8 subagents a day, 40% of the cap, changing nothing that is ranked.
+  # letting it touch the ranking makes it worse, monotonically in how much it is
+  # allowed to remove -- the haircut 0.325, dropping findings at priced_in>=90 gives
+  # 0.407, >=85 gives 0.402, >=80 gives 0.328, >=70 gives 0.221, keeping only <=50
+  # gives 0.305. Mean priced_in per name ranks +0.046. And once impact_sum became
+  # the key it reached the output through neither channel: eight subagents a day,
+  # 40% of the cap, changing nothing that is ranked, scored or resolved.
   #
-  # What it does do is catch findings that are factually wrong -- on 2026-09-09 a
-  # misread covenant date and a short-interest claim contradicted by its own source.
-  # That is why it survives as an audit rather than being deleted. On audit day the
-  # stage runs the full pass and hunts 8 names; on the other days it hunts 16.
+  # What is knowingly given up: it was the only thing in the stage that caught
+  # factually wrong findings -- on 2026-09-09 a covenant amendment misread by a year
+  # and a short-interest claim contradicted by its own source. Those now enter the
+  # key unchecked. Accepted because a check with no path to the output is not a
+  # check, and because sample size is what every open question is waiting on.
   #
-  # Monday, so the week's first run carries the check and the finding lands early.
-  adversary_audit_weekday: 1          # 0=Monday .. 6=Sunday, per date.weekday()
-  adversary_agents_per_ticker: 1      # on audit day only; 0 otherwise
-  # Names to hunt. The point of dropping the daily adversary is sample size: every
-  # open question in docs/EDGE_ANALYSIS.md is waiting on more resolved names.
-  hunted_names_normal_day: 16
-  hunted_names_audit_day: 8
+  # `.claude/agents/priced-in-adversary.md`, `scripts/edge_brief.py` and
+  # `scripts/edge_adversary_brief.py` are left in the tree unused, so the pass can be
+  # re-run deliberately over a week if the priced-in question is ever reopened.
+  adversary_agents_per_ticker: 0
+  # Every slot the sweep leaves goes to hunters: 1 + 19 = 20.
+  hunted_names: 19
   # No threshold and no call. edge_score.py emits one signed number per company --
   # `impact_sum`, the hunters' signed per-finding sizes added up, in points of spot
   # -- and the day is ranked on it; any cut is applied by the reader afterwards,
@@ -182,7 +191,8 @@ budget:
     - drop_unconfirmed_names_first          # the sweep could not source a date
     - drop_lowest_hunt_priority_names       # fewest names, full rigour on each
     - hunt_only_names_the_sweep_ranked_above_median_priority
-    - single_hunter_on_every_name           # LAST resort; record it in the run log
+  # `single_hunter_on_every_name` used to sit here as a last resort. It is the
+  # default since 2026-09-09, so there is nothing left to shed but names.
   # Never degraded, at any budget: the sealed-baseline-before-launch ordering, the
   # two-hunter split on the top two names, and -- ON AUDIT DAY ONLY -- adversary
   # coverage of every finding on both sides. Full coverage stopped being a daily
@@ -190,7 +200,7 @@ budget:
   # as subtractive; on audit day it is still all-or-nothing, because judging only
   # some findings reintroduces run 1's central flaw (an unjudged finding defaults to
   # mostly-priced, so partial coverage favours whichever side goes unattacked).
+  # One rule left, and it is the one that makes the whole exercise honest: a
+  # baseline written after a finding exists is one the finding has contaminated.
   edge_never_degrade:
     - baselines_sealed_and_committed_before_any_agent_launches
-    - two_hunters_on_the_top_two_names
-    - on_audit_day_the_adversary_judges_every_finding_both_sides

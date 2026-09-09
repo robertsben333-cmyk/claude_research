@@ -1,6 +1,6 @@
 ---
 name: earnings-edge-hunt
-description: Establishes what the market has already priced into each of the day's earnings prints, then sends free-roaming hunters to find information that is not in that price, and emits one signed number per company so the day's names can be ranked. A weekly adversary audit checks the hunters' findings for factual errors. Use when asked to run the edge hunt, rank the day's earnings names, hunt for unpriced information, or score companies reporting.
+description: Seals what the market has already priced into each of the day's earnings prints, then sends one free-roaming hunter per company to find information that is not in that price, and sums their signed finding sizes into one number per company so the day's names can be ranked. Use when asked to run the edge hunt, rank the day's earnings names, hunt for unpriced information, or score companies reporting.
 ---
 
 # Edge hunt — one signed number per company, so the day can be ranked
@@ -68,13 +68,15 @@ for, and one day of eight names cannot answer it.
 **Self-rated confidence does not work.** Across 33 scored arm calls in
 `backtest/runs/pilot-40`, the model's own `evidence_quality` split top-third and
 bottom-third accuracy at exactly 50/50. No hunter's feeling about its own certainty
-enters the score. `scripts/edge_score.py` derives everything from sizes, source
-counts and adversary numbers.
+enters the score. `scripts/edge_score.py` derives the key from the hunters' signed
+sizes and nothing else.
 
 **The crux is "is it already priced", and no rule settles it.** The PWR event in
 `backtest/notes/disagreement-map.md` had two analyses holding the same principle,
 reading the same corpus, disagreeing about which story was the widely-told one, and
-landing 14% apart. That gets an adversary, not a heuristic.
+landing 14% apart. That was the case for an adversary, and for a year it was the design.
+It did not survive measurement — see section 4 — so the question is now left inside the
+hunter's own sizing rather than adjudicated after the fact.
 
 ## If your Routine prompt disagrees with this file
 
@@ -211,17 +213,19 @@ One cheap agent replaces those eight.
 
 Write to `<RUN>/edge/sweep.json`. Publish it.
 
-## 3. Hunt — parallel only where independence is measured
+## 3. Hunt — one agent per name, all of them
 
 Launch `unpriced-hunter` on the confirmed names, ordered by `hunt_priority`:
 
-- **two hunters** on the top names, in parallel, isolated from each other
-- **one hunter** on the rest
+**One hunter per name, and every confirmed name gets one.** The double hunt on the top
+two was removed 2026-09-09: over six runs it paired twelve names and the gap between the
+two hunters predicted neither the eventual error (+0.203) nor whether the sign was right
+(+0.028), at n=12. Two slots for no signal.
 
-Two hunters on one name is the one place agent count must not be economised. On
-2026-08-31 the two SY hunters returned *opposite* numbers from the same sealed
-baseline and the same disclosed cohort table, and that disagreement was the most
-informative output of the run. It only exists because neither could see the other.
+What it did establish, before it was switched off, is that the key is noisy at its own
+scale: median gap 2.40 points, and **four of those twelve pairs came back with opposite
+signs**. Nothing measures that any more. Treat it as a standing property of every
+ranking, and re-run a double-hunt week occasionally rather than letting the number rot.
 
 Give each hunter exactly: ticker, company, event date and session, the absolute
 path to its `baselines/<TICKER>.json`, its output path, and its row from
@@ -237,20 +241,21 @@ Publish after each wave, not at the end of the fan-out.
 ### Do the budget arithmetic before the first launch
 
 ```
-1 sweep  +  (confirmed names + double_hunt_top_n) hunters  +  (tickers with findings) adversaries
+1 sweep  +  1 hunter per confirmed name
 ```
 
-**On a normal day there are no adversaries**, so the cap of 20 buys
-**sixteen hunted names**: 1 + (16 + 2) = 19. On the weekly audit day
-(`budget.adversary_audit_weekday`, Monday) the adversary pass comes back and the
-arithmetic reverts to eight: 1 + 10 + 8 = 19. `config/pipeline.yaml` carries both as
-`hunted_names_normal_day` and `hunted_names_audit_day`. Work out which kind of day it
-is from `date.weekday()` before planning the shed, not after.
+```
+1 sweep  +  1 hunter per confirmed name
+```
 
-Shed per `budget.edge_degrade_order`, which sheds **names** before rigour: unconfirmed
-names first, then lowest `hunt_priority`. Never shed at any budget: the two-hunter
-split, the sealed-baseline ordering, and — on audit day — adversary coverage of every
-finding on both sides.
+There is nothing else in the arithmetic any more. The cap of 20 buys **nineteen hunted
+names**, and `config/pipeline.yaml` carries that as `hunted_names`.
+
+Shed per `budget.edge_degrade_order`, which sheds **names**: unconfirmed first, then
+lowest `hunt_priority`. There is nothing left to shed but names — one hunter each is
+already the floor. The single thing never shed at any budget is the sealed-baseline
+ordering, because a baseline written after a finding exists is one the finding has
+contaminated.
 
 Keeping a name but measuring it worse corrupts the ranking silently. Dropping one
 puts it in the table as `rankable: false` with a stated reason, where the reader can
@@ -265,82 +270,49 @@ built entirely on names with no options is measuring something weaker. Record th
 deviation in the run log.
 
 **Concurrency is not the same limit as budget.** `max_concurrent_subagents` is about
-load; the cap of 20 is about spend. An `amc` name reporting tonight must be judged
-before its release, so serialising strictly can push its adversary past the event —
-exceed the concurrency guideline for those and stay inside the total.
+load; the cap of 20 is about spend. An `amc` name reporting tonight must be hunted before
+its release, so serialising strictly can push a hunter past the event — exceed the
+concurrency guideline for those and stay inside the total. The 2026-09-09 run found the
+real platform ceiling to be 8 concurrent subagents, not the 4 in config; launches beyond
+it are rejected and cost nothing, so relaunch as slots free rather than planning around
+the config number.
 
-## 4. Adversary — weekly audit only, skip it on the other four days
+## 4. There is no adversary pass
 
-**Check the weekday first.** If `date.weekday()` is not
-`budget.adversary_audit_weekday`, skip this whole section, hunt sixteen names instead
-of eight, and record in the run log that it was a non-audit day.
+Removed 2026-09-09. It returned two numbers and both were measured as subtractive over
+215 findings on six resolved days.
 
-Why it stopped being daily, on 2026-09-09: the adversary returns two numbers and both
-were measured as subtractive over 215 findings on six resolved days.
 `size_check_pct` — summing the hunter's own size ranks at ρ=0.453 against 0.407 for the
-mean of the two. `priced_in_pct` — every way of letting it touch the ranking makes the
-ranking worse, monotonically: the haircut gives 0.325, dropping findings at
-priced_in ≥ 90 gives 0.407, at ≥ 80 gives 0.328, at ≥ 70 gives 0.221. Mean `priced_in`
-per name ranks at +0.046. And since `impact_sum` became the key, neither number reaches
-the output at all — the pass was costing 8 of 20 subagents and changing nothing that is
-ranked, scored or resolved.
+mean of the hunter and the adversary.
 
-Why it survives at all: it catches findings that are **factually wrong**, which nothing
-else in the stage does. On 2026-09-09 it broke a covenant amendment misread by a year
-and a "the short base has not moved" claim contradicted by its own source. Those
-corrections are real, and on that day they changed the ranking by exactly zero, because
-a refuted finding still enters `impact_sum` at full size. The audit therefore measures
-hunter accuracy rather than steering the day — read its output as a report card on the
-hunters, and if a hunter's findings are repeatedly broken, fix the hunter prompt.
+`priced_in_pct` — every way of letting it touch the ranking makes the ranking worse, and
+monotonically in how much it is allowed to remove:
 
-What the audit is deliberately not allowed to do is prune. Do not drop or shrink a
-finding because the adversary priced it high; the table above is what happens when you
-do.
+| the key sums | ρ |
+| --- | --- |
+| every finding at the hunter's size — **as shipped** | **+0.453** |
+| × (1 − priced_in/100) | +0.325 |
+| findings with priced_in ≥ 90 dropped | +0.407 |
+| ≥ 80 dropped | +0.328 |
+| ≥ 70 dropped | +0.221 |
+| only priced_in ≤ 50 kept | +0.305 |
 
-On audit day, build the briefs with the script, never by hand:
+Mean `priced_in` per name ranks at +0.046. And once `impact_sum` became the key, neither
+number reached the output at all — the pass was spending eight of twenty subagents on
+something that changed nothing ranked, scored or resolved.
 
-```bash
-python3 scripts/edge_brief.py --run <RUN>/edge      # writes adversary-briefs/<TICKER>.json
-```
+**What was knowingly given up.** The adversary was the only thing in the stage that
+caught findings which were factually wrong: on 2026-09-09 a covenant amendment misread
+by a year, and a "the short base has not moved" claim contradicted by its own source.
+Those now enter the key unchecked. If a hunter's findings start looking unreliable, that
+is the cost showing up, and the fix is the hunter prompt — not a checker with no path to
+the output.
 
-It carries the claim, its source and its date, and nothing else — by whitelist, so a
-new field on the hunter contract cannot leak a hunter's own size or its
-`why_not_priced` into the brief and destroy the independence the whole pass depends
-on. It also generates each `finding_key` with the same rule `edge_score.py` uses to
-join on (`<hunt file stem>#<index>`).
-
-Launch `priced-in-adversary` **once per company**, with that company's brief. It
-returns `priced_in_pct` from 0 to 100 for each finding, plus its own independent
-`size_check_pct`, and writes `<RUN>/edge/adversary/<TICKER>.json` itself.
-
-Then verify the join before you score:
-
-```bash
-python3 scripts/edge_brief.py --run <RUN>/edge --check
-```
-
-A `finding_key` that does not match is dropped **silently** — the finding keeps no
-`priced_in_pct`, defaults to "unjudged, mostly priced", and quietly costs that name
-edge with nothing in the output to say so. `--check` names every unjudged finding,
-orphan verdict, null number and duplicate. Run it; "8 of 8 adversary files exist" is
-not the same statement as "every finding carries a number".
-
-Batching here is free. The findings share a company, a baseline and a news record,
-and they often rest on the same document or mirror each other — judging them
-together costs less and sees the interaction. What must stay separate is the
-adversary from the hunters, not the adversary from itself.
-
-**Judge every finding, on both sides.** On the first run adversaries were launched
-against the bullish findings only; since an unjudged finding defaults to
-mostly-priced, that mechanically favoured whichever side went unattacked. Never
-give the adversary the hunter's own numbers or reasoning.
-
-**If an adversary returns its JSON in the message instead of writing a file**, its
-definition is missing the `Write` tool — check
-`.claude/agents/priced-in-adversary.md`'s frontmatter before launching the rest.
-On 2026-08-31 all six adversaries hit this and the parent transcribed every verdict
-by hand, which is slow and puts a silent-drop typo into every join key. The tool is
-granted now; if it goes missing again, fix the definition rather than transcribing.
+`.claude/agents/priced-in-adversary.md`, `scripts/edge_brief.py` and
+`scripts/edge_adversary_brief.py` are still in the tree, unused, so the pass can be
+re-run deliberately over a week if the priced-in question is ever reopened. `edge_score.py`
+still reads `adversary/` when it is present, and reports `diagnostics.adversary_judged`
+as a count so a run with a pass and a run without are told apart at a glance.
 
 ## 5. Score and rank
 
@@ -400,16 +372,16 @@ hunters to find what the market has missed into a print than a fact about those 
 companies. If it recurs across many days, the hunter prompt is generating pessimism
 rather than detecting it — and that is only visible if each note records the count.
 
-**On audit day, say what the adversary broke.** Name the findings that turned out to be
-factually wrong and how, and name the one that survived best with its `priced_in_pct`.
-An adversary that conceded a fact but refused its sign is reporting something different
-from one that refuted the fact; keep that distinction. State plainly that none of it
-changed the ranking — the audit measures the hunters, it does not steer the day.
+**Say that nothing checked the findings.** There is no adversary pass and no second
+hunter, so a factually wrong finding enters the key at full size and nothing in the run
+would have caught it. That is the accepted cost of nineteen names, and a reader should
+not have to open the config to learn it.
 
-**On the other four days, say that there was no adversary pass**, and that a factually
-wrong finding therefore entered the key unchecked. That is the accepted cost of hunting
-sixteen names instead of eight; a reader should know which kind of day they are looking
-at without opening the config.
+**Say that the key is not reproducible to better than its own size.** When the stage
+still double-hunted, twelve paired names came back with a median gap of 2.40 points and
+**four of the twelve had opposite signs**, on a key whose typical magnitude is about 5.
+Nothing re-measures that now, so quote it as a standing caveat rather than letting a
+tidy ranking imply a precision it does not have.
 
 **Say how much of the baseline was measured rather than inferred.** Count the names
 with a live option chain. Where there is none, `priced_lean_pct` falls back to

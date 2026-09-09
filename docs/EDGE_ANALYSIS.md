@@ -626,19 +626,40 @@ But note what happens to them now: a refuted finding still enters `impact_sum` a
 size, because the only lever the adversary has is `priced_in_pct` and that no longer feeds
 the key. Both of those corrections changed the 09-09 ranking by exactly zero.
 
-### The decision
+### The decision: removed outright, and the double hunt with it
 
-Drop the adversary from the daily run and spend the slots on hunters — 8 names becomes 16,
-which is what the stage most needs, since every open question in this file is waiting on
-sample size. Keep it as a **weekly audit** rather than deleting it: one day a week the
-stage runs the full adversary pass, which preserves the factual check on hunter accuracy,
-keeps whatever deterrent effect the hunters' knowing-they-are-checked has, and keeps the
-`priced_in_pct` question answerable as days pool instead of freezing it at six.
+The adversary is gone — no daily pass and no weekly audit. So is the double hunt on the
+top two names, which failed the same test: over six runs it paired twelve names, and the
+gap between the two hunters predicted neither the eventual error (rank correlation +0.203)
+nor whether the sign was right (+0.028), at n=12. Two slots for no signal.
 
-What is deliberately accepted: on the other four days a factually wrong finding enters the
-key unchecked. That is a real cost. It is accepted because a check with no path to the
-output is not a check, and because doubling the sample is what turns every "lead, not a
-finding" in this file into an answer.
+The stage is now one sweep and one hunter per name, 19 names against the old 8.
+
+| | before | after |
+| --- | --- | --- |
+| sweep | 1 | 1 |
+| hunters | 10 (8 names + 2 double) | 19 (19 names) |
+| adversaries | 8 | 0 |
+| **names ranked** | **8** | **19** |
+
+**Two things are knowingly given up, and both belong in every note from here.**
+
+*Nothing checks a finding for being factually wrong.* The adversary was the only thing
+that did — on 2026-09-09 a covenant amendment misread by a year, and a "the short base has
+not moved" claim contradicted by its own source. Those now enter the key at full size. The
+fix, when hunter reliability starts to show, is the hunter prompt.
+
+*Nothing measures how reproducible the key is.* While the double hunt ran, twelve paired
+names came back with a **median gap of 2.40 points and four of twelve carrying opposite
+signs**, on a key whose typical magnitude is about 5. Run the same name twice and a third
+of the time you get the other direction. That is a property of every ranking the stage has
+ever produced, it is now unmeasured, and a tidy table should not be read as implying a
+precision the key does not have. Re-run a double-hunt week occasionally rather than letting
+the number rot.
+
+Both are accepted for the same reason: a check with no path to the output is not a check,
+and sample size is what every open question in this file is waiting on. Nineteen names a
+day against eight gets there roughly two and a half times faster.
 
 ## What to change
 

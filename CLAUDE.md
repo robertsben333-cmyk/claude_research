@@ -106,20 +106,26 @@ exactly. **It is not a return forecast**: regression slope 0.72–0.76 (0.86–0
 conviction floor), pearson 0.41–0.46, median absolute error 6–7 points against a realised
 standard deviation near 11, and it double-counts findings that rest on one document.
 
-**The adversary is a weekly audit from 2026-09-09, and the day hunts 16 names instead of
-8.** Both of its numbers were measured as subtractive over 215 findings on six days.
-`size_check_pct`: the hunter's own size ranks at ρ=0.453 against 0.407 for the mean of the
-two. `priced_in_pct`: every way of letting it touch the ranking makes it worse, and
-monotonically — the haircut 0.325, dropping findings at priced_in ≥ 90 gives 0.407, ≥ 80
-gives 0.328, ≥ 70 gives 0.221; mean priced_in per name ranks +0.046. And since
-`impact_sum` became the key neither number reached the output at all: 8 of 20 subagents
-changing nothing that is ranked. It survives as a Monday audit because it catches
-factually wrong findings — on 09-09 a covenant amendment misread by a year and a
-short-interest claim contradicted by its own source — which nothing else in the stage
-does. The audit is a report card on the hunters and must not prune or reweight; on the
-other four days a wrong finding enters the key unchecked, which is the accepted price of
-doubling the sample. `diagnostics.residual_sum` is `null` on non-audit days rather than
-computed off the "unjudged" default.
+**The adversary and the double hunt are both gone (2026-09-09); the day hunts 19 names
+with one hunter each.** The adversary returned two numbers and both were subtractive over
+215 findings on six days. `size_check_pct`: the hunter's own size ranks at ρ=0.453 against
+0.407 for the mean of the two. `priced_in_pct`: every way of letting it touch the ranking
+makes it worse, monotonically in how much it removes — the haircut 0.325, dropping
+findings at priced_in ≥ 90 gives 0.407, ≥ 80 gives 0.328, ≥ 70 gives 0.221, keeping only
+≤ 50 gives 0.305; mean priced_in per name ranks +0.046. Once `impact_sum` became the key
+neither number reached the output at all: 8 of 20 subagents changing nothing ranked. The
+double hunt went for the same reason — over twelve paired names the gap between two
+hunters predicted neither the error (+0.203) nor whether the sign was right (+0.028).
+
+**Two things were knowingly given up, and both belong in every note.** Nothing now checks
+a finding for being factually wrong; the adversary was the only thing that did, and on
+09-09 it caught a covenant amendment misread by a year and a short-interest claim
+contradicted by its own source. And nothing measures the key's reproducibility: while the
+double hunt ran, twelve pairs came back with a median gap of 2.40 points and **four of the
+twelve had opposite signs**, on a key whose typical size is about 5. Re-run a double-hunt
+week occasionally rather than letting that number rot.
+`.claude/agents/priced-in-adversary.md` and the brief scripts stay in the tree, unused, so
+either pass can be re-run deliberately.
 
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is

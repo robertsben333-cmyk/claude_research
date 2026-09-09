@@ -16,9 +16,9 @@ points at the skill in the tree it actually cloned — so it can be pasted befor
 the merge without breaking a run. What it cannot do is make the new key live; only the
 merge does that.
 
-**2026-09-09, second change.** The adversary became a weekly audit and the daily name
-count went from eight to sixteen, so step 5 and the budget line changed too. Everything
-else in the prompt is unchanged.
+**2026-09-09, second change.** The adversary was removed outright and the double hunt
+with it, so steps 4 and 5 and the budget line changed. The day now hunts nineteen names
+with one hunter each: 1 sweep + 19 = 20. Everything else in the prompt is unchanged.
 
 **What changed from the previous prompt.** The old text restated the output contract
 ("one signed number on −100 to +100"), which the 2026-09-09 rewrite made wrong: the key
@@ -61,11 +61,11 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
 
 3. SWEEP. Launch ONE `edge-sweep` agent for the whole universe. It confirms which companies are really reporting and scores each on where an unpriced finding might live. This exists because the first run sent twelve names to twelve deep hunters and eight of them burned a full Opus/high budget establishing that no event existed.
 
-4. HUNT. `unpriced-hunter` on the confirmed names: two hunters on the top two by hunt_priority, isolated from each other, one on the rest. The two-hunter split is the one place agent count must NOT be economised - on the first run two SY hunters returned opposite numbers from the same baseline and the same table, and that disagreement was the most informative output of the day. It exists only because neither could see the other. Give each hunter only its ticker, its baseline path, its output path and its sweep row.
+4. HUNT. `unpriced-hunter`, ONE per confirmed name, on all of them. The double hunt on the top two was removed 2026-09-09: over six runs the gap between paired hunters predicted neither the error nor whether the sign was right. Give each hunter only its ticker, its baseline path, its output path and its sweep row - not your view, not the other names.
 
    The sizes hunters put on their findings now carry the whole result, so the instruction to size honestly is not a formality. Six resolved runs measured the hunters' raw signed sizes as the best available ranking of the day, better than every number computed from them. An inflated size is no longer discounted by machinery downstream.
 
-5. ADVERSARY - WEEKLY AUDIT ONLY. Check the weekday against budget.adversary_audit_weekday in config/pipeline.yaml. On the other four days there is NO adversary pass and you hunt sixteen names instead of eight; say so in the note and the run log. On audit day run `priced-in-adversary` ONCE PER TICKER with all of that company's findings in one brief, judging BOTH sides - partial coverage reintroduces run 1's central flaw, since an unjudged finding defaults to mostly-priced and that favours whichever side goes unattacked. The audit measures hunter accuracy; it does NOT prune or reweight the ranking. Both of its numbers were measured as subtractive over 215 findings, so do not drop or shrink a finding because the adversary priced it high.
+5. THERE IS NO ADVERSARY PASS. Removed 2026-09-09 - both of its numbers were measured as subtractive over 215 findings on six days, and once impact_sum became the key neither reached the output at all. Do not reinstate it, do not improvise a substitute check, and do not drop or shrink a finding because you judge it already priced. The agent definition and the brief scripts are still in the tree, unused, so the pass can be re-run deliberately if that question is reopened.
 
 6. SCORE, RANK, WRITE, PUBLISH.
    python3 scripts/edge_score.py --run <RUN>/edge
@@ -73,7 +73,7 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
    Do not filter edge-scores.json and do not apply any cutoff to it - selection is the reader's, and the ranking test needs the complete table.
    Finish with scripts/publish.sh. It pushes to main. This session is ephemeral and work that is not pushed is destroyed.
 
-BUDGET: config/pipeline.yaml sets edge_hunt caps - 20 subagents for the whole stage. On a normal day that is 1 sweep + 16 hunters + 2 for the double-hunt = 19 and no adversaries; on audit day it is 1 + 10 + 8 = 19 with eight names. If you would exceed it, shed using budget.edge_degrade_order and record what you shed.
+BUDGET: config/pipeline.yaml sets edge_hunt caps - 20 subagents for the whole stage, which is 1 sweep + 19 hunters. If the confirmed universe is larger, shed NAMES using budget.edge_degrade_order and record what you shed; one hunter per name is already the floor. Note the real platform ceiling is 8 CONCURRENT subagents, which is not the same limit - rejected launches cost nothing, so relaunch as slots free.
 
 NEVER FABRICATE A NUMBER. Every company-specific figure carries a source URL or is marked unavailable. A missing anchor correctly lowers the score; an invented one corrupts the ranking, which is the only thing this stage produces.
 
