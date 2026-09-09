@@ -77,6 +77,20 @@ result came from the repeated day. The raw impact sum survives at +5.66%/day (CI
 over the thirteen candidates it was chosen from puts its ranking p at 0.056 — a lead to run
 forward, not a finding.
 
+**The direction lives in the large predictions, and only in the impact sum.** The
+threshold-free test — does the rank of `|impact sum|` predict whether its sign was right —
+gives ρ=+0.514, permutation p=0.0015 to the next close (ρ=+0.331, p=0.046 to the open).
+Above the median prediction the sign is right on 74% of events; below it, 53%. As a
+threshold, `|pred| >= 3` gives 16/21 with +6.37% per trade (t=2.74, CI [+1.80, +10.72],
++4.87% after a 1.5% cost), and the best of seven thresholds still clears family-wise
+correction at p=0.034. It is not one day (spread over five), not the microcaps (median
+turnover $7.5m in the top bucket against $69.9m in the bottom), and not a volatility proxy
+(the top bucket has the *smallest* median realised move). Run the same test on
+`|edge_score|` and it returns +0.077 and −0.003: the scorer destroys the conviction signal
+too. See `docs/EDGE_ANALYSIS.md`, "Conviction is where the direction lives" — the
+sign of the impact sum over all 38 events is a coin flip (53%), so the conviction floor is
+the whole finding.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080

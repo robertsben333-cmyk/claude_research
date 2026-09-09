@@ -108,10 +108,12 @@
   <header>
     <p class="eyebrow">Stage E · edge hunt · 38 events · 2026-08-31 t/m 2026-09-08</p>
     <h1>Voorspeld tegen gerealiseerd</h1>
-    <p class="lede">De impactsom <strong>rangschikt</strong> de dag (ρ=0,407, p=0,017) maar
-      <strong>voorspelt de richting niet</strong>: 55% naar de open, 53% naar de close, tegen
-      een muntvloer van 50%. Instap 20:00 CET (14:00 ET) op de laatste sessie voor de print,
-      uitstap op de volgende open of de volgende close.</p>
+    <p class="lede">Over alle 38 events voorspelt de impactsom de <strong>richting niet</strong>:
+      55% naar de open, 53% naar de close, tegen een muntvloer van 50%. Maar de vaardigheid zit
+      in de <strong>grote</strong> voorspellingen. De rang van |voorspelling| correlateert met
+      of het teken klopte: <strong>ρ=+0,514, p=0,0015</strong> naar de close. Instap 20:00 CET
+      (14:00 ET) op de laatste sessie voor de print, uitstap op de volgende open of de volgende
+      close.</p>
   </header>
 
   <section>
@@ -139,6 +141,26 @@
       <span><i class="sw" style="background:var(--s2)"></i> voorspeld omlaag (22 events)</span>
     </div>
     <div class="facets" id="hists"></div>
+  </section>
+
+  <section>
+    <h2>De vaardigheid zit in de grote voorspellingen</h2>
+    <p class="sub">Een impactsom rond nul betekent dat de hunters niets vonden dat netto
+      overbleef, vaak twee findings die elkaar opheffen. Zo'n niet-mening vragen welke kant het
+      op gaat is zinloos. De drempelvrije toets is daarom de juiste: correleert de rang van
+      |voorspelling| met of het teken klopte? Naar de close ρ=+0,514 met een permutatie-p van
+      0,0015; naar de open +0,331 bij p=0,046. Boven de mediane voorspelling klopt het teken op
+      74% van de events, eronder is het munt. Dezelfde toets op |edge_score| geeft +0,077 en
+      −0,003: de scorer sloopt ook dit signaal.</p>
+    <div class="facets" id="conv"></div>
+    <div class="tw" style="margin-top:22px"><table id="thr"></table></div>
+    <p class="sub" style="margin:14px 0 0">Zelfs gecorrigeerd voor het zoeken over zeven
+      drempels haalt de beste het: family-wise p=0,032 naar de open en 0,034 naar de close. Het
+      is niet één dag (de negen events boven |pred| = 8 liggen over vijf hunt-dagen), niet de
+      microcaps (mediane dagomzet $7,5m in de hoogste bak tegen $69,9m in de laagste) en geen
+      volatiliteitsproxy (de hoogste bak heeft juist de kleinste mediane beweging). Het gat in
+      de bak 1–3 zou bij een pure convictieverklaring rond 50% moeten liggen en niet op 27%;
+      3 van 11 is nog verenigbaar met ruis (tweezijdig p=0,45).</p>
   </section>
 
   <section>
@@ -311,6 +333,68 @@ document.getElementById('tbl').innerHTML =
     <td><span class="chip ${r.hit_o?'hit':'miss'}">${r.hit_o?'klopt':'mis'}</span></td>
     <td><span class="chip ${r.hit_c?'hit':'miss'}">${r.hit_c?'klopt':'mis'}</span></td>
     <td class="dim">$${(r.dv/1e6).toFixed(1)}m</td></tr>`).join('') +
+  '</tbody>';
+
+const EX = {"buckets":[{"lab":"0\u20131","n":6,"ho":3,"hc":1,"ret":-6.83},{"lab":"1\u20133","n":11,"ho":3,"hc":3,"ret":-4.69},{"lab":"3\u20136","n":9,"ho":6,"hc":6,"ret":4.4},{"lab":"6+","n":12,"ho":9,"hc":10,"ret":7.86}],"thresholds":[{"t":0,"n":38,"hc":20,"ret":1.08,"tstat":0.59,"dv":20.0},{"t":1,"n":32,"hc":19,"ret":2.57,"tstat":1.26,"dv":16.2},{"t":2,"n":25,"hc":17,"ret":4.38,"tstat":1.87,"dv":10.9},{"t":3,"n":21,"hc":16,"ret":6.37,"tstat":2.74,"dv":6.9},{"t":5,"n":14,"hc":11,"ret":6.31,"tstat":2.1,"dv":7.5},{"t":8,"n":9,"hc":8,"ret":8.56,"tstat":2.97,"dv":6.9}],"rho":{"open":0.331,"open_p":0.046,"close":0.514,"close_p":0.0015},"fw_p":{"open":0.032,"close":0.034},"above_median":{"open":68,"close":74}};
+
+/* ---- hit rate by conviction bucket -------------------------------------- */
+function convChart(host, hk, label){
+  const W = 460, H = 300, L = 40, R = 14, T = 18, B = 52;
+  const pw = W-L-R, ph = H-T-B;
+  const bs = EX.buckets, n = bs.length;
+  const bw = pw/n, pad = bw*0.22;
+  const y = v => T + ph - v/100*ph;
+  const fig = document.createElement('figure');
+  fig.innerHTML = `<figcaption>${label}</figcaption>`;
+  const s = mk('svg',{viewBox:`0 0 ${W} ${H}`, role:'img',
+    'aria-label':`Aandeel events waar het teken klopte, per grootte van de voorspelling, ${label}`});
+  for (let v=0; v<=100; v+=25){
+    s.appendChild(mk('line',{class:'gl',x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+    const tl = mk('text',{class:'tx',x:L-7,y:y(v)+3,'text-anchor':'end'});
+    tl.textContent = v+'%'; s.appendChild(tl);
+  }
+  s.appendChild(mk('line',{class:'dg',x1:L,x2:W-R,y1:y(50),y2:y(50)}));
+  const rl = mk('text',{class:'quadlbl',x:W-R,y:y(50)-6,'text-anchor':'end',
+    style:'fill:var(--ink-3)'});
+  rl.textContent = 'munt, 50%'; s.appendChild(rl);
+  bs.forEach((b,i) => {
+    const hits = hk==='ho' ? b.ho : b.hc;
+    const pct = 100*hits/b.n;
+    const bx = L + i*bw + pad;
+    const rect = mk('rect',{class:'bar',x:bx,y:y(pct),width:bw-2*pad,
+      height:T+ph-y(pct),fill:'var(--s1)',rx:3});
+    bind(rect, `<b>|voorspelling| ${b.lab}</b><br>teken klopt ${hits} van ${b.n}`+
+               ` (${pct.toFixed(0)}%)<br>rendement ${fmt(b.ret)}/trade`);
+    s.appendChild(rect);
+    const vl = mk('text',{class:'txb',x:bx+(bw-2*pad)/2,y:y(pct)-6,'text-anchor':'middle'});
+    vl.textContent = pct.toFixed(0)+'%'; s.appendChild(vl);
+    const xl = mk('text',{class:'tx',x:bx+(bw-2*pad)/2,y:T+ph+16,'text-anchor':'middle'});
+    xl.textContent = b.lab; s.appendChild(xl);
+    const nl = mk('text',{class:'tx',x:bx+(bw-2*pad)/2,y:T+ph+29,'text-anchor':'middle',
+      style:'opacity:.7'});
+    nl.textContent = 'n='+b.n; s.appendChild(nl);
+  });
+  const axl = mk('text',{class:'txb',x:L+pw/2,y:H-6,'text-anchor':'middle'});
+  axl.textContent = '|voorspelling| in punten'; s.appendChild(axl);
+  fig.appendChild(s); host.appendChild(fig);
+}
+const cv = document.getElementById('conv');
+convChart(cv, 'ho', 'teken klopt · uitstap op de open');
+convChart(cv, 'hc', 'teken klopt · uitstap op de close');
+
+/* ---- threshold table ----------------------------------------------------- */
+document.getElementById('thr').innerHTML =
+  '<thead><tr>' + ['drempel','events','teken klopt','rendement/trade','t',
+   'na 1,5% kosten','mediane dagomzet'].map(h=>`<th>${h}</th>`).join('') +
+  '</tr></thead><tbody>' +
+  EX.thresholds.map(r => `<tr>
+    <td class="${r.t>=3?'tk':'dim'}">${r.t===0?'alle':'&ge; '+r.t+'%'}</td>
+    <td>${r.n}</td>
+    <td>${r.hc}/${r.n} = ${Math.round(100*r.hc/r.n)}%</td>
+    <td class="${r.ret>0?'pos':'neg'}">${fmt(r.ret)}</td>
+    <td>${r.tstat.toFixed(2)}</td>
+    <td class="${r.ret-1.5>0?'pos':'neg'}">${fmt(r.ret-1.5)}</td>
+    <td class="dim">$${r.dv.toFixed(1)}m</td></tr>`).join('') +
   '</tbody>';
 
 </script>

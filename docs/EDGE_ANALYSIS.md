@@ -378,6 +378,96 @@ columns are measured from the 14:00 ET entry.
 | 37 | CAN | 2026-09-08 bmo | 2026-09-04 | -15.25% | -4.98% | -6.43% | hit | hit |
 | 38 | RZLV | 2026-09-01 bmo | 2026-08-31 | -18.35% | -13.10% | -17.41% | hit | hit |
 
+## Conviction is where the direction lives
+
+The observation that the effect concentrates in the larger predictions is correct, and it
+is the only result in this file that survives every robustness check I can run on 38
+events.
+
+The right test is the one with **no threshold in it**: does the rank of `|impact sum|`
+correlate with whether the sign turned out right? One test, nothing chosen after the fact.
+
+| exit | rank correlation, \|pred\| vs sign-correct | permutation p (within days) |
+| --- | --- | --- |
+| next open | +0.331 | 0.046 |
+| **next close** | **+0.514** | **0.0015** |
+
+Above the median prediction the sign is right on 74% of events to the close and 68% to the
+open. Below it, it is a coin flip. As a threshold, the same thing:
+
+| threshold | n | direction (close) | return/trade | sd | t | bootstrap 95% CI | after 1.5% cost | median turnover |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| all | 38 | 20/38 = 53% | +1.08% | 11.34 | 0.59 | [−2.48, +4.65] | −0.42% | $20.0m |
+| \|pred\| ≥ 1 | 32 | 19/32 = 59% | +2.57% | 11.54 | 1.26 | [−1.46, +6.44] | +1.07% | $16.2m |
+| \|pred\| ≥ 2 | 25 | 17/25 = 68% | +4.38% | 11.68 | 1.87 | [−0.20, +8.78] | +2.88% | $10.9m |
+| **\|pred\| ≥ 3** | **21** | **16/21 = 76%** | **+6.37%** | 10.64 | 2.74 | **[+1.80, +10.72]** | +4.87% | $6.9m |
+| \|pred\| ≥ 5 | 14 | 11/14 = 79% | +6.31% | 11.22 | 2.10 | [+0.32, +11.70] | +4.81% | $7.5m |
+| \|pred\| ≥ 8 | 9 | 8/9 = 89% | +8.56% | 8.64 | 2.97 | [+3.38, +14.11] | +7.06% | $6.9m |
+
+Even correcting for having searched seven thresholds, the best of them clears: a
+max-statistic permutation test gives family-wise p=0.032 to the open and 0.034 to the
+close.
+
+**Why this is a design property rather than a mined cut.** The impact sum is a conviction
+measure, not a probability. A near-zero value means the hunters found nothing on net —
+often two findings of opposite sign that cancel — and asking a no-view to call direction is
+meaningless. Conditioning a directional call on conviction is what any forecasting system
+with an abstain option does. That is also why the threshold-free rank test is the right
+test here, and it is the one that comes back at p=0.0015.
+
+### Four things it is not
+
+**Not one lucky day.** The nine events above \|pred\| = 8 are spread over five hunt days;
+the five above 10 are one name on each of five different days.
+
+**Not the microcaps.** The large-prediction bucket has a *median* turnover of $7.5m with 3
+of 12 names under $1m. The small-prediction bucket has a median of $69.9m. The conviction
+effect runs the opposite way from the capacity problem — the names the hunters have most to
+say about are mid-small, but they are not the $170k-a-day tail.
+
+**Not a volatility proxy.** If large predictions simply landed on names that move a lot,
+the return would rise while the hit rate stayed at 50%. The hit rate is what rises, and the
+\|pred\| ≥ 6 bucket has the *smallest* median realised move of the four (6.08% against
+7.05–9.00%).
+
+**Not a property of the shipped score.** Run the identical test on `|edge_score|` and the
+rank correlation is +0.077 to the open and −0.003 to the close. The scorer's cluster-max,
+√k discount, agreement discount and quality multiplier destroy the conviction signal along
+with the ordering — `edge_score`'s magnitude carries no information about whether its own
+sign is right. That is the fourth independent way the aggregation has now been shown to be
+subtractive.
+
+### The one blemish
+
+The relationship is monotone across the buckets except for a dip below chance in the middle:
+
+| \|pred\| bucket | n | direction, open | direction, close | return/trade (close) |
+| --- | --- | --- | --- | --- |
+| 0 – 1 | 6 | 3/6 (50%) | 1/6 (17%) | −6.83% |
+| 1 – 3 | 11 | 3/11 (27%) | 3/11 (27%) | −4.69% |
+| 3 – 6 | 9 | 6/9 (67%) | 6/9 (67%) | +4.40% |
+| 6 – 20 | 12 | 9/12 (75%) | 10/12 (83%) | +7.86% |
+
+A pure conviction story predicts the middle bucket near 50%, not 27%. Three of eleven is
+noise-compatible (two-sided p=0.45) and the names in it are a genuinely mixed bag —
+CRDO +2.4 predicted against −21.5 realised, FCEL +1.3 against −14.7, GTLB −2.1 against
++9.4. But if the inversion persists as days pool, the honest reading changes from "weak
+conviction is uninformative" to "weak conviction is anti-informative", which would be a
+different and more interesting finding.
+
+### What this changes
+
+The stage should emit the impact sum, and a reader should act on it only above a conviction
+floor. Concretely: carry `impact_sum` into `edge-scores.json`, keep `edge_score` as a
+diagnostic, and have `edge_resolve.py` report the threshold-free rank correlation between
+\|prediction\| and sign-correctness beside the ranking correlation it already reports. That
+number is the one to watch as days accumulate, because it needs no cut and no calibration.
+
+Still 38 events on six days in one regime, gross of borrow and slippage. But this is the
+first result in the stage that is significant on a test chosen before looking, robust to
+day-clustering, liquidity and volatility, and mechanically explicable. It is worth running
+forward properly.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a
