@@ -57,3 +57,7 @@
 - 02-ranking.json written from all 6 dossiers. panel_priority = 0.45*|preliminary_direction_score| + 0.35*evidence_completeness (change_expectation term dropped: triage ran in skip mode, no scores exist for any name).
 - Panel-eligible after this batch: COO, AVAV, NAVN, M, AEO, WLTH (all 6; none excluded — all event_confirmed, all evidence_completeness>=68, WLTH's missing implied move is covered by 3 historical post-IPO reactions)
 - Top 2 by panel_priority for panel.names=2: NAVN (35.4), WLTH (35.05)
+
+## Stage E — scorer rebuilt, impact_sum is the key
+- Logged at 2026-09-09 13:52 UTC
+- edge_score.py now ranks on impact_sum (hunters' signed per-finding sizes, points of spot) with conviction beside it; cluster-max, sqrt(k), agreement discount, quality multiplier, tanh, confidence and uncertainty are demoted to diagnostics (residual_sum and edge_score_legacy kept, the latter reproduces the old key exactly). config gains conviction_floor 3.0 as a floor on emphasis, never a filter. edge_resolve.py reads impact_sum with fallback to edge_score, adds the conviction-vs-sign correlation and both free controls, and pools within days. Skill sections 5-7 rewritten. The Routine prompt could NOT be updated from here (update_trigger refuses routines an agent did not create); replacement text is in docs/routine-prompts/edge-hunt.md.

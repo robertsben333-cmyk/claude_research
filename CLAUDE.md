@@ -116,6 +116,13 @@ Stage C is not part of the daily advice pipeline and nothing downstream reads it
 builds the forward corpus the backtest needs, and it is the only stage whose work cannot
 be redone tomorrow — the day will have moved. See `backtest/scripts/capture.py`.
 
+Stage E's Routine is `trig_01CvGQJWoKeNLXWCxiffM3ED`, cron `4 14 * * 1-5`, enabled. Its
+prompt cannot be edited by a session — `update_trigger` refuses any Routine an agent did
+not create — so the replacement text lives in `docs/routine-prompts/edge-hunt.md` for a
+human to paste. Since 2026-09-09 the prompt no longer restates the output contract: the
+ranking key is whatever the skill and `edge-scores.json`'s own `ranking_key` field say,
+because the old prompt named a key that a measurement then demoted.
+
 **The five pipeline Routines do not currently exist.** `RemoteTrigger list` on
 2026-08-29 returned six routines on this account — a disabled SFNL tender monitor, three
 spent one-shot wakers, and two trivial `hey` jobs. None of stages 0 through 4 is among

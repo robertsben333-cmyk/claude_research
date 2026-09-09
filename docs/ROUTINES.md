@@ -420,3 +420,21 @@ The prompts are stored in the Routines themselves, not in this repo, so changing
 means calling `update_trigger`. Each is self-contained — a fresh session has no memory
 of the others — and follows the same shape: state which stage it is, name the skill,
 point at `CLAUDE.md`, and require a push at the end.
+
+**Two of them cannot be changed by an agent.** `update_trigger` refuses any Routine an
+agent did not create itself, and the three real Routines — stage E
+(`trig_01CvGQJWoKeNLXWCxiffM3ED`), stage N (`trig_01XmfJNU2CM7q5uvdb5r4ydF`) and stage C
+(`trig_01K1ZTiK4qQayC9aLvaK2Gyn`) — were all created through the HTTP API. A session that
+needs one changed must leave the replacement text in `docs/routine-prompts/` for a human
+to paste, and must not delete and recreate the Routine: that loses its run history and
+its notification settings.
+
+`docs/routine-prompts/edge-hunt.md` holds stage E's current replacement text and the
+reason it changed.
+
+**Do not restate a tree fact in a prompt.** Stage E's prompt used to name the ranking key
+and its range. The 2026-09-09 rewrite changed the key and the prompt was instantly wrong
+about the thing it was most emphatic about. Prompts now carry bootstrap, timing,
+ordering, agent counts and budget — everything about the environment the tree cannot know
+— and defer every output contract to the skill and to the script's own docstring. This is
+the same failure that made this file's own stage table stale for five days.
