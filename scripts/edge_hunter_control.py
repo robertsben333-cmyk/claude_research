@@ -472,6 +472,55 @@ def main():
               f"{-st.mean([r['rc'] for r in v]):>+14.2f}")
     doc["floor_counterfactual"] = cfl
 
+    # --- and what any of it would have paid
+    print("\n=== traded: entry 14:00 ET before the print, exit next close ===")
+    print("Every name at sign(key), equal weight, gross. The mean and the sum share a")
+    print("sign on every name, so they can only differ where MAGNITUDE selects.\n")
+    print(f"{'key':22s}{'floor':>6s}{'n':>4s}{'hits':>8s}{'ret/trade':>11s}"
+          f"{'t':>6s}{'boot 95% CI':>22s}{'day book':>11s}")
+    cfk = {"full sum (published)": lambda r: r["pred"],
+           "mean of hunters": lambda r: st.mean(r["hsums"]),
+           "hunter A only": lambda r: r["hsums"][0],
+           "hunter B only": lambda r: r["hsums"][-1]}
+    days = by_day(ded)
+    trd = {}
+    for lab, kf in cfk.items():
+        book = []
+        for d in days:
+            if len(d) < 3:
+                continue
+            srt = sorted(d, key=lambda r: -kf(r))
+            k = max(1, len(srt) // 3)
+            book.append((st.mean(r["move"] for r in srt[:k])
+                         - st.mean(r["move"] for r in srt[-k:])) / 2)
+        for floor in (0, 3):
+            v = [r for r in ded if abs(kf(r)) >= floor and kf(r) != 0
+                 and r.get("rc") is not None]
+            tr = [sign(kf(r)) * r["rc"] for r in v]
+            h = sum(1 for r in v if sign(kf(r)) == sign(r["rc"]))
+            lo, hi = boot_mean(tr)
+            sd = st.stdev(tr) if len(tr) > 1 else 0.0
+            t = st.mean(tr) / (sd / math.sqrt(len(tr))) if sd else 0.0
+            trd[f"{lab}|floor{floor}"] = {
+                "n": len(v), "hits": h, "ret": round(st.mean(tr), 2),
+                "t": round(t, 2), "ci": [round(lo, 2), round(hi, 2)],
+                "day_book_pct": round(st.mean(book), 2)}
+            print(f"{lab:22s}{floor:>6}{len(v):>4d}{f'{h}/{len(v)}':>8s}"
+                  f"{st.mean(tr):>+11.2f}{t:>6.2f}"
+                  f"{f'[{lo:+.2f}, {hi:+.2f}]':>22s}"
+                  f"{(f'{st.mean(book):+.2f}%' if floor else ''):>11s}")
+    av = [r for r in ded if r.get("rc") is not None]
+    print(f"{'always short (null)':22s}{'-':>6s}{len(av):>4d}{'-':>8s}"
+          f"{-st.mean([r['rc'] for r in av]):>+11.2f}")
+    dis = [r for r in pairs if sign(r["hsums"][0]) != sign(r["hsums"][1])]
+    okc = sum(1 for r in dis if sign(r["pred"]) == sign(r["rc"]))
+    print(f"\nThe two hunters disagreed on sign on {len(dis)} of {len(pairs)} paired "
+          f"names ({', '.join(r['t'] for r in dis)}).")
+    print(f"Summing them resolved the sign correctly on {okc} of {len(dis)}.")
+    trd["disagreements"] = {"n": len(dis), "sum_correct": okc,
+                            "tickers": [r["t"] for r in dis]}
+    doc["traded"] = trd
+
     # --- is it the second hunter, or the sweep's choice of name?
     print("\n=== separating hunter count from hunt_priority ===")
     for lab, g in (("all events", ded), ("single-hunted only", sgl)):

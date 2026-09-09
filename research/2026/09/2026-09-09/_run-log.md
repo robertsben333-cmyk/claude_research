@@ -177,3 +177,9 @@
 - Right control: rebuild each double-hunted name's key from ONE hunter's findings, keeping all 38 events. Conviction +0.361 (p=0.045) vs +0.514 published; ranking +0.303 (p=0.099) vs +0.360 on the same events. Inflated ~a third, not manufactured.
 - conviction_floor 3.0 on that counterfactual: 15/21 = 71%, +5.53%/trade, CI [+1.02, +9.90]. Floor stands.
 - Mean of two hunters ranks conviction better than either alone (+0.442 vs +0.361/+0.299) - noise reduction, and an argument against having removed the double hunt. Second hunter bought no direction (7/10 either way); pair disagreed on sign 4 of 10.
+
+## Stage E — mean-of-hunters, traded
+- Logged at 2026-09-09 18:38 UTC
+- Traded (14:00 ET entry, next close): mean of hunters is identical to the published sum at the conviction floor (16/21, +6.37%/trade) because both share a sign on every name and select the same 21; in the day book it is worse, +4.79%/day vs +5.66%.
+- Against one hunter the mean is worth +0.84pp/trade (CI [+0.00, +2.32]), but hunter B beats hunter A by +0.88pp on the same cut - the gain is the size of the draw.
+- Hunters disagreed on sign on 4 of 10 paired names; summing them got the sign right on 1 of 4. The +0.442 ranking advantage does not reach money.

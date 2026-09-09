@@ -564,6 +564,40 @@ it buys no direction: hunter A alone is sign-correct on 7 of 10, both hunters su
 same 7 of 10. What the second hunt adds is magnitude and, on the evidence of the table above,
 a better-ordered magnitude — not a corrected sign.
 
+### Traded, averaging the hunters pays nothing
+
+The ranking advantage of the mean over one hunter (+0.442 against +0.361) does not reach
+money, because a trade is taken on the **sign** and the mean and the sum share a sign on
+every name — the mean can only differ where magnitude selects. Entry 14:00 ET on the last
+session before the print, exit the next close, every name at sign(key), equal weight, gross:
+
+| key | n at \|key\| ≥ 3 | sign | ret/trade | t | bootstrap 95% CI | day book |
+| --- | --- | --- | --- | --- | --- | --- |
+| full sum (published) | 21 | 16/21 | +6.37% | 2.74 | [+1.82, +10.60] | +5.66%/day |
+| mean of hunters | 21 | 16/21 | +6.37% | 2.74 | [+1.82, +10.60] | +4.79%/day |
+| hunter A only | 21 | 15/21 | +5.53% | 2.39 | [+1.02, +9.90] | +4.30%/day |
+| hunter B only | 20 | 15/20 | +6.41% | 2.62 | [+1.63, +10.98] | +4.68%/day |
+
+(Day book is long the top third, short the bottom third, close-to-close, capital halved.
+Always-short on the same 38 events returns +2.11% per trade.)
+
+Against the published key the mean is **identical** at the floor — halving the ten paired
+names leaves all seven of them above 3.0, so the same 21 names are traded — and **worse** in
+the day book, +4.79% against +5.66%, because shrinking the sweep's favourites pulls them out
+of the day's extremes where they were earning.
+
+Against a single hunter the mean is worth +0.84pp per trade at the floor (paired bootstrap
+CI [+0.00, +2.32]). But hunter B alone beats hunter A by +0.88pp on the same cut — the same
+size as the gain from averaging. On ten pairs, what you gain by averaging two hunters is
+indistinguishable from which one you happened to draw.
+
+And the combination does not fix disagreement. The two hunters differed on sign on 4 of the
+10 paired names (MMED, MEI, AMBA, UNFI); summing them landed on the correct sign for **1 of
+those 4**. Where the hunters agree the second one adds nothing to the sign, and where they
+disagree the sum does not adjudicate. The noise-reduction reading above is a statement about
+ordering conviction, not about the money, and it should not on its own reopen the double
+hunt.
+
 ### The floor, re-derived on one hunter per name
 
 `conviction_floor: 3.0` was derived from 16/21 = 76% at +6.37% per trade, t=2.74. On the
@@ -813,6 +847,7 @@ day against eight gets there roughly two and a half times faster.
    +0.303 ranking) rather than alone, and re-measure on days run under
    `double_hunt_top_n: 0`. The resolved sample cannot separate "a second hunter helps" from
    "the sweep picked well", because the two were assigned together.
-9. Revisit removing the double hunt. Averaging two hunters ranks conviction better than
-   either alone (+0.442 against +0.361 and +0.299), which is the noise-reduction signature,
-   and it is now unmeasured.
+9. Do not reopen the double hunt on the ordering result alone. Averaging two hunters ranks
+   conviction better than either alone (+0.442 against +0.361 and +0.299), but traded it pays
+   nothing over the published sum and its edge over one hunter (+0.84pp per trade) is the
+   same size as the gap between the two hunters themselves (+0.88pp).

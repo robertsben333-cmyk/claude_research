@@ -109,9 +109,13 @@ against +0.360 on the same de-duplicated events. `conviction_floor: 3.0` re-deri
 counterfactual gives 15/21 = 71% at +5.53% per trade, CI [+1.02, +9.90] — still clear of zero,
 still half the day, so the floor stands with a haircut rather than a reversal. Two further
 things: averaging the two hunters ranks better than either alone (+0.442 against +0.361 and
-+0.299), the signature of noise reduction, which argues against having removed the double
-hunt; and the second hunter bought no direction on those names (7/10 sign-correct either way)
-while the pair disagreed on sign 4 times in 10. Nothing here separates "a second opinion
++0.299), the signature of noise reduction — but **traded it pays nothing**. Mean and sum share
+a sign on every name and select the same 21 at the floor, so both return +6.37% per trade and
+the mean is *worse* in the day book (+4.79%/day against +5.66%). Its edge over one hunter,
++0.84pp per trade, is the same size as the gap between the two hunters themselves (+0.88pp),
+and where they disagreed on sign (4 of 10 names) summing them landed on the right sign only
+1 time in 4. So the second hunter bought ordering, not money, and not direction (7/10
+sign-correct either way). Nothing here separates "a second opinion
 helps" from "the sweep picked well" — they were assigned together — and only days under the
 new config, or a deliberate double-hunt week, will.
 
