@@ -83,3 +83,7 @@
 - No baseline amendment needed: no name carried a suspect event_plausibility verdict. edge_baseline_amend.py exited non-zero on a stale per-run table (CRMT/SUNB/YQ from an earlier run) — the guard working as designed. Routine prompt is the current post-2026-09-09 text and does NOT restate the output contract, so no staleness note is due; verified against list_triggers (trig_01CvGQJWoKeNLXWCxiffM3ED, cron 4 14 * * 1-5, updated 2026-09-09T13:55Z).
 - CLAUDE.md stage-E paragraph corrected in the same run: it still described the output as 'one signed score per company on -100...+100', which impact_sum (points of spot, unbounded) has not been since 2026-09-09. Cron times in the stage table verified against list_triggers and are correct; the five pipeline Routines still do not exist.
 - Resolve after the 2026-09-10 close (amc names) and the 2026-09-11 close (FLWS). 2026-09-08's eight names are also still awaiting resolution.
+
+## Capture - 2026-09-09 - STARTED
+- Logged at 2026-09-09 15:06 UTC
+- Sweep universe --horizon-days 15 (script-only), then agent-layer 9-area capture for the 6 largest names reporting within 3 days; publish after each name.
