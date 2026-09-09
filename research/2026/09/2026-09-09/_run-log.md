@@ -97,3 +97,7 @@
 ## Edge-corpus run complete
 - Logged at 2026-09-09 16:07 UTC
 - 7 days, 109 hunted, 104 in the pooled figure. rho +0.073 (p=0.45) raw, +0.109 (p=0.27) normalised. No subset significant. 32% of names score exactly zero; adversary median priced_in 78%. FINDINGS.md section 41.
+
+## Edge-corpus threshold analysis
+- Logged at 2026-09-09 16:11 UTC
+- At |expected_move| >= 3%: 55.3% over 38 names against a 52.6% base rate, p=0.63 - no value. At >=4%: 15/18 = 83.3% against a 55.6% base, day-demeaned 14/18, survives leave-one-day-out - but 12 cuts tested, n=18, 13 of 18 from one day, and 15 of 18 are filings-only captures. News-bearing only is 4/13, below a coin. FINDINGS.md section 42.

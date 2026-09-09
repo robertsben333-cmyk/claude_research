@@ -1145,3 +1145,71 @@ straddle for every name (section 33). What it does establish is that **the metho
 does not extract a rankable signal from a filings-only corpus**, which is a real
 result about a real configuration, and that the forward corpus needs a query budget
 for small names before this question can be asked again.
+
+## 42. Thresholding the size estimate: nothing at ±3%, something at ±4% that will not survive contact with more data
+
+Asked after section 41 came back null: if you keep only the big calls and read the
+sign as a direction, does the edge hunt predict anything? A threshold turns the
+ranking into a call, so this is scored as a hit rate against floors rather than as
+a correlation.
+
+The predictor is the hunter's own `expected_move_pct`, not `edge_pct` — after the
+adversary put the median finding at 78% priced, only ten names carry an `edge_pct`
+above 0.5% and there is no curve to draw.
+
+**At ±3%: nothing.** n=38, 21 hits, **55.3%** against a **52.6% base rate on
+exactly those names** — the score a constant call would have got on the set the
+filter selected. p=0.63 against a coin. The answer to the question as asked is no.
+
+The full curve, on all 104 resolved names:
+
+| cut | n | hit rate | base rate | ret/trade | day-demeaned hit |
+| --- | --- | --- | --- | --- | --- |
+| ≥2.0% | 53 | 0.472 | 0.509 | +0.42% | 0.45 |
+| ≥3.0% | 38 | 0.553 | 0.526 | +2.00% | 0.53 |
+| ≥3.5% | 27 | 0.593 | 0.519 | +0.62% | — |
+| **≥4.0%** | **18** | **0.833** | 0.556 | **+3.85%** | **0.78** |
+| ≥5.0% | 11 | 0.818 | 0.727 | +2.38% | 0.73 |
+| ≥6.0% | 5 | 1.000 | **1.000** | +3.20% | — |
+
+**The ≥4% cell is the only thing in this entire run that looks like a signal, and
+four things argue against believing it.**
+
+It survives the obvious checks, which is why it is recorded at all. It is not one
+day: leave-one-day-out gives 0.80, 0.88, 0.80, 0.82. It is not drift: 11 down calls
+and 7 up, hitting 9 and 6, and scoring against each day's own median move still
+gives 14/18. It is not the disclosed breach of section 40: none of the seven names
+that document listed is in the set. And it beats its own base rate by 28 points,
+unlike the ≥6% row where all five names moved the same way and a constant call
+would have scored 100% too.
+
+Against it:
+
+1. **Twelve cuts were tested on one sample of 104.** The raw p is 0.0082; a crude
+   Bonferroni over the cuts shown puts it near 0.10. The curve is printed in full
+   for exactly this reason — a threshold chosen after seeing outcomes is how a null
+   becomes a finding.
+2. **n=18, and three misses would end it.** At 12/18 it is 0.67 and unremarkable.
+3. **It is concentrated in one day's names.** Thirteen of the eighteen are
+   2026-09-03. Leave-one-day-out stays high only because dropping that day leaves
+   n=5.
+4. **It lives almost entirely in the corpus half that is weakest.** Fifteen of the
+   eighteen are filings-only captures. Restricted to the fourteen news-bearing
+   names — the half with an actual news channel — the whole curve is untestable:
+   n=13 at any prediction, n=6 at ±3% (3 hits), n=3 at ±4% (3 hits). And over all
+   thirteen news-bearing predictions the hit rate is **4/13, below a coin**.
+
+That last point is the uncomfortable one and it should not be smoothed over. The
+only suggestive result in the run comes from the captures that hold nothing but an
+EDGAR index and retail chatter, and it disappears on the captures that hold news.
+Two readings fit. Either a filings-only corpus forces the hunter onto hard,
+mechanical evidence — Form 4 clusters, filing gaps, registration overhangs — and
+that is what actually pays, while news copy is already priced by definition. Or
+eighteen names produced a coincidence and thirteen were too few to contradict it.
+
+**Nothing here is tradable and nothing should change the pipeline.** What it is, is
+the first pre-registerable hypothesis this backtest has generated: *the edge hunt's
+directional calls at |expected_move| ≥ 4% beat their base rate, and do so on
+filings-only captures.* It has a stated threshold, a stated subset and a stated
+floor, so a future run can falsify it rather than rediscover it. `PREREGISTRATION.md`
+is where it belongs before any further data is collected.
