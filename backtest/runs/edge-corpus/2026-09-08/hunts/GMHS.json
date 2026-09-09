@@ -1,0 +1,31 @@
+{
+  "ticker": "GMHS",
+  "expected_move_pct": -1.5,
+  "conviction_note": "The whole 11.95% five-day run-in is one unexplained 7.3m-share session on 2026-08-31 - roughly a hundred times the preceding days' volume - with no filing and no captured news behind it, on a sub-$1 name whose shelf went effective three weeks earlier; that reads as supply rather than information, so I sign it down small with a very wide band because this company's own annual print moved 19-32% last year.",
+  "findings": [
+    {
+      "finding": "On 2026-08-31 Gamehaus traded 7,314,900 shares and closed $0.848, up 16.5%, against 1,600 to 67,000 shares a day over the preceding two weeks (1,700 on 08/20, 1,600 on 08/21, 2,000 on 08/25) - a roughly hundredfold volume event - and nothing in the capture explains it: no filing was accepted on or around that date, the news channel returned nothing, and the entire StockTwits record for the day is four content-free posts ('dollar next', 'GFH's taking offf', two emoji). Volume collapsed straight back to 186,100, 48,200, 136,200 and 55,800 over the next four sessions and the price faded from $0.848 to $0.815, i.e. the buying did not follow through.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -14.0,
+      "impact_high_pct": 10.0,
+      "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002000530&type=6-K",
+      "source_date": "2026-08-31",
+      "corpus_ref": "quote.json bars 2026-08-18 through 2026-09-04; filings.json (nothing between the EFFECT notice accepted 2026-08-12T04:15:26Z and the 2026-09-08 6-K except the 6-K accepted 2026-08-28T09:00:17Z); docs/cc6eb1475baeadd1dc857292e761c1a3a0fc82b4.txt (four messages, all 2026-08-31)",
+      "body_available": true,
+      "why_not_priced": "The run-up is on the tape and therefore priced as price, but its cause is not: an earnings-preview screen sees +11.95% over five days and reads it as anticipation, whereas the capture shows a single unattributed liquidity event followed by immediate volume collapse and a partial give-back. If the move had carried information about the fiscal-year print, the 6-K accepted three days earlier on 2026-08-28 would have moved the stock - it moved it +0.14% - and the follow-through sessions would not have shrunk to 48,000 shares.",
+      "independence": "The filings index points the same way on supply: Gamehaus filed an F-3 shelf on 2026-07-28 (accepted 10:45:45Z) and it was declared effective on 2026-08-11 with the EFFECT notice accepted 2026-08-12T04:15:26Z, so the company had live issuance capacity in hand three weeks before the spike, at a price 64.4% below its 52-week high. https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002000530&type=F-3 . Separately, the older StockTwits digest records the same pattern at the June print - a +59.6% pre-market gap on 2026-06-08 that faded the same session ('no follow through', 'Out with small profit due to lack of momentum') - so unexplained spikes that reverse are this name's habit."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "the subject of the 6-K accepted 2026-08-28T09:00:17Z, which the seal's own text matcher also reads as results language and which sits eleven days before the print: no body is stored, and it moved the stock +0.14%, so I could not establish whether it was a pre-release, an AGM notice or a business update",
+    "any confirmation of the low-float and hard-to-borrow claims that dominate the June StockTwits digest ('free floats are less than 2 million shares', '0 shares available to borrow', 'heavily shorted') - no short interest, no float and no borrow datapoint exists in this capture, and a 7.3m-share session is hard to reconcile with a sub-2m float, so I treated the claims as unverified",
+    "any confirmation of the buyback the June digest twice asserts ('there's been a buy back program in this one also', 'when the buyback is initiated') - no 6-K discloses one",
+    "any substance behind the one August company datapoint in the capture, a 2026-08-12 post saying Gamehaus 'pivoted to AI-generated content, shifting resources to AI tools and cash-flow-focused portfolio management' - no filing or release in the capture corroborates it",
+    "the fiscal-year consensus: no preview, estimate or analyst item exists for this name anywhere in the capture",
+    "a use-of-proceeds or size for the effective F-3, and any 424B prospectus supplement drawing on it between 2026-08-12 and the print - there is none, so the shelf is capacity rather than an executed raise",
+    "any insider transaction: the lookback contains only Form 3 initial statements (six on 2026-03-18, one on 2026-04-03) and no Form 4 at all"
+  ],
+  "baseline_tension": "It cuts directly against the run-in, which is +11.95% over five days and +6.12% over twenty, and the baseline also warns that the reaction history is not an earnings base rate because the 55-day inferred cadence means the matched 6-Ks are not all prints - though the one clean precedent, the 2025-09-09 annual release, carried a 22.5m-share day against a 148,700 median and a move of -18.8% as tagged or +32.4% if bmo, which is why my band is fourteen points wide.",
+  "corpus_limits": "54 captured items of which 52 are EDGAR index entries; no news channel, no 6-K or F-3 body text, no consensus, no option chain, no short interest, no float. The StockTwits coverage has a hole: the older digest's newest message is 2026-08-12 and the later one contains only four posts from 2026-08-31, so 13 August through 7 September is almost entirely unobserved apart from the tape. quote.json for this name stops at 2026-09-04 with no partial 2026-09-08 bar, so nothing post-print leaked through the tape file. No tripwire-flagged document appeared in this capture.",
+  "sources_used": 4
+}

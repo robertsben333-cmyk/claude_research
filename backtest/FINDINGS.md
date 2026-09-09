@@ -884,3 +884,61 @@ post-print for every name and flagged 83 of 109. For an `amc` print that close i
 the *pre*-print close — the left-hand side of this repo's own close-to-close
 convention. A check that manufactures alarm gets switched off as fast as one that
 misses everything.
+
+## 36. Eighty-seven percent of the corpus is an EDGAR index and a Stocktwits dump
+
+Found by the 2026-09-01 hunter, which reported that nine of its fourteen captures
+had `n_queries: 0` in every sweep and said plainly that this, not an absence of
+anything to find, was why it returned so many zeros. Measured across the whole
+backtest sample it is worse than that.
+
+Item kinds over all 109 names: **12,015 filings, 662 news, 316 social.**
+
+| | |
+| --- | --- |
+| captures holding at least one news item | **14** |
+| captures with no news item at all | **95** |
+
+The 95 hold a median of 74 items, every one of them an EDGAR index line or a
+Stocktwits message. The 14 that carry news are SAIC, DELL, MDT, PANW, AVGO, HPE,
+NTAP, SNOW, CIEN, IOT, LULU, ZS, CASY and DLNG — which is to say the large caps,
+plus DLNG. Section 27 measured news *coverage* as a near-monotonic function of
+market cap; this is not that. This is the capture having run searches for those
+names and not for the others.
+
+**This is not a reason to stop, and it is a reason the pooled number would be
+misleading.** The sample is two experiments: can the method rank 14 names given
+news, filings and social, and can it rank 95 names given filings and retail chatter
+alone. Those answer different questions and pooling them repeats the anchor-mix
+mistake of section 34 in a new place. The resolve step must split on corpus type
+and report both, and the 95 are the harder and more interesting half — an edge hunt
+that finds nothing in an EDGAR index has told us something about the method, while
+one that finds nothing because nobody searched has told us about the capture.
+
+`config/pipeline.yaml` sets `edge_hunt.min_market_cap_usd: 0` on the stated grounds
+that filtering small names out would turn every result into a statement about
+mega-caps. The capture's own query budget has done that filtering anyway, quietly,
+one layer down.
+
+## 37. A 6-K acceptance time is not a release time, and 37 names are sealed on one
+
+Also from the 2026-09-01 hunter, on RZLV. The seal keyed the print to a 6-K
+accepted `2026-09-01T20:52Z` and therefore called it `amc`. The results release and
+the earnings call were pre-open that same day: `quote.json`'s final bar has the
+stock down from 2.89 to 2.34 on 43.8m shares against a 19.8m average by 11:06 ET.
+The baseline books that 19% fall as `run_up_5d_pct`, so the measured window is the
+aftermath and the surprise is outside it.
+
+The 8-K item 2.02 path does not have this problem — FINDINGS.md section 3
+established that its acceptance time recovers the session reliably, because a
+domestic filer files the item 2.02 with the release. A foreign private issuer's 6-K
+can be filed hours later, so acceptance time is evidence of the session and not a
+measurement of it.
+
+**37 of the 109 names are sealed through the 6-K heuristic**, which `seal.py`
+already labels as weaker than an item code. Its session is a reasonable guess and
+for some of those names it will be wrong in exactly RZLV's way. What the archive
+should carry, and does not yet: a check that the sealed session agrees with where
+the volume actually landed. `priced_in.session_disagrees_with_volume` already does
+precisely this for the reaction *history* and its result is recorded as
+`session_conflicts` — it is simply not applied to the event itself.

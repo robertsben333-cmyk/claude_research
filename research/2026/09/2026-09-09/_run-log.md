@@ -77,3 +77,7 @@
 ## Edge-corpus contamination audit
 - Logged at 2026-09-09 14:55 UTC
 - Re-audited against the sealed acceptance instant instead of the calendar date: 31 of 109 names hold post-print material, 29 of them because a bmo capture's daily sweep runs hours after a bmo 8-K. Non-destructive clean-view files written; FINDINGS.md section 35.
+
+## Edge-corpus corpus-quality findings
+- Logged at 2026-09-09 15:07 UTC
+- 95 of 109 captures hold no news item at all (12015 filings, 662 news, 316 social across the sample) - the sample is two experiments and must be reported split. 37 of 109 are sealed on a 6-K acceptance time, which RZLV shows can be hours after the release. FINDINGS.md sections 36 and 37.
