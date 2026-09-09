@@ -61,3 +61,7 @@
 ## Data availability check — test data inventory
 - Logged at 2026-09-09 13:59 UTC
 - Scored all six claude_naive days for the first time (LEDGER.md created, 39 events, 18 directional). Pooled the edge hunt across 7 runs (n=51). No pipeline stage run.
+
+## Backtest feasibility — edge hunt on the capture corpus
+- Logged at 2026-09-09 14:16 UTC
+- Checked whether the edge hunt can be backtested on backtest/captures (387 events, 205 sealed past). Yes on the expected-move proxy anchor, no on options. Four blockers written up in backtest/FINDINGS.md section 33, including a look-ahead options leak in scripts/priced_in.py.

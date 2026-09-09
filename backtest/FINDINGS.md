@@ -716,3 +716,52 @@ into a visible defect, which is the difference between a wrong answer and no ans
 
 Worth carrying into the live pipeline: a stage that reports "this input looks
 wrong" is doing something the calibration ledger cannot do afterwards.
+
+## 33. Can the edge hunt be backtested on the capture corpus?
+
+Asked on 2026-09-09. Answer: yes for the expected-move anchor, no for the options
+anchor, and four things must be fixed first — one of them a look-ahead leak in
+`scripts/priced_in.py` that would silently corrupt every past-event baseline.
+
+**The corpus supports it.** 387 events, 205 already reported, 182 not yet (2026-09-09
+to 2026-09-23). Of the 205 past events, **zero** have a snapshot taken after the event
+date, so the seal held. Median 57 captured research items and 2 stored doc bodies per
+event; 16 of the 205 carry a tripwire flag and should be dropped or read by hand.
+
+**The baseline reconstructs.** `priced_in.py` run today against a past date rebuilds
+tape, reaction history and cadence plausibility correctly — tested on CASY-2026-09-08:
+`last_close_date` 2026-09-08, spot 733.49 (the pre-print close), 7 prior reactions from
+8-K item 2.02 acceptance times, `fits_cadence`, quality tier `full`.
+
+**The proxy anchor is not a degradation.** The option chain is unrecoverable
+retrospectively (only 10 of the 205 events captured a page with a parseable implied-move
+percentage), so the backtest must run on `expected_move_basis: median historical
+reaction`. That is already the **majority production path**: across 111 live baselines,
+60 ran on the historical-reaction proxy and 51 on the straddle. The backtest therefore
+tests the branch the live strategy uses most, at n=205 instead of n=51.
+
+### Four blockers
+
+1. **`priced_in.py` leaks post-event options into a past baseline.** For the CASY
+   2026-09-08 print it fetched the **2026-09-18** expiry — a chain that did not exist
+   before the event — and returned `skew_25d_vol_points: 23.97` with
+   `priced_direction_lean: "downside paid"`. Those feed `priced_lean_pct()` and the
+   `dir_q` term of `baseline_quality()` in `scripts/edge_score.py`, so the leak reaches
+   the score. It raises no error and the baseline reads `status: ok`. Needs an as-of
+   guard that refuses the chain whenever `event_date` is in the past.
+2. **The hunter and adversary agents hold `WebSearch`/`WebFetch`.** On a past event a
+   search returns the outcome. Both need corpus-only variants confined to the event's
+   `docs/`, `snapshots/`, `filings.json` and `quote.json`.
+3. **`session` is null on all 387 captures.** `capture.py` defers it to `seal.py`, which
+   was never written. `truth.py` cannot compute a move without it. Derivable from the
+   8-K item 2.02 acceptance time; an 8-K is present for 130 of the 205 past events.
+4. **`edge_resolve.py` normalises only on `options.event_implied_move_pct`**, so
+   `spearman vs move/implied` — the script's own skill measure — would be null for the
+   whole backtest. Needs a fallback to `expected_move_pct`.
+
+### The part with a deadline
+
+The 182 unreported captures are the only events that can ever test the **options**
+branch, because their chains are readable now and not afterwards. 47 report on 09-09 and
+48 on 09-10. Every day without a baseline snapshot converts roughly 45 of them into
+proxy-only events, permanently.
