@@ -942,3 +942,15 @@ should carry, and does not yet: a check that the sealed session agrees with wher
 the volume actually landed. `priced_in.session_disagrees_with_volume` already does
 precisely this for the reaction *history* and its result is recorded as
 `session_conflicts` — it is simply not applied to the event itself.
+
+**And it reaches further than the session.** The 2026-09-08 hunter found the same
+defect one level down, in WDH's reaction *history*: the Q1 2026 release hit the
+tape on 2026-06-16 with no 6-K on that date, so the baseline counts 2026-06-17 and
+2026-06-23 as two separate prints and measures the wrong day for that quarter,
+while the 2026-07-24 6-K (16:01 ET, 46 days out) is almost certainly not a print at
+all. That matters more than a wrong session label, because `expected_move_pct` — the
+median of those reactions — is this backtest's only anchor and the denominator of
+its normalised metric. A mis-specified event list does not just mislabel a name, it
+rescales it. The same hunter noted `event_plausibility` had already flagged PXS's
+implied cadence as impossible for an earnings cadence, so the machinery to catch
+this exists and its verdict is not being carried into the anchor.

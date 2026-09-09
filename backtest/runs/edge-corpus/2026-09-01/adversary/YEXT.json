@@ -1,0 +1,43 @@
+{
+  "ticker": "YEXT",
+  "verdicts": [
+    {
+      "finding_key": "YEXT#0",
+      "priced_in_pct": 62,
+      "size_check_pct": 1.5,
+      "strongest_argument": "The claim is built from filings.json metadata, and the same metadata read one line further undercuts the activist framing. The 13D was accepted 2026-07-09T21:02:45 -- eighty-four seconds after a Form 3 (accession 0001231919-26-000745, accepted 2026-07-09T21:01:21) and two days after an 8-K carrying item 5.02, a director-or-officer change the company announced itself (accession 0001628280-26-047499, accepted 2026-07-07T20:16:11). A Form 3 is an initial statement of beneficial ownership by a new insider. A >5% holder who becomes a director files a Form 3 and converts to a 13D in the same minute, because board representation removes passive eligibility. That sequence is the ordinary signature of a company-disclosed board appointment, not of an unnoticed control raid, and the company-disclosed leg is the 8-K two days earlier. The tape then behaves as if it was noticed: 2026-07-08 close 4.93 -> 07-09 5.06 (+2.64% on 1,341,500 shares against a ~740k 20-day average) -> 07-13 5.21 -> 07-14 5.43, which is +4.22% on 1,637,900 shares, 2.2x average, on exactly the day the Englander Form 4 hit (accepted 2026-07-14T00:33:39). That is +10.1% over four sessions on double volume in the window the finding says nothing could react to, followed by a drift to 6.77 by 2026-08-31 (+33.8% from the 13D date, run_up_20d +19.19%, +102.69% off the 52-week low). And the surrounding context the finding says makes it matter is itself published in the capture: docs/601a3e5ab27afe4e9bca5545757b06c38a19f530.txt (admissible snapshot 20260830T083646Z) carries the insider buy as a dated roundup entry -- '$YEXT -- $398K single buy by insider Daniel Englander, +117% stake increase (Jul 13)' with a filingtracker link -- plus the $50m at 10.25% borrowed to buy back stock (message 2026-06-12) and the CEO's withdrawn $9-per-share proposal alongside the $150m authorisation (message 2026-02-02, with a news URL). What genuinely is not in the corpus is the 13D's holder, its size and its stated intent, because no body is stored -- that part is reachable-but-undrawn and it is why this is not in the seventies. Set against that, the mechanism does not route through this print: a control-intent stake and a possible renewed bid are a standing situation eight weeks old, not an FQ2 datapoint, so even the unpublished residual has no particular reason to resolve on 2026-09-01.",
+      "prior_publication": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1614178/000162828026047499/yext-20260707.htm",
+          "date": "2026-07-07",
+          "corpus_ref": "filings.json (8-K, items '5.02', accepted 2026-07-07T20:16:11.000Z)",
+          "what_it_says": "The company publicly announced a director-or-officer change two days before the 13D and Form 3 -- the underlying event the ownership filings follow."
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1614178/000123191926000745/xslF345X06/form3-07092026_090716.xml",
+          "date": "2026-07-09",
+          "corpus_ref": "filings.json (Form 3, accepted 2026-07-09T21:01:21.000Z, i.e. 84 seconds before the 13D)",
+          "what_it_says": "A new insider's initial ownership statement filed immediately before the 13D, the standard pattern when a >5% holder takes a board seat and loses passive status."
+        },
+        {
+          "url": "https://filingtracker.ai/filing/1289438/0001628280-26-048066",
+          "date": "2026-07-14",
+          "corpus_ref": "docs/601a3e5ab27afe4e9bca5545757b06c38a19f530.txt line 19 (stocktwits $YEXT, from admissible snapshot 20260830T083646Z)",
+          "what_it_says": "Third-party filing aggregator syndicated the $398K Englander purchase and the +117% stake increase to the retail feed within a day of the Form 4."
+        },
+        {
+          "url": "https://notreload.xyz/yext-ceo-drops-buyout-bid-150m-stock-repurchase-planned/",
+          "date": "2026-02-02",
+          "corpus_ref": "docs/601a3e5ab27afe4e9bca5545757b06c38a19f530.txt line 315 (message 2026-02-02T15:15:21Z)",
+          "what_it_says": "The withdrawn $9-per-share CEO proposal and the $150m repurchase authorisation -- the finding's 'context that makes it matter' -- were reported and circulated in February."
+        }
+      ],
+      "baseline_evidence": "quote.json admissible bars: 2026-07-08 4.93 -> 07-09 5.06 on 1,341,500 shares (13D/Form 3 accepted 21:02Z that evening) -> 07-14 5.43, +4.22% on 1,637,900 shares, 2.2x avg_volume_20d of 737,385, on the Form 4 acceptance date; +10.1% across the four-session window, then 5.43 -> 6.77 by 2026-08-31, +24.7%. Baseline run_up_20d_pct +19.19, pct_from_52w_low +102.69, pct_from_52w_high -26.09. The 2026-09-01 bar is excluded per clean-view and unused. Reaction history is 2-up-of-8 with a 4.33% median, so the print itself is the dominant near-term variance, not the stake.",
+      "corpus_coverage": "reachable but unconnected",
+      "reaches_this_print": false,
+      "what_would_change_it": "The 13D body showing a genuinely adversarial 'purpose of transaction' from a holder unconnected to the 2026-07-07 item 5.02 appointment, with a stake size the corpus never carries."
+    }
+  ],
+  "interactions": "One finding, but it bundles three legs of very different novelty and my number is a weighted read of them: the 2026-02-02 take-private withdrawal and buyback context is published in the corpus and old, the 2026-07-13 insider purchase is published in the corpus and visible in the bars on 2026-07-14, and only the 13D's holder/size/intent is genuinely undrawn. The finding's own independence leg (the Stocktwits roundup) is the same document that supplies the published-context evidence against it, so its corroboration and its refutation come from one file.",
+  "corpus_limits": "Excluded per clean-view/YEXT.json: snapshot 20260901T150605Z and the 2026-09-01 price bar (close 6.62), so all price arithmetic stops at the 2026-08-31 close of 6.77. The capture carries no news items for YEXT across the four admissible sweeps -- the only external link is a marketwirenews earnings-date page -- so the corpus is silent on whether any wire, aggregator or sell-side note named the 13D's holder or size, and that silence is not evidence of non-publication: this capture ran effectively no news queries for this name. No 13D, Form 3, Form 4 or 8-K body is stored, only EDGAR index metadata, so my reading of the Form 3 / 13D / item 5.02 sequence is an inference from acceptance timestamps and form types, not from the documents; I could not confirm the filer's identity behind CIK 0001734341 or whether the 2026-07-07 item 5.02 concerned that holder. No option chain, no implied move, and the $50m-at-10.25% borrowing and share-count math come only from retail paraphrase in the Stocktwits body. Nothing about the outcome of the 2026-09-01 print entered this analysis."
+}
