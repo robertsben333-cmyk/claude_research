@@ -1,0 +1,663 @@
+{
+ "generated_utc": "2026-09-09T15:32:47+00:00",
+ "run": "backtest/runs/edge-corpus/2026-09-08",
+ "legacy_rescore": false,
+ "names": 14,
+ "rankable": 13,
+ "note": "Every name carries a signed edge_score on -100..+100. There is no call and no threshold: rank on edge_score and cut wherever you like afterwards, which is what makes the ranking question answerable at every k.",
+ "ranking": [
+  {
+   "ticker": "WDH",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 6.9,
+   "edge_pct": 0.346,
+   "confidence": 5.6,
+   "uncertainty_pct": 0.173,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.1,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.1,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "WDH",
+     "key": "WDH#0",
+     "finding": "On 2026-09-04, the last session before the print, WDH traded 1,676,400 shares against a 254,685 20-day average and 201,700 the day before - 6.6x average, 8.3x the prior session and by far the heaviest day of the run-in - and closed at $1.02, back above the $1.00 mark after seven consecutive closes below it ($0.994, $0.995, $0.995, $0.993, $0.985, $0.976, $0.973 on 8/25 to 9/2, a two-cent band on 138,800-208,300 shares); nothing in the capture explains it - the last filing of any kind was a 6-K accepted 2026-07-24T20:01:08Z and the only commentary in the window is three StockTwits posts.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001823986&type=6-K",
+     "source_date": "2026-09-04",
+     "expected_impact_pct": 1.35,
+     "cluster": "sec.gov",
+     "priced_in_pct": 58.0,
+     "adversary_note": "The whole observation lives in quote.json, which is the anchor both sides already hold: the sealed baseline reports avg_volume_20d of 254,685, spot 1.02, run_up_5d_pct 2.72% and realised_vol_20d of 13.2%, so the 1,676,400-share session and the break back above $1.00 are computable from the shared file without research. That does not make the flow uninformative, but it does mean nothing was uncovered. The interpretation is then self-cancelling in the finding's own words - 'either an accumulator or the company's own bid defending the NYSE $1 threshold' - and those two readings have opposite implications for the print: an accumulator front-running results is information, a listing-compliance bid is mechanical and says nothing about the numbers, and a third reading the finding does not consider, a single index or ADS-conversion block on a $1 name that had just traded a two-cent band for seven sessions, is at least as likely as either. A one-directional claim cannot be built on a mechanism that has not been identified. On magnitude, the finding is measured against an anchor I am told not to trust and which visibly cannot be trusted: baselines/WDH.json lists 2025-12-03 twice as two separate events, tags three of eight rows with session conflicts, is built on the weaker 6-K exhibit-text path, and - per the sealed brief - counts 2026-06-17 and 2026-06-23 as two prints when the Q1 release actually hit the tape on 2026-06-16 with no 6-K that day, while treating a 2026-07-24 16:01 ET 6-K as a print 46 days out. So expected_move_pct of 1.73% is not a usable band in either direction, and a claim whose size only looks material against that anchor is unmeasured rather than small. What I concede: the corpus publishes nothing about the 09-04 session, the news channel returned zero items across all ten sweeps, and one session of 6.6x volume on the eve of a bmo print is the kind of flow that is sometimes informed.",
+     "adversary_size_pct": 1.5,
+     "size_disagreement_pct": 0.3,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.567
+    }
+   ],
+   "rank": 1
+  },
+  {
+   "ticker": "TTAN",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 3.6,
+   "edge_pct": 0.181,
+   "confidence": 8.0,
+   "uncertainty_pct": 0.09,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.306,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.306,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "TTAN",
+     "key": "TTAN#0",
+     "finding": "Two initial Schedule 13G filings - new holders crossing 5%, not amendments - were accepted eight days apart on 2026-07-30 and 2026-08-06, alongside 13G/As on 07-21 and 08-13, and there is no Schedule 13D anywhere in the 400-day lookback and no S-1, S-3 or 424B of any kind; so two institutions were building 5%-plus positions while the stock traded in the $90s, and no registered supply was created to meet them.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001638826&type=SC+13G",
+     "source_date": "2026-08-06",
+     "expected_impact_pct": 0.9,
+     "cluster": "sec.gov",
+     "priced_in_pct": 40.0,
+     "adversary_note": "I concede the narrow point - the corpus never connects these filings to the print, and initial 13Gs really are among the least-covered ownership events - but the claim as written is broken by how the form works, and by the tape it cites. A Schedule 13G initial filing carries a position as of an event date that precedes it: a qualified institution files within 45 days of the quarter-end in which it crossed 5%, so a 13G accepted 2026-07-30 most plausibly describes a holding as of 2026-06-30, not one built 'while the stock traded in the $90s'. The finding infers a purchase window from a filing date, which is exactly the stale-document pattern - the snapshot makes it look current when the underlying fact is a month or more old. Second, 13G rather than 13D is the passive box; two new 5% holders at a December-2024 IPO whose float is mechanically expanding through lockup release is the ordinary consequence of index and passive managers tracking a growing free float, which is structural, not conviction, and it is the mirror image of the supply the hunter's own second finding documents. Third, the price argument runs the wrong way: the finding says the 98.04-to-81.58 five-session collapse proves the 13Gs were not priced, but a -16.8% air pocket into a print is a tape rejecting the name, and the fact that no captured item explains it is a capture limitation, not evidence about what institutions were doing. The corroborating half - Cowen $125, Morgan Stanley $124/$115, Piper $115, BTIG and Truist $110, BMO $103, Baird $94, Freedom $155, KeyBanc and Needham $125, consensus $104 - is fully published in docs/, dated 2026-06-10 through 2026-07-03, and the hunter concedes it is two to three months stale; stale targets sitting above spot is the normal state of a de-rating growth name, not information.",
+     "adversary_size_pct": 0.8,
+     "size_disagreement_pct": 0.2,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.54
+    },
+    {
+     "hunter": "TTAN",
+     "key": "TTAN#1",
+     "finding": "Insider disposition filings ran essentially weekly from mid-June to mid-August - roughly twenty Form 4s (06/17 x4, 06/18 x6, 06/24 x2, 06/25, 06/30, 07/02, 07/07, 07/08 x2, 07/10, 07/14, 07/15 x3, 07/16 x2, 07/20, 08/05, 08/13, 08/17) and fourteen Form 144 sale notices (06/23, 07/01 x3, 07/07, 07/09 x3, 07/15, 07/16 x3, 08/04, 08/11, 08/12, 08/14) - and then stopped completely after 2026-08-17, three weeks before the print; that is persistent post-IPO overhead supply which is mechanically absent during the pre-release blackout and returns once the window reopens.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001638826&type=4",
+     "source_date": "2026-08-17",
+     "expected_impact_pct": -0.55,
+     "cluster": "sec.gov",
+     "priced_in_pct": 88.0,
+     "adversary_note": "This is structural and known in the strictest sense: insider sale filings stop before an earnings release at every company with a trading policy, so 'the cadence stopped on 2026-08-17, three weeks before the print' describes the blackout calendar rather than anything about ServiceTitan. The finding concedes the two decisive points itself - 'Individual Form 4s are the most-aggregated filing there is, so I am claiming very little here', and that this is 'a December 2024 IPO still working through lockup-expiry distribution', i.e. the overhang is the single most widely understood feature of a nine-month-old IPO. The chart evidence it offers is also published rather than derived: the same digest calls the level a 'triple top' on 2026-07-22 and a 'quadruple top' on 2026-07-28, so the failure at $100 was named by the holder base in real time before the 08-27 retest at 100.64 and the full retrace. And the claim is explicitly a cap on TTAN#0's magnitude rather than an independent edge, drawn from the same file, which the hunter says should collapse the two into one source cluster. Mechanically, the return of supply after the window reopens resolves after 8 September, so it does not land inside this print's reaction at all.",
+     "adversary_size_pct": -0.3,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.066
+    }
+   ],
+   "rank": 2
+  },
+  {
+   "ticker": "CASY",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 1.4,
+   "edge_pct": 0.072,
+   "confidence": 4.0,
+   "uncertainty_pct": 0.036,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.708,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.708,
+   "independent_clusters": 2,
+   "cluster_names": [
+    "talkbusiness.net",
+    "thecerbatgem.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "CASY",
+     "key": "CASY#0",
+     "finding": "The two large convenience-fuel peers whose reporting windows bracket Casey's May-July quarter both printed roughly a 9-cent-per-gallon year-on-year fuel-margin expansion with inside-store sales holding: Couche-Tard's quarter to 26 April 2026 showed US road-transportation fuel margin of 52.44 cpg, up 9.17 cpg, with US same-store merchandise revenue +3.4% and US same-store fuel volume only -2.1%; Murphy USA's June quarter (reported 2026-08-05) showed total fuel contribution of 40.6 cpg against 32.0 cpg a year earlier, total gallons +3.9%, same-store gallons +0.5%, and CEO Mindy West said the second half 'could be even stronger'.",
+     "source": "https://talkbusiness.net/2026/08/murphy-usa-q2-net-income-jumps-ceo-signals-strong-second-half-of-year-coming",
+     "source_date": "2026-08-05",
+     "expected_impact_pct": 2.25,
+     "cluster": "talkbusiness.net",
+     "priced_in_pct": 85.0,
+     "adversary_note": "The finding says 'nothing in this 42-document capture connects them to Casey's July-quarter fuel line', and the capture contains a pre-print article that does exactly that - which the finding itself cites as its fourth corroborating source. docs/a86b3418d285d28ff2989a034080417c7f27f0c1.txt is optionstradingreport's 'Casey's Faces a Record-Price Fuel Quarter', captured in snapshots/20260907T152430Z.json item 13 with no tripwire tells, and it lays out the entire thesis: 'the quarter that closed July 31 covered almost the full run of this surge'; 'Fuel margin hit 46.9 cents per gallon that quarter, a company record. The question for Q1 FY2027: did they repeat it in an even more extreme fuel environment?'; a bull case conditioned on 'fuel margins held above 44 cents per gallon'; and explicitly 'Peer read-across: Murphy USA (MUSA) and Sunoco (SUN) fuel margin commentary will provide real-time calibration on sector-wide CPG dynamics heading into this print.' The peer prints are not merely reachable either - the Murphy USA Q2 transcript, the talkbusiness.net write-up with the 40.6-versus-32.0 cpg comparison and the 'even stronger' quote, and the Couche-Tard FQ4 release are all stored bodies in this capture, and cspdailynews's '6 Fuel Insights From Casey's General Stores' Recent Results' and the Globe and Mail's 'Casey's Stock Outlook Hinges on Food, Fuel and Store Growth' are two more captured items building the same frame. So the mechanism is right, the quarter window is right, and it reaches this print - but the identification of fuel cpg as the swing variable, the prior-quarter record, the peer calibration and even a numeric bar for it are the captured consensus, not a discovery. What is left is only the residual that Casey's specifically out-executed a known-favourable environment, and the 20-session -14.2% drawdown does not establish that the environment was missed: the same capture carries 'The Supply Side: Convenience stores see reduced traffic to start 2026' and the article's own counterweight that high pump prices depress the inside basket, an equally published explanation for the de-rating.",
+     "adversary_size_pct": 2.0,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.338
+    },
+    {
+     "hunter": "CASY",
+     "key": "CASY#1",
+     "finding": "Short interest as of 14 August was 1,143,057 shares, down 32.3% from 1,688,551 on 30 July, leaving only 3.1% of shares short and a 4.0-day short-interest ratio - so the 14% drawdown from 08/24 to the print was long liquidation into an already-covered short base, not short pressure.",
+     "source": "https://www.thecerbatgem.com/2026/09/01/short-interest-in-caseys-general-stores-inc-nasdaqcasy-decreases-by-32-3.html",
+     "source_date": "2026-09-01",
+     "expected_impact_pct": -0.45,
+     "cluster": "thecerbatgem.com",
+     "priced_in_pct": 92.0,
+     "adversary_note": "Every number in this claim is the headline and first paragraph of a captured document. docs/0488a706646c99ae39425fa2f8360512df089568.txt is The Cerbat Gem's 'Short Interest in Casey's General Stores, Inc. (NASDAQ:CASY) Decreases By 32.3%', dated 2026-09-01, captured in snapshots/20260907T152430Z.json item 15, and it reads: 'As of August 14th, there was short interest totaling 1,143,057 shares, a decline of 32.3% from the July 30th total of 1,688,551 shares... the short-interest ratio is currently 4.0 days. Currently, 3.1% of the company's shares are sold short.' The 09-08 sweep independently captured the Nasdaq short-interest settlement page for the same series. There is nothing to discover: the finding restates a captured item verbatim. Beyond publication, a 3.1% short base and 4.0 days to cover at a $26bn-plus consumer staple is the structural default, not a condition - age is not novelty. And the claim's own conclusion is negative and small by construction: it says only that a squeeze component is absent, which is a haircut on another finding's magnitude rather than an independent edge.",
+     "adversary_size_pct": -0.4,
+     "size_disagreement_pct": 0.1,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.036
+    }
+   ],
+   "rank": 3
+  },
+  {
+   "ticker": "AVO",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 1.1,
+   "edge_pct": 0.054,
+   "confidence": 2.4,
+   "uncertainty_pct": 0.027,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.106,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.106,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "AVO",
+     "key": "AVO#0",
+     "finding": "10% owner Globalharvest bought roughly 1.77m shares for ~$23.7m in the open market on 7/7-7/9 at $13.00-$13.50 (Form 4s of 07/08, 07/09, 07/10 plus a 13D/A accepted 2026-07-09T20:15:20Z), entirely above the pre-print close of $12.87, taking affiliate-held stock to roughly 42-45% of the shares out; and the company filed a voluntary item-8.01 8-K 90 minutes after that 13D/A (accepted 2026-07-09T21:54:02Z) reporting buyback progress only one month into a $100m authorisation.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1802974/000110465926097078/xslSCHEDULE_13G_X02/primary_doc.xml",
+     "source_date": "2026-07-09",
+     "expected_impact_pct": 0.9,
+     "cluster": "sec.gov",
+     "priced_in_pct": 82.0,
+     "adversary_note": "Every element of this finding is in the one corpus document the hunter cited, and it is aggregator copy, not an obscure filing footnote. docs/5a3f3cc3c258ffdf842ca4dcebc73e57b6d02171.txt carries a #INSIDERS digest on 2026-07-10 naming 'Globalharvest bought 1,179,087 shares at $13.00-$13.50 worth approximately $15.8 mln', a second on 2026-07-13 naming the 592,957-share/$7.9m tranche, a filingtracker link to accession 0000899140-26-000708 posted 2026-07-09T20:24:29Z (nine minutes after acceptance), a merlintrader 'biggest insider buys Jul 6-10' roundup on 2026-07-11, and a 2026-07-10T13:25:25Z post that independently states the two interpretive points the finding leans on -- the odd item-8.01 8-K 'only one month after buyback authorization' and 'almost 45% tightly held'. The magnitude and the read were both published. The bars then confirm the market saw it: AVO went 12.49 (07-02) to 13.29 (07-06) to 13.50 (07-08), +8.1% over four sessions on 1.8-2.1m shares against a 518k 20d average -- 3.5x volume on the exact accumulation days -- and faded back to 12.6-12.9 through late July on 500-800k. That is the information arriving, being priced, and being sold into. The claim's own logic ('if it were priced AVO would not trade below the buyer's range') is the error: a stock can price an informed buy and still drift with avocado pricing and the Q3 EBITDA guide of $28-32m that was published 2026-06-08. Finally the mechanism is thin against this print: Form 4s from early July say nothing about the July-quarter P&L, and the buyback progress the 8-K disclosed is a use of the authorisation the company announced 2026-06-03, already in the corpus.",
+     "adversary_size_pct": 0.6,
+     "size_disagreement_pct": 0.6,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.162
+    }
+   ],
+   "rank": 4
+  },
+  {
+   "ticker": "CGNT",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.8,
+   "edge_pct": 0.042,
+   "confidence": 1.6,
+   "uncertainty_pct": 0.021,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.397,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.397,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "prismmarketview.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "CGNT",
+     "key": "CGNT#0",
+     "finding": "Cognyte announced three customer awards inside its 1 May - 31 July quarter - ~$5m (APAC national security upgrade, 2026-05-20), ~$5m (APAC national security agency, 2026-06-25) and ~$15m (APAC military intelligence customer expanding an existing partnership, 2026-07-28) - roughly $25m of disclosed awards, or about 5.6% of the maintained $448m FY27 revenue guide, with the largest of the three landing three days before the quarter closed; the stock nonetheless fell 7.9% over the trailing 20 sessions and sits 30.8% below its 52-week high.",
+     "source": "https://prismmarketview.com/companies/2633303/#news",
+     "source_date": "2026-07-28",
+     "expected_impact_pct": 0.75,
+     "cluster": "prismmarketview.com",
+     "priced_in_pct": 80.0,
+     "adversary_note": "The finding's own falsifiable prediction is that the largest award 'would have left a mark on the tape rather than none', and quote.json says it left one. CGNT closed 8.31 on 07-24, 8.71 on 07-27 and 8.92 on 07-28 - the two sessions bracketing the ~$15m APAC military-intelligence release - for +7.3% on volume of 437.7k and 466.2k, and then continued to 9.17 on 08-03 and 9.30 on 08-04, +11.9% from the pre-announcement close, on 490.9k and 709.6k against a 533k 20d average. That is the tape pricing the disclosure. The subsequent slide to 8.47 by 09-04 (the last admissible bar for a bmo name) is a give-back from a post-award high, not evidence the award went unnoticed, and the same digest offers a published competing cause on 2026-08-12: 'Looks like software not doing well today $NOW $CGNT $MNDY'. On publication, the hunter concedes the awards were company press releases; the corpus then shows them reaching retail - docs/0b0c6395bd667102b946b32c70ca524fa5efc341.txt carries the 07-28 headline verbatim as a bullish-tagged post at 12:03:27Z and the 06-25 award with a prismmarketview link. On size, the framing is the weak link: $25m of disclosed multi-year contract awards is bookings, not revenue, and a contract signed on 28 July contributes essentially nothing to a quarter that closed on 31 July. Measuring it as '5.6% of the $448m FY27 revenue guide' compares a multi-year order book to one year of revenue. The company maintained that guide with these awards in hand, and the finding itself notes the series also includes $10m+ on 03/04 and $20m+ on 04/29 - i.e. roughly monthly award press releases are this company's normal disclosure cadence, which makes three of them structural rather than incremental.",
+     "adversary_size_pct": 0.5,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.15
+    }
+   ],
+   "rank": 5
+  },
+  {
+   "ticker": "ABM",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.153,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 6
+  },
+  {
+   "ticker": "CAN",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -3.411,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 7
+  },
+  {
+   "ticker": "IRS",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.088,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 8
+  },
+  {
+   "ticker": "GMHS",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -1.3,
+   "edge_pct": -0.064,
+   "confidence": 1.8,
+   "uncertainty_pct": 0.032,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.306,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.306,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "GMHS",
+     "key": "GMHS#0",
+     "finding": "On 2026-08-31 Gamehaus traded 7,314,900 shares and closed $0.848, up 16.5%, against 1,600 to 67,000 shares a day over the preceding two weeks (1,700 on 08/20, 1,600 on 08/21, 2,000 on 08/25) - a roughly hundredfold volume event - and nothing in the capture explains it: no filing was accepted on or around that date, the news channel returned nothing, and the entire StockTwits record for the day is four content-free posts ('dollar next', 'GFH's taking offf', two emoji). Volume collapsed straight back to 186,100, 48,200, 136,200 and 55,800 over the next four sessions and the price faded from $0.848 to $0.815, i.e. the buying did not follow through.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002000530&type=6-K",
+     "source_date": "2026-08-31",
+     "expected_impact_pct": -1.05,
+     "cluster": "sec.gov",
+     "priced_in_pct": 78.0,
+     "adversary_note": "Every observable in this finding is quote.json, and quote.json is the baseline both sides already hold - the finding concedes as much in its own words: 'the run-up is on the tape and therefore priced as price'. The 7,314,900-share, +16.5% session on 2026-08-31 against 1,600-2,000 shares on 08-20/08-21/08-25, and the collapse to 186,100 / 48,200 / 136,200 / 55,800 with the price fading 0.848 to 0.815, are all readable from the same bars the baseline is computed from; the sealed baseline already reports run_up_5d_pct 11.95 and avg_volume_20d 408,260, a 20-day average that is itself dominated by the one spike day, so the anomaly is visible in the anchor without any research at all. Nor is this information about the company: it is a claim that a screen would misread the tape. An unexplained liquidity event with no identified cause is not a fact the market has failed to price - the market priced it, twice, up 16.5% and then back down. The one genuinely additional element is the F-3 shelf declared effective 2026-08-11 (filings.json EFFECT notice accepted 2026-08-12T04:15:26Z), which is reachable but unconnected: nothing in the capture ties it to the 08-31 volume, and the finding does not claim an issuance occurred. On the mechanism, the finding's own strongest point works against it - the 6-K accepted 2026-08-28T09:00:17Z moved the stock +0.14%, so this name's actual filings are not what moves it, which means the absence of an explanation for 08-31 says little about the fiscal-year print either.",
+     "adversary_size_pct": -0.6,
+     "size_disagreement_pct": 0.9,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.231
+    }
+   ],
+   "rank": 9
+  },
+  {
+   "ticker": "BRZE",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -2.6,
+   "edge_pct": -0.129,
+   "confidence": 6.4,
+   "uncertainty_pct": 0.065,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.272,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.272,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "BRZE",
+     "key": "BRZE#0",
+     "finding": "Braze affiliates filed eleven separate Form 144 sale notices across nine distinct dates in August 2026 (08/07, 08/10, 08/11, 08/13, 08/19 x2, 08/24 x2, 08/26, 08/27 x2) plus thirteen Form 4s on six dates (08/11, 08/12, 08/14, 08/19 x5, 08/21 x2, 08/26 x2, 08/28), against a 400-day baseline of one to four Form 144s per month arriving alongside a single-date vest batch of Form 4s (7 on 2026-02-02, 6 on 2026-02-20, 7 on 2026-03-20, 7 on 2026-05-19, 6 on 2025-11-20); four of the notices land on 08/24-08/27 as the stock printed its high close of $34.53.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001676238&type=144",
+     "source_date": "2026-08-27",
+     "expected_impact_pct": -0.8,
+     "cluster": "sec.gov",
+     "priced_in_pct": 52.0,
+     "adversary_note": "The individual filings are all in filings.json, so this is reachable rather than hidden, and what the finding adds on top -- monthly density -- is the part that does not survive. Braze is 92% above its 52-week low (baselines/BRZE.json tape.pct_from_52w_low = 91.96) and ran 27.95 (08-17) to 34.53 (08-28), +23.5% in nine sessions, with a +10.6% single day on 08-27 on 3.15m shares. Form 144 notices are per-seller and per-plan, so eleven notices from a company with five separate multi-holder vest batches in the prior year (7 on 2026-02-02, 6 on 2026-02-20, 7 on 2026-03-20, 7 on 2026-05-19) is the arithmetic of 10b5-1 limit orders being filled by a 23% rally, not a decision. The hunter's own note concedes the point twice: the fiscal Q2 ended 31 July so late-August discretionary sales would sit in blackout, meaning these are pre-set dispositions, and the entire move has already been surrendered -- 34.53 on 08-28 to 30.31 on 09-08, -12.2%, with run_up_5d_pct of -10.96% in the sealed baseline. If insider supply were the operative fact it has already been absorbed in the bars I am allowed to read. Against a $3bn-plus market cap and 2.73m average daily volume, eleven 144 notices is a rounding error of float, and no mechanism connects them to the Q2 result being reported. What keeps this off the 20-40 band is only that no captured item ties the filings to the print -- but the corpus has zero news items for BRZE in any sweep, which is a capture artefact, so silence there is worth nothing in either direction.",
+     "adversary_size_pct": -0.4,
+     "size_disagreement_pct": 0.8,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.384
+    }
+   ],
+   "rank": 10
+  },
+  {
+   "ticker": "MIND",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -6.0,
+   "edge_pct": -0.298,
+   "confidence": 2.0,
+   "uncertainty_pct": 0.149,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.817,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.817,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "MIND",
+     "key": "MIND#0",
+     "finding": "MIND made no order or contract announcement during its entire fiscal Q2 (May-July 2026): the only 8-K accepted between the 2026-04-15 results filing and the print is item 5.07 (annual meeting results, accepted 2026-07-23T20:15:17Z), and the shareholder record independently describes 'a prolonged absence of new order announcements' (2026-08-25), 'still radio silence, what's the plan?' (2026-07-28) and 'another quarter with basically no material announcements in it' (2026-06-10) - this after management told the Q1 call that pending bids carried backlog potential exceeding the then-current $13.9m backlog 'by multiples'.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000926423&type=8-K",
+     "source_date": "2026-08-25",
+     "expected_impact_pct": -3.25,
+     "cluster": "sec.gov",
+     "priced_in_pct": 85.0,
+     "adversary_note": "The finding quotes its own refutation. Its evidence that MIND signed no orders in the May-July quarter is a set of dated posts in docs/99c2756f5a8cd4ac8707f17d2da857799770ed0a.txt, and those posts are the corpus record that the fact was known and being acted on: 'there has been a prolonged absence of new order announcements' (2026-08-25T18:50:10Z), 'I cant even remember when there were latest orders?!' (2026-08-20T15:49:27Z), 'Still radio silence, what's the plan?' (2026-07-28T23:51:01Z), 'RFP awards need to be announced immediately' (2026-08-25). This is not an obscure filing-index inference that reached nobody - it is the dominant complaint of the holder base for six straight weeks, alongside 'the market has no confidence in your plan or execution' (08-28) and a proxy-vote protest. Then the tape: baselines/MIND.json has pct_from_52w_low at exactly 0.0, pct_from_52w_high at -70.61% and run_up_20d_pct at -16.33%, and the digest itself records '52 week low posted today' on 2026-08-20. A stock making new 52-week lows through the precise window in which the orders did not arrive is the market pricing the drought in real time; the finding cannot both cite the drawdown as context and claim the cause is unpriced. Its one piece of contrary evidence is a single retail poster 'just kinda feeling it' about a $10.2m order - a hope, not a price. The finding's own second support closes the loop: short interest falling from 968,000 to 415,000 means the de-rating was long liquidation, i.e. holders selling on the absence of orders rather than shorts pressing.",
+     "adversary_size_pct": -2.5,
+     "size_disagreement_pct": 1.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.488
+    }
+   ],
+   "rank": 11
+  },
+  {
+   "ticker": "UNFI",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -6.7,
+   "edge_pct": -0.336,
+   "confidence": 2.9,
+   "uncertainty_pct": 0.168,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.333,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.333,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "UNFI",
+     "key": "UNFI#0",
+     "finding": "UNFI changed CFO five weeks before its fiscal-year-end print: an 8-K carrying items 5.02, 7.01 and 9.01 was accepted 2026-07-09T11:01:43Z, the transition took effect on 2026-08-03 with President and CFO Matteo Tarditi moving to COO and a new CFO starting the following week, and a Form 3 initial statement of beneficial ownership was accepted 2026-08-13T20:18:01Z - so the person who will set the initial FY27 guidance, against a publicly referenced FY27 objective of $800m adjusted EBITDA versus an FY26 guide of $685-705m, has been in the seat for about a month.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001020859&type=8-K",
+     "source_date": "2026-07-09",
+     "expected_impact_pct": -2.5,
+     "cluster": "sec.gov",
+     "priced_in_pct": 78.0,
+     "adversary_note": "The finding concedes the appointment 'was announced on 9 July and is old news', and then supplies the price evidence that the handover was priced: it reports, and quote.json confirms, 50.83 on 2026-07-31 to 47.37 on 2026-08-03, -6.8% on 935,700 shares against a 526,595 20-day average, on the exact day the transition took effect. That is the market marking the stock down 6.8% on a 1.8x volume day for this specific event. Calling that 'evidence the handover carries information it has not finished pricing' is the inversion this seat exists to catch: a large, dated, volume-confirmed move on the event date is the definition of priced. The 8-K carried item 7.01 alongside 5.02, so there was a press release, and the corpus records the transition being discussed contemporaneously in docs/90689991bd14ca0cc40e8155a8a906a75333b2e5.txt at 2026-08-03T20:50:05Z. What is left is not a fact but a behavioural prior - 'a successor's first act on a multi-year margin walk-up is normally to widen or lower the opening bar' - which is generic, applies to every new CFO at every fiscal-year-end print, and is not something the corpus could publish or refute. The $800m FY27 EBITDA objective it is measured against is itself described as publicly referenced, and the June sell-side target raises (BMO $56, UBS $47, Goldman $47, Roth $43, Wells Fargo $56, all 2026-06-11) are published in the same digest, so both ends of the comparison are public.",
+     "adversary_size_pct": -2.5,
+     "size_disagreement_pct": 0.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.55
+    },
+    {
+     "hunter": "UNFI",
+     "key": "UNFI#1",
+     "finding": "Volume built on falling prices in the fortnight before the print with no identifiable news: $48.54 on 08/24 to $43.93 on 09/04, -9.5%, with volume rising through 967,500 on 08/31, 803,600 on 09/03 and 1,095,400 on 09/04 - the last being 2.1x the 526,595 20-day average and the heaviest session in the run-in - while the only shareholder commentary in the window reads 'August ended as it began: selling hard on no news' (2026-08-31); with roughly 61m shares out, institutional ownership reported above 100% of float and short interest of about 2.46m shares or 4.1% of float at 5.2 days to cover, that supply is long liquidation rather than shorts pressing.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001020859&type=4",
+     "source_date": "2026-09-04",
+     "expected_impact_pct": -1.25,
+     "cluster": "sec.gov",
+     "priced_in_pct": 82.0,
+     "adversary_note": "The finding's own first sentence of justification is 'The price is priced; the composition of the selling is not', and what it offers as composition is either the shared anchor or stale. The bars are quote.json, the same file the sealed baseline is computed from: run_up_5d_pct -4.08% and run_up_20d_pct -6.65% are already in baselines/UNFI.json, and 1,095,400 shares on 09-04 against a 526,595 average is visible to anyone holding the anchor. A -9.5% drift on rising volume into a fiscal-year-end print at a name whose last four reactions include -10.28%, -2.99% and -10.18% is the most ordinary pre-earnings pattern there is. The positioning half is worse than unpublished - it is old: the roughly 61m share count, 'institutional ownership above 100% of float' and the 2.46m-share/4.1%/5.2-days short figures are sourced to digest posts dated 2026-05-09 and 2026-04-18, four to five months before the print, and quoted as though current. Ownership above 100% of float is also a data-provider artefact of double-counting lent shares rather than a finding. The hunter then concedes the decisive contrary point itself: the same digest shows a base that has bought each of these dips ('buying the dip is 2 for 2 so far', 2026-06-09), and 'the fade may already be the consensus trade'. A distribution pattern that the holder base has publicly named ('August ended as it began: selling hard on no news', 2026-08-31) is a published observation, not a hidden one.",
+     "adversary_size_pct": -1.0,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.225
+    }
+   ],
+   "rank": 12
+  },
+  {
+   "ticker": "INNV",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -17.9,
+   "edge_pct": -0.903,
+   "confidence": 16.0,
+   "uncertainty_pct": 0.452,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 6,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.175,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.175,
+   "independent_clusters": 2,
+   "cluster_names": [
+    "d-risk.ai",
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "INNV",
+     "key": "INNV#0",
+     "finding": "The 8 September print is InnovAge's fiscal-year-end release, at which it issues an initial FY27 guide - and the corpus shows exactly how much sandbagging that guide has historically contained: FY26 was first guided on 2025-09-09 at revenue $900-950m and adjusted EBITDA $56-65m, raised on 2026-02-03 to $925-950m and $70-75m, then raised again on 2026-05-05 to $950-975m and $85-90m, i.e. the EBITDA midpoint travelled from $60.5m to $87.5m (+45%) while the revenue midpoint moved only 4%; the stock has re-rated 164% off its 52-week low on that walk-up and is now being asked to set the FY27 bar from a standing start.",
+     "source": "https://d-risk.ai/INNV/10-K/2025-09-09",
+     "source_date": "2026-05-05",
+     "expected_impact_pct": -2.75,
+     "cluster": "d-risk.ai",
+     "priced_in_pct": 62.0,
+     "adversary_note": "Both halves of this finding are already in the two files everyone on this event shares. Each guidance step is verbatim in the captured digest - docs/e38698851525c341f5b4c380fcc23299f7b2a703.txt has 'Sees FY26 adjusted EBITDA $56M-$65M' at the 2025-09-09 print, 'raising its full year fiscal 2026 financial guidance for total revenues to a range of $925 million to $950 million and Adjusted EBITDA to $70 million to $75 million' at 2026-02-03, and 'raising its fiscal 2026 guidance for total revenues to a range of $950M to $975M and Adjusted EBITDA to a range of $85 million to $90 million' at 2026-05-05 - and every one of those was a same-day press release and wire recap. The reaction split the finding leans on is not research either: it is baselines/INNV.json history.moves, which both the hunter and any competing method read straight from the sealed anchor (+37.46% on 2026-02-03, +14.39% on 2025-05-06, -2.81% on 2025-09-09, -17.56% on 2025-11-04). So the claim is an inference over shared public data rather than a fact the corpus failed to publish, and 'this company sandbags its opening guide' after three consecutive raises is structural and known to anyone holding it - age is not novelty. It also cuts both ways: a holder base that has watched three raises discounts a conservative opening guide, which is why the same pattern can produce -2.81% rather than a collapse. What keeps this from scoring higher is real: nothing in the capture assembles the sequence, names the FY-end print as the asymmetric one, or supplies an FY27 consensus to test the bar against, and the +164% re-rating off the low genuinely raises the cost of a soft opening guide.",
+     "adversary_size_pct": -3.5,
+     "size_disagreement_pct": 1.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -1.045
+    },
+    {
+     "hunter": "INNV",
+     "key": "INNV#1",
+     "finding": "InnovAge submitted a confidential draft registration statement (form DRS) accepted 2026-07-17T19:47:23Z, then publicly filed an S-3 on 2026-07-31 (accepted 20:11:06Z) which was declared effective with the EFFECT notice accepted 2026-08-05T04:15:18Z - five weeks before the print and two weeks after the fiscal year ended - and a Form 3 initial statement of beneficial ownership was accepted 2026-08-17T21:07:23Z with no 8-K item 5.02 anywhere in the lookback to explain a new insider; the company's last 8-K of any kind was item 7.01 accepted 2026-05-18T12:02:06Z.",
+     "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001834376&type=S-3",
+     "source_date": "2026-08-05",
+     "expected_impact_pct": -1.75,
+     "cluster": "sec.gov",
+     "priced_in_pct": 40.0,
+     "adversary_note": "This is the honest 'reachable but not drawn out' case, and I am not going to inflate it - but three things hold it down. First, the public S-3 filing date is not invisible in the bars: 11.60 on 07-30 to 11.36 on 07-31 (the S-3 acceptance date, 351,600 shares) to 11.23 on 08-03 (347,000), the two highest-volume sessions of that fortnight against a 200,090 average, for a -3.2% two-day drift; whoever was watching EDGAR traded it. Second, the mundane readings are the likely ones and the hunter cannot exclude them because no body is stored: an S-3 five years after a 2021 sponsor-backed IPO is most often a resale or shelf renewal for the pre-IPO holders, and a Form 3 requires no 8-K item 5.02 at all when the filer is a new 10% beneficial owner rather than an officer or director - which is an inflow signal, not an outflow one. The finding itself concedes 'I cannot read the S-3's body and it may simply be a three-year shelf renewal.' Third, the mechanism mostly misses this print: a registered secondary prepared for the post-print window resolves after 8 September, so it is an overhang on the following weeks rather than a component of the reaction, and an effective shelf on its own issues nothing. What I concede is that the corpus genuinely never connects any of this - the 90-message digest does not mention an offering, DRS or S-3 once - and a DRS from an already-listed issuer is a filing type no aggregator surfaces, so if a secondary does price off this shelf the size is unknown and could be material against a $200k-a-day tape.",
+     "adversary_size_pct": -2.0,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -1.05
+    }
+   ],
+   "rank": 13
+  },
+  {
+   "ticker": "GME",
+   "rankable": false,
+   "not_rankable_because": "event date does not fit the filing cadence",
+   "edge_score": -1.2,
+   "edge_pct": -0.062,
+   "confidence": 0.2,
+   "uncertainty_pct": 0.031,
+   "baseline_quality": 0.02,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.05,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.0,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.0,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "GME",
+     "key": "GME#0",
+     "finding": "GameStop disclosed results of operations under item 2.02 twice in eight days: an 8-K accepted 2026-08-31T06:23:08Z carrying items 1.01, 2.02, 3.02, 7.01 and 9.01 - i.e. preliminary quarterly results bundled with a material agreement and an unregistered sale of equity securities - and then the 8-K accepted 2026-09-08T09:02:39Z carrying only items 2.02, 7.01 and 9.01; the 08-31 disclosure moved the stock +2.85% on 10.95m shares against a 6.20m 20-day average, and the stock then rose a further 7.2% over five sessions to $19.16, so the 9 September print inherits a bid-up tape and almost no headline surprise capacity.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1326380/000132638026000046/gme-20260831.htm",
+     "source_date": "2026-08-31",
+     "expected_impact_pct": -1.25,
+     "cluster": "sec.gov",
+     "priced_in_pct": 75.0,
+     "adversary_note": "The finding supplies its own evidence that the pre-release was priced: it reports the 08-31 disclosure moving the stock +2.85% on 10.95m shares against a 6.20m average, and quote.json confirms 17.87 (08-28) to 18.38 (08-31) on 10.95m and then 11.75m on 09-01 - a two-day, 1.8x-volume event on exactly the date the item 2.02 8-K was accepted. So the numbers hit the tape and the tape absorbed them. What remains is the inference that the 09-08 release therefore has little surprise capacity, and that inference is drawn out inside the admissible corpus rather than left implicit: the 2026-09-07 sweep's digest (docs/41a4a7aa3d67072d0008eff3edfb23de89ebd9b6.txt) carries a 2026-09-06T11:55:53Z post titled 'GME Kills the VWAP early, Q2 prelim results, my trading position update & GME current Fair Value Update', i.e. retail was publishing fair-value work off the preliminary Q2 numbers two days ahead, and the surrounding posts in the same digest frame the print as needing non-financial news ('it's monday and there's no buyout announcement', 'we need news this week'). That is the hunter's own conclusion, published, before the print. A pre-release bundled with item 1.01 and item 3.02 is also the standard mechanics of disclosing results alongside a securities offering, which makes it structural rather than a discovery. The residual +7.2% over the five sessions after 08-31 is the only genuinely unexplained thing here, and it is at least as consistent with the offering pricing clearing and warrant speculation - both of which the same digest discusses - as with the market failing to notice a pre-release it had just traded 22m shares on.",
+     "adversary_size_pct": -1.0,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.312
+    },
+    {
+     "hunter": "GME",
+     "key": "GME#1",
+     "finding": "GameStop raised capital twice in the four weeks before the print - 8-K items 1.01/3.02/8.01/9.01 accepted 2026-08-03T10:12:28Z and items 1.01/2.02/3.02/7.01/9.01 accepted 2026-08-31T06:23:08Z, both carrying item 3.02 unregistered sales of equity securities - while the stock sat within 7.2% of its 52-week low and 30.8% below its 52-week high.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1326380/000132638026000042/gme-20260802.htm",
+     "source_date": "2026-08-03",
+     "expected_impact_pct": -0.5,
+     "cluster": "sec.gov",
+     "priced_in_pct": 92.0,
+     "adversary_note": "The claim states 'the tape shows no distinct de-rating on either date, which is what I would expect to see if the dilution had been separately priced', and quote.json contradicts that on the very date the finding is built on. GME closed 21.72 on 07-31 and 19.06 on 08-03 - the session of the 8-K accepted 2026-08-03T10:12:28Z carrying items 1.01/3.02/8.01/9.01 - a -12.25% single-day fall on 41,713,200 shares against a 6.20m 20-day average. That is 6.7x volume and the largest bar in the entire file; it is the de-rating the finding says is absent, and it happened on the acceptance date. The claim is therefore not merely priced, it is empirically wrong as stated. The second item 3.02, on 08-31, moved the stock the other way (+2.85%) on 1.8x volume, which is what happens when an offering prices into a bid. Beyond the bars, serial dilution is the single most-discussed feature of this capital structure in the admissible retail copy: the 2026-08-30 digest (docs/6de4101fccd1ca15af0d53df2b30801d670015a4.txt) contains 'will he do another bond dilution for the rest of the 0% interest bonds' dated 2026-08-28 and a same-day note that Robinhood's borrow rate for GME warrants rose 14%. Age is not novelty, and a rate of issuance that the holder base is openly forecasting is not an unpriced fact. The hunter also concedes the 08-31 8-K is shared with GME#0, leaving only the 08-03 filing as additional - and that is the one the tape demolishes.",
+     "adversary_size_pct": -0.3,
+     "size_disagreement_pct": 0.4,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.04
+    }
+   ],
+   "rank": null
+  }
+ ]
+}

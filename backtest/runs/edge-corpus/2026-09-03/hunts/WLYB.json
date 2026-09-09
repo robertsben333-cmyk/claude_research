@@ -1,0 +1,40 @@
+{
+  "ticker": "WLYB",
+  "expected_move_pct": 1.0,
+  "conviction_note": "Same company and same print as WLY - judged once - but damped hard for this class: WLYB's twenty-day average volume is 247 shares, its median print reaction is 1.98%, and two of its last seven recorded reactions are exactly 0.00% because the shares did not trade, so the class B cannot express the read at anything like the class A's magnitude.",
+  "findings": [
+    {
+      "finding": "On 2026-07-22 Wiley was named as joining a US federal AI initiative alongside HPE - 'INFQ Stock Surges After Three DOE Awards In $5B Genesis Mission - HPE, WLY Also Gain On Joining Federal AI Initiative' - and the class A shares have since fallen 6.3% over twenty sessions rather than re-rating, with the class B down 2.5% over the same period.",
+      "expected_impact_pct": 1.5,
+      "impact_low_pct": -2.0,
+      "impact_high_pct": 6.0,
+      "source": "https://www.marketbeat.com/earnings/reports/2026-9-3-john-wiley-amp-sons-inc-stock/",
+      "source_date": "2026-07-22",
+      "corpus_ref": "docs/d7ff82564a557ffced5d936a6aa2bd1f37a02219.txt in the WLY capture (snapshots/20260830T084039Z equivalent), entry dated 2026-07-22T17:19:31Z; WLYB's own capture holds 102 items and one body",
+      "body_available": true,
+      "why_not_priced": "Content licensing into a named federal AI programme is the exact line that drove Wiley's largest print reactions, it appears once in the combined capture, and no news search was run for either class (n_queries=0 in every sweep). The class-specific reason it stays unpriced is mechanical: at 247 shares a day the class B does not reprice on information until someone needs to trade it.",
+      "independence": "The same event is the basis of my WLY finding - this is deliberately NOT an independent second observation. It is one company, one print and one reading; the two files differ only in how much of it the share class can express. Cross-reference: the WLY hunt file in this run directory."
+    },
+    {
+      "finding": "The July leadership-change sequence applies to both classes equally: an 8-K with items 5.02 and 9.01 on 2026-07-09, a Form 3 on 2026-07-17 and seven Form 4s on 2026-07-24, making this the first results release under whatever changed.",
+      "expected_impact_pct": -0.5,
+      "impact_low_pct": -3.0,
+      "impact_high_pct": 2.0,
+      "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000107140&type=8-K",
+      "source_date": "2026-07-09",
+      "corpus_ref": "filings.json for CIK 0000107140 - the same index serves both share classes",
+      "body_available": false,
+      "why_not_priced": "No body stored, no mention anywhere in either capture. Signed negative against the finding above for the same reason as in the WLY file: a first print under new leadership is where guidance gets rebased.",
+      "independence": "none - identical to the WLY finding and drawn from the same EDGAR index; do not count it twice across the two tickers."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any share-class-specific information at all: WLYB's capture holds 102 items and one document body, and nothing in it distinguishes the class B from the class A",
+    "any change in the class B discount or premium (it trades at $52.94 against the class A's $51.05, i.e. a 3.7% premium, and 3.3% from its 52-week high against the class A's 8.4%)",
+    "the body of the 2026-07-09 8-K",
+    "any consensus estimate or news coverage: n_queries=0 in every sweep for both classes"
+  ],
+  "baseline_tension": "It cuts against the run-in (-1.6% over five sessions, -2.5% over twenty) and sits with a reaction history that is mostly noise: 3 of 7 up, median 1.98%, two zeros.",
+  "corpus_limits": "No option chain, so no implied move or skew. No news search was run for this ticker. The decisive limitation here is liquidity, not information: at 247 shares a day of average volume the class B's close-to-close reaction is substantially a stale-quote artefact, which is why my number is a quarter of the class A's rather than equal to it. WLY and WLYB are two share classes of one company reporting one print; the event was judged once, in the WLY file, and this file reuses that reading rather than inventing a second independent case. CONTAMINATION: the same DLTH-sourced pre-market movers list I flagged in the WLY file named Wiley's post-print move; I excluded it and nothing above derives from it. Excluded URL: https://ooc.bz/l/113179 .",
+  "sources_used": 2
+}
