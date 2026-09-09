@@ -157,3 +157,7 @@
 ## Stage 4 — calibration — nothing to score
 - Logged at 2026-09-04 06:38 UTC
 - 04-advice.json is status=blocked with 0 ranked_names; wrote a stub 05-outcome.md/.json so this run stops appearing as unscored.
+
+## Stage E — edge hunt — POST-HOC ANALYSIS
+- Logged at 2026-09-09 12:03 UTC
+- Resolved run 2 (8 names) and decomposed edge_score against the realised move. edge_score rho=0.333 (p=0.43) ranks worse than the raw residual sum (0.595), the hunters' own discarded expected_move_pct (0.635) and a free minus-20d-run-up control (0.619). Jackknife: dropping RZLV takes rho to 0.071. Adversary judged 51/51 with priced_in spread 18-92, but its size_check duplicates the hunter (median gap 0.50pp, 1 sign flip of 51). Magnitude under-scaled 4.1x median on correctly-signed names. See docs/EDGE_ANALYSIS.md.
