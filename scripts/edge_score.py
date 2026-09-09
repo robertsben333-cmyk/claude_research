@@ -7,7 +7,8 @@ Nothing else. It is measured, not designed: `docs/EDGA` -- see
 transformation this script used to apply lowered the rank correlation against the
 realised move.
 
-    impact sum, as it comes from the hunters        rho = 0.407  p = 0.017
+    impact sum, as it comes from the hunters        rho = 0.453  p = 0.006
+      sized on the hunter/adversary mean instead         0.407  p = 0.014
       x (1 - priced_in/100)                              0.376  p = 0.027
       cluster-max                                        0.284
       / sqrt(k)                                          0.279
@@ -201,14 +202,22 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
         x["priced_in_pct"] = None if p is None else float(p)
         x["adversary_note"] = v.get("strongest_argument")
         # The adversary sizes each claim itself, without seeing the hunter's
-        # number. Where the two disagree badly the disagreement is information,
-        # so the finding is sized on the average rather than on either alone.
+        # number. Until 2026-09-09 the finding was then sized on the MEAN of the
+        # two, on the reasoning that a disagreement is information. It is, but
+        # averaging is not how to use it: over 43 resolved names the mean ranks at
+        # rho=0.407 (p=0.014) and the hunter's own number at rho=0.453 (p=0.006).
+        # So the key sums the hunter's number and the adversary's estimate is kept
+        # beside it, where a large disagreement stays visible instead of being
+        # split down the middle. On 2026-09-09 KEQU-h1#0 had the hunter at -4.0
+        # against the adversary at -15.0, and that name's rank turned on it.
         sc = v.get("size_check_pct")
         if sc is not None:
             x["adversary_size_pct"] = float(sc)
             x["size_disagreement_pct"] = round(
                 abs(float(sc) - x["expected_impact_pct"]), 3)
-            x["expected_impact_pct"] = round(
+            # Only `edge_score_legacy` reads this, so the old key still
+            # reproduces exactly.
+            x["sized_mean_pct"] = round(
                 (x["expected_impact_pct"] + float(sc)) / 2.0, 3)
 
     # An unjudged finding is not a survivor. Default it to mostly-priced so that
@@ -221,6 +230,10 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
             x["priced_in_basis"] = "adversary"
         x["residual_pct"] = round(
             x["expected_impact_pct"] * (1.0 - x["priced_in_pct"] / 100.0), 3)
+        # The pre-2026-09-09 arithmetic, kept only so edge_score_legacy is exact.
+        x["_legacy_residual_pct"] = round(
+            x.get("sized_mean_pct", x["expected_impact_pct"])
+            * (1.0 - x["priced_in_pct"] / 100.0), 3)
 
     # THE RANKING KEY. The hunters' signed sizes, added up, and nothing else.
     impact_sum = round(sum(x["expected_impact_pct"] for x in findings), 3)
@@ -237,7 +250,7 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
     # run stays comparable and the demotion stays checkable.
     clusters = {}
     for x in findings:
-        clusters.setdefault(x["cluster"], []).append(x["residual_pct"])
+        clusters.setdefault(x["cluster"], []).append(x["_legacy_residual_pct"])
     per_cluster = [max(v, key=abs) for v in clusters.values()]
     k = len(per_cluster)
     legacy_pct = round(sum(per_cluster) / math.sqrt(k), 3) if k else 0.0

@@ -91,6 +91,18 @@ too. See `docs/EDGE_ANALYSIS.md`, "Conviction is where the direction lives" — 
 sign of the impact sum over all 38 events is a coin flip (53%), so the conviction floor is
 the whole finding.
 
+**`impact_sum` sums the HUNTER's sizes, since 2026-09-09.** The 09-09 run caught that
+`edge_score.py` was re-sizing every finding to the mean of the hunter's number and the
+adversary's `size_check_pct`, so the ρ=0.407 above was measured on the average and every
+description of the key as "the hunters' sizes" named the wrong number. Measured both ways
+on the same 43 names: the average ranks at ρ=0.407 (p=0.014), the hunter's own number at
+**ρ=0.453 (p=0.006)**. They differ by a median 0.80 points per name and reorder the day on
+4 of 6 days, so the key now sums the hunter and keeps the adversary's estimate beside it.
+`diagnostics.edge_score_legacy` still reads the averaged value and reproduces the old key
+exactly. **It is not a return forecast**: regression slope 0.72–0.76 (0.86–0.93 above the
+conviction floor), pearson 0.41–0.46, median absolute error 6–7 points against a realised
+standard deviation near 11, and it double-counts findings that rest on one document.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080

@@ -174,7 +174,7 @@ def build(runs, cache_path):
 
 
 CANDIDATES = [
-    ("impact_sum", 1, "impact sum, pre-adversary"),
+    ("impact_sum", 1, "impact sum (hunter sizes, pre-haircut)"),
     ("resid_sum", 1, "residual sum, no multipliers"),
     ("hunter_move", 1, "hunt expected_move_pct (unused by scorer)"),
     ("lean", 1, "priced_lean_pct (baseline only)"),

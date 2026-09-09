@@ -468,6 +468,58 @@ first result in the stage that is significant on a test chosen before looking, r
 day-clustering, liquidity and volatility, and mechanically explicable. It is worth running
 forward properly.
 
+## What `impact_sum` is, precisely — and the sizing correction of 2026-09-09
+
+The 2026-09-09 edge-hunt run caught a discrepancy between this file and the code, and
+resolving it changed the code rather than the prose.
+
+`scripts/edge_score.py` used to re-size every finding to the **mean** of the hunter's
+number and the adversary's independent `size_check_pct` before summing. So the ρ=0.407
+reported above was measured on the averaged sizes, not on the hunters' own — every
+description of the key as "the hunters' signed per-finding sizes" was wrong about which
+number it summed. Measured both ways over the same 43 names:
+
+| the key sums | ρ | permutation p |
+| --- | --- | --- |
+| the mean of hunter and adversary (what the code did) | +0.407 | 0.014 |
+| **the hunter's own number (what the docs claimed)** | **+0.453** | **0.006** |
+
+They differ by a median of 0.80 points per name, are identical on 1 of 43, and reorder the
+day on 4 of 6 days. So the averaging was not cosmetic and it was costing ordering. The key
+now sums the hunter's number; `adversary_size_pct` and `size_disagreement_pct` sit beside
+it, where a real disagreement stays visible instead of being split down the middle. On
+2026-09-09 KEQU's hunter sized a finding at −4.0 against the adversary's −15.0 and that
+name's rank turned on which was used. `edge_score_legacy` still reads the averaged value,
+so it reproduces the pre-2026-09-09 key exactly — verified to 0.05 on all five names of
+2026-09-04.
+
+### Is it the predicted return?
+
+Nearly, in scale; not at all, in precision. Regressing the realised move on the key over
+the 38 de-duplicated events:
+
+| exit | regression | pearson | median abs error | sd predicted vs realised |
+| --- | --- | --- | --- | --- |
+| next open | realised = +1.37 + **0.76** × predicted | +0.459 | 6.25pp | 6.48 vs 10.68 |
+| next close | realised = −1.18 + **0.72** × predicted | +0.414 | 7.00pp | 6.48 vs 11.19 |
+
+Above the conviction floor the slope tightens to 0.93 (open) and 0.86 (close) on 22
+events. So the number is not systematically half or double the move — it is roughly
+one-for-one, which is more than a pure ranking key needs to be. What it is not is a point
+forecast: R² is about 0.2 and the typical miss is 6 to 7 points of spot against a realised
+standard deviation near 11.
+
+Three structural reasons it cannot be read as a forecast, whatever the slope says.
+It sums "what this fact is worth **if the market has not priced it**" without subtracting
+what is priced — that subtraction is `residual_sum`, and it sits in diagnostics because it
+*lowered* measured ordering. It double-counts: the same fact reaching two findings from two
+sources is added twice, and on 2026-09-09 all eight adversaries independently reported that
+the findings on their name overlapped. And its dispersion is too narrow — a predicted
+standard deviation of 6.5 against a realised 11.2 — so even a perfectly ordered table
+understates how far the tails travel.
+
+Read it as a conviction-weighted ranking that happens to be scaled in the right units.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a
