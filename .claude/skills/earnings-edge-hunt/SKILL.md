@@ -76,6 +76,27 @@ counts and adversary numbers.
 reading the same corpus, disagreeing about which story was the widely-told one, and
 landing 14% apart. That gets an adversary, not a heuristic.
 
+## If your Routine prompt disagrees with this file
+
+**This file wins.** The prompt is a bootstrap: it knows the environment, the timing and
+the agent counts, and it cannot know the output contract, which has changed once already
+and will change again as days pool.
+
+Concretely, if the prompt you were given says the output is "one signed number on
+−100…+100", or asks you to report `edge_score` and `confidence`, you have the
+pre-2026-09-09 prompt. Those fields are gone from the decision path. Do this:
+
+1. Rank and report on `impact_sum` and `conviction`, as sections 5 and 6 specify.
+2. `edge-scores.json` names its own `ranking_key` — quote that in your closing report so
+   the disagreement is visible rather than silently resolved.
+3. Record one line in the run log: the Routine prompt is stale and the replacement text
+   is in `docs/routine-prompts/edge-hunt.md`, waiting to be pasted. A session cannot
+   update that Routine itself — `update_trigger` refuses any Routine an agent did not
+   create — so the note is the only way the fix gets requested.
+
+Do not split the difference by emitting both. Two ranking keys in one note is worse than
+either.
+
 ## What is fixed and what is free
 
 Fixed: the sealed baseline, the numeric output contracts, the sourcing rule, and
