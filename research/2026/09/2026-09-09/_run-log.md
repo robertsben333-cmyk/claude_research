@@ -45,3 +45,15 @@
 - This batch (2 of 2): M, AEO, WLTH
 - Already on disk, skipping: none
 - Plan: waves of deep_dive.wave_size=2 opus/high researchers (M+AEO, then WLTH alone), publish after each wave
+
+## Stage 2 — deep dive, batch 2 — FINISHED
+- Logged at 2026-09-09 10:53 UTC
+- Researched: M, AEO, WLTH
+- Skipped (already done): none
+- Failed: none
+- Subagents: 3 opus/high, in 2 waves (M+AEO, then WLTH)
+- Median evidence completeness: 76/100 (M 76, AEO 84, WLTH 68)
+- Day's cap (6 of 7 shortlisted names) now fully researched: COO, AVAV, NAVN (batch 1), M, AEO, WLTH (batch 2). TEN dropped from the cap.
+- 02-ranking.json written from all 6 dossiers. panel_priority = 0.45*|preliminary_direction_score| + 0.35*evidence_completeness (change_expectation term dropped: triage ran in skip mode, no scores exist for any name).
+- Panel-eligible after this batch: COO, AVAV, NAVN, M, AEO, WLTH (all 6; none excluded — all event_confirmed, all evidence_completeness>=68, WLTH's missing implied move is covered by 3 historical post-IPO reactions)
+- Top 2 by panel_priority for panel.names=2: NAVN (35.4), WLTH (35.05)

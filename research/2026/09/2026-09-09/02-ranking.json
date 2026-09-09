@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "run_date": "2026-09-09",
+  "note": "Built by stage 2 batch 2 (final batch). Shortlist had 7 names; capped to triage.shortlist_size=6 by shortlist order (market-cap descending), dropping TEN (7th, smallest cap, also flagged at stage 0 for unconfirmed options-chain data). Batch 1 researched COO, AVAV, NAVN; batch 2 researched M, AEO, WLTH. All 6 capped names have dossiers.",
+  "formula": "panel_priority = 0.45*|preliminary_direction_score| + 0.35*evidence_completeness + 0.20*change_expectation",
+  "formula_note": "change_expectation is null for every name: stage 1 (triage) ran in skip mode (universe 7 <= threshold 10), so no triage scores exist for any candidate. Following the same convention used on 2026-08-28, the 0.20 term is dropped rather than imputed; panel_priority is the sum of the first two terms only. Since this affects every name equally, the relative ranking is unaffected.",
+  "names": [
+    {
+      "ticker": "NAVN",
+      "company": "Navan, Inc.",
+      "preliminary_direction_score": -18,
+      "evidence_completeness": 78,
+      "change_expectation": null,
+      "panel_priority": 35.4,
+      "event_confirmed": true,
+      "event_implied_move_pct": 14.0,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "WLTH",
+      "company": "Wealthfront Corporation",
+      "preliminary_direction_score": -25,
+      "evidence_completeness": 68,
+      "change_expectation": null,
+      "panel_priority": 35.05,
+      "event_confirmed": true,
+      "event_implied_move_pct": null,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null,
+      "note": "No published implied move exists for this name (Barchart empty, Yahoo 503, Benzinga 403, CNN 451). Kept eligible because three post-IPO historical reactions (all down, mean |13.9%|) serve as a usable move anchor per the rule 'no implied move AND no historical move history'. Lowest evidence_completeness of the six, driven mainly by this missing anchor."
+    },
+    {
+      "ticker": "AVAV",
+      "company": "AeroVironment, Inc.",
+      "preliminary_direction_score": 12,
+      "evidence_completeness": 84,
+      "change_expectation": null,
+      "panel_priority": 34.8,
+      "event_confirmed": true,
+      "event_implied_move_pct": 13.0,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "M",
+      "company": "Macy's Inc",
+      "preliminary_direction_score": 18,
+      "evidence_completeness": 76,
+      "change_expectation": null,
+      "panel_priority": 34.7,
+      "event_confirmed": true,
+      "event_implied_move_pct": 5.2,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null,
+      "note": "Implied move conflicted across sources (5.2% Bloomberg-derived vs 7.66% first-expiry straddle proxy vs 9.13% monthly); dossier records both and flags the true band as 5-8%."
+    },
+    {
+      "ticker": "COO",
+      "company": "The Cooper Companies, Inc.",
+      "preliminary_direction_score": 12,
+      "evidence_completeness": 80,
+      "change_expectation": null,
+      "panel_priority": 33.4,
+      "event_confirmed": true,
+      "event_implied_move_pct": 8.08,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "AEO",
+      "company": "American Eagle Outfitters, Inc.",
+      "preliminary_direction_score": 8,
+      "evidence_completeness": 84,
+      "change_expectation": null,
+      "panel_priority": 33.0,
+      "event_confirmed": true,
+      "event_implied_move_pct": 13.0,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    }
+  ],
+  "not_researched": [
+    {
+      "ticker": "TEN",
+      "company": "Tsakos Energy Navigation Ltd",
+      "reason": "dropped from the day's cap: 7th by market cap, shortlist capped to triage.shortlist_size=6; also flagged at stage 0 for unconfirmed options-chain data"
+    }
+  ],
+  "panel_names_top_n": 2,
+  "top_n_for_panel": ["NAVN", "WLTH"]
+}
