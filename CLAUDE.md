@@ -106,6 +106,21 @@ exactly. **It is not a return forecast**: regression slope 0.72–0.76 (0.86–0
 conviction floor), pearson 0.41–0.46, median absolute error 6–7 points against a realised
 standard deviation near 11, and it double-counts findings that rest on one document.
 
+**The adversary is a weekly audit from 2026-09-09, and the day hunts 16 names instead of
+8.** Both of its numbers were measured as subtractive over 215 findings on six days.
+`size_check_pct`: the hunter's own size ranks at ρ=0.453 against 0.407 for the mean of the
+two. `priced_in_pct`: every way of letting it touch the ranking makes it worse, and
+monotonically — the haircut 0.325, dropping findings at priced_in ≥ 90 gives 0.407, ≥ 80
+gives 0.328, ≥ 70 gives 0.221; mean priced_in per name ranks +0.046. And since
+`impact_sum` became the key neither number reached the output at all: 8 of 20 subagents
+changing nothing that is ranked. It survives as a Monday audit because it catches
+factually wrong findings — on 09-09 a covenant amendment misread by a year and a
+short-interest claim contradicted by its own source — which nothing else in the stage
+does. The audit is a report card on the hunters and must not prune or reweight; on the
+other four days a wrong finding enters the key unchecked, which is the accepted price of
+doubling the sample. `diagnostics.residual_sum` is `null` on non-audit days rather than
+computed off the "unjudged" default.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080

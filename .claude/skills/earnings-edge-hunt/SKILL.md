@@ -1,6 +1,6 @@
 ---
 name: earnings-edge-hunt
-description: Establishes what the market has already priced into each of the day's earnings prints, then sends free-roaming hunters to find information that is not in that price, has an adversary size how much of each finding is already in, and emits one signed number per company so the day's names can be ranked. Use when asked to run the edge hunt, rank the day's earnings names, hunt for unpriced information, or score companies reporting.
+description: Establishes what the market has already priced into each of the day's earnings prints, then sends free-roaming hunters to find information that is not in that price, and emits one signed number per company so the day's names can be ranked. A weekly adversary audit checks the hunters' findings for factual errors. Use when asked to run the edge hunt, rank the day's earnings names, hunt for unpriced information, or score companies reporting.
 ---
 
 # Edge hunt — one signed number per company, so the day can be ranked
@@ -240,13 +240,17 @@ Publish after each wave, not at the end of the fan-out.
 1 sweep  +  (confirmed names + double_hunt_top_n) hunters  +  (tickers with findings) adversaries
 ```
 
-At the `edge_hunt` cap of 20 that is about **eight hunted names**: 1 + 10 + 8 = 19.
-Ten confirmed names needs 1 + 12 + 10 = 23 and does not fit, so plan the shed at the
-start rather than discovering it when the adversaries are due.
+**On a normal day there are no adversaries**, so the cap of 20 buys
+**sixteen hunted names**: 1 + (16 + 2) = 19. On the weekly audit day
+(`budget.adversary_audit_weekday`, Monday) the adversary pass comes back and the
+arithmetic reverts to eight: 1 + 10 + 8 = 19. `config/pipeline.yaml` carries both as
+`hunted_names_normal_day` and `hunted_names_audit_day`. Work out which kind of day it
+is from `date.weekday()` before planning the shed, not after.
 
-Shed per `budget.edge_degrade_order`, which now sheds **names** before rigour:
-unconfirmed names first, then lowest `hunt_priority`. Two things are never shed at
-any budget — the two-hunter split, and adversary coverage of every finding.
+Shed per `budget.edge_degrade_order`, which sheds **names** before rigour: unconfirmed
+names first, then lowest `hunt_priority`. Never shed at any budget: the two-hunter
+split, the sealed-baseline ordering, and — on audit day — adversary coverage of every
+finding on both sides.
 
 Keeping a name but measuring it worse corrupts the ranking silently. Dropping one
 puts it in the table as `rankable: false` with a stated reason, where the reader can
@@ -265,9 +269,35 @@ load; the cap of 20 is about spend. An `amc` name reporting tonight must be judg
 before its release, so serialising strictly can push its adversary past the event —
 exceed the concurrency guideline for those and stay inside the total.
 
-## 4. Adversary — one agent per ticker, not per finding
+## 4. Adversary — weekly audit only, skip it on the other four days
 
-Build the briefs with the script, never by hand:
+**Check the weekday first.** If `date.weekday()` is not
+`budget.adversary_audit_weekday`, skip this whole section, hunt sixteen names instead
+of eight, and record in the run log that it was a non-audit day.
+
+Why it stopped being daily, on 2026-09-09: the adversary returns two numbers and both
+were measured as subtractive over 215 findings on six resolved days.
+`size_check_pct` — summing the hunter's own size ranks at ρ=0.453 against 0.407 for the
+mean of the two. `priced_in_pct` — every way of letting it touch the ranking makes the
+ranking worse, monotonically: the haircut gives 0.325, dropping findings at
+priced_in ≥ 90 gives 0.407, at ≥ 80 gives 0.328, at ≥ 70 gives 0.221. Mean `priced_in`
+per name ranks at +0.046. And since `impact_sum` became the key, neither number reaches
+the output at all — the pass was costing 8 of 20 subagents and changing nothing that is
+ranked, scored or resolved.
+
+Why it survives at all: it catches findings that are **factually wrong**, which nothing
+else in the stage does. On 2026-09-09 it broke a covenant amendment misread by a year
+and a "the short base has not moved" claim contradicted by its own source. Those
+corrections are real, and on that day they changed the ranking by exactly zero, because
+a refuted finding still enters `impact_sum` at full size. The audit therefore measures
+hunter accuracy rather than steering the day — read its output as a report card on the
+hunters, and if a hunter's findings are repeatedly broken, fix the hunter prompt.
+
+What the audit is deliberately not allowed to do is prune. Do not drop or shrink a
+finding because the adversary priced it high; the table above is what happens when you
+do.
+
+On audit day, build the briefs with the script, never by hand:
 
 ```bash
 python3 scripts/edge_brief.py --run <RUN>/edge      # writes adversary-briefs/<TICKER>.json
@@ -370,11 +400,16 @@ hunters to find what the market has missed into a print than a fact about those 
 companies. If it recurs across many days, the hunter prompt is generating pessimism
 rather than detecting it — and that is only visible if each note records the count.
 
-**Say what the adversary broke.** The pass is the most informative part of the stage
-and its corrections belong in the note, not just in the JSON. Name the findings that
-turned out to be factually wrong and how, and name the one that survived best with
-its `priced_in_pct`. An adversary that conceded a fact but refused its sign is
-reporting something different from one that refuted the fact; keep that distinction.
+**On audit day, say what the adversary broke.** Name the findings that turned out to be
+factually wrong and how, and name the one that survived best with its `priced_in_pct`.
+An adversary that conceded a fact but refused its sign is reporting something different
+from one that refuted the fact; keep that distinction. State plainly that none of it
+changed the ranking — the audit measures the hunters, it does not steer the day.
+
+**On the other four days, say that there was no adversary pass**, and that a factually
+wrong finding therefore entered the key unchecked. That is the accepted cost of hunting
+sixteen names instead of eight; a reader should know which kind of day they are looking
+at without opening the config.
 
 **Say how much of the baseline was measured rather than inferred.** Count the names
 with a live option chain. Where there is none, `priced_lean_pct` falls back to

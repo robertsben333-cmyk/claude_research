@@ -581,6 +581,65 @@ called Neutral on four (CXM, DELL, PL, RZLV).
 So they are complementary in coverage and not in signal. Keep them separate, as
 `CLAUDE.md` already requires, and do not average them.
 
+## Is the adversary doing anything? Measured: no, and it costs 8 of 20 agents
+
+The adversary produces three things. Two are numbers, and both have now been measured as
+subtractive; the third is prose.
+
+**`size_check_pct`** — demoted 2026-09-09. Summing the hunter's own size ranks at 0.453
+against 0.407 for the mean of the two.
+
+**`priced_in_pct`** — every way of letting it touch the ranking makes the ranking worse,
+and monotonically so:
+
+| the key sums | ρ | p |
+| --- | --- | --- |
+| every finding at the hunter's size — **the key as shipped** | **+0.453** | 0.007 |
+| × (1 − priced_in/100), the haircut | +0.325 | 0.060 |
+| findings with priced_in ≥ 90 dropped | +0.407 | 0.016 |
+| ≥ 85 dropped | +0.402 | 0.019 |
+| ≥ 80 dropped | +0.328 | 0.054 |
+| ≥ 70 dropped | +0.221 | 0.200 |
+| only findings with priced_in ≤ 50 kept | +0.305 | 0.075 |
+
+Read the monotonicity, not any single row: the more the adversary is allowed to remove,
+the worse the day sorts. Its own summary statistic, mean `priced_in_pct` per name, ranks
+at +0.046. So the adversary's judgment of *what the market already knows* does not
+correlate with *which names move*, in any form, at 215 findings over six days.
+
+**And since the 2026-09-09 rewrite it reaches the output through neither channel.**
+`impact_sum` sums hunter sizes; `conviction` is its absolute value; `rankable` comes from
+the sweep. Everything the adversary returns lands in `diagnostics` and in the note's
+prose. Eight subagents a day, 40% of the stage's cap, currently changing nothing that is
+ranked, scored or resolved.
+
+### What it does that the numbers do not capture
+
+It catches findings that are factually wrong. On 2026-09-09 it broke LMNR-h1#2 — the
+covenant amendment defers to October 2027, not October 2026, so the mechanism cannot reach
+this print — and FLWS-h1#1, whose "the short base has not moved" was contradicted by its
+own source (9.30m shares in March against 7.75m in August), and which re-reported four
+sealed-baseline fields as discoveries. Those are real errors and nothing else in the stage
+would have found them.
+
+But note what happens to them now: a refuted finding still enters `impact_sum` at full
+size, because the only lever the adversary has is `priced_in_pct` and that no longer feeds
+the key. Both of those corrections changed the 09-09 ranking by exactly zero.
+
+### The decision
+
+Drop the adversary from the daily run and spend the slots on hunters — 8 names becomes 16,
+which is what the stage most needs, since every open question in this file is waiting on
+sample size. Keep it as a **weekly audit** rather than deleting it: one day a week the
+stage runs the full adversary pass, which preserves the factual check on hunter accuracy,
+keeps whatever deterrent effect the hunters' knowing-they-are-checked has, and keeps the
+`priced_in_pct` question answerable as days pool instead of freezing it at six.
+
+What is deliberately accepted: on the other four days a factually wrong finding enters the
+key unchecked. That is a real cost. It is accepted because a check with no path to the
+output is not a check, and because doubling the sample is what turns every "lead, not a
+finding" in this file into an answer.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a

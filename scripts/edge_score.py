@@ -241,10 +241,15 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
 
     # Everything below is a diagnostic. None of it enters the key.
     #
-    # residual_sum is the open question: on six resolved days the priced-in haircut
-    # LOWERED the rank correlation (0.407 -> 0.376). That is counter-intuitive and
-    # not yet actionable, so it is measured rather than applied.
-    residual_sum = round(sum(x["residual_pct"] for x in findings), 3)
+    # residual_sum is the open question: every way of letting priced_in touch the
+    # ranking lowered it (the haircut 0.453 -> 0.325, and dropping high-priced_in
+    # findings is monotonically worse the more it drops). Measured, never applied.
+    #
+    # None of it means anything on a day with no adversary pass, so say null rather
+    # than computing a number off the "unjudged" default of 65.
+    judged = [x for x in findings if x.get("priced_in_basis") == "adversary"]
+    residual_sum = (round(sum(x["residual_pct"] for x in findings), 3)
+                    if judged and len(judged) == len(findings) else None)
 
     # edge_score_legacy reproduces the pre-2026-09-09 key exactly, so every earlier
     # run stays comparable and the demotion stays checkable.
@@ -292,6 +297,7 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
         "findings": findings,
         "diagnostics": {
             "residual_sum": residual_sum,
+            "adversary_judged": f"{len(judged)}/{len(findings)}" if findings else "0/0",
             "edge_score_legacy": edge_score_legacy,
             "baseline_quality": q,
             "quality_parts": q_parts,

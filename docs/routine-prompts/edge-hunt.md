@@ -16,6 +16,10 @@ points at the skill in the tree it actually cloned — so it can be pasted befor
 the merge without breaking a run. What it cannot do is make the new key live; only the
 merge does that.
 
+**2026-09-09, second change.** The adversary became a weekly audit and the daily name
+count went from eight to sixteen, so step 5 and the budget line changed too. Everything
+else in the prompt is unchanged.
+
 **What changed from the previous prompt.** The old text restated the output contract
 ("one signed number on −100 to +100"), which the 2026-09-09 rewrite made wrong: the key
 is now `impact_sum` in points of spot. Rather than pin the new contract into the prompt
@@ -61,7 +65,7 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
 
    The sizes hunters put on their findings now carry the whole result, so the instruction to size honestly is not a formality. Six resolved runs measured the hunters' raw signed sizes as the best available ranking of the day, better than every number computed from them. An inflated size is no longer discounted by machinery downstream.
 
-5. ADVERSARY. `priced-in-adversary` ONCE PER TICKER, with all of that company's findings in one brief. It returns priced_in_pct from 0 to 100 per finding plus its own independent size estimate. Judge findings on BOTH sides - on the first run adversaries ran only against the bullish ones, and since an unjudged finding defaults to mostly-priced that mechanically favoured whichever side went unattacked. Full coverage is a floor, not a degradation step, and it is the cheapest part of the stage.
+5. ADVERSARY - WEEKLY AUDIT ONLY. Check the weekday against budget.adversary_audit_weekday in config/pipeline.yaml. On the other four days there is NO adversary pass and you hunt sixteen names instead of eight; say so in the note and the run log. On audit day run `priced-in-adversary` ONCE PER TICKER with all of that company's findings in one brief, judging BOTH sides - partial coverage reintroduces run 1's central flaw, since an unjudged finding defaults to mostly-priced and that favours whichever side goes unattacked. The audit measures hunter accuracy; it does NOT prune or reweight the ranking. Both of its numbers were measured as subtractive over 215 findings, so do not drop or shrink a finding because the adversary priced it high.
 
 6. SCORE, RANK, WRITE, PUBLISH.
    python3 scripts/edge_score.py --run <RUN>/edge
@@ -69,7 +73,7 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
    Do not filter edge-scores.json and do not apply any cutoff to it - selection is the reader's, and the ranking test needs the complete table.
    Finish with scripts/publish.sh. It pushes to main. This session is ephemeral and work that is not pushed is destroyed.
 
-BUDGET: config/pipeline.yaml sets edge_hunt caps - 20 subagents for the whole stage. If you would exceed it, shed using budget.edge_degrade_order and record what you shed.
+BUDGET: config/pipeline.yaml sets edge_hunt caps - 20 subagents for the whole stage. On a normal day that is 1 sweep + 16 hunters + 2 for the double-hunt = 19 and no adversaries; on audit day it is 1 + 10 + 8 = 19 with eight names. If you would exceed it, shed using budget.edge_degrade_order and record what you shed.
 
 NEVER FABRICATE A NUMBER. Every company-specific figure carries a source URL or is marked unavailable. A missing anchor correctly lowers the score; an invented one corrupts the ranking, which is the only thing this stage produces.
 
