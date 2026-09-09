@@ -836,3 +836,51 @@ shares with a hyphen and the calendars hand out dots, so `BF.A` and `BF.B` retur
 CIK — and no CIK means no reaction history, no cadence check, and a baseline that drops
 to thin with no error. Both separators are now tried. This was hitting the live pipeline
 too, not only the backtest.
+
+## 35. The seal moved, and a bmo capture always sweeps after its own print
+
+Found while running the edge hunt over the corpus, and found first by an agent
+rather than by the harness. The GAUZ hunter wrote its own leak into
+`corpus_limits`: capture filed under `GAUZ-2026-09-02` because the calendar said
+09-02, seal puts the print at `2026-08-31T13:10Z`, so `quote.json` carries the
+08-31 and 09-01 closes and two of three stored bodies were fetched after the
+print. It declined to read the post-print bodies, sized the name on pre-print
+evidence only, and asked to be treated as compromised.
+
+Section 32 said an honest agent converts silent corruption into a visible defect.
+This is that, in production, on the first day of a real run.
+
+**The harness check that should have caught it was asking the wrong question.**
+Section 33 reported zero of 205 captures holding post-event snapshots. That
+compared each snapshot against the capture's *directory* date — the date the
+earnings calendar claimed. `seal.py` moves an event to its 8-K or 6-K acceptance
+instant, and where that lands earlier than the calendar date, the capture went on
+sweeping past a print it had already missed. Re-run against the sealed instant:
+**31 of 109 names hold post-print material.**
+
+Two distinct causes, and the second is structural:
+
+1. **A calendar row that was days early.** GAUZ and KT. The capture followed the
+   calendar and the company reported before it.
+2. **Every `bmo` name, by construction.** A bmo 8-K is accepted around 11:00Z; the
+   capture's daily sweep runs around 15:07Z. So the last sweep before a bmo print
+   is always *after* it. Twenty-nine of the 31 are this, usually 2 items and once
+   22 (MDT). `capture.py` schedules on the calendar date without regard to session,
+   which is correct for `amc` and wrong for every `bmo` event it will ever capture.
+
+That second one needs fixing in `capture.py` for the forward corpus, where it is
+silently contaminating roughly half of everything being collected. It is not fixed
+here — this section is the record that it is known.
+
+**The backtest is not dropping those 31.** `edge_corpus_audit.py` writes a
+non-destructive `clean-view/<TICKER>.json` per affected event naming the snapshots
+an agent may read and the last admissible bar, and the brief passes it on. The
+capture corpus is the archive and is not rewritten. Dropping the names instead
+would cost 31 of 109 and would bias what remains toward `amc`.
+
+**A second wrong check, in the audit itself, worth recording because it points the
+other way.** The first version of the bar test counted the event day's own close as
+post-print for every name and flagged 83 of 109. For an `amc` print that close is
+the *pre*-print close — the left-hand side of this repo's own close-to-close
+convention. A check that manufactures alarm gets switched off as fast as one that
+misses everything.

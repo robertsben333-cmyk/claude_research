@@ -73,3 +73,7 @@
 ## Edge-corpus backtest — STARTED
 - Logged at 2026-09-09 14:39 UTC
 - Running the edge hunt over the sealed capture corpus: 109 events across 7 event days (2026-08-31 .. 2026-09-09), one hunter agent per day plus one adversary agent per day. Baselines built with the as-of guard, so every name is proxy-anchored. Output under backtest/runs/edge-corpus/<date>/.
+
+## Edge-corpus contamination audit
+- Logged at 2026-09-09 14:55 UTC
+- Re-audited against the sealed acceptance instant instead of the calendar date: 31 of 109 names hold post-print material, 29 of them because a bmo capture's daily sweep runs hours after a bmo 8-K. Non-destructive clean-view files written; FINDINGS.md section 35.

@@ -1,0 +1,53 @@
+{
+  "ticker": "AOUT",
+  "expected_move_pct": -5.0,
+  "conviction_note": "Baseline median reaction is 15.1% (inflated by duplicated event rows) and this name has moved 13-18% on four of its last five real prints, so magnitude is large; I tilt negative because the stock ground down 22% in fifteen sessions on ordinary volume with no news, and it must be measured against an FY27 guide of 5-10% sales growth issued ten weeks after a quarter in which sales fell 24% YoY.",
+  "findings": [
+    {
+      "finding": "A monotone 22% slide from $12.89 on 2026-08-13 to $10.01 on 2026-09-03 on entirely ordinary volume (25k-67k shares a day against a 56.8k twenty-day average, no single distribution spike), in a name whose whole float turns over slowly - a persistent seller with no news event and no volume signature anywhere in the capture to explain it.",
+      "expected_impact_pct": -5.0,
+      "impact_low_pct": -14.0,
+      "impact_high_pct": 3.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1808997/000180899726000035/aout-20260804.htm",
+      "source_date": "2026-09-03",
+      "corpus_ref": "quote.json bars 2026-08-12 through 2026-09-03; filings.json shows no filing of any kind after 2026-08-14 to explain the move",
+      "body_available": false,
+      "why_not_priced": "A grind lower with no volume spike is invisible to news screens and to any preview: there is literally nothing in the capture between 2026-08-19 and the print - one Stocktwits message in eleven days. If this were a known catalyst the volume would have spiked on one day rather than distributing evenly across fifteen sessions. The direction of an informed seller in a 57k-share-a-day stock is information the tape carries and the wire does not.",
+      "independence": "The only late-arriving corpus item, a Stocktwits post dated 2026-09-01, independently reads the tape the same way ('will go down another 1.00 tomorrow before leveling off') - docs/15f873a41212159a193bec5557be83120edf088e.txt"
+    },
+    {
+      "finding": "On 2026-08-06 the company filed an 8-K with items 5.02, 7.01 and 9.01 adding Kevin D. Leary as an independent director onto the compensation and governance committees, accompanied the same evening by a Form 3 and a Form 4 from a brand-new filer CIK, and four days later on 2026-08-10 a SCHEDULE 13D/A was accepted - the exact filing signature of an activist board settlement or cooperation agreement, four weeks before the print.",
+      "expected_impact_pct": 2.0,
+      "impact_low_pct": -1.0,
+      "impact_high_pct": 7.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1808997/000110465926093517/xslSCHEDULE_13D_X02/primary_doc.xml",
+      "source_date": "2026-08-10",
+      "corpus_ref": "filings.json accessions 0001808997-26-000035 (8-K, items 5.02/7.01/9.01, accepted 2026-08-06T21:03:54Z), 0002148361-26-000002 (Form 3), 0002148361-26-000003 (Form 4), 0001104659-26-093517 (13D/A, accepted 2026-08-10T22:50:37Z)",
+      "body_available": false,
+      "why_not_priced": "The 13D/A body is not in the capture and got exactly one Stocktwits mention with no engagement; nothing aggregates the sequence 8-K/5.02 -> Form 3 -> 13D/A into a settlement read. If the market had priced a board settlement in a $130m-cap company with a $10m buyback authorisation and a publicly speculated SWBI combination, the stock would not have fallen 22% in the three weeks after it. That is what makes it a floor for a bad print rather than a reason to be long.",
+      "independence": "A December-2025 corpus item names Engine Capital Management as the largest fund holder of AOUT ($8m position), an activist manager, which is consistent with the 13D/A being an activist rather than a passive filing - docs/994d48dabaeeaa94ab9820db27a79d7711cb5465.txt"
+    },
+    {
+      "finding": "The FY27 guide the company must defend on this print - net sales of $200-210m, 5-10% growth, adjusted EBITDA up over 40% - was issued on 2026-06-25 in the same release that reported Q4 FY26 sales of $47.06m, down 24.03% YoY, and the comparable seasonal quarter a year earlier (Q1 FY26, printed 2025-09-04) collapsed to $29.7m from $41.6m and took the stock down 18%.",
+      "expected_impact_pct": -3.5,
+      "impact_low_pct": -12.0,
+      "impact_high_pct": 4.0,
+      "source": "https://www.marketbeat.com/earnings/reports/2026-6-25-american-outdoor-brands-inc-stock/",
+      "source_date": "2026-06-25",
+      "corpus_ref": "docs/994d48dabaeeaa94ab9820db27a79d7711cb5465.txt (snapshots/20260830T084152Z.json item 1), Stocktwits entries dated 2026-06-25T20:12:17Z and 2025-09-04T21:01:12Z",
+      "body_available": true,
+      "why_not_priced": "The guidance range itself is wire copy. What is not aggregated is the arithmetic tension: a +5-10% full-year growth guide sitting on top of a most-recent quarter that shrank 24%, with the first quarter of the guided year being the smallest and historically most disappointing quarter of the fiscal calendar. There is zero sell-side preview in this capture (n_queries=0 in every one of six sweeps), so nobody in the observed corpus has done that arithmetic.",
+      "independence": "The FY26 experience is a separate document within the same body: the company withdrew its FY26 guide at the 2025-06-26 print after retailers pulled forward $8-10m of orders, so a mid-year guidance withdrawal is an established pattern at this issuer - https://d-risk.ai/AOUT/10-K/2026-06-25"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any 8-K after 2026-08-14, including any pre-announcement, guidance update or item 2.02 scheduling filing",
+    "any S-3, 424B or equity issuance",
+    "any Form 4 by the CEO or CFO in the two months before the print (the last insider Form 4s are 2026-07-13)",
+    "any news-wire coverage: every one of six sweeps has n_queries=0, so no sell-side preview, no consensus estimate and no channel data for this print",
+    "the 13D/A body itself, which would name the filer and the purpose"
+  ],
+  "baseline_tension": "My tape finding agrees with the run-up (-20.2% over 20 days) and with the historically negative Q1 reaction; the activist-settlement finding cuts against it, which is why the net number is well inside the 15% median magnitude.",
+  "corpus_limits": "No option chain, so no implied move or skew. The baseline's event_plausibility verdict is 'unknown' because duplicated event rows halve the inferred cadence to 69 days; the underlying dates (2026-06-26, 2026-03-12, 2025-12-09, 2025-09-05, 2025-06-27) are in fact a normal quarterly cadence, so I treated the reaction history as usable while noting the median is overstated by the duplicates. No news search was run for this ticker, so no consensus, preview or NICS/retail channel data. No item in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 6
+}
