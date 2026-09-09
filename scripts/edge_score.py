@@ -377,9 +377,17 @@ def main():
             print(f"{'--':>2} {r['ticker']:8s}{'':>9s}{'':>9s}{'':>7s}{ln:>9s}"
                   f"{'':>8s}{'':>8s}  not ranked: {r['not_rankable_because']}")
             continue
+        # residual_sum and edge_score_legacy are both None when a name carries no
+        # adversary verdicts. Since the adversary became a weekly audit that is the
+        # normal case on four days in five, so these must be formatted defensively
+        # or the summary crashes on every non-audit day.
+        rs = d.get("residual_sum")
+        lg = d.get("edge_score_legacy")
+        rs_s = f"{rs:+.2f}" if rs is not None else "n/a"
+        lg_s = f"{lg:+.1f}" if lg is not None else "n/a"
         print(f"{r['rank']:>2} {r['ticker']:8s}{r['impact_sum']:>+9.2f}"
               f"{r['conviction']:>9.2f}{('yes' if r['conviction'] >= FLOOR else '-'):>7s}"
-              f"{ln:>9s}{d['residual_sum']:>+8.2f}{d['edge_score_legacy']:>+8.1f}")
+              f"{ln:>9s}{rs_s:>8s}{lg_s:>8s}")
     print(f"\nwrote {out}")
 
 
