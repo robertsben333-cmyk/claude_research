@@ -1,0 +1,316 @@
+<title>Voorspeld tegen gerealiseerd</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ground:#fbfbf9; --surface:#ffffff; --raised:#f5f5f2;
+    --ink:#14161c; --ink-2:#565c69; --ink-3:#8b909d;
+    --rule:#e2e4ea; --rule-2:#eceef2;
+    --s1:#2a78d6; --s2:#eb6834;
+    --good:#0ca30c; --bad:#d03b3b;
+    --grid:#e8eaef;
+    --font-d:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+    --font-b:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+    --font-m:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#15171b; --surface:#1c1f24; --raised:#22262c;
+      --ink:#f1f2f5; --ink-2:#b0b6c0; --ink-3:#7d838f;
+      --rule:#2a2e36; --rule-2:#242830;
+      --s1:#3987e5; --s2:#d95926;
+      --good:#3cc23c; --bad:#e66767;
+      --grid:#282c34;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#15171b; --surface:#1c1f24; --raised:#22262c;
+    --ink:#f1f2f5; --ink-2:#b0b6c0; --ink-3:#7d838f;
+    --rule:#2a2e36; --rule-2:#242830;
+    --s1:#3987e5; --s2:#d95926;
+    --good:#3cc23c; --bad:#e66767;
+    --grid:#282c34;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--font-b);
+       font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:44px 24px 72px;display:flex;
+        flex-direction:column;gap:40px}
+  .eyebrow{font-family:var(--font-m);font-size:11px;letter-spacing:.12em;
+           text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+  h1{font-family:var(--font-d);font-weight:700;font-size:clamp(30px,4.4vw,46px);
+     line-height:1.05;letter-spacing:-.02em;margin:0;text-wrap:balance;max-width:22ch}
+  .lede{margin:14px 0 0;max-width:66ch;color:var(--ink-2);font-size:16.5px}
+  .lede strong{color:var(--ink);font-weight:600}
+  h2{font-family:var(--font-d);font-weight:500;font-size:21px;letter-spacing:-.01em;
+     margin:0 0 4px;text-wrap:balance}
+  .sub{color:var(--ink-3);font-size:13.5px;margin:0 0 18px;max-width:72ch}
+  section{display:flex;flex-direction:column}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;
+         background:var(--rule);border:1px solid var(--rule);border-radius:3px;
+         overflow:hidden}
+  .tile{background:var(--surface);padding:18px 20px 16px}
+  .tile .k{font-family:var(--font-m);font-size:10.5px;letter-spacing:.1em;
+           text-transform:uppercase;color:var(--ink-3)}
+  .tile .v{font-family:var(--font-d);font-weight:700;font-size:34px;line-height:1.1;
+           letter-spacing:-.02em;margin-top:8px;font-variant-numeric:tabular-nums}
+  .tile .n{font-size:12.5px;color:var(--ink-2);margin-top:5px}
+  .tile.flat .v{color:var(--ink-2);font-size:24px;letter-spacing:-.01em}
+
+  .facets{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:26px}
+  figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+         padding:16px 16px 10px}
+  figcaption{font-family:var(--font-m);font-size:11px;letter-spacing:.08em;
+             text-transform:uppercase;color:var(--ink-2);margin-bottom:10px}
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .gl{stroke:var(--grid);stroke-width:1}
+  .zl{stroke:var(--ink-3);stroke-width:1}
+  .dg{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:3 3;opacity:.55}
+  .tx{fill:var(--ink-3);font-family:var(--font-m);font-size:9.5px}
+  .txb{fill:var(--ink-2);font-family:var(--font-m);font-size:10px}
+  .quad{fill:var(--bad);opacity:.055}
+  .quadlbl{fill:var(--bad);font-family:var(--font-m);font-size:9px;opacity:.85}
+  .pt{stroke:var(--surface);stroke-width:2;cursor:pointer}
+  .bar{cursor:pointer}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:2px 0 12px;
+          font-size:12.5px;color:var(--ink-2)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .sw{width:11px;height:11px;border-radius:2px;display:inline-block}
+
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  .tw{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+  th{text-align:right;font-family:var(--font-m);font-size:10px;letter-spacing:.08em;
+     text-transform:uppercase;color:var(--ink-3);font-weight:400;
+     padding:11px 12px;border-bottom:1px solid var(--rule);white-space:nowrap;
+     position:sticky;top:0;background:var(--surface)}
+  th:first-child,th:nth-child(2),th:nth-child(3){text-align:left}
+  td{padding:8px 12px;border-bottom:1px solid var(--rule-2);text-align:right;
+     font-family:var(--font-m);font-variant-numeric:tabular-nums;white-space:nowrap}
+  td:first-child,td:nth-child(2),td:nth-child(3){text-align:left}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:var(--raised)}
+  .tk{font-family:var(--font-b);font-weight:600;color:var(--ink)}
+  .dim{color:var(--ink-3)}
+  .chip{font-family:var(--font-m);font-size:10.5px;padding:1px 6px;border-radius:2px;
+        border:1px solid currentColor}
+  .hit{color:var(--good)} .miss{color:var(--bad)}
+  .neg{color:var(--bad)} .pos{color:var(--good)}
+
+  #tip{position:fixed;pointer-events:none;opacity:0;transition:opacity .09s;
+       background:var(--ink);color:var(--ground);font-family:var(--font-m);font-size:11.5px;
+       padding:7px 9px;border-radius:3px;z-index:9;line-height:1.5;max-width:240px}
+  footer{border-top:1px solid var(--rule);padding-top:18px;color:var(--ink-3);
+          font-size:12.5px;max-width:74ch}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Stage E · edge hunt · 38 events · 2026-08-31 t/m 2026-09-08</p>
+    <h1>Voorspeld tegen gerealiseerd</h1>
+    <p class="lede">De impactsom <strong>rangschikt</strong> de dag (ρ=0,407, p=0,017) maar
+      <strong>voorspelt de richting niet</strong>: 55% naar de open, 53% naar de close, tegen
+      een muntvloer van 50%. Instap 20:00 CET (14:00 ET) op de laatste sessie voor de print,
+      uitstap op de volgende open of de volgende close.</p>
+  </header>
+
+  <section>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section>
+    <h2>Voorspeld tegen gerealiseerd, per event</h2>
+    <p class="sub">De gearceerde kwadranten zijn de verkeerde-tekenzone: daar ging de koers de
+      andere kant op dan voorspeld. De stippellijn is voorspeld = gerealiseerd. Beweeg over een
+      punt voor de naam.</p>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--s1)"></i> teken klopt</span>
+      <span><i class="sw" style="background:var(--s2)"></i> verkeerd teken (in de gearceerde kwadranten)</span>
+    </div>
+    <div class="facets" id="scatters"></div>
+  </section>
+
+  <section>
+    <h2>Verdeling van het gerealiseerde rendement, gesplitst op de voorspelling</h2>
+    <p class="sub">Als de voorspelling richting zou dragen, zouden de blauwe staven rechts van
+      nul liggen en de oranje links. Ze overlappen bijna volledig.</p>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--s1)"></i> voorspeld omhoog (16 events)</span>
+      <span><i class="sw" style="background:var(--s2)"></i> voorspeld omlaag (22 events)</span>
+    </div>
+    <div class="facets" id="hists"></div>
+  </section>
+
+  <section>
+    <h2>Alle 38 events</h2>
+    <p class="sub">Gesorteerd op voorspeld rendement. <code>pred</code> is de impactsom in punten
+      van de koers; beide rendementskolommen zijn gemeten vanaf de instap van 14:00 ET.
+      Dagomzet is koers × gemiddeld 20-daags volume.</p>
+    <div class="tw"><table id="tbl"></table></div>
+  </section>
+
+  <footer>
+    Zes hunt-dagen, 38 unieke events, één marktregime, bruto van borrow en slippage. De vijf
+    namen die op twee hunt-dagen voorkomen zijn ontdubbeld op de eerste hunt. Dit is een
+    voorspellingsoefening over publieke informatie, geen beleggingsadvies.
+  </footer>
+</div>
+
+<div id="tip"></div>
+
+<script>
+const DATA = {"n":38,"open":{"n":38,"hits":21,"pct":55.3,"binom_p":0.314,"ret":1.81,"sd":10.53,"t":1.06,"always_short":-0.39,"always_long":0.39,"down":19,"pearson_pred_vs_actual":0.448,"spearman_pred_vs_actual":0.367,"median_abs_error_pp":6.11},"close":{"n":38,"hits":20,"pct":52.6,"binom_p":0.436,"ret":1.08,"sd":11.34,"t":0.59,"always_short":2.11,"always_long":-2.11,"down":20,"pearson_pred_vs_actual":0.38,"spearman_pred_vs_actual":0.32,"median_abs_error_pp":7.67},"rows":[{"t":"SWBI","event":"2026-09-03","sess":"amc","day":"2026-09-03","pred":16.3,"ro":14.836,"rc":5.574,"hit_o":true,"hit_c":true,"dv":5552939},{"t":"SPWH","event":"2026-09-01","sess":"amc","day":"2026-09-01","pred":11.25,"ro":13.559,"rc":8.475,"hit_o":true,"hit_c":true,"dv":327379},{"t":"DLTH","event":"2026-09-03","sess":"bmo","day":"2026-09-02","pred":11.0,"ro":18.248,"rc":25.137,"hit_o":true,"hit_c":true,"dv":168145},{"t":"MAMA","event":"2026-09-03","sess":"amc","day":"2026-09-03","pred":8.25,"ro":-1.844,"rc":-5.377,"hit_o":false,"hit_c":false,"dv":6878496},{"t":"DELL","event":"2026-09-01","sess":"amc","day":"2026-09-01","pred":5.25,"ro":8.363,"rc":15.43,"hit_o":true,"hit_c":true,"dv":2250641665},{"t":"WOOF","event":"2026-09-02","sess":"amc","day":"2026-09-02","pred":4.5,"ro":20.532,"rc":-4.373,"hit_o":true,"hit_c":false,"dv":3874904},{"t":"NTSK","event":"2026-09-02","sess":"amc","day":"2026-09-02","pred":3.7,"ro":14.213,"rc":4.713,"hit_o":true,"hit_c":true,"dv":57920843},{"t":"DOO","event":"2026-09-03","sess":"bmo","day":"2026-09-02","pred":3.2,"ro":2.121,"rc":2.328,"hit_o":true,"hit_c":true,"dv":13357775},{"t":"CRDO","event":"2026-09-01","sess":"amc","day":"2026-09-01","pred":2.35,"ro":-10.438,"rc":-21.456,"hit_o":false,"hit_c":false,"dv":884909844},{"t":"ASAN","event":"2026-09-03","sess":"amc","day":"2026-09-03","pred":1.85,"ro":-13.337,"rc":-12.72,"hit_o":false,"hit_c":false,"dv":43029579},{"t":"AGX","event":"2026-09-02","sess":"amc","day":"2026-09-02","pred":1.6,"ro":4.278,"rc":0.559,"hit_o":true,"hit_c":true,"dv":114444638},{"t":"FCEL","event":"2026-09-02","sess":"bmo","day":"2026-09-01","pred":1.3,"ro":-9.624,"rc":-14.72,"hit_o":false,"hit_c":false,"dv":122479882},{"t":"AMBA","event":"2026-09-03","sess":"amc","day":"2026-09-03","pred":1.0,"ro":-3.154,"rc":-3.629,"hit_o":false,"hit_c":false,"dv":59694817},{"t":"NIO","event":"2026-09-01","sess":"bmo","day":"2026-08-31","pred":0.55,"ro":-5.643,"rc":-6.221,"hit_o":false,"hit_c":false,"dv":117172784},{"t":"MDB","event":"2026-09-01","sess":"amc","day":"2026-09-01","pred":0.5,"ro":-13.674,"rc":-14.378,"hit_o":false,"hit_c":false,"dv":636369254},{"t":"MDT","event":"2026-09-01","sess":"bmo","day":"2026-08-31","pred":0.08,"ro":3.353,"rc":1.22,"hit_o":true,"hit_c":true,"dv":564339142},{"t":"ABM","event":"2026-09-08","sess":"bmo","day":"2026-09-04","pred":-0.05,"ro":-2.324,"rc":7.889,"hit_o":true,"hit_c":false,"dv":15309430},{"t":"MMED","event":"2026-09-01","sess":"bmo","day":"2026-08-31","pred":-0.3,"ro":2.513,"rc":12.412,"hit_o":false,"hit_c":false,"dv":22664932},{"t":"DOMO","event":"2026-09-03","sess":"amc","day":"2026-09-03","pred":-0.55,"ro":-5.366,"rc":1.309,"hit_o":true,"hit_c":false,"dv":3339804},{"t":"AI","event":"2026-09-02","sess":"amc","day":"2026-09-02","pred":-1.4,"ro":2.578,"rc":4.057,"hit_o":false,"hit_c":false,"dv":43192889},{"t":"HMR","event":"2026-09-01","sess":"bmo","day":"2026-08-31","pred":-1.65,"ro":-1.6,"rc":-12.219,"hit_o":true,"hit_c":true,"dv":69266},{"t":"WDH","event":"2026-09-08","sess":"bmo","day":"2026-09-04","pred":-1.9,"ro":10.294,"rc":4.902,"hit_o":false,"hit_c":false,"dv":191647},{"t":"GTLB","event":"2026-09-01","sess":"amc","day":"2026-09-01","pred":-2.15,"ro":21.934,"rc":9.448,"hit_o":false,"hit_c":false,"dv":189558301},{"t":"UNFI","event":"2026-09-08","sess":"bmo","day":"2026-09-04","pred":-2.57,"ro":3.125,"rc":2.486,"hit_o":false,"hit_c":false,"dv":20892328},{"t":"PANW","event":"2026-09-01","sess":"amc","day":"2026-09-01","pred":-2.6,"ro":-4.095,"rc":-9.001,"hit_o":true,"hit_c":true,"dv":1961950522},{"t":"LULU","event":"2026-09-03","sess":"amc","day":"2026-09-03","pred":-3.0,"ro":-17.807,"rc":-15.79,"hit_o":true,"hit_c":true,"dv":414225719},{"t":"ZEPP","event":"2026-09-01","sess":"bmo","day":"2026-08-31","pred":-4.4,"ro":1.626,"rc":-8.537,"hit_o":false,"hit_c":true,"dv":190115},{"t":"CANG","event":"2026-08-31","sess":"amc","day":"2026-08-31","pred":-4.5,"ro":-13.208,"rc":-23.061,"hit_o":true,"hit_c":true,"dv":1095945},{"t":"DLNG","event":"2026-09-08","sess":"bmo","day":"2026-09-07","pred":-4.8,"ro":2.981,"rc":4.607,"hit_o":false,"hit_c":false,"dv":186038},{"t":"NX","event":"2026-09-03","sess":"amc","day":"2026-09-03","pred":-5.75,"ro":9.385,"rc":21.315,"hit_o":false,"hit_c":false,"dv":4890046},{"t":"YEXT","event":"2026-09-01","sess":"bmo","day":"2026-08-31","pred":-6.45,"ro":13.397,"rc":-3.331,"hit_o":false,"hit_c":true,"dv":4614685},{"t":"PL","event":"2026-09-03","sess":"amc","day":"2026-09-03","pred":-7.25,"ro":5.932,"rc":1.371,"hit_o":false,"hit_c":false,"dv":96513531},{"t":"MEI","event":"2026-09-02","sess":"amc","day":"2026-09-02","pred":-7.9,"ro":-16.399,"rc":-15.291,"hit_o":true,"hit_c":true,"dv":10891360},{"t":"GMHS","event":"2026-09-08","sess":"bmo","day":"2026-09-04","pred":-8.25,"ro":-13.357,"rc":-3.466,"hit_o":true,"hit_c":true,"dv":312360},{"t":"GOLD","event":"2026-09-02","sess":"amc","day":"2026-09-02","pred":-9.15,"ro":-3.909,"rc":-5.727,"hit_o":true,"hit_c":true,"dv":19058027},{"t":"CXM","event":"2026-09-02","sess":"bmo","day":"2026-09-01","pred":-9.2,"ro":-4.516,"rc":-10.194,"hit_o":true,"hit_c":true,"dv":22051229},{"t":"CAN","event":"2026-09-08","sess":"bmo","day":"2026-09-04","pred":-15.25,"ro":-4.98,"rc":-6.427,"hit_o":true,"hit_c":true,"dv":8150966},{"t":"RZLV","event":"2026-09-01","sess":"bmo","day":"2026-08-31","pred":-18.35,"ro":-13.103,"rc":-17.414,"hit_o":true,"hit_c":true,"dv":44972173}]};
+
+const tip = document.getElementById('tip');
+const fmt = v => (v>=0?'+':'') + v.toFixed(2) + '%';
+function bind(el, html){
+  el.addEventListener('mouseenter', e => { tip.innerHTML = html; tip.style.opacity = 1; });
+  el.addEventListener('mousemove', e => {
+    tip.style.left = Math.min(e.clientX+14, innerWidth-256) + 'px';
+    tip.style.top  = Math.max(e.clientY-12, 8) + 'px';
+  });
+  el.addEventListener('mouseleave', () => { tip.style.opacity = 0; });
+}
+const SVGNS = 'http://www.w3.org/2000/svg';
+const mk = (n, a) => { const e = document.createElementNS(SVGNS, n);
+  for (const k in a) e.setAttribute(k, a[k]); return e; };
+
+/* ---- stat tiles ---------------------------------------------------------- */
+const tiles = [
+  ['richting, uitstap open', DATA.open.hits+'/'+DATA.open.n,
+   Math.round(DATA.open.pct)+'% · binomiaal p='+DATA.open.binom_p.toFixed(3), false],
+  ['richting, uitstap close', DATA.close.hits+'/'+DATA.close.n,
+   Math.round(DATA.close.pct)+'% · binomiaal p='+DATA.close.binom_p.toFixed(3), false],
+  ['rendement per trade', fmt(DATA.open.ret)+' / '+fmt(DATA.close.ret),
+   'open / close · t='+DATA.open.t.toFixed(2)+' en '+DATA.close.t.toFixed(2), true],
+  ['vloer: altijd short', fmt(DATA.open.always_short)+' / '+fmt(DATA.close.always_short),
+   'zelfde events, geen research', true],
+];
+document.getElementById('tiles').innerHTML = tiles.map(([k,v,n,flat]) =>
+  `<div class="tile${flat?' flat':''}"><div class="k">${k}</div><div class="v">${v}</div>`+
+  `<div class="n">${n}</div></div>`).join('');
+
+/* ---- scatter: predicted vs realised -------------------------------------- */
+function scatter(host, key, hitKey, label){
+  const W = 460, H = 340, L = 46, R = 14, T = 16, B = 40;
+  const pw = W-L-R, ph = H-T-B;
+  const all = DATA.rows.flatMap(r => [r.pred, r.ro, r.rc]).map(Math.abs);
+  const lim = Math.ceil(Math.max(...all)/10)*10;   // one scale for both facets
+  const x = v => L + (v+lim)/(2*lim)*pw, y = v => T + (lim-v)/(2*lim)*ph;
+  const fig = document.createElement('figure');
+  fig.innerHTML = `<figcaption>${label}</figcaption>`;
+  const s = mk('svg', {viewBox:`0 0 ${W} ${H}`, role:'img',
+    'aria-label':`Spreidingsdiagram: voorspeld tegen gerealiseerd rendement, ${label}`});
+  // wrong-sign quadrants
+  s.appendChild(mk('rect',{class:'quad',x:x(0),y:y(0),width:pw/2,height:ph/2}));
+  s.appendChild(mk('rect',{class:'quad',x:L,y:T,width:pw/2,height:ph/2}));
+  const ql = mk('text',{class:'quadlbl',x:L+6,y:T+13}); ql.textContent='verkeerd teken';
+  s.appendChild(ql);
+  const ql2 = mk('text',{class:'quadlbl',x:W-R-6,y:H-B-6,'text-anchor':'end'});
+  ql2.textContent='verkeerd teken'; s.appendChild(ql2);
+  for (let v=-lim; v<=lim; v+=lim/2){
+    if (v!==0){
+      s.appendChild(mk('line',{class:'gl',x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+      s.appendChild(mk('line',{class:'gl',x1:x(v),x2:x(v),y1:T,y2:H-B}));
+    }
+    const tya = mk('text',{class:'tx',x:L-7,y:y(v)+3,'text-anchor':'end'});
+    tya.textContent = v.toFixed(0)+'%'; s.appendChild(tya);
+    const txa = mk('text',{class:'tx',x:x(v),y:H-B+15,'text-anchor':'middle'});
+    txa.textContent = v.toFixed(0)+'%'; s.appendChild(txa);
+  }
+  s.appendChild(mk('line',{class:'zl',x1:L,x2:W-R,y1:y(0),y2:y(0)}));
+  s.appendChild(mk('line',{class:'zl',x1:x(0),x2:x(0),y1:T,y2:H-B}));
+  s.appendChild(mk('line',{class:'dg',x1:x(-lim),y1:y(-lim),x2:x(lim),y2:y(lim)}));
+  const xl = mk('text',{class:'txb',x:L+pw/2,y:H-6,'text-anchor':'middle'});
+  xl.textContent = 'voorspeld (impactsom)'; s.appendChild(xl);
+  const yl = mk('text',{class:'txb',x:12,y:T+ph/2,'text-anchor':'middle',
+    transform:`rotate(-90 12 ${T+ph/2})`});
+  yl.textContent = 'gerealiseerd'; s.appendChild(yl);
+  DATA.rows.forEach(r => {
+    const c = mk('circle',{class:'pt',cx:x(r.pred),cy:y(r[key]),r:5.5,
+      fill: r[hitKey] ? 'var(--s1)' : 'var(--s2)'});
+    bind(c, `<b>${r.t}</b> · ${r.event} ${r.sess}<br>voorspeld ${fmt(r.pred)}<br>`+
+            `gerealiseerd ${fmt(r[key])}<br>${r[hitKey]?'teken klopt':'verkeerd teken'}`);
+    s.appendChild(c);
+  });
+  fig.appendChild(s); host.appendChild(fig);
+}
+const sc = document.getElementById('scatters');
+scatter(sc, 'ro', 'hit_o', 'uitstap op de open');
+scatter(sc, 'rc', 'hit_c', 'uitstap op de close');
+
+/* ---- histogram: realised, split on the prediction's sign ----------------- */
+function hist(host, key, label){
+  const edges = [-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30];
+  const up = new Array(edges.length-1).fill(0), dn = new Array(edges.length-1).fill(0);
+  const names = up.map(() => ({u:[],d:[]}));
+  DATA.rows.forEach(r => {
+    let i = edges.findIndex((e,k) => k<edges.length-1 && r[key]>=e && r[key]<edges[k+1]);
+    if (i < 0) i = r[key] < edges[0] ? 0 : edges.length-2;
+    if (r.pred >= 0) { up[i]++; names[i].u.push(r.t); } else { dn[i]++; names[i].d.push(r.t); }
+  });
+  const W = 460, H = 300, L = 30, R = 12, T = 14, B = 44;
+  const pw = W-L-R, ph = H-T-B;
+  const maxc = Math.max(...up, ...dn, 1);
+  const bw = pw/(edges.length-1), gap = 3, sw = (bw-gap*3)/2;
+  const y = c => T + ph - c/maxc*ph;
+  const fig = document.createElement('figure');
+  fig.innerHTML = `<figcaption>${label}</figcaption>`;
+  const s = mk('svg',{viewBox:`0 0 ${W} ${H}`, role:'img',
+    'aria-label':`Histogram van gerealiseerd rendement gesplitst op de voorspelling, ${label}`});
+  for (let c=0; c<=maxc; c++){
+    s.appendChild(mk('line',{class:'gl',x1:L,x2:W-R,y1:y(c),y2:y(c)}));
+    if (c%2===0){ const tl=mk('text',{class:'tx',x:L-6,y:y(c)+3,'text-anchor':'end'});
+      tl.textContent=c; s.appendChild(tl); }
+  }
+  const zx = L + pw * (0 - edges[0]) / (edges[edges.length-1]-edges[0]);
+  s.appendChild(mk('line',{class:'zl',x1:zx,x2:zx,y1:T,y2:T+ph}));
+  for (let i=0; i<edges.length-1; i++){
+    const bx = L + i*bw;
+    [[up[i],'var(--s1)',bx+gap,names[i].u,'voorspeld omhoog'],
+     [dn[i],'var(--s2)',bx+gap*2+sw,names[i].d,'voorspeld omlaag']].forEach(([c,fill,px,ns,lab])=>{
+      if (!c) return;
+      const rect = mk('rect',{class:'bar',x:px,y:y(c),width:sw,height:T+ph-y(c),
+        fill:fill,rx:2});
+      bind(rect, `<b>${lab}</b><br>${edges[i]}% tot ${edges[i+1]}%<br>`+
+                 `${c} event${c>1?'s':''}: ${ns.join(' ')}`);
+      s.appendChild(rect);
+      const lb = mk('text',{class:'tx',x:px+sw/2,y:y(c)-4,'text-anchor':'middle'});
+      lb.textContent = c; s.appendChild(lb);
+    });
+    if (i%2===0){
+      const tl = mk('text',{class:'tx',x:bx,y:T+ph+15,'text-anchor':'middle'});
+      tl.textContent = edges[i]+'%'; s.appendChild(tl);
+    }
+  }
+  const tlast = mk('text',{class:'tx',x:W-R,y:T+ph+15,'text-anchor':'middle'});
+  tlast.textContent = edges[edges.length-1]+'%'; s.appendChild(tlast);
+  const xl = mk('text',{class:'txb',x:L+pw/2,y:H-8,'text-anchor':'middle'});
+  xl.textContent = 'gerealiseerd rendement'; s.appendChild(xl);
+  fig.appendChild(s); host.appendChild(fig);
+}
+const hs = document.getElementById('hists');
+hist(hs, 'ro', 'uitstap op de open');
+hist(hs, 'rc', 'uitstap op de close');
+
+/* ---- table --------------------------------------------------------------- */
+const cls = v => v < 0 ? 'neg' : 'pos';
+document.getElementById('tbl').innerHTML =
+  '<thead><tr>' +
+  ['#','ticker','print','hunt','voorspeld','&rarr; open','&rarr; close','teken open',
+   'teken close','dagomzet'].map(h => `<th>${h}</th>`).join('') +
+  '</tr></thead><tbody>' +
+  DATA.rows.map((r,i) => `<tr>
+    <td class="dim">${i+1}</td>
+    <td class="tk">${r.t}</td>
+    <td class="dim">${r.event} ${r.sess}</td>
+    <td class="dim">${r.day.slice(5)}</td>
+    <td>${fmt(r.pred)}</td>
+    <td class="${cls(r.ro)}">${fmt(r.ro)}</td>
+    <td class="${cls(r.rc)}">${fmt(r.rc)}</td>
+    <td><span class="chip ${r.hit_o?'hit':'miss'}">${r.hit_o?'klopt':'mis'}</span></td>
+    <td><span class="chip ${r.hit_c?'hit':'miss'}">${r.hit_c?'klopt':'mis'}</span></td>
+    <td class="dim">$${(r.dv/1e6).toFixed(1)}m</td></tr>`).join('') +
+  '</tbody>';
+
+</script>

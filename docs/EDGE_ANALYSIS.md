@@ -301,6 +301,83 @@ Corrected for having gone looking, the ranking result sits just outside 0.05. It
 worth running forward, not a finding. Five independent days, 38 events, one regime, gross
 of borrow and slippage, and a strategy picked after the fact. None of it is advice.
 
+## Can the impact sum call direction? No.
+
+Ranking and direction are different questions, and the impact sum answers only the
+first. Scored the way `claude_naive` scores — **buy at 20:00 CET (14:00 ET) on the last
+session before the print, exit at the next open or the next close** — the sign of the
+impact sum is a coin flip. `scripts/edge_direction.py`; the per-event table is below and
+`docs/edge-direction.json` carries it machine-readable.
+
+| exit | direction | binomial p | return/trade | sd | t | always-short on the same events | realised down |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| next open | 21/38 = **55%** | 0.314 | +1.81% | 10.53 | 1.06 | -0.39% | 19/38 |
+| next close | 20/38 = **53%** | 0.436 | +1.08% | 11.34 | 0.59 | +2.11% | 20/38 |
+
+On the close exit the always-short floor (+2.11%/trade) beats the impact sum (+1.08%),
+and neither return is distinguishable from zero: t=1.06 and t=0.59 against a per-trade
+standard deviation above 10 percentage points. `edge_score`'s sign does no better (57%
+and 21/37), nor does the hunters' own volunteered `expected_move_pct` (55%).
+
+**What does survive is size, not sign.** Predicted against realised: Pearson 0.448 and
+Spearman 0.367 on the open exit, 0.380 and 0.320 on the close, with a median absolute
+error of 6.11pp and 7.67pp. So the impact sum orders *how far* a name travels better than
+it calls *which way* — the same split the pilot-40 backtest found on all three arms, and
+the reason `edge_resolve.py` measures rank correlation rather than a hit rate.
+
+It also explains why the long/short book works while the direction call does not. Under
+this entry convention the top-third/bottom-third book still returns +3.75%/day to the open
+and +4.45%/day to the close (against +5.73% on the close-to-close convention — entering at
+14:00 ET rather than on the close costs about a point a day in pre-print drift), because
+that book only ever trades the extremes of the ordering and never asks the middle 24 names
+which way they are going.
+
+### Every event, predicted against realised
+
+Sorted by predicted return. `pred` is the impact sum in points of spot; both realised
+columns are measured from the 14:00 ET entry.
+
+| # | ticker | print | hunted | pred | → open | → close | sign open | sign close |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | SWBI | 2026-09-03 amc | 2026-09-03 | +16.30% | +14.84% | +5.57% | hit | hit |
+| 2 | SPWH | 2026-09-01 amc | 2026-09-01 | +11.25% | +13.56% | +8.47% | hit | hit |
+| 3 | DLTH | 2026-09-03 bmo | 2026-09-02 | +11.00% | +18.25% | +25.14% | hit | hit |
+| 4 | MAMA | 2026-09-03 amc | 2026-09-03 | +8.25% | -1.84% | -5.38% | miss | miss |
+| 5 | DELL | 2026-09-01 amc | 2026-09-01 | +5.25% | +8.36% | +15.43% | hit | hit |
+| 6 | WOOF | 2026-09-02 amc | 2026-09-02 | +4.50% | +20.53% | -4.37% | hit | miss |
+| 7 | NTSK | 2026-09-02 amc | 2026-09-02 | +3.70% | +14.21% | +4.71% | hit | hit |
+| 8 | DOO | 2026-09-03 bmo | 2026-09-02 | +3.20% | +2.12% | +2.33% | hit | hit |
+| 9 | CRDO | 2026-09-01 amc | 2026-09-01 | +2.35% | -10.44% | -21.46% | miss | miss |
+| 10 | ASAN | 2026-09-03 amc | 2026-09-03 | +1.85% | -13.34% | -12.72% | miss | miss |
+| 11 | AGX | 2026-09-02 amc | 2026-09-02 | +1.60% | +4.28% | +0.56% | hit | hit |
+| 12 | FCEL | 2026-09-02 bmo | 2026-09-01 | +1.30% | -9.62% | -14.72% | miss | miss |
+| 13 | AMBA | 2026-09-03 amc | 2026-09-03 | +1.00% | -3.15% | -3.63% | miss | miss |
+| 14 | NIO | 2026-09-01 bmo | 2026-08-31 | +0.55% | -5.64% | -6.22% | miss | miss |
+| 15 | MDB | 2026-09-01 amc | 2026-09-01 | +0.50% | -13.67% | -14.38% | miss | miss |
+| 16 | MDT | 2026-09-01 bmo | 2026-08-31 | +0.08% | +3.35% | +1.22% | hit | hit |
+| 17 | ABM | 2026-09-08 bmo | 2026-09-04 | -0.05% | -2.32% | +7.89% | hit | miss |
+| 18 | MMED | 2026-09-01 bmo | 2026-08-31 | -0.30% | +2.51% | +12.41% | miss | miss |
+| 19 | DOMO | 2026-09-03 amc | 2026-09-03 | -0.55% | -5.37% | +1.31% | hit | miss |
+| 20 | AI | 2026-09-02 amc | 2026-09-02 | -1.40% | +2.58% | +4.06% | miss | miss |
+| 21 | HMR | 2026-09-01 bmo | 2026-08-31 | -1.65% | -1.60% | -12.22% | hit | hit |
+| 22 | WDH | 2026-09-08 bmo | 2026-09-04 | -1.90% | +10.29% | +4.90% | miss | miss |
+| 23 | GTLB | 2026-09-01 amc | 2026-09-01 | -2.15% | +21.93% | +9.45% | miss | miss |
+| 24 | UNFI | 2026-09-08 bmo | 2026-09-04 | -2.57% | +3.12% | +2.49% | miss | miss |
+| 25 | PANW | 2026-09-01 amc | 2026-09-01 | -2.60% | -4.09% | -9.00% | hit | hit |
+| 26 | LULU | 2026-09-03 amc | 2026-09-03 | -3.00% | -17.81% | -15.79% | hit | hit |
+| 27 | ZEPP | 2026-09-01 bmo | 2026-08-31 | -4.40% | +1.63% | -8.54% | miss | hit |
+| 28 | CANG | 2026-08-31 amc | 2026-08-31 | -4.50% | -13.21% | -23.06% | hit | hit |
+| 29 | DLNG | 2026-09-08 bmo | 2026-09-07 | -4.80% | +2.98% | +4.61% | miss | miss |
+| 30 | NX | 2026-09-03 amc | 2026-09-03 | -5.75% | +9.38% | +21.32% | miss | miss |
+| 31 | YEXT | 2026-09-01 bmo | 2026-08-31 | -6.45% | +13.40% | -3.33% | miss | hit |
+| 32 | PL | 2026-09-03 amc | 2026-09-03 | -7.25% | +5.93% | +1.37% | miss | miss |
+| 33 | MEI | 2026-09-02 amc | 2026-09-02 | -7.90% | -16.40% | -15.29% | hit | hit |
+| 34 | GMHS | 2026-09-08 bmo | 2026-09-04 | -8.25% | -13.36% | -3.47% | hit | hit |
+| 35 | GOLD | 2026-09-02 amc | 2026-09-02 | -9.15% | -3.91% | -5.73% | hit | hit |
+| 36 | CXM | 2026-09-02 bmo | 2026-09-01 | -9.20% | -4.52% | -10.19% | hit | hit |
+| 37 | CAN | 2026-09-08 bmo | 2026-09-04 | -15.25% | -4.98% | -6.43% | hit | hit |
+| 38 | RZLV | 2026-09-01 bmo | 2026-08-31 | -18.35% | -13.10% | -17.41% | hit | hit |
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a
