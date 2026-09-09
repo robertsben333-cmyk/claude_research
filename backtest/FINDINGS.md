@@ -954,3 +954,43 @@ its normalised metric. A mis-specified event list does not just mislabel a name,
 rescales it. The same hunter noted `event_plausibility` had already flagged PXS's
 implied cadence as impossible for an earnings cadence, so the machinery to catch
 this exists and its verdict is not being carried into the anchor.
+
+## 38. The zero-collapse is back, and it tracks the corpus rather than the scorer
+
+Interim, over the first 25 names scored in the edge-corpus run. **Twelve of them
+score exactly zero — 48%.** On 2026-09-01 it was ten of fourteen, and that day's
+ranking carried five distinct scores across fourteen names.
+
+`edge_score.py` exists because of this failure. Its docstring records that on
+2026-08-31 the previous scorer left "twelve names collapsed to a single non-zero
+score and eleven zeros. There was nothing to rank, and the bucketing did that
+rather than the evidence." CLAUDE.md then records the fix as working: run 2 that
+day "produced eight rankable names with eight distinct scores. So the ordering
+problem is fixed."
+
+It is fixed *in the scorer*. It is not fixed as a property of the pipeline, because
+the collapse has a second cause that continuous scoring cannot touch: a hunter with
+nothing to find correctly returns no findings, and no findings is a zero. Split by
+what the capture held:
+
+| | non-zero | zero |
+| --- | --- | --- |
+| corpus held news items | 4 | 1 |
+| corpus was filings + social only | 9 | 11 |
+
+The zeros are honest. Every one traces to a capture that ran `n_queries: 0` and
+holds an EDGAR index plus a Stocktwits dump, and the hunters said so in
+`corpus_limits` rather than inventing a number to fill the gap — which is the
+behaviour the agent definition asks for and the outcome it was warned would happen.
+
+**What this costs the experiment.** Half the ranking is ties, and a rank
+correlation over a column that is half one value is close to untestable at any n
+the archive will reach soon. The question "can these companies be ranked" cannot be
+answered by giving the ranker nothing to rank on for half the sample. So the
+corpus-type split of section 36 is not a nicety for the write-up: `filings_only` is
+where the zeros live, and pooling the two halves hides that the pooled coefficient
+is being computed largely over tied scores.
+
+The finding is about the capture, not the method. Fixing it means giving
+`capture.py` a query budget for the small names too, and that is a forward-corpus
+change — it cannot be applied retrospectively to any of these 205 events.

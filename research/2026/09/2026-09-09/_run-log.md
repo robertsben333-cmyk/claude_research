@@ -81,3 +81,7 @@
 ## Edge-corpus corpus-quality findings
 - Logged at 2026-09-09 15:07 UTC
 - 95 of 109 captures hold no news item at all (12015 filings, 662 news, 316 social across the sample) - the sample is two experiments and must be reported split. 37 of 109 are sealed on a 6-K acceptance time, which RZLV shows can be hours after the release. FINDINGS.md sections 36 and 37.
+
+## Edge-corpus interim: zero-collapse returns
+- Logged at 2026-09-09 15:20 UTC
+- 48% of the first 25 scored names carry edge_score exactly zero (11 of 20 filings-only captures against 1 of 5 news-bearing). Half the ranking is ties. FINDINGS.md section 38.
