@@ -189,8 +189,23 @@ def prior_prints(cik, before, n=8):
     # structure, different investor base -- and the history read as ChronoScale's
     # own. `formerNames` says exactly when the identity changed and is free to
     # check, so prints from before the change are excluded rather than pooled.
+    # `formerNames` is a list of name *records*, not a list of renames. EDGAR
+    # routinely carries an entry whose name is identical to the current one, with a
+    # `to` date of roughly now -- METHODE ELECTRONICS INC to 2026-09-03 while the
+    # company is still called METHODE ELECTRONICS INC. Taking that `to` as an
+    # identity change discarded all 67 of Methode's prior prints and all 21 of
+    # Sprinklr's, leaving `history.n` at zero and `expected_move_pct` with nothing
+    # to be computed from. It raised no error and the basis string read as a
+    # deliberate exclusion.
+    #
+    # So an entry only marks a change of identity when the name actually differs
+    # from the one the CIK carries now, which is what the CHRN case needed: Ekso
+    # Bionics Holdings is a different string from ChronoScale.
+    current = (j.get("name") or "").strip().casefold()
     identity_since = None
     for fn in (j.get("formerNames") or []):
+        if (fn.get("name") or "").strip().casefold() == current:
+            continue
         to = (fn.get("to") or "")[:10]
         if to and (identity_since is None or to > identity_since):
             identity_since = to

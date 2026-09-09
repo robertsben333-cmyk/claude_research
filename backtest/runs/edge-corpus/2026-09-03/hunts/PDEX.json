@@ -1,0 +1,30 @@
+{
+  "ticker": "PDEX",
+  "expected_move_pct": -3.5,
+  "conviction_note": "Baseline median reaction is 14.05% and only 1 of the last 6 prints was up (the others -31.9%, -16.5%, -11.6%, -3.6%, -0.5%); I take a moderate negative because an 8-K carrying items 5.02 and 9.01 - a management change with an attached press release - was filed six days before this fiscal-year-end print and is not mentioned anywhere in the 38-item capture, and because the stock enters the event 158% above its 52-week low with a reaction record that bad.",
+  "findings": [
+    {
+      "finding": "An 8-K with items 5.02 and 9.01 was filed on 2026-08-28, six days before the fiscal-year-end print - a director or officer change accompanied by an exhibit, i.e. announced by press release - and it is referenced in none of the 38 captured items; it follows a SCHEDULE 13D/A on 2026-06-26 and a Reg FD 8-K (items 7.01, 9.01) on 2026-06-17.",
+      "expected_impact_pct": -3.5,
+      "impact_low_pct": -13.0,
+      "impact_high_pct": 5.0,
+      "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000788920&type=8-K",
+      "source_date": "2026-08-28",
+      "corpus_ref": "filings.json, 8-K dated 2026-08-28 with items '5.02,9.01'; also SCHEDULE 13D/A dated 2026-06-26 and 8-K items '7.01,9.01' dated 2026-06-17",
+      "body_available": false,
+      "why_not_priced": "This company has no analyst coverage and no news search was run in the capture (n_queries=0 in every sweep); the entire social corpus for the six days after the filing consists of two identical copy-pasted rants about brokers and three empty ticker mentions. A leadership change six days before a fiscal-year-end release, at an issuer whose last five prints averaged double-digit declines, is a governance event with literally zero observed circulation. The sign is uncertain because no body is stored - I lean negative on the base rate and on the fact that companies time departures to just before a results release rather than just after.",
+      "independence": "none - the EDGAR index is the only source in this capture that references any of it; there is no second document."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "the body of the 2026-08-28 8-K, which would say whether the 5.02 is an appointment or a departure - this is the whole hunt's weakness",
+    "the 13D/A body from 2026-06-26 and the filer's identity",
+    "any S-3, 424B or capital-raise filing",
+    "any insider activity after the Form 4 on 2026-07-24 (Pro-Dex runs a continuous buyback, so the July Form 4 cluster may be company rather than insider activity - I could not tell)",
+    "any news-wire coverage, consensus estimate, sell-side preview or surgical-device channel data: n_queries=0 in every sweep and the two stored bodies contain nothing about the company",
+    "any explanation for the -5.7% twenty-day drift"
+  ],
+  "baseline_tension": "It agrees with the run-in (-4.8% over five sessions, -5.7% over twenty) and with the reaction history (1 of 6 up), which makes it largely confirmatory; the number is well inside the 14.05% median for that reason.",
+  "corpus_limits": "No option chain, so no implied move or skew. No news search was run for this ticker and the two stored document bodies contain no company information at all - this is one of the two or three thinnest captures in the sample, and the finding rests entirely on the presence of an 8-K item code with no body. This is an after-the-close print, so the 2026-09-03 sweep and price bar are pre-event and admissible; no item in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 1
+}

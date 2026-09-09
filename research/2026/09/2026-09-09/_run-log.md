@@ -85,3 +85,7 @@
 ## Edge-corpus interim: zero-collapse returns
 - Logged at 2026-09-09 15:20 UTC
 - 48% of the first 25 scored names carry edge_score exactly zero (11 of 20 filings-only captures against 1 of 5 news-bearing). Half the ranking is ties. FINDINGS.md section 38.
+
+## formerNames identity bug
+- Logged at 2026-09-09 15:25 UTC
+- EDGAR formerNames carries entries whose name equals the current name; prior_prints treated the to-date as a rename and dropped all prior prints. MEI, CXM, PANW wiped to zero history, GOLD and CPB partially. Fixed, five baselines rebuilt, 2026-09-01 re-resolved. FINDINGS.md section 39.

@@ -994,3 +994,45 @@ is being computed largely over tied scores.
 The finding is about the capture, not the method. Fixing it means giving
 `capture.py` a query budget for the small names too, and that is a forward-corpus
 change — it cannot be applied retrospectively to any of these 205 events.
+
+## 39. `formerNames` is a list of name records, not a list of renames
+
+Found by the 2026-09-02 hunter, which reported that MEI and CXM both carried zero
+reaction history on the stated grounds that every prior print was "filed under a
+former name before 2026-09-03" — and pointed out that Methode has not renamed, its
+Q4 FY26 item 2.02 is accession 0000065270-26-000030, and the corpus records a ~40%
+reaction the next session. It flagged the identical phrase and identical cutoff in
+two unrelated companies as pointing at the builder rather than at either company.
+
+It was right. EDGAR's `formerNames` carries, for both, an entry whose name is
+*identical to the current one* with a `to` date of 2026-09-03:
+
+```
+MEI  name METHODE ELECTRONICS INC   formerNames[0] METHODE ELECTRONICS INC to 2026-09-03
+CXM  name Sprinklr, Inc.            formerNames[0] Sprinklr, Inc.          to 2026-09-03
+```
+
+`prior_prints` took the latest `to` across all entries as `identity_since` and
+dropped every print before it. **All 67 of Methode's prior prints and all 21 of
+Sprinklr's**, leaving `history.n` at zero, `median_abs_move_pct` null, and
+`expected_move_pct` — the only anchor this backtest has — with nothing to compute
+from. No error, and the basis string read as a deliberate exclusion rather than a
+fault.
+
+The check the code wanted is the one the CHRN case actually needed: an entry marks
+a change of identity only when its name differs from the one the CIK carries now.
+Ekso Bionics Holdings is a different string from ChronoScale; METHODE ELECTRONICS
+INC is not a different string from METHODE ELECTRONICS INC.
+
+Five of the 109 names were hit — MEI, CXM and PANW wiped out entirely, GOLD and CPB
+partially discounted. After the fix: PANW 0 to 7 prior prints, CXM 0 to 8, MEI 0 to
+7, CPB 7, GOLD 2. This is a live-pipeline bug, not a backtest one, and it has been
+silently zeroing the reaction history of any company whose current name appears in
+its own `formerNames`.
+
+One measurable consequence, for the record: 2026-09-01 had already been scored and
+resolved with PANW's history empty, so PANW carried no `implied_pct` and dropped
+out of the normalised metric. Re-run on the fixed baseline the day's normalised
+correlation moved from −0.177 over 12 names to −0.390 over 13. Neither is
+significant; the point is that one silently broken anchor moved a reported
+coefficient by 0.21.
