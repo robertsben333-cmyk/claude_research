@@ -108,3 +108,10 @@
 - Dropped: WDH, CAN, DLNG, GMHS — all below the $500M floor. DLNG is the only row new vs 09-04 and is 4x below the floor; no above-floor name is new.
 - entry_snapshot.py deliberately not run: market closed, it would freeze Friday's stale close under a Monday timestamp.
 - Stage 0 note (flagged, not fixed): get_earnings.py printed the window as 'After the US close on Monday 07 September 2026' on a day it had itself flagged as a non-trading day. Human-readable string only — the company set matches Friday's, which correctly skipped Monday.
+
+## Stage 4 — calibration — DONE
+- Logged at 2026-09-09 06:33 UTC
+- Independent re-panel of the same ABM/UNFI event already scored under 2026-09-04's outcome files -- same realised prices, scored separately since this run's forecast was made independently, one day closer to the print.
+- ABM: same +7.55% outcome. Neutral hit. Panel consensus moved -8.9 -> -16.7 (more bearish) between the 09-04 and 09-07 runs while the preliminary read flipped -18 -> +12 (wrong to right) -- the panel moved the wrong way as the print approached; chair's own certainty-override note ties this to 4/7 personas sharing one Ortex article. Red-team's own 'what would break my case' scenario (EPS >= 1.04, margin up, guidance floor raised) again matches what happened almost exactly.
+- UNFI: same +2.28% outcome. Neutral hit. Panel consensus moved -4.4 -> -11.7, still Neutral; preliminary unchanged at -8 (wrong-signed, immaterial move). Both runs' reversal cases (large moves either direction) failed to fire.
+- LEDGER.md updated together with the 2026-09-04 run in the same commit -- see LEDGER.md for the combined summary (panelled n=13, prelim n=29).

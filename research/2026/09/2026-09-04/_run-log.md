@@ -169,3 +169,11 @@
 - Second independent panel of the same event ran 2026-09-07 (see that day's advice + run log) -- a deliberate re-panel one day closer to the print, not a duplicate. Both 2026-09-04's and 2026-09-07's calls on ABM/UNFI will need scoring once the outcome exists; that comparison (does re-panelling closer to the print change the call or the accuracy?) is worth calling out explicitly when scored.
 - No other unscored runs found: 2026-09-01 and 2026-09-02 already scored; 2026-09-03 never produced 04-advice.json (stage 3 did not run that day, so nothing to score there either); 2026-09-08 itself is today's forward-looking universe for the 09-09 window, unrelated to the ABM/UNFI event.
 - Leaving 05-outcome.md/.json absent on both 2026-09-04 and 2026-09-07 (not stubs) so they keep surfacing as unscored until they can actually be scored -- earliest eligible run is after 2026-09-08's close, i.e. stage 4 on or after 2026-09-09. LEDGER.md untouched this run.
+
+## Stage 4 — calibration — DONE
+- Logged at 2026-09-09 06:33 UTC
+- Scored via WebFetch/WebSearch (stockanalysis.com cross-checked against finance.yahoo.com and investing.com; all three agree on both closes).
+- ABM: close 47.05 -> 50.60 = +7.55%. Neutral hit (near-exact match to the 7.3% expectation, inside band, implied not broken). Red-team's stated bull mechanism (EPS >= 1.04, margin up, guidance floor raised) is close to exactly what happened -- reversal fired. Preliminary (-18) wrong-signed.
+- UNFI: close 43.93 -> 44.93 = +2.28%. Neutral hit (well below the 10.3% expectation). Red-team's squeeze case did not fire. Preliminary (-8) technically wrong-signed on a near-noise move.
+- This event was also independently re-panelled 2026-09-07 (same realised outcome, scored separately in that run's own 05-outcome.md/.md) -- see that file for the direct panel-vs-panel comparison.
+- LEDGER.md updated: panelled n 9->13 (8/13 hits, 61.5%), prelim n 25->29 (12/29, 41.4%). Full detail in LEDGER.md.
