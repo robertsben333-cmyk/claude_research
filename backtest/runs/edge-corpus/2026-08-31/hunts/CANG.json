@@ -1,0 +1,42 @@
+{
+  "ticker": "CANG",
+  "expected_move_pct": -5.0,
+  "conviction_note": "Baseline expected_move is 4.97% but is built from 8 non-earnings 6-Ks (split notices, EGM items, monthly ops updates), so I treat it as a floor on a 175%-annualised-vol $106m name; the signed tilt is negative because the only company-sourced fundamentals in the corpus (hashrate 37.01 -> 31.58 EH/s, cash cost flat at $68k/coin, $7.2m cash) point the opposite way to a +48% 20-day run-up that arrived on 8x volume with no filing behind it.",
+  "findings": [
+    {
+      "finding": "Cango exited the March quarter with only US$7.2m of cash equivalents against ~US$100m of quarterly revenue and an active S21 fleet purchase programme, while an F-3 shelf filed 2025-12-17 went effective 2025-12-19 and has never been drawn in the capture window - a Q2 report is the natural venue for a raise into a stock that has just doubled off its low.",
+      "expected_impact_pct": -3.0,
+      "impact_low_pct": -8.0,
+      "impact_high_pct": 1.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1725123/000110465925121786/cang-20241231xf3.htm",
+      "source_date": "2025-12-17",
+      "corpus_ref": "filings.json accession 0001104659-25-121786 (F-3) and 9999999995-25-003875 (EFFECT, 2025-12-19); cash figure from docs/268302313e584d370128e2c166dffdd85291a247.txt (stocktwits, 2026-06-01 message summarising Q1 results: 'cash equivalents decreased to US$7.2M')",
+      "body_available": false,
+      "why_not_priced": "A $106m Chinese-domiciled ADR with one estimate on the tape and no sell-side preview in the capture has no analyst pointing at the funding gap; if the market were pricing a raise, the 20-day tape would not be +48% on retail momentum volume and the 08-21 to 08-27 advance would have faded rather than extended. The shelf is 8 months old, so the *capacity* is public but the timing is not, and the cash number reaches the corpus only via a retail restatement of the Q1 release.",
+      "independence": "The 10-for-1 reverse share consolidation effective 2026-07-20, quoted verbatim from company resolution text in docs/268302313e584d370128e2c166dffdd85291a247.txt (2026-05-22 and 2026-07-10 messages) and bracketed by the 6-Ks of 2026-07-10 and 2026-07-21 in filings.json, is a listing-compliance action by the same balance sheet: https://www.sec.gov/Archives/edgar/data/1725123/000110465926082390/tm2620198d1_6k.htm"
+    },
+    {
+      "finding": "Company-published operating data show the June quarter running materially below the March quarter - hashrate 37.01 EH/s in Q1 falling to 31.58 EH/s in the April update with cash cost per coin held flat at US$68k, and the company's own weekly BTC output posts sliding from 55.2 to 45.6 by 2026-07-07 - while the stock's +48% 20-day move came on 4.14m shares on 08-21 (8x the 517k 20-day average) with zero SEC filings after 2026-07-21 to explain it.",
+      "expected_impact_pct": -2.5,
+      "impact_low_pct": -7.0,
+      "impact_high_pct": 2.0,
+      "source": "https://www.prnewswire.com/news-releases/cango-inc-announces-april-2026-operational-and-fleet-optimization-update-continuing-strategic-fleet-modernization-and-enhancing-production-efficiency-302766696.html?tc=eml_cleartime",
+      "source_date": "2026-05-08",
+      "corpus_ref": "docs/268302313e584d370128e2c166dffdd85291a247.txt (messages of 2026-05-08 April operational update, 2026-06-01 Q1 recap, 2026-07-07 weekly output), cross-read against quote.json bars 2026-08-20 to 2026-08-31 and filings.json (last filing of any kind 2026-07-21)",
+      "body_available": true,
+      "why_not_priced": "For a miner, quarterly revenue is nearly mechanical in hashrate, so a 15% sequential hashrate decline with flat unit cash cost implies a worse Q2 than Q1 - yet the run-in is priced as a BTC-beta squeeze: the stocktwits flow in the same document is entirely 'top gainers', 'crypto related play', 'china high float, pump wont last', with not one message referencing Q2 production or the print date. A market that had done the hashrate arithmetic would not have marked the equity up 48% into it. Q1 itself carried a US$261.1m net loss on US$102m of revenue with revenue -43%, i.e. a loss 2.5x the current market cap, and the April update describes legacy hardware still being removed, which is the mechanism for further write-offs.",
+      "independence": "Separate corpus file: filings.json shows no SEC filing at all between 2026-07-21 and the 2026-08-30 index sweep, so the 08-21 volume spike has no disclosure behind it - https://www.sec.gov/Archives/edgar/data/1725123/000110465926085217/tm2620856d1_6k.htm"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any sell-side preview, consensus revision or price target for the June quarter (event.json shows n_estimates = 1)",
+    "any Form 4 / 144 insider activity in 2026 (the only 144s are 2025-09-08 and 2025-09-10, and the eight Form 3s are all 2026-03-18/26 initial statements tied to the 13D)",
+    "an item-5.02 style officer or director departure, or any 13D/A after 2026-03-18",
+    "an August 2026 monthly operational update in any form - the corpus has the April update text but nothing for May, June or July production",
+    "any news wire, transcript or preview body at all: the entire non-filing capture for CANG is two stocktwits aggregates (91 messages total)",
+    "short interest, borrow cost or float data beyond one unsourced retail post citing 18.59M float / 35.86M outstanding"
+  ],
+  "baseline_tension": "Cuts against the run-up: the baseline shows +48% over 20 days and +3.9% over 5 days, while the only company-sourced fundamentals in the capture (falling hashrate, flat unit cost, $7.2m cash, an untapped effective shelf) all point down, and the reaction history the baseline warns not to use is 6 of 8 flat-or-negative anyway.",
+  "corpus_limits": "No option chain and therefore no read on which way the market leaned; no stored body for any SEC filing, so the F-3 size, the 20-F risk factors and the actual Q1 statements were unreadable and the Q1 numbers reach me only through a retail restatement; quote.json starts 2026-06-02 so the reaction to the one identifiable prior earnings print (2026-05-31 amc) cannot be measured; only three snapshot sweeps exist, two of which returned 0 or 1 items, so coverage is thin and my numbers are sized accordingly. No document in this capture carried a non-empty tripwire_tells, so nothing was excluded for contamination.",
+  "sources_used": 5
+}
