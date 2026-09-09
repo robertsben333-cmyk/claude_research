@@ -15,23 +15,36 @@ an adversary. Join verified clean: 37 findings, 37 verdicts, nothing silently dr
 
 | # | Ticker | `impact_sum` | `conviction` | ≥ floor (3.0) | control `-run_up_20d` | turnover $/day | chain |
 | --- | --- | ---: | ---: | :---: | ---: | ---: | :---: |
-| 1 | NAVN | **+9.75** | 9.75 | yes | +7.19 | $58.1m | live |
-| 2 | AVAV | **+3.25** | 3.25 | yes | +26.73 | $179.4m | live |
-| 3 | FLWS | **+1.50** | 1.50 | — | +11.88 | $0.71m | live |
-| 4 | LMNR | **+1.50** | 1.50 | — | −7.65 | $0.93m | live |
-| 5 | SKIL | **−2.50** | 2.50 | — | +29.22 | $0.29m | none |
-| 6 | LSAK | **−3.35** | 3.35 | yes | +5.38 | $0.38m | none |
-| 7 | KEQU | **−10.50** | 10.50 | yes | +0.52 | $0.07m | none |
-| 8 | WLTH | **−15.50** | 15.50 | yes | −0.57 | $12.4m | none |
+| 1 | NAVN | **+10.00** | 10.00 | yes | +7.19 | $58.1m | live |
+| 2 | AVAV | **+2.50** | 2.50 | — | +26.73 | $179.4m | live |
+| 3 | FLWS | **+2.50** | 2.50 | — | +11.88 | $0.71m | live |
+| 4 | LMNR | **0.00** | 0.00 | — | −7.65 | $0.93m | live |
+| 5 | LSAK | **−2.70** | 2.70 | — | +5.38 | $0.38m | none |
+| 6 | SKIL | **−3.00** | 3.00 | yes | +29.22 | $0.29m | none |
+| 7 | KEQU | **−5.00** | 5.00 | yes | +0.52 | $0.07m | none |
+| 8 | WLTH | **−10.50** | 10.50 | yes | −0.57 | $12.4m | none |
+
+**The key changed while this run was being written up.** These numbers are on the corrected
+`impact_sum` — the hunter's own size per finding. Until 16:17 UTC today `edge_score.py` summed the *mean*
+of the hunter's size and the adversary's independent size check; this run flagged that as a discrepancy
+against its own documentation, and a separate session then measured both ways over 43 resolved names
+(mean ρ=0.407 p=0.014, hunter-only ρ=0.453 p=0.006) and changed the key to the hunter's number. The
+earlier version of this note carried the averaged values. What moved: AVAV +3.25→+2.50, FLWS +1.50→+2.50,
+LMNR +1.50→**0.00**, SKIL −2.50→−3.00, LSAK −3.35→−2.70, KEQU −10.50→**−5.00**, WLTH −15.50→−10.50.
+SKIL and LSAK swap rank, and **four names clear the conviction floor rather than five** — AVAV no longer
+does. KEQU's halving is the single largest effect and it is exactly the case that prompted the fix: the
+hunter sized its lead finding at −4.0 and the adversary at −15.0.
 
 Not ranked (`no hunt`, shed for budget): AEO, COO, CULP, DBI, GLOO, IMPP, LAKE, LOVE, M, MCFT, SHOE, TEN, VNCE, YB.
 They are in `edge-scores.json` with `rankable: false` rather than sorted into the table on a 0.
 
 **Read the order, not the sign.** Below the conviction floor the sign of `impact_sum` has been a coin flip on
 the evidence so far — 53% over 38 resolved events. Above it, the *rank* of conviction predicted whether the
-sign was right at ρ=+0.514 (permutation p=0.0015). Five names here clear the floor: NAVN, AVAV, LSAK, KEQU,
-WLTH. FLWS at +1.50 and LMNR at +1.50 are not a bullish view on either company; they are the middle of the
-table, and reading them as one is the specific mistake this paragraph exists to prevent.
+sign was right at ρ=+0.514 (permutation p=0.0015). Four names here clear the floor: NAVN, SKIL, KEQU and
+WLTH. AVAV at +2.50 and FLWS at +2.50 are not a bullish view on either company, and **LMNR at exactly 0.00
+is not a neutral view** — it is four findings that cancel, two up and two down, which is a different thing
+from having looked and found nothing. They are the middle of the table, and reading them as directional is
+the specific mistake this paragraph exists to prevent.
 
 **`impact_sum` is not a forecast of the move.** It sums findings, and the same fact often appears in two
 findings from two sources. See the double-counting section below — on this day that is not a theoretical
@@ -41,15 +54,15 @@ caveat.
 
 ## What drives the top and the bottom
 
-### NAVN +9.75 — top of the table
+### NAVN +10.00 — top of the table
 
-Driving finding (`NAVN-h1#0`, sized +2.75, adversary `priced_in_pct` **72**): Navan guided fiscal Q2 to
+Driving finding (`NAVN-h1#0`, sized +3.00, adversary `priced_in_pct` **72**): Navan guided fiscal Q2 to
 $219–221m, flat sequentially on Q1's $220m, while the only observable prior year grew ~+9% over the same two
 fiscal quarters; consensus of $220.5m sits on the guide midpoint to within $0.5m, i.e. the street modelled the
 guide rather than the company's own seasonality.
 Source: https://investors.navan.com/news-releases/news-release-details/navan-announces-third-quarter-fiscal-year-2026-results
 
-The second-largest (`NAVN-h2#0`, +2.50, `priced_in_pct` 66) is independent in source: US airline-fare CPI ran
+The joint-largest (`NAVN-h2#0`, +3.00, `priced_in_pct` 66) is independent in source: US airline-fare CPI ran
 +26.2% y/y across May–July (Navan's fiscal Q2) against +14.2% across Feb–April, and Navan's revenue is a take
 rate on booking dollars. Source: https://www.bls.gov/news.release/cpi.nr0.htm
 
@@ -57,14 +70,15 @@ rate on booking dollars. Source: https://www.bls.gov/news.release/cpi.nr0.htm
 25-delta skew of +5.64 (puts bid) into a 14.06% option-implied move. Both hunters found the same tension and
 neither could see the other. The adversary priced the cluster at 62–82 and did not break the arithmetic.
 
-### WLTH −15.50 — bottom of the table
+### WLTH −10.50 — bottom of the table
 
-Driving finding (`WLTH-h1#0`, sized −5.50, `priced_in_pct` **55**): building fiscal Q2 revenue bottom-up from
+Driving finding (`WLTH-h1#0`, sized −4.00, `priced_in_pct` **55**): building fiscal Q2 revenue bottom-up from
 Wealthfront's own published May and June monthly asset disclosures at the company's own last-reported take
 rates lands near $94.5m against a consensus near $98m, while consensus EPS still implies a doubling off Q1's
 $0.07. Source: https://www.sec.gov/Archives/edgar/data/1524566/000162828026040793/q127earningsrelease.htm
 
-The lowest-`priced_in` finding on the name (`WLTH-h1#2`, −5.25, **50**) is the reaction-function claim: the
+The lowest-`priced_in` finding on the name, and its largest (`WLTH-h1#2`, −4.50, **50**), is the
+reaction-function claim: the
 January print beat on EPS and the stock still fell 16.8% on a deposit outflow, and July and August flows are
 both released for the first time tonight.
 
@@ -80,11 +94,11 @@ in five sessions into the print on no company news.
 `-run_up_20d_pct` — one number off the sealed baseline, available before a single subagent was spawned —
 ranks these eight names: **SKIL, AVAV, FLWS, NAVN, LSAK, KEQU, WLTH, LMNR.**
 
-The hunt's ranking is **NAVN, AVAV, FLWS, LMNR, SKIL, LSAK, KEQU, WLTH.**
+The hunt's ranking is **NAVN, AVAV, FLWS, LMNR, LSAK, SKIL, KEQU, WLTH.**
 
 The two agree on AVAV and FLWS near the top and disagree sharply on the extremes: the control puts SKIL first
-where the hunt puts it fifth, and puts LMNR last where the hunt puts it fourth. WLTH is bottom on the hunt and
-seventh on the control. So the hunt is not merely re-deriving the control — but over the six resolved runs so
+where the hunt puts it sixth — the widest disagreement on the board — and puts LMNR last where the hunt puts
+it fourth. WLTH is bottom on the hunt and seventh on the control. So the hunt is not merely re-deriving the control — but over the six resolved runs so
 far that free number ranked at ρ=0.335 against the hunt's raw 0.407, a gap of 0.080 whose confidence interval
 spans zero. **The stage has not been shown to beat it.** A day on which the hunt's order differs is not
 evidence that the difference is information.
@@ -94,15 +108,17 @@ evidence that the difference is information.
 ## Sign balance
 
 Ten hunts across eight names. **Six leaned negative, four positive** — NAVN (×2), AVAV and FLWS positive;
-WLTH (×2), LMNR, SKIL, LSAK, KEQU negative. At name level `impact_sum` splits 4 positive / 4 negative.
+WLTH (×2), LMNR, SKIL, LSAK, KEQU negative. At name level `impact_sum` splits 3 positive, 4 negative and
+one exact zero (LMNR).
 
 This is the same tilt recorded on 2026-08-31 (six of eight negative) and it remains more plausibly an artefact
 of asking hunters to find what the market has *missed* into a print than a fact about these companies. Worth
 watching across days; a single day cannot separate the two.
 
 One internal inconsistency to flag: **LMNR's hunter wrote a summary `expected_move_pct` of −2.5 while its own
-findings sum to +1.50.** The scorer uses the findings, correctly, but the hunter's narrative and its arithmetic
-disagree in sign, and a reader of the hunt file alone would take away the opposite of the table.
+findings sum to exactly 0.00.** The scorer uses the findings, correctly, but the hunter's narrative and its
+arithmetic disagree, and a reader of the hunt file alone would take away a bearish view from a name the table
+puts in the middle.
 
 ---
 
@@ -168,8 +184,15 @@ The code does not do that: where the adversary returned a `size_check_pct`, the 
 (`scripts/edge_score.py:206–211`). Today that mattered — the median hunter/adversary size disagreement was 0.5
 points but the maximum was **11.0** (`KEQU-h1#0`: hunter −4.0, adversary −15.0, booked at −9.5), and KEQU's
 rank depends on it — on the hunter's own number alone KEQU's `impact_sum` would be far smaller and it would not
-sit seventh. Nothing was changed in this run; the two descriptions need reconciling by someone who can
-check which version `docs/EDGE_ANALYSIS.md` measured at ρ=0.407.
+sit seventh.
+
+**Resolved the same day, by a separate session.** Both ways were measured over the same 43 resolved names at
+16:17 UTC: the mean ranks at ρ=0.407 (p=0.014), **the hunter's own number at ρ=0.453 (p=0.006)**. The key now
+sums the hunter's number, with `adversary_size_pct` and `size_disagreement_pct` kept beside it so a large
+disagreement stays visible instead of being split down the middle; `diagnostics.edge_score_legacy` still
+reproduces the old key. This note's table was regenerated on the corrected scorer, and the KEQU case above is
+cited in the code comment recording the change. The averaged version of this table is in git history, not in
+this file.
 
 ---
 
@@ -202,13 +225,13 @@ Capacity is not in the scorer and not in the budget, and on this day it is sever
 | WLTH (rank 8) | $12.4m/day | tradeable |
 | LMNR (rank 4) | $0.93m/day | below $1m |
 | FLWS (rank 3) | $0.71m/day | below $1m |
-| LSAK (rank 6) | $0.38m/day | below $1m |
-| SKIL (rank 5) | $0.29m/day | below $1m |
+| LSAK (rank 5) | $0.38m/day | below $1m |
+| SKIL (rank 6) | $0.29m/day | below $1m |
 | KEQU (rank 7) | **$0.07m/day** | ~2,000 shares; effectively untradeable |
 
-**Only three of eight names clear $5m/day.** Five trade under $1m, and KEQU — which carries the second-largest
-conviction in the table at 10.50 — turns over $70,000 a day and 368 shares changed hands on the session before
-the print. A long top-third / short bottom-third book on this table would be long NAVN and AVAV and short KEQU
+**Only three of eight names clear $5m/day.** Five trade under $1m, and KEQU — which carries the third-largest
+conviction in the table at 5.00, and clears the floor — turns over $70,000 a day, with 368 shares changing
+hands on the session before the print. A long top-third / short bottom-third book on this table would be long NAVN and AVAV and short KEQU
 and WLTH; the KEQU leg does not exist at any meaningful size.
 
 Worse, this is structural rather than bad luck. The shed to eight names was made on the sweep's `hunt_priority`,
