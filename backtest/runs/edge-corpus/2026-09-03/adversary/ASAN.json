@@ -1,0 +1,47 @@
+{
+  "ticker": "ASAN",
+  "verdicts": [
+    {
+      "finding_key": "ASAN#0",
+      "priced_in_pct": 33,
+      "size_check_pct": -0.5,
+      "strongest_argument": "The filings are reachable, so this cannot be scored low, but nothing about them is drawn out anywhere in the corpus and nothing about them is material to this print. Both accessions are in filings.json - 0001628280-26-059413 (8-K, item 5.02 only, accepted 2026-08-28T20:18:17Z) and the companion Form 4 0002075006-26-000006 - and the July 5.02 is in the same file, so any EDGAR reader had them six days ahead. That places this squarely in the reachable-but-unconnected band. What defeats the edge is size and mechanism rather than publication. Item 5.02 is the catch-all for director elections, officer appointments and compensatory arrangements, and a 5.02-only 8-K with a same-evening Form 4 from a brand-new filer CIK is the exact signature of a new director or officer receiving an initial grant - which is what a company mid-transition does routinely, not a buried resignation. The corroboration the hunter offers cuts against the finding: a Stocktwits user referring to a 'new CEO' on 2026-09-02 shows the transition was already common knowledge in the retail stream, so the transition is not the news. And even taken at its worst, a personnel change dated 2026-08-26 cannot alter the fiscal quarter that ended 2026-07-31; it can only affect commentary. The 'zero mentions across ninety Stocktwits messages' and n_queries=0 arguments are statements about the capture's query budget, not about market awareness.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/Archives/edgar/data/1477720/000162828026059413/asan-20260826.htm", "date": "2026-08-28", "corpus_ref": "filings.json accession 0001628280-26-059413, accepted 2026-08-28T20:18:17Z", "what_it_says": "8-K reporting an item 5.02 event dated 2026-08-26, publicly on EDGAR six days before the print."}
+      ],
+      "baseline_evidence": "quote.json/baseline show run_up_20d +16.24% with run_up_5d -0.79% - i.e. the week containing the 08-28 filing was flat, not a repricing in either direction, which is what an immaterial governance item looks like. avg_volume_20d 4.64m in a $2.34bn name means a 5.02 with no stated financial consequence has no channel to move the level.",
+      "corpus_coverage": "reachable but unconnected",
+      "reaches_this_print": false,
+      "what_would_change_it": "The 8-K body showing a CFO or COO departure without a named successor, or a separation agreement, rather than an appointment plus an initial equity grant."
+    },
+    {
+      "finding_key": "ASAN#1",
+      "priced_in_pct": 30,
+      "size_check_pct": -0.3,
+      "strongest_argument": "Both 144s are in filings.json with acceptance times, so they were reachable a week and two weeks before the print, and I agree no aggregator surfaces them - that is why this is 30 rather than 80. But this is the failure mode the brief warns hunters get wrong most often: it is real, low-visibility and far too small to matter. A Form 144 is a notice of intent to sell under a plan, the claim quotes no share count and no dollar value, and the capture stores no body for either, so there is no magnitude here at all - against a $2.34bn market cap and 4.64m shares a day of turnover, routine 10b5-1 executive sales in the weeks before a print are the base case at every software company and would need to be an order of magnitude larger than a typical 144 to register. The hunter's own independence note concedes this shares one source with #0 and should be collapsed into it, which means the two findings are one EDGAR-index observation, not two. And the supporting argument - 'if they were priced the run-in would not be +16%' - infers pricing from the run-up, which is not admissible here and would in any case be equally consistent with insiders selling into strength for tax or diversification reasons.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/Archives/edgar/data/1477720/000195004726008775/xsl144X01/primary_doc.xml", "date": "2026-08-27", "corpus_ref": "filings.json accession 0001950047-26-008775, accepted 2026-08-27T20:21:56Z", "what_it_says": "A Rule 144 notice of proposed sale was filed and publicly available a week before the print; a second, 0001950047-26-008490, on 2026-08-20."}
+      ],
+      "baseline_evidence": "No volume or price signature on 08-20 or 08-27 in the run-in; run_up_5d is -0.79% into the print against run_up_20d +16.24%, so the last week was flat. Nothing in the bars says a seller of consequence was working.",
+      "corpus_coverage": "reachable but unconnected",
+      "reaches_this_print": false,
+      "what_would_change_it": "A share count on the 144s worth more than a few days' volume, or a Form 4 confirming completed sales at a size that matters against 4.64m shares a day."
+    },
+    {
+      "finding_key": "ASAN#2",
+      "priced_in_pct": 68,
+      "size_check_pct": 0.5,
+      "strongest_argument": "This one is published in the corpus and the hunter's own corroboration shows the thesis was already in sell-side hands. The OpenAI case study is stored at docs/d5e80648628ec84fe86522ff021e9505944af73d.txt and indexed in snapshots/20260903T150836Z.json item 1 - a sweep timestamped 2026-09-03T15:08Z, hours before an amc print, so it was publicly visible on openai.com before the release, on one of the most-read corporate blogs in the sector. More damaging, the finding concedes that the Citizens note of 2026-08-24 (docs/870583e6d888ea56febb1223ec4b6bac0ba57553.txt) already cites 'Codex-enabled development efficiency' in its Market Outperform / $15 thesis, which means the mechanism was in the preview coverage ten days earlier and only the anecdote's phrasing is new. What the case study does not contain is a number that reaches a P&L line: '5 years of engineering work in 2 weeks' is a vendor marketing claim about internal velocity with no dollar figure, no headcount figure and no timeframe for margin realisation, so even if unpriced it is not a Q2 datapoint. I score it below 80 only because a vendor blog post is not financial wire copy and a one-day-old item may not have propagated.",
+      "prior_publication": [
+        {"url": "https://openai.com/index/asana/", "date": "2026-09-02", "corpus_ref": "docs/d5e80648628ec84fe86522ff021e9505944af73d.txt, snapshots/20260903T150836Z.json item 1", "what_it_says": "OpenAI's own customer story claiming Asana cleared five years of engineering work in two weeks with Codex."},
+        {"url": "https://stocktwits.com", "date": "2026-08-24", "corpus_ref": "docs/870583e6d888ea56febb1223ec4b6bac0ba57553.txt", "what_it_says": "Citizens reiterates Market Outperform with a $15 target citing Codex-enabled development efficiency - the same mechanism, in the sell-side preview, ten days earlier."}
+      ],
+      "baseline_evidence": "Baseline run_up_20d +16.24% and pct_from_52w_low +84.8% show a name that has already been re-rated on an AI-efficiency narrative; the 09-02/09-03 bars show run_up_5d of -0.79%, so nothing discontinuous happened when the case study appeared. That is consistent with an item that is either already reflected in the AI narrative or too soft to move a $2.3bn stock.",
+      "corpus_coverage": "published in corpus",
+      "reaches_this_print": true,
+      "what_would_change_it": "A quantified opex or headcount effect attributable to Codex that lands in the July quarter's operating expense line and is absent from the Citizens note."
+    }
+  ],
+  "interactions": "#0 and #1 rest on the same document - filings.json - and the hunter says so explicitly in #1's independence field, so they should not be counted as two independent signals. #2's corroborating Citizens note is also the document that most undermines it, since it carries the same Codex thesis earlier.",
+  "corpus_limits": "Neither 8-K body nor either 144 body is stored, so I could not check what item 5.02 actually reported or what size the notices covered - my scores on #0 and #1 rest on item codes and base rates. ASAN carries news items only via the Stocktwits dump plus the OpenAI page, so there is no broad wire coverage to test whether the executive change or the case study was reported elsewhere; that absence is a capture artefact and I have not treated it as non-publication. I did not open docs/352e5565c8c4c0d3898f5a4ba5c6d316d29af018.txt."
+}

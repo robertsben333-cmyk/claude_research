@@ -1,0 +1,32 @@
+{
+  "ticker": "AMBR",
+  "verdicts": [
+    {
+      "finding_key": "AMBR#0",
+      "priced_in_pct": 78,
+      "size_check_pct": -4.0,
+      "strongest_argument": "The rebrand is in the capture as a stored body and as a snapshot item (docs/6b85260769557edb0697f5f8fb5e6b9aced19f03.txt, snapshots/20260901T150802Z.json item 1) and as a company filing in filings.json (6-K 0001104659-26-103605, accepted 2026-08-31T09:21:07Z), and quote.json shows the market pricing it in the single largest bar in the whole series: 2026-09-01 traded 15,889,900 shares against 19k-56k in the preceding week and closed at 0.88, down 24% from the prior close of 1.16 after an opening pop. The market did not take the pivot as good news - it sold it by a quarter in one session. The hunter's residual is therefore not the announcement but a behavioural prior ('a sub-$100m issuer that discards its brand 48 hours before results is pre-framing bad numbers'), and no document in this capture asserts that, dates it, or sizes it. Two further problems. First, 'nobody connected them' rests on n_queries=0 in every sweep, which is a statement about the capture's query budget, not about what the market saw - the instructions are explicit that this is neither concession nor publication. Second, the claim's read that the market failed to connect the two is directly contradicted by the bar it cites: a stock that gets marked down 24% on 300x volume on the announcement day has connected something.",
+      "prior_publication": [
+        {"url": "https://ooc.bz/l/112914", "date": "2026-09-01", "corpus_ref": "docs/6b85260769557edb0697f5f8fb5e6b9aced19f03.txt, snapshots/20260901T150802Z.json item 1", "what_it_says": "Announces the abandonment of the Amber Premium identity, the AMBR agentic-AI repositioning and the Ambre/MIA agents, two days before the print."},
+        {"url": "https://www.sec.gov/Archives/edgar/data/1697818/000110465926103605/tm2624351d1_6k.htm", "date": "2026-08-31", "corpus_ref": "filings.json accession 0001104659-26-103605, accepted 2026-08-31T09:21:07Z", "what_it_says": "The company's own 6-K carrying the repositioning, on EDGAR three days before the print."}
+      ],
+      "baseline_evidence": "quote.json 2026-09-01: close 0.88 on 15,889,900 shares, the highest-volume bar in the file by two orders of magnitude, immediately following the announcement. Baseline run_up_20d -27.14%, pct_from_52w_high -76.98%, realised_vol_20d 146.1% - a tape that has already repriced this business hard.",
+      "corpus_coverage": "published in corpus",
+      "what_would_change_it": "A dated corpus item showing the rebrand carried a disclosed financial consequence - an impairment, a discontinued-operations election, a contract loss - whose size is not visible in the 09-01 bar."
+    },
+    {
+      "finding_key": "AMBR#1",
+      "priced_in_pct": 84,
+      "size_check_pct": -3.0,
+      "strongest_argument": "This finding's entire evidence base is quote.json, which is to say it is the price. A 15.9m-share bar closing at the low of the day is not information the market lacks; it is the market's own footprint, visible to every participant on every chart, and the hunter's own corpus_ref is the bar itself rather than any document. Worse, the reading is contradicted by the next bar. The claim describes 'a complete distribution of the pivot rally into the print' with 'the close at 0.88', but 0.88 is the 09-01 close, and the baseline's last_close_date 2026-09-02 spot is 1.02 - the stock rose about 16% off 0.88 on the session after the alleged distribution, which is the opposite of a name being liquidated into a print. The quote.json 09-02 bar (0.95 on 3,919,986 shares, fetched 2026-09-02T15:08:55Z) is a partial intraday bar and appears to be what the claim read as the state of play. The Nasdaq minimum-bid leg is also mechanically wrong: compliance requires 30 consecutive business days below $1.00, and the corpus shows only four scattered sub-$1 closes (08-19, 08-20, 08-21, 09-01) with the stock back at 1.02 pre-print, so no deficiency clock the claim implies can have started. The Stocktwits 30,000-share short anecdote is one retail post and cannot corroborate a float-turnover claim.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/Archives/edgar/data/1697818/000110465926103605/tm2624351d1_6k.htm", "date": "2026-08-31", "corpus_ref": "filings.json accession 0001104659-26-103605", "what_it_says": "The cited source for this finding is the same 6-K as finding #0 and says nothing about volume or float turnover."}
+      ],
+      "baseline_evidence": "quote.json shows the 09-01 spike-and-fade (1.16 -> 0.88, 15,889,900 shares) and a 09-02 partial bar at 0.95, while the baseline's completed 09-02 close is 1.02 - a +16% recovery that the claim does not have and that inverts its conclusion. avg_volume_20d of 1,093,050 is itself an artefact of the single 15.9m bar.",
+      "corpus_coverage": "published in corpus",
+      "what_would_change_it": "Evidence of a dated, non-price supply event - a registered direct, an ATM prospectus, a lock-up expiry in filings.json - rather than the volume bar itself."
+    }
+  ],
+  "interactions": "Both findings rest on the same 09-01 event and the same 6-K; #1 is the price footprint of #0, so they are one observation counted twice rather than two independent edges. They also pull against each other: #0 argues the market failed to read the rebrand as bad news, while #1's cited bar is the market marking the stock down 24% on that news.",
+  "corpus_limits": "AMBR carries no news items beyond the Stocktwits dump, so I cannot check for sell-side or wire commentary on the rebrand - that absence is a capture artefact. quote.json's final bar is a partial intraday bar and disagrees with the baseline close, which I resolved in the baseline's favour. Nothing in this capture states a float figure, so the '29% of float' arithmetic is unverifiable here. I did not open docs/352e5565c8c4c0d3898f5a4ba5c6d316d29af018.txt."
+}

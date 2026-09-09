@@ -49,7 +49,11 @@ YQ = "https://query1.finance.yahoo.com"
 
 
 def bars(ticker, days=120):
-    u = f"{YQ}/v8/finance/chart/{ticker}?range={days}d&interval=1d"
+    # Yahoo writes class shares with a hyphen, like EDGAR; calendars use a dot.
+    # `BF.A` returns a bare 404 here, and because this is the only network call in
+    # the resolve loop, one unresolvable ticker took down the whole day's report.
+    sym = ticker.upper().replace(".", "-")
+    u = f"{YQ}/v8/finance/chart/{sym}?range={days}d&interval=1d"
     j = json.loads(urllib.request.urlopen(
         urllib.request.Request(u, headers={"User-Agent": UA}), timeout=30).read())
     res = j["chart"]["result"][0]
@@ -154,7 +158,13 @@ def resolve_run(run, seed):
             row["outcome"] = "not_ranked"
             rows.append(row)
             continue
-        res, err = realised(t, b["event_date"], b.get("session", "bmo"))
+        # A name that cannot be priced is one pending row, not a dead run. Before
+        # this, an HTTPError from a single ticker propagated out of the loop and no
+        # outcome file was written at all -- losing the other 28 names of the day.
+        try:
+            res, err = realised(t, b["event_date"], b.get("session", "bmo"))
+        except Exception as exc:
+            res, err = None, f"price fetch failed: {type(exc).__name__}"
         if err:
             row.update({"outcome": "pending", "note": err})
             pending += 1
