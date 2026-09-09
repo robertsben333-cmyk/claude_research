@@ -69,3 +69,7 @@
 ## Backtest blockers — all four fixed
 - Logged at 2026-09-09 14:36 UTC
 - as-of options guard in priced_in.py; seal.py written (111 of 205 captures scorable, 90 phantom calendar rows); implied_basis recorded in edge_resolve.py; corpus-only hunter and adversary agents. Plus cik_for class-share fix. smoke_test passes.
+
+## Edge-corpus backtest — STARTED
+- Logged at 2026-09-09 14:39 UTC
+- Running the edge hunt over the sealed capture corpus: 109 events across 7 event days (2026-08-31 .. 2026-09-09), one hunter agent per day plus one adversary agent per day. Baselines built with the as-of guard, so every name is proxy-anchored. Output under backtest/runs/edge-corpus/<date>/.
