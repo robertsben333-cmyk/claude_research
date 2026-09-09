@@ -24,7 +24,10 @@ Stage N is not part of the daily advice pipeline. It is `backtest/` arm A promot
 production: the method that scored 72% direction and +0.90% per trade over 37 events
 while the pipeline's own stage-2 method (arm C) scored 55% and lost money. It writes to
 `claude_naive/` and reads nothing from `research/`. Its Routine is
-`trig_01XmfJNU2CM7q5uvdb5r4ydF` and it is enabled. See `claude_naive/README.md` for what
+`trig_01XmfJNU2CM7q5uvdb5r4ydF` and **it was disabled on 2026-09-09 at 16:16 UTC**,
+alongside stage C, by someone outside this repo — observed in `list_triggers`, reason not
+recorded anywhere. It had a run due at 17:35 that day and did not take it. Check
+`list_triggers` before concluding a missing `claude_naive/<date>/` is a failure. See `claude_naive/README.md` for what
 that result does and does not establish — in short, the direction ranking is a lead and
 the magnitude finding is the part worth acting on.
 
@@ -128,10 +131,11 @@ Stage C is not part of the daily advice pipeline and nothing downstream reads it
 builds the forward corpus the backtest needs, and it is the only stage whose work cannot
 be redone tomorrow — the day will have moved. See `backtest/scripts/capture.py`.
 
-Stage E's Routine is `trig_01CvGQJWoKeNLXWCxiffM3ED`, cron `4 14 * * 1-5`, enabled. Its
-prompt cannot be edited by a session — `update_trigger` refuses any Routine an agent did
-not create — so the replacement text lives in `docs/routine-prompts/edge-hunt.md` for a
-human to paste. Since 2026-09-09 the prompt no longer restates the output contract: the
+Stage E's Routine is `trig_01CvGQJWoKeNLXWCxiffM3ED`, cron `4 14 * * 1-5`, enabled, and
+the only one of the three still running. Its prompt cannot be edited by a session —
+`update_trigger` refuses any Routine an agent did not create — so the text lives in
+`docs/routine-prompts/edge-hunt.md` and was pasted in by hand on 2026-09-09 at 13:55 UTC;
+keep that file in step with the Routine, because nothing else will. Since 2026-09-09 the prompt no longer restates the output contract: the
 ranking key is whatever the skill and `edge-scores.json`'s own `ranking_key` field say,
 because the old prompt named a key that a measurement then demoted.
 
@@ -140,7 +144,10 @@ because the old prompt named a key that a measurement then demoted.
 spent one-shot wakers, and two trivial `hey` jobs. None of stages 0 through 4 is among
 them. The times in the table above therefore describe an intended schedule, not a
 running one, which is a far better explanation for missing days than any code path in
-this repo. Stage C (`trig_01K1ZTiK4qQayC9aLvaK2Gyn`) is real and enabled.
+this repo. Stage C (`trig_01K1ZTiK4qQayC9aLvaK2Gyn`) is real but **was disabled on 2026-09-09 at
+16:16 UTC**, a minute after stage N and from outside this repo. Its last run was that
+day's 15:05 sweep. Stage C is the one stage whose day cannot be redone, so every day it
+stays off is a permanent hole in the forward corpus.
 
 Times are Europe/Amsterdam, and they are the **actual cron times** — check them against
 `list_triggers` before trusting them, not the other way round. This table was stale for
