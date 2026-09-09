@@ -97,10 +97,30 @@ edge_hunt:
   # often rest on the same document. What must stay separate is the adversary from
   # the hunters, not the adversary from itself.
   adversary_agents_per_ticker: 1
-  # No threshold and no call. edge_score.py emits one signed number per company on
-  # -100..+100 and the day is ranked on it; any cut is applied by the reader
-  # afterwards, which is what keeps "can these be ranked" answerable at every k.
-  # A threshold here would put a category back into the output.
+  # No threshold and no call. edge_score.py emits one signed number per company --
+  # `impact_sum`, the hunters' signed per-finding sizes added up, in points of spot
+  # -- and the day is ranked on it; any cut is applied by the reader afterwards,
+  # which is what keeps "can these be ranked" answerable at every k. A threshold
+  # here would put a category back into the output.
+  #
+  # impact_sum became the key on 2026-09-09. docs/EDGE_ANALYSIS.md decomposed six
+  # resolved runs: the raw sum ranked at rho=0.407 (p=0.017) while the same numbers
+  # after the cluster-max, the sqrt(k) discount, the agreement discount and the
+  # quality multiplier ranked at 0.243 (p=0.156). Paired bootstrap over days puts
+  # the gap at +0.165, CI [+0.082, +0.244]. The machinery is still computed, into
+  # `diagnostics`, but it decides nothing.
+  #
+  # Where a reader should start believing the SIGN, in points of spot. Not a filter:
+  # edge-scores.json still carries every name, because the ranking test needs the
+  # complete table. It governs emphasis in the note.
+  #
+  # Measured on 38 events over six days: over all of them the sign of impact_sum is
+  # a coin flip (53% to the next close), but the RANK of conviction predicts whether
+  # the sign was right at rho=+0.514, permutation p=0.0015. |impact_sum| >= 3 gave
+  # 16/21 and +6.37% per trade; >= 8 gave 8/9. Best-of-seven-thresholds still clears
+  # family-wise correction at p=0.034. Re-derive this from the pooled sample rather
+  # than treating 3.0 as settled.
+  conviction_floor: 3.0
 
 output:
   disclaimer: >-

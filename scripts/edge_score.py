@@ -1,30 +1,48 @@
 #!/usr/bin/env python3
 """One signed number per company, so the day's names can be ranked.
 
-This replaces `edge_confidence.py`, which emitted a direction label, a binary
-`called` flag, and a confidence built from three-bucket adversary verdicts and a
-three-tier baseline quality. On 2026-08-31 every judged finding fell into one of
-two verdict buckets and twelve names collapsed to a single non-zero score and
-eleven zeros. There was nothing to rank, and the bucketing did that rather than
-the evidence.
+**The ranking key is `impact_sum`: the hunters' signed per-finding sizes, added up.**
+Nothing else. It is measured, not designed: `docs/EDGA` -- see
+`docs/EDGE_ANALYSIS.md` -- decomposed six resolved runs and found that every
+transformation this script used to apply lowered the rank correlation against the
+realised move.
 
-Everything here is continuous:
+    impact sum, as it comes from the hunters        rho = 0.407  p = 0.017
+      x (1 - priced_in/100)                              0.376  p = 0.027
+      cluster-max                                        0.284
+      / sqrt(k)                                          0.279
+      x agreement discount x quality multiplier          0.243  p = 0.156   <- shipped
+                                                                              until
+                                                                              2026-09-09
 
-  expected_impact_pct   each finding carries a SIGNED size in percentage points of
-                        spot, not an up/down label
-  priced_in_pct         the adversary returns 0-100 for how much of that impact is
-                        already in the price, not survives/partial/already
-  quality               baseline quality is a 0-1 scalar computed from counts and
-                        spreads, not full/partial/thin
-  edge_pct              the residual the market has not priced, in points of spot
-  edge_score            edge_pct squashed to -100..+100 for ranking across names
+A paired bootstrap over days puts the gap between the first line and the last at
++0.165, 95% CI [+0.082, +0.244]. The machinery was subtractive, so it no longer
+decides anything. The demoted numbers are still computed, into `diagnostics`, for
+two reasons: `residual_sum` is a genuinely open question (the priced-in haircut
+costing ordering is the most counter-intuitive result in the file and rests on six
+days), and `edge_score_legacy` keeps every earlier run comparable.
 
-There is no `called` flag and no threshold. Selection is done afterwards by
-sorting on `edge_score` and taking a top-k or a cutoff, which is what makes the
-question "can these be ranked?" answerable at every k rather than at one.
+Two things ride alongside the key:
 
-    python3 scripts/edge_score.py --run research/2026/08/2026-08-31/edge
-    python3 scripts/edge_score.py --run <dir> --legacy   # read old categorical files
+  conviction        abs(impact_sum). Direction skill is conditional on it. The rank
+                    of conviction predicts whether the sign was right at rho=+0.514
+                    (permutation p=0.0015) to the next close; over ALL events the
+                    sign is a coin flip at 53%. Above the median prediction it is
+                    74%. `conviction_floor` in config/pipeline.yaml is where a
+                    reader should start believing the sign -- it is a floor on
+                    EMPHASIS, never a filter on this file.
+  priced_lean_pct   the control. One number off the sealed baseline, available
+                    before a single subagent is spawned, that ranked the same six
+                    days at rho=0.335. Until the hunt beats it the hunt has not been
+                    shown to add anything, so it travels beside the key rather than
+                    multiplying into it.
+
+No call, no direction label, no threshold in the output. Selection is the reader's,
+made afterwards on the complete table, which is what keeps "can these be ranked?"
+answerable at every k.
+
+    python3 scripts/edge_score.py --run research/2026/09/2026-09-09/edge
+    python3 scripts/edge_score.py --run <dir> --legacy   # old categorical files
 """
 import argparse
 import json
@@ -41,6 +59,21 @@ from urllib.parse import urlparse
 LEGACY_PRICED_IN = {"survives": 15.0, "partially_priced": 60.0,
                     "already_priced": 95.0, "unjudged": 65.0}
 LEGACY_IMPACT_PCT = 4.0
+
+def conviction_floor(default=3.0):
+    """Where a reader should start believing the sign. Config, not arithmetic."""
+    p = Path(__file__).resolve().parent.parent / "config" / "pipeline.yaml"
+    try:
+        for line in p.read_text(encoding="utf-8").splitlines():
+            m = re.match(r"\s*conviction_floor:\s*([0-9.]+)", line)
+            if m:
+                return float(m.group(1))
+    except Exception:
+        pass
+    return default
+
+
+FLOOR = conviction_floor()
 
 AGGREGATORS = {"finance.yahoo.com", "stocktwits.com", "seekingalpha.com",
                "benzinga.com", "marketbeat.com", "zacks.com", "fool.com",
@@ -189,44 +222,39 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
         x["residual_pct"] = round(
             x["expected_impact_pct"] * (1.0 - x["priced_in_pct"] / 100.0), 3)
 
-    # Aggregate by source cluster, then discount for correlation between clusters.
-    # Within a cluster take the largest residual rather than the sum: two readings
-    # of one document are one fact seen twice.
+    # THE RANKING KEY. The hunters' signed sizes, added up, and nothing else.
+    impact_sum = round(sum(x["expected_impact_pct"] for x in findings), 3)
+    conviction = round(abs(impact_sum), 3)
+
+    # Everything below is a diagnostic. None of it enters the key.
+    #
+    # residual_sum is the open question: on six resolved days the priced-in haircut
+    # LOWERED the rank correlation (0.407 -> 0.376). That is counter-intuitive and
+    # not yet actionable, so it is measured rather than applied.
+    residual_sum = round(sum(x["residual_pct"] for x in findings), 3)
+
+    # edge_score_legacy reproduces the pre-2026-09-09 key exactly, so every earlier
+    # run stays comparable and the demotion stays checkable.
     clusters = {}
     for x in findings:
-        c = clusters.setdefault(x["cluster"], [])
-        c.append(x["residual_pct"])
+        clusters.setdefault(x["cluster"], []).append(x["residual_pct"])
     per_cluster = [max(v, key=abs) for v in clusters.values()]
     k = len(per_cluster)
-    raw_edge = sum(per_cluster)
-    edge_pct = round(raw_edge / math.sqrt(k), 3) if k else 0.0
+    legacy_pct = round(sum(per_cluster) / math.sqrt(k), 3) if k else 0.0
+    if lean is not None and legacy_pct:
+        legacy_pct = round(legacy_pct * (0.55 if (legacy_pct > 0) == (lean > 0) else 1.0), 3)
+    legacy_pct = round(legacy_pct * (0.35 + 0.65 * q), 3)
+    edge_score_legacy = round(100.0 * math.tanh(legacy_pct / 5.0), 1)
 
-    # Evidence that merely agrees with what the price already says is not edge.
-    tension = None
-    if lean is not None and edge_pct:
-        agree = (edge_pct > 0) == (lean > 0)
-        tension = round(abs(lean), 3)
-        edge_pct = round(edge_pct * (0.55 if agree else 1.0), 3)
-
-    edge_pct = round(edge_pct * (0.35 + 0.65 * q), 3)
-
-    # Ranking key. tanh keeps the ordering of edge_pct exactly while bounding the
-    # scale, so one outsized finding cannot dominate a sort across names.
-    edge_score = round(100.0 * math.tanh(edge_pct / 5.0), 1)
-
-    # Dispersion across hunters, in points. Wide disagreement is a real property
-    # of the name and belongs in the uncertainty, not in a gate.
+    # Dispersion across hunters, in points. A real property of the name, kept as
+    # metadata: two isolated hunters disagreeing is the most informative thing the
+    # stage produces and it should be visible, not folded into a number.
     per_hunter = {}
     for x in findings:
         per_hunter.setdefault(x["hunter"], 0.0)
-        per_hunter[x["hunter"]] += x["residual_pct"]
+        per_hunter[x["hunter"]] += x["expected_impact_pct"]
     vals = list(per_hunter.values())
     dispersion = round(statistics.pstdev(vals), 3) if len(vals) > 1 else 0.0
-
-    unpriced_share = ([round(1 - x["priced_in_pct"] / 100.0, 3) for x in findings] or [0.0])
-    confidence = round(100.0 * q * min(1.0, k / 3.0) *
-                       (1.0 - min(0.5, dispersion / 8.0)) *
-                       max(unpriced_share), 1)
 
     # A name with no event, or with no evidence either way, sits at 0.0 and would
     # sort above every mildly negative name. Arithmetically right, and useless for
@@ -245,21 +273,23 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
         "ticker": ticker,
         "rankable": rankable,
         "not_rankable_because": why_not,
-        "edge_score": edge_score,
-        "edge_pct": edge_pct,
-        "confidence": confidence,
-        "uncertainty_pct": round(max(dispersion, abs(edge_pct) * 0.5), 3),
-        "baseline_quality": q,
-        "quality_parts": q_parts,
+        "impact_sum": impact_sum,
+        "conviction": conviction,
         "priced_lean_pct": lean,
-        "agrees_with_price": None if (lean is None or not edge_pct)
-                             else ((edge_pct > 0) == (lean > 0)),
-        "price_lean_magnitude_pct": tension,
-        "independent_clusters": k,
-        "cluster_names": sorted(clusters),
-        "hunter_dispersion_pct": dispersion,
-        "hunters": len(hunts),
         "findings": findings,
+        "diagnostics": {
+            "residual_sum": residual_sum,
+            "edge_score_legacy": edge_score_legacy,
+            "baseline_quality": q,
+            "quality_parts": q_parts,
+            "independent_clusters": k,
+            "cluster_names": sorted(clusters),
+            "hunter_dispersion_pct": dispersion,
+            "hunters": len(hunts),
+            "note": "diagnostics only. None of these enters the ranking key -- "
+                    "docs/EDGE_ANALYSIS.md measured every one of them as neutral or "
+                    "subtractive against the realised move.",
+        },
     }
 
 
@@ -282,7 +312,7 @@ def main():
 
     rows = [score_name(t, baselines.get(t), hunts.get(t, []), verdicts.get(t, []), a.legacy)
             for t in sorted(set(baselines) | set(hunts))]
-    rows.sort(key=lambda r: (not r["rankable"], -r["edge_score"]))
+    rows.sort(key=lambda r: (not r["rankable"], -r["impact_sum"]))
     rank = 0
     for r in rows:
         if r["rankable"]:
@@ -297,10 +327,17 @@ def main():
         "legacy_rescore": a.legacy,
         "names": len(rows),
         "rankable": sum(1 for r in rows if r["rankable"]),
-        "note": "Every name carries a signed edge_score on -100..+100. There is no "
-                "call and no threshold: rank on edge_score and cut wherever you "
-                "like afterwards, which is what makes the ranking question "
-                "answerable at every k.",
+        "ranking_key": "impact_sum",
+        "conviction_floor": FLOOR,
+        "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added "
+                "up, in points of spot. No call and no threshold -- cut wherever you "
+                "like afterwards, which is what keeps the ranking question answerable "
+                "at every k. `conviction` (abs of the key) is where the direction "
+                "skill lives: over all events the sign is a coin flip, above the "
+                "median conviction it is 74%. conviction_floor is a floor on emphasis "
+                "in the note, never a filter on this file. Everything under "
+                "`diagnostics` was measured as neutral or subtractive and decides "
+                "nothing -- see docs/EDGE_ANALYSIS.md.",
         "ranking": rows,
     }
     out = Path(a.out) if a.out else run / "edge-scores.json"
@@ -309,18 +346,21 @@ def main():
     nr = sum(1 for r in rows if r["rankable"])
     print(f"{nr} of {len(rows)} names rankable"
           + ("  [LEGACY re-score: synthetic impacts, machinery only]" if a.legacy else ""))
-    print(f"\n{'#':>2} {'ticker':8s}{'edge':>7s}{'edge%':>8s}{'conf':>6s}{'unc%':>7s}"
-          f"{'qual':>6s}{'clus':>5s}  price lean")
+    above = sum(1 for r in rows if r["rankable"] and r["conviction"] >= FLOOR)
+    print(f"{above} of {nr} clear the conviction floor of {FLOOR:.1f} points\n")
+    print(f"{'#':>2} {'ticker':8s}{'impact':>9s}{'convict':>9s}{'floor':>7s}"
+          f"{'lean':>9s}{'resid':>8s}{'legacy':>8s}")
     for r in rows:
         lean = r["priced_lean_pct"]
-        ln = f"{lean:+.2f}%" if lean is not None else "  n/a"
+        ln = f"{lean:+.2f}%" if lean is not None else "n/a"
+        d = r["diagnostics"]
         if not r["rankable"]:
-            print(f"{'--':>2} {r['ticker']:8s}{'':>7s}{'':>8s}{'':>6s}{'':>7s}"
-                  f"{r['baseline_quality']:>6.2f}{'':>5s}  not ranked: {r['not_rankable_because']}")
+            print(f"{'--':>2} {r['ticker']:8s}{'':>9s}{'':>9s}{'':>7s}{ln:>9s}"
+                  f"{'':>8s}{'':>8s}  not ranked: {r['not_rankable_because']}")
             continue
-        print(f"{r['rank']:>2} {r['ticker']:8s}{r['edge_score']:>7.1f}{r['edge_pct']:>8.2f}"
-              f"{r['confidence']:>6.1f}{r['uncertainty_pct']:>7.2f}"
-              f"{r['baseline_quality']:>6.2f}{r['independent_clusters']:>5d}  {ln}")
+        print(f"{r['rank']:>2} {r['ticker']:8s}{r['impact_sum']:>+9.2f}"
+              f"{r['conviction']:>9.2f}{('yes' if r['conviction'] >= FLOOR else '-'):>7s}"
+              f"{ln:>9s}{d['residual_sum']:>+8.2f}{d['edge_score_legacy']:>+8.1f}")
     print(f"\nwrote {out}")
 
 

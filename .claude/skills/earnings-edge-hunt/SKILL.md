@@ -6,13 +6,47 @@ description: Establishes what the market has already priced into each of the day
 # Edge hunt — one signed number per company, so the day can be ranked
 
 This stage produces, for every company reporting in the window, a single signed
-score on −100…+100. Sort on it and you have the day ranked from most-likely-up to
-most-likely-down.
+number in **points of spot**: `impact_sum`, the hunters' own per-finding sizes added
+up. Sort on it and the day is ranked. Beside it travels `conviction` (its absolute
+value), which is where the direction skill lives.
 
 There is no call, no threshold and no direction label anywhere in the output. That
 is deliberate and it is the point: **the question being tested is whether these
 companies can be ranked at all**, and that question is answerable at every cut
 only if nothing has already been rounded into a bucket upstream.
+
+## What changed on 2026-09-09, and why the arithmetic got simpler
+
+`docs/EDGE_ANALYSIS.md` decomposed six resolved runs — 43 names, 249 findings —
+against the realised move, pooling within days. Every transformation the scorer
+applied lowered the rank correlation:
+
+| | ρ | p |
+| --- | --- | --- |
+| impact sum, as the hunters wrote it | **0.407** | **0.017** |
+| × (1 − priced_in/100) | 0.376 | 0.027 |
+| cluster-max | 0.284 | |
+| ÷ √k | 0.279 | |
+| × agreement discount × quality multiplier → the old `edge_score` | 0.243 | 0.156 |
+
+A paired bootstrap over days puts the gap between the first row and the last at
++0.165, 95% CI [+0.082, +0.244], so this is not small-sample noise. The machinery is
+still computed — into `diagnostics`, where `residual_sum` remains a genuinely open
+question and `edge_score_legacy` keeps earlier runs comparable — but it decides
+nothing.
+
+**The direction lives in the large numbers only.** Over all 38 de-duplicated events
+the sign of `impact_sum` is a coin flip: 53% to the next close. But the rank of
+`conviction` predicts whether the sign was right at ρ=+0.514, permutation p=0.0015.
+Above the median conviction the sign is right on 74% of events. `|impact_sum| ≥ 3`
+gave 16/21 with +6.37% per trade. Run the same test on `|edge_score|` and it returns
+−0.003 — the old machinery destroyed this too.
+
+**The stage has still not beaten a free control.** `-run_up_20d_pct`, one number off
+the sealed baseline before any subagent is spawned, ranked those six days at ρ=0.335
+and was positive on 6 of 6 days when traded. `edge_resolve.py` now prints it beside
+every result. Until the hunt beats it, the hunt has not been shown to add anything,
+and the note must say so.
 
 ## Why it looks like this
 
@@ -263,16 +297,23 @@ granted now; if it goes missing again, fix the definition rather than transcribi
 python3 scripts/edge_score.py --run <RUN>/edge
 ```
 
-Writes `edge-scores.json`: every name, with `edge_score` (−100…+100, the ranking
-key), `edge_pct` (the residual in points of spot), `confidence`, `uncertainty_pct`
-and the full component breakdown.
+Writes `edge-scores.json`: every name with `impact_sum` (the ranking key, signed
+points of spot), `conviction`, `priced_lean_pct` (the control), and a `diagnostics`
+block. The script prints which names clear `conviction_floor` from
+`config/pipeline.yaml`.
 
 Names whose event was not confirmed carry `rankable: false` and sit out of the
 ranking rather than sorting to the top on a 0.
 
-Do not filter this file and do not apply a cutoff. Selection is the reader's, made
-afterwards on a complete table, which is what keeps "can these be ranked" testable
-at every k.
+Do not filter this file and do not apply a cutoff — not even the conviction floor.
+The floor governs **emphasis in the note**, never the contents of the JSON, because
+the ranking test needs the complete table at every k.
+
+Nothing in `diagnostics` is a decision input. If you find yourself reaching for
+`confidence` or `baseline_quality` to decide what to highlight, stop: they were
+measured at −0.090 and +0.074 against the realised move, and on 2026-08-31 the
+highest-confidence name was the uninformative one while the name carrying that day's
+entire correlation had the lowest confidence in the run.
 
 ## 6. The note
 
@@ -284,14 +325,23 @@ Then the names that could not be ranked and why. End with the disclaimer from
 Four things the note must also do, each because a reader would otherwise draw a
 wrong conclusion from a correct table:
 
-**Say what the spread is, not just the order.** After an adversary honestly discounts
-every finding, very little survives: on 2026-08-31 the eight rankable names spanned
-`edge_pct` +0.04 to −0.58 points of spot, against implied moves of 4.6%, 9.8% and
-12.0% where a chain existed. Nobody should read `edge_score −11.5` as a forecast of a
-−11.5% move. State plainly that the score is a **ranking key**, that the bottom name
-means "last of eight", and that compression does not weaken the test — rank
-correlation reads order, not magnitude, so a tightly compressed but strictly ordered
-table is exactly as falsifiable as a wide one.
+**Separate the order from the sign.** Report the ranking for every name, and mark
+which names clear the conviction floor. Say in the note that below the floor the sign
+is a coin flip on the evidence so far (53% over 38 events) and that above it the rank
+of conviction predicted sign-correctness at ρ=+0.514. A reader who treats a
+`impact_sum` of −0.4 as a bearish view is reading the table wrong, and the note is
+where that is prevented.
+
+Also state that `impact_sum` is not a forecast of the move. The same fact often
+appears in two findings from two sources and adding both double-counts it — which is
+exactly what the cluster-max was built to stop, and the cluster-max is what the
+measurement demoted. The number ranks; it does not size.
+
+**Give the control its own line.** Print `-run_up_20d_pct` beside the ranking and say
+whether the hunt's order differs from it. On the six resolved runs that free number
+ranked at ρ=0.335 against the hunt's raw 0.407, a gap whose CI spans zero. A note
+that reports the ranking without the control is claiming more than the evidence
+carries.
 
 **Report the sign balance.** Count how many hunts leaned each way and say so. Six of
 eight leaned negative on 2026-08-31, which is more plausibly an artefact of asking
@@ -309,9 +359,17 @@ reporting something different from one that refuted the fact; keep that distinct
 with a live option chain. Where there is none, `priced_lean_pct` falls back to
 −0.05 × the 20-day run-up, and the "expected move" in the baseline is a historical
 median rather than a priced expectation. Seven of ten names had no listed options on
-2026-08-31, so for those the agreement discount fired against a lean inferred from a
-run-up — which is much weaker evidence of what is priced than the rule assumes. That
-is worth flagging in the note rather than silently special-casing the arithmetic.
+2026-08-31, and 18 of the first 43 resolved names took the fallback. Nothing
+multiplies by that lean any more, but `edge_resolve.py` still normalises by the
+expected move, so a note that calls the normalised correlation an implied-move
+measure is overstating it.
+
+**Say what the day would have cost to trade.** Capacity is not in the scorer and not
+in the budget. Report spot × 20-day average volume for the top and bottom names. On
+2026-09-02 the single best-ranked name, DLTH, moved +23.20% on **$170k a day** of
+turnover; six of the first 22 long/short positions traded under $1m a day. A ranking
+whose extremes are untradeable is a research result, not a signal, and the note
+should be the place a reader learns which one they are looking at.
 
 ## 7. Resolve, once the window closes
 
@@ -320,12 +378,19 @@ python3 scripts/edge_resolve.py --run <RUN>/edge
 python3 scripts/edge_resolve.py --pool 'research/2026/*/*/edge'   # the real number
 ```
 
-Reports Spearman rank correlation between `edge_score` and the realised move, both
-raw and divided by the implied move, with a permutation p-value; plus the spread
-from being long the top third and short the bottom third.
+Reports, per day and pooled: the rank correlation between the key and the realised
+move; **the conviction-versus-sign correlation**, which is the threshold-free form of
+"is the direction real"; both free controls; the legacy key for continuity; and the
+long/short spread.
 
-The normalised correlation is the skill measure. Sorting a 15%-implied biotech
-above a 2%-implied utility is easy and means nothing.
+The pooled figure pools **within** days — each day converted to within-day ranks and
+centred — because concatenating raw pairs across days lets market-wide drift into the
+rank structure and understates every ranker (0.189 against 0.243 on the same six
+days).
+
+Watch the conviction number as days accumulate. It needs no cut and no calibration,
+which is what makes it the honest headline; the ranking correlation and the
+long/short spread both depend on where you cut.
 
 **One day is an anecdote.** A single day of five to twelve names cannot produce a
 meaningful correlation, and the pooled figure across many days is the result. Say
