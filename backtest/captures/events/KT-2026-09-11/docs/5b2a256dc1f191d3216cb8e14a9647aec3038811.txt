@@ -1,0 +1,483 @@
+SOURCE: https://corp.kt.com/html/investors/resources/earnings.html
+PROVIDER: agent-websearch
+AREA: 1
+HEADLINE: 실적발표 | KT
+WHY: Primary official Korean-language IR earnings archive, source-of-truth for KST release timing
+QUERY: KT Corp 3분기 2026 실적발표일
+FETCHED_UTC: 2026-09-09T15:32:27Z
+
+ 
+ 
+ 
+ 
+	 
+	 
+	 
+	 
+	 실적발표 | KT 
+	 
+	 
+	 
+	 
+	  
+
+	 var ktMenuCd = '5FDA00'; 
+	  
+	 
+		s.pageName="^www^kt-회사소개^투자정보^IR자료실^실적발표";
+
+	 
+ 
+
+ 
+ 
+	 
+	 
+		 주메뉴 바로 가기 
+		 본문 바로가기 
+	 
+	 
+
+	 
+	 
+		  kt.floating()  
+		  kt.gnb()  
+	 
+	 
+
+	 
+	 
+		 
+		 
+			 
+				 
+					 
+						 
+							 kt.locationBar() 
+						 
+						 
+							 실적발표 
+						 
+					 
+				 
+			 
+			 
+				 
+					 
+						 
+							 2024년 이전 실적자료 
+							 (구) KTF 분기별 실적자료 
+						 
+					 
+					 
+						 
+							 
+								  
+							 
+							 
+								 KT 분기별 실적자료의 분기 및 자료다운로드(pdf&amp;엑셀), 인사말 , Q&amp;A를 제공합니다. 
+								 
+									 
+									 
+									 
+									 
+								 
+								 
+									 
+										 분기 
+										 자료 다운로드 
+										 인사말 
+										 Q&amp;A 
+									 
+								 
+								  
+							 
+						 
+						 
+							 2017년 3분기 실적발표 인사말 
+
+							 
+								   
+							 
+							 
+							 
+								 
+									Your browser does not support.
+								 
+							 
+							 
+							 
+							 음성파일 재생 불가 합니다. 
+							 
+							 
+								 실적발표-일시,발표자 
+								 
+									 
+										 
+								 
+								 
+									 
+										 일시 
+										  
+									 
+									 
+										 발표자 
+										  
+									 
+								 
+							 
+							  음성파일 자막  [2017년 3분기 실적발표 2017년 11월 1일(수) 오후 4시]음성자막파일은 실적발표 이후 등록됩니다.  
+						 
+						  
+						  
+					 
+				 
+			 
+
+		 
+		 
+
+	 
+	 
+
+	 
+	  kt.footer()  
+	 
+
+ 
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 
+
+ 
+	var isOnair = false;	// 온에어여부
+	let resultList = [];	// 검색결과
+	let viewList = [];	// 검색결과
+
+	$j(init);
+
+	function init() {
+		// 이벤트등록
+		$j('#btn_old_01').on('click', openOldEarnings);   // (구) KTF 분기별 실적자료
+		$j('#btn_old_02').on('click', openOldDataList);   // 2024년 이전 실적자료
+		$j('#earnings_year').on('change', function() {
+			$j('.playWarp').show();
+			$j('.play_record_on_air').hide();
+			search();
+		});
+
+		loadYear();
+	}
+
+	// (구) KTF 분기별 실적자료
+	function openOldEarnings() {
+		$j('#popup-01').load('earnings_pop.html');
+	}
+
+	// 2024년 이전 실적자료
+	function openOldDataList() {
+		$j('#popup-02').load('earnings_old_data.html', function(){
+			let fitstLine = true;
+			for (let i=2023;i>=2010;i--) {
+				let oldList = $j.grep(resultList, function(element, index) { return element.yyInfo == i && (element.saveFileNm01 !== null || element.saveFileNm02 !== null) });
+				let qtrView = false;
+				let oldHtml = '';
+				if(oldList.length > 0) {
+					for (let j=1;j  ${i} `;
+								fitstLine = false;
+							} else {
+								oldHtml +=`  ${i} `;
+							}
+						}
+						let qtrList = $j.grep(resultList, function(element, index) { return element.yyInfo == i && element.qtrType == `0${j}` && (element.saveFileNm01 !== null || element.saveFileNm02 !== null) });
+						if(qtrList.length > 0) {
+							qtrView = true;
+							let pdf = kt_common.addLastSlash(qtrList[0].saveFilePath01) + kt_common.isNull(qtrList[0].saveFileNm01);
+							let excel = kt_common.addLastSlash(qtrList[0].saveFilePath02) + kt_common.isNull(qtrList[0].saveFileNm02);
+							let rowTitle = `${i}년 ${j}분기`;
+
+							oldHtml += '  ';
+
+							if(pdf !== '') {
+								oldHtml += `  pdf파일 다운로드     `;
+							}
+							if(excel !== '') {
+								oldHtml += `  엑셀파일 다운로드     `;
+							}
+
+							oldHtml += '  ';
+						} else {
+							oldHtml +='  ';
+
+						}
+						if (j==4) { 
+							oldHtml +=' ';
+						}
+					}
+					if (qtrView) {
+						$j('#earnings_oldlist').append(oldHtml);
+					}
+				}
+			}
+		});
+	}
+
+	// 검색년도
+	function loadYear() {
+		// api 데이터
+		var data = {};
+		data.langDivType = 'KOR';	// 언어 구분 타입
+		// api 데이터
+
+		kt_common.api({
+			'url' : '/corp/announcements/v1.0/achievements/years',
+			'type' : 'get',
+			'data' : data,
+			'callback' : callbackYear
+		});
+	}
+
+	// 검색년도 콜백함수
+	function callbackYear(type, result) {
+		try {
+			if(type === 'success') {
+				if(kt_common.isNull(result.data) !== '') {
+					let yearList = result.data.yeareList;
+
+					if(yearList.length > 0) {
+						var optionsHtml = '';
+						$j.each(yearList, function(idx, data) {
+							if (idx > 0) {
+								if (data ' + data + '년 ';
+						});
+						$j('#earnings_year').append(optionsHtml); // 년도세팅
+
+						search();
+					}
+				}
+			}
+		} catch(e) {
+			common_log.log('응답파싱오류가 발생하였습니다.(' + e.message + ')');
+		}
+	}
+
+	// 검색결과
+	function search() {
+		// 재생영역 초기화
+		if(isOnair === false || $j('.play_record_on_air').is(':visible') === false) {
+			clear();
+		}
+
+		// api 데이터
+		var data = {};
+		data.langDivType = 'KOR';	// 언어 구분 타입
+		/*
+		var year = $j('#earnings_year').val();
+		if(year !== '') {
+			data.yyInfo = year;
+		}*/
+		// api 데이터
+
+		kt_common.api({
+			'url' : '/corp/announcements/v1.0/achievements',
+			'type' : 'get',
+			'data' : data,
+			'callback' : callbackSearch
+		});
+	}
+
+	// 검색결과 콜백함수
+	function callbackSearch(type, result) {
+		let year = $j('#earnings_year').val();
+		try {
+			if(type === 'success') {
+				if(kt_common.isNull(result.data) !== '') {
+					resultList = result.data.achPreList;
+					viewList = $j.grep(resultList, function(element, index) { return element.yyInfo == year});
+
+					if(viewList.length > 0) {
+						var html = '';
+						$j.each(viewList, function(idx, data) {
+							var pdf = kt_common.addLastSlash(data.saveFilePath01) + kt_common.isNull(data.saveFileNm01);
+							var excel = kt_common.addLastSlash(data.saveFilePath02) + kt_common.isNull(data.saveFileNm02);
+							var greetingSound = kt_common.addLastSlash(data.saveFilePath03) + kt_common.isNull(data.saveFileNm03);
+							var qnaSound = kt_common.addLastSlash(data.saveFilePath05) + kt_common.isNull(data.saveFileNm05);
+							var rowTitle = data.yyInfo+'년 '+ parseInt(data.qtrType) + '분기 ';
+
+							html += ' ';
+							html += '	 ' + parseInt(data.qtrType) + '분기 ';
+							html += '	 ';
+							html += '		 ';
+
+							if(pdf !== '') {
+								html += '			  pdf파일 다운로드     ';
+							}
+
+							if(excel !== '') {
+								html += '			  엑셀파일 다운로드     ';
+							}
+
+							html += '		 ';
+							html += '	 ';
+							html += '	 ';
+
+							//if(greetingSound !== '') { add 20171222 onair 추가 : 우측 화면 표시를 위해 인사말은 항상 보임.
+								html += '		  듣기  ';
+							//}
+
+							html += '	 ';
+							html += '	 ';
+
+							if(qnaSound !== '') {
+								html += '		  듣기  ';
+							}
+
+							html += '	 ';
+							html += ' ';
+						});
+
+						$j('#earnings_list').find('tbody').html(html);
+
+						var $btnSound = $j('#earnings_list').find('.btn-listen');
+						$btnSound.on('click', playSound);
+
+						//if(isOnair === false || $j('.play_record_on_air').is(':visible') === false) {	// 온에어가 아닐경우
+						if($btnSound.length > 0) {
+							playSound();
+						}
+						//}
+					}
+				}
+			}
+		} catch(e) {
+			common_log.log('응답파싱오류가 발생하였습니다.(' + e.message + ')');
+		}
+	}
+
+	// 음성재생
+	function playSound(event) {
+		var repositoryIdx = 0;
+		var soundIdx = 0;
+		var $target;
+		if(event === undefined) {
+			$target = $j('#earnings_list').find('.btn-listen').eq(0);
+		} else {
+			$target = $j(event.target);
+			if(event.target.tagName !== 'BUTTON') {
+				$target = $target.parent();
+			}
+		}
+
+		if($target.hasClass('active') === true) {
+			return false;
+		}
+
+		$j('#earnings_list').find('.btn-listen').removeClass('active');
+		$target.addClass('active');
+		$j('#earnings_list').find('tr').removeClass('active');
+		$target.parent().parent().addClass('active');
+
+		repositoryIdx = $target.parent().parent().index();
+		soundIdx = $target.parent().index() - 2;
+
+		var playData = viewList[repositoryIdx];
+
+		// 일시, 발표자
+		$j('#earnings_date').text(playData.ptDateInfo);
+		$j('#earnings_present').text(playData.ptUser);
+
+		// 플레이어세팅
+		var sound;
+		var caption;
+		var text;
+		if(soundIdx === 1) {
+			sound = kt_common.addLastSlash(playData.saveFilePath05) + kt_common.isNull(playData.saveFileNm05);
+			caption = kt_common.addLastSlash(playData.saveFilePath06) + kt_common.isNull(playData.saveFileNm06);
+			text = kt_common.isNull(playData.vcSubtitText05);
+		} else {
+			sound = kt_common.addLastSlash(playData.saveFilePath03) + kt_common.isNull(playData.saveFileNm03);
+			caption = kt_common.addLastSlash(playData.saveFilePath04) + kt_common.isNull(playData.saveFileNm04);
+			text = kt_common.isNull(playData.vcSubtitText03);
+		}
+
+		var captionHtml = ' 음성파일 자막 ';
+		if(caption !== '') {
+			captionHtml += '  자막다운로드    ';
+		}
+		captionHtml += ' ' + text + ' ';
+		$j('.play-record').find('.box-subtitles').html(captionHtml);
+
+		$j('#earnings_player').attr('src', sound);
+		// $j('#earnings_player')[0].play();
+
+		//add 20171222 onair 추가
+		if(kt_common.isNull(playData.aedPtType) == '01'){
+			// 발표 전,
+			$j('#earnings_title').text($j('#earnings_year').val() + ' ' + parseInt(playData.qtrType) +'분기 실적발표 인사말'); // title
+			showOnAir(repositoryIdx);
+		}else{
+			// 발표 후,
+			$j('#earnings_title').text($j('#earnings_year').val() + ' ' + parseInt(playData.qtrType) +'분기 실적발표 자료'); // title
+
+			$j('.play-record').show();
+			$j('.playWarp').show();
+			$j('.play_record_on_air').hide();
+
+			isOnair = false;
+		}
+	}
+
+	// add 20171222 onair 추가
+	function showOnAir(idx) {
+		var onAirData = viewList[idx];
+
+		// 이미지 정보
+		var banrLinkType = kt_common.isNull(onAirData.banrLinkType);
+		var banrLinkUrl = kt_common.isNull(onAirData.banrLinkUrl);
+		var banrSaveImgNm = kt_common.isNull(onAirData.banrSaveImgNm);
+		var banrSaveImgPath = kt_common.isNull(onAirData.banrSaveImgPath);
+		var banrAltText = kt_common.isNull(onAirData.banrAltText);
+		var aTitleText = " 실적발표 듣기";
+		if(banrLinkType == "01"){
+			// 새창
+			$j('.play_record_on_air').find("a").attr("target",  "_blank");
+			aTitleText = "[새창]" + aTitleText;
+		}else{
+			// 현재창
+			$j('.play_record_on_air').find("a").removeAttr("target");
+			aTitleText = "[현재창]" + aTitleText;
+		}
+		$j('.play_record_on_air').find("a").attr("href",  banrLinkUrl);
+		$j('.play_record_on_air').find("a").attr("title",  aTitleText);
+		$j('.play_record_on_air').find("img").attr("src", banrSaveImgPath+banrSaveImgNm)
+		$j('.play_record_on_air').find("img").attr("alt", banrAltText);
+
+		$j('.play_record_on_air').show();
+		$j('.play-record').show();
+		$j('.playWarp').hide();
+
+		isOnair = true;
+	}
+
+	// 음성재성영역 초기화
+	function clear() {
+		$j('.play-record').hide();
+		$j('#earnings_title').text('');
+		$j('#earnings_date').text('');
+		$j('#earnings_present').text('');
+		$j('.play-record').find('.box-subtitles').html('');
+		$j('#earnings_player').attr('src', '');
+	}
+ 
+ 
+
+ 
