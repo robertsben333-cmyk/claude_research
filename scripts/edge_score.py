@@ -34,9 +34,10 @@ Two things ride alongside the key:
                     EMPHASIS, never a filter on this file.
                     CAVEAT: that 0.514 comes from a sample in which the day's top
                     two names by hunt_priority were hunted twice, and the key is a
-                    sum, so they carry twice the conviction by construction. On the
-                    28 single-hunted names of that sample it is +0.270 (p=0.29).
-                    scripts/edge_hunter_control.py.
+                    sum, so they carry twice the conviction by construction. Rebuild
+                    those names' keys from one hunter, keeping all 38 events, and it
+                    is +0.361 (p=0.045) -- inflated by about a third, not
+                    manufactured. scripts/edge_hunter_control.py.
   priced_lean_pct   the control. One number off the sealed baseline, available
                     before a single subagent is spawned, that ranked the same six
                     days at rho=0.335. Until the hunt beats it the hunt has not been

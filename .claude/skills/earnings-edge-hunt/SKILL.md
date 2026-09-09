@@ -42,14 +42,15 @@ Above the median conviction the sign is right on 74% of events. `|impact_sum| �
 gave 16/21 with +6.37% per trade. Run the same test on `|edge_score|` and it returns
 −0.003 — the old machinery destroyed this too.
 
-**And that measurement is confounded, so quote it with the caveat.** Those six runs
-gave the day's top two names by `hunt_priority` a second hunter, and since the key is
-a sum they carry roughly twice the conviction for free — ten of the 38 events, which
-were also right more often (7/10 against 13/28). Dividing by hunter count keeps
-ρ=+0.442 (p=0.010); restricting to the 28 single-hunted names, which is how the stage
-now runs, gives +0.270 (p=0.29) and takes the ranking correlation from +0.407 to
-+0.042. The floor of 3.0 stands on 9/14 at +4.62% per trade in that subsample, CI
-[−1.62, +10.79]. `scripts/edge_hunter_control.py`, `docs/EDGE_ANALYSIS.md`.
+**That measurement is inflated by the double hunt, so quote it with the
+counterfactual.** Those six runs gave the day's top two names by `hunt_priority` a
+second hunter, and since the key is a sum those ten of 38 events carry roughly twice
+the conviction. Rebuild their keys from one hunter — all 38 events kept, which is how
+the stage now runs — and conviction is +0.361 (p=0.045) and the ranking +0.303
+(p=0.099). The floor of 3.0 then rests on 15/21 = 71% at +5.53% per trade, CI
+[+1.02, +9.90], so it stands. Do not check this by dropping the double-hunted names:
+`hunt_priority` is assigned before any hunting, so what is left is the low-priority
+half of the day. `scripts/edge_hunter_control.py`, `docs/EDGE_ANALYSIS.md`.
 
 **The stage has still not beaten a free control.** `-run_up_20d_pct`, one number off
 the sealed baseline before any subagent is spawned, ranked those six days at ρ=0.335
@@ -361,8 +362,8 @@ wrong conclusion from a correct table:
 which names clear the conviction floor. Say in the note that below the floor the sign
 is a coin flip on the evidence so far (53% over 38 events) and that above it the rank
 of conviction predicted sign-correctness at ρ=+0.514 — measured under a double hunt
-that no longer runs, and +0.270 (p=0.29) on the single-hunted names of that same
-sample. Both numbers belong in the note; neither is established. A reader who treats a
+that no longer runs, and +0.361 (p=0.045) when that sample is rebuilt at one hunter
+per name. Quote the second beside the first. A reader who treats a
 `impact_sum` of −0.4 as a bearish view is reading the table wrong, and the note is
 where that is prevented.
 

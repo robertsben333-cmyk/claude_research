@@ -29,10 +29,11 @@ Three more numbers, added 2026-09-09 because without them a run cannot be judged
                        permutation p of 0.0015. It needs no cut and no calibration,
                        which is why it is the number to watch as days pool.
                        Those six runs double-hunted their top two names each, which
-                       doubles their conviction for free; on the single-hunted names
-                       alone the correlation is +0.270 (p=0.29). Days run under
-                       double_hunt_top_n: 0 are the only clean measurement of it --
-                       see scripts/edge_hunter_control.py
+                       inflates their conviction; rebuilt from one hunter per name it
+                       is +0.361 (p=0.045). Do not check this by dropping the
+                       double-hunted names -- they were picked on a pre-hunt sweep
+                       score, so that subsample is the low-priority half of the day,
+                       not a de-confounded one. scripts/edge_hunter_control.py
   the controls         -run_up_20d_pct and priced_lean_pct, both off the sealed
                        baseline before a subagent is spawned. The first ranked the
                        same six days at rho=0.335. A run that does not beat the

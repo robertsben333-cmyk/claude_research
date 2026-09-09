@@ -94,26 +94,26 @@ too. See `docs/EDGE_ANALYSIS.md`, "Conviction is where the direction lives" — 
 sign of the impact sum over all 38 events is a coin flip (53%), so the conviction floor is
 the whole finding.
 
-**But every one of those numbers was measured under the double hunt, and neither survives
-its removal cleanly.** Until 2026-09-09 `double_hunt_top_n: 2` gave two hunters to the day's
-two highest-`hunt_priority` names and one to everything else. The key is a sum, so those ten
-of 38 events carry 2.6× the conviction of the rest by construction (mean \|impact\| 9.13
-against 3.53, 8.0 findings against 3.7) — and they were also right more often, 7/10 against
-13/28. `scripts/edge_hunter_control.py` separates what can be separated. Dividing the key by
-hunter count keeps the conviction result at ρ=+0.442, p=0.010, so the arithmetic alone is not
-it; hunter count on its own predicts sign-correctness at only +0.208 (p=0.222). But
-**restricted to the 28 single-hunted names — the regime that runs from now on — conviction
-falls to ρ=+0.270 (p=0.29) to the close and to zero to the open, and the ranking correlation
-falls from +0.407 to +0.042 (p=0.87)**, negative or near-zero on four of the five days that
-can be ranked. Partial correlations barely move (+0.481, +0.397), but hunter count takes two
-values and a partial removes only what is linear in its rank; where restriction and partial
-disagree, believe the restriction. The 7/10-against-13/28 gap is not itself significant
-(Fisher p=0.181), so a second opinion and a well-chosen name cannot be told apart here at
-all. `conviction_floor: 3.0` stays — it is still the best of six cuts on single-hunted names,
-still beats always-short there, and keeps half the names in both regimes — but what stands
-behind it is 9/14 at +4.62% with a CI of [−1.62, +10.79], not 16/21 at t=2.74. Do not quote
-either headline without this. The separation needs days run under the new config, not more
-analysis of these.
+**The double hunt inflates both of those numbers by about a third, and neither dies without
+it.** Until 2026-09-09 `double_hunt_top_n: 2` gave two hunters to the day's two
+highest-`hunt_priority` names and one to everything else. The key is a sum, so those ten of 38
+events carry 2.6× the conviction of the rest by construction (mean \|impact\| 9.13 against
+3.53, 8.0 findings against 3.7). `scripts/edge_hunter_control.py` measures it. **Do not test
+this by dropping the double-hunted names**: `hunt_priority` is assigned by the sweep before
+any hunting, so the survivors are the names the sweep rated lowest (mean priority 59.9 against
+77.2), and the collapse there (conviction +0.270 p=0.29, ranking +0.042) describes that
+population rather than a de-confounded effect. The right control keeps all 38 events and
+rebuilds each double-hunted name's key from **one hunter's findings**, which is also how the
+stage now runs: conviction **+0.361 (p=0.045)** against +0.514, ranking **+0.303 (p=0.099)**
+against +0.360 on the same de-duplicated events. `conviction_floor: 3.0` re-derived on that
+counterfactual gives 15/21 = 71% at +5.53% per trade, CI [+1.02, +9.90] — still clear of zero,
+still half the day, so the floor stands with a haircut rather than a reversal. Two further
+things: averaging the two hunters ranks better than either alone (+0.442 against +0.361 and
++0.299), the signature of noise reduction, which argues against having removed the double
+hunt; and the second hunter bought no direction on those names (7/10 sign-correct either way)
+while the pair disagreed on sign 4 times in 10. Nothing here separates "a second opinion
+helps" from "the sweep picked well" — they were assigned together — and only days under the
+new config, or a deliberate double-hunt week, will.
 
 **`impact_sum` sums the HUNTER's sizes, since 2026-09-09.** The 09-09 run caught that
 `edge_score.py` was re-sizing every finding to the mean of the hunter's number and the

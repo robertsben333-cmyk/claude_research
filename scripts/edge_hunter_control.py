@@ -12,9 +12,16 @@ tell apart.
 
 This separates them, on data already on disk. Nothing is re-hunted.
 
-  - restrict to the single-hunted names only
+  - THE COUNTERFACTUAL SINGLE HUNT: rebuild every double-hunted name's key from one
+    hunter's findings only, so all 38 events sit at one hunter each and no name is
+    dropped. This is the test that matters. Dropping the double-hunted names instead
+    is not a clean control: they were chosen on `hunt_priority`, a sweep score
+    assigned before any hunting, so the restricted sample is "the names the sweep
+    rated lowest", a different population rather than the same one de-confounded
   - divide the key by hunter count, and by finding count
   - hold hunter count fixed as a control (partial rank correlation)
+  - restrict to the single-hunted names, reported for completeness and read as the
+    low-priority subsample it is
   - and run hunter count and `hunt_priority` as predictors in their own right
 
 Both exposed tests are re-run: the conviction-vs-sign test of
@@ -103,6 +110,12 @@ def load_rows(rows_path, cache_path):
             for n in json.loads(sw.read_text()).get("names", []):
                 if n.get("hunt_priority") is not None:
                     prio[n["ticker"].upper()] = n["hunt_priority"]
+        per_hunter = {}
+        for n in sc["ranking"]:
+            g = {}
+            for f in n.get("findings") or []:
+                g.setdefault(f["hunter"], []).append(f["expected_impact_pct"])
+            per_hunter[n["ticker"]] = [round(sum(v), 3) for _, v in sorted(g.items())]
         for r in d:
             b = json.loads((Path(run) / "baselines" / f"{r['t']}.json").read_text())
             ed, sess = b.get("event_date"), b.get("session", "bmo")
@@ -115,6 +128,9 @@ def load_rows(rows_path, cache_path):
                 "prio": prio.get(r["t"].upper()),
                 "move": r["move"], "dv": r.get("dollar_vol"),
                 "ro": px.get("ret_to_open_pct"), "rc": px.get("ret_to_close_pct"),
+                # per-hunter sums, ordered by hunter label (a before b, h1 before h2).
+                # The hunters run in parallel, so the label is arbitrary, not temporal.
+                "hsums": per_hunter.get(r["t"]) or [r["impact_sum"]],
             })
     return out
 
@@ -381,6 +397,80 @@ def main():
             print(f"{'partial rho, controlling ' + cl:46s}{sl:10s}{fmt(rho)}"
                   f"{'':>9s}{n:>5d}")
     doc["ranking"] = t2
+
+    # --- the counterfactual single hunt: one hunter for every name, nothing dropped
+    print("\n=== counterfactual: rebuild the key from ONE hunter per name ===")
+    print("The double-hunted names were picked on hunt_priority, before any hunting.")
+    print("Dropping them changes the population; rebuilding their key from a single")
+    print("hunter holds the population and removes the doubling.\n")
+    pairs = [r for r in ded if len(r["hsums"]) >= 2]
+    print(f"{'day':12s}{'ticker':8s}{'hunter A':>10s}{'hunter B':>10s}"
+          f"{'full':>9s}{'A only':>9s}{'B only':>9s}{'move':>9s}")
+    for r in sorted(pairs, key=lambda r: r["day"]):
+        ha, hb = r["hsums"][0], r["hsums"][1]
+        print(f"{r['day']:12s}{r['t']:8s}{ha:>+10.2f}{hb:>+10.2f}"
+              f"{r['pred']:>+9.2f}{ha:>+9.2f}{hb:>+9.2f}{r['move']:>+9.2f}")
+    agree = sum(1 for r in pairs if sign(r["hsums"][0]) == sign(r["hsums"][1]))
+    gap = [abs(r["hsums"][0] - r["hsums"][1]) for r in pairs]
+    infl = [abs(r["pred"]) - abs(r["hsums"][0]) for r in pairs]
+    print(f"\n{len(pairs)} paired names. Hunters agree on sign {agree}/{len(pairs)}; "
+          f"median gap {st.median(gap):.2f} points.")
+    print(f"The second hunter moves |key| by a median {st.median(infl):+.2f} points "
+          f"(mean {st.mean(infl):+.2f}).")
+    hs_a = sum(1 for r in pairs if r["hsums"][0] and r.get("rc") is not None
+               and sign(r["hsums"][0]) == sign(r["rc"]))
+    hs_f = sum(1 for r in pairs if r["pred"] and r.get("rc") is not None
+               and sign(r["pred"]) == sign(r["rc"]))
+    print(f"Sign correct on those names: hunter A alone {hs_a}/{len(pairs)}, "
+          f"both hunters summed {hs_f}/{len(pairs)}.")
+    doc["counterfactual_pairs"] = {
+        "n": len(pairs), "sign_agree": agree, "median_gap": round(st.median(gap), 2),
+        "median_inflation": round(st.median(infl), 2),
+        "sign_first_only": hs_a, "sign_full": hs_f,
+        "rows": [{"day": r["day"], "t": r["t"], "a": r["hsums"][0],
+                  "b": r["hsums"][1], "full": r["pred"], "move": r["move"],
+                  "rc": r["rc"]} for r in pairs]}
+
+    cf = {"first hunter only": lambda r: r["hsums"][0],
+          "second hunter only": lambda r: r["hsums"][-1],
+          "mean of hunters": lambda r: st.mean(r["hsums"]),
+          "full sum (published)": lambda r: r["pred"]}
+    print(f"\n{'key':24s}{'conviction rho':>16s}{'p':>8s}{'hits':>8s}"
+          f"{'ranking rho':>14s}{'p':>8s}")
+    cfd = {}
+    for lab, kf in cf.items():
+        rho, pp, n = conv_sign_p(ded, kf, "rc", a.trials)
+        _, _, hits = conv_sign(ded, kf, "rc")
+        rr, rp, rn = pooled_p(by_day(ded), kf, 1, a.trials)
+        ro_, op, _ = conv_sign_p(ded, kf, "ro", a.trials)
+        cfd[lab] = {"conviction_close": rho, "p_close": pp, "hits": hits, "n": n,
+                    "conviction_open": ro_, "p_open": op,
+                    "ranking": rr, "ranking_p": rp, "ranking_n": rn}
+        print(f"{lab:24s}{fmt(rho, 16)}{(f'{pp:.4f}'):>8s}"
+              f"{f'{hits}/{n}':>8s}{fmt(rr, 14)}{(f'{rp:.4f}'):>8s}")
+    doc["counterfactual_keys"] = cfd
+
+    # --- the floor, re-derived on the counterfactual single-hunt key
+    print("\n=== conviction floor on the counterfactual key (one hunter, 38 events) ===")
+    print(f"{'threshold':12s}{'n':>4s}{'share':>7s}{'sign (close)':>14s}"
+          f"{'ret/trade':>11s}{'boot 95% CI':>22s}{'always-short':>14s}")
+    kf = lambda r: r["hsums"][0]
+    cfl = {}
+    for th in (0, 1, 2, 3, 5, 8):
+        v = [r for r in ded if abs(kf(r)) >= th and r.get("rc") is not None]
+        if len(v) < 3:
+            continue
+        h = sum(1 for r in v if sign(kf(r)) == sign(r["rc"]))
+        tr = [sign(kf(r)) * r["rc"] for r in v]
+        lo, hi = boot_mean(tr)
+        cfl[th] = {"n": len(v), "hits": h, "ret": round(st.mean(tr), 2),
+                   "ci": [round(lo, 2), round(hi, 2)],
+                   "always_short": round(-st.mean([r["rc"] for r in v]), 2)}
+        print(f"{'|pred| >= ' + str(th):12s}{len(v):>4d}"
+              f"{100 * len(v) / len(ded):>6.0f}%{f'{h}/{len(v)}':>14s}"
+              f"{st.mean(tr):>+11.2f}{f'[{lo:+.2f}, {hi:+.2f}]':>22s}"
+              f"{-st.mean([r['rc'] for r in v]):>+14.2f}")
+    doc["floor_counterfactual"] = cfl
 
     # --- is it the second hunter, or the sweep's choice of name?
     print("\n=== separating hunter count from hunt_priority ===")

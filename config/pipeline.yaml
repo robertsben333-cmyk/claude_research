@@ -149,15 +149,16 @@ edge_hunt:
   #
   # ALL of that was measured under `double_hunt_top_n: 2`, which gave the day's two
   # highest-hunt_priority names a second hunter and therefore, since the key is a
-  # sum, roughly twice the conviction. Ten of the 38 events. On the 28 single-hunted
-  # names -- the regime this config now runs -- the conviction correlation is +0.270
-  # (p=0.29) and the floor rests on 9/14 at +4.62%/trade, CI [-1.62, +10.79].
-  # scripts/edge_hunter_control.py, docs/EDGE_ANALYSIS.md.
+  # sum, roughly twice the conviction. Ten of the 38 events. Rebuild those names'
+  # keys from ONE hunter -- the regime this config now runs, and the control that
+  # keeps all 38 events instead of dropping the names the sweep rated highest -- and
+  # |impact_sum| >= 3 gives 15/21 = 71% at +5.53%/trade, CI [+1.02, +9.90], against
+  # 16/21 at +6.37%. scripts/edge_hunter_control.py, docs/EDGE_ANALYSIS.md.
   #
-  # The value stays at 3.0: it is still the best of six cuts on single-hunted names,
-  # still beats always-short there, and still selects half the day (14 of 28; 11 of
-  # 22 on 2026-09-09). What changed is the confidence behind it, not the number.
-  # Re-derive it once days accumulate under double_hunt_top_n: 0.
+  # So 3.0 stands: it is still the cut where the return CI clears zero, still beats
+  # always-short, still selects about half the day under either key. A haircut on the
+  # evidence, not a reversal. Re-derive once days accumulate under
+  # double_hunt_top_n: 0.
   conviction_floor: 3.0
 
 output:

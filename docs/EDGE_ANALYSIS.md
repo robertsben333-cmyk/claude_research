@@ -5,12 +5,12 @@ resolved — **43 names, 249 findings, 65 hunts**. The 09-08 run's eight names a
 the 2026-09-09 close. Run 1 of 08-31 (`edge/_run1-bmo/`) is excluded: its scores are a
 `--legacy` re-score built from substituted midpoints with only 9 of 28 findings judged.
 
-**Read "Every headline number here was measured under a double hunt on the day's top two
-names" before quoting anything below.** Every resolved run gave two hunters to its two
-highest-`hunt_priority` names and one to the rest, and the key is a sum, so those names
-carry mechanically the largest conviction. Restricted to the single-hunted names — the only
-subsample matching how the stage runs from 2026-09-09 — the conviction result falls from
-ρ=+0.514 (p=0.002) to +0.270 (p=0.29) and the ranking result from +0.407 to +0.042.
+**Read "The double hunt inflates both headline numbers" before quoting anything below.**
+Every resolved run gave two hunters to its two highest-`hunt_priority` names and one to the
+rest, and the key is a sum, so those names carry mechanically the largest conviction.
+Rebuilding every name's key from a single hunter — which holds all 38 events and matches how
+the stage runs from 2026-09-09 — takes conviction from ρ=+0.514 (p=0.002) to +0.361 (p=0.045)
+and the ranking from +0.360 to +0.303 (p=0.099). Inflated by about a third, not manufactured.
 
 ## How the pooling is done here, and why not the way the script does it
 
@@ -47,8 +47,10 @@ The difference is not cosmetic. The script's own pooled figure for `edge_score` 
 | number of findings | −0.256 | 0.134 |
 
 Every row in this table carries the double-hunt exposure described below: the two names each
-day with the highest `hunt_priority` were hunted twice, and on single-hunted names only the
-top row falls from +0.407 to +0.042. Read the middle of the table as a pipeline. Raw impact 0.407 → after the adversary 0.376
+day with the highest `hunt_priority` were hunted twice, so the top row is inflated — rebuilt
+from one hunter per name it is +0.303 rather than +0.360 on the same 38 events. The
+comparison between rows is unaffected, since every row is scored on the same findings. Read
+the middle of the table as a pipeline. Raw impact 0.407 → after the adversary 0.376
 → cluster-max 0.284 → ÷√k 0.279 → agreement discount and quality multiplier 0.243. Every
 step lowers ρ, and the raw inputs clear p=0.05 while the shipped score does not.
 
@@ -390,11 +392,10 @@ columns are measured from the 14:00 ET entry.
 ## Conviction is where the direction lives
 
 The observation that the effect concentrates in the larger predictions is correct, and it
-survives every robustness check in this section. It does **not** survive the one added
-later: restricted to names hunted once, ρ falls to +0.270 (p=0.29) to the close and to zero
-to the open. Read this section together with "Every headline number here was measured under
-a double hunt on the day's top two names" below — the numbers here stand as measured, under
-a design that stopped on 2026-09-09.
+survives every robustness check in this section. One more was added later and it costs about
+a third of the effect: every number here was measured with the day's top two names hunted
+twice, and rebuilding those names' keys from a single hunter takes ρ to +0.361 (p=0.045).
+Read this section together with "The double hunt inflates both headline numbers" below.
 
 The right test is the one with **no threshold in it**: does the rank of `|impact sum|`
 correlate with whether the sign turned out right? One test, nothing chosen after the fact.
@@ -442,11 +443,10 @@ the return would rise while the hit rate stayed at 50%. The hit rate is what ris
 \|pred\| ≥ 6 bucket has the *smallest* median realised move of the four (6.08% against
 7.05–9.00%).
 
-**But possibly the double hunt.** Ten of the 38 events were hunted twice, carry 2.6× the
-conviction of the rest by construction, and were sign-correct on 7 of 10 against 13 of 28.
-Dividing the key by hunter count keeps ρ=+0.442 at p=0.010, so the arithmetic alone does not
-explain it; restricting to single-hunted names takes it to +0.270 at p=0.29, so neither does
-anything else, on this sample. See the section below.
+**Partly the double hunt.** Ten of the 38 events were hunted twice and carry 2.6× the
+conviction of the rest by construction. Rebuild their keys from one hunter and ρ falls to
++0.361 (p=0.045); average the two hunters instead of summing them and it is +0.442 (p=0.010).
+So a third of the effect is the doubling and the rest is not. See the section below.
 
 **Not a property of the shipped score.** Run the identical test on `|edge_score|` and the
 rank correlation is +0.077 to the open and −0.003 to the close. The scorer's cluster-max,
@@ -482,12 +482,11 @@ diagnostic, and have `edge_resolve.py` report the threshold-free rank correlatio
 number is the one to watch as days accumulate, because it needs no cut and no calibration.
 
 Still 38 events on six days in one regime, gross of borrow and slippage. It is significant on
-a test chosen before looking and robust to day-clustering, liquidity and volatility — but not
-to holding hunter count fixed by restriction, which is the check this section did not run and
-the next one does. Worth running forward properly, and worth quoting with that caveat
-attached.
+a test chosen before looking, robust to day-clustering, liquidity and volatility, and it keeps
+p under 0.05 when every name's key is rebuilt from a single hunter — at +0.361 rather than
++0.514. Worth running forward properly, and worth quoting with the counterfactual beside it.
 
-## Every headline number here was measured under a double hunt on the day's top two names
+## The double hunt inflates both headline numbers; it does not manufacture them
 
 Until `a109692` on 2026-09-09, `config/pipeline.yaml` set `double_hunt_top_n: 2`: the two
 names with the highest `hunt_priority` got two independent hunters, everything else got
@@ -500,119 +499,109 @@ hunted twice:
 | double-hunted | 10 | 8.00 | 9.13 | 9.18 | 77.2 |
 | single-hunted | 28 | 3.71 | 3.53 | 2.80 | 59.9 |
 
-The double-hunted names carry 2.6× the conviction of a single-hunted one, and they are also
-the names the sweep judged most promising. So "high conviction predicts a correct sign",
-"the sweep's two favourites predict a correct sign" and "two hunters predict a correct
-sign" are three claims the sample cannot separate. `scripts/edge_hunter_control.py` runs
-every separation the data allows; `docs/edge-hunter-control.json` is its output.
+So the day's largest convictions sit on the day's most-hunted names by construction, and
+those are the names the sweep rated most promising. `scripts/edge_hunter_control.py` runs
+the separations the data allows; `docs/edge-hunter-control.json` is its output.
 
-### The conviction test
+### Dropping the double-hunted names is the wrong control
 
-| variant | exit | ρ | permutation p | n |
+The obvious test — restrict to the 28 single-hunted names — is selection on
+`hunt_priority`, which the sweep assigns **before any hunting**. The survivors are not "the
+same names without the doubling", they are the names the sweep rated lowest: mean priority
+59.9 against 77.2. On that subsample conviction falls to ρ=+0.270 (p=0.29) to the close and
+zero to the open, and the ranking correlation to +0.042 (p=0.87). Both numbers are real and
+both are statements about the low-priority half of the sample, where the hunt has least to
+say and the predictions are smallest. They are not a de-confounded estimate of anything.
+
+### The right control: rebuild every name's key from one hunter
+
+Each finding in `edge-scores.json` carries the hunter that produced it, so a double-hunted
+name's key can be rebuilt from one hunter's findings alone. That holds the population at all
+38 events, drops nothing, and puts every name at one hunter — which is exactly how the stage
+runs from 2026-09-09. The hunters run in parallel, so "A" and "B" are labels, not an order;
+both are shown.
+
+| key | conviction ρ (close) | p | ranking ρ | p |
 | --- | --- | --- | --- | --- |
-| **published: \|impact_sum\|, all events** | close | **+0.514** | 0.002 | 38 |
-| | open | +0.333 | 0.045 | 38 |
-| **single-hunted names only** | close | **+0.270** | **0.293** | 28 |
-| | open | −0.004 | 0.993 | 28 |
-| double-hunted names only | close | +0.798 | 0.183 | 10 |
-| `impact_sum` ÷ hunter count | close | +0.442 | 0.010 | 38 |
-| `impact_sum` ÷ finding count | close | +0.358 | 0.030 | 38 |
-| hunter count as the predictor | close | +0.208 | 0.222 | 38 |
-| partial ρ, controlling hunter count | close | +0.481 | — | 38 |
-| partial ρ, controlling finding count | close | +0.462 | — | 38 |
-| partial ρ, controlling `hunt_priority` | close | +0.477 | — | 38 |
+| hunter A only | +0.361 | 0.045 | +0.303 | 0.099 |
+| hunter B only | +0.299 | 0.076 | +0.343 | 0.062 |
+| mean of the two hunters | +0.442 | 0.010 | +0.326 | 0.077 |
+| **full sum, as published** | **+0.514** | **0.002** | **+0.360** | **0.048** |
 
-Dividing out the mechanical size doubling costs 0.07 of ρ and keeps p under 0.01, so the
-arithmetic of summing twice as many findings is **not** the whole effect. But restricting to
-the 28 single-hunted names — the only subsample drawn under the configuration that runs from
-now on — takes ρ to +0.270 at p=0.29 to the close and to zero at the open.
+(The ranking column is on the 38 de-duplicated events, so the published key reads +0.360
+here and +0.407 on the 43 rows with duplicates.)
 
-The partial correlations barely move, and that is a property of the control rather than
-evidence of robustness: hunter count takes two values, 10 of 38 names sit at the second, and
-a partial correlation removes only what is linear in its rank. The restriction removes the
-group. Where the two disagree, believe the restriction.
+**Both effects survive the counterfactual at roughly 60–85% of their published size.** The
+doubling inflates the estimate; it does not create it. Conviction on a single hunter's key
+still clears p=0.05 on one draw and misses on the other, and the ranking sits at +0.30 to
++0.34 with p around 0.06–0.10.
 
-The reason they disagree is that the ten double-hunted names are not merely larger, they were
-also **more often right**: 7/10 = 70% sign-correct to the close against 13/28 = 46%. That gap
-is itself not significant (one-sided Fisher p=0.181), so it cannot be attributed to the second
-hunter either. Nothing in this sample can tell a second opinion apart from the sweep having
-picked well. That is the finding: the design confounds them, and the design is now gone.
+The ordering is itself informative: full sum > mean of hunters > either hunter alone, on
+conviction. Averaging two independent hunters beats one, which is what noise reduction looks
+like, and summing them beats averaging, which says the extra magnitude the double hunt gave
+the sweep's favourites was earned rather than spurious. On ten pairs that is a lead, not a
+finding — but it argues against the reading that the double hunt was free inflation, and it
+sits awkwardly beside the decision to remove it.
 
-### The ranking test has the same exposure, and comes off worse
+### What the second hunter actually did
 
-`impact_sum` against the realised move, pooled within days:
+| day | ticker | hunter A | hunter B | full | realised move |
+| --- | --- | --- | --- | --- | --- |
+| 08-31 | MMED | +1.25 | −1.55 | −0.30 | +10.66 |
+| 08-31 | RZLV | −6.25 | −12.10 | −18.35 | −17.30 |
+| 09-01 | SPWH | +6.75 | +4.50 | +11.25 | +6.67 |
+| 09-01 | CXM | −5.15 | −4.05 | −9.20 | −8.55 |
+| 09-02 | MEI | +2.85 | −10.75 | −7.90 | −15.36 |
+| 09-02 | GOLD | −8.15 | −1.00 | −9.15 | −5.34 |
+| 09-03 | SWBI | +7.40 | +8.90 | +16.30 | +5.05 |
+| 09-03 | AMBA | +2.00 | −1.00 | +1.00 | −0.77 |
+| 09-04 | UNFI | −3.12 | +0.55 | −2.57 | +2.28 |
+| 09-04 | CAN | −5.25 | −10.00 | −15.25 | −10.28 |
 
-| variant | sample | ρ | permutation p | n |
-| --- | --- | --- | --- | --- |
-| **`impact_sum` (published)** | 43 names | **+0.407** | 0.016 | 43 |
-| | 38 de-duplicated | +0.360 | 0.045 | 37 |
-| | **single-hunted only** | **+0.042** | **0.873** | 27 |
-| `impact_sum` ÷ hunter count | 43 names | +0.376 | 0.028 | 43 |
-| `impact_sum` ÷ finding count | 43 names | +0.350 | 0.038 | 43 |
-| hunter count alone | 43 names | −0.093 | 0.589 | 43 |
-| `hunt_priority` alone | 43 names | −0.223 | 0.197 | 43 |
-| partial ρ, controlling hunter count | 43 names | +0.397 | — | 43 |
-| partial ρ, controlling `hunt_priority` | 43 names | +0.384 | — | 43 |
+The two hunters agree on sign on **6 of 10** names, with a median gap of 3.34 points on a key
+whose typical size is about 5. The second hunter moves \|key\| by a median +4.28 points. And
+it buys no direction: hunter A alone is sign-correct on 7 of 10, both hunters summed on the
+same 7 of 10. What the second hunt adds is magnitude and, on the evidence of the table above,
+a better-ordered magnitude — not a corrected sign.
 
-Per day, with and without the double-hunted names:
+### The floor, re-derived on one hunter per name
 
-| day | n | ρ all | n single | ρ single |
-| --- | --- | --- | --- | --- |
-| 2026-08-31 | 8 | +0.548 | 6 | +0.257 |
-| 2026-09-01 | 8 | +0.095 | 6 | −0.086 |
-| 2026-09-02 | 8 | +0.667 | 6 | +0.257 |
-| 2026-09-03 | 8 | −0.024 | 6 | −0.371 |
-| 2026-09-04 | 5 | +1.000 | 3 | +1.000 |
+`conviction_floor: 3.0` was derived from 16/21 = 76% at +6.37% per trade, t=2.74. On the
+counterfactual key — hunter A only, all 38 events:
 
-Take the double-hunted names out and the ranking correlation is +0.042 — nothing. It falls on
-four of the five days that have enough single-hunted names to rank. Every comparison this file
-makes against `edge_score` and against the free controls was run on a key whose ordering, in
-the single-hunt regime, has not been shown to exist.
-
-Two things keep this from being a refutation. Removing the top two names by `hunt_priority`
-also removes the widest predictions of the day, so the surviving spread is narrow and the test
-is low-powered: 27 rank pairs over five days. And the restriction is not random — it deletes
-exactly the names the hunt had most to say about. The correct reading is not "the ranking is
-worthless" but "the published ranking number is not evidence about how the stage now runs".
-
-### What it does to `conviction_floor`
-
-The floor of 3.0 was derived from 16/21 = 76% sign-correct at +6.37% per trade, t=2.74. On
-single-hunted names only:
-
-| threshold | n | share of names | sign (close) | ret/trade | bootstrap 95% CI | always-short |
+| threshold | n | share | sign (close) | ret/trade | bootstrap 95% CI | always-short |
 | --- | --- | --- | --- | --- | --- | --- |
-| all | 28 | 100% | 13/28 = 46% | −0.33% | [−4.60, +4.00] | +1.80% |
-| \|pred\| ≥ 1 | 23 | 82% | 12/23 = 52% | +0.84% | [−4.11, +5.85] | +1.75% |
-| \|pred\| ≥ 2 | 17 | 61% | 10/17 = 59% | +2.52% | [−3.58, +8.67] | +0.59% |
-| **\|pred\| ≥ 3** | 14 | 50% | **9/14 = 64%** | **+4.62%** | **[−1.62, +10.79]** | −0.78% |
-| \|pred\| ≥ 5 | 7 | 25% | 4/7 = 57% | +2.76% | [−7.52, +13.06] | −7.30% |
-| \|pred\| ≥ 8 | 3 | 11% | 2/3 | +7.74% | [−5.38, +25.14] | −5.43% |
+| all | 38 | 100% | 20/38 = 53% | +0.93% | [−2.69, +4.51] | +2.11% |
+| \|pred\| ≥ 1 | 33 | 87% | 19/33 = 58% | +1.94% | [−1.92, +5.93] | +2.12% |
+| \|pred\| ≥ 2 | 26 | 68% | 16/26 = 62% | +2.89% | [−1.61, +7.43] | +2.01% |
+| **\|pred\| ≥ 3** | 21 | 55% | **15/21 = 71%** | **+5.53%** | **[+1.02, +9.90]** | +0.58% |
+| \|pred\| ≥ 5 | 13 | 34% | 10/13 = 77% | +5.62% | [−0.61, +11.36] | −1.95% |
+| \|pred\| ≥ 8 | 4 | 11% | 3/4 | +7.24% | [−2.60, +19.72] | −2.64% |
 
-**The floor value survives; its evidence does not.** 3.0 is still the best of the six cuts on
-single-hunted names, it still beats always-short there, and its coverage transfers — it keeps
-14 of 28 single-hunted names, and 11 of the 22 names on the all-single 2026-09-09 run. So
-there is no case for moving it. But what stands behind it is 9 of 14 with a return CI that
-includes zero, not 16 of 21 at t=2.74. Anything downstream that treats the floor as a
-calibrated conviction threshold is treating a coin-flip-compatible result as established.
+**The floor holds.** 3.0 is still the cut where the return CI clears zero, it still selects
+about half the day (21 of 38, against 21 of 38 on the published key), and it still beats
+always-short by a wide margin. What it rests on is 15/21 at +5.53% rather than 16/21 at
++6.37% — a haircut, not a reversal. There is no case for moving the value.
+
+For completeness, on the low-priority subsample (single-hunted names only) the same cut gives
+9/14 at +4.62% with a CI of [−1.62, +10.79]. That is the weakest defensible reading of the
+floor and the one to quote if the question is specifically about names the sweep rates low.
 
 ### What is left
 
-- The conviction effect is not pure arithmetic: normalising by hunter count keeps ρ=+0.442 at
-  p=0.010, and hunter count on its own predicts sign-correctness at only +0.208 (p=0.222).
-- It is also not established in the regime that now runs. Single-hunted only: +0.270 (p=0.29)
-  to the close, zero to the open.
-- The ranking result is the more exposed of the two and does not survive the restriction at
-  all.
-- `hunt_priority` is not the explanation on its own either: among single-hunted names it
-  correlates with sign-correctness at +0.044, and as a ranker of moves it is negative.
-- Nothing here is fixable with more analysis of this sample. The double hunt stopped on
-  2026-09-09, so the separation can only come from days run under the new configuration —
-  or from deliberately re-running a double-hunt week, which `CLAUDE.md` already wants for a
-  different reason (nothing currently measures the key's reproducibility).
+- Both headline numbers are **inflated by roughly a third** by the double hunt and survive
+  its removal: conviction +0.361 (p=0.045) and ranking +0.303 (p=0.099) with one hunter per
+  name, against +0.514 and +0.360 as published.
+- Hunter count on its own predicts sign-correctness at only +0.208 (p=0.222), and
+  `hunt_priority` at +0.224 — neither is doing the work, though the second is a free number
+  worth watching.
+- Two hunters on one name disagree on sign 4 times in 10 and add no direction skill (7/10
+  either way). The key's reproducibility remains the stage's least-measured property.
+- Nothing in this sample separates "a second opinion helps" from "the sweep picked well",
+  because the two were assigned together. Days under `double_hunt_top_n: 0` will settle it;
+  a deliberate double-hunt week would settle it faster and is wanted anyway.
 
-Until then, both headline numbers should be quoted as measured under a design that no longer
-exists.
+Quote the published figures with the counterfactual beside them, not on their own.
 
 ## What `impact_sum` is, precisely — and the sizing correction of 2026-09-09
 
@@ -820,6 +809,10 @@ day against eight gets there roughly two and a half times faster.
 6. Rename `spearman_vs_move_over_implied`, or restrict it to names with a chain.
 7. Stop presenting `confidence` and `baseline_quality` as reader guidance until they
    correlate with something.
-8. Re-measure both headline numbers on days run under `double_hunt_top_n: 0` before quoting
-   either as established. Nothing in the resolved sample can separate conviction from hunter
-   count, and the fix is days, not analysis.
+8. Quote both headline numbers with their single-hunt counterfactual (+0.361 conviction,
+   +0.303 ranking) rather than alone, and re-measure on days run under
+   `double_hunt_top_n: 0`. The resolved sample cannot separate "a second hunter helps" from
+   "the sweep picked well", because the two were assigned together.
+9. Revisit removing the double hunt. Averaging two hunters ranks conviction better than
+   either alone (+0.442 against +0.361 and +0.299), which is the noise-reduction signature,
+   and it is now unmeasured.

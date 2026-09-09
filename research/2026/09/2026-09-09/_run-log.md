@@ -170,3 +170,10 @@
 - Ranking impact_sum vs move: +0.407 all 43, +0.042 (p=0.87) on single-hunted names only.
 - conviction_floor stays 3.0 (best of six cuts on single-hunted names, keeps half the day) but rests on 9/14 at +4.62%, CI [-1.62,+10.79], not 16/21 at t=2.74.
 - Caveat written into CLAUDE.md, docs/EDGE_ANALYSIS.md, docs/edge-direction.html, config/pipeline.yaml, edge_score.py, edge_resolve.py, SKILL.md. No hunters or adversaries re-run.
+
+## Stage E — confounding re-analysis — CORRECTED
+- Logged at 2026-09-09 18:27 UTC
+- Earlier entry today concluded from a restriction to single-hunted names. That control is wrong: hunt_priority is assigned by the sweep before any hunting, so dropping the double-hunted names leaves the low-priority half of the day, not a de-confounded sample.
+- Right control: rebuild each double-hunted name's key from ONE hunter's findings, keeping all 38 events. Conviction +0.361 (p=0.045) vs +0.514 published; ranking +0.303 (p=0.099) vs +0.360 on the same events. Inflated ~a third, not manufactured.
+- conviction_floor 3.0 on that counterfactual: 15/21 = 71%, +5.53%/trade, CI [+1.02, +9.90]. Floor stands.
+- Mean of two hunters ranks conviction better than either alone (+0.442 vs +0.361/+0.299) - noise reduction, and an argument against having removed the double hunt. Second hunter bought no direction (7/10 either way); pair disagreed on sign 4 of 10.
