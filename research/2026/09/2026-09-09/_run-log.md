@@ -16,3 +16,11 @@
 - Scouts: 0 subagents (skip mode, no scoring)
 - Session mix: 5 AMC / 2 BMO
 - Notable drops: YB (no_options_market, dropped at stage 0, not by triage)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-09 08:25 UTC
+- Shortlist: 7 names, all priority_score=null (stage 1 ran in skip mode, universe<=10). Capped to triage.shortlist_size=6 by shortlist order (market-cap descending); dropped TEN (smallest cap, and stage 0 flagged its options-chain data as unconfirmed).
+- This batch (1 of 2): COO, AVAV, NAVN
+- Batch 2 will cover: M, AEO, WLTH
+- Already on disk, skipping: none
+- Plan: waves of deep_dive.wave_size=2 opus/high researchers (COO+AVAV, then NAVN alone), publish after each wave
