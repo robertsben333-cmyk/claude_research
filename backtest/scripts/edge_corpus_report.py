@@ -43,6 +43,15 @@ RUNS = ROOT / "runs" / "edge-corpus"
 # whose corpus is richer; the other is one event counted twice.
 SHARE_CLASS_DROP = {"BF.A", "WLYB"}
 
+# Names whose hunt was written while a document naming post-print moves was in the
+# hunter's context. The 2026-09-03 hunter opened a pre-market movers list before
+# checking its fetch timestamp, disclosed it, and excluded it from the six names it
+# had not yet written -- but CPB and CIEN were already on disk. Their numbers may be
+# sound; they cannot be shown to be, which is the whole point of a sealed corpus.
+# Reported apart rather than deleted, because a disclosed breach is data about the
+# harness and a silently kept one is not.
+BREACH_EXPOSED = {("2026-09-03", "CPB"), ("2026-09-03", "CIEN")}
+
 
 def spearman(x, y):
     n = len(x)
@@ -129,6 +138,7 @@ def collect():
                 "contaminated": bool(contam.get((day, r["ticker"]))),
                 "seal_6k": "6-K" in (seal.get("basis") or ""),
                 "share_class_dup": r["ticker"] in SHARE_CLASS_DROP,
+                "breach_exposed": (day, r["ticker"]) in BREACH_EXPOSED,
                 "items": e.get("items"), "docs": e.get("docs"),
             })
     return rows
@@ -171,11 +181,13 @@ def main():
         ("contaminated", True, "capture kept sweeping past the print"),
         ("seal_6k", False, "session from an 8-K item 2.02 (measured)"),
         ("seal_6k", True, "session from a 6-K acceptance time (inferred)"),
+        ("breach_exposed", False, "no disclosed sight of a post-print document"),
     ]:
         blocks.append(stat_block([r for r in rows if r[key] == val], label))
 
     doc = {"names_resolved": len(rows),
            "share_class_duplicates_excluded": sorted(SHARE_CLASS_DROP),
+           "breach_exposed": sorted(f"{d}/{t}" for d, t in BREACH_EXPOSED),
            "days": sorted({r["day"] for r in rows}),
            "blocks": blocks, "rows": rows}
     outp = RUNS / "corpus-report.json"

@@ -89,3 +89,7 @@
 ## formerNames identity bug
 - Logged at 2026-09-09 15:25 UTC
 - EDGAR formerNames carries entries whose name equals the current name; prior_prints treated the to-date as a rename and dropped all prior prints. MEI, CXM, PANW wiped to zero history, GOLD and CPB partially. Fixed, five baselines rebuilt, 2026-09-01 re-resolved. FINDINGS.md section 39.
+
+## Edge-corpus: breach disclosed on 2026-09-03
+- Logged at 2026-09-09 15:35 UTC
+- Hunter opened a pre-market movers list naming post-print moves of seven names before checking its timestamp; disclosed and excluded it, but CPB and CIEN were already written. Both reported apart as breach_exposed. Plus two wrong 6-K session tags (PSNY, GLMD), four stale calendar rows the seal passed, and two genuine implied moves recoverable from captured docs (IOT 11.55%, ZS ~13%). FINDINGS.md section 40.

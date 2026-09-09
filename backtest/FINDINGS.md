@@ -1036,3 +1036,54 @@ out of the normalised metric. Re-run on the fixed baseline the day's normalised
 correlation moved from −0.177 over 12 names to −0.390 over 13. Neither is
 significant; the point is that one silently broken anchor moved a reported
 coefficient by 0.21.
+
+## 40. A disclosed breach, two wrong session tags, and an implied move that was recoverable after all
+
+All from the 2026-09-03 hunter, the largest day in the run at 41 names.
+
+**The breach.** Working DLTH, it opened
+`docs/352e5565c8c4c0d3898f5a4ba5c6d316d29af018.txt` before checking the fetch
+timestamp against the 07:17:40Z acceptance. It is a pre-market movers list naming
+the post-print moves of DLTH, GCO, VSXY, CPB, WLY, CIEN and AVGO. It excluded the
+document, declared it in the six affected files it had not yet written, and noted
+that **CPB and CIEN were already on disk** — written before it saw the leak. Its
+own defence was that its CPB (+2.0) and GCO (+1.5) calls point against the leaked
+figures, which is evidence but not proof.
+
+CPB and CIEN are reported apart in `edge_corpus_report.py` as `breach_exposed`
+rather than deleted. Their numbers may be sound; they cannot be *shown* to be,
+which is the entire function of a sealed corpus. A disclosed breach is data about
+the harness. A silently kept one is not, and this is the second time in one run
+that an agent's honesty has been the only thing standing between a leak and a
+result — the first was GAUZ in section 35.
+
+The generalisable lesson is about the corpus, not the agent: **a document that
+postdates one company's print sits inside another company's capture** and names
+seven of them. The tripwire in `capture.py` fires on a body that names *this*
+event's date, so a movers list is invisible to it for six of the seven names it
+mentions. Any future corpus-only run needs a cross-name tripwire, not a per-event
+one.
+
+**Two session tags are wrong, and both were caught by reading the tape.** PSNY is
+tagged `amc` but released before the open — the 15:08Z sweep contains the full
+outcome, so the hunter returned zero rather than launder a number. GLMD's release
+is dated 2026-09-02, a full day before its tagged event. Both are 6-K seals, which
+is section 37 arriving as a concrete count rather than a caveat: 28 of this day's
+41 names are sealed off a 6-K acceptance time.
+
+**Four events are stale calendar rows that the seal passed.** GASS, KNOP and NEWP
+all filed results on 2026-08-26, and GLMD on 2026-09-02, each with a
+`cadence_implausible` or `suspect` baseline. `seal.py` accepted them because its
+window looks for *an* item 2.02 or results-language 6-K within four days and one
+was there — the previous quarter's. The window needs a second test: that the filing
+it matched is not the same one it matched for the preceding event.
+
+**And the implied move is not always unrecoverable.** Two genuine option-implied
+moves turned up inside the captures despite every baseline reading
+`options.status: not_recoverable_retrospectively` — IOT at 11.55% for the weekly
+expiring 2026-09-04, and ZS at about 13% quoted from Bloomberg. Both were captured
+pre-print for after-the-close releases, so both are legitimate as-of numbers. This
+does not overturn section 33's finding that the chain cannot be *fetched*
+retrospectively, but it means the corpus itself occasionally carries the number,
+and a run that wants the straddle anchor should grep for it rather than assume its
+absence. Ten of the 205 past captures held a parseable implied-move percentage.
