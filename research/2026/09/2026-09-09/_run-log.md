@@ -61,3 +61,9 @@
 ## Stage E — scorer rebuilt, impact_sum is the key
 - Logged at 2026-09-09 13:52 UTC
 - edge_score.py now ranks on impact_sum (hunters' signed per-finding sizes, points of spot) with conviction beside it; cluster-max, sqrt(k), agreement discount, quality multiplier, tanh, confidence and uncertainty are demoted to diagnostics (residual_sum and edge_score_legacy kept, the latter reproduces the old key exactly). config gains conviction_floor 3.0 as a floor on emphasis, never a filter. edge_resolve.py reads impact_sum with fallback to edge_score, adds the conviction-vs-sign correlation and both free controls, and pools within days. Skill sections 5-7 rewritten. The Routine prompt could NOT be updated from here (update_trigger refuses routines an agent did not create); replacement text is in docs/routine-prompts/edge-hunt.md.
+
+## Edge hunt — 2026-09-09 amc + 2026-09-10 bmo — STARTED
+- Logged at 2026-09-09 14:10 UTC
+- Stage E run for the window 2026-09-09 amc + 2026-09-10 bmo. edge_universe.py --window resolved 22 of 84 calendar rows, 0 unresolved session, no --include-unknown. Baselines sealed for all 22 in two priced_in.py calls (12 amc on 09-09, 10 bmo on 09-10) and committed before any agent launches.
+- Baseline read: 7 of 22 names have a live option chain (COO 8.7%, AVAV 11.9%, NAVN 14.1%, AEO 13.3%, M 7.7%, FLWS 19.7%, LMNR 6.1% implied move); the other 15 take the historical-median fallback. event_plausibility: 16 fits_cadence, 6 unknown (AEO, DBI, LAKE, SHOE with no cadence read; GLOO and IMPP flagged cadence_implausible).
+- Plan: 1 edge-sweep over all 22 names, then shed to 8 hunted names per budget.edge_degrade_order (drop_unconfirmed_names_first, then drop_lowest_hunt_priority_names, keeping names with a live chain). 1 + (8+2) hunters + 8 adversaries = 19 of the 20-subagent edge_hunt cap. Ranking key is impact_sum per SKILL.md section 5 and edge-scores.json's own ranking_key.

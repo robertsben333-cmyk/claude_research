@@ -31,7 +31,8 @@ the magnitude finding is the part worth acting on.
 Stage E is a second experiment alongside it, and nothing downstream reads it either. It
 asks a narrower question than stage N: not "what will this stock do" but **"is there
 anything here the market has missed, and how does that rank against the other names
-reporting today."** It emits one signed score per company on −100…+100 with no call, no
+reporting today."** It emits one signed number per company — `impact_sum`, in points of
+spot, unbounded — with no call, no
 threshold and no direction label, because the question being tested is whether the day's
 companies can be **ranked** — and that is only answerable at every cut if nothing was
 rounded into a bucket upstream. Falsifiable by `scripts/edge_resolve.py`, which reports
