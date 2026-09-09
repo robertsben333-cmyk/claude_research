@@ -198,3 +198,7 @@
 - Macro noted at forecast time: an unexpectedly strong jobs report has pushed expectations toward a September rate hike with yields higher, oil up on Middle East tensions, mega-cap tech down ~2%. Treated as a headwind for the high-multiple software (SAIL, TTAN) and construction-levered (SUNB, CNM) names rather than as a directional signal.
 - SUNB tape is contaminated: 13.2M shares 08-28 and 28.4M 08-31 against a 6.3M 20-day average, then -7.2% on 09-01. Signature of an index event; the specific event could not be confirmed, so evidence_quality was cut to 55 and the 20-day drawdown was not read as informed selling.
 - No fetch was blocked this run. WebSearch and WebFetch both worked; SEC EDGAR and the Yahoo chart v8 endpoint were both reachable from Bash.
+
+## Stage E — edge hunt — POOLED ANALYSIS (6 days)
+- Logged at 2026-09-09 12:12 UTC
+- Resolved all six resolvable edge runs (43 names, 249 findings). Pooled within days: edge_score rho=0.243 p=0.156, not significant; the pre-adversary impact sum rho=0.407 p=0.017 and the residual sum rho=0.376 p=0.027 are. Paired bootstrap over days: impact sum beats edge_score by 0.165 [0.082,0.244], P(delta<=0)=0.000 - the aggregation is subtractive. The hunt still does not beat a free minus-20d-run-up control (delta 0.080, CI spans zero), which ranks 0.335 and is positive on 6/6 days when traded. 09-08's eight names pending the 09-09 close. See docs/EDGE_ANALYSIS.md.

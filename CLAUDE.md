@@ -38,16 +38,35 @@ rounded into a bucket upstream. Falsifiable by `scripts/edge_resolve.py`, which 
 Spearman rank correlation against the realised move with a permutation p-value. Until
 many days have pooled, it is not better than anything.
 
-Two runs exist, both on 2026-08-31, and they are archived separately —
-`research/2026/08/2026-08-31/edge/_run1-bmo/` and `edge/`. Run 1 (that day's `bmo`,
-with `--include-unknown`) found eight of twelve calendar rows had no earnings event at
-all and produced no ranking worth the name: every judged finding fell into one of two
-verdict buckets and twelve names collapsed to one non-zero score and eleven zeros. The
-categories the stage has since dropped are why. Run 2 (the `--window` default: that
-day's `amc` plus the next `bmo`) had a **zero** phantom rate across ten names, nine of
-them confirmed from a company source, and produced eight rankable names with eight
-distinct scores. So the ordering problem is fixed; the open question is whether the
-order carries information, and one day of eight names cannot answer it.
+Seven runs exist: two on 2026-08-31 and one on each of 09-01, 09-02, 09-03, 09-04,
+09-07 and 09-08. Six are resolved — **43 names, 249 findings, 65 hunts**; 09-08's eight
+names need the 09-09 close. The 08-31 pair is archived separately,
+`research/2026/08/2026-08-31/edge/_run1-bmo/` and `edge/`. Run 1 (that day's `bmo`, with
+`--include-unknown`) found eight of twelve calendar rows had no earnings event at all and
+produced no ranking worth the name: every judged finding fell into one of two verdict
+buckets and twelve names collapsed to one non-zero score and eleven zeros. The categories
+the stage has since dropped are why, and its `edge-scores.json` carries
+`legacy_rescore: true` — midpoints, never evidence about that day.
+
+**The ordering problem is fixed; the scorer is now the problem.** `docs/EDGE_ANALYSIS.md`
+decomposes all six resolved runs, pooling *within* days (`scripts/edge_decompose.py`).
+The shipped `edge_score` ranks at ρ=0.243, p=0.156 — not significant. The hunters' raw
+impact sum, before the cluster-max, the √k discount, the agreement discount and the
+quality multiplier, ranks at ρ=0.407, p=0.017. A paired bootstrap over days puts that
+gap at +0.165 with a 95% CI of [+0.082, +0.244], so the aggregation in
+`scripts/edge_score.py` is subtractive, not small-sample noise. Traded as a long
+top-third / short bottom-third, the shipped ranking returns +2.17pp per day against
++11.45pp for its own raw inputs.
+
+**And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
+the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
+positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080
+with a CI spanning zero. Note also that `edge_resolve.py --pool` concatenates days and
+understates every ranker (0.189 vs 0.243 for `edge_score`), that `confidence` and
+`baseline_quality` rank at −0.090 and +0.074 and must not be read as reader guidance, and
+that `spearman_vs_move_over_implied` normalises 18 of 43 names on a median historical
+reaction rather than an option-implied move. Fix the scorer before spending another day
+on hunts.
 
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have
