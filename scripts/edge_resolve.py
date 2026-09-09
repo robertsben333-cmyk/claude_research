@@ -241,7 +241,11 @@ def main():
     for rp in runs:
         r = resolve_run(rp, a.seed)
         st = stats_for(r["live"], a.seed)
-        per_day.append({"run": r["run"], **st})
+        # The per-name rows are kept, not just the summary. Without them any
+        # re-analysis -- a different pooling, a split by some property of the name --
+        # has to refetch every price series to recover numbers this run already
+        # computed, and a refetch weeks later is not the same data.
+        per_day.append({"run": r["run"], **st, "rows": r["rows"]})
         all_live.extend(r["live"])
 
         print(f"\n=== {r['run']} ===")
