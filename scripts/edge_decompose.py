@@ -162,6 +162,11 @@ def build(runs, cache_path):
                 "runup": (b.get("tape") or {}).get("run_up_20d_pct"),
                 "implied": (b.get("options") or {}).get("event_implied_move_pct"),
                 "nf": len(fs),
+                # liquidity, so a return can be read beside the capital it would absorb
+                "spot": (b.get("tape") or {}).get("spot"),
+                "adv_20d": (b.get("tape") or {}).get("avg_volume_20d"),
+                "dollar_vol": round(((b.get("tape") or {}).get("spot") or 0)
+                                    * ((b.get("tape") or {}).get("avg_volume_20d") or 0)),
             })
         if len(rows) >= 3:
             days.append(rows)
@@ -239,6 +244,7 @@ def main():
         print(f"  {label:14s}{st.mean(vals):+7.2f}pp   positive on "
               f"{spreads[key]['positive_days']}/{len(vals)} days")
 
+    Path("docs/edge-rows.json").write_text(json.dumps(days, indent=1) + "\n")
     doc = {"runs": [d[0]["run"] for d in days], "n_names": n,
            "pooling": "within-day ranks, centred, correlated across days",
            "candidates": table, "paired_bootstrap": pairs, "long_short": spreads}

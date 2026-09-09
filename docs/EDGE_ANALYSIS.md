@@ -160,6 +160,87 @@ worst quality (0.07) and lowest confidence (5.0), while the highest-confidence n
 sources, plus a full adversary pass on every one of 249 findings. Every run hit its
 20-subagent cap and every run above ten names shed the rest.
 
+## What the raw impact sum is
+
+Each finding a hunter returns carries `expected_impact_pct`: the hunter's own signed
+estimate, in percentage points of the share price, of what that one fact is worth **if
+the market has not already priced it**. The adversary independently sizes the same fact
+as `size_check_pct` and `edge_score.py` averages the two, but they barely differ (median
+gap 0.60pp over 249 findings), so in practice the number is the hunter's.
+
+The impact sum is those numbers added up per company. Nothing else. It is the ranking key
+with every one of the scorer's five subsequent steps removed:
+
+| step in `edge_score.py` | what it does | ρ after |
+| --- | --- | --- |
+| — | the impact sum itself | +0.407 |
+| `× (1 − priced_in/100)` | haircut each finding by how much the adversary says is already in | +0.376 |
+| cluster-max | two findings citing one domain count once, the largest | +0.284 |
+| `÷ √k` | discount for correlation between the surviving clusters | +0.279 |
+| `× 0.55` if it agrees with the price lean, `× (0.35 + 0.65·q)` for baseline quality | shrink evidence that merely repeats the price, and shrink thin names | +0.243 |
+| `100·tanh(edge_pct/5)` | bound the scale for sorting; order-preserving, so ρ is unchanged | +0.243 |
+
+So "the raw impact sum beats edge_score" means: the hunters' unadjusted sizes, summed,
+order a day better than the same sizes after five defensible-sounding adjustments.
+
+Two things it is **not**. It is not a forecast of the move — the same fact often appears
+in two findings from two sources, and adding both double-counts it, which is exactly what
+the cluster-max was built to stop. And it is not a claim that the adjustments are wrong in
+principle; the priced-in haircut costing ordering (0.407 → 0.376) is the most
+counter-intuitive number in this file and rests on six days.
+
+## What money placed on it would have done
+
+`scripts/edge_trade.py`. Entry is the close before the print, exit the close after the
+first full session — the window `edge_resolve.py` already scores, held through the print.
+The hunt fires at 16:04 CET, before that entry, so there is no look-ahead. Each strategy
+is one unit of capital, so a long/short book splits it in half and a day's return is
+`mean(long)/2 − mean(short)/2`, not the raw spread, which is 2× gross.
+
+Gross of costs, six days, 43 names:
+
+| strategy | mean/day | sd | t | bootstrap 95% CI | cumulative | up days |
+| --- | --- | --- | --- | --- | --- | --- |
+| `edge_score` L/S top-third | +1.09% | 5.23 | 0.51 | [−2.72, +4.80] | +6.0% | 4/6 (p=0.69) |
+| impact sum L/S top-third | +5.73% | 5.80 | 2.42 | [+0.90, +9.17] | +38.6% | 5/6 (p=0.22) |
+| minus run-up L/S top-third | +5.49% | 2.88 | 4.67 | [+3.28, +7.48] | +37.5% | 6/6 (**p=0.031**) |
+| `edge_score` L/S on sign | +2.82% | 3.10 | 2.23 | [+0.36, +4.86] | +17.9% | 5/6 (p=0.22) |
+| **always short — the null** | **+1.49%** | 3.27 | 1.12 | [−0.73, +4.03] | +9.0% | 3/6 (p=1.00) |
+
+Four consequences, in the order that matters.
+
+**The shipped ranking loses to doing no research.** `always short` needs no subagents, no
+baselines and no findings, and returns more per day than `edge_score`'s long/short book.
+This sample skewed down — 23 of 43 names fell, mean move −1.77% — and any short-tilted
+book was flattered by that. It is the null the stage has to clear and on six days it does
+not.
+
+**Costs kill it and leave the alternatives standing.** At a flat 1.5% per unit of capital
+per day, which is not pessimistic for names of this size held through a print,
+`edge_score`'s book goes to −0.41%/day and −3.1% cumulative. The impact sum stays at
++4.23%/day, the run-up control at +3.99%.
+
+**The best trade in the sample was uninvestable.** DLTH, ranked #1 on 09-02, moved +23.20%
+and turns over **$170k a day** — spot $3.62 on 46,449 shares. Six of `edge_score`'s 22
+positions traded under $1m a day. Screen the universe to names above $5m of daily turnover
+and only 29 of 43 survive; `edge_score long the #1` then goes from +6.79%/day to
+−1.29%/day, because the one position carrying it drops out. Nothing in this repo's budget
+or scoring notices capacity, and the ranking is systematically drawn to the illiquid end
+where information is genuinely least priced and least tradeable.
+
+**Single-name risk is the whole book.** A top-third/bottom-third split on eight names is
+four positions at 25% each, held over a print. The worst position was −20.04% (long CRDO
+on 09-01) and the second worst −22.23% (short NX on 09-03). Borrow is not modelled at all:
+shorting RZLV, CANG, MMED, ZEPP or DLTH is expensive where it is possible.
+
+The one strategy with a defensible p-value is minus the 20-day run-up: positive on 6 of 6
+days, sd of 2.88 against the others' 5+, sign test p=0.031. It uses no findings, no
+adversary and no subagents. That is the number the stage is competing against, and the
+reason to fix the scorer before buying another day of hunts.
+
+Six days of 43 names in one regime is not a backtest, every figure here is gross of borrow
+and slippage, and none of it is advice.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a

@@ -58,6 +58,16 @@ gap at +0.165 with a 95% CI of [+0.082, +0.244], so the aggregation in
 top-third / short bottom-third, the shipped ranking returns +2.17pp per day against
 +11.45pp for its own raw inputs.
 
+**Money placed on it would have lost to doing nothing.** `scripts/edge_trade.py` runs
+each day's ranking as a book, entry at the close before the print and exit after the
+first full session. Gross of costs the shipped ranking returns +1.09% per day (t=0.51,
+95% CI [−2.72, +4.80]) against **+1.49% for shorting every name and doing no research at
+all**; at a 1.5%/day cost it goes negative. The one strategy with a defensible p-value is
+minus the 20-day run-up, positive on 6 of 6 days (sign test p=0.031). And the single best
+trade in the sample, DLTH +23.20%, turns over $170k a day: six of the ranking's 22
+positions traded under $1m a day, and screening to names above $5m of turnover drops 14
+of 43 names. Nothing in the budget or the scorer notices capacity.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080

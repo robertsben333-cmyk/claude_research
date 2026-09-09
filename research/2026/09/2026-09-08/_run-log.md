@@ -202,3 +202,7 @@
 ## Stage E — edge hunt — POOLED ANALYSIS (6 days)
 - Logged at 2026-09-09 12:12 UTC
 - Resolved all six resolvable edge runs (43 names, 249 findings). Pooled within days: edge_score rho=0.243 p=0.156, not significant; the pre-adversary impact sum rho=0.407 p=0.017 and the residual sum rho=0.376 p=0.027 are. Paired bootstrap over days: impact sum beats edge_score by 0.165 [0.082,0.244], P(delta<=0)=0.000 - the aggregation is subtractive. The hunt still does not beat a free minus-20d-run-up control (delta 0.080, CI spans zero), which ranks 0.335 and is positive on 6/6 days when traded. 09-08's eight names pending the 09-09 close. See docs/EDGE_ANALYSIS.md.
+
+## Stage E — edge hunt — TRADING CONSEQUENCE
+- Logged at 2026-09-09 12:58 UTC
+- scripts/edge_trade.py: each day's ranking run as a book, entry the close before the print. Gross, 6 days: edge_score L/S top-third +1.09%/day (t=0.51, CI [-2.72,+4.80], 4/6 up days) against +1.49%/day for shorting every name with no research. At 1.5%/day cost the edge_score book is -0.41%/day. The impact sum returns +5.73%/day and minus-20d-run-up +5.49%/day on 6/6 up days (sign test p=0.031). Capacity is unaddressed: the best single trade (DLTH +23.20%) turns over 170k dollars a day, and 6 of 22 positions were under 1m/day. See docs/EDGE_ANALYSIS.md.
