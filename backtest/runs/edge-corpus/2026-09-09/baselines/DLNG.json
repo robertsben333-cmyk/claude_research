@@ -2,11 +2,10 @@
  "ticker": "DLNG",
  "event_date": "2026-09-09",
  "session": "bmo",
- "as_of_utc": "2026-09-09T14:49:21+00:00",
- "options_as_of_valid": true,
+ "as_of_utc": "2026-09-09T14:51:27+00:00",
+ "options_as_of_valid": false,
  "sources": [
   "yahoo chart v8 daily bars",
-  "yahoo options v7 front expiry (cookie+crumb)",
   "sec edgar submissions api, 8-K item 2.02 acceptance times"
  ],
  "tape": {
@@ -80,22 +79,12 @@
   "reason": "inferred cadence of 21 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
  },
  "options": {
-  "status": "unusable_chain",
-  "expiry": "2026-09-18",
-  "days_to_expiry": 9,
-  "atm_strike": 5.0,
-  "atm_iv_pct": null,
-  "straddle_implied_move_pct": null,
+  "status": "not_recoverable_retrospectively",
   "event_implied_move_pct": null,
-  "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+  "straddle_implied_move_pct": null,
   "skew_25d_vol_points": null,
-  "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
-  "put_call_open_interest_ratio": 0.03,
-  "total_open_interest": 41,
   "atm_spread_frac_of_mid": null,
-  "warnings": [
-   "ATM legs not two-sided; no live bid/ask to price a straddle from"
-  ]
+  "note": "the event date has passed; Yahoo serves only the current chain, which postdates the print and would be look-ahead"
  },
  "deadband_pct": 1.5,
  "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",

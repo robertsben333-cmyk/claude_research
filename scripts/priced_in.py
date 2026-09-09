@@ -97,8 +97,19 @@ def fetch_text(url, limit=200000):
 
 # ---------------------------------------------------------------- tape
 
+def yahoo_symbol(ticker):
+    """Yahoo writes class shares with a hyphen, like EDGAR. Calendars use a dot.
+
+    `BF.A` and `BF.B` returned an HTTPError and a KeyError from the chart endpoint,
+    so `build()` bailed at `bars_failed` and those names got no tape, no history and
+    no expected move at all -- a silent hole in a sample, not an error anyone sees.
+    """
+    return ticker.upper().replace(".", "-")
+
+
 def bars(ticker, days=460):
-    j = get_json(f"{YQ}/v8/finance/chart/{ticker}?range={days}d&interval=1d")
+    j = get_json(f"{YQ}/v8/finance/chart/{yahoo_symbol(ticker)}"
+                 f"?range={days}d&interval=1d")
     res = j["chart"]["result"][0]
     q = res["indicators"]["quote"][0]
     out = []
@@ -477,7 +488,7 @@ def options(ticker, event_date, spot, realised_vol_pct=None):
     except Exception as e:
         return {"status": f"crumb_failed: {type(e).__name__}"}
     try:
-        j = get_json(f"{YQ}/v7/finance/options/{ticker}?crumb={crumb}")
+        j = get_json(f"{YQ}/v7/finance/options/{yahoo_symbol(ticker)}?crumb={crumb}")
         res = j["optionChain"]["result"]
         if not res:
             return {"status": "no_options_market"}
@@ -490,7 +501,8 @@ def options(ticker, event_date, spot, realised_vol_pct=None):
         if not covering:
             return {"status": "no_expiry_after_event"}
         target = covering[0]
-        j = get_json(f"{YQ}/v7/finance/options/{ticker}?date={target}&crumb={crumb}")
+        j = get_json(f"{YQ}/v7/finance/options/{yahoo_symbol(ticker)}"
+                     f"?date={target}&crumb={crumb}")
         chain = j["optionChain"]["result"][0]["options"][0]
     except Exception as e:
         return {"status": f"chain_failed: {type(e).__name__}: {str(e)[:80]}"}
@@ -611,7 +623,7 @@ def options(ticker, event_date, spot, realised_vol_pct=None):
 
 # ---------------------------------------------------------------- assembly
 
-def options_are_recoverable(event_date):
+def options_are_recoverable(event_date, session):
     """Is the option chain for this event still the chain the market was holding?
 
     Only while the event is in the future. Yahoo serves the chain as it stands
@@ -626,11 +638,24 @@ def options_are_recoverable(event_date):
 
     A backtest over already-reported captures is exactly the case that trips
     this, so the guard lives here rather than in the caller.
+
+    The event date alone is not enough on the day itself. An `amc` print happens
+    after the close, so a chain read that day is genuinely pre-print; a `bmo` print
+    happens before the open, so the same chain postdates it.
     """
     try:
-        return date.fromisoformat(event_date) >= now_utc_date()
+        ed = date.fromisoformat(event_date)
     except ValueError:
         return False
+    today = now_utc_date()
+    if ed > today:
+        return True
+    if ed < today:
+        return False
+    # Today. Whether the chain still predates the print depends on the session, and
+    # getting this wrong is not visible in the output: DLNG, KFY and YQ all printed
+    # bmo on 2026-09-09 and a same-day `>=` test called their post-print chain valid.
+    return session == "amc"
 
 
 def now_utc_date():
@@ -641,7 +666,7 @@ def build(ticker, event_date, session, allow_options=None):
     """allow_options: None means decide from the date, which is what you want.
     False forces the chain off. True is refused for a past event."""
     ticker = ticker.upper()
-    recoverable = options_are_recoverable(event_date)
+    recoverable = options_are_recoverable(event_date, session)
     if allow_options is None:
         use_options = recoverable
     elif allow_options and not recoverable:
