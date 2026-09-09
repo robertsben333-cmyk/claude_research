@@ -1087,3 +1087,61 @@ does not overturn section 33's finding that the chain cannot be *fetched*
 retrospectively, but it means the corpus itself occasionally carries the number,
 and a run that wants the straddle anchor should grep for it rather than assume its
 absence. Ten of the 205 past captures held a parseable implied-move percentage.
+
+## 41. The edge-corpus run, complete: no rank signal at n=104
+
+Seven event days, 109 names hunted, 106 resolved, 104 in the pooled figure after
+dropping the two share-class duplicates. One hunter agent per day and one adversary
+agent per day, both confined to the sealed captures.
+
+| split | n | rho vs raw move | p | rho vs move/implied | p |
+| --- | --- | --- | --- | --- | --- |
+| **all resolved names** | **104** | **+0.073** | **0.45** | **+0.109** | **0.27** |
+| corpus held news items | 14 | +0.046 | 0.88 | −0.057 | 0.84 |
+| corpus was filings + social only | 90 | +0.103 | 0.34 | +0.154 | 0.15 |
+| capture clean against the seal | 74 | +0.114 | 0.33 | +0.129 | 0.28 |
+| capture kept sweeping past the print | 30 | −0.091 | 0.63 | +0.066 | 0.73 |
+| session from an 8-K item 2.02 | 69 | +0.018 | 0.88 | −0.012 | 0.92 |
+| session from a 6-K acceptance time | 35 | +0.241 | 0.16 | +0.275 | 0.12 |
+| no disclosed sight of a post-print document | 102 | +0.103 | 0.30 | +0.137 | 0.17 |
+
+**Nothing is significant, and no subset is.** The pooled coefficient is positive and
+small on both measures, which is what a null looks like at this n. Both anchors of
+the question the stage was built to answer — can the day's names be *ranked* — come
+back unanswered rather than answered no.
+
+Two per-day results are worth naming because they are the reason a pooled figure
+exists. 2026-08-31 returned rho +0.886 on six names with a permutation p of 0.032.
+Pooled over seven days that day contributes almost nothing: the run as a whole sits
+at +0.073. `edge_resolve.py`'s docstring says a single day is an anecdote, and this
+is the archive's cleanest demonstration of it. 2026-09-03, the largest day at 40
+resolved names, returned +0.222 (p=0.17), the strongest large-n day and still not
+significant.
+
+**What the run produced, descriptively.**
+
+- 131 findings across 109 hunts. **35 hunts (32%) returned nothing at all**, and
+  every one traces to a capture with no news channel (section 38).
+- Hunter direction was near-balanced: 40 negative, 34 positive, 35 zero. The live
+  edge hunt's 2026-08-31 skew — six of eight leaning negative — did not reproduce.
+- The adversary judged the median finding **78% already priced** (mean 72). Not one
+  of 131 findings scored in the 0–15 "genuinely not out" band. Fifteen scored 16–40.
+- `corpus_coverage` came back "published in corpus" 102 times, "reachable but
+  unconnected" 27, and "corpus silent" only twice — so the adversary was almost
+  always able to point at a document, not at an absence.
+
+That last pair is the substantive read on the method, and it is more interesting
+than the correlation. Confined to a sealed corpus and forced to size how much of
+each finding was already in the price, an independent adversary put essentially
+every finding at mostly-priced. The hunters were not lazy — they produced 131
+sourced findings and disclosed their own contamination twice — but what they found
+was, on the adversary's reading, overwhelmingly already public before the print.
+
+**What this does and does not establish.** It does not show the edge hunt has no
+edge. Three things stand between this run and that conclusion: 87% of the corpus is
+an EDGAR index and a Stocktwits dump (section 36), a third of the ranking is tied at
+zero (section 38), and the anchor is the reaction-history proxy rather than a
+straddle for every name (section 33). What it does establish is that **the method
+does not extract a rankable signal from a filings-only corpus**, which is a real
+result about a real configuration, and that the forward corpus needs a query budget
+for small names before this question can be asked again.

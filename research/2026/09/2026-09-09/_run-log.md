@@ -93,3 +93,7 @@
 ## Edge-corpus: breach disclosed on 2026-09-03
 - Logged at 2026-09-09 15:35 UTC
 - Hunter opened a pre-market movers list naming post-print moves of seven names before checking its timestamp; disclosed and excluded it, but CPB and CIEN were already written. Both reported apart as breach_exposed. Plus two wrong 6-K session tags (PSNY, GLMD), four stale calendar rows the seal passed, and two genuine implied moves recoverable from captured docs (IOT 11.55%, ZS ~13%). FINDINGS.md section 40.
+
+## Edge-corpus run complete
+- Logged at 2026-09-09 16:07 UTC
+- 7 days, 109 hunted, 104 in the pooled figure. rho +0.073 (p=0.45) raw, +0.109 (p=0.27) normalised. No subset significant. 32% of names score exactly zero; adversary median priced_in 78%. FINDINGS.md section 41.
