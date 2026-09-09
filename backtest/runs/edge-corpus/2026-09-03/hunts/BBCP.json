@@ -1,0 +1,41 @@
+{
+  "ticker": "BBCP",
+  "expected_move_pct": 4.0,
+  "conviction_note": "Baseline median reaction is 13.7% and 4 of 7 prior prints were up; I take a moderate positive because the 25% drift off the June high has an identifiable non-fundamental cause in filings.json (an S-3 declared effective 2026-07-16 plus Rule 144 notices on 07-09 and 07-10) rather than any estimate cut or negative disclosure, and the company raised FY26 guidance ten weeks ago into its seasonally strongest quarter.",
+  "findings": [
+    {
+      "finding": "The 25% slide from $12.05 on 2026-06-30 to $9.05 at the print coincides exactly with a supply event nobody has connected: an S-3 filed 2026-07-02 and declared effective 2026-07-16 (form EFFECT accepted 2026-07-17T04:15:26Z), with Rule 144 notices of intended sale on 2026-07-09 and 2026-07-10 and a Form 4 on 2026-07-13 in between - and then no filing of any kind for the seven weeks into the print.",
+      "expected_impact_pct": 4.0,
+      "impact_low_pct": -3.0,
+      "impact_high_pct": 11.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1703956/000143774926022501/bbpp20260629_s3.htm",
+      "source_date": "2026-07-02",
+      "corpus_ref": "filings.json accessions 0001437749-26-022501 (S-3), 9999999995-26-002338 (EFFECT), 0001950047-26-006989 and 0001950047-26-007004 (144s), 0001437749-26-023453 (Form 4); price path from quote.json 2026-06-30 to 2026-09-03",
+      "body_available": false,
+      "why_not_priced": "The entire Stocktwits stream for this name stops on 2026-07-10 and resumes with one message on the print day - eight weeks of zero observed commentary while the stock fell 25% on 50k-290k share days with no distribution spike. Nothing in the capture links the drawdown to the shelf and the 144s, and no aggregator publishes Form 144s. If the market had de-rated the stock on fundamentals, there would be an estimate cut, a downgrade or a negative filing in the window; there is none - the last sell-side action in the corpus is Baird raising its target to $12 on 2026-06-09.",
+      "independence": "The company's own 10-K risk factors, summarised in a separate corpus document, explicitly flag 'concentrated-holder selling and share buybacks potentially boosting volatility' - https://d-risk.ai/BBCP/10-K/2026-01-13"
+    },
+    {
+      "finding": "The FY26 guide the company raised on 2026-06-04 - revenue $410-425m, adjusted EBITDA $98-105m, free cash flow at least $45m, driven by data centre and infrastructure volume - implies a materially stronger second half than the $90.6m Q1 and $106.8m Q2 already reported, and this print is the seasonally strongest quarter, the same quarter that produced a +12.19% reaction in 2025.",
+      "expected_impact_pct": 2.5,
+      "impact_low_pct": -6.0,
+      "impact_high_pct": 8.0,
+      "source": "https://www.globenewswire.com/news-release/2026/03/10/3253300/0/en/Concrete-Pumping-Holdings-Reports-Strong-First-Quarter-Fiscal-Year-2026-Results.html",
+      "source_date": "2026-06-04",
+      "corpus_ref": "docs/b56e9371bd04e596d5a459214b6f5deabf719b47.txt (snapshots/20260830T084119Z equivalent, the 90-message Stocktwits body), entries dated 2026-06-04T20:18:01Z and 2026-03-10T20:11:30Z",
+      "body_available": true,
+      "why_not_priced": "The guide itself is wire copy from June. What the price has not held onto is the arithmetic: $410-425m against $197.4m reported in H1 requires $213-228m across Q3 and Q4, i.e. run-rate growth continuing, and the stock has since given back the whole post-guide move. The capture contains no sell-side preview and no revised estimate for this print at all, so nobody in the observed corpus has restated the second-half requirement.",
+      "independence": "none - the guidance and the Q2 beat sit in the same Stocktwits body as several other entries I used, so this and the supply finding share one captured document even though the underlying facts (EDGAR filings vs the June release) are distinct."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any 8-K in the seven weeks before the print - the last was 2026-06-04 item 2.02",
+    "any 5.02 management change, any 13D, any activist filing",
+    "any downgrade, estimate cut or negative sell-side action after 2026-06-09",
+    "any news-wire coverage at all: n_queries=0 in every sweep, and the Stocktwits stream is silent between 2026-07-10 and the print",
+    "the S-3 body, so I cannot tell whether it is a resale shelf for a concentrated holder or a routine universal shelf renewal - this is the main weakness in finding 1"
+  ],
+  "baseline_tension": "It cuts against the run-up (-6.5% over 20 days, -24.9% from the 52-week high) by arguing the drawdown is supply, not information, and it agrees with the +12.19% reaction to the same fiscal quarter a year earlier.",
+  "corpus_limits": "No option chain, so no implied move or skew. No news search was run for this ticker, so no consensus, no preview and no construction-activity channel data; the corpus is completely silent for the eight weeks immediately before the print, which is itself the reason my ranges are wide. The S-3's purpose is unverifiable from the capture. No item in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 4
+}
