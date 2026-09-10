@@ -21,10 +21,10 @@ hour into the session is nearer the next **open** (ρ=+0.331, p=0.046) than the 
 
 ## Three things still have to be true
 
-1. **`scripts/alpaca_trade.py` is on `main`.** A Routine clones the default branch. The
-   code arrived on `claude/alpaca-auto-orders-integration-y397gh`; until that is merged,
-   both steps find no script. They are written as "only if enabled", so pasting the
-   prompt early is harmless.
+1. **`scripts/alpaca_trade.py` is on `main`.** Done on 2026-09-10: a Routine clones the
+   default branch, the 2026-09-10 run found no script because the code was still on
+   `claude/alpaca-auto-orders-integration-y397gh`, and that branch was merged. Nothing
+   left to do here; the two below are still open.
 2. **The credentials are on the environment**, not in a shell: `ALPACA_API_KEY_ID`,
    `ALPACA_API_SECRET_KEY` and `ALPACA_BASE_URL=https://paper-api.alpaca.markets`, in
    `.env` format. `docs/EXECUTION.md` step 3 has the walkthrough.

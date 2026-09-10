@@ -148,8 +148,8 @@ on hunts.
 **Stage E can place its book at Alpaca, and it is switched off.**
 `scripts/alpaca_trade.py` takes the one rule that survived a family-wise correction —
 `|impact_sum| >= conviction_floor`, side from the sign, plus a $200k turnover floor
-and a shortability check — and places it market-on-close on the entry date, closing
-market-on-close on the entry date. Nothing is sent unless `execution.enabled` is
+and a shortability check — and places it as an immediate market order on the entry
+date, flattening at market at the start of the next run. Nothing is sent unless `execution.enabled` is
 `true` in `config/pipeline.yaml` **and** `--submit` is given **and** credentials are in
 the environment **and** the endpoint is paper; it is committed as `false`.
 
@@ -176,14 +176,17 @@ size. Under five names the account is deliberately under-invested, and at 100% g
 the whole account rides five to nine prints overnight with no stop. See
 `docs/EXECUTION.md` for what it refuses to do and what it does not know.
 
-Two things have to happen before either step does anything. The stage E Routine's
-prompt has to be re-pasted from `docs/routine-prompts/edge-hunt.md`, which now carries
-both steps — a session cannot do it, `update_trigger` refuses any Routine an agent did
-not create. And `scripts/alpaca_trade.py` has to reach `main`, because a Routine clones
-the default branch; it is on `claude/alpaca-auto-orders-integration-y397gh`, in
-[PR #1](https://github.com/robertsben333-cmyk/claude_research/pull/1). Both steps are
-written as *only if enabled*, so the prompt is safe to paste before the merge — it just
-does nothing.
+The code is on the main line as of 2026-09-10. The 2026-09-10 stage E run found steps 0b
+and 7 were no-ops: `scripts/alpaca_trade.py`, `docs/EXECUTION.md` and the `execution`
+block did not exist in the tree it cloned, because they were still sitting on
+`claude/alpaca-auto-orders-integration-y397gh`. That branch was merged in response, so
+the script, the docs and the config block are now here.
+
+One thing still has to happen by hand, on top of turning `execution.enabled` on: the
+stage E Routine's prompt has to be re-pasted from `docs/routine-prompts/edge-hunt.md`,
+which now carries both steps. A session cannot do it, `update_trigger` refuses any
+Routine an agent did not create. Until that paste the Routine's own text has no step 0b
+and no step 7, so nothing trades whatever the switch says.
 
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have

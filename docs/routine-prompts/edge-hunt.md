@@ -23,10 +23,12 @@ firing a day is a second thing that can fail silently, and because the account h
 flat before a session that might die rather than after.
 
 Both steps are no-ops until `execution.enabled` is `true` in `config/pipeline.yaml`,
-which is committed as `false`. Both need `scripts/alpaca_trade.py`, which arrived on
-`claude/alpaca-auto-orders-integration-y397gh` — until that branch reaches `main` the
-step finds no script. That is why the prompt says *only if enabled* rather than
-*always*: it is safe to paste before the merge, it just does nothing.
+which is committed as `false`. Both need `scripts/alpaca_trade.py`, which reached `main`
+on 2026-09-10 — the 2026-09-10 run found both steps no-ops because the script, the
+`execution` block and `docs/EXECUTION.md` were all still on
+`claude/alpaca-auto-orders-integration-y397gh`. They are in the tree now, so a step that
+finds no script means something else is wrong. The steps stay written as *only if
+enabled*, so this text remains safe to paste with execution off.
 
 Step 7 buys at market, immediately, rather than waiting for the closing auction. On the
 same 18 traded events that cost four hundredths of a point per trade (15/18 and +5.86%
