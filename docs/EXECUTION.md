@@ -82,7 +82,9 @@ paper account.
 2. **Margin, if the shorts are meant to happen.** Paper accounts are margin accounts
    by default. On a cash account every short leg comes back rejected and the book is
    long-only, which is a different strategy from the one that was measured.
-3. **Credentials as environment variables**, never in the repo:
+3. **Credentials as environment variables**, never in the repo. Locally that is a
+   shell export; for anything unattended it has to be on the cloud environment,
+   because a Routine fires into a fresh container that has only this repo:
 
    ```bash
    export ALPACA_API_KEY_ID=...
@@ -90,10 +92,26 @@ paper account.
    export ALPACA_BASE_URL=https://paper-api.alpaca.markets    # the default
    ```
 
-   A Routine fires into a fresh container that has only this repo, so for unattended
-   runs these have to be set on the *environment* the Routine uses, not in a shell.
-   Claude Code on the web keeps them under the environment's own configuration; see
-   https://code.claude.com/docs/en/claude-code-on-the-web.
+   On the cloud environment (claude.ai/code → the cloud icon → the environment →
+   **Environment variables**), the same three lines in `.env` format, one
+   `KEY=value` per line, no quotes and no `export`. A session copies the values once
+   at startup, so a session that is already running keeps the old ones: restart it
+   after editing. Everyone who uses that environment can read them, which is the
+   argument for keeping the keys paper-only.
+
+   **Network access.** The environment has to be able to reach
+   `paper-api.alpaca.markets`. The `Default` environment on this account
+   (`env_01TeUycLFPpAmGb3pDNEHNtp`) does — verified 2026-09-10, the endpoint answers
+   401 rather than being blocked. If a Routine is ever pointed at another
+   environment, set **Network access** to **Custom** and add the host.
+
+   On Pro and Max there is also an **API credentials** slot that keeps a key outside
+   the sandbox entirely and lets the agent proxy attach it. It is the safer shape in
+   principle, but Alpaca authenticates with two custom headers
+   (`APCA-API-KEY-ID` and `APCA-API-SECRET-KEY`), and this script builds those
+   headers itself and refuses to submit when it finds no credentials — so using it
+   that way needs a code change, not just configuration. Environment variables are
+   what is supported today.
 4. **`execution.enabled: true`** in `config/pipeline.yaml`. This is the switch. Four
    things must all hold before a single order is sent: `enabled: true`, `--submit` on
    the command line, credentials in the environment, and a paper endpoint — a live
