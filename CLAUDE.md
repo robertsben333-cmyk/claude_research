@@ -273,6 +273,27 @@ threshold-free conviction correlation is **+0.243 (within-day p=0.049) against +
 68 events is −2.71%, so shorting everything and doing nothing is still the thing to beat.
 See `edge/EDGE_ANALYSIS.md`, "The number is a confidence flag, not a magnitude".
 
+**The one clean lesson about the evidence itself: a third-party series bridged to the
+company is where the losses are.** `edge/scripts/edge_evidence.py` scores the ledger at
+the finding grain — 303 resolved findings, 67 companies, 7 days — and asks which *sorts*
+of information were worth finding rather than how good the stage is. Findings resting on
+a third-party series that the hunter connects to the company by its own reasoning (EIA
+diesel against a fuel-exposed guide, BLS airline-fare CPI against a bookings platform,
+a NOAA temperature record, a Semrush traffic estimate, FPDS contract counts) were right
+**3 of 15**, p=0.035, and **1 of 8** where they led the call; everything else was right
+166 of 288. They span 11 companies and 5 days and their median size is 2.38 points
+against 1.40, so the stage bet more on its worst category. What worked is dull and
+already published: nine of the ten largest lead findings were right, led by an
+unrecognised tariff refund named on a call, a peer's comps for the identical fiscal
+window, two quarters of backlog decline in a 10-Q. By lead source: statutory filing
+15/22, general financial press 2/6. A source older than 60 days beat one under 3 days
+(0.586 against 0.400). **This was found by looking**, after several cuts on 67 names, so
+p=0.035 does not survive a family-wise correction — it is a hypothesis with a mechanism,
+now written into `.claude/agents/unpriced-hunter.md` so the coming runs test it. Also:
+`independence` reads as corroborated on 288 of 303 findings and measures nothing until
+it is required to be a URL or the word `none`. See `edge/EDGE_ANALYSIS.md`, "Which
+findings were right: the evidence, not the scorer".
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080

@@ -1183,6 +1183,83 @@ the highest mean `|impact_sum|` of any day (7.09), and a 22% sign rate.
    The first run under the current contract resolves the morning after 2026-09-11; ten
    such days decides it.
 
+## Which findings were right: the evidence, not the scorer
+
+`edge/scripts/edge_evidence.py` asks the question that improves the hunter rather than
+grading it. Of the things it found, which sorts of thing were worth finding? The unit is
+a finding; the attributes are what the hunter wrote plus what is free off the source.
+303 resolved findings, 67 companies, 7 days, one hunt per event.
+
+Attribution is the difficulty: you observe one move per company and a name carries three
+to eight findings. So every cut is reported twice — over all findings, where the outcome
+is shared across the name, and over **lead findings**, one row per company classified by
+its single largest finding, where the unit and the outcome finally match.
+
+### A third-party series bridged to the company is the one clean negative
+
+| | findings | right | as lead | right |
+| --- | --- | --- | --- | --- |
+| rests on a third-party series | 15 | **3 (20%)**, p = 0.035 | 8 | **1 (12.5%)**, p = 0.070 |
+| everything else | 288 | 166 (58%) | 59 | 35 (59%) |
+
+An EIA diesel price against a company that guided on fuel (WOOF, UNFI). A BLS
+airline-fare CPI against a travel platform's bookings (NAVN, twice, +3.0 and +1.5 — the
+stock fell 21.9%). A NOAA temperature record against a field-service software quarter
+(TTAN, +1.3, the stock fell 30.0%). A Semrush traffic estimate (ODD, −3.3, the stock rose
+26.5%). A count of federal contract actions in FPDS (AI). A state Medicaid rate schedule
+(INNV).
+
+They span 11 companies and 5 days, so this is not one name or one bad session, and their
+median size is 2.38 points against 1.40 for everything else — the stage bet *more* on its
+worst category. The mechanism is legible: a public series is available to everyone and
+says nothing about a company until someone supplies the bridge, and the bridge is the
+hunter's own untested inference. That is why it is written into
+`.claude/agents/unpriced-hunter.md` as an instruction rather than recorded here as a
+curiosity.
+
+**It was found by looking.** Six or seven cuts were tried on 67 names before this one
+separated. p = 0.035 does not survive a family-wise correction over that search, and the
+honest status is a hypothesis with a mechanism, now pre-registered against the runs to
+come.
+
+### What the right calls rested on
+
+Nine of the ten largest lead findings were right, and they are uniformly dull: a number
+already in the public record that nobody re-read.
+
+- DLTH +11.0 → +23.20%. A CFO on the June call saying $12m of IEEPA tariff refunds had
+  been applied for and excluded from results. 87 days old, sitting in a transcript.
+- SHOE −5.0 → −6.07%. A peer (Caleres) printing −5.9% comparable sales for the *identical*
+  fiscal window, one day earlier.
+- MEI −5.2 → −15.36%. A $19.6m sequential EBITDA jump that management had already said was
+  one-time customer recoveries.
+- AGX −4.5, NNOX −4.5, PL −4.8. Two quarters of sequential backlog or RPO decline in the
+  10-Q; an impairment assessment still marked incomplete.
+
+By source of the lead finding: **statutory filing 15/22 (68%)**, company wire 3/5, trade
+and specialist data 14/26 (54%), general financial press **2/6**, third-party series 1/8.
+
+### Old beats new
+
+| age of the lead finding's source | n | right |
+| --- | --- | --- |
+| > 60 days | 29 | **0.586** |
+| 15–60 days | 16 | 0.438 |
+| 4–14 days | 9 | 0.667 |
+| ≤ 3 days | 10 | **0.400** |
+
+Non-monotone and thin, but it points the way the stage's own premise does: yesterday's
+wire is in the price, and page 47 of a June 10-Q may not be. It is an argument for
+spending searches on the filed record rather than on the news cycle.
+
+### Two fields that measure nothing as currently written
+
+`independence` reads as corroborated on 288 of 303 findings, because hunters write prose
+there whether or not they have a second source; only 15 say "none". Scoring it is
+meaningless until the field is required to be a URL or the word `none`. And the hunter's
+own `impact_low`/`impact_high` band separates almost nothing — a band under 2.5× the size
+was right 0.610 against 0.547 for a wider one, on 59 against 236 findings.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a

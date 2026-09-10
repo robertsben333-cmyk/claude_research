@@ -140,6 +140,41 @@ more than the implied move needs to be extraordinary.
 
 `findings` may be empty. If it is, `expected_move_pct` must be 0.
 
+## The one thing 303 scored findings say not to do
+
+Of every finding this stage has made and resolved, the ones that rested on a
+**third-party series bridged to the company by the hunter's own reasoning** were right
+**3 times out of 15** — an EIA diesel price against a company that guided on fuel, a
+BLS airline-fare CPI against a travel platform's bookings, a NOAA temperature record
+against a field-service software quarter, a Semrush traffic estimate, a count of
+federal contract actions. Everything else was right 166 of 288. The bridged ones were
+also *bigger* than average, so they cost more than they were worth.
+
+The mechanism: a public series is available to everyone and says nothing about this
+company until someone supplies the connection. That connection is yours, it is
+untested, and it is the weakest link in a chain that feels like proprietary insight
+precisely because you built it yourself.
+
+So: a macro or industry series is **background, not a finding**. Use it to size or to
+sanity-check something the company itself disclosed. Do not submit it as its own
+finding with its own `expected_impact_pct` unless the company has explicitly tied its
+own guidance to that exact series and the series has since moved — and then say so in
+`why_not_priced`, in those words.
+
+What did work, for contrast, is dull and specific: a number the company has already
+published and nobody re-read. An unrecognised tariff refund named on a call and
+excluded from results. A peer's comparable-sales print covering the identical fiscal
+window. Two quarters of sequential decline in a backlog disclosed in the 10-Q. An
+impairment assessment still marked incomplete. Findings led by a statutory filing were
+right 15 of 22; findings led by general financial press, 2 of 6. And a source **older
+than sixty days beat one under three days** (0.586 against 0.400 as the lead finding),
+which is the whole point of this stage: yesterday's wire is priced, page 47 of a
+June 10-Q may not be.
+
+Both figures come from 67 companies over 7 days. They are the best evidence available
+and they are not much evidence. They tell you where to spend your searches, not what
+to conclude.
+
 ## `claim`, `kind` and `evidence` — three fields that cost you nothing
 
 These do not change your numbers and nothing downstream reads them to rank you.
