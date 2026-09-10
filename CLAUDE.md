@@ -140,7 +140,13 @@ things: **amc** gaps at ρ=+0.273 / +8.91% and then gives back −3.00% intraday
 day-demeaned, and the book is 6 long / 6 short so it is not drift), while **bmo** is
 +0.187 at the open and +0.670 at the close. Selling into the release is the one variant
 the sample rejects: only 46% of the move exists there and for bmo names its ranking is
-negative. The hybrid — amc at the opening print, bmo at the close — is the best of six
+negative. Priced per hour of the clock (`docs/edge-exit-hourly.html`), the conviction book
+peaks at **+6.38% per trade at 09:00 pre-market** (t=3.54) against +5.60% at the close, and
+the two sessions peak in different places: amc at +8.45% at 09:00 then bleeding to +5.07%
+by 16:00, bmo at zero until 07:00 and then climbing to its best value of +6.23% at the
+close. The free control is on the opposite clock — shorting every name pays −0.5 to −2.0
+per day before the open and +1.7 to +2.5 after it, so its edge is intraday drift and
+exiting at the open removes it as a rival. The hybrid — amc at the opening print, bmo at the close — is the best of six
 policies at ρ=0.461 and +7.81% (t=4.01), but it was chosen after reading the split off
 these same 38 events, the bootstrap puts its gain at +1.87pp with a CI of [−1.30, +4.55],
 and the best of the six beats the close in 91% of resamples. Run it forward; do not

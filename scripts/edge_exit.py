@@ -126,6 +126,34 @@ def _bar_starting(day_bars, hm):
     return None
 
 
+# Hours since the entry close (16:00 ET on the entry day). One axis both sessions
+# share: 17.5 is the reaction session's open and 24.0 its close. Offsets 5-11 are
+# the overnight void -- the last price still exists there but no exit does, so the
+# grid skips it.
+HOUR_GRID = [1.0, 2.0, 3.0, 4.0,
+             12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 17.5,
+             18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0]
+
+
+def hourly_prices(m5, entry_date, react_date):
+    """Price at each grid hour: the last bar at or before it, within one hour.
+
+    The staleness window is what keeps a name that stopped trading at 16:20 from
+    reporting an 'exit' at 19:00 that nobody could have taken.
+    """
+    def offs(date, base_day_offset):
+        out = []
+        for b in m5.get(date, []):
+            out.append(((b["hm"] - 16 * 60) / 60.0 + base_day_offset, b["close"]))
+        return out
+    series = sorted(offs(entry_date, 0.0) + offs(react_date, 24.0))
+    px = {}
+    for h in HOUR_GRID:
+        v = [(o, c) for o, c in series if 0 < o <= h and o >= h - 1.0]
+        px[h] = v[-1][1] if v else None
+    return px
+
+
 def exit_prices(ticker, event_date, session, cache=None):
     """Entry close plus one price per horizon. Missing horizons come back None."""
     dd = daily(ticker, cache)
@@ -159,8 +187,12 @@ def exit_prices(ticker, event_date, session, cache=None):
                     ("m60", 10 * 60 + 25), ("midday", 11 * 60 + 55)):
         b = _bar_starting(react_bars, hm)
         px[lab] = b["close"] if b else None
+    hp = hourly_prices(m5, entry_date, react)
     return {"entry_date": entry_date, "entry_close": round(entry, 4),
             "reaction_date": react,
+            "hourly_move": {f"{h:g}": (None if hp[h] is None
+                                       else round((hp[h] / entry - 1) * 100, 3))
+                            for h in HOUR_GRID},
             "px": {k: (None if v is None else round(v, 4)) for k, v in px.items()},
             "move": {k: (None if v is None else round((v / entry - 1) * 100, 3))
                      for k, v in px.items()}}, None
@@ -445,6 +477,182 @@ def leg_stats(panel, floor):
     return out
 
 
+def returns_table(panel, floor, costs):
+    """The same horizons priced as money rather than as rank correlation.
+
+    Three books, all one unit of capital, all entered at the same close:
+
+      floor       every name with |impact_sum| >= floor, signed by the prediction.
+                  Per-trade, because the number of trades varies by day
+      ls_third    long the top third of the day, short the bottom third, capital
+                  split over the two sides. Per day, and compounded over the days
+      controls    `always_short` (no research) and `-run_up_20d` (one sealed number),
+                  both traded at the SAME horizon, because the horizon moves them too
+
+    Costs are a flat charge per unit of capital per round trip, applied alike. An
+    exit before the opening auction deserves a HIGHER charge than the close does and
+    gets the same one here, so the early-exit rows are flattered by this column.
+    """
+    out = {}
+    for h in HORIZONS:
+        mk = f"mv_{h}"
+        flat = [r for d in panel for r in d if r.get(mk) is not None]
+        conv = [r for r in flat if abs(r["impact_sum"]) >= floor]
+        rets = [r[mk] if r["impact_sum"] > 0 else -r[mk] for r in conv]
+        m, t, ci = ttest_mean(rets) if len(rets) > 2 else (None, None, None)
+
+        per_day, short_day, ctl_day = [], [], []
+        for day in panel:
+            v = [r for r in day if r.get(mk) is not None]
+            if len(v) < 3:
+                continue
+            x = ls_third(v, "impact_sum", mk)
+            if x is not None:
+                per_day.append(x)
+            short_day.append(-st.fmean(r[mk] for r in v))
+            c = [r for r in v if r.get("neg_runup") is not None]
+            if len(c) >= 3:
+                y = ls_third(c, "neg_runup", mk)
+                if y is not None:
+                    ctl_day.append(y)
+
+        def compound(xs, cost=0.0):
+            eq = 1.0
+            for x in xs:
+                eq *= (1 + (x - cost) / 100)
+            return round((eq - 1) * 100, 2)
+
+        row = {"n": len(flat), "floor_n": len(rets),
+               "floor_hits": sum(1 for x in rets if x > 0),
+               "floor_mean_ret_pct": m, "floor_t": t, "floor_ci95": ci,
+               "floor_median_ret_pct": (round(st.median(rets), 2) if rets else None),
+               "floor_worst_pct": (round(min(rets), 2) if rets else None),
+               "floor_best_pct": (round(max(rets), 2) if rets else None),
+               "ls_third_mean_day_pct": (round(st.fmean(per_day), 3) if per_day else None),
+               "ls_third_days": f"{sum(1 for x in per_day if x > 0)}/{len(per_day)}",
+               "ls_third_cumulative_pct": compound(per_day),
+               "null_always_short_day_pct": (round(st.fmean(short_day), 3)
+                                             if short_day else None),
+               "null_always_short_cumulative_pct": compound(short_day),
+               "control_neg_runup_day_pct": (round(st.fmean(ctl_day), 3)
+                                             if ctl_day else None),
+               "control_neg_runup_cumulative_pct": compound(ctl_day)}
+        for c in costs:
+            row[f"floor_mean_after_{c}pct_cost"] = (None if m is None
+                                                    else round(m - c, 2))
+            row[f"ls_third_cumulative_after_{c}pct_cost"] = compound(per_day, c)
+        out[h] = row
+    return out
+
+
+def policy_returns(panel, floor, costs):
+    """Per-session exit rules, priced. Same three books, same costs."""
+    out = {}
+    for name, rule in POLICIES.items():
+        for day in panel:
+            for r in day:
+                r["_pol"] = r.get(rule[r["session"]])
+        flat = [r for d in panel for r in d if r.get("_pol") is not None]
+        conv = [r for r in flat if abs(r["impact_sum"]) >= floor]
+        rets = [r["_pol"] if r["impact_sum"] > 0 else -r["_pol"] for r in conv]
+        m, t, ci = ttest_mean(rets) if len(rets) > 2 else (None, None, None)
+        per_day, short_day = [], []
+        for day in panel:
+            v = [r for r in day if r.get("_pol") is not None]
+            if len(v) < 3:
+                continue
+            x = ls_third(v, "impact_sum", "_pol")
+            if x is not None:
+                per_day.append(x)
+            short_day.append(-st.fmean(r["_pol"] for r in v))
+
+        def compound(xs, cost=0.0):
+            eq = 1.0
+            for x in xs:
+                eq *= (1 + (x - cost) / 100)
+            return round((eq - 1) * 100, 2)
+
+        row = {"floor_n": len(rets), "floor_hits": sum(1 for x in rets if x > 0),
+               "floor_mean_ret_pct": m, "floor_t": t, "floor_ci95": ci,
+               "ls_third_mean_day_pct": (round(st.fmean(per_day), 3) if per_day else None),
+               "ls_third_days": f"{sum(1 for x in per_day if x > 0)}/{len(per_day)}",
+               "ls_third_cumulative_pct": compound(per_day),
+               "null_always_short_day_pct": (round(st.fmean(short_day), 3)
+                                             if short_day else None),
+               "per_day_pct": [round(x, 2) for x in per_day]}
+        for c in costs:
+            row[f"floor_mean_after_{c}pct_cost"] = (None if m is None
+                                                    else round(m - c, 2))
+            row[f"ls_third_cumulative_after_{c}pct_cost"] = compound(per_day, c)
+        out[name] = row
+    for day in panel:
+        for r in day:
+            r.pop("_pol", None)
+    return out
+
+
+def session_returns(panel, floor):
+    """Per-trade return of the floor book by session and by exit, in points."""
+    out = {}
+    for sess in ("amc", "bmo"):
+        sub = [[r for r in d if r["session"] == sess] for d in panel]
+        sub = [d for d in sub if d]
+        row = {}
+        for h in HORIZONS:
+            mk = f"mv_{h}"
+            conv = [r for d in sub for r in d
+                    if r.get(mk) is not None and abs(r["impact_sum"]) >= floor]
+            rets = [r[mk] if r["impact_sum"] > 0 else -r[mk] for r in conv]
+            m, t, ci = ttest_mean(rets) if len(rets) > 2 else (None, None, None)
+            row[h] = {"n": len(rets), "hits": sum(1 for x in rets if x > 0),
+                      "mean_ret_pct": m, "t": t, "ci95": ci}
+        out[sess] = row
+    return out
+
+
+def hourly_returns(panel, floor):
+    """Per-trade return of the floor book at every grid hour, all names and by session.
+
+    This is the shape of the answer: where on the clock the money is, and whether the
+    two sessions put it in the same place.
+    """
+    def book(rows, key):
+        conv = [r for r in rows if r.get(key) is not None
+                and abs(r["impact_sum"]) >= floor]
+        rets = [r[key] if r["impact_sum"] > 0 else -r[key] for r in conv]
+        if len(rets) < 3:
+            return {"n": len(rets), "mean_ret_pct": None, "t": None,
+                    "hits": sum(1 for x in rets if x > 0), "coverage": len(conv)}
+        m, t, ci = ttest_mean(rets)
+        return {"n": len(rets), "hits": sum(1 for x in rets if x > 0),
+                "mean_ret_pct": m, "t": t, "ci95": ci, "coverage": len(conv)}
+
+    flat = [r for d in panel for r in d]
+    out = {"grid_hours": HOUR_GRID, "all": {}, "amc": {}, "bmo": {},
+           "ls_third_day_pct": {}, "null_always_short_day_pct": {},
+           "names_priced": {}}
+    for h in HOUR_GRID:
+        k = f"hr_{h:g}"
+        out["all"][f"{h:g}"] = book(flat, k)
+        for sess in ("amc", "bmo"):
+            out[sess][f"{h:g}"] = book([r for r in flat if r["session"] == sess], k)
+        per_day, short_day = [], []
+        for day in panel:
+            v = [r for r in day if r.get(k) is not None]
+            if len(v) < 3:
+                continue
+            x = ls_third(v, "impact_sum", k)
+            if x is not None:
+                per_day.append(x)
+            short_day.append(-st.fmean(r[k] for r in v))
+        out["ls_third_day_pct"][f"{h:g}"] = (round(st.fmean(per_day), 3)
+                                             if per_day else None)
+        out["null_always_short_day_pct"][f"{h:g}"] = (round(st.fmean(short_day), 3)
+                                                      if short_day else None)
+        out["names_priced"][f"{h:g}"] = sum(1 for r in flat if r.get(k) is not None)
+    return out
+
+
 def bootstrap_policies(panel, floor, seed, trials=4000):
     """Paired day bootstrap of each policy minus `uniform_close`, and the family-wise
     story: `amc_open_bmo_close` is the BEST OF SIX policies and the split that
@@ -571,6 +779,9 @@ def build_panel(cache, keep_dup):
                    "px": res["px"]}
             for h in HORIZONS:
                 row[f"mv_{h}"] = res["move"].get(h)
+            row["hourly_move"] = res["hourly_move"]
+            for k, v in res["hourly_move"].items():
+                row[f"hr_{k}"] = v
             out.append(row)
         if out:
             panel.append(out)
@@ -673,6 +884,76 @@ def main():
                   f"  frac_of_close={hv.get('median_frac_of_close_move')}"
                   f"  null_short={hv.get('null_always_short_day_pct')}")
 
+    costs = [0.5, 1.5, 3.0]
+    rt = returns_table(panel, a.floor, costs)
+    print("\nRETURNS by exit horizon -- floor book is per trade, the rest per day")
+    print(f"  {'horizon':<12}{'trades':>7}{'hits':>6}{'per_trade':>11}{'t':>7}"
+          f"{'ls/day':>9}{'ls_cum':>9}{'days+':>7}{'short/day':>11}{'runup/day':>11}")
+    for h in HORIZONS:
+        v = rt[h]
+        print(f"  {h:<12}{v['floor_n']:>7}{v['floor_hits']:>6}"
+              f"{('' if v['floor_mean_ret_pct'] is None else v['floor_mean_ret_pct']):>11}"
+              f"{('' if v['floor_t'] is None else v['floor_t']):>7}"
+              f"{('' if v['ls_third_mean_day_pct'] is None else v['ls_third_mean_day_pct']):>9}"
+              f"{v['ls_third_cumulative_pct']:>9}{v['ls_third_days']:>7}"
+              f"{('' if v['null_always_short_day_pct'] is None else v['null_always_short_day_pct']):>11}"
+              f"{('' if v['control_neg_runup_day_pct'] is None else v['control_neg_runup_day_pct']):>11}")
+    print("\n  per-trade return after a flat round-trip cost:")
+    print(f"  {'horizon':<12}" + "".join(f"{'-'+str(c)+'%':>10}" for c in costs)
+          + f"{'ls_cum@1.5%':>13}")
+    for h in HORIZONS:
+        v = rt[h]
+        print(f"  {h:<12}" + "".join(
+            f"{('' if v[f'floor_mean_after_{c}pct_cost'] is None else v[f'floor_mean_after_{c}pct_cost']):>10}"
+            for c in costs) + f"{v['ls_third_cumulative_after_1.5pct_cost']:>13}")
+    print("\n  worst / median / best single trade in the floor book:")
+    for h in HORIZONS:
+        v = rt[h]
+        print(f"  {h:<12}{v['floor_worst_pct']:>10}{v['floor_median_ret_pct']:>10}"
+              f"{v['floor_best_pct']:>10}")
+
+    sr = session_returns(panel, a.floor)
+    print("\nRETURNS by session (per trade, floor book)")
+    print(f"  {'horizon':<12}" + "".join(f"{s+'_ret':>10}{s+'_t':>8}" for s in ("amc", "bmo")))
+    for h in HORIZONS:
+        print(f"  {h:<12}" + "".join(
+            f"{('' if sr[s][h]['mean_ret_pct'] is None else sr[s][h]['mean_ret_pct']):>10}"
+            f"{('' if sr[s][h]['t'] is None else sr[s][h]['t']):>8}"
+            for s in ("amc", "bmo")))
+
+    pret = policy_returns(panel, a.floor, costs)
+    print("\nRETURNS by exit policy")
+    print(f"  {'policy':<24}{'trades':>7}{'hits':>6}{'per_trade':>11}{'t':>7}"
+          f"{'-1.5%':>8}{'ls/day':>9}{'ls_cum':>9}{'days+':>7}{'short/day':>11}")
+    for n, v in pret.items():
+        print(f"  {n:<24}{v['floor_n']:>7}{v['floor_hits']:>6}"
+              f"{('' if v['floor_mean_ret_pct'] is None else v['floor_mean_ret_pct']):>11}"
+              f"{('' if v['floor_t'] is None else v['floor_t']):>7}"
+              f"{v['floor_mean_after_1.5pct_cost']:>8}"
+              f"{('' if v['ls_third_mean_day_pct'] is None else v['ls_third_mean_day_pct']):>9}"
+              f"{v['ls_third_cumulative_pct']:>9}{v['ls_third_days']:>7}"
+              f"{('' if v['null_always_short_day_pct'] is None else v['null_always_short_day_pct']):>11}")
+    print("  per-day long/short returns:")
+    for n, v in pret.items():
+        print(f"    {n:<24}{v['per_day_pct']}")
+
+    hr = hourly_returns(panel, a.floor)
+    print("\nRETURNS per hour since the entry close (17.5 = the open, 24 = the close)")
+    print(f"  {'hour':>6}{'clock':>8}{'priced':>8}{'trades':>8}{'per_trade':>11}{'t':>7}"
+          f"{'amc':>9}{'bmo':>9}{'ls/day':>9}{'short/day':>11}")
+    for h in HOUR_GRID:
+        k = f"{h:g}"
+        a_ = hr["all"][k]
+        clock = (16 + h) % 24
+        cl = f"{int(clock):02d}:{int(round((clock % 1) * 60)):02d}"
+        print(f"  {k:>6}{cl:>8}{hr['names_priced'][k]:>8}{a_['n']:>8}"
+              f"{('' if a_['mean_ret_pct'] is None else a_['mean_ret_pct']):>11}"
+              f"{('' if a_.get('t') is None else a_['t']):>7}"
+              f"{('' if hr['amc'][k]['mean_ret_pct'] is None else hr['amc'][k]['mean_ret_pct']):>9}"
+              f"{('' if hr['bmo'][k]['mean_ret_pct'] is None else hr['bmo'][k]['mean_ret_pct']):>9}"
+              f"{('' if hr['ls_third_day_pct'][k] is None else hr['ls_third_day_pct'][k]):>9}"
+              f"{('' if hr['null_always_short_day_pct'][k] is None else hr['null_always_short_day_pct'][k]):>11}")
+
     pol = policy_stats(panel, a.floor)
     print("\nexit policies (one rule per session)")
     print(f"  {'policy':<24}{'rho':>8}{'floor_n':>9}{'hits':>6}{'mean_ret':>10}"
@@ -721,6 +1002,9 @@ def main():
            "horizons": stats, "horizons_liquid": lstats,
            "legs": legs, "bootstrap_vs_close": boot,
            "by_session": by_session, "policies": pol,
+           "returns_by_horizon": rt, "returns_by_session": sr,
+           "returns_hourly": hr,
+           "returns_by_policy": pret, "costs_pct": costs,
            "policy_bootstrap_vs_close": pboot,
            "family_wise": {"best_rho_p": fw_rho, "best_conviction_p": fw_conv},
            "panel": panel}

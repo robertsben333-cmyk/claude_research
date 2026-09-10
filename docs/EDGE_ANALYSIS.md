@@ -723,6 +723,62 @@ halves its session gain from +3.16% to +1.60%, so **half of what makes bmo look 
 hold is the day's average drift caught by a short-heavy book**, and neither bmo leg is
 significant on its own.
 
+### The same question in money, hour by hour
+
+Rank correlation is not a return, and on the exit question the two disagree: ρ peaks at the
+close while the money peaks before the open. `scripts/edge_exit.py` also prices every hour
+of the clock from the entry close (16:00 ET) to the next close, 24 hours later. The book is
+the same one: every name with `|impact_sum| >= 3`, signed by the prediction, one unit per
+name, mean **per trade**. Chart in `docs/edge-exit-hourly.html`.
+
+| exit (ET) | hour | both | t | amc | bmo | long/short per day | short-all per day | priced |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 17:00 | 1 | +4.07 | 2.78 | +7.39 | +0.09 | +2.99 | −0.57 | 38 |
+| 18:00 | 2 | +4.13 | 2.92 | +7.22 | +0.43 | +3.15 | −0.62 | 38 |
+| 19:00 | 3 | +4.19 | 2.86 | +7.42 | −0.13 | +2.81 | −0.51 | 37 |
+| 20:00 | 4 | +4.25 | 2.92 | +7.67 | +0.13 | +3.48 | −0.68 | 38 |
+| 04:00 | 12 | +4.18 | 2.43 | +7.18 | −0.32 | +2.05 | −1.60 | 35 |
+| 05:00 | 13 | +3.48 | 1.93 | +6.40 | −0.90 | +1.47 | −1.81 | 35 |
+| 06:00 | 14 | +3.90 | 1.89 | +6.89 | −0.59 | +2.98 | −1.98 | 33 |
+| 07:00 | 15 | +5.40 | 3.30 | +7.44 | +2.67 | +3.04 | −0.61 | 37 |
+| 08:00 | 16 | +5.50 | 2.88 | +8.06 | +2.09 | +3.38 | −0.76 | 37 |
+| **09:00** | 17 | **+6.38** | **3.54** | **+8.45** | +3.61 | +4.73 | −0.62 | 37 |
+| 09:35 | 17.5 | +4.72 | 2.69 | +7.08 | +1.89 | +4.44 | +1.05 | 38 |
+| 10:00 | 18 | +4.49 | 2.52 | +6.08 | +2.58 | +3.78 | +2.51 | 38 |
+| 11:00 | 19 | +4.25 | 2.25 | +4.83 | +3.55 | +3.68 | +1.90 | 38 |
+| 12:00 | 20 | +4.53 | 2.22 | +4.93 | +4.05 | +4.19 | +1.75 | 38 |
+| 13:00 | 21 | +4.44 | 2.26 | +5.14 | +3.60 | +4.09 | +1.91 | 38 |
+| 14:00 | 22 | +4.88 | 2.56 | +5.09 | +4.63 | +4.61 | +2.03 | 38 |
+| 15:00 | 23 | +5.28 | 2.49 | +5.28 | +5.29 | +4.93 | +1.78 | 38 |
+| **16:00** | 24 | +5.60 | 2.52 | +5.07 | **+6.23** | +4.77 | +1.96 | 38 |
+
+Hours 5 to 11 are the overnight void: the last price still exists, an exit does not. The
+17.5 row is the close of the 09:30 bar rather than the opening print, which is why it reads
++4.72 against the +6.21 the opening auction itself pays — five minutes of session gives back
+1.5 points.
+
+Three things the clock shows that the eight-horizon table does not.
+
+**amc is finished before the bell.** +7.39 an hour after its own print, flat through the
+night, a peak of **+8.45 at 09:00**, and then a monotone bleed to +5.07 by the close. Nothing
+after 09:00 pays an amc holder anything.
+
+**bmo does not exist before 07:00.** The line sitting at zero through hour 14 is the print not
+having happened, not a market that ignored it. From 07:00 it turns on and climbs without a
+reversal to its best value of the whole day at the close.
+
+**The free control is on the opposite clock.** Shorting every name and doing no research pays
+−0.5 to −2.0 per day at every hour before the open and +1.7 to +2.5 at every hour after it.
+The sample's downward skew — the thing that beat the shipped scorer in the first place — is
+an intraday effect. Exit at the open and the control is not a rival; hold to the close and
+roughly two of the +5.60 is available to anyone who shorts blind.
+
+Costs cut the other way. At a flat 1.5% round trip the ranking of exits barely moves
+(pre-open +5.11, open +4.71, close +4.30), but a fill at 09:00 in a name that trades $1m a day
+is not a 1.5% round trip, and this source reports no extended-hours volume at all, so the
+09:00 peak is a statement about information and not about capacity. The opening auction is the
+earliest hour on the chart where the number and the fill are the same thing.
+
 ### The policy, and why it is a lead and not a finding
 
 | exit policy | ρ | book | t | CI95 | long/short thirds | days positive |
@@ -733,6 +789,12 @@ significant on its own.
 | uniform after-hours | +0.230 | +5.16% | 2.75 | [+1.48, +8.84] | +3.26%/day | 2/5 |
 | **amc at the open, bmo at the close** | **+0.461** | **+7.81%** | **4.01** | [+3.99, +11.62] | **+6.97%/day** | 4/5 |
 | amc pre-open, bmo at the close | +0.456 | +7.49% | 3.89 | [+3.71, +11.27] | +6.85%/day | 5/5 |
+
+In money rather than ρ, over the five days: per trade the hybrid pays **+7.81%** against
++5.80% for the current uniform close (+6.31% against +4.30% after a 1.5% cost), and traded as
+long/short thirds it compounds to **+39.2%** over the five days against +27.2%. The uniform
+pre-open exit is the only one positive on all 5 days (+29.5% compounded), and exiting into the
+release is the worst of the lot at +16.6%.
 
 The hybrid is the best of six on every column. It is also chosen from six after the
 session split had been read off these same 38 events. The paired day bootstrap gives its
