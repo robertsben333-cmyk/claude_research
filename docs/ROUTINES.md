@@ -58,12 +58,29 @@ finding out cheaply.
 
 ### Stage E also trades its own ranking, in the same Routine
 
-**There is no separate execution Routine.** Since 2026-09-10 the stage E prompt carries
-two extra steps and the same session does both: step 0b sells yesterday's book at market
-before the hunt launches, step 7 buys today's market-on-close after the note is
-published. `scripts/alpaca_trade.py` does the work; `docs/EXECUTION.md` is the contract.
+**There is no separate execution Routine while `orders.exit_mode` is `uniform`.** Since
+2026-09-10 the stage E prompt carries two extra steps and the same session does both:
+step 0b sells yesterday's book at market before the hunt launches, step 7 buys today's
+after the note is published. `scripts/alpaca_trade.py` does the work; `docs/EXECUTION.md`
+is the contract.
 
-One Routine rather than two, for three reasons. A second firing a day is a second thing
+**`orders.exit_mode: auction_split` is the one setting that needs a second Routine, at
+`0 12 * * 1-5`.** It sends amc positions into the opening auction, and Alpaca rejects an
+`opg` order between 09:28 and 19:00 ET, so nothing firing in the European afternoon can
+place one. The window is narrower than that rule alone suggests: `close` selects legs
+whose exit date equals today off Alpaca's clock, so a 20:00 ET firing the evening before
+would match nothing and report success. Usable window is 00:00 to 09:28 ET **on the exit
+date**. 12:00 UTC lands on 08:00 ET in summer and 07:00 ET in winter, both comfortably
+inside it, which is why it is one cron all year rather than the summer/winter pair every
+other entry in this file needs. The prompt is in `docs/routine-prompts/edge-execute.md`
+and only a person can create it — `create_trigger` is refused to agent sessions here.
+
+**`orders.exit_mode: bmo_close` needs no second Routine**, and it is +1.77pp of the
++3.32pp on offer: amc at market on the run, bmo into today's closing auction, whose
+cutoff is 15:50 ET and therefore hours away from a 16:04 Amsterdam start. Do that one
+first.
+
+One Routine rather than two, while the mode is `uniform`, for three reasons. A second firing a day is a second thing
 that can fail silently, each with its own market-on-close deadline. The flatten belongs
 **before** a session that might die, not after — a killed session then leaves the account
 in cash instead of holding a book nobody is managing. And nothing has to be handed
