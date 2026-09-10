@@ -57,6 +57,21 @@ DUP_RUN = "2026-09-04"
 
 HORIZONS = ["ext_early", "pre_open", "open", "m15", "m30", "m60", "midday", "close"]
 
+# Hours of capital occupancy per horizon, measured from the 16:00 ET entry. The
+# return per TRADE is not the number a fixed capital base earns -- a position closed
+# in the opening auction frees its cash at 17.5 hours and the next day's entry can be
+# funded from settled cash rather than from proceeds of a sale in the same auction.
+# `ext_early` is the one horizon whose clock differs by session: half an hour after
+# the amc print, sixteen hours later for a bmo name whose print has not happened yet.
+HOLD_HOURS = {"ext_early": {"amc": 0.5, "bmo": 16.0},
+              "pre_open": {"amc": 17.4, "bmo": 17.4},
+              "open": {"amc": 17.5, "bmo": 17.5},
+              "m15": {"amc": 17.75, "bmo": 17.75},
+              "m30": {"amc": 18.0, "bmo": 18.0},
+              "m60": {"amc": 18.5, "bmo": 18.5},
+              "midday": {"amc": 20.0, "bmo": 20.0},
+              "close": {"amc": 24.0, "bmo": 24.0}}
+
 
 # ---------------------------------------------------------------- price plumbing
 
@@ -497,6 +512,66 @@ def leg_stats(panel, floor):
     return out
 
 
+def capital_table(panel, floor, policies=None):
+    """Exposure and idle time per exit, and what each honestly implies.
+
+    The tempting number -- return divided by hours held -- is wrong here, and wrong in
+    a way that flatters the early exits enormously. With ONE entry per day, always the
+    16:00 ET closing auction, the cash freed at 09:30 cannot be redeployed until 16:00
+    whatever you do with it, so every horizon occupies the same 24-hour slot. Divide by
+    hours held instead of hours committed and a 16:30 exit reads as 358% per capital-day
+    on half an hour of holding, which is an artefact of the denominator and nothing else.
+
+    So three columns, each answering its own question:
+
+      per_trade         what the trade paid
+      per_slot_day      what a fixed capital base earned. Identical to per_trade under a
+                        once-daily auction entry -- the recycling argument buys no return
+      per_exposure_day  what it paid per day AT RISK. This is the real case for an early
+                        exit: the same money for fewer hours of market exposure
+
+    `idle_hours` is what recycling actually delivers: cash settled and countable BEFORE
+    the auction that funds the next book, instead of proceeds from a sale in that same
+    auction. That is an operational gain in sizing certainty, not a return.
+    """
+    SLOT = 24.0
+
+    def block(rets, hrs):
+        m, t, ci = ttest_mean(rets)
+        hold = st.fmean(hrs)
+        exp = [x / (h / 24.0) for x, h in zip(rets, hrs)]
+        em, et, _ = ttest_mean(exp)
+        return {"n": len(rets), "mean_hold_hours": round(hold, 2),
+                "mean_idle_hours": round(SLOT - hold, 2),
+                "mean_ret_per_trade_pct": round(st.fmean(rets), 3),
+                "mean_ret_per_slot_day_pct": m, "slot_t": t, "slot_ci95": ci,
+                "mean_ret_per_exposure_day_pct": em, "exposure_t": et,
+                "degenerate_exposure": hold < 4.0}
+
+    out = {}
+    for h in HORIZONS:
+        mk = f"mv_{h}"
+        conv = [r for d in panel for r in d
+                if r.get(mk) is not None and abs(r["impact_sum"]) >= floor]
+        if len(conv) < 3:
+            continue
+        out[h] = block([(r[mk] if r["impact_sum"] > 0 else -r[mk]) for r in conv],
+                       [HOLD_HOURS[h][r["session"]] for r in conv])
+    for name, rule in (policies if policies is not None else POLICIES).items():
+        conv = []
+        for day in panel:
+            for r in day:
+                key = rule[r["session"]]
+                if r.get(key) is None or abs(r["impact_sum"]) < floor:
+                    continue
+                conv.append(((r[key] if r["impact_sum"] > 0 else -r[key]),
+                             HOLD_HOURS[key[3:]][r["session"]]))
+        if len(conv) < 3:
+            continue
+        out["policy:" + name] = block([x[0] for x in conv], [x[1] for x in conv])
+    return out
+
+
 def returns_table(panel, floor, costs):
     """The same horizons priced as money rather than as rank correlation.
 
@@ -817,7 +892,9 @@ def build_panel_from_runs(runs, cache):
                    "neg_runup": (None if tape.get("run_up_20d_pct") is None
                                  else -tape["run_up_20d_pct"]),
                    "dollar_vol": ((tape.get("spot") or b.get("spot") or 0)
-                                  * (tape.get("adv_20d") or 0)) or None,
+                                  * (next((tape[k] for k in ("avg_volume_20d",
+                                                             "adv_20d", "avg_vol_20d")
+                                           if tape.get(k)), 0))) or None,
                    "baseline_move_close": None,
                    "px": res["px"]}
             for h in HORIZONS:
@@ -1031,6 +1108,20 @@ def main():
     for n, v in pret.items():
         print(f"    {n:<24}{v['per_day_pct']}")
 
+    cap = capital_table(panel, a.floor)
+    print("\nEXPOSURE AND IDLE TIME (one 16:00 ET entry a day, so the slot is 24h)")
+    print(f"  {'exit':<32}{'trades':>7}{'hold_h':>8}{'idle_h':>8}{'per_trade':>11}"
+          f"{'per_slot_day':>14}{'per_exp_day':>13}{'exp_t':>7}")
+    for k, v in cap.items():
+        deg = " *" if v["degenerate_exposure"] else ""
+        print(f"  {(k + deg):<32}{v['n']:>7}{v['mean_hold_hours']:>8}"
+              f"{v['mean_idle_hours']:>8}{v['mean_ret_per_trade_pct']:>11}"
+              f"{('' if v['mean_ret_per_slot_day_pct'] is None else v['mean_ret_per_slot_day_pct']):>14}"
+              f"{('' if v['mean_ret_per_exposure_day_pct'] is None else v['mean_ret_per_exposure_day_pct']):>13}"
+              f"{('' if v['exposure_t'] is None else v['exposure_t']):>7}")
+    print("  * held under four hours; the per-exposure-day column is a denominator "
+          "artefact there, not a result")
+
     hr = hourly_returns(panel, a.floor)
     print("\nRETURNS per hour since the entry close (17.5 = the open, 24 = the close)")
     print(f"  {'hour':>6}{'clock':>8}{'priced':>8}{'trades':>8}{'per_trade':>11}{'t':>7}"
@@ -1097,7 +1188,7 @@ def main():
            "legs": legs, "bootstrap_vs_close": boot,
            "by_session": by_session, "policies": pol,
            "returns_by_horizon": rt, "returns_by_session": sr,
-           "returns_hourly": hr,
+           "returns_hourly": hr, "capital_efficiency": cap,
            "returns_by_policy": pret, "costs_pct": costs,
            "policy_bootstrap_vs_close": pboot,
            "family_wise": {"best_rho_p": fw_rho, "best_conviction_p": fw_conv},

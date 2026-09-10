@@ -894,6 +894,35 @@ The practical consequence: the two horizons the pooled sample liked are the two 
 instruments, and the pre-market hours the chart peaks on are the ones with neither a market
 order nor a verifiable book.
 
+### Recycling the cash: what the metric does and does not say
+
+The case for the early amc exit is often put as capital efficiency, and the arithmetic
+that seems to support it is wrong. Return divided by hours *held* makes a 16:30 exit read
+as **206% per capital-day** on half an hour of holding, and amc-at-the-open as 12.2%
+against 5.2% for the close. Both are denominator artefacts. There is one entry a day and
+it is always the 16:00 ET closing auction, so cash freed at 09:30 cannot be redeployed
+until 16:00 whatever you do with it: the capital slot is 24 hours for every horizon, and
+return per slot-day is identical to return per trade. `capital_table` in
+`scripts/edge_exit.py` prints both columns side by side and flags the degenerate one.
+
+| exit | trades | held | idle | per trade | per slot-day | per exposure-day |
+| --- | --- | --- | --- | --- | --- | --- |
+| after-hours / early pre-market | 21 | 7.1h | 16.9h | +5.16% | +5.16% | +206.18% * |
+| pre-open | 21 | 17.4h | 6.6h | +6.61% | +6.61% | +9.12% |
+| opening print | 22 | 17.5h | 6.5h | +6.21% | +6.21% | +8.51% |
+| midday | 21 | 20.0h | 4.0h | +4.24% | +4.24% | +5.09% |
+| first close | 22 | 24.0h | 0.0h | +5.80% | +5.80% | +5.80% |
+| **amc open / bmo close** | 22 | 20.5h | 3.6h | **+7.81%** | **+7.81%** | +9.61% |
+
+\* held under four hours; the per-exposure-day figure there is arithmetic, not a result.
+
+Two things the early exit does buy, and they are worth having without inflating them.
+**Sizing certainty**: the next book is funded from settled cash rather than from proceeds
+of a sale in the same auction, so position sizes do not depend on fills that have not
+arrived. **Less exposure for more return**: 17.5 hours instead of 24, at +8.91% against
++5.23% for amc — that is the honest version of the capital argument, and it is a risk
+statement rather than a return one.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a
@@ -916,5 +945,7 @@ order nor a verifiable book.
 10. Do not build execution on this until the forward days turn. Two out-of-sample days are
    flat to negative at every tradeable hour, and on 09-09 shorting blind beat the hunt by
    about five points a day.
-11. Do not exit into the release. Under half the move is there, and for bmo names the
+11. Do not sell the amc exit as capital efficiency. Per capital-day it is identical to
+   per trade under a once-daily auction entry; the gain is exposure and sizing certainty.
+12. Do not exit into the release. Under half the move is there, and for bmo names the
    after-hours ranking is negative.
