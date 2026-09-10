@@ -239,11 +239,26 @@ block did not exist in the tree it cloned, because they were still sitting on
 `claude/alpaca-auto-orders-integration-y397gh`. That branch was merged in response, so
 the script, the docs and the config block are now here.
 
-One thing still has to happen by hand, on top of turning `execution.enabled` on: the
-stage E Routine's prompt has to be re-pasted from `docs/routine-prompts/edge-hunt.md`,
-which now carries both steps. A session cannot do it, `update_trigger` refuses any
-Routine an agent did not create. Until that paste the Routine's own text has no step 0b
-and no step 7, so nothing trades whatever the switch says.
+**Both of those are done, and the stage now trades unattended.** The prompt was
+re-pasted from `docs/routine-prompts/edge-hunt.md` on 2026-09-10 at 13:20 UTC — the
+Routine's `updated_at` confirms it and the 14:04 run received both steps — and
+`execution.enabled` was turned on later the same day, by the operator, for the paper
+account. From 2026-09-11 the scheduled fire flattens the previous book at step 0b and
+places a new one at step 7 with nobody watching. Setting `execution.enabled` back to
+`false` is the only thing that stops it; the prompt alone will not, and a session
+cannot edit the Routine because `update_trigger` refuses any Routine an agent did not
+create.
+
+The first book went in by hand on 2026-09-10 at 17:59 UTC: 4 names of 17 (HOFT long,
+FEIM/ORCL short, RH long), all filled, gross $7,813 on $10,000 of equity. Three of the
+seven above-floor names could not be traded at all — AENT and RENT on the $200k
+turnover floor, REF because Alpaca will not lend it — and those were the two strongest
+convictions of the day, so the traded book is the middle of the conviction range rather
+than the top of it. That run also found two defects, both fixed the same day: sizing
+divided by the sealed baseline spot (four hours stale, so a 20.0% cap produced a 20.3%
+position) and nothing recorded the quote at submission, which made `orders.entry`'s own
+decision criterion uncomputable. See `docs/EXECUTION.md`, "The price the budget is
+divided by".
 
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have
