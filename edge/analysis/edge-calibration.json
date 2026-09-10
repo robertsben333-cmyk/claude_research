@@ -1,0 +1,457 @@
+{
+  "source": "/home/user/claude_research/edge/ledger/names.csv",
+  "deduplicated": true,
+  "all": {
+    "label": "all events",
+    "n_events": 68,
+    "days": [
+      "2026-08-31",
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03",
+      "2026-09-08",
+      "2026-09-09",
+      "2026-09-10"
+    ],
+    "direction": {
+      "n": 67,
+      "sign_correct": 36,
+      "rate": 0.537,
+      "binom_p": 0.6254,
+      "conviction_vs_sign": {
+        "spearman": 0.243,
+        "perm_p_within_day": 0.049,
+        "n": 66
+      },
+      "by_threshold": {
+        ">=0": {
+          "n": 67,
+          "correct": 36,
+          "rate": 0.537,
+          "binom_p": 0.6254,
+          "mean_abs_move": 10.22
+        },
+        ">=1": {
+          "n": 59,
+          "correct": 34,
+          "rate": 0.576,
+          "binom_p": 0.2976,
+          "mean_abs_move": 10.42
+        },
+        ">=2": {
+          "n": 47,
+          "correct": 28,
+          "rate": 0.596,
+          "binom_p": 0.243,
+          "mean_abs_move": 11.18
+        },
+        ">=3": {
+          "n": 35,
+          "correct": 24,
+          "rate": 0.686,
+          "binom_p": 0.041,
+          "mean_abs_move": 11.59
+        },
+        ">=4": {
+          "n": 29,
+          "correct": 18,
+          "rate": 0.621,
+          "binom_p": 0.2649,
+          "mean_abs_move": 11.45
+        },
+        ">=5": {
+          "n": 20,
+          "correct": 14,
+          "rate": 0.7,
+          "binom_p": 0.1153,
+          "mean_abs_move": 11.37
+        },
+        ">=6": {
+          "n": 15,
+          "correct": 11,
+          "rate": 0.733,
+          "binom_p": 0.1185,
+          "mean_abs_move": 10.63
+        },
+        ">=8": {
+          "n": 12,
+          "correct": 8,
+          "rate": 0.667,
+          "binom_p": 0.3877,
+          "mean_abs_move": 11.61
+        }
+      },
+      "threshold_note": "Eight nested cuts on one sample. The best of them is not a p-value; treat the largest cut (8) as the one that was pre-registered by config/pipeline.yaml's conviction_floor and the rest as description."
+    },
+    "calibration": {
+      "regression": {
+        "slope": -0.021,
+        "intercept": -2.735,
+        "slope_se": 0.239,
+        "slope_t": -0.09,
+        "r2": 0.0,
+        "n": 68,
+        "reading": "slope 1.0 = the number means what it says; below 1 = overconfident in magnitude, the prediction should be shrunk toward zero by that factor; the intercept is a standing directional bias in points."
+      },
+      "n": 68,
+      "mean_abs_error_pts": {
+        "hunt": 10.61,
+        "hunt_shrunk_in_sample": 10.25,
+        "predict_zero": 10.22,
+        "minus_run_up_20d": 15.81,
+        "implied_move_with_hunt_sign": 14.39
+      },
+      "median_abs_error_pts": {
+        "hunt": 7.6,
+        "predict_zero": 8.05
+      },
+      "realised_move_sd_pts": 12.5,
+      "hunt_minus_zero_error": {
+        "mean_pts": 0.39,
+        "ci95": [
+          -0.881,
+          1.755
+        ]
+      },
+      "shrink_note": "hunt_shrunk_in_sample fits the shrink factor on the same rows it scores, so it is a lower bound on the error, not a forecast."
+    },
+    "discrimination": {
+      "abs_pred_vs_abs_move": {
+        "spearman": 0.174,
+        "perm_p": 0.183,
+        "n": 67
+      },
+      "abs_pred_vs_abs_move_over_implied": {
+        "spearman": 0.122,
+        "perm_p": 0.3366,
+        "n": 63,
+        "note": "37 straddles and 32 history proxies pooled; see edge_resolve."
+      },
+      "signed_pred_vs_signed_move": {
+        "spearman": 0.019,
+        "perm_p": 0.8808
+      },
+      "by_bucket": {
+        "1-3": {
+          "n": 24,
+          "mean_abs_pred": 1.94,
+          "mean_abs_move": 8.72,
+          "sign_rate": 0.417
+        },
+        "3-6": {
+          "n": 20,
+          "mean_abs_pred": 4.3,
+          "mean_abs_move": 12.32,
+          "sign_rate": 0.65
+        },
+        ">=6": {
+          "n": 15,
+          "mean_abs_pred": 11.69,
+          "mean_abs_move": 10.63,
+          "sign_rate": 0.733
+        },
+        "<1": {
+          "n": 9,
+          "mean_abs_pred": 0.25,
+          "mean_abs_move": 8.92,
+          "sign_rate": 0.333
+        }
+      }
+    }
+  },
+  "double_hunt_era": {
+    "label": "before 2026-09-09",
+    "n_events": 41,
+    "days": [
+      "2026-08-31",
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03",
+      "2026-09-08"
+    ],
+    "direction": {
+      "n": 41,
+      "sign_correct": 21,
+      "rate": 0.512,
+      "binom_p": 1.0,
+      "conviction_vs_sign": {
+        "spearman": 0.494,
+        "perm_p_within_day": 0.0009,
+        "n": 40
+      },
+      "by_threshold": {
+        ">=0": {
+          "n": 41,
+          "correct": 21,
+          "rate": 0.512,
+          "binom_p": 1.0,
+          "mean_abs_move": 9.49
+        },
+        ">=1": {
+          "n": 35,
+          "correct": 20,
+          "rate": 0.571,
+          "binom_p": 0.4996,
+          "mean_abs_move": 9.98
+        },
+        ">=2": {
+          "n": 28,
+          "correct": 18,
+          "rate": 0.643,
+          "binom_p": 0.1849,
+          "mean_abs_move": 10.74
+        },
+        ">=3": {
+          "n": 22,
+          "correct": 17,
+          "rate": 0.773,
+          "binom_p": 0.0169,
+          "mean_abs_move": 10.19
+        },
+        ">=4": {
+          "n": 19,
+          "correct": 14,
+          "rate": 0.737,
+          "binom_p": 0.0636,
+          "mean_abs_move": 10.58
+        },
+        ">=5": {
+          "n": 15,
+          "correct": 12,
+          "rate": 0.8,
+          "binom_p": 0.0352,
+          "mean_abs_move": 10.79
+        },
+        ">=6": {
+          "n": 13,
+          "correct": 11,
+          "rate": 0.846,
+          "binom_p": 0.0225,
+          "mean_abs_move": 9.52
+        },
+        ">=8": {
+          "n": 10,
+          "correct": 8,
+          "rate": 0.8,
+          "binom_p": 0.1094,
+          "mean_abs_move": 10.36
+        }
+      },
+      "threshold_note": "Eight nested cuts on one sample. The best of them is not a p-value; treat the largest cut (8) as the one that was pre-registered by config/pipeline.yaml's conviction_floor and the rest as description."
+    },
+    "calibration": {
+      "regression": {
+        "slope": 0.162,
+        "intercept": -1.757,
+        "slope_se": 0.25,
+        "slope_t": 0.65,
+        "r2": 0.011,
+        "n": 41,
+        "reading": "slope 1.0 = the number means what it says; below 1 = overconfident in magnitude, the prediction should be shrunk toward zero by that factor; the intercept is a standing directional bias in points."
+      },
+      "n": 41,
+      "mean_abs_error_pts": {
+        "hunt": 9.74,
+        "hunt_shrunk_in_sample": 9.17,
+        "predict_zero": 9.49,
+        "minus_run_up_20d": 15.04,
+        "implied_move_with_hunt_sign": 14.25
+      },
+      "median_abs_error_pts": {
+        "hunt": 6.95,
+        "predict_zero": 6.67
+      },
+      "realised_move_sd_pts": 11.88,
+      "hunt_minus_zero_error": {
+        "mean_pts": 0.25,
+        "ci95": [
+          -1.581,
+          2.23
+        ]
+      },
+      "shrink_note": "hunt_shrunk_in_sample fits the shrink factor on the same rows it scores, so it is a lower bound on the error, not a forecast."
+    },
+    "discrimination": {
+      "abs_pred_vs_abs_move": {
+        "spearman": 0.234,
+        "perm_p": 0.1538,
+        "n": 40
+      },
+      "abs_pred_vs_abs_move_over_implied": {
+        "spearman": 0.201,
+        "perm_p": 0.1757,
+        "n": 39,
+        "note": "37 straddles and 32 history proxies pooled; see edge_resolve."
+      },
+      "signed_pred_vs_signed_move": {
+        "spearman": 0.156,
+        "perm_p": 0.2938
+      },
+      "by_bucket": {
+        "1-3": {
+          "n": 13,
+          "mean_abs_pred": 1.93,
+          "mean_abs_move": 9.63,
+          "sign_rate": 0.231
+        },
+        ">=6": {
+          "n": 13,
+          "mean_abs_pred": 11.91,
+          "mean_abs_move": 9.52,
+          "sign_rate": 0.846
+        },
+        "3-6": {
+          "n": 9,
+          "mean_abs_pred": 4.34,
+          "mean_abs_move": 11.16,
+          "sign_rate": 0.667
+        },
+        "<1": {
+          "n": 6,
+          "mean_abs_pred": 0.34,
+          "mean_abs_move": 6.61,
+          "sign_rate": 0.167
+        }
+      }
+    }
+  },
+  "single_hunt_era": {
+    "label": "2026-09-09 onward",
+    "n_events": 27,
+    "days": [
+      "2026-09-09",
+      "2026-09-10"
+    ],
+    "direction": {
+      "n": 26,
+      "sign_correct": 15,
+      "rate": 0.577,
+      "binom_p": 0.5572,
+      "conviction_vs_sign": {
+        "spearman": -0.26,
+        "perm_p_within_day": 0.2051,
+        "n": 26
+      },
+      "by_threshold": {
+        ">=0": {
+          "n": 26,
+          "correct": 15,
+          "rate": 0.577,
+          "binom_p": 0.5572,
+          "mean_abs_move": 11.37
+        },
+        ">=1": {
+          "n": 24,
+          "correct": 14,
+          "rate": 0.583,
+          "binom_p": 0.5413,
+          "mean_abs_move": 11.07
+        },
+        ">=2": {
+          "n": 19,
+          "correct": 10,
+          "rate": 0.526,
+          "binom_p": 1.0,
+          "mean_abs_move": 11.84
+        },
+        ">=3": {
+          "n": 13,
+          "correct": 7,
+          "rate": 0.538,
+          "binom_p": 1.0,
+          "mean_abs_move": 13.97
+        },
+        ">=4": {
+          "n": 10,
+          "correct": 4,
+          "rate": 0.4,
+          "binom_p": 0.7539,
+          "mean_abs_move": 13.11
+        },
+        ">=5": {
+          "n": 5,
+          "correct": 2,
+          "rate": 0.4,
+          "binom_p": 1.0,
+          "mean_abs_move": 13.11
+        }
+      },
+      "threshold_note": "Eight nested cuts on one sample. The best of them is not a p-value; treat the largest cut (5) as the one that was pre-registered by config/pipeline.yaml's conviction_floor and the rest as description."
+    },
+    "calibration": {
+      "regression": {
+        "slope": -0.908,
+        "intercept": -4.364,
+        "slope_se": 0.626,
+        "slope_t": -1.45,
+        "r2": 0.078,
+        "n": 27,
+        "reading": "slope 1.0 = the number means what it says; below 1 = overconfident in magnitude, the prediction should be shrunk toward zero by that factor; the intercept is a standing directional bias in points."
+      },
+      "n": 27,
+      "mean_abs_error_pts": {
+        "hunt": 11.94,
+        "hunt_shrunk_in_sample": 11.11,
+        "predict_zero": 11.34,
+        "minus_run_up_20d": 17.0,
+        "implied_move_with_hunt_sign": 14.6
+      },
+      "median_abs_error_pts": {
+        "hunt": 8.43,
+        "predict_zero": 10.3
+      },
+      "realised_move_sd_pts": 13.32,
+      "hunt_minus_zero_error": {
+        "mean_pts": 0.6,
+        "ci95": [
+          -0.807,
+          2.156
+        ]
+      },
+      "shrink_note": "hunt_shrunk_in_sample fits the shrink factor on the same rows it scores, so it is a lower bound on the error, not a forecast."
+    },
+    "discrimination": {
+      "abs_pred_vs_abs_move": {
+        "spearman": 0.196,
+        "perm_p": 0.3244,
+        "n": 27
+      },
+      "abs_pred_vs_abs_move_over_implied": {
+        "spearman": 0.018,
+        "perm_p": 0.9375,
+        "n": 24,
+        "note": "37 straddles and 32 history proxies pooled; see edge_resolve."
+      },
+      "signed_pred_vs_signed_move": {
+        "spearman": -0.209,
+        "perm_p": 0.2925
+      },
+      "by_bucket": {
+        "1-3": {
+          "n": 11,
+          "mean_abs_pred": 1.95,
+          "mean_abs_move": 7.64,
+          "sign_rate": 0.636
+        },
+        "3-6": {
+          "n": 11,
+          "mean_abs_pred": 4.26,
+          "mean_abs_move": 13.26,
+          "sign_rate": 0.636
+        },
+        "<1": {
+          "n": 3,
+          "mean_abs_pred": 0.07,
+          "mean_abs_move": 13.54,
+          "sign_rate": 0.667
+        },
+        ">=6": {
+          "n": 2,
+          "mean_abs_pred": 10.25,
+          "mean_abs_move": 17.88,
+          "sign_rate": 0.0
+        }
+      }
+    }
+  }
+}

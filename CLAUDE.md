@@ -247,11 +247,37 @@ finding's share of its name's `impact_sum`. The hunter contract gained three fie
 2026-09-10 for the same purpose: `claim` (the point in under twenty words), `kind` (one
 of thirteen words) and `evidence` (`primary`/`secondary`/`inference`). They decide
 nothing and `edge_score.py` carries them through untouched; they are null on every
-earlier run. **A per-finding outcome does not exist** — one move per company, three to
+earlier run. The first version of the script resolved every name against the date of
+the *run* rather than the date of the print, which is wrong for 78 of 153 baselines
+because a run covers tonight's `amc` prints and tomorrow's `bmo` ones; it now takes the
+date and session off the baseline, as `edge_resolve.py` always has, and the five repeated
+09-04/09-07 events are visible as repeats. **A per-finding outcome does not exist** — one move per company, three to
 eight findings per name — so `sign_agreed` on a finding row means the *name* moved the
 way that finding pointed and every finding of the name shares it. Group, weight by
 `share_of_impact`, never read a single row. Nothing in the grouped table is close to
 significant yet.
+
+**The number is a confidence flag and not a magnitude, and the conviction effect is
+half what was measured.** `edge/scripts/edge_calibration.py` scores the ledger's 68
+de-duplicated events over 7 days — 30 more than every earlier section was fitted on,
+because 09-08, 09-09 and 09-10 have resolved. The magnitude is worth nothing: regressing
+the realised move on `impact_sum` gives **slope −0.021, t=−0.09, R²=0.000**, and a mean
+absolute error of 10.61 points against **10.22 for predicting zero** (difference +0.39,
+CI [−0.88, +1.76]) on a realised standard deviation of 12.50. So `impact_sum` must never
+be quoted as an expected return and never size a position; equal weight is the only
+defensible sizing available. The ordering survives — sign rate by `|impact_sum|` bucket
+runs 0.333 / 0.417 / 0.650 / 0.733 and `|pred| >= 3` is 24/35 (p=0.041) — but the
+threshold-free conviction correlation is **+0.243 (within-day p=0.049) against +0.514
+(p=0.0015) on the fitted 38**. Adding three unseen days halved it. **On the two days run
+under the current one-hunter contract it inverts to −0.26 (p=0.21)**, against +0.494
+(p=0.0009) in the double-hunt era, and the two names above 6 points were both wrong;
+pooling every single-hunted name from every era instead gives `|pred| >= 3` at 17/24
+(70.8%, p=0.064). Both cuts are underpowered and they disagree, which is the honest
+state of it: the effect is real enough to keep gating on and smaller than the number the
+execution path was switched on against. It is not a volatility signal either —
+`|impact_sum|` against `|realised move|` ranks at 0.174 (p=0.183). The mean move over all
+68 events is −2.71%, so shorting everything and doing nothing is still the thing to beat.
+See `edge/EDGE_ANALYSIS.md`, "The number is a confidence flag, not a magnitude".
 
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is

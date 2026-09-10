@@ -1081,6 +1081,96 @@ arrived. **Less exposure for more return**: 17.5 hours instead of 24, at +8.91% 
 +5.23% for amc — that is the honest version of the capital argument, and it is a risk
 statement rather than a return one.
 
+## The number is a confidence flag, not a magnitude — and on the forward days not even that
+
+`edge/scripts/edge_calibration.py` runs off `edge/ledger/names.csv` and asks the question
+`edge_resolve.py` does not: the stage emits a *number*, in points of spot, and a number
+claims a magnitude, not just an ordering. Three properties are independent, and the
+answers differ.
+
+**68 de-duplicated events, 7 days**, keeping the earlier of a repeated hunt as
+`edge_direction.py` does. That is 30 events more than the 38 every earlier section here
+was fitted on, because 09-08, 09-09 and 09-10 have now resolved.
+
+### The magnitude is worth nothing at all
+
+| | |
+| --- | --- |
+| regression of realised move on `impact_sum` | slope **−0.021**, t = −0.09, R² = **0.000** |
+| mean absolute error, the hunt | 10.61 points |
+| mean absolute error, predicting **zero** | **10.22 points** |
+| hunt − zero | +0.39, 95% CI [−0.88, +1.76] |
+| standard deviation of the realised move | 12.50 points |
+
+An earlier section of this file reports slope 0.72–0.76 and pearson 0.41–0.46 on the
+fitted 43 names. On 68 events the slope is indistinguishable from zero and the number
+carries **no** magnitude information: a prediction of +9 says nothing more about the size
+of the move than a prediction of +3. It is also, point for point, slightly *worse* than
+saying nothing — not significantly, but the interval does not reach the other way either.
+
+The consequence is a rule, not a caveat. `impact_sum` must never be read as an expected
+return, never appear in a note as "we expect about X%", and never size a position. The
+current sizing is equal-weight and does not read the score, which turns out to be the
+only defensible choice available.
+
+### The size still orders the sign, at about half the strength that was measured
+
+| bucket of \|impact_sum\| | n | sign correct | mean \|move\| |
+| --- | --- | --- | --- |
+| < 1 | 9 | 0.333 | 8.92 |
+| 1–3 | 24 | 0.417 | 8.72 |
+| 3–6 | 20 | 0.650 | 12.32 |
+| ≥ 6 | 15 | 0.733 | 10.63 |
+
+Monotone, and the overall sign rate is a coin flip (36/67, 53.7%) — so the ordering is
+the whole of it, exactly as the conviction section says. But the threshold-free
+correlation between the rank of `|impact_sum|` and whether the sign was right is
+**ρ = +0.243, within-day permutation p = 0.049**, against **+0.514, p = 0.0015** on the
+fitted 38. Adding three unseen days halved it. `|pred| ≥ 3` is 24/35 (68.6%, p = 0.041)
+where it was 16/21.
+
+### On the two days run under the current one-hunter contract, it points the other way
+
+| | events | days | conviction → sign |
+| --- | --- | --- | --- |
+| before 2026-09-09 (two hunters on two names a day) | 41 | 5 | **+0.494**, p = 0.0009 |
+| 2026-09-09 onward (one hunter per name) | 27 | 2 | **−0.260**, p = 0.21 |
+
+Within the double-hunt era the bucket table is nearly perfect (0.167 / 0.231 / 0.667 /
+0.846 as `|pred|` rises). Within the two single-hunter days it inverts, and the two names
+above 6 points were both wrong. Twenty-seven events on two days establishes nothing on
+its own — but it is the only data that exists for the regime the stage now runs in, and
+it does not support the +0.361 that `edge_hunter_control.py` projected.
+
+Pooling differently gives the other answer, which is the honest state of it: taking every
+**single-hunted name from every era** (n = 54, the like-for-like control), `|pred| ≥ 3`
+is **17/24 = 70.8%, p = 0.064**. So the conviction floor survives a pooled single-hunter
+cut and fails a within-day one on the forward days. Both are underpowered. What can be
+said without hedging is that the effect is smaller than the number the execution path was
+switched on against.
+
+### It does not find volatility either
+
+`|impact_sum|` against `|realised move|` ranks at **ρ = 0.174, p = 0.183** (0.122, p = 0.34
+after dividing by the implied move). So a large prediction does not reliably land on a
+name that moved at all, in either direction. Whatever the number is doing, it is not a
+straddle signal, and the "trade it as an option instead" escape is not available.
+
+### The free control, again
+
+The mean realised move over all 68 events is **−2.71%**. Shorting every name reporting,
+with no research, remains the thing to beat, and 09-08 is the day that hurt: nine events,
+the highest mean `|impact_sum|` of any day (7.09), and a 22% sign rate.
+
+### What to do with this
+
+1. Keep `|impact_sum| >= conviction_floor` as a **gate**, which is all the evidence
+   supports, and stop describing the number as points of expected move anywhere a reader
+   might price off it.
+2. Size from the implied move or from equal weight — never from the score.
+3. Treat the conviction result as **live, not established**, until the single-hunter
+   sample reaches a size where the two poolings agree. Ten more days decides it.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a

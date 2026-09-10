@@ -75,7 +75,7 @@ KINDS = {
 EVIDENCE = {"primary", "secondary", "inference"}
 
 FINDING_COLS = [
-    "event_date", "ticker", "session", "run", "hunter", "key",
+    "event_date", "run_date", "ticker", "session", "run", "hunter", "key",
     "claim", "kind", "evidence", "finding", "why_not_priced",
     "expected_impact_pct", "impact_low_pct", "impact_high_pct", "band_width_pct",
     "sign", "abs_impact_pct", "share_of_impact", "sole_finding",
@@ -86,10 +86,14 @@ FINDING_COLS = [
     "move_pct", "sign_agreed", "resolved",
 ]
 NAME_COLS = [
-    "event_date", "ticker", "session", "run", "impact_sum", "conviction",
-    "above_floor", "n_findings", "n_clusters", "hunters", "priced_lean_pct",
-    "runup_20d_pct", "implied_move_pct", "spot", "dollar_vol_20d",
-    "move_pct", "sign_agreed", "abs_error_pts", "resolved",
+    "event_date", "run_date", "ticker", "session", "run",
+    "impact_sum", "conviction", "above_floor", "n_findings", "n_clusters",
+    "hunters", "priced_lean_pct", "runup_20d_pct", "runup_5d_pct",
+    "implied_move_pct", "implied_basis", "deadband_pct",
+    "hist_median_abs_move_pct", "hist_n", "baseline_quality",
+    "spot", "dollar_vol_20d",
+    "entry_date", "exit_date", "move_pct", "move_over_implied",
+    "sign_agreed", "abs_error_pts", "resolved",
 ]
 
 
@@ -142,6 +146,18 @@ def baseline_of(run, ticker):
             except Exception:
                 return {}
     return {}
+
+
+def event_of(run, ticker, baseline):
+    """The date of the PRINT, not the date of the run.
+
+    They are different for half the rows. A run fires in the European afternoon
+    and covers tonight's `amc` prints plus tomorrow morning's `bmo` ones, and the
+    09-04 run hunted five names that reported on 09-08. `edge_resolve.py` has
+    always taken the date off the baseline; the first version of this script took
+    it off the directory name and priced 78 of 153 rows over the wrong window.
+    """
+    return baseline.get("event_date") or event_date_of(run)
 
 
 def session_of(run, ticker, baseline):
@@ -219,11 +235,12 @@ def build(root, use_network=True):
                     sum(num(f.get("expected_impact_pct")) or 0.0 for f in fs), 3)
             conviction = abs(impact_sum) if impact_sum is not None else None
 
-            ck = f"{ed}:{t}"
+            print_date = event_of(run, t, base)
+            ck = f"{print_date}:{t}:{sess}"
             out = cache.get(ck)
             if out is None and use_network and sess:
                 try:
-                    r, err = realised(t, ed, sess)
+                    r, err = realised(t, print_date, sess)
                     out = r if not err else {"error": err}
                 except Exception as e:                       # noqa: BLE001
                     out = {"error": f"{type(e).__name__}: {e}"}
@@ -240,22 +257,47 @@ def build(root, use_network=True):
             above = (int(conviction >= floor)
                      if conviction is not None and floor is not None else None)
 
+            tape = base.get("tape") or {}
+            opts = base.get("options") or {}
+            hist = base.get("history") or {}
+            straddle = opts.get("event_implied_move_pct")
             names.append({
-                "event_date": ed, "ticker": t, "session": sess,
+                "event_date": print_date, "run_date": ed,
+                "ticker": t, "session": sess,
                 "run": str(run.relative_to(root)),
                 "impact_sum": impact_sum, "conviction": conviction,
                 "above_floor": above, "n_findings": len(fs),
                 "n_clusters": len(clusters), "hunters": len(hunters),
                 "priced_lean_pct": num(row.get("priced_lean_pct")),
-                "runup_20d_pct": num(base.get("run_up_20d_pct"),
-                                     (base.get("price") or {}).get("run_up_20d_pct")),
-                "implied_move_pct": num(base.get("implied_move_pct"),
-                                        (base.get("options") or {}).get("implied_move_pct")),
-                "spot": num(base.get("spot"), (base.get("price") or {}).get("spot")),
-                "dollar_vol_20d": num(base.get("dollar_volume_20d"),
-                                      (base.get("price") or {}).get("dollar_volume_20d")),
+                "runup_20d_pct": num(tape.get("run_up_20d_pct")),
+                "runup_5d_pct": num(tape.get("run_up_5d_pct")),
+                # Same convention as edge_resolve: the straddle where there was
+                # one, the reaction-history proxy where there was not, and a
+                # column saying which -- they are not interchangeable.
+                "implied_move_pct": num(straddle, base.get("expected_move_pct")),
+                "implied_basis": ("straddle" if straddle else
+                                  "history_proxy" if base.get("expected_move_pct")
+                                  else None),
+                "deadband_pct": num(base.get("deadband_pct")),
+                "hist_median_abs_move_pct": num(hist.get("median_abs_move_pct")),
+                "hist_n": hist.get("n"),
+                "baseline_quality": num(base.get("baseline_quality"),
+                                        (row.get("diagnostics") or {}).get("baseline_quality")),
+                "spot": num(tape.get("spot")),
+                "dollar_vol_20d": (round(tape["spot"] * tape["avg_volume_20d"])
+                                   if num(tape.get("spot")) and num(tape.get("avg_volume_20d"))
+                                   else None),
+                # The window that was actually priced. Two runs that hunted the
+                # same print on different days share it, which is what makes the
+                # repeated events findable at all.
+                "entry_date": (out or {}).get("before_date"),
+                "exit_date": (out or {}).get("after_date"),
                 "move_pct": move if resolved else None,
                 "sign_agreed": sign_agreed,
+                "move_over_implied": (round(move / num(straddle,
+                                       base.get("expected_move_pct")), 3)
+                                      if resolved and num(straddle,
+                                          base.get("expected_move_pct")) else None),
                 "abs_error_pts": (round(abs(impact_sum - move), 3)
                                   if resolved and impact_sum is not None else None),
                 "resolved": int(resolved),
@@ -272,9 +314,10 @@ def build(root, use_network=True):
                 lo = num(pick("impact_low_pct"))
                 hi = num(pick("impact_high_pct"))
                 sd = parse_day(f.get("source_date"))
-                ev = parse_day(ed)
+                ev = parse_day(print_date)
                 findings.append({
-                    "event_date": ed, "ticker": t, "session": sess,
+                    "event_date": print_date, "run_date": ed,
+                    "ticker": t, "session": sess,
                     "run": str(run.relative_to(root)),
                     "hunter": f.get("hunter"), "key": f.get("key"),
                     "claim": pick("claim"), "kind": norm_kind(pick("kind")),

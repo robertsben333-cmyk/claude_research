@@ -108,6 +108,13 @@ single row, and weight by `share_of_impact` when grouping — a finding that was
 name's key really was the call, one that was 5% of it is a passenger. The `sole_finding`
 column marks the rows where the problem does not arise; there is currently one of them.
 
+`edge_calibration.py` is the first thing built on it: it asks whether `impact_sum` means
+what it says, rather than whether it orders the day. Over 68 de-duplicated events the
+answer is no — the regression slope on the realised move is −0.021 with an R² of zero,
+and the number loses to predicting no move at all. What survives is the ordering by
+`|impact_sum|`, at about half the strength it was fitted at. Read
+`EDGE_ANALYSIS.md`, "The number is a confidence flag, not a magnitude".
+
 `kind` and `evidence` are null for every run before 2026-09-10 because the hunter contract
 had no such fields. 349 of the 399 findings resolve, over 76 names and 9 days, and nothing
 in the grouped table is close to significant. It is a table to watch as runs pool.
