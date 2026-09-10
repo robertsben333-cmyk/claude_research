@@ -6,14 +6,21 @@ before the hunt starts, step 7 buys today's after the note is published. Both li
 `docs/routine-prompts/edge-hunt.md`, which is the file to keep in step with
 `trig_01CvGQJWoKeNLXWCxiffM3ED`, and in `.claude/skills/earnings-edge-hunt/SKILL.md`.
 
-**The exception is `orders.exit_by_session`.** Turning it on requires a second Routine at
-14:00 Amsterdam, because Alpaca rejects an opening-auction order between 09:28 and 19:00
-ET and nothing firing in the European afternoon can place one. The prompt is below, and
-it has to exist *before* the flag goes on. This file used to say flatly that a second
-Routine should never exist; that was written before the per-session exit and is corrected
-here rather than left to mislead.
+**The exception is `orders.exit_mode: auction_split`.** That mode sends amc positions into
+the opening auction, and Alpaca rejects an `opg` order between 09:28 and 19:00 ET, so
+nothing firing in the European afternoon can place one. It needs a second Routine at 14:00
+Amsterdam and that Routine has to exist *before* the mode goes on. The prompt is below.
 
-Why one Routine and not two, while the flag is off:
+**`orders.exit_mode: bmo_close` needs no second Routine at all**, and it is where most of
+the money is: amc at market on the run (+6.08% a trade) and bmo into today's closing
+auction (+6.48%), which is +6.27% on the book against +4.49% for the flatten. The extra
+step from there to `auction_split` is +1.54pp and costs this whole second firing. Do
+`bmo_close` first.
+
+This file used to say flatly that a second Routine should never exist; that was written
+before the per-session exit and is corrected here rather than left to mislead.
+
+Why one Routine and not two, while the mode is `uniform`:
 
 - A second firing a day is a second thing that can fail silently, each with its own
   market-on-close deadline.
@@ -40,12 +47,12 @@ hour into the session is nearer the next **open** (ρ=+0.331, p=0.046) than the 
 Leave 3 for last. With 1 and 2 alone the stage runs its hunt exactly as before and both
 trading steps are silent.
 
-## The second Routine, required only if `orders.exit_by_session` is on
+## The second Routine, required only for `exit_mode: auction_split`
 
-`orders.exit_by_session` gives amc names the opening auction and bmo names the closing
-auction, because the two were measured to want opposite exits (`docs/EXECUTION.md`, "The
-exit the two sessions actually want"). It is off, and turning it on **needs this Routine
-to exist first**, for a reason that is not negotiable: Alpaca *rejects* rather than queues
+`orders.exit_mode: auction_split` gives amc names the opening auction and bmo names the
+closing auction, because the two were measured to want opposite exits (`docs/EXECUTION.md`, "The
+exit the two sessions actually want"). The mode is off, and turning it on **needs this
+Routine to exist first**, for a reason that is not negotiable: Alpaca *rejects* rather than queues
 an `opg` order between 09:28 and 19:00 ET, so the amc leg cannot be placed by a Routine
 that fires at 16:04 Amsterdam. Nothing in the stage E session can sell an amc position
 into its own opening auction.
@@ -57,9 +64,9 @@ The split therefore needs two runners:
 | 14:00 | 08:00 | **this Routine** | amc legs due today, into the opening auction (`opg`) |
 | 16:04 | 10:04 | stage E, step 0b | bmo legs due today (`cls`), plus anything overdue at market |
 
-Set `orders.exit_by_session: true` **and** `orders.flatten_before_entry: false` together.
-Either one alone is wrong: the flatten on its own sells the amc names before their
-auction, and `exit_by_session` on its own leaves the flatten selling everything anyway.
+Set `orders.exit_mode: auction_split` **and** `orders.flatten_before_entry: false`
+together. Either alone is wrong: the flatten on its own sells the amc names before their
+auction, and the mode on its own leaves the flatten selling everything anyway.
 
 **What happens if this Routine never fires.** The amc positions stay open past their exit
 date. The next stage E run then finds them: `close` sends anything overdue at plain market
@@ -81,8 +88,8 @@ only reason this Routine exists as a separate firing.
    stop and say so.
 
 1. If `execution.enabled` is false in config/pipeline.yaml, or
-   `orders.exit_by_session` is false, do nothing and say so in one line. Both are
-   committed as false.
+   `orders.exit_mode` is not `auction_split`, do nothing and say so in one line. As
+   shipped `enabled` is false and the mode is `uniform`.
 
 2. `python3 scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit`
    It closes only legs whose exit date is today, reads the real position quantity from

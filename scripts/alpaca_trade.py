@@ -525,31 +525,64 @@ def overdue_legs(today, scan="research/*/*/*/edge"):
     return out
 
 
+EXIT_MODES = ("uniform", "bmo_close", "auction_split")
+
+
+def exit_mode(ex):
+    """Which of the three exit schemes is configured.
+
+    `exit_by_session: true` is kept as an alias for `auction_split`; it was the first
+    shape of this setting and turning it on already meant that scheme.
+    """
+    m = ex["orders"].get("exit_mode")
+    if m is None:
+        m = "auction_split" if ex["orders"].get("exit_by_session") else "uniform"
+    if m not in EXIT_MODES:
+        raise SystemExit(f"execution.orders.exit_mode is {m!r}; expected one of "
+                         + ", ".join(EXIT_MODES))
+    return m
+
+
 def exit_tif_for(session, ex):
-    """Which auction closes a position, when `orders.exit_by_session` is on.
+    """Which instrument closes a position, per session, per mode.
 
     The two sessions were measured separately and want opposite exits
-    (`docs/EDGE_ANALYSIS.md`, "amc and bmo want opposite exits"). On the 38
-    de-duplicated events, per trade:
+    (`docs/EDGE_ANALYSIS.md`, "amc and bmo want opposite exits"). Per trade over the
+    38 de-duplicated events, on the conviction book:
 
-        amc   opening auction  +8.91% (t=3.20)   closing auction  +5.23% (t=1.48)
-        bmo   opening auction  +2.96% (t=1.01)   closing auction  +6.48% (t=2.34)
+        amc   opening auction +8.91%   ~10:00 ET +6.08%   closing auction +5.23%
+        bmo   opening auction +2.96%   ~10:00 ET +2.58%   closing auction +6.48%
 
-    An amc print gets a full overnight of processing, so the opening auction is
+    An amc print gets a whole overnight of processing, so the opening auction is
     already the informed price and the session that follows takes about three points
-    back off the book (open-to-close leg, ρ=−0.351, −2.61% day-demeaned on a book
-    that is six long and six short, so not drift). A bmo print gets two thin hours of
-    pre-market and goes on repricing all day: ρ +0.187 at the open, +0.670 at the
-    close.
+    back off the book. A bmo print gets two thin hours of pre-market and keeps
+    repricing all day.
 
-    Off by default, and it should stay off until the forward days turn: on 09-08 plus
-    09-09 every exit hour available on both days paid between −1.42% and −0.05% per
-    trade, and `backtest/RESULTS.md` puts the close ahead of the open on its own 37
-    sealed events for all three arms.
+    WHAT EACH MODE COSTS AND WHAT IT NEEDS, on the same 22 trades:
+
+      uniform         +4.49% (t=2.52)  the shipped scheme: flatten everything at
+                      market when the next run starts, about 10:00 ET
+      bmo_close       +6.27% (t=3.34)  amc at market on the run, bmo into today's
+                      closing auction. ONE run — reachable from stage E's own
+                      Routine, needs `flatten_before_entry: false` and nothing else
+      auction_split   +7.81% (t=4.01)  amc into the opening auction, bmo into the
+                      closing auction. Needs a SECOND Routine at 14:00 Amsterdam,
+                      because Alpaca rejects `opg` between 09:28 and 19:00 ET
+
+    So `bmo_close` buys +1.77pp of the +3.32pp on offer and costs no new machinery;
+    `auction_split` buys the remaining +1.54pp and costs a second daily firing that
+    only a person can create. None of it is established: on 09-08 and 09-09 every exit
+    hour available on both days paid between −1.42% and −0.05% per trade, and
+    `backtest/RESULTS.md` puts the close ahead of the open on its own 37 sealed events
+    for all three arms.
     """
-    if not ex["orders"].get("exit_by_session"):
+    mode = exit_mode(ex)
+    plain = ex["orders"].get("time_in_force", "day")
+    if mode == "uniform":
         return "cls" if ex["orders"].get("exit", "market_on_close") == \
-            "market_on_close" else ex["orders"].get("time_in_force", "day")
+            "market_on_close" else plain
+    if mode == "bmo_close":
+        return plain if session == "amc" else "cls"
     return "opg" if session == "amc" else "cls"
 
 
@@ -834,7 +867,8 @@ def cmd_close(a, api, ex):
         print("no run with an alpaca-orders.json to close")
         return
     blocked = guard(api, ex, a.submit, a.live_account_i_understand)
-    by_session = bool(ex["orders"].get("exit_by_session")) and not a.now
+    mode = exit_mode(ex)
+    by_session = mode != "uniform" and not a.now
     use_moc = ex["orders"].get("exit", "market_on_close") == "market_on_close" and not a.now
     moc, moc_note = ((entry_window(api, True) if use_moc else (True, "market order"))
                      if (a.submit and not blocked) else (False, "dry run"))
@@ -852,7 +886,8 @@ def cmd_close(a, api, ex):
         today = clk["timestamp"][:10] if clk else None
     print(f"closing across {len(runs)} run(s), today {today}, "
           f"{'blocked — ' + blocked if blocked else moc_note}"
-          + ("  [per-session exits: amc -> opg, bmo -> cls]" if by_session else ""))
+          + (f"  [exit_mode {mode}: amc -> {exit_tif_for('amc', ex)}, "
+             f"bmo -> {exit_tif_for('bmo', ex)}]" if by_session else ""))
 
     for run in runs:
         state = load_orders(run)
@@ -911,7 +946,7 @@ def cmd_close(a, api, ex):
             continue                        # a dry run records nothing
         state["log"].append({"utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                              "action": "close", "all": bool(a.all), "moc": moc_note,
-                             "exit_by_session": by_session,
+                             "exit_mode": mode,
                              "windows": {k: v[1] for k, v in win.items()}})
         save_orders(run, state)
         print(f"  wrote {orders_path(run)}")

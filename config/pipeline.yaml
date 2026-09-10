@@ -328,20 +328,43 @@ execution:
     # all three arms did BETTER at the close (+2.16% against +0.90% for arm A).
     # Re-price those 37 on scripts/edge_exit.py's hourly grid before turning this on.
     #
-    # TURNING THIS ON IS THREE CHANGES, NOT ONE, and two of them are outside this file.
-    #   1. this flag -> true
-    #   2. flatten_before_entry -> false, or the flatten sells the amc names hours
-    #      before the opening auction they are meant to exit into
-    #   3. the 14:00 Amsterdam exit Routine must EXIST, because Alpaca rejects rather
-    #      than queues an `opg` order between 09:28 and 19:00 ET -- nothing firing in
-    #      the European afternoon can place one. The prompt is in
-    #      docs/routine-prompts/edge-execute.md and a person has to create it;
-    #      create_trigger is refused to agent sessions here.
-    # Doing 1 and 2 without 3 means the amc names are never sold on their exit date.
-    # That is caught rather than silent: `close` sends anything past its exit date at
-    # plain market on the next run, and `open` REFUSES to enter a new book while a
-    # position is overdue and unsold. A missed firing costs the measured exit and one
-    # loud refusal; it does not accumulate a book nobody is managing.
-    exit_by_session: false
+    # WHICH INSTRUMENT CLOSES A POSITION, per session. Three schemes, measured on the
+    # same 22 trades of the conviction book over 38 de-duplicated events:
+    #
+    #   uniform        +4.49% (t=2.52)  what ships. flatten_before_entry sells the
+    #                  whole book at market when the next run starts, ~10:00 ET
+    #   bmo_close      +6.27% (t=3.34)  amc at market on the run, bmo into TODAY's
+    #                  closing auction. ONE run. Needs only
+    #                  flatten_before_entry: false -- no new Routine
+    #   auction_split  +7.81% (t=4.01)  amc into the OPENING auction, bmo into the
+    #                  closing auction. Needs a SECOND Routine at 14:00 Amsterdam
+    #
+    # Per trade over those events the two sessions want opposite things: amc pays
+    # +8.91% in the opening auction, +6.08% at ~10:00 ET and +5.23% at the close;
+    # bmo pays +2.96%, +2.58% and +6.48%. An amc print has had a whole overnight to
+    # be processed, so the opening auction is already the informed price; a bmo print
+    # has had two thin hours of pre-market and keeps repricing all day.
+    #
+    # `bmo_close` is where the cheap money is: +1.77pp of the +3.32pp on offer, and
+    # it needs no machinery that does not already exist. `auction_split` buys the
+    # other +1.54pp and needs a second daily firing, because Alpaca REJECTS rather
+    # than queues an `opg` order between 09:28 and 19:00 ET -- nothing that fires in
+    # the European afternoon can sell an amc position into its own opening auction.
+    # The prompt is in docs/routine-prompts/edge-execute.md and only a person can
+    # create it; create_trigger is refused to agent sessions in this environment.
+    #
+    # NEITHER IS ESTABLISHED. The split was read off the same 38 events it is
+    # justified by; on the first two forward days (09-08, 09-09) every exit hour
+    # available on both paid between -1.42% and -0.05% a trade; and
+    # backtest/RESULTS.md puts the close ahead of the open on its own 37 sealed
+    # events for all three arms. Re-price those 37 on scripts/edge_exit.py's hourly
+    # grid before moving off `uniform`.
+    #
+    # Either non-uniform mode also needs `flatten_before_entry: false`, or the
+    # flatten sells everything before any auction arrives. Getting that wrong does
+    # not lose the book: `close` sends anything past its exit date at plain market on
+    # the next run, and `open` REFUSES to enter a new book while a position is
+    # overdue and unsold.
+    exit_mode: uniform            # uniform | bmo_close | auction_split
     time_in_force: day           # market entries, and the plain-market fallback
     allow_shorts: true           # a short leg also needs Alpaca to call it shortable

@@ -186,24 +186,30 @@ overrides and stacks a second book on the first). That refusal is what makes the
 per-session exit safe to switch on: `flatten_before_entry` used to guarantee a clean slate
 by selling everything, and once the flatten is off the guarantee has to come from checking.
 
-**The per-session exit exists in `alpaca_trade.py` and is off.** `orders.exit_by_session`
-gives amc the opening auction (`opg`, +8.91% a trade in-sample against +5.23% at the close)
-and bmo the closing auction (`cls`, +6.48% against +2.96% at the open); together +7.81%
-(t=4.01) against +5.80% for one uniform close. Switching it on is **three
-changes, not one**: this flag, `flatten_before_entry: false` (a flatten at the start of the
-run sells the amc names before their auction), and the 14:00 Amsterdam exit Routine must
-already exist. Alpaca rejects rather than queues `opg` between 09:28 and 19:00 ET, so
-nothing firing in the European afternoon can sell an amc position into its own opening
-auction — the amc leg has to go in during the pre-market of the exit date, and 14:00
-Amsterdam is 08:00 ET. `auction_window()` refuses rather than sending an order that will
-bounce, and the prompt for that Routine is in `docs/routine-prompts/edge-execute.md`. Doing
-the first two without the third does not lose the book: `close` sweeps anything overdue at
-market and `open` refuses to stack a new book on it. **Recycling the amc cash buys no extra return**: with one auction entry a
-day the capital slot is 24 hours either way, which is why `capital_table` in `edge_exit.py`
-prints return per slot-day equal to return per trade and flags the hours-held version as a
-denominator artefact. What it buys is settled cash before the auction that funds the next
-book, and 6.5 fewer hours of exposure. See `docs/EXECUTION.md`, "The exit the two sessions
-actually want".
+**The per-session exit is three modes in `alpaca_trade.py`, and it ships on the dullest
+one.** `orders.exit_mode` picks which instrument closes a position, per session. Per trade
+over the 38 de-duplicated events, on the conviction book: **`uniform`** +4.49% (t=2.52),
+the flatten selling everything at market when the next run starts, about 10:00 ET;
+**`bmo_close`** +6.27% (t=3.34), amc at market on the run and bmo into today's closing
+auction; **`auction_split`** +7.81% (t=4.01), amc into the opening auction and bmo into the
+close. The two sessions want opposite things — amc pays +8.91% in the opening auction,
++6.08% at 10:00 ET and +5.23% at the close, bmo pays +2.96%, +2.58% and +6.48% — because an
+amc print has had a whole overnight to be processed while a bmo print has had two thin hours
+of pre-market and keeps repricing.
+
+**`bmo_close` is reachable from the existing Routine; `auction_split` is not.** Alpaca
+*rejects* rather than queues an `opg` order between 09:28 and 19:00 ET, so nothing firing in
+the European afternoon can sell an amc position into its own opening auction. `bmo_close`
+therefore buys +1.77pp of the +3.32pp on offer for one config line
+(`flatten_before_entry: false`), and `auction_split` buys the other +1.54pp at the cost of a
+second daily Routine at 14:00 Amsterdam that **only a person can create** — `create_trigger`
+is refused to agent sessions here, confirmed on 2026-09-10. The prompt is written out in
+`docs/routine-prompts/edge-execute.md`. Do `bmo_close` first. **Recycling the amc cash buys
+no extra return**: with one auction entry a day the capital slot is 24 hours either way,
+which is why `capital_table` in `edge_exit.py` prints return per slot-day equal to return
+per trade and flags the hours-held version as a denominator artefact. What it buys is
+settled cash before the auction that funds the next book, and fewer hours of exposure. See
+`docs/EXECUTION.md`, "The exit the two sessions actually want".
 
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
