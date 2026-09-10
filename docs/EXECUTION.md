@@ -267,6 +267,61 @@ prompt, `docs/routine-prompts/edge-hunt.md`, which has to be pasted into
 agent did not create. Keep that file in step with the Routine, because nothing else
 will.
 
+## The exit the two sessions actually want
+
+The shipped path gives the whole book one exit: `flatten` sells everything at market at
+the start of the next run. `scripts/edge_exit.py` re-priced all 38 de-duplicated events
+at eight exit horizons and at every hour of the clock, and the two sessions turn out to
+want opposite things. Per trade, on the conviction book:
+
+| | opening auction | closing auction |
+| --- | --- | --- |
+| **amc** (12 trades) | **+8.91%** (t=3.20) | +5.23% (t=1.48) |
+| **bmo** (10 trades) | +2.96% (t=1.01) | **+6.48%** (t=2.34) |
+| combined, split by session | **+7.81%** (t=4.01) | +5.80% for one uniform close |
+
+An amc print gets a whole overnight of processing, so the opening auction is already the
+informed price and the session that follows takes about three points back off the book:
+the open-to-close leg ranks at ρ=−0.351 and pays −2.61% day-demeaned, on a book that is
+six long and six short, so it is not market drift. A bmo print gets two thin hours of
+pre-market instead and goes on repricing all day: ρ +0.187 at the open against +0.670 at
+the close.
+
+`orders.exit_by_session` turns that into the exit instrument — `opg` for amc, `cls` for
+bmo — and **it is off**. Three things stand between it and being right:
+
+1. **It was read off the events it is justified by.** The paired day bootstrap puts the
+   split's gain at +1.87pp per trade with a 95% interval of [−1.30, +4.55], and the best
+   of six candidate rules beats a uniform close in 91% of resamples. That describes the
+   sample; it does not test the rule.
+2. **It does not replicate yet.** On 09-08 and 09-09 — 30 names, 14 above the floor,
+   neither day in the fitted sample — every exit hour available on both days paid between
+   −1.42% and −0.05% per trade. On 09-09 shorting the day blind paid +3.9% to +4.5% while
+   the book paid −0.2% to −0.9%.
+3. **The other 37 events in this repo disagree.** `backtest/RESULTS.md` prices its sealed
+   corpus at both exits and all three arms did better at the **close** (+2.16% against
+   +0.90% per trade for arm A). Re-pricing those 37 on `edge_exit.py`'s hourly grid is
+   the cheapest way to settle it and has not been done.
+
+### What it needs operationally, if it is ever switched on
+
+- **`flatten_before_entry: false`.** A flatten at the start of the run sells the amc names
+  hours before their opening auction arrives, so the two settings cancel out.
+- **A second run a day.** Alpaca *rejects* rather than queues `opg` between 09:28 and
+  19:00 ET, so the amc leg cannot be placed by the run that placed the entries. It has to
+  go in during the pre-market of the exit date; 14:00 Amsterdam is 08:00 ET and works.
+  `auction_window()` refuses rather than sending an order that will bounce.
+  `docs/routine-prompts/edge-execute.md` already keeps that second Routine documented as
+  the fallback exit.
+- **Nothing about capital recycling.** Closing amc in the opening auction frees the cash
+  at 09:30 rather than 16:00, and with one auction entry a day that is **not** extra
+  return: the capital slot is 24 hours either way. `capital_table` in `edge_exit.py`
+  prints return per slot-day equal to return per trade to make that hard to misread —
+  dividing by hours *held* instead is how a 16:30 exit reads as 206% per capital-day,
+  which is a denominator artefact. What it does buy is settled cash before the auction
+  that funds the next book, so sizing stops depending on unfilled proceeds, and 6.5 fewer
+  hours of market exposure at a higher per-trade number.
+
 ## What it refuses to do
 
 Every refusal is recorded with its reason, in the plan or in `alpaca-orders.json`:

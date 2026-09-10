@@ -501,6 +501,64 @@ def entry_window(api, moc=True):
     return True, f"{left:.0f} min to the close"
 
 
+def exit_tif_for(session, ex):
+    """Which auction closes a position, when `orders.exit_by_session` is on.
+
+    The two sessions were measured separately and want opposite exits
+    (`docs/EDGE_ANALYSIS.md`, "amc and bmo want opposite exits"). On the 38
+    de-duplicated events, per trade:
+
+        amc   opening auction  +8.91% (t=3.20)   closing auction  +5.23% (t=1.48)
+        bmo   opening auction  +2.96% (t=1.01)   closing auction  +6.48% (t=2.34)
+
+    An amc print gets a full overnight of processing, so the opening auction is
+    already the informed price and the session that follows takes about three points
+    back off the book (open-to-close leg, ρ=−0.351, −2.61% day-demeaned on a book
+    that is six long and six short, so not drift). A bmo print gets two thin hours of
+    pre-market and goes on repricing all day: ρ +0.187 at the open, +0.670 at the
+    close.
+
+    Off by default, and it should stay off until the forward days turn: on 09-08 plus
+    09-09 every exit hour available on both days paid between −1.42% and −0.05% per
+    trade, and `backtest/RESULTS.md` puts the close ahead of the open on its own 37
+    sealed events for all three arms.
+    """
+    if not ex["orders"].get("exit_by_session"):
+        return "cls" if ex["orders"].get("exit", "market_on_close") == \
+            "market_on_close" else ex["orders"].get("time_in_force", "day")
+    return "opg" if session == "amc" else "cls"
+
+
+def auction_window(api, tif):
+    """Can an auction order of this kind go in right now? Returns (ok, note).
+
+    Alpaca REJECTS rather than queues these inside two ET windows -- `cls` from 15:50
+    to 19:00, `opg` from 09:28 to 19:00 -- so an `opg` exit cannot be placed by the
+    same run that places the entries. It has to go in during the pre-market of the
+    exit date, or after 19:00 ET the evening before.
+    """
+    if tif == "cls":
+        return entry_window(api, True)
+    if tif != "opg":
+        clk, err = api.clock()
+        if not clk:
+            return False, f"clock unreachable: {err}"
+        return bool(clk.get("is_open")), ("market order" if clk.get("is_open")
+                                          else "market closed")
+    clk, err = api.clock()
+    if not clk:
+        return False, f"clock unreachable: {err}"
+    # The clock's own timestamp carries the exchange offset, so read the local wall
+    # clock off it rather than assuming an offset here.
+    now = datetime.fromisoformat(clk["timestamp"].replace("Z", "+00:00"))
+    local = now.astimezone(timezone(timedelta(hours=-4)))
+    mins = local.hour * 60 + local.minute
+    if 9 * 60 + 28 <= mins < 19 * 60:
+        return False, (f"{local:%H:%M} ET is inside Alpaca's opg rejection window "
+                       "(09:28-19:00 ET); submit in the pre-market of the exit date")
+    return True, f"opg accepted at {local:%H:%M} ET"
+
+
 def flatten(api, submit, reason_blocked, timeout=60):
     """Cancel every open order and close every position, at market, now.
 
@@ -549,10 +607,12 @@ def flatten(api, submit, reason_blocked, timeout=60):
     return rec
 
 
-def order_body(ticker, qty, side, ex, moc=True):
+def order_body(ticker, qty, side, ex, moc=True, tif=None):
     o = {"symbol": ticker, "qty": str(int(qty)), "side": side,
          "type": "market", "extended_hours": False}
-    if moc:
+    if tif:
+        o["time_in_force"] = tif                   # cls, opg, or day, chosen by caller
+    elif moc:
         o["time_in_force"] = "cls"                 # market-on-close
     else:
         o["time_in_force"] = ex["orders"].get("time_in_force", "day")
@@ -730,15 +790,25 @@ def cmd_close(a, api, ex):
         print("no run with an alpaca-orders.json to close")
         return
     blocked = guard(api, ex, a.submit, a.live_account_i_understand)
+    by_session = bool(ex["orders"].get("exit_by_session")) and not a.now
     use_moc = ex["orders"].get("exit", "market_on_close") == "market_on_close" and not a.now
     moc, moc_note = ((entry_window(api, True) if use_moc else (True, "market order"))
                      if (a.submit and not blocked) else (False, "dry run"))
+    # One clock call per instrument, not per position.
+    win = {}
+
+    def window_for(tif):
+        if tif not in win:
+            win[tif] = (auction_window(api, tif) if (a.submit and not blocked)
+                        else (False, "dry run"))
+        return win[tif]
     today = None
     if api.usable:
         clk, _ = api.clock()
         today = clk["timestamp"][:10] if clk else None
     print(f"closing across {len(runs)} run(s), today {today}, "
-          f"{'blocked — ' + blocked if blocked else moc_note}")
+          f"{'blocked — ' + blocked if blocked else moc_note}"
+          + ("  [per-session exits: amc -> opg, bmo -> cls]" if by_session else ""))
 
     for run in runs:
         state = load_orders(run)
@@ -763,22 +833,32 @@ def cmd_close(a, api, ex):
                     reason = f"no open position at Alpaca ({err})"
             if qty is None and not reason:
                 qty = int(e["qty"])
-            if not reason and use_moc and not moc:
+            tif = exit_tif_for(e.get("session"), ex) if by_session else None
+            if tif:
+                ok, note = window_for(tif)
+                if not reason and not ok:
+                    reason = f"{tif} unavailable ({note})"
+            elif not reason and use_moc and not moc:
                 reason = f"MOC unavailable ({moc_note}); rerun with --now for a " \
                          "market order or before the cutoff"
             side = "sell" if e["side"] == "buy" else "buy"
-            body = order_body(e["symbol"], qty or e["qty"], side, ex, moc=use_moc)
+            body = order_body(e["symbol"], qty or e["qty"], side, ex,
+                              moc=use_moc, tif=tif)
             rec = send(api, body, cid, a.submit, reason)
             rec.update({"leg": "exit", "closes": e["client_order_id"],
                         "exit_date": e.get("exit_date"), "position_qty_at_close": held})
             upsert(state["exits"], rec)
-            print(f"  {run} {e['symbol']:8s}"
+            rec["time_in_force"] = body["time_in_force"]
+            print(f"  {run} {e['symbol']:8s}{(e.get('session') or '?'):4s}"
+                  f"{body['time_in_force']:4s}"
                   f"{'SENT' if rec['submitted'] else 'not sent'}"
                   f"  {rec.get('order_id') or rec.get('reason')}")
         if blocked:
             continue                        # a dry run records nothing
         state["log"].append({"utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                             "action": "close", "all": bool(a.all), "moc": moc_note})
+                             "action": "close", "all": bool(a.all), "moc": moc_note,
+                             "exit_by_session": by_session,
+                             "windows": {k: v[1] for k, v in win.items()}})
         save_orders(run, state)
         print(f"  wrote {orders_path(run)}")
 

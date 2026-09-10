@@ -301,5 +301,38 @@ execution:
     # flatten_before_entry). There the auction is free: the order goes in on the exit
     # date with nothing else waiting on it.
     exit: market_on_close
+    # Give the two sessions the exits they were separately measured to want, instead
+    # of one instrument for the whole book. Only `close` reads it, and only when
+    # `exit` is the auction path. Per trade over the 38 de-duplicated events:
+    #
+    #                 opening auction        closing auction
+    #   amc           +8.91% (t=3.20)        +5.23% (t=1.48)
+    #   bmo           +2.96% (t=1.01)        +6.48% (t=2.34)
+    #
+    # An amc print gets a whole overnight of processing, so the opening auction is
+    # already the informed price and the session that follows takes about three
+    # points back (open-to-close leg rho=-0.351, -2.61% day-demeaned on a book that
+    # is six long and six short, so it is not market drift). A bmo print gets two
+    # thin hours of pre-market and keeps repricing all day: rho +0.187 at the open
+    # against +0.670 at the close. Combined the split gave +7.81% a trade (t=4.01)
+    # against +5.80% for one uniform close exit.
+    #
+    # OFF, and three things have to change before that is wrong. (1) The split was
+    # read off the same 38 events it is justified by: the paired day bootstrap puts
+    # its gain at +1.87pp with a 95% interval of [-1.30, +4.55], and the best of six
+    # candidate rules beats the close in 91% of resamples, which describes the sample
+    # rather than testing it. (2) It does not replicate yet -- on 09-08 and 09-09
+    # every exit hour available on both days paid between -1.42% and -0.05% a trade,
+    # and on 09-09 shorting the day blind beat the book by about five points.
+    # (3) backtest/RESULTS.md prices 37 independent sealed events at both exits and
+    # all three arms did BETTER at the close (+2.16% against +0.90% for arm A).
+    # Re-price those 37 on scripts/edge_exit.py's hourly grid before turning this on.
+    #
+    # And it needs a SECOND run a day. Alpaca rejects rather than queues `opg`
+    # between 09:28 and 19:00 ET, so the amc leg has to be submitted in the
+    # pre-market of the exit date (14:00 Amsterdam is 08:00 ET and works). It also
+    # requires `flatten_before_entry: false`, because a flatten at the start of the
+    # run sells the amc names before their opening auction ever arrives.
+    exit_by_session: false
     time_in_force: day           # market entries, and the plain-market fallback
     allow_shorts: true           # a short leg also needs Alpaca to call it shortable

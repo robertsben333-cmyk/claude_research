@@ -535,6 +535,29 @@ def main():
                                          key="k", secret="s"),
                                {**ex, "enabled": True}, submit=True, live_ok=False) or ""))
 
+    # Per-session exits. Off in the shipped config, so the first check is that it is
+    # off: turning it on also needs flatten_before_entry off and a second run a day,
+    # and the two would silently cancel each other out.
+    check("per-session exits are off in the shipped config",
+          ex["orders"].get("exit_by_session") is False,
+          repr(ex["orders"].get("exit_by_session")))
+    off = {**ex, "orders": {**ex["orders"], "exit_by_session": False}}
+    on = {**ex, "orders": {**ex["orders"], "exit_by_session": True}}
+    check("with the split off both sessions take the same exit",
+          at.exit_tif_for("amc", off) == at.exit_tif_for("bmo", off) == "cls",
+          f'amc={at.exit_tif_for("amc", off)} bmo={at.exit_tif_for("bmo", off)}')
+    check("with the split on amc exits in the opening auction",
+          at.exit_tif_for("amc", on) == "opg", at.exit_tif_for("amc", on))
+    check("with the split on bmo exits in the closing auction",
+          at.exit_tif_for("bmo", on) == "cls", at.exit_tif_for("bmo", on))
+    check("an unknown session falls back to the closing auction",
+          at.exit_tif_for(None, on) == "cls", at.exit_tif_for(None, on))
+    check("an explicit tif overrides the moc flag",
+          at.order_body("X", 1, "sell", ex, moc=True, tif="opg")["time_in_force"]
+          == "opg")
+    check("an opg order is still a plain market order",
+          at.order_body("X", 1, "sell", ex, tif="opg")["type"] == "market")
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:
