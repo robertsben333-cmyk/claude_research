@@ -177,6 +177,33 @@ is rejected between 09:28 and 19:00 ET so no European-afternoon Routine can plac
 (closing auction) is rejected between 15:50 and 19:00 ET, shorts need a margin account and an
 easy-to-borrow name checked daily, and fractional shorts do not exist.
 
+**The exit finding does not replicate on the first two forward days, and a second sample in
+this repo contradicts it.** `edge_exit.py --runs <edge dir>` scores any day directly, with a
+cutoff at the current clock so nothing unresolved is reported (`docs/edge-exit-forward.json`).
+On 09-08 plus 09-09 — 30 names, 14 above the conviction floor, neither day in the fitted
+sample — every exit horizon available on both days is flat to negative: −1.42% per trade in
+the after-hours, −0.05% at the opening print, −1.22% an hour in. On 09-09 the free control
+paid +3.9% to +4.5% per day at every hour after 08:00 against −0.2% to −0.9% for the hunt's
+own book, and the two largest predictions were both wrong and large (NAVN +10.0 fell 18.4%,
+WLTH −10.5 rose 8.0%). And `backtest/RESULTS.md` priced its 37 sealed events at both exits:
+all three arms did **better at the close** (+2.16% against +0.90% per trade for arm A).
+Re-price those 37 on the hourly grid before acting on any exit rule.
+
+**The per-session exit exists in `alpaca_trade.py` and is off.** `orders.exit_by_session`
+gives amc the opening auction (`opg`, +8.91% a trade in-sample against +5.23% at the close)
+and bmo the closing auction (`cls`, +6.48% against +2.96% at the open); together +7.81%
+(t=4.01) against +5.80% for one uniform close. Switching it on needs
+`flatten_before_entry: false` — a flatten at the start of the run sells the amc names before
+their auction — and a **second run a day**, because Alpaca rejects rather than queues `opg`
+between 09:28 and 19:00 ET, so the amc leg has to go in during the pre-market of the exit
+date (14:00 Amsterdam is 08:00 ET). `auction_window()` refuses rather than sending an order
+that will bounce. **Recycling the amc cash buys no extra return**: with one auction entry a
+day the capital slot is 24 hours either way, which is why `capital_table` in `edge_exit.py`
+prints return per slot-day equal to return per trade and flags the hours-held version as a
+denominator artefact. What it buys is settled cash before the auction that funds the next
+book, and 6.5 fewer hours of exposure. See `docs/EXECUTION.md`, "The exit the two sessions
+actually want".
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080
