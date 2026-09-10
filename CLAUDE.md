@@ -294,6 +294,38 @@ now written into `.claude/agents/unpriced-hunter.md` so the coming runs test it.
 it is required to be a URL or the word `none`. See `edge/EDGE_ANALYSIS.md`, "Which
 findings were right: the evidence, not the scorer".
 
+**Nine hypotheses are pre-registered, and the control is beating the best of them.**
+`edge/HYPOTHESES.md` fixes the tests before the data that settles them exists;
+`edge/scripts/edge_hypotheses.py` scores them on three samples — discovery (`edge/ledger/`
+through 09-10, 67 names, where every one of them was read off the data), **corpus**
+(`edge/ledger/corpus/`, 73 names built by `edge_ledger.py --runs
+'backtest/runs/edge-corpus/*'`, genuinely out of sample), and forward (empty until the
+09-11 runs resolve). Two results are worth carrying:
+
+- **Normalising the conviction by the implied move rescues the corpus — and then the
+  free control beats it.** On the corpus, where the raw key ranks at ρ=0.025 (p=0.87),
+  `|impact_sum| / implied` ranks the sign at ρ=0.241 (p=0.035). But `1/implied` **alone**
+  ranks at ρ=0.264 (p=0.020): the effect is that quiet names are easier to call, and
+  knowing which names are quiet needs no hunt. Live, the ratio leads that control by
+  0.046. H5 is therefore registered as "must beat `1/implied` by 0.08", starting life
+  leaning rejected, and the control is promoted to H9 in its own right — if a free number
+  predicts call accuracy then every accuracy rate in this file has to be re-read
+  conditioned on it.
+- **`-run_up_20d_pct` is not stable across samples.** It ranks the six fitted live days
+  at +0.335 and the corpus's 71 anchored events at **−0.266, p=0.018** — significant in
+  the opposite direction. Every claim about "the free control" is a claim about one
+  seven-day window.
+
+Also registered: the series bridge (H1, and note it was made partly untestable by acting
+on it — only 3 bridged findings exist in the corpus), filing-led calls (H2, corpus +0.06
+against the base rate), aggregator-led calls (H3, **1/8 on the corpus**), old sources
+beating fresh (H4, 0.588 vs 0.455 on the corpus, directionally consistent with live), the
+conviction gate the money rides on (H6, 16/28 on the corpus), the hunt against the free
+control where they disagree (H7, **12/24 vs 12/24 on the corpus** against 15/24 vs 9/24
+live), and the magnitude null (H8, corpus slope +0.187, t=0.40 — consistent). Nine
+hypotheses on one sample means one false positive is the expected outcome; read rule 3 of
+that file before quoting any of them.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080

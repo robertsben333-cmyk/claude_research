@@ -1,0 +1,396 @@
+{
+  "discovery_ends": "2026-09-10",
+  "forward_starts": "2026-09-11",
+  "samples": {
+    "discovery": {
+      "events": 67,
+      "findings": 303,
+      "days": 7
+    },
+    "corpus_out_of_sample": {
+      "events": 73,
+      "findings": 129,
+      "days": 7
+    },
+    "forward": {
+      "events": 0
+    }
+  },
+  "hypotheses": [
+    {
+      "id": "H1-series-bridge",
+      "claim": "A finding that rests on a third-party series the hunter connects to the company by its own reasoning is right less than half the time \u2014 worse than a coin, not merely unhelpful.",
+      "mechanism": "A public series is available to everyone and says nothing about one company until someone supplies the bridge. The bridge is the hunter's, untested, and it feels like insight precisely because it was built rather than found.",
+      "decides": "Rejected if 25+ bridged findings accumulate at or above 50%. Supported at 25+ below 40%.",
+      "discovery_estimate": "3/15 findings, 1/8 as lead (live, p=0.035)",
+      "events_needed_for_80pct_power": 49,
+      "results": {
+        "discovery": {
+          "n": 15,
+          "right": 3,
+          "rate": 0.2,
+          "binom_p": 0.0352,
+          "sample_base_rate": 0.558,
+          "lift_vs_base": -0.358
+        },
+        "corpus_out_of_sample": {
+          "n": 3,
+          "right": 1,
+          "rate": 0.333,
+          "binom_p": 1.0,
+          "sample_base_rate": 0.527,
+          "lift_vs_base": -0.194
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      },
+      "caveat": "The hunter was instructed against this on 2026-09-10, so the forward sample is deliberately starved. That was the right call for the book and it costs the experiment; if the category disappears entirely the hypothesis simply stops being testable, and the instruction stands on the discovery sample alone."
+    },
+    {
+      "id": "H2-filing-lead",
+      "claim": "A call led by a statutory filing beats the sample's own base rate by at least 10 points.",
+      "mechanism": "The company had to file it, so it is complete and dull; being dull is what leaves it unread. Nothing in a 10-Q is news, which is exactly why the price may not hold it.",
+      "decides": "Supported at 60+ filing-led calls with a lift above +0.10 and a binomial p under 0.05. Rejected if the lift is under +0.02.",
+      "discovery_estimate": "15/22 = 0.682 against a 0.537 base (live)",
+      "events_needed_for_80pct_power": 90,
+      "results": {
+        "discovery": {
+          "n": 22,
+          "right": 15,
+          "rate": 0.682,
+          "binom_p": 0.1338,
+          "sample_base_rate": 0.537,
+          "lift_vs_base": 0.145
+        },
+        "corpus_out_of_sample": {
+          "n": 31,
+          "right": 18,
+          "rate": 0.581,
+          "binom_p": 0.4731,
+          "sample_base_rate": 0.521,
+          "lift_vs_base": 0.06
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      }
+    },
+    {
+      "id": "H3-aggregator-lead",
+      "claim": "A call led by an aggregator page \u2014 Yahoo, MarketBeat, stockanalysis, Investing.com \u2014 is below the base rate.",
+      "mechanism": "An aggregator restates someone else's number. Anything reachable there has been reachable to everyone for as long as the page has existed, so it is the least likely place for something unpriced to sit.",
+      "decides": "Supported at 40+ aggregator-led calls below 40%. Rejected at or above the base rate.",
+      "discovery_estimate": "2/4 live and 1/8 corpus; pooled 3/12",
+      "events_needed_for_80pct_power": 49,
+      "results": {
+        "discovery": {
+          "n": 4,
+          "right": 2,
+          "rate": 0.5,
+          "binom_p": 1.0,
+          "sample_base_rate": 0.537,
+          "lift_vs_base": -0.037
+        },
+        "corpus_out_of_sample": {
+          "n": 8,
+          "right": 1,
+          "rate": 0.125,
+          "binom_p": 0.0703,
+          "sample_base_rate": 0.521,
+          "lift_vs_base": -0.396
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      }
+    },
+    {
+      "id": "H4-old-beats-fresh",
+      "claim": "A lead finding whose source is more than 60 days old beats one under 3 days old.",
+      "mechanism": "The stage's own premise. Yesterday's wire is in the price by construction; page 47 of a June filing may never have been read by anyone who trades the name.",
+      "decides": "Supported when both arms exceed 40 events and the gap holds above +0.10. Rejected if the gap turns negative at that size.",
+      "discovery_estimate": "0.586 vs 0.400 live; 0.588 vs 0.455 corpus",
+      "events_needed_for_80pct_power": 199,
+      "results": {
+        "discovery": {
+          "old": {
+            "n": 29,
+            "right": 17,
+            "rate": 0.586,
+            "binom_p": 0.4583,
+            "sample_base_rate": 0.537,
+            "lift_vs_base": 0.049
+          },
+          "fresh": {
+            "n": 10,
+            "right": 4,
+            "rate": 0.4,
+            "binom_p": 0.7539,
+            "sample_base_rate": 0.537,
+            "lift_vs_base": -0.137
+          },
+          "gap": 0.186
+        },
+        "corpus_out_of_sample": {
+          "old": {
+            "n": 17,
+            "right": 10,
+            "rate": 0.588,
+            "binom_p": 0.6291,
+            "sample_base_rate": 0.521,
+            "lift_vs_base": 0.067
+          },
+          "fresh": {
+            "n": 11,
+            "right": 5,
+            "rate": 0.455,
+            "binom_p": 1.0,
+            "sample_base_rate": 0.521,
+            "lift_vs_base": -0.066
+          },
+          "gap": 0.133
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      }
+    },
+    {
+      "id": "H5-conviction-over-implied",
+      "claim": "Conviction divided by the implied move ranks the sign better than raw conviction AND better than the implied move on its own. The second half is the whole hypothesis: without it the result is free.",
+      "mechanism": "Three points of edge on a name the market has priced to move 4% is a large claim; the same three points on a name priced to move 18% is noise. The raw key cannot tell those apart, and the ranking is run within a day across names of very different volatility. BUT a quiet name is easier to call for reasons that have nothing to do with the hunt, so `1/implied` has to be beaten, not merely mentioned \u2014 it was added as a control after the first version of this hypothesis looked strong, and it immediately explained most of the effect.",
+      "decides": "Supported when 120+ anchored events give the ratio a correlation above BOTH the raw key and `1/implied`, by at least 0.08 over the latter. Rejected if `1/implied` matches it \u2014 which is what both current samples say, so this starts life leaning rejected. Straddle-anchored names are reported separately; the corpus anchor is 100% history proxy, so there `1/implied` is a pure volatility ranking.",
+      "discovery_estimate": "rho 0.273 vs 0.209 raw, 62 anchored events",
+      "events_needed_for_80pct_power": 90,
+      "results": {
+        "discovery": {
+          "n_anchored": 63,
+          "ratio": {
+            "spearman": 0.273,
+            "perm_p": 0.0655,
+            "n": 62
+          },
+          "raw": {
+            "spearman": 0.209,
+            "perm_p": 0.1135,
+            "n": 62
+          },
+          "one_over_implied": {
+            "spearman": 0.227,
+            "perm_p": 0.1167,
+            "n": 62
+          },
+          "neg_run_up": {
+            "spearman": -0.021,
+            "perm_p": 0.8613,
+            "n": 62
+          },
+          "straddle_only": {
+            "n": 35,
+            "ratio": {
+              "spearman": 0.243,
+              "perm_p": 0.153,
+              "n": 33
+            },
+            "raw": {
+              "spearman": 0.227,
+              "perm_p": 0.1708,
+              "n": 33
+            }
+          }
+        },
+        "corpus_out_of_sample": {
+          "n_anchored": 72,
+          "ratio": {
+            "spearman": 0.241,
+            "perm_p": 0.0346,
+            "n": 71
+          },
+          "raw": {
+            "spearman": 0.025,
+            "perm_p": 0.8723,
+            "n": 71
+          },
+          "one_over_implied": {
+            "spearman": 0.264,
+            "perm_p": 0.0197,
+            "n": 71
+          },
+          "neg_run_up": {
+            "spearman": -0.266,
+            "perm_p": 0.0176,
+            "n": 71
+          }
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      }
+    },
+    {
+      "id": "H6-conviction-gate",
+      "claim": "The gate the book is placed on \u2014 |impact_sum| at or above the conviction floor of 3 \u2014 is right more than half the time.",
+      "mechanism": "A hunter that found something says so with a bigger number. The claim is only that the size orders the confidence, which is all H8 leaves standing.",
+      "decides": "Supported at 50+ gated events above 50% with p under 0.05. Rejected at 50+ events at or below 50%. This is the one the money rides on, so it is also the one to stop on.",
+      "discovery_estimate": "24/35 live all-hunters, 17/24 single-hunted, 16/28 corpus",
+      "events_needed_for_80pct_power": 63,
+      "results": {
+        "discovery": {
+          "n": 36,
+          "right": 24,
+          "rate": 0.667,
+          "binom_p": 0.0652,
+          "sample_base_rate": 0.537,
+          "lift_vs_base": 0.13
+        },
+        "corpus_out_of_sample": {
+          "n": 28,
+          "right": 16,
+          "rate": 0.571,
+          "binom_p": 0.5716,
+          "sample_base_rate": 0.521,
+          "lift_vs_base": 0.05
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      }
+    },
+    {
+      "id": "H7-beats-the-free-control",
+      "claim": "Where the hunt and minus-the-20-day-run-up point in opposite directions, the hunt is right more often than the control.",
+      "mechanism": "The control is the thing to beat and it costs nothing. If the hunt only agrees with it, the hunt is an expensive way to read a price chart. The disagreements are the entire question.",
+      "decides": "Supported at 60+ disagreements where the hunt leads by 10 points or more. Rejected if the control leads at that size.",
+      "discovery_estimate": "15/24 against 9/24 on the disagreements (live)",
+      "events_needed_for_80pct_power": 136,
+      "results": {
+        "discovery": {
+          "n": 24,
+          "hunt": 15,
+          "control": 9,
+          "hunt_rate": 0.625,
+          "control_rate": 0.375,
+          "binom_p": 0.3075
+        },
+        "corpus_out_of_sample": {
+          "n": 24,
+          "hunt": 12,
+          "control": 12,
+          "hunt_rate": 0.5,
+          "control_rate": 0.5,
+          "binom_p": 1.0
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      }
+    },
+    {
+      "id": "H9-quiet-names-are-callable",
+      "claim": "A free number available before any subagent is spawned \u2014 minus the implied move, i.e. prefer the quiet names \u2014 predicts whether the day's calls come out right.",
+      "mechanism": "A name the market has priced to move 4% has less room to surprise in either direction than one priced to move 18%, so whatever lean exists is likelier to survive the print. If this holds it is not an edge; it is a reason to distrust every accuracy number that has not been conditioned on it.",
+      "decides": "Supported at 120+ anchored events with a correlation clear of zero. If supported, every rate in H2, H3, H4 and H6 has to be re-read conditioned on it before any of them means anything.",
+      "discovery_estimate": "rho 0.227 (p=0.117) live, 0.264 (p=0.020) corpus \u2014 found while controlling H5",
+      "events_needed_for_80pct_power": 136,
+      "results": {
+        "discovery": {
+          "n_anchored": 63,
+          "ratio": {
+            "spearman": 0.227,
+            "perm_p": 0.1167,
+            "n": 62
+          },
+          "raw": {
+            "spearman": 0.209,
+            "perm_p": 0.1135,
+            "n": 62
+          },
+          "one_over_implied": {
+            "spearman": 0.227,
+            "perm_p": 0.1167,
+            "n": 62
+          },
+          "neg_run_up": {
+            "spearman": -0.021,
+            "perm_p": 0.8613,
+            "n": 62
+          },
+          "straddle_only": {
+            "n": 35,
+            "ratio": {
+              "spearman": 0.163,
+              "perm_p": 0.3752,
+              "n": 33
+            },
+            "raw": {
+              "spearman": 0.227,
+              "perm_p": 0.1708,
+              "n": 33
+            }
+          }
+        },
+        "corpus_out_of_sample": {
+          "n_anchored": 72,
+          "ratio": {
+            "spearman": 0.264,
+            "perm_p": 0.0197,
+            "n": 71
+          },
+          "raw": {
+            "spearman": 0.025,
+            "perm_p": 0.8723,
+            "n": 71
+          },
+          "one_over_implied": {
+            "spearman": 0.264,
+            "perm_p": 0.0197,
+            "n": 71
+          },
+          "neg_run_up": {
+            "spearman": -0.266,
+            "perm_p": 0.0176,
+            "n": 71
+          }
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      }
+    },
+    {
+      "id": "H8-magnitude-is-noise",
+      "claim": "The NULL, asserted rather than hoped for: the regression of the realised move on impact_sum has a slope indistinguishable from zero. The number orders; it does not measure.",
+      "mechanism": "Sizes are elicited from a model with no feedback loop and no units it has ever been scored on. There is no reason for them to be calibrated and, on 68 events, they are not.",
+      "decides": "This one is REJECTED \u2014 meaning the number does carry magnitude \u2014 if 150+ events give a slope whose t exceeds 2 and whose sign is positive. Until then the number must not size a position.",
+      "discovery_estimate": "slope -0.021, t=-0.09, R2=0.000 over 68 events",
+      "events_needed_for_80pct_power": null,
+      "results": {
+        "discovery": {
+          "slope": -0.033,
+          "slope_t": -0.14,
+          "r2": 0.0,
+          "n": 67
+        },
+        "corpus_out_of_sample": {
+          "slope": 0.187,
+          "slope_t": 0.4,
+          "r2": 0.002,
+          "n": 73
+        },
+        "forward": {
+          "n": 0,
+          "note": "no events in this sample"
+        }
+      }
+    }
+  ]
+}

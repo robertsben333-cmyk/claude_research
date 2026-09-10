@@ -128,13 +128,25 @@ def parse_day(s):
         return None
 
 
-def run_dirs(root):
-    return sorted(p for p in root.glob("research/*/*/*/edge")
+DEFAULT_RUNS = "research/*/*/*/edge"
+
+
+def run_dirs(root, pattern=DEFAULT_RUNS):
+    """Any directory shaped like a run: edge-scores.json, baselines/, hunts/.
+
+    `backtest/runs/edge-corpus/*` has that shape too, which is what makes an
+    out-of-sample test of a finding-level hypothesis possible at all: 104 resolved
+    events whose hunters could not see past the print, scored by the same code.
+    """
+    return sorted(p for p in root.glob(pattern)
                   if (p / "edge-scores.json").exists())
 
 
 def event_date_of(run):
-    return run.parent.name
+    """The run's own day. `research/2026/09/2026-09-10/edge` keeps it in the parent;
+    `backtest/runs/edge-corpus/2026-09-09` is the directory itself."""
+    name = run.parent.name if run.name == "edge" else run.name
+    return name
 
 
 def baseline_of(run, ticker):
@@ -206,13 +218,14 @@ def num(*vals):
     return None
 
 
-def build(root, use_network=True):
-    LEDGER.mkdir(parents=True, exist_ok=True)
-    cache_path = LEDGER / "outcomes.json"
+def build(root, use_network=True, pattern=DEFAULT_RUNS, out=None):
+    out_dir = out or LEDGER
+    out_dir.mkdir(parents=True, exist_ok=True)
+    cache_path = out_dir / "outcomes.json"
     cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
 
     findings, names = [], []
-    for run in run_dirs(root):
+    for run in run_dirs(root, pattern):
         ed = event_date_of(run)
         scores = json.loads((run / "edge-scores.json").read_text(encoding="utf-8"))
         floor = scores.get("conviction_floor") or 3.0
@@ -429,22 +442,29 @@ def main():
                     help="use the outcome cache only; do not fetch new bars")
     ap.add_argument("--report", action="store_true",
                     help="also write and print edge/ledger/report.json")
+    ap.add_argument("--runs", default=DEFAULT_RUNS,
+                    help="glob for run directories, relative to --root. Point it at "
+                         "backtest/runs/edge-corpus/* to build the sealed corpus as a "
+                         "ledger and test a finding-level hypothesis out of sample.")
+    ap.add_argument("--out", help="write the ledger here instead of edge/ledger/")
     a = ap.parse_args()
 
-    findings, names = build(Path(a.root), use_network=not a.no_network)
-    write_csv(LEDGER / "findings.csv", FINDING_COLS, findings)
-    write_csv(LEDGER / "names.csv", NAME_COLS, names)
-    write_sqlite(LEDGER / "edge.sqlite", findings, names)
+    out_dir = Path(a.out) if a.out else LEDGER
+    findings, names = build(Path(a.root), use_network=not a.no_network,
+                            pattern=a.runs, out=out_dir)
+    write_csv(out_dir / "findings.csv", FINDING_COLS, findings)
+    write_csv(out_dir / "names.csv", NAME_COLS, names)
+    write_sqlite(out_dir / "edge.sqlite", findings, names)
 
     res = sum(n["resolved"] for n in names)
     lab = sum(1 for f in findings if f["kind"])
     print(f"findings {len(findings)}  names {len(names)}  resolved names {res}  "
           f"days {len({n['event_date'] for n in names})}  kind-labelled {lab}")
-    print(f"-> {LEDGER}/findings.csv, names.csv, edge.sqlite")
+    print(f"-> {out_dir}/findings.csv, names.csv, edge.sqlite")
 
     if a.report:
         rep = group_report(findings)
-        (LEDGER / "report.json").write_text(json.dumps(rep, indent=2))
+        (out_dir / "report.json").write_text(json.dumps(rep, indent=2))
         print(json.dumps(rep, indent=2))
         if rep["days"] < 20:
             print("\nNOTE: too few days to read any of this as a result. It is a "
