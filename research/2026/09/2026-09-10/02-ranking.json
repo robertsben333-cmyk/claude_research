@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "run_date": "2026-09-10",
+  "note": "Built by stage 3, not stage 2: stage 2 batch 2 logged 'STARTED' (KR, CPRT, DSGX, RH) but never logged FINISHED and never wrote this file. Only KR and CPRT of that batch's four names have dossiers on disk; ORCL and ADBE survive from batch 1. DSGX and RH have no dossier and are not researched. Per earnings-panel-advice skill step 1 ('If some dossiers exist but no ranking, build the ranking yourself from 02-dossiers/*.json using panel.rank_by'), this file was constructed by stage 3 from the four dossiers that do exist, using the same formula stage 2 would have used.",
+  "formula": "panel_priority = 0.45*|preliminary_direction_score| + 0.35*evidence_completeness + 0.20*change_expectation",
+  "formula_note": "change_expectation is null for every name: stage 1 (triage) ran in skip mode (universe 8 <= threshold 10), so no triage scores exist for any candidate. Following the convention used on 2026-08-28 and 2026-09-09, the 0.20 term is dropped rather than imputed; panel_priority is the sum of the first two terms only. Since this affects every name equally, the relative ranking is unaffected.",
+  "names": [
+    {
+      "ticker": "KR",
+      "company": "The Kroger Co.",
+      "preliminary_direction_score": -22,
+      "evidence_completeness": 84,
+      "change_expectation": null,
+      "panel_priority": 39.3,
+      "event_confirmed": true,
+      "event_implied_move_pct": 5.79,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "ORCL",
+      "company": "Oracle Corporation",
+      "preliminary_direction_score": -22,
+      "evidence_completeness": 82,
+      "change_expectation": null,
+      "panel_priority": 38.6,
+      "event_confirmed": true,
+      "event_implied_move_pct": 11.5,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "CPRT",
+      "company": "Copart, Inc.",
+      "preliminary_direction_score": -18,
+      "evidence_completeness": 84,
+      "change_expectation": null,
+      "panel_priority": 37.5,
+      "event_confirmed": true,
+      "event_implied_move_pct": 6.2,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "ticker": "ADBE",
+      "company": "Adobe Inc.",
+      "preliminary_direction_score": -20,
+      "evidence_completeness": 80,
+      "change_expectation": null,
+      "panel_priority": 37.0,
+      "event_confirmed": true,
+      "event_implied_move_pct": 7.24,
+      "has_historical_moves": true,
+      "panel_eligible": true,
+      "exclusion_reason": null
+    }
+  ],
+  "not_researched": [
+    {
+      "ticker": "DSGX",
+      "company": "The Descartes Systems Group Inc.",
+      "reason": "part of the capped 6-name shortlist and batch 2's plan (KR, CPRT, DSGX, RH), but stage 2 batch 2 halted before this name was researched -- no dossier, no run-log FINISHED entry"
+    },
+    {
+      "ticker": "RH",
+      "company": "RH",
+      "reason": "part of the capped 6-name shortlist and batch 2's plan (KR, CPRT, DSGX, RH), but stage 2 batch 2 halted before this name was researched -- no dossier, no run-log FINISHED entry"
+    }
+  ],
+  "panel_names_top_n": 2,
+  "top_n_for_panel": ["KR", "ORCL"]
+}

@@ -46,3 +46,10 @@
 ## Execution machinery merged (out of band)
 - Logged at 2026-09-10 15:11 UTC
 - Steps 0b and 7 of today's stage E run were no-ops because config/pipeline.yaml had no execution block and scripts/alpaca_trade.py and docs/EXECUTION.md were absent. Found on branch claude/alpaca-auto-orders-integration-y397gh (PR #1, 8 commits, forked at ead1c5f before today's edge run); merged into claude/missing-execution-config-14ya8q. No conflicts with today's research files. smoke_test.py passes all 25 execution checks. execution.enabled stays false. Post-hoc dry run of alpaca_trade.py plan over today's edge/ wrote alpaca-plan.json: 5 of 17 names clear the benchmark (HOFT +7.30 long, FEIM -3.50, REF -3.50, ORCL -3.20 short, RH +3.00 long), gross 84.2% of a 100k assumed equity, 10 names below the 3.0 conviction floor and 2 below the 200k turnover floor. That plan was generated during this merge, not by the 16:04 run, and no account was contacted.
+
+## Stage 3 — panel & advice — STARTED
+- Logged at 2026-09-10 15:55 UTC
+- Stage 2 batch 2 never logged FINISHED and never wrote 02-ranking.json (KR, CPRT dossiers exist; DSGX, RH do not). Built 02-ranking.json in this stage from the 4 available dossiers (ADBE, CPRT, KR, ORCL), per earnings-panel-advice skill step 1.
+- Ranking (panel_priority, change_expectation term dropped, all null): KR 39.3, ORCL 38.6, CPRT 37.5, ADBE 37.0
+- panel.names=2 (config default, already at first budget.degrade_order step): panelling KR, ORCL
+- Plan: refresh spot/implied-move anchors for KR and ORCL, run 7 isolated personas per name (14 subagents total), synthesize, write dossiers and 04-advice
