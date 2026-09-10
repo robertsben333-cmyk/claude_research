@@ -328,11 +328,20 @@ execution:
     # all three arms did BETTER at the close (+2.16% against +0.90% for arm A).
     # Re-price those 37 on scripts/edge_exit.py's hourly grid before turning this on.
     #
-    # And it needs a SECOND run a day. Alpaca rejects rather than queues `opg`
-    # between 09:28 and 19:00 ET, so the amc leg has to be submitted in the
-    # pre-market of the exit date (14:00 Amsterdam is 08:00 ET and works). It also
-    # requires `flatten_before_entry: false`, because a flatten at the start of the
-    # run sells the amc names before their opening auction ever arrives.
+    # TURNING THIS ON IS THREE CHANGES, NOT ONE, and two of them are outside this file.
+    #   1. this flag -> true
+    #   2. flatten_before_entry -> false, or the flatten sells the amc names hours
+    #      before the opening auction they are meant to exit into
+    #   3. the 14:00 Amsterdam exit Routine must EXIST, because Alpaca rejects rather
+    #      than queues an `opg` order between 09:28 and 19:00 ET -- nothing firing in
+    #      the European afternoon can place one. The prompt is in
+    #      docs/routine-prompts/edge-execute.md and a person has to create it;
+    #      create_trigger is refused to agent sessions here.
+    # Doing 1 and 2 without 3 means the amc names are never sold on their exit date.
+    # That is caught rather than silent: `close` sends anything past its exit date at
+    # plain market on the next run, and `open` REFUSES to enter a new book while a
+    # position is overdue and unsold. A missed firing costs the measured exit and one
+    # loud refusal; it does not accumulate a book nobody is managing.
     exit_by_session: false
     time_in_force: day           # market entries, and the plain-market fallback
     allow_shorts: true           # a short leg also needs Alpaca to call it shortable

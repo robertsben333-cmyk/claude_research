@@ -177,15 +177,28 @@ is rejected between 09:28 and 19:00 ET so no European-afternoon Routine can plac
 (closing auction) is rejected between 15:50 and 19:00 ET, shorts need a margin account and an
 easy-to-borrow name checked daily, and fractional shorts do not exist.
 
+**Nothing sells a position twice and nothing forgets to sell one.** Two holes were open
+until 2026-09-10. `close` only ever closed legs whose exit date was exactly today, so one
+missed run left a position that no later run would sell; it now treats a past exit date as
+**overdue** and sends it at plain market immediately. And `open` now REFUSES to enter a new
+book while any position is past its exit date with no exit submitted (`--allow-stale`
+overrides and stacks a second book on the first). That refusal is what makes the
+per-session exit safe to switch on: `flatten_before_entry` used to guarantee a clean slate
+by selling everything, and once the flatten is off the guarantee has to come from checking.
+
 **The per-session exit exists in `alpaca_trade.py` and is off.** `orders.exit_by_session`
 gives amc the opening auction (`opg`, +8.91% a trade in-sample against +5.23% at the close)
 and bmo the closing auction (`cls`, +6.48% against +2.96% at the open); together +7.81%
-(t=4.01) against +5.80% for one uniform close. Switching it on needs
-`flatten_before_entry: false` — a flatten at the start of the run sells the amc names before
-their auction — and a **second run a day**, because Alpaca rejects rather than queues `opg`
-between 09:28 and 19:00 ET, so the amc leg has to go in during the pre-market of the exit
-date (14:00 Amsterdam is 08:00 ET). `auction_window()` refuses rather than sending an order
-that will bounce. **Recycling the amc cash buys no extra return**: with one auction entry a
+(t=4.01) against +5.80% for one uniform close. Switching it on is **three
+changes, not one**: this flag, `flatten_before_entry: false` (a flatten at the start of the
+run sells the amc names before their auction), and the 14:00 Amsterdam exit Routine must
+already exist. Alpaca rejects rather than queues `opg` between 09:28 and 19:00 ET, so
+nothing firing in the European afternoon can sell an amc position into its own opening
+auction — the amc leg has to go in during the pre-market of the exit date, and 14:00
+Amsterdam is 08:00 ET. `auction_window()` refuses rather than sending an order that will
+bounce, and the prompt for that Routine is in `docs/routine-prompts/edge-execute.md`. Doing
+the first two without the third does not lose the book: `close` sweeps anything overdue at
+market and `open` refuses to stack a new book on it. **Recycling the amc cash buys no extra return**: with one auction entry a
 day the capital slot is 24 hours either way, which is why `capital_table` in `edge_exit.py`
 prints return per slot-day equal to return per trade and flags the hours-held version as a
 denominator artefact. What it buys is settled cash before the auction that funds the next

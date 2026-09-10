@@ -148,6 +148,24 @@ Only when `execution.enabled` is `true` in `config/pipeline.yaml`. It is committ
 python3 scripts/alpaca_trade.py flatten --submit
 ```
 
+**Unless `orders.exit_by_session` is `true`.** Then the flatten is wrong — it would sell
+the amc names hours before the opening auction they are supposed to exit into — and the
+sell is two calls instead of one:
+
+```bash
+python3 scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
+python3 scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
+```
+
+`close` sends the bmo legs due today into the closing auction (`cls`, accepted until
+15:50 New York, so a 16:04 Amsterdam start has hours), and it sends anything **overdue**
+— exit date already past — at plain market immediately. It does **not** send the amc
+legs: those need `opg`, which Alpaca rejects between 09:28 and 19:00 ET, so they are the
+separate 14:00 Amsterdam Routine in `docs/routine-prompts/edge-execute.md`. If that
+Routine does not exist, do not turn `exit_by_session` on: `open` at step 6b will refuse
+to enter a new book on top of unsold positions, which is the failure being made loud
+rather than silent.
+
 **First, not last.** Two reasons, and the second is the one that matters. Every
 position in the account has already been through its print, so nothing is cut short of
 its event; and if this session dies mid-hunt — which has happened to other stages on

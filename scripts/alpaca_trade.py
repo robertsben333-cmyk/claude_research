@@ -501,6 +501,30 @@ def entry_window(api, moc=True):
     return True, f"{left:.0f} min to the close"
 
 
+def overdue_legs(today, scan="research/*/*/*/edge"):
+    """Entries whose exit date has passed with no exit ever submitted.
+
+    The safety property the whole operation rests on: a new book is never entered on
+    top of an old one nobody sold. `flatten_before_entry` used to guarantee that by
+    selling everything, but the per-session exit turns the flatten off, and then the
+    guarantee has to come from checking rather than from sweeping.
+    """
+    out = []
+    for run in sorted(glob.glob(str(REPO / scan))):
+        p = orders_path(run)
+        if not p.exists():
+            continue
+        state = json.loads(p.read_text(encoding="utf-8"))
+        done = {x.get("closes") for x in state.get("exits", []) if x.get("submitted")}
+        for e in state.get("entries", []):
+            xd = e.get("exit_date")
+            if (e.get("submitted") and xd and xd < today
+                    and e.get("client_order_id") not in done):
+                out.append({"run": run, "symbol": e["symbol"], "exit_date": xd,
+                            "side": e["side"], "qty": e.get("qty")})
+    return out
+
+
 def exit_tif_for(session, ex):
     """Which auction closes a position, when `orders.exit_by_session` is on.
 
@@ -708,6 +732,26 @@ def print_plan(plan):
 def cmd_open(a, api, ex):
     blocked = guard(api, ex, a.submit, a.live_account_i_understand)
 
+    # Never stack a new book on an unsold one. With `flatten_before_entry` on, the
+    # flatten below makes this impossible; with the per-session exit it is off, and
+    # then a missed exit run is the failure that has to be loud.
+    today = None
+    if api.usable:
+        clk, _ = api.clock()
+        today = clk["timestamp"][:10] if clk else None
+    if today:
+        stale = overdue_legs(today)
+        if stale and not a.allow_stale:
+            for s in stale:
+                print(f"  ! {s['symbol']:8s}{s['side']:5s}due {s['exit_date']}  "
+                      f"{s['run']}")
+            raise SystemExit(
+                f"refusing: {len(stale)} position(s) are past their exit date with no "
+                f"exit submitted. Close them first:\n"
+                f"  python3 scripts/alpaca_trade.py close "
+                f"--scan 'research/*/*/*/edge' --submit\n"
+                f"(--allow-stale to enter anyway, which stacks a second book on top)")
+
     # Clean slate first, and sizing after it, so the plan is drawn against the
     # equity and buying power the flatten actually leaves behind.
     flat = None
@@ -819,7 +863,14 @@ def cmd_close(a, api, ex):
             if any(x.get("client_order_id") == cid and x.get("submitted")
                    for x in state["exits"]):
                 continue
-            due = a.all or (today and e.get("exit_date") == today)
+            # A leg whose exit date has PASSED is overdue, not finished. The old rule
+            # closed only `exit_date == today`, so one missed run left a position that
+            # no later run would ever sell. Overdue legs go at plain market: their
+            # auction is gone, and holding on for the next one is not a decision
+            # anything here measured.
+            xd = e.get("exit_date")
+            overdue = bool(today and xd and xd < today)
+            due = a.all or overdue or (today and xd == today)
             if not due:
                 continue
             reason = blocked
@@ -834,6 +885,9 @@ def cmd_close(a, api, ex):
             if qty is None and not reason:
                 qty = int(e["qty"])
             tif = exit_tif_for(e.get("session"), ex) if by_session else None
+            if overdue:
+                tif = ex["orders"].get("time_in_force", "day")
+                print(f"  {run} {e['symbol']:8s} overdue since {xd}; going at market")
             if tif:
                 ok, note = window_for(tif)
                 if not reason and not ok:
@@ -960,6 +1014,8 @@ def main():
                    help="if the MOC window has passed, send a plain market order")
     p.add_argument("--no-flatten", action="store_true",
                    help="keep the existing positions instead of selling them first")
+    p.add_argument("--allow-stale", action="store_true",
+                   help="enter even though positions are past their exit date unsold")
 
     p = sub.add_parser("flatten", help="cancel every order and close every position, "
                                        "at market, now")

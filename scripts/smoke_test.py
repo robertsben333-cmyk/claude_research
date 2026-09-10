@@ -558,6 +558,45 @@ def main():
     check("an opg order is still a plain market order",
           at.order_body("X", 1, "sell", ex, tif="opg")["type"] == "market")
 
+    # The safety property: a new book is never entered on top of an unsold one. With
+    # flatten_before_entry on, the flatten guarantees it. With the per-session exit
+    # that flatten is off, so the guarantee has to come from this check instead.
+    import json as _json
+    import tempfile as _tf
+    from pathlib import Path as _Path
+    _tmp = _Path(_tf.mkdtemp())
+    _run = _tmp / "research" / "2026" / "09" / "2026-09-08" / "edge"
+    _run.mkdir(parents=True)
+    (_run / "alpaca-orders.json").write_text(_json.dumps({
+        "entries": [
+            {"symbol": "AAA", "side": "buy", "qty": 10, "exit_date": "2026-09-09",
+             "submitted": True, "client_order_id": "edge-2026-09-08-AAA-entry"},
+            {"symbol": "BBB", "side": "sell", "qty": 20, "exit_date": "2026-09-09",
+             "submitted": True, "client_order_id": "edge-2026-09-08-BBB-entry"},
+            {"symbol": "CCC", "side": "buy", "qty": 5, "exit_date": "2026-09-10",
+             "submitted": True, "client_order_id": "edge-2026-09-08-CCC-entry"},
+            {"symbol": "DDD", "side": "buy", "qty": 5, "exit_date": "2026-09-09",
+             "submitted": False, "client_order_id": "edge-2026-09-08-DDD-entry"},
+        ],
+        "exits": [{"closes": "edge-2026-09-08-BBB-entry", "submitted": True}],
+        "log": []}))
+    _repo = at.REPO
+    at.REPO = _tmp
+    try:
+        _late = [g["symbol"] for g in at.overdue_legs("2026-09-10")]
+        check("an unsold position past its exit date is flagged overdue",
+              _late == ["AAA"], f"flagged {_late}")
+        check("a position whose exit was already sent is not flagged",
+              "BBB" not in _late)
+        check("a position due today is not flagged overdue",
+              "CCC" not in _late)
+        check("an entry that never filled is not flagged as an open position",
+              "DDD" not in _late)
+        check("nothing is overdue on its own exit date",
+              at.overdue_legs("2026-09-09") == [])
+    finally:
+        at.REPO = _repo
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:
