@@ -35,6 +35,7 @@ BEST horizon beats the observed best.
     python3 scripts/edge_exit.py --out docs/edge-exit.json
 """
 import argparse
+import glob
 import json
 import math
 import os
@@ -154,6 +155,10 @@ def hourly_prices(m5, entry_date, react_date):
     return px
 
 
+def now_et():
+    return datetime.now(ET)
+
+
 def exit_prices(ticker, event_date, session, cache=None):
     """Entry close plus one price per horizon. Missing horizons come back None."""
     dd = daily(ticker, cache)
@@ -188,6 +193,21 @@ def exit_prices(ticker, event_date, session, cache=None):
         b = _bar_starting(react_bars, hm)
         px[lab] = b["close"] if b else None
     hp = hourly_prices(m5, entry_date, react)
+    # Nothing that has not happened yet may be reported. A daily bar for a session
+    # still in progress carries the LAST price as its close, which would silently
+    # become an "exit at the close" that nobody could have taken.
+    n = now_et()
+    entry_dt = datetime.fromisoformat(entry_date + "T16:00:00").replace(tzinfo=ET)
+    elapsed = (n - entry_dt).total_seconds() / 3600.0
+    for h in list(hp):
+        if h > elapsed:
+            hp[h] = None
+    if elapsed < 24.0:
+        px["close"] = None
+        for lab, need in (("midday", 20.0), ("m60", 18.5), ("m30", 18.0),
+                          ("m15", 17.75), ("open", 17.5)):
+            if elapsed < need:
+                px[lab] = None
     return {"entry_date": entry_date, "entry_close": round(entry, 4),
             "reaction_date": react,
             "hourly_move": {f"{h:g}": (None if hp[h] is None
@@ -746,6 +766,71 @@ def bootstrap_vs_close(panel, floor, seed, trials=4000):
 
 # ------------------------------------------------------------------------ panel
 
+def impact_sum_of(row):
+    """The ranking key. Older runs carry no top-level field; sum the findings."""
+    v = row.get("impact_sum")
+    if v is not None:
+        return float(v)
+    fs = row.get("findings") or []
+    vals = [f.get("expected_impact_pct") for f in fs
+            if f.get("expected_impact_pct") is not None]
+    return float(sum(vals)) if vals else None
+
+
+def build_panel_from_runs(runs, cache):
+    """Panel straight off `edge-scores.json` + `baselines/`, so a day that is not in
+    `docs/edge-rows.json` yet -- yesterday's, or one still resolving -- can be scored."""
+    panel, problems = [], []
+    for run in runs:
+        rp = Path(run)
+        sf = rp / "edge-scores.json"
+        if not sf.exists():
+            problems.append(f"{run}: no edge-scores.json (run not finished)")
+            continue
+        scores = json.loads(sf.read_text())
+        out = []
+        for r in scores.get("ranking", []):
+            t = r["ticker"]
+            if not r.get("rankable"):
+                continue
+            imp = impact_sum_of(r)
+            if imp is None:
+                problems.append(f"{run} {t}: no impact_sum and no sized findings")
+                continue
+            bf = rp / "baselines" / f"{t}.json"
+            if not bf.exists():
+                problems.append(f"{run} {t}: no baseline file")
+                continue
+            b = json.loads(bf.read_text())
+            if not b.get("event_date"):
+                problems.append(f"{run} {t}: baseline has no event_date")
+                continue
+            res, err = exit_prices(t, b["event_date"], b.get("session", "bmo"), cache)
+            if err:
+                problems.append(f"{run} {t}: {err}")
+                continue
+            tape = b.get("tape") or {}
+            row = {"run": str(run), "ticker": t, "session": b.get("session", "bmo"),
+                   "event_date": b["event_date"], "reaction_date": res["reaction_date"],
+                   "entry_date": res["entry_date"], "entry_close": res["entry_close"],
+                   "impact_sum": imp, "edge_score": r.get("edge_score"),
+                   "neg_runup": (None if tape.get("run_up_20d_pct") is None
+                                 else -tape["run_up_20d_pct"]),
+                   "dollar_vol": ((tape.get("spot") or b.get("spot") or 0)
+                                  * (tape.get("adv_20d") or 0)) or None,
+                   "baseline_move_close": None,
+                   "px": res["px"]}
+            for h in HORIZONS:
+                row[f"mv_{h}"] = res["move"].get(h)
+            row["hourly_move"] = res["hourly_move"]
+            for k, v in res["hourly_move"].items():
+                row[f"hr_{k}"] = v
+            out.append(row)
+        if out:
+            panel.append(out)
+    return panel, problems
+
+
 def build_panel(cache, keep_dup):
     rows_by_day = json.loads((ROOT / "docs" / "edge-rows.json").read_text())
     panel, problems = [], []
@@ -798,11 +883,19 @@ def main():
     ap.add_argument("--floor", type=float, default=3.0,
                     help="conviction floor on |impact_sum|, in points")
     ap.add_argument("--min-dollar-vol", type=float, default=5e6)
+    ap.add_argument("--runs", nargs="*",
+                    help="edge/ dirs to score directly instead of docs/edge-rows.json")
     ap.add_argument("--keep-duplicate-day", action="store_true",
                     help="keep the 2026-09-04 re-hunt; double-counts five events")
     a = ap.parse_args()
 
-    panel, problems = build_panel(a.cache, a.keep_duplicate_day)
+    if a.runs:
+        runs = []
+        for pat in a.runs:
+            runs.extend(sorted(glob.glob(pat)) or [pat])
+        panel, problems = build_panel_from_runs(runs, a.cache)
+    else:
+        panel, problems = build_panel(a.cache, a.keep_duplicate_day)
     panel = demean_legs(add_legs(panel))
     movekeys = [f"mv_{h}" for h in HORIZONS]
     n_all = sum(len(d) for d in panel)
@@ -909,8 +1002,9 @@ def main():
     print("\n  worst / median / best single trade in the floor book:")
     for h in HORIZONS:
         v = rt[h]
-        print(f"  {h:<12}{v['floor_worst_pct']:>10}{v['floor_median_ret_pct']:>10}"
-              f"{v['floor_best_pct']:>10}")
+        print(f"  {h:<12}" + "".join(
+            f"{('' if v[k] is None else v[k]):>10}"
+            for k in ("floor_worst_pct", "floor_median_ret_pct", "floor_best_pct")))
 
     sr = session_returns(panel, a.floor)
     print("\nRETURNS by session (per trade, floor book)")
@@ -929,7 +1023,7 @@ def main():
         print(f"  {n:<24}{v['floor_n']:>7}{v['floor_hits']:>6}"
               f"{('' if v['floor_mean_ret_pct'] is None else v['floor_mean_ret_pct']):>11}"
               f"{('' if v['floor_t'] is None else v['floor_t']):>7}"
-              f"{v['floor_mean_after_1.5pct_cost']:>8}"
+              f"{('' if v['floor_mean_after_1.5pct_cost'] is None else v['floor_mean_after_1.5pct_cost']):>8}"
               f"{('' if v['ls_third_mean_day_pct'] is None else v['ls_third_mean_day_pct']):>9}"
               f"{v['ls_third_cumulative_pct']:>9}{v['ls_third_days']:>7}"
               f"{('' if v['null_always_short_day_pct'] is None else v['null_always_short_day_pct']):>11}")

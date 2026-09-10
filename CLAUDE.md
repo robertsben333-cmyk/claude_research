@@ -153,6 +153,22 @@ and the best of the six beats the close in 91% of resamples. Run it forward; do 
 believe it yet. Extended-hours bars carry no volume from this source, so every horizon
 before the opening auction is a price that existed and not size that could have traded.
 
+**The exit finding does not replicate on the first two forward days, and a second sample in
+this repo contradicts it.** `edge_exit.py --runs <edge dir>` scores any day directly, with a
+cutoff at the current clock so nothing unresolved is reported (`docs/edge-exit-forward.json`).
+On 09-08 plus 09-09 — 30 names, 14 above the conviction floor, neither day in the fitted
+sample — every horizon available on both days is flat to negative: −1.42% per trade in the
+after-hours, −0.05% at the opening print, −1.22% an hour in. On 09-09 the free control paid
++3.9% to +4.5% per day at every hour after 08:00 against −0.2% to −0.9% for the hunt's own
+book, and the two largest predictions were both wrong and large (NAVN +10.0 fell 18.4%, WLTH
+−10.5 rose 8.0%). And `backtest/RESULTS.md` priced its 37 sealed events at both exits: all
+three arms did **better at the close** (+2.16% against +0.90% per trade for arm A). Re-price
+those 37 events on the hourly grid before acting on any exit rule. Execution reality, checked
+against Alpaca's current docs: extended hours are limit-only, an `opg` (opening auction) order
+is rejected between 09:28 and 19:00 ET so no European-afternoon Routine can place one, `cls`
+(closing auction) is rejected between 15:50 and 19:00 ET, shorts need a margin account and an
+easy-to-borrow name checked daily, and fractional shorts do not exist.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080

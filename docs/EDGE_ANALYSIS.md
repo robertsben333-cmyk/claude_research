@@ -820,6 +820,80 @@ On the liquid subset (≥$5m/day, 26 names) the gap-versus-session pattern holds
 ρ +0.243 at the open against +0.271 at the close, book +7.22% against +7.29%, and the
 conviction correlation is *higher* at the open (+0.477) than at the close (+0.441).
 
+### Forward test, two days: nothing replicates yet
+
+09-08 and 09-09 were not in the sample any of the above was fitted on. `edge_exit.py --runs`
+scores a run directory directly, with a hard cutoff at the current clock so nothing that has
+not happened is reported. 09-08's eight names resolved on the 09-09 close; 09-09's 22 names
+are mid-session on 09-10 as of 14:50 UTC, so their close does not exist yet. 09-08 predates
+the `impact_sum` key and its number is summed from the findings, the same way
+`edge_decompose.py` does it. Output in `docs/edge-exit-forward.json`.
+
+| exit | trades | hits | per trade | t | amc | bmo |
+| --- | --- | --- | --- | --- | --- | --- |
+| after-hours / early pre-market | 14 | 7 | −1.42% | −0.50 | +0.67% | −2.98% |
+| pre-open | 13 | 7 | −1.09% | −0.26 | −0.18% | −1.67% |
+| opening print | 14 | 6 | −0.05% | −0.01 | +1.19% | −0.98% |
+| open + 15 min | 13 | 7 | −0.52% | −0.14 | −0.74% | −0.39% |
+| open + 60 min | 13 | 7 | −1.22% | −0.32 | −0.95% | −1.45% |
+| first close | 3 | 1 | −10.33% | −0.77 | — | — |
+
+**Every horizon available on both days is flat to negative.** Only the 09-08 close exists, on
+three trades, so the −10.33% is one day and not a comparison. The ordering the pooled sample
+gave — early beats late for amc, late beats early for bmo — appears on 09-08 (its book is
+−1.54% at the open and −10.33% at the close, an 8.8-point gap driven almost entirely by YQ
+reversing 29 points intraday) and does not appear on 09-09 (−0.16% at the open, −0.90% by
+10:00, with the two largest predictions both wrong and large: NAVN at +10.0 fell 18.4% and
+WLTH at −10.5 rose 8.0% by 10:00). Two days is an anecdote about an anecdote; the point is
+that it is not confirmation.
+
+Worse for the method as a whole: on 09-09 the free control paid **+3.9% to +4.5% per day**
+at every hour after 08:00 while the hunt's own book paid −0.2% to −0.9%. Shorting the day
+blind beat the research by roughly five points.
+
+### The other 37 events in this repo say the opposite
+
+`backtest/RESULTS.md` priced its 37 sealed events at both exits, from a 14:00 ET entry on the
+session before the print. All three arms did **better at the close**:
+
+| arm | return/trade, exit open | return/trade, exit close |
+| --- | --- | --- |
+| A naive | +0.90% | +2.16% |
+| B plan-first | +0.45% | +2.24% |
+| C skill | −1.16% | +0.11% |
+
+That is an independent sample of the same size as stage E's, on overlapping calendar months,
+and it puts the close ahead by 1.3 to 1.8 points per trade. It is not a direct contradiction —
+different entry, different forecasts, no amc/bmo split recorded — but any claim that the first
+reaction is where the information sits has to explain it, and right now nothing does. Re-pricing
+those 37 events on the hourly grid is the cheapest way to settle it and has not been done.
+
+### What the execution venue allows
+
+Checked against Alpaca's current documentation (Placing Orders, updated 2026-08-10; 24/5
+Trading, 2026-07-07; Margin and Short Selling, 2026-06-24), because an exit hour that cannot
+be traded is not an exit:
+
+- **Extended hours are limit-only.** `time_in_force` must be `day` or `gtc` with
+  `extended_hours=true`; market, stop and stop-limit are rejected. So every horizon before
+  09:30 on the chart is a limit order that may not fill, which is the "price existed, size
+  did not" caveat made concrete.
+- **The opening auction has a clean instrument**: `opg` time-in-force. But submissions between
+  09:28 and 19:00 ET are *rejected*, not queued — an `opg` order must go in after 19:00 ET the
+  evening before. No Routine firing during European afternoon hours can place one.
+- **The close has a clean instrument too**: `cls` time-in-force, rejected between 15:50 and
+  19:00 ET. A run at 13:30 ET can submit both entries and `cls` exits.
+- **Shorting needs a margin account with $2,000 equity and an easy-to-borrow name**, checked
+  per name per day; hard-to-borrow shorts cannot be opened at all. Fractional shorts are not
+  supported, so the short leg cannot be sized fractionally.
+- Overnight (20:00–04:00 ET) executes on a single ATS rather than the consolidated market, so
+  a fill there is thinner than a regular-session quote suggests — on top of the six book
+  positions already under $1m a day.
+
+The practical consequence: the two horizons the pooled sample liked are the two with real
+instruments, and the pre-market hours the chart peaks on are the ones with neither a market
+order nor a verifiable book.
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a
@@ -836,5 +910,11 @@ conviction correlation is *higher* at the open (+0.477) than at the close (+0.44
 8. Resolve every run at the opening print as well as the close. `edge_resolve.py` measures
    one window and the amc names are scored on the wrong one — ρ +0.273 at the open against
    +0.156 at the close. Two columns cost nothing and the sample needs the forward test.
-9. Do not exit into the release. Under half the move is there, and for bmo names the
+9. Re-price `backtest/`'s 37 events on the same hourly grid before acting on any exit rule.
+   Two samples in this repo disagree about open versus close and only one of them has been
+   decomposed.
+10. Do not build execution on this until the forward days turn. Two out-of-sample days are
+   flat to negative at every tradeable hour, and on 09-09 shorting blind beat the hunt by
+   about five points a day.
+11. Do not exit into the release. Under half the move is there, and for bmo names the
    after-hours ranking is negative.
