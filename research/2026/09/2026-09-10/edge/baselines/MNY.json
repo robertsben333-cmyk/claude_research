@@ -1,0 +1,110 @@
+{
+ "ticker": "MNY",
+ "event_date": "2026-09-11",
+ "session": "bmo",
+ "as_of_utc": "2026-09-10T14:09:43+00:00",
+ "sources": [
+  "yahoo chart v8 daily bars",
+  "yahoo options v7 front expiry (cookie+crumb)",
+  "sec edgar submissions api, 8-K item 2.02 acceptance times"
+ ],
+ "tape": {
+  "last_close_date": "2026-09-10",
+  "spot": 0.84,
+  "run_up_5d_pct": -1.18,
+  "run_up_20d_pct": -10.16,
+  "pct_from_52w_high": -62.16,
+  "pct_from_52w_low": 1.2,
+  "realised_vol_20d_annualised_pct": 27.3,
+  "avg_volume_20d": 11441
+ },
+ "cik": "0001974044",
+ "history": {
+  "moves": [
+   {
+    "event_date": "2026-08-28",
+    "session": "bmo",
+    "move_pct": 4.09
+   },
+   {
+    "event_date": "2026-08-13",
+    "session": "amc",
+    "move_pct": -2.15
+   },
+   {
+    "event_date": "2026-06-24",
+    "session": "bmo",
+    "move_pct": -18.91,
+    "session_conflict": {
+     "tagged_session": "bmo",
+     "volume_says": "bmo",
+     "event_day_volume": 554900,
+     "next_day_volume": 64900,
+     "median_20d_before": 19550,
+     "move_as_tagged_pct": -18.91,
+     "move_if_bmo_pct": -18.91,
+     "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+    }
+   },
+   {
+    "event_date": "2026-06-10",
+    "session": "bmo",
+    "move_pct": 0.78
+   },
+   {
+    "event_date": "2026-05-29",
+    "session": "amc",
+    "move_pct": -1.12
+   },
+   {
+    "event_date": "2026-05-22",
+    "session": "amc",
+    "move_pct": 1.48
+   },
+   {
+    "event_date": "2026-04-30",
+    "session": "bmo",
+    "move_pct": 1.53
+   },
+   {
+    "event_date": "2026-04-16",
+    "session": "bmo",
+    "move_pct": 0.76
+   }
+  ],
+  "n": 8,
+  "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+  "median_abs_move_pct": 1.5,
+  "max_abs_move_pct": 18.91,
+  "up_count": 5,
+  "session_conflicts": 1
+ },
+ "event_plausibility": {
+  "days_since_last_print": 14,
+  "median_gap_days": 14,
+  "ratio": 1.0,
+  "last_print": "2026-08-28",
+  "verdict": "unknown",
+  "cadence_implausible": true,
+  "reason": "inferred cadence of 14 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+ },
+ "options": {
+  "status": "empty_chain",
+  "expiry": "2026-09-18"
+ },
+ "deadband_pct": 1.5,
+ "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+ "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+ "expected_move_pct": 1.5,
+ "expected_move_basis": "median historical reaction (no usable option chain)",
+ "baseline_quality": {
+  "options_usable": false,
+  "history_events": 8,
+  "history_usable": 8,
+  "event_plausibility": "unknown",
+  "priced_direction_available": false,
+  "tier": "partial",
+  "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+ },
+ "status": "ok"
+}

@@ -30,3 +30,7 @@
 - This batch: KR, CPRT, DSGX, RH (position 3 from batch 1's gap, plus positions 4-6)
 - Already on disk, skipping: ORCL, ADBE (both .md and .json present from batch 1)
 - Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2) -- wave 1: KR, CPRT; wave 2: DSGX, RH -- publish after each wave and after each dossier; final batch, so 02-ranking.json follows
+
+## Edge hunt — 2026-09-10 amc + 2026-09-11 bmo — STARTED
+- Logged at 2026-09-10 14:10 UTC
+- Stage E fired 14:04 UTC (16:04 Amsterdam, 10:04 New York), ~34 min into the US session. Universe: 17 of 52 calendar rows resolve to the window (12 amc 09-10, 5 bmo 09-11); --include-unknown withheld. Baselines sealed and committed BEFORE any agent launch: all 17 status=ok. 7 names carry a live option chain (ORCL spread 2.6% of mid, ADBE 12.7%, CPRT 11.3%, LPTH 22.2%, KR 30.0%, RH 59.0%, FEIM 79.1%) — the 16:04 timing gave ORCL/ADBE/CPRT two-sided quotes. Event-plausibility flags to resolve at sweep: CSBR suspect; DSGX and MNY unknown+cadence_implausible; REF and ZUMZ unknown (no reaction history). Plan: 1 edge-sweep over all 17, then 1 unpriced-hunter per confirmed name, cap 20 subagents (1+19), so up to 17 hunters fits with no shedding. No adversary pass (removed 2026-09-09). Execution: config/pipeline.yaml has no execution block and scripts/alpaca_trade.py is absent from this tree, so steps 0b/7 of the Routine prompt are no-ops — dry run, no book sold and none bought.
