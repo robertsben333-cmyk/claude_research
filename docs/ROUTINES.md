@@ -18,9 +18,8 @@ simply finds an empty universe and stops cheaply.
 | 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
-| 16:04 | E · Edge hunt | `earnings-edge-hunt` | 1 sweep + ≤8 hunters + ≤6 adversaries, Opus/high | **high** |
+| 16:04 | E · Edge hunt, and the book it places | `earnings-edge-hunt` | 1 sweep + ≤19 hunters, Opus/high | **high** |
 | 17:03 | C · Forward capture | `earnings-capture` | 0 (script) + ≤6 Sonnet | low |
-| 20:45 | E · Execution (does not exist) | none — `alpaca_trade.py` | 0 (script) | negligible |
 
 ## Stage E — edge hunt
 
@@ -57,29 +56,30 @@ name it looks at; E scores whether the market has missed something and ranks the
 one signed number. If E's ranking carries no information N's does not, that is worth
 finding out cheaply.
 
-## Stage E execution — place the book at Alpaca
+### Stage E also trades its own ranking, in the same Routine
 
-**This Routine does not exist.** Intended cron `45 18 * * 1-5` (summer) /
-`45 19 * * 1-5` (winter), 20:45 Amsterdam, fresh session per fire, weekdays. The
-copy-paste prompt and the three preconditions are in
-`docs/routine-prompts/edge-execute.md`. An agent session cannot create it:
-`create_trigger` is refused by the permission layer here, so a person has to make it
-at claude.ai/code and record the id in both files.
+**There is no separate execution Routine.** Since 2026-09-10 the stage E prompt carries
+two extra steps and the same session does both: step 0b sells yesterday's book at market
+before the hunt launches, step 7 buys today's market-on-close after the note is
+published. `scripts/alpaca_trade.py` does the work; `docs/EXECUTION.md` is the contract.
 
-20:45 sits four hours behind stage E, which normally has `edge-scores.json` on `main`
-within the hour, and about an hour ahead of Alpaca's market-on-close cutoff of 15:50
-New York. Both ends matter: earlier and the ranking may not be published yet, later
-and the entry cannot be a closing price.
+One Routine rather than two, for three reasons. A second firing a day is a second thing
+that can fail silently, each with its own market-on-close deadline. The flatten belongs
+**before** a session that might die, not after — a killed session then leaves the account
+in cash instead of holding a book nobody is managing. And nothing has to be handed
+between two sessions, so there is no state to lose.
 
-It runs `alpaca_trade.py plan` then `open --submit`, which sells every existing
-position at market before placing the new book, so one firing a day is the whole
-operation. There is no second Routine for the exit; see `docs/EXECUTION.md` for what
-that trades away (the measured exit is the next close, ρ=+0.514 against ρ=+0.331 to
-the next open).
+The deadline is the one thing this adds to the stage's timing. Alpaca stops accepting
+market-on-close orders at 15:50 New York, which is 21:50 Amsterdam in summer. Firing at
+16:04 leaves about three hours of margin after the hunts; the 2026-09-09 run took 2h53m
+end to end. A session that was retried, resumed, or ran long may have none, and
+`alpaca_trade.py open` refuses on its own rather than filling at a price no measurement
+used.
 
-While `execution.enabled` is `false` in `config/pipeline.yaml` the Routine runs end to
-end and submits nothing. That is the state to leave it in for the first few days: a
-daily plan and a run-log entry, no orders.
+Both steps are silent until `execution.enabled` is `true` in `config/pipeline.yaml`,
+committed as `false`, and both need `scripts/alpaca_trade.py` to have reached `main`.
+See `docs/routine-prompts/edge-execute.md` for the preconditions and for the separate
+exit Routine kept there as a fallback.
 
 ## Stage C — forward capture
 

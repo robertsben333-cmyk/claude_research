@@ -139,6 +139,33 @@ Write a README in the archive saying which window it covered and why it moved.
 Two runs on one date is normal — a retry, a re-run against a corrected universe, or
 a second window. Assume it has happened rather than assuming it has not.
 
+## 0b. Sell yesterday's book, before anything else
+
+Only when `execution.enabled` is `true` in `config/pipeline.yaml`. It is committed as
+`false`, and a run that finds it false does nothing here and says nothing.
+
+```bash
+python3 scripts/alpaca_trade.py flatten --submit
+```
+
+**First, not last.** Two reasons, and the second is the one that matters. Every
+position in the account has already been through its print, so nothing is cut short of
+its event; and if this session dies mid-hunt — which has happened to other stages on
+four consecutive days — the account is in cash rather than holding a book nobody is
+managing. Flattening at the end would make a killed session leave yesterday's
+positions open indefinitely.
+
+It costs something. The measured exit is the next **close** (ρ=+0.514, permutation
+p=0.0015); selling half an hour into the session is nearer the next **open**, which
+measured weaker on the same events (ρ=+0.331, p=0.046).
+
+Record in the run log what was sold and at what unrealised P&L, before the sweep
+launches. That line is the only record of the exit, and there is nothing else in the
+repo that will reconstruct it.
+
+If the account is unreachable, say so in the run log and **carry on with the hunt**.
+The research is the point; the book is downstream of it.
+
 ## 1. Universe and sealed baseline
 
 ```bash
@@ -399,20 +426,29 @@ turnover; six of the first 22 long/short positions traded under $1m a day. A ran
 whose extremes are untradeable is a research result, not a signal, and the note
 should be the place a reader learns which one they are looking at.
 
-## 6b. Money, only if it is switched on
+## 6b. Buy today's book, after the research is done
 
-`scripts/alpaca_trade.py` can place the day's names at Alpaca and close them a
-session later. **Do nothing here unless `execution.enabled` is `true` in
-`config/pipeline.yaml`.** It is committed as `false`, and a run that finds it false
-places nothing and says nothing — this step is not a degradation and not a decision
-the session gets to make.
-
-If it is on:
+Same switch as step 0b: nothing here happens unless `execution.enabled` is `true`.
+This step is not a degradation and not a decision the session gets to make.
 
 ```bash
 python3 scripts/alpaca_trade.py plan --run <RUN>/edge
-python3 scripts/alpaca_trade.py open --run <RUN>/edge --submit
+python3 scripts/alpaca_trade.py open --run <RUN>/edge --submit --no-flatten
+python3 scripts/alpaca_trade.py status --run <RUN>/edge
 ```
+
+`--no-flatten` because step 0b already did it, hours ago. Without the flag `open`
+would try to close positions that are not there, which is harmless but writes a
+misleading line into the log.
+
+**Check the clock before you run it.** Entries are market-on-close and Alpaca stops
+accepting MOC ten minutes before the bell — 15:50 New York, earlier on US half-days.
+A run that fires at 16:04 Amsterdam and finishes its hunts by 19:00 has about three
+hours of margin; the 2026-09-09 run took 2h53m end to end. A session that has been
+retried, resumed, or has run long may have none. `open` refuses on its own when the
+window has passed, and that refusal is correct: record it and stop rather than
+reaching for `--allow-market-fallback`, which fills at a worse price than the one
+every number in `docs/EDGE_ANALYSIS.md` was measured at.
 
 The selection is one rule — `|impact_sum| >= conviction_floor`, side from the sign —
 plus a turnover floor and a shortability check. Do not widen it, do not hand-pick a

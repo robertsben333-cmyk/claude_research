@@ -16,6 +16,23 @@ points at the skill in the tree it actually cloned — so it can be pasted befor
 the merge without breaking a run. What it cannot do is make the new key live; only the
 merge does that.
 
+**2026-09-10, the execution steps.** The stage now trades its own ranking, in this same
+Routine and this same session: **step 0b sells yesterday's book before the hunt starts,
+step 7 buys today's after the note is published.** No second Routine, because a second
+firing a day is a second thing that can fail silently, and because the account has to be
+flat before a session that might die rather than after.
+
+Both steps are no-ops until `execution.enabled` is `true` in `config/pipeline.yaml`,
+which is committed as `false`. Both need `scripts/alpaca_trade.py`, which arrived on
+`claude/alpaca-auto-orders-integration-y397gh` — until that branch reaches `main` the
+step finds no script. That is why the prompt says *only if enabled* rather than
+*always*: it is safe to paste before the merge, it just does nothing.
+
+Step 7 has a deadline the rest of the prompt does not: Alpaca stops accepting
+market-on-close orders at 15:50 New York, so a run that starts at 16:04 Amsterdam has
+about three hours of margin after its hunts. The prompt says to check the clock and to
+accept the script's refusal rather than filling at a worse price.
+
 **2026-09-09, second change.** The adversary was removed outright and the double hunt
 with it, so steps 4 and 5 and the budget line changed. The day now hunts nineteen names
 with one hunter each: 1 sweep + 19 = 20. Everything else in the prompt is unchanged.
@@ -50,6 +67,10 @@ WHAT THIS STAGE PRODUCES: one signed number per company, so today's names can be
 
 THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the ranking key, what its units are, and what the note must report are all stated in `.claude/skills/earnings-edge-hunt/SKILL.md` and in `scripts/edge_score.py`'s own docstring, and they have changed before and will change again as days pool. Read them in the tree you actually cloned and follow those. Do not carry a remembered contract into the run: a prompt that restates the scoring contract is exactly the kind of duplicated fact that went stale for five days in CLAUDE.md's stage table and cost real runs. `edge-scores.json` names its own `ranking_key`; report whatever that says.
 
+0b. SELL YESTERDAY'S BOOK, BEFORE THE HUNT. Only if `execution.enabled` is true in config/pipeline.yaml - it is committed as false, and if it is false you do nothing here and say nothing. If it is true:
+   python3 scripts/alpaca_trade.py flatten --submit
+   First and not last, for two reasons. Every position in the account has already been through its print, so nothing is cut short of its event. And if this session dies mid-hunt, the account is in cash rather than holding a book nobody is managing - stage 2 published nothing on four consecutive days once, so assume a session can die. Record in the run log what was sold and at what unrealised P&L, before the sweep launches: that line is the only record of the exit. If the account is unreachable, say so and CARRY ON WITH THE HUNT. The research is the point; the book is downstream of it.
+
 1. UNIVERSE AND SEALED BASELINE.
    python3 scripts/run_paths.py <today> --json
    python3 scripts/edge_universe.py --window -o <RUN>/edge/universe.json
@@ -72,6 +93,14 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
    Write <RUN>/edge/edge-note.md, answer first: the ranked table, then the finding and URL driving the top and bottom names, then the names that could not be ranked and why. Follow the skill's list of what the note must also say - each item on it exists because a reader drew a wrong conclusion from a correct table.
    Do not filter edge-scores.json and do not apply any cutoff to it - selection is the reader's, and the ranking test needs the complete table.
    Finish with scripts/publish.sh. It pushes to main. This session is ephemeral and work that is not pushed is destroyed.
+
+7. BUY TODAY'S BOOK, AFTER THE RESEARCH IS PUBLISHED. Same switch as step 0b - nothing happens here unless `execution.enabled` is true. If it is:
+   python3 scripts/alpaca_trade.py plan --run <RUN>/edge
+   python3 scripts/alpaca_trade.py open --run <RUN>/edge --submit --no-flatten
+   python3 scripts/alpaca_trade.py status --run <RUN>/edge
+   `--no-flatten` because step 0b already did it, hours ago. Selection is one rule - |impact_sum| >= the conviction floor, side from the sign, plus a turnover floor and a shortability check - and the book is EQUAL WEIGHT. Do not size a name by its score, do not hand-pick a name in, and do not trade a name below the floor because its finding reads well: below the floor the sign is a coin flip and that is the entire reason the floor exists.
+   CHECK THE CLOCK FIRST. Entries are market-on-close and Alpaca stops accepting MOC ten minutes before the bell, 15:50 New York. Firing at 16:04 Amsterdam and finishing the hunts by 19:00 leaves about three hours; the 2026-09-09 run took 2h53m end to end. A session that was retried, resumed or ran long may have none. `open` refuses on its own when that window has passed - record the refusal and stop, do NOT reach for --allow-market-fallback, which fills at a worse price than every number in docs/EDGE_ANALYSIS.md was measured at.
+   Then append to the run log and publish again: whether execution was on or this was a dry run, what was sold at step 0b, how many names met the benchmark, how many orders were accepted, the gross as a percentage of equity, and every name refused with its reason. Publish even when nothing was placed. docs/EXECUTION.md is the whole contract.
 
 BUDGET: config/pipeline.yaml sets edge_hunt caps - 20 subagents for the whole stage, which is 1 sweep + 19 hunters. If the confirmed universe is larger, shed NAMES using budget.edge_degrade_order and record what you shed; one hunter per name is already the floor. Note the real platform ceiling is 8 CONCURRENT subagents, which is not the same limit - rejected launches cost nothing, so relaunch as slots free.
 

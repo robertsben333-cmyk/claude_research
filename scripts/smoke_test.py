@@ -482,6 +482,18 @@ def main():
 
     check("flatten before entry is on", ex["orders"].get("flatten_before_entry") is True,
           str(ex["orders"].get("flatten_before_entry")))
+
+    # The two trading steps live in two hand-maintained files and drift silently.
+    skill = open(os.path.join(REPO, ".claude/skills/earnings-edge-hunt/SKILL.md"),
+                 encoding="utf-8").read()
+    rprompt = open(os.path.join(REPO, "docs/routine-prompts/edge-hunt.md"),
+                   encoding="utf-8").read()
+    for label, text in (("the skill", skill), ("the stage E Routine prompt", rprompt)):
+        check(f"{label} sells before the hunt", "flatten --submit" in text)
+        check(f"{label} buys with --no-flatten", "--no-flatten" in text)
+        check(f"{label} gates both steps on execution.enabled",
+              text.count("execution.enabled") >= 2 or text.count("enabled` is true") >= 2
+              or text.count("execution.enabled` is `true") >= 1)
     check("a flatten without --submit closes nothing",
           at.flatten(at.Alpaca(key="", secret=""), False,
                      "dry run")["submitted"] is False)

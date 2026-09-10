@@ -145,24 +145,34 @@ market-on-close on the entry date. Nothing is sent unless `execution.enabled` is
 `true` in `config/pipeline.yaml` **and** `--submit` is given **and** credentials are in
 the environment **and** the endpoint is paper; it is committed as `false`.
 
-One invocation a day does the whole thing: `open` **sells every existing position at
-market first**, waits for flat, then places the new book. That trades the measured
-exit for operational simplicity — the next close ranked ρ=+0.514, p=0.0015 against
-ρ=+0.331, p=0.046 to the next open, and selling at the start of the run is nearer the
-open. `scripts/alpaca_trade.py close` still does the market-on-close exit if
-`orders.flatten_before_entry` is turned off. Sizing is **equal weight, whole budget**:
+**It rides in stage E's own Routine, not a separate one.** Two steps in the same
+session: step 0b sells yesterday's book at market before the sweep launches, step 7
+buys today's market-on-close after the note is published. The sell goes first so that a
+session killed mid-hunt leaves the account in cash rather than holding a book nobody is
+managing. That trades away the measured exit — the next close ranked ρ=+0.514,
+p=0.0015 against ρ=+0.331, p=0.046 to the next open, and selling half an hour into the
+session is nearer the open. Step 7 has a deadline the rest of the stage does not:
+Alpaca stops accepting market-on-close orders at 15:50 New York, so a 16:04 Amsterdam
+start leaves about three hours after the hunts (2026-09-09 took 2h53m end to end), and
+`open` refuses rather than filling at a price no measurement used.
+`scripts/alpaca_trade.py close` still does the market-on-close exit if
+`orders.flatten_before_entry` is turned off and the fallback exit Routine in
+`docs/routine-prompts/edge-execute.md` is added. Sizing is **equal weight, whole
+budget**:
 the gross budget split N ways, 20% of equity per name, a capped name's leftover
 redistributed over the rest. Nothing reads the score — the key ranks and does not
 size. Under five names the account is deliberately under-invested, and at 100% gross
 the whole account rides five to nine prints overnight with no stop. See
-`docs/EXECUTION.md` for what it refuses to do and what it does not know, and
-`docs/routine-prompts/edge-execute.md` for the one Routine that would run it
-unattended. **That Routine does not exist**, and an agent session cannot create it —
-`create_trigger` is refused by the permission layer here, so the prompt lives in that
-file for a person to paste at claude.ai/code, intended cron `45 18 * * 1-5` (20:45
-Amsterdam, summer). It also cannot work until this branch reaches `main`: a Routine
-clones the default branch, and a firing that finds no `scripts/alpaca_trade.py` logs
-that and stops.
+`docs/EXECUTION.md` for what it refuses to do and what it does not know.
+
+Two things have to happen before either step does anything. The stage E Routine's
+prompt has to be re-pasted from `docs/routine-prompts/edge-hunt.md`, which now carries
+both steps — a session cannot do it, `update_trigger` refuses any Routine an agent did
+not create. And `scripts/alpaca_trade.py` has to reach `main`, because a Routine clones
+the default branch; it is on `claude/alpaca-auto-orders-integration-y397gh`, in
+[PR #1](https://github.com/robertsben333-cmyk/claude_research/pull/1). Both steps are
+written as *only if enabled*, so the prompt is safe to paste before the merge — it just
+does nothing.
 
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have

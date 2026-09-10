@@ -156,20 +156,39 @@ the account grows: at $10k of equity a 20% position is $2,000, which is 1% of a
 $200k/day name. The plan prints `%adv` per name either way, so the share of the
 closing auction each order represents is visible rather than inferred.
 
-## The daily run flattens first
+## Where this runs: inside stage E, not beside it
 
-`open` sells everything before it places anything: it cancels every open order and
-closes every position at market, waits for flat, and only then submits the new book.
-The account is rebuilt from scratch each day.
+There is no separate execution Routine. Trading is two steps in the stage E skill and
+its own session, four hours apart:
 
-That is safe at that moment for one reason: when the edge hunt fires, every position
-in the account has already been through its print, so nothing is cut short of its
-event. It is not free, either. The measured exit is the next **close** (direction
-ρ=+0.514, permutation p=0.0015); selling at the start of the run is nearer the next
+| step | when | what |
+| --- | --- | --- |
+| 0b | before the sweep launches, ~16:05 Amsterdam | `flatten --submit` — sell yesterday's book at market |
+| 7 | after the note is published, ~19:00 | `plan`, then `open --submit --no-flatten` — buy today's, market-on-close |
+
+The sell goes **first**, and not because it is tidier. Every position in the account
+has already been through its print by then, so nothing is cut short of its event; and
+if the session dies mid-hunt — four consecutive days of that have happened to another
+stage in this repo — the account is in cash rather than holding a book nobody is
+managing. Flattening at the end would leave a killed session's positions open
+indefinitely.
+
+It is not free. The measured exit is the next **close** (direction ρ=+0.514,
+permutation p=0.0015); selling half an hour into the session is nearer the next
 **open**, which measured weaker on the same events (ρ=+0.331, p=0.046). That gap is
-the price of a one-invocation-a-day operation with no overnight order to babysit.
+the price of one Routine with nothing handed between sessions.
 
-Two smaller things it brings:
+Step 7 carries the deadline. Alpaca stops accepting market-on-close orders at 15:50
+New York, so a run firing at 16:04 Amsterdam has about three hours of margin after its
+hunts; the 2026-09-09 run took 2h53m end to end. A session that was retried, resumed
+or ran long may have none, and `open` refuses rather than filling at a price no
+measurement used.
+
+`--no-flatten` on step 7 stops `open` from re-running a flatten that already happened.
+Run without it — by hand, or with `orders.flatten_before_entry: true` and no step 0b —
+and `open` is self-contained: it cancels, closes, waits for flat, then enters.
+
+Two smaller things the flatten brings:
 
 - Flattening at market and entering market-on-close in the same symbol on the same day
   is a **day trade**. Under $25k of equity, FINRA allows three in five business days
@@ -183,21 +202,19 @@ it cancels and closes everything, at market, now.
 
 ## Invocations
 
-**One invocation a day does everything**, because `open` flattens yesterday's book
-before placing today's. Entries are market-on-close, so it has to land before Alpaca's
-MOC cutoff, ten minutes before the bell:
+The stage E session runs these itself, at the two moments in the table above. By hand,
+on the entry date and before 15:50 ET:
 
 ```bash
-# on the entry date, after stage E has written edge-scores.json, before 15:50 ET
-python3 scripts/alpaca_trade.py plan --run research/2026/09/2026-09-09/edge
-python3 scripts/alpaca_trade.py open --run research/2026/09/2026-09-09/edge --submit
+python3 scripts/alpaca_trade.py flatten --submit                                  # step 0b
+python3 scripts/alpaca_trade.py plan --run research/2026/09/2026-09-09/edge        # step 7
+python3 scripts/alpaca_trade.py open --run research/2026/09/2026-09-09/edge --submit --no-flatten
 
 # any time
 python3 scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
-
-# everything out, at market, now
-python3 scripts/alpaca_trade.py flatten --submit
 ```
+
+`flatten --submit` on its own is also the panic button: everything out, at market, now.
 
 Entry dates come off the window `edge_resolve.py` scores, so the traded return and the
 measured return share an entry:
@@ -222,10 +239,11 @@ It walks every run with an `alpaca-orders.json`, closes only the legs whose
 `exit_date` is today, and reads the real position quantity from Alpaca so a partial
 fill still closes flat.
 
-To run it unattended, one Routine is needed beside stage E's own. The prompt is in
-`docs/routine-prompts/edge-execute.md`. Stage E's own Routine prompt is deliberately
-**not** changed: it has to be pasted in by hand and one hand-pasted file is already
-enough to keep in step.
+To run it unattended, no new Routine is needed — the two steps are in stage E's own
+prompt, `docs/routine-prompts/edge-hunt.md`, which has to be pasted into
+`trig_01CvGQJWoKeNLXWCxiffM3ED` by hand because `update_trigger` refuses any Routine an
+agent did not create. Keep that file in step with the Routine, because nothing else
+will.
 
 ## What it refuses to do
 
