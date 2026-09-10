@@ -16,6 +16,25 @@ points at the skill in the tree it actually cloned — so it can be pasted befor
 the merge without breaking a run. What it cannot do is make the new key live; only the
 merge does that.
 
+**2026-09-10, the execution steps.** The stage now trades its own ranking, in this same
+Routine and this same session: **step 0b sells yesterday's book before the hunt starts,
+step 7 buys today's after the note is published.** No second Routine, because a second
+firing a day is a second thing that can fail silently, and because the account has to be
+flat before a session that might die rather than after.
+
+Both steps are no-ops until `execution.enabled` is `true` in `config/pipeline.yaml`,
+which is committed as `false`. Both need `scripts/alpaca_trade.py`, which arrived on
+`claude/alpaca-auto-orders-integration-y397gh` — until that branch reaches `main` the
+step finds no script. That is why the prompt says *only if enabled* rather than
+*always*: it is safe to paste before the merge, it just does nothing.
+
+Step 7 buys at market, immediately, rather than waiting for the closing auction. On the
+same 18 traded events that cost four hundredths of a point per trade (15/18 and +5.86%
+in the auction against 14/18 and +5.82% at 14:00 ET), and it removes the pending order
+and the cutoff. What the measurement cannot see is the spread, so the prompt asks for
+the fills to be recorded: that number is what would send `orders.entry` back to
+`market_on_close`. The only remaining deadline is that the US session is still open.
+
 **2026-09-09, second change.** The adversary was removed outright and the double hunt
 with it, so steps 4 and 5 and the budget line changed. The day now hunts nineteen names
 with one hunter each: 1 sweep + 19 = 20. Everything else in the prompt is unchanged.
@@ -50,6 +69,10 @@ WHAT THIS STAGE PRODUCES: one signed number per company, so today's names can be
 
 THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the ranking key, what its units are, and what the note must report are all stated in `.claude/skills/earnings-edge-hunt/SKILL.md` and in `scripts/edge_score.py`'s own docstring, and they have changed before and will change again as days pool. Read them in the tree you actually cloned and follow those. Do not carry a remembered contract into the run: a prompt that restates the scoring contract is exactly the kind of duplicated fact that went stale for five days in CLAUDE.md's stage table and cost real runs. `edge-scores.json` names its own `ranking_key`; report whatever that says.
 
+0b. SELL YESTERDAY'S BOOK, BEFORE THE HUNT. Only if `execution.enabled` is true in config/pipeline.yaml - it is committed as false, and if it is false you do nothing here and say nothing. If it is true:
+   python3 scripts/alpaca_trade.py flatten --submit
+   First and not last, for two reasons. Every position in the account has already been through its print, so nothing is cut short of its event. And if this session dies mid-hunt, the account is in cash rather than holding a book nobody is managing - stage 2 published nothing on four consecutive days once, so assume a session can die. Record in the run log what was sold and at what unrealised P&L, before the sweep launches: that line is the only record of the exit. If the account is unreachable, say so and CARRY ON WITH THE HUNT. The research is the point; the book is downstream of it.
+
 1. UNIVERSE AND SEALED BASELINE.
    python3 scripts/run_paths.py <today> --json
    python3 scripts/edge_universe.py --window -o <RUN>/edge/universe.json
@@ -72,6 +95,15 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
    Write <RUN>/edge/edge-note.md, answer first: the ranked table, then the finding and URL driving the top and bottom names, then the names that could not be ranked and why. Follow the skill's list of what the note must also say - each item on it exists because a reader drew a wrong conclusion from a correct table.
    Do not filter edge-scores.json and do not apply any cutoff to it - selection is the reader's, and the ranking test needs the complete table.
    Finish with scripts/publish.sh. It pushes to main. This session is ephemeral and work that is not pushed is destroyed.
+
+7. BUY TODAY'S BOOK, AFTER THE RESEARCH IS PUBLISHED. Same switch as step 0b - nothing happens here unless `execution.enabled` is true. If it is:
+   python3 scripts/alpaca_trade.py plan --run <RUN>/edge
+   python3 scripts/alpaca_trade.py open --run <RUN>/edge --submit --no-flatten
+   python3 scripts/alpaca_trade.py status --run <RUN>/edge
+   `--no-flatten` because step 0b already did it, hours ago. Selection is one rule - |impact_sum| >= the conviction floor, side from the sign, plus a turnover floor and a shortability check - and the book is EQUAL WEIGHT. Do not size a name by its score, do not hand-pick a name in, and do not trade a name below the floor because its finding reads well: below the floor the sign is a coin flip and that is the entire reason the floor exists.
+   Entries are plain market orders, filled while you watch. The only deadline is that the US session is still open - 16:00 New York, 22:00 Amsterdam in summer. Firing at 16:04 and finishing the hunts by 19:00 leaves three hours; the 2026-09-09 run took 2h53m end to end. A session that was retried, resumed or ran long may have none, and `open` refuses rather than sending an order into a closed market. Record the refusal and stop.
+   RECORD THE FILLS. Buying at market rather than in the closing auction was measured as costing four hundredths of a point per trade, but that compares trade prices and not fills, and the auction is the deepest liquidity of the day - which matters more now the turnover floor is $200k. `status` prints filled_avg_price per order; if those come back materially worse than the plan's notional, say so in the run log. That is the number that decides whether orders.entry goes back to market_on_close.
+   Then append to the run log and publish again: whether execution was on or this was a dry run, what was sold at step 0b, how many names met the benchmark, how many orders were accepted and at what average fill, the gross as a percentage of equity, and every name refused with its reason. Publish even when nothing was placed. docs/EXECUTION.md is the whole contract.
 
 BUDGET: config/pipeline.yaml sets edge_hunt caps - 20 subagents for the whole stage, which is 1 sweep + 19 hunters. If the confirmed universe is larger, shed NAMES using budget.edge_degrade_order and record what you shed; one hunter per name is already the floor. Note the real platform ceiling is 8 CONCURRENT subagents, which is not the same limit - rejected launches cost nothing, so relaunch as slots free.
 

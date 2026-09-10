@@ -145,6 +145,46 @@ that `spearman_vs_move_over_implied` normalises 18 of 43 names on a median histo
 reaction rather than an option-implied move. Fix the scorer before spending another day
 on hunts.
 
+**Stage E can place its book at Alpaca, and it is switched off.**
+`scripts/alpaca_trade.py` takes the one rule that survived a family-wise correction —
+`|impact_sum| >= conviction_floor`, side from the sign, plus a $200k turnover floor
+and a shortability check — and places it market-on-close on the entry date, closing
+market-on-close on the entry date. Nothing is sent unless `execution.enabled` is
+`true` in `config/pipeline.yaml` **and** `--submit` is given **and** credentials are in
+the environment **and** the endpoint is paper; it is committed as `false`.
+
+**It rides in stage E's own Routine, not a separate one.** Two steps in the same
+session: step 0b sells yesterday's book at market before the sweep launches, step 7
+buys today's **at market, immediately** after the note is published. The sell goes
+first so that a session killed mid-hunt leaves the account in cash rather than holding a
+book nobody is managing. That trades away the measured exit — the next close ranked
+ρ=+0.514, p=0.0015 against ρ=+0.331, p=0.046 to the next open, and selling half an hour
+into the session is nearer the open. The immediate entry, by contrast, costs almost
+nothing measured: on the same 18 traded events the closing auction gave 15/18 and
++5.86% a trade against 14/18 and +5.82% at 14:00 ET, four hundredths of a point
+(`scripts/edge_entry_timing.py`). What that cannot see is the spread, so the fills go
+in the run log and `orders.entry: market_on_close` puts it back in the auction. The
+only deadline left is that the US session is open; `open` refuses rather than sending
+an order into a closed market.
+`scripts/alpaca_trade.py close` still does the market-on-close exit if
+`orders.flatten_before_entry` is turned off and the fallback exit Routine in
+`docs/routine-prompts/edge-execute.md` is added. Sizing is **equal weight, whole
+budget**:
+the gross budget split N ways, 20% of equity per name, a capped name's leftover
+redistributed over the rest. Nothing reads the score — the key ranks and does not
+size. Under five names the account is deliberately under-invested, and at 100% gross
+the whole account rides five to nine prints overnight with no stop. See
+`docs/EXECUTION.md` for what it refuses to do and what it does not know.
+
+Two things have to happen before either step does anything. The stage E Routine's
+prompt has to be re-pasted from `docs/routine-prompts/edge-hunt.md`, which now carries
+both steps — a session cannot do it, `update_trigger` refuses any Routine an agent did
+not create. And `scripts/alpaca_trade.py` has to reach `main`, because a Routine clones
+the default branch; it is on `claude/alpaca-auto-orders-integration-y397gh`, in
+[PR #1](https://github.com/robertsben333-cmyk/claude_research/pull/1). Both steps are
+written as *only if enabled*, so the prompt is safe to paste before the merge — it just
+does nothing.
+
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have
 pooled twelve stale zeros into run 2's ranking, a cadence heuristic in `priced_in.py`
