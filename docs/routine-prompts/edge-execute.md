@@ -110,11 +110,38 @@ An order sent into an auction does not fill until that auction runs, so do not w
 for a fill price here. Stage E's own run reads it back later.
 ```
 
+### When it has to run: `0 12 * * 1-5`
+
+**One cron, all year, and deliberately not an Amsterdam wall-clock time.** Cron is
+evaluated in UTC, so a Routine pinned to a New York hour needs editing twice a year and
+this repo has already lost runs to that trap. `0 12 * * 1-5` needs editing never:
+
+| | 12:00 UTC in ET | Amsterdam | slack before the 09:28 cutoff |
+| --- | --- | --- | --- |
+| summer (EDT) | 08:00 | 14:00 | 88 min |
+| winter (EST) | 07:00 | 13:00 | 148 min |
+
+Both sit inside the window and neither is close to an edge, so the drift between the two
+regimes costs nothing.
+
+**The window is narrower than Alpaca's own rule, and the reason is the date.** Alpaca
+accepts `opg` from 19:00 ET the evening before, which looks like it allows a 20:00 ET
+firing — but `close` selects legs whose `exit_date` equals *today* off Alpaca's own
+clock, and at 20:00 ET the clock date is still the day before the exit date. Such a run
+would select nothing and report success. So the usable window is **00:00 ET to 09:28 ET
+on the exit date itself**, which is 05:00/06:00 to 15:28 Amsterdam.
+
+Within that, later means less time to notice a failure and earlier means no benefit —
+an auction order does not care about pre-market liquidity. There is no automatic retry,
+so the slack is the whole argument: 12:00 UTC leaves an hour and a half.
+
+One side effect worth knowing: at 07:00–08:00 ET the `cls` window is open too, so this
+firing can take the bmo legs due today as well. With this Routine in place,
+`auction_split` is fully handled here and stage E's own run has nothing left to sell.
+
 An agent session cannot create this Routine: `create_trigger` is refused by the
-permission layer in this environment, so a person has to make it at claude.ai/code and
-record the id here and in `docs/ROUTINES.md`. Cron is evaluated in UTC — 08:00 New York
-is `0 12 * * 1-5` in summer and `0 13 * * 1-5` in winter, and this repo has lost runs to
-that trap once.
+permission layer in this environment, confirmed 2026-09-10. A person has to make it at
+claude.ai/code and record the id here and in `docs/ROUTINES.md`.
 
 ## The older fallback: one exit Routine in the evening
 
