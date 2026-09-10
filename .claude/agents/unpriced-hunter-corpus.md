@@ -155,6 +155,9 @@ Your final message is the return value. Emit **only** this JSON, no prose around
   "findings": [
     {
       "finding": "one sentence, concrete, the thing you found",
+      "claim": "<= 20 words, the main point stripped of hedging",
+      "kind": "filing_detail | guidance_mechanics | insider_or_ownership | regulatory_or_legal | competitor_or_peer | demand_data | cost_or_input | capital_structure | management_change | product_or_contract | accounting | positioning | other",
+      "evidence": "primary (you read the document) | secondary (someone reported it) | inference (you connected two documents)",
       "expected_impact_pct": 0.0,
       "impact_low_pct": 0.0,
       "impact_high_pct": 0.0,

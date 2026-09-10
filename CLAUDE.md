@@ -236,6 +236,23 @@ per trade and flags the hours-held version as a denominator artefact. What it bu
 settled cash before the auction that funds the next book, and fewer hours of exposure. See
 `edge/EXECUTION.md`, "The exit the two sessions actually want".
 
+**Findings are now pooled at the finding grain, not the company grain, and it cost
+nothing.** `edge/scripts/edge_ledger.py` flattens every run ever made into one row per
+finding (`edge/ledger/findings.csv`, `names.csv`, `edge.sqlite`) and joins the realised
+move. It reads files that already exist, spawns no subagent and calls no model; the only
+cost is one price fetch per newly resolved name, cached. All 399 findings across 9 days
+are in it and 349 resolve. Each row carries the hunter's own text and sizes, plus what is
+derivable for free — source domain, how old the source was on the day of the print, the
+finding's share of its name's `impact_sum`. The hunter contract gained three fields on
+2026-09-10 for the same purpose: `claim` (the point in under twenty words), `kind` (one
+of thirteen words) and `evidence` (`primary`/`secondary`/`inference`). They decide
+nothing and `edge_score.py` carries them through untouched; they are null on every
+earlier run. **A per-finding outcome does not exist** — one move per company, three to
+eight findings per name — so `sign_agreed` on a finding row means the *name* moved the
+way that finding pointed and every finding of the name shares it. Group, weight by
+`share_of_impact`, never read a single row. Nothing in the grouped table is close to
+significant yet.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080
@@ -426,6 +443,7 @@ edge/                                  stage E — see edge/README.md
   EDGE_ANALYSIS.md  EXECUTION.md       what the runs establish; the Alpaca contract
   scripts/                             the stage's own tools
   analysis/                            everything those tools generate
+  ledger/                              every finding ever made, flat (generated)
   routine-prompts/                     the text pasted into the Routines, by hand
 backtest/                              the sealed backtest
   runs/pilot-40/  runs/edge-corpus/    arms A/B/C; and stage E scored on the corpus

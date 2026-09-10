@@ -335,6 +335,15 @@ real platform ceiling to be 8 concurrent subagents, not the 4 in config; launche
 it are rejected and cost nothing, so relaunch as slots free rather than planning around
 the config number.
 
+### The three ledger fields
+
+Since 2026-09-10 each finding also carries `claim` (the main point in under twenty
+words), `kind` (one word from a closed list) and `evidence` (`primary`, `secondary`
+or `inference`). They are defined in `.claude/agents/unpriced-hunter.md` and they
+change nothing about the ranking — `edge_score.py` carries them through untouched so
+that `edge_ledger.py` can pool findings by type across months. If a hunter omits
+them the run still scores; the row just cannot be grouped.
+
 ## 4. There is no adversary pass
 
 Removed 2026-09-09. It returned two numbers and both were measured as subtractive over
@@ -395,6 +404,31 @@ Nothing in `diagnostics` is a decision input. If you find yourself reaching for
 measured at −0.090 and +0.074 against the realised move, and on 2026-08-31 the
 highest-confidence name was the uninformative one while the name carrying that day's
 entire correlation had the lowest confidence in the run.
+
+## 5b. Rebuild the finding ledger
+
+```bash
+python3 edge/scripts/edge_ledger.py
+```
+
+Flattens every run ever made into one row per finding — `edge/ledger/findings.csv`,
+`names.csv` and `edge.sqlite` — and joins what each stock did. It reads files that
+already exist, spawns nothing and calls no model; the only cost is one price fetch per
+name whose window has newly closed, cached in `outcomes.json`.
+
+It exists so that a year of hunting can be asked *which sort of finding was ever worth
+anything*: group by `kind`, by `evidence`, by how old the source was, by how big the
+claimed size was. `--report` prints those groupings.
+
+**Read the header of the script before reading the table.** A per-finding outcome does
+not exist — you observe one move per company and a name carries three to eight
+findings — so `sign_agreed` on a finding row means "the name this finding belonged to
+moved the way this finding pointed", shared by every finding of that name. It is a
+signal in aggregate and noise on any single row.
+
+Commit the CSVs with the run. They are derived state and safe to delete, but having
+them in the tree is what lets a fresh session answer a question about six months of
+hunting without re-reading six months of JSON.
 
 ## 6. The note
 

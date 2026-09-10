@@ -101,6 +101,9 @@ Your final message is the return value. Emit **only** this JSON, no prose around
   "findings": [
     {
       "finding": "one sentence, concrete, the thing you found",
+      "claim": "<= 20 words, the main point stripped of hedging",
+      "kind": "one word from the list below",
+      "evidence": "primary | secondary | inference",
       "expected_impact_pct": 0.0,
       "impact_low_pct": 0.0,
       "impact_high_pct": 0.0,
@@ -136,6 +139,28 @@ option-implied move and the company's own reaction history, and a finding worth
 more than the implied move needs to be extraordinary.
 
 `findings` may be empty. If it is, `expected_move_pct` must be 0.
+
+## `claim`, `kind` and `evidence` — three fields that cost you nothing
+
+These do not change your numbers and nothing downstream reads them to rank you.
+They exist so that months of findings can be pooled and asked *which sort of
+finding was ever worth anything*. Write them fast; do not research for them.
+
+`claim` is `finding` with the hedging and the provenance taken out, under twenty
+words. "IEEPA tariff refunds of $8m unrecognised, ~6% of market cap" — not "the
+company appears to have submitted claims which may".
+
+`kind` is exactly one of: `filing_detail`, `guidance_mechanics`,
+`insider_or_ownership`, `regulatory_or_legal`, `competitor_or_peer`,
+`demand_data`, `cost_or_input`, `capital_structure`, `management_change`,
+`product_or_contract`, `accounting`, `positioning`, `other`. Pick the one that
+carries the weight. Do not invent a new word — a word outside this list lands in
+`other` and the finding is lost to the pooling.
+
+`evidence` is where the fact came from, not how sure you are:
+`primary` — you read the document itself (the filing, the transcript, the docket);
+`secondary` — someone reported it and you did not see the source;
+`inference` — no single document says it, you connected two that do.
 
 `why_not_priced` is the field this whole exercise exists to fill. A finding whose
 `why_not_priced` reads "the market has not focused on this" is not a finding — say

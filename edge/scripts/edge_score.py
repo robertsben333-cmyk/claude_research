@@ -177,11 +177,22 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
             if imp is None and legacy:
                 d = (item.get("direction") or "").lower()
                 imp = LEGACY_IMPACT_PCT * (1 if d == "up" else -1 if d == "down" else 0)
+            lo, hi = item.get("impact_low_pct"), item.get("impact_high_pct")
             findings.append({
                 "hunter": f.stem, "key": f"{f.stem}#{i}",
                 "finding": item.get("finding"),
+                # The three ledger fields. They decide nothing here and are carried
+                # through verbatim so `edge_ledger.py` reads one file per run
+                # instead of re-opening every hunt. Null on runs before 2026-09-10.
+                "claim": item.get("claim"),
+                "kind": item.get("kind"),
+                "evidence": item.get("evidence"),
                 "source": item.get("source"), "source_date": item.get("source_date"),
                 "expected_impact_pct": float(imp or 0.0),
+                # The hunter's own band. Discarded until 2026-09-10, which threw
+                # away the one thing it says about its own uncertainty.
+                "impact_low_pct": None if lo is None else float(lo),
+                "impact_high_pct": None if hi is None else float(hi),
                 "cluster": cluster_of(item),
             })
 

@@ -19,6 +19,7 @@ edge/
   EXECUTION.md          the Alpaca path: what it refuses to do, and what it cannot see
   scripts/              the stage's own tools (see below)
   analysis/             everything the analysis scripts generate — JSON and HTML
+  ledger/               every finding ever made, flat — CSV and SQLite, generated
   routine-prompts/      the text pasted into the Routines, kept in step by hand
 ```
 
@@ -59,6 +60,7 @@ python3 edge/scripts/priced_in.py --tickers <T,...> --date <D> --session <s> \
         -o <RUN>/edge/baselines/                                       # seal BEFORE hunting
 #   ... one edge-sweep agent, then one unpriced-hunter per confirmed name ...
 python3 edge/scripts/edge_score.py --run <RUN>/edge
+python3 edge/scripts/edge_ledger.py                                    # rebuild the ledger
 scripts/publish.sh "stage E: edge hunt for <date>"
 ```
 
@@ -78,6 +80,37 @@ python3 edge/scripts/edge_entry_timing.py            # market vs the closing auc
 `edge_adversary_brief.py`, `edge_brief.py` and `.claude/agents/priced-in-adversary.md` are
 the removed adversary pass. They are kept unused so it can be re-run deliberately; the
 stage does not call them.
+
+## The finding ledger
+
+Every analysis above works on one row per *company*. The ledger works on one row per
+*finding*, which is the grain the hunt actually produces and the only grain at which the
+question "what sort of finding was ever worth anything" can be asked.
+
+```bash
+python3 edge/scripts/edge_ledger.py --report
+```
+
+It writes `ledger/findings.csv`, `ledger/names.csv` and `ledger/edge.sqlite` from files
+that already exist — no subagent, no model call, one price fetch per newly resolved name,
+cached. Rebuilt from scratch every time, so it is safe to delete.
+
+Each finding row carries what the hunter wrote (`claim`, `kind`, `evidence`, the size,
+the band, `why_not_priced`, `independence`), what is derivable for free (source domain,
+how old the source was on the day of the print, the finding's share of its name's
+`impact_sum`), and what the name did.
+
+**The one thing it cannot give you is a per-finding outcome.** You observe one move per
+company; a name carries three to eight findings that were never separately priced. So
+`sign_agreed` means "the name this finding belonged to moved the way this finding
+pointed", and every finding of that name shares the value. Two rules follow: never read a
+single row, and weight by `share_of_impact` when grouping — a finding that was 90% of its
+name's key really was the call, one that was 5% of it is a passenger. The `sole_finding`
+column marks the rows where the problem does not arise; there is currently one of them.
+
+`kind` and `evidence` are null for every run before 2026-09-10 because the hunter contract
+had no such fields. 349 of the 399 findings resolve, over 76 names and 9 days, and nothing
+in the grouped table is close to significant. It is a table to watch as runs pool.
 
 ## What it has established
 
