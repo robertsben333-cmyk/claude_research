@@ -204,3 +204,48 @@ budget:
   # baseline written after a finding exists is one the finding has contaminated.
   edge_never_degrade:
     - baselines_sealed_and_committed_before_any_agent_launches
+
+execution:
+  # Stage E's ranking placed as real orders at Alpaca, by scripts/alpaca_trade.py.
+  # OFF until someone turns it on deliberately. With `enabled: false` every
+  # invocation is a dry run that writes alpaca-plan.json and submits nothing, and
+  # --submit alone will not override it.
+  enabled: false
+  broker: alpaca
+  # The endpoint comes from $ALPACA_BASE_URL and defaults to the paper API. A
+  # non-paper endpoint additionally needs --live-account-i-understand on the
+  # command line. Credentials are read from $ALPACA_API_KEY_ID and
+  # $ALPACA_API_SECRET_KEY and are never written into this repo.
+  assumed_equity_usd: 100000     # sizing basis for dry runs with no account attached
+
+  benchmark:
+    # ONE rule, and it is the only cut in docs/EDGE_ANALYSIS.md that survived a
+    # family-wise correction: |impact_sum| >= the floor, side from the sign. Above
+    # the floor the sign was right on 16 of 21 events, +6.37% per trade (t=2.74,
+    # +4.87% after a 1.5% cost); over all 38 events it is 53%, a coin flip. That is
+    # 5 independent days. Do not raise the exposure below on the strength of it.
+    key: impact_sum
+    min_conviction: null         # null inherits edge_hunt.conviction_floor (3.0)
+    require_rankable: true       # an unconfirmed event is not a trade
+    # Capacity, which is in neither the scorer nor the budget. Six of the first 22
+    # long/short positions traded under $1m a day and the best trade in the sample
+    # (DLTH +23.20%) turns over $170k. Names below this floor are dropped, never
+    # sized down, because a fill at that size is a price the measurement never saw.
+    min_dollar_volume_usd: 5000000
+    max_positions: 10            # by conviction, highest first
+
+  sizing:
+    gross_exposure_pct_of_equity: 20
+    max_position_pct_of_equity: 4
+    max_position_pct_of_adv: 1.0   # percent of 20-day dollar volume, the hard cap
+    min_position_usd: 200
+
+  orders:
+    # Both legs are market-on-close, because that is the window edge_resolve.py
+    # scores: enter at the last close before the print, exit at the first close
+    # after it. Alpaca stops accepting MOC ten minutes before the bell, so `open`
+    # must run on the entry date and `close` on the exit date, both before then.
+    entry: market_on_close
+    exit: market_on_close
+    time_in_force: day           # only used by the plain-market fallback
+    allow_shorts: true           # a short leg also needs Alpaca to call it shortable

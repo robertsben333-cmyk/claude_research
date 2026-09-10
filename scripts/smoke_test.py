@@ -394,6 +394,82 @@ def main():
         check("the concurrent change was not clobbered",
               "OTHER.md" in files, str(files))
 
+    print("\nOrder placement (scripts/alpaca_trade.py, no network, no orders)")
+    import alpaca_trade as at                                     # noqa: E402
+
+    ex = at.execution_config(yaml.safe_load(
+        open(os.path.join(REPO, "config/pipeline.yaml"), encoding="utf-8")))
+    check("execution is off in the committed config", ex.get("enabled") is False,
+          f"enabled={ex.get('enabled')!r} — a committed `true` trades unattended")
+    check("the conviction floor is inherited from stage E",
+          ex["benchmark"]["min_conviction"] == 3.0,
+          str(ex["benchmark"]["min_conviction"]))
+
+    scores = {"ranking_key": "impact_sum", "ranking": [
+        {"ticker": "BIGL", "rankable": True, "impact_sum": 9.0},     # long, liquid
+        {"ticker": "BIGS", "rankable": True, "impact_sum": -6.0},    # short, liquid
+        {"ticker": "TINY", "rankable": True, "impact_sum": 12.0},    # illiquid
+        {"ticker": "WEAK", "rankable": True, "impact_sum": 2.9},     # under the floor
+        {"ticker": "NOEV", "rankable": False, "impact_sum": 8.0,
+         "not_rankable_because": "event unconfirmed"}]}
+    base = {t: {"ticker": t, "event_date": "2026-09-09", "session": s,
+                "as_of_utc": "2026-09-09T14:00:00+00:00",
+                "tape": {"spot": 50.0, "avg_volume_20d": v}}
+            for t, s, v in [("BIGL", "amc", 1_000_000), ("BIGS", "bmo", 1_000_000),
+                            ("TINY", "amc", 1_000), ("WEAK", "amc", 1_000_000),
+                            ("NOEV", "amc", 1_000_000)]}
+    taken, rejected = at.select(scores, base, ex["benchmark"])
+    reasons = {r["ticker"]: r["reason"] for r in rejected}
+    check("the benchmark takes only the liquid names above the floor",
+          [c["ticker"] for c in taken] == ["BIGL", "BIGS"],
+          str([c["ticker"] for c in taken]))
+    check("a name under the conviction floor is refused",
+          "conviction floor" in reasons.get("WEAK", ""), str(reasons))
+    check("an untradeably thin name is refused on capacity",
+          "turnover" in reasons.get("TINY", ""), str(reasons))
+    check("an unconfirmed event is refused", "not rankable" in reasons.get("NOEV", ""),
+          str(reasons))
+    check("the sign sets the side",
+          [c["side"] for c in taken] == ["buy", "sell"], str(taken))
+
+    sized, _ = at.size(taken, 100_000.0, ex["sizing"])
+    check("no position exceeds max_position_pct_of_equity",
+          all(s["notional_at_spot_usd"] <= 100_000 * 0.04 + 1e-6 for s in sized),
+          str([s["notional_at_spot_usd"] for s in sized]))
+    check("no position exceeds max_position_pct_of_adv",
+          all(s["notional_at_spot_usd"] <= s["cap_capacity_usd"] + 1e-6 for s in sized),
+          str([(s["notional_at_spot_usd"], s["cap_capacity_usd"]) for s in sized]))
+    check("share counts are whole", all(float(s["qty"]).is_integer() for s in sized))
+
+    days = at.trading_days_offline("2026-09-09")
+    check("an amc print enters on the event date and exits the next session",
+          at.window(days, "2026-09-09", "amc") == ("2026-09-09", "2026-09-10"),
+          str(at.window(days, "2026-09-09", "amc")))
+    check("a bmo print enters the session before and exits on the event date",
+          at.window(days, "2026-09-09", "bmo") == ("2026-09-08", "2026-09-09"),
+          str(at.window(days, "2026-09-09", "bmo")))
+    check("a Monday bmo print enters on the Friday",
+          at.window(at.trading_days_offline("2026-09-14"), "2026-09-14", "bmo")
+          == ("2026-09-11", "2026-09-14"),
+          str(at.window(at.trading_days_offline("2026-09-14"), "2026-09-14", "bmo")))
+
+    entry = at.order_body("BIGL", 10, "buy", ex, moc=True)
+    check("entry is market-on-close",
+          (entry["type"], entry["time_in_force"]) == ("market", "cls"), str(entry))
+    check("nothing is sent to extended hours", entry["extended_hours"] is False)
+    check("the exit inverts the entry side",
+          at.order_body("BIGL", 10, "sell" if entry["side"] == "buy" else "buy",
+                        ex)["side"] == "sell")
+    blocked = at.guard(at.Alpaca(key="", secret=""), ex, submit=False, live_ok=False)
+    check("a run without --submit is blocked before any order", bool(blocked), str(blocked))
+    check("a disabled config blocks --submit",
+          bool(at.guard(at.Alpaca(key="k", secret="s"), {**ex, "enabled": False},
+                        submit=True, live_ok=False)))
+    check("a live endpoint is blocked without the explicit flag",
+          "paper" in (at.guard(at.Alpaca(base="https://api.alpaca.markets",
+                                         key="k", secret="s"),
+                               {**ex, "enabled": True}, submit=True, live_ok=False) or ""))
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:

@@ -137,6 +137,19 @@ that `spearman_vs_move_over_implied` normalises 18 of 43 names on a median histo
 reaction rather than an option-implied move. Fix the scorer before spending another day
 on hunts.
 
+**Stage E can place its book at Alpaca, and it is switched off.**
+`scripts/alpaca_trade.py` takes the one rule that survived a family-wise correction —
+`|impact_sum| >= conviction_floor`, side from the sign, plus a $5m turnover floor and
+a shortability check — and places it market-on-close on the entry date, closing
+market-on-close one session later, which is the window `edge_resolve.py` scores.
+Nothing is sent unless `execution.enabled` is `true` in `config/pipeline.yaml` **and**
+`--submit` is given **and** credentials are in the environment **and** the endpoint is
+paper; it is committed as `false`. The rule is 21 trades over 5 independent days, so
+the exposure is sized for a lead: 20% gross, 4% a name, 1% of a name's daily turnover.
+See `docs/EXECUTION.md` for what it refuses to do and what it does not know, and
+`docs/routine-prompts/edge-execute.md` for the two Routines that would run it
+unattended. Those Routines do not exist.
+
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have
 pooled twelve stale zeros into run 2's ranking, a cadence heuristic in `priced_in.py`

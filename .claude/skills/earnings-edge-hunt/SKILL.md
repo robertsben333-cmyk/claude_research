@@ -399,6 +399,35 @@ turnover; six of the first 22 long/short positions traded under $1m a day. A ran
 whose extremes are untradeable is a research result, not a signal, and the note
 should be the place a reader learns which one they are looking at.
 
+## 6b. Money, only if it is switched on
+
+`scripts/alpaca_trade.py` can place the day's names at Alpaca and close them a
+session later. **Do nothing here unless `execution.enabled` is `true` in
+`config/pipeline.yaml`.** It is committed as `false`, and a run that finds it false
+places nothing and says nothing — this step is not a degradation and not a decision
+the session gets to make.
+
+If it is on:
+
+```bash
+python3 scripts/alpaca_trade.py plan --run <RUN>/edge
+python3 scripts/alpaca_trade.py open --run <RUN>/edge --submit
+```
+
+The selection is one rule — `|impact_sum| >= conviction_floor`, side from the sign —
+plus a turnover floor and a shortability check. Do not widen it, do not hand-pick a
+name into the book, and do not trade a name below the floor because its finding reads
+well: below the floor the sign is a coin flip and that is the entire reason the floor
+exists.
+
+Both legs are market-on-close and Alpaca stops accepting MOC ten minutes before the
+bell, so `open` has to run on the entry date and `close` on the exit date. A session
+firing at 16:04 has time; a session that has been running for six hours may not.
+
+Record in the run log how many names met the benchmark, how many orders went in, and
+every refusal with its reason. `docs/EXECUTION.md` is the whole contract, including
+what the rule does and does not rest on.
+
 ## 7. Resolve, once the window closes
 
 ```bash
