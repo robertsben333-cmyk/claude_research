@@ -54,9 +54,12 @@ import glob
 import json
 import math
 import os
+import re
+import statistics
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -65,8 +68,18 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "scripts"))
 
 PAPER = "https://paper-api.alpaca.markets"
+DATA = "https://data.alpaca.markets"   # market data lives on its own host
 CLIENT_PREFIX = "edge"          # every client_order_id this repo ever creates
 MOC_CUTOFF_MIN = 10             # minutes before the close that MOC stops being accepted
+# How old a last trade may be before the quote mid is preferred for sizing. Ten
+# minutes is loose enough for a $200k-a-day name that prints a few times an hour
+# and tight enough that a halted or overnight tape falls through to the quote.
+MAX_TRADE_AGE_S = 600
+# How wide a quote may be before its mid stops being a price. The free IEX feed
+# serves plenty of junk: FEIM quoted 54.24 / 72.79 at 18:12 UTC on 2026-09-10, a
+# 29% spread, while the stock was trading near 63.4. A mid taken off that is not
+# an estimate of anything, so a stale trade is preferred to it.
+MAX_QUOTE_SPREAD_PCT = 2.0
 
 
 # ---------------------------------------------------------------- config
@@ -148,6 +161,142 @@ class Alpaca:
 
     def submit(self, order):
         return self.call("POST", "/v2/orders", order)
+
+    # -- market data. A different host from the trading API, same credentials.
+
+    def data_call(self, path, timeout=30):
+        url = f"{DATA}{path}"
+        req = urllib.request.Request(url, method="GET", headers={
+            "APCA-API-KEY-ID": self.key,
+            "APCA-API-SECRET-KEY": self.secret,
+            "Accept": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                raw = r.read().decode()
+                return (json.loads(raw) if raw.strip() else {}), None
+        except urllib.error.HTTPError as e:
+            raw = e.read().decode(errors="replace")
+            try:
+                msg = json.loads(raw).get("message", raw)
+            except Exception:
+                msg = raw
+            return None, f"HTTP {e.code}: {str(msg)[:300]}"
+        except Exception as e:
+            return None, f"{type(e).__name__}: {str(e)[:300]}"
+
+    def latest_quotes(self, symbols):
+        if not symbols:
+            return {}, None
+        q = urllib.parse.quote(",".join(sorted(symbols)))
+        d, err = self.data_call(f"/v2/stocks/quotes/latest?symbols={q}")
+        return ((d or {}).get("quotes") or {}), err
+
+    def latest_trades(self, symbols):
+        if not symbols:
+            return {}, None
+        q = urllib.parse.quote(",".join(sorted(symbols)))
+        d, err = self.data_call(f"/v2/stocks/trades/latest?symbols={q}")
+        return ((d or {}).get("trades") or {}), err
+
+
+def quote_snapshot(q):
+    """Normalise one Alpaca quote into bid/ask/mid/spread, or None if unusable.
+
+    A one-sided or crossed quote is not a price. The free IEX feed serves plenty
+    of both, and a mid taken off `ap 163.86 / bp 155.76` -- a real ORCL quote from
+    2026-09-10 -- is 5% away from where the stock was actually trading.
+    """
+    if not q:
+        return None
+    bid, ask = q.get("bp"), q.get("ap")
+    try:
+        bid, ask = float(bid or 0), float(ask or 0)
+    except (TypeError, ValueError):
+        return None
+    if bid <= 0 or ask <= 0 or ask < bid:
+        return None
+    mid = (bid + ask) / 2.0
+    return {"bid": bid, "ask": ask, "mid": round(mid, 4),
+            "spread_pct": round(100 * (ask - bid) / mid, 3),
+            "utc": q.get("t"), "bid_size": q.get("bs"), "ask_size": q.get("as")}
+
+
+def _age_seconds(ts):
+    """Seconds between an Alpaca RFC3339 timestamp and now, or None if unparseable."""
+    if not ts:
+        return None
+    # Alpaca sends nanoseconds; fromisoformat takes at most microseconds.
+    s = re.sub(r"\.(\d{6})\d+", r".\1", str(ts).strip()).replace("Z", "+00:00")
+    try:
+        t = datetime.fromisoformat(s)
+    except ValueError:
+        return None
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=timezone.utc)
+    return (datetime.now(timezone.utc) - t).total_seconds()
+
+
+def reference_prices(api, tickers, max_trade_age_s=MAX_TRADE_AGE_S):
+    """A live, sourced price per ticker for sizing. Never invents one.
+
+    Sizing used to divide the budget by the SEALED BASELINE spot, and the old
+    docstring called that deliberate on the grounds that the alternative was "an
+    unsourced live quote". An Alpaca last trade is not unsourced -- it carries a
+    venue and an exchange timestamp, both recorded here -- and the baseline is
+    captured when the run starts, which on 2026-09-10 was 14:08 UTC against orders
+    that went in at 17:59. Four hours. HOFT was sized off 12.42 and filled at
+    12.6186, so a 20.0%-of-equity position was really 20.3%, and every "fill versus
+    plan" number in the run log was drift rather than execution.
+
+    Preference order, and each name records which one it got:
+      last trade   fresh, the best single estimate of where the next share prints
+      quote mid    trade stale or missing, and the quote is two-sided AND tight
+      last trade   stale, but still a price something actually traded at
+      None         caller falls back to the baseline spot and SAYS SO
+
+    The tightness test is not decoration. On the first live run FEIM's trade was
+    stale and its quote was 54.24 / 72.79 -- 29% wide on the free IEX feed -- and
+    the first version of this function sized off that mid. A wide mid is not a
+    price; a stale print is.
+
+    Returns {ticker: {price, source, utc, age_s, quote}}. A ticker absent from the
+    result has no live price and must be sized off the baseline with that recorded.
+    """
+    out = {}
+    if not api.usable or not tickers:
+        return out, "no credentials" if not api.usable else None
+    trades, terr = api.latest_trades(tickers)
+    quotes, qerr = api.latest_quotes(tickers)
+    for t in tickers:
+        snap = quote_snapshot(quotes.get(t))
+        tr = trades.get(t) or {}
+        price, source, utc, age = None, None, None, None
+        try:
+            tp = float(tr.get("p") or 0)
+        except (TypeError, ValueError):
+            tp = 0.0
+        tage = _age_seconds(tr.get("t"))
+        tight = snap and snap["spread_pct"] <= MAX_QUOTE_SPREAD_PCT
+        if tp > 0 and (tage is None or tage <= max_trade_age_s):
+            price, source, utc, age = tp, "alpaca last trade", tr.get("t"), tage
+        elif tight:
+            price, source, utc = snap["mid"], "alpaca quote mid", snap["utc"]
+            age = _age_seconds(snap["utc"])
+        elif tp > 0:
+            price, source, utc, age = (
+                tp, f"alpaca last trade (stale {tage:.0f}s)"
+                    + (f", quote {snap['spread_pct']:.1f}% wide" if snap else ""),
+                tr.get("t"), tage)
+        elif snap:
+            price, source, utc = (snap["mid"],
+                                  f"alpaca quote mid ({snap['spread_pct']:.1f}% wide, "
+                                  f"no trade)", snap["utc"])
+            age = _age_seconds(snap["utc"])
+        if price:
+            out[t] = {"price": round(price, 4), "source": source, "utc": utc,
+                      "age_s": round(age) if age is not None else None,
+                      "quote": snap}
+    return out, (terr or qerr)
 
 
 # ---------------------------------------------------------------- calendar
@@ -276,9 +425,17 @@ def size(taken, equity, sizing):
     uncapped name. When every name is capped the budget is deliberately
     under-deployed -- at a 20% cap that is any day with fewer than five names.
 
-    Share counts come off the sealed baseline's spot, taken hours before the close
-    the order fills at, so the notional drifts with the day's move. That is
-    deliberate: the alternative is an unsourced live quote.
+    Share counts come off `ref_price` -- a live, sourced Alpaca last trade or quote
+    mid, set by `reference_prices()` at plan time. Until 2026-09-10 they came off the
+    SEALED BASELINE spot instead, which is captured when the run starts: on that day
+    the baseline was 14:08 UTC and the orders went in at 17:59, so HOFT was sized off
+    12.42, filled at 12.6186, and a 20.0%-of-equity cap produced a 20.3% position.
+    The caps are percentages of equity and of ADV, so applying them to a stale price
+    makes them the wrong percentages, and the error grows with the gap.
+
+    A name with no live price keeps `spot` and records `price_source` as the
+    baseline, because sizing off a stale number knowingly beats not trading, and
+    both beat sizing off a stale number silently.
     """
     if not taken:
         return [], []
@@ -308,11 +465,14 @@ def size(taken, equity, sizing):
     sized, dropped = [], []
     for i, c in enumerate(taken):
         target = alloc[i]
-        qty = int(math.floor(target / c["spot"]))
-        notional = qty * c["spot"]
+        px = c.get("ref_price") or c["spot"]
+        qty = int(math.floor(target / px))
+        notional = qty * px
         cap_adv = (c["dollar_volume_usd"] * float(adv_pct) / 100.0 if adv_pct else None)
         row = {**c, "target_notional_usd": round(target, 2), "qty": qty,
-               "notional_at_spot_usd": round(notional, 2),
+               "price_used_usd": round(px, 4),
+               "price_source": c.get("ref_price_source") or "sealed baseline spot",
+               "notional_usd": round(notional, 2),
                "pct_of_equity": round(100 * notional / equity, 2) if equity else None,
                "pct_of_adv": (round(100 * notional / c["dollar_volume_usd"], 3)
                               if c["dollar_volume_usd"] else None),
@@ -405,6 +565,21 @@ def build_plan(run, api, ex, equity_override=None):
         else:
             tradable.append(c)
 
+    # A live price per name, fetched AFTER the tradable set is final so no quote is
+    # pulled for a name that cannot be placed. Sizing divides the budget by this;
+    # anything without one falls back to the baseline spot and says so in the row.
+    refs, ref_err = reference_prices(api, [c["ticker"] for c in tradable])
+    for c in tradable:
+        r = refs.get(c["ticker"])
+        if r:
+            c["ref_price"] = r["price"]
+            c["ref_price_source"] = r["source"]
+            c["ref_price_utc"] = r["utc"]
+            c["ref_price_age_s"] = r["age_s"]
+            c["quote_at_plan"] = r["quote"]
+            c["baseline_drift_pct"] = (round(100 * (r["price"] - c["spot"]) / c["spot"], 3)
+                                       if c.get("spot") else None)
+
     keep, undersized = size(tradable, float(equity), sizing)
     rejected += undersized
 
@@ -414,6 +589,7 @@ def build_plan(run, api, ex, equity_override=None):
             "ranking_key": scores.get("ranking_key"),
             "benchmark": bench, "sizing": sizing, "orders": ex["orders"],
             "calendar_source": cal_src, "today": today, "today_source": today_src,
+            "reference_price_error": ref_err,
             "equity_usd": round(float(equity), 2), "equity_source": equity_src,
             "buying_power_usd": (round(float(acct["buying_power"]), 2)
                                  if acct else None),
@@ -667,11 +843,28 @@ def print_plan(plan):
                   f"{c['value']:>+8.2f}"
                   f"{(f'{-ru:+.1f}' if ru is not None else '—'):>8s}"
                   f"{c['qty']:>7d}"
-                  f"{c['notional_at_spot_usd']:>11,.0f}"
+                  f"{c['notional_usd']:>11,.0f}"
                   f"{c.get('pct_of_equity') or 0:>7.1f}"
                   f"{c.get('pct_of_adv') or 0:>7.2f}"
                   f"{c['dollar_volume_usd']/1e6:>9.1f}m{c['binding_cap']:>13s}"
                   f"  {c['entry_date']} -> {c['exit_date']}")
+        # Where the share counts came from. A name sized off the baseline is sized
+        # off a price captured when the run started, which can be hours old.
+        stale_px = [c for c in plan["positions"]
+                    if c.get("price_source", "").startswith("sealed baseline")]
+        drift = [c for c in plan["positions"] if c.get("baseline_drift_pct") is not None]
+        if drift:
+            worst = max(drift, key=lambda c: abs(c["baseline_drift_pct"]))
+            print(f"sized on live prices; the baseline has drifted a median "
+                  f"{statistics.median(abs(c['baseline_drift_pct']) for c in drift):.2f}% "
+                  f"since the run sealed it, worst {worst['ticker']} "
+                  f"{worst['baseline_drift_pct']:+.2f}%")
+        if stale_px:
+            print(f"! {', '.join(c['ticker'] for c in stale_px)} sized off the SEALED "
+                  f"BASELINE spot, not a live price"
+                  + (f" ({plan['reference_price_error']})"
+                     if plan.get("reference_price_error") else "")
+                  + " — the %eq and %adv caps are against a stale price for these.")
         agree = [c for c in plan["positions"] if c.get("run_up_20d_pct") is not None
                  and (c["value"] > 0) == (c["run_up_20d_pct"] < 0)]
         print(f"the free control: -run_up_20d_pct agrees with the side on "
@@ -684,8 +877,8 @@ def print_plan(plan):
                   f"(today {plan['today']}, {plan['today_source']}). `open` will "
                   f"refuse these unless --force-date, and a forced fill is not the "
                   f"price edge_resolve.py scores.")
-        gross = sum(c["notional_at_spot_usd"] for c in plan["positions"])
-        net = sum(c["notional_at_spot_usd"] * (1 if c["side"] == "buy" else -1)
+        gross = sum(c["notional_usd"] for c in plan["positions"])
+        net = sum(c["notional_usd"] * (1 if c["side"] == "buy" else -1)
                   for c in plan["positions"])
         print(f"\ngross ${gross:,.0f} ({gross/plan['equity_usd']*100:.1f}% of equity), "
               f"net ${net:+,.0f}")
@@ -746,6 +939,20 @@ def cmd_open(a, api, ex):
     if flat is not None and flat.get("submitted"):
         state["log"].append(flat)
 
+    # The quote at submission, for every name, in one call immediately before the
+    # orders go out. Without this there is no way to tell execution cost from the
+    # day's drift: on 2026-09-10 the fills looked 0.83% adverse against the plan,
+    # but the plan's reference was four hours old, so the run log could only say
+    # "this number is not slippage". `orders.entry` (market vs market_on_close) is
+    # supposed to be decided on fill quality, and that decision needs this.
+    submit_quotes, sq_err = ({}, None)
+    if api.usable:
+        raw_q, sq_err = api.latest_quotes([c["ticker"] for c in plan["positions"]])
+        submit_quotes = {t: quote_snapshot(q) for t, q in raw_q.items()}
+        if sq_err:
+            print(f"  ! quotes at submit unavailable ({sq_err}); fills will not be "
+                  f"measurable against the spread")
+
     for c in plan["positions"]:
         reason = blocked
         if not reason and today and c["entry_date"] != today and not a.force_date:
@@ -767,7 +974,11 @@ def cmd_open(a, api, ex):
         rec.update({"leg": "entry", "entry_date": c["entry_date"],
                     "exit_date": c["exit_date"], "event_date": c["event_date"],
                     "session": c["session"], "key": c["key"], "value": c["value"],
-                    "spot_at_plan": c["spot"]})
+                    "spot_at_plan": c["spot"],
+                    "price_at_plan": c.get("price_used_usd"),
+                    "price_source_at_plan": c.get("price_source"),
+                    "quote_at_submit": submit_quotes.get(c["ticker"]),
+                    "quote_at_submit_error": sq_err})
         upsert(state["entries"], rec)
         print(f"  {c['ticker']:8s}{'SENT' if rec['submitted'] else 'not sent'}"
               f"  {rec.get('order_id') or rec.get('reason')}")
@@ -902,11 +1113,31 @@ def cmd_status(a, api, ex):
                 continue
             o, oerr = api.call("GET", f"/v2/orders:by_client_order_id?"
                                       f"client_order_id={e['client_order_id']}")
+            # Fill against the quote captured at submission. This is the only
+            # comparison here that is execution cost rather than the day's drift:
+            # both prices are from the same instant. Positive = paid away from the
+            # mid, in the direction that costs money on the side actually traded.
+            fap = (o or {}).get("filled_avg_price")
+            q = e.get("quote_at_submit") or {}
+            slip = half = None
+            if fap and q.get("mid"):
+                sgn = 1 if e["side"] == "buy" else -1
+                slip = round(100 * (float(fap) - q["mid"]) / q["mid"] * sgn, 3)
+                half = round((q.get("spread_pct") or 0) / 2.0, 3)
             rows.append({"client_order_id": e["client_order_id"], "leg": e.get("leg"),
                          "symbol": e["symbol"], "side": e["side"],
                          "status": (o or {}).get("status") or oerr,
                          "filled_qty": (o or {}).get("filled_qty"),
-                         "filled_avg_price": (o or {}).get("filled_avg_price"),
+                         "filled_avg_price": fap,
+                         "mid_at_submit": q.get("mid"),
+                         "spread_pct_at_submit": q.get("spread_pct"),
+                         "slippage_vs_mid_pct": slip,
+                         "half_spread_pct": half,
+                         "price_at_plan": e.get("price_at_plan"),
+                         "drift_since_plan_pct": (
+                             round(100 * (float(fap) - e["price_at_plan"])
+                                   / e["price_at_plan"], 3)
+                             if fap and e.get("price_at_plan") else None),
                          "exit_date": e.get("exit_date")})
         open_pos = []
         for sym in {e["symbol"] for e in state["entries"] if e.get("submitted")}:
@@ -920,6 +1151,25 @@ def cmd_status(a, api, ex):
             print(f"  {r['leg'] or '?':6s}{r['symbol']:8s}{r['side']:6s}"
                   f"{str(r['status']):12s}filled {r['filled_qty']} @ "
                   f"{r['filled_avg_price']}  exit {r['exit_date']}")
+        measured = [r for r in rows if r.get("slippage_vs_mid_pct") is not None]
+        if measured:
+            print(f"\n  {'':6s}{'sym':8s}{'vs mid':>9s}{'½spread':>9s}{'drift':>9s}")
+            for r in measured:
+                dr = r["drift_since_plan_pct"]
+                print(f"  {'':6s}{r['symbol']:8s}"
+                      f"{r['slippage_vs_mid_pct']:>+9.3f}"
+                      f"{r['half_spread_pct']:>9.3f}"
+                      + (f"{dr:>+9.3f}" if dr is not None else f"{'—':>9s}"))
+            avg = statistics.mean(r["slippage_vs_mid_pct"] for r in measured)
+            print(f"  {'':6s}{'mean':8s}{avg:>+9.3f}   <- execution cost against the "
+                  f"mid at submission. `drift` is the day moving between plan and "
+                  f"fill and is NOT execution cost.")
+            print(f"  {'':6s}orders.entry is '{ex['orders'].get('entry','market')}'; "
+                  f"switch to market_on_close if this mean stays above the half-spread.")
+        elif rows:
+            print(f"  (no quote captured at submission, so fill quality against the "
+                  f"spread cannot be measured for these — orders placed before "
+                  f"2026-09-10 predate that capture)")
         for p in open_pos:
             print(f"  OPEN  {p['symbol']:8s}{p['qty']:>8s} @ {p['avg_entry_price']}  "
                   f"{float(p['unrealized_plpc'])*100:+.2f}%")
