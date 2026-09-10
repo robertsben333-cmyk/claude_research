@@ -432,14 +432,59 @@ def main():
     check("the sign sets the side",
           [c["side"] for c in taken] == ["buy", "sell"], str(taken))
 
+    eq_cap = 100_000 * float(ex["sizing"]["max_position_pct_of_equity"]) / 100
+    gross_budget = 100_000 * float(ex["sizing"]["gross_exposure_pct_of_equity"]) / 100
     sized, _ = at.size(taken, 100_000.0, ex["sizing"])
     check("no position exceeds max_position_pct_of_equity",
-          all(s["notional_at_spot_usd"] <= 100_000 * 0.04 + 1e-6 for s in sized),
+          all(s["notional_at_spot_usd"] <= eq_cap + 1e-6 for s in sized),
           str([s["notional_at_spot_usd"] for s in sized]))
     check("no position exceeds max_position_pct_of_adv",
-          all(s["notional_at_spot_usd"] <= s["cap_capacity_usd"] + 1e-6 for s in sized),
+          all(s["cap_capacity_usd"] is None
+              or s["notional_at_spot_usd"] <= s["cap_capacity_usd"] + 1e-6
+              for s in sized),
           str([(s["notional_at_spot_usd"], s["cap_capacity_usd"]) for s in sized]))
+    check("the book never exceeds the gross budget",
+          sum(s["notional_at_spot_usd"] for s in sized) <= gross_budget + 1e-6)
     check("share counts are whole", all(float(s["qty"]).is_integer() for s in sized))
+
+    # Equal weight, and the leftover of a capped name redistributed rather than lost.
+    wide = [{"ticker": t, "key": "impact_sum", "value": v, "conviction": abs(v),
+             "side": "buy" if v > 0 else "sell", "spot": 10.0,
+             "dollar_volume_usd": dv, "event_date": "2026-09-09", "session": "amc"}
+            for t, v, dv in [("A", 9.0, 1e9), ("B", -8.0, 1e9), ("C", 7.0, 1e9),
+                             ("D", 6.0, 1e9), ("E", 5.0, 1e9), ("F", 4.0, 1e9)]]
+    six, _ = at.size(wide, 100_000.0, ex["sizing"])
+    notionals = [s["notional_at_spot_usd"] for s in six]
+    check("six equal weights, no cap binding",
+          max(notionals) - min(notionals) <= 10.0 and
+          abs(sum(notionals) - gross_budget) < 100, str(notionals))
+    check("the biggest score gets no more money than the smallest",
+          abs(six[0]["notional_at_spot_usd"] - six[-1]["notional_at_spot_usd"]) <= 10.0,
+          f"{six[0]['ticker']} {six[0]['notional_at_spot_usd']} vs "
+          f"{six[-1]['ticker']} {six[-1]['notional_at_spot_usd']}")
+
+    thin = [dict(w) for w in wide]
+    thin[0]["dollar_volume_usd"] = 300_000            # 1% of ADV = $3,000
+    redis, _ = at.size(thin, 100_000.0, ex["sizing"])
+    capped = [s for s in redis if s["ticker"] == "A"][0]
+    others = [s["notional_at_spot_usd"] for s in redis if s["ticker"] != "A"]
+    check("a capacity-capped name is cut to its cap",
+          capped["notional_at_spot_usd"] <= 3000 + 1e-6 and
+          capped["binding_cap"] == "capacity", str(capped["notional_at_spot_usd"]))
+    check("its leftover is redistributed, not lost",
+          abs(sum(others) + capped["notional_at_spot_usd"] - gross_budget) < 100 and
+          max(others) - min(others) <= 10.0, str(others))
+
+    few, _ = at.size(wide[:3], 100_000.0, ex["sizing"])
+    check("with three names the per-name cap under-deploys on purpose",
+          all(abs(s["notional_at_spot_usd"] - eq_cap) < 10.0 for s in few),
+          str([s["notional_at_spot_usd"] for s in few]))
+
+    check("flatten before entry is on", ex["orders"].get("flatten_before_entry") is True,
+          str(ex["orders"].get("flatten_before_entry")))
+    check("a flatten without --submit closes nothing",
+          at.flatten(at.Alpaca(key="", secret=""), False,
+                     "dry run")["submitted"] is False)
 
     days = at.trading_days_offline("2026-09-09")
     check("an amc print enters on the event date and exits the next session",

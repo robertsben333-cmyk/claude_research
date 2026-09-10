@@ -50,6 +50,7 @@ import json
 import math
 import os
 import sys
+import time
 import urllib.error
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
@@ -255,7 +256,20 @@ def select(scores, baselines, bench):
 
 
 def size(taken, equity, sizing):
-    """Equal weight on gross exposure, then capped by equity share and by capacity.
+    """Equal weight, capped per name, with the leftover redistributed equally.
+
+    Every name gets the same target: the gross budget split N ways. Nothing here
+    reads the score -- a name with a `impact_sum` of 12 gets the same dollars as one
+    at 3.1, because the key ranks and does not size (median absolute error 6-7 points
+    against a realised standard deviation near 11).
+
+    Two caps can cut a name below the equal share: `max_position_pct_of_equity`, and
+    `max_position_pct_of_adv` if it is set. Whatever a capped name cannot take is
+    redistributed equally over the names that are not yet capped, and the pass
+    repeats until nothing moves. So the book deploys as much of the budget as the
+    caps allow, and every uncapped name still holds the same amount as every other
+    uncapped name. When every name is capped the budget is deliberately
+    under-deployed -- at a 20% cap that is any day with fewer than five names.
 
     Share counts come off the sealed baseline's spot, taken hours before the close
     the order fills at, so the notional drifts with the day's move. That is
@@ -264,21 +278,44 @@ def size(taken, equity, sizing):
     if not taken:
         return [], []
     gross = equity * float(sizing.get("gross_exposure_pct_of_equity", 20)) / 100.0
-    per = gross / len(taken)
     max_eq = equity * float(sizing.get("max_position_pct_of_equity", 4)) / 100.0
-    adv_frac = float(sizing.get("max_position_pct_of_adv", 1.0)) / 100.0
+    adv_pct = sizing.get("max_position_pct_of_adv")
     min_usd = float(sizing.get("min_position_usd", 200))
+
+    caps = [min(max_eq, (c["dollar_volume_usd"] * float(adv_pct) / 100.0
+                         if adv_pct else float("inf")))
+            for c in taken]
+    alloc = [0.0] * len(taken)
+    remaining, open_idx = gross, list(range(len(taken)))
+    while open_idx:
+        share = remaining / len(open_idx)
+        hit = [i for i in open_idx if caps[i] <= share + 1e-9]
+        if not hit:                     # nobody is capped: this split is final
+            for i in open_idx:
+                alloc[i] = share
+            remaining = 0.0
+            break
+        for i in hit:
+            alloc[i] = caps[i]
+            remaining -= caps[i]
+        open_idx = [i for i in open_idx if i not in hit]
+
     sized, dropped = [], []
-    for c in taken:
-        cap_adv = c["dollar_volume_usd"] * adv_frac
-        target = min(per, max_eq, cap_adv)
+    for i, c in enumerate(taken):
+        target = alloc[i]
         qty = int(math.floor(target / c["spot"]))
         notional = qty * c["spot"]
+        cap_adv = (c["dollar_volume_usd"] * float(adv_pct) / 100.0 if adv_pct else None)
         row = {**c, "target_notional_usd": round(target, 2), "qty": qty,
                "notional_at_spot_usd": round(notional, 2),
-               "cap_equity_usd": round(max_eq, 2), "cap_capacity_usd": round(cap_adv, 2),
-               "binding_cap": ("capacity" if cap_adv <= min(per, max_eq)
-                               else "equity" if max_eq <= per else "gross/n")}
+               "pct_of_equity": round(100 * notional / equity, 2) if equity else None,
+               "pct_of_adv": (round(100 * notional / c["dollar_volume_usd"], 3)
+                              if c["dollar_volume_usd"] else None),
+               "cap_equity_usd": round(max_eq, 2),
+               "cap_capacity_usd": (round(cap_adv, 2) if cap_adv else None),
+               "binding_cap": ("equal share" if target < caps[i] - 1e-6 else
+                               "capacity" if cap_adv is not None and cap_adv < max_eq
+                               else "per-name %")}
         if qty < 1:
             dropped.append({**row, "reason": "sizes to less than one share"})
         elif notional < min_usd:
@@ -296,14 +333,14 @@ def build_plan(run, api, ex, equity_override=None):
     bench, sizing = ex["benchmark"], ex["sizing"]
     taken, rejected = select(scores, baselines, bench)
 
-    equity, equity_src = None, None
+    equity, equity_src, acct = None, None, None
     if equity_override:
         equity, equity_src = float(equity_override), "--equity"
-    elif api.usable:
+    if api.usable:
         acct, err = api.account()
-        if acct:
+        if acct and equity is None:
             equity, equity_src = float(acct["equity"]), "alpaca /v2/account"
-        else:
+        elif not acct:
             print(f"  ! /v2/account: {err}", file=sys.stderr)
     if equity is None:
         equity = ex.get("assumed_equity_usd")
@@ -312,12 +349,9 @@ def build_plan(run, api, ex, equity_override=None):
         sys.exit("no equity: give --equity, set execution.assumed_equity_usd, or "
                  "export ALPACA_API_KEY_ID / ALPACA_API_SECRET_KEY")
 
-    sized, undersized = size(taken, float(equity), sizing)
-    rejected += undersized
-
     # Dates, and the asset checks that decide whether a leg can be placed at all.
     cal_src, cal_cache = None, {}
-    for c in sized:
+    for c in taken:
         if c["event_date"] not in cal_cache:
             cal_cache[c["event_date"]] = trading_days(api, c["event_date"])
         days, cal_src = cal_cache[c["event_date"]]
@@ -346,13 +380,15 @@ def build_plan(run, api, ex, equity_override=None):
             today, today_src = clk["timestamp"][:10], "alpaca /v2/clock (ET)"
     if today is None:
         today = datetime.now(timezone.utc).date().isoformat()
-    for c in sized:
+    for c in taken:
         if c.get("entry_date"):
             c["entry_window"] = ("today" if c["entry_date"] == today else
                                  "past" if c["entry_date"] < today else "future")
 
-    keep = []
-    for c in sized:
+    # Everything that cannot be placed goes before the budget is split, so a name
+    # Alpaca will not lend does not take an equal share of the money with it.
+    tradable = []
+    for c in taken:
         if not c["entry_date"] or not c["exit_date"]:
             rejected.append({**c, "reason": "could not place the event in the calendar"})
         elif c.get("asset_checked") and not c.get("tradable"):
@@ -362,7 +398,10 @@ def build_plan(run, api, ex, equity_override=None):
         elif c["side"] == "sell" and c.get("asset_checked") and not c.get("shortable"):
             rejected.append({**c, "reason": "not shortable at Alpaca"})
         else:
-            keep.append(c)
+            tradable.append(c)
+
+    keep, undersized = size(tradable, float(equity), sizing)
+    rejected += undersized
 
     return {"generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "run": str(run), "broker": "alpaca", "endpoint": api.base,
@@ -371,6 +410,12 @@ def build_plan(run, api, ex, equity_override=None):
             "benchmark": bench, "sizing": sizing, "orders": ex["orders"],
             "calendar_source": cal_src, "today": today, "today_source": today_src,
             "equity_usd": round(float(equity), 2), "equity_source": equity_src,
+            "buying_power_usd": (round(float(acct["buying_power"]), 2)
+                                 if acct else None),
+            "regt_buying_power_usd": (round(float(acct["regt_buying_power"]), 2)
+                                      if acct and acct.get("regt_buying_power")
+                                      else None),
+            "shorting_enabled": (acct.get("shorting_enabled") if acct else None),
             "names_in_run": scores.get("names"),
             "note": ("Selection is |impact_sum| >= conviction_floor, sign for side, "
                      "plus a turnover floor and a shortability check. The rule is 21 "
@@ -449,6 +494,54 @@ def moc_ok(api):
     return True, f"{left:.0f} min to the close"
 
 
+def flatten(api, submit, reason_blocked, timeout=60):
+    """Cancel every open order and close every position, at market, now.
+
+    This is the start-of-run clean slate: the book is rebuilt from scratch every
+    day, so whatever is still open is yesterday's and goes. It is safe at that
+    moment for one reason worth stating -- at the time the edge hunt runs, every
+    position in the account has already been through its print, so nothing is cut
+    short of its event. It is not a free swap for the market-on-close exit: it sells
+    around the open rather than at the close, and to the next open the direction
+    result is ρ=+0.331, p=0.046 against ρ=+0.514, p=0.0015 to the next close.
+
+    Returns a record. Waits for flat, because an open opposing order in a symbol
+    that is also in today's book gets the entry rejected as a potential wash trade.
+    """
+    rec = {"action": "flatten", "utc": datetime.now(timezone.utc).isoformat(
+        timespec="seconds"), "submitted": False}
+    if reason_blocked:
+        return {**rec, "reason": reason_blocked}
+    before, err = api.call("GET", "/v2/positions")
+    if before is None:
+        return {**rec, "reason": f"could not read positions: {err}"}
+    rec["positions_before"] = [{"symbol": p["symbol"], "qty": p["qty"],
+                                "unrealized_plpc": p.get("unrealized_plpc")}
+                               for p in before]
+    if not submit:
+        return {**rec, "reason": "dry run"}
+    api.call("DELETE", "/v2/orders")                    # stale MOC exits included
+    resp, err = api.call("DELETE", "/v2/positions?cancel_orders=true")
+    if resp is None and err:
+        return {**rec, "reason": f"close-all refused: {err}"}
+    rec["close_all_response"] = resp
+    waited = 0
+    while waited < timeout:
+        left, _ = api.call("GET", "/v2/positions")
+        if left == []:
+            break
+        time.sleep(3)
+        waited += 3
+    left, _ = api.call("GET", "/v2/positions")
+    rec.update({"submitted": True, "waited_s": waited,
+                "positions_after": [p["symbol"] for p in (left or [])]})
+    if left:
+        rec["reason"] = ("still holding " + ", ".join(p["symbol"] for p in left) +
+                         " after the close-all; entries in those names would be "
+                         "rejected as a wash trade")
+    return rec
+
+
 def order_body(ticker, qty, side, ex, moc=True):
     o = {"symbol": ticker, "qty": str(int(qty)), "side": side,
          "type": "market", "extended_hours": False}
@@ -499,7 +592,8 @@ def print_plan(plan):
         print("no name meets the benchmark — nothing to trade")
     else:
         print(f"{'ticker':8s}{'side':6s}{'key':>8s}{'-runup':>8s}{'qty':>7s}"
-              f"{'notional':>11s}{'turnover':>11s}{'cap':>10s}  entry -> exit")
+              f"{'notional':>11s}{'%eq':>7s}{'%adv':>7s}{'turnover':>10s}"
+              f"{'size from':>13s}  entry -> exit")
         for c in plan["positions"]:
             ru = c.get("run_up_20d_pct")
             print(f"{c['ticker']:8s}{'long' if c['side']=='buy' else 'short':6s}"
@@ -507,7 +601,9 @@ def print_plan(plan):
                   f"{(f'{-ru:+.1f}' if ru is not None else '—'):>8s}"
                   f"{c['qty']:>7d}"
                   f"{c['notional_at_spot_usd']:>11,.0f}"
-                  f"{c['dollar_volume_usd']/1e6:>10.1f}m{c['binding_cap']:>10s}"
+                  f"{c.get('pct_of_equity') or 0:>7.1f}"
+                  f"{c.get('pct_of_adv') or 0:>7.2f}"
+                  f"{c['dollar_volume_usd']/1e6:>9.1f}m{c['binding_cap']:>13s}"
                   f"  {c['entry_date']} -> {c['exit_date']}")
         agree = [c for c in plan["positions"] if c.get("run_up_20d_pct") is not None
                  and (c["value"] > 0) == (c["run_up_20d_pct"] < 0)]
@@ -526,6 +622,16 @@ def print_plan(plan):
                   for c in plan["positions"])
         print(f"\ngross ${gross:,.0f} ({gross/plan['equity_usd']*100:.1f}% of equity), "
               f"net ${net:+,.0f}")
+        bp = plan.get("regt_buying_power_usd") or plan.get("buying_power_usd")
+        if bp and gross > bp:
+            print(f"! gross ${gross:,.0f} exceeds ${bp:,.0f} of buying power. The "
+                  f"orders that do not fit will be rejected by Alpaca, not by this "
+                  f"script — lower gross_exposure_pct_of_equity.")
+        short = [c for c in plan["positions"] if c["side"] == "sell"]
+        if short and plan.get("shorting_enabled") is False:
+            print(f"! {len(short)} short leg(s) on an account with shorting disabled. "
+                  f"They will all be rejected and the book becomes long-only, which "
+                  f"is a different strategy from the measured one.")
     if plan["rejected"]:
         print(f"\n{len(plan['rejected'])} name(s) not traded")
         for c in plan["rejected"]:
@@ -533,11 +639,32 @@ def print_plan(plan):
 
 
 def cmd_open(a, api, ex):
+    blocked = guard(api, ex, a.submit, a.live_account_i_understand)
+
+    # Clean slate first, and sizing after it, so the plan is drawn against the
+    # equity and buying power the flatten actually leaves behind.
+    flat = None
+    if ex["orders"].get("flatten_before_entry", True) and not a.no_flatten:
+        flat = flatten(api, a.submit, blocked)
+        held = flat.get("positions_before") or []
+        print(f"flatten: {len(held)} position(s) held"
+              + (f" — {', '.join(p['symbol'] for p in held)}" if held else "")
+              + (f" — {'closed' if flat['submitted'] else flat.get('reason')}"))
+        if flat.get("submitted") and flat.get("positions_after"):
+            print(f"  ! still holding {', '.join(flat['positions_after'])}")
+
     plan = build_plan(a.run, api, ex, a.equity)
+    if flat is not None:
+        plan["flatten"] = flat
+        same = {p["symbol"] for p in (flat.get("positions_before") or [])} & \
+               {c["ticker"] for c in plan["positions"]}
+        if same:
+            print(f"  ! {', '.join(sorted(same))} was sold and is bought back today, "
+                  f"which is a day trade. Under $25k of equity FINRA allows three in "
+                  f"five business days before the account is restricted.")
     Path(a.run, "alpaca-plan.json").write_text(json.dumps(plan, indent=1) + "\n",
                                                encoding="utf-8")
     print_plan(plan)
-    blocked = guard(api, ex, a.submit, a.live_account_i_understand)
     moc, moc_note = (moc_ok(api) if (a.submit and not blocked) else (False, "dry run"))
     print(f"\nsubmit: {'blocked — ' + blocked if blocked else moc_note}")
 
@@ -546,6 +673,8 @@ def cmd_open(a, api, ex):
         clk, _ = api.clock()
         today = clk["timestamp"][:10] if clk else None
     state = load_orders(a.run)
+    if flat is not None and flat.get("submitted"):
+        state["log"].append(flat)
     use_moc = ex["orders"].get("entry", "market_on_close") == "market_on_close"
 
     for c in plan["positions"]:
@@ -640,6 +769,24 @@ def cmd_close(a, api, ex):
         print(f"  wrote {orders_path(run)}")
 
 
+def cmd_flatten(a, api, ex):
+    blocked = guard(api, ex, a.submit, a.live_account_i_understand)
+    rec = flatten(api, a.submit, blocked)
+    held = rec.get("positions_before") or []
+    print(f"{len(held)} position(s) held")
+    for p in held:
+        pl = p.get("unrealized_plpc")
+        print(f"  {p['symbol']:8s}{p['qty']:>10s}"
+              + (f"  {float(pl)*100:+.2f}%" if pl is not None else ""))
+    print("closed" if rec.get("submitted") else f"not closed — {rec.get('reason')}")
+    if rec.get("positions_after"):
+        print(f"! still holding {', '.join(rec['positions_after'])}")
+    if a.run and rec.get("submitted"):
+        state = load_orders(a.run)
+        state["log"].append(rec)
+        save_orders(a.run, state)
+
+
 def cmd_status(a, api, ex):
     if not api.usable:
         sys.exit("status needs ALPACA_API_KEY_ID / ALPACA_API_SECRET_KEY")
@@ -710,12 +857,19 @@ def main():
     common(p)
     p.add_argument("--out")
 
-    p = sub.add_parser("open", help="place the entry orders (run on the entry date)")
+    p = sub.add_parser("open", help="flatten, then place the entry orders "
+                                    "(run on the entry date)")
     common(p)
     p.add_argument("--force-date", action="store_true",
                    help="place even when today is not the planned entry date")
     p.add_argument("--allow-market-fallback", action="store_true",
                    help="if the MOC window has passed, send a plain market order")
+    p.add_argument("--no-flatten", action="store_true",
+                   help="keep the existing positions instead of selling them first")
+
+    p = sub.add_parser("flatten", help="cancel every order and close every position, "
+                                       "at market, now")
+    common(p, run_required=False)
 
     p = sub.add_parser("close", help="close what is due (run on the exit date)")
     common(p, run_required=False)
@@ -738,7 +892,7 @@ def main():
     ex = execution_config(cfg)
     api = Alpaca(base=a.base)
     {"plan": cmd_plan, "open": cmd_open, "close": cmd_close,
-     "status": cmd_status}[a.cmd](a, api, ex)
+     "flatten": cmd_flatten, "status": cmd_status}[a.cmd](a, api, ex)
 
 
 if __name__ == "__main__":

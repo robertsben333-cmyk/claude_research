@@ -126,41 +126,106 @@ paper account.
 6. **The two Routines**, and only once steps 1 to 5 have been watched for a few days.
    Prompts in `docs/routine-prompts/edge-execute.md`.
 
-## Two invocations, two days
+## Sizing: equal weight, whole budget
 
-Both legs are market-on-close, because that is the window `edge_resolve.py` scores:
+Every name that clears the benchmark gets the same dollars. The gross budget
+(`gross_exposure_pct_of_equity`, 100%) is split N ways, each name is capped at
+`max_position_pct_of_equity` (20%), and whatever a capped name cannot take is
+redistributed equally over the names that are not yet capped, repeating until nothing
+moves. So the account deploys as much as the caps allow and every uncapped name holds
+the same amount as every other one.
 
-| print | entry | exit |
-| --- | --- | --- |
-| `amc` on day D | close of D | close of the next session |
-| `bmo` on day D | close of the session before D | close of D |
+**Nothing in the sizing reads the score.** A name at `impact_sum` 12 gets exactly what
+a name at 3.1 gets. That is not modesty: the key ranks and does not size — median
+absolute error 6 to 7 points against a realised standard deviation near 11 — so
+weighting by it would be sizing on a number with no measured relationship to the size
+of the move.
 
-Every name in one run therefore enters at the same close — the run's own date — and
-exits one session later. Alpaca stops accepting MOC orders ten minutes before the
-bell, so:
+Two consequences worth knowing before the first run:
+
+- **Under five names the account is deliberately under-invested.** Three names at the
+  20% cap is 60% deployed, and there is nowhere for the rest to go.
+- **The whole account rides five to nine earnings prints overnight, unhedged, with no
+  stop.** Two names in the resolved sample gapped 22–23% (NX +22.23%, CANG −23.01%);
+  at a 20% weight either one moves the account about 4.5%. Reg T allows twice equity
+  overnight, so 100% gross fits comfortably in buying power — the constraint here is
+  not margin, it is that nothing cuts a loss.
+
+`max_position_pct_of_adv` (1%) stays as a slippage guard and only starts to bind as
+the account grows: at $10k of equity a 20% position is $2,000, which is 1% of a
+$200k/day name. The plan prints `%adv` per name either way, so the share of the
+closing auction each order represents is visible rather than inferred.
+
+## The daily run flattens first
+
+`open` sells everything before it places anything: it cancels every open order and
+closes every position at market, waits for flat, and only then submits the new book.
+The account is rebuilt from scratch each day.
+
+That is safe at that moment for one reason: when the edge hunt fires, every position
+in the account has already been through its print, so nothing is cut short of its
+event. It is not free, either. The measured exit is the next **close** (direction
+ρ=+0.514, permutation p=0.0015); selling at the start of the run is nearer the next
+**open**, which measured weaker on the same events (ρ=+0.331, p=0.046). That gap is
+the price of a one-invocation-a-day operation with no overnight order to babysit.
+
+Two smaller things it brings:
+
+- Flattening at market and entering market-on-close in the same symbol on the same day
+  is a **day trade**. Under $25k of equity, FINRA allows three in five business days
+  before the account is restricted. It only happens when a name is in the book two
+  days running; `open` prints a warning naming the symbols when it does.
+- Waiting for flat is not optional. An open opposing order in a symbol that is also in
+  today's book gets the entry rejected as a potential wash trade.
+
+`--no-flatten` keeps the existing positions. `flatten` on its own is the panic button:
+it cancels and closes everything, at market, now.
+
+## Invocations
+
+**One invocation a day does everything**, because `open` flattens yesterday's book
+before placing today's. Entries are market-on-close, so it has to land before Alpaca's
+MOC cutoff, ten minutes before the bell:
 
 ```bash
 # on the entry date, after stage E has written edge-scores.json, before 15:50 ET
-python3 scripts/alpaca_trade.py plan  --run research/2026/09/2026-09-09/edge
-python3 scripts/alpaca_trade.py open  --run research/2026/09/2026-09-09/edge --submit
-
-# on the exit date, before 15:50 ET
-python3 scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
+python3 scripts/alpaca_trade.py plan --run research/2026/09/2026-09-09/edge
+python3 scripts/alpaca_trade.py open --run research/2026/09/2026-09-09/edge --submit
 
 # any time
 python3 scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
+
+# everything out, at market, now
+python3 scripts/alpaca_trade.py flatten --submit
 ```
 
-`close` with `--scan` walks every run that has an `alpaca-orders.json` and closes
-only the legs whose `exit_date` is today, so one daily invocation covers whatever is
-open. It reads the actual position quantity from Alpaca rather than the order, so a
-partial fill closes flat. `--all` ignores the dates and `--now` sends plain market
-orders instead of MOC — that pair is the panic button.
+Entry dates come off the window `edge_resolve.py` scores, so the traded return and the
+measured return share an entry:
 
-To run it unattended, two Routines are needed beside stage E's own. The prompts are
-in `docs/routine-prompts/edge-execute.md`. Stage E's Routine prompt is deliberately
+| print | entry | measured exit | what the flatten does instead |
+| --- | --- | --- | --- |
+| `amc` on day D | close of D | close of D+1 | sells the morning of D+1 |
+| `bmo` on day D | close of D−1 | close of D | sells the morning of D |
+
+Every name in one run enters at the same close — the run's own date.
+
+`close` is still there for the measured exit, and it is what to use if the
+flatten-at-open exit ever looks like it is costing more than the operational
+simplicity is worth. Set `orders.flatten_before_entry: false` and run it on the exit
+date, before the same cutoff:
+
+```bash
+python3 scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
+```
+
+It walks every run with an `alpaca-orders.json`, closes only the legs whose
+`exit_date` is today, and reads the real position quantity from Alpaca so a partial
+fill still closes flat.
+
+To run it unattended, one Routine is needed beside stage E's own. The prompt is in
+`docs/routine-prompts/edge-execute.md`. Stage E's own Routine prompt is deliberately
 **not** changed: it has to be pasted in by hand and one hand-pasted file is already
-drifting.
+enough to keep in step.
 
 ## What it refuses to do
 

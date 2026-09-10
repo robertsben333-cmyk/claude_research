@@ -141,14 +141,23 @@ on hunts.
 `scripts/alpaca_trade.py` takes the one rule that survived a family-wise correction —
 `|impact_sum| >= conviction_floor`, side from the sign, plus a $200k turnover floor
 and a shortability check — and places it market-on-close on the entry date, closing
-market-on-close one session later, which is the window `edge_resolve.py` scores.
-Nothing is sent unless `execution.enabled` is `true` in `config/pipeline.yaml` **and**
-`--submit` is given **and** credentials are in the environment **and** the endpoint is
-paper; it is committed as `false`. The rule is 21 trades over 5 independent days, so
-the exposure is sized for a lead: 20% gross, 4% a name, 1% of a name's daily turnover.
-See `docs/EXECUTION.md` for what it refuses to do and what it does not know, and
-`docs/routine-prompts/edge-execute.md` for the two Routines that would run it
-unattended. Those Routines do not exist.
+market-on-close on the entry date. Nothing is sent unless `execution.enabled` is
+`true` in `config/pipeline.yaml` **and** `--submit` is given **and** credentials are in
+the environment **and** the endpoint is paper; it is committed as `false`.
+
+One invocation a day does the whole thing: `open` **sells every existing position at
+market first**, waits for flat, then places the new book. That trades the measured
+exit for operational simplicity — the next close ranked ρ=+0.514, p=0.0015 against
+ρ=+0.331, p=0.046 to the next open, and selling at the start of the run is nearer the
+open. `scripts/alpaca_trade.py close` still does the market-on-close exit if
+`orders.flatten_before_entry` is turned off. Sizing is **equal weight, whole budget**:
+the gross budget split N ways, 20% of equity per name, a capped name's leftover
+redistributed over the rest. Nothing reads the score — the key ranks and does not
+size. Under five names the account is deliberately under-invested, and at 100% gross
+the whole account rides five to nine prints overnight with no stop. See
+`docs/EXECUTION.md` for what it refuses to do and what it does not know, and
+`docs/routine-prompts/edge-execute.md` for the one Routine that would run it
+unattended. That Routine does not exist.
 
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have

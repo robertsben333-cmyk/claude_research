@@ -418,11 +418,14 @@ The selection is one rule — `|impact_sum| >= conviction_floor`, side from the 
 plus a turnover floor and a shortability check. Do not widen it, do not hand-pick a
 name into the book, and do not trade a name below the floor because its finding reads
 well: below the floor the sign is a coin flip and that is the entire reason the floor
-exists.
+exists. The book is **equal weight**: every name gets the same dollars regardless of
+its score. Do not size by conviction — the key ranks and does not size.
 
-Both legs are market-on-close and Alpaca stops accepting MOC ten minutes before the
-bell, so `open` has to run on the entry date and `close` on the exit date. A session
-firing at 16:04 has time; a session that has been running for six hours may not.
+`open` sells every existing position at market before it places anything, so one
+invocation a day is the whole operation. Entries are market-on-close and Alpaca stops
+accepting MOC ten minutes before the bell, so it has to run on the entry date. A
+session firing at 16:04 has time; a session that has been running for six hours may
+not, and a plan built after that close says so rather than filling at the wrong price.
 
 Record in the run log how many names met the benchmark, how many orders went in, and
 every refusal with its reason. `docs/EXECUTION.md` is the whole contract, including

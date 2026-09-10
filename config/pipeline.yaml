@@ -240,15 +240,48 @@ execution:
     # grows). Re-run scripts/edge_turnover_floor.py as days pool and move it back if
     # the added names keep underperforming.
     min_dollar_volume_usd: 200000
-    max_positions: 10            # by conviction, highest first
+    # No cap on the count. Equal weight means more names is smaller positions, not
+    # more risk, and cutting the tail would be a second selection rule on top of the
+    # only one that was measured.
+    max_positions: null
 
   sizing:
-    gross_exposure_pct_of_equity: 20
-    max_position_pct_of_equity: 4
-    max_position_pct_of_adv: 1.0   # percent of 20-day dollar volume, the hard cap
+    # EQUAL WEIGHT, WHOLE BUDGET. Every name that clears the benchmark gets the same
+    # dollars: the gross budget split N ways, capped per name, with whatever a capped
+    # name cannot take redistributed equally over the rest. Nothing here reads the
+    # score. `impact_sum` ranks and does not size -- median absolute error 6-7 points
+    # against a realised standard deviation near 11 -- so weighting by it would be
+    # sizing on a number that has no measured relationship to the size of the move.
+    #
+    # 100% gross is the whole account, unhedged, through five to nine earnings prints
+    # a night. Two names in the resolved sample gapped 22-23% (NX +22.23%,
+    # CANG -23.01%): at a 20% weight either one moves the account by about 4.5%.
+    # Reg T allows twice equity overnight, so 100% fits, but nothing here is a stop.
+    gross_exposure_pct_of_equity: 100
+    max_position_pct_of_equity: 20
+    # Below five names every position hits that 20% and the account is deliberately
+    # under-deployed. That is the cap doing its job, not a bug to route around.
+    #
+    # Slippage guard, kept but loose: a market-on-close order this size is a share of
+    # the closing auction, and in a thin name that share is the cost. At $10k of
+    # equity a 20% position is $2,000, which is 1% of a $200k/day name -- so this
+    # only starts binding as the account grows. Set to null to disable it entirely;
+    # the plan prints %adv per name either way.
+    max_position_pct_of_adv: 1.0
     min_position_usd: 200
 
   orders:
+    # Sell everything at the start of the run, at market, before the new book goes
+    # in. The account is rebuilt from scratch every day.
+    #
+    # This is safe at that moment for one reason: when the edge hunt fires, every
+    # position in the account has already been through its print, so nothing is cut
+    # short of its event. It is NOT free. The measured exit is the next CLOSE
+    # (direction rho=+0.514, permutation p=0.0015); selling at the start of the run
+    # is nearer the next OPEN, which measured weaker on the same events (rho=+0.331,
+    # p=0.046). Ten to twenty basis points of that gap is the price of a one-run-a-day
+    # operation with no overnight order to babysit.
+    flatten_before_entry: true
     # Both legs are market-on-close, because that is the window edge_resolve.py
     # scores: enter at the last close before the print, exit at the first close
     # after it. Alpaca stops accepting MOC ten minutes before the bell, so `open`
