@@ -25,30 +25,83 @@ without them:
 | `min_dollar_volume_usd: 5000000` | six of the first 22 long/short positions traded under $1m a day, and the best trade in the sample (DLTH +23.20%) turns over $170k. A fill at that size is not a price the measurement ever saw. |
 | Alpaca `shortable` | a rejected short leg turns a market-neutral book into a naked long. Names Alpaca will not lend are dropped, not flipped. |
 
+### Where the turnover floor came from
+
+Measured on the 38 de-duplicated events, close-before to close-after, taking every
+name with `|impact_sum| >= 3` and its sign:
+
+| floor | trades | direction | binom p | return per trade | t |
+| --- | --- | --- | --- | --- | --- |
+| none | 21 | 17/21 | 0.004 | +6.18% | 2.66 |
+| $200k | 18 | 15/18 | 0.004 | +5.86% | 2.38 |
+| $1m | 16 | 13/16 | 0.011 | +6.08% | 2.20 |
+| $2m | 15 | 12/15 | 0.018 | +4.95% | 1.84 |
+| **$5m** | **12** | **11/12** | **0.003** | **+8.09%** | **3.85** |
+| $10m | 9 | 9/9 | 0.002 | +9.64% | 4.22 |
+
+Higher floors look better on this sample, and that is most of the reason to distrust
+the shape: picking the floor that maximises the in-sample return is the same move
+that put the ranking's own p at 0.056 under a max-statistic test. The six trades a
+$200k floor adds and a $5m floor refuses came in at 4/6 and +1.40% a trade, with one
+−22.23% (NX, short, $4.89m of turnover) in them. At n=38 no two adjacent rows in that
+table are distinguishable.
+
+So the floor is not a return decision. Two things that are not in the table decide it:
+
+- **Spread.** The measurement charges a flat 1.5% round trip. In a name turning over
+  $200k a day the spread alone can be that, and it is paid twice.
+- **Learning rate.** At $5m only 12 of 38 events trade, about two a day. At $200k it
+  is 18. If the point of running this with paper money is to accumulate events faster
+  than one small sample a week, a lower floor is defensible on those grounds and on
+  no others — say that out loud rather than dressing it up as expected return.
+
+The 1%-of-turnover sizing cap already handles the fill: at $100k of equity the
+per-name cap is $4,000, so any name under $400k of daily turnover is capacity-bound
+and gets a smaller position automatically. A $200k/day name comes in at $2,000, half
+weight.
+
 Names whose event the sweep could not confirm (`rankable: false`) never reach the
 book. `edge-scores.json` itself is still unfiltered — the ranking test needs the
 complete table — and this script is the only place a cut is applied.
 
 ## Setting it up
 
-```bash
-export ALPACA_API_KEY_ID=...            # paper keys first, and for a long time
-export ALPACA_API_SECRET_KEY=...
-export ALPACA_BASE_URL=https://paper-api.alpaca.markets    # the default
-```
+**Nothing to install.** The script is standard library plus PyYAML, which the repo
+already uses. No `alpaca-py`, no market-data subscription: it reads spot from the
+sealed baseline and calls only the trading API (`/v2/orders`, `/v2/positions`,
+`/v2/account`, `/v2/assets`, `/v2/clock`, `/v2/calendar`), all of which are free on a
+paper account.
 
-Credentials live in the environment. Nothing writes them to the repo, and the
-account number never enters a committed file.
+1. **An Alpaca account, on paper.** app.alpaca.markets → Paper Trading → generate an
+   API key. A paper account starts with $100k and needs no funding.
+2. **Margin, if the shorts are meant to happen.** Paper accounts are margin accounts
+   by default. On a cash account every short leg comes back rejected and the book is
+   long-only, which is a different strategy from the one that was measured.
+3. **Credentials as environment variables**, never in the repo:
 
-Then in `config/pipeline.yaml`, under `execution:`, set `enabled: true`. Four things
-must all hold before a single order is sent: `enabled: true`, `--submit` on the
-command line, credentials in the environment, and a paper endpoint — a live endpoint
-additionally needs `--live-account-i-understand`. Any one missing and the run is a
-dry run that prints the book and writes `alpaca-plan.json`.
+   ```bash
+   export ALPACA_API_KEY_ID=...
+   export ALPACA_API_SECRET_KEY=...
+   export ALPACA_BASE_URL=https://paper-api.alpaca.markets    # the default
+   ```
 
-Shorting needs a margin account. On a cash account every short leg comes back
-rejected and the book is long-only, which is a different strategy from the one that
-was measured.
+   A Routine fires into a fresh container that has only this repo, so for unattended
+   runs these have to be set on the *environment* the Routine uses, not in a shell.
+   Claude Code on the web keeps them under the environment's own configuration; see
+   https://code.claude.com/docs/en/claude-code-on-the-web.
+4. **`execution.enabled: true`** in `config/pipeline.yaml`. This is the switch. Four
+   things must all hold before a single order is sent: `enabled: true`, `--submit` on
+   the command line, credentials in the environment, and a paper endpoint — a live
+   endpoint additionally needs `--live-account-i-understand`. Any one missing and the
+   run is a dry run that prints the book and writes `alpaca-plan.json`.
+5. **Check it end to end on one past run first**, which needs no credentials at all:
+
+   ```bash
+   python3 scripts/alpaca_trade.py plan --run research/2026/09/2026-09-09/edge
+   ```
+
+6. **The two Routines**, and only once steps 1 to 5 have been watched for a few days.
+   Prompts in `docs/routine-prompts/edge-execute.md`.
 
 ## Two invocations, two days
 
