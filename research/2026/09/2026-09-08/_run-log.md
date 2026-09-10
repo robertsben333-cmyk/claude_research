@@ -214,3 +214,10 @@
 ## Stage E — edge hunt — CONVICTION FLOOR
 - Logged at 2026-09-09 13:39 UTC
 - The direction skill is conditional on prediction size. Threshold-free test: rank of |impact_sum| vs sign-correct gives rho=+0.514 (permutation p=0.0015) to the next close and +0.331 (p=0.046) to the open. Above the median prediction the sign is right on 74% of events, below it 53%. |pred|>=3 gives 16/21 and +6.37%/trade (t=2.74, CI [+1.80,+10.72]); best of seven thresholds clears family-wise at p=0.034. Not one day (spread over five), not the microcaps (median turnover 7.5m vs 69.9m in the bottom bucket), not a volatility proxy (top bucket has the smallest median realised move). The identical test on |edge_score| returns +0.077 and -0.003, so the scorer destroys the conviction signal as well as the ordering. See docs/EDGE_ANALYSIS.md.
+
+## Stage 4 — calibration — DONE
+- Logged at 2026-09-10 06:28 UTC
+- Scored 2026-09-10 against the 2026-09-08 close -> 2026-09-09 close window (all six names resolve on the same window; all reported on schedule).
+- TTAN: Neutral miss, -29.98% vs 13.14% implied/5.8-18.4% band -- largest magnitude break in the ledger. CHWY: Neutral hit, -10.83% vs 10.65% implied. Prelim 3/6 for the day (SAIL, BRZE, SIG hit; TTAN, CHWY, ASO missed).
+- LEDGER.md updated: panelled 9/15 (60%), independent-event panelled 7/13 (54%), prelim 15/35 (43%). High-certainty tier now 3/7 (43%) vs Med 6/8 (75%) -- gap persists.
+- Published research/2026/09/2026-09-08/05-outcome.md + 05-outcome.json.
