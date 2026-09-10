@@ -177,18 +177,6 @@ is rejected between 09:28 and 19:00 ET so no European-afternoon Routine can plac
 (closing auction) is rejected between 15:50 and 19:00 ET, shorts need a margin account and an
 easy-to-borrow name checked daily, and fractional shorts do not exist.
 
-**The exit finding does not replicate on the first two forward days, and a second sample in
-this repo contradicts it.** `edge_exit.py --runs <edge dir>` scores any day directly, with a
-cutoff at the current clock so nothing unresolved is reported (`docs/edge-exit-forward.json`).
-On 09-08 plus 09-09 — 30 names, 14 above the conviction floor, neither day in the fitted
-sample — every exit horizon available on both days is flat to negative: −1.42% per trade in
-the after-hours, −0.05% at the opening print, −1.22% an hour in. On 09-09 the free control
-paid +3.9% to +4.5% per day at every hour after 08:00 against −0.2% to −0.9% for the hunt's
-own book, and the two largest predictions were both wrong and large (NAVN +10.0 fell 18.4%,
-WLTH −10.5 rose 8.0%). And `backtest/RESULTS.md` priced its 37 sealed events at both exits:
-all three arms did **better at the close** (+2.16% against +0.90% per trade for arm A).
-Re-price those 37 on the hourly grid before acting on any exit rule.
-
 **The per-session exit exists in `alpaca_trade.py` and is off.** `orders.exit_by_session`
 gives amc the opening auction (`opg`, +8.91% a trade in-sample against +5.23% at the close)
 and bmo the closing auction (`cls`, +6.48% against +2.96% at the open); together +7.81%
