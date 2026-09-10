@@ -399,11 +399,97 @@ def main():
 
     ex = at.execution_config(yaml.safe_load(
         open(os.path.join(REPO, "config/pipeline.yaml"), encoding="utf-8")))
-    check("execution is off in the committed config", ex.get("enabled") is False,
-          f"enabled={ex.get('enabled')!r} — a committed `true` trades unattended")
+    # This asserted `enabled is False` until 2026-09-10, when the operator turned
+    # the switch on deliberately for the paper account and the check started failing
+    # on every run. A permanently red check is worse than no check: it trains the
+    # next session to skip the output. What the switch must still be is an explicit
+    # bool -- a None or a stray string would sail through `if ex["enabled"]` in
+    # guard() -- and the three gates that actually stop an accident are tested
+    # separately below and still hold: --submit is required, a disabled config
+    # blocks --submit, and a live endpoint needs its own flag.
+    check("the execution switch is an explicit bool",
+          isinstance(ex.get("enabled"), bool),
+          f"enabled={ex.get('enabled')!r} — guard() treats anything truthy as on")
+    if ex.get("enabled"):
+        print("        note: execution is ON. Orders go out on `--submit`; the "
+              "endpoint gate still requires paper unless overridden.")
     check("the conviction floor is inherited from stage E",
           ex["benchmark"]["min_conviction"] == 3.0,
           str(ex["benchmark"]["min_conviction"]))
+
+    # -- the price the budget is divided by (added 2026-09-10)
+    #
+    # Sizing used to divide by the sealed baseline spot, which is captured when the
+    # run starts: on the first live run that was 14:08 UTC against orders at 17:59,
+    # so a 20.0%-of-equity cap produced a 20.3% position. It now divides by a live
+    # Alpaca price. These checks cover the branch that got it wrong first time --
+    # a stale trade next to a 29%-wide quote, where the mid is not a price.
+    check("a two-sided quote gives a mid and a spread",
+          (at.quote_snapshot({"bp": 10.0, "ap": 10.1}) or {}).get("mid") == 10.05)
+    check("a one-sided or crossed quote is not a price",
+          at.quote_snapshot({"bp": 0, "ap": 10.1}) is None
+          and at.quote_snapshot({"bp": 11.0, "ap": 10.0}) is None
+          and at.quote_snapshot(None) is None)
+    check("a nanosecond timestamp parses",
+          at._age_seconds("2026-09-10T18:00:00.123456789Z") is not None
+          and at._age_seconds("not-a-date") is None)
+
+    now = __import__("datetime").datetime.now(
+        __import__("datetime").timezone.utc).isoformat().replace("+00:00", "Z")
+
+    class _FakeApi:
+        usable = True
+        def __init__(self, trades, quotes):
+            self._t, self._q = trades, quotes
+        def latest_trades(self, syms):
+            return {k: v for k, v in self._t.items() if k in syms}, None
+        def latest_quotes(self, syms):
+            return {k: v for k, v in self._q.items() if k in syms}, None
+
+    refs, _ = at.reference_prices(_FakeApi(
+        trades={"FRESH": {"p": 100.0, "t": now},
+                "STALE": {"p": 63.96, "t": "2026-01-01T00:00:00Z"},
+                "OLDTIGHT": {"p": 20.0, "t": "2026-01-01T00:00:00Z"}},
+        quotes={"FRESH": {"bp": 99.0, "ap": 99.1},
+                "STALE": {"bp": 54.24, "ap": 72.79},      # 29% wide, the FEIM case
+                "OLDTIGHT": {"bp": 21.0, "ap": 21.02},
+                "QUOTEONLY": {"bp": 5.0, "ap": 5.01}}),
+        ["FRESH", "STALE", "OLDTIGHT", "QUOTEONLY", "NOTHING"])
+    check("a fresh trade wins over the quote",
+          refs["FRESH"]["price"] == 100.0, str(refs.get("FRESH")))
+    check("a stale trade beats a 29%-wide mid",
+          refs["STALE"]["price"] == 63.96 and "stale" in refs["STALE"]["source"],
+          str(refs.get("STALE")))
+    check("a tight mid beats a stale trade",
+          refs["OLDTIGHT"]["price"] == 21.01, str(refs.get("OLDTIGHT")))
+    check("a quote with no trade is still usable",
+          refs["QUOTEONLY"]["price"] == 5.005, str(refs.get("QUOTEONLY")))
+    check("a name with neither is absent, so the caller falls back and says so",
+          "NOTHING" not in refs, str(list(refs)))
+    # Note Alpaca(key="") is NOT credential-less: the constructor reads the
+    # environment when an argument is falsy, so this stubs `usable` directly.
+    class _NoCreds:
+        usable = False
+    _none, _why = at.reference_prices(_NoCreds(), ["X"])
+    check("no credentials means no live prices and no guessing",
+          _none == {} and _why == "no credentials", f"{_none} {_why!r}")
+    check("no tickers is not an error",
+          at.reference_prices(_FakeApi({}, {}), [])[0] == {})
+
+    _sized, _ = at.size([{"ticker": "X", "spot": 100.0, "ref_price": 110.0,
+                          "ref_price_source": "alpaca last trade",
+                          "dollar_volume_usd": 10**9}], 10_000.0,
+                        {"gross_exposure_pct_of_equity": 100,
+                         "max_position_pct_of_equity": 20})
+    check("sizing divides by the live price, not the sealed spot",
+          _sized[0]["qty"] == 18 and _sized[0]["price_used_usd"] == 110.0,
+          str(_sized[0]["qty"]))
+    _fb, _ = at.size([{"ticker": "X", "spot": 100.0, "dollar_volume_usd": 10**9}],
+                     10_000.0, {"gross_exposure_pct_of_equity": 100,
+                                "max_position_pct_of_equity": 20})
+    check("with no live price it falls back to the spot and records that",
+          _fb[0]["qty"] == 20 and _fb[0]["price_source"] == "sealed baseline spot",
+          str(_fb[0]["price_source"]))
 
     scores = {"ranking_key": "impact_sum", "ranking": [
         {"ticker": "BIGL", "rankable": True, "impact_sum": 9.0},     # long, liquid
@@ -436,15 +522,15 @@ def main():
     gross_budget = 100_000 * float(ex["sizing"]["gross_exposure_pct_of_equity"]) / 100
     sized, _ = at.size(taken, 100_000.0, ex["sizing"])
     check("no position exceeds max_position_pct_of_equity",
-          all(s["notional_at_spot_usd"] <= eq_cap + 1e-6 for s in sized),
-          str([s["notional_at_spot_usd"] for s in sized]))
+          all(s["notional_usd"] <= eq_cap + 1e-6 for s in sized),
+          str([s["notional_usd"] for s in sized]))
     check("no position exceeds max_position_pct_of_adv",
           all(s["cap_capacity_usd"] is None
-              or s["notional_at_spot_usd"] <= s["cap_capacity_usd"] + 1e-6
+              or s["notional_usd"] <= s["cap_capacity_usd"] + 1e-6
               for s in sized),
-          str([(s["notional_at_spot_usd"], s["cap_capacity_usd"]) for s in sized]))
+          str([(s["notional_usd"], s["cap_capacity_usd"]) for s in sized]))
     check("the book never exceeds the gross budget",
-          sum(s["notional_at_spot_usd"] for s in sized) <= gross_budget + 1e-6)
+          sum(s["notional_usd"] for s in sized) <= gross_budget + 1e-6)
     check("share counts are whole", all(float(s["qty"]).is_integer() for s in sized))
 
     # Equal weight, and the leftover of a capped name redistributed rather than lost.
@@ -454,31 +540,31 @@ def main():
             for t, v, dv in [("A", 9.0, 1e9), ("B", -8.0, 1e9), ("C", 7.0, 1e9),
                              ("D", 6.0, 1e9), ("E", 5.0, 1e9), ("F", 4.0, 1e9)]]
     six, _ = at.size(wide, 100_000.0, ex["sizing"])
-    notionals = [s["notional_at_spot_usd"] for s in six]
+    notionals = [s["notional_usd"] for s in six]
     check("six equal weights, no cap binding",
           max(notionals) - min(notionals) <= 10.0 and
           abs(sum(notionals) - gross_budget) < 100, str(notionals))
     check("the biggest score gets no more money than the smallest",
-          abs(six[0]["notional_at_spot_usd"] - six[-1]["notional_at_spot_usd"]) <= 10.0,
-          f"{six[0]['ticker']} {six[0]['notional_at_spot_usd']} vs "
-          f"{six[-1]['ticker']} {six[-1]['notional_at_spot_usd']}")
+          abs(six[0]["notional_usd"] - six[-1]["notional_usd"]) <= 10.0,
+          f"{six[0]['ticker']} {six[0]['notional_usd']} vs "
+          f"{six[-1]['ticker']} {six[-1]['notional_usd']}")
 
     thin = [dict(w) for w in wide]
     thin[0]["dollar_volume_usd"] = 300_000            # 1% of ADV = $3,000
     redis, _ = at.size(thin, 100_000.0, ex["sizing"])
     capped = [s for s in redis if s["ticker"] == "A"][0]
-    others = [s["notional_at_spot_usd"] for s in redis if s["ticker"] != "A"]
+    others = [s["notional_usd"] for s in redis if s["ticker"] != "A"]
     check("a capacity-capped name is cut to its cap",
-          capped["notional_at_spot_usd"] <= 3000 + 1e-6 and
-          capped["binding_cap"] == "capacity", str(capped["notional_at_spot_usd"]))
+          capped["notional_usd"] <= 3000 + 1e-6 and
+          capped["binding_cap"] == "capacity", str(capped["notional_usd"]))
     check("its leftover is redistributed, not lost",
-          abs(sum(others) + capped["notional_at_spot_usd"] - gross_budget) < 100 and
+          abs(sum(others) + capped["notional_usd"] - gross_budget) < 100 and
           max(others) - min(others) <= 10.0, str(others))
 
     few, _ = at.size(wide[:3], 100_000.0, ex["sizing"])
     check("with three names the per-name cap under-deploys on purpose",
-          all(abs(s["notional_at_spot_usd"] - eq_cap) < 10.0 for s in few),
-          str([s["notional_at_spot_usd"] for s in few]))
+          all(abs(s["notional_usd"] - eq_cap) < 10.0 for s in few),
+          str([s["notional_usd"] for s in few]))
 
     check("flatten before entry is on", ex["orders"].get("flatten_before_entry") is True,
           str(ex["orders"].get("flatten_before_entry")))
@@ -611,6 +697,14 @@ def main():
               "DDD" not in _late)
         check("nothing is overdue on its own exit date",
               at.overdue_legs("2026-09-09") == [])
+        # `flatten` closes positions without writing a per-leg exit, so the ledger on
+        # its own calls a flattened position unsold forever. Only what the account
+        # actually holds counts.
+        check("a flattened position is not flagged once the account no longer holds it",
+              at.overdue_legs("2026-09-10", held=set()) == [])
+        check("it is still flagged while the account does hold it",
+              [g["symbol"] for g in at.overdue_legs("2026-09-10", held={"AAA"})]
+              == ["AAA"])
     finally:
         at.REPO = _repo
 

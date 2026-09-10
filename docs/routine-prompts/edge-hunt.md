@@ -9,6 +9,11 @@ update routines they created."* Do not delete and recreate it — that loses its
 history and its notification settings. Open the Routine and replace its prompt with the
 text below.
 
+**Done: the text below was pasted on 2026-09-10 at 13:20 UTC**, 44 minutes before that
+day's fire, and the 14:04 run received it with both execution steps present. The
+Routine's `updated_at` is the check — compare it against the last change to this file,
+because nothing else keeps the two in step.
+
 **Order matters.** The Routine clones `main`. The new ranking key is on
 `claude/agent-performance-comparison-wtwi1f` until that branch reaches `main`. The prompt
 below is written to be safe either way — it no longer restates the scoring contract, it
@@ -22,13 +27,25 @@ step 7 buys today's after the note is published.** No second Routine, because a 
 firing a day is a second thing that can fail silently, and because the account has to be
 flat before a session that might die rather than after.
 
-Both steps are no-ops until `execution.enabled` is `true` in `config/pipeline.yaml`,
-which is committed as `false`. Both need `scripts/alpaca_trade.py`, which reached `main`
-on 2026-09-10 — the 2026-09-10 run found both steps no-ops because the script, the
-`execution` block and `docs/EXECUTION.md` were all still on
+Both steps are no-ops until `execution.enabled` is `true` in `config/pipeline.yaml`.
+**It is now `true`** — turned on by the operator on 2026-09-10 for the paper account,
+after the day's book was placed by hand. Both need `scripts/alpaca_trade.py`, which
+reached `main` on 2026-09-10 — that day's scheduled run found both steps no-ops because
+the script, the `execution` block and `docs/EXECUTION.md` were all still on
 `claude/alpaca-auto-orders-integration-y397gh`. They are in the tree now, so a step that
-finds no script means something else is wrong. The steps stay written as *only if
-enabled*, so this text remains safe to paste with execution off.
+finds no script means something else is wrong.
+
+The prompt body below still says the switch "is committed as false" in steps 0b and 7.
+That parenthetical is stale and **is deliberately left alone**, because this file's job
+is to hold the exact text that is pasted in the Routine, and editing it here without
+re-pasting would break the only correspondence that matters. It is harmless: the
+instruction is *only if `execution.enabled` is true*, and the session reads the config
+rather than the parenthetical. Fix it on the next paste, not before.
+
+**So the next scheduled run will trade.** From 2026-09-11 the 14:04 fire flattens the
+previous book at step 0b and places a new one at step 7, unattended, with no human
+watching either. Set `execution.enabled` back to `false` to stop that; nothing else
+will.
 
 Step 7 buys at market, immediately, rather than waiting for the closing auction. On the
 same 18 traded events that cost four hundredths of a point per trade (15/18 and +5.86%

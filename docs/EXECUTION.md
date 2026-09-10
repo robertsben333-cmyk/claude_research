@@ -73,10 +73,15 @@ complete table — and this script is the only place a cut is applied.
 ## Setting it up
 
 **Nothing to install.** The script is standard library plus PyYAML, which the repo
-already uses. No `alpaca-py`, no market-data subscription: it reads spot from the
-sealed baseline and calls only the trading API (`/v2/orders`, `/v2/positions`,
-`/v2/account`, `/v2/assets`, `/v2/clock`, `/v2/calendar`), all of which are free on a
-paper account.
+already uses. No `alpaca-py` and no market-data subscription: it calls the trading API
+(`/v2/orders`, `/v2/positions`, `/v2/account`, `/v2/assets`, `/v2/clock`,
+`/v2/calendar`) plus two free market-data endpoints on `data.alpaca.markets`
+(`/v2/stocks/trades/latest`, `/v2/stocks/quotes/latest`) for sizing and for the quote
+captured at submission. All are free on a paper account, and the data ones serve the
+IEX feed, which is single-venue and quotes wide in thin names — see "The price the
+budget is divided by" below for what that costs and how it is handled. If those two
+endpoints are unreachable the script falls back to the sealed baseline spot and says
+so per name rather than failing.
 
 1. **An Alpaca account, on paper.** app.alpaca.markets → Paper Trading → generate an
    API key. A paper account starts with $100k and needs no funding.
@@ -196,10 +201,12 @@ session watches.
 
 What that measurement **cannot** see is the spread: it compares trade prices, not
 fills, and the closing auction is the deepest liquidity of the day — which matters more
-since the turnover floor dropped to $200k, not less. `status` prints
-`filled_avg_price` per order, the run log is asked to record it, and
-`orders.entry: market_on_close` puts it back in the auction if those fills come back
-materially worse than the plan's notional. That is the one number that should decide it.
+since the turnover floor dropped to $200k, not less. Since 2026-09-10 every order
+records the NBBO at the instant it was sent, so `status` prints the fill against that
+mid — real execution cost — separately from the day's drift, and
+`orders.entry: market_on_close` puts it back in the auction when that cost stays above
+the half-spread. That is the one number that should decide it, and before that capture
+existed it could not be computed at all.
 
 The only deadline left is that the US session has to still be open: 16:00 New York,
 22:00 Amsterdam in summer. A run firing at 16:04 has three hours of margin after its
@@ -376,14 +383,59 @@ Every refusal is recorded with its reason, in the plan or in `alpaca-orders.json
   subagent is spawned, ranked the same six days at ρ=0.335 and was positive on 6 of 6
   days when traded. The plan prints `run_up_20d_pct` beside each position for exactly
   that comparison.
-- **Share counts come off the sealed baseline's spot**, taken hours before the close
-  the order fills at, so the notional drifts with the day's move. The alternative is
-  an unsourced live quote.
 - **The position is held through the print overnight**, unhedged, with no stop. That
   is the window that was measured; a stop would be a different strategy with no
   measurement behind it.
 
 This is research, not investment advice.
+
+## The price the budget is divided by, and the quote at submission
+
+Both of these changed on 2026-09-10, after the first live book, and they are one
+story: **you cannot measure execution against a price from four hours ago.**
+
+**Sizing now divides by a live Alpaca price, not the sealed baseline spot.** It used
+to divide by `baseline.tape.spot`, which is captured when the stage-E run *starts*.
+On the first live run that was 14:08 UTC and the orders went in at 17:59. HOFT was
+sized off 12.42, filled at 12.6186, and the 20.0%-of-equity cap therefore produced a
+20.3% position. The caps are percentages of equity and of ADV, so applying them to a
+stale price makes them the wrong percentages, and the error grows with the gap.
+`reference_prices()` now takes a price per name in this order, recording which one
+each got in `price_source`:
+
+| | when |
+| --- | --- |
+| last trade | fresh, under `MAX_TRADE_AGE_S` (600s) |
+| quote mid | trade stale or missing, **and** the quote is under `MAX_QUOTE_SPREAD_PCT` (2%) wide |
+| last trade | stale, but a price something actually traded at |
+| sealed spot | nothing live — and the plan prints a `!` line naming those names |
+
+The tightness test is not decoration. The free IEX feed serves junk: at 18:12 UTC on
+2026-09-10 FEIM quoted **54.24 / 72.79**, a 29% spread, while trading near 63.4. The
+first version of this change sized off that mid. A wide mid is not a price; a stale
+print is. The plan also prints how far the baseline has drifted since it was sealed —
+a median 0.83% that afternoon, worst ORCL at −1.17%.
+
+**Every order now records the NBBO at the moment it was sent.** `open` fetches one
+quote batch immediately before submitting and stores `quote_at_submit`
+(bid/ask/mid/spread/timestamp) on each order row. `status` then prints three separate
+columns, and the separation is the whole point:
+
+- `vs mid` — the fill against the mid captured at submission. Both prices are from
+  the same instant, so this **is** execution cost.
+- `½spread` — half the spread at submission, i.e. what crossing should have cost.
+- `drift` — the fill against the plan's reference price. This is the day moving
+  between plan and fill and is **not** execution cost.
+
+Without this the two are inseparable. The 2026-09-10 run log could only report that
+fills were "+0.83% adverse against the plan" and then say, correctly, that the number
+was not slippage and could not be used. `orders.entry` (`market` vs `market_on_close`)
+is supposed to be decided on fill quality; until this capture existed that decision
+had no data behind it. Switch to `market_on_close` if the mean `vs mid` stays above
+the half-spread — `status` prints that comparison and names the current setting.
+
+Orders placed before 2026-09-10 carry no `quote_at_submit`, and `status` says so
+rather than silently showing blanks.
 
 ## Files it writes
 
