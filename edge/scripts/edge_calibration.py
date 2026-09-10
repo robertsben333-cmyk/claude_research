@@ -39,10 +39,13 @@ beside three free predictors that cost no research at all:
 
 ## Two things this cannot do
 
-It cannot separate the double-hunt regime from the single-hunt one on this sample.
-Runs before 2026-09-09 gave the day's two highest-priority names two hunters, and
-the key is a sum, so those names carry larger numbers by construction. `--split`
-reports the two regimes separately; both are too small to conclude from.
+**It cannot say anything about the forward regime, because the forward regime has no
+outcomes yet.** The 2026-09-10 run is the first with one hunter on every name, and all
+17 of its names were still unresolved when this was written. Splitting on the print
+date does not rescue that -- a run covers tonight's `amc` prints and tomorrow's `bmo`
+ones, so a "09-09 print" is mostly the 09-08 run's work. `--split` therefore cuts on
+the only thing that is a property of the name itself: **how many hunters it got**.
+Single-hunted names exist in every run and are the like-for-like control.
 
 And the sample repeats five events. ABM, UNFI, WDH, CAN and GMHS were hunted on
 both 09-04 and 09-07 for the same 09-08 prints. The earlier hunt is kept, as
@@ -59,7 +62,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 NAMES = ROOT / "edge" / "ledger" / "names.csv"
-REGIME_BREAK = "2026-09-09"          # first single-hunter run
+# The regime is a property of the RUN, not of the print. A run covers tonight's amc
+# prints and tomorrow's bmo ones, so splitting on the print date mixes two runs --
+# which is exactly the error the first version of this script made. And the split
+# that matters is not a date at all: it is how many hunters the name got, because
+# the key is a sum and two hunters make a bigger number by construction.
+FIRST_SINGLE_HUNTER_RUN = "2026-09-10"
 
 
 def load(path, keep_dups=False):
@@ -70,7 +78,7 @@ def load(path, keep_dups=False):
         f = {k: (float(v) if v not in ("", None) else None) for k, v in r.items()
              if k in ("impact_sum", "move_pct", "runup_20d_pct", "implied_move_pct",
                       "conviction", "n_findings", "deadband_pct",
-                      "hist_median_abs_move_pct", "dollar_vol_20d")}
+                      "hist_median_abs_move_pct", "dollar_vol_20d", "hunters")}
         f.update({k: r[k] for k in ("event_date", "run_date", "ticker", "session",
                                     "implied_basis")})
         rows.append(f)
@@ -302,11 +310,18 @@ def main():
     rows = load(a.names, a.keep_duplicates)
     doc = {"source": a.names, "deduplicated": not a.keep_duplicates,
            "all": report(rows, "all events")}
+    doc["forward_regime"] = {
+        "first_single_hunter_run": FIRST_SINGLE_HUNTER_RUN,
+        "resolved_events_from_it": sum(
+            1 for r in rows if r["run_date"] >= FIRST_SINGLE_HUNTER_RUN),
+        "note": ("Zero means the contract the stage now runs under has produced no "
+                 "outcomes at all, and nothing here speaks to it. The nearest "
+                 "available control is `hunters == 1` below.")}
     if a.split:
-        doc["double_hunt_era"] = report(
-            [r for r in rows if r["event_date"] < REGIME_BREAK], "before 2026-09-09")
-        doc["single_hunt_era"] = report(
-            [r for r in rows if r["event_date"] >= REGIME_BREAK], "2026-09-09 onward")
+        doc["single_hunted_names"] = report(
+            [r for r in rows if (r.get("hunters") or 0) <= 1], "one hunter (control)")
+        doc["double_hunted_names"] = report(
+            [r for r in rows if (r.get("hunters") or 0) >= 2], "two hunters")
 
     print(json.dumps(doc, indent=2))
     if a.json:

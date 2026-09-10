@@ -268,13 +268,7 @@ be quoted as an expected return and never size a position; equal weight is the o
 defensible sizing available. The ordering survives — sign rate by `|impact_sum|` bucket
 runs 0.333 / 0.417 / 0.650 / 0.733 and `|pred| >= 3` is 24/35 (p=0.041) — but the
 threshold-free conviction correlation is **+0.243 (within-day p=0.049) against +0.514
-(p=0.0015) on the fitted 38**. Adding three unseen days halved it. **On the two days run
-under the current one-hunter contract it inverts to −0.26 (p=0.21)**, against +0.494
-(p=0.0009) in the double-hunt era, and the two names above 6 points were both wrong;
-pooling every single-hunted name from every era instead gives `|pred| >= 3` at 17/24
-(70.8%, p=0.064). Both cuts are underpowered and they disagree, which is the honest
-state of it: the effect is real enough to keep gating on and smaller than the number the
-execution path was switched on against. It is not a volatility signal either —
+(p=0.0015) on the fitted 38**. Adding three unseen days halved it. **The forward regime has no outcomes yet**: the 2026-09-10 run is the first with one hunter on every name and all 17 of its names were still unresolved, so nothing measured speaks to the contract the stage now runs under. (An earlier version of this paragraph claimed a −0.26 inversion "on the two days run under the current contract". That split on the print date, and a run covers tonight's `amc` prints plus tomorrow's `bmo` ones, so it was reading the 09-08 and 09-09 runs' double-hunted work. Withdrawn.) The nearest control is `hunters == 1`, which exists in every run: on those 54 events the conviction correlation is **+0.197, p=0.145**, the buckets stay monotone at 0.375/0.455/0.684/0.800, and `|pred| >= 3` is 17/24 (70.8%, p=0.064). Suggestive, nothing that clears a bar, and smaller than the number the execution path was switched on against. It is not a volatility signal either —
 `|impact_sum|` against `|realised move|` ranks at 0.174 (p=0.183). The mean move over all
 68 events is −2.71%, so shorting everything and doing nothing is still the thing to beat.
 See `edge/EDGE_ANALYSIS.md`, "The number is a confidence flag, not a magnitude".

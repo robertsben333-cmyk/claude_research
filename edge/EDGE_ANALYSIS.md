@@ -1129,25 +1129,35 @@ correlation between the rank of `|impact_sum|` and whether the sign was right is
 fitted 38. Adding three unseen days halved it. `|pred| ≥ 3` is 24/35 (68.6%, p = 0.041)
 where it was 16/21.
 
-### On the two days run under the current one-hunter contract, it points the other way
+### The forward regime has produced no outcomes at all
 
-| | events | days | conviction → sign |
-| --- | --- | --- | --- |
-| before 2026-09-09 (two hunters on two names a day) | 41 | 5 | **+0.494**, p = 0.0009 |
-| 2026-09-09 onward (one hunter per name) | 27 | 2 | **−0.260**, p = 0.21 |
+An earlier version of this section reported a regime split with a **−0.26** correlation
+"on the two days run under the current one-hunter contract". That was wrong twice and
+the claim is withdrawn. It cut on the **print** date, but a run covers tonight's `amc`
+prints and tomorrow morning's `bmo` ones, so the names printing on 09-09 are mostly the
+**09-08 run's** work — a run that still double-hunted. And the 2026-09-10 run, the first
+with one hunter on every one of its 17 names, had **zero resolved events**: 12 of its
+names print that evening and 5 the next morning.
 
-Within the double-hunt era the bucket table is nearly perfect (0.167 / 0.231 / 0.667 /
-0.846 as `|pred|` rises). Within the two single-hunter days it inverts, and the two names
-above 6 points were both wrong. Twenty-seven events on two days establishes nothing on
-its own — but it is the only data that exists for the regime the stage now runs in, and
-it does not support the +0.361 that `edge_hunter_control.py` projected.
+So there is no forward sample. Nothing measured here speaks to the contract the stage
+now runs under, and the +0.361 that `edge_hunter_control.py` projected for it remains
+untested rather than contradicted.
 
-Pooling differently gives the other answer, which is the honest state of it: taking every
-**single-hunted name from every era** (n = 54, the like-for-like control), `|pred| ≥ 3`
-is **17/24 = 70.8%, p = 0.064**. So the conviction floor survives a pooled single-hunter
-cut and fails a within-day one on the forward days. Both are underpowered. What can be
-said without hedging is that the effect is smaller than the number the execution path was
-switched on against.
+The nearest available control is not a date but a property of the name: **how many
+hunters it got**. Single-hunted names exist in every run, and because the key is a sum,
+two hunters make a larger number by construction.
+
+| | events | sign rate | conviction → sign | `\|pred\| >= 3` |
+| --- | --- | --- | --- | --- |
+| all | 68 | 0.537 | +0.243, p = 0.049 | 24/35, p = 0.041 |
+| **one hunter** | 54 | 0.547 | **+0.197, p = 0.145** | **17/24, p = 0.064** |
+| two hunters | 14 | 0.500 | +0.290, p = 0.44 | 7/11 |
+
+The single-hunter column is the honest forward expectation. The bucket table stays
+monotone there — 0.375 / 0.455 / 0.684 / 0.800 as `|impact_sum|` rises — and the
+conviction correlation loses its significance, at +0.197 against the +0.514 fitted on
+38 mixed events. The `|pred| >= 3` cut is 17/24 at p = 0.064: suggestive, not
+established, on the sample that most resembles what the stage does now.
 
 ### It does not find volatility either
 
@@ -1168,8 +1178,10 @@ the highest mean `|impact_sum|` of any day (7.09), and a 22% sign rate.
    supports, and stop describing the number as points of expected move anywhere a reader
    might price off it.
 2. Size from the implied move or from equal weight — never from the score.
-3. Treat the conviction result as **live, not established**, until the single-hunter
-   sample reaches a size where the two poolings agree. Ten more days decides it.
+3. Treat the conviction result as **live, not established**. On single-hunted names it
+   is +0.197 with p = 0.145 and a 17/24 cut at p = 0.064 — nothing that clears a bar.
+   The first run under the current contract resolves the morning after 2026-09-11; ten
+   such days decides it.
 
 ## What to change
 
