@@ -22,3 +22,11 @@
 - This batch: ORCL, ADBE, KR (positions 1-3 of the capped 6; N=ceil(6/2)=3)
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2), publish after each wave and after each dossier
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-10 10:26 UTC
+- Shortlist: 8 names, capped to 6 (triage.shortlist_size=6) by market cap; dropped for cap: FEIM, LPTH
+- Batch 1 (ORCL, ADBE, KR) left KR unresearched with no HALTED note in the log -- picking it up here alongside this batch's own half
+- This batch: KR, CPRT, DSGX, RH (position 3 from batch 1's gap, plus positions 4-6)
+- Already on disk, skipping: ORCL, ADBE (both .md and .json present from batch 1)
+- Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2) -- wave 1: KR, CPRT; wave 2: DSGX, RH -- publish after each wave and after each dossier; final batch, so 02-ranking.json follows
