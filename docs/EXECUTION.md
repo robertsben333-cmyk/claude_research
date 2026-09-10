@@ -294,17 +294,32 @@ six long and six short, so it is not market drift. A bmo print gets two thin hou
 pre-market instead and goes on repricing all day: ρ +0.187 at the open against +0.670 at
 the close.
 
-`orders.exit_by_session` turns that into the exit instrument — `opg` for amc, `cls` for
-bmo — and **it is off**. Three things stand between it and being right:
+`orders.exit_mode` turns that into the exit instrument, and there are **three** schemes
+rather than two, because what a single 16:04-Amsterdam Routine can reach is not what the
+measurement wants. Per trade on the same 22 trades:
+
+| mode | amc | bmo | per trade | what it needs |
+| --- | --- | --- | --- | --- |
+| `uniform` *(ships)* | market ~10:00 ET | market ~10:00 ET | +4.49% (t=2.52) | nothing; it is the flatten |
+| `bmo_close` | market ~10:00 ET | today's close (`cls`) | **+6.27%** (t=3.34) | `flatten_before_entry: false` |
+| `auction_split` | opening auction (`opg`) | today's close (`cls`) | **+7.81%** (t=4.01) | that, plus a second Routine |
+
+**Do `bmo_close` first.** It is +1.77pp of the +3.32pp on offer and it needs no machinery
+that does not already exist: the amc leg is the plain market sell the flatten was already
+doing, and the bmo leg goes into a closing auction Alpaca accepts until 15:50 ET, hours
+after a 16:04 Amsterdam start. The whole gap between it and `auction_split` is the amc
+leg, worth +1.54pp, and that leg costs a second daily firing.
+
+**Three things stand between any of it and being right**, whichever mode:
 
 1. **It was read off the events it is justified by.** The paired day bootstrap puts the
-   split's gain at +1.87pp per trade with a 95% interval of [−1.30, +4.55], and the best
+   split's gain at +1.87pp per trade with a 95% interval of [-1.30, +4.55], and the best
    of six candidate rules beats a uniform close in 91% of resamples. That describes the
    sample; it does not test the rule.
-2. **It does not replicate yet.** On 09-08 and 09-09 — 30 names, 14 above the floor,
-   neither day in the fitted sample — every exit hour available on both days paid between
-   −1.42% and −0.05% per trade. On 09-09 shorting the day blind paid +3.9% to +4.5% while
-   the book paid −0.2% to −0.9%.
+2. **It does not replicate yet.** On 09-08 and 09-09 - 30 names, 14 above the floor,
+   neither day in the fitted sample - every exit hour available on both days paid between
+   -1.42% and -0.05% per trade. On 09-09 shorting the day blind paid +3.9% to +4.5% while
+   the book paid -0.2% to -0.9%.
 3. **The other 37 events in this repo disagree.** `backtest/RESULTS.md` prices its sealed
    corpus at both exits and all three arms did better at the **close** (+2.16% against
    +0.90% per trade for arm A). Re-pricing those 37 on `edge_exit.py`'s hourly grid is
@@ -314,12 +329,18 @@ bmo — and **it is off**. Three things stand between it and being right:
 
 - **`flatten_before_entry: false`.** A flatten at the start of the run sells the amc names
   hours before their opening auction arrives, so the two settings cancel out.
-- **A second run a day.** Alpaca *rejects* rather than queues `opg` between 09:28 and
-  19:00 ET, so the amc leg cannot be placed by the run that placed the entries. It has to
-  go in during the pre-market of the exit date; 14:00 Amsterdam is 08:00 ET and works.
-  `auction_window()` refuses rather than sending an order that will bounce.
-  `docs/routine-prompts/edge-execute.md` already keeps that second Routine documented as
-  the fallback exit.
+- **A second run a day, for `auction_split` only.** Alpaca *rejects* rather than queues
+  `opg` between 09:28 and 19:00 ET, so the amc leg cannot be placed by the run that placed
+  the entries. It has to go in during the pre-market of the exit date; 14:00 Amsterdam is
+  08:00 ET and works. `auction_window()` refuses rather than sending an order that will
+  bounce. The prompt is in `docs/routine-prompts/edge-execute.md` and **only a person can
+  create that Routine** - `create_trigger` is refused to agent sessions in this
+  environment, confirmed on 2026-09-10. `bmo_close` needs none of this.
+- **Nothing that can leave a position unsold.** `close` treats an exit date already in the
+  past as overdue and sends it at plain market immediately, and `open` refuses to enter a
+  new book while any position is overdue with no exit submitted. That is the guarantee
+  `flatten_before_entry` used to provide by sweeping; once the flatten is off it has to
+  come from checking.
 - **Nothing about capital recycling.** Closing amc in the opening auction frees the cash
   at 09:30 rather than 16:00, and with one auction entry a day that is **not** extra
   return: the capital slot is 24 hours either way. `capital_table` in `edge_exit.py`

@@ -148,6 +148,37 @@ Only when `execution.enabled` is `true` in `config/pipeline.yaml`. It is committ
 python3 scripts/alpaca_trade.py flatten --submit
 ```
 
+**Unless `orders.exit_mode` is not `uniform`.** Then the flatten is wrong — it sells every
+name at market when at least one of them wants an auction — and the sell is two calls:
+
+```bash
+python3 scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
+python3 scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
+```
+
+`close` picks the instrument per position, and what it can reach depends on the mode.
+Per trade over the 38 de-duplicated events, on the conviction book:
+
+| mode | amc | bmo | per trade | needs |
+| --- | --- | --- | --- | --- |
+| `uniform` | market ~10:00 ET | market ~10:00 ET | +4.49% (t=2.52) | nothing; it is the flatten |
+| `bmo_close` | market ~10:00 ET | today's close (`cls`) | +6.27% (t=3.34) | `flatten_before_entry: false` |
+| `auction_split` | opening auction (`opg`) | today's close (`cls`) | +7.81% (t=4.01) | that, **and a second Routine** |
+
+`bmo_close` is reachable from this session and is where the cheap money is: +1.77pp of
+the +3.32pp on offer, with no machinery that does not already exist. The `cls` window is
+open until 15:50 New York, so a 16:04 Amsterdam start has hours.
+
+`auction_split` is not reachable from here. Alpaca **rejects** rather than queues an `opg`
+order between 09:28 and 19:00 ET, so nothing firing in the European afternoon can sell an
+amc position into its own opening auction. That leg is the separate 14:00 Amsterdam
+Routine in `docs/routine-prompts/edge-execute.md`, which only a person can create.
+
+Either way `close` also sends anything **overdue** — exit date already past — at plain
+market immediately, and step 6b's `open` refuses to enter a new book while a position is
+overdue and unsold. So a missed exit costs the measured exit and one loud refusal; it
+never leaves a book nobody is managing.
+
 **First, not last.** Two reasons, and the second is the one that matters. Every
 position in the account has already been through its print, so nothing is cut short of
 its event; and if this session dies mid-hunt — which has happened to other stages on

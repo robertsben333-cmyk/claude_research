@@ -677,31 +677,95 @@ def entry_window(api, moc=True):
     return True, f"{left:.0f} min to the close"
 
 
+def overdue_legs(today, scan="research/*/*/*/edge", held=None):
+    """Entries whose exit date has passed with no exit ever submitted.
+
+    The safety property the whole operation rests on: a new book is never entered on
+    top of an old one nobody sold. `flatten_before_entry` used to guarantee that by
+    selling everything, but the per-session exit turns the flatten off, and then the
+    guarantee has to come from checking rather than from sweeping.
+
+    `held` is the set of symbols Alpaca actually still holds, and passing it is what
+    keeps this honest. `flatten` closes positions without writing a per-leg exit into
+    `alpaca-orders.json`, so the ledger alone reports a flattened position as unsold
+    forever. Filtering on what the account holds means only a position that is really
+    still open counts.
+    """
+    out = []
+    for run in sorted(glob.glob(str(REPO / scan))):
+        p = orders_path(run)
+        if not p.exists():
+            continue
+        state = json.loads(p.read_text(encoding="utf-8"))
+        done = {x.get("closes") for x in state.get("exits", []) if x.get("submitted")}
+        for e in state.get("entries", []):
+            xd = e.get("exit_date")
+            if (e.get("submitted") and xd and xd < today
+                    and e.get("client_order_id") not in done
+                    and (held is None or e["symbol"] in held)):
+                out.append({"run": run, "symbol": e["symbol"], "exit_date": xd,
+                            "side": e["side"], "qty": e.get("qty")})
+    return out
+
+
+EXIT_MODES = ("uniform", "bmo_close", "auction_split")
+
+
+def exit_mode(ex):
+    """Which of the three exit schemes is configured.
+
+    `exit_by_session: true` is kept as an alias for `auction_split`; it was the first
+    shape of this setting and turning it on already meant that scheme.
+    """
+    m = ex["orders"].get("exit_mode")
+    if m is None:
+        m = "auction_split" if ex["orders"].get("exit_by_session") else "uniform"
+    if m not in EXIT_MODES:
+        raise SystemExit(f"execution.orders.exit_mode is {m!r}; expected one of "
+                         + ", ".join(EXIT_MODES))
+    return m
+
+
 def exit_tif_for(session, ex):
-    """Which auction closes a position, when `orders.exit_by_session` is on.
+    """Which instrument closes a position, per session, per mode.
 
     The two sessions were measured separately and want opposite exits
-    (`docs/EDGE_ANALYSIS.md`, "amc and bmo want opposite exits"). On the 38
-    de-duplicated events, per trade:
+    (`docs/EDGE_ANALYSIS.md`, "amc and bmo want opposite exits"). Per trade over the
+    38 de-duplicated events, on the conviction book:
 
-        amc   opening auction  +8.91% (t=3.20)   closing auction  +5.23% (t=1.48)
-        bmo   opening auction  +2.96% (t=1.01)   closing auction  +6.48% (t=2.34)
+        amc   opening auction +8.91%   ~10:00 ET +6.08%   closing auction +5.23%
+        bmo   opening auction +2.96%   ~10:00 ET +2.58%   closing auction +6.48%
 
-    An amc print gets a full overnight of processing, so the opening auction is
+    An amc print gets a whole overnight of processing, so the opening auction is
     already the informed price and the session that follows takes about three points
-    back off the book (open-to-close leg, ρ=−0.351, −2.61% day-demeaned on a book
-    that is six long and six short, so not drift). A bmo print gets two thin hours of
-    pre-market and goes on repricing all day: ρ +0.187 at the open, +0.670 at the
-    close.
+    back off the book. A bmo print gets two thin hours of pre-market and keeps
+    repricing all day.
 
-    Off by default, and it should stay off until the forward days turn: on 09-08 plus
-    09-09 every exit hour available on both days paid between −1.42% and −0.05% per
-    trade, and `backtest/RESULTS.md` puts the close ahead of the open on its own 37
-    sealed events for all three arms.
+    WHAT EACH MODE COSTS AND WHAT IT NEEDS, on the same 22 trades:
+
+      uniform         +4.49% (t=2.52)  the shipped scheme: flatten everything at
+                      market when the next run starts, about 10:00 ET
+      bmo_close       +6.27% (t=3.34)  amc at market on the run, bmo into today's
+                      closing auction. ONE run — reachable from stage E's own
+                      Routine, needs `flatten_before_entry: false` and nothing else
+      auction_split   +7.81% (t=4.01)  amc into the opening auction, bmo into the
+                      closing auction. Needs a SECOND Routine at 14:00 Amsterdam,
+                      because Alpaca rejects `opg` between 09:28 and 19:00 ET
+
+    So `bmo_close` buys +1.77pp of the +3.32pp on offer and costs no new machinery;
+    `auction_split` buys the remaining +1.54pp and costs a second daily firing that
+    only a person can create. None of it is established: on 09-08 and 09-09 every exit
+    hour available on both days paid between −1.42% and −0.05% per trade, and
+    `backtest/RESULTS.md` puts the close ahead of the open on its own 37 sealed events
+    for all three arms.
     """
-    if not ex["orders"].get("exit_by_session"):
+    mode = exit_mode(ex)
+    plain = ex["orders"].get("time_in_force", "day")
+    if mode == "uniform":
         return "cls" if ex["orders"].get("exit", "market_on_close") == \
-            "market_on_close" else ex["orders"].get("time_in_force", "day")
+            "market_on_close" else plain
+    if mode == "bmo_close":
+        return plain if session == "amc" else "cls"
     return "opg" if session == "amc" else "cls"
 
 
@@ -901,6 +965,28 @@ def print_plan(plan):
 def cmd_open(a, api, ex):
     blocked = guard(api, ex, a.submit, a.live_account_i_understand)
 
+    # Never stack a new book on an unsold one. With `flatten_before_entry` on, the
+    # flatten below makes this impossible; with the per-session exit it is off, and
+    # then a missed exit run is the failure that has to be loud.
+    today = None
+    if api.usable:
+        clk, _ = api.clock()
+        today = clk["timestamp"][:10] if clk else None
+    if today:
+        pos, _ = api.call("GET", "/v2/positions")
+        held = {p["symbol"] for p in pos} if isinstance(pos, list) else None
+        stale = overdue_legs(today, held=held)
+        if stale and not a.allow_stale:
+            for s in stale:
+                print(f"  ! {s['symbol']:8s}{s['side']:5s}due {s['exit_date']}  "
+                      f"{s['run']}")
+            raise SystemExit(
+                f"refusing: {len(stale)} position(s) are past their exit date with no "
+                f"exit submitted. Close them first:\n"
+                f"  python3 scripts/alpaca_trade.py close "
+                f"--scan 'research/*/*/*/edge' --submit\n"
+                f"(--allow-stale to enter anyway, which stacks a second book on top)")
+
     # Clean slate first, and sizing after it, so the plan is drawn against the
     # equity and buying power the flatten actually leaves behind.
     flat = None
@@ -1001,7 +1087,8 @@ def cmd_close(a, api, ex):
         print("no run with an alpaca-orders.json to close")
         return
     blocked = guard(api, ex, a.submit, a.live_account_i_understand)
-    by_session = bool(ex["orders"].get("exit_by_session")) and not a.now
+    mode = exit_mode(ex)
+    by_session = mode != "uniform" and not a.now
     use_moc = ex["orders"].get("exit", "market_on_close") == "market_on_close" and not a.now
     moc, moc_note = ((entry_window(api, True) if use_moc else (True, "market order"))
                      if (a.submit and not blocked) else (False, "dry run"))
@@ -1019,7 +1106,8 @@ def cmd_close(a, api, ex):
         today = clk["timestamp"][:10] if clk else None
     print(f"closing across {len(runs)} run(s), today {today}, "
           f"{'blocked — ' + blocked if blocked else moc_note}"
-          + ("  [per-session exits: amc -> opg, bmo -> cls]" if by_session else ""))
+          + (f"  [exit_mode {mode}: amc -> {exit_tif_for('amc', ex)}, "
+             f"bmo -> {exit_tif_for('bmo', ex)}]" if by_session else ""))
 
     for run in runs:
         state = load_orders(run)
@@ -1030,7 +1118,14 @@ def cmd_close(a, api, ex):
             if any(x.get("client_order_id") == cid and x.get("submitted")
                    for x in state["exits"]):
                 continue
-            due = a.all or (today and e.get("exit_date") == today)
+            # A leg whose exit date has PASSED is overdue, not finished. The old rule
+            # closed only `exit_date == today`, so one missed run left a position that
+            # no later run would ever sell. Overdue legs go at plain market: their
+            # auction is gone, and holding on for the next one is not a decision
+            # anything here measured.
+            xd = e.get("exit_date")
+            overdue = bool(today and xd and xd < today)
+            due = a.all or overdue or (today and xd == today)
             if not due:
                 continue
             reason = blocked
@@ -1045,6 +1140,9 @@ def cmd_close(a, api, ex):
             if qty is None and not reason:
                 qty = int(e["qty"])
             tif = exit_tif_for(e.get("session"), ex) if by_session else None
+            if overdue:
+                tif = ex["orders"].get("time_in_force", "day")
+                print(f"  {run} {e['symbol']:8s} overdue since {xd}; going at market")
             if tif:
                 ok, note = window_for(tif)
                 if not reason and not ok:
@@ -1068,7 +1166,7 @@ def cmd_close(a, api, ex):
             continue                        # a dry run records nothing
         state["log"].append({"utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                              "action": "close", "all": bool(a.all), "moc": moc_note,
-                             "exit_by_session": by_session,
+                             "exit_mode": mode,
                              "windows": {k: v[1] for k, v in win.items()}})
         save_orders(run, state)
         print(f"  wrote {orders_path(run)}")
@@ -1210,6 +1308,8 @@ def main():
                    help="if the MOC window has passed, send a plain market order")
     p.add_argument("--no-flatten", action="store_true",
                    help="keep the existing positions instead of selling them first")
+    p.add_argument("--allow-stale", action="store_true",
+                   help="enter even though positions are past their exit date unsold")
 
     p = sub.add_parser("flatten", help="cancel every order and close every position, "
                                        "at market, now")

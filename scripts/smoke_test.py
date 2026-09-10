@@ -624,25 +624,89 @@ def main():
     # Per-session exits. Off in the shipped config, so the first check is that it is
     # off: turning it on also needs flatten_before_entry off and a second run a day,
     # and the two would silently cancel each other out.
-    check("per-session exits are off in the shipped config",
-          ex["orders"].get("exit_by_session") is False,
-          repr(ex["orders"].get("exit_by_session")))
-    off = {**ex, "orders": {**ex["orders"], "exit_by_session": False}}
-    on = {**ex, "orders": {**ex["orders"], "exit_by_session": True}}
-    check("with the split off both sessions take the same exit",
-          at.exit_tif_for("amc", off) == at.exit_tif_for("bmo", off) == "cls",
-          f'amc={at.exit_tif_for("amc", off)} bmo={at.exit_tif_for("bmo", off)}')
-    check("with the split on amc exits in the opening auction",
-          at.exit_tif_for("amc", on) == "opg", at.exit_tif_for("amc", on))
-    check("with the split on bmo exits in the closing auction",
-          at.exit_tif_for("bmo", on) == "cls", at.exit_tif_for("bmo", on))
+    def _mode(m):
+        return {**ex, "orders": {**ex["orders"], "exit_mode": m}}
+
+    check("the shipped config is on the uniform exit",
+          at.exit_mode(ex) == "uniform", at.exit_mode(ex))
+    check("uniform gives both sessions the same exit",
+          at.exit_tif_for("amc", _mode("uniform"))
+          == at.exit_tif_for("bmo", _mode("uniform")) == "cls")
+    # bmo_close is the one reachable from stage E's single Routine: the amc leg is
+    # the plain market sell the flatten already did, the bmo leg goes to the auction.
+    check("bmo_close sells amc at market and bmo into the closing auction",
+          (at.exit_tif_for("amc", _mode("bmo_close")) == "day"
+           and at.exit_tif_for("bmo", _mode("bmo_close")) == "cls"),
+          f'amc={at.exit_tif_for("amc", _mode("bmo_close"))} '
+          f'bmo={at.exit_tif_for("bmo", _mode("bmo_close"))}')
+    check("auction_split sends amc to the opening auction",
+          at.exit_tif_for("amc", _mode("auction_split")) == "opg")
+    check("auction_split sends bmo to the closing auction",
+          at.exit_tif_for("bmo", _mode("auction_split")) == "cls")
     check("an unknown session falls back to the closing auction",
-          at.exit_tif_for(None, on) == "cls", at.exit_tif_for(None, on))
+          at.exit_tif_for(None, _mode("auction_split")) == "cls")
+    check("exit_by_session: true still means auction_split",
+          at.exit_mode({**ex, "orders": {**{k: v for k, v in ex["orders"].items()
+                                            if k != "exit_mode"},
+                                         "exit_by_session": True}})
+          == "auction_split")
+    try:
+        at.exit_mode(_mode("whatever"))
+        check("an unknown exit_mode is refused", False, "it was accepted")
+    except SystemExit as e:
+        check("an unknown exit_mode is refused", "exit_mode" in str(e), str(e)[:80])
     check("an explicit tif overrides the moc flag",
           at.order_body("X", 1, "sell", ex, moc=True, tif="opg")["time_in_force"]
           == "opg")
     check("an opg order is still a plain market order",
           at.order_body("X", 1, "sell", ex, tif="opg")["type"] == "market")
+
+    # The safety property: a new book is never entered on top of an unsold one. With
+    # flatten_before_entry on, the flatten guarantees it. With the per-session exit
+    # that flatten is off, so the guarantee has to come from this check instead.
+    import json as _json
+    import tempfile as _tf
+    from pathlib import Path as _Path
+    _tmp = _Path(_tf.mkdtemp())
+    _run = _tmp / "research" / "2026" / "09" / "2026-09-08" / "edge"
+    _run.mkdir(parents=True)
+    (_run / "alpaca-orders.json").write_text(_json.dumps({
+        "entries": [
+            {"symbol": "AAA", "side": "buy", "qty": 10, "exit_date": "2026-09-09",
+             "submitted": True, "client_order_id": "edge-2026-09-08-AAA-entry"},
+            {"symbol": "BBB", "side": "sell", "qty": 20, "exit_date": "2026-09-09",
+             "submitted": True, "client_order_id": "edge-2026-09-08-BBB-entry"},
+            {"symbol": "CCC", "side": "buy", "qty": 5, "exit_date": "2026-09-10",
+             "submitted": True, "client_order_id": "edge-2026-09-08-CCC-entry"},
+            {"symbol": "DDD", "side": "buy", "qty": 5, "exit_date": "2026-09-09",
+             "submitted": False, "client_order_id": "edge-2026-09-08-DDD-entry"},
+        ],
+        "exits": [{"closes": "edge-2026-09-08-BBB-entry", "submitted": True}],
+        "log": []}))
+    _repo = at.REPO
+    at.REPO = _tmp
+    try:
+        _late = [g["symbol"] for g in at.overdue_legs("2026-09-10")]
+        check("an unsold position past its exit date is flagged overdue",
+              _late == ["AAA"], f"flagged {_late}")
+        check("a position whose exit was already sent is not flagged",
+              "BBB" not in _late)
+        check("a position due today is not flagged overdue",
+              "CCC" not in _late)
+        check("an entry that never filled is not flagged as an open position",
+              "DDD" not in _late)
+        check("nothing is overdue on its own exit date",
+              at.overdue_legs("2026-09-09") == [])
+        # `flatten` closes positions without writing a per-leg exit, so the ledger on
+        # its own calls a flattened position unsold forever. Only what the account
+        # actually holds counts.
+        check("a flattened position is not flagged once the account no longer holds it",
+              at.overdue_legs("2026-09-10", held=set()) == [])
+        check("it is still flagged while the account does hold it",
+              [g["symbol"] for g in at.overdue_legs("2026-09-10", held={"AAA"})]
+              == ["AAA"])
+    finally:
+        at.REPO = _repo
 
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
