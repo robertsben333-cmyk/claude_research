@@ -41,9 +41,17 @@ rounded into a bucket upstream. Falsifiable by `scripts/edge_resolve.py`, which 
 Spearman rank correlation against the realised move with a permutation p-value. Until
 many days have pooled, it is not better than anything.
 
-Seven runs exist: two on 2026-08-31 and one on each of 09-01, 09-02, 09-03, 09-04,
-09-07 and 09-08. Six are resolved — **43 names, 249 findings, 65 hunts**; 09-08's eight
-names need the 09-09 close. The 08-31 pair is archived separately,
+Ten runs exist: two on 2026-08-31 and one on each of 09-01, 09-02, 09-03, 09-04, 09-07,
+09-08, 09-09 and 09-10. Six are resolved — **43 names, 249 findings, 65 hunts**; the
+09-08, 09-09 and 09-10 runs are not. (This paragraph said "seven" and omitted 09-09
+until 09-10; the six-resolved decomposition in `docs/EDGE_ANALYSIS.md` is unaffected,
+because it covers 08-31 through 09-07 and never included them.) The 09-10 run is the
+first under the one-hunter-per-name contract: 17 names in the window, **17 of 17
+confirmed by the sweep with zero phantom rows**, 17 hunters, 61 findings, 7 clearing the
+conviction floor. Its ranking is near-orthogonal to the free control (Spearman 0.054
+against `-run_up_20d_pct`), and four of its seventeen names are ranked substantially by
+one regulatory event — the IEEPA tariff refunds — which is a correlated exposure the
+scorer cannot see. The 08-31 pair is archived separately,
 `research/2026/08/2026-08-31/edge/_run1-bmo/` and `edge/`. Run 1 (that day's `bmo`, with
 `--include-unknown`) found eight of twelve calendar rows had no earnings event at all and
 produced no ranking worth the name: every judged finding fell into one of two verdict
