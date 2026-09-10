@@ -1,0 +1,30 @@
+{
+  "ticker": "YQ",
+  "expected_move_pct": 5.0,
+  "conviction_note": "The baseline's 4.29% median is flagged unusable (cadence_implausible, 64-day inferred cadence) and 20-day realised vol is 95.8%; I take a sizeable positive because the CEO has bought stock in the open market on eleven separate occasions in the eight weeks into this print - including two days before it - in a stock whose entire average daily volume is 12,515 shares, which makes her the marginal buyer rather than a signaller.",
+  "findings": [
+    {
+      "finding": "CEO Liu Chang filed eleven Form 4s in eight weeks - 2026-07-06, 07-20, 07-22, 07-31, 08-03, 08-10, 08-11, 08-14, 08-24, 08-28 and 09-01 - taking her holding from 35,149 shares on 20 July to 92,786 on 1 September (a 164% increase) at prices between $1.89 and $2.46, with no sale anywhere in the index; the 9,216-share purchase on 2026-08-28 alone is 74% of the stock's 12,515-share twenty-day average volume.",
+      "expected_impact_pct": 5.0,
+      "impact_low_pct": -4.0,
+      "impact_high_pct": 15.0,
+      "source": "https://ceo-buys.com",
+      "source_date": "2026-09-01",
+      "corpus_ref": "filings.json Form 4 entries dated 2026-09-01, 08-28, 08-24, 08-14, 08-11, 08-10, 08-03, 07-31, 07-22, 07-20 and 07-06; each transaction's size, price and resulting holding is independently reported in docs/efbcfae7dffa7859bd8b63014428f3765f25ef93.txt and docs/eaf570aeb2ef6c8dc678cbc913a1e7dfceac5654.txt",
+      "body_available": true,
+      "why_not_priced": "Only two Stocktwits participants notice it in the whole 30-item capture, on 2026-08-06, and their reading is 'company pumping soon?!' - not an information read. There is no news search for this ticker (n_queries=0 in every sweep), no analyst coverage and no institutional following. The point is not the dollar size, which is trivial ($2k-$20k a clip), but the frequency and the liquidity: eleven consecutive purchases with zero sales, sized at a large fraction of the daily tape, in the run-in to a results release, is the clearest form of insider conviction available in an illiquid ADR - and the stock is still 63.4% below its 52-week high.",
+      "independence": "Two separate sources confirm every transaction: the EDGAR Form 4 index gives the dates, and ceo-buys.com posts reproduced in two different captured Stocktwits bodies give the size, price and cumulative holding for each one - https://ceo-buys.com"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any 6-K after 2026-06-17 - so no company disclosure at all in the eleven weeks before the print, and no scheduling notice confirming a 2026-09-03 release",
+    "any equity issuance, ADS ratio change or buyback",
+    "any 13D, 13G or institutional holder filing anywhere in the index",
+    "any news-wire coverage, consensus estimate or Chinese-education-sector regulatory update: n_queries=0 in every sweep and the two document bodies are almost entirely the ceo-buys feed",
+    "any confirmation that the 2026-09-03 event is a real results release - the baseline's cadence verdict is 'unknown' and the capture directory is dated 2026-09-02, which is the main reason my range crosses zero",
+    "the Form 4 bodies themselves, so the transaction types are taken from the third-party feed rather than from the filings"
+  ],
+  "baseline_tension": "It agrees with the run-in (+6.1% over five sessions, +13.4% over twenty) and cuts against the reaction history (2 of 8 up), though the baseline itself says that history should not be used as an earnings base rate.",
+  "corpus_limits": "No option chain, so no implied move or skew - which matters on a 95.8%-vol microcap. No news search was run for this ticker; the entire non-filing corpus is two short Stocktwits threads dominated by an automated insider-purchase feed. The event's existence is not confirmed from a company source and the baseline's cadence check rejects it, so part of my uncertainty is about whether there is a print at all. This is a before-the-open print, so I did not read or use any 2026-09-03 material; the capture in any case stops on 2026-09-02. No item in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 3
+}

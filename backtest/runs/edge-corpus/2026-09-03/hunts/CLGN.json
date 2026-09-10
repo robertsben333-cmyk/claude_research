@@ -1,0 +1,53 @@
+{
+  "ticker": "CLGN",
+  "expected_move_pct": -7.0,
+  "conviction_note": "Baseline median reaction of 3.73% is unusable (its own event_plausibility verdict is cadence_implausible - the eight 'prints' are 6-Ks eight days apart, not earnings), and 20-day realised vol is 114.6%; I take a sizeable negative because two pre-print company filings stack a share-and-warrant-funded pivot acquisition on top of a 1-for-10 reverse split effective the day after the print, and the 182.7m-share blow-off that greeted the pivot had fully faded before the release.",
+  "findings": [
+    {
+      "finding": "On the evening of 2026-09-01, hours before this before-the-open print, CollPlant announced a 1-for-10 reverse share split to take effect at the Nasdaq open on 2026-09-04 - the session immediately AFTER the print - explicitly 'as part of the Company's strategic plan to regain compliance with the Nasdaq minimum bid price requirement for continued listing'.",
+      "expected_impact_pct": -5.0,
+      "impact_low_pct": -16.0,
+      "impact_high_pct": 3.0,
+      "source": "https://www.prnewswire.com/news-releases/collplant-announces-reverse-share-split-302866688.html",
+      "source_date": "2026-09-01",
+      "corpus_ref": "docs/ee32750e276846aba37596bed7e3b23135338ee9.txt (snapshots/20260902T150801Z.json item 1); the underlying filing is filings.json/snapshot accession 0001213900-26-096233, form 6-K accepted 2026-09-01T20:30:01Z",
+      "body_available": true,
+      "why_not_priced": "Announced after the close on the eve of the release, into a corpus with zero news-search coverage (n_queries=0 in every sweep) and a Stocktwits stream that had already moved on to other tickers - only two of six captured messages that evening even mention it. Sandwiching a compliance reverse split between a pivot acquisition and a results print is a disclosure sequence no aggregator assembles, and a compliance-driven reverse split is a statement that the company does not expect the market to lift the price on its own. If it were priced, the stock would not have been bid 25% higher two sessions earlier on a pivot headline.",
+      "independence": "A second, independent Stocktwits participant reads the same sequence the same way the same evening - 'merger and they hav to r/s and er tomorrow this all adds up to a big pile of shit salad' - docs/ee32750e276846aba37596bed7e3b23135338ee9.txt"
+    },
+    {
+      "finding": "Two sessions before the print, on 2026-08-31, CollPlant announced it was acquiring LightSolver and entering the photonic-computing and supercomputing markets - consideration paid in newly issued shares AND warrants - and the stock traded 182,733,300 shares against a float the corpus puts at 13.0-13.5m, halted up, ran roughly 35% intraday, and closed only 8.4% higher before giving it all back over the next two sessions.",
+      "expected_impact_pct": -4.0,
+      "impact_low_pct": -14.0,
+      "impact_high_pct": 6.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1631487/000121390026095458/ea0303994-6k_collplant.htm",
+      "source_date": "2026-08-31",
+      "corpus_ref": "snapshots/20260831T150738Z.json item 2 (6-K accession 0001213900-26-095458, accepted 2026-08-31T10:07:51Z); docs/5135d7c19b08a747e07fe6779eb96726eb106de8.txt; quote.json bars 2026-08-27 through 2026-09-02",
+      "body_available": false,
+      "why_not_priced": "The announcement is public, so the headline is priced; the unaggregated part is the shape of the flow. 182.7m shares against a 13m float is roughly fourteen turns of the entire float in one session with the close only 8.4% up and a full round-trip within two days - that is distribution into retail, not accumulation. Nothing in the corpus computes that ratio, and there is no sell-side coverage of this name at all. A regenerative-medicine issuer buying a photonic-computing company for paper, two days before releasing results, is the same reframing-before-bad-numbers pattern.",
+      "independence": "filings.json shows the issuance machinery that makes the paper consideration credible as dilution rather than as strategy: F-1 (2026-03-30), F-1/A, 424B3 (2026-04-21 and 2026-07-17), F-3 (2026-01-09 and 2026-07-09), 424B5 (2026-02-06) and two Form Ds (2026-02-17, 2026-07-20) - https://www.sec.gov/Archives/edgar/data/1631487/000121390026095458/ea0303994-6k_collplant.htm"
+    },
+    {
+      "finding": "Three SCHEDULE 13D/A amendments were filed in twenty-five days - 2026-07-27, 2026-07-31 and 2026-08-21 - in a company whose float the corpus puts at 13.0-13.5m shares, immediately after a Form D private placement (2026-07-20) and a resale prospectus going effective (424B3, 2026-07-17).",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -8.0,
+      "impact_high_pct": 2.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1631487/000121390026095458/ea0303994-6k_collplant.htm",
+      "source_date": "2026-08-21",
+      "corpus_ref": "snapshots/20260830T083930Z.json, filing entries dated 2026-08-21, 2026-07-31, 2026-07-27 (SCHEDULE 13D/A), 2026-07-20 (form D), 2026-07-17 (424B3), 2026-07-16 (EFFECT), 2026-07-09 (F-3)",
+      "body_available": false,
+      "why_not_priced": "13D/A bodies are not stored and nothing in the capture references them. Three amendments in under a month at a sub-$50m issuer means a >5% holder's position is moving materially while a resale shelf is live - a supply fact with no publisher.",
+      "independence": "none - this rests on the same EDGAR index as finding 2 and should be collapsed into that source cluster."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any confirmation from a company source that a results release is actually scheduled for 2026-09-03 - the baseline's own cadence check rejects the inferred event, and the capture directory is dated 2026-09-02",
+    "any news-wire or sell-side coverage: n_queries=0 in all six sweeps, so no consensus, no estimate, no analyst view of the LightSolver deal",
+    "the bodies of the two pre-print 6-Ks, the F-3, the 424B3 and the three 13D/As",
+    "any cash-runway or financing disclosure that would size the dilution",
+    "any Nasdaq deficiency letter or compliance correspondence beyond what the reverse-split release implies"
+  ],
+  "baseline_tension": "It cuts against the run-up, which is +11.4% over five sessions and +10.7% over twenty on the pivot headline, and it argues the historical 3.73% median magnitude is far too small for a name running 114.6% realised vol into a reverse split.",
+  "corpus_limits": "No option chain, so no implied move or skew. No news search was run for this ticker; every non-filing item is Stocktwits, which for a sub-$1 momentum microcap is mostly promotional noise, and I discarded the pump content and used only the two dated announcements it reproduces. Note a data inconsistency I did not build on: the baseline reports a $3.43 spot while quote.json shows $0.31-0.39 closes for the same dates, which is Yahoo retro-adjusting for the 1-for-10 reverse split that the corpus says takes effect on 2026-09-04 - i.e. the baseline series is post-split-adjusted. I treated the split as a corpus-disclosed forward event (from the 2026-09-01 release) and not as an outcome. No item in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 5
+}

@@ -1,0 +1,43 @@
+{
+  "ticker": "KFY",
+  "expected_move_pct": -1.2,
+  "conviction_note": "Baseline hands me a 5.83% median own-print reaction with 5 of 7 up, and I am fading the top of that: the reported quarter should land inside a guide the company has never missed, but the forward guide is the first ever to carry acquisition interest, purchase accounting and >1% equity dilution from a deal that only closed on 2026-09-01, and the stock has given back 4.1% from a 52-week high in the five sessions since that closing 8-K - so I take a small negative rather than the historical up-move.",
+  "findings": [
+    {
+      "finding": "Korn Ferry closed an acquisition eight days before this print and paid for at least part of it in newly issued unregistered stock: 8-K 2026-06-29 items 1.01/3.02/7.01/9.01 (signing plus an unregistered equity issuance), 8-K 2026-08-19 items 1.01/2.03/8.01/9.01 (a new direct financial obligation, i.e. deal financing), 8-K 2026-09-01 items 2.01/3.02/7.01/9.01 (completion plus a second unregistered equity issuance) - and Item 3.02 is only reportable above 1% of shares outstanding, so each of those two issuances was at least ~530k shares, roughly $44m of stock at the current price.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 2.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/56679/000119312526378508/d122525d8k.htm",
+      "source_date": "2026-09-01",
+      "corpus_ref": "filings.json accession 0001193125-26-378508 (items 2.01,3.02,7.01,9.01), first appearing in snapshots/20260902T150945Z.json as the only new item in the final sweep; the signing and financing legs are accessions 0001193125-26-286757 and 0001193125-26-357084",
+      "body_available": false,
+      "why_not_priced": "Korn Ferry guides diluted EPS a quarter at a time, and event.json records consensus at $1.35 - exactly the midpoint of the $1.32-$1.38 range the company itself set on 2026-06-23, before the deal was even signed. The consensus therefore contains no deal at all, while the guide the company must issue at this print covers a quarter (August-October) that is two thirds post-close and carries first-time intangible amortisation, interest on the August 19 obligation and at least 1% more shares. What is priced is the fact of the deal, which was a Reg FD (item 7.01) release; what is not priced is the shape of the guide, because nobody outside the company has the target's financials. If the guide mechanics were already in the numbers, consensus would not still sit on the pre-deal midpoint.",
+      "independence": "The tape from a different source in the capture points the same way: quote.json has KFY closing at 85.55 on 2026-08-31, its high for the series, and the baseline then records spot 82.04 on 2026-09-08 with run_up_5d_pct of -4.10 - the entire drawdown falls in the five sessions that begin the day the closing 8-K was accepted (2026-09-01 20:38 UTC). The financing leg is a separate document: https://www.sec.gov/Archives/edgar/data/56679/000119312526357084/d417124d8k.htm"
+    },
+    {
+      "finding": "Korn Ferry's beat over consensus has been decaying quarter by quarter - adjusted EPS $1.31 vs $1.24 (+5.6%) on 2025-09-09, $1.28 vs $1.23 (+4.1%) on 2026-03-09, $1.40 vs $1.38 (+1.4%) on 2026-06-23 - so the +5.83%, +4.00%, +6.46% and +7.60% up-reactions the baseline is built from were earned in a fat-beat regime that has already halved twice.",
+      "expected_impact_pct": -1.0,
+      "impact_low_pct": -3.5,
+      "impact_high_pct": 1.5,
+      "source": "stocktwits $KFY (social item, no URL in the corpus; provider=stocktwits, 90 messages)",
+      "source_date": "2026-08-30",
+      "corpus_ref": "snapshots/20260830T084319Z.json item 1; body at docs/f52fae6941a874956cc2c58ea2ab58deffdc2526.txt (the three quarters are the timestamped 2025-09-09T10:55, 2026-03-09T11:17 and 2026-06-23T11:24 messages)",
+      "body_available": true,
+      "why_not_priced": "The three data points sit in three separate messages nine months apart inside one social dump; the sell-side preview line is 'beaten in N consecutive quarters', which is directionally the opposite reading of the same facts. The decay also explains something the baseline cannot: why the 2026-03-09 print, on a $0.05 beat, still went -1.53%. If the market had marked the beat regime down, consensus would sit below the guide midpoint rather than exactly on it, and the name would not have been within 4.9% of its 52-week high a week before the print.",
+      "independence": "Same source cluster as nothing else here - this rests only on docs/f52fae6941a874956cc2c58ea2ab58deffdc2526.txt, which is a different document from finding 1's filings.json evidence. Weakly corroborated from a different file by the baseline's own reaction series, whose two most recent entries (+5.83% on 2026-06-23, -1.53% on 2026-03-09) straddle zero where the four older entries did not."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any news coverage at all: all six KFY sweeps ran n_queries 0, so the capture contains 59 filing index rows, one stocktwits dump and a price series and no wire copy, no preview, no analyst note and no 8-K body - I could not read a single filing text",
+    "an item 5.02 officer or director departure ahead of the print - the only 5.02 in the window is 2026-03-06, six months old, paired with a Form 3 for an arriving insider",
+    "an insider selling cluster tight to the print: the Form 4/144 cluster is 2026-07-14 to 2026-07-17 (eight Form 4s, three Form 144s), immediately after the June print and eight weeks before this one, which is a routine post-fiscal-year-end vesting window; the comparable cluster a year earlier was 2025-09-19, i.e. after that print, not before",
+    "any 13D or activist filing - the only ownership amendments are passive 13G/13G-As (2026-08-13, 2026-04-30, 2026-04-29, 2026-03-27)",
+    "any S-3, 424B or registered offering that would have put the acquisition stock consideration on file",
+    "the target, size, consideration mix or pro formas of the acquisition - the 9.01 exhibits are indexed but no body is stored, so I know a deal closed and roughly how it was paid for and nothing else",
+    "any evidence on whether the 2026-09-01 to 2026-09-08 4.1% drawdown was company-specific or market-wide - the capture holds no index series"
+  ],
+  "baseline_tension": "It cuts against the baseline in both directions at once and nets negative: the reaction history says this name gaps up on prints, but the mechanism behind those gaps is decaying, and the pre-print tape has already sold 4.1% off a 52-week high in exactly the five sessions after the deal-closing 8-K, which is the opposite of the run-in you would expect ahead of a 5.83%-median up-mover.",
+  "corpus_limits": "No contaminated documents - tripwires is null in all six KFY snapshots. Not in the capture: any option-implied move or skew (options.status unusable_chain, ATM bid-ask 181% of mid), so I have no read on market lean; no news search was ever run, so the entire hunt rests on 8-K item codes, one stocktwits dump and the price series; every 8-K body is absent, so finding 1's reading of items 2.01+3.02 as a stock-funded acquisition is an inference from item codes, and the alternative that 2.01 is a disposition cannot be fully excluded even though a disposition does not explain the paired 3.02; quote.json's last bar (2026-09-02) is a mid-session snapshot at 101,732 shares, not a close, and the series stops six sessions before the print, so the last week of the run-in is known only through the baseline's summary figures.",
+  "sources_used": 5
+}

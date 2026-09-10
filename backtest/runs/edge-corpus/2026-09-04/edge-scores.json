@@ -1,0 +1,98 @@
+{
+ "generated_utc": "2026-09-09T15:10:53+00:00",
+ "run": "backtest/runs/edge-corpus/2026-09-04",
+ "legacy_rescore": false,
+ "names": 2,
+ "rankable": 2,
+ "note": "Every name carries a signed edge_score on -100..+100. There is no call and no threshold: rank on edge_score and cut wherever you like afterwards, which is what makes the ranking question answerable at every k.",
+ "ranking": [
+  {
+   "ticker": "LND",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.39,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 1
+  },
+  {
+   "ticker": "PXS",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -4.7,
+   "edge_pct": -0.236,
+   "confidence": 6.4,
+   "uncertainty_pct": 0.118,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -1.183,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 1.183,
+   "independent_clusters": 2,
+   "cluster_names": [
+    "feeds.issuerdirect.com",
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "PXS",
+     "key": "PXS#0",
+     "finding": "Pyxis has a live, never-consummated equity offering on file -- F-1 accepted 2026-05-27, F-1/A 2026-06-29, a free writing prospectus on 2026-07-21 and a further F-1/A two days later on 2026-07-23 -- and no 424B of any kind appears in the filings index through the 2026-08-30 sweep, meaning the deal was actively marketed in July, stalled, and now sits as unresolved supply over a $55-65m market cap that has run +137% off its 52-week low into an after-hours print.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1640043/000149315226034025/formfwp.htm",
+     "source_date": "2026-07-21",
+     "expected_impact_pct": -3.0,
+     "cluster": "sec.gov",
+     "priced_in_pct": 60.0,
+     "adversary_note": "The documents this claim rests on are not merely reachable, they are published in the corpus itself: all four appear as indexed items in snapshots/20260830T083607Z.json and in filings.json (F-1 2026-05-27, F-1/A 2026-06-29, FWP 2026-07-21, F-1/A 2026-07-23). More damaging, the hunter's tape argument examines the wrong window. It cites 07-20 to 07-23 (4.46 to 4.53, no volume build) and concludes the market is blind, but skips the F-1/A of 2026-06-29, which EDGAR accepted at 13:22:49Z -- 09:22 ET, before the open. On that session quote.json shows 4.42 (06-26) to 4.18 (06-29), -5.43%, on 72,100 shares against a ~50k trailing average, and the drift continued to 4.14 by 07-01 (-6.3% in three sessions). That -5.43% is the largest single-session decline in the entire 64-bar series. So the market demonstrably does trade this name on its own offering filings, and it priced the amendment on the day it landed -- which is the 70-85 anchor, verbatim. What holds the number down to 60 rather than higher is that the size is nowhere in the corpus: body_available is false, no F-1 or FWP body is stored in docs/, and nothing in the capture states the deal's dollar amount, so the magnitude of the overhang against a $55.5m cap (event.json) is genuinely undrawn. The connection to this specific 09-04 AMC print is also undrawn -- a standing unconsummated registration only reaches the print if management acts on it, and it has sat unpriced for over three months. A second problem is internal: the claim's load-bearing inference is from the absence of a 424B in filings.json, and finding PXS#1 proves that same index is incomplete (it is missing the 2026-03-05 results 6-K entirely, and carries no 6-K at all after 2026-05-26). An index that demonstrably drops filings cannot carry much weight when it drops a 424B, and if a 424B was in fact filed the deal is consummated and fully in the price.",
+     "adversary_size_pct": -3.0,
+     "size_disagreement_pct": 0.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -1.2
+    },
+    {
+     "hunter": "PXS",
+     "key": "PXS#1",
+     "finding": "The baseline's 2.33% expected move is built from eight 6-Ks that are mostly not results filings: the corpus confirms the actual Q4/FY2025 release was 2026-03-05 before the open, yet 2026-03-05 appears neither in the baseline's reaction history nor anywhere in filings.json, while three dates that are in the history (2026-02-02, 2026-04-10, 2026-04-24) are non-results 6-Ks -- so the event base rate for this name is mis-specified and, at 65% annualised realised vol (4.1% per day), understated to below the width of an average session.",
+     "source": "https://feeds.issuerdirect.com/news-release.html?newsid=5174405740764592&symbol=PXS",
+     "source_date": "2026-03-04",
+     "expected_impact_pct": 0.0,
+     "cluster": "feeds.issuerdirect.com",
+     "priced_in_pct": 92.0,
+     "adversary_note": "This is not a claim priced_in_pct can meaningfully be applied to -- it is a critique of the measuring instrument, not an assertion that the market lacks a fact -- and I say that plainly. But judged as it stands, it scores very high for a different reason than usual: it restates a defect the baseline discloses about itself, in the baseline's own words, in the very file the hunter read. baselines/PXS.json sets event_plausibility.cadence_implausible = true and its reason reads 'inferred cadence of 51 days is too short to be an earnings cadence ... so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead.' baseline_quality adds tier 'partial' and 'thin means there is no reliable statement of what the market priced.' The claim's own why_not_priced concedes it is repeating this flag. The vol arithmetic is likewise the baseline's published number read back: realised_vol_20d_annualised_pct 65.2 / sqrt(252) = 4.11% per day, and of course a median of eight reactions to non-events (2.33%) falls below that -- that is what the baseline warned about. The one genuinely incremental piece of work here is doing what the baseline asked and naming the real Q4/FY2025 date, 2026-03-05 BMO, from a company source; that is confirmed twice in the corpus (the 2026-03-04T20:49:18Z message quoting the company's own scheduling release, and the 2026-03-05T13:39:03Z message linking the stocktitan results release). The filings.json gap is also real: the index runs 2026-02-19 to 2026-03-18 to 2026-04-01 with no March 6-K, so it is verifiably incomplete. That earns the 8 points between 92 and 100. It does not move any expectation about the print's outcome, and no part of it has a sign.",
+     "adversary_size_pct": 0.0,
+     "size_disagreement_pct": 0.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.0
+    }
+   ],
+   "rank": 2
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "ticker": "ZGN",
+  "verdicts": [
+    {
+      "finding_key": "ZGN#0",
+      "priced_in_pct": 78,
+      "size_check_pct": 0.0,
+      "strongest_argument": "The finding's own sentence concedes it: 'the split-release structure (revenue in July, full accounts in September) is standard for European issuers'. Standard practice, followed by this issuer at every reporting cycle, is the definition of structural and known - every holder of a European luxury name knows the top line comes first and the margins come with the half-year accounts, and the baseline's median reaction of 1.75% across eight matched events is the market's long-standing acknowledgement of exactly that. The July revenue release is also published and captured: a 6-K dated 2026-07-23 in filings.json and a 'Q2 26 Earnings Results & Recap' entry in the admissible stored body (docs/43f565083d963dd453a2e5a3a2e636882ad642e2.txt, entry 2026-07-23T11:59:21Z), and the baseline records the reaction to it as -0.5%. So the claim that 'the revenue surprise is already in the price' is correct and is the opposite of an edge - it is an argument that this print carries less information than a normal one. What is offered as the unpriced residual, that the whole surprise now sits in gross margin and operating leverage, is a statement about which line to watch, not a view on what that line will say, and it has no size and no sign. The supporting point that 'no consensus anywhere in the capture' anchors a margin expectation is an n_queries=0 artefact; European luxury is among the most heavily covered sectors in the market and a margin consensus certainly exists outside this capture.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001877787&type=6-K", "date": "2026-07-23", "corpus_ref": "filings.json 6-K dated 2026-07-23; docs/43f565083d963dd453a2e5a3a2e636882ad642e2.txt entry 2026-07-23T11:59:21Z (admissible per clean-view)", "what_it_says": "Second-quarter revenue was released on 2026-07-23 and recorded in the captured stream, six weeks before the September accounts."}
+      ],
+      "baseline_evidence": "Admissible bars only (no 2026-09-03; bmo print): spot 12.56 at the 09-02 close, run_up_5d -8.52%, run_up_20d -17.42%, realised_vol_20d 28.7%. Baseline history: the 2026-07-23 revenue release produced -0.50% and the eight matched events have a 1.75% median with a 5.30% maximum. The market's own record says releases from this issuer do not move it much - which is the finding's conclusion, already sealed into the baseline.",
+      "corpus_coverage": "published in corpus",
+      "reaches_this_print": true,
+      "what_would_change_it": "A dated pre-print margin datapoint - a peer's wholesale commentary, an input-cost or currency disclosure, a channel inventory reading - that would give the composition argument a direction instead of only a location."
+    },
+    {
+      "finding_key": "ZGN#1",
+      "priced_in_pct": 80,
+      "size_check_pct": -0.5,
+      "strongest_argument": "This is a claim built entirely from the baseline's own run-up fields and then read as evidence that something is unpriced, which inverts the logic. run_up_20d of -17.42% and run_up_5d of -8.52% are the market pricing something; calling the move 'unexplained' because this capture holds no company filing after 2026-08-24 and one social message in six weeks is an argument from the absence of evidence in a corpus with no news search at all. The stated principle - 'unexplained moves into a print are more often information than noise' - carries no source and is not testable here. There is also a quantitative problem that I think is decisive. This issuer's eight matched releases have a median absolute reaction of 1.75% and a maximum of 5.30%, against a 17.4% pre-print drift. A name whose price moves ten times more between prints than on them is not one where print information is the driver, so attributing a 17% drift to anticipation of a release that historically moves the stock under two percent is a mismatch of an order of magnitude. The hunter's own alternative - a coincident consumer-discretionary and luxury de-rating, evidenced from the LULU capture in this same run - is both more parsimonious and better supported, and it is why the finding is correctly kept small.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001877787&type=6-K", "date": "2026-09-02", "corpus_ref": "baseline tape fields run_up_5d and run_up_20d; filings.json showing nothing between 2026-08-24 and the print", "what_it_says": "The cited evidence is the price series itself plus an absence in the filing index; no document asserts a cause."}
+      ],
+      "baseline_evidence": "run_up_20d -17.42%, run_up_5d -8.52%, spot 12.56, pct_from_52w_high -17.64% but pct_from_52w_low +49.70%, avg_volume_20d 848,200, realised_vol_20d 28.7%. Against a 1.75% median print reaction and a 1.5% deadband floor, the drift is roughly ten times the event's own historical magnitude - so whatever the tape is pricing, it is not this release.",
+      "corpus_coverage": "published in corpus",
+      "reaches_this_print": false,
+      "what_would_change_it": "A beta-adjusted decomposition against a luxury index over the same twenty sessions leaving a large company-specific residual, which would convert 'unexplained' from an absence into a measurement."
+    }
+  ],
+  "interactions": "#0 and #1 pull against each other on magnitude: #0 argues this print carries less information than usual because the top line is already out, while #1 argues a 17% drift is anticipation of that same print. #1's own independence field points at the LULU capture for the sector explanation, which makes the two names' briefs share a reading, and the LULU brief in this run scores that de-rating as consensus.",
+  "corpus_limits": "I honoured clean-view/ZGN.json: only the six allowed snapshots and no 2026-09-03 bar, since for this bmo print the event-day close is the reaction. ZGN's baseline is event_plausibility 'unknown' with cadence_implausible on a 14-day inferred cadence and last_print 2026-08-24, so the matched-event history is a mixture of revenue releases and other 6-Ks and its 1.75% median should be treated as indicative only. ZGN carries no news items, no consensus and no luxury-sector index in this capture, so I could not test the sector-versus-company attribution; that absence is a capture artefact. I did not open docs/352e5565c8c4c0d3898f5a4ba5c6d316d29af018.txt."
+}

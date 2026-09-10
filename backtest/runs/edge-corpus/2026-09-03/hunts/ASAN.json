@@ -1,0 +1,53 @@
+{
+  "ticker": "ASAN",
+  "expected_move_pct": -3.0,
+  "conviction_note": "Baseline median reaction is 15.6% with 5 of 7 prints up, and the stock is +16% over 20 days and +85% off its 52-week low into the event; I take a small negative because the two things in the capture that nobody has aggregated - a Friday-evening item 5.02 8-K six days before the print and Rule 144 sale notices on 08-20 and 08-27 - both point the other way from the retail positioning I can see.",
+  "findings": [
+    {
+      "finding": "An 8-K carrying only item 5.02 was accepted at 2026-08-28T20:18:17Z - Friday after the close, six days before the print - reporting an event dated 2026-08-26, accompanied within two hours by a Form 4 from a filer CIK (0002075006) that has no earlier filing in the 400-day index; this is the second 5.02-only 8-K in six weeks (the first was 2026-07-17), and neither appears in any of the 134 captured items outside the EDGAR index.",
+      "expected_impact_pct": -3.5,
+      "impact_low_pct": -10.0,
+      "impact_high_pct": 3.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1477720/000162828026059413/asan-20260826.htm",
+      "source_date": "2026-08-28",
+      "corpus_ref": "filings.json accession 0001628280-26-059413 (8-K, items 5.02, accepted 2026-08-28T20:18:17Z) and 0002075006-26-000006 (Form 4, accepted 2026-08-28T22:06:07Z); the 2026-07-17 8-K item 5.02 is in the same file",
+      "body_available": false,
+      "why_not_priced": "Zero mentions across ninety Stocktwits messages captured on 2026-08-30, two days after the filing - the Stocktwits stream on 08-28 and 08-29 talks only about the weekend and Thursday earnings. Friday-after-close is the standard slot for burying an executive change, and there is no news-search coverage for this name at all (n_queries=0 in all six sweeps). If the market had processed a second executive change in six weeks at a company mid-CEO-transition, the stock would not have closed the week making new highs off the July low.",
+      "independence": "A Stocktwits participant on 2026-09-02 refers to a 'new CEO' at Asana, independently confirming that the 5.02 sequence is a real management transition rather than routine board housekeeping - docs/b24fdf1c4a11aa123d605e9fe1d48e5599230d94.txt"
+    },
+    {
+      "finding": "Two Rule 144 notices of intent to sell were filed on 2026-08-20 and 2026-08-27, into the strongest part of the 16% twenty-day rally and in the week before the print, with no offsetting insider purchase anywhere in the 400-day index.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 1.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1477720/000195004726008775/xsl144X01/primary_doc.xml",
+      "source_date": "2026-08-27",
+      "corpus_ref": "filings.json accessions 0001950047-26-008775 (144, 2026-08-27T20:21:56Z) and 0001950047-26-008490 (144, 2026-08-20T22:05:20Z)",
+      "body_available": false,
+      "why_not_priced": "Form 144s are not indexed by any consumer aggregator and no item in this capture references them. If they were priced, the run-in would not be +16% on a name whose retail stream is full of 'still adding'.",
+      "independence": "none - this shares the EDGAR index with the 5.02 finding above and should be collapsed into that source cluster if the scorer treats filings.json as one document."
+    },
+    {
+      "finding": "OpenAI published a first-party customer case study on Asana ('Asana cleared 5 years of engineering work in 2 weeks with Codex') at openai.com/index/asana/, which appears in the corpus for the first time on 2026-09-02, one day before the print - a specific, quantified engineering-productivity claim from the vendor rather than from the company.",
+      "expected_impact_pct": 2.0,
+      "impact_low_pct": -1.0,
+      "impact_high_pct": 6.0,
+      "source": "https://openai.com/index/asana/",
+      "source_date": "2026-09-02",
+      "corpus_ref": "docs/d5e80648628ec84fe86522ff021e9505944af73d.txt (snapshots/20260903T150836Z.json item 1)",
+      "body_available": false,
+      "why_not_priced": "It arrives on the last day before the print, from openai.com rather than a financial wire, and the only sell-side note in the capture (Citizens, Market Outperform, $15 PT, 2026-08-24) cites 'Codex-enabled development efficiency' in general terms without the case study's numbers. A quantified opex-leverage claim from the vendor is a margin datapoint the preview coverage does not carry.",
+      "independence": "The Citizens reiteration dated 2026-08-24 in the Stocktwits body points the same way on the Codex-efficiency thesis from a different source - docs/870583e6d888ea56febb1223ec4b6bac0ba57553.txt"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any 8-K with item 2.02 pre-announcement, item 1.01 material agreement, or item 8.01",
+    "any S-3, 424B, ATM or convertible filing",
+    "any 13D or activist position (only passive 13Gs, the latest being BlackRock at 5.3% on 2026-07-27)",
+    "any body for the two item-5.02 8-Ks, so I cannot tell whether they are appointments or departures",
+    "any news-wire coverage of this print: n_queries=0 in all six sweeps, so the only non-filing material is Stocktwits"
+  ],
+  "baseline_tension": "It cuts against the run-up: the tape is +16% over 20 days and the reaction history is 5 up out of 7, while my two strongest findings (the buried 5.02 and the 144s) are negative, so my number is small and opposite in sign to the momentum.",
+  "corpus_limits": "No option chain, so no implied move or skew - the only implied-move reference in the corpus is a third-party 'may move 17%' article, which I treated as wire copy and not as a baseline input. No news search was run for this ticker, so no consensus, no preview and no NRR/seat-count channel work; the $214.15m revenue / $0.09 EPS figures in the corpus come from a Stocktwits post, not a broker. Neither item-5.02 8-K body is stored. No item in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 6
+}

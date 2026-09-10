@@ -1,0 +1,224 @@
+{
+ "generated_utc": "2026-09-09T15:13:08+00:00",
+ "run": "backtest/runs/edge-corpus/2026-09-09",
+ "legacy_rescore": false,
+ "names": 3,
+ "rankable": 2,
+ "note": "Every name carries a signed edge_score on -100..+100. There is no call and no threshold: rank on edge_score and cut wherever you like afterwards, which is what makes the ranking question answerable at every k.",
+ "ranking": [
+  {
+   "ticker": "DLNG",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -2.8,
+   "edge_pct": -0.138,
+   "confidence": 7.9,
+   "uncertainty_pct": 0.069,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.013,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.013,
+   "independent_clusters": 3,
+   "cluster_names": [
+    "AGGREGATOR",
+    "maritimes.gr",
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "DLNG",
+     "key": "DLNG#0",
+     "finding": "The quarter being reported (Q2/H1 2026) contains a multi-week unpaid gap on the Clean Energy - redelivered from SEFE 'in early April 2026' and only delivered to Rio Grande 'at the end of April 2026' per the company's own Q1 release - and it also loses the $4.9m of non-recurring insurance 'Other income' that supplied roughly $0.13 of Q1's $0.43 headline EPS, so the Q2 bar is materially lower than the 'higher daily rate ... accretive' framing that is the only Clean Energy commentary in circulation.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001578453/000131786126000029/f052926dlng6k.htm",
+     "source_date": "2026-05-29",
+     "expected_impact_pct": -1.5,
+     "cluster": "sec.gov",
+     "priced_in_pct": 68.0,
+     "adversary_note": "Both legs of this claim are in one document that the capture stored in full, and the larger leg is not a footnote the hunter dug out - it is the company's own headline bullet. The 2026-05-29 Q1 6-K (docs/3f571c7cb5d3488b30b59c9d455ca60bcbbfc75a.txt, item 3 of snapshots/20260904T154434Z.json) leads its highlights with 'Adjusted Net Income of $12.4 million and Adjusted Earnings per common unit (basic and diluted) of $0.29' against GAAP $17.4m / $0.43, and Appendix B footnote (2) says the excluded item 'Includes other income from insurance claims for damages incurred in prior years' against the $4,893k 'Other income' line. So Dynagas itself published, three months before this print, that $0.14 of the $0.43 was non-recurring insurance - the hunter's $0.13 is the company's own number, restated. The market's response to that release was +0.27% (baseline history 2026-05-29), i.e. it never capitalised the insurance gain, so there is nothing to give back when it does not repeat. The Clean Energy gap is in the same release, in plain CEO commentary: 'redelivered from her previous charter with SEFE in early April 2026 and was successfully delivered under her new time charter with Rio Grande at the end of April 2026.' What the corpus does not contain is anyone multiplying ~25 days by the disclosed $69,360/day average hire (~$1.7m, ~1.2% of the $137.9m cap in event.json), and it does not contain the two third-party summaries that would have done so - the TipRanks and StockTitan Q1 pieces are both in the sweep's 'skipped' list with fetch failures. That unconnected arithmetic on one vessel of six is the only genuinely new part, and it is small. Separately, the cash-return content of this print was already out: the $0.050 per common unit distribution for the quarter ended June 30 2026 was declared 2026-08-13 and the 6-K body is stored at docs/5d5ab7f71f81bc72e75bcdd0035a7e053fa66928.txt, unchanged from prior quarters, on a +1.58% day.",
+     "adversary_size_pct": -1.5,
+     "size_disagreement_pct": 0.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.48
+    },
+    {
+     "hunter": "DLNG",
+     "key": "DLNG#1",
+     "finding": "The Arctic Aurora - the single vessel that accounted for the Equinor charter, 25% of FY2025 revenue - comes off Equinor and onto its new ~7-year Rio Grande LNG fixture 'commencing between September - November 2026', i.e. inside the current quarter, and the Clean Energy precedent in the same charter package says such a handover costs roughly three to four weeks of unpaid hire; this print is where that timetable gets set.",
+     "source": "https://maritimes.gr/en/dynagas-lng-partners-lp-announces-new-time-charters-for-the-lng-carriers-clean-energy-and-arctic-aurora/",
+     "source_date": "2023-07-14",
+     "expected_impact_pct": -0.9,
+     "cluster": "maritimes.gr",
+     "priced_in_pct": 67.0,
+     "adversary_note": "The September-November 2026 commencement window is published twice inside this capture, in two independently stored bodies: the maritimes.gr syndication of the original 2023-07-13 GlobeNewswire release (docs/2f55a33d0047c5903f3e135afdcc25a7a0443648.txt, line 1063) and offshore-energy.biz's trade write-up of the same charters (docs/575db7651cbf1d9181b9565adb71d492d22a1f88.txt, line 376), both retrieved as items 4 and 5 of snapshots/20260904T154434Z.json. The Equinor revenue weight is published too, in a third body: StockTitan's 20-F summary states 'In 2025, SEFE accounted for 40% of total operating revenues, Yamal 35% and Equinor 25%' (docs/384edcd1a87ec9ed554b05d4a66847f353de315c.txt line 1763). So every component is in the corpus, and a charter-expiry schedule on a six-ship MLP with three charterers is the most structural fact about the name - age is not novelty. Two mechanism problems are worse for the claim than the publication question. First, event.json gives fiscal_quarter_ending Jun/2026: a September-November handover cannot touch the numbers in this print at all, so the channel is commentary only and the company gives no guidance. Second, the same Q1 release the hunter's other finding relies on states 'estimated contracted time charter coverage for 100%, 100%, and 65% of its fleet estimated Available Days for 2026, 2027, and 2028' as of 2026-05-29 - the company's own published coverage leaves essentially no uncontracted 2026 days for a three-to-four-week unpaid window to sit in. The claim has to argue that number is wrong, and the corpus does not contain that argument.",
+     "adversary_size_pct": -0.8,
+     "size_disagreement_pct": 0.2,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.297
+    },
+    {
+     "hunter": "DLNG",
+     "key": "DLNG#2",
+     "finding": "Dynagas restated its own results date twice inside two days - GlobeNewswire 2026-09-01 said after the close on Monday September 7 (a US market holiday), GlobeNewswire 2026-09-02 corrected it to before the open on Tuesday September 8 - and the results 6-K was in fact only accepted at 2026-09-09 05:24 ET, a further day late.",
+     "source": "https://www.globenewswire.com/news-release/2026/09/02/3355550/0/en/dynagas-lng-partners-lp-announces-date-for-the-second-quarter-and-six-months-2026-results.html",
+     "source_date": "2026-09-02",
+     "expected_impact_pct": -0.35,
+     "cluster": "AGGREGATOR",
+     "priced_in_pct": 76.0,
+     "adversary_note": "Two of the three date moves are in the captured wire copy, not merely reachable: the corrected announcement is stored in full at docs/8af3cf4d176d302876cb3e430c3ccbf0f6cbda16.txt (item 1 of snapshots/20260904T154434Z.json), a Manila Times syndication of the GlobeNewswire release dated 2026-09-03 carrying the verbatim text 'before market opens in New York on Tuesday, September 8, 2026'. Both original GlobeNewswire URLs and both StockTitan versions are additionally logged in that snapshot's 'skipped' list, so the capture proves at least five distinct publications of the date announcements. The first release's error is also self-explaining rather than a friction tell: September 7 2026 was Labor Day, so 'after the close on Monday September 7' was a clerical slip that any wire desk corrects the next morning, which is exactly what happened. The third slip - the results 6-K accepted 2026-09-09 05:24 ET - is not in the pre-print corpus at all; it comes from seal.json, whose accession postdates the last DLNG sweep of 2026-09-04, so I cannot treat it as something the market could have read before the print, and I decline to score it as either priced or unpriced. On magnitude the claim is self-limiting: a one-day results slip on a nano-cap with no consensus is worth close to nothing, and the tape agrees - across the three sessions after the first announcement (09-01 77,700, 09-02 49,200, 09-03 35,800 shares against avg_volume_20d 50,675) volume is unremarkable and the close round-trips 3.86 to 3.70 and back to 3.86 by 09-08.",
+     "adversary_size_pct": -0.2,
+     "size_disagreement_pct": 0.3,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.084
+    }
+   ],
+   "rank": 1
+  },
+  {
+   "ticker": "KFY",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -5.9,
+   "edge_pct": -0.295,
+   "confidence": 10.1,
+   "uncertainty_pct": 0.147,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.096,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.096,
+   "independent_clusters": 2,
+   "cluster_names": [
+    "UNSOURCED",
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "KFY",
+     "key": "KFY#0",
+     "finding": "Korn Ferry closed an acquisition eight days before this print and paid for at least part of it in newly issued unregistered stock: 8-K 2026-06-29 items 1.01/3.02/7.01/9.01 (signing plus an unregistered equity issuance), 8-K 2026-08-19 items 1.01/2.03/8.01/9.01 (a new direct financial obligation, i.e. deal financing), 8-K 2026-09-01 items 2.01/3.02/7.01/9.01 (completion plus a second unregistered equity issuance) - and Item 3.02 is only reportable above 1% of shares outstanding, so each of those two issuances was at least ~530k shares, roughly $44m of stock at the current price.",
+     "source": "https://www.sec.gov/Archives/edgar/data/56679/000119312526378508/d122525d8k.htm",
+     "source_date": "2026-09-01",
+     "expected_impact_pct": -1.5,
+     "cluster": "sec.gov",
+     "priced_in_pct": 62.0,
+     "adversary_note": "The hunter's own corroboration is the refutation. All three 8-Ks are indexed in filings.json with their item codes and exact acceptance stamps, and two of the three carry Item 7.01 - Regulation FD - which means Korn Ferry issued a press release on the signing (2026-06-29T10:10:16Z, items 1.01/3.02/7.01/9.01) and another on the completion (2026-09-01T20:38:21Z, items 2.01/3.02/7.01/9.01). This is a $4.35bn NYSE company (event.json) whose deal was publicly announced with a Reg FD release nine weeks before closing. And the tape marked it: the capture's last full bar is 84.65 on 2026-09-01, struck before the 20:38 UTC completion filing, against the baseline's 82.04 on 2026-09-08 - so -3.1% arrived in the three-and-a-bit sessions after the closing 8-K became public, against a 20-day realised vol of 21.9% (about 1.4% a day). That is better than two daily sigma of marking in exactly the window the information became available, which is the definition of already in the price. The second problem is the inference chain about consensus. event.json's fiscal_quarter_ending is Jul/2026 and the deal closed 2026-09-01 - after the quarter end - so a consensus containing no deal is not a market asleep, it is a sell-side correctly excluding a post-quarter event. That consensus of $1.35 is itself the exact midpoint of the $1.32-$1.38 diluted-EPS guide Korn Ferry published on 2026-06-23, which is verbatim in the captured social body at docs/f52fae6941a874956cc2c58ea2ab58deffdc2526.txt: 'Korn Ferry expects Q1 FY'27 fee revenue to range from $725 million to $745 million, with diluted earnings per share anticipated between $1.32 and $1.38.' The reported-quarter number is therefore a restatement of published guidance. Third, the 530k-share floor is an inference from a permissive instruction, not a fact: Item 3.02's 1% test is an exemption from reporting, and issuers routinely file the item voluntarily for below-threshold acquisition stock, so 'at least $44m of stock' is a lower bound the filing does not actually assert. What genuinely survives is narrower than the claim: the shape of the August-October guide, with first-time intangible amortisation and interest on the 2026-08-19 obligation, is not visible anywhere in this corpus - and I concede the capture cannot test whether it was published, because it ran zero web queries on this name.",
+     "adversary_size_pct": -1.5,
+     "size_disagreement_pct": 0.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.57
+    },
+    {
+     "hunter": "KFY",
+     "key": "KFY#1",
+     "finding": "Korn Ferry's beat over consensus has been decaying quarter by quarter - adjusted EPS $1.31 vs $1.24 (+5.6%) on 2025-09-09, $1.28 vs $1.23 (+4.1%) on 2026-03-09, $1.40 vs $1.38 (+1.4%) on 2026-06-23 - so the +5.83%, +4.00%, +6.46% and +7.60% up-reactions the baseline is built from were earned in a fat-beat regime that has already halved twice.",
+     "source": "stocktwits $KFY (social item, no URL in the corpus; provider=stocktwits, 90 messages)",
+     "source_date": "2026-08-30",
+     "expected_impact_pct": -0.75,
+     "cluster": "UNSOURCED",
+     "priced_in_pct": 85.0,
+     "adversary_note": "Every number in this claim is in captured wire copy, and the mechanism is contradicted by the baseline's own series. All three consensus-versus-actual pairs were published as real-time headlines and are quoted verbatim in docs/f52fae6941a874956cc2c58ea2ab58deffdc2526.txt: 'Korn Ferry reports Q1 adjusted EPS $1.31, consensus $1.24' (2025-09-09T10:55), 'Korn Ferry reports Q3 adjusted EPS $1.28, consensus $1.23' (2026-03-09T11:17), and for the June quarter the same document carries both the $1.38 expectation ('Wall St is expecting 1.38 EPS for $KFY Q4', 2026-06-16T12:00) and the $1.40 print (2026-06-23T22:03). The same document links the aggregation twice - estimize.com/intro/kfy?chart=historical&metric_name=eps is literally a published historical EPS-surprise chart for this ticker - so 'nobody sums the series' is not available here. Worse, the series is cherry-picked from a longer one in the same file, which also records 'Korn Ferry reports Q4 adjusted EPS $1.32, consensus $1.26' on 2025-06-18, a +4.8% beat that sits between the claimed +5.6% and breaks the 'halved twice' shape. And the causal step fails on the baseline's own numbers: the smallest beat in the hunter's series, +1.4% on 2026-06-23, produced the largest recent up-reaction at +5.83%, while the larger +4.1% beat on 2026-03-09 produced -1.53%. Within this sample beat magnitude and reaction are inversely related, so 'the up-reactions were earned in a fat-beat regime' is not what the data says - the June print was a thin beat with the corpus noting 'Quarterly Revenue Guidance Slightly Misses Expectations' (2026-06-23T12:46) and the stock rose almost 6% anyway. The observation that consensus sits exactly on the guide midpoint is also not evidence the market failed to mark the regime down; it is what a company that guides a quarter at a time produces mechanically.",
+     "adversary_size_pct": -0.5,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.113
+    }
+   ],
+   "rank": 2
+  },
+  {
+   "ticker": "YQ",
+   "rankable": false,
+   "not_rankable_because": "event date does not fit the filing cadence",
+   "edge_score": -2.9,
+   "edge_pct": -0.144,
+   "confidence": 0.3,
+   "uncertainty_pct": 0.072,
+   "baseline_quality": 0.02,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.05,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -2.896,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 2.896,
+   "independent_clusters": 2,
+   "cluster_names": [
+    "AGGREGATOR",
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "YQ",
+     "key": "YQ#0",
+     "finding": "The September-2025 template has been repeated but unbundled: on 2025-09-03 YQ announced a $10m repurchase and printed Q2 results on 2025-09-04, and the baseline records that combined event as +19.02%; in 2026 the identical $10m repurchase was approved effective 2026-09-03 but the results 6-K is six sessions later, and the buyback leg alone has already produced +21.5% on 2026-09-03 and +93.4% over five sessions, taking the market cap from the $24.75m recorded in event.json to roughly $41m at the 2026-09-08 close of 3.79 against the ~$51m of cash the buyback release was being read against.",
+     "source": "https://www.stocktitan.net/news/YQ/17-education-technology-group-inc-announces-new-share-repurchase-f1iq0q0t7jt6.html",
+     "source_date": "2026-09-03",
+     "expected_impact_pct": -4.5,
+     "cluster": "AGGREGATOR",
+     "priced_in_pct": 88.0,
+     "adversary_note": "This finding is a description of the price bars and the captured wire copy, and its own text says so - 'What is priced, violently, is the buyback and the cash-shell discount.' Every input is published in this corpus and dated before the print. The buyback release is in captured retail wire copy at docs/c64c6b6862121be1edca7d02c3f510e6f2384e9a.txt (item 1 of snapshots/20260907T150856Z.json): the 2026-09-03T10:21 message reads '17 Education & Technology Group Inc. approved a $10 million share repurchase program effective September 3, 2026, to be funded from existing cash. RTPR pushed this release out to users at 6:00:00 AM ET', with the StockTitan URL posted at 10:16 the same morning. The valuation argument is in the same body at 10:33 - 'They have $51M cash and a $24.75M market cap' - and so is the liquidity frame at 22:27 ('20-day average volume is ~7,300 shares. At $2.28 that's about $17K of daily liquidity') and the 7.51m float at 22:02. The prior-year template is in the same body too, at 2025-09-03T21:09: '$10M shares repurchase program'. And the tape has fully executed on it: quote.json goes 2.28 on 09-02 to 2.77 on 09-03 on 2,789,500 shares against a 20-day median of about 4,600, then 2.92 on 09-04 and a partial 3.4502 bar on 09-08 against the baseline's 3.79 close - +93.4% in five sessions on a 600x volume day. The discount-to-net-cash arithmetic the hunter runs is correct (about 51% on 09-03, about 20% by 09-08) but it is arithmetic on two numbers both published in the corpus and a price everyone can see. Nothing here is information the market lacks; the only unpublished element is the structural observation that last year's +19.02% bundled buyback and results while this year splits them six sessions apart, which is drawn from the baseline history and filings.json rather than from any captured commentary.",
+     "adversary_size_pct": -5.0,
+     "size_disagreement_pct": 1.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.54
+    },
+    {
+     "hunter": "YQ",
+     "key": "YQ#1",
+     "finding": "YQ has already printed a spectacular growth headline and been sold: the Q1 2026 6-K of 2026-06-17 showed revenue +359% year on year to CNY 99.5m on its AI learning product with a narrowed net loss, and the baseline records the reaction as -4.58%; the Q4 2025 print on 2026-03-25 was 0.0%.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526273326/yq-6k-06-17-2026-q1.htm",
+     "source_date": "2026-06-17",
+     "expected_impact_pct": -3.0,
+     "cluster": "sec.gov",
+     "priced_in_pct": 84.0,
+     "adversary_note": "Both halves of this are published and both are visible in the bars. The +359% revenue headline is not merely reachable in the 2026-06-17 6-K; it was recirculating on the captured retail feed the evening before this print - docs/9d6fda9a47e9a1e05f7738d51d5c7827d0bacfcc.txt, item 1 of snapshots/20260908T150822Z.json, message timestamped 2026-09-07T21:38: 'Q1 2026 revenue +359% YoY to CNY 99.5M and driven by its AI learning product Yiqi Aixue', tagged Bullish. The same figure is in the older body at 2026-06-17T04:12: 'released its Q1 2026 unaudited results, showing revenue jumping 359% YoY and a narrowed net loss.' And the reaction is directly checkable in the capture's own bars rather than only in the baseline: quote.json closes 2.4000 on 2026-06-16 and 2.2900 on 2026-06-17, which is -4.583% - the baseline's -4.58% to three digits. So a triple-digit growth print being sold is a fact published twice in the corpus and printed in the price bars on the day it happened. The residual value of the claim is not new information but a base-rate reconstruction: separating the three results 6-Ks from the five non-results 6-Ks the text matcher caught. That is legitimate analytical work on a baseline that threw its history away, and I do not dispute it - but a company's own past reaction to its own past release is the market's memory, not something the market has failed to price. The reconstruction also thins out under scrutiny: it yields a sample of three, one of which (2026-03-25, 0.0%) is a zero on 8,500-share liquidity and one of which (2025-09-04, +19.02%) the claim itself sets aside as buyback-paired, leaving a single clean observation to carry the inference.",
+     "adversary_size_pct": -3.0,
+     "size_disagreement_pct": 0.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.48
+    },
+    {
+     "hunter": "YQ",
+     "key": "YQ#2",
+     "finding": "The 'CEO is buying' stream that ran alongside the squeeze is twelve open-market purchases between 2026-07-20 and 2026-09-04 that together take Liu Chang from 35,149 to 113,070 shares - about 78,000 shares for roughly $170,000, i.e. under 0.7% of the market cap and about 1% of the 7.51m float, in individual tickets of $2,079 to $23,788 - and it stopped on 2026-09-04.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526382783/xslF345X06/ownership.xml",
+     "source_date": "2026-09-04",
+     "expected_impact_pct": -1.25,
+     "cluster": "sec.gov",
+     "priced_in_pct": 80.0,
+     "adversary_note": "The claim's own premise - 'nobody sums a Form 4 series, which is exactly why the corpus contains the twelve announcements and no total' - is wrong twice. First as a matter of the form: a Form 4 reports securities beneficially owned following the reported transaction, so the running total is on the face of every individual filing and no summation is required. Second, and decisively for this corpus: the captured ceo-buys.com messages in docs/c64c6b6862121be1edca7d02c3f510e6f2384e9a.txt each carry that running total explicitly - 'Liu Chang now owns 113,070 shares' (2026-09-04T13:45) and 'Liu Chang now owns 35,149 shares' (2026-07-20T12:40). The aggregate the hunter says nobody computes is a one-line subtraction between two numbers published in the same captured feed, and the eleven visible dollar tickets in that feed sum to about $135,000, so the sub-$200k scale is readable off the corpus directly. Every one of the underlying filings is also indexed in filings.json with its accession and date (2026-07-06 through 2026-09-04, thirteen Form 4 accessions, not twelve as the claim states). On magnitude the claim concedes its own case: about $170k against event.json's $24.75m market cap is 0.69%, roughly ten days of the $17k daily dollar liquidity the same feed quotes - immaterial by construction. The bearish tell that remains, 'it stopped on 2026-09-04', has a mundane published-calendar explanation: the results date was announced for September 8 on 2026-09-02 (same body, 18:30), so an insider going quiet in the days before a results release is the ordinary blackout pattern rather than a signal.",
+     "adversary_size_pct": -1.0,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.25
+    }
+   ],
+   "rank": null
+  }
+ ]
+}

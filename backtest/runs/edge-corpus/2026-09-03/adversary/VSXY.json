@@ -1,0 +1,34 @@
+{
+  "ticker": "VSXY",
+  "verdicts": [
+    {
+      "finding_key": "VSXY#0",
+      "priced_in_pct": 45,
+      "size_check_pct": -1.0,
+      "strongest_argument": "Two things hold this at the midpoint. First, the item codes say it was announced: an 8-K carrying item 5.02 with item 9.01 means an exhibit was furnished, which for a management change is a press release, so the company put it on a wire. Victoria's Secret is a $7.1bn consumer name that trades 1.5m shares a day and is covered by every retail-sector desk; a management change there is reported the same morning. The reason it is absent from this corpus is that no news search was run for this ticker and the stored stream is retail brand banter - a capture artefact, not evidence the market missed it. Second, the chronology in the finding does not hold. It says the 8-K sits 'inside the window in which the stock fell from $102 to $83 in seven business days', but the corpus quote recording that fall is dated 2026-08-18T18:42:03Z, two days BEFORE the 2026-08-20 filing - so the 19% drawdown was already complete when the 8-K was filed and cannot have been caused by it, nor can the 8-K be the unexplained cause the finding is looking for. What is left is an unread item code with no direction: 5.02 covers appointments and compensatory arrangements as readily as departures, no body is stored, and the stated lean ('departures get filed before results') is an unsourced base-rate assertion. The 13D/A of 07-29 adds an unnamed holder with an unstated stake.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001856437&type=8-K", "date": "2026-08-20", "corpus_ref": "filings.json, 8-K dated 2026-08-20 with items '5.02,9.01'", "what_it_says": "A management-change 8-K with an exhibit - i.e. accompanied by a press release - filed publicly two weeks before the print."},
+        {"url": "https://stocktwits.com/symbol/VSXY", "date": "2026-08-18", "corpus_ref": "docs/621d0cd2f2ce628fcfa8161af1d684a409ae43e9.txt, entry dated 2026-08-18T18:42:03Z (admissible per clean-view)", "what_it_says": "Records the 102-to-83 fall over seven business days - dated two days before the 8-K, which fixes the chronology against the finding."}
+      ],
+      "baseline_evidence": "Admissible bars only (clean-view excludes 2026-09-03; bmo print): spot 84.81 at the 09-02 close, run_up_5d -6.59%, run_up_20d -5.62%, pct_from_52w_high -15.16%, pct_from_52w_low +269.22%, realised_vol_20d 49.6%. The large drawdown the finding points at is dated before the filing; the twenty-session figure of -5.62% shows the stock partially recovered afterwards, which is the opposite of a market absorbing bad governance news on 08-20. Median historical reaction 9.93% with a +47.44% tail.",
+      "corpus_coverage": "reachable but unconnected",
+      "reaches_this_print": false,
+      "what_would_change_it": "The 8-K body. A CEO or CFO departure without a successor would make this real; anything else leaves it empty."
+    },
+    {
+      "finding_key": "VSXY#1",
+      "priced_in_pct": 85,
+      "size_check_pct": -2.0,
+      "strongest_argument": "The hunter concedes the components are 'individually all wire copy' and the capture confirms every one of them. UBS's raise to $95 from $90 on 2026-08-18, the second house's $80 mark, and the short-interest and squeeze discussion are all in the stored body at entries dated 2026-08-18T16:31:02Z, 2026-08-25T12:23:08Z and 2026-08-26T15:57:38Z (docs/621d0cd2f2ce628fcfa8161af1d684a409ae43e9.txt, admissible snapshots). The remaining two facts - the stock is 269% above its 52-week low and the prior print produced +47.44% - are fields in the sealed baseline, which is to say the market's own record of what it has already done. Combining published targets with a published price to observe that the stock trades above the sell-side's marks is subtraction on public numbers, and it is a permanent condition of any stock that has tripled: targets lag price by construction, in every squeeze, always. That is structural, not novel. The mechanism is also self-cancelling in the way the finding admits: 'a print that merely meets expectations removes the squeeze fuel' and 'a genuine short base can be squeezed further' are the two halves of a coin, and nothing in the capture gives a short-interest figure from an exchange source to weight them.",
+      "prior_publication": [
+        {"url": "https://stocktwits.com/symbol/VSXY", "date": "2026-08-18", "corpus_ref": "docs/621d0cd2f2ce628fcfa8161af1d684a409ae43e9.txt, entries 2026-08-18T16:31:02Z, 2026-08-25T12:23:08Z, 2026-08-26T15:57:38Z (admissible per clean-view)", "what_it_says": "Carries the UBS raise to $95, a separate $80 analyst target and the short-interest/squeeze discussion, all before the print."}
+      ],
+      "baseline_evidence": "pct_from_52w_low +269.22% and the recorded +47.44% reaction at the 2026-06-02 print are baseline fields - the extended positioning the finding describes is the baseline. run_up_5d -6.59% into the print shows longs already trimming, which is the de-risking the finding says has not happened. Median reaction 9.93%, deadband 4.96%.",
+      "corpus_coverage": "published in corpus",
+      "reaches_this_print": true,
+      "what_would_change_it": "An exchange short-interest figure with a settlement date and days-to-cover, which would let the squeeze fuel be sized rather than asserted from forum chatter."
+    }
+  ],
+  "interactions": "The hunter states both findings share the single stored Stocktwits body and asks for them to be collapsed. They also conflict on the same drawdown: #0 treats the 102-to-83 fall as unexplained and possibly caused by the management 8-K, while #1 treats the whole move as squeeze-driven positioning - and the dates show the fall preceded the filing, which favours #1's reading and undercuts #0's.",
+  "corpus_limits": "I honoured clean-view/VSXY.json: only the six allowed snapshots and no 2026-09-03 bar, since for this bmo print the event-day close is the reaction. VSXY is one of the tickers named in the pre-market movers document the hunter disclosed and excluded; I did not open docs/352e5565c8c4c0d3898f5a4ba5c6d316d29af018.txt in this or any capture. The 2026-08-20 8-K body and the 13D/A body are not stored, so neither the management change nor the holder is identifiable. No exchange short-interest series is in the capture, so the squeeze magnitude is unverifiable. VSXY carries no news items, so no sell-side preview or wire report is testable here."
+}

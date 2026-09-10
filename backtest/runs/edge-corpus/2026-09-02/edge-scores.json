@@ -1,0 +1,1099 @@
+{
+ "generated_utc": "2026-09-09T15:51:19+00:00",
+ "run": "backtest/runs/edge-corpus/2026-09-02",
+ "legacy_rescore": false,
+ "names": 29,
+ "rankable": 29,
+ "note": "Every name carries a signed edge_score on -100..+100. There is no call and no threshold: rank on edge_score and cut wherever you like afterwards, which is what makes the ranking question answerable at every k.",
+ "ranking": [
+  {
+   "ticker": "DAKT",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 3.5,
+   "edge_pct": 0.173,
+   "confidence": 6.0,
+   "uncertainty_pct": 0.086,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.504,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.504,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "DAKT",
+     "key": "DAKT#0",
+     "finding": "The same 13D filer (CIK 0001734916) amended its Schedule 13D on 2026-08-11 at 21:21:42Z, six weeks after amending it on 2026-06-30 - an accelerating campaign cadence three weeks before the print - and not one item anywhere in the 103-item capture mentions it, the news and social flow going completely silent between 2026-08-10 and 2026-08-31 while the stock drifted down 10.08% over twenty sessions.",
+     "source": "https://www.sec.gov/Archives/edgar/data/915779/000173491626000004/xslSCHEDULE_13D_X02/primary_doc.xml",
+     "source_date": "2026-08-11",
+     "expected_impact_pct": 1.15,
+     "cluster": "sec.gov",
+     "priced_in_pct": 55.0,
+     "adversary_note": "This claim is weaker than 'priced' - it is unsupported, and its own admissible bars point the other way. The hunter records `body_available: false`: it never read the 13D/A. So the entire content of the finding is a cadence count over three accession numbers, with no knowledge of whether accession 0001734916-26-000004 reports an increased stake, a reduced stake, a financing, or boilerplate. The stated sign rests on the assertion that 'an exiting 5% holder typically files one final amendment and stops', which is not how Rule 13d-2 works - a holder selling down must amend promptly on each material change, so a string of three amendments (2025-12-12, 2026-06-30, 2026-08-11) is at least as consistent with a distribution as with an escalation. On publication: a Schedule 13D/A is a mandated public disclosure, indexed in the capture's own filings.json with an exact acceptance instant, and it is the kind of filing professional ownership screens flag the same evening; the corpus's silence is a statement about the capture's query set (100 of 103 items are EDGAR index rows, no news documents at all), not about what filing-screen subscribers saw. Then the admissible tape: the amendment was accepted 2026-08-11T21:21:42Z after the close, and 2026-08-12 closed 20.63 against 21.20, -2.7%, on 334,300 shares - below the 447k average - followed by a steady grind to 19.36 by 2026-09-01. There is no activist bid visible anywhere in the window; the only above-average volume day is 08-24 (880,000 shares) on a -2.6% close. A finding signed positive on 'live campaign' has to explain why the market marked the stock down on low volume in the eleven sessions after the filing became public. Finally the mechanism does not reach this print: a 13D amendment does not change what Daktronics reports for its fiscal Q1 on 2026-09-02, and the baseline's 14.86% median reaction is driven by results, not by an ownership filing three weeks stale by the time the numbers land.",
+     "adversary_size_pct": 0.3,
+     "size_disagreement_pct": 1.7,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.517
+    }
+   ],
+   "rank": 1
+  },
+  {
+   "ticker": "PVH",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 3.0,
+   "edge_pct": 0.151,
+   "confidence": 4.0,
+   "uncertainty_pct": 0.075,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.849,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.849,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "theresilienttrader.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "PVH",
+     "key": "PVH#0",
+     "finding": "PVH's Calvin Klein women's dress and suit licences expire on 2026-12-31 after twenty years, returning that revenue in-house at PVH's own margin - a dated structural step-up in FY2027 revenue and gross margin that the pre-print coverage in this capture flags as overlooked, published two weeks before the print under the headline 'the deadline Wall Street forgot', against a stock at roughly 6.5x forward earnings with a 10.5% short float.",
+     "source": "https://www.theresilienttrader.com/p/deadline-wall-street-forgot-in-pvh-corp",
+     "source_date": "2026-08-15",
+     "expected_impact_pct": 1.5,
+     "cluster": "theresilienttrader.com",
+     "priced_in_pct": 70.0,
+     "adversary_note": "The finding concedes the two things that decide it. First, on publication: it describes its own source as 'pre-print coverage in this capture' that 'flags [the reversion] as overlooked, published two weeks before the print' - so the fact is in the captured feed, dated 2026-08-15T13:39:27Z in docs/766a040d...txt, complete with the two figures the finding quotes (6.5x forward earnings, 10.5% short float) and an explicit tradable recommendation: 'Long $82.50 or better, risk line $76. Jan 2027 $80/$100 call spread for a $920 debit.' A headline asserting 'the deadline Wall Street forgot' is promotional framing, not evidence that Wall Street forgot; and a licence agreement signed twenty years ago with a contractual expiry on 2026-12-31 is the archetype of structural-and-known - age is not novelty, and the expiry date has been fixed and disclosed since inception. Second, on mechanism, the hunter states it plainly: 'this is a January-2027 economic event: it cannot make this quarter's numbers, so its worst case is simply that it goes unmentioned.' A fact that cannot enter the reported quarter or the near guidance reaches this print only if management chooses to size it on the call, which is a coin-flip about commentary rather than an informational edge. Third, the finding's own tape works against it: the published recommendation was 'long $82.50 or better' with a $76 risk line, and the stock closed at 72.29 into the print after falling 16.97% over twenty sessions - the trade was stopped out, and the market that could read the article priced the stock 12% below the entry. That is not proof the reversion is priced, but it removes the finding's implied claim that publication had not been tested. Finally, its directional content is muddled: the hunter uses the licence upside as part of a net-negative read ('why my net number is negative rather than positive'), so the claim as delivered is not a signed bull case at all. I stop at 70 because I cannot verify from the capture whether sell-side FY27 models already embed the recaptured revenue - the two downgrades are relayed as headlines only, with no note bodies - and that is a capture limitation, not a concession.",
+     "adversary_size_pct": 1.0,
+     "size_disagreement_pct": 1.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.45
+    }
+   ],
+   "rank": 2
+  },
+  {
+   "ticker": "CHPT",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 2.3,
+   "edge_pct": 0.115,
+   "confidence": 2.4,
+   "uncertainty_pct": 0.058,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.533,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.533,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "rapidticker.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "CHPT",
+     "key": "CHPT#0",
+     "finding": "In the 8-K accepted 2026-07-31T21:28:25Z (items 2.05, 5.02, 7.01) ChargePoint reaffirmed Q2 revenue guidance of $100-110m for the quarter ending 2026-07-31 - i.e. on the final day of that quarter - and simultaneously disclosed a 10% workforce reduction with only ~$6m of restructuring cost that it expects to complete in Q3 FY2027, putting the charge in the next quarter rather than the one being reported, yet the stock fell 12.77% in the five sessions into the print with zero SEC filings in the whole of August 2026 and no captured news after 2026-08-27.",
+     "source": "https://www.rapidticker.com/news/chpt-sec-filing-b3c382",
+     "source_date": "2026-07-31",
+     "expected_impact_pct": 1.9,
+     "cluster": "rapidticker.com",
+     "priced_in_pct": 82.0,
+     "adversary_note": "The finding's central inference is quoted verbatim in the corpus, on the day the 8-K landed, and the price then rose on it. The hunter writes that 'only one third-party post in the corpus noticed the reaffirmation at all' and that 'nobody aggregated that' - but the post it is referring to, docs/873be191...txt line 142, dated 2026-07-31T23:00:29Z, reads: 'I think this definitely looks good for $CHPT as they explicitly reaffirmed revenue guidance on the last day of the quarter', followed by the exact $100-110m quote. That is not a source that failed to connect the dots; that is the finding, published, five weeks before the print. Line 148, dated 2026-07-31T21:45:28Z, separately publishes the 10% workforce reduction, the ~$6m estimate and the Q3 FY2027 completion timing with the rapidticker link the brief cites as its source. And a guidance reaffirmation is by definition published guidance, which is the 90-100 anchor. The tape then confirms the market took it as de-risking: the 8-K was accepted 2026-07-31T21:28:25Z after Friday's close, and quote.json shows 07-31 close 5.46 -> 08-03 5.52 -> 08-04 5.87 (+6.3% on 588,500 shares against a 422,595-share 20d average) -> 08-07 6.22, a +13.9% run in five sessions on the highest-volume day of the window. The hunter's counter-argument - that the -12.77% five-session slide proves it was not priced - is the inference this role exists to block: it reads a later, newsless drawdown (08-27 5.83 -> 09-01 5.30 on 638,400 shares) as if it were the market's response to the July 31 disclosure, when the actual response was a rally. Separately, the $6m restructuring charge is 5-6% of one quarter's revenue on a $151m market cap, and deferring it one quarter is worth a fraction of a percent of share price at best. I stop short of 90 because the specific point that the reported quarter's cost base carries no restructuring charge is only reachable, not spelled out, in the corpus, and because the CEO-severance-amendment inference in the independence note is genuinely undrawn anywhere in the capture - the hunter itself labels it inference not evidence.",
+     "adversary_size_pct": 0.8,
+     "size_disagreement_pct": 2.2,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.342
+    }
+   ],
+   "rank": 3
+  },
+  {
+   "ticker": "TLYS",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 1.5,
+   "edge_pct": 0.076,
+   "confidence": 2.0,
+   "uncertainty_pct": 0.038,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.443,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.443,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "everyticker.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "TLYS",
+     "key": "TLYS#0",
+     "finding": "At the Q1 print Tilly's disclosed $41.1m of cash and investments with no debt against a market capitalisation near $115m, and the corpus's contemporaneous read was that the company was 'turning positive next qt' with about $24m of projected net profit for the following year - so the quarter being reported here is the one the turnaround thesis is staked on - yet the stock slid from roughly $5.60 in mid-June to $3.81 with the entire captured record going silent after 2026-07-24 and the only August filing being a passive SCHEDULE 13G on 2026-08-13.",
+     "source": "https://everyticker.com/quote/TLYS/analysis/margin-inflection-meets-digital-rebirth-tilly-s-turnaround-accelerates-nasdaq-tlys",
+     "source_date": "2026-06-09",
+     "expected_impact_pct": 1.5,
+     "cluster": "everyticker.com",
+     "priced_in_pct": 85.0,
+     "adversary_note": "The finding's key negative assertion is falsified by its own document, and the positive facts are published company disclosure the market already repriced. The hunter writes that 'no sell-side note, consensus figure or preview exists anywhere in the capture to set a bar against'. But docs/2016f51865...txt line 52, dated 2026-06-04T00:40:58Z, publishes the whole Q1 release including the sentence 'Q2 sales are guided to $154M-$160M' - the company's own guided revenue range for the very quarter being reported on 2026-09-02. There is a bar, it is management's, and it is in the corpus. The same message publishes the $41.1m cash and no-debt datum, the 22.9% comp, the narrowed $8.0m net loss and the 28.9% gross margin, and line 48 relays the -0.26 EPS on $124.72m revenue. All of it is company disclosure from the 2026-06-03 print, which the market answered with +18.69% - the second-largest positive reaction in the seven-event record. So the balance sheet and the inflection narrative were published and priced in a measured move. What remains is weaker than it looks. The '$24m of projected net profit for the following year' is not an estimate: line 29 shows it is a single bullish StockTwits post of 2026-06-05 ('$24 mil projected net profit next year and they are turning positive next qt'), presented in the brief as 'the corpus's contemporaneous read'. Dressing a message-board number as a forecast is not evidence, and the arithmetic gives it away - $24m of net profit against a $117m market cap would be under 5x earnings, which is not a number the tape supports. And the residual claim, 'the quarter being reported here is the one the turnaround thesis is staked on', is true of every earnings print and carries no size. Finally the finding's structural argument - a five-week blackout in the capture means the decline 'carries no information' - is the inference I am explicitly instructed to reject in both directions: a thin capture is thin about everything, and asserting that a -32% slide from $5.60 to $3.81 is uninformative because the corpus stopped recording is reading a capture artefact as a fact about the market. I hold 15 points back because the corpus genuinely contains no third-party preview or estimate revision after 2026-07-24, so I cannot tell whether the market's markdown reflected a lowered bar for the $154-160m guide.",
+     "adversary_size_pct": 0.5,
+     "size_disagreement_pct": 2.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.225
+    }
+   ],
+   "rank": 4
+  },
+  {
+   "ticker": "AVGO",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 1.4,
+   "edge_pct": 0.071,
+   "confidence": 1.6,
+   "uncertainty_pct": 0.035,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.61,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.61,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "AGGREGATOR"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "AVGO",
+     "key": "AVGO#0",
+     "finding": "Broadcom is reported to be raising $70-80bn of debt (senior tranche ~$45bn, junior ~$35bn) through an SPV that buys the chips and leases them back to AI customers including Anthropic, scaling up a $35bn Anthropic compute commitment unveiled in June - and there is no 8-K, S-3 or 424B anywhere in the 400-day filing index to confirm it, the last 8-K of any kind being 2026-07-06.",
+     "source": "https://finance.yahoo.com/technology/ai/articles/broadcom-avgo-nears-70b-debt-164236440.html",
+     "source_date": "2026-08-21",
+     "expected_impact_pct": 1.75,
+     "cluster": "AGGREGATOR",
+     "priced_in_pct": 88.0,
+     "adversary_note": "Every factual component of this claim is in the captured wire copy, and the two anchors the hunter uses for magnitude are published company guidance. The $70-80bn SPV financing is the headline 'Broadcom (AVGO) Nears $70B Debt Financing Deal, Sources Say' on Yahoo Finance, dated 2026-08-21 and indexed as `new` in snapshots/20260831T152242Z.json (sha 5cd36372...) with the story recurring in the 08-30 and 09-01 sweeps too - this is top-of-feed coverage on a $1.77tn market cap, not an obscure trade note. The $35bn Anthropic compute commitment was 'unveiled in June' by the hunter's own description; the '$30bn AI bookings and backlog' and '$60bn cumulative' figures are, again by the hunter's own words, what 'the pre-print preview coverage in this same corpus anchors readers on'; and Hock Tan's '~$19bn H1, double it in H2' is a direct quote from the Q2 FY26 earnings call transcript, i.e. guidance already given to the whole market on 2026-06-03. That is the 90-100 band by definition. The residual novelty is a reframe - read the lease paper as a forward booking indicator rather than as credit risk - which is analysis, not information, and the hunter concedes the market saw the item and moved ~1% on it. The absence of an 8-K or S-3 confirming the financing does not make the story unpriced; it makes it a sourced press report, which is exactly how such deals trade, and the corpus itself shows the report circulating for twelve days before the print. Finally, the hunter's tape argument is backwards: the -12.2% 20-day drawdown is not the market failing to connect the financing, because the drawdown happened on 08-18/08-19 (392.43 -> 362.48, -7.6% on 35.1m shares vs a 20.2m 20d average), *before* the 08-21 report, after which the stock actually rose to 368.45 and then recovered to ~370 into the print. I hold back the last 12 points because nothing in the capture sizes the FY26 Q4 AI revenue number the financing would imply, so the specific magnitude of a backlog disclosure at this print is genuinely undrawn.",
+     "adversary_size_pct": 1.0,
+     "size_disagreement_pct": 1.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.21
+    }
+   ],
+   "rank": 5
+  },
+  {
+   "ticker": "OLLI",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 1.3,
+   "edge_pct": 0.067,
+   "confidence": 3.3,
+   "uncertainty_pct": 0.034,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.308,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.308,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "estimize.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "OLLI",
+     "key": "OLLI#0",
+     "finding": "Dollar General, the closest value-retail comparable, beat one week before this print, and the OLLI capture contains no company disclosure in the whole of August 2026 - only two passive 13G/A filings on 2026-08-06 and 2026-08-13, with no 8-K since the 2026-06-15 annual-meeting filing - while the stock drifted 6.17% lower over twenty sessions to sit 47.7% below its 52-week high after a fall from about $140 to about $60 in six months.",
+     "source": "https://www.estimize.com/intro/olli",
+     "source_date": "2026-08-27",
+     "expected_impact_pct": 0.8,
+     "cluster": "estimize.com",
+     "priced_in_pct": 75.0,
+     "adversary_note": "Both components of the claim are published in the admissible corpus, and the second one is published twice by different people. The Dollar General read-through is docs/2382fb2f...txt line 14, dated 2026-08-27T12:37:04Z: '$OLLI Dollar General earnings beat could mean good news for OLLI' - the exact inference, in the captured feed, six days before the print, on top of a DG print that is among the most widely syndicated retail results of any week. More damaging, the finding's real engine is the asymmetry argument - the pre-print markdown historically not being validated by the print - and that is stated outright by two separate posters in the same admissible document: line 13 (2026-08-27) 'gotta drive it down before earnings so when earnings are good it'll just go back to where it was.. over and over the game goes', and line 15 (2026-08-26) 'typical game in market now.. bring price down before earnings and then good earnings brings it back'. The consensus anchor is also published: line 23, 2026-08-06, 'Wall St is expecting 1.14 EPS for $OLLI Q2'. Separately, the statistical claim (downside never worse than -3.98%, upside twice above 8%) is not a corpus discovery at all - it is the sealed baseline's own history.moves array, computed from EDGAR acceptance times, visible to every reader of this run and to anyone with a chart. And the size check bounds the whole thing: this name's median reaction across seven prints is 1.80% with a 1.50% deadband, so even a fully correct asymmetry read is worth roughly a percentage point on a $4.3bn stock. The 13G/A filings are passive institutional forms on EDGAR, and passive 13G amendments are as often mechanical rebalancing as conviction adds. I withhold 25 points honestly: the capture has no sell-side preview, no news document and no company disclosure in August, so I cannot check whether the drawdown reflected a downward estimate revision the print would then meet - and the corpus's silence on that is a capture artefact, not a concession. The hunter is also candid that this is weak, which I credit.",
+     "adversary_size_pct": 0.6,
+     "size_disagreement_pct": 0.4,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.2
+    }
+   ],
+   "rank": 6
+  },
+  {
+   "ticker": "WOOF",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 1.3,
+   "edge_pct": 0.065,
+   "confidence": 4.3,
+   "uncertainty_pct": 0.033,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.496,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.496,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "estimize.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "WOOF",
+     "key": "WOOF#0",
+     "finding": "The reporting date was genuinely unknown to the market: through 2026-08-19 and 2026-08-20 the corpus shows participants variously certain that earnings were 'after the close today', 'likely on the 27th', or on Fidelity's Sept 3 date, and the stock ran to about $2.95 on that mistaken expectation before unwinding 9.93% over the following twenty sessions to $2.63 - so the pre-print long crowding this name normally carries was built and shaken out a fortnight early rather than into the actual print.",
+     "source": "https://www.estimize.com/intro/woof",
+     "source_date": "2026-08-20",
+     "expected_impact_pct": 0.6,
+     "cluster": "estimize.com",
+     "priced_in_pct": 68.0,
+     "adversary_note": "The finding's conclusion is contradicted by the later messages in its own document, and its magnitude is invisible against this name's reaction distribution. The date confusion is real and published - docs/aa9cccc1...txt shows it running from 2026-08-12T18:20:41Z ('One site says the 20th, another says the 27th') through 2026-08-20 and 08-21. But the same file resolves it publicly on 2026-08-24T13:04:34Z: 'Fidelity was correct, the ER will be Sept 2.' That is nine calendar days and six sessions before the print, in the same feed, visible to the same participants. And crucially the file then shows the crowd re-positioning for the real date, not staying out: 2026-08-21T14:14:29Z 'bought some more for 2.825', 2026-08-21T13:39:36Z 'If you haven't bought for earnings run up, I think there's still time', 2026-08-28T14:57:07Z 'Earnings will be spectacular... It will then pop to 3, 4, per share', and 2026-08-28T13:57:31Z 'Exited all at $2.74 for tiny loss. Earnings in 2 days' - an exit taken with explicit knowledge of the correct date, which is ordinary pre-print risk management, not the residue of a two-week-old mistake. So the mechanism 'a lighter book arrives at the real print' is not established by the document it comes from; the document shows a crowd that learned the date and traded around it. Then the size check kills what is left. The hunter honestly says it is worth 'a fraction of a percent of conviction' on a $2.63 stock, and this name's baseline carries a 23.34% median reaction with an 11.67% deadband. A positioning nuance an order of magnitude below the deadband cannot rank against anything. Everything else in the finding is published sell-side material: the CFRA downgrade of 2026-08-19 and RBC's flat-sales, EBITDA-down-3% expectation are both in the captured feed, and they are what actually sets the bar. I hold the number at 68 rather than higher because the specific aggregation - that positioning was built for the wrong date - is genuinely written nowhere, and that is the one honest thing in the claim.",
+     "adversary_size_pct": 0.2,
+     "size_disagreement_pct": 0.8,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.192
+    }
+   ],
+   "rank": 7
+  },
+  {
+   "ticker": "FCEL",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.9,
+   "edge_pct": 0.045,
+   "confidence": 2.0,
+   "uncertainty_pct": 0.022,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 1.205,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 1.205,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "sec.gov"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "FCEL",
+     "key": "FCEL#0",
+     "finding": "Director Homer John Livingston III bought 26,343 shares in the open market at $18.75 on 2026-07-16 - one of three Form 4s filed that evening - and the corpus shows the market did not register it until a retail post on 2026-08-29, six weeks later, by which time the stock was 9% below his purchase price and the company had raised equity at $21 on the 424B5s of 2026-07-07 and 2026-07-08, leaving both the insider and the placement book underwater at the $17.08 pre-print close.",
+     "source": "https://www.sec.gov/Archives/edgar/data/886128/000089706926001514/xslF345X06/wk-form4_1787692107.xml",
+     "source_date": "2026-07-16",
+     "expected_impact_pct": 0.9,
+     "cluster": "sec.gov",
+     "priced_in_pct": 85.0,
+     "adversary_note": "Three independent grounds, and the size check alone is close to fatal. (1) Size: 26,343 shares at $18.75 is about $494,000 against a $1.545bn market cap - 0.032% of the company. That is the classic error this role is meant to catch: real, verifiable, and too small to move a stock whose median earnings reaction is 11.35% and whose 20-day realised vol is 89% annualised. (2) Publication: the Form 4s are public EDGAR filings accepted 2026-07-16 between 21:36:43Z and 21:40:34Z and indexed in the capture's own filings.json, and the hunter itself documents that the corpus published the specific numbers before the print - $18.75, 26,343 shares and the $21 offering price are quoted in docs/4690318854...txt at 2026-08-29T00:41:26Z and 2026-08-29T10:03:51Z and again in docs/72990000...txt at 2026-09-01T12:26:03Z. A six-week transmission lag is irrelevant when the transmission completed three sessions before the print and inside the admissible window. (3) The balance-sheet consequence the hunter says the market has not drawn - financing done, runway off the table - rests on 424B5 prospectuses from 2026-07-07 and 2026-07-08, and the admissible bars show that raise being priced with extreme violence: 07-06 close 29.73 -> 07-07 25.96 (12.6m shares) -> 07-08 22.54 (21.5m shares) -> 07-16 17.26, a 42% drawdown in eight sessions on two to three times normal volume. The market did not miss the raise; it repriced the equity around it. Finally the sign is contradicted by the admissible tape after the insider buy surfaced: 08-27 close 19.32 -> 08-28 17.76 -> 08-31 17.23 on 9,056,300 shares against a 7,574,705-share 20d average -> 09-01 17.08. The insider purchase became visible in the retail stream on 08-29 and the stock fell 11.6% over the following two sessions on above-average volume. A finding signed positive on a director's underwater buy has to account for the market selling into the disclosure. I stop at 85 rather than higher because no document in the admissible corpus explicitly frames 'cash runway is not a question at this print', so that specific framing is reachable rather than drawn out.",
+     "adversary_size_pct": -0.2,
+     "size_disagreement_pct": 2.2,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.135
+    }
+   ],
+   "rank": 8
+  },
+  {
+   "ticker": "HPE",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.7,
+   "edge_pct": 0.035,
+   "confidence": 0.9,
+   "uncertainty_pct": 0.018,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.131,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.131,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "247wallst.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "HPE",
+     "key": "HPE#0",
+     "finding": "The pre-print bear case on HPE is gross margin rather than demand - the run-in's framing piece is titled 'Q3: margins matter more than AI orders' - but the margin fear is imported from AI servers, whereas the corpus's own segment split says networking is about 30% of HPE revenue and more than half of its profits post-Juniper, and HPE's own June guidance targeted $1.7-1.9bn of AI networking orders with a raised EPS outlook; meanwhile the peers all confirmed demand into the print (Super Micro's blowout AI server guidance on 2026-08-12 with HPE up 3%, Cisco lifting AI orders from $5bn to $9bn on record Q3 revenue and 'robust margins', and Dell's AI-server-driven beat reported 2026-09-01) and HPE nonetheless fell from $55.23 on 2026-08-26 to $50.49 intraday on 2026-09-02.",
+     "source": "https://247wallst.com/investing/2026/03/10/networking-now-30-of-hpe-revenue-but-over-half-of-profits/",
+     "source_date": "2026-03-10",
+     "expected_impact_pct": 1.5,
+     "cluster": "247wallst.com",
+     "priced_in_pct": 93.0,
+     "adversary_note": "The claim's central assertion is factually false against its own corpus. The hunter writes: 'not one of the roughly ninety captured documents puts \"margins matter more than AI orders\" next to \"networking is 30% of revenue and over half of profits\"'. But snapshots/20260830T151804Z.json - admissible, three days before an amc print - carries, within sixty lines of each other, the margin-pressure copy ('Dell, IBM and HPE have to operate on single digit margins when it comes to the server market', techradar; 'HPE Stock: Margin Pressure Builds as AI Infrastructure Boom Accelerates', parameter.io) AND exactly the offsetting mix argument the finding claims is unmade: 'HPE earnings preview: Juniper makes networking the AI story' (techi.com, an explicit earnings preview), 'Lenovo Doubles Infrastructure Revenue, Lifting HPE 8%: Juniper Makes It More Than AI Server Rally' (techtimes, 2026-08-13), and 'HPE Stock Ticks Up: CEO Says Networking Segment \"More Insulated\" From Memory Supply Squeeze' - the last being the company's own CEO making the insulation-from-margin-pressure case on the record. snapshots/20260901T153853Z.json separately carries 'HPE: AI drives compute and networking revenues higher while storage languishes' and the 247wallst segment piece itself. So the arbitrage is not an arbitrage; it is the pre-print preview consensus in the captured wire copy. Compounding this: the source document is dated 2026-03-10, six months before the print, so the segment split is not a fresh datum; the '$1.7-1.9bn AI networking orders and raised EPS outlook' is company guidance issued 2026-06-01 and reported on Seeking Alpha, on which the stock moved +19.47% - the single largest reaction in the eight-event history; and the three peer datapoints (SMCI 2026-08-12, Cisco, Dell 2026-09-01) are all mainstream wire, with the hunter itself noting HPE traded up 3% on the SMCI day. What is left is the tape argument - 'if it were priced HPE would not have given back its 52-week high' - which is precisely the substitution of a run-down for an option chain that I am not permitted to accept in the other direction and will not accept here. HPE is a $72bn company with 17.8m shares a day of volume and roughly ninety captured documents; it is the least plausible name on this list to carry an unpublished synthesis.",
+     "adversary_size_pct": 0.5,
+     "size_disagreement_pct": 2.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": 0.105
+    }
+   ],
+   "rank": 9
+  },
+  {
+   "ticker": "AGX",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 1.591,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 10
+  },
+  {
+   "ticker": "BF.A",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.321,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 11
+  },
+  {
+   "ticker": "BF.B",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.371,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 12
+  },
+  {
+   "ticker": "CURR",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.04,
+   "quality_parts": {
+    "history": 0.167,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 1,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -1.131,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 13
+  },
+  {
+   "ticker": "CXM",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.697,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 14
+  },
+  {
+   "ticker": "GIII",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.591,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 15
+  },
+  {
+   "ticker": "GOLD",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.08,
+   "quality_parts": {
+    "history": 0.333,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 2,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.056,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 16
+  },
+  {
+   "ticker": "KT",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.405,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 17
+  },
+  {
+   "ticker": "MEI",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.244,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 18
+  },
+  {
+   "ticker": "MTRX",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.298,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 19
+  },
+  {
+   "ticker": "SJ",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.177,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 20
+  },
+  {
+   "ticker": "YSG",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": 0.0,
+   "edge_pct": 0.0,
+   "confidence": 0.0,
+   "uncertainty_pct": 0.0,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.537,
+   "agrees_with_price": null,
+   "price_lean_magnitude_pct": null,
+   "independent_clusters": 0,
+   "cluster_names": [],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [],
+   "rank": 21
+  },
+  {
+   "ticker": "FIVE",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -0.8,
+   "edge_pct": -0.042,
+   "confidence": 1.3,
+   "uncertainty_pct": 0.021,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.422,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.422,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "notreload.xyz"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "FIVE",
+     "key": "FIVE#0",
+     "finding": "Five Below's back-half guidance rests on an explicit management assumption that tariffs revert - CFO Daniel Sullivan on the 2026-06-03 call: 'We have assumed for the back half of the year tariff rates that return to levels that they were at, at the start of our fiscal year' - which is what made the stock fall 13.78% on a quarter with revenue +32%, comps +22.7% and a raised guide; the stock has since rallied to 7.48% off its 52-week high on three sell-side upgrades, no captured item has revisited the assumption since 2026-06-04, and this print is the first one that sets guidance for the very half that assumption covers.",
+     "source": "https://notreload.xyz/five-below-shares-slide-despite-q1-profit-beat/",
+     "source_date": "2026-06-04",
+     "expected_impact_pct": -1.25,
+     "cluster": "notreload.xyz",
+     "priced_in_pct": 90.0,
+     "adversary_note": "The finding concedes its own refutation in its second sentence: 'The quote is three months old and was priced once, in the -13.78% June reaction.' A CFO statement made on a public earnings call on 2026-06-03, describing the assumption set inside guidance the company issued, is the 90-100 anchor almost verbatim - it restates published guidance. And the corpus proves the transmission: docs/e5819b95...txt carries the exact Sullivan quote at 2026-06-04T10:14:51Z, immediately beneath a headline in the same feed reading 'Why Is FIVE Stock Cratering Over 10% In Overnight Trading?' at 2026-06-04T09:30:05Z. So the market not only saw the assumption, it attributed the entire 13.78% single-day loss to it. The move from there to 'not priced' is the one inference this role exists to block: the hunter argues the fact was 'unpriced again by a 75.5% rally off the low', which is using the run-up as a substitute for an option chain it does not have. A rally does not un-publish a disclosure. Worse for the claim, the three upgrades it cites - Mizuho 2026-07-09, Bernstein 2026-07-21, Jefferies 2026-08-13 - all post-date the June call, so the analysts doing the re-rating were underwriting a guide whose tariff-reversion assumption was already on the record; the hunter's own independence note says Mizuho published H2 comps of 8-9% and $9.22 EPS 'above consensus', which is a sell-side house explicitly modelling the back half the assumption covers. Nor is the claim's residue material: 'the H2 guide rests on a policy assumption that may not hold' is generically true of every tariff-exposed retailer's guidance in 2026 and carries no sized number - the hunter itself calls the magnitude 'small' and the band 'genuinely two-sided'. The one thing I grant is real: this print is the first forum where the assumption is either reaffirmed or cut, and no captured item revisits it after 2026-06-04. That is a timing observation, not new information, and it is worth the ten points I withhold, not more.",
+     "adversary_size_pct": -1.0,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.125
+    }
+   ],
+   "rank": 22
+  },
+  {
+   "ticker": "TCOM",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -0.8,
+   "edge_pct": -0.038,
+   "confidence": 1.2,
+   "uncertainty_pct": 0.019,
+   "baseline_quality": 0.24,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 0.6,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.32,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.32,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "nimpact.tech"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "TCOM",
+     "key": "TCOM#0",
+     "finding": "Trip.com was hit with a penalty of nearly RMB 5.2bn together with a monopoly finding that, in the corpus's own words, 'raises the probability of weaker take rates, higher compliance costs' - and this is the first print that has to book the charge and guide take rates around it, while pre-print options implied only about a 3.5% move ($1.61) against a 7.1% median over the past eight quarters, with call volume leading puts 8:3.",
+     "source": "https://nimpact.tech/newsimpact/news/00e415d2c33a7b26",
+     "source_date": "2026-07-25",
+     "expected_impact_pct": -0.5,
+     "cluster": "nimpact.tech",
+     "priced_in_pct": 85.0,
+     "adversary_note": "Three separate failures, and the tape one is decisive. (1) The price moved on the penalty, and it moved the other way. The RMB 5.2bn penalty and monopoly finding were published 2026-07-25 (a Saturday). The next admissible session, 2026-07-27, closed at 44.77 against 43.64 on 07-24 - up 2.6% on 6,308,400 shares versus a 1,956,520-share 20-day average - and the stock then rose to 45.31 and 46.00 on 07-28 and 07-29, +5.4% in three sessions on two-to-three times normal volume. The market absorbed a multi-billion-renminbi penalty and a monopoly determination by marking the stock UP, which is the standard repricing when a long-running regulatory overhang is finally quantified. A finding signed negative on that same fact has to explain the volume spike and the direction. (2) The overhang was not new in July. The same admissible document publishes, on 2026-05-06, a securities class action 'over allegedly understating the company's antitrust risk in China despite its dominant market position and alleged monopolistic practices' with a class period running from April 30, 2024, and on 2026-02-26 a sell-side-style note saying 'an ongoing investigation carries too many unknowns. AVOID'. Two years of published antitrust risk is structural and known; the July announcement resolved a magnitude rather than revealing a problem. (3) The timing does not reach this print's P&L. The penalty was announced 2026-07-25, after the June 30 quarter end; the same document shows Q1 was reported around 2026-06-24/25 ('$TCOM (-12.6% pre) Trip.com (TCOM) Lags Q1 Earnings Estimates', 2026-06-25) and that the next report after this one is Q3 on 11/23 (message of 2026-08-25T20:00:20Z). So a 09-02 print covers the June quarter, and a July 25 penalty is a subsequent-event disclosure, not a charge booked in the reported numbers. The finding's phrase 'the first print that has to book the charge' is wrong on the calendar. Finally, the implied-move-versus-realised comparison - 3.5%/$1.61 implied against a 7.1% eight-quarter median with calls leading puts 8:3 - is not the hunter's observation: it is published verbatim in the admissible corpus at 2026-08-26T19:48:20Z, in docs/a8872d46...txt line 8, six sessions before the print. I stop at 85 rather than higher because the take-rate guidance question is real and genuinely undrawn anywhere in this 38-item capture, and because a cheap straddle relative to realised is a variance observation that could be correct even with everything above true.",
+     "adversary_size_pct": 0.5,
+     "size_disagreement_pct": 2.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.075
+    }
+   ],
+   "rank": 23
+  },
+  {
+   "ticker": "SNOW",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -1.5,
+   "edge_pct": -0.074,
+   "confidence": 0.9,
+   "uncertainty_pct": 0.037,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.174,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.174,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "tradingkey.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "SNOW",
+     "key": "SNOW#0",
+     "finding": "The governing precedent for a high-multiple consumption-software print in this tape is captured in the same sweep as the SNOW preview material: Datadog reported Q2 2026 revenue up 36% and raised guidance, and the stock fell 17% - and it arrives alongside evidence that Snowflake's own pre-print positioning is defensive (increased bearish options activity ahead of earnings, an 'eye-catching' executive stock sale, and coverage asking what short sellers are betting against after a near-50% year) while the sell-side has stretched targets to $405 (Cantor, +44%) and $677, and the stock sits only 9.35% below its high after rising 152.53% off its low.",
+     "source": "https://www.tradingkey.com/analysis/stocks/us-stocks/262084073-datadog-ddog-q2-2026-earnings-stock-drop-tradingkey",
+     "source_date": "2026-09-01",
+     "expected_impact_pct": -1.75,
+     "cluster": "tradingkey.com",
+     "priced_in_pct": 93.0,
+     "adversary_note": "This is the captured wire copy, and the hunter names it as such: five different publishers, every one of them indexed in an admissible pre-print sweep. snapshots/20260901T153017Z.json alone carries 'Datadog Q2 2026: Revenue Up 36% and Guidance Raised, but the Stock Fell 17%' (line 169), 'Snowflake (SNOW) Sees Increased Bearish Options Activity Ahead of Earnings' (gurufocus, line 131-136), 'Snowflake Is Up Nearly 50% in 2026 - What Are Short Sellers Betting Against?' (Yahoo, line 120-125), the tipranks insider-sale piece (line 37) and the Cantor $405 target piece (line 147). Every component of the 'defensive positioning' cluster is a headline in one sweep, one session before the print. And the claim that 'every preview document in this capture frames the question as whether Snowflake beats. None of them frames it as whether beating is sufficient' is directly falsified twice by the same corpus: snapshots/20260901T153017Z.json line 41 indexes 'Snowflake options indicate 12% move on Sept 2 earnings' (investing.com), and snapshots/20260902T151912Z.json line 29 indexes 'Snowflake Q2 Preview: Stock Moved An Average Of 12.8% Last Seven Earnings Reports, Experts Says Buckle Up' (Benzinga). A published 12% implied move IS the market saying a beat may not be sufficient - it is the priced distribution, stated in a headline, and it is the single most direct rebuttal available to a 'the bar is higher than people think' argument. The Datadog analogue is itself the most-discussed software print of the season and sits in the same sweep the hunter read. The executive sale is a Form 4, public by mandate and already written up by tipranks. On the other side, the corpus also publishes the bull regime datapoint the hunter concedes - 'Gartner: Software Spend Now $1.44 Trillion in 2026, Revised Back Up to 15.1%' in snapshots/20260902T151912Z.json - so both halves of the debate are in the captured coverage. What is left is a stitched narrative over five published articles, which is analysis, not information. I withhold seven points only because the 12% implied-move article's body failed to fetch, so I have the headline number but not its construction.",
+     "adversary_size_pct": -1.5,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.122
+    }
+   ],
+   "rank": 24
+  },
+  {
+   "ticker": "AI",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -2.4,
+   "edge_pct": -0.118,
+   "confidence": 2.7,
+   "uncertainty_pct": 0.059,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.308,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.308,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "merlintrader.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "AI",
+     "key": "AI#0",
+     "finding": "The pre-print options tape in this name was almost purely one-sided calls: 152,490 contracts traded on 2026-08-28 of which 97.94% were calls, with 40k volume in the 9/4 expiry alone and consecutive days on the 'Largest CALL OI Increases' list, while the stock rallied 8.45% in five sessions into a print whose own history is 6 down out of 8.",
+     "source": "https://www.merlintrader.com/c3-ai-stock-hub/",
+     "source_date": "2026-08-29",
+     "expected_impact_pct": -1.75,
+     "cluster": "merlintrader.com",
+     "priced_in_pct": 80.0,
+     "adversary_note": "The claim is contradicted by its own price bars, and its evidence is published in the corpus. The 97.94%-calls datapoint is an automated flow-bot post on a public StockTwits feed, captured verbatim in docs/50e5afee...txt at 2026-08-29T05:18:47Z, alongside 'Largest CALL OI Increases $NVDA $AI ...' on 2026-08-27T13:12:12Z and again on 2026-08-31T13:57:25Z in docs/2e374643...txt. So the aggregation the hunter says 'nobody does' is literally in the captured feed, twice, on consecutive sweeps. Worse, the hunter's own logic inverts the tape: it argues that if the crowding were priced the stock would not have risen 8.45%, but quote.json shows 08-26 close 9.70 -> 08-27 10.33 (+6.5% on 5.14m shares) -> 08-31 10.82 (6.44m shares vs a 4.67m 20d average). The rally and the volume build land on exactly the sessions the call flow is dated to. A price that has already gone up 11.5% in four sessions on above-average volume, with the corpus carrying a 2026-08-27 post reading 'starting to wake up + run up into earnings call', is the crowding expressed in the price, not evidence it is unexpressed. What remains unpriced is at most the second-order point that a 35%-of-float short base plus one-sided calls widens the tails - but the hunter itself calls the band 'deliberately wide and two-sided', which is a statement about variance, not a signed edge, and a variance statement cannot be ranked against a directional one. I withhold the last 20 points only because the corpus has no options chain, so I cannot verify whether dealer positioning was more extreme than the price move implies.",
+     "adversary_size_pct": -1.5,
+     "size_disagreement_pct": 0.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.35
+    }
+   ],
+   "rank": 25
+  },
+  {
+   "ticker": "NTAP",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -3.1,
+   "edge_pct": -0.157,
+   "confidence": 1.6,
+   "uncertainty_pct": 0.079,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.156,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.156,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "AGGREGATOR"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "NTAP",
+     "key": "NTAP#0",
+     "finding": "NetApp's closest pure-play peer told the market it is raising list prices 'due to a dramatic rise in component costs, which may impact product gross margins', while the corpus's storage-industry analysis says DRAM and NAND are not in a temporary shortage but a 'structural reallocation that will hold prices elevated through 2027' with 2026 NAND demand growing 20-22% against supply of 15-17% and no meaningful new fab capacity before 2027 - and NetApp's own last call already acknowledged cost 'rises due to supply chain issues such as higher NAND pricing' even as it guided a 'really strong outlook' and the market rewarded it with a +22.39% reaction on expanding margins.",
+     "source": "https://finance.yahoo.com/news/pure-storage-inc-pstg-q4-050226157.html",
+     "source_date": "2026-09-02",
+     "expected_impact_pct": -2.15,
+     "cluster": "AGGREGATOR",
+     "priced_in_pct": 88.0,
+     "adversary_note": "The claim is built on a stale document that the snapshot made look current, and every leg of it predates a print the market already answered. The brief carries `source_date: 2026-09-02` for the Pure Storage peer quote, but that is the FETCH timestamp, not the publication date: the stored body itself contains the article's own schema block, `\"datePublished\":\"2026-02-26T05:02:26Z\"`, and the headline is 'Pure Storage Inc (PSTG) Q4 2026 Earnings Call Highlights' - PSTG's fiscal Q4 call, held in late February 2026. So the peer's list-price increase and its product-gross-margin caveat have been public for six months, and the 'number and a quarter' the hunter says the peer put on it was PSTG's own Q1 FY27, guided in February. The second leg is dated in its own URL slug: storageswiss.com/2026/05/06 - four months old. The third leg is NetApp's own commentary on its own earnings call, reported 2026-05-29. All three therefore predate NetApp's 2026-05-28 print, which the market answered with a +22.39% reaction on expanding margins - by far the largest move in the seven-event history against a 3.43% median - and the hunter concedes exactly this in its own band note: 'NetApp resolved this same cost worry favourably once already in May.' A cost narrative that was fully public before a print the stock rose 22% on is not an unexploited edge into the next print; it is a resolved question the market re-underwrote at a higher price. The DRAM/NAND squeeze is also structural and mainstream rather than obscure - the HPE capture in this same run carries an item headlined 'CEO Says Networking Segment More Insulated From Memory Supply Squeeze', which is how widely the memory-cost frame was circulating in the same days. Finally the finding's tape argument is contradicted by its own baseline: it says 'NetApp would not be sitting near an all-time high on demand-led upgrades' if this were priced, but the sealed baseline puts spot at 180.77, which is 12.71% BELOW the 52-week high with run_up_5d of -6.75% and run_up_20d of -3.12%. The stock had already given back the demand-led melt-up before the print. I leave 12 points because no captured document explicitly quantifies elevated NAND against NetApp's product gross margin line, so the specific P&L arithmetic is reachable rather than drawn out.",
+     "adversary_size_pct": -0.8,
+     "size_disagreement_pct": 2.7,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.258
+    }
+   ],
+   "rank": 26
+  },
+  {
+   "ticker": "NTSK",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -3.2,
+   "edge_pct": -0.158,
+   "confidence": 0.8,
+   "uncertainty_pct": 0.079,
+   "baseline_quality": 0.2,
+   "quality_parts": {
+    "history": 0.5,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 3,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.117,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.117,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "thefly.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "NTSK",
+     "key": "NTSK#0",
+     "finding": "Mizuho downgraded Netskope on 2026-08-19 explicitly on a '75% rally since mid-June' - a move invisible in the baseline, whose run-up fields show only -1.22% over five days and -2.34% over twenty - so this stock enters a print it has fallen 12% to 21% on three times out of three having roughly doubled off its June level, with the corpus's retail base positioned long and adding.",
+     "source": "https://thefly.com/NTSK",
+     "source_date": "2026-08-19",
+     "expected_impact_pct": -2.75,
+     "cluster": "thefly.com",
+     "priced_in_pct": 88.0,
+     "adversary_note": "Both halves of this claim are the two most public datasets that exist - the price chart and a sell-side rating action - and the second one visibly moved the first. The '75% rally since mid-June' is not a hidden fact; it is quote.json, the same file I am given: mid-June closes of 8.47 (06-10) to 9.05 (06-18) rising to a 15.37 peak on 2026-08-18. Every market participant can read that. The Mizuho downgrade citing exactly that 75% figure is published wire copy, captured verbatim in docs/858fb38a...txt at 2026-08-19T10:12:08Z with the thefly.com link. And the tape then priced it: 08-18 close 15.37 -> 08-19 14.70 (-4.4% on the downgrade day) -> 09-01 14.05 -> 09-02 13.47, i.e. the stock came off 12.4% from its pre-downgrade high into the print. The base effect the hunter says nobody holds in view was repriced by 12% in the ten sessions after a broker published it. The reaction history - three of three double-digit negative prints - is not a corpus finding at all; it is the sealed baseline's own `history.moves` block, available to every reader of this run and to any market participant with a chart, and it is already expressed in the baseline's 19.11% expected move and 9.55% deadband. Most importantly, the finding's stated novelty is not a claim about the market: it is that 'a move invisible in the baseline, whose run-up fields show only -1.22% over five days and -2.34% over twenty' understates the base effect. That is a critique of the baseline's chosen lookback windows, not evidence that anyone trading the stock was unaware it had doubled. A defect in a research artefact's field set is not a market inefficiency. I hold 12 points back because the corpus genuinely carries no sell-side preview, no consensus figure and no August company disclosure, so I cannot verify whether expectations for this specific quarter had been reset after the downgrade - and that absence is a capture artefact, not a concession.",
+     "adversary_size_pct": -1.5,
+     "size_disagreement_pct": 2.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.33
+    }
+   ],
+   "rank": 27
+  },
+  {
+   "ticker": "ZEPP",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -4.7,
+   "edge_pct": -0.235,
+   "confidence": 2.9,
+   "uncertainty_pct": 0.117,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 7,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": 0.022,
+   "agrees_with_price": false,
+   "price_lean_magnitude_pct": 0.022,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "reuters.com"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "ZEPP",
+     "key": "ZEPP#0",
+     "finding": "The immediate pre-print gain in this name had a named and low-quality cause: the stock was 'up 11% pre-market on Wall Street Zen upgrade' on 2026-09-01, an algorithmic rating service rather than an information event, arriving on top of a retail base that had spent the prior fortnight explicitly buying for the print ('we should see a good run up next week following into the ER', 'a good earnings and we are back at $8-9') at a company whose last two prints produced -28.64% and -22.13% and which has disappointed on five of its last seven.",
+     "source": "https://www.reuters.com/sports/hyroxs-popularity-soars-fitness-racing-hybrid-chases-olympic-dream-2026-08-19/",
+     "source_date": "2026-09-01",
+     "expected_impact_pct": -1.75,
+     "cluster": "reuters.com",
+     "priced_in_pct": 78.0,
+     "adversary_note": "The claim's premise - that the stock enters this print marked up on mechanical froth - is contradicted by the sealed baseline and the admissible bars, and its cited source does not support it. Take the tape first, using only bars I can defend: 08-20 close 5.36, 08-21 5.15, drifting to 4.82 on 2026-08-31, i.e. -10.1% over eight sessions on 20,500-69,600 shares a day. The baseline then puts spot at 4.50 for last_close 2026-09-01 with run_up_5d of -11.59%. Whatever happened intraday on 09-01, the stock did not arrive at this print elevated: it arrived 6.6% below the prior close and 16% below where the retail 'run up into the ER' posts of 2026-08-21 and 2026-08-26/27 were written. Those posts are the finding's own evidence of pre-print crowding, and the bars show that crowding failed - the run-up never happened. An 11% pre-market print on a stock with 41,540 shares of average daily volume, followed by a lower close, is the market rejecting the quant upgrade within a session, which is the opposite of unpriced froth. Second, publication: the Wall Street Zen upgrade and the 11% pre-market figure are both in the captured feed at 2026-09-01T12:49:56Z (docs/cc13cba0...txt), so the fact and its low-quality provenance were public before the print. Third, sourcing: the brief's `source` field points at a Reuters article about the popularity of Hyrox fitness racing, which has nothing to do with the claim, and the hunter concedes 'the upgrade itself has no captured source' - so the central fact rests on a single retail message with no primary citation. Fourth, the base-rate half of the claim ('five disappointments in seven prints', '-28.64% and -22.13%') is simply the sealed baseline's own history block, already expressed in its 15.97% expected move and 7.99% deadband; restating a baseline is not a finding. What survives is that nobody aggregates 'the marginal buyer here was an algorithm', which is true and unwritten, but it is a statement about a 40,000-share tape and the hunter's own band reaches +10 in the other direction, so it is not a signed edge. I stop at 78 rather than higher only because the 2026-09-01 session's status is ambiguous in this capture and I declined to lean on it.",
+     "adversary_size_pct": -0.5,
+     "size_disagreement_pct": 2.5,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.385
+    }
+   ],
+   "rank": 28
+  },
+  {
+   "ticker": "PHR",
+   "rankable": true,
+   "not_rankable_because": null,
+   "edge_score": -6.0,
+   "edge_pct": -0.302,
+   "confidence": 6.0,
+   "uncertainty_pct": 0.151,
+   "baseline_quality": 0.4,
+   "quality_parts": {
+    "history": 1.0,
+    "options": 0.0,
+    "priced_direction": 0.0,
+    "event_plausibility": 1.0,
+    "history_events": 8,
+    "atm_spread_frac": null
+   },
+   "priced_lean_pct": -0.157,
+   "agrees_with_price": true,
+   "price_lean_magnitude_pct": 0.157,
+   "independent_clusters": 1,
+   "cluster_names": [
+    "d-risk.ai"
+   ],
+   "hunter_dispersion_pct": 0.0,
+   "hunters": 1,
+   "findings": [
+    {
+     "hunter": "PHR",
+     "key": "PHR#0",
+     "finding": "Phreesia's most recent 10-Q added risk factors disclosing its financing arm's dependence on securitization capital and 'restrictive covenants in a new securitization program that could constrain liquidity and operations', alongside higher card-network interchange fees, restructuring-driven execution and morale problems, and longer and more volatile sales cycles - with the filing's risk-factor section running 29,847 words against a 1,394-word average across 714 peers, more than twenty times the peer norm - while a securities class action filed 2026-07-01 alleges the company overstated its growth outlook 'while hiding weaker pharmaceutical marketing commitments in its Network Solutions segment', which is where the high-margin revenue sits.",
+     "source": "https://d-risk.ai/PHR/10-Q/2026-05-28",
+     "source_date": "2026-05-29",
+     "expected_impact_pct": -2.0,
+     "cluster": "d-risk.ai",
+     "priced_in_pct": 55.0,
+     "adversary_note": "Both underlying facts are published in the corpus with dates, and one of the finding's headline statistics is a tool artefact rather than a datum. The risk-factor changes, including the securitization language, were pushed to a public feed as an automated alert on 2026-05-29T11:36:09Z (docs/58c35b89...txt line 31-33) with the d-risk.ai/PHR/10-Q/2026-05-28 link, one day after the 10-Q was filed and one day after a print the market answered with +3.5%. The class action is published in the same feed on 2026-07-01T13:52:06Z with its specific allegation - overstated growth outlook 'while hiding weaker pharmaceutical marketing commitments in its Network Solutions segment' - and plaintiff-firm filings of that kind are press-released by construction. The Piper Sandler negative comment of 2026-05-28 is also in the feed. So this is not undisclosed information; it is disclosed information whose implication nobody in the capture has traced. On the '29,847 words against a 1,394-word average across 714 peers' comparison: that is not a signal about Phreesia. A 10-Q that restates its risk-factor section in full will always dwarf a peer set in which most filers incorporate the 10-K by reference and file only updates - the alert's own framing is '+2041.1% above peer average', which is the arithmetic signature of comparing unlike disclosure practices, not of unusual risk. Quoting it as evidence of risk weakens the claim. The tape gives the finding no help either: run_up_5d is +2.16% and run_up_20d +3.13% into the print, so there is no liquidity scare being priced, but equally the stock is 62.03% below its 52-week high, and the hunter honestly says as much - 'a good deal of it is in the price'. I credit that candour and I do not push this above the middle band, because the specific mechanism - a covenanted securitization funding a patient-financing book behaving as a liquidity constraint, interacting with softening Network Solutions pharma commitments - is genuinely drawn out nowhere in the capture, and the capture contains no sell-side note or preview at all to tell me whether the market has modelled it. That silence is a capture artefact and I have not converted it into either a concession or a refutation.",
+     "adversary_size_pct": -1.5,
+     "size_disagreement_pct": 1.0,
+     "priced_in_basis": "adversary",
+     "residual_pct": -0.9
+    }
+   ],
+   "rank": 29
+  }
+ ]
+}

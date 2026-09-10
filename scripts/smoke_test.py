@@ -394,7 +394,10 @@ def main():
         check("the concurrent change was not clobbered",
               "OTHER.md" in files, str(files))
 
-    print("\nOrder placement (scripts/alpaca_trade.py, no network, no orders)")
+    print("\nOrder placement (edge/scripts/alpaca_trade.py, no network, no orders)")
+    # The real module lives in edge/scripts; scripts/alpaca_trade.py is a forwarding
+    # shim for the Routine prompt's frozen path and is not importable as the module.
+    sys.path.insert(0, os.path.join(REPO, "edge", "scripts"))
     import alpaca_trade as at                                     # noqa: E402
 
     ex = at.execution_config(yaml.safe_load(
@@ -572,7 +575,7 @@ def main():
     # The two trading steps live in two hand-maintained files and drift silently.
     skill = open(os.path.join(REPO, ".claude/skills/earnings-edge-hunt/SKILL.md"),
                  encoding="utf-8").read()
-    rprompt = open(os.path.join(REPO, "docs/routine-prompts/edge-hunt.md"),
+    rprompt = open(os.path.join(REPO, "edge/routine-prompts/edge-hunt.md"),
                    encoding="utf-8").read()
     for label, text in (("the skill", skill), ("the stage E Routine prompt", rprompt)):
         check(f"{label} sells before the hunt", "flatten --submit" in text)
@@ -624,8 +627,11 @@ def main():
     # Per-session exits. Off in the shipped config, so the first check is that it is
     # off: turning it on also needs flatten_before_entry off and a second run a day,
     # and the two would silently cancel each other out.
-    def _mode(m):
-        return {**ex, "orders": {**ex["orders"], "exit_mode": m}}
+    # A non-uniform mode is REFUSED while the flatten is on, so every probe below
+    # sets both together -- which is also the only combination that is coherent.
+    def _mode(m, flatten=False):
+        return {**ex, "orders": {**ex["orders"], "exit_mode": m,
+                                 "flatten_before_entry": flatten}}
 
     check("the shipped config is on the uniform exit",
           at.exit_mode(ex) == "uniform", at.exit_mode(ex))
@@ -648,8 +654,20 @@ def main():
     check("exit_by_session: true still means auction_split",
           at.exit_mode({**ex, "orders": {**{k: v for k, v in ex["orders"].items()
                                             if k != "exit_mode"},
+                                         "flatten_before_entry": False,
                                          "exit_by_session": True}})
           == "auction_split")
+    # The contradiction that was documented in three places and enforced in none:
+    # the flatten sells the amc names at market hours before the auction the mode
+    # exists to reach, so the configured exit could never happen and nothing said so.
+    for _m in ("bmo_close", "auction_split"):
+        try:
+            at.exit_mode(_mode(_m, flatten=True))
+            check(f"{_m} with the flatten still on is refused", False,
+                  "it was accepted")
+        except SystemExit as e:
+            check(f"{_m} with the flatten still on is refused",
+                  "flatten_before_entry" in str(e), str(e)[:60])
     try:
         at.exit_mode(_mode("whatever"))
         check("an unknown exit_mode is refused", False, "it was accepted")

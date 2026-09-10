@@ -1,0 +1,54 @@
+{
+  "ticker": "LULU",
+  "expected_move_pct": -4.0,
+  "conviction_note": "Baseline median reaction is 14.19% with 4 of the last 7 prints down by 8.6% to 19.8%; I take a moderate negative because the filing record shows a board reconstituted at the 2026-06-26 annual meeting after the founder's contested-proxy campaign, a new externally hired CEO whose appointment the market treated as a vote of no confidence, and a standalone item-8.01 8-K three weeks before the print that nothing in a 22-item news sweep mentions - the classic configuration for a guidance reset, into a stock that has just rallied 5.9% in five sessions.",
+  "findings": [
+    {
+      "finding": "An 8-K carrying ONLY item 8.01 (Other Events) was filed on 2026-08-13, three weeks before the print, and it is referenced nowhere in the 22-item pre-print news sweep, nowhere in the 150-item first sweep, and nowhere in the social stream - a standalone Other Events filing at a company three weeks from results is either a strategic announcement, a settlement or a disclosure the company wanted separated from the earnings release.",
+      "expected_impact_pct": -3.0,
+      "impact_low_pct": -10.0,
+      "impact_high_pct": 6.0,
+      "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001397187&type=8-K",
+      "source_date": "2026-08-13",
+      "corpus_ref": "filings.json, 8-K dated 2026-08-13 with items '8.01' - the most recent filing of any kind before the print",
+      "body_available": false,
+      "why_not_priced": "Item 8.01 has no standard interpretation, which is exactly why aggregators skip it, and this capture ran a 22-query news sweep on the morning of the print without surfacing a single August company announcement. The sign is genuinely uncertain - I lean negative because it sits between two 13D/A amendments (2026-07-20 and 2026-08-03) at a company whose board has just been changed - but the informative fact is that a material standalone disclosure exists and no observed coverage discusses it.",
+      "independence": "Two SCHEDULE 13D/A amendments bracket it (2026-07-20 and 2026-08-03), a separate filing series showing a >5% holder actively repositioning in the same weeks - https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001397187&type=SC+13D"
+    },
+    {
+      "finding": "The founder's proxy campaign appears to have changed the board: a PREC14A nominated Laura Gentile, Eric Hirshberg and Marc Maurer as Class I directors on a GOLD universal proxy card, the 2026 annual meeting produced an 8-K carrying items 5.02 AND 5.07 on 2026-06-26, and three days later on 2026-06-29 two Form 3s and eleven Form 4s were filed at once - i.e. new insiders seated on the board immediately after the vote.",
+      "expected_impact_pct": -3.0,
+      "impact_low_pct": -9.0,
+      "impact_high_pct": 5.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1397187/000119312526129416/d122409dprec14a.htm",
+      "source_date": "2026-06-26",
+      "corpus_ref": "docs/a6714b8a9efb77fcb23338c7664926c08439b598.txt (snapshots/20260903T151408Z.json item 19); filings.json 8-K dated 2026-06-26 items '5.02,5.07', two Form 3s and eleven Form 4s dated 2026-06-29, DEFA14A dated 2026-06-05",
+      "body_available": true,
+      "why_not_priced": "The proxy fight was covered; the outcome, read off the filing pattern, was not - no item in the news sweep reports who won, and the only mention of Chip Wilson is inside an undated SWOT piece. A reconstituted board and a new chief executive arriving together is the standard precondition for a guidance reset and a write-down quarter, and that is the mechanism the price has not discounted while it rallied 5.9% into the event.",
+      "independence": "The corpus separately records the leadership half of the same reset from independent sources - Calvin McDonald announcing his departure on the December 2025 third-quarter call and Heidi O'Neill's appointment being sold off as a 'vote of no confidence': https://www.tradingkey.com/analysis/stocks/us-stocks/261815035-lululemon-lulu-stock-heidioeill-ceo-succession-nike-china-growth-tradingkey"
+    },
+    {
+      "finding": "The fundamentals going into the reset are already deteriorating on the company's own numbers: the corpus captures 'Lululemon cuts 2026 forecast as sales slump across Americas', a separate analysis titled 'Lululemon Q1 FY2026: The Brand Is Still There. The Business Has Fractured.', and a China-specific piece noting the China engine 'just hit a wall' with the stock down 46% in 2026.",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -8.0,
+      "impact_high_pct": 5.0,
+      "source": "https://www.tikr.com/blog/lululemon-is-down-46-in-2026-and-its-china-engine-just-hit-a-wall-where-lulu-stock-could-go-next",
+      "source_date": "2026-09-03",
+      "corpus_ref": "snapshots/20260903T151408Z.json items 5, 7, 9 and 22 (headlines and stored bodies)",
+      "body_available": true,
+      "why_not_priced": "Largely priced - a 43.6% drawdown from the high says so, and this is the weakest of my three findings for exactly that reason. It matters only as the reason a new CEO would take a kitchen-sink quarter rather than defend the existing guide.",
+      "independence": "none - this is the consensus narrative and overlaps with everything else in the sweep."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "the body of the 2026-08-13 item-8.01 8-K, which is the single most load-bearing gap in this hunt",
+    "any dated confirmation of when Heidi O'Neill actually started, so I cannot say for certain whether this is her first print or her second",
+    "the outcome of the 2026-06-26 vote in any narrative source - I inferred it from the Form 3 cluster",
+    "any option-implied move: the marketchameleon IV page returned 3,968 characters (an access-denied page) and the optionslam straddle page contains only the historical implied-vs-actual table structure, not a current number",
+    "any short-interest figure - the Nasdaq page is captured but I did not extract a value",
+    "any current-quarter consensus estimate"
+  ],
+  "baseline_tension": "It cuts against the five-session run-in (+5.9%) and sits with the twenty-session run-in (-2.4%) and with the reaction history, where four of seven prints fell between 8.6% and 19.8%.",
+  "corpus_limits": "No option chain, so no implied move or skew - both option pages in the sweep were blocked or structural. EXCLUDED: snapshots/20260903T151408Z.json items 1 and 8, both the 'lululemon athletica Q1 2026 Earnings Call Transcript' at fool.com, carry non-empty tripwire_tells and I did not open or use them. Note that although the 09-03 sweep is stamped 15:14Z it is admissible here because this is an after-the-close print. Several key documents in the sweep are undated in their URLs (the SWOT piece, the fleet ranking, the 'Dive Brief'), so I did not rest anything datable on them.",
+  "sources_used": 6
+}

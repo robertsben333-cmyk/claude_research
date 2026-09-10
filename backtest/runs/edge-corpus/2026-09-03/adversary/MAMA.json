@@ -1,0 +1,34 @@
+{
+  "ticker": "MAMA",
+  "verdicts": [
+    {
+      "finding_key": "MAMA#0",
+      "priced_in_pct": 78,
+      "size_check_pct": 1.0,
+      "strongest_argument": "The hunter's own independence citation publishes the finding. A participant in the captured stream wrote on 2026-07-21, six weeks before the print, 'stock trading at 17$, meaning it dropped below the 18$ price of the recent share issuance. This will head back above as soon as the company releases info on the new acquisition' - which is the deal-buyers-underwater observation, the undeployed-cash observation and the mean-reversion conclusion, all in one sentence, in the same document the finding rests on (docs/170806f7b3373558655fba2c2c0b8739efd7da18.txt). The offering itself is a 424B5 with an S-3ASR in filings.json and the pricing, size and bookrunners are in the captured body at the 2026-06-30 entries, so every input is public. The remaining step - comparing $15.96 to $18.00 - is subtraction on two published numbers. And the price has done the work: the announcement day fell 12.3% and the twenty sessions into the print are -12.83% per the baseline, so the market has already marked the equity below the placement price rather than failing to notice it is there. The 'institutional book is the marginal holder' mechanism also has no direction: a book that is underwater sells as readily as it averages down, and nothing in the capture says which. The 'can't find a reason for the drop' quote from 2026-08-27 is a retail participant's puzzlement, not evidence of unpriced information.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001520358&type=424B5", "date": "2026-06-30", "corpus_ref": "filings.json S-3ASR dated 2026-06-29 with 424B5 supplements 06-29 and 06-30", "what_it_says": "The prospectus supplements for the 5.6m-share offering are public filings, establishing the size and price."},
+        {"url": "https://stocktwits.com/symbol/MAMA", "date": "2026-07-21", "corpus_ref": "docs/170806f7b3373558655fba2c2c0b8739efd7da18.txt, entry 2026-07-21 (cited in the brief's own independence field)", "what_it_says": "States the stock is below the $18 issuance price and ties the recovery to the pending acquisition - the finding's exact observation, published six weeks early."}
+      ],
+      "baseline_evidence": "Baseline: spot 15.96, run_up_20d -12.83%, run_up_5d -0.37%, pct_from_52w_high -22.71%, pct_from_52w_low +69.79%, avg_volume_20d 486,810. The 12.3% fall on the offering announcement and the subsequent drift below the placement price are both in the bars - the tape priced the raise on the day and has kept pricing it. Median historical reaction 6.08% with a 28.09% tail.",
+      "corpus_coverage": "published in corpus",
+      "reaches_this_print": true,
+      "what_would_change_it": "Evidence of who holds the placement stock and whether they have been adding or exiting - a 13F change, a 13G, a block print - which would give the 'marginal holder' claim a direction it currently lacks."
+    },
+    {
+      "finding_key": "MAMA#1",
+      "priced_in_pct": 50,
+      "size_check_pct": 0.0,
+      "strongest_argument": "The finding is that an 8-K exists whose contents nobody knows, and I think the most likely contents make it empty. An 8-K carrying items 1.01, 8.01 and 9.01 filed on 2026-07-01, the day after a marketed secondary closed, is the textbook filing for the underwriting agreement itself: the underwriting agreement is a material definitive agreement (1.01), the closing or pricing press release goes under 8.01, and the agreement plus opinion are the 9.01 exhibits. That reading explains the item combination, the date and the absence of any coverage far better than an unannounced acquisition, and if it is right the filing is a mechanical adjunct to an event that is already fully published - which is why I put this at the midpoint rather than in the reachable-but-unconnected band. The finding's alternative readings do not help it either: a credit facility signed alongside a raise is routine and a purchase agreement would have been announced, because a company that raised $100m explicitly to fund acquisitions has every incentive to disclose one and the retail base is on record nine weeks later still waiting. The hunter concedes the direction is uncertain and that this collapses into #0's source cluster. What keeps me from going higher is honest: the body is not stored, so I cannot prove my reading, and the corpus cannot resolve it either way.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001520358&type=8-K", "date": "2026-07-01", "corpus_ref": "filings.json, 8-K dated 2026-07-01 with items '1.01,8.01,9.01'", "what_it_says": "A material-definitive-agreement 8-K with exhibits was filed the day after the offering closed; contents not stored in this capture."}
+      ],
+      "baseline_evidence": "No distinguishable price or volume event on 2026-07-01 beyond the ongoing post-offering drift; the twenty-session decline of 12.83% is spread across the period rather than concentrated on the filing date. That is consistent with a routine closing filing and inconsistent with a market reacting to a signed acquisition.",
+      "corpus_coverage": "reachable but unconnected",
+      "reaches_this_print": true,
+      "what_would_change_it": "The 8-K body or its exhibit list. If exhibit 9.01 is a purchase agreement rather than an underwriting agreement, this becomes a genuine finding."
+    }
+  ],
+  "interactions": "Both findings rest on filings.json plus the single stored Stocktwits body and the hunter asks for them to be collapsed. They also interlock: #0's 'the acquisition the raise was understood to fund is still unannounced' is the premise that #1's mystery 8-K might be that acquisition, so if my underwriting-agreement reading of #1 is right, #0's framing loses its catalyst.",
+  "corpus_limits": "The 2026-07-01 8-K body and exhibit list are not stored, so #1 is unresolvable from this capture in either direction. MAMA carries no news items, so there is no sell-side preview, consensus or offering coverage beyond the Stocktwits dump; n_queries=0 in every sweep is a capture artefact. The baseline is event_plausibility 'unknown' with cadence_implausible on a 56-day inferred cadence, so the 6.08% median expected move is not a reliable earnings base rate. I did not open docs/352e5565c8c4c0d3898f5a4ba5c6d316d29af018.txt."
+}

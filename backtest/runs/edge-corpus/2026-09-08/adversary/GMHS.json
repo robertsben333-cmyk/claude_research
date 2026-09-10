@@ -1,0 +1,21 @@
+{
+  "ticker": "GMHS",
+  "verdicts": [
+    {
+      "finding_key": "GMHS#0",
+      "priced_in_pct": 78,
+      "size_check_pct": -0.6,
+      "strongest_argument": "Every observable in this finding is quote.json, and quote.json is the baseline both sides already hold - the finding concedes as much in its own words: 'the run-up is on the tape and therefore priced as price'. The 7,314,900-share, +16.5% session on 2026-08-31 against 1,600-2,000 shares on 08-20/08-21/08-25, and the collapse to 186,100 / 48,200 / 136,200 / 55,800 with the price fading 0.848 to 0.815, are all readable from the same bars the baseline is computed from; the sealed baseline already reports run_up_5d_pct 11.95 and avg_volume_20d 408,260, a 20-day average that is itself dominated by the one spike day, so the anomaly is visible in the anchor without any research at all. Nor is this information about the company: it is a claim that a screen would misread the tape. An unexplained liquidity event with no identified cause is not a fact the market has failed to price - the market priced it, twice, up 16.5% and then back down. The one genuinely additional element is the F-3 shelf declared effective 2026-08-11 (filings.json EFFECT notice accepted 2026-08-12T04:15:26Z), which is reachable but unconnected: nothing in the capture ties it to the 08-31 volume, and the finding does not claim an issuance occurred. On the mechanism, the finding's own strongest point works against it - the 6-K accepted 2026-08-28T09:00:17Z moved the stock +0.14%, so this name's actual filings are not what moves it, which means the absence of an explanation for 08-31 says little about the fiscal-year print either.",
+      "prior_publication": [
+        {"url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002000530&type=F-3", "date": "2026-08-12", "corpus_ref": "filings.json (F-3 accepted 2026-07-28T10:45:45Z, EFFECT notice accepted 2026-08-12T04:15:26Z)", "what_it_says": "The shelf registration and its effectiveness are on the public record three weeks before the volume spike, so live issuance capacity was disclosed, not hidden."},
+        {"url": "https://stocktwits.com/symbol/GMHS", "date": "2026-08-31", "corpus_ref": "docs/cc6eb1475baeadd1dc857292e761c1a3a0fc82b4.txt", "what_it_says": "The four content-free posts on the spike date are themselves the corpus record that retail noticed the move in real time without an attributable cause."}
+      ],
+      "baseline_evidence": "quote.json, bmo name so the last admissible close is 0.815 on 2026-09-04: 0.728 on 08-28 to 0.848 on 08-31 on 7.31m shares versus 1,600-67,000 in the prior nine sessions, then 186k/48k/136k/56k and a fade to 0.815. The spike and the fade are both fully expressed in the bars, and the baseline's own run_up_5d_pct of 11.95% is arithmetically that one day. Anchor caveat: baselines/GMHS.json is on the 6-K exhibit-text path with session inferred, event_plausibility 'unknown', cadence_implausible true, and one session conflict where the 2025-09-09 move flips from -18.78% to +32.37% depending on tagging - so expected_move_pct of 4.19% cannot be used to size anything here, in either direction.",
+      "corpus_coverage": "reachable but unconnected",
+      "reaches_this_print": true,
+      "what_would_change_it": "A dated filing or disclosure identifying the 08-31 buyer or a completed placement off the effective F-3 - i.e. a cause rather than an anomaly - since an identified 7.3m-share supply event would be genuinely unconnected information."
+    }
+  ],
+  "interactions": "none - single claim; its supporting F-3 point and its main observation come from different files (filings.json and quote.json) but neither is connected to the other anywhere in the capture.",
+  "corpus_limits": "The capture has no news items, no analyst coverage and no consensus for GMHS, so I cannot establish what, if anything, was published about the 08-31 spike; that silence is a capture artefact and I have not treated it as evidence either way. No 6-K bodies are stored, so I cannot verify what the 2026-08-28 filing contained. The baseline's session is inferred from 6-K exhibit text rather than measured, its cadence verdict is explicitly unusable, and there is no option chain. No tripwire-flagged documents excluded."
+}

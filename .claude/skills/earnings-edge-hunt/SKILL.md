@@ -17,7 +17,7 @@ only if nothing has already been rounded into a bucket upstream.
 
 ## What changed on 2026-09-09, and why the arithmetic got simpler
 
-`docs/EDGE_ANALYSIS.md` decomposed six resolved runs — 43 names, 249 findings —
+`edge/EDGE_ANALYSIS.md` decomposed six resolved runs — 43 names, 249 findings —
 against the realised move, pooling within days. Every transformation the scorer
 applied lowered the rank correlation:
 
@@ -68,7 +68,7 @@ for, and one day of eight names cannot answer it.
 **Self-rated confidence does not work.** Across 33 scored arm calls in
 `backtest/runs/pilot-40`, the model's own `evidence_quality` split top-third and
 bottom-third accuracy at exactly 50/50. No hunter's feeling about its own certainty
-enters the score. `scripts/edge_score.py` derives the key from the hunters' signed
+enters the score. `edge/scripts/edge_score.py` derives the key from the hunters' signed
 sizes and nothing else.
 
 **The crux is "is it already priced", and no rule settles it.** The PWR event in
@@ -92,7 +92,7 @@ pre-2026-09-09 prompt. Those fields are gone from the decision path. Do this:
 2. `edge-scores.json` names its own `ranking_key` — quote that in your closing report so
    the disagreement is visible rather than silently resolved.
 3. Record one line in the run log: the Routine prompt is stale and the replacement text
-   is in `docs/routine-prompts/edge-hunt.md`, waiting to be pasted. A session cannot
+   is in `edge/routine-prompts/edge-hunt.md`, waiting to be pasted. A session cannot
    update that Routine itself — `update_trigger` refuses any Routine an agent did not
    create — so the note is the only way the fix gets requested.
 
@@ -145,15 +145,15 @@ Only when `execution.enabled` is `true` in `config/pipeline.yaml`. It is committ
 `false`, and a run that finds it false does nothing here and says nothing.
 
 ```bash
-python3 scripts/alpaca_trade.py flatten --submit
+python3 edge/scripts/alpaca_trade.py flatten --submit
 ```
 
 **Unless `orders.exit_mode` is not `uniform`.** Then the flatten is wrong — it sells every
 name at market when at least one of them wants an auction — and the sell is two calls:
 
 ```bash
-python3 scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
-python3 scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
+python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
+python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
 ```
 
 `close` picks the instrument per position, and what it can reach depends on the mode.
@@ -172,7 +172,7 @@ open until 15:50 New York, so a 16:04 Amsterdam start has hours.
 `auction_split` is not reachable from here. Alpaca **rejects** rather than queues an `opg`
 order between 09:28 and 19:00 ET, so nothing firing in the European afternoon can sell an
 amc position into its own opening auction. That leg is the separate 14:00 Amsterdam
-Routine in `docs/routine-prompts/edge-execute.md`, which only a person can create.
+Routine in `edge/routine-prompts/edge-execute.md`, which only a person can create.
 
 Either way `close` also sends anything **overdue** — exit date already past — at plain
 market immediately, and step 6b's `open` refuses to enter a new book while a position is
@@ -201,8 +201,8 @@ The research is the point; the book is downstream of it.
 
 ```bash
 python3 scripts/run_paths.py <YYYY-MM-DD> --json          # never invent a path
-python3 scripts/edge_universe.py --window -o <RUN>/edge/universe.json
-python3 scripts/priced_in.py --tickers <T,...> --date <D> --session <s> -o <RUN>/edge/baselines/
+python3 edge/scripts/edge_universe.py --window -o <RUN>/edge/universe.json
+python3 edge/scripts/priced_in.py --tickers <T,...> --date <D> --session <s> -o <RUN>/edge/baselines/
 ```
 
 `--window` resolves today's `amc` plus the next trading day's `bmo`, which is the
@@ -237,8 +237,8 @@ If the sweep confirms a date from a company source and the baseline still disagr
 amend it **before any hunter launches**, from company sources only:
 
 ```bash
-python3 scripts/edge_baseline_amend.py --dir <RUN>/edge/baselines            # dry run
-python3 scripts/edge_baseline_amend.py --dir <RUN>/edge/baselines --apply
+python3 edge/scripts/edge_baseline_amend.py --dir <RUN>/edge/baselines            # dry run
+python3 edge/scripts/edge_baseline_amend.py --dir <RUN>/edge/baselines --apply
 ```
 
 This does not breach the sealing rule: `event_plausibility` is an event-existence
@@ -366,8 +366,8 @@ Those now enter the key unchecked. If a hunter's findings start looking unreliab
 is the cost showing up, and the fix is the hunter prompt — not a checker with no path to
 the output.
 
-`.claude/agents/priced-in-adversary.md`, `scripts/edge_brief.py` and
-`scripts/edge_adversary_brief.py` are still in the tree, unused, so the pass can be
+`.claude/agents/priced-in-adversary.md`, `edge/scripts/edge_brief.py` and
+`edge/scripts/edge_adversary_brief.py` are still in the tree, unused, so the pass can be
 re-run deliberately over a week if the priced-in question is ever reopened. `edge_score.py`
 still reads `adversary/` when it is present, and reports `diagnostics.adversary_judged`
 as a count so a run with a pass and a run without are told apart at a glance.
@@ -375,7 +375,7 @@ as a count so a run with a pass and a run without are told apart at a glance.
 ## 5. Score and rank
 
 ```bash
-python3 scripts/edge_score.py --run <RUN>/edge
+python3 edge/scripts/edge_score.py --run <RUN>/edge
 ```
 
 Writes `edge-scores.json`: every name with `impact_sum` (the ranking key, signed
@@ -463,9 +463,9 @@ Same switch as step 0b: nothing here happens unless `execution.enabled` is `true
 This step is not a degradation and not a decision the session gets to make.
 
 ```bash
-python3 scripts/alpaca_trade.py plan --run <RUN>/edge
-python3 scripts/alpaca_trade.py open --run <RUN>/edge --submit --no-flatten
-python3 scripts/alpaca_trade.py status --run <RUN>/edge
+python3 edge/scripts/alpaca_trade.py plan --run <RUN>/edge
+python3 edge/scripts/alpaca_trade.py open --run <RUN>/edge --submit --no-flatten
+python3 edge/scripts/alpaca_trade.py status --run <RUN>/edge
 ```
 
 `--no-flatten` because step 0b already did it, hours ago. Without the flag `open`
@@ -482,7 +482,7 @@ sending an order into a closed market. That refusal is correct: record it and st
 
 Buying at market instead of in the closing auction was measured on the same 18 traded
 events — market-on-close 15/18 and +5.86% a trade, a market order at 14:00 ET 14/18
-and +5.82%, a gap of four hundredths of a point (`scripts/edge_entry_timing.py`).
+and +5.82%, a gap of four hundredths of a point (`edge/scripts/edge_entry_timing.py`).
 What that cannot see is the spread, and the auction is the deepest liquidity of the
 day. So **record the fills**: `status` prints `filled_avg_price` per order, and if
 those come back materially worse than the plan's notional, say so in the run log.
@@ -502,14 +502,14 @@ session firing at 16:04 has time; a session that has been running for six hours 
 not, and a plan built after that close says so rather than filling at the wrong price.
 
 Record in the run log how many names met the benchmark, how many orders went in, and
-every refusal with its reason. `docs/EXECUTION.md` is the whole contract, including
+every refusal with its reason. `edge/EXECUTION.md` is the whole contract, including
 what the rule does and does not rest on.
 
 ## 7. Resolve, once the window closes
 
 ```bash
-python3 scripts/edge_resolve.py --run <RUN>/edge
-python3 scripts/edge_resolve.py --pool 'research/2026/*/*/edge'   # the real number
+python3 edge/scripts/edge_resolve.py --run <RUN>/edge
+python3 edge/scripts/edge_resolve.py --pool 'research/2026/*/*/edge'   # the real number
 ```
 
 Reports, per day and pooled: the rank correlation between the key and the realised

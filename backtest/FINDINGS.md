@@ -716,3 +716,500 @@ into a visible defect, which is the difference between a wrong answer and no ans
 
 Worth carrying into the live pipeline: a stage that reports "this input looks
 wrong" is doing something the calibration ledger cannot do afterwards.
+
+## 33. Can the edge hunt be backtested on the capture corpus?
+
+Asked on 2026-09-09. Answer: yes for the expected-move anchor, no for the options
+anchor, and four things must be fixed first — one of them a look-ahead leak in
+`edge/scripts/priced_in.py` that would silently corrupt every past-event baseline.
+
+**The corpus supports it.** 387 events, 205 already reported, 182 not yet (2026-09-09
+to 2026-09-23). Of the 205 past events, **zero** have a snapshot taken after the event
+date, so the seal held. Median 57 captured research items and 2 stored doc bodies per
+event; 16 of the 205 carry a tripwire flag and should be dropped or read by hand.
+
+**The baseline reconstructs.** `priced_in.py` run today against a past date rebuilds
+tape, reaction history and cadence plausibility correctly — tested on CASY-2026-09-08:
+`last_close_date` 2026-09-08, spot 733.49 (the pre-print close), 7 prior reactions from
+8-K item 2.02 acceptance times, `fits_cadence`, quality tier `full`.
+
+**The proxy anchor is not a degradation.** The option chain is unrecoverable
+retrospectively (only 10 of the 205 events captured a page with a parseable implied-move
+percentage), so the backtest must run on `expected_move_basis: median historical
+reaction`. That is already the **majority production path**: across 111 live baselines,
+60 ran on the historical-reaction proxy and 51 on the straddle. The backtest therefore
+tests the branch the live strategy uses most, at n=205 instead of n=51.
+
+### Four blockers
+
+1. **`priced_in.py` leaks post-event options into a past baseline.** For the CASY
+   2026-09-08 print it fetched the **2026-09-18** expiry — a chain that did not exist
+   before the event — and returned `skew_25d_vol_points: 23.97` with
+   `priced_direction_lean: "downside paid"`. Those feed `priced_lean_pct()` and the
+   `dir_q` term of `baseline_quality()` in `edge/scripts/edge_score.py`, so the leak reaches
+   the score. It raises no error and the baseline reads `status: ok`. Needs an as-of
+   guard that refuses the chain whenever `event_date` is in the past.
+2. **The hunter and adversary agents hold `WebSearch`/`WebFetch`.** On a past event a
+   search returns the outcome. Both need corpus-only variants confined to the event's
+   `docs/`, `snapshots/`, `filings.json` and `quote.json`.
+3. **`session` is null on all 387 captures.** `capture.py` defers it to `seal.py`, which
+   was never written. `truth.py` cannot compute a move without it. Derivable from the
+   8-K item 2.02 acceptance time; an 8-K is present for 130 of the 205 past events.
+4. **`edge_resolve.py` does not record which denominator normalised each name.**
+   The fallback from the straddle to `expected_move_pct` was already there, so the
+   metric is not null as first written here — the defect is subtler and worse. The
+   anchor was never recorded, so a pooled `move/implied` figure silently mixes two
+   different denominators, and it is a mix in production: 51 straddle against 60 proxy
+   over 111 live baselines.
+
+### The part with a deadline
+
+The 182 unreported captures are the only events that can ever test the **options**
+branch, because their chains are readable now and not afterwards. 47 report on 09-09 and
+48 on 09-10. Every day without a baseline snapshot converts roughly 45 of them into
+proxy-only events, permanently.
+
+## 34. Fixing those four, and what the seal found
+
+All four are fixed. Two of them turned up something the write-up above did not
+anticipate.
+
+**The as-of guard** (`edge/scripts/priced_in.py`). `build()` now decides from the date
+whether an option chain may be read at all, and `--no-options` forces it off. A past
+event gets `options.status: not_recoverable_retrospectively` with the implied move and
+the skew explicitly null, and `options_as_of_valid: false` on the document. An explicit
+`allow_options=True` into the past is refused rather than honoured. Verified both ways:
+the CASY 2026-09-08 baseline now suppresses the chain and its tier drops from `full` to
+`partial`, which is the honest reading; a KR 2026-09-11 baseline still fetches the
+2026-09-18 expiry and reports a straddle.
+
+**The anchor mix** (`edge/scripts/edge_resolve.py`). Each row now carries `implied_basis`,
+and the per-run and pooled reports print the composition and split the normalised
+correlation by anchor where both are present. Re-running the seven live runs shows why
+this mattered: the pooled `move/implied` of +0.043 is an average of **−0.174 on the 30
+straddle-anchored names and +0.293 on the 20 proxy-anchored ones**. Neither is
+significant and the two point opposite ways. The single pooled figure was the one
+number in the report that could look like a result without being one.
+
+**The seal** (`backtest/scripts/seal.py`, new). Resolves each capture's session from
+the 8-K item 2.02 acceptance time, with `priced_in.sixk_prints`' exhibit-reading
+approach as the fallback for foreign private issuers — which is 33 of the seals and
+most of the shortfall, not an edge case. Harness-side, like `truth.py`.
+
+It also answers a second question for free, and the answer is worse than expected.
+Over the 205 already-reported captures:
+
+| | |
+| --- | --- |
+| sealed and scorable | **111** (60 amc / 51 bmo) |
+| unconfirmed, domestic | 57 |
+| unconfirmed, foreign filer | 33 |
+| intraday acceptance, not scorable under the close-to-close convention | 4 |
+
+**Forty-four percent of the calendar rows are not earnings events.** The window was
+checked before that was believed: across ten sampled unconfirmed names the nearest item
+2.02 is between 108 and 750 days from the calendar date, and two have never filed one.
+ITP last reported in November 2024. AIV is the Aimco liquidation case a hunter
+discovered by hand on the first live run, at the cost of an opus/high budget. So this is
+not a tight window rejecting real prints, it is an aggregator projecting dead cadences
+onto microcaps, and the phantom rate matches what the edge hunt's own run 1 hit on
+2026-08-31. Zumiez was checked against its own press release as a control: the calendar
+said 2026-09-03, the company reported 2026-09-10.
+
+The scorable sample is therefore **111 events**, against the 51 the live edge hunt has
+pooled to date.
+
+**The corpus-only agents** (`.claude/agents/unpriced-hunter-corpus.md`,
+`priced-in-adversary-corpus.md`, new). Same output contracts as the live pair, with
+`WebSearch`/`WebFetch` removed and `Read`/`Grep`/`Glob` in their place. Two changes are
+substantive rather than mechanical. The hunter is told that the option branch of the
+baseline is null by design and not to manufacture a directional read out of the run-up
+to replace it. The adversary loses its main tool — it settles prior publication by
+searching, live — so it must now classify every verdict as `published in corpus`,
+`reachable but unconnected`, or `corpus silent`, and is told explicitly that silence is
+not evidence of non-publication, because a bounded capture is silent about everything
+its queries did not ask for. Without that field a backtested adversary's number cannot
+be told apart from a guess.
+
+**One thing fixed on the way** (`cik_for` in `edge/scripts/priced_in.py`). EDGAR writes class
+shares with a hyphen and the calendars hand out dots, so `BF.A` and `BF.B` returned no
+CIK — and no CIK means no reaction history, no cadence check, and a baseline that drops
+to thin with no error. Both separators are now tried. This was hitting the live pipeline
+too, not only the backtest.
+
+## 35. The seal moved, and a bmo capture always sweeps after its own print
+
+Found while running the edge hunt over the corpus, and found first by an agent
+rather than by the harness. The GAUZ hunter wrote its own leak into
+`corpus_limits`: capture filed under `GAUZ-2026-09-02` because the calendar said
+09-02, seal puts the print at `2026-08-31T13:10Z`, so `quote.json` carries the
+08-31 and 09-01 closes and two of three stored bodies were fetched after the
+print. It declined to read the post-print bodies, sized the name on pre-print
+evidence only, and asked to be treated as compromised.
+
+Section 32 said an honest agent converts silent corruption into a visible defect.
+This is that, in production, on the first day of a real run.
+
+**The harness check that should have caught it was asking the wrong question.**
+Section 33 reported zero of 205 captures holding post-event snapshots. That
+compared each snapshot against the capture's *directory* date — the date the
+earnings calendar claimed. `seal.py` moves an event to its 8-K or 6-K acceptance
+instant, and where that lands earlier than the calendar date, the capture went on
+sweeping past a print it had already missed. Re-run against the sealed instant:
+**31 of 109 names hold post-print material.**
+
+Two distinct causes, and the second is structural:
+
+1. **A calendar row that was days early.** GAUZ and KT. The capture followed the
+   calendar and the company reported before it.
+2. **Every `bmo` name, by construction.** A bmo 8-K is accepted around 11:00Z; the
+   capture's daily sweep runs around 15:07Z. So the last sweep before a bmo print
+   is always *after* it. Twenty-nine of the 31 are this, usually 2 items and once
+   22 (MDT). `capture.py` schedules on the calendar date without regard to session,
+   which is correct for `amc` and wrong for every `bmo` event it will ever capture.
+
+That second one needs fixing in `capture.py` for the forward corpus, where it is
+silently contaminating roughly half of everything being collected. It is not fixed
+here — this section is the record that it is known.
+
+**The backtest is not dropping those 31.** `edge_corpus_audit.py` writes a
+non-destructive `clean-view/<TICKER>.json` per affected event naming the snapshots
+an agent may read and the last admissible bar, and the brief passes it on. The
+capture corpus is the archive and is not rewritten. Dropping the names instead
+would cost 31 of 109 and would bias what remains toward `amc`.
+
+**A second wrong check, in the audit itself, worth recording because it points the
+other way.** The first version of the bar test counted the event day's own close as
+post-print for every name and flagged 83 of 109. For an `amc` print that close is
+the *pre*-print close — the left-hand side of this repo's own close-to-close
+convention. A check that manufactures alarm gets switched off as fast as one that
+misses everything.
+
+## 36. Eighty-seven percent of the corpus is an EDGAR index and a Stocktwits dump
+
+Found by the 2026-09-01 hunter, which reported that nine of its fourteen captures
+had `n_queries: 0` in every sweep and said plainly that this, not an absence of
+anything to find, was why it returned so many zeros. Measured across the whole
+backtest sample it is worse than that.
+
+Item kinds over all 109 names: **12,015 filings, 662 news, 316 social.**
+
+| | |
+| --- | --- |
+| captures holding at least one news item | **14** |
+| captures with no news item at all | **95** |
+
+The 95 hold a median of 74 items, every one of them an EDGAR index line or a
+Stocktwits message. The 14 that carry news are SAIC, DELL, MDT, PANW, AVGO, HPE,
+NTAP, SNOW, CIEN, IOT, LULU, ZS, CASY and DLNG — which is to say the large caps,
+plus DLNG. Section 27 measured news *coverage* as a near-monotonic function of
+market cap; this is not that. This is the capture having run searches for those
+names and not for the others.
+
+**This is not a reason to stop, and it is a reason the pooled number would be
+misleading.** The sample is two experiments: can the method rank 14 names given
+news, filings and social, and can it rank 95 names given filings and retail chatter
+alone. Those answer different questions and pooling them repeats the anchor-mix
+mistake of section 34 in a new place. The resolve step must split on corpus type
+and report both, and the 95 are the harder and more interesting half — an edge hunt
+that finds nothing in an EDGAR index has told us something about the method, while
+one that finds nothing because nobody searched has told us about the capture.
+
+`config/pipeline.yaml` sets `edge_hunt.min_market_cap_usd: 0` on the stated grounds
+that filtering small names out would turn every result into a statement about
+mega-caps. The capture's own query budget has done that filtering anyway, quietly,
+one layer down.
+
+## 37. A 6-K acceptance time is not a release time, and 37 names are sealed on one
+
+Also from the 2026-09-01 hunter, on RZLV. The seal keyed the print to a 6-K
+accepted `2026-09-01T20:52Z` and therefore called it `amc`. The results release and
+the earnings call were pre-open that same day: `quote.json`'s final bar has the
+stock down from 2.89 to 2.34 on 43.8m shares against a 19.8m average by 11:06 ET.
+The baseline books that 19% fall as `run_up_5d_pct`, so the measured window is the
+aftermath and the surprise is outside it.
+
+The 8-K item 2.02 path does not have this problem — FINDINGS.md section 3
+established that its acceptance time recovers the session reliably, because a
+domestic filer files the item 2.02 with the release. A foreign private issuer's 6-K
+can be filed hours later, so acceptance time is evidence of the session and not a
+measurement of it.
+
+**37 of the 109 names are sealed through the 6-K heuristic**, which `seal.py`
+already labels as weaker than an item code. Its session is a reasonable guess and
+for some of those names it will be wrong in exactly RZLV's way. What the archive
+should carry, and does not yet: a check that the sealed session agrees with where
+the volume actually landed. `priced_in.session_disagrees_with_volume` already does
+precisely this for the reaction *history* and its result is recorded as
+`session_conflicts` — it is simply not applied to the event itself.
+
+**And it reaches further than the session.** The 2026-09-08 hunter found the same
+defect one level down, in WDH's reaction *history*: the Q1 2026 release hit the
+tape on 2026-06-16 with no 6-K on that date, so the baseline counts 2026-06-17 and
+2026-06-23 as two separate prints and measures the wrong day for that quarter,
+while the 2026-07-24 6-K (16:01 ET, 46 days out) is almost certainly not a print at
+all. That matters more than a wrong session label, because `expected_move_pct` — the
+median of those reactions — is this backtest's only anchor and the denominator of
+its normalised metric. A mis-specified event list does not just mislabel a name, it
+rescales it. The same hunter noted `event_plausibility` had already flagged PXS's
+implied cadence as impossible for an earnings cadence, so the machinery to catch
+this exists and its verdict is not being carried into the anchor.
+
+## 38. The zero-collapse is back, and it tracks the corpus rather than the scorer
+
+Interim, over the first 25 names scored in the edge-corpus run. **Twelve of them
+score exactly zero — 48%.** On 2026-09-01 it was ten of fourteen, and that day's
+ranking carried five distinct scores across fourteen names.
+
+`edge_score.py` exists because of this failure. Its docstring records that on
+2026-08-31 the previous scorer left "twelve names collapsed to a single non-zero
+score and eleven zeros. There was nothing to rank, and the bucketing did that
+rather than the evidence." CLAUDE.md then records the fix as working: run 2 that
+day "produced eight rankable names with eight distinct scores. So the ordering
+problem is fixed."
+
+It is fixed *in the scorer*. It is not fixed as a property of the pipeline, because
+the collapse has a second cause that continuous scoring cannot touch: a hunter with
+nothing to find correctly returns no findings, and no findings is a zero. Split by
+what the capture held:
+
+| | non-zero | zero |
+| --- | --- | --- |
+| corpus held news items | 4 | 1 |
+| corpus was filings + social only | 9 | 11 |
+
+The zeros are honest. Every one traces to a capture that ran `n_queries: 0` and
+holds an EDGAR index plus a Stocktwits dump, and the hunters said so in
+`corpus_limits` rather than inventing a number to fill the gap — which is the
+behaviour the agent definition asks for and the outcome it was warned would happen.
+
+**What this costs the experiment.** Half the ranking is ties, and a rank
+correlation over a column that is half one value is close to untestable at any n
+the archive will reach soon. The question "can these companies be ranked" cannot be
+answered by giving the ranker nothing to rank on for half the sample. So the
+corpus-type split of section 36 is not a nicety for the write-up: `filings_only` is
+where the zeros live, and pooling the two halves hides that the pooled coefficient
+is being computed largely over tied scores.
+
+The finding is about the capture, not the method. Fixing it means giving
+`capture.py` a query budget for the small names too, and that is a forward-corpus
+change — it cannot be applied retrospectively to any of these 205 events.
+
+## 39. `formerNames` is a list of name records, not a list of renames
+
+Found by the 2026-09-02 hunter, which reported that MEI and CXM both carried zero
+reaction history on the stated grounds that every prior print was "filed under a
+former name before 2026-09-03" — and pointed out that Methode has not renamed, its
+Q4 FY26 item 2.02 is accession 0000065270-26-000030, and the corpus records a ~40%
+reaction the next session. It flagged the identical phrase and identical cutoff in
+two unrelated companies as pointing at the builder rather than at either company.
+
+It was right. EDGAR's `formerNames` carries, for both, an entry whose name is
+*identical to the current one* with a `to` date of 2026-09-03:
+
+```
+MEI  name METHODE ELECTRONICS INC   formerNames[0] METHODE ELECTRONICS INC to 2026-09-03
+CXM  name Sprinklr, Inc.            formerNames[0] Sprinklr, Inc.          to 2026-09-03
+```
+
+`prior_prints` took the latest `to` across all entries as `identity_since` and
+dropped every print before it. **All 67 of Methode's prior prints and all 21 of
+Sprinklr's**, leaving `history.n` at zero, `median_abs_move_pct` null, and
+`expected_move_pct` — the only anchor this backtest has — with nothing to compute
+from. No error, and the basis string read as a deliberate exclusion rather than a
+fault.
+
+The check the code wanted is the one the CHRN case actually needed: an entry marks
+a change of identity only when its name differs from the one the CIK carries now.
+Ekso Bionics Holdings is a different string from ChronoScale; METHODE ELECTRONICS
+INC is not a different string from METHODE ELECTRONICS INC.
+
+Five of the 109 names were hit — MEI, CXM and PANW wiped out entirely, GOLD and CPB
+partially discounted. After the fix: PANW 0 to 7 prior prints, CXM 0 to 8, MEI 0 to
+7, CPB 7, GOLD 2. This is a live-pipeline bug, not a backtest one, and it has been
+silently zeroing the reaction history of any company whose current name appears in
+its own `formerNames`.
+
+One measurable consequence, for the record: 2026-09-01 had already been scored and
+resolved with PANW's history empty, so PANW carried no `implied_pct` and dropped
+out of the normalised metric. Re-run on the fixed baseline the day's normalised
+correlation moved from −0.177 over 12 names to −0.390 over 13. Neither is
+significant; the point is that one silently broken anchor moved a reported
+coefficient by 0.21.
+
+## 40. A disclosed breach, two wrong session tags, and an implied move that was recoverable after all
+
+All from the 2026-09-03 hunter, the largest day in the run at 41 names.
+
+**The breach.** Working DLTH, it opened
+`docs/352e5565c8c4c0d3898f5a4ba5c6d316d29af018.txt` before checking the fetch
+timestamp against the 07:17:40Z acceptance. It is a pre-market movers list naming
+the post-print moves of DLTH, GCO, VSXY, CPB, WLY, CIEN and AVGO. It excluded the
+document, declared it in the six affected files it had not yet written, and noted
+that **CPB and CIEN were already on disk** — written before it saw the leak. Its
+own defence was that its CPB (+2.0) and GCO (+1.5) calls point against the leaked
+figures, which is evidence but not proof.
+
+CPB and CIEN are reported apart in `edge_corpus_report.py` as `breach_exposed`
+rather than deleted. Their numbers may be sound; they cannot be *shown* to be,
+which is the entire function of a sealed corpus. A disclosed breach is data about
+the harness. A silently kept one is not, and this is the second time in one run
+that an agent's honesty has been the only thing standing between a leak and a
+result — the first was GAUZ in section 35.
+
+The generalisable lesson is about the corpus, not the agent: **a document that
+postdates one company's print sits inside another company's capture** and names
+seven of them. The tripwire in `capture.py` fires on a body that names *this*
+event's date, so a movers list is invisible to it for six of the seven names it
+mentions. Any future corpus-only run needs a cross-name tripwire, not a per-event
+one.
+
+**Two session tags are wrong, and both were caught by reading the tape.** PSNY is
+tagged `amc` but released before the open — the 15:08Z sweep contains the full
+outcome, so the hunter returned zero rather than launder a number. GLMD's release
+is dated 2026-09-02, a full day before its tagged event. Both are 6-K seals, which
+is section 37 arriving as a concrete count rather than a caveat: 28 of this day's
+41 names are sealed off a 6-K acceptance time.
+
+**Four events are stale calendar rows that the seal passed.** GASS, KNOP and NEWP
+all filed results on 2026-08-26, and GLMD on 2026-09-02, each with a
+`cadence_implausible` or `suspect` baseline. `seal.py` accepted them because its
+window looks for *an* item 2.02 or results-language 6-K within four days and one
+was there — the previous quarter's. The window needs a second test: that the filing
+it matched is not the same one it matched for the preceding event.
+
+**And the implied move is not always unrecoverable.** Two genuine option-implied
+moves turned up inside the captures despite every baseline reading
+`options.status: not_recoverable_retrospectively` — IOT at 11.55% for the weekly
+expiring 2026-09-04, and ZS at about 13% quoted from Bloomberg. Both were captured
+pre-print for after-the-close releases, so both are legitimate as-of numbers. This
+does not overturn section 33's finding that the chain cannot be *fetched*
+retrospectively, but it means the corpus itself occasionally carries the number,
+and a run that wants the straddle anchor should grep for it rather than assume its
+absence. Ten of the 205 past captures held a parseable implied-move percentage.
+
+## 41. The edge-corpus run, complete: no rank signal at n=104
+
+Seven event days, 109 names hunted, 106 resolved, 104 in the pooled figure after
+dropping the two share-class duplicates. One hunter agent per day and one adversary
+agent per day, both confined to the sealed captures.
+
+| split | n | rho vs raw move | p | rho vs move/implied | p |
+| --- | --- | --- | --- | --- | --- |
+| **all resolved names** | **104** | **+0.073** | **0.45** | **+0.109** | **0.27** |
+| corpus held news items | 14 | +0.046 | 0.88 | −0.057 | 0.84 |
+| corpus was filings + social only | 90 | +0.103 | 0.34 | +0.154 | 0.15 |
+| capture clean against the seal | 74 | +0.114 | 0.33 | +0.129 | 0.28 |
+| capture kept sweeping past the print | 30 | −0.091 | 0.63 | +0.066 | 0.73 |
+| session from an 8-K item 2.02 | 69 | +0.018 | 0.88 | −0.012 | 0.92 |
+| session from a 6-K acceptance time | 35 | +0.241 | 0.16 | +0.275 | 0.12 |
+| no disclosed sight of a post-print document | 102 | +0.103 | 0.30 | +0.137 | 0.17 |
+
+**Nothing is significant, and no subset is.** The pooled coefficient is positive and
+small on both measures, which is what a null looks like at this n. Both anchors of
+the question the stage was built to answer — can the day's names be *ranked* — come
+back unanswered rather than answered no.
+
+Two per-day results are worth naming because they are the reason a pooled figure
+exists. 2026-08-31 returned rho +0.886 on six names with a permutation p of 0.032.
+Pooled over seven days that day contributes almost nothing: the run as a whole sits
+at +0.073. `edge_resolve.py`'s docstring says a single day is an anecdote, and this
+is the archive's cleanest demonstration of it. 2026-09-03, the largest day at 40
+resolved names, returned +0.222 (p=0.17), the strongest large-n day and still not
+significant.
+
+**What the run produced, descriptively.**
+
+- 131 findings across 109 hunts. **35 hunts (32%) returned nothing at all**, and
+  every one traces to a capture with no news channel (section 38).
+- Hunter direction was near-balanced: 40 negative, 34 positive, 35 zero. The live
+  edge hunt's 2026-08-31 skew — six of eight leaning negative — did not reproduce.
+- The adversary judged the median finding **78% already priced** (mean 72). Not one
+  of 131 findings scored in the 0–15 "genuinely not out" band. Fifteen scored 16–40.
+- `corpus_coverage` came back "published in corpus" 102 times, "reachable but
+  unconnected" 27, and "corpus silent" only twice — so the adversary was almost
+  always able to point at a document, not at an absence.
+
+That last pair is the substantive read on the method, and it is more interesting
+than the correlation. Confined to a sealed corpus and forced to size how much of
+each finding was already in the price, an independent adversary put essentially
+every finding at mostly-priced. The hunters were not lazy — they produced 131
+sourced findings and disclosed their own contamination twice — but what they found
+was, on the adversary's reading, overwhelmingly already public before the print.
+
+**What this does and does not establish.** It does not show the edge hunt has no
+edge. Three things stand between this run and that conclusion: 87% of the corpus is
+an EDGAR index and a Stocktwits dump (section 36), a third of the ranking is tied at
+zero (section 38), and the anchor is the reaction-history proxy rather than a
+straddle for every name (section 33). What it does establish is that **the method
+does not extract a rankable signal from a filings-only corpus**, which is a real
+result about a real configuration, and that the forward corpus needs a query budget
+for small names before this question can be asked again.
+
+## 42. Thresholding the size estimate: nothing at ±3%, something at ±4% that will not survive contact with more data
+
+Asked after section 41 came back null: if you keep only the big calls and read the
+sign as a direction, does the edge hunt predict anything? A threshold turns the
+ranking into a call, so this is scored as a hit rate against floors rather than as
+a correlation.
+
+The predictor is the hunter's own `expected_move_pct`, not `edge_pct` — after the
+adversary put the median finding at 78% priced, only ten names carry an `edge_pct`
+above 0.5% and there is no curve to draw.
+
+**At ±3%: nothing.** n=38, 21 hits, **55.3%** against a **52.6% base rate on
+exactly those names** — the score a constant call would have got on the set the
+filter selected. p=0.63 against a coin. The answer to the question as asked is no.
+
+The full curve, on all 104 resolved names:
+
+| cut | n | hit rate | base rate | ret/trade | day-demeaned hit |
+| --- | --- | --- | --- | --- | --- |
+| ≥2.0% | 53 | 0.472 | 0.509 | +0.42% | 0.45 |
+| ≥3.0% | 38 | 0.553 | 0.526 | +2.00% | 0.53 |
+| ≥3.5% | 27 | 0.593 | 0.519 | +0.62% | — |
+| **≥4.0%** | **18** | **0.833** | 0.556 | **+3.85%** | **0.78** |
+| ≥5.0% | 11 | 0.818 | 0.727 | +2.38% | 0.73 |
+| ≥6.0% | 5 | 1.000 | **1.000** | +3.20% | — |
+
+**The ≥4% cell is the only thing in this entire run that looks like a signal, and
+four things argue against believing it.**
+
+It survives the obvious checks, which is why it is recorded at all. It is not one
+day: leave-one-day-out gives 0.80, 0.88, 0.80, 0.82. It is not drift: 11 down calls
+and 7 up, hitting 9 and 6, and scoring against each day's own median move still
+gives 14/18. It is not the disclosed breach of section 40: none of the seven names
+that document listed is in the set. And it beats its own base rate by 28 points,
+unlike the ≥6% row where all five names moved the same way and a constant call
+would have scored 100% too.
+
+Against it:
+
+1. **Twelve cuts were tested on one sample of 104.** The raw p is 0.0082; a crude
+   Bonferroni over the cuts shown puts it near 0.10. The curve is printed in full
+   for exactly this reason — a threshold chosen after seeing outcomes is how a null
+   becomes a finding.
+2. **n=18, and three misses would end it.** At 12/18 it is 0.67 and unremarkable.
+3. **It is concentrated in one day's names.** Thirteen of the eighteen are
+   2026-09-03. Leave-one-day-out stays high only because dropping that day leaves
+   n=5.
+4. **It lives almost entirely in the corpus half that is weakest.** Fifteen of the
+   eighteen are filings-only captures. Restricted to the fourteen news-bearing
+   names — the half with an actual news channel — the whole curve is untestable:
+   n=13 at any prediction, n=6 at ±3% (3 hits), n=3 at ±4% (3 hits). And over all
+   thirteen news-bearing predictions the hit rate is **4/13, below a coin**.
+
+That last point is the uncomfortable one and it should not be smoothed over. The
+only suggestive result in the run comes from the captures that hold nothing but an
+EDGAR index and retail chatter, and it disappears on the captures that hold news.
+Two readings fit. Either a filings-only corpus forces the hunter onto hard,
+mechanical evidence — Form 4 clusters, filing gaps, registration overhangs — and
+that is what actually pays, while news copy is already priced by definition. Or
+eighteen names produced a coincidence and thirteen were too few to contradict it.
+
+**Nothing here is tradable and nothing should change the pipeline.** What it is, is
+the first pre-registerable hypothesis this backtest has generated: *the edge hunt's
+directional calls at |expected_move| ≥ 4% beat their base rate, and do so on
+filings-only captures.* It has a stated threshold, a stated subset and a stated
+floor, so a future run can falsify it rather than rediscover it. `PREREGISTRATION.md`
+is where it belongs before any further data is collected.

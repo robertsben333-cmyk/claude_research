@@ -1,0 +1,30 @@
+{
+  "ticker": "AVGO",
+  "expected_move_pct": 2.5,
+  "conviction_note": "Baseline median reaction is 9.41% on 4-up-of-7; this is the most heavily observed name in the sample (432 items, 85 bodies) so almost everything is chewed over, and the one thread the preview coverage has not connected is that the $70-80bn chip-lease financing reported on 2026-08-21 is a demand disclosure as much as a balance-sheet one, which argues for a fraction of the median in the positive direction rather than anything like a full move.",
+  "findings": [
+    {
+      "finding": "Broadcom is reported to be raising $70-80bn of debt (senior tranche ~$45bn, junior ~$35bn) through an SPV that buys the chips and leases them back to AI customers including Anthropic, scaling up a $35bn Anthropic compute commitment unveiled in June - and there is no 8-K, S-3 or 424B anywhere in the 400-day filing index to confirm it, the last 8-K of any kind being 2026-07-06.",
+      "expected_impact_pct": 2.5,
+      "impact_low_pct": -3.5,
+      "impact_high_pct": 7.0,
+      "source": "https://finance.yahoo.com/technology/ai/articles/broadcom-avgo-nears-70b-debt-164236440.html",
+      "source_date": "2026-08-21",
+      "corpus_ref": "docs/5cd363729d4574611f226b76975ec64d89b7a104.txt, indexed in snapshots/20260831T152242Z.json; absence of any confirming filing checked against filings.json (last 8-K accession 0001193125-26-295589, 2026-07-06, item 8.01; the only item 5.02 8-Ks are 2026-03-02 and 2026-04-02, i.e. the CFO transition is old news)",
+      "body_available": true,
+      "why_not_priced": "The stock moved about 1% on the report and the coverage framed it purely as balance-sheet and credit risk (the article's own analyst quote is that the residual guarantee 'is where the risk sits'). Nobody has run it the other way: a lessor does not arrange $70-80bn of chip-lease paper for chips that have not been ordered, so the financing is a leading indicator of bookings. Meanwhile the pre-print preview coverage in this same corpus anchors readers on 'AI bookings and backlog exceeded $30 billion entering the quarter' and '$60 billion cumulative', and the print is the first forum where the company has to size either the backlog or the financing. If the market had already made this link the stock would not have kept sliding to -12.2% over 20 days while the AI demand datapoints in the corpus (OpenAI as fourth XPU customer at 10GW, Apple custom chip extended to 2031, supply locked through 2028, Tan's June math of ~$19bn H1 AI revenue doubling in H2) all pointed up. The band crosses zero because the same fact read as leverage plus a residual guarantee on an Anthropic-exposed SPV is a negative, and because Broadcom has never filed it.",
+      "independence": "Corroborated from a different source in the corpus: the Q2 FY26 call transcript has Hock Tan putting H1 AI revenue at 'something in the range of $19 billion' and telling analysts to 2x that for H2, https://www.fool.com/earnings/call-transcripts/2026/06/03/broadcom-avgo-q2-2026-earnings-transcript/ (docs/6970c7b2411041aebc1a1194edd46e45102511f7.txt), which is an implied ~$38bn H2 against a Q3 bar of 'AI revenue to exceed $16B' and therefore requires a very large Q4 AI number. A third, snippet-only pointer the same way: https://www.benzinga.com/markets/prediction-markets/26/08/61219624/broadcom-ai-financing-370-billion."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "a pre-print item 5.02 or management change: the CFO transition press release is in the corpus but the matching 8-K item 5.02 filings are 2026-03-02 and 2026-04-02, five and six months stale, and the Hartenstein board retirement is a 2026 calendar item",
+    "any 8-K, S-3, 424B or EFFECT in the four weeks before the print: filings.json is empty of company filings after 2026-07-06 other than routine Form 4/144, so the $70-80bn financing is unconfirmed by the company as of the print",
+    "an unpriced negative on the Google/Marvell insourcing thread: the stock fell about 5% on 2026-08-19 the day the Marvell-Google deal was reported and Macquarie downgraded on it, so it is in the tape",
+    "a margin datapoint the market has not seen: the margin-squeeze case is carried by at least four separate pre-print pieces (Forbes 2026-08-17, Seeking Alpha preview, barchart, investing.com), which is the definition of priced",
+    "confirmation of the $200bn 18-month backlog an analyst floated on the June call - Tan deflected it as 'a very complicated set of number questions', so I dropped that as a finding",
+    "the option-implied move as a measured input: the corpus carries three conflicting third-party figures (a snippet-only investing.com headline saying 7.3%, a stale Verified Investing page whose $533/$447 strike levels place it at a much higher spot and therefore a prior quarter, and a tripwired page saying 8.7%)"
+  ],
+  "baseline_tension": "It cuts against the 20-day run-up of -12.2%: the corpus's own demand datapoints and the financing scale-up point the opposite way from the four-week de-rating, which is why the finding is signed positive even though the tape has been going down.",
+  "corpus_limits": "No option chain or skew. Two documents are tripwire-flagged and I excluded both: https://earnings-watcher.com/wiki/avgo-earnings-september-2026 (sha 481d934062cefe89fe7a09de2fefc77d68640ee7, which is also the source of the 8.7% implied-move figure I therefore did not use) and https://stocktwits.com/symbol/AVGO plus https://stocktwits.com/symbol/AVGO/sentiment (shas 60e28a02eada413e10444cfd7acdf88e7e13cd66 and the sentiment page in snapshots/20260830T153157Z.json). Sixteen to twenty URLs per sweep failed to fetch and exist only as headlines, including the CNBC $70bn story itself, the Macquarie downgrade note, the Morgan Stanley Overweight reiteration, the Seeking Alpha margin-contraction preview and every short-interest page, so I could not read the primary reporting or measure positioning. Doc bodies are raw HTML with the article on a single line, so I read them by pattern window rather than in full and may have missed material elsewhere in those files.",
+  "sources_used": 9
+}

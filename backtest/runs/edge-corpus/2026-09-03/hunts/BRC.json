@@ -1,0 +1,42 @@
+{
+  "ticker": "BRC",
+  "expected_move_pct": 4.0,
+  "conviction_note": "Baseline median reaction is 6.19% and only 2 of 7 prints were up, but this is the first print and the first fiscal-year guide to consolidate a transformational, debt-funded acquisition that closed on 2026-08-06, and the stock has fallen 8.2% from the deal-close day into the event - a set-up where the first guide mechanically resets the headline numbers against a consensus that has had four weeks to catch up.",
+  "findings": [
+    {
+      "finding": "Brady completed an acquisition on 2026-08-06 - 8-K items 1.01, 2.01, 2.03, 7.01, 9.01, i.e. a definitive agreement, completed acquisition and new indebtedness in one filing - identified in the corpus as Honeywell's Productivity Solutions and Services business, and this 2026-09-03 print is the first release and the first FY27 guide that will consolidate it; the stock has fallen from $98.24 on the day of completion to $90.18 the night before the print.",
+      "expected_impact_pct": 4.5,
+      "impact_low_pct": -4.0,
+      "impact_high_pct": 13.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/746598/000074659826000000/",
+      "source_date": "2026-08-06",
+      "corpus_ref": "filings.json, 8-K filed 2026-08-06 with items '1.01,2.01,2.03,7.01,9.01'; scale described in docs/9da54838be70866b1935a4bc20f1299650419c48.txt (snapshots/20260902T150821Z.json item 1) and quote.json bars 2026-08-06 through 2026-09-02",
+      "body_available": false,
+      "why_not_priced": "A first guide that consolidates a business of roughly the acquirer's own size is the single largest revision event a name like this gets, and the tape moved the wrong way for it: -8.2% between deal completion and the print on rising volume, with the 20-day run-up negative. If the market had marked the deal to a new earnings base it would not be trading below where it closed the transaction. There is no sell-side preview anywhere in this capture (n_queries=0 in every sweep) to show whether published FY27 estimates include the acquired business at all - and when they do not, the first guide is a step-change.",
+      "independence": "Two separate pre-print corpus items from different Stocktwits participants on 2026-09-01 and 2026-09-02 independently frame the print the same way - 'their forward looking statements will be more valuable than actual earnings numbers' - which is a second, non-EDGAR pointer at the same guidance-reset asymmetry: docs/9da54838be70866b1935a4bc20f1299650419c48.txt"
+    },
+    {
+      "finding": "Volume on 2026-09-02, the session immediately before this before-the-open print, was 454,000 shares against a 185,865 twenty-day average - 2.4x normal and the single largest day in the whole captured price series - while the stock closed at the low of its three-week range at $90.18.",
+      "expected_impact_pct": 1.5,
+      "impact_low_pct": -4.0,
+      "impact_high_pct": 6.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/746598/000074659826000000/",
+      "source_date": "2026-09-02",
+      "corpus_ref": "quote.json bars 2026-08-03 through 2026-09-02; four Form 4s filed 2026-09-02 in filings.json",
+      "body_available": false,
+      "why_not_priced": "A 2.4x volume day before a bmo print with nothing in the news corpus to explain it is a positioning fact that no aggregator publishes. Note the caveat: four Form 4s were filed the same day and Brady's fiscal year ends 31 July, so at least part of that activity is likely routine annual equity grants and settlement rather than a directional build - which is why I size this small and wide.",
+      "independence": "none - this rests on the same price series and the same EDGAR index as finding 1 and should be collapsed into that source cluster."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any pre-announcement or guidance revision 8-K between 2026-08-06 and the print",
+    "any S-3, 424B or equity issuance (the acquisition funding shows up only as item 2.03 indebtedness)",
+    "any 13D or activist filing (only passive 13Gs)",
+    "any news-wire coverage or sell-side preview: n_queries=0 in every one of seven sweeps, so no consensus, no revision data, no read on whether FY27 estimates already consolidate the acquisition",
+    "the 8-K body itself and therefore the purchase price, financing terms and any pro-forma disclosure - my scale figures come from a retail post, not from the company",
+    "verification of a reported $1m CEO open-market purchase 'at almost $80' - the captured price series never trades below $89.8, so either that purchase predates the window or the post is wrong; I did not use it"
+  ],
+  "baseline_tension": "It cuts against the run-up: the stock is -8.1% over 20 days and -4.2% over 5 days into the print, and only 2 of the last 7 reactions were positive, while my finding argues for a positive guidance reset.",
+  "corpus_limits": "No option chain, so no implied move or skew. No news search was run for this ticker, so I have no consensus and no way to test whether the guide will beat published estimates - that is the load-bearing gap in this call. I EXCLUDED docs/43d36a958cf95a89f1bb009102928318a558d5c5.txt in its entirety: although its tripwire_tells field is empty, that Stocktwits body was fetched at 2026-09-03T15:08:31Z, after this before-the-open print, and reproduces the reported Q4 EPS, revenue and FY27 guidance range. I also did not use the 10-K and the 8-K with items '2.02,7.01,8.01,9.01' dated 2026-09-03 in filings.json, which are the print itself. Nothing in this hunt rests on any of those.",
+  "sources_used": 3
+}

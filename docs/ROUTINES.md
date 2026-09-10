@@ -18,16 +18,30 @@ simply finds an empty universe and stops cheaply.
 | 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
-| 16:04 | E · Edge hunt, and the book it places | `earnings-edge-hunt` | 1 sweep + ≤19 hunters, Opus/high | **high** |
+| 19:04 | E · Edge hunt, and the book it places | `earnings-edge-hunt` | 1 sweep + ≤19 hunters, Opus/high | **high** |
+| 12:00 | X · Close AMC (second exit Routine) | none | 0 — a no-op while `exit_mode` is `uniform` | none |
 | 17:03 | C · Forward capture | `earnings-capture` | 0 (script) + ≤6 Sonnet | low |
 
 ## Stage E — edge hunt
 
-Cron `4 14 * * 1-5` (summer) / `4 15 * * 1-5` (winter). Routine id
-`trig_01CvGQJWoKeNLXWCxiffM3ED`, created 2026-08-30, enabled.
+Routine id `trig_01CvGQJWoKeNLXWCxiffM3ED`, created 2026-08-30, enabled.
 
-**16:04 Amsterdam is 10:04 New York, about half an hour into the US session, and that
-is the point.** This is the only stage whose input includes a live option chain. The
+**Cron `4 17 * * 1-5` since 2026-09-10 at 18:28 UTC — 19:04 Amsterdam, 13:04 New York.**
+It was `4 14 * * 1-5` (16:04 Amsterdam) until then and it was changed from outside this
+repo. Everything written below about "16:04" was reasoned at the old time; the option-chain
+argument survives the move unchanged, and one thing does not.
+
+**The entry margin is gone.** Step 7 buys at market and `alpaca_trade.py open` refuses to
+send into a closed market, so the run must complete before 16:00 ET. From 13:04 that is
+2h56m, and the 2026-09-09 run took 2h53m end to end. A day with more names, a retried
+subagent or a slow sweep misses the entry, and the note publishes anyway, so the failure
+is quiet. The exit, by contrast, costs nothing: the flatten was measured at ~10:00 ET
+(+4.49% per trade on the conviction book) and at 13:00 ET the same grid gives +4.44%.
+Move the cron back to `4 14 * * 1-5`, or make step 7 queue for the next open rather than
+refuse.
+
+**16:04 Amsterdam was 10:04 New York, about half an hour into the US session, and that
+was the point.** This is the only stage whose input includes a live option chain. The
 sealed baseline reads the front expiry's ATM straddle and 25-delta skew, and both are
 worthless on stale quotes: the first run was snapshotted on a Sunday and SAIC's ATM
 spread came back at 41% of mid, wide enough that the guard nearly discarded a good
@@ -61,8 +75,16 @@ finding out cheaply.
 **There is no separate execution Routine while `orders.exit_mode` is `uniform`.** Since
 2026-09-10 the stage E prompt carries two extra steps and the same session does both:
 step 0b sells yesterday's book at market before the hunt launches, step 7 buys today's
-after the note is published. `scripts/alpaca_trade.py` does the work; `docs/EXECUTION.md`
+after the note is published. `edge/scripts/alpaca_trade.py` does the work; `edge/EXECUTION.md`
 is the contract.
+
+**The second Routine now exists — "Close AMC", `trig_01MPuhVvtDgvUYzZXkKpHpKD`, created
+2026-09-10 at 18:26 UTC, enabled, cron `0 10 * * 1-5`.** It is a correct no-op while
+`exit_mode` is `uniform` and will stay one until that changes. Two things to fix before
+it matters: its cron is `0 10`, not the `0 12` argued for below (10:00 UTC is 06:00 ET in
+summer, 05:00 in winter — inside the window, but its own prompt says "08:00 New York",
+which is wrong), and its step 1 is the hand-read guard rather than
+`alpaca_trade.py mode --require auction_split`.
 
 **`orders.exit_mode: auction_split` is the one setting that needs a second Routine, at
 `0 12 * * 1-5`.** It sends amc positions into the opening auction, and Alpaca rejects an
@@ -72,7 +94,7 @@ whose exit date equals today off Alpaca's clock, so a 20:00 ET firing the evenin
 would match nothing and report success. Usable window is 00:00 to 09:28 ET **on the exit
 date**. 12:00 UTC lands on 08:00 ET in summer and 07:00 ET in winter, both comfortably
 inside it, which is why it is one cron all year rather than the summer/winter pair every
-other entry in this file needs. The prompt is in `docs/routine-prompts/edge-execute.md`
+other entry in this file needs. The prompt is in `edge/routine-prompts/edge-execute.md`
 and only a person can create it — `create_trigger` is refused to agent sessions here.
 
 **`orders.exit_mode: bmo_close` needs no second Routine**, and it is +1.77pp of the
@@ -90,14 +112,24 @@ Step 7 buys at market rather than in the closing auction, which on the same 18 t
 events cost four hundredths of a point per trade (15/18 and +5.86% in the auction
 against 14/18 and +5.82% at 14:00 ET) and removes the pending order and the cutoff.
 The deadline this adds to the stage's timing is therefore only that the US session is
-still open — 16:00 New York, 22:00 Amsterdam in summer. Firing at 16:04 leaves three
-hours of margin after the hunts; the 2026-09-09 run took 2h53m end to end. A session
+still open — 16:00 New York, 22:00 Amsterdam in summer. Firing at 16:04 left three
+hours of margin after the hunts against a 2026-09-09 run of 2h53m end to end; **at the
+current 19:04 that margin is three minutes.** A session
 that was retried, resumed, or ran long may have none, and `alpaca_trade.py open`
 refuses rather than sending an order into a closed market.
 
-Both steps are silent until `execution.enabled` is `true` in `config/pipeline.yaml`,
-committed as `false`, and both need `scripts/alpaca_trade.py` to have reached `main`.
-See `docs/routine-prompts/edge-execute.md` for the preconditions and for the separate
+Both steps are silent unless `execution.enabled` is `true` in `config/pipeline.yaml`.
+**It is `true`** — turned on by the operator on 2026-09-10 for the paper account — so the
+scheduled fire trades unattended, and setting it back to `false` is the only thing that
+stops that. A session cannot: `update_trigger` refuses any Routine an agent did not
+create.
+
+A Routine that has to check the configuration runs
+`python3 edge/scripts/alpaca_trade.py mode --require <mode>` and reads the exit status.
+It never reads `config/pipeline.yaml` by eye — that check fails in both directions when a
+key is renamed or absent, and neither failure says anything in the run log.
+
+See `edge/routine-prompts/edge-execute.md` for the preconditions and for the separate
 exit Routine kept there as a fallback.
 
 ## Stage C — forward capture
@@ -469,11 +501,11 @@ point at `CLAUDE.md`, and require a push at the end.
 agent did not create itself, and the three real Routines — stage E
 (`trig_01CvGQJWoKeNLXWCxiffM3ED`), stage N (`trig_01XmfJNU2CM7q5uvdb5r4ydF`) and stage C
 (`trig_01K1ZTiK4qQayC9aLvaK2Gyn`) — were all created through the HTTP API. A session that
-needs one changed must leave the replacement text in `docs/routine-prompts/` for a human
+needs one changed must leave the replacement text in `edge/routine-prompts/` for a human
 to paste, and must not delete and recreate the Routine: that loses its run history and
 its notification settings.
 
-`docs/routine-prompts/edge-hunt.md` holds stage E's current replacement text and the
+`edge/routine-prompts/edge-hunt.md` holds stage E's current replacement text and the
 reason it changed.
 
 **Do not restate a tree fact in a prompt.** Stage E's prompt used to name the ranking key

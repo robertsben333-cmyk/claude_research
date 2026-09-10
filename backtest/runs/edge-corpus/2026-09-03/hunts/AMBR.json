@@ -1,0 +1,41 @@
+{
+  "ticker": "AMBR",
+  "expected_move_pct": -8.0,
+  "conviction_note": "Baseline median reaction is only 3.9% but the max is 56% and 20d realised vol is 146%, so the distribution is wide; I tilt it negative because the company announced a wholesale business-model pivot and rebrand 48 hours before the print and the tape rejected it violently (intraday +31% closing -24% on 300x normal volume), which is the signature of a company reframing ahead of bad numbers.",
+  "findings": [
+    {
+      "finding": "On 2026-09-01, two days before the results print, Amber International announced it was abandoning its 'Amber Premium' digital-asset wealth identity and rebranding to AMBR as an 'agentic AI company', launching AI agents Ambre and MIA - a total repositioning of the business released at 3:30 AM ET on PR Newswire, immediately ahead of the numbers.",
+      "expected_impact_pct": -7.0,
+      "impact_low_pct": -22.0,
+      "impact_high_pct": 5.0,
+      "source": "https://ooc.bz/l/112914",
+      "source_date": "2026-09-01",
+      "corpus_ref": "docs/6b85260769557edb0697f5f8fb5e6b9aced19f03.txt (snapshots/20260901T150802Z.json item 1); the underlying company filing is filings.json accession 0001104659-26-103605, form 6-K accepted 2026-08-31T09:21:07Z",
+      "body_available": true,
+      "why_not_priced": "The headline is priced - it is what moved the stock. What is not priced is the read-through: a sub-$100m issuer that discards its entire brand and stated business model 48 hours before releasing results is almost always pre-framing a bad set of numbers, and there is no sell-side coverage, no news-search coverage (every snapshot has n_queries=0) and no analyst preview anywhere in this capture to make that connection. If the market had connected them, the pivot day would not have opened +14% pre-market on retail gapper lists.",
+      "independence": "The 6-K accepted 2026-08-31T09:21:07Z, three days before the print, is a second, company-sourced document pointing at unusual pre-print disclosure activity - https://www.sec.gov/Archives/edgar/data/1697818/000110465926103605/tm2624351d1_6k.htm"
+    },
+    {
+      "finding": "quote.json shows 15,889,900 shares traded on 2026-09-01 against a 20-day average near 1.09m and a late-August run of 19k-55k a day - roughly 29% of the ~55m float turning over in one session, with the close at 0.88 after an intraday high well above 1.40, i.e. a complete distribution of the pivot rally into the print.",
+      "expected_impact_pct": -4.0,
+      "impact_low_pct": -12.0,
+      "impact_high_pct": 2.0,
+      "source": "https://www.sec.gov/Archives/edgar/data/1697818/000110465926103605/tm2624351d1_6k.htm",
+      "source_date": "2026-09-01",
+      "corpus_ref": "quote.json bars 2026-08-26 through 2026-09-02",
+      "body_available": false,
+      "why_not_priced": "A 300x volume day that closes at the low is a supply fact, not a news fact, and no aggregator publishes it. The stock also printed sub-$1.00 closes on 08-19, 08-20, 08-21 and 09-01, putting it inside the Nasdaq $1.00 minimum-bid window with a results print as the next catalyst - if the market were discounting a forced compliance action the stock would not have been bid +14% pre-market on a rebrand.",
+      "independence": "A Stocktwits participant independently describes an open 30,000-share short position being covered into the 09-01 spike, consistent with the distribution read - docs/c5bbd876dfcb8d50e0aaf346d4f71f1c079e35f8.txt"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any F-3, 424B, S-8 or ATM filing in the 400-day lookback that would explain the supply on 2026-09-01 (the only registration item is a form RW, registration withdrawal, dated 2025-10-16)",
+    "any 13D/A activity closer than 2026-06-01",
+    "any news-wire or sell-side preview: n_queries=0 in all six sweeps, so no analyst estimate, no consensus, no channel work",
+    "the body of the 2026-08-31 6-K and the 2026-08-10 6-K, neither of which is stored",
+    "any Nasdaq deficiency notice or compliance 6-K"
+  ],
+  "baseline_tension": "It agrees with the run-up (-27% over 20 days, -5% over 5) and with the 3-of-4 negative reaction history, but it argues for a much larger magnitude than the 3.9% median, because the baseline median predates the current 146% realised vol regime.",
+  "corpus_limits": "No option chain, so no implied move and no skew. No news search was run for this ticker at all, so I have only Stocktwits bodies plus the EDGAR index; the two most relevant 6-K bodies are not stored, so my read on the pivot announcement rests on Stocktwits reproductions of the press release rather than on the release itself. History basis is a 6-K text heuristic, not item 2.02, so the four prior reactions may be mis-dated. No item in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 5
+}

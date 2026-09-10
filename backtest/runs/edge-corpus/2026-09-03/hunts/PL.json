@@ -1,0 +1,42 @@
+{
+  "ticker": "PL",
+  "expected_move_pct": 3.0,
+  "conviction_note": "This is the highest-magnitude name in the sample - baseline median reaction 25.98%, with the last five prints at -26.0%, +25.5%, +35.0%, +47.9% and +49.4% - so any point estimate is a small fraction of the distribution; I tilt slightly positive because the corpus attributes the 64% drawdown to a sector capital-flow event rather than to Planet-specific news, and because one large manager more than doubled its position to become a top-five holder during it.",
+  "findings": [
+    {
+      "finding": "American Century's 13F filed 2026-08-12 raised its Planet Labs position from 5,813,758 to 14,399,902 shares - a 148% increase of 8.6m shares - making it a top-five institutional owner, disclosed in the middle of a drawdown that has taken the stock 64.3% below its 52-week high.",
+      "expected_impact_pct": 3.0,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 12.0,
+      "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&State=0&SIC=&dateb=&owner=include&count=40&search_text=",
+      "source_date": "2026-08-12",
+      "corpus_ref": "docs/9d6320246d8c47c15bc0b33e8312f82c2fb4986e.txt (the 90-message Stocktwits body), entry dated 2026-08-28T20:57:39Z",
+      "body_available": true,
+      "why_not_priced": "Individual 13F position changes are public but nobody aggregates one manager's delta against a specific print, and the corpus itself frames it as unnoticed - 'while retail is running scared, institutions keep accumulating'. The important caveat, which I am stating rather than hiding: a 13F filed 2026-08-12 reports holdings as of 30 June, so this is Q2 accumulation and does not prove buying through August. It is evidence about who owns the stock at this price, not about flow into the print.",
+      "independence": "A separate corpus item on 2026-08-28 notes 'small call buyer for 9/18 expiration, possibly expecting a trend reversal on Space stocks', a different kind of positioning signal in the same direction - docs/9d6320246d8c47c15bc0b33e8312f82c2fb4986e.txt"
+    },
+    {
+      "finding": "The corpus attributes the space-complex de-rating to a capital-flow event rather than to Planet's fundamentals: participants describe 'the volatility before spacex' and 'the pumpers that disappeared after the spacex ipo', and the drawdown moved in lockstep with RKLB across the same sessions, with the stock printing '10 of last 11 days red' and volume described repeatedly as unusually low.",
+      "expected_impact_pct": 2.5,
+      "impact_low_pct": -8.0,
+      "impact_high_pct": 12.0,
+      "source": "https://ted.europa.eu/en/notice/-/detail/576400-2026",
+      "source_date": "2026-08-28",
+      "corpus_ref": "docs/9d6320246d8c47c15bc0b33e8312f82c2fb4986e.txt, entries dated 2026-08-28T19:01:49Z, 2026-08-28T14:41:17Z, 2026-08-28T01:13:40Z, 2026-08-27T22:36:26Z and the RKLB cross-references throughout",
+      "body_available": true,
+      "why_not_priced": "A drawdown caused by capital rotating into a newly listed sector giant is a supply-of-capital fact, not an earnings fact, and nothing in the capture separates the two - there is no news search for this ticker at all (n_queries=0 in every sweep), no sell-side preview and no explanation on record for the -19.2% twenty-session fall. If the market were pricing a Planet-specific deterioration there would be a filing, a downgrade or a contract loss to point at, and the filing record is empty after a Form 4 on 2026-08-07.",
+      "independence": "none of substance - same captured document as finding 1; the two share one source cluster and the scorer should collapse them."
+    }
+  ],
+  "searched_and_found_nothing": [
+    "any 8-K at all in the 400-day index within the pre-print window - no contract award, no management change, no material agreement, which the corpus itself notices ('it's been way too quiet lately')",
+    "any S-3, 424B or capital raise",
+    "any 13D or activist filing; only a passive 13G/A dated 2026-07-29",
+    "any consensus estimate, sell-side preview or backlog/ACV datapoint: n_queries=0 in every sweep",
+    "any content behind the European tender notice a participant linked on 2026-08-27, which could be a contract award and which I could not read",
+    "any confirmation of what happened at the 2026-06-04 print that took the stock down 26% - the corpus does not carry that release"
+  ],
+  "baseline_tension": "It cuts against the run-in, which is severely negative (-13.3% over five sessions, -19.2% over twenty, -64.3% from the high), and sits with the reaction history where four of the last six prints produced moves of +25% to +49%.",
+  "corpus_limits": "No option chain, so no implied move or skew - important here because the baseline's 25.98% median is the widest in the sample and I have no way to check whether the market is pricing more or less. No news search was run for this ticker, so both findings come out of a single Stocktwits body and no primary source; the 13F figures are unverified against the filing itself and are as of 30 June rather than current. This is an after-the-close print, so the 2026-09-03 sweep and price bar are pre-event and admissible; no item in this capture carried a non-empty tripwire_tells.",
+  "sources_used": 2
+}

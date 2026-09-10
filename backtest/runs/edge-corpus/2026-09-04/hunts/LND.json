@@ -1,0 +1,18 @@
+{
+  "ticker": "LND",
+  "expected_move_pct": 0.0,
+  "conviction_note": "The LND capture is one filings index plus a single StockTwits dump whose newest message predates the print by four months; the only company-specific anomaly in it (a first-ever Form 4 stream) has no stored body and therefore no readable direction, so there is nothing here that I can sign and zero is the honest answer.",
+  "findings": [],
+  "searched_and_found_nothing": [
+    "A cluster of twelve Form 3s between 2026-03-18 and 2026-04-22 at an issuer that had filed no Section 16 forms in the prior 400 days looked like a board or control change -- but the PXS capture in the same sample shows six Form 3s filed on the identical date (2026-03-18) by another unrelated foreign private issuer, so the cluster has a common systemic cause, not a company-specific one, and it is not a finding for either name",
+    "Loss of foreign private issuer status as the explanation for the Section 16 forms: ruled out because the 2026-09-04 results filing is still a 6-K (seal.json accession 0001213900-26-097431), not a 10-Q or 8-K",
+    "Direction of the six Form 4 transactions filed 2026-05-22 through 2026-07-20 by two filer CIKs (0002119764 and 0002122712): the primary_doc.xml bodies are not stored in docs/, so buy versus sell is unreadable and the cluster cannot be signed either way",
+    "Any news article, sell-side preview, consensus number or company press release: the corpus contains zero news items across all seven sweeps, and event.json carries consensus_eps_forecast null with n_estimates 1",
+    "An 8-K/6-K in the run-in: no filing at all between 2026-05-08 and the results 6-K on 2026-09-04, i.e. no quiet pre-print disclosure to find",
+    "An explanation for the 2x-average volume days on 2026-08-14 (133k), 2026-08-24 (113k) and 2026-09-02 (115k) against a 62k 20-day average: nothing in any snapshot dates to those sessions",
+    "Dividend guidance for the FY2026 proposal, which the June-year-end Q4 print carries: the only corpus datum is a 2024-09-04 StockTwits message recalling a >50% dividend cut two years ago, which is too stale to sign this print"
+  ],
+  "baseline_tension": "Nothing found, so nothing to set against the baseline; the +7.8% 20-day run-up and the volume build are real but unexplained by anything in the capture, and at 21% annualised realised vol the baseline's 1.35% expected move is already about one daily sigma, which is a coherent anchor I have no evidence to widen or narrow.",
+  "corpus_limits": "Only one document body is stored for LND (docs/023795b6878df29f3cab7f17fefad86a9440e175.txt, a 57-message StockTwits dump whose newest entry is 2026-05-11); no 6-K, 20-F, Form 3 or Form 4 body is stored, so every filing in filings.json is a form code and a timestamp and nothing more. No news, no analyst preview, no consensus EPS, no option chain (options.status not_recoverable_retrospectively), no Brazilian-listing (AGRO3) price or volume, no soybean/sugarcane price or BRL data, and no farmland-valuation or land-sale disclosure. Six of the seven snapshots returned zero items, so the effective observation window is a single sweep on 2026-08-30. No document in this capture carried a tripwire_tells flag and none was excluded for contamination.",
+  "sources_used": 4
+}

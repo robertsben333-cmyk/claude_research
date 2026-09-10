@@ -1,0 +1,55 @@
+{
+  "ticker": "RZLV",
+  "verdicts": [
+    {
+      "finding_key": "RZLV#0",
+      "priced_in_pct": 92,
+      "size_check_pct": 0.0,
+      "strongest_argument": "I concede the observation and score it high because the observation is that the move already happened -- it is a statement about the price, made from the price. Everything in it is arithmetic on two machine-generated files in the capture, both of which the resolver reads as well: seal.json gives accepted_utc 2026-09-01T20:52:42Z (16:52 ET) for accession 0001193125-26-378541, and quote.json's final bar gives 2.34 on 43,813,931 shares at a 15:06:04Z fetch against avg_volume_20d 19,786,510. Prior close 2026-08-31 was 2.89, so 2.34 is -19.03% by 11:06 ET, and the baseline's run_up_5d_pct of -19.26% is 2.39/2.96 from the 2026-08-25 close, i.e. the baseline books the reaction as run-in. That is a correct and useful catch about window specification, and I say so plainly. But as a claim about information it is worth nothing directional: it asserts that the market has fully reacted, which is the definition of priced. Nothing about it is hidden, contested or unpublished -- the tape is the publication. My read of what the tape is showing: the fall IS the event, not a run-down I could retro-fit to any bearish thesis. The corpus supports that reading independently of the bars, because the only news-side item in the entire capture is a Stocktwits sweep whose messages between 14:22Z and 15:04Z discuss H1 results, the call, the cash position and the buyback in the past tense while quoting live prices of 2.32-2.33 -- results commentary, not anticipation. The residual I cannot price is whether the 6-K statements filed at 20:52Z produce a second leg on the following session, which is genuinely outside the tape I am allowed to read; that residual is the reason this is 92 and not 100.",
+      "prior_publication": [
+        {
+          "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001920294",
+          "date": "2026-09-01",
+          "corpus_ref": "seal.json (accepted_utc 2026-09-01T20:52:42.000Z, accession 0001193125-26-378541, basis: '6-K exhibit text matched results language. Heuristic, not an item code')",
+          "what_it_says": "The 6-K that defines the sealed event was accepted at 16:52 ET, after the session in which the stock had already fallen 19%."
+        },
+        {
+          "url": "no URL in corpus; stocktwits $RZLV sweep",
+          "date": "2026-09-01",
+          "corpus_ref": "snapshots/20260901T150602Z.json (single item, sha a6abeff7bb5c8e7a5f9bb05523161a9d6b9daaa6, fetched 15:06:04Z); docs/a6abeff7bb5c8e7a5f9bb05523161a9d6b9daaa6.txt",
+          "what_it_says": "Messages from 14:22Z onward discuss the released H1 numbers and the completed conference call in the past tense at live prices of 2.32-2.33, confirming the release and call preceded the intraday collapse."
+        }
+      ],
+      "baseline_evidence": "quote.json: 2026-08-31 close 2.89 -> 2026-09-01 bar 2.34 at a 15:06:04Z fetch on 43,813,931 shares, 2.21x avg_volume_20d of 19,786,510; baseline spot 2.39 with run_up_5d_pct -19.26 measured off the 2026-08-25 close of 2.96, so the -19% earnings reaction sits inside what the baseline calls the run-up. Also note 2026-08-25 itself: 2.43 -> 2.96, +21.8% on 98,379,200 shares (5x average), an unexplained pre-print spike with no matching filing in filings.json -- so the five-day window contains both a violent up-gap and the reaction, and expected_move_pct is null with a 6.62% deadband derived from one day at 105% realised vol. This name's prior is not a prior.",
+      "corpus_coverage": "published in corpus",
+      "reaches_this_print": true,
+      "what_would_change_it": "Evidence that the release and call were in fact after 16:52 ET on 2026-09-01 and that the 19% intraday fall had an unrelated cause, which would restore the print as a forward event."
+    },
+    {
+      "finding_key": "RZLV#1",
+      "priced_in_pct": 76,
+      "size_check_pct": -8.0,
+      "strongest_argument": "Every number in this finding is in the corpus document it cites, published on the public $RZLV feed while the stock was collapsing on 2.2x volume, which makes it contemporaneously transacted rather than unpropagated. From docs/a6abeff7bb5c8e7a5f9bb05523161a9d6b9daaa6.txt: line 111, 2026-09-01T14:32:56Z -- 'Dilution Dan only has $33.2M unrestricted cash. He barely has enough to keep the lights on, much less buy back more shares'; line 49, 14:52:32Z -- 'total cash position safely sits at $100.5 million... $67.5 million of those losses were entirely non-cash... $41.5 million in share-based... $20.4 million in depreciation and amortization$5.6 million in asset impairment'; line 123, 14:29:48Z -- 'they said there were no online questions submitted on the conference call, and ended it immediately after... My questions were regarding the share buyback, and 2027 outlook'; line 124 -- '$300m buyback?'; line 10 -- 'Announcing a buy back that is 3x cash reserves is wild work'; line 52 -- 'Rezolve reports -139 million net for H1 alone'. The unrestricted-versus-total split, the loss, the non-cash bridge, the buyback ratio and the unanswered-questions detail are therefore all published pre-seal, in the capture, timestamped, and the conclusion the finding draws was drawn in public in the same hour: line 162, 14:22:56Z -- '1. The buyback is probably off the table. 2. There is probably more dilution coming'; line 75 -- 'DILUTION is coming!!!!!'. Meanwhile 43.8m shares changed hands by 11:06 ET against a 19.8m average and the price went 2.89 -> 2.34. So the mechanism was stated and the volume to price it was there. I do not concede fully, for two reasons that keep this off 90: the figures reach me only as retail paraphrase of a call, with no wire, sell-side or filing text in the capture to check them against, and the formal statements land at 20:52Z, after the close, so the balance-sheet detail gets its first authoritative reading inside the measured window rather than before it. The magnitude is also real -- a serial issuer with two F-3s and three prospectus supplements in ten months (filings.json: F-3 2025-11-28 and 2025-12-19, 424B7 2025-11-07, 424B3 2025-12-30, 424B5 2026-01-21) and $33.2m unrestricted against a $300m authorisation has one obvious next move, and on a $2.39 stock a raise is worth high single to low double digits in percent. That is why the size check is large and the priced-in number is nevertheless high: material, but published and traded in the same session.",
+      "prior_publication": [
+        {
+          "url": "no URL in corpus; stocktwits $RZLV sweep",
+          "date": "2026-09-01",
+          "corpus_ref": "snapshots/20260901T150602Z.json item sha a6abeff7bb5c8e7a5f9bb05523161a9d6b9daaa6; docs/a6abeff7bb5c8e7a5f9bb05523161a9d6b9daaa6.txt lines 10, 49, 52, 111, 123, 124, 130, 162",
+          "what_it_says": "The $33.2m unrestricted cash, the $100.5m total cash, the ~$139m H1 net loss with the $67.5m non-cash bridge, the $300m buyback and the 'no online questions' call ending are all quoted publicly between 14:22Z and 15:04Z on 2026-09-01, together with the dilution and buyback-is-off conclusions."
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1920294/000119312526017691/ruby_3.0_prospectus_supp.htm",
+          "date": "2026-01-21",
+          "corpus_ref": "filings.json (424B5 accepted 2026-01-21T18:53:31Z; plus F-3 2025-11-28 and 2025-12-19, 424B7 2025-11-07, 424B3 2025-12-30)",
+          "what_it_says": "The serial-issuance pattern that makes the dilution inference obvious is on the public EDGAR record and has been for months -- structural and known, not new."
+        }
+      ],
+      "baseline_evidence": "quote.json: 2.89 -> 2.34 on 43,813,931 shares by the 15:06:04Z fetch, 2.21x the 19,786,510 20-day average, in the same session and the same hours as the messages quoting the $33.2m figure. Baseline spot 2.39 is 69.0% below the 52-week high and only 11.2% above the 52-week low, with realised_vol_20d 105.1% -- a tape already pricing funding stress. I am relying on the same-session timestamped source rather than on the fall alone; the fall on its own would not carry this argument.",
+      "corpus_coverage": "published in corpus",
+      "reaches_this_print": true,
+      "what_would_change_it": "Confirmation from the 6-K statements that the unrestricted/total split or the buyback capacity differs materially from the retail paraphrase, or evidence that the $33.2m figure was not stated on the call and first appears in the after-close filing."
+    }
+  ],
+  "interactions": "The two findings share one body (docs/a6abeff7bb5c8e7a5f9bb05523161a9d6b9daaa6.txt) and the hunter flags that itself. They also point in opposite directions and partly cancel: RZLV#0 argues the reaction is complete and the window mis-specified, which is precisely the reason RZLV#1's numbers cannot be an unpriced edge -- the same session that RZLV#0 identifies as the reaction is the session in which RZLV#1's figures were published and 43.8m shares traded. Accepting #0 forces the discount on #1. The only way both survive is the narrow reading that the after-close 6-K gives the balance sheet a second, authoritative airing; that reading is available but it is a magnitude claim about the following session, not a claim about this one.",
+  "corpus_limits": "There is no clean-view file for RZLV, and the capture is almost empty: an EDGAR index, a quote file and exactly one news-side item, a Stocktwits sweep with 90 messages. So there is no wire copy, no sell-side, no preview and no company release text in the capture at all, and the corpus is silent on everything the sweep does not happen to mention -- including the terms and date of the $300m buyback authorisation, the source of the 2026-08-25 +21.8% spike on 98.4m shares, and the actual text of the 2026-09-01 release and call. The sole source for every figure in RZLV#1 is retail paraphrase; I could not check a single number against a filing body because no filing body is stored. The 6-K accepted 20:52Z is indexed but not fetched, so the statements themselves are unread. quote.json's final bar is an intraday snapshot at 15:06:04Z (2.34), not a close; the 2.39 close comes from the baseline's own later fetch, and I used both only in support of the claim that the reaction preceded the sealing filing, which is what the findings assert. No snapshot here carries tripwire_tells, but I record that the single item in snapshots/20260901T150602Z.json is post-release commentary by content even though it is pre-seal by timestamp, and I have treated it as such rather than as a prior. Nothing about the outcome after 2026-09-01 entered this analysis."
+}
