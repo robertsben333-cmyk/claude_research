@@ -15,3 +15,10 @@
 - Scouts: 0 subagents (screen skipped)
 - Session mix: 7 AMC / 1 BMO
 - Notable drops (from stage 0): REF (unconfirmed_timing), IBEX/ZUMZ/AENT/HOFT/CMCM/RENT/CSBR/MNY (below_market_cap_floor)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-10 08:27 UTC
+- Shortlist: 8 names, all priority_score null (stage 1 ran in skip mode, unscored). Capped to triage.shortlist_size=6 using market cap as tie-break (already the shortlist's own order); dropped for cap: FEIM ($0.73B), LPTH ($0.67B) — smallest two, documented per skill step 1.
+- This batch: ORCL, ADBE, KR (positions 1-3 of the capped 6; N=ceil(6/2)=3)
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers (deep_dive.wave_size=2), publish after each wave and after each dossier
