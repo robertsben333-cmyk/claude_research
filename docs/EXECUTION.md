@@ -22,7 +22,7 @@ without them:
 
 | screen | why |
 | --- | --- |
-| `min_dollar_volume_usd: 5000000` | six of the first 22 long/short positions traded under $1m a day, and the best trade in the sample (DLTH +23.20%) turns over $170k. A fill at that size is not a price the measurement ever saw. |
+| `min_dollar_volume_usd: 200000` | below this a market-on-close fill is a meaningful share of the closing auction. It was $5m until 2026-09-10; see below for what the loosening costs. |
 | Alpaca `shortable` | a rejected short leg turns a market-neutral book into a naked long. Names Alpaca will not lend are dropped, not flipped. |
 
 ### Where the turnover floor came from
@@ -33,32 +33,37 @@ name with `|impact_sum| >= 3` and its sign:
 | floor | trades | direction | binom p | return per trade | t |
 | --- | --- | --- | --- | --- | --- |
 | none | 21 | 17/21 | 0.004 | +6.18% | 2.66 |
-| $200k | 18 | 15/18 | 0.004 | +5.86% | 2.38 |
+| **$200k** (shipped) | **18** | **15/18** | **0.004** | **+5.86%** | **2.38** |
 | $1m | 16 | 13/16 | 0.011 | +6.08% | 2.20 |
 | $2m | 15 | 12/15 | 0.018 | +4.95% | 1.84 |
-| **$5m** | **12** | **11/12** | **0.003** | **+8.09%** | **3.85** |
+| $5m (was shipped) | 12 | 11/12 | 0.003 | +8.09% | 3.85 |
 | $10m | 9 | 9/9 | 0.002 | +9.64% | 4.22 |
 
-Higher floors look better on this sample, and that is most of the reason to distrust
-the shape: picking the floor that maximises the in-sample return is the same move
-that put the ranking's own p at 0.056 under a max-statistic test. The six trades a
-$200k floor adds and a $5m floor refuses came in at 4/6 and +1.40% a trade, with one
-−22.23% (NX, short, $4.89m of turnover) in them. At n=38 no two adjacent rows in that
-table are distinguishable.
+Regenerate that table with `python3 scripts/edge_turnover_floor.py`, which also lists
+the individual trades each floor adds or refuses.
 
-So the floor is not a return decision. Two things that are not in the table decide it:
+**The shipped floor is not the best row, and the reason it is not is deliberate.**
+Higher floors look better here, and that is most of the reason to distrust the shape:
+picking the floor that maximises an in-sample return over 38 events is the same move
+that put the ranking's own p at 0.056 under a max-statistic test. The six trades that
+$200k admits and $5m refused came in at 4/6 and +1.40% a trade, with one −22.23% (NX,
+short, $4.89m of turnover) among them. At n=38 no two adjacent rows are
+distinguishable.
 
-- **Spread.** The measurement charges a flat 1.5% round trip. In a name turning over
-  $200k a day the spread alone can be that, and it is paid twice.
-- **Learning rate.** At $5m only 12 of 38 events trade, about two a day. At $200k it
-  is 18. If the point of running this with paper money is to accumulate events faster
-  than one small sample a week, a lower floor is defensible on those grounds and on
-  no others — say that out loud rather than dressing it up as expected return.
+Two things the table cannot see decided it:
 
-The 1%-of-turnover sizing cap already handles the fill: at $100k of equity the
-per-name cap is $4,000, so any name under $400k of daily turnover is capacity-bound
-and gets a smaller position automatically. A $200k/day name comes in at $2,000, half
-weight.
+- **Spread.** The measurement charges a flat 1.5% round trip, which was the argument
+  for a high floor. The operator's reading is that the real spread in these names is
+  far below that, which removes it. If that turns out wrong the cost lands on exactly
+  the names this floor admits, so it is worth checking against a few actual fills
+  before the position sizes matter.
+- **Event rate.** 18 of 38 events trade at $200k against 12 at $5m. That is how a
+  forward sample stops being one small sample a week, and it is a claim about
+  learning speed, not about expected return.
+
+The 1%-of-turnover sizing cap does the rest: at $100k of equity the per-name cap is
+$4,000, so any name under $400k of daily turnover is capacity-bound and gets a
+smaller position automatically. A $200k/day name comes in at $2,000, half weight.
 
 Names whose event the sweep could not confirm (`rankable: false`) never reach the
 book. `edge-scores.json` itself is still unfiltered — the ranking test needs the

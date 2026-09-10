@@ -139,8 +139,8 @@ on hunts.
 
 **Stage E can place its book at Alpaca, and it is switched off.**
 `scripts/alpaca_trade.py` takes the one rule that survived a family-wise correction —
-`|impact_sum| >= conviction_floor`, side from the sign, plus a $5m turnover floor and
-a shortability check — and places it market-on-close on the entry date, closing
+`|impact_sum| >= conviction_floor`, side from the sign, plus a $200k turnover floor
+and a shortability check — and places it market-on-close on the entry date, closing
 market-on-close one session later, which is the window `edge_resolve.py` scores.
 Nothing is sent unless `execution.enabled` is `true` in `config/pipeline.yaml` **and**
 `--submit` is given **and** credentials are in the environment **and** the endpoint is

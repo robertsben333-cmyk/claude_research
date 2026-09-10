@@ -227,11 +227,19 @@ execution:
     key: impact_sum
     min_conviction: null         # null inherits edge_hunt.conviction_floor (3.0)
     require_rankable: true       # an unconfirmed event is not a trade
-    # Capacity, which is in neither the scorer nor the budget. Six of the first 22
-    # long/short positions traded under $1m a day and the best trade in the sample
-    # (DLTH +23.20%) turns over $170k. Names below this floor are dropped, never
-    # sized down, because a fill at that size is a price the measurement never saw.
-    min_dollar_volume_usd: 5000000
+    # Capacity, which is in neither the scorer nor the budget. Names below this floor
+    # are dropped outright rather than sized down.
+    #
+    # $200k since 2026-09-10, down from $5m, on the operator's reading that the real
+    # spread in these names is far below the 1.5% round trip the analysis charges.
+    # BE CLEAR ABOUT WHAT THAT COSTS: on the 38 resolved events the floor helped
+    # monotonically -- $5m gave 11/12 and +8.09% a trade against 15/18 and +5.86% at
+    # $200k -- so this loosening is against the sample, not with it. It is defensible
+    # on two grounds the sample cannot speak to: the spread, and the event rate (18
+    # of 38 events trade here against 12 at $5m, which is how the forward sample
+    # grows). Re-run scripts/edge_turnover_floor.py as days pool and move it back if
+    # the added names keep underperforming.
+    min_dollar_volume_usd: 200000
     max_positions: 10            # by conviction, highest first
 
   sizing:
