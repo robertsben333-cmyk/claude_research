@@ -46,6 +46,88 @@ from pathlib import Path
 # on 2026-09-01 the 2026-08-31 table was still in place and did that. The guard
 # in main() now makes a fully stale table exit non-zero instead of looking clean.
 AMENDMENTS = {
+    "CSBR": ("fits_cadence",
+             "UPGRADE off 'suspect', and it is the ONLY amendment in today's pass "
+             "that changes anything ranked: edge_score.py sets rankable=False on a "
+             "suspect verdict and multiplies baseline_quality by 0.05, so Champions "
+             "Oncology would have been arithmetically incapable of ranking anywhere "
+             "despite a company-confirmed event. Every other verdict on this run "
+             "feeds only event_q (1.0 / 0.6 / 0.05) into baseline_quality, which "
+             "lives in diagnostics and decides nothing. The 'suspect' verdict is a "
+             "false positive off the fiscal calendar, not off a matcher defect: "
+             "Champions has an APRIL 30 year end, so FY results land in late July "
+             "and Q1 follows only ~45 days later, which the cadence heuristic reads "
+             "as a sub-quarterly gap. The same 45-day pattern produced the "
+             "2025-09-15 print already sitting in the baseline's own history. The "
+             "company's press release confirms Q1 (quarter ended 2026-07-31) after "
+             "the close on 2026-09-10 with a 4:30 p.m. EDT call. Domestic item-2.02 "
+             "filer and the sweep rates the seven recorded reactions trustworthy, "
+             "so unlike the FPI names below there is no history defect to forgive "
+             "and fits_cadence is the honest verdict rather than 'unknown'.",
+             "https://www.biospace.com/press-releases/champions-oncology-to-announce-first-quarter-financial-results-on-thursday-september-10-2026"),
+    "ZUMZ": ("fits_cadence",
+             "UPGRADE off 'unknown'. Zumiez is a long-listed domestic retailer and "
+             "the 'unknown' rests on history.n=0, which is a COLLECTION FAILURE and "
+             "not a cadence problem -- the same records artefact as PANW, CXM and "
+             "MEI on earlier runs. The event itself is confirmed by the company's "
+             "own GlobeNewswire release of 2026-08-27: fiscal 2026 Q2 results "
+             "'following the closing of regular stock market trading hours' on "
+             "2026-09-10, call 5:00 p.m. ET. The thin history is NOT forgiven by "
+             "this: hist_n stays 0 and the name still pays for it in "
+             "baseline_quality, and its hunter is told explicitly that the baseline "
+             "carries NO earnings base rate and that the absence is an artefact, so "
+             "it must not read the silence as a quiet history.",
+             "https://www.globenewswire.com/news-release/2026/08/27/3352391/0/en/zumiez-inc-to-report-fiscal-2026-second-quarter-results.html"),
+    "CMCM": ("unknown",
+             "DOWNGRADE off 'fits_cadence' -- the symmetric half of this pass, and "
+             "the reason it exists. Cheetah Mobile's 2026-09-11 pre-open date is "
+             "confirmed by its own PR Newswire release of 2026-09-04, so the EVENT "
+             "is real; but the 'fits_cadence' verdict rests on the foreign private "
+             "issuer 6-K text-matching defect, exactly the NIO / YSG failure mode. "
+             "CMCM files no item 2.02, so the matcher takes any 6-K whose text "
+             "resembles a results announcement, and the sweep rates the eight "
+             "recorded reactions untrustworthy as an earnings base rate. "
+             "'fits_cadence' would hand the name a 1.0 event multiplier its history "
+             "has not earned. 'unknown' is the correct middle for 'the event exists "
+             "but its history does not characterise it', and it does not bar the "
+             "name from ranking. Correcting only CSBR and ZUMZ, which both score "
+             "better for it, is how a scorer gets quietly tuned toward a result.",
+             "https://www.morningstar.com/news/pr-newswire/20260904cn40886/cheetah-mobile-to-report-second-quarter-2026-financial-results-on-september-11-2026"),
+}
+
+# DELIBERATELY NOT AMENDED on 2026-09-10, and this is the judgement, not an
+# oversight. The sweep confirmed all 17 of 17 names from company sources with zero
+# phantoms, so nothing needs killing; three flagged names nevertheless keep their
+# pessimistic verdict.
+#   DSGX: carries cadence_implausible with verdict 'unknown', and the event IS
+#         company-confirmed (GlobeNewswire 2026-08-04, Q2 FY2027 after the close
+#         2026-09-10, call 5:30 p.m. ET) -- so the instinct is to upgrade. It stays
+#         at 'unknown' for the DOO / PSNY / ZGN reason: Descartes is a foreign
+#         private issuer, the 6-K text matcher caught non-earnings filings, and the
+#         sweep rates the eight recorded reactions untrustworthy. Upgrading would
+#         forgive a history defect and hand it a 1.0 multiplier it has not earned.
+#   MNY:  identical case. MoneyHero's own 6-K exhibit on CIK 0001974044 announces
+#         Q2 2026 pre-open on 2026-09-11 with an 8:00 a.m. EDT call, which is the
+#         strongest kind of confirmation there is, and the cadence_implausible flag
+#         is a matcher artefact. But the same matcher is what produced its eight
+#         "reactions", the sweep rates them untrustworthy, and 'unknown' is what
+#         that state actually is.
+#   REF:  stays at 'unknown' on the OPPOSITE reasoning -- not a history defect but
+#         thin confirmation. Reformation IPO'd on the NYSE on 2026-07-30 at $15 and
+#         this is its first report as a public company, so history.n=0 is a fact
+#         about the company rather than an artefact. The date comes from wire copy
+#         dated 2026-08-27 mirrored on StockTitan and EDGAR CIK 0001787117 carries
+#         NO 8-K naming it, so unlike CSBR and ZUMZ there is no filing behind the
+#         confirmation. 'unknown' states exactly what is known. The cost is
+#         cosmetic: only 'suspect' blocks rankability.
+# The remaining 11 names are untouched -- all rated history-trustworthy by the
+# sweep, all already at fits_cadence.
+#
+# Net effect of this pass: CSBR becomes rankable at a 1.0 event multiplier instead
+# of being zeroed at 0.05, ZUMZ's records-bug thinness stops being scored as an
+# event-existence doubt, and CMCM's FPI matcher history stops carrying a 1.0
+# multiplier it had not earned. Per-name history warnings go to the hunters.
+_RETIRED_2026_09_08 = {
     "YQ": ("unknown",
            "UPGRADE off 'suspect', which is the amendment that matters today: "
            "edge_score.py sets rankable=False on a suspect verdict and multiplies "

@@ -139,6 +139,33 @@ Write a README in the archive saying which window it covered and why it moved.
 Two runs on one date is normal — a retry, a re-run against a corrected universe, or
 a second window. Assume it has happened rather than assuming it has not.
 
+## 0b. Sell yesterday's book, before anything else
+
+Only when `execution.enabled` is `true` in `config/pipeline.yaml`. It is committed as
+`false`, and a run that finds it false does nothing here and says nothing.
+
+```bash
+python3 scripts/alpaca_trade.py flatten --submit
+```
+
+**First, not last.** Two reasons, and the second is the one that matters. Every
+position in the account has already been through its print, so nothing is cut short of
+its event; and if this session dies mid-hunt — which has happened to other stages on
+four consecutive days — the account is in cash rather than holding a book nobody is
+managing. Flattening at the end would make a killed session leave yesterday's
+positions open indefinitely.
+
+It costs something. The measured exit is the next **close** (ρ=+0.514, permutation
+p=0.0015); selling half an hour into the session is nearer the next **open**, which
+measured weaker on the same events (ρ=+0.331, p=0.046).
+
+Record in the run log what was sold and at what unrealised P&L, before the sweep
+launches. That line is the only record of the exit, and there is nothing else in the
+repo that will reconstruct it.
+
+If the account is unreachable, say so in the run log and **carry on with the hunt**.
+The research is the point; the book is downstream of it.
+
 ## 1. Universe and sealed baseline
 
 ```bash
@@ -398,6 +425,54 @@ in the budget. Report spot × 20-day average volume for the top and bottom names
 turnover; six of the first 22 long/short positions traded under $1m a day. A ranking
 whose extremes are untradeable is a research result, not a signal, and the note
 should be the place a reader learns which one they are looking at.
+
+## 6b. Buy today's book, after the research is done
+
+Same switch as step 0b: nothing here happens unless `execution.enabled` is `true`.
+This step is not a degradation and not a decision the session gets to make.
+
+```bash
+python3 scripts/alpaca_trade.py plan --run <RUN>/edge
+python3 scripts/alpaca_trade.py open --run <RUN>/edge --submit --no-flatten
+python3 scripts/alpaca_trade.py status --run <RUN>/edge
+```
+
+`--no-flatten` because step 0b already did it, hours ago. Without the flag `open`
+would try to close positions that are not there, which is harmless but writes a
+misleading line into the log.
+
+Entries are plain market orders, filled while you watch, so there is no pending
+order and no auction to beat. **The only deadline is that the US session has to still
+be open** — 16:00 New York, 22:00 Amsterdam in summer, earlier on US half-days. A run
+that fires at 16:04 Amsterdam and finishes its hunts by 19:00 has three hours of
+margin; the 2026-09-09 run took 2h53m end to end. A session that has been retried,
+resumed or has run long may have none, and `open` refuses on its own rather than
+sending an order into a closed market. That refusal is correct: record it and stop.
+
+Buying at market instead of in the closing auction was measured on the same 18 traded
+events — market-on-close 15/18 and +5.86% a trade, a market order at 14:00 ET 14/18
+and +5.82%, a gap of four hundredths of a point (`scripts/edge_entry_timing.py`).
+What that cannot see is the spread, and the auction is the deepest liquidity of the
+day. So **record the fills**: `status` prints `filled_avg_price` per order, and if
+those come back materially worse than the plan's notional, say so in the run log.
+`orders.entry: market_on_close` in `config/pipeline.yaml` puts it back in the auction.
+
+The selection is one rule — `|impact_sum| >= conviction_floor`, side from the sign —
+plus a turnover floor and a shortability check. Do not widen it, do not hand-pick a
+name into the book, and do not trade a name below the floor because its finding reads
+well: below the floor the sign is a coin flip and that is the entire reason the floor
+exists. The book is **equal weight**: every name gets the same dollars regardless of
+its score. Do not size by conviction — the key ranks and does not size.
+
+`open` sells every existing position at market before it places anything, so one
+invocation a day is the whole operation. Entries are market-on-close and Alpaca stops
+accepting MOC ten minutes before the bell, so it has to run on the entry date. A
+session firing at 16:04 has time; a session that has been running for six hours may
+not, and a plan built after that close says so rather than filling at the wrong price.
+
+Record in the run log how many names met the benchmark, how many orders went in, and
+every refusal with its reason. `docs/EXECUTION.md` is the whole contract, including
+what the rule does and does not rest on.
 
 ## 7. Resolve, once the window closes
 

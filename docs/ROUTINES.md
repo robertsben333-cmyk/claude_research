@@ -18,7 +18,7 @@ simply finds an empty universe and stops cheaply.
 | 10:22 | 2A · Deep dive, batch 1 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
-| 16:04 | E · Edge hunt | `earnings-edge-hunt` | 1 sweep + ≤8 hunters + ≤6 adversaries, Opus/high | **high** |
+| 16:04 | E · Edge hunt, and the book it places | `earnings-edge-hunt` | 1 sweep + ≤19 hunters, Opus/high | **high** |
 | 17:03 | C · Forward capture | `earnings-capture` | 0 (script) + ≤6 Sonnet | low |
 
 ## Stage E — edge hunt
@@ -55,6 +55,33 @@ Nothing downstream reads stage E, and it overlaps stage N on purpose. N forecast
 name it looks at; E scores whether the market has missed something and ranks the day on
 one signed number. If E's ranking carries no information N's does not, that is worth
 finding out cheaply.
+
+### Stage E also trades its own ranking, in the same Routine
+
+**There is no separate execution Routine.** Since 2026-09-10 the stage E prompt carries
+two extra steps and the same session does both: step 0b sells yesterday's book at market
+before the hunt launches, step 7 buys today's market-on-close after the note is
+published. `scripts/alpaca_trade.py` does the work; `docs/EXECUTION.md` is the contract.
+
+One Routine rather than two, for three reasons. A second firing a day is a second thing
+that can fail silently, each with its own market-on-close deadline. The flatten belongs
+**before** a session that might die, not after — a killed session then leaves the account
+in cash instead of holding a book nobody is managing. And nothing has to be handed
+between two sessions, so there is no state to lose.
+
+Step 7 buys at market rather than in the closing auction, which on the same 18 traded
+events cost four hundredths of a point per trade (15/18 and +5.86% in the auction
+against 14/18 and +5.82% at 14:00 ET) and removes the pending order and the cutoff.
+The deadline this adds to the stage's timing is therefore only that the US session is
+still open — 16:00 New York, 22:00 Amsterdam in summer. Firing at 16:04 leaves three
+hours of margin after the hunts; the 2026-09-09 run took 2h53m end to end. A session
+that was retried, resumed, or ran long may have none, and `alpaca_trade.py open`
+refuses rather than sending an order into a closed market.
+
+Both steps are silent until `execution.enabled` is `true` in `config/pipeline.yaml`,
+committed as `false`, and both need `scripts/alpaca_trade.py` to have reached `main`.
+See `docs/routine-prompts/edge-execute.md` for the preconditions and for the separate
+exit Routine kept there as a fallback.
 
 ## Stage C — forward capture
 

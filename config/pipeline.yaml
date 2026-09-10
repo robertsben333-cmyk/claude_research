@@ -204,3 +204,102 @@ budget:
   # baseline written after a finding exists is one the finding has contaminated.
   edge_never_degrade:
     - baselines_sealed_and_committed_before_any_agent_launches
+
+execution:
+  # Stage E's ranking placed as real orders at Alpaca, by scripts/alpaca_trade.py.
+  # OFF until someone turns it on deliberately. With `enabled: false` every
+  # invocation is a dry run that writes alpaca-plan.json and submits nothing, and
+  # --submit alone will not override it.
+  enabled: false
+  broker: alpaca
+  # The endpoint comes from $ALPACA_BASE_URL and defaults to the paper API. A
+  # non-paper endpoint additionally needs --live-account-i-understand on the
+  # command line. Credentials are read from $ALPACA_API_KEY_ID and
+  # $ALPACA_API_SECRET_KEY and are never written into this repo.
+  assumed_equity_usd: 100000     # sizing basis for dry runs with no account attached
+
+  benchmark:
+    # ONE rule, and it is the only cut in docs/EDGE_ANALYSIS.md that survived a
+    # family-wise correction: |impact_sum| >= the floor, side from the sign. Above
+    # the floor the sign was right on 16 of 21 events, +6.37% per trade (t=2.74,
+    # +4.87% after a 1.5% cost); over all 38 events it is 53%, a coin flip. That is
+    # 5 independent days. Do not raise the exposure below on the strength of it.
+    key: impact_sum
+    min_conviction: null         # null inherits edge_hunt.conviction_floor (3.0)
+    require_rankable: true       # an unconfirmed event is not a trade
+    # Capacity, which is in neither the scorer nor the budget. Names below this floor
+    # are dropped outright rather than sized down.
+    #
+    # $200k since 2026-09-10, down from $5m, on the operator's reading that the real
+    # spread in these names is far below the 1.5% round trip the analysis charges.
+    # BE CLEAR ABOUT WHAT THAT COSTS: on the 38 resolved events the floor helped
+    # monotonically -- $5m gave 11/12 and +8.09% a trade against 15/18 and +5.86% at
+    # $200k -- so this loosening is against the sample, not with it. It is defensible
+    # on two grounds the sample cannot speak to: the spread, and the event rate (18
+    # of 38 events trade here against 12 at $5m, which is how the forward sample
+    # grows). Re-run scripts/edge_turnover_floor.py as days pool and move it back if
+    # the added names keep underperforming.
+    min_dollar_volume_usd: 200000
+    # No cap on the count. Equal weight means more names is smaller positions, not
+    # more risk, and cutting the tail would be a second selection rule on top of the
+    # only one that was measured.
+    max_positions: null
+
+  sizing:
+    # EQUAL WEIGHT, WHOLE BUDGET. Every name that clears the benchmark gets the same
+    # dollars: the gross budget split N ways, capped per name, with whatever a capped
+    # name cannot take redistributed equally over the rest. Nothing here reads the
+    # score. `impact_sum` ranks and does not size -- median absolute error 6-7 points
+    # against a realised standard deviation near 11 -- so weighting by it would be
+    # sizing on a number that has no measured relationship to the size of the move.
+    #
+    # 100% gross is the whole account, unhedged, through five to nine earnings prints
+    # a night. Two names in the resolved sample gapped 22-23% (NX +22.23%,
+    # CANG -23.01%): at a 20% weight either one moves the account by about 4.5%.
+    # Reg T allows twice equity overnight, so 100% fits, but nothing here is a stop.
+    gross_exposure_pct_of_equity: 100
+    max_position_pct_of_equity: 20
+    # Below five names every position hits that 20% and the account is deliberately
+    # under-deployed. That is the cap doing its job, not a bug to route around.
+    #
+    # Slippage guard, kept but loose: a market-on-close order this size is a share of
+    # the closing auction, and in a thin name that share is the cost. At $10k of
+    # equity a 20% position is $2,000, which is 1% of a $200k/day name -- so this
+    # only starts binding as the account grows. Set to null to disable it entirely;
+    # the plan prints %adv per name either way.
+    max_position_pct_of_adv: 1.0
+    min_position_usd: 200
+
+  orders:
+    # Sell everything at the start of the run, at market, before the new book goes
+    # in. The account is rebuilt from scratch every day.
+    #
+    # This is safe at that moment for one reason: when the edge hunt fires, every
+    # position in the account has already been through its print, so nothing is cut
+    # short of its event. It is NOT free. The measured exit is the next CLOSE
+    # (direction rho=+0.514, permutation p=0.0015); selling at the start of the run
+    # is nearer the next OPEN, which measured weaker on the same events (rho=+0.331,
+    # p=0.046). Ten to twenty basis points of that gap is the price of a one-run-a-day
+    # operation with no overnight order to babysit.
+    flatten_before_entry: true
+    # BUY IMMEDIATELY, at market, the moment the note is published -- not in the
+    # closing auction, which is the entry edge_resolve.py scores.
+    #
+    # Measured both ways on the same 18 traded events: market-on-close 15/18 and
+    # +5.86% a trade, a market order at 14:00 ET 14/18 and +5.82%. Four hundredths
+    # of a point per trade, and one event of eighteen changing sign (PL, 09-03).
+    # Re-run scripts/edge_entry_timing.py as days pool.
+    #
+    # What that measurement CANNOT see is the spread. It compares trade prices, not
+    # fills, and the closing auction is the deepest liquidity of the day -- which
+    # matters more since the turnover floor dropped to $200k, not less. If fills come
+    # back worse than the plan's notional by more than a few tenths of a percent,
+    # this is the first knob to put back: `market_on_close` returns to the auction,
+    # at the cost of a pending order and Alpaca's cutoff ten minutes before the bell.
+    entry: market
+    # Only `close` reads this, and `close` is the fallback path (see
+    # flatten_before_entry). There the auction is free: the order goes in on the exit
+    # date with nothing else waiting on it.
+    exit: market_on_close
+    time_in_force: day           # market entries, and the plain-market fallback
+    allow_shorts: true           # a short leg also needs Alpaca to call it shortable

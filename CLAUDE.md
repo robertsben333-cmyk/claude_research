@@ -41,9 +41,17 @@ rounded into a bucket upstream. Falsifiable by `scripts/edge_resolve.py`, which 
 Spearman rank correlation against the realised move with a permutation p-value. Until
 many days have pooled, it is not better than anything.
 
-Seven runs exist: two on 2026-08-31 and one on each of 09-01, 09-02, 09-03, 09-04,
-09-07 and 09-08. Six are resolved — **43 names, 249 findings, 65 hunts**; 09-08's eight
-names need the 09-09 close. The 08-31 pair is archived separately,
+Ten runs exist: two on 2026-08-31 and one on each of 09-01, 09-02, 09-03, 09-04, 09-07,
+09-08, 09-09 and 09-10. Six are resolved — **43 names, 249 findings, 65 hunts**; the
+09-08, 09-09 and 09-10 runs are not. (This paragraph said "seven" and omitted 09-09
+until 09-10; the six-resolved decomposition in `docs/EDGE_ANALYSIS.md` is unaffected,
+because it covers 08-31 through 09-07 and never included them.) The 09-10 run is the
+first under the one-hunter-per-name contract: 17 names in the window, **17 of 17
+confirmed by the sweep with zero phantom rows**, 17 hunters, 61 findings, 7 clearing the
+conviction floor. Its ranking is near-orthogonal to the free control (Spearman 0.054
+against `-run_up_20d_pct`), and four of its seventeen names are ranked substantially by
+one regulatory event — the IEEPA tariff refunds — which is a correlated exposure the
+scorer cannot see. The 08-31 pair is archived separately,
 `research/2026/08/2026-08-31/edge/_run1-bmo/` and `edge/`. Run 1 (that day's `bmo`, with
 `--include-unknown`) found eight of twelve calendar rows had no earnings event at all and
 produced no ranking worth the name: every judged finding fell into one of two verdict
@@ -178,6 +186,49 @@ understates every ranker (0.189 vs 0.243 for `edge_score`), that `confidence` an
 that `spearman_vs_move_over_implied` normalises 18 of 43 names on a median historical
 reaction rather than an option-implied move. Fix the scorer before spending another day
 on hunts.
+
+**Stage E can place its book at Alpaca, and it is switched off.**
+`scripts/alpaca_trade.py` takes the one rule that survived a family-wise correction —
+`|impact_sum| >= conviction_floor`, side from the sign, plus a $200k turnover floor
+and a shortability check — and places it as an immediate market order on the entry
+date, flattening at market at the start of the next run. Nothing is sent unless `execution.enabled` is
+`true` in `config/pipeline.yaml` **and** `--submit` is given **and** credentials are in
+the environment **and** the endpoint is paper; it is committed as `false`.
+
+**It rides in stage E's own Routine, not a separate one.** Two steps in the same
+session: step 0b sells yesterday's book at market before the sweep launches, step 7
+buys today's **at market, immediately** after the note is published. The sell goes
+first so that a session killed mid-hunt leaves the account in cash rather than holding a
+book nobody is managing. That trades away the measured exit — the next close ranked
+ρ=+0.514, p=0.0015 against ρ=+0.331, p=0.046 to the next open, and selling half an hour
+into the session is nearer the open. The immediate entry, by contrast, costs almost
+nothing measured: on the same 18 traded events the closing auction gave 15/18 and
++5.86% a trade against 14/18 and +5.82% at 14:00 ET, four hundredths of a point
+(`scripts/edge_entry_timing.py`). What that cannot see is the spread, so the fills go
+in the run log and `orders.entry: market_on_close` puts it back in the auction. The
+only deadline left is that the US session is open; `open` refuses rather than sending
+an order into a closed market.
+`scripts/alpaca_trade.py close` still does the market-on-close exit if
+`orders.flatten_before_entry` is turned off and the fallback exit Routine in
+`docs/routine-prompts/edge-execute.md` is added. Sizing is **equal weight, whole
+budget**:
+the gross budget split N ways, 20% of equity per name, a capped name's leftover
+redistributed over the rest. Nothing reads the score — the key ranks and does not
+size. Under five names the account is deliberately under-invested, and at 100% gross
+the whole account rides five to nine prints overnight with no stop. See
+`docs/EXECUTION.md` for what it refuses to do and what it does not know.
+
+The code is on the main line as of 2026-09-10. The 2026-09-10 stage E run found steps 0b
+and 7 were no-ops: `scripts/alpaca_trade.py`, `docs/EXECUTION.md` and the `execution`
+block did not exist in the tree it cloned, because they were still sitting on
+`claude/alpaca-auto-orders-integration-y397gh`. That branch was merged in response, so
+the script, the docs and the config block are now here.
+
+One thing still has to happen by hand, on top of turning `execution.enabled` on: the
+stage E Routine's prompt has to be re-pasted from `docs/routine-prompts/edge-hunt.md`,
+which now carries both steps. A session cannot do it, `update_trigger` refuses any
+Routine an agent did not create. Until that paste the Routine's own text has no step 0b
+and no step 7, so nothing trades whatever the switch says.
 
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have
