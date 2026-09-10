@@ -20,6 +20,7 @@ simply finds an empty universe and stops cheaply.
 | 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
 | 16:04 | E · Edge hunt | `earnings-edge-hunt` | 1 sweep + ≤8 hunters + ≤6 adversaries, Opus/high | **high** |
 | 17:03 | C · Forward capture | `earnings-capture` | 0 (script) + ≤6 Sonnet | low |
+| 20:45 | E · Execution (does not exist) | none — `alpaca_trade.py` | 0 (script) | negligible |
 
 ## Stage E — edge hunt
 
@@ -55,6 +56,30 @@ Nothing downstream reads stage E, and it overlaps stage N on purpose. N forecast
 name it looks at; E scores whether the market has missed something and ranks the day on
 one signed number. If E's ranking carries no information N's does not, that is worth
 finding out cheaply.
+
+## Stage E execution — place the book at Alpaca
+
+**This Routine does not exist.** Intended cron `45 18 * * 1-5` (summer) /
+`45 19 * * 1-5` (winter), 20:45 Amsterdam, fresh session per fire, weekdays. The
+copy-paste prompt and the three preconditions are in
+`docs/routine-prompts/edge-execute.md`. An agent session cannot create it:
+`create_trigger` is refused by the permission layer here, so a person has to make it
+at claude.ai/code and record the id in both files.
+
+20:45 sits four hours behind stage E, which normally has `edge-scores.json` on `main`
+within the hour, and about an hour ahead of Alpaca's market-on-close cutoff of 15:50
+New York. Both ends matter: earlier and the ranking may not be published yet, later
+and the entry cannot be a closing price.
+
+It runs `alpaca_trade.py plan` then `open --submit`, which sells every existing
+position at market before placing the new book, so one firing a day is the whole
+operation. There is no second Routine for the exit; see `docs/EXECUTION.md` for what
+that trades away (the measured exit is the next close, ρ=+0.514 against ρ=+0.331 to
+the next open).
+
+While `execution.enabled` is `false` in `config/pipeline.yaml` the Routine runs end to
+end and submits nothing. That is the state to leave it in for the first few days: a
+daily plan and a run-log entry, no orders.
 
 ## Stage C — forward capture
 

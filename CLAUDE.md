@@ -157,7 +157,12 @@ size. Under five names the account is deliberately under-invested, and at 100% g
 the whole account rides five to nine prints overnight with no stop. See
 `docs/EXECUTION.md` for what it refuses to do and what it does not know, and
 `docs/routine-prompts/edge-execute.md` for the one Routine that would run it
-unattended. That Routine does not exist.
+unattended. **That Routine does not exist**, and an agent session cannot create it —
+`create_trigger` is refused by the permission layer here, so the prompt lives in that
+file for a person to paste at claude.ai/code, intended cron `45 18 * * 1-5` (20:45
+Amsterdam, summer). It also cannot work until this branch reaches `main`: a Routine
+clones the default branch, and a firing that finds no `scripts/alpaca_trade.py` logs
+that and stops.
 
 Run 2's own failures are written into the skill and the agent definitions rather than
 left in the run log: a same-directory collision between the two runs that would have
