@@ -510,12 +510,20 @@ def main():
           == ("2026-09-11", "2026-09-14"),
           str(at.window(at.trading_days_offline("2026-09-14"), "2026-09-14", "bmo")))
 
-    entry = at.order_body("BIGL", 10, "buy", ex, moc=True)
-    check("entry is market-on-close",
-          (entry["type"], entry["time_in_force"]) == ("market", "cls"), str(entry))
-    check("nothing is sent to extended hours", entry["extended_hours"] is False)
+    moc_body = at.order_body("BIGL", 10, "buy", ex, moc=True)
+    mkt_body = at.order_body("BIGL", 10, "buy", ex, moc=False)
+    check("market-on-close is type market, tif cls",
+          (moc_body["type"], moc_body["time_in_force"]) == ("market", "cls"),
+          str(moc_body))
+    check("a plain market entry is type market, tif day",
+          (mkt_body["type"], mkt_body["time_in_force"]) == ("market", "day"),
+          str(mkt_body))
+    check("the shipped entry is an immediate market order",
+          ex["orders"].get("entry") == "market", str(ex["orders"].get("entry")))
+    check("nothing is sent to extended hours",
+          moc_body["extended_hours"] is False and mkt_body["extended_hours"] is False)
     check("the exit inverts the entry side",
-          at.order_body("BIGL", 10, "sell" if entry["side"] == "buy" else "buy",
+          at.order_body("BIGL", 10, "sell" if mkt_body["side"] == "buy" else "buy",
                         ex)["side"] == "sell")
     blocked = at.guard(at.Alpaca(key="", secret=""), ex, submit=False, live_ok=False)
     check("a run without --submit is blocked before any order", bool(blocked), str(blocked))

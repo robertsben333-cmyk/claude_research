@@ -282,11 +282,24 @@ execution:
     # p=0.046). Ten to twenty basis points of that gap is the price of a one-run-a-day
     # operation with no overnight order to babysit.
     flatten_before_entry: true
-    # Both legs are market-on-close, because that is the window edge_resolve.py
-    # scores: enter at the last close before the print, exit at the first close
-    # after it. Alpaca stops accepting MOC ten minutes before the bell, so `open`
-    # must run on the entry date and `close` on the exit date, both before then.
-    entry: market_on_close
+    # BUY IMMEDIATELY, at market, the moment the note is published -- not in the
+    # closing auction, which is the entry edge_resolve.py scores.
+    #
+    # Measured both ways on the same 18 traded events: market-on-close 15/18 and
+    # +5.86% a trade, a market order at 14:00 ET 14/18 and +5.82%. Four hundredths
+    # of a point per trade, and one event of eighteen changing sign (PL, 09-03).
+    # Re-run scripts/edge_entry_timing.py as days pool.
+    #
+    # What that measurement CANNOT see is the spread. It compares trade prices, not
+    # fills, and the closing auction is the deepest liquidity of the day -- which
+    # matters more since the turnover floor dropped to $200k, not less. If fills come
+    # back worse than the plan's notional by more than a few tenths of a percent,
+    # this is the first knob to put back: `market_on_close` returns to the auction,
+    # at the cost of a pending order and Alpaca's cutoff ten minutes before the bell.
+    entry: market
+    # Only `close` reads this, and `close` is the fallback path (see
+    # flatten_before_entry). There the auction is free: the order goes in on the exit
+    # date with nothing else waiting on it.
     exit: market_on_close
-    time_in_force: day           # only used by the plain-market fallback
+    time_in_force: day           # market entries, and the plain-market fallback
     allow_shorts: true           # a short leg also needs Alpaca to call it shortable

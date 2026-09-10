@@ -22,15 +22,20 @@ result would not have been reachable without them:
   shortability Alpaca will reject a short in a name that is not `shortable`, and a
                rejected leg turns a market-neutral book into a naked long.
 
-The window is the one `edge_resolve.py` scores, so the traded return and the
-measured return are the same number:
+The event window is the one `edge_resolve.py` scores:
 
-    amc print   enter at the close ON the event date,     exit at the next close
-    bmo print   enter at the close BEFORE the event date, exit at the event close
+    amc print   the last close before the print is the event date's close
+    bmo print   it is the close of the session before
 
-Entry and exit are both market-on-close, which is why this needs two invocations
-on two different days. `open` runs on the entry date, `close` on the exit date;
-both must land before Alpaca's 15:50 ET cutoff for MOC orders.
+Both trading steps run inside stage E's own session, four hours apart. Step 0b
+sells yesterday's book at market before the sweep launches; step 7 buys today's
+at market as soon as the note is published. Neither waits for the closing
+auction, and the difference that makes was measured on the same 18 traded events:
+market-on-close gave 15/18 and +5.86% a trade, a market order at 14:00 ET gave
+14/18 and +5.82% -- four hundredths of a point. `scripts/edge_entry_timing.py`
+regenerates that. What it cannot see is the spread: the closing auction is the
+deepest liquidity of the day, and in a $200k-a-day name that is where a fill is
+cheapest. Set `orders.entry: market_on_close` to go back to the auction.
 
 Nothing is submitted unless all four of these hold: `execution.enabled: true` in
 config/pipeline.yaml, `--submit` on the command line, credentials in the
@@ -39,9 +44,9 @@ environment, and a paper endpoint (a live endpoint additionally needs
 prints and writes the plan and touches no order.
 
     export ALPACA_API_KEY_ID=... ALPACA_API_SECRET_KEY=...
+    python3 scripts/alpaca_trade.py flatten --submit                    # step 0b
     python3 scripts/alpaca_trade.py plan  --run research/2026/09/2026-09-09/edge
-    python3 scripts/alpaca_trade.py open  --run research/2026/09/2026-09-09/edge --submit
-    python3 scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
+    python3 scripts/alpaca_trade.py open  --run <same> --submit --no-flatten   # step 7
     python3 scripts/alpaca_trade.py status --run research/2026/09/2026-09-09/edge
 """
 import argparse
@@ -475,11 +480,13 @@ def guard(api, ex, submit, live_ok):
     return None
 
 
-def moc_ok(api):
-    """Is it inside the window where Alpaca still accepts market-on-close?
+def entry_window(api, moc=True):
+    """Can an order go in right now? Returns (ok, note).
 
-    Returns (ok, note). The cutoff is the session close less MOC_CUTOFF_MIN, so
-    early-close days are handled by the calendar rather than a hardcoded 15:50.
+    A plain market order needs only an open session. A market-on-close order needs
+    the session to be open AND more than MOC_CUTOFF_MIN left, because Alpaca stops
+    accepting them near the bell; taking the cutoff off the calendar's own close
+    handles early-close days rather than hardcoding 15:50.
     """
     clk, err = api.clock()
     if not clk:
@@ -489,7 +496,7 @@ def moc_ok(api):
         return False, f"market closed at {now.isoformat(timespec='seconds')}"
     nc = datetime.fromisoformat(clk["next_close"].replace("Z", "+00:00"))
     left = (nc - now).total_seconds() / 60.0
-    if left < MOC_CUTOFF_MIN:
+    if moc and left < MOC_CUTOFF_MIN:
         return False, f"{left:.0f} min to the close, inside the MOC cutoff"
     return True, f"{left:.0f} min to the close"
 
@@ -665,8 +672,11 @@ def cmd_open(a, api, ex):
     Path(a.run, "alpaca-plan.json").write_text(json.dumps(plan, indent=1) + "\n",
                                                encoding="utf-8")
     print_plan(plan)
-    moc, moc_note = (moc_ok(api) if (a.submit and not blocked) else (False, "dry run"))
-    print(f"\nsubmit: {'blocked — ' + blocked if blocked else moc_note}")
+    use_moc = ex["orders"].get("entry", "market") == "market_on_close"
+    open_ok, open_note = (entry_window(api, use_moc) if (a.submit and not blocked)
+                          else (False, "dry run"))
+    print(f"\nsubmit: {'blocked — ' + blocked if blocked else open_note}"
+          f" ({'market-on-close' if use_moc else 'market'})")
 
     today = None
     if api.usable:
@@ -675,19 +685,22 @@ def cmd_open(a, api, ex):
     state = load_orders(a.run)
     if flat is not None and flat.get("submitted"):
         state["log"].append(flat)
-    use_moc = ex["orders"].get("entry", "market_on_close") == "market_on_close"
 
     for c in plan["positions"]:
         reason = blocked
         if not reason and today and c["entry_date"] != today and not a.force_date:
             reason = f"entry date is {c['entry_date']}, today is {today} (--force-date)"
         entry_moc = use_moc
-        if not reason and use_moc and not moc:
-            if a.allow_market_fallback:
-                entry_moc = False
-            else:
-                reason = (f"MOC unavailable ({moc_note}); --allow-market-fallback to "
+        if not reason and not open_ok:
+            if use_moc and a.allow_market_fallback:
+                entry_moc = False                # a market order still works
+            elif use_moc:
+                reason = (f"MOC unavailable ({open_note}); --allow-market-fallback to "
                           "send a plain market order instead")
+            else:
+                reason = (f"cannot send a market order: {open_note}. A market order "
+                          "outside the session does not fill at a price this stage "
+                          "has measured.")
         body = order_body(c["ticker"], c["qty"], c["side"], ex, moc=entry_moc)
         cid = client_id(a.run, c["ticker"], "entry")
         rec = send(api, body, cid, a.submit, reason)
@@ -703,7 +716,8 @@ def cmd_open(a, api, ex):
               f"the plan is in alpaca-plan.json")
         return
     state["log"].append({"utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                         "action": "open", "moc": moc_note,
+                         "action": "open", "window": open_note,
+                         "entry": ("market_on_close" if use_moc else "market"),
                          "positions": len(plan["positions"])})
     save_orders(a.run, state)
     print(f"\nwrote {orders_path(a.run)}")
@@ -717,7 +731,7 @@ def cmd_close(a, api, ex):
         return
     blocked = guard(api, ex, a.submit, a.live_account_i_understand)
     use_moc = ex["orders"].get("exit", "market_on_close") == "market_on_close" and not a.now
-    moc, moc_note = ((moc_ok(api) if use_moc else (True, "market order"))
+    moc, moc_note = ((entry_window(api, True) if use_moc else (True, "market order"))
                      if (a.submit and not blocked) else (False, "dry run"))
     today = None
     if api.usable:

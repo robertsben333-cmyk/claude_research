@@ -147,14 +147,17 @@ the environment **and** the endpoint is paper; it is committed as `false`.
 
 **It rides in stage E's own Routine, not a separate one.** Two steps in the same
 session: step 0b sells yesterday's book at market before the sweep launches, step 7
-buys today's market-on-close after the note is published. The sell goes first so that a
-session killed mid-hunt leaves the account in cash rather than holding a book nobody is
-managing. That trades away the measured exit — the next close ranked ρ=+0.514,
-p=0.0015 against ρ=+0.331, p=0.046 to the next open, and selling half an hour into the
-session is nearer the open. Step 7 has a deadline the rest of the stage does not:
-Alpaca stops accepting market-on-close orders at 15:50 New York, so a 16:04 Amsterdam
-start leaves about three hours after the hunts (2026-09-09 took 2h53m end to end), and
-`open` refuses rather than filling at a price no measurement used.
+buys today's **at market, immediately** after the note is published. The sell goes
+first so that a session killed mid-hunt leaves the account in cash rather than holding a
+book nobody is managing. That trades away the measured exit — the next close ranked
+ρ=+0.514, p=0.0015 against ρ=+0.331, p=0.046 to the next open, and selling half an hour
+into the session is nearer the open. The immediate entry, by contrast, costs almost
+nothing measured: on the same 18 traded events the closing auction gave 15/18 and
++5.86% a trade against 14/18 and +5.82% at 14:00 ET, four hundredths of a point
+(`scripts/edge_entry_timing.py`). What that cannot see is the spread, so the fills go
+in the run log and `orders.entry: market_on_close` puts it back in the auction. The
+only deadline left is that the US session is open; `open` refuses rather than sending
+an order into a closed market.
 `scripts/alpaca_trade.py close` still does the market-on-close exit if
 `orders.flatten_before_entry` is turned off and the fallback exit Routine in
 `docs/routine-prompts/edge-execute.md` is added. Sizing is **equal weight, whole

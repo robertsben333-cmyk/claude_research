@@ -22,7 +22,7 @@ without them:
 
 | screen | why |
 | --- | --- |
-| `min_dollar_volume_usd: 200000` | below this a market-on-close fill is a meaningful share of the closing auction. It was $5m until 2026-09-10; see below for what the loosening costs. |
+| `min_dollar_volume_usd: 200000` | below this an order is a meaningful share of the day's volume. It was $5m until 2026-09-10; see below for what the loosening costs. |
 | Alpaca `shortable` | a rejected short leg turns a market-neutral book into a naked long. Names Alpaca will not lend are dropped, not flipped. |
 
 ### Where the turnover floor came from
@@ -61,9 +61,10 @@ Two things the table cannot see decided it:
   forward sample stops being one small sample a week, and it is a claim about
   learning speed, not about expected return.
 
-The 1%-of-turnover sizing cap does the rest: at $100k of equity the per-name cap is
-$4,000, so any name under $400k of daily turnover is capacity-bound and gets a
-smaller position automatically. A $200k/day name comes in at $2,000, half weight.
+The 1%-of-turnover sizing cap does the rest, and at this account size the two lines
+meet: at $10k of equity the 20% per-name cap is $2,000, which is exactly 1% of a
+$200k/day name. Below that floor a position would be capacity-bound anyway, so the
+floor and the cap are saying the same thing from two directions.
 
 Names whose event the sweep could not confirm (`rankable: false`) never reach the
 book. `edge-scores.json` itself is still unfiltered — the ranking test needs the
@@ -123,8 +124,10 @@ paper account.
    python3 scripts/alpaca_trade.py plan --run research/2026/09/2026-09-09/edge
    ```
 
-6. **The two Routines**, and only once steps 1 to 5 have been watched for a few days.
-   Prompts in `docs/routine-prompts/edge-execute.md`.
+6. **Re-paste the stage E Routine prompt** from `docs/routine-prompts/edge-hunt.md`,
+   which carries both trading steps. No new Routine is needed. Do this only once steps
+   1 to 5 have been watched for a few days — and note that steps 1, 2 and 5 are worth
+   doing before step 4, so the first few days run with the switch still off.
 
 ## Sizing: equal weight, whole budget
 
@@ -164,7 +167,7 @@ its own session, four hours apart:
 | step | when | what |
 | --- | --- | --- |
 | 0b | before the sweep launches, ~16:05 Amsterdam | `flatten --submit` — sell yesterday's book at market |
-| 7 | after the note is published, ~19:00 | `plan`, then `open --submit --no-flatten` — buy today's, market-on-close |
+| 7 | after the note is published, ~19:00 | `plan`, then `open --submit --no-flatten` — buy today's at market |
 
 The sell goes **first**, and not because it is tidier. Every position in the account
 has already been through its print by then, so nothing is cut short of its event; and
@@ -178,11 +181,31 @@ permutation p=0.0015); selling half an hour into the session is nearer the next
 **open**, which measured weaker on the same events (ρ=+0.331, p=0.046). That gap is
 the price of one Routine with nothing handed between sessions.
 
-Step 7 carries the deadline. Alpaca stops accepting market-on-close orders at 15:50
-New York, so a run firing at 16:04 Amsterdam has about three hours of margin after its
-hunts; the 2026-09-09 run took 2h53m end to end. A session that was retried, resumed
-or ran long may have none, and `open` refuses rather than filling at a price no
-measurement used.
+**Step 7 buys at market, not in the closing auction.** Both were measured on the same
+18 traded events:
+
+| entry | direction | binom p | return per trade | t |
+| --- | --- | --- | --- | --- |
+| market-on-close | 15/18 | 0.004 | +5.86% | 2.38 |
+| market at 14:00 ET | 14/18 | 0.015 | +5.82% | 2.41 |
+
+Four hundredths of a point per trade, one event of eighteen changing sign (PL, 09-03).
+`scripts/edge_entry_timing.py` regenerates it. So the auction buys nothing worth a
+pending order and a cutoff, and the entry is a plain market order filled while the
+session watches.
+
+What that measurement **cannot** see is the spread: it compares trade prices, not
+fills, and the closing auction is the deepest liquidity of the day — which matters more
+since the turnover floor dropped to $200k, not less. `status` prints
+`filled_avg_price` per order, the run log is asked to record it, and
+`orders.entry: market_on_close` puts it back in the auction if those fills come back
+materially worse than the plan's notional. That is the one number that should decide it.
+
+The only deadline left is that the US session has to still be open: 16:00 New York,
+22:00 Amsterdam in summer. A run firing at 16:04 has three hours of margin after its
+hunts; the 2026-09-09 run took 2h53m end to end. A session that was retried, resumed or
+ran long may have none, and `open` refuses rather than sending an order into a closed
+market.
 
 `--no-flatten` on step 7 stops `open` from re-running a flatten that already happened.
 Run without it — by hand, or with `orders.flatten_before_entry: true` and no step 0b —
@@ -190,8 +213,7 @@ and `open` is self-contained: it cancels, closes, waits for flat, then enters.
 
 Two smaller things the flatten brings:
 
-- Flattening at market and entering market-on-close in the same symbol on the same day
-  is a **day trade**. Under $25k of equity, FINRA allows three in five business days
+- Selling a name at market and buying it back the same day is a **day trade**. Under $25k of equity, FINRA allows three in five business days
   before the account is restricted. It only happens when a name is in the book two
   days running; `open` prints a warning naming the symbols when it does.
 - Waiting for flat is not optional. An open opposing order in a symbol that is also in
@@ -203,7 +225,7 @@ it cancels and closes everything, at market, now.
 ## Invocations
 
 The stage E session runs these itself, at the two moments in the table above. By hand,
-on the entry date and before 15:50 ET:
+on the entry date and while the US session is open:
 
 ```bash
 python3 scripts/alpaca_trade.py flatten --submit                                  # step 0b
@@ -253,10 +275,11 @@ Every refusal is recorded with its reason, in the plan or in `alpaca-orders.json
 - touch a live endpoint without `--live-account-i-understand`
 - place an entry on a day that is not the planned entry date (`--force-date` overrides,
   and a forced fill is no longer the price the measurement uses)
-- send an MOC order inside Alpaca's cutoff (`--allow-market-fallback` sends a plain
-  market order instead, at a worse price than the one measured)
+- send any entry outside the open session — and, when `orders.entry` is set back to
+  `market_on_close`, inside Alpaca's cutoff (`--allow-market-fallback` downgrades that
+  one to a plain market order)
 - short a name Alpaca does not call shortable
-- size a position above 4% of equity or 1% of the name's 20-day dollar volume
+- size a position above 20% of equity or 1% of the name's 20-day dollar volume
 - place a second order for a leg it has already placed — `client_order_id` is
   `edge-<date>-<TICKER>-<entry|exit>`, so a re-run of a killed session is a no-op
   rather than a doubled position

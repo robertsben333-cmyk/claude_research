@@ -441,14 +441,21 @@ python3 scripts/alpaca_trade.py status --run <RUN>/edge
 would try to close positions that are not there, which is harmless but writes a
 misleading line into the log.
 
-**Check the clock before you run it.** Entries are market-on-close and Alpaca stops
-accepting MOC ten minutes before the bell — 15:50 New York, earlier on US half-days.
-A run that fires at 16:04 Amsterdam and finishes its hunts by 19:00 has about three
-hours of margin; the 2026-09-09 run took 2h53m end to end. A session that has been
-retried, resumed, or has run long may have none. `open` refuses on its own when the
-window has passed, and that refusal is correct: record it and stop rather than
-reaching for `--allow-market-fallback`, which fills at a worse price than the one
-every number in `docs/EDGE_ANALYSIS.md` was measured at.
+Entries are plain market orders, filled while you watch, so there is no pending
+order and no auction to beat. **The only deadline is that the US session has to still
+be open** — 16:00 New York, 22:00 Amsterdam in summer, earlier on US half-days. A run
+that fires at 16:04 Amsterdam and finishes its hunts by 19:00 has three hours of
+margin; the 2026-09-09 run took 2h53m end to end. A session that has been retried,
+resumed or has run long may have none, and `open` refuses on its own rather than
+sending an order into a closed market. That refusal is correct: record it and stop.
+
+Buying at market instead of in the closing auction was measured on the same 18 traded
+events — market-on-close 15/18 and +5.86% a trade, a market order at 14:00 ET 14/18
+and +5.82%, a gap of four hundredths of a point (`scripts/edge_entry_timing.py`).
+What that cannot see is the spread, and the auction is the deepest liquidity of the
+day. So **record the fills**: `status` prints `filled_avg_price` per order, and if
+those come back materially worse than the plan's notional, say so in the run log.
+`orders.entry: market_on_close` in `config/pipeline.yaml` puts it back in the auction.
 
 The selection is one rule — `|impact_sum| >= conviction_floor`, side from the sign —
 plus a turnover floor and a shortability check. Do not widen it, do not hand-pick a

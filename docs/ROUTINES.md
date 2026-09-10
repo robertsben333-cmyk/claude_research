@@ -69,12 +69,14 @@ that can fail silently, each with its own market-on-close deadline. The flatten 
 in cash instead of holding a book nobody is managing. And nothing has to be handed
 between two sessions, so there is no state to lose.
 
-The deadline is the one thing this adds to the stage's timing. Alpaca stops accepting
-market-on-close orders at 15:50 New York, which is 21:50 Amsterdam in summer. Firing at
-16:04 leaves about three hours of margin after the hunts; the 2026-09-09 run took 2h53m
-end to end. A session that was retried, resumed, or ran long may have none, and
-`alpaca_trade.py open` refuses on its own rather than filling at a price no measurement
-used.
+Step 7 buys at market rather than in the closing auction, which on the same 18 traded
+events cost four hundredths of a point per trade (15/18 and +5.86% in the auction
+against 14/18 and +5.82% at 14:00 ET) and removes the pending order and the cutoff.
+The deadline this adds to the stage's timing is therefore only that the US session is
+still open — 16:00 New York, 22:00 Amsterdam in summer. Firing at 16:04 leaves three
+hours of margin after the hunts; the 2026-09-09 run took 2h53m end to end. A session
+that was retried, resumed, or ran long may have none, and `alpaca_trade.py open`
+refuses rather than sending an order into a closed market.
 
 Both steps are silent until `execution.enabled` is `true` in `config/pipeline.yaml`,
 committed as `false`, and both need `scripts/alpaca_trade.py` to have reached `main`.
