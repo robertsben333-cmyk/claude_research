@@ -661,6 +661,103 @@ Both are accepted for the same reason: a check with no path to the output is not
 and sample size is what every open question in this file is waiting on. Nineteen names a
 day against eight gets there roughly two and a half times faster.
 
+## The exit is in the wrong place for half the names
+
+Everything above scores one window: the regular close before the print to the regular
+close after the first full session. That holds the print through a whole session of
+trading, which is a choice nobody in this repo ever made deliberately — it is what
+`realised()` in `edge_resolve.py` happened to compute. The question is whether the hunt's
+findings are about the **initial repricing** and everything after it is other people's
+news. `scripts/edge_exit.py` re-resolves all 38 de-duplicated events at eight exit
+horizons against the same unchanged entry, off 5-minute Yahoo bars with
+`includePrePost=true`. Output in `docs/edge-exit.json`.
+
+| exit | ρ (impact sum) | p | conviction ρ | floor book | t | median share of the close move |
+| --- | --- | --- | --- | --- | --- | --- |
+| after-hours / early pre-market | +0.230 | 0.221 | +0.255 | +5.16% | 2.75 | 0.46 |
+| pre-open indication | +0.360 | 0.047 | +0.342 | +6.61% | 3.17 | 0.68 |
+| opening print | +0.315 | 0.071 | +0.365 | +6.21% | 2.99 | 0.69 |
+| open + 15 min | +0.272 | 0.120 | +0.389 | +4.31% | 2.26 | 0.78 |
+| open + 30 min | +0.270 | 0.151 | +0.526 | +5.16% | 2.62 | 0.82 |
+| open + 60 min | +0.303 | 0.092 | +0.395 | +4.59% | 2.37 | 0.75 |
+| midday | +0.305 | 0.101 | +0.511 | +4.24% | 2.03 | 0.93 |
+| **first close (current)** | **+0.375** | **0.029** | +0.440 | **+5.80%** | 2.57 | 1.00 |
+
+"Floor book" is the `|impact_sum| >= 3` trade of the conviction section above, signed by
+the prediction. A paired day bootstrap of each horizon minus the close puts every Δρ
+between −0.15 and −0.02 with a CI spanning zero, and every Δ return between −1.7pp and
++0.7pp, also spanning zero. **Read flat: no uniform early exit is distinguishable from
+holding to the close.** The family-wise p over the eight horizons is 0.115 for the best ρ
+and 0.007 for the best conviction ρ.
+
+### The legs say something the horizons hide
+
+Split the hold into its two legs and the flatness turns out to be two effects cancelling.
+
+| leg | ρ | floor book | t | day-demeaned | mean abs move |
+| --- | --- | --- | --- | --- | --- |
+| entry → opening print (the gap) | +0.315 | +6.21% | 2.99 | +5.31% | 8.36% |
+| opening print → close (the session) | +0.078 | −0.20% | −0.11 | −0.19% | 5.99% |
+
+The gap pays the whole thing. The session leg carries 6 points of movement per name and
+pays nothing for it. On the pooled sample that is an argument about risk, not return:
+same money, roughly 40% less of the move sat through.
+
+### amc and bmo want opposite exits
+
+| | gap ρ | gap book | session ρ | session book | session book, day-demeaned |
+| --- | --- | --- | --- | --- | --- |
+| **amc** (n=21, 12 in the book) | +0.273 | **+8.91%** | **−0.351** | **−3.00%** | −2.61% (t=−1.56) |
+| **bmo** (n=17, 10 in the book) | +0.187 | +2.96% | +0.319 | +3.16% | +1.60% (t=1.01) |
+
+An amc print gets a full overnight of processing, so the opening auction is already the
+informed price and the session that follows takes 3 points back off a book that earned
+8.9 overnight. A bmo print gets two thin hours of pre-market instead, and the session goes
+on repricing in the same direction: `edge_score`'s ρ for bmo names is +0.187 at the open
+and +0.670 at the close.
+
+Two checks the split has to survive, and does, partly. The amc floor book is six long and
+six short, so its session loss cannot be the sample's downward drift — day-demeaning moves
+it from −3.00% to −2.61%. The bmo book is eight short and two long, and day-demeaning
+halves its session gain from +3.16% to +1.60%, so **half of what makes bmo look like a
+hold is the day's average drift caught by a short-heavy book**, and neither bmo leg is
+significant on its own.
+
+### The policy, and why it is a lead and not a finding
+
+| exit policy | ρ | book | t | CI95 | long/short thirds | days positive |
+| --- | --- | --- | --- | --- | --- | --- |
+| uniform close (current) | +0.375 | +5.80% | 2.57 | [+1.38, +10.22] | +5.09%/day | 4/5 |
+| uniform opening print | +0.315 | +6.21% | 2.99 | [+2.14, +10.27] | +5.58%/day | 3/5 |
+| uniform pre-open | +0.360 | +6.61% | 3.17 | [+2.53, +10.70] | +5.43%/day | 5/5 |
+| uniform after-hours | +0.230 | +5.16% | 2.75 | [+1.48, +8.84] | +3.26%/day | 2/5 |
+| **amc at the open, bmo at the close** | **+0.461** | **+7.81%** | **4.01** | [+3.99, +11.62] | **+6.97%/day** | 4/5 |
+| amc pre-open, bmo at the close | +0.456 | +7.49% | 3.89 | [+3.71, +11.27] | +6.85%/day | 5/5 |
+
+The hybrid is the best of six on every column. It is also chosen from six after the
+session split had been read off these same 38 events. The paired day bootstrap gives its
+gain over the close as +1.87pp with a CI of [−1.30, +4.55], and the **best of the six**
+beats the close in 91% of resamples — against a null where the true answer is picked
+blind that is not a p-value, and 5 independent days is the resampling unit. Treat the
+hybrid as the next thing to run forward, not as an established improvement.
+
+### What the horizons rule out
+
+Selling **immediately after the print** is the one variant the sample rejects rather than
+merely failing to support. Only 46% of the eventual first-session move exists in the
+after-hours window (63% for amc, 43% for bmo), ρ falls to +0.230, and for bmo names it
+goes negative (−0.184). The reaction is not complete when the release hits; waiting for
+the pre-open indication is worth 0.13 of ρ over exiting into the release.
+
+The other thing the table rules out is a **tradeable** early exit at face value. Yahoo
+reports no volume on extended-hours bars, so every horizon before the opening print is a
+price that existed, not size that could have been hit — and six of the 22 book positions
+turn over under $1m a day. The opening auction is the only pre-session horizon here that
+is genuinely liquid, which is convenient, because for amc names it is also the best one.
+On the liquid subset (≥$5m/day, 26 names) the gap-versus-session pattern holds:
+ρ +0.243 at the open against +0.271 at the close, book +7.22% against +7.29%, and the
+conviction correlation is *higher* at the open (+0.477) than at the close (+0.441).
+
 ## What to change
 
 1. Score on the sum of finding impacts, or on the residual sum. Keep `edge_score` as a
@@ -674,3 +771,8 @@ day against eight gets there roughly two and a half times faster.
 6. Rename `spearman_vs_move_over_implied`, or restrict it to names with a chain.
 7. Stop presenting `confidence` and `baseline_quality` as reader guidance until they
    correlate with something.
+8. Resolve every run at the opening print as well as the close. `edge_resolve.py` measures
+   one window and the amc names are scored on the wrong one — ρ +0.273 at the open against
+   +0.156 at the close. Two columns cost nothing and the sample needs the forward test.
+9. Do not exit into the release. Under half the move is there, and for bmo names the
+   after-hours ranking is negative.

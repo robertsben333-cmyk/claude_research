@@ -127,6 +127,26 @@ week occasionally rather than letting that number rot.
 `.claude/agents/priced-in-adversary.md` and the brief scripts stay in the tree, unused, so
 either pass can be re-run deliberately.
 
+**The exit is in the wrong place for the amc names.** `edge_resolve.py` scores one
+window — regular close before the print to regular close after the first full session —
+and nobody chose it. `scripts/edge_exit.py` re-resolves all 38 de-duplicated events at
+eight horizons off 5-minute pre/post bars (`docs/edge-exit.json`). No *uniform* early
+exit is distinguishable from holding to the close: every horizon's Δρ against the close
+has a CI spanning zero, and the family-wise p over the eight is 0.115. But the two legs
+of the hold cancel rather than agree. The entry-to-open gap ranks at ρ=0.315 and pays the
+whole conviction book (+6.21%, t=2.99); the open-to-close session leg ranks at ρ=0.078
+and pays −0.20%, for 6 points of movement sat through. And the two sessions want opposite
+things: **amc** gaps at ρ=+0.273 / +8.91% and then gives back −3.00% intraday (−2.61%
+day-demeaned, and the book is 6 long / 6 short so it is not drift), while **bmo** is
++0.187 at the open and +0.670 at the close. Selling into the release is the one variant
+the sample rejects: only 46% of the move exists there and for bmo names its ranking is
+negative. The hybrid — amc at the opening print, bmo at the close — is the best of six
+policies at ρ=0.461 and +7.81% (t=4.01), but it was chosen after reading the split off
+these same 38 events, the bootstrap puts its gain at +1.87pp with a CI of [−1.30, +4.55],
+and the best of the six beats the close in 91% of resamples. Run it forward; do not
+believe it yet. Extended-hours bars carry no volume from this source, so every horizon
+before the opening auction is a price that existed and not size that could have traded.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080
