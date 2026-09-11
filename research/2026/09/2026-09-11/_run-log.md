@@ -22,3 +22,10 @@
 - mode --require auction_split: PASS (exit 0) after the config change.
 - close --scan 'research/*/*/*/edge' --submit: HOFT (bmo) not sent -- cls unavailable, market closed at 07:49:33 ET (correct, will go in at stage E's own run today). FEIM (amc) SENT opg 5cad5a24-b3f4-401e-8c68-f71b3ab6ca0a. ORCL (amc) SENT opg 58792a00-ceef-4810-8b21-c2ac9dc9c79a. RH (amc) SENT opg d53747ca-36bb-416b-9ea2-5f1323bc3ea8.
 - status: all 3 opg exits queued (new, unfilled -- auction has not run yet). No refusals other than the expected HOFT/cls deferral.
+
+## Edge hunt — 2026-09-11 amc + 2026-09-14 bmo — STARTED
+- Logged at 2026-09-11 17:07 UTC
+- Window resolves 4 names, ALL 2026-09-14 bmo (Monday); zero amc tonight. Universe: CSHR, CODA, RFIL, HAIN. Baselines sealed and committed before any agent launch. Plan: 1 sweep + 1 hunter per confirmed name (<= 4 hunters), well inside the cap of 20.
+- Clock: session started 17:05 UTC. The Routine's own prompt still says it fires at 14:04 UTC / 10:04 ET; trig_01CvGQJWoKeNLXWCxiffM3ED reads '4 17 * * 1-5' and it fired at 17:04 UTC = 13:04 ET. Entry deadline (US close, 20:00 UTC) is 2h55m from start, not the 6h the prompt assumes.
+- Step 0b (execution.enabled: true, exit_mode: auction_split, flatten_before_entry: false): closed 2026-09-10's book. The 'Close AMC' Routine had already sent the three amc legs into this morning's opening auction at 11:49 UTC — ORCL covered 12 @ 165.43 (short from 155.78, -6.19%); FEIM and RH opg orders EXPIRED UNFILLED and were caught by plain market orders at 13:34 UTC: FEIM covered 31 @ 81.90 (short from 63.42, -29.14%), RH sold 14 @ 137.51 (long from 138.98, -1.06%). This session sent the remaining bmo leg, HOFT 161 sh, into TODAY's closing auction (cls, order ca3f9aca), unrealised -1.18% at submission. Realised on the three closed legs: -709.23 USD. Account equity 9,266.75 from 10,000 at yesterday's entry.
+- First-day operational finding on auction_split: two of three opg orders expired unfilled in the paper opening auction. The mode works but is not self-sufficient — the fallback market order is what actually closed FEIM and RH.
