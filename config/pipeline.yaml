@@ -281,7 +281,12 @@ execution:
     # is nearer the next OPEN, which measured weaker on the same events (rho=+0.331,
     # p=0.046). Ten to twenty basis points of that gap is the price of a one-run-a-day
     # operation with no overnight order to babysit.
-    flatten_before_entry: true
+    #
+    # 2026-09-11: set to false -- required alongside exit_mode: auction_split, since
+    # the flatten would otherwise sell every amc leg at market hours before its
+    # opening auction. `open`'s own refusal (any position past its exit date with no
+    # exit submitted blocks a new book) is the safety net this now relies on.
+    flatten_before_entry: false
     # BUY IMMEDIATELY, at market, the moment the note is published -- not in the
     # closing auction, which is the entry edge_resolve.py scores.
     #
@@ -358,7 +363,12 @@ execution:
     # available on both paid between -1.42% and -0.05% a trade; and
     # backtest/RESULTS.md puts the close ahead of the open on its own 37 sealed
     # events for all three arms. Re-price those 37 on edge/scripts/edge_exit.py's hourly
-    # grid before moving off `uniform`.
+    # grid -- this operator decision does not wait for that.
+    #
+    # 2026-09-11: switched to `auction_split` on the operator's explicit instruction,
+    # replication risk acknowledged and accepted. The requirement is that amc legs
+    # always exit into the opening auction rather than sit until stage E's own
+    # flatten at ~13:04 ET. See "Close AMC" (trig_01MPuhVvtDgvUYzZXkKpHpKD).
     #
     # Either non-uniform mode also needs `flatten_before_entry: false`, or the
     # flatten sells everything before any auction arrives. Since 2026-09-10 the
@@ -368,6 +378,6 @@ execution:
     # Getting it wrong never loses the book either way: `close` sends anything past
     # its exit date at plain market on the next run, and `open` REFUSES to enter a new
     # book while a position is overdue and unsold.
-    exit_mode: uniform            # uniform | bmo_close | auction_split
+    exit_mode: auction_split      # uniform | bmo_close | auction_split
     time_in_force: day           # market entries, and the plain-market fallback
     allow_shorts: true           # a short leg also needs Alpaca to call it shortable

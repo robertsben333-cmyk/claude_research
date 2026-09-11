@@ -19,7 +19,7 @@ If you are a Routine session, read this whole file before doing anything.
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
-| X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. A no-op while `exit_mode` is `uniform` |
+| X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11 (`exit_mode: auction_split`); see "`exit_mode` moved off `uniform`" below |
 
 Stage N is not part of the daily advice pipeline. It is `backtest/` arm A promoted to
 production: the method that scored 72% direction and +0.90% per trade over 37 events
@@ -211,8 +211,9 @@ overrides and stacks a second book on the first). That refusal is what makes the
 per-session exit safe to switch on: `flatten_before_entry` used to guarantee a clean slate
 by selling everything, and once the flatten is off the guarantee has to come from checking.
 
-**The per-session exit is three modes in `alpaca_trade.py`, and it ships on the dullest
-one.** `orders.exit_mode` picks which instrument closes a position, per session. Per trade
+**The per-session exit is three modes in `alpaca_trade.py`; it shipped on the dullest one
+until 2026-09-11** (see "`exit_mode` moved off `uniform`" below for what runs now).
+`orders.exit_mode` picks which instrument closes a position, per session. Per trade
 over the 38 de-duplicated events, on the conviction book: **`uniform`** +4.49% (t=2.52),
 the flatten selling everything at market when the next run starts, about 10:00 ET;
 **`bmo_close`** +6.27% (t=3.34), amc at market on the run and bmo into today's closing
@@ -222,14 +223,16 @@ close. The two sessions want opposite things — amc pays +8.91% in the opening 
 amc print has had a whole overnight to be processed while a bmo print has had two thin hours
 of pre-market and keeps repricing.
 
-**`bmo_close` is reachable from the existing Routine; `auction_split` is not.** Alpaca
-*rejects* rather than queues an `opg` order between 09:28 and 19:00 ET, so nothing firing in
-the European afternoon can sell an amc position into its own opening auction. `bmo_close`
-therefore buys +1.77pp of the +3.32pp on offer for one config line
-(`flatten_before_entry: false`), and `auction_split` buys the other +1.54pp at the cost of a
-second daily Routine at 14:00 Amsterdam that **only a person can create** — `create_trigger`
-is refused to agent sessions here, confirmed on 2026-09-10. The prompt is written out in
-`edge/routine-prompts/edge-execute.md`. Do `bmo_close` first. **Recycling the amc cash buys
+**`bmo_close` was reachable from the existing Routine alone; `auction_split` needed the
+second one, which now exists.** Alpaca *rejects* rather than queues an `opg` order between
+09:28 and 19:00 ET, so nothing firing in the European afternoon can sell an amc position
+into its own opening auction — that is what "Close AMC" (created 2026-09-10, cron `0 10
+* * 1-5`) is for. `bmo_close` bought +1.77pp of the +3.32pp on offer for one config line
+(`flatten_before_entry: false`); `auction_split` buys the other +1.54pp on top of that
+Routine, which **only a person could create** — `create_trigger` is refused to agent
+sessions here, confirmed on 2026-09-10. The prompt is written out in
+`edge/routine-prompts/edge-execute.md`. `auction_split` is what runs since 2026-09-11 — see
+below. **Recycling the amc cash buys
 no extra return**: with one auction entry a day the capital slot is 24 hours either way,
 which is why `capital_table` in `edge_exit.py` prints return per slot-day equal to return
 per trade and flags the hours-held version as a denominator artefact. What it buys is
@@ -388,6 +391,23 @@ because the old prompt named a key that a measurement then demoted.
   is gone; `docs/routine-prompts/README.md` was left in its place pointing at
   `edge/routine-prompts/`, because this Routine fires at 10:00 UTC — before any session
   can be asked about it.
+
+**`exit_mode` moved off `uniform` on 2026-09-11, on the operator's explicit instruction,
+replication risk knowingly accepted.** `config/pipeline.yaml` now ships
+`exit_mode: auction_split` and `flatten_before_entry: false`. The requirement stated was
+"amc is always run and closed by market open" — the two caveats above (unreplicated on
+09-08/09-09, and `backtest/RESULTS.md`'s 37 sealed events favoring the close for all three
+arms) were read and set aside, not missed. Practically: the "Close AMC" Routine is no
+longer a no-op, `mode --require auction_split` now exits 0, and stage E's own run must stop
+flattening the book at the start of each session — `open`'s refusal to enter a new book
+over an unsold, past-exit-date position is now the only thing keeping the account from
+stacking books, so do not reintroduce `flatten_before_entry: true` without also reverting
+`exit_mode`. The first book run under this config: 2026-09-11, closing 2026-09-10's amc
+legs (FEIM, ORCL, RH) into that morning's opening auction; HOFT (bmo) deferred to stage
+E's own closing-auction leg since `cls` is not accepted at 08:00 ET. If a future session
+finds `exit_mode: uniform` again, that is a reversion someone made deliberately — check the
+run log and this file's history before assuming it is stale, the same way the table above
+must be checked against `list_triggers` rather than trusted by itself.
 
 **The five pipeline Routines do not currently exist.** `RemoteTrigger list` on
 2026-08-29 returned six routines on this account — a disabled SFNL tender monitor, three
