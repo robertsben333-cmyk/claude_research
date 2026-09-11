@@ -29,3 +29,10 @@
 - Clock: session started 17:05 UTC. The Routine's own prompt still says it fires at 14:04 UTC / 10:04 ET; trig_01CvGQJWoKeNLXWCxiffM3ED reads '4 17 * * 1-5' and it fired at 17:04 UTC = 13:04 ET. Entry deadline (US close, 20:00 UTC) is 2h55m from start, not the 6h the prompt assumes.
 - Step 0b (execution.enabled: true, exit_mode: auction_split, flatten_before_entry: false): closed 2026-09-10's book. The 'Close AMC' Routine had already sent the three amc legs into this morning's opening auction at 11:49 UTC — ORCL covered 12 @ 165.43 (short from 155.78, -6.19%); FEIM and RH opg orders EXPIRED UNFILLED and were caught by plain market orders at 13:34 UTC: FEIM covered 31 @ 81.90 (short from 63.42, -29.14%), RH sold 14 @ 137.51 (long from 138.98, -1.06%). This session sent the remaining bmo leg, HOFT 161 sh, into TODAY's closing auction (cls, order ca3f9aca), unrealised -1.18% at submission. Realised on the three closed legs: -709.23 USD. Account equity 9,266.75 from 10,000 at yesterday's entry.
 - First-day operational finding on auction_split: two of three opg orders expired unfilled in the paper opening auction. The mode works but is not self-sufficient — the fallback market order is what actually closed FEIM and RH.
+
+## Edge hunt — 2026-09-11 — SWEEP
+- Logged at 2026-09-11 17:11 UTC
+- 4 of 4 confirmed, 0 phantom, 0 session-unsettled. Every date came off a company press release or IR page, every session off a stated release/call time. hunt_priority: HAIN 82, CSHR 74, RFIL 63, CODA 52.
+- RFIL is a session regime change caught by the sweep rather than inherited: all seven prior prints were amc by 8-K item 2.02 acceptance time, this one is company-stated bmo.
+- CSHR baseline_history_trustworthy=false — its three recorded 'moves' are corporate-action 6-Ks, one verified as an EGM notice, so the 4.46% expected move and 2.23% deadband are meaningless. CODA's n=0 is genuine absence (it does not file item 2.02 8-Ks at all), so the matcher imported nothing wrong but there is still no base rate.
+- Three of four have no usable option chain; RFIL's has a 67%-of-mid ATM spread. The day has essentially no option-implied anchor.
