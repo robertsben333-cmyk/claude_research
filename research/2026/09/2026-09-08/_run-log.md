@@ -214,3 +214,9 @@
 ## Stage E — edge hunt — CONVICTION FLOOR
 - Logged at 2026-09-09 13:39 UTC
 - The direction skill is conditional on prediction size. Threshold-free test: rank of |impact_sum| vs sign-correct gives rho=+0.514 (permutation p=0.0015) to the next close and +0.331 (p=0.046) to the open. Above the median prediction the sign is right on 74% of events, below it 53%. |pred|>=3 gives 16/21 and +6.37%/trade (t=2.74, CI [+1.80,+10.72]); best of seven thresholds clears family-wise at p=0.034. Not one day (spread over five), not the microcaps (median turnover 7.5m vs 69.9m in the bottom bucket), not a volatility proxy (top bucket has the smallest median realised move). The identical test on |edge_score| returns +0.077 and -0.003, so the scorer destroys the conviction signal as well as the ordering. See docs/EDGE_ANALYSIS.md.
+
+## Stage 4 — calibration — LEDGER.md integrated
+- Logged at 2026-09-11 06:26 UTC
+- Outcome files (05-outcome.md/.json) for this run were scored 2026-09-10 on branch determined-bardeen-pdvo4v and merged into main's research/ tree by the same-day repo-cleanup commit (e99aa239), but LEDGER.md itself was never updated with this run's numbers — that commit touched no LEDGER.md lines.
+- Closed 2026-09-11: TTAN (panelled, High certainty, Neutral call, -29.98% actual vs 13.14% implied — largest magnitude miss in the ledger, on the tightest panel agreement scored to date) and CHWY (panelled, High, Neutral, -10.83% actual vs 10.65% implied — hit) added to the Runs table; panelled n 13->15 (9/15, 60%), independent-event n 11->13 (7/13, 54%); preliminary n 29->35 (15/35, 43%); certainty-tier High n 5->7 (3/7, 43%) vs Med steady at 6/8 (75%).
+- No new research or WebSearch was needed — the outcome data already existed and was internally consistent with the merged 05-outcome.json; this pass only integrated it into the ledger's summary, certainty table and Runs table.
