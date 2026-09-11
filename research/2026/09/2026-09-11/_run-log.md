@@ -15,3 +15,9 @@
 - Scouts: 0 subagents (skip mode)
 - Session mix: 0 AMC / 1 BMO
 - Notable drops: CODA (below_market_cap_floor), RFIL (below_market_cap_floor), HAIN (below_market_cap_floor) -- all dropped at stage 0, none reached triage
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-11 08:24 UTC
+- Shortlist: 1 name; this batch: CSHR
+- Already on disk, skipping: none
+- Plan: 1 researcher (single wave, wave_size=2 not needed), publish after it completes
