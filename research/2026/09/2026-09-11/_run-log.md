@@ -15,3 +15,10 @@
 - Scouts: 0 subagents (skip mode)
 - Session mix: 0 AMC / 1 BMO
 - Notable drops: CODA (below_market_cap_floor), RFIL (below_market_cap_floor), HAIN (below_market_cap_floor) -- all dropped at stage 0, none reached triage
+
+## Close AMC — 2026-09-11
+- Logged at 2026-09-11 11:49 UTC
+- Config change (operator instruction): orders.exit_mode uniform -> auction_split, flatten_before_entry true -> false in config/pipeline.yaml. Replication risk explicitly acknowledged and accepted by the operator; requirement is amc legs always exit at the opening auction.
+- mode --require auction_split: PASS (exit 0) after the config change.
+- close --scan 'research/*/*/*/edge' --submit: HOFT (bmo) not sent -- cls unavailable, market closed at 07:49:33 ET (correct, will go in at stage E's own run today). FEIM (amc) SENT opg 5cad5a24-b3f4-401e-8c68-f71b3ab6ca0a. ORCL (amc) SENT opg 58792a00-ceef-4810-8b21-c2ac9dc9c79a. RH (amc) SENT opg d53747ca-36bb-416b-9ea2-5f1323bc3ea8.
+- status: all 3 opg exits queued (new, unfilled -- auction has not run yet). No refusals other than the expected HOFT/cls deferral.
