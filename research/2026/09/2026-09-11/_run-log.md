@@ -36,3 +36,11 @@
 - RFIL is a session regime change caught by the sweep rather than inherited: all seven prior prints were amc by 8-K item 2.02 acceptance time, this one is company-stated bmo.
 - CSHR baseline_history_trustworthy=false — its three recorded 'moves' are corporate-action 6-Ks, one verified as an EGM notice, so the 4.46% expected move and 2.23% deadband are meaningless. CODA's n=0 is genuine absence (it does not file item 2.02 8-Ks at all), so the matcher imported nothing wrong but there is still no base rate.
 - Three of four have no usable option chain; RFIL's has a 67%-of-mid ATM spread. The day has essentially no option-implied anchor.
+
+## Edge hunt — 2026-09-11 — HUNTS AND RANKING
+- Logged at 2026-09-11 17:23 UTC
+- 4 hunters, one per confirmed name, 17 findings total. Subagent spend: 1 sweep + 4 hunters = 5 of the cap of 20. No names shed; the universe was smaller than the budget.
+- Ranking on impact_sum (edge-scores.json ranking_key = impact_sum): RFIL +2.50, CODA -4.10, CSHR -5.50, HAIN -5.50. CSHR and HAIN TIE, so the day is three distinct positions over four names, not a strict order. 3 of 4 clear the conviction floor of 3.0; RFIL at 2.50 does not.
+- THE CONTROL REPRODUCED THE HUNT. -run_up_20d_pct ranks RFIL, CODA, HAIN, CSHR; the hunt ranks RFIL, CODA, CSHR=HAIN. Spearman between them is +0.95. Four names cannot support a correlation statistic, but this day bought essentially nothing the free control did not already give away.
+- Sign balance 3 negative / 1 positive. Option chains: 1 of 4 live (RFIL), and its ATM spread is 67% of mid, so on a strict reading zero of four have a usable priced-move anchor. CSHR's reaction history is unusable (baseline_history_trustworthy false) and CODA's n=0 is genuine absence — both hunters were told so explicitly.
+- No adversary pass and no second hunter, so nothing checked these 17 findings for being factually wrong.
