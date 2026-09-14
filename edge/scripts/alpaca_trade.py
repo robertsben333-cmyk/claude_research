@@ -698,6 +698,16 @@ def overdue_legs(today, scan="research/*/*/*/edge", held=None):
             continue
         state = json.loads(p.read_text(encoding="utf-8"))
         done = {x.get("closes") for x in state.get("exits", []) if x.get("submitted")}
+        # ... but only for a symbol the account has actually let go of. A partially
+        # filled exit that then expired leaves the record submitted and the shares
+        # held, and reading `done` alone turned that into a position no run would
+        # sell and no `open` would refuse to trade over — a silent leak, which is
+        # worse than the loud refusal this function exists to raise. When `held` is
+        # known it outranks the ledger: still held means still unsold.
+        if held is not None:
+            done = {c for c in done
+                    if not any(e.get("client_order_id") == c and e["symbol"] in held
+                               for e in state.get("entries", []))}
         for e in state.get("entries", []):
             xd = e.get("exit_date")
             if (e.get("submitted") and xd and xd < today
@@ -706,6 +716,32 @@ def overdue_legs(today, scan="research/*/*/*/edge", held=None):
                 out.append({"run": run, "symbol": e["symbol"], "exit_date": xd,
                             "side": e["side"], "qty": e.get("qty")})
     return out
+
+
+# Alpaca order states in which an order can still trade. Anything else — filled,
+# expired, canceled, rejected, done_for_day — can never fill another share, so a
+# position still open behind one of those is a leg nothing is selling.
+LIVE_ORDER_STATUSES = {
+    "new", "accepted", "pending_new", "partially_filled", "held",
+    "accepted_for_bidding", "pending_replace", "replaced", "calculated",
+    "stopped", "suspended", "pending_cancel",
+}
+
+
+def order_live(api, rec):
+    """Is this recorded order still capable of filling, per the broker right now?
+
+    Unknown counts as live. A failed lookup must not be the reason a position gets
+    sold a second time; the cost of being wrong that way is a real duplicate trade,
+    while the cost of the other way is one more overdue line in the next run's log.
+    """
+    cid = rec.get("client_order_id")
+    if not api.usable or not cid:
+        return True
+    o, err = api.call("GET", f"/v2/orders:by_client_order_id?client_order_id={cid}")
+    if not o:
+        return False if err and "404" in str(err) else True
+    return str(o.get("status", "")).lower() in LIVE_ORDER_STATUSES
 
 
 EXIT_MODES = ("uniform", "bmo_close", "auction_split")
@@ -1127,9 +1163,39 @@ def cmd_close(a, api, ex):
             if a.submit and not e.get("submitted"):
                 continue                    # in a dry run, show them all instead
             cid = client_id(run, e["symbol"], "exit")
-            if any(x.get("client_order_id") == cid and x.get("submitted")
-                   for x in state["exits"]):
-                continue
+            # A submitted exit is not a closed position. HOFT's exit on 2026-09-11 went
+            # in as `cls`, filled 17 of 161 and expired; the record said submitted, so
+            # every later run skipped it here and 144 shares sat open with nothing in
+            # the repo that would ever sell them. Submission is an intention — the only
+            # evidence a leg is finished is that the account no longer holds it. So the
+            # skip stands only while the position is really gone, and the re-send below
+            # is sized to what Alpaca reports it still holds, never to the entry qty.
+            prior = [x for x in state["exits"]
+                     if x.get("closes") == e["client_order_id"] and x.get("submitted")]
+            if prior:
+                still_held = None
+                if api.usable:
+                    pos, _ = api.position(e["symbol"])
+                    still_held = abs(float(pos.get("qty", 0))) if pos else 0.0
+                if still_held is None or still_held == 0.0:
+                    continue
+                # Held shares are not enough on their own: a `cls` order sent earlier
+                # in this same session sits at `new` until the auction, and the
+                # position stays open the whole time. Re-sending then would sell the
+                # position twice, which is the other half of the invariant. So a leg
+                # is only retried once every prior exit order is *dead* at the broker
+                # — the stored status is the status at submission and cannot say that,
+                # so it is re-read here.
+                if any(order_live(api, x) for x in prior):
+                    print(f"  {run} {e['symbol']:8s} exit already working at the "
+                          f"broker; leaving it alone")
+                    continue
+                # Alpaca rejects a duplicate client_order_id, so a retry needs its own.
+                # Suffixing keeps the original record intact and makes the retry legible
+                # in alpaca-orders.json rather than overwriting the history of the leg.
+                cid = f"{cid}-r{len(prior) + 1}"
+                print(f"  {run} {e['symbol']:8s} exit submitted {len(prior)}x but "
+                      f"{still_held:g} still held; re-sending as {cid}")
             # A leg whose exit date has PASSED is overdue, not finished. The old rule
             # closed only `exit_date == today`, so one missed run left a position that
             # no later run would ever sell. Overdue legs go at plain market: their
