@@ -70,3 +70,7 @@
 ## Stage 3 — panel & advice — LUXE panel complete
 - Logged at 2026-09-15 16:09 UTC
 - 7/7 personas returned for LUXE (no retries needed). Synthesis: consensus +8.3, disparity 30.1 (mixed), certainty Low (36.9, no implied-move anchor + 3/7 Low confidence + red-team reversal 72), call Neutral / No Edge. No chair override. Spot correction: anchor handed to panel ($7.83) was stale/wrong -- 4 of 7 personas independently sourced ~$7.15-7.18 as-of today; corrected spot $7.16 used in the dossier, noted in 03-panel/LUXE.json anchors.spot_correction_note. Implied move stays null (no functioning options market, a market-structure fact per stage 2, confirmed independently by all 7 personas).
+
+## Edge hunt — 2026-09-15 amc + 2026-09-16 bmo — STARTED
+- Logged at 2026-09-15 17:07 UTC
+- Stage E fired 17:04 UTC (13:04 ET). Window resolves 4 names of 38 calendar rows: TCOM, EPM (2026-09-15 amc); LUXE, ISPR (2026-09-16 bmo). Sealed baselines written and committed before any subagent. Option chain live on 2 of 4 (TCOM 6.89% straddle, LUXE 11.18%); EPM and ISPR fall back to historical median. TCOM and LUXE baselines carry cadence_implausible=true (6-K text matcher caught sub-quarterly filings), so their reaction history is not an earnings base rate — sweep to confirm dates from company sources, then edge_baseline_amend.py symmetrically. Plan: 1 edge-sweep + 1 unpriced-hunter per confirmed name, well inside the cap of 20.
