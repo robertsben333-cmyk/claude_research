@@ -15,3 +15,9 @@
 - Scouts: 0 subagents (screen skipped)
 - Session mix: 1 AMC / 1 BMO
 - Notable drops: none at this stage (EPM, ISPR already excluded by stage 0 for below_market_cap_floor)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-15 08:23 UTC
+- Shortlist: 2 names (TCOM, LUXE); this batch: TCOM
+- Already on disk, skipping: none
+- Plan: wave of 1 opus/high researcher (TCOM), publish after the wave
