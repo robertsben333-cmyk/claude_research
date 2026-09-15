@@ -42,3 +42,9 @@
 - status --scan confirms: 2026-09-14/edge RLGT exit order state 'new' (pending the auction); 2026-09-11/edge CODA still OPEN -144 @ 10.1 (-4.06%); 2026-09-14/edge VRA/FPS/RLGT entries all filled and open pending their own exits.
 - Account reachable throughout: paper, equity $9,798.36, cash $5,230.82, buying power $27,398.42.
 - Flagging for a human: the CODA overdue short (144 sh) has failed two consecutive close attempts (cls partial fill, then day-order refusal pre-open) and needs an exit sent once the market opens, or it will keep blocking future 'open' calls.
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-15 10:23 UTC
+- Shortlist: 2 names (TCOM, LUXE); this batch: LUXE
+- Already on disk, skipping: TCOM (batch 1 completed it)
+- Plan: wave of 1 opus/high researcher (LUXE); batch has only 1 name so wave_size 2 not reached
