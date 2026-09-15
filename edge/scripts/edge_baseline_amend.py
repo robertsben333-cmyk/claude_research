@@ -45,7 +45,36 @@ from pathlib import Path
 # every entry and then "DRY RUN", which reads exactly like "nothing to amend" --
 # on 2026-09-01 the 2026-08-31 table was still in place and did that. The guard
 # in main() now makes a fully stale table exit non-zero instead of looking clean.
-AMENDMENTS = {
+#
+# 2026-09-15: THE PASS IS EMPTY, AND THAT IS THE ANSWER RATHER THAN AN OVERSIGHT.
+# The sweep confirmed 4 of 4 names from company sources with zero phantom rows and
+# zero unsettled sessions, so nothing needs killing. Nothing needs upgrading either:
+#   - No name on this run carries 'suspect', and 'suspect' is the ONLY verdict that
+#     changes anything ranked (rankable=False, baseline_quality x0.05). Every other
+#     verdict feeds event_q into baseline_quality, which lives in diagnostics and
+#     decides nothing.
+#   - TCOM and LUXE carry cadence_implausible with verdict 'unknown', and both events
+#     ARE company-confirmed -- TCOM from its own 6-K filed 2026-09-02 (accession
+#     0001193125-26-379443, exhibit 99.1), LUXE from its IR release of 2026-08-26. So
+#     the instinct is to upgrade both. They stay at 'unknown' for the DSGX / MNY / CMCM
+#     reason: both are foreign private issuers, the 6-K text matcher caught non-earnings
+#     filings, and the sweep rates both reaction histories untrustworthy. LUXE's is
+#     self-evidently broken -- 2025-11-19 appears three times, twice as amc at an
+#     identical -3.00% and once as bmo at -5.25%. Upgrading to fits_cadence would
+#     forgive a history defect and hand each name a 1.0 event multiplier it has not
+#     earned. 'unknown' is exactly "the event exists but its history does not
+#     characterise it", and it does not bar either name from ranking.
+#   - ISPR stays 'unknown' on the REF reasoning: the event is confirmed by the
+#     company's PR Newswire release of 2026-09-09, but history.n=2 is thinness rather
+#     than an artefact and 'unknown' states what is known.
+#   - EPM is already 'fits_cadence' on a history the sweep rates trustworthy (126 days
+#     against a 91-day cadence), and its date is company-confirmed. Nothing to correct.
+# Net effect: no verdict changes. The history warnings go to the hunters instead, which
+# is where they can actually affect a number. Rewriting this table to {} rather than
+# leaving the 2026-09-10 entries in place is the point of the staleness guard below.
+AMENDMENTS: dict[str, tuple[str, str, str]] = {}
+
+_RETIRED_2026_09_10 = {
     "CSBR": ("fits_cadence",
              "UPGRADE off 'suspect', and it is the ONLY amendment in today's pass "
              "that changes anything ranked: edge_score.py sets rankable=False on a "
