@@ -660,6 +660,19 @@ def main():
           at.exit_tif_for("amc", _mode("auction_split")) == "opg")
     check("auction_split sends bmo to the closing auction",
           at.exit_tif_for("bmo", _mode("auction_split")) == "cls")
+    # amc_open is auction_split with the bmo leg brought forward to the run itself,
+    # so the position is certainly gone before the same afternoon buys the next book.
+    check("amc_open sends amc to the opening auction and bmo at market",
+          (at.exit_tif_for("amc", _mode("amc_open")) == "opg"
+           and at.exit_tif_for("bmo", _mode("amc_open")) == "day"),
+          f'amc={at.exit_tif_for("amc", _mode("amc_open"))} '
+          f'bmo={at.exit_tif_for("bmo", _mode("amc_open"))}')
+    # The second exit Routine exists to place `opg` orders, not to serve one named
+    # mode. A guard naming auction_split alone stopped doing anything the moment
+    # amc_open shipped -- while still reporting a correct-looking no-op.
+    check("both opening-auction modes are reachable by the opg guard",
+          all(at.exit_tif_for("amc", _mode(m)) == "opg"
+              for m in ("auction_split", "amc_open")))
     check("an unknown session falls back to the closing auction",
           at.exit_tif_for(None, _mode("auction_split")) == "cls")
     check("exit_by_session: true still means auction_split",
@@ -671,7 +684,7 @@ def main():
     # The contradiction that was documented in three places and enforced in none:
     # the flatten sells the amc names at market hours before the auction the mode
     # exists to reach, so the configured exit could never happen and nothing said so.
-    for _m in ("bmo_close", "auction_split"):
+    for _m in ("bmo_close", "auction_split", "amc_open"):
         try:
             at.exit_mode(_mode(_m, flatten=True))
             check(f"{_m} with the flatten still on is refused", False,

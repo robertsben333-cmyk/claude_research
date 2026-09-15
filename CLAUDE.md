@@ -211,6 +211,36 @@ overrides and stacks a second book on the first). That refusal is what makes the
 per-session exit safe to switch on: `flatten_before_entry` used to guarantee a clean slate
 by selling everything, and once the flatten is off the guarantee has to come from checking.
 
+**`exit_mode` moved to `amc_open` on 2026-09-15, on the operator's requirement that a
+bmo leg is gone before the same afternoon buys the next book.** amc still goes into the
+opening auction from the "Close AMC" Routine; bmo now goes at **plain market on stage E's
+own run at 13:05 ET** instead of into that day's closing auction. It is measurably worse
+on the fitted sample and that was accepted, not missed: `edge/scripts/edge_exit.py` scores
+it as the `amc_open_bmo_1300` policy at ρ=0.391, 16/22 and **+6.49% per trade (t=3.42)**
+against ρ=0.461, 17/22 and +7.81% (t=4.01) for `auction_split` — 1.31pp, on a paired day
+bootstrap against `uniform_close` of +0.57 [−2.86, +3.18], so neither is established. Two
+things that number cannot see: the +6.48% for a bmo closing auction **assumes the `cls`
+order fills**, and on this book it has filled 39 of 183 and 17 of 161 before expiring; and
+a bmo leg still open at 13:05 ET is still open when step 7 buys at 13:24 ET, so gross
+exposure stacks — VRA and FPS were held straight through LUXE's entry on 09-15, and
+`open`'s refusal does not catch it because a leg whose exit order is *working* is not past
+its exit date. A market sell is verifiable inside the same session, so the budget the
+entry divides is a known quantity. What it does not buy is return per unit of capital:
+`capital_table` prints return per slot-day equal to return per trade for every policy,
+because with one entry a day the slot is 24 hours either way.
+
+**The second Routine's guard had to change with the mode, and only a person can paste
+it.** "Close AMC" exists to place `opg` orders, and its pasted guard names
+`auction_split` — so from 2026-09-15 it fails, and a failing guard there reports a
+correct-looking no-op every morning while no amc leg reaches its auction. The guard is now
+about the instrument: `alpaca_trade.py mode --require-exit-tif opg` exits 0 whenever
+either session's exit is an `opg` order, and survives the next mode being renamed.
+`--require` also takes a comma-separated list. **Until `edge/routine-prompts/edge-execute.md`
+is re-pasted into `trig_01MPuhVvtDgvUYzZXkKpHpKD`, amc legs are not sold into the opening
+auction at all** — stage E's own run picks them up the next day as overdue, at market,
+which is a loud and recoverable failure rather than a silent one, but it is not the exit
+that was chosen.
+
 **The auction exits mostly did not sell, and until 2026-09-15 nothing looked.** Seven
 exits have gone into an auction since `exit_mode: auction_split` shipped. One filled:
 ORCL, the only mega-cap. HOFT filled 17 of 161 and expired, CODA 39 of 183, FEIM 0 of

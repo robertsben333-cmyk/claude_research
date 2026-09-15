@@ -149,7 +149,11 @@ python3 edge/scripts/alpaca_trade.py flatten --submit
 ```
 
 **Unless `orders.exit_mode` is not `uniform`.** Then the flatten is wrong — it sells every
-name at market when at least one of them wants an auction — and the sell is two calls:
+name at market when at least one of them wants an auction — and the sell is three calls.
+The shipped mode since 2026-09-15 is `amc_open`: amc legs went into the opening auction
+hours ago from the "Close AMC" Routine, and the bmo legs due today are yours to sell at
+plain market, right here, before step 7 buys. That ordering is the point of the mode —
+a bmo position still open when the entry is sized means gross exposure stacks.
 
 ```bash
 python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit

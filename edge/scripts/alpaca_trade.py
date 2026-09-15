@@ -931,11 +931,11 @@ def verify_exits(api, runs, ex, submit, blocked, wait_s=0, fix=True, quiet=False
     return rows
 
 
-EXIT_MODES = ("uniform", "bmo_close", "auction_split")
+EXIT_MODES = ("uniform", "bmo_close", "auction_split", "amc_open")
 
 
 def exit_mode(ex):
-    """Which of the three exit schemes is configured.
+    """Which of the four exit schemes is configured.
 
     `exit_by_session: true` is kept as an alias for `auction_split`; it was the first
     shape of this setting and turning it on already meant that scheme.
@@ -987,12 +987,41 @@ def exit_tif_for(session, ex):
                       closing auction. Needs a SECOND Routine at 14:00 Amsterdam,
                       because Alpaca rejects `opg` between 09:28 and 19:00 ET
 
+      amc_open        +6.49% (t=3.42)  amc into the opening auction, bmo at plain
+                      market on the run at 13:00 ET. Same second Routine as
+                      auction_split; gives up 1.31pp against it, and is the only mode
+                      whose bmo leg is CERTAIN to be gone before the same afternoon
+                      buys the next book
+
     So `bmo_close` buys +1.77pp of the +3.32pp on offer and costs no new machinery;
     `auction_split` buys the remaining +1.54pp and costs a second daily firing that
     only a person can create. None of it is established: on 09-08 and 09-09 every exit
     hour available on both days paid between −1.42% and −0.05% per trade, and
     `backtest/RESULTS.md` puts the close ahead of the open on its own 37 sealed events
     for all three arms.
+
+    WHY `amc_open` EXISTS, given that it is measurably worse than `auction_split`.
+    Two reasons the +7.81% cannot see, and both are about the bmo leg:
+
+    The +6.48% for a bmo closing auction assumes the `cls` order FILLS. On this book
+    it has filled 39 of 183 (CODA) and 17 of 161 (HOFT) and then expired, because an
+    auction order crosses once and takes whatever size the contra side brings. The
+    rest was sold at market one to three days later with the overnight exposure that
+    implies. A return that expires in the auction is not a return.
+
+    And a bmo leg still open at 13:05 ET is still open when step 7 buys at 13:24 ET.
+    The sizing divides a gross budget over the new names without knowing the old book
+    is still there, so gross stacks: on 2026-09-15 VRA and FPS were held through
+    LUXE's entry. `open` does not refuse it either, because a leg whose exit order is
+    working is not past its exit date. A plain market sell at 13:05 ET is verifiable
+    within the same session -- which is what the fill check is for -- so the budget
+    the entry divides is known to be free.
+
+    The cost is measured and is not zero: 1.31pp per trade over the same 22 trades,
+    ρ 0.391 against 0.461, and 16 of 22 right instead of 17. Against `uniform_close`
+    (+5.80%) it is still ahead by +0.57pp, on a paired day bootstrap of [−2.86, +3.18]
+    -- which is to say, not established either. `edge/scripts/edge_exit.py` scores it as
+    the `amc_open_bmo_1300` policy; re-run it as days pool.
     """
     mode = exit_mode(ex)
     plain = ex["orders"].get("time_in_force", "day")
@@ -1001,6 +1030,8 @@ def exit_tif_for(session, ex):
             "market_on_close" else plain
     if mode == "bmo_close":
         return plain if session == "amc" else "cls"
+    if mode == "amc_open":
+        return "opg" if session == "amc" else plain
     return "opg" if session == "amc" else "cls"
 
 
@@ -1729,10 +1760,20 @@ def cmd_mode(a, api, ex):
     guard that was clearly meant to pass, and a renamed key looks like a guard that
     can never pass. Neither failure says anything in the run log.
 
-    `--require <mode>` exits 0 when that mode is configured and 1 when it is not, so
-    the guard becomes one command whose answer is in the exit status:
+    `--require <mode>[,<mode>...]` exits 0 when one of those modes is configured and 1
+    when none is, so the guard becomes one command whose answer is in the exit status:
 
-        python3 edge/scripts/alpaca_trade.py mode --require auction_split || exit 0
+        python3 edge/scripts/alpaca_trade.py mode --require auction_split,amc_open || exit 0
+
+    `--require-exit-tif <tif>` is the better guard for the second exit Routine, and it
+    is the one its prompt should use. That Routine exists for exactly one reason: some
+    session's exit is an `opg` order, and only a pre-market firing can place one. Ask
+    that question directly and the guard keeps working when a mode is renamed or added
+    -- which has now happened twice. A guard naming `auction_split` alone silently
+    stopped doing anything the moment `amc_open` shipped, while still reporting a tidy
+    no-op every morning.
+
+        python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg || exit 0
     """
     enabled = bool(ex.get("enabled"))
     mode = exit_mode(ex)
@@ -1747,16 +1788,31 @@ def cmd_mode(a, api, ex):
     print(f"orders.fill_check_seconds    {orders.get('fill_check_seconds', 300)}")
     print(f"orders.fill_check_fix        {orders.get('fill_check_fix', True)}")
     if a.require:
-        if a.require not in EXIT_MODES:
-            raise SystemExit(f"--require {a.require!r}; expected one of "
+        want = [m.strip() for m in a.require.split(",") if m.strip()]
+        bad = [m for m in want if m not in EXIT_MODES]
+        if bad:
+            raise SystemExit(f"--require {', '.join(bad)}; expected one of "
                              + ", ".join(EXIT_MODES))
         if not enabled:
             print(f"\nrequire {a.require}: NO -- execution.enabled is false")
             raise SystemExit(1)
-        if mode != a.require:
+        if mode not in want:
             print(f"\nrequire {a.require}: NO -- the configured mode is {mode}")
             raise SystemExit(1)
         print(f"\nrequire {a.require}: yes")
+    if a.require_exit_tif:
+        tifs = {s: exit_tif_for(s, ex) for s in ("amc", "bmo")}
+        hit = [s for s, t in tifs.items() if t == a.require_exit_tif]
+        if not enabled:
+            print(f"\nrequire-exit-tif {a.require_exit_tif}: NO -- "
+                  f"execution.enabled is false")
+            raise SystemExit(1)
+        if not hit:
+            print(f"\nrequire-exit-tif {a.require_exit_tif}: NO -- no session exits "
+                  f"on it (amc -> {tifs['amc']}, bmo -> {tifs['bmo']})")
+            raise SystemExit(1)
+        print(f"\nrequire-exit-tif {a.require_exit_tif}: yes "
+              f"({', '.join(hit)})")
 
 
 def main():
@@ -1834,8 +1890,12 @@ def main():
 
     p = sub.add_parser("mode", help="print the effective execution settings; "
                                     "--require asserts one and sets the exit status")
-    p.add_argument("--require", help="exit 1 unless this exit mode is configured "
-                                     "and execution is enabled")
+    p.add_argument("--require", help="comma-separated exit modes; exit 1 unless one "
+                                     "of them is configured and execution is enabled")
+    p.add_argument("--require-exit-tif", metavar="TIF",
+                   help="exit 1 unless some session's exit uses this instrument "
+                        "(opg, cls, day) and execution is enabled. Survives a mode "
+                        "being renamed; use it in the second exit Routine's guard")
     p.add_argument("--base", help=argparse.SUPPRESS)
 
     a = ap.parse_args()
