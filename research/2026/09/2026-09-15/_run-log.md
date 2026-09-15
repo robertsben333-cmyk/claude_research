@@ -58,3 +58,7 @@
 - Median evidence completeness (this batch): 76/100
 - Panel-eligible after this batch (final ranking, both dossiers): TCOM (panel_priority 34.1), LUXE (panel_priority 33.35) -- both eligible, both selected (panel.names=2, only 2 candidates exist)
 - 02-ranking.json written: 2 names ranked, 0 excluded, 0 not_researched
+
+## Stage 3 — panel & advice — STARTED
+- Logged at 2026-09-15 15:53 UTC
+- Panelling both ranked names (TCOM panel_priority 34.1, LUXE 33.35), no budget shedding needed (stage 2 finished cleanly, panel.names=2 = full candidate pool). Plan: refresh spot/implied-move anchors, run 7 personas per name in parallel, synthesize, write dossiers + advice note.
