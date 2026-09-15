@@ -42,6 +42,12 @@ No call, no direction label, no threshold in the output. Selection is the reader
 made afterwards on the complete table, which is what keeps "can these be ranked?"
 answerable at every k.
 
+Since 2026-09-15 each row also carries `hunter_view` (the hunter's separate answers
+to "what will the number do" and "what will the stock do"), `outside_window` (sourced
+findings dated after the exit, kept out of the key) and `flags` (reasons a reader
+should doubt a floor-clearing row, from edge/LESSONS.md). None of it changes the key;
+`edge_postmortem.py` resolves it.
+
     python3 edge/scripts/edge_score.py --run research/2026/09/2026-09-09/edge
     python3 edge/scripts/edge_score.py --run <dir> --legacy   # old categorical files
 """
@@ -183,6 +189,12 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
                 "source": item.get("source"), "source_date": item.get("source_date"),
                 "expected_impact_pct": float(imp or 0.0),
                 "cluster": cluster_of(item),
+                # Carried since 2026-09-15 so the post-mortem can score each finding
+                # on the line it landed on. Absent on earlier runs; none of it
+                # enters the key.
+                "lands_on": item.get("lands_on"),
+                "resolves_by": item.get("resolves_by"),
+                "reaction_history_on_this_line": item.get("reaction_history_on_this_line"),
             })
 
     # The adversary now returns one file per ticker carrying a verdicts[] array,
@@ -287,6 +299,67 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
                    else "hunter found no event on this date" if not confirmed
                    else "event date does not fit the filing cadence")
 
+    # The hunter's two answers, carried whole. `print_vs_bar_pct` is what the hunter
+    # thinks the NUMBER does against the bar; `expected_move_pct` is what it thinks
+    # the STOCK does. They are resolved separately, and the gap between them is the
+    # cheapest measurement the stage has of whether the reaction is being predicted
+    # or only the print. Neither enters the key.
+    hunter_view = {}
+    if hunts:
+        h0 = hunts[0][1]
+        hunter_view = {
+            "expected_move_pct": h0.get("expected_move_pct"),
+            "print_vs_bar_pct": h0.get("print_vs_bar_pct"),
+            "bar": h0.get("bar"),
+            "positioning_check": h0.get("positioning_check"),
+            "baseline_tension": h0.get("baseline_tension"),
+        }
+    outside = []
+    for _, h in hunts:
+        outside.extend(h.get("outside_window") or [])
+    outside_sum = round(sum(float(o.get("expected_impact_pct") or 0.0) for o in outside), 3)
+
+    # Flags for the note's critical read of the floor-clearers. Each is a reason a
+    # correct-looking row should be doubted, drawn from edge/LESSONS.md. They are
+    # text for a reader; nothing filters on them.
+    flags = []
+    # Fields introduced 2026-09-15. A run recorded before them is not flagged for
+    # lacking them; only a hunt written under the new contract is held to it.
+    new_contract = any(("bar" in h or "print_vs_bar_pct" in h) for _, h in hunts)
+    tot = sum(abs(x["expected_impact_pct"]) for x in findings) or 0.0
+    one_off = sum(abs(x["expected_impact_pct"]) for x in findings
+                  if x.get("lands_on") == "one_off")
+    if tot and one_off / tot >= 0.5:
+        flags.append(f"one_off findings are {100*one_off/tot:.0f}% of the size: "
+                     "the market has not re-rated names on below-the-line items")
+    pv, em = hunter_view.get("print_vs_bar_pct"), hunter_view.get("expected_move_pct")
+    if isinstance(pv, (int, float)) and isinstance(em, (int, float)) and pv and em \
+            and (pv > 0) != (em > 0):
+        flags.append("hunter expects the number and the stock to go opposite ways "
+                     f"(print {pv:+.1f}% vs bar, stock {em:+.1f}%): read conviction_note")
+    if hunts and impact_sum and isinstance(em, (int, float)) and em \
+            and (em > 0) != (impact_sum > 0):
+        flags.append(f"hunter's own expected_move_pct ({em:+.2f}) has the opposite sign "
+                     f"to the sum of its findings ({impact_sum:+.2f})")
+    if hunts and isinstance(em, (int, float)) and impact_sum \
+            and abs(em) < 0.5 * abs(impact_sum):
+        flags.append(f"hunter's expected_move_pct ({em:+.2f}) is under half the sum of "
+                     f"its findings ({impact_sum:+.2f}): its own caveats did not reach the sum")
+    bar = str(hunter_view.get("bar") or "")
+    if new_contract and (not bar or bar.lower().startswith("unsourced")):
+        flags.append("bar unsourced: sizes should have been capped")
+    pc = str(hunter_view.get("positioning_check") or "")
+    if new_contract and impact_sum < 0 and (not pc or pc.lower().startswith("not found")):
+        flags.append("negative sum with no short-interest check")
+    if outside:
+        flags.append(f"{len(outside)} finding(s) worth {outside_sum:+.2f} dated after the "
+                     "exit window, kept out of the key")
+    pos = sum(1 for x in findings if x["expected_impact_pct"] > 0)
+    neg = sum(1 for x in findings if x["expected_impact_pct"] < 0)
+    if pos >= 2 and neg >= 2 and min(pos, neg) / max(pos, neg) >= 0.5:
+        flags.append(f"findings split {pos} positive / {neg} negative: the sum nets "
+                     "opposing theses rather than resolving them")
+
     return {
         "ticker": ticker,
         "rankable": rankable,
@@ -294,8 +367,12 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
         "impact_sum": impact_sum,
         "conviction": conviction,
         "priced_lean_pct": lean,
+        "hunter_view": hunter_view,
+        "flags": flags,
         "findings": findings,
+        "outside_window": outside,
         "diagnostics": {
+            "outside_window_sum_pct": outside_sum,
             "residual_sum": residual_sum,
             "adversary_judged": f"{len(judged)}/{len(findings)}" if findings else "0/0",
             "edge_score_legacy": edge_score_legacy,

@@ -374,6 +374,25 @@ Every refusal is recorded with its reason, in the plan or in `alpaca-orders.json
   `edge-<date>-<TICKER>-<entry|exit>`, so a re-run of a killed session is a no-op
   rather than a doubled position
 
+## Borrow at Alpaca is not tradability
+
+`plan` and `open` still refuse a short Alpaca will not lend, because Alpaca is where the
+book is placed and a rejected leg turns a neutral book into a naked long. But the note's
+`tradable` column, produced by `assets`, has separated two facts since 2026-09-15:
+
+- **Liquidity** is a property of the name and holds at every broker. `ok`, `thin` (under
+  `execution.benchmark.thin_dollar_volume_usd`, $1m/day by default), or `below floor`.
+  `thin` is the proxy for the limited-liquidity warning a broker shows, which the
+  operator does not trade into; nothing is dropped on it, and the note says the name
+  will carry that warning.
+- **Borrow** is one broker's answer on one day. A short that clears the turnover floor
+  but is not lendable at Alpaca prints `elsewhere` — check borrow at IBKR — never `no`.
+  On 2026-09-14 two of the four floor-clearing negatives were refused on Alpaca borrow
+  and one of them read borrowable the next morning.
+
+Only `below floor` and a missing 20-day volume are `no`. This changes what the note
+says; it changes nothing about what the book does.
+
 ## What it does not know
 
 - **The rule is 21 trades over 5 independent days.** `max_positions: 10`,

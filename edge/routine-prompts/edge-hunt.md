@@ -66,6 +66,16 @@ the fills to be recorded: that number is what would send `orders.entry` back to
 with it, so steps 4 and 5 and the budget line changed. The day now hunts nineteen names
 with one hunter each: 1 sweep + 19 = 20. Everything else in the prompt is unchanged.
 
+**2026-09-15, one line in step 4 and a note contract change.** The hunters now read
+`edge/LESSONS.md` before they search and return two numbers per name (the print against
+the bar, and the stock) plus a line per finding and a horizon; the note's tradable
+column separates thin liquidity from Alpaca borrow; and the note carries a critical read
+of every floor-clearer ending in recommended / not recommended. All of that lives in the
+agent definitions and the skill, which the session reads from the tree, so the prompt
+below needs only the one sentence added to step 4 — and it is only in the block below
+until it is pasted. The paste can carry the two older fixes at the same time: the
+`edge/` path prefix and the 17:04 UTC fire time.
+
 **What changed from the previous prompt.** The old text restated the output contract
 ("one signed number on −100 to +100"), which the 2026-09-09 rewrite made wrong: the key
 is now `impact_sum` in points of spot. Rather than pin the new contract into the prompt
@@ -114,6 +124,8 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
 4. HUNT. `unpriced-hunter`, ONE per confirmed name, on all of them. The double hunt on the top two was removed 2026-09-09: over six runs the gap between paired hunters predicted neither the error nor whether the sign was right. Give each hunter only its ticker, its baseline path, its output path and its sweep row - not your view, not the other names.
 
    The sizes hunters put on their findings now carry the whole result, so the instruction to size honestly is not a formality. Six resolved runs measured the hunters' raw signed sizes as the best available ranking of the day, better than every number computed from them. An inflated size is no longer discounted by machinery downstream.
+
+   Each hunter reads edge/LESSONS.md before it searches - its definition says so; make sure the file is in the tree you cloned and that the sweep row you hand it carries trades_on and short_interest. The hunt now returns print_vs_bar_pct beside expected_move_pct; if a hunt comes back without it, the agent definition that ran was not the one in the tree - score it anyway and say so in the run log.
 
 5. THERE IS NO ADVERSARY PASS. Removed 2026-09-09 - both of its numbers were measured as subtractive over 215 findings on six days, and once impact_sum became the key neither reached the output at all. Do not reinstate it, do not improvise a substitute check, and do not drop or shrink a finding because you judge it already priced. The agent definition and the brief scripts are still in the tree, unused, so the pass can be re-run deliberately if that question is reopened.
 

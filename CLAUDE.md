@@ -314,6 +314,19 @@ that flagged four company-confirmed reporters as non-events, an adversary agent 
 `Write` tool, and two entries of `budget.edge_degrade_order` that each contradicted a
 hard rule stated elsewhere. All four are fixed.
 
+**The hunters learn from the resolved days through one file, `edge/LESSONS.md`** (since
+2026-09-15). It holds the patterns that repeated across the post-mortems of 09-08 through
+09-14 — a verified fact is not a predicted reaction, name the line a finding lands on,
+the hunter's own caveat has to reach the number, financing is a question, a narrow proxy
+loses to a broad series, verify the bar and keep findings inside the exit window,
+positioning is the thing to beat — as rules with no company fixes in them. The hunter
+now answers two questions (`print_vs_bar_pct` and `expected_move_pct`), each finding
+carries `lands_on` and `resolves_by`, and `edge/scripts/edge_postmortem.py` scores a
+resolved run finding by finding so the file can grow from measurement. The note's
+`tradable` column separates thin liquidity from Alpaca borrow (a short Alpaca will not
+lend is usually borrowable at IBKR; `elsewhere`, not `no`), and it ends with a critical
+read of every floor-clearer. None of this touches the key, the floor or the book rule.
+
 Stage N and stage E overlap deliberately and must not be merged. N forecasts every name
 it looks at; E scores whether the market has missed something. If E's ranking turns out
 to carry no information that N's does not, that is a result worth having cheaply.

@@ -17,6 +17,7 @@ that N's does not, that is a result worth having cheaply.
 edge/
   EDGE_ANALYSIS.md      what the resolved runs establish, and what they do not
   EXECUTION.md          the Alpaca path: what it refuses to do, and what it cannot see
+  LESSONS.md            what the hunters learned from the post-mortems; the hunter reads it
   scripts/              the stage's own tools (see below)
   analysis/             everything the analysis scripts generate — JSON and HTML
   routine-prompts/      the text pasted into the Routines, kept in step by hand
@@ -73,7 +74,14 @@ python3 edge/scripts/edge_exit.py                    # when to sell
 python3 edge/scripts/edge_hunter_control.py          # how much of it is the double hunt
 python3 edge/scripts/edge_turnover_floor.py          # what capacity costs
 python3 edge/scripts/edge_entry_timing.py            # market vs the closing auction
+python3 edge/scripts/edge_postmortem.py --run <RUN>/edge --template   # then fill and re-run
+python3 edge/scripts/edge_postmortem.py --pool 'research/2026/*/*/edge'  # fact right vs reaction right
 ```
+
+`edge_postmortem.py` is how `LESSONS.md` grows: it scores a resolved run finding by
+finding — was the fact right, was the reaction right, which line did the move land on —
+and pools the tables. A pattern that recurs there is written into `LESSONS.md`, which is
+the only channel through which a hunter learns anything from a resolved day.
 
 `edge_adversary_brief.py`, `edge_brief.py` and `.claude/agents/priced-in-adversary.md` are
 the removed adversary pass. They are kept unused so it can be re-run deliberately; the

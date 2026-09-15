@@ -240,6 +240,10 @@ execution:
     # grows). Re-run edge/scripts/edge_turnover_floor.py as days pool and move it back if
     # the added names keep underperforming.
     min_dollar_volume_usd: 200000
+    # Not a floor. Below this the note calls the name THIN: the proxy for a broker's
+    # limited-liquidity warning, which the operator does not trade into. `assets`
+    # prints it beside borrow, and nothing is dropped on it.
+    thin_dollar_volume_usd: 1000000
     # No cap on the count. Equal weight means more names is smaller positions, not
     # more risk, and cutting the tail would be a second selection rule on top of the
     # only one that was measured.

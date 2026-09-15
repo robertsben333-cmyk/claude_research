@@ -290,6 +290,18 @@ path to its `baselines/<TICKER>.json`, its output path, and its row from
 `sweep.json`. Nothing else — not your view, not the other names, not the other
 hunter.
 
+**The hunter reads `edge/LESSONS.md` before it searches**; its own definition says so
+and the sweep row now carries `trades_on` and `short_interest` for it. Since
+2026-09-15 a hunt returns two numbers per name rather than one — `print_vs_bar_pct`
+(what the number does against the bar) and `expected_move_pct` (what the stock does)
+— plus `lands_on` and `resolves_by` per finding, `bar`, `positioning_check`, and an
+`outside_window` list for sourced findings dated after the exit that must not enter
+the key. The first two are resolved separately by `edge_postmortem.py`; the gap
+between them is the cheapest test the stage has of whether the reaction is being
+predicted or only the print. A hunt that comes back without them is under the old
+contract: score it, and record in the run log that the agent definition in the tree
+was not the one the hunter ran.
+
 Where the sweep set `baseline_history_trustworthy: false`, or the baseline carries
 `cadence_implausible`, tell that hunter so explicitly. Otherwise it will use a
 reaction history built from monthly operational updates as an earnings base rate.
@@ -379,9 +391,13 @@ python3 edge/scripts/edge_score.py --run <RUN>/edge
 ```
 
 Writes `edge-scores.json`: every name with `impact_sum` (the ranking key, signed
-points of spot), `conviction`, `priced_lean_pct` (the control), and a `diagnostics`
-block. The script prints which names clear `conviction_floor` from
-`config/pipeline.yaml`.
+points of spot), `conviction`, `priced_lean_pct` (the control), `hunter_view` (the
+hunter's two answers, carried whole), `flags` (reasons to doubt the row, from
+`edge/LESSONS.md` — one-off share, a print/reaction sign split, a sum the hunter's own
+`expected_move_pct` does not support, an unsourced bar, a negative with no
+short-interest check, findings netted rather than resolved), `outside_window`, and a
+`diagnostics` block. The script prints which names clear `conviction_floor` from
+`config/pipeline.yaml`. Nothing new enters the key.
 
 Names whose event was not confirmed carry `rankable: false` and sit out of the
 ranking rather than sorting to the top on a 0.
@@ -411,7 +427,7 @@ Then the names that could not be ranked and why. End with the disclaimer from
 | **session** | `amc` or `bmo`, with the event date — the print is not today for every row |
 | the ranking key | `impact_sum`, signed, points of spot |
 | floor | does `conviction` clear `conviction_floor` |
-| **tradable** | could this name be traded at all, and if not, why not |
+| **tradable** | `yes`, `elsewhere`, `no` or `unknown` — see below — with turnover, liquidity (`ok` / `thin`) and, for a short, whether Alpaca lends it |
 | control | `-run_up_20d_pct` |
 
 Generate the two bold ones rather than assembling them by hand:
@@ -439,9 +455,47 @@ thing a reader most needs. `assets` answers only "could this be traded" — turn
 against `min_dollar_volume_usd`, and, for a negative row, whether Alpaca will lend it.
 
 On 2026-09-14 those columns were the finding: all four floor-clearing NEGATIVES were
-untradeable — COE and BIOX not shortable, HYFT below the turnover floor — so the
-traded book was long-only and tested the long half of the ranking only. A five-column
-table showed a clean 9-name ranking and did not show that at all.
+refused by the book — COE and BIOX not lendable at Alpaca, HYFT below the turnover
+floor — so the traded book was long-only and tested the long half of the ranking only.
+A five-column table showed a clean 9-name ranking and did not show that at all.
+
+**Borrow at Alpaca is not tradability.** `assets` keeps two facts apart. *Liquidity* is a
+property of the name and holds at every broker: `ok`, `thin` (under
+`thin_dollar_volume_usd`, $1m/day by default — the proxy for a broker's limited-liquidity
+warning, which the operator does not trade into), or `below floor`. *Borrow* is one
+broker's answer on one day, and a short Alpaca will not lend is routinely borrowable at
+IBKR. So a short that clears the turnover floor but is not lendable here prints
+`elsewhere`, not `no`, and the note says "check borrow at IBKR" rather than
+"untradeable". COE read borrowable the morning after it was refused. Only `below floor`
+and `no 20-day volume` are `no`.
+
+### The critical read of the floor-clearers
+
+The floor says where the sign has meant something on the pooled sample. It does not say
+a given row is a good trade, and the note's job is to be harder on the floor-clearers
+than the table is. For **every name that clears the floor**, the note carries a short
+paragraph that answers, from the hunt file itself:
+
+- **Which line does it land on?** A row whose size is mostly `one_off` is a row the
+  market has repeatedly refused to re-rate on; say so. A `guidance` row is the kind that
+  has paid.
+- **Do the hunter's two numbers agree?** `print_vs_bar_pct` against `expected_move_pct`.
+  Opposite signs, or a reaction under half the sum of the findings, means the hunter's
+  own caveats did not reach the key; quote the `conviction_note`.
+- **Was the bar sourced, and what does positioning say?** `bar` and
+  `positioning_check`. An unsourced bar or a negative into a crowded short is a reason
+  to call the row weak whatever its size.
+- **Is it thin?** A `thin` name's headline return is an upper bound on what size could
+  have got; say it will carry a limited-liquidity warning.
+- **What is in `flags`?** Print them. They exist so a reader does not have to open the
+  hunt JSON to find the reason to doubt a tidy number.
+
+End that section with a plain sentence per floor-clearer: *recommended*, *recommended
+with a named reservation*, or *not recommended, because …*. That sentence changes no
+file and no order — the book rule in `alpaca_trade.py` is unchanged and does not read it
+— but it is what a reader takes away, and the resolved days show the floor alone
+recommending the day's two disasters as readily as its two best trades. Be as hard on
+the rows you like as on the rows you do not.
 
 **Borrow is a snapshot, so take it from the run's own record.** Alpaca re-checks
 shortability daily: COE was recorded `shortable: false` by the 2026-09-14 plan and
@@ -579,7 +633,31 @@ days).
 
 Watch the conviction number as days accumulate. It needs no cut and no calibration,
 which is what makes it the honest headline; the ranking correlation and the
-long/short spread both depend on where you cut.
+long/short spread both depend on where you cut. `edge_resolve.py` also splits hit rate
+and payoff by the sign of the prediction, overall and above the floor, because one day
+went 10/12 on shorts and 4/9 on longs and the next went 6/6 on longs; whether unpriced
+good news is the weaker edge is only answerable pooled.
+
+### The post-mortem, finding by finding
+
+Resolving the key says whether the day ranked. It does not say *why* a row was right or
+wrong, and the resolved days show the two coming apart constantly: the fact right and
+the reaction wrong. So after a run resolves, score it finding by finding:
+
+```bash
+python3 edge/scripts/edge_postmortem.py --run <RUN>/edge --template   # writes finding-verdicts.json to fill
+python3 edge/scripts/edge_postmortem.py --run <RUN>/edge              # scores it
+python3 edge/scripts/edge_postmortem.py --pool 'research/2026/*/*/edge'
+```
+
+The template lists every finding with three fields to fill from the release and the
+tape: `fact_correct` (did the thing the hunter said would be in the print appear),
+`reaction_correct` (did the stock move the way the finding's sign said, over the
+window), and `moved_on` (which line the move actually landed on, in the `lands_on`
+vocabulary). The pooled report gives the fact/reaction confusion matrix, hit rate by
+`lands_on`, and the resolution of `print_vs_bar_pct` against `expected_move_pct`. When
+a pattern in that table recurs, it goes into `edge/LESSONS.md`; that file is how the
+next hunter learns it, and nothing else is.
 
 **One day is an anecdote.** A single day of five to twelve names cannot produce a
 meaningful correlation, and the pooled figure across many days is the result. Say
