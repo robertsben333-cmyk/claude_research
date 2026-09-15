@@ -66,3 +66,7 @@
 ## Stage 3 — panel & advice — TCOM panel complete
 - Logged at 2026-09-15 16:05 UTC
 - 7/7 personas returned for TCOM (no retries needed). Synthesis: consensus -4.1, disparity 35.7 (mixed), certainty High (75.0), call Neutral / No Edge (genuine split: fundamental/macro/forensics negative, options/sentiment/red-team/base-rate near-zero-to-positive). No chair override. Refreshed anchors: spot $39.02 (vs stage 2's $39.08), implied move 5.6% (Bloomberg via Investing.com, dated to today's report; vs stage 2's self-derived 7.0%). LUXE panel launched next, in progress.
+
+## Stage 3 — panel & advice — LUXE panel complete
+- Logged at 2026-09-15 16:09 UTC
+- 7/7 personas returned for LUXE (no retries needed). Synthesis: consensus +8.3, disparity 30.1 (mixed), certainty Low (36.9, no implied-move anchor + 3/7 Low confidence + red-team reversal 72), call Neutral / No Edge. No chair override. Spot correction: anchor handed to panel ($7.83) was stale/wrong -- 4 of 7 personas independently sourced ~$7.15-7.18 as-of today; corrected spot $7.16 used in the dossier, noted in 03-panel/LUXE.json anchors.spot_correction_note. Implied move stays null (no functioning options market, a market-structure fact per stage 2, confirmed independently by all 7 personas).
