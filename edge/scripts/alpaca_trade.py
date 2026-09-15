@@ -1357,6 +1357,142 @@ def cmd_status(a, api, ex):
 
 # ---------------------------------------------------------------- cli
 
+def cmd_assets(a, api, ex):
+    """Per-name session and tradability for EVERY name in a run, floor or no floor.
+
+    The note has to state, for each name it ranks, which session carries the print
+    and whether the name could be traded at all. `plan` cannot answer the second
+    question for the whole table: it checks borrow only for names that already
+    cleared the conviction floor, because that is the only set it is about to size.
+    So a below-floor name has never been asked, and a note that filled the column in
+    anyway would be inventing the answer for exactly the rows nobody checked.
+
+    Tradability here is deliberately INDEPENDENT of the conviction floor. The floor
+    is a selection decision about whether the sign means anything; capacity and
+    borrow are facts about the name. Keeping them in separate columns is what lets a
+    reader see that a name was skipped for conviction rather than because it could
+    not be traded -- and, on 2026-09-14, that every one of the four floor-clearing
+    NEGATIVES was untradeable while the traded book was long-only.
+
+    Read-only: it places nothing and it is not gated on --submit. With no usable
+    credentials the borrow column reports `unknown` rather than a guess.
+
+    BORROW IS A SNAPSHOT, so this prefers the run's own `alpaca-plan.json` over a
+    live lookup whenever one exists. Alpaca re-checks shortability daily: COE was
+    recorded `shortable: false` by the 2026-09-14 plan at 17:35 UTC and read
+    borrowable the next morning. A note regenerated a day later against a live
+    lookup would therefore say the book could have shorted a name the run had
+    already refused, and would contradict the run log sitting beside it. `--live`
+    forces the current answer when the question really is "can I borrow it now".
+    """
+    run = Path(a.run)
+    scores, baselines = load_run(run)
+    # {ticker: (shortable, reason)} as the plan recorded it, for names it examined.
+    planned, plan_utc = {}, None
+    ppath = run / "alpaca-plan.json"
+    if not getattr(a, "live", False) and ppath.exists():
+        try:
+            pj = json.loads(ppath.read_text(encoding="utf-8"))
+            plan_utc = pj.get("generated_utc") or pj.get("as_of_utc")
+            # `positions` is the taken set and `rejected` the refused one. NOT
+            # `orders` -- that key holds the order settings dict, and listing it
+            # yields its keys as strings, which then raise inside this try and
+            # silently emptied `planned` so every row fell through to a live
+            # lookup. Only dicts, and only names the plan actually examined.
+            for r in (pj.get("positions") or []) + (pj.get("rejected") or []):
+                if isinstance(r, dict) and r.get("asset_checked"):
+                    planned[r["ticker"]] = (r.get("shortable"), r.get("reason"))
+        except Exception:
+            planned = {}
+    bench = ex.get("benchmark") or {}
+    floor = float(bench.get("min_conviction") or 0)
+    min_dv = float(bench.get("min_dollar_volume_usd") or 0)
+    key = bench.get("key", "impact_sum")
+
+    print(f"{run}   {'paper' if api.is_paper else 'live'} {api.base}"
+          if api.usable else f"{run}   no credentials: borrow is unknown")
+    print(f"floor |{key}| >= {floor}, turnover floor ${min_dv/1e6:.1f}m\n")
+    print(f"{'ticker':8}{'session':9}{'event':12}{key:>10}{'floor':>7}"
+          f"{'turnover':>11}{'borrow':>10}  tradable")
+
+    rows = []
+    for row in scores.get("ranking", []):
+        t = row.get("ticker")
+        b = baselines.get(t) or {}
+        tape = b.get("tape") or {}
+        spot, vol = tape.get("spot"), tape.get("avg_volume_20d")
+        dv = (spot * vol) if (spot and vol) else None
+        val = row.get(key)
+        signed = isinstance(val, (int, float))
+        short_side = signed and val < 0
+
+        tradable = shortable = None
+        source = "live"
+        if t in planned:
+            shortable = planned[t][0]
+            tradable = shortable if short_side else True
+            source = "plan"
+        elif api.usable:
+            asset, _ = api.asset(t)
+            if asset:
+                tradable = asset.get("shortable") if short_side else asset.get("tradable")
+                shortable = asset.get("shortable")
+
+        # The reason column answers "could this be traded", never "should it be".
+        if dv is None:
+            verdict, why = "no", "no 20-day volume, so capacity is unknown"
+        elif dv < min_dv:
+            verdict, why = "no", f"turnover ${dv/1e6:.2f}m below the ${min_dv/1e6:.1f}m floor"
+        elif not api.usable:
+            verdict, why = ("unknown", "borrow not checked (no credentials)") \
+                if short_side else ("yes", "long side, turnover clears")
+        elif tradable is None:
+            verdict, why = "unknown", "asset lookup failed"
+        elif not tradable:
+            verdict, why = "no", ("not shortable at Alpaca" if short_side
+                                  else "not tradable at Alpaca")
+        else:
+            verdict, why = "yes", ("short side, borrow available" if short_side
+                                   else "long side, turnover clears")
+
+        borrow = ("n/a" if not short_side else
+                  "unknown" if shortable is None else
+                  "yes" if shortable else "no")
+        print(f"{t:8}{str(b.get('session') or '?'):9}"
+              f"{str(b.get('event_date') or '?'):12}"
+              f"{(f'{val:+.2f}' if signed else '?'):>10}"
+              f"{('yes' if signed and abs(val) >= floor else '-'):>7}"
+              f"{(f'${dv/1e6:.2f}m' if dv else '?'):>11}{borrow:>10}  {verdict} — {why}")
+        rows.append({"ticker": t, "session": b.get("session"),
+                     "event_date": b.get("event_date"), key: val,
+                     "clears_floor": bool(signed and abs(val) >= floor),
+                     "dollar_volume_usd": round(dv) if dv else None,
+                     "shortable": shortable, "borrow_source": source,
+                     "tradable": verdict, "reason": why})
+
+    # Say which rows are the run's own answer and which were asked just now, so a
+    # reader can tell a reconstructed cell from a recorded one.
+    live_short = [r["ticker"] for r in rows
+                  if r["borrow_source"] == "live" and r["shortable"] is not None]
+    if planned:
+        print(f"\nborrow as the run recorded it at {plan_utc}"
+              + (f"; asked live just now for {', '.join(live_short)} "
+                 "(the plan never checked them -- they were below the floor)"
+                 if live_short else ""))
+    elif live_short:
+        print("\nborrow asked live just now; no alpaca-plan.json to read it from")
+
+    out = Path(a.out) if a.out else run / "alpaca-assets.json"
+    out.write_text(json.dumps({"run": str(run), "key": key,
+                               "conviction_floor": floor,
+                               "min_dollar_volume_usd": min_dv,
+                               "credentials": bool(api.usable),
+                               "borrow_as_of": plan_utc or "live lookup",
+                               "names": rows}, indent=1) + "\n", encoding="utf-8")
+    print(f"\nwrote {out}")
+    return rows
+
+
 def cmd_mode(a, api, ex):
     """Print the effective execution settings, and optionally assert one.
 
@@ -1446,6 +1582,14 @@ def main():
     p.add_argument("--scan", action="append", default=[])
     p.add_argument("--out")
 
+    p = sub.add_parser("assets", help="per-name session and tradability for every "
+                                      "name in a run (read-only; places nothing)")
+    common(p)
+    p.add_argument("--out")
+    p.add_argument("--live", action="store_true",
+                   help="ask the broker now instead of using the borrow state the "
+                        "run's own alpaca-plan.json recorded")
+
     p = sub.add_parser("mode", help="print the effective execution settings; "
                                     "--require asserts one and sets the exit status")
     p.add_argument("--require", help="exit 1 unless this exit mode is configured "
@@ -1459,7 +1603,8 @@ def main():
     ex = execution_config(cfg)
     api = Alpaca(base=a.base)
     {"plan": cmd_plan, "open": cmd_open, "close": cmd_close,
-     "flatten": cmd_flatten, "status": cmd_status, "mode": cmd_mode}[a.cmd](a, api, ex)
+     "flatten": cmd_flatten, "status": cmd_status, "mode": cmd_mode,
+     "assets": cmd_assets}[a.cmd](a, api, ex)
 
 
 if __name__ == "__main__":

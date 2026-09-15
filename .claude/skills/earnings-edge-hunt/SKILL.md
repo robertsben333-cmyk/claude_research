@@ -403,8 +403,60 @@ and bottom names the finding driving it, its URL, and what the price already say
 Then the names that could not be ranked and why. End with the disclaimer from
 `config/pipeline.yaml`.
 
-Four things the note must also do, each because a reader would otherwise draw a
-wrong conclusion from a correct table:
+### The ranked table carries six columns, always
+
+| column | what it is |
+| --- | --- |
+| ticker | |
+| **session** | `amc` or `bmo`, with the event date — the print is not today for every row |
+| the ranking key | `impact_sum`, signed, points of spot |
+| floor | does `conviction` clear `conviction_floor` |
+| **tradable** | could this name be traded at all, and if not, why not |
+| control | `-run_up_20d_pct` |
+
+Generate the two bold ones rather than assembling them by hand:
+
+```bash
+python3 edge/scripts/alpaca_trade.py assets --run <RUN>/edge
+```
+
+It is read-only, places nothing, and is not gated on `--submit` or on
+`execution.enabled` — so a run with execution switched off still gets both columns.
+
+**Session belongs in the table because the window spans two dates and two sessions.**
+`--window` resolves today's `amc` plus the next trading day's `bmo`, so a reader
+scanning a single ranked list is otherwise looking at rows whose prints are up to a
+day apart without being told. It also matters downstream: `edge_resolve.py` measures
+the move over the session recorded, and `exit_mode: auction_split` sends `amc` and
+`bmo` to different instruments. Mark any name whose session the sweep could not
+source as unsettled rather than printing a session it only inferred.
+
+**Tradable is a separate question from the floor, and the note must not merge them.**
+The floor is a selection decision about whether the sign means anything; capacity and
+borrow are facts about the name. A name below the floor may be perfectly tradable and
+a name at the top of the table may be untradeable, so collapsing the two hides the one
+thing a reader most needs. `assets` answers only "could this be traded" — turnover
+against `min_dollar_volume_usd`, and, for a negative row, whether Alpaca will lend it.
+
+On 2026-09-14 those columns were the finding: all four floor-clearing NEGATIVES were
+untradeable — COE and BIOX not shortable, HYFT below the turnover floor — so the
+traded book was long-only and tested the long half of the ranking only. A five-column
+table showed a clean 9-name ranking and did not show that at all.
+
+**Borrow is a snapshot, so take it from the run's own record.** Alpaca re-checks
+shortability daily: COE was recorded `shortable: false` by the 2026-09-14 plan and
+read borrowable the next morning. `assets` therefore prefers `alpaca-plan.json` over a
+live lookup and prints which rows are the run's own answer and which were asked just
+now; `--live` forces the current answer when the question really is "can I borrow it
+today". A note regenerated later against a live lookup would claim the book could have
+shorted a name the run had already refused, and would contradict the run log beside it.
+
+### What the note must also say
+
+Each of the following, every time — each is here because a reader once drew a wrong
+conclusion from a correct table. (Do not restate how many there are: the count was
+"four" for months while the list held seven, which is the same duplicated-fact rot
+that cost this repo five days of a stale stage table.)
 
 **Separate the order from the sign.** Report the ranking for every name, and mark
 which names clear the conviction floor. Say in the note that below the floor the sign
@@ -451,7 +503,10 @@ expected move, so a note that calls the normalised correlation an implied-move
 measure is overstating it.
 
 **Say what the day would have cost to trade.** Capacity is not in the scorer and not
-in the budget. Report spot × 20-day average volume for the top and bottom names. On
+in the budget. The `tradable` column now carries spot × 20-day average volume per
+name, so this bullet is no longer about producing the number — it is about saying out
+loud what the column implies: how many names of the day are actually reachable, and
+whether the extremes of the ranking are among them. On
 2026-09-02 the single best-ranked name, DLTH, moved +23.20% on **$170k a day** of
 turnover; six of the first 22 long/short positions traded under $1m a day. A ranking
 whose extremes are untradeable is a research result, not a signal, and the note
