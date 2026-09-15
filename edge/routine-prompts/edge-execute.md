@@ -107,7 +107,16 @@ only reason this Routine exists as a separate firing.
    orders in at 06:00 ET that stage E's own flatten cancels four hours later. The
    exit status has neither failure mode.
 
-2. `python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit`
+2. `python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge'`
+   FIRST, and read it. A submitted sell is not a sold position: six of the first seven
+   auction exits either part-filled or filled nothing and then expired, because `cls`
+   and `opg` cross once and take whatever size the contra side brings — HOFT 17 of 161,
+   CODA 39 of 183, RLGT 0 of 224. Any leg it marks UNFILLED is one nothing will sell on
+   its own. You fire before the open, so a plain market rescue is not available to you
+   and `--fix` would only record a refusal; name those legs in your report instead and
+   leave them to stage E's own run, which fires inside the session and does rescue them.
+
+3. `python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit`
    It closes only legs whose exit date is today, reads the real position quantity from
    the account so a partial fill still closes flat, and picks the instrument per
    session: amc into the opening auction, bmo into the closing auction. At 08:00 ET the
@@ -115,9 +124,9 @@ only reason this Routine exists as a separate firing.
    for stage E. That is fine and not a double-send: exits are keyed by a deterministic
    client_order_id and an already-submitted leg is skipped.
 
-3. `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
+4. `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
 
-4. Append to today's run log and publish: which legs were sent, with which
+5. Append to today's run log and publish: which legs were sent, with which
    time_in_force, and every refusal with its reason. Publish even when nothing was
    placed. If the account is unreachable, say so in the run log and publish that — an
    open position nobody recorded is the failure this step exists to prevent.
@@ -174,8 +183,10 @@ Close whatever of stage E's book is due today at Alpaca.
 
 1. `python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit`
    It closes only the legs whose exit date is today and reads the real position
-   quantity from the account, so a partial fill still closes flat.
-2. `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
+   quantity from the account, so a partial fill still closes flat. It then waits
+   `orders.fill_check_seconds` and re-reads the exits it sent.
+2. `python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit`
+   then `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
 3. If anything is still open whose exit date is in the past, close it now:
    `flatten --submit` sends plain market orders. Record that you did.
 4. Append what closed, and at what fill, to today's run log and publish.

@@ -211,6 +211,34 @@ overrides and stacks a second book on the first). That refusal is what makes the
 per-session exit safe to switch on: `flatten_before_entry` used to guarantee a clean slate
 by selling everything, and once the flatten is off the guarantee has to come from checking.
 
+**The auction exits mostly did not sell, and until 2026-09-15 nothing looked.** Seven
+exits have gone into an auction since `exit_mode: auction_split` shipped. One filled:
+ORCL, the only mega-cap. HOFT filled 17 of 161 and expired, CODA 39 of 183, FEIM 0 of
+31, RH 0 of 14, RLGT 0 of 224. This is documented Alpaca behaviour rather than a bug —
+`opg` and `cls` are eligible only in their one auction cross and whatever is unfilled
+afterwards is cancelled — and a $200k-a-day name has almost no size in that cross. (A
+second cause cannot be ruled out: there is a June 2026 report of MOC orders part-filling
+and expiring on a *paper* account where the same setup filled 100% live, and this
+account is paper.) What made it an open position rather than a logged miss is three
+things in this repo, all now fixed: `send` stored the status Alpaca returns at
+submission — always `pending_new` — and nothing ever re-read it; the retry asked for the
+same auction, so RLGT's 13:05 ET retry was refused inside Alpaca's 09:28–19:00 `opg`
+window and the position sat another day; and `upsert` merged records, so a successful
+retry kept the failed attempt's `reason`. The operator has been closing these by hand —
+three market orders at the broker carry random client_order_ids rather than this
+script's. **`close` now waits `orders.fill_check_seconds` (300) and re-reads every exit
+it sent, and `alpaca_trade.py verify [--fix --submit]` does it on demand**: per leg,
+closed / working / UNFILLED, where UNFILLED means shares still held and every order for
+the leg dead at the broker. `--fix` re-sends the residual at plain market, sized to what
+Alpaca reports is held and only while every prior order is dead. Five minutes cannot
+verify an auction order — a `cls` sent at 13:05 ET crosses at 16:00 ET, after the
+session ends — so it reports `working` and the rescue falls to the next run inside
+market hours. **None of that fixes the exit itself.** `auction_split` was chosen on
++7.81% per trade against +4.49% for `uniform`, and that number assumes the auction order
+fills; on this book it has filled once in seven. Marketable limit orders around the
+auction, or a different `exit_mode`, is the operator's call. See `edge/EXECUTION.md`,
+"The auction exits mostly did not sell".
+
 **The per-session exit is three modes in `alpaca_trade.py`; it shipped on the dullest one
 until 2026-09-11** (see "`exit_mode` moved off `uniform`" below for what runs now).
 `orders.exit_mode` picks which instrument closes a position, per session. Per trade

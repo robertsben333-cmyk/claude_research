@@ -152,9 +152,18 @@ python3 edge/scripts/alpaca_trade.py flatten --submit
 name at market when at least one of them wants an auction — and the sell is two calls:
 
 ```bash
+python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit
 python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
 python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
 ```
+
+`verify` goes first and its verdict lines go in the run log. A submitted sell is not a
+sold position: six of the first seven auction exits either part-filled or filled nothing
+and then expired, because `cls` and `opg` are eligible only in their one auction cross
+and a $200k-a-day name has almost no size in it — HOFT 17 of 161, CODA 39 of 183, RLGT 0
+of 224. `verify --fix` re-sends at plain market any leg the account still holds behind an
+order that is dead at the broker, sized to what Alpaca reports is held. This run is the
+only one of the day inside US market hours, so it is the only one that can.
 
 `close` picks the instrument per position, and what it can reach depends on the mode.
 Per trade over the 38 de-duplicated events, on the conviction book:

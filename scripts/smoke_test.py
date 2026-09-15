@@ -569,8 +569,15 @@ def main():
           all(abs(s["notional_usd"] - eq_cap) < 10.0 for s in few),
           str([s["notional_usd"] for s in few]))
 
-    check("flatten before entry is on", ex["orders"].get("flatten_before_entry") is True,
-          str(ex["orders"].get("flatten_before_entry")))
+    # The flatten and the exit mode are one setting in two keys: a non-uniform mode
+    # with the flatten on sells every auction leg at market before its auction, and
+    # exit_mode() refuses that pairing outright. Assert the pairing, not either value
+    # -- both have been changed by the operator once and will be again.
+    check("the flatten and the exit mode agree",
+          (ex["orders"].get("flatten_before_entry") is True)
+          == (at.exit_mode(ex) == "uniform"),
+          f"flatten={ex['orders'].get('flatten_before_entry')} "
+          f"exit_mode={at.exit_mode(ex)}")
 
     # The two trading steps live in two hand-maintained files and drift silently.
     skill = open(os.path.join(REPO, ".claude/skills/earnings-edge-hunt/SKILL.md"),
@@ -578,7 +585,11 @@ def main():
     rprompt = open(os.path.join(REPO, "edge/routine-prompts/edge-hunt.md"),
                    encoding="utf-8").read()
     for label, text in (("the skill", skill), ("the stage E Routine prompt", rprompt)):
-        check(f"{label} sells before the hunt", "flatten --submit" in text)
+        # Either shape is a sell before the hunt, and which one is right depends on
+        # orders.exit_mode: the flatten is wrong whenever a position wants an auction.
+        check(f"{label} sells before the hunt",
+              "flatten --submit" in text or "close --scan" in text)
+        check(f"{label} checks that the sells filled", "verify --scan" in text)
         check(f"{label} buys with --no-flatten", "--no-flatten" in text)
         check(f"{label} gates both steps on execution.enabled",
               text.count("execution.enabled") >= 2 or text.count("enabled` is true") >= 2
@@ -633,8 +644,8 @@ def main():
         return {**ex, "orders": {**ex["orders"], "exit_mode": m,
                                  "flatten_before_entry": flatten}}
 
-    check("the shipped config is on the uniform exit",
-          at.exit_mode(ex) == "uniform", at.exit_mode(ex))
+    check("the shipped config names a known exit mode",
+          at.exit_mode(ex) in at.EXIT_MODES, at.exit_mode(ex))
     check("uniform gives both sessions the same exit",
           at.exit_tif_for("amc", _mode("uniform"))
           == at.exit_tif_for("bmo", _mode("uniform")) == "cls")
