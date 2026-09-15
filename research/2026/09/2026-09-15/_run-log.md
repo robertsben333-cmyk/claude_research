@@ -62,3 +62,7 @@
 ## Stage 3 — panel & advice — STARTED
 - Logged at 2026-09-15 15:53 UTC
 - Panelling both ranked names (TCOM panel_priority 34.1, LUXE 33.35), no budget shedding needed (stage 2 finished cleanly, panel.names=2 = full candidate pool). Plan: refresh spot/implied-move anchors, run 7 personas per name in parallel, synthesize, write dossiers + advice note.
+
+## Stage 3 — panel & advice — TCOM panel complete
+- Logged at 2026-09-15 16:05 UTC
+- 7/7 personas returned for TCOM (no retries needed). Synthesis: consensus -4.1, disparity 35.7 (mixed), certainty High (75.0), call Neutral / No Edge (genuine split: fundamental/macro/forensics negative, options/sentiment/red-team/base-rate near-zero-to-positive). No chair override. Refreshed anchors: spot $39.02 (vs stage 2's $39.08), implied move 5.6% (Bloomberg via Investing.com, dated to today's report; vs stage 2's self-derived 7.0%). LUXE panel launched next, in progress.
