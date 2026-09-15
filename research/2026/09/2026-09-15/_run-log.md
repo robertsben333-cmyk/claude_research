@@ -30,3 +30,15 @@
 - Subagents: 1 opus/high, in 1 wave of 1 (batch 1 shortlist has only 1 name; wave_size 2 not reached)
 - Median evidence completeness: 82/100
 - Panel-eligible after this batch: n/a — batch 2 (LUXE) still pending, ranking happens after the last batch
+
+## Close AMC — amc opening-auction exit — 2026-09-15
+- Logged at 2026-09-15 10:06 UTC
+- Guard: python3 edge/scripts/alpaca_trade.py mode --require auction_split exited 0 (execution.enabled=true, orders.exit_mode=auction_split, flatten_before_entry=false). Proceeded.
+- SENT: 2026-09-14/edge RLGT, amc session, exit_date 2026-09-15, opg (opening auction), qty 224 sell, order 426a998f-6c62-4f79-b317-a83d95e2cb82, status new at submission (auction has not run yet — no fill price here).
+- REFUSED: 2026-09-14/edge VRA bmo leg — cls not sent, reason 'cls unavailable (market closed at 2026-09-15T06:05:11-04:00)'. Expected: cls window is not open at 08:00 ET; this leg is stage E's own closing-auction job later today.
+- REFUSED: 2026-09-14/edge FPS bmo leg — cls not sent, same reason as VRA, same expectation.
+- REFUSED: 2026-09-11/edge CODA — overdue exit (exit_date 2026-09-14, now 1 day stale). Script auto-escalated to an immediate market re-send (edge-2026-09-11-CODA-exit-r2, 144 shares buy) since a prior cls exit on 2026-09-14 only filled 39 of 183 shares. The re-send was itself refused: 'day unavailable (market closed)' — day orders cannot submit at 08:00 ET pre-market. CODA is still open: -144 shares @ 10.1, -4.06% unrealized, per 'status' below. This position remains unresolved and will block stage E's next 'open' call under its stale-position refusal until it is closed.
+- 2026-09-10/edge: no new lines from 'close' — nothing due today, prior legs already closed out.
+- status --scan confirms: 2026-09-14/edge RLGT exit order state 'new' (pending the auction); 2026-09-11/edge CODA still OPEN -144 @ 10.1 (-4.06%); 2026-09-14/edge VRA/FPS/RLGT entries all filled and open pending their own exits.
+- Account reachable throughout: paper, equity $9,798.36, cash $5,230.82, buying power $27,398.42.
+- Flagging for a human: the CODA overdue short (144 sh) has failed two consecutive close attempts (cls partial fill, then day-order refusal pre-open) and needs an exit sent once the market opens, or it will keep blocking future 'open' calls.
