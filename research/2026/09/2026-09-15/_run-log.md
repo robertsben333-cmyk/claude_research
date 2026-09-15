@@ -21,3 +21,12 @@
 - Shortlist: 2 names (TCOM, LUXE); this batch: TCOM
 - Already on disk, skipping: none
 - Plan: wave of 1 opus/high researcher (TCOM), publish after the wave
+
+## Stage 2 — deep dive, batch 1 — FINISHED (08:39 UTC)
+- Logged at 2026-09-15 08:39 UTC
+- Researched: TCOM
+- Skipped (already done): none
+- Failed: none
+- Subagents: 1 opus/high, in 1 wave of 1 (batch 1 shortlist has only 1 name; wave_size 2 not reached)
+- Median evidence completeness: 82/100
+- Panel-eligible after this batch: n/a — batch 2 (LUXE) still pending, ranking happens after the last batch
