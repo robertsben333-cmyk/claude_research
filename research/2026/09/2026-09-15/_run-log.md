@@ -48,3 +48,13 @@
 - Shortlist: 2 names (TCOM, LUXE); this batch: LUXE
 - Already on disk, skipping: TCOM (batch 1 completed it)
 - Plan: wave of 1 opus/high researcher (LUXE); batch has only 1 name so wave_size 2 not reached
+
+## Stage 2 — deep dive, batch 2 — FINISHED (10:48 UTC)
+- Logged at 2026-09-15 10:48 UTC
+- Researched: LUXE
+- Skipped (already done): TCOM (from batch 1)
+- Failed: none
+- Subagents: 1 opus/high, in 1 wave of 1 (batch 2 shortlist has only 1 name; wave_size 2 not reached)
+- Median evidence completeness (this batch): 76/100
+- Panel-eligible after this batch (final ranking, both dossiers): TCOM (panel_priority 34.1), LUXE (panel_priority 33.35) -- both eligible, both selected (panel.names=2, only 2 candidates exist)
+- 02-ranking.json written: 2 names ranked, 0 excluded, 0 not_researched
