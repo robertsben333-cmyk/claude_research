@@ -10,20 +10,43 @@ you like; that is the point of not bucketing it upstream.
 
 ## The ranking
 
-| # | ticker | session | `impact_sum` | conviction | floor | control `-run_up_20d` | turnover $/day |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | VRA | 09-15 bmo | **+7.20** | 7.20 | yes | +9.48 (5th) | $288k |
-| 2 | FPS | 09-15 bmo | **+3.00** | 3.00 | yes | +26.70 (8th) | $154.9m |
-| 3 | RLGT | 09-14 amc | **+3.00** | 3.00 | yes | +4.59 (3rd) | $1.08m |
-| 4 | KMTS | 09-14 amc | +2.70 | 2.70 | – | +15.94 (6th) | $5.90m |
-| 5 | PLAY | 09-14 amc | +2.00 | 2.00 | – | +18.35 (7th) | $12.9m |
-| 6 | HITI | 09-14 amc | −1.60 | 1.60 | – | −9.36 (1st) | $1.36m |
-| 7 | COE | 09-15 bmo | **−3.00** | 3.00 | yes | +43.67 (9th) | $667k |
-| 8 | BIOX | unsettled | **−5.00** | 5.00 | yes | +4.05 (2nd) | $202k |
-| 9 | HYFT | 09-14 amc | **−7.00** | 7.00 | yes | +6.03 (4th) | $138k |
+| # | ticker | session | `impact_sum` | floor | tradable | control `-run_up_20d` |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | VRA | **bmo** 09-15 | **+7.20** | yes | **yes** — long, $288k/d | +9.48 (5th) |
+| 2 | FPS | **bmo** 09-15 | **+3.00** | yes | **yes** — long, $154.9m/d | +26.70 (8th) |
+| 3 | RLGT | **amc** 09-14 | **+3.00** | yes | **yes** — long, $1.08m/d | +4.59 (3rd) |
+| 4 | KMTS | **amc** 09-14 | +2.70 | – | yes — long, $5.90m/d | +15.94 (6th) |
+| 5 | PLAY | **amc** 09-14 | +2.00 | – | yes — long, $12.9m/d | +18.35 (7th) |
+| 6 | HITI | **amc** 09-14 | −1.60 | – | yes — borrow ok, $1.36m/d | −9.36 (1st) |
+| 7 | COE | **bmo** 09-15 | **−3.00** | yes | **no** — not shortable | +43.67 (9th) |
+| 8 | BIOX | **amc** 09-14 † | **−5.00** | yes | **no** — not shortable | +4.05 (2nd) |
+| 9 | HYFT | **amc** 09-14 | **−7.00** | yes | **no** — $138k/d, under the $200k floor | +6.03 (4th) |
+
+† BIOX's session is **unsettled** — the date is company-confirmed, the release hour is
+not. Recorded as 09-14 amc on precedent only; see below.
+
+**`floor` and `tradable` are different questions and the table keeps them apart.** The
+floor is a selection decision about whether the sign means anything. Tradable is a fact
+about the name — turnover against the $200k floor, and for a negative row whether
+Alpaca will lend it. A name can be below the floor and perfectly tradable (KMTS, PLAY,
+HITI) or top-of-table and barely reachable (VRA at $288k/day).
+
+**Read down the tradable column and the day's real result appears: all four
+floor-clearing NEGATIVES were untradeable.** COE and BIOX could not be borrowed and
+HYFT — the single strongest conviction in the run at −7.00 — turns over $138k a day
+against a $200k floor. So the book that actually went on was long-only and tested the
+long half of this ranking only. The ranking itself is nine names; the tradable
+expression of it was three.
+
+Borrow is as the run recorded it at 2026-09-14 17:35 UTC, not as it reads now — Alpaca
+re-checks shortability daily and **COE already reads borrowable this morning**. The
+column is deliberately the run's own answer, because that is what the book was refused
+on. Regenerate with `alpaca_trade.py assets --run <RUN>/edge` (`--live` for today's
+borrow); HITI's borrow is a live lookup because the plan never checked it, being below
+the floor.
 
 `edge-scores.json` is the complete table, unfiltered and uncut — the ranking test needs
-every name at every k.
+every name at every k. `alpaca-assets.json` carries the two columns above per name.
 
 ## The order is not the sign
 
