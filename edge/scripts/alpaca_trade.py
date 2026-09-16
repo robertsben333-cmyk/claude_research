@@ -828,11 +828,20 @@ def auction_window(api, tif):
     if tif == "cls":
         return entry_window(api, True)
     if tif != "opg":
+        # A plain DAY order is not an auction order and Alpaca no longer rejects
+        # submissions while the market is closed -- it queues them and routes the
+        # order once the regular session opens (confirmed against Alpaca's current
+        # docs, 2026-09-16: "order-submission API calls while the market was closed
+        # were [once] rejected, but now those API calls are accepted ... and the
+        # orders are routed to the marketplace at the next available time"). So this
+        # always says yes; the note just records whether it goes in immediately or
+        # sits queued for the open.
         clk, err = api.clock()
         if not clk:
             return False, f"clock unreachable: {err}"
-        return bool(clk.get("is_open")), ("market order" if clk.get("is_open")
-                                          else "market closed")
+        return True, ("market order" if clk.get("is_open")
+                      else "queued for the next open (DAY orders are accepted "
+                           "and routed by Alpaca while the market is closed)")
     clk, err = api.clock()
     if not clk:
         return False, f"clock unreachable: {err}"
