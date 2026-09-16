@@ -15,3 +15,9 @@
 - Scouts: 0 subagents (screen skipped)
 - Session mix: 1 AMC / 0 BMO
 - Notable drops: none scored by triage (stage 0 already excluded LEN.B no_options_market, ALMU and IPHA below_market_cap_floor)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-16 08:22 UTC
+- Shortlist: 1 name; this batch: LEN
+- Already on disk, skipping: none
+- Plan: waves of 2 opus/high researchers, publish after each wave (single name = one wave of one)
