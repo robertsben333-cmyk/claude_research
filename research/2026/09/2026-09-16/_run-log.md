@@ -21,3 +21,12 @@
 - Shortlist: 1 name; this batch: LEN
 - Already on disk, skipping: none
 - Plan: waves of 2 opus/high researchers, publish after each wave (single name = one wave of one)
+
+## Stage 2 — deep dive, batch 1 — FINISHED (08:35 UTC)
+- Logged at 2026-09-16 08:36 UTC
+- Researched: LEN
+- Skipped (already done): none
+- Failed: none
+- Subagents: 1 opus/high, in 1 wave of 1 (shortlist has only 1 eligible name today)
+- Median evidence completeness: 82/100
+- Panel-eligible after this batch: n/a — ranking deferred to final batch per skill step 4
