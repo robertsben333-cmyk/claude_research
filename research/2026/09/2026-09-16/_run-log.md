@@ -30,3 +30,14 @@
 - Subagents: 1 opus/high, in 1 wave of 1 (shortlist has only 1 eligible name today)
 - Median evidence completeness: 82/100
 - Panel-eligible after this batch: n/a — ranking deferred to final batch per skill step 4
+
+## Close AMC — opening-auction exit — BLOCKED, no orders submitted
+- Logged at 2026-09-16 10:08 UTC
+- Step 1 guard as specified in the Routine prompt does not exist in this codebase: 'python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg' fails with argparse error (exit 2, unrecognized arguments). The 'mode' subcommand only supports '--require <MODE_NAME>' (uniform/bmo_close/auction_split), not an instrument/tif-based guard.
+- Step 2 as specified also does not exist: 'alpaca_trade.py verify --scan ...' fails (exit 2, invalid choice 'verify'; valid subcommands are plan, open, flatten, close, status, assets, mode).
+- The Routine prompt also references an 'amc_open' exit mode as having shipped 2026-09-15; grep of the full tree finds no such mode anywhere in edge/scripts/alpaca_trade.py (EXIT_MODES = uniform, bmo_close, auction_split only; 'amc_open' appears solely as part of 'amc_open_bmo_close', a label inside edge/scripts/edge_exit.py's analysis code, not an execution mode). This looks like the same class of drift CLAUDE.md documents for 2026-09-10 (a Routine prompt referencing code that lives on an unmerged branch) rather than a live feature on main.
+- Per the Routine's own instruction ('do not substitute your own reading of config/pipeline.yaml for this command'; 'on a non-zero exit, do nothing further ... and stop'), no close order was submitted this run. Ran plain 'mode' (no flags, informational only, not used as the guard) and 'status' (read-only) instead to capture context.
+- 'mode' reports: execution.enabled=true, orders.exit_mode=auction_split, exit instrument amc -> opg, bmo -> cls -- consistent with config/pipeline.yaml, but this was not treated as satisfying the specified exit-status guard.
+- 'status' shows no amc leg is actually due into the opening auction today: LUXE (from 2026-09-15, exit_date 2026-09-16) is session=bmo, so its exit is a closing-auction (cls) order this Routine would not place before market open regardless.
+- 'status' also surfaces an unrelated, pre-existing problem worth a human's attention: VRA and FPS (entered 2026-09-14, session=bmo, exit_date 2026-09-15) are still OPEN two days past their exit date -- VRA +40.14%, FPS +8.61% on paper. Their 2026-09-15 closing-auction exit orders both show 'expired filled 0' (0 shares sold). RLGT from the same batch (amc) resolved and is no longer open.
+- Recommend a human: (1) check whether edge/scripts/alpaca_trade.py is missing a 'verify' subcommand and a 'mode --require-exit-tif' flag that a newer version of the Routine prompt assumes, or whether the prompt was pasted from a draft never merged to main; (2) decide how VRA and FPS (2 days overdue, unresolved) should be closed -- they were not touched by this run.
