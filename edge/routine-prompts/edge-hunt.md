@@ -78,15 +78,18 @@ agent definitions and the skill, which the session reads from the tree, so the p
 below needs only the one sentence added to step 4 — and it is only in the block below
 until it is pasted.
 
-**2026-09-16, still not pasted, and the block now carries three fixes.** The 09-15 work
+**2026-09-16, still not pasted, and the block now carries five fixes.** The 09-15 work
 above never reached `main`: it sat on `claude/optimistic-hypatia-5qvags` until 09-16, so
 the 09-16 run cloned a tree with no `edge/LESSONS.md` in it and an `unpriced-hunter`
 that never heard of `print_vs_bar_pct`, while the Routine's pasted text asked for both.
 That branch is merged now. The block below therefore carries: the clock (17:04 UTC /
 13:04 ET, with the entry margin stated, replacing 14:04 / 10:04), the step-4 sentence in
 its new form — the hunter sizes the day once, freezes `pre_lessons`, and only then reads
-`edge/LESSONS.md`, so the file's own effect on the ranking is measurable — and the
-older `execution.enabled` parenthetical, still left alone on purpose. The `edge/` path
+`edge/LESSONS.md`, so the file's own effect on the ranking is measurable — the step-0b
+text for `amc_open`, which came in with `claude/alpaca-sell-orders-filling-mwumuw` the
+same day and for the same reason, the universe line on share classes (LEN.B is not a
+second event), and the older `execution.enabled` parenthetical, still left alone on
+purpose. The `edge/` path
 prefix is the one pending fix **not** taken here: the four shims make both spellings
 work, and changing the paths in the same paste as everything else would make a failed
 run harder to diagnose. Paste this, then delete the shims in a separate change.
@@ -121,8 +124,14 @@ WHAT THIS STAGE PRODUCES: one signed number per company, so today's names can be
 
 THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the ranking key, what its units are, and what the note must report are all stated in `.claude/skills/earnings-edge-hunt/SKILL.md` and in `scripts/edge_score.py`'s own docstring, and they have changed before and will change again as days pool. Read them in the tree you actually cloned and follow those. Do not carry a remembered contract into the run: a prompt that restates the scoring contract is exactly the kind of duplicated fact that went stale for five days in CLAUDE.md's stage table and cost real runs. `edge-scores.json` names its own `ranking_key`; report whatever that says.
 
-0b. SELL YESTERDAY'S BOOK, BEFORE THE HUNT. Only if `execution.enabled` is true in config/pipeline.yaml - it is committed as false, and if it is false you do nothing here and say nothing. If it is true:
-   python3 scripts/alpaca_trade.py flatten --submit
+0b. SELL YESTERDAY'S BOOK, BEFORE THE HUNT. Ask the code rather than reading the config by eye:
+   python3 edge/scripts/alpaca_trade.py mode
+   If `execution.enabled` is false you do nothing here and say nothing. If it is true:
+   python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit
+   python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
+   `verify` FIRST. A submitted sell is not a sold position: six of the first seven auction exits either part-filled or filled nothing and expired, because `cls` and `opg` cross once and take whatever size the contra side brings - HOFT 17 of 161, CODA 39 of 183, RLGT 0 of 224. `verify --fix` re-sends, at plain market, any leg the account still holds behind an order that is dead at the broker. You fire inside the US session, so the market order goes through; nobody else in the day is in a position to do this. Put its verdict lines in the run log.
+   `close`, not `flatten`, while `orders.flatten_before_entry` is false - which it is, and it has to be under any non-uniform mode or the flatten sells every amc leg hours before its opening auction. `close` sends what is due today with the instrument the session maps to, sends anything overdue at plain market, and waits `orders.fill_check_seconds` to check its own fills before it returns.
+   THE BMO LEGS MUST BE GONE BEFORE STEP 7. Under `amc_open`, the mode shipped since 2026-09-15, that is what this step does: amc legs went into the opening auction hours ago from the "Close AMC" Routine, and the bmo legs due today are sold here at plain market. Do not let step 7 buy over an unsold bmo position. Sizing divides a gross budget over the new names without knowing the old book is still there, so the exposure stacks - on 2026-09-15 VRA and FPS were held straight through LUXE's entry, and `open` did not refuse because a leg whose exit order is still working is not past its exit date. If `close` leaves a bmo leg open for any reason, say so in the run log and treat the entry budget as reduced by it.
    First and not last, for two reasons. Every position in the account has already been through its print, so nothing is cut short of its event. And if this session dies mid-hunt, the account is in cash rather than holding a book nobody is managing - stage 2 published nothing on four consecutive days once, so assume a session can die. Record in the run log what was sold and at what unrealised P&L, before the sweep launches: that line is the only record of the exit. If the account is unreachable, say so and CARRY ON WITH THE HUNT. The research is the point; the book is downstream of it.
 
 1. UNIVERSE AND SEALED BASELINE.
@@ -157,7 +166,7 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
    python3 scripts/alpaca_trade.py status --run <RUN>/edge
    `--no-flatten` because step 0b already did it, hours ago. Selection is one rule - |impact_sum| >= the conviction floor, side from the sign, plus a turnover floor and a shortability check - and the book is EQUAL WEIGHT. Do not size a name by its score, do not hand-pick a name in, and do not trade a name below the floor because its finding reads well: below the floor the sign is a coin flip and that is the entire reason the floor exists.
    Entries are plain market orders, filled while you watch. The only deadline is that the US session is still open - 16:00 New York, 22:00 Amsterdam in summer. Firing at 16:04 and finishing the hunts by 19:00 leaves three hours; the 2026-09-09 run took 2h53m end to end. A session that was retried, resumed or ran long may have none, and `open` refuses rather than sending an order into a closed market. Record the refusal and stop.
-   RECORD THE FILLS. Buying at market rather than in the closing auction was measured as costing four hundredths of a point per trade, but that compares trade prices and not fills, and the auction is the deepest liquidity of the day - which matters more now the turnover floor is $200k. `status` prints filled_avg_price per order; if those come back materially worse than the plan's notional, say so in the run log. That is the number that decides whether orders.entry goes back to market_on_close.
+   RECORD THE FILLS, AND WHETHER THEY ARE FILLS. `status` reports what each order actually did at the broker, not what was submitted - the two came apart for a week without anything noticing. Buying at market rather than in the closing auction was measured as costing four hundredths of a point per trade, but that compares trade prices and not fills, and the auction is the deepest liquidity of the day - which matters more now the turnover floor is $200k. `status` prints filled_avg_price per order; if those come back materially worse than the plan's notional, say so in the run log. That is the number that decides whether orders.entry goes back to market_on_close.
    Then append to the run log and publish again: whether execution was on or this was a dry run, what was sold at step 0b, how many names met the benchmark, how many orders were accepted and at what average fill, the gross as a percentage of equity, and every name refused with its reason. Publish even when nothing was placed. docs/EXECUTION.md is the whole contract.
 
 BUDGET: config/pipeline.yaml sets edge_hunt caps - 20 subagents for the whole stage, which is 1 sweep + 19 hunters. If the confirmed universe is larger, shed NAMES using budget.edge_degrade_order and record what you shed; one hunter per name is already the floor. Note the real platform ceiling is 8 CONCURRENT subagents, which is not the same limit - rejected launches cost nothing, so relaunch as slots free.

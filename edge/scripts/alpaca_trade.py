@@ -48,6 +48,15 @@ prints and writes the plan and touches no order.
     python3 edge/scripts/alpaca_trade.py plan  --run research/2026/09/2026-09-09/edge
     python3 edge/scripts/alpaca_trade.py open  --run <same> --submit --no-flatten   # step 7
     python3 edge/scripts/alpaca_trade.py status --run research/2026/09/2026-09-09/edge
+    python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit
+
+A submitted sell is not a sold position. `close` re-reads every exit it sent after
+`orders.fill_check_seconds` (300 by default) and says, per leg, whether the account
+has actually let go of the shares; `verify` does the same check on demand. That
+check exists because `cls` and `opg` are auction orders -- each crosses once and
+takes whatever size the contra side brings, which on a $200k-a-day name has been 17
+of 161 (HOFT), 39 of 183 (CODA) and 0 of 224 (RLGT). Nothing re-read the status, so
+the record said `submitted: true` while the position stayed open for another day.
 """
 import argparse
 import glob
@@ -624,9 +633,21 @@ def save_orders(run, state):
 
 
 def upsert(rows, row):
+    """Replace the row carrying this client_order_id, or append it.
+
+    Replace, not merge. The merge left a failed attempt's `reason` sitting beside
+    the successful attempt's `submitted: true` -- VRA and FPS on 2026-09-15 both
+    read "cls unavailable (market closed)" next to a live order id, which is the
+    opposite of what happened. alpaca-orders.json is the file a person opens to
+    answer "did the sell go", so each order says one thing. The attempts that were
+    never sent are kept, as history, where they cannot be read as the outcome.
+    """
     for i, r in enumerate(rows):
         if r.get("client_order_id") == row.get("client_order_id"):
-            rows[i] = {**r, **row}
+            hist = list(r.get("previous_attempts") or [])
+            if r.get("reason") and not r.get("submitted"):
+                hist.append({"utc": r.get("utc"), "reason": r.get("reason")})
+            rows[i] = {**row, **({"previous_attempts": hist} if hist else {})}
             return
     rows.append(row)
 
@@ -744,11 +765,177 @@ def order_live(api, rec):
     return str(o.get("status", "")).lower() in LIVE_ORDER_STATUSES
 
 
-EXIT_MODES = ("uniform", "bmo_close", "auction_split")
+# Where an auction order can only ever fill. `cls` crosses once at 16:00 ET and
+# `opg` once at 09:30 ET, so neither is verifiable five minutes after submission --
+# it is still `new`, correctly, for hours.
+AUCTION_TIFS = {"cls": "the 16:00 ET closing auction",
+                "opg": "the 09:30 ET opening auction"}
+
+
+def held_qty(api, sym):
+    """How many shares of this symbol the account still holds, unsigned."""
+    if not api.usable:
+        return None
+    pos, _ = api.position(sym)
+    return abs(float(pos.get("qty", 0))) if pos else 0.0
+
+
+def fill_state(api, rec):
+    """Re-read one submitted order at the broker: status, and how much it filled."""
+    cid = rec.get("client_order_id")
+    if not api.usable or not cid:
+        return None
+    o, err = api.call("GET", f"/v2/orders:by_client_order_id?client_order_id={cid}")
+    if not o:
+        # Unknown counts as live, for the reason order_live() counts it live: a
+        # failed lookup must never be the reason a position gets sold twice.
+        return {"status": f"lookup failed: {err}", "live": True,
+                "filled_qty": 0.0, "filled_avg_price": None, "order_qty": None}
+    st = str(o.get("status", "")).lower()
+    return {"status": st, "live": st in LIVE_ORDER_STATUSES,
+            "filled_qty": float(o.get("filled_qty") or 0),
+            "filled_avg_price": o.get("filled_avg_price"),
+            "order_qty": float(o.get("qty") or 0)}
+
+
+def verify_exits(api, runs, ex, submit, blocked, wait_s=0, fix=True, quiet=False):
+    """Did the sells actually SELL? Re-read every submitted exit at the broker.
+
+    Submission is not a fill, and until 2026-09-15 nothing here ever looked again.
+    `send` stored the status Alpaca returns at submission -- always `pending_new`
+    or `accepted` -- and the session ended. The only thing that ever noticed an
+    exit which had not sold was the NEXT run's held-position check, 17 to 24 hours
+    later, and that check could not always act (see the market fallback in
+    cmd_close).
+
+    What was being missed is that `cls` and `opg` are not market orders. Each
+    participates in ONE auction cross and takes whatever size the contra side
+    brings, which in a $200k-a-day name is often almost none:
+
+        HOFT  2026-09-11  cls    17 of 161 filled, then expired
+        CODA  2026-09-14  cls    39 of 183 filled, then expired
+        RLGT  2026-09-15  opg     0 of 224 filled
+
+    Three verdicts per leg, and only one of them is a problem:
+
+        closed     the account no longer holds it. Done, whatever the order says.
+        working    an order that can still fill is out. Expected for hours on an
+                   auction TIF -- this is not a failure and nothing is re-sent.
+        UNFILLED   shares still held and every order for the leg is dead at the
+                   broker. Nothing will ever sell this leg on its own.
+
+    With `fix`, an UNFILLED leg is re-sent at plain market, sized to what Alpaca
+    reports is still held, under the same invariant cmd_close keeps: only when
+    every prior order is dead AND the position is really still there.
+    """
+    if wait_s:
+        if not quiet:
+            print(f"\nwaiting {wait_s}s for fills, then verifying")
+        time.sleep(wait_s)
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    mkt_tif = ex["orders"].get("time_in_force", "day")
+    mkt = None                       # one clock call for the whole sweep, not per leg
+    rows = []
+    for run in runs:
+        state = load_orders(run)
+        touched = False
+        for en in state.get("entries", []):
+            if not en.get("submitted"):
+                continue
+            sent = [x for x in state.get("exits", [])
+                    if x.get("closes") == en["client_order_id"] and x.get("submitted")]
+            if not sent:
+                continue
+            reports = [(x, fill_state(api, x)) for x in sent]
+            residual = held_qty(api, en["symbol"])
+            live = [x for x, r in reports if r is None or r.get("live")]
+            filled = sum((r or {}).get("filled_qty") or 0 for _, r in reports)
+            if residual is None:
+                verdict = "unknown"
+            elif residual == 0:
+                verdict = "closed"
+            elif live:
+                verdict = "working"
+            else:
+                verdict = "unfilled"
+            row = {"run": run, "symbol": en["symbol"], "session": en.get("session"),
+                   "exit_date": en.get("exit_date"), "entry_qty": float(en["qty"]),
+                   "filled_qty": filled, "residual_qty": residual,
+                   "verdict": verdict, "checked_utc": now,
+                   "orders": [{"client_order_id": x["client_order_id"],
+                               "time_in_force": x.get("time_in_force"),
+                               **(r or {"status": "not checked"})}
+                              for x, r in reports]}
+            if verdict == "working":
+                waiting = {x.get("time_in_force") for x in live
+                           if x.get("time_in_force") in AUCTION_TIFS}
+                if waiting:
+                    row["note"] = ("waiting on " + ", ".join(
+                        sorted(AUCTION_TIFS[t] for t in waiting)) +
+                        "; not verifiable until it has crossed")
+            if verdict == "unfilled" and fix:
+                if blocked or not submit:
+                    row["rescue"] = {"submitted": False,
+                                     "reason": blocked or "dry run: --submit not given"}
+                else:
+                    if mkt is None:
+                        mkt = auction_window(api, mkt_tif)
+                    if not mkt[0]:
+                        row["rescue"] = {"submitted": False,
+                                         "reason": f"market unavailable ({mkt[1]})"}
+                    else:
+                        cid = f"{client_id(run, en['symbol'], 'exit')}-v{len(sent) + 1}"
+                        side = "sell" if en["side"] == "buy" else "buy"
+                        body = order_body(en["symbol"], int(residual), side, ex,
+                                          moc=False, tif=mkt_tif)
+                        rec = send(api, body, cid, True, None)
+                        rec.update({"leg": "exit", "closes": en["client_order_id"],
+                                    "exit_date": en.get("exit_date"),
+                                    "position_qty_at_close": residual,
+                                    "note": "rescue: every earlier exit for this leg "
+                                            "was dead at the broker with shares still "
+                                            "held"})
+                        upsert(state["exits"], rec)
+                        row["rescue"] = {k: rec.get(k) for k in
+                                         ("client_order_id", "submitted", "order_id",
+                                          "status", "reason", "qty")}
+                        touched = True
+            vs = state.setdefault("verifications", [])
+            for i, v in enumerate(vs):
+                if (v.get("symbol") == row["symbol"]
+                        and v.get("exit_date") == row["exit_date"]):
+                    vs[i] = row
+                    break
+            else:
+                vs.append(row)
+            touched = True
+            rows.append(row)
+        if touched and api.usable:
+            state["log"].append({"utc": now, "action": "verify", "fix": bool(fix)})
+            save_orders(run, state)
+    if not quiet:
+        print(f"\nfill check over {len(runs)} run(s), {len(rows)} exit leg(s)")
+        for r in rows:
+            mark = {"closed": "ok", "working": "work", "unfilled": "UNFILLED",
+                    "unknown": "?"}[r["verdict"]]
+            print(f"  {r['symbol']:8s}{(r['session'] or '?'):4s}{mark:9s}"
+                  f"filled {r['filled_qty']:g}/{r['entry_qty']:g}"
+                  f"  still held {r['residual_qty']}"
+                  + (f"  -> {r['note']}" if r.get("note") else "")
+                  + (f"  -> rescue {r['rescue'].get('order_id') or r['rescue'].get('reason')}"
+                     if r.get("rescue") else ""))
+        bad = [r for r in rows if r["verdict"] == "unfilled"]
+        if bad:
+            print(f"  {len(bad)} leg(s) NOT SOLD and no order working. Say so in the "
+                  f"run log: an unsold leg blocks the next `open`.")
+    return rows
+
+
+EXIT_MODES = ("uniform", "bmo_close", "auction_split", "amc_open")
 
 
 def exit_mode(ex):
-    """Which of the three exit schemes is configured.
+    """Which of the four exit schemes is configured.
 
     `exit_by_session: true` is kept as an alias for `auction_split`; it was the first
     shape of this setting and turning it on already meant that scheme.
@@ -800,12 +987,41 @@ def exit_tif_for(session, ex):
                       closing auction. Needs a SECOND Routine at 14:00 Amsterdam,
                       because Alpaca rejects `opg` between 09:28 and 19:00 ET
 
+      amc_open        +6.49% (t=3.42)  amc into the opening auction, bmo at plain
+                      market on the run at 13:00 ET. Same second Routine as
+                      auction_split; gives up 1.31pp against it, and is the only mode
+                      whose bmo leg is CERTAIN to be gone before the same afternoon
+                      buys the next book
+
     So `bmo_close` buys +1.77pp of the +3.32pp on offer and costs no new machinery;
     `auction_split` buys the remaining +1.54pp and costs a second daily firing that
     only a person can create. None of it is established: on 09-08 and 09-09 every exit
     hour available on both days paid between −1.42% and −0.05% per trade, and
     `backtest/RESULTS.md` puts the close ahead of the open on its own 37 sealed events
     for all three arms.
+
+    WHY `amc_open` EXISTS, given that it is measurably worse than `auction_split`.
+    Two reasons the +7.81% cannot see, and both are about the bmo leg:
+
+    The +6.48% for a bmo closing auction assumes the `cls` order FILLS. On this book
+    it has filled 39 of 183 (CODA) and 17 of 161 (HOFT) and then expired, because an
+    auction order crosses once and takes whatever size the contra side brings. The
+    rest was sold at market one to three days later with the overnight exposure that
+    implies. A return that expires in the auction is not a return.
+
+    And a bmo leg still open at 13:05 ET is still open when step 7 buys at 13:24 ET.
+    The sizing divides a gross budget over the new names without knowing the old book
+    is still there, so gross stacks: on 2026-09-15 VRA and FPS were held through
+    LUXE's entry. `open` does not refuse it either, because a leg whose exit order is
+    working is not past its exit date. A plain market sell at 13:05 ET is verifiable
+    within the same session -- which is what the fill check is for -- so the budget
+    the entry divides is known to be free.
+
+    The cost is measured and is not zero: 1.31pp per trade over the same 22 trades,
+    ρ 0.391 against 0.461, and 16 of 22 right instead of 17. Against `uniform_close`
+    (+5.80%) it is still ahead by +0.57pp, on a paired day bootstrap of [−2.86, +3.18]
+    -- which is to say, not established either. `edge/scripts/edge_exit.py` scores it as
+    the `amc_open_bmo_1300` policy; re-run it as days pool.
     """
     mode = exit_mode(ex)
     plain = ex["orders"].get("time_in_force", "day")
@@ -814,6 +1030,8 @@ def exit_tif_for(session, ex):
             "market_on_close" else plain
     if mode == "bmo_close":
         return plain if session == "amc" else "cls"
+    if mode == "amc_open":
+        return "opg" if session == "amc" else plain
     return "opg" if session == "amc" else "cls"
 
 
@@ -1232,6 +1450,20 @@ def cmd_close(a, api, ex):
                 print(f"  {run} {e['symbol']:8s} overdue since {xd}; going at market")
             if tif:
                 ok, note = window_for(tif)
+                if not ok and prior and not overdue:
+                    # The auction this leg wanted is gone AND the order sent to it is
+                    # dead with the shares still held. RLGT on 2026-09-15: the 06:05
+                    # ET `opg` filled none of 224, and the 13:05 ET retry asked for
+                    # `opg` again inside Alpaca's 09:28-19:00 rejection window, so
+                    # nothing was sent and the position sat another full day. Holding
+                    # for tomorrow's auction is not a decision anything here measured;
+                    # it is one more night of exposure on a leg whose event is over.
+                    mkt = ex["orders"].get("time_in_force", "day")
+                    ok2, note2 = window_for(mkt)
+                    if ok2:
+                        print(f"  {run} {e['symbol']:8s} {tif} unavailable ({note}) and "
+                              f"the earlier exit died unfilled; going at market")
+                        tif, ok, note = mkt, ok2, note2
                 if not reason and not ok:
                     reason = f"{tif} unavailable ({note})"
             elif not reason and use_moc and not moc:
@@ -1257,6 +1489,30 @@ def cmd_close(a, api, ex):
                              "windows": {k: v[1] for k, v in win.items()}})
         save_orders(run, state)
         print(f"  wrote {orders_path(run)}")
+
+    # A submitted sell is not a sold position, and the session is about to end. Wait
+    # out `orders.fill_check_seconds` and look. An auction TIF will still read
+    # `working` here and that is correct -- what this catches now is the order that
+    # was rejected, expired or never left the gate, which used to survive as
+    # `submitted: true` until the next run 17 to 24 hours later.
+    wait = (a.verify_after if getattr(a, "verify_after", None) is not None
+            else int(ex["orders"].get("fill_check_seconds", 300)))
+    if not blocked and a.submit and wait >= 0:
+        verify_exits(api, runs, ex, a.submit, blocked, wait_s=wait,
+                     fix=bool(ex["orders"].get("fill_check_fix", True)))
+
+
+def cmd_verify(a, api, ex):
+    if not api.usable:
+        sys.exit("verify needs ALPACA_API_KEY_ID / ALPACA_API_SECRET_KEY")
+    runs = [a.run] if a.run else sorted(
+        p for pat in a.scan for p in glob.glob(pat) if orders_path(p).exists())
+    if not runs:
+        print("no run with an alpaca-orders.json to verify")
+        return
+    blocked = (guard(api, ex, a.submit, a.live_account_i_understand) if a.fix
+               else "--fix not given")
+    verify_exits(api, runs, ex, a.submit, blocked, wait_s=a.wait, fix=a.fix)
 
 
 def cmd_flatten(a, api, ex):
@@ -1552,10 +1808,20 @@ def cmd_mode(a, api, ex):
     guard that was clearly meant to pass, and a renamed key looks like a guard that
     can never pass. Neither failure says anything in the run log.
 
-    `--require <mode>` exits 0 when that mode is configured and 1 when it is not, so
-    the guard becomes one command whose answer is in the exit status:
+    `--require <mode>[,<mode>...]` exits 0 when one of those modes is configured and 1
+    when none is, so the guard becomes one command whose answer is in the exit status:
 
-        python3 edge/scripts/alpaca_trade.py mode --require auction_split || exit 0
+        python3 edge/scripts/alpaca_trade.py mode --require auction_split,amc_open || exit 0
+
+    `--require-exit-tif <tif>` is the better guard for the second exit Routine, and it
+    is the one its prompt should use. That Routine exists for exactly one reason: some
+    session's exit is an `opg` order, and only a pre-market firing can place one. Ask
+    that question directly and the guard keeps working when a mode is renamed or added
+    -- which has now happened twice. A guard naming `auction_split` alone silently
+    stopped doing anything the moment `amc_open` shipped, while still reporting a tidy
+    no-op every morning.
+
+        python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg || exit 0
     """
     enabled = bool(ex.get("enabled"))
     mode = exit_mode(ex)
@@ -1567,17 +1833,34 @@ def cmd_mode(a, api, ex):
     print(f"orders.exit            {orders.get('exit', 'market_on_close')}")
     print(f"exit instrument        amc -> {exit_tif_for('amc', ex)}, "
           f"bmo -> {exit_tif_for('bmo', ex)}")
+    print(f"orders.fill_check_seconds    {orders.get('fill_check_seconds', 300)}")
+    print(f"orders.fill_check_fix        {orders.get('fill_check_fix', True)}")
     if a.require:
-        if a.require not in EXIT_MODES:
-            raise SystemExit(f"--require {a.require!r}; expected one of "
+        want = [m.strip() for m in a.require.split(",") if m.strip()]
+        bad = [m for m in want if m not in EXIT_MODES]
+        if bad:
+            raise SystemExit(f"--require {', '.join(bad)}; expected one of "
                              + ", ".join(EXIT_MODES))
         if not enabled:
             print(f"\nrequire {a.require}: NO -- execution.enabled is false")
             raise SystemExit(1)
-        if mode != a.require:
+        if mode not in want:
             print(f"\nrequire {a.require}: NO -- the configured mode is {mode}")
             raise SystemExit(1)
         print(f"\nrequire {a.require}: yes")
+    if a.require_exit_tif:
+        tifs = {s: exit_tif_for(s, ex) for s in ("amc", "bmo")}
+        hit = [s for s, t in tifs.items() if t == a.require_exit_tif]
+        if not enabled:
+            print(f"\nrequire-exit-tif {a.require_exit_tif}: NO -- "
+                  f"execution.enabled is false")
+            raise SystemExit(1)
+        if not hit:
+            print(f"\nrequire-exit-tif {a.require_exit_tif}: NO -- no session exits "
+                  f"on it (amc -> {tifs['amc']}, bmo -> {tifs['bmo']})")
+            raise SystemExit(1)
+        print(f"\nrequire-exit-tif {a.require_exit_tif}: yes "
+              f"({', '.join(hit)})")
 
 
 def main():
@@ -1624,6 +1907,21 @@ def main():
                    help="close every open leg regardless of its exit date")
     p.add_argument("--now", action="store_true",
                    help="market order immediately instead of market-on-close")
+    p.add_argument("--verify-after", type=int, metavar="SECONDS",
+                   help="seconds to wait before re-reading the exits at the broker "
+                        "(default orders.fill_check_seconds, 300)")
+    p.add_argument("--no-verify", dest="verify_after", action="store_const", const=-1,
+                   help="submit and exit without checking whether the sells filled")
+
+    p = sub.add_parser("verify", help="re-read submitted exits at the broker and "
+                                      "report what actually filled")
+    common(p, run_required=False)
+    p.add_argument("--scan", action="append", default=[])
+    p.add_argument("--wait", type=int, default=0,
+                   help="seconds to wait before looking (default 0)")
+    p.add_argument("--fix", action="store_true",
+                   help="re-send at plain market any leg still held behind a dead "
+                        "order (needs --submit)")
 
     p = sub.add_parser("status", help="reconcile orders and positions against a run")
     common(p, run_required=False)
@@ -1640,8 +1938,12 @@ def main():
 
     p = sub.add_parser("mode", help="print the effective execution settings; "
                                     "--require asserts one and sets the exit status")
-    p.add_argument("--require", help="exit 1 unless this exit mode is configured "
-                                     "and execution is enabled")
+    p.add_argument("--require", help="comma-separated exit modes; exit 1 unless one "
+                                     "of them is configured and execution is enabled")
+    p.add_argument("--require-exit-tif", metavar="TIF",
+                   help="exit 1 unless some session's exit uses this instrument "
+                        "(opg, cls, day) and execution is enabled. Survives a mode "
+                        "being renamed; use it in the second exit Routine's guard")
     p.add_argument("--base", help=argparse.SUPPRESS)
 
     a = ap.parse_args()
@@ -1652,7 +1954,7 @@ def main():
     api = Alpaca(base=a.base)
     {"plan": cmd_plan, "open": cmd_open, "close": cmd_close,
      "flatten": cmd_flatten, "status": cmd_status, "mode": cmd_mode,
-     "assets": cmd_assets}[a.cmd](a, api, ex)
+     "assets": cmd_assets, "verify": cmd_verify}[a.cmd](a, api, ex)
 
 
 if __name__ == "__main__":

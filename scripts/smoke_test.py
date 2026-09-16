@@ -569,15 +569,15 @@ def main():
           all(abs(s["notional_usd"] - eq_cap) < 10.0 for s in few),
           str([s["notional_usd"] for s in few]))
 
-    # Until 2026-09-11 this asserted the flatten was ON, which is what shipped then.
-    # The operator moved exit_mode to auction_split that day and turned the flatten
-    # off with it, so the assertion failed on every run afterwards and the whole
-    # smoke test read red for five days -- a gate nobody can pass is a gate nobody
-    # reads. What actually has to hold is the pairing, in both directions.
-    _fl = ex["orders"].get("flatten_before_entry")
-    check("the shipped flatten matches the shipped exit mode",
-          _fl is (at.exit_mode(ex) == "uniform"),
-          f"exit_mode={at.exit_mode(ex)} flatten_before_entry={_fl}")
+    # The flatten and the exit mode are one setting in two keys: a non-uniform mode
+    # with the flatten on sells every auction leg at market before its auction, and
+    # exit_mode() refuses that pairing outright. Assert the pairing, not either value
+    # -- both have been changed by the operator once and will be again.
+    check("the flatten and the exit mode agree",
+          (ex["orders"].get("flatten_before_entry") is True)
+          == (at.exit_mode(ex) == "uniform"),
+          f"flatten={ex['orders'].get('flatten_before_entry')} "
+          f"exit_mode={at.exit_mode(ex)}")
 
     # The two trading steps live in two hand-maintained files and drift silently.
     skill = open(os.path.join(REPO, ".claude/skills/earnings-edge-hunt/SKILL.md"),
@@ -585,7 +585,11 @@ def main():
     rprompt = open(os.path.join(REPO, "edge/routine-prompts/edge-hunt.md"),
                    encoding="utf-8").read()
     for label, text in (("the skill", skill), ("the stage E Routine prompt", rprompt)):
-        check(f"{label} sells before the hunt", "flatten --submit" in text)
+        # Either shape is a sell before the hunt, and which one is right depends on
+        # orders.exit_mode: the flatten is wrong whenever a position wants an auction.
+        check(f"{label} sells before the hunt",
+              "flatten --submit" in text or "close --scan" in text)
+        check(f"{label} checks that the sells filled", "verify --scan" in text)
         check(f"{label} buys with --no-flatten", "--no-flatten" in text)
         check(f"{label} gates both steps on execution.enabled",
               text.count("execution.enabled") >= 2 or text.count("enabled` is true") >= 2
@@ -640,13 +644,8 @@ def main():
         return {**ex, "orders": {**ex["orders"], "exit_mode": m,
                                  "flatten_before_entry": flatten}}
 
-    # What ships is auction_split since 2026-09-11, on the operator's instruction and
-    # with the replication risk knowingly accepted (CLAUDE.md records both). The check
-    # is therefore that the mode is one the code implements -- a renamed or misspelled
-    # key is the failure that would otherwise pass as a tidy no-op every morning.
-    check("the shipped exit mode is one the code implements",
-          at.exit_mode(ex) in ("uniform", "bmo_close", "auction_split"),
-          at.exit_mode(ex))
+    check("the shipped config names a known exit mode",
+          at.exit_mode(ex) in at.EXIT_MODES, at.exit_mode(ex))
     check("uniform gives both sessions the same exit",
           at.exit_tif_for("amc", _mode("uniform"))
           == at.exit_tif_for("bmo", _mode("uniform")) == "cls")
@@ -661,6 +660,19 @@ def main():
           at.exit_tif_for("amc", _mode("auction_split")) == "opg")
     check("auction_split sends bmo to the closing auction",
           at.exit_tif_for("bmo", _mode("auction_split")) == "cls")
+    # amc_open is auction_split with the bmo leg brought forward to the run itself,
+    # so the position is certainly gone before the same afternoon buys the next book.
+    check("amc_open sends amc to the opening auction and bmo at market",
+          (at.exit_tif_for("amc", _mode("amc_open")) == "opg"
+           and at.exit_tif_for("bmo", _mode("amc_open")) == "day"),
+          f'amc={at.exit_tif_for("amc", _mode("amc_open"))} '
+          f'bmo={at.exit_tif_for("bmo", _mode("amc_open"))}')
+    # The second exit Routine exists to place `opg` orders, not to serve one named
+    # mode. A guard naming auction_split alone stopped doing anything the moment
+    # amc_open shipped -- while still reporting a correct-looking no-op.
+    check("both opening-auction modes are reachable by the opg guard",
+          all(at.exit_tif_for("amc", _mode(m)) == "opg"
+              for m in ("auction_split", "amc_open")))
     check("an unknown session falls back to the closing auction",
           at.exit_tif_for(None, _mode("auction_split")) == "cls")
     check("exit_by_session: true still means auction_split",
@@ -672,7 +684,7 @@ def main():
     # The contradiction that was documented in three places and enforced in none:
     # the flatten sells the amc names at market hours before the auction the mode
     # exists to reach, so the configured exit could never happen and nothing said so.
-    for _m in ("bmo_close", "auction_split"):
+    for _m in ("bmo_close", "auction_split", "amc_open"):
         try:
             at.exit_mode(_mode(_m, flatten=True))
             check(f"{_m} with the flatten still on is refused", False,

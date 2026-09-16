@@ -47,24 +47,32 @@ hour into the session is nearer the next **open** (ρ=+0.331, p=0.046) than the 
    14:04 fire flattens the previous book and places a new one with nobody watching.
    Setting it back to `false` is the only thing that stops that.
 
-## The second Routine, required only for `exit_mode: auction_split`
+## The second Routine, required by any mode that sends amc to the opening auction
 
-`orders.exit_mode: auction_split` gives amc names the opening auction and bmo names the
-closing auction, because the two were measured to want opposite exits (`edge/EXECUTION.md`, "The
-exit the two sessions actually want"). The mode is off, and turning it on **needs this
-Routine to exist first**, for a reason that is not negotiable: Alpaca *rejects* rather than queues
-an `opg` order between 09:28 and 19:00 ET, so the amc leg cannot be placed by a Routine
-that fires at 16:04 Amsterdam. Nothing in the stage E session can sell an amc position
-into its own opening auction.
+Two modes do: `auction_split` and **`amc_open`, which is what ships since 2026-09-15**.
+Both give amc names the opening auction, because that is where an amc print was measured
+to pay (`edge/EXECUTION.md`, "The exit the two sessions actually want"). They differ only
+in the bmo leg — `auction_split` sends it to that day's closing auction, `amc_open` sells
+it at plain market on stage E's own run, so the position is certainly gone before the
+same afternoon buys the next book.
 
-The split therefore needs two runners:
+Either **needs this Routine to exist**, for a reason that is not negotiable: Alpaca
+*rejects* rather than queues an `opg` order between 09:28 and 19:00 ET, so the amc leg
+cannot be placed by a Routine that fires in the European afternoon. Nothing in the stage E
+session can sell an amc position into its own opening auction.
+
+So there are two runners (times as they actually are, checked against `list_triggers`):
 
 | Amsterdam | ET | who | what |
 | --- | --- | --- | --- |
-| 14:00 | 08:00 | **this Routine** | amc legs due today, into the opening auction (`opg`) |
-| 16:04 | 10:04 | stage E, step 0b | bmo legs due today (`cls`), plus anything overdue at market |
+| 12:00 | 06:00 | **this Routine** (`0 10 * * 1-5`) | amc legs due today, into the opening auction (`opg`) |
+| 19:04 | 13:04 | stage E, step 0b | bmo legs due today, plus anything overdue, at market |
 
-Set `orders.exit_mode: auction_split` **and** `orders.flatten_before_entry: false`
+**Guard on the instrument, not on the mode name.** This Routine's whole purpose is to
+place `opg` orders; which mode asked for them is not its business. A guard naming
+`auction_split` broke silently the day `amc_open` shipped.
+
+Set the mode **and** `orders.flatten_before_entry: false`
 together. Either alone is wrong: the flatten on its own sells the amc names before their
 auction, and the mode on its own leaves the flatten selling everything anyway. Since
 2026-09-10 that is **refused rather than documented**: `exit_mode()` raises on any
@@ -82,20 +90,29 @@ exists.
 ```
 Close stage E's amc positions in today's opening auction.
 
-You fire at 08:00 New York, which is inside Alpaca's pre-market and BEFORE the 09:28
-cutoff after which `opg` orders are rejected rather than queued. That timing is the
-only reason this Routine exists as a separate firing.
+You fire at 10:00 UTC, which is 06:00 New York in summer and 05:00 in winter. Re-read
+the clock with `date -u` rather than trusting this line. Either way you are inside
+Alpaca's pre-market and well BEFORE the 09:28 cutoff after which `opg` orders are
+rejected rather than queued. That timing is the only reason this Routine exists as a
+separate firing.
 
 0. Clone the repo on main, as edge/routine-prompts/edge-hunt.md step 0 describes, and
    verify edge/scripts/alpaca_trade.py exists. If it does not you are on the wrong branch:
    stop and say so.
 
 1. ASK THE CODE, DO NOT READ THE CONFIG BY EYE:
-   `python3 edge/scripts/alpaca_trade.py mode --require auction_split`
+   `python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg`
    It prints the effective settings and exits 0 only when execution is enabled AND
-   the configured mode is `auction_split`. On a non-zero exit, do nothing further,
-   paste its output into your one-line report, and stop. As shipped the mode is
-   `uniform`, so that is the expected outcome today.
+   some session's exit is an `opg` order — which is the one thing this Routine exists
+   to place, because Alpaca rejects `opg` between 09:28 and 19:00 ET and only a
+   pre-market firing can get one in. On a non-zero exit, do nothing further, paste its
+   output into your one-line report, and stop.
+
+   GUARD ON THE INSTRUMENT, NOT ON A MODE NAME. The previous version of this line said
+   `--require auction_split`, and it broke silently on 2026-09-15 when `amc_open`
+   shipped: the guard failed, this Routine reported a tidy no-op every morning, and the
+   amc legs it exists to sell never reached an opening auction. Two modes now send amc
+   to `opg` and more may follow; the instrument is the thing that matters here.
 
    Do not substitute your own reading of `config/pipeline.yaml` for this command.
    The guard used to be "if `orders.exit_mode` is not `auction_split`, do nothing",
@@ -107,7 +124,16 @@ only reason this Routine exists as a separate firing.
    orders in at 06:00 ET that stage E's own flatten cancels four hours later. The
    exit status has neither failure mode.
 
-2. `python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit`
+2. `python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge'`
+   FIRST, and read it. A submitted sell is not a sold position: six of the first seven
+   auction exits either part-filled or filled nothing and then expired, because `cls`
+   and `opg` cross once and take whatever size the contra side brings — HOFT 17 of 161,
+   CODA 39 of 183, RLGT 0 of 224. Any leg it marks UNFILLED is one nothing will sell on
+   its own. You fire before the open, so a plain market rescue is not available to you
+   and `--fix` would only record a refusal; name those legs in your report instead and
+   leave them to stage E's own run, which fires inside the session and does rescue them.
+
+3. `python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit`
    It closes only legs whose exit date is today, reads the real position quantity from
    the account so a partial fill still closes flat, and picks the instrument per
    session: amc into the opening auction, bmo into the closing auction. At 08:00 ET the
@@ -115,9 +141,9 @@ only reason this Routine exists as a separate firing.
    for stage E. That is fine and not a double-send: exits are keyed by a deterministic
    client_order_id and an already-submitted leg is skipped.
 
-3. `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
+4. `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
 
-4. Append to today's run log and publish: which legs were sent, with which
+5. Append to today's run log and publish: which legs were sent, with which
    time_in_force, and every refusal with its reason. Publish even when nothing was
    placed. If the account is unreachable, say so in the run log and publish that — an
    open position nobody recorded is the failure this step exists to prevent.
@@ -174,8 +200,10 @@ Close whatever of stage E's book is due today at Alpaca.
 
 1. `python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit`
    It closes only the legs whose exit date is today and reads the real position
-   quantity from the account, so a partial fill still closes flat.
-2. `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
+   quantity from the account, so a partial fill still closes flat. It then waits
+   `orders.fill_check_seconds` and re-reads the exits it sent.
+2. `python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit`
+   then `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
 3. If anything is still open whose exit date is in the past, close it now:
    `flatten --submit` sends plain market orders. Record that you did.
 4. Append what closed, and at what fill, to today's run log and publish.

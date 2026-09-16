@@ -241,6 +241,7 @@ python3 edge/scripts/alpaca_trade.py open --run research/2026/09/2026-09-09/edge
 
 # any time
 python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
+python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge'   # did the sells sell?
 ```
 
 `flatten --submit` on its own is also the panic button: everything out, at market, now.
@@ -266,7 +267,9 @@ python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
 
 It walks every run with an `alpaca-orders.json`, closes only the legs whose
 `exit_date` is today, and reads the real position quantity from Alpaca so a partial
-fill still closes flat.
+fill still closes flat. It then waits `orders.fill_check_seconds` and re-reads every
+exit it sent — see "The auction exits mostly did not sell" below for why that check
+exists and what it cannot cover.
 
 To run it unattended, no new Routine is needed — the two steps are in stage E's own
 prompt, `edge/routine-prompts/edge-hunt.md`, which has to be pasted into
@@ -356,6 +359,150 @@ leg, worth +1.54pp, and that leg costs a second daily firing.
   which is a denominator artefact. What it does buy is settled cash before the auction
   that funds the next book, so sizing stops depending on unfilled proceeds, and 6.5 fewer
   hours of market exposure at a higher per-trade number.
+
+## `amc_open`: the bmo leg has to be gone before the next book is bought
+
+Since 2026-09-15 the shipped mode is **`amc_open`** — amc into the opening auction from
+the "Close AMC" Routine, bmo at **plain market on stage E's own run at 13:05 ET**. The
+operator's requirement was that a bmo position is not still open when the same afternoon
+buys the next book.
+
+It is measurably worse than `auction_split` on the fitted sample and that was accepted,
+not missed. `edge/scripts/edge_exit.py` scores it as the `amc_open_bmo_1300` policy:
+
+| policy | ρ | trades | right | per trade | t | 95% CI | vs `uniform_close` |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `amc_open_bmo_close` (`auction_split`) | 0.461 | 22 | 17 | **+7.81%** | 4.01 | [+3.99, +11.62] | +1.87 [−1.30, +4.55] |
+| `amc_open_bmo_1300` (`amc_open`) | 0.391 | 22 | 16 | **+6.49%** | 3.42 | [+2.77, +10.22] | +0.57 [−2.86, +3.18] |
+| `uniform_close` | — | 22 | 17 | +5.80% | 2.57 | | — |
+
+**1.31pp per trade**, and one event of 22 changing sign. Both gaps against the close have
+a bootstrap interval spanning zero, so neither policy is established over the other.
+
+Two things that number cannot see, and both are why the trade is worth making:
+
+**The +6.48% for a bmo closing auction assumes the `cls` order fills.** On this book it
+has filled 39 of 183 (CODA) and 17 of 161 (HOFT) and then expired. The rest was sold at
+market one to three days later, carrying the overnight exposure in between. A return that
+expires in the auction is not a return. A plain market order at 13:05 ET fills, and the
+fill check confirms it within the same session.
+
+**A bmo leg still open at 13:05 ET is still open when step 7 buys at 13:24 ET.** The
+sizing divides the gross budget over the new names without knowing the old book is there,
+so gross stacks — on 2026-09-15, VRA and FPS were held straight through LUXE's entry.
+`open`'s refusal does not catch it either: a leg whose exit order is working is not past
+its exit date. Selling bmo at market on the run makes the budget the entry divides a
+known quantity.
+
+What it does **not** buy is return per unit of capital. `capital_table` prints return per
+slot-day equal to return per trade for every policy, because with one entry a day the
+capital slot is 24 hours either way (hold falls from 20.4h to 19.1h). The gain is sizing
+certainty, not compounding.
+
+### The second Routine's guard had to change with it
+
+"Close AMC" exists for one reason: some session's exit is an `opg` order and only a
+pre-market firing can place one. Its pasted guard names `auction_split`, so the moment
+`amc_open` shipped that guard began failing — and a failing guard there reports a correct
+-looking no-op every morning while amc legs never reach their auction. The guard is now
+about the instrument rather than the mode name:
+
+```bash
+python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg || exit 0
+```
+
+It exits 0 whenever either session's exit is an `opg` order, so it survives the next mode
+being renamed or added. `--require` also takes a comma-separated list now
+(`--require auction_split,amc_open`). **The Routine's own text still carries the old
+guard and a session cannot edit it** — `update_trigger` refuses any Routine an agent did
+not create — so until someone re-pastes `edge/routine-prompts/edge-execute.md`, the amc
+legs are not being sold into the opening auction at all and stage E's own run picks them
+up at 13:05 ET as overdue, at market.
+
+## The auction exits mostly did not sell, and nothing looked
+
+Seven exits have been sent into an auction since `exit_mode: auction_split` shipped on
+2026-09-11. **One filled.**
+
+| date | name | tif | ordered | filled | broker status |
+| --- | --- | --- | --- | --- | --- |
+| 09-11 | ORCL | `opg` | 12 | 12 | filled |
+| 09-11 | FEIM | `opg` | 31 | 0 | expired |
+| 09-11 | RH | `opg` | 14 | 0 | expired |
+| 09-11 | HOFT | `cls` | 161 | 17 | expired |
+| 09-14 | CODA | `cls` | 183 | 39 | expired |
+| 09-15 | RLGT | `opg` | 224 | 0 | expired |
+| 09-15 | VRA, FPS | `cls` | 642, 64 | pending | working at 19:26 UTC |
+
+The one that filled is the mega-cap. Everything else is the book this stage actually
+trades, and in those names the auction had no size to give.
+
+**This is documented behaviour, not a defect in the script.** An `opg` order is
+eligible to execute *only* in the opening auction and a `cls` order *only* in the
+closing auction; Alpaca's own docs say that after the cross, "any unfilled orders will
+be cancelled". There is no resting order afterwards and no second chance. A name that
+turns over $200k a day has an auction cross measured in hundreds of shares, so a
+161-share or 224-share order is not small relative to it. A second cause is visible in
+Alpaca's forum and cannot be ruled out here: a June 2026 report of MOC orders partially
+filling and expiring on a *paper* account where the identical setup filled 100% live.
+This account is paper.
+
+Three defects in this repo turned that into open positions:
+
+1. **Nothing re-read the order.** `send()` stored the status Alpaca returns at
+   submission — always `pending_new` — and the session ended. `alpaca-orders.json` said
+   `submitted: true` for a leg that had sold 17 of 161 shares.
+2. **The retry asked for the same auction.** When the next run did notice shares still
+   held behind a dead order, it re-sent with the TIF the session maps to. For an amc
+   leg that is `opg`, which Alpaca rejects between 09:28 and 19:00 ET — exactly when
+   stage E runs. RLGT's 13:05 ET retry was refused for that reason and the position sat
+   another full day. Only a leg whose exit date had already *passed* got the plain-market
+   fallback; a leg due today got nothing.
+3. **`upsert` merged records.** A retry that succeeded kept the failed attempt's
+   `reason`, so VRA and FPS read `submitted: true` beside "cls unavailable (market
+   closed)". The file a person opens to answer "did the sell go" said both.
+
+The operator has been closing these by hand — three market orders at the broker carry
+random client_order_ids rather than this script's: RH and FEIM at 13:33 ET on 09-11,
+RLGT at 15:15 ET on 09-15.
+
+### The fill check
+
+`close` now waits `orders.fill_check_seconds` (300) after sending its exits and re-reads
+every one of them at the broker, and `verify` does the same on demand:
+
+```bash
+python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge'              # report
+python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit
+```
+
+Three verdicts per leg, and only one is a problem. **closed** — the account no longer
+holds it, whatever the order says. **working** — an order that can still fill is out;
+for an auction TIF that is the correct answer for hours and nothing is re-sent.
+**UNFILLED** — shares still held and every order for the leg dead at the broker, so
+nothing will ever sell it on its own. With `--fix` (or `orders.fill_check_fix: true`,
+which is what `close` uses) an UNFILLED leg is re-sent at plain market, sized to what
+Alpaca reports is still held, and only while every prior order for it is dead. That is
+the same invariant `close` keeps, and it is what stops the check from selling a
+position twice. The result is written to `verifications` in the run's
+`alpaca-orders.json`.
+
+**Five minutes cannot verify an auction order.** A `cls` order sent at 13:05 ET crosses
+at 16:00 ET, hours after the session has ended; the check says `working` rather than
+pretending otherwise. What it catches inside the session is the order that was rejected,
+expired immediately or never left the gate. What catches a `cls` that dies at the cross
+is the next run: `close` sends anything overdue at plain market, and `verify --fix` at
+the start of a run that is inside market hours rescues the rest. Both the stage E
+Routine and "Close AMC" should call `verify` before anything else they do.
+
+**What none of this fixes is the exit itself.** Six of seven auction orders failed to
+sell the position they were sent for, and every rescue turns the measured
+`auction_split` exit into a market order hours later — which is `uniform` with extra
+steps and a worse clock. `auction_split` was chosen on +7.81% per trade against +4.49%
+for `uniform` over 38 events; that number assumes the auction order fills, and on this
+book it has filled once. Either use marketable limit orders around the auction, or move
+`exit_mode` back to something whose orders actually trade. That is the operator's call
+and it is not made here.
 
 ## What it refuses to do
 
@@ -472,5 +619,7 @@ research/<Y>/<M>/<date>/edge/
   alpaca-orders.json    what was actually submitted: client_order_id, order id, qty,
                         side, entry and exit dates, and an append-only log. Written
                         only when something is really submitted. NOT derived state —
-                        it is the record of what the account was told to do.
+                        it is the record of what the account was told to do. Its
+                        `verifications` array is the fill check: per leg, what the
+                        broker says filled and what the account still holds.
 ```

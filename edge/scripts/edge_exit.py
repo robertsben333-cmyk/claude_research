@@ -73,6 +73,17 @@ HOLD_HOURS = {"ext_early": {"amc": 0.5, "bmo": 16.0},
               "close": {"amc": 24.0, "bmo": 24.0}}
 
 
+def hold_hours(key, session):
+    """Hours a position is held to reach this exit, measured off the entry close.
+
+    A policy may name either a named horizon (`mv_open`) or a point on the hourly
+    grid (`hr_21`, which IS 21 hours off the entry close and needs no table).
+    """
+    if key.startswith("hr_"):
+        return float(key[3:])
+    return HOLD_HOURS[key[3:]][session]
+
+
 # ---------------------------------------------------------------- price plumbing
 
 def _get(url, cache=None, tag=None):
@@ -464,6 +475,12 @@ POLICIES = {
     "uniform_ext_early": {"amc": "mv_ext_early", "bmo": "mv_ext_early"},
     "amc_open_bmo_close": {"amc": "mv_open", "bmo": "mv_close"},
     "amc_pre_open_bmo_close": {"amc": "mv_pre_open", "bmo": "mv_close"},
+    # What stage E can actually reach with the two Routines that exist, if the bmo
+    # leg is to be gone before the same afternoon's entry rather than sitting in the
+    # closing auction while a new book is bought on top of it. amc into the opening
+    # auction at 06:00 ET from "Close AMC"; bmo at plain market at 13:00 ET, which is
+    # hour 21 off the entry close, when stage E's own run fires.
+    "amc_open_bmo_1300": {"amc": "mv_open", "bmo": "hr_21"},
 }
 
 
@@ -565,7 +582,7 @@ def capital_table(panel, floor, policies=None):
                 if r.get(key) is None or abs(r["impact_sum"]) < floor:
                     continue
                 conv.append(((r[key] if r["impact_sum"] > 0 else -r[key]),
-                             HOLD_HOURS[key[3:]][r["session"]]))
+                             hold_hours(key, r["session"])))
         if len(conv) < 3:
             continue
         out["policy:" + name] = block([x[0] for x in conv], [x[1] for x in conv])
@@ -909,7 +926,7 @@ def build_panel_from_runs(runs, cache):
 
 
 def build_panel(cache, keep_dup):
-    rows_by_day = json.loads((ROOT / "docs" / "edge-rows.json").read_text())
+    rows_by_day = json.loads((ROOT / "edge" / "analysis" / "edge-rows.json").read_text())
     panel, problems = [], []
     for day in rows_by_day:
         run = day[0]["run"]

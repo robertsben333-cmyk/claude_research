@@ -149,12 +149,25 @@ python3 edge/scripts/alpaca_trade.py flatten --submit
 ```
 
 **Unless `orders.exit_mode` is not `uniform`.** Then the flatten is wrong — it sells every
-name at market when at least one of them wants an auction — and the sell is two calls:
+name at market when at least one of them wants an auction — and the sell is three calls.
+The shipped mode since 2026-09-15 is `amc_open`: amc legs went into the opening auction
+hours ago from the "Close AMC" Routine, and the bmo legs due today are yours to sell at
+plain market, right here, before step 7 buys. That ordering is the point of the mode —
+a bmo position still open when the entry is sized means gross exposure stacks.
 
 ```bash
+python3 edge/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit
 python3 edge/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
 python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
 ```
+
+`verify` goes first and its verdict lines go in the run log. A submitted sell is not a
+sold position: six of the first seven auction exits either part-filled or filled nothing
+and then expired, because `cls` and `opg` are eligible only in their one auction cross
+and a $200k-a-day name has almost no size in it — HOFT 17 of 161, CODA 39 of 183, RLGT 0
+of 224. `verify --fix` re-sends at plain market any leg the account still holds behind an
+order that is dead at the broker, sized to what Alpaca reports is held. This run is the
+only one of the day inside US market hours, so it is the only one that can.
 
 `close` picks the instrument per position, and what it can reach depends on the mode.
 Per trade over the 38 de-duplicated events, on the conviction book:

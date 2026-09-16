@@ -382,6 +382,50 @@ execution:
     # Getting it wrong never loses the book either way: `close` sends anything past
     # its exit date at plain market on the next run, and `open` REFUSES to enter a new
     # book while a position is overdue and unsold.
-    exit_mode: auction_split      # uniform | bmo_close | auction_split
+    #
+    # 2026-09-15: switched to `amc_open` on the operator's requirement that a bmo leg
+    # is gone before the same afternoon buys the next book. amc still goes into the
+    # opening auction from the "Close AMC" Routine; bmo goes at plain MARKET on stage
+    # E's own run at 13:05 ET instead of into that day's closing auction.
+    #
+    # It is measurably worse on the fitted sample and that is accepted, not missed:
+    # +6.49% a trade (t=3.42, rho 0.391, 16/22) against +7.81% (t=4.01, rho 0.461,
+    # 17/22) for auction_split. 1.31pp. What the 7.81 cannot see is that the bmo leg
+    # of it has not actually been selling: a `cls` order crosses once and takes the
+    # size the contra side brings, which here was 39 of 183 (CODA) and 17 of 161
+    # (HOFT) before expiring, with the rest sold at market one to three days later.
+    # And a bmo position still open at 13:05 ET is still open when step 7 buys at
+    # 13:24 ET, so gross exposure stacks -- VRA and FPS were held through LUXE's
+    # entry on 09-15. A market sell at 13:05 ET is verifiable inside the same session,
+    # so the budget the entry divides is known to be free.
+    #
+    # edge/scripts/edge_exit.py scores this as the `amc_open_bmo_1300` policy. Re-run
+    # it as days pool; against uniform_close it leads by only +0.57pp on a paired day
+    # bootstrap of [-2.86, +3.18], so nothing here is established.
+    exit_mode: amc_open      # uniform | bmo_close | auction_split | amc_open
     time_in_force: day           # market entries, and the plain-market fallback
+    # AFTER the exits go in, wait this many seconds and re-read every one of them at
+    # the broker. A submitted sell is not a sold position, and until 2026-09-15
+    # nothing here ever looked: `send` stored the status Alpaca returns at
+    # submission -- always `pending_new` -- and the session ended. The only thing
+    # that noticed an exit which had not sold was the NEXT run's held-position
+    # check, 17 to 24 hours later.
+    #
+    # What was being missed is that `cls` and `opg` are not market orders. Each
+    # crosses ONCE and takes whatever size the contra side brings, which in a
+    # $200k-a-day name is often almost none: HOFT 17 of 161 (2026-09-11, cls),
+    # CODA 39 of 183 (09-14, cls), RLGT 0 of 224 (09-15, opg).
+    #
+    # Five minutes cannot verify an auction order -- it is still `new`, correctly,
+    # for hours -- and the check says `working` rather than pretending otherwise.
+    # What it does catch the same session is the order that was rejected, expired
+    # or never left the gate. Set to 0 to look immediately; -1 on the command line
+    # (`--no-verify`) skips it.
+    fill_check_seconds: 300
+    # When the check finds shares still held behind an order that is DEAD at the
+    # broker, re-send the residual at plain market rather than leaving it for
+    # tomorrow. Sized to what Alpaca reports is still held, never to the entry qty,
+    # and only when every order for that leg is dead -- the same invariant that
+    # keeps `close` from selling a position twice.
+    fill_check_fix: true
     allow_shorts: true           # a short leg also needs Alpaca to call it shortable

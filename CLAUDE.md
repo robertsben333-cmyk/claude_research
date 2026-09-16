@@ -19,7 +19,7 @@ If you are a Routine session, read this whole file before doing anything.
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
-| X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11 (`exit_mode: auction_split`); see "`exit_mode` moved off `uniform`" below |
+| X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 Stage N is not part of the daily advice pipeline. It is `backtest/` arm A promoted to
 production: the method that scored 72% direction and +0.90% per trade over 37 events
@@ -211,6 +211,64 @@ overrides and stacks a second book on the first). That refusal is what makes the
 per-session exit safe to switch on: `flatten_before_entry` used to guarantee a clean slate
 by selling everything, and once the flatten is off the guarantee has to come from checking.
 
+**`exit_mode` moved to `amc_open` on 2026-09-15, on the operator's requirement that a
+bmo leg is gone before the same afternoon buys the next book.** amc still goes into the
+opening auction from the "Close AMC" Routine; bmo now goes at **plain market on stage E's
+own run at 13:05 ET** instead of into that day's closing auction. It is measurably worse
+on the fitted sample and that was accepted, not missed: `edge/scripts/edge_exit.py` scores
+it as the `amc_open_bmo_1300` policy at ρ=0.391, 16/22 and **+6.49% per trade (t=3.42)**
+against ρ=0.461, 17/22 and +7.81% (t=4.01) for `auction_split` — 1.31pp, on a paired day
+bootstrap against `uniform_close` of +0.57 [−2.86, +3.18], so neither is established. Two
+things that number cannot see: the +6.48% for a bmo closing auction **assumes the `cls`
+order fills**, and on this book it has filled 39 of 183 and 17 of 161 before expiring; and
+a bmo leg still open at 13:05 ET is still open when step 7 buys at 13:24 ET, so gross
+exposure stacks — VRA and FPS were held straight through LUXE's entry on 09-15, and
+`open`'s refusal does not catch it because a leg whose exit order is *working* is not past
+its exit date. A market sell is verifiable inside the same session, so the budget the
+entry divides is a known quantity. What it does not buy is return per unit of capital:
+`capital_table` prints return per slot-day equal to return per trade for every policy,
+because with one entry a day the slot is 24 hours either way.
+
+**The second Routine's guard had to change with the mode, and only a person can paste
+it.** "Close AMC" exists to place `opg` orders, and its pasted guard names
+`auction_split` — so from 2026-09-15 it fails, and a failing guard there reports a
+correct-looking no-op every morning while no amc leg reaches its auction. The guard is now
+about the instrument: `alpaca_trade.py mode --require-exit-tif opg` exits 0 whenever
+either session's exit is an `opg` order, and survives the next mode being renamed.
+`--require` also takes a comma-separated list. **Until `edge/routine-prompts/edge-execute.md`
+is re-pasted into `trig_01MPuhVvtDgvUYzZXkKpHpKD`, amc legs are not sold into the opening
+auction at all** — stage E's own run picks them up the next day as overdue, at market,
+which is a loud and recoverable failure rather than a silent one, but it is not the exit
+that was chosen.
+
+**The auction exits mostly did not sell, and until 2026-09-15 nothing looked.** Seven
+exits have gone into an auction since `exit_mode: auction_split` shipped. One filled:
+ORCL, the only mega-cap. HOFT filled 17 of 161 and expired, CODA 39 of 183, FEIM 0 of
+31, RH 0 of 14, RLGT 0 of 224. This is documented Alpaca behaviour rather than a bug —
+`opg` and `cls` are eligible only in their one auction cross and whatever is unfilled
+afterwards is cancelled — and a $200k-a-day name has almost no size in that cross. (A
+second cause cannot be ruled out: there is a June 2026 report of MOC orders part-filling
+and expiring on a *paper* account where the same setup filled 100% live, and this
+account is paper.) What made it an open position rather than a logged miss is three
+things in this repo, all now fixed: `send` stored the status Alpaca returns at
+submission — always `pending_new` — and nothing ever re-read it; the retry asked for the
+same auction, so RLGT's 13:05 ET retry was refused inside Alpaca's 09:28–19:00 `opg`
+window and the position sat another day; and `upsert` merged records, so a successful
+retry kept the failed attempt's `reason`. The operator has been closing these by hand —
+three market orders at the broker carry random client_order_ids rather than this
+script's. **`close` now waits `orders.fill_check_seconds` (300) and re-reads every exit
+it sent, and `alpaca_trade.py verify [--fix --submit]` does it on demand**: per leg,
+closed / working / UNFILLED, where UNFILLED means shares still held and every order for
+the leg dead at the broker. `--fix` re-sends the residual at plain market, sized to what
+Alpaca reports is held and only while every prior order is dead. Five minutes cannot
+verify an auction order — a `cls` sent at 13:05 ET crosses at 16:00 ET, after the
+session ends — so it reports `working` and the rescue falls to the next run inside
+market hours. **None of that fixes the exit itself.** `auction_split` was chosen on
++7.81% per trade against +4.49% for `uniform`, and that number assumes the auction order
+fills; on this book it has filled once in seven. Marketable limit orders around the
+auction, or a different `exit_mode`, is the operator's call. See `edge/EXECUTION.md`,
+"The auction exits mostly did not sell".
+
 **The per-session exit is three modes in `alpaca_trade.py`; it shipped on the dullest one
 until 2026-09-11** (see "`exit_mode` moved off `uniform`" below for what runs now).
 `orders.exit_mode` picks which instrument closes a position, per session. Per trade
@@ -231,8 +289,9 @@ into its own opening auction — that is what "Close AMC" (created 2026-09-10, c
 (`flatten_before_entry: false`); `auction_split` buys the other +1.54pp on top of that
 Routine, which **only a person could create** — `create_trigger` is refused to agent
 sessions here, confirmed on 2026-09-10. The prompt is written out in
-`edge/routine-prompts/edge-execute.md`. `auction_split` is what runs since 2026-09-11 — see
-below. **Recycling the amc cash buys
+`edge/routine-prompts/edge-execute.md`. `auction_split` ran from 2026-09-11 until the
+2026-09-15 move to `amc_open` — see below; what this paragraph says about the second
+Routine still holds, because `amc_open` keeps the same `opg` leg. **Recycling the amc cash buys
 no extra return**: with one auction entry a day the capital slot is 24 hours either way,
 which is why `capital_table` in `edge_exit.py` prints return per slot-day equal to return
 per trade and flags the hours-held version as a denominator artefact. What it buys is
@@ -285,6 +344,18 @@ and 7 were no-ops: `edge/scripts/alpaca_trade.py`, `edge/EXECUTION.md` and the `
 block did not exist in the tree it cloned, because they were still sitting on
 `claude/alpaca-auto-orders-integration-y397gh`. That branch was merged in response, so
 the script, the docs and the config block are now here.
+
+**That failure repeated twice on 2026-09-15 and cost two live things, so check the
+branches before blaming an agent definition.** Both were merged on 2026-09-16 and both
+had been sitting unmerged for a day while the Routines ran against a tree without them:
+`claude/optimistic-hypatia-5qvags` held `edge/LESSONS.md` and the hunter contract that
+returns `print_vs_bar_pct`, which the pasted Routine prompt already asked for — so the
+09-16 run's "agent-definition drift" was a missing merge. `claude/alpaca-sell-orders-filling-mwumuw`
+held the `verify` subcommand, `mode --require-exit-tif` and the `amc_open` exit mode, so
+the "Close AMC" Routine failed its own guard on 09-16 with an argparse error, submitted
+nothing, and left VRA and FPS two days overdue. The tell is the same both times: the
+Routine prompt names something the tree does not have. A session cannot edit a Routine,
+so the tree is what moves — merge first, and only then suspect the definition.
 
 **Both of those are done, and the stage now trades unattended.** The prompt was
 re-pasted from `edge/routine-prompts/edge-hunt.md` on 2026-09-10 at 13:20 UTC — the
@@ -423,12 +494,16 @@ because the old prompt named a key that a measurement then demoted.
   can be asked about it.
 
 **`exit_mode` moved off `uniform` on 2026-09-11, on the operator's explicit instruction,
-replication risk knowingly accepted.** `config/pipeline.yaml` now ships
-`exit_mode: auction_split` and `flatten_before_entry: false`. The requirement stated was
+replication risk knowingly accepted.** `config/pipeline.yaml` shipped
+`exit_mode: auction_split` and `flatten_before_entry: false` from that day until
+2026-09-15, when the same operator moved it again, to `amc_open`. Read this paragraph as
+the history of the first move and the `amc_open` section above for what runs now; the
+flatten has stayed off throughout. The requirement stated was
 "amc is always run and closed by market open" — the two caveats above (unreplicated on
 09-08/09-09, and `backtest/RESULTS.md`'s 37 sealed events favoring the close for all three
 arms) were read and set aside, not missed. Practically: the "Close AMC" Routine is no
-longer a no-op, `mode --require auction_split` now exits 0, and stage E's own run must stop
+longer a no-op, `mode --require auction_split` exited 0 until the 09-15 move
+(`mode --require-exit-tif opg` is the guard that survives both), and stage E's own run must stop
 flattening the book at the start of each session — `open`'s refusal to enter a new book
 over an unsold, past-exit-date position is now the only thing keeping the account from
 stacking books, so do not reintroduce `flatten_before_entry: true` without also reverting
