@@ -41,3 +41,9 @@
 - 'status' shows no amc leg is actually due into the opening auction today: LUXE (from 2026-09-15, exit_date 2026-09-16) is session=bmo, so its exit is a closing-auction (cls) order this Routine would not place before market open regardless.
 - 'status' also surfaces an unrelated, pre-existing problem worth a human's attention: VRA and FPS (entered 2026-09-14, session=bmo, exit_date 2026-09-15) are still OPEN two days past their exit date -- VRA +40.14%, FPS +8.61% on paper. Their 2026-09-15 closing-auction exit orders both show 'expired filled 0' (0 shares sold). RLGT from the same batch (amc) resolved and is no longer open.
 - Recommend a human: (1) check whether edge/scripts/alpaca_trade.py is missing a 'verify' subcommand and a 'mode --require-exit-tif' flag that a newer version of the Routine prompt assumes, or whether the prompt was pasted from a draft never merged to main; (2) decide how VRA and FPS (2 days overdue, unresolved) should be closed -- they were not touched by this run.
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-16 10:23 UTC
+- Shortlist: 1 name (LEN); this batch: none — capped_len=1, N=ceil(1/2)=1, batch 1 took position 1..1, batch 2 covers 2..end which is empty
+- Already on disk, skipping: LEN (both .md and .json present from batch 1)
+- Plan: no researchers to spawn this batch; proceed straight to final-batch ranking (step 4) over the day's one dossier
