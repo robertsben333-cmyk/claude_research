@@ -314,6 +314,36 @@ that flagged four company-confirmed reporters as non-events, an adversary agent 
 `Write` tool, and two entries of `budget.edge_degrade_order` that each contradicted a
 hard rule stated elsewhere. All four are fixed.
 
+**The hunters learn from the resolved days through one file, `edge/LESSONS.md`** (since
+2026-09-15). It holds the patterns that repeated across the post-mortems of 09-08 through
+09-14 — a verified fact is not a predicted reaction, name the line a finding lands on,
+the hunter's own caveat has to reach the number, financing is a question, a narrow proxy
+loses to a broad series, verify the bar and keep findings inside the exit window,
+positioning is the thing to beat — as rules with no company fixes in them. The hunter
+now answers two questions (`print_vs_bar_pct` and `expected_move_pct`), each finding
+carries `lands_on` and `resolves_by`, and `edge/scripts/edge_postmortem.py` scores a
+resolved run finding by finding so the file can grow from measurement.
+
+**One issuer is one event, since 2026-09-16.** `edge/scripts/share_class.py` folds a
+second share class into its issuer in `edge_universe.py`, before a baseline is sealed,
+and `edge_score.py` repeats the check on the scored rows — the folded name keeps its
+hunt and its findings but leaves the ranking. On 2026-09-16 LEN and LEN.B were both
+hunted and both ranked off one Lennar release, and the run log had to warn in prose
+that `edge_resolve.py` would count one print as two events. Earlier runs are unchanged,
+so a pooled sample that spans them still carries that pair twice.
+
+**And the file itself is scored, since 2026-09-16.** The hunter sizes the day with the
+baseline alone, freezes that draft as `pre_lessons`, reads `edge/LESSONS.md`, then
+revises; `edge_score.py` carries `diagnostics.impact_sum_pre_lessons` beside the key and
+`edge_resolve.py` ranks both against the same realised move (`spearman_pre_lessons`).
+The cost is that the file can no longer steer a search, only a size and a selection.
+The gain is that guidance which costs rank correlation shows up within a few resolved
+days. Nothing pools yet: until several days carry both numbers, a delta is one day's
+noise. The note's
+`tradable` column separates thin liquidity from Alpaca borrow (a short Alpaca will not
+lend is usually borrowable at IBKR; `elsewhere`, not `no`), and it ends with a critical
+read of every floor-clearer. None of this touches the key, the floor or the book rule.
+
 Stage N and stage E overlap deliberately and must not be merged. N forecasts every name
 it looks at; E scores whether the market has missed something. If E's ranking turns out
 to carry no information that N's does not, that is a result worth having cheaply.

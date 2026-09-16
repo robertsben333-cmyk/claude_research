@@ -56,6 +56,20 @@ look at the financing trail; this is a consumer app, so look at review volume.
 Also flag what is plainly already in the price, so the hunter does not spend its
 budget rediscovering the wire copy.
 
+Two more things per name, both cheap and both because the resolved runs showed the
+hunters getting the fact right and the reaction wrong:
+
+**What this stock trades on.** From the last few releases and the reactions in the
+baseline, say which line moved it — the guide, the reported quarter, a one-off, capital
+return — and cite the release. One sentence in `trades_on`. A hunter told "this name has
+sold two consecutive beat-and-raises" sizes a reported-quarter beat differently from one
+that is not told. Where you cannot tell, say `unknown`; do not infer it.
+
+**Where the positioning is.** Short interest as a percent of float and days to cover,
+with source and date, in `short_interest`. The baseline does not carry it and two of the
+three worst losses in the record were crowded shorts that squeezed. You are recording a
+number, not forming a view: `unknown` when you cannot source it.
+
 ## Output
 
 Write the JSON to the path you are given and return it as your final message, with
@@ -78,7 +92,9 @@ no prose around it.
       "filer_type": "domestic | foreign_private_issuer | unknown",
       "baseline_history_trustworthy": true,
       "where_to_look": ["specific places a hunter should try, most promising first"],
-      "already_in_the_wire": ["what is plainly public, so nobody re-finds it"]
+      "already_in_the_wire": ["what is plainly public, so nobody re-finds it"],
+      "trades_on": "which line moved this stock on recent prints, with a URL — or unknown",
+      "short_interest": "pct of float and days to cover, source and date — or unknown"
     }
   ],
   "confirmed": 0,

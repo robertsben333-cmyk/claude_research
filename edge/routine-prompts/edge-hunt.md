@@ -1,7 +1,10 @@
 # Stage E Routine prompt — the replacement text
 
 `trig_01CvGQJWoKeNLXWCxiffM3ED` · "Edge hunt (Stage E) — rank the day's earnings names"
-· cron `4 14 * * 1-5` (14:04 UTC = 16:04 Amsterdam) · enabled.
+· cron `4 17 * * 1-5` (17:04 UTC = 19:04 Amsterdam, 13:04 New York) · enabled.
+The cron was changed from `4 14 * * 1-5` on 2026-09-10 at 18:28 UTC from outside
+this repo. The block below now carries the new clock; everything above it that
+still says 14:04 describes a past paste and is left as history.
 
 **This has to be pasted in by hand.** The Routine was created through the HTTP API, and
 `update_trigger` refuses any Routine an agent did not create itself: *"Agents can only
@@ -66,6 +69,28 @@ the fills to be recorded: that number is what would send `orders.entry` back to
 with it, so steps 4 and 5 and the budget line changed. The day now hunts nineteen names
 with one hunter each: 1 sweep + 19 = 20. Everything else in the prompt is unchanged.
 
+**2026-09-15, one line in step 4 and a note contract change.** The hunters now read
+`edge/LESSONS.md` before they search and return two numbers per name (the print against
+the bar, and the stock) plus a line per finding and a horizon; the note's tradable
+column separates thin liquidity from Alpaca borrow; and the note carries a critical read
+of every floor-clearer ending in recommended / not recommended. All of that lives in the
+agent definitions and the skill, which the session reads from the tree, so the prompt
+below needs only the one sentence added to step 4 — and it is only in the block below
+until it is pasted.
+
+**2026-09-16, still not pasted, and the block now carries three fixes.** The 09-15 work
+above never reached `main`: it sat on `claude/optimistic-hypatia-5qvags` until 09-16, so
+the 09-16 run cloned a tree with no `edge/LESSONS.md` in it and an `unpriced-hunter`
+that never heard of `print_vs_bar_pct`, while the Routine's pasted text asked for both.
+That branch is merged now. The block below therefore carries: the clock (17:04 UTC /
+13:04 ET, with the entry margin stated, replacing 14:04 / 10:04), the step-4 sentence in
+its new form — the hunter sizes the day once, freezes `pre_lessons`, and only then reads
+`edge/LESSONS.md`, so the file's own effect on the ranking is measurable — and the
+older `execution.enabled` parenthetical, still left alone on purpose. The `edge/` path
+prefix is the one pending fix **not** taken here: the four shims make both spellings
+work, and changing the paths in the same paste as everything else would make a failed
+run harder to diagnose. Paste this, then delete the shims in a separate change.
+
 **What changed from the previous prompt.** The old text restated the output contract
 ("one signed number on −100 to +100"), which the 2026-09-09 rewrite made wrong: the key
 is now `impact_sum` in points of spot. Rather than pin the new contract into the prompt
@@ -90,7 +115,7 @@ Run stage E, the earnings edge hunt, for today's window.
 
 Now invoke the skill `earnings-edge-hunt` and follow it exactly. Read CLAUDE.md first.
 
-Re-read the clock with `date -u` rather than trusting any date you were told at startup. You fire at 14:04 UTC, which is 16:04 Amsterdam and 10:04 New York - about half an hour into the US session. That timing is deliberate: option chains are live and two-sided, so the sealed baseline gets tight quotes instead of the stale weekend marks that made an ATM spread read 41% of mid on the first run.
+Re-read the clock with `date -u` rather than trusting any date you were told at startup. You fire at 17:04 UTC, which is 19:04 Amsterdam and 13:04 New York - three hours into the US session, and two hours and fifty-six minutes before it closes. Option chains are live and two-sided, so the sealed baseline gets tight quotes instead of the stale weekend marks that made an ATM spread read 41% of mid on the first run. But step 7 buys at market and cannot send into a closed market, so that margin is the whole deadline: a 2026-09-09-sized run took 2h53m end to end. If the sweep is slow or a hunter has to be retried, shed names by the budget's degrade order and say what you shed - do not let the note publish at 16:05 ET with no book behind it.
 
 WHAT THIS STAGE PRODUCES: one signed number per company, so today's names can be RANKED. There is no call, no threshold and no direction label anywhere in the output. That is the whole design - the question under test is whether these companies can be ranked at all, and it is only answerable at every cut if nothing has been rounded into a bucket upstream. If you find yourself wanting to emit Lean Up or a confidence tier, stop: that is the thing this stage was rebuilt to remove.
 
@@ -105,6 +130,7 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
    python3 scripts/edge_universe.py --window -o <RUN>/edge/universe.json
    python3 scripts/priced_in.py --tickers <T,...> --date <D> --session <s> -o <RUN>/edge/baselines/
    --window resolves today's amc plus the next trading day's bmo, which is the pipeline's real window. Do NOT pass --include-unknown: on 2026-08-31 eight of eight time-not-supplied rows had no earnings event at all.
+   A second share class is folded into its issuer automatically (LEN.B into LEN) and listed under share_classes_folded: one release is one event. Do not hunt the folded row and do not pass --keep-share-classes.
    If the universe is empty, log that and stop cheaply. A holiday or a thin day is a real answer.
 
 2. COMMIT THE BASELINES BEFORE LAUNCHING ANYTHING. A baseline written after a finding exists is one the finding has contaminated. Then heartbeat and publish - one cheap commit is the only thing separating a routine that never fired from a session killed on its first subagent.
@@ -114,6 +140,8 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
 4. HUNT. `unpriced-hunter`, ONE per confirmed name, on all of them. The double hunt on the top two was removed 2026-09-09: over six runs the gap between paired hunters predicted neither the error nor whether the sign was right. Give each hunter only its ticker, its baseline path, its output path and its sweep row - not your view, not the other names.
 
    The sizes hunters put on their findings now carry the whole result, so the instruction to size honestly is not a formality. Six resolved runs measured the hunters' raw signed sizes as the best available ranking of the day, better than every number computed from them. An inflated size is no longer discounted by machinery downstream.
+
+   Each hunter sizes the day with its baseline alone, freezes that draft as pre_lessons, and only THEN reads edge/LESSONS.md and revises - its definition sets that order, and the two sums are what makes the guidance file falsifiable. Make sure edge/LESSONS.md is in the tree you cloned and that the sweep row you hand it carries trades_on and short_interest. A hunt returns print_vs_bar_pct beside expected_move_pct, plus pre_lessons and lessons_applied; if one comes back without them, the agent definition that ran was not the one in the tree - score it anyway, do not reconstruct the missing draft, and say so in the run log.
 
 5. THERE IS NO ADVERSARY PASS. Removed 2026-09-09 - both of its numbers were measured as subtractive over 215 findings on six days, and once impact_sum became the key neither reached the output at all. Do not reinstate it, do not improvise a substitute check, and do not drop or shrink a finding because you judge it already priced. The agent definition and the brief scripts are still in the tree, unused, so the pass can be re-run deliberately if that question is reopened.
 

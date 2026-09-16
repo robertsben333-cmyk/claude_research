@@ -1386,6 +1386,14 @@ def cmd_assets(a, api, ex):
     Read-only: it places nothing and it is not gated on --submit. With no usable
     credentials the borrow column reports `unknown` rather than a guess.
 
+    Since 2026-09-15 the verdict separates LIQUIDITY from BORROW. Liquidity is a
+    property of the name (`ok`, `thin` under `thin_dollar_volume_usd`, `below floor`)
+    and holds at every broker; borrow is one broker's answer on one day, and a short
+    Alpaca will not lend is routinely borrowable at IBKR. So a short that clears the
+    turnover floor but is not lendable here reads `elsewhere`, never `no`. The
+    operator's rule is not to trade into a limited-liquidity warning, which is what
+    `thin` stands in for; nothing in this script drops a name on it.
+
     BORROW IS A SNAPSHOT, so this prefers the run's own `alpaca-plan.json` over a
     live lookup whenever one exists. Alpaca re-checks shortability daily: COE was
     recorded `shortable: false` by the 2026-09-14 plan at 17:35 UTC and read
@@ -1416,13 +1424,21 @@ def cmd_assets(a, api, ex):
     bench = ex.get("benchmark") or {}
     floor = float(bench.get("min_conviction") or 0)
     min_dv = float(bench.get("min_dollar_volume_usd") or 0)
+    # Below this the note calls the name THIN. It is not a floor and nothing is
+    # dropped on it: it is the proxy for the "limited liquidity" warning a broker
+    # shows, and the operator's rule is not to trade into one. $1m/day unless
+    # config says otherwise -- six of the first 22 long/short positions sat under
+    # it, and the headline returns on such names are upper bounds (VRA printed
+    # +23% at the open and was +12% within the same five-minute bar on $288k/day).
+    thin_dv = float(bench.get("thin_dollar_volume_usd") or 1_000_000)
     key = bench.get("key", "impact_sum")
 
     print(f"{run}   {'paper' if api.is_paper else 'live'} {api.base}"
           if api.usable else f"{run}   no credentials: borrow is unknown")
-    print(f"floor |{key}| >= {floor}, turnover floor ${min_dv/1e6:.1f}m\n")
+    print(f"floor |{key}| >= {floor}, turnover floor ${min_dv/1e6:.1f}m, "
+          f"thin below ${thin_dv/1e6:.1f}m\n")
     print(f"{'ticker':8}{'session':9}{'event':12}{key:>10}{'floor':>7}"
-          f"{'turnover':>11}{'borrow':>10}  tradable")
+          f"{'turnover':>11}{'liquidity':>12}{'Alpaca':>8}  tradable")
 
     rows = []
     for row in scores.get("ranking", []):
@@ -1447,22 +1463,35 @@ def cmd_assets(a, api, ex):
                 tradable = asset.get("shortable") if short_side else asset.get("tradable")
                 shortable = asset.get("shortable")
 
+        # Two facts, kept apart because they answer different questions and were
+        # once merged into one "no". Liquidity is a property of the NAME and holds at
+        # every broker. Borrow is a property of ONE broker on one day: a short Alpaca
+        # will not lend is routinely borrowable at IBKR, so "not shortable at Alpaca"
+        # is a check to make elsewhere, not a verdict that the name is untradeable.
         # The reason column answers "could this be traded", never "should it be".
+        liquidity = ("unknown" if dv is None else
+                     "below floor" if dv < min_dv else
+                     "thin" if dv < thin_dv else "ok")
         if dv is None:
             verdict, why = "no", "no 20-day volume, so capacity is unknown"
         elif dv < min_dv:
             verdict, why = "no", f"turnover ${dv/1e6:.2f}m below the ${min_dv/1e6:.1f}m floor"
-        elif not api.usable:
-            verdict, why = ("unknown", "borrow not checked (no credentials)") \
-                if short_side else ("yes", "long side, turnover clears")
         elif tradable is None:
-            verdict, why = "unknown", "asset lookup failed"
+            # No answer from the plan and none from a lookup. A long needs no
+            # borrow, so it is tradable on turnover alone; a short is unknown.
+            verdict, why = (("unknown", "borrow not checked (no credentials)"
+                             if not api.usable else "asset lookup failed")
+                            if short_side else ("yes", "long side, turnover clears"))
+        elif not tradable and short_side:
+            verdict, why = "elsewhere", ("not lendable at Alpaca on this snapshot; "
+                                         "check borrow at IBKR before calling it untradeable")
         elif not tradable:
-            verdict, why = "no", ("not shortable at Alpaca" if short_side
-                                  else "not tradable at Alpaca")
+            verdict, why = "no", "not tradable at Alpaca"
         else:
-            verdict, why = "yes", ("short side, borrow available" if short_side
+            verdict, why = "yes", ("short side, Alpaca borrow available" if short_side
                                    else "long side, turnover clears")
+        if liquidity == "thin" and verdict in ("yes", "elsewhere"):
+            why += f"; THIN at ${dv/1e6:.2f}m/day — expect a limited-liquidity warning"
 
         borrow = ("n/a" if not short_side else
                   "unknown" if shortable is None else
@@ -1471,12 +1500,15 @@ def cmd_assets(a, api, ex):
               f"{str(b.get('event_date') or '?'):12}"
               f"{(f'{val:+.2f}' if signed else '?'):>10}"
               f"{('yes' if signed and abs(val) >= floor else '-'):>7}"
-              f"{(f'${dv/1e6:.2f}m' if dv else '?'):>11}{borrow:>10}  {verdict} — {why}")
+              f"{(f'${dv/1e6:.2f}m' if dv else '?'):>11}{liquidity:>12}{borrow:>8}"
+              f"  {verdict} — {why}")
         rows.append({"ticker": t, "session": b.get("session"),
                      "event_date": b.get("event_date"), key: val,
                      "clears_floor": bool(signed and abs(val) >= floor),
                      "dollar_volume_usd": round(dv) if dv else None,
-                     "shortable": shortable, "borrow_source": source,
+                     "liquidity": liquidity, "thin_dollar_volume_usd": thin_dv,
+                     "shortable_alpaca": shortable, "shortable": shortable,
+                     "borrow_source": source,
                      "tradable": verdict, "reason": why})
 
     # Say which rows are the run's own answer and which were asked just now, so a
@@ -1495,6 +1527,13 @@ def cmd_assets(a, api, ex):
     out.write_text(json.dumps({"run": str(run), "key": key,
                                "conviction_floor": floor,
                                "min_dollar_volume_usd": min_dv,
+                               "thin_dollar_volume_usd": thin_dv,
+                               "tradable_values": {
+                                   "yes": "turnover clears and, for a short, Alpaca lends it",
+                                   "elsewhere": "turnover clears; Alpaca will not lend it on "
+                                                "this snapshot -- check IBKR",
+                                   "no": "turnover below the floor, or not tradable at all",
+                                   "unknown": "not checked"},
                                "credentials": bool(api.usable),
                                "borrow_as_of": plan_utc or "live lookup",
                                "names": rows}, indent=1) + "\n", encoding="utf-8")

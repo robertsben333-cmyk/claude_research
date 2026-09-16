@@ -9,6 +9,10 @@ usable news at all -- so the small names are not noise to be filtered out, they
 are the part of the distribution the hunt most needs to be tested on. A hunt that
 only ever runs on names with deep coverage is measuring market cap.
 
+A second share class is folded into its issuer before anything else happens: LEN and
+LEN.B are one Lennar release, and on 2026-09-16 both were hunted, both were ranked and
+the resolver had to be warned in prose. `--keep-share-classes` turns that off.
+
 Nasdaq's calendar carries an explicit session for future dates. Rows stamped
 `time-not-supplied` are kept and marked, because for a bmo run they may or may
 not be in the window and that is a fact about the day rather than a bug.
@@ -26,6 +30,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
 from get_earnings import next_trading_day    # NYSE calendar, holidays included
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from share_class import collapse            # noqa: E402
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 SESSION = {"time-pre-market": "bmo", "time-after-hours": "amc",
@@ -60,6 +67,10 @@ def main():
     ap.add_argument("--include-unknown", action="store_true",
                     help="also take rows Nasdaq left as time-not-supplied")
     ap.add_argument("--min-market-cap", type=float, default=0.0)
+    ap.add_argument("--keep-share-classes", action="store_true",
+                    help="do not fold a second share class into its issuer. Off by "
+                         "default: LEN and LEN.B are one release and one event, and "
+                         "hunting both spends a hunter to get a correlated row")
     ap.add_argument("-o", "--out")
     a = ap.parse_args()
 
@@ -100,6 +111,12 @@ def main():
             })
     out.sort(key=lambda x: -(x["market_cap_usd"] or 0))
 
+    # One issuer is one event. The second share class is folded out here, before a
+    # baseline is sealed or a hunter is spawned, so nothing downstream has to know.
+    folded = []
+    if not a.keep_share_classes:
+        out, folded = collapse(out)
+
     doc = {
         "event_date": a.date or plan[0][0],
         "window": [{"date": d, "session": s} for d, s in plan] if a.window else None,
@@ -109,6 +126,8 @@ def main():
         "rows_on_calendar": len(rows),
         "count": len(out),
         "unknown_session_included": a.include_unknown,
+        "share_classes_folded": folded,
+        "share_classes_folded_count": len(folded),
         "unknown_session_count": sum(1 for x in out if x["session"] == "unknown"),
         "note": "no market-cap floor by default. Small names are the part of the "
                 "distribution the hunt most needs testing on, not noise to filter.",
@@ -121,6 +140,9 @@ def main():
     label = " + ".join(f"{d} {s}" for d, s in plan)
     print(f"{label}: {len(out)} of {len(rows)} calendar rows"
           f" ({doc['unknown_session_count']} unresolved session)")
+    for x in folded:
+        print(f"  folded {x['ticker']:8s}into {x['share_class_of']} "
+              f"— {x['company'][:40]}")
     for x in out:
         cap = f"${x['market_cap_usd']/1e9:.2f}bn" if x["market_cap_usd"] else "cap n/a"
         print(f"  {x['ticker']:8s}{x['event_date']} {x['session']:9s}{cap:>12s}  "

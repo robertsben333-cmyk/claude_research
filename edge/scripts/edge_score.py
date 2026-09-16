@@ -42,6 +42,21 @@ No call, no direction label, no threshold in the output. Selection is the reader
 made afterwards on the complete table, which is what keeps "can these be ranked?"
 answerable at every k.
 
+Since 2026-09-15 each row also carries `hunter_view` (the hunter's separate answers
+to "what will the number do" and "what will the stock do"), `outside_window` (sourced
+findings dated after the exit, kept out of the key) and `flags` (reasons a reader
+should doubt a floor-clearing row, from edge/LESSONS.md). None of it changes the key;
+`edge_postmortem.py` resolves it.
+
+A second share class of a name already in the run (LEN.B against LEN) keeps its row
+and its findings but is not ranked: one issuer's single release is one event, and
+counting it twice shrinks the day's real sample while telling the reader it grew.
+
+Since 2026-09-16 `diagnostics` also carries `impact_sum_pre_lessons`: the sum the
+hunter had before it opened edge/LESSONS.md, frozen by the hunter itself. It is the
+control on the guidance file -- `edge_resolve.py` ranks both sums against the same
+realised move, so a file that only adds plausible rules can be caught doing it.
+
     python3 edge/scripts/edge_score.py --run research/2026/09/2026-09-09/edge
     python3 edge/scripts/edge_score.py --run <dir> --legacy   # old categorical files
 """
@@ -50,9 +65,13 @@ import json
 import math
 import re
 import statistics
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from share_class import base_of        # noqa: E402
 
 # Only used with --legacy, to read runs recorded before the contract changed.
 # Midpoints, not measurements: a re-score of old data is a demonstration of the
@@ -183,6 +202,12 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
                 "source": item.get("source"), "source_date": item.get("source_date"),
                 "expected_impact_pct": float(imp or 0.0),
                 "cluster": cluster_of(item),
+                # Carried since 2026-09-15 so the post-mortem can score each finding
+                # on the line it landed on. Absent on earlier runs; none of it
+                # enters the key.
+                "lands_on": item.get("lands_on"),
+                "resolves_by": item.get("resolves_by"),
+                "reaction_history_on_this_line": item.get("reaction_history_on_this_line"),
             })
 
     # The adversary now returns one file per ticker carrying a verdicts[] array,
@@ -287,6 +312,89 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
                    else "hunter found no event on this date" if not confirmed
                    else "event date does not fit the filing cadence")
 
+    # The hunter's two answers, carried whole. `print_vs_bar_pct` is what the hunter
+    # thinks the NUMBER does against the bar; `expected_move_pct` is what it thinks
+    # the STOCK does. They are resolved separately, and the gap between them is the
+    # cheapest measurement the stage has of whether the reaction is being predicted
+    # or only the print. Neither enters the key.
+    hunter_view = {}
+    if hunts:
+        h0 = hunts[0][1]
+        hunter_view = {
+            "expected_move_pct": h0.get("expected_move_pct"),
+            "print_vs_bar_pct": h0.get("print_vs_bar_pct"),
+            "bar": h0.get("bar"),
+            "positioning_check": h0.get("positioning_check"),
+            "baseline_tension": h0.get("baseline_tension"),
+        }
+    outside = []
+    for _, h in hunts:
+        outside.extend(h.get("outside_window") or [])
+    outside_sum = round(sum(float(o.get("expected_impact_pct") or 0.0) for o in outside), 3)
+
+    # THE LESSONS CONTROL. Each hunter sizes the day once with the baseline alone,
+    # freezes that draft into `pre_lessons`, and only then reads edge/LESSONS.md and
+    # revises. Both sums are carried so the file's own effect on the ranking is
+    # measurable rather than assumed; neither `pre_lessons` nor the delta enters the
+    # key. A hunt that reports no draft is flagged below, not silently defaulted --
+    # a reconstructed draft is worse than a missing one.
+    pre = [h.get("pre_lessons") for _, h in hunts]
+    pre = [d for d in pre if isinstance(d, dict)]
+    if pre:
+        impact_sum_pre_lessons = round(
+            sum(float(d.get("impact_sum_pct") or 0.0) for d in pre), 3)
+        lessons_delta = round(impact_sum - impact_sum_pre_lessons, 3)
+    else:
+        impact_sum_pre_lessons = lessons_delta = None
+    lessons_applied = []
+    for _, h in hunts:
+        lessons_applied.extend(h.get("lessons_applied") or [])
+
+    # Flags for the note's critical read of the floor-clearers. Each is a reason a
+    # correct-looking row should be doubted, drawn from edge/LESSONS.md. They are
+    # text for a reader; nothing filters on them.
+    flags = []
+    # Fields introduced 2026-09-15. A run recorded before them is not flagged for
+    # lacking them; only a hunt written under the new contract is held to it.
+    new_contract = any(("bar" in h or "print_vs_bar_pct" in h) for _, h in hunts)
+    tot = sum(abs(x["expected_impact_pct"]) for x in findings) or 0.0
+    one_off = sum(abs(x["expected_impact_pct"]) for x in findings
+                  if x.get("lands_on") == "one_off")
+    if tot and one_off / tot >= 0.5:
+        flags.append(f"one_off findings are {100*one_off/tot:.0f}% of the size: "
+                     "the market has not re-rated names on below-the-line items")
+    pv, em = hunter_view.get("print_vs_bar_pct"), hunter_view.get("expected_move_pct")
+    if isinstance(pv, (int, float)) and isinstance(em, (int, float)) and pv and em \
+            and (pv > 0) != (em > 0):
+        flags.append("hunter expects the number and the stock to go opposite ways "
+                     f"(print {pv:+.1f}% vs bar, stock {em:+.1f}%): read conviction_note")
+    if hunts and impact_sum and isinstance(em, (int, float)) and em \
+            and (em > 0) != (impact_sum > 0):
+        flags.append(f"hunter's own expected_move_pct ({em:+.2f}) has the opposite sign "
+                     f"to the sum of its findings ({impact_sum:+.2f})")
+    if hunts and isinstance(em, (int, float)) and impact_sum \
+            and abs(em) < 0.5 * abs(impact_sum):
+        flags.append(f"hunter's expected_move_pct ({em:+.2f}) is under half the sum of "
+                     f"its findings ({impact_sum:+.2f}): its own caveats did not reach the sum")
+    bar = str(hunter_view.get("bar") or "")
+    if new_contract and (not bar or bar.lower().startswith("unsourced")):
+        flags.append("bar unsourced: sizes should have been capped")
+    pc = str(hunter_view.get("positioning_check") or "")
+    if new_contract and impact_sum < 0 and (not pc or pc.lower().startswith("not found")):
+        flags.append("negative sum with no short-interest check")
+    if outside:
+        flags.append(f"{len(outside)} finding(s) worth {outside_sum:+.2f} dated after the "
+                     "exit window, kept out of the key")
+    if new_contract and hunts and not pre:
+        flags.append("no pre-lessons draft: this name cannot be used to score "
+                     "edge/LESSONS.md, and the hunter that ran may not be the "
+                     "definition in the tree")
+    pos = sum(1 for x in findings if x["expected_impact_pct"] > 0)
+    neg = sum(1 for x in findings if x["expected_impact_pct"] < 0)
+    if pos >= 2 and neg >= 2 and min(pos, neg) / max(pos, neg) >= 0.5:
+        flags.append(f"findings split {pos} positive / {neg} negative: the sum nets "
+                     "opposing theses rather than resolving them")
+
     return {
         "ticker": ticker,
         "rankable": rankable,
@@ -294,8 +402,12 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
         "impact_sum": impact_sum,
         "conviction": conviction,
         "priced_lean_pct": lean,
+        "hunter_view": hunter_view,
+        "flags": flags,
         "findings": findings,
+        "outside_window": outside,
         "diagnostics": {
+            "outside_window_sum_pct": outside_sum,
             "residual_sum": residual_sum,
             "adversary_judged": f"{len(judged)}/{len(findings)}" if findings else "0/0",
             "edge_score_legacy": edge_score_legacy,
@@ -305,6 +417,10 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
             "cluster_names": sorted(clusters),
             "hunter_dispersion_pct": dispersion,
             "hunters": len(hunts),
+            "impact_sum_pre_lessons": impact_sum_pre_lessons,
+            "lessons_delta": lessons_delta,
+            "hunts_with_pre_lessons": f"{len(pre)}/{len(hunts)}" if hunts else "0/0",
+            "lessons_applied": lessons_applied,
             "note": "diagnostics only. None of these enters the ranking key -- "
                     "edge/EDGE_ANALYSIS.md measured every one of them as neutral or "
                     "subtractive against the realised move.",
@@ -331,6 +447,24 @@ def main():
 
     rows = [score_name(t, baselines.get(t), hunts.get(t, []), verdicts.get(t, []), a.legacy)
             for t in sorted(set(baselines) | set(hunts))]
+
+    # ONE ISSUER IS ONE EVENT. edge_universe.py folds a second share class out of the
+    # universe before anything is hunted, but a run can still reach here with both --
+    # 2026-09-16 hunted LEN and LEN.B off one Lennar release, ranked them as two names,
+    # and the run log had to say in prose that the resolver would double-count the
+    # print. Here the thin class keeps its hunt, its findings and its row, and loses
+    # only its place in the ranking: the sample stays honest and nothing is thrown away.
+    present = {r["ticker"] for r in rows}
+    for r in rows:
+        base = base_of(r["ticker"])
+        if base and base in present:
+            r["share_class_of"] = base
+            if r["rankable"]:
+                r["rankable"] = False
+                r["not_rankable_because"] = (
+                    f"second share class of {base}: one issuer, one release, one event. "
+                    f"The hunt stands and is kept in this file; the ranking counts {base}.")
+
     rows.sort(key=lambda r: (not r["rankable"], -r["impact_sum"]))
     rank = 0
     for r in rows:
@@ -348,6 +482,17 @@ def main():
         "rankable": sum(1 for r in rows if r["rankable"]),
         "ranking_key": "impact_sum",
         "conviction_floor": FLOOR,
+        "lessons_control": {
+            "names_with_pre_lessons": sum(
+                1 for r in rows
+                if r["diagnostics"].get("impact_sum_pre_lessons") is not None),
+            "names_moved_by_lessons": sum(
+                1 for r in rows if r["diagnostics"].get("lessons_delta")),
+            "note": "pre_lessons is each hunter's own sum before it read "
+                    "edge/LESSONS.md. edge_resolve.py ranks it against the same "
+                    "realised move as the key, which is the only thing that can "
+                    "tell the guidance file apart from a habit.",
+        },
         "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added "
                 "up, in points of spot. No call and no threshold -- cut wherever you "
                 "like afterwards, which is what keeps the ranking question answerable "

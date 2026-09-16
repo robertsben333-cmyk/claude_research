@@ -569,8 +569,15 @@ def main():
           all(abs(s["notional_usd"] - eq_cap) < 10.0 for s in few),
           str([s["notional_usd"] for s in few]))
 
-    check("flatten before entry is on", ex["orders"].get("flatten_before_entry") is True,
-          str(ex["orders"].get("flatten_before_entry")))
+    # Until 2026-09-11 this asserted the flatten was ON, which is what shipped then.
+    # The operator moved exit_mode to auction_split that day and turned the flatten
+    # off with it, so the assertion failed on every run afterwards and the whole
+    # smoke test read red for five days -- a gate nobody can pass is a gate nobody
+    # reads. What actually has to hold is the pairing, in both directions.
+    _fl = ex["orders"].get("flatten_before_entry")
+    check("the shipped flatten matches the shipped exit mode",
+          _fl is (at.exit_mode(ex) == "uniform"),
+          f"exit_mode={at.exit_mode(ex)} flatten_before_entry={_fl}")
 
     # The two trading steps live in two hand-maintained files and drift silently.
     skill = open(os.path.join(REPO, ".claude/skills/earnings-edge-hunt/SKILL.md"),
@@ -633,8 +640,13 @@ def main():
         return {**ex, "orders": {**ex["orders"], "exit_mode": m,
                                  "flatten_before_entry": flatten}}
 
-    check("the shipped config is on the uniform exit",
-          at.exit_mode(ex) == "uniform", at.exit_mode(ex))
+    # What ships is auction_split since 2026-09-11, on the operator's instruction and
+    # with the replication risk knowingly accepted (CLAUDE.md records both). The check
+    # is therefore that the mode is one the code implements -- a renamed or misspelled
+    # key is the failure that would otherwise pass as a tidy no-op every morning.
+    check("the shipped exit mode is one the code implements",
+          at.exit_mode(ex) in ("uniform", "bmo_close", "auction_split"),
+          at.exit_mode(ex))
     check("uniform gives both sessions the same exit",
           at.exit_tif_for("amc", _mode("uniform"))
           == at.exit_tif_for("bmo", _mode("uniform")) == "cls")
@@ -725,6 +737,27 @@ def main():
               == ["AAA"])
     finally:
         at.REPO = _repo
+
+    print("\nOne issuer, one event (edge/scripts/share_class.py, edge_score.py)")
+    sys.path.insert(0, os.path.join(REPO, "edge", "scripts"))
+    import share_class as sc                                       # noqa: E402
+    check("a dotted class suffix resolves to its issuer",
+          sc.base_of("LEN.B") == "LEN" and sc.base_of("GEF-B") == "GEF")
+    check("an ordinary ticker is not a share class",
+          sc.base_of("LEN") is None and sc.base_of("ALMU") is None)
+    day = [{"ticker": "LEN", "event_date": "2026-09-16"},
+           {"ticker": "LEN.B", "event_date": "2026-09-16"},
+           {"ticker": "BRK.B", "event_date": "2026-09-16"},
+           {"ticker": "ALMU", "event_date": "2026-09-16"}]
+    kept, folded = sc.collapse(day)
+    check("the second class is folded into its issuer",
+          [x["ticker"] for x in folded] == ["LEN.B"]
+          and folded[0]["share_class_of"] == "LEN")
+    check("a class with no issuer in the day is kept",
+          "BRK.B" in [x["ticker"] for x in kept])
+    check("a class reporting on another date is not folded",
+          sc.collapse([{"ticker": "X", "event_date": "d1"},
+                       {"ticker": "X.A", "event_date": "d2"}])[1] == [])
 
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])

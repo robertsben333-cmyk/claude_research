@@ -28,6 +28,9 @@ Three more numbers, added 2026-09-09 because without them a run cannot be judged
                        (53%), but this correlation was +0.514 with a within-day
                        permutation p of 0.0015. It needs no cut and no calibration,
                        which is why it is the number to watch as days pool
+  pre-lessons          the same hunters' sizes before they opened edge/LESSONS.md,
+                       ranked against the same move. The file is guidance nobody has
+                       scored unless this number is reported beside the key
   the controls         -run_up_20d_pct and priced_lean_pct, both off the sealed
                        baseline before a subagent is spawned. The first ranked the
                        same six days at rho=0.335. A run that does not beat the
@@ -166,6 +169,43 @@ def pooled_within_days(days, key):
     return (round(num / (dx * dy), 3) if dx and dy else None), len(A)
 
 
+def sign_split(rows, floor=None):
+    """Hit rate and mean move by the SIGN of the prediction, overall and above the floor.
+
+    `move_pct` is signed as realised; a short's payoff is minus that.
+    """
+    if floor is None:
+        floor = _floor()
+    out = {}
+    for label, sel in (("all", lambda r: True),
+                       ("above_floor", lambda r: abs(r["score"]) >= floor)):
+        for side, ok in (("long", lambda r: r["score"] > 0),
+                         ("short", lambda r: r["score"] < 0)):
+            v = [r for r in rows if r.get("score") and sel(r) and ok(r)]
+            if not v:
+                continue
+            hits = sum(1 for r in v if (r["score"] > 0) == (r["move_pct"] > 0))
+            pay = statistics.fmean((r["move_pct"] if r["score"] > 0 else -r["move_pct"])
+                                   for r in v)
+            out[f"{label}_{side}"] = {"n": len(v), "hits": hits,
+                                      "hit_rate": round(hits / len(v), 3),
+                                      "mean_payoff_pct": round(pay, 2)}
+    return out
+
+
+def _floor(default=3.0):
+    p = Path(__file__).resolve().parents[2] / "config" / "pipeline.yaml"
+    try:
+        import re
+        for line in p.read_text(encoding="utf-8").splitlines():
+            m = re.match(r"\s*conviction_floor:\s*([0-9.]+)", line)
+            if m:
+                return float(m.group(1))
+    except Exception:
+        pass
+    return default
+
+
 def conviction_vs_sign(rows):
     """Does the rank of abs(score) predict whether the sign was right?
 
@@ -202,6 +242,8 @@ def resolve_run(run, seed):
                "edge_score_legacy": (r.get("diagnostics") or {}).get(
                    "edge_score_legacy", r.get("edge_score")),
                "priced_lean_pct": r.get("priced_lean_pct"),
+               "score_pre_lessons": (r.get("diagnostics") or {}).get(
+                   "impact_sum_pre_lessons"),
                "neg_run_up_20d": (None if (b.get("tape") or {}).get("run_up_20d_pct")
                                   is None else -(b["tape"]["run_up_20d_pct"])),
                "deadband_pct": b.get("deadband_pct")}
@@ -257,8 +299,13 @@ def stats_for(live, seed):
     out["p_permutation_raw"] = p
     # The controls. Both are free and both must be beaten before the hunt has
     # established anything.
+    # `score_pre_lessons` is not a control on the hunt, it is the control on
+    # edge/LESSONS.md: the same hunters' sizes before they read the file, ranked
+    # against the same move. If it tracks the shipped key day after day, the file is
+    # costing a pass and buying nothing.
     for key, lab in (("neg_run_up_20d", "control_neg_run_up_20d"),
-                     ("priced_lean_pct", "control_priced_lean")):
+                     ("priced_lean_pct", "control_priced_lean"),
+                     ("score_pre_lessons", "spearman_pre_lessons")):
         c = [r for r in live if r.get(key) is not None]
         if len(c) >= 3:
             out[lab] = spearman([r[key] for r in c], [r["move_pct"] for r in c])
@@ -285,6 +332,11 @@ def stats_for(live, seed):
             b: sum(1 for r in norm if r.get("implied_basis") == b)
             for b in ("straddle", "history_proxy", None)
             if any(r.get("implied_basis") == b for r in norm)}
+    # By sign of the prediction. One resolved day went 10/12 on shorts and 4/9 on
+    # longs; the next went 6/6 on longs. Whether "unpriced good news" is a weaker
+    # edge than "unpriced bad news" is only answerable pooled, and only if it is
+    # recorded per run. Above the floor and overall.
+    out["by_sign"] = sign_split(live)
     # Long the top third, short the bottom third. The ranking's payoff if you
     # traded it, which is the only version of "does the order matter" that pays.
     k = max(1, len(live) // 3)
@@ -307,10 +359,12 @@ def pooled_block(days, seed):
     for key, lab in (("score", "spearman_vs_raw_move"),
                      ("edge_score_legacy", "spearman_legacy_key"),
                      ("neg_run_up_20d", "control_neg_run_up_20d"),
-                     ("priced_lean_pct", "control_priced_lean")):
+                     ("priced_lean_pct", "control_priced_lean"),
+                     ("score_pre_lessons", "spearman_pre_lessons")):
         s, n = pooled_within_days(days, key)
         if s is not None:
             out[lab] = s
+    out["by_sign"] = sign_split(flat)
     cs, cn = conviction_vs_sign(flat)
     if cs is not None:
         out["conviction_vs_sign_correct"] = cs
@@ -329,6 +383,18 @@ def pooled_block(days, seed):
         out["long_short_spread_pct"] = round(statistics.fmean(spreads), 2)
         out["long_short_positive_days"] = sum(1 for x in spreads if x > 0)
     return out
+
+
+def print_by_sign(bs):
+    if not bs:
+        return
+    parts = []
+    for k in ("above_floor_long", "above_floor_short", "all_long", "all_short"):
+        v = bs.get(k)
+        if v:
+            parts.append(f"{k} {v['hits']}/{v['n']} {v['mean_payoff_pct']:+.2f}%")
+    if parts:
+        print("  by sign of prediction       " + "   ".join(parts))
 
 
 def main():
@@ -378,11 +444,13 @@ def main():
                 print(f"  conviction vs sign-correct  {st['conviction_vs_sign_correct']}"
                       f"   (sign {st['sign_hits']}, n={st['n_conviction']})")
             for key, lab in (("control_neg_run_up_20d", "control: -20d run-up  "),
-                             ("control_priced_lean", "control: priced lean  ")):
+                             ("control_priced_lean", "control: priced lean  "),
+                             ("spearman_pre_lessons", "before LESSONS.md     ")):
                 if key in st:
                     print(f"  {lab}      {st[key]}")
             print(f"  long top third / short bottom third: "
                   f"{st['long_short_spread_pct']:+.2f}pp  (k={st['k_per_side']})")
+            print_by_sign(st.get("by_sign"))
         else:
             print(f"  {st.get('note')}")
 
@@ -401,7 +469,9 @@ def main():
               f"   (sign {p.get('sign_hits')})")
         print(f"  control: -20d run-up        {p.get('control_neg_run_up_20d')}")
         print(f"  control: priced lean        {p.get('control_priced_lean')}")
+        print(f"  before LESSONS.md           {p.get('spearman_pre_lessons')}")
         print(f"  legacy edge_score key       {p.get('spearman_legacy_key')}")
+        print_by_sign(p.get("by_sign"))
         print(f"  long/short spread           {p.get('long_short_spread_pct')}pp"
               f"  (positive on {p.get('long_short_positive_days')} of "
               f"{p.get('days')} days)")
