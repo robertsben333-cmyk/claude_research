@@ -60,3 +60,11 @@
 ## Stage 3 — panel & advice — STARTED
 - Logged at 2026-09-16 16:02 UTC
 - Panelling LEN only (top_n_for_panel=[LEN]; config panel.names=2 but only one name panel-eligible, not a budget degrade). 7/7 persona seats filled, no retries needed. Panel synthesized: Lean Down, consensus -25.7, disparity 12.5 (aligned), certainty High (91.2).
+
+## Stage 3 — panel & advice (16:20 UTC)
+- Logged at 2026-09-16 16:04 UTC
+- Panelled: LEN
+- Calls: LEN Lean Down -1.4% (High certainty, P(down) 59.5%)
+- Panel seats filled: 7/7, no retries needed
+- Chair overrides: none (noted, not overridden: 5/7 personas cited the same Ortex positioning article as a secondary source for reversal-risk data; primary directional drivers were independently sourced)
+- Degradations: none (config asks for top 2 names; only 1 was panel-eligible today, not a budget shortfall)
