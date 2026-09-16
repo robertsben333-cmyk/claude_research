@@ -56,3 +56,7 @@
 - Subagents: 0 opus/high, 0 waves — no researcher spawned this batch
 - Median evidence completeness: 82/100 (LEN, the day's only dossier)
 - Panel-eligible after this batch: LEN
+
+## Stage 3 — panel & advice — STARTED
+- Logged at 2026-09-16 16:02 UTC
+- Panelling LEN only (top_n_for_panel=[LEN]; config panel.names=2 but only one name panel-eligible, not a budget degrade). 7/7 persona seats filled, no retries needed. Panel synthesized: Lean Down, consensus -25.7, disparity 12.5 (aligned), certainty High (91.2).
