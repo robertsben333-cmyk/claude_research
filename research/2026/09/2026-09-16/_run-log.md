@@ -124,3 +124,10 @@
 - Logged at 2026-09-16 19:05 UTC
 - The two sessions reached the same diagnosis independently and the entries are both kept, in the order they were written. The merge the correction recommends holding is already done on `claude/youthful-johnson-aius7n`; it is NOT on `main`, so nothing a Routine clones has changed yet.
 - The recommended order (merge after Close AMC flattens the 09-17 exits) cuts against the second branch: the Close AMC prompt guards on `mode --require-exit-tif opg`, which does not exist in main's `alpaca_trade.py`, so on main that Routine fails again at 10:00 UTC on 09-17, submits nothing, and ALMU and LEN are picked up as overdue at market by stage E's own 17:04 run instead of going into the opening auction. Landing the merge on main BEFORE 10:00 UTC is what makes the chosen exit reachable; landing it after keeps the contract clean but repeats the blocked run. Whoever merges should pick deliberately, not by whichever entry they read first.
+
+## Maintenance — the merge is on main
+- Logged at 2026-09-16 22:21 UTC
+- Pushed to main on the operator's explicit go-ahead. main is now f12310bd; the two entries above that say the merge is only on claude/youthful-johnson-aius7n are superseded by this line.
+- Live from the next clone: edge/LESSONS.md and the pre_lessons contract, edge/scripts/share_class.py, the verify subcommand and mode --require-exit-tif, and exit_mode: amc_open with flatten_before_entry false.
+- The merge landed BEFORE the 10:00 UTC Close AMC run of 09-17, deliberately: on main's previous tree that Routine's guard failed with an argparse error and submitted nothing, so ALMU and LEN would have missed the opening auction and been sold as overdue at market in the afternoon. The competing recommendation (merge after the 09-17 exits, to keep one hunter contract per position) was read and set aside; the same entry judged the book effect to be none.
+- Unchanged and still needing a person: both Routine prompts must be re-pasted from edge/routine-prompts/. Until then the stage E prompt still states 14:04 UTC and the Close AMC prompt still names the old hand-read guard.
