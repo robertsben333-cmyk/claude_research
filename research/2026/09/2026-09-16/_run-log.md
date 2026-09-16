@@ -47,3 +47,12 @@
 - Shortlist: 1 name (LEN); this batch: none — capped_len=1, N=ceil(1/2)=1, batch 1 took position 1..1, batch 2 covers 2..end which is empty
 - Already on disk, skipping: LEN (both .md and .json present from batch 1)
 - Plan: no researchers to spawn this batch; proceed straight to final-batch ranking (step 4) over the day's one dossier
+
+## Stage 2 — deep dive, batch 2 — FINISHED (10:24 UTC)
+- Logged at 2026-09-16 10:24 UTC
+- Researched: none (batch 2 range was empty — shortlist has only 1 name, fully covered by batch 1)
+- Skipped (already done): LEN
+- Failed: none
+- Subagents: 0 opus/high, 0 waves — no researcher spawned this batch
+- Median evidence completeness: 82/100 (LEN, the day's only dossier)
+- Panel-eligible after this batch: LEN
