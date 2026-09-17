@@ -70,12 +70,45 @@ threshold you cannot move is a threshold you cannot test.
 | **uitstap** | which of the eight exit horizons the board return is measured at |
 | **drempel** | `\|impact_sum\| >=` this. Off by default, so the landing view is the full sample; on, **every table and chart on the page** holds only names that clear it |
 | **verhandelbaar** | a turnover floor per side — shorts get a higher one, because a short needs size *and* a borrow — plus an optional "only what Alpaca will lend" |
+| **positiecap** | the sizing rule, recomputed: a gross budget split equally over the day's names, capped per name. Off means equal weight and always fully invested, which is the research number and not what an account does |
+| **periode** | which runs count, by preset or by two dates. Every chart's x-axis follows it |
 | **sessie / sector** | amc against bmo, and one sector at a time |
+
+Three returns travel together on the overview, because they are not the same number and
+the difference between them is usually larger than either: **per name or position** (with
+its standard deviation, quartiles and worst/best, since on this sample the spread is an
+order of magnitude wider than the mean), **per day** (every day weighted equally, whatever
+its name count, scaled by what the position cap would actually have deployed), and
+**total** (compounded over the period, beside what the broker's own equity did).
 
 The **Drempel** tab sweeps the threshold rather than assuming one: return, hit rate, ρ
 and n at fifteen cuts, split by session and by thin against thick turnover. It is the
 tab to read before believing any single cut, because the cut in `config/pipeline.yaml`
 was chosen on the same events it is judged on.
+
+## A run whose window has not closed
+
+A stage E run resolves against the session *after* the print, so this morning's run has
+no outcome until tonight's close. `edge_exit.py` refuses those rows, rightly — it feeds
+the analysis scripts. But refusing them made the whole day disappear here: on 2026-09-17
+the 09-16 run had two live positions and no row anywhere, and every chart simply stopped
+a day early with nothing saying why. `build_ledger.py` now adds a **pending row** for
+such a name, carrying the horizons that already exist (the after-hours print, the
+pre-market) and `pending: true`. At the `close` horizon it still has no return and drops
+out of the statistics; switch the exit control to `pre_open` and today's names appear
+with what the market is doing to them right now. The overview names them explicitly
+rather than letting the line end.
+
+## A sector's consumer tilt
+
+There is no free source for ownership — Yahoo's holders breakdown sits behind a crumb and
+13F is quarterly and institutional-only — so the sector tab carries a **proxy**, built
+from four things already in the tree that all point the same way: daily dollar volume over
+market cap, small market cap, low share price, and 20-day realised volatility. Each is a
+percentile over the whole sample, averaged to 0–100. It is a tilt, not a measurement, and
+the components sit beside it in the table so a reader can see which one moves a sector.
+The scatter next to it asks the question the indicator exists for: does the edge live in
+the names consumers trade? On the first build the answer is no — slope 0.04, r² 0.00.
 
 ## What the numbers mean
 
