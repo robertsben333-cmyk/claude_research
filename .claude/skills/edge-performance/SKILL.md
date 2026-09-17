@@ -79,6 +79,11 @@ Compare against the numbers from step 1 and establish, for each:
   build now carries a move. Check whether the day's `rho` in the Score tab is
   plausible against the names — one day of eight names swings between +0.9 and −0.3
   on noise alone.
+- **A run still in flight.** The newest run resolves against tonight's close, so its
+  names carry `pending: true` and no return at the `close` horizon. That is expected, not
+  a failure — but check that yesterday's run has *left* that state. A pending row that is
+  two days old means the reaction session came and went without a daily bar, which is a
+  data problem, not a market one.
 - **Positions open longer than a day.** Cross-check `data/trades.csv` `hold_hours`
   and the planned `exit_date` in `research/<date>/edge/alpaca-orders.json`. An
   `opg`/`cls` order that never crossed leaves a position open and the ledger shows
@@ -104,6 +109,15 @@ once in this sample and none of them is visible in the unfiltered numbers.
 - **What did execution cost?** The **Handel** tab prices every closed position against
   the same name's board return. Report the policy gap and the exec gap separately —
   the first includes the entry timing, the second does not.
+- **What does the position cap cost?** The **positiecap** control recomputes every day's
+  return under the sizing rule — gross budget split over the day's names, capped per
+  name. On the first build, 33% per name over the whole sample compounds to less than
+  equal weight does, because a four-name day leaves capital idle. Report the total under
+  the live cap, not the equal-weighted one, whenever the question is about the account.
+
+Always report which of the three returns you mean. Per name or position, per day, and
+compounded over the period are three different numbers, and on this sample the spread
+around the first is more than ten times its mean.
 
 Set the filters back to the defaults before quoting a headline number, and say in the
 log which filters a number was taken under. A ρ measured above the threshold is a

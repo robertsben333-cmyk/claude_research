@@ -84,3 +84,41 @@ de elf dagen áchter en haalt hem pas op de laatste dag in.
 **Read.** De drempel-per-sessie is het eerste dat het waard is om vooruit te testen, en
 het is precies het soort splitsing dat op deze n vanzelf ontstaat. Niets veranderen aan
 de config voordat er tien dagen bij zijn.
+
+## 2026-09-17 — lopende dag zichtbaar, drie rendementsniveaus, positiecap
+
+De 09-16 run stond nergens in: hij wordt afgewikkeld tegen de slotkoers van vandaag en
+`edge_exit.py` weigert een horizon die nog niet bestaat, dus vielen alle vier de namen uit
+de ledger en stopte elke grafiek een dag te vroeg zonder dat iets zei waarom.
+`build_ledger.py` maakt daar nu een **pending-rij** van met de momenten die wél bestaan.
+Stand vanochtend, voorbeurs: ALMU −16.6% (short, dus in het voordeel), LEN −2.6%,
+IPHA −2.0%. Op `close` hebben ze nog geen rendement en tellen ze nergens in mee; het
+overzicht noemt ze bij naam in plaats van de lijn te laten eindigen.
+
+**Drie rendementen staan nu naast elkaar, want ze zijn niet hetzelfde.** Over de elf
+afgewikkelde dagen, gelijk gewogen: per naam +0.71% met een standaarddeviatie van 13.1
+(slechtste −42.4%, beste +34.5%), per dag +1.15% met sd 5.2, en samengesteld over de
+periode +11.90%. De rekening zelf deed +12.9%. De spreiding is het verhaal: de sd per
+naam is achttien keer het gemiddelde, en zonder de grootste enkele uitslag (FEIM −42.4%,
+een short die won) zakt het gemiddelde van +0.71% naar +1.14%… omhoog, want die uitslag
+zat in het voordeel van het boek.
+
+**De positiecap doet op deze steekproef bijna niets, en dat is zelf de bevinding.**
+Nagerekend over dezelfde dagen: gelijk gewogen +11.90%, cap 50% +11.90%, cap 33% +11.90%,
+cap 20% +10.85%. Bij 33% bindt het plafond pas onder drie namen per dag en de dunste dag
+had er vier; bij 20% bindt het op elke dag met vier namen en kost het ruim een
+procentpunt. Met de drempel aan zakt het aantal namen per dag hard en gaat het plafond
+wél knellen — dat is precies de combinatie om vooruit in de gaten te houden, want de
+config ging op 2026-09-17 van 20% naar 33%.
+
+**De consumentenkanteling per sector zegt niets over rendement, en dat is nuttig om te
+weten.** Er is geen gratis eigendomsbron, dus het is een proxy uit vier percentielen
+(churn over marktkap, kleine kap, lage koers, vol). Communication Services (58), Consumer
+Defensive (64) en Basic Materials (80, n=1) staan het hoogst, Healthcare (34) en
+Industrials (42) het laagst. Tegen het rendement uitgezet over 102 namen: helling 0.04,
+r² 0.00. De edge zit dus niet zichtbaar in de namen waar consumenten handelen — maar de
+indicator is er nu, dus als dat kantelt is het te zien.
+
+**Read.** Niets aan de gepoolde cijfers veranderd. Wat erbij kwam is het vermogen om
+vragen te stellen: periode, drempel, verhandelbaarheid, positiecap, sessie en sector
+leiden nu elk getal op de pagina opnieuw af, en de lopende dag is niet langer onzichtbaar.

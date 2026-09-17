@@ -75,6 +75,68 @@ def book_stats(rets):
     return out
 
 
+# ----------------------------------------------------------- retail tilt
+
+def retail_tilt(names, runs):
+    """How much of the trading in a name looks like consumer money.
+
+    There is no free source for ownership: Yahoo's `majorHoldersBreakdown` is behind a
+    crumb, and 13F data is quarterly and institutional-only. So this is a PROXY, built
+    from four things that are all in the tree already and all point the same way:
+
+      churn       daily dollar volume over market cap. A name that turns a large part
+                  of itself over every day is being traded, not held
+      small cap   institutional mandates have size floors; a $200m company is bought
+                  mostly by people
+      low price   a share price under about $20 is where retail concentrates, and it is
+                  the single most-cited retail marker in the literature
+      volatility  20-day realised, annualised
+
+    Each is turned into a percentile over the whole sample and averaged, so the number
+    is 0-100 and comparable across sectors rather than absolute. It is a tilt, not a
+    measurement, and the components travel with it so a reader can see which one is
+    driving a sector.
+    """
+    caps = {}
+    for run in runs:
+        f = Path(run) / "universe.json"
+        if not f.exists():
+            continue
+        try:
+            d = json.loads(f.read_text())
+        except Exception:
+            continue
+        for row in (d.get("rows") or d.get("names") or []):
+            if row.get("market_cap_usd"):
+                caps[row["ticker"]] = float(row["market_cap_usd"])
+    for r in names:
+        r["market_cap_usd"] = caps.get(r["ticker"])
+        dv = r.get("dollar_vol") or r.get("plan_dollar_volume_usd")
+        r["churn_pct"] = (rd(100 * dv / r["market_cap_usd"], 3)
+                          if dv and r.get("market_cap_usd") else None)
+
+    def pct_rank(key, invert=False):
+        vals = sorted(v for v in (r.get(key) for r in names) if v is not None)
+        out = {}
+        for r in names:
+            v = r.get(key)
+            if v is None or not vals:
+                out[id(r)] = None
+                continue
+            below = sum(1 for x in vals if x < v)
+            p = 100 * below / max(1, len(vals) - 1)
+            out[id(r)] = round(100 - p if invert else p, 1)
+        return out
+
+    parts = {"churn": pct_rank("churn_pct"), "small_cap": pct_rank("market_cap_usd", True),
+             "low_price": pct_rank("spot", True), "volatility": pct_rank("realised_vol_20d")}
+    for r in names:
+        vals = [parts[k][id(r)] for k in parts if parts[k][id(r)] is not None]
+        r["retail_parts"] = {k: parts[k][id(r)] for k in parts}
+        r["retail_tilt"] = round(st.fmean(vals), 1) if len(vals) >= 2 else None
+    return names
+
+
 # ------------------------------------------------------------- sector & asset
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
@@ -186,6 +248,20 @@ def load_names(runs, cache):
             for p in pl.get("positions", []) + pl.get("rejected", []):
                 plans[(str(run), p["ticker"])] = p
 
+    have = {(d[0]["run"], r["ticker"]) for d in panel for r in d}
+    pend, pend_problems = partial_rows(runs, cache, have)
+    problems += pend_problems
+    if pend:
+        by = {}
+        for r in pend:
+            by.setdefault(r["run"], []).append(r)
+        for run, rs in by.items():
+            same = next((d for d in panel if d and d[0]["run"] == run), None)
+            if same is not None:
+                same.extend(rs)
+            else:
+                panel.append(rs)
+
     rows = []
     for day in panel:
         for r in day:
@@ -201,6 +277,12 @@ def load_names(runs, cache):
                 r["plan_pct_of_adv"] = p.get("pct_of_adv")
                 r["planned"] = p.get("qty") is not None
             r["run_date"] = r["run"].rstrip("/").split("/")[-2]
+            r["pending"] = bool(r.get("pending"))
+            bf = Path(r["run"]) / "baselines" / f"{r['ticker']}.json"
+            if bf.exists():
+                tape = (json.loads(bf.read_text()).get("tape") or {})
+                r["spot"] = tape.get("spot")
+                r["realised_vol_20d"] = tape.get("realised_vol_20d_annualised_pct")
             r["conviction"] = abs(r["impact_sum"])
             r["above_floor"] = None
             for h in EX.HORIZONS:
@@ -221,6 +303,91 @@ def load_names(runs, cache):
         r["duplicate_event"] = False
         seen[k] = r
     return rows, problems
+
+
+def partial_rows(runs, cache, have):
+    """Rows for a run whose outcome window has NOT closed yet.
+
+    `edge_exit.exit_prices` refuses these, and rightly so -- it feeds the analysis
+    scripts, which must never report a horizon that has not happened. But refusing
+    them made the whole day vanish from this ledger: on 2026-09-17 the 09-16 run had
+    two live positions and no row anywhere, so every chart simply stopped a day early
+    with nothing saying why.
+
+    So: the same prices, from the same bars, for the horizons that DO already exist,
+    and `pending: true` on the row. The reaction date comes off the 5-minute series
+    rather than the daily one, because the daily bar for a session in progress does
+    not exist yet while its pre-market bars do.
+    """
+    out, problems = [], []
+    for run in runs:
+        rp = Path(run)
+        sf = rp / "edge-scores.json"
+        if not sf.exists():
+            continue
+        scores = json.loads(sf.read_text())
+        for r in scores.get("ranking", []):
+            t = r["ticker"]
+            if not r.get("rankable") or (str(run), t) in have:
+                continue
+            imp = EX.impact_sum_of(r)
+            bf = rp / "baselines" / f"{t}.json"
+            if imp is None or not bf.exists():
+                continue
+            b = json.loads(bf.read_text())
+            ev, sess = b.get("event_date"), b.get("session", "bmo")
+            if not ev:
+                continue
+            dd = EX.daily(t, cache)
+            if not dd:
+                problems.append(f"{run} {t}: no daily bars, not even a pending row")
+                continue
+            dates = sorted(dd)
+            before = [d for d in dates if (d <= ev if sess == "amc" else d < ev)]
+            if not before:
+                continue
+            entry_date = before[-1]
+            entry = dd[entry_date]["close"]
+            m5 = EX.intraday(t, cache)
+            m5dates = sorted(m5)
+            react = next((d for d in m5dates if d > ev), None) if sess == "amc" else \
+                    next((d for d in m5dates if d >= ev), None)
+            px = {}
+            if sess == "amc":
+                px["ext_early"] = EX._last_at_or_before(m5.get(ev, []), 16*60+30, 16*60+5)
+            elif react:
+                px["ext_early"] = EX._last_at_or_before(m5.get(react, []), 8*60, 4*60)
+            rb = m5.get(react, []) if react else []
+            if rb:
+                px["pre_open"] = EX._last_at_or_before(rb, 9*60+25, 4*60)
+                ob = EX._bar_starting(rb, 9*60+30)
+                px["open"] = ob["open"] if ob and ob["open"] else None
+                for lab, hm in (("m15", 9*60+40), ("m30", 9*60+55),
+                                ("m60", 10*60+25), ("midday", 11*60+55)):
+                    bar = EX._bar_starting(rb, hm)
+                    px[lab] = bar["close"] if bar else None
+            hp = EX.hourly_prices(m5, entry_date, react) if react else {}
+            row = {"run": str(run), "ticker": t, "session": sess, "event_date": ev,
+                   "reaction_date": react, "entry_date": entry_date,
+                   "entry_close": round(entry, 4), "impact_sum": imp,
+                   "edge_score": r.get("edge_score"), "pending": True,
+                   "neg_runup": (None if (b.get("tape") or {}).get("run_up_20d_pct") is None
+                                 else -b["tape"]["run_up_20d_pct"]),
+                   "dollar_vol": None, "baseline_move_close": None,
+                   "px": {k: (None if v is None else round(v, 4)) for k, v in px.items()},
+                   "hourly_move": {}}
+            tape = b.get("tape") or {}
+            vol = next((tape[k] for k in ("avg_volume_20d", "adv_20d", "avg_vol_20d")
+                        if tape.get(k)), 0)
+            row["dollar_vol"] = ((tape.get("spot") or b.get("spot") or 0) * vol) or None
+            for h in EX.HORIZONS:
+                v = px.get(h)
+                row[f"mv_{h}"] = None if v is None else round((v/entry - 1)*100, 3)
+            for h, v in (hp or {}).items():
+                row[f"hr_{h:g}"] = None if v is None else round((v/entry - 1)*100, 3)
+                row["hourly_move"][f"{h:g}"] = row[f"hr_{h:g}"]
+            out.append(row)
+    return out, problems
 
 
 def panel_of(rows, key="ret_close"):
@@ -803,6 +970,7 @@ def main():
         r["tradable_flag"] = (da or {}).get("tradable", la.get("tradable"))
         r["tradable_reason"] = (da or {}).get("tradable_reason")
         r["asset_asof"] = (da or {}).get("asset_asof", "live lookup, not day-of")
+    retail_tilt(names, runs)
     attach_theoretical(all_eps, names)
     costs = costs_for(runs, names)
 
@@ -832,7 +1000,8 @@ def main():
                "reaction_date", "rank", "impact_sum", "conviction",
                "impact_sum_pre_lessons", "lessons_delta", "n_findings", "neg_runup",
                "dollar_vol", "plan_dollar_volume_usd", "sector", "industry",
-               "shortable", "easy_to_borrow", "tradable_flag", "duplicate_event", "traded",
+               "shortable", "easy_to_borrow", "tradable_flag", "market_cap_usd",
+               "churn_pct", "retail_tilt", "pending", "duplicate_event", "traded",
                "entry_close", "mv_open", "mv_close", "ret_open", "ret_close",
                "trade_ret_pct", "trade_pnl_usd"])
     write_csv(DATA / "trades.csv", all_eps,

@@ -104,7 +104,20 @@ select {
   background:var(--surface); color:var(--ink); border:1px solid var(--ring);
   border-radius:7px; padding:4px 7px; max-width:190px;
 }
-.ctl.off { opacity:.42; }
+.ctl.off { opacity:.45; }
+.ctlrow { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; width:100%; }
+.ctl { border:1px solid transparent; border-radius:9px; padding:2px 6px; }
+.ctl:has(input[type=checkbox]:checked) { border-color:var(--ring); background:var(--surface); }
+.btn.small { padding:4px 10px; font-size:13px; }
+.ctl .dash { color:var(--muted); }
+input[type=date] { background:var(--surface); color:var(--ink); border:1px solid var(--ring);
+                   border-radius:7px; padding:3px 6px; font-size:13px; }
+.help { width:100%; background:var(--surface); border:1px solid var(--ring); border-radius:12px;
+        padding:14px 18px; margin:6px 0 2px; }
+.help dl { margin:6px 0; color:var(--ink2); max-width:86ch; }
+.help dt { font-weight:600; color:var(--ink); margin-top:9px; }
+.help dd { margin:2px 0 0 0; }
+.controls { flex-direction:column; align-items:stretch; gap:8px; }
 .filterline { font-size:12.5px; color:var(--muted); margin:2px 0 0; }
 
 .card {
@@ -259,6 +272,22 @@ function book(rets) {
   o.median = rets.length ? [...rets].sort((a,b)=>a-b)[Math.floor(rets.length/2)] : null;
   return o;
 }
+/* Spread, not just the middle. A mean with no dispersion beside it hides whether a
+   book is a steady edge or one trade carrying eight. */
+function spread(xs) {
+  if (!xs.length) return {n:0};
+  const v = [...xs].sort((a,b)=>a-b), q = f => {
+    const i = (v.length-1)*f, lo = Math.floor(i), hi = Math.ceil(i);
+    return v[lo] + (v[hi]-v[lo])*(i-lo);
+  };
+  const o = ttest(xs);
+  return {...o, median:q(0.5), p25:q(0.25), p75:q(0.75), iqr:q(0.75)-q(0.25),
+          min:v[0], max:v[v.length-1],
+          hits: xs.filter(x=>x>0).length, hit: 100*xs.filter(x=>x>0).length/xs.length};
+}
+/* Compound a list of period returns in percent. */
+const compound = rs => (rs.reduce((a,r)=>a*(1+r/100), 1) - 1) * 100;
+
 /* Least squares through the points, for a trend line. Reported with its r², so a
    line drawn through noise announces itself. */
 function ols(pts) {
@@ -272,12 +301,21 @@ function ols(pts) {
 }
 
 /* ------------------------------------------------------- filters and lenses */
-const F = {
+const DATES = [...new Set(D.names.map(r => r.run_date))].sort();
+const DEFAULTS = {
   lens: 'research', horizon: 'close',
   thrOn: false, thr: D.conviction_floor ?? 3,
   tradeOn: false, minLong: 200000, minShort: 1000000, reqShort: true,
-  session: 'all', sector: 'all'
+  session: 'all', sector: 'all',
+  from: DATES[0] || '', to: DATES[DATES.length-1] || '',
+  capOn: false, capPct: 33, grossPct: 100
 };
+const F = {...DEFAULTS};
+/* How much of the equity a day actually puts to work. The stage splits a gross
+   budget equally over the day's names and caps each one, so a day with few names is
+   deliberately under-invested and a day with many is diluted. With the cap off every
+   day counts as fully invested, which is the research view. */
+const deployedPct = n => F.capOn ? Math.min(F.grossPct, n * F.capPct) : 100;
 const ALL = D.names.filter(r => !r.duplicate_event);
 const advOf = r => r.dollar_vol ?? r.plan_dollar_volume_usd ?? null;
 const mvOf = r => r['mv_' + F.horizon];
@@ -287,6 +325,8 @@ const boardOf = r => r['ret_' + F.horizon];
 const retOf = r => F.lens === 'trading' ? (r.trade_ret_pct ?? null) : boardOf(r);
 
 function passesFilters(r) {
+  if (F.from && r.run_date < F.from) return false;
+  if (F.to && r.run_date > F.to) return false;
   if (F.session !== 'all' && r.session !== F.session) return false;
   if (F.sector !== 'all' && (r.sector || 'onbekend') !== F.sector) return false;
   if (F.thrOn && Math.abs(r.impact_sum) < F.thr) return false;
@@ -309,6 +349,9 @@ function byDay(rows) {
 }
 /* Trades pass the same filters, through the name row they came from. A position
    whose name is not in this run's ranking (a hand trade) is kept: it is money. */
+const inRange = d => (!F.from || d >= F.from) && (!F.to || d <= F.to);
+const curveRows = () => ((D.account && D.account.curve) || []).filter(c => inRange(c.date));
+const dailyRows = () => ((D.stats.trading || {}).daily || []).filter(d => inRange(d.date));
 const nameIndex = new Map(ALL.map(r => [r.run_date + '|' + r.ticker, r]));
 const nameOfTrade = t => nameIndex.get(t.run_date + '|' + t.symbol) || null;
 function tradesFiltered(closedOnly) {
@@ -440,6 +483,26 @@ function barChart(host, spec) {
   el('line', {x1:x0, x2:x1, y1:Y(0), y2:Y(0), stroke:css('--axis'), 'stroke-width':1}, svg);
 }
 
+function histChart(host, spec) {
+  const xs = spec.values;
+  if (xs.length < 2) { noData(host); return; }
+  const lo = Math.min(...xs), hi = Math.max(...xs);
+  const t = scaleTicks(lo, hi, spec.bins || 8);
+  const step = t[1]-t[0];
+  const bins = t.slice(0,-1).map((b,i) => ({lo:b, hi:t[i+1], v:0, rows:[]}));
+  xs.forEach((x,i) => {
+    let k = Math.min(bins.length-1, Math.max(0, Math.floor((x-t[0])/step)));
+    bins[k].v++; bins[k].rows.push(spec.labels ? spec.labels[i] : null);
+  });
+  barChart(host, {height: spec.height || 200, fmtY: v=>v.toFixed(0),
+    labelY: spec.labelY || 'aantal',
+    items: bins.map(b => ({label: b.lo.toFixed(0) + (spec.unit || ''),
+      v: b.v, color: b.hi <= 0 ? css('--bad') : b.lo >= 0 ? css('--good') : css('--muted'),
+      tip:`<b>${b.lo.toFixed(1)}${spec.unit||''} tot ${b.hi.toFixed(1)}${spec.unit||''}</b><br>
+           ${b.v} ${b.v===1?'positie':'posities'}${b.rows.filter(Boolean).length
+             ? '<br>'+esc(b.rows.filter(Boolean).join(', ')) : ''}`}))});
+}
+
 function scatterChart(host, spec) {
   const h = spec.height || 320, {svg, w} = frame(host, h);
   const pad = {l:56, r:20, t:18, b:40};
@@ -539,83 +602,138 @@ const LENSNOTE = () => F.lens === 'trading'
 
 function tabOverzicht() {
   const rows = rowsFor(), rk = rankRows(), days = byDay(rk);
-  const b = book(rows.map(retOf));
+  const perUnit = spread(rows.map(retOf));
   const rho = pooledRho(days, r=>r.impact_sum, mvOf);
   const ctl = pooledRho(days, r=>r.neg_runup, mvOf);
   const conv = convictionRho(rk, r=>r.impact_sum, mvOf);
-  const eq = (D.stats.trading || {}).equity || {};
   const closed = tradesFiltered(true);
   const pnl = closed.reduce((s,t)=>s+(t.pnl_usd||0), 0);
-  const shortAll = book(rk.map(r => -mvOf(r)));
+  const curve = curveRows(), daily = dailyRows();
+
+  /* Per day: the mean of that day's names, scaled by how much of the equity the
+     sizing rule would actually have deployed. Every day weighs the same, whatever
+     its name count — which is the only way a 22-name day does not drown a 4-name one. */
+  const dayRows = byDay(rows);
+  const dayRets = dayRows.map(d => {
+    const m = d.reduce((s,x)=>s+retOf(x),0)/d.length;
+    return {date: d[0].run_date, n: d.length, mean: m,
+            deployed: deployedPct(d.length), ret: m * deployedPct(d.length)/100};
+  });
+  const perDay = spread(dayRets.map(d=>d.ret));
+  const total = compound(dayRets.map(d=>d.ret));
+  const ctlDay = dayRows.map(d => d.reduce((s,x)=>s-(mvOf(x)??0),0)/d.length
+                                  * deployedPct(d.length)/100);
+  const eqStart = curve.length ? curve[0].equity : null;
+  const eqEnd = curve.length ? curve[curve.length-1].equity : null;
+  const eqRet = (eqStart && eqEnd) ? (eqEnd/eqStart - 1)*100 : null;
 
   let html = `<p class="lead">${LENSNOTE()}</p>`;
   html += tiles([
-    {k: F.lens === 'trading' ? 'gem. per positie' : 'gem. bord-rendement',
-     v: pc(b.mean), cls:sgn(b.mean),
-     s:`n=${b.n}, t=${n2(b.t)}, 95% ${b.ci ? n1(b.ci[0])+' … '+n1(b.ci[1]) : '–'}`},
-    {k:'trefkans', v: b.hit === null ? '–' : n1(b.hit)+'%', s:`${b.hits}/${b.n} in de plus`},
+    {k: F.lens === 'trading' ? 'per positie' : 'per naam', v:pc(perUnit.mean),
+     cls:sgn(perUnit.mean), s:`n=${perUnit.n}, sd ${n1(perUnit.sd)}, t=${n2(perUnit.t)}`},
+    {k:'per dag', v:pc(perDay.mean), cls:sgn(perDay.mean),
+     s:`${perDay.n} dagen, sd ${n1(perDay.sd)}${F.capOn?`, ${n1(dayRets.reduce((s,d)=>s+d.deployed,0)/Math.max(1,dayRets.length))}% belegd`:''}`},
+    {k:'totaal, samengesteld', v:pc(total), cls:sgn(total),
+     s: F.capOn ? `max ${F.capPct}% per naam` : 'gelijk gewogen, volledig belegd'},
+    {k:'rekening', v:pc(eqRet), cls:sgn(eqRet),
+     s:`${usd(eqStart)} → ${usd(eqEnd)}${pnl?`, P&L ${usd(pnl)}`:''}`},
     {k:'ρ rangschikking', v:n3(rho), s:`tegen ${n3(ctl)} voor de gratis controle`},
-    {k:'ρ conviction', v:n3(conv), s:'voorspelt |impact| of het teken klopte'},
-    {k:'gerealiseerde P&L', v:usd(pnl), cls:sgn(pnl), s:`${closed.length} afgeronde posities`},
-    {k:'rendement rekening', v:pc(eq.return_pct), cls:sgn(eq.return_pct),
-     s:`${usd(eq.start)} → ${usd(eq.last)}, dal ${pc(eq.max_drawdown_pct)}`}]);
+    {k:'ρ conviction', v:n3(conv), s:'voorspelt |impact| of het teken klopte'}]);
+
+  html += `<div class="card"><h3>Drie niveaus van rendement, en de spreiding erin</h3>` +
+    table([
+      {h:'niveau', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
+      {h:'gemiddeld', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+      {h:'mediaan', f:r=>pc(r.median)},
+      {h:'sd', f:r=>n2(r.sd)},
+      {h:'p25 … p75', f:r=>r.p25===undefined?'–':`${n1(r.p25)} … ${n1(r.p75)}`},
+      {h:'slechtste', f:r=>`<span class="neg">${pc(r.min)}</span>`},
+      {h:'beste', f:r=>`<span class="pos">${pc(r.max)}</span>`},
+      {h:'raak %', f:r=>n1(r.hit)},
+      {h:'t', f:r=>n2(r.t)},
+      {h:'95% interval', f:r=>r.ci?`${n1(r.ci[0])} … ${n1(r.ci[1])}`:'–'}],
+      [{label: F.lens === 'trading' ? 'per positie' : 'per naam', ...perUnit},
+       {label:'per dag (boek)', ...perDay},
+       {label:'gratis controle per dag', ...spread(ctlDay)}]) +
+    `<small>De spreiding is het punt: op dit aantal waarnemingen is de standaarddeviatie
+     per ${F.lens === 'trading' ? 'positie' : 'naam'} ${n1(perUnit.sd)} procentpunt tegen
+     een gemiddelde van ${n1(perUnit.mean)}. Samengesteld over de periode:
+     <b>${pc(total)}</b>${F.capOn ? ` bij max ${F.capPct}% per naam en ${F.grossPct}% bruto`
+     : ' gelijk gewogen'}.</small></div>`;
+
+  html += `<div class="card"><h3>Spreiding per ${F.lens === 'trading' ? 'positie' : 'naam'}</h3>
+    ${legend([{color:css('--good'), label:'in de plus'}, {color:css('--bad'), label:'in de min'}])}
+    ${chartBlock('c-hist', 210)}
+    <small>Waar de staart zit. Eén naam in de rechterstaart kan het hele gemiddelde
+    dragen; de tooltip noemt ze.</small></div>`;
 
   html += `<div class="card"><h3>Samengesteld rendement van het geselecteerde boek</h3>
     ${legend([{color:css('--s1'), label:'het boek onder deze filters'},
               {color:css('--s2'), label:'gratis controle: alles shorten'}])}
     ${chartBlock('c-cum', 250)}
     <small>Per dag het gemiddelde rendement van de namen die door de filters komen,
-    samengesteld. Gelijk gewogen, geen kosten, en een dag zonder namen telt als nul —
-    dit is de rangschikking als boek, niet de rekening.</small></div>`;
+    ${F.capOn ? `geschaald naar wat de sizing-regel zou hebben ingelegd (max ${F.capPct}% per naam, bruto ${F.grossPct}%)`
+    : 'gelijk gewogen en volledig belegd'}, samengesteld. Geen kosten.</small></div>`;
+
   html += `<div class="card"><h3>Equity, zoals de broker hem rapporteert</h3>
-    ${chartBlock('c-equity', 240)}
-    <small>De hele rekening, ongefilterd — de filters hierboven raken het onderzoek en de
-    selectie, niet wat er al gehandeld is.</small></div>`;
+    ${chartBlock('c-equity', 230)}
+    <small>De rekening zelf: alleen de periode volgt de filters, de inhoud niet — dit is
+    wat er werkelijk gehandeld is.</small></div>`;
   html += `<div class="card"><h3>Gerealiseerde P&L per instapdag</h3>
     ${legend([{color:css('--good'), label:'winst'}, {color:css('--bad'), label:'verlies'}])}
-    ${chartBlock('c-daypnl', 210)}</div>`;
+    ${chartBlock('c-daypnl', 200)}</div>`;
 
+  const pend = ALL.filter(r => passesFilters(r) && r.pending);
   const warn = [];
+  if (pend.length) {
+    const byd = [...new Set(pend.map(r=>r.run_date))].join(', ');
+    warn.push(`${pend.length} namen (${esc(byd)}) zijn nog in afwikkeling: de reactiesessie
+      is niet gesloten, dus op <code>close</code> hebben ze geen rendement en vallen ze uit
+      elke grafiek. Zet uitstap op <code>pre_open</code> of <code>ext_early</code> om te
+      zien waar ze nu staan. ${esc(pend.map(r=>r.ticker+' '+pc(r.mv_pre_open ?? r.mv_ext_early)).join(', '))}.`);
+  }
   if (rho !== null && ctl !== null && rho <= ctl)
     warn.push(`De rangschikking (ρ=${n3(rho)}) verslaat de gratis controle
-      <code>-run_up_20d_pct</code> (ρ=${n3(ctl)}) niet. Zolang dat zo is heeft de hunt
-      niets aangetoond dat één getal uit de sealed baseline niet ook geeft.`);
-  if (b.n < 25)
-    warn.push(`n=${b.n}. Het 95%-interval loopt van ${b.ci ? n1(b.ci[0])+'% tot '+n1(b.ci[1])+'%' : '–'};
-      elk gemiddelde hier is met deze steekproef niet te onderscheiden van nul.`);
-  if (shortAll.n >= 3)
-    warn.push(`De gratis controle over dezelfde namen — alles shorten, geen research —
-      levert ${pc(shortAll.mean)} per naam. Dat is de lat.`);
+      <code>-run_up_20d_pct</code> (ρ=${n3(ctl)}) niet.`);
+  if (perUnit.n < 25)
+    warn.push(`n=${perUnit.n}. Het 95%-interval loopt van
+      ${perUnit.ci ? n1(perUnit.ci[0])+'% tot '+n1(perUnit.ci[1])+'%' : '–'}.`);
+  if (perUnit.n) {
+    const top = rows.slice().sort((a,b)=>Math.abs(retOf(b))-Math.abs(retOf(a)))[0];
+    const without = spread(rows.filter(r=>r!==top).map(retOf));
+    warn.push(`Zonder de grootste enkele uitslag (${esc(top.ticker)} ${pc(retOf(top))})
+      gaat het gemiddelde van ${pc(perUnit.mean)} naar ${pc(without.mean)}.`);
+  }
   html += `<div class="card warnbox"><h3>Wat dit niet bewijst</h3><ul>` +
     warn.map(w=>`<li>${w}</li>`).join('') + `</ul></div>`;
 
   draw.push(() => {
-    const dayRows = byDay(rows);
+    histChart(document.getElementById('c-hist'), {
+      values: rows.map(retOf), labels: rows.map(r=>r.ticker), unit:'%', bins:9, height:210,
+      labelY:'aantal namen'});
     let cum = 1, cumC = 1;
     const labels = [], book_ = [], ctl_ = [];
-    dayRows.forEach(d => {
-      const r = d.reduce((s,x)=>s+retOf(x),0)/d.length;
-      const c = d.reduce((s,x)=>s-(mvOf(x)??0),0)/d.length;
-      cum *= (1 + r/100); cumC *= (1 + c/100);
-      labels.push(d[0].run_date.slice(5)); book_.push((cum-1)*100); ctl_.push((cumC-1)*100);
+    dayRets.forEach((d,i) => {
+      cum *= (1 + d.ret/100); cumC *= (1 + ctlDay[i]/100);
+      labels.push(d.date.slice(5)); book_.push((cum-1)*100); ctl_.push((cumC-1)*100);
     });
     lineChart(document.getElementById('c-cum'), {
-      x: labels,
+      x: labels, sub: dayRets.map(d=>`n=${d.n}`),
       series:[{label:'boek', color:css('--s1'), values:book_},
               {label:'controle', color:css('--s2'), values:ctl_}],
-      zero:true, fmtY:v=>v.toFixed(0)+'%', fmtT:pc, height:250});
-    const c = (D.account && D.account.curve) || [];
+      zero:true, fmtY:v=>v.toFixed(0)+'%', fmtT:pc, height:250,
+      tipX:i=>`${dayRets[i].date} · ${dayRets[i].n} namen · dag ${pc(dayRets[i].ret)}` +
+              (F.capOn ? ` · ${n1(dayRets[i].deployed)}% belegd` : '')});
     lineChart(document.getElementById('c-equity'), {
-      x: c.map(p=>p.date.slice(5)),
-      series: [{label:'equity', color:css('--s1'), values:c.map(p=>p.equity)}],
-      fmtY: v => '$'+(v/1000).toFixed(1)+'k', fmtT: usd, height:240});
-    const daily = (D.stats.trading || {}).daily || [];
+      x: curve.map(p=>p.date.slice(5)),
+      series:[{label:'equity', color:css('--s1'), values:curve.map(p=>p.equity)}],
+      fmtY: v=>'$'+(v/1000).toFixed(1)+'k', fmtT: usd, height:230});
     barChart(document.getElementById('c-daypnl'), {
       items: daily.map(d => ({label:d.date.slice(5), v:d.pnl_usd, sub:`${d.n}×`,
         tip:`<b>${d.date}</b><br>${esc(d.symbols)}<br>inzet ${usd(d.notional_usd)}
              (${n1(d.gross_pct_of_equity)}% van equity)<br>P&amp;L ${usd(d.pnl_usd)}
              = ${pc(d.ret_on_notional_pct)} op de inzet`})),
-      fmtY: usd, fmtT: usd, height:210});
+      fmtY: usd, fmtT: usd, height:200});
   });
   return html;
 }
@@ -884,6 +1002,8 @@ function tabDrempel() {
   return html;
 }
 
+const med = xs => { const a = xs.filter(x=>x!==null&&x!==undefined).sort((x,y)=>x-y);
+                    return a.length ? a[Math.floor(a.length/2)] : null; };
 function tabSector() {
   const rows = rowsFor();
   const by = new Map();
@@ -893,8 +1013,9 @@ function tabSector() {
       long: v.filter(r=>r.impact_sum>0).length, short: v.filter(r=>r.impact_sum<0).length,
       amc: book(v.filter(r=>r.session==='amc').map(retOf)),
       bmo: book(v.filter(r=>r.session==='bmo').map(retOf)),
-      medAdv: (() => { const a = v.map(advOf).filter(x=>x!==null).sort((x,y)=>x-y);
-                       return a.length ? a[Math.floor(a.length/2)] : null; })()}))
+      medAdv: med(v.map(advOf)), tilt: med(v.map(r=>r.retail_tilt)),
+      churn: med(v.map(r=>r.churn_pct)), cap: med(v.map(r=>r.market_cap_usd)),
+      price: med(v.map(r=>r.spot)), vol: med(v.map(r=>r.realised_vol_20d))}))
     .sort((a,b)=>b.n-a.n);
   let html = `<p class="lead">Sector en industrie komen van Yahoo, per ticker opgezocht en
     gecached. Met ${rows.length} namen over ${secs.length} sectoren is elke cel hier klein:
@@ -903,6 +1024,22 @@ function tabSector() {
     ${chartBlock('c-sector', 250)}
     <small>Gesorteerd op aantal namen, niet op rendement — anders leest de volgorde zelf
     als een resultaat.</small></div>`;
+  html += `<div class="card"><h3>Hoeveel consumentengeld er in de sector handelt</h3>
+    ${chartBlock('c-tilt', 240)}
+    <small><b>Wat dit is en niet is.</b> Er bestaat geen gratis bron voor eigendom —
+    Yahoo's ownership zit achter een crumb, 13F is per kwartaal en alleen institutioneel.
+    Dit is daarom een <i>proxy</i> uit vier dingen die allemaal dezelfde kant op wijzen:
+    dagomzet gedeeld door marktkap (een naam die een groot deel van zichzelf per dag
+    omzet wordt verhandeld, niet gehouden), kleine marktkap (institutionele mandaten
+    hebben ondergrenzen), lage koers per aandeel, en realised vol. Elk als percentiel
+    over de hele steekproef, gemiddeld tot 0–100. Lees het als een kanteling, niet als een
+    meting; de componenten staan in de tabel en in de tooltip.</small></div>`;
+  html += `<div class="card"><h3>Consumentenkanteling tegen rendement</h3>
+    ${legend([{color:css('--s1'), label:'naam'},
+              {color:css('--s2'), label:'kleinste-kwadratenlijn', dash:true}])}
+    ${chartBlock('c-tiltret', 300)}
+    <small>De vraag waar de indicator voor is: zit de edge in de namen waar consumenten
+    handelen, of juist niet. Een helling door nul betekent dat het niets uitmaakt.</small></div>`;
   html += `<div class="card"><h3>Per sector</h3>` + table([
     {h:'sector', f:r=>esc(r.sector)}, {h:'n', f:r=>r.n},
     {h:'long/short', f:r=>`${r.long}/${r.short}`},
@@ -911,7 +1048,14 @@ function tabSector() {
     {h:'t', f:r=>n2(r.t)},
     {h:'amc n', f:r=>r.amc.n}, {h:'amc %', f:r=>`<span class="${sgn(r.amc.mean)}">${pc(r.amc.mean)}</span>`},
     {h:'bmo n', f:r=>r.bmo.n}, {h:'bmo %', f:r=>`<span class="${sgn(r.bmo.mean)}">${pc(r.bmo.mean)}</span>`},
-    {h:'mediane dagomzet', f:r=>usdM(r.medAdv)}], secs) + `</div>`;
+    {h:'mediane dagomzet', f:r=>usdM(r.medAdv)},
+    {h:'consumenten­kanteling', f:r=>`<b>${n1(r.tilt)}</b>`},
+    {h:'churn %/dag', f:r=>n2(r.churn)},
+    {h:'mediane marktkap', f:r=>usdM(r.cap)},
+    {h:'mediane koers', f:r=>r.price===null?'–':'$'+n2(r.price)},
+    {h:'vol 20d', f:r=>n1(r.vol)}], secs) +
+    `<small>Churn is de dagomzet als percentage van de marktkap. De kanteling is het
+     gemiddelde percentiel van churn, kleine kap, lage koers en vol.</small></div>`;
   const inds = new Map();
   rows.forEach(r => { const k = r.industry || 'onbekend';
                       if (!inds.has(k)) inds.set(k, []); inds.get(k).push(r); });
@@ -929,6 +1073,24 @@ function tabSector() {
              gemiddeld ${pc(s.mean)}, trefkans ${n1(s.hit)}%, t=${n2(s.t)}<br>
              mediane dagomzet ${usdM(s.medAdv)}`})),
       fmtY:v=>v.toFixed(0)+'%', fmtT:pc, height:250});
+    barChart(document.getElementById('c-tilt'), {
+      items: secs.filter(s=>s.tilt!==null).map(s => ({label: shortSector(s.sector),
+        v:s.tilt, sub:`n=${s.n}`, color: css('--s3'),
+        tip:`<b>${esc(s.sector)}</b> — kanteling ${n1(s.tilt)} van 100<br>
+             churn ${n2(s.churn)}% van de marktkap per dag<br>
+             mediane marktkap ${usdM(s.cap)} · koers $${n2(s.price)} · vol ${n1(s.vol)}<br>
+             n=${s.n}, gemiddeld rendement ${pc(s.mean)}`})),
+      fmtY:v=>v.toFixed(0), labelY:'percentiel 0–100', height:240});
+    scatterChart(document.getElementById('c-tiltret'), {
+      points: rows.filter(r=>r.retail_tilt!==null&&r.retail_tilt!==undefined).map(r => ({
+        x:r.retail_tilt, y:retOf(r), r: r.traded ? 7 : 4.5, open: !r.traded,
+        color: css('--s1'),
+        tip:`<b>${esc(r.ticker)}</b> ${r.run_date} · ${esc(r.sector||'')}<br>
+             kanteling ${n1(r.retail_tilt)} (churn ${n2(r.churn_pct)}%/dag,
+             kap ${usdM(r.market_cap_usd)}, koers $${n2(r.spot)})<br>
+             rendement ${pc(retOf(r))}`})),
+      labelX:'consumentenkanteling (percentiel)', labelY:'rendement %',
+      fmtY:v=>v.toFixed(0)+'%', height:300});
   });
   return html;
 }
@@ -1195,7 +1357,9 @@ function tabData() {
     {h:'short?', f:r=>r.shortable === true ? 'ja' : r.shortable === false ? 'nee' : '–'},
     {h:'beweging', f:r=>pc(mvOf(r))},
     {h:'bord-rendement', f:r=>`<span class="${sgn(boardOf(r))}">${pc(boardOf(r))}</span>`},
-    {h:'gehandeld', f:r=>r.traded ? `ja (${pc(r.trade_ret_pct)})` : '–'}], rows) +
+    {h:'kanteling', f:r=>n1(r.retail_tilt)},
+    {h:'gehandeld', f:r=>r.traded ? `ja (${pc(r.trade_ret_pct)})` : '–'},
+    {h:'status', f:r=>r.pending ? '<span class="meta">in afwikkeling</span>' : ''}], rows) +
     `<small>Ook in <code>edge/performance/data/names.csv</code> en <code>trades.csv</code>,
      ongefilterd, voor wie liever zelf rekent.</small></div>`;
   html += `<div class="card"><h3>Ververs dit dashboard</h3>
@@ -1211,72 +1375,163 @@ function tabData() {
 const SECTORS = [...new Set(ALL.map(r => r.sector || 'onbekend'))].sort();
 function renderControls() {
   const c = document.getElementById('controls');
+  const days = ALL.filter(r => inRange(r.run_date)).length;
   c.innerHTML = `
-    <div class="ctl"><label>lens</label>
-      <span class="seg" id="seg-lens">
-        <button data-v="research" aria-pressed="${F.lens==='research'}">onderzoek</button>
-        <button data-v="trading" aria-pressed="${F.lens==='trading'}">handel</button>
-      </span></div>
-    <div class="ctl"><label>uitstap</label>
-      <select id="f-horizon">${D.horizons.map(h =>
-        `<option value="${h}" ${h===F.horizon?'selected':''}>${h} · ${HZ_CET[h]||''}</option>`).join('')}
-      </select></div>
-    <div class="ctl ${F.thrOn?'':'off'}">
-      <label class="sw"><input type="checkbox" id="f-thron" ${F.thrOn?'checked':''}> drempel |impact|</label>
-      <input type="number" id="f-thr" step="0.5" min="0" max="20" value="${F.thr}">
-      <input type="range" id="f-thrr" step="0.5" min="0" max="12" value="${F.thr}">
+    <div class="ctlrow">
+      <div class="ctl" title="Onderzoek = elke gerangschikte naam met het bord-rendement. Handel = alleen namen die een positie werden, met het rendement van de broker.">
+        <label>lens</label>
+        <span class="seg" id="seg-lens">
+          <button data-v="research" aria-pressed="${F.lens==='research'}">onderzoek</button>
+          <button data-v="trading" aria-pressed="${F.lens==='trading'}">handel</button>
+        </span></div>
+      <div class="ctl" title="Op welk moment de positie zou zijn gesloten. De instap ligt vast op de slotkoers vóór de print.">
+        <label>uitstap</label>
+        <select id="f-horizon">${D.horizons.map(h =>
+          `<option value="${h}" ${h===F.horizon?'selected':''}>${h} · ${HZ_CET[h]||''} CET</option>`).join('')}
+        </select></div>
+      <div class="ctl" title="Welke runs meetellen. Verschuift ook de x-as van elke grafiek.">
+        <label>periode</label>
+        <span class="seg" id="seg-period">
+          ${[['alles',0],['20d',20],['10d',10],['5d',5]].map(([lab,n]) =>
+            `<button data-n="${n}" aria-pressed="${periodIs(n)}">${lab}</button>`).join('')}
+        </span>
+        <input type="date" id="f-from" value="${F.from}" min="${DATES[0]}" max="${DATES[DATES.length-1]}">
+        <span class="dash">–</span>
+        <input type="date" id="f-to" value="${F.to}" min="${DATES[0]}" max="${DATES[DATES.length-1]}">
+      </div>
     </div>
-    <div class="ctl ${F.tradeOn?'':'off'}">
-      <label class="sw"><input type="checkbox" id="f-tradeon" ${F.tradeOn?'checked':''}> verhandelbaar</label>
-      <label>long ≥</label><input type="number" id="f-minlong" step="100000" min="0" value="${F.minLong}">
-      <label>short ≥</label><input type="number" id="f-minshort" step="100000" min="0" value="${F.minShort}">
-      <label class="sw"><input type="checkbox" id="f-reqshort" ${F.reqShort?'checked':''}> alleen leenbaar</label>
+    <div class="ctlrow">
+      <div class="ctl ${F.thrOn?'':'off'}" title="Alleen namen waarvan |impact_sum| minstens deze waarde is. Aan betekent dat élke tabel en grafiek op de pagina alleen die namen gebruikt.">
+        <label class="sw"><input type="checkbox" id="f-thron" ${F.thrOn?'checked':''}>
+          <b>drempel</b> |impact_sum| ≥</label>
+        <input type="number" id="f-thr" step="0.5" min="0" max="20" value="${F.thr}">
+        <input type="range" id="f-thrr" step="0.5" min="0" max="12" value="${F.thr}">
+      </div>
+      <div class="ctl ${F.tradeOn?'':'off'}" title="Namen die te dun verhandeld worden of niet te lenen zijn, eruit. De vloer voor shorts ligt hoger, want een short heeft omvang én een borrow nodig.">
+        <label class="sw"><input type="checkbox" id="f-tradeon" ${F.tradeOn?'checked':''}>
+          <b>verhandelbaar</b></label>
+        <label>long ≥</label><input type="number" id="f-minlong" step="100000" min="0" value="${F.minLong}">
+        <label>short ≥</label><input type="number" id="f-minshort" step="100000" min="0" value="${F.minShort}">
+        <label class="sw"><input type="checkbox" id="f-reqshort" ${F.reqShort?'checked':''}> alleen leenbaar</label>
+      </div>
+      <div class="ctl ${F.capOn?'':'off'}" title="Simuleert de sizing-regel: een bruto budget gelijk verdeeld over de namen van de dag, met een plafond per naam. Uit = gelijk gewogen en altijd volledig belegd.">
+        <label class="sw"><input type="checkbox" id="f-capon" ${F.capOn?'checked':''}>
+          <b>positiecap</b> max</label>
+        <input type="number" id="f-cappct" step="1" min="1" max="100" value="${F.capPct}">
+        <label>% per naam, bruto</label>
+        <input type="number" id="f-grosspct" step="5" min="10" max="200" value="${F.grossPct}">
+        <label>%</label>
+      </div>
+      <div class="ctl" title="amc rapporteert na de slotbel, bmo vóór de opening. De twee gedragen zich meetbaar anders.">
+        <label>sessie</label>
+        <select id="f-session">${['all','amc','bmo'].map(x =>
+          `<option value="${x}" ${x===F.session?'selected':''}>${x==='all'?'alle':x}</option>`).join('')}
+        </select></div>
+      <div class="ctl" title="Sector volgens Yahoo, per ticker opgezocht.">
+        <label>sector</label>
+        <select id="f-sector"><option value="all">alle</option>${SECTORS.map(x =>
+          `<option value="${esc(x)}" ${x===F.sector?'selected':''}>${esc(x)}</option>`).join('')}
+        </select></div>
+      <button class="btn small" id="f-help" aria-expanded="false">? uitleg</button>
+      <button class="btn small" id="f-reset">herstel</button>
     </div>
-    <div class="ctl"><label>sessie</label>
-      <select id="f-session">${['all','amc','bmo'].map(s =>
-        `<option value="${s}" ${s===F.session?'selected':''}>${s==='all'?'alle':s}</option>`).join('')}
-      </select></div>
-    <div class="ctl"><label>sector</label>
-      <select id="f-sector"><option value="all">alle</option>${SECTORS.map(s =>
-        `<option value="${esc(s)}" ${s===F.sector?'selected':''}>${esc(s)}</option>`).join('')}
-      </select></div>
-    <button class="btn" id="f-reset">herstel</button>`;
+    <div class="help" id="helpbox" hidden>
+      <h3>Wat de knoppen doen</h3>
+      <dl>
+        <dt>lens</dt><dd><b>onderzoek</b> rekent met elke gerangschikte naam en het
+          <i>bord-rendement</i>: de koersbeweging in de richting van het teken van
+          <code>impact_sum</code>, zonder spread, zonder uitvoering. <b>handel</b> houdt
+          alleen namen over die een echte positie werden en gebruikt het rendement dat de
+          broker maakte. Het verschil tussen die twee is wat uitvoering kostte.</dd>
+        <dt>uitstap</dt><dd>Acht momenten, van een half uur na de print tot de slotkoers
+          van de reactiesessie. De instap staat vast op de slotkoers vóór de print, dus dit
+          verandert alleen waar je verkoopt. Alles vóór 15:30 CET is een prijs die bestond,
+          geen omvang die kon handelen.</dd>
+        <dt>periode</dt><dd>Welke runs meedoen. De knoppen nemen de laatste N handelsdagen
+          uit de archieven; de twee datumvelden zetten een eigen venster. Elke grafiek
+          volgt: dit is ook de x-as.</dd>
+        <dt>drempel</dt><dd>De conviction-floor. Alleen namen met |impact_sum| ≥ deze
+          waarde tellen mee — in élke tabel en grafiek, niet alleen in het overzicht.
+          Uit is de volledige steekproef. De config staat op
+          ${D.conviction_floor}; het tabblad <b>Drempel</b> laat zien wat andere waarden
+          zouden hebben gedaan.</dd>
+        <dt>verhandelbaar</dt><dd>Twee omzetvloeren en een borrow-check. Een naam met te
+          weinig dagomzet kun je niet vullen zonder de koers te bewegen, en een short die
+          niemand uitleent kun je helemaal niet doen. Daarom staat de shortvloer standaard
+          hoger dan de longvloer.</dd>
+        <dt>positiecap</dt><dd>De sizing-regel van stage E, nagerekend: het bruto budget
+          gelijk verdeeld over de namen van die dag, met een plafond per naam. Bij drie
+          namen en 33% is de rekening voor 99% belegd, bij één naam voor 33%, bij tien
+          namen voor 100% met 10% per naam. Uit betekent gelijk gewogen en altijd volledig
+          belegd — dat is het onderzoeksgetal, niet wat een rekening doet.</dd>
+        <dt>sessie en sector</dt><dd>amc rapporteert na de slotbel, bmo vóór de opening; op
+          deze steekproef gedragen ze zich tegengesteld. Sector komt van Yahoo.</dd>
+      </dl>
+      <p><b>Drie rendementen, en ze zijn niet hetzelfde.</b> Per positie is het gemiddelde
+      van losse trades, met een spreiding die hier groter is dan het gemiddelde. Per dag
+      weegt elke dag even zwaar, ongeacht hoeveel namen erin zaten. Totaal is samengesteld
+      over de periode en is het enige getal dat een rekening ook echt ziet.</p>
+    </div>`;
   const on = (id, ev, fn) => { const e = document.getElementById(id);
                                if (e) e.addEventListener(ev, fn); };
   document.querySelectorAll('#seg-lens button').forEach(b =>
-    b.addEventListener('click', () => { F.lens = b.dataset.v; refresh(); }));
-  on('f-horizon','change', e => { F.horizon = e.target.value; refresh(); });
-  on('f-thron','change', e => { F.thrOn = e.target.checked; refresh(); });
-  on('f-thr','change', e => { F.thr = +e.target.value; refresh(); });
-  on('f-thrr','input', e => { F.thr = +e.target.value; F.thrOn = true; refresh(); });
-  on('f-tradeon','change', e => { F.tradeOn = e.target.checked; refresh(); });
-  on('f-minlong','change', e => { F.minLong = +e.target.value; refresh(); });
-  on('f-minshort','change', e => { F.minShort = +e.target.value; refresh(); });
-  on('f-reqshort','change', e => { F.reqShort = e.target.checked; refresh(); });
-  on('f-session','change', e => { F.session = e.target.value; refresh(); });
-  on('f-sector','change', e => { F.sector = e.target.value; refresh(); });
-  on('f-reset','click', () => {
-    Object.assign(F, {lens:'research', horizon:'close', thrOn:false,
-      thr: D.conviction_floor ?? 3, tradeOn:false, minLong:200000, minShort:1000000,
-      reqShort:true, session:'all', sector:'all'});
-    refresh();
+    b.addEventListener('click', () => { F.lens = b.dataset.v; redraw(); }));
+  document.querySelectorAll('#seg-period button').forEach(b =>
+    b.addEventListener('click', () => { setPeriod(+b.dataset.n); redraw(); }));
+  on('f-from','change', e => { F.from = e.target.value; redraw(); });
+  on('f-to','change', e => { F.to = e.target.value; redraw(); });
+  on('f-horizon','change', e => { F.horizon = e.target.value; redraw(); });
+  on('f-thron','change', e => { F.thrOn = e.target.checked; redraw(); });
+  on('f-thr','change', e => { F.thr = +e.target.value; F.thrOn = true; redraw(); });
+  on('f-thrr','input', e => { F.thr = +e.target.value; F.thrOn = true; redraw(); });
+  on('f-tradeon','change', e => { F.tradeOn = e.target.checked; redraw(); });
+  on('f-minlong','change', e => { F.minLong = +e.target.value; redraw(); });
+  on('f-minshort','change', e => { F.minShort = +e.target.value; redraw(); });
+  on('f-reqshort','change', e => { F.reqShort = e.target.checked; redraw(); });
+  on('f-capon','change', e => { F.capOn = e.target.checked; redraw(); });
+  on('f-cappct','change', e => { F.capPct = +e.target.value; F.capOn = true; redraw(); });
+  on('f-grosspct','change', e => { F.grossPct = +e.target.value; F.capOn = true; redraw(); });
+  on('f-session','change', e => { F.session = e.target.value; redraw(); });
+  on('f-sector','change', e => { F.sector = e.target.value; redraw(); });
+  on('f-reset','click', () => { Object.assign(F, DEFAULTS); redraw(); });
+  on('f-help','click', e => {
+    const box = document.getElementById('helpbox');
+    box.hidden = !box.hidden;
+    e.target.setAttribute('aria-expanded', String(!box.hidden));
   });
 }
+function periodIs(n) {
+  const full = F.from === DATES[0] && F.to === DATES[DATES.length-1];
+  if (!n) return full;
+  // A preset wider than the archive IS the full range, and only "alles" should light
+  // up for it — otherwise every preset reads as active on a short history.
+  if (n >= DATES.length) return false;
+  return F.from === DATES[DATES.length-n] && F.to === DATES[DATES.length-1] && !full;
+}
+function setPeriod(n) {
+  F.to = DATES[DATES.length-1];
+  F.from = n ? (DATES[Math.max(0, DATES.length-n)] || DATES[0]) : DATES[0];
+}
+/* Rebuild the controls too: the checkboxes carry state that a reset has to show. */
+function redraw() { renderControls(); refresh(); }
+
 function filterLine() {
   const kept = ALL.filter(passesFilters);
   const withRet = kept.filter(r => retOf(r) !== null && retOf(r) !== undefined);
-  const bits = [];
-  bits.push(F.lens === 'trading' ? 'lens handel' : 'lens onderzoek');
+  const pend = kept.filter(r => r.pending).length;
+  const nDays = new Set(withRet.map(r=>r.run_date)).size;
+  const bits = [F.lens === 'trading' ? 'lens handel' : 'lens onderzoek'];
   bits.push(F.thrOn ? `|impact_sum| ≥ ${F.thr}` : 'geen drempel');
   if (F.tradeOn) bits.push(`long ≥ ${usdM(F.minLong)}/dag, short ≥ ${usdM(F.minShort)}/dag` +
     (F.reqShort ? ', alleen leenbaar' : ''));
+  if (F.capOn) bits.push(`max ${F.capPct}% per naam, bruto ${F.grossPct}%`);
   if (F.session !== 'all') bits.push(F.session);
   if (F.sector !== 'all') bits.push(F.sector);
   bits.push(`uitstap ${F.horizon} (${HZ_CET[F.horizon]} CET)`);
+  bits.push(`${F.from} t/m ${F.to}`);
   document.getElementById('filterline').innerHTML =
-    `${esc(bits.join(' · '))} — <b>${withRet.length}</b> van ${ALL.length} namen in beeld` +
-    (kept.length !== withRet.length
-      ? `, ${kept.length - withRet.length} zonder rendement op dit moment` : '');
+    `${esc(bits.join(' · '))} — <b>${withRet.length}</b> namen over ${nDays} dagen` +
+    (pend ? `, ${pend} nog in afwikkeling` : '');
 }
 
 /* ------------------------------------------------------------------- boot */
