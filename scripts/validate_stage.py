@@ -35,7 +35,13 @@ def _num(problems, obj, key, lo, hi, where, required=True):
 
 def validate_shortlist(doc, problems):
     names = doc.get("shortlist")
-    if not isinstance(names, list) or not names:
+    if not isinstance(names, list):
+        problems.append("root: 'shortlist' must be a list")
+        return
+    # A skipped-screen run carries every eligible name forward. When the universe
+    # itself is empty (a day with nothing tradeable, not just a thin one), that is
+    # legitimately zero names rather than a malformed file.
+    if not names and not (doc.get("triage_mode") == "skipped_small_universe" and doc.get("universe_eligible") == 0):
         problems.append("root: 'shortlist' must be a non-empty list")
         return
     # Skipped-screen runs (universe at or below the triage threshold) carry every
