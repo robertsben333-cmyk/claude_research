@@ -58,3 +58,13 @@
 - Already on disk, skipping: none (02-dossiers/ is empty)
 - Batch 1 already ran and correctly found 0 names to research (not a failure — the empty shortlist is genuine: universe_total 1, universe_eligible 0). No gap to cover.
 - Plan: no researchers to spawn; confirm against 00-universe.json/01-shortlist.json, then write 02-ranking.json (empty) since this is the final batch.
+
+## Stage 2 — deep dive, batch 2 — FINISHED (10:24 UTC)
+- Logged at 2026-09-17 10:23 UTC
+- Researched: none (shortlist empty — universe_total 1, universe_eligible 0, UPXI excluded at stage 0 for market cap $76.0M < $500M floor)
+- Skipped (already done): none
+- Failed: none
+- Subagents: 0 opus/high, 0 waves
+- Median evidence completeness: n/a
+- 02-ranking.json written (final batch): 0 names, panel_names_top_n 2, top_n_for_panel []
+- Panel-eligible after this batch: none
