@@ -131,3 +131,11 @@
 - Live from the next clone: edge/LESSONS.md and the pre_lessons contract, edge/scripts/share_class.py, the verify subcommand and mode --require-exit-tif, and exit_mode: amc_open with flatten_before_entry false.
 - The merge landed BEFORE the 10:00 UTC Close AMC run of 09-17, deliberately: on main's previous tree that Routine's guard failed with an argparse error and submitted nothing, so ALMU and LEN would have missed the opening auction and been sold as overdue at market in the afternoon. The competing recommendation (merge after the 09-17 exits, to keep one hunter contract per position) was read and set aside; the same entry judged the book effect to be none.
 - Unchanged and still needing a person: both Routine prompts must be re-pasted from edge/routine-prompts/. Until then the stage E prompt still states 14:04 UTC and the Close AMC prompt still names the old hand-read guard.
+
+## Stage 4 — calibration — DEFERRED
+- Attempted on schedule at 2026-09-17 06:21 UTC.
+- 04-advice.json exists (LEN panelled Lean Down, certainty High). No 05-outcome.md.
+- Cannot score yet: measurement convention is close-before-print to close-after-first-full-session-following. LEN reported amc 2026-09-16, so its first full session is today's (2026-09-17) regular session, which has not opened yet at this firing (06:21 UTC = 02:21 ET, ~7 hours before the open) — no close exists to measure against.
+- Confirmed via WebSearch: LEN reported on schedule 2026-09-16 amc — EPS $1.19 vs $1.29 consensus (missed by $0.10), revenue $8.05B vs $8.31B consensus (missed), FY26 delivery guide cut to 80,000-81,000 from 82,000-83,000. Stock was down ~2.6-2.8% in after-hours trading. Not fabricating an after-hours quote as a close — same restraint as the 2026-08-20/08-27 precedent.
+- Deferring: the next stage-4 firing after 2026-09-17's regular close is the earliest point LEN's outcome window is measurable. Recorded here per the standing schedule-lag flag (2026-08-20, 2026-08-27) — an amc print the evening before a stage-4 morning firing always resolves on the *current* day's close, which a same-morning firing cannot yet see.
+- No LEDGER.md change made; no 05-outcome.md written.
