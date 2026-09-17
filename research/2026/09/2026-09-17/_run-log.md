@@ -51,3 +51,10 @@
 - status --scan confirms both still OPEN: ALMU -167 @ 13.35 (+13.86% unrealized), LEN -28 @ 79.96 (+4.50% unrealized); exit order state 'new' for both.
 - Account reachable throughout: paper, equity $11,669.19, cash $15,727.77, buying power $40,771.06.
 - Not a rescue point: firing before 09:28 ET means no plain-market rescue is available here even if the auction cross under-fills (documented behavior: HOFT 17/161, CODA 39/183, RLGT 0/224 in past runs). Stage E's own run inside the session is what carries an UNFILLED leg forward via 'verify --fix'.
+
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-17 10:23 UTC
+- Shortlist: 0 names (triage_mode: skipped_small_universe, universe_eligible: 0); this batch: none (N=ceil(0/2)=0, batch 2 covers positions 1..end of an empty capped list)
+- Already on disk, skipping: none (02-dossiers/ is empty)
+- Batch 1 already ran and correctly found 0 names to research (not a failure — the empty shortlist is genuine: universe_total 1, universe_eligible 0). No gap to cover.
+- Plan: no researchers to spawn; confirm against 00-universe.json/01-shortlist.json, then write 02-ranking.json (empty) since this is the final batch.
