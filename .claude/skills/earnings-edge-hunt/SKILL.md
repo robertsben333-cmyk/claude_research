@@ -255,11 +255,19 @@ It reads two free sources and spends no agent. **EDGAR** kills a row outright wh
 company filed its results in the ten days before the event — no quarterly or
 semi-annual reporter prints twice in a fortnight — and that kill is certain. **Nasdaq's
 press-release feed** confirms a row when the company itself announced a results date in
-the window, with a citable URL. On the only labelled set in this repo, the twelve rows
-of 2026-08-31, `announced` kept **4 of 4 real reporters and none of the 8 phantoms**,
-while the filing-cadence prior separated nothing: two phantoms read `fits`. Hunt the
-`announced` rows; treat `unresolved` as a calendar row with no evidence behind it, which
-is what it is.
+the window, with a citable URL, and separately records whether the company announces its
+dates at all: a missing announcement is only evidence against a row for a company that
+has issued them before.
+
+`announced` is precise and it is not sensitive. On the twelve labelled rows of
+2026-08-31 it kept **4 of 4 real reporters and none of the 8 phantoms**. On 2026-09-17
+it found nothing, and TRT — which has never pre-announced a date in twenty years of
+EDGAR history — was real, cleared the floor at +5.10 and was the day's only trade. So
+**`--announced-only` is for a day with more confirmed names than hunters, never for a
+thin one**, and the filing-cadence prior is to be read rather than filtered on. It is
+not a phantom test: two phantoms read `fits` on 08-31. It is a reason to look, and on
+09-17 `TRT / unresolved / fits / last item-2.02 2026-05-14, 126 days` was the whole case
+for the name that a sweep had already refuted on an incomplete filing history.
 
 What it cannot do is settle the **session**. Nasdaq serves the release body as a
 JavaScript shell and the headline usually omits the time, so a carried row reaches the
@@ -269,10 +277,13 @@ flip on whether the print is inside the window at all, because a `bmo` row dated
 printed this morning and an `amc` row dated tomorrow prints a full session after the
 entry.
 
-`--apply` rewrites the universe in place; `--announced-only` carries nothing else.
-On 2026-09-17 it bought back **no names at all** — two provably already reported, none
-announced, eighteen with nothing behind them — so the one-name day was the market's,
-not the filter's. Record that in the run log; a checked thin day and an unchecked one
+`--apply` rewrites the universe in place. On 2026-09-17 the script killed two rows
+outright (HUBG, VFS), confirmed none by press release and carried eighteen; a hand check
+the same evening found one of those eighteen — TRT — was real, and it became the day's
+only position. The measured phantom rate for that window is **19 of 20**, against 8 of 8
+on 2026-08-31. The rule to withhold `--include-unknown` still holds on cost, nineteen
+hunters to find one name, but it is not free and on 09-17 it cost the only name in the
+book. Record the check in the run log either way; a checked thin day and an unchecked one
 are different facts.
 
 If the universe is empty, log it and stop cheaply. A holiday or a thin day is a real

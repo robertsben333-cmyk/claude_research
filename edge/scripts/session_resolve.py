@@ -21,9 +21,12 @@ Per ticker, from `data.sec.gov` only:
                     words -- "before market open", "after market close" -- read it off
                     and carry the filing URL as evidence.
   prior             days since the last results filing, against the ~91-day quarterly
-                    and ~182-day semi-annual cadence. A weak prior is never a drop on
-                    its own: `priced_in.py`'s cadence heuristic once killed four
-                    company-confirmed reporters.
+                    and ~182-day semi-annual cadence. Read it, never filter on it: two
+                    of 2026-08-31's eight phantoms read `fits`, and `priced_in.py`'s
+                    cadence heuristic once killed four company-confirmed reporters. It
+                    still earns its place — on 2026-09-17 `TRT / fits / last item-2.02
+                    2026-05-14, 126 days` was the whole case for the only name that
+                    traded, after a sweep had refuted it on an incomplete history.
 
 What survives is not confirmed, only not yet killed. An unresolved session still has
 to be settled by the sweep from a company source before the name can be hunted,
@@ -371,9 +374,12 @@ def main():
                          "resolved, mark the rest for the sweep to settle")
     ap.add_argument("--announced-only", action="store_true",
                     help="carry only rows with a company press release naming a date "
-                         "in the window. On the one labelled set in the repo — the "
-                         "twelve rows of 2026-08-31 — that test kept 4 of 4 real "
-                         "reporters and none of the 8 phantoms")
+                         "in the window. Precise and not sensitive: on the twelve "
+                         "labelled rows of 2026-08-31 it kept 4 of 4 real reporters and "
+                         "none of the 8 phantoms, but on 2026-09-17 it dropped TRT, "
+                         "which has never pre-announced a date and was that day's only "
+                         "trade. For a day with more confirmed names than hunters, "
+                         "never for a thin one")
     ap.add_argument("--drop-weak", action="store_true",
                     help="also drop rows with no filing cadence behind them. Off by "
                          "default: the sweep kills phantoms for one agent, and a "

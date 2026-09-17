@@ -406,13 +406,19 @@ case is usually the larger half of the calendar: 20 of 22 rows on 2026-09-17, le
 against two free sources and no agent — EDGAR kills a row whose results were filed in
 the ten days before the event, Nasdaq's press-release feed confirms one the company
 itself announced a date for. On the twelve labelled rows of 2026-08-31 the `announced`
-test kept **4 of 4 real reporters and none of the 8 phantoms**, while the filing-cadence
-prior separated nothing — two phantoms read `fits`, which is the same defect that made
-`priced_in.py`'s cadence heuristic useless. It cannot settle the **session**: Nasdaq
-serves the release body as a JavaScript shell, so a carried row reaches the sweep with
-`session_unresolved: true` and the sweep settles it or drops the name. Run it when the
-window comes back under ten names; on 2026-09-17 it confirmed zero of twenty, so the
-thin day was the market's and not the filter's.
+test kept **4 of 4 real reporters and none of the 8 phantoms**. It is precise and not
+sensitive: on 2026-09-17 it confirmed none of the twenty, and TRT — which has never
+pre-announced a date in twenty years of EDGAR history — was real, cleared the floor at
++5.10 and was the day's only trade, recovered by hand on the cadence evidence the script
+had already returned (`unresolved / fits / last item-2.02 2026-05-14, 126 days`). So
+`--announced-only` is for a day with more confirmed names than hunters, never for a thin
+one, and the cadence prior is read rather than filtered on — two phantoms read `fits` on
+08-31, the same defect that made `priced_in.py`'s cadence heuristic useless as a filter.
+It cannot settle the **session**: Nasdaq serves the release body as a JavaScript shell,
+so a carried row reaches the sweep with `session_unresolved: true` and the sweep settles
+it or drops the name. The measured phantom rate on `time-not-supplied` is **19 of 20**
+for the 09-17 window and 8 of 8 for 08-31, so withholding `--include-unknown` still holds
+on cost and is not free: on 09-17 it cost the only name in the book.
 
 **One issuer is one event, since 2026-09-16.** `edge/scripts/share_class.py` folds a
 second share class into its issuer in `edge_universe.py`, before a baseline is sealed,
