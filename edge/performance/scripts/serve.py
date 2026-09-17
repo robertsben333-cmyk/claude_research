@@ -1,15 +1,24 @@
 #!/usr/bin/env python3
 """Serve the dashboard and make its refresh button real.
 
-A file:// page cannot run a shell script, so the button in the header falls back
-to copying the command. Started through this server it does the thing instead:
-POST /rebuild runs the ledger and the renderer and streams back what they printed.
+A file:// page cannot run a shell script. What it CAN do is talk to a server that is
+already running, so this one answers two routes and both are usable from a page opened
+straight off the disk:
+
+    GET  /ping      "yes, a rebuilder is here" -- the page probes this on load and
+                    turns its button live when it answers
+    POST /rebuild   run the ledger and the renderer, return what they printed
 
     python3 edge/performance/scripts/serve.py [--port 8765] [--offline]
-    ./edge/performance/update.sh --serve
+    ./edge/performance/update.sh --serve        # foreground
+    ./edge/performance/update.sh --serve-bg     # detached, shell back
 
-Binds to localhost only. It runs two scripts in this repo and nothing else -- no
-arguments from the request reach a shell, and the broker is only ever read.
+Binds to 127.0.0.1, so only something already on this machine can reach it. Both
+routes carry CORS headers for `null` (a file:// page) and localhost origins only: a
+random site you happen to visit can still fire the POST -- it is a simple request --
+but cannot read the answer. The rebuild re-reads data and rewrites two files, reads
+the broker and never sends an order, so that is an acceptable worst case for a
+server you start when you want it. Pass --token to require one anyway.
 """
 import argparse
 import json
@@ -24,7 +33,20 @@ HERE = ROOT / "edge" / "performance"
 LOCK = threading.Lock()
 
 
-def make_handler(offline):
+ALLOWED_ORIGIN = ("null",)
+
+
+def cors_origin(origin):
+    """`null` is what a file:// page sends. Localhost is the served copy. Anything
+    else gets no header, so it cannot read what comes back."""
+    if not origin or origin in ALLOWED_ORIGIN:
+        return "null"
+    if origin.startswith("http://127.0.0.1") or origin.startswith("http://localhost"):
+        return origin
+    return None
+
+
+def make_handler(offline, token=None):
     class H(SimpleHTTPRequestHandler):
         def __init__(self, *a, **kw):
             super().__init__(*a, directory=str(HERE), **kw)
@@ -32,9 +54,23 @@ def make_handler(offline):
         def log_message(self, fmt, *args):
             sys.stderr.write("  %s\n" % (fmt % args))
 
+        def do_GET(self):
+            if self.path.split("?")[0].rstrip("/") == "/ping":
+                self._json(200, {"ok": True, "service": "edge-performance",
+                                 "busy": LOCK.locked(), "offline": bool(offline),
+                                 "needs_token": bool(token)})
+                return
+            super().do_GET()
+
+        def do_OPTIONS(self):
+            self._json(204, None)
+
         def do_POST(self):
-            if self.path.rstrip("/") != "/rebuild":
+            if self.path.split("?")[0].rstrip("/") != "/rebuild":
                 self.send_error(404)
+                return
+            if token and self.path.split("token=")[-1].split("&")[0] != token:
+                self._json(403, {"ok": False, "log": "wrong or missing --token"})
                 return
             if not LOCK.acquire(blocking=False):
                 self._json(409, {"ok": False, "log": "a rebuild is already running"})
@@ -60,15 +96,21 @@ def make_handler(offline):
                 LOCK.release()
 
         def _json(self, code, body):
-            raw = json.dumps(body).encode()
+            raw = b"" if body is None else json.dumps(body).encode()
             self.send_response(code)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(raw)))
             self.end_headers()
-            self.wfile.write(raw)
+            if raw:
+                self.wfile.write(raw)
 
         def end_headers(self):
             self.send_header("Cache-Control", "no-store")
+            allow = cors_origin(self.headers.get("Origin"))
+            if allow:
+                self.send_header("Access-Control-Allow-Origin", allow)
+                self.send_header("Vary", "Origin")
+                self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
             super().end_headers()
     return H
 
@@ -79,10 +121,12 @@ def main():
     ap.add_argument("--port", type=int, default=8765)
     ap.add_argument("--offline", action="store_true",
                     help="the button rebuilds without contacting the broker")
+    ap.add_argument("--token", help="require ?token=... on /rebuild")
     a = ap.parse_args()
-    srv = ThreadingHTTPServer(("127.0.0.1", a.port), make_handler(a.offline))
+    srv = ThreadingHTTPServer(("127.0.0.1", a.port), make_handler(a.offline, a.token))
     print(f"dashboard: http://127.0.0.1:{a.port}/dashboard.html")
-    print("the refresh button in the page now rebuilds for real. ctrl-c to stop.")
+    print("the refresh button now works -- in this served copy AND in the file you")
+    print("already have open, which probes this server on load. ctrl-c to stop.")
     try:
         srv.serve_forever()
     except KeyboardInterrupt:
