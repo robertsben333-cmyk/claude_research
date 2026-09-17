@@ -77,3 +77,11 @@
 - Chair overrides: none.
 - Degradations: none — nothing to shed; this is a genuinely empty day, not a budget cut.
 - 04-advice.md/.json written with status: no_names; ranked field lists UPXI's exclusion for context.
+
+## Edge hunt — 2026-09-17 amc + 2026-09-18 bmo — STARTED
+- Logged at 2026-09-17 17:09 UTC
+- Stage E fired 17:05 UTC (13:05 ET). Repo on main @ 15999ff; scripts/edge_score.py, scripts/priced_in.py and the skill all present.
+- Step 0b (execution.enabled: true, exit_mode: amc_open, paper endpoint): NOTHING TO SELL. verify --scan over 5 runs / 11 exit legs returned ok on all 11, still-held 0.0 on every leg. Alpaca account is flat: equity $11,527.83, cash $11,527.83, 0 positions, 0 open orders. close --scan --submit ran and sent nothing. Yesterday's book (LUXE bmo, ALMU/LEN amc) was already closed before this session. Unrealised P&L on the exit is therefore not this session's to record — no position was held at 17:05 UTC.
+- Universe: 22 calendar rows over the window (15 on 09-17, 7 on 09-18). 20 of 22 are time-not-supplied and were dropped per the skill (8 of 8 such rows were phantom on 2026-08-31). Of the 2 rows carrying an explicit session, IPHA is 09-17 bmo — already past, outside the window. ONE name in the window: UPXI (Upexi, Inc.), 2026-09-17 amc, $77m cap. --include-unknown deliberately withheld.
+- Baseline sealed for UPXI before any agent launches: spot $1.05, straddle implied move 11.43% off a LIVE option chain (measured, not the historical-median fallback), event_plausibility fits_cadence (127 days vs 92-day cadence), 6 prior reactions off exact 8-K item 2.02 acceptance times, median abs move 6.58%, run_up_20d 19.32%.
+- Plan: 1 sweep + 1 hunter = 2 of the 20-subagent cap. A one-name day cannot be ranked — there is nothing to rank it against — so today contributes one event to the pooled sample and no within-day correlation.
