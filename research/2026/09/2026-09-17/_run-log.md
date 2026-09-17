@@ -24,3 +24,9 @@
 - Session mix: n/a
 - Notable drops: UPXI (excluded at stage 0, market cap $76.0M < $500M floor)
 - Note: validate_stage.py's shortlist check previously required a non-empty list, which a genuinely empty eligible universe can't satisfy under skip-mode; fixed to allow shortlist: [] when triage_mode is skipped_small_universe and universe_eligible is 0.
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-17 08:22 UTC
+- Shortlist: 0 names (triage_mode: skipped_small_universe, universe_eligible: 0); this batch: none
+- Already on disk, skipping: none
+- Plan: no researchers to spawn — shortlist is empty because today's universe had only 1 AMC print (UPXI, $76.0M market cap) which failed the $500M floor at stage 0, so stage 1 skipped with 0 names
