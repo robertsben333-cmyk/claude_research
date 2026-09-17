@@ -30,3 +30,12 @@
 - Shortlist: 0 names (triage_mode: skipped_small_universe, universe_eligible: 0); this batch: none
 - Already on disk, skipping: none
 - Plan: no researchers to spawn — shortlist is empty because today's universe had only 1 AMC print (UPXI, $76.0M market cap) which failed the $500M floor at stage 0, so stage 1 skipped with 0 names
+
+## Stage 2 — deep dive, batch 1 — FINISHED (08:23 UTC)
+- Logged at 2026-09-17 08:22 UTC
+- Researched: none (shortlist empty)
+- Skipped (already done): none
+- Failed: none
+- Subagents: 0 opus/high, 0 waves
+- Median evidence completeness: n/a
+- Note: 0 names capped from a shortlist of 0 — nothing dropped for the cap. Confirmed against 00-universe.json/01-shortlist.json before publishing this section, not just the earlier run-log entries.
