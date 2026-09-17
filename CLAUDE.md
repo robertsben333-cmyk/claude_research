@@ -302,10 +302,17 @@ settled cash before the auction that funds the next book, and fewer hours of exp
 **The performance record has its own place, and on the current sample it
 contradicts the paragraphs above.** `edge/performance/` holds one ledger over every
 run, every fill the broker reports and the equity curve, plus a dashboard built from
-it; `./edge/performance/update.sh` rebuilds both and the `edge-performance` skill
-folds in what has closed since the last build and writes the reading into
-`edge/performance/LOG.md`. It is read-only: it never places an order and never
-re-scores a run. Its first build, 2026-09-17, prices 102 ranked names over 11 days
+it; `./edge/performance/update.sh` rebuilds both (`--serve` makes the page's own
+refresh button work) and the `edge-performance` skill folds in what has closed since
+the last build and writes the reading into `edge/performance/LOG.md`. It is read-only:
+it never places an order and never re-scores a run. The page recomputes every statistic
+client-side under a lens (research or money), an exit horizon, a conviction threshold,
+a per-side turnover floor, a session and a sector — so a threshold can be swept rather
+than assumed, which is how the first slice worth acting on turned up: **raising the
+threshold lifts bmo monotonically (+2.5% at ≥0 to +12.0% at ≥7) and lowers amc over the
+same range (−0.7% to −2.9%)**, and the pooled curve is the average of two opposite
+movements. Do not move `conviction_floor` on it yet — at ≥7 that is nine bmo names
+against eleven amc. Its first build, 2026-09-17, prices 102 ranked names over 11 days
 and puts the pooled ranking at **ρ = −0.145 against −0.137 for the free control**.
 The split is by date, not by method: the five days `edge/EDGE_ANALYSIS.md` was
 written on pool at ρ ≈ +0.38 and reproduce its conviction figure, and every day from

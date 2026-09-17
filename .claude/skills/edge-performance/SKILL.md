@@ -50,6 +50,10 @@ comparison and say so.
 ./edge/performance/update.sh
 ```
 
+`--offline` skips the broker and keeps the previous build's trades; `--serve` serves
+the page afterwards so its own refresh button works. A person can run the same button
+from the page; you run the script.
+
 It fetches the account's whole fill history, matches it into round trips, re-prices
 every run at eight exit horizons, recomputes every statistic and re-renders
 `dashboard.html`. Without network to the broker use `--offline`, which keeps the
@@ -83,7 +87,30 @@ Compare against the numbers from step 1 and establish, for each:
   the pooled `rho` by 0.2, something re-priced. Say so rather than reporting the new
   figure as a finding.
 
-## 4. Write it down
+## 4. Read the tabs that only a filter can answer
+
+Three questions are worth asking on every update, because each one has already moved
+once in this sample and none of them is visible in the unfiltered numbers.
+
+- **Does the threshold still do the same thing to both sessions?** The **Drempel** tab
+  sweeps fifteen cuts. On the first build, raising it lifted bmo monotonically (+2.5%
+  at ≥0 to +12.0% at ≥7) while amc fell with it (−0.7% to −2.9%). If that split holds
+  as days pool it is an argument for a per-session floor; if it flips, it was noise and
+  the note has to say so.
+- **Is the edge in the thin names?** The same tab splits thin against thick turnover at
+  the median. If only the thin half rises with the threshold, the cut buys illiquidity
+  rather than information, and the **Capaciteit** tab says what the position size would
+  have to be.
+- **What did execution cost?** The **Handel** tab prices every closed position against
+  the same name's board return. Report the policy gap and the exec gap separately —
+  the first includes the entry timing, the second does not.
+
+Set the filters back to the defaults before quoting a headline number, and say in the
+log which filters a number was taken under. A ρ measured above the threshold is a
+different statistic from the pooled one and the two must never be reported as if they
+were the same.
+
+## 5. Write it down
 
 Append one dated section to `edge/performance/LOG.md` — append, never rewrite, the
 same rule as `_run-log.md`. Keep it short and keep it honest:
@@ -109,10 +136,15 @@ Three things belong in every entry and nothing else has to:
 3. one sentence of critical read — what the new data would have to look like before
    any of this is a finding.
 
+Add a fourth line whenever a *slice* moved: the session split on the threshold curve,
+a sector that has gone from three names to eight, an execution gap that widened, or a
+cost per name that doubled. Those are the numbers that change what the stage does
+next, and they are invisible in the pooled figure.
+
 Never write a conclusion the sample cannot carry. At this n, the honest sentence is
 usually "still nothing established"; write that rather than dressing up a good week.
 
-## 5. Publish
+## 6. Publish
 
 ```bash
 scripts/publish.sh "performance: ledger and dashboard through <YYYY-MM-DD>"
@@ -122,7 +154,7 @@ The ledger, the CSVs and `dashboard.html` are generated but they are **not**
 reproducible later: the broker's fill history is not in this repo and the oldest
 orders age out of the API. A session that does not push them loses the only copy.
 
-## 6. Report
+## 7. Report
 
 Lead with what changed, not with the level. Then the pooled figure and its control,
 then anything that needs a person: an exit that never filled, a position two days
