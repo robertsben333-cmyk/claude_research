@@ -19,6 +19,7 @@ If you are a Routine session, read this whole file before doing anything.
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
+| P | `edge-performance` | on demand | Fold every closed position and resolved run into `edge/performance/`, rebuild the dashboard, log what it now reads |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 Stage N is not part of the daily advice pipeline. It is `backtest/` arm A promoted to
@@ -388,6 +389,24 @@ per trade and flags the hours-held version as a denominator artefact. What it bu
 settled cash before the auction that funds the next book, and fewer hours of exposure. See
 `edge/EXECUTION.md`, "The exit the two sessions actually want".
 
+**The performance record has its own place, and on the current sample it
+contradicts the paragraphs above.** `edge/performance/` holds one ledger over every
+run, every fill the broker reports and the equity curve, plus a dashboard built from
+it; `./edge/performance/update.sh` rebuilds both and the `edge-performance` skill
+folds in what has closed since the last build and writes the reading into
+`edge/performance/LOG.md`. It is read-only: it never places an order and never
+re-scores a run. Its first build, 2026-09-17, prices 102 ranked names over 11 days
+and puts the pooled ranking at **ρ = −0.145 against −0.137 for the free control**.
+The split is by date, not by method: the five days `edge/EDGE_ANALYSIS.md` was
+written on pool at ρ ≈ +0.38 and reproduce its conviction figure, and every day from
+09-08 onward is at or below zero. The account is +17.3% over eight sessions on nine
+closed positions — six longs at +17.7% against three shorts at −13.9%, in a week when
+shorting everything paid −1.7% a name, so that number is a market and not a result.
+Six of those nine were closed by hand rather than by stage E, and HOFT and CODA sat
+95 hours before someone sold them. Read the dashboard's first screen before quoting
+any figure in this file: the numbers above were measured on the first six days and
+the ledger is what is measuring them now.
+
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
 positive on 6 of 6 days when traded (+10.97pp). The hunt's raw evidence leads it by 0.080
@@ -680,6 +699,9 @@ edge/                                  stage E — see edge/README.md
   scripts/                             the stage's own tools
   analysis/                            everything those tools generate
   routine-prompts/                     the text pasted into the Routines, by hand
+  performance/                         the standing performance record — see below
+    update.sh  scripts/  data/  LOG.md
+    dashboard.html                     open it from disk; rebuilt by update.sh
 backtest/                              the sealed backtest
   runs/pilot-40/  runs/edge-corpus/    arms A/B/C; and stage E scored on the corpus
 claude_naive/                          stage N
