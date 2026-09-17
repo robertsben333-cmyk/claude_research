@@ -212,11 +212,40 @@ the result.
 
 None. One name in the window, `rankable: true`, scored.
 
-The twenty `time-not-supplied` calendar rows were never in the universe and so are not
-"unrankable" — they were dropped before a baseline was sealed, deliberately, and are listed
-here only so the reader knows the day had 22 rows and not 1: VFS, HUBG, DAVA, YRD, IH,
-EONR, CMMB, ALAR, SMXT, BTTC, SNYR, ITP, IPST (09-17) and NB, HTLM, TRT, ZONE, CELU, ENLV,
-LNAI (09-18). IPHA was 09-17 `bmo`, outside the window.
+The twenty `time-not-supplied` calendar rows were dropped before a baseline was sealed. They
+were then **checked anyway**, on the operator's instruction, by a second sweep over all
+twenty (`sweep-unknown.json`) — and the result is the strongest confirmation the standing
+rule has had.
+
+**Zero of twenty could be confirmed in-window. Twenty of twenty are phantom or
+out-of-session.** No hunter was launched on any of them, because there was nothing to
+launch one on. The refutations are specific, not a failure to find:
+
+| row | why it is not an event in this window |
+| --- | --- |
+| CMMB | already reported **2026-08-19** (6-K, Q2 and 1H 2026). No second event. |
+| ALAR | already reported **2026-09-02**. |
+| NB | EDGAR item-2.02 cadence is 2025-10-14 / 2026-01-12 — FY2026 is an **October** event. Row is a vendor projection off the June year end. |
+| TRT | last item-2.02 was 2026-05-14; the 2026-08-19 8-K was a **listing** matter (items 3.01/8.01). Fiscal-year prints historically land ~**09-23**, five days after the row. |
+| HUBG | **no earnings event at all.** Mid-restatement; the Nasdaq exception to file the FY2025 10-K and the 2026 Q1/Q2 10-Qs expired 2026-09-14, it released selected preliminary unaudited numbers and expects a delisting determination, and the lender deadline runs to 2026-11-30. The row is a vendor slot for a quarter the company *cannot* report. |
+| DAVA, YRD, IH | structurally **out on session** — these issuers release pre-US-open, so a 09-17 row is `bmo` and already past. |
+| IH, HTLM | **prior-year relabels.** HomesToLife published 1H 2025 results on 2025-09-17 (date off the URL path) and has since moved to quarterly; IH's lead traces to 2025-09-18. |
+| VFS | Q2 2026 results are genuinely outstanding — the 2026-07-29 6-K says VinFast needs more time after the VFTP divestment and will announce timing later, and no such announcement exists. But it has always pre-announced, and it releases `bmo`. |
+| EONR, SMXT, SNYR, ITP, IPST, BTTC, ZONE, CELU, ENLV, LNAI | sub-$40m names with no discoverable IR schedule. The row is a filing-deadline projection. |
+
+**This re-measures the phantom rate on `time-not-supplied` rows at 20 of 20.** The only
+prior data points were 8 of 8 on the 2026-08-31 first run and 0 of 10 when the second run
+withheld the flag. Three runs now agree that `--include-unknown` buys nothing but phantoms,
+and today it would have burned up to seventeen Opus/high hunters to establish that no event
+existed — which is the exact failure the sweep was built to prevent, and this time the sweep
+prevented it for the cost of one agent.
+
+Two are worth a cheap EDGAR watch rather than a hunt, because their prints are genuinely
+missing rather than imaginary: **VFS** (Q2 2026 outstanding and undated) and **HTLM** (1H
+2026 missing, prior-year analogue landed 09-17). Neither has a company source or a call that
+would settle a session.
+
+IPHA was 09-17 `bmo` — a real event, but this morning, outside the window.
 
 ---
 
