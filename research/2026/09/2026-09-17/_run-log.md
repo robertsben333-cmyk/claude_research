@@ -39,3 +39,15 @@
 - Subagents: 0 opus/high, 0 waves
 - Median evidence completeness: n/a
 - Note: 0 names capped from a shortlist of 0 — nothing dropped for the cap. Confirmed against 00-universe.json/01-shortlist.json before publishing this section, not just the earlier run-log entries.
+
+## Close AMC — amc opening-auction exit — 2026-09-17
+- Logged at 2026-09-17 10:11 UTC
+- Guard: python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg exited 0 (execution.enabled=true, orders.exit_mode=amc_open, amc -> opg / bmo -> day). Proceeded.
+- verify --scan 'research/*/*/*/edge' first: 9 of 11 exit legs already ok/closed from prior days (HOFT, FEIM, ORCL, RH, CODA, VRA, FPS, RLGT, LUXE all still held 0.0). ALMU and LEN (2026-09-16/edge, amc, exit_date 2026-09-17) were the only legs due today: still held 167 and 28 respectively, 0/167 and 0/28 filled — expected, fired pre-open.
+- SENT: 2026-09-16/edge ALMU, amc session, exit_date 2026-09-17, opg (opening auction), qty 167 buy-to-cover, order 43561a60-077d-4108-9584-df101aa9bb2d, status pending_new at submission.
+- SENT: 2026-09-16/edge LEN, amc session, exit_date 2026-09-17, opg (opening auction), qty 28 buy-to-cover, order af499521-2c8d-4331-960e-5e52f5ae53bf, status pending_new at submission.
+- No bmo legs due today; no refusals this run.
+- Post-submit verify (after the script's 300s fill-check wait): ALMU and LEN both report 'work' — filled 0, still held 167.0 / 28.0, 'waiting on the 09:30 ET opening auction; not verifiable until it has crossed'. Expected: an opg order does not fill until the auction runs, well after this pre-market firing.
+- status --scan confirms both still OPEN: ALMU -167 @ 13.35 (+13.86% unrealized), LEN -28 @ 79.96 (+4.50% unrealized); exit order state 'new' for both.
+- Account reachable throughout: paper, equity $11,669.19, cash $15,727.77, buying power $40,771.06.
+- Not a rescue point: firing before 09:28 ET means no plain-market rescue is available here even if the auction cross under-fills (documented behavior: HOFT 17/161, CODA 39/183, RLGT 0/224 in past runs). Stage E's own run inside the session is what carries an UNFILLED leg forward via 'verify --fix'.
