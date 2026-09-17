@@ -29,6 +29,9 @@ import math
 import os
 import statistics as st
 import sys
+import time
+import urllib.parse
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -70,6 +73,82 @@ def book_stats(rets):
     out["hit_rate_pct"] = rd(100 * out["hits"] / len(rets), 1) if rets else None
     out["median"] = rd(st.median(rets), 3) if rets else None
     return out
+
+
+# ------------------------------------------------------------- sector & asset
+
+UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+
+
+def _cached(path):
+    try:
+        return json.loads(Path(path).read_text())
+    except Exception:
+        return {}
+
+
+def sectors_for(tickers, cache_path):
+    """Sector and industry per ticker, from Yahoo's search endpoint.
+
+    `quoteSummary/assetProfile` answers 401 without a crumb; search does not and
+    returns the same two fields. Cached forever: a company's sector does not move,
+    and re-fetching 100 names on every build is rude."""
+    cache = _cached(cache_path)
+    todo = [t for t in sorted(set(tickers)) if t not in cache]
+    for t in todo:
+        sym = t.upper().replace(".", "-")
+        url = (f"https://query1.finance.yahoo.com/v1/finance/search?q="
+               f"{urllib.parse.quote(sym)}&quotesCount=6&newsCount=0")
+        row = {"sector": None, "industry": None, "name": None, "source": "yahoo search"}
+        try:
+            j = json.loads(urllib.request.urlopen(
+                urllib.request.Request(url, headers={"User-Agent": UA}), timeout=20).read())
+            for q in j.get("quotes", []):
+                if (q.get("symbol") or "").upper() in (sym, t.upper()):
+                    row.update({"sector": q.get("sector"), "industry": q.get("industry"),
+                                "name": q.get("longname") or q.get("shortname")})
+                    break
+        except Exception as exc:
+            row["source"] = f"unavailable: {type(exc).__name__}"
+        cache[t] = row
+        time.sleep(0.15)
+    if todo:
+        Path(cache_path).write_text(json.dumps(cache, indent=1, sort_keys=True) + "\n")
+    return cache
+
+
+def assets_for(tickers, api, runs, cache_path):
+    """Can this name be traded, and can it be borrowed.
+
+    Two sources, and they are not the same thing. A run's own `alpaca-assets.json`
+    is what was true ON THE DAY and is preferred; the live `/v2/assets` lookup is
+    what is true NOW and is the only thing available for the runs that predate that
+    file. Borrow is checked daily by the broker, so a live flag is not evidence
+    about a print three weeks ago -- every row says which it is."""
+    out = {}
+    for run in runs:                                    # day-of, the honest source
+        f = Path(run) / "alpaca-assets.json"
+        if not f.exists():
+            continue
+        d = json.loads(f.read_text())
+        for n in d.get("names", []):
+            out[(str(run), n["ticker"])] = {
+                "shortable": n.get("shortable"), "tradable": n.get("tradable"),
+                "tradable_reason": n.get("reason"), "asset_asof": "day of the run"}
+    cache = _cached(cache_path)
+    todo = [t for t in sorted(set(tickers)) if t not in cache]
+    if api is not None and api.usable:
+        for t in todo:
+            d, err = api.asset(t.upper().replace(".", "-"))
+            cache[t] = ({"shortable": None, "easy_to_borrow": None, "tradable": None,
+                         "error": err} if err else
+                        {"shortable": d.get("shortable"),
+                         "easy_to_borrow": d.get("easy_to_borrow"),
+                         "tradable": d.get("tradable"),
+                         "exchange": d.get("exchange")})
+        if todo:
+            Path(cache_path).write_text(json.dumps(cache, indent=1, sort_keys=True) + "\n")
+    return out, cache
 
 
 # ------------------------------------------------------------------ the names
@@ -265,6 +344,106 @@ def finish(ep, idx, closed):
     if t.get("impact_sum") is not None:
         t["conviction"] = abs(t["impact_sum"])
     return t
+
+
+def attach_theoretical(trades, names):
+    """What the price series says the same position was worth, beside what the
+    broker actually got.
+
+    Two gaps, and they measure different things:
+
+      policy_gap   actual minus the board return over the stage's own window --
+                   the close before the print to the close after. It contains the
+                   entry timing (the book goes in at ~13:24 ET, the board assumes
+                   the close), the spread, and every hour the exit was early or late.
+      exec_gap     actual minus the board return at the hour the position was
+                   ACTUALLY closed. Timing is divided out, so what is left is the
+                   spread, the fill quality and the partial fills.
+    """
+    idx = {(r["run_date"], r["ticker"]): r for r in names}
+    for t in trades:
+        r = idx.get((t.get("run_date"), t["symbol"]))
+        if not r or t.get("ret_pct") is None:
+            continue
+        sign = 1 if t["side"] == "long" else -1
+        if r.get("mv_close") is not None:
+            t["theo_ret_close_pct"] = rd(sign * r["mv_close"], 3)
+            t["policy_gap_pct"] = rd(t["ret_pct"] - t["theo_ret_close_pct"], 3)
+        # Hours from the theoretical entry (16:00 ET on the entry day) to the real exit.
+        try:
+            ex = datetime.fromisoformat(t["exit_utc"].replace("Z", "+00:00")).astimezone(ET)
+            e0 = datetime.fromisoformat(r["entry_date"] + "T16:00:00").replace(tzinfo=ET)
+            hrs = (ex - e0).total_seconds() / 3600
+        except Exception:
+            continue
+        grid = [(abs(h - hrs), h) for h in EX.HOUR_GRID
+                if r.get(f"hr_{h:g}") is not None]
+        if not grid:
+            continue
+        gap, h = min(grid)
+        if gap > 2.0:                      # no grid point near the real exit; say so
+            t["theo_exit_hour_note"] = f"closest grid hour {h:g} is {gap:.1f}h away"
+            continue
+        t["theo_exit_hour"] = h
+        t["theo_ret_at_exit_pct"] = rd(sign * r[f"hr_{h:g}"], 3)
+        t["exec_gap_pct"] = rd(t["ret_pct"] - t["theo_ret_at_exit_pct"], 3)
+    return trades
+
+
+def costs_for(runs, names):
+    """What a run cost to produce, beside what it earned.
+
+    No token count is recorded anywhere in this repo, so the default is a PROXY:
+    the bytes the run wrote, over four, plus the subagents it spawned. Drop real
+    numbers into `edge/performance/data/costs.csv`
+    (`run_date,tokens_in,tokens_out,usd,note`) and they are used instead, per day,
+    with the proxy kept beside them so the two never silently merge."""
+    measured = {}
+    f = DATA / "costs.csv"
+    if f.exists():
+        import csv
+        for row in csv.DictReader(f.open(encoding="utf-8")):
+            d = (row.get("run_date") or "").strip()
+            if not d:
+                continue
+            def num(k):
+                v = (row.get(k) or "").strip()
+                try:
+                    return float(v)
+                except ValueError:
+                    return None
+            measured[d] = {"tokens_in": num("tokens_in"), "tokens_out": num("tokens_out"),
+                           "usd": num("usd"), "note": (row.get("note") or "").strip()}
+    out = []
+    for run in runs:
+        rp = Path(run)
+        date = str(run).rstrip("/").split("/")[-2]
+        hunts = sorted(rp.glob("hunts/*.json"))
+        n_findings, chars = 0, 0
+        for h in hunts:
+            try:
+                txt = h.read_text(encoding="utf-8")
+            except Exception:
+                continue
+            chars += len(txt)
+            try:
+                n_findings += len(json.loads(txt).get("findings") or [])
+            except Exception:
+                pass
+        for extra in ("sweep.json", "edge-note.md", "edge-scores.json"):
+            g = rp / extra
+            if g.exists():
+                chars += len(g.read_text(encoding="utf-8", errors="replace"))
+        day_names = [r for r in names if r["run"] == str(run)]
+        row = {"run": str(run), "run_date": date,
+               "n_names": len(day_names), "n_hunters": len(hunts),
+               "n_findings": n_findings,
+               "n_subagents": len(hunts) + 1,            # hunters plus the one sweep
+               "artifact_chars": chars,
+               "est_output_tokens": round(chars / 4),
+               "measured": measured.get(date)}
+        out.append(row)
+    return out
 
 
 def account_block(api):
@@ -505,6 +684,23 @@ def trading_stats(trades, names, account):
     return out
 
 
+def execution_gap_stats(trades):
+    """Theoretical against actual, over the closed positions."""
+    cl = [t for t in trades if t.get("ret_pct") is not None]
+    out = {"n": len(cl)}
+    pol = [t["policy_gap_pct"] for t in cl if t.get("policy_gap_pct") is not None]
+    ex = [t["exec_gap_pct"] for t in cl if t.get("exec_gap_pct") is not None]
+    if pol:
+        out["policy_gap"] = ttest(pol)
+        out["actual_mean"] = rd(st.fmean(t["ret_pct"] for t in cl
+                                         if t.get("policy_gap_pct") is not None), 3)
+        out["theoretical_mean"] = rd(st.fmean(t["theo_ret_close_pct"] for t in cl
+                                              if t.get("policy_gap_pct") is not None), 3)
+    if ex:
+        out["exec_gap"] = ttest(ex)
+    return out
+
+
 def link_trades_to_names(trades, names):
     idx = {(t.get("run_date"), t["symbol"]): t for t in trades if t.get("run_date")}
     for r in names:
@@ -589,6 +785,27 @@ def main():
     all_eps = trades + open_eps
     link_trades_to_names(all_eps, names)
 
+    # Sector, industry and tradability, so the dashboard can slice and filter on
+    # them. Both are cached; neither is on the critical path of a rebuild.
+    tickers = [r["ticker"] for r in names]
+    sec = sectors_for(tickers, DATA / "sectors.json")
+    day_assets, live_assets = assets_for(
+        tickers, (None if a.offline else Alpaca()), runs, DATA / "assets.json")
+    for r in names:
+        m = sec.get(r["ticker"], {})
+        r["sector"] = m.get("sector")
+        r["industry"] = m.get("industry")
+        r["company"] = m.get("name")
+        da = day_assets.get((r["run"], r["ticker"]))
+        la = live_assets.get(r["ticker"], {})
+        r["shortable"] = (da or {}).get("shortable", la.get("shortable"))
+        r["easy_to_borrow"] = la.get("easy_to_borrow")
+        r["tradable_flag"] = (da or {}).get("tradable", la.get("tradable"))
+        r["tradable_reason"] = (da or {}).get("tradable_reason")
+        r["asset_asof"] = (da or {}).get("asset_asof", "live lookup, not day-of")
+    attach_theoretical(all_eps, names)
+    costs = costs_for(runs, names)
+
     doc = {
         "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "conviction_floor": floor,
@@ -602,7 +819,11 @@ def main():
             "buckets": bucket_stats(names, floor),
             "lessons": lessons_stats(names),
             "timing": timing_stats(names, floor),
-            "trading": trading_stats(all_eps, names, account)},
+            "trading": trading_stats(all_eps, names, account),
+            "execution": execution_gap_stats(all_eps)},
+        "costs": costs,
+        "hour_grid": EX.HOUR_GRID,
+        "horizons": EX.HORIZONS,
         "problems": problems}
 
     Path(a.out).write_text(json.dumps(doc, indent=1, default=str) + "\n", encoding="utf-8")
@@ -610,7 +831,8 @@ def main():
               ["run_date", "ticker", "session", "event_date", "entry_date",
                "reaction_date", "rank", "impact_sum", "conviction",
                "impact_sum_pre_lessons", "lessons_delta", "n_findings", "neg_runup",
-               "dollar_vol", "plan_dollar_volume_usd", "duplicate_event", "traded",
+               "dollar_vol", "plan_dollar_volume_usd", "sector", "industry",
+               "shortable", "easy_to_borrow", "tradable_flag", "duplicate_event", "traded",
                "entry_close", "mv_open", "mv_close", "ret_open", "ret_close",
                "trade_ret_pct", "trade_pnl_usd"])
     write_csv(DATA / "trades.csv", all_eps,
@@ -618,7 +840,9 @@ def main():
                "qty", "entry_px", "exit_px", "entry_utc", "exit_utc", "hold_hours",
                "entry_notional_usd", "ret_pct", "pnl_usd", "impact_sum",
                "entry_source", "exit_source", "exit_tif", "n_exit_fills",
-               "partial_exit_days", "entry_spread_pct"])
+               "partial_exit_days", "entry_spread_pct", "theo_ret_close_pct",
+               "policy_gap_pct", "theo_exit_hour", "theo_ret_at_exit_pct",
+               "exec_gap_pct"])
 
     s = doc["stats"]
     print(f"\nranking   rho={s['ranking'].get('rho_impact_sum')} "
