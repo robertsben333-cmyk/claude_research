@@ -112,6 +112,15 @@ so the `amc` label was never established; YEXT and HMR were both company-confirm
 A hunter that assumes the calendar's session can size a finding against the wrong
 day, and `edge_resolve.py` measures the move over the session you name.
 
+A row carrying `session_unresolved: true` came off Nasdaq's calendar as
+`time-not-supplied` and was bought back by `session_resolve.py`, which can confirm that
+the event exists but not when in the day it lands. For those, settling the session is
+the whole job and there is no fallback: an unknown session is a coin flip on whether the
+print is inside the window at all, because a `bmo` row dated today printed this morning
+and an `amc` row dated tomorrow prints a full session after the entry. Settle it from a
+company source or return the name with `event_confirmed: false` and say why. Its
+`session_source` already carries the press release that named the date; start there.
+
 `baseline_history_trustworthy` is false when the baseline's reaction history is
 measuring something other than earnings. `priced_in.py` matches 6-K text, so for a
 foreign private issuer it can catch monthly operational updates — bitcoin production,

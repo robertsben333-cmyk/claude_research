@@ -238,6 +238,43 @@ rate — on the first 2026-08-31 run **eight of eight** of them had no earnings 
 at all. Withholding `--include-unknown` on the second run took the phantom rate to
 **zero of ten**.
 
+`time-not-supplied` is Nasdaq's own `time` field. It is not a claim that the event is
+fake, only that Nasdaq does not know the session, and on most days it is the larger
+half of the calendar: 20 of 22 rows on 2026-09-17, which left **one name in the
+window**. The drop is right on the base rate and expensive on a thin day, so when the
+window comes back under ten names, check the dropped rows instead of taking the base
+rate on faith:
+
+```bash
+python3 edge/scripts/edge_universe.py --window --include-unknown \
+        -o <RUN>/edge/universe-with-unknown.json
+python3 edge/scripts/session_resolve.py --universe <RUN>/edge/universe-with-unknown.json
+```
+
+It reads two free sources and spends no agent. **EDGAR** kills a row outright when the
+company filed its results in the ten days before the event — no quarterly or
+semi-annual reporter prints twice in a fortnight — and that kill is certain. **Nasdaq's
+press-release feed** confirms a row when the company itself announced a results date in
+the window, with a citable URL. On the only labelled set in this repo, the twelve rows
+of 2026-08-31, `announced` kept **4 of 4 real reporters and none of the 8 phantoms**,
+while the filing-cadence prior separated nothing: two phantoms read `fits`. Hunt the
+`announced` rows; treat `unresolved` as a calendar row with no evidence behind it, which
+is what it is.
+
+What it cannot do is settle the **session**. Nasdaq serves the release body as a
+JavaScript shell and the headline usually omits the time, so a carried row reaches the
+sweep with `session_unresolved: true` and the sweep has to settle it from a company
+source or drop the name. That is not optional politeness: an unknown session is a coin
+flip on whether the print is inside the window at all, because a `bmo` row dated today
+printed this morning and an `amc` row dated tomorrow prints a full session after the
+entry.
+
+`--apply` rewrites the universe in place; `--announced-only` carries nothing else.
+On 2026-09-17 it bought back **no names at all** — two provably already reported, none
+announced, eighteen with nothing behind them — so the one-name day was the market's,
+not the filter's. Record that in the run log; a checked thin day and an unchecked one
+are different facts.
+
 If the universe is empty, log it and stop cheaply. A holiday or a thin day is a real
 answer.
 

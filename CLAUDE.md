@@ -398,6 +398,22 @@ now answers two questions (`print_vs_bar_pct` and `expected_move_pct`), each fin
 carries `lands_on` and `resolves_by`, and `edge/scripts/edge_postmortem.py` scores a
 resolved run finding by finding so the file can grow from measurement.
 
+**`time-not-supplied` rows are checkable, since 2026-09-17, and on that day the check
+bought back nothing.** Nasdaq's `time` field is a schedule for `time-pre-market` and
+`time-after-hours` and an admission of ignorance for `time-not-supplied`, and the third
+case is usually the larger half of the calendar: 20 of 22 rows on 2026-09-17, leaving
+**one name in the window**. `edge/scripts/session_resolve.py` checks the dropped rows
+against two free sources and no agent — EDGAR kills a row whose results were filed in
+the ten days before the event, Nasdaq's press-release feed confirms one the company
+itself announced a date for. On the twelve labelled rows of 2026-08-31 the `announced`
+test kept **4 of 4 real reporters and none of the 8 phantoms**, while the filing-cadence
+prior separated nothing — two phantoms read `fits`, which is the same defect that made
+`priced_in.py`'s cadence heuristic useless. It cannot settle the **session**: Nasdaq
+serves the release body as a JavaScript shell, so a carried row reaches the sweep with
+`session_unresolved: true` and the sweep settles it or drops the name. Run it when the
+window comes back under ten names; on 2026-09-17 it confirmed zero of twenty, so the
+thin day was the market's and not the filter's.
+
 **One issuer is one event, since 2026-09-16.** `edge/scripts/share_class.py` folds a
 second share class into its issuer in `edge_universe.py`, before a baseline is sealed,
 and `edge_score.py` repeats the check on the scored rows — the folded name keeps its
