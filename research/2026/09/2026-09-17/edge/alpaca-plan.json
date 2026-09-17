@@ -1,0 +1,61 @@
+{
+ "generated_utc": "2026-09-17T17:26:00+00:00",
+ "run": "research/2026/09/2026-09-17/edge",
+ "broker": "alpaca",
+ "endpoint": "https://paper-api.alpaca.markets",
+ "account_kind": "paper",
+ "ranking_key": "impact_sum",
+ "benchmark": {
+  "key": "impact_sum",
+  "min_conviction": 3.0,
+  "require_rankable": true,
+  "min_dollar_volume_usd": 200000,
+  "thin_dollar_volume_usd": 1000000,
+  "max_positions": null
+ },
+ "sizing": {
+  "gross_exposure_pct_of_equity": 100,
+  "max_position_pct_of_equity": 33,
+  "max_position_pct_of_adv": 1.0,
+  "min_position_usd": 200
+ },
+ "orders": {
+  "flatten_before_entry": false,
+  "entry": "market",
+  "exit": "market_on_close",
+  "exit_mode": "amc_open",
+  "time_in_force": "day",
+  "fill_check_seconds": 300,
+  "fill_check_fix": true,
+  "allow_shorts": true
+ },
+ "calendar_source": null,
+ "today": "2026-09-17",
+ "today_source": "alpaca /v2/clock (ET)",
+ "reference_price_error": null,
+ "equity_usd": 11527.83,
+ "equity_source": "alpaca /v2/account",
+ "buying_power_usd": 46111.32,
+ "regt_buying_power_usd": 23055.66,
+ "shorting_enabled": true,
+ "names_in_run": 1,
+ "note": "Selection is |impact_sum| >= conviction_floor, sign for side, plus a turnover floor and a shortability check. The rule is 21 trades over 5 independent days; treat it as a lead. This is research, not investment advice.",
+ "positions": [],
+ "rejected": [
+  {
+   "ticker": "UPXI",
+   "key": "impact_sum",
+   "value": -2.3,
+   "conviction": 2.3,
+   "side": null,
+   "event_date": "2026-09-17",
+   "session": "amc",
+   "spot": 1.05,
+   "spot_as_of": "2026-09-17T17:08:49+00:00",
+   "avg_volume_20d": 4570070,
+   "dollar_volume_usd": 4798574,
+   "run_up_20d_pct": 19.32,
+   "reason": "below the conviction floor (2.30 < 3.00)"
+  }
+ ]
+}
