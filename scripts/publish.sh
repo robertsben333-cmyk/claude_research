@@ -92,6 +92,11 @@ paths=()
 # died with the container — the exact failure CLAUDE.md warns about, and silent
 # because the run log lives under research/ and published fine on its own.
 [[ -d claude_naive ]] && paths+=(claude_naive)
+# The performance ledger and its dashboard. Generated, but generated from a
+# broker account whose fill history is not in this repo and whose oldest orders
+# will eventually age out of the API -- so the built artefact is the record, and
+# a session that does not push it loses the only copy.
+[[ -d edge/performance ]] && paths+=(edge/performance)
 for f in "${GENERATED[@]}" LEDGER.md; do
   [[ -e "$f" ]] && paths+=("$f")
 done
