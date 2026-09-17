@@ -564,10 +564,17 @@ def main():
           abs(sum(others) + capped["notional_usd"] - gross_budget) < 100 and
           max(others) - min(others) <= 10.0, str(others))
 
-    few, _ = at.size(wide[:3], 100_000.0, ex["sizing"])
-    check("with three names the per-name cap under-deploys on purpose",
-          all(abs(s["notional_usd"] - eq_cap) < 10.0 for s in few),
+    # How few names it takes to under-deploy moves with the cap: five at 20%, three at
+    # 33%. Two names is under-deployed at any cap the config can sanely carry, so the
+    # check reads the shipped numbers rather than restating one of them.
+    few, _ = at.size(wide[:2], 100_000.0, ex["sizing"])
+    check("a book smaller than the cap allows under-deploys on purpose",
+          all(abs(s["notional_usd"] - eq_cap) < 10.0 for s in few)
+          and sum(s["notional_usd"] for s in few) < gross_budget - 1.0,
           str([s["notional_usd"] for s in few]))
+    check("the per-name cap is the binding one there",
+          all(s["binding_cap"] == "per-name %" for s in few),
+          str([s["binding_cap"] for s in few]))
 
     # The flatten and the exit mode are one setting in two keys: a non-uniform mode
     # with the flatten on sells every auction leg at market before its auction, and

@@ -333,10 +333,13 @@ an order into a closed market.
 `orders.flatten_before_entry` is turned off and the fallback exit Routine in
 `edge/routine-prompts/edge-execute.md` is added. Sizing is **equal weight, whole
 budget**:
-the gross budget split N ways, 20% of equity per name, a capped name's leftover
-redistributed over the rest. Nothing reads the score — the key ranks and does not
-size. Under five names the account is deliberately under-invested, and at 100% gross
-the whole account rides five to nine prints overnight with no stop. See
+the gross budget split N ways, **33% of equity per name since 2026-09-17** (20%
+before, raised on the operator's instruction), a capped name's leftover redistributed
+over the rest. Nothing reads the score — the key ranks and does not size. Under three
+names the account is deliberately under-invested, and at 100% gross the whole account
+rides three to nine prints overnight with no stop. The cap is the only risk control in
+the stage, so what the raise costs is concentration and nothing else changed to offset
+it: the 23% gap that moved the account 4.5% at 20% moves it about 7.5% at 33%. See
 `edge/EXECUTION.md` for what it refuses to do and what it does not know.
 
 The code is on the main line as of 2026-09-10. The 2026-09-10 stage E run found steps 0b

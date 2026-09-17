@@ -61,10 +61,12 @@ Two things the table cannot see decided it:
   forward sample stops being one small sample a week, and it is a claim about
   learning speed, not about expected return.
 
-The 1%-of-turnover sizing cap does the rest, and at this account size the two lines
-meet: at $10k of equity the 20% per-name cap is $2,000, which is exactly 1% of a
-$200k/day name. Below that floor a position would be capacity-bound anyway, so the
-floor and the cap are saying the same thing from two directions.
+The 1%-of-turnover sizing cap does the rest. At $10k of equity the two lines used to
+meet exactly — a 20% per-name cap was $2,000, precisely 1% of a $200k/day name — and
+since the cap went to 33% on 2026-09-17 they no longer do: $3,300 is 1.65% of that
+name, so in the thinnest tradable names capacity binds first and the equity cap never
+comes into it. The floor and the cap now say the same thing from two directions only
+above about $600k of daily turnover.
 
 Names whose event the sweep could not confirm (`rankable: false`) never reach the
 book. `edge-scores.json` itself is still unfiltered — the ranking test needs the
@@ -138,7 +140,8 @@ so per name rather than failing.
 
 Every name that clears the benchmark gets the same dollars. The gross budget
 (`gross_exposure_pct_of_equity`, 100%) is split N ways, each name is capped at
-`max_position_pct_of_equity` (20%), and whatever a capped name cannot take is
+`max_position_pct_of_equity` (33% since 2026-09-17, 20% before), and whatever a
+capped name cannot take is
 redistributed equally over the names that are not yet capped, repeating until nothing
 moves. So the account deploys as much as the caps allow and every uncapped name holds
 the same amount as every other one.
@@ -151,17 +154,20 @@ of the move.
 
 Two consequences worth knowing before the first run:
 
-- **Under five names the account is deliberately under-invested.** Three names at the
-  20% cap is 60% deployed, and there is nowhere for the rest to go.
-- **The whole account rides five to nine earnings prints overnight, unhedged, with no
+- **Under three names the account is deliberately under-invested.** Two names at the
+  33% cap is 66% deployed, and there is nowhere for the rest to go. Three names fill
+  the book to 99%.
+- **The whole account rides three to nine earnings prints overnight, unhedged, with no
   stop.** Two names in the resolved sample gapped 22–23% (NX +22.23%, CANG −23.01%);
-  at a 20% weight either one moves the account about 4.5%. Reg T allows twice equity
-  overnight, so 100% gross fits comfortably in buying power — the constraint here is
-  not margin, it is that nothing cuts a loss.
+  at a 33% weight either one moves the account about 7.5%, against 4.5% under the old
+  20% cap. Reg T allows twice equity overnight, so 100% gross fits comfortably in
+  buying power — the constraint here is not margin, it is that nothing cuts a loss,
+  and with a third of equity in one print the cap is the only risk control there is.
 
-`max_position_pct_of_adv` (1%) stays as a slippage guard and only starts to bind as
-the account grows: at $10k of equity a 20% position is $2,000, which is 1% of a
-$200k/day name. The plan prints `%adv` per name either way, so the share of the
+`max_position_pct_of_adv` (1%) stays as a slippage guard. At $10k of equity a 33%
+position is $3,300, which is 1.65% of a $200k/day name, so it binds at the bottom of
+the tradable range right away and the leftover is redistributed over the rest of the
+book. The plan prints `%adv` per name either way, so the share of the
 closing auction each order represents is visible rather than inferred.
 
 ## Where this runs: inside stage E, not beside it
@@ -516,7 +522,8 @@ Every refusal is recorded with its reason, in the plan or in `alpaca-orders.json
   `market_on_close`, inside Alpaca's cutoff (`--allow-market-fallback` downgrades that
   one to a plain market order)
 - short a name Alpaca does not call shortable
-- size a position above 20% of equity or 1% of the name's 20-day dollar volume
+- size a position above `max_position_pct_of_equity` (33%) of equity or 1% of the
+  name's 20-day dollar volume
 - place a second order for a leg it has already placed — `client_order_id` is
   `edge-<date>-<TICKER>-<entry|exit>`, so a re-run of a killed session is a no-op
   rather than a doubled position

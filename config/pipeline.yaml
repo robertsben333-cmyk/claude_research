@@ -259,18 +259,29 @@ execution:
     #
     # 100% gross is the whole account, unhedged, through five to nine earnings prints
     # a night. Two names in the resolved sample gapped 22-23% (NX +22.23%,
-    # CANG -23.01%): at a 20% weight either one moves the account by about 4.5%.
+    # CANG -23.01%): at a 33% weight either one moves the account by about 7.5%.
     # Reg T allows twice equity overnight, so 100% fits, but nothing here is a stop.
     gross_exposure_pct_of_equity: 100
-    max_position_pct_of_equity: 20
-    # Below five names every position hits that 20% and the account is deliberately
+    # 2026-09-17: raised from 20 to 33 on the operator's instruction. A third of
+    # equity per name is the stated ceiling, so three names now fill the book where
+    # five did before. What that costs is concentration, and the number above is the
+    # whole of it: the same 23% gap that moved the account 4.5% at a 20% cap moves it
+    # about 7.5% here, and on a two-name day the book is 66% in two prints rather
+    # than 40%. Nothing in this stage is hedged and nothing is stopped out, so the
+    # cap IS the risk control. Raising it further has no measured support: the only
+    # rule that survived a family-wise correction is which names to hold, never how
+    # much of one to hold.
+    max_position_pct_of_equity: 33
+    # Below three names every position hits that 33% and the account is deliberately
     # under-deployed. That is the cap doing its job, not a bug to route around.
     #
     # Slippage guard, kept but loose: a market-on-close order this size is a share of
     # the closing auction, and in a thin name that share is the cost. At $10k of
-    # equity a 20% position is $2,000, which is 1% of a $200k/day name -- so this
-    # only starts binding as the account grows. Set to null to disable it entirely;
-    # the plan prints %adv per name either way.
+    # equity a 33% position is $3,300, which is 1.65% of a $200k/day name -- so with
+    # the guard at 1.0% of ADV, capacity now binds before equity does in the thinnest
+    # tradable names, and the redistribution that follows is the leftover going to
+    # the rest of the book. Set to null to disable it entirely; the plan prints %adv
+    # per name either way.
     max_position_pct_of_adv: 1.0
     min_position_usd: 200
 
