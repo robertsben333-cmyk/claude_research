@@ -109,6 +109,8 @@ select {
 .ctl { border:1px solid transparent; border-radius:9px; padding:2px 6px; }
 .ctl:has(input[type=checkbox]:checked) { border-color:var(--ring); background:var(--surface); }
 .btn.small { padding:4px 10px; font-size:13px; }
+.badge { font-size:11.5px; color:var(--good); border:1px solid var(--good);
+         border-radius:999px; padding:1px 8px; }
 .ctl .dash { color:var(--muted); }
 input[type=date] { background:var(--surface); color:var(--ink); border:1px solid var(--ring);
                    border-radius:7px; padding:3px 6px; font-size:13px; }
@@ -166,6 +168,7 @@ li { margin:4px 0; }
     <div class="meta" id="stamp"></div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
+    <span class="badge" id="served" hidden title="Er draait een rebuilder op 127.0.0.1:8765">live</span>
     <button class="btn primary" id="refresh">Ververs</button>
     <button class="btn" id="theme">donker / licht</button>
   </div>
@@ -1363,11 +1366,17 @@ function tabData() {
     `<small>Ook in <code>edge/performance/data/names.csv</code> en <code>trades.csv</code>,
      ongefilterd, voor wie liever zelf rekent.</small></div>`;
   html += `<div class="card"><h3>Ververs dit dashboard</h3>
-    <p>De knop rechtsboven werkt echt als de pagina geserveerd wordt:</p>
-    <p><code>./edge/performance/update.sh --serve</code></p>
-    <p>Geopend als bestand kan een pagina geen script draaien; de knop kopieert dan het
-    commando. Zonder broker: <code>./edge/performance/update.sh --offline</code>. Met
-    publiceren: <code>--publish</code>.</p></div>`;
+    <p>Eén keer per sessie dit, en de knop rechtsboven werkt — ook als je dit bestand
+    gewoon van schijf hebt geopend:</p>
+    <p><code>./edge/performance/update.sh --serve-bg</code></p>
+    <p>Dat start een rebuilder op <code>127.0.0.1:8765</code> en geeft je je shell terug.
+    De pagina zoekt die server bij het laden; vindt hij hem, dan staat er <b>live</b>
+    naast de knop en herbouwt een klik de ledger, dit bestand én de geserveerde kopie.
+    Een pagina die als bestand is geopend mag zelf geen script draaien — dat is een
+    browserregel, geen instelling — maar praten met een server die al draait mag wel.</p>
+    <p>Andere vormen: <code>--serve</code> houdt de server op de voorgrond,
+    <code>--offline</code> slaat de broker over, <code>--fresh</code> gooit de
+    koerscache weg, <code>--publish</code> commit en pusht.</p></div>`;
   return html;
 }
 
@@ -1568,27 +1577,67 @@ document.getElementById('theme').onclick = () => {
   document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
   refresh();
 };
-/* The refresh button. Served by serve.py it rebuilds for real; opened as a file it
-   cannot run anything, so it hands over the command instead of pretending. */
+/* The refresh button.
+   Served by serve.py it rebuilds directly. Opened as a file it cannot run anything
+   itself -- but it can ask a rebuilder that is already running, and `serve.py` answers
+   a file:// page on purpose. So the button probes on load: if the server is up it goes
+   live and a rebuild rewrites this very file on disk, which a reload then picks up. If
+   nothing answers it hands over the command instead of pretending. */
+const PORT = 8765;
+const BASE = location.protocol === 'file:' ? `http://127.0.0.1:${PORT}` : '';
 const CMD = './edge/performance/update.sh';
-document.getElementById('refresh').onclick = async (e) => {
-  const btn = e.target, log = document.getElementById('refreshlog');
+const btn = document.getElementById('refresh');
+const log = document.getElementById('refreshlog');
+let served = location.protocol !== 'file:';
+
+async function probe() {
+  if (served) { btn.title = 'Herbouwt de ledger en dit dashboard.'; return; }
+  try {
+    const r = await fetch(`${BASE}/ping`, {cache:'no-store'});
+    const j = await r.json();
+    if (j && j.ok) {
+      served = true;
+      btn.textContent = 'Ververs';
+      btn.title = `Verbonden met de rebuilder op poort ${PORT}.`;
+      document.getElementById('served').hidden = false;
+    }
+  } catch (_) {
+    btn.title = `Geen rebuilder gevonden op poort ${PORT}. Klik voor het commando.`;
+  }
+}
+function explain() {
+  log.hidden = false;
+  log.textContent =
+    `Deze pagina is als bestand geopend, dus hij kan zelf geen script draaien.\n\n` +
+    `Eén keer dit draaien in de repo-root, dan werkt deze knop — ook in dit bestand:\n` +
+    `    ${CMD} --serve-bg\n\n` +
+    `Die start een servertje op 127.0.0.1:${PORT} en geeft je je shell terug. Ververs\n` +
+    `daarna deze pagina; de knop vindt de server vanzelf.\n\n` +
+    `Liever eenmalig en zonder server:\n    ${CMD}`;
+  navigator.clipboard?.writeText(`${CMD} --serve-bg`)
+    .then(() => { log.textContent += '\n\n(het eerste commando staat op je klembord)'; })
+    .catch(() => {});
+}
+btn.onclick = async () => {
+  if (!served) { explain(); probe(); return; }
   btn.disabled = true; btn.textContent = 'bezig…';
   log.hidden = false; log.textContent = 'ledger en dashboard opnieuw bouwen…';
   try {
-    const r = await fetch('rebuild', {method:'POST'});
+    const r = await fetch(`${BASE}/rebuild`, {method:'POST'});
     const j = await r.json();
     log.textContent = j.log || '(geen uitvoer)';
-    if (j.ok) { log.textContent += '\nklaar — pagina wordt herladen'; setTimeout(()=>location.reload(), 900); return; }
+    if (j.ok) {
+      log.textContent += '\nklaar — pagina wordt herladen';
+      setTimeout(() => location.reload(), 900);
+      return;
+    }
   } catch (err) {
-    log.textContent = `Deze pagina is als bestand geopend, dus de knop kan zelf niets draaien.\n\n` +
-      `Draai in de repo-root:\n    ${CMD}\n\nOf serveer hem, dan werkt deze knop wel:\n` +
-      `    ${CMD} --serve`;
-    try { await navigator.clipboard.writeText(CMD + ' --serve');
-          log.textContent += '\n\n(commando naar het klembord gekopieerd)'; } catch (_) {}
+    served = false;
+    explain();
   }
   btn.disabled = false; btn.textContent = 'Ververs';
 };
+probe();
 let rt;
 addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(refresh, 150); });
 renderControls();

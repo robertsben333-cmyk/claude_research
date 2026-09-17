@@ -47,11 +47,19 @@ mixing them is how you get a number that flatters the stage.
 ./edge/performance/update.sh --serve    # and serve it, so the page's own button works
 ```
 
-**The refresh button in the page.** Opened as a file, a page cannot run a script, so
-the button hands over the command instead of pretending. Started with `--serve` it
-POSTs to a localhost-only helper that runs the same two scripts and reloads the page.
-The helper runs those two scripts and nothing else — nothing from the request reaches
-a shell, and the broker is only ever read.
+**The refresh button in the page, including from a file.** A `file://` page may not run
+a script — a browser rule, not a setting — but it may talk to a server that is already
+running, and `serve.py` answers one on purpose. Run `--serve-bg` once and you get your
+shell back; every copy of the page, served or opened off the disk, probes
+`127.0.0.1:8765` on load, shows **live** beside the button when it answers, and a click
+then rebuilds the ledger and rewrites `dashboard.html` on disk, which the reload picks
+up. Nothing answering means the button hands over the command instead of pretending.
+
+The helper runs those two scripts and nothing else; no part of a request reaches a
+shell, it binds to `127.0.0.1`, and the broker is only ever read. Its CORS headers name
+`null` (a file page) and localhost, so a site you happen to be visiting cannot read
+what comes back — it could still fire the POST, which would rebuild a dashboard and
+nothing more. `--token` closes even that.
 
 Daily bars and 5-minute bars are cached under `.cache/bars` (gitignored), so a
 rebuild that adds one day costs one day of fetches. A run whose outcome window has
