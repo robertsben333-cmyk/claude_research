@@ -128,8 +128,10 @@ rather than detecting it.
 **Nothing checked the findings.** There is no adversary pass and no second hunter —
 `diagnostics.adversary_judged` reads `0/6`. A factually wrong finding entered the key at
 full size and nothing in this run would have caught it. That is the accepted cost of
-running nineteen names on twenty subagents, and it is live here: the adversary was the only
-thing that ever caught a covenant amendment misread by a year.
+running nineteen names on twenty subagents, and **it did not stay hypothetical today**: the
+sweep's claim that the baseline history was contaminated was itself factually wrong (see
+below), and it reached the hunter's sizing unchallenged. It was caught only because the
+session re-checked EDGAR by hand after the key was written.
 
 **The key is not reproducible to better than its own size.** When the stage still
 double-hunted, twelve paired names came back with a median gap of 2.40 points and **four of
@@ -145,18 +147,48 @@ view and was not handed to the hunter as one. `edge_resolve.py` still normalises
 expected move, so the normalised correlation for this name should not be called an
 implied-move measure.
 
-**And the baseline's reaction history is wrong — this is the run's most important caveat.**
-`priced_in.py` built six prints from what it read as 8-K item 2.02 acceptance times. EDGAR
-supports **one**: 2026-02-10, accepted 22:15:30 UTC, items 2.02/8.01/9.01, −16.31%. The
-2025-11-12 row lines up with two 8-Ks carrying items 8.01/9.01 and **no 2.02**, while the
-company's own release put that earnings call on 11-11; the 2026-05-13 row is measured a
-session late against a Q3 8-K accepted 2026-05-12 at 20:40:59 UTC. Upexi files 8.01 current
-reports constantly — SOL holdings, buybacks, treasury updates — which is precisely the
-contamination mode the skill warns about. `median_abs_move_pct` 6.58 and `deadband_pct`
-3.29 both inherit the defect and were **not** given to the hunter as a base rate; it
-rebuilt the history from item-2.02 filings only and found both clean prints in a 9–16%
-absolute band. `baseline_quality` 0.4 does not capture this and is in `diagnostics`, where
-it decides nothing.
+**The sweep alleged the baseline's reaction history was contaminated. It is not — the sweep
+was wrong, and the hunt ran on that false premise. This is the run's most important
+caveat.**
+
+The sweep set `baseline_history_trustworthy: false` and claimed EDGAR supported only one of
+the baseline's six prints. Checked directly against the submissions feed
+(https://data.sec.gov/submissions/CIK0001775194.json), **all six baseline dates are exactly
+the six most recent 8-K item-2.02 acceptances**: 2026-05-13, 2026-02-10, 2025-11-12,
+2025-09-26, 2025-05-16, 2024-12-23. `priced_in.py` filters on the item code and it filtered
+correctly. The sweep's two specific claims are both refuted by that feed:
+
+- It said the 2025-11-12 row lines up with 8-Ks carrying items 8.01/9.01 and **no** 2.02.
+  The 2025-11-12 8-K carries items **2.02, 9.01**, accepted 21:06:12 UTC. The 8.01/9.01
+  filing it is thinking of is dated **2025-11-14** — a different filing, two days later.
+- It said the 2026-05-13 row is measured a session late against a Q3 8-K accepted
+  2026-05-12 at 20:40:59 UTC. That 2026-05-12 20:40:59 filing is the **10-Q**, not an 8-K.
+  The item-2.02 8-K is 2026-05-13, accepted 20:35:40 UTC.
+
+So `median_abs_move_pct` 6.58, the 2-up-of-6 skew and `deadband_pct` 3.29 were all usable,
+and the hunter was told — on the sweep's authority and in this session's own briefing — not
+to use them. It rebuilt a base rate it described as "n=1 clean" when n=6 was clean, and its
+`lessons_applied` records discarding the median and the deadband. **The key below was
+therefore formed under a false premise about its own baseline.**
+
+It has not been rescored and the hunt has not been re-run. Re-hunting a name after seeing
+its first number is the selection this stage is built to avoid, nothing was traded, and the
+honest record is more useful to `edge_postmortem.py` than a tidier one. But a reader — and
+the resolver — should treat this row's size as carrying that defect. The direction of the
+effect is not obvious: the true history (median absolute move 6.58%, 2 up of 6) and the
+hunter's substitute (two prints in a 9–16% band) point the same way in kind, and the
+hunter's stated reason for a small number was the run-up and the short base, not the base
+rate.
+
+One residual question the feed does not settle: the company's own release put the Q1 FY2026
+call on 2025-11-11, while the item-2.02 8-K was accepted 2025-11-12 at 17:06 ET. If the news
+was genuinely out on 11-11, that one move is measured a session late. That is a real and
+much narrower question than the contamination the sweep alleged.
+
+**This is exactly the failure mode the removed adversary used to catch** — a factually wrong
+claim entering the run at full weight with nothing checking it. Here it entered through the
+sweep rather than a finding, where not even the adversary would have looked.
+`baseline_quality` 0.4 is in `diagnostics` and decides nothing either way.
 
 **What the day would have cost to trade.** UPXI turns over **$4.80m a day** at $1.05 —
 comfortably above the $200k floor and above the $1m thin threshold, so this is not a
