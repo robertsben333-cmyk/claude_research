@@ -1,0 +1,135 @@
+{
+ "ticker": "ENLV",
+ "event_date": "2026-09-18",
+ "session": "amc",
+ "as_of_utc": "2026-09-18T17:11:15+00:00",
+ "options_as_of_valid": true,
+ "sources": [
+  "yahoo chart v8 daily bars",
+  "yahoo options v7 front expiry (cookie+crumb)",
+  "sec edgar submissions api, 8-K item 2.02 acceptance times"
+ ],
+ "tape": {
+  "last_close_date": "2026-09-18",
+  "spot": 0.7661,
+  "run_up_5d_pct": -20.2,
+  "run_up_20d_pct": -48.93,
+  "pct_from_52w_high": -95.78,
+  "pct_from_52w_low": 5.38,
+  "realised_vol_20d_annualised_pct": 69.1,
+  "avg_volume_20d": 304467
+ },
+ "cik": "0001596812",
+ "history": {
+  "moves": [
+   {
+    "event_date": "2026-08-11",
+    "session": "amc",
+    "move_pct": -4.17
+   },
+   {
+    "event_date": "2026-07-30",
+    "session": "bmo",
+    "move_pct": -13.33
+   },
+   {
+    "event_date": "2026-07-29",
+    "session": "bmo",
+    "move_pct": 0.45
+   },
+   {
+    "event_date": "2026-07-28",
+    "session": "amc",
+    "move_pct": 0.45,
+    "session_conflict": {
+     "tagged_session": "amc",
+     "volume_says": "bmo",
+     "event_day_volume": 4039200,
+     "next_day_volume": 373900,
+     "median_20d_before": 71143,
+     "move_as_tagged_pct": 0.45,
+     "move_if_bmo_pct": -47.42,
+     "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+    }
+   },
+   {
+    "event_date": "2026-07-28",
+    "session": "bmo",
+    "move_pct": -47.42,
+    "session_conflict": {
+     "tagged_session": "bmo",
+     "volume_says": "bmo",
+     "event_day_volume": 4039200,
+     "next_day_volume": 373900,
+     "median_20d_before": 71143,
+     "move_as_tagged_pct": -47.42,
+     "move_if_bmo_pct": -47.42,
+     "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+    }
+   },
+   {
+    "event_date": "2026-07-20",
+    "session": "bmo",
+    "move_pct": -0.85
+   },
+   {
+    "event_date": "2026-07-13",
+    "session": "bmo",
+    "move_pct": -2.77
+   },
+   {
+    "event_date": "2026-07-07",
+    "session": "bmo",
+    "move_pct": -3.52
+   }
+  ],
+  "n": 8,
+  "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+  "median_abs_move_pct": 3.15,
+  "max_abs_move_pct": 47.42,
+  "up_count": 2,
+  "session_conflicts": 2
+ },
+ "event_plausibility": {
+  "days_since_last_print": 38,
+  "median_gap_days": 6,
+  "ratio": 6.33,
+  "last_print": "2026-08-11",
+  "verdict": "unknown",
+  "cadence_implausible": true,
+  "reason": "inferred cadence of 6 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+ },
+ "options": {
+  "status": "unusable_chain",
+  "expiry": "2026-11-20",
+  "days_to_expiry": 63,
+  "atm_strike": 2.5,
+  "atm_iv_pct": null,
+  "straddle_implied_move_pct": null,
+  "event_implied_move_pct": null,
+  "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+  "skew_25d_vol_points": null,
+  "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+  "put_call_open_interest_ratio": null,
+  "total_open_interest": 18,
+  "atm_spread_frac_of_mid": null,
+  "warnings": [
+   "ATM legs not two-sided; no live bid/ask to price a straddle from"
+  ]
+ },
+ "deadband_pct": 1.57,
+ "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+ "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+ "expected_move_pct": 3.15,
+ "expected_move_basis": "median historical reaction (no usable option chain)",
+ "baseline_quality": {
+  "options_usable": false,
+  "history_events": 8,
+  "history_usable": 8,
+  "event_plausibility": "unknown",
+  "priced_direction_available": false,
+  "tier": "partial",
+  "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+ },
+ "status": "ok"
+}

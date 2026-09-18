@@ -19,6 +19,7 @@ If you are a Routine session, read this whole file before doing anything.
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
+| P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
@@ -60,6 +61,163 @@ produced no ranking worth the name: every judged finding fell into one of two ve
 buckets and twelve names collapsed to one non-zero score and eleven zeros. The categories
 the stage has since dropped are why, and its `edge-scores.json` carries
 `legacy_rescore: true` — midpoints, never evidence about that day.
+
+**The analysis has been reading six days out of thirteen, since 2026-09-09.**
+`edge_decompose.py` reads `edge_score`, `edge_pct`, `confidence` and `baseline_quality`
+off each ranked row, and those left the top level of `edge-scores.json` the day
+`impact_sum` became the key. It has raised `KeyError: 'edge_score'` on every run since,
+so **every number in `researcher_us/EDGE_ANALYSIS.md` still rests on 38 de-duplicated events**
+while seven more run days sat on disk in no sample at all.
+`researcher_us/scripts/edge_sample.py` reads the fields both schemas carry and loads the lot:
+**106 resolved, de-duplicated events over 13 hunt days, 55 above the conviction floor.**
+It sums `impact_sum` from `findings` for the pre-09-09 runs — that is the definition of
+the field, not a reconstruction, and all 38 rows of the existing `edge-rows.json`
+reproduce exactly. Use it for anything new; `edge_decompose.py` is still the only thing
+that computes the residual/cluster decomposition, and it is still broken past 09-08.
+
+**On that larger sample the free control stops working, and the hunt still beats doing
+nothing.** `-run_up_20d_pct` ranks the first six days at ρ=0.335 and was positive on 6 of
+6 days traded; over 105 events it returns **−0.42% per trade**. So the control that every
+paragraph above measures the hunt against is not stable either. What survives: the hunt
+above the floor pays **+3.37%** per trade against **+1.59%** for shorting every name with
+no research at all.
+
+**`w2` IS THE WEIGHTING BEING CARRIED FORWARD (2026-09-18, operator's design).** The
+conviction floor stays the only gate — no factor adds a name and none removes one — and
+four factors set the SIZE instead: more findings, retail tilt, price-lean agreement, less
+search traffic, each −1/0/+1, weight = clamp(1 + 0.125·Σ, 0.5, 1.5), with the per-name cap
+raised from 33% to **50% of equity**. A wrong factor costs size on a good name and can
+never buy a name the hunt did not conviction-rank, which is where `w1` lost.
+
+**The headline mixes a risk decision and a research claim, so read them apart.** Per day
+over 12 traded days: **A** normal (equal, cap 33) +4.28%, t 2.36; **B** cap 50 only
++4.94%, t 2.44; **C** w2 weighted at cap 50 +5.12%, t 2.37; **D** w2 weighted at cap 33
++4.37%, t 2.18. A→B is the cap (+0.66pp, and deployment goes 94%→100% because 33% left
+cash on thin days). B→C is the weighting: **+0.18pp with the sd up from 7.01 to 7.47, so
+t falls**. At the old cap the weighting is worth +0.09pp and t falls to 2.18. **The
+capital decision carries the result; the weighting earns close to nothing and buys
+variance.** All four factors point the right way one at a time (lean +7.27% against
++0.11%, search-quiet +5.32% against +0.37%, retail +4.68% against +2.47%). `evidence` is
+in on instruction and is the one factor H7 measured as `geen effect` alone — first to drop
+if w2 underperforms. **The 50% cap is the only risk control in the stage**: the 23%
+single-name gap that moved the account 4.5% at a 20% cap and ~7.5% at 33% moves it ~11.5%
+at 50%. Nothing is switched on; w2 is computed beside the live rule.
+
+**`w1` IS SUPERSEDED AND KEPT (2026-09-18).** `dashboard/scripts/weighting.py`, version `w1`, frozen today:
+`w_score = impact_sum * clamp(1 + 0.15 * Σ tilts, 0.5, 1.5)`, four tilts at −1/0/+1 —
+price-lean agreement, search quiet, retail tilt, sector — one magnitude for all four
+because four fitted weights on 56 traded names is memorisation. `edge_score.py` is
+untouched and the book is still placed on the plain score. **Nothing in that spec may be
+re-tuned**: a tilt that turns out wrong becomes `w2` beside `w1`, never an edited
+constant, because a constant that moves with the data is not a hypothesis.
+
+**In sample the symmetric variant LOSES, and that is the finding.** +3.09% per name
+against +3.69% for the plain rule, on the very days every tilt was chosen from.
+Decomposed: the names it drops were correctly dropped (+0.22%), what it keeps beats the
+book (+4.27%), and the four names it promotes over the floor return −11.01%. Every tilt
+on its own points the right way. The damage is entirely in promotion — the conviction
+floor is the only rule here that ever cleared a family-wise correction, and a tilt chosen
+on 13 days was overruling it. So `w1_filter` ships beside it: demote-only, structurally
+unable to add a name the floor rejected, +4.27% on 48 names. **Both are frozen and both
+run forward**; picking the better one on the sample that produced it is the same error
+one level up. The `Weging` tab tracks them per day.
+
+**There is a hypothesis register on the dashboard, and it is NOT part of the skill
+(2026-09-18).** The `Hypotheses` tab is a place to test, not a step in a routine — do not
+fold it into `edge-performance`. Intermediate variables are screened first against three
+outcomes that are not the same question (sign right / book return / move size), and the
+named hypotheses were written after reading that screen, which the tab states in its own
+header. One verdict rule for all of them: the gap carries the predicted sign and clears
+two standard errors of its own difference. A hypothesis comparing the same names at two
+exits is **paired** and tested on the per-name difference.
+
+The hypotheses are asked of the TRADED BOOK, not of every ranked name, and the verdict
+ladder has a middle rung — `mogelijk · meer data` for a gap that is practically large
+(≥ 1.5pp per name) with |t| still under 2, printed with how many names it would take to
+settle. Of ten on 13 days: one sector carries the result (Consumer Cyclical 27
+names, 70.4%, +5.97% against Technology 48.3%, −1.89%), the hunt pays more where it
+**agrees with the sealed price lean** (ρ +0.33 on the book, p 0.017), and the conviction
+floor — the anchor. **The price-lean result is the uncomfortable one**: this stage exists
+to find what the market has missed, so a variable saying it earns most where it follows
+the price points the other way, and it is the first thing to measure forward. What does
+NOT survive includes two that were expected: bmo over amc, and the amc-early / bmo-late
+exit split — the paired tests give +1.88pp (16/28, t 0.93) and +2.18pp (19/28, t 1.20),
+both leaning the predicted way and neither clearing |t| = 2. And `retail_tilt` interacts
+with the floor rather than adding to it: high tilt above the floor is 78.1% / +4.90%,
+high tilt below it 38.1% / −3.66%, low tilt ~46% either way. **Move NOTHING on any of
+this** — thirteen days, no multiplicity correction, every rule chosen after seeing these
+days. Three of the four variables that clear the screen's rough bar rank move SIZE, which
+is volatility and not skill.
+
+**The dashboard's default exit is the strategy's, not a horizon (2026-09-18).** One
+column cannot describe this book: amc sells into the opening print at **15:30 CET**
+(`mv_open`) and bmo at **20:00 CET** (`hr_22`). `attach_strategy_exit()` resolves it
+per session and carries it as if it were a horizon, so every tab reads it like the
+eight fixed ones, which stay selectable. On the conviction book it pays +3.69% per name
+against +3.19% at the close. **It disagrees with the live config by an hour**:
+`orders.exit_mode: amc_open` sells bmo at plain market on stage E's own 13:05 ET run,
+which is 19:05 CET. Over the 28 bmo names above the floor the three are monotonic —
++4.24% at 19:05, +4.36% at 20:00, +5.22% at the close — so the config is the worst of
+them and the dashboard default is the middle. Pick one rather than leaving the page and
+the account disagreeing.
+
+**The dashboard is `dashboard/` at the top level, and it is the one reading surface.**
+It was `edge/performance/` on the unmerged branch `claude/epic-ride-s4bcg4` until
+2026-09-18; merging it was the fix for "there is no dashboard in the repo", which is
+what a session concluded from the git history alone while the branch sat unmerged.
+Open `dashboard/dashboard.html` off the disk — no server, no network, no CDN — and
+rebuild it with `./dashboard/update.sh`. Everything on the page is recomputed
+client-side from `dashboard/data/ledger.json`, so every control re-derives every
+statistic under it rather than filtering a view. Its own README is the authority on
+the controls and the three levels (names / trades / account), which are not the same
+thing and must not be mixed.
+
+**Three new questions, three near-nulls and one lead (2026-09-18).** They are tabs on
+that dashboard — `Instap`, `Aanloop`, `Zoekvolume`, plus `Agenda` — not separate pages.
+An earlier standalone set under `researcher_us/analysis/dashboard/` was deleted the same day: two
+renderers over one dataset is the drift this repo keeps paying for. The artifact
+https://claude.ai/artifact/JjEfQYMhb1UN25SCGp4SK3 is a dated snapshot of that interim
+version and is not maintained.
+
+- **The pre-print run-up says nothing** (`edge_runup.py`). The 2/5/10/20-session return
+  to the 20:00 CET entry does not predict whether the hunt's sign was right: largest
+  |ρ| 0.153, smallest p 0.117, hit rate flat at 49–57% across run-up terciles. And
+  agreement between run-up and prediction does not pay on the book that is traded — over
+  all names the 2d window looks helpful (+2.55% against −1.12%), above the floor it
+  **inverts at all four windows** (10d: +0.71% agreeing against +5.75% disagreeing).
+  Two subsets pointing opposite ways with overlapping intervals are noise measured twice.
+- **The entry hour does not matter** (`edge_entry_clock.py`). Exit held fixed, entry
+  swept 10:00–16:00 ET in half hours: best minus worst over the whole session is
+  **0.40pp** on the conviction book against a per-trade sd of 15. The close is nominally
+  best (+3.59% against +3.37% at 20:00 CET) and that gap is not worth acting on. There is
+  no intraday drift to time either — no t above 1.6 on the unsigned drift to the close.
+  What the grid cannot see is the SPREAD, which is the one real argument for entering
+  later and is unmeasured; TRT quoted a 14.6% half-spread on 09-17.
+- **Google search attention is the one lead** (`edge_search_volume.py`). Daily Trends
+  interest, US, 90 days to the entry, one fixed query per company (registered name minus
+  the legal suffix, never the ticker — "TRT" and "RH" are English words). Above the
+  floor the entry-day spike ranks at **ρ=−0.504, permutation p=0.018 on 22 events**: more
+  attention, worse outcome, and the high-attention names also move least (median 4.67%
+  against 10.08%). It is one cell out of ten looked at — **p=0.18 after Bonferroni** — and
+  the measurable half is systematically the liquid half (median turnover $22.7m against
+  $1.4m for the names Google reports nothing for). The cheap way to settle it is to put
+  the spike in the sealed baseline beside `run_up_20d_pct` and let it pool.
+  **Read `measures()` before trusting any Trends number**: each series is normalised to
+  its own maximum, so a name searched on three of ninety days reads 0…0,100 and a spike
+  over a zero median comes out at 100×. Eleven such names filled the top tercile on the
+  first run. A series now needs a non-zero median to be scored at all.
+
+**`edge_runup.py`, `edge_entry_clock.py` and `edge_search_volume.py` are the CLI
+versions of those three tabs.** The dashboard does not call the first two — the ledger
+computes `enpx` and `runup_*d` from its own bars, so there is one price source — but it
+does read `edge-search-volume.json`, and `update.sh` runs that script and the calendar
+before every build. Either feeder may fail without costing the rebuild.
+
+**`edge_calendar.py` is the forward week, with both gates applied.** Nasdaq's calendar
+with the `time-not-supplied` rows and the `min_dollar_volume_usd` floor counted
+separately rather than folded together, so the candidate count is honest: 80 rows to
+2026-09-25, 25 with a confirmed session, 22 clearing the floor. It carries no prediction —
+that comes from a hunt that has not run.
 
 **The ordering problem is fixed; the scorer is now the problem.** `researcher_us/EDGE_ANALYSIS.md`
 decomposes all six resolved runs, pooling *within* days (`researcher_us/scripts/edge_decompose.py`).
@@ -330,6 +488,30 @@ which is why `capital_table` in `edge_exit.py` prints return per slot-day equal 
 per trade and flags the hours-held version as a denominator artefact. What it buys is
 settled cash before the auction that funds the next book, and fewer hours of exposure. See
 `researcher_us/EXECUTION.md`, "The exit the two sessions actually want".
+
+**The performance record has its own place, and on the current sample it
+contradicts the paragraphs above.** `dashboard/` holds one ledger over every run, every fill the broker reports and the equity curve, plus a dashboard built from
+it; `./dashboard/update.sh` rebuilds both (`--serve` makes the page's own
+refresh button work) and the `edge-performance` skill folds in what has closed since
+the last build and writes the reading into `dashboard/LOG.md`. It is read-only:
+it never places an order and never re-scores a run. The page recomputes every statistic
+client-side under a lens (research or money), an exit horizon, a conviction threshold,
+a per-side turnover floor, a session and a sector — so a threshold can be swept rather
+than assumed, which is how the first slice worth acting on turned up: **raising the
+threshold lifts bmo monotonically (+2.5% at ≥0 to +12.0% at ≥7) and lowers amc over the
+same range (−0.7% to −2.9%)**, and the pooled curve is the average of two opposite
+movements. Do not move `conviction_floor` on it yet — at ≥7 that is nine bmo names
+against eleven amc. Its first build, 2026-09-17, prices 102 ranked names over 11 days
+and puts the pooled ranking at **ρ = −0.145 against −0.137 for the free control**.
+The split is by date, not by method: the five days `researcher_us/EDGE_ANALYSIS.md` was
+written on pool at ρ ≈ +0.38 and reproduce its conviction figure, and every day from
+09-08 onward is at or below zero. The account is +17.3% over eight sessions on nine
+closed positions — six longs at +17.7% against three shorts at −13.9%, in a week when
+shorting everything paid −1.7% a name, so that number is a market and not a result.
+Six of those nine were closed by hand rather than by stage E, and HOFT and CODA sat
+95 hours before someone sold them. Read the dashboard's first screen before quoting
+any figure in this file: the numbers above were measured on the first six days and
+the ledger is what is measuring them now.
 
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
@@ -718,6 +900,9 @@ researcher_us/                         stage E — see researcher_us/README.md
   scripts/                             the stage's own tools
   analysis/                            everything those tools generate
   routine-prompts/                     the text pasted into the Routines, by hand
+dashboard/                             the standing performance record and the one
+  update.sh  scripts/  data/  LOG.md   reading surface — see dashboard/README.md
+  dashboard.html                       open it from disk; rebuilt by update.sh
 edge -> researcher_us                  SYMLINK. The live Routine prompt names edge/
                                        paths and cannot be edited from a session.
 backtest/                              the sealed backtest

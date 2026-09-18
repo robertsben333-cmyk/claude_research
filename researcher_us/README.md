@@ -22,6 +22,10 @@ edge/
   scripts/              the stage's own tools (see below)
   analysis/             everything the analysis scripts generate — JSON and HTML
   routine-prompts/      the text pasted into the Routines, kept in step by hand
+  performance/          what the stage is actually worth: the runs, the broker's
+                        fills and the equity curve in one ledger, plus the dashboard
+                        built from it. Read-only — it never places an order and never
+                        re-scores a run. See dashboard/README.md
 ```
 
 ## What cannot live here, and where it is instead

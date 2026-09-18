@@ -139,3 +139,7 @@
 - Confirmed via WebSearch: LEN reported on schedule 2026-09-16 amc — EPS $1.19 vs $1.29 consensus (missed by $0.10), revenue $8.05B vs $8.31B consensus (missed), FY26 delivery guide cut to 80,000-81,000 from 82,000-83,000. Stock was down ~2.6-2.8% in after-hours trading. Not fabricating an after-hours quote as a close — same restraint as the 2026-08-20/08-27 precedent.
 - Deferring: the next stage-4 firing after 2026-09-17's regular close is the earliest point LEN's outcome window is measurable. Recorded here per the standing schedule-lag flag (2026-08-20, 2026-08-27) — an amc print the evening before a stage-4 morning firing always resolves on the *current* day's close, which a same-morning firing cannot yet see.
 - No LEDGER.md change made; no 05-outcome.md written.
+
+## Stage 4 — calibration — 2026-09-16
+- Logged at 2026-09-18 15:29 UTC
+- LEN scored: Lean Down called, actual +1.71% close-to-close (78.36 -> 79.70) -- direction miss, first directional (non-Neutral) panelled call in the ledger and its first miss. Fundamentals missed exactly as called (EPS/revenue miss, guidance cut again) but a same-day Fed rate decision on 09-17 lifted the stock net positive -- measurement-window limitation, not a misread of the company. See 05-outcome.md for full writeup.

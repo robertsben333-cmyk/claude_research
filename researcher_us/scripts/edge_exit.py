@@ -107,12 +107,25 @@ def _get(url, cache=None, tag=None):
     return j
 
 
+def yahoo_symbol(ticker):
+    """Yahoo writes a class share with a hyphen, like EDGAR; the calendars use a
+    dot. `LEN.B` is a bare 404 here, and before this every class share silently
+    dropped out of the panel."""
+    return ticker.upper().replace(".", "-")
+
+
 def daily(ticker, cache=None):
-    j = _get(f"{YQ}/v8/finance/chart/{ticker}?range=90d&interval=1d",
+    sym = yahoo_symbol(ticker)
+    j = _get(f"{YQ}/v8/finance/chart/{sym}?range=90d&interval=1d",
              cache, f"{ticker}.d.json")
     if j.get("_error") or not (j.get("chart") or {}).get("result"):
         return None
     r = j["chart"]["result"][0]
+    # An empty chart -- a delisted or unknown symbol -- comes back as a result
+    # with meta and nothing else. Returning None makes it one recorded problem;
+    # indexing it raised KeyError and took the whole build down with it.
+    if not r.get("timestamp") or not (r.get("indicators") or {}).get("quote"):
+        return None
     q = r["indicators"]["quote"][0]
     out = {}
     for i, ts in enumerate(r["timestamp"]):
@@ -124,11 +137,14 @@ def daily(ticker, cache=None):
 
 
 def intraday(ticker, cache=None):
-    j = _get(f"{YQ}/v8/finance/chart/{ticker}?range=45d&interval=5m&includePrePost=true",
+    j = _get(f"{YQ}/v8/finance/chart/{yahoo_symbol(ticker)}"
+             f"?range=45d&interval=5m&includePrePost=true",
              cache, f"{ticker}.m5.json")
     if j.get("_error") or not (j.get("chart") or {}).get("result"):
         return {}
     r = j["chart"]["result"][0]
+    if not r.get("timestamp") or not (r.get("indicators") or {}).get("quote"):
+        return {}
     q = r["indicators"]["quote"][0]
     bars = {}
     for i, ts in enumerate(r["timestamp"]):
