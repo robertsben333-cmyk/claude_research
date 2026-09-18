@@ -188,6 +188,7 @@ def main():
             "conviction": r.get("conviction"),
             "priced_lean_pct": r.get("priced_lean_pct"),
             "run_up_20d_pct": (bl.get("tape") or {}).get("run_up_20d_pct"),
+            "run_up_5d_pct": (bl.get("tape") or {}).get("run_up_5d_pct"),
             "lean_components": bl.get("lean_components") or {},
             "short_ratio_pct": (bl.get("positioning") or {}).get("short_ratio_pct"),
             "margin_ratio": (bl.get("positioning") or {}).get("margin_ratio"),
@@ -226,6 +227,12 @@ def main():
             "spearman_impact_sum_vs_move": r_key,
             "permutation_p": perm_p(key, ys, r_key),
             "spearman_free_control_neg_runup": r_ctl,
+            # The 5-day window as its own free control. Added after the first live run
+            # found the 20-day one netting out a +4.4% five-session run-in. If this
+            # out-ranks the 20-day version across pooled days, it is the control the
+            # stage has to beat and lean_components should carry it instead.
+            "spearman_free_control_neg_runup_5d": spearman(
+                [-(x.get("run_up_5d_pct") or 0.0) for x in usable], ys),
             "spearman_priced_lean": r_lean,
             "spearman_conviction_vs_sign_right": r_conv,
             "sign_right_frac": round(sum(sign_ok) / len(sign_ok), 3),

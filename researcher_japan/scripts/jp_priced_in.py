@@ -267,6 +267,18 @@ def build(name, event_date):
         "spot": round(spot, 2) if spot else None,
         "currency": meta.get("currency"),
         "run_up_20d_pct": round((win[-1] / win[0] - 1) * 100, 2) if len(win) >= 2 else None,
+        # The 5-day run-in, added 2026-09-18 after the first live run found the 20-day
+        # window hiding the thing that mattered. On 4716 the 20-day read -0.42%, which
+        # says "no directional content", while the five sessions into the print were
+        # +4.4% on a US-parent read-through -- the hunter had to source the move itself
+        # off raw bars because the baseline netted an early-September drawdown against
+        # a late bounce. A run-in the market has to justify at the print is exactly what
+        # a lean is for, so it is now sealed rather than left to be rediscovered.
+        # NOTE: it is NOT in priced_lean_pct. Adding it would be a second helping of the
+        # run-up in a composite that already carries the 20-day one, and no Japanese
+        # measurement says which window belongs there. jp_resolve.py ranks it separately.
+        "run_up_5d_pct": round((closes[-6:][-1] / closes[-6:][0] - 1) * 100, 2)
+                         if len(closes) >= 6 else None,
         "median_turnover_jpy_20d": name.get("tape", {}).get("median_turnover_jpy_20d"),
         "realised_vol_20d_pct": realised_vol_pct(rows, 20),
         "realised_vol_60d_pct": realised_vol_pct(rows, 60),

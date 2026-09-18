@@ -102,6 +102,22 @@ near ones are up at a time, so a day with no rows usually means that cohort's sh
 not published yet, not that nobody reports. `calendar_sheets` and `calendar_as_of` are
 carried into every universe file for exactly this reason.
 
+## The hunters need `curl`, and that was found the hard way
+
+On the 2026-09-18 verification run a hunter hit HTTP 403 from `WebFetch` on **every URL
+it tried**, including the TDnet 月次 PDFs that were the single highest-value series for
+its name, and fell back to search snippets it could not confirm. Re-checked from the
+same container seconds later: `curl` returned **200** on TDnet's list *and* its PDFs, on
+kabutan, on irbank and on Nikkei — the same URLs `WebFetch` refused. A company's own IR
+host and minkabu refuse both.
+
+`WebFetch` is blocked on this egress path where `curl` is not, and this market's evidence
+lives in documents rather than in search results. `unpriced-hunter-jp` therefore carries
+`Bash`, which the US hunter does not, and its definition documents the fallback. Without
+it the stage reads Japan through search snippets and cannot verify a single figure in its
+source, which is the condition this repo's "never fabricate a number" rule exists to
+prevent.
+
 ## The selection is random on purpose
 
 In season the calendar carries up to 125 names on one date and TDnet saw 456 releases
