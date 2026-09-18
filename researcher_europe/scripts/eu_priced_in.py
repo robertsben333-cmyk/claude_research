@@ -270,7 +270,7 @@ def lean_components(positioning, runup):
     return out
 
 
-def build(name, event_date, registers):
+def build(name, event_date, registers, validation_only=False):
     m = name["_market"]
     cfg = MARKETS[m]
     sym = name["yahoo_symbol"]
@@ -456,6 +456,14 @@ def build(name, event_date, registers):
     }
 
     doc["event_occurred"] = None      # settled after the fact by eu_resolve
+    if validation_only:
+        doc["validation_only"] = True
+        doc["validation_note"] = (
+            "This baseline was built from a universe assembled with "
+            "--use-last-release, for a date whose outcome already exists. Every tape "
+            "number in it was read AFTER the print, so `spot`, the run-ups and realised "
+            "volatility are contaminated by the very move this stage is meant to "
+            "predict. It exercises the plumbing and is not a result about anything.")
     return doc
 
 
@@ -479,10 +487,33 @@ def main():
         print(f"  register {m}: covered={r['covered']} as_of={r['as_of']} "
               f"rows={len(r.get('rows') or {})}")
 
+    # The baseline FILENAME is the key edge_score.py joins a hunt to: it keys a baseline
+    # on the file stem and a hunt on the hunt's own `ticker` field. So the stem has to BE
+    # the ticker, exactly as in the US and Japanese runs. A "<market>-<ticker>" stem was
+    # tried first and produced an unranked ghost row for every name, because the stem and
+    # the hunter's ticker no longer agreed.
+    #
+    # Three markets can collide on one ticker, so a collision gets a `.<MKT>` suffix --
+    # two letters, and therefore invisible to share_class.base_of(), whose class-suffix
+    # rule matches a SINGLE letter. (`BT.A` is a real UK EPIC that base_of() does read as
+    # a share class of `BT`; that only bites if both lines report on one day, and
+    # edge_score only folds when the base is present in the same run.)
+    seen = {}
+    for n in u.get("names", []):
+        seen.setdefault(str(n["name"]).upper(), []).append(n)
+
     made = 0
     for n in u.get("names", []):
-        doc = build(n, u["event_date"], registers)
-        (out / f"{doc['submarket']}-{doc['ticker']}.json").write_text(
+        doc = build(n, u["event_date"], registers, bool(u.get("validation_only")))
+        key = doc["ticker"]
+        if len(seen.get(str(key).upper(), [])) > 1:
+            key = f"{key}.{doc['submarket'].upper()}"
+            doc["ticker"] = key
+            doc["ticker_disambiguated"] = (
+                "this ticker appears in more than one market on this date, so the market "
+                "code was appended. The hunter must echo this exact string as `ticker` "
+                "or its findings will not join to this baseline.")
+        (out / f"{key}.json").write_text(
             json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         made += 1
         print(f"  sealed {doc['submarket']}:{doc['ticker']:<8} "

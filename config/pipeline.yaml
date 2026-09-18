@@ -213,6 +213,93 @@ japan_hunt:
     - skip the note's per-name critical read, keep the ranked table
     - publish the ranking with fewer names and say which were shed
 
+
+europe_hunt:
+  # Stage EU. The same question as `edge_hunt` and `japan_hunt`, asked of the UK, French
+  # and German markets POOLED, and deliberately scored by the SAME scorer
+  # (researcher_us/scripts/edge_score.py) so the three markets' numbers mean the same
+  # thing. RESEARCH ONLY -- there is no execution block here and there must not be one.
+  # Alpaca does not carry LSE, Euronext or XETRA, and execution is a separate decision
+  # to be made later on Europe's own resolved numbers.
+  markets: [uk, de, fr]
+  #
+  # WHY ONE STAGE OVER THREE MARKETS. Not elegance -- arithmetic. Measured in
+  # researcher_europe/SUBMARKET.md: the UK bottoms out at ONE eligible name on a Friday,
+  # Germany reports quarterly but puts 153 of 259 forward events in November and carries
+  # one in June, and France is semi-annual with 94 of 161 in February-March. They peak in
+  # different months, so pooling three seasonal calendars is what produces one stream:
+  # roughly 8-12 names on a median day above the turnover floor, and two or three on the
+  # thin ones. A thin day is a weak day, not a broken stage. The response to one is to
+  # hunt the names there are, NEVER to drop the floor.
+  cap: 12
+  #
+  # THE TURNOVER FLOOR IS $1m A DAY, FIVE TIMES THE US AND JAPANESE BAR, AND THE REASON
+  # IS MEASURED. Below $1m the FCA short register -- which is what substitutes for the
+  # option anchor Europe does not have -- resolves on 22 of 190 UK names (12%) against 41
+  # of 46 (89%) in the $1-5m band. So the cheap half of the universe is the half where the
+  # anchor stops working AND nothing can be traded. Both reasons point the same way.
+  # Normalised to USD off a live FX rate that is written into every universe file, because
+  # three currencies and a constant is a floor that moves 10% a year without saying so.
+  min_turnover_usd: 1000000
+  #
+  # NO SIZE-BAND CUT ABOVE THE FLOOR, and this is deliberate against the operator's own
+  # prior. Phase 1 measured sell-side coverage at 1-2 analysts below $1m/day, 5-7 at
+  # $1-5m, 11-13 at $5-25m and 16-19 above $25m, consistently across all three markets --
+  # so the genuinely under-read band is $1-5m, one band below MDAX / SBF 120 ex-CAC 40 /
+  # FTSE 250. Cutting to it would bake this stage's thesis into its universe and make it
+  # unfalsifiable. The draw is random; `analyst_band` rides in every baseline; and
+  # eu_resolve.py ranks the hunt BY band so the thesis is tested rather than selected on.
+  #
+  # ONE HUNTER PER NAME, for the reason edge_hunt.double_hunt_top_n records: over twelve
+  # paired US names the gap between two hunters predicted neither the error (+0.203) nor
+  # whether the sign was right (+0.028).
+  hunters_per_name: 1
+  wave_size: 4
+  max_concurrent_subagents: 4
+  model: opus
+  effort: high
+  # No sweep agent. The vendor calendar's measured phantom rate on the UK was 2 of 90 rows
+  # against the RNS record -- a different object from the Nasdaq feed's `time-not-supplied`
+  # rows, which were 20 of 20 phantom on 2026-09-17. Confirmation is eu_resolve.py's job,
+  # after the fact, and event_occurred: false is reachable.
+  sweep_agents: 0
+  # Inherits edge_hunt.conviction_floor unless set. A floor on EMPHASIS in the note,
+  # never a filter on the scored file.
+  conviction_floor: null
+  #
+  # THE LANGUAGE EXPERIMENT (2026-09-18). Each hunter runs an ENGLISH pass first, freezes
+  # it as `pre_local`, then runs the local pass and revises; edge_score.py carries
+  # diagnostics.impact_sum_pre_local beside the key and eu_resolve.py ranks both against
+  # the same realised move. English first, then local: the ordering is load-bearing and
+  # reversing it tests a different question.
+  #
+  # THE UK IS A DEGENERATE CASE and is reported apart. Its local language IS English, so
+  # its second pass varies SOURCE LOCALITY (RNS, Investegate, the domestic trade press)
+  # rather than language. eu_resolve.py refuses to pool the UK delta with the German and
+  # French ones, because averaging them reports the mean of two different experiments.
+  language_pass: true
+  #
+  # THE ANCHOR. Europe has NO retrievable single-stock option chain -- Yahoo returns zero
+  # expiries for .L, .DE and .PA, and Eurex's free reference file carries no settlement
+  # prices, no open interest and no underlying map. So `options` is null and the baseline
+  # builds its own lean from the national short registers at the SSR 0.5% threshold. Every
+  # weight in eu_priced_in.lean_components() is a PRIOR borrowed from the US runs;
+  # eu_resolve.py ranks each separately so they can be replaced by measurement. Cut a
+  # component's weight to zero when several pooled days rank it at or below zero -- do not
+  # argue for it.
+  #
+  # FRANCE'S REGISTER DOES NOT RESOLVE FROM THIS CONTAINER. www.data.gouv.fr resets the
+  # connection on every request, so French names run with positioning.covered false and
+  # their lean IS the free control. `per_market.lean_vs_free_control_rho` in the resolved
+  # file should read near 1.0 for France and near 0.4-0.6 for the UK and Germany. If the
+  # UK or German number climbs toward 1.0, that register has stopped resolving too.
+  positioning_lookup: true
+  degrade_order:
+    - drop France (its short register does not resolve and its press is largely paywalled)
+    - reduce cap to 8 names
+    - skip the short-register lookup entirely (the lean falls back to the run-up, which is
+      also the free control, so the hunt is then being measured against its own anchor)
+    - reduce cap to 4 names
 output:
   disclaimer: >-
     This is research, not financial advice. Earnings reactions are highly uncertain

@@ -165,20 +165,29 @@ def scan(market):
     return rows, d.get("totalCount")
 
 
-def scheduled_on(rows, target):
-    """Rows whose NEXT scheduled release is `target`, with the session resolved."""
+def scheduled_on(rows, target, past=False):
+    """Rows whose NEXT scheduled release is `target`, with the session resolved.
+
+    `past=True` reads the vendor's LAST release date instead. That is a VALIDATION
+    switch and nothing else: it builds a universe for a date whose outcome already
+    exists, so a run built with it can exercise the whole chain against a real day but
+    can never be a result about anything. Every file it produces is stamped
+    `validation_only: true` for exactly that reason.
+    """
+    key = "earnings_release_date" if past else "earnings_release_next_date"
+    tkey = "earnings_release_time" if past else "earnings_release_next_time"
     out = []
     for r in rows:
-        ts = r.get("earnings_release_next_date")
+        ts = r.get(key)
         if not ts:
             continue
         d = datetime.fromtimestamp(ts, UTC).date().isoformat()
         if d != target:
             continue
-        sess = SESSION_FLAG.get(r.get("earnings_release_next_time"))
+        sess = SESSION_FLAG.get(r.get(tkey))
         out.append({**r, "scheduled_date": d, "session": sess or "bmo",
                     "session_unresolved": sess is None,
-                    "session_basis": ("vendor flag " + str(r.get("earnings_release_next_time"))
+                    "session_basis": ("vendor flag " + str(r.get(tkey))
                                       if sess else
                                       "vendor says unknown; defaulted to bmo because "
                                       "339 of 379 measured UK results announcements "
@@ -263,6 +272,12 @@ def main():
                     help="median 20-session turnover floor in USD (default 1e6). "
                          "Below it the short register resolves on 12%% of names and "
                          "nothing is tradeable; see SUBMARKET.md section 4.")
+    ap.add_argument("--use-last-release", action="store_true",
+                    help="VALIDATION ONLY. Build the universe from the vendor's LAST "
+                         "release date instead of its next one, so the whole chain can "
+                         "be exercised against a real past day. The outcome already "
+                         "exists, so nothing built this way is a result about anything "
+                         "and every file is stamped validation_only.")
     ap.add_argument("--no-tape", action="store_true",
                     help="skip Yahoo entirely: emits the raw calendar with no screen "
                          "and no draw, for inspecting what the vendor is publishing")
@@ -293,6 +308,7 @@ def main():
                            "is eu_resolve.py's job and event_occurred: false is "
                            "reachable.",
         "generated_utc": datetime.now(UTC).isoformat(timespec="seconds"),
+        "validation_only": bool(a.use_last_release),
         "per_market": {},
     }
 
@@ -305,7 +321,7 @@ def main():
             continue
         closed = closed_reason(m, target)
         closed_all[m] = closed
-        got = [] if closed else scheduled_on(rows, target)
+        got = [] if closed else scheduled_on(rows, target, a.use_last_release)
         for r in got:
             r["_market"] = m
         todays.extend(got)
