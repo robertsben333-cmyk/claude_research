@@ -159,6 +159,15 @@ def main():
     rows.sort(key=lambda r: (r["run_date"], r["ticker"]), reverse=True)
     summary = summarise(rows)
 
+    # Stages 1-4 were retired on 2026-09-18 and their output moved to
+    # archive/pipeline/, which is where the finished table now lives. This script
+    # still reads research/, so a run here finds nothing -- and writing that empty
+    # result out would look like a rebuild rather than an absence. Refuse instead.
+    if not rows:
+        print("no predictions under research/ -- stages 1-4 are retired; the frozen "
+              "table is archive/pipeline/PREDICTIONS.csv. Nothing written.")
+        return
+
     with open(args.out_csv, "w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=COLUMNS, extrasaction="ignore")
         w.writeheader()

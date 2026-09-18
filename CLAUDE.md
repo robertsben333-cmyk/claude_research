@@ -1,35 +1,55 @@
 # claude_research — daily earnings pipeline
 
-This repository runs one thing: a five-stage daily research pipeline over US companies
-reporting earnings between today's close and tomorrow's open. Each stage is fired by a
-scheduled Routine into a **fresh session** that knows nothing except this file and the
-repo contents.
+This repository runs one thing: a daily research pipeline over US companies reporting
+earnings between today's close and tomorrow's open. Each stage is fired by a scheduled
+Routine into a **fresh session** that knows nothing except this file and the repo
+contents.
 
 If you are a Routine session, read this whole file before doing anything.
+
+## STOP — stages 1, 2, 3 and 4 were retired on 2026-09-18
+
+**If your Routine prompt names `earnings-triage`, `earnings-deep-dive`,
+`earnings-panel-advice` or `earnings-calibration`, do not run it.** Append one line to
+that day's `_run-log.md` saying the stage is retired, publish, and end the session.
+Their Routines still fire because a session cannot disable a Routine it did not create,
+so this file is the only thing that stops them. Do not re-create the folders they used
+to write.
+
+The measurements are in `archive/README.md`. In one line each: stage 2's preliminary
+read went 39 of 75 on direction, which is worse than shorting the same names blind;
+stage 3 produced 21 Neutrals and one wrong call in 22 panels because its ±25 threshold
+sits above anything a seven-way average can reach, and its hidden signed consensus was
+right 6 times in 22; stage 4's headline hit rate turned out to be a restatement of
+whether the option-implied move was broken.
+
+**Stage 0 and stage E still run**, and stage E is still placing money. Everything below
+about the edge hunt, the execution path and the exit modes is live. The stage 1 to 4
+material below is kept because the live stages reference it, not because it runs.
 
 ## The stages
 
 | # | Skill | Fires | What it does |
 | --- | --- | --- | --- |
 | 0 | `earnings-universe` | 07:12 | Fetch and qualify the day's earnings universe |
-| 4 | `earnings-calibration` | 08:20 | Score *yesterday's* calls, update the ledger |
-| 1 | `earnings-triage` | 08:38 | Screen it down to ~6 names worth researching |
-| 2 | `earnings-deep-dive` | 10:22 & 12:22 | One deep Opus/high dossier per name, in two batches |
-| 3 | `earnings-panel-advice` | 17:52 | Seven-persona panel on the top names → the advice note |
-| C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
+| ~~4~~ | `earnings-calibration` **RETIRED** | 08:20 | Score *yesterday's* calls, update the ledger |
+| ~~1~~ | `earnings-triage` **RETIRED** | 08:38 | Screen it down to ~6 names worth researching |
+| ~~2~~ | `earnings-deep-dive` **RETIRED** | 10:22 & 12:22 | One deep Opus/high dossier per name, in two batches |
+| ~~3~~ | `earnings-panel-advice` **RETIRED** | 17:52 | Seven-persona panel on the top names → the advice note |
+| ~~C~~ | `earnings-capture` **ARCHIVED** | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
-Stage N is not part of the daily advice pipeline. It is `backtest/` arm A promoted to
+Stage N is not part of the daily advice pipeline. It is `archive/backtest/` arm A promoted to
 production: the method that scored 72% direction and +0.90% per trade over 37 events
 while the pipeline's own stage-2 method (arm C) scored 55% and lost money. It writes to
-`claude_naive/` and reads nothing from `research/`. Its Routine is
+`archive/claude_naive/` and reads nothing from `research/`. Its Routine is
 `trig_01XmfJNU2CM7q5uvdb5r4ydF` and **it was disabled on 2026-09-09 at 16:16 UTC**,
 alongside stage C, by someone outside this repo — observed in `list_triggers`, reason not
 recorded anywhere. It had a run due at 17:35 that day and did not take it. Check
-`list_triggers` before concluding a missing `claude_naive/<date>/` is a failure. See `claude_naive/README.md` for what
+`list_triggers` before concluding a missing `archive/claude_naive/<date>/` is a failure. See `archive/claude_naive/README.md` for what
 that result does and does not establish — in short, the direction ranking is a lead and
 the magnitude finding is the part worth acting on.
 
@@ -276,12 +296,12 @@ bootstrap interval spanning zero. See `edge/EDGE_ANALYSIS.md`, "The double hunt 
 both headline numbers".
 
 **Scored on the sealed backtest corpus, the hunt found no rank signal at all.**
-`backtest/runs/edge-corpus/` re-runs stage E over 104 resolved events on 7 days of
-point-in-time captures, judged by `backtest/scripts/edge_corpus_report.py`: ρ=+0.073
+`archive/backtest/runs/edge-corpus/` re-runs stage E over 104 resolved events on 7 days of
+point-in-time captures, judged by `archive/backtest/scripts/edge_corpus_report.py`: ρ=+0.073
 (p=0.45) raw, +0.109 (p=0.27) normalised, and no subgroup — clean captures, corpora holding
 news, measured rather than inferred sessions — reaches significance. That is 104 events
 against 38, on a corpus the hunters could not see past, and it is the single most
-discouraging number in the repo. Read its caveats in `backtest/FINDINGS.md` §33 before
+discouraging number in the repo. Read its caveats in `archive/backtest/FINDINGS.md` §33 before
 weighing it: the option anchor is unrecoverable retrospectively so every event runs on the
 historical-reaction proxy, and 30 of the captures kept sweeping past the print.
 
@@ -352,7 +372,7 @@ sample — every horizon available on both days is flat to negative: −1.42% pe
 after-hours, −0.05% at the opening print, −1.22% an hour in. On 09-09 the free control paid
 +3.9% to +4.5% per day at every hour after 08:00 against −0.2% to −0.9% for the hunt's own
 book, and the two largest predictions were both wrong and large (NAVN +10.0 fell 18.4%, WLTH
-−10.5 rose 8.0%). And `backtest/RESULTS.md` priced its 37 sealed events at both exits: all
+−10.5 rose 8.0%). And `archive/backtest/RESULTS.md` priced its 37 sealed events at both exits: all
 three arms did **better at the close** (+2.16% against +0.90% per trade for arm A). Re-price
 those 37 events on the hourly grid before acting on any exit rule. Execution reality, checked
 against Alpaca's current docs: extended hours are limit-only, an `opg` (opening auction) order
@@ -673,7 +693,7 @@ to carry no information that N's does not, that is a result worth having cheaply
 
 Stage C is not part of the daily advice pipeline and nothing downstream reads it. It
 builds the forward corpus the backtest needs, and it is the only stage whose work cannot
-be redone tomorrow — the day will have moved. See `backtest/scripts/capture.py`.
+be redone tomorrow — the day will have moved. See `archive/backtest/scripts/capture.py`.
 
 **The scripts moved to `edge/scripts/` on 2026-09-10, and four shims stayed behind.**
 `scripts/edge_score.py`, `scripts/edge_universe.py`, `scripts/priced_in.py` and
@@ -752,7 +772,7 @@ replication risk knowingly accepted.** `config/pipeline.yaml` shipped
 the history of the first move and the `amc_open` section above for what runs now; the
 flatten has stayed off throughout. The requirement stated was
 "amc is always run and closed by market open" — the two caveats above (unreplicated on
-09-08/09-09, and `backtest/RESULTS.md`'s 37 sealed events favoring the close for all three
+09-08/09-09, and `archive/backtest/RESULTS.md`'s 37 sealed events favoring the close for all three
 arms) were read and set aside, not missed. Practically: the "Close AMC" Routine is no
 longer a no-op, `mode --require auction_split` exited 0 until the 09-15 move
 (`mode --require-exit-tif opg` is the guard that survives both), and stage E's own run must stop
@@ -792,8 +812,8 @@ specify.
 
 ## Where things go
 
-**One folder per experiment, since 2026-09-10.** `edge/` is stage E, `backtest/` is the
-sealed backtest, `claude_naive/` is stage N. `scripts/` holds only what the pipeline
+**One folder per experiment, since 2026-09-10.** `edge/` is stage E, `archive/backtest/` is the
+sealed backtest, `archive/claude_naive/` is stage N. `scripts/` holds only what the pipeline
 stages share, plus four forwarding shims described below. Nothing about an experiment
 lives in `docs/` any more; `docs/ROUTINES.md` is all that is left there, because it covers
 every Routine rather than one stage.
@@ -807,9 +827,11 @@ edge/                                  stage E — see edge/README.md
 dashboard/                             the standing performance record and the one
   update.sh  scripts/  data/  LOG.md   reading surface — see dashboard/README.md
   dashboard.html                       open it from disk; rebuilt by update.sh
-backtest/                              the sealed backtest
-  runs/pilot-40/  runs/edge-corpus/    arms A/B/C; and stage E scored on the corpus
-claude_naive/                          stage N
+archive/                               retired 2026-09-18 — see archive/README.md
+  backtest/                            the sealed backtest, arms A/B/C + edge-corpus
+  claude_naive/                        stage N, disabled 2026-09-09
+  pipeline/<YYYY>/<MM>/<date>/         stages 1-4's output, day by day
+  pipeline/LEDGER.md PREDICTIONS.*     the forecast ledger and the flat prediction table
 scripts/                               shared: run_paths, publish, run_log, get_earnings,
                                        build_predictions, update_index, validate_stage,
                                        synthesize, smoke_test — and four shims
@@ -817,33 +839,19 @@ config/pipeline.yaml                   one config for all of it
 .claude/{agents,skills}/               where the harness looks; cannot move
 
 research/<YYYY>/<MM>/<YYYY-MM-DD>/
-  00-universe.json  00-universe.md      stage 0
-  01-shortlist.json 01-shortlist.md     stage 1
-  02-dossiers/<TICKER>.md + .json       stage 2
-  02-ranking.json                       stage 2, final batch only
-  03-panel/<TICKER>.json                stage 3, verdicts + synthesis
-  03-panel/<TICKER>-synthesis.json      stage 3, raw script output
-  03-panel/<TICKER>-dossier.md          stage 3, the answer-first dossier
-  04-advice.md  04-advice.json          stage 3, the day's deliverable
-  05-outcome.md 05-outcome.json         stage 4
+  00-universe.json  00-universe.md      stage 0 — still written every day
   edge/                                 stage E's run for that day
   _run-log.md                           appended by every stage
+  01-* 02-* 03-panel/ 04-* 05-*         stages 1-4, MOVED to archive/pipeline/ on
+                                        2026-09-18. Do not write them again.
 INDEX.md         rolling archive index (generated — never hand-edit)
-LEDGER.md        rolling forecast accuracy ledger
-PREDICTIONS.csv  every prediction ever made, one row per (day, ticker) — generated
-PREDICTIONS.json same data plus a summary block — generated
 ```
 
-`PREDICTIONS.csv` is the file to open when the question is "what did we call, and what
-happened". It joins the triage scores, the dossier's preliminary read, the panel
-synthesis, and the realised outcome into one flat table. Regenerate it with:
-
-```bash
-python3 scripts/build_predictions.py
-```
-
-Stages 3 and 4 do this as part of publishing. It is derived state — safe to delete and
-rebuild.
+`archive/pipeline/PREDICTIONS.csv` is the file to open when the question is "what did the
+retired pipeline call, and what happened". It joins the triage scores, the dossier's
+preliminary read, the panel synthesis and the realised outcome into one flat table.
+`scripts/build_predictions.py` still builds it from `research/`, which now holds none of
+those files, so it would write an empty table over a frozen one. Leave it alone.
 
 Never invent a path. Always resolve with:
 

@@ -1,5 +1,12 @@
 # The Routines — schedule, cost, and setup
 
+> **Retired 2026-09-18.** The stage 1, 2, 3 and 4 Routines still fire, because a session
+> cannot disable a Routine it did not create, but `CLAUDE.md` now tells those sessions to
+> log one line and stop. Stage C and stage N were disabled on 2026-09-09 from outside this
+> repo and their folders moved to `archive/` on 2026-09-18. Stage 0, stage E, "Close AMC"
+> and the performance dashboard are what remain live. See `archive/README.md`.
+
+
 Five Routines run the pipeline. Each fires a **fresh session** in a cloud environment,
 which clones this repo, reads `CLAUDE.md`, invokes one stage skill, and pushes its
 output back before dying.
@@ -157,7 +164,7 @@ Routine id `trig_01K1ZTiK4qQayC9aLvaK2Gyn`, created 2026-08-29.
 `earnings-naive-forecast`, Routine `trig_01XmfJNU2CM7q5uvdb5r4ydF`, created 2026-08-30,
 enabled, **Opus**, cron `30 17 * * 1-5`.
 
-Arm A of the `backtest/` study promoted to production. It scored 72% on direction and
+Arm A of the `archive/backtest/` study promoted to production. It scored 72% on direction and
 +0.90% per trade at the open exit over 37 events, against the pipeline's own stage-2
 method at 55% and −1.16%. It won by being given no research method at all, which is why
 the skill says so explicitly and warns against porting the nine-area structure back in.
@@ -183,9 +190,9 @@ the account that needs the switch, and neither switches itself.
 
 ### What it writes
 
-`claude_naive/<date>/forecasts.json` and `entry-prices.json`. Nothing downstream in the
-daily pipeline reads it. `claude_naive/scripts/score_naive.py` scores it the morning
-after against the backtest's own trading scheme and appends to `claude_naive/LEDGER.md`,
+`archive/claude_naive/<date>/forecasts.json` and `entry-prices.json`. Nothing downstream in the
+daily pipeline reads it. `archive/claude_naive/scripts/score_naive.py` scores it the morning
+after against the backtest's own trading scheme and appends to `archive/claude_naive/LEDGER.md`,
 with every rate beside its floor.
 
 **Stages 0 through 4 have no Routine.** A `RemoteTrigger list` on 2026-08-29 found six
