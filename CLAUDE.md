@@ -109,6 +109,18 @@ search traffic, each −1/0/+1, weight = clamp(1 + 0.125·Σ, 0.5, 1.5), with th
 raised from 33% to **50% of equity**. A wrong factor costs size on a good name and can
 never buy a name the hunt did not conviction-rank, which is where `w1` lost.
 
+**The factors are measured on all 105 researched names, not on the 56 the floor buys
+(2026-09-18).** The books are placed above the floor because that is what the gate buys;
+the factors are a claim about the hunt, and the floor selects on `|impact_sum|`, which is
+not what any of the four measure. On the doubled sample **all four keep their sign** and
+every level falls, because the below-floor half returns −2.98% per name against +3.69%
+above it: more findings +1.32% against +0.18%, retail +2.15% against −0.85%, lean agrees
++2.88% against −1.96%, less search +0.41% against −1.12%. The 49 names below the floor are
+the one part of these days no factor was chosen on, and there the two register-backed
+factors keep their sign (retail +1.64pp, lean +2.93pp) while the two without it invert
+(`evidence` −1.86pp, `search_quiet` −2.29pp). No gap reaches two standard errors and
+nothing moves on it.
+
 **The headline mixes a risk decision and a research claim, so read them apart.** Per day
 over 12 traded days: **A** normal (equal, cap 33) +4.28%, t 2.36; **B** cap 50 only
 +4.94%, t 2.44; **C** w2 weighted at cap 50 +5.12%, t 2.37; **D** w2 weighted at cap 33
