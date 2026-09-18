@@ -98,6 +98,10 @@ def render(rows):
         "Stage column reads `UTDPAO`: **U**niverse, **T**riage, **D**ossiers, "
         "**P**anel, **A**dvice, **O**utcome. A `·` means that stage did not produce output.",
         "",
+        "Stages 1 to 4 were retired on 2026-09-18 and their output moved to "
+        "`archive/pipeline/`, so every row from that date reads `U·····` because "
+        "those stages no longer run, not because they failed. See `archive/README.md`.",
+        "",
         "| Date | Stages | Universe | Shortlist | Dossiers | Panels | Top call |",
         "| --- | :---: | ---: | ---: | ---: | ---: | --- |",
     ]

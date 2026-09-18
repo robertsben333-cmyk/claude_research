@@ -31,7 +31,9 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
 # Files that are rebuilt from research/ and must never be merged by content.
-GENERATED=(INDEX.md PREDICTIONS.csv PREDICTIONS.json)
+# PREDICTIONS.* and LEDGER.md left this list on 2026-09-18 with the stages that
+# generated them; they are frozen under archive/pipeline/ and are not regenerated.
+GENERATED=(INDEX.md)
 
 if [[ -z "$(git config user.email || true)" ]]; then
   git config user.email "earnings-routine@users.noreply.github.com"
@@ -83,21 +85,17 @@ resolve_generated() {
 # which left INDEX.md modified-but-unstaged and blocked the rebase below.
 paths=()
 [[ -d research ]] && paths+=(research)
-# Forward capture writes here. Named explicitly rather than staging `backtest/`,
-# which also holds the retrospective corpus and work in progress that a capture
-# run has no business committing.
-[[ -d backtest/captures ]] && paths+=(backtest/captures)
-# Stage N (`earnings-naive-forecast`) writes claude_naive/<date>/ and its ledger.
-# Omitted when that stage was added, so its forecasts were committed nowhere and
-# died with the container — the exact failure CLAUDE.md warns about, and silent
-# because the run log lives under research/ and published fine on its own.
-[[ -d claude_naive ]] && paths+=(claude_naive)
+# Retired 2026-09-18. The backtest, stage N and the stage 1-4 pipeline now live
+# under archive/ and nothing writes there any more, so the whole folder is staged
+# as one path rather than named stage by stage. A session that revives any of them
+# is on notice that archive/README.md says why they were stopped.
+[[ -d archive ]] && paths+=(archive)
 # The performance ledger and its dashboard. Generated, but generated from a
 # broker account whose fill history is not in this repo and whose oldest orders
 # will eventually age out of the API -- so the built artefact is the record, and
 # a session that does not push it loses the only copy.
 [[ -d dashboard ]] && paths+=(dashboard)
-for f in "${GENERATED[@]}" LEDGER.md; do
+for f in "${GENERATED[@]}"; do
   [[ -e "$f" ]] && paths+=("$f")
 done
 if (( ${#paths[@]} == 0 )); then
