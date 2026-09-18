@@ -36,7 +36,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "edge" / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "researcher_us" / "scripts"))
 from priced_in import RESULT_WORDS, cik_for, fetch_text, get_json  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]

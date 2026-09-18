@@ -55,7 +55,7 @@ import edge_runup as RU         # noqa: E402
 import edge_sample as ES        # noqa: E402
 import edge_stats as SS         # noqa: E402
 
-CACHE = REPO / "edge" / "analysis" / "trends-cache.json"
+CACHE = REPO / "researcher_us" / "analysis" / "trends-cache.json"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 SUFFIXES = re.compile(

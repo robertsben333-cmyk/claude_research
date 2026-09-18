@@ -19,6 +19,7 @@ If you are a Routine session, read this whole file before doing anything.
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
+| J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 Stage N is not part of the daily advice pipeline. It is `backtest/` arm A promoted to
@@ -628,6 +629,50 @@ specify.
 
 ## Where things go
 
+**Stage J is a second market, added 2026-09-18: `researcher_japan/`.** The same
+hunt, the same hunter contract and — deliberately — the *same scorer*
+(`researcher_us/scripts/edge_score.py`, unchanged), run over Tokyo. It exists to ask
+whether the result stage E is chasing is a property of the method or a property of the
+US market. **It places no orders.** There is no execution block, no broker call and
+there must not be one; that is the one thing that separates it from stage E.
+
+Korea was the original target and was rejected on measurement, not on taste. Querying
+DART directly: Korean periodic filings arrive in four spikes a year of roughly 3,000
+each (Nov 3,077 quarterly, Mar 2,880 annual, May 3,059, Aug 3,121) and the weeks between
+carry almost nothing — 14–18 September 2026 had zero quarterly or semi-annual reports.
+Korean issuers are near-universally December fiscal year-end, so they all report at once.
+Korea also has no mandatory forward earnings-date notice (the 결산실적 예고 공시 is
+explicitly voluntary), no liquid single-stock options, and KIND returns 403 here.
+Japan's fiscal year-ends are staggered, so the flow never stops: counting 決算短信 on
+TDnet, 456 on 2026-08-14 at the peak but still 79 on 09-11, 39 on 09-18 and 11 on 09-17
+off-season. The quietest day sampled was half the US stage's daily universe.
+
+**Three things about stage J that a reader will otherwise get wrong.** First, there is
+**no option anchor** — Japan concentrates option volume in the index — so `options` is
+written all-`null`, `baseline_quality` tops out at 0.40, and `priced_lean_pct` is
+`-0.05 * run_up_20d_pct` for every name. The free control and the baseline's only
+directional content are therefore *the same number*, and the hunt has to beat the run-up
+to have added anything. This is the regime that produced the worst number in the repo
+(`backtest/FINDINGS.md` §33: ρ=+0.073, p=0.45 over 104 events). Second, the day is
+**cut at random**: microcaps go on median 20-day turnover (¥30m, the same ~$200k/day the
+US run screens on), and if more than 25 survive a **date-seeded random draw** picks them,
+because any other cut is a second ranking the scorer cannot see — which is exactly what
+the double hunt turned out to be. Third, `history` is an **estimated cadence**, not a
+record of announcement dates; TDnet keeps only ~31 days, so prior dates are inferred by
+applying this quarter's notified lag backwards. It is a scale. Reading a cadence prior
+as evidence is how TRT got ranked, traded and never reported.
+
+Nothing has resolved in Japan. The stack was validated end to end on 2026-09-18 against
+2026-09-11 (76 scheduled, 34 eligible, 25 drawn, 24 of 25 confirmed on TDnet, one
+correctly killed as `event_occurred: false`, median realised move 2.87%) using
+*synthetic* findings, which ranked at ρ=0.154, p=0.47 — what random findings should do.
+See `researcher_japan/README.md`.
+
+**The five stage 0–4 pipeline Routines were disabled on 2026-09-18** at the operator's
+request, and the stage table's claim that they "do not currently exist" was wrong before
+that: all six were enabled and firing. They are disabled now, not deleted. Stage E is
+untouched and still runs.
+
 **One folder per experiment, since 2026-09-10.** `edge/` is stage E, `backtest/` is the
 sealed backtest, `claude_naive/` is stage N. `scripts/` holds only what the pipeline
 stages share, plus four forwarding shims described below. Nothing about an experiment
@@ -644,6 +689,10 @@ edge -> researcher_us                  SYMLINK. The live Routine prompt names ed
                                        paths and cannot be edited from a session.
 backtest/                              the sealed backtest
   runs/pilot-40/  runs/edge-corpus/    arms A/B/C; and stage E scored on the corpus
+researcher_japan/                      stage J — see researcher_japan/README.md
+  scripts/                             jp_universe, jp_priced_in, jp_resolve
+  routine-prompts/                     the text in the stage J Routine
+  LESSONS.md                           deliberately empty until a run resolves
 claude_naive/                          stage N
 scripts/                               shared: run_paths, publish, run_log, get_earnings,
                                        build_predictions, update_index, validate_stage,

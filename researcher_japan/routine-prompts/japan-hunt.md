@@ -1,0 +1,80 @@
+# Stage J Routine prompt — the Japan researcher
+
+Cron `4 1 * * 1-5` — **01:04 UTC = 10:04 JST = 03:04 Amsterdam.**
+
+Why that hour: Tokyo trades 09:00–11:30 and 12:30–15:00 JST, and Japanese results land
+overwhelmingly after the 15:00 close (386 of 456 `決算短信` on 2026-08-14, all 24 on
+09-01). Firing at 10:04 JST puts the run an hour into the session, with live prices for
+the sealed baseline and just under five hours before the first release. The US stage E
+fires at 17:04 UTC, so the two never overlap and neither can starve the other.
+
+Unlike stage E, this Routine **was created by an agent session**, so a later session can
+update it with `update_trigger` and does not have to ask for a hand-paste. Keep this file
+in step with it anyway — that discipline is what stage E's prompt drift cost.
+
+---
+
+```text
+Run stage J, the Japan researcher, for today's Tokyo window.
+
+0. GET THE REPO, ON THE RIGHT BRANCH. The sandbox starts empty and this repository's
+   DEFAULT branch is a stale feature branch. Do exactly this:
+   - add_repo with owner robertsben333-cmyk, repo claude_research, access push
+   - git clone --depth 1 -b main https://github.com/robertsben333-cmyk/claude_research /home/user/claude_research
+   - register_repo_root on that directory
+   Then verify that researcher_japan/scripts/jp_universe.py,
+   researcher_us/scripts/edge_score.py and
+   .claude/skills/researcher-japan-hunt/SKILL.md all exist. If any is missing you are
+   on the wrong branch or a merge is outstanding: stop and say so. Do not improvise a
+   substitute workflow and do not run the US stage's skills.
+
+Now invoke the skill `researcher-japan-hunt` and follow it exactly. Read CLAUDE.md first.
+
+Re-read the clock with `date -u` rather than trusting any date you were told at
+startup. You fire at 01:04 UTC, which is 10:04 in Tokyo and 03:04 in Amsterdam. The
+Tokyo close is 15:00 JST, five hours out, and essentially every release lands after it.
+That is your deadline for the note, not for an order: THIS STAGE PLACES NO ORDERS.
+There is no broker step, no alpaca_trade.py call and no execution block. If you find
+yourself reaching for one, stop — that is the US stage and it is not this one.
+
+WHAT THIS STAGE PRODUCES: one signed number per company, so today's names can be
+RANKED. No call, no threshold, no direction label anywhere in the output. The question
+under test is whether these companies can be ranked at all, and it is only answerable
+at every cut if nothing has been rounded into a bucket upstream.
+
+THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the ranking
+key and what the note must report are stated in
+.claude/skills/researcher-japan-hunt/SKILL.md and in edge-scores.json's own
+`ranking_key` field. Read them in the tree you actually cloned and follow those.
+
+FOUR THINGS THAT ARE SPECIFIC TO THIS MARKET AND BELONG IN THE NOTE EVERY TIME:
+
+  - There is no option anchor. Japan has no liquid single-stock options, so `options`
+    is all null, baseline_quality tops out at 0.40, and priced_lean_pct is
+    -0.05 * run_up_20d_pct for every name. The free control and the baseline's only
+    directional content are THE SAME NUMBER. If the hunt does not beat the run-up it
+    has added nothing. On the sealed US corpus, in this same anchor-less regime, the
+    hunt ranked rho=+0.073, p=0.45 over 104 events.
+  - The universe is cut and the cut is random. Microcaps go on turnover, then if more
+    than the cap survive, a random draw seeded by the date picks them. Report
+    selection.method, eligible and hunted. Do not substitute your own judgement for
+    the draw, and do not re-run the universe step hoping for a different sample.
+  - `history` is an estimated cadence, not a record of dates. It is a scale for how
+    much the name moves. Never cite one of its dates as a fact.
+  - Daily price limits truncate the tail, so a large finding may be right and still
+    not get paid in full.
+
+If the calendar has no rows for today, that is a normal outcome and usually means the
+relevant fiscal cohort's sheet is not published yet rather than that nobody reports.
+Publish the empty universe with calendar_sheets and calendar_as_of, say so in one line,
+and stop. Do not go looking for names another way.
+
+Work on the `main` branch. Publish the STARTED heartbeat before you spawn a single
+hunter, publish after each wave, and finish with `python3 scripts/update_index.py` then
+`scripts/publish.sh "stage J: Japan ranking for <date>"`. This session is ephemeral;
+anything not pushed is lost.
+
+Reply with the funnel in one line (scheduled / eligible / hunted), the ranked table,
+the finding and URL driving the top and bottom name, and one line on what the day does
+NOT establish.
+```

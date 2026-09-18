@@ -397,7 +397,7 @@ def main():
     print("\nOrder placement (researcher_us/scripts/alpaca_trade.py, no network, no orders)")
     # The real module lives in researcher_us/scripts; scripts/alpaca_trade.py is a forwarding
     # shim for the Routine prompt's frozen path and is not importable as the module.
-    sys.path.insert(0, os.path.join(REPO, "edge", "scripts"))
+    sys.path.insert(0, os.path.join(REPO, "researcher_us", "scripts"))
     import alpaca_trade as at                                     # noqa: E402
 
     ex = at.execution_config(yaml.safe_load(
@@ -799,7 +799,7 @@ def main():
         at.REPO = _repo
 
     print("\nOne issuer, one event (researcher_us/scripts/share_class.py, edge_score.py)")
-    sys.path.insert(0, os.path.join(REPO, "edge", "scripts"))
+    sys.path.insert(0, os.path.join(REPO, "researcher_us", "scripts"))
     import share_class as sc                                       # noqa: E402
     check("a dotted class suffix resolves to its issuer",
           sc.base_of("LEN.B") == "LEN" and sc.base_of("GEF-B") == "GEF")

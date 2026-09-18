@@ -149,6 +149,57 @@ edge_hunt:
   # than treating 3.0 as settled.
   conviction_floor: 3.0
 
+japan_hunt:
+  # Stage J. The same question as `edge_hunt`, asked of the Tokyo market, and
+  # deliberately scored by the SAME scorer (researcher_us/scripts/edge_score.py) so
+  # the two markets' numbers mean the same thing. RESEARCH ONLY -- there is no
+  # execution block here and there must not be one.
+  #
+  # THE CAP AND THE DRAW. In season JPX's calendar carries up to 125 names on one
+  # date and TDnet saw 456 releases on 2026-08-14. One hunter per name means the day
+  # has to be cut, and the cut is two steps: drop microcaps on turnover, then draw
+  # at random from what is left, seeded by the date.
+  #
+  # Random rather than by any priority score, because a non-random cut is a second
+  # ranking the scorer cannot see. The US run has already paid for this once: its two
+  # highest-hunt_priority names each got two hunters, the key is a SUM, so those names
+  # carried the largest conviction by construction and edge_hunter_control.py had to
+  # rebuild all 38 events to find out how much of the headline was the selection
+  # rather than the finding. A seeded draw cannot do that, and `eligible_codes` in the
+  # universe file carries the population the draw came from.
+  cap: 25
+  # Median 20-day turnover floor, in yen. 3e7 JPY is about $200k/day at 150, which is
+  # the same capacity bar `execution.benchmark.min_dollar_volume_usd` screens on, so
+  # the two markets' universes are cut on one number rather than two chosen apart.
+  #
+  # BE CLEAR WHAT IT COSTS: the Japanese tail is far thinner than the US one. On the
+  # 62 names scheduled for 2026-10-09 the median was 7,367,800 JPY a day (~$49k) and
+  # this floor kept 40%. The ranked universe is the liquid half of the day and is not
+  # a sample of Japanese listed companies. That is the "deselect microcaps" step and
+  # it is intended, but it is a selection and it belongs in the note.
+  min_turnover_jpy: 30000000
+  # ONE HUNTER PER NAME, for the reason edge_hunt.double_hunt_top_n records: over
+  # twelve paired US names the gap between two hunters predicted neither the error
+  # (+0.203) nor whether the sign was right (+0.028).
+  hunters_per_name: 1
+  wave_size: 4
+  max_concurrent_subagents: 4
+  model: opus
+  effort: high
+  # No sweep agent. The US sweep exists to kill phantom calendar rows, and Japan's
+  # calendar is the issuer's own notified date carried by JPX -- a different and much
+  # stronger object than the Nasdaq feed, whose `time-not-supplied` rows were 20 of 20
+  # phantom on 2026-09-17. The hunter re-checks a stale `calendar_as_of` itself.
+  sweep_agents: 0
+  # Inherits edge_hunt.conviction_floor unless set. A floor on EMPHASIS in the note,
+  # never a filter on the scored file.
+  conviction_floor: null
+  degrade_order:
+    - reduce cap to 15 names
+    - reduce cap to 8 names
+    - skip the note's per-name critical read, keep the ranked table
+    - publish the ranking with fewer names and say which were shed
+
 output:
   disclaimer: >-
     This is research, not financial advice. Earnings reactions are highly uncertain

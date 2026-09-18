@@ -34,7 +34,7 @@ from zoneinfo import ZoneInfo
 
 ET = ZoneInfo("America/New_York")
 REPO = Path(__file__).resolve().parents[2]
-CACHE = REPO / "edge" / "analysis" / "bars-cache.json.gz"
+CACHE = REPO / "researcher_us" / "analysis" / "bars-cache.json.gz"
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 CHART = ("https://query1.finance.yahoo.com/v8/finance/chart/"
          "{t}?interval={iv}&range={rg}")

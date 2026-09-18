@@ -926,7 +926,7 @@ def build_panel_from_runs(runs, cache):
 
 
 def build_panel(cache, keep_dup):
-    rows_by_day = json.loads((ROOT / "edge" / "analysis" / "edge-rows.json").read_text())
+    rows_by_day = json.loads((ROOT / "researcher_us" / "analysis" / "edge-rows.json").read_text())
     panel, problems = [], []
     for day in rows_by_day:
         run = day[0]["run"]

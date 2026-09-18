@@ -20,7 +20,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "edge" / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "researcher_us" / "scripts"))
 from priced_in import build  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
