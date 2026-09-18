@@ -4,6 +4,43 @@ Append-only. One dated section per update, written by the `edge-performance` ski
 Three things in every entry: what closed and what resolved, the pooled ranking figure
 beside its free control, and one sentence of critical read.
 
+## 2026-09-18 (evening) — hypotheses moved to the traded book, and a frozen weighting
+
+**The hypotheses are now asked of the book, not of every ranked name.** A rule that only
+works on names the stage never buys cannot change anything, and below the floor the sign
+is a coin flip, so those names diluted every split with noise the book does not carry.
+That costs about half the sample, which is why the verdict ladder grew a middle rung:
+
+    steun               right sign, |t| >= 2
+    mogelijk · meer data right sign, |t| < 2, gap >= 1.5pp per name
+    geen effect         small either way
+    tegengesteld        wrong sign, |t| >= 2
+
+Each `mogelijk` row now also prints how many names it would take to settle, from
+n*(2/t)^2. On the traded book: three `steun` (H5 price lean, H6 the floor, H9 search),
+five `mogelijk`, two `geen effect`. Both exit hypotheses (H2a/H2b) sit in the middle rung
+at +1.88pp and +2.18pp — which is the answer that was missing before.
+
+**A pre-registered weighting, `dashboard/scripts/weighting.py`, version w1, frozen
+today.** `w_score = impact_sum * clamp(1 + 0.15 * sum(tilts), 0.5, 1.5)`, four tilts at
+−1/0/+1 from what the register found. It does not touch `edge_score.py` and the book is
+still placed on the plain rule.
+
+**In sample it loses, and that is the finding.** Symmetric w1 returns +3.09% against
++3.69% for the plain rule — on the very days every tilt was chosen from. Decomposed: the
+names it drops were correctly dropped (+0.22%), what it keeps beats the book (+4.27%),
+and the four it promotes over the floor return −11.01%. Every tilt on its own points the
+right way (lean_agree +7.27% against +0.11%, sector +7.48% against +1.82%, search +5.32%
+against +0.37%, retail +4.68% against +2.47%). The damage is entirely in promotion.
+
+So `w1_filter` ships beside it: demote-only, structurally unable to add a name the floor
+rejected. In sample +4.27% on 48 names. Both are frozen and both run forward, because
+choosing the better one on the sample that produced it is the same error one level up.
+
+One bug worth recording: the per-tilt table printed `NaN` for every t-statistic. The loop
+variable was called `t` and was spread over a row whose t-statistic is also called `t`.
+Caught by rendering the page, not by reading it — the second time today.
+
 ## 2026-09-18 (later still) — a hypothesis register, and a verdict rule that bites
 
 A `Hypotheses` tab, deliberately outside the `edge-performance` skill: a place to test,

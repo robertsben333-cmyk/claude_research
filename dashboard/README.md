@@ -133,6 +133,41 @@ bmo-late exit split. Both exit tests lean the predicted way (+1.9pp and +2.2pp p
 and neither reaches |t| = 2, so they are the two worth watching forward rather than
 acting on.
 
+## The Weging tab and the pre-registered weighting
+
+`dashboard/scripts/weighting.py` holds a weighting of `impact_sum`, frozen with a date
+and a version. It does **not** replace the live rule: `edge_score.py` is untouched, the
+book is still placed on the plain score, and this runs beside it so the two can be
+compared on days that do not exist yet.
+
+    w_score = impact_sum * clamp(1 + K * sum(tilts), 0.5, 1.5)      K = 0.15
+
+Four tilts, each −1 / 0 / +1, drawn from what the hypothesis register found: price-lean
+agreement (H5), search quiet (H9), retail tilt (H3), sector (H4). One magnitude for all
+four — four fitted weights on 56 traded names is how a scheme memorises its sample.
+
+**Two variants ship, both frozen, both tracked forward.** `w1` is symmetric; `w1_filter`
+may only remove a name from the book and can never promote one the plain floor rejected.
+The second exists because of what the first did in sample, and that reasoning is in the
+module rather than hidden in a constant:
+
+| rule | n | raak | per name |
+| --- | ---: | ---: | ---: |
+| plain | 56 | 64% | +3.69% |
+| w1 symmetric | 52 | 65% | +3.09% |
+| w1_filter demote-only | 48 | 69% | +4.27% |
+
+The names `w1` **drops** were correctly dropped (+0.22%), what it keeps beats the book
+(+4.27%), and the four it **promotes** return −11.01% — the whole of its
+underperformance. The conviction floor is the only rule in this repo that ever cleared a
+family-wise correction, so a tilt chosen on 13 days overruling it is the weakest link
+doing the most consequential thing.
+
+Shipping both rather than picking the better one is deliberate: `w1_filter` was designed
+after seeing those four names, so choosing it on this sample would be the same fitting
+error one level up. **Nothing here may be re-tuned.** A tilt that turns out wrong becomes
+`w2` beside `w1`, never a quietly edited constant.
+
 ## The four tabs added 2026-09-18
 
 `Timing` moves the EXIT with the entry fixed at the 22:00 CET close. These are the

@@ -81,6 +81,26 @@ paragraph above measures the hunt against is not stable either. What survives: t
 above the floor pays **+3.37%** per trade against **+1.59%** for shorting every name with
 no research at all.
 
+**A PRE-REGISTERED WEIGHTING RUNS BESIDE THE LIVE RULE, and does not replace it
+(2026-09-18).** `dashboard/scripts/weighting.py`, version `w1`, frozen today:
+`w_score = impact_sum * clamp(1 + 0.15 * Σ tilts, 0.5, 1.5)`, four tilts at −1/0/+1 —
+price-lean agreement, search quiet, retail tilt, sector — one magnitude for all four
+because four fitted weights on 56 traded names is memorisation. `edge_score.py` is
+untouched and the book is still placed on the plain score. **Nothing in that spec may be
+re-tuned**: a tilt that turns out wrong becomes `w2` beside `w1`, never an edited
+constant, because a constant that moves with the data is not a hypothesis.
+
+**In sample the symmetric variant LOSES, and that is the finding.** +3.09% per name
+against +3.69% for the plain rule, on the very days every tilt was chosen from.
+Decomposed: the names it drops were correctly dropped (+0.22%), what it keeps beats the
+book (+4.27%), and the four names it promotes over the floor return −11.01%. Every tilt
+on its own points the right way. The damage is entirely in promotion — the conviction
+floor is the only rule here that ever cleared a family-wise correction, and a tilt chosen
+on 13 days was overruling it. So `w1_filter` ships beside it: demote-only, structurally
+unable to add a name the floor rejected, +4.27% on 48 names. **Both are frozen and both
+run forward**; picking the better one on the sample that produced it is the same error
+one level up. The `Weging` tab tracks them per day.
+
 **There is a hypothesis register on the dashboard, and it is NOT part of the skill
 (2026-09-18).** The `Hypotheses` tab is a place to test, not a step in a routine — do not
 fold it into `edge-performance`. Intermediate variables are screened first against three
@@ -90,7 +110,10 @@ header. One verdict rule for all of them: the gap carries the predicted sign and
 two standard errors of its own difference. A hypothesis comparing the same names at two
 exits is **paired** and tested on the per-name difference.
 
-Of ten, three survive on 13 days: one sector carries the result (Consumer Cyclical 27
+The hypotheses are asked of the TRADED BOOK, not of every ranked name, and the verdict
+ladder has a middle rung — `mogelijk · meer data` for a gap that is practically large
+(≥ 1.5pp per name) with |t| still under 2, printed with how many names it would take to
+settle. Of ten on 13 days: one sector carries the result (Consumer Cyclical 27
 names, 70.4%, +5.97% against Technology 48.3%, −1.89%), the hunt pays more where it
 **agrees with the sealed price lean** (ρ +0.33 on the book, p 0.017), and the conviction
 floor — the anchor. **The price-lean result is the uncomfortable one**: this stage exists

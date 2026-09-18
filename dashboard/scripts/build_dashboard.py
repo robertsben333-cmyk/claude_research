@@ -165,6 +165,7 @@ td.t { font-family:var(--mono); }
 .c-no   { color:var(--muted); }
 .c-anti { color:var(--bad); }
 .c-thin { color:var(--muted); opacity:.75; }
+.c-maybe { color:var(--warn); }
 .hyp table { margin-top:6px; }
 .warn { border-left:3px solid var(--warn); background:var(--surface); padding:11px 15px;
         border-radius:0 4px 4px 0; margin:12px 0; font-size:13.5px; color:var(--ink2); }
@@ -1892,30 +1893,59 @@ function hypRows() {
 const hitOf  = r => (Math.sign(r.impact_sum) === Math.sign(mvOf(r))) ? 1 : 0;
 const rateOf = g => g.length ? 100 * g.reduce((s,r)=>s+hitOf(r),0) / g.length : null;
 
-/* One verdict rule, stated once and applied to every row, so no hypothesis gets a
-   kinder reading than another. Thresholds are deliberately blunt: on 13 days a
-   subtle effect is not distinguishable from none. */
+/* ONE VERDICT LADDER, applied to every hypothesis so none gets a kinder reading.
+   The middle rung is the important one: a difference can be large enough to matter
+   and still be indistinguishable from nothing on 13 days, and calling that "geen
+   effect" throws away the thing most worth measuring forward. So:
+
+     steun               right sign, |t| >= 2
+     mogelijk            right sign, |t| < 2, but the gap is practically large
+     geen effect         small either way
+     mogelijk andersom   wrong sign, practically large, |t| < 2
+     tegengesteld        wrong sign, |t| >= 2
+     te dun              under eight names on a side
+
+   PRACTICALLY LARGE is 1.5 percentage points per name. That is not a statistical
+   bar; it is the smallest difference that would change what you do on a book whose
+   floor rule is worth about 6 points. */
+const PRACTICAL_PP = 1.5;
+
+function rungOf(gap, t, expect) {
+  const right = expect > 0 ? gap > 0 : gap < 0;
+  const big = Math.abs(gap) >= PRACTICAL_PP;
+  if (t != null && isFinite(t) && Math.abs(t) >= 2)
+    return right ? ['steun', 'c-yes'] : ['tegengesteld', 'c-anti'];
+  if (big) return right ? ['mogelijk · meer data', 'c-maybe']
+                        : ['mogelijk andersom', 'c-maybe'];
+  return ['geen effect', 'c-no'];
+}
+/* How many events this would need to settle, at the size it is showing now. The
+   standard error falls with sqrt(n), so n_needed = n * (2/t)^2. It is a rough number
+   and it is the most useful one on the page: it turns "not significant" into "come
+   back after this many more prints". */
+function needN(n, t) {
+  if (!t || !isFinite(t) || Math.abs(t) >= 2) return null;
+  return Math.ceil(n * Math.pow(2 / Math.abs(t), 2));
+}
+
 function verdict(a, b, expect) {
   if (!a || !b || a.n < 8 || b.n < 8) return ['te dun', 'c-thin'];
   const gap = a.mean - b.mean;
-  // The gap has to clear its OWN uncertainty, not a flat number of points. A
-  // two-point difference on a book whose per-name standard deviation is twelve is
-  // noise, and a rule that calls it support will call seven of nine hypotheses
-  // supported -- which is what the first version of this did. se is the standard
-  // error of the difference of two means; 2*se is roughly a t-test at p<0.05.
   const se = Math.sqrt((a.sd ?? 0)**2 / a.n + (b.sd ?? 0)**2 / b.n);
   if (!isFinite(se) || se <= 0) return ['geen effect', 'c-no'];
-  if (Math.abs(gap) < 2 * se) return ['geen effect', 'c-no'];
-  const asExpected = expect > 0 ? gap > 0 : gap < 0;
-  return asExpected ? ['steun', 'c-yes'] : ['tegengesteld', 'c-anti'];
+  return rungOf(gap, gap / se, expect);
 }
-/* The gap and what it would have to be to count, so the reader sees the bar. */
+/* The gap, its uncertainty, and -- when it falls short -- how much more data it
+   would take. */
 function gapNote(a, b) {
   if (!a || !b || !a.n || !b.n) return '';
   const gap = a.mean - b.mean;
   const se = Math.sqrt((a.sd ?? 0)**2 / a.n + (b.sd ?? 0)**2 / b.n);
-  return `verschil ${pc(gap)}, standaardfout ${n2(se)}pp — nodig voor steun: ` +
-         `${n2(2*se)}pp`;
+  const t = se > 0 ? gap / se : null;
+  const need = needN(a.n + b.n, t);
+  return `verschil ${pc(gap)}, t ${n2(t)}` +
+         (need ? ` — zou ongeveer ${need} namen nodig hebben in plaats van ${a.n + b.n}`
+               : ` — haalt de lat`);
 }
 /* A PAIRED hypothesis compares the same names at two exits. Running that as two
    independent groups inflates the standard error by roughly the between-name spread,
@@ -1936,9 +1966,7 @@ function pairedSide(rows, fa, fb, labelA, labelB) {
 function pairedVerdict(pr, expect) {
   if (!pr || pr.n < 8) return ['te dun', 'c-thin'];
   if (pr.t == null || !isFinite(pr.t)) return ['geen effect', 'c-no'];
-  if (Math.abs(pr.t) < 2) return ['geen effect', 'c-no'];
-  return (expect > 0 ? pr.diff > 0 : pr.diff < 0) ? ['steun', 'c-yes']
-                                                  : ['tegengesteld', 'c-anti'];
+  return rungOf(pr.diff, pr.t, expect);
 }
 function pairedBlock(h) {
   const pr = h.pair;
@@ -1952,7 +1980,9 @@ function pairedBlock(h) {
              {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
              {h:'t', f:r=>n2(r.t)}], rows)}
     <p class="why"><code>${pr ? `gepaard over ${pr.n} namen: verschil ${pc(pr.diff)}, ` +
-      `t ${n2(pr.t)}, ${pr.wins}/${pr.n} in de voorspelde richting` : 'te weinig paren'}</code></p>
+      `t ${n2(pr.t)}, ${pr.wins}/${pr.n} in de voorspelde richting` +
+      (needN(pr.n, pr.t) ? ` — zou ongeveer ${needN(pr.n, pr.t)} namen nodig hebben`
+                         : ' — haalt de lat') : 'te weinig paren'}</code></p>
     ${h.why ? `<p class="why">${h.why}</p>` : ''}
   </div>`;
 }
@@ -1984,8 +2014,8 @@ function tabHypotheses() {
   const FLOOR = D.conviction_floor ?? 3;
   const above = rk.filter(r => Math.abs(r.impact_sum) >= FLOOR);
   const below = rk.filter(r => Math.abs(r.impact_sum) <  FLOOR);
-  const medOf = k => { const v = rk.map(r=>r[k]).filter(x=>x!==null&&x!==undefined)
-                                   .sort((a,b)=>a-b);
+  const medOf = k => { const v = above.map(r=>r[k]).filter(x=>x!==null&&x!==undefined)
+                                      .sort((a,b)=>a-b);
                        return v.length ? v[Math.floor(v.length/2)] : null; };
 
   let html = `<p class="lead">Een register van vermoedens, geen conclusies. Elke regel
@@ -2036,16 +2066,29 @@ function tabHypotheses() {
     is volatiliteit, geen vaardigheid.</small></div>`;
 
   /* -------------------------------------------------------- 2. the hypotheses */
+  /* THE HYPOTHESES ARE ASKED OF THE TRADED BOOK, not of every ranked name. A rule
+     that only works on names the stage never buys cannot change anything, and the
+     names below the floor are a different population: their sign is a coin flip, so
+     mixing them in dilutes every split with noise the book never carries. The cost is
+     power -- roughly half the sample -- which is why the middle rung of the ladder
+     exists. H6 is the exception: it IS the floor, so it has to see both sides. */
+  const HS = above;
+  const ctx = (fa, fb, expect) => {          // the same split over ALL names, for context
+    const a = side(rk.filter(fa), ''), b = side(rk.filter(fb), '');
+    if (!a.n || !b.n) return '';
+    const gap = a.mean - b.mean;
+    const se = Math.sqrt((a.sd ?? 0)**2 / a.n + (b.sd ?? 0)**2 / b.n);
+    return `alle namen (n=${a.n}+${b.n}): verschil ${pc(gap)}, t ${n2(se ? gap/se : null)}`;
+  };
   const H = [];
 
   H.push({id:'H1', title:'bmo is beter voorspelbaar dan amc',
     claim:`Een <code>bmo</code>-print heeft twee dunne voorbeurs-uren gehad, een
       <code>amc</code>-print een hele nacht. Als de hunt iets vindt dat de markt nog moet
       verwerken, hoort dat bij bmo langer beschikbaar te zijn.`,
-    a: side(rk.filter(r=>r.session==='bmo'), 'bmo'),
-    b: side(rk.filter(r=>r.session==='amc'), 'amc'), expect: 1,
-    why:`Zet de drempel aan en kijk opnieuw: het verschil zit vooral in het boek, niet in
-      de trefkans.`});
+    a: side(HS.filter(r=>r.session==='bmo'), 'bmo'),
+    b: side(HS.filter(r=>r.session==='amc'), 'amc'), expect: 1,
+    why:`Boven de conviction floor. ` + ctx(r=>r.session==='bmo', r=>r.session==='amc')});
 
   const sgnRet = (r, k) => r[k] == null ? null : (r.impact_sum > 0 ? r[k] : -r[k]);
   H.push({id:'H2a', title:'amc is méér waard verkocht op de opening dan op de close',
@@ -2076,14 +2119,14 @@ function tabHypotheses() {
         kap, lage koers en volatiliteit. Het vermoeden is dat een retail-gehouden naam
         reageert op wat een lezer kan vinden, en een institutioneel gehouden naam niet.
         Mediaan onder deze filters is ${n1(tilt)}.`,
-      a: side(rk.filter(r=>r.retail_tilt >= tilt), `tilt ≥ ${n1(tilt)}`),
-      b: side(rk.filter(r=>r.retail_tilt <  tilt), `tilt < ${n1(tilt)}`), expect: 1,
+      a: side(HS.filter(r=>r.retail_tilt >= tilt), `tilt ≥ ${n1(tilt)}`),
+      b: side(HS.filter(r=>r.retail_tilt <  tilt), `tilt < ${n1(tilt)}`), expect: 1,
       why:`Let op de interactietabel onderaan: het effect zit niet in de tilt zelf maar in
         de combinatie met de conviction floor.`});
   }
 
   const bySec = {};
-  rk.forEach(r => { const k = r.sector || 'onbekend';
+  HS.forEach(r => { const k = r.sector || 'onbekend';
                     (bySec[k] = bySec[k] || []).push(r); });
   const secs = Object.entries(bySec).filter(([,g]) => g.length >= 8)
                      .map(([k,g]) => side(g, k)).sort((a,b)=>b.mean-a.mean);
@@ -2104,8 +2147,8 @@ function tabHypotheses() {
         leunt, vóór er een hunter draaide. De stage heet "zoek wat de markt heeft gemist",
         dus als dit iets oplevert wijst het de verkeerde kant op: dan verdient de hunt
         juist waar hij de markt <i>volgt</i>.`,
-      a: side(rk.filter(r=>r.priced_lean_pct >= lean), `lean ≥ ${n2(lean)}`),
-      b: side(rk.filter(r=>r.priced_lean_pct <  lean), `lean < ${n2(lean)}`), expect: 1,
+      a: side(HS.filter(r=>r.priced_lean_pct >= lean), `lean ≥ ${n2(lean)}`),
+      b: side(HS.filter(r=>r.priced_lean_pct <  lean), `lean < ${n2(lean)}`), expect: 1,
       why:`Dit is de enige continue variabele in de screen die op zowel raak als boek iets
         laat zien. Het is ook de meest ongemakkelijke uitkomst in dit register, en daarom
         de eerste die vooruit gemeten hoort te worden in plaats van weggeredeneerd.`});
@@ -2123,8 +2166,9 @@ function tabHypotheses() {
     claim:`Een naam waar de hunter zes dingen vond hoort beter gelezen te zijn dan een
       naam met één. Als dat niet zo is, meet <code>impact_sum</code> vooral hoeveel er
       te schrijven viel.`,
-    a: side(rk.filter(r=>r.n_findings >= 4), 'vier findings of meer'),
-    b: side(rk.filter(r=>r.n_findings <  4), 'minder dan vier'), expect: 1});
+    a: side(HS.filter(r=>r.n_findings >= 4), 'vier findings of meer'),
+    b: side(HS.filter(r=>r.n_findings <  4), 'minder dan vier'), expect: 1,
+    why: ctx(r=>r.n_findings>=4, r=>r.n_findings<4)});
 
   const dv = medOf('dollar_vol');
   if (dv !== null) {
@@ -2132,11 +2176,12 @@ function tabHypotheses() {
       claim:`Waar minder ogen kijken, hoort meer onverwerkt te zijn. Dit is ook de
         hypothese met de meeste praktische gevolgen: als hij klopt, zit het rendement
         precies waar het niet te handelen is.`,
-      a: side(rk.filter(r=>(advOf(r)||0) <  dv), `omzet < $${n1(dv/1e6)}m`),
-      b: side(rk.filter(r=>(advOf(r)||0) >= dv), `omzet ≥ $${n1(dv/1e6)}m`), expect: 1});
+      a: side(HS.filter(r=>(advOf(r)||0) <  dv), `omzet < $${n1(dv/1e6)}m`),
+      b: side(HS.filter(r=>(advOf(r)||0) >= dv), `omzet ≥ $${n1(dv/1e6)}m`), expect: 1,
+      why: ctx(r=>(advOf(r)||0)<dv, r=>(advOf(r)||0)>=dv)});
   }
 
-  const meas = rk.filter(r => r.search_state === 'measured' && r.search_spike != null);
+  const meas = HS.filter(r => r.search_state === 'measured' && r.search_spike != null);
   if (meas.length >= 16) {
     const sp = [...meas].map(r=>r.search_spike).sort((a,b)=>a-b)[Math.floor(meas.length/2)];
     H.push({id:'H9', title:'veel zoekverkeer betekent een slechtere trade',
@@ -2147,8 +2192,17 @@ function tabHypotheses() {
   }
 
   html += `<div class="card"><h3>2. De hypotheses</h3>
+    <p class="claim"><b>Alles hieronder wordt gevraagd van het verhandelde boek</b> —
+    de namen boven de conviction floor — en niet van elke gerangschikte naam. Een regel
+    die alleen werkt op namen die de stage nooit koopt kan niets veranderen, en onder de
+    floor is het teken een muntje, dus die namen verdunnen elke splitsing met ruis die het
+    boek niet draagt. Dat kost ongeveer de helft van de steekproef, en daarvoor is de
+    middelste trede. H6 is de uitzondering: dat <i>is</i> de floor, dus die ziet beide
+    kanten.</p>
     <p class="claim">Verdict per regel: <b>steun</b> als het verschil het voorspelde teken
-    heeft en groot genoeg is tegen zijn eigen onzekerheid;
+    heeft en |t| ≥ 2; <b>mogelijk · meer data</b> als het teken klopt en het verschil
+    praktisch groot is (≥ ${PRACTICAL_PP} procentpunt per naam) maar |t| nog onder 2 zit;
+    <b>geen effect</b> als het klein is;
     <b>tegengesteld</b> als het even groot is maar de andere kant op; <b>geen effect</b>
     als het kleiner is; <b>te dun</b> onder acht namen per kant. Eén regel voor alle
     hypotheses, zodat geen enkele een vriendelijker lezing krijgt.</p>
@@ -2221,12 +2275,138 @@ function tabHypotheses() {
   return html;
 }
 
+
+/* ===================================================================== weging
+   The pre-registered weighting, beside the plain rule and never instead of it. The
+   spec lives in dashboard/scripts/weighting.py with its freeze date; this tab only
+   reports what it does. Nothing here re-fits anything. */
+function tabWeging() {
+  const W = D.weighting;
+  const rk = rankRows().filter(r => r.impact_sum !== 0 && r.w_score != null
+                                 && retOf(r) !== null && retOf(r) !== undefined);
+  if (rk.length < 12) return `<div class="empty">te weinig rijen onder deze filters</div>`;
+  const FLOOR = D.conviction_floor ?? 3;
+  const sgnRet = r => r.impact_sum > 0 ? mvOf(r) : -mvOf(r);
+
+  const plain = rk.filter(r => Math.abs(r.impact_sum) >= FLOOR);
+  const w1    = rk.filter(r => Math.abs(r.w_score)   >= FLOOR);
+  const wf    = rk.filter(r => Math.abs(r.impact_sum) >= FLOOR
+                            && Math.abs(r.w_score)    >= FLOOR);
+  const mk = (rows, label) => ({...book(rows.map(retOf)), label, n: rows.length});
+  const books = [mk(plain, 'normale routine · |impact_sum| ≥ ' + FLOOR),
+                 mk(w1,    'w1 · symmetrisch'),
+                 mk(wf,    'w1_filter · alleen afwaarderen')];
+
+  const key = r => r.ticker + r.event_date;
+  const inP = new Set(plain.map(key)), inW = new Set(w1.map(key));
+  const added   = w1.filter(r => !inP.has(key(r)));
+  const dropped = plain.filter(r => !inW.has(key(r)));
+  const kept    = plain.filter(r =>  inW.has(key(r)));
+
+  let html = `<p class="lead">Een <b>vooraf vastgelegde</b> weging van
+    <code>impact_sum</code>, naast de normale routine en nooit in plaats daarvan. Het boek
+    wordt nog steeds op het gewone getal geplaatst; dit draait ernaast zodat de twee op
+    dagen die nog niet bestaan vergeleken kunnen worden.</p>`;
+
+  html += `<div class="warn"><b>De in-sample vergelijking hieronder is geen bewijs.</b>
+    Elke tilt in de spec is gekozen ná het zien van deze ${byDay(rk).length} dagen. Op
+    precies die dagen hoort hij te winnen; dat hij dat symmetrisch <i>niet</i> doet is
+    het interessantste getal op deze pagina. De test is vooruit, vanaf
+    ${esc((W && W.frozen) || '—')}.</div>`;
+
+  html += `<div class="card"><h3>De spec</h3>
+    <p class="claim"><code>w_score = impact_sum × clamp(1 + ${W ? W.k : '?'} × Σ tilts,
+    ${W ? W.clamp[0] : '?'}, ${W ? W.clamp[1] : '?'})</code>, teken behouden. Elke tilt is
+    −1, 0 of +1; één magnitude voor alle vier, omdat vier losse gewichten op
+    ${plain.length} verhandelde namen fitten is. Versie <b>${esc(W ? W.version : '—')}</b>,
+    bevroren <b>${esc(W ? W.frozen : '—')}</b> — een constante die meebeweegt met de data
+    is geen hypothese, dus een tilt die fout blijkt wordt <code>w2</code> naast
+    <code>w1</code> en geen stille edit.</p>` + table([
+    {h:'tilt', f:r=>`<code>${esc(r.k)}</code>`},
+    {h:'uit', f:r=>esc(r.from)},
+    {h:'+1', f:r=>esc(r.up)},
+    {h:'−1', f:r=>esc(r.dn)},
+    {h:'vuurt', f:r=>r.fires}],
+    [{k:'lean_agree', from:'H5 · steun', fires: rk.filter(r=>r.w_tilts.lean_agree).length,
+      up:'prijs-lean wijst dezelfde kant op', dn:'de andere kant'},
+     {k:'search_quiet', from:'H9 · steun', fires: rk.filter(r=>r.w_tilts.search_quiet).length,
+      up:'zoekpiek onder normaal', dn:'erboven'},
+     {k:'retail', from:'H3 · mogelijk', fires: rk.filter(r=>r.w_tilts.retail).length,
+      up:'retail tilt ≥ 50', dn:'< 50'},
+     {k:'sector', from:'H4 · mogelijk', fires: rk.filter(r=>r.w_tilts.sector).length,
+      up:'Consumer Cyclical', dn:'Technology'}]) +
+    `<small>Bewust weggelaten: sessie (H1 geen effect — en de uitstapsplitsing hoort in
+     <code>exit_mode</code>, niet in een score), aantal findings (H7 geen effect), en omzet
+     (H8 leunt, maar daarop kantelen betekent kantelen naar namen die de omzetvloer en de
+     borrow-check daarna weigeren — een capaciteitsval, geen edge).</small></div>`;
+
+  html += `<div class="card"><h3>Het boek onder elke regel</h3>` + table([
+    {h:'regel', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
+    {h:'raak %', f:r=>n1(r.hit)},
+    {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'mediaan', f:r=>pc(r.median)}, {h:'t', f:r=>n2(r.t)}], books) +
+    `<small>Zelfde namen, zelfde uitstap, alleen een andere selectieregel.</small></div>`;
+
+  html += `<div class="card"><h3>Waar het verschil vandaan komt</h3>` + table([
+    {h:'groep', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
+    {h:'raak %', f:r=>n1(r.hit)},
+    {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`}],
+    [mk(kept, 'door beide gehouden'), mk(dropped, 'door de weging afgevallen'),
+     mk(added, 'door de weging toegevoegd')]) +
+    `<small>De namen die de weging <i>weggooit</i> waren inderdaad de zwakke, en wat
+     overblijft doet het beter dan het hele boek. Wat symmetrisch misgaat zit in de laatste
+     regel: namen die de gewone floor afwees en een tilt er alsnog overheen tilt. Daarom
+     bestaat <code>w1_filter</code>, die per constructie niets kan promoveren — en daarom
+     draaien ze allebei vooruit in plaats van dat er nu één wordt gekozen, want die keuze
+     op deze dagen maken is dezelfde fitfout een niveau hoger.</small></div>`;
+
+  const tiltRows = [];
+  // `tilt` and not `t`: mk() returns the row's t-statistic under that name, and
+  // spreading a loop variable called `t` over it replaced every t with a tilt name.
+  ['lean_agree','search_quiet','retail','sector'].forEach(tilt => {
+    [1,-1].forEach(v => {
+      const g = plain.filter(r => r.w_tilts[tilt] === v);
+      if (g.length >= 5) tiltRows.push(mk(g, `${tilt} ${v > 0 ? '+1' : '−1'}`));
+    });
+  });
+  html += `<div class="card"><h3>Wat elke tilt afzonderlijk doet</h3>
+    <p class="claim">Op het verhandelde boek, één tilt tegelijk. Dit is de tabel waaruit
+    de spec is gekozen, dus hij kan de spec niet bevestigen — hij laat alleen zien dat
+    geen enkele tilt de verkeerde kant op wijst.</p>` + table([
+    {h:'tilt', f:r=>`<code>${esc(r.label)}</code>`}, {h:'n', f:r=>r.n},
+    {h:'raak %', f:r=>n1(r.hit)},
+    {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'t', f:r=>n2(r.t)}], tiltRows) + `</div>`;
+
+  const per = byDay(rk).map(day => {
+    const d0 = day[0].run_date;
+    const P = day.filter(r => Math.abs(r.impact_sum) >= FLOOR);
+    const F = P.filter(r => Math.abs(r.w_score) >= FLOOR);
+    return {d: d0, np: P.length, nf: F.length,
+            mp: P.length ? book(P.map(retOf)).mean : null,
+            mf: F.length ? book(F.map(retOf)).mean : null};
+  });
+  html += `<div class="card"><h3>Per dag, vooruit te volgen</h3>` + table([
+    {h:'dag', f:r=>esc(r.d)},
+    {h:'namen normaal', f:r=>r.np}, {h:'normaal', f:r=>r.mp===null?'–':
+      `<span class="${sgn(r.mp)}">${pc(r.mp)}</span>`},
+    {h:'namen w1_filter', f:r=>r.nf}, {h:'w1_filter', f:r=>r.mf===null?'–':
+      `<span class="${sgn(r.mf)}">${pc(r.mf)}</span>`},
+    {h:'verschil', f:r=>(r.mp===null||r.mf===null)?'–':
+      `<span class="${sgn(r.mf-r.mp)}">${pc(r.mf-r.mp)}</span>`}], per) +
+    `<small>Dit is de tabel die betekenis krijgt naarmate er dagen bijkomen na
+     ${esc((W && W.frozen) || '—')}. Alles erboven is de dag waarop de regel bedacht is.</small>
+    </div>`;
+  return html;
+}
+
 /* ------------------------------------------------------------------- boot */
 const TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel], ['Score',tabScore],
               ['Drempel',tabDrempel], ['Sector',tabSector], ['Timing',tabTiming],
               ['Instap',tabInstap], ['Aanloop',tabAanloop], ['Zoekvolume',tabZoek],
               ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten], ['Lessons',tabLessons],
-              ['Hypotheses',tabHypotheses], ['Agenda',tabAgenda], ['Data',tabData]];
+              ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
+              ['Agenda',tabAgenda], ['Data',tabData]];
 let active = 0;
 const nav = document.getElementById('tabs'), panels = document.getElementById('panels');
 TABS.forEach(([name], i) => {

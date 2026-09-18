@@ -1132,6 +1132,17 @@ def main():
         r["tradable_reason"] = (da or {}).get("tradable_reason")
         r["asset_asof"] = (da or {}).get("asset_asof", "live lookup, not day-of")
     retail_tilt(names, runs)
+
+    # The pre-registered weighting, beside the plain score and never instead of it.
+    # It MUST run last: two of its four tilts read `sector` and `retail_tilt`, which
+    # are attached just above, and running it earlier silently scored those tilts 0 --
+    # a weighting that looks like it works because half of it never fires.
+    sys.path.insert(0, str(ROOT / "dashboard" / "scripts"))
+    import weighting as WGT                                   # noqa: E402
+    n_w = WGT.attach(names, floor)
+    fired = sum(1 for r in names if any((r.get("w_tilts") or {}).values()))
+    print(f"weighting {WGT.SPEC['version']} (frozen {WGT.SPEC['frozen']}): "
+          f"{n_w} scored, {fired} with at least one tilt")
     attach_theoretical(all_eps, names)
     costs = costs_for(runs, names)
 
@@ -1155,6 +1166,7 @@ def main():
         "horizons": EX.HORIZONS,
         "strategy_exit": {k: {"field": v[0], "cet": v[1]}
                           for k, v in STRATEGY_EXIT.items()},
+        "weighting": WGT.SPEC,
         "entry_grid": [f"{h:02d}{m:02d}" for h, m in ENTRY_GRID],
         # The forward week, carried through so the dashboard has one file to read.
         # It is a plan, not a measurement: no prediction, no ranking, no score.
