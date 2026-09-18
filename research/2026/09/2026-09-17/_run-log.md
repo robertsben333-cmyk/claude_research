@@ -146,3 +146,7 @@
 - CORRECTED AGAINST THE 20:01 ENTRY ABOVE, which landed on main while this was being written. The phantom rate for this window is 19 of 20, not 20 of 20: TRT was real, was hunted, cleared the floor at +5.10 and was traded. So `no name bought back` above is the press-release channel's result, not the day's.
 - THE TWO METHODS AGREE ON TRT AND THE SCRIPT GOT THERE WITHOUT AN AGENT. session_resolve.py returned TRT `unresolved / prior: fits` on last item-2.02 2026-05-14, 126 days — the same evidence the hand check used to overturn sweep 2 (which cited 127 days). It also returned `announces_dates: false`, so TRT's missing press release is not evidence against it, which is why the absent-announcement kill is gated on that flag.
 - WHAT THIS COSTS THE `announced` TEST. High precision, low recall: 4 of 4 real reporters on 2026-08-31 and 0 of 8 phantoms, but 0 of 1 today, because TRT has never pre-announced an earnings date in its EDGAR history. `--announced-only` would have dropped the day's only tradeable name. It is for a day with more names than hunters, never for a thin one, and the cadence prior is to be read rather than filtered on.
+
+## Stage 4 — calibration — 2026-09-17
+- Logged at 2026-09-18 15:29 UTC
+- Nothing to score: 04-advice.json status=no_names (single candidate UPXI failed the 00M floor). Wrote 05-outcome.md/.json noting nothing to score.
