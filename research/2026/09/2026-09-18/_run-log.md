@@ -230,3 +230,7 @@ WHAT FAILED: nothing. No agent errored, no fetch was blocked, no script raised. 
 ## Stage C — china scoping — STARTED
 - Logged at 2026-09-18 20:47 UTC
 - Phase 1: measure three China submarket candidates (US-listed China ADRs / HKEX main board / mainland A-shares) on stream, untruncated move, anchor availability and reachability from this container. Write researcher_china/SUBMARKET.md with real counts, recommend one, then build stage C mirroring researcher_japan.
+
+## Stage C — china scoping — ABANDONED
+- Logged at 2026-09-18 20:52 UTC
+- Stopped by the operator before any measurement was written. No researcher_china/ directory, no SUBMARKET.md, nothing to resume. The STARTED heartbeat above is not an unfinished run. Pivoted to Europe (UK / France / Germany) in the same session.
