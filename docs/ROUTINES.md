@@ -75,7 +75,7 @@ finding out cheaply.
 **There is no separate execution Routine while `orders.exit_mode` is `uniform`.** Since
 2026-09-10 the stage E prompt carries two extra steps and the same session does both:
 step 0b sells yesterday's book at market before the hunt launches, step 7 buys today's
-after the note is published. `edge/scripts/alpaca_trade.py` does the work; `edge/EXECUTION.md`
+after the note is published. `researcher_us/scripts/alpaca_trade.py` does the work; `researcher_us/EXECUTION.md`
 is the contract.
 
 **The second Routine now exists — "Close AMC", `trig_01MPuhVvtDgvUYzZXkKpHpKD`, created
@@ -94,7 +94,7 @@ whose exit date equals today off Alpaca's clock, so a 20:00 ET firing the evenin
 would match nothing and report success. Usable window is 00:00 to 09:28 ET **on the exit
 date**. 12:00 UTC lands on 08:00 ET in summer and 07:00 ET in winter, both comfortably
 inside it, which is why it is one cron all year rather than the summer/winter pair every
-other entry in this file needs. The prompt is in `edge/routine-prompts/edge-execute.md`
+other entry in this file needs. The prompt is in `researcher_us/routine-prompts/edge-execute.md`
 and only a person can create it — `create_trigger` is refused to agent sessions here.
 
 **`orders.exit_mode: bmo_close` needs no second Routine**, and it is +1.77pp of the
@@ -125,11 +125,11 @@ stops that. A session cannot: `update_trigger` refuses any Routine an agent did 
 create.
 
 A Routine that has to check the configuration runs
-`python3 edge/scripts/alpaca_trade.py mode --require <mode>` and reads the exit status.
+`python3 researcher_us/scripts/alpaca_trade.py mode --require <mode>` and reads the exit status.
 It never reads `config/pipeline.yaml` by eye — that check fails in both directions when a
 key is renamed or absent, and neither failure says anything in the run log.
 
-See `edge/routine-prompts/edge-execute.md` for the preconditions and for the separate
+See `researcher_us/routine-prompts/edge-execute.md` for the preconditions and for the separate
 exit Routine kept there as a fallback.
 
 ## Stage C — forward capture
@@ -501,11 +501,11 @@ point at `CLAUDE.md`, and require a push at the end.
 agent did not create itself, and the three real Routines — stage E
 (`trig_01CvGQJWoKeNLXWCxiffM3ED`), stage N (`trig_01XmfJNU2CM7q5uvdb5r4ydF`) and stage C
 (`trig_01K1ZTiK4qQayC9aLvaK2Gyn`) — were all created through the HTTP API. A session that
-needs one changed must leave the replacement text in `edge/routine-prompts/` for a human
+needs one changed must leave the replacement text in `researcher_us/routine-prompts/` for a human
 to paste, and must not delete and recreate the Routine: that loses its run history and
 its notification settings.
 
-`edge/routine-prompts/edge-hunt.md` holds stage E's current replacement text and the
+`researcher_us/routine-prompts/edge-hunt.md` holds stage E's current replacement text and the
 reason it changed.
 
 **Do not restate a tree fact in a prompt.** Stage E's prompt used to name the ranking key

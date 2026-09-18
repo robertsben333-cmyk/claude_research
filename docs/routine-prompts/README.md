@@ -1,6 +1,6 @@
-# Moved to `edge/routine-prompts/`
+# Moved to `researcher_us/routine-prompts/`
 
-The stage E Routine prompts live in [`edge/routine-prompts/`](../../edge/routine-prompts/)
+The stage E Routine prompts live in [`researcher_us/routine-prompts/`](../../researcher_us/routine-prompts/)
 since 2026-09-10, when everything about stage E was grouped into `edge/`.
 
 - `edge-hunt.md` — the text pasted into `trig_01CvGQJWoKeNLXWCxiffM3ED` (stage E)

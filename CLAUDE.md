@@ -38,14 +38,14 @@ anything here the market has missed, and how does that rank against the other na
 reporting today."** It emits one signed number per company — `impact_sum`, in points of
 spot, unbounded — with no call, no threshold and no direction label, because the question being tested is whether the day's
 companies can be **ranked** — and that is only answerable at every cut if nothing was
-rounded into a bucket upstream. Falsifiable by `edge/scripts/edge_resolve.py`, which reports
+rounded into a bucket upstream. Falsifiable by `researcher_us/scripts/edge_resolve.py`, which reports
 Spearman rank correlation against the realised move with a permutation p-value. Until
 many days have pooled, it is not better than anything.
 
 Ten runs exist: two on 2026-08-31 and one on each of 09-01, 09-02, 09-03, 09-04, 09-07,
 09-08, 09-09 and 09-10. Six are resolved — **43 names, 249 findings, 65 hunts**; the
 09-08, 09-09 and 09-10 runs are not. (This paragraph said "seven" and omitted 09-09
-until 09-10; the six-resolved decomposition in `edge/EDGE_ANALYSIS.md` is unaffected,
+until 09-10; the six-resolved decomposition in `researcher_us/EDGE_ANALYSIS.md` is unaffected,
 because it covers 08-31 through 09-07 and never included them.) The 09-10 run is the
 first under the one-hunter-per-name contract: 17 names in the window, **17 of 17
 confirmed by the sweep with zero phantom rows**, 17 hunters, 61 findings, 7 clearing the
@@ -60,17 +60,17 @@ buckets and twelve names collapsed to one non-zero score and eleven zeros. The c
 the stage has since dropped are why, and its `edge-scores.json` carries
 `legacy_rescore: true` — midpoints, never evidence about that day.
 
-**The ordering problem is fixed; the scorer is now the problem.** `edge/EDGE_ANALYSIS.md`
-decomposes all six resolved runs, pooling *within* days (`edge/scripts/edge_decompose.py`).
+**The ordering problem is fixed; the scorer is now the problem.** `researcher_us/EDGE_ANALYSIS.md`
+decomposes all six resolved runs, pooling *within* days (`researcher_us/scripts/edge_decompose.py`).
 The shipped `edge_score` ranks at ρ=0.243, p=0.156 — not significant. The hunters' raw
 impact sum, before the cluster-max, the √k discount, the agreement discount and the
 quality multiplier, ranks at ρ=0.407, p=0.017. A paired bootstrap over days puts that
 gap at +0.165 with a 95% CI of [+0.082, +0.244], so the aggregation in
-`edge/scripts/edge_score.py` is subtractive, not small-sample noise. Traded as a long
+`researcher_us/scripts/edge_score.py` is subtractive, not small-sample noise. Traded as a long
 top-third / short bottom-third, the shipped ranking returns +2.17pp per day against
 +11.45pp for its own raw inputs.
 
-**Money placed on it would have lost to doing nothing.** `edge/scripts/edge_trade.py` runs
+**Money placed on it would have lost to doing nothing.** `researcher_us/scripts/edge_trade.py` runs
 each day's ranking as a book, entry at the close before the print and exit after the
 first full session. Gross of costs the shipped ranking returns +1.09% per day (t=0.51,
 95% CI [−2.72, +4.80]) against **+1.49% for shorting every name and doing no research at
@@ -99,7 +99,7 @@ correction at p=0.034. It is not one day (spread over five), not the microcaps (
 turnover $7.5m in the top bucket against $69.9m in the bottom), and not a volatility proxy
 (the top bucket has the *smallest* median realised move). Run the same test on
 `|edge_score|` and it returns +0.077 and −0.003: the scorer destroys the conviction signal
-too. See `edge/EDGE_ANALYSIS.md`, "Conviction is where the direction lives" — the
+too. See `researcher_us/EDGE_ANALYSIS.md`, "Conviction is where the direction lives" — the
 sign of the impact sum over all 38 events is a coin flip (53%), so the conviction floor is
 the whole finding.
 
@@ -107,14 +107,14 @@ the whole finding.
 was scored while the day's two highest-`hunt_priority` names got two hunters and the rest
 got one, and the key is a *sum*, so those names carry the largest conviction by
 construction: 10 double-hunted names average 8.00 findings and |impact| 9.13 against 3.71
-and 3.53 for the other 28. `edge/scripts/edge_hunter_control.py` rebuilds every name's key
+and 3.53 for the other 28. `researcher_us/scripts/edge_hunter_control.py` rebuilds every name's key
 from a single hunter — the only control that keeps all 38 events, since dropping the
 double-hunted names selects on a sweep score assigned before any hunting. Rebuilt, the
 conviction correlation falls from +0.514 (p=0.002) to +0.361 (p=0.045) and the ranking from
 +0.360 to +0.303 (p=0.099). Inflated, not manufactured — but the forward regime is one
 hunter per name, so **+0.361 is the number to expect, not +0.514**, and on single-hunted
 names alone the `|pred| >= 3` cut the trading rule rests on is 9/14 at +4.62% with a
-bootstrap interval spanning zero. See `edge/EDGE_ANALYSIS.md`, "The double hunt inflates
+bootstrap interval spanning zero. See `researcher_us/EDGE_ANALYSIS.md`, "The double hunt inflates
 both headline numbers".
 
 **Scored on the sealed backtest corpus, the hunt found no rank signal at all.**
@@ -162,8 +162,8 @@ either pass can be re-run deliberately.
 
 **The exit is in the wrong place for the amc names.** `edge_resolve.py` scores one
 window — regular close before the print to regular close after the first full session —
-and nobody chose it. `edge/scripts/edge_exit.py` re-resolves all 38 de-duplicated events at
-eight horizons off 5-minute pre/post bars (`edge/analysis/edge-exit.json`). No *uniform* early
+and nobody chose it. `researcher_us/scripts/edge_exit.py` re-resolves all 38 de-duplicated events at
+eight horizons off 5-minute pre/post bars (`researcher_us/analysis/edge-exit.json`). No *uniform* early
 exit is distinguishable from holding to the close: every horizon's Δρ against the close
 has a CI spanning zero, and the family-wise p over the eight is 0.115. But the two legs
 of the hold cancel rather than agree. The entry-to-open gap ranks at ρ=0.315 and pays the
@@ -173,7 +173,7 @@ things: **amc** gaps at ρ=+0.273 / +8.91% and then gives back −3.00% intraday
 day-demeaned, and the book is 6 long / 6 short so it is not drift), while **bmo** is
 +0.187 at the open and +0.670 at the close. Selling into the release is the one variant
 the sample rejects: only 46% of the move exists there and for bmo names its ranking is
-negative. Priced per hour of the clock (`edge/analysis/edge-exit-hourly.html`), the conviction book
+negative. Priced per hour of the clock (`researcher_us/analysis/edge-exit-hourly.html`), the conviction book
 peaks at **+6.38% per trade at 09:00 pre-market** (t=3.54) against +5.60% at the close, and
 the two sessions peak in different places: amc at +8.45% at 09:00 then bleeding to +5.07%
 by 16:00, bmo at zero until 07:00 and then climbing to its best value of +6.23% at the
@@ -188,7 +188,7 @@ before the opening auction is a price that existed and not size that could have 
 
 **The exit finding does not replicate on the first two forward days, and a second sample in
 this repo contradicts it.** `edge_exit.py --runs <edge dir>` scores any day directly, with a
-cutoff at the current clock so nothing unresolved is reported (`edge/analysis/edge-exit-forward.json`).
+cutoff at the current clock so nothing unresolved is reported (`researcher_us/analysis/edge-exit-forward.json`).
 On 09-08 plus 09-09 — 30 names, 14 above the conviction floor, neither day in the fitted
 sample — every horizon available on both days is flat to negative: −1.42% per trade in the
 after-hours, −0.05% at the opening print, −1.22% an hour in. On 09-09 the free control paid
@@ -216,7 +216,7 @@ bmo leg is gone before the same afternoon buys the next book.** amc still exits 
 open from the "Close AMC" Routine (as an `opg` order until 2026-09-18, as a market DAY
 order queued in the pre-market since); bmo now goes at **plain market on stage E's
 own run at 13:05 ET** instead of into that day's closing auction. It is measurably worse
-on the fitted sample and that was accepted, not missed: `edge/scripts/edge_exit.py` scores
+on the fitted sample and that was accepted, not missed: `researcher_us/scripts/edge_exit.py` scores
 it as the `amc_open_bmo_1300` policy at ρ=0.391, 16/22 and **+6.49% per trade (t=3.42)**
 against ρ=0.461, 17/22 and +7.81% (t=4.01) for `auction_split` — 1.31pp, on a paired day
 bootstrap against `uniform_close` of +0.57 [−2.86, +3.18], so neither is established. Two
@@ -282,7 +282,7 @@ the difference between the 09:30 auction print and the NBBO seconds later, wides
 exactly the thin names this book trades; what it buys is an exit that happens. **Still
 unmeasured on this account: whether a queued pre-market DAY order fills at the open.**
 Alpaca's docs say it does and `auction_window()` has assumed so since 09-16, but this
-book has never sent one — `edge/EXECUTION.md` has a one-share test, paired against an
+book has never sent one — `researcher_us/EXECUTION.md` has a one-share test, paired against an
 `opg` control, that settles it in one morning.
 
 What made the failures open positions rather than logged misses was three things in this
@@ -298,7 +298,7 @@ closed / working / UNFILLED, where UNFILLED means shares still held and every or
 the leg dead at the broker. `--fix` re-sends the residual at plain market, sized to what
 Alpaca reports is held and only while every prior order is dead — and from the pre-market
 that rescue now works rather than being refused, because a market DAY order is accepted
-while the market is closed. See `edge/EXECUTION.md`, "The auction exits mostly did not
+while the market is closed. See `researcher_us/EXECUTION.md`, "The auction exits mostly did not
 sell, and the reason was the account".
 
 **The per-session exit is three modes in `alpaca_trade.py`; it shipped on the dullest one
@@ -321,14 +321,14 @@ into its own opening auction — that is what "Close AMC" (created 2026-09-10, c
 (`flatten_before_entry: false`); `auction_split` buys the other +1.54pp on top of that
 Routine, which **only a person could create** — `create_trigger` is refused to agent
 sessions here, confirmed on 2026-09-10. The prompt is written out in
-`edge/routine-prompts/edge-execute.md`. `auction_split` ran from 2026-09-11 until the
+`researcher_us/routine-prompts/edge-execute.md`. `auction_split` ran from 2026-09-11 until the
 2026-09-15 move to `amc_open` — see below; what this paragraph says about the second
 Routine still holds, because `amc_open` keeps the same `opg` leg. **Recycling the amc cash buys
 no extra return**: with one auction entry a day the capital slot is 24 hours either way,
 which is why `capital_table` in `edge_exit.py` prints return per slot-day equal to return
 per trade and flags the hours-held version as a denominator artefact. What it buys is
 settled cash before the auction that funds the next book, and fewer hours of exposure. See
-`edge/EXECUTION.md`, "The exit the two sessions actually want".
+`researcher_us/EXECUTION.md`, "The exit the two sessions actually want".
 
 **And the stage has not yet beaten a free control.** `-run_up_20d_pct`, one number from
 the sealed baseline available before any subagent is spawned, ranks at ρ=0.335 and is
@@ -341,7 +341,7 @@ reaction rather than an option-implied move. Fix the scorer before spending anot
 on hunts.
 
 **Stage E can place its book at Alpaca, and it is switched off.**
-`edge/scripts/alpaca_trade.py` takes the one rule that survived a family-wise correction —
+`researcher_us/scripts/alpaca_trade.py` takes the one rule that survived a family-wise correction —
 `|impact_sum| >= conviction_floor`, side from the sign, plus a $200k turnover floor
 and a shortability check — and places it as an immediate market order on the entry
 date, flattening at market at the start of the next run. Nothing is sent unless `execution.enabled` is
@@ -357,13 +357,13 @@ book nobody is managing. That trades away the measured exit — the next close r
 into the session is nearer the open. The immediate entry, by contrast, costs almost
 nothing measured: on the same 18 traded events the closing auction gave 15/18 and
 +5.86% a trade against 14/18 and +5.82% at 14:00 ET, four hundredths of a point
-(`edge/scripts/edge_entry_timing.py`). What that cannot see is the spread, so the fills go
+(`researcher_us/scripts/edge_entry_timing.py`). What that cannot see is the spread, so the fills go
 in the run log and `orders.entry: market_on_close` puts it back in the auction. The
 only deadline left is that the US session is open; `open` refuses rather than sending
 an order into a closed market.
-`edge/scripts/alpaca_trade.py close` still does the market-on-close exit if
+`researcher_us/scripts/alpaca_trade.py close` still does the market-on-close exit if
 `orders.flatten_before_entry` is turned off and the fallback exit Routine in
-`edge/routine-prompts/edge-execute.md` is added. Sizing is **equal weight, whole
+`researcher_us/routine-prompts/edge-execute.md` is added. Sizing is **equal weight, whole
 budget**:
 the gross budget split N ways, **33% of equity per name since 2026-09-17** (20%
 before, raised on the operator's instruction), a capped name's leftover redistributed
@@ -372,10 +372,10 @@ names the account is deliberately under-invested, and at 100% gross the whole ac
 rides three to nine prints overnight with no stop. The cap is the only risk control in
 the stage, so what the raise costs is concentration and nothing else changed to offset
 it: the 23% gap that moved the account 4.5% at 20% moves it about 7.5% at 33%. See
-`edge/EXECUTION.md` for what it refuses to do and what it does not know.
+`researcher_us/EXECUTION.md` for what it refuses to do and what it does not know.
 
 The code is on the main line as of 2026-09-10. The 2026-09-10 stage E run found steps 0b
-and 7 were no-ops: `edge/scripts/alpaca_trade.py`, `edge/EXECUTION.md` and the `execution`
+and 7 were no-ops: `researcher_us/scripts/alpaca_trade.py`, `researcher_us/EXECUTION.md` and the `execution`
 block did not exist in the tree it cloned, because they were still sitting on
 `claude/alpaca-auto-orders-integration-y397gh`. That branch was merged in response, so
 the script, the docs and the config block are now here.
@@ -383,7 +383,7 @@ the script, the docs and the config block are now here.
 **That failure repeated twice on 2026-09-15 and cost two live things, so check the
 branches before blaming an agent definition.** Both were merged on 2026-09-16 and both
 had been sitting unmerged for a day while the Routines ran against a tree without them:
-`claude/optimistic-hypatia-5qvags` held `edge/LESSONS.md` and the hunter contract that
+`claude/optimistic-hypatia-5qvags` held `researcher_us/LESSONS.md` and the hunter contract that
 returns `print_vs_bar_pct`, which the pasted Routine prompt already asked for — so the
 09-16 run's "agent-definition drift" was a missing merge. `claude/alpaca-sell-orders-filling-mwumuw`
 held the `verify` subcommand, `mode --require-exit-tif` and the `amc_open` exit mode, so
@@ -393,7 +393,7 @@ Routine prompt names something the tree does not have. A session cannot edit a R
 so the tree is what moves — merge first, and only then suspect the definition.
 
 **Both of those are done, and the stage now trades unattended.** The prompt was
-re-pasted from `edge/routine-prompts/edge-hunt.md` on 2026-09-10 at 13:20 UTC — the
+re-pasted from `researcher_us/routine-prompts/edge-hunt.md` on 2026-09-10 at 13:20 UTC — the
 Routine's `updated_at` confirms it and the 14:04 run received both steps — and
 `execution.enabled` was turned on later the same day, by the operator, for the paper
 account. From 2026-09-11 the scheduled fire flattens the previous book at step 0b and
@@ -410,7 +410,7 @@ convictions of the day, so the traded book is the middle of the conviction range
 than the top of it. That run also found two defects, both fixed the same day: sizing
 divided by the sealed baseline spot (four hours stale, so a 20.0% cap produced a 20.3%
 position) and nothing recorded the quote at submission, which made `orders.entry`'s own
-decision criterion uncomputable. See `edge/EXECUTION.md`, "The price the budget is
+decision criterion uncomputable. See `researcher_us/EXECUTION.md`, "The price the budget is
 divided by".
 
 Run 2's own failures are written into the skill and the agent definitions rather than
@@ -420,21 +420,21 @@ that flagged four company-confirmed reporters as non-events, an adversary agent 
 `Write` tool, and two entries of `budget.edge_degrade_order` that each contradicted a
 hard rule stated elsewhere. All four are fixed.
 
-**The hunters learn from the resolved days through one file, `edge/LESSONS.md`** (since
+**The hunters learn from the resolved days through one file, `researcher_us/LESSONS.md`** (since
 2026-09-15). It holds the patterns that repeated across the post-mortems of 09-08 through
 09-14 — a verified fact is not a predicted reaction, name the line a finding lands on,
 the hunter's own caveat has to reach the number, financing is a question, a narrow proxy
 loses to a broad series, verify the bar and keep findings inside the exit window,
 positioning is the thing to beat — as rules with no company fixes in them. The hunter
 now answers two questions (`print_vs_bar_pct` and `expected_move_pct`), each finding
-carries `lands_on` and `resolves_by`, and `edge/scripts/edge_postmortem.py` scores a
+carries `lands_on` and `resolves_by`, and `researcher_us/scripts/edge_postmortem.py` scores a
 resolved run finding by finding so the file can grow from measurement.
 
 **`time-not-supplied` rows are checkable, since 2026-09-17, and on that day the check
 bought back nothing.** Nasdaq's `time` field is a schedule for `time-pre-market` and
 `time-after-hours` and an admission of ignorance for `time-not-supplied`, and the third
 case is usually the larger half of the calendar: 20 of 22 rows on 2026-09-17, leaving
-**one name in the window**. `edge/scripts/session_resolve.py` checks the dropped rows
+**one name in the window**. `researcher_us/scripts/session_resolve.py` checks the dropped rows
 against two free sources and no agent — EDGAR kills a row whose results were filed in
 the ten days before the event, Nasdaq's press-release feed confirms one the company
 itself announced a date for. On the twelve labelled rows of 2026-08-31 the `announced`
@@ -465,7 +465,7 @@ the name not rankable ahead of every other reason, because it is the only one se
 the outcome rather than predicted before it. It does not touch the trade record. TRT on
 2026-09-17 is the worked example.
 
-**One issuer is one event, since 2026-09-16.** `edge/scripts/share_class.py` folds a
+**One issuer is one event, since 2026-09-16.** `researcher_us/scripts/share_class.py` folds a
 second share class into its issuer in `edge_universe.py`, before a baseline is sealed,
 and `edge_score.py` repeats the check on the scored rows — the folded name keeps its
 hunt and its findings but leaves the ranking. On 2026-09-16 LEN and LEN.B were both
@@ -474,7 +474,7 @@ that `edge_resolve.py` would count one print as two events. Earlier runs are unc
 so a pooled sample that spans them still carries that pair twice.
 
 **And the file itself is scored, since 2026-09-16.** The hunter sizes the day with the
-baseline alone, freezes that draft as `pre_lessons`, reads `edge/LESSONS.md`, then
+baseline alone, freezes that draft as `pre_lessons`, reads `researcher_us/LESSONS.md`, then
 revises; `edge_score.py` carries `diagnostics.impact_sum_pre_lessons` beside the key and
 `edge_resolve.py` ranks both against the same realised move (`spearman_pre_lessons`).
 The cost is that the file can no longer steer a search, only a size and a selection.
@@ -493,18 +493,36 @@ Stage C is not part of the daily advice pipeline and nothing downstream reads it
 builds the forward corpus the backtest needs, and it is the only stage whose work cannot
 be redone tomorrow — the day will have moved. See `backtest/scripts/capture.py`.
 
-**The scripts moved to `edge/scripts/` on 2026-09-10, and four shims stayed behind.**
+**`edge/` was renamed to `researcher_us/` on 2026-09-18, and `edge` is now a symlink to
+it.** The stage is "the US researcher" rather than "the edge hunt"; a second market is
+intended to sit beside it as its own top-level directory. Three names did NOT change,
+because the live Routine prompt hard-verifies them and **a session cannot edit that
+prompt**: the skill is still `.claude/skills/earnings-edge-hunt/`, the four shims are
+still `scripts/edge_score.py`, `scripts/edge_universe.py`, `scripts/priced_in.py` and
+`scripts/alpaca_trade.py`, and the per-day output directory is still
+`research/<YYYY>/<MM>/<DATE>/edge/`. Two constants are also deliberately untouched:
+`CLIENT_PREFIX = "edge"` in `alpaca_trade.py`, which is the prefix of every
+`client_order_id` this repo has ever sent to Alpaca and therefore identifies live
+orders at the broker, and the `edge-scores.json` / `edge-note.md` filenames that ten
+resolved runs already carry. The symlink is what keeps the prompt's `edge/…` references
+resolving; **do not delete it until the prompt has been re-pasted** from
+`researcher_us/routine-prompts/edge-hunt.md` with the new paths, and the Routine's
+`updated_at` confirms the paste. This is the same failure that cost two live things on
+2026-09-15 — the Routine prompt naming something the tree does not have — so the rename
+was made non-breaking rather than complete.
+
+**The scripts moved to `researcher_us/scripts/` on 2026-09-10, and four shims stayed behind.**
 `scripts/edge_score.py`, `scripts/edge_universe.py`, `scripts/priced_in.py` and
 `scripts/alpaca_trade.py` are three-line forwarders. They exist because the live Routine
 prompt names those paths, *verifies two of them exist before doing anything else*, and
 cannot be edited from a session — so removing them would have stopped the next unattended
 run at step 0, before step 0b sold the previous day's book. Delete them once
-`edge/routine-prompts/edge-hunt.md` has been re-pasted with the `edge/` prefix. Import the
-modules from `edge/scripts`, never from the shims: they forward a command line and expose
+`researcher_us/routine-prompts/edge-hunt.md` has been re-pasted with the `edge/` prefix. Import the
+modules from `researcher_us/scripts`, never from the shims: they forward a command line and expose
 nothing.
 
 **A Routine prompt guards on an exit status, not on a config key it reads by eye.**
-`python3 edge/scripts/alpaca_trade.py mode --require <mode>` prints the effective
+`python3 researcher_us/scripts/alpaca_trade.py mode --require <mode>` prints the effective
 execution settings and exits non-zero unless execution is enabled and that mode is
 configured. The second exit Routine's prompt used to say "if `orders.exit_mode` is not
 `auction_split`, do nothing", which fails in both directions: a key that has been renamed
@@ -522,7 +540,7 @@ stage says 16:04 Amsterdam / 10:04 ET. Its last run under the old cron fired at 
 
 - **The exit costs nothing.** The `uniform` flatten was measured at ~10:00 ET (+4.49% per
   trade on the conviction book); at 13:00 ET the same grid gives +4.44%. Five hundredths
-  of a point. `edge/analysis/edge-exit-hourly.html`, hour 21.
+  of a point. `researcher_us/analysis/edge-exit-hourly.html`, hour 21.
 - **The entry margin is gone.** Step 7 buys at market and `open` refuses to send into a
   closed market, so the run must finish before 16:00 ET. From 13:04 that is 2h56m. The
   2026-09-09 run took **2h53m end to end**. Three minutes. A day with more names, a
@@ -537,14 +555,14 @@ which is the only reason that is survivable. Fix it on the next paste.
 It is enabled and it is the only pipeline Routine still running. Its prompt cannot be
 edited by a session —
 `update_trigger` refuses any Routine an agent did not create — so the text lives in
-`edge/routine-prompts/edge-hunt.md` and was pasted in by hand on 2026-09-09 at 13:55 UTC;
+`researcher_us/routine-prompts/edge-hunt.md` and was pasted in by hand on 2026-09-09 at 13:55 UTC;
 keep that file in step with the Routine, because nothing else will. Since 2026-09-09 the prompt no longer restates the output contract: the
 ranking key is whatever the skill and `edge-scores.json`'s own `ranking_key` field say,
 because the old prompt named a key that a measurement then demoted.
 
 **A second Routine now exists: "Close AMC", `trig_01MPuhVvtDgvUYzZXkKpHpKD`, created
 2026-09-10 at 18:26 UTC and enabled.** It is the second exit Routine from
-`edge/routine-prompts/edge-execute.md`, and three things about it are worth knowing before
+`researcher_us/routine-prompts/edge-execute.md`, and three things about it are worth knowing before
 `exit_mode` is ever moved off `uniform`:
 
 - **Its cron is `0 10 * * 1-5`, not the `0 12 * * 1-5` that file recommends.** 10:00 UTC
@@ -560,7 +578,7 @@ because the old prompt named a key that a measurement then demoted.
 - **It names two paths that no longer hold what they used to.** `scripts/alpaca_trade.py`
   is one of the four shims and works unchanged. The old `docs/routine-prompts/edge-hunt.md`
   is gone; `docs/routine-prompts/README.md` was left in its place pointing at
-  `edge/routine-prompts/`, because this Routine fires at 10:00 UTC — before any session
+  `researcher_us/routine-prompts/`, because this Routine fires at 10:00 UTC — before any session
   can be asked about it.
 
 **`exit_mode` moved off `uniform` on 2026-09-11, on the operator's explicit instruction,
@@ -617,11 +635,13 @@ lives in `docs/` any more; `docs/ROUTINES.md` is all that is left there, because
 every Routine rather than one stage.
 
 ```
-edge/                                  stage E — see edge/README.md
+researcher_us/                         stage E — see researcher_us/README.md
   EDGE_ANALYSIS.md  EXECUTION.md       what the runs establish; the Alpaca contract
   scripts/                             the stage's own tools
   analysis/                            everything those tools generate
   routine-prompts/                     the text pasted into the Routines, by hand
+edge -> researcher_us                  SYMLINK. The live Routine prompt names edge/
+                                       paths and cannot be edited from a session.
 backtest/                              the sealed backtest
   runs/pilot-40/  runs/edge-corpus/    arms A/B/C; and stage E scored on the corpus
 claude_naive/                          stage N

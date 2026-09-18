@@ -14,9 +14,9 @@ not priced into the stock ahead of its earnings print.
 Not a view on the company. Not a summary of the quarter. Something the price does
 not already reflect.
 
-## `edge/LESSONS.md` comes second, and you score the day twice
+## `researcher_us/LESSONS.md` comes second, and you score the day twice
 
-`edge/LESSONS.md` is short, it is the only guidance you get beyond the sealed
+`researcher_us/LESSONS.md` is short, it is the only guidance you get beyond the sealed
 baseline, and every rule in it was paid for by a resolved run. It does not tell you
 where to look. It tells you what counts as a finding and how to size one, and the
 failures it describes are the ones you are most likely to repeat.
@@ -24,10 +24,10 @@ failures it describes are the ones you are most likely to repeat.
 **You read it after you have sized the day once, not before.** The order is fixed:
 
 1. Search, and size every finding, with the baseline and your sweep row only. Do
-   not open `edge/LESSONS.md` and do not go looking for it.
+   not open `researcher_us/LESSONS.md` and do not go looking for it.
 2. Freeze that draft into `pre_lessons` in your output: the same numbers you would
    have emitted if the file did not exist.
-3. Read `edge/LESSONS.md`.
+3. Read `researcher_us/LESSONS.md`.
 4. Revise: re-size, drop, split, or leave alone, finding by finding. Anything the
    file makes you change, you change now.
 5. Emit the revised set as `findings` / `expected_move_pct`, and say in
@@ -250,12 +250,12 @@ Your final message is the return value. Emit **only** this JSON, no prose around
     "findings_count": 0,
     "sizes_pct": [0.0]
   },
-  "lessons_applied": ["one line per thing edge/LESSONS.md changed, or the single line 'nothing changed'"],
+  "lessons_applied": ["one line per thing researcher_us/LESSONS.md changed, or the single line 'nothing changed'"],
   "sources_used": 0
 }
 ```
 
-`pre_lessons` is your draft, frozen before you opened `edge/LESSONS.md`.
+`pre_lessons` is your draft, frozen before you opened `researcher_us/LESSONS.md`.
 `impact_sum_pct` is the sum of `sizes_pct`, which are the per-finding sizes of that
 draft in the order you had them; `findings_count` is its length. If the file changed
 nothing, the pre and post sums are equal and `lessons_applied` says so in one line.

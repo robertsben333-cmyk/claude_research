@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Pool the edge-corpus days, split by what the capture actually held.
 
-`edge/scripts/edge_resolve.py` pools a run's names into one rank correlation. That is
+`researcher_us/scripts/edge_resolve.py` pools a run's names into one rank correlation. That is
 right for the live pipeline, where every name got the same treatment. It is wrong
 here, and section 36 is why: of the 109 names in this backtest only 14 captures
 hold a single news item. The other 95 are an EDGAR index and a Stocktwits dump.

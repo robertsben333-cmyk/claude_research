@@ -721,7 +721,7 @@ wrong" is doing something the calibration ledger cannot do afterwards.
 
 Asked on 2026-09-09. Answer: yes for the expected-move anchor, no for the options
 anchor, and four things must be fixed first — one of them a look-ahead leak in
-`edge/scripts/priced_in.py` that would silently corrupt every past-event baseline.
+`researcher_us/scripts/priced_in.py` that would silently corrupt every past-event baseline.
 
 **The corpus supports it.** 387 events, 205 already reported, 182 not yet (2026-09-09
 to 2026-09-23). Of the 205 past events, **zero** have a snapshot taken after the event
@@ -746,7 +746,7 @@ tests the branch the live strategy uses most, at n=205 instead of n=51.
    2026-09-08 print it fetched the **2026-09-18** expiry — a chain that did not exist
    before the event — and returned `skew_25d_vol_points: 23.97` with
    `priced_direction_lean: "downside paid"`. Those feed `priced_lean_pct()` and the
-   `dir_q` term of `baseline_quality()` in `edge/scripts/edge_score.py`, so the leak reaches
+   `dir_q` term of `baseline_quality()` in `researcher_us/scripts/edge_score.py`, so the leak reaches
    the score. It raises no error and the baseline reads `status: ok`. Needs an as-of
    guard that refuses the chain whenever `event_date` is in the past.
 2. **The hunter and adversary agents hold `WebSearch`/`WebFetch`.** On a past event a
@@ -774,7 +774,7 @@ proxy-only events, permanently.
 All four are fixed. Two of them turned up something the write-up above did not
 anticipate.
 
-**The as-of guard** (`edge/scripts/priced_in.py`). `build()` now decides from the date
+**The as-of guard** (`researcher_us/scripts/priced_in.py`). `build()` now decides from the date
 whether an option chain may be read at all, and `--no-options` forces it off. A past
 event gets `options.status: not_recoverable_retrospectively` with the implied move and
 the skew explicitly null, and `options_as_of_valid: false` on the document. An explicit
@@ -783,7 +783,7 @@ the CASY 2026-09-08 baseline now suppresses the chain and its tier drops from `f
 `partial`, which is the honest reading; a KR 2026-09-11 baseline still fetches the
 2026-09-18 expiry and reports a straddle.
 
-**The anchor mix** (`edge/scripts/edge_resolve.py`). Each row now carries `implied_basis`,
+**The anchor mix** (`researcher_us/scripts/edge_resolve.py`). Each row now carries `implied_basis`,
 and the per-run and pooled reports print the composition and split the normalised
 correlation by anchor where both are present. Re-running the seven live runs shows why
 this mattered: the pooled `move/implied` of +0.043 is an average of **−0.174 on the 30
@@ -831,7 +831,7 @@ not evidence of non-publication, because a bounded capture is silent about every
 its queries did not ask for. Without that field a backtested adversary's number cannot
 be told apart from a guess.
 
-**One thing fixed on the way** (`cik_for` in `edge/scripts/priced_in.py`). EDGAR writes class
+**One thing fixed on the way** (`cik_for` in `researcher_us/scripts/priced_in.py`). EDGAR writes class
 shares with a hyphen and the calendars hand out dots, so `BF.A` and `BF.B` returned no
 CIK — and no CIK means no reaction history, no cadence check, and a baseline that drops
 to thin with no error. Both separators are now tried. This was hitting the live pipeline

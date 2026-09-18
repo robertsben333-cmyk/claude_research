@@ -1,0 +1,753 @@
+# Placing stage E at Alpaca
+
+`researcher_us/scripts/alpaca_trade.py` turns stage E's ranking into real orders and closes them
+again. It is off in the committed config and stays off until someone sets
+`execution.enabled: true` deliberately.
+
+## The one rule
+
+```
+|impact_sum| >= conviction_floor   ->   long if positive, short if negative
+```
+
+That is the whole selection. It is the only cut in `researcher_us/EDGE_ANALYSIS.md` that
+survived a family-wise correction over the thirteen candidate rankings it was chosen
+from: above the floor the sign was right on 16 of 21 events at +6.37% per trade
+(t=2.74, CI [+1.80, +10.72], +4.87% after a 1.5% round-trip cost); over all 38 events
+it is 53%, a coin flip. Below the floor nothing is traded, because below the floor
+there is nothing to trade.
+
+Two screens sit on top of it, both because the measured result is unreachable
+without them:
+
+| screen | why |
+| --- | --- |
+| `min_dollar_volume_usd: 200000` | below this an order is a meaningful share of the day's volume. It was $5m until 2026-09-10; see below for what the loosening costs. |
+| Alpaca `shortable` | a rejected short leg turns a market-neutral book into a naked long. Names Alpaca will not lend are dropped, not flipped. |
+
+### Where the turnover floor came from
+
+Measured on the 38 de-duplicated events, close-before to close-after, taking every
+name with `|impact_sum| >= 3` and its sign:
+
+| floor | trades | direction | binom p | return per trade | t |
+| --- | --- | --- | --- | --- | --- |
+| none | 21 | 17/21 | 0.004 | +6.18% | 2.66 |
+| **$200k** (shipped) | **18** | **15/18** | **0.004** | **+5.86%** | **2.38** |
+| $1m | 16 | 13/16 | 0.011 | +6.08% | 2.20 |
+| $2m | 15 | 12/15 | 0.018 | +4.95% | 1.84 |
+| $5m (was shipped) | 12 | 11/12 | 0.003 | +8.09% | 3.85 |
+| $10m | 9 | 9/9 | 0.002 | +9.64% | 4.22 |
+
+Regenerate that table with `python3 researcher_us/scripts/edge_turnover_floor.py`, which also lists
+the individual trades each floor adds or refuses.
+
+**The shipped floor is not the best row, and the reason it is not is deliberate.**
+Higher floors look better here, and that is most of the reason to distrust the shape:
+picking the floor that maximises an in-sample return over 38 events is the same move
+that put the ranking's own p at 0.056 under a max-statistic test. The six trades that
+$200k admits and $5m refused came in at 4/6 and +1.40% a trade, with one −22.23% (NX,
+short, $4.89m of turnover) among them. At n=38 no two adjacent rows are
+distinguishable.
+
+Two things the table cannot see decided it:
+
+- **Spread.** The measurement charges a flat 1.5% round trip, which was the argument
+  for a high floor. The operator's reading is that the real spread in these names is
+  far below that, which removes it. If that turns out wrong the cost lands on exactly
+  the names this floor admits, so it is worth checking against a few actual fills
+  before the position sizes matter.
+- **Event rate.** 18 of 38 events trade at $200k against 12 at $5m. That is how a
+  forward sample stops being one small sample a week, and it is a claim about
+  learning speed, not about expected return.
+
+The 1%-of-turnover sizing cap does the rest. At $10k of equity the two lines used to
+meet exactly — a 20% per-name cap was $2,000, precisely 1% of a $200k/day name — and
+since the cap went to 33% on 2026-09-17 they no longer do: $3,300 is 1.65% of that
+name, so in the thinnest tradable names capacity binds first and the equity cap never
+comes into it. The floor and the cap now say the same thing from two directions only
+above about $600k of daily turnover.
+
+Names whose event the sweep could not confirm (`rankable: false`) never reach the
+book. `edge-scores.json` itself is still unfiltered — the ranking test needs the
+complete table — and this script is the only place a cut is applied.
+
+## Setting it up
+
+**Nothing to install.** The script is standard library plus PyYAML, which the repo
+already uses. No `alpaca-py` and no market-data subscription: it calls the trading API
+(`/v2/orders`, `/v2/positions`, `/v2/account`, `/v2/assets`, `/v2/clock`,
+`/v2/calendar`) plus two free market-data endpoints on `data.alpaca.markets`
+(`/v2/stocks/trades/latest`, `/v2/stocks/quotes/latest`) for sizing and for the quote
+captured at submission. All are free on a paper account, and the data ones serve the
+IEX feed, which is single-venue and quotes wide in thin names — see "The price the
+budget is divided by" below for what that costs and how it is handled. If those two
+endpoints are unreachable the script falls back to the sealed baseline spot and says
+so per name rather than failing.
+
+1. **An Alpaca account, on paper.** app.alpaca.markets → Paper Trading → generate an
+   API key. A paper account starts with $100k and needs no funding.
+2. **Margin, if the shorts are meant to happen.** Paper accounts are margin accounts
+   by default. On a cash account every short leg comes back rejected and the book is
+   long-only, which is a different strategy from the one that was measured.
+3. **Credentials as environment variables**, never in the repo. Locally that is a
+   shell export; for anything unattended it has to be on the cloud environment,
+   because a Routine fires into a fresh container that has only this repo:
+
+   ```bash
+   export ALPACA_API_KEY_ID=...
+   export ALPACA_API_SECRET_KEY=...
+   export ALPACA_BASE_URL=https://paper-api.alpaca.markets    # the default
+   ```
+
+   On the cloud environment (claude.ai/code → the cloud icon → the environment →
+   **Environment variables**), the same three lines in `.env` format, one
+   `KEY=value` per line, no quotes and no `export`. A session copies the values once
+   at startup, so a session that is already running keeps the old ones: restart it
+   after editing. Everyone who uses that environment can read them, which is the
+   argument for keeping the keys paper-only.
+
+   **Network access.** The environment has to be able to reach
+   `paper-api.alpaca.markets`. The `Default` environment on this account
+   (`env_01TeUycLFPpAmGb3pDNEHNtp`) does — verified 2026-09-10, the endpoint answers
+   401 rather than being blocked. If a Routine is ever pointed at another
+   environment, set **Network access** to **Custom** and add the host.
+
+   On Pro and Max there is also an **API credentials** slot that keeps a key outside
+   the sandbox entirely and lets the agent proxy attach it. It is the safer shape in
+   principle, but Alpaca authenticates with two custom headers
+   (`APCA-API-KEY-ID` and `APCA-API-SECRET-KEY`), and this script builds those
+   headers itself and refuses to submit when it finds no credentials — so using it
+   that way needs a code change, not just configuration. Environment variables are
+   what is supported today.
+4. **`execution.enabled: true`** in `config/pipeline.yaml`. This is the switch. Four
+   things must all hold before a single order is sent: `enabled: true`, `--submit` on
+   the command line, credentials in the environment, and a paper endpoint — a live
+   endpoint additionally needs `--live-account-i-understand`. Any one missing and the
+   run is a dry run that prints the book and writes `alpaca-plan.json`.
+5. **Check it end to end on one past run first**, which needs no credentials at all:
+
+   ```bash
+   python3 researcher_us/scripts/alpaca_trade.py plan --run research/2026/09/2026-09-09/edge
+   ```
+
+6. **Re-paste the stage E Routine prompt** from `researcher_us/routine-prompts/edge-hunt.md`,
+   which carries both trading steps. No new Routine is needed. Do this only once steps
+   1 to 5 have been watched for a few days — and note that steps 1, 2 and 5 are worth
+   doing before step 4, so the first few days run with the switch still off.
+
+## Sizing: equal weight, whole budget
+
+Every name that clears the benchmark gets the same dollars. The gross budget
+(`gross_exposure_pct_of_equity`, 100%) is split N ways, each name is capped at
+`max_position_pct_of_equity` (33% since 2026-09-17, 20% before), and whatever a
+capped name cannot take is
+redistributed equally over the names that are not yet capped, repeating until nothing
+moves. So the account deploys as much as the caps allow and every uncapped name holds
+the same amount as every other one.
+
+**Nothing in the sizing reads the score.** A name at `impact_sum` 12 gets exactly what
+a name at 3.1 gets. That is not modesty: the key ranks and does not size — median
+absolute error 6 to 7 points against a realised standard deviation near 11 — so
+weighting by it would be sizing on a number with no measured relationship to the size
+of the move.
+
+Two consequences worth knowing before the first run:
+
+- **Under three names the account is deliberately under-invested.** Two names at the
+  33% cap is 66% deployed, and there is nowhere for the rest to go. Three names fill
+  the book to 99%.
+- **The whole account rides three to nine earnings prints overnight, unhedged, with no
+  stop.** Two names in the resolved sample gapped 22–23% (NX +22.23%, CANG −23.01%);
+  at a 33% weight either one moves the account about 7.5%, against 4.5% under the old
+  20% cap. Reg T allows twice equity overnight, so 100% gross fits comfortably in
+  buying power — the constraint here is not margin, it is that nothing cuts a loss,
+  and with a third of equity in one print the cap is the only risk control there is.
+
+`max_position_pct_of_adv` (1%) stays as a slippage guard. At $10k of equity a 33%
+position is $3,300, which is 1.65% of a $200k/day name, so it binds at the bottom of
+the tradable range right away and the leftover is redistributed over the rest of the
+book. The plan prints `%adv` per name either way, so the share of the
+closing auction each order represents is visible rather than inferred.
+
+## Where this runs: inside stage E, not beside it
+
+There is no separate execution Routine. Trading is two steps in the stage E skill and
+its own session, four hours apart:
+
+| step | when | what |
+| --- | --- | --- |
+| 0b | before the sweep launches, ~16:05 Amsterdam | `flatten --submit` — sell yesterday's book at market |
+| 7 | after the note is published, ~19:00 | `plan`, then `open --submit --no-flatten` — buy today's at market |
+
+The sell goes **first**, and not because it is tidier. Every position in the account
+has already been through its print by then, so nothing is cut short of its event; and
+if the session dies mid-hunt — four consecutive days of that have happened to another
+stage in this repo — the account is in cash rather than holding a book nobody is
+managing. Flattening at the end would leave a killed session's positions open
+indefinitely.
+
+It is not free. The measured exit is the next **close** (direction ρ=+0.514,
+permutation p=0.0015); selling half an hour into the session is nearer the next
+**open**, which measured weaker on the same events (ρ=+0.331, p=0.046). That gap is
+the price of one Routine with nothing handed between sessions.
+
+**Step 7 buys at market, not in the closing auction.** Both were measured on the same
+18 traded events:
+
+| entry | direction | binom p | return per trade | t |
+| --- | --- | --- | --- | --- |
+| market-on-close | 15/18 | 0.004 | +5.86% | 2.38 |
+| market at 14:00 ET | 14/18 | 0.015 | +5.82% | 2.41 |
+
+Four hundredths of a point per trade, one event of eighteen changing sign (PL, 09-03).
+`researcher_us/scripts/edge_entry_timing.py` regenerates it. So the auction buys nothing worth a
+pending order and a cutoff, and the entry is a plain market order filled while the
+session watches.
+
+What that measurement **cannot** see is the spread: it compares trade prices, not
+fills, and the closing auction is the deepest liquidity of the day — which matters more
+since the turnover floor dropped to $200k, not less. Since 2026-09-10 every order
+records the NBBO at the instant it was sent, so `status` prints the fill against that
+mid — real execution cost — separately from the day's drift, and
+`orders.entry: market_on_close` puts it back in the auction when that cost stays above
+the half-spread. That is the one number that should decide it, and before that capture
+existed it could not be computed at all.
+
+The only deadline left is that the US session has to still be open: 16:00 New York,
+22:00 Amsterdam in summer. A run firing at 16:04 has three hours of margin after its
+hunts; the 2026-09-09 run took 2h53m end to end. A session that was retried, resumed or
+ran long may have none, and `open` refuses rather than sending an order into a closed
+market.
+
+`--no-flatten` on step 7 stops `open` from re-running a flatten that already happened.
+Run without it — by hand, or with `orders.flatten_before_entry: true` and no step 0b —
+and `open` is self-contained: it cancels, closes, waits for flat, then enters.
+
+Two smaller things the flatten brings:
+
+- Selling a name at market and buying it back the same day is a **day trade**. Under $25k of equity, FINRA allows three in five business days
+  before the account is restricted. It only happens when a name is in the book two
+  days running; `open` prints a warning naming the symbols when it does.
+- Waiting for flat is not optional. An open opposing order in a symbol that is also in
+  today's book gets the entry rejected as a potential wash trade.
+
+`--no-flatten` keeps the existing positions. `flatten` on its own is the panic button:
+it cancels and closes everything, at market, now.
+
+## Invocations
+
+The stage E session runs these itself, at the two moments in the table above. By hand,
+on the entry date and while the US session is open:
+
+```bash
+python3 researcher_us/scripts/alpaca_trade.py flatten --submit                                  # step 0b
+python3 researcher_us/scripts/alpaca_trade.py plan --run research/2026/09/2026-09-09/edge        # step 7
+python3 researcher_us/scripts/alpaca_trade.py open --run research/2026/09/2026-09-09/edge --submit --no-flatten
+
+# any time
+python3 researcher_us/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'
+python3 researcher_us/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge'   # did the sells sell?
+```
+
+`flatten --submit` on its own is also the panic button: everything out, at market, now.
+
+Entry dates come off the window `edge_resolve.py` scores, so the traded return and the
+measured return share an entry:
+
+| print | entry | measured exit | what the flatten does instead |
+| --- | --- | --- | --- |
+| `amc` on day D | close of D | close of D+1 | sells the morning of D+1 |
+| `bmo` on day D | close of D−1 | close of D | sells the morning of D |
+
+Every name in one run enters at the same close — the run's own date.
+
+`close` is still there for the measured exit, and it is what to use if the
+flatten-at-open exit ever looks like it is costing more than the operational
+simplicity is worth. Set `orders.flatten_before_entry: false` and run it on the exit
+date, before the same cutoff:
+
+```bash
+python3 researcher_us/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge' --submit
+```
+
+It walks every run with an `alpaca-orders.json`, closes only the legs whose
+`exit_date` is today, and reads the real position quantity from Alpaca so a partial
+fill still closes flat. It then waits `orders.fill_check_seconds` and re-reads every
+exit it sent — see "The auction exits mostly did not sell" below for why that check
+exists and what it cannot cover.
+
+To run it unattended, no new Routine is needed — the two steps are in stage E's own
+prompt, `researcher_us/routine-prompts/edge-hunt.md`, which has to be pasted into
+`trig_01CvGQJWoKeNLXWCxiffM3ED` by hand because `update_trigger` refuses any Routine an
+agent did not create. Keep that file in step with the Routine, because nothing else
+will.
+
+## The exit the two sessions actually want
+
+The shipped path gives the whole book one exit: `flatten` sells everything at market at
+the start of the next run. `researcher_us/scripts/edge_exit.py` re-priced all 38 de-duplicated events
+at eight exit horizons and at every hour of the clock, and the two sessions turn out to
+want opposite things. Per trade, on the conviction book:
+
+| | opening auction | closing auction |
+| --- | --- | --- |
+| **amc** (12 trades) | **+8.91%** (t=3.20) | +5.23% (t=1.48) |
+| **bmo** (10 trades) | +2.96% (t=1.01) | **+6.48%** (t=2.34) |
+| combined, split by session | **+7.81%** (t=4.01) | +5.80% for one uniform close |
+
+An amc print gets a whole overnight of processing, so the opening auction is already the
+informed price and the session that follows takes about three points back off the book:
+the open-to-close leg ranks at ρ=−0.351 and pays −2.61% day-demeaned, on a book that is
+six long and six short, so it is not market drift. A bmo print gets two thin hours of
+pre-market instead and goes on repricing all day: ρ +0.187 at the open against +0.670 at
+the close.
+
+`orders.exit_mode` turns that into the exit instrument, and there are **three** schemes
+rather than two, because what a single 16:04-Amsterdam Routine can reach is not what the
+measurement wants. Per trade on the same 22 trades:
+
+| mode | amc | bmo | per trade | what it needs |
+| --- | --- | --- | --- | --- |
+| `uniform` *(ships)* | market ~10:00 ET | market ~10:00 ET | +4.49% (t=2.52) | nothing; it is the flatten |
+| `bmo_close` | market ~10:00 ET | today's close (`cls`) | **+6.27%** (t=3.34) | `flatten_before_entry: false` |
+| `auction_split` | opening auction (`opg`) | today's close (`cls`) | **+7.81%** (t=4.01) | that, plus a second Routine |
+
+**Do `bmo_close` first.** It is +1.77pp of the +3.32pp on offer and it needs no machinery
+that does not already exist: the amc leg is the plain market sell the flatten was already
+doing, and the bmo leg goes into a closing auction Alpaca accepts until 15:50 ET, hours
+after a 16:04 Amsterdam start. The whole gap between it and `auction_split` is the amc
+leg, worth +1.54pp, and that leg costs a second daily firing.
+
+**Three things stand between any of it and being right**, whichever mode:
+
+1. **It was read off the events it is justified by.** The paired day bootstrap puts the
+   split's gain at +1.87pp per trade with a 95% interval of [-1.30, +4.55], and the best
+   of six candidate rules beats a uniform close in 91% of resamples. That describes the
+   sample; it does not test the rule.
+2. **It does not replicate yet.** On 09-08 and 09-09 - 30 names, 14 above the floor,
+   neither day in the fitted sample - every exit hour available on both days paid between
+   -1.42% and -0.05% per trade. On 09-09 shorting the day blind paid +3.9% to +4.5% while
+   the book paid -0.2% to -0.9%.
+3. **The other 37 events in this repo disagree.** `backtest/RESULTS.md` prices its sealed
+   corpus at both exits and all three arms did better at the **close** (+2.16% against
+   +0.90% per trade for arm A). Re-pricing those 37 on `edge_exit.py`'s hourly grid is
+   the cheapest way to settle it and has not been done.
+
+### What it needs operationally, if it is ever switched on
+
+- **`flatten_before_entry: false`.** A flatten at the start of the run sells the amc names
+  hours before their opening auction arrives, so the two settings cancel out. Since
+  2026-09-10 they cannot be half-set: `exit_mode()` raises on any non-uniform mode while
+  the flatten is on, so `open`, `close` and `mode` all refuse rather than running the exit
+  the config did not ask for.
+- **A guard the Routine can execute.** `alpaca_trade.py mode --require <mode>` prints the
+  effective settings and exits non-zero unless execution is enabled and that mode is
+  configured. Routine prompts guard on the exit status; they do not read the YAML by eye,
+  which is a check that fails in both directions when a key is renamed or absent.
+- **A second run a day, for `auction_split` only.** Alpaca *rejects* rather than queues
+  `opg` between 09:28 and 19:00 ET, so the amc leg cannot be placed by the run that placed
+  the entries. It has to go in during the pre-market of the exit date; 14:00 Amsterdam is
+  08:00 ET and works. `auction_window()` refuses rather than sending an order that will
+  bounce. The prompt is in `researcher_us/routine-prompts/edge-execute.md` and **only a person can
+  create that Routine** - `create_trigger` is refused to agent sessions in this
+  environment, confirmed on 2026-09-10. `bmo_close` needs none of this.
+- **Nothing that can leave a position unsold.** `close` treats an exit date already in the
+  past as overdue and sends it at plain market immediately, and `open` refuses to enter a
+  new book while any position is overdue with no exit submitted. That is the guarantee
+  `flatten_before_entry` used to provide by sweeping; once the flatten is off it has to
+  come from checking.
+- **Nothing about capital recycling.** Closing amc in the opening auction frees the cash
+  at 09:30 rather than 16:00, and with one auction entry a day that is **not** extra
+  return: the capital slot is 24 hours either way. `capital_table` in `edge_exit.py`
+  prints return per slot-day equal to return per trade to make that hard to misread —
+  dividing by hours *held* instead is how a 16:30 exit reads as 206% per capital-day,
+  which is a denominator artefact. What it does buy is settled cash before the auction
+  that funds the next book, so sizing stops depending on unfilled proceeds, and 6.5 fewer
+  hours of market exposure at a higher per-trade number.
+
+## `amc_open`: the bmo leg has to be gone before the next book is bought
+
+Since 2026-09-15 the shipped mode is **`amc_open`** — amc into the opening auction from
+the "Close AMC" Routine, bmo at **plain market on stage E's own run at 13:05 ET**. The
+operator's requirement was that a bmo position is not still open when the same afternoon
+buys the next book.
+
+It is measurably worse than `auction_split` on the fitted sample and that was accepted,
+not missed. `researcher_us/scripts/edge_exit.py` scores it as the `amc_open_bmo_1300` policy:
+
+| policy | ρ | trades | right | per trade | t | 95% CI | vs `uniform_close` |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `amc_open_bmo_close` (`auction_split`) | 0.461 | 22 | 17 | **+7.81%** | 4.01 | [+3.99, +11.62] | +1.87 [−1.30, +4.55] |
+| `amc_open_bmo_1300` (`amc_open`) | 0.391 | 22 | 16 | **+6.49%** | 3.42 | [+2.77, +10.22] | +0.57 [−2.86, +3.18] |
+| `uniform_close` | — | 22 | 17 | +5.80% | 2.57 | | — |
+
+**1.31pp per trade**, and one event of 22 changing sign. Both gaps against the close have
+a bootstrap interval spanning zero, so neither policy is established over the other.
+
+Two things that number cannot see, and both are why the trade is worth making:
+
+**The +6.48% for a bmo closing auction assumes the `cls` order fills.** On this book it
+has filled 39 of 183 (CODA) and 17 of 161 (HOFT) and then expired. The rest was sold at
+market one to three days later, carrying the overnight exposure in between. A return that
+expires in the auction is not a return. A plain market order at 13:05 ET fills, and the
+fill check confirms it within the same session.
+
+**A bmo leg still open at 13:05 ET is still open when step 7 buys at 13:24 ET.** The
+sizing divides the gross budget over the new names without knowing the old book is there,
+so gross stacks — on 2026-09-15, VRA and FPS were held straight through LUXE's entry.
+`open`'s refusal does not catch it either: a leg whose exit order is working is not past
+its exit date. Selling bmo at market on the run makes the budget the entry divides a
+known quantity.
+
+What it does **not** buy is return per unit of capital. `capital_table` prints return per
+slot-day equal to return per trade for every policy, because with one entry a day the
+capital slot is 24 hours either way (hold falls from 20.4h to 19.1h). The gain is sizing
+certainty, not compounding.
+
+### The second Routine's guard had to change with it
+
+"Close AMC" exists for one reason: some session's exit is an `opg` order and only a
+pre-market firing can place one. Its pasted guard names `auction_split`, so the moment
+`amc_open` shipped that guard began failing — and a failing guard there reports a correct
+-looking no-op every morning while amc legs never reach their auction. The guard is now
+about the instrument rather than the mode name:
+
+```bash
+python3 researcher_us/scripts/alpaca_trade.py mode --require-exit-tif opg || exit 0
+```
+
+It exits 0 whenever either session's exit is an `opg` order, so it survives the next mode
+being renamed or added. `--require` also takes a comma-separated list now
+(`--require auction_split,amc_open`). **The Routine's own text still carries the old
+guard and a session cannot edit it** — `update_trigger` refuses any Routine an agent did
+not create — so until someone re-pastes `researcher_us/routine-prompts/edge-execute.md`, the amc
+legs are not being sold into the opening auction at all and stage E's own run picks them
+up at 13:05 ET as overdue, at market.
+
+## The auction exits mostly did not sell, and the reason was the account
+
+Ten exit legs have been sent into an auction since `exit_mode: auction_split` shipped on
+2026-09-11. **One filled in full.**
+
+| date | name | tif | ordered | filled | broker status |
+| --- | --- | --- | --- | --- | --- |
+| 09-11 | ORCL | `opg` | 12 | 12 | filled |
+| 09-11 | FEIM | `opg` | 31 | 0 | expired |
+| 09-11 | RH | `opg` | 14 | 0 | expired |
+| 09-11 | HOFT | `cls` | 161 | 17 | expired |
+| 09-14 | CODA | `cls` | 183 | 39 | expired |
+| 09-15 | RLGT | `opg` | 224 | 0 | expired |
+| 09-15 | VRA | `cls` | 642 | 0 | expired |
+| 09-15 | FPS | `cls` | 64 | 0 | expired |
+| 09-16 | LUXE | `cls` | 292 | 0 | canceled |
+| 09-17 | ALMU | `opg` | 167 | 0 | expired 09:31:31 ET |
+| 09-17 | LEN | `opg` | 28 | 0 | expired 09:30:52 ET |
+
+**That last row is the one that settles it.** LEN is Lennar: a $20bn homebuilder whose
+opening cross on its primary listing trades in the hundreds of thousands of shares. A
+buy-to-cover of **28 shares** expired at 09:30:52 ET having filled none. Whatever
+explains that, it is not "the auction had no size to give", which is what this section
+said for a week while the thin-name rows were the only evidence.
+
+**This is documented behaviour, not a defect in the script.** An `opg` order is
+eligible to execute *only* in the opening auction and a `cls` order *only* in the
+closing auction; Alpaca's own docs say that after the cross, "any unfilled orders will
+be cancelled". There is no resting order afterwards and no second chance. A name that
+turns over $200k a day has an auction cross measured in hundreds of shares, so a
+161-share or 224-share order is not small relative to it. A second cause is visible in
+Alpaca's forum and cannot be ruled out here: a June 2026 report of MOC orders partially
+filling and expiring on a *paper* account where the identical setup filled 100% live.
+This account is paper.
+
+Three defects in this repo turned that into open positions:
+
+1. **Nothing re-read the order.** `send()` stored the status Alpaca returns at
+   submission — always `pending_new` — and the session ended. `alpaca-orders.json` said
+   `submitted: true` for a leg that had sold 17 of 161 shares.
+2. **The retry asked for the same auction.** When the next run did notice shares still
+   held behind a dead order, it re-sent with the TIF the session maps to. For an amc
+   leg that is `opg`, which Alpaca rejects between 09:28 and 19:00 ET — exactly when
+   stage E runs. RLGT's 13:05 ET retry was refused for that reason and the position sat
+   another full day. Only a leg whose exit date had already *passed* got the plain-market
+   fallback; a leg due today got nothing.
+3. **`upsert` merged records.** A retry that succeeded kept the failed attempt's
+   `reason`, so VRA and FPS read `submitted: true` beside "cls unavailable (market
+   closed)". The file a person opens to answer "did the sell go" said both.
+
+The operator has been closing these by hand — three market orders at the broker carry
+random client_order_ids rather than this script's: RH and FEIM at 13:33 ET on 09-11,
+RLGT at 15:15 ET on 09-15.
+
+### The fill check
+
+`close` now waits `orders.fill_check_seconds` (300) after sending its exits and re-reads
+every one of them at the broker, and `verify` does the same on demand:
+
+```bash
+python3 researcher_us/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge'              # report
+python3 researcher_us/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge' --fix --submit
+```
+
+Three verdicts per leg, and only one is a problem. **closed** — the account no longer
+holds it, whatever the order says. **working** — an order that can still fill is out;
+for an auction TIF that is the correct answer for hours and nothing is re-sent.
+**UNFILLED** — shares still held and every order for the leg dead at the broker, so
+nothing will ever sell it on its own. With `--fix` (or `orders.fill_check_fix: true`,
+which is what `close` uses) an UNFILLED leg is re-sent at plain market, sized to what
+Alpaca reports is still held, and only while every prior order for it is dead. That is
+the same invariant `close` keeps, and it is what stops the check from selling a
+position twice. The result is written to `verifications` in the run's
+`alpaca-orders.json`.
+
+**Five minutes cannot verify an auction order.** A `cls` order sent at 13:05 ET crosses
+at 16:00 ET, hours after the session has ended; the check says `working` rather than
+pretending otherwise. What it catches inside the session is the order that was rejected,
+expired immediately or never left the gate. What catches a `cls` that dies at the cross
+is the next run: `close` sends anything overdue at plain market, and `verify --fix` at
+the start of a run that is inside market hours rescues the rest. Both the stage E
+Routine and "Close AMC" should call `verify` before anything else they do.
+
+**What none of this fixes is the exit itself.** Nine of ten auction orders failed to
+sell the position they were sent for, and every rescue turns the measured
+`auction_split` exit into a market order hours later — which is `uniform` with extra
+steps and a worse clock. `auction_split` was chosen on +7.81% per trade against +4.49%
+for `uniform` over 38 events; that number assumes the auction order fills, and on this
+book it has filled once.
+
+### Why they did not sell: `opg` and `cls` are order types this account does not have
+
+Checked against Alpaca's own documentation on 2026-09-18, after the 09-17 amc exit failed
+the same way for the fourth time. Two causes, and **either one alone is sufficient**:
+
+1. **They are Elite Smart Router order types.** Alpaca's order-types page says it
+   plainly: *"OPG and CLS orders are only available to Elite Smart Router users."* The
+   Elite programme is a separate routing tier with a deposit minimum this account is
+   nowhere near — it holds $11.5k. Nothing rejects the order at submission. It is
+   accepted, it sits, and it is cancelled at the cross it never reached.
+2. **Paper does not run an auction.** Alpaca's paper-trading page says fills are
+   simulated against the NBBO quote stream — *"all orders submitted in paper trading
+   will be matched against the best available current market price"* — and that eligible
+   orders *"receive partial fills for a random size 10% of the time"*. That sentence is
+   an exact description of HOFT's 17 of 161 and CODA's 39 of 183. There is no cross to
+   be in; there is a quote, and a simulator that sometimes gives a random slice of it.
+
+Both explanations survive the LEN row and the thin-name rows equally well, and neither
+can be distinguished from the other without an Elite live account. That does not matter
+for what to do: on **this** account an auction order is not an exit.
+
+### The fix: placement and instrument are now separate things
+
+`orders.auction_orders` (new, `false`) decides whether `opg`/`cls` may be used at all.
+The mode still decides **where** an exit is aimed — `exit_placement()` returns `open`,
+`close` or `market` — and `exit_tif_for()` turns that into an instrument the account can
+actually use. `amc_open` still sends amc to the open; it now gets there as a plain
+market **DAY** order submitted in the pre-market, which Alpaca accepts while the market
+is closed and routes at the next open. The order fills in the first seconds of the
+regular session rather than in the 09:30 cross.
+
+```
+exit placement         amc -> open, bmo -> market
+exit instrument        amc -> day, bmo -> day
+```
+
+**The pasted Routine guard still passes, and that was a design constraint, not luck.**
+"Close AMC" runs `mode --require-exit-tif opg`, a session cannot edit a Routine, and a
+guard that failed shut would have reported a correct-looking no-op every morning while
+the amc legs went unsold — the exact failure that guard was written to replace. So
+`--require-exit-tif` matches on the placement family: `opg` asks "is there an exit here
+that has to be placed before the open", and the answer is still yes. It prints a NOTE
+saying it matched on placement rather than on the literal instrument.
+
+**What the change costs.** The measured +8.91% for an amc opening exit was priced at the
+09:30 auction print. A queued market order fills a few seconds later at the NBBO, which
+is a handful of basis points in a liquid name and more in a thin one — the opening
+minutes are the widest spreads of the session. Against an order that does not sell at
+all, that is not a close comparison: the last four amc legs were either rescued by hand
+hours later or held overnight. Nothing about the ranking, the floor or the book rule
+changes.
+
+### Which run sells which leg
+
+`close` takes every leg whose exit date is today, and two runs a day call it: "Close
+AMC" at 06:05 ET and stage E at 13:05 ET. So the early run was taking the **bmo** leg
+as well as the amc one.
+
+Under `auction_split` that was harmless. The bmo leg wanted `cls`, and
+`window_for("cls")` refuses a closed market, so the pre-market run could not take it
+even by accident. Under `amc_open` the bmo instrument is a plain DAY order — and a DAY
+order sent before the open is not refused, it is **queued for the open**. On 2026-09-18
+TRT's bmo exit went in at 06:07 ET that way. The book was running amc at the open and
+bmo at the open, where the configured policy is bmo at market on stage E's 13:05 ET
+run, and where bmo is the session that measured *worst*: +2.96% at the open against
++6.48% at the close and +2.58% around 10:00 ET.
+
+`close` now leaves a leg whose placement is `market` to the run that fires inside the
+session:
+
+```
+TRT      bmo day not sent   market placement, and the market is closed: this leg
+                            exits at market on the run that fires inside the session,
+                            not queued for the open by this one
+```
+
+Two exemptions, both deliberate. An **overdue** leg still goes immediately: its event
+is over, and queueing it for the open beats holding it another seven hours on the
+chance that the later run fires. And a leg is never deferred when the clock could not
+be read — an unknown clock must not become the reason a position goes unsold.
+
+What it costs: if stage E's own run then dies, the bmo leg is held overnight instead of
+having been sold at the open by accident. The overdue rule is the net — it goes at
+market on the next run either way, and `open` refuses to buy a new book over it.
+
+**What was considered and not done.** A marketable limit through the touch (say 2–3%)
+instead of a plain market order would cap a bad opening print in a microcap, which is
+what a professional desk would do with an order it cannot put in the auction. It is not
+built, because the operator's stated requirement is that the amc leg is *gone* by the
+open, and a limit order that misses is the failure this whole section is about. If the
+queued market fills start coming back wide of the opening print — `status` prints
+execution cost against the mid at submission — that is the knob to add next.
+
+**Still unmeasured on this account: whether a queued pre-market DAY order fills at the
+open.** Alpaca's docs are explicit that orders submitted while the market is closed are
+accepted and routed at the next open, and `auction_window()` has said so since 09-16,
+but this book has never sent one. The cheap confirmation is one share of a liquid name,
+pre-market, paired against an `opg` order in the same name for a same-open control:
+
+```bash
+# pre-market, before 09:28 ET, on the paper account
+python3 - <<'EOF'
+import sys; sys.path.insert(0, 'researcher_us/scripts')
+import alpaca_trade as t
+api = t.Alpaca()
+for cid, tif in (("edge-test-F-queued-day", "day"), ("edge-test-F-opg", "opg")):
+    print(tif, api.call("POST", "/v2/orders", {
+        "symbol": "F", "qty": "1", "side": "buy", "type": "market",
+        "time_in_force": tif, "extended_hours": False, "client_order_id": cid}))
+EOF
+```
+
+Read both back after 09:31 ET. The expectation is that the `day` order is filled and the
+`opg` order is expired at 0; if the `day` order is also unfilled, nothing here works and
+the exit has to move to the regular session.
+
+## What it refuses to do
+
+Every refusal is recorded with its reason, in the plan or in `alpaca-orders.json`:
+
+- send anything without `enabled: true` **and** `--submit`
+- touch a live endpoint without `--live-account-i-understand`
+- place an entry on a day that is not the planned entry date (`--force-date` overrides,
+  and a forced fill is no longer the price the measurement uses)
+- send any entry outside the open session — and, when `orders.entry` is set back to
+  `market_on_close`, inside Alpaca's cutoff (`--allow-market-fallback` downgrades that
+  one to a plain market order)
+- short a name Alpaca does not call shortable
+- size a position above `max_position_pct_of_equity` (33%) of equity or 1% of the
+  name's 20-day dollar volume
+- place a second order for a leg it has already placed — `client_order_id` is
+  `edge-<date>-<TICKER>-<entry|exit>`, so a re-run of a killed session is a no-op
+  rather than a doubled position
+
+## Borrow at Alpaca is not tradability
+
+`plan` and `open` still refuse a short Alpaca will not lend, because Alpaca is where the
+book is placed and a rejected leg turns a neutral book into a naked long. But the note's
+`tradable` column, produced by `assets`, has separated two facts since 2026-09-15:
+
+- **Liquidity** is a property of the name and holds at every broker. `ok`, `thin` (under
+  `execution.benchmark.thin_dollar_volume_usd`, $1m/day by default), or `below floor`.
+  `thin` is the proxy for the limited-liquidity warning a broker shows, which the
+  operator does not trade into; nothing is dropped on it, and the note says the name
+  will carry that warning.
+- **Borrow** is one broker's answer on one day. A short that clears the turnover floor
+  but is not lendable at Alpaca prints `elsewhere` — check borrow at IBKR — never `no`.
+  On 2026-09-14 two of the four floor-clearing negatives were refused on Alpaca borrow
+  and one of them read borrowable the next morning.
+
+Only `below floor` and a missing 20-day volume are `no`. This changes what the note
+says; it changes nothing about what the book does.
+
+## What it does not know
+
+- **The rule is 21 trades over 5 independent days.** `max_positions: 10`,
+  `gross_exposure_pct_of_equity: 20` and the 4% per-name cap are sized for a lead, not
+  for an edge. Re-derive the floor from the pooled sample before raising any of them.
+- **Nothing checked the findings.** There is no adversary pass and no second hunter,
+  so a factually wrong finding enters `impact_sum` at full size and reaches the book
+  unexamined.
+- **The key is not reproducible to better than its own size.** While the double hunt
+  ran, twelve paired names came back with a median gap of 2.40 points and four of the
+  twelve had opposite signs, on a key whose typical magnitude is about 5. Nothing
+  re-measures that now.
+- **It has not beaten a free control.** `-run_up_20d_pct`, available before any
+  subagent is spawned, ranked the same six days at ρ=0.335 and was positive on 6 of 6
+  days when traded. The plan prints `run_up_20d_pct` beside each position for exactly
+  that comparison.
+- **The position is held through the print overnight**, unhedged, with no stop. That
+  is the window that was measured; a stop would be a different strategy with no
+  measurement behind it.
+
+This is research, not investment advice.
+
+## The price the budget is divided by, and the quote at submission
+
+Both of these changed on 2026-09-10, after the first live book, and they are one
+story: **you cannot measure execution against a price from four hours ago.**
+
+**Sizing now divides by a live Alpaca price, not the sealed baseline spot.** It used
+to divide by `baseline.tape.spot`, which is captured when the stage-E run *starts*.
+On the first live run that was 14:08 UTC and the orders went in at 17:59. HOFT was
+sized off 12.42, filled at 12.6186, and the 20.0%-of-equity cap therefore produced a
+20.3% position. The caps are percentages of equity and of ADV, so applying them to a
+stale price makes them the wrong percentages, and the error grows with the gap.
+`reference_prices()` now takes a price per name in this order, recording which one
+each got in `price_source`:
+
+| | when |
+| --- | --- |
+| last trade | fresh, under `MAX_TRADE_AGE_S` (600s) |
+| quote mid | trade stale or missing, **and** the quote is under `MAX_QUOTE_SPREAD_PCT` (2%) wide |
+| last trade | stale, but a price something actually traded at |
+| sealed spot | nothing live — and the plan prints a `!` line naming those names |
+
+The tightness test is not decoration. The free IEX feed serves junk: at 18:12 UTC on
+2026-09-10 FEIM quoted **54.24 / 72.79**, a 29% spread, while trading near 63.4. The
+first version of this change sized off that mid. A wide mid is not a price; a stale
+print is. The plan also prints how far the baseline has drifted since it was sealed —
+a median 0.83% that afternoon, worst ORCL at −1.17%.
+
+**Every order now records the NBBO at the moment it was sent.** `open` fetches one
+quote batch immediately before submitting and stores `quote_at_submit`
+(bid/ask/mid/spread/timestamp) on each order row. `status` then prints three separate
+columns, and the separation is the whole point:
+
+- `vs mid` — the fill against the mid captured at submission. Both prices are from
+  the same instant, so this **is** execution cost.
+- `½spread` — half the spread at submission, i.e. what crossing should have cost.
+- `drift` — the fill against the plan's reference price. This is the day moving
+  between plan and fill and is **not** execution cost.
+
+Without this the two are inseparable. The 2026-09-10 run log could only report that
+fills were "+0.83% adverse against the plan" and then say, correctly, that the number
+was not slippage and could not be used. `orders.entry` (`market` vs `market_on_close`)
+is supposed to be decided on fill quality; until this capture existed that decision
+had no data behind it. Switch to `market_on_close` if the mean `vs mid` stays above
+the half-spread — `status` prints that comparison and names the current setting.
+
+Orders placed before 2026-09-10 carry no `quote_at_submit`, and `status` says so
+rather than silently showing blanks.
+
+## Files it writes
+
+```
+research/<Y>/<M>/<date>/edge/
+  alpaca-plan.json      what the benchmark selected, sized, with every rejection and
+                        its reason. Written by `plan` and by `open`. Derived state.
+  alpaca-orders.json    what was actually submitted: client_order_id, order id, qty,
+                        side, entry and exit dates, and an append-only log. Written
+                        only when something is really submitted. NOT derived state —
+                        it is the record of what the account was told to do. Its
+                        `verifications` array is the fill check: per leg, what the
+                        broker says filled and what the account still holds.
+```

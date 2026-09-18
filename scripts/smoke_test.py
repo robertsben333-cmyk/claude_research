@@ -394,8 +394,8 @@ def main():
         check("the concurrent change was not clobbered",
               "OTHER.md" in files, str(files))
 
-    print("\nOrder placement (edge/scripts/alpaca_trade.py, no network, no orders)")
-    # The real module lives in edge/scripts; scripts/alpaca_trade.py is a forwarding
+    print("\nOrder placement (researcher_us/scripts/alpaca_trade.py, no network, no orders)")
+    # The real module lives in researcher_us/scripts; scripts/alpaca_trade.py is a forwarding
     # shim for the Routine prompt's frozen path and is not importable as the module.
     sys.path.insert(0, os.path.join(REPO, "edge", "scripts"))
     import alpaca_trade as at                                     # noqa: E402
@@ -589,7 +589,7 @@ def main():
     # The two trading steps live in two hand-maintained files and drift silently.
     skill = open(os.path.join(REPO, ".claude/skills/earnings-edge-hunt/SKILL.md"),
                  encoding="utf-8").read()
-    rprompt = open(os.path.join(REPO, "edge/routine-prompts/edge-hunt.md"),
+    rprompt = open(os.path.join(REPO, "researcher_us/routine-prompts/edge-hunt.md"),
                    encoding="utf-8").read()
     for label, text in (("the skill", skill), ("the stage E Routine prompt", rprompt)):
         # Either shape is a sell before the hunt, and which one is right depends on
@@ -798,7 +798,7 @@ def main():
     finally:
         at.REPO = _repo
 
-    print("\nOne issuer, one event (edge/scripts/share_class.py, edge_score.py)")
+    print("\nOne issuer, one event (researcher_us/scripts/share_class.py, edge_score.py)")
     sys.path.insert(0, os.path.join(REPO, "edge", "scripts"))
     import share_class as sc                                       # noqa: E402
     check("a dotted class suffix resolves to its issuer",

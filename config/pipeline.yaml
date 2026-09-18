@@ -118,8 +118,8 @@ edge_hunt:
   # key unchecked. Accepted because a check with no path to the output is not a
   # check, and because sample size is what every open question is waiting on.
   #
-  # `.claude/agents/priced-in-adversary.md`, `edge/scripts/edge_brief.py` and
-  # `edge/scripts/edge_adversary_brief.py` are left in the tree unused, so the pass can be
+  # `.claude/agents/priced-in-adversary.md`, `researcher_us/scripts/edge_brief.py` and
+  # `researcher_us/scripts/edge_adversary_brief.py` are left in the tree unused, so the pass can be
   # re-run deliberately over a week if the priced-in question is ever reopened.
   adversary_agents_per_ticker: 0
   # Every slot the sweep leaves goes to hunters: 1 + 19 = 20.
@@ -130,7 +130,7 @@ edge_hunt:
   # which is what keeps "can these be ranked" answerable at every k. A threshold
   # here would put a category back into the output.
   #
-  # impact_sum became the key on 2026-09-09. edge/EDGE_ANALYSIS.md decomposed six
+  # impact_sum became the key on 2026-09-09. researcher_us/EDGE_ANALYSIS.md decomposed six
   # resolved runs: the raw sum ranked at rho=0.407 (p=0.017) while the same numbers
   # after the cluster-max, the sqrt(k) discount, the agreement discount and the
   # quality multiplier ranked at 0.243 (p=0.156). Paired bootstrap over days puts
@@ -206,7 +206,7 @@ budget:
     - baselines_sealed_and_committed_before_any_agent_launches
 
 execution:
-  # Stage E's ranking placed as real orders at Alpaca, by edge/scripts/alpaca_trade.py.
+  # Stage E's ranking placed as real orders at Alpaca, by researcher_us/scripts/alpaca_trade.py.
   # OFF until someone turns it on deliberately. With `enabled: false` every
   # invocation is a dry run that writes alpaca-plan.json and submits nothing, and
   # --submit alone will not override it.
@@ -219,7 +219,7 @@ execution:
   assumed_equity_usd: 100000     # sizing basis for dry runs with no account attached
 
   benchmark:
-    # ONE rule, and it is the only cut in edge/EDGE_ANALYSIS.md that survived a
+    # ONE rule, and it is the only cut in researcher_us/EDGE_ANALYSIS.md that survived a
     # family-wise correction: |impact_sum| >= the floor, side from the sign. Above
     # the floor the sign was right on 16 of 21 events, +6.37% per trade (t=2.74,
     # +4.87% after a 1.5% cost); over all 38 events it is 53%, a coin flip. That is
@@ -237,7 +237,7 @@ execution:
     # $200k -- so this loosening is against the sample, not with it. It is defensible
     # on two grounds the sample cannot speak to: the spread, and the event rate (18
     # of 38 events trade here against 12 at $5m, which is how the forward sample
-    # grows). Re-run edge/scripts/edge_turnover_floor.py as days pool and move it back if
+    # grows). Re-run researcher_us/scripts/edge_turnover_floor.py as days pool and move it back if
     # the added names keep underperforming.
     min_dollar_volume_usd: 200000
     # Not a floor. Below this the note calls the name THIN: the proxy for a broker's
@@ -308,7 +308,7 @@ execution:
     # Measured both ways on the same 18 traded events: market-on-close 15/18 and
     # +5.86% a trade, a market order at 14:00 ET 14/18 and +5.82%. Four hundredths
     # of a point per trade, and one event of eighteen changing sign (PL, 09-03).
-    # Re-run edge/scripts/edge_entry_timing.py as days pool.
+    # Re-run researcher_us/scripts/edge_entry_timing.py as days pool.
     #
     # What that measurement CANNOT see is the spread. It compares trade prices, not
     # fills, and the closing auction is the deepest liquidity of the day -- which
@@ -346,7 +346,7 @@ execution:
     # and on 09-09 shorting the day blind beat the book by about five points.
     # (3) backtest/RESULTS.md prices 37 independent sealed events at both exits and
     # all three arms did BETTER at the close (+2.16% against +0.90% for arm A).
-    # Re-price those 37 on edge/scripts/edge_exit.py's hourly grid before turning this on.
+    # Re-price those 37 on researcher_us/scripts/edge_exit.py's hourly grid before turning this on.
     #
     # WHICH INSTRUMENT CLOSES A POSITION, per session. Three schemes, measured on the
     # same 22 trades of the conviction book over 38 de-duplicated events:
@@ -370,14 +370,14 @@ execution:
     # other +1.54pp and needs a second daily firing, because Alpaca REJECTS rather
     # than queues an `opg` order between 09:28 and 19:00 ET -- nothing that fires in
     # the European afternoon can sell an amc position into its own opening auction.
-    # The prompt is in edge/routine-prompts/edge-execute.md and only a person can
+    # The prompt is in researcher_us/routine-prompts/edge-execute.md and only a person can
     # create it; create_trigger is refused to agent sessions in this environment.
     #
     # NEITHER IS ESTABLISHED. The split was read off the same 38 events it is
     # justified by; on the first two forward days (09-08, 09-09) every exit hour
     # available on both paid between -1.42% and -0.05% a trade; and
     # backtest/RESULTS.md puts the close ahead of the open on its own 37 sealed
-    # events for all three arms. Re-price those 37 on edge/scripts/edge_exit.py's hourly
+    # events for all three arms. Re-price those 37 on researcher_us/scripts/edge_exit.py's hourly
     # grid -- this operator decision does not wait for that.
     #
     # 2026-09-11: switched to `auction_split` on the operator's explicit instruction,
@@ -410,7 +410,7 @@ execution:
     # entry on 09-15. A market sell at 13:05 ET is verifiable inside the same session,
     # so the budget the entry divides is known to be free.
     #
-    # edge/scripts/edge_exit.py scores this as the `amc_open_bmo_1300` policy. Re-run
+    # researcher_us/scripts/edge_exit.py scores this as the `amc_open_bmo_1300` policy. Re-run
     # it as days pool; against uniform_close it leads by only +0.57pp on a paired day
     # bootstrap of [-2.86, +3.18], so nothing here is established.
     exit_mode: amc_open      # uniform | bmo_close | auction_split | amc_open
