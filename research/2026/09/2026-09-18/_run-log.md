@@ -102,3 +102,12 @@
 - A CONTROL THAT HAS BEEN LOAD-BEARING JUST MOVED. Minus the 20-day run-up ranks the first six days at rho 0.335 and was 6 of 6 positive when traded; on these 105 events it returns -0.42% per trade. The comparison that does survive: the hunt above the floor +3.37% per trade against +1.59% for shorting every name with no research at all.
 - DELIVERABLE: edge/scripts/edge_dashboard.py generates edge/analysis/dashboard/{index,runup,entry-clock,search-volume,calendar}.html from the analysis JSON. Generated, never hand-edited, so a page cannot drift from the run that measured it. Published at https://claude.ai/artifact/JjEfQYMhb1UN25SCGp4SK3 . Also edge_calendar.py: the forward week with the session and liquidity gates both applied -- 80 calendar rows to 2026-09-25, 25 with a confirmed session, 22 clearing the $200k floor.
 - Verified: smoke_test.py passes. The chart palette was run through the dataviz validator against both surfaces before use (all checks pass; light aqua sits under 3:1, so every series is direct-labelled and every chart has a table beside it).
+
+## Stage 3 — panel & advice (15:56 UTC)
+- Logged at 2026-09-18 15:56 UTC
+- - Panelled: none — 02-ranking.json sealed top_n_for_panel: [] (stage 0 universe was 0 eligible, cascaded through stage 1 skip and both stage 2 batches)
+- - Calls: none
+- - Panel seats filled: 0/0 (no names to panel)
+- - Chair overrides: none
+- - Degradations: none (empty universe made the panel budget moot, not exceeded)
+- - Wrote 04-advice.md/.json with status: no_names, ranked_names: []; validated with validate_stage.py advice
