@@ -168,6 +168,45 @@ own (H7); it is the first to drop if w2 underperforms.
 The 23% single-name gap that moved the account 4.5% at a 20% cap and ~7.5% at 33% moves
 it ~11.5% at 50%. Nothing was added to offset that, and w2 is switched on nowhere.
 
+### The factors are judged on every researched name, not on the book
+
+The four books above are placed on the 56 names above the conviction floor, because that
+is what the gate buys. The four **factors** are a claim about the hunt, and the hunt
+ranked 105 names on the same days. Judging them on the traded half alone discards the
+other half for no reason: the floor selects on `|impact_sum|`, which is not what any of
+the four measure. The tab prints both columns.
+
+| factor | n all | per name all | n book | per name book |
+| --- | ---: | ---: | ---: | ---: |
+| more findings +1 | 66 | +1.32% | 41 | +3.85% |
+| more findings −1 | 11 | +0.18% | 4 | — |
+| retail tilt +1 | 50 | +2.15% | 31 | +4.68% |
+| retail tilt −1 | 55 | −0.85% | 25 | +2.47% |
+| lean agrees +1 | 55 | +2.88% | 28 | +7.27% |
+| lean agrees −1 | 50 | −1.96% | 28 | +0.11% |
+| less search +1 | 28 | +0.41% | 14 | +5.32% |
+| less search −1 | 19 | −1.12% | 8 | +0.37% |
+
+**All four keep their sign on the doubled sample** and every level is lower, because the
+below-floor half returns −2.98% per name against +3.69% above it.
+
+The 49 names below the floor are the one part of these days no factor was chosen on —
+every hypothesis in the register was asked of the traded book. It is not a clean
+out-of-sample test (same days, same hunters, and the names are there *because* the hunt
+found little), so read the sign of the gap and not its level:
+
+| factor | gap below the floor | gap in the book | same sign |
+| --- | ---: | ---: | --- |
+| more findings | −1.86pp | — (n=4) | — |
+| retail tilt | +1.64pp | +2.21pp | yes |
+| lean agrees | +2.93pp | +7.16pp | yes |
+| less search | −2.29pp | +4.95pp | **no** |
+
+The two factors with register support behind them keep their sign; the two without —
+`evidence`, which H7 measured as `geen effect`, and `search_quiet`, which is one
+Bonferroni-uncorrected cell — invert. No gap here reaches two standard errors. Nothing
+moves on it: the floor is still the gate and these names are not bought either way.
+
 ### w1, superseded and kept
 
 w1 multiplies the score, so it changes which names clear the floor. It does **not**

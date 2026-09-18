@@ -61,6 +61,7 @@ h3 { font-size:14px; margin:0 0 10px; color:var(--ink2); font-weight:600; }
 p  { margin:8px 0; color:var(--ink2); max-width:80ch; }
 p.lead { color:var(--ink); }
 small, .meta { color:var(--muted); font-size:12.5px; }
+.muted { color:var(--muted); }
 a { color:var(--s1); }
 button, select, input { font:inherit; }
 .btn {
@@ -2379,24 +2380,88 @@ function tabWeging() {
     {h:'verschil', f:r=>`<span class="${sgn(r.gap)}">${pc(r.gap)}</span>`},
     {h:'grootste in C', f:r=>`${esc(r.top)} ${n1(r.topPct)}%`}], perDay) + `</div>`;
 
+  // THE FACTORS ARE JUDGED ON EVERY ONDERZOCHTE NAAM, NOT ON THE BOOK.
+  // The conviction floor is the trading gate and stays the trading gate -- the four
+  // books above are placed on `bk` and nothing here changes that. But a factor is a
+  // claim about the hunt, and the hunt ranked roughly twice as many names as it
+  // traded. Judging the factor on the traded half alone throws away the other half of
+  // the evidence for no reason: the floor selects on |impact_sum|, which is not what
+  // any of these four measure. Both columns are printed because they can disagree, and
+  // a factor that only works on the side it was chosen from is the thing to catch.
   const S = ['evidence','retail','lean_agree','search_quiet'];
   const NL = {evidence:'meer findings', retail:'retail tilt', lean_agree:'lean wijst mee',
               search_quiet:'minder zoekverkeer'};
+  const cell = rows => rows.length >= 5 ? book(rows.map(retOf)) : {n: rows.length};
   const rowsF = [];
   S.forEach(k => [1,-1].forEach(v => {
-    const g = bk.filter(r => (r.w2_strength||{})[k] === v);
-    if (g.length >= 5) rowsF.push({...book(g.map(retOf)),
-                                   k: `${NL[k]} ${v > 0 ? '+1' : '−1'}`, n: g.length});
+    const a = cell(rk.filter(r => (r.w2_strength||{})[k] === v));
+    const b = cell(bk.filter(r => (r.w2_strength||{})[k] === v));
+    if ((a.n || 0) + (b.n || 0) === 0) return;
+    rowsF.push({k: `${NL[k]} ${v > 0 ? '+1' : '\u22121'}`, a, b,
+                gap: (a.mean != null && b.mean != null) ? b.mean - a.mean : null});
   }));
-  html += `<div class="card"><h3>De vier factoren</h3>` + table([
-    {h:'factor', f:r=>`<code>${esc(r.k)}</code>`}, {h:'n', f:r=>r.n},
-    {h:'raak %', f:r=>n1(r.hit)},
-    {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
-    {h:'t', f:r=>n2(r.t)}], rowsF) +
-    `<small><code>meer findings</code> staat hier op instructie en draagt een voorbehoud
-     dat de andere drie niet hebben: H7 mat <code>n_findings</code> op zichzelf als
-     <i>geen effect</i>. Het is de enige factor zonder steun in het register en de eerste
-     die eruit gaat als w2 tegenvalt.</small></div>`;
+  const num = (o, f) => o.n >= 5 ? f(o) : `<span class="muted">n=${o.n}</span>`;
+  html += `<div class="card"><h3>De vier factoren, op alle onderzochte namen en op het boek</h3>` +
+    table([
+    {h:'factor', f:r=>`<code>${esc(r.k)}</code>`},
+    {h:'n alle', f:r=>r.a.n},
+    {h:'raak % alle', f:r=>num(r.a, o=>n1(o.hit))},
+    {h:'per naam alle', f:r=>num(r.a, o=>`<span class="${sgn(o.mean)}">${pc(o.mean)}</span>`)},
+    {h:'t alle', f:r=>num(r.a, o=>n2(o.t))},
+    {h:'n boek', f:r=>r.b.n},
+    {h:'raak % boek', f:r=>num(r.b, o=>n1(o.hit))},
+    {h:'per naam boek', f:r=>num(r.b, o=>`<span class="${sgn(o.mean)}">${pc(o.mean)}</span>`)},
+    {h:'t boek', f:r=>num(r.b, o=>n2(o.t))},
+    {h:'verschil', f:r=>r.gap == null ? '—' : `<span class="${sgn(r.gap)}">${pc(r.gap)}</span>`}],
+    rowsF) +
+    `<small><b>Alle</b> is elke gerangschikte naam met een uitkomst onder deze filters
+     (${rk.length}); <b>boek</b> is de deelverzameling boven de conviction floor
+     (${bk.length}), de namen die daadwerkelijk gekocht zouden zijn. De vier boeken
+     hierboven staan op de tweede kolomgroep; deze tabel staat er alleen om te zien of
+     een factor buiten het boek hetzelfde doet. Een factor die alleen boven de floor
+     werkt is niet weerlegd, maar hij is ook niet bevestigd op de helft van de namen die
+     hem zou kunnen bevestigen. <code>meer findings</code> staat hier op instructie en
+     draagt een voorbehoud dat de andere drie niet hebben: H7 mat <code>n_findings</code>
+     op zichzelf als <i>geen effect</i>. Het is de enige factor zonder steun in het
+     register en de eerste die eruit gaat als w2 tegenvalt.</small></div>`;
+
+  // The below-floor half is the only part of the sample the factors were NOT chosen on:
+  // every hypothesis in the register was asked of the traded book. It is not a clean
+  // out-of-sample test -- same days, same hunters, and the names are there because the
+  // hunt found little -- but a factor whose sign flips here was worth exactly the 56
+  // names it was fitted to.
+  const sub = rk.filter(r => Math.abs(r.impact_sum) < FLOOR);
+  const rowsU = [];
+  S.forEach(k => {
+    const up = cell(sub.filter(r => (r.w2_strength||{})[k] === 1));
+    const dn = cell(sub.filter(r => (r.w2_strength||{})[k] === -1));
+    if (up.n >= 5 && dn.n >= 5)
+      rowsU.push({k: NL[k], up, dn, gap: up.mean - dn.mean,
+                  bookGap: (() => {
+                    const a = cell(bk.filter(r => (r.w2_strength||{})[k] === 1));
+                    const b = cell(bk.filter(r => (r.w2_strength||{})[k] === -1));
+                    return (a.n >= 5 && b.n >= 5) ? a.mean - b.mean : null; })()});
+  });
+  html += `<div class="card"><h3>Het deel waar geen enkele factor op gekozen is</h3>
+    <p class="lead">De ${sub.length} namen <i>onder</i> de conviction floor. Elke hypothese
+    in het register is aan het boek gesteld, dus dit is het enige stuk van dezelfde dagen
+    dat de factoren niet heeft gezien. Deze namen renderen als groep slecht
+    (${pc(book(sub.map(retOf)).mean)} per naam tegen
+    ${pc(book(bk.map(retOf)).mean)} boven de floor), dus lees het teken van het gat en
+    niet het niveau.</p>` + table([
+    {h:'factor', f:r=>`<code>${esc(r.k)}</code>`},
+    {h:'+1', f:r=>`${r.up.n} · <span class="${sgn(r.up.mean)}">${pc(r.up.mean)}</span>`},
+    {h:'\u22121', f:r=>`${r.dn.n} · <span class="${sgn(r.dn.mean)}">${pc(r.dn.mean)}</span>`},
+    {h:'gat onder de floor', f:r=>`<span class="${sgn(r.gap)}">${pc(r.gap)}</span>`},
+    {h:'gat in het boek', f:r=>r.bookGap == null ? '—'
+        : `<span class="${sgn(r.bookGap)}">${pc(r.bookGap)}</span>`},
+    {h:'zelfde teken', f:r=>r.bookGap == null ? '—'
+        : ((r.gap > 0) === (r.bookGap > 0)
+           ? '<span class="c-yes">ja</span>' : '<span class="c-anti">nee</span>')}],
+    rowsU) +
+    `<small>Geen van deze gaten haalt twee standaardfouten; ze zijn er om het teken te
+     lezen, niet om iets te bevestigen. w2 verandert hier niets door: de floor blijft de
+     poort en deze namen worden hoe dan ook niet gekocht.</small></div>`;
 
   html += `<div class="warn"><b>Wat de hogere cap kost.</b> De per-naam cap is het enige
     risicoinstrument in deze stage. Van 33% naar 50% betekent dat één print het vermogen

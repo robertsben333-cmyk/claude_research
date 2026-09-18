@@ -213,3 +213,7 @@ WHAT FAILED: nothing. No agent errored, no fetch was blocked, no script raised. 
 - w1 and w1_filter stay frozen and still computed rather than deleted. Removing a spec after watching it lose is how a record stops being a record.
 - TWO SHADOWING BUGS, BOTH CAUGHT BY RENDERING RATHER THAN READING: a local `book` variable shadowed the global statistics helper of the same name, and table() hands its formatter the row and no index, so the paired day had to be folded into the row instead of looked up by position.
 - Verified: smoke_test.py passes, the ledger rebuilds with w2 attached to 112 names, the page renders with no JS errors and zero NaN.
+
+## Dashboard — Weging: factoren op alle onderzochte namen
+- Logged at 2026-09-18 20:03 UTC
+- De vier w2-factoren worden nu gemeten op alle 105 gerangschikte namen naast de 56 boven de floor; de boeken blijven op het boek. Alle vier houden hun teken op de bredere steekproef; onder de floor houden retail (+1.64pp) en lean (+2.93pp) hun teken en draaien evidence (-1.86pp) en search_quiet (-2.29pp) om. Geen gat haalt twee standaardfouten. Niets aangezet.

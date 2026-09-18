@@ -4,6 +4,38 @@ Append-only. One dated section per update, written by the `edge-performance` ski
 Three things in every entry: what closed and what resolved, the pooled ranking figure
 beside its free control, and one sentence of critical read.
 
+## 2026-09-18 (laatste) — de factoren op alle onderzochte namen
+
+Niets gesloten en niets nieuws opgelost sinds de vorige build: 112 namen, 12 posities,
+dezelfde twaalf verhandelde dagen. Wat veranderde is waar de vier w2-factoren op
+gemeten worden.
+
+**De boeken blijven boven de floor, de factoren niet meer.** De vier boeken (A t/m D)
+staan op de 56 namen boven de conviction floor, want dat is wat de poort koopt. De
+factoren zijn een uitspraak over de hunt, en de hunt rangschikte op dezelfde dagen 105
+namen. De floor selecteert op `|impact_sum|` en dat is niet wat een van de vier meet,
+dus de andere helft van het bewijs weggooien had geen reden. Beide kolommen staan nu
+naast elkaar in de tab.
+
+**Alle vier houden hun teken op de verdubbelde steekproef**, en elk niveau zakt, omdat
+de helft onder de floor −2.98% per naam doet tegen +3.69% erboven: meer findings +1.32%
+tegen +0.18%, retail +2.15% tegen −0.85%, lean wijst mee +2.88% tegen −1.96%, minder
+zoekverkeer +0.41% tegen −1.12%.
+
+**Het interessante deel is de 49 namen onder de floor** — het enige stuk van deze dagen
+waar geen factor op gekozen is, want elke hypothese in het register is aan het boek
+gesteld. Daar houden de twee factoren mét steun in het register hun teken (retail
++1.64pp, lean +2.93pp) en draaien de twee zonder om: `evidence`, dat H7 als *geen
+effect* mat, op −1.86pp en `search_quiet`, één Bonferroni-ongecorrigeerde cel, op
+−2.29pp.
+
+**Read.** Geen enkel gat hier haalt twee standaardfouten en het is dezelfde dagen, met
+namen die er staan omdát de hunt weinig vond — dus het is geen schone
+out-of-sample-toets. Het is wel de eerste keer dat de twee zwakste factoren van w2 iets
+laten zien dat de andere twee niet doen, en het is precies de volgorde waarin ze eruit
+zouden gaan. Er beweegt niets: de floor blijft de poort, w2 staat nergens aan, en deze
+namen worden hoe dan ook niet gekocht.
+
 ## 2026-09-18 (late) — w2: the floor stays the gate, the factors set the size
 
 The operator's redesign, and it is a better shape than w1. The conviction floor remains
