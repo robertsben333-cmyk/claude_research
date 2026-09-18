@@ -72,6 +72,8 @@ JST = ZoneInfo("Asia/Tokyo")
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts"))
 
+SHUKUJITSU = "https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv"
+HOLIDAY_CACHE = REPO / "researcher_japan" / "analysis" / "jp-holidays.json"
 JPX_INDEX = ("https://www.jpx.co.jp/listing/event-schedules/"
              "financial-announcement/index.html")
 JPX_HOST = "https://www.jpx.co.jp"
@@ -95,6 +97,65 @@ def fetch(url, binary=False, referer=None, timeout=45):
     if code != 200:
         raise RuntimeError(f"HTTP {code} for {url}")
     return body if binary else body.decode("utf-8", "replace")
+
+
+def market_closed(day):
+    """Is Tokyo shut on `day` (a date)? Returns a reason string, or None if open.
+
+    WHY THIS IS NOT COSMETIC. An empty calendar has two completely different causes and
+    they need opposite responses: the fiscal cohort's sheet is not published yet (wait),
+    or the exchange is shut (nothing to wait for). Without this the run records the first
+    reason for both, and next week is the worked example -- Tokyo is closed 2026-09-21,
+    09-22 and 09-23 for 敬老の日, a 国民の休日 and 秋分の日, so the Routine fires into
+    three consecutive shut days and would have logged a misleading explanation each
+    time. This repo has already paid for a wrong reason recorded confidently.
+
+    Source is the Cabinet Office's own 国民の祝日 CSV, which is the authoritative list.
+    TSE additionally closes 31 December to 3 January, which no holiday list carries
+    because they are not public holidays.
+    """
+    if day.weekday() >= 5:
+        return "weekend"
+    if (day.month, day.day) in ((12, 31), (1, 1), (1, 2), (1, 3)):
+        return "year-end / new-year exchange holiday (31 Dec - 3 Jan)"
+
+    holidays = {}
+    if HOLIDAY_CACHE.exists():
+        try:
+            holidays = json.loads(HOLIDAY_CACHE.read_text(encoding="utf-8"))
+        except Exception:
+            holidays = {}
+    if day.isoformat() not in holidays:
+        try:
+            raw = fetch(SHUKUJITSU, binary=True)
+            text = None
+            for enc in ("cp932", "utf-8-sig", "utf-8"):
+                try:
+                    text = raw.decode(enc)
+                    break
+                except Exception:
+                    continue
+            if text:
+                import csv as _csv
+                import io as _io
+                fresh = {}
+                for row in _csv.reader(_io.StringIO(text)):
+                    if len(row) < 2 or "/" not in row[0]:
+                        continue
+                    try:
+                        y, m, d = (int(x) for x in row[0].split("/"))
+                    except ValueError:
+                        continue
+                    fresh[date(y, m, d).isoformat()] = row[1]
+                if fresh:
+                    holidays = fresh
+                    HOLIDAY_CACHE.parent.mkdir(parents=True, exist_ok=True)
+                    HOLIDAY_CACHE.write_text(
+                        json.dumps(holidays, ensure_ascii=False), encoding="utf-8")
+        except Exception:
+            pass                      # an unreachable list is not a reason to stop
+    name = holidays.get(day.isoformat())
+    return f"public holiday: {name}" if name else None
 
 
 def cohort_files():
@@ -222,6 +283,7 @@ def main():
     a = ap.parse_args()
 
     target = a.date or datetime.now(JST).date().isoformat()
+    closed = market_closed(date.fromisoformat(target))
     rows, as_of, files = calendar()
     todays = [r for r in rows if r["scheduled_date"] == target]
 
@@ -234,10 +296,25 @@ def main():
         "calendar_sheets": files,
         "calendar_rows_total": len(rows),
         "scheduled_today": len(todays),
+        "market_closed": closed,
         "cap": a.cap,
         "min_turnover_jpy": a.min_turnover_jpy,
         "generated_utc": datetime.now(ZoneInfo("UTC")).isoformat(timespec="seconds"),
     }
+
+    if closed and not todays:
+        out["names"] = []
+        out["note"] = (f"Tokyo is closed on {target} ({closed}). An empty calendar here "
+                       f"is the exchange being shut, NOT a cohort sheet that has yet to "
+                       f"be published. Nothing to wait for and nothing to hunt.")
+        text = json.dumps(out, ensure_ascii=False, indent=2)
+        if a.out:
+            Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+            Path(a.out).write_text(text + "\n", encoding="utf-8")
+            print(f"{target}: market closed ({closed}); empty universe -> {a.out}")
+        else:
+            print(text)
+        return
 
     if a.no_tape:
         out["names"] = todays
