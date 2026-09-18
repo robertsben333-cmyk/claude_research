@@ -705,6 +705,21 @@ def main():
     # opg`, a session cannot edit a Routine, and the guard failing shut would mean a
     # correct-looking no-op every morning while the amc legs went unsold -- the exact
     # failure it was written to replace. So it matches on placement.
+    # WHICH RUN SELLS A LEG. `close` takes every leg due today and two runs a day
+    # call it. On 2026-09-18 the 06:05 ET Routine sent TRT's bmo exit as a market DAY
+    # order, which Alpaca queues for the OPEN, although `amc_open` puts bmo at market
+    # on stage E's 13:05 ET run -- and bmo measured worst at the open of the three.
+    check("a market-placement leg is left to the run inside the session",
+          at.defer_to_session_run("market", overdue=False, session_open=False))
+    check("an open-placement leg is exactly what the pre-market run is for",
+          not at.defer_to_session_run("open", overdue=False, session_open=False))
+    check("an overdue leg is never deferred",
+          not at.defer_to_session_run("market", overdue=True, session_open=False))
+    check("nothing is deferred while the session is open",
+          not at.defer_to_session_run("market", overdue=False, session_open=True))
+    check("an unreadable clock never becomes a reason a leg goes unsold",
+          not at.defer_to_session_run("market", overdue=False, session_open=None))
+
     check("both opening modes are reachable by the opg guard, auction orders or not",
           all(at.exit_placement("amc", _auc(m, on)) == "open"
               for m in ("auction_split", "amc_open") for on in (True, False)))
