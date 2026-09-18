@@ -1,0 +1,336 @@
+<title>Aanloop en trefkans</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#EDF0F2; --surface:#FFFFFF; --raised:#E3E8EB; --sunk:#F5F7F8;
+  --ink:#0F1418; --ink-2:#4B575E; --ink-3:#7E8B93;
+  --rule:#D2D9DD; --rule-2:#E5EAED;
+  --accent:#0B6E6E; --accent-soft:#DCEDEC; --accent-ink:#095A5A;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --good:#2E6B4A; --good-soft:#E2EFE7;
+  --bad:#A33A3A;  --bad-soft:#F6E5E5;
+  --warn:#8A5A1B; --warn-soft:#F6ECDC;
+  --grid:#E5EAED;
+  --f-d:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-b:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --f-m:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --ground:#0E1215; --surface:#161B1F; --raised:#1E252A; --sunk:#12171A;
+  --ink:#E9EEF0; --ink-2:#A3AFB6; --ink-3:#77848B;
+  --rule:#272F34; --rule-2:#1D2429;
+  --accent:#4FB5B0; --accent-soft:#11302F; --accent-ink:#79CFCA;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --good:#5FA57C; --good-soft:#15291F;
+  --bad:#DA6F6F;  --bad-soft:#2B1A1A;
+  --warn:#C79350; --warn-soft:#2A2013;
+  --grid:#242C31;
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1215; --surface:#161B1F; --raised:#1E252A; --sunk:#12171A;
+  --ink:#E9EEF0; --ink-2:#A3AFB6; --ink-3:#77848B;
+  --rule:#272F34; --rule-2:#1D2429;
+  --accent:#4FB5B0; --accent-soft:#11302F; --accent-ink:#79CFCA;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --good:#5FA57C; --good-soft:#15291F;
+  --bad:#DA6F6F;  --bad-soft:#2B1A1A;
+  --warn:#C79350; --warn-soft:#2A2013;
+  --grid:#242C31;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+     font-family:var(--f-b);font-size:15.5px;line-height:1.6;
+     -webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding-block:40px 80px;padding-left:20px;padding-right:20px;
+      display:flex;flex-direction:column;gap:38px}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:2px}
+
+h1,h2,h3{font-family:var(--f-d);font-weight:500;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(29px,4.6vw,42px);line-height:1.12}
+h2{font-size:23px;line-height:1.25}
+h3{font-size:17px;line-height:1.35}
+p{margin:0;max-width:68ch}
+.lede{font-size:17.5px;color:var(--ink-2);max-width:66ch}
+.lede b,.lede strong{color:var(--ink);font-weight:600}
+
+.eyebrow{font-family:var(--f-m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+         color:var(--ink-3)}
+.mono{font-family:var(--f-m);font-variant-numeric:tabular-nums}
+code{font-family:var(--f-m);font-size:.87em;background:var(--raised);padding:1px 5px;
+     border-radius:3px;color:var(--ink-2)}
+
+header.top{display:flex;flex-direction:column;gap:14px;padding-bottom:24px;
+           border-bottom:2px solid var(--ink)}
+nav.crumbs{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;align-items:baseline}
+nav.crumbs .sep{color:var(--ink-3)}
+
+section{display:flex;flex-direction:column;gap:14px}
+section > .sub{color:var(--ink-3);font-size:13.5px;max-width:72ch;margin-top:-6px}
+
+/* the sample band: every number on every page rests on it */
+.facts{display:flex;flex-wrap:wrap;gap:1px;background:var(--rule);
+       border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.fact{flex:1 1 130px;background:var(--surface);padding:13px 16px}
+.fact b{display:block;font-family:var(--f-m);font-size:22px;font-weight:500;
+        font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.2}
+.fact span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:3px}
+
+/* verdict chips — the register's own vocabulary, not decoration */
+.chip{display:inline-block;font-family:var(--f-m);font-size:10.5px;letter-spacing:.07em;
+      text-transform:uppercase;padding:2.5px 8px;border-radius:3px;white-space:nowrap;
+      border:1px solid currentColor;vertical-align:2px}
+.c-null{background:var(--warn-soft);color:var(--warn)}
+.c-open{background:var(--accent-soft);color:var(--accent-ink)}
+.c-lead{background:var(--good-soft);color:var(--good)}
+.c-done{background:var(--raised);color:var(--ink-3)}
+.c-plan{background:var(--sunk);color:var(--ink-3)}
+
+/* the question ledger: rows, not cards. Each row is a register entry. */
+.ledger{display:flex;flex-direction:column}
+.q{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 22px;
+   padding:22px 0;border-top:1px solid var(--rule)}
+.q:last-child{border-bottom:1px solid var(--rule)}
+.q .qh{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.q .qh h2{font-size:20px}
+.q .ans{color:var(--ink-2);font-size:15px;max-width:64ch}
+.q .stat{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:0;margin-top:4px;
+         border-left:2px solid var(--accent);padding-left:14px}
+.q .stat .n{font-family:var(--f-m);font-variant-numeric:tabular-nums;font-size:14px;
+            color:var(--ink);padding-right:20px}
+.q .stat .n em{font-style:normal;color:var(--ink-3);font-size:12.5px;display:block;
+               letter-spacing:.04em;text-transform:uppercase;font-family:var(--f-m)}
+.q .go{grid-row:1;grid-column:2;align-self:start;font-size:13.5px;white-space:nowrap}
+
+.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 12px;text-align:right;border-bottom:1px solid var(--rule-2);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-family:var(--f-m);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+         color:var(--ink-3);font-weight:400;border-bottom:1px solid var(--rule);
+         position:sticky;top:0;background:var(--surface)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{font-family:var(--f-m)}
+tr.hl td{background:var(--accent-soft)}
+.pos{color:var(--good)} .neg{color:var(--bad)} .dim{color:var(--ink-3)}
+table.prose td:nth-child(2){white-space:normal;min-width:30ch}
+table.prose td:first-child{white-space:normal}
+
+.note{border-left:3px solid var(--warn);background:var(--surface);padding:14px 18px;
+      border-radius:0 4px 4px 0;display:flex;flex-direction:column;gap:7px}
+.note .lbl{font-family:var(--f-m);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+           color:var(--warn)}
+.note p{max-width:none;font-size:14.5px}
+.note.acc{border-left-color:var(--accent)} .note.acc .lbl{color:var(--accent-ink)}
+
+figure{margin:0;display:flex;flex-direction:column;gap:9px}
+figcaption{font-size:13px;color:var(--ink-3);max-width:72ch}
+.chart{background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+       padding:14px 12px 8px;position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--ink-2);
+        padding:2px 4px 6px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;
+          vertical-align:-1px}
+.tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .08s;
+     background:var(--ink);color:var(--ground);font-family:var(--f-m);font-size:11.5px;
+     line-height:1.45;padding:7px 9px;border-radius:4px;white-space:pre;z-index:5;
+     transform:translate(-50%,-115%)}
+details{background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+        padding:10px 14px}
+details[open]{padding-bottom:14px}
+summary{cursor:pointer;font-size:13.5px;color:var(--ink-2);font-family:var(--f-m)}
+summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+footer{border-top:1px solid var(--rule);padding-top:18px;color:var(--ink-3);font-size:13px;
+       display:flex;flex-direction:column;gap:10px}
+footer p{max-width:74ch}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:620px){
+  .q{grid-template-columns:minmax(0,1fr)}
+  .q .go{grid-row:auto;grid-column:1}
+}
+</style>
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">stage E &middot; onderzoeksvraag 1 en 2</span>
+  <nav class="crumbs"><a href="index.html">Overzicht</a><span class="sep">/</span><b>Aanloop</b><span class="sep">/</span><a href="entry-clock.html">Instapmoment</a><span class="sep">/</span><a href="search-volume.html">Zoekvolume</a><span class="sep">/</span><a href="calendar.html">Agenda</a></nav>
+  <h1>Zegt de aanloop iets over de voorspelling?</h1>
+  <p class="lede">Twee vragen over hetzelfde getal. Voorspelt het rendement van de
+  2, 5, 10 en 20 sessies vóór de instap of de <b>richting</b> van de hunt klopte? En
+  levert het meer op als die aanloop <b>dezelfde kant op wijst</b> als de voorspelling?
+  Op 105 events over 13 dagen is het antwoord op de eerste vraag nee, en op de tweede
+  nee op precies het boek dat wordt verhandeld.</p>
+  <div class="facts">
+    <div class="fact"><b>105</b><span>afgerekende events</span></div>
+    <div class="fact"><b>13</b><span>hunt-dagen</span></div>
+    <div class="fact"><b>55</b><span>boven de floor van 3.0</span></div>
+    <div class="fact"><b class="mono">0.57</b><span>laagste p, vraag 1</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Meten tot 20:00 CET, niet tot de slotkoers</h2>
+  <p>Elke aanloop eindigt op de 14:00 ET-balk van de instapdag &mdash; 20:00 CET, het
+  moment waarop het boek wordt geplaatst. Doorrekenen tot de close zou twee uur koers
+  in een voorspeller stoppen die op het beslismoment bekend hoort te zijn. Bij een
+  <code>bmo</code>-print is de instapdag de sessie <em>vóór</em> de eventdatum, want
+  dat is de laatste waarop je kunt handelen; bij <code>amc</code> is het de eventdag zelf.</p>
+</section>
+
+<section>
+  <h2>Vraag 1 &mdash; voorspelt de aanloop of het teken klopte?</h2>
+  <p class="sub">Raak is <code>sign(impact_sum) == sign(gerealiseerde beweging)</code>.
+  De eerste rho zet de aanloop af tegen die 0/1-uitkomst, de tweede de absolute aanloop.
+  p-waarden zijn permutatie-p's.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>venster</th><th class="num">n</th><th class="num">rho aanloop</th>
+    <th class="num">p</th><th class="num">rho |aanloop|</th><th class="num">p</th>
+    <th class="num">raak laag</th><th class="num">midden</th><th class="num">hoog</th></tr></thead>
+    <tbody><tr><td>2d</td><td class='num'>105</td><td class='num'>-0.056</td><td class='num dim'>0.566</td><td class='num'>+0.025</td><td class='num dim'>0.796</td><td class='num'>54%</td><td class='num'>57%</td><td class='num'>51%</td></tr><tr><td>5d</td><td class='num'>105</td><td class='num'>+0.037</td><td class='num dim'>0.716</td><td class='num'>-0.047</td><td class='num dim'>0.632</td><td class='num'>49%</td><td class='num'>57%</td><td class='num'>57%</td></tr><tr><td>10d</td><td class='num'>105</td><td class='num'>+0.023</td><td class='num dim'>0.820</td><td class='num'>+0.074</td><td class='num dim'>0.451</td><td class='num'>54%</td><td class='num'>54%</td><td class='num'>54%</td></tr><tr><td>20d</td><td class='num'>105</td><td class='num'>+0.044</td><td class='num dim'>0.658</td><td class='num'>+0.007</td><td class='num dim'>0.944</td><td class='num'>51%</td><td class='num'>57%</td><td class='num'>54%</td></tr></tbody>
+  </table></div>
+  <div class="note"><span class="lbl">wat hier staat</span>
+  <p>Geen enkele rho komt boven 0,16 uit en geen enkele p onder 0,11. De trefkans per
+  aanlooptercile blijft in een band van 49% tot 57% &mdash; vlak, en niet monotoon. Dit
+  is geen zwak signaal dat meer dagen nodig heeft; het is de vorm van niets.</p></div>
+</section>
+
+<section>
+  <h2>Vraag 2 &mdash; helpt het als de aanloop dezelfde kant op wijst?</h2>
+  <p class="sub">Eens is <code>sign(aanloop) == sign(impact_sum)</code>. Het boek is
+  gelijkgewogen, getekend door de voorspelling, ingestapt om 20:00 CET en verkocht op de
+  volgende slotkoers. Staven zijn het gemiddelde rendement per trade; de sprieten zijn
+  een 95%-betrouwbaarheidsinterval uit een bootstrap over <em>dagen</em>, niet over events.</p>
+  <figure>
+    <div class="chart">
+      <div class="legend"><span><i style="background:var(--s1)"></i>aanloop eens met de voorspelling</span><span><i style="background:var(--s2)"></i>aanloop oneens</span></div>
+      <svg viewBox="0 0 880 300" role="img"><line x1="52" y1="254.0" x2="864" y2="254.0" stroke="var(--grid)"/><text x="43" y="258.0" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">-5.7</text><line x1="52" y1="206.4" x2="864" y2="206.4" stroke="var(--grid)"/><text x="43" y="210.4" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">-1.6</text><line x1="52" y1="158.8" x2="864" y2="158.8" stroke="var(--grid)"/><text x="43" y="162.8" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+2.5</text><line x1="52" y1="111.2" x2="864" y2="111.2" stroke="var(--grid)"/><text x="43" y="115.2" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+6.5</text><line x1="52" y1="63.6" x2="864" y2="63.6" stroke="var(--grid)"/><text x="43" y="67.6" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+10.6</text><line x1="52" y1="16.0" x2="864" y2="16.0" stroke="var(--grid)"/><text x="43" y="20.0" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+14.7</text><line x1="52" y1="187.5" x2="864" y2="187.5" stroke="var(--ink-3)" stroke-width="1"/><rect x="115.5" y="150.7" width="34.0" height="36.8" fill="var(--s1)" rx="3" tabindex="0" data-tip="2d · aanloop EENS met voorspelling
+n=28  raak 18/28
+gemiddeld +3.15%  t=1.14
+95%-BI [-2.72, +7.74]"><title>2d · aanloop EENS met voorspelling
+n=28  raak 18/28
+gemiddeld +3.15%  t=1.14
+95%-BI [-2.72, +7.74]</title></rect><line x1="132.5" y1="219.2" x2="132.5" y2="97.3" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="128.5" y1="219.2" x2="136.5" y2="219.2" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="128.5" y1="97.3" x2="136.5" y2="97.3" stroke="var(--ink-2)" stroke-width="1.5"/><rect x="153.5" y="145.6" width="34.0" height="41.9" fill="var(--s2)" rx="3" tabindex="0" data-tip="2d · aanloop ONEENS met voorspelling
+n=27  raak 18/27
+gemiddeld +3.59%  t=1.26
+95%-BI [-1.53, +9.89]"><title>2d · aanloop ONEENS met voorspelling
+n=27  raak 18/27
+gemiddeld +3.59%  t=1.26
+95%-BI [-1.53, +9.89]</title></rect><line x1="170.5" y1="205.3" x2="170.5" y2="72.3" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="166.5" y1="205.3" x2="174.5" y2="205.3" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="166.5" y1="72.3" x2="174.5" y2="72.3" stroke="var(--ink-2)" stroke-width="1.5"/><text x="153.5" y="274" text-anchor="middle" font-size="11.5" fill="var(--ink-2)" font-family="var(--f-m)">2d</text><rect x="318.5" y="173.6" width="34.0" height="13.9" fill="var(--s1)" rx="3" tabindex="0" data-tip="5d · aanloop EENS met voorspelling
+n=22  raak 12/22
+gemiddeld +1.20%  t=0.47
+95%-BI [-4.00, +5.20]"><title>5d · aanloop EENS met voorspelling
+n=22  raak 12/22
+gemiddeld +1.20%  t=0.47
+95%-BI [-4.00, +5.20]</title></rect><line x1="335.5" y1="234.2" x2="335.5" y2="126.9" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="331.5" y1="234.2" x2="339.5" y2="234.2" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="331.5" y1="126.9" x2="339.5" y2="126.9" stroke="var(--ink-2)" stroke-width="1.5"/><rect x="356.5" y="131.3" width="34.0" height="56.2" fill="var(--s2)" rx="3" tabindex="0" data-tip="5d · aanloop ONEENS met voorspelling
+n=33  raak 24/33
+gemiddeld +4.82%  t=1.73
+95%-BI [-2.06, +12.60]"><title>5d · aanloop ONEENS met voorspelling
+n=33  raak 24/33
+gemiddeld +4.82%  t=1.73
+95%-BI [-2.06, +12.60]</title></rect><line x1="373.5" y1="211.6" x2="373.5" y2="40.6" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="369.5" y1="211.6" x2="377.5" y2="211.6" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="369.5" y1="40.6" x2="377.5" y2="40.6" stroke="var(--ink-2)" stroke-width="1.5"/><text x="356.5" y="274" text-anchor="middle" font-size="11.5" fill="var(--ink-2)" font-family="var(--f-m)">5d</text><rect x="521.5" y="179.2" width="34.0" height="8.3" fill="var(--s1)" rx="3" tabindex="0" data-tip="10d · aanloop EENS met voorspelling
+n=26  raak 14/26
+gemiddeld +0.71%  t=0.30
+95%-BI [-3.87, +3.98]"><title>10d · aanloop EENS met voorspelling
+n=26  raak 14/26
+gemiddeld +0.71%  t=0.30
+95%-BI [-3.87, +3.98]</title></rect><line x1="538.5" y1="232.6" x2="538.5" y2="141.2" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="534.5" y1="232.6" x2="542.5" y2="232.6" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="534.5" y1="141.2" x2="542.5" y2="141.2" stroke="var(--ink-2)" stroke-width="1.5"/><rect x="559.5" y="120.5" width="34.0" height="67.0" fill="var(--s2)" rx="3" tabindex="0" data-tip="10d · aanloop ONEENS met voorspelling
+n=29  raak 22/29
+gemiddeld +5.75%  t=1.90
+95%-BI [-1.63, +13.01]"><title>10d · aanloop ONEENS met voorspelling
+n=29  raak 22/29
+gemiddeld +5.75%  t=1.90
+95%-BI [-1.63, +13.01]</title></rect><line x1="576.5" y1="206.5" x2="576.5" y2="35.8" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="572.5" y1="206.5" x2="580.5" y2="206.5" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="572.5" y1="35.8" x2="580.5" y2="35.8" stroke="var(--ink-2)" stroke-width="1.5"/><text x="559.5" y="274" text-anchor="middle" font-size="11.5" fill="var(--ink-2)" font-family="var(--f-m)">10d</text><rect x="724.5" y="165.3" width="34.0" height="22.2" fill="var(--s1)" rx="3" tabindex="0" data-tip="20d · aanloop EENS met voorspelling
+n=24  raak 14/24
+gemiddeld +1.91%  t=0.63
+95%-BI [-3.57, +5.97]"><title>20d · aanloop EENS met voorspelling
+n=24  raak 14/24
+gemiddeld +1.91%  t=0.63
+95%-BI [-3.57, +5.97]</title></rect><line x1="741.5" y1="229.2" x2="741.5" y2="118.0" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="737.5" y1="229.2" x2="745.5" y2="229.2" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="737.5" y1="118.0" x2="745.5" y2="118.0" stroke="var(--ink-2)" stroke-width="1.5"/><rect x="762.5" y="135.0" width="34.0" height="52.5" fill="var(--s2)" rx="3" tabindex="0" data-tip="20d · aanloop ONEENS met voorspelling
+n=31  raak 22/31
+gemiddeld +4.50%  t=1.74
+95%-BI [-2.48, +10.86]"><title>20d · aanloop ONEENS met voorspelling
+n=31  raak 22/31
+gemiddeld +4.50%  t=1.74
+95%-BI [-2.48, +10.86]</title></rect><line x1="779.5" y1="216.4" x2="779.5" y2="61.0" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="775.5" y1="216.4" x2="783.5" y2="216.4" stroke="var(--ink-2)" stroke-width="1.5"/><line x1="775.5" y1="61.0" x2="783.5" y2="61.0" stroke="var(--ink-2)" stroke-width="1.5"/><text x="762.5" y="274" text-anchor="middle" font-size="11.5" fill="var(--ink-2)" font-family="var(--f-m)">20d</text></svg>
+      <div class="tip"></div>
+    </div>
+    <figcaption>Het verhandelde boek: de 55 namen boven de conviction floor van
+    3.0. Bij elk venster ligt de <em>oneens</em>-staaf hoger. Elk interval
+    overlapt nul en elkaar.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <thead><tr><th>venster</th><th class="num">eens raak</th><th class="num">eens</th>
+    <th class="num">95%-BI</th><th class="num">oneens raak</th><th class="num">oneens</th>
+    <th class="num">95%-BI</th><th class="num">verschil</th></tr></thead>
+    <tbody><tr class='hl'><td colspan='8'><b>alle namen</b></td></tr><tr><td>2d aanloop</td><td class='num'>30/49</td><td class='num pos'>+2.55%</td><td class='num dim'>[-1.56, +5.80]</td><td class='num'>26/56</td><td class='num neg'>-1.12%</td><td class='num dim'>[-4.10, +3.47]</td><td class='num pos'>+3.67pp</td></tr><tr><td>5d aanloop</td><td class='num'>18/43</td><td class='num neg'>-0.33%</td><td class='num dim'>[-3.91, +2.58]</td><td class='num'>38/62</td><td class='num pos'>+1.23%</td><td class='num dim'>[-1.76, +5.30]</td><td class='num neg'>-1.56pp</td></tr><tr><td>10d aanloop</td><td class='num'>23/43</td><td class='num pos'>+0.65%</td><td class='num dim'>[-3.68, +3.45]</td><td class='num'>33/62</td><td class='num pos'>+0.55%</td><td class='num dim'>[-2.84, +4.60]</td><td class='num pos'>+0.10pp</td></tr><tr><td>20d aanloop</td><td class='num'>23/40</td><td class='num pos'>+1.38%</td><td class='num dim'>[-2.98, +4.59]</td><td class='num'>33/65</td><td class='num pos'>+0.11%</td><td class='num dim'>[-3.34, +3.76]</td><td class='num pos'>+1.27pp</td></tr><tr class='hl'><td colspan='8'><b>conviction &ge; 3.0</b></td></tr><tr><td>2d aanloop</td><td class='num'>18/28</td><td class='num pos'>+3.15%</td><td class='num dim'>[-2.72, +7.74]</td><td class='num'>18/27</td><td class='num pos'>+3.59%</td><td class='num dim'>[-1.53, +9.89]</td><td class='num neg'>-0.44pp</td></tr><tr><td>5d aanloop</td><td class='num'>12/22</td><td class='num pos'>+1.20%</td><td class='num dim'>[-4.00, +5.20]</td><td class='num'>24/33</td><td class='num pos'>+4.82%</td><td class='num dim'>[-2.06, +12.60]</td><td class='num neg'>-3.62pp</td></tr><tr><td>10d aanloop</td><td class='num'>14/26</td><td class='num pos'>+0.71%</td><td class='num dim'>[-3.87, +3.98]</td><td class='num'>22/29</td><td class='num pos'>+5.75%</td><td class='num dim'>[-1.63, +13.01]</td><td class='num neg'>-5.03pp</td></tr><tr><td>20d aanloop</td><td class='num'>14/24</td><td class='num pos'>+1.91%</td><td class='num dim'>[-3.57, +5.97]</td><td class='num'>22/31</td><td class='num pos'>+4.50%</td><td class='num dim'>[-2.48, +10.86]</td><td class='num neg'>-2.60pp</td></tr></tbody>
+  </table></div>
+  <div class="note"><span class="lbl">de twee pools wijzen tegengesteld, en dat is het antwoord</span>
+  <p>Over <b>alle</b> namen lijkt eens-zijn te helpen: de 2-daagse aanloop geeft
+  +2.55% tegen -1.12%.
+  Over het <b>verhandelde</b> boek draait het om, bij alle vier de vensters: 10 dagen
+  geeft +0.71% als de aanloop meebeweegt tegen
+  +5.75% als hij tegenbeweegt.</p>
+  <p>Twee deelverzamelingen van dezelfde data die tegengesteld wijzen, met intervallen
+  die elkaar volledig overlappen, zijn geen twee bevindingen. Het is ruis die twee keer
+  is gemeten. Er zijn hier vier vensters, twee pools en twee uitgangen bekeken; bij
+  zestien cellen hoort een p van 0,05 er ongeveer één keer bij te zitten.</p></div>
+</section>
+
+<section>
+  <h2>Waar dit tegen afgezet hoort te worden</h2>
+  <p class="sub">Dezelfde events, dezelfde instap. Alles shorten kost geen onderzoek.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>regel</th><th class="num">raak</th><th class="num">trefkans</th>
+    <th class="num">per trade</th><th class="num">t</th></tr></thead>
+    <tbody><tr><td>de hunt, boven de floor</td><td class='num'>36/55</td><td class='num'>65%</td><td class='num pos'>+3.37%</td><td class='num dim'>1.72</td></tr><tr><td>de hunt, alle namen</td><td class='num'>56/105</td><td class='num'>53%</td><td class='num pos'>+0.59%</td><td class='num dim'>0.46</td></tr><tr><td>alles shorten, geen onderzoek</td><td class='num'>59/105</td><td class='num'>56%</td><td class='num pos'>+1.59%</td><td class='num dim'>1.27</td></tr><tr><td>min de 20-daagse aanloop</td><td class='num'>47/105</td><td class='num'>45%</td><td class='num neg'>-0.42%</td><td class='num dim'>-0.34</td></tr><tr><td>min de 10-daagse aanloop</td><td class='num'>51/105</td><td class='num'>49%</td><td class='num pos'>+0.08%</td><td class='num dim'>0.07</td></tr></tbody>
+  </table></div>
+  <p>Op deze 105 events verdient de hunt boven de floor
+  +3.37% per trade tegen +1.59%
+  voor alles shorten zonder enig onderzoek. Dat is een echt verschil en het is de reden
+  dat de floor blijft staan. Maar <code>min de 20-daagse aanloop</code> &mdash; de
+  gratis controle die in <code>edge/EDGE_ANALYSIS.md</code> de hunt op elke eerdere
+  steekproef versloeg &mdash; doet het hier met -0.42%
+  juist slecht. Ook die controle is dus niet stabiel over deze grotere steekproef.</p>
+</section>
+
+<footer>
+
+<p>Gegenereerd uit <code>edge/analysis/*.json</code> door
+<code>edge/scripts/edge_dashboard.py</code> op 2026-09-18 15:32 UTC. Elk getal op deze
+pagina's komt uit het script dat de meting deed; deze pagina's worden nooit met de
+hand bijgewerkt.</p>
+<p>Bron is uitsluitend de edge hunt (stage E), <code>research/&lt;datum&gt;/edge/</code>,
+vanaf de eerste run op 31 augustus 2026. Geen resultaten van stage 0 tot 4, niet van
+<code>claude_naive/</code>, niet van <code>backtest/</code>.</p>
+<p>Dit is een voorspelexercitie op openbare informatie. Het is geen beleggingsadvies.
+Rendementen zijn brutobedragen zonder transactiekosten, spread, slippage of leenkosten,
+op een boek waarvan een groot deel uit shorts bestaat in namen die per dag weinig
+omzetten.</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  document.querySelectorAll('.chart').forEach(function(box){
+    var tip = box.querySelector('.tip'); if(!tip) return;
+    box.querySelectorAll('[data-tip]').forEach(function(el){
+      function show(e){
+        var r = box.getBoundingClientRect();
+        var b = el.getBoundingClientRect();
+        tip.textContent = el.getAttribute('data-tip');
+        tip.style.left = (b.left + b.width/2 - r.left) + 'px';
+        tip.style.top  = (b.top - r.top) + 'px';
+        tip.style.opacity = 1;
+      }
+      el.addEventListener('mouseenter', show);
+      el.addEventListener('focus', show);
+      el.addEventListener('mouseleave', function(){ tip.style.opacity = 0; });
+      el.addEventListener('blur', function(){ tip.style.opacity = 0; });
+    });
+  });
+})();
+</script>

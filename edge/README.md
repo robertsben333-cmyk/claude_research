@@ -21,6 +21,7 @@ edge/
                         first sizing pass, so its own effect is measurable
   scripts/              the stage's own tools (see below)
   analysis/             everything the analysis scripts generate — JSON and HTML
+  analysis/dashboard/   the generated research register; never hand-edited
   routine-prompts/      the text pasted into the Routines, kept in step by hand
 ```
 

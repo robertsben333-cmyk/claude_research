@@ -1,0 +1,495 @@
+<title>Het instapmoment</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#EDF0F2; --surface:#FFFFFF; --raised:#E3E8EB; --sunk:#F5F7F8;
+  --ink:#0F1418; --ink-2:#4B575E; --ink-3:#7E8B93;
+  --rule:#D2D9DD; --rule-2:#E5EAED;
+  --accent:#0B6E6E; --accent-soft:#DCEDEC; --accent-ink:#095A5A;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --good:#2E6B4A; --good-soft:#E2EFE7;
+  --bad:#A33A3A;  --bad-soft:#F6E5E5;
+  --warn:#8A5A1B; --warn-soft:#F6ECDC;
+  --grid:#E5EAED;
+  --f-d:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-b:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --f-m:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --ground:#0E1215; --surface:#161B1F; --raised:#1E252A; --sunk:#12171A;
+  --ink:#E9EEF0; --ink-2:#A3AFB6; --ink-3:#77848B;
+  --rule:#272F34; --rule-2:#1D2429;
+  --accent:#4FB5B0; --accent-soft:#11302F; --accent-ink:#79CFCA;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --good:#5FA57C; --good-soft:#15291F;
+  --bad:#DA6F6F;  --bad-soft:#2B1A1A;
+  --warn:#C79350; --warn-soft:#2A2013;
+  --grid:#242C31;
+}}
+:root[data-theme="dark"]{
+  --ground:#0E1215; --surface:#161B1F; --raised:#1E252A; --sunk:#12171A;
+  --ink:#E9EEF0; --ink-2:#A3AFB6; --ink-3:#77848B;
+  --rule:#272F34; --rule-2:#1D2429;
+  --accent:#4FB5B0; --accent-soft:#11302F; --accent-ink:#79CFCA;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --good:#5FA57C; --good-soft:#15291F;
+  --bad:#DA6F6F;  --bad-soft:#2B1A1A;
+  --warn:#C79350; --warn-soft:#2A2013;
+  --grid:#242C31;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+     font-family:var(--f-b);font-size:15.5px;line-height:1.6;
+     -webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding-block:40px 80px;padding-left:20px;padding-right:20px;
+      display:flex;flex-direction:column;gap:38px}
+a{color:var(--accent-ink);text-decoration-thickness:1px;text-underline-offset:2px}
+
+h1,h2,h3{font-family:var(--f-d);font-weight:500;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(29px,4.6vw,42px);line-height:1.12}
+h2{font-size:23px;line-height:1.25}
+h3{font-size:17px;line-height:1.35}
+p{margin:0;max-width:68ch}
+.lede{font-size:17.5px;color:var(--ink-2);max-width:66ch}
+.lede b,.lede strong{color:var(--ink);font-weight:600}
+
+.eyebrow{font-family:var(--f-m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+         color:var(--ink-3)}
+.mono{font-family:var(--f-m);font-variant-numeric:tabular-nums}
+code{font-family:var(--f-m);font-size:.87em;background:var(--raised);padding:1px 5px;
+     border-radius:3px;color:var(--ink-2)}
+
+header.top{display:flex;flex-direction:column;gap:14px;padding-bottom:24px;
+           border-bottom:2px solid var(--ink)}
+nav.crumbs{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;align-items:baseline}
+nav.crumbs .sep{color:var(--ink-3)}
+
+section{display:flex;flex-direction:column;gap:14px}
+section > .sub{color:var(--ink-3);font-size:13.5px;max-width:72ch;margin-top:-6px}
+
+/* the sample band: every number on every page rests on it */
+.facts{display:flex;flex-wrap:wrap;gap:1px;background:var(--rule);
+       border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.fact{flex:1 1 130px;background:var(--surface);padding:13px 16px}
+.fact b{display:block;font-family:var(--f-m);font-size:22px;font-weight:500;
+        font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.2}
+.fact span{display:block;font-size:12.5px;color:var(--ink-3);margin-top:3px}
+
+/* verdict chips — the register's own vocabulary, not decoration */
+.chip{display:inline-block;font-family:var(--f-m);font-size:10.5px;letter-spacing:.07em;
+      text-transform:uppercase;padding:2.5px 8px;border-radius:3px;white-space:nowrap;
+      border:1px solid currentColor;vertical-align:2px}
+.c-null{background:var(--warn-soft);color:var(--warn)}
+.c-open{background:var(--accent-soft);color:var(--accent-ink)}
+.c-lead{background:var(--good-soft);color:var(--good)}
+.c-done{background:var(--raised);color:var(--ink-3)}
+.c-plan{background:var(--sunk);color:var(--ink-3)}
+
+/* the question ledger: rows, not cards. Each row is a register entry. */
+.ledger{display:flex;flex-direction:column}
+.q{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 22px;
+   padding:22px 0;border-top:1px solid var(--rule)}
+.q:last-child{border-bottom:1px solid var(--rule)}
+.q .qh{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.q .qh h2{font-size:20px}
+.q .ans{color:var(--ink-2);font-size:15px;max-width:64ch}
+.q .stat{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:0;margin-top:4px;
+         border-left:2px solid var(--accent);padding-left:14px}
+.q .stat .n{font-family:var(--f-m);font-variant-numeric:tabular-nums;font-size:14px;
+            color:var(--ink);padding-right:20px}
+.q .stat .n em{font-style:normal;color:var(--ink-3);font-size:12.5px;display:block;
+               letter-spacing:.04em;text-transform:uppercase;font-family:var(--f-m)}
+.q .go{grid-row:1;grid-column:2;align-self:start;font-size:13.5px;white-space:nowrap}
+
+.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 12px;text-align:right;border-bottom:1px solid var(--rule-2);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-family:var(--f-m);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+         color:var(--ink-3);font-weight:400;border-bottom:1px solid var(--rule);
+         position:sticky;top:0;background:var(--surface)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{font-family:var(--f-m)}
+tr.hl td{background:var(--accent-soft)}
+.pos{color:var(--good)} .neg{color:var(--bad)} .dim{color:var(--ink-3)}
+table.prose td:nth-child(2){white-space:normal;min-width:30ch}
+table.prose td:first-child{white-space:normal}
+
+.note{border-left:3px solid var(--warn);background:var(--surface);padding:14px 18px;
+      border-radius:0 4px 4px 0;display:flex;flex-direction:column;gap:7px}
+.note .lbl{font-family:var(--f-m);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+           color:var(--warn)}
+.note p{max-width:none;font-size:14.5px}
+.note.acc{border-left-color:var(--accent)} .note.acc .lbl{color:var(--accent-ink)}
+
+figure{margin:0;display:flex;flex-direction:column;gap:9px}
+figcaption{font-size:13px;color:var(--ink-3);max-width:72ch}
+.chart{background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+       padding:14px 12px 8px;position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--ink-2);
+        padding:2px 4px 6px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;
+          vertical-align:-1px}
+.tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .08s;
+     background:var(--ink);color:var(--ground);font-family:var(--f-m);font-size:11.5px;
+     line-height:1.45;padding:7px 9px;border-radius:4px;white-space:pre;z-index:5;
+     transform:translate(-50%,-115%)}
+details{background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+        padding:10px 14px}
+details[open]{padding-bottom:14px}
+summary{cursor:pointer;font-size:13.5px;color:var(--ink-2);font-family:var(--f-m)}
+summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+footer{border-top:1px solid var(--rule);padding-top:18px;color:var(--ink-3);font-size:13px;
+       display:flex;flex-direction:column;gap:10px}
+footer p{max-width:74ch}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:620px){
+  .q{grid-template-columns:minmax(0,1fr)}
+  .q .go{grid-row:auto;grid-column:1}
+}
+</style>
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">stage E &middot; onderzoeksvraag 3</span>
+  <nav class="crumbs"><a href="index.html">Overzicht</a><span class="sep">/</span><a href="runup.html">Aanloop</a><span class="sep">/</span><b>Instapmoment</b><span class="sep">/</span><a href="search-volume.html">Zoekvolume</a><span class="sep">/</span><a href="calendar.html">Agenda</a></nav>
+  <h1>Is 20:00 CET het juiste instapmoment?</h1>
+  <p class="lede">De uitgang is vastgezet en alleen de <b>ingang</b> schuift, van 16:00
+  tot 22:00 CET in stappen van een half uur. Elk verschil tussen twee rijen is dus
+  instapmoment en niets anders. Over het verhandelde boek is de spreiding over de hele
+  sessie <b>0.40 procentpunt</b> &mdash; op een rendement van
+  +3.37% en een standaardafwijking van 15. Het maakt niet uit.</p>
+  <div class="facts">
+    <div class="fact"><b>105</b><span>afgerekende events</span></div>
+    <div class="fact"><b class="mono">+3.37%</b><span>om 20:00 CET, boven de floor</span></div>
+    <div class="fact"><b class="mono">0.40pp</b><span>spreiding over 6 uur</span></div>
+    <div class="fact"><b class="mono">15</b><span>sd per trade</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Waarom het raster bij de slotkoers stopt</h2>
+  <p>Bij een <code>amc</code>-naam valt de print ná 16:00 ET, dus de slotkoers is de
+  laatste verhandelbare minuut en &ldquo;later&rdquo; bestaat niet meer. Bij een
+  <code>bmo</code>-naam valt de print vóór de volgende open, dus de slotkoers van de
+  instapdag is opnieuw het laatste liquide moment: de nabeurs daartussen draagt in deze
+  bron geen volume. &ldquo;Later&rdquo; betekent hier dus later in dezelfde sessie. Het
+  raster begint om 16:00 CET omdat de vraag pas iets betekent naast haar spiegelbeeld:
+  als vroeger meer oplevert, is het antwoord dat de run eerder klaar moet zijn.</p>
+</section>
+
+<section>
+  <h2>Rendement per instapmoment</h2>
+  <p class="sub">Gemiddeld rendement per trade, uitgang op de volgende slotkoers.
+  De stippellijn is 20:00 CET, het moment waarop stage E nu koopt.</p>
+  <figure>
+    <div class="chart">
+      <div class="legend"><span><i style="background:var(--s1)"></i>boven de conviction floor</span><span><i style="background:var(--s2)"></i>alle namen</span></div>
+      <svg viewBox="0 0 880 300" role="img" aria-label="rendement per trade"><line x1="52" y1="266.0" x2="776" y2="266.0" stroke="var(--grid)" stroke-width="1"/><text x="43" y="270.0" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">-0.1</text><line x1="52" y1="216.0" x2="776" y2="216.0" stroke="var(--grid)" stroke-width="1"/><text x="43" y="220.0" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+0.8</text><line x1="52" y1="166.0" x2="776" y2="166.0" stroke="var(--grid)" stroke-width="1"/><text x="43" y="170.0" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+1.6</text><line x1="52" y1="116.0" x2="776" y2="116.0" stroke="var(--grid)" stroke-width="1"/><text x="43" y="120.0" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+2.4</text><line x1="52" y1="66.0" x2="776" y2="66.0" stroke="var(--grid)" stroke-width="1"/><text x="43" y="70.0" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+3.2</text><line x1="52" y1="16.0" x2="776" y2="16.0" stroke="var(--grid)" stroke-width="1"/><text x="43" y="20.0" text-anchor="end" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">+4.0</text><line x1="52" y1="262.7" x2="776" y2="262.7" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3"/><line x1="534.7" y1="16" x2="534.7" y2="266" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="534.7" y="13" text-anchor="middle" font-size="10.5" fill="var(--accent)" font-family="var(--f-m)" letter-spacing="0.06em">20:00 CET</text><text x="52.0" y="284" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">16:00 CET</text><text x="172.7" y="284" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">17:00 CET</text><text x="293.3" y="284" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">18:00 CET</text><text x="414.0" y="284" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">19:00 CET</text><text x="534.7" y="284" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">20:00 CET</text><text x="655.3" y="284" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">21:00 CET</text><text x="776.0" y="284" text-anchor="middle" font-size="11" fill="var(--ink-3)" font-family="var(--f-m)">22:00 CET</text><text x="43" y="10" text-anchor="end" font-size="10.5" fill="var(--ink-3)" font-family="var(--f-m)">%</text><path d="M52.0,50.1 L112.3,60.7 L172.7,52.7 L233.0,54.8 L293.3,54.3 L353.7,60.1 L414.0,65.4 L474.3,67.5 L534.7,57.0 L595.0,58.5 L655.3,59.8 L715.7,54.6 L776.0,43.3" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="52.0" cy="50.1" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+10:00 ET / 16:00 CET
+n=53  raak 36/53
+gemiddeld +3.48%  t=1.76
+95%-BI [-0.37, +7.63]"><title>boven de floor
+10:00 ET / 16:00 CET
+n=53  raak 36/53
+gemiddeld +3.48%  t=1.76
+95%-BI [-0.37, +7.63]</title></circle><circle cx="112.3" cy="60.7" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+10:30 ET / 16:30 CET
+n=55  raak 38/55
+gemiddeld +3.31%  t=1.68
+95%-BI [-1.03, +7.98]"><title>boven de floor
+10:30 ET / 16:30 CET
+n=55  raak 38/55
+gemiddeld +3.31%  t=1.68
+95%-BI [-1.03, +7.98]</title></circle><circle cx="172.7" cy="52.7" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+11:00 ET / 17:00 CET
+n=55  raak 37/55
+gemiddeld +3.44%  t=1.76
+95%-BI [-0.82, +8.03]"><title>boven de floor
+11:00 ET / 17:00 CET
+n=55  raak 37/55
+gemiddeld +3.44%  t=1.76
+95%-BI [-0.82, +8.03]</title></circle><circle cx="233.0" cy="54.8" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+11:30 ET / 17:30 CET
+n=55  raak 37/55
+gemiddeld +3.41%  t=1.76
+95%-BI [-1.00, +8.12]"><title>boven de floor
+11:30 ET / 17:30 CET
+n=55  raak 37/55
+gemiddeld +3.41%  t=1.76
+95%-BI [-1.00, +8.12]</title></circle><circle cx="293.3" cy="54.3" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+12:00 ET / 18:00 CET
+n=55  raak 37/55
+gemiddeld +3.41%  t=1.77
+95%-BI [-0.89, +8.04]"><title>boven de floor
+12:00 ET / 18:00 CET
+n=55  raak 37/55
+gemiddeld +3.41%  t=1.77
+95%-BI [-0.89, +8.04]</title></circle><circle cx="353.7" cy="60.1" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+12:30 ET / 18:30 CET
+n=55  raak 37/55
+gemiddeld +3.32%  t=1.71
+95%-BI [-1.00, +8.09]"><title>boven de floor
+12:30 ET / 18:30 CET
+n=55  raak 37/55
+gemiddeld +3.32%  t=1.71
+95%-BI [-1.00, +8.09]</title></circle><circle cx="414.0" cy="65.4" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+13:00 ET / 19:00 CET
+n=55  raak 37/55
+gemiddeld +3.23%  t=1.65
+95%-BI [-1.11, +8.03]"><title>boven de floor
+13:00 ET / 19:00 CET
+n=55  raak 37/55
+gemiddeld +3.23%  t=1.65
+95%-BI [-1.11, +8.03]</title></circle><circle cx="474.3" cy="67.5" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+13:30 ET / 19:30 CET
+n=55  raak 37/55
+gemiddeld +3.20%  t=1.63
+95%-BI [-1.13, +7.96]"><title>boven de floor
+13:30 ET / 19:30 CET
+n=55  raak 37/55
+gemiddeld +3.20%  t=1.63
+95%-BI [-1.13, +7.96]</title></circle><circle cx="534.7" cy="57.0" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+14:00 ET / 20:00 CET
+n=55  raak 36/55
+gemiddeld +3.37%  t=1.72
+95%-BI [-0.96, +8.21]"><title>boven de floor
+14:00 ET / 20:00 CET
+n=55  raak 36/55
+gemiddeld +3.37%  t=1.72
+95%-BI [-0.96, +8.21]</title></circle><circle cx="595.0" cy="58.5" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+14:30 ET / 20:30 CET
+n=55  raak 36/55
+gemiddeld +3.34%  t=1.70
+95%-BI [-1.00, +8.19]"><title>boven de floor
+14:30 ET / 20:30 CET
+n=55  raak 36/55
+gemiddeld +3.34%  t=1.70
+95%-BI [-1.00, +8.19]</title></circle><circle cx="655.3" cy="59.8" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+15:00 ET / 21:00 CET
+n=55  raak 38/55
+gemiddeld +3.32%  t=1.67
+95%-BI [-1.06, +8.22]"><title>boven de floor
+15:00 ET / 21:00 CET
+n=55  raak 38/55
+gemiddeld +3.32%  t=1.67
+95%-BI [-1.06, +8.22]</title></circle><circle cx="715.7" cy="54.6" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+15:30 ET / 21:30 CET
+n=55  raak 39/55
+gemiddeld +3.41%  t=1.68
+95%-BI [-1.06, +8.50]"><title>boven de floor
+15:30 ET / 21:30 CET
+n=55  raak 39/55
+gemiddeld +3.41%  t=1.68
+95%-BI [-1.06, +8.50]</title></circle><circle cx="776.0" cy="43.3" r="4.5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="boven de floor
+16:00 ET / 22:00 CET
+n=55  raak 38/55
+gemiddeld +3.59%  t=1.82
+95%-BI [-0.65, +8.48]"><title>boven de floor
+16:00 ET / 22:00 CET
+n=55  raak 38/55
+gemiddeld +3.59%  t=1.82
+95%-BI [-0.65, +8.48]</title></circle><text x="785.0" y="47.3" font-size="11.5" fill="var(--s1)" font-family="var(--f-m)">boven de floor</text><path d="M52.0,231.1 L112.3,231.4 L172.7,229.6 L233.0,235.2 L293.3,236.8 L353.7,238.7 L414.0,235.6 L474.3,234.7 L534.7,226.7 L595.0,219.8 L655.3,216.3 L715.7,207.0 L776.0,214.5" fill="none" stroke="var(--s2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="52.0" cy="231.1" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+10:00 ET / 16:00 CET
+n=103  raak 54/103
+gemiddeld +0.52%  t=0.40
+95%-BI [-1.91, +2.99]"><title>alle namen
+10:00 ET / 16:00 CET
+n=103  raak 54/103
+gemiddeld +0.52%  t=0.40
+95%-BI [-1.91, +2.99]</title></circle><circle cx="112.3" cy="231.4" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+10:30 ET / 16:30 CET
+n=105  raak 59/105
+gemiddeld +0.51%  t=0.40
+95%-BI [-2.06, +3.27]"><title>alle namen
+10:30 ET / 16:30 CET
+n=105  raak 59/105
+gemiddeld +0.51%  t=0.40
+95%-BI [-2.06, +3.27]</title></circle><circle cx="172.7" cy="229.6" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+11:00 ET / 17:00 CET
+n=105  raak 55/105
+gemiddeld +0.54%  t=0.42
+95%-BI [-2.04, +3.27]"><title>alle namen
+11:00 ET / 17:00 CET
+n=105  raak 55/105
+gemiddeld +0.54%  t=0.42
+95%-BI [-2.04, +3.27]</title></circle><circle cx="233.0" cy="235.2" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+11:30 ET / 17:30 CET
+n=105  raak 57/105
+gemiddeld +0.45%  t=0.35
+95%-BI [-2.15, +3.30]"><title>alle namen
+11:30 ET / 17:30 CET
+n=105  raak 57/105
+gemiddeld +0.45%  t=0.35
+95%-BI [-2.15, +3.30]</title></circle><circle cx="293.3" cy="236.8" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+12:00 ET / 18:00 CET
+n=105  raak 55/105
+gemiddeld +0.42%  t=0.33
+95%-BI [-2.10, +3.18]"><title>alle namen
+12:00 ET / 18:00 CET
+n=105  raak 55/105
+gemiddeld +0.42%  t=0.33
+95%-BI [-2.10, +3.18]</title></circle><circle cx="353.7" cy="238.7" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+12:30 ET / 18:30 CET
+n=105  raak 56/105
+gemiddeld +0.39%  t=0.31
+95%-BI [-2.08, +3.16]"><title>alle namen
+12:30 ET / 18:30 CET
+n=105  raak 56/105
+gemiddeld +0.39%  t=0.31
+95%-BI [-2.08, +3.16]</title></circle><circle cx="414.0" cy="235.6" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+13:00 ET / 19:00 CET
+n=105  raak 56/105
+gemiddeld +0.44%  t=0.35
+95%-BI [-2.05, +3.22]"><title>alle namen
+13:00 ET / 19:00 CET
+n=105  raak 56/105
+gemiddeld +0.44%  t=0.35
+95%-BI [-2.05, +3.22]</title></circle><circle cx="474.3" cy="234.7" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+13:30 ET / 19:30 CET
+n=105  raak 55/105
+gemiddeld +0.46%  t=0.36
+95%-BI [-2.04, +3.20]"><title>alle namen
+13:30 ET / 19:30 CET
+n=105  raak 55/105
+gemiddeld +0.46%  t=0.36
+95%-BI [-2.04, +3.20]</title></circle><circle cx="534.7" cy="226.7" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+14:00 ET / 20:00 CET
+n=105  raak 56/105
+gemiddeld +0.59%  t=0.46
+95%-BI [-1.85, +3.31]"><title>alle namen
+14:00 ET / 20:00 CET
+n=105  raak 56/105
+gemiddeld +0.59%  t=0.46
+95%-BI [-1.85, +3.31]</title></circle><circle cx="595.0" cy="219.8" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+14:30 ET / 20:30 CET
+n=105  raak 57/105
+gemiddeld +0.70%  t=0.55
+95%-BI [-1.80, +3.49]"><title>alle namen
+14:30 ET / 20:30 CET
+n=105  raak 57/105
+gemiddeld +0.70%  t=0.55
+95%-BI [-1.80, +3.49]</title></circle><circle cx="655.3" cy="216.3" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+15:00 ET / 21:00 CET
+n=105  raak 57/105
+gemiddeld +0.76%  t=0.59
+95%-BI [-1.76, +3.64]"><title>alle namen
+15:00 ET / 21:00 CET
+n=105  raak 57/105
+gemiddeld +0.76%  t=0.59
+95%-BI [-1.76, +3.64]</title></circle><circle cx="715.7" cy="207.0" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+15:30 ET / 21:30 CET
+n=105  raak 59/105
+gemiddeld +0.91%  t=0.71
+95%-BI [-1.59, +3.77]"><title>alle namen
+15:30 ET / 21:30 CET
+n=105  raak 59/105
+gemiddeld +0.91%  t=0.71
+95%-BI [-1.59, +3.77]</title></circle><circle cx="776.0" cy="214.5" r="4.5" fill="var(--s2)" stroke="var(--surface)" stroke-width="2" tabindex="0" data-tip="alle namen
+16:00 ET / 22:00 CET
+n=105  raak 57/105
+gemiddeld +0.79%  t=0.63
+95%-BI [-1.64, +3.61]"><title>alle namen
+16:00 ET / 22:00 CET
+n=105  raak 57/105
+gemiddeld +0.79%  t=0.63
+95%-BI [-1.64, +3.61]</title></circle><text x="785.0" y="218.5" font-size="11.5" fill="var(--s2)" font-family="var(--f-m)">alle namen</text></svg>
+      <div class="tip"></div>
+    </div>
+    <figcaption>Beide lijnen lopen vlak. De beste en slechtste instap van de dag
+    schelen 0.40pp op het verhandelde boek, tegen een standaardafwijking
+    van 15 punten per trade.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <thead><tr><th>instap</th><th class="num">n</th><th class="num">alle namen</th>
+    <th class="num">raak</th><th class="num">boven floor</th><th class="num">t</th>
+    <th class="num">95%-BI</th><th class="num">amc</th><th class="num">bmo</th></tr></thead>
+    <tbody><tr><td>10:00 ET / 16:00 CET</td><td class='num'>103</td><td class='num pos'>+0.52%</td><td class='num'>36/53</td><td class='num pos'>+3.48%</td><td class='num dim'>1.76</td><td class='num dim'>[-0.37, +7.63]</td><td class='num pos'>+2.67%</td><td class='num pos'>+4.33%</td></tr><tr><td>10:30 ET / 16:30 CET</td><td class='num'>105</td><td class='num pos'>+0.51%</td><td class='num'>38/55</td><td class='num pos'>+3.31%</td><td class='num dim'>1.68</td><td class='num dim'>[-1.03, +7.98]</td><td class='num pos'>+1.41%</td><td class='num pos'>+5.28%</td></tr><tr><td>11:00 ET / 17:00 CET</td><td class='num'>105</td><td class='num pos'>+0.54%</td><td class='num'>37/55</td><td class='num pos'>+3.44%</td><td class='num dim'>1.76</td><td class='num dim'>[-0.82, +8.03]</td><td class='num pos'>+1.83%</td><td class='num pos'>+5.11%</td></tr><tr><td>11:30 ET / 17:30 CET</td><td class='num'>105</td><td class='num pos'>+0.45%</td><td class='num'>37/55</td><td class='num pos'>+3.41%</td><td class='num dim'>1.76</td><td class='num dim'>[-1.00, +8.12]</td><td class='num pos'>+1.68%</td><td class='num pos'>+5.20%</td></tr><tr><td>12:00 ET / 18:00 CET</td><td class='num'>105</td><td class='num pos'>+0.42%</td><td class='num'>37/55</td><td class='num pos'>+3.41%</td><td class='num dim'>1.77</td><td class='num dim'>[-0.89, +8.04]</td><td class='num pos'>+1.44%</td><td class='num pos'>+5.47%</td></tr><tr><td>12:30 ET / 18:30 CET</td><td class='num'>105</td><td class='num pos'>+0.39%</td><td class='num'>37/55</td><td class='num pos'>+3.32%</td><td class='num dim'>1.71</td><td class='num dim'>[-1.00, +8.09]</td><td class='num pos'>+1.25%</td><td class='num pos'>+5.46%</td></tr><tr><td>13:00 ET / 19:00 CET</td><td class='num'>105</td><td class='num pos'>+0.44%</td><td class='num'>37/55</td><td class='num pos'>+3.23%</td><td class='num dim'>1.65</td><td class='num dim'>[-1.11, +8.03]</td><td class='num pos'>+1.02%</td><td class='num pos'>+5.53%</td></tr><tr><td>13:30 ET / 19:30 CET</td><td class='num'>105</td><td class='num pos'>+0.46%</td><td class='num'>37/55</td><td class='num pos'>+3.20%</td><td class='num dim'>1.63</td><td class='num dim'>[-1.13, +7.96]</td><td class='num pos'>+1.27%</td><td class='num pos'>+5.19%</td></tr><tr class=hl><td>14:00 ET / 20:00 CET</td><td class='num'>105</td><td class='num pos'>+0.59%</td><td class='num'>36/55</td><td class='num pos'>+3.37%</td><td class='num dim'>1.72</td><td class='num dim'>[-0.96, +8.21]</td><td class='num pos'>+1.46%</td><td class='num pos'>+5.35%</td></tr><tr><td>14:30 ET / 20:30 CET</td><td class='num'>105</td><td class='num pos'>+0.70%</td><td class='num'>36/55</td><td class='num pos'>+3.34%</td><td class='num dim'>1.70</td><td class='num dim'>[-1.00, +8.19]</td><td class='num pos'>+1.30%</td><td class='num pos'>+5.47%</td></tr><tr><td>15:00 ET / 21:00 CET</td><td class='num'>105</td><td class='num pos'>+0.76%</td><td class='num'>38/55</td><td class='num pos'>+3.32%</td><td class='num dim'>1.67</td><td class='num dim'>[-1.06, +8.22]</td><td class='num pos'>+1.07%</td><td class='num pos'>+5.66%</td></tr><tr><td>15:30 ET / 21:30 CET</td><td class='num'>105</td><td class='num pos'>+0.91%</td><td class='num'>39/55</td><td class='num pos'>+3.41%</td><td class='num dim'>1.68</td><td class='num dim'>[-1.06, +8.50]</td><td class='num pos'>+1.15%</td><td class='num pos'>+5.75%</td></tr><tr><td>16:00 ET / 22:00 CET</td><td class='num'>105</td><td class='num pos'>+0.79%</td><td class='num'>38/55</td><td class='num pos'>+3.59%</td><td class='num dim'>1.82</td><td class='num dim'>[-0.65, +8.48]</td><td class='num pos'>+1.57%</td><td class='num pos'>+5.69%</td></tr></tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>De twee sessies willen tegengestelde dingen &mdash; zwak</h2>
+  <p><code>amc</code>-namen betalen het meest als je <em>vroeg</em> instapt
+  (+2.67% om 10:00 ET tegen
+  +1.02% om 13:00 ET),
+  <code>bmo</code>-namen juist als je <em>laat</em> instapt
+  (+5.75% om 15:30 ET tegen
+  +4.33% om 10:00 ET).
+  Dat is dezelfde vorm als de uitgangsbevinding in <code>edge/EDGE_ANALYSIS.md</code>,
+  wat het plausibel maakt.</p>
+  <div class="note"><span class="lbl">niet naar handelen</span>
+  <p>Het gaat om 28 en 27 events. De spreidingen van 1,65 en 1,42 procentpunt zijn
+  kleiner dan de standaardfout van elke afzonderlijke cel, en het beste uur is gekozen
+  ná het lezen van deze grafiek. Een splitsing die op beide sessies de andere kant op
+  wijst is precies wat ruis doet als je hem in tweeën snijdt.</p></div>
+</section>
+
+<section>
+  <h2>Wat het wachten kost vóór er een voorspelling op zit</h2>
+  <p class="sub">Gemiddeld ongetekend rendement van elk instapmoment naar de slotkoers
+  van diezelfde dag. Als dit niet vlak is, heeft de sessie een drift die het boek hoe dan
+  ook oppikt.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>instap</th><th class="num">n</th><th class="num">drift naar de close</th>
+    <th class="num">t</th></tr></thead>
+    <tbody><tr><td>10:00 ET / 16:00 CET</td><td class='num'>103</td><td class='num neg'>-0.256%</td><td class='num dim'>-0.83</td></tr><tr><td>10:30 ET / 16:30 CET</td><td class='num'>105</td><td class='num neg'>-0.189%</td><td class='num dim'>-0.61</td></tr><tr><td>11:00 ET / 17:00 CET</td><td class='num'>105</td><td class='num pos'>+0.034%</td><td class='num dim'>0.11</td></tr><tr><td>11:30 ET / 17:30 CET</td><td class='num'>105</td><td class='num pos'>+0.015%</td><td class='num dim'>0.05</td></tr><tr><td>12:00 ET / 18:00 CET</td><td class='num'>105</td><td class='num pos'>+0.194%</td><td class='num dim'>0.73</td></tr><tr><td>12:30 ET / 18:30 CET</td><td class='num'>105</td><td class='num pos'>+0.248%</td><td class='num dim'>1.03</td></tr><tr><td>13:00 ET / 19:00 CET</td><td class='num'>105</td><td class='num pos'>+0.151%</td><td class='num dim'>0.65</td></tr><tr><td>13:30 ET / 19:30 CET</td><td class='num'>105</td><td class='num pos'>+0.136%</td><td class='num dim'>0.60</td></tr><tr><td>14:00 ET / 20:00 CET</td><td class='num'>105</td><td class='num pos'>+0.019%</td><td class='num dim'>0.10</td></tr><tr><td>14:30 ET / 20:30 CET</td><td class='num'>105</td><td class='num pos'>+0.001%</td><td class='num dim'>0.00</td></tr><tr><td>15:00 ET / 21:00 CET</td><td class='num'>105</td><td class='num neg'>-0.032%</td><td class='num dim'>-0.18</td></tr><tr><td>15:30 ET / 21:30 CET</td><td class='num'>105</td><td class='num pos'>+0.216%</td><td class='num dim'>1.52</td></tr></tbody>
+  </table></div>
+  <p>Geen enkele t komt boven 1,6. Er is geen intradagdrift in deze namen om op te
+  timen, wat verklaart waarom de bovenste grafiek vlak is: er valt niets te winnen
+  omdat er niets systematisch beweegt tussen 16:00 en 22:00 CET.</p>
+</section>
+
+<section>
+  <h2>Wat hier niet in zit</h2>
+  <p>De spread. Elke koers hierboven is een slotkoers van een 15-minutenbalk, niet een
+  prijs waartegen dit boek daadwerkelijk zou zijn gevuld. Op 2026-09-17 mat het
+  handelsscript bij TRT een halve spread van 14,6%. In namen als die overheerst de
+  spread elk verschil van 0,4 procentpunt dat hier staat, en die spread is niet constant
+  over de sessie &mdash; hij is het breedst rond de open en het smalst tegen de close.
+  Dat is het enige argument in deze analyse dat vóór later instappen pleit, en het is
+  niet gemeten.</p>
+</section>
+
+<footer>
+
+<p>Gegenereerd uit <code>edge/analysis/*.json</code> door
+<code>edge/scripts/edge_dashboard.py</code> op 2026-09-18 15:32 UTC. Elk getal op deze
+pagina's komt uit het script dat de meting deed; deze pagina's worden nooit met de
+hand bijgewerkt.</p>
+<p>Bron is uitsluitend de edge hunt (stage E), <code>research/&lt;datum&gt;/edge/</code>,
+vanaf de eerste run op 31 augustus 2026. Geen resultaten van stage 0 tot 4, niet van
+<code>claude_naive/</code>, niet van <code>backtest/</code>.</p>
+<p>Dit is een voorspelexercitie op openbare informatie. Het is geen beleggingsadvies.
+Rendementen zijn brutobedragen zonder transactiekosten, spread, slippage of leenkosten,
+op een boek waarvan een groot deel uit shorts bestaat in namen die per dag weinig
+omzetten.</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  document.querySelectorAll('.chart').forEach(function(box){
+    var tip = box.querySelector('.tip'); if(!tip) return;
+    box.querySelectorAll('[data-tip]').forEach(function(el){
+      function show(e){
+        var r = box.getBoundingClientRect();
+        var b = el.getBoundingClientRect();
+        tip.textContent = el.getAttribute('data-tip');
+        tip.style.left = (b.left + b.width/2 - r.left) + 'px';
+        tip.style.top  = (b.top - r.top) + 'px';
+        tip.style.opacity = 1;
+      }
+      el.addEventListener('mouseenter', show);
+      el.addEventListener('focus', show);
+      el.addEventListener('mouseleave', function(){ tip.style.opacity = 0; });
+      el.addEventListener('blur', function(){ tip.style.opacity = 0; });
+    });
+  });
+})();
+</script>

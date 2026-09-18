@@ -60,6 +60,64 @@ buckets and twelve names collapsed to one non-zero score and eleven zeros. The c
 the stage has since dropped are why, and its `edge-scores.json` carries
 `legacy_rescore: true` — midpoints, never evidence about that day.
 
+**The analysis has been reading six days out of thirteen, since 2026-09-09.**
+`edge_decompose.py` reads `edge_score`, `edge_pct`, `confidence` and `baseline_quality`
+off each ranked row, and those left the top level of `edge-scores.json` the day
+`impact_sum` became the key. It has raised `KeyError: 'edge_score'` on every run since,
+so **every number in `edge/EDGE_ANALYSIS.md` still rests on 38 de-duplicated events**
+while seven more run days sat on disk in no sample at all.
+`edge/scripts/edge_sample.py` reads the fields both schemas carry and loads the lot:
+**106 resolved, de-duplicated events over 13 hunt days, 55 above the conviction floor.**
+It sums `impact_sum` from `findings` for the pre-09-09 runs — that is the definition of
+the field, not a reconstruction, and all 38 rows of the existing `edge-rows.json`
+reproduce exactly. Use it for anything new; `edge_decompose.py` is still the only thing
+that computes the residual/cluster decomposition, and it is still broken past 09-08.
+
+**On that larger sample the free control stops working, and the hunt still beats doing
+nothing.** `-run_up_20d_pct` ranks the first six days at ρ=0.335 and was positive on 6 of
+6 days traded; over 105 events it returns **−0.42% per trade**. So the control that every
+paragraph above measures the hunt against is not stable either. What survives: the hunt
+above the floor pays **+3.37%** per trade against **+1.59%** for shorting every name with
+no research at all.
+
+**Three new questions, three near-nulls and one lead (2026-09-18).** Written up as a
+generated dashboard — `edge/scripts/edge_dashboard.py` → `edge/analysis/dashboard/`,
+published at https://claude.ai/artifact/JjEfQYMhb1UN25SCGp4SK3 — with a page each.
+
+- **The pre-print run-up says nothing** (`edge_runup.py`). The 2/5/10/20-session return
+  to the 20:00 CET entry does not predict whether the hunt's sign was right: largest
+  |ρ| 0.153, smallest p 0.117, hit rate flat at 49–57% across run-up terciles. And
+  agreement between run-up and prediction does not pay on the book that is traded — over
+  all names the 2d window looks helpful (+2.55% against −1.12%), above the floor it
+  **inverts at all four windows** (10d: +0.71% agreeing against +5.75% disagreeing).
+  Two subsets pointing opposite ways with overlapping intervals are noise measured twice.
+- **The entry hour does not matter** (`edge_entry_clock.py`). Exit held fixed, entry
+  swept 10:00–16:00 ET in half hours: best minus worst over the whole session is
+  **0.40pp** on the conviction book against a per-trade sd of 15. The close is nominally
+  best (+3.59% against +3.37% at 20:00 CET) and that gap is not worth acting on. There is
+  no intraday drift to time either — no t above 1.6 on the unsigned drift to the close.
+  What the grid cannot see is the SPREAD, which is the one real argument for entering
+  later and is unmeasured; TRT quoted a 14.6% half-spread on 09-17.
+- **Google search attention is the one lead** (`edge_search_volume.py`). Daily Trends
+  interest, US, 90 days to the entry, one fixed query per company (registered name minus
+  the legal suffix, never the ticker — "TRT" and "RH" are English words). Above the
+  floor the entry-day spike ranks at **ρ=−0.504, permutation p=0.018 on 22 events**: more
+  attention, worse outcome, and the high-attention names also move least (median 4.67%
+  against 10.08%). It is one cell out of ten looked at — **p=0.18 after Bonferroni** — and
+  the measurable half is systematically the liquid half (median turnover $22.7m against
+  $1.4m for the names Google reports nothing for). The cheap way to settle it is to put
+  the spike in the sealed baseline beside `run_up_20d_pct` and let it pool.
+  **Read `measures()` before trusting any Trends number**: each series is normalised to
+  its own maximum, so a name searched on three of ninety days reads 0…0,100 and a spike
+  over a zero median comes out at 100×. Eleven such names filled the top tercile on the
+  first run. A series now needs a non-zero median to be scored at all.
+
+**`edge_calendar.py` is the forward week, with both gates applied.** Nasdaq's calendar
+with the `time-not-supplied` rows and the `min_dollar_volume_usd` floor counted
+separately rather than folded together, so the candidate count is honest: 80 rows to
+2026-09-25, 25 with a confirmed session, 22 clearing the floor. It carries no prediction —
+that comes from a hunt that has not run.
+
 **The ordering problem is fixed; the scorer is now the problem.** `edge/EDGE_ANALYSIS.md`
 decomposes all six resolved runs, pooling *within* days (`edge/scripts/edge_decompose.py`).
 The shipped `edge_score` ranks at ρ=0.243, p=0.156 — not significant. The hunters' raw

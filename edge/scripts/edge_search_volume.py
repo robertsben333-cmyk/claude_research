@@ -20,11 +20,14 @@ Interest is RELATIVE, 0-100 against the series' own maximum, and each series is
 fetched alone, so levels are NOT comparable between companies. Only the spike is,
 which is why the spike is the measure the correlations use.
 
-THE FLOOR IS THE FINDING FOR HALF THE SAMPLE. Google reports zero for a query below
-its own reporting threshold, and most of the names this stage hunts are microcaps.
-A series that is all zeros is not "no interest measured at low precision", it is no
-measurement at all, and those names are reported separately rather than scored as
-zeros -- averaging them in would manufacture a correlation out of market cap.
+THE FLOOR IS THE FINDING FOR PART OF THE SAMPLE. Google reports zero for a query
+below its own reporting threshold, and most of the names this stage hunts are
+microcaps. A name is dropped from the correlations, and reported separately, when it
+is `silent` (zero every day) or `sparse` (a zero median -- fewer than half the days
+carry any interest). The second case is the one that matters: each series is
+normalised to its OWN maximum, so a name searched on three days out of ninety reads
+0 ... 0, 100, and a spike off a zero median comes out at 100x. Scoring those as the
+day's biggest spikes is how the first run of this script filled its top tercile.
 
 QUERY CHOICE IS A REAL DEGREE OF FREEDOM, so it is fixed in advance and stated: the
 company name as the run's own `universe.json` recorded it, with the legal suffix
@@ -136,11 +139,29 @@ def series_for(ticker, keyword, entry_day, refresh=False):
 
 
 def measures(pts):
-    """level, spike and 7-day trend, or None where Google reported nothing."""
+    """level, spike and 7-day trend -- or a reason the series cannot carry them.
+
+    TWO WAYS A SERIES IS UNUSABLE, and the second one bites hard.
+
+    `silent`  Google reported zero on every day. No measurement exists.
+
+    `sparse`  Google reported something, but on fewer than half the days. The
+              series is rescaled to its OWN maximum, so a name searched on three
+              days out of ninety reads 0, 0, ... 0, 100 -- and a spike computed
+              off a zero median comes out at 100x. That is the quantisation of a
+              near-empty series, not attention. The first run of this script
+              scored eleven such names as the largest spikes in the sample and
+              put them in the top tercile; requiring a non-zero MEDIAN -- at
+              least half the days carrying measurable interest -- is what
+              separates a real baseline from an artefact of the scale.
+    """
     vals = [v for _, v in pts]
     if not vals or max(vals) == 0:
-        return None
+        return {"unusable": "silent"}
     med = st.median(vals) or 0.0
+    if med <= 0:
+        return {"unusable": "sparse", "zero_days": sum(1 for v in vals if v == 0),
+                "n_days": len(vals)}
     last = vals[-1]
     week = st.mean(vals[-7:])
     prior = st.mean(vals[-30:-7]) if len(vals) > 30 else med
@@ -183,9 +204,12 @@ def main():
             print(f"  {r['ticker']:8s} {q[:34]:34s} FAILED  {err}")
             continue
         m = measures(pts)
-        if m is None:
+        if m.get("unusable"):
+            r["unusable"] = m["unusable"]
             silent.append(r)
-            print(f"  {r['ticker']:8s} {q[:34]:34s} below Google's reporting threshold")
+            why = ("nul op elke dag" if m["unusable"] == "silent"
+                   else f"{m.get('zero_days')}/{m.get('n_days')} nuldagen, geen basislijn")
+            print(f"  {r['ticker']:8s} {q[:34]:34s} UNUSABLE ({m['unusable']}): {why}")
             continue
         r.update(m)
         scored.append(r)
@@ -193,14 +217,17 @@ def main():
               f"  entry-day {m['level_entry_day']:>3.0f}"
               f"  spike {m['spike_day']:>5.2f}x  ({m['zero_days']}/{m['n_days']} zero days)")
 
-    print(f"\n{len(scored)} measured, {len(silent)} below the reporting threshold, "
+    n_sil = sum(1 for r in silent if r.get("unusable") == "silent")
+    print(f"\n{len(scored)} measurable, {len(silent)} unusable "
+          f"({n_sil} silent, {len(silent) - n_sil} too sparse for a baseline), "
           f"{len(failed)} failed.\n")
 
     res = {"generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
            "n_events": len(rows), "n_measured": len(scored), "n_silent": len(silent),
            "n_failed": len(failed), "exit": a.exit, "floor": a.floor,
            "silent": [{"ticker": r["ticker"], "company": r.get("company"),
-                       "query": r["trends_query"], "dollar_vol": r["dollar_vol"]}
+                       "query": r["trends_query"], "dollar_vol": r["dollar_vol"],
+                       "unusable": r.get("unusable")}
                       for r in silent],
            "failed": [{"ticker": r["ticker"], "why": r.get("trends_error")} for r in failed],
            "correlations": {}, "buckets": {}, "rows": [
