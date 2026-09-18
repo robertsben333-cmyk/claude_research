@@ -103,6 +103,36 @@ CET. On the 28 bmo names above the floor that hour is worth +4.24% at 19:05 agai
 dashboard default sits between the two. The page and the account disagree by one
 hour; decide which is right rather than leaving it.
 
+## The Hypotheses tab
+
+A register of hunches, deliberately **not** wired into the `edge-performance` skill: it
+is a place to test, not a step in a routine. Two halves, and the order is the point.
+
+**1. Intermediate variables, screened first.** Thirteen candidates against three
+outcomes that are not the same question — was the SIGN right, what did the BOOK earn,
+how far did the stock MOVE. A variable that only ranks the third is a volatility proxy
+and says nothing about skill; `retail_tilt`, `realised_vol_20d` and `rank` all sit
+there, and they are largely the same fact three times.
+
+**2. Hypotheses, written after reading that screen.** That is the honest order to work
+in and the dishonest order to report, so the tab says so in its own header. One verdict
+rule for all of them: the gap must carry the predicted sign and clear **two standard
+errors of its own difference** — roughly a t-test at p<0.05. A first version used a flat
+2pp bar and returned *steun* for seven of nine hypotheses on a book whose per-name
+standard deviation is twelve, which is what a loose rule does.
+
+A hypothesis comparing the same names at two exits (H2a, H2b) is **paired**, and is
+tested on the per-name difference. Running it as two independent groups puts the whole
+between-name spread into the standard error and can never find anything.
+
+On the 13 resolved days three of ten survive: the sector spread, the price-lean
+relationship, and the conviction floor itself — which is the anchor, and the only rule
+in this repo that ever cleared a family-wise correction. Everything else reads *geen
+effect*, including two the operator expected: bmo over amc, and the amc-early /
+bmo-late exit split. Both exit tests lean the predicted way (+1.9pp and +2.2pp per name)
+and neither reaches |t| = 2, so they are the two worth watching forward rather than
+acting on.
+
 ## The four tabs added 2026-09-18
 
 `Timing` moves the EXIT with the entry fixed at the 22:00 CET close. These are the

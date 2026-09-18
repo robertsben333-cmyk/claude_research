@@ -81,6 +81,30 @@ paragraph above measures the hunt against is not stable either. What survives: t
 above the floor pays **+3.37%** per trade against **+1.59%** for shorting every name with
 no research at all.
 
+**There is a hypothesis register on the dashboard, and it is NOT part of the skill
+(2026-09-18).** The `Hypotheses` tab is a place to test, not a step in a routine — do not
+fold it into `edge-performance`. Intermediate variables are screened first against three
+outcomes that are not the same question (sign right / book return / move size), and the
+named hypotheses were written after reading that screen, which the tab states in its own
+header. One verdict rule for all of them: the gap carries the predicted sign and clears
+two standard errors of its own difference. A hypothesis comparing the same names at two
+exits is **paired** and tested on the per-name difference.
+
+Of ten, three survive on 13 days: one sector carries the result (Consumer Cyclical 27
+names, 70.4%, +5.97% against Technology 48.3%, −1.89%), the hunt pays more where it
+**agrees with the sealed price lean** (ρ +0.33 on the book, p 0.017), and the conviction
+floor — the anchor. **The price-lean result is the uncomfortable one**: this stage exists
+to find what the market has missed, so a variable saying it earns most where it follows
+the price points the other way, and it is the first thing to measure forward. What does
+NOT survive includes two that were expected: bmo over amc, and the amc-early / bmo-late
+exit split — the paired tests give +1.88pp (16/28, t 0.93) and +2.18pp (19/28, t 1.20),
+both leaning the predicted way and neither clearing |t| = 2. And `retail_tilt` interacts
+with the floor rather than adding to it: high tilt above the floor is 78.1% / +4.90%,
+high tilt below it 38.1% / −3.66%, low tilt ~46% either way. **Move NOTHING on any of
+this** — thirteen days, no multiplicity correction, every rule chosen after seeing these
+days. Three of the four variables that clear the screen's rough bar rank move SIZE, which
+is volatility and not skill.
+
 **The dashboard's default exit is the strategy's, not a horizon (2026-09-18).** One
 column cannot describe this book: amc sells into the opening print at **15:30 CET**
 (`mv_open`) and bmo at **20:00 CET** (`hr_22`). `attach_strategy_exit()` resolves it

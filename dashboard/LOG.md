@@ -4,6 +4,56 @@ Append-only. One dated section per update, written by the `edge-performance` ski
 Three things in every entry: what closed and what resolved, the pooled ranking figure
 beside its free control, and one sentence of critical read.
 
+## 2026-09-18 (later still) — a hypothesis register, and a verdict rule that bites
+
+A `Hypotheses` tab, deliberately outside the `edge-performance` skill: a place to test,
+not a step in a routine.
+
+**Intermediate variables were screened before any hypothesis was named**, against three
+outcomes that are not the same question — sign right, book return, move size. What came
+back:
+
+| variable | what it ranks |
+| --- | --- |
+| `priced_lean_pct` | the book, ρ +0.33 (p 0.017), and accuracy at ρ +0.23 (p 0.099) |
+| `retail_tilt` | move SIZE only, ρ +0.32 (p 0.017) |
+| `realised_vol_20d` | move size, ρ +0.27 (p 0.047) |
+| `rank` | move size, ρ −0.28 (p 0.044) |
+| everything else | nothing at the rough bar |
+
+Three of those four rank the same thing — how far the stock went — which is volatility,
+not skill, and they are one finding rather than three. The tab marks that column
+explicitly for that reason.
+
+**Ten hypotheses, one verdict rule.** The gap must carry the predicted sign and clear two
+standard errors of its own difference. A first version used a flat 2pp bar and returned
+*steun* for seven of nine on a book with a per-name sd of twelve; that is what a loose
+rule does, and the rewrite is recorded on the tab rather than quietly swapped.
+
+Surviving: **H4** one sector carries it (Consumer Cyclical 27 names, 70.4%, +5.97%
+against Technology 48.3%, −1.89%), **H5** the hunt pays more where it agrees with the
+price lean, **H6** the conviction floor — the anchor.
+
+H5 is the uncomfortable one and it is written up as such: the stage is called "find what
+the market has missed", so a variable saying it earns most where it *follows* the price
+points the other way. It is the first thing to measure forward.
+
+Not surviving, including two the operator expected: **H1** bmo over amc, and **H2a/H2b**
+the amc-early / bmo-late exit split. Both exit tests are PAIRED — same names, two exits,
+tested on the per-name difference, because two independent groups would put the whole
+between-name spread into the standard error and never find anything. amc open-minus-close
+is +1.88pp (16/28, t 0.93); bmo close-minus-open is +2.18pp (19/28, t 1.20). Both lean
+the predicted way, neither clears the bar. Those are the two to watch, not to act on.
+
+**Also found, and it is the one that would change a weighting rule if it holds**: the
+conviction floor and `retail_tilt` interact rather than add. High tilt and above the
+floor is 78.1% and +4.90%; high tilt below the floor is 38.1% and −3.66%; low tilt is
+~46% either way. Four cells over 105 names is exactly the count at which an interaction
+looks convincing without being it, and the tab says so under the table.
+
+Nothing here should move a weight. Thirteen days, no multiplicity correction, and every
+rule was chosen after seeing these days.
+
 ## 2026-09-18 (later) — fresh broker data, and the default exit is now the strategy's
 
 Rebuilt against the broker rather than `--offline`: **12 closed positions, none open**,

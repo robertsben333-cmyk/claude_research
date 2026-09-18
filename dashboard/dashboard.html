@@ -131,6 +131,23 @@ td.t { font-family:var(--mono); }
 .note { border-left:3px solid var(--s2); padding-left:12px; margin:14px 0; }
 .warnbox { border-left:3px solid var(--warn); padding-left:12px; }
 .empty { color:var(--muted); padding:22px 0; text-align:center; }
+/* hypothesis register: a verdict is a chip, so the eye finds the ones that moved */
+.hyp { border-top:1px solid var(--grid); padding:14px 0; }
+.hyp:last-child { border-bottom:1px solid var(--grid); }
+.hyp h4 { margin:0 0 3px; font-size:14.5px; font-weight:600; display:flex; flex-wrap:wrap;
+          gap:9px; align-items:baseline; }
+.hyp .claim { color:var(--ink2); font-size:13.5px; margin:0 0 8px; max-width:78ch; }
+.hyp .why { color:var(--muted); font-size:12.5px; margin:7px 0 0; max-width:78ch; }
+.chip { font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+        padding:2px 7px; border-radius:3px; border:1px solid currentColor; white-space:nowrap; }
+.c-yes  { color:var(--good); }
+.c-no   { color:var(--muted); }
+.c-anti { color:var(--bad); }
+.c-thin { color:var(--muted); opacity:.75; }
+.hyp table { margin-top:6px; }
+.warn { border-left:3px solid var(--warn); background:var(--surface); padding:11px 15px;
+        border-radius:0 4px 4px 0; margin:12px 0; font-size:13.5px; color:var(--ink2); }
+.warn b { color:var(--ink); }
 code { font-family:var(--mono); font-size:12.5px; background:var(--plane); padding:1px 5px; border-radius:5px; }
 ul { color:var(--ink2); max-width:80ch; }
 li { margin:4px 0; }
@@ -1816,12 +1833,379 @@ function tabAgenda() {
   return html;
 }
 
+
+/* ================================================================== hypotheses
+   A register, not a conclusion. Two halves and the order matters:
+
+   1. INTERMEDIATE VARIABLES are screened first, against three outcomes that are
+      not the same question -- was the SIGN right, what did the BOOK earn, and how
+      far did the stock MOVE. A variable that only predicts the third is a
+      volatility proxy and says nothing about skill.
+   2. HYPOTHESES are named, directional and were written AFTER reading that screen.
+      That is the honest order to work in and the dishonest order to report, so the
+      page says so at the top rather than presenting them as predictions.
+
+   Everything recomputes from the filtered rows, so any hypothesis can be re-asked
+   under a different exit, threshold, period or sector. */
+
+const SCREEN_VARS = [
+  ['priced_lean_pct', 'prijs-lean uit de baseline'],
+  ['retail_tilt',     'retail tilt (consumentenkarakter)'],
+  ['realised_vol_20d','gerealiseerde vol 20d'],
+  ['n_findings',      'aantal findings'],
+  ['baseline_quality','baseline-kwaliteit'],
+  ['neg_runup',       'min de 20d aanloop (gratis controle)'],
+  ['runup_20d',       '20d aanloop tot 20:00 CET'],
+  ['search_spike',    'Google-zoekpiek'],
+  ['dollar_vol',      'omzet per dag'],
+  ['market_cap_usd',  'marktkapitalisatie'],
+  ['churn_pct',       'churn'],
+  ['conviction',      '|impact_sum| (conviction)'],
+  ['rank',            'rang binnen de dag'],
+];
+
+function hypRows() {
+  return rankRows().filter(r => r.impact_sum !== 0 && retOf(r) !== null
+                             && retOf(r) !== undefined);
+}
+const hitOf  = r => (Math.sign(r.impact_sum) === Math.sign(mvOf(r))) ? 1 : 0;
+const rateOf = g => g.length ? 100 * g.reduce((s,r)=>s+hitOf(r),0) / g.length : null;
+
+/* One verdict rule, stated once and applied to every row, so no hypothesis gets a
+   kinder reading than another. Thresholds are deliberately blunt: on 13 days a
+   subtle effect is not distinguishable from none. */
+function verdict(a, b, expect) {
+  if (!a || !b || a.n < 8 || b.n < 8) return ['te dun', 'c-thin'];
+  const gap = a.mean - b.mean;
+  // The gap has to clear its OWN uncertainty, not a flat number of points. A
+  // two-point difference on a book whose per-name standard deviation is twelve is
+  // noise, and a rule that calls it support will call seven of nine hypotheses
+  // supported -- which is what the first version of this did. se is the standard
+  // error of the difference of two means; 2*se is roughly a t-test at p<0.05.
+  const se = Math.sqrt((a.sd ?? 0)**2 / a.n + (b.sd ?? 0)**2 / b.n);
+  if (!isFinite(se) || se <= 0) return ['geen effect', 'c-no'];
+  if (Math.abs(gap) < 2 * se) return ['geen effect', 'c-no'];
+  const asExpected = expect > 0 ? gap > 0 : gap < 0;
+  return asExpected ? ['steun', 'c-yes'] : ['tegengesteld', 'c-anti'];
+}
+/* The gap and what it would have to be to count, so the reader sees the bar. */
+function gapNote(a, b) {
+  if (!a || !b || !a.n || !b.n) return '';
+  const gap = a.mean - b.mean;
+  const se = Math.sqrt((a.sd ?? 0)**2 / a.n + (b.sd ?? 0)**2 / b.n);
+  return `verschil ${pc(gap)}, standaardfout ${n2(se)}pp — nodig voor steun: ` +
+         `${n2(2*se)}pp`;
+}
+/* A PAIRED hypothesis compares the same names at two exits. Running that as two
+   independent groups inflates the standard error by roughly the between-name spread,
+   which on this book is an order of magnitude larger than the difference being
+   tested -- so it reports "geen effect" for anything. The per-name difference is the
+   right series to test, and it is also the one a reader can act on. */
+function pairedSide(rows, fa, fb, labelA, labelB) {
+  const pairs = rows.filter(r => fa(r) != null && fb(r) != null)
+                    .map(r => ({a: fa(r), b: fb(r)}));
+  if (!pairs.length) return null;
+  const d = pairs.map(x => x.a - x.b);
+  const st = ttest(d);
+  return {n: pairs.length, diff: st.mean, t: st.t, sd: st.sd,
+          ci: st.ci, wins: d.filter(x=>x>0).length,
+          a: book(pairs.map(x=>x.a)), b: book(pairs.map(x=>x.b)),
+          labelA, labelB};
+}
+function pairedVerdict(pr, expect) {
+  if (!pr || pr.n < 8) return ['te dun', 'c-thin'];
+  if (pr.t == null || !isFinite(pr.t)) return ['geen effect', 'c-no'];
+  if (Math.abs(pr.t) < 2) return ['geen effect', 'c-no'];
+  return (expect > 0 ? pr.diff > 0 : pr.diff < 0) ? ['steun', 'c-yes']
+                                                  : ['tegengesteld', 'c-anti'];
+}
+function pairedBlock(h) {
+  const pr = h.pair;
+  const [v, cls] = pairedVerdict(pr, h.expect ?? 1);
+  const rows = pr ? [{...pr.a, label: pr.labelA}, {...pr.b, label: pr.labelB}] : [];
+  return `<div class="hyp">
+    <h4>${esc(h.id)} · ${esc(h.title)} <span class="chip ${cls}">${esc(v)}</span></h4>
+    <p class="claim">${h.claim}</p>
+    ${table([{h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
+             {h:'raak %', f:r=>r.hit===null?'–':n1(r.hit)},
+             {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+             {h:'t', f:r=>n2(r.t)}], rows)}
+    <p class="why"><code>${pr ? `gepaard over ${pr.n} namen: verschil ${pc(pr.diff)}, ` +
+      `t ${n2(pr.t)}, ${pr.wins}/${pr.n} in de voorspelde richting` : 'te weinig paren'}</code></p>
+    ${h.why ? `<p class="why">${h.why}</p>` : ''}
+  </div>`;
+}
+
+function side(rows, label) {
+  const b = book(rows.map(retOf));
+  return {...b, label, hit: rateOf(rows)};
+}
+function hypBlock(h) {
+  const [v, cls] = verdict(h.a, h.b, h.expect ?? 1);
+  const rows = [h.a, h.b].filter(x => x && x.n);
+  return `<div class="hyp">
+    <h4>${esc(h.id)} · ${esc(h.title)} <span class="chip ${cls}">${esc(v)}</span></h4>
+    <p class="claim">${h.claim}</p>
+    ${table([{h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
+             {h:'raak %', f:r=>r.hit===null?'–':n1(r.hit)},
+             {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+             {h:'mediaan', f:r=>pc(r.med ?? r.median)},
+             {h:'t', f:r=>n2(r.t)}], rows)}
+    <p class="why"><code>${esc(gapNote(h.a, h.b))}</code></p>
+    ${h.why ? `<p class="why">${h.why}</p>` : ''}
+  </div>`;
+}
+
+function tabHypotheses() {
+  const rk = hypRows();
+  if (rk.length < 12) return `<div class="empty">te weinig rijen onder deze filters</div>`;
+  const dd = byDay(rk);
+  const FLOOR = D.conviction_floor ?? 3;
+  const above = rk.filter(r => Math.abs(r.impact_sum) >= FLOOR);
+  const below = rk.filter(r => Math.abs(r.impact_sum) <  FLOOR);
+  const medOf = k => { const v = rk.map(r=>r[k]).filter(x=>x!==null&&x!==undefined)
+                                   .sort((a,b)=>a-b);
+                       return v.length ? v[Math.floor(v.length/2)] : null; };
+
+  let html = `<p class="lead">Een register van vermoedens, geen conclusies. Elke regel
+    herberekent uit de rijen die door de filters hierboven komen, dus je kunt elke
+    hypothese opnieuw stellen onder een andere uitstap, drempel, periode of sector.</p>`;
+
+  html += `<div class="warn"><b>Lees dit eerst.</b> Deze hypotheses zijn geschreven
+    <i>nadat</i> de screen hieronder was bekeken. Dat is de eerlijke volgorde om in te
+    werken en de oneerlijke om in te rapporteren, dus het staat er. Er zijn ${SCREEN_VARS.length}
+    variabelen tegen drie uitkomsten gezet plus een stuk of tien splitsingen: bij
+    p&nbsp;&lt;&nbsp;0,05 horen daar twee tot drie toevalstreffers tussen te zitten.
+    Niets hier is gecorrigeerd voor meervoudig toetsen, en ${dd.length} dagen is geen
+    steekproef waarop een weegfactor hoort te worden gekalibreerd. Gebruik het om te
+    kiezen wát je vooruit gaat meten, niet om nu iets te wegen.</div>`;
+
+  /* ------------------------------------------------- 1. intermediate variables */
+  html += `<div class="card"><h3>1. Tussenvariabelen, eerst gescreend</h3>
+    <p class="claim">Drie uitkomsten die niet dezelfde vraag zijn. <b>Raak</b> is of het
+    teken klopte. <b>Boek</b> is wat de trade opleverde. <b>|beweging|</b> is hoe ver het
+    aandeel ging, in welke richting dan ook — een variabele die alleen dát voorspelt is
+    een volatiliteitsmaat en zegt niets over of de hunt gelijk had. ρ is binnen dagen
+    gepoold, p is een permutatie-p.</p>`;
+  const scr = SCREEN_VARS.map(([k, label]) => {
+    const g = rk.filter(r => r[k] !== null && r[k] !== undefined);
+    if (g.length < 20) return {k, label, n: g.length, thin: true};
+    const gd = byDay(g);
+    return {k, label, n: g.length,
+            ra: pooledRho(gd, r=>r[k], r=>hitOf(r)),
+            rr: pooledRho(gd, r=>r[k], r=>retOf(r)),
+            rm: pooledRho(gd, r=>r[k], r=>Math.abs(mvOf(r)))};
+  });
+  /* Bold means "clears a rough 2/sqrt(n) bar", not "is a number". Marking every
+     value emphatic is how a screen starts reading like a result. */
+  const mark = (v, n) => v == null ? '–'
+    : (Math.abs(v) >= 2 / Math.sqrt(Math.max(n, 1)) ? `<b>${n3(v)}</b>` : n3(v));
+  html += table([
+    {h:'variabele', f:r=>`${esc(r.label)}<br><code>${esc(r.k)}</code>`},
+    {h:'n', f:r=>r.n},
+    {h:'ρ raak', f:r=>r.thin?'–':mark(r.ra, r.n)},
+    {h:'ρ boek', f:r=>r.thin?'–':mark(r.rr, r.n)},
+    {h:'ρ |beweging|', f:r=>r.thin?'–':mark(r.rm, r.n)},
+  ], scr) + `<small>Vet is <code>|ρ| ≥ 2/√n</code>, een ruwe 5%-lat — geen p-waarde, en
+    zeker geen p-waarde die is gecorrigeerd voor de ${SCREEN_VARS.length}&nbsp;×&nbsp;3
+    cellen in deze tabel. Leeg betekent minder dan 20 namen onder deze filters.
+    <code>priced_lean_pct</code> en <code>conviction</code> komen uit de run zelf; de rest
+    uit de tape of van buiten. Let op de derde kolom: als een variabele alléén daar vet
+    staat, voorspelt hij hoe hard het aandeel beweegt en niet of de hunt gelijk had — dat
+    is volatiliteit, geen vaardigheid.</small></div>`;
+
+  /* -------------------------------------------------------- 2. the hypotheses */
+  const H = [];
+
+  H.push({id:'H1', title:'bmo is beter voorspelbaar dan amc',
+    claim:`Een <code>bmo</code>-print heeft twee dunne voorbeurs-uren gehad, een
+      <code>amc</code>-print een hele nacht. Als de hunt iets vindt dat de markt nog moet
+      verwerken, hoort dat bij bmo langer beschikbaar te zijn.`,
+    a: side(rk.filter(r=>r.session==='bmo'), 'bmo'),
+    b: side(rk.filter(r=>r.session==='amc'), 'amc'), expect: 1,
+    why:`Zet de drempel aan en kijk opnieuw: het verschil zit vooral in het boek, niet in
+      de trefkans.`});
+
+  const sgnRet = (r, k) => r[k] == null ? null : (r.impact_sum > 0 ? r[k] : -r[k]);
+  H.push({id:'H2a', title:'amc is méér waard verkocht op de opening dan op de close',
+    paired: true, expect: 1,
+    claim:`Een <code>amc</code>-print heeft een hele nacht gehad om verwerkt te worden, dus
+      de beweging hoort in de openingsprint te zitten en daarna terug te lopen. Dezelfde
+      namen op twee uitstappen, dus dit is een <b>gepaarde</b> toets: het verschil per naam,
+      niet twee groepen naast elkaar.`,
+    pair: pairedSide(above.filter(r=>r.session==='amc'),
+                     r=>sgnRet(r,'mv_open'), r=>sgnRet(r,'mv_close'),
+                     'amc, uit op de opening (15:30)', 'amc, uit op de close (22:00)'),
+    why:`Alleen namen boven de conviction floor, want daar wordt op gehandeld.`});
+
+  H.push({id:'H2b', title:'bmo is méér waard verkocht op de close dan op de opening',
+    paired: true, expect: 1,
+    claim:`De spiegel van H2a: een <code>bmo</code>-print heeft twee dunne voorbeurs-uren
+      gehad en herprijst de hele sessie door, dus vasthouden hoort te lonen. Als H2a en H2b
+      allebei staan, is er geen één uitstap voor dit boek maar twee.`,
+    pair: pairedSide(above.filter(r=>r.session==='bmo'),
+                     r=>sgnRet(r,'mv_close'), r=>sgnRet(r,'mv_open'),
+                     'bmo, uit op de close (22:00)', 'bmo, uit op de opening (15:30)'),
+    why:`De huidige standaarduitstap verkoopt bmo om 20:00 CET, tussen deze twee in.`});
+
+  const tilt = medOf('retail_tilt');
+  if (tilt !== null) {
+    H.push({id:'H3', title:'namen met een consumentenkarakter zijn beter voorspelbaar',
+      claim:`<code>retail_tilt</code> is de samengestelde maat uit de ledger: churn, kleine
+        kap, lage koers en volatiliteit. Het vermoeden is dat een retail-gehouden naam
+        reageert op wat een lezer kan vinden, en een institutioneel gehouden naam niet.
+        Mediaan onder deze filters is ${n1(tilt)}.`,
+      a: side(rk.filter(r=>r.retail_tilt >= tilt), `tilt ≥ ${n1(tilt)}`),
+      b: side(rk.filter(r=>r.retail_tilt <  tilt), `tilt < ${n1(tilt)}`), expect: 1,
+      why:`Let op de interactietabel onderaan: het effect zit niet in de tilt zelf maar in
+        de combinatie met de conviction floor.`});
+  }
+
+  const bySec = {};
+  rk.forEach(r => { const k = r.sector || 'onbekend';
+                    (bySec[k] = bySec[k] || []).push(r); });
+  const secs = Object.entries(bySec).filter(([,g]) => g.length >= 8)
+                     .map(([k,g]) => side(g, k)).sort((a,b)=>b.mean-a.mean);
+  if (secs.length >= 2) {
+    H.push({id:'H4', title:'één sector draagt het resultaat',
+      claim:`Als de hunt in één sector werkt en nergens anders, is dat een selectieregel
+        en geen weegfactor. Beste tegen slechtste sector met minstens zes namen.`,
+      a: secs[0], b: secs[secs.length-1], expect: 1,
+      why:`Alle sectoren staan in de tabel hieronder. Dit is de hypothese waar het
+        meervoudig-toetsen-probleem het hardst bijt: met negen sectoren is de beste
+        ervan altijd goed.`});
+  }
+
+  const lean = medOf('priced_lean_pct');
+  if (lean !== null) {
+    H.push({id:'H5', title:'de hunt betaalt méér als hij mét de prijs mee wijst',
+      claim:`<code>priced_lean_pct</code> is wat de sealed baseline zegt dat de prijs al
+        leunt, vóór er een hunter draaide. De stage heet "zoek wat de markt heeft gemist",
+        dus als dit iets oplevert wijst het de verkeerde kant op: dan verdient de hunt
+        juist waar hij de markt <i>volgt</i>.`,
+      a: side(rk.filter(r=>r.priced_lean_pct >= lean), `lean ≥ ${n2(lean)}`),
+      b: side(rk.filter(r=>r.priced_lean_pct <  lean), `lean < ${n2(lean)}`), expect: 1,
+      why:`Dit is de enige continue variabele in de screen die op zowel raak als boek iets
+        laat zien. Het is ook de meest ongemakkelijke uitkomst in dit register, en daarom
+        de eerste die vooruit gemeten hoort te worden in plaats van weggeredeneerd.`});
+  }
+
+  H.push({id:'H6', title:'de conviction floor werkt (het anker)',
+    claim:`Geen nieuwe hypothese maar de controle waar de rest tegen afgezet hoort te
+      worden: dit is de enige regel in <code>edge/EDGE_ANALYSIS.md</code> die een
+      familiegewijze correctie overleefde. Als een nieuwe splitsing minder doet dan deze,
+      is hij het niet waard.`,
+    a: side(above, `|impact_sum| ≥ ${FLOOR}`),
+    b: side(below, `< ${FLOOR}`), expect: 1});
+
+  H.push({id:'H7', title:'meer findings is een betere voorspelling',
+    claim:`Een naam waar de hunter zes dingen vond hoort beter gelezen te zijn dan een
+      naam met één. Als dat niet zo is, meet <code>impact_sum</code> vooral hoeveel er
+      te schrijven viel.`,
+    a: side(rk.filter(r=>r.n_findings >= 4), 'vier findings of meer'),
+    b: side(rk.filter(r=>r.n_findings <  4), 'minder dan vier'), expect: 1});
+
+  const dv = medOf('dollar_vol');
+  if (dv !== null) {
+    H.push({id:'H8', title:'de edge zit in de kleine, dun verhandelde namen',
+      claim:`Waar minder ogen kijken, hoort meer onverwerkt te zijn. Dit is ook de
+        hypothese met de meeste praktische gevolgen: als hij klopt, zit het rendement
+        precies waar het niet te handelen is.`,
+      a: side(rk.filter(r=>(advOf(r)||0) <  dv), `omzet < $${n1(dv/1e6)}m`),
+      b: side(rk.filter(r=>(advOf(r)||0) >= dv), `omzet ≥ $${n1(dv/1e6)}m`), expect: 1});
+  }
+
+  const meas = rk.filter(r => r.search_state === 'measured' && r.search_spike != null);
+  if (meas.length >= 16) {
+    const sp = [...meas].map(r=>r.search_spike).sort((a,b)=>a-b)[Math.floor(meas.length/2)];
+    H.push({id:'H9', title:'veel zoekverkeer betekent een slechtere trade',
+      claim:`Uit het tabblad Zoekvolume, hier als toetsbare regel gezet: aandacht hoort
+        bij een print die al is uitgekauwd. Alleen de namen die Google überhaupt meet.`,
+      a: side(meas.filter(r=>r.search_spike <  sp), `zoekpiek < ${n2(sp)}×`),
+      b: side(meas.filter(r=>r.search_spike >= sp), `zoekpiek ≥ ${n2(sp)}×`), expect: 1});
+  }
+
+  html += `<div class="card"><h3>2. De hypotheses</h3>
+    <p class="claim">Verdict per regel: <b>steun</b> als het verschil het voorspelde teken
+    heeft en groot genoeg is tegen zijn eigen onzekerheid;
+    <b>tegengesteld</b> als het even groot is maar de andere kant op; <b>geen effect</b>
+    als het kleiner is; <b>te dun</b> onder acht namen per kant. Eén regel voor alle
+    hypotheses, zodat geen enkele een vriendelijker lezing krijgt.</p>
+    <p class="claim">Een gepaarde hypothese (dezelfde namen, twee uitstappen) wordt op het
+    verschil <i>per naam</i> getoetst; twee losse groepen zouden daar de hele spreiding
+    tussen namen in de standaardfout stoppen en dus nooit iets vinden.</p>
+    <p class="claim">De drempel is geen vast aantal punten maar twee standaardfouten van
+    het verschil zelf — ruwweg een t-toets op p&nbsp;&lt;&nbsp;0,05. Een vaste drempel van
+    twee procentpunt gaf zeven van de negen hypotheses <i>steun</i> op een boek met een
+    standaardafwijking van twaalf per naam, en dat is wat een te losse regel doet.</p>
+    ${H.map(h => h.paired ? pairedBlock(h) : hypBlock(h)).join('')}</div>`;
+
+  /* --------------------------------------------- 3. the two supporting displays */
+  const HZ = D.horizons;
+  const curve = sess => HZ.map(h => {
+    const g = above.filter(r => r.session === sess && r['mv_'+h] != null);
+    return g.length >= 5
+      ? book(g.map(r => r.impact_sum > 0 ? r['mv_'+h] : -r['mv_'+h])).mean : null;
+  });
+  html += `<div class="card"><h3>H2 in beeld — rendement per uitstapmoment, per sessie</h3>
+    ${legend([{color:css('--s2'), label:'amc'}, {color:css('--s3'), label:'bmo'}])}
+    ${chartBlock('c-hyp-exit', 250)}
+    <small>Alleen namen boven de conviction floor, want daar wordt op gehandeld. Als de
+    twee lijnen tegengesteld hellen is dat H2; als ze parallel lopen is er één uitstap
+    voor het hele boek en niet twee.</small></div>`;
+
+  const secRows = Object.entries(bySec).map(([k,g]) => ({...side(g, k), sec:k}))
+                        .sort((a,b)=>b.n-a.n);
+  html += `<div class="card"><h3>H4 in tabel — alle sectoren</h3>` + table([
+    {h:'sector', f:r=>esc(r.sec)}, {h:'n', f:r=>r.n},
+    {h:'raak %', f:r=>r.hit===null?'–':n1(r.hit)},
+    {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'t', f:r=>n2(r.t)}], secRows) +
+    `<small>Sector komt van Yahoo en is per ticker gecached. Met negen sectoren over
+     ${rk.length} namen is de beste ervan per constructie goed — lees dit als de spreiding,
+     niet als een keuze.</small></div>`;
+
+  if (tilt !== null) {
+    const cross = [];
+    for (const [tl, tf] of [['tilt hoog', r=>r.retail_tilt>=tilt], ['tilt laag', r=>r.retail_tilt<tilt]])
+      for (const [cl, cf] of [[`≥ ${FLOOR}`, r=>Math.abs(r.impact_sum)>=FLOOR],
+                              [`< ${FLOOR}`, r=>Math.abs(r.impact_sum)<FLOOR]]) {
+        const g = rk.filter(r => tf(r) && cf(r));
+        if (g.length) cross.push({...side(g, `${tl} · conviction ${cl}`)});
+      }
+    html += `<div class="card"><h3>H3 × H6 — waar de twee elkaar raken</h3>` + table([
+      {h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
+      {h:'raak %', f:r=>r.hit===null?'–':n1(r.hit)},
+      {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+      {h:'t', f:r=>n2(r.t)}], cross) +
+      `<small>Dit is de cel die een weegfactor zou raken als hij standhoudt: het is geen
+       optelsom van twee effecten maar een interactie, en vier cellen over ${rk.length}
+       namen is precies het aantal waarop een interactie er overtuigend uitziet zonder
+       het te zijn.</small></div>`;
+  }
+
+  html += `<div class="warn"><b>Wat hiermee te doen.</b> Niets wegen. Kies één of twee
+    regels, leg ze vandaag vast met een datum, en meet ze vooruit op dagen die nog niet
+    bestaan. Elke regel die op deze ${dd.length} dagen is gekozen én op deze ${dd.length}
+    dagen wordt beoordeeld, is per constructie goed.</div>`;
+
+  draw.push(() => {
+    lineChart(document.getElementById('c-hyp-exit'), {
+      x: HZ.map(h=>HZ_CET[h]||h), sub: HZ, height:250, zero:true,
+      fmtY:v=>v.toFixed(0)+'%', fmtT:pc,
+      series:[{label:'amc', color:css('--s2'), values:curve('amc')},
+              {label:'bmo', color:css('--s3'), values:curve('bmo')}],
+      tipX:i=>`${HZ[i]} · ${HZ_CET[HZ[i]]||''} CET`});
+  });
+  return html;
+}
+
 /* ------------------------------------------------------------------- boot */
 const TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel], ['Score',tabScore],
               ['Drempel',tabDrempel], ['Sector',tabSector], ['Timing',tabTiming],
               ['Instap',tabInstap], ['Aanloop',tabAanloop], ['Zoekvolume',tabZoek],
               ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten], ['Lessons',tabLessons],
-              ['Agenda',tabAgenda], ['Data',tabData]];
+              ['Hypotheses',tabHypotheses], ['Agenda',tabAgenda], ['Data',tabData]];
 let active = 0;
 const nav = document.getElementById('tabs'), panels = document.getElementById('panels');
 TABS.forEach(([name], i) => {
