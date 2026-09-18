@@ -96,7 +96,7 @@ paths=()
 # broker account whose fill history is not in this repo and whose oldest orders
 # will eventually age out of the API -- so the built artefact is the record, and
 # a session that does not push it loses the only copy.
-[[ -d edge/performance ]] && paths+=(edge/performance)
+[[ -d dashboard ]] && paths+=(dashboard)
 for f in "${GENERATED[@]}" LEDGER.md; do
   [[ -e "$f" ]] && paths+=("$f")
 done

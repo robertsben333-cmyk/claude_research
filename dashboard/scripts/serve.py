@@ -9,9 +9,9 @@ straight off the disk:
                     turns its button live when it answers
     POST /rebuild   run the ledger and the renderer, return what they printed
 
-    python3 edge/performance/scripts/serve.py [--port 8765] [--offline]
-    ./edge/performance/update.sh --serve        # foreground
-    ./edge/performance/update.sh --serve-bg     # detached, shell back
+    python3 dashboard/scripts/serve.py [--port 8765] [--offline]
+    ./dashboard/update.sh --serve        # foreground
+    ./dashboard/update.sh --serve-bg     # detached, shell back
 
 Binds to 127.0.0.1, so only something already on this machine can reach it. Both
 routes carry CORS headers for `null` (a file:// page) and localhost origins only: a
@@ -28,8 +28,8 @@ import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
-HERE = ROOT / "edge" / "performance"
+ROOT = Path(__file__).resolve().parents[2]
+HERE = ROOT / "dashboard"
 LOCK = threading.Lock()
 
 
@@ -76,13 +76,13 @@ def make_handler(offline, token=None):
                 self._json(409, {"ok": False, "log": "a rebuild is already running"})
                 return
             try:
-                cmd = [sys.executable, "edge/performance/scripts/build_ledger.py"]
+                cmd = [sys.executable, "dashboard/scripts/build_ledger.py"]
                 if offline:
                     cmd.append("--offline")
                 out = []
                 ok = True
                 for c in (cmd, [sys.executable,
-                                "edge/performance/scripts/build_dashboard.py"]):
+                                "dashboard/scripts/build_dashboard.py"]):
                     r = subprocess.run(c, cwd=ROOT, capture_output=True, text=True,
                                        timeout=3600)
                     out.append(r.stdout + r.stderr)

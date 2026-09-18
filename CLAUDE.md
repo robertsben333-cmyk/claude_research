@@ -19,7 +19,7 @@ If you are a Routine session, read this whole file before doing anything.
 | C | `earnings-capture` | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
-| P | `edge-performance` | on demand | Fold every closed position and resolved run into `edge/performance/`, rebuild the dashboard, log what it now reads |
+| P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 Stage N is not part of the daily advice pipeline. It is `backtest/` arm A promoted to
@@ -81,9 +81,23 @@ paragraph above measures the hunt against is not stable either. What survives: t
 above the floor pays **+3.37%** per trade against **+1.59%** for shorting every name with
 no research at all.
 
-**Three new questions, three near-nulls and one lead (2026-09-18).** Written up as a
-generated dashboard — `edge/scripts/edge_dashboard.py` → `edge/analysis/dashboard/`,
-published at https://claude.ai/artifact/JjEfQYMhb1UN25SCGp4SK3 — with a page each.
+**The dashboard is `dashboard/` at the top level, and it is the one reading surface.**
+It was `edge/performance/` on the unmerged branch `claude/epic-ride-s4bcg4` until
+2026-09-18; merging it was the fix for "there is no dashboard in the repo", which is
+what a session concluded from the git history alone while the branch sat unmerged.
+Open `dashboard/dashboard.html` off the disk — no server, no network, no CDN — and
+rebuild it with `./dashboard/update.sh`. Everything on the page is recomputed
+client-side from `dashboard/data/ledger.json`, so every control re-derives every
+statistic under it rather than filtering a view. Its own README is the authority on
+the controls and the three levels (names / trades / account), which are not the same
+thing and must not be mixed.
+
+**Three new questions, three near-nulls and one lead (2026-09-18).** They are tabs on
+that dashboard — `Instap`, `Aanloop`, `Zoekvolume`, plus `Agenda` — not separate pages.
+An earlier standalone set under `edge/analysis/dashboard/` was deleted the same day: two
+renderers over one dataset is the drift this repo keeps paying for. The artifact
+https://claude.ai/artifact/JjEfQYMhb1UN25SCGp4SK3 is a dated snapshot of that interim
+version and is not maintained.
 
 - **The pre-print run-up says nothing** (`edge_runup.py`). The 2/5/10/20-session return
   to the 20:00 CET entry does not predict whether the hunt's sign was right: largest
@@ -112,6 +126,12 @@ published at https://claude.ai/artifact/JjEfQYMhb1UN25SCGp4SK3 — with a page e
   its own maximum, so a name searched on three of ninety days reads 0…0,100 and a spike
   over a zero median comes out at 100×. Eleven such names filled the top tercile on the
   first run. A series now needs a non-zero median to be scored at all.
+
+**`edge_runup.py`, `edge_entry_clock.py` and `edge_search_volume.py` are the CLI
+versions of those three tabs.** The dashboard does not call the first two — the ledger
+computes `enpx` and `runup_*d` from its own bars, so there is one price source — but it
+does read `edge-search-volume.json`, and `update.sh` runs that script and the calendar
+before every build. Either feeder may fail without costing the rebuild.
 
 **`edge_calendar.py` is the forward week, with both gates applied.** Nasdaq's calendar
 with the `time-not-supplied` rows and the `min_dollar_volume_usd` floor counted
@@ -390,11 +410,11 @@ settled cash before the auction that funds the next book, and fewer hours of exp
 `edge/EXECUTION.md`, "The exit the two sessions actually want".
 
 **The performance record has its own place, and on the current sample it
-contradicts the paragraphs above.** `edge/performance/` holds one ledger over every
+contradicts the paragraphs above.** `dashboard/` holds one ledger over every
 run, every fill the broker reports and the equity curve, plus a dashboard built from
-it; `./edge/performance/update.sh` rebuilds both (`--serve` makes the page's own
+it; `./dashboard/update.sh` rebuilds both (`--serve` makes the page's own
 refresh button work) and the `edge-performance` skill folds in what has closed since
-the last build and writes the reading into `edge/performance/LOG.md`. It is read-only:
+the last build and writes the reading into `dashboard/LOG.md`. It is read-only:
 it never places an order and never re-scores a run. The page recomputes every statistic
 client-side under a lens (research or money), an exit horizon, a conviction threshold,
 a per-side turnover floor, a session and a sector — so a threshold can be swept rather

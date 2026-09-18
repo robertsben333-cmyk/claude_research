@@ -4,6 +4,50 @@ Append-only. One dated section per update, written by the `edge-performance` ski
 Three things in every entry: what closed and what resolved, the pooled ranking figure
 beside its free control, and one sentence of critical read.
 
+## 2026-09-18 — moved to the top level, and four tabs
+
+`edge/performance/` is now `dashboard/`, because the file you open should not be four
+directories deep. Nothing about the build changed beyond the paths.
+
+Four tabs, all recomputed from the filtered rows rather than from a frozen summary, so
+each one moves with the lens, the exit horizon, the threshold, the period and the
+session filter like everything else on the page.
+
+- **Instap** — the entry side of the clock. `Timing` moves the exit with the entry
+  fixed at the 22:00 CET close; this moves the entry with the exit fixed at whichever
+  horizon is selected. New per-name field `enpx`: the entry-day price at every half
+  hour of the regular session. On the current sample it does not matter — about half a
+  point between the best and the worst entry of six hours, against a per-name standard
+  deviation near 13 — and the unsigned drift to the close is flat at every hour, which
+  is why. Reguliere sessie alleen: a pre/post bar from this source carries no volume.
+- **Aanloop** — new fields `runup_2d/5d/10d/20d`, measured to the **20:00 CET bar**
+  and not to the close, because the two hours after it are on the wrong side of the
+  decision they are supposed to inform. Neither question comes back with anything: no
+  |ρ| above 0.07 against whether the sign was right, and the agreement result flips
+  sign between the full sample and the traded book. Two subsets of one dataset pointing
+  opposite ways is noise measured twice, and the tab says so where the reader is.
+- **Zoekvolume** — new fields `search_spike`, `search_level`, `search_state`, attached
+  from `edge/scripts/edge_search_volume.py`. The one lead in the set: above the
+  conviction floor a larger search spike goes with a worse outcome, and the
+  high-attention names also move least. Two things keep it a lead rather than a
+  finding — it is one cell of ten looked at, and half the book is below Google's
+  reporting threshold, so the measurable half is systematically the liquid half and
+  says nothing about the names this stage most often trades.
+- **Agenda** — the forward week from `edge/scripts/edge_calendar.py`, with the session
+  gate and the liquidity floor counted separately rather than folded together, so the
+  candidate count is honest. The ledger drops it once it is more than three days old:
+  a stale list of what is coming is a list of what already came.
+
+The first run of the search script was wrong in a way worth keeping written down. Each
+Trends series is normalised to its OWN maximum, so a name searched on three days out of
+ninety reads 0…0,100, and a spike over a zero median came out at 100×. Eleven such
+names filled the top tercile and the correlation looked strong. A series now needs a
+non-zero median to be scored at all, which took the sample from 95 "measurable" names
+to 47 real ones.
+
+`update.sh` runs both feeders before the ledger; either may fail without costing the
+rebuild, and `--no-feeders` skips them.
+
 ## 2026-09-17 — first build
 
 Thirteen runs, 107 names priced, 102 in the ranking sample over 11 days (five names

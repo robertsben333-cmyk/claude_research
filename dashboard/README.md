@@ -1,4 +1,4 @@
-# edge/performance — what the hunt is actually worth
+# dashboard — what the hunt is actually worth
 
 Stage E produces a number per company. This folder is the only place that asks,
 systematically and over every day at once, whether that number is worth anything —
@@ -6,8 +6,11 @@ and what the account did with it.
 
 Nothing here runs a hunt, scores a finding or places an order. It reads.
 
+Top level on purpose: `dashboard/dashboard.html` is the file to open, and it opens
+straight off the disk with no server and no network.
+
 ```
-edge/performance/
+dashboard/
   update.sh                 the button: rebuild everything, optionally publish
   scripts/build_ledger.py   collect runs + broker + prices -> data/ledger.json
   scripts/build_dashboard.py render data/ledger.json -> dashboard.html
@@ -26,7 +29,7 @@ edge/performance/
 
 | level | what it is | where it comes from |
 | --- | --- | --- |
-| **names** | every rankable name of every run, priced at eight exit horizons | `edge-scores.json` + `baselines/` + Yahoo bars |
+| **names** | every rankable name of every run, priced at eight exit horizons **and at every half hour of the entry session** | `edge-scores.json` + `baselines/` + Yahoo bars |
 | **trades** | every position the account opened and closed, matched from the fill stream | Alpaca `/v2/account/activities/FILL` |
 | **account** | the equity curve as the broker reports it | Alpaca portfolio history |
 
@@ -40,11 +43,11 @@ mixing them is how you get a number that flatters the stage.
 ## Running it
 
 ```bash
-./edge/performance/update.sh            # broker + re-price + render
-./edge/performance/update.sh --offline  # no broker call, keep the last broker state
-./edge/performance/update.sh --publish  # and commit + push
-./edge/performance/update.sh --fresh    # drop the bar cache, re-price everything
-./edge/performance/update.sh --serve    # and serve it, so the page's own button works
+./dashboard/update.sh            # broker + re-price + render
+./dashboard/update.sh --offline  # no broker call, keep the last broker state
+./dashboard/update.sh --publish  # and commit + push
+./dashboard/update.sh --fresh    # drop the bar cache, re-price everything
+./dashboard/update.sh --serve    # and serve it, so the page's own button works
 ```
 
 **The refresh button in the page, including from a file.** A `file://` page may not run
@@ -81,6 +84,30 @@ threshold you cannot move is a threshold you cannot test.
 | **positiecap** | the sizing rule, recomputed: a gross budget split equally over the day's names, capped per name. Off means equal weight and always fully invested, which is the research number and not what an account does |
 | **periode** | which runs count, by preset or by two dates. Every chart's x-axis follows it |
 | **sessie / sector** | amc against bmo, and one sector at a time |
+
+## The four tabs added 2026-09-18
+
+`Timing` moves the EXIT with the entry fixed at the 22:00 CET close. These are the
+questions that sit beside it, and each one is recomputed from the filtered rows like
+everything else — a threshold you cannot move is a threshold you cannot test.
+
+| tab | the question | what came back |
+| --- | --- | --- |
+| **Instap** | buy at 20:00 CET, or later? The exit is held at the selected horizon and only the entry moves | nothing: about half a point between the best and worst entry of the whole session, against a per-name sd near 13 |
+| **Aanloop** | does the 2/5/10/20-session return INTO the entry predict whether the sign was right, and does it pay when run-up and prediction agree? | nothing, and the agreement result flips sign between the full sample and the traded book, which is what noise does when you cut it in two |
+| **Zoekvolume** | does Google Trends interest say anything about the trade? | the one lead: above the floor a bigger search spike goes with a worse outcome. Half the book is not measurable at all, and the measurable half is the liquid half |
+| **Agenda** | what reports next week, through both gates | a plan, not a measurement — no prediction, no ranking, no score |
+
+Two feeders run before the ledger and are allowed to fail without costing you the
+rebuild: `edge/scripts/edge_search_volume.py` (Google Trends, cached) and
+`edge/scripts/edge_calendar.py` (the forward week). `--no-feeders` skips both. The
+calendar is dropped by the ledger once it is more than three days old, because a stale
+list of "what is coming" is a list of what already came.
+
+**Read `measures()` in `edge_search_volume.py` before trusting a Trends number.** Each
+series is normalised to its OWN maximum, so a name searched on three days out of ninety
+reads 0…0,100 and a spike over a zero median comes out at 100×. Eleven such names filled
+the top tercile on the first run. A series now needs a non-zero median to be scored.
 
 Three returns travel together on the overview, because they are not the same number and
 the difference between them is usually larger than either: **per name or position** (with

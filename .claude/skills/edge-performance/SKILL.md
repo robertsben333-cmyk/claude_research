@@ -22,7 +22,7 @@ and re-prices itself on the next update.
 
 ```bash
 date -u
-python3 edge/performance/scripts/build_ledger.py --help >/dev/null   # imports resolve
+python3 dashboard/scripts/build_ledger.py --help >/dev/null   # imports resolve
 ```
 
 A session's own sense of the date goes stale; `date -u` is the only clock to trust.
@@ -32,7 +32,7 @@ point of the update:
 ```bash
 python3 - <<'PY'
 import json
-d = json.load(open('edge/performance/data/ledger.json'))
+d = json.load(open('dashboard/data/ledger.json'))
 s = d['stats']
 print(d['generated_utc'], '| names', s['ranking']['n'], 'days', s['ranking']['days'],
       '| rho', s['ranking'].get('rho_impact_sum'),
@@ -47,7 +47,7 @@ comparison and say so.
 ## 2. Rebuild
 
 ```bash
-./edge/performance/update.sh
+./dashboard/update.sh
 ```
 
 `--offline` skips the broker and keeps the previous build's trades; `--serve` serves
@@ -126,7 +126,7 @@ were the same.
 
 ## 5. Write it down
 
-Append one dated section to `edge/performance/LOG.md` — append, never rewrite, the
+Append one dated section to `dashboard/LOG.md` — append, never rewrite, the
 same rule as `_run-log.md`. Keep it short and keep it honest:
 
 ```markdown

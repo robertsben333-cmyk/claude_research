@@ -19,8 +19,8 @@ floor mean most ranked names are never traded, and a traded name can be closed b
 hand at a price no horizon in `names` knows about. Every figure in the dashboard
 says which level it came from.
 
-    python3 edge/performance/scripts/build_ledger.py
-    python3 edge/performance/scripts/build_ledger.py --offline   # skip the broker
+    python3 dashboard/scripts/build_ledger.py
+    python3 dashboard/scripts/build_ledger.py --offline   # skip the broker
 """
 import argparse
 import glob
@@ -35,13 +35,13 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "edge" / "scripts"))
 
 import edge_exit as EX                                            # noqa: E402
 from alpaca_trade import Alpaca                                   # noqa: E402
 
-DATA = ROOT / "edge" / "performance" / "data"
+DATA = ROOT / "dashboard" / "data"
 ET = timezone(timedelta(hours=-4))
 
 # Buckets. Fixed edges rather than quantiles, so a bucket means the same thing
@@ -305,6 +305,16 @@ def load_names(runs, cache):
     return rows, problems
 
 
+# Half-hour marks through the regular US session, as (hour, minute) ET. 14:00 is
+# 20:00 CET, the moment stage E's own run places the book, and the anchor every
+# run-up is measured to. The grid stops at the close because that is the last
+# tradeable minute before an amc print and the last liquid one before a bmo print.
+ENTRY_GRID = [(10, 0), (10, 30), (11, 0), (11, 30), (12, 0), (12, 30), (13, 0),
+              (13, 30), (14, 0), (14, 30), (15, 0), (15, 30), (15, 55)]
+ENTRY_ANCHOR = "1400"
+RUNUP_WINDOWS = [2, 5, 10, 20]
+
+
 def partial_rows(runs, cache, have):
     """Rows for a run whose outcome window has NOT closed yet.
 
@@ -388,6 +398,111 @@ def partial_rows(runs, cache, have):
                 row["hourly_move"][f"{h:g}"] = row[f"hr_{h:g}"]
             out.append(row)
     return out, problems
+
+
+def attach_entry_side(names, cache):
+    """The ENTRY half of the clock, and the run-ups measured to it.
+
+    Everything else in this file prices the EXIT and holds the entry at the 22:00 CET
+    close before the print. That answers "when should the position be sold" and cannot
+    answer "when should it be bought", which is a separate question with a separate
+    answer: stage E's own run places the book at 20:00 CET (14:00 ET), not at the close.
+
+    Two fields per name, from bars this build has already fetched:
+
+      enpx        the entry-day price at each half hour of the regular session, so the
+                  dashboard can move the entry while holding any exit horizon fixed.
+                  Regular session only -- a pre/post bar from this source carries no
+                  volume, so it is a price that existed and not size that could trade
+      runup_Nd    the 2/5/10/20-session return INTO the 20:00 CET entry. Measured to
+                  that bar and not to the close, because the two hours after it are on
+                  the wrong side of the decision the number is supposed to inform
+
+    Names whose entry day falls outside the 45-day intraday window keep `enpx` empty
+    and their run-ups null, rather than silently taking the daily close instead.
+    """
+    done = 0
+    for row in names:
+        entry_date, t = row.get("entry_date"), row.get("ticker")
+        if not entry_date or not t:
+            continue
+        m5 = EX.intraday(t, cache)
+        eb = m5.get(entry_date, [])
+        enpx = {}
+        for hh, mm in ENTRY_GRID:
+            v = EX._last_at_or_before(eb, hh * 60 + mm, hh * 60 + mm - 55)
+            enpx[f"{hh:02d}{mm:02d}"] = None if v is None else round(v, 4)
+        row["enpx"] = enpx
+        anchor = enpx.get(ENTRY_ANCHOR)
+        dd = EX.daily(t, cache) or {}
+        dates = sorted(dd)
+        for w in RUNUP_WINDOWS:
+            row[f"runup_{w}d"] = None
+        if entry_date in dates:
+            di = dates.index(entry_date)
+            for w in RUNUP_WINDOWS:
+                j = di - w
+                base = dd[dates[j]]["close"] if j >= 0 else None
+                if base and anchor:
+                    row[f"runup_{w}d"] = round((anchor / base - 1) * 100, 3)
+        if anchor:
+            done += 1
+    return done
+
+
+def attach_search_volume(names, path):
+    """Google Trends interest per name, from edge_search_volume.py's own output.
+
+    Not recomputed here: that script owns the query rule, the cache and -- most
+    importantly -- the test that throws a series away. Each Trends series is
+    normalised to its OWN maximum, so a name searched on three days out of ninety
+    reads 0...0,100 and a spike over a zero median comes out at 100x. Names whose
+    median is zero are carried as `search_state: sparse` with no numbers at all,
+    never as a large spike.
+    """
+    if not Path(path).exists():
+        return 0
+    d = json.loads(Path(path).read_text())
+    by = {}
+    for r in d.get("rows") or []:
+        by[(r["ticker"], r.get("event_date"))] = {
+            "search_state": "measured", "search_spike": r.get("spike_day"),
+            "search_spike_week": r.get("spike_week"), "search_level": r.get("level_median_90d"),
+            "search_trend": r.get("trend_7v30"), "search_query": r.get("trends_query")}
+    for r in d.get("silent") or []:
+        by.setdefault((r["ticker"], None), None)
+    unusable = {r["ticker"]: (r.get("unusable") or "silent") for r in d.get("silent") or []}
+    hit = 0
+    for row in names:
+        k = (row.get("ticker"), row.get("event_date"))
+        if k in by and by[k]:
+            row.update(by[k])
+            hit += 1
+        elif row.get("ticker") in unusable:
+            row["search_state"] = unusable[row["ticker"]]
+        else:
+            row["search_state"] = "unmeasured"
+    return hit
+
+
+def calendar_block(path=None):
+    """The forward earnings calendar, if edge_calendar.py has written one today.
+
+    Stale is worse than absent for a forward calendar -- a week-old list of "what is
+    coming" is a list of what already came -- so anything older than three days is
+    dropped rather than shown with a date next to it.
+    """
+    p = Path(path or (ROOT / "edge" / "analysis" / "edge-calendar.json"))
+    if not p.exists():
+        return None
+    try:
+        d = json.loads(p.read_text())
+        gen = datetime.fromisoformat(d["generated_utc"].replace("Z", "+00:00"))
+        if (datetime.now(timezone.utc) - gen).days > 3:
+            return None
+        return d
+    except Exception:                                        # noqa: BLE001
+        return None
 
 
 def panel_of(rows, key="ret_close"):
@@ -562,7 +677,7 @@ def costs_for(runs, names):
 
     No token count is recorded anywhere in this repo, so the default is a PROXY:
     the bytes the run wrote, over four, plus the subagents it spawned. Drop real
-    numbers into `edge/performance/data/costs.csv`
+    numbers into `dashboard/data/costs.csv`
     (`run_date,tokens_in,tokens_out,usd,note`) and they are used instead, per day,
     with the proxy kept beside them so the two never silently merge."""
     measured = {}
@@ -924,6 +1039,17 @@ def main():
     names, problems = load_names(runs, a.cache)
     print(f"names priced: {len(names)}   problems: {len(problems)}")
 
+    # The entry side of the clock, and search attention. Both are per-name fields the
+    # dashboard recomputes from, so they travel with every filter rather than sitting
+    # in a frozen summary.
+    n_entry = attach_entry_side(names, a.cache)
+    n_search = attach_search_volume(names, ROOT / "edge" / "analysis" / "edge-search-volume.json")
+    print(f"entry grid: {n_entry} names with a 20:00 CET price   "
+          f"search: {n_search} measured")
+    if not n_search:
+        problems.append("no search-volume input: run edge/scripts/edge_search_volume.py "
+                        "(cached, so it is cheap) before this build")
+
     trades, open_eps, account, broker_err = [], [], None, None
     if a.offline:
         broker_err = "offline: broker not contacted"
@@ -992,6 +1118,10 @@ def main():
         "costs": costs,
         "hour_grid": EX.HOUR_GRID,
         "horizons": EX.HORIZONS,
+        "entry_grid": [f"{h:02d}{m:02d}" for h, m in ENTRY_GRID],
+        # The forward week, carried through so the dashboard has one file to read.
+        # It is a plan, not a measurement: no prediction, no ranking, no score.
+        "calendar": calendar_block(),
         "problems": problems}
 
     Path(a.out).write_text(json.dumps(doc, indent=1, default=str) + "\n", encoding="utf-8")

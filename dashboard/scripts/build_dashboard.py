@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Render edge/performance/dashboard.html from data/ledger.json.
+"""Render dashboard/dashboard.html from data/ledger.json.
 
 One self-contained file: no CDN, no build step, no network. Open it from disk, or
-serve it with `edge/performance/scripts/serve.py` and the page's own refresh
+serve it with `dashboard/scripts/serve.py` and the page's own refresh
 button rebuilds for real.
 
 The page filters and recomputes client-side — the lens (research or money), the
@@ -10,14 +10,14 @@ conviction threshold, the tradability floors, the session and the sector all
 re-derive every statistic on the page from the rows in the ledger. That is
 deliberate: a threshold you cannot move is a threshold you cannot test.
 
-    python3 edge/performance/scripts/build_dashboard.py
+    python3 dashboard/scripts/build_dashboard.py
 """
 import argparse
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
-DATA = ROOT / "edge" / "performance" / "data"
+ROOT = Path(__file__).resolve().parents[2]
+DATA = ROOT / "dashboard" / "data"
 
 HTML = r"""<!DOCTYPE html>
 <html lang="nl">
@@ -1252,7 +1252,7 @@ function tabKosten() {
     ? 'Gemeten tokens komen uit <code>data/costs.csv</code>.'
     : `<b>Er is nergens een tokenaantal vastgelegd</b>, dus dit is een proxy: de tekens die
        de run zelf op schijf schreef, gedeeld door vier, plus het aantal subagents. Vul
-       <code>edge/performance/data/costs.csv</code>
+       <code>dashboard/data/costs.csv</code>
        (<code>run_date,tokens_in,tokens_out,usd,note</code>) en die getallen worden gebruikt,
        met de proxy ernaast.`}</p>`;
   const withRet = merged.filter(r=>r.mean !== null);
@@ -1363,12 +1363,12 @@ function tabData() {
     {h:'kanteling', f:r=>n1(r.retail_tilt)},
     {h:'gehandeld', f:r=>r.traded ? `ja (${pc(r.trade_ret_pct)})` : '–'},
     {h:'status', f:r=>r.pending ? '<span class="meta">in afwikkeling</span>' : ''}], rows) +
-    `<small>Ook in <code>edge/performance/data/names.csv</code> en <code>trades.csv</code>,
+    `<small>Ook in <code>dashboard/data/names.csv</code> en <code>trades.csv</code>,
      ongefilterd, voor wie liever zelf rekent.</small></div>`;
   html += `<div class="card"><h3>Ververs dit dashboard</h3>
     <p>Eén keer per sessie dit, en de knop rechtsboven werkt — ook als je dit bestand
     gewoon van schijf hebt geopend:</p>
-    <p><code>./edge/performance/update.sh --serve-bg</code></p>
+    <p><code>./dashboard/update.sh --serve-bg</code></p>
     <p>Dat start een rebuilder op <code>127.0.0.1:8765</code> en geeft je je shell terug.
     De pagina zoekt die server bij het laden; vindt hij hem, dan staat er <b>live</b>
     naast de knop en herbouwt een klik de ledger, dit bestand én de geserveerde kopie.
@@ -1543,11 +1543,295 @@ function filterLine() {
     (pend ? `, ${pend} nog in afwikkeling` : '');
 }
 
+
+/* ===================================================================== aanloop
+   Does what the stock did BEFORE the print say anything about the call, and does
+   it pay when run-up and prediction point the same way? Both recomputed from the
+   filtered rows, so every control above moves them. */
+const RUNUPS = ['2d','5d','10d','20d'];
+const ruOf = (r, w) => r['runup_' + w];
+
+function tabAanloop() {
+  const rk = rankRows().filter(r => retOf(r) !== null && retOf(r) !== undefined);
+  if (!rk.length) return `<div class="empty">geen rijen onder deze filters</div>`;
+  const sgnOf = r => r.impact_sum > 0 ? 1 : r.impact_sum < 0 ? -1 : 0;
+  const hitOf = r => (sgnOf(r) !== 0 && Math.sign(mvOf(r)) === sgnOf(r)) ? 1 : 0;
+
+  // question 1: does the run-up rank whether the sign turned out right
+  const q1 = RUNUPS.map(w => {
+    const g = rk.filter(r => ruOf(r,w) !== null && ruOf(r,w) !== undefined && sgnOf(r) !== 0);
+    const days = byDay(g);
+    const terc = [...g].sort((a,b)=>ruOf(a,w)-ruOf(b,w));
+    const k = Math.floor(terc.length/3);
+    const rate = seg => seg.length ? 100*seg.reduce((s,r)=>s+hitOf(r),0)/seg.length : null;
+    return {w, n:g.length,
+            rho: pooledRho(days, r=>ruOf(r,w), r=>hitOf(r)),
+            rhoAbs: pooledRho(days, r=>Math.abs(ruOf(r,w)), r=>hitOf(r)),
+            lo: rate(terc.slice(0,k)), mid: rate(terc.slice(k,2*k)), hi: rate(terc.slice(2*k))};
+  });
+
+  // question 2: does agreement pay
+  const q2 = RUNUPS.map(w => {
+    const ok = r => ruOf(r,w) !== null && ruOf(r,w) !== undefined && sgnOf(r) !== 0;
+    const ag = rk.filter(r => ok(r) && Math.sign(ruOf(r,w)) === sgnOf(r));
+    const di = rk.filter(r => ok(r) && Math.sign(ruOf(r,w)) !== sgnOf(r));
+    const B = g => book(g.map(r => retOf(r) === null ? null : retOf(r)).filter(v=>v!==null));
+    return {w, a:B(ag), d:B(di)};
+  });
+  const base = book(rk.map(retOf).filter(v=>v!==null));
+
+  let html = `<p class="lead">De aanloop is het rendement over de 2, 5, 10 en 20 sessies
+    <b>tot 20:00 CET op de instapdag</b> — het moment waarop stage E het boek plaatst, niet
+    de slotkoers erna. Twee vragen: voorspelt dat of het teken klopte, en levert het meer op
+    als aanloop en voorspelling dezelfde kant op wijzen.</p>`;
+
+  html += `<div class="card"><h3>Voorspelt de aanloop of het teken klopte?</h3>` + table([
+    {h:'venster', f:r=>`<code>${esc(r.w)}</code>`},
+    {h:'n', f:r=>r.n},
+    {h:'ρ aanloop', f:r=>n3(r.rho)},
+    {h:'ρ |aanloop|', f:r=>n3(r.rhoAbs)},
+    {h:'raak laag', f:r=>r.lo===null?'–':n1(r.lo)+'%'},
+    {h:'midden', f:r=>r.mid===null?'–':n1(r.mid)+'%'},
+    {h:'hoog', f:r=>r.hi===null?'–':n1(r.hi)+'%'}], q1) +
+    `<small>Raak is <code>sign(impact_sum)</code> gelijk aan het teken van de gerealiseerde
+     beweging. ρ is binnen dagen gepoold. Terciles zijn op de aanloop gesorteerd.</small></div>`;
+
+  html += `<div class="card"><h3>Eens tegen oneens</h3>
+    ${legend([{color:css('--s1'), label:'aanloop eens met de voorspelling'},
+              {color:css('--s2'), label:'oneens'}])}
+    ${chartBlock('c-runup', 250)}
+    <small>De twee lijnen wisselen van plaats tussen de vensters. Dat kruisen is het
+    antwoord: als meebewegen hielp, zou blauw overal boven oranje liggen.</small>` + table([
+    {h:'venster', f:r=>`<code>${esc(r.w)}</code>`},
+    {h:'eens n', f:r=>r.a.n},
+    {h:'eens raak %', f:r=>n1(r.a.hit)},
+    {h:'eens %', f:r=>`<span class="${sgn(r.a.mean)}">${pc(r.a.mean)}</span>`},
+    {h:'oneens n', f:r=>r.d.n},
+    {h:'oneens raak %', f:r=>n1(r.d.hit)},
+    {h:'oneens %', f:r=>`<span class="${sgn(r.d.mean)}">${pc(r.d.mean)}</span>`},
+    {h:'verschil', f:r=>`<span class="${sgn(r.a.mean-r.d.mean)}">${pc(r.a.mean-r.d.mean)}</span>`}], q2) +
+    `<small>Hele selectie ter vergelijking: ${pc(base.mean)} per naam over ${base.n}.
+     Zet de <b>drempel</b> hierboven aan en weer uit: het teken van de laatste kolom keert
+     om tussen de volledige steekproef en het verhandelde boek. Twee deelverzamelingen van
+     dezelfde data die tegengesteld wijzen zijn geen twee bevindingen.</small></div>`;
+
+  html += `<div class="card"><h3>20-daagse aanloop tegen het rendement</h3>
+    ${chartBlock('c-runup-sc', 300)}
+    <small>Eén punt per naam. Blauw boven de conviction floor, grijs eronder.</small></div>`;
+
+  draw.push(() => {
+    lineChart(document.getElementById('c-runup'), {
+      x: q2.map(r=>r.w), height:250, zero:true, fmtY:v=>v.toFixed(0)+'%', fmtT:pc,
+      series:[{label:'eens', color:css('--s1'), values:q2.map(r=>r.a.n?r.a.mean:null)},
+              {label:'oneens', color:css('--s2'), values:q2.map(r=>r.d.n?r.d.mean:null)}],
+      tipX:i=>`aanloopvenster ${q2[i].w} — eens n=${q2[i].a.n}, oneens n=${q2[i].d.n}`});
+    scatterChart(document.getElementById('c-runup-sc'), {
+      height:300, labelX:'20-daagse aanloop tot 20:00 CET (%)', labelY:'rendement (%)',
+      fmtX:v=>v.toFixed(0)+'%', fmtY:v=>v.toFixed(0)+'%',
+      points: rk.filter(r=>ruOf(r,'20d')!==null && retOf(r)!==null).map(r=>({
+        x:ruOf(r,'20d'), y:retOf(r),
+        color: Math.abs(r.impact_sum) >= D.conviction_floor ? css('--s1') : css('--muted'),
+        tip:`<b>${esc(r.ticker)}</b> ${esc(r.run_date)}<br>aanloop ${pc(ruOf(r,'20d'))}<br>impact_sum ${n2(r.impact_sum)}<br>rendement ${pc(retOf(r))}`}))});
+  });
+  return html;
+}
+
+/* ====================================================================== instap
+   The Timing tab moves the exit with the entry fixed at the 22:00 CET close. This
+   moves the ENTRY with the exit fixed at whichever horizon is selected above. */
+const ENTRY_KEYS = ['1000','1030','1100','1130','1200','1230','1300','1330','1400',
+                    '1430','1500','1530','1555'];
+const ENTRY_CET = {'1000':'16:00','1030':'16:30','1100':'17:00','1130':'17:30','1200':'18:00',
+                   '1230':'18:30','1300':'19:00','1330':'19:30','1400':'20:00','1430':'20:30',
+                   '1500':'21:00','1530':'21:30','1555':'21:55'};
+
+function tabInstap() {
+  const rk = rankRows();
+  if (!rk.length) return `<div class="empty">geen rijen onder deze filters</div>`;
+  const exitPx = r => (r.px || {})[F.horizon];
+  const ret = (r, k) => {
+    const e = (r.enpx || {})[k], x = exitPx(r);
+    if (!e || !x) return null;
+    const v = (x/e - 1)*100;
+    return r.impact_sum > 0 ? v : r.impact_sum < 0 ? -v : null;
+  };
+  const stat = (k, sel) => {
+    const g = rk.filter(r => (!sel || sel(r)) && ret(r,k) !== null);
+    const b = book(g.map(r => ret(r,k)));
+    return {...b, rho: pooledRho(byDay(g), r=>r.impact_sum, r=>ret(r,k))};
+  };
+  const rows = ENTRY_KEYS.map(k => ({k, all:stat(k),
+                                     amc:stat(k, r=>r.session==='amc'),
+                                     bmo:stat(k, r=>r.session==='bmo')}));
+  const anchor = rows.find(r=>r.k==='1400');
+  const withN = rows.filter(r=>r.all.n>=3);
+  const best = withN.reduce((a,b)=>b.all.mean>a.all.mean?b:a, withN[0]||rows[0]);
+  const worst = withN.reduce((a,b)=>b.all.mean<a.all.mean?b:a, withN[0]||rows[0]);
+  // what the wait costs before any prediction is applied
+  const drift = ENTRY_KEYS.slice(0,-1).map(k => {
+    const g = rk.filter(r => (r.enpx||{})[k] && (r.enpx||{})['1555']);
+    const xs = g.map(r => (r.enpx['1555']/r.enpx[k] - 1)*100);
+    return {k, n:xs.length, ...book(xs)};
+  });
+
+  let html = `<p class="lead">De uitstap staat vast op <code>${esc(F.horizon)}</code> en alleen
+    de <b>instap</b> schuift, van 16:00 tot 21:55 CET. Elk verschil tussen twee rijen is dus
+    instapmoment en niets anders. Stage E koopt nu om 20:00 CET.</p>`;
+  html += tiles([
+    {k:'om 20:00 CET', v:pc(anchor && anchor.all.mean), cls:sgn(anchor && anchor.all.mean),
+     s:`${anchor ? anchor.all.n : 0} namen`},
+    {k:'beste moment', v:ENTRY_CET[best.k]||best.k, s:pc(best.all.mean)},
+    {k:'slechtste', v:ENTRY_CET[worst.k]||worst.k, s:pc(worst.all.mean)},
+    {k:'spreiding over de sessie', v:n2(best.all.mean-worst.all.mean)+'pp',
+     s:`sd per naam ${n1(anchor && anchor.all.sd)}`}]);
+
+  html += `<div class="card"><h3>Rendement per instapmoment</h3>
+    ${legend([{color:css('--s1'), label:'alles'}, {color:css('--s2'), label:'amc'},
+              {color:css('--s3'), label:'bmo'}])}
+    ${chartBlock('c-entry', 250)}
+    <small>De kolom met <b>nu</b> eronder is 20:00 CET, de huidige instap.</small></div>`;
+
+  html += `<div class="card"><h3>Per instapmoment</h3>` + table([
+    {h:'instap (CET)', f:r=>`${ENTRY_CET[r.k]||r.k}${r.k==='1400'?' <b>·  nu</b>':''}`},
+    {h:'n', f:r=>r.all.n}, {h:'ρ', f:r=>n3(r.all.rho)},
+    {h:'raak %', f:r=>n1(r.all.hit)},
+    {h:'boek %', f:r=>`<span class="${sgn(r.all.mean)}">${pc(r.all.mean)}</span>`},
+    {h:'t', f:r=>n2(r.all.t)},
+    {h:'vs 20:00', f:r=>anchor?`<span class="${sgn(r.all.mean-anchor.all.mean)}">${n2(r.all.mean-anchor.all.mean)}pp</span>`:'–'},
+    {h:'amc %', f:r=>`<span class="${sgn(r.amc.mean)}">${pc(r.amc.mean)}</span>`},
+    {h:'bmo %', f:r=>`<span class="${sgn(r.bmo.mean)}">${pc(r.bmo.mean)}</span>`}], rows) +
+    `<small>Reguliere sessie, dus elke prijs hier had omvang. De spread zit er niet in en
+     is het enige argument dat vóór later instappen pleit: hij is het breedst rond de opening
+     en het smalst tegen de close.</small></div>`;
+
+  html += `<div class="card"><h3>Wat het wachten kost vóór er een voorspelling op zit</h3>` + table([
+    {h:'instap (CET)', f:r=>ENTRY_CET[r.k]||r.k}, {h:'n', f:r=>r.n},
+    {h:'drift naar 21:55', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'t', f:r=>n2(r.t)}], drift) +
+    `<small>Ongetekend. Is dit vlak, dan valt er niets te timen en is de grafiek hierboven
+     vlak om die reden.</small></div>`;
+
+  draw.push(() => {
+    lineChart(document.getElementById('c-entry'), {
+      x: ENTRY_KEYS.map(k=>ENTRY_CET[k]||k), height:250, zero:true,
+      fmtY:v=>v.toFixed(0)+'%', fmtT:pc,
+      sub: ENTRY_KEYS.map(k => k==='1400' ? 'nu' : ''),
+      series:[{label:'alles', color:css('--s1'), values:rows.map(r=>r.all.n>=3?r.all.mean:null)},
+              {label:'amc', color:css('--s2'), values:rows.map(r=>r.amc.n>=3?r.amc.mean:null)},
+              {label:'bmo', color:css('--s3'), values:rows.map(r=>r.bmo.n>=3?r.bmo.mean:null)}],
+      tipX:i=>`instap ${ENTRY_CET[ENTRY_KEYS[i]]} CET — n=${rows[i].all.n}, ρ ${n3(rows[i].all.rho)}`});
+  });
+  return html;
+}
+
+/* ================================================================= zoekvolume */
+function tabZoek() {
+  const rk = rankRows().filter(r => retOf(r) !== null && retOf(r) !== undefined);
+  const meas = rk.filter(r => r.search_state === 'measured' && r.search_spike !== null
+                           && r.search_spike !== undefined);
+  const counts = {measured:0, sparse:0, silent:0, unmeasured:0};
+  rk.forEach(r => { counts[r.search_state] = (counts[r.search_state]||0) + 1; });
+  if (!meas.length) return `<p class="lead">Geen meetbare Trends-reeks onder deze filters.</p>`;
+
+  const days = byDay(meas);
+  const rhoTrade = pooledRho(days, r=>r.search_spike, r=>retOf(r));
+  const rhoMove  = pooledRho(days, r=>r.search_spike, r=>Math.abs(mvOf(r)));
+  const srt = [...meas].sort((a,b)=>a.search_spike-b.search_spike);
+  const k = Math.floor(srt.length/3);
+  const bucket = (g, label) => ({label, n:g.length, ...book(g.map(retOf)),
+    lo:g.length?g[0].search_spike:null, hi:g.length?g[g.length-1].search_spike:null,
+    absMove: g.length ? spread(g.map(r=>Math.abs(mvOf(r)))).median : null});
+  const buckets = [bucket(srt.slice(0,k),'lage zoekpiek'), bucket(srt.slice(k,2*k),'midden'),
+                   bucket(srt.slice(2*k),'hoge zoekpiek')];
+  const mdDV = g => g.length ? spread(g.map(r=>advOf(r)||0)).median : null;
+
+  let html = `<p class="lead">Google Trends, dagelijks, VS, de 90 dagen tot de instapdag. De
+    <b>zoekpiek</b> is de intensiteit op de instapdag gedeeld door de eigen mediaan. Eén vaste
+    zoekterm per bedrijf: de naam zonder rechtsvorm, nooit de ticker.</p>`;
+  html += tiles([
+    {k:'meetbaar', v:counts.measured||0, s:`van ${rk.length} namen`},
+    {k:'te dun', v:counts.sparse||0, s:'mediaan nul, geen basislijn'},
+    {k:'nul op elke dag', v:counts.silent||0, s:'onder Googles drempel'},
+    {k:'ρ piek vs rendement', v:n3(rhoTrade), cls:sgn(rhoTrade), s:'binnen dagen gepoold'}]);
+
+  html += `<div class="card"><h3>Zoekpiek tegen het rendement</h3>
+    ${chartBlock('c-zoek', 300)}
+    <small>Blauw boven de conviction floor, grijs eronder. De verticale as is het rendement
+    op de geselecteerde uitstap.</small></div>`;
+
+  html += `<div class="card"><h3>Per tercile</h3>` + table([
+    {h:'bak', f:r=>`${esc(r.label)} <span class="mut">(${n2(r.lo)}×–${n2(r.hi)}×)</span>`},
+    {h:'n', f:r=>r.n}, {h:'raak %', f:r=>n1(r.hit)},
+    {h:'boek %', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'t', f:r=>n2(r.t)},
+    {h:'mediane |beweging|', f:r=>n2(r.absMove)+'%'}], buckets) +
+    `<small>De rechterkolom is het aannemelijke deel: namen met veel aandacht bewegen
+     minder, dus hun print was al uitgekauwd. Als <em>rang</em>correlatie over alle namen
+     is datzelfde verband er niet — ρ van de piek tegen |beweging| is ${n3(rhoMove)} —
+     dus het zit in de staarten, niet in een monotoon verband.</small></div>`;
+
+  html += `<div class="card"><h3>Wat de meetdrempel selecteert</h3>` + table([
+    {h:'groep', f:r=>esc(r.k)}, {h:'n', f:r=>r.n},
+    {h:'mediane omzet/dag', f:r=>r.dv===null?'–':'$'+(r.dv/1e6).toFixed(1)+'m'}],
+    [{k:'meetbaar', n:meas.length, dv:mdDV(meas)},
+     {k:'te dun of stil', n:rk.filter(r=>r.search_state==='sparse'||r.search_state==='silent').length,
+      dv:mdDV(rk.filter(r=>r.search_state==='sparse'||r.search_state==='silent'))}]) +
+    `<small>Elke correlatie hierboven geldt dus voor de liquide helft van het boek en zegt
+     niets over de helft die deze stage het vaakst verhandelt.</small></div>`;
+
+  draw.push(() => {
+    scatterChart(document.getElementById('c-zoek'), {
+      height:300, labelX:'zoekpiek op de instapdag (× de eigen mediaan)', labelY:'rendement (%)',
+      fmtX:v=>v.toFixed(1)+'×', fmtY:v=>v.toFixed(0)+'%',
+      points: meas.map(r=>({x:r.search_spike, y:retOf(r),
+        color: Math.abs(r.impact_sum) >= D.conviction_floor ? css('--s1') : css('--muted'),
+        tip:`<b>${esc(r.ticker)}</b> ${esc(r.run_date)}<br>piek ${n2(r.search_spike)}×, niveau ${n1(r.search_level)}<br>impact_sum ${n2(r.impact_sum)}<br>rendement ${pc(retOf(r))}`}))});
+  });
+  return html;
+}
+
+/* ====================================================================== agenda */
+function tabAgenda() {
+  const C = D.calendar;
+  if (!C || !C.by_date) return `<p class="lead">Geen agenda in de ledger. Draai
+    <code>python3 edge/scripts/edge_calendar.py</code> en bouw opnieuw.</p>`;
+  const dates = Object.keys(C.by_date).sort();
+  const rows = [];
+  dates.forEach(d => {
+    const all = C.by_date[d] || [];
+    const conf = all.filter(n => n.session === 'amc' || n.session === 'bmo');
+    const tr = conf.filter(n => n.clears_liquidity)
+                   .sort((a,b)=>(b.dollar_vol||0)-(a.dollar_vol||0));
+    (tr.length ? tr : [null]).forEach((n, i) => rows.push({
+      d: i===0 ? d : '', conf: i===0 ? conf.length : '', unk: i===0 ? all.length-conf.length : '',
+      n}));
+  });
+  let html = `<p class="lead">Vooruitblik, geen meting: wat er komende week rapporteert en
+    hoeveel daarvan door de twee poorten komt die bepalen of de hunt een naam ziet.</p>`;
+  html += tiles([
+    {k:'kalenderregels', v:C.totals.rows, s:`over ${dates.length} handelsdagen`},
+    {k:'bevestigde sessie', v:C.totals.confirmed_session, s:'de enige die stage 0 houdt'},
+    {k:'halen de omzetvloer', v:C.totals.clears_liquidity,
+     s:`$${Number(C.liquidity_floor_usd).toLocaleString('nl-NL')}/dag`},
+    {k:'weggelaten', v:C.totals.rows - C.totals.confirmed_session, s:'time-not-supplied'}]);
+  html += `<div class="card"><h3>De namen</h3>` + table([
+    {h:'datum', f:r=>esc(r.d)},
+    {h:'bevestigd', f:r=>r.conf}, {h:'onbekend', f:r=>r.unk},
+    {h:'naam', f:r=>r.n ? `<b>${esc(r.n.ticker)}</b> <span class="mut">${esc((r.n.company||'').slice(0,38))}</span>` : '<span class="mut">geen verhandelbare naam</span>'},
+    {h:'sessie', f:r=>r.n?esc(r.n.session):''},
+    {h:'omzet/dag', f:r=>r.n && r.n.dollar_vol ? '$'+(r.n.dollar_vol/1e6).toFixed(1)+'m' : '–'},
+    {h:'eps-verwachting', f:r=>r.n ? esc(r.n.eps_estimate ?? '–') : ''}], rows) +
+    `<small>Geen voorspelling en geen ranking — die komen uit een hunt die nog niet heeft
+     gedraaid. Opgehaald ${esc((C.generated_utc||'').slice(0,16))} UTC.</small></div>`;
+  return html;
+}
+
 /* ------------------------------------------------------------------- boot */
 const TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel], ['Score',tabScore],
               ['Drempel',tabDrempel], ['Sector',tabSector], ['Timing',tabTiming],
+              ['Instap',tabInstap], ['Aanloop',tabAanloop], ['Zoekvolume',tabZoek],
               ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten], ['Lessons',tabLessons],
-              ['Data',tabData]];
+              ['Agenda',tabAgenda], ['Data',tabData]];
 let active = 0;
 const nav = document.getElementById('tabs'), panels = document.getElementById('panels');
 TABS.forEach(([name], i) => {
@@ -1585,7 +1869,7 @@ document.getElementById('theme').onclick = () => {
    nothing answers it hands over the command instead of pretending. */
 const PORT = 8765;
 const BASE = location.protocol === 'file:' ? `http://127.0.0.1:${PORT}` : '';
-const CMD = './edge/performance/update.sh';
+const CMD = './dashboard/update.sh';
 const btn = document.getElementById('refresh');
 const log = document.getElementById('refreshlog');
 let served = location.protocol !== 'file:';
@@ -1653,7 +1937,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--ledger", default=str(DATA / "ledger.json"))
-    ap.add_argument("--out", default=str(ROOT / "edge" / "performance" / "dashboard.html"))
+    ap.add_argument("--out", default=str(ROOT / "dashboard" / "dashboard.html"))
     a = ap.parse_args()
 
     led = json.loads(Path(a.ledger).read_text(encoding="utf-8"))
