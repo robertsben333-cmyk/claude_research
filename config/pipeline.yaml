@@ -414,6 +414,28 @@ execution:
     # it as days pool; against uniform_close it leads by only +0.57pp on a paired day
     # bootstrap of [-2.86, +3.18], so nothing here is established.
     exit_mode: amc_open      # uniform | bmo_close | auction_split | amc_open
+    # MAY THIS ACCOUNT USE `opg`/`cls` AT ALL? No, since 2026-09-18, and the mode
+    # above is unchanged: amc is still aimed at the open, it just gets there as a
+    # plain market DAY order queued in the pre-market instead of as an auction order.
+    #
+    # Ten auction exit legs have been sent from this book and ONE filled in full
+    # (ORCL 12 of 12). Two part-filled and expired (HOFT 17 of 161, CODA 39 of 183)
+    # and seven filled nothing -- most tellingly LEN on 2026-09-17, a buy-to-cover of
+    # 28 shares of a $20bn homebuilder, expired at 09:30:52 ET with zero filled. That
+    # is not liquidity. Alpaca's own order-types page: "OPG and CLS orders are only
+    # available to Elite Smart Router users", which this $11.5k paper account is not;
+    # and paper fills are simulated against the NBBO quote stream with "partial fills
+    # for a random size 10% of the time", which describes the 17-of-161 exactly.
+    #
+    # WHAT IT COSTS. The measured +8.91% for an amc opening-auction exit was priced at
+    # the 09:30 cross; a queued market order fills in the first seconds of continuous
+    # trading instead, which is a few basis points away in a liquid name and more in a
+    # thin one. Against an order that does not sell at all it is not close: the last
+    # three amc legs were rescued by hand hours later, or not at all.
+    #
+    # Set back to true only on an account genuinely on the Elite Smart Router, and
+    # only after `verify` shows an auction leg filling in FULL.
+    auction_orders: false
     time_in_force: day           # market entries, and the plain-market fallback
     # AFTER the exits go in, wait this many seconds and re-read every one of them at
     # the broker. A submitted sell is not a sold position, and until 2026-09-15
