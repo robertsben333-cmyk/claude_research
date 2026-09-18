@@ -135,3 +135,17 @@
 - The amc leg matches: the config sends it to the open as a queued pre-market market DAY order, which is the same 15:30 CET moment the column measures.
 - ONE BUG FOUND AND FIXED IN THE SAME PASS: the new tooltip on the uitstap control contained backticks, which terminated the JS template literal the whole control panel is built from. The page booted with no controls at all and a single 'Unexpected identifier' error. Caught by a headless render check, not by reading it.
 - Verified: smoke_test.py passes, ./dashboard/update.sh runs clean end to end with the broker, and the page renders with no JS errors, the default reading 'uitstap strategie (amc 15:30, bmo 20:00 CET)' over 107 names and 13 days.
+
+## Edge hunt — 2026-09-18 amc + 2026-09-21 bmo — STARTED
+- Logged at 2026-09-18 17:13 UTC
+- Fired 17:04 UTC (13:04 ET). Market open until 16:00 ET — 2h50m of entry margin.
+
+Step 0b (execution.enabled: true, exit_mode: amc_open): the account was already flat. `verify --scan --fix --submit` over 6 runs / 12 exit legs reported every leg `ok`, 0.0 still held — nothing to rescue. `close --scan --submit` found nothing due and submitted nothing. Yesterday's only position, TRT (long 338), had already been sold by the 'Close AMC' Routine this morning: entry 338 @ 11.259171 on 09-17, exit 338 @ 11.42 on 09-18, +1.43% gross on the leg. Note this is the bmo leg going at the open, which is the defect CLAUDE.md records as fixed on 09-18 by `defer_to_session_run()` — the fix is in the tree; this exit predates it or was placed before it took effect. Account: equity $11,582.19, cash $11,582.19, zero positions.
+
+Step 1 — THE GATED WINDOW IS EMPTY. `edge_universe.py --window` resolved 2026-09-18 amc + 2026-09-21 bmo and returned **0 of 15 calendar rows**. Fourteen of the fifteen are `time-not-supplied`; the fifteenth carries a session outside the window. So the strict universe is not thin, it is zero.
+
+Checked the dropped rows rather than taking the phantom base rate on faith (skill §1: under ten names, check). `edge_universe.py --window --include-unknown` carried all 14; `session_resolve.py` read EDGAR and the Nasdaq press-release feed and **confirmed none, killed none** — 14 carried, 0 with a session off a filing. Five names (CBAT, CHRN, HTLM, NB, plus the press-release test on others) announce their dates by press release and have issued none for this window. The cadence prior reads `fits` on AIV, CURR, FRGT and TRT — and that prior is exactly what CLAUDE.md records as having failed on 09-17, when a human read `TRT / fits / 127 days` as confirmation, put 33% of equity behind it, and TRT never reported. It is read here as a prior, not as evidence.
+
+Baselines sealed for all 14 carried rows BEFORE any agent launches (7 on 2026-09-18 amc, 7 on 2026-09-21 bmo — the window-implied session, since a 09-18 bmo already printed before the entry). **Zero of the 14 have a live option chain**, so every `priced_lean_pct` here is the −0.05 × 20-day-run-up fallback and every 'expected move' is a historical median.
+
+Plan: one `edge-sweep` agent over the 14 carried rows — 1 of the 20-subagent cap — to settle from company sources which, if any, are real and which session they print in. Then one `unpriced-hunter` per confirmed name. If the sweep confirms none, the day is an honestly empty, CHECKED day and the stage stops there with no book. The measured phantom rate on `time-not-supplied` from this source now stands at 8/8 (08-31) and 20/20 (09-17).
