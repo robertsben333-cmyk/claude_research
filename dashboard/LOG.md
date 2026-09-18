@@ -4,6 +4,34 @@ Append-only. One dated section per update, written by the `edge-performance` ski
 Three things in every entry: what closed and what resolved, the pooled ranking figure
 beside its free control, and one sentence of critical read.
 
+## 2026-09-18 (later) — fresh broker data, and the default exit is now the strategy's
+
+Rebuilt against the broker rather than `--offline`: **12 closed positions, none open**,
+against nine at the last build. Equity $10,000 → $11,582 (+15.8%). The pooled ranking
+is unchanged at ρ = −0.142 against −0.139 for the free control.
+
+**`strategie` is the default exit.** One horizon cannot describe this book, because the
+two sessions are sold at different moments:
+
+| session | CET | ET | field |
+| --- | --- | --- | --- |
+| amc | 15:30 | 09:30 | `mv_open`, the opening print |
+| bmo | 20:00 | 14:00 | `hr_22` |
+
+It is carried as if it were a horizon — `mv_strategy`, `ret_strategy`, `px.strategy`,
+resolved per session in `attach_strategy_exit()` — so every tab reads it the same way
+as the eight fixed ones, which stay in the list and can still be swept. Coverage is
+107 of 107 names. On the conviction book it is **+3.69% per name against +3.19% at the
+close**, so switching the default is not free of consequence: it changes the headline
+figure on the landing screen.
+
+**The page and the account now disagree by one hour, and that is worth resolving.**
+`orders.exit_mode` is `amc_open` and its bmo leg goes at plain market on stage E's own
+13:05 ET run — 19:05 CET, not 20:00. On the 28 bmo names above the floor: +4.24% at
+19:05, +4.36% at 20:00, +5.22% at the close. Monotonic, so the live config is the worst
+of the three and the default now shown is the middle one. Neither gap is large against
+the spread on these names.
+
 ## 2026-09-18 — moved to the top level, and four tabs
 
 `edge/performance/` is now `dashboard/`, because the file you open should not be four

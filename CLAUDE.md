@@ -81,6 +81,18 @@ paragraph above measures the hunt against is not stable either. What survives: t
 above the floor pays **+3.37%** per trade against **+1.59%** for shorting every name with
 no research at all.
 
+**The dashboard's default exit is the strategy's, not a horizon (2026-09-18).** One
+column cannot describe this book: amc sells into the opening print at **15:30 CET**
+(`mv_open`) and bmo at **20:00 CET** (`hr_22`). `attach_strategy_exit()` resolves it
+per session and carries it as if it were a horizon, so every tab reads it like the
+eight fixed ones, which stay selectable. On the conviction book it pays +3.69% per name
+against +3.19% at the close. **It disagrees with the live config by an hour**:
+`orders.exit_mode: amc_open` sells bmo at plain market on stage E's own 13:05 ET run,
+which is 19:05 CET. Over the 28 bmo names above the floor the three are monotonic —
++4.24% at 19:05, +4.36% at 20:00, +5.22% at the close — so the config is the worst of
+them and the dashboard default is the middle. Pick one rather than leaving the page and
+the account disagreeing.
+
 **The dashboard is `dashboard/` at the top level, and it is the one reading surface.**
 It was `edge/performance/` on the unmerged branch `claude/epic-ride-s4bcg4` until
 2026-09-18; merging it was the fix for "there is no dashboard in the repo", which is
@@ -410,8 +422,7 @@ settled cash before the auction that funds the next book, and fewer hours of exp
 `edge/EXECUTION.md`, "The exit the two sessions actually want".
 
 **The performance record has its own place, and on the current sample it
-contradicts the paragraphs above.** `dashboard/` holds one ledger over every
-run, every fill the broker reports and the equity curve, plus a dashboard built from
+contradicts the paragraphs above.** `dashboard/` holds one ledger over every run, every fill the broker reports and the equity curve, plus a dashboard built from
 it; `./dashboard/update.sh` rebuilds both (`--serve` makes the page's own
 refresh button work) and the `edge-performance` skill folds in what has closed since
 the last build and writes the reading into `dashboard/LOG.md`. It is read-only:
@@ -726,9 +737,9 @@ edge/                                  stage E — see edge/README.md
   scripts/                             the stage's own tools
   analysis/                            everything those tools generate
   routine-prompts/                     the text pasted into the Routines, by hand
-  performance/                         the standing performance record — see below
-    update.sh  scripts/  data/  LOG.md
-    dashboard.html                     open it from disk; rebuilt by update.sh
+dashboard/                             the standing performance record and the one
+  update.sh  scripts/  data/  LOG.md   reading surface — see dashboard/README.md
+  dashboard.html                       open it from disk; rebuilt by update.sh
 backtest/                              the sealed backtest
   runs/pilot-40/  runs/edge-corpus/    arms A/B/C; and stage E scored on the corpus
 claude_naive/                          stage N

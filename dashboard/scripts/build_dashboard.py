@@ -220,8 +220,15 @@ const cetOfHour = h => {                       // h = hours after the 16:00 ET e
   const m = Math.round((22 + h) * 60) % (24*60);
   return String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
 };
-const HZ_CET = {ext_early:'22:30 / 14:00', pre_open:'15:25', open:'15:30', m15:'15:45',
+const HZ_CET = {strategy:'amc 15:30 / bmo 20:00',
+                ext_early:'22:30 / 14:00', pre_open:'15:25', open:'15:30', m15:'15:45',
                 m30:'16:00', m60:'16:30', midday:'18:00', close:'22:00'};
+/* The exit the strategy aims at is not one moment: amc goes into the opening print
+   and bmo four and a half hours later. `strategy` resolves per session in the ledger
+   and is carried as a horizon so every tab reads it the same way as the rest. It is
+   the default, because the book is what the page is about; the fixed horizons stay
+   in the list so any of them can still be swept. */
+const HORIZONS = ['strategy', ...(D.horizons || [])];
 const HZ_LABEL = h => `${h} · ${HZ_CET[h] || ''}`;
 
 /* ------------------------------------------------------------------ stats */
@@ -306,7 +313,7 @@ function ols(pts) {
 /* ------------------------------------------------------- filters and lenses */
 const DATES = [...new Set(D.names.map(r => r.run_date))].sort();
 const DEFAULTS = {
-  lens: 'research', horizon: 'close',
+  lens: 'research', horizon: 'strategy',
   thrOn: false, thr: D.conviction_floor ?? 3,
   tradeOn: false, minLong: 200000, minShort: 1000000, reqShort: true,
   session: 'all', sector: 'all',
@@ -1393,10 +1400,10 @@ function renderControls() {
           <button data-v="research" aria-pressed="${F.lens==='research'}">onderzoek</button>
           <button data-v="trading" aria-pressed="${F.lens==='trading'}">handel</button>
         </span></div>
-      <div class="ctl" title="Op welk moment de positie zou zijn gesloten. De instap ligt vast op de slotkoers vóór de print.">
+      <div class="ctl" title="Op welk moment de positie zou zijn gesloten. De optie strategie is niet één moment: amc gaat op de opening (15:30 CET), bmo om 20:00 CET. De instap ligt vast op de slotkoers vóór de print, behalve op het tabblad Instap.">
         <label>uitstap</label>
-        <select id="f-horizon">${D.horizons.map(h =>
-          `<option value="${h}" ${h===F.horizon?'selected':''}>${h} · ${HZ_CET[h]||''} CET</option>`).join('')}
+        <select id="f-horizon">${HORIZONS.map(h =>
+          `<option value="${h}" ${h===F.horizon?'selected':''}>${h==='strategy'?'strategie':h} · ${HZ_CET[h]||''}${h==='strategy'?' CET':' CET'}</option>`).join('')}
         </select></div>
       <div class="ctl" title="Welke runs meetellen. Verschuift ook de x-as van elke grafiek.">
         <label>periode</label>
@@ -1536,7 +1543,9 @@ function filterLine() {
   if (F.capOn) bits.push(`max ${F.capPct}% per naam, bruto ${F.grossPct}%`);
   if (F.session !== 'all') bits.push(F.session);
   if (F.sector !== 'all') bits.push(F.sector);
-  bits.push(`uitstap ${F.horizon} (${HZ_CET[F.horizon]} CET)`);
+  bits.push(F.horizon === 'strategy'
+    ? 'uitstap strategie (amc 15:30, bmo 20:00 CET)'
+    : `uitstap ${F.horizon} (${HZ_CET[F.horizon]} CET)`);
   bits.push(`${F.from} t/m ${F.to}`);
   document.getElementById('filterline').innerHTML =
     `${esc(bits.join(' · '))} — <b>${withRet.length}</b> namen over ${nDays} dagen` +
@@ -1674,7 +1683,9 @@ function tabInstap() {
     return {k, n:xs.length, ...book(xs)};
   });
 
-  let html = `<p class="lead">De uitstap staat vast op <code>${esc(F.horizon)}</code> en alleen
+  const HZNAME = F.horizon === 'strategy' ? 'strategie (amc 15:30, bmo 20:00 CET)'
+                                          : F.horizon;
+  let html = `<p class="lead">De uitstap staat vast op <code>${esc(HZNAME)}</code> en alleen
     de <b>instap</b> schuift, van 16:00 tot 21:55 CET. Elk verschil tussen twee rijen is dus
     instapmoment en niets anders. Stage E koopt nu om 20:00 CET.</p>`;
   html += tiles([

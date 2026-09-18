@@ -289,6 +289,7 @@ def load_names(runs, cache):
                 mv = r.get(f"mv_{h}")
                 r[f"ret_{h}"] = (None if mv is None
                                  else rd(mv if r["impact_sum"] > 0 else -mv, 3))
+            attach_strategy_exit(r)
             rows.append(r)
 
     # One issuer reporting once is one event. The 09-04 run re-hunted five names
@@ -396,8 +397,42 @@ def partial_rows(runs, cache, have):
             for h, v in (hp or {}).items():
                 row[f"hr_{h:g}"] = None if v is None else round((v/entry - 1)*100, 3)
                 row["hourly_move"][f"{h:g}"] = row[f"hr_{h:g}"]
+            attach_strategy_exit(row)
             out.append(row)
     return out, problems
+
+
+# The exit the strategy actually aims at, which is NOT one horizon: the two sessions
+# are sold at different moments, so a single column cannot describe the book.
+#
+#   amc  15:30 CET = 09:30 ET = the opening print. `mv_open`, the auction price.
+#   bmo  20:00 CET = 14:00 ET = hour 22 on the grid measured from the 16:00 ET entry
+#        close. `hr_22`.
+#
+# WHAT THIS DIFFERS FROM. `orders.exit_mode` is `amc_open` and sells bmo at plain
+# market on stage E's own 13:05 ET run -- 19:05 CET, an hour before the column below.
+# The dashboard default is the operator's stated policy; the live config is an hour
+# earlier. If one of the two is wrong it is worth saying which, rather than letting
+# the page and the account quietly disagree.
+STRATEGY_EXIT = {"amc": ("mv_open", "15:30"), "bmo": ("hr_22", "20:00")}
+
+
+def attach_strategy_exit(r):
+    """`mv_strategy` / `ret_strategy` / `px["strategy"]`, resolved per session.
+
+    Everything downstream reads a horizon by name, so the per-session exit is given
+    the same shape as a real horizon rather than a special case in five places. The
+    price is reconstructed from the move and the entry close, which is exact: the
+    move is defined as (price / entry_close - 1) * 100.
+    """
+    key, _ = STRATEGY_EXIT.get(r.get("session") or "bmo", ("mv_close", "22:00"))
+    mv = r.get(key)
+    r["mv_strategy"] = None if mv is None else rd(mv, 3)
+    r["ret_strategy"] = (None if mv is None or r.get("impact_sum") is None
+                         else rd(mv if r["impact_sum"] > 0 else -mv, 3))
+    entry = r.get("entry_close")
+    px = r.setdefault("px", {})
+    px["strategy"] = None if (mv is None or not entry) else round(entry * (1 + mv / 100), 4)
 
 
 def attach_entry_side(names, cache):
@@ -1118,6 +1153,8 @@ def main():
         "costs": costs,
         "hour_grid": EX.HOUR_GRID,
         "horizons": EX.HORIZONS,
+        "strategy_exit": {k: {"field": v[0], "cet": v[1]}
+                          for k, v in STRATEGY_EXIT.items()},
         "entry_grid": [f"{h:02d}{m:02d}" for h, m in ENTRY_GRID],
         # The forward week, carried through so the dashboard has one file to read.
         # It is a plan, not a measurement: no prediction, no ranking, no score.

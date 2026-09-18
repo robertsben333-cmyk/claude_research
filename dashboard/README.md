@@ -78,12 +78,30 @@ threshold you cannot move is a threshold you cannot test.
 | control | what it does |
 | --- | --- |
 | **lens** | *onderzoek* is every ranked name at its board return; *handel* keeps only names that became a position and uses the broker's own return |
-| **uitstap** | which of the eight exit horizons the board return is measured at |
+| **uitstap** | which exit the board return is measured at. **Default `strategie`**, which is not one moment: amc sells into the opening print at 15:30 CET and bmo at 20:00 CET. The eight fixed horizons stay in the list so any of them can still be swept |
 | **drempel** | `\|impact_sum\| >=` this. Off by default, so the landing view is the full sample; on, **every table and chart on the page** holds only names that clear it |
 | **verhandelbaar** | a turnover floor per side — shorts get a higher one, because a short needs size *and* a borrow — plus an optional "only what Alpaca will lend" |
 | **positiecap** | the sizing rule, recomputed: a gross budget split equally over the day's names, capped per name. Off means equal weight and always fully invested, which is the research number and not what an account does |
 | **periode** | which runs count, by preset or by two dates. Every chart's x-axis follows it |
 | **sessie / sector** | amc against bmo, and one sector at a time |
+
+## The default exit is the strategy's, not a single horizon
+
+The two sessions are sold at different moments, so one column cannot describe the
+book. `strategy` resolves per session in the ledger and is carried as if it were a
+horizon, so every tab reads it the same way as the rest:
+
+| session | CET | ET | field |
+| --- | --- | --- | --- |
+| amc | 15:30 | 09:30 | `mv_open`, the opening print |
+| bmo | 20:00 | 14:00 | `hr_22` on the hour grid from the 16:00 ET entry close |
+
+**The live config sells bmo an hour earlier than this column.** `orders.exit_mode` is
+`amc_open`, whose bmo leg goes at plain market on stage E's own 13:05 ET run — 19:05
+CET. On the 28 bmo names above the floor that hour is worth +4.24% at 19:05 against
++4.36% at 20:00 and +5.22% at the close, so the ordering is monotonic and the
+dashboard default sits between the two. The page and the account disagree by one
+hour; decide which is right rather than leaving it.
 
 ## The four tabs added 2026-09-18
 
