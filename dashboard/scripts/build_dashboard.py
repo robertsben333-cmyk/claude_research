@@ -2277,126 +2277,133 @@ function tabHypotheses() {
 
 
 /* ===================================================================== weging
-   The pre-registered weighting, beside the plain rule and never instead of it. The
-   spec lives in dashboard/scripts/weighting.py with its freeze date; this tab only
-   reports what it does. Nothing here re-fits anything. */
+   w2: the conviction floor stays the gate and the four factors set the SIZE. w1 let a
+   tilt push a name over the floor and lost on exactly those names; this cannot, so a
+   wrong factor costs size and never buys membership.
+
+   The tab's job is to separate two things the headline number mixes: raising the
+   per-name cap from 33% to 50% deploys more capital on thin days, and the weighting
+   redistributes within a day. Those are a risk decision and a research claim, and they
+   have to be read apart. */
+function w2Weight(r) {
+  const S = r.w2_strength || {};
+  const sum = (S.evidence||0) + (S.retail||0) + (S.lean_agree||0) + (S.search_quiet||0);
+  const g = (D.weighting_w2 && D.weighting_w2.g) || 0.125;
+  return Math.max(0.5, Math.min(1.5, 1 + g * sum));
+}
+/* Same shape as the live sizer: pro rata, cap, redistribute what the cap refused. */
+function allocate(rows, gross, cap, weighted) {
+  const share = new Map();
+  let live = rows.slice(), budget = gross;
+  const w = r => weighted ? w2Weight(r) : 1;
+  for (let i = 0; i <= rows.length; i++) {
+    const tot = live.reduce((s,r)=>s+w(r), 0);
+    if (!live.length || tot <= 0 || budget <= 1e-9) break;
+    const capped = live.filter(r => budget * w(r) / tot >= cap - 1e-9);
+    if (!capped.length) { live.forEach(r => share.set(r, budget * w(r) / tot)); break; }
+    capped.forEach(r => share.set(r, cap));
+    budget -= cap * capped.length;
+    const drop = new Set(capped);
+    live = live.filter(r => !drop.has(r));
+  }
+  return share;
+}
+
 function tabWeging() {
-  const W = D.weighting;
-  const rk = rankRows().filter(r => r.impact_sum !== 0 && r.w_score != null
-                                 && retOf(r) !== null && retOf(r) !== undefined);
-  if (rk.length < 12) return `<div class="empty">te weinig rijen onder deze filters</div>`;
+  const W2 = D.weighting_w2 || {};
   const FLOOR = D.conviction_floor ?? 3;
-  const sgnRet = r => r.impact_sum > 0 ? mvOf(r) : -mvOf(r);
+  const rk = rankRows().filter(r => r.impact_sum !== 0 && r.w2_strength
+                                 && retOf(r) !== null && retOf(r) !== undefined);
+  if (rk.length < 8) return `<div class="empty">te weinig rijen onder deze filters</div>`;
+  const bk = rk.filter(r => Math.abs(r.impact_sum) >= FLOOR);   // NOT `book`: that is the global stats helper
+  const dayGroups = byDay(bk).filter(g => g.length);
 
-  const plain = rk.filter(r => Math.abs(r.impact_sum) >= FLOOR);
-  const w1    = rk.filter(r => Math.abs(r.w_score)   >= FLOOR);
-  const wf    = rk.filter(r => Math.abs(r.impact_sum) >= FLOOR
-                            && Math.abs(r.w_score)    >= FLOOR);
-  const mk = (rows, label) => ({...book(rows.map(retOf)), label, n: rows.length});
-  const books = [mk(plain, 'normale routine · |impact_sum| ≥ ' + FLOOR),
-                 mk(w1,    'w1 · symmetrisch'),
-                 mk(wf,    'w1_filter · alleen afwaarderen')];
-
-  const key = r => r.ticker + r.event_date;
-  const inP = new Set(plain.map(key)), inW = new Set(w1.map(key));
-  const added   = w1.filter(r => !inP.has(key(r)));
-  const dropped = plain.filter(r => !inW.has(key(r)));
-  const kept    = plain.filter(r =>  inW.has(key(r)));
-
-  let html = `<p class="lead">Een <b>vooraf vastgelegde</b> weging van
-    <code>impact_sum</code>, naast de normale routine en nooit in plaats daarvan. Het boek
-    wordt nog steeds op het gewone getal geplaatst; dit draait ernaast zodat de twee op
-    dagen die nog niet bestaan vergeleken kunnen worden.</p>`;
-
-  html += `<div class="warn"><b>De in-sample vergelijking hieronder is geen bewijs.</b>
-    Elke tilt in de spec is gekozen ná het zien van deze ${byDay(rk).length} dagen. Op
-    precies die dagen hoort hij te winnen; dat hij dat symmetrisch <i>niet</i> doet is
-    het interessantste getal op deze pagina. De test is vooruit, vanaf
-    ${esc((W && W.frozen) || '—')}.</div>`;
-
-  html += `<div class="card"><h3>De spec</h3>
-    <p class="claim"><code>w_score = impact_sum × clamp(1 + ${W ? W.k : '?'} × Σ tilts,
-    ${W ? W.clamp[0] : '?'}, ${W ? W.clamp[1] : '?'})</code>, teken behouden. Elke tilt is
-    −1, 0 of +1; één magnitude voor alle vier, omdat vier losse gewichten op
-    ${plain.length} verhandelde namen fitten is. Versie <b>${esc(W ? W.version : '—')}</b>,
-    bevroren <b>${esc(W ? W.frozen : '—')}</b> — een constante die meebeweegt met de data
-    is geen hypothese, dus een tilt die fout blijkt wordt <code>w2</code> naast
-    <code>w1</code> en geen stille edit.</p>` + table([
-    {h:'tilt', f:r=>`<code>${esc(r.k)}</code>`},
-    {h:'uit', f:r=>esc(r.from)},
-    {h:'+1', f:r=>esc(r.up)},
-    {h:'−1', f:r=>esc(r.dn)},
-    {h:'vuurt', f:r=>r.fires}],
-    [{k:'lean_agree', from:'H5 · steun', fires: rk.filter(r=>r.w_tilts.lean_agree).length,
-      up:'prijs-lean wijst dezelfde kant op', dn:'de andere kant'},
-     {k:'search_quiet', from:'H9 · steun', fires: rk.filter(r=>r.w_tilts.search_quiet).length,
-      up:'zoekpiek onder normaal', dn:'erboven'},
-     {k:'retail', from:'H3 · mogelijk', fires: rk.filter(r=>r.w_tilts.retail).length,
-      up:'retail tilt ≥ 50', dn:'< 50'},
-     {k:'sector', from:'H4 · mogelijk', fires: rk.filter(r=>r.w_tilts.sector).length,
-      up:'Consumer Cyclical', dn:'Technology'}]) +
-    `<small>Bewust weggelaten: sessie (H1 geen effect — en de uitstapsplitsing hoort in
-     <code>exit_mode</code>, niet in een score), aantal findings (H7 geen effect), en omzet
-     (H8 leunt, maar daarop kantelen betekent kantelen naar namen die de omzetvloer en de
-     borrow-check daarna weigeren — een capaciteitsval, geen edge).</small></div>`;
-
-  html += `<div class="card"><h3>Het boek onder elke regel</h3>` + table([
-    {h:'regel', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
-    {h:'raak %', f:r=>n1(r.hit)},
-    {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
-    {h:'mediaan', f:r=>pc(r.median)}, {h:'t', f:r=>n2(r.t)}], books) +
-    `<small>Zelfde namen, zelfde uitstap, alleen een andere selectieregel.</small></div>`;
-
-  html += `<div class="card"><h3>Waar het verschil vandaan komt</h3>` + table([
-    {h:'groep', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
-    {h:'raak %', f:r=>n1(r.hit)},
-    {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`}],
-    [mk(kept, 'door beide gehouden'), mk(dropped, 'door de weging afgevallen'),
-     mk(added, 'door de weging toegevoegd')]) +
-    `<small>De namen die de weging <i>weggooit</i> waren inderdaad de zwakke, en wat
-     overblijft doet het beter dan het hele boek. Wat symmetrisch misgaat zit in de laatste
-     regel: namen die de gewone floor afwees en een tilt er alsnog overheen tilt. Daarom
-     bestaat <code>w1_filter</code>, die per constructie niets kan promoveren — en daarom
-     draaien ze allebei vooruit in plaats van dat er nu één wordt gekozen, want die keuze
-     op deze dagen maken is dezelfde fitfout een niveau hoger.</small></div>`;
-
-  const tiltRows = [];
-  // `tilt` and not `t`: mk() returns the row's t-statistic under that name, and
-  // spreading a loop variable called `t` over it replaced every t with a tilt name.
-  ['lean_agree','search_quiet','retail','sector'].forEach(tilt => {
-    [1,-1].forEach(v => {
-      const g = plain.filter(r => r.w_tilts[tilt] === v);
-      if (g.length >= 5) tiltRows.push(mk(g, `${tilt} ${v > 0 ? '+1' : '−1'}`));
+  const runBook = (gross, cap, weighted) => {
+    const per = dayGroups.map(g => {
+      const a = allocate(g, gross, cap, weighted);
+      let ret = 0, dep = 0;
+      g.forEach(r => { const sh = a.get(r) || 0; ret += sh * retOf(r) / 100; dep += sh; });
+      return {d: g[0].run_date, ret, dep, n: g.length,
+              top: g.reduce((b,r)=>(a.get(r)||0) > (a.get(b)||0) ? r : b, g[0]),
+              topPct: Math.max(...g.map(r => a.get(r) || 0))};
     });
-  });
-  html += `<div class="card"><h3>Wat elke tilt afzonderlijk doet</h3>
-    <p class="claim">Op het verhandelde boek, één tilt tegelijk. Dit is de tabel waaruit
-    de spec is gekozen, dus hij kan de spec niet bevestigen — hij laat alleen zien dat
-    geen enkele tilt de verkeerde kant op wijst.</p>` + table([
-    {h:'tilt', f:r=>`<code>${esc(r.label)}</code>`}, {h:'n', f:r=>r.n},
+    const xs = per.map(p => p.ret);
+    const s = ttest(xs);
+    let cum = 1; xs.forEach(v => cum *= 1 + v/100);
+    return {...s, per, cum: 100*(cum-1),
+            green: xs.filter(v=>v>0).length,
+            dep: per.reduce((a,p)=>a+p.dep,0) / (per.length || 1)};
+  };
+  const A = runBook(100, 33, false);
+  const B = runBook(100, W2.max_pct_per_name ?? 50, false);
+  const C = runBook(100, W2.max_pct_per_name ?? 50, true);
+  const Dd = runBook(100, 33, true);
+  const books = [{...A, label:'A · normale routine, gelijk gewicht, cap 33%'},
+                 {...B, label:'B · alleen de cap naar 50%, nog steeds gelijk'},
+                 {...C, label:'C · w2 gewogen, cap 50%'},
+                 {...Dd, label:'D · w2-weging, cap terug op 33%'}];
+
+  let html = `<p class="lead">De conviction floor blijft de poort: <b>geen enkele factor
+    voegt een naam toe of haalt er een weg</b>. De vier factoren bepalen alleen hoeveel
+    er per naam in gaat, en één naam mag tot <b>${W2.max_pct_per_name ?? 50}%</b> van het
+    vermogen worden in plaats van de 33% die de stage nu gebruikt. Versie
+    <b>${esc(W2.version || 'w2')}</b>, bevroren <b>${esc(W2.frozen || '—')}</b>.</p>`;
+
+  html += `<div class="warn"><b>Twee dingen zitten in het kopgetal en ze horen apart.</b>
+    De cap van 33% naar 50% zet meer geld aan het werk op dunne dagen; dat is een
+    risicobesluit. De weging herverdeelt binnen een dag; dat is de onderzoeksclaim. Rij A
+    tegen B isoleert de cap, B tegen C de weging. Lees ze niet als één getal.</div>`;
+
+  html += `<div class="card"><h3>Vier boeken, dezelfde namen</h3>` + table([
+    {h:'boek', f:r=>esc(r.label)},
+    {h:'per dag', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'sd', f:r=>n2(r.sd)}, {h:'t', f:r=>n2(r.t)},
+    {h:'samengesteld', f:r=>`<span class="${sgn(r.cum)}">${pc(r.cum)}</span>`},
+    {h:'groene dagen', f:r=>`${r.green}/${r.n}`},
+    {h:'gem. inzet', f:r=>n1(r.dep)+'%'},
+    {h:'per eenheid inzet', f:r=>n3(100*r.mean/(r.dep||1))+'%'}],
+    books.map(b => ({...b, n: b.per.length}))) +
+    `<small>De laatste kolom is het rendement gedeeld door hoeveel van het vermogen
+     daadwerkelijk aan het werk stond. Een boek dat alleen meer inzet is, wint op
+     <i>per dag</i> en niet op deze kolom.</small></div>`;
+
+  // table() hands the formatter the ROW and nothing else, so the paired day has to be
+  // folded into the row rather than looked up by index.
+  const perDay = A.per.map((a, i) => ({
+    d: a.d, n: a.n, a: a.ret, c: C.per[i].ret, gap: C.per[i].ret - a.ret,
+    top: C.per[i].top.ticker, topPct: C.per[i].topPct}));
+  html += `<div class="card"><h3>Per dag, en waar de grootste positie zat</h3>` + table([
+    {h:'dag', f:r=>esc(r.d)}, {h:'namen', f:r=>r.n},
+    {h:'A normaal', f:r=>`<span class="${sgn(r.a)}">${pc(r.a)}</span>`},
+    {h:'C w2', f:r=>`<span class="${sgn(r.c)}">${pc(r.c)}</span>`},
+    {h:'verschil', f:r=>`<span class="${sgn(r.gap)}">${pc(r.gap)}</span>`},
+    {h:'grootste in C', f:r=>`${esc(r.top)} ${n1(r.topPct)}%`}], perDay) + `</div>`;
+
+  const S = ['evidence','retail','lean_agree','search_quiet'];
+  const NL = {evidence:'meer findings', retail:'retail tilt', lean_agree:'lean wijst mee',
+              search_quiet:'minder zoekverkeer'};
+  const rowsF = [];
+  S.forEach(k => [1,-1].forEach(v => {
+    const g = bk.filter(r => (r.w2_strength||{})[k] === v);
+    if (g.length >= 5) rowsF.push({...book(g.map(retOf)),
+                                   k: `${NL[k]} ${v > 0 ? '+1' : '−1'}`, n: g.length});
+  }));
+  html += `<div class="card"><h3>De vier factoren</h3>` + table([
+    {h:'factor', f:r=>`<code>${esc(r.k)}</code>`}, {h:'n', f:r=>r.n},
     {h:'raak %', f:r=>n1(r.hit)},
     {h:'per naam', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
-    {h:'t', f:r=>n2(r.t)}], tiltRows) + `</div>`;
+    {h:'t', f:r=>n2(r.t)}], rowsF) +
+    `<small><code>meer findings</code> staat hier op instructie en draagt een voorbehoud
+     dat de andere drie niet hebben: H7 mat <code>n_findings</code> op zichzelf als
+     <i>geen effect</i>. Het is de enige factor zonder steun in het register en de eerste
+     die eruit gaat als w2 tegenvalt.</small></div>`;
 
-  const per = byDay(rk).map(day => {
-    const d0 = day[0].run_date;
-    const P = day.filter(r => Math.abs(r.impact_sum) >= FLOOR);
-    const F = P.filter(r => Math.abs(r.w_score) >= FLOOR);
-    return {d: d0, np: P.length, nf: F.length,
-            mp: P.length ? book(P.map(retOf)).mean : null,
-            mf: F.length ? book(F.map(retOf)).mean : null};
-  });
-  html += `<div class="card"><h3>Per dag, vooruit te volgen</h3>` + table([
-    {h:'dag', f:r=>esc(r.d)},
-    {h:'namen normaal', f:r=>r.np}, {h:'normaal', f:r=>r.mp===null?'–':
-      `<span class="${sgn(r.mp)}">${pc(r.mp)}</span>`},
-    {h:'namen w1_filter', f:r=>r.nf}, {h:'w1_filter', f:r=>r.mf===null?'–':
-      `<span class="${sgn(r.mf)}">${pc(r.mf)}</span>`},
-    {h:'verschil', f:r=>(r.mp===null||r.mf===null)?'–':
-      `<span class="${sgn(r.mf-r.mp)}">${pc(r.mf-r.mp)}</span>`}], per) +
-    `<small>Dit is de tabel die betekenis krijgt naarmate er dagen bijkomen na
-     ${esc((W && W.frozen) || '—')}. Alles erboven is de dag waarop de regel bedacht is.</small>
-    </div>`;
+  html += `<div class="warn"><b>Wat de hogere cap kost.</b> De per-naam cap is het enige
+    risicoinstrument in deze stage. Van 33% naar 50% betekent dat één print het vermogen
+    met de helft van zijn eigen gat kan bewegen: het gat van 23% dat de rekening 4,5%
+    bewoog bij een cap van 20% en ongeveer 7,5% bij 33%, beweegt hem ongeveer 11,5% bij
+    50%. Er is niets bijgekomen dat dat compenseert, en w2 staat nergens aan — hij wordt
+    naast de live regel berekend zodat de twee vergeleken kunnen worden.</div>`;
   return html;
 }
 

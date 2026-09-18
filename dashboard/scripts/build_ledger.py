@@ -1140,6 +1140,7 @@ def main():
     sys.path.insert(0, str(ROOT / "dashboard" / "scripts"))
     import weighting as WGT                                   # noqa: E402
     n_w = WGT.attach(names, floor)
+    WGT.attach_w2(names, floor)
     fired = sum(1 for r in names if any((r.get("w_tilts") or {}).values()))
     print(f"weighting {WGT.SPEC['version']} (frozen {WGT.SPEC['frozen']}): "
           f"{n_w} scored, {fired} with at least one tilt")
@@ -1167,6 +1168,7 @@ def main():
         "strategy_exit": {k: {"field": v[0], "cet": v[1]}
                           for k, v in STRATEGY_EXIT.items()},
         "weighting": WGT.SPEC,
+        "weighting_w2": WGT.SPEC_W2,
         "entry_grid": [f"{h:02d}{m:02d}" for h, m in ENTRY_GRID],
         # The forward week, carried through so the dashboard has one file to read.
         # It is a plan, not a measurement: no prediction, no ranking, no score.

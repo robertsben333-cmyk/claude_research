@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
-"""A pre-registered weighting of the edge-hunt score. Frozen 2026-09-18.
+"""Pre-registered weightings of the edge-hunt score. Frozen 2026-09-18.
+
+TWO SPECS LIVE HERE AND w2 IS THE ONE BEING CARRIED FORWARD.
+
+    w1 / w1_filter   the first attempt: the factor multiplies the score, so it changes
+                     which names clear the conviction floor. Superseded, kept frozen
+                     and still computed, because deleting a spec after seeing it lose
+                     is how a record stops being a record.
+    w2               the operator's design: the floor stays the gate and the factors
+                     set the SIZE. See the w2 block at the bottom of this file.
+
+Everything below this line describes w1.
 
 WHAT THIS IS
 ------------
@@ -77,7 +88,8 @@ K = SPEC["k"]
 LO, HI = SPEC["clamp"]
 
 # The retail-tilt split point, frozen at the median of the traded book on the freeze
-# date. A median recomputed每 rebuild would move with the sample and quietly re-fit.
+# date. A median recomputed on every rebuild would drift with the sample and
+# quietly re-fit the spec without anyone editing it.
 RETAIL_SPLIT = 50.0
 SEARCH_SPLIT = 1.0
 SECTOR_UP = {"Consumer Cyclical"}
@@ -196,3 +208,140 @@ if __name__ == "__main__":
     print("\n  IN SAMPLE AND THEREFORE WORTH NOTHING as evidence: every tilt was chosen")
     print("  after seeing these days. The forward comparison is the test.")
     sys.exit(0)
+
+
+# =============================================================================
+# w2 — THE FLOOR STAYS THE GATE; THE VARIABLES SET THE SIZE
+# =============================================================================
+"""
+w1 let a tilt push a name over the conviction floor, and that is where it lost: the
+four names it promoted returned -11.01% and the floor is the only rule in this repo
+that ever cleared a family-wise correction. w2 takes the other road, on the operator's
+instruction:
+
+    SELECTION   unchanged. |impact_sum| >= conviction_floor, and nothing else.
+                No tilt adds a name and no tilt removes one.
+    SIZING      asymmetric. The four factors set a strength per name, strength sets
+                a share of the gross budget, and a single name may take up to 50% of
+                equity instead of the flat 33% the stage uses now.
+
+So a wrong tilt can now cost size on a good name or buy size on a bad one, but it can
+never buy a name the hunt did not conviction-rank in the first place. That is a smaller
+surface for a rule chosen on 13 days.
+
+WHAT THE HIGHER CAP COSTS, STATED PLAINLY. `config/pipeline.yaml` calls the per-name
+cap the only risk control in the stage. Raising it from 33% to 50% means one print can
+move the account by half the gap it opens: the 23% single-name gap that moved the
+account 4.5% at a 20% cap and about 7.5% at 33% moves it about 11.5% at 50%. Nothing
+else changed to offset that, and w2 is not switched on anywhere -- it is computed
+beside the live rule so the two can be compared.
+
+FOUR FACTORS, EACH -1 / 0 / +1, all four named by the operator:
+
+    evidence      more findings behind the score
+    retail        the consumer/retail character of the name
+    lean_agree    the sealed price lean points the same way
+    search_quiet  less search traffic into the print
+
+`evidence` is in here on instruction and carries a caveat the others do not: H7 measured
+`n_findings` on its own as `geen effect`. It is the one factor with no support behind it
+in the register, and if w2 underperforms it is the first to drop.
+"""
+SPEC_W2 = {
+    "version": "w2",
+    "frozen": "2026-09-18",
+    "gate": "|impact_sum| >= conviction_floor, unchanged",
+    "g": 0.125,                    # strength -> weight slope; +-4 spans 0.5 .. 1.5
+    "weight_clamp": [0.5, 1.5],
+    "max_pct_per_name": 50.0,      # up from the live 33
+    "gross_pct": 100.0,
+    "note": "sizing only; no tilt adds or removes a name. Chosen on 13 days; "
+            "only a forward sample tests it.",
+}
+G = SPEC_W2["g"]
+W_LO, W_HI = SPEC_W2["weight_clamp"]
+MAX_PCT = SPEC_W2["max_pct_per_name"]
+GROSS_PCT = SPEC_W2["gross_pct"]
+
+FINDINGS_MANY, FINDINGS_FEW = 4, 2
+
+
+def strength(row):
+    """The four factors, each -1 / 0 / +1. Missing input is 0, never a guess."""
+    t = tilts(row)                      # lean_agree, search_quiet, retail  (sector drops)
+    nf = row.get("n_findings")
+    out = {
+        "evidence": 0 if nf is None else (1 if nf >= FINDINGS_MANY
+                                          else (-1 if nf <= FINDINGS_FEW else 0)),
+        "retail": t["retail"],
+        "lean_agree": t["lean_agree"],
+        "search_quiet": t["search_quiet"],
+    }
+    return out
+
+
+def weight(row):
+    """Per-name relative weight before the budget is divided. Never negative."""
+    st = strength(row)
+    return max(W_LO, min(W_HI, 1 + G * sum(st.values()))), st
+
+
+def allocate(rows, gross_pct=None, max_pct=None):
+    """Shares of equity for one day's book, weighted and capped.
+
+    Same shape as the live sizer -- a capped name's leftover is redistributed over the
+    rest -- so the only differences from the live rule are WHICH weight each name gets
+    and WHERE the cap sits. Returns {id: pct_of_equity}; the sum is the deployed gross,
+    which is below `gross_pct` only when too few names can absorb it.
+    """
+    gross = GROSS_PCT if gross_pct is None else gross_pct
+    cap = MAX_PCT if max_pct is None else max_pct
+    if not rows:
+        return {}
+    ws = {id(r): weight(r)[0] for r in rows}
+    share = {}
+    live = list(rows)
+    budget = gross
+    # iterate: hand out pro rata, cap, redistribute what the cap refused
+    for _ in range(len(rows) + 1):
+        tot = sum(ws[id(r)] for r in live)
+        if not live or tot <= 0 or budget <= 1e-9:
+            break
+        capped = []
+        for r in live:
+            want = budget * ws[id(r)] / tot
+            if want >= cap - 1e-9:
+                share[id(r)] = cap
+                capped.append(r)
+        if not capped:
+            for r in live:
+                share[id(r)] = budget * ws[id(r)] / tot
+            break
+        budget -= cap * len(capped)
+        live = [r for r in live if id(r) not in {id(x) for x in capped}]
+    return share
+
+
+def equal_allocate(rows, gross_pct=100.0, max_pct=33.0):
+    """The live rule: equal weight, whole budget, capped per name."""
+    if not rows:
+        return {}
+    per = min(max_pct, gross_pct / len(rows))
+    return {id(r): per for r in rows}
+
+
+def attach_w2(names, floor):
+    """`w2_strength` / `w2_weight` per name. Shares are per DAY, so they are computed
+    where a day exists -- in the dashboard and in the day table below -- not here."""
+    n = 0
+    for r in names:
+        imp = r.get("impact_sum")
+        if imp is None:
+            r["w2_weight"], r["w2_strength"] = None, {}
+            continue
+        w, st = weight(r)
+        r["w2_weight"] = round(w, 4)
+        r["w2_strength"] = st
+        r["w2_in_book"] = bool(abs(imp) >= floor)     # the plain gate, unchanged
+        n += 1
+    return n

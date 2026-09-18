@@ -133,10 +133,45 @@ bmo-late exit split. Both exit tests lean the predicted way (+1.9pp and +2.2pp p
 and neither reaches |t| = 2, so they are the two worth watching forward rather than
 acting on.
 
-## The Weging tab and the pre-registered weighting
+## The Weging tab and the pre-registered weightings
 
-`dashboard/scripts/weighting.py` holds a weighting of `impact_sum`, frozen with a date
-and a version. It does **not** replace the live rule: `edge_score.py` is untouched, the
+**w2 is the design being carried forward.** The conviction floor stays the gate — no
+factor adds a name and none removes one — and four factors set the SIZE instead, with
+a per-name cap raised from 33% to 50% of equity:
+
+    evidence      more findings behind the score
+    retail        the consumer/retail character
+    lean_agree    the sealed price lean points the same way
+    search_quiet  less search traffic into the print
+
+Each is −1 / 0 / +1; weight = clamp(1 + 0.125 * Σ, 0.5, 1.5); the day's gross is split
+pro rata, capped per name, and a capped name's leftover redistributed — the same shape
+as the live sizer, with a different weight and a different cap.
+
+**The tab separates two things the headline mixes**, because they are a risk decision
+and a research claim:
+
+| book | per day | sd | t | compounded | per unit deployed |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| A normal, equal, cap 33% | +4.28% | 6.29 | 2.36 | +62.1% | 4.551% |
+| B cap 50% only, still equal | +4.94% | 7.01 | **2.44** | +74.0% | 4.941% |
+| C w2 weighted, cap 50% | +5.12% | 7.47 | 2.37 | +77.0% | 5.121% |
+| D w2 weighted, cap back to 33% | +4.37% | 6.92 | 2.18 | +62.9% | 4.641% |
+
+**The cap does the work; the weighting adds almost nothing and costs variance.** A→B is
++0.66pp from deploying more on thin days. B→C is +0.18pp and t falls from 2.44 to 2.37.
+At the old cap (D) the weighting is +0.09pp and t falls to 2.18. `evidence` is in the
+spec on instruction and is the one factor the register measured as `geen effect` on its
+own (H7); it is the first to drop if w2 underperforms.
+
+**What the higher cap costs:** the per-name cap is the only risk control in the stage.
+The 23% single-name gap that moved the account 4.5% at a 20% cap and ~7.5% at 33% moves
+it ~11.5% at 50%. Nothing was added to offset that, and w2 is switched on nowhere.
+
+### w1, superseded and kept
+
+w1 multiplies the score, so it changes which names clear the floor. It does **not**
+replace the live rule: `edge_score.py` is untouched, the
 book is still placed on the plain score, and this runs beside it so the two can be
 compared on days that do not exist yet.
 

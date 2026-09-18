@@ -4,6 +4,42 @@ Append-only. One dated section per update, written by the `edge-performance` ski
 Three things in every entry: what closed and what resolved, the pooled ranking figure
 beside its free control, and one sentence of critical read.
 
+## 2026-09-18 (late) — w2: the floor stays the gate, the factors set the size
+
+The operator's redesign, and it is a better shape than w1. The conviction floor remains
+the only thing that decides membership; the four named factors — more findings, retail
+tilt, price-lean agreement, less search traffic — set how much goes into each name, and
+the per-name cap rises from 33% to 50% of equity. A wrong factor can now cost size on a
+good name, but it can never buy a name the hunt did not conviction-rank, which is exactly
+where w1 lost.
+
+**The headline mixes two things and the tab separates them.**
+
+| book | per day | sd | t | compounded |
+| --- | ---: | ---: | ---: | ---: |
+| A normal, equal weight, cap 33% | +4.28% | 6.29 | 2.36 | +62.1% |
+| B cap 50% only | +4.94% | 7.01 | 2.44 | +74.0% |
+| C w2 weighted, cap 50% | +5.12% | 7.47 | 2.37 | +77.0% |
+| D w2 weighted, cap 33% | +4.37% | 6.92 | 2.18 | +62.9% |
+
+A→B is the cap: +0.66pp per day, and deployment goes 94% to 100% because the 33% cap was
+leaving cash on thin days. B→C is the weighting: +0.18pp, with the standard deviation up
+from 7.01 to 7.47, so **t falls**. At the old cap the weighting is worth +0.09pp and t
+falls from 2.36 to 2.18. On 12 days the weighting earns close to nothing and buys
+variance; the capital decision carries the result.
+
+Factor by factor on the book, all four point the right way: lean +7.27% against +0.11%,
+search-quiet +5.32% against +0.37%, retail +4.68% against +2.47%, more-findings +3.85%
+(no −1 group large enough to show). `evidence` is in on instruction and carries the
+caveat that H7 measured it as `geen effect` alone.
+
+Nothing is switched on. `w1` and `w1_filter` stay frozen and computed rather than
+deleted: removing a spec after watching it lose is how a record stops being one.
+
+Two shadowing bugs, both caught by rendering: a local `book` shadowed the global
+statistics helper, and `table()` hands its formatter the row and no index, so the paired
+day had to be folded into the row.
+
 ## 2026-09-18 (evening) — hypotheses moved to the traded book, and a frozen weighting
 
 **The hypotheses are now asked of the book, not of every ranked name.** A rule that only

@@ -81,8 +81,28 @@ paragraph above measures the hunt against is not stable either. What survives: t
 above the floor pays **+3.37%** per trade against **+1.59%** for shorting every name with
 no research at all.
 
-**A PRE-REGISTERED WEIGHTING RUNS BESIDE THE LIVE RULE, and does not replace it
-(2026-09-18).** `dashboard/scripts/weighting.py`, version `w1`, frozen today:
+**`w2` IS THE WEIGHTING BEING CARRIED FORWARD (2026-09-18, operator's design).** The
+conviction floor stays the only gate — no factor adds a name and none removes one — and
+four factors set the SIZE instead: more findings, retail tilt, price-lean agreement, less
+search traffic, each −1/0/+1, weight = clamp(1 + 0.125·Σ, 0.5, 1.5), with the per-name cap
+raised from 33% to **50% of equity**. A wrong factor costs size on a good name and can
+never buy a name the hunt did not conviction-rank, which is where `w1` lost.
+
+**The headline mixes a risk decision and a research claim, so read them apart.** Per day
+over 12 traded days: **A** normal (equal, cap 33) +4.28%, t 2.36; **B** cap 50 only
++4.94%, t 2.44; **C** w2 weighted at cap 50 +5.12%, t 2.37; **D** w2 weighted at cap 33
++4.37%, t 2.18. A→B is the cap (+0.66pp, and deployment goes 94%→100% because 33% left
+cash on thin days). B→C is the weighting: **+0.18pp with the sd up from 7.01 to 7.47, so
+t falls**. At the old cap the weighting is worth +0.09pp and t falls to 2.18. **The
+capital decision carries the result; the weighting earns close to nothing and buys
+variance.** All four factors point the right way one at a time (lean +7.27% against
++0.11%, search-quiet +5.32% against +0.37%, retail +4.68% against +2.47%). `evidence` is
+in on instruction and is the one factor H7 measured as `geen effect` alone — first to drop
+if w2 underperforms. **The 50% cap is the only risk control in the stage**: the 23%
+single-name gap that moved the account 4.5% at a 20% cap and ~7.5% at 33% moves it ~11.5%
+at 50%. Nothing is switched on; w2 is computed beside the live rule.
+
+**`w1` IS SUPERSEDED AND KEPT (2026-09-18).** `dashboard/scripts/weighting.py`, version `w1`, frozen today:
 `w_score = impact_sum * clamp(1 + 0.15 * Σ tilts, 0.5, 1.5)`, four tilts at −1/0/+1 —
 price-lean agreement, search quiet, retail tilt, sector — one magnitude for all four
 because four fitted weights on 56 traded names is memorisation. `edge_score.py` is
