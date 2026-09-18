@@ -414,6 +414,17 @@ execution:
     # it as days pool; against uniform_close it leads by only +0.57pp on a paired day
     # bootstrap of [-2.86, +3.18], so nothing here is established.
     exit_mode: amc_open      # uniform | bmo_close | auction_split | amc_open
+    # WHICH RUN SELLS WHICH LEG, since 2026-09-18. `close` takes every leg whose exit
+    # date is today and TWO runs a day call it -- "Close AMC" at 06:05 ET and stage E
+    # at 13:05 ET -- so the early run was taking the bmo leg as well. Under
+    # auction_split that was harmless (bmo wanted `cls`, which a closed market
+    # refuses); under amc_open the bmo instrument is a plain DAY order, which Alpaca
+    # QUEUES FOR THE OPEN. On 2026-09-18 TRT's bmo exit went in at 06:07 ET that way,
+    # so the book was running amc at the open and bmo at the open -- and bmo is the
+    # session that measured worst there (+2.96% against +6.48% at the close and
+    # +2.58% around 10:00 ET). `close` now leaves a leg whose placement is `market`
+    # to the run that fires inside the session. Overdue legs are exempt and still go
+    # immediately.
     # MAY THIS ACCOUNT USE `opg`/`cls` AT ALL? No, since 2026-09-18, and the mode
     # above is unchanged: amc is still aimed at the open, it just gets there as a
     # plain market DAY order queued in the pre-market instead of as an auction order.

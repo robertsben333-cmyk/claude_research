@@ -1065,6 +1065,38 @@ def exit_placement(session, ex):
     return "open" if session == "amc" else "close"
 
 
+def defer_to_session_run(placement, overdue, session_open):
+    """Should THIS run leave this leg to the one that fires inside the session?
+
+    `close` takes every leg whose exit date is today, and two runs a day call it:
+    "Close AMC" at 06:05 ET and stage E at 13:05 ET. Under `auction_split` that was
+    harmless -- the bmo leg wanted `cls`, and `window_for("cls")` refuses a closed
+    market, so the early run could not take it even by accident. Once the instrument
+    became a plain DAY order nothing refused it any more: on 2026-09-18 the 06:05 ET
+    run sent TRT's bmo exit as a market DAY order, which Alpaca queues for the OPEN.
+    The book was then running amc at the open AND bmo at the open, where the
+    configured policy is bmo at 13:05 ET -- and bmo is the session that measured
+    WORST at the open (+2.96% against +6.48% at the close, +2.58% around 10:00 ET).
+
+    The placement is the whole of the rule. A leg aimed at the `open` is exactly what
+    a pre-market run exists to place. A leg aimed at `market` means "at market, on
+    the run that fires inside the session", and a closed market is the one condition
+    under which this run is not that run.
+
+    An OVERDUE leg is never deferred: its event is over, and queueing it for the open
+    beats holding it another seven hours on the chance the later run fires. Nor is a
+    leg deferred when the clock could not be read (`session_open is None`) -- an
+    unknown clock must not become a reason a position goes unsold.
+
+    What this costs: if stage E's own run then dies, the bmo leg is held overnight
+    rather than having been sold at the open by accident. The overdue rule is the
+    net -- it goes at market on the next run either way, and `open` refuses to buy a
+    new book over it.
+    """
+    return bool(placement and placement != "open" and not overdue
+                and session_open is False)
+
+
 def auction_orders(ex):
     """May this account use `opg`/`cls` at all? Default NO, since 2026-09-18.
 
@@ -1441,9 +1473,11 @@ def cmd_close(a, api, ex):
                         else (False, "dry run"))
         return win[tif]
     today = None
+    session_open = None
     if api.usable:
         clk, _ = api.clock()
         today = clk["timestamp"][:10] if clk else None
+        session_open = clk.get("is_open") if clk else None
     print(f"closing across {len(runs)} run(s), today {today}, "
           f"{'blocked — ' + blocked if blocked else moc_note}"
           + (f"  [exit_mode {mode}: amc -> {exit_tif_for('amc', ex)}, "
@@ -1510,9 +1544,16 @@ def cmd_close(a, api, ex):
             if qty is None and not reason:
                 qty = int(e["qty"])
             tif = exit_tif_for(e.get("session"), ex) if by_session else None
+            place = exit_placement(e.get("session"), ex) if by_session else None
             if overdue:
                 tif = ex["orders"].get("time_in_force", "day")
+                place = "market"
                 print(f"  {run} {e['symbol']:8s} overdue since {xd}; going at market")
+            elif (not reason
+                  and defer_to_session_run(place, overdue, session_open)):
+                reason = ("market placement, and the market is closed: this leg exits "
+                          "at market on the run that fires inside the session, not "
+                          "queued for the open by this one")
             if tif:
                 ok, note = window_for(tif)
                 if not ok and prior and not overdue:
@@ -1544,8 +1585,7 @@ def cmd_close(a, api, ex):
                         # it there. Without it the record cannot distinguish an exit
                         # meant for the open from one that merely went at market,
                         # which is the whole of what changed on 2026-09-18.
-                        "placement": ("market" if overdue or not by_session
-                                      else exit_placement(e.get("session"), ex))})
+                        "placement": place or "market"})
             upsert(state["exits"], rec)
             rec["time_in_force"] = body["time_in_force"]
             print(f"  {run} {e['symbol']:8s}{(e.get('session') or '?'):4s}"

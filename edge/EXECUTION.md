@@ -567,6 +567,39 @@ all, that is not a close comparison: the last four amc legs were either rescued 
 hours later or held overnight. Nothing about the ranking, the floor or the book rule
 changes.
 
+### Which run sells which leg
+
+`close` takes every leg whose exit date is today, and two runs a day call it: "Close
+AMC" at 06:05 ET and stage E at 13:05 ET. So the early run was taking the **bmo** leg
+as well as the amc one.
+
+Under `auction_split` that was harmless. The bmo leg wanted `cls`, and
+`window_for("cls")` refuses a closed market, so the pre-market run could not take it
+even by accident. Under `amc_open` the bmo instrument is a plain DAY order — and a DAY
+order sent before the open is not refused, it is **queued for the open**. On 2026-09-18
+TRT's bmo exit went in at 06:07 ET that way. The book was running amc at the open and
+bmo at the open, where the configured policy is bmo at market on stage E's 13:05 ET
+run, and where bmo is the session that measured *worst*: +2.96% at the open against
++6.48% at the close and +2.58% around 10:00 ET.
+
+`close` now leaves a leg whose placement is `market` to the run that fires inside the
+session:
+
+```
+TRT      bmo day not sent   market placement, and the market is closed: this leg
+                            exits at market on the run that fires inside the session,
+                            not queued for the open by this one
+```
+
+Two exemptions, both deliberate. An **overdue** leg still goes immediately: its event
+is over, and queueing it for the open beats holding it another seven hours on the
+chance that the later run fires. And a leg is never deferred when the clock could not
+be read — an unknown clock must not become the reason a position goes unsold.
+
+What it costs: if stage E's own run then dies, the bmo leg is held overnight instead of
+having been sold at the open by accident. The overdue rule is the net — it goes at
+market on the next run either way, and `open` refuses to buy a new book over it.
+
 **What was considered and not done.** A marketable limit through the touch (say 2–3%)
 instead of a plain market order would cap a bad opening print in a microcap, which is
 what a professional desk would do with an order it cannot put in the auction. It is not

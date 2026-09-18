@@ -256,6 +256,19 @@ Paper compounds it — fills there are simulated against the NBBO quote stream w
 Nothing rejects the order; it is accepted, it sits, it is cancelled at a cross it never
 reached.
 
+**And the early Routine was taking the bmo leg too (fixed 2026-09-18).** `close` takes
+every leg whose exit date is today and two runs a day call it, so "Close AMC" at 06:05
+ET was selling the bmo leg as well as the amc one. Harmless under `auction_split` —
+bmo wanted `cls` and a closed market refuses it — but live under `amc_open`, where the
+bmo instrument is a plain DAY order that Alpaca **queues for the open**. TRT's exit
+went in at 06:07 ET on 09-18 that way, so the book ran amc at the open and bmo at the
+open, against a configured policy of bmo at market on stage E's 13:05 ET run, and bmo
+is the session that measured worst at the open (+2.96% against +6.48% at the close and
++2.58% around 10:00 ET). `close` now defers a leg whose placement is `market` to the
+run that fires inside the session, with two exemptions: an overdue leg still goes
+immediately, and nothing is deferred when the clock could not be read.
+`defer_to_session_run()` is the whole rule and `smoke_test.py` covers all four cases.
+
 **The fix separates WHERE an exit is aimed from WHICH order gets it there
 (2026-09-18).** `orders.auction_orders` is new and `false`: `exit_placement()` returns
 `open`/`close`/`market` from the mode, and `exit_tif_for()` turns that into an instrument

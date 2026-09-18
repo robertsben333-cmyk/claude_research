@@ -154,9 +154,14 @@ aimed at the open has to be submitted before the open, and stage E's own run fir
    the account so a partial fill still closes flat, and picks the instrument per
    session from the configured placement. Under `amc_open` with auction orders off that
    is a market DAY order for the amc legs, which Alpaca queues and routes at the open.
-   A bmo leg due today may also go in here; that is fine and not a double-send, because
-   exits are keyed by a deterministic client_order_id and an already-submitted leg is
-   skipped.
+
+   IT WILL LEAVE SOME LEGS ALONE, AND THAT IS THE POINT. A leg whose placement is
+   `market` — the bmo leg under `amc_open` — belongs to the run that fires INSIDE the
+   session, not to you: a market order sent from the pre-market is queued for the open,
+   and bmo measured worst at the open of the three exits it was priced at. Since
+   2026-09-18 `close` refuses those with "market placement, and the market is closed".
+   Report the refusal; it is correct, not a failure. An OVERDUE leg is exempt and still
+   goes immediately.
 
 4. `python3 edge/scripts/alpaca_trade.py status --scan 'research/*/*/*/edge'`
 
