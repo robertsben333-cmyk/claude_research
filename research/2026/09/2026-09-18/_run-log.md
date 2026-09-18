@@ -30,3 +30,13 @@
 - Subagents: 0 opus/high, 0 waves
 - Median evidence completeness: n/a
 - Note: 0 names capped from a shortlist of 0 — nothing dropped for the cap. Confirmed against 00-universe.json/01-shortlist.json before publishing this section, not just the earlier run-log entries. Batch 2 should also find nothing to do unless stage 1 is re-run and finds names.
+
+## Close AMC — opg exit guard and sweep — 2026-09-18
+- Logged at 2026-09-18 10:13 UTC
+- Fired ~10:05 UTC (06:05 ET), well before the 09:28 ET opg cutoff. Re-read clock with date -u.
+- Guard: python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg -> exit 0 (execution.enabled=true, exit_mode=amc_open, amc -> opg, bmo -> day). Proceeded.
+- verify --scan 'research/*/*/*/edge' before any send: all 11 pre-existing exit legs (HOFT, FEIM, ORCL, RH, CODA, VRA, FPS, RLGT, LUXE, ALMU, LEN) report still held 0.0 — nothing UNFILLED, nothing to rescue.
+- close --scan 'research/*/*/*/edge' --submit: no amc leg has an exit date of 2026-09-18, so no opg order was placed this run. The only leg due today is TRT (2026-09-17 entry, bmo, exit 2026-09-18) — sent as a day-tif market order per the amc_open instrument mapping (bmo -> day, not opg), client_order_id 66ee2f1a-aa2d-4d6d-acf5-714200e24ada, working/unfilled at report time (bmo exit does not cross at the open, so no fill expected yet).
+- status --scan confirms: TRT is the only OPEN position (338 sh long, +0.36%), its exit order is 'new'/unsubmitted-fill, all other runs flat.
+- Refusals: none. Account reachable throughout (paper, equity $11,541.63).
+- No amc opg leg was placed today because none was due — this is a correct no-op for the opg instrument, not a guard failure. Left to stage E's own run and the next 'Close AMC' firing to pick up any future amc exit.
