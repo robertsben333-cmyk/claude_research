@@ -242,3 +242,7 @@ WHAT FAILED: nothing. No agent errored, no fetch was blocked, no script raised. 
 ## Stage EU — europe scoping — DONE
 - Logged at 2026-09-18 21:40 UTC
 - Phase 1 measured and written to researcher_europe/SUBMARKET.md; recommendation is BUILD, all three markets pooled, $1m/day turnover floor, no size-band cut. Phase 2 built: eu_market/eu_universe/eu_priced_in/eu_positioning/eu_resolve, three language hunters, the researcher-europe-hunt skill, a europe_hunt config block, README and LESSONS. edge_score.py gained diagnostics.impact_sum_pre_local (a US run re-scores identically). Validated end to end against 2026-09-16: 4 eligible above the floor, 4 of 4 confirmed by real results RNS on Investegate, synthetic findings, rho -0.80 p 0.33 which is noise by construction. event_occurred:false verified against ITM and PDL on 2026-09-15. No Routine created, execution untouched.
+
+## Stage EU — europe researcher — DOCUMENTED
+- Logged at 2026-09-18 21:43 UTC
+- Stage EU added to CLAUDE.md: the stage table, a full section beside stage J, and the folder block. Also verified the shared scorer independently: rescored all five live US runs (09-14..09-18) with the pre-stage-EU edge_score.py and the current one, every ranked row identical on rank, impact_sum, conviction and priced_lean_pct. smoke_test.py passes.

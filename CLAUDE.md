@@ -41,6 +41,7 @@ material below is kept because the live stages reference it, not because it runs
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
+| EU | `researcher-europe-hunt` | **no Routine yet** | **Stage EU — the Europe researcher.** UK, France and Germany pooled, one stage, three language-specific hunters, research only, no orders. Built 2026-09-18; nothing scheduled, so it runs only when invoked by hand |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 Stage N is not part of the daily advice pipeline. It is `archive/backtest/` arm A promoted to
@@ -933,6 +934,92 @@ correctly killed as `event_occurred: false`, median realised move 2.87%) using
 *synthetic* findings, which ranked at ρ=0.154, p=0.47 — what random findings should do.
 See `researcher_japan/README.md`.
 
+**Stage EU is a third market, added 2026-09-18: `researcher_europe/`.** The UK, France
+and Germany, pooled into one stage, on the same scorer again
+(`researcher_us/scripts/edge_score.py`). **It places no orders and there is no Routine**,
+so nothing fires on its own; invoke `researcher-europe-hunt` by hand. Alpaca carries none
+of these venues, so execution would be a separate build against a different broker.
+
+**Pooling is not a convenience, it is the only thing that makes the stage possible.**
+Each market fails the stream test alone and each fails it differently: Germany's Prime
+Standard quarterly statement under §63 BörsO is real (156 of 259 names quarterly, median
+gap 97 days) but **synchronised** — 153 of 259 forward events land in November and one in
+June, which is the Korea failure mode in milder form. France is thinner still (17 of 161
+quarterly) and 94 of 161 events fall in February–March. **The UK is the staggered one**,
+with every month carrying a non-trivial count, which is the December/March/June/September
+year-end spread Korea and China lack entirely — but above a $1m/day floor the UK alone
+runs a median of 4 names and bottoms out at 1 on Fridays. They peak in different months,
+so pooled the day clears the Japan bar on a median day and **not on every day**: August,
+late December, Fridays and the German June–July gap still give two- and three-name days.
+
+**The option anchor was expected to be Europe's advantage over Tokyo and it is not
+there.** No European single-stock chain proved retrievable free from this container:
+Yahoo returns 21 expiries for AAPL and **zero** for SAP.DE, MC.PA, BARC.L and BNP.PA;
+Eurex's daily zip downloads but carries trading parameters only, no settlement prices, no
+open interest, no underlying map. The coverage fraction could not be measured because the
+coverage could not be reached. **So Europe runs anchor-less exactly like Japan** — the
+regime `archive/backtest/FINDINGS.md` §33 priced at ρ=+0.073, p=0.45 over 104 events.
+
+**What Europe does have, and Tokyo does not, is a short register worth using.** The FCA
+publishes current aggregated net short positions as a plain CSV *and* the full per-holder
+history back to 2012, so a European positioning anchor can be **backtested**, which JPX's
+cannot. Coverage of the UK results cohort is 89% in the $1–5m turnover band against
+Japan's 9–11 of 25 names. Germany resolves through the Bundesanzeiger with a session
+cookie. **France is the one unsolved leg**: `data.gouv.fr` is unreachable by curl from
+here, BDIF is an SPA whose API was not found, and most of the French financial press
+(Les Echos, Investir, Boursier, Zonebourse) is shut to both `curl` and `WebFetch`. French
+names therefore run `positioning.covered: false` and their lean collapses back into the
+free control — the exact defect stage J spent a day fixing.
+
+**The Japan `curl`-beats-`WebFetch` finding does not generalise.** On this path the two
+mostly agree; what differs is paywalls, not the fetcher. Each hunter definition carries
+its own measured reachability table rather than inheriting Japan's.
+
+**Europe reports before the open, which no other stage does.** 339 of 379 UK results
+announcements landed before 08:00 London (89.4%), so the window is
+`close(D−1) → close(D)` and **the baseline must be sealed the evening before**. Getting
+this wrong is not cosmetic: Barratt Redrow moved +11.72% over the correct window and
++1.78% over the one a US-shaped stage would have used.
+
+**The calendar is far cleaner than the US one.** Measured against four full weeks of the
+RNS record via Investegate — a full mirror queryable by date back to 1999, where TDnet
+keeps about 31 days — TradingView's forward rows show a **2.2% phantom rate** (88 of 90
+UK rows had a same-day results RNS from the same issuer) against the US
+`time-not-supplied` rate of 20 of 20. Six of the eight apparent misses were a headline
+classifier, not a missing print.
+
+**The size band contradicts the obvious prior and the universe is deliberately NOT cut to
+it.** Analyst coverage runs 1–2.5 names below $1m/day, 5–7 at $1–5m, 11–13 at $5–25m and
+16–19.5 above — so MDAX/SDAX, SBF 120 ex-CAC 40 and FTSE 250 sit in the *well-covered*
+band and the genuinely under-read one is $1–5m, a band lower than "mid cap" would suggest.
+Selecting the universe on the thesis would make the thesis unfalsifiable, so the stage
+takes a $1m/day floor (capacity *and* anchor coverage: the register resolves on 12% of
+names below it) then a seeded random draw, carries `analyst_band` in every baseline, and
+`eu_resolve.py` ranks the hunt **by band**. Let the measurement find the band.
+
+**Each hunter runs English first, then local, and the order is load-bearing.** The
+English pass is frozen as `pre_local` before the local-language pass revises it, so
+`diagnostics.impact_sum_pre_local` and `spearman_pre_local` measure whether searching in
+German and French earns rank correlation or only costs tokens — the same control shape as
+`pre_lessons`, which still runs after it. **The UK case is degenerate and is labelled as
+such**: its second pass varies *source locality* (RNS, Investegate, the domestic trade
+press), not language, so `eu_resolve.py` **refuses to pool** the UK delta with the German
+and French ones. A UK zero is not evidence about language.
+
+**The shared scorer gained 42 lines and moved nothing.** Verified by rescoring all five
+live US runs (09-14 through 09-18) with the pre-stage-EU scorer and the current one: every
+ranked row identical, rank, `impact_sum`, `conviction` and `priced_lean_pct` alike.
+
+Nothing has resolved in Europe. The stack was validated end to end on 2026-09-18 against
+2026-09-16 (22 vendor rows, 4 eligible above $1m, 4 of 4 confirmed by a real results RNS
+out of the 40 EPICs filing that day, short register 4 of 4, UK
+`lean_vs_free_control_rho` 0.40) using **synthetic findings**, which ranked at ρ=−0.80,
+p=0.33 on four names — noise by construction. **No German or French name has ever been
+run through it**: neither cleared the floor on the validation date, so the EQS-News and
+French confirmation paths are exercised as code only. Spread is entirely unmeasured, and
+it is the cost that would matter most in the band this stage targets.
+See `researcher_europe/README.md` and `researcher_europe/SUBMARKET.md`.
+
 **The five stage 0–4 pipeline Routines were disabled on 2026-09-18** at the operator's
 request, and the stage table's claim that they "do not currently exist" was wrong before
 that: all six were enabled and firing. They are disabled now, not deleted. Stage E is
@@ -960,6 +1047,11 @@ researcher_japan/                      stage J — see researcher_japan/README.m
                                        jp_resolve
   routine-prompts/                     the text in the stage J Routine
   LESSONS.md                           deliberately empty until a run resolves
+researcher_europe/                     stage EU — see researcher_europe/README.md
+  scripts/                             eu_market, eu_universe, eu_positioning,
+                                       eu_priced_in, eu_resolve
+  SUBMARKET.md                         why UK+FR+DE pooled, with the counts behind it
+  routine-prompts/                     written; NO Routine exists yet
 archive/                               retired 2026-09-18 — see archive/README.md
   backtest/                            the sealed backtest, arms A/B/C + edge-corpus
   claude_naive/                        stage N, disabled 2026-09-09
