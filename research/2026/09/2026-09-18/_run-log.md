@@ -58,6 +58,22 @@
 - AND IT EXPOSES A POLICY GAP THAT PREDATES TODAY'S CHANGE. `amc_open` is specified as amc at the open, bmo at plain market on stage E's own run at 13:05 ET — that is the `amc_open_bmo_1300` policy edge_exit.py scores at +6.49% a trade, and the stated reason for choosing it over auction_split is that a bmo leg is CERTAINLY gone before the same afternoon buys the next book. But `close --scan --submit` takes every leg whose exit date is today, so the 06:05 ET Routine picked the bmo leg up too and TRT will exit at the OPEN, not at 13:05 ET. The Routine prompt has always said this may happen ('a bmo leg due today may go in here'), which was harmless under auction_split where bmo wanted `cls` and the pre-market run could not place one. Under amc_open the bmo instrument is a plain day order, so the earlier Routine simply takes it — and the book is being run on a policy nobody scored: amc at the open, bmo at the open. Measured, bmo at the opening auction paid +2.96% against +6.48% at the close and +2.58% at ~10:00 ET, so this is the weakest of the three for that session.
 - NOT CHANGED HERE. It is a real deviation from the configured intent and the fix is one line in `close` (skip a leg whose placement is `market` when the run is outside market hours, leaving it for stage E), but it changes which session sells a live position and that is the operator's call, not a session's. Recorded so the next run does not read TRT's 06:07 ET exit as a defect in today's instrument change — it is not; the two are independent.
 
+## Stage 2 — deep dive, batch 2 — STARTED
+- Logged at 2026-09-18 10:24 UTC
+- Shortlist: 0 names (triage_mode: skipped_small_universe, universe_eligible: 0, universe_total: 0); this batch: none
+- Already on disk, skipping: none (02-dossiers/ empty, confirmed on disk not just from batch 1's log)
+- Batch 1 already confirmed and published this empty state (08:24 UTC) and covers the day; nothing to add for batch 2
+- Plan: no researchers to spawn; writing 02-ranking.json empty as final batch, since stage 3 reads it and does not re-derive it
+
+## Stage 2 — deep dive, batch 2 — FINISHED
+- Logged at 2026-09-18 10:24 UTC
+- Researched: none (shortlist empty)
+- Skipped (already done): none
+- Failed: none
+- Subagents: 0 opus/high, 0 waves
+- Median evidence completeness: n/a
+- Wrote 02-ranking.json: 0 names, top_n_for_panel: [] -- confirmed empty state directly (00-universe.json, 01-shortlist.json, 02-dossiers/ on disk), not just from batch 1's log
+- Panel-eligible after this batch: none
 ## Execution — close no longer sells a bmo leg from the pre-market run
 - Logged at 2026-09-18 10:25 UTC
 - Follow-up to the 10:30 UTC entry, on the operator's instruction to fix it rather than record it. `close` takes every leg whose exit date is today and two runs a day call it (Close AMC 06:05 ET, stage E 13:05 ET), so the early run was taking the bmo leg as well. Harmless under auction_split — bmo wanted `cls` and window_for('cls') refuses a closed market — and live under amc_open, where the bmo instrument is a plain DAY order that Alpaca QUEUES FOR THE OPEN.
