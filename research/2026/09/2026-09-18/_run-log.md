@@ -21,3 +21,12 @@
 - Shortlist: 0 names (triage_mode: skipped_small_universe, universe_eligible: 0, universe_total: 0); this batch: none
 - Already on disk, skipping: none (02-dossiers/ does not exist yet)
 - Plan: no researchers to spawn — today's universe had 0 eligible names (Nasdaq returned 7 after-close/8 before-open rows but only one, ABVX amc 09-21, had a confirmed session, and it doesn't fill the before-open slot), so stage 1 skipped with an empty shortlist
+
+## Stage 2 — deep dive, batch 1 — FINISHED
+- Logged at 2026-09-18 08:24 UTC
+- Researched: none (shortlist empty)
+- Skipped (already done): none
+- Failed: none
+- Subagents: 0 opus/high, 0 waves
+- Median evidence completeness: n/a
+- Note: 0 names capped from a shortlist of 0 — nothing dropped for the cap. Confirmed against 00-universe.json/01-shortlist.json before publishing this section, not just the earlier run-log entries. Batch 2 should also find nothing to do unless stage 1 is re-run and finds names.
