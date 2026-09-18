@@ -653,35 +653,61 @@ def main():
 
     check("the shipped config names a known exit mode",
           at.exit_mode(ex) in at.EXIT_MODES, at.exit_mode(ex))
-    check("uniform gives both sessions the same exit",
-          at.exit_tif_for("amc", _mode("uniform"))
-          == at.exit_tif_for("bmo", _mode("uniform")) == "cls")
+    # WHERE the exit is aimed is the mode's decision; WHICH INSTRUMENT gets it there
+    # is orders.auction_orders. They were the same thing until 2026-09-18, when ten
+    # auction legs had produced one full fill and the account turned out not to be on
+    # the Elite Smart Router that `opg`/`cls` require. So the placement checks below
+    # are the ones that must hold in every configuration; the instrument checks are
+    # conditional on auction orders being available.
+    def _auc(m, on):
+        d = _mode(m)
+        return {**d, "orders": {**d["orders"], "auction_orders": on}}
+
+    check("uniform aims both sessions at the same exit",
+          at.exit_placement("amc", _mode("uniform"))
+          == at.exit_placement("bmo", _mode("uniform")) == "close")
     # bmo_close is the one reachable from stage E's single Routine: the amc leg is
-    # the plain market sell the flatten already did, the bmo leg goes to the auction.
-    check("bmo_close sells amc at market and bmo into the closing auction",
-          (at.exit_tif_for("amc", _mode("bmo_close")) == "day"
-           and at.exit_tif_for("bmo", _mode("bmo_close")) == "cls"),
-          f'amc={at.exit_tif_for("amc", _mode("bmo_close"))} '
-          f'bmo={at.exit_tif_for("bmo", _mode("bmo_close"))}')
-    check("auction_split sends amc to the opening auction",
-          at.exit_tif_for("amc", _mode("auction_split")) == "opg")
-    check("auction_split sends bmo to the closing auction",
-          at.exit_tif_for("bmo", _mode("auction_split")) == "cls")
+    # the plain market sell the flatten already did, the bmo leg goes to the close.
+    check("bmo_close sells amc at market and aims bmo at the close",
+          (at.exit_placement("amc", _mode("bmo_close")) == "market"
+           and at.exit_placement("bmo", _mode("bmo_close")) == "close"),
+          f'amc={at.exit_placement("amc", _mode("bmo_close"))} '
+          f'bmo={at.exit_placement("bmo", _mode("bmo_close"))}')
+    check("auction_split aims amc at the open and bmo at the close",
+          (at.exit_placement("amc", _mode("auction_split")) == "open"
+           and at.exit_placement("bmo", _mode("auction_split")) == "close"))
     # amc_open is auction_split with the bmo leg brought forward to the run itself,
     # so the position is certainly gone before the same afternoon buys the next book.
-    check("amc_open sends amc to the opening auction and bmo at market",
-          (at.exit_tif_for("amc", _mode("amc_open")) == "opg"
-           and at.exit_tif_for("bmo", _mode("amc_open")) == "day"),
-          f'amc={at.exit_tif_for("amc", _mode("amc_open"))} '
-          f'bmo={at.exit_tif_for("bmo", _mode("amc_open"))}')
-    # The second exit Routine exists to place `opg` orders, not to serve one named
-    # mode. A guard naming auction_split alone stopped doing anything the moment
-    # amc_open shipped -- while still reporting a correct-looking no-op.
-    check("both opening-auction modes are reachable by the opg guard",
-          all(at.exit_tif_for("amc", _mode(m)) == "opg"
-              for m in ("auction_split", "amc_open")))
-    check("an unknown session falls back to the closing auction",
-          at.exit_tif_for(None, _mode("auction_split")) == "cls")
+    check("amc_open aims amc at the open and sells bmo at market",
+          (at.exit_placement("amc", _mode("amc_open")) == "open"
+           and at.exit_placement("bmo", _mode("amc_open")) == "market"),
+          f'amc={at.exit_placement("amc", _mode("amc_open"))} '
+          f'bmo={at.exit_placement("bmo", _mode("amc_open"))}')
+    check("an unknown session falls back to the closing exit",
+          at.exit_placement(None, _mode("auction_split")) == "close")
+
+    check("with auction orders ON the opening modes use opg and the closing cls",
+          all(at.exit_tif_for("amc", _auc(m, True)) == "opg"
+              for m in ("auction_split", "amc_open"))
+          and at.exit_tif_for("bmo", _auc("auction_split", True)) == "cls")
+    # The instrument that replaced them. A plain DAY order submitted in the
+    # pre-market is accepted while the market is closed and routed at the next open,
+    # so the amc leg still leaves at the open -- it just leaves.
+    check("with auction orders OFF every exit is a plain day order",
+          all(at.exit_tif_for(sess, _auc(m, False)) == "day"
+              for m in at.EXIT_MODES for sess in ("amc", "bmo")),
+          str({m: {s: at.exit_tif_for(s, _auc(m, False)) for s in ("amc", "bmo")}
+               for m in at.EXIT_MODES}))
+    check("the shipped config has auction orders off",
+          at.auction_orders(ex) is False, str(at.auction_orders(ex)))
+    # The second exit Routine exists to place the exit that must go in BEFORE the
+    # open, whichever instrument does it. Its pasted guard says `--require-exit-tif
+    # opg`, a session cannot edit a Routine, and the guard failing shut would mean a
+    # correct-looking no-op every morning while the amc legs went unsold -- the exact
+    # failure it was written to replace. So it matches on placement.
+    check("both opening modes are reachable by the opg guard, auction orders or not",
+          all(at.exit_placement("amc", _auc(m, on)) == "open"
+              for m in ("auction_split", "amc_open") for on in (True, False)))
     check("exit_by_session: true still means auction_split",
           at.exit_mode({**ex, "orders": {**{k: v for k, v in ex["orders"].items()
                                             if k != "exit_mode"},

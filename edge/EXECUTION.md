@@ -425,10 +425,10 @@ not create — so until someone re-pastes `edge/routine-prompts/edge-execute.md`
 legs are not being sold into the opening auction at all and stage E's own run picks them
 up at 13:05 ET as overdue, at market.
 
-## The auction exits mostly did not sell, and nothing looked
+## The auction exits mostly did not sell, and the reason was the account
 
-Seven exits have been sent into an auction since `exit_mode: auction_split` shipped on
-2026-09-11. **One filled.**
+Ten exit legs have been sent into an auction since `exit_mode: auction_split` shipped on
+2026-09-11. **One filled in full.**
 
 | date | name | tif | ordered | filled | broker status |
 | --- | --- | --- | --- | --- | --- |
@@ -438,10 +438,17 @@ Seven exits have been sent into an auction since `exit_mode: auction_split` ship
 | 09-11 | HOFT | `cls` | 161 | 17 | expired |
 | 09-14 | CODA | `cls` | 183 | 39 | expired |
 | 09-15 | RLGT | `opg` | 224 | 0 | expired |
-| 09-15 | VRA, FPS | `cls` | 642, 64 | pending | working at 19:26 UTC |
+| 09-15 | VRA | `cls` | 642 | 0 | expired |
+| 09-15 | FPS | `cls` | 64 | 0 | expired |
+| 09-16 | LUXE | `cls` | 292 | 0 | canceled |
+| 09-17 | ALMU | `opg` | 167 | 0 | expired 09:31:31 ET |
+| 09-17 | LEN | `opg` | 28 | 0 | expired 09:30:52 ET |
 
-The one that filled is the mega-cap. Everything else is the book this stage actually
-trades, and in those names the auction had no size to give.
+**That last row is the one that settles it.** LEN is Lennar: a $20bn homebuilder whose
+opening cross on its primary listing trades in the hundreds of thousands of shares. A
+buy-to-cover of **28 shares** expired at 09:30:52 ET having filled none. Whatever
+explains that, it is not "the auction had no size to give", which is what this section
+said for a week while the thin-name rows were the only evidence.
 
 **This is documented behaviour, not a defect in the script.** An `opg` order is
 eligible to execute *only* in the opening auction and a `cls` order *only* in the
@@ -501,14 +508,95 @@ is the next run: `close` sends anything overdue at plain market, and `verify --f
 the start of a run that is inside market hours rescues the rest. Both the stage E
 Routine and "Close AMC" should call `verify` before anything else they do.
 
-**What none of this fixes is the exit itself.** Six of seven auction orders failed to
+**What none of this fixes is the exit itself.** Nine of ten auction orders failed to
 sell the position they were sent for, and every rescue turns the measured
 `auction_split` exit into a market order hours later — which is `uniform` with extra
 steps and a worse clock. `auction_split` was chosen on +7.81% per trade against +4.49%
 for `uniform` over 38 events; that number assumes the auction order fills, and on this
-book it has filled once. Either use marketable limit orders around the auction, or move
-`exit_mode` back to something whose orders actually trade. That is the operator's call
-and it is not made here.
+book it has filled once.
+
+### Why they did not sell: `opg` and `cls` are order types this account does not have
+
+Checked against Alpaca's own documentation on 2026-09-18, after the 09-17 amc exit failed
+the same way for the fourth time. Two causes, and **either one alone is sufficient**:
+
+1. **They are Elite Smart Router order types.** Alpaca's order-types page says it
+   plainly: *"OPG and CLS orders are only available to Elite Smart Router users."* The
+   Elite programme is a separate routing tier with a deposit minimum this account is
+   nowhere near — it holds $11.5k. Nothing rejects the order at submission. It is
+   accepted, it sits, and it is cancelled at the cross it never reached.
+2. **Paper does not run an auction.** Alpaca's paper-trading page says fills are
+   simulated against the NBBO quote stream — *"all orders submitted in paper trading
+   will be matched against the best available current market price"* — and that eligible
+   orders *"receive partial fills for a random size 10% of the time"*. That sentence is
+   an exact description of HOFT's 17 of 161 and CODA's 39 of 183. There is no cross to
+   be in; there is a quote, and a simulator that sometimes gives a random slice of it.
+
+Both explanations survive the LEN row and the thin-name rows equally well, and neither
+can be distinguished from the other without an Elite live account. That does not matter
+for what to do: on **this** account an auction order is not an exit.
+
+### The fix: placement and instrument are now separate things
+
+`orders.auction_orders` (new, `false`) decides whether `opg`/`cls` may be used at all.
+The mode still decides **where** an exit is aimed — `exit_placement()` returns `open`,
+`close` or `market` — and `exit_tif_for()` turns that into an instrument the account can
+actually use. `amc_open` still sends amc to the open; it now gets there as a plain
+market **DAY** order submitted in the pre-market, which Alpaca accepts while the market
+is closed and routes at the next open. The order fills in the first seconds of the
+regular session rather than in the 09:30 cross.
+
+```
+exit placement         amc -> open, bmo -> market
+exit instrument        amc -> day, bmo -> day
+```
+
+**The pasted Routine guard still passes, and that was a design constraint, not luck.**
+"Close AMC" runs `mode --require-exit-tif opg`, a session cannot edit a Routine, and a
+guard that failed shut would have reported a correct-looking no-op every morning while
+the amc legs went unsold — the exact failure that guard was written to replace. So
+`--require-exit-tif` matches on the placement family: `opg` asks "is there an exit here
+that has to be placed before the open", and the answer is still yes. It prints a NOTE
+saying it matched on placement rather than on the literal instrument.
+
+**What the change costs.** The measured +8.91% for an amc opening exit was priced at the
+09:30 auction print. A queued market order fills a few seconds later at the NBBO, which
+is a handful of basis points in a liquid name and more in a thin one — the opening
+minutes are the widest spreads of the session. Against an order that does not sell at
+all, that is not a close comparison: the last four amc legs were either rescued by hand
+hours later or held overnight. Nothing about the ranking, the floor or the book rule
+changes.
+
+**What was considered and not done.** A marketable limit through the touch (say 2–3%)
+instead of a plain market order would cap a bad opening print in a microcap, which is
+what a professional desk would do with an order it cannot put in the auction. It is not
+built, because the operator's stated requirement is that the amc leg is *gone* by the
+open, and a limit order that misses is the failure this whole section is about. If the
+queued market fills start coming back wide of the opening print — `status` prints
+execution cost against the mid at submission — that is the knob to add next.
+
+**Still unmeasured on this account: whether a queued pre-market DAY order fills at the
+open.** Alpaca's docs are explicit that orders submitted while the market is closed are
+accepted and routed at the next open, and `auction_window()` has said so since 09-16,
+but this book has never sent one. The cheap confirmation is one share of a liquid name,
+pre-market, paired against an `opg` order in the same name for a same-open control:
+
+```bash
+# pre-market, before 09:28 ET, on the paper account
+python3 - <<'EOF'
+import sys; sys.path.insert(0, 'edge/scripts')
+import alpaca_trade as t
+api = t.Alpaca()
+for cid, tif in (("edge-test-F-queued-day", "day"), ("edge-test-F-opg", "opg")):
+    print(tif, api.call("POST", "/v2/orders", {
+        "symbol": "F", "qty": "1", "side": "buy", "type": "market",
+        "time_in_force": tif, "extended_hours": False, "client_order_id": cid}))
+EOF
+```
+
+Read both back after 09:31 ET. The expectation is that the `day` order is filled and the
+`opg` order is expired at 0; if the `day` order is also unfilled, nothing here works and
+the exit has to move to the regular session.
 
 ## What it refuses to do
 

@@ -835,6 +835,8 @@ def verify_exits(api, runs, ex, submit, blocked, wait_s=0, fix=True, quiet=False
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     mkt_tif = ex["orders"].get("time_in_force", "day")
     mkt = None                       # one clock call for the whole sweep, not per leg
+    clk, _ = api.clock() if api.usable else (None, None)
+    market_open = clk.get("is_open") if clk else None
     rows = []
     for run in runs:
         state = load_orders(run)
@@ -873,6 +875,15 @@ def verify_exits(api, runs, ex, submit, blocked, wait_s=0, fix=True, quiet=False
                     row["note"] = ("waiting on " + ", ".join(
                         sorted(AUCTION_TIFS[t] for t in waiting)) +
                         "; not verifiable until it has crossed")
+                elif market_open is False:
+                    # A plain DAY order sent in the pre-market is accepted and held by
+                    # Alpaca until the regular session opens, so `new` here is correct
+                    # and not a failure. It is the same shape of "cannot be verified
+                    # yet" as an auction order, and saying so keeps a pre-market run
+                    # from reporting a working exit as if it were a problem.
+                    row["note"] = ("queued while the market is closed; Alpaca routes "
+                                   "it at the next open, so it is not verifiable "
+                                   "until the session starts")
             if verdict == "unfilled" and fix:
                 if blocked or not submit:
                     row["rescue"] = {"submitted": False,
@@ -1023,16 +1034,70 @@ def exit_tif_for(session, ex):
     -- which is to say, not established either. `edge/scripts/edge_exit.py` scores it as
     the `amc_open_bmo_1300` policy; re-run it as days pool.
     """
-    mode = exit_mode(ex)
+    placement = exit_placement(session, ex)
     plain = ex["orders"].get("time_in_force", "day")
+    if not auction_orders(ex):
+        return plain
+    if placement == "open":
+        return "opg"
+    if placement == "close":
+        return "cls"
+    return plain
+
+
+def exit_placement(session, ex):
+    """WHERE this session's exit is aimed, independent of which instrument gets it
+    there: `open`, `close` or `market` (whenever the run that sends it fires).
+
+    Placement and instrument were the same thing until 2026-09-18, and conflating
+    them is what made the amc exit fail silently for a week. The mode says where the
+    exit belongs; `auction_orders` says whether an auction order is the way to get it
+    there. On this account it is not.
+    """
+    mode = exit_mode(ex)
     if mode == "uniform":
-        return "cls" if ex["orders"].get("exit", "market_on_close") == \
-            "market_on_close" else plain
+        return "close" if ex["orders"].get("exit", "market_on_close") == \
+            "market_on_close" else "market"
     if mode == "bmo_close":
-        return plain if session == "amc" else "cls"
+        return "market" if session == "amc" else "close"
     if mode == "amc_open":
-        return "opg" if session == "amc" else plain
-    return "opg" if session == "amc" else "cls"
+        return "open" if session == "amc" else "market"
+    return "open" if session == "amc" else "close"
+
+
+def auction_orders(ex):
+    """May this account use `opg`/`cls` at all? Default NO, since 2026-09-18.
+
+    THE AUCTION ORDERS WERE NEVER REACHING AN AUCTION. Ten auction exit legs have
+    been sent from this book. One filled in full (ORCL, 12 of 12), two part-filled
+    and expired (HOFT 17 of 161, CODA 39 of 183), and seven filled nothing at all --
+    including LEN on 2026-09-17, a buy-to-cover of 28 shares of a $20bn homebuilder,
+    which expired at 09:30:52 ET with zero. Twenty-eight shares of Lennar is not a
+    liquidity problem in the opening cross of its primary listing. The instrument was.
+
+    Two documented causes, and either is sufficient:
+
+      * `opg` and `cls` are Elite Smart Router order types. Alpaca's own order-types
+        page states it flatly -- "OPG and CLS orders are only available to Elite
+        Smart Router users" -- and this is an $11.5k paper account, not an Elite one.
+        The API accepts the order and it simply never reaches an auction.
+      * Paper fills are simulated against the NBBO quote stream, not against a real
+        auction cross, and the simulator "will receive partial fills for a random
+        size 10% of the time". That is an exact description of the 17-of-161 and
+        39-of-183 records, and of the zeros.
+
+    So the mode still decides WHERE the exit is aimed (`exit_placement`) and this
+    decides HOW it gets there. With auction orders off, an exit aimed at the open is
+    a plain market DAY order submitted in the pre-market: Alpaca accepts it while the
+    market is closed and routes it at the next open, so it fills in the first seconds
+    of the regular session instead of in the 09:30 cross. That is a few basis points
+    away from the auction price and about 10 points of per-trade return away from an
+    order that does not sell at all.
+
+    Set to `true` only on an account that is actually on the Elite Smart Router, and
+    only after `verify` shows an auction leg filling in full.
+    """
+    return bool(ex["orders"].get("auction_orders", False))
 
 
 def auction_window(api, tif):
@@ -1474,7 +1539,13 @@ def cmd_close(a, api, ex):
                               moc=use_moc, tif=tif)
             rec = send(api, body, cid, a.submit, reason)
             rec.update({"leg": "exit", "closes": e["client_order_id"],
-                        "exit_date": e.get("exit_date"), "position_qty_at_close": held})
+                        "exit_date": e.get("exit_date"), "position_qty_at_close": held,
+                        # WHERE this exit was aimed, beside the instrument that got
+                        # it there. Without it the record cannot distinguish an exit
+                        # meant for the open from one that merely went at market,
+                        # which is the whole of what changed on 2026-09-18.
+                        "placement": ("market" if overdue or not by_session
+                                      else exit_placement(e.get("session"), ex))})
             upsert(state["exits"], rec)
             rec["time_in_force"] = body["time_in_force"]
             print(f"  {run} {e['symbol']:8s}{(e.get('session') or '?'):4s}"
@@ -1831,8 +1902,21 @@ def cmd_mode(a, api, ex):
     print(f"orders.flatten_before_entry  {orders.get('flatten_before_entry', True)}")
     print(f"orders.entry           {orders.get('entry', 'market')}")
     print(f"orders.exit            {orders.get('exit', 'market_on_close')}")
+    print(f"orders.auction_orders  {auction_orders(ex)}"
+          + ("" if auction_orders(ex) else
+             "   <- opg/cls are Elite Smart Router order types and did not fill on "
+             "this account (1 of 10 legs); an exit aimed at the open goes as a "
+             "market DAY order queued in the pre-market instead"))
+    print(f"exit placement         amc -> {exit_placement('amc', ex)}, "
+          f"bmo -> {exit_placement('bmo', ex)}")
     print(f"exit instrument        amc -> {exit_tif_for('amc', ex)}, "
           f"bmo -> {exit_tif_for('bmo', ex)}")
+    if not auction_orders(ex) and "close" in (exit_placement('amc', ex),
+                                              exit_placement('bmo', ex)):
+        print("  WARNING: a session is aimed at the CLOSING auction and auction "
+              "orders are off, so its exit goes at plain market whenever the run "
+              "that sends it fires -- which is not the close. That is a different "
+              "exit from the measured one.")
     print(f"orders.fill_check_seconds    {orders.get('fill_check_seconds', 300)}")
     print(f"orders.fill_check_fix        {orders.get('fill_check_fix', True)}")
     if a.require:
@@ -1849,18 +1933,36 @@ def cmd_mode(a, api, ex):
             raise SystemExit(1)
         print(f"\nrequire {a.require}: yes")
     if a.require_exit_tif:
+        want = a.require_exit_tif
         tifs = {s: exit_tif_for(s, ex) for s in ("amc", "bmo")}
-        hit = [s for s, t in tifs.items() if t == a.require_exit_tif]
+        places = {s: exit_placement(s, ex) for s in ("amc", "bmo")}
+        # `opg` and `cls` are asked for as a PLACEMENT and not as a literal
+        # instrument. The Routine that pastes `--require-exit-tif opg` is asking one
+        # question -- is there an exit here that has to go in before the open, which
+        # only a pre-market firing can place -- and the answer did not change when
+        # the instrument stopped being an auction order on 2026-09-18. A guard that
+        # matched the literal string would have failed shut that day and reported a
+        # tidy no-op every morning while the amc legs went unsold, which is exactly
+        # the failure this guard replaced.
+        family = {"opg": "open", "cls": "close"}.get(want)
+        hit = [s for s in ("amc", "bmo")
+               if tifs[s] == want or (family and places[s] == family)]
         if not enabled:
-            print(f"\nrequire-exit-tif {a.require_exit_tif}: NO -- "
-                  f"execution.enabled is false")
+            print(f"\nrequire-exit-tif {want}: NO -- execution.enabled is false")
             raise SystemExit(1)
         if not hit:
-            print(f"\nrequire-exit-tif {a.require_exit_tif}: NO -- no session exits "
-                  f"on it (amc -> {tifs['amc']}, bmo -> {tifs['bmo']})")
+            print(f"\nrequire-exit-tif {want}: NO -- no session exits there "
+                  f"(amc -> {places['amc']}/{tifs['amc']}, "
+                  f"bmo -> {places['bmo']}/{tifs['bmo']})")
             raise SystemExit(1)
-        print(f"\nrequire-exit-tif {a.require_exit_tif}: yes "
-              f"({', '.join(hit)})")
+        how = ", ".join(f"{s} {places[s]} as {tifs[s]}" for s in hit)
+        print(f"\nrequire-exit-tif {want}: yes ({how})")
+        if family and not any(tifs[s] == want for s in hit):
+            print(f"  NOTE: matched on placement, not on the literal tif. "
+                  f"orders.auction_orders is {auction_orders(ex)}, so the exit aimed "
+                  f"at the {family} goes as a plain market order queued for it. The "
+                  f"question this Routine exists to ask -- is there an exit that must "
+                  f"be placed before the open -- is still yes.")
 
 
 def main():

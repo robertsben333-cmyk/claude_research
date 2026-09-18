@@ -212,8 +212,9 @@ per-session exit safe to switch on: `flatten_before_entry` used to guarantee a c
 by selling everything, and once the flatten is off the guarantee has to come from checking.
 
 **`exit_mode` moved to `amc_open` on 2026-09-15, on the operator's requirement that a
-bmo leg is gone before the same afternoon buys the next book.** amc still goes into the
-opening auction from the "Close AMC" Routine; bmo now goes at **plain market on stage E's
+bmo leg is gone before the same afternoon buys the next book.** amc still exits at the
+open from the "Close AMC" Routine (as an `opg` order until 2026-09-18, as a market DAY
+order queued in the pre-market since); bmo now goes at **plain market on stage E's
 own run at 13:05 ET** instead of into that day's closing auction. It is measurably worse
 on the fitted sample and that was accepted, not missed: `edge/scripts/edge_exit.py` scores
 it as the `amc_open_bmo_1300` policy at ρ=0.391, 16/22 and **+6.49% per trade (t=3.42)**
@@ -230,44 +231,62 @@ entry divides is a known quantity. What it does not buy is return per unit of ca
 because with one entry a day the slot is 24 hours either way.
 
 **The second Routine's guard had to change with the mode, and only a person can paste
-it.** "Close AMC" exists to place `opg` orders, and its pasted guard names
-`auction_split` — so from 2026-09-15 it fails, and a failing guard there reports a
-correct-looking no-op every morning while no amc leg reaches its auction. The guard is now
-about the instrument: `alpaca_trade.py mode --require-exit-tif opg` exits 0 whenever
-either session's exit is an `opg` order, and survives the next mode being renamed.
-`--require` also takes a comma-separated list. **Until `edge/routine-prompts/edge-execute.md`
-is re-pasted into `trig_01MPuhVvtDgvUYzZXkKpHpKD`, amc legs are not sold into the opening
-auction at all** — stage E's own run picks them up the next day as overdue, at market,
-which is a loud and recoverable failure rather than a silent one, but it is not the exit
-that was chosen.
+it — it has been pasted, and it still passes.** "Close AMC" exists to place the exit that
+must go in before the open, and its original guard named `auction_split`, so from
+2026-09-15 it failed and reported a correct-looking no-op every morning while no amc leg
+reached its auction. It was re-pasted with `alpaca_trade.py mode --require-exit-tif opg`,
+which the 2026-09-17 run confirms: two `opg` orders went in at 10:05 UTC. Since
+2026-09-18 that guard asks about the PLACEMENT rather than the literal instrument, so it
+exits 0 although the amc exit is now a market DAY order queued for the open. **Do not
+re-paste it to name the new tif** — a session cannot edit a Routine, so a guard that
+failed shut would be the same silent no-op again. `--require` also takes a
+comma-separated list.
 
-**The auction exits mostly did not sell, and until 2026-09-15 nothing looked.** Seven
-exits have gone into an auction since `exit_mode: auction_split` shipped. One filled:
-ORCL, the only mega-cap. HOFT filled 17 of 161 and expired, CODA 39 of 183, FEIM 0 of
-31, RH 0 of 14, RLGT 0 of 224. This is documented Alpaca behaviour rather than a bug —
-`opg` and `cls` are eligible only in their one auction cross and whatever is unfilled
-afterwards is cancelled — and a $200k-a-day name has almost no size in that cross. (A
-second cause cannot be ruled out: there is a June 2026 report of MOC orders part-filling
-and expiring on a *paper* account where the same setup filled 100% live, and this
-account is paper.) What made it an open position rather than a logged miss is three
-things in this repo, all now fixed: `send` stored the status Alpaca returns at
-submission — always `pending_new` — and nothing ever re-read it; the retry asked for the
-same auction, so RLGT's 13:05 ET retry was refused inside Alpaca's 09:28–19:00 `opg`
-window and the position sat another day; and `upsert` merged records, so a successful
-retry kept the failed attempt's `reason`. The operator has been closing these by hand —
-three market orders at the broker carry random client_order_ids rather than this
-script's. **`close` now waits `orders.fill_check_seconds` (300) and re-reads every exit
-it sent, and `alpaca_trade.py verify [--fix --submit]` does it on demand**: per leg,
+**The auction exits did not sell because this account cannot place an auction order.**
+Ten exit legs have gone into an auction since `exit_mode: auction_split` shipped. **One
+filled in full**: ORCL, the only mega-cap. HOFT filled 17 of 161 and expired, CODA 39 of
+183, FEIM 0 of 31, RH 0 of 14, RLGT 0 of 224, VRA 0 of 642, FPS 0 of 64, LUXE 0 of 292 —
+and on 2026-09-17 ALMU 0 of 167 and **LEN 0 of 28**, expired at 09:30:52 ET. Twenty-eight
+shares of a $20bn homebuilder in its own opening cross is not a liquidity problem, which
+is what this paragraph said for a week on the strength of the thin-name rows alone. The
+cause, checked against Alpaca's docs on 2026-09-18, is the account: *"OPG and CLS orders
+are only available to Elite Smart Router users"*, and this is an $11.5k paper account.
+Paper compounds it — fills there are simulated against the NBBO quote stream with
+"partial fills for a random size 10% of the time", which describes the 17-of-161 exactly.
+Nothing rejects the order; it is accepted, it sits, it is cancelled at a cross it never
+reached.
+
+**The fix separates WHERE an exit is aimed from WHICH order gets it there
+(2026-09-18).** `orders.auction_orders` is new and `false`: `exit_placement()` returns
+`open`/`close`/`market` from the mode, and `exit_tif_for()` turns that into an instrument
+the account has. `amc_open` still sends amc to the open — now as a plain market **DAY**
+order submitted in the pre-market, which Alpaca accepts while the market is closed and
+routes at the next open. The pasted "Close AMC" guard `mode --require-exit-tif opg`
+**still exits 0**, by design: it matches on the placement family, because a session
+cannot edit a Routine and a guard failing shut would mean a tidy no-op every morning
+while the amc legs went unsold. Do not "correct" it to the new tif. What this costs is
+the difference between the 09:30 auction print and the NBBO seconds later, widest in
+exactly the thin names this book trades; what it buys is an exit that happens. **Still
+unmeasured on this account: whether a queued pre-market DAY order fills at the open.**
+Alpaca's docs say it does and `auction_window()` has assumed so since 09-16, but this
+book has never sent one — `edge/EXECUTION.md` has a one-share test, paired against an
+`opg` control, that settles it in one morning.
+
+What made the failures open positions rather than logged misses was three things in this
+repo, all fixed on 2026-09-15: `send` stored the status Alpaca returns at submission —
+always `pending_new` — and nothing ever re-read it; the retry asked for the same auction,
+so RLGT's 13:05 ET retry was refused inside Alpaca's 09:28–19:00 `opg` window and the
+position sat another day; and `upsert` merged records, so a successful retry kept the
+failed attempt's `reason`. The operator has been closing these by hand — the market
+orders at the broker carrying random client_order_ids, most recently ALMU and LEN at
+09:47 ET on 09-17. **`close` waits `orders.fill_check_seconds` (300) and re-reads every
+exit it sent, and `alpaca_trade.py verify [--fix --submit]` does it on demand**: per leg,
 closed / working / UNFILLED, where UNFILLED means shares still held and every order for
 the leg dead at the broker. `--fix` re-sends the residual at plain market, sized to what
-Alpaca reports is held and only while every prior order is dead. Five minutes cannot
-verify an auction order — a `cls` sent at 13:05 ET crosses at 16:00 ET, after the
-session ends — so it reports `working` and the rescue falls to the next run inside
-market hours. **None of that fixes the exit itself.** `auction_split` was chosen on
-+7.81% per trade against +4.49% for `uniform`, and that number assumes the auction order
-fills; on this book it has filled once in seven. Marketable limit orders around the
-auction, or a different `exit_mode`, is the operator's call. See `edge/EXECUTION.md`,
-"The auction exits mostly did not sell".
+Alpaca reports is held and only while every prior order is dead — and from the pre-market
+that rescue now works rather than being refused, because a market DAY order is accepted
+while the market is closed. See `edge/EXECUTION.md`, "The auction exits mostly did not
+sell, and the reason was the account".
 
 **The per-session exit is three modes in `alpaca_trade.py`; it shipped on the dullest one
 until 2026-09-11** (see "`exit_mode` moved off `uniform`" below for what runs now).
