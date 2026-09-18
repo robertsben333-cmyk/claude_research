@@ -303,12 +303,24 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
     # sort above every mildly negative name. Arithmetically right, and useless for
     # the question being asked. Rankable is carried separately so the correlation
     # test runs on names that actually reported.
+    #
+    # `event_occurred: false` is the one RETROSPECTIVE kill, written into a sealed
+    # baseline after the window has passed and the release did not come. It is not a
+    # forecast and it does not touch a price: the calendar row was wrong, so the name
+    # is not an event and cannot be a data point about ranking events. It outranks
+    # every other reason here because it is the only one established by the outcome
+    # rather than predicted before it. Whoever sets it also writes
+    # `event_occurred_note` with the source that establishes the absence -- see
+    # TRT in research/2026/09/2026-09-17/edge/baselines/.
     plaus = ((baseline or {}).get("event_plausibility") or {}).get("verdict")
+    occurred = (baseline or {}).get("event_occurred")
     confirmed = any((h.get("event_confirmed") is not False) for _, h in hunts) if hunts else True
-    rankable = bool(hunts) and confirmed and plaus != "suspect"
+    rankable = bool(hunts) and confirmed and plaus != "suspect" and occurred is not False
     why_not = None
     if not rankable:
         why_not = ("no hunt" if not hunts
+                   else "no earnings event occurred in this window "
+                        "(retrospective, sourced in the baseline)" if occurred is False
                    else "hunter found no event on this date" if not confirmed
                    else "event date does not fit the filing cadence")
 

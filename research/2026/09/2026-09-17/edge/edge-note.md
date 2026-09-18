@@ -1,5 +1,36 @@
 # Edge hunt — 2026-09-17 amc + 2026-09-18 bmo
 
+> ## CORRECTION — 2026-09-18: TRT never reported, and is out of the research sample
+>
+> **The print this whole note is built on did not happen.** EDGAR for CIK 0000732026,
+> read on 2026-09-18: the last item-2.02 8-K is still **2026-05-14**. Nothing carrying
+> results was filed on or before 2026-09-18. The three filings dated 2026-09-15 —
+> CERT, Form 25, 8-A12B — are an **exchange listing transfer**, not a release.
+>
+> `event_occurred: false` is now set on the sealed baseline with that source, so
+> `edge_score.py` marks TRT **not rankable** and the day contributes **UPXI only** —
+> one name, `impact_sum` −2.30, below the floor. **Zero names clear the conviction
+> floor on 2026-09-17.** Every pooled ranking, resolution and correlation excludes TRT
+> from here on.
+>
+> **The trade is not retracted, because it happened.** 338 shares went in at 19:58 UTC
+> and the position is real; `alpaca-orders.json` is the record and the exit ran on
+> 2026-09-18. A trade on a phantom event is a fact about execution, not a data point
+> about ranking earnings reactions, and the two must not be netted against each other.
+>
+> **What this costs the hand recovery.** The note below argues at length that the
+> operator was right to overturn the sweep's refutation of TRT, and on the evidence
+> available on 2026-09-17 that reasoning still reads correctly: the cadence prior did
+> fit, 127 days against a 90-day gap, and the 2025-09-19 precedent was real and was
+> missed. It was still the wrong answer. The sweep said 09-22 and the sweep was nearer
+> the truth than the hand check that overruled it. Read the rest of this note as the
+> record of what was believed on the day, not as a finding.
+>
+> **And the day's phantom rate goes back to 20 of 20.** The 09-17 entries in `CLAUDE.md`
+> and `_run-log.md` that record "19 of 20, TRT was real" are wrong by this evidence.
+> `--announced-only` would have cost the day nothing, because there was nothing to cost.
+
+
 **Two names. One clears the floor — TRT at +5.10 — and it was bought at market two minutes
 before the close. I do not recommend it, and the reasons are below.**
 

@@ -439,18 +439,31 @@ against two free sources and no agent — EDGAR kills a row whose results were f
 the ten days before the event, Nasdaq's press-release feed confirms one the company
 itself announced a date for. On the twelve labelled rows of 2026-08-31 the `announced`
 test kept **4 of 4 real reporters and none of the 8 phantoms**. It is precise and not
-sensitive: on 2026-09-17 it confirmed none of the twenty, and TRT — which has never
-pre-announced a date in twenty years of EDGAR history — was real, cleared the floor at
-+5.10 and was the day's only trade, recovered by hand on the cadence evidence the script
-had already returned (`unresolved / fits / last item-2.02 2026-05-14, 126 days`). So
-`--announced-only` is for a day with more confirmed names than hunters, never for a thin
-one, and the cadence prior is read rather than filtered on — two phantoms read `fits` on
-08-31, the same defect that made `priced_in.py`'s cadence heuristic useless as a filter.
-It cannot settle the **session**: Nasdaq serves the release body as a JavaScript shell,
-so a carried row reaches the sweep with `session_unresolved: true` and the sweep settles
-it or drops the name. The measured phantom rate on `time-not-supplied` is **19 of 20**
-for the 09-17 window and 8 of 8 for 08-31, so withholding `--include-unknown` still holds
-on cost and is not free: on 09-17 it cost the only name in the book.
+sensitive: on 2026-09-17 it confirmed none of the twenty, and **it was right about all
+twenty**. TRT was recovered by hand on the cadence evidence the script had already
+returned (`unresolved / fits / last item-2.02 2026-05-14, 126 days`), cleared the floor
+at +5.10, was the day's only trade — **and never reported**. EDGAR on 2026-09-18: last
+item-2.02 still 2026-05-14, and the 2026-09-15 filings are CERT / Form 25 / 8-A12B, an
+exchange transfer. Its baseline now carries `event_occurred: false` and it is out of
+every ranking and pooled sample; the trade stands in `alpaca-orders.json` because it
+happened. So the measured phantom rate on `time-not-supplied` is **20 of 20** for the
+09-17 window and 8 of 8 for 08-31, and withholding `--include-unknown` cost that day
+nothing at all. `--announced-only` is still for a day with more confirmed names than
+hunters rather than a thin one, but the reason is no longer that it would have cost a
+real name — it is that one day of 20 does not establish recall. **The cadence prior is
+the part that failed.** It read `fits` on TRT and on two 08-31 phantoms; it is the same
+defect that made `priced_in.py`'s cadence heuristic useless as a filter, and on 09-17 a
+human read it as confirmation and put 33% of equity behind it. Read it as a prior, never
+as evidence a print exists. It cannot settle the **session** either: Nasdaq serves the
+release body as a JavaScript shell, so a carried row reaches the sweep with
+`session_unresolved: true` and the sweep settles it or drops the name.
+
+**`event_occurred: false` is the retrospective kill, added 2026-09-18.** A sealed
+baseline can be amended after its window passes to record that no release came, with the
+source that establishes the absence in `event_occurred_note`. `edge_score.py` then marks
+the name not rankable ahead of every other reason, because it is the only one settled by
+the outcome rather than predicted before it. It does not touch the trade record. TRT on
+2026-09-17 is the worked example.
 
 **One issuer is one event, since 2026-09-16.** `edge/scripts/share_class.py` folds a
 second share class into its issuer in `edge_universe.py`, before a baseline is sealed,
