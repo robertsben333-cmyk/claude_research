@@ -234,3 +234,7 @@ WHAT FAILED: nothing. No agent errored, no fetch was blocked, no script raised. 
 ## Stage C — china scoping — ABANDONED
 - Logged at 2026-09-18 20:52 UTC
 - Stopped by the operator before any measurement was written. No researcher_china/ directory, no SUBMARKET.md, nothing to resume. The STARTED heartbeat above is not an unfinished run. Pivoted to Europe (UK / France / Germany) in the same session.
+
+## Stage EU — europe scoping — STARTED
+- Logged at 2026-09-18 20:53 UTC
+- Phase 1: measure UK/FR/DE earnings stream, move, anchor (Eurex/ICE options + FCA/BaFin/AMF short registers) and source access from this container on real sampled dates, in-season and off-season. Write researcher_europe/SUBMARKET.md with counts and a recommendation before building anything. Branch claude/wizardly-pascal-sz00hy.
