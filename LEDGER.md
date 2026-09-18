@@ -8,41 +8,55 @@ after the first full session following it.**
 
 ## Summary
 
-Eight runs scored so far (2026-08-19, 2026-08-26, 2026-08-27, 2026-09-01, 2026-09-02,
-2026-09-04, 2026-09-07, 2026-09-08). 2026-08-31 was checked and found to have nothing to
-score (stages 0-2 never ran that day — see its own `05-outcome.md`). The 2026-09-08 run
-(TTAN, CHWY, plus four non-panelled names) resolved on the 2026-09-09 close and was
-scored 2026-09-10 — but that scoring only reached `research/2026/09/2026-09-08/`; it was
-produced on a branch that got merged back into `main` on 2026-09-10 for its *research*
-files, and this ledger's own summary/table were never updated to include it until this
-run closed that gap. 2026-09-09 and 2026-09-10 were checked and found **not scorable**:
-neither day has an `04-advice.json` at all — stage 3 did not finish on either day (see
-their own `_run-log.md`) — so there is nothing yet to score for them. **n=15 for
-panelled calls.**
+Ten runs scored so far (2026-08-19, 2026-08-26, 2026-08-27, 2026-09-01, 2026-09-02,
+2026-09-04, 2026-09-07, 2026-09-08, 2026-09-16, 2026-09-17). 2026-08-31 was checked and
+found to have nothing to score (stages 0-2 never ran that day — see its own
+`05-outcome.md`). The 2026-09-08 run (TTAN, CHWY, plus four non-panelled names) resolved
+on the 2026-09-09 close and was scored 2026-09-10 — but that scoring only reached
+`research/2026/09/2026-09-08/`; it was produced on a branch that got merged back into
+`main` on 2026-09-10 for its *research* files, and this ledger's own summary/table were
+never updated to include it until that run closed the gap. 2026-09-09, 2026-09-10 and
+2026-09-15 were checked and found **not scorable**: all three have a `03-panel/`
+directory with partial persona work (NAVN/WLTH on 09-09, TCOM/LUXE fully synthesized on
+09-15) but no `04-advice.json` — stage 3 started and left a heartbeat but never
+published the advice note, so there is no call to score, not a call that missed.
+2026-09-11 and 2026-09-14 never reached stage 2/3 at all (see their own `_run-log.md`).
+2026-09-17 was checked and found to have nothing to score for a different reason: stage
+0's universe held one candidate, it failed the market-cap floor, and every stage
+downstream published a clean empty result — see its own `05-outcome.md`. **n=16 for
+panelled calls** (LEN, 2026-09-16, is the sixteenth — and the first *directional*
+panelled call the ledger has ever scored; every one of the prior fifteen was
+`Neutral / No Edge`).
 
 | Metric | Panelled calls | Deep-dive preliminary reads |
 | --- | --- | --- |
-| Calls scored | 15 | 35 |
-| Direction hit rate | 60% (9/15, Neutral-hit convention) | 43% (15/35) |
-| Mean absolute magnitude error | n/a (no signed estimate on any panelled call — every one has been Neutral) | n/a (no magnitude estimate) |
-| Median absolute magnitude error | n/a | n/a |
-| Band hit rate | 60% (9/15) | n/a |
-| Implied move broken | 40% (6/15) | n/a |
-| Red-team reversal fired | 40% (6/15) | n/a |
+| Calls scored | 16 | 36 |
+| Direction hit rate | 56% (9/16, Neutral-hit convention plus one real directional miss) | 42% (15/36) |
+| Mean absolute magnitude error | 3.11pp (n=1 — LEN is the first panelled call carrying a signed estimate at all) | n/a (no magnitude estimate) |
+| Median absolute magnitude error | 3.11pp (n=1) | n/a |
+| Band hit rate | 56% (9/16) | n/a |
+| Implied move broken | 37.5% (6/16) | n/a |
+| Red-team reversal fired | 37.5% (6/16) | n/a |
 
-**Panel vs. single deep researcher, fifteen panelled calls in — but read the n
-carefully:** every panelled call to date — WOLF, OKTA, DLTR, AFRM, ESTC, DELL, CXM, AI,
-SNOW, ABM and UNFI (each scored *twice*, from two independent re-panels three days apart
-around the same 2026-09-08 print), and now TTAN and CHWY — has still been **Neutral / No
-Edge**. The panel has made zero directional calls across fifteen tries. The panelled hit
-rate slipped from 62% (8/13) to 60% (9/15) this update: CHWY hit cleanly but TTAN is the
-largest magnitude miss in the ledger (see below), so the new pair split 1/2. **Treat the
-60% figure as resting on 13 independent events, not 15** — the ABM/UNFI double count
-still applies — so the true underlying picture moves from 6/11 (55%) to 7/13 (54%),
-essentially flat. The preliminary read went 3/6 on the same six 2026-09-08 names (TTAN
-and CHWY both wrong-signed; SAIL, BRZE and SIG right, ASO wrong), nudging its running
-rate up from 41% (12/29) to 43% (15/35) — still below the panel's raw 60%, and the
-independent-event framing continues to matter more than the headline number.
+**Panel vs. single deep researcher, sixteen panelled calls in — but read the n
+carefully:** WOLF, OKTA, DLTR, AFRM, ESTC, DELL, CXM, AI, SNOW, ABM and UNFI (each scored
+*twice*, from two independent re-panels three days apart around the same 2026-09-08
+print), TTAN and CHWY were all **Neutral / No Edge** — fifteen straight. **LEN
+(2026-09-16) broke that streak**: `Lean Down`, `High` certainty, disparity 12.5, panel
+aligned 7-0 bearish — the panel's most confident directional read to date, on its first
+real directional call. It missed: LEN closed +1.71% against every fundamental input
+(EPS miss, revenue miss, delivery-guide cut) printing in the bear case's favor — see
+`research/2026/09/2026-09-16/05-outcome.md` for the full read on why. The panelled hit
+rate falls from 60% (9/15) to 56% (9/16) this update. **Treat the 56% figure as resting
+on 14 independent events, not 16** — the ABM/UNFI double count still applies and LEN is
+a new, undoubled event — so the true underlying picture moves from 7/13 (54%) to 7/14
+(50%). The preliminary read also missed LEN (-22, same wrong sign as the panel), nudging
+its running rate down from 43% (15/35) to 42% (15/36) — on this single event the panel
+and the preliminary read failed identically, so LEN adds nothing to the panel-vs-prelim
+separation question by itself, only to the direction-hit-rate denominator. It does add
+the ledger's first-ever magnitude-error reading on a panelled call: 3.11 points of signed
+error, n=1, far too small to read as bias yet, but the column is no longer permanently
+`n/a`.
 
 **The re-panel pair is the most informative single comparison in the ledger.** Panelling
 the identical ABM/UNFI event twice, three days apart, let the panel's own consensus score
@@ -93,26 +107,36 @@ often than Low-certainty ones?** If they do not, the tiering is decorative and
 
 | Certainty | Calls | Direction/Neutral hit rate |
 | --- | --- | --- |
-| High | 7 (OKTA miss, DLTR hit, ESTC miss, AI hit, SNOW miss, TTAN miss, CHWY hit) | 43% (3/7) |
+| High | 8 (OKTA miss, DLTR hit, ESTC miss, AI hit, SNOW miss, TTAN miss, CHWY hit, LEN miss) | 37.5% (3/8) |
 | Med | 8 (WOLF hit, AFRM hit, DELL miss, CXM miss, ABM 09-04 hit, UNFI 09-04 hit, ABM 09-07 hit, UNFI 09-07 hit) | 75% (6/8) |
 | Low | 0 | — |
 
-Still no directional (Strong/Lean Up/Down) calls have been scored — every panelled call
-to date has been Neutral / No Edge (15/15) — so this table is still scoring the
-below-expected-move convention rather than the tiering's intended target. The gap holds
-at five consecutive updates now: High-certainty calls hit 43% (3/7, up slightly from 40%
-but on a pair that split 1-1) while Med-certainty calls hit 75% (6/8, unchanged) — a
-32-point gap on the metric this table exists to check. Caveat as before: two of the eight
-Med calls are the same two events counted twice (ABM/UNFI, both runs), so independent-
-event n for Med is really 6, not 8, and the true hit rate on independent events is 4/6
-(67%) — still comfortably above High's 43%. "High-certainty calls hit no better, and
-usually worse, than Med" is no longer a small-sample curiosity; it has now held across
-five consecutive ledger updates, and TTAN adds a sharper version of the same finding —
-the tightest panel agreement scored to date (disparity 8.7) produced the largest
-magnitude miss scored to date. Tight agreement is measuring how much the seven personas
-converged, not whether they converged on the right answer; `scripts/synthesize.py`'s
-certainty logic needs a direct look at whether disparity is the wrong signal to build
-the tier on, rather than more waiting for a bigger sample to resolve it on its own.
+**LEN is the first directional call in the certainty table, and it landed in the High
+tier, and it missed.** Fifteen of the prior sixteen High/Med calls were Neutral-hit
+scoring; LEN is a plain miss on a plain call — `Lean Down` on a stock that closed up. The
+gap this table exists to check widens rather than narrows: High-certainty calls now hit
+37.5% (3/8, down from 43%) while Med-certainty calls still hit 75% (6/8, unchanged) — a
+37.5-point gap. Caveat as before: two of the eight Med calls are the same two events
+counted twice (ABM/UNFI, both runs), so independent-event n for Med is really 6, not 8,
+and the true hit rate on independent events is 4/6 (67%) — still well above High's 37.5%
+(High has no duplicate events, so its raw and independent-event numbers are the same
+number). "High-certainty calls hit no better, and usually worse, than Med" has now held
+across six consecutive ledger updates, and LEN sharpens it further: the panel's *most
+confident directional read to date* — 7-0 aligned, disparity 12.5, the tightest
+non-Neutral agreement scored — missed cleanly, on inputs (EPS miss, revenue miss,
+guidance cut) that matched its own bear case almost exactly. The panel was certain about
+the wrong thing: it read seven independently-sourced bearish fundamentals as high
+conviction and treated "the bar is already this low" as a secondary caveat (four of
+seven personas named it, none weighted it as primary) rather than the dominant factor.
+That is the same shape as TTAN's finding — tight agreement measures how much the seven
+personas converged, not whether they converged on the right answer — but LEN adds a new
+wrinkle: the miss was not a magnitude surprise on an ambiguous Neutral call, it was a
+sign error on the panel's most confident directional call yet.
+`scripts/synthesize.py`'s certainty logic needs a direct look at whether disparity is
+the wrong signal to build the tier on, and specifically whether it should discount
+fundamentals-agreement when the positioning/expectations personas (options-positioning,
+sentiment) are flagging an already-priced-in bar as a live risk to the sign, not just the
+size.
 
 A `Neutral / No Edge` call is scored as a hit when the realised absolute move came in
 below the expected move, and a miss when the stock moved hard and the panel had no view.
@@ -130,3 +154,6 @@ below the expected move, and a miss when the stock moved hard and the panel had 
 | 2026-09-04 | 2 (ABM, UNFI) | 2 (ABM, UNFI) | Panelled 2/2 (100%, Neutral-hit convention); Prelim 0/2 (0%) | n/a — both panelled calls Neutral, no signed estimate | Both report BMO 2026-09-08 (window rolled through the Labor Day holiday). ABM: adj EPS $1.04 beat (~$1.01 consensus), record revenue $2.3B +4.2% YoY, FY26 guide narrowed to $3.95-4.10 with the floor raised; closed $47.05→$50.60, +7.55% — Neutral hit (near-exact match to the 7.3% expectation, band held, implied not broken); red-team's named bull mechanism ("EPS ≥ $1.04, margin up, guidance floor raised" squeezes it 6-8%) is close to exactly what happened — reversal fired; prelim (−18) wrong-signed. UNFI: adj EPS $0.69 beat ($0.61 consensus), revenue $7.64B slight miss, first FY27 guide $3.00-3.50; closed $43.93→$44.93, +2.28% — Neutral hit (well below the 10.3% expectation, band undershot); red-team's 15-20% squeeze case did not fire; prelim (−8) technically wrong-signed on a near-noise move. Independently re-panelled again 2026-09-07 — see that run for the direct comparison. |
 | 2026-09-07 | 2 (ABM, UNFI) — independent re-panel of the same 2026-09-08 event already forecast 2026-09-04 | 2 (ABM, UNFI) | Panelled 2/2 (100%, Neutral-hit convention); Prelim 1/2 (50%) | n/a — both panelled calls Neutral, no signed estimate | Same realised outcomes as 2026-09-04 above (ABM +7.55%, UNFI +2.28%), scored separately as an independently-sourced forecast one day closer to the print. ABM: Neutral hit again (7.4% expectation vs 7.55% actual); panel consensus moved *more* bearish than the 09-04 run (-8.9→-16.7) while prelim flipped from wrong to right (−18→+12) over the same three days — the panel moved away from the truth, the cheap read moved toward it; chair overrode certainty High→Med for four personas sharing one Ortex article, and that override was the right call. Red-team's own "what would break my case" scenario (EPS ≥ $1.04, margin up, guidance floor raised) again matches what happened almost exactly — reversal fired a second time. UNFI: Neutral hit again (10.4% expectation vs 2.28% actual, band undershot); prelim unchanged at −8 (wrong-signed, immaterial move); neither side's large-magnitude reversal case fired. This same-event, two-forecast pair is the most direct panel-vs-panel comparison in the ledger to date — see `research/2026/09/2026-09-07/05-outcome.md`. |
 | 2026-09-08 | 6 (TTAN, CHWY, SAIL, BRZE, SIG, ASO) | 2 (TTAN, CHWY) | Panelled 1/2 (50%, Neutral-hit convention); Prelim 3/6 (50%, all researched names) | n/a — both panelled calls Neutral, no signed estimate | TTAN: EPS beat +11.1%, revenue beat +2.67%, but GTV growth decelerated ~200bps YoY; closed $81.58→$57.12, **−29.98%**, more than 2x the 13.14% implied move and outside the panel's 5.8–18.4% band — Neutral call missed, the largest magnitude break scored to date, on the tightest panel agreement scored to date (disparity 8.7, all seven personas independently mild-bullish, certainty High). Red-team's own named downside mechanism ("a good quarter gets sold anyway if the SaaS de-rate is still mid-cycle, as it did for Salesforce and Workday") is close to exactly what happened, scored only +8 (still net positive) — right story, far too little weight against a bullish consensus; prelim (+25) also wrong-signed by the same margin. CHWY: EPS in line, revenue at the high end of guide, FY guidance raised and narrowed; closed $23.27→$20.75, −10.83%, near-exactly the 10.65% implied move and inside the 4.7–17.4% band — Neutral hit; red-team's "no room left to surprise off an already-top-of-guide consensus" mechanism matched what happened, its own upside-reversal case (buyback squeezing a loose short base) did not fire; prelim (+16) wrong-signed, panel's genuine 28.2-disparity split (5 of 7 leaning down) caught what the single dossier missed. Shed to prelim-only by `panel.names=2`: SAIL (−1.18%, near-noise on a beat/slight-miss print, prelim −18 right), BRZE (−21.73%, beat-and-raise undercut by a soft Q3 EPS guide and slowing customer adds, prelim −15 right, strongest single prelim call of the run), SIG (+23.96%, large EPS beat plus a meaningful FY guidance raise amplified by a >18%-of-float short base, prelim +18 right, day's largest move), ASO (+14.40%, beat-and-raise helped by tariff refunds, prelim −12 wrong — the one prelim miss of the run). Scored 2026-09-10; the outcome files were committed to `main` in that day's repo-cleanup merge but this ledger was not updated until 2026-09-11 — see the Summary section above. |
+| 2026-09-09 to 2026-09-15 | Not scorable — see Summary | — | — | — | 09-09, 09-10 and 09-15 each reached a `03-panel/` directory with real persona work (NAVN/WLTH partially synthesized on 09-09; TCOM/LUXE fully synthesized on 09-15) but no `04-advice.json` was ever published — stage 3 left a heartbeat and did not finish. 09-11 and 09-14 did not reach stage 2/3 at all. None of the five has a call to score. |
+| 2026-09-16 | 1 (LEN) | 1 (LEN) | Panelled 0/1 (0%, first directional call scored); Prelim 0/1 (0%) | 3.11pp (n=1, the first panelled call ever to carry a signed estimate) | LEN reported AMC 2026-09-16 into a same-day FOMC decision 90 minutes earlier. GAAP EPS $1.19 vs ~$1.29-1.30 consensus (below the $1.20-1.40 guide's own low end), revenue $8.05B vs ~$8.31-8.32B consensus (miss), FY26 delivery guide cut 82-83k→80-81k, Fed hiked 25bp 12-0 with 16/18 officials projecting another hike — every input the panel's `Lean Down` call (High certainty, disparity 12.5, 7-0 aligned) was built on printed as expected, and the stock still closed $78.36→$79.70, **+1.71%**, against a −1.4% signed estimate. Band missed low (1.71% < 2.3% floor), implied move (5.2%) not broken, red-team's compound reversal case (margin beat AND guide intact) half-fired — margin cleared 15.6%→15.8%, guide did not stay intact — so scored not-fired. Preliminary read (−22) wrong-signed identically, so this event does not separate panel from prelim. Read as: the panel got the fundamentals right and the sign wrong, because it treated an already-rock-bottom starting price (4-year low, 8.5% short, targets at/below spot, no upgrades) as a secondary caveat rather than the dominant factor — four of seven personas named that risk, none weighted it as primary. Deferred once already (logged 2026-09-17 06:21 UTC, see that day's `_run-log.md`) because the outcome window had not closed at that firing. See `research/2026/09/2026-09-16/05-outcome.md`. |
+| 2026-09-17 | 0 — stage 0's only candidate (UPXI) failed the $500M cap floor | 0 | Not scored — nothing to score | n/a | `04-advice.json` carries `status: no_names`, empty `ranked_names`; every stage published a clean empty result. See its own `05-outcome.md`. |
