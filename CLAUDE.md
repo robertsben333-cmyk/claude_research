@@ -662,6 +662,20 @@ record of announcement dates; TDnet keeps only ~31 days, so prior dates are infe
 applying this quarter's notified lag backwards. It is a scale. Reading a cadence prior
 as evidence is how TRT got ranked, traded and never reported.
 
+**Stage J's Routine is created but NOT verified.** `trig_0192kQeqhumBKpNGzzyQrS1H` came
+back with empty `sources`, `outcomes` and `allowed_tools`, unlike the five pipeline
+Routines which all carry a populated repository source and tool list. Its prompt clones
+the repo itself at step 0, so this may be harmless, but that path needs `add_repo` and
+`register_repo_root` and `update_trigger` cannot set those fields. Fire it once by hand
+and read the result, or recreate it from the Routines UI, before believing a quiet
+morning. See `researcher_japan/routine-prompts/japan-hunt.md`.
+
+**And nothing reaches any Routine until this branch is merged to `main`.** Every Routine
+clones `main`; `claude/eloquent-noether-w58hqf` holds the rename and the whole Japan
+stack. A fresh clone of it was checked on 2026-09-18: the `edge` symlink is restored,
+the four shims execute, and all three paths stage E verifies resolve, so the merge is
+safe for the live US run.
+
 Nothing has resolved in Japan. The stack was validated end to end on 2026-09-18 against
 2026-09-11 (76 scheduled, 34 eligible, 25 drawn, 24 of 25 confirmed on TDnet, one
 correctly killed as `event_occurred: false`, median realised move 2.87%) using

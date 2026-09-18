@@ -8,6 +8,28 @@ overwhelmingly after the 15:00 close (386 of 456 `決算短信` on 2026-08-14, a
 the sealed baseline and just under five hours before the first release. The US stage E
 fires at 17:04 UTC, so the two never overlap and neither can starve the other.
 
+**UNVERIFIED, AND IT IS THE THING MOST LIKELY TO MAKE THIS A SILENT NO-OP.** The
+Routine was created from a session on 2026-09-18 (`trig_0192kQeqhumBKpNGzzyQrS1H`) and
+came back with **empty `sources`, empty `outcomes` and empty `allowed_tools`**, plus a
+warning that it stores no MCP connectors. The five stage 0–4 Routines all carry a
+populated `sources` (the git repository), an `outcomes` branch and an explicit tool
+list; this one carries none. Step 0 is written to clone the repo itself, exactly as
+stage E's prompt does, so an empty `sources` may not matter — **but that path needs
+`add_repo` and `register_repo_root`, which are connector tools this Routine may not
+have.** `update_trigger` cannot set any of those fields, so a session cannot repair it.
+
+Before trusting the first scheduled fire, do one of these:
+
+1. Fire it once by hand (`fire_trigger`) and read what the session actually did. A run
+   that cannot clone will say so at step 0 rather than producing a wrong ranking, which
+   is the failure mode this prompt was written to force.
+2. Or recreate the Routine from the claude.ai Routines UI, where the repository source
+   and the tool list can be attached, and delete `trig_0192kQeqhumBKpNGzzyQrS1H`.
+
+Do not assume it works because it exists and is enabled. A Routine that fires, fails
+step 0 and reports a tidy no-op every morning is precisely the fault this repo has
+already paid for twice.
+
 Unlike stage E, this Routine **was created by an agent session**, so a later session can
 update it with `update_trigger` and does not have to ask for a hand-paste. Keep this file
 in step with it anyway — that discipline is what stage E's prompt drift cost.
