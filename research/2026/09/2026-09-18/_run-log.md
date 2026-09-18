@@ -15,3 +15,9 @@
 - Scouts: 0 subagents (screen skipped per triage.skip_if_universe_at_or_below)
 - Session mix: 0 AMC / 0 BMO
 - Notable drops: none (drop happened upstream in stage 0 qualification, not triage)
+
+## Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-18 08:24 UTC
+- Shortlist: 0 names (triage_mode: skipped_small_universe, universe_eligible: 0, universe_total: 0); this batch: none
+- Already on disk, skipping: none (02-dossiers/ does not exist yet)
+- Plan: no researchers to spawn — today's universe had 0 eligible names (Nasdaq returned 7 after-close/8 before-open rows but only one, ABVX amc 09-21, had a confirmed session, and it doesn't fill the before-open slot), so stage 1 skipped with an empty shortlist
