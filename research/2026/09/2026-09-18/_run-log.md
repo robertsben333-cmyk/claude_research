@@ -226,3 +226,7 @@ WHAT FAILED: nothing. No agent errored, no fetch was blocked, no script raised. 
 ## Dashboard — Weging: factoren op alle onderzochte namen
 - Logged at 2026-09-18 20:03 UTC
 - De vier w2-factoren worden nu gemeten op alle 105 gerangschikte namen naast de 56 boven de floor; de boeken blijven op het boek. Alle vier houden hun teken op de bredere steekproef; onder de floor houden retail (+1.64pp) en lean (+2.93pp) hun teken en draaien evidence (-1.86pp) en search_quiet (-2.29pp) om. Geen gat haalt twee standaardfouten. Niets aangezet.
+
+## Stage C — china scoping — STARTED
+- Logged at 2026-09-18 20:47 UTC
+- Phase 1: measure three China submarket candidates (US-listed China ADRs / HKEX main board / mainland A-shares) on stream, untruncated move, anchor availability and reachability from this container. Write researcher_china/SUBMARKET.md with real counts, recommend one, then build stage C mirroring researcher_japan.
