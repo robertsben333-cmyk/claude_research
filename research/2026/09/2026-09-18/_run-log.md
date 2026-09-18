@@ -64,3 +64,13 @@
 - Already on disk, skipping: none (02-dossiers/ empty, confirmed on disk not just from batch 1's log)
 - Batch 1 already confirmed and published this empty state (08:24 UTC) and covers the day; nothing to add for batch 2
 - Plan: no researchers to spawn; writing 02-ranking.json empty as final batch, since stage 3 reads it and does not re-derive it
+
+## Stage 2 — deep dive, batch 2 — FINISHED
+- Logged at 2026-09-18 10:24 UTC
+- Researched: none (shortlist empty)
+- Skipped (already done): none
+- Failed: none
+- Subagents: 0 opus/high, 0 waves
+- Median evidence completeness: n/a
+- Wrote 02-ranking.json: 0 names, top_n_for_panel: [] -- confirmed empty state directly (00-universe.json, 01-shortlist.json, 02-dossiers/ on disk), not just from batch 1's log
+- Panel-eligible after this batch: none
