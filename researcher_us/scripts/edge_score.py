@@ -389,6 +389,31 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
     for _, h in hunts:
         lessons_applied.extend(h.get("lessons_applied") or [])
 
+    # THE LANGUAGE CONTROL, added 2026-09-18 for stage EU and shaped exactly like the
+    # lessons control above. A European hunter runs an ENGLISH pass first, freezes that
+    # draft into `pre_local`, then runs the local-language pass and revises. Both sums
+    # are carried so "searching in German and French earns rank correlation" is measured
+    # rather than believed; neither `pre_local` nor the delta enters the key.
+    #
+    # `pre_local_variable` says WHAT the second pass varied, because it is not the same
+    # question in every market: for Germany and France it is `language`, and for the UK
+    # -- whose local language is English -- it is `source_locality`, a domestic-source
+    # pass over RNS, Investegate, Citywire and the domestic trade press. eu_resolve.py
+    # reports the delta per market and refuses to pool the two.
+    #
+    # A US or Japanese hunt emits no `pre_local`, so these are null there and nothing
+    # about those runs changes.
+    pre_loc = [h.get("pre_local") for _, h in hunts]
+    pre_loc = [d for d in pre_loc if isinstance(d, dict)]
+    if pre_loc:
+        impact_sum_pre_local = round(
+            sum(float(d.get("impact_sum_pct") or 0.0) for d in pre_loc), 3)
+        local_delta = round(impact_sum - impact_sum_pre_local, 3)
+        pre_local_variable = next(
+            (d.get("variable") for d in pre_loc if d.get("variable")), None)
+    else:
+        impact_sum_pre_local = local_delta = pre_local_variable = None
+
     # Flags for the note's critical read of the floor-clearers. Each is a reason a
     # correct-looking row should be doubted, drawn from researcher_us/LESSONS.md. They are
     # text for a reader; nothing filters on them.
@@ -460,6 +485,10 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
             "lessons_delta": lessons_delta,
             "hunts_with_pre_lessons": f"{len(pre)}/{len(hunts)}" if hunts else "0/0",
             "lessons_applied": lessons_applied,
+            "impact_sum_pre_local": impact_sum_pre_local,
+            "local_delta": local_delta,
+            "pre_local_variable": pre_local_variable,
+            "hunts_with_pre_local": f"{len(pre_loc)}/{len(hunts)}" if hunts else "0/0",
             "note": "diagnostics only. None of these enters the ranking key -- "
                     "researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or "
                     "subtractive against the realised move.",
@@ -531,6 +560,19 @@ def main():
                     "researcher_us/LESSONS.md. edge_resolve.py ranks it against the same "
                     "realised move as the key, which is the only thing that can "
                     "tell the guidance file apart from a habit.",
+        },
+        # Empty on a US or Japanese run: only stage EU's hunters emit `pre_local`.
+        "language_control": {
+            "names_with_pre_local": sum(
+                1 for r in rows
+                if r["diagnostics"].get("impact_sum_pre_local") is not None),
+            "names_moved_by_local_pass": sum(
+                1 for r in rows if r["diagnostics"].get("local_delta")),
+            "note": "pre_local is each hunter's own sum after the ENGLISH pass and "
+                    "before the local pass. eu_resolve.py ranks it against the same "
+                    "realised move as the key, per market, and does not pool the UK "
+                    "(where the second pass varies source locality) with Germany and "
+                    "France (where it varies language).",
         },
         "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added "
                 "up, in points of spot. No call and no threshold -- cut wherever you "
