@@ -194,7 +194,20 @@ japan_hunt:
   # Inherits edge_hunt.conviction_floor unless set. A floor on EMPHASIS in the note,
   # never a filter on the scored file.
   conviction_floor: null
+  # THE ANCHOR SUBSTITUTES (2026-09-18). Japan has no single-stock option chain, so the
+  # baseline builds its own lean from JPX's disclosed short register, the change in that
+  # register, and 信用倍率. Every weight in jp_priced_in.lean_components() is a PRIOR
+  # borrowed from the US runs; jp_resolve.py ranks each component separately so they can
+  # be replaced by measurement. Cut a component's weight to zero when several pooled days
+  # rank it at or below zero -- do not argue for it.
+  #
+  # The number that says the fix is still working is `lean_vs_free_control_rho` in the
+  # resolved file. It was 1.0 by construction before this shipped and measured 0.446-0.59
+  # on the 2026-09-11 universe. If it returns to 1.0 the positioning sources have stopped
+  # resolving and the lean has silently fallen back to the run-up alone.
+  margin_ratio_lookup: true      # one scraped request per name; false skips it
   degrade_order:
+    - skip the scraped margin ratio (positioning falls back to the JPX register alone)
     - reduce cap to 15 names
     - reduce cap to 8 names
     - skip the note's per-name critical read, keep the ranked table

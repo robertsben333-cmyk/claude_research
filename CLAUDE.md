@@ -647,20 +647,39 @@ Japan's fiscal year-ends are staggered, so the flow never stops: counting 決算
 TDnet, 456 on 2026-08-14 at the peak but still 79 on 09-11, 39 on 09-18 and 11 on 09-17
 off-season. The quietest day sampled was half the US stage's daily universe.
 
-**Three things about stage J that a reader will otherwise get wrong.** First, there is
-**no option anchor** — Japan concentrates option volume in the index — so `options` is
-written all-`null`, `baseline_quality` tops out at 0.40, and `priced_lean_pct` is
-`-0.05 * run_up_20d_pct` for every name. The free control and the baseline's only
-directional content are therefore *the same number*, and the hunt has to beat the run-up
-to have added anything. This is the regime that produced the worst number in the repo
-(`backtest/FINDINGS.md` §33: ρ=+0.073, p=0.45 over 104 events). Second, the day is
-**cut at random**: microcaps go on median 20-day turnover (¥30m, the same ~$200k/day the
-US run screens on), and if more than 25 survive a **date-seeded random draw** picks them,
-because any other cut is a second ranking the scorer cannot see — which is exactly what
-the double hunt turned out to be. Third, `history` is an **estimated cadence**, not a
-record of announcement dates; TDnet keeps only ~31 days, so prior dates are inferred by
-applying this quarter's notified lag backwards. It is a scale. Reading a cadence prior
-as evidence is how TRT got ranked, traded and never reported.
+**Three things about stage J that a reader will otherwise get wrong.** First, **the
+missing option anchor is substituted, not merely disclosed.** Japan has no liquid
+single-stock options, so until 2026-09-18 `priced_lean_pct` was `-0.05 *
+run_up_20d_pct` — which is *also the free control every ranker is measured against*, so
+the baseline's lean and its own benchmark were one number and `baseline_quality` was
+capped at 0.40. `researcher_japan/scripts/jp_positioning.py` now supplies three
+substitutes from what Tokyo does publish: JPX's daily disclosed short register (every
+position at or above 0.5% of shares outstanding, so an absent name is a real zero), the
+change in that register (shorts building or covering into the print), and 信用倍率, the
+margin long/short ratio. Measured on the 2026-09-11 universe the lean's correlation with
+the free control fell from **1.0 by construction to 0.446–0.59** and `baseline_quality`
+rose from **0.40 to 0.725**. The weights are priors with no Japanese measurement behind
+them, so `jp_resolve.py` ranks every component separately and reports
+`lean_vs_free_control_rho` — if that climbs back to 1.0 the sources stopped resolving and
+the lean is the run-up again. What is still absent: none of it says what the market
+expects from *this* print, so `backtest/FINDINGS.md` §33 (ρ=+0.073, p=0.45 over 104
+events) is made testable, not refuted.
+
+Second, the day is **cut at random**: microcaps go on median 20-day turnover (¥30m, the
+same ~$200k/day the US run screens on), and if more than 25 survive a **date-seeded
+random draw** picks them, because any other cut is a second ranking the scorer cannot
+see — which is exactly what the double hunt turned out to be. Third, `history` is an
+**estimated cadence**, not a record of announcement dates; TDnet keeps only ~31 days, so
+prior dates are inferred by applying this quarter's notified lag backwards. It is a
+scale. Reading a cadence prior as evidence is how TRT got ranked, traded and never
+reported.
+
+**The shared scorer gained two optional baseline keys on 2026-09-18, and US output is
+byte-identical.** `edge_score.baseline_quality()` now reads `anchor_quality:
+{magnitude, direction}` when a baseline supplies it, and `edge_score.priced_lean_pct()`
+returns a baseline's own `priced_lean_pct` when it carries one. Both branches are
+unreachable for a US baseline, which sets neither key. Verified by rescoring
+`research/2026/09/2026-09-10/edge`: 17 rows compared, 0 changed.
 
 **Stage J's Routine is created but NOT verified.** `trig_0192kQeqhumBKpNGzzyQrS1H` came
 back with empty `sources`, `outcomes` and `allowed_tools`, unlike the five pipeline

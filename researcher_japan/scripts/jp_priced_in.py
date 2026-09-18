@@ -62,6 +62,9 @@ from pathlib import Path
 from statistics import median
 from zoneinfo import ZoneInfo
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import jp_positioning as POS               # noqa: E402
+
 JST = ZoneInfo("Asia/Tokyo")
 UTC = ZoneInfo("UTC")
 REPO = Path(__file__).resolve().parents[2]
@@ -175,6 +178,66 @@ def reaction_near(rows, target, window=2):
             "days_from_estimate": (used - target).days}
 
 
+def realised_vol_pct(rows, n=20):
+    """Annualised close-to-close volatility over the last `n` sessions, in percent.
+
+    The magnitude anchor the option chain would have given. It is not an implied move
+    and must not be called one: it says how much this stock HAS been moving, not how
+    much the market is paying for it to move through this print. Its virtue over the
+    historical-reaction proxy is that it is current -- a name whose vol has doubled in
+    the last month shows up here and does not show up in a median of twelve estimated
+    reactions from the last three years.
+    """
+    cl = [r["c"] for r in rows if r["c"]]
+    if len(cl) < n + 1:
+        return None
+    rets = [(cl[i] / cl[i - 1] - 1.0) for i in range(len(cl) - n, len(cl))]
+    if len(rets) < 2:
+        return None
+    mu = sum(rets) / len(rets)
+    var = sum((r - mu) ** 2 for r in rets) / (len(rets) - 1)
+    return round((var ** 0.5) * (252 ** 0.5) * 100, 2)
+
+
+def lean_components(positioning, margin, runup):
+    """The four things Tokyo prices that the run-up does not, each signed, in points.
+
+    NONE OF THESE WEIGHTS IS MEASURED ON JAPANESE DATA. They are priors, and they are
+    kept as separate named components precisely so that `jp_resolve.py` can rank each
+    one against the realised move and replace the priors with measurement. Do not
+    defend the weights; replace them.
+
+    Signs, and where each prior comes from:
+
+      short_squeeze   crowded disclosed short -> POSITIVE. The US run saw two shorts
+                      into names with 18% and 23% of float short both squeeze more
+                      than 20%. A crowded short is fuel, not a forecast.
+      short_building  shorts ADDING into the print -> NEGATIVE. Disclosed sellers
+                      increasing a position days before results is positioning by
+                      people who must file their names; it is the closest thing this
+                      market has to informed flow you can see.
+      margin_overhang high 信用倍率 (margin longs >> margin shorts) -> NEGATIVE.
+                      Leveraged retail longs have to be sold eventually and a
+                      disappointing print is when. Below 1 the margin short side is
+                      larger, which is the setup that squeezes, so the sign flips.
+                      Log-scaled because the raw ratio runs from 2 to 2,395.
+      runup           the US fallback, kept so the composite still contains what the
+                      free control contains -- but no longer ONLY that.
+    """
+    import math
+    out = {}
+    sr = (positioning or {}).get("short_ratio_pct")
+    sc = (positioning or {}).get("short_change_pct_pts")
+    out["short_squeeze"] = round(max(-3.0, min(3.0, 0.6 * sr)), 3) if sr is not None else None
+    out["short_building"] = round(max(-2.0, min(2.0, -2.0 * sc)), 3) if sc is not None else None
+    if margin and margin > 0:
+        out["margin_overhang"] = round(max(-2.0, min(2.0, -0.5 * math.log10(margin))), 3)
+    else:
+        out["margin_overhang"] = None
+    out["runup"] = round(-0.05 * runup, 3) if runup is not None else None
+    return out
+
+
 def build(name, event_date):
     code = name["code"]
     rows, meta = bars(code)
@@ -205,6 +268,8 @@ def build(name, event_date):
         "currency": meta.get("currency"),
         "run_up_20d_pct": round((win[-1] / win[0] - 1) * 100, 2) if len(win) >= 2 else None,
         "median_turnover_jpy_20d": name.get("tape", {}).get("median_turnover_jpy_20d"),
+        "realised_vol_20d_pct": realised_vol_pct(rows, 20),
+        "realised_vol_60d_pct": realised_vol_pct(rows, 60),
         "bars_3y": len(rows),
     }
 
@@ -216,10 +281,12 @@ def build(name, event_date):
         "skew_25d_vol_points": None,
         "reason": "No liquid single-stock option market in Japan for this name. JPX "
                   "option volume is concentrated in the index, so there is no "
-                  "event-implied move and no skew to read a direction lean from. "
-                  "priced_lean_pct therefore falls back to -0.05 * run_up_20d_pct "
-                  "for every Japanese name, which makes the free control and the "
-                  "baseline's only directional content the same number.",
+                  "event-implied move and no skew. Until 2026-09-18 that left "
+                  "priced_lean_pct as -0.05 * run_up_20d_pct, which is ALSO the free "
+                  "control, so the baseline's lean and its own benchmark were the same "
+                  "number. They are no longer: `positioning` and `expected_move` below "
+                  "carry substitutes built from what Tokyo does publish, and this "
+                  "baseline supplies its own `priced_lean_pct` and `anchor_quality`.",
     }
 
     # Consensus: real, sourced, unmodified.
@@ -290,6 +357,59 @@ def build(name, event_date):
         "basis": "issuer-notified date carried by JPX on the 決算発表予定日 sheet",
         "calendar_as_of": name.get("_calendar_as_of"),
     }
+    # --- what Tokyo prices, in place of an option chain -------------------------
+    pos = POS.for_code(code, name.get("_short_rows") or {}, name.get("_short_as_of"))
+    margin = name.get("_margin_ratio")
+    doc["positioning"] = dict(pos)
+    doc["positioning"]["margin_ratio"] = margin
+    doc["positioning"]["margin_ratio_basis"] = (
+        "信用倍率, margin long balance / margin short balance, scraped from a broker "
+        "portal rather than published by the exchange. Null is a normal outcome."
+    )
+
+    rv20 = doc["tape"]["realised_vol_20d_pct"]
+    hist_med = doc["history"]["median_abs_move_pct"]
+    # A one-session move implied by current vol. Not an implied move -- there is no
+    # option paying for this -- so it is named for what it is.
+    vol_1d = round(rv20 / (252 ** 0.5), 2) if rv20 else None
+    doc["expected_move"] = {
+        "event_move_proxy_pct": max([x for x in (hist_med, vol_1d) if x is not None],
+                                    default=None),
+        "from_realised_vol_1d_pct": vol_1d,
+        "from_history_median_pct": hist_med,
+        "basis": "the larger of (a) the median of twelve ESTIMATED prior reactions and "
+                 "(b) a one-session move implied by 20-day realised volatility. It is "
+                 "NOT an option-implied move: nothing is paying for it, and it carries "
+                 "no information about what the market expects from THIS print. It is "
+                 "a scale for how far this name travels.",
+    }
+
+    comps = lean_components(pos, margin, doc["tape"]["run_up_20d_pct"])
+    vals = [v for v in comps.values() if v is not None]
+    doc["lean_components"] = comps
+    doc["priced_lean_pct"] = round(sum(vals), 3) if vals else None
+    doc["priced_lean_basis"] = (
+        "Sum of the components above. Read researcher_japan/scripts/jp_priced_in.py, "
+        "lean_components(): every weight is a PRIOR, none is measured on Japanese "
+        "data, and jp_resolve.py ranks each component separately so measurement can "
+        "replace them. What matters today is only that this is no longer identical to "
+        "-0.05 * run_up_20d_pct, so the free control is a real rival again."
+    )
+
+    # How well anchored is this name, for a market with no option chain. Read by the
+    # shared scorer's baseline_quality(). Neither term reaches 1.0 on purpose: an
+    # option-implied move with a tight two-sided chain is better than any of this.
+    have_dir = sum(1 for k in ("short_squeeze", "short_building", "margin_overhang")
+                   if comps.get(k) is not None)
+    doc["anchor_quality"] = {
+        "magnitude": 0.5 if (rv20 and hist_med) else (0.3 if (rv20 or hist_med) else 0.0),
+        "direction": {0: 0.0, 1: 0.25, 2: 0.45, 3: 0.60}[have_dir],
+        "basis": "magnitude: realised vol plus an estimated-cadence reaction history, "
+                 "capped at 0.5 because neither is an option-implied move. direction: "
+                 "how many of the three positioning components resolved, capped at "
+                 "0.60 because none of them is 25-delta skew.",
+    }
+
     doc["event_occurred"] = None      # settled after the fact by jp_resolve
     return doc
 
@@ -299,22 +419,38 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--universe", required=True)
     ap.add_argument("--out-dir", required=True)
+    ap.add_argument("--no-margin", action="store_true",
+                    help="skip the scraped 信用倍率 lookup (one request per name)")
     a = ap.parse_args()
 
     u = json.loads(Path(a.universe).read_text(encoding="utf-8"))
     out = Path(a.out_dir)
     out.mkdir(parents=True, exist_ok=True)
+
+    # One download for the whole day rather than one per name.
+    short_as_of, short_rows = POS.load(u.get("event_date"))
+    if not short_rows:
+        print("  WARNING: no JPX short register could be read; positioning will be "
+              "empty and the lean falls back to the run-up alone")
+    else:
+        print(f"  short register {short_as_of}: {len(short_rows)} codes")
+
     made = 0
     for n in u.get("names", []):
         n = dict(n)
         n["_calendar_as_of"] = u.get("calendar_as_of")
+        n["_short_rows"] = short_rows
+        n["_short_as_of"] = short_as_of
+        n["_margin_ratio"] = POS.margin_ratio(n["code"]) if not a.no_margin else None
         doc = build(n, u["event_date"])
         p = out / f"{n['code']}.json"
         p.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         made += 1
-        print(f"  sealed {n['code']:<6} {(doc['company'] or '')[:34]:<34} "
-              f"spot={doc['tape']['spot']} runup={doc['tape']['run_up_20d_pct']} "
-              f"hist_n={doc['history']['n']}")
+        print(f"  sealed {n['code']:<6} {(doc['company'] or '')[:30]:<30} "
+              f"spot={doc['tape']['spot']!s:<9} lean={doc['priced_lean_pct']!s:<7} "
+              f"short={doc['positioning']['short_ratio_pct']}% "
+              f"margin={doc['positioning']['margin_ratio']} "
+              f"q={doc['anchor_quality']['direction']}")
     print(f"{made} baselines -> {out}")
 
 

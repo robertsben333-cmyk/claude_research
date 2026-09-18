@@ -68,20 +68,35 @@ how**, because two of the numbers that stage was built around do not exist here.
 
 `options` is all `null`. There is no liquid single-stock option market in Japan, so
 there is **no event-implied move and no 25-delta skew**. In the US run the skew is the
-market's one out-loud directional statement and the thing a finding has to beat. Here
-there is nothing of the kind. What you get instead:
+market's one out-loud directional statement and the thing a finding has to beat. Since
+2026-09-18 three substitutes stand in its place, and they are in your baseline:
 
-- `tape.run_up_20d_pct` — the 20-day run-in. In this market it is not a minor control,
-  it is the baseline's ONLY directional content: `priced_lean_pct` is computed as
-  `-0.05 * run_up_20d_pct` and nothing else. A name up 25% into its print has an
-  expectation built into it, and a positive finding on that name is competing with
-  the run-up rather than adding to it.
-- `history` — twelve prior reactions, giving `median_abs_move_pct`. **Read the caveat
-  on it.** The DATES are estimated by applying this quarter's notified lag backwards;
-  they are a cadence prior, not a record. Use the median as a SCALE for how much this
-  name moves. Never cite a specific past date from it as a fact.
-- `consensus.quarters` — Yahoo's EPS actual, estimate and surprise history. Real and
-  sourced. This is the one hard consensus number you have.
+- `positioning.short_ratio_pct` — the sum of disclosed short positions from **JPX's own
+  daily register**, which lists every position at or above 0.5% of shares outstanding.
+  A crowded short is fuel: the US run watched two names with 18% and 23% of float short
+  both squeeze more than 20%. **Before any negative finding, read this number.** A zero
+  here is real (no disclosed position above the threshold), not missing.
+- `positioning.short_change_pct_pts` — whether those sellers are **building or covering**
+  into this print. Disclosed shorts adding days before results is the closest thing this
+  market has to informed flow you can actually see, and a negative finding that agrees
+  with it is probably already in the price.
+- `positioning.margin_ratio` — 信用倍率, margin longs over margin shorts. High means
+  leveraged retail is crowded long and has to sell eventually; below 1 the margin short
+  side is bigger, which is the setup that squeezes. Scraped rather than official, so a
+  null is normal.
+
+`priced_lean_pct` is the composite of those three plus the run-up, and
+`lean_components` shows you each one. **Treat it as the thing you have to beat**, the
+way the US hunter treats skew. A finding that merely agrees with the positioning is not
+a finding.
+
+`tape.run_up_20d_pct` is still in there and still matters: it is the free control this
+whole stage has to out-rank. It is no longer the *only* directional content, which it
+was until 2026-09-18.
+
+`expected_move.event_move_proxy_pct` is a **scale**, not an expectation. It is the larger
+of an estimated-cadence reaction history and a one-session move implied by realised
+volatility. Nothing is paying for it. Sizing a finding far above it needs a reason.
 
 **The bar in Japan is the company's own forecast, not the analysts'.** This is the
 single biggest difference from the US and most of your edge will come from taking it

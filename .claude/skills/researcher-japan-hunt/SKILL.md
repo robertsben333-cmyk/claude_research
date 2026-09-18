@@ -19,17 +19,24 @@ step here and there must not be one. It is research.
 | --- | --- | --- |
 | Calendar | Nasdaq vendor feed, `time-not-supplied` 20/20 phantom on one day | JPX `決算発表予定日`, the issuer's own notified date |
 | Event window | after US close → before next open | after 15:00 JST → before 09:00 JST next session |
-| Option anchor | implied move + 25d skew | **none**; `options` is all `null` |
+| Option anchor | implied move + 25d skew | none; substituted by JPX short register + 信用倍率 |
 | The bar | sell-side consensus EPS | the company's own 会社予想 and the 進捗率 against it |
 | Names per day | 17–22, all hunted | 8–125 scheduled; microcaps cut, then **capped at 25 by random draw** |
 | Tail | uncapped | daily 値幅制限 price limit truncates large moves |
 
-The missing option anchor is the caveat that goes in every note. `baseline_quality`
-tops out at 0.40 for a Japanese name, and `priced_lean_pct` is `-0.05 * run_up_20d_pct`
-for every one of them, so **the free control and the baseline's only directional
-content are the same number**. On the sealed US backtest corpus, where the option
-anchor was likewise unrecoverable, the hunt ranked at ρ=+0.073, p=0.45 over 104
-events. Japan runs in that regime permanently. Say so.
+**The missing option anchor is substituted, not ignored (since 2026-09-18).** Japan has
+no single-stock option chain, so there is no implied move and no skew. The baseline
+instead carries `positioning` — JPX's daily disclosed short register (level and change)
+and 信用倍率 — and supplies its own `priced_lean_pct` and `anchor_quality` to the shared
+scorer. What that bought, measured on the 2026-09-11 universe: the lean's rank
+correlation with the free control fell from **1.0 by construction to 0.446–0.59**, and
+`baseline_quality` rose from a hard ceiling of **0.40 to 0.725**.
+
+Two things still belong in every note. The weights in `lean_components()` are priors
+with no Japanese measurement behind them, which is why `jp_resolve.py` ranks each
+component separately. And none of it says what the market expects from *this* print —
+positioning is stock, not flow — so the sealed-corpus result for anchor-less hunting
+(ρ=+0.073, p=0.45 over 104 events) has been made testable, not refuted.
 
 ## Steps
 
@@ -94,8 +101,9 @@ ranked and why.
 The note must also say, every time:
 
 - `selection.method`, and that the draw was random among the eligible names
-- that there is no option anchor, so the free control and the baseline's lean are
-  the same number, and the hunt has to beat it to have added anything
+- `lean_vs_free_control_rho` from the previous resolved run if there is one, because
+  it is the check that the lean has not collapsed back into the free control
+- that the lean's weights are priors, and which positioning components resolved
 - the `history` basis is an estimated cadence, a scale and not a record of dates
 - which names sit above `conviction_floor`, and that over the whole US sample the
   sign was a coin flip below it

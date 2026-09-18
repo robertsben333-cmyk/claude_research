@@ -33,9 +33,25 @@ as open questions for the first post-mortems to answer.
    results pre-releases the number. The first few runs should record whether names with
    a prior revision moved less, and if so the universe step may need to flag them.
 
-## The caveat that applies to every Japanese finding until measured otherwise
+## The anchor, and the one number that tells you it is still working
 
-There is no option anchor in this market, so nothing here tells you what the market
-expected. `priced_lean_pct` is `-0.05 * run_up_20d_pct` and nothing else, which means
-the free control and the baseline's only directional content are the same number. A
-finding has to beat the run-up, not merely agree with it.
+There is no option anchor in this market. Since 2026-09-18 the baseline's lean is built
+instead from JPX's disclosed short register (level and change) and 信用倍率, so it is no
+longer the same number as the free control -- it ranked against the control at 0.446 to
+0.59 on the 2026-09-11 universe, where it used to be 1.0 by construction.
+
+**Check `lean_vs_free_control_rho` in the resolved file on every run.** If it drifts back
+toward 1.0, the JPX register or the margin scrape has stopped resolving and the lean has
+silently fallen back to `-0.05 * run_up_20d_pct`. That failure is invisible in the
+ranking itself, which is why the resolver reports the number.
+
+A finding still has to beat the run-up. What the positioning now tells you is how
+crowded the trade already is, not what the market expects the number to be. Nothing in
+this market tells you the latter.
+
+## The weights are open questions, not rules
+
+`jp_priced_in.lean_components()` carries four weights and **none is measured on Japanese
+data**. `jp_resolve.py` ranks each component separately. When several days have pooled,
+a component that ranks at or below zero gets its weight cut to zero here, in writing,
+with the pooled number beside it. Until then they are priors borrowed from the US runs.

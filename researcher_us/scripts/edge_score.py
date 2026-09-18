@@ -145,15 +145,26 @@ def baseline_quality(baseline):
     n = hist.get("n") or 0
     hist_q = min(1.0, n / 6.0)
 
+    # A market with no listed option chain can supply its own anchors instead, under
+    # `anchor_quality: {magnitude, direction}`, each 0-1. Added 2026-09-18 for stage J:
+    # Tokyo has no liquid single-stock options, so both option terms were structurally
+    # zero and a Japanese name could never score above 0.40 no matter how well it was
+    # actually anchored. A US baseline carries no `anchor_quality` key, so its two
+    # branches below are unreachable there and its numbers are unchanged.
+    anchors = b.get("anchor_quality") or {}
+
     spread = opts.get("atm_spread_frac_of_mid")
     if opts.get("event_implied_move_pct") is None:
-        opt_q = 0.0
+        opt_q = float(anchors.get("magnitude") or 0.0)
     elif spread is None:
         opt_q = 0.5
     else:
         opt_q = max(0.0, min(1.0, 1.0 - spread / 0.6))
 
-    dir_q = 1.0 if opts.get("skew_25d_vol_points") is not None else 0.0
+    if opts.get("skew_25d_vol_points") is not None:
+        dir_q = 1.0
+    else:
+        dir_q = float(anchors.get("direction") or 0.0)
 
     plaus = (b.get("event_plausibility") or {}).get("verdict")
     event_q = {"fits_cadence": 1.0, "unknown": 0.6, "suspect": 0.05}.get(plaus, 0.6)
@@ -175,6 +186,22 @@ def priced_lean_pct(baseline):
     """
     b = baseline or {}
     opts = b.get("options") or {}
+
+    # A baseline may carry its own lean, already computed from whatever IS priced in
+    # its market. Added 2026-09-18 for stage J. Without it, a market with no option
+    # chain fell through to the run-up branch below -- which is ALSO the free control
+    # every ranker is measured against, so the baseline's lean and its benchmark were
+    # the same number and the control could not be beaten by anything that used it.
+    # Stage J composes this from JPX's disclosed short register, the change in that
+    # register, 信用倍率 and the run-up; see researcher_japan/scripts/jp_priced_in.py.
+    # A US baseline does not set this key, so US behaviour is byte-identical.
+    own = b.get("priced_lean_pct")
+    if own is not None:
+        try:
+            return round(float(own), 3)
+        except (TypeError, ValueError):
+            pass
+
     skew = opts.get("skew_25d_vol_points")
     em = opts.get("event_implied_move_pct")
     if skew is None or not em:

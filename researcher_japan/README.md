@@ -25,7 +25,8 @@ findings should do and is not a result about anything.
 | `scripts/jp_universe.py` | JPX `決算発表予定日` → today's names, microcap cut, cap-25 random draw |
 | `scripts/jp_priced_in.py` | the sealed baseline, in the shape `edge_score.py` reads |
 | `scripts/jp_resolve.py` | TDnet confirmation, realised move, Spearman + permutation p |
-| `researcher_us/scripts/edge_score.py` | **shared, unchanged** — the scorer is deliberately the same one |
+| `scripts/jp_positioning.py` | JPX disclosed short register + 信用倍率, the substitute anchors |
+| `researcher_us/scripts/edge_score.py` | **shared** — same scorer for both markets, so the numbers are comparable |
 | `.claude/agents/unpriced-hunter-jp.md` | the hunter; same output contract as the US one |
 | `.claude/skills/researcher-japan-hunt/SKILL.md` | the run |
 
@@ -44,19 +45,46 @@ TDnet across all pages: 456 on 2026-08-14 at the season peak, but still 79 on 09
 39 on 09-18, 24 on 09-01 and 11 on 09-17 in the off-season. The quietest day sampled
 matched half the US stage's daily universe.
 
-## What this market will not give you
+## The anchor problem, and how it was solved
 
-**No option anchor.** JPX concentrates option volume in the index; single-stock options
-are not liquid. `options` is written all-`null` with a reason rather than omitted.
-Consequences, which belong in every note:
+Japan has no liquid single-stock options, so `options` is all `null`: no event-implied
+move, no 25-delta skew. Until 2026-09-18 that left `priced_lean_pct` as
+`-0.05 * run_up_20d_pct`, which is **also the free control every ranker is measured
+against** -- the baseline's lean and its own benchmark were the same number, so the
+control could not be beaten by anything that used it, and `baseline_quality` was capped
+at 0.40.
 
-- `baseline_quality` tops out at **0.40** for any Japanese name.
-- `priced_lean_pct` falls to `-0.05 * run_up_20d_pct` for every name, so the free
-  control and the baseline's only directional content are **the same number**. The
-  hunt has to beat the run-up to have added anything at all.
-- This is the regime that produced the worst number in this repo: on the sealed
-  backtest corpus, where the option anchor was likewise unrecoverable, the hunt ranked
-  ρ=+0.073, p=0.45 over 104 events (`backtest/FINDINGS.md` §33).
+Three substitutes now carry that load, built from what Tokyo does publish:
+
+| | what it is | coverage | independent of the run-up? |
+| --- | --- | --- | --- |
+| `short_ratio_pct` | JPX's daily disclosed short register, summed over sellers | non-zero on 9-11 of 25 names; a real 0 otherwise | yes, rho 0.07 |
+| `short_change_pct_pts` | the same register's current vs previous ratio: shorts building or covering | same | largely |
+| `margin_ratio` | 信用倍率, margin longs / margin shorts | 25 of 25 | largely, rho -0.39 |
+
+Measured on the 2026-09-11 universe, the composite lean now ranks against the free
+control at **rho 0.446-0.59, where it was 1.0 by construction**, and `baseline_quality`
+reaches **0.725** where it was capped at 0.40. `jp_resolve.py` reports
+`lean_vs_free_control_rho` on every run: if it climbs back toward 1.0 the positioning
+sources have stopped resolving and the lean has collapsed into the control again.
+
+**The weights are priors and nothing about them is measured in Tokyo.** A crowded short
+is treated as a positive lean because the US run watched two shorts into 18%- and
+23%-of-float names both squeeze more than 20%; shorts building into a print is treated
+as negative because disclosed sellers who must file their names are the closest thing
+this market has to visible informed flow; a high 信用倍率 is treated as negative because
+leveraged retail longs have to be sold eventually. `jp_resolve.py` ranks each component
+separately against the realised move for exactly this reason. **Replace the weights with
+measurement; do not defend them.**
+
+What is still missing, and it is not small: none of this says what the market expects
+from *this print*. Skew is a price someone paid for one tail on one date. A short
+register and a margin ratio are stock, not flow, and they say how crowded the trade
+already is, not what the crowd thinks the number will be. `expected_move` is likewise a
+scale, from realised vol and an estimated-cadence history, and **nothing is paying for
+it**. The sealed-corpus result that runs on this kind of anchor -- rho +0.073, p 0.45
+over 104 events (`backtest/FINDINGS.md` §33) -- has not been refuted by any of this. It
+has been made testable.
 
 **No retrievable history of announcement dates.** TDnet keeps ~31 days and JPX
 publishes only near cohorts. `history` is therefore built by applying this quarter's

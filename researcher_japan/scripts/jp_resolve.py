@@ -188,6 +188,9 @@ def main():
             "conviction": r.get("conviction"),
             "priced_lean_pct": r.get("priced_lean_pct"),
             "run_up_20d_pct": (bl.get("tape") or {}).get("run_up_20d_pct"),
+            "lean_components": bl.get("lean_components") or {},
+            "short_ratio_pct": (bl.get("positioning") or {}).get("short_ratio_pct"),
+            "margin_ratio": (bl.get("positioning") or {}).get("margin_ratio"),
             "entry_close": entry, "exit_close": exitp,
             "exit_date": exit_d.isoformat() if exit_d else None,
             "realised_move_pct": move,
@@ -227,9 +230,24 @@ def main():
             "spearman_conviction_vs_sign_right": r_conv,
             "sign_right_frac": round(sum(sign_ok) / len(sign_ok), 3),
             "median_abs_realised_pct": round(median(abs(y) for y in ys), 2),
+            # Every lean component ranked on its own. The weights in
+            # jp_priced_in.lean_components() are PRIORS with no Japanese measurement
+            # behind them; these are what replaces them. A component that ranks at or
+            # below zero across several pooled days should have its weight cut to zero
+            # rather than argued for.
+            "spearman_lean_components": {
+                k: spearman([(x["lean_components"].get(k) or 0.0) for x in usable], ys)
+                for k in ("short_squeeze", "short_building", "margin_overhang", "runup")
+            },
+            "lean_vs_free_control_rho": spearman(lean, ctl),
             "note": "One day is not a result. These pool across days; a single "
                     "day's rho on 4 to 25 names is noise and must not be reported "
-                    "as a finding. The free control is the thing to beat.",
+                    "as a finding. The free control is the thing to beat. "
+                    "`lean_vs_free_control_rho` is the check that the baseline's lean "
+                    "has not collapsed back into the control: it was 1.0 by "
+                    "construction before 2026-09-18 and is expected around 0.4-0.5. "
+                    "If it returns to 1.0 the positioning sources stopped resolving "
+                    "and the lean is the run-up again.",
         }
     else:
         out["stats"] = {"n": len(usable),
