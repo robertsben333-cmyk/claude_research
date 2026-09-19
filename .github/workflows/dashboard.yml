@@ -1,0 +1,179 @@
+# Rebuild the performance dashboard where a browser can reach it.
+#
+# `./dashboard/update.sh` is the button on a laptop. A page that has been FETCHED
+# rather than opened off the disk has no laptop to press it on: it cannot run a
+# script and it cannot talk to 127.0.0.1. So the rebuild moves here, and the page's
+# own refresh button starts this workflow instead of pretending.
+#
+# What a run does, in order: rebuild the ledger from the runs, the broker and the
+# prices; render dashboard.html; commit both back to main; publish the result to
+# GitHub Pages. Nothing here places, cancels or amends an order — the ledger only
+# ever READS the broker, and `alpaca_trade.py` is never invoked.
+name: dashboard
+
+on:
+  workflow_dispatch:
+    inputs:
+      offline:
+        description: "Skip the broker: keep the last fills and equity"
+        type: boolean
+        default: false
+      fresh:
+        description: "Drop the bar cache and re-price every name"
+        type: boolean
+        default: false
+  schedule:
+    # 11:40 and 21:40 UTC on weekdays. The second is after the US close, so the
+    # day's daily bar exists and the fills of stage E's own run are in.
+    - cron: "40 11 * * 1-5"
+    - cron: "40 21 * * 1-5"
+  push:
+    branches: [main]
+    # Only the inputs. The outputs (dashboard/data, dashboard.html) are deliberately
+    # absent, so the commit this workflow makes cannot trigger it again.
+    paths:
+      - "research/**"
+      - "dashboard/scripts/**"
+      - "dashboard/update.sh"
+      - "researcher_us/scripts/**"
+      - "config/pipeline.yaml"
+      - ".github/workflows/dashboard.yml"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# One at a time: two runs would race on the same commit to main.
+concurrency:
+  group: dashboard
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      pages: ${{ steps.pages.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Everything else is the standard library on purpose. PyYAML is the one
+      # import outside it: config/pipeline.yaml holds the conviction floor.
+      - run: python3 -m pip install --quiet pyyaml
+
+      # No bar cache is restored between runs. `edge_exit._get` caches a ticker's
+      # chart forever once it has it, so a carried-over cache would freeze prices
+      # at the day it was first written. A cold fetch of the whole panel is about
+      # a minute; a silently stale dashboard is worse.
+      - name: Rebuild ledger and dashboard
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          ALPACA_BASE_URL: ${{ secrets.ALPACA_BASE_URL }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [ "${{ github.event.inputs.offline }}" = "true" ] || [ -z "${ALPACA_API_KEY_ID:-}" ]; then
+            args+=(--offline)
+            echo "broker: not contacted (no credentials, or --offline asked for)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "${{ github.event.inputs.fresh }}" = "true" ]; then
+            args+=(--fresh)
+          fi
+          ./dashboard/update.sh "${args[@]+"${args[@]}"}" | tee /tmp/update.log
+          {
+            echo '```'
+            cat /tmp/update.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # The built page IS the record: the broker's fill history is not in this repo
+      # and its oldest orders eventually age out of the API.
+      #
+      # A hunt session may push to main while this runs. Rather than rebase the
+      # generated files -- a conflict in a 500 kB JSON blob has no sensible side to
+      # pick -- the built output is set aside, main is taken as it now stands, and the
+      # output is laid back on top. The build is a pure function of the tree it read,
+      # so the worst case is that the next run recomputes it.
+      - name: Commit the rebuilt dashboard
+        run: |
+          set -euo pipefail
+          git config user.name  "dashboard workflow"
+          git config user.email "dashboard@users.noreply.github.com"
+
+          FEEDERS="researcher_us/analysis/edge-search-volume.json
+                   researcher_us/analysis/trends-cache.json
+                   researcher_us/analysis/edge-calendar.json"
+          tmp="$(mktemp -d)"
+          mkdir -p "$tmp/dashboard" "$tmp/feeders"
+          cp dashboard/dashboard.html "$tmp/dashboard/"
+          cp -r dashboard/data "$tmp/dashboard/"
+          for f in $FEEDERS; do [ -f "$f" ] && cp "$f" "$tmp/feeders/" || true; done
+
+          for i in 1 2 3; do
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            cp "$tmp/dashboard/dashboard.html" dashboard/dashboard.html
+            cp -r "$tmp/dashboard/data/." dashboard/data/
+            for f in $FEEDERS; do
+              [ -f "$tmp/feeders/$(basename "$f")" ] && cp "$tmp/feeders/$(basename "$f")" "$f" || true
+            done
+            git add -A -- dashboard $FEEDERS
+            if git diff --cached --quiet; then
+              echo "nothing changed" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            git commit -q -m "dashboard: rebuild $(date -u +%Y-%m-%dT%H:%MZ) [ci]"
+            git push -q origin HEAD:main && exit 0
+            echo "push rejected, main moved -- retrying ($i)"
+            sleep $((i * 5))
+          done
+          echo "could not push the rebuild; the page below is still the fresh one" \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      # dashboard.html is self-contained — the ledger is inlined — so the site is
+      # one file. The CSVs ride along for anyone who would rather compute their own.
+      - name: Assemble the site
+        run: |
+          set -euo pipefail
+          mkdir -p _site/data
+          cp dashboard/dashboard.html _site/index.html
+          cp dashboard/data/*.csv dashboard/data/ledger.json _site/data/
+          cp dashboard/README.md _site/README.md
+
+      # GITHUB_TOKEN may not CREATE a Pages site -- "Resource not accessible by
+      # integration" -- so the first time this needs one click in Settings -> Pages
+      # -> Source -> GitHub Actions. Until then the publish is skipped and the
+      # rebuild-and-commit above still stands: a page that is not served is worth
+      # more than a workflow that goes red.
+      - id: pages
+        uses: actions/configure-pages@v5
+        continue-on-error: true
+        with:
+          enablement: true
+
+      - if: steps.pages.outcome != 'success'
+        run: |
+          echo "Pages is off: set Settings -> Pages -> Source to 'GitHub Actions' once," \
+               "then re-run. The ledger and dashboard.html are committed to main either way." \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      - if: steps.pages.outcome == 'success'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: needs.build.outputs.pages == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

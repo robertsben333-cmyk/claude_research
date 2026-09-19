@@ -235,6 +235,25 @@ statistic under it rather than filtering a view. Its own README is the authority
 the controls and the three levels (names / trades / account), which are not the same
 thing and must not be mixed.
 
+**And it rebuilds itself in CI since 2026-09-19, because the button could not work on a
+fetched page.** `.github/workflows/dashboard.yml` — the first workflow in this repo —
+runs the same `./dashboard/update.sh`, commits `dashboard/` back to `main` and publishes
+the page to GitHub Pages at <https://robertsben333-cmyk.github.io/claude_research/> —
+**which needs Settings → Pages → Source set to *GitHub Actions* once**, because
+`GITHUB_TOKEN` is refused when it asks to create the site; until that is done the
+workflow rebuilds and commits as normal and skips the publish rather than going red. It
+fires at 11:40 and 21:40 UTC on weekdays, on a push touching `research/` or the scripts,
+and on demand. The page's own button now knows which of the two worlds it is in: a local
+rebuilder on `127.0.0.1:8765` (**live**) or the workflow (**CI**), and on a fetched page
+a click dispatches the run, watches it and reloads. It is read-only about the broker like
+every other part of `dashboard/` — no order is ever placed, cancelled or amended from it.
+Two things it needs: `ALPACA_API_KEY_ID` / `ALPACA_API_SECRET_KEY` as **repository
+secrets**, without which the build passes `--offline` and the trades and equity curve
+stay at the last build that had them; and a GitHub token in the browser for the button
+to dispatch, without which the click opens the workflow page instead. **Its commit
+touches only `dashboard/` and the three feeder files, and its `paths:` filter excludes
+them, so it cannot trigger itself** — do not add `dashboard/**` to that filter.
+
 **Three new questions, three near-nulls and one lead (2026-09-18).** They are tabs on
 that dashboard — `Instap`, `Aanloop`, `Zoekvolume`, plus `Agenda` — not separate pages.
 An earlier standalone set under `researcher_us/analysis/dashboard/` was deleted the same day: two
@@ -1187,6 +1206,8 @@ researcher_us/                         stage E — see researcher_us/README.md
 dashboard/                             the standing performance record and the one
   update.sh  scripts/  data/  LOG.md   reading surface — see dashboard/README.md
   dashboard.html                       open it from disk; rebuilt by update.sh
+.github/workflows/dashboard.yml        the same rebuild in CI + GitHub Pages, for the
+                                       copy that is fetched rather than opened
 edge -> researcher_us                  SYMLINK. The live Routine prompt names edge/
                                        paths and cannot be edited from a session.
 researcher_japan/                      stage J — see researcher_japan/README.md

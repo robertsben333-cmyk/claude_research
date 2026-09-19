@@ -142,6 +142,36 @@ def retail_tilt(names, runs):
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 
 
+def build_stamp():
+    """Who built this file, so the page can tell a CI build from a laptop one and
+    say where to go for the next one. Off a laptop most keys are empty; GitHub
+    Actions fills them from its own environment. The repo slug is what the
+    dashboard's refresh button needs to reach the workflow, so it falls back to
+    the git remote rather than being hard-coded in two places."""
+    env = os.environ
+    repo = env.get("GITHUB_REPOSITORY") or ""
+    if not repo:
+        try:
+            import subprocess
+            url = subprocess.run(["git", "remote", "get-url", "origin"], cwd=ROOT,
+                                 capture_output=True, text=True, timeout=10).stdout.strip()
+            url = url.removesuffix(".git")
+            if url:
+                repo = "/".join(url.replace(":", "/").split("/")[-2:])
+        except Exception:
+            repo = ""
+    run = env.get("GITHUB_RUN_ID") or ""
+    server = env.get("GITHUB_SERVER_URL") or "https://github.com"
+    return {
+        "where": "github-actions" if run else "local",
+        "repo": repo,
+        "workflow": env.get("GITHUB_WORKFLOW") or None,
+        "run_id": run or None,
+        "run_url": f"{server}/{repo}/actions/runs/{run}" if run and repo else None,
+        "sha": (env.get("GITHUB_SHA") or "")[:7] or None,
+    }
+
+
 def _cached(path):
     try:
         return json.loads(Path(path).read_text())
@@ -1149,6 +1179,7 @@ def main():
 
     doc = {
         "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "build": build_stamp(),
         "conviction_floor": floor,
         "runs": runs,
         "broker_error": broker_err,

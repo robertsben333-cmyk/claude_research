@@ -12,6 +12,7 @@ straight off the disk with no server and no network.
 ```
 dashboard/
   update.sh                 the button: rebuild everything, optionally publish
+  ../.github/workflows/dashboard.yml   the same rebuild, in CI, for the fetched copy
   scripts/build_ledger.py   collect runs + broker + prices -> data/ledger.json
   scripts/build_dashboard.py render data/ledger.json -> dashboard.html
   data/ledger.json          the whole dataset, one file
@@ -56,7 +57,46 @@ running, and `serve.py` answers one on purpose. Run `--serve-bg` once and you ge
 shell back; every copy of the page, served or opened off the disk, probes
 `127.0.0.1:8765` on load, shows **live** beside the button when it answers, and a click
 then rebuilds the ledger and rewrites `dashboard.html` on disk, which the reload picks
-up. Nothing answering means the button hands over the command instead of pretending.
+up.
+
+**And when the page is FETCHED rather than opened, the button starts a GitHub Action.**
+A page on the web has no machine of yours to build on: it cannot run a script and it
+cannot reach `127.0.0.1` — an https page is not allowed to talk to plain http at all.
+So `.github/workflows/dashboard.yml` does the rebuild, and the button fires it. The
+published copy is <https://robertsben333-cmyk.github.io/claude_research/>.
+
+| where the page came from | what the button does | what the badge says |
+| --- | --- | --- |
+| disk or localhost, with `--serve-bg` running | rebuilds here, rewrites the file | **live** |
+| fetched over http(s) | starts the `dashboard` workflow | **CI** |
+| neither reachable | hands over the command | (none) |
+
+The workflow rebuilds the ledger, renders the page, **commits both back to `main`** and
+republishes the site. It runs on a schedule (11:40 and 21:40 UTC, weekdays — the second
+after the US close, so the day's bar exists), on a push that touches `research/` or the
+scripts, and on demand. Its own commit touches only the outputs, which are not in its
+`paths:` filter, so it cannot trigger itself.
+
+Two things it needs, and neither is fatal when absent:
+
+- **`ALPACA_API_KEY_ID` / `ALPACA_API_SECRET_KEY` as repository secrets** (optionally
+  `ALPACA_BASE_URL`). Without them the build passes `--offline`: names are re-priced,
+  and the trades, the equity curve and the fills stay at whatever the last build with
+  credentials found. The page says so rather than reporting a zero. The ledger only
+  ever reads the broker — nothing in this workflow can place, cancel or amend an order.
+- **A GitHub token in your browser**, for the button to dispatch the run itself. Without
+  one a click opens the workflow's own page, where *Run workflow* is one more click. With
+  one — fine-grained, this repository, *Actions: read and write* — the button dispatches,
+  watches the run and reloads when it lands. It is kept in that browser's `localStorage`
+  and is sent to `api.github.com` and nowhere else. Reading the run's status needs no
+  token at all, which is how the page can say *there is a newer build than this one*.
+
+**Pages needs one click before any of this is served.** `actions/configure-pages` asks
+to turn it on and `GITHUB_TOKEN` is refused — *Resource not accessible by integration*,
+measured on the first run of 2026-09-19. Set **Settings → Pages → Source** to *GitHub
+Actions* once, and the publish starts working. Until then the workflow still rebuilds
+and still commits to `main`; it skips the publish rather than going red, so the button's
+CI path reports success for a page nobody can fetch yet.
 
 The helper runs those two scripts and nothing else; no part of a request reaches a
 shell, it binds to `127.0.0.1`, and the broker is only ever read. Its CORS headers name

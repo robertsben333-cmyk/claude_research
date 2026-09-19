@@ -175,7 +175,13 @@ code { font-family:var(--mono); font-size:12.5px; background:var(--plane); paddi
 ul { color:var(--ink2); max-width:80ch; }
 li { margin:4px 0; }
 .log { font-family:var(--mono); font-size:12px; white-space:pre-wrap; color:var(--ink2);
-       max-height:180px; overflow:auto; margin-top:8px; }
+       max-height:240px; overflow:auto; margin-top:8px; }
+.log a { color:var(--s1); }
+.log .row { white-space:normal; display:flex; flex-wrap:wrap; gap:6px; align-items:center;
+            margin-top:8px; }
+.log input { background:var(--surface); color:var(--ink); border:1px solid var(--ring);
+             border-radius:7px; padding:4px 7px; font:12px var(--mono); min-width:260px; }
+.badge.ci { color:var(--ink2); border-color:var(--ring); }
 @media (max-width:640px){ .wrap{padding:14px 16px 60px;} h1{font-size:19px;} .controls{position:static;} }
 </style>
 </head>
@@ -187,7 +193,7 @@ li { margin:4px 0; }
     <div class="meta" id="stamp"></div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
-    <span class="badge" id="served" hidden title="Er draait een rebuilder op 127.0.0.1:8765">live</span>
+    <span class="badge" id="served" hidden></span>
     <button class="btn primary" id="refresh">Ververs</button>
     <button class="btn" id="theme">donker / licht</button>
   </div>
@@ -1391,15 +1397,22 @@ function tabData() {
     {h:'status', f:r=>r.pending ? '<span class="meta">in afwikkeling</span>' : ''}], rows) +
     `<small>Ook in <code>dashboard/data/names.csv</code> en <code>trades.csv</code>,
      ongefilterd, voor wie liever zelf rekent.</small></div>`;
+  const repo = (D.build || {}).repo || '';
   html += `<div class="card"><h3>Ververs dit dashboard</h3>
-    <p>Eén keer per sessie dit, en de knop rechtsboven werkt — ook als je dit bestand
-    gewoon van schijf hebt geopend:</p>
-    <p><code>./dashboard/update.sh --serve-bg</code></p>
-    <p>Dat start een rebuilder op <code>127.0.0.1:8765</code> en geeft je je shell terug.
-    De pagina zoekt die server bij het laden; vindt hij hem, dan staat er <b>live</b>
-    naast de knop en herbouwt een klik de ledger, dit bestand én de geserveerde kopie.
-    Een pagina die als bestand is geopend mag zelf geen script draaien — dat is een
+    <p>De knop rechtsboven werkt op twee manieren, en zegt zelf in welke hij staat.</p>
+    <p><b>Op je eigen machine.</b> Eén keer per sessie
+    <code>./dashboard/update.sh --serve-bg</code>, en de knop werkt — ook in dit bestand
+    van schijf. Dat start een rebuilder op <code>127.0.0.1:8765</code> en geeft je je
+    shell terug; de pagina zoekt die server bij het laden en zet er <b>live</b> naast.
+    Een pagina die als bestand is geopend mag zelf geen script draaien — een
     browserregel, geen instelling — maar praten met een server die al draait mag wel.</p>
+    <p><b>Als opgehaalde pagina.</b> Dan is er geen machine om op te bouwen, en de knop
+    start de workflow <code>dashboard.yml</code>${repo ? ' in ' + esc(repo) : ''} in
+    plaats daarvan: GitHub Actions herbouwt de ledger, commit hem en publiceert deze
+    pagina opnieuw. Er staat dan <b>CI</b> naast de knop. Een klik zonder token opent de
+    workflow, waar dezelfde run één klik is; met een token (alleen <i>Actions: read and
+    write</i>, bewaard in deze browser) doet de knop het zelf en herlaadt als de run
+    klaar is. De workflow draait sowieso op een schema.</p>
     <p>Andere vormen: <code>--serve</code> houdt de server op de voorgrond,
     <code>--offline</code> slaat de broker over, <code>--fresh</code> gooit de
     koerscache weg, <code>--publish</code> commit en pusht.</p></div>`;
@@ -2499,7 +2512,10 @@ function refresh() {
   draw.forEach(fn => fn());
 }
 document.getElementById('stamp').textContent =
-  `gebouwd ${D.generated_utc} · ${D.runs.length} runs · ${D.names.length} namen · ` +
+  `gebouwd ${D.generated_utc}` +
+  ((D.build || {}).where === 'github-actions'
+     ? ` door GitHub Actions (${(D.build.sha || '?')})` : '') +
+  ` · ${D.runs.length} runs · ${D.names.length} namen · ` +
   `${D.trades.filter(t=>t.closed).length} afgeronde posities · ` +
   `conviction-floor uit de config ${D.conviction_floor}`;
 document.getElementById('theme').onclick = () => {
@@ -2508,66 +2524,250 @@ document.getElementById('theme').onclick = () => {
   document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
   refresh();
 };
-/* The refresh button.
-   Served by serve.py it rebuilds directly. Opened as a file it cannot run anything
-   itself -- but it can ask a rebuilder that is already running, and `serve.py` answers
-   a file:// page on purpose. So the button probes on load: if the server is up it goes
-   live and a rebuild rewrites this very file on disk, which a reload then picks up. If
-   nothing answers it hands over the command instead of pretending. */
+/* The refresh button, three ways, and it says which one it is in.
+
+   lokaal  a rebuilder answers on 127.0.0.1:8765 (`./dashboard/update.sh --serve-bg`).
+           A click rebuilds the ledger and rewrites this very file on disk. A file://
+           page may not run a script -- a browser rule, not a setting -- but it may
+           talk to a server that is already running, and serve.py answers one on
+           purpose.
+   ci      no local rebuilder, but the repository is known: a click asks GitHub
+           Actions to run the `dashboard` workflow, which rebuilds the ledger,
+           commits it and republishes this page. That is the mode a hosted copy is
+           in, because a page on the web cannot reach your laptop and must not
+           pretend it can.
+   uit     neither is reachable, so the button hands over the command.
+
+   An https page cannot probe http://127.0.0.1 -- mixed content -- so the local probe
+   only runs where it can succeed: a file, or a page served from localhost. The
+   dispatch needs a token GitHub will accept; without one the button opens the
+   workflow's own page, where the same run is one click away. The token is kept in
+   this browser's localStorage and goes nowhere but api.github.com. */
 const PORT = 8765;
-const BASE = location.protocol === 'file:' ? `http://127.0.0.1:${PORT}` : '';
+const ONFILE = location.protocol === 'file:';
+const LOCALHOST = /^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname);
+const LOCAL = ONFILE ? `http://127.0.0.1:${PORT}` : (LOCALHOST ? location.origin : null);
 const CMD = './dashboard/update.sh';
+const BUILD = D.build || {};
+const REPO = BUILD.repo || '';
+const WF = 'dashboard.yml';
+const API = REPO ? `https://api.github.com/repos/${REPO}` : '';
+const WFURL = REPO ? `https://github.com/${REPO}/actions/workflows/${WF}` : '';
+const TOKKEY = 'edge-dashboard-gh-token';
 const btn = document.getElementById('refresh');
 const log = document.getElementById('refreshlog');
-let served = location.protocol !== 'file:';
+const badge = document.getElementById('served');
+let mode = 'uit';
+
+const tok = () => { try { return localStorage.getItem(TOKKEY) || ''; } catch (_) { return ''; } };
+function setTok(v) {
+  try { v ? localStorage.setItem(TOKKEY, v) : localStorage.removeItem(TOKKEY); } catch (_) {}
+}
+function gh(extra) {
+  const h = Object.assign({'Accept':'application/vnd.github+json',
+                           'X-GitHub-Api-Version':'2022-11-28'}, extra || {});
+  if (tok()) h['Authorization'] = `Bearer ${tok()}`;
+  return h;
+}
+function show(text) { log.hidden = false; log.textContent = text; }
+function showHTML(html) { log.hidden = false; log.innerHTML = html; }
+function setBadge(text, title, cls) {
+  badge.hidden = false; badge.textContent = text; badge.title = title || '';
+  badge.className = 'badge' + (cls ? ' ' + cls : '');
+}
+function stamp(d) {
+  try { return new Date(d).toLocaleString('nl-NL', {dateStyle:'short', timeStyle:'short'}); }
+  catch (_) { return d; }
+}
+
+async function lastRun() {
+  if (!API) return null;
+  try {
+    const r = await fetch(`${API}/actions/workflows/${WF}/runs?per_page=1`,
+                          {headers: gh(), cache:'no-store'});
+    if (!r.ok) return null;
+    return ((await r.json()).workflow_runs || [])[0] || null;
+  } catch (_) { return null; }
+}
+
+/* Is there a finished build newer than the data on this page? On a hosted copy
+   that means a reload is all it takes; in a file it means `git pull`. */
+function newerThanThisPage(run) {
+  if (!run || run.status !== 'completed' || run.conclusion !== 'success') return false;
+  if (!D.generated_utc) return false;
+  return new Date(run.updated_at) > new Date(D.generated_utc);
+}
 
 async function probe() {
-  if (served) { btn.title = 'Herbouwt de ledger en dit dashboard.'; return; }
-  try {
-    const r = await fetch(`${BASE}/ping`, {cache:'no-store'});
-    const j = await r.json();
-    if (j && j.ok) {
-      served = true;
-      btn.textContent = 'Ververs';
-      btn.title = `Verbonden met de rebuilder op poort ${PORT}.`;
-      document.getElementById('served').hidden = false;
-    }
-  } catch (_) {
-    btn.title = `Geen rebuilder gevonden op poort ${PORT}. Klik voor het commando.`;
+  if (LOCAL) {
+    try {
+      const j = await (await fetch(`${LOCAL}/ping`, {cache:'no-store'})).json();
+      if (j && j.ok) {
+        mode = 'lokaal';
+        setBadge('live', `Rebuilder op poort ${PORT}: een klik herbouwt dit bestand.`);
+        btn.title = 'Herbouwt de ledger en dit dashboard, hier op deze machine.';
+        return;
+      }
+    } catch (_) {}
+  }
+  if (!API) {
+    btn.title = `Geen rebuilder op poort ${PORT} en geen repo bekend. Klik voor het commando.`;
+    return;
+  }
+  mode = 'ci';
+  btn.title = 'Laat GitHub Actions de ledger en deze pagina opnieuw bouwen.';
+  const run = await lastRun();
+  if (!run) {
+    setBadge('CI', 'Workflow-status niet op te halen (limiet of geen netwerk).', 'ci');
+    return;
+  }
+  const busy = run.status !== 'completed';
+  setBadge(busy ? 'CI bezig' : 'CI',
+           `Laatste run: ${run.status}${run.conclusion ? ' / ' + run.conclusion : ''} ` +
+           `om ${stamp(run.updated_at)}`, 'ci');
+  if (newerThanThisPage(run)) {
+    showHTML(`Er is een nieuwere build klaar (${stamp(run.updated_at)}) dan de data op ` +
+             `deze pagina (${stamp(D.generated_utc)}).\n` +
+             (ONFILE ? `Dit is een bestand op schijf: haal hem op met <code>git pull</code>.`
+                     : `<a href="#" id="hardreload">Herlaad deze pagina</a> om hem te zien.`));
+    const a = document.getElementById('hardreload');
+    if (a) a.onclick = (e) => { e.preventDefault(); bust(); };
   }
 }
-function explain() {
-  log.hidden = false;
-  log.textContent =
-    `Deze pagina is als bestand geopend, dus hij kan zelf geen script draaien.\n\n` +
-    `Eén keer dit draaien in de repo-root, dan werkt deze knop — ook in dit bestand:\n` +
-    `    ${CMD} --serve-bg\n\n` +
-    `Die start een servertje op 127.0.0.1:${PORT} en geeft je je shell terug. Ververs\n` +
-    `daarna deze pagina; de knop vindt de server vanzelf.\n\n` +
-    `Liever eenmalig en zonder server:\n    ${CMD}`;
-  navigator.clipboard?.writeText(`${CMD} --serve-bg`)
-    .then(() => { log.textContent += '\n\n(het eerste commando staat op je klembord)'; })
-    .catch(() => {});
+
+/* The published copy comes off a CDN, so a plain reload can hand back the old
+   file. A changing query string cannot. */
+function bust() {
+  location.replace(location.pathname + '?b=' + Date.now() + location.hash);
 }
-btn.onclick = async () => {
-  if (!served) { explain(); probe(); return; }
+
+function explainLocal() {
+  show(`Deze pagina kan zelf geen script draaien.\n\n` +
+       `Eén keer dit draaien in de repo-root, dan werkt deze knop — ook in dit bestand:\n` +
+       `    ${CMD} --serve-bg\n\n` +
+       `Die start een servertje op 127.0.0.1:${PORT} en geeft je je shell terug. Ververs\n` +
+       `daarna deze pagina; de knop vindt de server vanzelf.\n\n` +
+       `Liever eenmalig en zonder server:\n    ${CMD}`);
+  navigator.clipboard?.writeText(`${CMD} --serve-bg`).catch(() => {});
+}
+
+function explainCI() {
+  showHTML(
+    (ONFILE
+      ? `Dit bestand staat op schijf en er draait geen rebuilder. Wil je HIER bouwen, dan\n` +
+        `is het <code>${CMD} --serve-bg</code> in de repo-root, en daarna deze pagina\n` +
+        `verversen.\n\n`
+      : `Deze pagina draait niet op jouw machine, dus de knop kan hier niets bouwen.\n`) +
+    `Wat hij wél kan: de workflow <code>${WF}</code> starten in ${REPO}. Die herbouwt de\n` +
+    `ledger, commit hem en publiceert de gepubliceerde pagina opnieuw` +
+    (ONFILE ? ` — niet dit bestand, dat haal je daarna op met <code>git pull</code>` : ``) +
+    `.\n\n` +
+    `Eén klik hier: <a href="${WFURL}" target="_blank" rel="noopener">open de workflow</a> ` +
+    `en kies “Run workflow”.\n\n` +
+    `Of laat deze knop het doen. Daarvoor is een GitHub-token nodig met alleen\n` +
+    `<b>Actions: read and write</b> op deze repo (fine-grained, of een classic met <code>repo</code>).\n` +
+    `Hij wordt alleen in deze browser bewaard en gaat alleen naar api.github.com.\n` +
+    `<div class="row"><input type="password" id="ghtok" placeholder="github_pat_…" ` +
+    `autocomplete="off" spellcheck="false">` +
+    `<button class="btn small" id="ghtoksave">bewaren</button>` +
+    `<button class="btn small" id="ghtokclear">vergeten</button></div>`);
+  const inp = document.getElementById('ghtok');
+  document.getElementById('ghtoksave').onclick = () => {
+    const v = (inp.value || '').trim();
+    if (!v) return;
+    setTok(v); inp.value = '';
+    show('token bewaard — klik nu op Ververs.');
+  };
+  document.getElementById('ghtokclear').onclick = () => {
+    setTok(''); show('token gewist uit deze browser.');
+  };
+}
+
+async function rebuildLocal() {
   btn.disabled = true; btn.textContent = 'bezig…';
-  log.hidden = false; log.textContent = 'ledger en dashboard opnieuw bouwen…';
+  show('ledger en dashboard opnieuw bouwen…');
   try {
-    const r = await fetch(`${BASE}/rebuild`, {method:'POST'});
-    const j = await r.json();
-    log.textContent = j.log || '(geen uitvoer)';
+    const j = await (await fetch(`${LOCAL}/rebuild`, {method:'POST'})).json();
+    show(j.log || '(geen uitvoer)');
     if (j.ok) {
       log.textContent += '\nklaar — pagina wordt herladen';
       setTimeout(() => location.reload(), 900);
       return;
     }
-  } catch (err) {
-    served = false;
-    explain();
+  } catch (_) {
+    mode = 'uit';
+    explainLocal();
   }
   btn.disabled = false; btn.textContent = 'Ververs';
+}
+
+/* Fire the workflow and then watch it. The run is only reported complete once the
+   build AND the publish step are done, so when this says klaar the page behind the
+   URL really has changed. */
+async function rebuildCI() {
+  if (!tok()) { explainCI(); return; }
+  btn.disabled = true; btn.textContent = 'bezig…';
+  show('GitHub Actions starten…');
+  const t0 = Date.now() - 120000;
+  let r;
+  try {
+    r = await fetch(`${API}/actions/workflows/${WF}/dispatches`, {
+      method: 'POST',
+      headers: gh({'Content-Type': 'application/json'}),
+      body: JSON.stringify({ref: 'main', inputs: {}})});
+  } catch (err) {
+    show(`starten mislukt: ${err}\nProbeer de workflow zelf: ${WFURL}`);
+    btn.disabled = false; btn.textContent = 'Ververs'; return;
+  }
+  if (!r.ok) {
+    const why = r.status === 401 || r.status === 403
+      ? 'het token wordt niet geaccepteerd (verlopen, of zonder Actions-schrijfrecht)'
+      : r.status === 404
+        ? `workflow ${WF} niet gevonden op de hoofdbranch van ${REPO}`
+        : `HTTP ${r.status}`;
+    showHTML(`Starten mislukt: ${why}.\n` +
+             `<a href="${WFURL}" target="_blank" rel="noopener">Open de workflow</a> en ` +
+             `draai hem daar, of zet een ander token.`);
+    btn.disabled = false; btn.textContent = 'Ververs'; return;
+  }
+  show('gestart — wachten tot de build klaar is (meestal twee tot vier minuten)…');
+  for (let i = 0; i < 150; i++) {
+    await new Promise(res => setTimeout(res, 6000));
+    const run = await lastRun();
+    if (!run || new Date(run.created_at).getTime() < t0) {
+      show('gestart — de run staat nog in de wachtrij…');
+      continue;
+    }
+    if (run.status !== 'completed') {
+      show(`bezig: ${run.status}${run.conclusion ? ' / ' + run.conclusion : ''} — ` +
+           `${run.html_url}`);
+      continue;
+    }
+    if (run.conclusion === 'success') {
+      if (ONFILE) {
+        showHTML(`Klaar. Dit is een bestand op schijf, dus het verandert er niet van: ` +
+                 `<code>git pull</code> haalt de nieuwe versie op. ` +
+                 `<a href="${run.html_url}" target="_blank" rel="noopener">De run</a>.`);
+        btn.disabled = false; btn.textContent = 'Ververs';
+        return;
+      }
+      show('klaar — pagina wordt opnieuw opgehaald');
+      setTimeout(bust, 1200);
+      return;
+    }
+    showHTML(`De run eindigde als <b>${run.conclusion}</b>. ` +
+             `<a href="${run.html_url}" target="_blank" rel="noopener">Bekijk het logboek</a>.`);
+    break;
+  }
+  btn.disabled = false; btn.textContent = 'Ververs';
+}
+
+btn.onclick = () => {
+  if (mode === 'lokaal') return rebuildLocal();
+  if (mode === 'ci') return rebuildCI();
+  return explainLocal();
 };
+probe();
 probe();
 let rt;
 addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(refresh, 150); });
