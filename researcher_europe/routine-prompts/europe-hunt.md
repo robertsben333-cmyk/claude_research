@@ -1,7 +1,6 @@
 # The Routine prompt for stage EU
 
-**The Routine exists: `trig_018WGfdq2fUm1ZqJhCGQ1wde`, "Stage EU — Europe researcher
-(UK/FR/DE)", cron `30 13 * * 1-5`, enabled, created 2026-09-19 at 08:24 UTC.** Check it
+**The Routine exists: `trig_018WGfdq2fUm1ZqJhCGQ1wde`, "Stage EU — Europe researcher", cron `30 13 * * 1-5`, enabled, created 2026-09-19 at 08:24 UTC.** Check it
 against `list_triggers` rather than against this line.
 
 It was **created by a session**, so `update_trigger` works on it — the same as stage J's
@@ -115,19 +114,28 @@ Keep the two in step; nothing else will.
 >
 > Invoke `researcher-europe-hunt` and follow it exactly.
 >
-> - **No orders, no broker.** Alpaca does not carry LSE, Euronext or XETRA.
+> - **No orders, no broker.** Alpaca carries none of these ten venues.
 > - The ranking key is whatever `edge-scores.json`'s own `ranking_key` says.
-> - **One isolated subagent per name**, matching the baseline's `submarket`:
->   `unpriced-hunter-uk`, `-fr` or `-de`. Several names in one context destroys both
->   controls and leaves names unhunted.
+> - **Ten markets since 2026-09-19**: uk, de, fr, se, dk, no, fi, it, es, pl. The cap is
+>   **20**. Read `config/pipeline.yaml`'s `europe_hunt` block rather than this line.
+> - **One isolated subagent per name**, dispatched on the baseline's `submarket` —
+>   the mapping is `MARKETS[<submarket>]["hunter"]`, so read it rather than recalling it:
+>   `unpriced-hunter-uk`, `-de`, `-fr`, `-it`, `-es`, `-pl`, and **`-nordic` for se/dk/no/fi
+>   (tell it which of the four it is hunting)**. Several names in one context destroys
+>   both controls and leaves names unhunted.
 > - **English pass first**, frozen as `pre_local`, then the local pass revises.
 > - A two-name day is normal. **Do not lower the $200k turnover floor to fill a wave.**
 > - **Never fabricate a number**; non-English sources get the original string quoted.
 > - Heartbeat before spending, publish after every wave, append to `_run-log.md`.
 >
-> Known limits: Yahoo's European closes lag one session for `.L` and ~two for `.PA`/`.DE`,
-> so a run cannot be resolved the next morning; and `event_occurred: false` is unreachable
-> for Germany, since EQS-News has no whole-day query.
+> Known limits, and they now differ by market — `eu_market.CAPABILITY` is the table:
+> Yahoo's European closes lag one session for `.L` and ~two for `.PA`/`.DE`, so a run
+> cannot be resolved the next morning. **`event_occurred: false` is unreachable for
+> Germany, Spain and Poland.** For Sweden, Denmark and Finland it is reachable only
+> while the print is inside the Nasdaq feed's ~12-day paged window, so **resolve a Nordic
+> run within about a week**. **Spain and Poland also have no short register**, so those
+> names carry no positioning anchor and their lean is the free control — say so in the
+> note, with how many of the day's names they are.
 >
 > ## Publishing
 >
@@ -153,13 +161,21 @@ here than in the US stage:
 
 - The **UK** source (Investegate) is queryable by date back to 1999 and will keep.
 - **France** is `info-financiere.gouv.fr`, the AMF's own regulated-information flux:
-  536,868 records back to 2012, and the only one of the three carrying the issuer's own
-  filing category. It will keep. This corrects what this file said until 2026-09-19
+  536,868 records back to 2012, and — with the Nordic feed added in 2026-09 — one of the
+  few carrying the issuer's own filing category. It will keep. This corrects what this file said until 2026-09-19
   ("France has no readable confirmation source at all"), which was measured against
   Euronext's SPA and never against the regulator.
 - **Germany** is the EQS-News *search*, which paginates back years per issuer but has **no
   whole-day query**. So a German name can be confirmed but a German phantom cannot be
   caught: `event_occurred: false` is unreachable for Germany by construction.
+- **Norway** is Oslo Børs NewsWeb — a true day query, ticker-keyed, and it will keep.
+- **Italy** is eMarket STORAGE, which keeps, behind a WAF that answers about 7 of 8.
+- **Sweden, Denmark and Finland are the ones that expire**, and this is the reason a
+  late resolve now costs more than it used to. The Nasdaq Nordic feed has **no date
+  query at all** — its `fromDate` is accepted and ignored — so the archive is paged back
+  ~200 rows and about two days at a time, roughly twelve days before it stops being
+  cheap. Past that, a Nordic row resolves `null` for ever. **Resolve within a week.**
+- **Spain and Poland have no archive**, so their rows always resolve `null`.
 
 A guard for any such Routine should be an **exit status, not a config key read by eye** —
 the lesson `researcher_us/routine-prompts/edge-execute.md` paid for twice. There is no

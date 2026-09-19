@@ -1,16 +1,17 @@
 # researcher_europe — stage EU
 
-The unpriced-information hunt, run over the **UK, France and Germany pooled**. One
-signed number per company (`impact_sum`, points of spot, unbounded) so the day's names
-can be **ranked**. No call, no threshold, no direction label. Research only: **this stage
-places no orders and reads no broker.**
+The unpriced-information hunt, run over **ten European markets pooled** — the UK,
+France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain and Poland. One signed
+number per company (`impact_sum`, points of spot, unbounded) so the day's names can be
+**ranked**. No call, no threshold, no direction label. Research only: **this stage places
+no orders and reads no broker.**
 
 It exists to ask whether the result the US stage is chasing is a property of the method
 or a property of the US market — the same question stage J asks of Tokyo, now asked of a
-third market with a different microstructure. Because it uses the same scorer, the same
+third region with a different microstructure. Because it uses the same scorer, the same
 key and the same measurement window, all three are directly comparable.
 
-Alpaca does not carry LSE, Euronext or XETRA. Execution here is a separate decision to be
+Alpaca carries none of these ten venues. Execution here is a separate decision to be
 made later on Europe's own resolved numbers; what this stage does for that decision is
 carry a turnover floor and a shortability signal in the universe, and say below what a
 broker would still need.
@@ -18,6 +19,14 @@ broker would still need.
 ## Status
 
 **Nothing has resolved. There is no European result, good or bad.**
+
+**Seven markets were added on 2026-09-19** — Stockholm, Copenhagen, Oslo, Helsinki,
+Milan, Madrid and Warsaw — on the operator's instruction, with the cap raised from 12 to
+20. Same $200k floor, same scorer, still no orders. What that change rests on, and what
+it costs, is in "Ten markets and not three" below. The short version: it buys October and
+November, which are exactly the months the original three are thinnest, and it brings in
+two markets (Spain and Poland) that have **no positioning anchor and no way to confirm a
+print after the fact**.
 
 Built and validated end to end on 2026-09-18 against a real past date (2026-09-16: 22
 vendor-scheduled rows across the three markets, 4 eligible above the $1m turnover floor,
@@ -39,19 +48,20 @@ not an automatic kill.
 
 | | |
 | --- | --- |
-| `SUBMARKET.md` | Phase 1. Why these three, with the counts. **Read it before changing any threshold here.** |
-| `scripts/eu_market.py` | what the three markets share and where they differ |
-| `scripts/eu_universe.py` | the vendor forward calendar → today's names, USD turnover floor, seeded random draw |
+| `SUBMARKET.md` | Phase 1. Why these markets, with the counts. **Read it before changing any threshold here.** |
+| `scripts/eu_market.py` | what the ten markets share, where they differ, and **`CAPABILITY`** — what each one's sources can actually do |
+| `scripts/eu_universe.py` | the vendor forward calendar → today's names, USD turnover floor in six currencies, seeded random draw |
 | `scripts/eu_priced_in.py` | the sealed baseline, in the shape `edge_score.py` reads |
-| `scripts/eu_positioning.py` | FCA / Bundesanzeiger / (AMF) short registers, the substitute anchors |
-| `scripts/eu_archive.py` | **the day archive per market** — Investegate, the AMF flux, EQS search — one row shape, one classifier, one three-state `confirm()` |
+| `scripts/eu_positioning.py` | eight national short registers, the substitute anchors |
+| `scripts/eu_archive.py` | **the day archive per market** — Investegate, the AMF flux, EQS search, the Nasdaq Nordic feed, Oslo NewsWeb, eMarket STORAGE — one row shape, one classifier, one three-state `confirm()` |
+| `scripts/eu_sheet.py` | ODS and XLSX with the standard library, because two registers are spreadsheets and this container has no `openpyxl` or `odfpy` |
 | `scripts/eu_resolve.py` | confirmation, realised move, Spearman + permutation p, per-market stats, the anchor-coverage split, the language control |
-| `researcher_us/scripts/edge_score.py` | **shared** — same scorer for all three markets, so the numbers are comparable |
-| `.claude/agents/unpriced-hunter-{uk,fr,de}.md` | the hunters; same output contract, three source worlds |
+| `researcher_us/scripts/edge_score.py` | **shared** — same scorer for all ten markets, so the numbers are comparable |
+| `.claude/agents/unpriced-hunter-{uk,fr,de,nordic,it,es,pl}.md` | the hunters; same output contract, seven source worlds. The four added in 2026-09 are **generated from the German one** so the invariant contract cannot drift |
 | `.claude/skills/researcher-europe-hunt/SKILL.md` | the run |
 | `LESSONS.md` | what a finding has to carry here, grown from resolved runs |
 
-## Why three markets and not one
+## Ten markets and not three
 
 Because none of them is a daily market on its own, and the counts are in `SUBMARKET.md`:
 
@@ -67,12 +77,75 @@ Because none of them is a daily market on its own, and the counts are in `SUBMAR
 - **France** — semi-annual, median gap 204 days, **94 of 161 forward events in
   February–March**. The thinnest of the three on both axes.
 
-They peak in different months, so pooling is what turns three seasonal calendars into
-one stream. Fridays, August, late December and the German June–July gap are thin
-whatever the floor is, and **a thin day is a weak day, not a broken stage**.
+They peak in different months, so pooling is what turns seasonal calendars into one
+stream. Fridays, August, late December and the German June–July gap are thin whatever the
+floor is, and **a thin day is a weak day, not a broken stage**.
+
+### The seven added on 2026-09-19, and the measurement that justifies them
+
+**The obvious test says they add nothing, and it is testing the one window where they
+cannot help.** Over the ten sessions 2026-09-21 → 10-02, against the live vendor
+calendar and the live tape, the seven new markets add **six names** to a pooled median of
+seven a day. Late September is the UK's month and nobody else's.
+
+By **month** of forward vendor events the picture inverts:
+
+| month | UK+DE+FR | the new seven | note |
+| --- | --- | --- | --- |
+| Sep 2026 | 161 | 13 | the window the ten-session probe sampled |
+| **Oct 2026** | **114** | **456** | October is the existing stage's *thinnest* month |
+| Nov 2026 | 309 | 515 | |
+| Dec 2026 | 109 | 56 | |
+| Feb 2027 | 133 | 38 | |
+| Mar 2027 | 250 | 70 | |
+
+Sweden alone carries 259 October events. **The seven are worth their code in October and
+November and add almost nothing in February and March**, which is precisely the
+complementarity the original pooling argument is built on.
+
+**And the cadence is better, which matters more than the count.** Measured median gap
+between a vendor row's last and next release: Sweden 98 days, Denmark 91, Norway 91,
+Finland 97, Poland 91, Italy 105, Spain 105 — against the UK's 217 and France's 204. The
+Nordics report quarterly, so a Nordic name recurs four times a year where a UK one
+recurs twice, and a pooled sample fills at twice the rate per name.
+
+**What is worse, and it is not small.** The vendor carries a forward date for 0.88 of
+Finnish and 0.81 of Norwegian issuers and for **0.20 of Italian, 0.19 of Spanish and 0.13
+of Polish** ones. That is France's regime (0.27), and France was measured to be
+undercounted 3.6× by this same vendor — so Milan, Madrid and Warsaw are seen through a
+calendar that misses most of them.
+
+### They are not equally instrumented, and that is carried in the data
+
+`eu_market.CAPABILITY` is the measured table, from 2026-09-19:
+
+| markets | short register | day archive | `event_occurred: false` | `history` |
+| --- | --- | --- | --- | --- |
+| **uk** | FCA, with history | Investegate, by date to 1999 | yes | **observed** |
+| **no** | dated event history per issuer — the best of the ten | Oslo NewsWeb, true day query, **ticker-keyed** | yes | **observed** |
+| **fr** | AMF, per-holder to 2012 | AMF flux, issuer's own category | yes | estimated |
+| **it** | CONSOB xlsx, WAF-retried | eMarket STORAGE, WAF-retried | yes | estimated |
+| **se dk fi** | national, snapshot only | Nasdaq Nordic, **paged, no date query** | only inside a ~12-day window | estimated |
+| **de** | Bundesanzeiger, snapshot | EQS, per issuer only | **no** | estimated |
+| **es pl** | **none reachable** | **none reachable** | **no** | estimated |
+
+Three consequences worth stating plainly:
+
+- **Norway is now the second-best-instrumented market in this stage**, after the UK. It
+  is the only other one whose `history` carries observed announcement dates.
+- **Spain and Poland run blind on both axes.** With no register, `priced_lean_pct` falls
+  back to the 20-day run-up — which is also the free control the stage is measured
+  against — so those names cannot beat the benchmark with anything that uses it, and
+  their prints can never be confirmed or killed. Both were given the eight-try standard
+  that rescued France and Italy and failed it. **A pooled ρ that does not say how much of
+  it is `es`/`pl` is being oversold.**
+- **Denmark is not on the same scale as anyone else.** Finanstilsynet publishes from
+  **0.1%** where the SSR threshold is 0.5%, so Danish aggregates are systematically
+  larger for the same real crowding. Deliberately not rescaled — a correction factor
+  nobody has measured is worse than a difference everyone can see.
 
 **The floor is $200k/day since 2026-09-19, down from $1m, on the operator's
-instruction** — the same bar the US and Japanese stages screen on, so the three markets
+instruction** — the same bar the US and Japanese stages screen on, so all ten markets
 are cut the same way and their resolved numbers are comparable. Measured over the ten
 sessions 2026-09-21 → 10-02 on the live vendor calendar and live tape, it is not
 cosmetic: the pooled day goes from a median of **2.5 names to 6.5** and a mean of 2.8 to
@@ -175,7 +248,7 @@ them.**
 
 ## The calendar is a vendor calendar, and its error rate was measured
 
-TradingView's public scanner is the forward calendar for all three markets. Against the
+TradingView's public scanner is the forward calendar for all ten markets. Against the
 actual RNS record over 20 fully scraped days, **90 of its UK rows fell on a scraped day
 and 88 had a same-day results announcement from the same issuer — a 2.2% phantom rate.**
 The US stage's `time-not-supplied` rows were 20 of 20 phantom on 2026-09-17, so this is a
@@ -183,13 +256,41 @@ different object. It is not zero: on a ten-name day 2.2% is one phantom every fi
 and this repo ranked, traded and lost money on TRT, which never reported. `event_occurred:
 false` is reachable and the confirmation pass is not optional.
 
-**All three markets have a day archive since 2026-09-19** — `scripts/eu_archive.py`,
-one row shape over three sources, so `eu_resolve.py` confirms three markets through one
-code path:
+**Its forward-date coverage is very uneven across the ten**, and that is a separate
+failure from a phantom row. Measured 2026-09-19 as the fraction of each market's primary
+universe carrying an `earnings_release_next_date`: UK 0.75, Finland 0.88, Norway 0.81,
+Germany 0.61, Sweden 0.55, Denmark 0.46, France 0.27, **Italy 0.20, Spain 0.19, Poland
+0.13**. A market at 0.13 is not being screened, it is being sampled.
+
+**Eight of the ten markets have a day archive** — `scripts/eu_archive.py`, one row shape
+over six sources, so `eu_resolve.py` confirms every market through one code path. It
+returns **`None`, not `[]`**, where a source could not be read, because "nobody announced
+anything" and "I could not look" are the two answers this stage may never confuse:
 
 - **UK — Investegate**, a full RNS mirror queryable **by date back to 1999**. Stronger
   than Japan's TDnet, which keeps about 31 days: a UK run can be confirmed months later.
   Results are identified by **headline**, which is its weakness.
+- **SE / DK / FI — the Nasdaq Nordic disclosure feed** (`api.news.eu.nasdaq.com`), one
+  endpoint for three markets, carrying **the issuer's own release category** — so the
+  property that made France the best-classified market now holds in four. **Its
+  `fromDate` is accepted and IGNORED**: a request for a date a month old returns the most
+  recent 200 rows, dated today. That is the most dangerous shape in this stage, a
+  successful-looking request for the wrong day, so the filter is never passed and the
+  feed is **paged** instead — about two days per request, roughly twelve days before it
+  stops being cheap. Beyond that window it returns `None`. **Resolve a Nordic run within
+  about a week.**
+- **NO — Oslo Børs NewsWeb**, a true `fromDate`/`toDate` query with English category
+  labels and `issuerSign` on every row. The only archive besides Investegate that lets
+  confirmation join on a **ticker** rather than a normalised company name, which is the
+  weakest link everywhere else here. Its per-issuer query is also what gives Norway
+  observed announcement history.
+- **IT — eMarket STORAGE**, Borsa Italiana's officially appointed storage mechanism,
+  behind the same Radware WAF as CONSOB (measured 7 of 8 good, so retried rather than
+  believed on one failure). **`data_to` is EXCLUSIVE** — `data_from=D&data_to=D` returns
+  zero rows and looks exactly like a silent day, where `data_to=D+1` returns the 19 that
+  exist.
+- **ES / PL — nothing.** Every CNMV `Consulta-OIR` path returns 403; `www.gpw.pl` and
+  `espi.pap.pl` each returned 0 of 8 on the sweep where emarketstorage returned 7 of 8.
 - **FR — `info-financiere.gouv.fr`**, the AMF's own regulated-information archive,
   through an Opendatasoft API with no key: **536,868 records back to 2012**, current to
   yesterday, 45–110 items a day, queryable by date range. It is the only one of the
@@ -220,8 +321,8 @@ coverage problem.
 
 **The vendor undercounts the UK and France and not Germany.** On the 20 sampled days the
 UK's measured count above $1m/day of turnover was 5.05 events a day against the 2.3 the
-vendor's forward calendar gives — a factor of 2.2. With day archives for all three
-markets (2026-09-19) the same comparison gives **3.6× for France** on the week where the
+vendor's forward calendar gives — a factor of 2.2. With day archives for the original
+three markets (2026-09-19) the same comparison gives **3.6× for France** on the week where the
 vendor's last-release field is current — 10.0 results issuers a day against 2.8 vendor
 rows — and **0.78× for Germany** in its August peak week, 10.8 against 13.8. So France's
 contribution to the pooled stream is materially larger than `SUBMARKET.md`'s table says,
@@ -258,8 +359,8 @@ because the key is a sum those names carried the largest conviction by construct
 
 **And there is no size-band cut above the floor, deliberately, against the prior that
 motivated this stage.** Sell-side coverage was measured at 1–2 analysts below $1m/day of
-turnover, 5–7 at $1–5m, 11–13 at $5–25m and 16–19 above $25m, consistently across all
-three markets. The genuinely under-read band is $1–5m — one band *below* MDAX / SBF 120
+turnover, 5–7 at $1–5m, 11–13 at $5–25m and 16–19 above $25m, consistently across the
+three markets it was measured on. The genuinely under-read band is $1–5m — one band *below* MDAX / SBF 120
 ex-CAC 40 / FTSE 250. Cutting the universe to it would bake this stage's own thesis into
 its universe and make it unfalsifiable. So `analyst_band` rides in every baseline and
 `eu_resolve.py` ranks the hunt **by band**. Measure the thesis; do not select on it.
@@ -268,8 +369,8 @@ its universe and make it unfalsifiable. So `analyst_band` rides in every baselin
 
 The hunters run an **English pass**, freeze it as `pre_local`, then run a **local pass**
 and revise. `edge_score.py` carries `diagnostics.impact_sum_pre_local` beside the key and
-`eu_resolve.py` ranks both against the same realised move, so "searching in German and
-French earns rank correlation" is a measured claim and not a belief.
+`eu_resolve.py` ranks both against the same realised move, so "searching in the local
+language earns rank correlation" is a measured claim and not a belief.
 
 English-only is the coverage the thesis says is already in the price. Local-only throws
 away sell-side notes, wire copy and cross-border reporting that genuinely carry
@@ -287,6 +388,16 @@ pool** the UK delta with the German and French ones, because averaging them repo
 mean of two different experiments. Be honest about what follows: the UK number measures a
 weaker effect, and a UK zero is not evidence about language.
 
+**The Nordic case is weaker than the others too, and for a different reason.** Nordic
+issuers publish in English as a matter of routine — most releases go out in both
+languages at once, which is not true in Germany, France or Italy. So the premise the
+second pass tests is genuinely thinner there, and a Nordic `pre_local` delta of zero has
+two readings that look identical from the number alone: the local pass found nothing, or
+there was no local-only information to find. What is reliably local in the Nordics is the
+**press and the retail forums**, not the filing. `unpriced-hunter-nordic` says this in as
+many words and asks for it in `local_pass_note`, so a zero can be read rather than
+guessed at.
+
 **Nothing pools on one day.** A delta on four to twelve names is noise, the same caveat
 `researcher_japan` records for its own `impact_sum_pre_lessons`.
 
@@ -295,16 +406,35 @@ before `LESSONS.md` is opened, so the guidance file keeps its own separate contr
 
 ## Currencies, holidays and the things that differ per market
 
-- **Currencies.** The UK quotes in pence (`GBp` on Yahoo, `GBX` on the vendor); France
-  and Germany in EUR. Moves are in percent so the key is unaffected, but the turnover
-  floor is an absolute number and would mean three different things in three currencies.
-  **Everything is normalised to USD**, off a live rate, and the rate is written into every
-  universe file so the cut is reproducible.
+- **Currencies — six of them.** The UK quotes in pence (`GBp` on Yahoo, `GBX` on the
+  vendor); France, Germany, Finland, Italy and Spain in EUR; Sweden in SEK, Denmark in
+  DKK, Norway in NOK, Poland in PLN. Moves are in percent so the key is unaffected, but
+  the turnover floor is an absolute number and would otherwise mean six different things.
+  **Everything is normalised to USD**, off a live rate, and every rate is written into
+  every universe file so the cut is reproducible. A currency whose rate does not resolve
+  drops that market's names as "no fx" rather than screening them at the wrong size — a
+  PLN name compared to a USD floor would pass at a quarter of its real turnover.
+- **Ticker translation is per market.** The vendor writes Nordic share classes with an
+  underscore and Yahoo with a hyphen: `OMXSTO:INVE_A` is `INVE-A.ST`, `OMXHEX:NDA_FI` is
+  `NDA-FI.HE`. Getting this wrong does not raise — Yahoo answers with an empty chart, the
+  row drops as "no tape", and the day silently loses its largest Nordic names, which are
+  exactly the ones with two share classes.
+- **The vendor's country scanner is not one exchange.** `sweden` pools OMXSTO (663) with
+  NGM (230) and `poland` pools GPW (384) with NewConnect (325). NGM names do not take
+  `.ST` at all, so they would be screened on somebody else's tape. `exchange_allow`
+  filters the markets added in 2026-09 and is deliberately absent for uk/de/fr, whose
+  output must stay byte-identical — the UK scanner has always carried 37 AQUIS rows.
 - **Holidays are exchange holidays, not public holidays.** XETRA trades on Fronleichnam
   and Allerheiligen, which a generic German holiday list carries; Euronext Paris is
-  shorter than the French jours fériés. Those two are computed from Easter plus a fixed
-  list in `eu_market.exchange_holidays()`. The UK is the one case where the public list is
-  the exchange list, and `gov.uk/bank-holidays.json` is fetched and cached.
+  shorter than the French jours fériés; Stockholm and Helsinki shut for **Midsummer Eve**,
+  which moves (the Friday between 19 and 25 June) and is computed rather than listed.
+  These are computed from Easter plus a fixed list in `eu_market.exchange_holidays()`.
+  **The UK is the only one fetched live** — `gov.uk/bank-holidays.json`, cached. The other
+  nine are hand-entered from each exchange's published trading calendar and are therefore
+  the most likely thing in this module to be quietly wrong; `market_closed` in the
+  universe file records which rule fired, so an error shows up in the output rather than
+  only in the source. **The Nordic list is the one to check first**: three moving feasts
+  plus Midsummer.
 - **Half sessions** around Christmas and New Year are reported, not skipped — a print into
   a 12:30 close has half the exit window the measurement assumes and a reader is entitled
   to know which rows those are.

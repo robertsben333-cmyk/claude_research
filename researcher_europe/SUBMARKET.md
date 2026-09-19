@@ -9,11 +9,14 @@ size-band cut.** The pooled stream clears the Japan bar on a median day and does
 clear it on every day. Three conditions are named at the end; two of them are real and
 one of them (the French short register) was unsolved when this was written.
 
-**Two things changed on 2026-09-19 and this file was amended rather than rewritten.**
+**Three things changed on 2026-09-19 and this file was amended rather than rewritten.**
 The floor is now **$200k**, on the operator's instruction, for cross-market
 comparability and stream depth — see "What the $200k floor adds" in §1 for what that
-buys and what it costs, both measured. And **the French short register is solved**: §4
-carries the working path. Everything else below stands as measured on 2026-09-18.
+buys and what it costs, both measured. **The French short register is solved**: §4
+carries the working path. And **seven more markets were added** — Stockholm, Copenhagen,
+Oslo, Helsinki, Milan, Madrid and Warsaw — measured in **§10, appended at the end**.
+Everything else below stands as measured on 2026-09-18, and §10 does not overwrite it:
+the verdict in this header was about the original three and is left as it was written.
 
 ---
 
@@ -712,3 +715,153 @@ average of two different experiments.
 
 *Research, not investment advice. Keep the disclaimer from `config/pipeline.yaml` on
 every deliverable.*
+
+---
+
+## 10. The seven markets added on 2026-09-19
+
+Measured from this container on 2026-09-19 against the live vendor calendar, the live
+tape and the live regulator sites, to the same standard as Phase 1: where a number could
+not be measured it says so.
+
+**This was an instruction, not a proposal** — the operator asked for the Nordics, Poland,
+Milan and Madrid at the same $200k floor, with the cap raised to 20. What follows is what
+that buys and what it costs, so the decision is reviewable rather than merely recorded.
+
+### 10.1 Stream — and the first measurement is misleading
+
+Over the ten sessions **2026-09-21 → 10-02**, with the $200k floor applied to live
+20-session median turnover, the seven new markets add **six names** to a pooled median of
+seven a day. On that number alone they are not worth their code.
+
+That window is the problem, not the answer. Late September is the UK's month. Counting
+**all** forward vendor events by the month they fall in:
+
+| month | UK+DE+FR | new seven | of which SE | uplift |
+| --- | --- | --- | --- | --- |
+| Sep 2026 | 161 | 13 | 2 | 0.08× |
+| **Oct 2026** | **114** | **456** | **259** | **4.00×** |
+| Nov 2026 | 309 | 515 | 215 | 1.67× |
+| Dec 2026 | 109 | 56 | 13 | 0.51× |
+| Jan 2027 | 27 | 3 | 1 | 0.11× |
+| Feb 2027 | 133 | 38 | 3 | 0.29× |
+| Mar 2027 | 250 | 70 | 0 | 0.28× |
+
+**October is the existing stage's thinnest month of the autumn and the new seven carry
+four times its whole stream in it.** November nearly doubles. February and March — the
+French and UK months — are barely touched. That is the same complementarity the original
+three-market pooling argument rests on, and it is the whole case for this change.
+
+### 10.2 Cadence, which matters more than the count
+
+Median gap between a vendor row's last and next scheduled release:
+
+| market | median gap (days) | market | median gap (days) |
+| --- | --- | --- | --- |
+| Sweden | 98 | Poland | 91 |
+| Denmark | 91 | Italy | 105 |
+| Norway | 91 | Spain | 105 |
+| Finland | 97 | *UK* | *217* |
+| | | *France* | *204* |
+
+The Nordics and Poland report **quarterly**. A Nordic name therefore recurs four times a
+year where a UK one recurs twice, so a pooled sample fills at roughly twice the rate per
+name — which matters for a stage whose binding constraint is how many resolved events it
+can accumulate before anything can be said.
+
+### 10.3 What is worse: the vendor barely sees three of them
+
+Fraction of each market's primary-listing universe carrying an
+`earnings_release_next_date`:
+
+| market | universe | with a forward date | fraction |
+| --- | --- | --- | --- |
+| Finland | 181 | 160 | **0.88** |
+| Norway | 274 | 221 | **0.81** |
+| UK | 1078 | 807 | 0.75 |
+| Germany | 427 | 259 | 0.61 |
+| Sweden | 893 | 493 | 0.55 |
+| Denmark | 134 | 62 | 0.46 |
+| France | 591 | 161 | 0.27 |
+| **Italy** | 389 | 78 | **0.20** |
+| **Spain** | 278 | 54 | **0.19** |
+| **Poland** | 709 | 89 | **0.13** |
+
+Italy, Spain and Poland sit at or below France's coverage — and France was measured in §1
+to be **undercounted 3.6× by this same vendor**. So those three are sampled rather than
+screened. They are in because they were asked for and because a missed name costs
+nothing; **they are not load-bearing and no note should present them as if they were.**
+
+### 10.4 The anchor: five more registers, and two that do not exist
+
+| market | source | result | change measurable? |
+| --- | --- | --- | --- |
+| Sweden | Finansinspektionen `GetBlankningsregisterAggregat` (ODS) | ✓ 342 issuers | cache diff only |
+| Denmark | Finanstilsynet aggregated table (inline HTML) | ✓ 50 issuers, **0.1% threshold** | cache diff only |
+| Norway | `ssr.finanstilsynet.no/api/v2/instruments` (JSON) | ✓ 96 issuers, **full dated event history** | **exact** |
+| Finland | `finanssivalvonta.fi/api/shortselling/datatable/current` (POST) | ✓ 17 issuers, per holder | cache diff only |
+| Italy | CONSOB `PncPubbl.xlsx` | ✓ 52 issuers, per holder, **WAF 2/5 — retry** | cache diff only |
+| **Spain** | CNMV `posicionescortas` | **✗** ASP.NET postback, 0 rows on 8/8 | — |
+| **Poland** | KNF `RssOuterView/JSCRIPT` | **✗** 302 then 403, every attempt | — |
+
+Three things follow.
+
+**Norway's is the best register in this stage.** A full dated event history per issuer
+means the level *and* the change over any window are exact measurements, and the anchor
+is backtestable — the property the FCA and AMF files have and Bundesanzeiger's does not.
+
+**Denmark is not on the same scale as anybody else.** Finanstilsynet publishes from
+**0.1%** where the SSR threshold is 0.5%, so Danish aggregates sum positions no other
+register shows and read systematically higher for the same real crowding. Deliberately
+**not rescaled**: a correction factor nobody has measured is worse than a difference
+everyone can see. `threshold_pct` rides in the Danish rows.
+
+**Spain and Poland have no anchor at all**, and both were given the **eight-try standard**
+that rescued France in §4 and Italy here — on the same sweep, `emarketstorage.com`
+scored 7 of 8 while `www.gpw.pl` and `espi.pap.pl` each scored 0 of 8. With no register a
+name's `priced_lean_pct` falls back to `-0.05 × run_up_20d_pct`, which **is the free
+control the whole stage is measured against**, so such a name cannot beat the benchmark
+with anything that uses it.
+
+### 10.5 Confirmation: who can ever be killed
+
+| market | day archive | `event_occurred: false` |
+| --- | --- | --- |
+| Norway | Oslo Børs NewsWeb — true day query, **ticker-keyed**, categorised | yes |
+| Italy | eMarket STORAGE — WAF 7/8, **`data_to` is EXCLUSIVE** | yes |
+| SE / DK / FI | Nasdaq Nordic feed — issuer's own category, but **no date query** | only inside a ~12-day paged window |
+| **Spain, Poland** | none reachable | **no** |
+
+Two traps were found here and both are the silent kind:
+
+- **The Nasdaq feed's `fromDate` is accepted and ignored.** A request for a date a month
+  old returns the most recent 200 rows, dated today, with HTTP 200. Used naively it would
+  have written a confident `event_occurred: false` for every Nordic name ever hunted. The
+  code never passes the filter and pages back instead.
+- **eMarket STORAGE's `data_to` is exclusive.** `data_from=D&data_to=D` returns zero rows
+  and is indistinguishable from a day on which nothing was published; `data_to=D+1`
+  returns the 19 rows that exist.
+
+### 10.6 Access from this container
+
+The financial **press** of all four new regions is more open than France's, which is the
+one pleasant surprise. Three tries each: di.se, dn.se, placera.se, avanza.se, borsen.dk,
+e24.no, kauppalehti.fi, hs.fi, mfn.se, milanofinanza.it, ilsole24ore.com, teleborsa.it,
+borsaitaliana.it, expansion.com, bolsamania.com, parkiet.com, pb.pl, bankier.pl,
+stockwatch.pl and strefainwestorow.pl **all 3/3**. Refusing: affarsvarlden.se (0/3),
+cincodias.elpais.com (403), eleconomista.es (403), dn.no (2/3).
+
+**Poland is the instructive case.** Its regulator and its exchange are both shut to this
+container while its entire financial press is open — so a Polish name can be *researched*
+and cannot be *anchored* or *confirmed*. Those are different failures and the stage
+records them separately.
+
+### 10.7 What would change the verdict
+
+- If pooled days accumulate and `by_market` shows the Spanish and Polish arm ranking at
+  zero while the anchored markets do not, **drop them**; they are already first in
+  `europe_hunt.degrade_order` for exactly this reason.
+- If the Nasdaq feed gains a working date query, Sweden, Denmark and Finland move from
+  conditional to unconditional confirmation.
+- If a Spanish or Polish register becomes reachable, add a loader and delete the entry
+  from `eu_positioning.UNREACHABLE`. It is written to be re-tested, not believed.
