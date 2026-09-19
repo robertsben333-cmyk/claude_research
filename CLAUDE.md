@@ -44,6 +44,32 @@ material below is kept because the live stages reference it, not because it runs
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** UK, France and Germany pooled, one stage, three language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
+**STAGE E's ROUTINE AND "CLOSE AMC" DO NOT EXIST ON THIS ACCOUNT (checked 2026-09-19
+09:11 UTC).** `list_triggers`, with `include_completed: true` and `has_more: false`,
+returns eight Routines and **neither `trig_01CvGQJWoKeNLXWCxiffM3ED` (stage E) nor
+`trig_01MPuhVvtDgvUYzZXkKpHpKD` ("Close AMC") is among them.** Everything below describing
+stage E as live, unattended and placing money, and "Close AMC" as the second exit Routine,
+describes a schedule that is not currently running. The repo has stage E output through
+2026-09-18 and a Close AMC run that morning, so this is recent: the Routines were removed,
+disabled out of listing range, or moved somewhere this tool cannot see, between 2026-09-18
+and 2026-09-19, from outside this repo. **Nothing was re-created in response** — a Routine
+that places real orders is not something a session should conjure back. What still holds:
+`execution.enabled` in `config/pipeline.yaml` governs whether any order is sent, and with
+no Routine firing, no book is being opened or closed by anything but a hand-run session.
+**If an amc or bmo leg was open on 2026-09-18, nothing scheduled is going to sell it.**
+Check `alpaca_trade.py verify` before assuming the account is flat. This is the fourth
+time this file has disagreed with `list_triggers`; the rule stands — check the Routines,
+not the table.
+
+**The two live Routines run on Opus, since 2026-09-19 09:11 UTC.** Stage J and stage EU
+both carried an empty `model`, which resolves to the account default — the stage EU
+hand-fire served `claude-sonnet-5`. Both are now pinned to `claude-opus-5` on the
+operator's instruction ("move everything to opus"). The config and the agent definitions
+were already Opus throughout: every `model:` in `config/pipeline.yaml` reads `opus`, and
+the only Sonnet agent left is `earnings-triage-scout`, which belongs to retired stage 1.
+So the Routine's own model was the whole gap, and it governs the session that orchestrates
+a run rather than the hunters it spawns.
+
 Stage N is not part of the daily advice pipeline. It is `archive/backtest/` arm A promoted to
 production: the method that scored 72% direction and +0.90% per trade over 37 events
 while the pipeline's own stage-2 method (arm C) scored 55% and lost money. It writes to
@@ -768,7 +794,7 @@ The prompt pasted in that Routine still tells the session it fires at "14:04 UTC
 16:04 Amsterdam and 10:04 New York". It also tells it to re-read the clock with `date -u`,
 which is the only reason that is survivable. Fix it on the next paste.
 
-It is enabled and it is the only pipeline Routine still running. Its prompt cannot be
+It was enabled and described as the only pipeline Routine still running; as of 2026-09-19 it is not in `list_triggers` at all — see the note under the stage table. Its prompt cannot be
 edited by a session —
 `update_trigger` refuses any Routine an agent did not create — so the text lives in
 `researcher_us/routine-prompts/edge-hunt.md` and was pasted in by hand on 2026-09-09 at 13:55 UTC;
@@ -1168,7 +1194,7 @@ researcher_europe/                     stage EU — see researcher_europe/README
   scripts/                             eu_market, eu_universe, eu_positioning,
                                        eu_priced_in, eu_resolve
   SUBMARKET.md                         why UK+FR+DE pooled, with the counts behind it
-  routine-prompts/                     written; NO Routine exists yet
+  routine-prompts/                     the text in the stage EU Routine
 archive/                               retired 2026-09-18 — see archive/README.md
   backtest/                            the sealed backtest, arms A/B/C + edge-corpus
   claude_naive/                        stage N, disabled 2026-09-09

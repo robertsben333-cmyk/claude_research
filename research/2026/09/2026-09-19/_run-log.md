@@ -27,3 +27,7 @@
 ## Stage EU — Routine prompt hardened after a silent hand-fire
 - Logged at 2026-09-19 08:40 UTC
 - The 08:24 UTC hand-fire published nothing anywhere (no commit, no branch, no run dir) after 165k tokens and ten minutes, so it did not settle whether a fired session arrives with a checkout. Prompt updated 08:39 UTC to not depend on it: step 0 clones the repo if CLAUDE.md is absent and distinguishes no-repo from branch-not-merged, and every fire must publish something even on an empty day or a failure. Also noted: the fired session served on claude-sonnet-5 while europe_hunt asks for model: opus.
+
+## Routines — both live stages pinned to Opus; stage E's Routine is missing
+- Logged at 2026-09-19 09:12 UTC
+- Stage EU (trig_018WGfdq2fUm1ZqJhCGQ1wde) and stage J (trig_0192kQeqhumBKpNGzzyQrS1H) both carried an empty model and are now claude-opus-5, on the operator's instruction. Config and agent definitions were already Opus throughout. Separately and more seriously: list_triggers with include_completed and has_more false returns eight Routines and stage E's trig_01CvGQJWoKeNLXWCxiffM3ED and Close AMC's trig_01MPuhVvtDgvUYzZXkKpHpKD are not among them, so the money-placing stage has no schedule. Nothing was re-created.
