@@ -52,6 +52,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      pages: ${{ steps.pages.outcome }}
     steps:
       - uses: actions/checkout@v4
 
@@ -143,16 +145,31 @@ jobs:
           cp dashboard/data/*.csv dashboard/data/ledger.json _site/data/
           cp dashboard/README.md _site/README.md
 
-      - uses: actions/configure-pages@v5
+      # GITHUB_TOKEN may not CREATE a Pages site -- "Resource not accessible by
+      # integration" -- so the first time this needs one click in Settings -> Pages
+      # -> Source -> GitHub Actions. Until then the publish is skipped and the
+      # rebuild-and-commit above still stands: a page that is not served is worth
+      # more than a workflow that goes red.
+      - id: pages
+        uses: actions/configure-pages@v5
+        continue-on-error: true
         with:
           enablement: true
 
-      - uses: actions/upload-pages-artifact@v3
+      - if: steps.pages.outcome != 'success'
+        run: |
+          echo "Pages is off: set Settings -> Pages -> Source to 'GitHub Actions' once," \
+               "then re-run. The ledger and dashboard.html are committed to main either way." \
+            >> "$GITHUB_STEP_SUMMARY"
+
+      - if: steps.pages.outcome == 'success'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
   deploy:
     needs: build
+    if: needs.build.outputs.pages == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

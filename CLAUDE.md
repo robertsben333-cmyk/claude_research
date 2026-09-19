@@ -238,7 +238,10 @@ thing and must not be mixed.
 **And it rebuilds itself in CI since 2026-09-19, because the button could not work on a
 fetched page.** `.github/workflows/dashboard.yml` — the first workflow in this repo —
 runs the same `./dashboard/update.sh`, commits `dashboard/` back to `main` and publishes
-the page to GitHub Pages at <https://robertsben333-cmyk.github.io/claude_research/>. It
+the page to GitHub Pages at <https://robertsben333-cmyk.github.io/claude_research/> —
+**which needs Settings → Pages → Source set to *GitHub Actions* once**, because
+`GITHUB_TOKEN` is refused when it asks to create the site; until that is done the
+workflow rebuilds and commits as normal and skips the publish rather than going red. It
 fires at 11:40 and 21:40 UTC on weekdays, on a push touching `research/` or the scripts,
 and on demand. The page's own button now knows which of the two worlds it is in: a local
 rebuilder on `127.0.0.1:8765` (**live**) or the workflow (**CI**), and on a fetched page

@@ -91,9 +91,12 @@ Two things it needs, and neither is fatal when absent:
   and is sent to `api.github.com` and nowhere else. Reading the run's status needs no
   token at all, which is how the page can say *there is a newer build than this one*.
 
-Pages is served from the workflow, and `actions/configure-pages` turns it on at the
-first run. If that step fails on permissions, set Settings → Pages → Source to *GitHub
-Actions* by hand once.
+**Pages needs one click before any of this is served.** `actions/configure-pages` asks
+to turn it on and `GITHUB_TOKEN` is refused — *Resource not accessible by integration*,
+measured on the first run of 2026-09-19. Set **Settings → Pages → Source** to *GitHub
+Actions* once, and the publish starts working. Until then the workflow still rebuilds
+and still commits to `main`; it skips the publish rather than going red, so the button's
+CI path reports success for a page nobody can fetch yet.
 
 The helper runs those two scripts and nothing else; no part of a request reaches a
 shell, it binds to `127.0.0.1`, and the broker is only ever read. Its CORS headers name
