@@ -13,6 +13,11 @@
 #                                             and the button works in the file you already
 #                                             have open, because the page finds the server
 #
+# None of that reaches a page you FETCHED rather than opened: it has no machine of
+# yours to build on. .github/workflows/dashboard.yml runs this same rebuild in CI,
+# commits the result to main and republishes the site, and the page's own button
+# starts it. See dashboard/README.md.
+#
 # Safe to run any number of times a day: the price cache means a rebuild that adds
 # one day costs one day of fetches, and nothing here places or cancels an order.
 set -euo pipefail
