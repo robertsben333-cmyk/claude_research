@@ -41,7 +41,7 @@ material below is kept because the live stages reference it, not because it runs
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
-| EU | `researcher-europe-hunt` | **no Routine yet** | **Stage EU — the Europe researcher.** UK, France and Germany pooled, one stage, three language-specific hunters, research only, no orders. Built 2026-09-18; nothing scheduled, so it runs only when invoked by hand |
+| EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** UK, France and Germany pooled, one stage, three language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 Stage N is not part of the daily advice pipeline. It is `archive/backtest/` arm A promoted to
@@ -936,9 +936,27 @@ See `researcher_japan/README.md`.
 
 **Stage EU is a third market, added 2026-09-18: `researcher_europe/`.** The UK, France
 and Germany, pooled into one stage, on the same scorer again
-(`researcher_us/scripts/edge_score.py`). **It places no orders and there is no Routine**,
-so nothing fires on its own; invoke `researcher-europe-hunt` by hand. Alpaca carries none
-of these venues, so execution would be a separate build against a different broker.
+(`researcher_us/scripts/edge_score.py`). **It places no orders.** Alpaca carries none of
+these venues, so execution would be a separate build against a different broker.
+
+**Its Routine exists since 2026-09-19: `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron
+`30 13 * * 1-5`.** Created by a session, so `update_trigger` works on it, and
+`researcher_europe/routine-prompts/europe-hunt.md` must be changed in the same commit as
+any re-paste. Two things about it are NOT verified: it came back with empty `sources`,
+`outcomes` and `allowed_tools` exactly as stage J's did, and **unlike stage J its prompt
+does not clone the repo**, so a session arriving without a checkout would exit non-zero
+and report a clean failure every morning while never running. It was hand-fired on
+2026-09-19 at 08:24 UTC (session `cse_01GPAvkwHzwzxuWdsscSUPUN`) to settle that; read that
+run before believing a quiet afternoon.
+
+**It fires two hours before the European close, not after it, on the operator's
+instruction.** The obvious slot is after the 17:30 CET closes so every `close(D-1)` is
+final. 13:30 UTC is 15:30 Amsterdam in summer and 14:30 in winter, while the markets are
+still trading. This does **not** corrupt the measurement, because `eu_resolve.py` takes the
+realised move from daily bars and never from the sealed spot; it does mean the sealed spot
+and `run_up_20d_pct` are intraday prices, struck at the same instant as the free control
+they are measured against. Never call the sealed spot a close. The cron is UTC and the
+exchanges are not, so the gap widens to three hours after the October change.
 
 **Pooling is not a convenience, it is the only thing that makes the stage possible.**
 Each market fails the stream test alone and each fails it differently: Germany's Prime
