@@ -67,10 +67,17 @@ Because none of them is a daily market on its own, and the counts are in `SUBMAR
   February–March**. The thinnest of the three on both axes.
 
 They peak in different months, so pooling is what turns three seasonal calendars into
-one stream: roughly **8–12 names on a median day** above the $1m floor. It is not 8–12
-every day. Fridays, August, late December and the German June–July gap will produce
-two- and three-name days. **A thin day is a weak day, not a broken stage. The response
-to one is to hunt the names there are, never to drop the turnover floor.**
+one stream. Fridays, August, late December and the German June–July gap are thin
+whatever the floor is, and **a thin day is a weak day, not a broken stage**.
+
+**The floor is $200k/day since 2026-09-19, down from $1m, on the operator's
+instruction** — the same bar the US and Japanese stages screen on, so the three markets
+are cut the same way and their resolved numbers are comparable. Measured over the ten
+sessions 2026-09-21 → 10-02 on the live vendor calendar and live tape, it is not
+cosmetic: the pooled day goes from a median of **2.5 names to 6.5** and a mean of 2.8 to
+6.1, and France goes from a median of 0 names a day to 1. What it costs is the anchor,
+priced in `SUBMARKET.md` §"What the $200k floor adds"; `anchor_covered` rides in every
+baseline and `eu_resolve.py` reports the Spearman split by it.
 
 ## Europe reports before the open, and that changes the window
 
@@ -167,16 +174,24 @@ factor of 2.2. So the stream numbers above are floors. A better forward calendar
 Germany and France is the biggest single improvement available to this stage and it is not
 built.
 
-## The selection is random on purpose, and the floor is $1m
+## The selection is random on purpose, and the floor is $200k
 
-Two steps: drop everything below **$1m a day** of median 20-session turnover, normalised
-to USD off a live FX rate written into the universe file; then if more than `cap` survive,
-take a **random sample seeded by the date**.
+Two steps: drop everything below **$200k a day** of median 20-session turnover,
+normalised to USD off a live FX rate written into the universe file; then if more than
+`cap` survive, take a **random sample seeded by the date**.
 
-$1m rather than the ~$200k the US and Japanese stages use, and the reason is measured:
-below $1m the FCA register resolves on 22 of 190 UK names (12%) against 41 of 46 (89%) in
-the $1–5m band. The cheap half of the universe is the half where the substitute anchor
-stops working **and** nothing can be traded. Both reasons point the same way.
+It was **$1m until 2026-09-19** and that reason was measured: below $1m the FCA register
+returns a disclosed position for 22 of 190 UK names (12%) against 41 of 46 (89%) in the
+$1–5m band, so the cheap half of the universe is the half where the substitute anchor
+stops working *and* nothing can be traded. The operator moved it to $200k for
+cross-market comparability and stream depth, **cost accepted, not missed**.
+
+The cost is carried rather than argued about. Every baseline seals **`anchor_covered`** —
+true only where the register named this issuer, false for a truncated zero (register
+read, issuer absent) and for an unreadable register — `anchor_quality.direction` pays a
+truncated zero 0.15 where a disclosure earns 0.45, and `eu_resolve.py` reports
+`by_anchor_covered` with the count in each arm. If the uncovered half ranks at zero,
+that is readable within a fortnight instead of never.
 
 Random, because any other cut is a second ranking the scorer cannot see. The US run has
 already paid for this: its two highest-`hunt_priority` names got two hunters each, and

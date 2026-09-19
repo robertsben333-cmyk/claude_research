@@ -233,14 +233,35 @@ europe_hunt:
   # hunt the names there are, NEVER to drop the floor.
   cap: 12
   #
-  # THE TURNOVER FLOOR IS $1m A DAY, FIVE TIMES THE US AND JAPANESE BAR, AND THE REASON
-  # IS MEASURED. Below $1m the FCA short register -- which is what substitutes for the
-  # option anchor Europe does not have -- resolves on 22 of 190 UK names (12%) against 41
-  # of 46 (89%) in the $1-5m band. So the cheap half of the universe is the half where the
-  # anchor stops working AND nothing can be traded. Both reasons point the same way.
+  # THE TURNOVER FLOOR WAS $1m A DAY UNTIL 2026-09-19 AND IS NOW $200k, ON THE
+  # OPERATOR'S INSTRUCTION. The $1m reason was measured and is not withdrawn: below $1m
+  # the FCA short register -- which is what substitutes for the option anchor Europe does
+  # not have -- resolves on 22 of 190 UK names (12%) against 41 of 46 (89%) in the $1-5m
+  # band, so the cheap half of the universe is the half where the anchor stops working
+  # AND nothing can be traded. Both reasons pointed the same way and this change accepts
+  # the cost of both.
+  #
+  # WHY IT MOVED, in the operator's words: $200k is what edge_hunt and japan_hunt screen
+  # on, so all three markets are now cut the same way and their resolved numbers are
+  # comparable; and it adds names on exactly the thin days that pooling three seasonal
+  # calendars was supposed to fix.
+  #
+  # WHAT IT COSTS, measured rather than asserted (researcher_europe/SUBMARKET.md, "What
+  # the $200k floor adds"): on the 20-day UK RNS sample it lifts the median day from 4
+  # names to 7 and the mean from 5.05 to 7.65, and every name it adds sits in the band
+  # where 88% of issuers carry no disclosed short at all. So the stream gets thicker and
+  # the anchor gets thinner in the same move.
+  #
+  # THE COST IS NOT LEFT SILENT, which is the part that matters. Every baseline now
+  # carries a top-level `anchor_covered` boolean -- did this name's short register
+  # actually return a disclosed position, as opposed to a truncated zero or an
+  # unreadable file -- `anchor_quality.direction` is graded by it rather than paying a
+  # register-read absence the same 0.45 as a real disclosure, and eu_resolve.py reports
+  # the Spearman SPLIT BY `anchor_covered` with the count in each arm. If the uncovered
+  # half ranks at zero, that is readable within a fortnight instead of never.
   # Normalised to USD off a live FX rate that is written into every universe file, because
   # three currencies and a constant is a floor that moves 10% a year without saying so.
-  min_turnover_usd: 1000000
+  min_turnover_usd: 200000
   #
   # NO SIZE-BAND CUT ABOVE THE FLOOR, and this is deliberate against the operator's own
   # prior. Phase 1 measured sell-side coverage at 1-2 analysts below $1m/day, 5-7 at

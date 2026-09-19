@@ -993,9 +993,27 @@ it.** Analyst coverage runs 1–2.5 names below $1m/day, 5–7 at $1–5m, 11–
 16–19.5 above — so MDAX/SDAX, SBF 120 ex-CAC 40 and FTSE 250 sit in the *well-covered*
 band and the genuinely under-read one is $1–5m, a band lower than "mid cap" would suggest.
 Selecting the universe on the thesis would make the thesis unfalsifiable, so the stage
-takes a $1m/day floor (capacity *and* anchor coverage: the register resolves on 12% of
-names below it) then a seeded random draw, carries `analyst_band` in every baseline, and
-`eu_resolve.py` ranks the hunt **by band**. Let the measurement find the band.
+takes a turnover floor then a seeded random draw, carries `analyst_band` in every
+baseline, and `eu_resolve.py` ranks the hunt **by band**. Let the measurement find the
+band.
+
+**The floor moved from $1m to $200k on 2026-09-19, on the operator's instruction, and
+the cost is now carried in the data.** The reason given: $200k is what stages E and J
+screen on, so all three markets are cut the same way and their resolved numbers are
+comparable, and it adds names on exactly the thin days. Measured forward over ten
+sessions (2026-09-21 → 10-02, live vendor calendar and live tape) it is **not
+cosmetic**: the pooled day goes from a median 2.5 names to **6.5** and a mean 2.8 to
+6.1, 28 names to 61 over the ten days, with France going from a median of zero a day to
+one. What it costs is the anchor — in the UK the short register names **80% of the names
+above $1m and 32% of the names the new floor adds** (16/20 against 8/25), which is less
+bad than Phase 1's "12% below $1m" suggested because that figure pooled the $200k–$1m
+band with everything under it. So every baseline now seals **`anchor_covered`** (true
+only where the register names that issuer; a truncated zero and an unreadable register
+are both false, kept apart by `anchor_coverage.state`), `anchor_quality.direction` pays
+a truncated zero 0.15 where a disclosure earns 0.45, and `eu_resolve.py` reports
+**`by_anchor_covered`** — Spearman, sign rate and count in each arm. If the half this
+floor bought ranks at zero, a fortnight of pooled days says so rather than nobody ever
+finding out.
 
 **Each hunter runs English first, then local, and the order is load-bearing.** The
 English pass is frozen as `pre_local` before the local-language pass revises it, so

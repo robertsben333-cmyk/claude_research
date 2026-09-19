@@ -16,12 +16,22 @@ None of the three is a daily market on its own. Measured in Phase 1
            February and March.
 
 They peak in different months, so pooling three seasonal calendars is what produces
-one stream. Pooled above $1m/day of turnover that is roughly 8 to 12 names on a median
-day. It is NOT 8 to 12 every day: Fridays, August, late December and the German
-June-July gap will produce two- and three-name days. A thin day is a weak day and not
-a broken stage; the response to one is to hunt the names there are, never to drop the
-turnover floor, because below $1m/day the short register that substitutes for the
-missing option anchor resolves on 12% of names and nothing can be traded anyway.
+one stream. It is still not a thick stream every day: Fridays, August, late December
+and the German June-July gap are thin whatever the floor is.
+
+THE FLOOR IS $200k/DAY SINCE 2026-09-19, DOWN FROM $1m, ON THE OPERATOR'S INSTRUCTION.
+Two reasons were given and both are about comparability and depth: $200k is what the US
+and Japanese stages screen on, so the three markets are now cut the same way and their
+resolved numbers mean the same thing; and it adds names on exactly the thin days.
+Measured on the 20-day UK RNS sample it takes the median day from 4 names to 7.
+
+WHAT THAT COSTS IS NOT WITHDRAWN. Below $1m/day the FCA short register -- the thing
+that substitutes for the option anchor Europe does not have -- returns a disclosed
+position for 22 of 190 UK names (12%) against 41 of 46 (89%) in the $1-5m band. So
+every name this floor adds is a name whose positioning anchor most likely reads a
+truncated zero, and nothing down there is tradeable either. The cost is made visible
+rather than argued about: `anchor_covered` rides in every baseline, `anchor_quality`
+is graded by it, and `eu_resolve.py` reports the Spearman split by it.
 
 EUROPE REPORTS BEFORE THE OPEN
 ------------------------------
@@ -52,10 +62,11 @@ Two steps, and the second is deliberately not a judgement:
 
   1. Drop everything below `--min-turnover-usd` on median 20-session turnover,
      currency-normalised to USD with a live rate that is written into the output.
-     $1m/day rather than the $200k the US and Japanese stages use, and the reason is
-     measured rather than borrowed: below $1m the FCA short register resolves on 22 of
-     190 UK names (12%) against 41 of 46 (89%) in the $1-5m band, so the cheap half of
-     the universe is the half where the substitute anchor stops working.
+     $200k/day since 2026-09-19, the same bar the US and Japanese stages use, so the
+     three markets' resolved numbers are comparable. Below $1m the FCA register
+     returns a disclosed position for 12% of names against 89% in the $1-5m band, so
+     the names between $200k and $1m are mostly unanchored -- carried explicitly as
+     `anchor_covered: false` rather than screened out.
   2. If more than `--cap` survive, take a RANDOM sample seeded by the date.
 
 Random, because any other cut is a second ranking the scorer cannot see, and the US run
@@ -268,10 +279,13 @@ def main():
                     help="comma-separated subset of uk,de,fr (default all three)")
     ap.add_argument("--cap", type=int, default=12,
                     help="most names to hunt in a day (default 12)")
-    ap.add_argument("--min-turnover-usd", type=float, default=1_000_000,
-                    help="median 20-session turnover floor in USD (default 1e6). "
-                         "Below it the short register resolves on 12%% of names and "
-                         "nothing is tradeable; see SUBMARKET.md section 4.")
+    ap.add_argument("--min-turnover-usd", type=float, default=200_000,
+                    help="median 20-session turnover floor in USD (default 2e5, the "
+                         "same bar the US and Japanese stages use, since 2026-09-19). "
+                         "It was 1e6: below $1m the short register returns a disclosed "
+                         "position for 12%% of names against 89%% at $1-5m and nothing "
+                         "is tradeable. See SUBMARKET.md section 4 and the "
+                         "`anchor_covered` split in eu_resolve.py.")
     ap.add_argument("--use-last-release", action="store_true",
                     help="VALIDATION ONLY. Build the universe from the vendor's LAST "
                          "release date instead of its next one, so the whole chain can "
@@ -384,12 +398,14 @@ def main():
         "method": method, "seed": seed,
         "eligible": len(eligible), "dropped": len(dropped), "hunted": len(picked),
         "by_market": {m: sum(1 for x in picked if x["_market"] == m) for m in markets},
-        "basis": "Turnover floor for capacity and anchor coverage, then a seeded random "
-                 "draw. The floor is NOT a size-band cut: Phase 1 found coverage runs "
-                 "5-7 analysts at $1-5m of turnover against 16-19 above $25m, and "
-                 "selecting on that band would bake this stage's own thesis into its "
-                 "universe. Turnover rides in every baseline so the resolver can rank "
-                 "performance by band instead of assuming it.",
+        "basis": "Turnover floor, then a seeded random draw. The floor is $200k/day "
+                 "since 2026-09-19 -- the same bar the US and Japanese stages use, so "
+                 "the three markets are cut the same way. It is NOT a size-band cut: "
+                 "Phase 1 found coverage runs 5-7 analysts at $1-5m of turnover against "
+                 "16-19 above $25m, and selecting on that band would bake this stage's "
+                 "own thesis into its universe. Turnover and `anchor_covered` ride in "
+                 "every baseline so the resolver can rank performance by band and by "
+                 "whether the name had a positioning anchor at all.",
     }
     out["eligible_symbols"] = sorted(f'{x["_market"]}:{x["name"]}' for x in eligible)
     out["names"] = picked

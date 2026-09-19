@@ -32,8 +32,8 @@ three seasonal calendars is what produces one stream. See `researcher_europe/SUB
 | Session | mixed bmo/amc | all amc | **89% bmo** — close(D−1) → close(D) |
 | Option anchor | implied move + 25d skew | none; JPX shorts + 信用倍率 | **none**; FCA / Bundesanzeiger short registers |
 | Tail | uncapped | 値幅制限 truncates | **uncapped** — maxima 42% / 27% / 52% |
-| Names per day | 17–22, all hunted | 8–125, capped at 25 by random draw | ~8–12 pooled above $1m, capped at 12 |
-| Turnover floor | $200k | ¥30m (~$200k) | **$1m** — below it the short register resolves on 12% of names |
+| Names per day | 17–22, all hunted | 8–125, capped at 25 by random draw | median 6.5 above $200k, 2.5 above $1m, capped at 12 |
+| Turnover floor | $200k | ¥30m (~$200k) | **$200k** since 2026-09-19 (was $1m); below $1m the register names 12% of issuers, and `anchor_covered` carries that |
 | Hunters | one, English | one, Japanese | **three, one per market, English pass then local pass** |
 
 **Europe reports before the open.** 339 of 379 measured UK results announcements landed
@@ -78,9 +78,15 @@ python3 researcher_europe/scripts/eu_universe.py --date <EVENT-DATE> -o <RUN>/un
 
 `<EVENT-DATE>` is the day the print lands, which for a `bmo` name is the day AFTER the
 session you are sealing against. It reads the vendor calendar for all three markets,
-drops anything below $1m a day of turnover (normalised to USD off a live FX rate written
-into the file), and if more than `cap` survive takes a **random sample seeded by the
-date**. Report `selection.method`, `eligible`, `hunted` and `by_market` in the note.
+drops anything below **$200k** a day of turnover (normalised to USD off a live FX rate
+written into the file — it was $1m until 2026-09-19), and if more than `cap` survive
+takes a **random sample seeded by the date**. Report `selection.method`, `eligible`,
+`hunted` and `by_market` in the note.
+
+The floor matches the US and Japanese stages so all three markets are cut the same way.
+It also means most names now arrive with **no positioning anchor**: below $1m/day the
+national short register names 12% of issuers against 89% in the $1–5m band. Every
+baseline carries `anchor_covered` and the note must say how many names had one.
 
 The draw is random on purpose: any other cut is a second ranking the scorer cannot see,
 and the US run has already paid for that once. It matters twice here — Phase 1 measured
@@ -130,7 +136,9 @@ The note must also say, every time:
 - which names carry `session_unresolved`, because their window was assumed rather than
   known and getting it wrong roughly halves the move
 - that `options` is null in all three markets and Europe runs in the anchor-less regime
-- which markets' short registers resolved, and **that France's did not**
+- which markets' short registers resolved, and **how many names carry
+  `anchor_covered: true`** — a name the register was read for but does not name is a
+  truncated zero, not an anchor, and under the $200k floor that is most of them
 - `lean_vs_free_control_rho` per market from the previous resolved run if there is one
 - that the lean's weights are priors borrowed from the US runs, measured nowhere in Europe
 - for a German or French name, that `history.basis` is an estimated cadence — a scale and

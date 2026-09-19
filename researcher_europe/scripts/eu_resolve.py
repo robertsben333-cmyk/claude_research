@@ -37,6 +37,15 @@ anything.
    `conviction` against whether the sign was right. Plus, per market, every lean
    component on its own and `lean_vs_free_control_rho`.
 
+   AND SPLIT BY `anchor_covered`, which is new on 2026-09-19 with the turnover floor.
+   The floor dropped from $1m to $200k for cross-market comparability and stream depth,
+   and the measured cost is that below $1m the national short register returns a
+   disclosed position for 12% of UK issuers against 89% in the $1-5m band. So most of
+   what the floor buys is names with no positioning anchor at all, and pooling them with
+   the anchored ones would hide an unanchored half ranking at zero. `by_anchor_covered`
+   carries the count in each arm, and over a fortnight of pooled days it is what makes
+   that decision reviewable.
+
 4. SCORE THE LANGUAGE PASS. Each hunter runs an ENGLISH pass first, freezes it as
    `pre_local`, then runs the local-language pass and revises. `spearman_pre_local`
    ranks the frozen draft against the same realised move as the published key, so
@@ -135,6 +144,30 @@ def confirm_de(day):
     return ("TEXT", text) if today else (None, None)
 
 
+def _anchor_state(bl):
+    """Three states, derived for a baseline sealed before 2026-09-19 that has none.
+
+    `anchor_covered` and `anchor_coverage` are sealed into every baseline from
+    2026-09-19, when the turnover floor dropped to $200k. Runs sealed before that date
+    carry neither, and reading a missing key as False would file four disclosed UK
+    shorts under "no anchor" -- so the state is reconstructed from the positioning
+    block, which those baselines do carry, by exactly the rule eu_priced_in.py now
+    seals.
+    """
+    st = (bl.get("anchor_coverage") or {}).get("state")
+    if st:
+        return st
+    pos = bl.get("positioning") or {}
+    if not pos.get("covered"):
+        return "register_unreadable"
+    return "disclosed" if pos.get("short_ratio_pct") else "register_read_no_position"
+
+
+def _anchor_covered(bl):
+    v = bl.get("anchor_covered")
+    return bool(v) if v is not None else _anchor_state(bl) == "disclosed"
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -220,6 +253,9 @@ def main():
             "analyst_band": (bl.get("consensus") or {}).get("analyst_band"),
             "lean_components": bl.get("lean_components") or {},
             "positioning_covered": (bl.get("positioning") or {}).get("covered"),
+            "anchor_covered": _anchor_covered(bl),
+            "anchor_state": _anchor_state(bl),
+            "short_ratio_pct": (bl.get("positioning") or {}).get("short_ratio_pct"),
             "session": sess, "session_unresolved": bl.get("session_unresolved"),
             "move_bmo_window_pct": mv_bmo, "move_amc_window_pct": mv_amc,
             "realised_move_pct": move,
@@ -412,6 +448,53 @@ def stats_block(usable):
                 ) / len(sub), 3)}
         elif sub:
             s["by_analyst_band"][b] = {"n": len(sub), "note": "too few rows"}
+
+    # --- the cost of the $200k floor, split so it is readable rather than pooled -----
+    # The floor moved from $1m to $200k on 2026-09-19 for cross-market comparability and
+    # stream depth. What it buys is names; what it costs is the anchor, because below
+    # $1m the national short register returns a disclosed position for 12% of UK issuers
+    # against 89% in the $1-5m band. Pooling the two halves would hide exactly that: if
+    # the unanchored half ranks at zero the pooled number still looks like a result.
+    #
+    # `anchor_covered` is true only where the register NAMED this issuer. A name the
+    # register was read for and does not carry reads a truncated 0.0 and counts as
+    # uncovered here, which is the whole point -- that is the state the cheap half of
+    # the universe is in.
+    s["by_anchor_covered"] = {}
+    for lab, want in (("covered", True), ("uncovered", False)):
+        sub = [x for x in usable if bool(x.get("anchor_covered")) is want]
+        blk = {"n": len(sub),
+               "median_turnover_usd_20d": (round(median(
+                   x["median_turnover_usd_20d"] for x in sub
+                   if x.get("median_turnover_usd_20d") is not None))
+                   if any(x.get("median_turnover_usd_20d") is not None for x in sub)
+                   else None),
+               "n_below_1m_turnover": sum(
+                   1 for x in sub
+                   if (x.get("median_turnover_usd_20d") or 0) < 1_000_000)}
+        if len(sub) >= 3:
+            sy = [x["realised_move_pct"] for x in sub]
+            blk.update({
+                "spearman_impact_sum_vs_move": spearman([x["impact_sum"] for x in sub], sy),
+                "spearman_free_control_neg_runup": spearman(
+                    [-(x["run_up_20d_pct"] or 0.0) for x in sub], sy),
+                "sign_right_frac": round(sum(
+                    1 for x in sub
+                    if (x["impact_sum"] or 0) * (x["realised_move_pct"] or 0) > 0
+                ) / len(sub), 3),
+                "median_abs_realised_pct": round(median(abs(y) for y in sy), 2)})
+        else:
+            blk["note"] = "too few rows for a rank correlation"
+        s["by_anchor_covered"][lab] = blk
+    s["by_anchor_covered"]["note"] = (
+        "`covered` means the national short register returned a DISCLOSED net short "
+        "position for this issuer; `uncovered` pools the truncated zeros (register read, "
+        "issuer not named) with the unreadable registers, and `anchor_state` on each row "
+        "separates those two. This split exists because the turnover floor dropped from "
+        "$1m to $200k on 2026-09-19 and the names that buys are overwhelmingly in the "
+        "uncovered arm. One day says nothing; over a fortnight of pooled days, an "
+        "uncovered arm ranking at zero while the covered arm does not is the measured "
+        "cost of that decision.")
 
     s["unresolved_sessions"] = sum(1 for x in usable if x.get("session_unresolved"))
     s["note"] = ("One day is not a result. These pool across days; a single day's rho on "

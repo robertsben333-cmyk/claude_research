@@ -442,17 +442,75 @@ def build(name, event_date, registers, validation_only=False):
            "What matters is only that this is no longer identical to "
            "-0.05 * run_up_20d_pct, so the free control is a real rival again."))
 
+    # --- anchor coverage -----------------------------------------------------------
+    # Three states, not two, and the middle one is the one the $200k floor creates.
+    #
+    #   disclosed               the register was read AND this issuer carries a net
+    #                           short position at or above the SSR 0.5% threshold. The
+    #                           lean holds a name-specific number.
+    #   register_read_no_position
+    #                           the register was read and this issuer is absent. That is
+    #                           a real zero and it is information -- but it is the
+    #                           TRUNCATION FLOOR, identical for 0.0% and 0.4%, and below
+    #                           $1m/day of turnover 88% of UK issuers read exactly this.
+    #                           It cannot be worth the same as a disclosure.
+    #   register_unreadable     no register (France before 2026-09-19; any market whose
+    #                           file fails to download). Not a zero at all.
+    #
+    # `anchor_covered` is the boolean form and it is TRUE ONLY FOR `disclosed`, because
+    # the question it has to answer downstream is "did this name have a positioning
+    # anchor", and a truncated zero shared with a third of the market is not one.
+    # `positioning.covered` keeps its own meaning -- was the FILE readable -- and the
+    # two are deliberately different fields.
+    covered_file = bool(pos.get("covered"))
+    sr = pos.get("short_ratio_pct")
+    if not covered_file:
+        anchor_state = "register_unreadable"
+    elif sr:                                  # a real, non-zero disclosed position
+        anchor_state = "disclosed"
+    else:
+        anchor_state = "register_read_no_position"
+    doc["anchor_covered"] = anchor_state == "disclosed"
+    doc["anchor_coverage"] = {
+        "state": anchor_state,
+        "register": cfg["short_register"],
+        "as_of": pos.get("as_of"),
+        "source": pos.get("source"),
+        "basis": "`anchor_covered` is true only where the national short register "
+                 "returned a disclosed net short position for THIS issuer. A name the "
+                 "register was read for and does not name reads 0.0 -- real, but the "
+                 "0.5% truncation floor rather than a measurement, and below $1m/day of "
+                 "turnover 168 of 190 sampled UK issuers read exactly that. The turnover "
+                 "floor moved from $1m to $200k on 2026-09-19, so this field is how the "
+                 "cost of that move is made visible: eu_resolve.py reports the Spearman "
+                 "split by it, with the count in each arm.",
+    }
+
     have_dir = sum(1 for k in ("short_squeeze", "short_building")
                    if comps.get(k) is not None)
+    # Graded by anchor coverage, not just by how many components are non-null. Before
+    # 2026-09-19 a name the register was read for and did not name scored the full 0.45
+    # -- both components resolve to 0.0 -- so a truncated zero bought exactly as much
+    # `baseline_quality` as a disclosed 9% short. With the floor at $200k that is most
+    # of the universe, so it is now worth 0.15 of the 0.45.
+    if have_dir == 0:
+        dir_q = 0.0
+    elif anchor_state == "register_read_no_position":
+        dir_q = 0.15
+    else:
+        dir_q = {1: 0.25, 2: 0.45}[have_dir]
     doc["anchor_quality"] = {
         "magnitude": 0.5 if (rv20 and hist_med) else (0.3 if (rv20 or hist_med) else 0.0),
         # Two components rather than Japan's three, because there is no European
         # 信用倍率 analogue, so the ceiling is lower: 0.45 against 0.60.
-        "direction": {0: 0.0, 1: 0.25, 2: 0.45}[have_dir],
+        "direction": dir_q,
+        "anchor_state": anchor_state,
         "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because "
                  "neither is an option-implied move. direction: how many of the two "
                  "positioning components resolved, capped at 0.45 because neither is "
-                 "25-delta skew and Europe has no margin-balance component to add.",
+                 "25-delta skew and Europe has no margin-balance component to add, and "
+                 "held to 0.15 where the register was read and does not name this issuer "
+                 "-- a truncated zero is not a disclosure.",
     }
 
     doc["event_occurred"] = None      # settled after the fact by eu_resolve

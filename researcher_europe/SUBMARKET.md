@@ -7,7 +7,13 @@ not guess. Korea was killed on counts; the same standard applies here.
 **Verdict: build, all three pooled from day one, with a $1m/day turnover floor and no
 size-band cut.** The pooled stream clears the Japan bar on a median day and does not
 clear it on every day. Three conditions are named at the end; two of them are real and
-one of them (the French short register) is currently unsolved.
+one of them (the French short register) was unsolved when this was written.
+
+**Two things changed on 2026-09-19 and this file was amended rather than rewritten.**
+The floor is now **$200k**, on the operator's instruction, for cross-market
+comparability and stream depth — see "What the $200k floor adds" in §1 for what that
+buys and what it costs, both measured. And **the French short register is solved**: §4
+carries the working path. Everything else below stands as measured on 2026-09-18.
 
 ---
 
@@ -155,9 +161,69 @@ day**, and above $200k/day roughly 12 to 15.
 
 That clears the Japan bar on the median day. It does not clear it on every day, and the
 thin days are predictable: Fridays, the second half of December, August, and the whole
-of June and July for Germany. **The stage must tolerate a two-name day rather than drop
-the turnover floor to fill the wave**, because dropping the floor is how you end up
-ranking names nobody can trade and whose short register does not resolve (§4).
+of June and July for Germany. Phase 1's recommendation was that **the stage tolerate a
+two-name day rather than drop the turnover floor to fill the wave**, because dropping
+the floor is how you end up ranking names nobody can trade and whose short register does
+not resolve (§4). **The operator overruled that on 2026-09-19 and the floor is now
+$200k.** The reasoning above is not withdrawn; the section below prices what the change
+buys and what it costs, measured rather than argued.
+
+### What the $200k floor adds, measured
+
+Two measurements, one forward and one retrospective, because they answer different
+questions.
+
+**Forward — the live vendor calendar and the live tape, ten sessions 2026-09-21 →
+2026-10-02, measured on 2026-09-19.** Every primary listing whose next scheduled release
+falls on one of those days, with median 20-session turnover in USD off the same FX rates
+the universe uses:
+
+| | median names/day ≥$200k | ≥$1m | mean ≥$200k | mean ≥$1m | ten-day total ≥$200k | ≥$1m |
+| --- | --- | --- | --- | --- | --- | --- |
+| UK | 4.5 | 1.5 | 4.5 | 2.0 | 45 | 20 |
+| Germany | 0.5 | 0.0 | 0.6 | 0.4 | 6 | 4 |
+| France | 1.0 | 0.0 | 1.0 | 0.4 | 10 | 4 |
+| **pooled** | **6.5** | **2.5** | **6.1** | **2.8** | **61** | **28** |
+
+Per day, pooled: 4 / 9 / 9 / 14 / 1 / 4 / 9 / 9 / 1 / 1 at $200k against
+2 / 4 / 3 / 7 / 0 / 1 / 5 / 4 / 1 / 1 at $1m. **It is not cosmetic.** The floor roughly
+doubles the stream — 61 names against 28 over ten sessions — and it changes France and
+Germany from markets that contribute nothing on a median day to markets that contribute
+one and a half between them. It does not fix the
+thin days: 2026-09-25 and 2026-10-01 carry one name at either floor, and the worst day
+is still a one-name day.
+
+**Retrospective — the 20-day UK RNS record** (`analysis/phase1-uk-moves.json`, the 307
+events that resolved to a price window): 153 events above $200k against 101 above $1m, a
+median day of 7 against 4 and a mean of 7.65 against 5.05. The floor is 1 either way.
+On the German and French Phase 1 cohorts the same ratio is +37% (169 against 123) and
++34% (156 against 116).
+
+### What it costs, measured on the same forward sample
+
+The 33 names the lower floor adds over those ten sessions, against the national short
+registers read the same day:
+
+| | names ≥$1m with a disclosed short | names $200k–$1m with one |
+| --- | --- | --- |
+| UK / FCA | 16 of 20 (**80%**) | 8 of 25 (**32%**) |
+| Germany / Bundesanzeiger | 1 of 4 | 0 of 2 |
+| France / AMF | register unreadable at the time of this probe — see §4 | — |
+
+So in the UK — the only one of the three with enough names here to say anything — **the
+positioning anchor resolves on 80% of the names above $1m and 32% of the names the new
+floor adds.** That is the cost, and it is smaller than Phase 1's "12% below $1m" implies,
+because that figure pooled the $200k–$1m band with everything beneath it. The German
+rows are too few to read and the French rows were taken before the AMF register was
+solved (§4); re-measure both once several days have run.
+
+**The cost is carried in the data rather than in this paragraph.** Every baseline seals
+`anchor_covered` — true only where the register names that issuer, false for a truncated
+zero and false for an unreadable register, with `anchor_coverage.state` keeping those two
+apart — `anchor_quality.direction` pays a truncated zero 0.15 where a disclosure earns
+0.45, and `eu_resolve.py` reports `by_anchor_covered`: the Spearman, the sign rate and
+the count in each arm. If the names this floor bought rank at zero, a fortnight of pooled
+days says so.
 
 ---
 
@@ -438,7 +504,10 @@ on 89% of the target band, an open local press, and a measured 2.2% calendar pha
 Germany second. France last, and only after §4's data.gouv problem is solved.
 
 **Which size band?**
-$1m/day turnover floor, currency-normalised to USD, and **no band cut above it**. The
+$1m/day turnover floor, currency-normalised to USD, and **no band cut above it** — as
+recommended on 2026-09-18. **The floor was moved to $200k on 2026-09-19 by the
+operator**; the no-band-cut half of this answer is unchanged and the cost of the other
+half is measured in §1. The
 thin-coverage band is $1–5m/day (5–7 analysts), one band below the operator's prior, but
 selecting on it would bake the thesis into the universe and make it unfalsifiable. Carry
 turnover and coverage in the baseline and let the resolver rank by band.
