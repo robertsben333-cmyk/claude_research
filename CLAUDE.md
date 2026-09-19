@@ -1043,13 +1043,22 @@ library, because Sweden's and Italy's registers are spreadsheets and this contai
 no `openpyxl`, no `odfpy` and no `pandas` — the same constraint that produced
 `eu_pdftext.py`.
 
-**The Routine's pasted prompt still describes three markets.** It was last pasted on
-2026-09-19 at 08:39 UTC, before the seven were added, so it names
-`unpriced-hunter-uk/-fr/-de` and no cap. The skill it invokes is correct and the config
-is correct, so a fired run would still hunt all ten — but the prompt is stale and
-`researcher_europe/routine-prompts/europe-hunt.md` is the corrected text. **Unlike stage
-E's, this Routine CAN be edited from a session** (`update_trigger` works on one a session
-created), so re-paste it from that file and confirm `updated_at` moved.
+**The Routine's prompt was re-pasted from a session on 2026-09-19 at 13:25 UTC** and its
+`updated_at` confirms it. It now names all ten markets, the cap of 20 and the seven
+hunters including `unpriced-hunter-nordic`, and it carries the per-market resolve
+deadline. It was renamed to "Stage EU — Europe researcher (10 markets)". **Unlike stage
+E's, this Routine CAN be edited from a session**, so
+`researcher_europe/routine-prompts/europe-hunt.md` and the Routine must move in the same
+commit — that file now carries the pasted text verbatim.
+
+**And that call corrected a claim this file and the prompt file both carried.** Stage
+EU's Routine does NOT have empty `sources`, `outcomes` and `allowed_tools` any more: the
+update response returns a populated `session_request.config` with a `git_repository`
+source for this repo, a full `allowed_tools` preset, and an **`outcomes` branch of
+`claude/pensive-sagan`**. So a fired session does get a checkout. **The unresolved part
+is the publish destination**: the declared outcome branch is not `main`, while the prompt
+tells the run to use `scripts/publish.sh`, which defaults to `main`. Nobody has observed
+which one a fired run's work lands on. Check it on the next fire.
 
 **Its Routine exists since 2026-09-19: `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron
 `30 13 * * 1-5`.** Created by a session, so `update_trigger` works on it, and
