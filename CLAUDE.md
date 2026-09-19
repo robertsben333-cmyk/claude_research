@@ -1179,6 +1179,17 @@ python3 scripts/run_paths.py --json
 
 ## Rules that apply to every stage
 
+**`scripts/publish.sh` pushes to `main`, not to your branch.** `BRANCH="${EARNINGS_DATA_BRANCH:-main}"`
+is deliberate: a Routine session's job is to put the day's research on the data branch, and
+every stage's closing step depends on it. It is a trap for a *development* session working
+on a feature branch, which will push its work-in-progress to `main` without meaning to —
+that happened on 2026-09-19 and put three of stage EU's four tasks on `main` unreviewed
+(harmlessly: `main` stayed a strict ancestor of the branch and nothing outside
+`researcher_europe/`, the three Europe hunters, the Europe skill and the `europe_hunt`
+config block was touched, so the live stage E was unaffected). If you are building rather
+than running a stage, use plain `git commit` and `git push origin <your branch>`, or set
+`EARNINGS_DATA_BRANCH` first. Do not change the default; the Routines depend on it.
+
 **Publish or it never happened.** These sessions are ephemeral containers. Work that is
 not committed and pushed is destroyed when the session ends. Every stage ends with:
 
