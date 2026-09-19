@@ -28,7 +28,7 @@ three seasonal calendars is what produces one stream. See `researcher_europe/SUB
 
 | | US (stage E) | Japan (stage J) | Europe (stage EU) |
 | --- | --- | --- | --- |
-| Calendar | Nasdaq vendor feed, 20/20 phantom on one day | JPX, the issuer's own notified date | TradingView vendor feed, **2 of 90 phantom** measured against RNS |
+| Calendar | Nasdaq vendor feed, 20/20 phantom on one day | JPX, the issuer's own notified date | TradingView vendor feed, **2 of 90 phantom** measured against RNS; day archives now exist for all three markets |
 | Session | mixed bmo/amc | all amc | **89% bmo** — close(D−1) → close(D) |
 | Option anchor | implied move + 25d skew | none; JPX shorts + 信用倍率 | **none**; FCA / Bundesanzeiger short registers |
 | Tail | uncapped | 値幅制限 truncates | **uncapped** — maxima 42% / 27% / 52% |
@@ -168,10 +168,17 @@ the session was unresolved), and reports Spearman against the realised move with
 permutation p, the controls, every lean component separately, per-market statistics and
 the language-pass control.
 
-**Resolve promptly.** The UK's confirmation source is historical and will still be there
-in a month; Germany's is a same-day snapshot that does not paginate, and France has no
-readable one at all. A German name resolved late gets `event_occurred: null`, never
-`false` — absence of a readable page is not absence of a release.
+**All three markets have a day archive since 2026-09-19** (`eu_archive.py`): the UK on
+Investegate, France on the AMF's own `info-financiere.gouv.fr` flux — which carries the
+issuer's declared filing category, so French results are classified by what was filed
+and not by a headline keyword — and Germany on the EQS-News **search**, which paginates
+back years where its front page does not.
+
+So none of the three expires, and **resolving late is no longer a data-loss risk**. What
+does differ: EQS has no whole-day query, so the German archive is assembled issuer by
+issuer and a German name that is not found resolves **`event_occurred: null`, never
+`false`**. The UK and France can reach `false`, because their archives were read in full
+for that date and do not carry the issuer.
 
 ## The language experiment
 

@@ -62,13 +62,16 @@ MARKETS = {
         "language": "de",
         "hunter": "unpriced-hunter-de",
         # EQS-News is the DGAP successor and carries the MAR Article 17 `ad-hoc` stream
-        # plus Quartalsmitteilung / Halbjahresbericht corporate releases. It serves a
-        # ~60-item server-rendered snapshot of the LIVE feed and does not paginate --
-        # `?paged=2`, `/page/2/` and `?label=Reports` all return byte-identical HTML --
-        # so it confirms today and yesterday and cannot be searched historically.
-        # Resolve promptly or the confirmation is lost, exactly as for TDnet.
-        "confirm": "https://www.eqs-news.com/",
-        "confirm_name": "EQS-News (DGAP successor), same-day snapshot only",
+        # plus Quartalsmitteilung / Halbjahresbericht corporate releases. Its FRONT PAGE
+        # is a ~60-item snapshot that does not paginate, which is what Phase 1 measured
+        # and why this stage believed German confirmation expired after a day. Its
+        # SEARCH does paginate -- `/search-results/page/<n>/` -- and goes back years,
+        # carrying the date, news type, company, headline and ISIN per row. What it has
+        # no query for is a whole DAY, so the German archive is assembled per issuer and
+        # a German name that is not found resolves null, never false.
+        "confirm": ("https://www.eqs-news.com/search-results/"
+                    "?searchtype=news&searchword={issuer}"),
+        "confirm_name": "EQS-News search (per issuer, paginated, back years)",
         "short_register": "Bundesanzeiger Netto-Leerverkaufspositionen",
     },
     "fr": {
@@ -81,8 +84,14 @@ MARKETS = {
         "close_local": "17:35",
         "language": "fr",
         "hunter": "unpriced-hunter-fr",
-        "confirm": "https://live.euronext.com/en",
-        "confirm_name": "Euronext Paris company news (SPA; weakest of the three)",
+        # The AMF's own regulated-information archive, through its Opendatasoft API.
+        # 536,868 records back to 2012, current to yesterday, queryable BY DATE with no
+        # key -- and it carries the ISSUER'S OWN filing category, which neither
+        # Investegate nor EQS does. Phase 1's "FR -- nothing readable" was true of
+        # Euronext's SPA and was never tested against this.
+        "confirm": ("https://www.info-financiere.gouv.fr/api/explore/v2.1/catalog/"
+                    "datasets/flux-amf-new-prod/records"),
+        "confirm_name": "AMF regulated-information flux (info-financiere.gouv.fr)",
         # SOLVED 2026-09-19. Phase 1 recorded www.data.gouv.fr as unreachable on four
         # connection resets; re-tested eighteen times it answers roughly one request in
         # three, so the register comes in two retried hops -- the dataset endpoint for

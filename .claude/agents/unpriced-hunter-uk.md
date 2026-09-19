@@ -223,7 +223,7 @@ over.** On the Japanese path `WebFetch` returned 403 on every URL a hunter tried
 | **Les Echos, Investir** | 403 | blocked |
 | **Boursier.com, Zonebourse, actusnews** | 403 | — |
 | **Sharecast, Proactive, Investors' Chronicle** | 403 | 403 |
-| **www.data.gouv.fr** | connection reset | reads HTML only |
+| **www.data.gouv.fr** | ~1 in 3 (retry) | reads HTML only |
 
 So use whichever tool is to hand, and when one fails **try the other before giving up** —
 that costs one call and occasionally works. You have `Bash` for it:

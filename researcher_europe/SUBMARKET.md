@@ -72,6 +72,10 @@ $200k capacity bar the US and Japanese stages use bottoms out at one name.
 
 ### Germany and France, and why the calendar instrument had to change
 
+*(Phase 1, 2026-09-18. **Both halves of this paragraph were wrong and are corrected in
+"The German and French day archives" below**, added 2026-09-19. Kept because the search
+that failed is worth knowing about.)*
+
 There is no Investegate for Germany or France. EQS-News (the DGAP successor) serves a
 ~60-item server-rendered snapshot of the live feed and **does not paginate** —
 `?paged=2`, `/page/2/` and `?label=Reports` all return byte-identical listings — so it
@@ -79,7 +83,8 @@ is a same-day confirmation surface and not a day archive. The Börse Frankfurt A
 reachable (`equity_key_data` returns a full record) but `company_calendar`,
 `company_dates` and `equity_master_data` all return `{}` for every ISIN and parameter
 combination tried. Nothing equivalent to the UK archive was found for either market
-inside this session's budget, and that is an open risk, written up in §6.
+inside this session's budget, and that is an open risk, written up in §6. **Both were
+found on 2026-09-19** — the AMF's own flux for France and the EQS *search* for Germany.
 
 What both markets do have is a forward vendor calendar. TradingView's public scanner
 (`scanner.tradingview.com/<market>/scan`, POST, no key) returns for every primary
@@ -102,6 +107,109 @@ stage's `time-not-supplied` rate of 20 of 20 on 2026-09-17. That is a completely
 different object and it is the single most encouraging access number in this file.
 It does not remove the need for a confirmation source; TRT was a 33%-of-equity mistake
 and `event_occurred: false` has to be reachable here too.
+
+### The German and French day archives, built 2026-09-19
+
+Phase 1 said there was no Investegate for Germany or France. There is one for each; both
+were found by looking in a different place, and the French one is in some ways better
+than Investegate.
+
+**France — `info-financiere.gouv.fr`, the AMF's own regulated-information archive.**
+An Opendatasoft API, no key, no cookie: dataset `flux-amf-new-prod`, **536,868 records
+back to 2012**, current to yesterday, queryable by date range and by issuer. Between 42
+and 152 filings a day on the twenty sampled days. It is the French RNS, and Phase 1's
+"FR — nothing readable" was a statement about Euronext's SPA that was never tested
+against the regulator's own archive.
+
+It has something neither Investegate nor EQS has: **the issuer's own declared filing
+category** on every record — *Rapports financiers et d'audit semestriels / annuels*,
+*Information financière trimestrielle* — plus a second, finer label inside the title
+field. That second label is the one that matters. A French results release is very often
+filed as *Informations privilégiées* (inside information) rather than as a periodic
+report, with the AMF's own sous-type in the title: **"Informations privilégiées /
+Communiqué sur comptes, résultats"** — literally *news release on accounts, results*.
+MedinCell, Theraclion, Implanet and Advicenne all filed exactly that, and a headline
+keyword classifier reads it as no results vocabulary at all. Over the twenty sampled days
+**78 of 178 results rows are classified by the issuer's category and 100 by headline**,
+and four of the seven French rows that first measured `announced_unclassified` were
+category rows the headline pass had missed.
+
+**Germany — the EQS-News *search*, not its front page.** Phase 1 measured
+`eqs-news.com/` — a ~60-item snapshot that genuinely does not paginate — and concluded
+German confirmation expires after a day. The search does not have that limit:
+`?searchtype=news&searchword=<issuer>`, paginated at `/search-results/page/<n>/`, 25
+rows a page and **67 pages for a single mid-cap**, each row carrying the date, the EQS
+news type, the company, the headline and the **ISIN**. German confirmation is historical
+after all.
+
+Two things it is not. It has **no whole-day query** — `searchword=` empty returns
+nothing and a one-letter word returns a sparse subset — so the German day archive is
+assembled issuer by issuer, which means `event_occurred: false` is unreachable for
+Germany by construction: "not found" cannot be told from "search term missed". And its
+news type is not a results category (`Corporate` covers both a results release and a
+store opening), so German classification falls back to the headline. **Only France
+escapes the headline classifier.**
+
+**The search word is not the issuer's legal name.**
+`searchword=HORNBACH Holding AG & Co. KGaA` returns **zero** rows; `HORNBACH` returns 25.
+The search ANDs over words, so every legal-form token and every ampersand narrows it to
+nothing. This cost a whole measurement run, in which nine German vendor rows all resolved
+`null` and looked like a coverage problem.
+
+### What the archives say about the phantom rate and the true stream
+
+**Phantom rate, vendor rows checked against the archive.** The vendor's
+`earnings_release_date` is the issuer's LAST release, so only recent dates carry many
+rows; that is the same limitation Phase 1's UK measurement had.
+
+| | vendor rows on the 20 sampled days | results confirmed | announced, not classified | published on a different day | nothing at all |
+| --- | --- | --- | --- | --- | --- |
+| UK (Phase 1) | 90 | 82 | 6 | — | **2 (2.2%)** |
+| France | 17 | 12 | 3 | 1 (Hipay, filed its H1 the day before) | **1 (Guerbet, 5.9%)** |
+| Germany | 6 | 2 | 1 | — | 3 **not found, which is not a phantom** |
+
+France's phantom rate is **1 of 17** on a small sample, and the one date error is a
+different failure from a phantom and is worth separating. Germany's cannot be measured
+with this instrument at all: three of its six rows returned nothing from EQS, and since
+EQS is searched per issuer that is indistinguishable from an issuer who does not
+distribute through EQS.
+
+Of the three French rows that did not classify, two are results a human reads
+immediately — Robertet's *"UN PREMIER SEMESTRE 2026 SOLIDE"* and Vente-unique's
+*"accélère sa dynamique de croissance rentable au 1er semestre"* — and one, Aelis Farma,
+filed *"Informations privilégiées / Autres communiqués"*, which is genuinely not a
+results filing. **So the classifier misses about 2 of 14 real French results releases,
+and the AMF category rescues four that a headline pass would have lost.**
+
+**True daily event count against the vendor's own count.** Both sides unfiltered — every
+listed name, no turnover floor, one issuer counted once a day — and measured on the week
+where the vendor's last-release field is current:
+
+| week | market | vendor rows/day | archive results issuers/day | ratio |
+| --- | --- | --- | --- | --- |
+| 2026-09-14 → 18 | UK | 13.6 | 23.4 (Phase 1 table) | **1.7×** |
+| 2026-09-14 → 18 | France | 2.8 | **10.0** | **3.6×** |
+| 2026-09-14 → 18 | Germany | 0.6 | 1.6 | 2.7× (on 3 and 8 events) |
+| 2026-08-10 → 14 (the German peak) | Germany | 13.8 | 10.8 | **0.78×** |
+
+Over all twenty sampled days France runs a **median of 5 and a mean of 6.2 results
+issuers a day** against the 0.9 a day the vendor-derived table above gives for names
+above $1m — different bases, so not directly comparable, but the direction is not in
+doubt.
+
+**So the UK's 2.2× undercount generalises to France and does NOT generalise to
+Germany.** France's contribution to the pooled stream is materially larger than this
+file claimed; Germany's, measured in its own August peak week, is if anything *smaller*
+than the vendor says — though the EQS instrument is a lower bound, since it sees only
+issuers who distribute through EQS and matches on name. Germany's seasonality, not the
+calendar's accuracy, is what makes it thin outside November and August.
+
+**One operational finding that came out of the same work.** Yahoo's European daily
+closes lag: on 2026-09-19 `.PA` and `.DE` symbols carried timestamps for 09-17 and 09-18
+with **null closes**, on liquid names (MC.PA) as well as thin ones, and `.L` was one
+session behind. **A European run cannot be resolved the morning after the print.**
+`eu_resolve.py` now carries `last_bar_date` and `move_pending` per row and warns when
+every row is pending, so that is never read as a day on which nothing moved.
 
 ### Cadence, and how staggered the year-ends really are
 
@@ -158,6 +266,13 @@ On the 20 scraped days the UK's measured count above $1m/day was 5.05 events a d
 against the 2.3 this table gives — a factor of 2.2. If Germany and France undercount
 similarly, the pooled true stream above $1m/day is **roughly 8 to 12 names on a median
 day**, and above $200k/day roughly 12 to 15.
+
+**Measured on 2026-09-19, that guess was half right.** With day archives for all three
+markets (see "The German and French day archives" below), France undercounts by
+**3.6×** on the week where the comparison is clean and Germany does **not** undercount
+at all — 10.8 measured results issuers a day against 13.8 vendor rows in its August peak
+week. So France's contribution to the pooled stream is larger than this table says and
+Germany's is not, and the thin German months are seasonality rather than a bad feed.
 
 That clears the Japan bar on the median day. It does not clear it on every day, and the
 thin days are predictable: Fridays, the second half of December, August, and the whole
@@ -511,10 +626,11 @@ the Japanese hunter is told to look for under 業績予想の修正: a pre-relea
 makes the print itself substantially less of an event. The category is well-structured,
 timestamped and machine-readable, which Hong Kong's profit alerts are not.
 
-The limit is retrieval, not structure: EQS serves a rolling snapshot with no pagination
-and no date archive, so ad-hoc releases can be read **for today and yesterday** and not
-searched historically. That is enough for a daily stage and not enough for a backtest.
-RNS via Investegate has no such limit and can be read by date back to 1999.
+The limit is retrieval, not structure: EQS's FRONT PAGE serves a rolling snapshot with
+no pagination. **Its search does paginate and goes back years** (2026-09-19), so ad-hoc
+releases can be read historically per issuer after all — enough for a backtest, as long
+as the backtest is willing to iterate issuers, because there is no whole-day query.
+RNS via Investegate and the AMF flux both can be read by date.
 
 ---
 

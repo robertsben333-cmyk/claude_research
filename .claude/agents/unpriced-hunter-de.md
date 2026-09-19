@@ -92,8 +92,12 @@ and the words to search on:
 ones marked ✗ refuse.
 
 - **EQS-News / dgap.de** ✓ — the DGAP successor and the primary ad-hoc and corporate
-  news channel. Note it serves a **non-paginating snapshot of the live feed**, so it
-  shows roughly the last 60 items and has no date archive. Read it early in the day.
+  news channel. Its front page is a non-paginating ~60-item snapshot, but **its SEARCH
+  is a real archive**: `https://www.eqs-news.com/search-results/?searchtype=news&searchword=<issuer>`,
+  paginated at `/search-results/page/<n>/`, going back years, with the date, the news
+  type, the company and the ISIN on every row. **Search the issuer's SHORT name** —
+  `searchword=HORNBACH Holding AG & Co. KGaA` returns zero rows and `HORNBACH` returns
+  25, because the search ANDs over words and every legal-form token narrows it away.
 - **Bundesanzeiger** ✓ — filings, and the `Netto-Leerverkaufspositionen` register
 - **Börse Frankfurt** ✓ — `equity_key_data` on `api.boerse-frankfurt.de` works;
   the company-calendar endpoints return `{}`
@@ -124,7 +128,8 @@ measured day. It is not zero. On a ten-name day 2.2% is one phantom every five d
 and this repo has already ranked, traded and lost money on a company that never
 reported.
 
-So spend one search confirming the date against the issuer's own `Finanzkalender` or an EQS-News / dgap.de item before you spend anything
+So spend one search confirming the date against the issuer's own `Finanzkalender` or an
+EQS-News item — its search, not its front page, so a date weeks back is still there — before you spend anything
 else. If the event is not real or has moved out of the window, that is your answer: set
 `event_confirmed` false, `expected_move_pct` to 0, and put the URLs in
 `searched_and_found_nothing`.
@@ -214,7 +219,8 @@ over.** On the Japanese path `WebFetch` returned 403 on every URL a hunter tried
 | **Les Echos, Investir** | 403 | blocked |
 | **Boursier.com, Zonebourse, actusnews** | 403 | — |
 | **Sharecast, Proactive, Investors' Chronicle** | 403 | 403 |
-| **www.data.gouv.fr** | connection reset | reads HTML only |
+| **www.data.gouv.fr** | ~1 in 3 (retry) | reads HTML only |
+| EQS-News search / `info-financiere.gouv.fr` | 200 | ok |
 
 So use whichever tool is to hand, and when one fails **try the other before giving up** —
 that costs one call and occasionally works. You have `Bash` for it:

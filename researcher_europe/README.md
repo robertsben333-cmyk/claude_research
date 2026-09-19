@@ -44,7 +44,8 @@ not an automatic kill.
 | `scripts/eu_universe.py` | the vendor forward calendar → today's names, USD turnover floor, seeded random draw |
 | `scripts/eu_priced_in.py` | the sealed baseline, in the shape `edge_score.py` reads |
 | `scripts/eu_positioning.py` | FCA / Bundesanzeiger / (AMF) short registers, the substitute anchors |
-| `scripts/eu_resolve.py` | confirmation, realised move, Spearman + permutation p, per-market stats, the language control |
+| `scripts/eu_archive.py` | **the day archive per market** — Investegate, the AMF flux, EQS search — one row shape, one classifier, one three-state `confirm()` |
+| `scripts/eu_resolve.py` | confirmation, realised move, Spearman + permutation p, per-market stats, the anchor-coverage split, the language control |
 | `researcher_us/scripts/edge_score.py` | **shared** — same scorer for all three markets, so the numbers are comparable |
 | `.claude/agents/unpriced-hunter-{uk,fr,de}.md` | the hunters; same output contract, three source worlds |
 | `.claude/skills/researcher-europe-hunt/SKILL.md` | the run |
@@ -182,22 +183,55 @@ different object. It is not zero: on a ten-name day 2.2% is one phantom every fi
 and this repo ranked, traded and lost money on TRT, which never reported. `event_occurred:
 false` is reachable and the confirmation pass is not optional.
 
-**The confirmation sources differ in strength and the difference is recorded per name:**
+**All three markets have a day archive since 2026-09-19** — `scripts/eu_archive.py`,
+one row shape over three sources, so `eu_resolve.py` confirms three markets through one
+code path:
 
 - **UK — Investegate**, a full RNS mirror queryable **by date back to 1999**. Stronger
   than Japan's TDnet, which keeps about 31 days: a UK run can be confirmed months later.
-- **DE — EQS-News**, the DGAP successor, which serves a non-paginating snapshot of the
-  live feed. It confirms today and yesterday and nothing older. Resolve promptly.
-- **FR — nothing readable.** Euronext company news is an SPA. A French name that cannot
-  be confirmed gets `event_occurred: null`, **never false**: absence of a readable page is
-  not absence of a release, and turning an unreadable source into a retrospective kill
-  would be inventing a fact.
+  Results are identified by **headline**, which is its weakness.
+- **FR — `info-financiere.gouv.fr`**, the AMF's own regulated-information archive,
+  through an Opendatasoft API with no key: **536,868 records back to 2012**, current to
+  yesterday, 45–110 items a day, queryable by date range. It is the only one of the
+  three that carries the **issuer's own declared filing category** — *Rapports
+  financiers et d'audit semestriels / annuels*, *Information financière trimestrielle* —
+  so a French results release is identified by what the issuer filed it as rather than
+  by what its headline says. That is the one real fix for the Trustpilot failure mode
+  and only France has it. Phase 1 recorded "FR — nothing readable", which was true of
+  Euronext and was never tested against the AMF's own archive.
+- **DE — EQS-News *search***, `/search-results/?searchtype=news&searchword=…`,
+  paginated at `/search-results/page/<n>/`, **back years**. Phase 1 measured the front
+  page, which does not paginate, and concluded EQS "confirms today and yesterday and
+  nothing older"; the search does not have that limit. Each row carries the date, the
+  EQS news type, the company, the headline and the **ISIN**.
 
-**The vendor undercounts.** On the 20 sampled days the UK's measured count above $1m/day
-of turnover was 5.05 events a day against the 2.3 the vendor's forward calendar gives — a
-factor of 2.2. So the stream numbers above are floors. A better forward calendar for
-Germany and France is the biggest single improvement available to this stage and it is not
-built.
+**`event_occurred: false` is now reachable for the UK and France and not for Germany**,
+and that asymmetry is in every row's `confirmation_note`. EQS has no whole-day query, so
+the German archive is assembled issuer by issuer and "not found" can mean the search
+term missed rather than that nothing was published. A German name therefore resolves
+`null`, never `false` — absence of a readable page is not absence of a release.
+
+**The German search word is not the issuer's legal name.**
+`searchword=HORNBACH Holding AG & Co. KGaA` returns **zero** rows and `HORNBACH`
+returns 25: the search ANDs over words, so every legal-form token narrows it to
+nothing. `eu_archive.de_query()` strips them and keeps two tokens. This cost a whole
+measurement run, in which nine German vendor rows all resolved `null` and looked like a
+coverage problem.
+
+**The vendor undercounts the UK and France and not Germany.** On the 20 sampled days the
+UK's measured count above $1m/day of turnover was 5.05 events a day against the 2.3 the
+vendor's forward calendar gives — a factor of 2.2. With day archives for all three
+markets (2026-09-19) the same comparison gives **3.6× for France** on the week where the
+vendor's last-release field is current — 10.0 results issuers a day against 2.8 vendor
+rows — and **0.78× for Germany** in its August peak week, 10.8 against 13.8. So France's
+contribution to the pooled stream is materially larger than `SUBMARKET.md`'s table says,
+Germany's is not, and the thin German months are seasonality rather than a bad feed.
+
+**Yahoo's European daily closes lag, so a run cannot be resolved the next morning.**
+Measured 2026-09-19: `.PA` and `.DE` symbols carried timestamps for 09-17 and 09-18 with
+**null closes**, on liquid names as well as thin ones, and `.L` was one session behind.
+`eu_resolve.py` carries `last_bar_date` and `move_pending` per row and warns when every
+row is pending, so an unresolvable morning is never read as a day on which nothing moved.
 
 ## The selection is random on purpose, and the floor is $200k
 

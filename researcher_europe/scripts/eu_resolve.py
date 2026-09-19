@@ -9,19 +9,26 @@ anything.
    2 of 90 rows over 20 sampled days -- far better than the US feed's `time-not-supplied`
    rate of 20 of 20 on 2026-09-17, and not zero, which on a ten-name day is one phantom
    every five days. TRT was ranked, traded and never reported, so `event_occurred: false`
-   has to be reachable here too. The confirmation sources differ in strength and that
-   difference is recorded per name rather than smoothed over:
+   has to be reachable here too.
 
-     UK  Investegate's day archive, which is queryable BY DATE back to 1999. This is a
-         STRONGER instrument than Japan's TDnet, which keeps about 31 days -- a UK run
-         can be confirmed months later.
-     DE  EQS-News, which serves a non-paginating snapshot of the LIVE feed. It confirms
-         today and yesterday and nothing older. Resolve promptly or the confirmation is
-         lost, exactly as for TDnet.
-     FR  Euronext's company news is a single-page application and is the weakest of the
-         three. A French name that cannot be confirmed gets `event_occurred: null`, NOT
-         false: absence of a readable page is not absence of a release, and turning an
-         unreadable source into a retrospective kill would be inventing a fact.
+   **All three markets now have a day archive** (`eu_archive.py`, 2026-09-19), so this
+   is one code path over three sources rather than three special cases:
+
+     UK  Investegate's RNS mirror, queryable BY DATE back to 1999. Stronger than Japan's
+         TDnet, which keeps about 31 days. Classification is by headline.
+     FR  info-financiere.gouv.fr, the AMF's own regulated-information archive, 536,868
+         records back to 2012 and current to yesterday. It is the only one of the three
+         that publishes the ISSUER'S OWN filing category, so a French results release is
+         identified by what the issuer filed it as rather than by what its headline
+         says -- the one real fix for the Trustpilot failure mode.
+     DE  EQS-News SEARCH, paginated, back years -- not the front-page snapshot Phase 1
+         measured and wrote off as same-day-only. It is queried per issuer, because no
+         EQS query returns a whole day, so a German name whose EQS spelling differs from
+         the vendor's resolves `null` rather than false.
+
+   `event_occurred: false` is now reachable for the UK and France, where a day archive
+   was read in full and does not carry the issuer. It stays unreachable for Germany by
+   construction, and that asymmetry is recorded in each row's `confirmation_note`.
 
 2. MEASURE. Europe reports before the open -- 339 of 379 measured UK results
    announcements landed before 08:00 London -- so a `bmo` name is scored close(D-1) ->
@@ -75,27 +82,20 @@ import subprocess
 import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from collections import Counter
 from statistics import median
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import eu_archive as ARCH                         # noqa: E402
 from eu_market import MARKETS                     # noqa: E402
 
 UTC = ZoneInfo("UTC")
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0"
 YQ = "https://query1.finance.yahoo.com"
-IG_DAY = "https://www.investegate.co.uk/today-announcements/{d}"
-EQS = "https://www.eqs-news.com/"
-
-RESULTS_RE = re.compile(r"""(?ix)\b(
-   interim\s+(results|report|accounts) |half[-\s]?year(ly)? |final\s+(audited\s+)?results
-  |preliminary\s+(results|announcement) |annual\s+(results|financial\s+report)
-  |full[-\s]?year\s*(20\d\d\s*)?results |audited\s+results
-  |(q[1-4]|first|second|third|fourth)[-\s]*quarter |quarterly\s+(results|report|statement)
-  |trading\s+(statement|update) |results\s+for\s+the
-  |quartalsmitteilung |halbjahres |jahresabschluss |zwischenbericht
-  |r[ée]sultats |chiffre\s+d.affaires
- )\b""")
+# The day archives, the classifier and the three-state confirm all live in
+# eu_archive.py now, so this file no longer carries a second copy of a results regex
+# that could drift from the one the archive uses.
 
 
 def sh(c):
@@ -103,45 +103,34 @@ def sh(c):
 
 
 # --- confirmation -----------------------------------------------------------------
-def confirm_uk(day):
-    """Every EPIC that published a results-type RNS on `day`, plus every EPIC that
-    published anything at all.
-
-    Both are returned because a UK issuer's results headline is not reliably a results
-    headline: Trustpilot's 2026 interims went out as "AI, Enterprise and US momentum
-    fuel strong growth". A name that announced SOMETHING on its scheduled results day
-    and nothing recognisable is reported as `announced_unclassified` -- a human call,
-    not an automatic kill.
-    """
-    res, any_ = set(), set()
-    for pg in range(1, 15):
-        url = IG_DAY.format(d=day) + (f"?page={pg}" if pg > 1 else "")
-        html = sh(f"curl -sSL --max-time 40 -H 'User-Agent: {UA}' '{url}'")
-        rows = re.findall(r"/company/([A-Z0-9\.]+)\".*?announcement-link\"[^>]*>([^<]*)<",
-                          html, re.S)
-        if not rows:
-            break
-        before = len(any_)
-        for code, head in rows:
-            any_.add(code.upper())
-            if RESULTS_RE.search(head):
-                res.add(code.upper())
-        if len(any_) == before:
-            break
-    return (res, any_) if any_ else (None, None)
+# All three markets go through `eu_archive`, which returns one row shape per market and
+# says per row whether the results classification came from the issuer's own filing
+# category (France) or from a headline keyword (everywhere else).
 
 
-def confirm_de(day):
-    """EQS-News' live snapshot. Same-day only -- it does not paginate and has no date
-    archive, so a run older than a day or two resolves `null`, never false."""
-    today = datetime.now(UTC).date().isoformat()
-    if day < (datetime.now(UTC).date() - timedelta(days=2)).isoformat():
-        return None, None
-    html = sh(f"curl -sSL --max-time 40 -H 'User-Agent: {UA}' '{EQS}'")
-    if len(html) < 20000:
-        return None, None
-    text = re.sub(r"<[^>]+>", " ", html)
-    return ("TEXT", text) if today else (None, None)
+def build_archives(ev, baselines, verbose=True):
+    """Read each market's day archive once, for the whole run."""
+    arch, notes = {}, {}
+    markets = {b["submarket"] for b in baselines.values()}
+    for m in sorted(markets):
+        try:
+            if m == "de":
+                issuers = [(b.get("company") or b["ticker"], b.get("company"))
+                           for b in baselines.values() if b["submarket"] == "de"]
+                rows = ARCH.de_day(ev, issuers)
+            else:
+                rows = ARCH.day(m, ev)
+        except Exception as exc:
+            arch[m], notes[m] = None, f"unavailable: {exc}"
+            continue
+        arch[m] = rows
+        notes[m] = (f"{len({r['issuer_norm'] for r in rows if r['is_results']})} issuers "
+                    f"with a results-classified announcement, {len(rows)} rows"
+                    + (" (searched per issuer; EQS has no whole-day query)"
+                       if m == "de" else ""))
+        if verbose:
+            print(f"  archive {m}: {notes[m]}")
+    return arch, notes
 
 
 def _anchor_state(bl):
@@ -188,12 +177,7 @@ def main():
     ev = next(iter(baselines.values()))["event_date"]
     d0 = date.fromisoformat(ev)
 
-    uk_res = uk_any = de_text = None
-    if not a.no_confirm:
-        if any(b["submarket"] == "uk" for b in baselines.values()):
-            uk_res, uk_any = confirm_uk(ev)
-        if any(b["submarket"] == "de" for b in baselines.values()):
-            _, de_text = confirm_de(ev)
+    arch, arch_notes = ({}, {}) if a.no_confirm else build_archives(ev, baselines)
 
     rows = []
     for r in ranking:
@@ -204,6 +188,7 @@ def main():
         sess = bl.get("session") or "bmo"
         cs = closes(sym, d0) if sym else []
         ds = [x[0] for x in cs]
+        last_bar = ds[-1].isoformat() if ds else None
         mv_bmo = mv_amc = None
         if d0 in ds:
             i = ds.index(d0)
@@ -214,29 +199,13 @@ def main():
         move = mv_bmo if sess == "bmo" else mv_amc
 
         occurred, cnote = None, "not checked"
-        if m == "uk" and uk_any is not None:
-            t = tk.upper()
-            if t in (uk_res or set()):
-                occurred, cnote = True, "results RNS on Investegate for this EPIC"
-            elif t in (uk_any or set()):
-                occurred = None
-                cnote = ("announced_unclassified: this EPIC published on the day but "
-                         "nothing matched the results classifier. UK issuers headline "
-                         "results in marketing language often enough that this is a "
-                         "HUMAN call, not an automatic kill -- read the announcement.")
+        if not a.no_confirm and m in arch:
+            if arch[m] is None:
+                cnote = f"{MARKETS[m]['confirm_name']}: {arch_notes.get(m)}"
             else:
-                occurred, cnote = False, ("nothing at all from this EPIC on Investegate "
-                                         "for the event date")
-        elif m == "de" and de_text:
-            nm = (bl.get("company") or "").split()[0]
-            occurred = bool(nm and nm.lower() in de_text.lower()) or None
-            cnote = ("EQS-News live snapshot names this issuer" if occurred else
-                     "not in the EQS-News snapshot; the snapshot is ~60 items and does "
-                     "not paginate, so this is NOT a kill")
-        elif m == "fr":
-            cnote = ("no readable French confirmation source; Euronext company news is "
-                     "an SPA. event_occurred stays null -- an unreadable source is not "
-                     "evidence of absence.")
+                occurred, cnote = ARCH.confirm(
+                    m, ev, bl.get("company") or tk,
+                    ticker=tk if m == "uk" else None, archive=arch[m])
 
         rows.append({
             "ticker": tk, "submarket": m, "company": bl.get("company"),
@@ -259,23 +228,47 @@ def main():
             "session": sess, "session_unresolved": bl.get("session_unresolved"),
             "move_bmo_window_pct": mv_bmo, "move_amc_window_pct": mv_amc,
             "realised_move_pct": move,
+            # The last daily close Yahoo actually serves for this symbol. MEASURED
+            # 2026-09-19: Paris and Frankfurt run about TWO sessions behind and London
+            # about one -- `.PA` and `.DE` symbols carried timestamps for 09-17 and
+            # 09-18 with null closes, on liquid names as well as thin ones. So a
+            # European run cannot be resolved the morning after the print, and a row
+            # whose `last_bar_date` is before its event date is PENDING, not a name
+            # that did not move.
+            "last_bar_date": last_bar,
+            "move_pending": bool(move is None and last_bar and last_bar < ev),
             "event_occurred": occurred, "confirmation_note": cnote,
             "rankable": r.get("rankable"),
         })
+
+    # Yahoo occasionally serves a European symbol's daily bars truncated by a session or
+    # two -- the same request that returned bars to 09-16 returned bars to 09-18 twenty
+    # minutes later, with no error either time. A resolve where EVERY row has no move is
+    # far more likely to be that than a day on which nothing traded, so it says so
+    # rather than reporting an empty statistics block as a result.
+    if rows and all(x["realised_move_pct"] is None for x in rows):
+        pend = sum(1 for x in rows if x["move_pending"])
+        print(f"  WARNING: no row resolved to a realised move ({pend} of {len(rows)} "
+              f"PENDING -- Yahoo's last daily close is before the event date). Measured "
+              f"2026-09-19: Paris and Frankfurt daily closes run about two sessions "
+              f"behind and London about one, so a European run cannot be resolved the "
+              f"morning after. Re-run in a day or two; this is not a result.")
 
     usable = [x for x in rows if x["realised_move_pct"] is not None and x["rankable"]
               and x["event_occurred"] is not False and x["impact_sum"] is not None]
 
     out = {"market": "EU", "event_date": ev, "run": str(run),
            "resolved_utc": datetime.now(UTC).isoformat(timespec="seconds"),
-           "confirmation": {
-               "uk": ("skipped" if a.no_confirm else
-                      f"{len(uk_res)} EPICs with a results RNS, {len(uk_any)} with any "
-                      f"announcement" if uk_any is not None else "unavailable"),
-               "de": ("skipped" if a.no_confirm else
-                      "EQS-News live snapshot read" if de_text else
-                      "unavailable (snapshot is same-day only and does not paginate)"),
-               "fr": "no readable source; event_occurred stays null for French names"},
+           "confirmation": ({m: "skipped" for m in
+                             {b['submarket'] for b in baselines.values()}}
+                            if a.no_confirm else
+                            {m: {"source": MARKETS[m]["confirm_name"],
+                                 "read": arch_notes.get(m),
+                                 "false_reachable": m != "de",
+                                 "classified_by": dict(Counter(
+                                     r["classified_by"] for r in (arch.get(m) or [])
+                                     if r["is_results"]))}
+                             for m in sorted(arch)}),
            "n_rows": len(rows), "n_usable": len(usable), "rows": rows}
     out["stats"] = stats_block(usable)
     text = json.dumps(out, ensure_ascii=False, indent=2)
@@ -390,7 +383,14 @@ def stats_block(usable):
             "spearman_impact_sum_vs_move": spearman([x["impact_sum"] for x in sub], sy),
             "spearman_free_control_neg_runup": spearman(sc, sy),
             "lean_vs_free_control_rho": spearman(sl, sc),
-            "positioning_covered": sum(1 for x in sub if x["positioning_covered"]),
+            # Two different things, and confusing them would misread the line above.
+            # `register_read` counts names whose national register DOWNLOADED;
+            # `anchor_covered` counts names the register actually NAMES. A day whose
+            # names are all absent from a register that read perfectly well has every
+            # lean equal to -0.05 * run_up, so lean_vs_free_control_rho is 1.0 -- and
+            # that is a thin-name day, not a broken register. Read the two together.
+            "register_read": sum(1 for x in sub if x["positioning_covered"]),
+            "anchor_covered": sum(1 for x in sub if x.get("anchor_covered")),
             "median_abs_realised_pct": round(median(abs(y) for y in sy), 2),
         }
 
@@ -500,9 +500,12 @@ def stats_block(usable):
     s["note"] = ("One day is not a result. These pool across days; a single day's rho on "
                  "4 to 12 names is noise and must not be reported as a finding. The free "
                  "control is the thing to beat. `per_market.lean_vs_free_control_rho` is "
-                 "the check that the lean has not collapsed into the control: France has "
-                 "no readable short register and should read near 1.0 there, near "
-                 "0.4-0.6 in the UK and Germany. `unresolved_sessions` counts rows whose "
+                 "the check on whether the lean is anything but the control -- but read "
+                 "it beside `anchor_covered` in the same block, because a day whose "
+                 "names are all ABSENT from registers that read perfectly well has every "
+                 "lean equal to -0.05 * run_up and reads 1.0 for a reason that is about "
+                 "the names, not the source. All three registers resolve since "
+                 "2026-09-19. `unresolved_sessions` counts rows whose "
                  "window was assumed rather than known -- compare "
                  "move_bmo_window_pct against move_amc_window_pct on those rows before "
                  "believing their sign.")

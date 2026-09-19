@@ -70,14 +70,22 @@ mid-cap returns the wire copy, which is the one thing you already know is priced
 company's registered French name from your baseline and, where you have it, the ISIN —
 not an anglicised name.
 
-**This is the hardest of the three markets to source and you should know that before you
-start.** Measured from this container on 2026-09-18, **Les Echos, Investir, Boursier.com,
-Zonebourse and actusnews all return 403** to both `curl` and `WebFetch`, and
-`www.data.gouv.fr` — which hosts the AMF's public short-position register — resets the
-connection on every request. So a French name's baseline usually carries
-`positioning.covered: false`, which means **nothing is known about its short interest**,
-not that nobody is short. Read `positioning.covered` before you write
-`positioning_check`.
+**This is the hardest of the three markets for the PRESS and no longer for the
+regulator.** Measured from this container on 2026-09-18, **Les Echos, Investir,
+Boursier.com, Zonebourse and actusnews all return 403** to both `curl` and `WebFetch`,
+and that still holds. What changed on **2026-09-19** is the official record:
+
+- **The AMF short register resolves.** `www.data.gouv.fr` is intermittent, not blocked —
+  about one request in three — so the stage retries it and pulls the file from
+  `object-api.infra.data.gouv.fr`. A French baseline now normally carries a real
+  `positioning.short_ratio_pct`, a measured `short_change_pct_pts` over ten days and
+  `positioning.covered: true`. 74 French issuers carry an open disclosed position.
+  Still read `positioning.covered` before you write `positioning_check`: a zero on a
+  read register is a real zero at the 0.5% threshold, `false` is still "not known".
+- **`info-financiere.gouv.fr` is the AMF's own regulated-information archive** and it
+  is reachable, searchable by date and by issuer, back to 2012 — 45 to 150 filings a
+  day with the issuer's own category on each. It is the French RNS and it is the first
+  place to confirm this event and to read what the company has already filed.
 
 **The filing vocabulary.** The words the documents are filed under:
 
@@ -102,9 +110,16 @@ it.
 
 **Where to look.** Reachability measured 2026-09-18:
 
+- **`info-financiere.gouv.fr`** ✓ — **the AMF's own regulated-information flux**, the
+  French RNS, queryable by date and issuer back to 2012 through an Opendatasoft API
+  with no key. Every filing carries the issuer's declared category and a link to the
+  PDF. Start here: it is the primary document, not a press account of it.
+  `https://www.info-financiere.gouv.fr/api/explore/v2.1/catalog/datasets/flux-amf-new-prod/records?where=...`
 - **Euronext Paris** ✓ root, but the company-news and financial-calendar sub-pages are a
   single-page application and return the shell
 - **AMF** ✓ root; its data pages 404 and **BDIF** is an SPA whose API was not found
+- **`www.data.gouv.fr`** ~ — intermittent, about one request in three; retry with a
+  2–4 second pause rather than concluding it is blocked
 - **BALO** (`journal-officiel.gouv.fr/balo`) ✓ — statutory publications, including
   results notices, and genuinely under-read
 - **La Tribune** ✓, **AOF** ✓, **ABC Bourse** ✓
@@ -160,7 +175,7 @@ Two substitutes stand in its place and they are in your baseline:
   the closest thing these markets have to informed flow you can see, and a negative
   finding that merely agrees with them is probably already in the price.
 
-**For France this register is usually EMPTY and that is a retrieval failure, not a market fact.** www.data.gouv.fr, which hosts it, resets the connection on every request from this container. So `positioning.covered` is normally `false` for a French name: nothing is known about its short interest, and `priced_lean_pct` collapses into the run-up, which is also the free control this stage has to beat. Say so in `positioning_check` rather than writing a zero.
+**Since 2026-09-19 this register RESOLVES for France** and it is the best-instrumented of the three: the AMF publishes every disclosed position per holder since 2012 with a publication END date, so `short_change_pct_pts` in your baseline is a real ten-day delta rather than an approximation. If `positioning.covered` is `false` on your name, that is a retrieval failure on the day — say so in `positioning_check` rather than writing a zero — and if `stale_cache_days` is set, the register was read that many days ago and not today.
 
 `positioning.covered` says whether the register was read at all. **`covered: false` is
 not a zero.** It means the file could not be downloaded, so nothing is known about this
@@ -221,7 +236,8 @@ over.** On the Japanese path `WebFetch` returned 403 on every URL a hunter tried
 | **Les Echos, Investir** | 403 | blocked |
 | **Boursier.com, Zonebourse, actusnews** | 403 | — |
 | **Sharecast, Proactive, Investors' Chronicle** | 403 | 403 |
-| **www.data.gouv.fr** | connection reset | reads HTML only |
+| **www.data.gouv.fr** | ~1 in 3 (retry) | reads HTML only |
+| **info-financiere.gouv.fr** (AMF flux) | 200 | ok |
 
 So use whichever tool is to hand, and when one fails **try the other before giving up** —
 that costs one call and occasionally works. You have `Bash` for it:

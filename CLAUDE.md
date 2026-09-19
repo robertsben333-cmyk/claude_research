@@ -1002,6 +1002,38 @@ UK rows had a same-day results RNS from the same issuer) against the US
 `time-not-supplied` rate of 20 of 20. Six of the eight apparent misses were a headline
 classifier, not a missing print.
 
+**Germany and France have day archives too, since 2026-09-19 (`eu_archive.py`), and
+Phase 1 was wrong about both.** France is `info-financiere.gouv.fr`, the AMF's own
+regulated-information flux: an Opendatasoft API, no key, **536,868 records back to
+2012**, current to yesterday, 42–152 filings a day, queryable by date. It is the only
+one of the three that carries **the issuer's own declared filing category**, which is the
+one real fix for the Trustpilot failure mode — a French results release is often filed as
+*Informations privilégiées / Communiqué sur comptes, résultats*, which a headline
+classifier reads as nothing; over twenty sampled days 78 of 178 results rows classify by
+category and 100 by headline. Germany is the EQS-News **search** — `/search-results/`,
+paginated at `/page/<n>/`, 67 pages for one mid-cap — not the front page Phase 1 measured
+and wrote off as same-day-only. Two German catches: EQS has **no whole-day query**, so
+the German archive is assembled per issuer and `event_occurred: false` is unreachable
+there by construction; and `searchword=HORNBACH Holding AG & Co. KGaA` returns **zero**
+rows where `HORNBACH` returns 25, because the search ANDs over words.
+
+**What the archives changed about the measured stream: France is 3.6× the vendor,
+Germany is 0.78×.** Unfiltered, one issuer counted once a day, on the week where the
+vendor's last-release field is current: UK 23.4 measured against 13.6 vendor rows a day
+(1.7×), **France 10.0 against 2.8**, Germany 1.6 against 0.6 on single digits — and in
+Germany's August peak week **10.8 measured against 13.8 vendor rows**. So the UK's 2.2×
+undercount generalises to France and not to Germany; France's contribution to the pooled
+stream is materially larger than `SUBMARKET.md` claimed, and the thin German months are
+seasonality, not a bad feed. Phantom rates against the archives: UK 2 of 90, **France 1
+of 17** (plus one vendor date off by a day), Germany **not measurable** — three of six
+rows returned nothing from a per-issuer search, which is not a phantom.
+
+**Yahoo's European daily closes lag, so a European run cannot be resolved the morning
+after the print.** Measured 2026-09-19: `.PA` and `.DE` carried timestamps for 09-17 and
+09-18 with **null closes**, on liquid names as well as thin ones, `.L` one session
+behind. `eu_resolve.py` carries `last_bar_date` and `move_pending` per row and warns when
+every row is pending.
+
 **The size band contradicts the obvious prior and the universe is deliberately NOT cut to
 it.** Analyst coverage runs 1–2.5 names below $1m/day, 5–7 at $1–5m, 11–13 at $5–25m and
 16–19.5 above — so MDAX/SDAX, SBF 120 ex-CAC 40 and FTSE 250 sit in the *well-covered*

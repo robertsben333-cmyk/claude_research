@@ -282,7 +282,13 @@ europe_hunt:
   # No sweep agent. The vendor calendar's measured phantom rate on the UK was 2 of 90 rows
   # against the RNS record -- a different object from the Nasdaq feed's `time-not-supplied`
   # rows, which were 20 of 20 phantom on 2026-09-17. Confirmation is eu_resolve.py's job,
-  # after the fact, and event_occurred: false is reachable.
+  # after the fact, through eu_archive.py's day archives: Investegate for the UK, the
+  # AMF's own info-financiere flux for France (which carries the issuer's declared
+  # filing category, so French results are not classified by headline keyword) and the
+  # EQS-News SEARCH for Germany, which paginates back years where its front page does
+  # not. event_occurred: false is reachable for the UK and France. It is NOT reachable
+  # for Germany: EQS has no whole-day query, so a German name is searched by issuer and
+  # "not found" cannot be told from "search term missed".
   sweep_agents: 0
   # Inherits edge_hunt.conviction_floor unless set. A floor on EMPHASIS in the note,
   # never a filter on the scored file.
