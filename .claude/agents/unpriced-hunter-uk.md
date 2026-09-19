@@ -232,7 +232,7 @@ that costs one call and occasionally works. You have `Bash` for it:
 curl -sSL --max-time 30 -H "User-Agent: Mozilla/5.0" "<url>" | head -c 4000
 ```
 
-For a PDF, pipe through `pdftotext - -` if present. Do not disable TLS verification and
+For a PDF, `pdftotext` is NOT present in this container and neither `pdfminer` nor `pypdf` imports (a broken `cryptography` module); use `python3 researcher_europe/scripts/eu_pdftext.py <file> [chars]`. Do not disable TLS verification and
 do not try to route around the proxy. A source that refuses both tools is a genuine dead
 end: record the URL in `searched_and_found_nothing`, mark the datum `snippet_only`, and
 say so. **A number you could not confirm in the document is not load-bearing.**

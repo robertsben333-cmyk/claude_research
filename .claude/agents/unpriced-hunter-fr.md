@@ -115,6 +115,17 @@ it.
   with no key. Every filing carries the issuer's declared category and a link to the
   PDF. Start here: it is the primary document, not a press account of it.
   `https://www.info-financiere.gouv.fr/api/explore/v2.1/catalog/datasets/flux-amf-new-prod/records?where=...`
+- **`researcher_europe/scripts/eu_pdftext.py`** ✓ — **the AMF flux links every filing as
+  a PDF and this container cannot otherwise read one.** `pdftotext` is not installed,
+  `pdfminer.six` and `pypdf` both die on a broken `cryptography` module, and `WebFetch`
+  on a PDF returns "garbled binary data". This script inflates the streams with the
+  standard library and gives you the text. It mangles intra-word spacing, so normalise
+  before quoting and quote what the document says:
+
+  ```bash
+  curl -sSL --max-time 60 -o /tmp/f.pdf "<pdf url>" && \
+    python3 researcher_europe/scripts/eu_pdftext.py /tmp/f.pdf 4000
+  ```
 - **Euronext Paris** ✓ root, but the company-news and financial-calendar sub-pages are a
   single-page application and return the shell
 - **AMF** ✓ root; its data pages 404 and **BDIF** is an SPA whose API was not found

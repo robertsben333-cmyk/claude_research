@@ -177,6 +177,18 @@ def main():
     ev = next(iter(baselines.values()))["event_date"]
     d0 = date.fromisoformat(ev)
 
+    # A RUN CANNOT BE CONFIRMED BEFORE ITS EVENT. Without this, resolving a forward run
+    # reads the day archives for a date that has not happened, finds no announcement
+    # from the issuer, and writes `event_occurred: false` -- a retrospective KILL, which
+    # is the one verdict in this stage that is settled by the outcome rather than
+    # predicted. TRT is in this repo because a name was ranked and traded on a print
+    # that never came; the mirror-image mistake is killing a name whose print is still
+    # three days away.
+    today = datetime.now(UTC).date().isoformat()
+    if ev > today and not a.no_confirm:
+        print(f"  confirmation SKIPPED: the event date {ev} is in the future "
+              f"(today is {today}). Nothing is confirmed and nothing is killed.")
+        a.no_confirm = True
     arch, arch_notes = ({}, {}) if a.no_confirm else build_archives(ev, baselines)
 
     rows = []

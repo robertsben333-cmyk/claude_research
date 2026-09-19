@@ -293,9 +293,9 @@ def _fr_rows():
     and which has not failed a request here. Path 2 exists because path 1 has to get
     the flaky host right on the first hop AND the redirect in one go.
     """
-    raw = _curl_retry(AMF_RESOURCE, tries=8)
+    raw = _curl_retry(AMF_RESOURCE, tries=8, timeout=90)
     if not _is_amf_csv(raw):
-        meta = _curl_retry(AMF_DATASET_API, tries=15, timeout=60)
+        meta = _curl_retry(AMF_DATASET_API, tries=15, timeout=25)
         try:
             res = (json.loads(meta.decode("utf-8", "replace")).get("resources") or [])
             direct = next((r.get("url") for r in res
@@ -395,6 +395,21 @@ def load(markets=("uk", "de", "fr"), refresh=False):
     today = datetime.utcnow().date().isoformat()
     out = {}
     for m in markets:
+        # TODAY'S FILE IS ALREADY ON DISK: USE IT. Without this the stage re-fetches
+        # every register on every invocation, which for France means up to 27 retries
+        # against an intermittent host -- measured at twelve minutes before a single
+        # baseline was sealed. A register is published once a day; re-reading it twice
+        # in one session cannot say anything new. `--refresh` forces the fetch.
+        cached_today = (cache.get(m) or {}).get(today)
+        if cached_today and not refresh:
+            dates = [v.get("position_date") for v in cached_today.values()
+                     if v.get("position_date")]
+            out[m] = {"as_of": max(dates) if dates else None, "rows": cached_today,
+                      "covered": True, "error": None, "stale_cache_days": 0,
+                      "from_cache": True,
+                      "source": {"uk": FCA_CURRENT, "de": BANZ_CSV,
+                                 "fr": AMF_RESOURCE}[m]}
+            continue
         loader = {"uk": load_uk, "de": load_de, "fr": load_fr}[m]
         try:
             as_of, rows = loader()

@@ -23,16 +23,33 @@ on the 2026-09-16 validation run Barratt Redrow moved +11.72% over the bmo windo
 +1.78% over the amc one. If your baseline says `session_unresolved`, spend one search
 settling it before you size anything. It is worth more than any finding you will make.
 
-**`positioning.covered: false` is not a zero.** It means the register could not be read.
-For France it is the normal case. A hunter that writes "no disclosed short position" into
-`positioning_check` on a French name has invented a fact. Say "register not readable for
-this market" and size your negative findings knowing you cannot see the crowding.
+**`positioning.covered: false` is not a zero, and neither is a zero.** `covered: false`
+means the register could not be read — it was the normal case for France until
+2026-09-19 and is now an exception in all three markets. A hunter that writes "no
+disclosed short position" on an unreadable register has invented a fact; say "register
+not readable" instead.
+
+**And `short_ratio_pct: 0.0` on a register that DID read is the 0.5% truncation floor,
+not a measurement of this issuer.** Under the $200k turnover floor most names are in
+exactly that state: on the forward sample the UK register names 80% of issuers above
+$1m and 32% between $200k and $1m. Your baseline says which — `anchor_covered` is true
+only where the register names this issuer. When it is false, you have no positioning
+anchor at all and `priced_lean_pct` is the run-up, which is also the free control this
+stage has to beat. Say so in `positioning_check` and do not treat a truncated zero as
+evidence that nobody is short.
 
 **Read the headline loosely and the URL strictly.** UK issuers headline results in
 marketing language often enough to defeat a keyword filter — Trustpilot's 2026 interims
 went out as "AI, Enterprise and US momentum fuel strong growth". Six of the eight apparent
 calendar misses in Phase 1 were this, not the calendar. Conversely, search results relabel
 old articles with today's year: read the date out of the URL path or the document.
+
+**A PDF needs `eu_pdftext.py` and nothing else works.** The AMF flux links every French
+filing as a PDF, and this container has no `pdftotext`; `pdfminer.six` and `pypdf` both
+die on a broken `cryptography` module, and `WebFetch` on a PDF answers "garbled binary
+data". `researcher_europe/scripts/eu_pdftext.py` reads it with the standard library. On
+2026-09-19 that is what turned a 5%-threshold declaration on Quadient from a search
+snippet into a quotable primary document.
 
 **Four sources are shut and retrying them wastes calls.** Les Echos, Investir,
 Boursier.com, Zonebourse and actusnews return 403 to both `curl` and `WebFetch`;

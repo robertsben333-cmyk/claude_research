@@ -99,6 +99,11 @@ ones marked ✗ refuse.
   `searchword=HORNBACH Holding AG & Co. KGaA` returns zero rows and `HORNBACH` returns
   25, because the search ANDs over words and every legal-form token narrows it away.
 - **Bundesanzeiger** ✓ — filings, and the `Netto-Leerverkaufspositionen` register
+- **`researcher_europe/scripts/eu_pdftext.py`** — for any filing served as a PDF. This
+  container has no `pdftotext`, `pdfminer` and `pypdf` both die on a broken
+  `cryptography` module, and `WebFetch` on a PDF returns garbled binary. This script
+  reads it with the standard library; it mangles intra-word spacing, so normalise before
+  you quote.
 - **Börse Frankfurt** ✓ — `equity_key_data` on `api.boerse-frankfurt.de` works;
   the company-calendar endpoints return `{}`
 - **Handelsblatt** ✓, **Börsen-Zeitung** ✓ — both work on `curl` and `WebFetch`

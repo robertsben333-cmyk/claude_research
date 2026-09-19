@@ -1078,10 +1078,39 @@ Nothing has resolved in Europe. The stack was validated end to end on 2026-09-18
 2026-09-16 (22 vendor rows, 4 eligible above $1m, 4 of 4 confirmed by a real results RNS
 out of the 40 EPICs filing that day, short register 4 of 4, UK
 `lean_vs_free_control_rho` 0.40) using **synthetic findings**, which ranked at ρ=−0.80,
-p=0.33 on four names — noise by construction. **No German or French name has ever been
-run through it**: neither cleared the floor on the validation date, so the EQS-News and
-French confirmation paths are exercised as code only. Spread is entirely unmeasured, and
-it is the cost that would matter most in the band this stage targets.
+p=0.33 on four names — noise by construction. Spread is entirely unmeasured, and it is
+the cost that would matter most in the band this stage targets.
+
+**A German and a French name went through with real research on 2026-09-19, for the
+2026-09-23 session** (`research/2026/09/2026-09-23/europe/`): KWS SAAT `impact_sum`
+−2.10 and Quadient +0.90, neither above the conviction floor. Quadient at $0.51m/day
+of turnover is a name the old $1m floor would have excluded, so the French leg exists
+because the floor moved. Both were confirmed against the **issuer's own calendar** —
+KWS's Finanzkalender (23 September 07:00 CEST) and Quadient's (23 September, after
+close) — and both hunts held their emitted number inside the sum of their findings.
+What the run establishes and what it does not: the chain runs end to end for DE and FR
+(universe → share-class fold → `anchor_covered` baseline with all three registers
+reading → hunt with a real `pre_local` freeze → `edge_score.py` → `eu_resolve.py` →
+note), and **it is not a ranking** — the session could not spawn subagents, so the seven
+UK names were left unhunted, a shed recorded in the run log, and two names cannot be
+ranked against each other. **`pre_lessons` in both hunts is not a measurement**: one
+context ran both hunts and had read `LESSONS.md` first, so the freeze is equal to the
+emitted set by construction. `impact_sum_pre_local` is a real freeze and a two-name
+delta is still noise.
+
+**Three defects came out of that run and all three are fixed.** `eu_resolve.py` would
+have **killed names that had not reported yet** — resolving a forward run read the day
+archives for a date that has not happened, found nothing from the issuer and wrote
+`event_occurred: false`, the mirror image of the TRT mistake; it now refuses to confirm
+a future date. `eu_positioning.load()` re-fetched every register on every invocation,
+which with France's intermittent host meant **twelve minutes before a single baseline
+was sealed**; today's file is now read from the cache unless `--refresh` is passed. And
+**no PDF could be read in this container at all** — no `pdftotext`, `pdfminer` and
+`pypdf` both dead on a broken `cryptography` module, `WebFetch` returning "garbled
+binary data" — which matters because the AMF flux links every French filing as a PDF;
+`researcher_europe/scripts/eu_pdftext.py` reads them with the standard library, and it
+is what turned Quadient's 5%-threshold declaration from a search snippet into a
+quotable primary document.
 See `researcher_europe/README.md` and `researcher_europe/SUBMARKET.md`.
 
 **The five stage 0–4 pipeline Routines were disabled on 2026-09-18** at the operator's
