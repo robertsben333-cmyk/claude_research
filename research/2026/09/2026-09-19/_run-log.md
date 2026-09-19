@@ -31,3 +31,7 @@
 ## Routines — both live stages pinned to Opus; stage E's Routine is missing
 - Logged at 2026-09-19 09:12 UTC
 - Stage EU (trig_018WGfdq2fUm1ZqJhCGQ1wde) and stage J (trig_0192kQeqhumBKpNGzzyQrS1H) both carried an empty model and are now claude-opus-5, on the operator's instruction. Config and agent definitions were already Opus throughout. Separately and more seriously: list_triggers with include_completed and has_more false returns eight Routines and stage E's trig_01CvGQJWoKeNLXWCxiffM3ED and Close AMC's trig_01MPuhVvtDgvUYzZXkKpHpKD are not among them, so the money-placing stage has no schedule. Nothing was re-created.
+
+## Routines — correction: stage E is on another account, not missing
+- Logged at 2026-09-19 09:14 UTC
+- The warning written at 09:11 UTC was wrong. list_triggers is scoped to the calling account and stage E's Routine plus Close AMC live on a different one, confirmed by the operator. Nothing is unscheduled and no position is unattended. CLAUDE.md now records the scoping rule instead, because an absent Routine has two causes that look identical from here: disabled/deleted, or on another account.

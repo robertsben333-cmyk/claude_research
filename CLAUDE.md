@@ -44,22 +44,26 @@ material below is kept because the live stages reference it, not because it runs
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** UK, France and Germany pooled, one stage, three language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
-**STAGE E's ROUTINE AND "CLOSE AMC" DO NOT EXIST ON THIS ACCOUNT (checked 2026-09-19
-09:11 UTC).** `list_triggers`, with `include_completed: true` and `has_more: false`,
-returns eight Routines and **neither `trig_01CvGQJWoKeNLXWCxiffM3ED` (stage E) nor
-`trig_01MPuhVvtDgvUYzZXkKpHpKD` ("Close AMC") is among them.** Everything below describing
-stage E as live, unattended and placing money, and "Close AMC" as the second exit Routine,
-describes a schedule that is not currently running. The repo has stage E output through
-2026-09-18 and a Close AMC run that morning, so this is recent: the Routines were removed,
-disabled out of listing range, or moved somewhere this tool cannot see, between 2026-09-18
-and 2026-09-19, from outside this repo. **Nothing was re-created in response** — a Routine
-that places real orders is not something a session should conjure back. What still holds:
-`execution.enabled` in `config/pipeline.yaml` governs whether any order is sent, and with
-no Routine firing, no book is being opened or closed by anything but a hand-run session.
-**If an amc or bmo leg was open on 2026-09-18, nothing scheduled is going to sell it.**
-Check `alpaca_trade.py verify` before assuming the account is flat. This is the fourth
-time this file has disagreed with `list_triggers`; the rule stands — check the Routines,
-not the table.
+**`list_triggers` IS SCOPED TO THE CALLING ACCOUNT, AND STAGE E IS ON A DIFFERENT ONE.**
+Stage E's Routine (`trig_01CvGQJWoKeNLXWCxiffM3ED`) and "Close AMC"
+(`trig_01MPuhVvtDgvUYzZXkKpHpKD`) are **not visible from the account this repo's research
+sessions run on**, and that is by design, not a fault. Confirmed by the operator on
+2026-09-19 after a session called `list_triggers` with `include_completed: true` and
+`has_more: false`, got eight Routines, found neither ID among them, and wrote a loud
+warning into this file saying the money-placing stage had no schedule. It has one. It is
+simply somewhere this tool cannot look.
+
+**So the rule in this file — check the table against `list_triggers` rather than the other
+way round — has an exception, and it is the expensive kind.** An absent Routine has two
+causes that look identical from here and mean opposite things: it was disabled or deleted,
+or it lives on another account. Only the second is true of stage E and "Close AMC". Before
+concluding that any Routine is missing, check whether it is one of those two; if it is,
+nothing is wrong. For everything else on this account the original rule stands, and stage N
+and stage C really were disabled from outside this repo on 2026-09-09.
+
+The two Routines this account *can* see and edit are stage J
+(`trig_0192kQeqhumBKpNGzzyQrS1H`) and stage EU (`trig_018WGfdq2fUm1ZqJhCGQ1wde`), both
+created by a session, both enabled, both editable with `update_trigger`.
 
 **The two live Routines run on Opus, since 2026-09-19 09:11 UTC.** Stage J and stage EU
 both carried an empty `model`, which resolves to the account default — the stage EU
@@ -794,7 +798,7 @@ The prompt pasted in that Routine still tells the session it fires at "14:04 UTC
 16:04 Amsterdam and 10:04 New York". It also tells it to re-read the clock with `date -u`,
 which is the only reason that is survivable. Fix it on the next paste.
 
-It was enabled and described as the only pipeline Routine still running; as of 2026-09-19 it is not in `list_triggers` at all — see the note under the stage table. Its prompt cannot be
+It is enabled and it is the only pipeline Routine still running. It does **not** appear in `list_triggers` from this account, because it lives on another one — see the scoping note under the stage table before reading that absence as a fault. Its prompt cannot be
 edited by a session —
 `update_trigger` refuses any Routine an agent did not create — so the text lives in
 `researcher_us/routine-prompts/edge-hunt.md` and was pasted in by hand on 2026-09-09 at 13:55 UTC;
