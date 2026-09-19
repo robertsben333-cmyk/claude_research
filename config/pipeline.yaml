@@ -182,8 +182,10 @@ japan_hunt:
   # twelve paired US names the gap between two hunters predicted neither the error
   # (+0.203) nor whether the sign was right (+0.028).
   hunters_per_name: 1
-  wave_size: 4
-  max_concurrent_subagents: 4
+  # 20 names at a wave of 5 is four waves, publishing after each, so a run killed
+  # part-way still banks most of the day. Raised from 4 with the cap.
+  wave_size: 5
+  max_concurrent_subagents: 5
   model: opus
   effort: high
   # No sweep agent. The US sweep exists to kill phantom calendar rows, and Japan's
@@ -221,7 +223,46 @@ europe_hunt:
   # thing. RESEARCH ONLY -- there is no execution block here and there must not be one.
   # Alpaca does not carry LSE, Euronext or XETRA, and execution is a separate decision
   # to be made later on Europe's own resolved numbers.
-  markets: [uk, de, fr]
+  # QUOTED, AND THAT IS LOAD-BEARING. Unquoted `no` is YAML 1.1 boolean FALSE, so
+  # `[uk, de, fr, se, dk, no, fi, it, es, pl]` parses with Norway as the value False and
+  # silently drops the best-instrumented of the seven new markets -- the one with a dated
+  # short-position history, a ticker-keyed day archive and observed announcement dates.
+  # It fails as a wrong RESULT, not as an error. Every code stays quoted.
+  markets: ["uk", "de", "fr", "se", "dk", "no", "fi", "it", "es", "pl"]
+  #
+  # SEVEN MARKETS WERE ADDED ON 2026-09-19 ON THE OPERATOR'S INSTRUCTION: the four
+  # Nordics (Stockholm, Copenhagen, Oslo, Helsinki), Warsaw, Milan and Madrid, on the
+  # same $200k floor and the same scorer. Still research only; Alpaca carries none of
+  # these venues either.
+  #
+  # THE MEASUREMENT THAT JUSTIFIES IT IS SEASONAL, AND THE OBVIOUS ONE SAYS THE OPPOSITE.
+  # Over the ten sessions 2026-09-21 -> 10-02 the seven add SIX names to a pooled median
+  # of 7 a day, because late September is the UK's month. By month of forward vendor
+  # events: October is the existing stage's THINNEST month at 114 for UK+DE+FR, and the
+  # seven carry 456 in it; November is 309 against 515. Sweden alone carries 259 October
+  # events. And the cadence is better -- measured median gaps of 91-98 days across the
+  # Nordics and Poland against the UK's 217 and France's 204 -- so a Nordic name recurs
+  # four times a year where a UK one recurs twice, and a pooled sample fills faster per
+  # name.
+  #
+  # THEY ARE NOT EQUALLY INSTRUMENTED AND THIS IS THE PART TO READ BEFORE QUOTING ANY
+  # POOLED NUMBER. eu_market.CAPABILITY is the measured table:
+  #   se dk fi   short register reads; day archive is the Nasdaq Nordic feed, which
+  #              carries the ISSUER'S OWN results category (the France property) but has
+  #              NO date query -- it is paged back ~12 days, so event_occurred: false is
+  #              reachable only inside that window.
+  #   no         the best-instrumented of the ten after the UK: a dated short-position
+  #              event history, a true day archive keyed by TICKER, and OBSERVED
+  #              announcement history via Oslo NewsWeb's per-issuer query.
+  #   it         CONSOB's register and eMarket STORAGE both read, both behind a Radware
+  #              WAF that answers ~7 of 8, so both are retried.
+  #   es pl      NEITHER a register NOR an archive. A Spanish or Polish name is hunted
+  #              with no positioning anchor -- its priced_lean_pct IS the free control,
+  #              so it cannot beat the control with anything that uses it -- and it can
+  #              never be confirmed or killed after the fact. Both were given the
+  #              eight-try standard that rescued France and Italy and failed it.
+  # If a pooled rho is quoted without saying how much of it is es/pl, it is being
+  # oversold. eu_resolve.py reports per_market for this reason.
   #
   # WHY ONE STAGE OVER THREE MARKETS. Not elegance -- arithmetic. Measured in
   # researcher_europe/SUBMARKET.md: the UK bottoms out at ONE eligible name on a Friday,
@@ -231,7 +272,12 @@ europe_hunt:
   # roughly 8-12 names on a median day above the turnover floor, and two or three on the
   # thin ones. A thin day is a weak day, not a broken stage. The response to one is to
   # hunt the names there are, NEVER to drop the floor.
-  cap: 12
+  # RAISED FROM 12 TO 20 ON 2026-09-19, with the seven new markets. 12 was set when the
+  # pooled median day was 6.5 names above $200k; the ten-market universe for 2026-10-22
+  # returned 65 eligible names, so a cap of 12 would have thrown away four fifths of a
+  # real day. 20 is a subagent-budget number, not a measurement: wave_size and
+  # max_concurrent_subagents below still govern how many run at once.
+  cap: 20
   #
   # THE TURNOVER FLOOR WAS $1m A DAY UNTIL 2026-09-19 AND IS NOW $200k, ON THE
   # OPERATOR'S INSTRUCTION. The $1m reason was measured and is not withdrawn: below $1m
@@ -275,8 +321,10 @@ europe_hunt:
   # paired US names the gap between two hunters predicted neither the error (+0.203) nor
   # whether the sign was right (+0.028).
   hunters_per_name: 1
-  wave_size: 4
-  max_concurrent_subagents: 4
+  # 20 names at a wave of 5 is four waves, publishing after each, so a run killed
+  # part-way still banks most of the day. Raised from 4 with the cap.
+  wave_size: 5
+  max_concurrent_subagents: 5
   model: opus
   effort: high
   # No sweep agent. The vendor calendar's measured phantom rate on the UK was 2 of 90 rows
@@ -327,7 +375,19 @@ europe_hunt:
   # back into the free control. A register that fails on the day is served from cache
   # for up to five days with `stale_cache_days` set.
   positioning_lookup: true
+  # SHED THE LEAST-INSTRUMENTED MARKETS FIRST. This order is not a view about which
+  # markets are interesting; it is what each name COSTS relative to what can be learned
+  # from it. A Spanish or Polish name has no positioning anchor and can never be
+  # confirmed after the fact, so it is the cheapest thing to drop and the last thing
+  # worth a scarce hunter.
   degrade_order:
+    - drop Spain and Poland (no short register and no day archive reachable from this
+      container, measured 2026-09-19 with the eight-try standard -- so their lean IS the
+      free control and event_occurred can never be settled. Least learned per hunter)
+    - reduce cap to 14 names
+    - drop Italy (both its sources sit behind a Radware WAF that answers about 7 of 8,
+      so an Italian name costs retries; its register and archive DO work, which is why
+      it goes after Spain and Poland and not with them)
     - drop France (its press is largely paywalled -- Les Echos, Investir, Boursier,
       Zonebourse and actusnews all refuse this container. Its short register is NO
       LONGER a reason; that was solved on 2026-09-19)

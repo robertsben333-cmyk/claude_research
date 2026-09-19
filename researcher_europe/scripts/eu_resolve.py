@@ -11,8 +11,8 @@ anything.
    every five days. TRT was ranked, traded and never reported, so `event_occurred: false`
    has to be reachable here too.
 
-   **All three markets now have a day archive** (`eu_archive.py`, 2026-09-19), so this
-   is one code path over three sources rather than three special cases:
+   **Eight of the ten markets have a day archive** (`eu_archive.py`), so this is one code
+   path over several sources rather than a special case each:
 
      UK  Investegate's RNS mirror, queryable BY DATE back to 1999. Stronger than Japan's
          TDnet, which keeps about 31 days. Classification is by headline.
@@ -26,9 +26,26 @@ anything.
          EQS query returns a whole day, so a German name whose EQS spelling differs from
          the vendor's resolves `null` rather than false.
 
-   `event_occurred: false` is now reachable for the UK and France, where a day archive
-   was read in full and does not carry the issuer. It stays unreachable for Germany by
-   construction, and that asymmetry is recorded in each row's `confirmation_note`.
+     SE/DK/FI  The Nasdaq Nordic disclosure feed, which carries the ISSUER'S OWN
+         category (`Half Year financial report`, `Interim report (Q1 and Q3)`,
+         `Financial Statement Release`) -- the France property, in three more markets.
+         **Its date filter is accepted and IGNORED**, so it is paged instead, and a day
+         it could not be paged back to returns None rather than an empty list.
+     NO  Oslo Bors NewsWeb: a true day query, categorised, and keyed by the exchange
+         TICKER, so Norwegian confirmation joins on a code rather than on a normalised
+         company name -- the weakest link everywhere else here.
+     IT  eMarket STORAGE, Borsa Italiana's storage mechanism, behind an intermittent WAF
+         (7 of 8 good) and with an EXCLUSIVE `data_to`, which read naively returns zero
+         rows for every day and would have killed every Italian name ever hunted.
+     ES/PL  **Nothing reachable.** Every CNMV `Consulta-OIR` path returns 403, and
+         `www.gpw.pl` and `espi.pap.pl` each scored 0 of 8 on the sweep where
+         emarketstorage scored 7 of 8. Every Spanish and Polish row resolves null.
+
+   So `event_occurred: false` is reachable for the UK, France, Norway and Italy; for
+   Sweden, Denmark and Finland only while the print is still inside the Nasdaq feed's
+   rolling window; and never for Germany, Spain or Poland. `false_reachable` and
+   `archive_kind` in the output say which case each market is in, per run, and that
+   asymmetry is recorded in each row's `confirmation_note`.
 
 2. MEASURE. Europe reports before the open -- 339 of 379 measured UK results
    announcements landed before 08:00 London -- so a `bmo` name is scored close(D-1) ->
@@ -69,11 +86,18 @@ anything.
    must not be reported as a finding, the same caveat `researcher_japan` records for its
    own `impact_sum_pre_lessons`.
 
-ONE CAVEAT SPECIFIC TO EUROPE, AND IT IS A GOOD ONE. None of the three markets has a
-daily price limit, only volatility interruptions and auction pauses, so the tail is
-intact: Phase 1 measured maxima of 42.2% (UK), 27.5% (DE) and 51.8% (FR) against Tokyo's
+ONE CAVEAT SPECIFIC TO EUROPE, AND IT IS A GOOD ONE. None of these markets has a daily
+price limit, only volatility interruptions and auction pauses, so the tail is intact:
+Phase 1 measured maxima of 42.2% (UK), 27.5% (DE) and 51.8% (FR) against Tokyo's
 値幅制限, which truncates exactly the events the hunt most wants credit for. Europe is
-the one market of the three in this repo where a large correct call can be paid in full.
+the one region of the three in this repo where a large correct call can be paid in full.
+
+AND ONE THAT ARRIVED WITH THE SEVEN NEW MARKETS. The universe draw is random and the
+forward calendar is seasonal, so a day can be almost entirely one market -- 15 of 20
+names were Swedish on 2026-10-22. That is a correlated exposure the scorer cannot see,
+the same shape as the four US names the IEEPA tariff refunds ranked together.
+`selection.market_concentration` in the universe file carries it; read it before pooling
+a day's rho as if it were ten markets.
 """
 import argparse
 import json
@@ -88,7 +112,7 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import eu_archive as ARCH                         # noqa: E402
-from eu_market import MARKETS                     # noqa: E402
+from eu_market import MARKETS, capability, false_reachable  # noqa: E402
 
 UTC = ZoneInfo("UTC")
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0"
@@ -124,10 +148,21 @@ def build_archives(ev, baselines, verbose=True):
             arch[m], notes[m] = None, f"unavailable: {exc}"
             continue
         arch[m] = rows
+        if rows is None:
+            # `day()` returns None rather than [] where the source could not be read at
+            # all -- Spain and Poland always, the Nasdaq feed when it could not be paged
+            # back to the date, Italy when the WAF won all eight retries. Every row from
+            # such a market resolves `event_occurred: null`, never false.
+            notes[m] = ("no archive read: " + (MARKETS[m]["confirm_name"] or "none"))
+            continue
+        extra = {"de": " (searched per issuer; EQS has no whole-day query)",
+                 "se": " (Nasdaq feed paged back to the date; its date filter is "
+                       "accepted and ignored, so it is never passed)",
+                 "dk": " (Nasdaq feed, paged)", "fi": " (Nasdaq feed, paged)",
+                 "it": " (eMarket STORAGE; data_to is EXCLUSIVE and the WAF is "
+                       "retried)"}.get(m, "")
         notes[m] = (f"{len({r['issuer_norm'] for r in rows if r['is_results']})} issuers "
-                    f"with a results-classified announcement, {len(rows)} rows"
-                    + (" (searched per issuer; EQS has no whole-day query)"
-                       if m == "de" else ""))
+                    f"with a results-classified announcement, {len(rows)} rows" + extra)
         if verbose:
             print(f"  archive {m}: {notes[m]}")
     return arch, notes
@@ -217,7 +252,11 @@ def main():
             else:
                 occurred, cnote = ARCH.confirm(
                     m, ev, bl.get("company") or tk,
-                    ticker=tk if m == "uk" else None, archive=arch[m])
+                    # The UK's EPIC and Norway's issuerSign are both real exchange
+                    # tickers carried by their archives, so those two join on a code.
+                    # Everywhere else the join is on a normalised company name and a
+                    # spelling difference reads as silence.
+                    ticker=tk if m in ARCH.TICKER_KEYED else None, archive=arch[m])
 
         rows.append({
             "ticker": tk, "submarket": m, "company": bl.get("company"),
@@ -276,7 +315,16 @@ def main():
                             if a.no_confirm else
                             {m: {"source": MARKETS[m]["confirm_name"],
                                  "read": arch_notes.get(m),
-                                 "false_reachable": m != "de",
+                                 # Per market, from the measured capability table, not
+                                 # from a rule of thumb. It is false for Germany (EQS
+                                 # has no whole-day query) and for Spain and Poland (no
+                                 # archive reachable at all), and it is CONDITIONALLY
+                                 # true for the three Nasdaq markets -- only while the
+                                 # print is still inside the feed's rolling window,
+                                 # which `archive_read` above records.
+                                 "false_reachable": false_reachable(m),
+                                 "archive_kind": capability(m, "archive"),
+                                 "archive_read": arch.get(m) is not None,
                                  "classified_by": dict(Counter(
                                      r["classified_by"] for r in (arch.get(m) or [])
                                      if r["is_results"]))}

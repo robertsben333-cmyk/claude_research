@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Disclosed short positioning per European name, from the three national registers.
+"""Disclosed short positioning per European name, from the national registers.
 
 WHY THIS EXISTS
 ---------------
@@ -16,10 +16,29 @@ So `options` is null for Europe as it is for Japan, `edge_score.priced_lean_pct`
 fall through to its `-0.05 * run_up_20d_pct` branch, and the baseline's lean and the
 free control every ranker is measured against would be the same number.
 
-The Short Selling Regulation is what stands in its place. All three markets publish
+The Short Selling Regulation is what stands in its place. Most of these markets publish
 name-level net short positions at the 0.5% public threshold, which gives two things the
 run-up cannot: how crowded the short side already is, and whether it is being built or
 covered into the print.
+
+EIGHT OF TEN READ. Measured 2026-09-19, when the Nordics, Warsaw, Milan and Madrid were
+added: UK, DE, FR, SE, DK, NO, FI and IT all download; **ES and PL do not** -- see
+UNREACHABLE, and note that both were given the eight-try standard that rescued France
+and Italy and failed it. A market with no register produces a lean equal to the free
+control, which is a measurement that cannot beat its own benchmark; that is a real cost
+of including Spain and Poland and it is carried, not hidden.
+
+FOUR CAN MEASURE THEIR OWN CHANGE and the rest need the cache. The UK (historic file),
+France (publication end dates) and Norway (dated events per issuer) carry history;
+Germany, Denmark, Finland, Italy and Sweden publish only the current position and are
+diffed against yesterday's cached file. `SELF_HISTORIED` and `CACHE_DIFFED` are the
+lists, and getting a market into the wrong one either double-counts or leaves
+`short_building` null forever.
+
+AND DENMARK IS NOT ON THE SAME SCALE. Finanstilsynet publishes from 0.1% where the SSR
+threshold is 0.5%, so a Danish aggregate sums positions no other register shows. It is
+deliberately not rescaled: `threshold_pct` rides in the row and eu_resolve.py ranks the
+lean components per market.
 
 WHAT EACH REGISTER ACTUALLY GIVES, MEASURED
 -------------------------------------------
@@ -106,9 +125,15 @@ import json
 import re
 import subprocess
 import time
+import sys
 from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
+
+# Before the sibling import, not after: eu_positioning is imported by eu_priced_in from
+# a different working directory, and a bare `import eu_sheet` would raise there.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import eu_sheet                                                       # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
 CACHE = REPO / "researcher_europe" / "analysis" / "eu-short-cache.json"
@@ -138,6 +163,44 @@ AMF_DATASET_API = ("https://www.data.gouv.fr/api/1/datasets/historique-des-posit
 # not re-filed since Tuesday has not changed position, and a one-day window would read
 # almost every name as unchanged.
 FR_CHANGE_WINDOW_DAYS = 10
+# The same window for every register that carries its own dated history, so the
+# `short_change_pct_pts` field means one thing across markets rather than ten.
+CHANGE_WINDOW_DAYS = 10
+
+# --- the seven registers added on 2026-09-19 --------------------------------------
+# Every URL below was fetched from this container on that date and the result is in the
+# comment beside it. Four work outright, one works with a retry, two do not work at all.
+SE_ODS = ("https://www.fi.se/sv/vara-register/blankningsregistret/"
+          "GetBlankningsregisterAggregat/")            # 609 kB ODS, dated history
+DK_PAGE = ("https://www.dfsa.dk/financial-themes/capital-market/"
+           "company-announcements/aggregated-net-short-positions")   # inline HTML table
+NO_API = "https://ssr.finanstilsynet.no/api/v2/instruments"          # 1.5 MB JSON
+FI_API = "https://www.finanssivalvonta.fi/api/shortselling/datatable/current"
+FI_REFERER = ("https://www.finanssivalvonta.fi/en/financial-market-participants/"
+              "capital-markets/issuers-and-investors/short-positions/"
+              "Current-net-short-positions/")
+IT_XLSX = ("https://www.consob.it/documents/11973/395154/PncPubbl.xlsx/"
+           "fbefe0a2-795b-bad3-9369-beccbeb14f27")     # 746 kB xlsx behind a WAF
+
+# WHAT DOES NOT RESOLVE, AND WHY IT IS RECORDED HERE RATHER THAN DISCOVERED AGAIN.
+# Both were given the EIGHT-TRY STANDARD that rescued France and Italy -- this repo has
+# twice written a host off as blocked after four attempts and been wrong both times --
+# and both failed it, on the same sweep where emarketstorage passed 7 of 8.
+UNREACHABLE = {
+    "es": ("The CNMV publishes net short positions through an ASP.NET postback "
+           "(`/portal/consultas/ee/posicionescortas`) behind a cookie gate. Driven from "
+           "here the page returns 8 of 8 HTTP 200 and ZERO table rows and zero ES ISINs, "
+           "before and after posting the cookie-consent form with a valid __VIEWSTATE. "
+           "Every `Consulta-OIR` / `InformacionRelevante` path returns 403. So a Spanish "
+           "name has NO positioning anchor: its lean is the run-up, which is also the "
+           "free control it is measured against."),
+    "pl": ("The KNF register is a DataTables POST to "
+           "`rss.knf.gov.pl/RssOuterView/JSCRIPT`, which answers 302 without a cookie "
+           "and 403 with one, on every attempt and with browser headers. This is a HARD "
+           "failure, not the intermittent kind: on the same sweep `www.gpw.pl` and "
+           "`espi.pap.pl` each scored 0 of 8 while `emarketstorage.com` scored 7 of 8. "
+           "So a Polish name has NO positioning anchor."),
+}
 
 
 def _curl(args, cookie=None, referer=None, timeout=90):
@@ -379,12 +442,276 @@ def load_fr():
     return (max(dates) if dates else None), out
 
 
-def load(markets=("uk", "de", "fr"), refresh=False):
+# --- SE ----------------------------------------------------------------------------
+def _num(x):
+    """A register percentage, however its locale writes it. `7,99` and `7.99` both."""
+    try:
+        return float(str(x).strip().replace("\u00a0", "").replace(" ", "").replace(",", "."))
+    except (TypeError, ValueError):
+        return None
+
+
+def load_se():
+    """Finansinspektionen's aggregated register: a SNAPSHOT, one row per issuer.
+
+    THIS WAS READ WRONG ONCE AND THE CORRECTION IS THE REASON FOR THIS PARAGRAPH. The
+    sheet is 1,784 rows, of which all but 342 are blank padding, and the 342 real rows
+    are 342 DISTINCT issuers -- one each. It looked like a dated history because the
+    position dates span 2019-12-19 to 2026-09-18 across 96 distinct values, but that
+    spread is not history: `Positionsdatum senaste position` is the date THIS issuer's
+    aggregate last changed, so a name nobody has traded against since 2019 carries a
+    2019 date. Read as a history it produced a `short_change_pct_pts` equal to the full
+    level for every one of the 342 names, because no row was ever older than the
+    reference date.
+
+    So Sweden is snapshot-only, like Germany, Denmark, Finland and Italy, and its change
+    is a cache diff. What the date field does buy, which no other snapshot register
+    gives, is STALENESS: `position_date` says how long this level has stood, and a
+    disclosed short unchanged since 2019 is a different object from one that moved
+    yesterday. It rides in the row as `position_date` and is worth reading before a
+    negative finding.
+    """
+    raw = _curl_retry(SE_ODS, tries=4, timeout=120)
+    if not raw:
+        raise RuntimeError("Finansinspektionen's ODS did not download in 4 tries")
+    rows = eu_sheet.read(raw)
+    hdr = next((i for i, r in enumerate(rows)
+                if r and "emittent" in (r[0] or "").lower()), None)
+    if hdr is None:
+        raise RuntimeError("the Swedish ODS has no issuer header row; layout changed")
+    hist = defaultdict(list)                     # issuer -> [(date, pct, lei, name)]
+    # Keyed by issuer so a duplicate row cannot silently become two issuers, and so the
+    # `max` below is well defined if the file's shape ever changes.
+    for r in rows[hdr + 1:]:
+        if len(r) < 4 or not (r[0] or "").strip():
+            continue
+        pct, d = _num(r[2]), (r[3] or "").strip()[:10]
+        if pct is None or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", d):
+            continue
+        hist[norm(r[0])].append((d, pct, (r[1] or "").strip(), r[0].strip()))
+    out = {}
+    for k, evs in hist.items():
+        # One row per issuer in practice; `max` rather than `[0]` so a future file that
+        # did carry several rows would take the newest instead of an arbitrary one.
+        d, pct, lei, name = max(evs)
+        out[k] = {"short_ratio_pct": round(pct, 4),
+                  # Null, never 0: this file cannot say what the level was last week,
+                  # and 0 would read as "unchanged". Filled from the cache from the
+                  # second day on, like the other three snapshot registers.
+                  "short_ratio_prev_pct": None,
+                  "short_change_pct_pts": None,
+                  "disclosed_sellers": None,     # the file is aggregated, not per holder
+                  "isin": None, "lei": lei,
+                  "position_date": d, "issuer_as_published": name}
+    dates = [v["position_date"] for v in out.values() if v["position_date"]]
+    return (max(dates) if dates else None), out
+
+
+# --- DK ----------------------------------------------------------------------------
+_DK_ROW = re.compile(r"<tr[^>]*>(.*?)</tr>", re.S)
+_DK_CELL = re.compile(r"<td[^>]*>(.*?)</td>", re.S)
+
+
+def load_dk():
+    """Finanstilsynet's aggregated table, parsed out of the page itself.
+
+    The only one of the ten served as HTML rather than as a file, and the only one whose
+    PUBLICATION THRESHOLD IS 0.1% rather than the SSR's 0.5% -- the rows run down to
+    0.10 when measured. So a Danish zero is a stronger statement than a British one: it
+    rules out five times less short interest. `threshold_pct` rides in every row so
+    nothing downstream compares a Danish zero with a Swedish one as if they were the
+    same object.
+
+    Current position only, so the change is a cache diff, as for Germany.
+    """
+    html = _curl([DK_PAGE], timeout=60).decode("utf-8", "replace")
+    out = {}
+    for r in _DK_ROW.findall(html):
+        cells = [re.sub(r"<[^>]+>", "", c).replace("&nbsp;", " ").strip()
+                 for c in _DK_CELL.findall(r)]
+        if len(cells) < 4 or not re.fullmatch(r"[A-Z]{2}[A-Z0-9]{10}", cells[1] or ""):
+            continue
+        pct = _num(cells[3])
+        if pct is None:
+            continue
+        out[norm(cells[2])] = {
+            "short_ratio_pct": round(pct, 4),
+            "short_ratio_prev_pct": None, "short_change_pct_pts": None,
+            "disclosed_sellers": None, "isin": cells[1],
+            "threshold_pct": 0.1,
+            "position_date": (cells[4][:10] if len(cells) > 4 else ""),
+            "issuer_as_published": cells[2]}
+    dates = [v["position_date"] for v in out.values() if v["position_date"]]
+    return (max(dates) if dates else None), out
+
+
+# --- NO ----------------------------------------------------------------------------
+def load_no():
+    """The Norwegian SSR register: the cleanest of the ten.
+
+    One JSON document, no key and no cookie, carrying every issuer that has ever had a
+    disclosed position together with its FULL DATED EVENT HISTORY -- each event an
+    aggregate percentage plus the per-holder positions behind it. So the current level
+    and the change over any window are both exact, and the anchor is backtestable, like
+    the FCA's and the AMF's and unlike Bundesanzeiger's.
+
+    An event with `shortPercent` 0 is a real close-out, not a gap, so a name whose latest
+    event is 0 has a disclosed history and no current position. That is deliberately
+    kept as a row rather than dropped: it is the one state that distinguishes "shorts
+    were here and have gone" from "nobody has ever been short", and the second is what a
+    name absent from the register means.
+    """
+    raw = _curl_retry(NO_API, tries=4, timeout=120)
+    if not raw:
+        raise RuntimeError("the Norwegian SSR API did not answer in 4 tries")
+    data = json.loads(raw.decode("utf-8", "replace"))
+    ref = (datetime.utcnow().date() - timedelta(days=CHANGE_WINDOW_DAYS)).isoformat()
+    out = {}
+    for it in data:
+        evs = sorted((e for e in (it.get("events") or []) if e.get("date")),
+                     key=lambda e: e["date"])
+        if not evs:
+            continue
+        last = evs[-1]
+        prev = next((e for e in reversed(evs) if e["date"][:10] <= ref), None)
+        pct = float(last.get("shortPercent") or 0.0)
+        pv = float(prev.get("shortPercent") or 0.0) if prev else 0.0
+        out[norm(it.get("issuerName"))] = {
+            "short_ratio_pct": round(pct, 4),
+            "short_ratio_prev_pct": round(pv, 4),
+            "short_change_pct_pts": round(pct - pv, 4),
+            "change_window_days": CHANGE_WINDOW_DAYS,
+            "change_reference_date": ref,
+            "disclosed_sellers": len(last.get("activePositions") or []),
+            "isin": it.get("isin"),
+            "position_date": last["date"][:10],
+            "issuer_as_published": it.get("issuerName")}
+    dates = [v["position_date"] for v in out.values() if v["position_date"]]
+    return (max(dates) if dates else None), out
+
+
+# --- FI ----------------------------------------------------------------------------
+def load_fi():
+    """FIN-FSA's current register, through the DataTables endpoint its own page calls.
+
+    A POST, not a GET, and the GET returns a 404 page that looks exactly like a dead
+    URL -- which is why the endpoint is recorded here with the form body that works
+    rather than left to be rediscovered. Per-holder rows, so the aggregate is a sum and
+    `disclosed_sellers` is real. Current positions only; the change is a cache diff.
+    """
+    body = ("draw=1&start=0&length=1000&lang=en"
+            "&search%5Bvalue%5D=&search%5Bregex%5D=false")
+    raw = _curl(["-X", "POST", "--data", body,
+                 "-H", "X-Requested-With: XMLHttpRequest",
+                 "-H", "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
+                 FI_API], referer=FI_REFERER, timeout=60)
+    data = json.loads(raw.decode("utf-8", "replace"))
+    agg = defaultdict(lambda: {"pct": 0.0, "sellers": 0, "isin": None, "name": None,
+                               "date": ""})
+    for r in data.get("data") or []:
+        pct = _num(r.get("netShortPositionInPercent"))
+        if pct is None:
+            continue
+        a = agg[norm(r.get("issuerName"))]
+        a["pct"] += pct
+        a["sellers"] += 1
+        a["isin"] = a["isin"] or r.get("isinCode")
+        a["name"] = a["name"] or r.get("issuerName")
+        a["date"] = max(a["date"], (r.get("positionDate") or "")[:10])
+    out = {k: {"short_ratio_pct": round(v["pct"], 4),
+               "short_ratio_prev_pct": None, "short_change_pct_pts": None,
+               "disclosed_sellers": v["sellers"], "isin": v["isin"],
+               "position_date": v["date"], "issuer_as_published": v["name"]}
+           for k, v in agg.items()}
+    dates = [v["position_date"] for v in out.values() if v["position_date"]]
+    return (max(dates) if dates else None), out
+
+
+# --- IT ----------------------------------------------------------------------------
+def _excel_date(v):
+    """CONSOB writes the position date as an Excel serial, so 46259 is 2026-08-25.
+
+    Left as a number it sorts and compares as a number, which reads as a plausible date
+    to nothing and silently breaks `as_of`. The epoch is 1899-12-30, which is Excel's
+    own off-by-one for 1900 and is correct for every date this register carries.
+    """
+    try:
+        n = float(str(v).strip().replace(",", "."))
+    except (TypeError, ValueError):
+        return (str(v) or "")[:10]
+    if n < 20000 or n > 80000:
+        return (str(v) or "")[:10]
+    return (datetime(1899, 12, 30) + timedelta(days=int(n))).date().isoformat()
+
+
+def load_it():
+    """CONSOB's per-holder register, from an xlsx behind an intermittent WAF.
+
+    Measured 2026-09-19: the short-selling landing page served the real document on 2 of
+    5 tries and a Radware captcha page on the other 3, and the xlsx itself came on the
+    second attempt. Retried, not believed on one failure -- the France lesson.
+
+    The download URL is not guessable. It is built by a `downloadShortselling()` function
+    inlined in the landing page, and the filename is `PncPubbl.xlsx` with two Ls, which
+    is why the obvious `PncPubb.xlsx` returns 404 and looks like a dead register.
+    """
+    raw = _curl_retry(IT_XLSX, tries=8, timeout=120)
+    if not raw or raw[:2] != b"PK":
+        raise RuntimeError("CONSOB's PncPubbl.xlsx did not download in 8 tries "
+                           "(the WAF serves a captcha page instead)")
+    rows = eu_sheet.read(raw)
+    agg = defaultdict(lambda: {"pct": 0.0, "sellers": 0, "isin": None, "name": None,
+                               "date": ""})
+    for r in rows:
+        # Two header rows, Italian then English, then the data. Keyed off a real ISIN in
+        # column 5 rather than off a row index, so an added preamble row cannot shift it.
+        if len(r) < 7 or not re.fullmatch(r"[A-Z]{2}[A-Z0-9]{10}", (r[4] or "").strip()):
+            continue
+        pct = _num(r[5])
+        if pct is None:
+            continue
+        a = agg[norm(r[2])]
+        a["pct"] += pct
+        a["sellers"] += 1
+        a["isin"] = a["isin"] or r[4].strip()
+        a["name"] = a["name"] or r[2].strip()
+        a["date"] = max(a["date"], _excel_date(r[6]))
+    out = {k: {"short_ratio_pct": round(v["pct"], 4),
+               "short_ratio_prev_pct": None, "short_change_pct_pts": None,
+               "disclosed_sellers": v["sellers"], "isin": v["isin"],
+               "position_date": v["date"], "issuer_as_published": v["name"]}
+           for k, v in agg.items()}
+    dates = [v["position_date"] for v in out.values() if v["position_date"]]
+    return (max(dates) if dates else None), out
+
+
+# Which markets publish their own dated history, and which need two days of cache before
+# `short_change_pct_pts` is anything but null. Getting this wrong in either direction is
+# expensive: a cache diff applied to a file that already carries history double-counts,
+# and a missing diff leaves the `short_building` lean component null forever.
+SELF_HISTORIED = {"uk", "fr", "no"}
+CACHE_DIFFED = {"de", "dk", "fi", "it", "se"}
+LOADERS = {"uk": load_uk, "de": load_de, "fr": load_fr, "se": load_se,
+           "dk": load_dk, "no": load_no, "fi": load_fi, "it": load_it}
+SOURCES = {"uk": FCA_CURRENT, "de": BANZ_CSV, "fr": AMF_RESOURCE, "se": SE_ODS,
+           "dk": DK_PAGE, "no": NO_API, "fi": FI_API, "it": IT_XLSX,
+           "es": None, "pl": None}
+
+
+def load(markets=("uk", "de", "fr", "se", "dk", "no", "fi", "it", "es", "pl"),
+         refresh=False):
     """Every register once for the whole day, cached.
 
-    Cached because Bundesanzeiger publishes only the current snapshot: once a day's
-    file is replaced it cannot be re-fetched, and the cache is the only way the CHANGE
-    component ever becomes computable for Germany.
+    Cached because four of the eight readable registers publish only the current
+    snapshot -- Germany, Denmark, Finland and Italy -- so once a day's file is replaced
+    it cannot be re-fetched, and the cache is the only way `short_change_pct_pts` ever
+    becomes computable for them. The other four carry their own dated history and are
+    never diffed against the cache; see SELF_HISTORIED.
+
+    Spain and Poland have no reachable register at all and short-circuit here rather
+    than being attempted, retried and timed out on every run. That is not a judgement
+    about those markets, it is the measurement in UNREACHABLE, and it is re-testable:
+    delete the entry and add a loader when one of them starts answering.
     """
     cache = {}
     if CACHE.exists() and not refresh:
@@ -406,11 +733,14 @@ def load(markets=("uk", "de", "fr"), refresh=False):
                      if v.get("position_date")]
             out[m] = {"as_of": max(dates) if dates else None, "rows": cached_today,
                       "covered": True, "error": None, "stale_cache_days": 0,
-                      "from_cache": True,
-                      "source": {"uk": FCA_CURRENT, "de": BANZ_CSV,
-                                 "fr": AMF_RESOURCE}[m]}
+                      "from_cache": True, "source": SOURCES.get(m)}
             continue
-        loader = {"uk": load_uk, "de": load_de, "fr": load_fr}[m]
+        if m in UNREACHABLE:
+            out[m] = {"as_of": None, "rows": {}, "covered": False, "error": None,
+                      "stale_cache_days": None, "source": None,
+                      "reason": UNREACHABLE[m]}
+            continue
+        loader = LOADERS[m]
         try:
             as_of, rows = loader()
         except Exception as exc:
@@ -421,7 +751,7 @@ def load(markets=("uk", "de", "fr"), refresh=False):
         if rows:
             snap = cache.setdefault(m, {})
             prev_day = max([d for d in snap if d < today], default=None)
-            if m == "de" and prev_day:      # FR carries its own history; UK has one
+            if m in CACHE_DIFFED and prev_day:   # the four snapshot-only registers
                 for k, v in rows.items():
                     p = snap[prev_day].get(k)
                     if p and p.get("short_ratio_pct") is not None:
@@ -448,9 +778,7 @@ def load(markets=("uk", "de", "fr"), refresh=False):
                 if age <= 5 and snap[prev_day]:
                     rows, as_of, stale = snap[prev_day], prev_day, age
         out[m] = {"as_of": as_of, "rows": rows, "covered": bool(rows), "error": err,
-                  "stale_cache_days": stale,
-                  "source": {"uk": FCA_CURRENT, "de": BANZ_CSV,
-                             "fr": AMF_RESOURCE}[m]}
+                  "stale_cache_days": stale, "source": SOURCES.get(m)}
         if m == "fr" and not rows:
             out[m]["reason"] = (
                 "The AMF register is hosted on www.data.gouv.fr, which answers this "
@@ -494,7 +822,7 @@ def for_name(market, company, registers):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--markets", default="uk,de,fr")
+    ap.add_argument("--markets", default="uk,de,fr,se,dk,no,fi,it,es,pl")
     ap.add_argument("--refresh", action="store_true")
     ap.add_argument("--name", action="append", help="look up these company names")
     a = ap.parse_args()

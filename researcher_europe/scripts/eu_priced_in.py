@@ -3,8 +3,11 @@
 
 Same job as `researcher_us/scripts/priced_in.py` and `researcher_japan/scripts/
 jp_priced_in.py`, and it writes the same shape, so `researcher_us/scripts/edge_score.py`
-scores a European run unchanged and the three markets stay directly comparable. What
-differs is what these markets will tell you.
+scores a European run unchanged and the ten markets stay directly comparable. What
+differs is what each market will tell you -- and since 2026-09-19 that differs a great
+deal more than it used to, because the seven markets added that day are not equally
+instrumented. `eu_market.CAPABILITY` is the table; this file reads it rather than
+assuming.
 
 THE OPTION ANCHOR DOES NOT EXIST HERE EITHER, AND THAT WAS THE HOPE
 -------------------------------------------------------------------
@@ -27,30 +30,45 @@ WHAT STANDS IN ITS PLACE, AND WHERE IT WORKS
 --------------------------------------------
 The Short Selling Regulation's 0.5% public threshold. The FCA register resolved on 89%
 of the UK $1-5m-turnover cohort against 12% below $1m and 36-44% for Japan's JPX
-register, so the substitute anchor is materially better here than in Tokyo. **All three
-registers read since 2026-09-19**, France included -- Phase 1 had written the AMF file
-off as unreachable and it is merely intermittent; see `eu_positioning.load_fr()`. So no
-market's `priced_lean_pct` is structurally the free control any more, and
-`eu_resolve.py` still reports `lean_vs_free_control_rho` PER MARKET, because a register
-that quietly stops resolving would send that number back to 1.0 and nothing else would
+register, so the substitute anchor is materially better here than in Tokyo.
+
+**EIGHT OF THE TEN REGISTERS READ, measured 2026-09-19**: the UK, Germany, France,
+Sweden, Denmark, Norway, Finland and Italy. Norway's is the best of them -- a JSON
+document carrying every issuer's full dated event history, so its change is exact and
+its anchor is backtestable, like the FCA's and the AMF's. **SPAIN AND POLAND HAVE NO
+READABLE REGISTER AT ALL**, so a Spanish or Polish name's `priced_lean_pct` IS the
+run-up, which is also the free control it is being measured against -- that name cannot
+beat the control with anything that uses the control. `eu_resolve.py` reports
+`lean_vs_free_control_rho` PER MARKET for exactly this reason, and it should read ~1.0
+for `es` and `pl` and materially below it everywhere else. If it climbs toward 1.0 for a
+market that used to be below, that register has stopped resolving and nothing else will
 say so.
+
+And Denmark is on a different scale: Finanstilsynet publishes from **0.1%** where the
+SSR threshold is 0.5%, so Danish aggregates are systematically larger for the same real
+crowding. Not rescaled -- see `lean_components()`.
 
 What the registers do NOT fix is the cheap end of the universe. With the floor at $200k
 most names are absent from a register that read perfectly well, which is a truncated
 zero rather than an anchor: `anchor_covered` is sealed per name and paid less quality
 than a disclosure, and `eu_resolve.py` splits the ranking by it.
 
-THE HISTORY ANCHOR IS REAL FOR THE UK AND ESTIMATED FOR THE OTHER TWO
-----------------------------------------------------------------------
+THE HISTORY ANCHOR IS REAL FOR THE UK AND NORWAY AND ESTIMATED FOR THE OTHER EIGHT
+------------------------------------------------------------------------------------
 Japan has no retrievable history of announcement dates, so `jp_priced_in.py` applies
 this quarter's notified lag backwards and labels every row `estimated`. The UK does not
 have that problem: Investegate's per-company page lists real dated RNS announcements
 going back years, so a UK name's `history` carries **observed** dates and the reaction
 is read off the correct window around a date that is known to have carried a release.
 
-Germany and France have no equivalent free archive -- EQS-News serves a non-paginating
-snapshot of the live feed, and the Boerse Frankfurt `company_calendar` endpoint returns
-`{}` for every ISIN tried -- so those two fall back to the Japanese method: step the
+Norway joined it on 2026-09-19: Oslo Bors NewsWeb takes `issuer=<ticker>` over a
+multi-year date range and really filters, so a Norwegian name also carries observed
+dates. See `no_history()`.
+
+The other eight have no equivalent free archive -- EQS-News serves a non-paginating
+snapshot of the live feed, the Boerse Frankfurt `company_calendar` endpoint returns `{}`
+for every ISIN tried, and the Nasdaq Nordic feed pages back about twelve days, which is
+confirmation range and not history range -- so they fall back to the Japanese method: step the
 measured cadence gap backwards from the vendor's last release date and take the largest
 move within +/-2 trading days. Every such row carries `basis: "estimated"`, the estimated
 date, the date used and the gap between them. **It is a scale, not a record.** This repo
@@ -94,6 +112,14 @@ UTC = ZoneInfo("UTC")
 YQ = "https://query1.finance.yahoo.com"
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0"
 IG_COMPANY = "https://www.investegate.co.uk/company/{code}"
+# Oslo Bors NewsWeb filtered to one issuer. `issuer=<issuerSign>` is the exchange
+# ticker, and it really filters -- `issuer=ODF` returns 151 Odfjell messages back to
+# 2024-01-10 and nobody else's. (`issuerSign=` is NOT the parameter: it is accepted,
+# ignored, and returns the whole market, which is the silent-success shape this stage
+# keeps having to guard against.) So Norway is the SECOND market of the ten that can
+# carry observed announcement dates rather than a cadence guess.
+OSLO_ISSUER = ("https://api3.oslo.oslobors.no/v1/newsreader/list"
+               "?issuer={sign}&fromDate={frm}&toDate={to}")
 _crumb = {"v": None}
 
 # Same classifier the Phase 1 measurement used. It is deliberately loose: UK issuers
@@ -115,8 +141,34 @@ RESULTS_RE = re.compile(r"""(?ix)\b(
   |quarterly\s+(results|report|statement|update)
   |trading\s+(statement|update)
   |results\s+for\s+the\s+(year|period|half|six|three|nine|twelve)
+  # Added 2026-09-19 with the Nordic markets. "NOD: Results for the first quarter 2026"
+  # is how Oslo and Stockholm issuers headline a print, and the UK-shaped alternation
+  # above stops at `twelve` -- so every such headline fell through to the cadence
+  # estimate even though a real dated announcement was sitting right there.
+  |results\s+for\s+the\s+(first|second|third|fourth)\s+(quarter|half)
+  |(fourth|third|second|first)\s+quarter\s+(and\s+\w+\s+)*results
+  |(preliminary\s+)?full[-\s]?year\s+results
  )\b""")
-NOTICE_RE = re.compile(r"(?i)\bnotice\s+of\s+(results|interim|final|half)")
+# A RESULTS ANNOUNCEMENT AND AN ANNOUNCEMENT *ABOUT* A RESULTS ANNOUNCEMENT ARE NOT THE
+# SAME EVENT, and this pattern is the only thing separating them. Measured on Nordic
+# Semiconductor when Norwegian observed history was added on 2026-09-19: **12 of its 25
+# matched rows were invitations** -- "NOD: Invitation to fourth quarter results for
+# 2025" -- each landing about a week before the print it advertises. Kept, they halve
+# the measured reaction scale, because a name's move on the day it announces a webcast
+# date is roughly nothing and it was being averaged in with its real prints. The Nordic
+# and Italian wordings are here for the same reason the archive's classifier carries
+# their results vocabulary: `innkalling`, `inbjudan` and `kutsu` are the words actually
+# used, and an English-only guard lets them all through.
+NOTICE_RE = re.compile(r"""(?ix)(
+   \bnotice\s+of\s+(results|interim|final|half|annual|quarter)
+  |\binvitation\s+to\b |\binvites?\s+(you\s+)?to\b
+  |\bpresentation\s+of\s+(the\s+)?(results|interim|quarter)
+  |\b(webcast|conference\s+call|audiocast|capital\s+markets\s+day)\b
+  |\bwill\s+(be\s+)?(publish|present|report|release)
+  |\b(financial|reporting)\s+calendar\b |\bdate\s+of\s+(the\s+)?(results|report)
+  |innkalling |inbjudan |inbjuder |indbydelse |kutsu\b |einladung
+  |convocazione |invito\s+a |convocatoria
+ )""")
 
 
 def sh(cmd):
@@ -236,6 +288,51 @@ def uk_history(epic, rows, session, before, max_pages=4):
     return out
 
 
+def no_history(sign, rows, session, before, years=3):
+    """Real, dated past results announcements for a Norwegian name, off Oslo NewsWeb.
+
+    The same object `uk_history` builds from Investegate, and for the same reason: a row
+    here is a date on which a results announcement demonstrably went out, so the
+    reaction is measured over the correct window around a known event rather than over a
+    cadence guess. Everywhere else in this stage outside the UK and Norway, `history` is
+    a SCALE and not a record -- and this repo has already ranked, traded and lost money
+    on a cadence prior read as evidence.
+
+    Norway's Q1/Q3 reports carry no category of their own, because the Transparency
+    Directive does not mandate them, so the category test is backed by the headline
+    classifier exactly as it is in the day archive.
+    """
+    frm = (before - timedelta(days=365 * years)).isoformat()
+    url = OSLO_ISSUER.format(sign=sign, frm=frm, to=before.isoformat())
+    try:
+        msgs = (get_json(url, timeout=45) or {}).get("data", {}).get("messages") or []
+    except Exception:
+        return []
+    out, seen = [], set()
+    for m in msgs:
+        cats = [(c.get("category_en") or "").strip().lower()
+                for c in (m.get("category") or [])]
+        head = (m.get("title") or "").strip()
+        if not (any(c in ("half year financial report", "annual financial report",
+                          "quarterly report") for c in cats)
+                or RESULTS_RE.search(head)) or NOTICE_RE.search(head):
+            continue
+        try:
+            d = datetime.fromisoformat(
+                (m.get("publishedTime") or "").replace("Z", "+00:00")).date()
+        except ValueError:
+            continue
+        if d >= before or d in seen:
+            continue
+        seen.add(d)
+        mv = move_for(rows, d, session)
+        if mv is not None:
+            out.append({"move_pct": mv, "date_used": d.isoformat(),
+                        "headline": head[:80], "basis": "observed_newsweb"})
+    out.sort(key=lambda x: x["date_used"])
+    return out
+
+
 def realised_vol_pct(rows, n=20):
     cl = [r["c"] for r in rows if r["c"]]
     if len(cl) < n + 1:
@@ -256,6 +353,14 @@ def lean_components(positioning, runup):
 
       short_squeeze   crowded disclosed short -> POSITIVE. The US run watched two shorts
                       into 18%- and 23%-of-float names both squeeze more than 20%.
+                      **DENMARK IS NOT ON THE SAME SCALE AS THE OTHER NINE.**
+                      Finanstilsynet publishes from 0.1% where the SSR threshold is
+                      0.5%, so a Danish aggregate sums positions the other registers
+                      never show and reads systematically higher for the same real
+                      crowding. It is deliberately NOT rescaled here -- a correction
+                      factor nobody has measured is worse than a difference everybody
+                      can see -- so `positioning.threshold_pct` rides in the Danish rows
+                      and eu_resolve.py ranks this component per market.
       short_building  shorts ADDING into the print -> NEGATIVE. Sellers who must file
                       their names increasing a position days before results are the
                       closest thing to visible informed flow in these markets.
@@ -331,7 +436,9 @@ def build(name, event_date, registers, validation_only=False):
                   "no open interest and no underlying ISIN map, and its statistics page "
                   "is JavaScript with no JSON endpoint. So there is no event-implied "
                   "move and no skew, and this baseline supplies its own priced_lean_pct "
-                  "and anchor_quality from the national short registers instead.",
+                  "and anchor_quality from the national short registers instead. This "
+                  "holds for all ten markets; nothing measured in 2026-09 on the seven "
+                  "added that month changes it.",
     }
 
     qs = (f"{YQ}/v10/finance/quoteSummary/{sym}"
@@ -367,6 +474,10 @@ def build(name, event_date, registers, validation_only=False):
     if m == "uk":
         hist = uk_history(name["name"], rows, session, ed)
         hbasis, hsrc = "observed_rns", IG_COMPANY.format(code=name["name"])
+    elif m == "no":
+        hist = no_history(name["name"], rows, session, ed)
+        hbasis, hsrc = "observed_newsweb", OSLO_ISSUER.format(
+            sign=name["name"], frm="<-3y>", to=ed.isoformat())
     if not hist:
         last, nxt = name.get("earnings_release_date"), name.get("earnings_release_next_date")
         gap = None
@@ -390,9 +501,11 @@ def build(name, event_date, registers, validation_only=False):
         "n": len(hist), "basis": hbasis, "source": hsrc,
         "median_abs_move_pct": round(median(moves), 2) if moves else None,
         "events": hist,
-        "caveat": ("Dates are REAL: each row is a results announcement Investegate "
-                   "records on that date, and the move is over this stage's own window."
-                   if hbasis == "observed_rns" else
+        "caveat": ("Dates are REAL: each row is a results announcement the market's "
+                   "own archive records on that date, and the move is over this stage's "
+                   "own window. Only the UK (Investegate) and Norway (Oslo NewsWeb) "
+                   "reach this state; the other eight markets are estimated."
+                   if hbasis in ("observed_rns", "observed_newsweb") else
                    "Dates are ESTIMATED by stepping the measured cadence gap backwards "
                    "from the vendor's last release date; the move is the largest within "
                    "+/-2 trading days of that estimate. A cadence prior, not a record "

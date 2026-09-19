@@ -819,6 +819,124 @@ def main():
           sc.collapse([{"ticker": "X", "event_date": "d1"},
                        {"ticker": "X.A", "event_date": "d2"}])[1] == [])
 
+    print("\nTen European markets (researcher_europe/scripts/*, config europe_hunt)")
+    sys.path.insert(0, os.path.join(REPO, "researcher_europe", "scripts"))
+    import eu_market as em                                         # noqa: E402
+    import eu_sheet as esheet                                      # noqa: E402
+    import eu_archive as earch                                     # noqa: E402
+    import eu_priced_in as epi                                     # noqa: E402
+
+    # THE YAML BOOLEAN TRAP. Unquoted `no` in a YAML list is the boolean False, so
+    # `markets: [uk, de, fr, se, dk, no, fi, it, es, pl]` silently drops Norway -- the
+    # best-instrumented of the seven markets added on 2026-09-19. It fails as a wrong
+    # RESULT, not as an error, which is exactly the class of bug this file exists for.
+    import yaml                                                    # noqa: E402
+    cfg = yaml.safe_load(open(os.path.join(REPO, "config", "pipeline.yaml"),
+                              encoding="utf-8"))
+    mk = cfg["europe_hunt"]["markets"]
+    check("every configured European market is a string, not a YAML boolean",
+          all(isinstance(x, str) for x in mk), repr(mk))
+    check("Norway survives the YAML load", "no" in mk, repr(mk))
+    check("every configured market is known to eu_market",
+          all(x in em.MARKETS for x in mk),
+          repr([x for x in mk if x not in em.MARKETS]))
+    check("every market has a hunter agent definition",
+          all(os.path.exists(os.path.join(REPO, ".claude", "agents",
+                                          em.MARKETS[x]["hunter"] + ".md"))
+              for x in mk),
+          repr(sorted({em.MARKETS[x]["hunter"] for x in mk})))
+
+    # The Nordic share-class translation. Yahoo answers an empty chart for the wrong
+    # symbol rather than erroring, so a broken rule here drops the day's largest Nordic
+    # names -- the ones with two share classes -- as "no tape".
+    check("a Nordic share class is hyphenated for Yahoo",
+          em.yahoo_symbol("se", "OMXSTO:INVE_A") == "INVE-A.ST"
+          and em.yahoo_symbol("fi", "OMXHEX:NDA_FI") == "NDA-FI.HE")
+    check("a non-Nordic ticker is left alone",
+          em.yahoo_symbol("de", "XETR:SAP") == "SAP.DE"
+          and em.yahoo_symbol("fr", "EURONEXT:MC") == "MC.PA")
+
+    # `event_occurred: false` is reachable in some markets and not others, and treating
+    # an unreachable archive as an empty one is the TRT mistake in mirror image.
+    check("event_occurred: false is unreachable where no archive exists",
+          not em.false_reachable("es") and not em.false_reachable("pl")
+          and not em.false_reachable("de"))
+    check("event_occurred: false is reachable where a day archive exists",
+          all(em.false_reachable(m) for m in ("uk", "fr", "no", "it", "se")))
+    check("a market with no archive returns None, not an empty day",
+          earch.day("es", "2026-09-17") is None
+          and earch.day("pl", "2026-09-17") is None)
+
+    # Holiday arithmetic, the part most likely to be wrong and least likely to raise.
+    check("Midsummer Eve is the Friday between 19 and 25 June",
+          em.midsummer_eve(2026).isoformat() == "2026-06-19"
+          and em.midsummer_eve(2027).isoformat() == "2027-06-25")
+    check("the Nordic and southern exchange calendars are populated",
+          all(len(em.exchange_holidays(m, 2026)) >= 9
+              for m in ("se", "dk", "no", "fi", "pl", "it", "es")))
+
+    # A results announcement and an announcement ABOUT one are different events. 12 of
+    # Nordic Semiconductor's 25 matched history rows were invitations before this.
+    for head, want in (("NOD: Results for the first quarter 2026", True),
+                       ("Interim report January-June 2026", True),
+                       ("NOD: Invitation to first quarter results for 2026", False),
+                       ("Notice of Interim Results", False),
+                       ("Fortum's financial calendar in 2027", False)):
+        got = bool(epi.RESULTS_RE.search(head)) and not bool(epi.NOTICE_RE.search(head))
+        check(f"history keeps/drops correctly: {head[:44]}", got == want)
+
+    # The local-language classifier. `bokslutskommunike` has no English cognate, so an
+    # English-only classifier misses every Nordic Q4.
+    for head, want in (("Delårsrapport kvartal 1, maj - juli 2026", True),
+                       ("Bokslutskommuniké 2026", True),
+                       ("Osavuosikatsaus tammi-kesäkuu 2026", True),
+                       ("Risultati consolidati al 30 giugno 2026", True),
+                       ("Raport kwartalny za III kwartał 2026", True),
+                       ("Mandatory notification of trade", False)):
+        check(f"archive classifier: {head[:44]}",
+              earch.looks_like_results(head) == want)
+
+    # The two spreadsheet registers are parsed with the standard library, because this
+    # container has no openpyxl and no odfpy.
+    import zipfile                                                 # noqa: E402
+    import io as _io                                               # noqa: E402
+    buf = _io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("[Content_Types].xml", "<Types/>")
+        # The SpreadsheetML namespace is not decoration: eu_sheet matches on the
+        # namespaced local name, because that is what a real .xlsx carries.
+        ns = ('xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"')
+        z.writestr("xl/sharedStrings.xml",
+                   f'<sst {ns}><si><t>Issuer</t></si><si><t>ACME SPA</t></si></sst>')
+        z.writestr("xl/worksheets/sheet1.xml",
+                   f'<worksheet {ns}><sheetData>'
+                   '<row><c r="A1" t="s"><v>0</v></c></row>'
+                   '<row><c r="A2" t="s"><v>1</v></c><c r="C2"><v>1.25</v></c></row>'
+                   '</sheetData></worksheet>')
+    rows = esheet.read(buf.getvalue())
+    check("xlsx shared strings resolve and sparse cells keep their column",
+          rows[0][0] == "Issuer" and rows[1][0] == "ACME SPA"
+          and len(rows[1]) == 3 and rows[1][1] == "" and rows[1][2] == "1.25",
+          repr(rows))
+    buf = _io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("mimetype", "application/vnd.oasis.opendocument.spreadsheet")
+        # Real ODS puts cell text in <text:p>, namespaced, and eu_sheet matches the
+        # namespaced local name. A bare <p> is not what the format produces.
+        z.writestr("content.xml",
+                   '<o xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"'
+                   '   xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">'
+                   '<table:table>'
+                   '<table:table-row>'
+                   '<table:table-cell><text:p>A</text:p></table:table-cell>'
+                   '<table:table-cell table:number-columns-repeated="3"/>'
+                   '<table:table-cell><text:p>B</text:p></table:table-cell>'
+                   '</table:table-row></table:table></o>')
+    rows = esheet.read(buf.getvalue())
+    check("an ods repeated-cell run expands to the right column count",
+          rows and rows[0][0] == "A" and rows[0][4] == "B" and len(rows[0]) == 5,
+          repr(rows))
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:

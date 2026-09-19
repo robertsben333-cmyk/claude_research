@@ -12,14 +12,17 @@ every German and French stream number in `SUBMARKET.md` rested on a vendor feed 
 known to undercount by more than a factor of two in the one market where it could be
 checked, and `event_occurred: false` was unreachable for both.
 
-This module is that instrument for the other two. It is deliberately NOT three scrapers
-with three shapes: every market returns the same row --
+This module is that instrument for the others. It is deliberately NOT one scraper per
+market with a shape each: every market returns the same row --
 
     {market, issuer, isin, ticker_hint, ts, headline, category, is_results,
      classified_by, url}
 
--- so `eu_resolve.py` confirms three markets through one code path and a measurement
-written for one market runs on all three.
+-- so `eu_resolve.py` confirms every market through one code path and a measurement
+written for one market runs on all of them. `day()` returns **None, not []**, where the
+source could not be read: that distinction is the only thing standing between "nobody
+announced anything" and "I could not look", and only the first may ever support
+`event_occurred: false`.
 
 WHAT EACH MARKET ACTUALLY GIVES, MEASURED 2026-09-19
 ------------------------------------------------------
@@ -62,26 +65,58 @@ WHAT EACH MARKET ACTUALLY GIVES, MEASURED 2026-09-19
        falls back to the HEADLINE, in German and English, with the same weakness the UK
        has. Only France escapes it.
 
+  SE/DK/FI  **The Nasdaq Nordic disclosure feed**, one endpoint for all three, carrying
+       the issuer's own category -- so the France property now holds in four markets
+       rather than one. **Its `fromDate` is accepted and IGNORED**: a request for a date
+       a month old returns the most recent 200 rows, dated today. That is the most
+       dangerous failure shape in this stage, a successful-looking request for the wrong
+       day, so the filter is never passed and the feed is PAGED back instead, ~200 rows
+       and roughly two days per request, about twelve days before it stops being cheap.
+
+  NO   **Oslo Bors NewsWeb.** A true `fromDate`/`toDate` query, English category labels,
+       and `issuerSign` on every row -- the only archive besides Investegate that lets
+       confirmation join on a TICKER instead of a normalised company name. It also takes
+       `issuer=<sign>` over a multi-year range, which is what gives Norway observed
+       announcement history in `eu_priced_in.no_history()`.
+
+  IT   **eMarket STORAGE**, Borsa Italiana's officially appointed storage mechanism,
+       behind the same Radware WAF as CONSOB: measured 7 of 8 good, so retried rather
+       than believed on one failure. **`data_to` is EXCLUSIVE** -- asking for
+       `data_from=D&data_to=D` returns zero rows and looks exactly like a silent day,
+       where `data_to=D+1` returns the 19 rows that exist.
+
+  ES/PL **Nothing.** Every CNMV `Consulta-OIR` / `InformacionRelevante` path returns 403;
+       `www.gpw.pl/komunikaty-spolek` and `espi.pap.pl` each returned 0 of 8 on the sweep
+       where emarketstorage returned 7 of 8, so the eight-try standard that rescued
+       France and Italy was applied and did not rescue these. `day()` returns None and
+       every row from them resolves null.
+
 CLASSIFICATION IS REPORTED, NEVER ASSUMED
 -----------------------------------------
 Every row says how it was classified: `issuer_category` where the source publishes the
-issuer's own filing category (France only) and `headline` everywhere else. A caller that
+issuer's own filing category (France, and the Nordics since 2026-09-19) and `headline`
+everywhere else. The headline classifier carries Swedish, Norwegian, Danish, Finnish,
+Italian, Spanish and Polish vocabulary as well as English, German and French, because
+`delarsrapport` and `bokslutskommunike` have no English cognate and an English-only
+classifier misses every Nordic quarter. A caller that
 wants to know how much of its confirmation rests on a keyword list can count them. And
 a row that is not classified as results is still returned -- `announced_unclassified` is
 a human call, not an automatic kill, exactly as for the UK.
 """
 import argparse
+import html
 import json
 import re
 import subprocess
 import sys
+import time
 import urllib.parse
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from eu_market import MARKETS                                        # noqa: E402
+from eu_market import MARKETS, NASDAQ_MAX_PAGES                      # noqa: E402
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
@@ -134,6 +169,26 @@ RESULTS_RE = re.compile(r"""(?ix)\b(
   |neunmonats |halbjahr  |gesch[aä]ftsjahr\s+20\d\d
   |r[ée]sultats\s+(annuels|semestriels|du|de|\d) |chiffre\s+d.affaires
   |r[ée]sultats\s+financiers |information\s+financi[eè]re\s+trimestrielle
+  # --- Nordic. `delarsrapport` (SE/NO/DK) and `osavuosikatsaus` (FI) are the ordinary
+  # words for an interim report and appear in the headline far more often than any
+  # English term, because these releases are bilingual and the Swedish half leads.
+  # `bokslutskommunike` / `tilinpaatostiedote` is the full-year release and has NO
+  # English cognate at all -- an English-only classifier misses every Nordic Q4.
+  |del[aå]rsrapport |delarsrapport |kvartalsrapport |halv[aå]rsrapport
+  |bokslutskommunik[ée] |[aå]rsredovisning |[aå]rsrapport |resultatrapport
+  |osavuosikatsaus |puolivuosikatsaus |tilinp[aä][aä]t[oö]stiedote |vuosikertomus
+  |regnskab |[aå]rsregnskab |kvartalsregnskab
+  # --- Italian
+  |risultati\s+(del|di|annuali|semestrali|consolidati)
+  |relazione\s+finanziaria\s+(semestrale|annuale) |resoconto\s+intermedio
+  |bilancio\s+(consolidato|d.esercizio) |ricavi\s+(del|di|consolidati)
+  # --- Spanish
+  |resultados\s+(del|de|anuales|semestrales|trimestrales)
+  |informaci[oó]n\s+financiera\s+(semestral|trimestral)
+  |cuentas\s+anuales |estados\s+financieros
+  # --- Polish
+  |raport\s+(okresowy|kwartalny|p[oó][lł]roczny|roczny)
+  |skonsolidowany\s+raport |sprawozdanie\s+finansowe |wyniki\s+finansowe
  )\b""")
 # An EQS type that is a results release by construction, whatever the headline says.
 # "Advance financial reports" is the WpHG pre-announcement of a publication date and is
@@ -351,14 +406,228 @@ def de_day(day, issuers, max_pages=6):
     return out
 
 
+# --- Nordics: SE / DK / FI on one Nasdaq feed ------------------------------------
+NASDAQ_API = ("https://api.news.eu.nasdaq.com/news/query.action"
+              "?type=json&showCompany=true&limit=200&start={start}")
+# The feed's own `market` labels, measured 2026-09-19. It carries the Baltics and
+# Iceland on the same endpoint, so a market filter is required or a Estonian print would
+# confirm a Swedish name. First North is the growth segment of each country and is kept:
+# a First North issuer that clears $200k/day is a legitimate row of this stage's
+# universe, and excluding it here would make confirmation fail for names the universe
+# accepted.
+NASDAQ_MARKETS = {
+    "se": ("Main Market, Stockholm", "First North Sweden"),
+    "dk": ("Main Market, Copenhagen", "First North Denmark"),
+    "fi": ("Main Market, Helsinki", "First North Finland"),
+}
+# The issuer's own disclosure category, where it is a periodic results filing. Matched
+# case-insensitively because the feed writes the same category both ways -- `Half Year
+# financial report` and `Half year financial report` both occur in one week's rows.
+#
+# `Financial Calendar` is deliberately NOT here. It is the announcement of a future
+# publication date, the Nordic analogue of EQS's `Advance financial reports`, and
+# counting it as results would confirm a print on the day the company said when the
+# print would be.
+NASDAQ_RESULTS_CATEGORIES = {
+    "half year financial report", "half-yearly information",
+    "interim report (q1 and q3)", "interim report", "quarterly report",
+    "financial statement release",          # the Finnish term for the full-year result
+    "annual financial report", "annual report",
+}
+# Oslo publishes English category labels on every row. Norway's Q1/Q3 reports are not
+# mandated by the Transparency Directive and do not get their own category, so they
+# arrive as inside information or as additional regulated information and are caught by
+# the headline classifier instead -- which is why `looks_like_results` still runs for
+# Norway even though its categories are good.
+OSLO_API = ("https://api3.oslo.oslobors.no/v1/newsreader/list"
+            "?fromDate={d}&toDate={d}")
+OSLO_RESULTS_CATEGORIES = {
+    "half year financial report", "annual financial report", "quarterly report",
+}
+# --- Italy -----------------------------------------------------------------------
+# eMarket STORAGE is Borsa Italiana's officially appointed storage mechanism. Its Drupal
+# view takes `data_from` and `data_to` as ISO dates, and **`data_to` IS EXCLUSIVE**:
+# `data_from=2026-09-17&data_to=2026-09-17` returns ZERO rows and looks exactly like a
+# day on which nothing was published, while `data_to=2026-09-18` returns the 19 rows
+# that really exist. That single off-by-one would have written `event_occurred: false`
+# for every Italian name ever hunted.
+EMS_DAY = ("https://www.emarketstorage.com/it/comunicati-finanziari"
+           "?data_from={d}&data_to={nxt}&page={page}")
+EMS_MAX_PAGES = 8
+
+
+def _get_retry(url, tries=8, min_bytes=1, timeout=45):
+    """Fetch through a WAF that answers intermittently.
+
+    CONSOB and eMarket STORAGE both sit behind Radware, which serves a ~15 kB captcha
+    page instead of the document on a share of requests -- measured 7 of 8 good for
+    emarketstorage and 2 of 5 for the CONSOB landing page on 2026-09-19. A single
+    failure here is not evidence of anything, and this repo has twice declared a host
+    blocked after four tries and been wrong. Returns "" when every try fails, so the
+    caller reports an unavailable archive rather than an empty day.
+    """
+    for i in range(tries):
+        try:
+            body = get(url, timeout=timeout)
+        except Exception:
+            body = ""
+        if body and len(body) >= min_bytes and "Radware" not in body[:2000]:
+            return body
+        time.sleep(2 + 2 * (i % 3))
+    return ""
+
+
+def nasdaq_day(d, market, max_pages=None):
+    """Every Nasdaq Nordic disclosure for `market` on `d`, by paging back to it.
+
+    **THE DATE FILTER ON THIS ENDPOINT IS ACCEPTED AND IGNORED.** `fromDate=2026-08-14`
+    returns the most recent 200 items, dated today. That is the most dangerous kind of
+    failure in this stage -- a successful-looking request whose rows are for the wrong
+    day -- so the date is never passed and the feed is PAGED instead, 200 rows at a time,
+    until its rows are older than the day wanted. Measured: `start=1000` reached 12 days
+    back, so a week costs about 7 requests.
+
+    Returns `None` (not an empty list) when the feed could not be paged back far enough,
+    because "I could not see that day" and "that day was empty" are the two answers this
+    stage may never confuse.
+    """
+    max_pages = max_pages or NASDAQ_MAX_PAGES
+    want = set(NASDAQ_MARKETS.get(market, ()))
+    out, reached = [], False
+    for page in range(max_pages):
+        try:
+            data = json.loads(get(NASDAQ_API.format(start=page * 200), timeout=60))
+            items = data["results"]["item"]
+        except Exception:
+            break
+        if not items:
+            break
+        for x in items:
+            ts = (x.get("published") or "")[:10]
+            if ts < d:
+                reached = True                  # paged past the day: it was covered
+                continue
+            if ts != d or x.get("market") not in want:
+                continue
+            cat = (x.get("cnsCategory") or "").strip()
+            by_cat = cat.lower() in NASDAQ_RESULTS_CATEGORIES
+            head = x.get("headline") or ""
+            out.append(_row(market, x.get("company"), None, ts, head, cat,
+                            by_cat or looks_like_results(head),
+                            "issuer_category" if by_cat else "headline",
+                            x.get("messageUrl")))
+        if reached:
+            break
+    return out if reached else None
+
+
+def oslo_day(d):
+    """Every Oslo Bors NewsWeb message on `d`. A real day query, and ticker-keyed.
+
+    The best-instrumented archive of the ten after Investegate: `fromDate`/`toDate`
+    genuinely filter, and every row carries `issuerSign`, the exchange ticker, so
+    Norwegian confirmation joins on a code rather than on a normalised company name --
+    the weakest link everywhere else in this stage.
+    """
+    try:
+        data = json.loads(get(OSLO_API.format(d=d), timeout=45))
+        msgs = (data.get("data") or {}).get("messages") or []
+    except Exception:
+        return None
+    out = []
+    for m in msgs:
+        cats = [c.get("category_en") or "" for c in (m.get("category") or [])]
+        by_cat = any(c.strip().lower() in OSLO_RESULTS_CATEGORIES for c in cats)
+        head = (m.get("title") or "").strip()
+        out.append(_row("no", m.get("issuerName"), None,
+                        (m.get("publishedTime") or "")[:10], head,
+                        " / ".join(cats),
+                        by_cat or looks_like_results(head),
+                        "issuer_category" if by_cat else "headline",
+                        f"https://newsweb.oslobors.no/message/{m.get('messageId')}",
+                        ticker_hint=(m.get("issuerSign") or "").upper() or None))
+    return out
+
+
+def it_day(d, max_pages=EMS_MAX_PAGES):
+    """Every eMarket STORAGE filing on `d`. Behind a WAF, so retried, and `data_to` is
+    EXCLUSIVE -- see EMS_DAY."""
+    nxt = (date.fromisoformat(d) + timedelta(days=1)).isoformat()
+    out, seen, any_page = [], set(), False
+    for page in range(max_pages):
+        html_ = _get_retry(EMS_DAY.format(d=d, nxt=nxt, page=page), min_bytes=15000)
+        if not html_:
+            # Distinguish "the WAF beat us on page 0" from "there are no more pages":
+            # only a failure on the FIRST page makes the day unreadable.
+            if page == 0:
+                return None
+            break
+        any_page = True
+        rows = re.findall(r'<div class="views-row">(.*?)(?=<div class="views-row">'
+                          r'|<div class="view-footer|$)', html_, re.S)
+        if not rows:
+            break
+        before = len(seen)
+        for r in rows:
+            when = re.search(r'class="datetime">(\d{2})/(\d{2})/(\d{4})', r)
+            comp = re.search(r'news-azienda"><a[^>]*>([^<]*)', r)
+            pdf = re.search(r'href="(/sites/default/files/comunicati/[^"]+)"', r)
+            if not comp:
+                continue
+            ts = (f"{when.group(3)}-{when.group(2)}-{when.group(1)}" if when else d)
+            # The headline is the row text once the logo/company block is stripped.
+            body = re.sub(r'<div class="azienda-wrapper".*?</div></div>', ' ', r,
+                          flags=re.S)
+            head = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ",
+                                                            body))).strip()
+            key = (comp.group(1).strip(), head[:120])
+            if key in seen:
+                continue
+            seen.add(key)
+            if ts != d:
+                continue
+            out.append(_row("it", comp.group(1).strip(), None, ts, head, None,
+                            looks_like_results(head), "headline",
+                            ("https://www.emarketstorage.com" + pdf.group(1))
+                            if pdf else EMS_DAY.format(d=d, nxt=nxt, page=page)))
+        if len(seen) == before:
+            break
+    return out if any_page else None
+
+
 def day(market, d, issuers=None):
+    """The day archive for one market, or None where none is reachable.
+
+    None and [] are different answers and the difference is the whole point: [] means
+    the source was read and carries nothing from anybody, None means the source could
+    not be read. Only the first can ever support `event_occurred: false`.
+    """
     if market == "uk":
         return uk_day(d)
     if market == "fr":
         return fr_day(d)
     if market == "de":
         return de_day(d, issuers or [])
+    if market in NASDAQ_MARKETS:
+        return nasdaq_day(d, market)
+    if market == "no":
+        return oslo_day(d)
+    if market == "it":
+        return it_day(d)
+    if market in ("es", "pl"):
+        # Measured 2026-09-19, with the eight-try standard that rescued France and
+        # Italy: every CNMV `Consulta-OIR` path returns 403, and `www.gpw.pl` and
+        # `espi.pap.pl` each scored 0 of 8 on the sweep where emarketstorage scored 7
+        # of 8. So these two have no archive and every row from them resolves null.
+        return None
     raise ValueError(market)
+
+
+# The markets whose archive carries a TICKER, so confirmation can join on a code rather
+# than on a normalised company name. Name matching is the weakest link in this stage --
+# `norm()` strips legal forms and compares exactly, so a register spelling that differs
+# by one word reads as silence -- and these two escape it.
+TICKER_KEYED = {"uk", "no"}
 
 
 def confirm(market, d, issuer_name, ticker=None, archive=None, issuer_query=None):
@@ -375,7 +644,11 @@ def confirm(market, d, issuer_name, ticker=None, archive=None, issuer_query=None
         archive = day(market, d, issuers=[(issuer_query or issuer_name, issuer_name)]
                       if market == "de" else None)
     if archive is None:
-        return None, "source unavailable"
+        # Three different causes, one answer: Spain and Poland have no archive at all,
+        # the Nasdaq feed could not be paged back to the day, or the Italian WAF won
+        # every retry. None of them is evidence that nothing was published.
+        return None, ("source unavailable: " + (MARKETS.get(market, {})
+                                                .get("confirm_name") or "no archive"))
     key = norm(issuer_name)
     mine = [r for r in archive
             if (ticker and r.get("ticker_hint") and
@@ -403,7 +676,8 @@ def confirm(market, d, issuer_name, ticker=None, archive=None, issuer_query=None
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("market", choices=["uk", "de", "fr"])
+    ap.add_argument("market", choices=["uk", "de", "fr", "se", "dk", "no",
+                                       "fi", "it", "es", "pl"])
     ap.add_argument("--date", required=True, help="the day to read, or the FIRST day "
                                                   "with --days")
     ap.add_argument("--days", type=int, default=1)

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""The day's European earnings universe, across the UK, France and Germany.
+"""The day's European earnings universe, across ten markets.
 
-WHY THREE MARKETS IN ONE UNIVERSE, AND NOT THREE STAGES
--------------------------------------------------------
-None of the three is a daily market on its own. Measured in Phase 1
+WHY TEN MARKETS IN ONE UNIVERSE, AND NOT TEN STAGES
+----------------------------------------------------
+No single European market is a daily market on its own. Measured in Phase 1
 (`researcher_europe/SUBMARKET.md`):
 
   UK       17 results announcements a day ex funds at the median, but 3 on
@@ -15,9 +15,49 @@ None of the three is a daily market on its own. Measured in Phase 1
   France   semi-annual, median gap 204 days, with 94 of 161 forward events in
            February and March.
 
-They peak in different months, so pooling three seasonal calendars is what produces
-one stream. It is still not a thick stream every day: Fridays, August, late December
-and the German June-July gap are thin whatever the floor is.
+They peak in different months, so pooling seasonal calendars is what produces one
+stream.
+
+SEVEN MARKETS WERE ADDED ON 2026-09-19, ON THE OPERATOR'S INSTRUCTION: Stockholm,
+Copenhagen, Oslo, Helsinki, Warsaw, Milan and Madrid, on the same $200k floor. The cap
+went from 12 to 20 in the same change.
+
+**THE OBVIOUS MEASUREMENT SAYS THEY ADD NOTHING AND IT IS MEASURING THE WRONG WINDOW.**
+Over the ten sessions 2026-09-21 -> 10-02, against the live vendor calendar and the live
+tape, the seven add SIX names to a pooled median of 7 a day. Late September is the UK's
+month. By MONTH of forward events the picture inverts completely:
+
+    month     UK+DE+FR    the new seven
+    Sep 2026       161               13
+    Oct 2026       114              456      <- the current stage's THINNEST month
+    Nov 2026       309              515
+    Dec 2026       109               56
+    Feb 2027       133               38
+    Mar 2027       250               70
+
+October is where this change pays: the existing three carry 114 forward events and the
+seven carry four times that. Sweden alone carries 259 of them.
+
+**AND THE CADENCE IS BETTER, WHICH MATTERS MORE THAN THE COUNT.** Measured median gap
+between a vendor row's last and next release: Sweden 98 days, Denmark 91, Norway 91,
+Finland 97, Poland 91, Italy 105, Spain 105 -- against the UK's 217 and France's 204. The
+Nordics report QUARTERLY, so a Nordic name recurs four times a year where a UK one
+recurs twice, and a pooled sample fills at twice the rate per name.
+
+**WHAT IS WORSE, AND IT IS NOT SMALL.** The vendor carries a forward date for 0.88 of
+Finnish and 0.81 of Norwegian issuers, and for **0.20 of Italian, 0.19 of Spanish and
+0.13 of Polish** ones. That last band is France's regime (0.27), and France was measured
+to be undercounted 3.6x by this same vendor -- so Milan, Madrid and Warsaw are seen
+through a calendar that misses most of them. They are in because they were asked for and
+because a missed name costs nothing; they are not load-bearing and the note must not
+present them as if they were.
+
+**THE THREE ARE NOT EQUALLY INSTRUMENTED AND THE UNIVERSE FILE SAYS SO PER MARKET.**
+`per_market[*].capability` carries what each market's short register and day archive can
+actually do, measured 2026-09-19. Four of the seven are complete; Italy has a register
+and a WAF-intermittent archive; **Spain and Poland have neither**, so a name from those
+two is hunted with no positioning anchor at all and can never be confirmed or killed
+after the fact. See `eu_market.CAPABILITY`.
 
 THE FLOOR IS $200k/DAY SINCE 2026-09-19, DOWN FROM $1m, ON THE OPERATOR'S INSTRUCTION.
 Two reasons were given and both are about comparability and depth: $200k is what the US
@@ -88,7 +128,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from eu_market import MARKETS, exchange_holidays, half_session, yahoo_symbol  # noqa: E402
+from eu_market import (MARKETS, capability, exchange_holidays,  # noqa: E402
+                       false_reachable, half_session, yahoo_symbol)
 
 UTC = ZoneInfo("UTC")
 REPO = Path(__file__).resolve().parents[2]
@@ -130,8 +171,18 @@ def fetch(url, timeout=45, post=None, referer=None):
 
 
 # --- FX ---------------------------------------------------------------------------
+# Every currency the ten markets quote in. SEK, DKK, NOK and PLN were added with the
+# Nordics, Warsaw, Milan and Madrid on 2026-09-19; all four resolve on Yahoo (measured
+# SEK 0.1017, DKK 0.1537, NOK 0.1063, PLN 0.2634). A market whose rate does not resolve
+# drops every one of its names as "no fx" rather than being screened against a floor in
+# the wrong currency -- a PLN name compared to a USD floor would pass at a quarter of the
+# real size.
+FX_PAIRS = (("GBPUSD", "GBP"), ("EURUSD", "EUR"), ("SEKUSD", "SEK"),
+            ("DKKUSD", "DKK"), ("NOKUSD", "NOK"), ("PLNUSD", "PLN"))
+
+
 def fx_rates():
-    """GBP and EUR against USD, live, with the source carried into the output.
+    """Every quote currency against USD, live, with the source carried into the output.
 
     A constant would be simpler and would silently move the turnover floor by 10% a
     year. The floor is the only selection this stage makes that is not random, so the
@@ -139,7 +190,7 @@ def fx_rates():
     """
     out = {"USD": 1.0, "source": f"{YQ}/v8/finance/chart/<pair>=X",
            "as_of": datetime.now(UTC).isoformat(timespec="seconds")}
-    for pair, code in (("GBPUSD", "GBP"), ("EURUSD", "EUR")):
+    for pair, code in FX_PAIRS:
         try:
             d = json.loads(fetch(f"{YQ}/v8/finance/chart/{pair}=X?range=5d&interval=1d",
                                  timeout=25))
@@ -168,12 +219,22 @@ def scan(market):
             "sort": {"sortBy": "market_cap_basic", "sortOrder": "desc"},
             "range": [0, 5000]}
     d = json.loads(fetch(TV.format(scanner=cfg["scanner"]), post=body, timeout=90))
-    rows = []
+    # THE VENDOR'S COUNTRY SCANNER IS NOT ONE EXCHANGE. `sweden` pools OMXSTO with NGM
+    # (663 + 230 when measured) and `poland` pools GPW with NewConnect (384 + 325); the
+    # NGM half does not carry Yahoo's `.ST` at all, so those rows would be screened on
+    # somebody else's tape. `exchange_allow` is set for the markets added in 2026-09 and
+    # deliberately absent for uk/de/fr, whose output must stay byte-identical -- the UK
+    # scanner also carries 37 AQUIS rows and always has.
+    allow = cfg.get("exchange_allow")
+    rows, filtered = [], 0
     for x in d.get("data", []):
         r = dict(zip(TV_COLUMNS, x["d"]))
         r["tv_symbol"] = x["s"]
+        if allow and r.get("exchange") not in allow:
+            filtered += 1
+            continue
         rows.append(r)
-    return rows, d.get("totalCount")
+    return rows, d.get("totalCount"), filtered
 
 
 def scheduled_on(rows, target, past=False):
@@ -275,10 +336,13 @@ def main():
     ap.add_argument("--date", help="event date. Default: the NEXT calendar day, "
                                    "because Europe reports before the open and the "
                                    "baseline is sealed the evening before.")
-    ap.add_argument("--markets", default="uk,de,fr",
-                    help="comma-separated subset of uk,de,fr (default all three)")
-    ap.add_argument("--cap", type=int, default=12,
-                    help="most names to hunt in a day (default 12)")
+    ap.add_argument("--markets", default="uk,de,fr,se,dk,no,fi,it,es,pl",
+                    help="comma-separated subset of the ten markets (default all). "
+                         "The seven beyond uk,de,fr were added 2026-09-19 and are NOT "
+                         "equally instrumented -- see eu_market.CAPABILITY.")
+    ap.add_argument("--cap", type=int, default=20,
+                    help="most names to hunt in a day (default 20, raised from 12 on "
+                         "2026-09-19 with the seven new markets)")
     ap.add_argument("--min-turnover-usd", type=float, default=200_000,
                     help="median 20-session turnover floor in USD (default 2e5, the "
                          "same bar the US and Japanese stages use, since 2026-09-19). "
@@ -319,8 +383,11 @@ def main():
         "min_turnover_usd": a.min_turnover_usd,
         "calendar_source": "TradingView public scanner (vendor). Measured phantom rate "
                            "on the UK: 2 of 90 rows over 20 sampled days. Confirmation "
-                           "is eu_resolve.py's job and event_occurred: false is "
-                           "reachable.",
+                           "is eu_resolve.py's job, and whether event_occurred: false "
+                           "is reachable DIFFERS BY MARKET -- see per_market[*]."
+                           "event_occurred_false_reachable. It is false for Germany "
+                           "(EQS has no whole-day query) and for Spain and Poland "
+                           "(no archive reachable at all).",
         "generated_utc": datetime.now(UTC).isoformat(timespec="seconds"),
         "validation_only": bool(a.use_last_release),
         "per_market": {},
@@ -329,7 +396,7 @@ def main():
     todays, closed_all = [], {}
     for m in markets:
         try:
-            rows, total = scan(m)
+            rows, total, filtered = scan(m)
         except Exception as exc:
             out["per_market"][m] = {"error": str(exc)}
             continue
@@ -341,11 +408,17 @@ def main():
         todays.extend(got)
         out["per_market"][m] = {
             "universe_size": len(rows), "vendor_total": total,
+            "off_primary_exchange_filtered": filtered,
             "scheduled_today": len(got),
             "market_closed": closed,
             "half_session": half_session(m, target),
             "confirmation_source": MARKETS[m]["confirm_name"],
             "short_register": MARKETS[m]["short_register"],
+            # Carried per market so a reader of the universe file can see, without
+            # opening the code, that a Spanish or Polish name arrives with no
+            # positioning anchor and no way to be confirmed or killed after the fact.
+            "capability": capability(m),
+            "event_occurred_false_reachable": false_reachable(m),
         }
 
     out["scheduled_today"] = len(todays)
@@ -394,13 +467,34 @@ def main():
         picked = sorted(eligible, key=lambda x: (x["_market"], x["name"]))
         method = f"all {len(eligible)} eligible names (at or under the cap)"
 
+    by_mkt = {m: sum(1 for x in picked if x["_market"] == m) for m in markets}
+    top_m = max(by_mkt, key=lambda k: by_mkt[k]) if picked else None
     out["selection"] = {
         "method": method, "seed": seed,
         "eligible": len(eligible), "dropped": len(dropped), "hunted": len(picked),
-        "by_market": {m: sum(1 for x in picked if x["_market"] == m) for m in markets},
+        "by_market": by_mkt,
+        "eligible_by_market": {m: sum(1 for x in eligible if x["_market"] == m)
+                               for m in markets},
+        # A RANDOM DRAW FROM A SEASONALLY LOPSIDED POOL GIVES A ONE-MARKET DAY, and that
+        # is a correlated exposure the scorer cannot see -- the same shape as the four
+        # US names the IEEPA tariff refunds ranked together on 2026-09-10. On
+        # 2026-10-22, 15 of 20 drawn names were Swedish, because October is Sweden's
+        # month. The draw is left random on purpose (a per-market quota is a second
+        # selection, and this stage has already paid once for a cut the scorer could not
+        # see), so the concentration is REPORTED instead: read it before pooling a day's
+        # rho as if it were ten markets.
+        "market_concentration": {
+            "largest_market": top_m,
+            "largest_market_share": (round(by_mkt[top_m] / len(picked), 3)
+                                     if picked and top_m else None),
+            "markets_represented": sum(1 for v in by_mkt.values() if v),
+            "basis": "a day whose names are mostly one market is one market's day. The "
+                     "draw is deliberately not stratified; this field is how that shows "
+                     "up in the note and in eu_resolve.py's per_market block.",
+        },
         "basis": "Turnover floor, then a seeded random draw. The floor is $200k/day "
                  "since 2026-09-19 -- the same bar the US and Japanese stages use, so "
-                 "the three markets are cut the same way. It is NOT a size-band cut: "
+                 "all ten markets are cut the same way. It is NOT a size-band cut: "
                  "Phase 1 found coverage runs 5-7 analysts at $1-5m of turnover against "
                  "16-19 above $25m, and selecting on that band would bake this stage's "
                  "own thesis into its universe. Turnover and `anchor_covered` ride in "
