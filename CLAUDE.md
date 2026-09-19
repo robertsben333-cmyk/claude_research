@@ -41,7 +41,7 @@ material below is kept because the live stages reference it, not because it runs
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
-| EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** UK, France and Germany pooled, one stage, three language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
+| EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 **`list_triggers` IS SCOPED TO THE CALLING ACCOUNT, AND STAGE E IS ON A DIFFERENT ONE.**
@@ -983,10 +983,73 @@ correctly killed as `event_occurred: false`, median realised move 2.87%) using
 *synthetic* findings, which ranked at ρ=0.154, p=0.47 — what random findings should do.
 See `researcher_japan/README.md`.
 
-**Stage EU is a third market, added 2026-09-18: `researcher_europe/`.** The UK, France
-and Germany, pooled into one stage, on the same scorer again
+**Stage EU is a third market, added 2026-09-18: `researcher_europe/`.** Ten European
+markets pooled into one stage, on the same scorer again
 (`researcher_us/scripts/edge_score.py`). **It places no orders.** Alpaca carries none of
 these venues, so execution would be a separate build against a different broker.
+
+**SEVEN MARKETS WERE ADDED ON 2026-09-19 AND THE CAP WENT FROM 12 TO 20**, on the
+operator's instruction: Stockholm, Copenhagen, Oslo, Helsinki, Milan, Madrid and Warsaw,
+on the same $200k floor and the same scorer. **The obvious measurement says they add
+nothing and it is measuring the wrong window.** Over the ten sessions 2026-09-21 → 10-02
+they add SIX names to a pooled median of seven a day, because late September is the UK's
+month. By month of forward vendor events, **October is the existing stage's thinnest at
+114 for UK+DE+FR and the new seven carry 456**; November is 309 against 515; February and
+March are barely touched. Sweden alone carries 259 October events. And the cadence is
+better — measured median gaps of 91–98 days across the Nordics and Poland against the
+UK's 217 and France's 204 — so a Nordic name recurs four times a year where a UK one
+recurs twice.
+
+**THEY ARE NOT EQUALLY INSTRUMENTED AND THAT IS THE PART TO CARRY INTO ANY POOLED
+NUMBER.** `researcher_europe/scripts/eu_market.py`'s `CAPABILITY` is the measured table
+and the code reads it rather than assuming. Norway is now the best-instrumented market in
+this stage after the UK — a dated short-position event history, a true ticker-keyed day
+archive, and the only other market whose `history` carries OBSERVED announcement dates
+rather than a cadence estimate. Sweden, Denmark and Finland have registers and a day
+archive, but the Nasdaq Nordic feed **has no date query at all** — its `fromDate` is
+accepted and ignored — so it is paged back about twelve days and `event_occurred: false`
+is reachable only inside that window: **resolve a Nordic run within about a week**. Italy
+has both, behind a WAF that answers about 7 of 8. **Spain and Poland have NEITHER a short
+register NOR a day archive**, so those names carry no positioning anchor — their
+`priced_lean_pct` IS the free control every ranker is measured against, so they cannot
+beat the benchmark with anything that uses it — and their prints can never be confirmed
+or killed. Both were given the eight-try standard that rescued France and Italy and
+failed it (`gpw.pl` and `espi.pap.pl` scored 0 of 8 on the sweep where emarketstorage
+scored 7 of 8). A pooled ρ that does not say how much of it is `es`/`pl` is being
+oversold.
+
+**Five defects were found building it and all five are fixed; two would have failed
+silently.** YAML parsed unquoted `no` as boolean False, which dropped Norway from the
+configured market list without an error — the smoke test now asserts it. Nordic share
+classes are `OMXSTO:INVE_A` on the vendor and `INVE-A.ST` on Yahoo, and a wrong symbol
+returns an empty chart rather than an error, so the day would quietly have lost its
+largest Nordic names. Norway's observed history counted "Invitation to Q4 results" as a
+print — 12 of Nordic Semiconductor's 25 rows, each a week before the real event, halving
+the measured reaction scale. Sweden's ODS was read as a dated history and is a per-issuer
+snapshot, so the change came out equal to the level for all 342 names. And eMarket
+STORAGE's `data_to` is EXCLUSIVE, so a naive single-day query returns zero rows and looks
+exactly like a silent day.
+
+**The draw is random and the calendar is seasonal, so a day can be one market.** 15 of 20
+names were Swedish on 2026-10-22. That is a correlated exposure the scorer cannot see —
+the same shape as the four US names the IEEPA tariff refunds ranked together on
+2026-09-10. The draw is deliberately NOT stratified, because a per-market quota is a
+second selection and this stage has already paid once for a cut the scorer could not see;
+`selection.market_concentration` in the universe file carries it instead, and the note
+must report it.
+
+**`researcher_europe/scripts/eu_sheet.py` is new**: ODS and XLSX with the standard
+library, because Sweden's and Italy's registers are spreadsheets and this container has
+no `openpyxl`, no `odfpy` and no `pandas` — the same constraint that produced
+`eu_pdftext.py`.
+
+**The Routine's pasted prompt still describes three markets.** It was last pasted on
+2026-09-19 at 08:39 UTC, before the seven were added, so it names
+`unpriced-hunter-uk/-fr/-de` and no cap. The skill it invokes is correct and the config
+is correct, so a fired run would still hunt all ten — but the prompt is stale and
+`researcher_europe/routine-prompts/europe-hunt.md` is the corrected text. **Unlike stage
+E's, this Routine CAN be edited from a session** (`update_trigger` works on one a session
+created), so re-paste it from that file and confirm `updated_at` moved.
 
 **Its Routine exists since 2026-09-19: `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron
 `30 13 * * 1-5`.** Created by a session, so `update_trigger` works on it, and
@@ -1216,9 +1279,11 @@ researcher_japan/                      stage J — see researcher_japan/README.m
   routine-prompts/                     the text in the stage J Routine
   LESSONS.md                           deliberately empty until a run resolves
 researcher_europe/                     stage EU — see researcher_europe/README.md
-  scripts/                             eu_market, eu_universe, eu_positioning,
-                                       eu_priced_in, eu_resolve
-  SUBMARKET.md                         why UK+FR+DE pooled, with the counts behind it
+  scripts/                             eu_market (incl. CAPABILITY), eu_universe,
+                                       eu_positioning, eu_priced_in, eu_archive,
+                                       eu_resolve, eu_sheet, eu_pdftext
+  SUBMARKET.md                         why these markets pooled, with the counts behind
+                                       it; section 10 is the 2026-09-19 expansion
   routine-prompts/                     the text in the stage EU Routine
 archive/                               retired 2026-09-18 — see archive/README.md
   backtest/                            the sealed backtest, arms A/B/C + edge-corpus
