@@ -942,12 +942,18 @@ these venues, so execution would be a separate build against a different broker.
 **Its Routine exists since 2026-09-19: `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron
 `30 13 * * 1-5`.** Created by a session, so `update_trigger` works on it, and
 `researcher_europe/routine-prompts/europe-hunt.md` must be changed in the same commit as
-any re-paste. Two things about it are NOT verified: it came back with empty `sources`,
-`outcomes` and `allowed_tools` exactly as stage J's did, and **unlike stage J its prompt
-does not clone the repo**, so a session arriving without a checkout would exit non-zero
-and report a clean failure every morning while never running. It was hand-fired on
-2026-09-19 at 08:24 UTC (session `cse_01GPAvkwHzwzxuWdsscSUPUN`) to settle that; read that
-run before believing a quiet afternoon.
+any re-paste. It came back with empty `sources`, `outcomes` and `allowed_tools` exactly as
+stage J's did. **The hand-fire meant to settle whether a fired session gets a checkout did
+not settle it**: session `cse_01GPAvkwHzwzxuWdsscSUPUN`, 2026-09-19 08:24 UTC, spent 165k
+tokens over ten minutes and **published nothing at all** — no commit, no branch, no run
+directory on any remote — and its transcript cannot be read from another session. So the
+prompt was rewritten at 08:39 UTC to stop depending on the answer: step 0 clones the repo
+when `CLAUDE.md` is absent and distinguishes "no repo" from "branch not merged", and every
+fire must now publish something, even an empty day or a failure, because a fire that
+publishes nothing is indistinguishable from a Routine that never fired. It served on
+`claude-sonnet-5` while the `europe_hunt` block asks for `model: opus`; the config governs
+the hunters it spawns, the Routine's model governs the session that orchestrates them, and
+whether that matters is unmeasured.
 
 **It fires two hours before the European close, not after it, on the operator's
 instruction.** The obvious slot is after the 17:30 CET closes so every `close(D-1)` is

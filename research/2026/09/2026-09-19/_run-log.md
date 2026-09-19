@@ -23,3 +23,7 @@
 ## Stage EU — Routine created and hand-fired
 - Logged at 2026-09-19 08:26 UTC
 - trig_018WGfdq2fUm1ZqJhCGQ1wde, cron 30 13 * * 1-5 (13:30 UTC = 15:30 Amsterdam, two hours before the European close, operator's choice), enabled, first scheduled fire 2026-09-21 13:37 UTC. Created by a session so update_trigger works on it. It returned empty sources/outcomes/allowed_tools like stage J's, and unlike stage J its prompt does not clone the repo, so hand-fired at 08:24 UTC (session cse_01GPAvkwHzwzxuWdsscSUPUN) to find out whether a fired session arrives with a checkout. Prompt file and CLAUDE.md updated in the same commit as the paste.
+
+## Stage EU — Routine prompt hardened after a silent hand-fire
+- Logged at 2026-09-19 08:40 UTC
+- The 08:24 UTC hand-fire published nothing anywhere (no commit, no branch, no run dir) after 165k tokens and ten minutes, so it did not settle whether a fired session arrives with a checkout. Prompt updated 08:39 UTC to not depend on it: step 0 clones the repo if CLAUDE.md is absent and distinguishes no-repo from branch-not-merged, and every fire must publish something even on an empty day or a failure. Also noted: the fired session served on claude-sonnet-5 while europe_hunt asks for model: opus.
