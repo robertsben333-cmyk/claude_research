@@ -960,16 +960,30 @@ open interest, no underlying map. The coverage fraction could not be measured be
 coverage could not be reached. **So Europe runs anchor-less exactly like Japan** — the
 regime `archive/backtest/FINDINGS.md` §33 priced at ρ=+0.073, p=0.45 over 104 events.
 
-**What Europe does have, and Tokyo does not, is a short register worth using.** The FCA
-publishes current aggregated net short positions as a plain CSV *and* the full per-holder
-history back to 2012, so a European positioning anchor can be **backtested**, which JPX's
-cannot. Coverage of the UK results cohort is 89% in the $1–5m turnover band against
-Japan's 9–11 of 25 names. Germany resolves through the Bundesanzeiger with a session
-cookie. **France is the one unsolved leg**: `data.gouv.fr` is unreachable by curl from
-here, BDIF is an SPA whose API was not found, and most of the French financial press
-(Les Echos, Investir, Boursier, Zonebourse) is shut to both `curl` and `WebFetch`. French
-names therefore run `positioning.covered: false` and their lean collapses back into the
-free control — the exact defect stage J spent a day fixing.
+**What Europe does have, and Tokyo does not, is a short register worth using — and
+since 2026-09-19 all three markets' registers read.** The FCA publishes current
+aggregated net short positions as a plain CSV *and* the full per-holder history back to
+2012, so a European positioning anchor can be **backtested**, which JPX's cannot.
+Coverage of the UK results cohort is 89% in the $1–5m turnover band against Japan's 9–11
+of 25 names. Germany resolves through the Bundesanzeiger with a session cookie.
+
+**France was the unsolved leg and the diagnosis that closed it was wrong.** Phase 1
+tried `www.data.gouv.fr` four times, got four connection resets and wrote the host off
+as unreachable. Re-tested eighteen times it answers **roughly one request in three** —
+the failure is a TLS exchange that dies after 7s, indistinguishable from a block and not
+one, and a tight retry loop scores 0 of 12 where a 2–4s backoff scores about 1 in 3. So
+`eu_positioning.load_fr()` takes two retried hops: the dataset endpoint for the
+resource's current URL (the filename carries an export timestamp and changes daily),
+then the CSV off `object-api.infra.data.gouv.fr`, which has never failed here. **5.1 MB,
+40,696 per-holder rows back to 2012, 74 issuers with an open position** (Ubisoft 12.56%
+across 11 sellers, Valeo 10.69%, Renault 9.59%). Its publication **end** dates let the
+aggregate be reconstructed as of any past date, so the French change is measured rather
+than approximated and the anchor is backtestable — better instrumented than Germany's
+current-only snapshot. A register that fails on the day is served from cache for up to
+five days with `stale_cache_days` set. What is still true: the French financial press
+(Les Echos, Investir, Boursier, Zonebourse, actusnews) is shut to both `curl` and
+`WebFetch`, so France remains the thinnest leg on sources, and it carries 74 disclosed
+issuers against 419 UK and 124 German.
 
 **The Japan `curl`-beats-`WebFetch` finding does not generalise.** On this path the two
 mostly agree; what differs is paywalls, not the fetcher. Each hunter definition carries

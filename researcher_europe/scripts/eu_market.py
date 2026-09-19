@@ -83,15 +83,16 @@ MARKETS = {
         "hunter": "unpriced-hunter-fr",
         "confirm": "https://live.euronext.com/en",
         "confirm_name": "Euronext Paris company news (SPA; weakest of the three)",
-        # NOT SOLVED. www.data.gouv.fr, which hosts the AMF's public register, is
-        # unreachable by curl from this container -- every request including the site
-        # root dies with `Recv failure: Connection reset by peer` and the agent proxy
-        # logs `ws_closed_mid_exchange`. WebFetch reads the dataset page but cannot
-        # deliver a 4.9 MB CSV. So French names run with `positioning` empty and their
-        # lean falls back to the run-up, which is ALSO the free control. That is the
-        # exact defect jp_positioning.py exists to fix, live for one of three markets,
-        # and `lean_vs_free_control_rho` is reported per market so it stays visible.
-        "short_register": None,
+        # SOLVED 2026-09-19. Phase 1 recorded www.data.gouv.fr as unreachable on four
+        # connection resets; re-tested eighteen times it answers roughly one request in
+        # three, so the register comes in two retried hops -- the dataset endpoint for
+        # the resource's current direct URL, then the CSV off
+        # object-api.infra.data.gouv.fr, which has never failed here. 40,696 per-holder
+        # rows back to 2012 with publication start AND end dates, so the aggregate can
+        # be reconstructed as of any past date: the French change is measured rather
+        # than approximated, and it is backtestable. See eu_positioning.load_fr().
+        "short_register": "AMF positions courtes nettes (data.gouv.fr, per-holder "
+                          "history since 2012)",
     },
 }
 

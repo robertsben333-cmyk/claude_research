@@ -47,13 +47,16 @@ settlement prices, no open interest and no underlying map. Europe runs in the sa
 anchor-less regime as Japan, which is the regime that produced ρ=+0.073, p=0.45 over 104
 events on the sealed corpus (`backtest/FINDINGS.md` §33). Say so in every note.
 
-**What Europe does have is a better short register.** The FCA resolves on **89% of the
-$1–5m turnover band** against 36–44% for Japan's JPX register, and publishes a per-holder
-history back to 2012 where JPX's rolls off. Germany works with a cookie. **France does
-not work at all** — `www.data.gouv.fr` resets the connection from this container — so
-French names run with `positioning.covered: false` and their lean collapses into the free
-control. `eu_resolve.py` reports `lean_vs_free_control_rho` per market so this stays
-visible.
+**What Europe does have is a better short register, and since 2026-09-19 all three
+read.** The FCA resolves on **89% of the $1–5m turnover band** against 36–44% for
+Japan's JPX register, and publishes a per-holder history back to 2012 where JPX's rolls
+off. Germany works with a cookie. **France works too** — `www.data.gouv.fr` is
+intermittent rather than blocked, so `eu_positioning.load_fr()` retries it for the
+resource URL and pulls the file from `object-api.infra.data.gouv.fr`: 40,696 per-holder
+rows since 2012, 74 issuers with an open position, and publication end dates that make
+the change a measurement. `eu_resolve.py` still reports `lean_vs_free_control_rho` per
+market — if it climbs back toward 1.0 for any market, that register has stopped
+resolving.
 
 ## Steps
 

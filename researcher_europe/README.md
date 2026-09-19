@@ -122,20 +122,45 @@ What stands in its place is the Short Selling Regulation's 0.5% public threshold
 | --- | --- | --- | --- |
 | **UK / FCA** | aggregated current net short positions, plus the **whole per-holder history back to 2012** | **89% of the $1–5m turnover band**, 74% at $5–25m, 67% above $25m, 12% below $1m | three plain GETs, no cookie |
 | **DE / Bundesanzeiger** | current net short positions | 124 German issuers of 427 primary listings | one GET, needs a session cookie |
-| **FR / AMF** | — | — | **no** |
+| **FR / AMF** | per-holder history since 2012 with publication start **and end** dates | 74 issuers with an open position | **yes, since 2026-09-19** — two retried hops |
 
 Japan's JPX register resolved on 9 to 11 of 25 names. The FCA also publishes history,
 which JPX does not — its file rolls off, which is why `jp_positioning.py` has to cache it.
 So a European positioning anchor can be **backtested**, not only run forward.
 
-**France is the hole and it is not worked around.** `www.data.gouv.fr`, which hosts the
-AMF register, resets the connection on every request from this container
-(`ws_closed_mid_exchange` in the proxy log, including the site root). `WebFetch` reads the
-dataset page but cannot deliver a 4.9 MB CSV, and `bdif.amf-france.org` is an Angular SPA
-whose API was not found. So a French name runs with `positioning.covered: false` — which
-is **not** a zero — and its `priced_lean_pct` collapses into the run-up, which is also the
-free control. `eu_resolve.py` reports `lean_vs_free_control_rho` **per market** so France
-reads near 1.0 and the other two near 0.4–0.6. On the validation run the UK read **0.40**.
+**France was the hole and it is now closed (2026-09-19). The diagnosis that closed it
+was wrong.** Phase 1 tried `www.data.gouv.fr` four times, got four connection resets
+(`ws_closed_mid_exchange`, including the site root) and recorded the host as unreachable.
+Re-tested eighteen times it answers **roughly one request in three**: the site root 2 of
+3, `/api/1/site/` 4 of 9, the dataset endpoint 2 of 6. The tunnel dies inside the TLS
+exchange — 517 B sent, 39 B received, closed after 7s — which is indistinguishable from
+a policy block and is not one.
+
+So the register comes in **two retried hops**: ask the dataset endpoint (up to 15 tries,
+with a backoff) for the resource's current direct URL — the filename carries an export
+timestamp and changes daily, so it cannot be hard-coded — then pull the CSV from
+`object-api.infra.data.gouv.fr`, which has answered every request made to it. **5.1 MB,
+40,696 per-holder rows back to 2012**, each with a position start date, a publication
+start date and a publication **end** date.
+
+That last column makes France the best-instrumented of the three in one respect: a
+position is open exactly while its end date is empty, so the aggregate can be
+reconstructed **as of any past date**, and `short_change_pct_pts` is a measured delta
+over a stated window (10 calendar days) rather than the UK file's best effort or
+Germany's cache-two-days-and-subtract. It is backtestable, like the FCA's and unlike
+JPX's. What it does not fix is breadth: **74 French issuers carry an open position**
+against 419 UK and 124 German.
+
+Read on 2026-09-19 the register gives Ubisoft 12.56% across 11 disclosed sellers
+(−0.42pp over ten days), Valeo 10.69% (+0.36), Renault 9.59% (+1.17), Teleperformance
+8.38% (+0.51). A French name's lean is therefore no longer the free control, and
+`lean_vs_free_control_rho` is still reported **per market** — because a register that
+quietly stops resolving sends that number back toward 1.0 and nothing else would say so.
+On the validation run the UK read **0.40**.
+
+**A register that fails on the day is now used from cache if it is at most five days
+old**, with `stale_cache_days` in every name's positioning block. A disclosure register
+moves slowly; a reader still gets to see that the file was not today's.
 
 **The weights are priors and nothing about them is measured in Europe.** They are the
 Japanese priors, which are the US priors: a crowded short is treated as a positive lean

@@ -27,12 +27,18 @@ WHAT STANDS IN ITS PLACE, AND WHERE IT WORKS
 --------------------------------------------
 The Short Selling Regulation's 0.5% public threshold. The FCA register resolved on 89%
 of the UK $1-5m-turnover cohort against 12% below $1m and 36-44% for Japan's JPX
-register, so the substitute anchor is materially better here than in Tokyo -- in the UK
-and Germany. **It is empty for France**, because www.data.gouv.fr is unreachable from
-this container; see `eu_positioning.py`. A French name's `priced_lean_pct` therefore
-falls back to the run-up, which is also the free control, and `eu_resolve.py` reports
-`lean_vs_free_control_rho` PER MARKET so that reads as the near-1.0 it is instead of
-being averaged away.
+register, so the substitute anchor is materially better here than in Tokyo. **All three
+registers read since 2026-09-19**, France included -- Phase 1 had written the AMF file
+off as unreachable and it is merely intermittent; see `eu_positioning.load_fr()`. So no
+market's `priced_lean_pct` is structurally the free control any more, and
+`eu_resolve.py` still reports `lean_vs_free_control_rho` PER MARKET, because a register
+that quietly stops resolving would send that number back to 1.0 and nothing else would
+say so.
+
+What the registers do NOT fix is the cheap end of the universe. With the floor at $200k
+most names are absent from a register that read perfectly well, which is a truncated
+zero rather than an anchor: `anchor_covered` is sealed per name and paid less quality
+than a disclosure, and `eu_resolve.py` splits the ranking by it.
 
 THE HISTORY ANCHOR IS REAL FOR THE UK AND ESTIMATED FOR THE OTHER TWO
 ----------------------------------------------------------------------

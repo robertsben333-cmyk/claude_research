@@ -309,14 +309,22 @@ europe_hunt:
   # component's weight to zero when several pooled days rank it at or below zero -- do not
   # argue for it.
   #
-  # FRANCE'S REGISTER DOES NOT RESOLVE FROM THIS CONTAINER. www.data.gouv.fr resets the
-  # connection on every request, so French names run with positioning.covered false and
-  # their lean IS the free control. `per_market.lean_vs_free_control_rho` in the resolved
-  # file should read near 1.0 for France and near 0.4-0.6 for the UK and Germany. If the
-  # UK or German number climbs toward 1.0, that register has stopped resolving too.
+  # ALL THREE REGISTERS RESOLVE SINCE 2026-09-19, FRANCE INCLUDED. Phase 1 recorded
+  # www.data.gouv.fr as unreachable on four connection resets; re-tested eighteen times
+  # it answers roughly one request in three, so eu_positioning.load_fr() retries the
+  # dataset endpoint for the resource's current URL and pulls the CSV from
+  # object-api.infra.data.gouv.fr: 40,696 per-holder rows since 2012, 74 issuers with an
+  # open position, and publication END dates, so the French change is reconstructed as
+  # of a past date rather than approximated. `per_market.lean_vs_free_control_rho` in
+  # the resolved file is the check that this is still true: if any market's number
+  # climbs toward 1.0, its register has stopped resolving and the lean has collapsed
+  # back into the free control. A register that fails on the day is served from cache
+  # for up to five days with `stale_cache_days` set.
   positioning_lookup: true
   degrade_order:
-    - drop France (its short register does not resolve and its press is largely paywalled)
+    - drop France (its press is largely paywalled -- Les Echos, Investir, Boursier,
+      Zonebourse and actusnews all refuse this container. Its short register is NO
+      LONGER a reason; that was solved on 2026-09-19)
     - reduce cap to 8 names
     - skip the short-register lookup entirely (the lean falls back to the run-up, which is
       also the free control, so the hunt is then being measured against its own anchor)

@@ -362,26 +362,58 @@ Filtered to German ISINs that is **124 issuers** against 427 primary German stoc
 thinner than the UK in absolute terms, and the file carries only the current position,
 so the change has to be built by caching successive days exactly as Japan does.
 
-### France — AMF. **This does not work and it is the one unsolved item.**
+### France — AMF. **Solved on 2026-09-19. The Phase 1 diagnosis was wrong.**
 
-- `www.data.gouv.fr` is **unreachable by `curl` from this container.** Every request,
-  including the site root, dies with `Recv failure: Connection reset by peer` and the
-  agent proxy logs `ws_closed_mid_exchange` against `www.data.gouv.fr:443` and
-  `object-api.infra.data.gouv.fr:443`. Four attempts, three different paths.
-- `WebFetch` **can** read the dataset page and returns the resource URL
-  (`/api/1/datasets/r/c2539d1c-8531-4937-9cba-3bd8e9786cc5`, 4.9 MB, daily) — but
-  `WebFetch` answers a prompt against a page and cannot deliver a 4.9 MB CSV into the
-  container.
-- `bdif.amf-france.org` returns 200 but is an Angular SPA; its backend API was not found
-  within budget (`/back/api/v1/documents`, `/back/api/v1/search`, `/api/v1/documents`
-  all 404).
+Phase 1 recorded `www.data.gouv.fr` as unreachable: four attempts on three paths, four
+`Recv failure: Connection reset by peer`, `ws_closed_mid_exchange` in the proxy log
+including against the site root. Re-tested **eighteen times on 2026-09-19 the host
+answers roughly one request in three**:
 
-So **French names will run with `positioning` empty** until this is solved, which means
-their `priced_lean_pct` falls back to the run-up — which is also the free control. That
-is precisely the defect `jp_positioning.py` was written to fix, and it will be live for
-one of the three markets. `eu_resolve.py` reports `lean_vs_free_control_rho` per market
-for exactly this reason: France will read near 1.0 and the other two will not, and that
-is the signal that nothing has been fixed for France yet.
+| path | successes |
+| --- | --- |
+| `https://www.data.gouv.fr/` | 2 of 3 |
+| `/api/1/site/` | 4 of 9 |
+| `/api/1/datasets/<slug>/` | 2 of 6 |
+| `/api/1/datasets/r/c2539d1c-…` | 1 of 6 (302) |
+| `object-api.infra.data.gouv.fr` | **every request** |
+
+The tunnel dies inside the TLS exchange — 517 B sent, 39 B received, closed after 7s —
+which is indistinguishable from a policy block and is not one. **Four attempts were
+enough to conclude "blocked"; eight are enough to get the file.** A tight retry loop
+also fails: 0 of 12 with no pause against ~1 in 3 with a 2–4 s backoff.
+
+So the register comes in **two retried hops**, and `eu_positioning.load_fr()` does both:
+
+1. Ask `/api/1/datasets/<slug>/` (up to 15 tries, backoff) for the resource's current
+   direct URL. The filename carries an export timestamp
+   (`export_od_vad_20260918111500_20260918123001.csv`) and changes daily, so it cannot
+   be hard-coded; the stable `…/datasets/r/<uuid>` id 302s to it and is tried first.
+2. Pull the CSV from `object-api.infra.data.gouv.fr`, which has not failed a request
+   here. **5.1 MB, 40,696 per-holder rows back to 2012-10-06.**
+
+Columns: holder, LEI, issuer, ratio, ISIN, position start date, publication start date,
+publication **end** date. That last one is what makes France the best-instrumented
+register of the three in one specific respect: a position is open exactly while its end
+date is empty, so **the aggregate can be reconstructed as of any past date**.
+`short_change_pct_pts` is therefore a measured delta over a stated window (10 calendar
+days) rather than the UK file's best effort or Germany's cache-two-days-and-subtract,
+and the anchor is backtestable, like the FCA's and unlike JPX's.
+
+Read on 2026-09-19: **74 issuers carry an open position** — against 419 UK and 124
+German, so France is the thinnest of the three on breadth — aggregating to Ubisoft
+12.56% across 11 disclosed sellers (−0.42pp over ten days), Valeo 10.69% (+0.36),
+Renault 9.59% (+1.17), Teleperformance 8.38% (+0.51), Viridien 7.04% (+0.49). Median
+aggregate 1.59%.
+
+**Two details that cost a run each.** The file is served with a UTF-8 BOM, so a
+byte-exact `startswith(b'"Detenteur')` header check fails on a download that worked and
+reports the register unreachable with the working URL printed beside it. And a register
+that fails on the day is now served from cache for up to five days with
+`stale_cache_days` set on every name — a disclosure register moves slowly, but a reader
+is entitled to know the file was not today's.
+
+`bdif.amf-france.org` is still an Angular SPA whose API was not found, and it is no
+longer needed.
 
 ---
 
@@ -403,7 +435,8 @@ the two mostly agree, and where they differ it goes both ways.
 | Euronext `live.euronext.com` | 200 root, 404 sub-pages | — | SPA |
 | AMF `amf-france.org` | 200 root | — | data pages 404 |
 | `bdif.amf-france.org` | 200 | — | SPA, API not found |
-| **`www.data.gouv.fr`** | **reset** | reads HTML | proxy tunnel closes mid-exchange; cannot bulk-download |
+| **`www.data.gouv.fr`** | **~1 in 3** | reads HTML | intermittent, NOT blocked — retry with a backoff (2026-09-19) |
+| `object-api.infra.data.gouv.fr` | **200** | — | serves the 5.1 MB AMF register; no failure seen |
 | BALO (`journal-officiel.gouv.fr/balo`) | **200** | — | |
 | TradingView scanner (POST) | **200** | — | the forward calendar, all three markets |
 | Yahoo chart `.L` `.DE` `.PA` | **200** | — | bars fine |
@@ -420,11 +453,11 @@ the two mostly agree, and where they differ it goes both ways.
 | MarketScreener, Investing.com | 403 | — | |
 
 **The German press is fully open on both tools. The French financial press is largely
-shut** — Les Echos, Investir, Boursier, Zonebourse and actusnews all refuse. That is a
-second, independent reason France is the weakest leg: its confirmation source is
-unreachable *and* its local press is paywalled, and a market whose confirmation source
-cannot be read cannot be built. France is being carried here on Euronext, BALO, La
-Tribune, AOF and ABC Bourse, and that is thinner than what Germany and the UK get.
+shut** — Les Echos, Investir, Boursier, Zonebourse and actusnews all refuse. That was
+one of two reasons France was the weakest leg; **the other, its unreadable short
+register, was solved on 2026-09-19** (§4). The press one stands: France is carried on
+Euronext, BALO, La Tribune, AOF and ABC Bourse, which is thinner than what Germany and
+the UK get.
 
 ---
 
@@ -501,7 +534,8 @@ half-yearly floor, the SSR 0.5% threshold), only measurable.
 If the build has to be phased, phase it **UK first**: it is the only one of the three with
 a historical day-level announcement archive, a one-GET daily short register that resolves
 on 89% of the target band, an open local press, and a measured 2.2% calendar phantom rate.
-Germany second. France last, and only after §4's data.gouv problem is solved.
+Germany second. France last — §4's data.gouv problem was the reason, and it was solved
+on 2026-09-19.
 
 **Which size band?**
 $1m/day turnover floor, currency-normalised to USD, and **no band cut above it** — as
@@ -532,10 +566,11 @@ day for a day of names that cannot be traded and whose short register does not r
    German maximum of 15.4% on the first pass here. The universe must carry the session,
    its source, and an explicit `session_unresolved` flag, and the resolver must not
    silently guess.
-2. **The French short register is unsolved.** France will run with `positioning` empty and
-   its `priced_lean_pct` collapsing into the free control. `lean_vs_free_control_rho` is
-   reported per market so this is visible rather than assumed away. Do not pool a French
-   lean result with the other two until it is fixed.
+2. ~~**The French short register is unsolved.**~~ **Closed 2026-09-19** — §4 has the
+   working path, and a French name now carries a disclosed position, a measured change
+   and a lean that is not the free control. `lean_vs_free_control_rho` stays reported per
+   market, now as the alarm that a register has stopped resolving rather than as a
+   standing caveat about France.
 3. **No option anchor anywhere.** Europe runs in the regime that scored ρ=+0.073 on the
    sealed corpus. Nothing here refutes that and the stage should say so in its own note
    every time.

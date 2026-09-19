@@ -45,23 +45,53 @@ WHAT EACH REGISTER ACTUALLY GIVES, MEASURED
                   the CHANGE has to be built by caching successive days exactly as
                   Japan does.
 
-  FR / AMF        **DOES NOT WORK FROM THIS CONTAINER AND IS NOT WORKED AROUND.**
-                  www.data.gouv.fr, which hosts the register, resets the proxy tunnel
-                  on every request including the site root (`ws_closed_mid_exchange`);
-                  WebFetch reads the dataset page but cannot deliver a 4.9 MB CSV;
-                  bdif.amf-france.org is an Angular SPA whose API was not found. French
-                  names therefore run with `covered: false` and an EXPLICIT reason, and
-                  their lean falls back to the run-up -- which is also the free control.
-                  `eu_resolve.py` reports `lean_vs_free_control_rho` PER MARKET so this
-                  reads near 1.0 for France and near 0.4-0.6 for the other two, rather
-                  than being averaged into invisibility.
+  FR / AMF        **SOLVED ON 2026-09-19, AND THE DIAGNOSIS THAT CLOSED IT WAS WRONG.**
+                  Phase 1 recorded www.data.gouv.fr as unreachable: every curl request
+                  including the site root died with `Recv failure: Connection reset by
+                  peer` and the agent proxy logged `ws_closed_mid_exchange`. Re-tested
+                  eighteen times on 2026-09-19, the host answers **intermittently, not
+                  never**: `/` returned 200 on 2 of 3 tries, `/api/1/site/` on 4 of 9,
+                  and the dataset endpoint on 2 of 6. The tunnel fails at TLS -- 517 B
+                  sent, 39 B received, closed after 7s -- so it looks identical to a
+                  block and is not one. Four attempts were enough to conclude "blocked"
+                  and eight are enough to get the file.
+
+                  So the register comes in two hops, and the second one is the reliable
+                  one: retry the dataset endpoint until it answers, read the resource's
+                  direct URL out of it, and pull the CSV from
+                  `object-api.infra.data.gouv.fr`, which has answered 200 on every
+                  request made to it. 5.1 MB, **40,696 per-holder rows back to 2012**,
+                  with a position start date, a publication start date and a publication
+                  END date -- so it is the AMF's whole history, the analogue of the FCA's
+                  per-holder xlsx and better than Bundesanzeiger's current-only snapshot.
+
+                  Two consequences worth stating. The change is **measured, not
+                  approximated**: a position is open exactly while its end date is empty,
+                  so the aggregate can be reconstructed as of any past date and
+                  `short_change_pct_pts` is a real delta over a stated window, which is
+                  more than the UK file supports. And it is **backtestable**, like the
+                  FCA's and unlike JPX's. What it does not fix is coverage: 74 French
+                  issuers carry an open position against 419 UK and 124 German.
 
 ABSENCE IS A ZERO ONLY WHERE THE FILE WAS READ
 ----------------------------------------------
-A UK or German name absent from a register that downloaded successfully has no disclosed
-position at or above 0.5%, which is information. A French name is absent because the
-file could not be read at all, which is not. The two are different objects and
-`covered` is the field that separates them; nothing downstream may treat them alike.
+A name absent from a register that downloaded successfully has no disclosed position at
+or above 0.5%, which is information. A name whose register could not be read at all is
+not a zero. The two are different objects, `covered` is the field that separates them,
+and nothing downstream may treat them alike. Since 2026-09-19 all three registers
+normally read, so the second case is a transient rather than a market -- and a register
+that fails today but was read within five days is used from the cache with
+`stale_cache_days` set, which is a third state and is labelled as one.
+
+THE TRUNCATED ZERO IS NOT AN ANCHOR, AND THE TURNOVER FLOOR MADE THAT MATTER
+-----------------------------------------------------------------------------
+The floor dropped from $1m to $200k on 2026-09-19. On the ten sessions measured that
+day the FCA register names 80% of the UK issuers above $1m and 32% of those between
+$200k and $1m, so most of what the lower floor buys reads a truncated 0.0 here. That is
+a real zero and it is NOT a measurement of this issuer: `eu_priced_in.py` seals
+`anchor_covered` (true only where the register names the issuer), pays that state 0.15
+of `anchor_quality.direction` where a disclosure earns 0.45, and `eu_resolve.py` reports
+the rank correlation split by it.
 
 WHAT IS NOT KNOWN. The threshold truncates -- 0.4% and 0.0% are both recorded as 0.0.
 Market-maker and index-arbitrage shorts below the line are invisible. And the SIGN of
@@ -75,8 +105,9 @@ import io
 import json
 import re
 import subprocess
+import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -94,6 +125,19 @@ BANZ_CSV = ("https://www.bundesanzeiger.de/pub/en/nlp"
             "?0--top~csv~form~panel-form-csv~resource~link")
 AMF_DATASET = ("https://www.data.gouv.fr/datasets/historique-des-positions-courtes-"
                "nettes-sur-actions-rendues-publiques-depuis-le-1er-novembre-2012")
+# The stable resource id. It 302s to the dated object-storage file; the redirect target
+# changes every day (the filename carries an export timestamp), so it cannot be
+# hard-coded, and this id is the only fixed handle on it.
+AMF_RESOURCE = ("https://www.data.gouv.fr/api/1/datasets/r/"
+                "c2539d1c-8531-4937-9cba-3bd8e9786cc5")
+AMF_DATASET_API = ("https://www.data.gouv.fr/api/1/datasets/historique-des-positions-"
+                   "courtes-nettes-sur-actions-rendues-publiques-depuis-le-1er-"
+                   "novembre-2012/")
+# How far back the French change is measured. Ten calendar days rather than one trading
+# day: the register is a disclosure stream, not a daily snapshot, so a holder who has
+# not re-filed since Tuesday has not changed position, and a one-day window would read
+# almost every name as unchanged.
+FR_CHANGE_WINDOW_DAYS = 10
 
 
 def _curl(args, cookie=None, referer=None, timeout=90):
@@ -206,6 +250,135 @@ def load_de(tmp_cookie="/tmp/eu_banz_cookie.txt"):
     return (max(dates) if dates else None), out
 
 
+# --- FR ----------------------------------------------------------------------------
+def _curl_retry(url, tries=10, timeout=120, follow=True):
+    """www.data.gouv.fr answers intermittently from this container. Retry it.
+
+    Phase 1 tried four times, got four connection resets and wrote the host off as
+    blocked. It is not blocked: the same requests succeed roughly a third of the time,
+    and the failure is a TLS exchange that dies after 7 seconds, which looks exactly
+    like a policy block and is not one. Returns b"" when every try fails, so the caller
+    reports an uncovered register rather than raising.
+    """
+    cmd = ["curl", "-sS", "--max-time", str(timeout), "-H", f"User-Agent: {UA}"]
+    if follow:
+        cmd.append("-L")
+    for i in range(tries):
+        p = subprocess.run(cmd + [url], capture_output=True)
+        if p.returncode == 0 and p.stdout:
+            return p.stdout
+        # Back off. Hammering the host without a pause was measured at 0 successes in
+        # 12 where a 2-4s gap gets one in three; whatever resets the tunnel does not
+        # like a tight loop.
+        time.sleep(2 + 2 * (i % 3))
+    return b""
+
+
+def _is_amf_csv(raw):
+    """The file is served with a UTF-8 BOM, so a byte-exact startswith misses it.
+
+    This cost a run: the fetch worked, the header check did not, and the register was
+    reported unreachable with the direct URL printed beside it. Check the header inside
+    the first line instead.
+    """
+    return bool(raw) and b"Detenteur de la position" in raw[:200]
+
+
+def _fr_rows():
+    """The AMF per-holder CSV, by whichever of the two paths answers.
+
+    Path 1 is the stable resource id, followed through its 302. Path 2 asks the dataset
+    API for the resource's current direct URL and pulls that from
+    `object-api.infra.data.gouv.fr`, which is the host that actually serves the bytes
+    and which has not failed a request here. Path 2 exists because path 1 has to get
+    the flaky host right on the first hop AND the redirect in one go.
+    """
+    raw = _curl_retry(AMF_RESOURCE, tries=8)
+    if not _is_amf_csv(raw):
+        meta = _curl_retry(AMF_DATASET_API, tries=15, timeout=60)
+        try:
+            res = (json.loads(meta.decode("utf-8", "replace")).get("resources") or [])
+            direct = next((r.get("url") for r in res
+                           if (r.get("format") or "").lower() == "csv"), None)
+        except Exception:
+            direct = None
+        if not direct:
+            return None, "the data.gouv.fr dataset endpoint did not answer in 15 tries"
+        raw = _curl_retry(direct, tries=4, timeout=180)
+        if not _is_amf_csv(raw):
+            return None, (f"resource URL {direct} did not deliver the CSV "
+                          f"({len(raw)} bytes, starts {raw[:40]!r})")
+    rows = list(csv.DictReader(io.StringIO(raw.decode("utf-8-sig", "replace")),
+                               delimiter=";"))
+    return (rows, None) if rows else (None, "the AMF CSV parsed to zero rows")
+
+
+def _fr_aggregate(rows, as_of=None):
+    """Aggregate disclosed net short per issuer, point in time.
+
+    A row is one holder's declared position with a start date, a publication start date
+    and a publication END date that is filled in when the position falls back below the
+    0.5% threshold. So a position is open exactly while its end date is empty, and the
+    register as of any past date D is: every row published on or before D whose end date
+    is empty or after D, taking each holder's most recent such row. That is what makes
+    the French change a MEASUREMENT rather than the UK file's best effort.
+    """
+    cur = defaultdict(dict)
+    for r in rows:
+        end = (r.get("Date de fin de publication position") or "").strip()
+        pub = (r.get("Date de debut de publication position") or "").strip()
+        start = (r.get("Date de debut position") or "").strip()
+        if as_of is not None:
+            if pub and pub > as_of:
+                continue
+            if end and end <= as_of:
+                continue
+        elif end:
+            continue
+        try:
+            pct = float(str(r.get("Ratio")).replace(",", "."))
+        except (TypeError, ValueError):
+            continue
+        k = norm(r.get("Emetteur / issuer"))
+        h = r.get("Detenteur de la position courte nette") or ""
+        prev = cur[k].get(h)
+        if prev is None or start > prev[0]:
+            cur[k][h] = (start, pct, r.get("code ISIN"),
+                         r.get("Emetteur / issuer"))
+    return {k: {"pct": round(sum(v[1] for v in hs.values()), 4),
+                "sellers": len(hs),
+                "isin": next(iter(hs.values()))[2],
+                "name": next(iter(hs.values()))[3],
+                "date": max(v[0] for v in hs.values())}
+            for k, hs in cur.items() if hs}
+
+
+def load_fr():
+    rows, err = _fr_rows()
+    if rows is None:
+        raise RuntimeError(err)
+    now = _fr_aggregate(rows)
+    then_day = (datetime.utcnow().date()
+                - timedelta(days=FR_CHANGE_WINDOW_DAYS)).isoformat()
+    then = _fr_aggregate(rows, as_of=then_day)
+    out = {}
+    for k, v in now.items():
+        prev = then.get(k)
+        out[k] = {
+            "short_ratio_pct": v["pct"],
+            "short_ratio_prev_pct": prev["pct"] if prev else 0.0,
+            "short_change_pct_pts": round(v["pct"] - (prev["pct"] if prev else 0.0), 4),
+            "change_window_days": FR_CHANGE_WINDOW_DAYS,
+            "change_reference_date": then_day,
+            "disclosed_sellers": v["sellers"],
+            "isin": v["isin"],
+            "position_date": v["date"],
+            "issuer_as_published": v["name"],
+        }
+    dates = [v["position_date"] for v in out.values() if v["position_date"]]
+    return (max(dates) if dates else None), out
+
+
 def load(markets=("uk", "de", "fr"), refresh=False):
     """Every register once for the whole day, cached.
 
@@ -222,20 +395,7 @@ def load(markets=("uk", "de", "fr"), refresh=False):
     today = datetime.utcnow().date().isoformat()
     out = {}
     for m in markets:
-        if m == "fr":
-            out["fr"] = {"as_of": None, "rows": {}, "covered": False,
-                         "reason": "The AMF register is hosted on www.data.gouv.fr, "
-                                   "which is unreachable from this container: every "
-                                   "curl request including the site root dies with "
-                                   "`Recv failure: Connection reset by peer` and the "
-                                   "agent proxy logs `ws_closed_mid_exchange`. WebFetch "
-                                   "reads the dataset page but cannot deliver the 4.9 MB "
-                                   "CSV, and bdif.amf-france.org is an SPA whose API was "
-                                   "not found. This is a KNOWN OPEN HOLE, not a market "
-                                   "with no short sellers.",
-                         "source": AMF_DATASET}
-            continue
-        loader = load_uk if m == "uk" else load_de
+        loader = {"uk": load_uk, "de": load_de, "fr": load_fr}[m]
         try:
             as_of, rows = loader()
         except Exception as exc:
@@ -246,7 +406,7 @@ def load(markets=("uk", "de", "fr"), refresh=False):
         if rows:
             snap = cache.setdefault(m, {})
             prev_day = max([d for d in snap if d < today], default=None)
-            if m == "de" and prev_day:
+            if m == "de" and prev_day:      # FR carries its own history; UK has one
                 for k, v in rows.items():
                     p = snap[prev_day].get(k)
                     if p and p.get("short_ratio_pct") is not None:
@@ -256,8 +416,34 @@ def load(markets=("uk", "de", "fr"), refresh=False):
             snap[today] = rows
             CACHE.parent.mkdir(parents=True, exist_ok=True)
             CACHE.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
+        stale = None
+        if not rows:
+            # A register that failed TODAY but was read within the last few days is
+            # better than nothing AND worse than a fresh read, so it is used and
+            # labelled. Disclosure registers move slowly -- a French holder who has not
+            # re-filed since Tuesday has not changed position -- but `stale` and
+            # `cache_age_days` ride in every name's positioning block so no reader
+            # mistakes a five-day-old file for today's. Five days is the limit; beyond
+            # it the register is simply uncovered.
+            snap = (cache.get(m) or {})
+            prev_day = max(snap, default=None)
+            if prev_day:
+                age = (datetime.fromisoformat(today).date()
+                       - datetime.fromisoformat(prev_day).date()).days
+                if age <= 5 and snap[prev_day]:
+                    rows, as_of, stale = snap[prev_day], prev_day, age
         out[m] = {"as_of": as_of, "rows": rows, "covered": bool(rows), "error": err,
-                  "source": FCA_CURRENT if m == "uk" else BANZ_CSV}
+                  "stale_cache_days": stale,
+                  "source": {"uk": FCA_CURRENT, "de": BANZ_CSV,
+                             "fr": AMF_RESOURCE}[m]}
+        if m == "fr" and not rows:
+            out[m]["reason"] = (
+                "The AMF register is hosted on www.data.gouv.fr, which answers this "
+                "container INTERMITTENTLY -- roughly one request in three, the rest "
+                "dying in the TLS exchange (`ws_closed_mid_exchange`). It is retried "
+                "up to eighteen times across two paths and this run got nothing. That "
+                "is a transient, not a market with no short sellers: re-run before "
+                "concluding anything. " + (f"Last error: {err}" if err else ""))
     return out
 
 
@@ -283,6 +469,7 @@ def for_name(market, company, registers):
                          "register reads as a zero it should not.",
                 "as_of": reg.get("as_of"), "source": src}
     out = dict(hit)
+    out["stale_cache_days"] = reg.get("stale_cache_days")
     out.update({"covered": True, "as_of": reg.get("as_of"), "source": src,
                 "basis": "sum of disclosed net short positions at or above 0.5% of "
                          "shares outstanding, as published by the national regulator"})
