@@ -173,12 +173,27 @@ def cohort_files():
     return [h if h.startswith("http") else JPX_HOST + h for h in hrefs]
 
 
-def parse_cohort(blob):
-    import openpyxl
+def sheet_rows(blob):
+    """Rows of the first worksheet, as `(value, ...)` tuples with dates as datetime.
+
+    openpyxl if it is installed, else `xlsx_stdlib` on the standard library alone.
+    The container these Routines fire into ships no openpyxl and nothing in this
+    repo declares it as a dependency, so without the fallback every JPX cohort
+    sheet fails to parse and the day looks empty. Same reason eu_pdftext.py reads
+    PDFs without a PDF library.
+    """
+    try:
+        import openpyxl
+    except ImportError:
+        from xlsx_stdlib import rows as _rows
+        return _rows(blob)
     wb = openpyxl.load_workbook(io.BytesIO(blob), data_only=True, read_only=True)
-    ws = wb.worksheets[0]
+    return list(wb.worksheets[0].iter_rows(values_only=True))
+
+
+def parse_cohort(blob):
     as_of, header_seen, rows = None, False, []
-    for r in ws.iter_rows(values_only=True):
+    for r in sheet_rows(blob):
         if not r:
             continue
         first = str(r[0]) if r[0] is not None else ""
