@@ -29,3 +29,15 @@
 - SAA: emitted +2.4, 3 findings summing +3.1, event confirmed. Its locality control is the largest on the day — `pre_local` −2.0 flips to `pre_lessons` +2.4.
 - Two 89-byte files (`prtcq.json`, `sptxq.json`) were left in the repo root by a hunter's curl — failed Yahoo chart calls returning `Invalid Crumb`. Deleted; they carried nothing. Worth noting that hunters can write scratch to the repo root.
 - LUCE and PRTC still hunting.
+
+## Stage EU — Europe researcher — COMPLETE (9 of 9 hunted, 9 of 9 rankable)
+- Logged at 2026-09-21 19:07 UTC
+- Sealed for **2026-09-22**. Ranking on `impact_sum`: OXB +3.20, SAA +3.10, KGF +2.70, ABCA +2.30, LUCE +1.40, MAB1 +1.40, PRTC −0.80, FNX −1.30, SMIN −1.40. **Two clear the conviction floor of 3.0** (OXB, SAA).
+- **Both floor-clearers rest on an activist TR-1 filed within 24h of the print** — Irenic 5.41% in OXB (RNS 21 Sep 10:43) and Harwood/Rockwood/Oryx crossing 9% in SAA (TR-1 21 Sep 17:25). That is ONE correlated exposure the scorer cannot see, the same shape as the four IEEPA-tariff US names on 2026-09-10. Flagged at the top of the note.
+- All nine `event_confirmed: true` from the issuer's own calendar or RNS, not the vendor. **All three `session_unresolved` names (PRTC, SAA, SMIN) were settled against a primary document**; PRTC's hunter also closed the ADR/after-hours risk via Form 25 and 15F-12B on EDGAR.
+- Anchor: `options` null in all ten markets. FCA (419 rows, 2026-09-19) and AMF (74 issuers, 2026-09-17) both read; **7 of 9 `anchor_covered: true`**, ABCA and FNX truncated zeros whose lean is therefore the free control. Zero names from es/pl and zero from de, so the three markets that cannot reach `event_occurred: false` cost this day nothing.
+- Controls: lessons freeze on 9 of 9, **8 moved** (largest LUCE +1.3; SMIN unmoved; ABCA and PRTC moved DOWN). Locality freeze on 9 of 9, **9 moved**, largest **SAA −2.0 → +2.4, a sign reversal**. Eight UK names against one French one, so there is nothing poolable here and `eu_resolve.py` will not pool a UK locality delta with a French language one anyway.
+- **Two defects recorded, not smoothed.** (1) The run spans 4.5h across two account rate limits, so wave 2 saw the 09-21 London close and wave 1 did not — SAA's largest finding rests on a 17:25 TR-1 that did not exist when wave 1 ran, and SAA and OXB are ranked against each other on unequal information. (2) KGF's baseline short (10.69% @ 2026-09-16) is not reproducible from the live FCA file (9.31% @ 2026-08-05), whose every top row is ~6 weeks stale.
+- Also noted: ABCA's `print_vs_bar_pct` is +25.0, an order-of-magnitude outlier struck against an H1 share of an unrevised FY consensus on 2 analysts. It does not affect the rank — `impact_sum` is the key — but it should not be quoted bare.
+- Resolve: all nine are uk/fr, both of which have a dated day archive, so **this run does not expire** (no Nordic ~12-day window applies). Yahoo's `.L` closes lag one session and `.PA` about two, so it cannot be resolved on the morning of 09-23.
+- Research only: no order placed, no broker contacted, no `alpaca_trade.py` step. Published to **main** with EARNINGS_DATA_BRANCH pinned explicitly.
