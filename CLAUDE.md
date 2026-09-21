@@ -1055,10 +1055,25 @@ commit — that file now carries the pasted text verbatim.
 EU's Routine does NOT have empty `sources`, `outcomes` and `allowed_tools` any more: the
 update response returns a populated `session_request.config` with a `git_repository`
 source for this repo, a full `allowed_tools` preset, and an **`outcomes` branch of
-`claude/pensive-sagan`**. So a fired session does get a checkout. **The unresolved part
-is the publish destination**: the declared outcome branch is not `main`, while the prompt
-tells the run to use `scripts/publish.sh`, which defaults to `main`. Nobody has observed
-which one a fired run's work lands on. Check it on the next fire.
+`claude/pensive-sagan`**. So a fired session does get a checkout.
+
+**THE OUTCOME BRANCH CANNOT BE CHANGED FROM A SESSION, AND THE PROMPT NOW PINS THE
+DESTINATION INSTEAD (2026-09-21).** `update_trigger` takes only `name`,
+`cron_expression`, `enabled`, `model`, `prompt` and `run_once_at` — there is no field for
+`sources` or `outcomes`, and `create_trigger` has none either, so
+`outcomes: claude/pensive-sagan` is settable **only from the Routines UI**. Changing it
+there is the operator's job and it is the one loose end left on this stage.
+
+What was done instead is the part that actually decides where the day's research lands:
+the prompt re-pasted at 06:46 UTC **exports `EARNINGS_DATA_BRANCH=main` explicitly**
+before calling `publish.sh`, and then runs `git fetch origin main && git log --oneline -1
+origin/main` and requires the run to say in its reply if its own commit is not there.
+`publish.sh` performs a real `git push` to that branch, which is a different mechanism
+from the harness's `outcomes` metadata — so pinning the variable makes the data
+destination deterministic whatever the outcome field says, and the verification line
+makes a wrong destination visible instead of silent. **That is belt-and-braces, not a
+fix**: until somebody clears the `outcomes` branch in the UI, the two still disagree on
+paper, and the first fire under this prompt is the observation that settles it.
 
 **Its Routine exists since 2026-09-19: `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron
 `30 13 * * 1-5`.** Created by a session, so `update_trigger` works on it, and

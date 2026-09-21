@@ -136,14 +136,24 @@ The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-09-1
 > - **The draw is random and the calendar is seasonal, so a day can be almost entirely one market** — 15 of 20 names were Swedish on 2026-10-22, because October is Sweden's month. Report `selection.market_concentration` before making any pooled statement about the day.
 > - **`history.basis` is an ESTIMATED cadence for eight of the ten markets.** Only UK names (`observed_rns`) and Norwegian ones (`observed_newsweb`) carry real dated announcement history. A cadence prior is a scale, never evidence that a print happened on a date — TRT was ranked, traded and never reported on exactly that mistake.
 >
-> ## Publishing
+> ## Publishing — to `main`, and pin it rather than trusting a default
 >
-> `scripts/publish.sh` pushes to the branch in `EARNINGS_DATA_BRANCH`, defaulting to `main`. That default is correct for a scheduled run:
+> **The day's research goes on `main`.** `scripts/publish.sh` pushes to
+> `${EARNINGS_DATA_BRANCH:-main}`, so the default is already right — but this Routine's
+> stored `outcomes` branch is NOT `main` (it reads `claude/pensive-sagan`), and nobody
+> has yet watched a fire to see which destination the work lands on. So do not rely on
+> the default: **pin the variable, and say in the run log where you pushed.**
 >
 > ```bash
+> export EARNINGS_DATA_BRANCH=main
 > python3 scripts/update_index.py
 > scripts/publish.sh "stage EU: Europe ranking for <EVENT-DATE>"
+> git log --oneline -1 origin/main    # confirm the work is on main, and say so in the run log
 > ```
+>
+> If that last command does not show your commit, **say so explicitly in your reply** —
+> a publish that went somewhere else is the one failure mode that looks exactly like
+> success from inside the session.
 >
 > **You must publish something even if the day is empty or the run fails** — a heartbeat, a run-log line saying what happened, or the finished ranking. Ending a fire with nothing pushed leaves no evidence the Routine ran at all.
 
