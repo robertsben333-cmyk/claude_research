@@ -18,3 +18,10 @@
 - close --submit --scan: no new orders placed. 2026-09-18's run had 0 positions (all 14 candidates rejected, none cleared the conviction/turnover floor), so no book was left open over the weekend for this Routine to close.
 - status --scan: account is flat, equity == cash ($11,582.19), no open positions.
 - No refusals, no UNFILLED legs, no unreachable-account condition. Quiet morning — nothing to sell.
+
+## Edge hunt — 2026-09-21 amc + 2026-09-22 bmo — STARTED
+- Logged at 2026-09-21 17:12 UTC
+- Fired 17:05 UTC (13:05 ET), Monday. Window: today amc + next-session bmo. Universe: 5 of 27 calendar rows confirmed (AZO, ABVX, THO, MLKN, HERE); 19 time-not-supplied rows dropped.
+- Thin-day check done (skill sec.1, window under ten): --include-unknown gave 24 rows, session_resolve.py checked all 19 carried rows against EDGAR + Nasdaq press releases — 0 killed, 0 confirmed by announcement, 19 carried unresolved. Same outcome as 2026-09-17 (which was 19 of 20 phantom). Cadence prior reads 'fits' on CURR (89d), FRGT (153d), ZENA (62d) — read as a prior, NOT filtered on and NOT used to add a name; that is exactly the TRT failure. Carried rows handed to the sweep to settle or drop.
+- Step 0b execution: execution.enabled=true, exit_mode=amc_open. verify --scan over 7 runs / 12 exit legs: all 12 'ok', 0 shares still held, nothing to --fix. Account flat — 0 positions, equity $11,582.19, all cash. Nothing sold at step 0b because nothing was held; unrealised P&L on the exit: n/a.
+- Baselines sealed and committed before any agent launched. 4 of 5 carry a live option chain (AZO, ABVX, THO, MLKN); HERE is no_options_market, tier thin. Plan: 1 edge-sweep over all 24 rows, then 1 unpriced-hunter per confirmed name. Budget 20, so no shedding.
