@@ -295,12 +295,24 @@ def main():
         "calendar_as_of": as_of,
         "calendar_sheets": files,
         "calendar_rows_total": len(rows),
+        "calendar_readable": any("error" not in f for f in files),
         "scheduled_today": len(todays),
         "market_closed": closed,
         "cap": a.cap,
         "min_turnover_jpy": a.min_turnover_jpy,
         "generated_utc": datetime.now(ZoneInfo("UTC")).isoformat(timespec="seconds"),
     }
+
+    if files and not out["calendar_readable"]:
+        # Every cohort sheet failed to parse. That is NOT an empty calendar, and the
+        # two are indistinguishable from `scheduled_today` alone -- which is the read
+        # the skill tells a session to make. Say so in the file itself.
+        out["note"] = (
+            "EVERY cohort sheet failed to parse, so `scheduled_today` is 0 because "
+            "nothing was read, NOT because nobody reports. See calendar_sheets[].error. "
+            "A missing openpyxl is the known cause and is a container problem, not a "
+            "calendar one. Do not read this as an unpublished sheet."
+        )
 
     if closed and not todays:
         out["names"] = []
