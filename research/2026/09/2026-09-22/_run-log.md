@@ -22,3 +22,10 @@
 - **All five subagents were killed by an account session rate limit (HTTP 429, reset 18:30 UTC) during their wrap-up turn, AFTER writing their JSON.** Nothing was lost: the contract check passes on all five. Only KGF's hand-back reached this session in prose; the other four are read from disk.
 - **The run therefore spans a 4.5-hour gap**: baselines sealed 13:39 UTC, wave 1 hunted 13:50–14:00 UTC, wave 2 dispatched after the reset at 18:31 UTC. The baselines are unaffected — sealed once, before any hunter, and nothing downstream revises them. But wave 2's hunters can see the 2026-09-21 European close and wave 1's could not, which is an information asymmetry INSIDE one day's ranking. It is recorded here and in the note rather than smoothed over.
 - KGF flagged that it could not reproduce the baseline's short figure: the live FCA aggregated CSV reads 9.31% at position date 2026-08-05 where the cached baseline reads 10.69% at 2026-09-16, and the FCA's own 'current' file is itself ~6 weeks stale. Direction unaffected. Recorded, not corrected — the baseline is sealed.
+
+## Stage EU — wave 2 partial (FNX, SAA banked)
+- Logged at 2026-09-21 18:45 UTC
+- FNX: emitted −1.0, 3 findings summing −1.3, event confirmed twice from the issuer's own words (23 Jul RNS naming 22 September, plus today's 11:33 RNS setting a 22 Sep 09:00 BST question deadline). `anchor_covered: false` — the FCA register read and does not name Fonix, which is the 0.5% per-holder truncation floor and not a measurement, so its lean is close to the free control.
+- SAA: emitted +2.4, 3 findings summing +3.1, event confirmed. Its locality control is the largest on the day — `pre_local` −2.0 flips to `pre_lessons` +2.4.
+- Two 89-byte files (`prtcq.json`, `sptxq.json`) were left in the repo root by a hunter's curl — failed Yahoo chart calls returning `Invalid Crumb`. Deleted; they carried nothing. Worth noting that hunters can write scratch to the repo root.
+- LUCE and PRTC still hunting.
