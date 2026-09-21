@@ -14,3 +14,11 @@
 - Registers: FCA (uk) read, 419 rows as of 2026-09-19; AMF (fr) read, 74 issuers as of 2026-09-17. **7 of 9 names carry `anchor_covered: true`**; FNX and ABCA are `register_read_no_position` (a truncated zero, not an anchor) and take `anchor_quality.direction` 0.15 instead of 0.45.
 - Sessions: all 9 bmo. Three carry `session_unresolved: true` — PRTC, SAA, SMIN — defaulted to bmo on the 339/379 measured UK base rate.
 - history.basis: 8 UK names `observed_rns` (real dated announcement history); ABCA (fr) is `estimated_from_cadence` — a scale, never evidence a print exists.
+
+## Stage EU — wave 1 banked (5 of 9)
+- Logged at 2026-09-21 18:32 UTC
+- Hunted: ABCA (fr), KGF, SMIN, OXB, MAB1 (uk). All five wrote a complete hunt file and all five carry a real `pre_local` freeze, a `pre_lessons` freeze and `event_confirmed: true`.
+- Finding sums before scoring: OXB +3.20, KGF +2.70, ABCA +2.30, MAB1 +1.40, SMIN −1.40.
+- **All five subagents were killed by an account session rate limit (HTTP 429, reset 18:30 UTC) during their wrap-up turn, AFTER writing their JSON.** Nothing was lost: the contract check passes on all five. Only KGF's hand-back reached this session in prose; the other four are read from disk.
+- **The run therefore spans a 4.5-hour gap**: baselines sealed 13:39 UTC, wave 1 hunted 13:50–14:00 UTC, wave 2 dispatched after the reset at 18:31 UTC. The baselines are unaffected — sealed once, before any hunter, and nothing downstream revises them. But wave 2's hunters can see the 2026-09-21 European close and wave 1's could not, which is an information asymmetry INSIDE one day's ranking. It is recorded here and in the note rather than smoothed over.
+- KGF flagged that it could not reproduce the baseline's short figure: the live FCA aggregated CSV reads 9.31% at position date 2026-08-05 where the cached baseline reads 10.69% at 2026-09-16, and the FCA's own 'current' file is itself ~6 weeks stale. Direction unaffected. Recorded, not corrected — the baseline is sealed.
