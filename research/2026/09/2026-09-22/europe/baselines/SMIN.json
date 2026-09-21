@@ -1,0 +1,124 @@
+{
+  "market": "EU",
+  "submarket": "uk",
+  "submarket_name": "United Kingdom",
+  "language": "en",
+  "ticker": "SMIN",
+  "yahoo_symbol": "SMIN.L",
+  "tv_symbol": "LSE:SMIN",
+  "company": "Smiths Group Plc",
+  "industry": "Producer Manufacturing",
+  "event_date": "2026-09-22",
+  "session": "bmo",
+  "session_unresolved": true,
+  "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+  "window": "close of the session before 2026-09-22 -> 2026-09-22 close",
+  "sealed_utc": "2026-09-21T13:41:50+00:00",
+  "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/SMIN.L?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Investegate (RNS mirror)"
+  },
+  "tape": {
+    "spot": 2566.0,
+    "currency": "GBp",
+    "run_up_20d_pct": -1.31,
+    "run_up_5d_pct": 2.39,
+    "median_turnover_usd_20d": 31233900,
+    "realised_vol_20d_pct": 17.3,
+    "realised_vol_60d_pct": 21.39,
+    "bars_3y": 759
+  },
+  "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on the seven added that month changes it."
+  },
+  "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/SMIN.L?modules=earningsHistory%2CfinancialData",
+    "quarters": [],
+    "analyst_count": 14,
+    "analyst_band": ">13",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+  },
+  "history": {
+    "n": 4,
+    "basis": "observed_rns",
+    "source": "https://www.investegate.co.uk/company/SMIN",
+    "median_abs_move_pct": 0.69,
+    "events": [
+      {
+        "move_pct": 0.41,
+        "date_used": "2025-10-09",
+        "headline": "Annual Financial Report",
+        "basis": "observed_rns"
+      },
+      {
+        "move_pct": -0.98,
+        "date_used": "2025-11-19",
+        "headline": "Smiths Group Q1 FY26 Trading Statement",
+        "basis": "observed_rns"
+      },
+      {
+        "move_pct": -9.87,
+        "date_used": "2026-03-20",
+        "headline": "Half-year Financial Report",
+        "basis": "observed_rns"
+      },
+      {
+        "move_pct": 0.32,
+        "date_used": "2026-05-21",
+        "headline": "3rd Quarter Results",
+        "basis": "observed_rns"
+      }
+    ],
+    "caveat": "Dates are REAL: each row is a results announcement the market's own archive records on that date, and the move is over this stage's own window. Only the UK (Investegate) and Norway (Oslo NewsWeb) reach this state; the other eight markets are estimated."
+  },
+  "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Investegate (RNS mirror) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+  },
+  "positioning": {
+    "short_ratio_pct": 1.83,
+    "isin": "GB00B1WY2338",
+    "position_date": "16/09/2026",
+    "issuer_as_published": "SMITHS GROUP PLC",
+    "short_ratio_prev_pct": 0.7,
+    "short_change_pct_pts": 1.13,
+    "stale_cache_days": 2,
+    "covered": true,
+    "as_of": "2026-09-19",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "basis": "sum of disclosed net short positions at or above 0.5% of shares outstanding, as published by the national regulator"
+  },
+  "expected_move": {
+    "event_move_proxy_pct": 1.09,
+    "from_realised_vol_1d_pct": 1.09,
+    "from_history_median_pct": 0.69,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+  },
+  "lean_components": {
+    "short_squeeze": 1.098,
+    "short_building": -2.0,
+    "runup": 0.066
+  },
+  "priced_lean_pct": -0.836,
+  "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+  "anchor_covered": true,
+  "anchor_coverage": {
+    "state": "disclosed",
+    "register": "FCA aggregated net short positions",
+    "as_of": "2026-09-19",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+  },
+  "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.45,
+    "anchor_state": "disclosed",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a disclosure."
+  },
+  "event_occurred": null
+}
