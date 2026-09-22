@@ -2526,15 +2526,15 @@ function tabWeging() {
 
 
 /* ====================================================== de andere markten
-   Stage EU, stage J en stage AU: dezelfde jacht, dezelfde scorer, drie andere
-   beurzen. Geen van drieën plaatst een order, dus er is hier geen geldniveau en er
-   komt er geen: de ledger hierboven gaat over de Alpaca-rekening, die deze markten
-   niet kent. Alles op deze drie tabbladen is het onderzoeksniveau.
+   Stage EU, stage J, stage AU en stage CA: dezelfde jacht, dezelfde scorer, vier
+   andere beurzen. Geen van vieren plaatst een order, dus er is hier geen geldniveau
+   en er komt er geen: de ledger hierboven gaat over de Alpaca-rekening, die deze
+   markten niet kent. Alles op deze tabbladen is het onderzoeksniveau.
 
    De gerealiseerde beweging komt uit de resolver van de markt zelf
-   (eu_resolve.py, jp_resolve.py, au_resolve.py) en nergens anders vandaan. Elk
-   venster is anders: Europa en Australië rapporteren vóór de opening, Tokio na de
-   slotbel. Die logica hoort in één bestand per markt te staan, niet ook hier. Staat
+   (eu_resolve.py, jp_resolve.py, au_resolve.py, ca_resolve.py) en nergens anders
+   vandaan. Elk venster is anders: Europa en Australië rapporteren vóór de opening,
+   Tokio na de slotbel. Die logica hoort in één bestand per markt te staan, niet ook hier. Staat
    er geen beweging, dan is de run nog niet opgelost. */
 const MRAW = document.getElementById('markets');
 const M = MRAW ? JSON.parse(MRAW.textContent) : {markets:{}, problems:[]};
@@ -2558,6 +2558,16 @@ const MNOTE = {
        zelf was. Het venster loopt van de slotbel naar de volgende opening. De beurs
        is vaker dicht dan de cron: een lege dag met <code>market_closed</code> is een
        feestdag en geen storing.`,
+  CA: `Toronto, en de reden is niet de agenda. Canada is de enige markt hier waar de
+       <b>mét en zonder optie-anker</b> naast elkaar in één dag zitten: de Montréal
+       Exchange noteert opties op 360 namen (96% boven $25m per dag, 10% eronder),
+       terwijl het CIRO short-register 87–88% van élke omzetband dekt. Zo splitst
+       één Canadese dag in een arm die precies als een Amerikaanse naam is verankerd
+       en een arm die het als een Japanse of Europese doet, in dezelfde markt en
+       door dezelfde scorer. Die vergelijking is de reden dat de stage bestaat; de
+       rangschikking is bijvangst. Wat het kost: <code>sedarplus.ca</code> en
+       <code>ciro.ca</code> zijn hier dicht, dus alles loopt via één stack bij TMX,
+       en één storing is dan één storing en geen vier.`,
   AU: `De ASX. Het venster is <code>slot(D−1) → slot(D)</code>, want 91% van de
        gemeten Australische resultaten landt vóór de opening van 10:00 Sydney, en de
        Routine draait daarom zondag tot en met donderdag. Eén Engelse jachtronde,
@@ -2766,7 +2776,7 @@ const TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel], ['Score',tabScor
               ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten], ['Lessons',tabLessons],
               ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
               ['Europa',()=>tabMarkt('EU'),1], ['Japan',()=>tabMarkt('JP'),1],
-              ['Australië',()=>tabMarkt('AU'),1],
+              ['Australië',()=>tabMarkt('AU'),1], ['Canada',()=>tabMarkt('CA'),1],
               ['Agenda',tabAgenda], ['Data',tabData]];
 let active = 0;
 const nav = document.getElementById('tabs'), panels = document.getElementById('panels');

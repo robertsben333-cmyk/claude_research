@@ -35,9 +35,9 @@ dashboard/
 | **account** | the equity curve as the broker reports it | Alpaca portfolio history |
 
 A fourth thing sits beside those three and is not one of them: the **markets** level in
-`data/markets.json`, the research record of stage EU, J and AU. Those stages place no
-orders, so it has names and no trades and no equity curve. See "The other three markets"
-below.
+`data/markets.json`, the research record of stages EU, J, AU and CA. Those stages place
+no orders, so it has names and no trades and no equity curve. See "The markets that place
+no orders" below.
 
 A name is not a trade. The conviction floor, the $200k turnover floor and the
 borrow check mean most ranked names are never traded, and the two strongest
@@ -347,12 +347,13 @@ the components sit beside it in the table so a reader can see which one moves a 
 The scatter next to it asks the question the indicator exists for: does the edge live in
 the names consumers trade? On the first build the answer is no — slope 0.04, r² 0.00.
 
-## The other three markets: Europa, Japan, Australië
+## The markets that place no orders: Europa, Japan, Australië, Canada
 
-Stage EU, stage J and stage AU run the same hunt with the same scorer over the ASX,
-Tokyo and ten European venues, and **none of the three places an order**. So they get
-their own tabs rather than rows in the ledger: there is no money level for them and
-there must not be one. Everything on those three tabs is the research level.
+Stage EU, stage J, stage AU and stage CA run the same hunt with the same scorer over
+ten European venues, Tokyo, the ASX and Toronto, and **none of the four places an
+order**. So they get their own tabs rather than rows in the ledger: there is no money
+level for them and there must not be one. Everything on those tabs is the research
+level.
 
 ```bash
 python3 dashboard/scripts/build_markets.py             # collect what is on disk
@@ -367,7 +368,8 @@ say so themselves.
 **It does not own the outcome window, and that is deliberate.** Europe and Australia
 report before the open, so their window is `close(D−1) → close(D)`; Tokyo's runs from
 the close to the next open. That logic lives in `eu_resolve.py`, `jp_resolve.py` and
-`au_resolve.py`, and this collector reads the `*-resolved.json` those write. With
+`au_resolve.py` and `ca_resolve.py`, and this collector reads the `*-resolved.json`
+those write. With
 `--resolve` it calls the market's own resolver for a run whose window has closed and
 which has no outcome yet. A realised move on these tabs was computed by the market's
 resolver or it is not there.
@@ -378,7 +380,8 @@ somewhere in this repo:
 - **A validation run is not research.** The two European days that have resolved ran on
   *synthetic* findings to test the chain end to end. They are excluded by default and the
   switch that includes them says what they are. Stage AU's validation never landed in
-  `research/` at all, so that tab is honestly empty.
+  `research/` at all, and Canada has not had a fire yet, so those two tabs are honestly
+  empty and say what is missing.
 - **An unhunted name is not a zero.** Seven UK names on 2026-09-23 carry `impact_sum: 0`
   and `rankable: false` because the session could not spawn subagents. They appear in the
   names table with `not_rankable_because` in place of the number and count in no

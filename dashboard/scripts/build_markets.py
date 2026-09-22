@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
-"""Collect the Europe, Japan and Australia researchers' runs into one dataset,
-for the per-market tabs on the dashboard.
+"""Collect the researchers that place no orders into one dataset, for the
+per-market tabs on the dashboard: Europe, Japan, Australia and Canada.
 
     python3 dashboard/scripts/build_markets.py
     python3 dashboard/scripts/build_markets.py --resolve     # also fill in moves
 
-This is the RESEARCH record for the three stages that place no orders. There is
-no money level here and there must not be one: stage EU, stage J and stage AU
-have no broker, so `dashboard/data/ledger.json`'s trades and equity curve say
-nothing about them and are not extended to them.
+This is the RESEARCH record for the stages that place no orders. There is no
+money level here and there must not be one: stages EU, J, AU and CA have no
+broker, so `dashboard/data/ledger.json`'s trades and equity curve say nothing
+about them and are not extended to them.
 
 What it does NOT do is own the outcome window. Each market's window is different
 -- Europe and Australia report before the open, so theirs is close(D-1) ->
 close(D), Japan's is the Tokyo close to the next one -- and that logic lives in
-eu_resolve.py, jp_resolve.py and au_resolve.py. This script reads the file those
-write (`eu-resolved.json`, `jp-resolved.json`, `au-resolved.json`) and, with
+eu_resolve.py, jp_resolve.py, au_resolve.py and ca_resolve.py. This script reads
+the file those write (`eu-resolved.json`, `jp-resolved.json`, `au-resolved.json`,
+`canada-resolved.json`) and, with
 --resolve, runs the market's own resolver for a past run that has none yet. A
 realised move that appears here was computed by the market's resolver or it does
 not appear at all.
@@ -47,6 +48,9 @@ STAGES = {
     "AU": {"dir": "australia", "label": "Australië", "stage": "AU",
            "resolver": "researcher_australia/scripts/au_resolve.py",
            "resolved": "au-resolved.json"},
+    "CA": {"dir": "canada", "label": "Canada", "stage": "CA",
+           "resolver": "researcher_canada/scripts/ca_resolve.py",
+           "resolved": "canada-resolved.json"},
 }
 
 
@@ -247,7 +251,7 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--runs", nargs="*", default=None,
                     help="run directory globs; default is every europe/japan/"
-                         "australia run under research/")
+                         "australia/canada run under research/")
     ap.add_argument("--resolve", action="store_true",
                     help="for a run whose event date has passed and which has no "
                          "resolved file, call the market's own resolver. Costs "

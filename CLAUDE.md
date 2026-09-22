@@ -262,17 +262,18 @@ to dispatch, without which the click opens the workflow page instead. **Its comm
 touches only `dashboard/` and the three feeder files, and its `paths:` filter excludes
 them, so it cannot trigger itself** — do not add `dashboard/**` to that filter.
 
-**The other three researchers have their own tabs since 2026-09-22, and they are the
-research level only.** `Europa`, `Japan` and `Australië` are fed by
+**The researchers that place no orders have their own tabs since 2026-09-22, and they
+are the research level only.** `Europa`, `Japan`, `Australië` and `Canada` are fed by
 `dashboard/scripts/build_markets.py` into `dashboard/data/markets.json`, which
 `build_dashboard.py` inlines beside the ledger; `update.sh` runs it with `--resolve` as a
 third feeder that may fail without costing the rebuild. **There is no money level on
-those three tabs and there must not be one**: stages EU, J and AU place no orders, so the
+those tabs and there must not be one**: stages EU, J, AU and CA place no orders, so the
 ledger's trades and equity curve say nothing about them, and the filter bar (lens, cap,
 sector, exit horizon) is hidden on a market tab because none of it has anything
 underneath. The collector does NOT own the outcome window — Europe and Australia are
 `close(D−1) → close(D)`, Tokyo is close to next open — it reads the `*-resolved.json`
-that `eu_resolve.py`, `jp_resolve.py` and `au_resolve.py` write, and with `--resolve`
+that `eu_resolve.py`, `jp_resolve.py`, `au_resolve.py` and `ca_resolve.py` write, and
+with `--resolve`
 calls the market's own resolver for a run whose window has closed and which has none. A
 resolved file whose rows are all `move_pending` is fetched again, because Yahoo's
 European closes lag a session and treating that file as done would freeze the day at
@@ -283,8 +284,8 @@ now.** Europe: four runs, 18 hunted names, 59 findings, and **the only resolved 
 the two validation runs that ran on synthetic findings** — excluded by default, behind a
 switch that names them. Japan: two hunted days, three names, nothing resolved, plus two
 days on which Tokyo was shut and the runs table prints the holiday instead of a zero.
-Australia: no run directory in `research/` at all, since its validation never landed
-there. Three rules are enforced in the rendering rather than left to a reader: an
+Australia and Canada: no run directory in `research/` at all, since neither
+validation landed there and stage CA has not fired yet. Three rules are enforced in the rendering rather than left to a reader: an
 unhunted name (`rankable: false`, seven UK names on 09-23) is shown with
 `not_rankable_because` instead of the 0 the scorer writes and counts in no statistic; a
 shut exchange is not a failed run; and **ρ is withheld below five names**, because on
@@ -1498,8 +1499,8 @@ researcher_us/                         stage E — see researcher_us/README.md
 dashboard/                             the standing performance record and the one
   update.sh  scripts/  data/  LOG.md   reading surface — see dashboard/README.md
   dashboard.html                       open it from disk; rebuilt by update.sh
-  scripts/build_markets.py             stage EU/J/AU into data/markets.json, for the
-                                       Europa, Japan and Australië tabs
+  scripts/build_markets.py             stage EU/J/AU/CA into data/markets.json, for
+                                       the four order-less market tabs
 .github/workflows/dashboard.yml        the same rebuild in CI + GitHub Pages, for the
                                        copy that is fetched rather than opened
 edge -> researcher_us                  SYMLINK. The live Routine prompt names edge/
