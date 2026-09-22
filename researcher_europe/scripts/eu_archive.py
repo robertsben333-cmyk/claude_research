@@ -285,6 +285,11 @@ def fr_day(day, page_size=100, max_pages=12):
 
     ODS Explore v2.1: `where=` takes a date range, `limit` caps at 100 and `offset` at
     10,000, which is far above a French day (45-70 items).
+
+    The field names are load-bearing and are NOT the ones a reader would guess:
+    `uin_dat_amf` is the timestamp and `identificationsociete_iso_cd_isi` the ISIN.
+    A `where=` naming anything else comes back HTTP 200 with `total_count: null` rather
+    than an error, so this function checks that field before believing an empty day.
     """
     out = []
     for pg in range(max_pages):
@@ -296,7 +301,18 @@ def fr_day(day, page_size=100, max_pages=12):
         try:
             d = json.loads(get(f"{ODS}?{qs}"))
         except Exception:
+            if pg == 0:
+                return None          # could not read, NOT "nobody announced anything"
             break
+        # SILENT-FAILURE GUARD, measured 2026-09-22. Opendatasoft answers a `where=` on
+        # a field that does not exist with HTTP 200, `results: []` and
+        # `total_count: null` -- it does NOT error. So a field rename on the vendor's
+        # side would turn every French day into an empty list, which is the one answer
+        # that can support `event_occurred: false`. France would then silently start
+        # killing names that did report, exactly as Italy was doing until this morning.
+        # A real French day returns an integer count (0 is legitimate on a weekend).
+        if d.get("total_count") is None:
+            return None
         res = d.get("results") or []
         for r in res:
             sub = r.get("subtype_of_information")

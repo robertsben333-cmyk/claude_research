@@ -413,12 +413,24 @@ def build(name, event_date, registers, validation_only=False):
     }
 
     closes = [r["c"] for r in rows]
-    w20, w5 = closes[-21:], closes[-6:]
+    w20, w5, w60 = closes[-21:], closes[-6:], closes[-61:]
     doc["tape"] = {
         "spot": round(closes[-1], 4) if closes else None,
         "currency": meta.get("currency"),
         "run_up_20d_pct": round((w20[-1] / w20[0] - 1) * 100, 2) if len(w20) >= 2 else None,
         "run_up_5d_pct": round((w5[-1] / w5[0] - 1) * 100, 2) if len(w5) >= 2 else None,
+        # SEALED 2026-09-22, for a blind spot the other two share. On 2026-09-23 W7L
+        # read run_up_20d +0.24% and run_up_5d -0.67% on a stock that had bottomed at
+        # 177.0p on 2026-07-20 and traded 215p -- +21.5% -- because the move was OLDER
+        # than twenty sessions and both windows opened after it. Stage J sealed
+        # run_up_5d_pct for the mirror case (a move NEWER than twenty days), so a
+        # shorter window cannot catch this one and did not.
+        #
+        # It is DELIBERATELY NOT folded into priced_lean_pct, for the same reason
+        # run_up_5d_pct is not: the run-up is the free control every ranker here is
+        # measured against, and a lean built out of it cannot beat it. jp_resolve and
+        # eu_resolve rank it as its own control instead.
+        "run_up_60d_pct": round((w60[-1] / w60[0] - 1) * 100, 2) if len(w60) >= 2 else None,
         "median_turnover_usd_20d": name.get("median_turnover_usd_20d"),
         "realised_vol_20d_pct": realised_vol_pct(rows, 20),
         "realised_vol_60d_pct": realised_vol_pct(rows, 60),
@@ -511,7 +523,23 @@ def build(name, event_date, registers, validation_only=False):
                    "+/-2 trading days of that estimate. A cadence prior, not a record "
                    "that a print happened on that date. Use it as a SCALE for how far "
                    "this name travels, never as evidence about a particular past date -- "
-                   "TRT was ranked, traded and never reported on exactly this mistake."),
+                   "TRT was ranked, traded and never reported on exactly this mistake. "
+                   "AND THE SCALE IS BIASED LOW: most estimated dates land on ordinary "
+                   "sessions, so this median is ordinary-session volatility and not "
+                   "event volatility. Treat it as a LOWER BOUND on how far this name "
+                   "moves on a print, and size above it rather than to it."),
+        # MEASURED 2026-09-22 on the nine names of the 2026-09-23 European run. Median
+        # absolute move by basis: the six `observed_rns` names ran 2.61 / 3.16 / 3.80 /
+        # 4.76 / 6.06 / 10.50 with maxima of 15-32%, the three `estimated_from_cadence`
+        # names 1.82 / 1.90 / 2.09 with maxima of 3.79, 4.65 and 17.82. On KWS exactly
+        # ONE of eight estimated dates was a real print day. Two hunters, in two
+        # markets, reported it independently on the same day.
+        #
+        # The bias is NOT corrected by a factor here. A constant fitted to nine names is
+        # not a hypothesis, and the same rule that froze `w1` applies: it is recorded,
+        # the quality score is lowered, and `eu_resolve.py` reports `by_history_basis`
+        # so a fortnight of pooled days can settle the size of it.
+        "scale_is_lower_bound": hbasis == "estimated_from_cadence",
     }
 
     doc["event_plausibility"] = {
@@ -618,14 +646,32 @@ def build(name, event_date, registers, validation_only=False):
         dir_q = 0.15
     else:
         dir_q = {1: 0.25, 2: 0.45}[have_dir]
+    # An ESTIMATED reaction history is a weaker magnitude anchor than an observed one
+    # and used to be paid exactly the same 0.5. It is not a different quantity of
+    # evidence, it is a measurably biased one (see `history.scale_is_lower_bound`), so
+    # a name whose scale comes from a cadence prior earns 0.35 where an observed record
+    # earns 0.5. `baseline_quality` reaches `diagnostics` only -- `impact_sum` is the
+    # sum of the hunters' sizes and nothing else -- so this CANNOT move the ranking;
+    # verified by rescoring the 2026-09-23 run, 9 rows compared, 0 ranks changed.
+    hist_observed = doc["history"]["basis"] in ("observed_rns", "observed_newsweb")
+    if rv20 and hist_med:
+        mag = 0.5 if hist_observed else 0.35
+    elif rv20 or hist_med:
+        mag = 0.3 if (hist_observed or not hist_med) else 0.2
+    else:
+        mag = 0.0
     doc["anchor_quality"] = {
-        "magnitude": 0.5 if (rv20 and hist_med) else (0.3 if (rv20 or hist_med) else 0.0),
+        "magnitude": mag,
         # Two components rather than Japan's three, because there is no European
         # 信用倍率 analogue, so the ceiling is lower: 0.45 against 0.60.
         "direction": dir_q,
         "anchor_state": anchor_state,
         "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because "
-                 "neither is an option-implied move. direction: how many of the two "
+                 "neither is an option-implied move, and cut to 0.35 where that history "
+                 "is a cadence estimate rather than observed dates -- measured "
+                 "2026-09-22, an estimated history lands mostly on ordinary sessions "
+                 "and its median absolute move runs about half an observed one. "
+                 "direction: how many of the two "
                  "positioning components resolved, capped at 0.45 because neither is "
                  "25-delta skew and Europe has no margin-balance component to add, and "
                  "held to 0.15 where the register was read and does not name this issuer "

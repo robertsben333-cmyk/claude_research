@@ -825,6 +825,9 @@ def main():
     import eu_sheet as esheet                                      # noqa: E402
     import eu_archive as earch                                     # noqa: E402
     import eu_priced_in as epi                                     # noqa: E402
+    import eu_pdftext as epdf                                      # noqa: E402
+    import eu_resolve as eres                                      # noqa: E402
+    import inspect                                                 # noqa: E402
 
     # THE YAML BOOLEAN TRAP. Unquoted `no` in a YAML list is the boolean False, so
     # `markets: [uk, de, fr, se, dk, no, fi, it, es, pl]` silently drops Norway -- the
@@ -880,6 +883,62 @@ def main():
     check("a market with no archive returns None, not an empty day",
           earch.day("es", "2026-09-17") is None
           and earch.day("pl", "2026-09-17") is None)
+
+    # --- the four defects the 2026-09-23 run surfaced, fixed 2026-09-22 --------------
+
+    # 1. The PDF extractor used to read only `(literal)` strings, so an issuer's
+    #    headline figures -- set in a bold SUBSET font and emitted as `<hex>` -- came
+    #    back blank inside fluent prose. A blank where a number belongs is worse than a
+    #    failure, because nothing downstream can tell them apart.
+    import zlib as _zlib
+    _digits = "229,681"
+    _cmap = ("/CIDInit /ProcSet findresource begin 12 dict begin begincmap\n"
+             f"{len(_digits)} beginbfchar\n"
+             + "".join(f"<{i+1:04X}> <{ord(c):04X}>\n"
+                       for i, c in enumerate(_digits))
+             + "endbfchar\nendcmap end end")
+    _codes = "".join(f"{i+1:04X}" for i in range(len(_digits)))
+    _body = ("1 0 obj << /Font << /F1 2 0 R >> >> endobj\n"
+             "2 0 obj << /ToUnicode 3 0 R >> endobj\n")
+    _content = f"BT /F1 12 Tf (Net Profit of ) Tj <{_codes}> Tj ( thousand) Tj ET"
+
+    def _stream(txt):
+        return b"stream\n" + _zlib.compress(txt.encode("latin-1")) + b"\nendstream\n"
+
+    _pdf = (b"%PDF-1.4\n" + _body.encode() + b"3 0 obj "
+            + _stream(_cmap) + b"endobj\n" + _stream(_content) + b"%%EOF\n")
+    _txt = epdf.squeeze(epdf.extract(_pdf))
+    check("a hex-encoded subset-font number survives PDF extraction",
+          _digits in _txt and "Net Profit of" in _txt)
+    check("an ordinary literal-string PDF still extracts unchanged",
+          "Ordinary 1,234 text" in epdf.squeeze(epdf.extract(
+              b"%PDF-1.4\n" + _stream("BT (Ordinary 1,234 text) Tj ET") + b"%%EOF")))
+    check("per-font CMaps are resolved rather than merged",
+          b"F1" in epdf._font_cmaps(_pdf))
+
+    # 2. The AMF flux answers a `where=` on a field that does not exist with HTTP 200,
+    #    `results: []` and `total_count: null`. An empty list is the one answer that can
+    #    support `event_occurred: false`, so a vendor field rename would have made
+    #    France start killing names that did report.
+    check("fr_day checks total_count before believing an empty day",
+          "total_count" in inspect.getsource(earch.fr_day))
+
+    # 3. An ESTIMATED reaction history is a measurably biased scale, not merely a
+    #    thinner one, so it must not earn an observed history's magnitude score.
+    check("an estimated history is worth less than an observed one",
+          "scale_is_lower_bound" in inspect.getsource(epi)
+          and "0.35" in inspect.getsource(epi))
+    check("eu_resolve splits the ranking by history basis",
+          "by_history_basis" in inspect.getsource(eres))
+
+    # 4. The 20- and 5-day run-ups share a blind spot: a move OLDER than twenty
+    #    sessions reads flat in both. Sealed as its own control, never in the lean.
+    check("a 60-day control is sealed beside the other two",
+          "run_up_60d_pct" in inspect.getsource(epi))
+    check("the 60-day control is ranked separately",
+          "spearman_free_control_neg_runup_60d" in inspect.getsource(eres))
+    check("the 60-day run-up is NOT folded into the lean",
+          "run_up_60d_pct" not in inspect.getsource(epi.lean_components))
 
     # Holiday arithmetic, the part most likely to be wrong and least likely to raise.
     check("Midsummer Eve is the Friday between 19 and 25 June",
