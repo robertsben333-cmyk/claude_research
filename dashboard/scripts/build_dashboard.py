@@ -101,7 +101,7 @@ button, select, input { font:inherit; }
 .btn[disabled] { opacity:.55; cursor:progress; }
 /* De markt is de bovenste as. Hij staat boven de tabbladen en niet ertussen,
    want een markt kiezen en een analyse kiezen zijn niet dezelfde handeling. */
-.marketbar { display:flex; flex-wrap:wrap; gap:6px; margin:16px 0 0; }
+.marketbar { display:flex; flex-wrap:wrap; gap:6px; margin:14px 0 0; }
 .marketbar button {
   display:flex; flex-direction:column; gap:1px; text-align:left; cursor:pointer;
   background:var(--surface); color:var(--ink2); border:1px solid var(--ring);
@@ -113,7 +113,16 @@ button, select, input { font:inherit; }
 }
 .marketbar .mk { font-size:14px; font-weight:600; }
 .marketbar .mc { font-size:11.5px; opacity:.8; font-variant-numeric:tabular-nums; }
-nav { display:flex; flex-wrap:wrap; gap:4px; margin:10px 0 0; border-bottom:1px solid var(--grid); }
+/* De rij is de index: de tabbladen staan in groepen met hun groepsnaam erboven,
+   zodat twintig tabbladen niet als één ongesorteerde reeks lezen. Het label is
+   een opschrift en geen knop. */
+nav { display:flex; flex-wrap:wrap; gap:2px 16px; margin:10px 0 6px; align-items:flex-end;
+      border-bottom:1px solid var(--grid); }
+.tabgroup { display:flex; flex-wrap:wrap; gap:2px; align-items:flex-end; }
+.tabgroup .gl {
+  width:100%; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); padding:0 4px 2px;
+}
 nav button {
   background:none; border:none; border-bottom:2px solid transparent; color:var(--ink2);
   padding:9px 12px; cursor:pointer; border-radius:6px 6px 0 0;
@@ -252,11 +261,14 @@ li { margin:4px 0; }
 </header>
 <div class="log" id="refreshlog" hidden></div>
 
-<div class="controls" id="controls"></div>
-<div class="filterline" id="filterline"></div>
-
+<!-- Markt, dan tabblad, dan filters. Dat is ook de volgorde van de beslissing,
+     en op een telefoon duwde de filterbalk de marktkiezer anders een heel scherm
+     naar beneden: de bovenste as stond onder de onderste. -->
 <div class="marketbar" id="marketbar" role="group" aria-label="markt"></div>
 <nav id="tabs" role="tablist"></nav>
+
+<div class="controls" id="controls"></div>
+<div class="filterline" id="filterline"></div>
 <div id="panels"></div>
 <div class="tip" id="tip"></div>
 </div>
@@ -3155,14 +3167,106 @@ const MTABDEFS = [
   {name:'Runs',      fn:mtRuns,      needs:'een run op schijf',
    when:c => c.runs.length > 0},
   {name:'Data',      fn:mtData},
+  {name:'Index',     fn:() => tabIndex()},
 ];
 
 function marketTabs(code) {
   const c = mCtx(code, true);
-  return MTABDEFS
+  return byGroup(MTABDEFS
     .filter(t => !t.only || t.only === code)
     .filter(t => !t.when || !c || t.when(c))
-    .map(t => [t.name, () => t.fn(code), 1]);
+    .map(t => [t.name, () => t.fn(code), 1]));
+}
+
+/* Op groep sorteren, stabiel. De rij tekent een groepskop zodra de groep
+   verandert, dus een groep die niet aaneengesloten staat, krijgt twee koppen —
+   op de Europese rij stond DOORSNEDES twee keer omdat Lessons ertussen viel. */
+function byGroup(tabs) {
+  return tabs
+    .map((t, i) => [t, i])
+    .sort((a, b) => (TABGROUPS.indexOf(tabGroup(a[0][0])) -
+                     TABGROUPS.indexOf(tabGroup(b[0][0]))) || (a[1] - b[1]))
+    .map(x => x[0]);
+}
+
+/* ------------------------------------------------------- de index van de pagina
+   Twintig tabbladen in één platte rij zijn geen index. Drie dingen maken er wel
+   een van: elk tabblad hoort bij een groep, elk tabblad heeft één regel die zegt
+   welke vraag het beantwoordt, en elk tabblad heeft een adres. Dat adres staat in
+   de hash (`#eu/score`), dus een tabblad is te bookmarken, te delen en te herladen
+   — en de Ververs-knop, die de pagina met een cache-buster herlaadt, brengt je
+   terug waar je stond in plaats van op Overzicht. */
+const TABGROUPS = ['Stand', 'Rangschikking', 'Klok', 'Doorsnedes', 'Register', 'Bronnen'];
+const TABMETA = {
+  /* Stand */
+  'Overzicht':  {g:'Stand', q:'Wat staat er vandaag, op één scherm: dagen, namen, vondsten en of er al iets is opgelost.'},
+  'Handel':     {g:'Stand', q:'Elke positie die de rekening echt heeft geopend en gesloten, met de spread en de uitstap die er werkelijk was.'},
+  /* Rangschikking */
+  'Score':      {g:'Rangschikking', q:'Rangschikt de jacht de dag beter dan de gratis controle, en wat levert het teken op?'},
+  'Drempel':    {g:'Rangschikking', q:'Wat doet de conviction-floor als je hem verzet: rendement, raakpercentage, ρ en n bij elke snede.'},
+  'Aanloop':    {g:'Rangschikking', q:'Zegt de koersbeweging vóór de print iets, en betaalt het als die het met de jacht eens is?'},
+  /* Klok */
+  'Timing':     {g:'Klok', q:'Waar hoort de uitstap te liggen: elke horizon van de nabeurs tot de slotkoers, per sessie.'},
+  'Instap':     {g:'Klok', q:'Maakt het uur van instappen uit, met de uitstap vastgehouden?'},
+  /* Doorsnedes */
+  'Sector':     {g:'Doorsnedes', q:'Leeft de edge in één sector, en zit hij in de namen die particulieren verhandelen?'},
+  'Zoekvolume': {g:'Doorsnedes', q:'Zegt de Google-aandacht rond de print iets over de uitkomst?'},
+  'Capaciteit': {g:'Doorsnedes', q:'Hoeveel van het resultaat zit in namen die te dun zijn om in te handelen?'},
+  'Kosten':     {g:'Doorsnedes', q:'Wat kost een run aan subagenten, en wat levert die run op?'},
+  'Deelmarkt':  {g:'Doorsnedes', q:'Per beurs: namen, vondsten, ankerdekking, omzet en rangcorrelatie — en hoe scheef de trekking zat.'},
+  'Ankerarm':   {g:'Doorsnedes', q:'Mét optie-anker tegen alleen het short-register, binnen één markt en één dag. De reden dat stage CA bestaat.'},
+  'Soort':      {g:'Doorsnedes', q:'Winstcijfer tegen Appendix 4C/5B-kasstroomrapport: twee verschillende latten in één getal.'},
+  'Taal':       {g:'Doorsnedes', q:'Levert de ronde in de eigen taal rangcorrelatie op, of kost hij alleen tokens?'},
+  /* Register */
+  'Lessons':    {g:'Register', q:'Kost of levert LESSONS.md: de bevroren draft tegen de uiteindelijke som.'},
+  'Hypotheses': {g:'Register', q:'Het hypotheseregister met één verdictregel, en wat er tot nu toe overeind blijft.'},
+  'Weging':     {g:'Register', q:'De bevroren wegingen w1 en w2 naast de vlakke regel, per dag meegerekend.'},
+  /* Bronnen */
+  'Agenda':     {g:'Bronnen', q:'Wat er de komende week rapporteert, met beide poorten apart geteld. Geen voorspelling.'},
+  'Namen':      {g:'Bronnen', q:'Elke gerangschikte naam met zijn sleutel, zijn baseline en zijn uitkomst.'},
+  'Runs':       {g:'Bronnen', q:'Elke run op schijf: trekking, hunters, vondsten, wat er gedood is en het alarm van de resolver.'},
+  'Data':       {g:'Bronnen', q:'Waar de cijfers vandaan komen en wat er bewust niet in zit.'},
+  'Index':      {g:'Bronnen', q:'Elk tabblad van elke markt, met de vraag die het beantwoordt en of het al open staat.'},
+};
+const tabGroup = name => (TABMETA[name] || {}).g || 'Bronnen';
+const tabQ = name => (TABMETA[name] || {}).q || '';
+
+/* Het adres. Diakrieten eruit, want een hash met é of ë overleeft niet elke
+   plek waar iemand hem plakt. */
+const slug = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+                   .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/* ------------------------------------------------------------------ Index */
+function tabIndex() {
+  let html = `<p class="lead">Elk tabblad van elke markt, met de vraag die het beantwoordt.
+    Een tabblad van een markt zonder broker bestaat niet en een analysetabblad verschijnt
+    pas als zijn data het draagt; hieronder staat allebei, met de voorwaarde erbij.</p>`;
+  for (const [code, label] of MARKETS) {
+    const open = code === 'US' ? US_TABS.map(t => t[0]) : marketTabs(code).map(t => t[0]);
+    const shut = code === 'US' ? [] : MTABDEFS
+      .filter(t => (!t.only || t.only === code) && !open.includes(t.name))
+      .map(t => ({name: t.name, needs: t.needs}));
+    const rows = [...open.map(n => ({name:n, open:true})),
+                  ...shut.map(t => ({name:t.name, open:false, needs:t.needs}))]
+      .sort((a, b) => TABGROUPS.indexOf(tabGroup(a.name)) - TABGROUPS.indexOf(tabGroup(b.name)));
+    html += `<div class="card"><h3>${esc(label)}</h3>` + table([
+      {h:'groep', f:r=>`<span class="meta">${esc(tabGroup(r.name))}</span>`},
+      {h:'tabblad', f:r=> r.open
+          ? `<a href="#${slug(code)}/${slug(r.name)}"><b>${esc(r.name)}</b></a>`
+          : `<span class="meta">${esc(r.name)}</span>`},
+      {h:'de vraag', f:r=>esc(tabQ(r.name))},
+      {h:'staat', f:r=> r.open ? 'open'
+          : `<span class="meta">dicht · ${esc(r.needs || '')}</span>`},
+    ], rows) + `</div>`;
+  }
+  html += `<div class="card"><h3>Adressen</h3>
+    <p>Elk tabblad heeft er een: <code>#markt/tabblad</code>, bijvoorbeeld
+    <a href="#eu/deelmarkt"><code>#eu/deelmarkt</code></a> of
+    <a href="#us/drempel"><code>#us/drempel</code></a>. Zo'n adres is te bookmarken en te
+    delen, en het overleeft de Ververs-knop, die de pagina met een cache-buster herlaadt.
+    Wijst een adres naar een tabblad dat bij die markt niet bestaat of nog dicht is, dan
+    opent Overzicht van die markt.</p></div>`;
+  return html;
 }
 
 /* ------------------------------------------------------------------- boot */
@@ -3170,12 +3274,17 @@ function marketTabs(code) {
    De VS heeft een broker, dus die houdt zijn handels-, capaciteits-, kosten- en
    wegingstabbladen. De andere vier plaatsen geen orders, dus die tabbladen
    bestaan daar niet: een rij die per markt verschilt, vertelt precies dat. */
-const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel], ['Score',tabScore],
-              ['Drempel',tabDrempel], ['Sector',tabSector], ['Timing',tabTiming],
-              ['Instap',tabInstap], ['Aanloop',tabAanloop], ['Zoekvolume',tabZoek],
-              ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten], ['Lessons',tabLessons],
-              ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
-              ['Agenda',tabAgenda], ['Data',tabData]];
+/* Op groepsvolgorde, want de rij zelf is de index. Stand · Rangschikking ·
+   Klok · Doorsnedes · Register · Bronnen; zie TABMETA voor wat elk tabblad
+   beantwoordt. */
+const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel],
+              ['Score',tabScore], ['Drempel',tabDrempel], ['Aanloop',tabAanloop],
+              ['Timing',tabTiming], ['Instap',tabInstap],
+              ['Sector',tabSector], ['Zoekvolume',tabZoek],
+              ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten],
+              ['Lessons',tabLessons], ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
+              ['Agenda',tabAgenda], ['Data',tabData], ['Index',tabIndex]];
+US_TABS.splice(0, US_TABS.length, ...byGroup(US_TABS));
 const MARKETS = [['US','Verenigde Staten'], ['EU','Europa'], ['JP','Japan'],
                  ['AU','Australië'], ['CA','Canada']];
 let MKT = 'US';
@@ -3201,15 +3310,31 @@ MARKETS.forEach(([code, label]) => {
   bar.appendChild(b);
 });
 
+/* De knoppen in leesvolgorde, los van de groepsblokken waarin ze staan. Alles
+   wat met een index werkt (toetsenbord, aria-selected, de hash) telt op deze
+   lijst en niet op nav.children, want dat zijn de groepen. */
+let navBtns = [];
+
 function buildTabs(keepName) {
-  nav.innerHTML = ''; panels.innerHTML = '';
+  nav.innerHTML = ''; panels.innerHTML = ''; navBtns = [];
+  let group = null, box = null;
   TABS.forEach(([name], i) => {
+    const g = tabGroup(name);
+    if (g !== group) {
+      group = g;
+      box = document.createElement('span');
+      box.className = 'tabgroup';
+      box.innerHTML = `<span class="gl">${esc(g)}</span>`;
+      nav.appendChild(box);
+    }
     const b = document.createElement('button');
     b.textContent = name; b.setAttribute('role','tab');
     b.id = 'tab-' + i;
+    b.title = tabQ(name);
     b.setAttribute('aria-controls', 'panel-' + i);
     b.onclick = () => { active = i; refresh(); };
-    nav.appendChild(b);
+    box.appendChild(b);
+    navBtns.push(b);
     const s = document.createElement('section');
     s.id = 'panel-' + i; s.setAttribute('role','tabpanel');
     s.setAttribute('aria-labelledby', 'tab-' + i);
@@ -3242,14 +3367,43 @@ nav.addEventListener('keydown', e => {
   active = !isFinite(step) ? (step < 0 ? 0 : TABS.length - 1)
                            : (active + step + TABS.length) % TABS.length;
   refresh();
-  nav.children[active].focus();
+  navBtns[active].focus();
 });
+
+/* ---- het adres van een tabblad ------------------------------------------
+   `#markt/tabblad`. replaceState en niet pushState: met twintig tabbladen maal
+   vijf markten zou de Terug-knop anders door de klikgeschiedenis lopen in plaats
+   van de pagina te verlaten. Wijst een adres nergens heen, dan opent Overzicht
+   van die markt in plaats van een foutmelding. */
+let hashLock = false;
+function writeHash() {
+  if (hashLock) return;
+  const h = '#' + slug(MKT) + '/' + slug((TABS[active] || [''])[0]);
+  if (location.hash !== h) history.replaceState(null, '', location.pathname + location.search + h);
+}
+function readHash() {
+  const m = /^#([a-z]{2})\/(.+)$/.exec(location.hash.toLowerCase());
+  if (!m) return false;
+  const code = MARKETS.find(([c]) => slug(c) === m[1]);
+  if (!code) return false;
+  hashLock = true;
+  setMarket(code[0]);
+  hashLock = false;
+  const i = TABS.findIndex(t => slug(t[0]) === m[2]);
+  if (i >= 0) { active = i; }
+  refresh();
+  return true;
+}
+/* Een adres dat nergens heen wijst, wordt rechtgezet in plaats van te blijven
+   staan: refresh schrijft de hash terug naar waar de pagina werkelijk staat. */
+addEventListener('hashchange', () => { if (!readHash()) refresh(); });
 buildTabs();
 function refresh() {
-  [...nav.children].forEach((b,j) => {
+  navBtns.forEach((b,j) => {
     b.setAttribute('aria-selected', j===active ? 'true':'false');
     b.tabIndex = j === active ? 0 : -1;
   });
+  writeHash();
   [...panels.children].forEach((s,j) => s.hidden = j !== active);
   /* De filterbalk hoort bij de ledger van stage E: lens, cap, sector en uitstap-
      horizon bestaan alleen daar. Op een markttabblad zou hij filters tonen die
@@ -3525,7 +3679,9 @@ probe();
 let rt;
 addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(refresh, 150); });
 renderControls();
-refresh();
+/* Pas hier, want readHash kan een markt en een tabblad zetten en die render moet
+   de filterbalk al kennen. Geen adres in de URL: gewoon de VS op Overzicht. */
+if (!readHash()) refresh();
 </script>
 </body>
 </html>

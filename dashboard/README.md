@@ -379,7 +379,20 @@ so it is hidden off the US.
 | **Namen** · **Runs** | every ranked name; every run with its draw and the resolver's alarm | a name / a run |
 | **Data** | provenance, and what is deliberately absent | always |
 
-Without that last column a short tab row would read as a dashboard that does not know
+**The row itself is the index, and every tab has an address.** Three things carry it.
+The tabs sit in six named groups — **Stand · Rangschikking · Klok · Doorsnedes · Register ·
+Bronnen** — with the group printed above its block, so twenty tabs do not read as one
+undifferentiated run; the row is sorted by group, because the heading is drawn when the
+group changes and a non-contiguous group printed its name twice. Every tab carries one line
+saying which question it answers, on hover and in full on the **Index** tab, which lists
+every tab of every market with that question and whether it is open. And every tab has an
+address in the hash, `#market/tab` — `#eu/deelmarkt`, `#us/drempel` — so a tab can be
+bookmarked, linked and reloaded, and the refresh button, which reloads with a cache-buster,
+comes back where you were instead of on Overzicht. An address that points nowhere, or at a
+tab that market does not have, opens that market's Overzicht and rewrites itself rather
+than sitting there broken.
+
+Without the Index's last column a short tab row would read as a dashboard that does not know
 those analyses. **ρ is withheld below five names** and the threshold sweep below ten,
 which is `au_resolve.py`'s own rule: on three names a rank correlation of 1.0 comes up one
 time in six. A control may narrow a number and may never close the tab a reader is

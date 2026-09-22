@@ -270,7 +270,19 @@ those stages have no broker. An analysis tab appears only when its data carries 
 and Aanloop at 5 resolved names, Drempel at 10, Lessons at a frozen `pre_lessons` draft,
 Taal at a `pre_local` one, plus `Deelmarkt` for EU, `Ankerarm` for CA and `Soort` for AU),
 and **Overzicht lists what is still shut and what opens it** — without that a short row
-reads as a dashboard that does not know those analyses. The gate is computed with the
+reads as a dashboard that does not know those analyses.
+
+**The row is the index, and every tab has an address (2026-09-22).** The tabs sit in six
+named groups (Stand · Rangschikking · Klok · Doorsnedes · Register · Bronnen) printed above
+each block, and both rows are **sorted by group** because the heading is drawn when the
+group changes — a non-contiguous group printed `DOORSNEDES` twice on the European row.
+Every tab carries the question it answers, on hover and in full on the new **Index** tab,
+which lists every tab of every market with that question and whether it is open. And every
+tab has an address in the hash, `#market/tab` (`#eu/deelmarkt`, `#us/drempel`), written
+with `replaceState` so Back leaves the page instead of walking the click history; an
+address that points nowhere opens that market's Overzicht and rewrites itself. The market
+bar and the tab row now sit **above** the filter bar: on a phone the sticky controls pushed
+the top axis a whole screen below the bottom one. The gate is computed with the
 conviction threshold OFF on purpose: a control may narrow a number and may never close the
 tab a reader is standing on.
 
