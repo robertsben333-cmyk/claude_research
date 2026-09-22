@@ -76,7 +76,7 @@ def load_run(run):
             baselines[f.stem.upper()] = json.loads(f.read_text())
         except Exception:                                         # noqa: BLE001
             pass
-    causes = {}
+    causes, pipes = {}, {}
     for f in sorted((run / "hunts").glob("*.json")):
         try:
             d = json.loads(f.read_text())
@@ -85,11 +85,14 @@ def load_run(run):
         t = (d.get("ticker") or f.stem.split("-")[0]).upper()
         if d.get("cause"):
             causes[t] = d["cause"]
-    return scores, baselines, causes
+        if d.get("pipeline") or d.get("more_to_come_pct") is not None:
+            pipes[t] = {**(d.get("pipeline") or {}),
+                        "more_to_come_pct": d.get("more_to_come_pct")}
+    return scores, baselines, causes, pipes
 
 
 def build_rows(run):
-    scores, baselines, causes = load_run(run)
+    scores, baselines, causes, pipes = load_run(run)
     rows = []
     for r in scores.get("ranking", []):
         if not r.get("rankable"):
@@ -103,6 +106,7 @@ def build_rows(run):
         if mv is None:
             continue
         c = causes.get(t) or {}
+        pl = pipes.get(t) or {}
         rows.append({
             "ticker": t, "drop_date": drop_date,
             "impact_sum": r.get("impact_sum"),
@@ -119,7 +123,14 @@ def build_rows(run):
             "atr14_pct": (b.get("context") or {}).get("atr14_pct"),
             "volume_spike_x": (b.get("drop") or {}).get("volume_spike_x"),
             "cause": c.get("label"),
-            "mechanical_vs_informational": c.get("mechanical_vs_informational"),
+            # The forward variables. `news_flow_balance` describes the findings, not a
+            # second forecast; `seller_is_finished_pct` describes the cause. They are
+            # ranked separately because the stage's pre-registered hypothesis is about
+            # them and not about the key.
+            "news_flow_balance": pl.get("news_flow_balance"),
+            "more_to_come_pct": pl.get("more_to_come_pct"),
+            "seller_is_finished_pct": c.get("seller_is_finished_pct"),
+            "next_dated_event": pl.get("next_dated_event"),
             **{k: v for k, v in (mv or {}).items()},
         })
     return rows
@@ -148,7 +159,12 @@ def rank_block(rows, horizon, reps=2000):
                                                if r.get("atr14_pct") is not None else None),
         "neg_vol_spike (free control)": lambda r: (-r["volume_spike_x"]
                                                    if r.get("volume_spike_x") is not None else None),
-        "mechanical_vs_informational": lambda r: r["mechanical_vs_informational"],
+        # THE PRE-REGISTERED HYPOTHESIS, ranked whether or not it looks good. A fall
+        # with an identified, dated, unfinished pipeline of further bad news continues;
+        # one whose cause is complete and dated does not.
+        "news_flow_balance": lambda r: r["news_flow_balance"],
+        "more_to_come_pct": lambda r: r["more_to_come_pct"],
+        "seller_is_finished_pct": lambda r: r["seller_is_finished_pct"],
     }
     out = {}
     for name, fn in keys.items():
@@ -278,6 +294,10 @@ def main():
         "rankings": {h: rank_block(rows, h, a.reps) for h in HORIZONS},
         "conviction": {h: conviction_block(rows, h) for h in HORIZONS},
         "by_cause": by_cause(rows, a.horizon),
+        "pipeline_note": "news_flow_balance and seller_is_finished_pct are the stage's "
+                         "pre-registered forward variables. They are reported at every "
+                         "horizon whether or not they look good, because a hypothesis "
+                         "read off the answer is not a hypothesis",
         "book": {f"cost_x{m}": book_block(rows, a.horizon, a.floor, m) for m in (0, 1, 2)},
         "rows": rows,
     }

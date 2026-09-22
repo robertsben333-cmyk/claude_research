@@ -1148,6 +1148,21 @@ def main():
     check("permutation_p calls signal signal", p_s is not None and p_s < 0.01,
           (rho_s, p_s))
 
+    # The forward block is what the stage's question rests on, so its contract is
+    # checked offline: the phrases it searches for, and the two labels that stop a
+    # reader trusting a number more than it deserves.
+    import rev_forward as rf                                        # noqa: E402
+    probe_keys = {k for k, _, _ in rf.PROBES}
+    for k in ("shelf_or_atm", "going_concern", "covenant", "listing_deficiency",
+              "restatement"):
+        check(f"the forward probe set covers `{k}`", k in probe_keys)
+    check("every forward probe says why it matters",
+          all(w and len(w) > 20 for _, _, w in rf.PROBES))
+    check("the SEC user-agent carries a contact, as the SEC asks",
+          "@" in rf.SEC_UA["User-Agent"])
+    check("Nasdaq is called with a browser user-agent, which is what it answers",
+          "Mozilla" in rf.NDQ_UA["User-Agent"])
+
     # The stage places no orders, and neither the skill nor the hunter may acquire one.
     rev_skill = open(os.path.join(REPO, ".claude", "skills",
                                   "researcher-reversal-hunt", "SKILL.md"),
@@ -1166,11 +1181,31 @@ def main():
           cfg["reversal_hunt"]["min_dollar_volume_usd"] == 200000)
     check("the hypothesis is pre-registered in config, not in prose",
           cfg["reversal_hunt"]["pre_registered_hypothesis"]
-          == "mechanical_reverts_informational_drifts")
+          == "unfinished_pipeline_continues_finished_cause_does_not")
     check("the reversal hunter keeps the pre_lessons control",
           '"pre_lessons"' in rev_agent and "lessons_applied" in rev_agent)
+    check("the reversal hunter asks the FORWARD question, not 'did it overshoot'",
+          "more bad news coming" in rev_agent
+          and "news_flow_balance" in rev_agent
+          # phrase chosen to sit on one line: the brief is hard-wrapped, so a longer
+          # quote matches nothing the day someone reflows a paragraph
+          and "A second shoe is a filing with a date" in rev_agent)
     check("the reversal hunter must name a cause with evidence",
-          '"cause"' in rev_agent and "mechanical_vs_informational" in rev_agent)
+          '"cause"' in rev_agent and "seller_is_finished_pct" in rev_agent)
+    check("the reversal hunter carries the MEASURED source table",
+          "efts.sec.gov" in rev_agent and "clinicaltrials.gov" in rev_agent
+          and "do NOT answer from here" in rev_agent)
+    check("the reversal hunter is told the earnings date is a cadence prior",
+          "cadence prior" in rev_agent and "TRT" in rev_agent)
+    check("every finding must carry a date inside the window",
+          "A finding with no date is not a finding" in rev_agent)
+    # THE CONTAMINATION CHANNEL. Stage E's hunters run before the print, so the outcome
+    # does not exist; here the predicted session may already be trading and its price
+    # arrives unbidden in search snippets. A hunt that peeked looks like research and
+    # scores like hindsight, so the prohibition is checked rather than assumed.
+    check("the reversal hunter is forbidden from reading the outcome",
+          "The outcome is reachable, and you must not look at it" in rev_agent
+          and "worse than no hunt" in rev_agent)
     check("the reversal hunter is told the base rate it argues against",
           "11,235" in rev_agent and "-1.00%" in rev_agent.replace("\u2212", "-"))
     check("researcher_reversal/LESSONS.md carries no rules yet",

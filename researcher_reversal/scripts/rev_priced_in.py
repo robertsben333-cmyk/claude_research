@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
-"""The sealed baseline: what a person with no research would already expect.
+"""The sealed baseline: what is already known and what is already scheduled.
+
+THE STAGE'S QUESTION IS FORWARD, SO THE BASELINE CARRIES A FORWARD BLOCK
+------------------------------------------------------------------------
+Stage R asks whether more bad news is coming that the price does not hold, not whether
+yesterday's fall was proportionate. That makes `forward` -- built by rev_forward.py from
+EDGAR's submissions feed and full-text search, Nasdaq's dated short interest and insider
+summary, and ClinicalTrials.gov -- the most important thing in this file. It is sealed
+here rather than left to each hunter so that the hunt starts at a document, and so that
+two hunts on one name start from the same documents.
 
 THE ANALOGUE, AND WHERE IT BREAKS
 ---------------------------------
@@ -54,6 +63,7 @@ REPO = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "researcher_us" / "scripts"))
 import rev_market as M                                            # noqa: E402
+import rev_forward as F                                           # noqa: E402
 
 try:
     import priced_in as PI                                        # noqa: E402
@@ -138,7 +148,8 @@ def cross_prior(row, path=PRIOR_PATH):
 
 
 # ------------------------------------------------------------------- build
-def build(ticker, drop_date, meta=None, with_options=True, bars=None):
+def build(ticker, drop_date, meta=None, with_options=True, bars=None,
+          with_forward=True):
     meta = meta or {}
     b = bars if bars is not None else M.bars(ticker, rg="3y")
     if not b:
@@ -238,6 +249,21 @@ def build(ticker, drop_date, meta=None, with_options=True, bars=None):
         "sources": ["yahoo chart v8 daily bars (split and dividend adjusted)",
                     "nasdaq screener (sector, cap)"],
     }
+
+    # THE FORWARD PIPELINE IS THE POINT OF THIS STAGE, so it is sealed with everything
+    # else rather than left to each hunter to find. It is every dated thing about this
+    # issuer that a source measured to answer can supply: its filing history by form,
+    # full-text hits for the phrases that carry a forward risk, dated short interest,
+    # insider activity, active trials, and the bid-price rule. The hunter starts at a
+    # document instead of a search box, and two hunters on the same name start from the
+    # same documents rather than from whatever each happened to find.
+    if with_forward:
+        try:
+            doc["forward"] = F.build(ticker, price=cur["raw_close"])
+        except Exception as e:                                    # noqa: BLE001
+            doc["forward"] = {"status": "error", "note": str(e)[:200]}
+    else:
+        doc["forward"] = {"status": "not_requested"}
 
     if with_options and PI is not None:
         try:
@@ -364,9 +390,13 @@ def main():
     ap.add_argument("--ticker", required=True)
     ap.add_argument("--date", required=True, help="the drop date, YYYY-MM-DD")
     ap.add_argument("--no-options", action="store_true")
+    ap.add_argument("--no-forward", action="store_true",
+                    help="skip the forward pipeline. Only for a plumbing test: it is "
+                         "the block this stage exists to hand the hunter")
     ap.add_argument("-o", "--out")
     a = ap.parse_args()
-    doc = build(a.ticker, a.date, with_options=not a.no_options)
+    doc = build(a.ticker, a.date, with_options=not a.no_options,
+                with_forward=not a.no_forward)
     s = json.dumps(doc, indent=1)
     if a.out:
         Path(a.out).write_text(s)

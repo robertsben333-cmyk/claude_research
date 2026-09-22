@@ -3,6 +3,13 @@
 **The question.** Yesterday's biggest US losers: do they keep falling, or do they
 bounce? And can research tell which is which, name by name, on the day?
 
+**The hunter's question is narrower and it is forward:** *is there more bad news coming
+that the price does not yet hold, or is the bad news finished?* An open ATM that will
+sell into a bounce, a covenant, a deficiency clock, estimate cuts that have only started,
+a dated binary — against an index trade that cleared, an offering that priced, insiders
+who bought. **A second shoe is a filing with a date on it. An over-reaction is an
+opinion**, and the first build of this stage asked for the opinion. See §7.
+
 **The short answer, measured before a single agent was built: they keep falling.** Over
 11,235 falls of 5% or more on 749 sessions, the median stock is down another 1.00% by
 the next close, down 3.89% by the fifth and down 11.11% by the twenty-first. The median
@@ -27,6 +34,7 @@ rev_harvest.py     phase 0's data: every fall in the market, with what happened 
 rev_backtest.py    phase 0's answer: base rates, cuts, free rankers, cost, the book
 --------------------------------------------------------------- phase 0 ends here
 rev_universe.py    the live day's worst K fallers
+rev_forward.py     what is still SCHEDULED for each name, from measured sources
 rev_priced_in.py   one sealed baseline per name, before any agent runs
 edge_score.py      researcher_us/scripts/edge_score.py, UNCHANGED
 rev_resolve.py     did the hunt rank the day, and did it beat the free controls
@@ -232,31 +240,107 @@ flattered.
 ## 7. What phase 1 asks, and the hypothesis it pre-registers
 
 Phase 0 says the *average* faller keeps falling. It says nothing about whether the
-fallers can be told apart on the day. That is the research question, and it is the one
-a language model might answer where a factor model cannot, because it turns on reading
-what happened.
+fallers can be told apart on the day. That is the research question, and it is the one a
+language model might answer where a factor model cannot, because it turns on reading
+documents.
 
-**Pre-registered, in `config/pipeline.yaml:reversal_hunt.pre_registered_hypothesis` so
-it cannot be rewritten once the answer arrives:**
+### The question the hunter is given, and the one it replaced
 
-> Falls caused by **mechanical** selling revert. Falls carrying **information** drift.
+**Is there more bad news coming that the price does not yet hold, or is the bad news
+finished?**
 
-Mechanical: index deletion, lock-up expiry, a fund liquidating, forced or tax-loss
-selling, a sympathy move off a peer, a sector selloff. Nothing was learned about the
-business and the seller had no opinion.
+The first build (2026-09-22, morning) asked whether the fall "overshot what the news
+justified". That was replaced the same day. Three reasons, and the third is the one that
+matters:
 
-Informational: a guidance cut, a failed readout, a lost customer, a going-concern
-paragraph, a short report that lands.
+1. It is backward-looking. The market has seen yesterday's news; that is why the stock is
+   down. Re-adjudicating it adds nothing the tape has not already done.
+2. It cannot be checked before the outcome. "Proportionate" has no unit.
+3. **Hindsight is structural here.** The fall is the hunter's own input. A model handed a
+   25% drop and asked whether it was overdone will produce a fluent, confident
+   rationalisation every time, in either direction.
 
-The `reversal-hunter` agent supplies `cause.label` and a −100…+100
-`mechanical_vs_informational` axis from primary sources, and `rev_resolve.py` reports
-`by_cause` and ranks the axis as its own column **whether or not it looks good**. The
-hunter is told, in its own brief, to score the axis on the evidence and size
-`expected_move_pct` on its own reasoning, so that a disagreement between the two is
-data rather than a tautology.
+The forward question has none of those problems, because its answers are objects: a
+shelf registration with an effective date, a covenant with a test date, a deficiency
+letter with a 180-day clock, a primary completion date, a settlement date. **Each finding
+must name a dated future development with a document behind it, and a finding with no
+date is not a finding** — it goes in `outside_window`.
 
-Phase 0 already offers one piece of weak support: volume is the best conditional cut on
-the page, and volume is a proxy for exactly this axis.
+The cause of the fall is still established, in one block, because you cannot work out
+what follows from something nobody has named. It is an input, not the deliverable.
+
+### The sources, and why the hunt is possible at all
+
+Every source below was probed on 2026-09-22 and answered. `rev_forward.py` pulls them
+into the sealed baseline, so the hunt starts at a document rather than a search box and
+two hunts on one name start from the same documents.
+
+| source | what it gives |
+| --- | --- |
+| `data.sec.gov/submissions` | every filing this issuer has made, dated, by form |
+| **`efts.sec.gov` full-text search** | the TEXT of filings, scoped by CIK, form and date |
+| `sec.gov` browse-edgar atom | Form 4 and 8-K feeds |
+| `api.nasdaq.com/.../short-interest` | 24 dated settlements, level and days to cover |
+| `api.nasdaq.com/.../insider-trades` | Form 4 summary, 3 and 12 month |
+| `clinicaltrials.gov/api/v2` | trial status and primary completion dates |
+| `api.fda.gov` | recalls, adverse events, approvals |
+| `courtlistener.com/api/rest/v4` | federal dockets |
+
+The full-text search is the one that makes the stage work: seven phrases are run against
+each issuer's own filings, twice — once ever, once over the last 550 days, because the
+index returns hits by relevance and not by date. On the 2026-09-21 screen that found
+recent ATM language in 11 of 15 names, going-concern language in 6, a minimum-bid-price
+clock in 8 and a non-reliance item in 1.
+
+**Three sources do NOT answer from this container and nothing may rest on them**: Nasdaq's
+Listing Center (403), FTSE Russell's index notices (404), Nasdaq's press-release API
+(301). So an index deletion or a delisting notice is only assertable through the issuer's
+own 8-K.
+
+**Two labels stop a reader over-trusting a number.** `next_earnings_estimated` is Zacks's
+algorithm over historical reporting dates, served by Nasdaq, not a company announcement —
+this repo has already paid for reading a cadence prior as evidence when TRT cleared the
+conviction floor, was the day's only trade and never reported. And FINRA publishes short
+interest about eight business days after settlement, so the position carried *into* the
+fall is not observable.
+
+### The outcome is reachable, which no earnings stage has to deal with
+
+An earnings hunter runs before the print, so the outcome does not exist anywhere on the
+internet. **Here the session being predicted may already be trading.** Its price arrives
+unbidden in search snippets, quote widgets and page headers, and a hunt that has seen it
+looks exactly like research while scoring like hindsight.
+
+This was not theorised, it was observed: on the 2026-09-22 validation run one hunter
+reported, unprompted, that live 09-22 quotes had appeared in several fetched pages and
+that it had excluded them from every number. That disclosure is the reason the rule is
+now in the brief — **no price, quote, chart or market summary dated after the drop-day
+close may enter the reasoning**, and anything that reaches the hunter anyway has to be
+declared in `searched_and_found_nothing`.
+
+**The structural fix is the clock, not the rule.** The Routine fires after the US close
+and the window opens the next morning, so a scheduled run cannot see the outcome. Both
+validation hunts were hand-run in the middle of the session they were predicting, so
+they are contaminated by construction and must never be pooled. That is recorded in the
+run log as well as here.
+
+### The hypothesis, pre-registered
+
+Written into `config/pipeline.yaml:reversal_hunt.pre_registered_hypothesis` so it cannot
+be rewritten once the answer arrives:
+
+> A fall with an identified, dated, **unfinished** pipeline of further bad news
+> continues. A fall whose cause is **complete and dated** does not.
+
+The hunter supplies `pipeline.news_flow_balance` (−100…+100 on the forward flow alone)
+and `cause.seller_is_finished_pct` (0…100 on whether the selling pressure is spent).
+`rev_resolve.py` ranks both as their own columns at every horizon, **whether or not they
+look good**, and the hunter is told to score them on the evidence rather than to make
+them agree with `expected_move_pct`, so a disagreement is data.
+
+Phase 0 already offers one piece of weak support, and it is the right way round: the
+drift exists because bad news arrives in clusters, so the second shoe is the norm. Volume
+is the cheapest proxy for it and it is the strongest conditional on the page.
 
 ### What would make phase 1 a failure
 
@@ -264,11 +348,9 @@ the page, and volume is a proxy for exactly this axis.
   fortnight.
 - `lean_vs_free_control_rho` sits near 1.0, meaning the baseline's own lean is the free
   control wearing another name. That is the stage J failure mode and it is a defect.
-- `by_cause` shows no separation between the mechanical and informational ends.
+- `news_flow_balance` and `seller_is_finished_pct` show no separation.
 
 Any of those, and the honest outcome is to write it down and stop.
-
----
 
 ## 8. Known biases, carried in the data file as well as here
 

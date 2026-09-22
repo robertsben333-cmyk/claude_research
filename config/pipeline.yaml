@@ -865,13 +865,20 @@ reversal_hunt:
   # that decision starts from `book_sweep` and `overlap_check` in phase0-base-rates.json,
   # not from this key.
   headline_horizon: d1
+  # THE HUNTER'S QUESTION IS FORWARD, AND THE FIRST VERSION GOT THIS WRONG. It asked
+  # whether yesterday's fall "overshot the news", which is unanswerable before the
+  # outcome and which a model handed a 25% fall will argue either way. The question is:
+  # is there MORE bad news coming that the price does not hold, or is the bad news
+  # finished? A second shoe is a filing with a date. An over-reaction is an opinion.
+  #
   # The pre-registered hypothesis, recorded here so it cannot be rewritten after the
-  # answer arrives: falls caused by MECHANICAL selling (index deletion, lock-up expiry,
-  # forced liquidation, sympathy) revert, and falls carrying INFORMATION (guidance cut,
-  # failed readout, lost customer) drift. The hunter supplies
-  # `cause.mechanical_vs_informational` on a -100..+100 axis and rev_resolve.py ranks it
-  # as its own column. Nothing in the scorer reads it.
-  pre_registered_hypothesis: mechanical_reverts_informational_drifts
+  # answer arrives: a fall with an identified, dated, UNFINISHED pipeline of further bad
+  # news continues, and a fall whose cause is complete and dated does not. The hunter
+  # supplies `pipeline.news_flow_balance` (-100..+100 on the forward flow) and
+  # `cause.seller_is_finished_pct` (0..100 on whether the selling pressure is spent), and
+  # rev_resolve.py ranks both as their own columns at every horizon. Nothing in the
+  # scorer reads either.
+  pre_registered_hypothesis: unfinished_pipeline_continues_finished_cause_does_not
   # ONE HUNTER PER NAME. Same reason as every other stage: over twelve paired US names
   # the gap between two hunters predicted neither the error nor whether the sign was
   # right, and a doubled name carries the largest conviction by construction because the

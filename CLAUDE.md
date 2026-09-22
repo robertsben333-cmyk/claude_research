@@ -1128,23 +1128,60 @@ concurrent positions, and a spread estimate that is a floor. One bias runs the o
 way: the universe is today's listings, so falls followed by a delisting are absent and
 the continuation is **understated**.
 
-**The stage's own hypothesis is pre-registered in config, not in prose** —
-`reversal_hunt.pre_registered_hypothesis: mechanical_reverts_informational_drifts`. The
-`reversal-hunter` agent supplies `cause.label` (fourteen values) and a −100…+100
-`mechanical_vs_informational` axis from primary sources, and `rev_resolve.py` reports
-`by_cause` and ranks the axis whether or not it looks good. The hunter is told to score
-the axis on the evidence and size `expected_move_pct` on its own reasoning, so a
-disagreement between them is data rather than a tautology.
+**THE HUNTER'S QUESTION IS FORWARD, AND THE FIRST BUILD GOT IT WRONG (both on
+2026-09-22).** The morning version asked whether yesterday's fall "overshot what the news
+justified". That was replaced the same day on the operator's correction. It is
+backward-looking — the market has seen the news, that is why the stock is down — it
+cannot be checked before the outcome, and **the hindsight problem is structural**: the
+fall is the hunter's own input, so a model asked whether a 25% drop was overdone will
+rationalise fluently in either direction. The question now is **"is there more bad news
+coming that the price does not yet hold, or is the bad news finished?"** A second shoe is
+a filing with a date on it; an over-reaction is an opinion. The cause is still
+established, in one block, because you cannot work out what follows from something nobody
+has named — but it is an input, not the deliverable. **Every finding must name a dated
+future development with a document behind it, and a finding with no date goes in
+`outside_window`.** The first two hunts under the old brief are kept at
+`research/2026/09/2026-09-21/reversal/_v1-overshoot/` so the change is inspectable.
 
-**Two things about this stage that the earnings stages do not have.** The hindsight
-problem is structural: stage E's hunters worked before the outcome existed, and here
-the fall IS the input, so a model asked whether a 25% drop was overdone will rationalise
-fluently every time. The defences are the `pre_lessons` freeze, `resolves_by` on every
-finding, and the fact that the ranking is WITHIN the day. And **the screen selects names
-with no option chain**: all fifteen names on the 2026-09-21 screen came back
-`no_options_market` or `unusable_chain`, so stage R runs anchor-less like stages J, EU
-and AU rather than like stage E — the regime `archive/backtest/FINDINGS.md` §33 priced
-at ρ=+0.073, p=0.45.
+**THE STAGE ONLY EXISTS BECAUSE THE SOURCES WERE PROBED FIRST, on the operator's
+instruction that nothing may rest on what cannot be found.** `rev_forward.py` carries the
+measured table and pulls it into every sealed baseline, so the hunt starts at a document
+rather than a search box and two hunts on one name start from the same documents.
+Answering on 2026-09-22: `data.sec.gov/submissions` (every filing, dated, by form),
+**`efts.sec.gov` full-text search** (the TEXT of filings, scoped by CIK, form and date),
+browse-edgar atom, Nasdaq short-interest (24 dated settlements) and insider-trades,
+ClinicalTrials.gov v2, openFDA, CourtListener. **NOT answering, so nothing may depend on
+them: Nasdaq's Listing Center (403), FTSE Russell's index notices (404), Nasdaq's
+press-release API (301)** — an index deletion or a delisting notice is therefore only
+assertable through the issuer's own 8-K. The full-text search is what makes the stage
+work, and it is run TWICE per phrase because the index returns hits by relevance and not
+by date: a single query put Cue's newest ATM language at 2021 while three S-3s sat in the
+last year. Over the 2026-09-21 screen the windowed version found recent ATM language in
+11 of 15 names, going-concern language in 6, a minimum-bid-price clock in 8 and a
+non-reliance item in 1.
+
+**Two labels in the forward block stop a reader over-trusting a number, and the note must
+carry them.** `next_earnings_estimated` is Zacks's algorithm over historical reporting
+dates served by Nasdaq, NOT a company announcement — the TRT failure, where a cadence
+prior cleared the conviction floor, took 33% of equity and never reported. And FINRA
+publishes short interest about eight business days after settlement, so the position
+carried INTO the fall is not observable; the change between the last two settlements is.
+
+**The hypothesis is pre-registered in config, not in prose** —
+`reversal_hunt.pre_registered_hypothesis:
+unfinished_pipeline_continues_finished_cause_does_not`. A fall with an identified, dated,
+UNFINISHED pipeline of further bad news continues; one whose cause is complete and dated
+does not. The hunter supplies `pipeline.news_flow_balance` (−100…+100 on the forward flow
+alone) and `cause.seller_is_finished_pct` (0…100 on whether the selling pressure is
+spent), and `rev_resolve.py` ranks both at every horizon whether or not they look good.
+Phase 0's drift is weak support read the right way round: it exists because bad news
+arrives in clusters, so the second shoe is the norm and volume is the cheapest proxy for
+one.
+
+**And the screen selects names with no option chain**: all fifteen names on the
+2026-09-21 screen came back `no_options_market` or `unusable_chain`, so stage R runs
+anchor-less like stages J, EU and AU rather than like stage E — the regime
+`archive/backtest/FINDINGS.md` §33 priced at ρ=+0.073, p=0.45.
 
 **What the corporate-action kill catches and what it deliberately does not.** A fall
 that is an unadjusted spin-off or special dividend has a shape: all of it overnight, on
@@ -1508,7 +1545,9 @@ researcher_reversal/                   stage R — see researcher_reversal/READM
                                        with it. Read it before quoting any number
   scripts/                             rev_market (bars, Corwin-Schultz, permutation),
                                        rev_harvest + rev_backtest (phase 0),
-                                       rev_universe, rev_priced_in, rev_resolve
+                                       rev_universe, rev_forward (the measured source
+                                       table and what is still scheduled),
+                                       rev_priced_in, rev_resolve
   analysis/                            phase0-base-rates.json and the 11,235 selected
                                        rows it was computed on, checked in so the
                                        report is auditable without refetching

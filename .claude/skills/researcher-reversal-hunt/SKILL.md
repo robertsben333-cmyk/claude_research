@@ -1,6 +1,6 @@
 ---
 name: researcher-reversal-hunt
-description: The unpriced-information hunt, turned around and pointed at yesterday's biggest US losers. Seals what is already known about each fall, sends one hunter per name to work out what caused it and whether the reaction overshot, and sums their signed finding sizes into one number per company so the day's fallers can be ranked. Research only, no orders. Use when asked to run the reversal researcher, run stage R, rank yesterday's biggest losers, or work out whether a stock that fell will bounce or keep falling.
+description: The unpriced-information hunt, turned around and pointed at yesterday's biggest US losers. Seals what is already known and already scheduled for each fallen name, then sends one hunter per name to answer a forward question - is there more bad news coming that the price does not yet hold, or is the bad news finished - and sums their signed finding sizes into one number per company so the day's fallers can be ranked. Research only, no orders. Use when asked to run the reversal researcher, run stage R, rank yesterday's biggest losers, or work out whether a stock that fell has a second shoe coming.
 ---
 
 # Stage R — the reversal researcher
@@ -11,6 +11,24 @@ output contract to stages E, J, EU and AU, and the identical scorer, which is th
 point: a Japanese print and an American faller are then scored the same way and their
 resolved numbers can be compared.
 
+## The question, and the one it replaced
+
+**Is there more bad news coming that the price does not yet hold, or is the bad news
+finished?**
+
+The first build of this stage asked its hunter whether yesterday's fall "overshot what
+the news justified". That was wrong and it was replaced on 2026-09-22. It is
+backward-looking, it cannot be checked before the outcome, and a model handed a 25% fall
+will argue either side fluently — the fall is the hunter's *input*, so hindsight is baked
+in. **A second shoe is a filing with a date on it. An over-reaction is an opinion.**
+
+The cause of the fall is still established, because you cannot work out what follows from
+something nobody has named. But it is an input in one block, not the deliverable. The
+deliverable is what comes next: an open ATM that will sell into a bounce, a covenant, a
+deficiency clock, estimate cuts that have only started, a dated binary — or the evidence
+that the seller is finished, the index trade cleared, the offering priced, the insiders
+bought.
+
 **This stage places no orders and reads no broker.** There is no `alpaca_trade.py` step
 and there must not be one. Phase 0 says why in one line: at the horizon this stage
 predicts, the gross edge is smaller than the estimated spread.
@@ -20,12 +38,12 @@ predicts, the gross edge is smaller than the estimated spread.
 | | stage E (earnings) | stage R (reversal) |
 | --- | --- | --- |
 | The event | scheduled, binary, **not yet public** | already happened and already public |
-| What the hunt looks for | a fact the market has not seen | whether the market's reaction to a fact it HAS seen is wrong |
+| What the hunt looks for | a fact the market has not seen | the NEXT dated development the price does not hold |
 | The anchor | option-implied move + 25d skew + prior prints | the fall decomposed, the volume, this name's own comparable falls, a chain where one exists |
 | The window | close before the print → close after | close of the drop day → close of the next session |
 | The free control | `-run_up_20d_pct`, ρ=0.335 on six days | **`atr14`, ρ=−0.126 on 749 sessions, family-wise p=0.0017** |
 | Phantom events | 20 of 20 on one `time-not-supplied` day | none. The fall is observed |
-| Hindsight risk | low: the outcome does not exist yet | **high: the outcome of the first move IS the input** |
+| Hindsight risk | low: the outcome does not exist yet | **structural: the fall IS the input.** Answered by asking forward, not backward |
 
 That last row is the one to keep in mind all day. Stage E's hunters worked before the
 outcome existed. Here the fall is handed to the hunter, and a model asked whether a 25%
@@ -84,6 +102,19 @@ selling off is the most ordinary way for fifteen names to fall at once, and it i
 correlated exposure the scorer cannot see.
 
 **2. Seal a baseline for every hunted name, before any hunter is spawned.**
+
+The baseline's `forward` block is the point of this stage: `rev_forward.py` pulls the
+issuer's whole filing history by form, full-text hits for the phrases that carry a
+forward risk (ATM, covenant, going concern, minimum bid price, lock-up, reverse split,
+non-reliance), dated short interest, insider activity, active trials and the bid-price
+rule. Every source in it was probed on 2026-09-22 and answered. The hunter therefore
+starts at a document rather than a search box, and two hunts on one name start from the
+same documents.
+
+**Two labels in there stop a reader over-trusting a number**, and the note must carry
+them too: `next_earnings_estimated` is Zacks's cadence algorithm and not a company
+announcement — the TRT failure — and short interest is published about eight business
+days after settlement, so the position carried *into* the fall is not observable.
 
 ```bash
 mkdir -p <RUN>/baselines <RUN>/hunts
@@ -156,13 +187,26 @@ scripts/publish.sh "stage R: reversal hunt for <YYYY-MM-DD>"
 
 **Never present a rebound thesis without its base rate.** Positive numbers here are
 fighting 11,235 measured events. That does not make them wrong; it makes them
-expensive, and the note has to price them.
+expensive, and the note has to price them. Read the drift the right way round, though:
+it exists because bad news arrives in clusters, so it is evidence that the stage's
+question is the right one, not a reason to mark everything down.
 
-**The cause classification is the hypothesis, and it is pre-registered.** Mechanical
-falls revert, informational falls drift. It is written into
-`config/pipeline.yaml:reversal_hunt.pre_registered_hypothesis` so it cannot be rewritten
-after the answer arrives. `rev_resolve.py` reports `by_cause` and ranks
-`mechanical_vs_informational` as its own column **whether or not it looks good**.
+**A finding with no date is not a finding.** The window is the drop-day close to the next
+session's close. A shelf that will be drawn "at some point", a trial reading out next
+year, a hearing in March: real, sourceable, and worth nothing to this ranking. They go in
+`outside_window`.
+
+**The hypothesis is pre-registered.** A fall with an identified, dated, unfinished
+pipeline of further bad news continues; one whose cause is complete and dated does not.
+It is written into `config/pipeline.yaml:reversal_hunt.pre_registered_hypothesis` so it
+cannot be rewritten after the answer arrives, and `rev_resolve.py` ranks
+`news_flow_balance` and `seller_is_finished_pct` as their own columns at every horizon
+**whether or not they look good**.
+
+**Nothing may rest on a source that was not measured to answer.** The hunter's brief
+carries the probed table. Three things that do NOT answer from this container — Nasdaq's
+Listing Center, FTSE Russell's index notices, Nasdaq's press-release API — so an index
+deletion or a delisting notice is only assertable through the issuer's own 8-K.
 
 **Do not move a floor, a weight or a horizon on one day's result.** The repo has paid
 for that lesson four times. A rule that changes with the data is not a hypothesis.
