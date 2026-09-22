@@ -365,44 +365,49 @@ ex-CAC 40 / FTSE 250. Cutting the universe to it would bake this stage's own the
 its universe and make it unfalsifiable. So `analyst_band` rides in every baseline and
 `eu_resolve.py` ranks the hunt **by band**. Measure the thesis; do not select on it.
 
-## Each hunter searches English first, then locally — and that is measured too
+## Each hunter searches English and the local language in ONE pass
 
-The hunters run an **English pass**, freeze it as `pre_local`, then run a **local pass**
-and revise. `edge_score.py` carries `diagnostics.impact_sum_pre_local` beside the key and
-`eu_resolve.py` ranks both against the same realised move, so "searching in the local
-language earns rank correlation" is a measured claim and not a belief.
+**Since 2026-09-22, on the operator's instruction.** One pass, both languages, moving
+between them as the question demands: a German filing is often the reason to run a
+particular English query, and an English wire item is often the reason to go and find the
+German original.
 
 English-only is the coverage the thesis says is already in the price. Local-only throws
 away sell-side notes, wire copy and cross-border reporting that genuinely carry
-information. Both passes are required.
+information. Both halves are required; neither is the junior partner.
 
-**The ordering is load-bearing.** English first, then local. Running local first would
-measure what English adds to a local reader, which is a different question, and the two
-results do not transfer.
+**What this replaced, and what it cost.** Until that day the hunt ran English first,
+froze that draft as `pre_local`, and only then searched locally; `edge_score.py` carried
+`diagnostics.impact_sum_pre_local` beside the key and `eu_resolve.py` ranked both against
+the same realised move, so "searching in the local language earns rank correlation" was a
+measured claim rather than a belief. It is gone, and the reason is not only the turns the
+split cost: sequencing the two halves forbade them from informing each other, so the
+control was being paid for out of the quality of the research it was measuring.
+**Nothing measures the local half now**, and a freeze reconstructed after the fact is not
+a freeze, so it cannot be recovered from a run later. The one thing that softens it: no
+European day had resolved while the control ran, so `spearman_pre_local` never produced a
+number against a real outcome. What was given up is a future measurement, not a result.
 
-**The UK case is degenerate and is reported apart.** Its local language is English, so its
-second pass is a **domestic-source** pass — RNS, Investegate, Citywire, Proactive,
-Sharecast, the Investors' Chronicle, the domestic trade press — and the variable is source
-locality, not language. `pre_local.variable` says which, and `eu_resolve.py` **refuses to
-pool** the UK delta with the German and French ones, because averaging them reports the
-mean of two different experiments. Be honest about what follows: the UK number measures a
-weaker effect, and a UK zero is not evidence about language.
+**What replaces it is prose.** Every hunter emits `language_note` — one line per thing
+the local-language sources carried that the English ones did not, or the single line
+'nothing the English sources did not already carry'. Nothing ranks it. `eu_resolve.py`'s
+language-pass section still exists and reports 0 names on any run sealed after the merge;
+that is the honest report of a retired control, not a hunter that forgot to freeze. The
+dashboard's `Taal` tab still shows the runs that carry the field, labelled as history.
+
+**The UK case was degenerate and the asymmetry survives the merge.** Its local language
+is English, so its local half is a **domestic-source** half — RNS, Investegate, Citywire,
+Proactive, Sharecast, the Investors' Chronicle, the domestic trade press — and the
+variable is source locality, not language. A UK `language_note` saying the domestic
+sources added nothing is an honest result and not a lazy hunt.
 
 **The Nordic case is weaker than the others too, and for a different reason.** Nordic
 issuers publish in English as a matter of routine — most releases go out in both
 languages at once, which is not true in Germany, France or Italy. So the premise the
-second pass tests is genuinely thinner there, and a Nordic `pre_local` delta of zero has
-two readings that look identical from the number alone: the local pass found nothing, or
-there was no local-only information to find. What is reliably local in the Nordics is the
-**press and the retail forums**, not the filing. `unpriced-hunter-nordic` says this in as
-many words and asks for it in `local_pass_note`, so a zero can be read rather than
-guessed at.
-
-**Nothing pools on one day.** A delta on four to twelve names is noise, the same caveat
-`researcher_japan` records for its own `impact_sum_pre_lessons`.
-
-The hunters also carry a second freeze, `pre_lessons`, taken after **both** passes and
-before `LESSONS.md` is opened, so the guidance file keeps its own separate control.
+local half rests on is genuinely thinner there, and 'nothing the English sources did not
+already carry' is the expected `language_note` more often than anywhere else in the
+stage. What is reliably local in the Nordics is the **press and the retail forums**, not
+the filing, and `unpriced-hunter-nordic` says so in as many words.
 
 ## Currencies, holidays and the things that differ per market
 

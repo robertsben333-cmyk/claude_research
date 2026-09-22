@@ -393,7 +393,7 @@ so it is hidden off the US.
 | **Ankerarm** (CA) | option-anchored against register-only, which is the reason stage CA exists | a name with an anchor status |
 | **Soort** (AU) | profit result against 4C/5B cash-flow report | a name with a `filer_type` |
 | **Lessons** | `pre_lessons` frozen against the emitted sum, per name and pooled | a frozen draft |
-| **Taal** (EU) | `pre_local` against the emitted sum, with the UK case labelled degenerate | a frozen draft |
+| **Taal** (EU) | `pre_local` against the emitted sum, with the UK case labelled degenerate — **the control was retired 2026-09-22 and this tab covers only the runs sealed before it** | a frozen draft |
 | **Namen** · **Runs** | every ranked name; every run with its draw and the resolver's alarm | a name / a run |
 | **Data** | provenance, and what is deliberately absent | always |
 

@@ -696,20 +696,26 @@ day for a day of names that cannot be traded and whose short register does not r
 
 ## 9. One note on the language experiment and the UK
 
-The stage runs an English pass first, freezes it as `pre_local`, then runs a
-local-language pass and revises — the `impact_sum_pre_lessons` pattern applied to
-language, so that "searching in German and French earns rank correlation" becomes a
-measured claim instead of a belief.
+**The experiment was retired on 2026-09-22 and this section is history.** Until then the
+stage ran an English pass first, froze it as `pre_local`, then ran a local-language pass
+and revised — the `impact_sum_pre_lessons` pattern applied to language, so that
+"searching in German and French earns rank correlation" became a measured claim instead
+of a belief. The hunters now run ONE bilingual pass on the operator's instruction, because
+sequencing the two halves forbade them from informing each other. No European day had
+resolved while the freeze ran, so the control never produced a number against a real
+outcome; what was given up is a future measurement and not a result. `language_note` —
+prose, one line per thing the local sources carried that the English ones did not —
+replaces it and cannot be ranked.
 
-**For the UK the local language is English, so the UK number is not measuring the same
-variable as the German and French ones.** The UK's second pass is a *domestic-source*
-pass — RNS, Investegate, Citywire, Proactive, Sharecast, the Investors' Chronicle, the
-domestic trade press — so the variable is source locality, not language. The mechanics are
-kept identical so the three markets stay structurally comparable, but
-`pre_local_variable` is carried in every hunter's output (`language` for DE and FR,
-`source_locality` for the UK) and **`eu_resolve.py` reports the pre/post delta per market
-and refuses to pool the UK delta with the other two.** Pooling them would report an
-average of two different experiments.
+**For the UK the local language is English, so the UK number was never measuring the same
+variable as the German and French ones**, and that asymmetry survives the merge. The UK's
+local half is a *domestic-source* half — RNS, Investegate, Citywire, Proactive, Sharecast,
+the Investors' Chronicle, the domestic trade press — so the variable is source locality,
+not language. While the freeze ran, `pre_local_variable` was carried in every hunter's
+output (`language` for DE and FR, `source_locality` for the UK) and **`eu_resolve.py`
+reported the pre/post delta per market and refused to pool the UK delta with the other
+two.** Pooling them would have reported an average of two different experiments. That code
+still reads the runs that carry the field and reports 0 names on the ones that do not.
 
 ---
 

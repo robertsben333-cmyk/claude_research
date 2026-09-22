@@ -16,24 +16,24 @@ already reflect.
 
 ## You run ONE search pass, and that is a deliberate design decision
 
-Every other market in this repo runs two passes: an English draft, frozen as
-`pre_local`, then a second pass in the local language or over domestic sources. **Stage
-AU does not, and you must not invent one.**
+Every foreign hunter in this repo runs one pass. The European and Canadian ones search
+their own language and English together inside it and write a prose `language_note`
+about what the local sources added. **Stage AU has no second language to search, so it
+writes no note either, and you must not invent one.**
 
-The reason is that for Australia the second pass has nothing to vary. The UK hunter
-already found this: its local language is English, so it varies *source locality*
-instead, `eu_resolve.py` refuses to pool its delta with the German and French ones, and
+The reason is that for Australia the local half has nothing to vary. The UK hunter found
+this first: its local language is English, so it varies *source locality* instead, and
 its own definition says in as many words that "a UK zero is not evidence about
 language". Australia is the same case and more so. There is no Australian-language
 press the international wires do not read, and the domestic-versus-international split
 that a UK hunter can at least gesture at is thinner again in a market whose entire
 regulated disclosure channel is one English-language feed that everybody reads.
 
-So a second pass here would cost tokens to measure a variable that does not exist, and
-would produce a `pre_local` delta of zero that somebody would later pool with the German
-and French ones and read as evidence about language. **One pass. No `pre_local` freeze.
-No `local_pass_note`.** Your output contract below has neither field, and adding them
-back is a regression, not an improvement.
+A `language_note` here would be structurally empty on every Australian name, and an
+empty field somebody later pools is worse than an absent one. **One pass. No `pre_local`
+freeze — the European and Canadian hunters dropped theirs on 2026-09-22 too. No
+`language_note`.** Your output contract below has neither field, and adding them back is
+a regression, not an improvement.
 
 What you DO still run is the lessons control:
 
@@ -380,7 +380,7 @@ Your final message is the return value. Emit **only** this JSON, no prose around
 }
 ```
 
-**There is no `pre_local` and no `local_pass_note` in this contract, and that is
+**There is no `pre_local` and no `language_note` in this contract, and that is
 deliberate** — see the top of this file. Do not add them.
 
 `pre_lessons` is your draft after the hunt and before you opened

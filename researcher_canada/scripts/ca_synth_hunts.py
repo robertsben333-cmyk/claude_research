@@ -59,10 +59,9 @@ def main():
             "outside_window": [],
             "searched_and_found_nothing": ["synthetic"],
             "baseline_tension": "synthetic",
-            "pre_local": {"impact_sum_pct": total, "expected_move_pct": total,
-                          "findings_count": len(findings),
-                          "sizes_pct": [f["expected_impact_pct"] for f in findings],
-                          "variable": "none (synthetic)"},
+            # No `pre_local`: the hunter runs ONE bilingual pass since 2026-09-22
+            # and emits no freeze. `language_note` replaced it and is prose.
+            "language_note": ["synthetic"],
             "pre_lessons": {"impact_sum_pct": total, "expected_move_pct": total,
                             "print_vs_bar_pct": 0.0, "findings_count": len(findings),
                             "sizes_pct": [f["expected_impact_pct"] for f in findings]},

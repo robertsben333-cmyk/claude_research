@@ -37,7 +37,7 @@ the ranking is the by-product.
 | The bar | sell-side consensus EPS | the company's own 会社予想 | **absent from the baseline — the hunter sources it** |
 | Reaction history | real dates | estimated cadence | **real dates, off the TMX archive** |
 | Event shape | a release | a release | a release **or a bare SEDAR+ filing**; filing-only issuers are screened out |
-| Second language | none | Japanese | **French, for Québec issuers only** |
+| Second language | none | Japanese | **French, for Québec issuers only — inside the one pass, not a second one** |
 
 Four things must appear in every note this stage writes, because each is a live
 uncertainty rather than a caveat that has been retired:
@@ -60,6 +60,22 @@ uncertainty rather than a caveat that has been retired:
    serves the register, the filings, the archive, the calendar and the tape. Europe's
    ten markets fail independently; Canada fails all at once, and there is no second
    source for the register anywhere.
+
+
+## One bilingual pass, and the control that went with it
+
+**`unpriced-hunter-ca` runs ONE pass in English and, for a Québec issuer, French,
+since 2026-09-22.** Until that day the English half was frozen as `pre_local` before the
+French half ran, and `impact_sum_pre_local` measured whether French search earned rank
+correlation. It was retired on the operator's instruction: sequencing the two halves
+forbade them from informing each other, which is most of what a bilingual reader is for.
+
+**Nothing measures the French half any more.** No Canadian day had resolved while the
+freeze existed, so the control never produced a number — what was given up is a future
+measurement, not a result. What replaces it is `language_note`: prose, one line per
+thing the French sources carried that the English ones did not, or 'not a Québec issuer,
+English sources only'. Nothing ranks it. Quote it in the note where it is interesting
+and do not present it as evidence. The `pre_lessons` control is untouched and still runs.
 
 ## Steps
 
