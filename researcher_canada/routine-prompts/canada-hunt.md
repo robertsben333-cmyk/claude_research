@@ -63,7 +63,7 @@ THE OUTPUT CONTRACT LIVES IN THE SKILL, NOT IN THIS PROMPT. Which field is the r
 
 IF THE UNIVERSE IS EMPTY, READ THE REASON RATHER THAN GUESSING IT. `universe.json` carries `market_closed`: if it is set, the TSX is shut and there is nothing to wait for. If it is null and `scheduled_today` is 0, nobody is scheduled — which in Canada is a NORMAL weekday outcome outside the reporting peaks, not a fault. Late September ran one name a day; late October runs twelve. Publish the empty universe, say which case it is in one line, and stop.
 
-FIVE THINGS SPECIFIC TO THIS MARKET THAT BELONG IN THE NOTE EVERY TIME:
+SIX THINGS SPECIFIC TO THIS MARKET THAT BELONG IN THE NOTE EVERY TIME:
 
   - TWO ANCHOR ARMS, AND THE SPLIT IS THE RESULT. Report how many names came back anchor_covered "options" and how many "register". If it is zero on the options arm during a weekday run, the seal happened outside 09:30-16:00 ET and the day is a register-arm run — say so, because it changes what the day can be compared against. ca_resolve.py ranks the two arms separately and that comparison is why this stage exists: the sealed backtest priced anchor-less hunting at rho=+0.073, p=0.45 over 104 events and could not tell the anchor from the market.
   - TWO CALENDARS THAT DISAGREE ON 172 OF 277 FORWARD DATES. Report the calendar_reconciliation split (confirmed / agreed / wsh_only / vendor_only / disputed) and moved_off_target_by_wsh. Disputed names are dropped unless the issuer itself announced the date. Do not override that with --hunt-disputed: hunting an unconfirmed date is exactly how TRT was ranked, traded at 33% of equity and never reported.
