@@ -158,3 +158,7 @@
 - Logged at 2026-09-22 18:37 UTC
 - Universe: 2505 scanner rows, 17 in window, 2 scheduled (vendor_only 2), 0 eligible, 0 hunted. market_closed null — TSX open; both scheduled names (MMY $147k, SR $9k filing_only) below the $200k turnover floor. No baselines sealed, no hunters spawned, no scoring.
 - FX fell back to constant CADUSD 0.71 (Yahoo did not answer); not decisive for either drop. TMX stack answered. Pre-existing short-register/2026-09-22.json holds a single all-null AGF.B row — not a usable first snapshot.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-09-22 19:05 UTC
+- Fired 19:05 UTC = 15:05 ET, inside 13:30–16:05 ET. Plan: rev_universe --intraday --k 15 for 2026-09-22, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-09-21, note before 16:00 ET.
