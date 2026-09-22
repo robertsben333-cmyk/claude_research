@@ -1079,6 +1079,105 @@ def main():
           open(os.path.join(REPO, "researcher_australia", "LESSONS.md"),
                encoding="utf-8").read())
 
+    print("\nStage R — reversal")
+    sys.path.insert(0, os.path.join(REPO, "researcher_reversal", "scripts"))
+    import rev_market as rm                                          # noqa: E402
+    import rev_priced_in as rpi                                      # noqa: E402
+
+    # The spread estimator decides whether this stage can exist, so it is checked on
+    # bars whose answer is known rather than on whatever the tape happens to serve.
+    flat = [{"date": f"2026-01-{d:02d}", "open": 10.0, "high": 10.0, "low": 10.0,
+             "close": 10.0, "raw_close": 10.0, "volume": 1e5} for d in range(1, 8)]
+    check("Corwin-Schultz is zero on a zero-range series",
+          rm.corwin_schultz(flat) == 0.0, rm.corwin_schultz(flat))
+    wide = [{"date": f"2026-01-{d:02d}", "open": 10.0, "high": 10.5, "low": 9.5,
+             "close": 10.0, "raw_close": 10.0, "volume": 1e5} for d in range(1, 8)]
+    hs = rm.half_spread_pct(wide)
+    check("Corwin-Schultz returns a positive half-spread on a wide series",
+          hs is not None and hs > 0, hs)
+
+    # THE STAGE'S OWN KILL. A fall that is an unadjusted corporate action has a shape:
+    # all of it overnight, on below-normal volume, with no intraday follow-through.
+    # Thin volume ALONE must not trip it -- four of fifteen names on the 2026-09-21
+    # screen fell over 15% on under 1.5x volume, which is ordinary in a $2m stock.
+    def _bars(gap, intra, spike, n=60):
+        b = [{"date": f"2026-0{1 + d // 28}-{1 + d % 28:02d}", "open": 10.0, "high": 10.2,
+              "low": 9.8, "close": 10.0, "raw_close": 10.0, "volume": 1e5}
+             for d in range(n - 1)]
+        o = 10.0 * (1 + gap / 100)
+        c = o * (1 + intra / 100)
+        b.append({"date": "2026-03-02", "open": o, "high": max(o, c), "low": min(o, c),
+                  "close": c, "raw_close": c, "volume": 1e5 * spike})
+        return b
+    sus = rpi.build("XXXX", "2026-03-02", with_options=False,
+                    bars=_bars(-20.0, 0.0, 0.6))
+    check("an all-overnight fall on thin volume is suspect",
+          sus["event_plausibility"]["verdict"] == "suspect",
+          sus["event_plausibility"]["verdict"])
+    thin = rpi.build("XXXX", "2026-03-02", with_options=False,
+                     bars=_bars(-4.0, -14.0, 1.2))
+    check("a thin-volume INTRADAY fall is unknown, not suspect",
+          thin["event_plausibility"]["verdict"] == "unknown",
+          thin["event_plausibility"]["verdict"])
+    loud = rpi.build("XXXX", "2026-03-02", with_options=False,
+                     bars=_bars(-15.0, -5.0, 8.0))
+    check("a fall on heavy volume fits",
+          loud["event_plausibility"]["verdict"] == "fits_cadence",
+          loud["event_plausibility"]["verdict"])
+
+    # The four keys researcher_us/scripts/edge_score.py reads off a baseline. If any of
+    # them stops being emitted, the shared scorer silently falls back to a US branch
+    # that is unreachable here and the whole stage scores on defaults.
+    for k in ("history", "anchor_quality", "priced_lean_pct", "event_plausibility"):
+        check(f"the reversal baseline supplies `{k}` for the shared scorer", k in loud)
+    check("anchor_quality carries both terms",
+          set(loud["anchor_quality"]) == {"magnitude", "direction"},
+          loud["anchor_quality"])
+
+    # The permutation test was rewritten to shuffle ranks rather than values. It must
+    # still return an uncorrelated pair as noise and a correlated one as signal.
+    import random as _rnd
+    _r = _rnd.Random(4)
+    null = [[(_r.random(), _r.random()) for _ in range(12)] for _ in range(40)]
+    rho_n, p_n = rm.permutation_p(null, reps=400)
+    check("permutation_p calls noise noise", p_n is not None and p_n > 0.05,
+          (rho_n, p_n))
+    sig = [[(x, x + _r.random() * 0.5) for x in
+            [_r.random() for _ in range(12)]] for _ in range(40)]
+    rho_s, p_s = rm.permutation_p(sig, reps=400)
+    check("permutation_p calls signal signal", p_s is not None and p_s < 0.01,
+          (rho_s, p_s))
+
+    # The stage places no orders, and neither the skill nor the hunter may acquire one.
+    rev_skill = open(os.path.join(REPO, ".claude", "skills",
+                                  "researcher-reversal-hunt", "SKILL.md"),
+                     encoding="utf-8").read()
+    rev_agent = open(os.path.join(REPO, ".claude", "agents", "reversal-hunter.md"),
+                     encoding="utf-8").read()
+    check("stage R's skill places no orders",
+          "alpaca_trade.py" not in rev_skill.replace(
+              "There is no `alpaca_trade.py` step", ""))
+    check("stage R has no execution block",
+          "execution" not in cfg["reversal_hunt"]
+          and cfg["reversal_hunt"]["place_orders"] is False)
+    check("stage R hunts every selected name, so the cap equals the screen's K",
+          cfg["reversal_hunt"]["hunters_per_name"] == 1)
+    check("stage R uses the same turnover floor as the other stages",
+          cfg["reversal_hunt"]["min_dollar_volume_usd"] == 200000)
+    check("the hypothesis is pre-registered in config, not in prose",
+          cfg["reversal_hunt"]["pre_registered_hypothesis"]
+          == "mechanical_reverts_informational_drifts")
+    check("the reversal hunter keeps the pre_lessons control",
+          '"pre_lessons"' in rev_agent and "lessons_applied" in rev_agent)
+    check("the reversal hunter must name a cause with evidence",
+          '"cause"' in rev_agent and "mechanical_vs_informational" in rev_agent)
+    check("the reversal hunter is told the base rate it argues against",
+          "11,235" in rev_agent and "-1.00%" in rev_agent.replace("\u2212", "-"))
+    check("researcher_reversal/LESSONS.md carries no rules yet",
+          "Deliberately empty" in
+          open(os.path.join(REPO, "researcher_reversal", "LESSONS.md"),
+               encoding="utf-8").read())
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:

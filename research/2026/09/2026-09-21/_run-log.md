@@ -44,3 +44,12 @@
 - The missing openpyxl was not a container quirk to install around: nothing in the repo declares it and every Routine fires into a fresh container, so a hand install fixes one session only. 09-21/22/23 are Tokyo holidays and the holiday check short-circuits the parse, so the first fire it would have silently blanked is 09-24 — the first day with names.
 - Added researcher_japan/scripts/xlsx_stdlib.py (read-only .xlsx on the standard library) and a fallback in jp_universe.sheet_rows(). Both live cohort sheets parse byte-identically under openpyxl and the fallback; with openpyxl UNINSTALLED, 09-24 reads 680 rows / 2 scheduled / 1 eligible (4716 ORACLE CORPORATION JAPAN) where it previously read 0. smoke_test.py passes.
 - UNVERIFIED and worth a hand-fire before 09-24: this session's registry lost the unpriced-hunter-jp agent type partway through, and stage J's Routine still has empty sources/outcomes/allowed_tools per CLAUDE.md. Neither was exercised today because no hunter was spawned.
+
+## Stage R — reversal researcher — PARTIAL, NOT A RANKING
+- Logged at 2026-09-22 10:07 UTC
+- Live screen for the 2026-09-21 session: 6,014 listed names, 200 pre-ranked on the screener, 77 above the $200k / $1 floors, worst 15 taken. SPY +1.55% that day, so these are idiosyncratic falls.
+- All 15 baselines sealed. Two flagged event_plausibility: suspect (PMI, SMTK) on the corporate-action shape — all of the fall overnight, below-normal volume, no intraday follow-through.
+- NO NAME HAD A USABLE OPTION CHAIN. 15 of 15 came back no_options_market or unusable_chain, so this stage runs anchor-less like stages J, EU and AU, not like stage E. That is a property of the screen: a losers screen selects small names.
+- Estimated half-spreads run from 0.00% (the estimator flooring, read as UNKNOWN) to 4.10% on YDES, an 8.2-point round trip. That spread is the stage's real constraint, not its ranking.
+- Only 2 of 15 names were hunted (CUE, SCTX), to prove the reversal-hunter brief produces a conforming output. TWO NAMES IS NOT A RANKING and this day must not be pooled.
+- The reversal-hunter agent definition could not be spawned by the session that wrote it: the harness loads .claude/agents/ at session start. The brief was run through a general-purpose agent reading the file instead. A fresh Routine session picks it up normally.

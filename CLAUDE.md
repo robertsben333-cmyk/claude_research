@@ -43,6 +43,7 @@ material below is kept because the live stages reference it, not because it runs
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | AU | `researcher-australia-hunt` | 08:30 | **Stage AU — the Australia researcher.** Same question, ASX, research only, no orders. One English hunting pass and no local-language pass, deliberately. `trig_01Qy7FjBpjY4dEGcZsYGnpt3`, cron `30 6 * * 0-4` = 06:30 UTC **Sunday to Thursday**, after the 16:00 Sydney close. Seals for the NEXT session, because 91% of ASX results land before the open, so the fire that seals for Monday is the Sunday one |
+| R | `researcher-reversal-hunt` | **no Routine yet** | **Stage R — the reversal researcher.** Not an earnings stage: yesterday's biggest US losers, and whether each keeps falling or bounces. Research only, no orders. Phase 0 is measured and checked in; no hunt has resolved. The Routine text is in `researcher_reversal/routine-prompts/reversal-hunt.md` and has NOT been installed — suggested `30 21 * * 1-5`, which must be AFTER the US close |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 **`list_triggers` IS SCOPED TO THE CALLING ACCOUNT, AND STAGE E IS ON A DIFFERENT ONE.**
@@ -1087,6 +1088,95 @@ opposite sign to the US sample; one day is not a result and it is recorded becau
 the kind of thing that gets remembered wrongly. See `researcher_australia/README.md` and
 `researcher_australia/SUBMARKET.md`.
 
+**Stage R is a different EVENT, not a different market, added 2026-09-22:
+`researcher_reversal/`.** Same hunter contract, same sealed-baseline discipline, same
+scorer (`researcher_us/scripts/edge_score.py`, unchanged again), pointed at the biggest
+US losers of the last completed session and asking whether each keeps falling or
+bounces. **It places no orders and there is no code path that could.**
+
+**PHASE 0 RAN FIRST AND IT IS THE ONLY THING IN THIS STAGE THAT HAS BEEN MEASURED.**
+`rev_harvest.py` pulled 3 years of adjusted daily bars for all 6,014 listed US common
+stocks (0 empty charts) and `rev_backtest.py` scored **11,235 falls of 5% or more on 749
+sessions** above the same $200k turnover floor the other stages use. Entering at the
+drop-day close, the median stock is **−1.00%** by the next close, −3.89% by the fifth
+and **−11.11%** by the twenty-first, and the share that rises falls monotonically from
+49.7% to 34.4%. **The median is negative in every cut taken** — by size of fall, by
+turnover, by price, by sector, by gap share. Market-excess is worse at every horizon.
+Buying yesterday's biggest losers is refuted, not marginal.
+
+**The three conditional facts the hunter is told, because they set the bar.** Falls
+below −40% average −4.00% the next session against +0.27% for the −25 to −15 band, so
+**deeper falls continue harder and the reversal control has the wrong sign**. A fall on
+over 15x normal volume does −2.44% against +1.46% under 2x, which is the best free
+conditional on the page and the closest thing phase 0 has to a test of the stage's own
+hypothesis. And the best free RANKER of thirteen is the name's own 14-day ATR at
+**ρ=−0.126, family-wise p=0.0017** under a max-statistic correction with one shuffle per
+day shared by every candidate — that is what a hunt has to beat, and it is a harder bar
+than stage E's `-run_up_20d_pct`.
+
+**ONE SESSION IS NOT TRADEABLE AND THAT IS WHY THERE IS NO EXECUTION BLOCK.** The gross
+edge at the horizon this stage predicts is ±0.35% a day against a round-trip
+Corwin-Schultz estimate of about 1.06 points. What does clear cost is the SHORT side at
+ten to twenty-one sessions: +3.07%/book at d10 and +5.42% at d21 net of one spread, and
++2.36% / +4.56% restricted to names above $5m a day. **The t on those is inflated by
+overlapping books** — 21 books open at once sharing 20/21 of their window — so
+`overlap_check` re-runs every non-overlapping offset: d5 evaporates, d10 is marginal (4
+of 10 offsets over t=2), **d21 holds with 15 of 21 offsets over t=2, a median +6.57% and
+a worst offset of −12.21%**. Three things that table cannot see: borrow (20–100%
+annualised is 1.2–6.0 points over 21 sessions, the same order as the drift), 315
+concurrent positions, and a spread estimate that is a floor. One bias runs the other
+way: the universe is today's listings, so falls followed by a delisting are absent and
+the continuation is **understated**.
+
+**The stage's own hypothesis is pre-registered in config, not in prose** —
+`reversal_hunt.pre_registered_hypothesis: mechanical_reverts_informational_drifts`. The
+`reversal-hunter` agent supplies `cause.label` (fourteen values) and a −100…+100
+`mechanical_vs_informational` axis from primary sources, and `rev_resolve.py` reports
+`by_cause` and ranks the axis whether or not it looks good. The hunter is told to score
+the axis on the evidence and size `expected_move_pct` on its own reasoning, so a
+disagreement between them is data rather than a tautology.
+
+**Two things about this stage that the earnings stages do not have.** The hindsight
+problem is structural: stage E's hunters worked before the outcome existed, and here
+the fall IS the input, so a model asked whether a 25% drop was overdone will rationalise
+fluently every time. The defences are the `pre_lessons` freeze, `resolves_by` on every
+finding, and the fact that the ranking is WITHIN the day. And **the screen selects names
+with no option chain**: all fifteen names on the 2026-09-21 screen came back
+`no_options_market` or `unusable_chain`, so stage R runs anchor-less like stages J, EU
+and AU rather than like stage E — the regime `archive/backtest/FINDINGS.md` §33 priced
+at ρ=+0.073, p=0.45.
+
+**What the corporate-action kill catches and what it deliberately does not.** A fall
+that is an unadjusted spin-off or special dividend has a shape: all of it overnight, on
+below-normal volume, with no intraday follow-through. That triple sets
+`event_plausibility: suspect`, which the shared scorer already multiplies by 0.05. **Thin
+volume alone does not**, because four of fifteen names on 2026-09-21 fell more than 15%
+on under 1.5x volume and that is ordinary in a $2m-a-day stock; those read `unknown` and
+naming the cause is the hunter's job, not the baseline's guess.
+
+**The chain was validated end to end on 2026-09-22 with SYNTHETIC findings** against
+2026-09-11 (213 candidate falls, 158 above the floors, 15 hunted, all 15 rankable), which
+ranked at ρ=0.418, p=0.127 — what random findings on one day should do. The number worth
+keeping from that run is **`lean_vs_free_control_rho` = −0.075**: unlike stage J at
+launch, this baseline's lean is NOT the free control wearing another name.
+`rev_universe.py --from-drops` rebuilds any past session from the harvest, which is what
+makes a historical validation possible at all. **Nothing has resolved in phase 1 and no
+number in `researcher_reversal/README.md` is evidence about the hunt** — it is evidence
+about the market the hunt is being pointed at.
+
+**Its Routine does not exist and was deliberately not created.** The text is in
+`researcher_reversal/routine-prompts/reversal-hunt.md`, suggested `30 21 * * 1-5`, which
+must fire AFTER the US close because the fall it seals is the last completed session and
+daily bars are not final before then. Installing it is a decision to spend fifteen Opus
+hunts a night on a stage with no resolved days, so it is the operator's, not a session's.
+
+**One trap worth recording: a new agent definition is not visible to the session that
+wrote it.** The harness loads `.claude/agents/` at session start, so the 2026-09-22
+session could not spawn `reversal-hunter` and validated the brief through a
+general-purpose agent reading the file instead. A fresh Routine session picks it up
+normally. This is the same family as the Routine-prompt drift that cost two live things
+on 2026-09-15: the tree and the running process disagree, and the tree is what moved.
+
 **Stage EU is a third market, added 2026-09-18: `researcher_europe/`.** Ten European
 markets pooled into one stage, on the same scorer again
 (`researcher_us/scripts/edge_score.py`). **It places no orders.** Alpaca carries none of
@@ -1412,6 +1502,17 @@ researcher_australia/                  stage AU — see researcher_australia/REA
                                        au_positioning, au_priced_in, au_resolve
   SUBMARKET.md                         why Australia and not Canada, with the counts
   routine-prompts/                     the text in the stage AU Routine
+  LESSONS.md                           deliberately empty until a run resolves
+researcher_reversal/                   stage R — see researcher_reversal/README.md
+  README.md                            phase 0's answer, with every caveat that goes
+                                       with it. Read it before quoting any number
+  scripts/                             rev_market (bars, Corwin-Schultz, permutation),
+                                       rev_harvest + rev_backtest (phase 0),
+                                       rev_universe, rev_priced_in, rev_resolve
+  analysis/                            phase0-base-rates.json and the 11,235 selected
+                                       rows it was computed on, checked in so the
+                                       report is auditable without refetching
+  routine-prompts/                     the text to paste, NOT yet installed anywhere
   LESSONS.md                           deliberately empty until a run resolves
 researcher_europe/                     stage EU — see researcher_europe/README.md
   scripts/                             eu_market (incl. CAPABILITY), eu_universe,

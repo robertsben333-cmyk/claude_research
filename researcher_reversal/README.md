@@ -1,0 +1,286 @@
+# Stage R — the reversal researcher
+
+**The question.** Yesterday's biggest US losers: do they keep falling, or do they
+bounce? And can research tell which is which, name by name, on the day?
+
+**The short answer, measured before a single agent was built: they keep falling.** Over
+11,235 falls of 5% or more on 749 sessions, the median stock is down another 1.00% by
+the next close, down 3.89% by the fifth and down 11.11% by the twenty-first. The median
+is negative in **every** cut we took — by size of fall, by turnover, by price, by
+sector, by how much of the fall happened overnight. "Buy the dip on yesterday's worst
+names" is not a marginal idea. It is refuted at every horizon and every liquidity band.
+
+**This stage places no orders.** There is no execution path and there must not be one.
+
+---
+
+## 1. How the stage is built, and why in this order
+
+Phase 0 ran first, deliberately. It cost bars and no tokens, and it could have killed
+the stage before anything expensive existed. `CLAUDE.md` is largely a record of what
+the other order costs: stage E spent thirteen days of hunts before anyone measured that
+its scorer was subtractive and that a one-line free control ranked better than it did.
+
+```
+rev_market.py      the listed universe, adjusted daily bars, a spread estimator, stats
+rev_harvest.py     phase 0's data: every fall in the market, with what happened next
+rev_backtest.py    phase 0's answer: base rates, cuts, free rankers, cost, the book
+--------------------------------------------------------------- phase 0 ends here
+rev_universe.py    the live day's worst K fallers
+rev_priced_in.py   one sealed baseline per name, before any agent runs
+edge_score.py      researcher_us/scripts/edge_score.py, UNCHANGED
+rev_resolve.py     did the hunt rank the day, and did it beat the free controls
+```
+
+The scorer is not copied, forked or wrapped. The reversal baseline supplies the four
+keys `edge_score.py` reads (`history.n`, `anchor_quality`, `priced_lean_pct`,
+`event_plausibility.verdict`) and the hunter emits the same finding contract, so one
+scorer serves five markets and two different events. A US earnings run rescores
+byte-identically because nothing in it was touched.
+
+---
+
+## 2. Phase 0: the sample
+
+| | |
+| --- | --- |
+| Universe | 6,014 US common stocks and ADRs on NASDAQ, NYSE and AMEX. Warrants, units, rights, preferreds and notes excluded |
+| Bars | 3 years of split- and dividend-adjusted daily OHLCV, 0 empty charts out of 6,014 |
+| Sessions | 749, 2023-09-25 to 2026-09-18 |
+| Candidate rows | 283,812 falls of 4% or more above $100k a day |
+| After the floors | 168,049 rows at ≤ −5%, ≥ $200k median 20-day turnover, ≥ $1 |
+| **Selected** | **11,235 events** — the worst 15 of each session |
+| Median fall | −20.83% |
+| Median turnover | $1.43m a day |
+| Median estimated half-spread | 0.53% |
+
+The screen is the event definition, not a ranking inside it: "the biggest losers" is the
+population being studied. Everything is rebuildable with
+`rev_harvest.py --range 3y` and `rev_backtest.py --drops <dir>`; the 11,235 selected
+rows travel with the report as `analysis/phase0-selected.jsonl.gz`, so every number
+below is auditable without re-fetching the market.
+
+---
+
+## 3. What happens after a big fall
+
+Entry at the close of the drop day, equal weight, gross of costs.
+
+| horizon | mean | median | share that rose | t |
+| --- | --- | --- | --- | --- |
+| next open | **+0.93%** | 0.00% | 49.7% | +4.61 |
+| next close | −0.30% | −1.00% | 44.5% | −1.15 |
+| 2 sessions | −0.76% | −1.76% | 42.7% | −2.08 |
+| 3 sessions | −0.83% | −2.58% | 41.5% | −1.52 |
+| 5 sessions | −1.79% | −3.89% | 39.5% | −3.44 |
+| 10 sessions | −3.84% | −6.72% | 37.2% | −5.81 |
+| 21 sessions | −5.15% | −11.11% | 34.4% | −3.83 |
+
+Net of the market it is worse at every horizon (−6.99% at 21 sessions), so this is not
+the sample sitting in a bad tape.
+
+**The mean and the median disagree, and the median is the honest one.** Means are
+dragged up by a thin right tail of names that double; the median stock is down in every
+row and in every cut below. Anyone quoting a positive mean from this stage is quoting a
+tail.
+
+**The one real bounce is overnight and it does not survive the spread.** +0.93% to the
+next open, then the session gives it back. A round trip at the estimated half-spread
+turns that +0.93% into −0.52%.
+
+---
+
+## 4. The cuts, at the next close
+
+| by size of fall | n | mean | median | rose |
+| --- | --- | --- | --- | --- |
+| ≤ −40% | 916 | **−4.00%** | −5.41% | 35.4% |
+| −40 to −25% | 2,720 | −0.76% | −1.55% | 43.6% |
+| −25 to −15% | 5,827 | +0.27% | −0.64% | 45.6% |
+| −15 to −10% | 1,608 | +0.39% | −0.24% | 46.8% |
+
+Monotonic, and against the rebound thesis: **the harder it fell, the harder it keeps
+falling.**
+
+| by volume on the drop day | n | mean | median | rose |
+| --- | --- | --- | --- | --- |
+| > 15× normal | 1,601 | **−2.44%** | −2.59% | 38.8% |
+| 5–15× | 3,277 | −0.54% | −1.03% | 43.8% |
+| 2–5× | 3,222 | −0.72% | −0.70% | 45.5% |
+| < 2× | 3,135 | +1.46% | −0.37% | 47.3% |
+
+This is the most useful free variable on the page. Heavy volume means the fall carried
+information and it keeps going; light volume means it did not. It is also the closest
+thing phase 0 has to a test of the stage's own hypothesis, and it points the predicted
+way.
+
+Turnover, price and sector all move less. The $1–3 band is the only one with a positive
+mean (+1.18%) and its median is still negative (−0.44%) — fat tail, not edge.
+
+---
+
+## 5. The free rankers, and the bar the hunt has to clear
+
+Within-day rank correlation against the next close, 749 sessions, permutation p from
+shuffling the outcomes inside each day.
+
+| ranker | ρ | perm p |
+| --- | --- | --- |
+| **14-day ATR** (its own volatility) | **−0.126** | 0.0003 |
+| position in the 52-week range | +0.079 | 0.0003 |
+| **minus the size of the fall** (the reversal control) | **−0.076** | 0.0003 |
+| price level | −0.075 | 0.0003 |
+| minus the 20-day run-up | −0.053 | 0.0003 |
+| volume spike | −0.046 | 0.0003 |
+| share of the fall that was the gap | −0.014 | 0.138 |
+
+Max-statistic correction over all thirteen candidates, one shuffle per day shared by
+every candidate: **best |ρ| = 0.126, family-wise p = 0.0017.** It survives.
+
+Two things follow and both are uncomfortable for the stage:
+
+- **The reversal control has the wrong sign.** Ranking by how far a name fell is
+  *negatively* related to what it does next. A rebound thesis is fighting this.
+- **The bar is `atr14`, not nothing.** A hunt that ranks the day below ρ=−0.126 has
+  added nothing a single number off the sealed baseline does not already give.
+
+---
+
+## 6. Could it be traded? Only at the long end, only short, and only with caveats
+
+Equal-weight the worst 15 each session, one book per day, charged one round trip at the
+Corwin-Schultz estimated spread (`x1`).
+
+| horizon | short, all names | short, ≥ $5m a day | long, ≥ $5m a day |
+| --- | --- | --- | --- |
+| next close | −1.14% (t −4.2) | −0.56% (t −1.2) | −1.65% (t −3.5) |
+| 5 sessions | +0.59% (t 1.1) | +0.63% (t 0.8) | −2.84% (t −3.7) |
+| 10 sessions | +3.07% (t 4.3) | **+2.36% (t 2.5)** | −4.58% (t −4.8) |
+| 21 sessions | +5.42% (t 4.0) | **+4.56% (t 4.4)** | −6.80% (t −6.6) |
+
+**One session is not tradeable.** The gross edge is ±0.35% against a round-trip cost of
+about 1.06 points. The drift only clears cost once it has had ten to twenty-one sessions
+to accumulate, because the spread is paid once whatever the holding period.
+
+### The t above is inflated, and here is the corrected version
+
+Starting a new 21-session book every day means 21 books are open at once and consecutive
+day-returns share 20/21 of their window. Thinned to non-overlapping books, all offsets
+run:
+
+| book | independent books | median mean | worst offset | median t | offsets with t>2 |
+| --- | --- | --- | --- | --- | --- |
+| 5 sessions, short | 148 | −0.53% | −0.88% | −0.44 | 2 of 5 |
+| 10 sessions, short | 73 | +2.58% | −1.84% | +1.64 | 4 of 10 |
+| **21 sessions, short** | 34 | **+6.57%** | −12.21% | **+2.44** | **15 of 21** |
+| 21 sessions, long | 34 | −9.54% | −15.13% | −3.57 | 0 of 21 |
+
+The five-session result evaporates. Ten is marginal. **Twenty-one holds**, with 15 of 21
+offsets clearing t=2 — and with one offset losing 12% a book, which is the dispersion a
+reader should take away rather than the median.
+
+### Four reasons not to act on that table
+
+1. **Borrow.** The short side assumes every name can be borrowed and charges no fee.
+   These are exactly the names that cannot be. A hard-to-borrow rate of 20–100%
+   annualised is 1.2–6.0 points over 21 sessions, the same order as the drift.
+2. **Capital.** Fifteen names a day held 21 days is 315 concurrent positions.
+3. **Spread.** Corwin-Schultz is a **floor** on the real cost, estimated from the days
+   *before* the fall, so it cannot see the widening the fall itself causes.
+4. **It is not this stage's question.** Stage R predicts the next session. The drift
+   lives at ten to twenty-one. Those are different stages and they should not be
+   conflated.
+
+**One bias runs the other way, and it is worth stating.** The universe is today's
+listings, so a fall followed by a delisting is absent from every row. That removes the
+worst continuations only, which means the drift measured here is *understated*, not
+flattered.
+
+---
+
+## 7. What phase 1 asks, and the hypothesis it pre-registers
+
+Phase 0 says the *average* faller keeps falling. It says nothing about whether the
+fallers can be told apart on the day. That is the research question, and it is the one
+a language model might answer where a factor model cannot, because it turns on reading
+what happened.
+
+**Pre-registered, in `config/pipeline.yaml:reversal_hunt.pre_registered_hypothesis` so
+it cannot be rewritten once the answer arrives:**
+
+> Falls caused by **mechanical** selling revert. Falls carrying **information** drift.
+
+Mechanical: index deletion, lock-up expiry, a fund liquidating, forced or tax-loss
+selling, a sympathy move off a peer, a sector selloff. Nothing was learned about the
+business and the seller had no opinion.
+
+Informational: a guidance cut, a failed readout, a lost customer, a going-concern
+paragraph, a short report that lands.
+
+The `reversal-hunter` agent supplies `cause.label` and a −100…+100
+`mechanical_vs_informational` axis from primary sources, and `rev_resolve.py` reports
+`by_cause` and ranks the axis as its own column **whether or not it looks good**. The
+hunter is told, in its own brief, to score the axis on the evidence and size
+`expected_move_pct` on its own reasoning, so that a disagreement between the two is
+data rather than a tautology.
+
+Phase 0 already offers one piece of weak support: volume is the best conditional cut on
+the page, and volume is a proxy for exactly this axis.
+
+### What would make phase 1 a failure
+
+- The hunt's ρ against the next close does not beat `atr14`'s −0.126 over a pooled
+  fortnight.
+- `lean_vs_free_control_rho` sits near 1.0, meaning the baseline's own lean is the free
+  control wearing another name. That is the stage J failure mode and it is a defect.
+- `by_cause` shows no separation between the mechanical and informational ends.
+
+Any of those, and the honest outcome is to write it down and stop.
+
+---
+
+## 8. Known biases, carried in the data file as well as here
+
+| bias | direction |
+| --- | --- |
+| Survivorship: the universe is today's listings | **understates** the continuation |
+| Spread is estimated, from before the fall | overstates every net return |
+| No borrow check or fee on the short side | overstates the short book |
+| Overlapping books at long horizons | inflates t, corrected in §6 |
+| Hindsight: the hunter is handed the fall | overstates the hunt, mitigated not solved |
+
+---
+
+## 9. What the first live screen showed, which phase 0 could not
+
+The 2026-09-21 session: 6,014 listed names, 200 pre-ranked on the screener, **77 above
+the $200k and $1 floors**, worst 15 taken. SPY was +1.55% that day, so these were
+idiosyncratic falls and not a tape.
+
+**Not one of the fifteen had a usable option chain.** All came back
+`no_options_market` or `unusable_chain`. That is not bad luck, it is a property of the
+screen — a losers screen selects small names — and it means **stage R runs anchor-less
+like stages J, EU and AU rather than like stage E**. The regime
+`archive/backtest/FINDINGS.md` §33 priced at ρ=+0.073, p=0.45 over 104 events is the
+one this stage is in, and no amount of hunting changes that.
+
+**The estimated half-spreads ran from 0.00% to 4.10%.** YDES at 4.10% is an 8.2-point
+round trip on a name that fell 17.6%. The zeros are the estimator flooring a negative
+alpha, not a narrow spread, and the baseline says so in `costs.half_spread_status`
+rather than reporting a bare 0.00 that a reader would take at face value. **The spread
+is this stage's binding constraint, not its ranking.**
+
+**Two of fifteen tripped the corporate-action check** (`event_plausibility: suspect`) on
+the shape that matters: the whole fall overnight, on below-normal volume, with no
+intraday follow-through. Four others fell more than 15% on under 1.5× volume and were
+deliberately left `unknown` — thin volume alone is ordinary in a $2m-a-day stock, and
+naming the cause is the hunter's job rather than the baseline's guess.
+
+## 10. State
+
+Phase 0 is complete and is the only thing in this stage that has been measured.
+
+**Nothing has resolved in phase 1. No hunter has run. No number here is evidence about
+the hunt** — it is evidence about the market the hunt is being pointed at, and about
+how high the bar is. `researcher_reversal/LESSONS.md` is deliberately empty until a
+run resolves.

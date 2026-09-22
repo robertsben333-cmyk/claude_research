@@ -818,3 +818,64 @@ execution:
     # keeps `close` from selling a position twice.
     fill_check_fix: true
     allow_shorts: true           # a short leg also needs Alpaca to call it shortable
+
+reversal_hunt:
+  # Stage R. The same machinery as `edge_hunt`, `japan_hunt` and `europe_hunt`, asked of
+  # a different event: not "what has the market not priced into tonight's print" but
+  # "the market has already reacted to this news -- is the reaction wrong, and which
+  # way". Scored by the SAME scorer (researcher_us/scripts/edge_score.py, unchanged), so
+  # its numbers sit beside the other stages' rather than next to them.
+  #
+  # RESEARCH ONLY. There is no execution block here and there must not be one. Phase 0
+  # says why in one line: at the one-session horizon this stage predicts, the gross edge
+  # is smaller than the estimated spread, so nothing here is tradeable as it stands.
+  #
+  # THE SCREEN IS THE EVENT DEFINITION, NOT A SELECTION. "The biggest losers" is the
+  # population, so ranking by the fall and taking the worst K is what the stage studies.
+  # What must not happen is a second cut underneath: every name that clears the floors
+  # and makes the worst K is hunted, one hunter each, and `cap` equals K for that reason.
+  # Hunting the "most interesting" ten of fifteen would be the double-hunt mistake one
+  # level up -- a score assigned before any hunting that nothing downstream can see.
+  cap: 15
+  # Median 20-day dollar volume. The same $200k floor stages E, J, EU and AU screen on,
+  # so four markets and this stage are cut on one number rather than five chosen apart.
+  # BE CLEAR WHAT IT KEEPS: phase 0's selected sample has a median turnover of $1.43m and
+  # a median estimated half-spread of 0.53%, which is a round-trip cost of about 1.06
+  # points against a one-session edge of about 0.35. The floor is not a capacity claim.
+  min_dollar_volume_usd: 200000
+  # Sub-dollar names are tick-constrained and frequently in delisting proceedings, and
+  # their "30% fall" is often two ticks. Phase 0's $1-3 band is the one band whose MEAN
+  # next-session return is positive (+1.18%) while its MEDIAN is still negative (-0.44%),
+  # which is a fat right tail and not an edge.
+  min_price_usd: 1.00
+  # How deep the screener's own percent change is trusted before the bars decide. The
+  # screener is unadjusted, so a 2-for-1 split reads as -50% there; every candidate's
+  # fall is recomputed from adjusted closes and the gap is carried per row.
+  candidates_pre_ranked: 200
+  model: opus
+  # Inherits edge_hunt.conviction_floor unless set. A floor on EMPHASIS in the note,
+  # never a filter on the scores file. It has NOT been earned on this stage's own
+  # resolved days -- there are none -- so it is the US stage's number until there are.
+  conviction_floor: null
+  # The horizon the hunters are asked about and the note is written on. Phase 0 measured
+  # seven; d1 is the research horizon because it resolves in one session and because it
+  # is the one the hunter can reason about. It is NOT the horizon where the money is:
+  # over 749 sessions the drift runs -0.30% at d1, -1.79% at d5 and -5.15% at d21, and
+  # only the long end survives a round-trip spread. If this stage ever places an order,
+  # that decision starts from `book_sweep` and `overlap_check` in phase0-base-rates.json,
+  # not from this key.
+  headline_horizon: d1
+  # The pre-registered hypothesis, recorded here so it cannot be rewritten after the
+  # answer arrives: falls caused by MECHANICAL selling (index deletion, lock-up expiry,
+  # forced liquidation, sympathy) revert, and falls carrying INFORMATION (guidance cut,
+  # failed readout, lost customer) drift. The hunter supplies
+  # `cause.mechanical_vs_informational` on a -100..+100 axis and rev_resolve.py ranks it
+  # as its own column. Nothing in the scorer reads it.
+  pre_registered_hypothesis: mechanical_reverts_informational_drifts
+  # ONE HUNTER PER NAME. Same reason as every other stage: over twelve paired US names
+  # the gap between two hunters predicted neither the error nor whether the sign was
+  # right, and a doubled name carries the largest conviction by construction because the
+  # key is a sum.
+  hunters_per_name: 1
+  language_pass: false          # one English pass; there is no second locality to vary
+  place_orders: false           # and there is no code path that could

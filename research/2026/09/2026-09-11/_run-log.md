@@ -55,3 +55,12 @@
 - FILL QUALITY: CODA filled at 10.10 against a mid at submission of 10.085 — +0.148% versus mid, exactly the half-spread, so it crossed the spread and paid nothing beyond it. No case here for moving orders.entry back to market_on_close.
 - WINDOW NOTE: every name is Monday bmo, so this is a weekend hold — entry at today's close, exit at Monday's close. That is the window edge_resolve.py scores, so the method is intact, but it is three calendar days of exposure rather than an overnight, and the whole book is single-session bmo, so Monday's 'Close AMC' Routine will have nothing to do and the leg exits via stage E's own cls.
 - STALE ROUTINE PROMPT (clock, not contract): the pasted prompt says stage E fires at '14:04 UTC, which is 16:04 Amsterdam and 10:04 New York'. trig_01CvGQJWoKeNLXWCxiffM3ED reads '4 17 * * 1-5' and this session started at 17:05 UTC = 13:05 ET. The prompt's own instruction to re-read the clock with date -u is the only reason that was survivable. The output contract in the prompt is NOT stale — it correctly defers to the skill, and edge-scores.json's ranking_key (impact_sum) matches what was reported. Replacement text is in edge/routine-prompts/edge-hunt.md; a session cannot update the Routine itself.
+
+## Stage R — reversal researcher — SYNTHETIC VALIDATION
+- Logged at 2026-09-22 10:07 UTC
+- Not a run. The chain was exercised end to end with fabricated findings to check the plumbing, on a day chosen because it has already resolved.
+- rev_universe.py --from-drops rebuilt the session from the 3-year harvest: 213 candidate falls, 158 above the $200k / $1 floors, worst 15 hunted, 0 share classes folded.
+- 15 baselines sealed by rev_priced_in.py. No name had a usable option chain, so every anchor_quality.magnitude is the realised-volatility branch at 0.45.
+- Findings are SYNTHETIC and every hunt file carries "SYNTHETIC": true. researcher_us/scripts/edge_score.py scored them UNCHANGED: 15 of 15 rankable, 6 above the 3.0 conviction floor.
+- rev_resolve.py: impact_sum ranked at rho=0.418, perm p=0.127 at d1 — what random findings on one day should do. lean_vs_free_control_rho = -0.075, so the baseline's lean is NOT the free control (the stage J failure mode is absent).
+- NOTHING HERE IS EVIDENCE ABOUT THE HUNT. Do not pool this day.
