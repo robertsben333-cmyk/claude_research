@@ -44,7 +44,7 @@ material below is kept because the live stages reference it, not because it runs
 | CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | AU | `researcher-australia-hunt` | 08:30 | **Stage AU — the Australia researcher.** Same question, ASX, research only, no orders. One English hunting pass and no local-language pass, deliberately. `trig_01Qy7FjBpjY4dEGcZsYGnpt3`, cron `30 6 * * 0-4` = 06:30 UTC **Sunday to Thursday**, after the 16:00 Sydney close. Seals for the NEXT session, because 91% of ASX results land before the open, so the fire that seals for Monday is the Sunday one |
-| R | `researcher-reversal-hunt` | **no Routine yet** | **Stage R — the reversal researcher.** Not an earnings stage: yesterday's biggest US losers, and whether each keeps falling or bounces. Research only, no orders. Phase 0 is measured and checked in; no hunt has resolved. The Routine text is in `researcher_reversal/routine-prompts/reversal-hunt.md` and has NOT been installed — suggested `30 21 * * 1-5`, which must be AFTER the US close |
+| R | `researcher-reversal-hunt` | 23:30 | **Stage R — the reversal researcher.** Not an earnings stage: yesterday's biggest US losers, and whether each keeps falling or bounces, over the next session only. Research only, no orders. `trig_012Dt6bbiL4dJp9r4bpJtWME`, cron `30 21 * * 1-5` = 21:30 UTC, **after the US close**, because the fall it seals is the last completed session and daily bars are not final before then. The Friday fire seals for Monday. Created by a session on 2026-09-22, so `update_trigger` works on it |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 **`list_triggers` IS SCOPED TO THE CALLING ACCOUNT, AND STAGE E IS ON A DIFFERENT ONE.**
@@ -64,10 +64,11 @@ concluding that any Routine is missing, check whether it is one of those two; if
 nothing is wrong. For everything else on this account the original rule stands, and stage N
 and stage C really were disabled from outside this repo on 2026-09-09.
 
-The three Routines this account *can* see and edit are stage J
-(`trig_0192kQeqhumBKpNGzzyQrS1H`), stage EU (`trig_018WGfdq2fUm1ZqJhCGQ1wde`) and stage AU
-(`trig_01Qy7FjBpjY4dEGcZsYGnpt3`, added 2026-09-22), all created by a session, all enabled,
-all editable with `update_trigger`.
+The Routines this account *can* see and edit are stage J
+(`trig_0192kQeqhumBKpNGzzyQrS1H`), stage EU (`trig_018WGfdq2fUm1ZqJhCGQ1wde`), stage AU
+(`trig_01Qy7FjBpjY4dEGcZsYGnpt3`) and stage R (`trig_012Dt6bbiL4dJp9r4bpJtWME`), the last
+two added 2026-09-22 — all created by a session, all enabled, all editable with
+`update_trigger`.
 
 **The research Routines run on Opus.** Stage AU was pinned to `claude-opus-5` at
 creation on 2026-09-22 for the same reason the other two were on 2026-09-19: an empty
@@ -1298,11 +1299,27 @@ makes a historical validation possible at all. **Nothing has resolved in phase 1
 number in `researcher_reversal/README.md` is evidence about the hunt** — it is evidence
 about the market the hunt is being pointed at.
 
-**Its Routine does not exist and was deliberately not created.** The text is in
-`researcher_reversal/routine-prompts/reversal-hunt.md`, suggested `30 21 * * 1-5`, which
-must fire AFTER the US close because the fall it seals is the last completed session and
-daily bars are not final before then. Installing it is a decision to spend fifteen Opus
-hunts a night on a stage with no resolved days, so it is the operator's, not a session's.
+**Its Routine exists since 2026-09-22 on the operator's instruction:
+`trig_012Dt6bbiL4dJp9r4bpJtWME`, cron `30 21 * * 1-5`, enabled, fresh session per fire.**
+It must fire AFTER the US close, because the fall it seals is the last completed session
+and daily bars are not final before then; the Friday fire seals for Monday. It was
+created by a session, so `update_trigger` works on it and
+`researcher_reversal/routine-prompts/reversal-hunt.md` must move in the same commit as
+any re-paste — that file carries the pasted text.
+
+**It came back with an empty `model` and was pinned immediately**, which is the third
+time this has happened on this account: an empty model resolves to the account default,
+and that is how a stage EU hand-fire served `claude-sonnet-5` while its config asked for
+Opus. It now reads `claude-opus-5` and `updated_at` confirms the change. **Check the model
+on any Routine created through this tool**; the create call does not carry it.
+
+Two other things the create response shows, both matching stages J, EU and AU: `sources`,
+`outcomes` and `allowed_tools` all came back empty, which is why step 0 of the prompt
+clones the repo when `CLAUDE.md` is absent; and it stores no MCP connectors, which costs
+this stage nothing because it uses WebSearch, WebFetch and Bash rather than connector
+tools. **`next_run_at` came back as 21:37 rather than 21:30** — the server does not
+schedule it at the literal cron minute, so read the Routine rather than the cron string
+when the exact minute matters.
 
 **One trap worth recording: a new agent definition is not visible to the session that
 wrote it.** The harness loads `.claude/agents/` at session start, so the 2026-09-22
