@@ -247,9 +247,18 @@ thing and must not be mixed.
 fetched page.** `.github/workflows/dashboard.yml` — the first workflow in this repo —
 runs the same `./dashboard/update.sh`, commits `dashboard/` back to `main` and publishes
 the page to GitHub Pages at <https://robertsben333-cmyk.github.io/claude_research/> —
-**which needs Settings → Pages → Source set to *GitHub Actions* once**, because
-`GITHUB_TOKEN` is refused when it asks to create the site; until that is done the
-workflow rebuilds and commits as normal and skips the publish rather than going red. It
+**which needs one switch in Settings → Pages, and has never been flipped**. Two routes
+exist and only one of them is free of the refusal. *GitHub Actions* is what the workflow
+assumes, and `configure-pages` is refused when it must CREATE the site — with
+`continue-on-error` set it then reports `conclusion: success` while `outcome` is failure,
+so the upload and the deploy skip in silence and the run is green. Confirmed on the
+2026-09-22 13:49 UTC run, whose "Pages is off" branch fired while the step showed success.
+*Deploy from a branch* (`main`, `/ (root)`) asks nothing of `GITHUB_TOKEN`, and **`index.html`
+at the repository root exists for it since 2026-09-22**: a redirect to
+`dashboard/dashboard.html` that carries `location.hash` and `location.search` across, so a
+deep link like `#eu/deelmarkt` survives it, plus `.nojekyll`. It is deliberately NOT a copy
+of the dashboard — one generated page, one place. Until somebody flips either switch the
+workflow rebuilds and commits as normal and publishes nothing. It
 fires at 11:40 and 21:40 UTC on weekdays, on a push touching `research/` or the scripts,
 and on demand. The page's own button now knows which of the two worlds it is in: a local
 rebuilder on `127.0.0.1:8765` (**live**) or the workflow (**CI**), and on a fetched page

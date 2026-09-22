@@ -239,7 +239,13 @@ def collect_run(run, spec, problems):
         if meta["market_closed"]:
             meta["quiet_reason"] = f"beurs dicht: {meta['market_closed']}"
         elif not meta["scored"]:
-            meta["quiet_reason"] = "geen edge-scores.json: geen naam gehaald deze dag"
+            # Hunts on disk and no edge-scores.json is a run that is still going,
+            # not a day that produced nothing. The live stage EU run of 09-23 sat
+            # in exactly that state -- four hunts written, scoring not reached --
+            # and the two read identically from here unless the hunts are counted.
+            meta["quiet_reason"] = (
+                f"gejaagd ({len(hunts)} hunts), nog niet gescoord" if hunts
+                else "geen edge-scores.json: geen naam gehaald deze dag")
         else:
             meta["quiet_reason"] = "edge-scores.json zonder ranking-rijen"
             problems.append(f"{rel}: edge-scores.json has no ranking rows")
