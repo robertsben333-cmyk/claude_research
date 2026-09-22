@@ -307,7 +307,7 @@ two hunts on one name start from the same documents.
 | `api.nasdaq.com/.../insider-trades` | Form 4 summary, 3 and 12 month |
 | `clinicaltrials.gov/api/v2` | trial status and primary completion dates |
 | `api.fda.gov` | recalls, adverse events, approvals |
-| `courtlistener.com/api/rest/v4` | federal dockets |
+| `courtlistener.com/api/rest/v4` | federal dockets, **125 requests/day** |
 
 The full-text search is the one that makes the stage work: seven phrases are run against
 each issuer's own filings, twice — once ever, once over the last 550 days, because the
@@ -316,9 +316,20 @@ recent ATM language in 11 of 15 names, going-concern language in 6, a minimum-bi
 clock in 8 and a non-reliance item in 1.
 
 **Three sources do NOT answer from this container and nothing may rest on them**: Nasdaq's
-Listing Center (403), FTSE Russell's index notices (404), Nasdaq's press-release API
-(301). So an index deletion or a delisting notice is only assertable through the issuer's
-own 8-K.
+Listing Center (403), FTSE Russell's index *notices* page (404), Nasdaq's press-release
+API (301). So an index deletion or a delisting notice is only assertable through the
+issuer's own 8-K.
+
+**Two corrections came out of the 2026-09-22 hunts, and both were wrong in the report
+that raised them** — which is the argument for re-probing an agent's claim rather than
+filing it. A hunt reported CourtListener unreachable; it had spent the **125-request daily
+quota** and a re-probe returned 200, so a 429 there means spent, not down. The same hunt
+reported FTSE Russell's quarterly IPO-additions PDF as having no ToUnicode map; it
+downloads at 200, 419 KB, **and it has one**. What fails is this container's reader —
+`eu_pdftext.py` decompresses streams but does not apply CMaps, so a subset-font document
+comes back as font-table bytes. **The fix is a CMap-aware decoder, not another source**,
+and it is not built. Until it is, issuer-level index membership rests on a secondary
+aggregator plus the volume signature, and a finding that uses it has to say so.
 
 **Two labels stop a reader over-trusting a number.** `next_earnings_estimated` is Zacks's
 algorithm over historical reporting dates, served by Nasdaq, not a company announcement —

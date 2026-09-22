@@ -26,12 +26,28 @@ EVERY SOURCE HERE WAS PROBED ON 2026-09-22 AND ANSWERED
 | `api.nasdaq.com/analyst/../earnings-date` | an ALGORITHMIC estimate, see below | 200 |
 | `clinicaltrials.gov/api/v2` | trial status and primary completion dates | 200 |
 | `api.fda.gov` | recalls and adverse events | 200 |
-| `courtlistener.com/api/rest/v4` | federal dockets | 200 |
+| `courtlistener.com/api/rest/v4` | federal dockets | 200, **125 requests/day** |
+
+**CourtListener has a daily quota, and spending it looks like a dead source.** 125
+requests a day across the whole session. A hunt that exhausts it gets HTTP 429 with
+`Rate limit exceeded: 125/day` and, unless it reads the body, will write the docket check
+off as unreachable — which happened on 2026-09-22. Re-probed afterwards it returned 200.
+Budget it: one or two queries per name, and a 429 means spent, not blocked.
 
 **NOT reachable, so nothing may depend on them:** Nasdaq's Listing Center rulebook and
-notices (403), FTSE Russell's index notices (404), Nasdaq's press-release topic API
-(301). An index deletion or a delisting notice therefore has to be found through the
+notices (403), FTSE Russell's index *notices* page (404), Nasdaq's press-release topic
+API (301). An index deletion or a delisting notice therefore has to be found through the
 company's own 8-K, which is the only route this container has.
+
+**And FTSE Russell's quarterly IPO-additions PDF is a near miss worth stating precisely,
+because the obvious diagnosis is wrong.** `final-ipo-additions-3-qtr-r3000.pdf` downloads
+at HTTP 200, 419 KB, and it DOES carry a `/ToUnicode` CMap — the 2026-09-22 hunt reported
+that it did not, and re-probing showed otherwise. What fails is this container's reader:
+`researcher_europe/scripts/eu_pdftext.py` decompresses the streams but does not apply
+CMaps, so on a subset-font document it returns font-table bytes rather than text. So the
+issuer-level index membership that would confirm an `index_or_flow` cause still rests on
+a secondary aggregator plus the volume signature. **The fix is a CMap-aware decoder, not
+another source**, and it is not built; until it is, an index-addition finding says so.
 
 THE EARNINGS DATE IS A CADENCE PRIOR AND IS LABELLED AS ONE
 ------------------------------------------------------------

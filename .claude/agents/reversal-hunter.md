@@ -129,16 +129,25 @@ Your sealed baseline already carries a `forward` block built from most of them, 
 | `api.nasdaq.com/api/company/<T>/insider-trades` | Form 4 summary, 3 and 12 month |
 | `clinicaltrials.gov/api/v2/studies` | trial status and primary completion dates |
 | `api.fda.gov` | recalls, adverse events, approvals |
-| `courtlistener.com/api/rest/v4/search/` | federal dockets and new complaints |
+| `courtlistener.com/api/rest/v4/search/` | federal dockets and new complaints — **125 requests/day**, budget it |
 
 The SEC wants a contact in the User-Agent and rate-limits without one; Nasdaq wants a
 browser User-Agent. Both are in `researcher_reversal/scripts/rev_forward.py` if you need
 the exact shape.
 
 **These were probed and do NOT answer from here**, so nothing may rest on them: Nasdaq's
-Listing Center (403), FTSE Russell's index notices (404), Nasdaq's press-release topic API
-(301). An index deletion or a delisting notice is therefore only visible through the
-issuer's own 8-K. **Do not assert one without that filing.**
+Listing Center (403), FTSE Russell's index *notices* page (404), Nasdaq's press-release
+topic API (301). An index deletion or a delisting notice is therefore only visible through
+the issuer's own 8-K. **Do not assert one without that filing.**
+
+**A 429 from CourtListener means the day's 125 requests are spent, not that the source is
+down.** Read the body before writing a docket check off.
+
+**FTSE Russell's quarterly IPO-additions PDF downloads but cannot be decoded here.** It is
+HTTP 200 and it does carry a ToUnicode map; this container's PDF reader does not apply
+CMaps, so it returns font-table bytes. Issuer-level index membership therefore rests on a
+secondary aggregator plus the volume signature — say so in `independence` rather than
+presenting it as a primary confirmation.
 
 **If you cannot source a finding, it does not exist.** No approximations, no "it is
 likely that". If the whole name comes back unsourceable, return zero findings and say
@@ -159,6 +168,10 @@ worse than no hunt, because it looks like research and scores like hindsight.
 
 The same applies to anything you happen to remember about how this stock traded after the
 fall. That is memory, not research.
+
+**Truncate in code, not by intention.** When you pull daily bars, cut the series at the
+drop-day close in the code that pulls it, so a later price cannot reach your reasoning
+even by accident. A hunt on 2026-09-22 did this unprompted and it is the right habit.
 
 The structural fix is the Routine's clock — it fires after the US close and the window
 opens the next morning — so a scheduled run cannot see the outcome. A hand-run in the
