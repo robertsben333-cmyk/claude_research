@@ -149,3 +149,7 @@
 - NOTHING HUNTED, NOTHING SCORED, no universe or baseline written, no floor/weight/horizon touched. research/2026/09/2026-09-21/reversal/ is left exactly as the build session left it. rev_resolve.py not run: no poolable previous run exists (09-21 is a contaminated 2-name validation).
 - Preflight passed: rev_universe.py, rev_priced_in.py, rev_forward.py, edge_score.py and .claude/agents/reversal-hunter.md all present on main (23ec4f6). Repo was already checked out; no clone needed.
 - Unexplained: WHY this fire landed at 17:57. Either a hand-fire or a scheduler anomaly; read the Routine (trig_012Dt6bbiL4dJp9r4bpJtWME) before the next fire. If fires can land before 20:00 UTC, the prompt should refuse on date -u rather than rely on the cron.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-09-22 18:36 UTC
+- Fired 18:36Z (14:3x ET, inside the Toronto session). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves -> edge_score -> canada-note. No orders.
