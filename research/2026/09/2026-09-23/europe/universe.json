@@ -3,86 +3,255 @@
   "markets": [
     "uk",
     "de",
-    "fr"
+    "fr",
+    "se",
+    "dk",
+    "no",
+    "fi",
+    "it",
+    "es",
+    "pl"
   ],
   "event_date": "2026-09-23",
   "window": "2026-09-23 close of the PREVIOUS session -> 2026-09-23 close, for a `bmo` name; 2026-09-23 close -> next close for an `amc` one. Europe reports before the open: 339 of 379 measured UK results announcements landed before 08:00 London.",
   "fx": {
     "USD": 1.0,
     "source": "https://query1.finance.yahoo.com/v8/finance/chart/<pair>=X",
-    "as_of": "2026-09-19T02:10:47+00:00",
-    "GBP": 1.33935,
-    "EUR": 1.1489,
-    "GBp": 0.0133935,
-    "GBX": 0.0133935
+    "as_of": "2026-09-22T13:43:13+00:00",
+    "GBP": 1.33627,
+    "EUR": 1.146,
+    "SEK": 0.10179,
+    "DKK": 0.15327,
+    "NOK": 0.10604,
+    "PLN": 0.26343,
+    "GBp": 0.0133627,
+    "GBX": 0.0133627
   },
-  "cap": 12,
+  "cap": 20,
   "min_turnover_usd": 200000,
-  "calendar_source": "TradingView public scanner (vendor). Measured phantom rate on the UK: 2 of 90 rows over 20 sampled days. Confirmation is eu_resolve.py's job and event_occurred: false is reachable.",
-  "generated_utc": "2026-09-19T02:10:47+00:00",
+  "calendar_source": "TradingView public scanner (vendor). Measured phantom rate on the UK: 2 of 90 rows over 20 sampled days. Confirmation is eu_resolve.py's job, and whether event_occurred: false is reachable DIFFERS BY MARKET -- see per_market[*].event_occurred_false_reachable. It is false for Germany (EQS has no whole-day query) and for Spain and Poland (no archive reachable at all).",
+  "generated_utc": "2026-09-22T13:43:15+00:00",
   "validation_only": false,
   "per_market": {
     "uk": {
-      "universe_size": 1078,
-      "vendor_total": 1078,
+      "universe_size": 1080,
+      "vendor_total": 1080,
+      "off_primary_exchange_filtered": 0,
       "scheduled_today": 16,
       "market_closed": null,
       "half_session": null,
       "confirmation_source": "Investegate (RNS mirror)",
-      "short_register": "FCA aggregated net short positions"
+      "short_register": "FCA aggregated net short positions",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "observed"
+      },
+      "event_occurred_false_reachable": true
     },
     "de": {
-      "universe_size": 427,
-      "vendor_total": 427,
+      "universe_size": 430,
+      "vendor_total": 430,
+      "off_primary_exchange_filtered": 0,
       "scheduled_today": 1,
       "market_closed": null,
       "half_session": null,
       "confirmation_source": "EQS-News search (per issuer, paginated, back years)",
-      "short_register": "Bundesanzeiger Netto-Leerverkaufspositionen"
+      "short_register": "Bundesanzeiger Netto-Leerverkaufspositionen",
+      "capability": {
+        "archive": "issuer",
+        "register": true,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": false
     },
     "fr": {
-      "universe_size": 591,
-      "vendor_total": 591,
+      "universe_size": 588,
+      "vendor_total": 588,
+      "off_primary_exchange_filtered": 0,
       "scheduled_today": 5,
       "market_closed": null,
       "half_session": null,
       "confirmation_source": "AMF regulated-information flux (info-financiere.gouv.fr)",
-      "short_register": "AMF positions courtes nettes (data.gouv.fr, per-holder history since 2012)"
+      "short_register": "AMF positions courtes nettes (data.gouv.fr, per-holder history since 2012)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": true
+    },
+    "se": {
+      "universe_size": 664,
+      "vendor_total": 895,
+      "off_primary_exchange_filtered": 231,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finansinspektionen aggregerade korta nettopositioner (ODS, snapshot; the date is when the level last changed)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": true
+    },
+    "dk": {
+      "universe_size": 134,
+      "vendor_total": 134,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finanstilsynet aggregerede korte nettopositioner (HTML table, 0.1% threshold)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": true
+    },
+    "no": {
+      "universe_size": 274,
+      "vendor_total": 274,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Oslo Bors NewsWeb (true day query, ticker-keyed, categorised)",
+      "short_register": "Finanstilsynet SSR register (JSON, dated events per issuer)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": true
+    },
+    "fi": {
+      "universe_size": 181,
+      "vendor_total": 181,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finanssivalvonta net short positions (JSON, per holder)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": true
+    },
+    "it": {
+      "universe_size": 389,
+      "vendor_total": 389,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 1,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "eMarket STORAGE (Borsa Italiana OAM; WAF-intermittent, retried)",
+      "short_register": "CONSOB posizioni nette corte (PncPubbl.xlsx, per holder)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": true
+    },
+    "es": {
+      "universe_size": 277,
+      "vendor_total": 277,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "none reachable (CNMV OIR returns 403 from this container)",
+      "short_register": "none reachable (CNMV grid is an ASP.NET postback that returns no rows from this container)",
+      "capability": {
+        "archive": null,
+        "register": false,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": false
+    },
+    "pl": {
+      "universe_size": 383,
+      "vendor_total": 709,
+      "off_primary_exchange_filtered": 326,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "none reachable (GPW and espi.pap.pl both 0 of 8 tries)",
+      "short_register": "none reachable (KNF RssOuterView returns 403)",
+      "capability": {
+        "archive": null,
+        "register": false,
+        "history": "estimated"
+      },
+      "event_occurred_false_reachable": false
     }
   },
-  "scheduled_today": 22,
+  "scheduled_today": 23,
   "selection": {
     "method": "all 9 eligible names (at or under the cap)",
     "seed": "eu-2026-09-23",
     "eligible": 9,
-    "dropped": 13,
+    "dropped": 14,
     "hunted": 9,
     "by_market": {
-      "uk": 7,
+      "uk": 6,
       "de": 1,
-      "fr": 1
+      "fr": 1,
+      "se": 0,
+      "dk": 0,
+      "no": 0,
+      "fi": 0,
+      "it": 1,
+      "es": 0,
+      "pl": 0
     },
-    "basis": "Turnover floor, then a seeded random draw. The floor is $200k/day since 2026-09-19 -- the same bar the US and Japanese stages use, so the three markets are cut the same way. It is NOT a size-band cut: Phase 1 found coverage runs 5-7 analysts at $1-5m of turnover against 16-19 above $25m, and selecting on that band would bake this stage's own thesis into its universe. Turnover and `anchor_covered` ride in every baseline so the resolver can rank performance by band and by whether the name had a positioning anchor at all."
+    "eligible_by_market": {
+      "uk": 6,
+      "de": 1,
+      "fr": 1,
+      "se": 0,
+      "dk": 0,
+      "no": 0,
+      "fi": 0,
+      "it": 1,
+      "es": 0,
+      "pl": 0
+    },
+    "market_concentration": {
+      "largest_market": "uk",
+      "largest_market_share": 0.667,
+      "markets_represented": 4,
+      "basis": "a day whose names are mostly one market is one market's day. The draw is deliberately not stratified; this field is how that shows up in the note and in eu_resolve.py's per_market block."
+    },
+    "basis": "Turnover floor, then a seeded random draw. The floor is $200k/day since 2026-09-19 -- the same bar the US and Japanese stages use, so all ten markets are cut the same way. It is NOT a size-band cut: Phase 1 found coverage runs 5-7 analysts at $1-5m of turnover against 16-19 above $25m, and selecting on that band would bake this stage's own thesis into its universe. Turnover and `anchor_covered` ride in every baseline so the resolver can rank performance by band and by whether the name had a positioning anchor at all."
   },
   "eligible_symbols": [
     "de:KWS",
     "fr:QDT",
+    "it:PHIL",
     "uk:BOKU",
     "uk:CWR",
     "uk:JDG",
     "uk:KOO",
     "uk:RSW",
-    "uk:TIME",
     "uk:W7L"
   ],
   "names": [
     {
       "name": "KWS",
       "description": "KWS SAAT SE & Co KGaA",
-      "close": 76.8,
+      "close": 76.9,
       "currency": "EUR",
-      "market_cap_basic": 2564099899,
-      "average_volume_10d_calc": 10925.5,
+      "market_cap_basic": 2550900101,
+      "average_volume_10d_calc": 8235.3,
       "earnings_release_date": 1778562000,
       "earnings_release_time": -1,
       "earnings_release_next_date": 1790139600,
@@ -98,24 +267,24 @@
       "_market": "de",
       "yahoo_symbol": "KWS.DE",
       "tape": {
-        "spot": 76.5,
+        "spot": 76.9,
         "currency": "EUR",
-        "run_up_20d_pct": 4.37,
-        "run_up_5d_pct": -4.26,
-        "median_turnover_native_20d": 904875,
-        "bars": 38
+        "run_up_20d_pct": 3.5,
+        "run_up_5d_pct": -0.13,
+        "median_turnover_native_20d": 897032,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 1039610
+      "median_turnover_usd_20d": 1027998
     },
     {
       "name": "QDT",
       "description": "Quadient SA",
-      "close": 12.26,
+      "close": 12.48,
       "currency": "EUR",
       "market_cap_basic": 420243642,
-      "average_volume_10d_calc": 82779.2,
-      "earnings_release_date": 1758729000,
-      "earnings_release_time": 1,
+      "average_volume_10d_calc": 81966,
+      "earnings_release_date": 1774440000,
+      "earnings_release_time": 0,
       "earnings_release_next_date": 1790177400,
       "earnings_release_next_time": 1,
       "exchange": "EURONEXT",
@@ -129,22 +298,53 @@
       "_market": "fr",
       "yahoo_symbol": "QDT.PA",
       "tape": {
-        "spot": 12.52,
+        "spot": 12.48,
         "currency": "EUR",
-        "run_up_20d_pct": 1.79,
-        "run_up_5d_pct": -0.32,
+        "run_up_20d_pct": -3.11,
+        "run_up_5d_pct": 0.48,
         "median_turnover_native_20d": 439729,
-        "bars": 38
+        "bars": 40
       },
-      "median_turnover_usd_20d": 505204
+      "median_turnover_usd_20d": 503929
+    },
+    {
+      "name": "PHIL",
+      "description": "Philogen SpA",
+      "close": 23.4,
+      "currency": "EUR",
+      "market_cap_basic": 687207229,
+      "average_volume_10d_calc": 17243.8,
+      "earnings_release_date": 1775649600,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1790164800,
+      "earnings_release_next_time": 0,
+      "exchange": "MIL",
+      "sector": "Health Technology",
+      "country": "Italy",
+      "tv_symbol": "MIL:PHIL",
+      "scheduled_date": "2026-09-23",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "_market": "it",
+      "yahoo_symbol": "PHIL.MI",
+      "tape": {
+        "spot": 23.4,
+        "currency": "EUR",
+        "run_up_20d_pct": -1.89,
+        "run_up_5d_pct": 0.65,
+        "median_turnover_native_20d": 355760,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 407700
     },
     {
       "name": "BOKU",
       "description": "BOKU, Inc.",
-      "close": 122.5,
+      "close": 123,
       "currency": "GBX",
       "market_cap_basic": 349737993,
-      "average_volume_10d_calc": 1149221.4,
+      "average_volume_10d_calc": 1108843,
       "earnings_release_date": 1773730800,
       "earnings_release_time": -1,
       "earnings_release_next_date": 1790164800,
@@ -160,22 +360,22 @@
       "_market": "uk",
       "yahoo_symbol": "BOKU.L",
       "tape": {
-        "spot": 122.5,
+        "spot": 122.0,
         "currency": "GBp",
-        "run_up_20d_pct": 10.36,
-        "run_up_5d_pct": 9.38,
-        "median_turnover_native_20d": 73577880,
-        "bars": 39
+        "run_up_20d_pct": 6.55,
+        "run_up_5d_pct": 1.24,
+        "median_turnover_native_20d": 79425484,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 985465
+      "median_turnover_usd_20d": 1061338
     },
     {
       "name": "CWR",
       "description": "Ceres Power Holdings plc",
-      "close": 410,
+      "close": 416.8,
       "currency": "GBX",
-      "market_cap_basic": 827081764,
-      "average_volume_10d_calc": 1834384.1,
+      "market_cap_basic": 908763565,
+      "average_volume_10d_calc": 1773080.1,
       "earnings_release_date": 1774508400,
       "earnings_release_time": -1,
       "earnings_release_next_date": 1790164800,
@@ -191,24 +391,24 @@
       "_market": "uk",
       "yahoo_symbol": "CWR.L",
       "tape": {
-        "spot": 386.8,
+        "spot": 417.2,
         "currency": "GBp",
-        "run_up_20d_pct": -7.46,
-        "run_up_5d_pct": -4.59,
-        "median_turnover_native_20d": 623645340,
-        "bars": 39
+        "run_up_20d_pct": 2.41,
+        "run_up_5d_pct": 16.15,
+        "median_turnover_native_20d": 651478382,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 8352793
+      "median_turnover_usd_20d": 8705510
     },
     {
       "name": "JDG",
       "description": "Judges Scientific plc",
-      "close": 3800,
+      "close": 3750,
       "currency": "GBX",
-      "market_cap_basic": 253106395,
-      "average_volume_10d_calc": 10915.3,
-      "earnings_release_date": 1758175200,
-      "earnings_release_time": -1,
+      "market_cap_basic": 252773365,
+      "average_volume_10d_calc": 16795.1,
+      "earnings_release_date": 1774958400,
+      "earnings_release_time": 0,
       "earnings_release_next_date": 1790146800,
       "earnings_release_next_time": -1,
       "exchange": "LSE",
@@ -222,22 +422,22 @@
       "_market": "uk",
       "yahoo_symbol": "JDG.L",
       "tape": {
-        "spot": 3800.0,
+        "spot": 3815.0,
         "currency": "GBp",
-        "run_up_20d_pct": -3.55,
-        "run_up_5d_pct": -5.0,
+        "run_up_20d_pct": -3.42,
+        "run_up_5d_pct": -2.55,
         "median_turnover_native_20d": 33403475,
-        "bars": 39
+        "bars": 40
       },
-      "median_turnover_usd_20d": 447389
+      "median_turnover_usd_20d": 446360
     },
     {
       "name": "KOO",
       "description": "Kooth PLC",
-      "close": 187.5,
+      "close": 183.5,
       "currency": "GBX",
-      "market_cap_basic": 67862887,
-      "average_volume_10d_calc": 96515.8,
+      "market_cap_basic": 66592727,
+      "average_volume_10d_calc": 89315.1,
       "earnings_release_date": 1775631000,
       "earnings_release_time": -1,
       "earnings_release_next_date": 1790143200,
@@ -253,22 +453,22 @@
       "_market": "uk",
       "yahoo_symbol": "KOO.L",
       "tape": {
-        "spot": 187.0,
+        "spot": 183.5,
         "currency": "GBp",
-        "run_up_20d_pct": 26.78,
-        "run_up_5d_pct": 5.35,
-        "median_turnover_native_20d": 15883360,
-        "bars": 39
+        "run_up_20d_pct": 24.41,
+        "run_up_5d_pct": -0.81,
+        "median_turnover_native_20d": 17084472,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 212733
+      "median_turnover_usd_20d": 228294
     },
     {
       "name": "RSW",
       "description": "Renishaw plc",
-      "close": 5175,
+      "close": 5475,
       "currency": "GBX",
-      "market_cap_basic": 3761529657,
-      "average_volume_10d_calc": 148996.7,
+      "market_cap_basic": 3968886593,
+      "average_volume_10d_calc": 149966.2,
       "earnings_release_date": 1770793200,
       "earnings_release_time": -1,
       "earnings_release_next_date": 1790143200,
@@ -284,53 +484,22 @@
       "_market": "uk",
       "yahoo_symbol": "RSW.L",
       "tape": {
-        "spot": 5170.0,
+        "spot": 5475.0,
         "currency": "GBp",
-        "run_up_20d_pct": 2.07,
-        "run_up_5d_pct": 3.77,
-        "median_turnover_native_20d": 341680150,
-        "bars": 39
+        "run_up_20d_pct": 8.74,
+        "run_up_5d_pct": 10.43,
+        "median_turnover_native_20d": 387023520,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 4576293
-    },
-    {
-      "name": "TIME",
-      "description": "Time Finance plc",
-      "close": 57.8,
-      "currency": "GBX",
-      "market_cap_basic": 53472343,
-      "average_volume_10d_calc": 236042.4,
-      "earnings_release_date": 1769497200,
-      "earnings_release_time": -1,
-      "earnings_release_next_date": 1790164800,
-      "earnings_release_next_time": 0,
-      "exchange": "LSE",
-      "sector": "Commercial Services",
-      "country": "United Kingdom",
-      "tv_symbol": "LSE:TIME",
-      "scheduled_date": "2026-09-23",
-      "session": "bmo",
-      "session_unresolved": true,
-      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
-      "_market": "uk",
-      "yahoo_symbol": "TIME.L",
-      "tape": {
-        "spot": 57.8,
-        "currency": "GBp",
-        "run_up_20d_pct": 1.05,
-        "run_up_5d_pct": 0.17,
-        "median_turnover_native_20d": 22615890,
-        "bars": 39
-      },
-      "median_turnover_usd_20d": 302905
+      "median_turnover_usd_20d": 5171679
     },
     {
       "name": "W7L",
       "description": "Warpaint London PLC",
-      "close": 222.5,
+      "close": 220,
       "currency": "GBX",
-      "market_cap_basic": 177778020,
-      "average_volume_10d_calc": 177138.8,
+      "market_cap_basic": 175274772,
+      "average_volume_10d_calc": 184138.6,
       "earnings_release_date": 1777464000,
       "earnings_release_time": 0,
       "earnings_release_next_date": 1790143200,
@@ -346,24 +515,24 @@
       "_market": "uk",
       "yahoo_symbol": "W7L.L",
       "tape": {
-        "spot": 223.0,
+        "spot": 218.5275,
         "currency": "GBp",
-        "run_up_20d_pct": 1.36,
-        "run_up_5d_pct": 2.29,
+        "run_up_20d_pct": 0.24,
+        "run_up_5d_pct": -0.67,
         "median_turnover_native_20d": 28758672,
-        "bars": 39
+        "bars": 40
       },
-      "median_turnover_usd_20d": 385179
+      "median_turnover_usd_20d": 384293
     }
   ],
   "dropped": [
     {
       "name": "JD.",
       "description": "JD Sports Fashion Plc",
-      "close": 73.72,
+      "close": 78.66,
       "currency": "GBX",
-      "market_cap_basic": 3635418536,
-      "average_volume_10d_calc": 18834573.600000005,
+      "market_cap_basic": 3514975360,
+      "average_volume_10d_calc": 19830024.400000006,
       "earnings_release_date": 1778133600,
       "earnings_release_time": -1,
       "earnings_release_next_date": 1790143200,
@@ -387,12 +556,12 @@
     {
       "name": "PHAR",
       "description": "Pharos Energy PLC",
-      "close": 29.8,
+      "close": 30,
       "currency": "GBX",
       "market_cap_basic": 123760826,
-      "average_volume_10d_calc": 116747.3,
-      "earnings_release_date": 1758693600,
-      "earnings_release_time": -1,
+      "average_volume_10d_calc": 121732.5,
+      "earnings_release_date": 1774440000,
+      "earnings_release_time": 0,
       "earnings_release_next_date": 1790146800,
       "earnings_release_next_time": -1,
       "exchange": "LSE",
@@ -408,21 +577,53 @@
       "tape": {
         "spot": 30.0,
         "currency": "GBp",
-        "run_up_20d_pct": -0.99,
-        "run_up_5d_pct": 1.35,
-        "median_turnover_native_20d": 5612082,
-        "bars": 39
+        "run_up_20d_pct": 0.0,
+        "run_up_5d_pct": 1.01,
+        "median_turnover_native_20d": 4553670,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 75165,
-      "drop_reason": "below the turnover floor: $75,165 < $200,000 a day"
+      "median_turnover_usd_20d": 60849,
+      "drop_reason": "below the turnover floor: $60,849 < $200,000 a day"
+    },
+    {
+      "name": "AURR",
+      "description": "Aurrigo International PLC",
+      "close": 123.49,
+      "currency": "GBX",
+      "market_cap_basic": 108863148,
+      "average_volume_10d_calc": 117807.7,
+      "earnings_release_date": 1780574400,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1790143200,
+      "earnings_release_next_time": -1,
+      "exchange": "LSE",
+      "sector": "Producer Manufacturing",
+      "country": "United Kingdom",
+      "tv_symbol": "LSE:AURR",
+      "scheduled_date": "2026-09-23",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "_market": "uk",
+      "yahoo_symbol": "AURR.L",
+      "tape": {
+        "spot": 123.49,
+        "currency": "GBp",
+        "run_up_20d_pct": 49.68,
+        "run_up_5d_pct": 6.46,
+        "median_turnover_native_20d": 5007580,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 66914,
+      "drop_reason": "below the turnover floor: $66,915 < $200,000 a day"
     },
     {
       "name": "KETL",
       "description": "Strix Group PLC",
-      "close": 33,
+      "close": 33.3165,
       "currency": "GBX",
-      "market_cap_basic": 65505928,
-      "average_volume_10d_calc": 237023.7,
+      "market_cap_basic": 65406977.99999999,
+      "average_volume_10d_calc": 159259.2,
       "earnings_release_date": 1759212000,
       "earnings_release_time": -1,
       "earnings_release_next_date": 1790164800,
@@ -438,25 +639,57 @@
       "_market": "uk",
       "yahoo_symbol": "KETL.L",
       "tape": {
-        "spot": 33.1,
+        "spot": 33.3165,
         "currency": "GBp",
-        "run_up_20d_pct": -3.22,
-        "run_up_5d_pct": -3.92,
-        "median_turnover_native_20d": 7552754,
-        "bars": 39
+        "run_up_20d_pct": 0.35,
+        "run_up_5d_pct": 0.65,
+        "median_turnover_native_20d": 6815061,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 101157,
-      "drop_reason": "below the turnover floor: $101,158 < $200,000 a day"
+      "median_turnover_usd_20d": 91067,
+      "drop_reason": "below the turnover floor: $91,068 < $200,000 a day"
+    },
+    {
+      "name": "TIME",
+      "description": "Time Finance plc",
+      "close": 57.8022,
+      "currency": "GBX",
+      "market_cap_basic": 53472343,
+      "average_volume_10d_calc": 201715.2,
+      "earnings_release_date": 1769497200,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1790164800,
+      "earnings_release_next_time": 0,
+      "exchange": "LSE",
+      "sector": "Commercial Services",
+      "country": "United Kingdom",
+      "tv_symbol": "LSE:TIME",
+      "scheduled_date": "2026-09-23",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "_market": "uk",
+      "yahoo_symbol": "TIME.L",
+      "tape": {
+        "spot": 57.8022,
+        "currency": "GBp",
+        "run_up_20d_pct": 0.35,
+        "run_up_5d_pct": 0.0,
+        "median_turnover_native_20d": 14161693,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 189238,
+      "drop_reason": "below the turnover floor: $189,238 < $200,000 a day"
     },
     {
       "name": "PMP",
       "description": "Portmeirion Group PLC",
-      "close": 51.5,
+      "close": 50,
       "currency": "GBX",
-      "market_cap_basic": 26493751,
-      "average_volume_10d_calc": 17464.5,
-      "earnings_release_date": 1758780000,
-      "earnings_release_time": -1,
+      "market_cap_basic": 26239004,
+      "average_volume_10d_calc": 13413.6,
+      "earnings_release_date": 1778068800,
+      "earnings_release_time": 0,
       "earnings_release_next_date": 1790164800,
       "earnings_release_next_time": 0,
       "exchange": "LSE",
@@ -470,23 +703,23 @@
       "_market": "uk",
       "yahoo_symbol": "PMP.L",
       "tape": {
-        "spot": 52.0,
+        "spot": 50.0,
         "currency": "GBp",
-        "run_up_20d_pct": 0.97,
-        "run_up_5d_pct": 0.0,
-        "median_turnover_native_20d": 705165,
-        "bars": 39
+        "run_up_20d_pct": -5.66,
+        "run_up_5d_pct": -3.85,
+        "median_turnover_native_20d": 768500,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 9444,
-      "drop_reason": "below the turnover floor: $9,445 < $200,000 a day"
+      "median_turnover_usd_20d": 10269,
+      "drop_reason": "below the turnover floor: $10,269 < $200,000 a day"
     },
     {
       "name": "KRM",
       "description": "KRM22 Plc",
-      "close": 33,
+      "close": 33.75,
       "currency": "GBX",
       "market_cap_basic": 19574353,
-      "average_volume_10d_calc": 10531.9,
+      "average_volume_10d_calc": 10903.1,
       "earnings_release_date": 1778673600,
       "earnings_release_time": 0,
       "earnings_release_next_date": 1790164800,
@@ -502,57 +735,25 @@
       "_market": "uk",
       "yahoo_symbol": "KRM.L",
       "tape": {
-        "spot": 33.0,
+        "spot": 33.75,
         "currency": "GBp",
-        "run_up_20d_pct": 22.22,
-        "run_up_5d_pct": 0.0,
-        "median_turnover_native_20d": 313861,
-        "bars": 39
+        "run_up_20d_pct": 14.41,
+        "run_up_5d_pct": 2.27,
+        "median_turnover_native_20d": 297472,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 4203,
-      "drop_reason": "below the turnover floor: $4,204 < $200,000 a day"
-    },
-    {
-      "name": "PHE",
-      "description": "Powerhouse Energy Group PLC",
-      "close": 0.195,
-      "currency": "GBX",
-      "market_cap_basic": 9987226,
-      "average_volume_10d_calc": 3265252.4,
-      "earnings_release_date": 1694076000,
-      "earnings_release_time": -1,
-      "earnings_release_next_date": 1790164800,
-      "earnings_release_next_time": 0,
-      "exchange": "LSE",
-      "sector": "Utilities",
-      "country": "United Kingdom",
-      "tv_symbol": "LSE:PHE",
-      "scheduled_date": "2026-09-23",
-      "session": "bmo",
-      "session_unresolved": true,
-      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
-      "_market": "uk",
-      "yahoo_symbol": "PHE.L",
-      "tape": {
-        "spot": 0.195,
-        "currency": "GBp",
-        "run_up_20d_pct": -4.88,
-        "run_up_5d_pct": -2.5,
-        "median_turnover_native_20d": 691343,
-        "bars": 39
-      },
-      "median_turnover_usd_20d": 9259,
-      "drop_reason": "below the turnover floor: $9,260 < $200,000 a day"
+      "median_turnover_usd_20d": 3975,
+      "drop_reason": "below the turnover floor: $3,975 < $200,000 a day"
     },
     {
       "name": "DBOX",
       "description": "Digitalbox PLC",
-      "close": 5.25,
+      "close": 4.71,
       "currency": "GBX",
-      "market_cap_basic": 6190978,
-      "average_volume_10d_calc": 122520.5,
-      "earnings_release_date": 1758607200,
-      "earnings_release_time": -1,
+      "market_cap_basic": 6073055,
+      "average_volume_10d_calc": 122336.8,
+      "earnings_release_date": 1774958400,
+      "earnings_release_time": 0,
       "earnings_release_next_date": 1790143200,
       "earnings_release_next_time": -1,
       "exchange": "LSE",
@@ -566,25 +767,25 @@
       "_market": "uk",
       "yahoo_symbol": "DBOX.L",
       "tape": {
-        "spot": 5.25,
+        "spot": 4.71,
         "currency": "GBp",
-        "run_up_20d_pct": 0.0,
-        "run_up_5d_pct": 0.0,
+        "run_up_20d_pct": -15.89,
+        "run_up_5d_pct": -10.29,
         "median_turnover_native_20d": 472762,
-        "bars": 39
+        "bars": 40
       },
-      "median_turnover_usd_20d": 6331,
-      "drop_reason": "below the turnover floor: $6,332 < $200,000 a day"
+      "median_turnover_usd_20d": 6317,
+      "drop_reason": "below the turnover floor: $6,317 < $200,000 a day"
     },
     {
       "name": "DSG",
       "description": "Dillistone Group Plc",
-      "close": 14.8,
+      "close": 13.2501,
       "currency": "GBX",
-      "market_cap_basic": 4781433,
-      "average_volume_10d_calc": 56747.2,
-      "earnings_release_date": 1759212000,
-      "earnings_release_time": -1,
+      "market_cap_basic": 4958523,
+      "average_volume_10d_calc": 46437.4,
+      "earnings_release_date": 1778155200,
+      "earnings_release_time": 0,
       "earnings_release_next_date": 1790164800,
       "earnings_release_next_time": 0,
       "exchange": "LSE",
@@ -598,24 +799,24 @@
       "_market": "uk",
       "yahoo_symbol": "DSG.L",
       "tape": {
-        "spot": 13.5,
+        "spot": 14.0,
         "currency": "GBp",
-        "run_up_20d_pct": 12.5,
+        "run_up_20d_pct": 16.67,
         "run_up_5d_pct": 0.0,
-        "median_turnover_native_20d": 568875,
+        "median_turnover_native_20d": 360513,
         "bars": 39
       },
-      "median_turnover_usd_20d": 7619,
-      "drop_reason": "below the turnover floor: $7,619 < $200,000 a day"
+      "median_turnover_usd_20d": 4817,
+      "drop_reason": "below the turnover floor: $4,817 < $200,000 a day"
     },
     {
       "name": "SUN",
       "description": "Surgical Innovations Group plc",
-      "close": 0.425,
+      "close": 0.4,
       "currency": "GBX",
       "market_cap_basic": 3964469,
-      "average_volume_10d_calc": 32282.3,
-      "earnings_release_date": 1759147200,
+      "average_volume_10d_calc": 19437.2,
+      "earnings_release_date": 1776772800,
       "earnings_release_time": 0,
       "earnings_release_next_date": 1790164800,
       "earnings_release_next_time": 0,
@@ -630,24 +831,24 @@
       "_market": "uk",
       "yahoo_symbol": "SUN.L",
       "tape": {
-        "spot": 0.425,
+        "spot": 0.4,
         "currency": "GBp",
-        "run_up_20d_pct": 0.0,
-        "run_up_5d_pct": 0.0,
-        "median_turnover_native_20d": 7431,
-        "bars": 39
+        "run_up_20d_pct": -5.88,
+        "run_up_5d_pct": -5.88,
+        "median_turnover_native_20d": 6146,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 99,
-      "drop_reason": "below the turnover floor: $100 < $200,000 a day"
+      "median_turnover_usd_20d": 82,
+      "drop_reason": "below the turnover floor: $82 < $200,000 a day"
     },
     {
       "name": "ARVEN",
       "description": "Arverne Group Act",
-      "close": 6.92,
+      "close": 6.64,
       "currency": "EUR",
-      "market_cap_basic": 258090970.00000003,
-      "average_volume_10d_calc": 5528.8,
-      "earnings_release_date": 1758715200,
+      "market_cap_basic": 255089915,
+      "average_volume_10d_calc": 5742.4,
+      "earnings_release_date": 1774440000,
       "earnings_release_time": 0,
       "earnings_release_next_date": 1790177400,
       "earnings_release_next_time": 1,
@@ -662,55 +863,23 @@
       "_market": "fr",
       "yahoo_symbol": "ARVEN.PA",
       "tape": {
-        "spot": 6.9,
+        "spot": 6.64,
         "currency": "EUR",
-        "run_up_20d_pct": -11.99,
-        "run_up_5d_pct": -9.92,
-        "median_turnover_native_20d": 35977,
-        "bars": 38
+        "run_up_20d_pct": -16.16,
+        "run_up_5d_pct": -5.95,
+        "median_turnover_native_20d": 29675,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 41333,
-      "drop_reason": "below the turnover floor: $41,334 < $200,000 a day"
-    },
-    {
-      "name": "ALSEN",
-      "description": "Sensorion SAS",
-      "close": 9.187,
-      "currency": "EUR",
-      "market_cap_basic": 95023771,
-      "average_volume_10d_calc": 12457.27,
-      "earnings_release_date": 1773815400,
-      "earnings_release_time": -1,
-      "earnings_release_next_date": 1790164800,
-      "earnings_release_next_time": 0,
-      "exchange": "EURONEXT",
-      "sector": "Health Technology",
-      "country": "France",
-      "tv_symbol": "EURONEXT:ALSEN",
-      "scheduled_date": "2026-09-23",
-      "session": "bmo",
-      "session_unresolved": true,
-      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
-      "_market": "fr",
-      "yahoo_symbol": "ALSEN.PA",
-      "tape": {
-        "spot": 9.402,
-        "currency": "EUR",
-        "run_up_20d_pct": -32.36,
-        "run_up_5d_pct": -19.12,
-        "median_turnover_native_20d": 133750,
-        "bars": 39
-      },
-      "median_turnover_usd_20d": 153665,
-      "drop_reason": "below the turnover floor: $153,665 < $200,000 a day"
+      "median_turnover_usd_20d": 34007,
+      "drop_reason": "below the turnover floor: $34,008 < $200,000 a day"
     },
     {
       "name": "ALUNI",
       "description": "Unify Group",
-      "close": 1.588,
+      "close": 1.618,
       "currency": "EUR",
-      "market_cap_basic": 90720816,
-      "average_volume_10d_calc": 32551.5,
+      "market_cap_basic": 91952825,
+      "average_volume_10d_calc": 30278.3,
       "earnings_release_date": 1774440000,
       "earnings_release_time": 0,
       "earnings_release_next_date": 1790164800,
@@ -726,24 +895,56 @@
       "_market": "fr",
       "yahoo_symbol": "ALUNI.PA",
       "tape": {
-        "spot": 1.62,
+        "spot": 1.618,
         "currency": "EUR",
-        "run_up_20d_pct": -8.16,
-        "run_up_5d_pct": -4.71,
+        "run_up_20d_pct": -7.75,
+        "run_up_5d_pct": 0.25,
         "median_turnover_native_20d": 31585,
-        "bars": 38
+        "bars": 40
       },
-      "median_turnover_usd_20d": 36288,
-      "drop_reason": "below the turnover floor: $36,288 < $200,000 a day"
+      "median_turnover_usd_20d": 36196,
+      "drop_reason": "below the turnover floor: $36,196 < $200,000 a day"
+    },
+    {
+      "name": "ALSEN",
+      "description": "Sensorion SAS",
+      "close": 8.352,
+      "currency": "EUR",
+      "market_cap_basic": 87221348,
+      "average_volume_10d_calc": 12482.668000000001,
+      "earnings_release_date": 1773815400,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1790164800,
+      "earnings_release_next_time": 0,
+      "exchange": "EURONEXT",
+      "sector": "Health Technology",
+      "country": "France",
+      "tv_symbol": "EURONEXT:ALSEN",
+      "scheduled_date": "2026-09-23",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "_market": "fr",
+      "yahoo_symbol": "ALSEN.PA",
+      "tape": {
+        "spot": 8.352,
+        "currency": "EUR",
+        "run_up_20d_pct": -39.91,
+        "run_up_5d_pct": 3563.16,
+        "median_turnover_native_20d": 122356,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 140219,
+      "drop_reason": "below the turnover floor: $140,220 < $200,000 a day"
     },
     {
       "name": "POXEL",
       "description": "Poxel SA",
-      "close": 0.163,
+      "close": 0.207,
       "currency": "EUR",
-      "market_cap_basic": 8681206,
-      "average_volume_10d_calc": 211458.8,
-      "earnings_release_date": 1733745600,
+      "market_cap_basic": 9744869,
+      "average_volume_10d_calc": 428957.7,
+      "earnings_release_date": 1758628800,
       "earnings_release_time": 0,
       "earnings_release_next_date": 1790164800,
       "earnings_release_next_time": 0,
@@ -758,15 +959,15 @@
       "_market": "fr",
       "yahoo_symbol": "POXEL.PA",
       "tape": {
-        "spot": 0.168,
+        "spot": 0.207,
         "currency": "EUR",
-        "run_up_20d_pct": -15.49,
-        "run_up_5d_pct": -8.5,
-        "median_turnover_native_20d": 45044,
-        "bars": 38
+        "run_up_20d_pct": -3.27,
+        "run_up_5d_pct": 16.29,
+        "median_turnover_native_20d": 46234,
+        "bars": 40
       },
-      "median_turnover_usd_20d": 51751,
-      "drop_reason": "below the turnover floor: $51,751 < $200,000 a day"
+      "median_turnover_usd_20d": 52984,
+      "drop_reason": "below the turnover floor: $52,984 < $200,000 a day"
     }
   ]
 }
