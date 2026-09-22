@@ -63,10 +63,11 @@ warning that it stores no MCP connectors, exactly as stage J's and stage EU's di
 default. Stage J's prompt still has that ordering the other way round and has never been
 fired to find out.
 
-**It will stop at step 0 until `claude/jolly-brown-3dm2xo` is merged to `main`.** The
-code is on the branch; the Routine clones `main`. That failure is loud by design — it
-publishes a run-log line naming the missing file — but it is a failure, and merging is
-the fix.
+**The code reached `main` on 2026-09-22**, fast-forwarded from
+`claude/jolly-brown-3dm2xo`, so the first scheduled fire has a tree to work in. Step 0's
+file check stays: the tell for the two live things stage E lost on 2026-09-15 was always
+a Routine naming something the tree does not have, and a check that has never failed is
+not the same as a check that is unnecessary.
 
 ## What to check on the first fire
 
