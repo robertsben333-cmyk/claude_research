@@ -49,3 +49,10 @@
 ## Stage J — Japan researcher — MARKET CLOSED
 - Logged at 2026-09-22 01:08 UTC
 - 2026-09-22 is 敬老の日 / 国民の休日; universe.json carries market_closed='public holiday: 休日'. Calendar WAS readable (680 rows across 2 JPX sheets, as_of 2026-09-03 & 2026-09-17), scheduled_today=0. This is the exchange-shut case, not an unpublished cohort sheet. No baselines sealed, no hunters spawned, no orders (stage J never places orders). Empty universe + note published. Tokyo reopens 2026-09-24.
+
+## Stage EU — Europe researcher — STARTED
+- Logged at 2026-09-22 13:42 UTC
+- Fired 2026-09-22 13:40 UTC (13:30 cron), European markets still OPEN — the sealed spot is an intraday price, NOT close(D-1). Sealing for the next European trading day, EVENT DATE 2026-09-23 (Europe reports before the open: 339/379 measured UK results RNS landed before 08:00 London).
+- PRIOR RUN FOUND at research/2026/09/2026-09-23/europe/: built 2026-09-19T02:10Z over THREE markets (uk/de/fr) only, 9 eligible, 2 hunted (KWS SAAT, Quadient), 7 UK names shed because that session could not spawn subagents. Its baselines were sealed three sessions before close(D-1), so its spot and run_up_20d_pct are struck on the wrong day for the window eu_resolve.py will measure. It is preserved at europe/_run1-2026-09-19-seal/ (the same treatment the US stage gave 2026-08-31 run 1) and today's run is built fresh.
+- Plan: ten-market universe (uk de fr se dk no fi it es pl), $200k/day turnover floor, cap 20, date-seeded random draw -> seal baselines -> one isolated hunter per name dispatched on submarket via MARKETS[submarket]['hunter'], English pass frozen as pre_local then local pass -> waves of 5, publish after each -> researcher_us/scripts/edge_score.py -> europe-note.md. RESEARCH ONLY: no broker, no orders, no alpaca_trade.py step.
+- Publishing to main with EARNINGS_DATA_BRANCH pinned explicitly; the Routine's stored outcomes branch reads claude/pensive-sagan and has never been observed.
