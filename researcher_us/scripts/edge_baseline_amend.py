@@ -72,7 +72,49 @@ from pathlib import Path
 # Net effect: no verdict changes. The history warnings go to the hunters instead, which
 # is where they can actually affect a number. Rewriting this table to {} rather than
 # leaving the 2026-09-10 entries in place is the point of the staleness guard below.
-AMENDMENTS: dict[str, tuple[str, str, str]] = {}
+AMENDMENTS: dict[str, tuple[str, str, str]] = {
+    "AYTU": ("fits_cadence",
+             "UPGRADE off 'suspect', and it is the only amendment in today's pass. "
+             "It is the CSBR case exactly: a fiscal-calendar false positive, not a "
+             "matcher defect. Aytu has a 30 JUNE year end, so the Q3-to-FY4 gap is "
+             "structurally ~132 days while the Q1/Q2/Q3 gaps are ~70-90, and the "
+             "median of the mixed set (70 days) does not describe the gap being "
+             "tested. The proof is inside the baseline's own history: the previous "
+             "FY print, 2025-09-23, sits exactly 132 days after the 2025-05-14 Q3 "
+             "print -- the identical gap the heuristic is currently calling "
+             "suspect. AYTU is a domestic item-2.02 filer, the seven recorded "
+             "reactions are on exact 8-K acceptance times, and the sweep rates the "
+             "history trustworthy, so there is no history defect to forgive and "
+             "fits_cadence is the honest verdict rather than 'unknown'. Without "
+             "this the name is arithmetically incapable of ranking (rankable=False, "
+             "baseline_quality x0.05) despite a company-confirmed event. NOTE ON "
+             "ORDERING: this pass was run AFTER the hunters rather than before "
+             "them, which is a departure from the skill and is recorded in the run "
+             "log. The evidence it rests on is the sweep's, which was written and "
+             "pushed to main (commit 2f2ab3d) before any hunter launched, and the "
+             "amendment cannot reach the book -- AYTU trades ~$60k/day, below the "
+             "$200k turnover floor, so it is unbuyable either way and this changes "
+             "the research ranking only.",
+             "https://www.biospace.com/press-releases/aytu-biopharma-to-report-fiscal-2026-full-year-and-fourth-quarter-operational-and-financial-results-on-september-22-2026"),
+}
+
+# SYMMETRY, 2026-09-22: one upgrade and no downgrades, which needs stating rather
+# than leaving as an absence. Two names on this run carry cadence_implausible with
+# verdict 'unknown' and BOTH have company-confirmed events, so the instinct is to
+# upgrade them; both are deliberately left alone on the CMCM/LUXE reasoning.
+#   - MANU: foreign private issuer, history basis is 6-K exhibit text matching, and
+#     the inferred median gap is 10 DAYS. The matcher caught club/operational 6-Ks,
+#     the sweep rates the history untrustworthy, and only 2 of 8 rows are plausibly
+#     earnings. Upgrading would hand it a 1.0 event multiplier its history has not
+#     earned.
+#   - WOR: domestic and on exact item-2.02 acceptance times, but the inferred median
+#     gap is 3 DAYS, so the matcher pooled non-earnings item-2.02 filings into the
+#     reaction history. Its hunter independently reached the same conclusion from the
+#     other end -- on the four rows that really are earnings releases the name is
+#     0 of 4 up at a mean of -6.2%, against the baseline's pooled 3-of-8 at a 3.56%
+#     median.
+# Neither is barred from ranking by 'unknown', so the correct action on both is none.
+# Correcting only the name that would score better is how a scorer gets quietly tuned.
 
 _RETIRED_2026_09_10 = {
     "CSBR": ("fits_cadence",
