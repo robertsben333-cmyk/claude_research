@@ -41,6 +41,7 @@ material below is kept because the live stages reference it, not because it runs
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
+| CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. **No Routine exists yet**; the prompt is written for cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, inside the session so the Montréal option chain quotes two-sided |
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
@@ -1273,28 +1274,62 @@ is what turned Quadient's 5%-threshold declaration from a search snippet into a
 quotable primary document.
 See `researcher_europe/README.md` and `researcher_europe/SUBMARKET.md`.
 
-**Canada was measured on 2026-09-22 and is NOT a stage: `researcher_canada/` holds an
-access measurement and nothing else.** The two official surfaces are shut from this
-container and stay shut on the eight-try France protocol — `sedarplus.ca` returns a
-Radware 403 8/8, `ciro.ca` a Cloudflare interstitial 8/8, `sedi.ca` the same 403 — and
-both are reachable through TMX Group's own portal instead. `app-money.tmx.com/graphql`
-is unauthenticated and serves the SEDAR+ filing index with a PDF per filing, a
-consolidated newswire archive with timestamps, the short register, Wall Street Horizon's
-calendar with a CONFIRMED/UNCONFIRMED flag and a session in the event name, and TMX's own
-daily tape; `m-x.ca` serves the listed option chain for 360 underlyings, serially.
-Measured over 374 names above the same $200k floor: the **short register covers 87–88% of
-every turnover band**, matching the FCA register in the $1–5m band (89%) and beating it
-below $1m, where the UK covers 32% of the names that floor adds and JPX 9–11 of 25 at any
-size; the **vendor calendar's phantom rate is 1 in 140** against the US
-`time-not-supplied` 20 of 20, and the release timestamp agrees with the vendor's session
-on 90 of 92 confirmed prints. **Four things are unsettled and a stage must not be built
-over them**: everything but the options comes from one vendor stack, the register has no
-history and an ununderstood `BUSINESS_DATE`, the implied move was only ever priced off
-`last` with Toronto shut, and WSH disagrees with TradingView on 172 of 277 forward dates.
-About a third of the eligible universe also reports by SEDAR+ filing with no press
-release at all, which is a different event shape from the one this method assumes. Read
-`researcher_canada/SOURCES.md`; it ends with the three cheap tests that would have to run
-first.
+**Stage CA is a fourth market, added 2026-09-22: `researcher_canada/`.** The same
+hunt, the same hunter contract and the same scorer
+(`researcher_us/scripts/edge_score.py`, unchanged), run over Toronto — TSX, TSX Venture,
+CSE and NEO. **It places no orders.** Alpaca carries no Canadian venue and there is no
+execution block.
+
+**IT EXISTS FOR ONE MEASUREMENT AND NOT FOR THE CALENDAR.** Canada is the only market in
+this repo where the OPTION-ANCHORED and ANCHOR-LESS regimes run inside ONE DAY'S NAMES:
+the Montréal Exchange lists options on 360 underlyings (96% of names above $25m a day,
+43% at $1–5m, 10% below $1m) while the CIRO short register covers 87–88% of EVERY band.
+`archive/backtest/FINDINGS.md` §33 priced the anchor-less regime at ρ=+0.073, p=0.45 over
+104 events and could NOT separate the anchor from the market it was measured in.
+`ca_resolve.py`'s `by_anchor_covered` holds the market fixed and separates them.
+
+**BOTH OFFICIAL SURFACES ARE SHUT AND THE STAGE DOES NOT USE THEM.** `sedarplus.ca` is a
+Radware 403, `ciro.ca` a Cloudflare interstitial, `sedi.ca` the same 403, all 0 of 8 on
+the France retry protocol. Everything reaches the stage through TMX Group's own
+UNAUTHENTICATED GraphQL endpoint (`app-money.tmx.com/graphql`: the SEDAR+ filing index
+with a PDF per filing, a consolidated newswire archive with timestamps, the short
+register, Wall Street Horizon's calendar with a CONFIRMED/UNCONFIRMED flag, the tape)
+plus `m-x.ca` for the chain, fetched SERIALLY. That is a SINGLE VENDOR STACK: Europe's
+ten markets fail independently, Canada fails all at once, and no second source for the
+register exists anywhere.
+
+**Five measured things the stage is built around**, all in `researcher_canada/SOURCES.md`:
+the register covers 87–88% of every band but has **no history and no date argument**, so
+the level is sealed and the change accumulates from
+`researcher_canada/analysis/short-register/<date>.json`; the chain's bid and ask are
+**zeroes outside 09:30–16:00 ET**, so the implied move is REFUSED rather than priced off
+a stale `last` (a straddle off `last` gave a median 12.5% "implied move"), which is why
+the Routine must fire at **18:30 UTC = 14:30 Toronto**; the two calendars **disagree on
+172 of 277 forward dates**, so every name is graded confirmed / agreed / wsh_only /
+vendor_only / disputed and a disputed date is not hunted unless the issuer itself
+announced it; **about a third of the eligible universe reports by SEDAR+ filing with no
+press release at all** (38 of 39 vendor rows with no same-day release had one), so
+`filing_only` issuers are screened out of the draw; and **there is no consensus EPS
+anywhere in this data**, so the hunter sources the bar itself and caps its sizes when it
+cannot. The phantom rate against the two archives is **1 in 140**, against the US
+`time-not-supplied` 20 of 20, so there is no sweep agent.
+
+**Validated end to end on 2026-08-13 with SYNTHETIC findings**
+(`researcher_canada/analysis/validation-2026-08-13/`): 40 scheduled above the $200k
+floor, 19 sealed and hunted, the shared scorer ranked 19 of 19 unchanged, the resolver
+confirmed **19 of 19 releases by their real wire headline** off TMX's own tape, and the
+random findings ranked at **ρ=−0.146, p=0.55** — what random findings should do, and the
+null a real Canadian number has to beat. `lean_vs_free_control_rho` came out at **0.125**,
+not 1.0, so the lean is a real rival to the free control and Canada does not have the
+defect that makes Spain and Poland unable to beat their own benchmark. **Nothing has
+resolved in Canada and no real hunter has run.** The option arm is untested by a live
+run — that day sealed with Toronto shut, so all 19 names landed on the register arm; the
+two-sided path is covered by `ca_smoke.py` against a fabricated chain, which proves the
+arithmetic and not the feed.
+
+**NO ROUTINE FIRES IT YET.** The prompt is written out in
+`researcher_canada/routine-prompts/canada-hunt.md` at cron `30 18 * * 1-5`. Keep that
+file and any Routine in step in the same commit.
 
 **The five stage 0–4 pipeline Routines were disabled on 2026-09-18** at the operator's
 request, and the stage table's claim that they "do not currently exist" was wrong before
@@ -1332,10 +1367,15 @@ researcher_europe/                     stage EU — see researcher_europe/README
   SUBMARKET.md                         why these markets pooled, with the counts behind
                                        it; section 10 is the 2026-09-19 expansion
   routine-prompts/                     the text in the stage EU Routine
-researcher_canada/                     NOT a stage — an access measurement, 2026-09-22
-  SOURCES.md  README.md                what is reachable in Canada and what is not
-  scripts/                             ca_sources (incl. CAPABILITY), ca_measure
-  analysis/                            ca-source-measurement.json
+researcher_canada/                     stage CA — see researcher_canada/README.md
+  SOURCES.md                           what is reachable in Canada and what is not
+  scripts/                             ca_sources (incl. CAPABILITY), ca_market,
+                                       ca_universe, ca_priced_in, ca_resolve,
+                                       ca_measure, ca_synth_hunts, ca_smoke
+  analysis/short-register/             one snapshot per run; makes the change computable
+  analysis/validation-2026-08-13/      the synthetic end-to-end validation
+  routine-prompts/                     the text for a Routine that does not exist yet
+  LESSONS.md                           deliberately empty until a run resolves
 archive/                               retired 2026-09-18 — see archive/README.md
   backtest/                            the sealed backtest, arms A/B/C + edge-corpus
   claude_naive/                        stage N, disabled 2026-09-09

@@ -142,8 +142,21 @@ class of mistake that made the check necessary after the fact.
 5. **Terms of use.** money.tmx.com is a retail portal, not a published data product. This
    is read-only research traffic at single-name rates and should stay that way. m-x.ca
    refuses at 5 concurrent and answers 8 of 8 serially.
-6. **Nothing here is a result about Canadian prints.** No baseline has been sealed, no
-   hunt has run, nothing has resolved. This is an access measurement and only that.
+6. **Nothing here is a result about Canadian prints.** Stage CA was built on this
+   measurement on 2026-09-22 and validated end to end with synthetic findings, but no
+   real hunter has run and nothing has resolved. This document is what is REACHABLE;
+   `README.md` is what the stage does about it.
+
+**What the stage does with each of the five above, rather than merely disclosing it:**
+the register's missing history becomes a per-run snapshot in
+`analysis/short-register/<date>.json`, so the change exists from the second run and the
+`BUSINESS_DATE` question answers itself; the unverified implied move is **refused** in
+`ca_priced_in.option_anchor()` unless the chain quotes two-sided, which is why the
+Routine is written for 14:30 Toronto rather than an hour convenient to Amsterdam; the
+calendar disagreement is graded per name and ranked by grade in `ca_resolve.py`; the
+filing-only third of the universe is screened out of the draw by
+`ca_market.event_shape()`; and the single vendor stack is stated in the skill as
+something the note must report as ONE outage rather than four.
 
 ## 7. Reproduce it
 

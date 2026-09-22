@@ -49,6 +49,7 @@ WHAT IS NOT SOLVED, AND MUST BE READ BEFORE ANY OF IT IS BELIEVED:
    m-x.ca refuses at 5 concurrent fetches and answers 8 of 8 serially -- fetch it one at
    a time.
 """
+import html
 import json
 import re
 import subprocess
@@ -153,9 +154,14 @@ Q_NEWS_MANY = ("query($symbols:[String!],$page:Int!,$limit:Int!,$locale:String!)
 Q_STORY = ("query($newsid:String!){newsArticle:getNewsStoryById(newsid:$newsid){"
            "headline story datetime source}}")
 Q_WSH = "query($symbols:[String]){quote:getWSHEventData(symbols:$symbols){data}}"
-Q_BARS = ("query($symbol:String!,$start:String,$end:String,$limit:Int){"
-          "getCompanyPriceHistory(symbol:$symbol,start:$start,end:$end,limit:$limit)"
-          "{datetime openPrice closePrice high low volume tradeValue}}")
+# getCompanyPriceHistory SILENTLY CAPS AT 25 ROWS whatever `limit` and `start` say --
+# measured on AGF.B, where a three-year request returned five weeks. It is the charting
+# endpoint that carries the tape: 766 daily rows over the same three years. A truncation
+# that returns a valid-looking short series is exactly the failure this repo keeps
+# paying for, so the capped endpoint is not used at all.
+Q_BARS = ("query($symbol:String!,$fromDate:String,$toDate:String,$freq:String){"
+          "getChartDataBySymbol(symbol:$symbol,fromDate:$fromDate,toDate:$toDate,"
+          "freq:$freq){dateTime open high low close volume}}")
 
 
 def short_interest(symbol):
@@ -179,8 +185,38 @@ def news(symbol, limit=60, page=1, locale="en"):
     """One issuer's consolidated wire feed, newest first, with an ISO timestamp carrying
     the Eastern offset -- so the SESSION is readable off the release itself. Measured
     against the vendor's session flag on 89 confirmed prints: 89 agree, 2 do not."""
-    return gql(Q_NEWS, {"symbol": symbol, "page": page, "limit": limit,
+    rows = gql(Q_NEWS, {"symbol": symbol, "page": page, "limit": limit,
                         "locale": locale}).get("news") or []
+    # The feed carries raw HTML entities ("AGF&#xA0;Management Limited Reports ...").
+    # Left in, they break every headline classifier on a word boundary.
+    for r in rows:
+        for k in ("headline", "summary"):
+            if r.get(k):
+                r[k] = html.unescape(r[k])
+    return rows
+
+
+def news_pages(symbol, pages=3, limit=100, locale="en"):
+    """Several pages of one issuer's feed, oldest-reaching first call last.
+
+    100 items reaches back about six months for a chatty issuer -- AGF publishes monthly
+    AUM releases and its last 100 headlines contained ONE results release. A reaction
+    history two prints long is not a history, so anything that needs one pages."""
+    out, seen = [], set()
+    for p in range(1, pages + 1):
+        try:
+            rows = news(symbol, limit=limit, page=p, locale=locale)
+        except Exception:
+            break
+        if not rows:
+            break
+        for r in rows:
+            k = r.get("newsid")
+            if k in seen:
+                continue
+            seen.add(k)
+            out.append(r)
+    return out
 
 
 def news_for(symbols, limit=100, page=1, locale="en"):
@@ -229,12 +265,29 @@ def earnings_event(symbol, on_or_after=None):
     return sorted(out, key=lambda x: x["date"])[:1]
 
 
-def bars(symbol, start, end, limit=400):
-    """TMX's own daily tape, NEWEST ROW FIRST. Worth preferring over Yahoo for the same reason
-    eu_resolve.py carries `move_pending`: Yahoo's European closes were measured lagging
-    a session with null closes, which makes a run unresolvable the morning after."""
-    return gql(Q_BARS, {"symbol": symbol, "start": start, "end": end,
-                        "limit": limit}).get("getCompanyPriceHistory") or []
+Q_ANALYSTS = ("query($symbol:String!){getCompanyAnalysts(symbol:$symbol){totalAnalysts "
+              "priceTarget{lowPriceTarget highPriceTarget priceTarget priceTargetUpside} "
+              "consensusAnalysts{consensus buy sell hold}}}")
+
+
+def analysts(symbol):
+    """Analyst count, price target and the buy/sell/hold split.
+
+    The count is the `analyst_band` variable stage EU carries, and it is the one number
+    that speaks directly to this repo's thesis about under-read names. There is NO EPS
+    consensus anywhere in this API, which is a real gap: the bar a Canadian print is
+    judged against has to be sourced by the hunter, and the baseline says so rather than
+    leaving a reader to assume it was checked."""
+    return gql(Q_ANALYSTS, {"symbol": symbol}).get("getCompanyAnalysts")
+
+
+def bars(symbol, start, end, freq="day"):
+    """TMX's own daily tape, OLDEST ROW FIRST, as {dateTime, open, high, low, close,
+    volume}. Preferred over Yahoo deliberately: Yahoo answered 429 to every request
+    during the 2026-09-22 build, and its European closes were measured a session stale,
+    which is what forced `move_pending` on stage EU. This is the exchange's own tape."""
+    return gql(Q_BARS, {"symbol": symbol, "fromDate": start, "toDate": end,
+                        "freq": freq}, timeout=60).get("getChartDataBySymbol") or []
 
 
 # --- Montreal Exchange ------------------------------------------------------------
