@@ -70,10 +70,14 @@ The Routines this account *can* see and edit are stage J
 two added 2026-09-22 — all created by a session, all enabled, all editable with
 `update_trigger`.
 
-**The research Routines run on Opus.** Stage AU was pinned to `claude-opus-5` at
-creation on 2026-09-22 for the same reason the other two were on 2026-09-19: an empty
-`model` resolves to the account default and the stage EU hand-fire served
-`claude-sonnet-5` that way.
+**The research Routines run on Opus, and all five read back as `claude-opus-5-5`.**
+Stage AU was pinned at creation on 2026-09-22 for the same reason the other two were on
+2026-09-19: an empty `model` resolves to the account default and the stage EU hand-fire
+served `claude-sonnet-5` that way. **Every one of them was written `claude-opus-5` and every
+one of them stores `claude-opus-5-5`** — stages J, EU, AU, CA and R alike, read back on
+2026-09-22 at 18:22 UTC. The field is normalised to a point release between the write and
+the store, so the pin works and the string does not survive it. Check what a Routine READS,
+never what it was SET to.
 
 **Stage J and stage EU were moved to Opus on 2026-09-19 09:11 UTC.** Stage J and stage EU
 both carried an empty `model`, which resolves to the account default — the stage EU
@@ -1331,19 +1335,40 @@ It was created by a session, so `update_trigger` works on it and
 `researcher_reversal/routine-prompts/reversal-hunt.md` must move in the same commit as
 any re-paste — that file carries the pasted text.
 
-**It came back with an empty `model` and was pinned immediately**, which is the third
-time this has happened on this account: an empty model resolves to the account default,
-and that is how a stage EU hand-fire served `claude-sonnet-5` while its config asked for
-Opus. It now reads `claude-opus-5` and `updated_at` confirms the change. **Check the model
-on any Routine created through this tool**; the create call does not carry it.
+**It came back with an empty `model`, was pinned immediately, and the pin did not take
+the value it was given.** An empty model resolves to the account default, which is how a
+stage EU hand-fire served `claude-sonnet-5` while its config asked for Opus. `claude-opus-5`
+was written; reading the Routine back at 18:22 UTC it serves **`claude-opus-5-5`**, and so
+do stages J, EU, AU and CA, all of which were written the same value. So the model field is
+normalised to a point release somewhere between the write and the store, on every Routine on
+this account. It is the right family and it is not the string in the call — **read the
+Routine back rather than trusting what you set**, the same rule as the cron minute below.
 
-Two other things the create response shows, both matching stages J, EU and AU: `sources`,
-`outcomes` and `allowed_tools` all came back empty, which is why step 0 of the prompt
-clones the repo when `CLAUDE.md` is absent; and it stores no MCP connectors, which costs
-this stage nothing because it uses WebSearch, WebFetch and Bash rather than connector
-tools. **`next_run_at` came back as 21:37 rather than 21:30** — the server does not
-schedule it at the literal cron minute, so read the Routine rather than the cron string
-when the exact minute matters.
+Two other things, and the first has changed since the create response. `sources`, `outcomes`
+and `allowed_tools` came back empty at creation, exactly as stages J, EU and AU did, and
+are **populated now**, with an `outcomes` branch of **`claude/sweet-ritchie`** — the same
+shape as stage EU's `claude/pensive-sagan`, and the same mitigation applies: the prompt
+exports `EARNINGS_DATA_BRANCH=main` explicitly and then verifies its own commit is on
+`origin/main`, because `publish.sh` does a real `git push` and the harness's `outcomes`
+metadata is a different mechanism. Neither field is settable from a session, so clearing the
+branch is the operator's job and the loose end is the same one stage EU carries. And it
+stores no MCP connectors, which costs this stage nothing because it uses WebSearch, WebFetch
+and Bash rather than connector tools. **`next_run_at` is not the literal cron minute** — it
+read 21:37 against `30 21` and reads **19:04:05 against `0 19`**, a stable per-Routine offset
+of about four minutes. Read the Routine when the exact minute matters.
+
+**It fired once at 17:57:12 UTC, four minutes after it was created and under the old
+`30 21` cron, and the cause is not established.** The run SUCCEEDED
+(`cse_01EEesGDMeHxcvhCQ5qE8dqj`, 70 seconds) and it did the right thing: it refused to hunt,
+because 17:57 UTC was 13:57 ET with the 09-22 session still trading, so the close-to-close
+window it would have predicted was open underneath it. It published that refusal to the run
+log, which is why it is legible at all. **A creation-fire is NOT the explanation**: stage CA
+was created through the same tool nine hours earlier and has no `last_fired_at` at all. What
+that fire cost was nothing and what it proves is worth keeping — the clone path works, the
+preflight passes on `main`, and a fire outside its intended hour lands in a session that can
+recognise it. **Under the current prompt the same fire would have been legal**: 13:57 ET is
+inside the 13:30–16:05 ET screen window, and `rev_universe.py --intraday` is the thing that
+enforces the hour now, not the cron.
 
 **One trap worth recording: a new agent definition is not visible to the session that
 wrote it.** The harness loads `.claude/agents/` at session start, so the 2026-09-22
@@ -1764,7 +1789,7 @@ two-sided path is covered by `ca_smoke.py` against a fabricated chain, which pro
 arithmetic and not the feed.
 
 **Its Routine exists since 2026-09-22: `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron
-`30 18 * * 1-5`, enabled, pinned to `claude-opus-5`.** Created from a session, so
+`30 18 * * 1-5`, enabled, pinned to Opus (it reads `claude-opus-5-5`).** Created from a session, so
 `update_trigger` works on it and `researcher_canada/routine-prompts/canada-hunt.md` must
 change in the same commit as any re-paste. **It stores no MCP connectors and its
 `sources`, `outcomes` and `allowed_tools` all came back empty**, exactly as stage J's and
