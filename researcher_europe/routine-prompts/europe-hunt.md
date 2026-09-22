@@ -140,8 +140,10 @@ The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-09-1
 >
 > **The day's research goes on `main`.** `scripts/publish.sh` pushes to
 > `${EARNINGS_DATA_BRANCH:-main}`, so the default is already right — but this Routine's
-> stored `outcomes` branch is NOT `main` (it reads `claude/pensive-sagan`), and nobody
-> has yet watched a fire to see which destination the work lands on. So do not rely on
+> stored `outcomes` branch is NOT `main`, and it is not even a fixed value: it read
+> `claude/pensive-sagan` on 2026-09-19 and `claude/clever-gates` on 2026-09-22, and the
+> stage CA and AU Routines carry their own different ones. It is assigned outside this
+> repo and it rotates, so no prompt can name it correctly for long. So do not rely on
 > the default: **pin the variable, and say in the run log where you pushed.**
 >
 > ```bash
