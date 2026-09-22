@@ -861,8 +861,22 @@ def main():
     check("event_occurred: false is unreachable where no archive exists",
           not em.false_reachable("es") and not em.false_reachable("pl")
           and not em.false_reachable("de"))
-    check("event_occurred: false is reachable where a day archive exists",
-          all(em.false_reachable(m) for m in ("uk", "fr", "no", "it", "se")))
+    check("event_occurred: false is reachable where a UNIVERSAL day archive exists",
+          all(em.false_reachable(m) for m in ("uk", "fr", "no", "se")))
+    # ITALY IS THE EXCEPTION AND IT WAS MEASURED, not assumed. This assertion used to
+    # include "it", on the belief that a day archive implies a kill is reachable. On
+    # 2026-09-22 PHILOGEN was found absent from eMarket STORAGE's issuer dropdown and
+    # from day queries on three dates it is known to have filed, while the archive read
+    # fine each time -- so eMarket STORAGE is not universal across Italian issuers and
+    # "carries the day and not this issuer" is not evidence of silence there. A day
+    # archive is necessary for a kill and not sufficient; `universal` is the rest.
+    check("Italy cannot kill on absence: its day archive is not universal",
+          em.capability("it", "archive") == "day"
+          and em.capability("it", "universal") is False
+          and not em.false_reachable("it"))
+    check("every other market is universal unless measured otherwise",
+          all(em.capability(m, "universal") for m in
+              ("uk", "de", "fr", "se", "dk", "no", "fi", "es", "pl")))
     check("a market with no archive returns None, not an empty day",
           earch.day("es", "2026-09-17") is None
           and earch.day("pl", "2026-09-17") is None)

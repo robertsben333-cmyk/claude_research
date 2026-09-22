@@ -663,6 +663,22 @@ def confirm(market, d, issuer_name, ticker=None, archive=None, issuer_query=None
             return None, ("no EQS release found for this issuer on the date; EQS is "
                           "searched per issuer, so a name that does not match its EQS "
                           "spelling looks identical to silence")
+        if market == "it":
+            # MEASURED 2026-09-22. eMarket STORAGE is Borsa Italiana's appointed storage
+            # mechanism but not the only authorised one, and it does not carry every
+            # issuer: PHILOGEN is absent from its `azienda` dropdown, and day queries on
+            # three dates it is known to have filed (2025-09-23, 2026-03-27, 2026-08-17)
+            # returned 33, 99 and 24 rows with no Philogen row on any. The archive read
+            # fine each time, so absence here is NOT silence, and killing on it is the
+            # TRT mistake inverted -- retiring a name that did report. Two exchange-side
+            # substitutes answered first try and are where an Italian check should go:
+            # borsaitaliana.it/azioni/documenti/calendariobilancidividendi/CDA_today.pdf
+            # (forward board meetings, every issuer) and the per-ISIN news list.
+            return None, ("eMarket STORAGE carries the day and not this issuer, which "
+                          "for Italy is NOT a kill: the mechanism is not universal "
+                          "across Italian issuers (measured 2026-09-22 on PHILOGEN, "
+                          "absent on three known filing dates). Check Borsa Italiana's "
+                          "own CDA list or the per-ISIN news feed by hand.")
         return False, f"{MARKETS[market]['confirm_name']} carries the day and not this issuer"
     hit = next((r for r in mine if r["is_results"]), None)
     if hit:
