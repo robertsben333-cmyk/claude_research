@@ -153,3 +153,8 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-09-22 18:36 UTC
 - Fired 18:36Z (14:3x ET, inside the Toronto session). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves -> edge_score -> canada-note. No orders.
+
+## Stage CA — Canada researcher — DONE (empty day)
+- Logged at 2026-09-22 18:37 UTC
+- Universe: 2505 scanner rows, 17 in window, 2 scheduled (vendor_only 2), 0 eligible, 0 hunted. market_closed null — TSX open; both scheduled names (MMY $147k, SR $9k filing_only) below the $200k turnover floor. No baselines sealed, no hunters spawned, no scoring.
+- FX fell back to constant CADUSD 0.71 (Yahoo did not answer); not decisive for either drop. TMX stack answered. Pre-existing short-register/2026-09-22.json holds a single all-null AGF.B row — not a usable first snapshot.
