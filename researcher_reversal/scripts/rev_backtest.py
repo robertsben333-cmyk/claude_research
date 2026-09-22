@@ -478,6 +478,22 @@ def main():
                                [0, 0.25, 0.75, 2.0],
                                ["<0.25%", "0.25-0.75%", "0.75-2%", ">2%"], HEADLINE),
     }
+    # THE SAME TWO CUTS AT THE LONG HORIZON, because the drift that survives cost is
+    # at d10-d21 and the d1 table cannot say whether it is about the FALL or only about
+    # the kind of stock that falls. If depth of fall still orders the drift at d21, the
+    # effect is about the event; if it flattens, this is a small-and-illiquid factor
+    # wearing a losers screen.
+    rep["cuts_long_horizon"] = {}
+    for h in ("d5", "d21"):
+        rep["cuts_long_horizon"][h] = {
+            "by_drop_size": band(flat, lambda r: r["ret_d_pct"],
+                                 [-1e9, -40, -25, -15, -10, -7.5],
+                                 ["<=-40%", "-40..-25", "-25..-15", "-15..-10",
+                                  "-10..-7.5", "-7.5..-5"], h),
+            "by_turnover": band(flat, lambda r: r["dv_med20"],
+                                [0, 1e6, 5e6, 25e6, 1e8],
+                                ["<$1m", "$1-5m", "$5-25m", "$25-100m", ">$100m"], h),
+        }
     sectors = sorted({r["sector"] for r in flat if r["sector"]})
     rep["cuts"]["by_sector"] = sorted(
         [describe([_fwd(r, HEADLINE) for r in flat if r["sector"] == s], s)

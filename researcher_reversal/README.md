@@ -146,6 +146,37 @@ Two things follow and both are uncomfortable for the stage:
 
 ---
 
+## 5b. Is it the fall, or just the kind of stock that falls?
+
+The one-session table cannot tell those apart, and the drift that survives cost lives
+at ten to twenty-one sessions. So the same two cuts, at 21 sessions:
+
+| by size of fall | n | mean | median | rose |
+| --- | --- | --- | --- | --- |
+| ≤ −40% | 895 | **−13.76%** | −21.68% | 28.6% |
+| −40 to −25% | 2,658 | −9.01% | −12.34% | 34.1% |
+| −25 to −15% | 5,657 | −2.60% | −9.97% | 35.3% |
+| −15 to −10% | 1,561 | −2.38% | −9.26% | 35.2% |
+
+**Monotonic in the depth of the fall, and steeper than at one session.** So the drift is
+about the event, not only about the kind of company that has these events. Good.
+
+| by turnover | n | mean at 21 sessions | rose |
+| --- | --- | --- | --- |
+| < $1m a day | 4,601 | −5.18% | 31.3% |
+| $1–5m | 3,201 | −6.34% | 31.9% |
+| $5–25m | 1,845 | −5.67% | 37.9% |
+| $25–100m | 796 | −3.08% | 45.2% |
+| **> $100m** | 492 | **+1.65%** | 48.8% |
+
+**And here is the one place a rebound thesis survives.** Above $100m a day the drift is
+gone and turns slightly positive, and at five sessions that band is **+2.05% with
+t=2.06** — the only positive cell in the whole cut table. Large, liquid stocks that fall
+hard do bounce a little; small ones keep falling. The stage's own screen sits at a
+median turnover of $1.43m, which is the wrong side of that line, and 492 events is a
+thin basis for the claim. It is recorded because it is the kind of thing that gets
+remembered wrongly, and because it is the natural next screen to test.
+
 ## 6. Could it be traded? Only at the long end, only short, and only with caveats
 
 Equal-weight the worst 15 each session, one book per day, charged one round trip at the
