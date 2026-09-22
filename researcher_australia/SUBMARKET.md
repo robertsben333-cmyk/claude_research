@@ -31,7 +31,21 @@ declined on **reachability**, which is the axis this repo keeps paying for:
 | `ciro.ca` | the short register | **0 of 7, Cloudflare challenge** |
 | `tsx.com` company directory | reference data | 3 of 3 |
 
-So Canada today is Spain and Poland from stage EU: no positioning anchor and no way to
+**SUPERSEDED ON 2026-09-22, ON THE AXIS THAT MATTERED, AND STAGE CA NOW EXISTS.** Both
+hosts are still shut and were re-tested on the France protocol (`sedarplus.ca` 0 of 8,
+`ciro.ca` 0 of 8, `sedi.ca` 0 of 8) — the premise below was wrong not about the hosts but
+about them being the only route. TMX Group's own unauthenticated GraphQL endpoint serves
+the SEDAR+ filing index, a consolidated newswire archive and the CIRO short register,
+which covers **87–88% of every turnover band**, and the Montréal Exchange serves an
+option chain for 360 underlyings. So Canada is not Spain and Poland: it has the
+best-covered positioning anchor in the repo and a measured phantom rate of 1 in 140. See
+`researcher_canada/SOURCES.md`. **None of that weakens the case for Australia** — the
+counts in this section stand, the seasonal-complement argument stands, and the two stages
+now run side by side. What it does retire is one of the four kill conditions below.
+
+The paragraph as written on 2026-09-21, kept for the record:
+
+> So Canada today is Spain and Poland from stage EU: no positioning anchor and no way to
 reach `event_occurred: false`. EDGAR does not rescue it for the band this stage targets —
 only 166 of 456 eligible Canadian names match an EDGAR ticker, and that **36% is an upper
 bound** because bare-ticker matching collides with US issuers. By turnover band it is 31%
@@ -264,9 +278,11 @@ ones and read as evidence. `unpriced-hunter-au` therefore has no `pre_local` fie
 - **`lean_vs_free_control_rho` stays near 0.8.** The lean is then not an anchor, it is the
   free control with extra steps. The fix is a re-weighting that measurement chooses, not an
   edited constant.
-- **Canada's sources open.** `sedarplus.ca` and `ciro.ca` were both refused on every attempt
-  here, but France's `data.gouv.fr` was written off on four connection resets and later found
-  to answer one request in three. Re-test before treating 0 of 7 as permanent.
+- ~~**Canada's sources open.**~~ **THIS ONE FIRED, on 2026-09-22.** The hosts stayed shut
+  on a proper eight-try re-test, but the data behind them turned out to be reachable
+  through TMX and the Montréal Exchange, and stage CA was built on it the same day. This
+  is no longer a condition to watch; it is a thing that happened, and the two stages are
+  now complements rather than alternatives.
 - **The off-season is emptier than this file expects.** If the stage publishes empty
   universes for most of October to January, the honest answer is to run it seasonally rather
   than daily.

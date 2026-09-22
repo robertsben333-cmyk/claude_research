@@ -1378,6 +1378,13 @@ is what turned Quadient's 5%-threshold declaration from a search snippet into a
 quotable primary document.
 See `researcher_europe/README.md` and `researcher_europe/SUBMARKET.md`.
 
+**`researcher_australia/SUBMARKET.md` §1 says Canada "was declined on reachability" and
+that premise is superseded, which is recorded in that file rather than left to disagree.**
+Both Canadian hosts really are shut and were re-tested 0 of 8 each; what was wrong was
+treating them as the only route. That is also one of the four kill conditions stage AU
+wrote down for itself, and it fired — the two stages are complements now, not
+alternatives, and nothing in Australia's own counts changed.
+
 **Stage CA is a fourth market, added 2026-09-22: `researcher_canada/`.** The same
 hunt, the same hunter contract and the same scorer
 (`researcher_us/scripts/edge_score.py`, unchanged), run over Toronto — TSX, TSX Venture,
@@ -1492,7 +1499,7 @@ researcher_canada/                     stage CA — see researcher_canada/README
                                        ca_measure, ca_synth_hunts, ca_smoke
   analysis/short-register/             one snapshot per run; makes the change computable
   analysis/validation-2026-08-13/      the synthetic end-to-end validation
-  routine-prompts/                     the text for a Routine that does not exist yet
+  routine-prompts/                     the text in the stage CA Routine
   LESSONS.md                           deliberately empty until a run resolves
 archive/                               retired 2026-09-18 — see archive/README.md
   backtest/                            the sealed backtest, arms A/B/C + edge-corpus
