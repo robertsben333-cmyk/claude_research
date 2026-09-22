@@ -41,3 +41,7 @@
 - Also noted: ABCA's `print_vs_bar_pct` is +25.0, an order-of-magnitude outlier struck against an H1 share of an unrevised FY consensus on 2 analysts. It does not affect the rank — `impact_sum` is the key — but it should not be quoted bare.
 - Resolve: all nine are uk/fr, both of which have a dated day archive, so **this run does not expire** (no Nordic ~12-day window applies). Yahoo's `.L` closes lag one session and `.PA` about two, so it cannot be resolved on the morning of 09-23.
 - Research only: no order placed, no broker contacted, no `alpaca_trade.py` step. Published to **main** with EARNINGS_DATA_BRANCH pinned explicitly.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-09-22 01:07 UTC
+- Fired 01:04 UTC (10:04 JST) for the Tokyo window. Plan: jp_universe → seal baselines → one unpriced-hunter-jp per name in waves of 5 → edge_score → ranked note. NO orders. Note: 2026-09-22 is 敬老の日, expect market_closed.
