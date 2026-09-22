@@ -66,9 +66,10 @@ and stage C really were disabled from outside this repo on 2026-09-09.
 
 The Routines this account *can* see and edit are stage J
 (`trig_0192kQeqhumBKpNGzzyQrS1H`), stage EU (`trig_018WGfdq2fUm1ZqJhCGQ1wde`), stage AU
-(`trig_01Qy7FjBpjY4dEGcZsYGnpt3`) and stage R (`trig_012Dt6bbiL4dJp9r4bpJtWME`), the last
-two added 2026-09-22 — all created by a session, all enabled, all editable with
-`update_trigger`.
+(`trig_01Qy7FjBpjY4dEGcZsYGnpt3`), stage CA (`trig_01Qv4Yyo6K8K3nNyGbiESeAv`) and stage R
+(`trig_012Dt6bbiL4dJp9r4bpJtWME`) — **five**, the last three added 2026-09-22, all created
+by a session, all enabled, all editable with `update_trigger`. This line has said three
+and four on its way to five; check `list_triggers` rather than trusting the count.
 
 **The research Routines run on Opus, and all five read back as `claude-opus-5-5`.**
 Stage AU was pinned at creation on 2026-09-22 for the same reason the other two were on
@@ -1451,6 +1452,16 @@ EU's Routine does NOT have empty `sources`, `outcomes` and `allowed_tools` any m
 update response returns a populated `session_request.config` with a `git_repository`
 source for this repo, a full `allowed_tools` preset, and an **`outcomes` branch of
 `claude/pensive-sagan`**. So a fired session does get a checkout.
+
+**AND THE OUTCOME BRANCH ROTATES, SO IT IS NOT A LOOSE END TO CLEAR (2026-09-22).** Read
+back from every editable Routine while the bilingual-pass prompts were being re-pasted:
+stage EU carries **`claude/clever-gates`** where it read `claude/pensive-sagan` three days
+earlier, stage CA `claude/affectionate-mendel`, stage AU `claude/tender-brahmagupta`. It is
+assigned outside this repo, per Routine, and it CHANGES — so no prompt can name it
+correctly for long, and the paragraph below asking the operator to clear it in the UI is
+chasing a moving value. `EARNINGS_DATA_BRANCH=main` is the whole fix and it is already in
+the EU, CA and AU prompts. Read the rest of this paragraph as the mechanism, not as an
+outstanding job.
 
 **THE OUTCOME BRANCH CANNOT BE CHANGED FROM A SESSION, AND THE PROMPT NOW PINS THE
 DESTINATION INSTEAD (2026-09-21).** `update_trigger` takes only `name`,
