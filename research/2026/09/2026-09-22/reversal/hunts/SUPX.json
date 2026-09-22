@@ -1,0 +1,72 @@
+{
+  "ticker": "SUPX",
+  "drop_date": "2026-09-22",
+  "window": {"from": "close of 2026-09-22", "to": "close of 2026-09-23"},
+  "expected_move_pct": 0.8,
+  "conviction_note": "No cause and nothing dated in the window was found. The only finding is a small positive one: an active issuer buyback with about $19m of room, which bought on the last dip below $8. The number stays at the finding's +0.8 rather than being pulled up to this name's own median rebound of +4.85% after comparable falls, because that history has no mechanism. It is not pulled down to the high-ATR prior either, because volume was ordinary (1.58x).",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.8,
+  "print_vs_bar_pct": 0.0,
+  "bar": "The name's own 27 comparable falls (median next close +4.85%, 66.7% up, median absolute move 6.7%) and the cross-section prior of -0.35%, both from the sealed baseline /home/user/claude_research/research/2026/09/2026-09-22/reversal/baselines/SUPX.json. There is no option chain.",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 0,
+    "confidence_pct": 20,
+    "what_happened": "SUPX fell 16.6% entirely intraday (no gap) on 1.58x normal volume by 15:05 ET on 2026-09-22. There was no 6-K after 2026-09-08 on EDGAR, no press release dated 09-22 in the aggregators, and no sector sell-off (tech was green that day). It reads as a high-ATR name (14-day ATR 13.6%) giving back its +11.3% five-day run-up.",
+    "evidence": [
+      {"claim": "Latest EDGAR filing is a 6-K accepted 2026-09-08 11:50 UTC (a CIO employment agreement). Nothing was filed on 09-22.", "url": "https://data.sec.gov/submissions/CIK0001897087.json", "timestamp": "2026-09-22"},
+      {"claim": "News list ends with a buyback update on 09-09 and a 'drops over 2%' item on 09-11. There is nothing dated 09-22.", "url": "https://www.marketbeat.com/stocks/NASDAQ/SUPX/news/", "timestamp": "2026-09-22"},
+      {"claim": "The tech sector (XLK/QQQ) traded green on 2026-09-22, so this was not a sector-wide tech sell-off.", "url": "https://247wallst.com/investing/2026/09/22/cisco-sinks-6-while-the-tech-sector-rises-arista-and-ciena-hold-flat/", "timestamp": "2026-09-22"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 20,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "None found inside the window. The nearest dated item is the Woodman $38.8m B300 cluster delivery in mid-November 2026. The FY2026 (June year-end) 20-F is due by 2026-10-31 and has no announced date.",
+    "what_would_change_my_mind": "A 6-K filed overnight on 09-22/09-23 announcing a registered offering, a private placement, warrant issuance or a lost order would flip the sign. So would an F-3/424B, which this issuer has never filed and which would therefore be new."
+  },
+  "positioning_check": "Nasdaq/FINRA settlement 2026-08-31: 697,905 shares short, 1.26 days to cover, +7.6% on 08-14 (648,758). This data is three weeks stale, so the position carried into the fall is not observable (https://api.nasdaq.com/api/quote/SUPX/short-interest?assetclass=stocks). Float was not sourced from a primary document. Insider Form 4 activity: zero trades in 3 and 12 months (https://api.nasdaq.com/api/company/SUPX/insider-trades). No options market, so no skew.",
+  "findings": [
+    {
+      "finding": "SuperX has an active $20m 2026 repurchase program authorised 2026-08-06, of which only about $0.97m had been used by 2026-09-08. It bought 119,360 shares at $7.7691 on 09-08, the last time the stock dipped below $8, so the issuer is a price-sensitive buyer with about $19m of room at a spot of $7.375 during the 09-23 session.",
+      "leg": "new_information",
+      "mechanism_in_window": "The authorisation is live through August 2027 and the company has bought on dips before (09-02 and 09-08, each disclosed within days). With spot about 5% below its last repurchase price, the 09-23 session is the first one in which it can bid at this level. The buying itself is not dated, which is why the size is small.",
+      "expected_impact_pct": 0.8,
+      "impact_low_pct": 0.0,
+      "impact_high_pct": 2.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-09-23",
+      "reaction_history_on_this_line": "After the 2026-09-01 fall of -13.04% the next close was +3.59%, and the 09-08 repurchase followed within the week. The 09-10 buyback-update release was followed by a 'drops over 2%' headline on 09-11 (cn.investing.com via marketbeat), so the announcement alone has not lifted the stock.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1897087/000121390026096966/ea030453801ex99-1.htm",
+      "source_date": "2026-09-03",
+      "why_not_priced": "The close prices a stock with no stated buyer. What the tape has not taken is an issuer bid of up to about $1m a session, set against a 20-day median of $7.8m a day in turnover. If it were priced, the fall would have stopped near the $7.77 repurchase level rather than going through it.",
+      "independence": "The 09-09 release gives the 09-08 repurchase of 119,360 shares at $7.7691: https://macaubusiness.com/superx-announces-an-update-on-the-progress-of-share-repurchases-program-to-demonstrate-confidence-in-long-term-growth-value-2/"
+    }
+  ],
+  "outside_window": [
+    {"finding": "Woodman $38.8m NVIDIA B300 cluster order, scheduled for delivery in mid-November 2026. Revenue recognition or a delivery release would land then.", "expected_impact_pct": 2.0, "resolves_by": "2026-11-15", "source": "https://www.sec.gov/Archives/edgar/data/1897087/000121390026096966/ea030453801ex99-1.htm"},
+    {"finding": "FY2026 (June year-end) 20-F due by 2026-10-31, going by last year's 2025-10-31 20-F. No date has been announced. Trailing losses are large (about $90.9m TTM per Simply Wall St).", "expected_impact_pct": -2.0, "resolves_by": "2026-10-31", "source": "https://www.sec.gov/Archives/edgar/data/1897087/000121390025104687/ea0262729-20f_superxai.htm"},
+    {"finding": "Warrants from the 2025 Reg S private placements (for example 365,385 warrants attached to the 1,096,154 shares at $13.00 placed around Nov/Dec 2025) are overhang only if exercise prices are reached. The Reg S resale restrictions lapsed around mid-2026. Neither is dated inside the window.", "expected_impact_pct": 0.0, "resolves_by": "2027-01-01", "source": "https://www.sec.gov/Archives/edgar/data/1897087/000121390025121868/ea026847901ex10-1_superx.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions: no filing after the 2026-09-08 6-K, so no drop-day 6-K (https://data.sec.gov/submissions/CIK0001897087.json)",
+    "EDGAR full text 'registration statement' 2025-09 to 2026-09: no F-1, F-3, S-8 or 424B filings, only Reg S private-placement 6-Ks from 2025 (https://efts.sec.gov/LATEST/search-index?q=%22registration%20statement%22&ciks=0001897087)",
+    "Baseline text probes: no ATM language in 550 days, no going-concern, no minimum-bid, no reverse split, no non-reliance",
+    "EDGAR full text 'SuperX' 09-09 to 09-22: HTTP 500. browse-edgar atom: HTTP 503",
+    "Company IR pages superx.gcs-web.com/news-releases and superx.sg/news: HTTP 503. The nasdaq.com press-release page: HTTP 503",
+    "WebSearch for a 09-22 cause (English and Chinese): nothing dated 09-22",
+    "Sector check: no AI-infrastructure sell-off on 09-22 (247wallst, tech green)",
+    "Contamination: quote snippets appeared in search results (tradingkey '7.110 -0.750%', MEXC '$8.12', trendlyne 'down 14.18%') with no timestamp or an earlier one. None was used, and any that could post-date the 15:05 ET screen instant was discarded.",
+    "The '09-17' repurchase-update date in one search summary could not be confirmed. The fetched release carries 09-09/09-10 and only the 09-08 purchase, so no repurchase after 09-08 is asserted."
+  ],
+  "baseline_tension": "The small positive agrees with the ordinary volume (1.58x, where the under-2x bucket averages +1.46%) and with this name's own history of comparable falls (+4.85% median, 66.7% up). It cuts against the 13.6% ATR, the strongest free ranker saying high-volatility names keep falling. That tension, plus no identifiable cause, is why the number is held at the finding's size and not lifted toward the own-history median.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.8,
+    "expected_move_pct": 0.8,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [0.8]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
