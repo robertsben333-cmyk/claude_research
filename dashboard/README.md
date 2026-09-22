@@ -34,6 +34,11 @@ dashboard/
 | **trades** | every position the account opened and closed, matched from the fill stream | Alpaca `/v2/account/activities/FILL` |
 | **account** | the equity curve as the broker reports it | Alpaca portfolio history |
 
+A fourth thing sits beside those three and is not one of them: the **markets** level in
+`data/markets.json`, the research record of stages EU, J, AU and CA. Those stages place
+no orders, so it has names and no trades and no equity curve. See "The markets that place
+no orders" below.
+
 A name is not a trade. The conviction floor, the $200k turnover floor and the
 borrow check mean most ranked names are never traded, and the two strongest
 convictions of 2026-09-10 were all three untradable. A traded name can also be
@@ -50,6 +55,24 @@ mixing them is how you get a number that flatters the stage.
 ./dashboard/update.sh --fresh    # drop the bar cache, re-price everything
 ./dashboard/update.sh --serve    # and serve it, so the page's own button works
 ```
+
+**The published page is live since 2026-09-22 14:11 UTC**, on Source = *GitHub Actions*.
+The workflow copies `dashboard.html` to `_site/index.html`, so the dashboard is at the
+ROOT of <https://robertsben333-cmyk.github.io/claude_research/> and `…/dashboard/dashboard.html`
+is a 404 there. Tab addresses work on it.
+
+**How to tell whether it is really publishing**, because the failure mode is silent:
+`configure-pages` is refused when it has to *create* the site, and `continue-on-error`
+makes it report `conclusion: success` with `outcome: failure`, so the upload and the deploy
+skip and the run still goes green. **Read step 9.** If `Run echo "Pages is off…"` executed,
+nothing was published; if it was skipped and the `deploy` job ran, the site is current.
+
+The switch is a person's, in Settings → Pages — `enablement: true` on the action does not
+substitute for it. The other route, **Deploy from a branch (`main`, `/ (root)`)**, asks
+nothing of `GITHUB_TOKEN`; `index.html` at the repository root is its front door, a
+redirect to `dashboard/dashboard.html` carrying `location.hash` and `location.search`, with
+`.nojekyll` beside it. It is not a second copy of the dashboard, and under the Actions
+route it is simply not served.
 
 **The refresh button in the page, including from a file.** A `file://` page may not run
 a script — a browser rule, not a setting — but it may talk to a server that is already
@@ -342,6 +365,137 @@ the components sit beside it in the table so a reader can see which one moves a 
 The scatter next to it asks the question the indicator exists for: does the edge live in
 the names consumers trade? On the first build the answer is no — slope 0.04, r² 0.00.
 
+## The markets that place no orders: Europa, Japan, Australië, Canada
+
+Stage EU, stage J, stage AU and stage CA run the same hunt with the same scorer over
+ten European venues, Tokyo, the ASX and Toronto, and **none of the four places an
+order**. So they get their own tabs rather than rows in the ledger: there is no money
+level for them and there must not be one. Everything on those tabs is the research
+level.
+
+**The market is the top axis of the page, not a tab among the others.** A bar above the
+tab row picks US, Europa, Japan, Australië or Canada with its counts on the card, and the
+tab row is rebuilt underneath. The US keeps its sixteen; each other market gets the same
+suite minus what it cannot have. **Handel, Capaciteit, Kosten and Weging do not exist
+there at all**, because those markets have no broker, and a row that differs per market
+says exactly that. The filter bar (lens, cap, sector, exit horizon) belongs to the ledger,
+so it is hidden off the US.
+
+**A tab appears when its data carries it, and what is still shut is named on Overzicht.**
+
+| tab | what it shows | opens at |
+| --- | --- | --- |
+| **Overzicht** | the day counts, the state, and the list of tabs still shut | always |
+| **Score** | ρ against the realised move, the hunt against the free control, the board return, the amc/bmo split | 5 resolved names |
+| **Drempel** | the conviction floor swept: n, sign rate, board return and ρ at eight cuts | 10 resolved names |
+| **Aanloop** | the 20- and 5-session run-up against the outcome, and what agreement with the hunt pays | 5 resolved names |
+| **Deelmarkt** (EU) | per venue: names, findings, anchor coverage, turnover, ρ | a hunted name |
+| **Ankerarm** (CA) | option-anchored against register-only, which is the reason stage CA exists | a name with an anchor status |
+| **Soort** (AU) | profit result against 4C/5B cash-flow report | a name with a `filer_type` |
+| **Lessons** | `pre_lessons` frozen against the emitted sum, per name and pooled | a frozen draft |
+| **Taal** (EU) | `pre_local` against the emitted sum, with the UK case labelled degenerate | a frozen draft |
+| **Namen** · **Runs** | every ranked name; every run with its draw and the resolver's alarm | a name / a run |
+| **Data** | provenance, and what is deliberately absent | always |
+
+**The row itself is the index, and every tab has an address.** Three things carry it.
+The tabs sit in six named groups — **Stand · Rangschikking · Klok · Doorsnedes · Register ·
+Bronnen** — with the group printed above its block, so twenty tabs do not read as one
+undifferentiated run; the row is sorted by group, because the heading is drawn when the
+group changes and a non-contiguous group printed its name twice. Every tab carries one line
+saying which question it answers, on hover and in full on the **Index** tab, which lists
+every tab of every market with that question and whether it is open. And every tab has an
+address in the hash, `#market/tab` — `#eu/deelmarkt`, `#us/drempel` — so a tab can be
+bookmarked, linked and reloaded, and the refresh button, which reloads with a cache-buster,
+comes back where you were instead of on Overzicht. An address that points nowhere, or at a
+tab that market does not have, opens that market's Overzicht and rewrites itself rather
+than sitting there broken.
+
+Without the Index's last column a short tab row would read as a dashboard that does not know
+those analyses. **ρ is withheld below five names** and the threshold sweep below ten,
+which is `au_resolve.py`'s own rule: on three names a rank correlation of 1.0 comes up one
+time in six. A control may narrow a number and may never close the tab a reader is
+standing on, so the gate is computed with the threshold off; the validation switch can
+open a tab, and the row is then rebuilt with the same tab found again by name.
+
+```bash
+python3 dashboard/scripts/build_markets.py             # collect what is on disk
+python3 dashboard/scripts/build_markets.py --resolve   # and fetch missing outcomes
+```
+
+`update.sh` runs it with `--resolve` as a third feeder, allowed to fail like the other
+two; `--no-feeders` skips all three. It writes `dashboard/data/markets.json`, which
+`build_dashboard.py` inlines beside the ledger. A missing file is not an error: the tabs
+say so themselves.
+
+**It does not own the outcome window, and that is deliberate.** Europe and Australia
+report before the open, so their window is `close(D−1) → close(D)`; Tokyo's runs from
+the close to the next open. That logic lives in `eu_resolve.py`, `jp_resolve.py` and
+`au_resolve.py` and `ca_resolve.py`, and this collector reads the `*-resolved.json`
+those write. With
+`--resolve` it calls the market's own resolver for a run whose window has closed and
+which has no outcome yet. A realised move on these tabs was computed by the market's
+resolver or it is not there.
+
+Three things the tabs keep apart, because each of them has already been read wrong once
+somewhere in this repo:
+
+- **A validation run is not research.** The two European days that have resolved ran on
+  *synthetic* findings to test the chain end to end. They are excluded by default and the
+  switch that includes them says what they are. Stage AU's validation never landed in
+  `research/` at all, and Canada has not had a fire yet, so those two markets show
+  Overzicht and Data only, and say what is missing.
+- **An unhunted name is not a zero.** Seven UK names on 2026-09-23 carry `impact_sum: 0`
+  and `rankable: false` because the session could not spawn subagents. They appear in the
+  names table with `not_rankable_because` in place of the number and count in no
+  statistic; a nought nobody measured pulls every ranking toward the middle.
+- **A shut exchange is not a failed run.** Tokyo was closed on 2026-09-21 and 09-22, and
+  the run directory says so in `market_closed`. The runs table prints the reason instead
+  of a zero.
+
+**ρ is withheld below five names.** On three names a rank correlation of exactly 1.0
+comes up one time in six, which `au_resolve.py` writes down after the first synthetic
+Australian run duly produced one. Below five the tab shows the names and no coefficient.
+Above it, the pooling is one flat pool over all days rather than the within-day centring
+the US tabs use — there are not enough days for that yet — and there is no permutation
+test and no multiplicity correction, because on this many names both would suggest more
+precision than exists.
+
+**A premature resolve is re-resolved.** Yahoo's European daily closes lag a session or
+two, so a run resolved the morning after its print writes a file in which every row is
+`move_pending`. Treating that as done would freeze the day at nothing permanently, and it
+would look exactly like a day on which the hunt had no outcome. A resolved file with no
+realised move and at least one live row is fetched again; one that carries even a single
+move is left alone, because the window it priced has closed.
+
+## The design pass of 2026-09-22, and the two tokens it added
+
+Run with the Impeccable design skill (`detect` + audit + polish) over the whole page, not
+only the new tabs. The detector ends clean; what it and the manual round changed:
+
+- **`--fill` / `--on-fill` are new, and `--s1` must not be used as a control background
+  again.** `--s1` is tuned to read as a series on the chart plane. White on it is 4.4:1 in
+  light and 3.6:1 in dark, so every filled control — the Ververs button and every pressed
+  segment — failed WCAG AA both ways. The filled state now has its own pair: dark blue
+  with white in light mode, the bright blue with near-black ink in dark mode. Both clear
+  4.5:1 and the chart colours are untouched.
+- **The tablist now keeps its promise.** The buttons carried `role="tab"` while the panels
+  had no `role="tabpanel"`, no `aria-labelledby` and no `aria-controls`, and nineteen tabs
+  meant nineteen tab stops. Roving tabindex makes the strip one stop; Arrow, Home and End
+  move inside it.
+- **The page themes its own browser surfaces**: a 2px focus ring in the accent colour
+  (the UA's 1px outline is invisible on the dark plane), text selection, and the
+  scrollbars of `.scroll` — which is also the only affordance saying that the 13-column
+  names table scrolls sideways on a phone.
+- **44px targets under a coarse pointer.** Segment buttons are 30px, which is a mouse
+  target; they grow to 44 on touch.
+- **The reading measure is capped at 74ch.** Tables may use the full width; running text
+  above them may not.
+- **A market with no run on disk gets one empty state, not five tiles reading zero.**
+  Five zeroes is a dashboard performing completeness. The Australia tab says what is
+  missing instead.
+- **The market controls are a control strip, not a card.** A card holds content; the rest
+  of the page puts controls in a bar, and these tabs hide that bar.
+
 ## What the numbers mean
 
 - **bord-rendement** (board return) is the realised move in the direction of the
@@ -396,7 +550,8 @@ instead, with the proxy kept beside them so the two never silently merge.
 ## What it deliberately does not do
 
 - It never submits, cancels or modifies an order. `researcher_us/scripts/alpaca_trade.py`
-  is the only thing in this repo that does.
+  is the only thing in this repo that does, and it knows only the US account: the
+  Europe, Japan and Australia tabs have no money level at all.
 - It does not re-score a run. `impact_sum` is read as the run wrote it.
 - It does not drop a losing day, a microcap or an outlier. Every exclusion in the
   ledger is a duplicate event (one issuer reporting once, hunted twice) and is

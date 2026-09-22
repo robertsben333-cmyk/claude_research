@@ -268,6 +268,10 @@ def main():
             "priced_lean_pct": r.get("priced_lean_pct"),
             "run_up_20d_pct": (bl.get("tape") or {}).get("run_up_20d_pct"),
             "run_up_5d_pct": (bl.get("tape") or {}).get("run_up_5d_pct"),
+            "run_up_60d_pct": (bl.get("tape") or {}).get("run_up_60d_pct"),
+            "history_basis": (bl.get("history") or {}).get("basis"),
+            "history_median_abs_move_pct": (bl.get("history") or {})
+                                           .get("median_abs_move_pct"),
             "median_turnover_usd_20d": (bl.get("tape") or {}).get("median_turnover_usd_20d"),
             "analyst_count": (bl.get("consensus") or {}).get("analyst_count"),
             "analyst_band": (bl.get("consensus") or {}).get("analyst_band"),
@@ -415,6 +419,12 @@ def stats_block(usable):
         "spearman_free_control_neg_runup": spearman(ctl, ys),
         "spearman_free_control_neg_runup_5d": spearman(
             [-(x.get("run_up_5d_pct") or 0.0) for x in usable], ys),
+        # The 60-day control, sealed 2026-09-22. The 20- and 5-day windows share a blind
+        # spot: a move OLDER than twenty sessions reads as flat in both, which is what
+        # W7L did on 2026-09-23 (+0.24% and -0.67% on a stock +21.5% off its July low).
+        # Ranked as its own control and never folded into the lean.
+        "spearman_free_control_neg_runup_60d": spearman(
+            [-(x.get("run_up_60d_pct") or 0.0) for x in usable], ys),
         "spearman_priced_lean": spearman(lean, ys),
         "spearman_conviction_vs_sign_right": spearman(
             [x["conviction"] or 0.0 for x in usable], sign_ok),
@@ -546,6 +556,59 @@ def stats_block(usable):
         else:
             blk["note"] = "too few rows for a rank correlation"
         s["by_anchor_covered"][lab] = blk
+
+    # --- by_history_basis -----------------------------------------------------------
+    # Added 2026-09-22. `history` carries OBSERVED announcement dates for the UK
+    # (Investegate) and Norway (Oslo NewsWeb) and a CADENCE ESTIMATE for the other
+    # eight markets, and the two are not the same quality of evidence: measured on the
+    # nine names of the 2026-09-23 run, the six observed names had a median absolute
+    # historical move of 2.61-10.50% against 1.82-2.09% for the three estimated ones,
+    # because an estimated date mostly lands on an ordinary session and samples
+    # ordinary-session volatility. On KWS exactly one of eight estimated dates was a
+    # real print day.
+    #
+    # Two different things could follow and this split is what tells them apart: the
+    # hunters may be sized too small in the estimated markets (a scale problem, which
+    # shows up as a smaller median realised move being predicted well), or the ranking
+    # may simply be worse there (an evidence problem). Nothing is corrected on the
+    # strength of one day -- `anchor_quality.magnitude` is cut to 0.35 for an estimated
+    # history and that reaches `diagnostics` only, never `impact_sum`.
+    s["by_history_basis"] = {}
+    for lab in ("observed", "estimated"):
+        want_obs = lab == "observed"
+        sub = [x for x in usable
+               if (str(x.get("history_basis") or "").startswith("observed")) is want_obs]
+        blk = {"n": len(sub),
+               "median_history_abs_move_pct": (
+                   round(median(x["history_median_abs_move_pct"] for x in sub
+                                if x.get("history_median_abs_move_pct") is not None), 2)
+                   if any(x.get("history_median_abs_move_pct") is not None for x in sub)
+                   else None),
+               "markets": sorted({x["submarket"] for x in sub if x.get("submarket")})}
+        if len(sub) >= 3:
+            sy = [x["realised_move_pct"] for x in sub]
+            blk.update({
+                "spearman_impact_sum_vs_move": spearman(
+                    [x["impact_sum"] for x in sub], sy),
+                "spearman_free_control_neg_runup": spearman(
+                    [-(x["run_up_20d_pct"] or 0.0) for x in sub], sy),
+                "sign_right_frac": round(sum(
+                    1 for x in sub
+                    if (x["impact_sum"] or 0) * (x["realised_move_pct"] or 0) > 0
+                ) / len(sub), 3),
+                "median_abs_realised_pct": round(median(abs(y) for y in sy), 2)})
+        else:
+            blk["note"] = "too few rows for a rank correlation"
+        s["by_history_basis"][lab] = blk
+    s["by_history_basis"]["note"] = (
+        "`observed` is a real dated announcement record (uk via Investegate, no via "
+        "Oslo NewsWeb); `estimated` is this quarter's notified lag stepped backwards, "
+        "which is a SCALE and never evidence that a print happened on a date. Compare "
+        "`median_history_abs_move_pct` with `median_abs_realised_pct` in each arm: if "
+        "the estimated arm's history is systematically below what those names actually "
+        "do, the cadence estimator is sampling ordinary sessions and every hunter in "
+        "those eight markets is being handed a scale that is too small.")
+
     s["by_anchor_covered"]["note"] = (
         "`covered` means the national short register returned a DISCLOSED net short "
         "position for this issuer; `uncovered` pools the truncated zeros (register read, "

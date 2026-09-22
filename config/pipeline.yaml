@@ -216,6 +216,99 @@ japan_hunt:
     - publish the ranking with fewer names and say which were shed
 
 
+canada_hunt:
+  # Stage CA. The same question as `edge_hunt`, `japan_hunt` and `europe_hunt`, asked of
+  # the Canadian market -- TSX, TSX Venture, CSE and NEO -- and scored by the SAME scorer
+  # (researcher_us/scripts/edge_score.py). RESEARCH ONLY: there is no execution block here
+  # and there must not be one. Alpaca does not carry Canadian venues, and execution would
+  # be a separate build against a different broker on Canada's own resolved numbers.
+  #
+  # WHY THIS MARKET AND NOT ANOTHER. Not the calendar and not the liquidity. Canada is the
+  # only market in this repo where the OPTION-ANCHORED and ANCHOR-LESS regimes run inside
+  # ONE DAY'S NAMES: the Montreal Exchange lists options on 360 underlyings (96% of names
+  # above $25m a day, 43% at $1-5m, 10% below $1m) while the short register covers 87-88%
+  # of EVERY band. archive/backtest/FINDINGS.md section 33 priced the anchor-less regime at
+  # rho=+0.073, p=0.45 over 104 events and could NOT separate the anchor from the market it
+  # was measured in. ca_resolve.py's `by_anchor_covered` holds the market fixed and
+  # separates them. The ranking is the by-product; that comparison is the reason.
+  #
+  # THE TWO OFFICIAL SURFACES ARE SHUT AND THE STAGE DOES NOT USE THEM. sedarplus.ca is a
+  # Radware 403 and ciro.ca a Cloudflare interstitial, both 0 of 8 on the France retry
+  # protocol. Everything reaches this stage through TMX Group's own unauthenticated
+  # GraphQL endpoint instead, plus m-x.ca for the chain. That is a SINGLE VENDOR STACK for
+  # the register, the filings, the archive, the calendar and the tape: Europe's ten markets
+  # fail independently, Canada fails all at once, and no second source for the register
+  # exists anywhere. See researcher_canada/SOURCES.md.
+  cap: 20
+  # The same $200k/day capacity bar stages E, J and EU screen on, so the four markets'
+  # universes are cut on one number rather than four chosen apart. Applied in USD off a
+  # LIVE CAD rate, with the fallback constant recorded in the universe file when Yahoo
+  # refuses -- a silent constant would move the floor by whatever the currency did.
+  min_turnover_usd: 200000
+  hunters_per_name: 1
+  wave_size: 5
+  max_concurrent_subagents: 5
+  model: opus
+  effort: high
+  # No sweep agent. The US sweep exists to kill phantom calendar rows; Canada kills them
+  # in code instead, and more cheaply. The measured phantom rate against the two archives
+  # is 1 in 140, against the US `time-not-supplied` 20 of 20.
+  sweep_agents: 0
+  conviction_floor: null          # inherits edge_hunt.conviction_floor
+  #
+  # THE CALENDAR IS RECONCILED, NOT CHOSEN. Wall Street Horizon (through TMX) and
+  # TradingView disagree on 172 of 277 forward dates and neither is established. Every
+  # name is graded confirmed / agreed / wsh_only / vendor_only / disputed and the grade is
+  # sealed into the baseline, so `by_date_confidence` in the resolved file answers "which
+  # calendar is right" from accumulated runs rather than from argument. A DISPUTED date is
+  # not hunted unless the issuer itself announced it: that check fired on 0 of 27 names
+  # that did not report and 11 of 61 that did, so it is precise, not sensitive, and may
+  # promote a date but never drop one.
+  hunt_disputed_dates: false
+  #
+  # THE EVENT SHAPE IS SCREENED. About a third of the eligible universe reports by filing
+  # interim statements on SEDAR+ with NO press release -- 38 of 39 vendor rows with no
+  # same-day release had one. That is a real reporting event and it is not the event this
+  # method can hunt, because there is nothing for the market to reprice against. An issuer
+  # needs this many financial-results headlines in its own recent feed to count as a wire
+  # reporter; at 2 the classifier keeps 60 of 61 measured wire reporters.
+  min_financial_headlines: 2
+  #
+  # THE IMPLIED MOVE IS REFUSED UNLESS THE CHAIN QUOTES TWO-SIDED. Outside 09:30-16:00 ET
+  # the Montreal chain's bid and ask are zeroes and an ATM straddle off `last` gave a
+  # median 12.5% "implied move" on the 2026-09-22 sample. The scorer weights the option
+  # term at 0.35, so a wrong anchor is worse than none: the name falls to the register arm
+  # instead. A run sealed outside the Toronto session puts the WHOLE day on that arm, which
+  # is why the Routine fires at 18:30 UTC.
+  require_two_sided_chain: true
+  #
+  # THE REGISTER HAS NO HISTORY AND NO DATE ARGUMENT, so the change in short interest -- the
+  # component Tokyo found most defensible -- cannot exist on day one. Every run writes the
+  # day's readings to researcher_canada/analysis/short-register/<date>.json and the change
+  # resolves as soon as two runs exist. `register_business_date` is sealed into every
+  # baseline as well: whether that feed refreshes daily or restamps CIRO's twice-monthly
+  # snapshot is UNKNOWN, and those files are what will settle it.
+  store_register_snapshot: true
+  #
+  # Every weight in ca_priced_in.lean_components() is a PRIOR carried over from stage J
+  # with no Canadian measurement behind it. ca_resolve.py ranks each component separately
+  # so they can be replaced by measurement. Cut a component to zero when several pooled
+  # days rank it at or below zero; do not argue for it. `analyst_gap` is the weakest and
+  # is first to drop -- it is an argument about sell-side optimism, not an observation of
+  # positioning.
+  #
+  # `lean_vs_free_control_rho` in the resolved file is the check that the fix still works.
+  # At 1.0 the lean IS -run_up_20d_pct and the hunt cannot beat its own benchmark with
+  # anything built on it, which is the state Spain and Poland are in permanently.
+  french_pass: true               # Quebec issuers only; pre_local freezes the English draft
+  degrade_order:
+    - skip the option chain lookup (every name falls to the register arm; say so)
+    - reduce cap to 12 names
+    - reduce cap to 6 names
+    - skip the note's per-name critical read, keep the ranked table
+    - publish the ranking with fewer names and say which were shed
+
+
 europe_hunt:
   # Stage EU. The same question as `edge_hunt` and `japan_hunt`, asked of the UK, French
   # and German markets POOLED, and deliberately scored by the SAME scorer

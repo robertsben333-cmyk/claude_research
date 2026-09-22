@@ -285,6 +285,11 @@ def fr_day(day, page_size=100, max_pages=12):
 
     ODS Explore v2.1: `where=` takes a date range, `limit` caps at 100 and `offset` at
     10,000, which is far above a French day (45-70 items).
+
+    The field names are load-bearing and are NOT the ones a reader would guess:
+    `uin_dat_amf` is the timestamp and `identificationsociete_iso_cd_isi` the ISIN.
+    A `where=` naming anything else comes back HTTP 200 with `total_count: null` rather
+    than an error, so this function checks that field before believing an empty day.
     """
     out = []
     for pg in range(max_pages):
@@ -296,7 +301,18 @@ def fr_day(day, page_size=100, max_pages=12):
         try:
             d = json.loads(get(f"{ODS}?{qs}"))
         except Exception:
+            if pg == 0:
+                return None          # could not read, NOT "nobody announced anything"
             break
+        # SILENT-FAILURE GUARD, measured 2026-09-22. Opendatasoft answers a `where=` on
+        # a field that does not exist with HTTP 200, `results: []` and
+        # `total_count: null` -- it does NOT error. So a field rename on the vendor's
+        # side would turn every French day into an empty list, which is the one answer
+        # that can support `event_occurred: false`. France would then silently start
+        # killing names that did report, exactly as Italy was doing until this morning.
+        # A real French day returns an integer count (0 is legitimate on a weekend).
+        if d.get("total_count") is None:
+            return None
         res = d.get("results") or []
         for r in res:
             sub = r.get("subtype_of_information")
@@ -663,6 +679,22 @@ def confirm(market, d, issuer_name, ticker=None, archive=None, issuer_query=None
             return None, ("no EQS release found for this issuer on the date; EQS is "
                           "searched per issuer, so a name that does not match its EQS "
                           "spelling looks identical to silence")
+        if market == "it":
+            # MEASURED 2026-09-22. eMarket STORAGE is Borsa Italiana's appointed storage
+            # mechanism but not the only authorised one, and it does not carry every
+            # issuer: PHILOGEN is absent from its `azienda` dropdown, and day queries on
+            # three dates it is known to have filed (2025-09-23, 2026-03-27, 2026-08-17)
+            # returned 33, 99 and 24 rows with no Philogen row on any. The archive read
+            # fine each time, so absence here is NOT silence, and killing on it is the
+            # TRT mistake inverted -- retiring a name that did report. Two exchange-side
+            # substitutes answered first try and are where an Italian check should go:
+            # borsaitaliana.it/azioni/documenti/calendariobilancidividendi/CDA_today.pdf
+            # (forward board meetings, every issuer) and the per-ISIN news list.
+            return None, ("eMarket STORAGE carries the day and not this issuer, which "
+                          "for Italy is NOT a kill: the mechanism is not universal "
+                          "across Italian issuers (measured 2026-09-22 on PHILOGEN, "
+                          "absent on three known filing dates). Check Borsa Italiana's "
+                          "own CDA list or the per-ISIN news feed by hand.")
         return False, f"{MARKETS[market]['confirm_name']} carries the day and not this issuer"
     hit = next((r for r in mine if r["is_results"]), None)
     if hit:

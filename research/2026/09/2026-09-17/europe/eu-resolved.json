@@ -1,13 +1,15 @@
 {
   "market": "EU",
   "event_date": "2026-09-17",
-  "run": "research/2026/09/2026-09-17/europe",
-  "resolved_utc": "2026-09-19T02:07:59+00:00",
+  "run": "/home/user/claude_research/research/2026/09/2026-09-17/europe",
+  "resolved_utc": "2026-09-22T08:32:08+00:00",
   "confirmation": {
     "fr": {
       "source": "AMF regulated-information flux (info-financiere.gouv.fr)",
-      "read": "13 issuers with a results-classified announcement, 70 rows",
+      "read": "13 issuers with a results-classified announcement, 71 rows",
       "false_reachable": true,
+      "archive_kind": "day",
+      "archive_read": true,
       "classified_by": {
         "issuer_category": 15,
         "headline": 6
@@ -15,7 +17,7 @@
     }
   },
   "n_rows": 3,
-  "n_usable": 0,
+  "n_usable": 3,
   "rows": [
     {
       "ticker": "VIRP",
@@ -42,11 +44,11 @@
       "short_ratio_pct": 0.0,
       "session": "amc",
       "session_unresolved": false,
-      "move_bmo_window_pct": null,
-      "move_amc_window_pct": null,
-      "realised_move_pct": null,
-      "last_bar_date": "2026-09-16",
-      "move_pending": true,
+      "move_bmo_window_pct": 0.8,
+      "move_amc_window_pct": -1.27,
+      "realised_move_pct": -1.27,
+      "last_bar_date": "2026-09-22",
+      "move_pending": false,
       "event_occurred": true,
       "confirmation_note": "issuer_category: Periodic regulated information > Half yearly financial reports and audit reports/limited reviews | Virbac : Half-Year report 2026",
       "rankable": true
@@ -76,11 +78,11 @@
       "short_ratio_pct": 0.0,
       "session": "bmo",
       "session_unresolved": false,
-      "move_bmo_window_pct": null,
-      "move_amc_window_pct": null,
-      "realised_move_pct": null,
-      "last_bar_date": "2026-09-16",
-      "move_pending": true,
+      "move_bmo_window_pct": 3.21,
+      "move_amc_window_pct": -1.86,
+      "realised_move_pct": 3.21,
+      "last_bar_date": "2026-09-22",
+      "move_pending": false,
       "event_occurred": true,
       "confirmation_note": "issuer_category: Periodic regulated information > Half yearly financial reports and audit reports/limited reviews | Rapports financiers et d'audit semestriels/examens réduits / Rapport financier semestriel",
       "rankable": true
@@ -110,18 +112,85 @@
       "short_ratio_pct": 0.0,
       "session": "amc",
       "session_unresolved": false,
-      "move_bmo_window_pct": null,
-      "move_amc_window_pct": null,
-      "realised_move_pct": null,
-      "last_bar_date": "2026-09-16",
-      "move_pending": true,
+      "move_bmo_window_pct": 0.0,
+      "move_amc_window_pct": -4.97,
+      "realised_move_pct": -4.97,
+      "last_bar_date": "2026-09-22",
+      "move_pending": false,
       "event_occurred": null,
       "confirmation_note": "announced_unclassified: this issuer published on the day and nothing matched the results classifier. A human call, not a kill -- read it: ROBERTET : UN PREMIER SEMESTRE 2026 SOLIDE | ROBERTET: A SOLID FIRST HALF 2026",
       "rankable": true
     }
   ],
   "stats": {
-    "n": 0,
-    "note": "fewer than 3 usable rows: no statistics computed"
+    "n": 3,
+    "spearman_impact_sum_vs_move": 0.5,
+    "permutation_p": 1.0,
+    "spearman_free_control_neg_runup": 1.0,
+    "spearman_free_control_neg_runup_5d": 0.5,
+    "spearman_priced_lean": 1.0,
+    "spearman_conviction_vs_sign_right": 0.0,
+    "sign_right_frac": 0.333,
+    "median_abs_realised_pct": 3.21,
+    "spearman_lean_components": {
+      "short_squeeze": null,
+      "short_building": null,
+      "runup": 1.0
+    },
+    "per_market": {
+      "fr": {
+        "n": 3,
+        "spearman_impact_sum_vs_move": 0.5,
+        "spearman_free_control_neg_runup": 1.0,
+        "lean_vs_free_control_rho": 1.0,
+        "register_read": 3,
+        "anchor_covered": 0,
+        "median_abs_realised_pct": 3.21
+      }
+    },
+    "language_pass": {
+      "n_with_pre_local": 3,
+      "spearman_pre_local": 0.5,
+      "by_market": {
+        "fr": {
+          "n": 3,
+          "variable": "language",
+          "spearman_pre_local": 0.5,
+          "spearman_published": 0.5,
+          "median_abs_revision_pts": 0.81
+        }
+      },
+      "note": "spearman_pre_local is the ENGLISH-only draft, frozen by the hunter before it ran the local pass, ranked against the same realised move as the published key. The delta is the local pass's contribution. NOTHING POOLS ON ONE DAY: four to twelve names is noise. And the UK delta is NOT the same experiment as the German and French ones -- the UK's local language is English, so its second pass is a domestic-SOURCE pass and the variable is source locality. They are reported apart and must not be averaged."
+    },
+    "by_analyst_band": {
+      "<=2": {
+        "n": 1,
+        "note": "too few rows"
+      },
+      "8-13": {
+        "n": 2,
+        "note": "too few rows"
+      }
+    },
+    "by_anchor_covered": {
+      "covered": {
+        "n": 0,
+        "median_turnover_usd_20d": null,
+        "n_below_1m_turnover": 0,
+        "note": "too few rows for a rank correlation"
+      },
+      "uncovered": {
+        "n": 3,
+        "median_turnover_usd_20d": 630231,
+        "n_below_1m_turnover": 2,
+        "spearman_impact_sum_vs_move": 0.5,
+        "spearman_free_control_neg_runup": 1.0,
+        "sign_right_frac": 0.333,
+        "median_abs_realised_pct": 3.21
+      },
+      "note": "`covered` means the national short register returned a DISCLOSED net short position for this issuer; `uncovered` pools the truncated zeros (register read, issuer not named) with the unreadable registers, and `anchor_state` on each row separates those two. This split exists because the turnover floor dropped from $1m to $200k on 2026-09-19 and the names that buys are overwhelmingly in the uncovered arm. One day says nothing; over a fortnight of pooled days, an uncovered arm ranking at zero while the covered arm does not is the measured cost of that decision."
+    },
+    "unresolved_sessions": 0,
+    "note": "One day is not a result. These pool across days; a single day's rho on 4 to 12 names is noise and must not be reported as a finding. The free control is the thing to beat. `per_market.lean_vs_free_control_rho` is the check on whether the lean is anything but the control -- but read it beside `anchor_covered` in the same block, because a day whose names are all ABSENT from registers that read perfectly well has every lean equal to -0.05 * run_up and reads 1.0 for a reason that is about the names, not the source. All three registers resolve since 2026-09-19. `unresolved_sessions` counts rows whose window was assumed rather than known -- compare move_bmo_window_pct against move_amc_window_pct on those rows before believing their sign."
   }
 }

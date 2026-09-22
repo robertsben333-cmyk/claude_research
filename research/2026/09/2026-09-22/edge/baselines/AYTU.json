@@ -1,0 +1,102 @@
+{
+  "ticker": "AYTU",
+  "event_date": "2026-09-22",
+  "session": "amc",
+  "as_of_utc": "2026-09-22T17:08:54+00:00",
+  "options_as_of_valid": true,
+  "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+  ],
+  "tape": {
+    "last_close_date": "2026-09-22",
+    "spot": 2.29,
+    "run_up_5d_pct": 15.08,
+    "run_up_20d_pct": -0.87,
+    "pct_from_52w_high": -21.03,
+    "pct_from_52w_low": 33.92,
+    "realised_vol_20d_annualised_pct": 45.2,
+    "avg_volume_20d": 26037
+  },
+  "cik": "0001385818",
+  "history": {
+    "moves": [
+      {
+        "event_date": "2026-05-13",
+        "session": "amc",
+        "move_pct": 0.89
+      },
+      {
+        "event_date": "2026-04-02",
+        "session": "amc",
+        "move_pct": -0.75
+      },
+      {
+        "event_date": "2026-02-03",
+        "session": "amc",
+        "move_pct": -10.31
+      },
+      {
+        "event_date": "2025-11-13",
+        "session": "amc",
+        "move_pct": 1.46
+      },
+      {
+        "event_date": "2025-09-23",
+        "session": "amc",
+        "move_pct": -17.93
+      },
+      {
+        "event_date": "2025-05-14",
+        "session": "amc",
+        "move_pct": 91.85
+      },
+      {
+        "event_date": "2025-02-12",
+        "session": "amc",
+        "move_pct": -0.72
+      }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 1.46,
+    "max_abs_move_pct": 91.85,
+    "up_count": 3,
+    "session_conflicts": 0
+  },
+  "event_plausibility": {
+    "days_since_last_print": 132,
+    "median_gap_days": 70.0,
+    "ratio": 1.89,
+    "last_print": "2026-05-13",
+    "verdict": "fits_cadence",
+    "reason": "UPGRADE off 'suspect', and it is the only amendment in today's pass. It is the CSBR case exactly: a fiscal-calendar false positive, not a matcher defect. Aytu has a 30 JUNE year end, so the Q3-to-FY4 gap is structurally ~132 days while the Q1/Q2/Q3 gaps are ~70-90, and the median of the mixed set (70 days) does not describe the gap being tested. The proof is inside the baseline's own history: the previous FY print, 2025-09-23, sits exactly 132 days after the 2025-05-14 Q3 print -- the identical gap the heuristic is currently calling suspect. AYTU is a domestic item-2.02 filer, the seven recorded reactions are on exact 8-K acceptance times, and the sweep rates the history trustworthy, so there is no history defect to forgive and fits_cadence is the honest verdict rather than 'unknown'. Without this the name is arithmetically incapable of ranking (rankable=False, baseline_quality x0.05) despite a company-confirmed event. NOTE ON ORDERING: this pass was run AFTER the hunters rather than before them, which is a departure from the skill and is recorded in the run log. The evidence it rests on is the sweep's, which was written and pushed to main (commit 2f2ab3d) before any hunter launched, and the amendment cannot reach the book -- AYTU trades ~$60k/day, below the $200k turnover floor, so it is unbuyable either way and this changes the research ranking only.",
+    "amended_from": {
+      "verdict": "suspect",
+      "reason": "132 days since the last earnings filing against a 70-day cadence; the company may have changed or stopped its reporting, which would also make the reaction history above describe a regime that no longer exists"
+    },
+    "amended_utc": "2026-09-22T17:43:10+00:00",
+    "amended_by": "edge sweep, company-sourced; before any hunter launched",
+    "amended_source": "https://www.biospace.com/press-releases/aytu-biopharma-to-report-fiscal-2026-full-year-and-fourth-quarter-operational-and-financial-results-on-september-22-2026"
+  },
+  "options": {
+    "status": "no_options_market"
+  },
+  "deadband_pct": 1.5,
+  "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+  "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+  "expected_move_pct": 1.46,
+  "expected_move_basis": "median historical reaction (no usable option chain)",
+  "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 0,
+    "event_plausibility": "suspect",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline.",
+    "history_discount_note": "reaction history is present but not counted toward the tier: the event date does not fit this company's own filing cadence, so the history may describe a reporting regime it no longer follows"
+  },
+  "status": "ok"
+}

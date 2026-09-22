@@ -1,0 +1,135 @@
+{
+  "market": "CA",
+  "ticker": "DSV",
+  "company": "Discovery Mining Ltd.",
+  "exchange": "TSX",
+  "sector": "Non-Energy Minerals",
+  "event_date": "2026-08-13",
+  "session": "bmo",
+  "session_unresolved": false,
+  "window": "close 2026-08-12 -> close 2026-08-13 (bmo)",
+  "sealed_utc": "2026-09-22T08:28:58+00:00",
+  "sources": {
+    "tape": "getCompanyPriceHistory via app-money.tmx.com",
+    "options": "https://www.m-x.ca/en/trading/data/quotes",
+    "register": "getCompanyShortInterest via app-money.tmx.com",
+    "archive": "getNewsForSymbol via app-money.tmx.com"
+  },
+  "tape": {
+    "spot": 12.47,
+    "currency": "CAD",
+    "run_up_20d_pct": 5.05,
+    "run_up_5d_pct": 7.78,
+    "median_turnover_cad_20d": 29385187,
+    "turnover_usd_20d": 26926071,
+    "realised_vol_20d_pct": 65.11,
+    "realised_vol_60d_pct": 74.04,
+    "bars": 751,
+    "last_bar": "2026-09-21"
+  },
+  "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "chain found (27 strikes on 2026-10-16) but the ATM bid/ask is not two-sided, so the only price available is `last`. A straddle priced off a stale mark gave a median 12.5% implied move on the 2026-09-22 sample and the scorer weights this term at 0.35 -- a wrong anchor is worse than none. Seal during the Toronto session (09:30-16:00 ET) to get this number.",
+    "chain_present": true,
+    "expiry": "2026-10-16",
+    "atm_strike": 12.5,
+    "atm_open_interest": 7940.0
+  },
+  "history": {
+    "n": 3,
+    "basis": "observed",
+    "news_rows_read": 75,
+    "median_abs_move_pct": 5.78,
+    "events": [
+      {
+        "move_pct": 2.46,
+        "date_used": "2026-02-20",
+        "announced": "2026-02-19",
+        "basis": "observed",
+        "headline": "Discovery Reports Strong Earnings Growth and Cash Generation in Q4 2025",
+        "source": "GlobeNewswire via QuoteMedia"
+      },
+      {
+        "move_pct": -5.78,
+        "date_used": "2026-05-15",
+        "announced": "2026-05-14",
+        "basis": "observed",
+        "headline": "Discovery Reports Solid Earnings and Cash Flow in Q1 2026",
+        "source": "GlobeNewswire via QuoteMedia"
+      },
+      {
+        "move_pct": -7.76,
+        "date_used": "2026-06-23",
+        "announced": "2026-06-22",
+        "basis": "observed",
+        "headline": "Discovery Announces Annual General and Special Meeting Results",
+        "source": "GlobeNewswire via QuoteMedia"
+      }
+    ],
+    "caveat": "Dates are REAL: each row is a dated financial-results release from the TMX news archive, not a cadence estimate. The move is the larger of the release session and the one after it, because an after-hours release reacts the next day. The headline classifier excludes drill and assay results, which is the single most common false positive on the TSXV."
+  },
+  "positioning": {
+    "short_interest_shares": 28558098,
+    "short_ratio_pct": 4.42,
+    "days_to_cover_30d": 10.64,
+    "register_business_date": "2026-09-21",
+    "short_change_pct_pts": null,
+    "short_change_vs": null,
+    "analysts": {
+      "totalAnalysts": 2,
+      "priceTarget": {
+        "lowPriceTarget": 15,
+        "highPriceTarget": 15,
+        "priceTarget": 15,
+        "priceTargetUpside": 20.29
+      },
+      "consensusAnalysts": {
+        "consensus": "Buy",
+        "buy": 2,
+        "sell": 0,
+        "hold": 0
+      }
+    },
+    "analyst_band": "1-2",
+    "basis": "CIRO's consolidated short position, served by TMX because ciro.ca is 0 of 8 from this container. There is NO history endpoint and no date argument, so `short_change_pct_pts` is null until two runs have stored a snapshot, and `register_business_date` is carried so the question of how often that feed moves is settled by the accumulating files. There is also NO EPS consensus anywhere in this API: the bar this print will be judged against is not in this baseline and the hunter has to source it."
+  },
+  "expected_move": {
+    "event_move_proxy_pct": 5.78,
+    "from_option_implied_pct": null,
+    "from_history_median_pct": 5.78,
+    "from_realised_vol_1d_pct": 4.1,
+    "basis": "the option-implied move where the chain quotes two-sided, otherwise the larger of an observed reaction history and a one-session move implied by 20-day realised vol. The fallbacks are a SCALE for how far this name travels and carry no information about this print."
+  },
+  "lean_components": {
+    "option_lean": null,
+    "short_squeeze": 2.652,
+    "short_building": null,
+    "days_to_cover": 0.266,
+    "analyst_gap": -0.406,
+    "runup": -0.253
+  },
+  "priced_lean_pct": 2.259,
+  "priced_lean_basis": "Sum of lean_components. Every weight is a PRIOR carried over from stage J and none is measured on Canadian data; ca_resolve.py ranks each component separately so they can be replaced by measurement. What matters today is that it is not identical to -0.05 * run_up_20d_pct, so the free control is a real rival rather than the baseline's own number.",
+  "anchor_covered": "register",
+  "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.5,
+    "basis": "Read by the shared scorer ONLY when there is no option-implied move. magnitude is capped at 0.5 because an observed reaction history plus realised vol is still not an option price; direction at 0.6 because none of the four components is 25-delta skew."
+  },
+  "event_plausibility": {
+    "verdict": "unknown",
+    "date_confidence": "validation_past",
+    "vendor_date": "2026-08-13",
+    "wsh": null,
+    "issuer_announced": {
+      "headline": "Discovery Announces Details of Second Quarter 2026 Results Conference Call and Webcast",
+      "datetime": "2026-07-11T07:37:36-04:00",
+      "source": "GlobeNewswire via QuoteMedia"
+    },
+    "event_shape": "release",
+    "basis": "Two calendars that disagree on 172 of 277 forward dates, reconciled in ca_universe.py. `confirmed` is Wall Street Horizon's own CON flag, which no other calendar in this repo carries."
+  },
+  "event_occurred": null
+}

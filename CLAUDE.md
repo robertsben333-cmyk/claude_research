@@ -41,6 +41,7 @@ material below is kept because the live stages reference it, not because it runs
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
+| CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | AU | `researcher-australia-hunt` | 08:30 | **Stage AU — the Australia researcher.** Same question, ASX, research only, no orders. One English hunting pass and no local-language pass, deliberately. `trig_01Qy7FjBpjY4dEGcZsYGnpt3`, cron `30 6 * * 0-4` = 06:30 UTC **Sunday to Thursday**, after the 16:00 Sydney close. Seals for the NEXT session, because 91% of ASX results land before the open, so the fire that seals for Monday is the Sunday one |
 | R | `researcher-reversal-hunt` | **no Routine yet** | **Stage R — the reversal researcher.** Not an earnings stage: yesterday's biggest US losers, and whether each keeps falling or bounces. Research only, no orders. Phase 0 is measured and checked in; no hunt has resolved. The Routine text is in `researcher_reversal/routine-prompts/reversal-hunt.md` and has NOT been installed — suggested `30 21 * * 1-5`, which must be AFTER the US close |
@@ -247,9 +248,28 @@ thing and must not be mixed.
 fetched page.** `.github/workflows/dashboard.yml` — the first workflow in this repo —
 runs the same `./dashboard/update.sh`, commits `dashboard/` back to `main` and publishes
 the page to GitHub Pages at <https://robertsben333-cmyk.github.io/claude_research/> —
-**which needs Settings → Pages → Source set to *GitHub Actions* once**, because
-`GITHUB_TOKEN` is refused when it asks to create the site; until that is done the
-workflow rebuilds and commits as normal and skips the publish rather than going red. It
+**and it is LIVE since 2026-09-22 14:11 UTC**, on Source = *GitHub Actions*. The site is
+the dashboard itself: the workflow copies `dashboard.html` to `_site/index.html`, so the
+page is at the ROOT of that URL and `…/dashboard/dashboard.html` is a 404 there. Every tab
+address works on it (`…/claude_research/#eu/deelmarkt`).
+
+**It was off for days and the failure was silent, which is the part to remember.**
+`configure-pages` is refused when it has to CREATE the site, and `continue-on-error` then
+reports `conclusion: success` while `outcome` is failure — so the upload and the deploy
+skipped and the run went green. The 13:49 UTC run of that day is the worked example: its
+"Pages is off" branch fired while the step itself showed success. **The tell is step 9.**
+If `Run echo "Pages is off…"` executes, publishing is not happening whatever the run's
+colour says; if it is SKIPPED and the `deploy` job runs, the site is live. Verified at
+14:11 UTC: configure-pages success, step 9 skipped, upload success, deploy success, and
+the served bytes are the current build (`c44129d`).
+
+The switch can only be flipped by a person in Settings → Pages; nothing in this repo can
+do it, and `enablement: true` on the action does not substitute for it. **`index.html` at
+the repository root is the other route and is currently unused**: a redirect to
+`dashboard/dashboard.html` carrying `location.hash` and `location.search`, plus
+`.nojekyll`, for Source = *Deploy from a branch* (`main`, `/ (root)`), which asks nothing
+of `GITHUB_TOKEN`. It is deliberately NOT a copy of the dashboard — one generated page, one
+place — and it is served by that route only, so it costs nothing where it sits. It
 fires at 11:40 and 21:40 UTC on weekdays, on a push touching `research/` or the scripts,
 and on demand. The page's own button now knows which of the two worlds it is in: a local
 rebuilder on `127.0.0.1:8765` (**live**) or the workflow (**CI**), and on a fetched page
@@ -261,6 +281,60 @@ stay at the last build that had them; and a GitHub token in the browser for the 
 to dispatch, without which the click opens the workflow page instead. **Its commit
 touches only `dashboard/` and the three feeder files, and its `paths:` filter excludes
 them, so it cannot trigger itself** — do not add `dashboard/**` to that filter.
+
+**The market is the top axis of the dashboard since 2026-09-22, and the tab row is
+rebuilt under it.** A bar above the tabs picks US, Europa, Japan, Australië or Canada;
+the US keeps its sixteen tabs and each other market gets the same suite minus what it
+cannot have — **Handel, Capaciteit, Kosten and Weging do not exist off the US**, because
+those stages have no broker. An analysis tab appears only when its data carries it (Score
+and Aanloop at 5 resolved names, Drempel at 10, Lessons at a frozen `pre_lessons` draft,
+Taal at a `pre_local` one, plus `Deelmarkt` for EU, `Ankerarm` for CA and `Soort` for AU),
+and **Overzicht lists what is still shut and what opens it** — without that a short row
+reads as a dashboard that does not know those analyses.
+
+**The row is the index, and every tab has an address (2026-09-22).** The tabs sit in six
+named groups (Stand · Rangschikking · Klok · Doorsnedes · Register · Bronnen) printed above
+each block, and both rows are **sorted by group** because the heading is drawn when the
+group changes — a non-contiguous group printed `DOORSNEDES` twice on the European row.
+Every tab carries the question it answers, on hover and in full on the new **Index** tab,
+which lists every tab of every market with that question and whether it is open. And every
+tab has an address in the hash, `#market/tab` (`#eu/deelmarkt`, `#us/drempel`), written
+with `replaceState` so Back leaves the page instead of walking the click history; an
+address that points nowhere opens that market's Overzicht and rewrites itself. The market
+bar and the tab row now sit **above** the filter bar: on a phone the sticky controls pushed
+the top axis a whole screen below the bottom one. The gate is computed with the
+conviction threshold OFF on purpose: a control may narrow a number and may never close the
+tab a reader is standing on.
+
+**The researchers that place no orders are the research level only.** `Europa`, `Japan`,
+`Australië` and `Canada` are fed by
+`dashboard/scripts/build_markets.py` into `dashboard/data/markets.json`, which
+`build_dashboard.py` inlines beside the ledger; `update.sh` runs it with `--resolve` as a
+third feeder that may fail without costing the rebuild. **There is no money level on
+those tabs and there must not be one**: stages EU, J, AU and CA place no orders, so the
+ledger's trades and equity curve say nothing about them, and the filter bar (lens, cap,
+sector, exit horizon) belongs to the ledger and is hidden off the US. The collector does NOT own the outcome window — Europe and Australia are
+`close(D−1) → close(D)`, Tokyo is close to next open — it reads the `*-resolved.json`
+that `eu_resolve.py`, `jp_resolve.py`, `au_resolve.py` and `ca_resolve.py` write, and
+with `--resolve`
+calls the market's own resolver for a run whose window has closed and which has none. A
+resolved file whose rows are all `move_pending` is fetched again, because Yahoo's
+European closes lag a session and treating that file as done would freeze the day at
+nothing for good.
+
+**What those tabs show today is almost nothing, which is the point of building them
+now.** Europe: four runs, 18 hunted names, 59 findings, and **the only resolved days are
+the two validation runs that ran on synthetic findings** — excluded by default, behind a
+switch that names them. Japan: two hunted days, three names, nothing resolved, plus two
+days on which Tokyo was shut and the runs table prints the holiday instead of a zero.
+Australia and Canada: no run directory in `research/` at all, since neither
+validation landed there and stage CA has not fired yet, so those two show Overzicht and
+Data and nothing else. Three rules are enforced in the rendering rather than left to a reader: an
+unhunted name (`rankable: false`, seven UK names on 09-23) is shown with
+`not_rankable_because` instead of the 0 the scorer writes and counts in no statistic; a
+shut exchange is not a failed run; and **ρ is withheld below five names**, because on
+three a rank correlation of 1.0 arrives one time in six and `au_resolve.py` already says
+so.
 
 **Three new questions, three near-nulls and one lead (2026-09-18).** They are tabs on
 that dashboard — `Instap`, `Aanloop`, `Zoekvolume`, plus `Agenda` — not separate pages.
@@ -1512,6 +1586,67 @@ context ran both hunts and had read `LESSONS.md` first, so the freeze is equal t
 emitted set by construction. `impact_sum_pre_local` is a real freeze and a two-name
 delta is still noise.
 
+**Four more defects came out of the 2026-09-23 run and all four are fixed (2026-09-22).
+Every one of them returned a plausible answer instead of an error.** That is the class
+this repo keeps paying for, and three of the four would have corrupted a measurement
+rather than stopping it.
+
+- **Italy could kill a name that DID report.** eMarket STORAGE is Borsa Italiana's
+  appointed storage mechanism but it is **not universal across Italian issuers**:
+  PHILOGEN is absent from its `azienda` dropdown, and `eu_archive.day('it', d)` on three
+  dates it is known to have filed (2025-09-23, 2026-03-27, 2026-08-17) returned 33, 99
+  and 24 rows with no Philogen row on any. The archive read cleanly every time, and
+  Italy joins on a company name, so `confirm()` fell through to "the source was read and
+  this issuer is not in it" and returned **False** — the TRT mistake inverted. It now
+  returns `None` for Italy, `CAPABILITY["it"]` carries `universal: False`, and
+  `false_reachable()` requires it. **`universal` defaults to True**, so a market nobody
+  has measured is not silently exempted from kills. Two exchange-side substitutes
+  answered first try and are named in the return note:
+  `borsaitaliana.it/azioni/documenti/calendariobilancidividendi/CDA_today.pdf` and the
+  per-ISIN news list.
+- **No PDF number could be read where the issuer used a subset font.**
+  `eu_pdftext.py` read only `(literal)` strings, so headline euro figures emitted as
+  `<hex>` came back blank inside fluent prose — *"Net Profit for the period of ___
+  thousand"* — and reported success. It now resolves **each font's** ToUnicode CMap via
+  `/Font << /F1 N 0 R >>` and tracks the active font through `Tf`. Merging every CMap
+  into one table is the obvious shortcut and it is **wrong**: subset fonts renumber from
+  1, so codes collide and text corrupts silently — a real AMF filing rendered
+  "Relations" as "ReelatilWoWns". Per-font, the same filing reads as quotable French.
+  Literal strings are mapped too when the active font covers them, which is what fixed
+  it.
+- **France could start killing names on a vendor field rename.** The AMF flux answers a
+  `where=` on a field that does not exist with **HTTP 200, `results: []` and
+  `total_count: null`** — verified. An empty list is the one answer that can support
+  `event_occurred: false`. `fr_day()` now returns `None` unless `total_count` is an
+  integer. The field names are not guessable: **`uin_dat_amf`** is the timestamp and
+  **`identificationsociete_iso_cd_isi`** the ISIN.
+- **An estimated reaction history was paid like an observed one.** It is not thinner
+  evidence, it is **biased** evidence: on the nine names of 2026-09-23 the six
+  `observed_rns` histories ran 2.61–10.50% median absolute move against **1.82–2.09%**
+  for the three `estimated_from_cadence` ones, because a cadence date mostly lands on an
+  ordinary session and samples ordinary-session volatility. On KWS **one of eight**
+  estimated dates was a real print day, and two hunters in two markets reported it
+  independently. `anchor_quality.magnitude` is now **0.35** rather than 0.5 for an
+  estimated basis, `history.scale_is_lower_bound` says so to the hunter, and
+  `eu_resolve.py` reports **`by_history_basis`**. **No correction factor was fitted** —
+  nine names is not a hypothesis, the same rule that froze `w1`.
+
+**And the free control has a blind spot that the 5-day fix cannot cover, so a third
+window is sealed.** `run_up_20d_pct` and `run_up_5d_pct` both read flat on a move that
+is **older** than twenty sessions: W7L went into its 2026-09-23 print at +0.24% and
+−0.67% having risen **21.5% off its 20 July low**. Stage J sealed `run_up_5d_pct` for the
+mirror case — a move *newer* than twenty days — so a shorter window cannot catch this one
+and did not. **`run_up_60d_pct` is sealed beside them since 2026-09-22 and ranked as its
+own control** (`spearman_free_control_neg_runup_60d`), and it is **deliberately NOT
+folded into `priced_lean_pct`**, for the reason the 5-day one is not: the run-up is the
+benchmark every ranker is measured against, and a lean built out of it cannot beat it.
+It is not redundant — on a fresh seal W7L reads +7.95% at 60 days, and BOKU reads +7.86%
+at 20 days against **−17.67%** at 60.
+
+Nothing above touches the ranking key. `impact_sum` is the sum of the hunters' sizes and
+`baseline_quality` reaches `diagnostics` only — verified by rescoring the 2026-09-23
+European run (9 of 9 rows identical) and the 2026-09-10 US run (17 of 17).
+
 **Three defects came out of that run and all three are fixed.** `eu_resolve.py` would
 have **killed names that had not reported yet** — resolving a forward run read the day
 archives for a date that has not happened, found nothing from the issuer and wrote
@@ -1526,6 +1661,77 @@ binary data" — which matters because the AMF flux links every French filing as
 is what turned Quadient's 5%-threshold declaration from a search snippet into a
 quotable primary document.
 See `researcher_europe/README.md` and `researcher_europe/SUBMARKET.md`.
+
+**`researcher_australia/SUBMARKET.md` §1 says Canada "was declined on reachability" and
+that premise is superseded, which is recorded in that file rather than left to disagree.**
+Both Canadian hosts really are shut and were re-tested 0 of 8 each; what was wrong was
+treating them as the only route. That is also one of the four kill conditions stage AU
+wrote down for itself, and it fired — the two stages are complements now, not
+alternatives, and nothing in Australia's own counts changed.
+
+**Stage CA is a fourth market, added 2026-09-22: `researcher_canada/`.** The same
+hunt, the same hunter contract and the same scorer
+(`researcher_us/scripts/edge_score.py`, unchanged), run over Toronto — TSX, TSX Venture,
+CSE and NEO. **It places no orders.** Alpaca carries no Canadian venue and there is no
+execution block.
+
+**IT EXISTS FOR ONE MEASUREMENT AND NOT FOR THE CALENDAR.** Canada is the only market in
+this repo where the OPTION-ANCHORED and ANCHOR-LESS regimes run inside ONE DAY'S NAMES:
+the Montréal Exchange lists options on 360 underlyings (96% of names above $25m a day,
+43% at $1–5m, 10% below $1m) while the CIRO short register covers 87–88% of EVERY band.
+`archive/backtest/FINDINGS.md` §33 priced the anchor-less regime at ρ=+0.073, p=0.45 over
+104 events and could NOT separate the anchor from the market it was measured in.
+`ca_resolve.py`'s `by_anchor_covered` holds the market fixed and separates them.
+
+**BOTH OFFICIAL SURFACES ARE SHUT AND THE STAGE DOES NOT USE THEM.** `sedarplus.ca` is a
+Radware 403, `ciro.ca` a Cloudflare interstitial, `sedi.ca` the same 403, all 0 of 8 on
+the France retry protocol. Everything reaches the stage through TMX Group's own
+UNAUTHENTICATED GraphQL endpoint (`app-money.tmx.com/graphql`: the SEDAR+ filing index
+with a PDF per filing, a consolidated newswire archive with timestamps, the short
+register, Wall Street Horizon's calendar with a CONFIRMED/UNCONFIRMED flag, the tape)
+plus `m-x.ca` for the chain, fetched SERIALLY. That is a SINGLE VENDOR STACK: Europe's
+ten markets fail independently, Canada fails all at once, and no second source for the
+register exists anywhere.
+
+**Five measured things the stage is built around**, all in `researcher_canada/SOURCES.md`:
+the register covers 87–88% of every band but has **no history and no date argument**, so
+the level is sealed and the change accumulates from
+`researcher_canada/analysis/short-register/<date>.json`; the chain's bid and ask are
+**zeroes outside 09:30–16:00 ET**, so the implied move is REFUSED rather than priced off
+a stale `last` (a straddle off `last` gave a median 12.5% "implied move"), which is why
+the Routine must fire at **18:30 UTC = 14:30 Toronto**; the two calendars **disagree on
+172 of 277 forward dates**, so every name is graded confirmed / agreed / wsh_only /
+vendor_only / disputed and a disputed date is not hunted unless the issuer itself
+announced it; **about a third of the eligible universe reports by SEDAR+ filing with no
+press release at all** (38 of 39 vendor rows with no same-day release had one), so
+`filing_only` issuers are screened out of the draw; and **there is no consensus EPS
+anywhere in this data**, so the hunter sources the bar itself and caps its sizes when it
+cannot. The phantom rate against the two archives is **1 in 140**, against the US
+`time-not-supplied` 20 of 20, so there is no sweep agent.
+
+**Validated end to end on 2026-08-13 with SYNTHETIC findings**
+(`researcher_canada/analysis/validation-2026-08-13/`): 40 scheduled above the $200k
+floor, 19 sealed and hunted, the shared scorer ranked 19 of 19 unchanged, the resolver
+confirmed **19 of 19 releases by their real wire headline** off TMX's own tape, and the
+random findings ranked at **ρ=−0.146, p=0.55** — what random findings should do, and the
+null a real Canadian number has to beat. `lean_vs_free_control_rho` came out at **0.125**,
+not 1.0, so the lean is a real rival to the free control and Canada does not have the
+defect that makes Spain and Poland unable to beat their own benchmark. **Nothing has
+resolved in Canada and no real hunter has run.** The option arm is untested by a live
+run — that day sealed with Toronto shut, so all 19 names landed on the register arm; the
+two-sided path is covered by `ca_smoke.py` against a fabricated chain, which proves the
+arithmetic and not the feed.
+
+**Its Routine exists since 2026-09-22: `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron
+`30 18 * * 1-5`, enabled, pinned to `claude-opus-5`.** Created from a session, so
+`update_trigger` works on it and `researcher_canada/routine-prompts/canada-hunt.md` must
+change in the same commit as any re-paste. **It stores no MCP connectors and its
+`sources`, `outcomes` and `allowed_tools` all came back empty**, exactly as stage J's and
+stage EU's did, so whether a fired session can reach the repository at all is unverified;
+only the Routines UI can fix those fields. The first fire lands 2026-09-22T18:35 UTC
+against `main`, which does not yet carry `researcher_canada/` — step 0 is written to
+report that rather than improvise, so that fire is a probe of the clone path and not a
+stage run.
 
 **The five stage 0–4 pipeline Routines were disabled on 2026-09-18** at the operator's
 request, and the stage table's claim that they "do not currently exist" was wrong before
@@ -1547,6 +1753,8 @@ researcher_us/                         stage E — see researcher_us/README.md
 dashboard/                             the standing performance record and the one
   update.sh  scripts/  data/  LOG.md   reading surface — see dashboard/README.md
   dashboard.html                       open it from disk; rebuilt by update.sh
+  scripts/build_markets.py             stage EU/J/AU/CA into data/markets.json, for
+                                       the four order-less market tabs
 .github/workflows/dashboard.yml        the same rebuild in CI + GitHub Pages, for the
                                        copy that is fetched rather than opened
 edge -> researcher_us                  SYMLINK. The live Routine prompt names edge/
@@ -1583,6 +1791,15 @@ researcher_europe/                     stage EU — see researcher_europe/README
   SUBMARKET.md                         why these markets pooled, with the counts behind
                                        it; section 10 is the 2026-09-19 expansion
   routine-prompts/                     the text in the stage EU Routine
+researcher_canada/                     stage CA — see researcher_canada/README.md
+  SOURCES.md                           what is reachable in Canada and what is not
+  scripts/                             ca_sources (incl. CAPABILITY), ca_market,
+                                       ca_universe, ca_priced_in, ca_resolve,
+                                       ca_measure, ca_synth_hunts, ca_smoke
+  analysis/short-register/             one snapshot per run; makes the change computable
+  analysis/validation-2026-08-13/      the synthetic end-to-end validation
+  routine-prompts/                     the text in the stage CA Routine
+  LESSONS.md                           deliberately empty until a run resolves
 archive/                               retired 2026-09-18 — see archive/README.md
   backtest/                            the sealed backtest, arms A/B/C + edge-corpus
   claude_naive/                        stage N, disabled 2026-09-09

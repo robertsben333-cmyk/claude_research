@@ -32,6 +32,11 @@ HTML = r"""<!DOCTYPE html>
   --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
   --good:#0ca30c; --bad:#d03b3b; --warn:#fab219;
+  /* A filled control is not a chart line. --s1 is tuned to read as a series on
+     the plane; white on it is 4.4:1 light and 3.6:1 dark, which fails AA both
+     ways. So the filled state gets its own pair, darker in light mode and
+     dark-on-bright in dark mode, and the series colour stays untouched. */
+  --fill:#1a5fb4; --on-fill:#ffffff;
   --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 @media (prefers-color-scheme: dark) {
@@ -40,6 +45,7 @@ HTML = r"""<!DOCTYPE html>
     --plane:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
     --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
     --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#0ca30c; --bad:#d03b3b;
+    --fill:#3987e5; --on-fill:#0b0b0b;
   }
 }
 :root[data-theme="dark"] {
@@ -47,8 +53,27 @@ HTML = r"""<!DOCTYPE html>
   --plane:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
   --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
   --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#0ca30c; --bad:#d03b3b;
+  --fill:#3987e5; --on-fill:#0b0b0b;
 }
 * { box-sizing:border-box; }
+/* The parts of the page the stylesheet did not draw still carry the design. A
+   1px UA outline is invisible on the dark plane, and this page is operated from
+   the keyboard as much as the mouse. */
+:focus-visible { outline:2px solid var(--s1); outline-offset:2px; border-radius:4px; }
+::selection { background:var(--s1); color:#fff; }
+.scroll { scrollbar-width:thin; scrollbar-color:var(--axis) transparent; }
+.scroll::-webkit-scrollbar { width:10px; height:10px; }
+.scroll::-webkit-scrollbar-thumb {
+  background:var(--axis); border-radius:6px; border:2px solid var(--surface);
+}
+.scroll::-webkit-scrollbar-track { background:transparent; }
+/* Touch. A 30px segment is a mouse target; a finger needs 44. */
+@media (pointer:coarse) {
+  .seg button, nav button, .btn { min-height:44px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  * { transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+}
 body {
   margin:0; background:var(--plane); color:var(--ink);
   font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -59,7 +84,10 @@ h1 { font-size:22px; margin:0; letter-spacing:-0.01em; }
 h2 { font-size:17px; margin:26px 0 6px; }
 h3 { font-size:14px; margin:0 0 10px; color:var(--ink2); font-weight:600; }
 p  { margin:8px 0; color:var(--ink2); max-width:80ch; }
-p.lead { color:var(--ink); }
+/* Een regel van 110 tekens leest niet. De tabellen mogen de volle breedte
+   hebben, de lopende tekst erboven niet. */
+p.lead { color:var(--ink); max-width:74ch; }
+.card > p, .card > ul { max-width:82ch; }
 small, .meta { color:var(--muted); font-size:12.5px; }
 .muted { color:var(--muted); }
 a { color:var(--s1); }
@@ -69,9 +97,32 @@ button, select, input { font:inherit; }
   border-radius:8px; padding:6px 12px; cursor:pointer;
 }
 .btn:hover { border-color:var(--axis); }
-.btn.primary { background:var(--s1); color:#fff; border-color:transparent; }
+.btn.primary { background:var(--fill); color:var(--on-fill); border-color:transparent; }
 .btn[disabled] { opacity:.55; cursor:progress; }
-nav { display:flex; flex-wrap:wrap; gap:4px; margin:16px 0 0; border-bottom:1px solid var(--grid); }
+/* De markt is de bovenste as. Hij staat boven de tabbladen en niet ertussen,
+   want een markt kiezen en een analyse kiezen zijn niet dezelfde handeling. */
+.marketbar { display:flex; flex-wrap:wrap; gap:6px; margin:14px 0 0; }
+.marketbar button {
+  display:flex; flex-direction:column; gap:1px; text-align:left; cursor:pointer;
+  background:var(--surface); color:var(--ink2); border:1px solid var(--ring);
+  border-radius:10px; padding:7px 13px;
+}
+.marketbar button:hover { border-color:var(--axis); }
+.marketbar button[aria-pressed="true"] {
+  background:var(--fill); color:var(--on-fill); border-color:transparent;
+}
+.marketbar .mk { font-size:14px; font-weight:600; }
+.marketbar .mc { font-size:11.5px; opacity:.8; font-variant-numeric:tabular-nums; }
+/* De rij is de index: de tabbladen staan in groepen met hun groepsnaam erboven,
+   zodat twintig tabbladen niet als één ongesorteerde reeks lezen. Het label is
+   een opschrift en geen knop. */
+nav { display:flex; flex-wrap:wrap; gap:2px 16px; margin:10px 0 6px; align-items:flex-end;
+      border-bottom:1px solid var(--grid); }
+.tabgroup { display:flex; flex-wrap:wrap; gap:2px; align-items:flex-end; }
+.tabgroup .gl {
+  width:100%; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); padding:0 4px 2px;
+}
 nav button {
   background:none; border:none; border-bottom:2px solid transparent; color:var(--ink2);
   padding:9px 12px; cursor:pointer; border-radius:6px 6px 0 0;
@@ -86,6 +137,16 @@ section[hidden] { display:none; }
   border-bottom:1px solid var(--grid); padding:10px 0 11px; margin-bottom:6px;
   display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center;
 }
+/* `display:flex` above beats the browser's own rule for [hidden], so hiding the
+   filter bar on a market tab needs saying here or it silently does nothing. */
+.controls[hidden], .filterline[hidden] { display:none; }
+/* The market tabs hide the bar above and carry their own, so it has to look
+   like that bar and not like a card with two buttons in it. */
+.mctl {
+  display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+  padding:0 0 12px; margin:0 0 4px; border-bottom:1px solid var(--grid);
+}
+.mctl .hint { font-size:12.5px; color:var(--muted); max-width:62ch; }
 .ctl { display:flex; align-items:center; gap:7px; }
 .ctl > label { font-size:12.5px; color:var(--muted); }
 .seg { display:inline-flex; border:1px solid var(--ring); border-radius:8px; overflow:hidden; }
@@ -94,7 +155,7 @@ section[hidden] { display:none; }
   border-right:1px solid var(--ring); font-size:13.5px;
 }
 .seg button:last-child { border-right:none; }
-.seg button[aria-pressed="true"] { background:var(--s1); color:#fff; font-weight:600; }
+.seg button[aria-pressed="true"] { background:var(--fill); color:var(--on-fill); font-weight:600; }
 .sw { display:inline-flex; align-items:center; gap:6px; font-size:13.5px; color:var(--ink2); cursor:pointer; }
 input[type=number] {
   width:104px; background:var(--surface); color:var(--ink); border:1px solid var(--ring);
@@ -200,15 +261,20 @@ li { margin:4px 0; }
 </header>
 <div class="log" id="refreshlog" hidden></div>
 
+<!-- Markt, dan tabblad, dan filters. Dat is ook de volgorde van de beslissing,
+     en op een telefoon duwde de filterbalk de marktkiezer anders een heel scherm
+     naar beneden: de bovenste as stond onder de onderste. -->
+<div class="marketbar" id="marketbar" role="group" aria-label="markt"></div>
+<nav id="tabs" role="tablist"></nav>
+
 <div class="controls" id="controls"></div>
 <div class="filterline" id="filterline"></div>
-
-<nav id="tabs" role="tablist"></nav>
 <div id="panels"></div>
 <div class="tip" id="tip"></div>
 </div>
 
 <script id="ledger" type="application/json">__LEDGER__</script>
+<script id="markets" type="application/json">__MARKETS__</script>
 <script>
 const D = JSON.parse(document.getElementById('ledger').textContent);
 /* ------------------------------------------------------------- formatting */
@@ -2485,28 +2551,868 @@ function tabWeging() {
   return html;
 }
 
+
+/* ====================================================== de andere markten
+   Stage EU, stage J, stage AU en stage CA: dezelfde jacht, dezelfde scorer, vier
+   andere beurzen. Geen van vieren plaatst een order, dus er is hier geen geldniveau
+   en er komt er geen: de ledger hierboven gaat over de Alpaca-rekening, die deze
+   markten niet kent. Alles op deze tabbladen is het onderzoeksniveau.
+
+   De gerealiseerde beweging komt uit de resolver van de markt zelf
+   (eu_resolve.py, jp_resolve.py, au_resolve.py, ca_resolve.py) en nergens anders
+   vandaan. Elk venster is anders: Europa en Australië rapporteren vóór de opening,
+   Tokio na de slotbel. Die logica hoort in één bestand per markt te staan, niet ook hier. Staat
+   er geen beweging, dan is de run nog niet opgelost. */
+const MRAW = document.getElementById('markets');
+const M = MRAW ? JSON.parse(MRAW.textContent) : {markets:{}, problems:[]};
+const MS = {val:false, thr:0};
+function mSet(k, v) {
+  MS[k] = (k === 'thr' ? +v : v);
+  /* De validatieknop kan een analysetabblad openen of sluiten, dus de rij wordt
+     opnieuw gezet en hetzelfde tabblad bij naam teruggezocht. */
+  if (MKT !== 'US') {
+    const keep = TABS[active] && TABS[active][0];
+    TABS = marketTabs(MKT);
+    buildTabs(keep);
+  }
+  refresh();
+}
+
+const MNOTE = {
+  EU: `Tien Europese markten in één stage: het VK, Frankrijk, Duitsland, Zweden,
+       Denemarken, Noorwegen, Finland, Italië, Spanje en Polen. Het venster is
+       <code>slot(D−1) → slot(D)</code>, want 339 van 379 gemeten Britse
+       resultaten kwamen vóór 08:00 Londen. De baseline wordt twee uur vóór de
+       Europese sluiting verzegeld, dus de verzegelde spot is een koers tijdens de
+       handel en nooit een slotkoers. Er is geen optie-anker, en Spanje en Polen
+       hebben ook geen short-register: hun <code>priced_lean_pct</code> ís de
+       gratis benchmark, dus die namen kunnen die benchmark per definitie niet
+       verslaan. De Nordics moeten binnen een week worden opgelost, want de Nasdaq
+       Nordic-feed kent geen datumquery en gaat ongeveer twaalf dagen terug.`,
+  JP: `Tokio. Geen optie-anker, dus de lean komt uit het JPX short-register, de
+       verandering daarin en 信用倍率. Samen brengen die de
+       <code>baseline_quality</code> op 0,725, tegen 0,40 toen de lean nog de run-up
+       zelf was. Het venster loopt van de slotbel naar de volgende opening. De beurs
+       is vaker dicht dan de cron: een lege dag met <code>market_closed</code> is een
+       feestdag en geen storing.`,
+  CA: `Toronto, en de reden is niet de agenda. Canada is de enige markt hier waar de
+       <b>mét en zonder optie-anker</b> naast elkaar in één dag zitten: de Montréal
+       Exchange noteert opties op 360 namen (96% boven $25m per dag, 10% eronder),
+       terwijl het CIRO short-register 87–88% van élke omzetband dekt. Zo splitst
+       één Canadese dag in een arm die precies als een Amerikaanse naam is verankerd
+       en een arm die het als een Japanse of Europese doet, in dezelfde markt en
+       door dezelfde scorer. Die vergelijking is de reden dat de stage bestaat; de
+       rangschikking is bijvangst. Wat het kost: <code>sedarplus.ca</code> en
+       <code>ciro.ca</code> zijn hier dicht, dus alles loopt via één stack bij TMX,
+       en één storing is dan één storing en geen vier.`,
+  AU: `De ASX. Het venster is <code>slot(D−1) → slot(D)</code>, want 91% van de
+       gemeten Australische resultaten landt vóór de opening van 10:00 Sydney, en de
+       Routine draait daarom zondag tot en met donderdag. Eén Engelse jachtronde,
+       bewust geen tweede taalronde. Het ASIC-register is het enige
+       positie-anker hier dat elk niveau publiceert in plaats van alleen boven
+       0,5%, maar het loopt ongeveer vier handelsdagen achter. En de helft van de
+       ASX levert een 4C- of 5B-kasstroomrapport in plaats van een winstcijfer:
+       <code>filer_type</code> zegt welke van de twee.`,
+};
+
+const mRows = (code, allThr) => {
+  const d = (M.markets || {})[code] || {names: [], runs: []};
+  const val = new Set(d.runs.filter(r => r.validation_only).map(r => r.run));
+  const thr = allThr ? 0 : MS.thr;
+  return d.names.filter(r => (MS.val || !val.has(r.run))
+                          && (!thr || Math.abs(r.impact_sum || 0) >= thr));
+};
+const mRuns = code => {
+  const d = (M.markets || {})[code] || {runs: []};
+  return d.runs.filter(r => MS.val || !r.validation_only);
+};
+
+/* Vijf namen is de ondergrens, en dat is geen preutsheid. Op drie namen komt een
+   rangcorrelatie van precies 1,0 één keer op de zes toevallig uit. au_resolve.py
+   schrijft dat zelf op, nadat de eerste synthetische Australische run er netjes
+   een produceerde. */
+const MMIN = 5;
+
+function mStat(rows) {
+  const v = rows.filter(r => r.realised_move_pct !== null
+                          && r.realised_move_pct !== undefined
+                          && r.impact_sum !== null && r.impact_sum !== undefined);
+  const o = {n: v.length, rows: v};
+  if (v.length >= MMIN) {
+    o.rho = corr(ranks(v.map(r => r.impact_sum)),
+                 ranks(v.map(r => r.realised_move_pct)));
+    const ctl = v.filter(r => r.run_up_20d_pct !== null && r.run_up_20d_pct !== undefined);
+    o.ctlN = ctl.length;
+    o.ctl = ctl.length >= MMIN
+      ? corr(ranks(ctl.map(r => -r.run_up_20d_pct)),
+             ranks(ctl.map(r => r.realised_move_pct))) : null;
+  }
+  const signed = v.filter(r => r.impact_sum);
+  o.signN = signed.length;
+  o.signRight = signed.filter(r => r.sign_right).length;
+  o.book = book(v.filter(r => r.ret !== null && r.ret !== undefined).map(r => r.ret));
+  return o;
+}
+
+/* ---------------------------------------------------- de markt-tabbladen
+   Eén context per render. Elk tabblad hieronder werkt op dezelfde gefilterde
+   verzameling, zodat een getal op het ene tabblad en een getal op het andere
+   over dezelfde namen gaan. */
+function mCtx(code, allThr) {
+  const d = (M.markets || {})[code] || null;
+  if (!d) return null;
+  const runs = mRuns(code), rows = mRows(code, allThr);
+  /* Een naam zonder jacht is geen nul, het is een lege plek. Op 2026-09-23 bleven
+     zeven Britse namen ongejaagd omdat de sessie geen subagenten kon starten, en
+     die staan in edge-scores.json met impact_sum 0 en rankable false. Ze horen in
+     de namentabel, want ze laten zien wat er is afgevallen, maar in geen enkel
+     getal: een nul die niemand heeft gemeten trekt elke rangschikking naar het
+     midden. */
+  const ranked = rows.filter(r => r.rankable !== false);
+  return {code, d, runs, rows, ranked,
+          unranked: rows.length - ranked.length,
+          st: mStat(ranked),
+          hasVal: d.runs.some(r => r.validation_only),
+          floor: (d.runs.find(r => r.conviction_floor) || {}).conviction_floor || 3,
+          hunted: runs.filter(r => r.n_rows > 0),
+          resolved: ranked.filter(r => r.realised_move_pct !== null
+                                    && r.realised_move_pct !== undefined)};
+}
+
+const MNAAM = {EU:'Europa', JP:'Japan', AU:'Australië', CA:'Canada'};
+
+/* De twee knoppen die elk markttabblad deelt. `want` zegt welke van de twee er
+   iets onder zich hebben: een drempel op de runtabel filtert niets. */
+function mControls(c, want) {
+  if (want === 'none') return '';
+  let h = `<div class="mctl">`;
+  if (want !== 'val') h += `<span class="seg" role="group" aria-label="conviction-drempel">
+      <button aria-pressed="${!MS.thr}" onclick="mSet('thr',0)">alle namen</button>
+      <button aria-pressed="${MS.thr === c.floor}" onclick="mSet('thr',${c.floor})">|impact_sum| ≥ ${c.floor}</button>
+    </span>`;
+  if (c.hasVal) h += `<span class="seg" role="group" aria-label="validatieruns">
+      <button aria-pressed="${!MS.val}" onclick="mSet('val',false)">alleen echte runs</button>
+      <button aria-pressed="${MS.val}" onclick="mSet('val',true)">validatieruns meetellen</button>
+    </span>
+    <span class="hint">Een validatierun draaide op <b>synthetische</b> vondsten om de keten
+      te testen. Die namen zijn geen onderzoek en horen standaard niet in een getal.</span>`;
+  return h + `</div>`;
+}
+
+/* Elk markttabblad begint hier: geen marktbestand, of geen run op schijf, en dan
+   is er niets te tonen en zegt het tabblad dat in plaats van nullen te zetten. */
+function mGuard(c, code) {
+  if (!c) return `<div class="card warnbox"><h3>Geen marktbestand</h3>
+    <p>De bouw vond geen <code>dashboard/data/markets.json</code>. Draai
+    <code>python3 dashboard/scripts/build_markets.py</code> en bouw opnieuw.</p></div>`;
+  if (!c.d.runs.length) return `<div class="card warnbox"><h3>Nog geen run op schijf</h3>
+    <p>Er staat geen enkele map onder <code>research/*/*/*/${esc(c.d.dir)}/</code>, dus
+    valt er niets te tonen: geen nul, geen leeg getal, geen tabel. De stage bestaat wel
+    en heeft zijn eigen Routine; wat ontbreekt is een fire die iets heeft gepubliceerd.</p>
+    <p>De validatie van deze stage is buiten <code>research/</code> gedraaid en is hier
+    dus ook niet te zien. Zodra één fire publiceert, vullen deze tabbladen zich vanzelf.</p></div>`;
+  return null;
+}
+
+/* Waarom een getal ontbreekt, in de taal van wat het nodig heeft. Elk
+   analysetabblad dat nog niet kan rekenen, eindigt hier en niet in een lege
+   tabel: een leeg vak leest als een meting die nul opleverde. */
+function mNeeds(c, need) {
+  const pend = c.runs.filter(r => !r.has_resolved_file && r.n_rows).length;
+  if (!c.st.n) return `<div class="card warnbox"><h3>Nog niets opgelost</h3>
+    <p>Er is in ${MNAAM[c.code]} nog geen enkele naam met een gerealiseerde beweging, dus
+    staat hier geen prestatiegetal. Dat is de stand, niet een fout in dit tabblad.</p>
+    <p>Van de ${c.runs.length} runs hebben er ${pend} nog geen
+    <code>${esc(c.d.resolved_file)}</code>. Een run wordt pas oplosbaar als zijn venster
+    dicht is; daarna vult dit tabblad zich vanzelf met
+    <code>python3 dashboard/scripts/build_markets.py --resolve</code>, of per dag met
+    <code>python3 ${esc(c.d.resolver)} --run &lt;rundir&gt; -o &lt;rundir&gt;/${esc(c.d.resolved_file)}</code>.</p></div>`;
+  return `<div class="card warnbox"><h3>${c.st.n} opgeloste namen, en dit vraagt er ${need}</h3>
+    <p>Op drie namen komt een rangcorrelatie van precies 1,0 één keer op de zes toevallig
+    uit; <code>au_resolve.py</code> schrijft dat zelf op nadat de eerste synthetische
+    Australische run er netjes een produceerde. Onder ${need} namen staat hier daarom niets
+    in plaats van een getal dat blijft hangen. De namen zelf staan op <b>Namen</b>.</p></div>`;
+}
+
+/* ------------------------------------------------------------- Overzicht */
+function mtOverzicht(code) {
+  const c = mCtx(code);
+  const g = mGuard(c, code);
+  let html = `<p class="lead">${MNOTE[code]}</p>`;
+  if (g) return html + g;
+
+  html += mControls(c, 'both');
+  html += tiles([
+    {k:'jachtdagen', v:c.hunted.length, s:`${c.runs.length} runs in de map`},
+    {k:'namen', v:c.ranked.length,
+     s: (MS.thr ? `boven ${MS.thr}` : 'gejaagd en gerangschikt')
+        + (c.unranked ? ` · ${c.unranked} ongejaagd` : '')},
+    {k:'vondsten', v:c.ranked.reduce((s,r)=>s+(r.n_findings||0),0), s:'over die namen'},
+    {k:'opgelost', v:c.st.n, s:'met een gerealiseerde beweging'},
+    {k:'teken goed', v: c.st.signN ? `${c.st.signRight}/${c.st.signN}` : '–',
+     s: c.st.signN ? n1(100*c.st.signRight/c.st.signN) + '%' : 'nog niets opgelost'}]);
+
+  if (c.st.n >= MMIN) {
+    html += `<div class="card"><h3>Waar het vandaag op staat</h3>` +
+      table([{h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n}, {h:'ρ', f:r=>n3(r.rho)}],
+        [{label:'de jacht · impact_sum', n:c.st.n, rho:c.st.rho},
+         {label:'gratis controle · −run_up_20d_pct', n:c.st.ctlN, rho:c.st.ctl}]) +
+      `<p class="meta">Uitgesplitst op <b>Score</b>, per drempel op <b>Drempel</b>.</p></div>`;
+  } else {
+    html += mNeeds(c, MMIN);
+  }
+
+  /* Welke tabbladen er nog niet staan, en wat ze openzet. Zonder deze regel is
+     een korte tabbladenrij niet te onderscheiden van een dashboard dat die
+     analyses niet kent. */
+  const cg = mCtx(code, true);
+  const gated = MTABDEFS.filter(t => (!t.only || t.only === code)
+                                  && t.when && !t.when(cg));
+  if (gated.length) html += `<div class="card"><h3>Wat hier nog niet staat</h3>
+    <p>Deze markt heeft de tabbladen van de VS, maar een tabblad verschijnt pas als zijn
+    data het draagt. Nog dicht:</p>` + table([
+      {h:'tabblad', f:r=>`<b>${esc(r.name)}</b>`},
+      {h:'gaat open bij', f:r=>esc(r.needs)}],
+      gated.map(t => ({name:t.name, needs:t.needs}))) + `</div>`;
+
+  if ((M.problems || []).length) html += `<div class="card warnbox"><h3>Problemen bij het verzamelen</h3>
+    <ul>${M.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`;
+  return html;
+}
+
+/* ----------------------------------------------------------------- Score */
+function mtScore(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  let html = mControls(c, 'both');
+  if (c.st.n < MMIN) return html + mNeeds(c, MMIN);
+
+  html += `<div class="card"><h3>Rangschikking tegen de gerealiseerde beweging</h3>` +
+    table([{h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n}, {h:'ρ', f:r=>n3(r.rho)}],
+      [{label:'de jacht · impact_sum', n:c.st.n, rho:c.st.rho},
+       {label:'gratis controle · −run_up_20d_pct', n:c.st.ctlN, rho:c.st.ctl}]) +
+    `<p class="meta">Eén pool over alle dagen, niet per dag gecentreerd: daar zijn het er
+     nog niet genoeg voor. Geen permutatietest en geen correctie voor meervoudig toetsen:
+     op ${c.st.n} namen zou allebei meer precisie suggereren dan er is. De jacht moet de
+     gratis controle verslaan om iets te hebben vastgesteld; gelijk spel is geen
+     resultaat.</p></div>`;
+
+  if (c.st.book.n) html += `<div class="card"><h3>Bord-rendement</h3>` +
+    table(BOOKCOLS, [bookRow('elke opgeloste naam, in de richting van het teken', c.st.book)].filter(Boolean)) +
+    `<p class="meta">Bord-rendement: de beweging in de richting van het teken van
+     <code>impact_sum</code>. Deze stage plaatst geen orders, dus er zit geen spread, geen
+     instapmoment en geen uitvoering in. Dit is wat het onderzoek zei, niet wat het
+     opbracht.</p></div>`;
+
+  const bySess = ['amc','bmo'].map(s => {
+    const g2 = c.resolved.filter(r => r.session === s);
+    return g2.length ? {label:s, ...book(g2.map(r=>r.ret).filter(x=>x!==null&&x!==undefined)),
+                        rho: g2.length >= MMIN
+                          ? corr(ranks(g2.map(r=>r.impact_sum)), ranks(g2.map(r=>r.realised_move_pct)))
+                          : null} : null;
+  }).filter(Boolean);
+  if (bySess.length) html += `<div class="card"><h3>Per sessie</h3>` + table([
+    {h:'sessie', f:r=>`<b>${esc(r.label)}</b>`}, {h:'n', f:r=>r.n},
+    {h:'raak %', f:r=>n1(r.hit)}, {h:'gem. %', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'ρ', f:r=>n3(r.rho)}], bySess) +
+    `<p class="meta">De VS-steekproef splitst hier hard uiteen: amc en bmo willen tegengestelde
+     uitstapmomenten. Of dat elders ook zo is, is precies wat deze rij moet uitwijzen, en
+     twee cijfers per sessie zeggen er nog niets over.</p></div>`;
+  return html;
+}
+
+/* --------------------------------------------------------------- Drempel */
+const MTHR = [0, 1, 2, 3, 4, 5, 6, 8];
+function mtDrempel(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  let html = mControls(c, 'val');
+  if (c.st.n < MDREMPEL) return html + mNeeds(c, MDREMPEL);
+
+  const rows = MTHR.map(t => {
+    const g2 = c.resolved.filter(r => Math.abs(r.impact_sum) >= t);
+    if (g2.length < 3) return null;
+    const b = book(g2.map(r=>r.ret).filter(x=>x!==null&&x!==undefined));
+    return {t, n:g2.length, hit:b.hit, mean:b.mean,
+            rho: g2.length >= MMIN
+              ? corr(ranks(g2.map(r=>r.impact_sum)), ranks(g2.map(r=>r.realised_move_pct)))
+              : null};
+  }).filter(Boolean);
+
+  html += `<div class="card"><h3>De drempel doorgerekend</h3>` + table([
+    {h:'|impact_sum| ≥', f:r=>`<b>${n1(r.t)}</b>`},
+    {h:'namen', f:r=>r.n},
+    {h:'teken goed %', f:r=>n1(r.hit)},
+    {h:'bord %', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'ρ', f:r=>n3(r.rho)}], rows) +
+    `<p class="meta">De conviction-floor is de enige regel in dit onderzoek die in de VS ooit
+     een familiegewijze correctie doorstond, en hij is daar op dertien dagen gekozen. Deze
+     tabel toont of hij hier iets doet; hij is géén uitnodiging om de drempel te verzetten op
+     de dagen die hem hebben voortgebracht. De rij met de hoogste waarde is bijna altijd de
+     rij met de minste namen.</p></div>`;
+  return html;
+}
+
+/* --------------------------------------------------------------- Aanloop */
+function mtAanloop(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  let html = mControls(c, 'both');
+  if (c.st.n < MMIN) return html + mNeeds(c, MMIN);
+
+  const ctl = (key, label) => {
+    const v = c.resolved.filter(r => r[key] !== null && r[key] !== undefined);
+    if (v.length < MMIN) return {label, n:v.length, rho:null, agree:null, dis:null};
+    const rho = corr(ranks(v.map(r => -r[key])), ranks(v.map(r => r.realised_move_pct)));
+    const A = v.filter(r => (r.impact_sum > 0) === (r[key] < 0));
+    const B = v.filter(r => (r.impact_sum > 0) !== (r[key] < 0));
+    return {label, n:v.length, rho,
+            agree: A.length ? book(A.map(r=>r.ret)).mean : null, an:A.length,
+            dis: B.length ? book(B.map(r=>r.ret)).mean : null, bn:B.length};
+  };
+  html += `<div class="card"><h3>De aanloop naar de print</h3>` + table([
+    {h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n}, {h:'ρ tegen de beweging', f:r=>n3(r.rho)},
+    {h:'eens met de jacht', f:r=>r.agree===null?'–':`${pc(r.agree)} <span class="meta">(${r.an})</span>`},
+    {h:'oneens', f:r=>r.dis===null?'–':`${pc(r.dis)} <span class="meta">(${r.bn})</span>`}],
+    [ctl('run_up_20d_pct','−run-up 20 sessies · de gratis controle'),
+     ctl('run_up_5d_pct','−run-up 5 sessies')]) +
+    `<p class="meta">De gratis controle is één getal uit de verzegelde baseline, beschikbaar
+     vóór er één subagent draait. In de VS gaven de twee deelverzamelingen — alle namen en het
+     verhandelde boek — tegengestelde tekens met overlappende intervallen, wat ruis is die
+     twee keer is gemeten. Lees deze tabel dus als twee getallen naast elkaar en niet als een
+     regel. Bij stage J is <code>run_up_5d_pct</code> apart verzegeld omdat de 20-daagse de
+     beweging verborg die ertoe deed.</p></div>`;
+  return html;
+}
+
+/* ----------------------------------------------------- Deelmarkt (alleen EU) */
+function mtDeelmarkt(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  let html = mControls(c, 'both');
+  const subs = [...new Set(c.ranked.map(r => r.submarket))].sort();
+  const rows = subs.map(s => {
+    const g2 = c.ranked.filter(r => r.submarket === s);
+    const res = g2.filter(r => r.realised_move_pct !== null && r.realised_move_pct !== undefined);
+    const t = g2.map(r=>r.turnover_usd).filter(x=>x!==null&&x!==undefined).sort((a,b)=>a-b);
+    return {sub:s, n:g2.length, res:res.length,
+            anch:g2.filter(r=>r.anchor_covered).length,
+            turn: t.length ? t[Math.floor(t.length/2)] : null,
+            find: g2.reduce((a,r)=>a+(r.n_findings||0),0),
+            mean: res.length ? book(res.map(r=>r.ret)).mean : null,
+            rho: res.length >= MMIN
+              ? corr(ranks(res.map(r=>r.impact_sum)), ranks(res.map(r=>r.realised_move_pct)))
+              : null};
+  });
+  html += `<div class="card"><h3>Per deelmarkt</h3>` + table([
+    {h:'markt', f:r=>`<b>${esc(r.sub)}</b>`}, {h:'namen', f:r=>r.n},
+    {h:'vondsten', f:r=>r.find}, {h:'opgelost', f:r=>r.res},
+    {h:'anker', f:r=>`${r.anch}/${r.n}`},
+    {h:'mediane omzet', f:r=>usdM(r.turn)},
+    {h:'bord %', f:r=>r.mean===null?'–':`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'ρ', f:r=>n3(r.rho)}], rows) +
+    `<p class="meta">Een dag kan één markt zijn: 15 van de 20 namen waren Zweeds op
+     2026-10-22. De trekking is bewust <b>niet</b> gestratificeerd, want een quotum per markt
+     is een tweede selectie die de scorer niet ziet, en deze stage heeft al één keer betaald
+     voor een snede die hij niet kon zien. <code>anker</code> telt de namen die het
+     short-register van hun eigen markt noemt; Spanje en Polen hebben er geen, dus hun
+     <code>priced_lean_pct</code> ís de gratis controle en die namen kunnen die benchmark per
+     definitie niet verslaan. Een gepoolde ρ die niet zegt hoeveel ervan <code>es</code> en
+     <code>pl</code> is, wordt oververkocht.</p></div>`;
+  return html;
+}
+
+/* ------------------------------------------------- Ankerarm (alleen Canada) */
+function mtAnker(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  let html = mControls(c, 'both');
+  const arm = v => {
+    const g2 = c.ranked.filter(r => r.anchor_covered === v);
+    const res = g2.filter(r => r.realised_move_pct !== null && r.realised_move_pct !== undefined);
+    return {label: v ? 'mét optie-anker' : 'zonder, alleen het short-register',
+            n:g2.length, res:res.length,
+            mean: res.length ? book(res.map(r=>r.ret)).mean : null,
+            rho: res.length >= MMIN
+              ? corr(ranks(res.map(r=>r.impact_sum)), ranks(res.map(r=>r.realised_move_pct)))
+              : null};
+  };
+  html += `<div class="card"><h3>De twee ankerarmen</h3>` + table([
+    {h:'', f:r=>esc(r.label)}, {h:'namen', f:r=>r.n}, {h:'opgelost', f:r=>r.res},
+    {h:'bord %', f:r=>r.mean===null?'–':`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'ρ', f:r=>n3(r.rho)}], [arm(true), arm(false)]) +
+    `<p class="meta">Dit is de reden dat stage CA bestaat, en niet de agenda. Canada is de
+     enige markt hier waar beide regimes in <b>één dag namen</b> zitten: de Montréal Exchange
+     noteert opties op 360 namen, het CIRO short-register dekt 87–88% van elke omzetband.
+     <code>archive/backtest/FINDINGS.md</code> §33 prijsde het ankerloze regime op ρ=+0,073
+     (p=0,45) over 104 events en kon het anker niet scheiden van de markt waarin het gemeten
+     was. Deze tabel houdt de markt vast en scheidt ze wel — zodra er iets is opgelost. De
+     validatierun van 2026-08-13 verzegelde met Toronto dicht, dus alle 19 namen landden op de
+     registerarm en de optiearm is door geen enkele echte run aangeraakt.</p></div>`;
+  return html;
+}
+
+/* ------------------------------------------- Filer-type (alleen Australië) */
+function mtFiler(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  let html = mControls(c, 'both');
+  const kinds = [...new Set(c.ranked.map(r => r.filer_type || 'onbekend'))].sort();
+  const rows = kinds.map(k => {
+    const g2 = c.ranked.filter(r => (r.filer_type || 'onbekend') === k);
+    const res = g2.filter(r => r.realised_move_pct !== null && r.realised_move_pct !== undefined);
+    return {k, n:g2.length, res:res.length,
+            mean: res.length ? book(res.map(r=>r.ret)).mean : null,
+            rho: res.length >= MMIN
+              ? corr(ranks(res.map(r=>r.impact_sum)), ranks(res.map(r=>r.realised_move_pct)))
+              : null};
+  });
+  html += `<div class="card"><h3>Winstcijfer of kasstroomrapport</h3>` + table([
+    {h:'soort', f:r=>`<b>${esc(r.k)}</b>`}, {h:'namen', f:r=>r.n}, {h:'opgelost', f:r=>r.res},
+    {h:'bord %', f:r=>r.mean===null?'–':`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'ρ', f:r=>n3(r.rho)}], rows) +
+    `<p class="meta">De helft van de ASX levert een Appendix 4C of 5B kwartaalrapport onder
+     Listing Rule 4.7B in plaats van een winstcijfer. Dat is een echt koersbewegend event —
+     de elf waargenomen van IperionX hebben een mediane absolute reactie van 4,66% — maar met
+     een volstrekt andere lat. Een gepoolde ρ die de mix niet noemt, verbergt twee
+     verschillende vragen in één getal.</p></div>`;
+  return html;
+}
+
+/* ----------------------------------------------- Lessons en de taalcontrole */
+function mDelta(c, key, title, note) {
+  const v = c.ranked.filter(r => r[key] !== null && r[key] !== undefined);
+  if (!v.length) return `<div class="card warnbox"><h3>${title}: nog geen bevroren draft</h3>
+    <p>Geen enkele naam draagt <code>${esc(key)}</code>. ${note}</p></div>`;
+  const res = v.filter(r => r.realised_move_pct !== null && r.realised_move_pct !== undefined);
+  let h = `<div class="card"><h3>${title}</h3>`;
+  if (res.length >= MMIN) h += table(
+    [{h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n}, {h:'ρ', f:r=>n3(r.rho)},
+     {h:'bord %', f:r=>r.mean===null?'–':`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`}],
+    [{label:'vóór', n:res.length,
+      rho: corr(ranks(res.map(r=>r[key])), ranks(res.map(r=>r.realised_move_pct))),
+      mean: book(res.map(r => r[key] > 0 ? r.realised_move_pct : -r.realised_move_pct)).mean},
+     {label:'ná', n:res.length,
+      rho: corr(ranks(res.map(r=>r.impact_sum)), ranks(res.map(r=>r.realised_move_pct))),
+      mean: book(res.map(r=>r.ret)).mean}]);
+  else h += `<p class="meta">${res.length} van deze ${v.length} namen is opgelost, dus er staat
+    hier geen ρ. Het verschil per naam is wel al zichtbaar.</p>`;
+  h += table([
+    {h:'dag', f:r=>r.run_date},
+    ...(c.code === 'EU' ? [{h:'mkt', f:r=>esc(r.submarket)}] : []),
+    {h:'ticker', f:r=>`<b>${esc(r.ticker)}</b>`},
+    {h:'vóór', f:r=>n1(r[key])}, {h:'ná', f:r=>n1(r.impact_sum)},
+    {h:'verschil', f:r=>`<span class="${sgn(r.impact_sum-r[key])}">${n1(r.impact_sum-r[key])}</span>`},
+    {h:'beweging', f:r=>r.realised_move_pct===null||r.realised_move_pct===undefined
+        ? '<span class="meta">niet opgelost</span>' : pc(r.realised_move_pct)}], v);
+  return h + `<p class="meta">${note}</p></div>`;
+}
+
+function mtLessons(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  return mControls(c, 'both') + mDelta(c, 'impact_sum_pre_lessons', 'Vóór en ná LESSONS.md',
+    `De hunter maakt zijn sommen eerst met alleen de baseline, dat wordt bevroren als
+     <code>pre_lessons</code>, daarna leest hij het bestand en herziet. Het bestand kan
+     daardoor geen zoektocht meer sturen, alleen een omvang en een selectie. Let op de
+     valkuil die stage EU al één keer maakte: draait één context beide hunts en heeft die
+     <code>LESSONS.md</code> al gelezen, dan is de freeze per constructie gelijk aan de
+     uitkomst en meet dit niets. ${code === 'AU' || code === 'CA'
+       ? 'Het LESSONS.md van deze markt is bewust nog leeg tot er een run oplost.' : ''}`);
+}
+
+function mtTaal(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  const uk = c.ranked.filter(r => r.submarket === 'uk'
+                               && r.impact_sum_pre_local !== null
+                               && r.impact_sum_pre_local !== undefined).length;
+  return mControls(c, 'both') + mDelta(c, 'impact_sum_pre_local', 'Vóór en ná de lokale ronde',
+    `Elke hunter draait eerst Engels, dat wordt bevroren als <code>pre_local</code>, en pas
+     daarna de ronde in de eigen taal. Dit meet of zoeken in het Duits, Frans, Italiaans,
+     Pools, Spaans of een Scandinavische taal rangcorrelatie oplevert of alleen tokens kost.
+     <b>Het Britse geval is ontaard en telt niet mee</b>: de tweede ronde varieert daar
+     bronlokaliteit (RNS, Investegate, de vakpers) en geen taal, dus <code>eu_resolve.py</code>
+     weigert dat verschil te poolen met het Duitse en Franse. ${uk ? `Er staan ${uk} Britse
+     namen in deze tabel; lees hun verschil apart.` : ''}`);
+}
+
+/* ----------------------------------------------------------------- Namen */
+function mtNamen(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  const shown = [...c.rows].sort((a,b) => (b.run_date).localeCompare(a.run_date)
+                                       || Math.abs(b.impact_sum||0) - Math.abs(a.impact_sum||0));
+  return mControls(c, 'both') + `<div class="card"><h3>Elke gerangschikte naam</h3>` + table([
+    {h:'dag', f:r=>r.run_date},
+    ...(code === 'EU' ? [{h:'mkt', f:r=>esc(r.submarket)}] : []),
+    {h:'ticker', f:r=>`<b>${esc(r.ticker)}</b>`},
+    {h:'bedrijf', f:r=>esc((r.company||'').slice(0,34))},
+    {h:'sessie', f:r=>esc(r.session)},
+    {h:'impact_sum', f:r=> r.rankable === false
+        ? `<span class="meta">${esc(r.not_rankable_because || 'niet gerangschikt')}</span>`
+        : `<span class="${sgn(r.impact_sum)}">${n1(r.impact_sum)}</span>`},
+    {h:'vondsten', f:r=>r.n_findings},
+    {h:'lean %', f:r=>n2(r.priced_lean_pct)},
+    {h:'run-up 20d', f:r=>pc(r.run_up_20d_pct)},
+    {h:'omzet/dag', f:r=>usdM(r.turnover_usd)},
+    ...(code === 'AU' ? [{h:'soort', f:r=>esc(r.filer_type || '–')}] : []),
+    {h:'anker', f:r=>r.anchor_covered === true ? 'ja' : r.anchor_covered === false ? 'nee' : '–'},
+    {h:'beweging', f:r=>r.realised_move_pct === null || r.realised_move_pct === undefined
+        ? `<span class="meta">${r.move_pending ? 'wacht op bar' : 'niet opgelost'}</span>`
+        : pc(r.realised_move_pct)},
+    {h:'bord %', f:r=>r.ret === null || r.ret === undefined ? '–'
+        : `<span class="${sgn(r.ret)}">${pc(r.ret)}</span>`},
+  ], shown) + `<p class="meta"><code>impact_sum</code> is de som van de door de hunter
+    opgegeven maten, in punten spot, zonder richtinglabel en zonder drempel. Een rij die
+    <b>${'niet gerangschikt'}</b> zegt, is niet gejaagd en telt in geen enkel getal mee.</p></div>`;
+}
+
+/* ------------------------------------------------------------------ Runs */
+function mtRuns(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  return mControls(c, 'val') + `<div class="card"><h3>Elke run op schijf</h3>` + table([
+    {h:'dag', f:r=>`<b>${esc(r.run_date)}</b>`},
+    {h:'namen', f:r=>r.n_rows || (r.quiet_reason ? `<span class="meta">${esc(r.quiet_reason)}</span>` : 0)},
+    {h:'hunters', f:r=>r.n_hunts},
+    {h:'vondsten', f:r=>r.n_findings},
+    {h:'opgelost', f:r=>r.n_rows ? `${r.n_resolved}/${r.n_rows}` : '–'},
+    {h:'gedood', f:r=>r.n_killed || '–'},
+    {h:'lean vs controle', f:r=>n2((r.resolver_stats||{}).lean_vs_free_control_rho)},
+    {h:'trekking', f:r=>{
+      const s = r.selection || {};
+      const mc = (s.market_concentration || {});
+      return mc.largest_market
+        ? `${esc(mc.largest_market)} ${n1(100*(mc.largest_market_share||0))}%`
+        : (s.eligible !== undefined ? `${s.hunted ?? '–'}/${s.eligible}` : '–');
+    }},
+    {h:'soort', f:r=>r.validation_only ? '<span class="meta">validatie</span>' : 'echt'},
+  ], c.runs) + `<p class="meta"><b>gedood</b> is <code>event_occurred: false</code>: het venster
+    ging voorbij en er kwam geen publicatie, dus de naam valt uit elke rangschikking. <b>lean vs
+    controle</b> is het alarm van de resolver — loopt die richting 1,0, dan is het register
+    gestopt met laden en ís de lean de gratis controle geworden; leeg betekent dat de resolver
+    hem niet berekende, meestal wegens te weinig namen. <b>trekking</b> is hoeveel van de
+    in aanmerking komende namen gejaagd zijn, en voor Europa hoe geconcentreerd die dag in één
+    markt zat.</p></div>`;
+}
+
+/* ------------------------------------------------------------------ Data */
+function mtData(code) {
+  const c = mCtx(code);
+  if (!c) return mGuard(c, code);
+  let html = `<p class="lead">Waar deze cijfers vandaan komen en wat er niet in zit.</p>`;
+  html += `<div class="card"><h3>Herkomst</h3><ul>
+    <li>Stage <b>${esc(c.d.stage)}</b>, runmap <code>research/*/*/*/${esc(c.d.dir)}/</code></li>
+    <li>Verzamelaar: <code>dashboard/scripts/build_markets.py</code> →
+        <code>dashboard/data/markets.json</code>, gebouwd ${esc(M.generated_utc || '–')}</li>
+    <li>Resolver: <code>${esc(c.d.resolver)}</code>, schrijft
+        <code>${esc(c.d.resolved_file)}</code> in de runmap</li>
+    <li>Scorer: <code>researcher_us/scripts/edge_score.py</code>, ongewijzigd gedeeld met
+        de VS — een Amerikaanse run herscoort identiek</li>
+    <li>${c.d.n_runs} runs · ${c.d.n_names} namen · ${c.d.n_resolved} met een gerealiseerde
+        beweging</li></ul></div>`;
+  html += `<div class="card warnbox"><h3>Wat hier bewust niet staat</h3>
+    <p><b>Er is geen geldniveau.</b> Deze stage plaatst geen orders: geen broker, geen fills,
+    geen equity-curve. De handels-, capaciteits-, kosten- en wegingstabbladen van de VS bestaan
+    hier daarom niet, en de ledger van stage E zegt niets over deze markt. Elk getal hier is
+    bord-rendement: de koersbeweging in de richting van het teken, zonder spread en zonder
+    uitvoering.</p>
+    <p><b>Het venster is niet van dit dashboard.</b> Europa en Australië rapporteren vóór de
+    opening, dus daar loopt het van <code>slot(D−1)</code> tot <code>slot(D)</code>; Tokio loopt
+    van de slotbel naar de volgende opening. Die logica hoort in de resolver van de markt zelf
+    en staat nergens hier. Een gerealiseerde beweging op deze tabbladen is door die resolver
+    berekend of hij staat er niet.</p></div>`;
+  html += `<div class="card"><h3>Per run</h3>` + table([
+    {h:'dag', f:r=>`<b>${esc(r.run_date)}</b>`},
+    {h:'event', f:r=>esc(r.event_date)},
+    {h:'verzegeld', f:r=>esc((r.sealed_utc||'–').slice(0,16).replace('T',' '))},
+    {h:'gescoord', f:r=>esc((r.scored_utc||'–').slice(0,16).replace('T',' '))},
+    {h:'opgelost', f:r=>esc((r.resolved_utc||'–').slice(0,16).replace('T',' '))},
+    {h:'sleutel', f:r=>esc(r.ranking_key || '–')},
+    {h:'floor', f:r=>n1(r.conviction_floor)},
+    {h:'cap', f:r=>r.cap ?? '–'},
+    {h:'omzetdrempel', f:r=>usdM(r.min_turnover_usd)}], c.d.runs) + `</div>`;
+  if ((M.problems || []).length) html += `<div class="card warnbox"><h3>Problemen bij het verzamelen</h3>
+    <ul>${M.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`;
+  return html;
+}
+
+/* De suite per markt. `when` bepaalt of een tabblad vandaag iets onder zich
+   heeft; wat dicht is, staat met zijn voorwaarde op Overzicht, zodat een korte
+   rij niet leest als een dashboard dat die analyse niet kent. */
+const MDREMPEL = 10;
+const MTABDEFS = [
+  {name:'Overzicht', fn:mtOverzicht},
+  {name:'Score',     fn:mtScore,     needs:`${MMIN} opgeloste namen`,
+   when:c => c.st.n >= MMIN},
+  {name:'Drempel',   fn:mtDrempel,   needs:`${MDREMPEL} opgeloste namen`,
+   when:c => c.st.n >= MDREMPEL},
+  {name:'Aanloop',   fn:mtAanloop,   needs:`${MMIN} opgeloste namen`,
+   when:c => c.st.n >= MMIN},
+  {name:'Deelmarkt', fn:mtDeelmarkt, needs:'een gejaagde naam', only:'EU',
+   when:c => c.ranked.length > 0},
+  {name:'Ankerarm',  fn:mtAnker,     needs:'een naam met een ankerstatus', only:'CA',
+   when:c => c.ranked.some(r => r.anchor_covered !== null && r.anchor_covered !== undefined)},
+  {name:'Soort',     fn:mtFiler,     needs:'een naam met een filer_type', only:'AU',
+   when:c => c.ranked.some(r => r.filer_type)},
+  {name:'Lessons',   fn:mtLessons,   needs:'een bevroren pre_lessons-draft',
+   when:c => c.ranked.some(r => r.impact_sum_pre_lessons !== null
+                             && r.impact_sum_pre_lessons !== undefined)},
+  {name:'Taal',      fn:mtTaal,      needs:'een bevroren pre_local-draft', only:'EU',
+   when:c => c.ranked.some(r => r.impact_sum_pre_local !== null
+                             && r.impact_sum_pre_local !== undefined)},
+  {name:'Namen',     fn:mtNamen,     needs:'een gejaagde naam',
+   when:c => c.rows.length > 0},
+  {name:'Runs',      fn:mtRuns,      needs:'een run op schijf',
+   when:c => c.runs.length > 0},
+  {name:'Data',      fn:mtData},
+  {name:'Index',     fn:() => tabIndex()},
+];
+
+function marketTabs(code) {
+  const c = mCtx(code, true);
+  return byGroup(MTABDEFS
+    .filter(t => !t.only || t.only === code)
+    .filter(t => !t.when || !c || t.when(c))
+    .map(t => [t.name, () => t.fn(code), 1]));
+}
+
+/* Op groep sorteren, stabiel. De rij tekent een groepskop zodra de groep
+   verandert, dus een groep die niet aaneengesloten staat, krijgt twee koppen —
+   op de Europese rij stond DOORSNEDES twee keer omdat Lessons ertussen viel. */
+function byGroup(tabs) {
+  return tabs
+    .map((t, i) => [t, i])
+    .sort((a, b) => (TABGROUPS.indexOf(tabGroup(a[0][0])) -
+                     TABGROUPS.indexOf(tabGroup(b[0][0]))) || (a[1] - b[1]))
+    .map(x => x[0]);
+}
+
+/* ------------------------------------------------------- de index van de pagina
+   Twintig tabbladen in één platte rij zijn geen index. Drie dingen maken er wel
+   een van: elk tabblad hoort bij een groep, elk tabblad heeft één regel die zegt
+   welke vraag het beantwoordt, en elk tabblad heeft een adres. Dat adres staat in
+   de hash (`#eu/score`), dus een tabblad is te bookmarken, te delen en te herladen
+   — en de Ververs-knop, die de pagina met een cache-buster herlaadt, brengt je
+   terug waar je stond in plaats van op Overzicht. */
+const TABGROUPS = ['Stand', 'Rangschikking', 'Klok', 'Doorsnedes', 'Register', 'Bronnen'];
+const TABMETA = {
+  /* Stand */
+  'Overzicht':  {g:'Stand', q:'Wat staat er vandaag, op één scherm: dagen, namen, vondsten en of er al iets is opgelost.'},
+  'Handel':     {g:'Stand', q:'Elke positie die de rekening echt heeft geopend en gesloten, met de spread en de uitstap die er werkelijk was.'},
+  /* Rangschikking */
+  'Score':      {g:'Rangschikking', q:'Rangschikt de jacht de dag beter dan de gratis controle, en wat levert het teken op?'},
+  'Drempel':    {g:'Rangschikking', q:'Wat doet de conviction-floor als je hem verzet: rendement, raakpercentage, ρ en n bij elke snede.'},
+  'Aanloop':    {g:'Rangschikking', q:'Zegt de koersbeweging vóór de print iets, en betaalt het als die het met de jacht eens is?'},
+  /* Klok */
+  'Timing':     {g:'Klok', q:'Waar hoort de uitstap te liggen: elke horizon van de nabeurs tot de slotkoers, per sessie.'},
+  'Instap':     {g:'Klok', q:'Maakt het uur van instappen uit, met de uitstap vastgehouden?'},
+  /* Doorsnedes */
+  'Sector':     {g:'Doorsnedes', q:'Leeft de edge in één sector, en zit hij in de namen die particulieren verhandelen?'},
+  'Zoekvolume': {g:'Doorsnedes', q:'Zegt de Google-aandacht rond de print iets over de uitkomst?'},
+  'Capaciteit': {g:'Doorsnedes', q:'Hoeveel van het resultaat zit in namen die te dun zijn om in te handelen?'},
+  'Kosten':     {g:'Doorsnedes', q:'Wat kost een run aan subagenten, en wat levert die run op?'},
+  'Deelmarkt':  {g:'Doorsnedes', q:'Per beurs: namen, vondsten, ankerdekking, omzet en rangcorrelatie — en hoe scheef de trekking zat.'},
+  'Ankerarm':   {g:'Doorsnedes', q:'Mét optie-anker tegen alleen het short-register, binnen één markt en één dag. De reden dat stage CA bestaat.'},
+  'Soort':      {g:'Doorsnedes', q:'Winstcijfer tegen Appendix 4C/5B-kasstroomrapport: twee verschillende latten in één getal.'},
+  'Taal':       {g:'Doorsnedes', q:'Levert de ronde in de eigen taal rangcorrelatie op, of kost hij alleen tokens?'},
+  /* Register */
+  'Lessons':    {g:'Register', q:'Kost of levert LESSONS.md: de bevroren draft tegen de uiteindelijke som.'},
+  'Hypotheses': {g:'Register', q:'Het hypotheseregister met één verdictregel, en wat er tot nu toe overeind blijft.'},
+  'Weging':     {g:'Register', q:'De bevroren wegingen w1 en w2 naast de vlakke regel, per dag meegerekend.'},
+  /* Bronnen */
+  'Agenda':     {g:'Bronnen', q:'Wat er de komende week rapporteert, met beide poorten apart geteld. Geen voorspelling.'},
+  'Namen':      {g:'Bronnen', q:'Elke gerangschikte naam met zijn sleutel, zijn baseline en zijn uitkomst.'},
+  'Runs':       {g:'Bronnen', q:'Elke run op schijf: trekking, hunters, vondsten, wat er gedood is en het alarm van de resolver.'},
+  'Data':       {g:'Bronnen', q:'Waar de cijfers vandaan komen en wat er bewust niet in zit.'},
+  'Index':      {g:'Bronnen', q:'Elk tabblad van elke markt, met de vraag die het beantwoordt en of het al open staat.'},
+};
+const tabGroup = name => (TABMETA[name] || {}).g || 'Bronnen';
+const tabQ = name => (TABMETA[name] || {}).q || '';
+
+/* Het adres. Diakrieten eruit, want een hash met é of ë overleeft niet elke
+   plek waar iemand hem plakt. */
+const slug = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+                   .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/* ------------------------------------------------------------------ Index */
+function tabIndex() {
+  let html = `<p class="lead">Elk tabblad van elke markt, met de vraag die het beantwoordt.
+    Een tabblad van een markt zonder broker bestaat niet en een analysetabblad verschijnt
+    pas als zijn data het draagt; hieronder staat allebei, met de voorwaarde erbij.</p>`;
+  for (const [code, label] of MARKETS) {
+    const open = code === 'US' ? US_TABS.map(t => t[0]) : marketTabs(code).map(t => t[0]);
+    const shut = code === 'US' ? [] : MTABDEFS
+      .filter(t => (!t.only || t.only === code) && !open.includes(t.name))
+      .map(t => ({name: t.name, needs: t.needs}));
+    const rows = [...open.map(n => ({name:n, open:true})),
+                  ...shut.map(t => ({name:t.name, open:false, needs:t.needs}))]
+      .sort((a, b) => TABGROUPS.indexOf(tabGroup(a.name)) - TABGROUPS.indexOf(tabGroup(b.name)));
+    html += `<div class="card"><h3>${esc(label)}</h3>` + table([
+      {h:'groep', f:r=>`<span class="meta">${esc(tabGroup(r.name))}</span>`},
+      {h:'tabblad', f:r=> r.open
+          ? `<a href="#${slug(code)}/${slug(r.name)}"><b>${esc(r.name)}</b></a>`
+          : `<span class="meta">${esc(r.name)}</span>`},
+      {h:'de vraag', f:r=>esc(tabQ(r.name))},
+      {h:'staat', f:r=> r.open ? 'open'
+          : `<span class="meta">dicht · ${esc(r.needs || '')}</span>`},
+    ], rows) + `</div>`;
+  }
+  html += `<div class="card"><h3>Adressen</h3>
+    <p>Elk tabblad heeft er een: <code>#markt/tabblad</code>, bijvoorbeeld
+    <a href="#eu/deelmarkt"><code>#eu/deelmarkt</code></a> of
+    <a href="#us/drempel"><code>#us/drempel</code></a>. Zo'n adres is te bookmarken en te
+    delen, en het overleeft de Ververs-knop, die de pagina met een cache-buster herlaadt.
+    Wijst een adres naar een tabblad dat bij die markt niet bestaat of nog dicht is, dan
+    opent Overzicht van die markt.</p></div>`;
+  return html;
+}
+
 /* ------------------------------------------------------------------- boot */
-const TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel], ['Score',tabScore],
-              ['Drempel',tabDrempel], ['Sector',tabSector], ['Timing',tabTiming],
-              ['Instap',tabInstap], ['Aanloop',tabAanloop], ['Zoekvolume',tabZoek],
-              ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten], ['Lessons',tabLessons],
-              ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
-              ['Agenda',tabAgenda], ['Data',tabData]];
+/* De markt is de bovenste as van deze pagina, en de tabbladenrij hangt eronder.
+   De VS heeft een broker, dus die houdt zijn handels-, capaciteits-, kosten- en
+   wegingstabbladen. De andere vier plaatsen geen orders, dus die tabbladen
+   bestaan daar niet: een rij die per markt verschilt, vertelt precies dat. */
+/* Op groepsvolgorde, want de rij zelf is de index. Stand · Rangschikking ·
+   Klok · Doorsnedes · Register · Bronnen; zie TABMETA voor wat elk tabblad
+   beantwoordt. */
+const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel],
+              ['Score',tabScore], ['Drempel',tabDrempel], ['Aanloop',tabAanloop],
+              ['Timing',tabTiming], ['Instap',tabInstap],
+              ['Sector',tabSector], ['Zoekvolume',tabZoek],
+              ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten],
+              ['Lessons',tabLessons], ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
+              ['Agenda',tabAgenda], ['Data',tabData], ['Index',tabIndex]];
+US_TABS.splice(0, US_TABS.length, ...byGroup(US_TABS));
+const MARKETS = [['US','Verenigde Staten'], ['EU','Europa'], ['JP','Japan'],
+                 ['AU','Australië'], ['CA','Canada']];
+let MKT = 'US';
+let TABS = US_TABS;
 let active = 0;
+const bar = document.getElementById('marketbar');
 const nav = document.getElementById('tabs'), panels = document.getElementById('panels');
-TABS.forEach(([name], i) => {
+
+/* Eén regel per markt met wat erachter zit, zodat de keuze niet blind is. */
+const mCount = code => {
+  if (code === 'US') return `${D.runs.length} runs · ${ALL.length} namen · handel`;
+  const d = (M.markets || {})[code];
+  if (!d) return 'geen data';
+  return d.n_runs ? `${d.n_runs} runs · ${d.n_names} namen · ${d.n_resolved} opgelost`
+                  : 'nog geen run';
+};
+MARKETS.forEach(([code, label]) => {
   const b = document.createElement('button');
-  b.textContent = name; b.setAttribute('role','tab');
-  b.setAttribute('aria-selected', i===0 ? 'true' : 'false');
-  b.onclick = () => { active = i; refresh(); };
-  nav.appendChild(b);
-  const s = document.createElement('section'); s.hidden = i !== 0;
-  panels.appendChild(s);
+  b.innerHTML = `<span class="mk">${esc(label)}</span>` +
+                `<span class="mc">${esc(mCount(code))}</span>`;
+  b.setAttribute('aria-pressed', code === MKT ? 'true' : 'false');
+  b.onclick = () => setMarket(code);
+  bar.appendChild(b);
 });
+
+/* De knoppen in leesvolgorde, los van de groepsblokken waarin ze staan. Alles
+   wat met een index werkt (toetsenbord, aria-selected, de hash) telt op deze
+   lijst en niet op nav.children, want dat zijn de groepen. */
+let navBtns = [];
+
+function buildTabs(keepName) {
+  nav.innerHTML = ''; panels.innerHTML = ''; navBtns = [];
+  let group = null, box = null;
+  TABS.forEach(([name], i) => {
+    const g = tabGroup(name);
+    if (g !== group) {
+      group = g;
+      box = document.createElement('span');
+      box.className = 'tabgroup';
+      box.innerHTML = `<span class="gl">${esc(g)}</span>`;
+      nav.appendChild(box);
+    }
+    const b = document.createElement('button');
+    b.textContent = name; b.setAttribute('role','tab');
+    b.id = 'tab-' + i;
+    b.title = tabQ(name);
+    b.setAttribute('aria-controls', 'panel-' + i);
+    b.onclick = () => { active = i; refresh(); };
+    box.appendChild(b);
+    navBtns.push(b);
+    const s = document.createElement('section');
+    s.id = 'panel-' + i; s.setAttribute('role','tabpanel');
+    s.setAttribute('aria-labelledby', 'tab-' + i);
+    s.tabIndex = 0;                    /* the panel scrolls, so it must focus */
+    panels.appendChild(s);
+  });
+  /* Een filter mag een getal versmallen, nooit het tabblad onder je wegtrekken.
+     Verandert de rij toch (de validatieknop kan een analysetabblad openen), dan
+     wordt hetzelfde tabblad bij naam teruggezocht en anders Overzicht. */
+  const i = keepName ? TABS.findIndex(t => t[0] === keepName) : -1;
+  active = i >= 0 ? i : 0;
+}
+
+function setMarket(code) {
+  MKT = code;
+  TABS = code === 'US' ? US_TABS : marketTabs(code);
+  [...bar.children].forEach((b, i) =>
+    b.setAttribute('aria-pressed', MARKETS[i][0] === code ? 'true' : 'false'));
+  buildTabs();
+  refresh();
+}
+
+/* Roving tabindex: een tablist is ÉÉN tabstop en de pijlen bewegen erbinnen.
+   Met twintig tabbladen is het alternatief twintig toetsaanslagen voor de
+   pagina zelf. */
+nav.addEventListener('keydown', e => {
+  const step = {ArrowRight:1, ArrowLeft:-1, Home:-Infinity, End:Infinity}[e.key];
+  if (step === undefined) return;
+  e.preventDefault();
+  active = !isFinite(step) ? (step < 0 ? 0 : TABS.length - 1)
+                           : (active + step + TABS.length) % TABS.length;
+  refresh();
+  navBtns[active].focus();
+});
+
+/* ---- het adres van een tabblad ------------------------------------------
+   `#markt/tabblad`. replaceState en niet pushState: met twintig tabbladen maal
+   vijf markten zou de Terug-knop anders door de klikgeschiedenis lopen in plaats
+   van de pagina te verlaten. Wijst een adres nergens heen, dan opent Overzicht
+   van die markt in plaats van een foutmelding. */
+let hashLock = false;
+function writeHash() {
+  if (hashLock) return;
+  const h = '#' + slug(MKT) + '/' + slug((TABS[active] || [''])[0]);
+  if (location.hash !== h) history.replaceState(null, '', location.pathname + location.search + h);
+}
+function readHash() {
+  const m = /^#([a-z]{2})\/(.+)$/.exec(location.hash.toLowerCase());
+  if (!m) return false;
+  const code = MARKETS.find(([c]) => slug(c) === m[1]);
+  if (!code) return false;
+  hashLock = true;
+  setMarket(code[0]);
+  hashLock = false;
+  const i = TABS.findIndex(t => slug(t[0]) === m[2]);
+  if (i >= 0) { active = i; }
+  refresh();
+  return true;
+}
+/* Een adres dat nergens heen wijst, wordt rechtgezet in plaats van te blijven
+   staan: refresh schrijft de hash terug naar waar de pagina werkelijk staat. */
+addEventListener('hashchange', () => { if (!readHash()) refresh(); });
+buildTabs();
 function refresh() {
-  [...nav.children].forEach((b,j) => b.setAttribute('aria-selected', j===active ? 'true':'false'));
+  navBtns.forEach((b,j) => {
+    b.setAttribute('aria-selected', j===active ? 'true':'false');
+    b.tabIndex = j === active ? 0 : -1;
+  });
+  writeHash();
   [...panels.children].forEach((s,j) => s.hidden = j !== active);
-  filterLine();
+  /* De filterbalk hoort bij de ledger van stage E: lens, cap, sector en uitstap-
+     horizon bestaan alleen daar. Op een markttabblad zou hij filters tonen die
+     niets onder zich hebben, dus daar verdwijnt hij en zet het tabblad zijn eigen
+     twee knoppen neer. */
+  const isMarket = !!TABS[active][2];
+  document.getElementById('controls').hidden = isMarket;
+  document.getElementById('filterline').hidden = isMarket;
+  if (!isMarket) filterLine();
   draw.length = 0;
   panels.children[active].innerHTML = TABS[active][1]();
   draw.forEach(fn => fn());
@@ -2515,7 +3421,8 @@ document.getElementById('stamp').textContent =
   `gebouwd ${D.generated_utc}` +
   ((D.build || {}).where === 'github-actions'
      ? ` door GitHub Actions (${(D.build.sha || '?')})` : '') +
-  ` · ${D.runs.length} runs · ${D.names.length} namen · ` +
+  ` · ${D.runs.length} runs · ${D.names.length} namen` +
+  (ALL.length !== D.names.length ? ` (${ALL.length} na aftrek dubbele events)` : '') + ` · ` +
   `${D.trades.filter(t=>t.closed).length} afgeronde posities · ` +
   `conviction-floor uit de config ${D.conviction_floor}`;
 document.getElementById('theme').onclick = () => {
@@ -2772,7 +3679,9 @@ probe();
 let rt;
 addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(refresh, 150); });
 renderControls();
-refresh();
+/* Pas hier, want readHash kan een markt en een tabblad zetten en die render moet
+   de filterbalk al kennen. Geen adres in de URL: gewoon de VS op Overzicht. */
+if (!readHash()) refresh();
 </script>
 </body>
 </html>
@@ -2784,6 +3693,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--ledger", default=str(DATA / "ledger.json"))
+    ap.add_argument("--markets", default=str(DATA / "markets.json"))
     ap.add_argument("--out", default=str(ROOT / "dashboard" / "dashboard.html"))
     a = ap.parse_args()
 
@@ -2791,6 +3701,16 @@ def main():
     # `</script>` inside the payload would close the tag it is embedded in.
     blob = json.dumps(led, separators=(",", ":")).replace("</", "<\\/")
     html = HTML.replace("__LEDGER__", blob)
+
+    # The other three researchers. A missing file is not an error: stage EU, J and
+    # AU place no orders and their tabs say so themselves, and a rebuild must not
+    # fail because a feeder that only feeds three tabs did not run.
+    mk = Path(a.markets)
+    mblob = (mk.read_text(encoding="utf-8").strip() if mk.exists()
+             else json.dumps({"markets": {}, "problems":
+                              [f"{mk} does not exist: run "
+                               "dashboard/scripts/build_markets.py"]}))
+    html = html.replace("__MARKETS__", mblob.replace("</", "<\\/"))
     Path(a.out).write_text(html, encoding="utf-8")
     print(f"wrote {a.out}  ({len(html.encode())/1024:.0f} kB, {len(led['names'])} names, "
           f"{len(led['trades'])} positions)")

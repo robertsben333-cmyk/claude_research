@@ -329,7 +329,17 @@ CAPABILITY = {
     "dk": {"archive": "paged",  "register": True,  "history": "estimated"},
     "no": {"archive": "day",    "register": True,  "history": "estimated"},
     "fi": {"archive": "paged",  "register": True,  "history": "estimated"},
-    "it": {"archive": "day",    "register": True,  "history": "estimated"},
+    # MEASURED 2026-09-22, and the flag is load-bearing. eMarket STORAGE is Borsa
+    # Italiana's appointed storage mechanism but it is NOT the only authorised one and
+    # it does NOT carry every Italian issuer: PHILOGEN is absent from its `azienda`
+    # dropdown entirely, and a day query on three dates the company is known to have
+    # filed (2025-09-23 half-year, 2026-03-27 FY, 2026-08-17) returned 33, 99 and 24
+    # rows with no Philogen row on any of them. The archive read fine every time. So
+    # "the source carries the day and not this issuer" does NOT mean the issuer was
+    # silent, and an unguarded kill here is the TRT mistake inverted -- killing a name
+    # that DID report. `universal` records that; `false_reachable` requires it.
+    "it": {"archive": "day",    "register": True,  "history": "estimated",
+           "universal": False},
     "es": {"archive": None,     "register": False, "history": "estimated"},
     "pl": {"archive": None,     "register": False, "history": "estimated"},
 }
@@ -344,8 +354,12 @@ NASDAQ_MAX_PAGES = 14
 
 
 def capability(market, what=None):
-    c = CAPABILITY.get(market, {"archive": None, "register": False,
-                                "history": "estimated"})
+    c = dict(CAPABILITY.get(market, {"archive": None, "register": False,
+                                     "history": "estimated"}))
+    # Every market whose day archive was measured to carry all of its issuers is
+    # `universal`; only Italy has been measured otherwise, so the default is True and
+    # a market that has not been checked is not silently exempted from kills.
+    c.setdefault("universal", True)
     return c if what is None else c.get(what)
 
 
@@ -357,6 +371,11 @@ def false_reachable(market):
     only while the print is still inside the feed's rolling window; the caller checks
     that by looking at the oldest row it actually paged to, never by assuming.
     """
+    # A day archive can only support a kill if it carries EVERY issuer in its market.
+    # Italy's does not (see CAPABILITY["it"]), so absence from it is `null`, not False.
+    # `universal` defaults to True because it is true of every other market measured.
+    if not capability(market, "universal"):
+        return False
     return capability(market, "archive") in ("day", "paged")
 
 
