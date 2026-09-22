@@ -1,0 +1,57 @@
+{
+  "ticker": "HVII",
+  "drop_date": "2026-09-22",
+  "window": {"from": "close of 2026-09-22", "to": "close of 2026-09-23"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Zero. HVII is a SPAC whose deal was approved on 2026-08-24, with about 204k public shares left after 18.8M of 19.0M were tendered for redemption. The fall followed a forward-purchase 8-K filed at 08:10 ET, so the tape had the document all day. No dated event inside the window and no mechanism that closes a gap could be sourced. On a microfloat with a 16.5% ATR, a sign guess would be noise.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "the per-share redemption price of about $10.60 as of 2026-09-18, which is also the FPA's Initial Price, from https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/form8-k.htm. Nothing was sized against it because no finding survived.",
+  "cause": {
+    "label": "equity_offering",
+    "seller_is_finished_pct": 20,
+    "confidence_pct": 60,
+    "what_happened": "At 08:10 ET on 2026-09-22 (EDGAR acceptance 12:10:48Z) HVII and ONE Nuclear filed an 8-K Item 1.01 for a prepaid share forward with New Circle Capital covering up to 5,000,000 recycled shares at the ~$10.60 redemption price. That is roughly 25x the ~204k unredeemed public float. The stock opened +0.28% and then fell 14.5% intraday on 1.24x normal volume (about $324k traded). The link between the filing and the fade is inferred from timing; no wire story says so.",
+    "evidence": [
+      {"claim": "FPA for up to 5M shares, prepayment at the ~$10.60 redemption price. 18.8M shares were tendered for redemption as of 2026-09-18. No closing date is given.", "url": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/form8-k.htm", "timestamp": "2026-09-22 08:10 ET"},
+      {"claim": "Recycled shares are bought from third parties at no more than the Initial Price. Any sale after closing is an Optional Early Termination, and the seller then owes the company the Reset Price per share; the Reset Price can be cut by mutual agreement. At the Valuation Date, 90 days after closing, the seller keeps the prepayment. The seller may not short before the Valuation Date.", "url": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/ex10-1.htm", "timestamp": "2026-09-22"},
+      {"claim": "19,000,000 public Class A shares, 690,000 non-redeemable Class A shares and 6,333,333 Class B shares outstanding. Trust held $200.1M at 2026-06-30.", "url": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226037362/form10-q.htm", "timestamp": "2026-08-12"},
+      {"claim": "Shareholders approved the business combination at the EGM on 2026-08-24. Preliminary redemption requests covered 18,807,662 shares.", "url": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226039917/form8-k.htm", "timestamp": "2026-08-24"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -20,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "The business combination outside date, 2026-09-30 (8-K amendment of 2026-08-07). No closing date has been announced. If closing happens, the seller's Pricing Date Notice is due one business day later, and the ticker becomes ONEN.",
+    "what_would_change_my_mind": "An issuer 8-K or press release before the 2026-09-23 open that dates the closing or the ONEN listing for 2026-09-23. That would put a float expansion and a ticker change inside the window."
+  },
+  "positioning_check": "Nasdaq short interest settled 2026-08-31 at 55,604 shares, 1.0 days to cover, up from 2,485 on 2026-08-14. Publication lags settlement by about eight business days, so the position carried into today's fall cannot be seen. Float is about 204k unredeemed public shares plus 690k non-redeemable Class A shares (10-Q cover 2026-08-12, 8-K 2026-09-22). Insider trades: none in 3 or 12 months. No option chain, so no skew. Source: https://api.nasdaq.com/api/quote/HVII/short-interest?assetclass=stocks",
+  "findings": [],
+  "outside_window": [
+    {"finding": "The de-SPAC closing and float expansion. The outside date is 2026-09-30, and the FPA signed today is the kind of agreement usually struck days before a close. At closing, up to 5M recycled shares plus the sponsor and target shares join a ~204k public float, and the name changes to ONEN. No closing date is sourced, so it cannot be placed inside the 2026-09-23 window.", "expected_impact_pct": -8.0, "resolves_by": "2026-09-30", "source": "https://www.tradingview.com/news/tradingview:8e7766e4ab7dd:0-hennessy-capital-investment-vii-extends-one-nuclear-deal-to-sep-30-lifts-note-to-620-000/"},
+    {"finding": "The FPA Valuation Date, 90 days after closing (about late December 2026). The seller keeps the ~$10.60 prepayment on unsold shares and is then free to sell them without paying the company. Before that date, a sale below the Reset Price costs the seller money unless the Reset Price is cut by mutual agreement, which the confirmation allows.", "expected_impact_pct": -5.0, "resolves_by": "2026-12-29", "source": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/ex10-1.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "A closing date or ONEN listing date in any 2026-09 filing. The 425s of 2026-09-10 and 2026-09-14 say only 'second half of 2026'. An EFTS full-text search for \"closing date\" over 2026-09-01 to 2026-09-22 returned 0 hits: https://efts.sec.gov/LATEST/search-index?q=%22closing%20date%22&ciks=0001846416&startdt=2026-09-01&enddt=2026-09-22",
+    "An FPA seller buying in the open market as a repricing mechanism. The confirmation contains no 'open market', 'broker' or 'privately negotiated' language, only purchases 'from third parties' at no more than the Initial Price, so a named open-market buyer below $10.60 cannot be asserted. Dropped: https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/ex10-1.htm",
+    "The 'non-reliance' text probe hit ex10-1, the FPA's contractual non-reliance clause. It is not an Item 4.02 restatement. The 8-K items are 1.01 and 9.01 only.",
+    "The 'covenant' text probe hit the same FPA exhibit. No debt covenant test was found.",
+    "The going-concern language (last seen in the 424B3 of 2026-08-03) is SPAC boilerplate about the combination deadline, with no date inside the window.",
+    "No ATM or shelf: the at-the-market probe has zero hits ever.",
+    "No bid-price issue: spot is $9.33, far above $1.",
+    "Any wire story or analyst note for 2026-09-22 or 2026-09-23 beyond reprints of the 8-K (rallies.ai, tipranks). None found.",
+    "Insider trades via the Nasdaq API: none in 12 months.",
+    "No price dated after the screen instant was seen or used."
+  ],
+  "baseline_tension": "Nothing found cuts against the baseline. Volume was ordinary (1.24x, which the base rate reads as mildly favourable), the name's own comparable falls are two consecutive days in 2026-08 (-21.9% and +9.2% next), and the 16.5% ATR says noise dominates. The one structural fact, a 5M-share FPA over a ~204k float, bites at a closing that has no date, so the number stays at 0 instead of drifting toward either prior.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
