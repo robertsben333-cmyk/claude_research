@@ -262,15 +262,26 @@ to dispatch, without which the click opens the workflow page instead. **Its comm
 touches only `dashboard/` and the three feeder files, and its `paths:` filter excludes
 them, so it cannot trigger itself** — do not add `dashboard/**` to that filter.
 
-**The researchers that place no orders have their own tabs since 2026-09-22, and they
-are the research level only.** `Europa`, `Japan`, `Australië` and `Canada` are fed by
+**The market is the top axis of the dashboard since 2026-09-22, and the tab row is
+rebuilt under it.** A bar above the tabs picks US, Europa, Japan, Australië or Canada;
+the US keeps its sixteen tabs and each other market gets the same suite minus what it
+cannot have — **Handel, Capaciteit, Kosten and Weging do not exist off the US**, because
+those stages have no broker. An analysis tab appears only when its data carries it (Score
+and Aanloop at 5 resolved names, Drempel at 10, Lessons at a frozen `pre_lessons` draft,
+Taal at a `pre_local` one, plus `Deelmarkt` for EU, `Ankerarm` for CA and `Soort` for AU),
+and **Overzicht lists what is still shut and what opens it** — without that a short row
+reads as a dashboard that does not know those analyses. The gate is computed with the
+conviction threshold OFF on purpose: a control may narrow a number and may never close the
+tab a reader is standing on.
+
+**The researchers that place no orders are the research level only.** `Europa`, `Japan`,
+`Australië` and `Canada` are fed by
 `dashboard/scripts/build_markets.py` into `dashboard/data/markets.json`, which
 `build_dashboard.py` inlines beside the ledger; `update.sh` runs it with `--resolve` as a
 third feeder that may fail without costing the rebuild. **There is no money level on
 those tabs and there must not be one**: stages EU, J, AU and CA place no orders, so the
 ledger's trades and equity curve say nothing about them, and the filter bar (lens, cap,
-sector, exit horizon) is hidden on a market tab because none of it has anything
-underneath. The collector does NOT own the outcome window — Europe and Australia are
+sector, exit horizon) belongs to the ledger and is hidden off the US. The collector does NOT own the outcome window — Europe and Australia are
 `close(D−1) → close(D)`, Tokyo is close to next open — it reads the `*-resolved.json`
 that `eu_resolve.py`, `jp_resolve.py`, `au_resolve.py` and `ca_resolve.py` write, and
 with `--resolve`
@@ -285,7 +296,8 @@ the two validation runs that ran on synthetic findings** — excluded by default
 switch that names them. Japan: two hunted days, three names, nothing resolved, plus two
 days on which Tokyo was shut and the runs table prints the holiday instead of a zero.
 Australia and Canada: no run directory in `research/` at all, since neither
-validation landed there and stage CA has not fired yet. Three rules are enforced in the rendering rather than left to a reader: an
+validation landed there and stage CA has not fired yet, so those two show Overzicht and
+Data and nothing else. Three rules are enforced in the rendering rather than left to a reader: an
 unhunted name (`rankable: false`, seven UK names on 09-23) is shown with
 `not_rankable_because` instead of the 0 the scorer writes and counts in no statistic; a
 shut exchange is not a failed run; and **ρ is withheld below five names**, because on

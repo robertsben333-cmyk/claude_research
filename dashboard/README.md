@@ -355,6 +355,37 @@ order**. So they get their own tabs rather than rows in the ledger: there is no 
 level for them and there must not be one. Everything on those tabs is the research
 level.
 
+**The market is the top axis of the page, not a tab among the others.** A bar above the
+tab row picks US, Europa, Japan, Australië or Canada with its counts on the card, and the
+tab row is rebuilt underneath. The US keeps its sixteen; each other market gets the same
+suite minus what it cannot have. **Handel, Capaciteit, Kosten and Weging do not exist
+there at all**, because those markets have no broker, and a row that differs per market
+says exactly that. The filter bar (lens, cap, sector, exit horizon) belongs to the ledger,
+so it is hidden off the US.
+
+**A tab appears when its data carries it, and what is still shut is named on Overzicht.**
+
+| tab | what it shows | opens at |
+| --- | --- | --- |
+| **Overzicht** | the day counts, the state, and the list of tabs still shut | always |
+| **Score** | ρ against the realised move, the hunt against the free control, the board return, the amc/bmo split | 5 resolved names |
+| **Drempel** | the conviction floor swept: n, sign rate, board return and ρ at eight cuts | 10 resolved names |
+| **Aanloop** | the 20- and 5-session run-up against the outcome, and what agreement with the hunt pays | 5 resolved names |
+| **Deelmarkt** (EU) | per venue: names, findings, anchor coverage, turnover, ρ | a hunted name |
+| **Ankerarm** (CA) | option-anchored against register-only, which is the reason stage CA exists | a name with an anchor status |
+| **Soort** (AU) | profit result against 4C/5B cash-flow report | a name with a `filer_type` |
+| **Lessons** | `pre_lessons` frozen against the emitted sum, per name and pooled | a frozen draft |
+| **Taal** (EU) | `pre_local` against the emitted sum, with the UK case labelled degenerate | a frozen draft |
+| **Namen** · **Runs** | every ranked name; every run with its draw and the resolver's alarm | a name / a run |
+| **Data** | provenance, and what is deliberately absent | always |
+
+Without that last column a short tab row would read as a dashboard that does not know
+those analyses. **ρ is withheld below five names** and the threshold sweep below ten,
+which is `au_resolve.py`'s own rule: on three names a rank correlation of 1.0 comes up one
+time in six. A control may narrow a number and may never close the tab a reader is
+standing on, so the gate is computed with the threshold off; the validation switch can
+open a tab, and the row is then rebuilt with the same tab found again by name.
+
 ```bash
 python3 dashboard/scripts/build_markets.py             # collect what is on disk
 python3 dashboard/scripts/build_markets.py --resolve   # and fetch missing outcomes
@@ -380,8 +411,8 @@ somewhere in this repo:
 - **A validation run is not research.** The two European days that have resolved ran on
   *synthetic* findings to test the chain end to end. They are excluded by default and the
   switch that includes them says what they are. Stage AU's validation never landed in
-  `research/` at all, and Canada has not had a fire yet, so those two tabs are honestly
-  empty and say what is missing.
+  `research/` at all, and Canada has not had a fire yet, so those two markets show
+  Overzicht and Data only, and say what is missing.
 - **An unhunted name is not a zero.** Seven UK names on 2026-09-23 carry `impact_sum: 0`
   and `rankable: false` because the session could not spawn subagents. They appear in the
   names table with `not_rankable_because` in place of the number and count in no
