@@ -49,3 +49,13 @@
 ## Stage J — Japan researcher — MARKET CLOSED
 - Logged at 2026-09-22 01:08 UTC
 - 2026-09-22 is 敬老の日 / 国民の休日; universe.json carries market_closed='public holiday: 休日'. Calendar WAS readable (680 rows across 2 JPX sheets, as_of 2026-09-03 & 2026-09-17), scheduled_today=0. This is the exchange-shut case, not an unpublished cohort sheet. No baselines sealed, no hunters spawned, no orders (stage J never places orders). Empty universe + note published. Tokyo reopens 2026-09-24.
+
+## Close AMC — opening-auction exit sweep — 2026-09-22
+- Logged at 2026-09-22 10:11 UTC
+- Fired 10:04-10:14 UTC (05:04-05:14 ET), before the 09:28 ET opg-rejection cutoff.
+- Guard: python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg -> exit 0. execution.enabled true, orders.exit_mode amc_open, amc exit placed as a market DAY order queued for the open (auction_orders: False, so no literal opg is sent -- guarded on placement, not tif, per this file's own note on the 2026-09-15 guard failure).
+- verify --scan before close: 12 exit legs checked across 8 runs (2026-09-10, 09-11, 09-14, 09-15, 09-16, 09-17, 09-18, 09-21) -- all 12 already 'ok', 0.0 residual held. Nothing open.
+- close --scan ... --submit: windows: {} on every one of the 8 runs -- no leg had an exit date of today, so nothing new was sent. Re-verified after the 300s fill-check wait: still 12/12 closed, 0.0 residual.
+- status --scan: account flat, equity == cash == $11,582.19, buying power $46,328.76. No open positions anywhere in the scan.
+- No refusals, no UNFILLED legs, no rescue sends. This firing had nothing to do -- every prior book was already closed (several by the operator's own hand-closes recorded in CLAUDE.md, e.g. ALMU/LEN on 09-17).
+- Published to this session's designated branch (claude/friendly-clarke-i1u7dm), not main: this session carries an explicit 'never push to a different branch without permission' restriction that conflicts with scripts/publish.sh's main default. CLAUDE.md's own guidance for a session bound to a feature branch is to set EARNINGS_DATA_BRANCH rather than push to main, so that is what this run did. A human should merge/reconcile this branch into main so today's Close AMC record is visible where other Routines look for it.
