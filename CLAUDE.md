@@ -41,7 +41,7 @@ material below is kept because the live stages reference it, not because it runs
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
-| CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. **No Routine exists yet**; the prompt is written for cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, inside the session so the Montréal option chain quotes two-sided |
+| CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
@@ -1327,9 +1327,16 @@ run — that day sealed with Toronto shut, so all 19 names landed on the registe
 two-sided path is covered by `ca_smoke.py` against a fabricated chain, which proves the
 arithmetic and not the feed.
 
-**NO ROUTINE FIRES IT YET.** The prompt is written out in
-`researcher_canada/routine-prompts/canada-hunt.md` at cron `30 18 * * 1-5`. Keep that
-file and any Routine in step in the same commit.
+**Its Routine exists since 2026-09-22: `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron
+`30 18 * * 1-5`, enabled, pinned to `claude-opus-5`.** Created from a session, so
+`update_trigger` works on it and `researcher_canada/routine-prompts/canada-hunt.md` must
+change in the same commit as any re-paste. **It stores no MCP connectors and its
+`sources`, `outcomes` and `allowed_tools` all came back empty**, exactly as stage J's and
+stage EU's did, so whether a fired session can reach the repository at all is unverified;
+only the Routines UI can fix those fields. The first fire lands 2026-09-22T18:35 UTC
+against `main`, which does not yet carry `researcher_canada/` — step 0 is written to
+report that rather than improvise, so that fire is a probe of the clone path and not a
+stage run.
 
 **The five stage 0–4 pipeline Routines were disabled on 2026-09-18** at the operator's
 request, and the stage table's claim that they "do not currently exist" was wrong before

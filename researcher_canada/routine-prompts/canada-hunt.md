@@ -15,20 +15,27 @@ issuers use.
 It also does not collide with anything. Stage E fires at 17:04 UTC and needs its entry
 margin; stage EU at 13:30; stage J at 01:04.
 
-**No Routine has been created for this stage yet.** `create_trigger` is available to
-agent sessions for stages J and EU, so it is very likely available here too, and the
-resulting Routine would be editable with `update_trigger` — unlike stage E's, which can
-only be hand-pasted. Two things to check on the first fire, both of which have already
-cost this repo a day:
+**The Routine exists: `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5`, enabled,
+model `claude-opus-5`, created from a session on 2026-09-22 at 08:35 UTC.** It was
+created by a session, so `update_trigger` works on it and this file and the Routine must
+move in the same commit.
 
-1. Whether the created Routine comes back with **empty `sources`, `outcomes` and
-   `allowed_tools`**, as stage J's and stage EU's both did. Step 0 below clones the repo
-   itself so that an empty `sources` is survivable, but that path needs `add_repo` and
-   `register_repo_root`, which are connector tools the Routine may not carry.
-2. Whether the fire publishes anything at all. Stage EU's first hand-fire
-   (`cse_01GPAvkwHzwzxuWdsscSUPUN`) spent 165k tokens and published nothing — no commit,
-   no branch, no run directory — and a fire that publishes nothing is indistinguishable
-   from a Routine that never fired.
+**IT STORES NO MCP CONNECTORS, AND THE CREATE CALL SAID SO IN WRITING.** Its `sources`,
+`outcomes` and `allowed_tools` all came back empty, exactly as stage J's and stage EU's
+did. Step 0 below clones the repo itself so an empty `sources` is survivable — **but
+that path needs `add_repo` and `register_repo_root`, which are connector tools a fired
+session may not have.** `update_trigger` takes only name, cron, enabled, model, prompt
+and run_once_at, so a session cannot repair any of those three fields; only the claude.ai
+Routines UI can.
+
+**The first fire is a free probe of exactly that, and it should not be read as a stage
+run.** It falls at 2026-09-22T18:35 UTC, against `main`, which does not yet carry
+`researcher_canada/`. Step 0 is written to detect that case and say "the branch carrying
+this stage has not been merged" rather than improvising, so the fire answers the one
+unverified question — can a fired session reach the repository at all — without
+pretending to produce a ranking. Read its reply before merging anything on the strength
+of it. Stage EU's first hand-fire (`cse_01GPAvkwHzwzxuWdsscSUPUN`) spent 165k tokens and
+published nothing at all, which is indistinguishable from a Routine that never fired.
 
 **Keep this file and the Routine in step in the same commit.** Nothing enforces it and
 stage E's prompt drift is what cost two live things on 2026-09-15.
