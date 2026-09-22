@@ -29,6 +29,32 @@ simply finds an empty universe and stops cheaply.
 | 12:00 | X · Close AMC (second exit Routine) | none | 0 — a no-op while `exit_mode` is `uniform` | none |
 | 17:03 | C · Forward capture | `earnings-capture` | 0 (script) + ≤6 Sonnet | low |
 
+## The non-US research Routines
+
+**This file predates stages J, EU and AU and its table above does not carry them.** That
+is a standing gap rather than a statement that they do not exist; the authority is
+`CLAUDE.md`'s stage table, checked against `list_triggers`. The three are recorded here
+because their timing follows rules the table above does not describe.
+
+| Cron (UTC) | Stage | Trigger | Why that hour |
+| --- | --- | --- | --- |
+| `4 1 * * 1-5` | J · Japan | `trig_0192kQeqhumBKpNGzzyQrS1H` | 10:04 JST, an hour into the Tokyo session. Japanese results land after the 15:00 close, so the seal is live-priced and five hours early |
+| `30 13 * * 1-5` | EU · Europe | `trig_018WGfdq2fUm1ZqJhCGQ1wde` | **two hours before the European close**, on the operator's instruction, so it seals an intraday spot and not a close. Europe reports before the open, so it seals for the NEXT day |
+| `30 6 * * 0-4` | AU · Australia | `trig_01Qy7FjBpjY4dEGcZsYGnpt3` | 16:30 or 17:30 Sydney, after the 16:00 close. Seals for the NEXT session |
+
+**All three are UTC crons over non-UTC exchanges, so the local hour moves twice a year**
+and in opposite directions for the northern and southern hemispheres. Stage EU's gap to
+the European close widens by an hour after the October change. Stage AU's 06:30 UTC is
+16:30 Sydney on AEST and 17:30 on AEDT, both after the close, so it is safe either way —
+that was checked, not assumed.
+
+**Stage AU's `0-4` is Sunday to Thursday and is not a typo.** 91% of ASX results land
+before the 10:00 Sydney open, so the stage seals for the next session, and the fire that
+seals for Monday has to happen on Sunday. A `1-5` cron would seal Monday's names from the
+previous Thursday's close, two sessions stale, and waste the Friday fire.
+
+**None of the three places an order.** Only stage E does.
+
 ## Stage E — edge hunt
 
 Routine id `trig_01CvGQJWoKeNLXWCxiffM3ED`, created 2026-08-30, enabled.
