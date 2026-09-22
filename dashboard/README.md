@@ -402,6 +402,35 @@ would look exactly like a day on which the hunt had no outcome. A resolved file 
 realised move and at least one live row is fetched again; one that carries even a single
 move is left alone, because the window it priced has closed.
 
+## The design pass of 2026-09-22, and the two tokens it added
+
+Run with the Impeccable design skill (`detect` + audit + polish) over the whole page, not
+only the new tabs. The detector ends clean; what it and the manual round changed:
+
+- **`--fill` / `--on-fill` are new, and `--s1` must not be used as a control background
+  again.** `--s1` is tuned to read as a series on the chart plane. White on it is 4.4:1 in
+  light and 3.6:1 in dark, so every filled control — the Ververs button and every pressed
+  segment — failed WCAG AA both ways. The filled state now has its own pair: dark blue
+  with white in light mode, the bright blue with near-black ink in dark mode. Both clear
+  4.5:1 and the chart colours are untouched.
+- **The tablist now keeps its promise.** The buttons carried `role="tab"` while the panels
+  had no `role="tabpanel"`, no `aria-labelledby` and no `aria-controls`, and nineteen tabs
+  meant nineteen tab stops. Roving tabindex makes the strip one stop; Arrow, Home and End
+  move inside it.
+- **The page themes its own browser surfaces**: a 2px focus ring in the accent colour
+  (the UA's 1px outline is invisible on the dark plane), text selection, and the
+  scrollbars of `.scroll` — which is also the only affordance saying that the 13-column
+  names table scrolls sideways on a phone.
+- **44px targets under a coarse pointer.** Segment buttons are 30px, which is a mouse
+  target; they grow to 44 on touch.
+- **The reading measure is capped at 74ch.** Tables may use the full width; running text
+  above them may not.
+- **A market with no run on disk gets one empty state, not five tiles reading zero.**
+  Five zeroes is a dashboard performing completeness. The Australia tab says what is
+  missing instead.
+- **The market controls are a control strip, not a card.** A card holds content; the rest
+  of the page puts controls in a bar, and these tabs hide that bar.
+
 ## What the numbers mean
 
 - **bord-rendement** (board return) is the realised move in the direction of the

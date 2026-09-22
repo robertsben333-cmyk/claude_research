@@ -11,6 +11,11 @@
   --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
   --good:#0ca30c; --bad:#d03b3b; --warn:#fab219;
+  /* A filled control is not a chart line. --s1 is tuned to read as a series on
+     the plane; white on it is 4.4:1 light and 3.6:1 dark, which fails AA both
+     ways. So the filled state gets its own pair, darker in light mode and
+     dark-on-bright in dark mode, and the series colour stays untouched. */
+  --fill:#1a5fb4; --on-fill:#ffffff;
   --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 @media (prefers-color-scheme: dark) {
@@ -19,6 +24,7 @@
     --plane:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
     --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
     --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#0ca30c; --bad:#d03b3b;
+    --fill:#3987e5; --on-fill:#0b0b0b;
   }
 }
 :root[data-theme="dark"] {
@@ -26,8 +32,27 @@
   --plane:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
   --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
   --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#0ca30c; --bad:#d03b3b;
+  --fill:#3987e5; --on-fill:#0b0b0b;
 }
 * { box-sizing:border-box; }
+/* The parts of the page the stylesheet did not draw still carry the design. A
+   1px UA outline is invisible on the dark plane, and this page is operated from
+   the keyboard as much as the mouse. */
+:focus-visible { outline:2px solid var(--s1); outline-offset:2px; border-radius:4px; }
+::selection { background:var(--s1); color:#fff; }
+.scroll { scrollbar-width:thin; scrollbar-color:var(--axis) transparent; }
+.scroll::-webkit-scrollbar { width:10px; height:10px; }
+.scroll::-webkit-scrollbar-thumb {
+  background:var(--axis); border-radius:6px; border:2px solid var(--surface);
+}
+.scroll::-webkit-scrollbar-track { background:transparent; }
+/* Touch. A 30px segment is a mouse target; a finger needs 44. */
+@media (pointer:coarse) {
+  .seg button, nav button, .btn { min-height:44px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  * { transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+}
 body {
   margin:0; background:var(--plane); color:var(--ink);
   font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -38,7 +63,10 @@ h1 { font-size:22px; margin:0; letter-spacing:-0.01em; }
 h2 { font-size:17px; margin:26px 0 6px; }
 h3 { font-size:14px; margin:0 0 10px; color:var(--ink2); font-weight:600; }
 p  { margin:8px 0; color:var(--ink2); max-width:80ch; }
-p.lead { color:var(--ink); }
+/* Een regel van 110 tekens leest niet. De tabellen mogen de volle breedte
+   hebben, de lopende tekst erboven niet. */
+p.lead { color:var(--ink); max-width:74ch; }
+.card > p, .card > ul { max-width:82ch; }
 small, .meta { color:var(--muted); font-size:12.5px; }
 .muted { color:var(--muted); }
 a { color:var(--s1); }
@@ -48,7 +76,7 @@ button, select, input { font:inherit; }
   border-radius:8px; padding:6px 12px; cursor:pointer;
 }
 .btn:hover { border-color:var(--axis); }
-.btn.primary { background:var(--s1); color:#fff; border-color:transparent; }
+.btn.primary { background:var(--fill); color:var(--on-fill); border-color:transparent; }
 .btn[disabled] { opacity:.55; cursor:progress; }
 nav { display:flex; flex-wrap:wrap; gap:4px; margin:16px 0 0; border-bottom:1px solid var(--grid); }
 nav button {
@@ -68,6 +96,13 @@ section[hidden] { display:none; }
 /* `display:flex` above beats the browser's own rule for [hidden], so hiding the
    filter bar on a market tab needs saying here or it silently does nothing. */
 .controls[hidden], .filterline[hidden] { display:none; }
+/* The market tabs hide the bar above and carry their own, so it has to look
+   like that bar and not like a card with two buttons in it. */
+.mctl {
+  display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+  padding:0 0 12px; margin:0 0 4px; border-bottom:1px solid var(--grid);
+}
+.mctl .hint { font-size:12.5px; color:var(--muted); max-width:62ch; }
 .ctl { display:flex; align-items:center; gap:7px; }
 .ctl > label { font-size:12.5px; color:var(--muted); }
 .seg { display:inline-flex; border:1px solid var(--ring); border-radius:8px; overflow:hidden; }
@@ -76,7 +111,7 @@ section[hidden] { display:none; }
   border-right:1px solid var(--ring); font-size:13.5px;
 }
 .seg button:last-child { border-right:none; }
-.seg button[aria-pressed="true"] { background:var(--s1); color:#fff; font-weight:600; }
+.seg button[aria-pressed="true"] { background:var(--fill); color:var(--on-fill); font-weight:600; }
 .sw { display:inline-flex; align-items:center; gap:6px; font-size:13.5px; color:var(--ink2); cursor:pointer; }
 input[type=number] {
   width:104px; background:var(--surface); color:var(--ink); border:1px solid var(--ring);
@@ -2572,18 +2607,27 @@ function tabMarkt(code) {
 
   let html = `<p class="lead">${MNOTE[code]}</p>`;
 
-  html += `<div class="card"><div class="row" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
-    <span class="seg">
+  if (!d.runs.length) {
+    return html + `<div class="card warnbox"><h3>Nog geen run op schijf</h3>
+      <p>Er staat geen enkele map onder <code>research/*/*/*/${esc(d.dir)}/</code>, dus
+      valt er niets te tonen: geen nul, geen leeg getal, geen tabel. De stage bestaat wel
+      en heeft zijn eigen Routine; wat ontbreekt is een fire die iets heeft gepubliceerd.</p>
+      <p>De validatie van deze stage is buiten <code>research/</code> gedraaid en is hier
+      dus ook niet te zien. Zodra één fire publiceert, vult dit tabblad zich vanzelf.</p></div>`;
+  }
+
+  html += `<div class="mctl">
+    <span class="seg" role="group" aria-label="conviction-drempel">
       <button aria-pressed="${!MS.thr}" onclick="mSet('thr',0)">alle namen</button>
       <button aria-pressed="${MS.thr === floor}" onclick="mSet('thr',${floor})">|impact_sum| ≥ ${floor}</button>
     </span>`;
-  if (hasVal) html += `<span class="seg">
+  if (hasVal) html += `<span class="seg" role="group" aria-label="validatieruns">
       <button aria-pressed="${!MS.val}" onclick="mSet('val',false)">alleen echte runs</button>
       <button aria-pressed="${MS.val}" onclick="mSet('val',true)">validatieruns meetellen</button>
     </span>
-    <span class="meta">Een validatierun draaide op <b>synthetische</b> vondsten om de keten
+    <span class="hint">Een validatierun draaide op <b>synthetische</b> vondsten om de keten
       te testen. Die namen zijn geen onderzoek en horen standaard niet in een getal.</span>`;
-  html += `</div></div>`;
+  html += `</div>`;
 
   html += tiles([
     {k:'jachtdagen', v:hunted.length, s:`${runs.length} runs in de map`},
@@ -2596,12 +2640,15 @@ function tabMarkt(code) {
      s: st.signN ? n1(100*st.signRight/st.signN) + '%' : 'nog niets opgelost'}]);
 
   if (!st.n) {
-    const pend = d.runs.filter(r => !r.has_resolved_file && r.n_rows).length;
+    /* Tegen dezelfde verzameling als de tegels erboven. Tellen tegen alle runs
+       terwijl het tabblad er twee laat zien, is precies het soort getal dat een
+       lezer niet kan narekenen. */
+    const pend = runs.filter(r => !r.has_resolved_file && r.n_rows).length;
     html += `<div class="card warnbox"><h3>Nog niets opgelost</h3>
       <p>Er is in ${code === 'EU' ? 'Europa' : code === 'JP' ? 'Japan' : 'Australië'}
       nog geen enkele naam met een gerealiseerde beweging, dus staat er hieronder wat er
       is en geen enkel prestatiegetal. Dat is de stand, niet een fout in dit tabblad.</p>
-      <p>Van de ${d.runs.length} runs hebben er ${pend} nog geen
+      <p>Van de ${runs.length} runs hebben er ${pend} nog geen
       <code>${esc(d.resolved_file)}</code>. Een run wordt pas oplosbaar als zijn venster
       dicht is; daarna vult dit tabblad zich vanzelf met
       <code>python3 dashboard/scripts/build_markets.py --resolve</code>, of per dag met
@@ -2705,14 +2752,35 @@ const nav = document.getElementById('tabs'), panels = document.getElementById('p
 TABS.forEach(([name], i) => {
   const b = document.createElement('button');
   b.textContent = name; b.setAttribute('role','tab');
+  b.id = 'tab-' + i;
+  b.setAttribute('aria-controls', 'panel-' + i);
   b.setAttribute('aria-selected', i===0 ? 'true' : 'false');
+  /* Roving tabindex: a tablist is ONE tab stop and the arrows move inside it.
+     With nineteen tabs the alternative is nineteen presses to reach the page. */
+  b.tabIndex = i === 0 ? 0 : -1;
   b.onclick = () => { active = i; refresh(); };
   nav.appendChild(b);
-  const s = document.createElement('section'); s.hidden = i !== 0;
+  const s = document.createElement('section');
+  s.id = 'panel-' + i; s.setAttribute('role','tabpanel');
+  s.setAttribute('aria-labelledby', 'tab-' + i);
+  s.tabIndex = 0;                      /* the panel scrolls, so it must focus */
+  s.hidden = i !== 0;
   panels.appendChild(s);
 });
+nav.addEventListener('keydown', e => {
+  const step = {ArrowRight:1, ArrowLeft:-1, Home:-Infinity, End:Infinity}[e.key];
+  if (step === undefined) return;
+  e.preventDefault();
+  active = !isFinite(step) ? (step < 0 ? 0 : TABS.length - 1)
+                           : (active + step + TABS.length) % TABS.length;
+  refresh();
+  nav.children[active].focus();
+});
 function refresh() {
-  [...nav.children].forEach((b,j) => b.setAttribute('aria-selected', j===active ? 'true':'false'));
+  [...nav.children].forEach((b,j) => {
+    b.setAttribute('aria-selected', j===active ? 'true':'false');
+    b.tabIndex = j === active ? 0 : -1;
+  });
   [...panels.children].forEach((s,j) => s.hidden = j !== active);
   /* De filterbalk hoort bij de ledger van stage E: lens, cap, sector en uitstap-
      horizon bestaan alleen daar. Op een markttabblad zou hij filters tonen die
