@@ -34,6 +34,11 @@ dashboard/
 | **trades** | every position the account opened and closed, matched from the fill stream | Alpaca `/v2/account/activities/FILL` |
 | **account** | the equity curve as the broker reports it | Alpaca portfolio history |
 
+A fourth thing sits beside those three and is not one of them: the **markets** level in
+`data/markets.json`, the research record of stage EU, J and AU. Those stages place no
+orders, so it has names and no trades and no equity curve. See "The other three markets"
+below.
+
 A name is not a trade. The conviction floor, the $200k turnover floor and the
 borrow check mean most ranked names are never traded, and the two strongest
 convictions of 2026-09-10 were all three untradable. A traded name can also be
@@ -342,6 +347,61 @@ the components sit beside it in the table so a reader can see which one moves a 
 The scatter next to it asks the question the indicator exists for: does the edge live in
 the names consumers trade? On the first build the answer is no — slope 0.04, r² 0.00.
 
+## The other three markets: Europa, Japan, Australië
+
+Stage EU, stage J and stage AU run the same hunt with the same scorer over the ASX,
+Tokyo and ten European venues, and **none of the three places an order**. So they get
+their own tabs rather than rows in the ledger: there is no money level for them and
+there must not be one. Everything on those three tabs is the research level.
+
+```bash
+python3 dashboard/scripts/build_markets.py             # collect what is on disk
+python3 dashboard/scripts/build_markets.py --resolve   # and fetch missing outcomes
+```
+
+`update.sh` runs it with `--resolve` as a third feeder, allowed to fail like the other
+two; `--no-feeders` skips all three. It writes `dashboard/data/markets.json`, which
+`build_dashboard.py` inlines beside the ledger. A missing file is not an error: the tabs
+say so themselves.
+
+**It does not own the outcome window, and that is deliberate.** Europe and Australia
+report before the open, so their window is `close(D−1) → close(D)`; Tokyo's runs from
+the close to the next open. That logic lives in `eu_resolve.py`, `jp_resolve.py` and
+`au_resolve.py`, and this collector reads the `*-resolved.json` those write. With
+`--resolve` it calls the market's own resolver for a run whose window has closed and
+which has no outcome yet. A realised move on these tabs was computed by the market's
+resolver or it is not there.
+
+Three things the tabs keep apart, because each of them has already been read wrong once
+somewhere in this repo:
+
+- **A validation run is not research.** The two European days that have resolved ran on
+  *synthetic* findings to test the chain end to end. They are excluded by default and the
+  switch that includes them says what they are. Stage AU's validation never landed in
+  `research/` at all, so that tab is honestly empty.
+- **An unhunted name is not a zero.** Seven UK names on 2026-09-23 carry `impact_sum: 0`
+  and `rankable: false` because the session could not spawn subagents. They appear in the
+  names table with `not_rankable_because` in place of the number and count in no
+  statistic; a nought nobody measured pulls every ranking toward the middle.
+- **A shut exchange is not a failed run.** Tokyo was closed on 2026-09-21 and 09-22, and
+  the run directory says so in `market_closed`. The runs table prints the reason instead
+  of a zero.
+
+**ρ is withheld below five names.** On three names a rank correlation of exactly 1.0
+comes up one time in six, which `au_resolve.py` writes down after the first synthetic
+Australian run duly produced one. Below five the tab shows the names and no coefficient.
+Above it, the pooling is one flat pool over all days rather than the within-day centring
+the US tabs use — there are not enough days for that yet — and there is no permutation
+test and no multiplicity correction, because on this many names both would suggest more
+precision than exists.
+
+**A premature resolve is re-resolved.** Yahoo's European daily closes lag a session or
+two, so a run resolved the morning after its print writes a file in which every row is
+`move_pending`. Treating that as done would freeze the day at nothing permanently, and it
+would look exactly like a day on which the hunt had no outcome. A resolved file with no
+realised move and at least one live row is fetched again; one that carries even a single
+move is left alone, because the window it priced has closed.
+
 ## What the numbers mean
 
 - **bord-rendement** (board return) is the realised move in the direction of the
@@ -396,7 +456,8 @@ instead, with the proxy kept beside them so the two never silently merge.
 ## What it deliberately does not do
 
 - It never submits, cancels or modifies an order. `researcher_us/scripts/alpaca_trade.py`
-  is the only thing in this repo that does.
+  is the only thing in this repo that does, and it knows only the US account: the
+  Europe, Japan and Australia tabs have no money level at all.
 - It does not re-score a run. `impact_sum` is read as the run wrote it.
 - It does not drop a losing day, a microcap or an outlier. Every exclusion in the
   ledger is a duplicate event (one issuer reporting once, hunted twice) and is

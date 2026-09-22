@@ -6,7 +6,8 @@
 #   ./dashboard/update.sh --offline    no broker call; keep the last broker state
 #   ./dashboard/update.sh --publish    also commit and push the result
 #   ./dashboard/update.sh --fresh      drop the bar cache and re-price everything
-#   ./dashboard/update.sh --no-feeders skip Google Trends and the forward calendar
+#   ./dashboard/update.sh --no-feeders skip Trends, the forward calendar and the
+#                                             Europe/Japan/Australia collector
 #   ./dashboard/update.sh --serve      rebuild, then serve it so the page's own
 #                                             refresh button works (localhost only)
 #   ./dashboard/update.sh --serve-bg   the same, detached: you get your shell back
@@ -46,11 +47,21 @@ done
 # rebuild. The ledger records their absence as a problem rather than a zero.
 #   search volume -> the Zoekvolume tab   (cache: researcher_us/analysis/trends-cache.json)
 #   the calendar  -> the Agenda tab       (dropped by the ledger once >3 days old)
+#   the markets   -> the Europa, Japan and Australië tabs
+#
+# The markets feeder is the only one that can WRITE outside dashboard/: with
+# --resolve it calls eu_resolve.py, jp_resolve.py or au_resolve.py for a run whose
+# window has closed and which has no `*-resolved.json` yet, and those write their
+# result into the run directory. That is the same file a hand-run resolver writes,
+# it is only ever computed once per day, and a run whose window is still open is
+# never touched. Pass --no-feeders to skip all three.
 if (( FEEDERS )); then
   python3 researcher_us/scripts/edge_search_volume.py >/dev/null 2>&1 \
     || echo "update: search volume failed, keeping the last one"
   python3 researcher_us/scripts/edge_calendar.py --days 7 >/dev/null 2>&1 \
     || echo "update: calendar failed, the Agenda tab may go stale"
+  python3 dashboard/scripts/build_markets.py --resolve \
+    || echo "update: markets feeder failed, the three market tabs keep the last one"
 fi
 
 python3 dashboard/scripts/build_ledger.py "${LEDGER_ARGS[@]+"${LEDGER_ARGS[@]}"}"

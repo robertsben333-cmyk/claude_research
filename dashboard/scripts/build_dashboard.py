@@ -86,6 +86,9 @@ section[hidden] { display:none; }
   border-bottom:1px solid var(--grid); padding:10px 0 11px; margin-bottom:6px;
   display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center;
 }
+/* `display:flex` above beats the browser's own rule for [hidden], so hiding the
+   filter bar on a market tab needs saying here or it silently does nothing. */
+.controls[hidden], .filterline[hidden] { display:none; }
 .ctl { display:flex; align-items:center; gap:7px; }
 .ctl > label { font-size:12.5px; color:var(--muted); }
 .seg { display:inline-flex; border:1px solid var(--ring); border-radius:8px; overflow:hidden; }
@@ -209,6 +212,7 @@ li { margin:4px 0; }
 </div>
 
 <script id="ledger" type="application/json">__LEDGER__</script>
+<script id="markets" type="application/json">__MARKETS__</script>
 <script>
 const D = JSON.parse(document.getElementById('ledger').textContent);
 /* ------------------------------------------------------------- formatting */
@@ -2485,12 +2489,237 @@ function tabWeging() {
   return html;
 }
 
+
+/* ====================================================== de andere markten
+   Stage EU, stage J en stage AU: dezelfde jacht, dezelfde scorer, drie andere
+   beurzen. Geen van drieën plaatst een order, dus er is hier geen geldniveau en er
+   komt er geen: de ledger hierboven gaat over de Alpaca-rekening, die deze markten
+   niet kent. Alles op deze drie tabbladen is het onderzoeksniveau.
+
+   De gerealiseerde beweging komt uit de resolver van de markt zelf
+   (eu_resolve.py, jp_resolve.py, au_resolve.py) en nergens anders vandaan. Elk
+   venster is anders: Europa en Australië rapporteren vóór de opening, Tokio na de
+   slotbel. Die logica hoort in één bestand per markt te staan, niet ook hier. Staat
+   er geen beweging, dan is de run nog niet opgelost. */
+const MRAW = document.getElementById('markets');
+const M = MRAW ? JSON.parse(MRAW.textContent) : {markets:{}, problems:[]};
+const MS = {val:false, thr:0};
+function mSet(k, v) { MS[k] = (k === 'thr' ? +v : v); refresh(); }
+
+const MNOTE = {
+  EU: `Tien Europese markten in één stage: het VK, Frankrijk, Duitsland, Zweden,
+       Denemarken, Noorwegen, Finland, Italië, Spanje en Polen. Het venster is
+       <code>slot(D−1) → slot(D)</code>, want 339 van 379 gemeten Britse
+       resultaten kwamen vóór 08:00 Londen. De baseline wordt twee uur vóór de
+       Europese sluiting verzegeld, dus de verzegelde spot is een koers tijdens de
+       handel en nooit een slotkoers. Er is geen optie-anker, en Spanje en Polen
+       hebben ook geen short-register: hun <code>priced_lean_pct</code> ís de
+       gratis benchmark, dus die namen kunnen die benchmark per definitie niet
+       verslaan. De Nordics moeten binnen een week worden opgelost, want de Nasdaq
+       Nordic-feed kent geen datumquery en gaat ongeveer twaalf dagen terug.`,
+  JP: `Tokio. Geen optie-anker, dus de lean komt uit het JPX short-register, de
+       verandering daarin en 信用倍率. Samen brengen die de
+       <code>baseline_quality</code> op 0,725, tegen 0,40 toen de lean nog de run-up
+       zelf was. Het venster loopt van de slotbel naar de volgende opening. De beurs
+       is vaker dicht dan de cron: een lege dag met <code>market_closed</code> is een
+       feestdag en geen storing.`,
+  AU: `De ASX. Het venster is <code>slot(D−1) → slot(D)</code>, want 91% van de
+       gemeten Australische resultaten landt vóór de opening van 10:00 Sydney, en de
+       Routine draait daarom zondag tot en met donderdag. Eén Engelse jachtronde,
+       bewust geen tweede taalronde. Het ASIC-register is het enige
+       positie-anker hier dat elk niveau publiceert in plaats van alleen boven
+       0,5%, maar het loopt ongeveer vier handelsdagen achter. En de helft van de
+       ASX levert een 4C- of 5B-kasstroomrapport in plaats van een winstcijfer:
+       <code>filer_type</code> zegt welke van de twee.`,
+};
+
+const mRows = code => {
+  const d = (M.markets || {})[code] || {names: [], runs: []};
+  const val = new Set(d.runs.filter(r => r.validation_only).map(r => r.run));
+  return d.names.filter(r => (MS.val || !val.has(r.run))
+                          && (!MS.thr || Math.abs(r.impact_sum || 0) >= MS.thr));
+};
+const mRuns = code => {
+  const d = (M.markets || {})[code] || {runs: []};
+  return d.runs.filter(r => MS.val || !r.validation_only);
+};
+
+/* Vijf namen is de ondergrens, en dat is geen preutsheid. Op drie namen komt een
+   rangcorrelatie van precies 1,0 één keer op de zes toevallig uit. au_resolve.py
+   schrijft dat zelf op, nadat de eerste synthetische Australische run er netjes
+   een produceerde. */
+const MMIN = 5;
+
+function mStat(rows) {
+  const v = rows.filter(r => r.realised_move_pct !== null
+                          && r.realised_move_pct !== undefined
+                          && r.impact_sum !== null && r.impact_sum !== undefined);
+  const o = {n: v.length, rows: v};
+  if (v.length >= MMIN) {
+    o.rho = corr(ranks(v.map(r => r.impact_sum)),
+                 ranks(v.map(r => r.realised_move_pct)));
+    const ctl = v.filter(r => r.run_up_20d_pct !== null && r.run_up_20d_pct !== undefined);
+    o.ctlN = ctl.length;
+    o.ctl = ctl.length >= MMIN
+      ? corr(ranks(ctl.map(r => -r.run_up_20d_pct)),
+             ranks(ctl.map(r => r.realised_move_pct))) : null;
+  }
+  const signed = v.filter(r => r.impact_sum);
+  o.signN = signed.length;
+  o.signRight = signed.filter(r => r.sign_right).length;
+  o.book = book(v.filter(r => r.ret !== null && r.ret !== undefined).map(r => r.ret));
+  return o;
+}
+
+function tabMarkt(code) {
+  const d = (M.markets || {})[code];
+  if (!d) return `<div class="card warnbox"><h3>Geen marktbestand</h3>
+    <p>De bouw vond geen <code>dashboard/data/markets.json</code>. Draai
+    <code>python3 dashboard/scripts/build_markets.py</code> en bouw opnieuw.</p></div>`;
+
+  const runs = mRuns(code), rows = mRows(code);
+  /* Een naam zonder jacht is geen nul, het is een lege plek. Op 2026-09-23 bleven
+     zeven Britse namen ongejaagd omdat de sessie geen subagenten kon starten, en
+     die staan in edge-scores.json met impact_sum 0 en rankable false. Ze horen in
+     de namentabel, want ze laten zien wat er is afgevallen, maar in geen enkel
+     getal: een nul die niemand heeft gemeten trekt elke rangschikking naar het
+     midden. */
+  const ranked = rows.filter(r => r.rankable !== false);
+  const unranked = rows.length - ranked.length;
+  const st = mStat(ranked);
+  const hasVal = d.runs.some(r => r.validation_only);
+  const floor = (d.runs.find(r => r.conviction_floor) || {}).conviction_floor || 3;
+  const hunted = runs.filter(r => r.n_rows > 0);
+
+  let html = `<p class="lead">${MNOTE[code]}</p>`;
+
+  html += `<div class="card"><div class="row" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+    <span class="seg">
+      <button aria-pressed="${!MS.thr}" onclick="mSet('thr',0)">alle namen</button>
+      <button aria-pressed="${MS.thr === floor}" onclick="mSet('thr',${floor})">|impact_sum| ≥ ${floor}</button>
+    </span>`;
+  if (hasVal) html += `<span class="seg">
+      <button aria-pressed="${!MS.val}" onclick="mSet('val',false)">alleen echte runs</button>
+      <button aria-pressed="${MS.val}" onclick="mSet('val',true)">validatieruns meetellen</button>
+    </span>
+    <span class="meta">Een validatierun draaide op <b>synthetische</b> vondsten om de keten
+      te testen. Die namen zijn geen onderzoek en horen standaard niet in een getal.</span>`;
+  html += `</div></div>`;
+
+  html += tiles([
+    {k:'jachtdagen', v:hunted.length, s:`${runs.length} runs in de map`},
+    {k:'namen', v:ranked.length,
+     s: (MS.thr ? `boven ${MS.thr}` : 'gejaagd en gerangschikt')
+        + (unranked ? ` · ${unranked} ongejaagd` : '')},
+    {k:'vondsten', v:ranked.reduce((s,r)=>s+(r.n_findings||0),0), s:'over die namen'},
+    {k:'opgelost', v:st.n, s:'met een gerealiseerde beweging'},
+    {k:'teken goed', v: st.signN ? `${st.signRight}/${st.signN}` : '–',
+     s: st.signN ? n1(100*st.signRight/st.signN) + '%' : 'nog niets opgelost'}]);
+
+  if (!st.n) {
+    const pend = d.runs.filter(r => !r.has_resolved_file && r.n_rows).length;
+    html += `<div class="card warnbox"><h3>Nog niets opgelost</h3>
+      <p>Er is in ${code === 'EU' ? 'Europa' : code === 'JP' ? 'Japan' : 'Australië'}
+      nog geen enkele naam met een gerealiseerde beweging, dus staat er hieronder wat er
+      is en geen enkel prestatiegetal. Dat is de stand, niet een fout in dit tabblad.</p>
+      <p>Van de ${d.runs.length} runs hebben er ${pend} nog geen
+      <code>${esc(d.resolved_file)}</code>. Een run wordt pas oplosbaar als zijn venster
+      dicht is; daarna vult dit tabblad zich vanzelf met
+      <code>python3 dashboard/scripts/build_markets.py --resolve</code>, of per dag met
+      <code>python3 ${esc(d.resolver)} --run &lt;rundir&gt; -o &lt;rundir&gt;/${esc(d.resolved_file)}</code>.</p></div>`;
+  } else if (st.n < MMIN) {
+    html += `<div class="card warnbox"><h3>${st.n} opgeloste namen: te weinig voor een ρ</h3>
+      <p>De rangcorrelatie wordt pas vanaf ${MMIN} namen berekend. Op drie namen komt een ρ
+      van precies 1,0 één keer op de zes toevallig uit, en dat is precies het soort getal
+      dat blijft hangen. De namen zelf staan onderaan.</p></div>`;
+  } else {
+    html += `<div class="card"><h3>Rangschikking tegen de gerealiseerde beweging</h3>` +
+      table([{h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n}, {h:'ρ', f:r=>n3(r.rho)}],
+        [{label:'de jacht · impact_sum', n:st.n, rho:st.rho},
+         {label:'gratis controle · −run_up_20d_pct', n:st.ctlN, rho:st.ctl}]) +
+      `<p class="meta">Eén pool over alle dagen, niet per dag gecentreerd: daar zijn het er
+       nog niet genoeg voor. Geen permutatietest en geen correctie voor meervoudig
+       toetsen: op ${st.n} namen zou allebei meer precisie suggereren dan er is.</p></div>`;
+    if (st.book.n) html += `<div class="card"><h3>Bord-rendement</h3>` +
+      table(BOOKCOLS, [bookRow('elke opgeloste naam, in de richting van het teken', st.book)].filter(Boolean)) +
+      `<p class="meta">Bord-rendement: de beweging in de richting van het teken van
+       <code>impact_sum</code>. Er is op deze markten geen order geplaatst, dus er zit geen
+       spread, geen instapmoment en geen uitvoering in. Dit is wat het onderzoek zei, niet
+       wat het opbracht.</p></div>`;
+  }
+
+  if (code === 'EU') {
+    const subs = [...new Set(ranked.map(r => r.submarket))].sort();
+    if (subs.length) html += `<div class="card"><h3>Per deelmarkt</h3>` + table([
+      {h:'markt', f:r=>`<b>${esc(r.sub)}</b>`},
+      {h:'namen', f:r=>r.n},
+      {h:'opgelost', f:r=>r.res},
+      {h:'anker', f:r=>`${r.anch}/${r.n}`},
+      {h:'mediane omzet', f:r=>usdM(r.turn)}],
+      subs.map(s => {
+        const g = ranked.filter(r => r.submarket === s);
+        const t = g.map(r=>r.turnover_usd).filter(x=>x!==null&&x!==undefined).sort((a,b)=>a-b);
+        return {sub:s, n:g.length,
+                res:g.filter(r=>r.realised_move_pct!==null&&r.realised_move_pct!==undefined).length,
+                anch:g.filter(r=>r.anchor_covered).length,
+                turn: t.length ? t[Math.floor(t.length/2)] : null};
+      })) + `<p class="meta">Een dag kan één markt zijn: de trekking is bewust niet
+      gestratificeerd, want een quotum per markt is een tweede selectie die de scorer niet
+      ziet. <code>anker</code> telt de namen die het short-register van hun eigen markt
+      noemt; Spanje en Polen hebben er geen, dus daar staat altijd 0.</p></div>`;
+  }
+
+  html += `<div class="card"><h3>De runs</h3>` + table([
+    {h:'dag', f:r=>`<b>${esc(r.run_date)}</b>`},
+    {h:'namen', f:r=>r.n_rows || (r.quiet_reason ? `<span class="meta">${esc(r.quiet_reason)}</span>` : 0)},
+    {h:'hunters', f:r=>r.n_hunts},
+    {h:'vondsten', f:r=>r.n_findings},
+    {h:'opgelost', f:r=>r.n_rows ? `${r.n_resolved}/${r.n_rows}` : '–'},
+    {h:'gedood', f:r=>r.n_killed || '–'},
+    {h:'lean vs controle', f:r=>n2((r.resolver_stats||{}).lean_vs_free_control_rho)},
+    {h:'soort', f:r=>r.validation_only ? '<span class="meta">validatie</span>' : 'echt'},
+  ], runs) + `<p class="meta"><b>gedood</b> is <code>event_occurred: false</code>: het venster
+    ging voorbij en er kwam geen publicatie, dus de naam valt uit elke rangschikking.
+    <b>lean vs controle</b> is het alarm van de resolver: loopt die richting 1,0, dan is het
+    register gestopt met laden en ís de lean de gratis controle geworden. Leeg betekent dat de
+    resolver hem niet berekende, meestal omdat er te weinig namen waren.</p></div>`;
+
+  const shown = [...rows].sort((a,b) => (b.run_date).localeCompare(a.run_date)
+                                     || Math.abs(b.impact_sum||0) - Math.abs(a.impact_sum||0));
+  html += `<div class="card"><h3>De namen</h3>` + table([
+    {h:'dag', f:r=>r.run_date},
+    ...(code === 'EU' ? [{h:'mkt', f:r=>esc(r.submarket)}] : []),
+    {h:'ticker', f:r=>`<b>${esc(r.ticker)}</b>`},
+    {h:'bedrijf', f:r=>esc((r.company||'').slice(0,34))},
+    {h:'sessie', f:r=>esc(r.session)},
+    {h:'impact_sum', f:r=> r.rankable === false
+        ? `<span class="meta">${esc(r.not_rankable_because || 'niet gerangschikt')}</span>`
+        : `<span class="${sgn(r.impact_sum)}">${n1(r.impact_sum)}</span>`},
+    {h:'vondsten', f:r=>r.n_findings},
+    {h:'lean %', f:r=>n2(r.priced_lean_pct)},
+    {h:'run-up 20d', f:r=>pc(r.run_up_20d_pct)},
+    {h:'omzet/dag', f:r=>usdM(r.turnover_usd)},
+    {h:'anker', f:r=>r.anchor_covered === true ? 'ja' : r.anchor_covered === false ? 'nee' : '–'},
+    {h:'beweging', f:r=>r.realised_move_pct === null || r.realised_move_pct === undefined
+        ? `<span class="meta">${r.move_pending ? 'wacht op bar' : 'niet opgelost'}</span>`
+        : pc(r.realised_move_pct)},
+    {h:'bord %', f:r=>r.ret === null || r.ret === undefined ? '–'
+        : `<span class="${sgn(r.ret)}">${pc(r.ret)}</span>`},
+  ], shown) + `</div>`;
+
+  if ((M.problems || []).length) html += `<div class="card warnbox"><h3>Problemen bij het verzamelen</h3>
+    <ul>${M.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`;
+  return html;
+}
+
 /* ------------------------------------------------------------------- boot */
 const TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel], ['Score',tabScore],
               ['Drempel',tabDrempel], ['Sector',tabSector], ['Timing',tabTiming],
               ['Instap',tabInstap], ['Aanloop',tabAanloop], ['Zoekvolume',tabZoek],
               ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten], ['Lessons',tabLessons],
               ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
+              ['Europa',()=>tabMarkt('EU'),1], ['Japan',()=>tabMarkt('JP'),1],
+              ['Australië',()=>tabMarkt('AU'),1],
               ['Agenda',tabAgenda], ['Data',tabData]];
 let active = 0;
 const nav = document.getElementById('tabs'), panels = document.getElementById('panels');
@@ -2506,7 +2735,14 @@ TABS.forEach(([name], i) => {
 function refresh() {
   [...nav.children].forEach((b,j) => b.setAttribute('aria-selected', j===active ? 'true':'false'));
   [...panels.children].forEach((s,j) => s.hidden = j !== active);
-  filterLine();
+  /* De filterbalk hoort bij de ledger van stage E: lens, cap, sector en uitstap-
+     horizon bestaan alleen daar. Op een markttabblad zou hij filters tonen die
+     niets onder zich hebben, dus daar verdwijnt hij en zet het tabblad zijn eigen
+     twee knoppen neer. */
+  const isMarket = !!TABS[active][2];
+  document.getElementById('controls').hidden = isMarket;
+  document.getElementById('filterline').hidden = isMarket;
+  if (!isMarket) filterLine();
   draw.length = 0;
   panels.children[active].innerHTML = TABS[active][1]();
   draw.forEach(fn => fn());
@@ -2784,6 +3020,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--ledger", default=str(DATA / "ledger.json"))
+    ap.add_argument("--markets", default=str(DATA / "markets.json"))
     ap.add_argument("--out", default=str(ROOT / "dashboard" / "dashboard.html"))
     a = ap.parse_args()
 
@@ -2791,6 +3028,16 @@ def main():
     # `</script>` inside the payload would close the tag it is embedded in.
     blob = json.dumps(led, separators=(",", ":")).replace("</", "<\\/")
     html = HTML.replace("__LEDGER__", blob)
+
+    # The other three researchers. A missing file is not an error: stage EU, J and
+    # AU place no orders and their tabs say so themselves, and a rebuild must not
+    # fail because a feeder that only feeds three tabs did not run.
+    mk = Path(a.markets)
+    mblob = (mk.read_text(encoding="utf-8").strip() if mk.exists()
+             else json.dumps({"markets": {}, "problems":
+                              [f"{mk} does not exist: run "
+                               "dashboard/scripts/build_markets.py"]}))
+    html = html.replace("__MARKETS__", mblob.replace("</", "<\\/"))
     Path(a.out).write_text(html, encoding="utf-8")
     print(f"wrote {a.out}  ({len(html.encode())/1024:.0f} kB, {len(led['names'])} names, "
           f"{len(led['trades'])} positions)")
