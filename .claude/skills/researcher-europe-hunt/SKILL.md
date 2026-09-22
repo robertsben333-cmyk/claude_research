@@ -79,7 +79,7 @@ France and Italy and failed it. If a pooled ρ is quoted without saying how much
 | Tail | uncapped | 値幅制限 truncates | **uncapped** — maxima 42% / 27% / 52% |
 | Names per day | 17–22, all hunted | 8–125, capped at 25 by random draw | 65 eligible on 2026-10-22; capped at **20** |
 | Turnover floor | $200k | ¥30m (~$200k) | **$200k** since 2026-09-19 (was $1m); below $1m the register names 12% of issuers, and `anchor_covered` carries that |
-| Hunters | one, English | one, Japanese | **seven definitions over ten markets, English pass then local pass** |
+| Hunters | one, English | one, Japanese | **seven definitions over ten markets, one bilingual pass each** |
 
 **Europe reports before the open.** 339 of 379 measured UK results announcements landed
 before 08:00 London. So the baseline for a `bmo` name must be sealed **the evening
@@ -254,7 +254,9 @@ python3 researcher_europe/scripts/eu_resolve.py --run <RUN>
 Confirms each release, measures the correct window per session (and BOTH windows where
 the session was unresolved), and reports Spearman against the realised move with a
 permutation p, the controls, every lean component separately, per-market statistics and
-the language-pass control.
+the language-pass control — which reports 0 names on any run sealed after 2026-09-22,
+because the hunters stopped freezing an English-only draft that day. An empty section
+there is the report, not a fault.
 
 **Eight of the ten markets have a day archive** (`eu_archive.py`): the UK on Investegate,
 France on the AMF's `info-financiere.gouv.fr` flux, Germany on the EQS-News **search**,
@@ -283,31 +285,47 @@ headline keyword.
 is the only thing between "nobody announced anything" and "I could not look", and only
 the first may ever support a kill.
 
-## The language experiment
+## The language experiment, and why it stopped
 
-Each hunter runs an **English pass first**, freezes it as `pre_local`, then runs the
-local pass and revises. `edge_score.py` carries `diagnostics.impact_sum_pre_local` beside
-the key and `eu_resolve.py` ranks both against the same realised move, so "searching in
-German and French earns rank correlation" is measured rather than believed.
+**The hunters run ONE pass in English and the local language together, since
+2026-09-22.** Until that day each ran an English pass first, froze it as `pre_local`,
+and only then searched locally; `edge_score.py` carried
+`diagnostics.impact_sum_pre_local` beside the key and `eu_resolve.py` ranked both
+against the same realised move, so "searching in German and French earns rank
+correlation" was a measured claim rather than a believed one.
 
-**The ordering is load-bearing.** English first, then local. Running local first tests a
-different question and the two are not interchangeable.
+**It was retired on the operator's instruction, and the reason is not only tokens.**
+Sequencing the two halves forbade them from informing each other — a German filing is
+often the reason to run a particular English query, and an English wire item the reason
+to go and find the German original — so the control was being paid for out of the
+quality of the research it was measuring.
 
-**The UK case is degenerate and is reported apart.** Its local language is English, so its
-second pass varies *source locality* (RNS, Investegate, the domestic trade press) rather
-than language. `pre_local.variable` says which, and `eu_resolve.py` refuses to pool the UK
-delta with the German and French ones. Averaging them would report the mean of two
-different experiments.
+**What that cost is worth stating plainly.** Nothing measures the local half any more.
+It cannot be recovered from a run after the fact, because a freeze reconstructed later
+is not a freeze. The one thing that softens it: **no European day had resolved while the
+control ran**, so `spearman_pre_local` never produced a number against a real outcome.
+What was given up is a future measurement, not a result.
+
+**What replaces it is prose.** Every hunter emits `language_note`: one line per thing
+the local-language sources carried that the English ones did not, or the single line
+'nothing the English sources did not already carry'. Nothing ranks it. The note should
+quote it where it is interesting, and should not present it as evidence.
+
+**The UK case was degenerate and the asymmetry survives.** Its local language is
+English, so its local half varies *source locality* (RNS, Investegate, the domestic
+trade press) rather than language, and a UK `language_note` saying the domestic sources
+added nothing is an honest result rather than a lazy hunt.
 
 **The Nordic case is weaker than the others and the hunter is told so.** Nordic issuers
 publish in English as a matter of routine — most releases go out in both languages at
-once, which is not true in Germany, France or Italy. So a Nordic `pre_local` delta of
-zero has two readings that look identical: the local pass found nothing, or there was no
-local-only information to find. Read `local_pass_note` before drawing anything from a
-Nordic delta, and do not pool it with the German, French or Italian ones without saying
-that.
+once, which is not true in Germany, France or Italy. A Nordic `language_note` that reads
+'nothing the English sources did not already carry' is the expected answer there more
+often than anywhere else in the stage.
 
-**Nothing pools on one day.** A delta on four to twelve names is noise. Say so in the note.
+**`eu_resolve.py` still reports the old control and will read 0 names.** That is the
+honest report of a control that no longer runs, not a hunter that forgot to freeze. The
+runs sealed before 2026-09-22 keep their diagnostics and the dashboard's `Taal` tab
+still shows them, labelled as history.
 
 ## Budget
 

@@ -293,7 +293,7 @@ the US keeps its sixteen tabs and each other market gets the same suite minus wh
 cannot have — **Handel, Capaciteit, Kosten and Weging do not exist off the US**, because
 those stages have no broker. An analysis tab appears only when its data carries it (Score
 and Aanloop at 5 resolved names, Drempel at 10, Lessons at a frozen `pre_lessons` draft,
-Taal at a `pre_local` one, plus `Deelmarkt` for EU, `Ankerarm` for CA and `Soort` for AU),
+Taal at a `pre_local` one, which only runs sealed before 2026-09-22 carry, plus `Deelmarkt` for EU, `Ankerarm` for CA and `Soort` for AU),
 and **Overzicht lists what is still shut and what opens it** — without that a short row
 reads as a dashboard that does not know those analyses.
 
@@ -1138,17 +1138,18 @@ presentation arrangements (TUA), and an S&P index rebalance (−4.88%). That is 
 defect stage EU already measured, where "Invitation to Q4 results" counted as a print for
 12 of Nordic Semiconductor's 25 rows.
 
-**ONE ENGLISH HUNTING PASS, AND NO `pre_local` FREEZE (operator's instruction).** Stages
-EU and J freeze an English draft and then run a local-language or domestic-source pass.
-Australia runs one pass. There is no Australian-language press the wires do not read, and
-stage EU already carries the degenerate case: its UK hunter varies *source locality*
-instead of language, `eu_resolve.py` **refuses to pool** its delta with the German and
-French ones, and its own definition says a UK zero is not evidence about language. A
-second Australian pass would spend tokens measuring a variable that does not exist and
-would emit a structurally zero delta somebody would later pool as if it were one.
-`unpriced-hunter-au` has no `pre_local` field, `australia_hunt.language_pass` is `false`,
-and `smoke_test.py` asserts the field does not come back. The `pre_lessons` control still
-runs and `researcher_australia/LESSONS.md` is deliberately empty until a run resolves.
+**ONE ENGLISH HUNTING PASS, AND NO `pre_local` FREEZE (operator's instruction).**
+Australia hunts in one language because there is only one: there is no Australian-language
+press the wires do not read, and the regulated disclosure channel is one English feed
+everybody reads. When this was written, stages EU and CA froze an English draft and then
+ran a local-language pass; **since 2026-09-22 they do not — they run one bilingual pass
+each** — so Australia is no longer the exception, and the difference that remains is that
+they have a second language to search and this stage does not. They carry a prose
+`language_note`; Australia carries neither that nor `pre_local`, because a field that
+would be structurally empty on every Australian name is worse than absent — somebody
+would eventually pool it. `australia_hunt.language_pass` is `false` and `smoke_test.py`
+asserts neither field comes back. The `pre_lessons` control still runs and
+`researcher_australia/LESSONS.md` is deliberately empty until a run resolves.
 
 **What no new market fixes: the option anchor.** Measured 2026-09-22 on the repo's own
 authenticated Yahoo path, AAPL returns 22 expiries, TSM 19 and ITUB 8, while `BHP.AX`,
@@ -1615,14 +1616,32 @@ a truncated zero 0.15 where a disclosure earns 0.45, and `eu_resolve.py` reports
 floor bought ranks at zero, a fortnight of pooled days says so rather than nobody ever
 finding out.
 
-**Each hunter runs English first, then local, and the order is load-bearing.** The
-English pass is frozen as `pre_local` before the local-language pass revises it, so
-`diagnostics.impact_sum_pre_local` and `spearman_pre_local` measure whether searching in
-German and French earns rank correlation or only costs tokens — the same control shape as
-`pre_lessons`, which still runs after it. **The UK case is degenerate and is labelled as
-such**: its second pass varies *source locality* (RNS, Investegate, the domestic trade
-press), not language, so `eu_resolve.py` **refuses to pool** the UK delta with the German
-and French ones. A UK zero is not evidence about language.
+**EVERY FOREIGN HUNTER NOW RUNS ONE BILINGUAL PASS (2026-09-22, the operator's
+instruction), AND THE LANGUAGE CONTROL IS GONE WITH IT.** Stage EU's seven hunters and
+stage CA's search English and the local language together in a single pass. Until that
+day each ran English first, froze that draft as `pre_local`, and only then searched
+locally, so `diagnostics.impact_sum_pre_local` and `spearman_pre_local` measured whether
+searching in German and French earned rank correlation or only cost tokens — the same
+control shape as `pre_lessons`, which is untouched and still runs. The reason for merging
+is not only the turns the split cost: sequencing the two halves forbade them from
+informing each other, which is most of what a bilingual reader is for, so the control was
+being paid for out of the quality of the research it was measuring.
+
+**What that costs, stated rather than buried.** Nothing measures the local half any more,
+and a freeze reconstructed after the fact is not a freeze, so it cannot be recovered from
+a run later. The one thing that softens it: **no European or Canadian day had resolved
+while the control ran**, so `spearman_pre_local` never produced a number against a real
+outcome — what was given up is a future measurement, not a result. What replaces it is
+`language_note`, prose and not a number: one line per thing the local sources carried that
+the English ones did not, or 'nothing the English sources did not already carry'. Nothing
+ranks it. `edge_score.py` and `eu_resolve.py` still read `pre_local` where a run carries
+it, so the runs sealed before the merge keep their diagnostics and the dashboard's `Taal`
+tab still shows them, labelled as history; a run sealed after it reports 0 names there,
+which is the honest report of a retired control and not a hunter that forgot to freeze.
+**The UK case was degenerate and the asymmetry survives the merge**: its local half varies
+*source locality* (RNS, Investegate, the domestic trade press), not language, so a UK
+`language_note` saying the domestic sources added nothing is an honest result. Stage J and
+stage AU never had the freeze and are unchanged.
 
 **The shared scorer gained 42 lines and moved nothing.** Verified by rescoring all five
 live US runs (09-14 through 09-18) with the pre-stage-EU scorer and the current one: every
@@ -1650,7 +1669,8 @@ UK names were left unhunted, a shed recorded in the run log, and two names canno
 ranked against each other. **`pre_lessons` in both hunts is not a measurement**: one
 context ran both hunts and had read `LESSONS.md` first, so the freeze is equal to the
 emitted set by construction. `impact_sum_pre_local` is a real freeze and a two-name
-delta is still noise.
+delta is still noise — and that run is now the ONLY European one that will ever carry it,
+because the freeze was retired on 2026-09-22.
 
 **Four more defects came out of the 2026-09-23 run and all four are fixed (2026-09-22).
 Every one of them returned a plausible answer instead of an error.** That is the class

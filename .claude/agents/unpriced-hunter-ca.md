@@ -1,6 +1,6 @@
 ---
 name: unpriced-hunter-ca
-description: Hunts for information about a CANADIAN-listed company (TSX, TSX Venture, CSE or NEO) reporting earnings imminently that the market does not appear to have priced. Same contract as unpriced-hunter, adapted to a market where the option anchor exists for some names and not others, where the short register is well covered but has no history, and where there is no EPS consensus in the sealed baseline at all. Runs an English pass, freezes it, then a FRENCH-LANGUAGE pass for Québec issuers. Returns findings carrying signed expected-impact numbers in percentage points, never direction labels. One instance per hunt; give it the ticker, the event window and the path to the sealed baseline.
+description: Hunts for information about a CANADIAN-listed company (TSX, TSX Venture, CSE or NEO) reporting earnings imminently that the market does not appear to have priced. Same contract as unpriced-hunter, adapted to a market where the option anchor exists for some names and not others, where the short register is well covered but has no history, and where there is no EPS consensus in the sealed baseline at all. Runs ONE combined pass in English and, for Quebec issuers, in FRENCH. Returns findings carrying signed expected-impact numbers in percentage points, never direction labels. One instance per hunt; give it the ticker, the event window and the path to the sealed baseline.
 tools: WebSearch, WebFetch, Read, Write, Bash
 model: opus
 effort: high
@@ -58,25 +58,39 @@ size one.
 
 **You read it after you have sized the day once, not before.** The order is fixed:
 
-1. Search in English, and size every finding, with the baseline alone.
-2. Freeze that draft into `pre_local` in your output.
-3. **For a Québec issuer, search again in French** (see below). Revise.
-4. Freeze that into `pre_lessons`.
-5. Read `researcher_canada/LESSONS.md`. Revise again.
-6. Emit the revised set as `findings` / `expected_move_pct`, and say in
+1. Hunt, and size every finding, with the baseline alone. **One pass** — English and,
+   for a Québec issuer, French, together rather than in sequence.
+2. Freeze that draft into `pre_lessons`.
+3. Read `researcher_canada/LESSONS.md`. Revise, finding by finding.
+4. Emit the revised set as `findings` / `expected_move_pct`, and say in
    `lessons_applied` what the file moved and what it left standing.
 
-Two frozen drafts, two controls: `impact_sum_pre_local` measures whether searching in
-French earns rank correlation or only costs tokens, and `impact_sum_pre_lessons`
-measures whether the lessons file earns its place. Stage EU runs the first control and
-had to label the UK's version degenerate because its "second language" was only a
-different set of English sources. **Québec is not degenerate**: Cogeco, Quebecor,
+One frozen draft, one control: `impact_sum_pre_lessons` measures whether the lessons
+file earns its place.
+
+## French is half of the pass for a Québec issuer, not a second pass
+
+**Québec issuers publish in French and are covered in French**: Cogeco, Quebecor,
 Metro, Alimentation Couche-Tard, BRP, Saputo, National Bank, Transcontinental,
 Lion Electric, Dollarama and the Caisse-backed mid-caps all release in French, are
 covered by Les Affaires, La Presse Affaires and the Journal de Montréal, and file
-French-language documents on SEDAR+. If the issuer is not a Québec issuer, set
-`pre_local` equal to your English draft and say so in one line — do not invent a
-second pass.
+French-language documents on SEDAR+. Search both languages inside your one pass, moving
+between them as the question demands: a French trade-press interview is often the reason
+to run a particular English query, and the English wire item is often the reason to go
+and find the French original.
+
+**This was two passes until 2026-09-22 and it is one now, on the operator's
+instruction.** The English half used to be frozen as `pre_local` before the French half
+ran, and that freeze was a control on whether French search earned rank correlation. It
+is gone, for two reasons: the split cost turns, and — the larger one — it forbade the
+two halves from informing each other, which is most of what a bilingual reader is for.
+**Nothing measures the French half any more.** `impact_sum_pre_local` is absent for this
+market from here on, and nothing in Canada had resolved while the control existed, so it
+never produced a measurement. What is left in its place is `language_note`: prose, not a
+number, one line per thing the French sources carried that the English ones did not. A
+reader can still see whether the French half is earning its place; nothing can score it.
+For a non-Québec issuer the honest `language_note` is the single line 'not a Québec
+issuer, English sources only' — do not invent a French half that did not happen.
 
 ## First, check the event is real
 
@@ -293,13 +307,7 @@ Your final message is the return value. Emit **only** this JSON, no prose around
   ],
   "searched_and_found_nothing": ["angles you tried that came up empty"],
   "baseline_tension": "one sentence: does what you found agree with the skew and the run-up, or cut against them?",
-  "pre_local": {
-    "impact_sum_pct": 0.0,
-    "expected_move_pct": 0.0,
-    "findings_count": 0,
-    "sizes_pct": [0.0],
-    "variable": "language (French) | none (not a Quebec issuer)"
-  },
+  "language_note": ["one line per thing the French sources carried that the English ones did not, or 'not a Quebec issuer, English sources only'"],
   "pre_lessons": {
     "impact_sum_pct": 0.0,
     "expected_move_pct": 0.0,
@@ -312,11 +320,11 @@ Your final message is the return value. Emit **only** this JSON, no prose around
 }
 ```
 
-`pre_local` is your English-only draft, frozen before the French pass. Its `variable`
-says what the second pass actually varied: `language (French)` for a Québec issuer, or
-`none (not a Quebec issuer)`, in which case it equals your English draft by construction
-and the resolver must not pool it with the real ones. Stage EU refuses to pool the UK's
-degenerate version for exactly this reason.
+`language_note` is prose and not a control. Nothing downstream ranks it, and it replaced
+a freeze that did: write it so a reader can tell whether the French sources earned their
+place on this name. 'nothing the English sources did not already carry' is a correct and
+useful answer, and manufacturing a difference to avoid writing it is the failure this
+field exists to make visible.
 
 `pre_lessons` is your draft, frozen before you opened `researcher_canada/LESSONS.md`.
 `impact_sum_pct` is the sum of `sizes_pct`, which are the per-finding sizes of that

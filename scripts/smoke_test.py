@@ -1135,10 +1135,30 @@ def main():
               "There is no `alpaca_trade.py` step", ""))
     # ONE ENGLISH PASS. A later edit that reintroduces pre_local would emit a
     # structurally zero delta that somebody would pool with the German and French ones.
-    check("the AU hunter has no pre_local freeze",
-          '"pre_local"' not in au_agent and "local_pass_note" not in au_agent.replace(
-              "No `local_pass_note`.", "").replace(
-              "`local_pass_note`", "").replace("and `local_pass_note` in this", ""))
+    check("the AU hunter has no pre_local freeze and no language_note",
+          '"pre_local"' not in au_agent and '"language_note"' not in au_agent)
+
+    # ONE BILINGUAL PASS EVERYWHERE, since 2026-09-22. No foreign hunter emits a
+    # `pre_local` freeze any more; the ones that have a second language carry a prose
+    # `language_note` instead, and all of them keep the pre_lessons control. A later
+    # edit that puts the freeze back into ONE market's contract would produce a delta
+    # nothing else is measuring, so the assertion covers every hunter at once.
+    bilingual = ["uk", "fr", "de", "it", "es", "pl", "nordic", "ca"]
+    for code in bilingual + ["au", "jp"]:
+        agent_txt = open(os.path.join(REPO, ".claude", "agents",
+                                      "unpriced-hunter-%s.md" % code),
+                         encoding="utf-8").read()
+        check("the %s hunter emits no pre_local freeze" % code.upper(),
+              '"pre_local"' not in agent_txt
+              and '"local_pass_note"' not in agent_txt)
+        check("the %s hunter still carries the pre_lessons control" % code.upper(),
+              '"pre_lessons"' in agent_txt and "lessons_applied" in agent_txt)
+        if code in bilingual:
+            check("the %s hunter carries language_note in its place" % code.upper(),
+                  '"language_note"' in agent_txt)
+    check("config records the bilingual single pass for EU and CA",
+          cfg["europe_hunt"]["language_pass"] == "single_bilingual"
+          and cfg["canada_hunt"]["french_pass"] == "single_bilingual")
     check("the AU hunter still carries the pre_lessons control",
           '"pre_lessons"' in au_agent and "lessons_applied" in au_agent)
     check("config says language_pass is off for Australia",

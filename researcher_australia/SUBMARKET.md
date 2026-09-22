@@ -252,22 +252,26 @@ both before giving up.
 The Japanese `curl`-beats-`WebFetch` finding partly applies: AFR is reachable by `curl` and
 refused by `WebFetch`. The ASX archive answers both.
 
-## 10. One English pass, and why there is no second one
+## 10. One English pass, and why there is no second language
 
-Every other market in this repo runs two hunting passes: an English draft frozen as
-`pre_local`, then a local-language or domestic-source pass. **Stage AU runs one**, on the
-operator's instruction, and the reason it is right is already in the repo.
+**Stage AU hunts in one language because there is only one**, on the operator's
+instruction. There is no Australian-language press the international wires do not read,
+and the entire regulated disclosure channel is one English feed everybody reads.
 
-Stage EU's UK hunter is the degenerate case. Its local language is English, so it varies
-*source locality* instead; `eu_resolve.py` **refuses to pool** its delta with the German and
-French ones; and its own definition says in as many words that a UK zero is not evidence
-about language. Australia is that case and more so: there is no Australian-language press
-the international wires do not read, and the entire regulated disclosure channel is one
-English feed everybody reads.
+**When this was written, every other market ran two hunting passes** — an English draft
+frozen as `pre_local`, then a local-language or domestic-source pass. That premise is
+superseded: on 2026-09-22 stages EU and CA merged theirs into ONE bilingual pass and
+dropped the freeze, on the same operator's instruction. **The conclusion for Australia is
+unchanged and the argument for it is now shorter.** Stage EU's UK hunter was the
+degenerate case — its local language is English, so it varied *source locality* instead,
+`eu_resolve.py` **refused to pool** its delta with the German and French ones, and its own
+definition said a UK zero is not evidence about language. Australia is that case and more
+so.
 
-A second pass here would spend tokens measuring a variable that does not exist, and would
-emit a structurally zero delta that somebody would later pool with the German and French
-ones and read as evidence. `unpriced-hunter-au` therefore has no `pre_local` field and
+What the other markets kept is a prose `language_note`: one line per thing the local
+sources carried that the English ones did not. Australia carries none, because on every
+Australian name it would be structurally empty and somebody would eventually pool it as
+if it were a measurement. `unpriced-hunter-au` therefore has neither field and
 `smoke_test.py` asserts it does not acquire one. The `pre_lessons` control still runs, and
 `researcher_australia/LESSONS.md` is deliberately empty until a run resolves.
 

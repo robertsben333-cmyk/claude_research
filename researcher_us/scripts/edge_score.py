@@ -389,20 +389,22 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
     for _, h in hunts:
         lessons_applied.extend(h.get("lessons_applied") or [])
 
-    # THE LANGUAGE CONTROL, added 2026-09-18 for stage EU and shaped exactly like the
-    # lessons control above. A European hunter runs an ENGLISH pass first, freezes that
-    # draft into `pre_local`, then runs the local-language pass and revises. Both sums
-    # are carried so "searching in German and French earns rank correlation" is measured
-    # rather than believed; neither `pre_local` nor the delta enters the key.
+    # THE LANGUAGE CONTROL, added 2026-09-18 for stage EU and RETIRED 2026-09-22. A
+    # European or Canadian hunter used to run an ENGLISH pass first, freeze that draft
+    # into `pre_local`, then run the local-language pass and revise; both sums were
+    # carried so "searching in German and French earns rank correlation" was measured
+    # rather than believed. On the operator's instruction those hunters now run ONE
+    # bilingual pass and emit no freeze, so `pre_local` is absent from every run sealed
+    # after that date and these values are null there.
     #
-    # `pre_local_variable` says WHAT the second pass varied, because it is not the same
-    # question in every market: for Germany and France it is `language`, and for the UK
-    # -- whose local language is English -- it is `source_locality`, a domestic-source
-    # pass over RNS, Investegate, Citywire and the domestic trade press. eu_resolve.py
+    # THIS CODE STAYS because the runs sealed before it still carry the field and their
+    # diagnostics must keep reproducing. It is not a live control any more; do not read
+    # a null here as a hunter that failed to freeze. `pre_local_variable` says what the
+    # second pass varied on those older runs -- `language` for Germany and France,
+    # `source_locality` for the UK, whose local language is English -- and eu_resolve.py
     # reports the delta per market and refuses to pool the two.
     #
-    # A US or Japanese hunt emits no `pre_local`, so these are null there and nothing
-    # about those runs changes.
+    # A US, Japanese or Australian hunt never emitted `pre_local` at all.
     pre_loc = [h.get("pre_local") for _, h in hunts]
     pre_loc = [d for d in pre_loc if isinstance(d, dict)]
     if pre_loc:
@@ -561,18 +563,23 @@ def main():
                     "realised move as the key, which is the only thing that can "
                     "tell the guidance file apart from a habit.",
         },
-        # Empty on a US or Japanese run: only stage EU's hunters emit `pre_local`.
+        # Empty on every run sealed after 2026-09-22, when the freeze was retired and
+        # the European and Canadian hunters moved to one bilingual pass. It stays
+        # populated for the runs that predate it.
         "language_control": {
             "names_with_pre_local": sum(
                 1 for r in rows
                 if r["diagnostics"].get("impact_sum_pre_local") is not None),
             "names_moved_by_local_pass": sum(
                 1 for r in rows if r["diagnostics"].get("local_delta")),
-            "note": "pre_local is each hunter's own sum after the ENGLISH pass and "
-                    "before the local pass. eu_resolve.py ranks it against the same "
-                    "realised move as the key, per market, and does not pool the UK "
-                    "(where the second pass varies source locality) with Germany and "
-                    "France (where it varies language).",
+            "note": "RETIRED 2026-09-22: the European and Canadian hunters now run "
+                    "one bilingual pass and emit no freeze, so this is 0/0 on every "
+                    "run sealed after that date. On earlier runs pre_local is each "
+                    "hunter's own sum after the ENGLISH pass and before the local "
+                    "pass; eu_resolve.py ranks it against the same realised move as "
+                    "the key, per market, and does not pool the UK (where the second "
+                    "pass varied source locality) with Germany and France (where it "
+                    "varied language).",
         },
         "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added "
                 "up, in points of spot. No call and no threshold -- cut wherever you "

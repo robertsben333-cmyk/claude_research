@@ -142,9 +142,10 @@ MARKETS = {
     #
     # WHAT IS WEAKER HERE THAN THE BRIEF SUGGESTS: Nordic issuers publish in English as a
     # matter of course. That is a real dent in the language thesis this stage is testing,
-    # and it is why `local_pass_note` matters more here than anywhere else -- a Nordic
-    # `pre_local` delta of zero may mean the local pass found nothing, or it may mean
-    # there was no local-only information to find. See `unpriced-hunter-nordic`.
+    # and since the `pre_local` freeze was retired on 2026-09-22 nothing measures it at
+    # all -- a Nordic hunt's `language_note` is the only place the dent shows up, and
+    # 'nothing the English sources did not already carry' is the honest entry here more
+    # often than anywhere else in the stage. See `unpriced-hunter-nordic`.
     "se": {
         "name": "Sweden",
         "scanner": "sweden",

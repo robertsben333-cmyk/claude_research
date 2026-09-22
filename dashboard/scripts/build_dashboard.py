@@ -3028,10 +3028,17 @@ function mtTaal(code) {
                                && r.impact_sum_pre_local !== null
                                && r.impact_sum_pre_local !== undefined).length;
   return mControls(c, 'both') + mDelta(c, 'impact_sum_pre_local', 'Vóór en ná de lokale ronde',
-    `Elke hunter draait eerst Engels, dat wordt bevroren als <code>pre_local</code>, en pas
-     daarna de ronde in de eigen taal. Dit meet of zoeken in het Duits, Frans, Italiaans,
-     Pools, Spaans of een Scandinavische taal rangcorrelatie oplevert of alleen tokens kost.
-     <b>Het Britse geval is ontaard en telt niet mee</b>: de tweede ronde varieert daar
+    `<b>Deze controle is op 2026-09-22 gestopt en dit tabblad is geschiedenis.</b> Tot die
+     dag draaide elke hunter eerst Engels, werd die versie bevroren als
+     <code>pre_local</code>, en pas daarna de ronde in de eigen taal; dat mat of zoeken in
+     het Duits, Frans, Italiaans, Pools, Spaans of een Scandinavische taal rangcorrelatie
+     oplevert of alleen tokens kost. De hunters doen nu één tweetalige ronde, dus een run
+     die na die datum is verzegeld staat hier niet en dat is geen fout. <b>Er was nog geen
+     Europese dag opgelost toen de freeze liep</b>, dus deze meting heeft nooit één getal
+     tegen een echte uitkomst opgeleverd; wat is opgegeven is een toekomstig cijfer en geen
+     resultaat. Wat ervoor in de plaats komt is <code>language_note</code> per hunt: proza,
+     niet te rangschikken, en niet zichtbaar op deze pagina.
+     <b>Het Britse geval was ontaard en telde niet mee</b>: de tweede ronde varieerde daar
      bronlokaliteit (RNS, Investegate, de vakpers) en geen taal, dus <code>eu_resolve.py</code>
      weigert dat verschil te poolen met het Duitse en Franse. ${uk ? `Er staan ${uk} Britse
      namen in deze tabel; lees hun verschil apart.` : ''}`);
@@ -3159,7 +3166,7 @@ const MTABDEFS = [
   {name:'Lessons',   fn:mtLessons,   needs:'een bevroren pre_lessons-draft',
    when:c => c.ranked.some(r => r.impact_sum_pre_lessons !== null
                              && r.impact_sum_pre_lessons !== undefined)},
-  {name:'Taal',      fn:mtTaal,      needs:'een bevroren pre_local-draft', only:'EU',
+  {name:'Taal',      fn:mtTaal,      needs:'een run van vóór 2026-09-22 met een bevroren pre_local-draft', only:'EU',
    when:c => c.ranked.some(r => r.impact_sum_pre_local !== null
                              && r.impact_sum_pre_local !== undefined)},
   {name:'Namen',     fn:mtNamen,     needs:'een gejaagde naam',
@@ -3216,7 +3223,7 @@ const TABMETA = {
   'Deelmarkt':  {g:'Doorsnedes', q:'Per beurs: namen, vondsten, ankerdekking, omzet en rangcorrelatie — en hoe scheef de trekking zat.'},
   'Ankerarm':   {g:'Doorsnedes', q:'Mét optie-anker tegen alleen het short-register, binnen één markt en één dag. De reden dat stage CA bestaat.'},
   'Soort':      {g:'Doorsnedes', q:'Winstcijfer tegen Appendix 4C/5B-kasstroomrapport: twee verschillende latten in één getal.'},
-  'Taal':       {g:'Doorsnedes', q:'Levert de ronde in de eigen taal rangcorrelatie op, of kost hij alleen tokens?'},
+  'Taal':       {g:'Doorsnedes', q:'Leverde de aparte ronde in de eigen taal rangcorrelatie op? (controle gestopt 2026-09-22; alleen runs van vóór die datum)'},
   /* Register */
   'Lessons':    {g:'Register', q:'Kost of levert LESSONS.md: de bevroren draft tegen de uiteindelijke som.'},
   'Hypotheses': {g:'Register', q:'Het hypotheseregister met één verdictregel, en wat er tot nu toe overeind blijft.'},

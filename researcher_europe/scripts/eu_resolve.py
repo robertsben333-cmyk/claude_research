@@ -70,17 +70,25 @@ anything.
    carries the count in each arm, and over a fortnight of pooled days it is what makes
    that decision reviewable.
 
-4. SCORE THE LANGUAGE PASS. Each hunter runs an ENGLISH pass first, freezes it as
-   `pre_local`, then runs the local-language pass and revises. `spearman_pre_local`
-   ranks the frozen draft against the same realised move as the published key, so
-   "searching in German and French earns rank correlation" becomes a measured claim.
+4. SCORE THE LANGUAGE PASS — RETIRED 2026-09-22, AND READ AS HISTORY. Until that day
+   each hunter ran an ENGLISH pass first, froze it as `pre_local`, then ran the
+   local-language pass and revised, and `spearman_pre_local` ranked the frozen draft
+   against the same realised move as the published key. On the operator's instruction
+   the hunters now run ONE bilingual pass and emit no freeze, so a run sealed after
+   that date carries no `pre_local` and this section reports `n_with_pre_local: 0`.
 
-   **The UK number is not the same experiment.** The UK's local language IS English, so
-   its second pass is a DOMESTIC-SOURCE pass (RNS, Investegate, Citywire, Proactive,
-   Sharecast, the Investors' Chronicle) and the variable is source locality, not
-   language. This script therefore reports the pre/post delta per market and REFUSES to
-   pool the UK delta with the German and French ones. Averaging them would report the
-   mean of two different questions.
+   **No European day had resolved while the freeze ran**, so this control never
+   produced a number on a real outcome; what was given up is a future measurement and
+   not a result. The code stays because the runs that carry the field must keep
+   reproducing, and because an empty section here is the honest report of a control
+   that no longer runs.
+
+   **The UK number was never the same experiment.** The UK's local language IS English,
+   so its second pass was a DOMESTIC-SOURCE pass (RNS, Investegate, Citywire,
+   Proactive, Sharecast, the Investors' Chronicle) and the variable was source
+   locality, not language. This script therefore reports the pre/post delta per market
+   and REFUSES to pool the UK delta with the German and French ones. Averaging them
+   would report the mean of two different questions.
 
    Nothing pools on one day. A single day's delta on four to twelve names is noise and
    must not be reported as a finding, the same caveat `researcher_japan` records for its
@@ -464,9 +472,11 @@ def stats_block(usable):
             "median_abs_realised_pct": round(median(abs(y) for y in sy), 2),
         }
 
-    # The language experiment. Reported per market and NOT pooled across the UK / DE-FR
-    # boundary, because the UK's second pass tests source locality and the German and
-    # French ones test language. See the module docstring.
+    # The language experiment, RETIRED 2026-09-22. Empty on every run sealed after that
+    # date, because the hunters now run one bilingual pass and freeze nothing. On the
+    # runs that carry it, reported per market and NOT pooled across the UK / DE-FR
+    # boundary, because the UK's second pass tested source locality and the German and
+    # French ones tested language. See the module docstring.
     pre = [x for x in usable if x.get("impact_sum_pre_local") is not None]
     s["language_pass"] = {
         "n_with_pre_local": len(pre),
@@ -474,14 +484,17 @@ def stats_block(usable):
                                         [x["realised_move_pct"] for x in pre])
                                if len(pre) >= 3 else None),
         "by_market": {},
-        "note": "spearman_pre_local is the ENGLISH-only draft, frozen by the hunter "
-                "before it ran the local pass, ranked against the same realised move as "
-                "the published key. The delta is the local pass's contribution. NOTHING "
-                "POOLS ON ONE DAY: four to twelve names is noise. And the UK delta is "
-                "NOT the same experiment as the German and French ones -- the UK's "
-                "local language is English, so its second pass is a domestic-SOURCE "
-                "pass and the variable is source locality. They are reported apart and "
-                "must not be averaged.",
+        "note": "RETIRED 2026-09-22: the hunters now run ONE bilingual pass and freeze "
+                "nothing, so n_with_pre_local is 0 on every run sealed after that date "
+                "and that is by design, not a hunter that failed to freeze. On earlier "
+                "runs spearman_pre_local is the ENGLISH-only draft, frozen by the "
+                "hunter before it ran the local pass, ranked against the same realised "
+                "move as the published key; the delta is the local pass's "
+                "contribution. NOTHING POOLS ON ONE DAY: four to twelve names is "
+                "noise. And the UK delta is NOT the same experiment as the German and "
+                "French ones -- the UK's local language is English, so its second pass "
+                "was a domestic-SOURCE pass and the variable is source locality. They "
+                "are reported apart and must not be averaged.",
     }
     for m in sorted({x["submarket"] for x in pre if x["submarket"]}):
         sub = [x for x in pre if x["submarket"] == m]

@@ -54,14 +54,16 @@ the **lag**: ASIC publishes about four business days in arrears, carried as
 report the mix. `none_found` on an issuer whose three years of archive read cleanly is a
 reason to doubt the print exists at all.
 
-**The hunters run one English pass and there is no second one.** Stage EU freezes a
-`pre_local` draft and then runs a local-language or domestic-source pass. Australia does
-not: there is no Australian-language press the wires do not read, and the UK hunter —
-the one degenerate case stage EU already has — says in its own definition that a UK zero
-is not evidence about language. A second pass here would spend tokens measuring a
-variable that does not exist and would emit a zero delta somebody would later pool with
-the German and French ones. **`unpriced-hunter-au` has no `pre_local` field. Do not add
-one.** The `pre_lessons` freeze still runs.
+**The hunters run one English pass and there is no second language to search.** There is
+no Australian-language press the wires do not read, and the entire regulated disclosure
+channel is one English feed everybody reads. **`unpriced-hunter-au` has no `pre_local`
+field and no `language_note`. Do not add either.** The `pre_lessons` freeze still runs.
+
+Stage EU and stage CA dropped their own `pre_local` freeze on 2026-09-22 and now run one
+bilingual pass each, so this is no longer the exception it was. The difference that
+remains is that they have a second language to search and Australia does not: they carry
+a prose `language_note` and this stage carries none. A field that would be structurally
+empty on every Australian name is worse than absent — somebody would eventually pool it.
 
 ## Steps
 

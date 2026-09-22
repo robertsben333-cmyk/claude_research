@@ -300,7 +300,11 @@ canada_hunt:
   # `lean_vs_free_control_rho` in the resolved file is the check that the fix still works.
   # At 1.0 the lean IS -run_up_20d_pct and the hunt cannot beat its own benchmark with
   # anything built on it, which is the state Spain and Poland are in permanently.
-  french_pass: true               # Quebec issuers only; pre_local freezes the English draft
+  # Quebec issuers only, and since 2026-09-22 it is HALF OF ONE PASS rather than a second
+  # one: the hunter searches English and French together and there is no `pre_local`
+  # freeze. See europe_hunt.language_pass for the reasoning and for what was given up.
+  # `language_note` in the hunt output is the prose replacement; nothing ranks it.
+  french_pass: single_bilingual
   degrade_order:
     - skip the option chain lookup (every name falls to the register arm; say so)
     - reduce cap to 12 names
@@ -435,17 +439,29 @@ europe_hunt:
   # never a filter on the scored file.
   conviction_floor: null
   #
-  # THE LANGUAGE EXPERIMENT (2026-09-18). Each hunter runs an ENGLISH pass first, freezes
-  # it as `pre_local`, then runs the local pass and revises; edge_score.py carries
-  # diagnostics.impact_sum_pre_local beside the key and eu_resolve.py ranks both against
-  # the same realised move. English first, then local: the ordering is load-bearing and
-  # reversing it tests a different question.
+  # ONE BILINGUAL PASS SINCE 2026-09-22, ON THE OPERATOR'S INSTRUCTION. Each hunter runs
+  # a SINGLE pass in English and the local language together. Until then it ran English
+  # first, froze that draft as `pre_local`, and only then searched locally --
+  # edge_score.py carried diagnostics.impact_sum_pre_local beside the key and
+  # eu_resolve.py ranked both against the same realised move.
   #
-  # THE UK IS A DEGENERATE CASE and is reported apart. Its local language IS English, so
-  # its second pass varies SOURCE LOCALITY (RNS, Investegate, the domestic trade press)
-  # rather than language. eu_resolve.py refuses to pool the UK delta with the German and
-  # French ones, because averaging them reports the mean of two different experiments.
-  language_pass: true
+  # WHAT WAS GIVEN UP IS A CONTROL, AND IT NEVER PRODUCED A NUMBER. No European day had
+  # resolved while the freeze ran, so `spearman_pre_local` was never computed on a real
+  # outcome; what was lost is a future measurement, not a result. The reason for merging
+  # is not only the turns the split cost: sequencing the two halves forbade them from
+  # informing each other, and the control was being paid for out of the quality of the
+  # research it measured. What replaces it is `language_note` -- prose, per hunt, one
+  # line per thing the local sources carried that the English ones did not. It cannot be
+  # ranked. Do NOT reintroduce the freeze without saying what has changed.
+  #
+  # THE UK WAS THE DEGENERATE CASE and the asymmetry survives the merge. Its local
+  # language IS English, so its local half varies SOURCE LOCALITY (RNS, Investegate, the
+  # domestic trade press) rather than language, and a UK `language_note` that reads
+  # 'nothing the English sources did not already carry' is an honest result.
+  #
+  # edge_score.py and eu_resolve.py still read `pre_local` where a run carries it, so the
+  # runs sealed before this date keep their diagnostics. New runs carry none.
+  language_pass: single_bilingual
   #
   # THE ANCHOR. Europe has NO retrievable single-stock option chain -- Yahoo returns zero
   # expiries for .L, .DE and .PA, and Eurex's free reference file carries no settlement
@@ -531,17 +547,16 @@ australia_hunt:
   conviction_floor: null
   #
   # NO LANGUAGE PASS, AND THAT IS A DECISION RATHER THAN AN OMISSION (2026-09-22, on the
-  # operator's instruction). Stages EU and J freeze a `pre_local` draft and then run a
-  # second pass in the local language or over domestic sources. Australia runs ONE
-  # English pass. There is no Australian-language press the international wires do not
-  # read, and stage EU already carries the one degenerate case: the UK hunter varies
-  # SOURCE LOCALITY instead of language, eu_resolve.py refuses to pool its delta with the
-  # German and French ones, and its own definition says a UK zero is not evidence about
-  # language. A second Australian pass would spend tokens measuring a variable that does
-  # not exist and would emit a zero delta somebody would later pool as if it were one.
-  # unpriced-hunter-au therefore has NO pre_local field and edge_score.py's
+  # operator's instruction). There is no Australian-language press the international
+  # wires do not read, so there is no second language to search and nothing to note.
+  # unpriced-hunter-au has NO pre_local field and no `language_note`, and edge_score.py's
   # diagnostics.impact_sum_pre_local is absent for this market by design, not by failure.
   # The pre_lessons control still runs.
+  #
+  # As of the same day this is no longer the exception: stages EU and CA dropped their
+  # `pre_local` freeze too and now run ONE bilingual pass each. The difference that
+  # remains is that they still have a second language to search and Australia does not,
+  # so they carry a prose `language_note` and this stage carries none.
   language_pass: false
   #
   # THE ANCHOR, AND WHY IT IS THE BEST ONE HERE. Australia has no retrievable single-stock
