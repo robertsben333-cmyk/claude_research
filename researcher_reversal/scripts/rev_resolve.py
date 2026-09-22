@@ -51,6 +51,14 @@ HEADLINE = "d1"
 def realised(ticker, drop_date):
     """What the stock did from the drop-day close. None where it has not happened yet."""
     b = M.bars(ticker, rg="6mo")
+    # A bar dated today while the session is still open (or not yet settled) is a
+    # partial bar, not a close. Resolving against it scores a window that has not
+    # closed -- the 2026-09-22 15:10 ET resolve of 2026-09-21 did exactly that.
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    now_et = datetime.now(ZoneInfo("America/New_York"))
+    if b and b[-1]["date"] == now_et.date().isoformat() and (now_et.hour, now_et.minute) < (16, 30):
+        b = b[:-1]
     dates = [x["date"] for x in b]
     if drop_date not in dates:
         return None, f"no bar on {drop_date}"
@@ -260,13 +268,16 @@ def book_block(rows, horizon, floor, cost_mult=1.0):
         "net_t": M.tstat(n), "net_ci95": [lo, hi],
         "win_rate_pct": round(100 * sum(1 for x in n if x > 0) / len(n), 1) if n else None,
         "legs": legs,
-        "free_control_short_everything_pct": (
-            round(M.mean([-r[horizon + "_pct"] for r in rows
-                          if r.get(horizon + "_pct") is not None]), 3)),
-        "free_control_long_everything_pct": (
-            round(M.mean([r[horizon + "_pct"] for r in rows
-                          if r.get(horizon + "_pct") is not None]), 3)),
+        "free_control_short_everything_pct": _mean_or_none(
+            [-r[horizon + "_pct"] for r in rows if r.get(horizon + "_pct") is not None]),
+        "free_control_long_everything_pct": _mean_or_none(
+            [r[horizon + "_pct"] for r in rows if r.get(horizon + "_pct") is not None]),
     }
+
+
+def _mean_or_none(xs):
+    """Every row pending is a real state (the window has not closed), not an error."""
+    return round(M.mean(xs), 3) if xs else None
 
 
 def _by_mechanism(rows, horizon):

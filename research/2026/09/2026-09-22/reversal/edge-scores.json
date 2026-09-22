@@ -1,0 +1,948 @@
+{
+ "generated_utc": "2026-09-22T19:09:29+00:00",
+ "run": "research/2026/09/2026-09-22/reversal",
+ "legacy_rescore": false,
+ "names": 15,
+ "rankable": 6,
+ "ranking_key": "impact_sum",
+ "conviction_floor": 3.0,
+ "lessons_control": {
+  "names_with_pre_lessons": 6,
+  "names_moved_by_lessons": 0,
+  "note": "pre_lessons is each hunter's own sum before it read researcher_us/LESSONS.md. edge_resolve.py ranks it against the same realised move as the key, which is the only thing that can tell the guidance file apart from a habit."
+ },
+ "language_control": {
+  "names_with_pre_local": 0,
+  "names_moved_by_local_pass": 0,
+  "note": "RETIRED 2026-09-22: the European and Canadian hunters now run one bilingual pass and emit no freeze, so this is 0/0 on every run sealed after that date. On earlier runs pre_local is each hunter's own sum after the ENGLISH pass and before the local pass; eu_resolve.py ranks it against the same realised move as the key, per market, and does not pool the UK (where the second pass varied source locality) with Germany and France (where it varied language)."
+ },
+ "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added up, in points of spot. No call and no threshold -- cut wherever you like afterwards, which is what keeps the ranking question answerable at every k. `conviction` (abs of the key) is where the direction skill lives: over all events the sign is a coin flip, above the median conviction it is 74%. conviction_floor is a floor on emphasis in the note, never a filter on this file. Everything under `diagnostics` was measured as neutral or subtractive and decides nothing -- see researcher_us/EDGE_ANALYSIS.md.",
+ "ranking": [
+  {
+   "ticker": "ETS",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.5,
+   "conviction": 0.5,
+   "priced_lean_pct": -5.7,
+   "hunter_view": {
+    "expected_move_pct": 0.2,
+    "print_vs_bar_pct": 0.0,
+    "bar": "the sealed baseline's own reaction function (own comparable falls median -12.75%, n=4; cross-section prior for the -25..-15 / <$1m bands +0.34%; ATR14 17.89%), research/2026/09/2026-09-22/reversal/baselines/ETS.json. No option chain, no consensus, no analyst coverage, so there is no external bar and every size is kept small",
+    "positioning_check": "Nasdaq/FINRA: 95,948 shares short at the 2026-08-31 settlement, 2.55 days to cover, down 19.4% from 118,990 at 08-14 (https://api.nasdaq.com/api/quote/ETS/short-interest?assetclass=stocks). That position is three weeks old and predates the run-up and this fall; the 09-15 settlement is not yet published. Against 44,550,005 Class A shares outstanding (S-3, 2026-08-26) short interest is ~0.2%, so it cannot drive a squeeze either way. 32,000,000 of those shares (72%) went to eight non-US investors at $0.25 under Reg S on 2026-06-04 and are restricted securities. No option market, so no skew. No Form 4 activity in 3 or 12 months (Nasdaq insider-trades).",
+    "baseline_tension": "The finding leans slightly positive, like the low-volume (<2x, +1.46%) and -25..-15 band (+0.27%) priors, but it cuts against this name's ATR of 17.9% (high-volatility names keep falling), against its own comparable falls (median -12.75%, 1 of 4 up, and the first leg of this episode was followed by today's -18.7%) and against a no-news unwind of a ~3x speculative spike with seller_is_finished at only 10%. So expected_move is +0.2 against a findings sum of +0.5, cut by 0.3."
+   },
+   "flags": [
+    "hunter's expected_move_pct (+0.20) is under half the sum of its findings (+0.50): its own caveats did not reach the sum",
+    "4 finding(s) worth -9.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "ETS",
+     "key": "ETS#0",
+     "finding": "No registered offering can price in the window: the $300m S-3 filed 2026-08-28 (baby-shelf limited, no ATM agent named) has no EFFECT notice on EDGAR, and the company has never done a registered follow-on since the August 2025 IPO, so the ATM or shelf takedown that is the commonest second leg for a sub-$100m faller is not available tonight.",
+     "source": "https://data.sec.gov/submissions/CIK0002053641.json",
+     "source_date": "2026-09-22",
+     "expected_impact_pct": 0.5,
+     "cluster": "data.sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-09-23",
+     "reaction_history_on_this_line": "No prior registered offering to compare: the only equity raise since the IPO was the unregistered Reg S sale of 32M shares at $0.25, closed 2026-06-04 and 8-K'd 2026-06-08. The baseline's own falls (2025-08-22 IPO-week -58%, 2026-08-24/25) do not coincide with a financing.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "32,000,000 Class A shares (72% of 44.55M outstanding) sold 2026-06-04 at $0.25 to eight non-US investors under Reg S are restricted securities; the Rule 144 six-month holding period for a reporting issuer ends about 2026-12-04, when holders sitting on a ~7x gain can resell in the US. This is a large dated supply release, and it is outside the window.",
+     "expected_impact_pct": -5.0,
+     "resolves_by": "2026-12-04",
+     "source": "https://www.sec.gov/Archives/edgar/data/2053641/000110465926071441/tm2617088d1_8k.htm"
+    },
+    {
+     "finding": "If the S-3 is declared effective, a baby-shelf takedown (capped at one-third of public float in 12 months) becomes possible; no EFFECT notice and no acceleration request are visible yet.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2026-10-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/2053641/000110465926103393/tm2623148d1_s3.htm"
+    },
+    {
+     "finding": "Fiscal Q3 (quarter ended 2026-08-31) 10-Q and results; the prior year's Q3 filing came 2025-10-14. Single-customer (FedEx) revenue and a widening loss on the AI-platform spend ($3.3m Leyan development agreement).",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2026-10-15",
+     "source": "https://www.sec.gov/Archives/edgar/data/2053641/000110465926083496/ets-20260531x10q.htm"
+    },
+    {
+     "finding": "Nasdaq minimum-bid deficiency was closed on 2026-08-06, so no listing clock is running; at $1.74 there is no near-term re-trigger.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-08-06",
+     "source": "https://www.sec.gov/Archives/edgar/data/2053641/000110465926092685/tm2622514d1_8k.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -9.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": 1.9,
+    "baseline_quality": 0.284,
+    "quality_parts": {
+     "history": 0.667,
+     "options": 0.45,
+     "priced_direction": 0.2,
+     "event_plausibility": 0.6,
+     "history_events": 4,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "data.sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.5,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 1
+  },
+  {
+   "ticker": "AIFU",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": 0.425,
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "bar": "unsourced: no cause identified, so there is nothing to size an overshoot against. Reaction scale from the baseline's own comparable falls (n=16, median |next close| 8.26%); no option chain (empty_chain).",
+    "positioning_check": "Nasdaq/FINRA short interest at the 2026-08-31 settlement: 5,163 shares, 1.0 days to cover, up 14.7% from 4,500 on 08-14. Against about 6.18M shares outstanding (stockanalysis.com, secondary) that is negligible, so no squeeze or cover mechanism. It lags about eight business days, and the position carried into this fall cannot be observed. Source: https://api.nasdaq.com/api/quote/AIFU/short-interest?assetclass=stocks. No insider Form 4 trades in 3 or 12 months (https://api.nasdaq.com/api/company/AIFU/insider-trades). No option chain (empty_chain), so there is no skew.",
+    "baseline_tension": "Nothing I found contradicts the baseline, but nothing supports a number either. The recent reaction function (08-17, 08-18, 09-04 and 09-10 comparable falls, all followed by -9% to -20% next closes) and the 37% ATR point to continuation, while the full 16-event history (median +0.49%) and the modest 2.43x volume do not; with no dated finding, the number stays 0."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "3 finding(s) worth -1.50 dated after the exit window, kept out of the key"
+   ],
+   "findings": [],
+   "outside_window": [
+    {
+     "finding": "Completion of the 10,000,000 Class B issuance to Expansion Group at par. The 6-K says it is expected by the end of September 2026 but gives no date. The previous Expansion subscription took 45 days from agreement (2025-11-07) to completion (2025-12-22), so there is no cadence support for it landing on 09-23. Its information content is mostly already public (09-09), so on completion it is a confirmation rather than news.",
+     "expected_impact_pct": -0.5,
+     "resolves_by": "2026-09-30",
+     "source": "https://www.sec.gov/Archives/edgar/data/1413855/000121390026098418/ea0304936-6k_aifu.htm"
+    },
+    {
+     "finding": "The F-3 shelf went effective 2026-05-28 and carries at-the-market language. No 424B prospectus supplement appears in the filing index since then, so no takedown is visible. Supply that could be drawn at some point, with no date.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2029-05-28",
+     "source": "https://www.sec.gov/Archives/edgar/data/1413855/000121390026061007/ea0292142-f3_aifu.htm"
+    },
+    {
+     "finding": "Peakleap Ventures (industrial AI) acquisition is still a non-binding MOU from 2026-06-11. It depends on due diligence and a definitive agreement, with no date.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.globenewswire.com/news-release/2026/06/11/3310531/0/en/AIFU-Signs-MOU-to-Acquire-Industrial-AI-Company-Launching-Strategic-Transformation.html"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -1.5,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 16,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed: researcher_reversal/LESSONS.md is deliberately empty (nothing has resolved)"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 2
+  },
+  {
+   "ticker": "CMPX",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.3,
+   "conviction": 0.3,
+   "priced_lean_pct": -0.944,
+   "hunter_view": {
+    "expected_move_pct": -0.3,
+    "print_vs_bar_pct": 0.0,
+    "bar": "Sized against this name's own two comparable falls (2025-04-02 -24.6% then -5.03% next close; 2026-04-27 -64.4% then +2.79%; median abs next move 3.91%) and its 14-day ATR of 12.3%, all from the sealed baseline /home/user/claude_research/research/2026/09/2026-09-22/reversal/baselines/CMPX.json. No usable option chain (unusable_chain), so there is no implied move.",
+    "positioning_check": "Short interest was 40,788,891 shares at the 2026-08-31 settlement, +1.5% on the prior settlement, 17.3 days to cover on 2.36M average daily volume (https://api.nasdaq.com/api/quote/CMPX/short-interest?assetclass=stocks). That is about 22.6% of 180,087,915 shares outstanding (10-Q, 2026-07-28 count), and the level has built steadily from 31.0M in mid-May. Publication lags settlement by about 8 business days, so the position carried into today is not observable. Today's volume to the screen was roughly 21.3M shares ($26.9M / $1.26), about half the reported short position, so some covering into the resolved binary is plausible, but it is undated and cannot be counted. No usable skew: the chain is unusable_chain; put/call OI ratio 0.05 on 3,409 contracts.",
+    "baseline_tension": "The high 14-day ATR (12.3%) and the 8.45x volume both lean toward continuation, and my research sources no second shoe. The flat intraday leg after a pre-market low near -40% and the near-cash valuation cut the other way but carry no in-window mechanism. So I kept the number at the small ATM finding (-0.3), which is less negative than both the own-history mean (-1.12) and the cross-section prior (-0.87), rather than adding the baseline drift, which is common to every name in the day."
+   },
+   "flags": [
+    "5 finding(s) worth +0.50 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "CMPX",
+     "key": "CMPX#0",
+     "finding": "An effective shelf (S-3 filed 2025-12-30, EFFECT 2026-01-07) carries an at-the-market agreement with Leerink Partners and Cantor Fitzgerald. It had sold no shares through H1 2026 and could be drawn from the 2026-09-23 open.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1738021/000117184326005295/cmpx20260630_10q.htm",
+     "source_date": "2026-08-06",
+     "expected_impact_pct": -0.3,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-09-23",
+     "reaction_history_on_this_line": "None observable: the 10-Q reports no sales under the December 2025 agreement in H1 2026, and ATM sales are disclosed only in the next periodic report. The August 2025 financing (424B5 2025-08-12/13, with pre-funded warrants) was an underwritten deal, not ATM supply.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Cash floor: $179.9M cash and marketable securities at 2026-06-30, no debt, against about 186.8M shares including 6.71M pre-funded warrants, which is about $0.96/share before Q3 burn. At $1.26 the stock trades near 1.3x cash. Real support over weeks, but no mechanism closes any gap by the next close.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-04",
+     "source": "https://www.sec.gov/Archives/edgar/data/1738021/000117184326005295/cmpx20260630_10q.htm"
+    },
+    {
+     "finding": "Compass says it will 'work with the Agency' toward its planned BLA and will present the full COMPANION-002 dataset at a medical conference in 2026. No date is given for either.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1738021/000117184326006162/exh_991.htm"
+    },
+    {
+     "finding": "Summit ivonescimab FDA decision 2026-11-14, which Leerink cites as the precedent for filing a BLA over an FDA request for more studies. A positive read-through, a month outside the window.",
+     "expected_impact_pct": 1.0,
+     "resolves_by": "2026-11-14",
+     "source": "https://www.biospace.com/drug-development/compass-vows-to-press-on-with-fda-application-despite-new-trial-request"
+    },
+    {
+     "finding": "Q3 10-Q (Zacks-estimated 2026-11-04, a cadence prior and not an announced date) will disclose any ATM sales and any post-setback restructuring or runway revision.",
+     "expected_impact_pct": -0.5,
+     "resolves_by": "2026-11-04",
+     "source": "https://api.nasdaq.com/api/analyst/CMPX/earnings-date"
+    },
+    {
+     "finding": "CTX-8371 Phase 1 primary completion 2026-12 per ClinicalTrials.gov. The pipeline value left after tovecimig's setback rests on this, beyond the window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://clinicaltrials.gov/study/NCT06150664"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.5,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -0.7,
+    "baseline_quality": 0.341,
+    "quality_parts": {
+     "history": 0.333,
+     "options": 0.45,
+     "priced_direction": 0.2,
+     "event_plausibility": 1.0,
+     "history_events": 2,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.3,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 3
+  },
+  {
+   "ticker": "EDRY",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.75,
+   "conviction": 0.75,
+   "priced_lean_pct": -0.353,
+   "hunter_view": {
+    "expected_move_pct": -1.0,
+    "print_vs_bar_pct": 0.0,
+    "bar": "No sell-side estimates or option chain (options.status no_options_market). Sized against the baseline's cross-section prior (-0.353 expected next close; -25..-15 band +0.27, $5-25m turnover band -0.98), ATR14 11.6% and the ATM's size ($20m against 2,866,591 shares x $55 = ~$158m) from https://www.sec.gov/Archives/edgar/data/1731388/000091957426006294/p15075106_424b5.htm. The name has no own comparable falls (history.n = 0), so sizes are capped.",
+    "positioning_check": "Nasdaq/FINRA short interest was 136,921 shares at the 2026-08-31 settlement, up 312% from 33,216 on 08-14, with 1.0 days to cover on 157,344 average daily volume. That is about 4.8% of the 2,866,591 shares outstanding and a larger share of float, because the Pittas family holds a large stake. Source: https://api.nasdaq.com/api/quote/EDRY/short-interest?assetclass=stocks. It is lagged: the position carried into the 09-22 fall is not observable, and the 09-15 settlement publishes after the window. Insiders: 11 sells and 0 buys over 3 months per the baseline's Nasdaq summary (the live endpoint returned 503 today). No option market, so there is no skew.",
+    "baseline_tension": "The finding agrees with the high ATR (11.6%, a continuation ranker) and the heavy 60-day run-up. It sits against the moderate 2.56x volume and the -25..-15 band's slightly positive mean. With no own history (n=0), the -1.0 is kept small."
+   },
+   "flags": [
+    "3 finding(s) worth -1.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "EDRY",
+     "key": "EDRY#0",
+     "finding": "An effective $20m at-the-market program (A.G.P., equity distribution agreement dated 2026-09-11, F-3 effective 2026-09-03) can sell EDRY stock on 2026-09-23 into any rebound. It is about 12-13% of market cap at $55, roughly 364k shares against ~$9.5m median daily turnover.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1731388/000091957426006296/p1507865_exh-1.htm",
+     "source_date": "2026-09-11",
+     "expected_impact_pct": -0.75,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-09-23",
+     "reaction_history_on_this_line": "None in the baseline: history.n = 0 comparable falls. The earlier ATMs (2021, 2023) are documented, but their next-day price effect is not measured here.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.262,
+     "_legacy_residual_pct": -0.262
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "The FINRA 2026-09-15 short-interest settlement publishes after the window; the 08-31 figure had already quadrupled.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-09-24",
+     "source": "https://api.nasdaq.com/api/quote/EDRY/short-interest?assetclass=stocks"
+    },
+    {
+     "finding": "Q3 2026 results and disclosure of any ATM draws are expected in mid-November (Zacks estimate 2026-11-12, not company-announced).",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-12",
+     "source": "https://api.nasdaq.com/api/analyst/EDRY/earnings-date"
+    },
+    {
+     "finding": "The $200m F-3 universal shelf (effective 2026-09-03) is an overhang for further takedowns beyond the ATM, with no date.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2029-09-03",
+     "source": "https://www.sec.gov/Archives/edgar/data/1731388/000091957426005806/p15057625_f-3.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -1.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -1.4,
+    "baseline_quality": 0.208,
+    "quality_parts": {
+     "history": 0.0,
+     "options": 0.45,
+     "priced_direction": 0.2,
+     "event_plausibility": 1.0,
+     "history_events": 0,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.75,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed: researcher_reversal/LESSONS.md is deliberately empty"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 4
+  },
+  {
+   "ticker": "TGL",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -1.0,
+   "conviction": 1.0,
+   "priced_lean_pct": -0.076,
+   "hunter_view": {
+    "expected_move_pct": -0.6,
+    "print_vs_bar_pct": 0.0,
+    "bar": "This name's own comparable falls (n=27, median next close 0.0%, mean -3.45%, median absolute 3.85%) and ATR14 of 24.7%, both from the sealed baseline /home/user/claude_research/research/2026/09/2026-09-22/reversal/baselines/TGL.json. There is no option chain.",
+    "positioning_check": "Nasdaq/FINRA short interest was 122,856 shares at the 2026-08-31 settlement, up 728% from 14,838 on 08-14, with days to cover 1.0 on an average daily volume of 1.10m. Against about 1.48m non-affiliate shares (424B5 dated 2026-02-03) that is roughly 8% of float. The figure lags about eight business days and does not show the position carried into 09-22. Source: https://api.nasdaq.com/api/quote/TGL/short-interest?assetclass=stocks. There is no options market, so there is no skew. Insider trades are zero over 3 and 12 months (https://api.nasdaq.com/api/company/TGL/insider-trades).",
+    "baseline_tension": "The finding cuts slightly against this name's own recent reaction function: its last two promotional-release fades were followed by +2.04% and 0.00%, and its median after comparable falls is 0.0%. It agrees with the high ATR and the 9.8x volume. So expected_move_pct is -0.6, 0.4 points smaller than the -1.0 finding sum."
+   },
+   "flags": [
+    "3 finding(s) worth -4.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "TGL",
+     "key": "TGL#0",
+     "finding": "An at-the-market agreement with Kingswood Capital Partners for up to $10,085,000 is open on live shelf 333-278171 (prospectus supplement 2026-02-03), and I found no termination filing. The issuer can sell stock into any 2026-09-23 bounce.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1905956/000121390026011440/ea0274820-424b5_treasure.htm",
+     "source_date": "2026-02-03",
+     "expected_impact_pct": -1.0,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-09-23",
+     "reaction_history_on_this_line": "In December 2025 the name had a live takedown (424B5 2025-12-11, 424B3 2025-12-15) around a reverse split. Its falls then ran on: 12-08 -22% then -20.5%, 12-09 -20.5% then -40.0% (baseline events). The 2026 falls with no offering in progress (01-08, 06-11, 08-21, 09-17) were followed by -0% to +4%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.35,
+     "_legacy_residual_pct": -0.35
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "The FY2026 10-K (FYE 2026-06-30) is due about 2026-09-28. The last two 10-Qs were each preceded by an NT 10-Q, and going-concern language recurs, so an NT 10-K or a renewed going-concern opinion is likely next week.",
+     "expected_impact_pct": -2.0,
+     "resolves_by": "2026-09-29",
+     "source": "https://www.sec.gov/Archives/edgar/data/1905956/000121390026057761/ea0290872-nt10q_treasure.htm"
+    },
+    {
+     "finding": "Legacy Trustee's $1.2m Reg S subscription from 2026-05-26 (floor price $3.88) carried an obligation to file a resale S-1/S-3 within 60 days. I can see none on EDGAR, and the 6-month Rule 144 release of the first tranche is around 2026-11-26.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2026-11-26",
+     "source": "https://www.sec.gov/Archives/edgar/data/1905956/000121390026062834/ea0292758-8k_treasure.htm"
+    },
+    {
+     "finding": "Up to $5m of software-development fees (8-Ks dated 2026-08-26 for $3m and 2026-09-14 for $2m, plus Keen Success $2m on 2026-08-18) can be paid in shares priced at the prior close. The shares are Reg S restricted for 6 months, so this is dilution scheduled for 2027 and not supply now.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2027-02-26",
+     "source": "https://www.sec.gov/Archives/edgar/data/1905956/000121390026093980/ea0303515-8k_treasure.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -4.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -3.0,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 27,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -1.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 5
+  },
+  {
+   "ticker": "XNDU",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -2.4,
+   "conviction": 2.4,
+   "priced_lean_pct": 0.991,
+   "hunter_view": {
+    "expected_move_pct": -2.0,
+    "print_vs_bar_pct": 0.0,
+    "bar": "Sized against this stock's own comparable falls in the sealed baseline (n=4, median next close +2.56, median |move| 5.39; the supply-line analogue 2026-05-04 went -3.50 next close), 14d ATR 10.53%, and the phase-0 over-15x-volume conditional of -2.44. There is no option anchor (unusable_chain). Baseline: /home/user/claude_research/research/2026/09/2026-09-22/reversal/baselines/XNDU.json",
+    "positioning_check": "Short interest was 4,926,691 shares at the 2026-08-31 settlement (Nasdaq/FINRA), with 3.44 days to cover on 1.43M ADV, up 14.6% from 4,299,051 on 08-14. That is roughly 11% of the pre-lockup Class B float of 43.28M (as of 2026-05-14 per the 424B3 of 2026-06-01). Settlement data lag about 8 business days, so the position carried into the expiry is NOT observable. The 09-15 settlement is not yet in the baseline. Skew is unavailable (unusable_chain, ATM legs not two-sided). Front-expiry put/call open-interest ratio is 4.76 on 5,316 contracts. Nasdaq insider feed: 0 trades over 12 months (FPI, no Form 4). Source: https://api.nasdaq.com/api/quote/XNDU/short-interest?assetclass=stocks",
+    "baseline_tension": "The finding agrees with the 17x volume (phase 0: over 15x gives -2.44) and with the high 14d ATR of 10.5%. It cuts against this name's own median comparable fall of +2.56, which comes from small-float squeezes in April that a sixfold-larger float should dampen. So the emitted -2.0 is 0.4 smaller than the -2.4 sum of findings."
+   },
+   "flags": [
+    "4 finding(s) worth +4.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "XNDU",
+     "key": "XNDU#0",
+     "finding": "The 180-day post-closing lock-up (closing 2026-03-26) expired on the drop day, 2026-09-22. About 255M resale-registered shares became saleable against a prior float near 43M. Day-2 selling by early holders lands on 2026-09-23.",
+     "source": "https://www.sec.gov/Archives/edgar/data/2097163/000211517226000002/primary_doc.xml",
+     "source_date": "2026-04-02",
+     "expected_impact_pct": -2.0,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-09-23",
+     "reaction_history_on_this_line": "The last supply event on this name was the resale registration of ~294M shares on 2026-05-04 (-61.27%). The next close was -3.50% and the next open +0.29% (baseline history). The two positive rebounds in the history (2026-04-21 +51.75%, 2026-04-23 +7.28%) came while the float was about 43M, which a 6x larger float now dampens.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.7,
+     "_legacy_residual_pct": -0.7
+    },
+    {
+     "hunter": "XNDU",
+     "key": "XNDU#1",
+     "finding": "The $300M Yorkville standby equity purchase agreement (SEPA), a synthetic ATM, had about $232.8M of capacity left as of 2026-08-21. The issuer has drawn on it before (5.5M shares for $67.2M in Q2), and Yorkville's resale shares are registered, so a draw can be made on any session, including 2026-09-23.",
+     "source": "https://www.sec.gov/Archives/edgar/data/2097163/000121390026092648/ea0302974-424b3_xanadu.htm",
+     "source_date": "2026-08-21",
+     "expected_impact_pct": -0.4,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-09-23",
+     "reaction_history_on_this_line": "The Q2 draws averaged a net $12.28/share. The stock has since fallen about 55% with no separately identifiable draw-day reaction in the baseline. The facility's effect is diffuse drift, not a gap.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.14,
+     "_legacy_residual_pct": -0.14
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "CIBC's Todd Coupland keeps a US$22 target and tells investors to 'use weakness around the Sept. 22 lockup' to buy. The call was published before the drop, and no fresh note dated 2026-09-23 was found, so it is not a mechanism inside the window. The target-versus-spot gap is not a mechanism.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-09-20 (already public)",
+     "source": "https://www.theglobeandmail.com/business/article-xanadu-stock-faces-test-as-lockup-set-to-lift-for-most-investors/"
+    },
+    {
+     "finding": "DARPA Quantum Benchmarking Initiative: Xanadu is in Stage B (advanced 2025-11-06). Stage C decisions are 'fall 2026' with no date, and DARPA announces promotions only after contracting.",
+     "expected_impact_pct": 5.0,
+     "resolves_by": "2026-12-31 (undated, 'fall 2026')",
+     "source": "https://www.darpa.mil/research/programs/quantum-benchmarking-initiative/stage-b-selection"
+    },
+    {
+     "finding": "Going-concern language ('substantial doubt about its ability to continue') recurs in filings through the 2026-08-21 424B3, against $312.8M of cash at 2026-06-30 and the CAD 195M federal agreement of 2026-08-28. It resurfaces at the next periodic report, which has no announced date.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2026-11-04 (Zacks estimate only, not announced)",
+     "source": "https://www.sec.gov/Archives/edgar/data/2097163/000121390026092647/ea0302975-424b3_xanadu.htm"
+    },
+    {
+     "finding": "The founder shares (SPAC Class B) had a price-based release at $12.00 for 20 of 30 trading days. That trigger is not reachable at a ~$5.8 spot, so this tranche's timing depends on the 180-day or 1-year terms, not on price.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-03-26 (one-year anniversary, if applicable; not verified)",
+     "source": "https://www.sec.gov/Archives/edgar/data/2097163/000121390026021941/ea0266307-x2.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 4.0,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -9.2,
+    "baseline_quality": 0.474,
+    "quality_parts": {
+     "history": 0.667,
+     "options": 0.45,
+     "priced_direction": 0.2,
+     "event_plausibility": 1.0,
+     "history_events": 4,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -2.4,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 6
+  },
+  {
+   "ticker": "DAVA",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": 1.869,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.614,
+    "quality_parts": {
+     "history": 0.667,
+     "options": 0.85,
+     "priced_direction": 0.2,
+     "event_plausibility": 1.0,
+     "history_events": 4,
+     "atm_spread_frac": 0.667
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  },
+  {
+   "ticker": "EVER",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": -0.369,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.881,
+    "quality_parts": {
+     "history": 0.833,
+     "options": 0.85,
+     "priced_direction": 1.0,
+     "event_plausibility": 1.0,
+     "history_events": 5,
+     "atm_spread_frac": 0.182
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  },
+  {
+   "ticker": "FTFT",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": -0.143,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 63,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  },
+  {
+   "ticker": "HVII",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": -1.637,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.204,
+    "quality_parts": {
+     "history": 0.333,
+     "options": 0.45,
+     "priced_direction": 0.2,
+     "event_plausibility": 0.6,
+     "history_events": 2,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  },
+  {
+   "ticker": "LVO",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": 1.193,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 29,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  },
+  {
+   "ticker": "NFE",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": 0.15,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 11,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  },
+  {
+   "ticker": "NTRB",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": 1.323,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 32,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  },
+  {
+   "ticker": "NUR",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": -3.836,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 6,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  },
+  {
+   "ticker": "SUPX",
+   "rankable": false,
+   "not_rankable_because": "no hunt",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": 2.574,
+   "hunter_view": {},
+   "flags": [],
+   "findings": [],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 27,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 0,
+    "impact_sum_pre_lessons": null,
+    "lessons_delta": null,
+    "hunts_with_pre_lessons": "0/0",
+    "lessons_applied": [],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/0",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  }
+ ]
+}
