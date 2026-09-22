@@ -1273,6 +1273,29 @@ is what turned Quadient's 5%-threshold declaration from a search snippet into a
 quotable primary document.
 See `researcher_europe/README.md` and `researcher_europe/SUBMARKET.md`.
 
+**Canada was measured on 2026-09-22 and is NOT a stage: `researcher_canada/` holds an
+access measurement and nothing else.** The two official surfaces are shut from this
+container and stay shut on the eight-try France protocol — `sedarplus.ca` returns a
+Radware 403 8/8, `ciro.ca` a Cloudflare interstitial 8/8, `sedi.ca` the same 403 — and
+both are reachable through TMX Group's own portal instead. `app-money.tmx.com/graphql`
+is unauthenticated and serves the SEDAR+ filing index with a PDF per filing, a
+consolidated newswire archive with timestamps, the short register, Wall Street Horizon's
+calendar with a CONFIRMED/UNCONFIRMED flag and a session in the event name, and TMX's own
+daily tape; `m-x.ca` serves the listed option chain for 360 underlyings, serially.
+Measured over 374 names above the same $200k floor: the **short register covers 87–88% of
+every turnover band**, matching the FCA register in the $1–5m band (89%) and beating it
+below $1m, where the UK covers 32% of the names that floor adds and JPX 9–11 of 25 at any
+size; the **vendor calendar's phantom rate is 1 in 140** against the US
+`time-not-supplied` 20 of 20, and the release timestamp agrees with the vendor's session
+on 90 of 92 confirmed prints. **Four things are unsettled and a stage must not be built
+over them**: everything but the options comes from one vendor stack, the register has no
+history and an ununderstood `BUSINESS_DATE`, the implied move was only ever priced off
+`last` with Toronto shut, and WSH disagrees with TradingView on 172 of 277 forward dates.
+About a third of the eligible universe also reports by SEDAR+ filing with no press
+release at all, which is a different event shape from the one this method assumes. Read
+`researcher_canada/SOURCES.md`; it ends with the three cheap tests that would have to run
+first.
+
 **The five stage 0–4 pipeline Routines were disabled on 2026-09-18** at the operator's
 request, and the stage table's claim that they "do not currently exist" was wrong before
 that: all six were enabled and firing. They are disabled now, not deleted. Stage E is
@@ -1309,6 +1332,10 @@ researcher_europe/                     stage EU — see researcher_europe/README
   SUBMARKET.md                         why these markets pooled, with the counts behind
                                        it; section 10 is the 2026-09-19 expansion
   routine-prompts/                     the text in the stage EU Routine
+researcher_canada/                     NOT a stage — an access measurement, 2026-09-22
+  SOURCES.md  README.md                what is reachable in Canada and what is not
+  scripts/                             ca_sources (incl. CAPABILITY), ca_measure
+  analysis/                            ca-source-measurement.json
 archive/                               retired 2026-09-18 — see archive/README.md
   backtest/                            the sealed backtest, arms A/B/C + edge-corpus
   claude_naive/                        stage N, disabled 2026-09-09
