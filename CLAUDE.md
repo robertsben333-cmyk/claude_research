@@ -1128,20 +1128,40 @@ concurrent positions, and a spread estimate that is a floor. One bias runs the o
 way: the universe is today's listings, so falls followed by a delisting are absent and
 the continuation is **understated**.
 
-**THE HUNTER'S QUESTION IS FORWARD, AND THE FIRST BUILD GOT IT WRONG (both on
-2026-09-22).** The morning version asked whether yesterday's fall "overshot what the news
-justified". That was replaced the same day on the operator's correction. It is
-backward-looking — the market has seen the news, that is why the stock is down — it
-cannot be checked before the outcome, and **the hindsight problem is structural**: the
-fall is the hunter's own input, so a model asked whether a 25% drop was overdone will
-rationalise fluently in either direction. The question now is **"is there more bad news
-coming that the price does not yet hold, or is the bad news finished?"** A second shoe is
-a filing with a date on it; an over-reaction is an opinion. The cause is still
+**THE HUNTER ASKS TWO LEGS IN ONE SHORT WINDOW, AND THIS IS THE THIRD VERSION OF THE
+QUESTION (all three on 2026-09-22).** The window is the drop-day close to the next
+session's close and it bounds both legs; nothing outside it counts, however real.
+
+- **Leg 1, repricing:** did the fall misprice what is ALREADY known?
+- **Leg 2, new information:** does anything land INSIDE the window that the price does
+  not hold, bad or good?
+
+**v1 asked only leg 1** and was replaced the same morning on the operator's correction.
+Three problems and the third is the one that matters: backward-looking, "proportionate"
+has no unit, and **hindsight is structural** because the fall is the hunter's own input,
+so a model handed a 25% drop rationalises fluently in either direction. **v2 asked only
+leg 2**, which is checkable and document-backed and throws away the case the stage exists
+for: a fall that was simply too big had no leg to sit in. **v3 asks both**, on the
+operator's instruction, and the short-horizon bound is what rescues leg 1.
+
+**AN OVERSHOOT PAYS NOTHING UNLESS SOMETHING CLOSES THE GAP INSIDE THE WINDOW**, so every
+`repricing` finding carries `mechanism_in_window`: a wider overnight audience reading the
+primary document, a seller that is finished and dated, a note landing before the open, a
+disclosed buyer, a checkably wrong wire story, or supply that is countable and spent.
+"It is cheap now" and "the market over-reacts to these" are not mechanisms — the brief
+says drop them or file them in `outside_window`, and `pipeline.overshoot_has_mechanism`
+is the honest way to emit an overshoot that is believed but cannot be dated.
+
+**THE LEGS ARE SUMMED INTO THE RANKED NUMBER AND REPORTED APART.** Every finding carries
+`leg`; the shared scorer sums them all, and `rev_resolve.py` ranks `leg1_repricing`,
+`leg2_new_information`, `overshoot_pct` and `more_to_come_pct` separately at every
+horizon and splits `by_overshoot_mechanism` into a with-mechanism and a without-mechanism
+arm. **Which leg carries the result is the most useful thing this stage can learn in its
+first month, and pooling them makes it unanswerable.** The cause of the fall is still
 established, in one block, because you cannot work out what follows from something nobody
-has named — but it is an input, not the deliverable. **Every finding must name a dated
-future development with a document behind it, and a finding with no date goes in
-`outside_window`.** The first two hunts under the old brief are kept at
-`research/2026/09/2026-09-21/reversal/_v1-overshoot/` so the change is inspectable.
+has named; it is an input to both legs, not the deliverable. Each earlier brief's hunts
+are kept so the change is inspectable: `_v1-overshoot/`, `_v1b-stale-agent/` and
+`_v2-forward-only/` under `research/2026/09/2026-09-21/reversal/`.
 
 **THE STAGE ONLY EXISTS BECAUSE THE SOURCES WERE PROBED FIRST, on the operator's
 instruction that nothing may rest on what cannot be found.** `rev_forward.py` carries the
@@ -1167,16 +1187,19 @@ prior cleared the conviction floor, took 33% of equity and never reported. And F
 publishes short interest about eight business days after settlement, so the position
 carried INTO the fall is not observable; the change between the last two settlements is.
 
-**The hypothesis is pre-registered in config, not in prose** —
-`reversal_hunt.pre_registered_hypothesis:
-unfinished_pipeline_continues_finished_cause_does_not`. A fall with an identified, dated,
-UNFINISHED pipeline of further bad news continues; one whose cause is complete and dated
-does not. The hunter supplies `pipeline.news_flow_balance` (−100…+100 on the forward flow
+**Both hypotheses are pre-registered in config, not in prose** —
+`reversal_hunt.pre_registered_hypotheses`, a list of two, beside
+`window: close_of_drop_day_to_close_of_next_session`. Leg 2: a fall with an identified,
+dated, UNFINISHED pipeline of further bad news continues, and one whose cause is complete
+and dated does not; carried by `pipeline.news_flow_balance` (−100…+100 on the forward flow
 alone) and `cause.seller_is_finished_pct` (0…100 on whether the selling pressure is
-spent), and `rev_resolve.py` ranks both at every horizon whether or not they look good.
-Phase 0's drift is weak support read the right way round: it exists because bad news
-arrives in clusters, so the second shoe is the norm and volume is the cheapest proxy for
-one.
+spent). Leg 1: an overshoot pays only where a named mechanism closes the gap inside the
+window; carried by `overshoot_pct` and `pipeline.overshoot_has_mechanism`, which the
+resolver splits into two arms because an overshoot with a mechanism and one without are
+not the same claim. `rev_resolve.py` ranks all of it at every horizon whether or not it
+looks good. Phase 0's drift is weak support for leg 2 read the right way round: it exists
+because bad news arrives in clusters, so the second shoe is the norm and volume is the
+cheapest proxy for one.
 
 **And the screen selects names with no option chain**: all fifteen names on the
 2026-09-21 screen came back `no_options_market` or `unusable_chain`, so stage R runs

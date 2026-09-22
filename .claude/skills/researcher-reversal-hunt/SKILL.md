@@ -1,6 +1,6 @@
 ---
 name: researcher-reversal-hunt
-description: The unpriced-information hunt, turned around and pointed at yesterday's biggest US losers. Seals what is already known and already scheduled for each fallen name, then sends one hunter per name to answer a forward question - is there more bad news coming that the price does not yet hold, or is the bad news finished - and sums their signed finding sizes into one number per company so the day's fallers can be ranked. Research only, no orders. Use when asked to run the reversal researcher, run stage R, rank yesterday's biggest losers, or work out whether a stock that fell has a second shoe coming.
+description: The unpriced-information hunt, turned around and pointed at yesterday's biggest US losers. Seals what is already known and already scheduled for each fallen name, then sends one hunter per name to answer two questions about the very short term - did the fall misprice what is already known, and does anything land inside the window that the price does not hold - and sums their signed finding sizes into one number per company so the day's fallers can be ranked. Research only, no orders. Use when asked to run the reversal researcher, run stage R, rank yesterday's biggest losers, or work out whether a stock that fell has a second shoe coming.
 ---
 
 # Stage R — the reversal researcher
@@ -11,47 +11,34 @@ output contract to stages E, J, EU and AU, and the identical scorer, which is th
 point: a Japanese print and an American faller are then scored the same way and their
 resolved numbers can be compared.
 
-## The question, and the one it replaced
+## The question, in two legs, both bounded to one short window
 
-**Is there more bad news coming that the price does not yet hold, or is the bad news
-finished?**
+**Leg 1 — repricing.** Did the fall misprice what is already known?
+**Leg 2 — new information.** Does anything land inside the window that the price does not
+hold, bad or good?
 
-The first build of this stage asked its hunter whether yesterday's fall "overshot what
-the news justified". That was wrong and it was replaced on 2026-09-22. It is
-backward-looking, it cannot be checked before the outcome, and a model handed a 25% fall
-will argue either side fluently — the fall is the hunter's *input*, so hindsight is baked
-in. **A second shoe is a filing with a date on it. An over-reaction is an opinion.**
+The window is the drop-day close to the next session's close, and it bounds both legs.
+Nothing outside it counts, however real.
 
-The cause of the fall is still established, because you cannot work out what follows from
-something nobody has named. But it is an input in one block, not the deliverable. The
-deliverable is what comes next: an open ATM that will sell into a bounce, a covenant, a
-deficiency clock, estimate cuts that have only started, a dated binary — or the evidence
-that the seller is finished, the index trade cleared, the offering priced, the insiders
-bought.
+This is the third version and the first two were each half of it. **v1 asked only about
+the overshoot**, which on its own is unfalsifiable inside a day: a mispricing with no
+mechanism can sit there for months, and the fall is the hunter's own input, so a model
+handed a 25% drop will argue either side fluently. **v2 asked only what comes next**,
+which is checkable but throws away the case the stage was built for — a fall that was
+simply too big.
 
-**This stage places no orders and reads no broker.** There is no `alpaca_trade.py` step
-and there must not be one. Phase 0 says why in one line: at the horizon this stage
-predicts, the gross edge is smaller than the estimated spread.
+**The short-horizon bound is what makes leg 1 answerable.** An overshoot earns nothing
+unless it *corrects* inside the window, so a `repricing` finding must carry
+`mechanism_in_window`: the named thing that closes the gap before the next close. A wider
+overnight audience reading the primary document, a seller that is finished and dated, a
+note landing before the open, a disclosed buyer, a checkable error in the wire copy, a
+countable and spent supply. Without a mechanism it is an opinion, and the brief tells the
+hunter to drop it or file it in `outside_window`.
 
-## The question is not the earnings question, and the difference decides everything
-
-| | stage E (earnings) | stage R (reversal) |
-| --- | --- | --- |
-| The event | scheduled, binary, **not yet public** | already happened and already public |
-| What the hunt looks for | a fact the market has not seen | the NEXT dated development the price does not hold |
-| The anchor | option-implied move + 25d skew + prior prints | the fall decomposed, the volume, this name's own comparable falls, a chain where one exists |
-| The window | close before the print → close after | close of the drop day → close of the next session |
-| The free control | `-run_up_20d_pct`, ρ=0.335 on six days | **`atr14`, ρ=−0.126 on 749 sessions, family-wise p=0.0017** |
-| Phantom events | 20 of 20 on one `time-not-supplied` day | none. The fall is observed |
-| Hindsight risk | low: the outcome does not exist yet | **structural: the fall IS the input.** Answered by asking forward, not backward |
-
-That last row is the one to keep in mind all day. Stage E's hunters worked before the
-outcome existed. Here the fall is handed to the hunter, and a model asked whether a 25%
-fall was overdone will produce a fluent, confident rationalisation every time. The
-defences are the `pre_lessons` freeze, the requirement that every finding name what
-resolves it and by when, and the fact that the ranking is **within the day** — being
-right that things which fall keep falling earns nothing, because every name in the day
-fell.
+Every finding carries `leg`. The shared scorer sums them into the one ranked number, and
+`rev_resolve.py` ranks the two legs **separately** — which leg carries the result is the
+most useful thing this stage can learn in its first month, and pooling them makes it
+unanswerable.
 
 ## What phase 0 established, before any agent existed
 
@@ -196,12 +183,15 @@ session's close. A shelf that will be drawn "at some point", a trial reading out
 year, a hearing in March: real, sourceable, and worth nothing to this ranking. They go in
 `outside_window`.
 
-**The hypothesis is pre-registered.** A fall with an identified, dated, unfinished
-pipeline of further bad news continues; one whose cause is complete and dated does not.
-It is written into `config/pipeline.yaml:reversal_hunt.pre_registered_hypothesis` so it
-cannot be rewritten after the answer arrives, and `rev_resolve.py` ranks
-`news_flow_balance` and `seller_is_finished_pct` as their own columns at every horizon
-**whether or not they look good**.
+**Two hypotheses are pre-registered**, in
+`config/pipeline.yaml:reversal_hunt.pre_registered_hypotheses`, so neither can be
+rewritten after the answer arrives. Leg 2: a fall with an identified, dated, unfinished
+pipeline of further bad news continues, and one whose cause is complete and dated does
+not. Leg 1: an overshoot pays only where a named mechanism closes the gap inside the
+window. `rev_resolve.py` ranks `news_flow_balance`, `seller_is_finished_pct`,
+`overshoot_pct` and each leg's own sum at every horizon, and splits
+`by_overshoot_mechanism` into a with-mechanism and a without-mechanism arm, **whether or
+not they look good**.
 
 **Nothing may rest on a source that was not measured to answer.** The hunter's brief
 carries the probed table. Three things that do NOT answer from this container — Nasdaq's

@@ -85,9 +85,22 @@ def load_run(run):
         t = (d.get("ticker") or f.stem.split("-")[0]).upper()
         if d.get("cause"):
             causes[t] = d["cause"]
-        if d.get("pipeline") or d.get("more_to_come_pct") is not None:
+        if d.get("pipeline") or d.get("more_to_come_pct") is not None \
+                or d.get("overshoot_pct") is not None:
+            # The two legs are summed from the findings rather than trusted from the
+            # hunter's own totals, because the totals are a claim and the findings are
+            # the record. A hunt whose stated leg sums disagree with its findings is
+            # reported rather than silently corrected.
+            legs = {"repricing": 0.0, "new_information": 0.0, "unlabelled": 0.0}
+            for f in d.get("findings") or []:
+                key = f.get("leg") if f.get("leg") in legs else "unlabelled"
+                legs[key] += float(f.get("expected_impact_pct") or 0.0)
             pipes[t] = {**(d.get("pipeline") or {}),
-                        "more_to_come_pct": d.get("more_to_come_pct")}
+                        "more_to_come_pct": d.get("more_to_come_pct"),
+                        "overshoot_pct": d.get("overshoot_pct"),
+                        "leg_repricing_sum": round(legs["repricing"], 3),
+                        "leg_new_information_sum": round(legs["new_information"], 3),
+                        "leg_unlabelled_sum": round(legs["unlabelled"], 3)}
     return scores, baselines, causes, pipes
 
 
@@ -129,6 +142,11 @@ def build_rows(run):
             # them and not about the key.
             "news_flow_balance": pl.get("news_flow_balance"),
             "more_to_come_pct": pl.get("more_to_come_pct"),
+            "overshoot_pct": pl.get("overshoot_pct"),
+            "overshoot_has_mechanism": pl.get("overshoot_has_mechanism"),
+            "leg_repricing_sum": pl.get("leg_repricing_sum"),
+            "leg_new_information_sum": pl.get("leg_new_information_sum"),
+            "leg_unlabelled_sum": pl.get("leg_unlabelled_sum"),
             "seller_is_finished_pct": c.get("seller_is_finished_pct"),
             "next_dated_event": pl.get("next_dated_event"),
             **{k: v for k, v in (mv or {}).items()},
@@ -165,6 +183,12 @@ def rank_block(rows, horizon, reps=2000):
         "news_flow_balance": lambda r: r["news_flow_balance"],
         "more_to_come_pct": lambda r: r["more_to_come_pct"],
         "seller_is_finished_pct": lambda r: r["seller_is_finished_pct"],
+        # THE TWO LEGS, RANKED APART. The whole argument for combining the questions is
+        # that either might carry the result; pooling them into impact_sum and never
+        # looking again would make that unanswerable.
+        "leg1_repricing": lambda r: r["leg_repricing_sum"],
+        "leg2_new_information": lambda r: r["leg_new_information_sum"],
+        "overshoot_pct": lambda r: r["overshoot_pct"],
     }
     out = {}
     for name, fn in keys.items():
@@ -245,6 +269,35 @@ def book_block(rows, horizon, floor, cost_mult=1.0):
     }
 
 
+def _by_mechanism(rows, horizon):
+    """An overshoot WITH a named mechanism against one without.
+
+    The stage's second pre-registered hypothesis. "The market over-reacted" is an opinion
+    until something is named that closes the gap inside the window, so the two arms are
+    different claims and must never be pooled. A hunt that emits a non-zero
+    `overshoot_pct` with `overshoot_has_mechanism: false` is being honest, not sloppy,
+    and this is where that honesty gets measured.
+    """
+    out = {}
+    for arm, keep in (("with_mechanism", lambda r: r.get("overshoot_has_mechanism") is True),
+                      ("without_mechanism", lambda r: r.get("overshoot_has_mechanism") is False),
+                      ("not_stated", lambda r: r.get("overshoot_has_mechanism") is None)):
+        sub = [r for r in rows if keep(r) and r.get(horizon + "_pct") is not None
+               and r.get("overshoot_pct")]
+        if not sub:
+            out[arm] = {"n": 0}
+            continue
+        mv = [r[horizon + "_pct"] for r in sub]
+        ok = [1.0 if (m > 0) == (r["overshoot_pct"] > 0) else 0.0
+              for m, r in zip(mv, sub)]
+        out[arm] = {"n": len(sub),
+                    "mean_move_pct": round(M.mean(mv), 3),
+                    "overshoot_sign_right_pct": round(100 * M.mean(ok), 1),
+                    "rho_overshoot_vs_move": M.spearman(
+                        [r["overshoot_pct"] for r in sub], mv)}
+    return out
+
+
 def by_cause(rows, horizon):
     out = []
     groups = defaultdict(list)
@@ -294,6 +347,19 @@ def main():
         "rankings": {h: rank_block(rows, h, a.reps) for h in HORIZONS},
         "conviction": {h: conviction_block(rows, h) for h in HORIZONS},
         "by_cause": by_cause(rows, a.horizon),
+        "by_leg": {
+            "note": "which leg carries the result. Both are ranked at every horizon in "
+                    "`rankings`; this block is the per-name decomposition",
+            "names_with_repricing": sum(1 for r in rows if r.get("leg_repricing_sum")),
+            "names_with_new_information": sum(
+                1 for r in rows if r.get("leg_new_information_sum")),
+            "names_with_unlabelled_findings": sum(
+                1 for r in rows if r.get("leg_unlabelled_sum")),
+            "legs_disagree_in_sign": sum(
+                1 for r in rows
+                if (r.get("leg_repricing_sum") or 0) * (r.get("leg_new_information_sum") or 0) < 0),
+        },
+        "by_overshoot_mechanism": _by_mechanism(rows, a.horizon),
         "pipeline_note": "news_flow_balance and seller_is_finished_pct are the stage's "
                          "pre-registered forward variables. They are reported at every "
                          "horizon whether or not they look good, because a hypothesis "

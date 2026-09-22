@@ -3,12 +3,14 @@
 **The question.** Yesterday's biggest US losers: do they keep falling, or do they
 bounce? And can research tell which is which, name by name, on the day?
 
-**The hunter's question is narrower and it is forward:** *is there more bad news coming
-that the price does not yet hold, or is the bad news finished?* An open ATM that will
-sell into a bounce, a covenant, a deficiency clock, estimate cuts that have only started,
-a dated binary — against an index trade that cleared, an offering that priced, insiders
-who bought. **A second shoe is a filing with a date on it. An over-reaction is an
-opinion**, and the first build of this stage asked for the opinion. See §7.
+**The hunter answers two questions, both bounded to the very short term** — the drop-day
+close to the next session's close. *Did the fall misprice what is already known?* and
+*does anything land inside the window that the price does not hold?* The second is the
+one with documents behind it: an open ATM, a covenant, a deficiency clock, estimate cuts
+that have only started, against an index trade that cleared or insiders who bought. The
+first is the one the stage was built for and it is only answerable because of the
+bound — **an overshoot earns nothing unless something closes the gap inside the window**,
+so every repricing finding has to name that mechanism. See §7.
 
 **The short answer, measured before a single agent was built: they keep falling.** Over
 11,235 falls of 5% or more on 749 sessions, the median stock is down another 1.00% by
@@ -244,30 +246,51 @@ fallers can be told apart on the day. That is the research question, and it is t
 language model might answer where a factor model cannot, because it turns on reading
 documents.
 
-### The question the hunter is given, and the one it replaced
+### The question the hunter is given, in two legs
 
-**Is there more bad news coming that the price does not yet hold, or is the bad news
-finished?**
+**Leg 1 — repricing.** Did the fall misprice what is already known?
+**Leg 2 — new information.** Does anything land inside the window that the price does not
+hold, bad or good?
 
-The first build (2026-09-22, morning) asked whether the fall "overshot what the news
-justified". That was replaced the same day. Three reasons, and the third is the one that
-matters:
+Both are bounded to the drop-day close → next session close. This is the third version
+and the first two were each half of it, which is worth recording because the reasoning
+generalises.
 
-1. It is backward-looking. The market has seen yesterday's news; that is why the stock is
-   down. Re-adjudicating it adds nothing the tape has not already done.
-2. It cannot be checked before the outcome. "Proportionate" has no unit.
-3. **Hindsight is structural here.** The fall is the hunter's own input. A model handed a
-   25% drop and asked whether it was overdone will produce a fluent, confident
-   rationalisation every time, in either direction.
+**v1 asked only "did the fall overshoot".** Three problems, and the third is the one that
+matters: it is backward-looking; "proportionate" has no unit; and **hindsight is
+structural**, because the fall is the hunter's own input, so a model handed a 25% drop
+will produce a fluent rationalisation in either direction.
 
-The forward question has none of those problems, because its answers are objects: a
-shelf registration with an effective date, a covenant with a test date, a deficiency
-letter with a 180-day clock, a primary completion date, a settlement date. **Each finding
-must name a dated future development with a document behind it, and a finding with no
-date is not a finding** — it goes in `outside_window`.
+**v2 asked only "is there more bad news coming".** Checkable, dated, document-backed —
+and it throws away the case this stage exists for. A fall that was simply too big had no
+leg to sit in, so it could only appear as colour.
+
+**v3 asks both, and the short-horizon bound is what rescues leg 1.** An overshoot pays
+nothing unless it *corrects* inside the window, so a `repricing` finding must carry
+`mechanism_in_window`: the named thing that closes the gap before the next close.
+
+| mechanism | why it closes a gap in one session |
+| --- | --- |
+| a wider overnight audience | the intraday tape was traders; the 8-K exhibit and the transcript get read after the close |
+| the seller is finished and dated | an index trade that cleared, an offering that priced, a lock-up that passed |
+| a note lands before the open | a reiteration, upgrade or defence puts a named buyer under a stock the tape had none for |
+| a disclosed buyer stepped in | a Form 4 cluster, a 13D/G, an ETF trade file that publishes after the close |
+| the wire copy is checkably wrong | and the correction is already public |
+| supply is countable and spent | the close printed at the low on exhausted volume; say how many shares against what |
+
+"It is cheap now", "the data was good", "the market over-reacts to these" are not
+mechanisms. The brief tells the hunter to drop them or file them in `outside_window`,
+and `pipeline.overshoot_has_mechanism` is the honest way to emit an overshoot that is
+believed but cannot be dated.
+
+**The legs are summed into the one ranked number and reported apart.** Every finding
+carries `leg`; `rev_resolve.py` ranks `leg1_repricing`, `leg2_new_information`,
+`overshoot_pct` and `more_to_come_pct` separately at every horizon, and splits
+`by_overshoot_mechanism` into two arms. Which leg carries the result is the most useful
+thing this stage can learn in its first month, and pooling them makes it unanswerable.
 
 The cause of the fall is still established, in one block, because you cannot work out
-what follows from something nobody has named. It is an input, not the deliverable.
+what follows from something nobody has named. It is an input to both legs.
 
 ### The sources, and why the hunt is possible at all
 
@@ -324,13 +347,16 @@ validation hunts were hand-run in the middle of the session they were predicting
 they are contaminated by construction and must never be pooled. That is recorded in the
 run log as well as here.
 
-### The hypothesis, pre-registered
+### The hypotheses, pre-registered
 
-Written into `config/pipeline.yaml:reversal_hunt.pre_registered_hypothesis` so it cannot
-be rewritten once the answer arrives:
+Written into `config/pipeline.yaml:reversal_hunt.pre_registered_hypotheses` so neither
+can be rewritten once the answer arrives:
 
-> A fall with an identified, dated, **unfinished** pipeline of further bad news
-> continues. A fall whose cause is **complete and dated** does not.
+> **Leg 2.** A fall with an identified, dated, **unfinished** pipeline of further bad
+> news continues. A fall whose cause is **complete and dated** does not.
+>
+> **Leg 1.** An overshoot pays only where a **named mechanism** closes the gap inside the
+> window. An overshoot without one does not.
 
 The hunter supplies `pipeline.news_flow_balance` (−100…+100 on the forward flow alone)
 and `cause.seller_is_finished_pct` (0…100 on whether the selling pressure is spent).
@@ -349,6 +375,7 @@ is the cheapest proxy for it and it is the strongest conditional on the page.
 - `lean_vs_free_control_rho` sits near 1.0, meaning the baseline's own lean is the free
   control wearing another name. That is the stage J failure mode and it is a defect.
 - `news_flow_balance` and `seller_is_finished_pct` show no separation.
+- Neither leg ranks, and the two do not separate from each other.
 
 Any of those, and the honest outcome is to write it down and stop.
 

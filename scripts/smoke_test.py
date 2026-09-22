@@ -1179,17 +1179,31 @@ def main():
           cfg["reversal_hunt"]["hunters_per_name"] == 1)
     check("stage R uses the same turnover floor as the other stages",
           cfg["reversal_hunt"]["min_dollar_volume_usd"] == 200000)
-    check("the hypothesis is pre-registered in config, not in prose",
-          cfg["reversal_hunt"]["pre_registered_hypothesis"]
-          == "unfinished_pipeline_continues_finished_cause_does_not")
+    check("both hypotheses are pre-registered in config, not in prose",
+          cfg["reversal_hunt"]["pre_registered_hypotheses"] == [
+              "unfinished_pipeline_continues_finished_cause_does_not",
+              "overshoot_pays_only_with_a_mechanism_in_window"])
+    check("the window is pinned in config",
+          cfg["reversal_hunt"]["window"]
+          == "close_of_drop_day_to_close_of_next_session")
     check("the reversal hunter keeps the pre_lessons control",
           '"pre_lessons"' in rev_agent and "lessons_applied" in rev_agent)
-    check("the reversal hunter asks the FORWARD question, not 'did it overshoot'",
-          "more bad news coming" in rev_agent
-          and "news_flow_balance" in rev_agent
-          # phrase chosen to sit on one line: the brief is hard-wrapped, so a longer
-          # quote matches nothing the day someone reflows a paragraph
-          and "A second shoe is a filing with a date" in rev_agent)
+    # THE TWO LEGS. v1 asked only about the overshoot, v2 only about what comes next,
+    # and v3 asks both inside one short window. The assertions are phrased so that
+    # dropping either leg fails, because each earlier version passed the other's test.
+    check("the reversal hunter asks BOTH legs",
+          "Leg 1 — repricing" in rev_agent and "Leg 2 — new information" in rev_agent
+          and "overshoot_pct" in rev_agent and "more_to_come_pct" in rev_agent)
+    check("both legs are bounded to the same short window",
+          "very short term" in rev_agent
+          and "Anything dated after the next close is real" in rev_agent)
+    # The rule that makes leg 1 answerable at all. Without it "the market over-reacted"
+    # is an opinion and this stage is back to v1.
+    check("an overshoot needs a mechanism inside the window",
+          "mechanism_in_window" in rev_agent
+          and "is an opinion and it is unfalsifiable inside a day" in rev_agent)
+    check("every finding declares which leg it belongs to",
+          '"leg": "repricing | new_information"' in rev_agent)
     check("the reversal hunter must name a cause with evidence",
           '"cause"' in rev_agent and "seller_is_finished_pct" in rev_agent)
     check("the reversal hunter carries the MEASURED source table",
