@@ -1436,6 +1436,67 @@ context ran both hunts and had read `LESSONS.md` first, so the freeze is equal t
 emitted set by construction. `impact_sum_pre_local` is a real freeze and a two-name
 delta is still noise.
 
+**Four more defects came out of the 2026-09-23 run and all four are fixed (2026-09-22).
+Every one of them returned a plausible answer instead of an error.** That is the class
+this repo keeps paying for, and three of the four would have corrupted a measurement
+rather than stopping it.
+
+- **Italy could kill a name that DID report.** eMarket STORAGE is Borsa Italiana's
+  appointed storage mechanism but it is **not universal across Italian issuers**:
+  PHILOGEN is absent from its `azienda` dropdown, and `eu_archive.day('it', d)` on three
+  dates it is known to have filed (2025-09-23, 2026-03-27, 2026-08-17) returned 33, 99
+  and 24 rows with no Philogen row on any. The archive read cleanly every time, and
+  Italy joins on a company name, so `confirm()` fell through to "the source was read and
+  this issuer is not in it" and returned **False** — the TRT mistake inverted. It now
+  returns `None` for Italy, `CAPABILITY["it"]` carries `universal: False`, and
+  `false_reachable()` requires it. **`universal` defaults to True**, so a market nobody
+  has measured is not silently exempted from kills. Two exchange-side substitutes
+  answered first try and are named in the return note:
+  `borsaitaliana.it/azioni/documenti/calendariobilancidividendi/CDA_today.pdf` and the
+  per-ISIN news list.
+- **No PDF number could be read where the issuer used a subset font.**
+  `eu_pdftext.py` read only `(literal)` strings, so headline euro figures emitted as
+  `<hex>` came back blank inside fluent prose — *"Net Profit for the period of ___
+  thousand"* — and reported success. It now resolves **each font's** ToUnicode CMap via
+  `/Font << /F1 N 0 R >>` and tracks the active font through `Tf`. Merging every CMap
+  into one table is the obvious shortcut and it is **wrong**: subset fonts renumber from
+  1, so codes collide and text corrupts silently — a real AMF filing rendered
+  "Relations" as "ReelatilWoWns". Per-font, the same filing reads as quotable French.
+  Literal strings are mapped too when the active font covers them, which is what fixed
+  it.
+- **France could start killing names on a vendor field rename.** The AMF flux answers a
+  `where=` on a field that does not exist with **HTTP 200, `results: []` and
+  `total_count: null`** — verified. An empty list is the one answer that can support
+  `event_occurred: false`. `fr_day()` now returns `None` unless `total_count` is an
+  integer. The field names are not guessable: **`uin_dat_amf`** is the timestamp and
+  **`identificationsociete_iso_cd_isi`** the ISIN.
+- **An estimated reaction history was paid like an observed one.** It is not thinner
+  evidence, it is **biased** evidence: on the nine names of 2026-09-23 the six
+  `observed_rns` histories ran 2.61–10.50% median absolute move against **1.82–2.09%**
+  for the three `estimated_from_cadence` ones, because a cadence date mostly lands on an
+  ordinary session and samples ordinary-session volatility. On KWS **one of eight**
+  estimated dates was a real print day, and two hunters in two markets reported it
+  independently. `anchor_quality.magnitude` is now **0.35** rather than 0.5 for an
+  estimated basis, `history.scale_is_lower_bound` says so to the hunter, and
+  `eu_resolve.py` reports **`by_history_basis`**. **No correction factor was fitted** —
+  nine names is not a hypothesis, the same rule that froze `w1`.
+
+**And the free control has a blind spot that the 5-day fix cannot cover, so a third
+window is sealed.** `run_up_20d_pct` and `run_up_5d_pct` both read flat on a move that
+is **older** than twenty sessions: W7L went into its 2026-09-23 print at +0.24% and
+−0.67% having risen **21.5% off its 20 July low**. Stage J sealed `run_up_5d_pct` for the
+mirror case — a move *newer* than twenty days — so a shorter window cannot catch this one
+and did not. **`run_up_60d_pct` is sealed beside them since 2026-09-22 and ranked as its
+own control** (`spearman_free_control_neg_runup_60d`), and it is **deliberately NOT
+folded into `priced_lean_pct`**, for the reason the 5-day one is not: the run-up is the
+benchmark every ranker is measured against, and a lean built out of it cannot beat it.
+It is not redundant — on a fresh seal W7L reads +7.95% at 60 days, and BOKU reads +7.86%
+at 20 days against **−17.67%** at 60.
+
+Nothing above touches the ranking key. `impact_sum` is the sum of the hunters' sizes and
+`baseline_quality` reaches `diagnostics` only — verified by rescoring the 2026-09-23
+European run (9 of 9 rows identical) and the 2026-09-10 US run (17 of 17).
+
 **Three defects came out of that run and all three are fixed.** `eu_resolve.py` would
 have **killed names that had not reported yet** — resolving a forward run read the day
 archives for a date that has not happened, found nothing from the issuer and wrote
