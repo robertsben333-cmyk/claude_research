@@ -44,7 +44,7 @@ material below is kept because the live stages reference it, not because it runs
 | CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | AU | `researcher-australia-hunt` | 08:30 | **Stage AU — the Australia researcher.** Same question, ASX, research only, no orders. One English hunting pass and no local-language pass, deliberately. `trig_01Qy7FjBpjY4dEGcZsYGnpt3`, cron `30 6 * * 0-4` = 06:30 UTC **Sunday to Thursday**, after the 16:00 Sydney close. Seals for the NEXT session, because 91% of ASX results land before the open, so the fire that seals for Monday is the Sunday one |
-| R | `researcher-reversal-hunt` | 23:30 | **Stage R — the reversal researcher.** Not an earnings stage: yesterday's biggest US losers, and whether each keeps falling or bounces, over the next session only. Research only, no orders. `trig_012Dt6bbiL4dJp9r4bpJtWME`, cron `30 21 * * 1-5` = 21:30 UTC, **after the US close**, because the fall it seals is the last completed session and daily bars are not final before then. The Friday fire seals for Monday. Created by a session on 2026-09-22, so `update_trigger` works on it |
+| R | `researcher-reversal-hunt` | 21:00 | **Stage R — the reversal researcher.** Not an earnings stage: TODAY's biggest US losers, screened while the session is still open, and whether each keeps falling or bounces over the next session. Research only, no orders. `trig_012Dt6bbiL4dJp9r4bpJtWME`, cron `0 19 * * 1-5` = 19:00 UTC = **15:00 New York, one hour BEFORE the close**, on the operator's instruction, so the names can still be bought today. **Must move to `0 20 * * 1-5` on or after 2026-11-02**, when the US DST change would otherwise leave it at 14:00 ET. Created by a session, so `update_trigger` works on it |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 **`list_triggers` IS SCOPED TO THE CALLING ACCOUNT, AND STAGE E IS ON A DIFFERENT ONE.**
@@ -1299,11 +1299,35 @@ makes a historical validation possible at all. **Nothing has resolved in phase 1
 number in `researcher_reversal/README.md` is evidence about the hunt** — it is evidence
 about the market the hunt is being pointed at.
 
-**Its Routine exists since 2026-09-22 on the operator's instruction:
-`trig_012Dt6bbiL4dJp9r4bpJtWME`, cron `30 21 * * 1-5`, enabled, fresh session per fire.**
-It must fire AFTER the US close, because the fall it seals is the last completed session
-and daily bars are not final before then; the Friday fire seals for Monday. It was
-created by a session, so `update_trigger` works on it and
+**Its Routine exists since 2026-09-22: `trig_012Dt6bbiL4dJp9r4bpJtWME`, enabled, fresh
+session per fire — and it fires an hour BEFORE the US close, not after it.** Created at
+`30 21 * * 1-5` and moved the same day to **`0 19 * * 1-5` = 19:00 UTC = 21:00 Amsterdam
+= 15:00 New York**, on the operator's instruction, so the names it ranks can still be
+bought on the day they fell. A note published after the close cannot be acted on until
+the next morning, and phase 0 measured the next open at **+0.93%** — the worst moment of
+the whole window to put a short on.
+
+**IT MUST MOVE TO `0 20 * * 1-5` ON OR AFTER 2026-11-02.** Amsterdam and New York change
+clocks on different weekends: 19:00 UTC is 15:00 ET until 1 November and **14:00 ET**
+after it, two hours before the close and outside the hour this was measured on. The
+one-week gap (26 Oct – 1 Nov) leaves ET right and Amsterdam an hour early, which is the
+harmless half. **Anchor on ET, never on the cron string or the Amsterdam time.**
+
+**THE COST OF SCREENING AN HOUR EARLY WAS MEASURED BEFORE THE CLOCK MOVED**, because
+phase 0's entire base-rate table is CLOSE-to-close and an intraday screen is a different
+population. `rev_intraday.py`, 45 sessions of 15-minute bars
+(`researcher_reversal/analysis/intraday-cut.json`): **86.4% of the worst 15 at 15:00 ET
+are still the worst 15 at the close** (mean 12.96, never fewer than 11 of 15), and the
+15:00-to-close move on those names is a coin flip — **mean −0.24%, median 0.00%, sd
+4.54%, 49.8% falling further**. So about two names of fifteen swap out, and the early
+entry is near-free in expectation and slightly favours the short side. What it does NOT
+buy is a free pass on phase 0: the note must not quote those base rates as though the two
+populations were identical. **The scored window is unchanged** — today's close to the
+next close — and `rev_universe.py --intraday` seals the live screen price as `spot`
+because that is what can be traded, alongside `screen_time_et` and
+`bars_are_final: false`. It refuses outside 13:30–16:05 ET.
+
+It was created by a session, so `update_trigger` works on it and
 `researcher_reversal/routine-prompts/reversal-hunt.md` must move in the same commit as
 any re-paste — that file carries the pasted text.
 

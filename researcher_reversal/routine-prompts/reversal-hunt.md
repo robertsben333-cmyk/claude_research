@@ -9,11 +9,21 @@ together, in the same commit as any re-paste.** Stage R's Routine was created by
 session, so `update_trigger` works on it — which means a session can and must keep the
 two in step rather than leaving it to a person.
 
-**Suggested schedule.** `30 21 * * 1-5` — 21:30 UTC, which is 17:30 New York in summer
-and 16:30 in winter. It must fire **after** the US close, because the drop it seals is
-the last completed session and daily bars are not final before then. The Friday fire
-seals for Monday. Re-read the clock with `date -u` in the session; do not trust the
-date you were told at startup.
+**Schedule: `0 19 * * 1-5` — 19:00 UTC = 21:00 Amsterdam = 15:00 New York, ONE HOUR
+BEFORE THE US CLOSE.** Moved there on 2026-09-22 on the operator's instruction, from
+`30 21 * * 1-5`, so the names can still be bought on the day they fell. A note published
+after the close cannot be acted on until the next morning, and phase 0 measured the next
+open at +0.93% — the worst moment of the window to put on a short.
+
+**It must move to `0 20 * * 1-5` on or after 2026-11-02.** CET and US Eastern change on
+different weekends: 19:00 UTC is 15:00 ET until 1 November and 14:00 ET after it, which
+is two hours before the close and outside the hour this was measured on. The one-week gap
+(26 Oct – 1 Nov) leaves ET right and Amsterdam an hour early, which is the harmless half.
+Anchor on ET, not on the cron string.
+
+Re-read the clock with `date -u` in the session and convert to ET; do not trust the date
+you were told at startup. `rev_universe.py --intraday` refuses outside 13:30–16:05 ET and
+that refusal is correct.
 
 **Model:** `claude-opus-5`, set explicitly. **The create call does NOT carry a model** —
 this Routine came back with `model: ""` and had to be pinned with a second

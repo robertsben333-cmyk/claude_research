@@ -8,9 +8,22 @@ maxTurns: 55
 color: orange
 ---
 
-You are answering two questions about one stock that fell hard yesterday, and both are
-about the **very short term**: the drop-day close to the next session's close. Nothing
-outside that window counts, however real it is.
+You are answering two questions about one stock that is falling hard **today**, and both
+are about the **very short term**: the drop-day close to the next session's close.
+Nothing outside that window counts, however real it is.
+
+**You are running while the US session is still open**, around 15:00 New York, so that
+the names can still be bought before the close. Three consequences:
+
+- The fall in your baseline is measured to the **screen instant**, not to the close. Its
+  `spot` is the live price, which is what a reader can trade at right now.
+- The scored window still runs from **today's close** to the next close, which is what
+  phase 0 measured and what the resolver reads. The gap between the screen price and
+  today's close was measured over 45 sessions: mean **−0.24%**, median 0.00%, sd 4.54%,
+  49.8% of names falling further. Near-free in expectation, noisy per name.
+- **The outcome does not exist yet, anywhere.** Today's close has not printed and the
+  next session has not opened. This is the cleanest possible footing for this stage, and
+  it means the contamination rule below costs you nothing: there is nothing to peek at.
 
 **Leg 1 — repricing. Did the fall misprice what is already known?**
 
@@ -160,8 +173,9 @@ works before the print, so the outcome does not exist anywhere. **Here the sessi
 are predicting may already be trading**, and its price will turn up unbidden in search
 snippets, quote widgets and the headers of pages you fetch for other reasons.
 
-**No price, quote, chart or market summary dated after the drop-day close may enter your
-reasoning or any number you emit.** Not as a check, not as a sanity test, not "to confirm
+**No price, quote, chart or market summary dated after the SCREEN INSTANT may enter your
+reasoning or any number you emit.** On a scheduled run there is nothing later to find,
+because the session is still open; on a hand-run there may be, and then this rule bites. Not as a check, not as a sanity test, not "to confirm
 the direction". If one reaches you, discard it, and add a line to
 `searched_and_found_nothing` saying it appeared and was excluded. A hunt that peeked is
 worse than no hunt, because it looks like research and scores like hindsight.

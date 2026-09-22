@@ -36,6 +36,7 @@ import json
 import sys
 import time
 from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -54,6 +55,11 @@ except Exception:                                                 # noqa: BLE001
 DV_FLOOR = 200_000.0
 PRICE_FLOOR = 1.00
 CANDIDATES = 200          # deepest the screener pre-rank is trusted to go
+ET = ZoneInfo("America/New_York")
+# The intraday screen is only meaningful in the last part of the session: early enough
+# that the position can still go on, late enough that the day's fall is mostly made.
+# 21:00 CET is 15:00 ET, which is the hour this was measured on.
+CUT_OPEN_ET, CUT_CLOSE_ET = (13, 30), (16, 5)
 
 
 def last_session(bars_spy):
@@ -68,6 +74,12 @@ def main():
     ap.add_argument("--dv", type=float, default=DV_FLOOR)
     ap.add_argument("--price", type=float, default=PRICE_FLOOR)
     ap.add_argument("--candidates", type=int, default=CANDIDATES)
+    ap.add_argument("--intraday", action="store_true",
+                    help="screen TODAY's incomplete session off the live partial bar, "
+                         "so the names can still be bought before the close. Measured "
+                         "cost against the close screen: 86.4%% of the worst 15 survive "
+                         "to the close and the last hour is a coin flip "
+                         "(researcher_reversal/analysis/intraday-cut.json)")
     ap.add_argument("--from-drops", metavar="DIR",
                     help="rebuild a PAST session from rev_harvest.py's drops.jsonl.gz "
                          "instead of the live screener. The screener's percent change "
@@ -77,7 +89,25 @@ def main():
     a = ap.parse_args()
 
     spy = M.bars("SPY", rg="1mo")
-    drop_date = a.date or last_session(spy)
+    now_et = datetime.now(ET)
+    if a.intraday:
+        # Yahoo's daily chart carries TODAY as a partial bar whose close is the live
+        # price, so the same code path screens an unfinished session. What it must not
+        # do is pretend the bar is final.
+        drop_date = a.date or now_et.date().isoformat()
+        hhmm = (now_et.hour, now_et.minute)
+        if not (CUT_OPEN_ET <= hhmm <= CUT_CLOSE_ET) and not a.date:
+            print(f"intraday screen refused at {now_et:%H:%M} ET: the window is "
+                  f"{CUT_OPEN_ET[0]:02d}:{CUT_OPEN_ET[1]:02d}-"
+                  f"{CUT_CLOSE_ET[0]:02d}:{CUT_CLOSE_ET[1]:02d} ET. Before it the day's "
+                  f"fall is not made yet; after it, screen the completed session "
+                  f"instead of a partial bar.", file=sys.stderr)
+            return 2
+        if now_et.weekday() >= 5 and not a.date:
+            print("intraday screen refused: US market shut", file=sys.stderr)
+            return 2
+    else:
+        drop_date = a.date or last_session(spy)
     if not drop_date:
         print("cannot establish the last completed session", file=sys.stderr)
         return 2
@@ -190,6 +220,18 @@ def main():
         "next_session": nxt,
         "predicted_window": "close of drop_date -> close of next_session",
         "spy_ret_d_pct": spy_ret,
+        "screen_basis": ("live partial bar, session still open" if a.intraday
+                         else "completed session, final daily bars"),
+        "screen_time_et": now_et.strftime("%Y-%m-%d %H:%M %Z"),
+        "bars_are_final": not a.intraday,
+        "intraday_caveat": (
+            "The fall is measured to the screen instant, not to the close. Measured "
+            "over 45 sessions: 86.4% of the worst 15 at 15:00 ET are still the worst 15 "
+            "at the close (min 11 of 15), and the 15:00-to-close move on those names is "
+            "a coin flip -- mean -0.24%, median 0.00%, sd 4.54%, 49.8% falling further. "
+            "So the screen is cheap and the entry is near-free in expectation, but "
+            "phase 0's base rates are CLOSE-to-close and this is not."
+            if a.intraday else None),
         "screen": {"candidates_pre_ranked": len(pre),
                    "dv_med20_min": a.dv, "price_min": a.price,
                    "worst_per_session": a.k,

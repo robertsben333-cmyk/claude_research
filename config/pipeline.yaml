@@ -977,6 +977,15 @@ reversal_hunt:
   # two legs SEPARATELY -- which leg carries the result is the most useful thing this
   # stage can learn in its first month, and it cannot be learned if they are pooled.
   window: close_of_drop_day_to_close_of_next_session
+  # THE SCREEN INSTANT IS NOT THE WINDOW'S START, and the two must not be conflated.
+  # The Routine fires at 15:00 ET so the names can still be bought before the close; the
+  # scored window still runs close(D) -> close(D+1), which is what phase 0 measured.
+  # Measured cost of screening an hour early, 45 sessions of 15-minute bars
+  # (researcher_reversal/analysis/intraday-cut.json): 86.4% of the worst 15 at 15:00 are
+  # still the worst 15 at the close, never fewer than 11 of 15; and the 15:00-to-close
+  # move on those names is mean -0.24%, median 0.00%, sd 4.54%, 49.8% falling further.
+  screen_instant_et: "15:00"
+  screen_window_et: ["13:30", "16:05"]
   pre_registered_hypotheses:
     # Leg 2. A fall with an identified, dated, UNFINISHED pipeline of further bad news
     # continues; one whose cause is complete and dated does not. Carried by

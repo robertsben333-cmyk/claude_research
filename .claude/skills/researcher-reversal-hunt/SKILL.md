@@ -60,6 +60,37 @@ you run the day:
 So the note must never present a positive number as "the market over-reacted, expect a
 bounce" without saying what it is fighting.
 
+## The clock, and why it is an hour before the close
+
+**The Routine fires at 21:00 Amsterdam, which is 15:00 New York — one hour before the US
+close.** That is deliberate and it is the whole point of the schedule: a prediction
+published after the close cannot be acted on until the next morning, and phase 0 measured
+the next open at **+0.93%**, which is the worst moment of the whole window to put on a
+short. Firing at 15:00 ET lets the reader trade the names in the last hour of the day the
+fall happened.
+
+**What that costs was measured before the clock moved**
+(`researcher_reversal/analysis/intraday-cut.json`, 45 sessions, 15-minute bars):
+
+| | |
+| --- | --- |
+| Worst 15 at 15:00 still in the worst 15 at the close | **86.4%** (mean 12.96 of 15, never below 11) |
+| 15:00 → close move on those names | mean **−0.24%**, median 0.00%, sd 4.54%, 49.8% fall further |
+
+So about two names of fifteen swap out by the close, and the entry an hour early is a
+coin flip worth about a quarter point in expectation — in the direction that slightly
+helps a short. **What it does not buy is a free pass on phase 0**: those base rates are
+CLOSE-to-close, and the screen is not, so the note must not quote them as if the two
+populations were identical.
+
+**The window that is scored is unchanged:** today's close to the next session's close.
+The baseline seals the live screen price as `spot` because that is what can be traded,
+and `rev_universe.py` records `screen_time_et`, `bars_are_final: false` and the caveat
+above in the universe file.
+
+**The screen refuses outside 13:30–16:05 ET.** Before that the day's fall is not made
+yet; after it, the session is over and the completed-session path is the right one.
+
 ## Steps
 
 Resolve paths with `python3 scripts/run_paths.py --json`. Re-read the clock with
@@ -80,8 +111,11 @@ a session killed on its first subagent.
 **1. Universe.** The worst fallers of the last completed session.
 
 ```bash
-python3 researcher_reversal/scripts/rev_universe.py --k 15 -o <RUN>/universe.json
+python3 researcher_reversal/scripts/rev_universe.py --intraday --k 15 -o <RUN>/universe.json
 ```
+
+`--intraday` screens TODAY's open session off the live partial bar. Drop it only when
+running after the close on a completed session, and say which you did in the run log.
 
 Read `counts` and `market_concentration` before going on. A day where one sector is more
 than half the names is **one bet, not fifteen**, and the note has to say so — a sector
