@@ -162,3 +162,12 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-09-22 19:05 UTC
 - Fired 19:05 UTC = 15:05 ET, inside 13:30–16:05 ET. Plan: rev_universe --intraday --k 15 for 2026-09-22, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-09-21, note before 16:00 ET.
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-09-22 19:13 UTC
+- Screen: rev_universe --intraday at 15:05 ET, 6009 screened, 84 passed floors, 15 hunted; largest sector Consumer Discretionary 27% (no concentration warning); SPY +0.04% at screen.
+- All 15 baselines sealed before any hunter; none no_bars/too_little_history. 15 reversal-hunters ran (8-concurrent cap: 8 then 7 queued as slots freed). Nothing shed.
+- Scored with researcher_us/scripts/edge_score.py unchanged: 1 of 15 above floor 3.0 — NUR −4.00 (leg 2, supply; no repricing findings). No leg-1 finding with mechanism_in_window on any name; overshoot_pct 0 on all 15.
+- Resolve of 2026-09-21: PENDING, correctly — its window closes at today's close. DEFECT FOUND AND FIXED: rev_resolve.py was scoring d1 off today's still-open partial daily bar (reported SCTX +2.8%, CUE −1.0% at 15:10 ET as if final). It now drops a bar dated today before 16:30 ET, and book_block no longer crashes when every row is pending. lean_vs_free_control_rho and rho vs neg_atr14: n/a (nothing resolved).
+- Baseline caveats: NFE's run-ups/volume spike/ATR straddle the 1-for-50 reverse split of 2026-09-11 (artefacts, flagged by its hunter). spot_basis text in rev_priced_in.py still says 'unadjusted close of the drop day' on an intraday seal — label defect, not fixed today. CMPX baseline shows intraday_pct exactly 0.0 (whole fall as gap) — plausible, unverified.
+- EVER: finding sum +0.5 but hunter expected_move −0.8 (opposite sign); only the sum is ranked. No constant moved. No orders; no execution path exists.
