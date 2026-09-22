@@ -247,18 +247,28 @@ thing and must not be mixed.
 fetched page.** `.github/workflows/dashboard.yml` — the first workflow in this repo —
 runs the same `./dashboard/update.sh`, commits `dashboard/` back to `main` and publishes
 the page to GitHub Pages at <https://robertsben333-cmyk.github.io/claude_research/> —
-**which needs one switch in Settings → Pages, and has never been flipped**. Two routes
-exist and only one of them is free of the refusal. *GitHub Actions* is what the workflow
-assumes, and `configure-pages` is refused when it must CREATE the site — with
-`continue-on-error` set it then reports `conclusion: success` while `outcome` is failure,
-so the upload and the deploy skip in silence and the run is green. Confirmed on the
-2026-09-22 13:49 UTC run, whose "Pages is off" branch fired while the step showed success.
-*Deploy from a branch* (`main`, `/ (root)`) asks nothing of `GITHUB_TOKEN`, and **`index.html`
-at the repository root exists for it since 2026-09-22**: a redirect to
-`dashboard/dashboard.html` that carries `location.hash` and `location.search` across, so a
-deep link like `#eu/deelmarkt` survives it, plus `.nojekyll`. It is deliberately NOT a copy
-of the dashboard — one generated page, one place. Until somebody flips either switch the
-workflow rebuilds and commits as normal and publishes nothing. It
+**and it is LIVE since 2026-09-22 14:11 UTC**, on Source = *GitHub Actions*. The site is
+the dashboard itself: the workflow copies `dashboard.html` to `_site/index.html`, so the
+page is at the ROOT of that URL and `…/dashboard/dashboard.html` is a 404 there. Every tab
+address works on it (`…/claude_research/#eu/deelmarkt`).
+
+**It was off for days and the failure was silent, which is the part to remember.**
+`configure-pages` is refused when it has to CREATE the site, and `continue-on-error` then
+reports `conclusion: success` while `outcome` is failure — so the upload and the deploy
+skipped and the run went green. The 13:49 UTC run of that day is the worked example: its
+"Pages is off" branch fired while the step itself showed success. **The tell is step 9.**
+If `Run echo "Pages is off…"` executes, publishing is not happening whatever the run's
+colour says; if it is SKIPPED and the `deploy` job runs, the site is live. Verified at
+14:11 UTC: configure-pages success, step 9 skipped, upload success, deploy success, and
+the served bytes are the current build (`c44129d`).
+
+The switch can only be flipped by a person in Settings → Pages; nothing in this repo can
+do it, and `enablement: true` on the action does not substitute for it. **`index.html` at
+the repository root is the other route and is currently unused**: a redirect to
+`dashboard/dashboard.html` carrying `location.hash` and `location.search`, plus
+`.nojekyll`, for Source = *Deploy from a branch* (`main`, `/ (root)`), which asks nothing
+of `GITHUB_TOKEN`. It is deliberately NOT a copy of the dashboard — one generated page, one
+place — and it is served by that route only, so it costs nothing where it sits. It
 fires at 11:40 and 21:40 UTC on weekdays, on a push touching `research/` or the scripts,
 and on demand. The page's own button now knows which of the two worlds it is in: a local
 rebuilder on `127.0.0.1:8765` (**live**) or the workflow (**CI**), and on a fetched page

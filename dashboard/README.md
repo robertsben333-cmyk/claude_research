@@ -56,19 +56,23 @@ mixing them is how you get a number that flatters the stage.
 ./dashboard/update.sh --serve    # and serve it, so the page's own button works
 ```
 
-**Two ways Pages can serve this, and only one of them works today.** The workflow builds
-`_site/index.html` as a copy of the dashboard and publishes it — that is **Source = GitHub
-Actions**, and it is what `.github/workflows/dashboard.yml` assumes. It has never
-published: `configure-pages` is refused when it has to *create* the site, and because the
-step carries `continue-on-error` it reports `conclusion: success` with `outcome: failure`,
-so the upload and the deploy are skipped in silence. The second route asks nothing of
-`GITHUB_TOKEN`: **Source = Deploy from a branch, `main`, `/ (root)`**, where GitHub serves
-the branch as it stands. `index.html` at the repository root is the front door for that
-route — a redirect to `dashboard/dashboard.html`, not a second copy of it — and it carries
-`location.hash` and `location.search` across, so `…/#eu/deelmarkt` still lands on that tab.
-`.nojekyll` sits beside it so the branch is served as files rather than run through Jekyll.
-Either way a person has to flip the switch once in Settings → Pages; nothing in this repo
-can do it.
+**The published page is live since 2026-09-22 14:11 UTC**, on Source = *GitHub Actions*.
+The workflow copies `dashboard.html` to `_site/index.html`, so the dashboard is at the
+ROOT of <https://robertsben333-cmyk.github.io/claude_research/> and `…/dashboard/dashboard.html`
+is a 404 there. Tab addresses work on it.
+
+**How to tell whether it is really publishing**, because the failure mode is silent:
+`configure-pages` is refused when it has to *create* the site, and `continue-on-error`
+makes it report `conclusion: success` with `outcome: failure`, so the upload and the deploy
+skip and the run still goes green. **Read step 9.** If `Run echo "Pages is off…"` executed,
+nothing was published; if it was skipped and the `deploy` job ran, the site is current.
+
+The switch is a person's, in Settings → Pages — `enablement: true` on the action does not
+substitute for it. The other route, **Deploy from a branch (`main`, `/ (root)`)**, asks
+nothing of `GITHUB_TOKEN`; `index.html` at the repository root is its front door, a
+redirect to `dashboard/dashboard.html` carrying `location.hash` and `location.search`, with
+`.nojekyll` beside it. It is not a second copy of the dashboard, and under the Actions
+route it is simply not served.
 
 **The refresh button in the page, including from a file.** A `file://` page may not run
 a script — a browser rule, not a setting — but it may talk to a server that is already
