@@ -937,6 +937,148 @@ def main():
           rows and rows[0][0] == "A" and rows[0][4] == "B" and len(rows[0]) == 5,
           repr(rows))
 
+    # ---------------------------------------------------------------- stage AU
+    print("\nStage AU — Australia")
+    sys.path.insert(0, os.path.join(REPO, "researcher_australia", "scripts"))
+    import au_market as am                                          # noqa: E402
+    import au_priced_in as api                                      # noqa: E402
+    import au_positioning as apos                                   # noqa: E402
+
+    # THE ONE-DAY SHIFT. The vendor stamps the UTC instant and Sydney is ten or eleven
+    # hours ahead, so 85% of Australian rows sit one Sydney day later than the vendor
+    # says. This is the defect most likely to produce a plausible wrong answer: it does
+    # not throw, it hunts a name whose print was yesterday.
+    import datetime as _dt                                          # noqa: E402
+    midnight = int(_dt.datetime(2026, 8, 17, 0, 0, tzinfo=am.UTC).timestamp())
+    d, _ = am.sydney_event_date(midnight, "bmo")
+    check("a bare UTC midnight on a bmo row moves to the next Sydney day",
+          d.isoformat() == "2026-08-18", d)
+    d, _ = am.sydney_event_date(midnight, "amc")
+    check("a bare UTC midnight on an amc row keeps its date",
+          d.isoformat() == "2026-08-17", d)
+    # BHP lodged its Appendix 4E at 08:31 on 18 August Sydney time.
+    bhp = int(_dt.datetime(2026, 8, 17, 22, 31, tzinfo=am.UTC).timestamp())
+    d, basis = am.sydney_event_date(bhp, "bmo")
+    check("a real pre-open instant converts to the Sydney date, not vendor + 1",
+          d.isoformat() == "2026-08-18" and "Sydney" in basis, f"{d} {basis}")
+    # And it survives the daylight-saving change on 2026-10-04, which a constant +1
+    # would not: 22:31 UTC is 09:31 AEDT the next day, still pre-open.
+    dst = int(_dt.datetime(2026, 10, 15, 22, 31, tzinfo=am.UTC).timestamp())
+    d, _ = am.sydney_event_date(dst, "bmo")
+    check("the shift survives the AEDT changeover", d.isoformat() == "2026-10-16", d)
+    check("a missing vendor date returns None rather than today",
+          am.sydney_event_date(None, "bmo")[0] is None)
+
+    # The window. A bmo print is close(D-1) -> close(D); an amc print is the US shape.
+    w = am.window_for("bmo", _dt.date(2026, 9, 23), [_dt.date(2026, 9, 22),
+                                                     _dt.date(2026, 9, 23),
+                                                     _dt.date(2026, 9, 24)])
+    check("a bmo window ends on the event date, not after it",
+          w["from_close"] == "2026-09-22" and w["to_close"] == "2026-09-23", w)
+    w = am.window_for("amc", _dt.date(2026, 9, 23), [_dt.date(2026, 9, 22),
+                                                     _dt.date(2026, 9, 23),
+                                                     _dt.date(2026, 9, 24)])
+    check("an amc window starts on the event date",
+          w["from_close"] == "2026-09-23" and w["to_close"] == "2026-09-24", w)
+
+    # THE HOLIDAY CALENDAR. `trading_days()` only knows the PAST -- the tape can say a
+    # session happened, never that a future one will -- and this stage always seals for
+    # a date beyond the tape. Without a holiday rule the fallback read "weekday means
+    # open", so an ASX holiday Monday would have come back as a quiet session, which is
+    # the two-causes-look-identical failure that jp_universe.market_closed exists for.
+    # The Routine fires on Sundays, so a holiday Monday is not a corner case.
+    check("Easter is computed correctly",
+          [am.easter(y).isoformat() for y in (2026, 2027, 2028)]
+          == ["2026-04-05", "2027-03-28", "2028-04-16"])
+    h2026, h2027, h2028 = (am.exchange_holidays(y) for y in (2026, 2027, 2028))
+    check("Good Friday and Easter Monday are ASX holidays",
+          h2027.get(_dt.date(2027, 3, 26)) == "Good Friday"
+          and h2027.get(_dt.date(2027, 3, 29)) == "Easter Monday")
+    # Christmas 2027 is a Saturday and Boxing Day a Sunday; both want the Monday. The
+    # dict-literal version silently overwrote Christmas and the year came back with two
+    # Boxing Days -- right dates, wrong names.
+    check("a Christmas/Boxing collision keeps both names and both days",
+          h2027.get(_dt.date(2027, 12, 27)) == "Christmas Day"
+          and h2027.get(_dt.date(2027, 12, 28)) == "Boxing Day")
+    check("Boxing Day 2026 moves to the Monday",
+          h2026.get(_dt.date(2026, 12, 28)) == "Boxing Day")
+    # ANZAC Day is not substituted when it falls on a weekend, unlike the others.
+    check("ANZAC Day is dropped on a weekend and kept on a weekday",
+          _dt.date(2026, 4, 25) not in h2026
+          and h2028.get(_dt.date(2028, 4, 25)) == "ANZAC Day")
+    check("market_open_on names which instrument answered",
+          am.market_open_on(_dt.date(2027, 12, 27), [])[1].startswith("ASX holiday")
+          and am.market_open_on(_dt.date(2027, 9, 26), [])[1] == "weekend"
+          and am.market_open_on(_dt.date(2027, 9, 23), [])[0] is None)
+
+    # THREE CLASSES, NOT ONE. A 4D/4E is a profit result; a 4C/5B is a cash-flow report
+    # with a completely different bar; a notice of a results date is neither. Each of
+    # the False rows below was a real false positive in the 2026-09-22 build: Myer's
+    # "FY24 Results Release Date" scored as a -3.53% reaction, TUA's two "Details"
+    # notices as -2.09% and +0.32%, and an S&P index rebalance as -4.88%.
+    for head, want in (
+            ("BHP Appendix 4E and 2026 Annual Report", "results"),
+            ("Appendix 4D and Interim Financial Report", "results"),
+            ("2026 Full Year Results Presentation", "results"),
+            ("June 2026 Quarterly Report", "quarterly_report"),
+            ("Appendix 4C Quarterly Cashflow Report", "quarterly_report"),
+            ("Quarterly Activities Report", "quarterly_report"),
+            ("FY24 Results Release Date", None),
+            ("HY25 Results Presentation Details", None),
+            ("Details for FY24 Full Year Results Investor Presentation", None),
+            ("S&amp;P DJI Announces September 2026 Quarterly Rebalance", None),
+            ("Notice of Annual General Meeting", None),
+            ("BHP Group Limited Appendix 4G", None),
+            ("Change of Director's Interest Notice", None)):
+        check(f"AU classifier: {head[:46]}", api.classify(head) == want,
+              f"got {api.classify(head)!r}, want {want!r}")
+
+    # ABSENCE IS A MEASURED ZERO ONLY WHEN THE FILE WAS READ. ASIC's register is not
+    # truncated at 0.5%, so an absent product really has no reported position -- but an
+    # unreadable file is missing data, and confusing the two invents a zero.
+    reg = {"BHP": {"short_pct": 1.5, "short_shares": 100, "product": "BHP"}}
+    prev = {"BHP": {"short_pct": 1.0, "short_shares": 90, "product": "BHP"}}
+    hit = apos.for_code("BHP", reg, prev, "20260916", "20260909", 4)
+    check("a listed product carries its level, change and lag",
+          hit["short_pct"] == 1.5 and hit["short_change_pct_pts"] == 0.5
+          and hit["in_register"] and hit["lag_sessions"] == 4, hit)
+    absent = apos.for_code("ZZZ", reg, prev, "20260916", "20260909", 4)
+    check("an absent product is a measured zero when the register was read",
+          absent["short_pct"] == 0.0 and absent["covered"] and not absent["in_register"])
+    broken = apos.for_code("BHP", {}, {}, None, None, None)
+    check("an unreadable register is None, never a zero",
+          broken["short_pct"] is None and not broken["covered"]
+          and "missing data" in broken["basis"], broken)
+
+    # The stage places no orders, and the skill and hunter must not acquire one.
+    au_skill = open(os.path.join(REPO, ".claude", "skills",
+                              "researcher-australia-hunt", "SKILL.md"),
+                 encoding="utf-8").read()
+    au_agent = open(os.path.join(REPO, ".claude", "agents",
+                              "unpriced-hunter-au.md"),
+                 encoding="utf-8").read()
+    check("stage AU's skill places no orders",
+          "alpaca_trade.py" not in au_skill.replace(
+              "There is no `alpaca_trade.py` step", ""))
+    # ONE ENGLISH PASS. A later edit that reintroduces pre_local would emit a
+    # structurally zero delta that somebody would pool with the German and French ones.
+    check("the AU hunter has no pre_local freeze",
+          '"pre_local"' not in au_agent and "local_pass_note" not in au_agent.replace(
+              "No `local_pass_note`.", "").replace(
+              "`local_pass_note`", "").replace("and `local_pass_note` in this", ""))
+    check("the AU hunter still carries the pre_lessons control",
+          '"pre_lessons"' in au_agent and "lessons_applied" in au_agent)
+    check("config says language_pass is off for Australia",
+          cfg["australia_hunt"]["language_pass"] is False)
+    check("config gives Australia the same turnover floor as the other stages",
+          cfg["australia_hunt"]["min_turnover_usd"] == 200000)
+    check("stage AU has no execution block",
+          "execution" not in cfg["australia_hunt"])
+    check("researcher_australia/LESSONS.md carries no rules yet",
+          "Add the first rule when" in
+          open(os.path.join(REPO, "researcher_australia", "LESSONS.md"),
+               encoding="utf-8").read())
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:

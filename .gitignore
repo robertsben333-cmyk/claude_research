@@ -18,3 +18,11 @@ backtest/captures/events/*/filings_text/
 # Price bars cached by dashboard/build_ledger.py. Pure cache:
 # delete it and the next build refetches.
 .cache/
+
+# Stage AU's ASIC short-register cache. Deliberately NOT committed, where
+# researcher_japan/analysis/short-positions-cache.json IS: JPX's window rolls, so once a
+# day drops off its index that file is the only record of it and losing it loses the
+# data. ASIC keeps 4,113 dated files back to 2010-06-16, so this cache is a convenience
+# that re-fetches on demand, and committing a file that grows 280KB every run would
+# bloat the repo for nothing.
+researcher_australia/analysis/short-positions-cache.json

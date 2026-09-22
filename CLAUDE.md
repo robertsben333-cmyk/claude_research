@@ -42,6 +42,7 @@ material below is kept because the live stages reference it, not because it runs
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
+| AU | `researcher-australia-hunt` | 08:30 | **Stage AU — the Australia researcher.** Same question, ASX, research only, no orders. One English hunting pass and no local-language pass, deliberately. `trig_01Qy7FjBpjY4dEGcZsYGnpt3`, cron `30 6 * * 0-4` = 06:30 UTC **Sunday to Thursday**, after the 16:00 Sydney close. Seals for the NEXT session, because 91% of ASX results land before the open, so the fire that seals for Monday is the Sunday one |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 **`list_triggers` IS SCOPED TO THE CALLING ACCOUNT, AND STAGE E IS ON A DIFFERENT ONE.**
@@ -61,11 +62,17 @@ concluding that any Routine is missing, check whether it is one of those two; if
 nothing is wrong. For everything else on this account the original rule stands, and stage N
 and stage C really were disabled from outside this repo on 2026-09-09.
 
-The two Routines this account *can* see and edit are stage J
-(`trig_0192kQeqhumBKpNGzzyQrS1H`) and stage EU (`trig_018WGfdq2fUm1ZqJhCGQ1wde`), both
-created by a session, both enabled, both editable with `update_trigger`.
+The three Routines this account *can* see and edit are stage J
+(`trig_0192kQeqhumBKpNGzzyQrS1H`), stage EU (`trig_018WGfdq2fUm1ZqJhCGQ1wde`) and stage AU
+(`trig_01Qy7FjBpjY4dEGcZsYGnpt3`, added 2026-09-22), all created by a session, all enabled,
+all editable with `update_trigger`.
 
-**The two live Routines run on Opus, since 2026-09-19 09:11 UTC.** Stage J and stage EU
+**The research Routines run on Opus.** Stage AU was pinned to `claude-opus-5` at
+creation on 2026-09-22 for the same reason the other two were on 2026-09-19: an empty
+`model` resolves to the account default and the stage EU hand-fire served
+`claude-sonnet-5` that way.
+
+**Stage J and stage EU were moved to Opus on 2026-09-19 09:11 UTC.** Stage J and stage EU
 both carried an empty `model`, which resolves to the account default — the stage EU
 hand-fire served `claude-sonnet-5`. Both are now pinned to `claude-opus-5` on the
 operator's instruction ("move everything to opus"). The config and the agent definitions
@@ -983,6 +990,103 @@ correctly killed as `event_occurred: false`, median realised move 2.87%) using
 *synthetic* findings, which ranked at ρ=0.154, p=0.47 — what random findings should do.
 See `researcher_japan/README.md`.
 
+**Stage AU is a fourth market, added 2026-09-22: `researcher_australia/`.** The same
+hunt, the same hunter contract and the same scorer
+(`researcher_us/scripts/edge_score.py`, unchanged: a US run rescores identically because
+nothing was touched), run over the ASX. **It places no orders.** Alpaca does not carry
+the ASX and execution would be a separate build against a different broker.
+
+**IT WAS CHOSEN FOR ITS ANCHOR, NOT ITS CALENDAR, AND CANADA HAS THE BETTER CALENDAR.**
+Annualised by cadence above the $200k floor on the same vendor instrument stage EU uses:
+Canada 6.89 events a trading day (median gap 93 days, 62% quarterly), the UK leg 5.01,
+**Australia 3.08** (median gap 187 days, 0.5% quarterly). Canada was declined on
+reachability, which is the axis this repo keeps paying for: `sedarplus.ca` answered **0
+of 4** and `ciro.ca` **0 of 7**, both behind bot protection, so Canada today is Spain and
+Poland from stage EU — no positioning anchor and no way to reach `event_occurred: false`.
+EDGAR does not rescue it for the band this stage targets: only 166 of 456 eligible
+Canadian names match an EDGAR ticker, and that 36% is an **upper bound** because bare
+tickers collide with US issuers; by band it is 31% at $0.2–1m and 26% at $1–5m against
+59% above $25m.
+
+**ASIC'S REGISTER IS A DIFFERENT CLASS OF OBJECT FROM EVERY OTHER ONE IN THIS REPO.** The
+FCA, JPX, the Bundesanzeiger and the AMF all publish positions at or above a 0.5%
+disclosure threshold. ASIC publishes the **aggregate for every product**: on the
+2026-09-16 file, 755 products, minimum 0.000000%, median 0.309%, maximum 17.30%, and
+**430 of 755 rows below 0.5%**. So the level is real at every size, there are no
+truncated zeros and no `anchor_covered` arm, and the change moves when the position moves
+rather than when a holder crosses a line. Its index carries **4,113 dated files back to
+2010-06-16**, which makes it the only positioning anchor here that can be BACKTESTED over
+a long history — and that test needs no stage at all. What it costs is the lag: ASIC
+publishes about four business days in arrears, carried as `positioning.lag_sessions` and
+never to be treated as zero.
+
+**AND THE LEAN THIS BUILD SHIPS WITH IS WORSE THAN TOKYO'S, WHICH IS STATED RATHER THAN
+FIXED.** On the 2026-08-27 validation run `lean_vs_free_control_rho` read **0.80 over 20
+names** against stage J's healthy 0.446–0.59: the lean is `short_squeeze` +
+`short_building` + `runup`, and the run-up term dominates whenever short interest is
+small, which on an untruncated register is most names. So Australia's lean is more
+entangled with its own benchmark than Tokyo's. The weights are Tokyo's priors with no
+Australian measurement behind them and they were deliberately NOT re-tuned — a constant
+that moves with the data is not a hypothesis, which is why `w1` is frozen. `au_resolve.py`
+ranks every component separately so measurement can replace them. This is the first thing
+a resolved Australian run should settle.
+
+**Three more things a reader will otherwise get wrong.** First, **the vendor's date is
+one day early for 85% of Australian rows** — Sydney is UTC+10 or +11 and the vendor
+stamps the UTC instant, so BHP's 08:31 Appendix 4E on 18 August reads as 17 August.
+`au_market.sydney_event_date()` converts the instant rather than adding a constant, so it
+survives the 2026-10-04 daylight-saving change, and every row carries `event_date_basis`.
+Getting it wrong does not throw; it seals on the wrong evening and hunts a name whose
+print was yesterday. Second, **Australia reports before the open harder than Europe
+does** — 67 of 74 measured results announcements (91%) landed before the 10:00 Sydney
+open against the UK's 89.4% — so the window is `close(D−1) → close(D)`, the baseline is
+sealed the evening before, and **the Routine's cron is Sunday to Thursday**, because the
+fire that seals for Monday has to happen on Sunday. Third, **half the ASX lodges a
+cash-flow report and not a profit result**: an Appendix 4C or 5B quarterly activities
+report under Listing Rule 4.7B is a real, market-moving event (IperionX's eleven observed
+ones carry a median absolute reaction of 4.66%) with a completely different bar, so
+`history.filer_type` carries which, and `au_resolve.py` reports `by_filer_type` so a
+pooled number cannot hide the mix.
+
+**What is BETTER here than in Tokyo: the reaction history is observed.** The ASX
+per-issuer announcement archive is queryable by year and goes back years, so prior prints
+carry real dates and real timestamps and may be cited as facts — where stage J applies
+this quarter's lag backwards and labels every row `estimated`. Three classifier defects
+came out of building it and all three are fixed, each having scored a non-event as a
+reaction: a "Results Release Date" notice (Myer, −3.53%), two "Details" notices of
+presentation arrangements (TUA), and an S&P index rebalance (−4.88%). That is the Oslo
+defect stage EU already measured, where "Invitation to Q4 results" counted as a print for
+12 of Nordic Semiconductor's 25 rows.
+
+**ONE ENGLISH HUNTING PASS, AND NO `pre_local` FREEZE (operator's instruction).** Stages
+EU and J freeze an English draft and then run a local-language or domestic-source pass.
+Australia runs one pass. There is no Australian-language press the wires do not read, and
+stage EU already carries the degenerate case: its UK hunter varies *source locality*
+instead of language, `eu_resolve.py` **refuses to pool** its delta with the German and
+French ones, and its own definition says a UK zero is not evidence about language. A
+second Australian pass would spend tokens measuring a variable that does not exist and
+would emit a structurally zero delta somebody would later pool as if it were one.
+`unpriced-hunter-au` has no `pre_local` field, `australia_hunt.language_pass` is `false`,
+and `smoke_test.py` asserts the field does not come back. The `pre_lessons` control still
+runs and `researcher_australia/LESSONS.md` is deliberately empty until a run resolves.
+
+**What no new market fixes: the option anchor.** Measured 2026-09-22 on the repo's own
+authenticated Yahoo path, AAPL returns 22 expiries, TSM 19 and ITUB 8, while `BHP.AX`,
+`CBA.AX`, `SHOP.TO`, `0700.HK`, `7203.T`, `NESN.SW` and `RELIANCE.NS` all return **zero**.
+So stage AU runs anchor-less exactly like stages J and EU — the regime
+`archive/backtest/FINDINGS.md` §33 priced at ρ=+0.073, p=0.45 over 104 events. There are
+now three unresolved anchor-less stages and zero resolved days outside the US, and that
+belongs in any argument for a fifth market.
+
+Nothing has resolved in Australia. The stack was validated end to end on 2026-09-22
+against 2026-08-27 (67 scheduled, 37 eligible, 20 drawn at the cap, 19 of 20 confirmed
+against the ASX record and one correctly left `announced_unclassified`) using *synthetic*
+findings, which ranked at ρ=0.215, p=0.36 — what random findings should do. On that same
+day the free control `-run_up_20d_pct` ranked at **ρ=−0.508, p=0.025**, which is the
+opposite sign to the US sample; one day is not a result and it is recorded because it is
+the kind of thing that gets remembered wrongly. See `researcher_australia/README.md` and
+`researcher_australia/SUBMARKET.md`.
+
 **Stage EU is a third market, added 2026-09-18: `researcher_europe/`.** Ten European
 markets pooled into one stage, on the same scorer again
 (`researcher_us/scripts/edge_score.py`). **It places no orders.** Alpaca carries none of
@@ -1301,6 +1405,13 @@ researcher_japan/                      stage J — see researcher_japan/README.m
   scripts/                             jp_universe, jp_positioning, jp_priced_in,
                                        jp_resolve
   routine-prompts/                     the text in the stage J Routine
+  LESSONS.md                           deliberately empty until a run resolves
+researcher_australia/                  stage AU — see researcher_australia/README.md
+  scripts/                             au_market (the Sydney date shift, the trading
+                                       calendar, the three headline classifiers),
+                                       au_positioning, au_priced_in, au_resolve
+  SUBMARKET.md                         why Australia and not Canada, with the counts
+  routine-prompts/                     the text in the stage AU Routine
   LESSONS.md                           deliberately empty until a run resolves
 researcher_europe/                     stage EU — see researcher_europe/README.md
   scripts/                             eu_market (incl. CAPABILITY), eu_universe,

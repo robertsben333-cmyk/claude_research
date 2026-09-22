@@ -395,6 +395,105 @@ europe_hunt:
     - skip the short-register lookup entirely (the lean falls back to the run-up, which is
       also the free control, so the hunt is then being measured against its own anchor)
     - reduce cap to 4 names
+australia_hunt:
+  # Stage AU. The same question as `edge_hunt`, `japan_hunt` and `europe_hunt`, asked of
+  # the ASX, and deliberately scored by the SAME scorer (researcher_us/scripts/
+  # edge_score.py) so the four markets' numbers mean the same thing. RESEARCH ONLY --
+  # there is no execution block here and there must not be one. Alpaca does not carry
+  # the ASX, and execution is a separate decision to be made later on Australia's own
+  # resolved numbers.
+  #
+  # WHY AUSTRALIA, IN ONE LINE: it has the best positioning anchor measured anywhere in
+  # this repo. See researcher_australia/SUBMARKET.md for the counts behind that and for
+  # the two things that are WORSE here than in the existing stages.
+  #
+  # THE SEAL IS THE EVENING BEFORE. 67 of 74 measured results announcements (91%) land
+  # before the 10:00 Sydney open, so the window is close(D-1) -> close(D) and
+  # au_universe.py --date defaults to the NEXT ASX session. The Routine fires at 06:30
+  # UTC, after the 16:00 Sydney close and about fifteen hours before the first release.
+  # A run that seals on the morning of the print seals after the event.
+  cap: 20
+  # Median 20-day turnover floor in USD, the same bar stages E, J and EU screen on, so
+  # the four markets' universes are cut on one number rather than four chosen apart.
+  # AUD is converted at a LIVE rate written into the universe file: a constant would
+  # silently move the floor by 10% a year, and the floor is the only selection this
+  # stage makes that is not random.
+  min_turnover_usd: 200000
+  # ONE HUNTER PER NAME, for the reason edge_hunt.double_hunt_top_n records: over twelve
+  # paired US names the gap between two hunters predicted neither the error (+0.203) nor
+  # whether the sign was right (+0.028).
+  hunters_per_name: 1
+  wave_size: 5
+  max_concurrent_subagents: 5
+  model: opus
+  effort: high
+  # No sweep agent. Confirmation is au_resolve.py's job, after the fact, against the ASX
+  # per-issuer announcement archive -- which is queryable by year and goes back years, so
+  # unlike TDnet's ~31-day window the confirmation does not expire and a late resolve
+  # loses nothing. event_occurred: false is fully reachable here, which it is not for
+  # Germany.
+  sweep_agents: 0
+  # Inherits edge_hunt.conviction_floor unless set. A floor on EMPHASIS in the note,
+  # never a filter on the scored file.
+  conviction_floor: null
+  #
+  # NO LANGUAGE PASS, AND THAT IS A DECISION RATHER THAN AN OMISSION (2026-09-22, on the
+  # operator's instruction). Stages EU and J freeze a `pre_local` draft and then run a
+  # second pass in the local language or over domestic sources. Australia runs ONE
+  # English pass. There is no Australian-language press the international wires do not
+  # read, and stage EU already carries the one degenerate case: the UK hunter varies
+  # SOURCE LOCALITY instead of language, eu_resolve.py refuses to pool its delta with the
+  # German and French ones, and its own definition says a UK zero is not evidence about
+  # language. A second Australian pass would spend tokens measuring a variable that does
+  # not exist and would emit a zero delta somebody would later pool as if it were one.
+  # unpriced-hunter-au therefore has NO pre_local field and edge_score.py's
+  # diagnostics.impact_sum_pre_local is absent for this market by design, not by failure.
+  # The pre_lessons control still runs.
+  language_pass: false
+  #
+  # THE ANCHOR, AND WHY IT IS THE BEST ONE HERE. Australia has no retrievable single-stock
+  # option chain either -- measured 2026-09-22 on the repo's own authenticated Yahoo path,
+  # AAPL returns 22 expiries and BHP.AX and CBA.AX return zero -- so `options` is null and
+  # this stage runs in the regime archive/backtest/FINDINGS.md section 33 priced at
+  # rho=+0.073, p=0.45 over 104 events. What stands in its place is ASIC's aggregated
+  # daily short position report, and it is NOT a 0.5% disclosure register like the FCA's,
+  # JPX's, the Bundesanzeiger's or the AMF's: it publishes the aggregate for EVERY
+  # product. On the 2026-09-16 file, 430 of 755 rows were below 0.5% and the minimum was
+  # 0.000000%. So there are no truncated zeros, there is no `anchor_covered` arm to split
+  # out, and the level is a real number at every size. Its index carries 4,113 dated files
+  # back to 2010-06-16, so this is also the only positioning anchor in the repo that can
+  # be BACKTESTED over a long history.
+  #
+  # WHAT IT COSTS: the file is published about four business days in arrears. Every
+  # baseline carries positioning.lag_sessions and nothing may treat it as zero -- on a
+  # name that has already run, four sessions is the whole move.
+  #
+  # Every weight in au_priced_in.lean_components() is a PRIOR carried over from stage J
+  # with no Australian measurement behind it. au_resolve.py ranks each component
+  # separately so they can be replaced by measurement. Cut a component's weight to zero
+  # when several pooled days rank it at or below zero -- do not argue for it.
+  positioning_lookup: true
+  # HALF THE ASX LODGES A CASH-FLOW REPORT, NOT A PROFIT RESULT, and the stage carries
+  # the distinction rather than smoothing it. An Appendix 4D or 4E is a profit result; an
+  # Appendix 4C or 5B is a quarterly activities and cash-flow report under Listing Rule
+  # 4.7B, which is a real and market-moving event with a completely different bar -- cash
+  # burn against stated runway rather than consensus EPS. history.filer_type says which,
+  # the hunter is told to size against the right bar, and au_resolve.py reports
+  # by_filer_type so a pooled number can never hide the mix.
+  include_quarterly_report_filers: true
+  # SHED THE THINGS THAT COST MOST PER UNIT LEARNED. Unlike stage EU there is only one
+  # market here, so the order is about what each STEP costs rather than which country to
+  # drop.
+  degrade_order:
+    - skip the ASX announcement-history lookup (au_priced_in.py --no-history, three
+      requests a name, and it is what makes history observed rather than estimated.
+      Dropping it costs the reaction scale and filer_type, so the hunter loses the one
+      thing that tells it whether this name reports earnings or cash flow)
+    - reduce cap to 12 names
+    - reduce cap to 6 names
+    - skip the short-register lookup entirely (the lean falls back to the run-up, which
+      is ALSO the free control, so the hunt would then be measured against its own
+      anchor. This is last on purpose, because it is the reason this market was built)
 output:
   disclaimer: >-
     This is research, not financial advice. Earnings reactions are highly uncertain
