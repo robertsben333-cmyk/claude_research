@@ -45,3 +45,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-09-22 01:07 UTC
 - Fired 01:04 UTC (10:04 JST) for the Tokyo window. Plan: jp_universe → seal baselines → one unpriced-hunter-jp per name in waves of 5 → edge_score → ranked note. NO orders. Note: 2026-09-22 is 敬老の日, expect market_closed.
+
+## Stage J — Japan researcher — MARKET CLOSED
+- Logged at 2026-09-22 01:08 UTC
+- 2026-09-22 is 敬老の日 / 国民の休日; universe.json carries market_closed='public holiday: 休日'. Calendar WAS readable (680 rows across 2 JPX sheets, as_of 2026-09-03 & 2026-09-17), scheduled_today=0. This is the exchange-shut case, not an unpublished cohort sheet. No baselines sealed, no hunters spawned, no orders (stage J never places orders). Empty universe + note published. Tokyo reopens 2026-09-24.
