@@ -45,3 +45,6 @@
 
 ## Stage EU — KEFI likely phantom
 - KEFI: vendor row has placeholder time and stale last-release (2022-09-28); last three interims came 29/30 Sep with no notice. Likely a phantom for 09-24; eu_resolve should check Investegate. 0 findings.
+
+## Stage EU — ALTN date unconfirmed
+- ALTN: no Notice of Results; vendor date is exactly 52 weeks after last year's release. Hunter puts ~30% on the 24th. Both findings moved to outside_window; 0 findings.
