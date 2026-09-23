@@ -41,3 +41,7 @@
 ## Stage CA — Canada researcher — DONE (empty day)
 - Logged at 2026-09-23 18:33 UTC
 - TSX open (market_closed null); 4 scheduled, 0 eligible, 0 hunted. All 4 fell below the $200k floor (MMY $139k, DND $119k disputed, WILD $55k, SR $10k filing_only). Calendar: confirmed 1 / agreed 0 / wsh_only 0 / vendor_only 2 / disputed 1; moved_off_target_by_wsh none. Anchor arms: options 0 / register 0. No baselines sealed, so no register snapshot stored today. TMX calendar and archive answered; Yahoo FX did not (fallback CAD/USD 0.71, not binding).
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-09-23 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside 13:30-16:05 ET. CLAUDE.md present (no clone). Preflight: all five files present. Plan: --intraday screen K=15, seal baselines, 15 reversal-hunters, edge_score, resolve 2026-09-22, note before 16:00 ET.
