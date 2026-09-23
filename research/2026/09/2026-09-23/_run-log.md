@@ -25,3 +25,7 @@
 ## Edge hunt — 2026-09-23 amc + 2026-09-24 bmo — STARTED
 - Logged at 2026-09-23 17:15 UTC
 - 8 of 44 calendar rows in window (FUL, SFIX, NEOV amc 09-23; DRI, SNX, BB, UXIN, MITQ bmo 09-24). Baselines sealed 17:15 UTC, 6 of 8 with an option chain (UXIN, MITQ none). Thin day (<10) so the 29 time-not-supplied rows were checked with session_resolve.py: 3 killed by EDGAR, 0 confirmed by press release, 26 carried unresolved — none added (measured phantom rate 20/20 on 09-17, 8/8 on 08-31). Plan: 1 sweep + up to 8 hunters. amc hunts must finish before 20:00 UTC.
+
+## Edge hunt — 2026-09-23 amc + 2026-09-24 bmo — DONE
+- Logged at 2026-09-23 17:28 UTC
+- Execution ON (paper). Step 0b: MANU sold at market 187 @ 20.28 (entry 20.43, -$28); WOR already covered at the open by Close AMC 64 @ 64.75 (short 59.23, -$353). verify: all prior legs closed. Sweep: 8/8 confirmed, 0 phantom. 8 hunters, all returned pre_lessons and print_vs_bar_pct (tree's contract ran). ranking_key impact_sum: SFIX +0.8, BB +0.5, MITQ +0.2, DRI 0, FUL 0, SNX 0, NEOV -1.5, UXIN -3.0. 1 name met the conviction floor (UXIN) and was refused on turnover ($0.05m < $0.2m). 0 orders placed, gross 0% of equity $11,200.86, account all cash. V2 grounded written (calibrated, 170 obs) before first print. Key vs -run_up_20d_pct rho +0.10. No failures.
