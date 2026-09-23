@@ -45,3 +45,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-09-23 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside 13:30-16:05 ET. CLAUDE.md present (no clone). Preflight: all five files present. Plan: --intraday screen K=15, seal baselines, 15 reversal-hunters, edge_score, resolve 2026-09-22, note before 16:00 ET.
+
+## Stage R — note
+- Logged at 2026-09-23 19:06 UTC
+- Harness concurrent-subagent limit is 8; 8 hunters launched 19:06 UTC, remaining 7 (NFE CGEM SST KPLT CNXU BYND BTCT) queued for the next free slots. Not a shed yet.
