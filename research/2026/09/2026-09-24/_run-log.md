@@ -31,3 +31,8 @@
 - ATE: vendor date wrong. Alten's AMF-filed H1 revenue release sets H1 results for 2026-09-25 after the close (~17:40 Paris). Neither window holds the print. 0 findings. Candidate for event_occurred: false on 09-24 at resolve time.
 - ADOC: real print on 09-24 but amc (all 2026 AMF releases stamped 18h00 CEST), so the resolver's alternative window, close 09-24 -> close 09-25, is the relevant one. 0 findings.
 - SLR: the hunter read the CNMV per-issuer short register at https://www.cnmv.es/portal/consultas/ee/posicionescortas?nif=A83511501&lang=es from this container: 7 live positions, 5.61% total. This contradicts CAPABILITY['es'] (register unreachable). Worth re-probing before trusting the 'Spain has no register' line; the baseline stays sealed as-is.
+
+## Stage EU — DEFECT: Swedish register name join missed H&M
+- Logged at 2026-09-23 13:55 UTC
+- HM_B baseline sealed short_ratio_pct 0.0 / anchor_coverage.state register_read_no_position, but the cached FI register carries 'H M HENNES MAURITZ AB' at 4.53% (4.42% on the prior cache day). The join on issuer name failed against the vendor's 'H&M Hennes & Mauritz AB Class B' (share-class suffix and/or '&' normalisation). Confirmed by grep of researcher_europe/analysis/eu-short-cache.json.
+- The baseline is sealed and NOT revised; its lean (+0.37) is run-up only. The hunter carried the true level (4.53%, building) as a finding. Any Nordic share-class name (… AB Class A/B) may read a false zero the same way. Fix eu_positioning's name normalisation in a development session, not in this run.
