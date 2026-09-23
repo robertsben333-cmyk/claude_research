@@ -504,13 +504,28 @@ def kappa_fit(pairs):
             "n": n, "pearson": r}
 
 
+def horizon_end(it, tf):
+    """When horizon tf of this item stopped moving, as an aware datetime, or None."""
+    t0 = datetime.fromisoformat(it["t0_utc"].replace("Z", "+00:00"))
+    if tf in INTRADAY:
+        return t0 + timedelta(seconds=INTRADAY[tf])
+    end = ((it.get("moves") or {}).get(tf) or {}).get("end_date")
+    if not end:
+        return None
+    d = date.fromisoformat(end)
+    hh, mm = (9, 30) if tf == "next_open" else (16, 0)
+    return datetime(d.year, d.month, d.day, hh, mm, tzinfo=ET)
+
+
 def fit_matrix(items, as_of=None):
     """kappa per (line, horizon) and pooled per horizon, from scored-and-measured items.
 
-    `as_of` keeps only items with t0 before it, so a matrix can be rebuilt exactly as
-    it stood on a run date: an item-2.02 8-K of a name stage E hunted IS that name's
-    print, and a matrix fitted after the run would carry the run's own outcome.
+    `as_of` keeps, per horizon, only observations whose END point lies before it, so a
+    matrix can be rebuilt exactly as it stood on a run date. Filtering on t0 alone is
+    not enough: an 8-K filed an hour before the seal has its session close after it,
+    and when it is the hunted name's own filing that close IS the run's outcome.
     """
+    cut = (datetime.fromisoformat(as_of.replace("Z", "+00:00")) if as_of else None)
     obs = [it for it in items
            if it.get("llm_impact_score") not in (None, 0) and it.get("sigma_daily_pct")
            and not (as_of and it["t0_utc"] >= as_of)]
@@ -521,6 +536,10 @@ def fit_matrix(items, as_of=None):
             m = (it.get("moves") or {}).get(tf) or {}
             if m.get("status") != "ok" or m.get("excess_pct") is None:
                 continue
+            if cut is not None:
+                end = horizon_end(it, tf)
+                if end is None or end >= cut:
+                    continue
             p = (it["llm_impact_score"], m["excess_pct"] / it["sigma_daily_pct"])
             pooled.append(p)
             by_line.setdefault(it.get("line_item", "other"), []).append(p)

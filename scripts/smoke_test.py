@@ -1329,15 +1329,22 @@ def main():
     check("kappa is the through-origin slope", k["kappa"] == 0.5 and k["se"] == 0.0, str(k))
     check("an empty fit is None, not zero", sh.kappa_fit([]) is None)
 
-    def _item(i, line, score, excess, t0="2026-08-10T20:30:00Z", sigma=2.0):
+    def _item(i, line, score, excess, t0="2026-08-10T20:30:00Z", sigma=2.0,
+              end="2026-08-11"):
         return {"id": f"T{i}", "t0_utc": t0, "llm_impact_score": score,
                 "line_item": line, "sigma_daily_pct": sigma, "status": "measured",
-                "moves": {tf: {"excess_pct": excess, "status": "ok"} for tf in sh.TIMEFRAMES}}
+                "moves": {tf: {"excess_pct": excess, "status": "ok", "end_date": end}
+                          for tf in sh.TIMEFRAMES}}
     items = ([_item(i, "reported_quarter", 2.0, 2.0) for i in range(30)] +
              [_item(100 + i, "financing", 1.0, 0.2) for i in range(5)] +
              [_item(200, "guidance", 1.0, 50.0, t0="2026-09-20T13:00:00Z")])
     m, n = sh.fit_matrix(items, as_of="2026-09-01T00:00:00+00:00")
     check("fit_matrix drops items at or after as_of", n == 35 and "guidance" not in m, str(n))
+    late = [_item(300, "financing", 1.0, 9.0, t0="2026-08-31T20:30:00Z", end="2026-09-01")]
+    m2, _ = sh.fit_matrix(items + late, as_of="2026-09-01T12:00:00+00:00")
+    check("an observation whose close lands after the seal is not used",
+          m2["_pooled"]["session_close"]["n"] == 35 and m2["_pooled"]["5m"]["n"] == 36,
+          str((m2["_pooled"]["session_close"]["n"], m2["_pooled"]["5m"]["n"])))
     check("per-line kappa is excess/sigma per score point",
           m["reported_quarter"]["session_close"]["kappa"] == 0.5)
     kp, src = gs.pick_kappa(m, "financing", "session_close", 30)
