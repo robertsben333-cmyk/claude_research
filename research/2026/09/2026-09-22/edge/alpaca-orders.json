@@ -66,7 +66,41 @@
    "quote_at_submit_error": null
   }
  ],
- "exits": [],
+ "exits": [
+  {
+   "client_order_id": "edge-2026-09-22-MANU-exit",
+   "symbol": "MANU",
+   "qty": "187",
+   "side": "sell",
+   "type": "market",
+   "time_in_force": "day",
+   "utc": "2026-09-23T10:11:37+00:00",
+   "submitted": false,
+   "reason": "market placement, and the market is closed: this leg exits at market on the run that fires inside the session, not queued for the open by this one",
+   "leg": "exit",
+   "closes": "edge-2026-09-22-MANU-entry",
+   "exit_date": "2026-09-23",
+   "position_qty_at_close": 187.0,
+   "placement": "market"
+  },
+  {
+   "client_order_id": "edge-2026-09-22-WOR-exit",
+   "symbol": "WOR",
+   "qty": "64",
+   "side": "buy",
+   "type": "market",
+   "time_in_force": "day",
+   "utc": "2026-09-23T10:11:37+00:00",
+   "submitted": true,
+   "order_id": "5994e8fb-1ee0-415b-89aa-27a4ed43eb65",
+   "status": "pending_new",
+   "leg": "exit",
+   "closes": "edge-2026-09-22-WOR-entry",
+   "exit_date": "2026-09-23",
+   "position_qty_at_close": -64.0,
+   "placement": "open"
+  }
+ ],
  "log": [
   {
    "utc": "2026-09-22T17:45:47+00:00",
@@ -74,7 +108,47 @@
    "window": "134 min to the close",
    "entry": "market",
    "positions": 2
+  },
+  {
+   "utc": "2026-09-23T10:11:37+00:00",
+   "action": "close",
+   "all": false,
+   "moc": "market closed at 2026-09-23T06:11:35-04:00",
+   "exit_mode": "amc_open",
+   "windows": {
+    "day": "queued for the next open (DAY orders are accepted and routed by Alpaca while the market is closed)"
+   }
+  },
+  {
+   "utc": "2026-09-23T10:16:37+00:00",
+   "action": "verify",
+   "fix": true
   }
  ],
- "updated_utc": "2026-09-22T17:45:47+00:00"
+ "updated_utc": "2026-09-23T10:16:43+00:00",
+ "verifications": [
+  {
+   "run": "research/2026/09/2026-09-22/edge",
+   "symbol": "WOR",
+   "session": "amc",
+   "exit_date": "2026-09-23",
+   "entry_qty": 64.0,
+   "filled_qty": 0,
+   "residual_qty": 64.0,
+   "verdict": "working",
+   "checked_utc": "2026-09-23T10:16:37+00:00",
+   "orders": [
+    {
+     "client_order_id": "edge-2026-09-22-WOR-exit",
+     "time_in_force": "day",
+     "status": "new",
+     "live": true,
+     "filled_qty": 0.0,
+     "filled_avg_price": null,
+     "order_qty": 64.0
+    }
+   ],
+   "note": "queued while the market is closed; Alpaca routes it at the next open, so it is not verifiable until the session starts"
+  }
+ ]
 }
