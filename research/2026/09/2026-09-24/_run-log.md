@@ -36,3 +36,6 @@
 - Logged at 2026-09-23 13:55 UTC
 - HM_B baseline sealed short_ratio_pct 0.0 / anchor_coverage.state register_read_no_position, but the cached FI register carries 'H M HENNES MAURITZ AB' at 4.53% (4.42% on the prior cache day). The join on issuer name failed against the vendor's 'H&M Hennes & Mauritz AB Class B' (share-class suffix and/or '&' normalisation). Confirmed by grep of researcher_europe/analysis/eu-short-cache.json.
 - The baseline is sealed and NOT revised; its lean (+0.37) is run-up only. The hunter carried the true level (4.53%, building) as a finding. Any Nordic share-class name (… AB Class A/B) may read a false zero the same way. Fix eu_positioning's name normalisation in a development session, not in this run.
+
+## Stage EU — CNE is under offer
+- CNE: recommended all-cash DNO scheme at US$5.214 (RNS 17 Sep, Court Meeting 16 Oct). The interim print cannot move a fixed-price offer; 0 findings. Its run-up is takeover premium, so the free control means nothing on this row.
