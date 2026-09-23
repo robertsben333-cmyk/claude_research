@@ -489,6 +489,20 @@ measured at −0.090 and +0.074 against the realised move, and on 2026-08-31 the
 highest-confidence name was the uninformative one while the name carrying that day's
 entire correlation had the lowest confidence in the run.
 
+### 5b. V2, beside V1 — seconds, and it may fail
+
+```bash
+python3 researcher_us/scripts/edge_grounded_score.py --run <RUN>/edge || true
+```
+
+Writes `edge-scores-grounded.json` next to `edge-scores.json` and changes nothing in
+it. **V1 is the key that ranks the note and the only key the book is placed on**;
+`alpaca_trade.py` never reads the grounded file. V2 maps each finding through the
+shadow ledger's κ and the name's realised σ (`researcher_us/README_V2.md`). Until the
+ledger holds `edge_v2.min_n` measured observations the file says `uncalibrated` and
+carries no grounded numbers — that is the correct output, not a failure. If the
+script errors, log it and carry on: nothing downstream of today waits on V2.
+
 ## 6. The note
 
 `<RUN>/edge/edge-note.md`, answer first: the ranked table, then for each of the top
@@ -691,6 +705,36 @@ Record in the run log how many names met the benchmark, how many orders went in,
 every refusal with its reason. `researcher_us/EXECUTION.md` is the whole contract, including
 what the rule does and does not rest on.
 
+## 6c. Grow the shadow ledger — after the book, never before it
+
+Only once step 6b has placed (or refused) the book, so V2 can never cost the entry
+its margin. Skip the whole step if `edge_v2.enabled` is false or the session is
+short of time; a skipped day loses nothing that tomorrow cannot collect.
+
+```bash
+python3 researcher_us/scripts/edge_shadow_engine.py collect --from-run <RUN>/edge
+python3 researcher_us/scripts/edge_shadow_engine.py brief -o <RUN>/edge/shadow-brief.json
+```
+
+If the brief lists any inputs, launch **one** `shadow-scorer` agent with only the
+brief path. It is outside the 20-subagent hunt budget (`edge_v2.shadow_scorer_agents`)
+and it is the first thing shed. It has no web tools and must read nothing but the
+inputs named in the brief: a score written after seeing the price is the one error
+this ledger cannot detect. Do not hand it today's hunts, the note or your view.
+
+```bash
+python3 researcher_us/scripts/edge_shadow_engine.py ingest
+python3 researcher_us/scripts/edge_shadow_engine.py measure
+python3 researcher_us/scripts/edge_shadow_engine.py fit
+python3 scripts/update_index.py
+scripts/publish.sh "stage E V2: shadow ledger for <YYYY-MM-DD>"
+```
+
+`measure` only prices items that already carry a score and re-prices those whose
+horizons were still open, so running it daily is what fills the 5d and 1m columns.
+Put one line in the run log: collected, scored, refused (with the reason `ingest`
+printed), and the pooled n at `session_close`.
+
 ## 7. Resolve, once the window closes
 
 ```bash
@@ -701,7 +745,10 @@ python3 researcher_us/scripts/edge_resolve.py --pool 'research/2026/*/*/edge'   
 Reports, per day and pooled: the rank correlation between the key and the realised
 move; **the conviction-versus-sign correlation**, which is the threshold-free form of
 "is the direction real"; both free controls; the legacy key for continuity; and the
-long/short spread.
+long/short spread. Where a run carries a calibrated `edge-scores-grounded.json` it
+also reports **V2** (`spearman_v2_grounded`), **V1 × σ with no κ**
+(`control_vol_only`) and the calibration slope of each. V2 has added something only
+where it beats the vol-only control; beating V1 alone can be pure volatility.
 
 The pooled figure pools **within** days — each day converted to within-day ranks and
 centred — because concatenating raw pairs across days lets market-wide drift into the

@@ -110,6 +110,17 @@ rounded into a bucket upstream. Falsifiable by `researcher_us/scripts/edge_resol
 Spearman rank correlation against the realised move with a permutation p-value. Until
 many days have pooled, it is not better than anything.
 
+**Stage E V2 runs beside V1 since 2026-09-23, and V1 still ranks and trades.**
+RobinBaumeister's PR #9, rebuilt against its review: public 8-Ks are scored blind by a
+`shadow-scorer` agent (no web tools), their moves measured at nine horizons after the
+score exists, and a response factor κ fitted per line and horizon.
+`edge_grounded_score.py` maps each day's findings through it into
+`edge-scores-grounded.json`; `alpaca_trade.py` never reads that file. The ledger
+(`researcher_us/analysis/shadow-ledger.json`) **ships empty**, because PR #9's three rows
+were hand-entered, so every run reads `uncalibrated` until `edge_v2.min_n` observations
+exist. V2 has added something only where it beats `control_vol_only` (V1 × σ, no κ) in
+`edge_resolve.py`, not where it beats V1. See `researcher_us/README_V2.md`.
+
 Ten runs exist: two on 2026-08-31 and one on each of 09-01, 09-02, 09-03, 09-04, 09-07,
 09-08, 09-09 and 09-10. Six are resolved — **43 names, 249 findings, 65 hunts**; the
 09-08, 09-09 and 09-10 runs are not. (This paragraph said "seven" and omitted 09-09

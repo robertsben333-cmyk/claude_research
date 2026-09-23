@@ -149,6 +149,31 @@ edge_hunt:
   # than treating 3.0 as settled.
   conviction_floor: 3.0
 
+# Stage E V2 (PR #9, RobinBaumeister; rebuilt 2026-09-23). Runs BESIDE V1 and never
+# instead of it: V1's impact_sum ranks the day and is the only thing alpaca_trade.py
+# reads. V2 maps the same hunter sizes through a response factor kappa measured on
+# public 8-Ks (researcher_us/scripts/edge_shadow_engine.py) and writes
+# edge-scores-grounded.json beside edge-scores.json. See researcher_us/README_V2.md.
+edge_v2:
+  enabled: true
+  # The horizon the grounded ranking key uses. session_close is the first full
+  # session's close after t0 -- the same window edge_resolve.py scores a print on.
+  primary_horizon: session_close
+  # Below this many observations a kappa is not used: a line falls back to the
+  # pooled kappa for its horizon, and a pooled kappa below it leaves the whole day
+  # `uncalibrated` with no grounded numbers. 30 is a floor for a standard error
+  # worth printing, not a claim that 30 settles anything.
+  min_n: 30
+  # Filings before this date are never collected: the scorer model may have seen
+  # them, and their reaction, in training.
+  min_event_date: "2026-07-01"
+  # One blind scorer agent per stage E run, AFTER the book is placed, outside the
+  # 20-subagent hunt budget. Shed it first if anything about the day is tight.
+  shadow_scorer_agents: 1
+  max_items_per_run: 40
+  max_filings_per_ticker: 8
+  input_max_chars: 12000
+
 japan_hunt:
   # Stage J. The same question as `edge_hunt`, asked of the Tokyo market, and
   # deliberately scored by the SAME scorer (researcher_us/scripts/edge_score.py) so

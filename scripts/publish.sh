@@ -95,6 +95,11 @@ paths=()
 # will eventually age out of the API -- so the built artefact is the record, and
 # a session that does not push it loses the only copy.
 [[ -d dashboard ]] && paths+=(dashboard)
+# Stage E V2's shadow ledger and the scorer's inputs and scores. Named one by one
+# rather than researcher_us/analysis/ as a whole, which holds other generated files
+# that are rebuilt on purpose and committed by hand.
+[[ -e researcher_us/analysis/shadow-ledger.json ]] && paths+=(researcher_us/analysis/shadow-ledger.json)
+[[ -d researcher_us/analysis/shadow ]] && paths+=(researcher_us/analysis/shadow)
 for f in "${GENERATED[@]}"; do
   [[ -e "$f" ]] && paths+=("$f")
 done
