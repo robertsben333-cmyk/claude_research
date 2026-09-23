@@ -517,6 +517,67 @@ def horizon_end(it, tf):
     return datetime(d.year, d.month, d.day, hh, mm, tzinfo=ET)
 
 
+_leak = [None]
+
+
+def context_tickers():
+    """Tickers CLAUDE.md names. Every agent in this repo gets that file in its context,
+    and it quotes outcomes (NAVN fell 18.4%, DLTH +23.20%), so a scorer cannot be blind
+    to those names. Excluding them is conservative: some are named without an outcome."""
+    if _leak[0] is None:
+        p = REPO / "CLAUDE.md"
+        txt = p.read_text(encoding="utf-8") if p.exists() else ""
+        _leak[0] = set(re.findall(r"(?<![A-Za-z0-9])[A-Z]{1,5}(?:\.[A-Z])?(?![A-Za-z0-9])", txt))
+    return _leak[0]
+
+
+LEAK_WORDS = re.compile(r"CLAUDE\.md|project instructions", re.I)
+
+
+def exclusion(it):
+    """Why an item may not enter a fit, or None."""
+    if it["ticker"] in context_tickers():
+        return "ticker named in CLAUDE.md, which every agent's context carries"
+    if LEAK_WORDS.search(it.get("score_basis") or ""):
+        return "the scorer said it saw something about this name in its context"
+    return None
+
+
+def accession(it):
+    return it["id"][len(it["ticker"]) + 1:]
+
+
+def observations(items, tf, cut=None):
+    """(score, excess/sigma, line) pairs for one horizon, one per event.
+
+    One accession under two tickers (BF.A/BF.B, LEN/LEN.B) is one filing and counts
+    once. Two filings of one issuer whose horizon ends at the same moment share one
+    move -- a results 8-K and an acquisition 8-K filed the same evening -- so they are
+    one observation whose score is the SUM of theirs, the way impact_sum sums
+    findings. The line is the one carrying the larger |score|.
+    """
+    seen, groups = set(), {}
+    for it in items:
+        if it.get("llm_impact_score") is None or not it.get("sigma_daily_pct"):
+            continue
+        if exclusion(it) or accession(it) in seen:
+            continue
+        m = (it.get("moves") or {}).get(tf) or {}
+        if m.get("status") != "ok" or m.get("excess_pct") is None:
+            continue
+        end = horizon_end(it, tf)
+        if cut is not None and (end is None or end >= cut):
+            continue
+        seen.add(accession(it))
+        key = (it.get("cik") or it["ticker"], end.isoformat() if end else it["t0_utc"])
+        g = groups.setdefault(key, {"score": 0.0, "y": m["excess_pct"] / it["sigma_daily_pct"],
+                                    "line": it.get("line_item", "other"), "top": 0.0})
+        g["score"] += it["llm_impact_score"]
+        if abs(it["llm_impact_score"]) > g["top"]:
+            g["top"], g["line"] = abs(it["llm_impact_score"]), it.get("line_item", "other")
+    return [(g["score"], g["y"], g["line"]) for g in groups.values() if g["score"] != 0]
+
+
 def fit_matrix(items, as_of=None):
     """kappa per (line, horizon) and pooled per horizon, from scored-and-measured items.
 
@@ -524,29 +585,22 @@ def fit_matrix(items, as_of=None):
     matrix can be rebuilt exactly as it stood on a run date. Filtering on t0 alone is
     not enough: an 8-K filed an hour before the seal has its session close after it,
     and when it is the hunted name's own filing that close IS the run's outcome.
+    Exclusions and de-duplication are in `observations`.
     """
     cut = (datetime.fromisoformat(as_of.replace("Z", "+00:00")) if as_of else None)
-    obs = [it for it in items
-           if it.get("llm_impact_score") not in (None, 0) and it.get("sigma_daily_pct")
-           and not (as_of and it["t0_utc"] >= as_of)]
+    items = [it for it in items if not (as_of and it["t0_utc"] >= as_of)]
     matrix = {"_pooled": {}}
+    n_obs = 0
     for tf in TIMEFRAMES:
-        pooled, by_line = [], {}
-        for it in obs:
-            m = (it.get("moves") or {}).get(tf) or {}
-            if m.get("status") != "ok" or m.get("excess_pct") is None:
-                continue
-            if cut is not None:
-                end = horizon_end(it, tf)
-                if end is None or end >= cut:
-                    continue
-            p = (it["llm_impact_score"], m["excess_pct"] / it["sigma_daily_pct"])
-            pooled.append(p)
-            by_line.setdefault(it.get("line_item", "other"), []).append(p)
-        matrix["_pooled"][tf] = kappa_fit(pooled)
+        obs = observations(items, tf, cut)
+        n_obs = max(n_obs, len(obs))
+        matrix["_pooled"][tf] = kappa_fit([(x, y) for x, y, _ in obs])
+        by_line = {}
+        for x, y, line in obs:
+            by_line.setdefault(line, []).append((x, y))
         for line, ps in by_line.items():
             matrix.setdefault(line, {})[tf] = kappa_fit(ps)
-    return matrix, len(obs)
+    return matrix, n_obs
 
 
 def fit(ledger_path=LEDGER, as_of=None):

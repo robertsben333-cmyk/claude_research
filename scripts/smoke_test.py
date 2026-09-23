@@ -1331,7 +1331,8 @@ def main():
 
     def _item(i, line, score, excess, t0="2026-08-10T20:30:00Z", sigma=2.0,
               end="2026-08-11"):
-        return {"id": f"T{i}", "t0_utc": t0, "llm_impact_score": score,
+        return {"id": f"ZQ{i}-0000000000-26-{i:06d}", "ticker": f"ZQ{i}", "cik": f"C{i}",
+                "t0_utc": t0, "llm_impact_score": score,
                 "line_item": line, "sigma_daily_pct": sigma, "status": "measured",
                 "moves": {tf: {"excess_pct": excess, "status": "ok", "end_date": end}
                           for tf in sh.TIMEFRAMES}}
@@ -1345,6 +1346,19 @@ def main():
     check("an observation whose close lands after the seal is not used",
           m2["_pooled"]["session_close"]["n"] == 35 and m2["_pooled"]["5m"]["n"] == 36,
           str((m2["_pooled"]["session_close"]["n"], m2["_pooled"]["5m"]["n"])))
+    base_n = len(sh.observations(items, "session_close"))
+    dup = dict(items[0], id="ZQ0B-0000000000-26-000000", ticker="ZQ0B")
+    check("one accession under two tickers counts once",
+          len(sh.observations(items + [dup], "session_close")) == base_n)
+    twin = dict(items[1], id="ZQ1-0000000000-26-999999", llm_impact_score=1.0)
+    obs = sh.observations(items + [twin], "session_close")
+    check("two filings of one issuer sharing a move are one observation, scores summed",
+          len(obs) == base_n and any(o[0] == 3.0 for o in obs))
+    leak = dict(items[2], id="NAVN-0000000000-26-000001", ticker="NAVN", cik="CN")
+    based = dict(items[3], id="ZQ3-0000000000-26-000002", cik="CB",
+                 score_basis="the project instructions mention this name")
+    check("a name CLAUDE.md quotes, or a score that admits seeing it, is excluded",
+          len(sh.observations(items + [leak, based], "session_close")) == base_n)
     check("per-line kappa is excess/sigma per score point",
           m["reported_quarter"]["session_close"]["kappa"] == 0.5)
     kp, src = gs.pick_kappa(m, "financing", "session_close", 30)

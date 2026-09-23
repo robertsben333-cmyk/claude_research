@@ -105,15 +105,22 @@ def ground_run(run_dir, ledger_path=shadow.LEDGER, min_n=None, primary=None):
     for r in scores.get("ranking", []):
         t = r["ticker"]
         sig = sigma_live(baselines.get(t))
+        # Runs sealed before 2026-09-09 carry `edge_score` and no top-level
+        # impact_sum; the key's definition is the sum of the hunters' sizes, which is
+        # what edge_sample.py reconstructs for them too.
+        v1 = r.get("impact_sum")
+        if v1 is None and r.get("findings"):
+            v1 = round(sum(float(f["expected_impact_pct"]) for f in r["findings"]
+                           if f.get("expected_impact_pct") is not None), 3)
         row = {"ticker": t, "rankable": r.get("rankable"),
                "rank_v1": r.get("rank"),
                "impact_sum_pre_lessons": (r.get("diagnostics") or {}).get(
                    "impact_sum_pre_lessons"),
-               "impact_sum_v1": r.get("impact_sum"),
+               "impact_sum_v1": v1,
                "sigma_daily_pct": sig,
                # The control V2 must beat: V1 in percent-of-sigma units, no kappa.
-               "control_vol_only": (None if sig is None or r.get("impact_sum") is None
-                                    else round(r["impact_sum"] * sig, 3)),
+               "control_vol_only": (None if sig is None or v1 is None
+                                    else round(v1 * sig, 3)),
                "grounded": {}, "impact_sum_grounded": None}
         why = None
         if not r.get("rankable"):
