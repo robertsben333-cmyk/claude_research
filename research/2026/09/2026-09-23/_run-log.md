@@ -17,3 +17,11 @@
 - fill check at +300s: WOR reads work, filled 0/64, still held 64.0 — expected, since Alpaca queues a pre-market DAY order and does not route it until the 09:30 ET open; not verifiable from this session.
 - status --scan confirms account state: equity $11,064.67, cash $11,552.50. 2026-09-22/edge shows MANU OPEN long 187 @ 20.43 (+0.39%) and WOR OPEN short -64 @ 59.23 (-14.05%), both awaiting their respective exits.
 - No account/API errors. Nothing else to report.
+
+## Edge hunt — 2026-09-23 — step 0b exits
+- Logged at 2026-09-23 17:10 UTC
+- execution.enabled true, exit_mode amc_open. verify: all 13 prior legs closed, nothing held. close: sent MANU (bmo, 09-22 book) at market 17:0x UTC, filled 187 @ 20.28 vs entry 20.43 (-$28, -0.7%). WOR (amc short, 09-22 book) had already been covered by Close AMC at the open: 64 @ 64.75 vs short 59.23 (-$353, -9.3%). Account flat, equity $11,200.86 all cash.
+
+## Edge hunt — 2026-09-23 amc + 2026-09-24 bmo — STARTED
+- Logged at 2026-09-23 17:15 UTC
+- 8 of 44 calendar rows in window (FUL, SFIX, NEOV amc 09-23; DRI, SNX, BB, UXIN, MITQ bmo 09-24). Baselines sealed 17:15 UTC, 6 of 8 with an option chain (UXIN, MITQ none). Thin day (<10) so the 29 time-not-supplied rows were checked with session_resolve.py: 3 killed by EDGAR, 0 confirmed by press release, 26 carried unresolved — none added (measured phantom rate 20/20 on 09-17, 8/8 on 08-31). Plan: 1 sweep + up to 8 hunters. amc hunts must finish before 20:00 UTC.
