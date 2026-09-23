@@ -49,3 +49,7 @@
 ## Stage R — note
 - Logged at 2026-09-23 19:06 UTC
 - Harness concurrent-subagent limit is 8; 8 hunters launched 19:06 UTC, remaining 7 (NFE CGEM SST KPLT CNXU BYND BTCT) queued for the next free slots. Not a shed yet.
+
+## Stage R — SCREEN DEFECT (2026-09-23)
+- Logged at 2026-09-23 19:10 UTC
+- rev_universe.py --intraday measured ret_d_pct against the 2026-09-21 close for many names: Yahoo's daily series has no settled 2026-09-22 bar (its last bar carries 09-22's timestamp with today's live data, close null), so the 'one-day' fall is two sessions. Reported independently by the DAVA, EVER and CTEV hunters, and visible in universe.json's own screener_vs_adjusted_gap_pp: DAVA +22.48pp (Nasdaq pct_change -9.24 vs -31.72), EVER +13.23, LVO +10.42, SST +8.56, BTCT +6.54, CNXU +5.92, CTEV +5.68, KPLT +4.99. On Nasdaq's own same-day change several not-hunted names fell harder (RAPP -17.10, INNV -15.49, CATX -14.70, ANRO -14.10) than 5+ hunted ones. So roughly half of today's 15 were selected on a merged two-session move, and their drop band, volume spike and cross-section prior are mis-keyed. NOT re-screened: baselines were sealed and hunts had already run, and re-selecting after reading hunts is a second selection. Fix belongs in rev_universe.py (refuse or fall back to the screener's pct_change when screener_vs_adjusted_gap_pp is large and no corporate action is known); left for a development session. The 09-22 run (DAVA -24.2 there too) should be checked for the same fault before it is pooled.

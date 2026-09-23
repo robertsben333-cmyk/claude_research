@@ -1,0 +1,58 @@
+{
+  "ticker": "CNXU",
+  "drop_date": "2026-09-23",
+  "window": {"from": "close of 2026-09-23", "to": "close of 2026-09-24"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "No finding dated inside the window survived: no news, no filing since 2026-09-15, no dated catalyst on 2026-09-24, and the real overhang (going concern, ~$2M cash, 9.48M registered resale shares, in-the-money $2.30 warrants) has no date, so it sits in outside_window and the emitted number is 0.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced — no option chain (baseline options.status no_options_market), no consensus; the only scale is this name's own six comparable falls (median next close +1.31%, median |move| 4.3%) and ATR14 13.76% from the sealed baseline",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 10,
+    "confidence_pct": 25,
+    "what_happened": "CNXU fell ~17% to the 15:04 ET screen (8% gap, ~10% intraday) on 0.87x normal volume with no press release or SEC filing since 2026-09-15; it is the continuation of a 47% 20-day slide in a May-2026 direct listing with a going-concern warning, ~$2M cash at 2026-07-31 and a registered resale overhang of 9,481,123 shares.",
+    "evidence": [
+      {"claim": "Most recent EDGAR filing is a Schedule 13D/A accepted 2026-09-15 21:25 UTC; nothing filed 2026-09-16 through the screen instant", "url": "https://data.sec.gov/submissions/CIK0002066836.json", "timestamp": "2026-09-23"},
+      {"claim": "Resale prospectus supplement No. 5 covers 9,481,123 shares; 28,206,698 shares outstanding at 2026-09-10; cash $1,971,408 at 2026-07-31; substantial doubt about going concern; $11.7M nine-month net loss", "url": "https://www.sec.gov/Archives/edgar/data/2066836/000106299326004940/form424b3.htm", "timestamp": "2026-09-15"},
+      {"claim": "8-K Item 3.02: 1,448,368 unregistered shares issued Jun 18 - Sep 4, including 762,608 shares from warrant exercises at $2.30 on 2026-09-04 and repeated consultant share payments", "url": "https://www.sec.gov/Archives/edgar/data/2066836/000106299326004891/form8k.htm", "timestamp": "2026-09-10"},
+      {"claim": "Director Jeffrey Sharpe exercised 500,000 performance warrants at $0.001 on 2026-09-14, holds 1.5M shares (5.2%), reserves right to sell", "url": "https://www.sec.gov/Archives/edgar/data/2066836/000106299326004967/xslSCHEDULE_13D_X02/primary_doc.xml", "timestamp": "2026-09-15"},
+      {"claim": "Latest company press release is the 2026-09-01 conference schedule; no release on 2026-09-22 or 09-23 found", "url": "https://www.stocktitan.net/overview/CNXU/", "timestamp": "2026-09-23"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -20,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "H.C. Wainwright Biotech on Tap, Munich, 2026-10-01 to 10-03 (outside window); 510(k) submission guided to Q1 2027",
+    "what_would_change_my_mind": "An 8-K or press release after the close announcing a priced PIPE/registered direct or a new equity line (negative), or a disclosed insider open-market buy (positive)."
+  },
+  "positioning_check": "Nasdaq/FINRA short interest 202,485 shares at the 2026-08-31 settlement, +56.4% vs 129,461 at 08-14, days to cover 1.0, against 28,206,698 shares outstanding (~0.7%); the position carried into today's fall is not observable (publication lags ~8 business days). No options market, so no skew. Insider summary: 0 buys and 0 sells in 3 months, 4 open-market buys in 12 months (api.nasdaq.com/api/company/CNXU/insider-trades). Source: https://api.nasdaq.com/api/quote/CNXU/short-interest?assetclass=stocks",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Financing is forced: $1.97M cash at 2026-07-31 against an $11.7M nine-month loss and a going-concern opinion; S-3 is unavailable until 12 months after the May 2026 listing, so the likely route is a PIPE/registered direct or equity line announced on an undated day — a second shoe with no date.", "expected_impact_pct": -8.0, "resolves_by": "2026-12-31", "source": "https://www.sec.gov/Archives/edgar/data/2066836/000106299326004940/form424b3.htm"},
+    {"finding": "Continuing resale and warrant supply: 9.48M registered resale shares, warrant holders at $2.30 still in the money, consultants and directors paid in stock (500K at $0.001 on 2026-09-14) — a supply source with no end date.", "expected_impact_pct": -3.0, "resolves_by": "2026-12-31", "source": "https://www.sec.gov/Archives/edgar/data/2066836/000106299326004891/form8k.htm"},
+    {"finding": "H.C. Wainwright Biotech on Tap presentation, Munich, 2026-10-01 to 10-03.", "expected_impact_pct": 0.5, "resolves_by": "2026-10-03", "source": "https://www.stocktitan.net/news/CNXU/conexeu-sciences-sets-september-and-october-2026-conference-f1xn6cy6euox.html"},
+    {"finding": "Final performance-warrant tranche (500K to director Sharpe) vests on 510(k) submission, guided Q1 2027.", "expected_impact_pct": 0.0, "resolves_by": "2027-03-31", "source": "https://www.sec.gov/Archives/edgar/data/2066836/000106299326004967/xslSCHEDULE_13D_X02/primary_doc.xml"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions JSON: no filing after 2026-09-15 21:25 UTC, so no 8-K clock running on a drop-day event (https://data.sec.gov/submissions/CIK0002066836.json)",
+    "EDGAR full-text search for 'Conexeu' 2026-09-16..09-24 returned HTTP 500 (https://efts.sec.gov/LATEST/search-index)",
+    "Baseline text probes: zero 'at-the-market' hits ever, zero 'non-reliance'; 'minimum bid price' irrelevant at ~$3.94",
+    "Company news via stocktitan and WebSearch: latest release 2026-09-01; nothing on 2026-09-22/23 explaining the fall",
+    "Lock-up: IPO-era lock-up language dates to the 2026-05-11 424B4 (direct listing on 2026-05-21); no expiry dated 2026-09-24 found",
+    "Analyst notes / initiations before the 2026-09-24 open: none found",
+    "Trials: not applicable (SIC 3842, device); CourtListener not queried given no litigation signal",
+    "No post-screen-instant prices were viewed; tools were instructed not to report prices"
+  ],
+  "baseline_tension": "Nothing found cuts either way inside the window: the low volume (0.87x) and this name's own falls (4 of 6 up next session, median +1.31%) lean mildly toward a bounce while ATR 13.76% and the undated financing overhang lean toward continuation, and with no dated finding neither is allowed to reach the number.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
