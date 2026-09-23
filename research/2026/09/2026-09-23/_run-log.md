@@ -37,3 +37,7 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-09-23 18:33 UTC
 - Fired 18:33 UTC (14:33 Toronto, inside the session). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves of 5 -> edge_score -> canada-note. Research only, no orders.
+
+## Stage CA — Canada researcher — DONE (empty day)
+- Logged at 2026-09-23 18:33 UTC
+- TSX open (market_closed null); 4 scheduled, 0 eligible, 0 hunted. All 4 fell below the $200k floor (MMY $139k, DND $119k disputed, WILD $55k, SR $10k filing_only). Calendar: confirmed 1 / agreed 0 / wsh_only 0 / vendor_only 2 / disputed 1; moved_off_target_by_wsh none. Anchor arms: options 0 / register 0. No baselines sealed, so no register snapshot stored today. TMX calendar and archive answered; Yahoo FX did not (fallback CAD/USD 0.71, not binding).
