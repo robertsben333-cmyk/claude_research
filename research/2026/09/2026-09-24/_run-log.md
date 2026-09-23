@@ -19,3 +19,9 @@
 - Fired 2026-09-23 13:38 UTC (intraday, ~2h before the European close). Sealing for event date 2026-09-24 (Thu), the next European session.
 - Plan: eu_universe.py --date 2026-09-24 over ten markets, cap 20, $200k floor, seal baselines, one bilingual hunter per name in waves of 5, publish after each wave, edge_score.py, note.
 - Checkout note: local main had diverged from a force-updated origin/main (ahead 82 / behind 58); work was done on a fresh branch cut from origin/main 4a28ef10 so publish.sh would not rebase stale history onto main. EARNINGS_DATA_BRANCH=main pinned.
+
+## Stage EU — universe and baselines sealed
+- Logged at 2026-09-23 13:44 UTC
+- 46 scheduled, 14 eligible above $200k, all 14 hunted (at or under cap 20; no draw). by_market uk 9, fr 2, de 1, se 1, es 1. Concentration: UK 64.3%.
+- Baselines sealed ~13:44-13:49 UTC on INTRADAY spots (markets open), not closes.
+- Registers read: uk (as of 09-19), de (09-22), fr (09-21), se (09-22); es none.
