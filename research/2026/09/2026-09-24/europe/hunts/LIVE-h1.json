@@ -1,0 +1,67 @@
+{
+  "ticker": "LIVE",
+  "market": "UK",
+  "expected_move_pct": -1.4,
+  "conviction_note": "The one sourced, in-window, sized item is mechanical: the Q2 dividend of 1.4475p (1.92% of the 75.35p spot) goes ex on 24 September, the same session as the interims, and eu_resolve.py measures unadjusted Yahoo closes; on this name's own last ten clean ex-dates the raw close fell a median 1.58% and a mean 1.19% (8 of 10 down), so -1.4 is the number. Nothing I found says the interim print will differ from the bar, so print_vs_bar is 0 and nothing is added for the result itself; results-day moves here have been small (median abs 1.5%, 4 of 5 recent results days positive), which is noise around the ex-div drift, not a signal.",
+  "print_vs_bar_pct": 0.0,
+  "bar": "Edison (paid-for sponsored research, 4 Sep 2026): FY26e EPRA earnings GBP27.3m, adjusted EPS 6.66p, DPS 5.79p, EPRA NTA 0.95 GBP/share against 94.23p at FY25, https://www.edisongroup.com/research/building-from-strength/BM-3642/ ; company's own FY26 DPS target 5.79p, https://www.investegate.co.uk/announcement/rns/living-reit-plc--live/dividend-declaration/9775261 . No second independent estimate and no H1-specific consensus found (Yahoo quoteSummary returns no quarters, 2 analysts), so the bar counts as unsourced for H1 and any result-based sizing would be capped. None was made.",
+  "event_confirmed": true,
+  "session_check": "bmo. Issuer's own RNS 'Notice of Interim Results and Investor Presentation' (3 Sep 2026) says it will announce H1 results on Thursday 24 September 2026, with an analyst presentation at 08:30 that day, so the release comes before the open. Its last two results RNSs went out at 07:00 (10 Sep 2025, 26 Mar 2026) per https://www.investegate.co.uk/company/LIVE . Source: https://www.investegate.co.uk/announcement/rns/living-reit-plc--live/notice-of-interim-results/9754277",
+  "positioning_check": "FCA aggregated register (as of 2026-09-19) read successfully and does not name Living REIT: short_ratio 0.0, change 0.0, https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv . anchor_covered is false, so this is the 0.5% truncation floor and not evidence that nobody is short. There is no positioning anchor, and priced_lean (+0.075) is effectively the run-up term. The one visible holder flow is IntegraFin (Transact platform) cutting its holding from 3.98% to 2.82% on 25 Aug 2026 (https://www.investegate.co.uk/announcement/rns/living-reit-plc--live/holding-s-in-company/9741949), which is retail-platform noise and is not sized.",
+  "findings": [
+    {
+      "finding": "The 1.4475p Q2 interim dividend goes ex on 24 September 2026, the same session as the H1 results. That is 1.92% of the 75.35p sealed spot. The stage's resolver measures unadjusted Yahoo closes, and on this name's last ten clean ex-dates the raw close fell a median 1.58% (mean 1.19%, 8 of 10 negative).",
+      "expected_impact_pct": -1.4,
+      "impact_low_pct": -2.3,
+      "impact_high_pct": -0.3,
+      "lands_on": "capital_return",
+      "reaction_history_on_this_line": "Raw close-to-close on this name's ex-dates from Yahoo's v8 chart with events=div: 2023-11-30 -4.22, 2024-03-14 -1.30, 2024-05-30 -1.86, 2024-09-19 -0.91, 2024-11-28 -1.29, 2025-03-27 +3.41 (three days after FY results), 2025-05-29 -2.25, 2025-09-18 +0.72, 2025-12-04 -1.89, 2026-04-02 -2.34. The 2026-07-09 row is dropped because Yahoo's data around it is corrupted (a pence/pounds error: 0.768).",
+      "resolves_by": "2026-09-24",
+      "source": "https://www.investegate.co.uk/announcement/rns/living-reit-plc--live/dividend-declaration/9775261",
+      "source_date": "2026-09-16 11:01",
+      "source_language": "en",
+      "original_quote": null,
+      "why_not_priced": "It is priced, and it is not an information edge: the market will mark the dividend off at the open. It belongs in the number for a different reason. eu_resolve.py closes() reads q['close'] from Yahoo's v8 chart, which is not dividend-adjusted (the adjclose series differs from it on this very name). So the scored window close(23 Sep) to close(24 Sep) contains the dividend coming off, and the baseline does not see it: priced_lean is +0.075, and neither history nor event_move_proxy flags an ex-date. If this were already in the baseline, the lean would carry a -1 to -2 point ex-div component, or the resolver would read adjclose.",
+      "independence": "The ex-date comes from the issuer's RNS only. The drop size is backed independently by Yahoo's own dividend event series and raw closes on this name (https://query1.finance.yahoo.com/v8/finance/chart/LIVE.L?range=3y&interval=1d&events=div), and the unadjusted-close use by /home/user/claude_research/researcher_europe/scripts/eu_resolve.py (closes(), line ~365). The FY26 5.79p target made of four quarters of ~1.4475p is also in https://www.investegate.co.uk/announcement/rns/living-reit-plc--live/dividend-guidance-declaration-new-debt-facility/9593290"
+    }
+  ],
+  "outside_window": [
+    {
+      "finding": "The senior-living acquisition completed on 16 July 2026, after the H1 period end. Edison estimates the net assets acquired at a fair value of c GBP132m (including the mark-to-market on the 3.46% Scottish Widows debt) against GBP107.3m consideration. So IFRS NAV should take a gain in H2, while adjusted EPRA NTA is 'very slightly' diluted. At most it is a post-balance-sheet disclosure in these interims; the numbers land with FY26 results in March 2027, and Edison has already published the analysis.",
+      "expected_impact_pct": 0.0,
+      "resolves_by": "2027-03-31",
+      "source": "https://www.edisongroup.com/research/building-from-strength/BM-3642/"
+    },
+    {
+      "finding": "Edison's FY26–28 forecasts carry a voluntary 5% haircut to SSH contracted rent for unforeseen tenant problems. Edison says that without it, earnings and dividend-paying capacity would be 7–8% higher. A clean H1 with no tenant problems would show this in the run-rate, but the haircut is in the published note and is really a full-year guidance item, not something this print settles.",
+      "expected_impact_pct": 0.0,
+      "resolves_by": "2027-03-31",
+      "source": "https://www.edisongroup.com/research/building-from-strength/BM-3642/"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "A trading update or profit warning before the print: none. The RNS list since the 26 Mar 2026 FY results holds dividends, the acquisition, the name change, PDMR notices, one TR-1 and FTSE notices, and no trading statement (https://www.investegate.co.uk/company/LIVE)",
+    "An H1-specific consensus: Yahoo quoteSummary returns no quarters; Edison publishes only FY numbers (https://www.edisongroup.com/research/building-from-strength/BM-3642/)",
+    "A read on the 30 June SSH valuation: nothing company-level. Edison says yields 'stabilised in H2' 2025 at a 6.42% NIY, and CPI indexation of 3.8% points to a small NTA uplift, but that is macro-to-company inference and was not sized. ReSI's senior-living portfolio was flat at GBP185.3m at 31 Mar 2026 (via Edison) but is outside the H1 balance sheet",
+    "SSH regulatory news in H1 2026: the RSH's G2/V2 grading of Inclusion (30% of rent) was announced 11 Jun 2026 and is priced (https://www.investegate.co.uk/announcement/rns/living-reit-plc--live/inclusion-housing-cic-s-regulatory-judgement/9612470). The Pivotal judgement of 4 Jun 2026 touches two LIVE properties, already reassigned at the same rent (Edison)",
+    "The FTSE September 2026 quarterly review: LIVE is not among the FTSE 250 changes, so there is no index flow in the window (https://www.lseg.com/en/media-centre/press-releases/2026/ftse-uk-index-series-review-september-2026)",
+    "The domestic retail press: Sharecast, Proactive Investors and Investors' Chronicle are 403 per the measured table, and Fidelity's news tab shows 'Sharecast service unavailable' (https://www.fidelity.co.uk/factsheet-data/factsheet/GB00BF0P7H59-living-reit-plc/news-key-dates-and-documents). A kalkine.co.uk piece is generic",
+    "The Edison page returned 403 to WebFetch and 200 to curl; the note was read in full via curl"
+  ],
+  "baseline_tension": "It cuts slightly against the lean: priced_lean is +0.075, a small positive from the -1.5% 20-day run-up, while the one in-window item is a mechanical -1.4 ex-dividend drop. The result itself gives no directional evidence either way.",
+  "language_note": [
+    "The ex-dividend date falling on the results day is only in the issuer's own RNS (16 Sep 2026, Investegate). The wire and sell-side material I found (Edison's 4 Sep note, search snippets) does not mention it. This is a domestic-regulatory-channel item, not a language gap, and it is what the finding rests on.",
+    "Otherwise nothing the English sources did not already carry: Edison's sponsored note repeats the RNS record almost exactly, and the domestic retail press is unreachable (403)."
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": -1.4,
+    "expected_move_pct": -1.4,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-1.4]
+  },
+  "lessons_applied": [
+    "nothing changed in the numbers. The file's truncated-zero rule matched how positioning_check was already worded (anchor_covered false, so no positioning anchor), and the session was already settled from the issuer's notice."
+  ],
+  "sources_used": 13
+}

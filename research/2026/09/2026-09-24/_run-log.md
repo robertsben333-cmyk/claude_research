@@ -48,3 +48,7 @@
 
 ## Stage EU — ALTN date unconfirmed
 - ALTN: no Notice of Results; vendor date is exactly 52 weeks after last year's release. Hunter puts ~30% on the 24th. Both findings moved to outside_window; 0 findings.
+
+## Stage EU — LIVE: resolver/ex-dividend issue and a Yahoo data defect
+- LIVE's whole -1.4 is the Q2 dividend (1.4475p, 1.92% of spot) going ex on 24 Sep, the results day. It ranks only because eu_resolve.py closes() reads unadjusted Yahoo closes. Not an information edge. The resolver should either adjust for in-window ex-dates or flag them; until then any European name going ex in its window carries a mechanical move the baseline does not see.
+- Yahoo LIVE.L closes around 8-10 Jul 2026 read 0.768 (a pence/pounds error), which makes the baseline's realised_vol_60d_pct 20132.93. That field is garbage for LIVE.
