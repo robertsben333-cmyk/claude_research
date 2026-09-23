@@ -42,3 +42,6 @@
 
 ## Stage EU — CHAR date unconfirmed
 - CHAR: no Notice of Results. The 24 Sep date is vendor/Fidelity 'Sep 2026' only. eu_resolve should confirm or kill it against Investegate. The 1-for-25 consolidation approved 22 Sep has no effective date; if it lands in the window an unadjusted Yahoo bar would show a ~25x jump — the resolver must check.
+
+## Stage EU — KEFI likely phantom
+- KEFI: vendor row has placeholder time and stale last-release (2022-09-28); last three interims came 29/30 Sep with no notice. Likely a phantom for 09-24; eu_resolve should check Investegate. 0 findings.
