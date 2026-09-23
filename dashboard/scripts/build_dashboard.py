@@ -275,6 +275,7 @@ li { margin:4px 0; }
 
 <script id="ledger" type="application/json">__LEDGER__</script>
 <script id="markets" type="application/json">__MARKETS__</script>
+<script id="v2" type="application/json">__V2__</script>
 <script>
 const D = JSON.parse(document.getElementById('ledger').textContent);
 /* ------------------------------------------------------------- formatting */
@@ -3196,6 +3197,109 @@ function byGroup(tabs) {
     .map(x => x[0]);
 }
 
+/* ===================================================================== V2 */
+/* Stage E V2 naast V1. De koersen komen uit ledger.json, net als op elk ander
+   tabblad, dus pre-lessons, post-lessons en V2 worden tegen dezelfde uitstap en
+   onder dezelfde filters gerangschikt. Alleen de V2-score zelf komt uit v2.json. */
+const V2RAW = document.getElementById('v2');
+const V2 = (V2RAW && JSON.parse(V2RAW.textContent)) || {ledger:null, names:{}, runs:[]};
+ALL.forEach(r => {
+  const g = (V2.names || {})[r.run + '|' + r.ticker];
+  r.v2 = g ? g.v2 : null;
+  r.v2_vol_only = g ? g.vol_only : null;
+  r.v2_status = g ? g.status : null;
+});
+
+function tabV2() {
+  const L = V2.ledger;
+  let html = `<p class="lead">Stage E V2 rekent de sommen van de hunters om via κ: hoe
+    hard de koers bewoog op openbare 8-K's die een blinde scorer op dezelfde schaal
+    scoorde, zonder marktbeta en per eenheid σ. <b>V1 blijft de sleutel die handelt.</b>
+    Dit tabblad zet drie scores naast elkaar: vóór LESSONS.md, erna (V1) en V2, plus
+    V1 × σ zonder κ. V2 voegt pas iets toe als het díe controle verslaat.</p>`;
+  if (!L) {
+    return html + `<div class="card warnbox"><h3>Geen V2-data</h3><p>De bouw vond geen
+      <code>dashboard/data/v2.json</code>. Draai <code>dashboard/scripts/build_v2.py</code>.</p></div>`;
+  }
+  const bs = L.by_status || {};
+  const prim = V2.primary_horizon;
+  const pooledPrim = ((L.matrix || {})._pooled || {})[prim];
+  const calibrated = pooledPrim && pooledPrim.n >= V2.min_n;
+  html += tiles([
+    {k:'8-K-filings in de ledger', v:L.items, s:`sinds ${esc(V2.min_event_date)}`},
+    {k:'gescoord', v:(bs.scored||0)+(bs.measuring||0)+(bs.measured||0),
+     s:`${bs.collected||0} wachten op de scorer`},
+    {k:`waarnemingen bij ${esc(prim)}`, v:pooledPrim ? pooledPrim.n : 0,
+     s:`min_n = ${V2.min_n}`},
+    {k:'status', v: calibrated ? 'gekalibreerd' : 'nog niet',
+     s: calibrated ? 'V2 krijgt getallen' : 'elke run leest uncalibrated'}]);
+
+  const rows = rowsFor(r => r.impact_sum_pre_lessons !== null && r.impact_sum_pre_lessons !== undefined
+                         || r.v2 !== null);
+  const days = byDay(rows);
+  const withV2 = rows.filter(r => r.v2 !== null && r.v2 !== undefined);
+  const dV2 = byDay(withV2);
+  html += `<div class="card"><h3>Drie scores tegen dezelfde beweging</h3>` + table([
+    {h:'score', f:r=>r.label}, {h:'ρ binnen dagen', f:r=>`<span class="${sgn(r.rho)}">${n3(r.rho)}</span>`},
+    {h:'namen', f:r=>r.n}, {h:'wat het is', f:r=>r.what}], [
+    {label:'<b>pre-lessons</b>', rho:pooledRho(days, r=>r.impact_sum_pre_lessons, mvOf),
+     n:rows.filter(r=>r.impact_sum_pre_lessons!==null && r.impact_sum_pre_lessons!==undefined).length,
+     what:'de som vóór LESSONS.md, bevroren'},
+    {label:'<b>post-lessons (V1)</b>', rho:pooledRho(days, r=>r.impact_sum, mvOf), n:rows.length,
+     what:'<code>impact_sum</code>, de sleutel en het enige dat handelt'},
+    {label:'<b>V2</b>', rho:pooledRho(dV2, r=>r.v2, mvOf), n:withV2.length,
+     what:'<code>impact_sum_grounded</code>, alleen gekalibreerde runs'},
+    {label:'controle: V1 × σ', rho:pooledRho(dV2, r=>r.v2_vol_only, mvOf), n:withV2.length,
+     what:'zelfde namen als V2, geen κ'}]) +
+    `<small>ρ is binnen dagen gepoold, op de gekozen uitstap en onder de filters bovenaan.
+     V2 en de controle staan op dezelfde namen; vergelijk V2 met de controle, niet met V1.
+     ${withV2.length ? '' : 'Nog geen gekalibreerde run, dus V2 en de controle zijn leeg.'}</small></div>`;
+
+  const tf = L.timeframes || [];
+  const pooled = (L.matrix || {})._pooled || {};
+  html += `<div class="card"><h3>κ per horizon, gepoold</h3>` + table([
+    {h:'horizon', f:r=> r.tf === prim ? `<b>${esc(r.tf)}</b>` : esc(r.tf)},
+    {h:'κ', f:r=>r.k ? n3(r.k.kappa) : '–'},
+    {h:'95%-interval', f:r=>r.k && r.k.ci95 ? `${n3(r.k.ci95[0])} … ${n3(r.k.ci95[1])}` : '–'},
+    {h:'n', f:r=>r.k ? r.k.n : 0},
+    {h:'pearson', f:r=>r.k ? n2(r.k.pearson) : '–'},
+    {h:'bruikbaar', f:r=>r.k && r.k.n >= V2.min_n ? 'ja' : `<span class="meta">onder ${V2.min_n}</span>`}],
+    tf.map(t => ({tf:t, k:pooled[t]}))) +
+    `<small>κ is de beweging zonder beta, gedeeld door σ, per scorepunt. Een κ van 0,5 bij een
+     σ van 2% betekent: een finding van +1 punt is +1% waard. Vetgedrukt is de horizon waarop
+     V2 rangschikt.</small></div>`;
+
+  const lines = Object.keys(L.matrix || {}).filter(k => k !== '_pooled');
+  if (lines.length) {
+    html += `<div class="card"><h3>κ per regel bij ${esc(prim)}</h3>` + table([
+      {h:'regel', f:r=>esc(r.line)}, {h:'κ', f:r=>r.k ? n3(r.k.kappa) : '–'},
+      {h:'n', f:r=>r.k ? r.k.n : 0},
+      {h:'gebruikt', f:r=>r.k && r.k.n >= V2.min_n ? 'eigen κ' : 'gepoolde κ'}],
+      lines.map(l => ({line:l, k:(L.matrix[l] || {})[prim]}))) + `</div>`;
+  }
+
+  const runs = V2.runs || [];
+  if (runs.length) {
+    html += `<div class="card"><h3>Runs met een V2-bestand</h3>` + table([
+      {h:'run', f:r=>esc(r.run.split('/').slice(-2,-1)[0])},
+      {h:'status', f:r=>esc(r.status)}, {h:'namen met V2', f:r=>r.n_grounded},
+      {h:'κ zoals op', f:r=>`<span class="meta">${esc(r.matrix_as_of||'–')}</span>`},
+      {h:'waarnemingen', f:r=>r.observations}], runs) +
+      `<small>Elke run gebruikt κ zoals die stond toen zijn baselines verzegeld werden: een
+       waarneming telt alleen als het eindpunt van haar horizon vóór die seal lag.</small></div>`;
+  }
+  const perName = rows.filter(r => r.v2_status);
+  if (perName.length) {
+    html += `<div class="card"><h3>Per naam</h3>` + table([
+      {h:'run', f:r=>r.run_date}, {h:'ticker', f:r=>`<b>${esc(r.ticker)}</b>`},
+      {h:'pre-lessons', f:r=>n2(r.impact_sum_pre_lessons)},
+      {h:'post-lessons', f:r=>n2(r.impact_sum)},
+      {h:'V2', f:r=> r.v2 === null || r.v2 === undefined ? `<span class="meta">${esc(r.v2_status)}</span>` : n2(r.v2)},
+      {h:'beweging', f:r=>pc(mvOf(r))}], perName) + `</div>`;
+  }
+  return html;
+}
+
 /* ------------------------------------------------------- de index van de pagina
    Twintig tabbladen in één platte rij zijn geen index. Drie dingen maken er wel
    een van: elk tabblad hoort bij een groep, elk tabblad heeft één regel die zegt
@@ -3226,6 +3330,7 @@ const TABMETA = {
   'Taal':       {g:'Doorsnedes', q:'Leverde de aparte ronde in de eigen taal rangcorrelatie op? (controle gestopt 2026-09-22; alleen runs van vóór die datum)'},
   /* Register */
   'Lessons':    {g:'Register', q:'Kost of levert LESSONS.md: de bevroren draft tegen de uiteindelijke som.'},
+  'V2':         {g:'Register', q:'Pre-lessons, post-lessons en V2 naast elkaar, en of κ iets toevoegt boven V1 × σ.'},
   'Hypotheses': {g:'Register', q:'Het hypotheseregister met één verdictregel, en wat er tot nu toe overeind blijft.'},
   'Weging':     {g:'Register', q:'De bevroren wegingen w1 en w2 naast de vlakke regel, per dag meegerekend.'},
   /* Bronnen */
@@ -3289,7 +3394,7 @@ const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel],
               ['Timing',tabTiming], ['Instap',tabInstap],
               ['Sector',tabSector], ['Zoekvolume',tabZoek],
               ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten],
-              ['Lessons',tabLessons], ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
+              ['Lessons',tabLessons], ['V2',tabV2], ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
               ['Agenda',tabAgenda], ['Data',tabData], ['Index',tabIndex]];
 US_TABS.splice(0, US_TABS.length, ...byGroup(US_TABS));
 const MARKETS = [['US','Verenigde Staten'], ['EU','Europa'], ['JP','Japan'],
@@ -3701,6 +3806,7 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--ledger", default=str(DATA / "ledger.json"))
     ap.add_argument("--markets", default=str(DATA / "markets.json"))
+    ap.add_argument("--v2", default=str(DATA / "v2.json"))
     ap.add_argument("--out", default=str(ROOT / "dashboard" / "dashboard.html"))
     a = ap.parse_args()
 
@@ -3718,6 +3824,10 @@ def main():
                               [f"{mk} does not exist: run "
                                "dashboard/scripts/build_markets.py"]}))
     html = html.replace("__MARKETS__", mblob.replace("</", "<\\/"))
+    # Stage E V2. Missing is not an error either: the tab says so itself.
+    v2 = Path(a.v2)
+    vblob = v2.read_text(encoding="utf-8").strip() if v2.exists() else "null"
+    html = html.replace("__V2__", vblob.replace("</", "<\\/"))
     Path(a.out).write_text(html, encoding="utf-8")
     print(f"wrote {a.out}  ({len(html.encode())/1024:.0f} kB, {len(led['names'])} names, "
           f"{len(led['trades'])} positions)")

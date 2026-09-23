@@ -64,6 +64,11 @@ if (( FEEDERS )); then
     || echo "update: markets feeder failed, the three market tabs keep the last one"
 fi
 
+# Stage E V2 -> the V2 tab. Reads the shadow ledger and every
+# edge-scores-grounded.json on disk, no network, so it runs even with --no-feeders.
+python3 dashboard/scripts/build_v2.py \
+  || echo "update: V2 feeder failed, the V2 tab keeps the last one"
+
 python3 dashboard/scripts/build_ledger.py "${LEDGER_ARGS[@]+"${LEDGER_ARGS[@]}"}"
 python3 dashboard/scripts/build_dashboard.py
 

@@ -115,11 +115,15 @@ RobinBaumeister's PR #9, rebuilt against its review: public 8-Ks are scored blin
 `shadow-scorer` agent (no web tools), their moves measured at nine horizons after the
 score exists, and a response factor κ fitted per line and horizon.
 `edge_grounded_score.py` maps each day's findings through it into
-`edge-scores-grounded.json`; `alpaca_trade.py` never reads that file. The ledger
-(`researcher_us/analysis/shadow-ledger.json`) **ships empty**, because PR #9's three rows
-were hand-entered, so every run reads `uncalibrated` until `edge_v2.min_n` observations
-exist. V2 has added something only where it beats `control_vol_only` (V1 × σ, no κ) in
-`edge_resolve.py`, not where it beats V1. See `researcher_us/README_V2.md`.
+`edge-scores-grounded.json`; `alpaca_trade.py` never reads that file. PR #9's three
+hand-entered ledger rows were dropped; the ledger was filled on 2026-09-23 with 303 8-Ks
+for the 197 tickers of every run on disk, 302 scored blind. At `session_close` the scorer's
+sizes predict the real 8-K reaction at **pearson 0.40, κ 0.365 (CI 0.224–0.506), n 161** —
+but on the stage E names themselves V2 ranks at −0.134 against −0.176 for V1 and **−0.132
+for V1 × σ**, so κ adds nothing over volatility scaling yet. **CLAUDE.md is in every
+agent's context and quotes outcomes (NAVN, WLTH, DLTH), so any ticker it names is
+excluded from the fit** — 39 filings. V2 has added something only where it beats
+`control_vol_only`, not where it beats V1. See `researcher_us/README_V2.md`.
 
 Ten runs exist: two on 2026-08-31 and one on each of 09-01, 09-02, 09-03, 09-04, 09-07,
 09-08, 09-09 and 09-10. Six are resolved — **43 names, 249 findings, 65 hunts**; the

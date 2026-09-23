@@ -15,7 +15,10 @@ dashboard/
   ../.github/workflows/dashboard.yml   the same rebuild, in CI, for the fetched copy
   scripts/build_ledger.py   collect runs + broker + prices -> data/ledger.json
   scripts/build_dashboard.py render data/ledger.json -> dashboard.html
+  scripts/build_v2.py       stage E V2: shadow ledger + grounded runs -> data/v2.json,
+                            for the V2 tab (pre-lessons, post-lessons and V2 side by side)
   data/ledger.json          the whole dataset, one file
+  data/v2.json              stage E V2, joined onto the ledger's names by run|ticker
   data/names.csv            one row per ranked name per run
   data/trades.csv           one row per position the account opened
   data/sectors.json         sector and industry per ticker (cached, Yahoo)

@@ -34,8 +34,29 @@ runtime grounded_τ(j) = S_j · κ_τ,L_j · σ_live   σ_live off the sealed ba
 `researcher_us/scripts/edge_shadow_engine.py` does the first four steps and
 `researcher_us/scripts/edge_grounded_score.py` the last. The ledger is
 `researcher_us/analysis/shadow-ledger.json`; the scorer's inputs and scores are under
-`researcher_us/analysis/shadow/`. **The ledger ships empty.** The three rows PR #9
-committed were not produced by its own code and are gone.
+`researcher_us/analysis/shadow/`. The three rows PR #9 committed were not produced by
+its own code and are gone; the ledger was filled on 2026-09-23 with 303 8-Ks for the 197
+tickers of every run on disk (up to three per ticker since 2026-07-01), 302 scored blind.
+
+## What the fit excludes
+
+- **Any ticker CLAUDE.md names.** That file is loaded into every agent's context and it
+  quotes outcomes (NAVN fell 18.4%, WLTH rose 8.0%, DLTH +23.20%). Two scorers reported
+  it themselves. A score that says in its `basis` that it saw the name is excluded too.
+  39 filings on the first fill.
+- **One accession under two tickers** (BF.A/BF.B, LEN/LEN.B) counts once.
+- **Two filings of one issuer whose horizon ends at the same moment** share one move, so
+  they are one observation with their scores summed (CPRT results + acquisition, RENT
+  results + rights offering).
+
+## First reading, 2026-09-23
+
+At `session_close` the scorer's sizes predict the real 8-K reaction: κ **0.365**, 95%
+interval 0.224–0.506, pearson **0.40**, n 161. The model sizes public news with real
+information. On the stage E names themselves, all 17 runs grounded as of their own seal,
+pooled within days on the dashboard's default exit: V1 **−0.176**, V2 **−0.134**, V1 × σ
+**−0.132**, 112 names. V2 equals the vol-only control, so κ has added nothing over
+volatility scaling, and every ranker is negative on these days.
 
 ## What changed from PR #9, and why
 
