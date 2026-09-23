@@ -1,0 +1,73 @@
+{
+  "ticker": "BYND",
+  "drop_date": "2026-09-23",
+  "window": {"from": "close of 2026-09-23", "to": "close of 2026-09-24"},
+  "expected_move_pct": -1.5,
+  "conviction_note": "One dated, unfinished seller: the 2027-note exchange prices its top-up shares on a three-day VWAP from 9/23 that covers all of 9/24, so holders paid in stock have a reason to sell through the window (finding -2.0); I trimmed it to -1.5 because today's excess volume (~1.4m shares over a ~1.05m normal day) is about the size of the whole exchange, so part of that supply has probably already traded. The leg 1 overshoot (a 16.6% fall against ~8% per-share dilution on an exchange that is roughly neutral to enterprise value) is real but only closes once the VWAP period ends at the 9/25 close, which is outside the window.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -2.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "The dilution arithmetic in the issuer's 8-K (https://www.sec.gov/Archives/edgar/data/1655210/000119312526398531/d186483d8k.htm): about $15.0m of 2027 notes exchanged at 96% (about $14.4m of equity), 1,097,444 shares at initial settlement plus up to 848,265 more on a 3-day VWAP with a $7.4009 floor. That is against about 17.2m shares outstanding (515.8m before the split per the 10-Q cover https://www.sec.gov/Archives/edgar/data/1655210/000165521026000055/bynd-20260627.htm, divided by 30 per the 1-for-30 split 8-K https://www.sec.gov/Archives/edgar/data/1655210/000165521026000059/bynd-20260813.htm, which agrees with the $197.9m cap at $11.51 in https://www.investing.com/news/sec-filings/beyond-meat-announces-exchange-of-15-million-convertible-notes-for-stock-93CH-4912956). Sizes are also held against the baseline's 6.34% two-day straddle and this name's own falls (median -3.98% next close, n=18).",
+  "cause": {
+    "label": "equity_offering",
+    "seller_is_finished_pct": 35,
+    "confidence_pct": 80,
+    "what_happened": "Before the open on 2026-09-23 (Investing.com 08:20 ET), Beyond Meat filed an 8-K (Items 3.02 and 8.01) saying it had privately exchanged about $15.0m of its 0% convertible notes due 2027 for common stock at 96% of face. That is 1,097,444 shares on 9/23 and up to 848,265 more at final settlement around 9/28, priced on a VWAP over the three trading days from 9/23 with a $7.4009 floor, or about 6-11% of the roughly 17.2m shares outstanding. The stock gapped down 7.7% and fell another 9.6% intraday on 2.5x normal volume.",
+    "evidence": [
+      {"claim": "8-K Items 3.02/8.01: exchange of about $15.0m of 2027 notes at 96% for 1,097,444 shares now plus up to 848,265 on a 3-day VWAP starting 9/23 with a $7.4009 floor, final settlement around 9/28, Section 4(a)(2)", "url": "https://www.sec.gov/Archives/edgar/data/1655210/000119312526398531/d186483d8k.htm", "timestamp": "2026-09-23"},
+      {"claim": "Wire copy published 08:20 ET 2026-09-23 with the stock at $11.51 pre-market and a $197.9m market cap", "url": "https://www.investing.com/news/sec-filings/beyond-meat-announces-exchange-of-15-million-convertible-notes-for-stock-93CH-4912956", "timestamp": "2026-09-23 08:20 ET"},
+      {"claim": "Second report of the same exchange and its dilution", "url": "https://www.tipranks.com/news/company-announcements/beyond-meat-retires-convertible-notes-through-stock-exchange", "timestamp": "2026-09-23"},
+      {"claim": "On 2026-08-10 the 2030-notes indenture was amended to remove the restrictions on repurchasing or exchanging the 2027 notes for cash and/or equity, which is what enabled today's exchange", "url": "https://www.sec.gov/Archives/edgar/data/1655210/000119312526341312/d156122d8k.htm", "timestamp": "2026-08-10"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -40,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "The VWAP averaging period of the 2027-note exchange runs through the close of 2026-09-25, with final settlement of up to 848,265 more shares around 2026-09-28. Nothing else dated falls inside the window.",
+    "what_would_change_my_mind": "An 8-K or release before the 9/24 open showing the exchange shares already fixed (VWAP period cut short), or a second exchange of the remaining roughly $14.5m of 2027 notes, which would take the supply finding to zero or deepen it."
+  },
+  "positioning_check": "Short interest 4,672,133 shares at the 2026-08-31 settlement (Nasdaq/FINRA, https://api.nasdaq.com/api/quote/BYND/short-interest?assetclass=stocks), 2.98 days to cover, down 8.8% from 5,121,711 on 2026-08-14. That is about 27% of the roughly 17.2m shares outstanding after the split. FINRA publishes about eight business days after settlement, so the position carried into today's fall, and any shorting against the VWAP window, cannot be seen yet. Insiders: 4 sells and 0 open-market buys over 3 and 12 months (Nasdaq insider-trades), last Form 4s filed 2026-09-16. Options: 25-delta skew +1.71 vol points (mildly favours puts), put/call open interest 0.24, two-day straddle 6.34%, ATM spread 22% of mid (baseline).",
+  "findings": [
+    {
+      "finding": "The exchange's top-up shares (up to 848,265, about 5% of shares outstanding) price on a VWAP over the three trading days from 2026-09-23, so the averaging period covers all of 2026-09-24, and holders paid about $14.4m in stock gain from selling or shorting into it; the seller is not finished until the 2026-09-25 close.",
+      "leg": "new_information",
+      "mechanism_in_window": "The contractual pricing window in the 8-K is 9/23, 9/24 and 9/25. The 9/24 session is the middle day of the averaging period, so the flow that sets the share count trades inside the scored window and not after it. The company cannot add a registered offering on top of it tonight, because the 10-Q says it no longer qualifies for S-3 and cannot use its ATM.",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-09-24",
+      "reaction_history_on_this_line": "No VWAP-priced equity settlement appears among this name's comparable falls in the baseline. The June 2026 private equity issuance (Big Geyser warrants, 8-K 2026-06-25) had fixed exercise prices and no averaging window, and there is no qualifying fall around it. The October 2025 exchange-offer period (2025-10-16 to 10-27 in the baseline) was a meme-squeeze regime with next-day moves from -23% to +24%, which is not comparable. The post-split falls (08-11, 08-17) went -0.96% and +9.54% the next day.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1655210/000119312526398531/d186483d8k.htm",
+      "source_date": "2026-09-23",
+      "why_not_priced": "Today's close holds day one of the averaging flow and not days two and three. If the market had discounted the remaining supply, the stock would already sit near the level where the extra shares stop mattering, and the $7.4009 floor is 25% below the screen price. Instead the holders are still paid more shares for every cent lower the 9/24 VWAP prints. Against that, today's roughly 2.5m shares traded against a ~1.05m normal day leaves ~1.4m of excess, about the size of the whole exchange, so part of this supply has probably already cleared.",
+      "independence": "The same terms, the three-day VWAP and final settlement around 9/28, are reported independently by Investing.com (https://www.investing.com/news/sec-filings/beyond-meat-announces-exchange-of-15-million-convertible-notes-for-stock-93CH-4912956) and TipRanks (https://www.tipranks.com/news/company-announcements/beyond-meat-retires-convertible-notes-through-stock-exchange). Both restate the 8-K and neither is an independent read of the flow."
+    }
+  ],
+  "outside_window": [
+    {"finding": "Leg 1 overshoot with a date that falls after the window: the fall (~16.6%, about $34m of market cap from roughly $205m) is about twice the per-share dilution (~7-8%) of an exchange that retires $15.0m of debt for about $14.4m of equity. The supply that set the price ends at the 2026-09-25 close (VWAP period) and settles around 9/28, so any relief from a finished seller lands after the scored window.", "expected_impact_pct": 3.0, "resolves_by": "2026-09-28", "source": "https://www.sec.gov/Archives/edgar/data/1655210/000119312526398531/d186483d8k.htm"},
+    {"finding": "Roughly $14.5m of 2027 notes likely remain: $29.5m current before today (10-Q) less the ~$15.0m exchanged, assuming no other repurchases since the 2026-08-10 amendment. A further stock exchange like today's is permitted since that amendment, but nothing dates one. The notes mature in 2027.", "expected_impact_pct": -2.0, "resolves_by": "2027-03-15", "source": "https://www.sec.gov/Archives/edgar/data/1655210/000119312526341312/d156122d8k.htm"},
+    {"finding": "Sonate/Vegadelphia trademark judgment of $15,437,500 entered 2026-09-18 (actual damages cut from $23.5m to $37,500). Post-judgment motions and appeals remain open to both sides, with the appeal clock about 30 days from entry. This was known and filed on 9/22, before the drop.", "expected_impact_pct": 0.0, "resolves_by": "2026-10-19", "source": "https://www.sec.gov/Archives/edgar/data/1655210/000165521026000064/bynd-20260918.htm"},
+    {"finding": "Next earnings: the Zacks cadence estimate is 2026-11-09. That is a prior, not a company announcement.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-09", "source": "https://api.nasdaq.com/api/analyst/BYND/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "ATM or shelf takedown tonight: the Q2 10-Q says the company no longer meets S-3 eligibility and cannot use its ATM program (https://www.sec.gov/Archives/edgar/data/1655210/000165521026000055/bynd-20260627.htm), and the newest ATM text hit is 2026-04-09, so no registered offering can price overnight",
+    "Going-concern language: 0 hits ever in EDGAR full-text search (baseline forward block)",
+    "Listing deficiency: bid-price compliance was regained on 2026-08-28 per the 8-K filed 2026-09-01 (https://www.sec.gov/Archives/edgar/data/1655210/000165521026000062/bynd-20260828.htm), and the stock is at $9.94, so no open clock",
+    "Other exchange agreements: efts full-text search for \"exchange agreements\" since 2026-08-01 returns only today's 8-K (https://efts.sec.gov/LATEST/search-index?q=%22exchange%20agreements%22&ciks=0001655210&startdt=2026-08-01&enddt=2026-09-23)",
+    "Analyst note, upgrade or defence dated before the 9/24 open: none found by web search",
+    "Disclosed buyer (Form 4 buy, 13D/G): none. Last Form 4s, filed 2026-09-16, are sells (Nasdaq insider summary: 0 buys over 12 months)",
+    "The search result titled 'Why is Beyond Meat stock plunging 17% today' (investing.com) turned out to be dated 2026-08-11 and covers the reverse split, not today's fall. It was not used as a cause source",
+    "No price dated after the 15:04 ET screen instant was seen or used"
+  ],
+  "baseline_tension": "Broadly agrees: moderate volume (2.5x), mildly positive put skew, a high 9% ATR and this name's own falls (median -3.98%, 33% up) all lean toward continuation, as the supply finding does. The one thing cutting against it is that today's excess volume is already about the size of the whole exchange, so I emitted -1.5 against a finding sum of -2.0 (0.5 points trimmed).",
+  "pre_lessons": {
+    "impact_sum_pct": -2.0,
+    "expected_move_pct": -1.5,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-2.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 11
+}
