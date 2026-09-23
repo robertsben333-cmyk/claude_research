@@ -1,0 +1,72 @@
+{
+  "ticker": "VOYG",
+  "drop_date": "2026-09-23",
+  "window": {"from": "close of 2026-09-23", "to": "close of 2026-09-24"},
+  "expected_move_pct": 0.2,
+  "conviction_note": "One finding: the convert-arb hedge supply behind today's intraday leg should end with the pricing release before the 2026-09-24 open (the 2025 deal priced after one marketing day), sized +0.8 net of upsize risk. It is cut to +0.2 because this stock's own day-after-pricing in November 2025 was -1.6% even with a concurrent buyback, its comparable falls have a median of -2.04%, and its 8.7% ATR sits on the continuation side of the base rate.",
+  "overshoot_pct": 0.8,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.8,
+  "bar": "Sized against this stock's own record on the same line: the Nov 2025 $300m convertible, launched 2025-11-05 (https://www.sec.gov/Archives/edgar/data/1788060/000162828025051764/ex991launchpressrelease.htm) and priced off the 2025-11-06 close of $23.83, upsized to $435m (https://voyagertechnologies.com/press-releases/voyager-technologies-inc-prices-upsized-435-0-million-convertible-senior-notes-offering/). Daily bars, pulled only for 2025-11-03..2025-11-13: 26.29 -> 23.83 on the marketing day (-9.4%), then 23.45 the day after pricing (-1.6%). Also the baseline's own comparable falls (n=3, median -2.04%) and the forward straddle (16.4% over 23 days, not an event move).",
+  "cause": {
+    "label": "equity_offering",
+    "seller_is_finished_pct": 60,
+    "confidence_pct": 85,
+    "what_happened": "At 16:28 ET on 2026-09-22 Voyager launched a $350m (+$52.5m option) convertible senior notes offering due 2032, about 18% of market cap, with a capped call and no concurrent buyback or prepaid forward. The stock fell about 7% after hours, gapped -11.8%, and lost another 8.3% during today's marketing session, when convert arbitrage funds put on their hedge shorts. Morgan Stanley also cut its target to $37 (Underweight) on 09-22.",
+    "evidence": [
+      {"claim": "Launch press release: $350.0m 2032 convertible notes, $52.5m option, capped call at >=150% premium, proceeds to capped call and general corporate purposes; terms set at pricing", "url": "https://www.financialcontent.com/article/bizwire-2026-9-22-voyager-technologies-inc-announces-proposed-convertible-senior-notes-offering", "timestamp": "2026-09-22 16:28 ET"},
+      {"claim": "Shares fell 7.0% after hours to $34.89 from the $37.53 regular close; Morgan Stanley cut its target to $37 from $39 and kept Underweight", "url": "https://www.investing.com/news/stock-market-news/why-is-voyager-technologies-stock-sliding-today-93CH-4911709", "timestamp": "2026-09-22 17:03 ET"},
+      {"claim": "The company's own press-release list shows no pricing release as of the screen; the newest item is the 09-22 launch", "url": "https://voyagertechnologies.com/press-releases/", "timestamp": "2026-09-23"},
+      {"claim": "The stock-news feed's newest VOYG item is the 09-22 16:28 launch; no pricing item", "url": "https://www.stocktitan.net/news/VOYG/", "timestamp": "2026-09-23"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 20,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Pricing release for the 2032 convertible notes, expected after today's close or before the 2026-09-24 open. The date is inferred from the 2025 deal's one-day marketing (launch 2025-11-05, priced off the 11-06 close); the company has not announced one.",
+    "what_would_change_my_mind": "A large upsize (the 2025 deal went from $300m to $435m) or a low conversion premium in the pricing release. Either one would mean more hedge supply or a distressed read and would turn this negative. So would the deal failing to price tonight, which leaves the arb short supply open through 09-24."
+  },
+  "positioning_check": "Not found. The Nasdaq short-interest API returned HTTP 503 and the baseline carries short_interest unavailable. Even if it had answered, FINRA settlement lags about eight business days, so the position carried into the fall is unobservable. Options: 25-delta skew is -4.04 vol points (calls richer than puts, 'upside paid'), put/call OI 0.48, ATM IV 80.8%. Arb hedging usually runs through stock rather than listed puts, so the skew says little about today's supply. Insiders (Nasdaq): 0 open-market buys and 1 sale in 3 months; a Form 144 was filed 2026-08-11.",
+  "findings": [
+    {
+      "finding": "The selling that set today's intraday price is convertible-arbitrage hedge shorting against a $350m note deal launched 2026-09-22 at 16:28 ET. It ends at pricing, which on the issuer's own precedent lands after today's close and is announced before the 2026-09-24 open. That release also triggers the capped-call counterparties' initial hedge purchases, which the launch release itself says could raise the share price. Sized net of the risk that the release carries an upsize.",
+      "leg": "repricing",
+      "mechanism_in_window": "The pricing press release for the 2032 notes. The 2025 deal was launched 2025-11-05, marketed one day, priced off the 2025-11-06 close, and the pricing was released 2025-11-07. The same cadence puts this pricing on today's close and the release before the 09-24 open. The release fixes the hedge ratio (arb shorting is done), and the launch release states that capped-call counterparties 'expect to enter into various derivative transactions ... and/or purchase shares' concurrently with or shortly after pricing.",
+      "expected_impact_pct": 0.8,
+      "impact_low_pct": -3.0,
+      "impact_high_pct": 4.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-09-24",
+      "reaction_history_on_this_line": "One prior instance, the Nov 2025 convertible. Marketing day 2025-11-06: -9.4% (26.29 to 23.83). Day after pricing, 2025-11-07: opened 23.15 (-2.9%) and closed 23.45 (-1.6%), and the stock kept drifting to 20.92 by 11-13. That deal was upsized 45% at pricing and came with a $175m repurchase and prepaid forward (launch release). This one has neither, so today's hedge shorting had to go through the open market, which is consistent with the deeper -19% fall against -9.4%.",
+      "source": "https://www.financialcontent.com/article/bizwire-2026-9-22-voyager-technologies-inc-announces-proposed-convertible-senior-notes-offering",
+      "source_date": "2026-09-22 16:28 ET",
+      "why_not_priced": "Today's tape holds the arbs' short supply while the deal size and terms are still open. It does not hold the end of that supply or the capped-call dealers' purchases, which only start at pricing. If the market already priced the deal as done, the intraday leg would have been flat after the gap instead of adding another 8.3%. The upsize risk, which the 2025 precedent shows, cuts the other way and is netted into the +0.8.",
+      "independence": "Mechanism timing: the issuer's own 2025 launch/pricing pair on EDGAR (https://www.sec.gov/Archives/edgar/data/1788060/000162828025051764/ex991launchpressrelease.htm and https://voyagertechnologies.com/press-releases/voyager-technologies-inc-prices-upsized-435-0-million-convertible-senior-notes-offering/). Direction: the same precedent points AGAINST a bounce (-1.6% the day after pricing), so the independent evidence on sign is contrary."
+    }
+  ],
+  "outside_window": [
+    {"finding": "Initial purchasers' $52.5m option on the 2032 notes, exercisable within 13 days of issuance. Exercise adds delta-hedge shorting at a date nobody has announced.", "expected_impact_pct": -0.5, "resolves_by": "2026-10-13", "source": "https://www.financialcontent.com/article/bizwire-2026-9-22-voyager-technologies-inc-announces-proposed-convertible-senior-notes-offering"},
+    {"finding": "Open S-3ASR universal shelf filed 2026-08-14 (automatic, effective on filing). It allows further issuance, but no ATM language appears anywhere in the filings (efts probe, 0 hits) and no takedown is dated.", "expected_impact_pct": -0.3, "resolves_by": "2029-08-14", "source": "https://www.sec.gov/Archives/edgar/data/1788060/000162828026057140/forms-3universalshelfregis.htm"},
+    {"finding": "Q3 2026 results. The only date is the Zacks/Nasdaq estimate of 2026-11-02, a cadence prior and not a company announcement.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-02", "source": "https://api.nasdaq.com/api/analyst/VOYG/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "Pricing release for the 2032 notes as of the screen: none on the company press-release page (https://voyagertechnologies.com/press-releases/), the stocktitan VOYG feed, or the search results for 'Voyager Technologies Prices ... 2032'",
+    "EDGAR filings from 2026-09-15 onward: none in the browse-edgar atom feed; efts full text for 'convertible' over 2026-09-20..09-24 returned 0 hits, so no launch 8-K yet (the 2025 deal's 8-K came only after closing)",
+    "Short interest: api.nasdaq.com short-interest returned HTTP 503",
+    "Other 09-23 news or a second shoe (downgrade, contract loss, guidance): nothing beyond the offering and Morgan Stanley's 09-22 target cut (tipranks, gurufocus, investing.com)",
+    "Sector move on 09-23: only a snippet on LUNR -3.3%, no sector-wide event of this size found. Not used",
+    "ATM, going-concern, minimum-bid-price and non-reliance probes in the baseline: 0 recent hits (the non-reliance hits are 2025 capped-call and prepaid-forward exhibit boilerplate)",
+    "Benzinga and businesswire returned HTTP 403, so the launch release was read through financialcontent",
+    "No price after the screen instant appeared or was used. Historical bars were fetched only for 2025-11-03..2025-11-13, a range bounded in the URL"
+  ],
+  "baseline_tension": "The finding leans positive (supply ends at pricing). It cuts against this stock's own day-after-pricing in Nov 2025 (-1.6%), its comparable falls (median -2.04%, 1 of 3 up) and its high 8.7% ATR. It agrees with the modest 5x volume (no 15x capitulation signature) and the -25..-15 cross-section band (+0.27%). So expected_move is cut from the +0.8 finding sum to +0.2, a reduction of 0.6.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.8,
+    "expected_move_pct": 0.2,
+    "print_vs_bar_pct": 0.8,
+    "findings_count": 1,
+    "sizes_pct": [0.8]
+  },
+  "lessons_applied": ["nothing changed (researcher_reversal/LESSONS.md is deliberately empty; nothing has resolved)"],
+  "sources_used": 11
+}

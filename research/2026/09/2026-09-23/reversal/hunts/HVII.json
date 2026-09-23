@@ -1,0 +1,58 @@
+{
+  "ticker": "HVII",
+  "drop_date": "2026-09-23",
+  "window": {"from": "close of 2026-09-23", "to": "close of 2026-09-24"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Zero: I found no sourced cause for today's -60% fall and nothing dated inside the window. HVII is a SPAC with almost no float left: 18.8M shares have asked to be redeemed, the merger with ONE Nuclear is approved but has not closed, and the outside date is 2026-09-30. Its 44% ATR and the -4% base rate for falls deeper than 40% are reaction-function priors, not findings, and an empty findings set has to emit 0.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced. No option chain and no own comparable falls (history n=0). The only bar is the redemption price of $10.60 per share from the 2026-09-22 8-K (https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/form8-k.htm). It is not a floor for holders who did not redeem, because the redemption election closed with the 2026-08-24 vote.",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 0,
+    "confidence_pct": 15,
+    "what_happened": "HVII, the SPAC merging with ONE Nuclear Energy, fell about 60% on 2026-09-23 on 10x volume: a 15% gap down, then a 53% slide during the session. No 8-K, 425 or press release was filed or issued on 2026-09-23 as of the screen. The last disclosures were the 2026-09-22 16:10 UTC 8-K and 425: a prepaid forward with New Circle for up to 5M recycled shares, and redemption requests for about 18.8M Class A shares at $10.60. No document ties those to today's move.",
+    "evidence": [
+      {"claim": "Most recent filings are the 8-K (1.01, 9.01) accepted 2026-09-22T16:10:48Z and the 425 at 16:15:34Z. Nothing is dated 2026-09-23.", "url": "https://data.sec.gov/submissions/CIK0001846416.json", "timestamp": "2026-09-22 12:10 ET"},
+      {"claim": "The prepaid forward covers up to 5,000,000 recycled shares. Initial Price and Reset Price both equal the redemption price. Prepayment comes from the trust one business day after closing, and maturity is 90 days after closing. As of 2026-09-18 about 18.8M shares had asked to redeem at $10.60.", "url": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/form8-k.htm", "timestamp": "2026-09-22"},
+      {"claim": "Every proposal passed on 2026-08-24. Preliminary redemption requests were 18,807,662 Class A shares, and closing is still subject to Nasdaq listing approval.", "url": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226039917/form8-k.htm", "timestamp": "2026-08-24"},
+      {"claim": "The outside date was extended to 2026-09-30. After closing the company is renamed ONE Nuclear Energy Inc. and trades as ONEN.", "url": "https://www.tradingview.com/news/tradingview:8e7766e4ab7dd:0-hennessy-capital-investment-vii-extends-one-nuclear-deal-to-sep-30-lifts-note-to-620-000/", "timestamp": "2026-08"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "The business-combination outside date, 2026-09-30, after the window. No closing date, listing-approval date or first ONEN trading date has been announced in any filing found.",
+    "what_would_change_my_mind": "A closing 8-K or ONEN listing notice filed tonight, or an amendment cutting the forward's Reset Price below $10.60. Either would date the float change inside the window. The second would also free New Circle's up to 5M recycled shares to be sold into a float of roughly 1M."
+  },
+  "positioning_check": "Nasdaq/FINRA short interest was 55,604 shares at the 2026-08-31 settlement, up from 2,485 on 2026-08-14, with days to cover 1.0 (https://api.nasdaq.com/api/quote/HVII/short-interest?assetclass=stocks). That is about eight business days of publication lag and three weeks stale, so the position carried into today's fall is not observable. Float: the 2026-08-24 vote had 19,589,191 shares present at 75.28%, which implies about 26.0M voting shares in total, about 6.2M of them Class B going by the domestication vote. Against 18.8M redemption requests that leaves roughly 1M public Class A shares unredeemed. That is my arithmetic from the 8-K, not a disclosed float. Insiders: 0 trades in 3 or 12 months (Nasdaq insider-trades). No options market, so no skew.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "The HVII/ONE Nuclear business combination must close by the 2026-09-30 outside date. At closing the ticker changes to ONEN, the float is set by final redemptions plus up to 5M New Circle recycled shares, and a super 8-K is due within four business days. No closing date is announced, so it cannot be placed on 2026-09-24. Direction is unsized: a float near 1M shares can squeeze or collapse.", "expected_impact_pct": 0.0, "resolves_by": "2026-09-30", "source": "https://www.tradingview.com/news/tradingview:8e7766e4ab7dd:0-hennessy-capital-investment-vii-extends-one-nuclear-deal-to-sep-30-lifts-note-to-620-000/"},
+    {"finding": "The forward's Reset Price equals the $10.60 Initial Price, and any post-closing sale by New Circle is an Optional Early Termination that owes the company the Reset Price per share. At a spot near $4.30 the recycled shares are therefore not an economic near-term supply overhang unless the Reset Price is cut by mutual agreement. The 90-day maturity falls after closing plus 90 days. Filed here because no dated mechanism brings a reader to it inside the window, and the exhibit has been public since 2026-09-22 12:10 ET.", "expected_impact_pct": 0.0, "resolves_by": "closing + 90 days (after 2026-09-30)", "source": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/ex10-1.htm"},
+    {"finding": "Going-concern language ('substantial doubt') appears in the S-4/A and 424B3 (latest 2026-08-03). With about 95% of public shares redeemed, the combined company closes with little trust cash. This is a solvency concern for after closing, with no date inside the window.", "expected_impact_pct": 0.0, "resolves_by": "after closing, undated", "source": "https://www.sec.gov/Archives/edgar/data/1846416/000149315226035869/form424b3.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions JSON: no filing on 2026-09-23 as of the fetch, so there is no closing 8-K, no 4.02 and no listing notice (https://data.sec.gov/submissions/CIK0001846416.json)",
+    "EDGAR full-text search for 'ONE Nuclear' 2026-09-21..24: only the 2026-09-22 8-K and 425 plus their exhibits (https://efts.sec.gov/LATEST/search-index?q=%22ONE%20Nuclear%22&startdt=2026-09-21&enddt=2026-09-24)",
+    "The 'non-reliance' probe hit on 2026-09-22 is ISDA Section 13.1 boilerplate in the forward confirmation (ex10-1). It is NOT an Item 4.02 restatement (https://www.sec.gov/Archives/edgar/data/1846416/000149315226043680/ex10-1.htm)",
+    "The 'at-the-market' probe had 0 hits ever, so there is no ATM",
+    "2026-09-22 425: no closing date, no listing-approval status, no PIPE or minimum-cash detail (https://www.sec.gov/Archives/edgar/data/1846416/000149315226043683/form425.htm)",
+    "WebSearch for ONE Nuclear / HVII news on 2026-09-23 on businesswire, globenewswire, prnewswire, stocktitan and sec.gov: nothing dated 2026-09-23. The latest item is the 2026-09-22 5 GW Louisiana portfolio release",
+    "browse-edgar atom feed returned HTTP 503",
+    "A search snippet (Robinhood/WallStreetZen family) showed a 2026-09-23 intraday high, low and 'current price' that contradict the sealed spot. It appeared unbidden, its timestamp is unknown, and it was excluded from all reasoning and every number",
+    "The stocktitan overview page showed relative 'N days ago' labels that imply a render date after the screen. Only headline dates up to 2026-09-22 were used, and no price or later content was read or used",
+    "CourtListener, ClinicalTrials and openFDA were not queried: this is a SPAC and electric-utility SIC, with no trial and no docket lead"
+  ],
+  "baseline_tension": "Nothing I found contradicts the baseline, and nothing I found explains it. The 10x volume and the 44% ATR point to continuation and the <=-40% band prior is -4%, but with no identified cause and no dated catalyst I have nothing that separates this name from the day's other fallers. The number stays at 0 rather than inheriting the base rate.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 8
+}

@@ -1,0 +1,57 @@
+{
+  "ticker": "LVO",
+  "drop_date": "2026-09-23",
+  "window": {"from": "close of 2026-09-23", "to": "close of 2026-09-24"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Zero: no cause for the -21% fall could be sourced (no 8-K, no press release, no filing by the issuer on 2026-09-23), and nothing dated lands between today's close and tomorrow's close, so neither leg has a finding; the mildly positive reaction-function priors (own comparable falls 4/5 up, median +2.74%; volume 1.88x in the under-2x bucket) are opinion without a mechanism and the 15.7% ATR cuts the other way.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced — no identified cause, so no bar to size against; the only reference is the baseline's own comparable falls (n=5, median next close +2.74%, median abs 3.65%) from /home/user/claude_research/research/2026/09/2026-09-23/reversal/baselines/LVO.json",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 0,
+    "confidence_pct": 20,
+    "what_happened": "LVO gapped about -12% at the open on 2026-09-23 and extended to -21% by the 15:04 ET screen on 1.88x normal (thin, ~$324k) dollar volume, continuing a slide of -14.9% over 5 sessions and -40% over 60, with no issuer filing or release found for the day; the prior day's news (Slacker/Groove five-year partnership, 2026-09-22) was positive.",
+    "evidence": [
+      {"claim": "EDGAR company feed shows no LVO-issued filing after the 2026-08-14 10-Q; the only September filings are LiveOne's own Form 4 (2026-09-21) and 13D/A (2026-09-22) as REPORTING PERSON on PodcastOne (PODC), recording 374,109 PODC shares acquired 2026-09-18 by settling intercompany balances", "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001491419&type=&dateb=&owner=include&count=10&output=atom", "timestamp": "2026-09-23"},
+      {"claim": "13D/A: LiveOne holds 20,804,235 PODC shares, 68.8%, event date 2026-09-18; no sale, pledge or margin language", "url": "https://www.sec.gov/Archives/edgar/data/1491419/000121390026102325/xslSCHEDULE_13D_X02/primary_doc.xml", "timestamp": "2026-09-22"},
+      {"claim": "Most recent company news is positive: Slacker Radio five-year partnership with Groove Technology Solutions", "url": "https://www.stocktitan.net/news/LVO/live-one-lvo-subsidiary-slacker-radio-signs-five-year-partnership-pa12zkc157dy.html", "timestamp": "2026-09-22"},
+      {"claim": "10-Q for quarter to 2026-06-30 carries going-concern language (substantial doubt about the Company's ability to continue as a going concern), $8.6m cash against $35.0m current liabilities, $13.2m working-capital deficit, 1,245,084 shares issued for services in the quarter; Roth ATM ($25m) unused", "url": "https://www.sec.gov/Archives/edgar/data/1491419/000143774926028046/lvo20260630_10q.htm", "timestamp": "2026-08-14"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "none found inside the window; nearest is the FINRA short-interest file for the 2026-09-15 settlement, which publishes around 2026-09-24 but has no sign that can be sized, and a Zacks-estimated (not company-announced) earnings date of 2026-11-11",
+    "what_would_change_my_mind": "An LVO 8-K or 424B5 filed after the close tonight (an offering, a Nasdaq notice, a debenture default or a settlement-share issuance) would make this a supply/solvency continuation name; a company statement that nothing is pending would make it a bounce candidate."
+  },
+  "positioning_check": "Short interest 311,380 shares at the 2026-08-31 settlement, 6.1 days to cover on 51,075 avg daily volume, up 10.6% vs 281,424 on 2026-08-14 (and up from 122,578 on 2026-07-31) — shorts roughly 2.5x'd through August, but that is three weeks stale and the position carried into this fall is not observable (FINRA lag ~8 business days). Source: https://api.nasdaq.com/api/quote/LVO/short-interest?assetclass=stocks. Shares outstanding 13,711,789 as of 2026-08-12 (10-Q), so the reported short is ~2.3% of shares. Options chain unusable (ATM legs not two-sided), no skew; put/call OI 1.41 on 789 contracts total. Nasdaq insider summary shows zero open-market insider trades in 3 and 12 months.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Going-concern company ($8.6m cash vs $35.0m current liabilities at 2026-06-30) with a $150m S-3 effective since 2025-02-26 and a $25m Roth ATM that the 10-Q says has never been used; a raise is a real risk but nothing dates it to 2026-09-24, and an ATM untouched for ~19 months is not evidence it is drawn tonight.", "expected_impact_pct": -1.0, "resolves_by": "2026-11-14", "source": "https://www.sec.gov/Archives/edgar/data/1491419/000143774926028046/lvo20260630_10q.htm"},
+    {"finding": "Continuous settlement-share supply: 1,000,000 shares issued to BMI at $7.50 for royalties (424B5 2026-04-23), 70,000 to Music Story at $7.50 (424B5 2026-07-30, holder capped at 3.5% of 20-day ADV), 1,245,084 shares for services in Q1 FY27, and 798,810 resale shares registered from convertible debentures (S-3/A 2026-04-30); counterparties whose proceeds offset fees are sellers with the stock at $2.58, which plausibly explains the 60-day grind but has no date inside the window.", "expected_impact_pct": -0.5, "resolves_by": "2027-03-31", "source": "https://www.sec.gov/Archives/edgar/data/1491419/000121390026047097/ea0287401-424b5_liveone.htm"},
+    {"finding": "Next earnings (Q2 FY27) estimated 2026-11-11 by Zacks cadence, not company-announced; outside the window and not evidence of anything.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-11", "source": "https://api.nasdaq.com/api/analyst/LVO/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "Issuer filings on or after 2026-09-15: EDGAR full-text search scoped to CIK 1491419 returns only the PODC Form 4 (2026-09-21) and 13D/A (2026-09-22); browse-edgar atom shows no LVO-issued filing since the 2026-08-14 10-Q — no 8-K, 424B5, NT or Nasdaq-notice item for the drop day (https://efts.sec.gov/LATEST/search-index?q=%22LiveOne%22&ciks=0001491419&startdt=2026-09-15&enddt=2026-09-23)",
+    "News for the drop day via WebSearch and stocktitan's LVO overview: latest items are 2026-09-22 (Slacker/Groove partnership), 2026-09-16 (PODC share purchases) and 2026-09-01 (PPVOne/Bare Knuckle); nothing dated 2026-09-23 (https://www.stocktitan.net/overview/LVO/)",
+    "Alliance Global price-target cut to $8 from $11 (Buy kept) appears in search snippets with no date on the page; could not tie it to 2026-09-23, so it is not used as a cause (https://www.tipranks.com/stocks/lvo/forecast)",
+    "Debenture monthly redemption/payment date that could fall inside the window: 10-Q describes holder-option monthly redemptions of $100k-$300k on the senior secured convertible debentures maturing 2028-05-19 but gives no day of month; efts 'redemption' search 2026-06-01..09-23 found only the 10-K, 10-Q and July 424B5",
+    "Listing: price $2.575 is well above $1; last 'minimum bid price' language 2025-08-29, resolved by the 2025-09-26 1-for-10 reverse split; no current deficiency 8-K",
+    "Restatement / non-reliance: zero hits in 550 days (baseline text probe)",
+    "Corporate-action check: baseline event_plausibility 'unknown', fall is 59% gap and 41% intraday with above-normal volume, not the suspect overnight-only shape; no split or special dividend on EDGAR",
+    "Sympathy via PodcastOne (68.8% owned): a search snippet reported PODC's same-day intraday range; it was a drop-day intraday observation, not used for any number, and no PODC news explaining an LVO move was found",
+    "Price hygiene: search snippets quoted LVO intraday prices for 2026-09-23 (one mislabelled as a 2026-09-22 close); these are drop-day, pre-screen or undated quotes and none entered any number here. No price dated after the screen instant was seen."
+  ],
+  "baseline_tension": "Nothing found cuts against or confirms the baseline: the own-history (4 of 5 comparable falls up next close) and the under-2x volume bucket lean mildly positive while the 15.7% ATR leans negative, and with no sourced finding in either leg none of that is allowed to reach the number.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed — researcher_reversal/LESSONS.md is deliberately empty until a run resolves"],
+  "sources_used": 11
+}
