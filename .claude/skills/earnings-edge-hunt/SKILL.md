@@ -503,6 +503,11 @@ ledger holds `edge_v2.min_n` measured observations the file says `uncalibrated` 
 carries no grounded numbers — that is the correct output, not a failure. If the
 script errors, log it and carry on: nothing downstream of today waits on V2.
 
+**Run it before the first print, or not at all.** V2 is compared forward only, so the
+script refuses to write once the run's earliest print (a bmo name's 09:30 ET open, an amc
+name's 16:00 ET close) has passed, and prints `V2 not written`. A resumed or late session
+records that in the run log; it does not work around it.
+
 ## 6. The note
 
 `<RUN>/edge/edge-note.md`, answer first: the ranked table, then for each of the top

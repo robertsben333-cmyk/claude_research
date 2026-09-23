@@ -3216,7 +3216,9 @@ function tabV2() {
     hard de koers bewoog op openbare 8-K's die een blinde scorer op dezelfde schaal
     scoorde, zonder marktbeta en per eenheid σ. <b>V1 blijft de sleutel die handelt.</b>
     Dit tabblad zet drie scores naast elkaar: vóór LESSONS.md, erna (V1) en V2, plus
-    V1 × σ zonder κ. V2 voegt pas iets toe als het díe controle verslaat.</p>`;
+    V1 × σ zonder κ. V2 voegt pas iets toe als het díe controle verslaat.
+    <b>Alleen forward:</b> V2 telt alleen voor runs waarvoor hij vóór de eerste print
+    is berekend. Oude runs achteraf aarden is een backtest en staat hier niet.</p>`;
   if (!L) {
     return html + `<div class="card warnbox"><h3>Geen V2-data</h3><p>De bouw vond geen
       <code>dashboard/data/v2.json</code>. Draai <code>dashboard/scripts/build_v2.py</code>.</p></div>`;
@@ -3248,12 +3250,12 @@ function tabV2() {
     {label:'<b>post-lessons (V1)</b>', rho:pooledRho(days, r=>r.impact_sum, mvOf), n:rows.length,
      what:'<code>impact_sum</code>, de sleutel en het enige dat handelt'},
     {label:'<b>V2</b>', rho:pooledRho(dV2, r=>r.v2, mvOf), n:withV2.length,
-     what:'<code>impact_sum_grounded</code>, alleen gekalibreerde runs'},
+     what:'<code>impact_sum_grounded</code>, alleen forward en gekalibreerd'},
     {label:'controle: V1 × σ', rho:pooledRho(dV2, r=>r.v2_vol_only, mvOf), n:withV2.length,
      what:'zelfde namen als V2, geen κ'}]) +
     `<small>ρ is binnen dagen gepoold, op de gekozen uitstap en onder de filters bovenaan.
      V2 en de controle staan op dezelfde namen; vergelijk V2 met de controle, niet met V1.
-     ${withV2.length ? '' : 'Nog geen gekalibreerde run, dus V2 en de controle zijn leeg.'}</small></div>`;
+     ${withV2.length ? '' : 'Nog geen forward run met een opgeloste uitkomst, dus V2 en de controle zijn leeg.'}</small></div>`;
 
   const tf = L.timeframes || [];
   const pooled = (L.matrix || {})._pooled || {};
@@ -3280,7 +3282,7 @@ function tabV2() {
 
   const runs = V2.runs || [];
   if (runs.length) {
-    html += `<div class="card"><h3>Runs met een V2-bestand</h3>` + table([
+    html += `<div class="card"><h3>Forward runs met een V2-bestand</h3>` + table([
       {h:'run', f:r=>esc(r.run.split('/').slice(-2,-1)[0])},
       {h:'status', f:r=>esc(r.status)}, {h:'namen met V2', f:r=>r.n_grounded},
       {h:'κ zoals op', f:r=>`<span class="meta">${esc(r.matrix_as_of||'–')}</span>`},

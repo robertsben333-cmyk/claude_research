@@ -262,7 +262,9 @@ def resolve_run(run, seed):
     gp = run / "edge-scores-grounded.json"
     if gp.exists():
         g = json.loads(gp.read_text(encoding="utf-8"))
-        v2 = {x["ticker"]: x for x in g.get("ranking", [])}
+        # Forward only: a file grounded after the run's first print is not read.
+        if g.get("forward") is True:
+            v2 = {x["ticker"]: x for x in g.get("ranking", [])}
 
     rows, pending = [], 0
     for r in scores["ranking"]:
