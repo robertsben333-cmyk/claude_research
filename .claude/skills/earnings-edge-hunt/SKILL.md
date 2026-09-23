@@ -510,18 +510,27 @@ and bottom names the finding driving it, its URL, and what the price already say
 Then the names that could not be ranked and why. End with the disclaimer from
 `config/pipeline.yaml`.
 
-### The ranked table carries six columns, always
+### The ranked table carries eight columns, always
 
 | column | what it is |
 | --- | --- |
 | ticker | |
 | **session** | `amc` or `bmo`, with the event date — the print is not today for every row |
-| the ranking key | `impact_sum`, signed, points of spot |
+| **pre-lessons** | `impact_sum_pre_lessons`: the hunters' sum before they read `LESSONS.md` |
+| **post-lessons** | `impact_sum`, the ranking key: signed, points of spot. **The only score the book trades on** |
+| **V2** | `impact_sum_grounded`, percent of spot, or `uncalibrated` while the shadow ledger is below `edge_v2.min_n` |
 | floor | does `conviction` clear `conviction_floor` |
 | **tradable** | `yes`, `elsewhere`, `no` or `unknown` — see below — with turnover, liquidity (`ok` / `thin`) and, for a short, whether Alpaca lends it |
 | control | `-run_up_20d_pct` |
 
-Generate the two bold ones rather than assembling them by hand:
+The table is ordered by post-lessons, because that is the key. Take the three score
+columns from `edge_grounded_score.py`'s printed table (step 5b) rather than copying
+numbers by hand; it prints all three side by side from the files on disk. Print
+`uncalibrated` in the V2 column instead of leaving it out: a column that disappears
+on thin days reads as a V2 that stopped running. And say in one line under the table
+that pre-lessons and V2 are measured beside the key, not traded.
+
+Generate the session and tradable columns rather than assembling them by hand:
 
 ```bash
 python3 researcher_us/scripts/alpaca_trade.py assets --run <RUN>/edge

@@ -1356,6 +1356,7 @@ def main():
                   open(os.path.join(run_dir, "baselines", "NOV.json"), "w"))
         json.dump({"ranking": [
             {"ticker": "AAA", "rank": 1, "rankable": True, "impact_sum": 5.0,
+             "diagnostics": {"impact_sum_pre_lessons": 3.0},
              "findings": [{"expected_impact_pct": 4.0, "lands_on": "reported_quarter"},
                           {"expected_impact_pct": 1.0, "lands_on": "positioning"}]},
             {"ticker": "NOV", "rank": 2, "rankable": True, "impact_sum": -1.0,
@@ -1377,6 +1378,13 @@ def main():
         check("a name with no sigma is not grounded and says why",
               rows["NOV"]["impact_sum_grounded"] is None
               and "sigma" in rows["NOV"].get("not_grounded_because", ""))
+        check("every row carries all three scores: pre-lessons, post-lessons, V2",
+              rows["AAA"]["impact_sum_pre_lessons"] == 3.0
+              and rows["AAA"]["impact_sum_v1"] == 5.0
+              and rows["AAA"]["impact_sum_grounded"] is not None)
+        tbl = gs.three_score_table(out)
+        check("the three-score table prints one line per name",
+              "pre-lessons" in tbl and "post-lessons" in tbl and "AAA" in tbl and "NOV" in tbl)
         check("the vol-only control is V1 times sigma",
               rows["AAA"]["control_vol_only"] == round(5.0 * 2.0, 3))
         check("V2 never rewrites edge-scores.json",

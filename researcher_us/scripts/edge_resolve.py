@@ -345,7 +345,8 @@ def stats_for(live, seed):
         c = [r for r in live if r.get(key) is not None]
         if len(c) >= 3:
             out[lab] = spearman([r[key] for r in c], [r["move_pct"] for r in c])
-    for key, lab in (("score", "calibration_slope_v1"),
+    for key, lab in (("score_pre_lessons", "calibration_slope_pre_lessons"),
+                     ("score", "calibration_slope_v1"),
                      ("score_v2", "calibration_slope_v2")):
         sl = slope([r for r in live if r.get(key) is not None], key)
         if sl is not None:
@@ -491,6 +492,7 @@ def main():
                              ("spearman_pre_lessons", "before LESSONS.md     "),
                              ("spearman_v2_grounded", "V2 grounded           "),
                              ("control_vol_only", "control: V1 x sigma   "),
+                             ("calibration_slope_pre_lessons", "slope move on pre-less"),
                              ("calibration_slope_v1", "slope move on V1      "),
                              ("calibration_slope_v2", "slope move on V2      ")):
                 if key in st:

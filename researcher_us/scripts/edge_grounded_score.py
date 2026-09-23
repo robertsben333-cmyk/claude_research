@@ -9,6 +9,11 @@ sigma_live is the name's 20-session realised daily sigma off the sealed baseline
 the same quantity, computed the same way, that divided every shadow move. The
 result is in percent of spot, per horizon.
 
+THREE SCORES PER NAME, ALWAYS TOGETHER. Every row carries the hunters' sum before
+they read LESSONS.md (`impact_sum_pre_lessons`), V1's key after it (`impact_sum_v1`)
+and V2 (`impact_sum_grounded`). The CLI prints them as one table, which is the table
+the note carries, and `edge_resolve.py` ranks all three against the same move.
+
 V1 IS STILL THE KEY THAT TRADES. This writes `edge-scores-grounded.json` beside
 `edge-scores.json` and changes nothing in it; `alpaca_trade.py` never reads this
 file. V2 has to earn its place in `edge_resolve.py`, which ranks both against the
@@ -101,7 +106,10 @@ def ground_run(run_dir, ledger_path=shadow.LEDGER, min_n=None, primary=None):
         t = r["ticker"]
         sig = sigma_live(baselines.get(t))
         row = {"ticker": t, "rankable": r.get("rankable"),
-               "rank_v1": r.get("rank"), "impact_sum_v1": r.get("impact_sum"),
+               "rank_v1": r.get("rank"),
+               "impact_sum_pre_lessons": (r.get("diagnostics") or {}).get(
+                   "impact_sum_pre_lessons"),
+               "impact_sum_v1": r.get("impact_sum"),
                "sigma_daily_pct": sig,
                # The control V2 must beat: V1 in percent-of-sigma units, no kappa.
                "control_vol_only": (None if sig is None or r.get("impact_sum") is None
@@ -163,6 +171,21 @@ def ground_run(run_dir, ledger_path=shadow.LEDGER, min_n=None, primary=None):
     return out
 
 
+def three_score_table(out):
+    """pre-lessons | post-lessons (V1, trades) | V2, one line per name."""
+    def f(v):
+        return "--" if v is None else f"{v:+.2f}"
+    status = out["status"]
+    lines = [f"{'ticker':8s}{'pre-lessons':>13s}{'post-lessons':>14s}{'V2':>9s}  note",
+             f"{'':8s}{'':>13s}{'(V1, trades)':>14s}{'':>9s}"]
+    for r in sorted(out["ranking"], key=lambda r: (r.get("rank_v1") or 999)):
+        v2 = f(r["impact_sum_grounded"]) if status == "calibrated" else "uncal."
+        note = r.get("not_grounded_because", "") if status == "calibrated" else ""
+        lines.append(f"{r['ticker']:8s}{f(r.get('impact_sum_pre_lessons')):>13s}"
+                     f"{f(r.get('impact_sum_v1')):>14s}{v2:>9s}  {note}")
+    return "\n".join(lines)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -174,6 +197,7 @@ def main():
     print(f"V2 {out['status']}: {n} of {len(out['ranking'])} names grounded at "
           f"{out['primary_horizon']}, matrix as of {out['matrix_as_of']} on "
           f"{out['ledger_observations_used']} ledger observations")
+    print(three_score_table(out))
     print(f"wrote {Path(a.run) / 'edge-scores-grounded.json'}  (V1 untouched; V1 trades)")
 
 

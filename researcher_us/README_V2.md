@@ -73,6 +73,14 @@ Yahoo serves 5-minute bars for 60 days, so a filing measured later than that has
 intraday horizons (`intraday_window_passed`). A number once measured is kept on
 re-measure for that reason.
 
+## Three scores per name
+
+Every stage E note carries three scores side by side: **pre-lessons** (the hunters'
+sum before `LESSONS.md`), **post-lessons** (V1's `impact_sum`, the key, and the only
+one the book trades on) and **V2** (`impact_sum_grounded`, or `uncalibrated`).
+`edge_grounded_score.py` prints that table and `edge_resolve.py` ranks all three
+against the same realised move, per day and pooled within days.
+
 ## The test V2 has to pass
 
 `edge_resolve.py` reports three rankers against the same realised move:
