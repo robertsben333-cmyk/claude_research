@@ -39,3 +39,6 @@
 
 ## Stage EU — CNE is under offer
 - CNE: recommended all-cash DNO scheme at US$5.214 (RNS 17 Sep, Court Meeting 16 Oct). The interim print cannot move a fixed-price offer; 0 findings. Its run-up is takeover premium, so the free control means nothing on this row.
+
+## Stage EU — CHAR date unconfirmed
+- CHAR: no Notice of Results. The 24 Sep date is vendor/Fidelity 'Sep 2026' only. eu_resolve should confirm or kill it against Investegate. The 1-for-25 consolidation approved 22 Sep has no effective date; if it lands in the window an unadjusted Yahoo bar would show a ~25x jump — the resolver must check.
