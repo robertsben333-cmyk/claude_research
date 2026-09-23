@@ -40,6 +40,18 @@ Three more numbers, added 2026-09-09 because without them a run cannot be judged
                        across days lets market-wide drift into the rank structure and
                        understates every ranker (0.189 against 0.243 for the old key)
 
+And, since 2026-09-23, stage E V2 beside V1 (`edge_grounded_score.py`):
+
+  v2 grounded          the hunters' sizes mapped through the shadow ledger's kappa
+                       and the name's sigma. Reported only where the run carries
+                       `edge-scores-grounded.json` with status `calibrated`
+  control: vol only    V1's impact_sum times sigma, no kappa. Rank-identical to V2
+                       whenever kappa is one number, so V2 has added something only
+                       where it beats THIS, not where it beats V1
+  calibration slope    realised move regressed on the key. V2's claim is that its
+                       units are percent of spot, so its slope should sit near 1;
+                       V1 has measured 0.72-0.76
+
 A single day of n names is far too small for either number to mean anything. They
 are recorded per day and pooled across days; the pooled figure is the result and
 one day is an anecdote.
@@ -206,6 +218,18 @@ def _floor(default=3.0):
     return default
 
 
+def slope(rows, key):
+    """OLS slope of the realised move on the key. 1.0 means the key is in the
+    move's own units; V1 has measured 0.72-0.76."""
+    if len(rows) < 3:
+        return None
+    x = [r[key] for r in rows]
+    y = [r["move_pct"] for r in rows]
+    mx, my = statistics.fmean(x), statistics.fmean(y)
+    sxx = sum((a - mx) ** 2 for a in x)
+    return round(sum((a - mx) * (b - my) for a, b in zip(x, y)) / sxx, 3) if sxx else None
+
+
 def conviction_vs_sign(rows):
     """Does the rank of abs(score) predict whether the sign was right?
 
@@ -232,6 +256,14 @@ def resolve_run(run, seed):
         d = json.loads(f.read_text(encoding="utf-8"))
         baselines[d["ticker"]] = d
 
+    # V2 rides beside V1 and never replaces it. An uncalibrated day carries no
+    # grounded numbers, so nothing below changes for it.
+    v2 = {}
+    gp = run / "edge-scores-grounded.json"
+    if gp.exists():
+        g = json.loads(gp.read_text(encoding="utf-8"))
+        v2 = {x["ticker"]: x for x in g.get("ranking", [])}
+
     rows, pending = [], 0
     for r in scores["ranking"]:
         t = r["ticker"]
@@ -246,7 +278,9 @@ def resolve_run(run, seed):
                    "impact_sum_pre_lessons"),
                "neg_run_up_20d": (None if (b.get("tape") or {}).get("run_up_20d_pct")
                                   is None else -(b["tape"]["run_up_20d_pct"])),
-               "deadband_pct": b.get("deadband_pct")}
+               "deadband_pct": b.get("deadband_pct"),
+               "score_v2": (v2.get(t) or {}).get("impact_sum_grounded"),
+               "control_vol_only": (v2.get(t) or {}).get("control_vol_only")}
         # Which denominator normalised this name. The fallback to the reaction-history
         # proxy has always been here, but the anchor it used was never recorded, so a
         # pooled `move/implied` figure silently mixed two different denominators --
@@ -305,10 +339,18 @@ def stats_for(live, seed):
     # costing a pass and buying nothing.
     for key, lab in (("neg_run_up_20d", "control_neg_run_up_20d"),
                      ("priced_lean_pct", "control_priced_lean"),
-                     ("score_pre_lessons", "spearman_pre_lessons")):
+                     ("score_pre_lessons", "spearman_pre_lessons"),
+                     ("score_v2", "spearman_v2_grounded"),
+                     ("control_vol_only", "control_vol_only")):
         c = [r for r in live if r.get(key) is not None]
         if len(c) >= 3:
             out[lab] = spearman([r[key] for r in c], [r["move_pct"] for r in c])
+    for key, lab in (("score_pre_lessons", "calibration_slope_pre_lessons"),
+                     ("score", "calibration_slope_v1"),
+                     ("score_v2", "calibration_slope_v2")):
+        sl = slope([r for r in live if r.get(key) is not None], key)
+        if sl is not None:
+            out[lab] = sl
     cs, cn = conviction_vs_sign(live)
     if cs is not None:
         out["conviction_vs_sign_correct"] = cs
@@ -360,7 +402,9 @@ def pooled_block(days, seed):
                      ("edge_score_legacy", "spearman_legacy_key"),
                      ("neg_run_up_20d", "control_neg_run_up_20d"),
                      ("priced_lean_pct", "control_priced_lean"),
-                     ("score_pre_lessons", "spearman_pre_lessons")):
+                     ("score_pre_lessons", "spearman_pre_lessons"),
+                     ("score_v2", "spearman_v2_grounded"),
+                     ("control_vol_only", "control_vol_only")):
         s, n = pooled_within_days(days, key)
         if s is not None:
             out[lab] = s
@@ -445,7 +489,12 @@ def main():
                       f"   (sign {st['sign_hits']}, n={st['n_conviction']})")
             for key, lab in (("control_neg_run_up_20d", "control: -20d run-up  "),
                              ("control_priced_lean", "control: priced lean  "),
-                             ("spearman_pre_lessons", "before LESSONS.md     ")):
+                             ("spearman_pre_lessons", "before LESSONS.md     "),
+                             ("spearman_v2_grounded", "V2 grounded           "),
+                             ("control_vol_only", "control: V1 x sigma   "),
+                             ("calibration_slope_pre_lessons", "slope move on pre-less"),
+                             ("calibration_slope_v1", "slope move on V1      "),
+                             ("calibration_slope_v2", "slope move on V2      ")):
                 if key in st:
                     print(f"  {lab}      {st[key]}")
             print(f"  long top third / short bottom third: "
@@ -471,6 +520,9 @@ def main():
         print(f"  control: priced lean        {p.get('control_priced_lean')}")
         print(f"  before LESSONS.md           {p.get('spearman_pre_lessons')}")
         print(f"  legacy edge_score key       {p.get('spearman_legacy_key')}")
+        if p.get("spearman_v2_grounded") is not None:
+            print(f"  V2 grounded                 {p.get('spearman_v2_grounded')}")
+            print(f"  control: V1 x sigma         {p.get('control_vol_only')}")
         print_by_sign(p.get("by_sign"))
         print(f"  long/short spread           {p.get('long_short_spread_pct')}pp"
               f"  (positive on {p.get('long_short_positive_days')} of "

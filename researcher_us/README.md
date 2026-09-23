@@ -15,6 +15,8 @@ that N's does not, that is a result worth having cheaply.
 
 ```
 edge/
+  README_V2.md          stage E V2: the shadow ledger that grounds hunter sizes in
+                        measured moves. Runs beside V1; V1 still ranks and trades
   EDGE_ANALYSIS.md      what the resolved runs establish, and what they do not
   EXECUTION.md          the Alpaca path: what it refuses to do, and what it cannot see
   LESSONS.md            what the hunters learned from the post-mortems; read after the

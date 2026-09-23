@@ -1320,6 +1320,148 @@ def main():
           open(os.path.join(REPO, "researcher_reversal", "LESSONS.md"),
                encoding="utf-8").read())
 
+    print("\nStage E V2 (grounded, beside V1)")
+    sys.path.insert(0, os.path.join(REPO, "researcher_us", "scripts"))
+    import edge_shadow_engine as sh  # noqa: E402
+    import edge_grounded_score as gs  # noqa: E402
+
+    k = sh.kappa_fit([(1.0, 0.5), (2.0, 1.0), (-3.0, -1.5)])
+    check("kappa is the through-origin slope", k["kappa"] == 0.5 and k["se"] == 0.0, str(k))
+    check("an empty fit is None, not zero", sh.kappa_fit([]) is None)
+
+    def _item(i, line, score, excess, t0="2026-08-10T20:30:00Z", sigma=2.0):
+        return {"id": f"T{i}", "t0_utc": t0, "llm_impact_score": score,
+                "line_item": line, "sigma_daily_pct": sigma, "status": "measured",
+                "moves": {tf: {"excess_pct": excess, "status": "ok"} for tf in sh.TIMEFRAMES}}
+    items = ([_item(i, "reported_quarter", 2.0, 2.0) for i in range(30)] +
+             [_item(100 + i, "financing", 1.0, 0.2) for i in range(5)] +
+             [_item(200, "guidance", 1.0, 50.0, t0="2026-09-20T13:00:00Z")])
+    m, n = sh.fit_matrix(items, as_of="2026-09-01T00:00:00+00:00")
+    check("fit_matrix drops items at or after as_of", n == 35 and "guidance" not in m, str(n))
+    check("per-line kappa is excess/sigma per score point",
+          m["reported_quarter"]["session_close"]["kappa"] == 0.5)
+    kp, src = gs.pick_kappa(m, "financing", "session_close", 30)
+    check("a line under min_n takes the POOLED kappa, not the raw score",
+          src == "pooled" and kp == m["_pooled"]["session_close"]["kappa"], f"{src} {kp}")
+    kp, src = gs.pick_kappa(m, "financing", "session_close", 50)
+    check("a pooled kappa under min_n is uncalibrated", kp is None and src == "uncalibrated")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        run_dir = os.path.join(tmp, "edge")
+        os.makedirs(os.path.join(run_dir, "baselines"))
+        base = {"ticker": "AAA", "as_of_utc": "2026-09-01T17:00:00+00:00",
+                "tape": {"realised_vol_20d_annualised_pct": round(2.0 * 252 ** .5, 4)}}
+        json.dump(base, open(os.path.join(run_dir, "baselines", "AAA.json"), "w"))
+        json.dump({"ticker": "NOV", "as_of_utc": "2026-09-01T17:05:00+00:00", "tape": {}},
+                  open(os.path.join(run_dir, "baselines", "NOV.json"), "w"))
+        json.dump({"ranking": [
+            {"ticker": "AAA", "rank": 1, "rankable": True, "impact_sum": 5.0,
+             "diagnostics": {"impact_sum_pre_lessons": 3.0},
+             "findings": [{"expected_impact_pct": 4.0, "lands_on": "reported_quarter"},
+                          {"expected_impact_pct": 1.0, "lands_on": "positioning"}]},
+            {"ticker": "NOV", "rank": 2, "rankable": True, "impact_sum": -1.0,
+             "findings": [{"expected_impact_pct": -1.0, "lands_on": "guidance"}]}]},
+            open(os.path.join(run_dir, "edge-scores.json"), "w"))
+        led = os.path.join(tmp, "ledger.json")
+        json.dump({"items": items}, open(led, "w"))
+        v1_before = open(os.path.join(run_dir, "edge-scores.json")).read()
+        out = gs.ground_run(run_dir, led, min_n=30)
+        rows = {r["ticker"]: r for r in out["ranking"]}
+        pooled_k = sh.fit_matrix(items, "2026-09-01T17:00:00+00:00")[0]["_pooled"]["session_close"]["kappa"]
+        want = round(4.0 * 0.5 * 2.0 + 1.0 * pooled_k * 2.0, 3)
+        check("grounded = S * kappa * sigma, one scale for every finding",
+              out["status"] == "calibrated" and rows["AAA"]["impact_sum_grounded"] == want,
+              f"{rows['AAA']['impact_sum_grounded']} vs {want}")
+        check("the matrix is rebuilt as of the run's seal, not today",
+              out["matrix_as_of"] == "2026-09-01T17:00:00+00:00"
+              and out["ledger_observations_used"] == 35)
+        check("a name with no sigma is not grounded and says why",
+              rows["NOV"]["impact_sum_grounded"] is None
+              and "sigma" in rows["NOV"].get("not_grounded_because", ""))
+        check("every row carries all three scores: pre-lessons, post-lessons, V2",
+              rows["AAA"]["impact_sum_pre_lessons"] == 3.0
+              and rows["AAA"]["impact_sum_v1"] == 5.0
+              and rows["AAA"]["impact_sum_grounded"] is not None)
+        tbl = gs.three_score_table(out)
+        check("the three-score table prints one line per name",
+              "pre-lessons" in tbl and "post-lessons" in tbl and "AAA" in tbl and "NOV" in tbl)
+        check("the vol-only control is V1 times sigma",
+              rows["AAA"]["control_vol_only"] == round(5.0 * 2.0, 3))
+        check("V2 never rewrites edge-scores.json",
+              open(os.path.join(run_dir, "edge-scores.json")).read() == v1_before)
+        out = gs.ground_run(run_dir, led, min_n=100)
+        check("an uncalibrated day emits no grounded numbers at all",
+              out["status"] == "uncalibrated"
+              and all(r["impact_sum_grounded"] is None for r in out["ranking"]))
+
+    # Horizons, on synthetic bars: an amc 8-K on Mon 2026-08-10.
+    days = ["2026-08-07", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13",
+            "2026-08-14"]
+
+    def _daily(closes):
+        from datetime import date as _d
+        return [{"ts": 0, "date": _d.fromisoformat(d), "open": c * 0.99, "close": c}
+                for d, c in zip(days, closes)]
+    stock = _daily([100, 100, 110, 121, 121, 121])
+    spy = _daily([100, 100, 101, 101, 101, 101])
+    mv, err = sh.moves_for("2026-08-10T20:30:00Z", stock, spy, [], [], beta=1.0)
+    check("an amc filing's session_close is close(D) -> close(D+1)",
+          mv["session_close"]["raw_pct"] == 10.0 and mv["session_close"]["end_date"] == "2026-08-11",
+          str(mv.get("session_close")))
+    check("next_close is a different end point from session_close",
+          mv["next_close"]["end_date"] == "2026-08-12" and mv["next_close"]["raw_pct"] == 21.0)
+    check("excess strips beta x SPY", mv["session_close"]["excess_pct"] == 9.0)
+    check("1d is its own intraday horizon, not next_close under another name",
+          mv["1d"]["status"] == "intraday_window_passed")
+    check("a horizon past the data is pending, not zero", mv["1m"]["status"] == "pending")
+    mv, _ = sh.moves_for("2026-08-10T12:00:00Z", stock, [], [], [], beta=1.0)
+    check("a bmo filing's session_close is close(D-1) -> close(D)",
+          mv["session_close"]["end_date"] == "2026-08-10")
+    check("no benchmark leaves excess empty and says so",
+          mv["session_close"]["excess_pct"] is None
+          and mv["session_close"]["status"] == "no_benchmark")
+
+    with tempfile.TemporaryDirectory() as tmp:
+        old_dir = sh.SHADOW_DIR
+        sh.SHADOW_DIR = __import__("pathlib").Path(tmp)
+        os.makedirs(os.path.join(tmp, "inputs"))
+        os.makedirs(os.path.join(tmp, "scores"))
+        body = json.dumps({"id": "X-1", "text": "8-K"}, indent=1, sort_keys=True)
+        open(os.path.join(tmp, "inputs", "X-1.json"), "w").write(body + "\n")
+        led = os.path.join(tmp, "ledger.json")
+        json.dump({"items": [{"id": "X-1", "ticker": "X", "t0_utc": "2026-08-10T20:30:00Z",
+                              "input_sha256": sh.sha(body), "status": "collected"}]},
+                  open(led, "w"))
+        json.dump({"id": "X-1", "input_sha256": "0" * 64, "expected_impact_pct": 1.0},
+                  open(os.path.join(tmp, "scores", "X-1.json"), "w"))
+        ok, refused = sh.ingest(led, os.path.join(tmp, "scores"))
+        check("a score for a different input is refused", ok == 0 and refused)
+        saved = (sh.daily, sh.intraday)
+        sh.daily, sh.intraday = (lambda t: stock), (lambda t: [])
+        sh.measure(led)
+        sh.daily, sh.intraday = saved
+        check("measure never touches an unscored item",
+              "moves" not in json.load(open(led))["items"][0])
+        json.dump({"id": "X-1", "input_sha256": sh.sha(body), "expected_impact_pct": 1.5,
+                   "lands_on": "financing"}, open(os.path.join(tmp, "scores", "X-1.json"), "w"))
+        ok, refused = sh.ingest(led, os.path.join(tmp, "scores"))
+        check("a score for the collected input is ingested",
+              ok == 1 and json.load(open(led))["items"][0]["status"] == "scored")
+        sh.SHADOW_DIR = old_dir
+
+    trade_src = open(os.path.join(REPO, "researcher_us", "scripts", "alpaca_trade.py"),
+                     encoding="utf-8").read()
+    check("alpaca_trade.py does not read V2", "grounded" not in trade_src)
+    scorer = open(os.path.join(REPO, ".claude", "agents", "shadow-scorer.md"),
+                  encoding="utf-8").read()
+    check("the shadow scorer has no web tools",
+          re.search(r"^tools:\s*Read, Write\s*$", scorer, re.M) is not None)
+    ledger0 = json.load(open(os.path.join(REPO, "researcher_us", "analysis",
+                                          "shadow-ledger.json")))
+    check("every ledger observation carries a score and a collected input hash",
+          all(it.get("input_sha256") and (it["status"] == "collected"
+              or it.get("llm_impact_score") is not None) for it in ledger0["items"]))
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:
