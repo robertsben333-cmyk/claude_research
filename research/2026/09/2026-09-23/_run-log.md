@@ -29,3 +29,7 @@
 ## Edge hunt — 2026-09-23 amc + 2026-09-24 bmo — DONE
 - Logged at 2026-09-23 17:28 UTC
 - Execution ON (paper). Step 0b: MANU sold at market 187 @ 20.28 (entry 20.43, -$28); WOR already covered at the open by Close AMC 64 @ 64.75 (short 59.23, -$353). verify: all prior legs closed. Sweep: 8/8 confirmed, 0 phantom. 8 hunters, all returned pre_lessons and print_vs_bar_pct (tree's contract ran). ranking_key impact_sum: SFIX +0.8, BB +0.5, MITQ +0.2, DRI 0, FUL 0, SNX 0, NEOV -1.5, UXIN -3.0. 1 name met the conviction floor (UXIN) and was refused on turnover ($0.05m < $0.2m). 0 orders placed, gross 0% of equity $11,200.86, account all cash. V2 grounded written (calibrated, 170 obs) before first print. Key vs -run_up_20d_pct rho +0.10. No failures.
+
+## Stage E V2 — shadow ledger 2026-09-23
+- Logged at 2026-09-23 17:31 UTC
+- collected 7 new 8-Ks (brief listed 8 inputs, incl. WOR re-scored over an existing score file); scored 8 blind, ingested 8, 0 refused; measure 5 complete; pooled n at session_close 165, kappa 0.362 (se 0.071).
