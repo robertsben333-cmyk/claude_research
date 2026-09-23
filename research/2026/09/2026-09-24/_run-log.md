@@ -52,3 +52,6 @@
 ## Stage EU — LIVE: resolver/ex-dividend issue and a Yahoo data defect
 - LIVE's whole -1.4 is the Q2 dividend (1.4475p, 1.92% of spot) going ex on 24 Sep, the results day. It ranks only because eu_resolve.py closes() reads unadjusted Yahoo closes. Not an information edge. The resolver should either adjust for in-window ex-dates or flag them; until then any European name going ex in its window carries a mechanical move the baseline does not see.
 - Yahoo LIVE.L closes around 8-10 Jul 2026 read 0.768 (a pence/pounds error), which makes the baseline's realised_vol_60d_pct 20132.93. That field is garbage for LIVE.
+
+## Stage EU — UK register served from a stale cache
+- The UK register was read as of 2026-09-19 at a 2026-09-23 seal (eu_positioning serves today's file from cache unless --refresh). RPI: baseline 0.70% and covering; the live FCA file shows 0.92% dated 18/09 (a rebuild). RKH: baseline 'building' +0.33, live file 1.21% (covering from 1.43%). Both hunters carried the live level; baselines left sealed. Consider --refresh on the UK register at seal time.
