@@ -33,3 +33,7 @@
 ## Stage E V2 — shadow ledger 2026-09-23
 - Logged at 2026-09-23 17:31 UTC
 - collected 7 new 8-Ks (brief listed 8 inputs, incl. WOR re-scored over an existing score file); scored 8 blind, ingested 8, 0 refused; measure 5 complete; pooled n at session_close 165, kappa 0.362 (se 0.071).
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-09-23 18:33 UTC
+- Fired 18:33 UTC (14:33 Toronto, inside the session). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves of 5 -> edge_score -> canada-note. Research only, no orders.
