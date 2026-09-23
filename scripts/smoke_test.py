@@ -1371,9 +1371,11 @@ def main():
         run_dir = os.path.join(tmp, "edge")
         os.makedirs(os.path.join(run_dir, "baselines"))
         base = {"ticker": "AAA", "as_of_utc": "2026-09-01T17:00:00+00:00",
+                "event_date": "2026-09-02", "session": "amc",
                 "tape": {"realised_vol_20d_annualised_pct": round(2.0 * 252 ** .5, 4)}}
         json.dump(base, open(os.path.join(run_dir, "baselines", "AAA.json"), "w"))
-        json.dump({"ticker": "NOV", "as_of_utc": "2026-09-01T17:05:00+00:00", "tape": {}},
+        json.dump({"ticker": "NOV", "as_of_utc": "2026-09-01T17:05:00+00:00",
+                   "event_date": "2026-09-02", "session": "bmo", "tape": {}},
                   open(os.path.join(run_dir, "baselines", "NOV.json"), "w"))
         json.dump({"ranking": [
             {"ticker": "AAA", "rank": 1, "rankable": True, "impact_sum": 5.0,
@@ -1386,7 +1388,9 @@ def main():
         led = os.path.join(tmp, "ledger.json")
         json.dump({"items": items}, open(led, "w"))
         v1_before = open(os.path.join(run_dir, "edge-scores.json")).read()
-        out = gs.ground_run(run_dir, led, min_n=30)
+        from datetime import datetime as _dt, timezone as _tz
+        before = _dt(2026, 9, 1, 18, 0, tzinfo=_tz.utc)
+        out = gs.ground_run(run_dir, led, min_n=30, now=before)
         rows = {r["ticker"]: r for r in out["ranking"]}
         pooled_k = sh.fit_matrix(items, "2026-09-01T17:00:00+00:00")[0]["_pooled"]["session_close"]["kappa"]
         want = round(4.0 * 0.5 * 2.0 + 1.0 * pooled_k * 2.0, 3)
@@ -1408,9 +1412,18 @@ def main():
               "pre-lessons" in tbl and "post-lessons" in tbl and "AAA" in tbl and "NOV" in tbl)
         check("the vol-only control is V1 times sigma",
               rows["AAA"]["control_vol_only"] == round(5.0 * 2.0, 3))
+        check("a forward file says so and names the first print",
+              out["forward"] is True and out["first_print_utc"] == "2026-09-02T13:30:00+00:00",
+              str(out.get("first_print_utc")))
+        try:
+            gs.ground_run(run_dir, led, min_n=30, now=_dt(2026, 9, 2, 14, 0, tzinfo=_tz.utc))
+            refused = False
+        except gs.Retroactive:
+            refused = True
+        check("V2 refuses to ground a run once its first print has passed", refused)
         check("V2 never rewrites edge-scores.json",
               open(os.path.join(run_dir, "edge-scores.json")).read() == v1_before)
-        out = gs.ground_run(run_dir, led, min_n=100)
+        out = gs.ground_run(run_dir, led, min_n=100, now=before)
         check("an uncalibrated day emits no grounded numbers at all",
               out["status"] == "uncalibrated"
               and all(r["impact_sum_grounded"] is None for r in out["ranking"]))

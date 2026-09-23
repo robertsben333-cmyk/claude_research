@@ -44,6 +44,8 @@ def main():
     names, runs = {}, []
     for gp in sorted(glob.glob(str(ROOT / "research/*/*/*/edge/edge-scores-grounded.json"))):
         g = json.loads(Path(gp).read_text(encoding="utf-8"))
+        if g.get("forward") is not True:
+            continue                    # forward only: a regrounded old run is a backtest
         run = str(Path(gp).parent.relative_to(ROOT))
         runs.append({"run": run, "status": g.get("status"),
                      "matrix_as_of": g.get("matrix_as_of"),

@@ -118,9 +118,10 @@ score exists, and a response factor κ fitted per line and horizon.
 `edge-scores-grounded.json`; `alpaca_trade.py` never reads that file. PR #9's three
 hand-entered ledger rows were dropped; the ledger was filled on 2026-09-23 with 303 8-Ks
 for the 197 tickers of every run on disk, 302 scored blind. At `session_close` the scorer's
-sizes predict the real 8-K reaction at **pearson 0.40, κ 0.365 (CI 0.224–0.506), n 161** —
-but on the stage E names themselves V2 ranks at −0.134 against −0.176 for V1 and **−0.132
-for V1 × σ**, so κ adds nothing over volatility scaling yet. **CLAUDE.md is in every
+sizes predict the real 8-K reaction at **pearson 0.40, κ 0.365 (CI 0.224–0.506), n 161**.
+**V2 is compared FORWARD ONLY** (operator's instruction): the scorer refuses to ground a
+run after its first print, and the dashboard and resolver read only `forward: true` files,
+so the ranking comparison starts with the first run after 2026-09-23. **CLAUDE.md is in every
 agent's context and quotes outcomes (NAVN, WLTH, DLTH), so any ticker it names is
 excluded from the fit** — 39 filings. V2 has added something only where it beats
 `control_vol_only`, not where it beats V1. See `researcher_us/README_V2.md`.

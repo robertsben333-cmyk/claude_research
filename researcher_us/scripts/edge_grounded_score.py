@@ -32,14 +32,23 @@ THREE RULES THAT PR #9 DID NOT HAVE, each against a way a plausible number misle
     with t0 before the run's baselines were sealed, so re-grounding an old run later
     cannot use that run's own prints.
 
+FORWARD ONLY (2026-09-23, operator's instruction). V2 is compared on runs it was
+computed for BEFORE their first print, and on nothing else. This refuses to write once
+the run's first print has passed: grounding an old run is a backtest wearing a forward
+run's filename, and the dashboard and `edge_resolve.py` would pool it with the real
+thing. Every file carries `forward: true` and `first_print_utc` so a reader can check.
+
     python3 researcher_us/scripts/edge_grounded_score.py --run research/2026/09/2026-09-22/edge
 """
 import argparse
 import json
 import math
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+ET = ZoneInfo("America/New_York")
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import edge_shadow_engine as shadow  # noqa: E402
@@ -83,7 +92,25 @@ def seal_time(run_dir):
     return min(stamps) if stamps else None
 
 
-def ground_run(run_dir, ledger_path=shadow.LEDGER, min_n=None, primary=None):
+def first_print(baselines):
+    """The earliest moment any name of the run reports: a bmo print at 09:30 ET of its
+    event date (it lands before that open), an amc print at 16:00 ET. None if no
+    baseline carries a date."""
+    moments = []
+    for b in baselines.values():
+        if b.get("event_occurred") is False or not b.get("event_date"):
+            continue
+        d = date.fromisoformat(b["event_date"])
+        hh, mm = (9, 30) if b.get("session") == "bmo" else (16, 0)
+        moments.append(datetime(d.year, d.month, d.day, hh, mm, tzinfo=ET))
+    return min(moments) if moments else None
+
+
+class Retroactive(Exception):
+    pass
+
+
+def ground_run(run_dir, ledger_path=shadow.LEDGER, min_n=None, primary=None, now=None):
     run_dir = Path(run_dir)
     scores = load_json(run_dir / "edge-scores.json")
     if not scores:
@@ -99,6 +126,13 @@ def ground_run(run_dir, ledger_path=shadow.LEDGER, min_n=None, primary=None):
         d = load_json(bp)
         if d and d.get("ticker"):
             baselines[d["ticker"]] = d
+
+    now = now or datetime.now(timezone.utc)
+    fp = first_print(baselines)
+    if fp is None or now >= fp:
+        raise Retroactive(f"{run_dir}: first print {fp.isoformat() if fp else 'unknown'} "
+                          f"has passed or cannot be dated; V2 is compared forward only, "
+                          f"so nothing was written")
 
     day_calibrated = usable((matrix["_pooled"]).get(primary), min_n)
     rows = []
@@ -158,8 +192,10 @@ def ground_run(run_dir, ledger_path=shadow.LEDGER, min_n=None, primary=None):
         x["rank_v2"] = i
     out = {
         "run": str(run_dir),
-        "grounded_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "grounded_utc": now.isoformat(timespec="seconds"),
         "version": "v2",
+        "forward": True,
+        "first_print_utc": fp.astimezone(timezone.utc).isoformat(timespec="seconds"),
         "status": "calibrated" if day_calibrated else "uncalibrated",
         "ranking_key": "impact_sum_grounded",
         "primary_horizon": primary,
@@ -199,7 +235,11 @@ def main():
     ap.add_argument("--run", required=True)
     ap.add_argument("--ledger", default=str(shadow.LEDGER))
     a = ap.parse_args()
-    out = ground_run(a.run, a.ledger)
+    try:
+        out = ground_run(a.run, a.ledger)
+    except Retroactive as exc:
+        print(f"V2 not written: {exc}")
+        return
     n = sum(1 for r in out["ranking"] if r.get("rank_v2"))
     print(f"V2 {out['status']}: {n} of {len(out['ranking'])} names grounded at "
           f"{out['primary_horizon']}, matrix as of {out['matrix_as_of']} on "

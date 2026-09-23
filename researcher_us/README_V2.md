@@ -53,10 +53,19 @@ tickers of every run on disk (up to three per ticker since 2026-07-01), 302 scor
 
 At `session_close` the scorer's sizes predict the real 8-K reaction: κ **0.365**, 95%
 interval 0.224–0.506, pearson **0.40**, n 161. The model sizes public news with real
-information. On the stage E names themselves, all 17 runs grounded as of their own seal,
-pooled within days on the dashboard's default exit: V1 **−0.176**, V2 **−0.134**, V1 × σ
-**−0.132**, 112 names. V2 equals the vol-only control, so κ has added nothing over
-volatility scaling, and every ranker is negative on these days.
+information. That is the calibration; it says nothing yet about the ranking.
+
+## Forward only
+
+**V2 is compared on runs it was grounded for BEFORE their first print, and on nothing
+else** (operator's instruction, 2026-09-23). `edge_grounded_score.py` refuses to write
+once a run's first print has passed, every file carries `forward: true` and
+`first_print_utc`, and `build_v2.py` and `edge_resolve.py` read only files that say so.
+The 17 historical runs were grounded once as of their own seal and then deleted: an as-of
+matrix keeps the prints out of κ, but a run scored after its outcome is still a backtest,
+and pooling it with forward runs would make the comparison unreadable. The ranking
+comparison therefore starts with the first stage E run after 2026-09-23 and has no
+number yet.
 
 ## What changed from PR #9, and why
 
