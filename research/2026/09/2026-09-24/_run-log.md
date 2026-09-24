@@ -78,3 +78,12 @@
 - Logged at 2026-09-24 17:13 UTC
 - Fired 17:05 UTC (13:05 ET). execution.enabled true, exit_mode amc_open. Step 0b: verify/close/status over 10 runs, 14 exit legs all ok, 0 held — account already flat, nothing sold (2026-09-23 opened a book of MANU/WOR whose exits filled 09-23; no leg due today).
 - Universe --window: 4 of 28 rows (COST, SCHL, LGCY amc 09-24; TBN bmo 09-25). Thin day, so session_resolve.py run over the 22 time-not-supplied rows: 4 killed already_reported (HUBG 09-15, TRT 09-24, DAVA 09-21, ENLV 09-22), 0 confirmed announced, 18 carried and not hunted. Baselines sealed and committed; COST is the only live option chain (implied 3.22%). Plan: 1 sweep + 4 hunters.
+
+## Edge hunt — 2026-09-24 amc + 2026-09-25 bmo — DONE
+- Logged at 2026-09-24 17:28 UTC
+- Execution ON (paper). Step 0b: verify/close over 10 runs, 14 exit legs, all ok, 0 held; nothing sold, nothing overdue. Account flat at $11,200.86 equity.
+- Universe 4 (COST, SCHL, LGCY amc 09-24; TBN bmo 09-25). The sweep confirmed 4/4 from company sources, 0 phantoms, 0 sessions unsettled. The 22 time-not-supplied rows were checked by session_resolve: 4 killed (already reported), 0 confirmed, 18 not hunted.
+- 1 sweep + 4 hunters (5 of 20 subagents). Every hunt carries pre_lessons, print_vs_bar_pct and expected_move_pct, so the agent definition in the tree is the one that ran.
+- Ranking (impact_sum): SCHL +0.30, COST 0.00, LGCY 0.00, TBN 0.00. 0 of 4 clear floor 3.0. Pre-lessons: SCHL +1.5, COST +0.3, LGCY -1.0, TBN 0.0; LESSONS.md dropped 4 of 5 draft findings. V2 calibrated (n 175): SCHL +0.19, the rest 0.
+- Step 7: plan/open/status. 0 names met the benchmark, 0 orders sent, gross 0% of equity. Refused: all 4 were below the conviction floor. Opened 155 min before the close, so the entry margin was not the constraint.
+- V2 shadow ledger: 6 8-Ks collected (1 TBN 8-K skipped, no document text), 6 scored blind, 6 ingested, 0 refused. Pooled session_close n 175, kappa 0.358 (se 0.069).
