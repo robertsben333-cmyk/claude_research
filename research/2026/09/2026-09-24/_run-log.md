@@ -99,3 +99,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-09-24 19:04 UTC
 - 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen window. Plan: rev_universe --intraday --k 15 on the open 2026-09-24 session, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-09-23, note before 16:00 ET. Repo was present (no clone); HEAD on origin/main.
+
+## Stage R — reversal researcher — universe and baselines sealed
+- Logged at 2026-09-24 19:06 UTC
+- 19:05 UTC: rev_universe --intraday screened 15:04 EDT; 80 above floors, 15 hunted; Health Care 8 of 15 (53%) — one bet, not fifteen. SPY −0.09% at screen. JAGX screener −74.1% vs adjusted −23.7% (gap −50pp, likely reverse split / corporate action); several names show screener ~−10% vs adjusted ~−6.5%, a live-bar lag, recorded not corrected. 15 baselines sealed 19:05 UTC before any hunter. Harness caps concurrent subagents at 8: first wave JAGX TVRD KPLT NCT EOSE BYND RCKT ZBIO; BW OBX BLSM AMTX SLDB MEDS VEEA queued. Resolve: 2026-09-23 run all pending (window closes today); 2026-09-22 run resolved on only 5 of 15 names (resolver drops rows), lean_vs_free_control_rho 0.0, impact_sum rho −0.30 (p 0.69) vs neg_atr14 −0.60, neg_ret_d +0.10 — does not beat the free controls.
