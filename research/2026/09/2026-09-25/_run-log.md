@@ -20,3 +20,8 @@
 ## Stage EU — universe and seal
 - Logged at 2026-09-24 13:40 UTC
 - 21 scheduled (uk 8, de 2, fr 2, it 4, pl 5; se/dk/no/fi/es 0), 2 eligible above $200k, 2 hunted, no draw. CHG (de) and VGO (pl); both session_unresolved (defaulted bmo), both history estimated_from_cadence, anchor_covered 0 of 2 (DE register read as of 09-23, CHG not named; PL has no register).
+
+## Stage EU — CHG phantom
+- Logged at 2026-09-24 13:42 UTC
+- CHG: vendor date is a phantom. Issuer Finanzkalender: H1 report '1. Oktober – 31. Oktober' (https://www.chaptersgroup.de/finanzkalender/); 8 Sep release says October. H1 figures already pre-released by ad-hoc 2026-09-08. 0 findings, event_confirmed false. Germany cannot reach event_occurred: false in eu_resolve, so this must be read from the hunt, not the resolver.
+- Orchestrator error, caught by the hunter: my brief named researcher_us/LESSONS.md; the agent definition's researcher_europe/LESSONS.md is the right file and was the one read.
