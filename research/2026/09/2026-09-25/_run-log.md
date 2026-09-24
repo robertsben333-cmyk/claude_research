@@ -4,3 +4,9 @@
 - Logged at 2026-09-24 06:41 UTC
 - Fired 06:41 UTC 2026-09-24. Sealing for the next ASX session, expected 2026-09-25.
 - Plan: au_universe -> au_priced_in seal -> unpriced-hunter-au in waves, one per name -> edge_score -> note. No orders.
+
+## Stage AU — Australia researcher — DONE
+- Logged at 2026-09-24 06:53 UTC
+- 27 scheduled / 6 eligible / 6 hunted (no draw, under cap 20) / 0 rankable. session_unresolved 0. All 6 quarterly_report_only; all 6 hunters: event not confirmed, 0 findings.
+- Defect (2nd day): late-Sept vendor rows for June-FY 5B filers are the statutory annual report (due 30/09), not a print. 6 of 6 hunts spent on it today, 8 of 12 on 09-24. A pre-hunt filter is warranted; not changed in this run.
+- Register lag 3 sessions (ASIC 2026-09-18). ASX PDFs encrypted, eu_pdftext.py fails; hunters' scratch decryptors collided in shared /tmp.
