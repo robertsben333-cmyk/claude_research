@@ -64,3 +64,12 @@
 ## Stage J — Japan researcher — DONE (resumed)
 - Logged at 2026-09-24 01:05 UTC
 - Scheduled fire 01:04 UTC. Output for 2026-09-24 already existed from the 2026-09-18 validation run (4716 impact_sum -3.50, above floor). Universe re-read to scratch: unchanged, 2 scheduled / 1 eligible / 1 hunted, market_closed null. No new hunt, baseline not revised; addendum appended to japan/japan-note.md. No resolved JP run yet, so no lean_vs_free_control_rho.
+
+## Close AMC — opening-auction exit run — 2026-09-24
+- Logged at 2026-09-24 10:16 UTC
+- Guard: python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg -> exit 0 (amc placed as a market DAY order queued in the pre-market since auction_orders is False; exit_mode=amc_open).
+- verify --scan before closing: all 14 tracked exit legs across the 10 runs on disk already read ok / still held 0.0 — nothing carried an open position into today.
+- close --scan --submit: 2026-09-23's run opened 0 positions (no name cleared the floor that day), so there was no leg with an exit date of 2026-09-24 to submit. No new order was sent.
+- status --scan confirms the account is flat: equity == cash == $11,200.86, buying power $44,803.44. Every historical entry/exit shows filled or expired, nothing pending.
+- Nothing to place this morning. Today's stage E run (19:04 UTC) has not fired yet, so there is no book from today to worry about; if it opens a position tonight, that leg's amc exit (if any) is this Routine's job tomorrow.
+- Separately, and outside this task's scope: the primary session checkout at /home/user/claude_research had a stale local 'main' branch (80 commits, no common ancestor with origin/main) left over from container state. It was left untouched (no force-push) and the session's designated feature branch was restored; flagging it here in case it is unexpected.
