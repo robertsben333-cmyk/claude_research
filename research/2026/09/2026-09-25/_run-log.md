@@ -16,3 +16,7 @@
 - Fired 13:38 UTC 2026-09-24 (markets still open; sealed spot is intraday, not a close). Sealing for event date 2026-09-25 (Fri).
 - Plan: eu_universe -> eu_priced_in seal -> one bilingual hunter per name by submarket, waves of 5, publish per wave -> edge_score -> note. No orders.
 - Checkout: local main had diverged from origin/main (forced update, no ff); worked from a branch equal to origin/main b643b708, publishing with EARNINGS_DATA_BRANCH=main.
+
+## Stage EU — universe and seal
+- Logged at 2026-09-24 13:40 UTC
+- 21 scheduled (uk 8, de 2, fr 2, it 4, pl 5; se/dk/no/fi/es 0), 2 eligible above $200k, 2 hunted, no draw. CHG (de) and VGO (pl); both session_unresolved (defaulted bmo), both history estimated_from_cadence, anchor_covered 0 of 2 (DE register read as of 09-23, CHG not named; PL has no register).
