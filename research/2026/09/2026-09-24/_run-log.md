@@ -87,3 +87,7 @@
 - Ranking (impact_sum): SCHL +0.30, COST 0.00, LGCY 0.00, TBN 0.00. 0 of 4 clear floor 3.0. Pre-lessons: SCHL +1.5, COST +0.3, LGCY -1.0, TBN 0.0; LESSONS.md dropped 4 of 5 draft findings. V2 calibrated (n 175): SCHL +0.19, the rest 0.
 - Step 7: plan/open/status. 0 names met the benchmark, 0 orders sent, gross 0% of equity. Refused: all 4 were below the conviction floor. Opened 155 min before the close, so the entry margin was not the constraint.
 - V2 shadow ledger: 6 8-Ks collected (1 TBN 8-K skipped, no document text), 6 scored blind, 6 ingested, 0 refused. Pooled session_close n 175, kappa 0.358 (se 0.069).
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-09-24 18:33 UTC
+- Fired 18:33 UTC (14:33 ET). Plan: ca_universe -> seal baselines before 16:00 ET close -> one unpriced-hunter-ca per name in waves of 5 -> edge_score -> note. Research only, no orders.
