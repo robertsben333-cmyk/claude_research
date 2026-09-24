@@ -56,3 +56,21 @@ reflects a view about which names were worth hunting.
 over one to three names is noise, and `jp_resolve.py` will say so.
 
 This is research, not investment advice. It is a forecasting exercise over public information and must not be presented as advice.
+
+## Addendum — scheduled fire, 2026-09-24 01:04 UTC
+
+The scheduled Routine fired on the print day and **resumed rather than restarted**: the
+universe, baseline, hunt and scores above were produced on 2026-09-18 during the
+end-to-end validation. Re-reading JPX's calendar today (`jp_universe.py` into a scratch file,
+leaving the sealed universe untouched) gave the same result: 2 scheduled, 1 eligible, 1
+hunted, `market_closed` null, sheets as of 2026-09-03 and 2026-09-17. So nothing new was
+hunted, and the sealed baseline was not revised. Some wording above ("three names", "every
+name is negative") comes from the combined 09-24/09-25 validation write-up. For this date
+alone the ranking is one name.
+
+Caveats: the baseline spot and the hunt are **six days older than the print**, so news after
+2026-09-18 is not in the number. No Japanese run has resolved yet, so there is no
+`lean_vs_free_control_rho` from a previous resolved run to report. 4716 is the only name,
+and it sits above the conviction floor of 3.0. Over the whole US sample the sign was a coin
+flip below that floor. A one-name day cannot be ranked, so it establishes nothing about the
+method.

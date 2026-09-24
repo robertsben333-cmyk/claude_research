@@ -60,3 +60,7 @@
 - Logged at 2026-09-23 14:10 UTC
 - 14 hunted, 14 returned, 9 rankable, 0 above conviction floor 3.0. Top SLR +2.50, bottom LIVE -1.40 (mechanical ex-dividend; real bottom VBK -0.50). Not ranked: ATE (wrong date, prints 09-25 amc), KEFI/ALTN/CHAR/RKH (date unconfirmed).
 - Note: research/2026/09/2026-09-24/europe/europe-note.md. Published to main with EARNINGS_DATA_BRANCH=main pinned.
+
+## Stage J — Japan researcher — DONE (resumed)
+- Logged at 2026-09-24 01:05 UTC
+- Scheduled fire 01:04 UTC. Output for 2026-09-24 already existed from the 2026-09-18 validation run (4716 impact_sum -3.50, above floor). Universe re-read to scratch: unchanged, 2 scheduled / 1 eligible / 1 hunted, market_closed null. No new hunt, baseline not revised; addendum appended to japan/japan-note.md. No resolved JP run yet, so no lean_vs_free_control_rho.
