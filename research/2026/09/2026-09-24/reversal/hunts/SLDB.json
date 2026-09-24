@@ -1,0 +1,72 @@
+{
+  "ticker": "SLDB",
+  "drop_date": "2026-09-24",
+  "window": {"from": "close of 2026-09-24", "to": "close of 2026-09-25"},
+  "expected_move_pct": -0.2,
+  "conviction_note": "No cause and no dated catalyst inside the window could be found; the only sourced item is an open $200M Jefferies ATM that can supply stock into any bounce (-0.3), damped to -0.2 because the fall came on 0.93x volume (the <2x bucket averages +1.46% next session) and this name's own 122 comparable falls have a median next close of 0.0%.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -0.3,
+  "print_vs_bar_pct": 0.0,
+  "bar": "the name's own reaction function: 122 falls <= -4.76% over 3 years, median next close 0.0%, up-rate 47.5%, median |move| 3.45%, ATR14 6.96% (sealed baseline /home/user/claude_research/research/2026/09/2026-09-24/reversal/baselines/SLDB.json); no usable option chain (ATM legs not two-sided)",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 20,
+    "confidence_pct": 30,
+    "what_happened": "SLDB fell 6.8% to 7.475 by the 15:04 ET screen, almost all of it intraday (gap -0.87%, intraday -5.98%) on 0.93x normal volume, its second straight ~6% down day (-6.09% on 2026-09-23), with no company filing or press release since the 2026-09-02 conference notice and small-cap biotech (XBI) weakening since mid-September.",
+    "evidence": [
+      {"claim": "No SEC filing by the issuer between 2026-09-01 and 2026-09-24 (EDGAR full-text search returned 0 hits); latest filings are 13D/A and 13G/A on 2026-08-14", "url": "https://efts.sec.gov/LATEST/search-index?q=%22Solid%20Biosciences%22&ciks=0001707502&startdt=2026-09-01&enddt=2026-09-24", "timestamp": "2026-09-24"},
+      {"claim": "Latest company press release is 2026-09-02 (investor conferences on Sep 9, 10 and 14, all passed); nothing since", "url": "https://www.globenewswire.com/search/organization/Solid%20Biosciences%20Inc%C2%A7", "timestamp": "2026-09-02"},
+      {"claim": "A 2026-09-22 article attributes the drift to investors 'weighing recent gains and fundamentals' after a ~58% YTD rise, naming no catalyst", "url": "https://www.ad-hoc-news.de/boerse/news/nebenwerte/solid-biosciences-stock-edges-lower-as-investors-weigh-recent-gains-and/70148267", "timestamp": "2026-09-22 02:09"},
+      {"claim": "XBI fell 1.4% in the week to 2026-09-15 while large-cap healthcare rose; biotech momentum cooling after a hot 2026", "url": "https://stocktwits.com/news-articles/markets/equity/biotech-midweek-pulse-xbi-loses-steam-hot-2026-stocks-catalysts-watch/cZtYGZfRB2R", "timestamp": "2026-09-15"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -15,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Sarepta's seven posters (five on ELEVIDYS, incl. Phase 4 ENDURE) at the Neuromuscular Study Group meeting, 2026-09-25 to 09-27 — a competitor read-across that opens inside the window, but with no Solid presentation found and no direction sourceable it is not sized; Solid's own next earnings (2026-11-02) is only a Zacks estimate",
+    "what_would_change_my_mind": "An 8-K or press release from Solid tonight (financing, clinical/safety update on SGT-003, or a FDA letter), or a REGENXBIO RGX-202 BLA-submission/acceptance release landing before the 2026-09-25 open."
+  },
+  "positioning_check": "Nasdaq/FINRA short interest 16,384,018 shares at the 2026-08-31 settlement, 18.9 days to cover on 866k ADV, -1.4% vs the 2026-08-14 settlement (16.62M) and down from a 18.27M peak on 2026-06-30; published ~8 business days after settlement, so the position carried into the 09-23/09-24 fall is not observable (https://api.nasdaq.com/api/quote/SLDB/short-interest?assetclass=stocks). Float not sourced. Insiders: 0 buys and 0 sells in 3 months, 28 sells in 12 months (https://api.nasdaq.com/api/company/SLDB/insider-trades?limit=15&type=ALL). Options: chain unusable (ATM legs not two-sided), put/call OI 0.25 on 700 contracts total, no skew available.",
+  "findings": [
+    {
+      "finding": "Solid has an open $200M at-the-market program with Jefferies (424B5 dated 2026-08-06, on an effective automatic S-3ASR) and fully drew its previous $85M ATM, so it can sell stock into any bounce on 2026-09-25.",
+      "leg": "new_information",
+      "mechanism_in_window": "An ATM on an effective S-3ASR can be drawn on any trading day, including 2026-09-25, with no further filing; the issuer has shown it uses such programs ($84,993,553 of $85M sold under the May 2025 supplement).",
+      "expected_impact_pct": -0.3,
+      "impact_low_pct": -1.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "reaction_history_on_this_line": "Not separable from the tape: ATM sales are only disclosed in the next 10-Q. The 424B5/S-3ASR day itself (2026-08-06, alongside Q2 results) is not among the baseline's comparable falls.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1707502/000119312526338410/d360115d424b5.htm",
+      "source_date": "2026-08-06",
+      "why_not_priced": "The program is public since August and so its existence is priced; what the close does not hold is its use as a cap on a rebound — an issuer that drained its last ATM tends to sell into strength, so a bounce tomorrow would meet supply that a stock without a live ATM would not. If the market fully held this, low-volume drops in SLDB would not have a 47.5% up-rate and 0.0% median next day. Small because nothing says the agent is selling at 7.5 after a ~16% slide rather than waiting for strength.",
+      "independence": "The Q2 10-Q (2026-08-06) carries the same 'at-the-market' language per the baseline's EDGAR text probe; same issuer, not an independent source. https://www.sec.gov/Archives/edgar/data/1707502/000119312526337935/sldb-20260630.htm"
+    }
+  ],
+  "outside_window": [
+    {"finding": "REGENXBIO planned to initiate its RGX-202 (competing DMD microdystrophin gene therapy) BLA under accelerated approval in Q3 2026, i.e. by 2026-09-30; a submission release is competitor news for SGT-003 but no date inside the window is sourced, and its sign for SLDB is ambiguous (validates the accelerated pathway vs. adds a competitor ahead).", "expected_impact_pct": -0.5, "resolves_by": "2026-09-30", "source": "https://ir.regenxbio.com/news-releases/news-release-details/regenxbio-completes-dosing-confirmatory-study-rgx-202-marking/"},
+    {"finding": "Phase 1/2 microdystrophin study NCT03368742 (SGT-001, active not recruiting) lists primary completion 2026-10-15; the lead INSPIRE DUCHENNE study of SGT-003 completes 2027-05-06. Neither reads out in the window.", "expected_impact_pct": 0.0, "resolves_by": "2026-10-15", "source": "https://clinicaltrials.gov/study/NCT03368742"},
+    {"finding": "Next earnings estimated 2026-11-02 by Zacks cadence only (is_estimate true); not a company announcement.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-02", "source": "https://api.nasdaq.com/api/analyst/SLDB/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR full-text search scoped to CIK 1707502, 2026-09-01 to 2026-09-24: 0 hits (no 8-K, no new 424B, no Form 4) — https://efts.sec.gov/LATEST/search-index?q=%22Solid%20Biosciences%22&ciks=0001707502&startdt=2026-09-01&enddt=2026-09-24",
+    "Company press releases: none since 2026-09-02; the three conferences it named (Cantor 09-09, Citi 09-10, H.C. Wainwright 09-14) are all past — https://www.globenewswire.com/search/organization/Solid%20Biosciences%20Inc%C2%A7",
+    "investors.solidbio.com news page returned HTTP 503",
+    "Neuromuscular Study Group 2026-09-25..27: found Sarepta's seven posters (https://www.financialcontent.com/article/bizwire-2026-9-24-sarepta-therapeutics-to-present-new-data-from-its-neuromuscular-portfolio-at-27th-annual-neuromuscular-study-group-scientific-meeting), no Solid presentation found",
+    "Sarepta/REGENXBIO patent settlement on 2026-09-23 ($39.0M to REGENXBIO over AAVrh74 claims) — Solid's SGT-003 uses its own AAV-SLB101 capsid, so no sourced read-across to SLDB; not sized",
+    "No going-concern, minimum-bid-price, or restatement language in the last 550 days (baseline EDGAR text probes); price 7.475 is far from $1",
+    "No analyst downgrade or estimate cut found in search; the only September analyst item found is an RBC Outperform initiation (secondary snippet, no primary)",
+    "Clinical trials: no primary completion inside the window (ClinicalTrials.gov, baseline forward block)",
+    "No post-screen price, quote or chart for 2026-09-24 after 15:04 ET or for 2026-09-25 was encountered or used"
+  ],
+  "baseline_tension": "The only finding (ATM supply, -0.3) leans the continuation way while the volume (0.93x, the bucket that averages +1.46% next session) and this name's own history (median 0.0%, 47.5% up over 122 falls) lean flat-to-up, so the emitted -0.2 is a third smaller than the finding sum.",
+  "pre_lessons": {
+    "impact_sum_pct": -0.3,
+    "expected_move_pct": -0.2,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-0.3]
+  },
+  "lessons_applied": ["nothing changed — researcher_reversal/LESSONS.md is deliberately empty until a run resolves"],
+  "sources_used": 10
+}
