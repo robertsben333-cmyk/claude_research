@@ -73,3 +73,8 @@
 - status --scan confirms the account is flat: equity == cash == $11,200.86, buying power $44,803.44. Every historical entry/exit shows filled or expired, nothing pending.
 - Nothing to place this morning. Today's stage E run (19:04 UTC) has not fired yet, so there is no book from today to worry about; if it opens a position tonight, that leg's amc exit (if any) is this Routine's job tomorrow.
 - Separately, and outside this task's scope: the primary session checkout at /home/user/claude_research had a stale local 'main' branch (80 commits, no common ancestor with origin/main) left over from container state. It was left untouched (no force-push) and the session's designated feature branch was restored; flagging it here in case it is unexpected.
+
+## Edge hunt — 2026-09-24 amc + 2026-09-25 bmo — STARTED
+- Logged at 2026-09-24 17:13 UTC
+- Fired 17:05 UTC (13:05 ET). execution.enabled true, exit_mode amc_open. Step 0b: verify/close/status over 10 runs, 14 exit legs all ok, 0 held — account already flat, nothing sold (2026-09-23 opened a book of MANU/WOR whose exits filled 09-23; no leg due today).
+- Universe --window: 4 of 28 rows (COST, SCHL, LGCY amc 09-24; TBN bmo 09-25). Thin day, so session_resolve.py run over the 22 time-not-supplied rows: 4 killed already_reported (HUBG 09-15, TRT 09-24, DAVA 09-21, ENLV 09-22), 0 confirmed announced, 18 carried and not hunted. Baselines sealed and committed; COST is the only live option chain (implied 3.22%). Plan: 1 sweep + 4 hunters.
