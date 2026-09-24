@@ -25,3 +25,9 @@
 - Logged at 2026-09-24 13:42 UTC
 - CHG: vendor date is a phantom. Issuer Finanzkalender: H1 report '1. Oktober – 31. Oktober' (https://www.chaptersgroup.de/finanzkalender/); 8 Sep release says October. H1 figures already pre-released by ad-hoc 2026-09-08. 0 findings, event_confirmed false. Germany cannot reach event_occurred: false in eu_resolve, so this must be read from the hunt, not the resolver.
 - Orchestrator error, caught by the hunter: my brief named researcher_us/LESSONS.md; the agent definition's researcher_europe/LESSONS.md is the right file and was the one read.
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-09-24 13:50 UTC
+- Event date 2026-09-25. 21 scheduled / 2 eligible / 2 hunted / 1 rankable / 0 above floor 3.0. VGO (pl) +0.50; CHG (de) not ranked, phantom date (H1 report due in October per issuer).
+- VGO session is amc, not the defaulted bmo: last four interim ESPI releases 17:03-19:57 CEST. Reaction lands 2026-09-28; read move_amc_window_pct at resolve. Baseline left sealed.
+- Note: research/2026/09/2026-09-25/europe/europe-note.md. Published to main with EARNINGS_DATA_BRANCH=main pinned.
