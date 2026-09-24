@@ -91,3 +91,7 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-09-24 18:33 UTC
 - Fired 18:33 UTC (14:33 ET). Plan: ca_universe -> seal baselines before 16:00 ET close -> one unpriced-hunter-ca per name in waves of 5 -> edge_score -> note. Research only, no orders.
+
+## Stage CA — Canada researcher — EMPTY DAY
+- Logged at 2026-09-24 18:34 UTC
+- TSX open (market_closed null). 8 scheduled / 0 eligible / 0 hunted: all 8 below the $200k turnover floor (max MMY $114k); 5 of the 8 were also filing_only. Calendar: confirmed 1, vendor_only 7, disputed 0. No baselines sealed, so no register snapshot stored. Yahoo CAD/USD failed again (fallback 0.71), not decisive. TMX stack answered. Note: research/2026/09/2026-09-24/canada/canada-note.md
