@@ -70,3 +70,33 @@ reflects a view about which names were worth hunting.
 over one to three names is noise, and `jp_resolve.py` will say so.
 
 This is research, not investment advice. It is a forecasting exercise over public information and must not be presented as advice.
+
+## Addendum — scheduled fire, 2026-09-25 01:04 UTC
+
+The scheduled Routine fired on the print day and **resumed rather than restarted**: the
+universe, baselines, hunts and scores above were produced on 2026-09-18 during the
+end-to-end validation. Re-reading JPX's calendar today into a scratch file (the sealed
+universe untouched) gave the same result: **4 scheduled / 2 eligible / 2 hunted**,
+`market_closed` null, `selection.method` "all 2 eligible names (at or under the cap)" — no
+draw was needed; 2778 パレモ and 4465 ニイタカ fell to the ¥30m turnover floor. Nothing new
+was hunted and neither baseline was revised. The wording above that speaks of "three names"
+is the combined 09-24/09-25 validation write-up; for this date the ranking is two names.
+
+- **The baselines and hunts are seven days older than the print.** News after 2026-09-18
+  is not in either number.
+- **No Japanese run has resolved yet**, so there is no `lean_vs_free_control_rho` to report.
+  This fire tried to resolve 2026-09-24 (4716) and found `jp_resolve.py` reading the
+  still-trading 09-25 Tokyo session as the exit close (10:05 JST). That file was discarded
+  unpublished and the resolver now drops any bar for a Tokyo session that has not closed.
+  TDnet did confirm 4716's 決算短信 on 09-24 (`event_occurred: true`). Resolve 09-24 after
+  15:30 JST today, and this run after the 2026-09-28 close (Friday print, Monday session).
+- On both names the short register is a real zero; the lean is 信用倍率 plus run-up. The
+  weights are priors with no Japanese measurement behind them.
+- `history` is an estimated cadence: a scale, never a record of dates.
+- Daily 値幅制限 limits truncate the tail, so a large finding can be right and still not be
+  paid in full.
+- 2742 is above the conviction floor (3.0); 3333 is below it, where over the whole US sample
+  the sign was a coin flip. Two names cannot be ranked meaningfully, and one day is not a
+  result.
+
+This is research, not investment advice.

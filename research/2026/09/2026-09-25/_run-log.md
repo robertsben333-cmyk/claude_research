@@ -31,3 +31,8 @@
 - Event date 2026-09-25. 21 scheduled / 2 eligible / 2 hunted / 1 rankable / 0 above floor 3.0. VGO (pl) +0.50; CHG (de) not ranked, phantom date (H1 report due in October per issuer).
 - VGO session is amc, not the defaulted bmo: last four interim ESPI releases 17:03-19:57 CEST. Reaction lands 2026-09-28; read move_amc_window_pct at resolve. Baseline left sealed.
 - Note: research/2026/09/2026-09-25/europe/europe-note.md. Published to main with EARNINGS_DATA_BRANCH=main pinned.
+
+## Stage J — Japan researcher — DONE (resumed)
+- Logged at 2026-09-25 01:06 UTC
+- Scheduled fire 01:04 UTC. Output for 2026-09-25 already existed from the 2026-09-18 validation run (2742 -3.90 above floor, 3333 -2.50). Universe re-read to scratch: unchanged, 4 scheduled / 2 eligible / 2 hunted, market_closed null. No new hunt, baselines not revised; addendum appended to japan/japan-note.md.
+- Defect fixed: jp_resolve.py on 2026-09-24's run at 10:05 JST took the live 09-25 price as exit_close (4716 +6.77%, not a close). File discarded unpublished; resolver now drops bars for a Tokyo session not yet closed (before 15:30 JST). TDnet confirms 4716 reported 09-24. Resolve 09-24 after 15:30 JST today.
