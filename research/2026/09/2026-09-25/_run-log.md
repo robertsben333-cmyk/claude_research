@@ -44,3 +44,9 @@
 - close --scan 'research/*/*/*/edge' --submit: no leg had an exit date of 2026-09-25, so nothing new was sent -- every scanned run logged an empty close action (positions: 0, windows: {}). Post-submit fill check reproduced the same 14 already-resolved legs, unchanged.
 - status --scan 'research/*/*/*/edge': account flat, equity $11,200.86 = cash $11,200.86, buying power $44,803.44. No open positions anywhere in the scan. 2026-09-23 and 2026-09-24 runs carry no entries at all (stage E's own concern, not this routine's).
 - Nothing placed today. Account was already flat before this fire; the amc opening-auction exit this Routine exists for had nothing to act on.
+
+## Edge hunt — 2026-09-25 amc + 2026-09-28 bmo — STARTED
+- Logged at 2026-09-25 17:17 UTC
+- Fired 17:04 UTC (date -u 17:05). Step 0b (exit_mode amc_open): verify --fix --submit found 14 tracked legs, all resolved, nothing UNFILLED; close --submit had no leg due; account flat, equity $11,200.86 cash, nothing sold, no unrealised P&L to record.
+- Universe --window: 6 of 30 rows (IVA amc 09-25; KNDI NTWK GNS MITQ ADXN bmo 09-28). Thin day (<10), so session_resolve.py run on the 17 time-not-supplied rows: 1 killed (ENLV, 6-K 2026-09-22), 16 carried unresolved, 0 confirmed by press release. Carried rows go to the sweep as session_unresolved; any it confirms with a sourced session gets a baseline sealed after the sweep and before any hunter.
+- Baselines sealed for the 6 before any agent; none has a live option chain. Plan: 1 sweep, then 1 hunter per confirmed name (cap 19).
