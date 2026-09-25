@@ -67,3 +67,7 @@
 - Refused: KNDI 0.50, ADXN 0.00, NTWK 0.00, MITQ 0.10, GNS 1.30, all below the floor; IVA had no hunt.
 - V2 shadow ledger: collected 0 new 8-Ks, 0 brief inputs, no shadow-scorer launched; measure priced 2 complete (199 pending); fit n=177 at 1d.
 - Routine prompt still says 17:04 UTC = 13:04 NY, which is correct; it still names scripts/ shims and edge/LESSONS.md (served via the edge symlink). No failures this run.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-09-25 18:33 UTC
+- Fired 18:30 UTC (date -u 18:33, 14:33 ET, inside the Toronto session). Plan: ca_universe.py -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves of 5 -> edge_score.py -> canada-note.md. Research only, no orders.
