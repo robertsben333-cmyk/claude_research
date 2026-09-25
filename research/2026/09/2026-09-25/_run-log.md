@@ -60,3 +60,10 @@
 - Logged at 2026-09-25 17:33 UTC
 - 5 hunts returned, all under the current contract (pre_lessons, print_vs_bar_pct, lands_on, resolves_by present). edge_score.py: 5 of 6 rankable (IVA unconfirmed, not hunted), 0 of 5 clear floor 3.0. KNDI +0.50, ADXN 0.00, NTWK 0.00, MITQ -0.10, GNS -1.30. V2 calibrated (177 obs) and written before the first print.
 - Assets: 4 of 5 ranked names are below the $200k turnover floor; GNS is $0.55m/day and not lendable at Alpaca. Note: edge-note.md.
+
+## Edge hunt — DONE (execution)
+- Logged at 2026-09-25 17:35 UTC
+- Execution ON (paper). Step 0b sold nothing: account already flat. Benchmark met by 0 of 5 names (none at |impact_sum| >= 3.0; IVA unrankable). open --submit --no-flatten placed 0 orders with 147 min to the close; no fills. Gross 0% of equity, which stays $11,200.86 in cash.
+- Refused: KNDI 0.50, ADXN 0.00, NTWK 0.00, MITQ 0.10, GNS 1.30, all below the floor; IVA had no hunt.
+- V2 shadow ledger: collected 0 new 8-Ks, 0 brief inputs, no shadow-scorer launched; measure priced 2 complete (199 pending); fit n=177 at 1d.
+- Routine prompt still says 17:04 UTC = 13:04 NY, which is correct; it still names scripts/ shims and edge/LESSONS.md (served via the edge symlink). No failures this run.
