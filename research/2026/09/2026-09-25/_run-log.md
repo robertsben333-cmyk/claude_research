@@ -71,3 +71,9 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-09-25 18:33 UTC
 - Fired 18:30 UTC (date -u 18:33, 14:33 ET, inside the Toronto session). Plan: ca_universe.py -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves of 5 -> edge_score.py -> canada-note.md. Research only, no orders.
+
+## Stage CA — Canada researcher — DONE
+- Logged at 2026-09-25 18:36 UTC
+- Funnel 6 scheduled / 1 eligible (BRC) / 1 hunted / 0 rankable. Sealed 18:33 UTC inside the session; anchor arms options 0 · register 1; calendar vendor_only 6; register_business_date 2026-09-24; FX fallback 0.71 (Yahoo silent).
+- BRC: hunter found no results event on 2026-09-25 (pre-revenue explorer, filing-only interims, Q3 not due till 10-30); event_confirmed false, not ranked.
+- DEFECTS (not patched): (1) ca_universe.py marked BRC event_shape=release though it is filing-only; (2) history headline classifier counts 'Annual General Meeting Results' as financial results — all 3 of BRC's sealed history rows are AGMs.

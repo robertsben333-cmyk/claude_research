@@ -1,0 +1,34 @@
+{
+  "ticker": "BRC",
+  "event_confirmed": false,
+  "expected_move_pct": 0.0,
+  "conviction_note": "No results release lands on 2026-09-25: Blackrock Silver is a pre-revenue explorer (FYE 30 Nov) that files its interim statements on SEDAR+ with no press release (Q3 interims were filed 2024-09-27 and 2025-09-29, Q2 2026 on 2026-06-26, none with a same-day release in the TMX news archive), it has announced no results date, the TMX filing index shows nothing on 2026-09-25 as of 18:34 UTC, and the vendor's 09-25 (and a second vendor's 09-28) are cadence estimates for a Q3 interim not due until 2026-10-30 - so this is a filing_only issuer that the upstream screen should have removed, the baseline's 'history' is three AGM-results releases misclassified as financial results, and the honest number is 0.",
+  "print_vs_bar_pct": null,
+  "bar": "none - pre-revenue exploration company with no revenue, no EPS guidance and no results release; the single analyst (TMX: 1 Buy, target C$2.10) publishes no quarterly estimate that could be found. No print exists to be measured against a bar.",
+  "positioning_check": "CIRO register via TMX in the sealed baseline: 2,187,378 shares short, 0.72% short ratio, 2.53 days to cover (30d), register business date 2026-09-24; no option chain at the Montreal Exchange so no skew or option lean; short change not available (no history). Not used, because there is no event to position against.",
+  "findings": [],
+  "outside_window": [],
+  "searched_and_found_nothing": [
+    "Issuer newsroom https://blackrocksilver.com/news/ (fetched 2026-09-25): September 2026 releases are the board appointment (09-24), Tonopah West NW drilling (09-23), GDXJ inclusion (09-15) and TSX conditional approval + ATM programme (09-14); no results release and no 'to release results on' notice.",
+    "TMX news archive (getNewsForSymbol, ~60 most recent items back to 2024-09): no financial-results headline on any date; the three rows the baseline classifies as results releases (2023-12-15/18, 2024-12-20, 2025-11-24) are all 'Blackrock Silver Announces Annual General Meeting Results'.",
+    "TMX SEDAR+ filing index (getCompanyFilings, 2023-01-01 to 2026-09-25): interim/annual financial statements filed 2024-06-28, 2024-09-27, 2025-02-27, 2025-03-26, 2025-06-26, 2025-09-29, 2026-02-27, 2026-03-27, 2026-06-26 - none with a news release filed the same day; nothing filed on 2026-09-25 at the time of the check.",
+    "Web search for a Q3 2026 results date: only an aggregator estimate of 2026-09-28 (vendor cadence, not an issuer announcement), https://www.blackrocksilver.com/investors listed but no date on it.",
+    "Did not hunt the 2026-09-14 ATM programme / TSX graduation or the 2026-09-23 drill results: they are real and sourced but they are not this event, and with no release in the window there is no print for them to land on."
+  ],
+  "baseline_tension": "Working without a price anchor (anchor_covered 'register', no Montreal chain); the -10.16% 20-day run-up and 0.72% short ratio are irrelevant because the event itself does not exist as a release, so there is nothing to agree or disagree with.",
+  "language_note": [
+    "not a Quebec issuer, English sources only (Vancouver-based, Nevada asset)"
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": null,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": [
+    "nothing changed - researcher_canada/LESSONS.md is deliberately empty (nothing has resolved in Canada), and the draft was already an empty set at 0"
+  ],
+  "stage_note": "Two defects about the stage, both for the run log: (1) event_shape 'release' is wrong for BRC - it is a filing_only reporter and should have been screened out by ca_universe.py; (2) the history classifier counted 'Annual General Meeting Results' as a financial-results headline, so history.median_abs_move_pct 5.8 is AGM-day volatility, not a reaction scale. Sources: https://blackrocksilver.com/news/ ; TMX getCompanyFilings/getNewsForSymbol for BRC via https://app-money.tmx.com/graphql (queried 2026-09-25 ~18:35 UTC).",
+  "sources_used": 4
+}
