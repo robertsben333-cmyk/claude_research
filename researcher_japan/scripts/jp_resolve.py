@@ -166,6 +166,11 @@ def main():
         bl_path = run / "baselines" / f"{code}.json"
         bl = json.loads(bl_path.read_text(encoding="utf-8")) if bl_path.exists() else {}
         cs = closes(code, d0, d0 + timedelta(days=8))
+        # A bar for a Tokyo session still trading is a live price, not a close; on
+        # 2026-09-25 a 10:05 JST resolve read one as the exit and froze it.
+        now_jst = datetime.now(ZoneInfo("Asia/Tokyo"))
+        if now_jst.hour * 60 + now_jst.minute < 15 * 60 + 30:
+            cs = [b for b in cs if b[0] < now_jst.date()]
         entry = exitp = exit_d = None
         limit_hit = False
         for i, (dd, c, hi, lo) in enumerate(cs):
