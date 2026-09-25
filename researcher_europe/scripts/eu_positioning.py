@@ -231,6 +231,21 @@ def norm(s):
 
 
 # --- UK ----------------------------------------------------------------------------
+def _fca_date(r):
+    """The FCA row's position date as ISO YYYY-MM-DD, or "".
+
+    The column was renamed to "Position date (of latest position date notified)" by
+    2026-09-25, which made an exact-key lookup return None for every row and crash the
+    whole register on max(); and the value is DD/MM/YYYY, which compares wrongly as a
+    string. So match the header by prefix and normalise the date before comparing."""
+    for k, v in r.items():
+        if k and k.strip().lower().startswith("position date"):
+            v = (v or "").strip()
+            m = re.match(r"^(\d{2})/(\d{2})/(\d{4})$", v)
+            return f"{m.group(3)}-{m.group(2)}-{m.group(1)}" if m else v
+    return ""
+
+
 def load_uk():
     """{normalised issuer name: {...}} plus the change against the historic file."""
     cur = _curl([FCA_CURRENT], referer=FCA_PAGE).decode("utf-8-sig", "replace")
@@ -243,8 +258,9 @@ def load_uk():
             pct = float(r["Aggregated net short position (%)"])
         except (KeyError, TypeError, ValueError):
             continue
-        d = r.get("Position date")
-        dates.append(d)
+        d = _fca_date(r)
+        if d:
+            dates.append(d)
         out[norm(r["Name of Company"])] = {
             "short_ratio_pct": round(pct, 4),
             "isin": r.get("International Securities Identification Number (ISIN)"),
@@ -268,7 +284,7 @@ def load_uk():
             pct = float(r["Aggregated net short position (%)"])
         except (KeyError, TypeError, ValueError):
             continue
-        d = r.get("Position date") or ""
+        d = _fca_date(r)
         if k not in prev or d > prev[k][1]:
             prev[k] = (pct, d)
     for k, v in out.items():
