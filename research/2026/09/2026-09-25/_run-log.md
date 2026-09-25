@@ -36,3 +36,11 @@
 - Logged at 2026-09-25 01:06 UTC
 - Scheduled fire 01:04 UTC. Output for 2026-09-25 already existed from the 2026-09-18 validation run (2742 -3.90 above floor, 3333 -2.50). Universe re-read to scratch: unchanged, 4 scheduled / 2 eligible / 2 hunted, market_closed null. No new hunt, baselines not revised; addendum appended to japan/japan-note.md.
 - Defect fixed: jp_resolve.py on 2026-09-24's run at 10:05 JST took the live 09-25 price as exit_close (4716 +6.77%, not a close). File discarded unpublished; resolver now drops bars for a Tokyo session not yet closed (before 15:30 JST). TDnet confirms 4716 reported 09-24. Resolve 09-24 after 15:30 JST today.
+
+## Close AMC — 2026-09-25 10:00 UTC fire
+- Logged at 2026-09-25 10:16 UTC
+- Guard: 'python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg' exited 0. execution.enabled=true, orders.exit_mode=amc_open, orders.auction_orders=False -> amc exit placed as a market DAY order queued in the pre-market (opg/cls not available on this account).
+- verify --scan 'research/*/*/*/edge' before submit: 14 tracked exit legs across 11 runs, all already resolved (still held 0.0 in each case) -- HOFT(bmo,161/161) FEIM(amc,0/31) ORCL(amc,12/12) RH(amc,0/14) CODA(bmo,183/183) VRA(bmo,0/642) FPS(bmo,0/64) RLGT(amc,0/224) LUXE(bmo,0/292) ALMU(amc,0/167) LEN(amc,0/28) TRT(bmo,338/338) MANU(bmo,187/187) WOR(amc,64/64). No UNFILLED legs to flag.
+- close --scan 'research/*/*/*/edge' --submit: no leg had an exit date of 2026-09-25, so nothing new was sent -- every scanned run logged an empty close action (positions: 0, windows: {}). Post-submit fill check reproduced the same 14 already-resolved legs, unchanged.
+- status --scan 'research/*/*/*/edge': account flat, equity $11,200.86 = cash $11,200.86, buying power $44,803.44. No open positions anywhere in the scan. 2026-09-23 and 2026-09-24 runs carry no entries at all (stage E's own concern, not this routine's).
+- Nothing placed today. Account was already flat before this fire; the amc opening-auction exit this Routine exists for had nothing to act on.
