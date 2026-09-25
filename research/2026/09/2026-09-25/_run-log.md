@@ -81,3 +81,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-09-25 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen window. Repo was present (no clone). Plan: rev_universe --intraday --k 15 for drop date 2026-09-25, seal 15 baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-09-24, note before 16:00 ET where possible.
+
+## Stage R — reversal researcher — progress
+- Logged at 2026-09-25 19:07 UTC
+- 19:06 UTC: universe sealed (15 of 52 above floors; Health Care 7/15 = 47%, under the half-line). 15 baselines sealed before any hunter. Hunter concurrency is capped at 8 in this session, so ARTL, DBGI, VOGX, BYND, OBX, NEOV, KLRA are queued behind the first eight, not shed. Resolved 09-23+09-22 pooled at d1 (30 names): impact_sum rho -0.167 (p 0.38) vs neg_atr14 -0.148, neg_ret_d -0.021; lean_vs_free_control_rho 0.107. The 09-24 run is all-pending until today's close.
