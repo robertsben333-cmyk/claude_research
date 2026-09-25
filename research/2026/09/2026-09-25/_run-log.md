@@ -50,3 +50,8 @@
 - Fired 17:04 UTC (date -u 17:05). Step 0b (exit_mode amc_open): verify --fix --submit found 14 tracked legs, all resolved, nothing UNFILLED; close --submit had no leg due; account flat, equity $11,200.86 cash, nothing sold, no unrealised P&L to record.
 - Universe --window: 6 of 30 rows (IVA amc 09-25; KNDI NTWK GNS MITQ ADXN bmo 09-28). Thin day (<10), so session_resolve.py run on the 17 time-not-supplied rows: 1 killed (ENLV, 6-K 2026-09-22), 16 carried unresolved, 0 confirmed by press release. Carried rows go to the sweep as session_unresolved; any it confirms with a sourced session gets a baseline sealed after the sweep and before any hunter.
 - Baselines sealed for the 6 before any agent; none has a live option chain. Plan: 1 sweep, then 1 hunter per confirmed name (cap 19).
+
+## Edge hunt — sweep
+- Logged at 2026-09-25 17:23 UTC
+- Sweep (1 agent): 22 names swept, 5 confirmed (NTWK, MITQ, GNS, KNDI, ADXN, all 2026-09-28 bmo with a company-sourced session), 5 phantom (CHRN, GRFS, AIV, AIAI, PBM), 12 unconfirmed. IVA, the only amc row, is unconfirmed: no company date found, and last year's H1 went out on a Monday bmo. None of the 16 carried time-not-supplied rows was confirmed. 5 hunters launched 17:23 UTC, one per confirmed name; nothing shed.
+- baseline_history_trustworthy=false for NTWK, GNS, KNDI, ADXN (cadence_implausible or under 3 prints); every hunter was told.
