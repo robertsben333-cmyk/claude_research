@@ -77,3 +77,7 @@
 - Funnel 6 scheduled / 1 eligible (BRC) / 1 hunted / 0 rankable. Sealed 18:33 UTC inside the session; anchor arms options 0 · register 1; calendar vendor_only 6; register_business_date 2026-09-24; FX fallback 0.71 (Yahoo silent).
 - BRC: hunter found no results event on 2026-09-25 (pre-revenue explorer, filing-only interims, Q3 not due till 10-30); event_confirmed false, not ranked.
 - DEFECTS (not patched): (1) ca_universe.py marked BRC event_shape=release though it is filing-only; (2) history headline classifier counts 'Annual General Meeting Results' as financial results — all 3 of BRC's sealed history rows are AGMs.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-09-25 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen window. Repo was present (no clone). Plan: rev_universe --intraday --k 15 for drop date 2026-09-25, seal 15 baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-09-24, note before 16:00 ET where possible.
