@@ -16,3 +16,9 @@
 ## Stage EU — wave 1 complete
 - Logged at 2026-09-25 13:54 UTC
 - 5 of 5 hunters returned: TLW +0.9 sum (confirmed bmo, 07:00 RNS), LIKE +2.0 (confirmed bmo, Notice of Results 17 Sep), EQS -1.0 (confirmed bmo, issuer agenda 'avant bourse'), OSE -1.3 (confirmed amc), SEE 0 findings, PHANTOM: FY26 audited results moved to 'by the end of November' (Proactive CEO/CFO interview 24 Sep); no Notice of Results RNS. Wave 2 (PKP) launched 14:05 UTC.
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-09-25 14:04 UTC
+- Event date 2026-09-28 (sealed Fri 09-25 intraday). 15 scheduled / 6 eligible / 6 hunted / 5 rankable / 0 above floor 3.0. LIKE +2.00, TLW +0.90, PKP -0.30, EQS -1.00, OSE -1.30; SEE not ranked (phantom, FY26 results moved to end-Nov).
+- PKP session is amc (post-17:00 Warsaw filings), not the defaulted bmo: read move_amc_window_pct at resolve. OSE amc too. Resolve from 2026-09-30.
+- Note: research/2026/09/2026-09-28/europe/europe-note.md. Publishing with EARNINGS_DATA_BRANCH=main pinned.
