@@ -22,3 +22,7 @@
 - Event date 2026-09-28 (sealed Fri 09-25 intraday). 15 scheduled / 6 eligible / 6 hunted / 5 rankable / 0 above floor 3.0. LIKE +2.00, TLW +0.90, PKP -0.30, EQS -1.00, OSE -1.30; SEE not ranked (phantom, FY26 results moved to end-Nov).
 - PKP session is amc (post-17:00 Warsaw filings), not the defaulted bmo: read move_amc_window_pct at resolve. OSE amc too. Resolve from 2026-09-30.
 - Note: research/2026/09/2026-09-28/europe/europe-note.md. Publishing with EARNINGS_DATA_BRANCH=main pinned.
+
+## Stage EU — publish check
+- Logged at 2026-09-25 14:05 UTC
+- git log -1 origin/main after publish: 9cb4733d 'stage EU: Europe ranking for 2026-09-28' — the ranking is on main.
