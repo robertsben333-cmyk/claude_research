@@ -1,0 +1,71 @@
+{
+  "ticker": "BYND",
+  "drop_date": "2026-09-25",
+  "window": {"from": "close of 2026-09-25", "to": "close of 2026-09-28"},
+  "expected_move_pct": 0.5,
+  "conviction_note": "One dated, document-backed mechanism: the 8-K's three-day VWAP pricing window for the $15.0m 2027-note exchange is Sep 23-25 and ends at today's close, so the counterparties' price-locking sales stop there (+1.5). I cut that to +0.5 because this name's own comparable falls rise only 34% of the time (median -1.97%), its 14-day ATR of 10.4% is the kind the base rate says keeps falling, the skew pays for downside, and Monday's true-up delivery could still be sold if a holder did not pre-hedge.",
+  "overshoot_pct": 1.5,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 1.5,
+  "bar": "Sized against this name's own 82 comparable falls (median next close -1.97%, median absolute 4.21%, up-rate 34.1%) and the front-week straddle (10.56% over 7 days, about 4.7% per session), both from the sealed baseline research/2026/09/2026-09-25/reversal/baselines/BYND.json; the pricing mechanics are from https://www.sec.gov/Archives/edgar/data/1655210/000119312526398531/d186483d8k.htm",
+  "cause": {
+    "label": "equity_offering",
+    "seller_is_finished_pct": 70,
+    "confidence_pct": 70,
+    "what_happened": "BYND is on the third and last day of the VWAP averaging window (Sep 23-25) of a privately negotiated exchange of about $15.0m of 0% 2027 convertible notes, bought at 96% of face, for up to 1,945,709 new shares (8-K accepted 2026-09-23 08:04 ET). The price drove the share count, which gave the exchanging holders a reason to sell into the window. That sits on top of a $15.44m Sonate trademark judgment filed 2026-09-22 after the close. I found no separate news for today.",
+    "evidence": [
+      {"claim": "Exchange of ~$15.0m 2027 notes at 96% of face; share count from VWAP 'over the three trading days starting September 23, 2026', floor $7.4009; 1,097,444 shares issued initially; up to 848,265 more at the Final Settlement 'on or about September 28, 2026'", "url": "https://www.sec.gov/Archives/edgar/data/1655210/000119312526398531/d186483d8k.htm", "timestamp": "2026-09-23 08:04 ET"},
+      {"claim": "Court final ruling 2026-09-18: judgment of $15,437,500 to Sonate (actual damages cut to $37,500, $15.4m disgorgement upheld); both sides may appeal", "url": "https://www.sec.gov/Archives/edgar/data/1655210/000165521026000064/bynd-20260918.htm", "timestamp": "2026-09-22 16:12 ET"},
+      {"claim": "Wire copy puts Wednesday's ~12% fall on the debt-for-equity exchange dilution and the Sonate judgment", "url": "https://www.tipranks.com/news/why-beyond-meat-stock-is-falling-today-and-what-wall-street-sees-from-here", "timestamp": "2026-09-23"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 20,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Final Settlement of the 2027-note exchange true-up shares (at most 848,265 at the floor), on or about 2026-09-28, which is the next session",
+    "what_would_change_my_mind": "A new 8-K announcing a second exchange of the remaining 2027 notes (about $15m left) with a fresh VWAP window starting 2026-09-28, which would restart the same seller."
+  },
+  "positioning_check": "Nasdaq/FINRA: 5,092,081 shares short at the 2026-09-15 settlement, 4.66 days to cover, +9.0% on the 08-31 settlement (4,672,133). That is a large fraction of a share count of roughly 17-25m after the 1-for-30 split. The position carried into this week's fall is not observable, because of the ~8-business-day publication lag. Source: https://api.nasdaq.com/api/quote/BYND/short-interest?assetclass=stocks. Options: front-week (2026-10-02) ATM IV 84.6%, straddle 10.56%, 25-delta skew +9.93 vol points, so downside is paid for. Put/call OI 0.23 on 3,492 contracts total, and the ATM spread is 18.5% of mid, so the chain is thin.",
+  "findings": [
+    {
+      "finding": "The exchange's three-day VWAP averaging window (Sep 23, 24, 25) ends at today's close. The sellers who were fixing the share count, and who drove three straight falls of -12.86%, -8.37% and -8.32% on 1-2x volume, stop selling before the next session.",
+      "leg": "repricing",
+      "mechanism_in_window": "The seller that set the price is finished and dated. Per the 8-K, the VWAP that fixes the exchange share count is computed 'over the three trading days starting September 23, 2026', which is Sep 23-25. Averaging ends at the 2026-09-25 close and settles on or about 2026-09-28, so the holders have no pricing reason to keep selling after today.",
+      "expected_impact_pct": 1.5,
+      "impact_low_pct": -2.0,
+      "impact_high_pct": 5.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-09-28",
+      "reaction_history_on_this_line": "The baseline's own comparable falls include the two earlier sessions of this window: 2026-09-23 (-12.86%) was followed by -8.37%, and 2026-09-24 (-8.37%) by -8.32%. That fits continuous pressure inside the averaging period. The baseline has no comparable post-window observation for this name.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1655210/000119312526398531/d186483d8k.htm",
+      "source_date": "2026-09-23",
+      "why_not_priced": "The intraday tape on the last averaging day still carries the price-locking sales. If the market fully expected them to stop, today's session would show a fade in selling into the close rather than a new 52-week low (pos_52w 0.0). The risk working against this: 848,265 true-up shares at most (about 0.4m at a VWAP near $9.4, estimated from the baseline's daily returns) are delivered 2026-09-28, and a holder who did not pre-hedge could sell them that day. That is why the size is 1.5 and not more.",
+      "independence": "The Q2 10-Q says the company cannot access its ATM because it no longer meets S-3 eligibility, so no ATM draw can replace this seller tonight: https://www.sec.gov/Archives/edgar/data/1655210/000165521026000055/bynd-20260627.htm"
+    }
+  ],
+  "outside_window": [
+    {"finding": "About $15m of 0% 2027 notes remains after this exchange (the 10-Q carried $29.5m current on 2026-06-27). The 2026-08-10 supplemental indenture removed the 2030-indenture restriction on exchanging them for equity, so another VWAP exchange is possible. None is announced or dated.", "expected_impact_pct": -3.0, "resolves_by": "2027-06-15", "source": "https://www.sec.gov/Archives/edgar/data/1655210/000119312526341312/d156122d8k.htm"},
+    {"finding": "Sonate $15.44m judgment: post-trial motions and appeals remain open to both sides, with no date in the window.", "expected_impact_pct": 0.0, "resolves_by": "2027-03-31", "source": "https://www.sec.gov/Archives/edgar/data/1655210/000165521026000064/bynd-20260918.htm"},
+    {"finding": "Q3 results: Zacks cadence estimate of 2026-11-09 only, not a company announcement. Q3 revenue guidance was $60-65m per wire copy.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-09", "source": "https://api.nasdaq.com/api/analyst/BYND/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "Filed on 2026-09-24/25 (8-K, 424B, S-3, 13D/G, Form 4): none after the 2026-09-23 8-K, per https://data.sec.gov/submissions/CIK0001655210.json",
+    "ATM or shelf takedown that could price tonight: the 10-Q states the ATM is inaccessible (not S-3 eligible). EFTS 'at-the-market' newest hit is 2026-04-09",
+    "Going-concern language: zero EFTS hits ever",
+    "Listing: the bid-price deficiency was cured 2026-08-28 per https://www.sec.gov/Archives/edgar/data/1655210/000165521026000062/bynd-20260828.htm, and the price is $8.4, so there is no clock in the window",
+    "News dated 2026-09-24/25 beyond the exchange and the judgment: WebSearch returned nothing new",
+    "Analyst note scheduled before the 2026-09-28 open: none found. The consensus cited is 'Moderate Sell'",
+    "Excluded: a search snippet quoting an intraday BYND price and range for 2026-09-25 with no timestamp. It may postdate the 15:04 ET screen, so it was discarded and used nowhere",
+    "CourtListener: not queried, because the Sonate docket's status is already in the issuer's 8-K and nothing in it is dated inside the window"
+  ],
+  "baseline_tension": "The finding cuts against this name's own reaction function (34% up-rate, median -1.97%), its high ATR and the positive put skew. It agrees with the under-2x volume and with the -10..-7.5 drop band, both mildly positive. So expected_move is +0.5, one point below the +1.5 finding.",
+  "pre_lessons": {
+    "impact_sum_pct": 1.5,
+    "expected_move_pct": 0.5,
+    "print_vs_bar_pct": 1.5,
+    "findings_count": 1,
+    "sizes_pct": [1.5]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
