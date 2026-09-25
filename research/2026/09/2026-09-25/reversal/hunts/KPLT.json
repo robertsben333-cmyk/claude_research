@@ -1,0 +1,56 @@
+{
+  "ticker": "KPLT",
+  "drop_date": "2026-09-25",
+  "window": {"from": "close of 2026-09-25", "to": "close of 2026-09-28"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "0 because nothing dated lands between Friday's close and Monday's close: there has been no filing since the 2026-09-15 resale S-3, no news on any of the three drop days, and no overshoot mechanism I could source. The reaction function (ATR 17.3%, a three-day cascade, and this name's own cascades in Sep-2025 and 09-23/24 that kept going) leans negative, but it is free-control information, not research, so it is not carried into the number.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "the sealed baseline's reaction history (n=40 falls <= -7.64%, median next close -0.23%, up-rate 45%, median |move| 3.59%) and ATR14 17.3%, from /home/user/claude_research/research/2026/09/2026-09-25/reversal/baselines/KPLT.json. No option chain (no_options_market).",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 20,
+    "confidence_pct": 45,
+    "what_happened": "Third straight intraday-only fall (-14.77% on 09-23, -18.73% on 09-24, -10.9% to 15:04 ET on 09-25) with no issuer filing or press release since 2026-09-15. It unwinds a thin-float run of about +60% in a month to ~$9.50 on Fri 09-18, which Benzinga flagged as RSI-overbought on 09-21. The only cause named in print is a secondary piece blaming the 2026-09-15 resale S-3 for 74.0M shares (of 84.8M outstanding) for reviving overhang worries.",
+    "evidence": [
+      {"claim": "Resale S-3 for 74,025,322 shares by merger holders; no proceeds to the company; preliminary ('subject to completion'), so not yet effective; 84,849,055 shares outstanding as of 2026-09-03; lock-up bars transfers for 6 months after the 2026-08-11 closing, then 50% / 75% / 100% at 6 / 9 / 12 months", "url": "https://www.sec.gov/Archives/edgar/data/1785424/000110465926107971/tm2624836-1_s3.htm", "timestamp": "2026-09-15"},
+      {"claim": "Secondary attribution of the 09-24 fall to the S-3 reviving dilution and supply-overhang concerns", "url": "https://www.kucoin.com/news/insight/COIN/6ab5a24e74fd460007c540f2", "timestamp": "2026-09-24"},
+      {"claim": "No EDGAR filing by CIK 1785424 between 2026-09-16 and 2026-09-25 (full-text search 0 hits; atom feed's latest item is the 09-15 S-3)", "url": "https://efts.sec.gov/LATEST/search-index?q=%22Katapult%22&ciks=0001785424&startdt=2026-09-16&enddt=2026-09-25", "timestamp": "2026-09-25"},
+      {"claim": "Benzinga RSI-overbought list including KPLT after it closed ~$9.50 on Friday 09-18, following a ~60% one-month rise (snippet only; page 403)", "url": "https://www.benzinga.com/trading-ideas/short-ideas/26/09/61893409/top-3-financial-stocks-that-may-fall-off-a-cliff-this-quarter", "timestamp": "2026-09-21"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Revolver draw period ends 2026-09-30, after the window closes (8-K 2026-08-28, Sixth Amendment); the S-3 goes effective on an undated SEC action; Q3 earnings ~2026-11-11 is a Zacks estimate, not announced",
+    "what_would_change_my_mind": "An S-3/A, an EFFECT notice or a 424B prospectus supplement naming an underwritten or block sale by holders not under lock-up, or a Form 4 cluster of insider buys during 09-23 to 09-25, published before Monday's open."
+  },
+  "positioning_check": "Shares short 254,556 at the 2026-09-15 settlement, up 69.5% from 150,196 at 08-31; days to cover 1.60 (Nasdaq, https://api.nasdaq.com/api/quote/KPLT/short-interest?assetclass=stocks). The position carried into the 09-23 to 09-25 fall is not observable, because the 09-30 settlement publishes around 10-09. The tradable float is small: about 74.0M of 84.8M shares are held by locked-up merger holders (S-3). There is no options market, so there is no skew.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Lock-up on the 74.0M registered merger shares first eases six months after the 2026-08-11 close: 50% transferable from about 2027-02-11, 75% at 9 months, all at 12 months. This is real supply, and it is 87% of shares outstanding. The plan of distribution allows underwritten offerings and block trades.", "expected_impact_pct": -8.0, "resolves_by": "2027-02-11", "source": "https://www.sec.gov/Archives/edgar/data/1785424/000110465926107971/tm2624836-1_s3.htm"},
+    {"finding": "Possible overshoot on a misread headline: the S-3 blamed for the fall registers shares that are locked up until 2027-02. No named buyer, note or dated reading closes that gap by Monday's close, so it is not a finding.", "expected_impact_pct": 1.0, "resolves_by": "2027-02-11", "source": "https://www.kucoin.com/news/insight/COIN/6ab5a24e74fd460007c540f2"},
+    {"finding": "Revolver draw period ends 2026-09-30 (moved from 08-30 by the Sixth Amendment), followed by a 12-month amortization. A further extension or its absence becomes visible after the window.", "expected_impact_pct": -1.0, "resolves_by": "2026-09-30", "source": "https://www.sec.gov/Archives/edgar/data/1785424/000110465926103268/tm2624296d1_8k.htm"},
+    {"finding": "Auditor change from Grant Thornton, whose FY2024 and FY2025 opinions carried going-concern paragraphs, to Elliott Davis on 2026-09-02. No disagreements were reported. The first combined-company 10-Q/audit cycle falls after the window.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-11", "source": "https://www.sec.gov/Archives/edgar/data/1785424/000110465926105493/tm2624719d2_8k.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR filings 2026-09-16 to 2026-09-25 for CIK 1785424, with no S-3/A, EFFECT, 424B, 8-K or Form 4: https://efts.sec.gov/LATEST/search-index?q=%22Katapult%22&ciks=0001785424&startdt=2026-09-16&enddt=2026-09-25 and https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001785424&type=&dateb=&owner=include&count=40&output=atom",
+    "Company press releases in September 2026: none (https://www.stocktitan.net/news/KPLT/, https://www.stocktitan.net/overview/KPLT/)",
+    "MarketBeat news feed: only comparison-bot items on 09-14 and 09-21 and the 09-16 S-3 story (https://www.marketbeat.com/stocks/NASDAQ/KPLT/news/)",
+    "IR events page is JS-loaded and showed no scheduled event (https://ir.katapultholdings.com/news-events/events-and-presentations/default.aspx)",
+    "Index addition or deletion: nothing found by search, and no issuer 8-K",
+    "Nasdaq insider-trades API returned 503; the EDGAR atom feed shows no Form 4 after 2026-08-20, so there is no disclosed insider buying into the fall",
+    "Search snippets showed only mid-September prices (~$9.29 to $9.50, before the drop); no price dated after the screen instant appeared"
+  ],
+  "baseline_tension": "Nothing I found cuts against the baseline, and nothing adds to it. With no dated second shoe and no mechanism, the only signal left is the reaction function: high ATR, a three-day cascade and this name's own cascades that continued. That is free-control information, so it is left at 0 rather than turned into a research number.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 11
+}

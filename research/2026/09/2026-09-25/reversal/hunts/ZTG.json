@@ -1,0 +1,57 @@
+{
+  "ticker": "ZTG",
+  "drop_date": "2026-09-25",
+  "window": {"from": "close of 2026-09-25", "to": "close of 2026-09-28"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Zero: the fall is day two of the 2026-09-24 09:00 ET ZentoAI 'no customer orders' release, and the next events I found are outside the window. The F-3 shelf is not effective (no EFFECT, CORRESP or 424B on EDGAR), the 12,278,340 consideration shares are restricted and unregistered, the 12:1 consolidation EGM is on 2026-09-30, and the impairment assessment has no date. So no finding survives the window rule, and the own-history (+2.64% median over 45 falls) and ATR (29.5%) priors are left to the base rate, not restated as a research read.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "Sized against the name's own 45 comparable falls in the sealed baseline (median next close +2.64%, median absolute 5.54%) and ATR14 of 29.5%. There is no options market (baseline options.status no_options_market).",
+  "cause": {
+    "label": "customer_or_contract_loss",
+    "seller_is_finished_pct": 35,
+    "confidence_pct": 70,
+    "what_happened": "At 09:00 ET on 2026-09-24 Zenta said ZentoAI had no customer orders or binding commitments, citing force majeure. It had bought ZentoAI on 2026-09-11 for HKD10m plus 12,278,340 new Class A shares at $0.476. The stock fell 9.8% that day and is down a further 10.4% today on 0.4x normal volume with no new filing, which reads as continuation of the 09-24 news rather than a fresh event.",
+    "evidence": [
+      {"claim": "ZentoAI has no confirmed customer purchase orders or binding commitments. Management does not expect meaningful revenue in the near term and is assessing the carrying amount of goodwill and intangibles.", "url": "https://www.globenewswire.com/news-release/2026/09/24/3368354/0/en/zenta-group-provides-business-update-on-zentoai.html", "timestamp": "2026-09-24 09:00 ET"},
+      {"claim": "Acquisition completed 2026-09-11 for HKD10,000,000 cash plus 12,278,340 Class A shares, taking the count to 24,087,179 (17,719,499 Class A).", "url": "https://www.sec.gov/Archives/edgar/data/2011458/000149315226042820/form6-k.htm", "timestamp": "2026-09-16"},
+      {"claim": "Company clarified that platforms still show the pre-issuance ~11.8m share count, and that the true total is 24.1m.", "url": "https://www.globenewswire.com/news-release/2026/09/23/3367799/0/en/zenta-group-company-limited-clarifies-shares-outstanding-following-recent-share-issuance.html", "timestamp": "2026-09-23"},
+      {"claim": "No EDGAR filing after the 2026-09-22 F-3 as of the screen, so nothing was filed on the drop day.", "url": "https://data.sec.gov/submissions/CIK0002011458.json", "timestamp": "2026-09-25"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -20,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "EGM on 2026-09-30 at 10:00 Macau time (22:00 ET 2026-09-29) to vote a 12:1 share consolidation plus a pre-approved 20:1 if the price stays below $1 for 8 trading days. This is after the window.",
+    "what_would_change_my_mind": "Either of two things filed before the 2026-09-28 close: an EFFECT notice or acceleration CORRESP on the F-3, which would make an overnight takedown possible, or a 6-K quantifying a ZentoAI impairment."
+  },
+  "positioning_check": "Short interest was 227,451 shares at the 2026-09-15 settlement, up 8.2% from 210,308 on 2026-08-31, with days to cover 1.0 against an ADV of 6.24m in the pump week (https://api.nasdaq.com/api/quote/ZTG/short-interest?assetclass=stocks). The position carried into the 09-24/25 fall is not observable because of the ~8-business-day FINRA lag. There are 17.7m Class A shares, of which 12.28m are restricted consideration shares, so the tradeable float is roughly 5.4m, derived from the 6-K count and not directly sourced. The 3- and 12-month insider-trade counts are zero. There is no options market, so no skew.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "EGM on 2026-09-30 votes a 12:1 share consolidation and a pre-approved 20:1 contingent consolidation. Reverse splits in Macau/HK microcaps typically draw pre- and post-effect selling, and the effective date would come later still.", "expected_impact_pct": -3.0, "resolves_by": "2026-09-30", "source": "https://www.sec.gov/Archives/edgar/data/2011458/000149315226042570/ex99-2.htm"},
+    {"finding": "A $50m universal F-3 was filed 2026-09-22 and is not effective. Baby-shelf cap is one-third of public float, with the float stated at $42.7m at $10.50 on 2026-08-13. A takedown needs SEC effectiveness first, and nothing on EDGAR shows a request.", "expected_impact_pct": -4.0, "resolves_by": "2026-10-31", "source": "https://www.sec.gov/Archives/edgar/data/2011458/000149315226043703/formf-3.htm"},
+    {"finding": "The company is assessing an impairment of ZentoAI goodwill and intangibles, with no date given. It could arrive by 6-K at any time or with the next 20-F/interim report.", "expected_impact_pct": -2.0, "resolves_by": "2026-12-31", "source": "https://www.globenewswire.com/news-release/2026/09/24/3368354/0/en/zenta-group-provides-business-update-on-zentoai.html"},
+    {"finding": "12,278,340 unregistered restricted consideration shares were issued 2026-09-11 at $0.476, a cost basis about a third of spot. No registration rights are in the SPA. Under Rule 144 the first public resale is around 2027-03, unless a resale registration is filed.", "expected_impact_pct": -3.0, "resolves_by": "2027-03-11", "source": "https://www.sec.gov/Archives/edgar/data/2011458/000149315226041956/ex10-1.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "Checked EDGAR submissions for anything filed on 2026-09-23 or later, including an EFFECT, CORRESP, F-3/A or 424B. There is none (https://data.sec.gov/submissions/CIK0002011458.json).",
+    "Read the F-3 for an at-the-market sales agreement or agent. None is named; the 'at-the-market' text hit is generic plan-of-distribution language (https://www.sec.gov/Archives/edgar/data/2011458/000149315226043703/formf-3.htm).",
+    "Searched the SPA for vesting, Reg S or registration rights. It has transfer restrictions only (https://www.sec.gov/Archives/edgar/data/2011458/000149315226041956/ex10-1.htm).",
+    "Looked for a drop-day news item on 2026-09-25. None found: stocktitan's list ends at 2026-09-24 (https://www.stocktitan.net/overview/ZTG/), and the investing.com item is about the 09-22 F-3.",
+    "Searched CourtListener for 'Zenta Group'. The only hit is an unrelated 2020 bankruptcy docket.",
+    "Checked for a minimum-bid-price deficiency. The baseline probe found 0 hits and spot is $1.40, above $1.",
+    "The baseline 'reverse stock split' probe returned 0 because the filing uses 'share consolidation'. I found the proposal through the 2026-09-14 6-K instead.",
+    "Search snippets carried third-party quote figures ($1.55, and weekly/monthly % changes) of unknown timestamp. I excluded them from reasoning; no price after the screen instant was used."
+  ],
+  "baseline_tension": "No research read reaches the number, so there is nothing to conflict with. For the record: low 0.4x volume and the name's own +2.64% median after falls lean up, while ATR at 29.5% and the fact that this is day two of a real negative disclosure lean down. Those are free priors, not findings.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 12
+}

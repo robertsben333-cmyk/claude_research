@@ -1,0 +1,71 @@
+{
+  "ticker": "IPEX",
+  "drop_date": "2026-09-25",
+  "window": {"from": "close of 2026-09-25", "to": "close of 2026-09-28"},
+  "expected_move_pct": -6.0,
+  "conviction_note": "De-SPAC closing-day dump. The shares that can come to market are about 4.4x the ~1.15m public shares left after redemptions: 1.78m shares from rights conversion plus 3.34m sponsor and underwriter shares whose lock-up was removed on 2026-08-31. Today's roughly 0.35-0.5m shares of volume cannot have cleared that, and the stock starts trading as GOW on 2026-09-28. The single supply finding (-5) is taken slightly further to -6 because the <=-40% band (-4.0), volume above 15x (-2.44) and a 70% ATR all point the same way; I found no repricing mechanism.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -5.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "Sized against the cross-section prior for this band in the sealed baseline (<=-40% band mean -4.00% next close, >15x volume -2.44%) and the 70.5% 14-day ATR. The name has no comparable falls of its own (history n=0) and no option chain. Supply counts are from https://www.sec.gov/Archives/edgar/data/2028355/000121390026090163/ea0301197-10q_inflection5.htm and https://www.sec.gov/Archives/edgar/data/2097702/000121390026095812/ea0303966-424b3_gowell.htm",
+  "cause": {
+    "label": "index_or_flow",
+    "seller_is_finished_pct": 20,
+    "confidence_pct": 75,
+    "what_happened": "SPAC Inflection Point Acquisition Corp. V closed its business combination with GOWell Technology on 2026-09-25, announced at 13:30 ET. The fall has the typical closing-day de-SPAC shape: a -4.9% gap and a -57.7% intraday leg on 16.7x volume. The float is tiny (about 1.15m public shares after 7.48m were redeemed). Against it, freely tradeable supply is arriving: 3.34m sponsor and underwriter shares whose lock-up was removed on 08-31, and about 1.78m shares from rights conversion.",
+    "evidence": [
+      {"claim": "Business combination closed 2026-09-25. The combined company trades on Nasdaq as GOW from 2026-09-28. About $50m PIPE of preferred shares and warrants at closing plus the $20m signing PIPE, $70m gross.", "url": "https://www.globenewswire.com/news-release/2026/09/25/3369273/0/en/gowell-technology-limited-and-inflection-point-acquisition-corp-v-announce-closing-of-business-combination.html", "timestamp": "2026-09-25 13:30 ET"},
+      {"claim": "Sponsor and underwriter lock-ups terminated. 3,337,500 PubCo shares held by IPF, Maywood Sponsor, Cohen and Seaport are freely tradeable after closing.", "url": "https://www.sec.gov/Archives/edgar/data/2028355/000121390026095807/ea0303966-8k425_inflection5.htm", "timestamp": "2026-08-31"},
+      {"claim": "8,625,000 public units, each with one right to 1/5 share, plus 265,625 private rights. 7,475,610 public shares redeemed (about $79.1m at about $10.59).", "url": "https://www.sec.gov/Archives/edgar/data/2028355/000121390026090163/ea0301197-10q_inflection5.htm", "timestamp": "2026-08-14"},
+      {"claim": "Shareholder vote approved the combination on 2026-09-03.", "url": "https://www.sec.gov/Archives/edgar/data/2028355/000121390026097265/ea0304463-8k425_inflection5.htm", "timestamp": "2026-09-03"},
+      {"claim": "PubCo 8-A12B and exchange CERT filed 2026-09-24, registering the GOW listing.", "url": "https://data.sec.gov/submissions/CIK0002097702.json", "timestamp": "2026-09-24 16:53 UTC"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -50,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "The stock starts trading as GOW on 2026-09-28, the first session in which rights-conversion shares and unlocked sponsor shares trade under the new symbol. The post-closing shell-company report (Form 20-F) is due within four business days of the 2026-09-25 closing, so by about 2026-10-01; it is not dated inside the window.",
+    "what_would_change_my_mind": "A filing showing the sponsor or rights-conversion shares are restricted or undelivered until after 2026-09-28, or a disclosed buyer (13D/G or Form 4 purchase) stepping in before the open."
+  },
+  "positioning_check": "Nasdaq short interest at the 2026-09-15 settlement: 33,789 shares, up 867% from 3,494 on 2026-08-31, about 1 day to cover (https://api.nasdaq.com/api/quote/IPEX/short-interest?assetclass=stocks). That is under 3% of the ~1.15m public float, and it lags by about eight business days, so the position carried into the fall is not observable. There is no option chain, so no skew. Nasdaq insider summary: 0 trades in 3 and 12 months.",
+  "findings": [
+    {
+      "finding": "Rights-conversion shares (8,890,625 rights / 5 = about 1.78m shares) and 3,337,500 sponsor and underwriter shares with the lock-up removed become tradeable at the 2026-09-25 closing, and the first full session for them is 2026-09-28 under GOW. Together that is about 5.1m shares against about 1.15m public shares and today's volume of roughly 0.35-0.5m shares.",
+      "leg": "new_information",
+      "mechanism_in_window": "Rights convert 'upon the consummation of an initial business combination', which happened 2026-09-25. The lock-up termination takes effect at closing. The first session in which that stock can trade in full under the new symbol is 2026-09-28, inside the window. Rights-arb holders who redeemed their shares and kept the rights got these shares at near-zero cost and sell regardless of price.",
+      "expected_impact_pct": -5.0,
+      "impact_low_pct": -15.0,
+      "impact_high_pct": 8.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-09-28",
+      "reaction_history_on_this_line": "No comparable falls of its own (baseline history n=0; SPAC listed Feb 2025). The cross-section prior for the <=-40% band is -4.00% next close, and >15x volume gives -2.44%.",
+      "source": "https://www.sec.gov/Archives/edgar/data/2028355/000121390026095807/ea0303966-8k425_inflection5.htm",
+      "source_date": "2026-08-31",
+      "why_not_priced": "Today's dollar volume of $1.55m at about $3-7 is roughly 0.35-0.5m shares, under a tenth of the ~5.1m shares that became freely tradeable at closing. Most of the rights-conversion stock cannot be delivered and sold on the day the deal closed, so the seller has barely started. If the close held the full supply, volume would be several million shares, or a disclosed buyer would have absorbed the sponsor block.",
+      "independence": "Rights count and redemption numbers come from a different document, the 10-Q: https://www.sec.gov/Archives/edgar/data/2028355/000121390026090163/ea0301197-10q_inflection5.htm. The 3,337,500 unlocked figure and the post-redemption share count are repeated in the PubCo prospectus supplement: https://www.sec.gov/Archives/edgar/data/2097702/000121390026095812/ea0303966-424b3_gowell.htm"
+    }
+  ],
+  "outside_window": [
+    {"finding": "Post-closing shell-company Form 20-F is due within four business days of the 2026-09-25 closing, which will disclose the final share count and the terms of the new $50m PIPE preferred and warrants. The conversion price and any reset or floor terms of that $50m preferred were not found; the signing PIPE converts at $12.00, well above spot. Not dated inside the window.", "expected_impact_pct": -2.0, "resolves_by": "2026-10-01", "source": "https://www.sec.gov/Archives/edgar/data/2097702/000121390026095812/ea0303966-424b3_gowell.htm"},
+    {"finding": "Legacy GOWell holders' lock-ups: about 42m of the up to 46.7m PubCo shares are not sponsor or public shares. Their expiry is not dated inside the window.", "expected_impact_pct": -1.0, "resolves_by": "2027-03-25", "source": "https://www.sec.gov/Archives/edgar/data/2097702/000121390026095812/ea0303966-424b3_gowell.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "Repricing mechanism: no note, disclosed buyer, wrong wire fact or dated finished seller found. The 13:30 ET closing release is neutral to mildly positive ($70m gross proceeds), but the fall is driven by supply, not by the headline. No repricing finding.",
+    "Going-concern, non-reliance, minimum-bid-price and reverse-split phrases: 0 hits in the SPAC's filings (baseline text_probes, efts.sec.gov). The 'at-the-market' hits are merger-document boilerplate (DEFM14A, 2025-10 BCA exhibits), not an issuer ATM.",
+    "Insider trades: none in 3 or 12 months (api.nasdaq.com insider-trades).",
+    "New $50m PIPE conversion and reset terms: the efts full-text search for PIPE and preferred on CIK 2097702 returned only the two 424B3s. The 2026-09-24 424B3 (ea0268687-11.htm) is over 10MB and could not be read here.",
+    "Intraday timing of the fall relative to the 13:30 ET release was not pulled; intraday bars could not be cut at the screen instant with the tools available.",
+    "A search result (Manila Times syndication of the closing release, dated 2026-09-26, after the screen instant) appeared. It carried no price, and its content duplicates the 2026-09-25 GlobeNewswire release, which is the source actually used. It was not relied on.",
+    "Resolver caveat: IPEX changes to GOW from 2026-09-28 (per the 2026-09-25 release), so the next-session close must be read under GOW or the row may resolve as missing."
+  ],
+  "baseline_tension": "What I found agrees with the baseline: 16.7x volume, a fall below -40% and a 70% ATR all point to continuation, as does a supply overhang that is not finished. So the expected move is more negative than the band prior, not visibly smaller than the finding.",
+  "pre_lessons": {
+    "impact_sum_pct": -5.0,
+    "expected_move_pct": -6.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-5.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 8
+}
