@@ -55,3 +55,8 @@
 - Logged at 2026-09-25 17:23 UTC
 - Sweep (1 agent): 22 names swept, 5 confirmed (NTWK, MITQ, GNS, KNDI, ADXN, all 2026-09-28 bmo with a company-sourced session), 5 phantom (CHRN, GRFS, AIV, AIAI, PBM), 12 unconfirmed. IVA, the only amc row, is unconfirmed: no company date found, and last year's H1 went out on a Monday bmo. None of the 16 carried time-not-supplied rows was confirmed. 5 hunters launched 17:23 UTC, one per confirmed name; nothing shed.
 - baseline_history_trustworthy=false for NTWK, GNS, KNDI, ADXN (cadence_implausible or under 3 prints); every hunter was told.
+
+## Edge hunt — scored
+- Logged at 2026-09-25 17:33 UTC
+- 5 hunts returned, all under the current contract (pre_lessons, print_vs_bar_pct, lands_on, resolves_by present). edge_score.py: 5 of 6 rankable (IVA unconfirmed, not hunted), 0 of 5 clear floor 3.0. KNDI +0.50, ADXN 0.00, NTWK 0.00, MITQ -0.10, GNS -1.30. V2 calibrated (177 obs) and written before the first print.
+- Assets: 4 of 5 ranked names are below the $200k turnover floor; GNS is $0.55m/day and not lendable at Alpaca. Note: edge-note.md.
