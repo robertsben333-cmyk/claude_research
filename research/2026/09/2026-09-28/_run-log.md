@@ -26,3 +26,7 @@
 ## Stage EU — publish check
 - Logged at 2026-09-25 14:05 UTC
 - git log -1 origin/main after publish: 9cb4733d 'stage EU: Europe ranking for 2026-09-28' — the ranking is on main.
+
+## Stage AU — Australia researcher — STARTED
+- Logged at 2026-09-27 06:40 UTC
+- Fired Sun 2026-09-27 06:40 UTC; sealing for next ASX session (expected Mon 2026-09-28). Plan: au_universe -> au_priced_in -> unpriced-hunter-au waves -> edge_score -> note. No orders.
