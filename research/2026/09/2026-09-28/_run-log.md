@@ -30,3 +30,8 @@
 ## Stage AU — Australia researcher — STARTED
 - Logged at 2026-09-27 06:40 UTC
 - Fired Sun 2026-09-27 06:40 UTC; sealing for next ASX session (expected Mon 2026-09-28). Plan: au_universe -> au_priced_in -> unpriced-hunter-au waves -> edge_score -> note. No orders.
+
+## Stage AU — universe and seal
+- Logged at 2026-09-27 06:42 UTC
+- 53 scheduled / 14 eligible / 14 hunted; selection.method: all 14 eligible (under cap 20), seed au-2026-09-28 unused; session_unresolved 1 (IPX). market_open true (weekday, not an ASX holiday).
+- Filer mix: 13 quarterly_report_only (4C/5B), 1 results (PNR). ASIC register 20260921, lag 4 sessions. AT4/HCH/KGL/SGQ re-appear from 09-25, where all hunters found the vendor row was the June-FY statutory annual report, not a print. Hunting anyway per skill (no pre-hunt filter exists); waves of 5.
