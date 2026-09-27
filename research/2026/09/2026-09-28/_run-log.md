@@ -35,3 +35,7 @@
 - Logged at 2026-09-27 06:42 UTC
 - 53 scheduled / 14 eligible / 14 hunted; selection.method: all 14 eligible (under cap 20), seed au-2026-09-28 unused; session_unresolved 1 (IPX). market_open true (weekday, not an ASX holiday).
 - Filer mix: 13 quarterly_report_only (4C/5B), 1 results (PNR). ASIC register 20260921, lag 4 sessions. AT4/HCH/KGL/SGQ re-appear from 09-25, where all hunters found the vendor row was the June-FY statutory annual report, not a print. Hunting anyway per skill (no pre-hunt filter exists); waves of 5.
+
+## Stage AU — wave 1 complete
+- Logged at 2026-09-27 06:49 UTC
+- 5 of 5 returned: AT4 0 (no findings), BCM 0 (event not confirmed), BML +0.4 (1 finding), CHN 0, GLN 0. All five identify the vendor row as the June-FY statutory annual report (due 30 Sep), not a 4C/5B print — same defect as 09-24/09-25. Wave 2: HCH IPX KGL MI6 PEN.
