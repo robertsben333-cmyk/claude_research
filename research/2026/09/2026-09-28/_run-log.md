@@ -43,3 +43,8 @@
 ## Stage AU — wave 2 complete
 - Logged at 2026-09-27 06:54 UTC
 - 5 of 5 returned: HCH 0, IPX 0 (event not confirmed; ~1/3 odds annual report lands in window), KGL 0 (not confirmed), MI6 0 (short 4.44%->9.63% read as placement/index hedging), PEN -0.4 (Davidson Kempner 28.1m-share residual below disclosure line). Wave 3: PNR SGQ VMM WC8.
+
+## Stage AU — Australia researcher — DONE
+- Logged at 2026-09-27 07:03 UTC
+- 53 scheduled / 14 eligible / 14 hunted / 8 rankable / 0 above floor 3.0. BML +0.40, AT4 MI6 SGQ VMM 0, PEN -0.40, WC8 -0.50, PNR -0.60; BCM CHN GLN HCH IPX KGL not ranked (no event confirmed).
+- All 14 vendor rows are the June-FY statutory annual report (due 30 Sep), third run running. Register 20260921, lag 4. Note: research/2026/09/2026-09-28/australia/australia-note.md
