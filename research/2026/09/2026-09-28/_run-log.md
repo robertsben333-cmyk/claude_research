@@ -39,3 +39,7 @@
 ## Stage AU — wave 1 complete
 - Logged at 2026-09-27 06:49 UTC
 - 5 of 5 returned: AT4 0 (no findings), BCM 0 (event not confirmed), BML +0.4 (1 finding), CHN 0, GLN 0. All five identify the vendor row as the June-FY statutory annual report (due 30 Sep), not a 4C/5B print — same defect as 09-24/09-25. Wave 2: HCH IPX KGL MI6 PEN.
+
+## Stage AU — wave 2 complete
+- Logged at 2026-09-27 06:54 UTC
+- 5 of 5 returned: HCH 0, IPX 0 (event not confirmed; ~1/3 odds annual report lands in window), KGL 0 (not confirmed), MI6 0 (short 4.44%->9.63% read as placement/index hedging), PEN -0.4 (Davidson Kempner 28.1m-share residual below disclosure line). Wave 3: PNR SGQ VMM WC8.
