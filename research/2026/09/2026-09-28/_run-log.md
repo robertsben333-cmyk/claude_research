@@ -93,3 +93,7 @@
 - calendar_reconciliation: confirmed 1 (STC) / agreed 0 / wsh_only 0 / vendor_only 6 / disputed 1 (DND); moved_off_target_by_wsh: none.
 - filing_only: 4 of 8 (ROS, XXIX, FCLX, SR), but none was the binding cut — all four were already below the floor. Anchor arms: 0 options / 0 register (nothing sealed). No short-register snapshot stored today, so the register history does not advance.
 - Degradation: fx_source = FALLBACK CONSTANT 0.71 (Yahoo did not answer). Immaterial today (MMY would need CAD/USD ~0.96 to clear). TMX calendar/archive answered; no vendor-stack outage.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-09-28 19:04 UTC
+- Fired 19:03 UTC = 15:03 ET, inside 13:30–16:05 ET. Plan: intraday screen K=15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve previous run, note before 16:00 ET (shed names if late).
