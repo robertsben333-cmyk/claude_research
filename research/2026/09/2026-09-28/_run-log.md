@@ -97,3 +97,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-09-28 19:04 UTC
 - Fired 19:03 UTC = 15:03 ET, inside 13:30–16:05 ET. Plan: intraday screen K=15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve previous run, note before 16:00 ET (shed names if late).
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-09-28 19:14 UTC
+- Clone: CLAUDE.md was present (no clone needed). Intraday screen at 15:04 ET, K=15, 46 above floors, largest sector Health Care 4/15 (27%), SPY -0.62%. 15 baselines sealed 15:05 ET before any hunter; 15/15 hunted (concurrency cap 8, so 7 hunters launched as slots freed; nothing shed). edge_score: 15 rankable, 1 above floor (LABT -6.50, leg 2, supply). Leg 1 empty on all 15. Resolve: 09-25 run pending (window closes today); pooled 09-22..09-24 d1 over 45 names impact_sum rho -0.201 (p 0.21) vs neg_atr14 -0.060, neg_ret_d +0.026; lean_vs_free_control_rho 0.123 — no free control beaten. Process note: two hunter results (CCG, SMX) were briefly written into the session transcript by the orchestrator before the real files existed; they were discarded and every number in the note comes from the files on disk. No orders; no execution block exists in this stage.
