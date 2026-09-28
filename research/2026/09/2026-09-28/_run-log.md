@@ -48,3 +48,7 @@
 - Logged at 2026-09-27 07:03 UTC
 - 53 scheduled / 14 eligible / 14 hunted / 8 rankable / 0 above floor 3.0. BML +0.40, AT4 MI6 SGQ VMM 0, PEN -0.40, WC8 -0.50, PNR -0.60; BCM CHN GLN HCH IPX KGL not ranked (no event confirmed).
 - All 14 vendor rows are the June-FY statutory annual report (due 30 Sep), third run running. Register 20260921, lag 4. Note: research/2026/09/2026-09-28/australia/australia-note.md
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-09-28 01:06 UTC
+- 01:06 UTC fire on main (6d420b2). Plan: jp_universe -> seal baselines -> unpriced-hunter-jp in waves of 5 -> edge_score -> japan-note. No orders.
