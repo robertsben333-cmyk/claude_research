@@ -325,8 +325,17 @@ MARKETS = {
 CAPABILITY = {
     "uk": {"archive": "day",    "register": True,  "history": "observed"},
     "de": {"archive": "issuer", "register": True,  "history": "estimated"},
-    "fr": {"archive": "day",    "register": True,  "history": "estimated"},
-    "se": {"archive": "paged",  "register": True,  "history": "estimated"},
+    # MEASURED 2026-09-28, and it retired France's kill the way PHILOGEN retired
+    # Italy's. The AMF flux carries the REGULATED FILING, not the results press
+    # release. ABC arbitrage put its H1 results out at 07:00 CEST on 2026-09-22 via
+    # GlobeNewswire; the flux's first ABCA rows are the half-year financial report,
+    # timestamped 2026-09-24T16:00Z. The flux read fine on 09-22 (69 rows) and did not
+    # name the issuer, so the resolver wrote `event_occurred: false` on a company that
+    # reported that morning and moved +11.09%. The flux still CONFIRMS (a results row
+    # on the day is a real release); its absence is null, never a kill.
+    "fr": {"archive": "day",    "register": True,  "history": "estimated",
+           "universal": False},
+    "se":{"archive": "paged",  "register": True,  "history": "estimated"},
     "dk": {"archive": "paged",  "register": True,  "history": "estimated"},
     "no": {"archive": "day",    "register": True,  "history": "estimated"},
     "fi": {"archive": "paged",  "register": True,  "history": "estimated"},

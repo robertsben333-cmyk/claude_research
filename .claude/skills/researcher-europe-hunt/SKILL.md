@@ -51,8 +51,8 @@ where a UK one recurs twice.
 | --- | --- | --- | --- |
 | **uk** | FCA, with history | Investegate, by date to 1999 | yes |
 | **no** | dated event history per issuer | Oslo NewsWeb, true day query, **ticker-keyed** | yes |
-| **fr** | AMF, per-holder to 2012 | AMF flux, issuer's own category | yes |
-| **it** | CONSOB xlsx, WAF-retried | eMarket STORAGE, WAF-retried | yes |
+| **fr** | AMF, per-holder to 2012 | AMF flux, issuer's own category — **lags the press release** | **no** (since 2026-09-28) |
+| **it** | CONSOB xlsx, WAF-retried | eMarket STORAGE, WAF-retried, **not universal** | **no** (since 2026-09-22) |
 | **se dk fi** | national, snapshot | Nasdaq Nordic, **paged, no date query** | only inside the feed's ~12-day window |
 | **de** | Bundesanzeiger, snapshot | EQS, per issuer only | **no** |
 | **es pl** | **none reachable** | **none reachable** | **no** |
@@ -258,6 +258,38 @@ the language-pass control — which reports 0 names on any run sealed after 2026
 because the hunters stopped freezing an English-only draft that day. An empty section
 there is the report, not a fault.
 
+**Then pool, because one day is noise.** `eu_resolve.py` now also writes
+`stats.size_and_certainty` per run: the hunter's magnitude against the move's
+(`abs_move_pct`, `expected_move_pct`, `impact_sum`), the ratio between them, and a Brier
+score for `p_up`. None of that means anything on nine names, so read it pooled:
+
+```bash
+python3 researcher_europe/scripts/eu_calibration.py
+```
+
+It pools every resolved non-validation run and reports SIZE (does the hunter's magnitude
+rank the move's, and at what level), DIRECTION (sign, `p_up` against a coin), CERTAINTY
+(does anything the hunter emits tell a right sign from a wrong one) and which `lands_on`
+lines carry direction.
+
+**And write the post-mortem, because it is the only thing that says WHY.** The rank
+correlation cannot tell a hunter that got the number wrong from one that got the number
+right and the reaction wrong, and the fix for each is different. Within a week of the
+print, for every resolved name, fill `<RUN>/eu-postmortem.json` from the release itself —
+one object per ticker with `print_vs_bar_actual_pct` (against the bar the hunter named),
+`guidance_change`, `prior_update` (`{"value", "date", "url"}`: had a trading update
+already disclosed the period?), `moved_on` (one of the `lands_on` values) with a URL, and
+`findings_scored` (`fact_correct` per finding). A general-purpose subagent per five names
+does it in about four minutes; the outcome exists, so there is nothing to contaminate.
+`eu_calibration.py` reads those files and prints the number-versus-reaction matrix.
+The first one, over 2026-09-22 → 09-25, is what `researcher_europe/LESSONS.md`'s
+measured section rests on.
+
+**Check the session against the release timestamp while you are there.** Adocia was
+sealed `bmo` for 2026-09-24 and released at 18:00 CEST, after the Paris close: the scored
+window ended before the release and the 20% fall the next day is in no sample. A vendor
+session flag is a guess until a timestamp says otherwise.
+
 **Eight of the ten markets have a day archive** (`eu_archive.py`): the UK on Investegate,
 France on the AMF's `info-financiere.gouv.fr` flux, Germany on the EQS-News **search**,
 Sweden/Denmark/Finland on the **Nasdaq Nordic disclosure feed**, Norway on **Oslo Børs
@@ -268,7 +300,16 @@ headline keyword.
 **Three things differ by market and the resolved file states each one per run**
 (`confirmation[*].false_reachable`, `archive_kind`, `archive_read`):
 
-- **Germany, Spain and Poland can never reach `event_occurred: false`.** EQS has no
+- **Germany, Spain, Poland, Italy and — since 2026-09-28 — France can never reach
+  `event_occurred: false`.** France's AMF flux carries the regulated filing, which can
+  land days after the results press release: ABC arbitrage released at 07:00 CEST on
+  2026-09-22 and first appears in the flux on 09-24, so the resolver killed a name that
+  reported and rose 11%. The flux still confirms; absence from it is null. And the
+  Nordic feed spells some issuers in another word order (`Hennes & Mauritz AB, H & M`),
+  which killed H&M's nine-month report until `eu_archive.same_issuer()` matched on the
+  words rather than the prefix. **Two of the first four European kills were wrong** —
+  a kill removes a name from every sample, so read each one before believing it.
+- **Germany, Spain and Poland** in detail: EQS has no
   whole-day query, so a German name is searched by issuer and "not found" cannot be told
   from "the search term missed". Spain and Poland have no archive at all.
 - **Sweden, Denmark and Finland can reach it only for a recent print.** The Nasdaq feed's

@@ -116,7 +116,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from eu_market import MARKETS, NASDAQ_MAX_PAGES                      # noqa: E402
+from eu_market import MARKETS, NASDAQ_MAX_PAGES, capability                      # noqa: E402
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
@@ -239,6 +239,25 @@ def norm(s):
     s = re.sub(r"\b(PLC|LIMITED|LTD|GROUP|HOLDINGS|HOLDING|THE|SA|SE|AG|INC|COMPANY|"
                r"CO|NV|SPA|KGAA|AKTIENGESELLSCHAFT|SOCIETE|ANONYME|KG)\b", " ", s)
     return re.sub(r"\s+", " ", s).strip()
+
+
+def same_issuer(a, b):
+    """Two normalised issuer names that are the same company, whatever the word order.
+
+    A prefix match alone is not enough, and it failed as a KILL: the Nasdaq Nordic feed
+    spells H&M "Hennes & Mauritz AB, H & M", which normalises to `HENNES MAURITZ AB H M`
+    against the vendor's `H M HENNES MAURITZ AB`. Neither is a prefix of the other, so on
+    2026-09-24 the resolver wrote `event_occurred: false` on H&M's nine-month report.
+    Same words in another order is the same issuer; a subset of at least two words
+    covers a legal form or share-class suffix on one side only.
+    """
+    if not a or not b:
+        return False
+    if a == b or a.startswith(b) or b.startswith(a):
+        return True
+    ta, tb = set(a.split()), set(b.split())
+    small = ta if len(ta) <= len(tb) else tb
+    return len(small) >= 2 and (ta <= tb or tb <= ta)
 
 
 def _row(market, issuer, isin, ts, headline, category, is_results, how, url,
@@ -669,9 +688,7 @@ def confirm(market, d, issuer_name, ticker=None, archive=None, issuer_query=None
     mine = [r for r in archive
             if (ticker and r.get("ticker_hint") and
                 r["ticker_hint"].upper() == str(ticker).upper())
-            or (key and r["issuer_norm"] and
-                (r["issuer_norm"] == key or r["issuer_norm"].startswith(key)
-                 or key.startswith(r["issuer_norm"])))]
+            or same_issuer(key, r["issuer_norm"])]
     if not mine:
         if market == "de":
             # EQS is searched per issuer, so "not found" can mean the search term
@@ -695,6 +712,15 @@ def confirm(market, d, issuer_name, ticker=None, archive=None, issuer_query=None
                           "across Italian issuers (measured 2026-09-22 on PHILOGEN, "
                           "absent on three known filing dates). Check Borsa Italiana's "
                           "own CDA list or the per-ISIN news feed by hand.")
+        if not capability(market, "universal"):
+            # France, measured 2026-09-28: the AMF flux carries the regulated filing,
+            # which can land days after the results press release (ABC arbitrage:
+            # release 2026-09-22 07:00 CEST, first flux row 2026-09-24). Absence on the
+            # day is not silence. See eu_market.CAPABILITY["fr"].
+            return None, (f"{MARKETS[market]['confirm_name']} carries the day and not "
+                          "this issuer, which is NOT a kill here: this archive does not "
+                          "carry every results release on its day. Check the issuer's "
+                          "own release or newswire by hand.")
         return False, f"{MARKETS[market]['confirm_name']} carries the day and not this issuer"
     hit = next((r for r in mine if r["is_results"]), None)
     if hit:

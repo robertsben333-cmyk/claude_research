@@ -865,7 +865,28 @@ def main():
           not em.false_reachable("es") and not em.false_reachable("pl")
           and not em.false_reachable("de"))
     check("event_occurred: false is reachable where a UNIVERSAL day archive exists",
-          all(em.false_reachable(m) for m in ("uk", "fr", "no", "se")))
+          all(em.false_reachable(m) for m in ("uk", "no", "se")))
+    # FRANCE WENT THE WAY OF ITALY on 2026-09-28: the AMF flux carries the regulated
+    # filing, which for ABC arbitrage landed two days after the results release, so
+    # the resolver killed a name that reported and moved +11%. It confirms; it never
+    # kills.
+    check("France cannot kill on absence: the AMF flux lags the press release",
+          em.capability("fr", "universal") is False and not em.false_reachable("fr"))
+    _fr_day = [earch._row("fr", "Autre Societe SA", None, "2026-09-22T05:00:00+00:00",
+                          "Resultats", None, True, "headline", "u")]
+    check("absence from the French flux resolves null, never False",
+          earch.confirm("fr", "2026-09-22", "ABC arbitrage SA", archive=_fr_day)[0]
+          is None)
+    # And the Nordic spelling that killed H&M: the feed writes the name in a different
+    # order, so a prefix match missed it and the day read as silent.
+    _se_day = [earch._row("se", "Hennes & Mauritz AB, H & M", None,
+                          "2026-09-24T06:00:00+00:00", "Nine-month report", "Interim report",
+                          True, "issuer_category", "u")]
+    check("an issuer named in another word order is still the same issuer",
+          earch.confirm("se", "2026-09-24", "H&M Hennes & Mauritz AB",
+                        archive=_se_day)[0] is True)
+    check("two different companies sharing one word do not match",
+          not earch.same_issuer("NORDIC SEMICONDUCTOR ASA", "NORDIC BANK ASA"))
     # ITALY IS THE EXCEPTION AND IT WAS MEASURED, not assumed. This assertion used to
     # include "it", on the belief that a day archive implies a kill is reachable. On
     # 2026-09-22 PHILOGEN was found absent from eMarket STORAGE's issuer dropdown and
@@ -879,7 +900,7 @@ def main():
           and not em.false_reachable("it"))
     check("every other market is universal unless measured otherwise",
           all(em.capability(m, "universal") for m in
-              ("uk", "de", "fr", "se", "dk", "no", "fi", "es", "pl")))
+              ("uk", "de", "se", "dk", "no", "fi", "es", "pl")))
     check("a market with no archive returns None, not an empty day",
           earch.day("es", "2026-09-17") is None
           and earch.day("pl", "2026-09-17") is None)

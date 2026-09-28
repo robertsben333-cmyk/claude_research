@@ -1,8 +1,8 @@
 {
   "market": "EU",
   "event_date": "2026-09-24",
-  "run": "/home/user/claude_research/research/2026/09/2026-09-24/europe",
-  "resolved_utc": "2026-09-28T09:38:11+00:00",
+  "run": "research/2026/09/2026-09-24/europe",
+  "resolved_utc": "2026-09-28T10:00:24+00:00",
   "confirmation": {
     "de": {
       "source": "EQS-News search (per issuer, paginated, back years)",
@@ -25,7 +25,7 @@
     "fr": {
       "source": "AMF regulated-information flux (info-financiere.gouv.fr)",
       "read": "32 issuers with a results-classified announcement, 117 rows",
-      "false_reachable": true,
+      "false_reachable": false,
       "archive_kind": "day",
       "archive_read": true,
       "classified_by": {
@@ -56,7 +56,7 @@
     }
   },
   "n_rows": 14,
-  "n_usable": 8,
+  "n_usable": 9,
   "rows": [
     {
       "ticker": "SLR",
@@ -128,8 +128,8 @@
       "realised_move_pct": -2.02,
       "last_bar_date": "2026-09-28",
       "move_pending": false,
-      "event_occurred": false,
-      "confirmation_note": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query) carries the day and not this issuer",
+      "event_occurred": true,
+      "confirmation_note": "issuer_category: Interim report (Q1 and Q3) | H & M Hennes & Mauritz AB Niomånadersrapport 2026",
       "rankable": true
     },
     {
@@ -578,20 +578,20 @@
     }
   ],
   "stats": {
-    "n": 8,
-    "spearman_impact_sum_vs_move": 0.122,
-    "permutation_p": 0.7948,
-    "spearman_free_control_neg_runup": -0.405,
-    "spearman_free_control_neg_runup_5d": -0.81,
-    "spearman_free_control_neg_runup_60d": -0.024,
-    "spearman_priced_lean": 0.119,
-    "spearman_conviction_vs_sign_right": 0.447,
-    "sign_right_frac": 0.5,
-    "median_abs_realised_pct": 2.76,
+    "n": 9,
+    "spearman_impact_sum_vs_move": 0.051,
+    "permutation_p": 0.9132,
+    "spearman_free_control_neg_runup": -0.317,
+    "spearman_free_control_neg_runup_5d": -0.767,
+    "spearman_free_control_neg_runup_60d": -0.017,
+    "spearman_priced_lean": 0.167,
+    "spearman_conviction_vs_sign_right": 0.264,
+    "sign_right_frac": 0.444,
+    "median_abs_realised_pct": 2.39,
     "spearman_lean_components": {
-      "short_squeeze": 0.171,
-      "short_building": 0.171,
-      "runup": -0.405
+      "short_squeeze": 0.137,
+      "short_building": 0.137,
+      "runup": -0.317
     },
     "per_market": {
       "de": {
@@ -603,6 +603,10 @@
         "note": "too few rows"
       },
       "fr": {
+        "n": 1,
+        "note": "too few rows"
+      },
+      "se": {
         "n": 1,
         "note": "too few rows"
       },
@@ -633,8 +637,9 @@
         "sign_right_frac": 0.6
       },
       ">13": {
-        "n": 2,
-        "note": "too few rows"
+        "n": 3,
+        "spearman": -0.5,
+        "sign_right_frac": 0.0
       }
     },
     "by_anchor_covered": {
@@ -645,13 +650,13 @@
         "note": "too few rows for a rank correlation"
       },
       "uncovered": {
-        "n": 6,
-        "median_turnover_usd_20d": 495800,
+        "n": 7,
+        "median_turnover_usd_20d": 508726,
         "n_below_1m_turnover": 4,
-        "spearman_impact_sum_vs_move": 0.058,
-        "spearman_free_control_neg_runup": -0.029,
-        "sign_right_frac": 0.5,
-        "median_abs_realised_pct": 2.1
+        "spearman_impact_sum_vs_move": -0.018,
+        "spearman_free_control_neg_runup": 0.107,
+        "sign_right_frac": 0.429,
+        "median_abs_realised_pct": 2.02
       },
       "note": "`covered` means the national short register returned a DISCLOSED net short position for this issuer; `uncovered` pools the truncated zeros (register read, issuer not named) with the unreadable registers, and `anchor_state` on each row separates those two. This split exists because the turnover floor dropped from $1m to $200k on 2026-09-19 and the names that buys are overwhelmingly in the uncovered arm. One day says nothing; over a fortnight of pooled days, an uncovered arm ranking at zero while the covered arm does not is the measured cost of that decision."
     },
@@ -668,17 +673,18 @@
         "median_abs_realised_pct": 2.39
       },
       "estimated": {
-        "n": 3,
-        "median_history_abs_move_pct": 4.93,
+        "n": 4,
+        "median_history_abs_move_pct": 4.07,
         "markets": [
           "de",
           "es",
-          "fr"
+          "fr",
+          "se"
         ],
-        "spearman_impact_sum_vs_move": -0.5,
+        "spearman_impact_sum_vs_move": -0.4,
         "spearman_free_control_neg_runup": 1.0,
-        "sign_right_frac": 0.333,
-        "median_abs_realised_pct": 3.14
+        "sign_right_frac": 0.25,
+        "median_abs_realised_pct": 2.58
       },
       "note": "`observed` is a real dated announcement record (uk via Investegate, no via Oslo NewsWeb); `estimated` is this quarter's notified lag stepped backwards, which is a SCALE and never evidence that a print happened on a date. Compare `median_history_abs_move_pct` with `median_abs_realised_pct` in each arm: if the estimated arm's history is systematically below what those names actually do, the cadence estimator is sampling ordinary sessions and every hunter in those eight markets is being handed a scale that is too small."
     },

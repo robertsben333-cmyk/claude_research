@@ -219,6 +219,17 @@ def main():
         raise SystemExit("no baselines: cannot tell what date or market this run is for")
     ev = next(iter(baselines.values()))["event_date"]
     d0 = date.fromisoformat(ev)
+    # The hunter's own answers beside the key, so the SIZE and the CERTAINTY of each
+    # call can be scored apart from its rank (see size_certainty_block). Read from the
+    # hunt files because edge-scores.json carries only the summed findings.
+    hunts = {}
+    for f in sorted((run / "hunts").glob("*.json")):
+        try:
+            h = json.loads(f.read_text(encoding="utf-8"))
+        except (ValueError, OSError):
+            continue
+        if isinstance(h, dict) and h.get("ticker"):
+            hunts.setdefault(h["ticker"], h)
 
     # A RUN CANNOT BE CONFIRMED BEFORE ITS EVENT. Without this, resolving a forward run
     # reads the day archives for a date that has not happened, finds no announcement
@@ -302,6 +313,7 @@ def main():
             "move_pending": bool(move is None and last_bar and last_bar < ev),
             "event_occurred": occurred, "confirmation_note": cnote,
             "rankable": r.get("rankable"),
+            **hunter_answers(hunts.get(tk)),
         })
 
     # Yahoo occasionally serves a European symbol's daily bars truncated by a session or
@@ -407,6 +419,72 @@ def perm_p(xs, ys, rho, iters=20000, seed=7):
         if r is not None and abs(r) >= abs(rho):
             hits += 1
     return round((hits + 1) / (iters + 1), 4)
+
+
+def hunter_answers(h):
+    """The hunter's four answers about the window, as emitted; None where absent.
+
+    `abs_move_pct` and `p_up` were added 2026-09-28 and older hunts do not carry them.
+    """
+    h = h or {}
+
+    def num(k):
+        v = h.get(k)
+        return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else None
+    return {"expected_move_pct": num("expected_move_pct"),
+            "print_vs_bar_pct": num("print_vs_bar_pct"),
+            "abs_move_pct": num("abs_move_pct"),
+            "p_up": num("p_up")}
+
+
+def size_certainty_block(usable):
+    """Score SIZE and CERTAINTY separately from rank, added 2026-09-28.
+
+    The first 28 resolved European names showed the two failing differently: the size of
+    the hunter's number ranked the size of the move (|expected_move| vs |move| rho +0.43)
+    while its level was a third of the move's (median 1.4 against 3.3), and nothing the
+    hunter emitted -- range width, finding count, sources -- told a right sign from a
+    wrong one. A rank correlation on the signed key mixes both and shows neither.
+    """
+    ys = [x["realised_move_pct"] for x in usable]
+    out = {}
+    for k in ("abs_move_pct", "expected_move_pct", "impact_sum",
+              "history_median_abs_move_pct"):
+        pairs = [(abs(x[k]), abs(y)) for x, y in zip(usable, ys)
+                 if isinstance(x.get(k), (int, float)) and x[k] != 0]
+        if len(pairs) < 3:
+            out[k] = {"n": len(pairs), "note": "fewer than 3 rows carry it"}
+            continue
+        out[k] = {"n": len(pairs),
+                  "spearman_abs_vs_abs_move": spearman([a for a, _ in pairs],
+                                                       [b for _, b in pairs]),
+                  "median_predicted_abs": round(median(a for a, _ in pairs), 2),
+                  "median_realised_abs": round(median(b for _, b in pairs), 2),
+                  "median_ratio_realised_to_predicted": round(
+                      median(b / a for a, b in pairs), 2),
+                  "frac_realised_larger": round(
+                      sum(1 for a, b in pairs if b > a) / len(pairs), 3)}
+    probs = [(x["p_up"] / 100.0, 1.0 if y > 0 else 0.0) for x, y in zip(usable, ys)
+             if isinstance(x.get("p_up"), (int, float)) and y != 0]
+    if len(probs) >= 3:
+        brier = sum((p - o) ** 2 for p, o in probs) / len(probs)
+        conf = [abs(p - 0.5) for p, _ in probs]
+        right = [1.0 if (p > 0.5) == (o == 1.0) else 0.0 for p, o in probs
+                 if p != 0.5]
+        out["p_up"] = {"n": len(probs), "brier": round(brier, 4),
+                       "brier_coin_flip": 0.25,
+                       "mean_confidence": round(sum(conf) / len(conf), 3),
+                       "sign_right_frac_when_not_50": (round(sum(right) / len(right), 3)
+                                                       if right else None),
+                       "spearman_confidence_vs_sign_right": spearman(
+                           conf, [1.0 if (p > 0.5) == (o == 1.0) else 0.0
+                                  for p, o in probs])}
+    else:
+        out["p_up"] = {"n": len(probs), "note": "fewer than 3 rows carry p_up"}
+    out["note"] = ("Size and certainty, scored apart from rank. A ratio above 1 means the "
+                   "hunter under-sized; Brier below 0.25 means p_up beats a coin. One day "
+                   "is noise: pool with eu_calibration.py before reading any of it.")
+    return out
 
 
 def stats_block(usable):
@@ -632,6 +710,7 @@ def stats_block(usable):
         "uncovered arm ranking at zero while the covered arm does not is the measured "
         "cost of that decision.")
 
+    s["size_and_certainty"] = size_certainty_block(usable)
     s["unresolved_sessions"] = sum(1 for x in usable if x.get("session_unresolved"))
     s["note"] = ("One day is not a result. These pool across days; a single day's rho on "
                  "4 to 12 names is noise and must not be reported as a finding. The free "
