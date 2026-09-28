@@ -21,3 +21,8 @@
 ## Stage EU — wave 1 complete
 - Logged at 2026-09-28 13:56 UTC
 - 5 of 5 UK hunters returned: CARD -1.1 (guide restatement after weak May-Jul high street), CBG -0.3 (CET1 +0.3, dividend timetable -0.6), MTEC -0.7 (reiteration after +48% run), BAG 0 (H1 pre-released 4 Aug), MTL 0 (H1 pre-released; date UNCONFIRMED, AIM deadline 30 Sep so 29 or 30 Sep). All bmo 07:00 by issuer RNS pattern. Wave 2: 2GB HBH GNFT SERI launched, ADX now.
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-09-28 14:08 UTC
+- Event date 2026-09-29 (sealed Mon 09-28 intraday). 31 scheduled / 10 eligible / 10 hunted / 9 rankable / 0 above floor 3.0. 2GB +0.70, BAG 0, GNFT 0, HBH -0.10, ADX -0.25, SERI -0.25, CBG -0.30, MTEC -0.70, CARD -1.10; MTL not ranked (date unconfirmed, AIM deadline 30 Sep).
+- GNFT and SERI are AMC per hunters (evening releases) though sealed bmo: read the amc window at resolve. AMF register unreadable today (GNFT no anchor). ADX hunter reports CNMV resultado-oir/resultado-ip listing pages returned 200 -- unverified in code. SERI hunter reports eu_pdftext.py garbled the issuer PDF. Note: research/2026/09/2026-09-29/europe/europe-note.md. Publishing with EARNINGS_DATA_BRANCH=main pinned.
