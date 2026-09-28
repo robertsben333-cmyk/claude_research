@@ -52,3 +52,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-09-28 01:06 UTC
 - 01:06 UTC fire on main (6d420b2). Plan: jp_universe -> seal baselines -> unpriced-hunter-jp in waves of 5 -> edge_score -> japan-note. No orders.
+
+## Stage J — universe + baseline sealed
+- Logged at 2026-09-28 01:08 UTC
+- 2 scheduled / 1 eligible / 1 hunted (8227 しまむら; 7624 ＮａＩＴＯ dropped as microcap). Method: all eligible at or under cap. Short register file 20260918. Hunter spawned.
