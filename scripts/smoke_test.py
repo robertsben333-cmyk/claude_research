@@ -885,6 +885,31 @@ def main():
     check("an issuer named in another word order is still the same issuer",
           earch.confirm("se", "2026-09-24", "H&M Hennes & Mauritz AB",
                         archive=_se_day)[0] is True)
+    # 2026-09-28: size and certainty are separate answers, and the hunter's timestamped
+    # session check overrides a defaulted baseline session in the resolver.
+    check("every European hunter emits abs_move_pct and p_up, also in pre_lessons",
+          all(open(os.path.join(REPO, ".claude", "agents", em.MARKETS[x]["hunter"] + ".md"),
+                   encoding="utf-8").read().count('"abs_move_pct"') >= 2
+              and '"p_up"' in open(os.path.join(REPO, ".claude", "agents",
+                                                em.MARKETS[x]["hunter"] + ".md"),
+                                   encoding="utf-8").read() for x in mk))
+    check("a session check opening with a verdict and a URL is read",
+          eres.hunter_session({"session_check": "amc, NOT the baseline's bmo: "
+                                                "https://x/y 18:00 CEST"}) == "amc")
+    check("a session check without a URL, or not opening with one, is not",
+          eres.hunter_session({"session_check": "amc probably"}) is None
+          and eres.hunter_session({"session_check": "baseline, not checked; bmo "
+                                                    "https://x"}) is None)
+    _sc = eres.size_certainty_block([
+        {"realised_move_pct": 6.0, "abs_move_pct": 5.0, "p_up": 80,
+         "expected_move_pct": 3.0, "impact_sum": 3.0, "history_median_abs_move_pct": 2.0},
+        {"realised_move_pct": -2.0, "abs_move_pct": 3.0, "p_up": 40,
+         "expected_move_pct": -1.0, "impact_sum": -1.0, "history_median_abs_move_pct": 4.0},
+        {"realised_move_pct": 9.0, "abs_move_pct": 8.0, "p_up": 70,
+         "expected_move_pct": 3.0, "impact_sum": 2.0, "history_median_abs_move_pct": 3.0}])
+    check("size_and_certainty scores magnitude and a Brier for p_up",
+          _sc["abs_move_pct"]["n"] == 3 and _sc["p_up"]["brier"] < 0.25,
+          repr(_sc["p_up"]))
     check("two different companies sharing one word do not match",
           not earch.same_issuer("NORDIC SEMICONDUCTOR ASA", "NORDIC BANK ASA"))
     # ITALY IS THE EXCEPTION AND IT WAS MEASURED, not assumed. This assertion used to

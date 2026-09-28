@@ -129,6 +129,14 @@ def direction_block(rows):
                   "sign_right": f"{sum(right)}/{len(right)}",
                   "book_mean_pct": round(sum(math.copysign(1, a) * b for a, b in p)
                                          / len(p), 2)}
+    # The ranker the two new answers imply, beside the key it may one day replace:
+    # (2 p_up - 1) x abs_move. Hunts before 2026-09-28 carry neither field.
+    se = [((2 * r["p_up"] / 100.0 - 1) * r["abs_move"], r["move"]) for r in rows
+          if isinstance(r.get("p_up"), (int, float))
+          and isinstance(r.get("abs_move"), (int, float))]
+    out["signed_expectation"] = ({"n": len(se), "rho": rho([a for a, _ in se],
+                                                           [b for _, b in se])}
+                                 if len(se) >= 3 else {"n": len(se)})
     pr = [(r["p_up"] / 100.0, 1.0 if r["move"] > 0 else 0.0) for r in rows
           if isinstance(r.get("p_up"), (int, float)) and r["move"]]
     if len(pr) >= 3:

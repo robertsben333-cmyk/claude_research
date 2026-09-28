@@ -236,6 +236,12 @@ The note must also say, every time:
   how TRT got ranked, traded and never reported
 - which names sit above `conviction_floor`, and that over the whole US sample the sign
   was a coin flip below it
+- per name, the hunter's `abs_move_pct` and `p_up` beside `impact_sum`, and which names
+  had **already pre-released the period** (`already_public`) or face a **likely guidance
+  change** (`new_in_release`). On the first resolved days those two facts decided the
+  size of the move — 3.1% against 7.4%, and 9.0% against 2.3% — while the emitted sizes
+  barely differed, so a note that shows them lets a reader see whether the sizing has
+  caught up (see the hunters' "Size and certainty" section)
 - that one day is not a result
 
 **6. Publish.**

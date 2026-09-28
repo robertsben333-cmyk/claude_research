@@ -274,9 +274,10 @@ So you answer two questions and emit both numbers:
 
 They are different objects and they are allowed to disagree. When they do, say why in
 `conviction_note`. **The reaction function has veto power over the fundamental read**:
-the baseline gives you this name's prior reactions; if beats have been sold, size the
-reaction small however good the fact is. A hunter whose two numbers always agree is not
-answering the second question.
+the baseline gives you this name's prior reactions; if beats have been sold, pull the
+reaction toward zero however good the fact is. A hunter whose two numbers always agree is not
+answering the second question. Since 2026-09-28 the veto acts on `p_up`, not on
+`abs_move_pct` — see "Size and certainty" below.
 
 ## What a finding has to carry, beyond the fact
 
@@ -340,6 +341,92 @@ three promising leads this way in one session — all August 2025 stories served
 2026, each caught only by reading the year out of the URL path (`/2025/08/`). Before a
 finding rests on a dated fact, confirm the date from the URL path or the document itself.
 
+## Size and certainty are two answers, and the first resolved days say which one failed
+
+Measured on the first 25 resolved European names whose release landed inside the window
+(2026-09-22 → 09-25), each checked against the release itself
+(`researcher_europe/scripts/eu_calibration.py`, the `eu-postmortem.json` files in those
+runs). Four days is a lead, not a law — but it is the only European measurement there is,
+and it points somewhere specific.
+
+**You get the NUMBER right far more often than the MOVE.** Where the print came out
+above or below the bar you named, your `print_vs_bar_pct` had the right sign 13 times in
+15. Your `expected_move_pct` then had the right sign on 9 of those 13. The research is
+not the weak part; turning it into a size is.
+
+**The size of the move was decided by two things you can check before the print, and
+the hunts sized neither:**
+
+| before the print | median realised move | median `expected_move_pct` emitted |
+| --- | --- | --- |
+| the period's numbers were already out in a trading update | **3.1%** | 1.0 |
+| they were not | **7.4%** | 2.0 |
+| guidance was raised, cut or introduced in the release | **9.0%** | 1.4 |
+| guidance was reiterated or none was given | **2.3%** | 1.2 |
+
+Your number was smaller than the realised move on 18 of 23 names, by a median factor of
+about three. And the name's own reaction history (`event_move_proxy_pct`) did **not**
+rank the size of the moves at all (ρ −0.14): five to seventeen observations mixing
+results days with trading updates are too few to be a scale, so use it as context, never
+as a cap.
+
+**Nothing you emitted told a right sign from a wrong one.** Finding count (ρ +0.01),
+the width of your ranges (−0.07) and the size of your sum (−0.03) all said nothing about
+whether the sign would hold. So the ranges were decoration. The fix is to say your
+uncertainty in the one field built for it.
+
+### Two questions before any size
+
+1. **`already_public`: what of this period is already out?** A trading update, a
+   pre-close statement, a profit warning, a revenue pre-release, a guide the company
+   has repeated since. Date and URL for each. It is the normal case, not the exception —
+   11 of the 25 names had pre-released the period, most of them British — and the
+   results day then carries nothing on those lines. A finding about a number the market has already been told is worth 0
+   unless the finding is that the pre-release will be revised. This is why
+   `reported_quarter` findings went 4 of 14 on sign: most restated disclosed numbers.
+
+2. **`new_in_release`: which lines will the release carry that the market has not
+   seen?** Next year's first guide (a FIRST guide for a new fiscal year is a scheduled
+   guidance event — Smiths FY27 at +7.5%, Verbio 2026/27 at −3.1%), a change to this
+   year's guide (Raspberry Pi raised, +19.6%; Warpaint to the low end, −12.3%), H2
+   current trading, cash flow and working capital (Luceco fell 5.5% on free cash flow on
+   a day it RAISED guidance), the dividend, a strategic item. **The move lives here.**
+   Say for each line whether you expect it to change and which way.
+
+### Then two numbers, not one
+
+- **`abs_move_pct`**: how big the move will be, **whatever its direction**. Start from
+  the measured European base — about **3%** when the period is pre-released and the
+  guide is not expected to move, about **7%** when the numbers are new, about **9%** when
+  a guidance change is likely — and move it for this name: turnover (the thin half moves
+  more), a crowded or building short, a large not-yet-public gap in `print_vs_bar_pct`.
+  Your certainty about the sign does not shrink this number. That shrinking is what
+  produced the factor of three.
+- **`p_up`**: the probability, 0 to 100, that the stock closes the window higher. **This
+  is where your uncertainty goes.** Far from 50 only with a sourced, not-yet-public
+  number: ABC arbitrage's hunter had the half-year beat from the issuer's own activity
+  disclosures (`print_vs_bar_pct` +25; actual +53) and the stock rose 11%. A pre-released
+  period with an unchanged guide sits between 45 and 55 whatever the findings say.
+
+`expected_move_pct` stays the signed expectation and should read as roughly
+`(2 × p_up / 100 − 1) × abs_move_pct`. **Your findings' sizes must add up to it**, because
+the day is ranked on their sum. That is the practical change: on a name where new
+numbers and a guidance change are in play and you are 75% sure of the sign, the sum is
+around +4.5, not +1.4.
+
+**The reaction history vetoes the direction, not the size.** "Beats have been sold here"
+is a reason to pull `p_up` toward 50. It is not a reason to cap `abs_move_pct` at the
+last three reactions when this surprise is larger than any of theirs — ABC arbitrage's
+three September prints moved under 2% each, the hunter capped at 1.4 on that basis, and
+the fourth moved 11%.
+
+**The session is yours to settle and the resolver now uses it.** Three of the first 28
+names were sealed `bmo` and released after the close (Adocia 18:00, Philogen 18:31,
+VIGO 17:52 local). All three hunters wrote `amc` with the issuer's timestamps; nothing
+read it. `eu_resolve.py` now takes the session from `session_check` when that field OPENS
+with `bmo` or `amc` and cites a URL. So write the verdict first, then the evidence — and
+only when you have a timestamp.
+
 ## Read your own findings as a set before you emit
 
 You size each finding alone, which is correct. Then check the set:
@@ -384,6 +471,10 @@ Your final message is the return value. Emit **only** this JSON, no prose around
   "expected_move_pct": 0.0,
   "conviction_note": "one sentence on how you got to that number, or why it is 0",
   "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 0.0,
+  "p_up": 50,
+  "already_public": [{"what": "the period's numbers or guide already disclosed", "date": "YYYY-MM-DD", "source": "https://..."}],
+  "new_in_release": [{"line": "guidance | h2_trading | cash_flow | dividend | reported_quarter | other", "expect": "what you expect and which way, or 'unknown'"}],
   "bar": "the bar you sized against and its source URL, or 'unsourced' — in which case every size above is capped",
   "event_confirmed": true,
   "session_check": "bmo or amc, how you settled it, and the URL — or 'baseline, not checked'",
@@ -415,6 +506,8 @@ Your final message is the return value. Emit **only** this JSON, no prose around
     "impact_sum_pct": 0.0,
     "expected_move_pct": 0.0,
     "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 0.0,
+    "p_up": 50,
     "findings_count": 0,
     "sizes_pct": [0.0]
   },
@@ -449,6 +542,12 @@ company reporting that day, so a lazy +5/−5 on everything is worse than useles
 destroys the ordering the whole exercise exists to test.
 
 `findings` may be empty. If it is, `expected_move_pct` must be 0.
+
+`abs_move_pct` is unsigned and is NOT 0 when `findings` is empty: a name you found
+nothing on still moves, and "nothing new in the release" is itself a size (about 3%).
+`p_up` is 50 when you have no view. Both are scored by `eu_resolve.py`
+(`stats.size_and_certainty`) and pooled by `eu_calibration.py`; they do not touch the
+ranking key.
 
 `why_not_priced` is the field this exercise exists to fill. A finding whose
 `why_not_priced` reads "the market has not focused on this" is not a finding — say what

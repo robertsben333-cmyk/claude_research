@@ -4,12 +4,55 @@ What counts as a finding in these three markets, and how to size one. Read **aft
 have sized the day twice — once in English, once locally — and frozen both drafts. It
 does not tell you where to look.
 
-**Nothing in this file has been paid for by a resolved European run yet, because there
-has not been one.** Every rule below is either (a) carried over from a resolved US or
-Japanese run and marked as such, or (b) a defect this stage's own Phase 1 measurement
-found in Europe specifically. When European runs resolve, `eu_resolve.py` and the
+**The first section below was paid for by resolved European runs** — 25 names whose
+release landed in the window, 2026-09-22 → 09-25, each checked against the release in
+that run's `eu-postmortem.json`. Four days is a lead: every rule in it names the count it
+rests on so that it can be cut when the count stops holding. The rest is either (a)
+carried over from a resolved US or Japanese run and marked as such, or (b) a defect this
+stage's own Phase 1 measurement found in Europe specifically. When European runs resolve, `eu_resolve.py` and the
 post-mortem replace these with measurement. A rule that costs rank correlation gets cut,
 not argued for. That is the point of freezing `pre_lessons`: the file is scored.
+
+---
+
+## Measured on resolved European runs (2026-09-22 → 09-25, 25 names)
+
+**A finding about a number the market has already been told is worth 0.** 11 of 25 names
+had pre-released the period in a trading update, and `reported_quarter` findings went
+**4 of 14** on sign — the worst line in the stage. Luceco, Judges, Kooth, DFS and Mortgage
+Advice Bureau all printed within a whisker of their own pre-release. If your finding is
+"the half will show X" and the company already said X, drop it or move it to what is
+still unknown.
+
+**The move is in the guide.** Guidance raised, cut or introduced: median move **9.0%**;
+reiterated or none: **2.3%**. `guidance` findings went **11 of 17** on sign. A first
+guide for a new fiscal year is a scheduled guidance event even when nobody calls it one
+(Smiths FY27, +7.5%; Verbio 2026/27, −3.1%).
+
+**You were right about the number and too small about the move.** `print_vs_bar_pct`
+had the right sign **13 of 15** times the print left the bar; `expected_move_pct` was
+smaller than the realised move on **18 of 23** names, by a median factor of about three.
+ABC arbitrage is the worked case: +25 on the bar (actual +53), +1.4 emitted because three
+earlier prints had moved under 2%, and the stock rose 11%. Size the move on what is new
+in the release; let the reaction history move `p_up`, not `abs_move_pct`.
+
+**A beat made of a one-off is sold.** H&M beat the operating-profit bar by 18.5% with a
+tariff refund inside it and fell 2% on weak sales; the hunter had the refund right and
+sized it +0.3. Confirms the carried-over US rule below on a European name.
+
+**Cash can outweigh a raised guide.** Luceco raised its full-year outlook and fell 5.5%
+on negative free cash flow from an inventory build. When the guide is the obvious line,
+look at working capital before signing the name.
+
+**In a live bid, results are noise.** Capricorn's interims did not matter; a competing
+offer for the company did (Genel raised to $5.74 the next day). If the company is in an
+offer period, the offer is the finding.
+
+**Your own session check was right three times out of three and nothing used it.**
+Adocia, Philogen and VIGO were sealed `bmo` and released after the close; all three
+hunters wrote `amc` with the timestamp. Since 2026-09-28 `eu_resolve.py` takes the
+session from a `session_check` that opens with `bmo`/`amc` and cites a URL — so open with
+the verdict, and only when you have a timestamp.
 
 ---
 

@@ -252,6 +252,17 @@ def main():
         m = bl.get("submarket")
         sym = bl.get("yahoo_symbol")
         sess = bl.get("session") or "bmo"
+        # THE HUNTER'S SESSION WINS WHEN IT CITES A TIMESTAMP (2026-09-28). The session
+        # is a fact about when the release lands, not a prediction, and the baseline's
+        # is often a vendor default. Of the first 28 resolved European names three were
+        # sealed bmo and released after the close -- Adocia 18:00 CEST, Philogen 18:31
+        # CET, VIGO 17:52 CEST -- so the scored window ended before the print. All three
+        # hunters had written "amc, NOT the baseline's defaulted bmo" with the issuer's
+        # own timestamps. The baseline's window is kept beside it.
+        hunter_sess = hunter_session(hunts.get(tk))
+        sess_source = "baseline"
+        if hunter_sess and hunter_sess != sess:
+            sess, sess_source = hunter_sess, "hunter_session_check"
         cs = closes(sym, d0) if sym else []
         ds = [x[0] for x in cs]
         last_bar = ds[-1].isoformat() if ds else None
@@ -299,7 +310,9 @@ def main():
             "anchor_covered": _anchor_covered(bl),
             "anchor_state": _anchor_state(bl),
             "short_ratio_pct": (bl.get("positioning") or {}).get("short_ratio_pct"),
-            "session": sess, "session_unresolved": bl.get("session_unresolved"),
+            "session": sess, "session_source": sess_source,
+            "session_baseline": bl.get("session") or "bmo",
+            "session_unresolved": bl.get("session_unresolved"),
             "move_bmo_window_pct": mv_bmo, "move_amc_window_pct": mv_amc,
             "realised_move_pct": move,
             # The last daily close Yahoo actually serves for this symbol. MEASURED
@@ -419,6 +432,20 @@ def perm_p(xs, ys, rho, iters=20000, seed=7):
         if r is not None and abs(r) >= abs(rho):
             hits += 1
     return round((hits + 1) / (iters + 1), 4)
+
+
+def hunter_session(h):
+    """`bmo`/`amc` when the hunter's session_check OPENS with one and cites a URL.
+
+    Only a leading verdict counts ("amc, NOT the baseline's defaulted bmo ..."), so a
+    check that merely mentions both words, or one that says "baseline, not checked", is
+    not read as a correction.
+    """
+    txt = str((h or {}).get("session_check") or "").strip().lower()
+    if "http" not in txt:
+        return None
+    m = re.match(r"^\W*(bmo|amc)\b", txt)
+    return m.group(1) if m else None
 
 
 def hunter_answers(h):
