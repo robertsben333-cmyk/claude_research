@@ -86,3 +86,10 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-09-28 18:33 UTC
 - Fired 18:33 UTC (14:33 ET). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name -> edge_score -> note. No orders.
+
+## Stage CA — Canada researcher — EMPTY DAY
+- Logged at 2026-09-28 18:33 UTC
+- universe.json written 18:33 UTC. market_closed: null, scheduled_today: 8 (TSX open, names scheduled) — but 0 eligible: all 8 fall below the $200k/day turnover floor (largest MMY $148,672). Not a fault; no baselines sealed, no hunters spawned, no ranking.
+- calendar_reconciliation: confirmed 1 (STC) / agreed 0 / wsh_only 0 / vendor_only 6 / disputed 1 (DND); moved_off_target_by_wsh: none.
+- filing_only: 4 of 8 (ROS, XXIX, FCLX, SR), but none was the binding cut — all four were already below the floor. Anchor arms: 0 options / 0 register (nothing sealed). No short-register snapshot stored today, so the register history does not advance.
+- Degradation: fx_source = FALLBACK CONSTANT 0.71 (Yahoo did not answer). Immaterial today (MMY would need CAD/USD ~0.96 to clear). TMX calendar/archive answered; no vendor-stack outage.
