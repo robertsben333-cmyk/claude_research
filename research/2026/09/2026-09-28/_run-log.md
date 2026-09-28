@@ -64,3 +64,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-09-28 01:18 UTC
 - 1 name ranked: 8227 impact_sum -0.50 (below floor). Hunter hit 60-turn limit and was resumed to write output. Short register file 20260918 (10 days stale). Note: japan/japan-note.md.
+
+## Close AMC — pre-market exit sweep
+- Logged at 2026-09-28 10:21 UTC
+- Fired 10:11 UTC (06:11 ET), inside the pre-market window before the 09:28 ET opg cutoff. Guard: mode --require-exit-tif opg -> exit 0 (execution.enabled true, exit_mode amc_open, amc exits placed as a market DAY order queued for the open since orders.auction_orders is False). verify --scan found all 14 tracked exit legs across 12 prior runs already at 'still held 0.0' -- nothing UNFILLED, nothing to rescue. close --submit re-scanned the same 12 runs (2026-09-10 through 2026-09-25); no leg has an exit date of 2026-09-28 and every prior leg is already closed (filled, expired or canceled with zero held), so nothing new was placed -- an idempotent no-op by design, not a guard failure. status confirms the account is flat: equity $11,200.86, no open entry or exit orders on any dated run 2026-09-10 through 2026-09-25, and 09-18/09-21/09-23/09-24/09-25 carry no positions at all.
