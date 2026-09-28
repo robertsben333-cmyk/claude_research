@@ -78,3 +78,7 @@
 - Logged at 2026-09-28 17:27 UTC
 - 9 names in window, sweep confirmed 9/9, 0 phantom rows. 9 hunters (one per name), all returned the current contract (pre_lessons, print_vs_bar_pct, expected_move_pct present). Ranking key impact_sum: TRAK +0.90, KMX +0.40, POCI +0.20, IDT/JEF/MTN 0, CCL -0.50, SANG -0.50, UEC -0.90. 0 of 9 clear the 3.0 floor. V2 calibrated (177 obs), written before first print. Control -run_up_20d ranks the day at Spearman -0.67 vs the hunt.
 - Execution: DRY/NOT RUN. execution.enabled is true but the session permission classifier refused every alpaca_trade.py broker call (verify, status). Step 0b sold nothing; step 7 not run; with 0 names meeting the benchmark the book would have been empty anyway (0 orders, 0% gross). alpaca_trade.py assets not run (broker lookup) — tradable column built from baseline spot x 20d volume, borrow unchecked.
+
+## Stage E V2 — shadow ledger — 2026-09-28
+- Logged at 2026-09-28 17:31 UTC
+- collected 11 8-Ks for 9 tickers; shadow-scorer scored 11/11 blind; ingested 11, refused 0; measured 12 complete (198 pending). Pooled n at session_close 179, kappa +0.353 (se 0.069).
