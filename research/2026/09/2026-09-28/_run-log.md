@@ -56,3 +56,7 @@
 ## Stage J — universe + baseline sealed
 - Logged at 2026-09-28 01:08 UTC
 - 2 scheduled / 1 eligible / 1 hunted (8227 しまむら; 7624 ＮａＩＴＯ dropped as microcap). Method: all eligible at or under cap. Short register file 20260918. Hunter spawned.
+
+## Stage J — resolved 09-24 and 09-25
+- Logged at 2026-09-28 01:08 UTC
+- 09-24: 4716 confirmed, impact_sum -3.50, realised +8.15% (sign wrong); n=1 so no rho and no lean_vs_free_control_rho. 09-25: 2742 and 3333 confirmed on TDnet, move_pending until today's close.
