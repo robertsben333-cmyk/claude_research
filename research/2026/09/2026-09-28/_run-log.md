@@ -60,3 +60,7 @@
 ## Stage J — resolved 09-24 and 09-25
 - Logged at 2026-09-28 01:08 UTC
 - 09-24: 4716 confirmed, impact_sum -3.50, realised +8.15% (sign wrong); n=1 so no rho and no lean_vs_free_control_rho. 09-25: 2742 and 3333 confirmed on TDnet, move_pending until today's close.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-09-28 01:18 UTC
+- 1 name ranked: 8227 impact_sum -0.50 (below floor). Hunter hit 60-turn limit and was resumed to write output. Short register file 20260918 (10 days stale). Note: japan/japan-note.md.
