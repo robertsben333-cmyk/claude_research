@@ -69,3 +69,7 @@
 ## Stage CA — Canada researcher — DONE (empty)
 - Logged at 2026-09-29 18:34 UTC
 - Universe: 5 scheduled / 0 eligible / 0 hunted; market open, all five TSXV names below the $200k floor (FX fallback 0.71, Yahoo silent). Calendar: vendor_only 5. No baselines sealed, no hunters, no scores. Normal thin-season outcome, not a fault; TMX archive and scanner both answered.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-09-29 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside 13:30–16:05 ET; CLAUDE.md present, no clone. Plan: intraday screen K=15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 09-28 run (09-25 now scoreable too), note before 16:00 ET (shed names if late).
