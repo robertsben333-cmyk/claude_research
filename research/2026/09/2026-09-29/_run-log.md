@@ -61,3 +61,7 @@
 - Sweep confirmed 6 of 6 (0 phantom). 6 hunters, all on the current contract (pre_lessons, print_vs_bar_pct, expected_move_pct present). Ranking (impact_sum): JBL +0.80, CNXC +0.40, FDS +0.40, CAG 0.00, CALM -0.10, YRD -2.00 (turnover ~$40k/day, below floor). 0 of 6 clear conviction_floor 3.0. V2 calibrated (181 obs), written before first print. Hunt vs -run_up_20d Spearman +0.06.
 - Correction to the STARTED entry: repo records show no leg was due to exit today (09-28 placed nothing; the 09-28 Close AMC run found the account flat), so the blocked step 0b left nothing known unsold. Broker state itself was NOT read.
 - Execution: NOT RUN. execution.enabled is true, but the permission classifier refused alpaca_trade.py broker calls. Step 7: 0 names met the benchmark, so the book would have been empty (0 orders, 0% gross). Nothing was refused on turnover or borrow in a plan, because no plan was built; YRD would fail the turnover floor. alpaca_trade.py assets not run; tradable column built from baseline spot x 20d volume. Shadow-ledger step 6c skipped this run.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-09-29 18:33 UTC
+- Fired 18:33 UTC (14:33 ET, inside the session). Plan: ca_universe → seal baselines before 16:00 ET → one unpriced-hunter-ca per name in waves of 5 → edge_score → canada-note. Research only, no orders.
