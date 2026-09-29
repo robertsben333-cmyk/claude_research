@@ -1,0 +1,72 @@
+{
+  "ticker": "SWMR",
+  "drop_date": "2026-09-29",
+  "window": {"from": "close of 2026-09-29", "to": "close of 2026-09-30"},
+  "expected_move_pct": -2.0,
+  "conviction_note": "No company filing or release on 09-28 or 09-29 explains the fall, so no repricing leg has a mechanism. The only in-window finding is an effective equity line that can sell stock into 09-30 (-1.0). This name's own reaction function (24 comparable falls, 18 of them followed by another down day, median -5.24%) and its 22% ATR both point further down, so I let a little of that through: -2.0, well short of the history median because volume is only 2.9x and nothing new was learned.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "This name's own 24 comparable falls (median next close -5.24%, 25% up, median absolute move 7.46%) and the cross-section prior of -0.30%, both from the sealed baseline. No option chain exists (no_options_market). Primary documents: https://www.sec.gov/Archives/edgar/data/2092574/000110465926108323/tmb-20260630xposam.htm",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 20,
+    "confidence_pct": 40,
+    "what_happened": "SWMR gapped up 2.3% and then fell about 12.4% intraday to $16.29 at 15:04 ET on 2.9x normal dollar volume. This is the second straight double-digit down day (-12.3% on 09-28). EDGAR shows no filing after the 09-25 PREM14A, and no issuer release after 09-23. The most likely driver is continued selling of the roughly 9.35M shares (about 59% of the stock) released at the mid-September lock-up expiry, plus the Lucid equity line, but no document ties either one to today.",
+    "evidence": [
+      {"claim": "No SWMR filing since the 2026-09-25 17:20 PREM14A; nothing on 09-28 or 09-29", "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002092574&type=&dateb=&owner=include&count=20&output=atom", "timestamp": "2026-09-29"},
+      {"claim": "Most recent issuer release was the 09-23 17:55 Vectus MOU; the only 09-29 item is a sector article about other drone companies", "url": "https://www.stocktitan.net/news/SWMR/", "timestamp": "2026-09-29"},
+      {"claim": "Lock-up expiry released about 9.35M shares (about 59% of outstanding), bought well below the $5 March 2026 IPO price; dilution worries over the Ratel deal", "url": "https://finance.biggo.com/news/46e55697-dd54-4517-a1cb-f2107877ce6c", "timestamp": "2026-09 (week of the lock-up expiry; exact date not verified from the page)"},
+      {"claim": "Equity line with Lucid Capital Markets for up to 3,000,000 shares at 98% of VWAP; 654,734 sold to date for about $27.2M; post-effective amendment filed 09-16, effective 09-18", "url": "https://www.sec.gov/Archives/edgar/data/2092574/000110465926108323/tmb-20260630xposam.htm", "timestamp": "2026-09-16"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -40,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Special meeting to approve issuing up to 5,487,067 shares for Ratel Robotics, 2026-10-30 (PREM14A, preliminary). Outside the window.",
+    "what_would_change_my_mind": "A Form 4 or 13D/A inside the window showing the large unlocked holders (Kupriienko at 28.7%, Fink) did not sell, or an issuer statement suspending draws on the Lucid line."
+  },
+  "positioning_check": "Short interest 1,128,880 shares at the 2026-09-15 settlement, up 41.9% from 795,766 at 08-31, with 1.10 days to cover (Nasdaq, https://api.nasdaq.com/api/quote/SWMR/short-interest?assetclass=stocks). That is about 6.8% of the 16,610,264 shares outstanding at the 09-11 record date (PREM14A). FINRA publishes about eight business days after settlement, so the position carried into this fall cannot be seen yet. Float after the lock-up is not sourced. No option chain, so there is no skew.",
+  "findings": [
+    {
+      "finding": "The Lucid Capital Markets equity line has been effective again since 2026-09-18 and can sell stock on 2026-09-30. About 2.35M of its 3.0M registered shares remain (roughly 14% of shares outstanding), at 98% of VWAP, capped at 250,000 shares or 20% of volume per purchase.",
+      "leg": "new_information",
+      "mechanism_in_window": "The registration went effective on 2026-09-18 (EFFECT), and the issuer has already used the line: 654,734 shares for $27.2M. Nothing more has to happen for it to sell stock into the 09-30 session, so this supply sits inside the window rather than after it.",
+      "expected_impact_pct": -1.0,
+      "impact_low_pct": -2.5,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-09-30",
+      "reaction_history_on_this_line": "The line was re-registered on 09-16 and 09-18. The stock fell 28.36% on 09-15, rose 8.98% on 09-16, and has fallen on most sessions since. No draw has been dated to a specific session, so no clean reaction to an individual draw is observable.",
+      "source": "https://www.sec.gov/Archives/edgar/data/2092574/000110465926108323/tmb-20260630xposam.htm",
+      "source_date": "2026-09-16",
+      "why_not_priced": "The price has already fallen 45% in 20 sessions, but a live line that sells up to 250k shares into any session at 98% of VWAP caps a bounce mechanically. It is recurring supply rather than a one-off event, so the close cannot fully discount it. If the price held it, a 2.3% gap-up would not have turned into a 12% intraday fall on a day with no news.",
+      "independence": "The post-lock-up overhang from separate filings points the same way. Kupriienko's 13D/A (09-23) shows 4.67M shares (28.7%) after an option exercise on 09-21 and says he may dispose of shares: https://www.sec.gov/Archives/edgar/data/2092574/000110465926109988/xslSCHEDULE_13D_X02/primary_doc.xml. Green Flag Fund's Form 144 (09-16): https://www.sec.gov/Archives/edgar/data/2092574/000162828026062291/xsl144X01/primary_doc.xml"
+    }
+  ],
+  "outside_window": [
+    {"finding": "Special meeting on 2026-10-30 to approve issuing up to 5,487,067 shares (closing shares plus earnout) for Ratel Robotics, about a third of the 16.6M shares outstanding. This is dilution with a vote date.", "expected_impact_pct": -2.0, "resolves_by": "2026-10-30", "source": "https://www.sec.gov/Archives/edgar/data/2092574/000110465926111047/tm2625952-1_prem14a.htm"},
+    {"finding": "The Ratel acquisition is expected to close in Q4 2026 (outside date 2027-01-07). The shares issued at closing carry a six-month lock-up.", "expected_impact_pct": -0.5, "resolves_by": "2027-01-07", "source": "https://www.sec.gov/Archives/edgar/data/2092574/000110465926106499/tm2625021d3_8k.htm"},
+    {"finding": "Next earnings is a Zacks cadence estimate of 2026-11-12, not a company announcement.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-12", "source": "https://api.nasdaq.com/api/analyst/SWMR/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "An EDGAR filing on 09-28 or 09-29 (8-K, 424B, Form 4, 13D/G): none; latest is the 09-25 PREM14A (browse-edgar atom feed)",
+    "An issuer press release on 09-28 or 09-29: none (StockTitan SWMR news list; latest is the 09-23 Vectus MOU)",
+    "A Benzinga 'Swarmer Stock Plunges Tuesday' article: HTTP 403, so its date could not be verified. Its snippet cites a price near $24, which fits the 09-15 lock-up week, not today, so it was not used as today's cause",
+    "A drone-sector sell-off on 09-29: 24/7 Wall St and Yahoo results were ambiguous about the date and nothing tied a peer move to today; not used",
+    "Going-concern language: the text probe returned unavailable in the baseline; not re-run",
+    "A listing deficiency: price is $16.29, far above $1; no deficiency language since 03-2026",
+    "Non-reliance (Item 4.02): 0 hits",
+    "No price dated after the 15:04 ET screen instant appeared in any fetched page. Search snippets showed the 09-28 close (20.73), which is before the screen instant"
+  ],
+  "baseline_tension": "What I found agrees with the reaction function: the stock's own falls continue 75% of the time, its ATR is extreme, and a supply-driven fall with no news fits. Volume at 2.9x is moderate rather than heavy, and nothing new was learned today, so I sized well short of the -5.24% history median.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.0,
+    "expected_move_pct": -2.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-1.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 11
+}
