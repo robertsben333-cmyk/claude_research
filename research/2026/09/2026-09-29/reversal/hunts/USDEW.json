@@ -1,0 +1,55 @@
+{
+  "ticker": "USDEW",
+  "drop_date": "2026-09-29",
+  "window": {"from": "close of 2026-09-29", "to": "close of 2026-09-30"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Zero: USDEW is StablecoinX's public warrant ($11.50 strike, expiring 2031-06-25), and it fell with its common stock on no company filing or news. Every supply and redemption event I could find is dated outside the window, so no finding survives. The name's own 16 comparable falls have a 50% up-rate, a 14% median absolute next move and a 20% ATR, so they give no direction to lean on.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced as a bar. Sized against the baseline's own comparable falls (n=16, median next close +1.39%, up-rate 50%, median |move| 14.15%) and ATR14 20.13%; no option chain (no_options_market). Every size above is capped, and it is zero.",
+  "cause": {
+    "label": "sympathy",
+    "seller_is_finished_pct": 20,
+    "confidence_pct": 45,
+    "what_happened": "The warrant followed its underlying, USDE common. The common closed 17.25 on 09-25 and 15.56 on 09-28, and on 09-29 it traded in a 14.05-16.40 range near 14.4, a momentum unwind after roughly +185% in a month. The warrant gapped up 7.6% and then fell 16.6% intraday. No 8-K, no 424B and no press release was filed on 09-28 or 09-29.",
+    "evidence": [
+      {"claim": "USDEW is the StablecoinX public warrant: exercise price $11.50, 11.5M public warrants, expiry 2031-06-25; USDE/USDEW began Nasdaq trading 2026-06-26 after the TLGY merger", "url": "https://www.sec.gov/Archives/edgar/data/2080215/000121390026099731/ea0305435-424b3_stable.htm", "timestamp": "2026-09-14"},
+      {"claim": "Latest EDGAR filings are 424B3 + 8-K (1.01) of 2026-09-17; nothing filed 09-18 through the screen instant", "url": "https://data.sec.gov/submissions/CIK0002080215.json", "timestamp": "2026-09-29"},
+      {"claim": "The common ran from about $6.2 (09-16) to $14.69 (09-24) and traded on momentum, with a CEO change announced 09-24. No dated catalysts are mentioned", "url": "https://stockstotrade.com/news/stablecoinx-inc-usde-news-2026_09_24/", "timestamp": "2026-09-24 12:33 ET"},
+      {"claim": "Drop-day common: previous close 15.56, day range 14.05-16.40, trading near 14.41 (search snippet, drop-day only, snippet_only)", "url": "https://www.investing.com/equities/tlgy-acquisition", "timestamp": "2026-09-29"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "2026-10-05: the Ethena waiver of the 48-month ENA token lock-up takes effect, which allows ENA treasury 'Funding Sales' on five business days' notice (8-K of 2026-09-17). This is outside the window.",
+    "what_would_change_my_mind": "Any of these filed tonight or tomorrow morning: an 8-K or 424B, an offering, a warrant-redemption notice, or a large ENA sale notice."
+  },
+  "positioning_check": "USDEW short interest was 8,064 at the 2026-09-15 settlement, down 35.2% from 12,435 at 08-31, with days to cover 1.0 (https://api.nasdaq.com/api/quote/USDEW/short-interest?assetclass=stocks). The position carried into the fall is not observable because FINRA publishes about 8 business days late. Insider trades are 0 over 3 and 12 months. There is no options market, so there is no skew.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "The ENA token lock-up waiver takes effect 2026-10-05. After that date the company can sell ENA treasury tokens for working capital, subject to Foundation ROFR and consent. It is a possible overhang on the ENA NAV that the common, and so the warrant, is priced on.", "expected_impact_pct": -1.0, "resolves_by": "2026-10-05", "source": "https://www.sec.gov/Archives/edgar/data/2080215/000121390026100751/ea0305686-8k_stablecoinx.htm"},
+    {"finding": "The warrant exercise shares (19.1M) and the selling-stockholder resale of 12.67M shares have been registered and effective since 2026-09-14. With the common above $11.50 the warrants are in the money and can be exercised continuously. It is undated supply and has no date inside the window.", "expected_impact_pct": -0.5, "resolves_by": "2026-12-25", "source": "https://www.sec.gov/Archives/edgar/data/2080215/000121390026099731/ea0305435-424b3_stable.htm"},
+    {"finding": "The standard SPAC $18.00 redemption trigger (20 of 30 trading days, with 'equals or exceeds $18.00' language in the S-1/424B3) cannot be met inside the window. The common is about $14-16 and has not closed above $18. A redemption notice would cap the warrant's time value, but it is weeks away at the earliest.", "expected_impact_pct": 0.0, "resolves_by": "2026-10-31", "source": "https://efts.sec.gov/LATEST/search-index?q=%22equals%20or%20exceeds%20%2418.00%22&ciks=0002080215"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions: no filing after 2026-09-17, so there is no drop-day 8-K and no four-day clock running (https://data.sec.gov/submissions/CIK0002080215.json)",
+    "ATM / at-the-market full-text: 0 hits ever (baseline text_probes)",
+    "minimum bid price / non-reliance: 0 hits. Spot is $4.35, so no listing clock",
+    "News search for 09-28/09-29 company-specific news on USDE: nothing beyond the 09-24 CEO change coverage",
+    "An ENA token price snippet appeared, dated 2026-09-29 but at an unknown time and possibly after the screen instant. I excluded it and did not use it",
+    "Lock-up expiry dates for the selling stockholders are not stated in the S-1/A excerpt or on the stocktitan summary (https://www.stocktitan.net/sec-filings/USDE/s-1-a-stable-coin-x-inc-amends-ipo-registration-statement-e8694269e18e.html)",
+    "The warrant redemption mechanics could only be confirmed by full-text hits on the phrase; the full clause was not readable through WebFetch"
+  ],
+  "baseline_tension": "No tension. Volume is ordinary (1.04x), the name's own falls are a coin flip with 14% absolute moves, and I found nothing dated in the window. The zero agrees with the reaction function rather than overriding it.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 7
+}
