@@ -27,3 +27,8 @@
 - Logged at 2026-09-29 13:51 UTC
 - 5 of 5 UK hunters returned: SAGA +1.1 (guide firm/raise, fuel hedge), AVG 0 (FY26 pre-released in line), PINE 0 (448p scheme, court 7 Oct), SPI 0 (250p final offer, vote 30 Oct), DEBS 0 event_confirmed false (H1 update already 17 Sep; interims likely Nov, vendor date probable phantom).
 - Wave 2 early return: ADE event_confirmed false — H1 report published 2026-09-29 09:00 CEST (EQS), before the seal; neither window contains it. At resolve, amend ADE baseline with event_occurred: false + that URL (German archive cannot reach it automatically).
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-09-29 13:59 UTC
+- 10 hunted / 6 rankable / 0 above floor 3.0. SAGA +1.10, GXI +0.50, AVG 0, PINE 0 (448p scheme), SPI 0 (250p final offer), SKIS_B -0.50. Not ranked (no event in window): ADE (H1 out 09-29 09:00 CEST), DIB (FY out 09-24 evening), KOF (9M amc 1 Oct per issuer), DEBS (probable phantom, interims Nov).
+- At resolve: hand-amend ADE and DIB baselines with event_occurred: false (DE/IT cannot reach it automatically). Resolve SKIS_B within ~a week. Note: research/2026/09/2026-09-30/europe/europe-note.md. No orders. Published to main (EARNINGS_DATA_BRANCH=main).
