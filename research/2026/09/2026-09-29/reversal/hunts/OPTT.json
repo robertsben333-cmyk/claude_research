@@ -1,0 +1,74 @@
+{
+  "ticker": "OPTT",
+  "drop_date": "2026-09-29",
+  "window": {"from": "close of 2026-09-29", "to": "close of 2026-09-30"},
+  "expected_move_pct": -2.5,
+  "conviction_note": "One supply finding sized at -3.0: Series D notes that can be converted at any time at 93% of the lowest 7-day VWAP, live since 2026-09-25. Cut to -2.5 because volume was 0.69x normal (the under-2x cohort averages +1.46%) and this name's own comparable falls have a median next close of 0.0%. The 33% ATR and the two falls since the exchange that kept going (09-15 -11.2%, 09-28 -17.1%) keep it negative.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -3.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "This name's own 27 comparable falls (median next close 0.0%, median absolute 6.82%, up-rate 44.4%) and a 14-day ATR of 32.96%, both from the sealed baseline /home/user/claude_research/research/2026/09/2026-09-29/reversal/baselines/OPTT.json. No usable option chain (unusable_chain) and no consensus.",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 15,
+    "confidence_pct": 55,
+    "what_happened": "No news was found for 09-28 or 09-29. The fall is the third leg down (-35% from $2.12 on 09-22) since the 09-25 after-hours 8-K. That 8-K swapped the $12.00 Series C-1 notes into Series D notes convertible at the holder's option at any time at an alternate price of 93% of the lowest VWAP over the prior seven trading days, up to 19.99% of outstanding shares before stockholder approval. It also repriced the June warrants from $12.00 to $2.45. The shape (0.69x volume, 93% intraday, grinding) matches conversion selling rather than a news event. Whether conversions actually happened today is inferred, not observed.",
+    "evidence": [
+      {"claim": "Series D notes: conversion price $2.45, with an alternate price of 93% of the lowest VWAP over the seven trading days before conversion; warrant exercise price cut from $12.00 to $2.45; amortization starts 2027-01-01", "url": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226044336/form8-k.htm", "timestamp": "2026-09-25 16:39 ET (accepted 20:39 UTC)"},
+      {"claim": "Holders may convert at the Alternate Conversion Price 'at any time, at the option of the Holder' (Section 3(e)(i)(1)). Until stockholder approval, issuance is capped at 19.99% of shares outstanding before the exchange", "url": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226044336/ex10-2.htm", "timestamp": "2026-09-25"},
+      {"claim": "Stockholder meeting required within 60 calendar days of closing; one-time waiver of defaults, default-rate interest from 2026-08-14 not waived", "url": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226044336/ex10-1.htm", "timestamp": "2026-09-25"},
+      {"claim": "9,094,159 shares outstanding at 2026-09-22; last sale $2.12 on 2026-09-22; going-concern doubt citing an 'unwaived event of default under our convertible notes'", "url": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226044343/forms-1a.htm", "timestamp": "2026-09-25"},
+      {"claim": "Notes: $10.0m April 2026 issuance, carrying amount $8.07m at 2026-07-31; cash $7.36m; ATM unusable because the company is not S-3 eligible", "url": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226042579/form10-q.htm", "timestamp": "2026-09-14"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -60,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Daily Series D conversions at 93% of the 7-day low VWAP, ongoing from 2026-09-25. The next dated corporate event is the stockholder approval meeting, due within 60 days of the 09-25 closing (by about 2026-11-24), which is outside the window.",
+    "what_would_change_my_mind": "An 8-K showing the noteholders' 19.99% pre-approval conversion cap is already used up, or a leak-out restriction on conversion shares, would mean the seller is finished."
+  },
+  "positioning_check": "Not found. The Nasdaq short-interest endpoint returned HTTP 503 at hunt time and the baseline's short_interest is 'unavailable'. FINRA's roughly 8-business-day lag would hide the position carried into this fall anyway. Options: unusable_chain, no two-sided ATM quote, skew null, put/call OI 1.01 on 329 contracts total. Insiders: zero trades in 3 and 12 months (Nasdaq insider-trades).",
+  "findings": [
+    {
+      "finding": "Series D noteholders can convert at any time at 93% of the lowest 7-trading-day VWAP (up to about 1.8m shares, 19.99% of ~9.09m, before stockholder approval) and sell. Today's low VWAP enters that lookback, so tomorrow's conversions price below today's close. That is a continuing, reflexive seller in the 2026-09-30 session.",
+      "leg": "new_information",
+      "mechanism_in_window": "The conversion right has been live since 2026-09-25 with no leak-out cap found in the exchange agreement, so conversion shares can be delivered and sold in the 2026-09-30 session itself. The supply lands inside the window rather than at a later date.",
+      "expected_impact_pct": -3.0,
+      "impact_low_pct": -12.0,
+      "impact_high_pct": 6.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-09-30",
+      "reaction_history_on_this_line": "Since the exchange 8-K (after hours 09-25), falls on 09-28 (-16.92%) and 09-29 (-17.07%) have come back to back. Of the name's own comparable falls in the toxic-note period, 09-15 went on to -11.22% the next session and 09-28 to -17.07%. Across all 27 comparable falls the median next close is 0.0%.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226044336/ex10-2.htm",
+      "source_date": "2026-09-25",
+      "why_not_priced": "A close prices the shares already sold, not the ones a holder converts tomorrow at a guaranteed 7% below the running low. While that discount exists, the holder profits by converting and selling into any bid, so a bounce gets sold into. If the price already held this, you would expect a halt in the drift, or an 8-K showing the 19.99% cap is used up. Neither exists: no filing after 09-25 appears in EDGAR's submissions feed.",
+      "independence": "The 10-Q (https://www.sec.gov/Archives/edgar/data/1378140/000149315226042579/form10-q.htm) shows ~$8.1m of note carrying value against $7.36m of cash, going-concern doubt and an unusable ATM. So the notes are the company's only live source of equity supply, and nothing else would absorb it."
+    }
+  ],
+  "outside_window": [
+    {"finding": "A pending best-efforts primary offering on S-1 333-298786 (filed 2026-09-08): common stock plus pre-funded warrants plus common warrants, with the price and the placement agent left blank. No amendment and no EFFECT notice seen in submissions, so it cannot be dated inside the window. When it prices, the warrant-heavy structure is the likely next leg down.", "expected_impact_pct": -8.0, "resolves_by": "2026-10-31", "source": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226041658/forms-1.htm"},
+    {"finding": "Stockholder approval meeting for Series D issuance above 19.99%, due within 60 days of the 2026-09-25 closing. Approval removes the conversion cap and opens roughly $8m+ of notes to conversion at the running-low price.", "expected_impact_pct": -6.0, "resolves_by": "2026-11-24", "source": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226044336/ex10-1.htm"},
+    {"finding": "Resale S-1/A (333-298559) covering 366,162 shares for Columbia Power Technologies (about 4% of outstanding). Not yet effective, so it adds supply once declared effective.", "expected_impact_pct": -1.0, "resolves_by": "2026-10-31", "source": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226044343/forms-1a.htm"},
+    {"finding": "Series D amortization starts 2027-01-01 and quarterly after that. Installments are typically paid in shares at the alternate price.", "expected_impact_pct": -2.0, "resolves_by": "2027-01-01", "source": "https://www.sec.gov/Archives/edgar/data/1378140/000149315226044336/form8-k.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "No news dated 2026-09-28 or 09-29: stocktitan news list shows the latest item on 2026-09-21 (https://www.stocktitan.net/news/OPTT/); WebSearch found no release either",
+    "No new EDGAR filing after 2026-09-25 (browse-edgar atom and data.sec.gov submissions); no 424B4, EFFECT or CORRESP in the recent block",
+    "ATM draw: not possible. The 10-Q says the company is not S-3 eligible and cannot sell under the Wainwright agreement; the Ladenburg ATM was terminated 2026-07-22",
+    "Listing: the 2026-08-14 NYSE American Section 1007 late-filing notice (https://www.sec.gov/Archives/edgar/data/1378140/000149315226039393/form8-k.htm) was cured by the 10-K on 2026-08-19. No bid-price language within 550 days; price $1.385 is above $1",
+    "Short interest: the Nasdaq short-interest API returned 503",
+    "Repricing leg: found no note, disclosed buyer, wire error or finished seller. The 09-25 Proactive interview (ex99-1: $20m backlog, $150m pipeline) is old and cannot close a gap overnight",
+    "event_plausibility: the 1-for-30 reverse split was effective 2026-09-14. The baseline's +882% 20-day run-up and its 09-11 '+2381%' event are unadjusted split artifacts, not moves. Today's fall happened after the split and is real (93% intraday)",
+    "A WebSearch snippet quoting an OPTT price labelled 2026-09-29 appeared; it disagrees with the sealed spot and was discarded. No price outside the baseline entered any number"
+  ],
+  "baseline_tension": "The finding cuts against the volume (0.69x, where under-2x falls average +1.46%) and this name's median-zero history of comparable falls, but agrees with the 33% ATR and with the two post-exchange falls that continued. So expected_move_pct (-2.5) is set 0.5 points smaller than the -3.0 finding.",
+  "pre_lessons": {
+    "impact_sum_pct": -3.0,
+    "expected_move_pct": -2.5,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-3.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 10
+}
