@@ -22,3 +22,8 @@
 - Logged at 2026-09-29 13:41 UTC
 - 41 scheduled / 10 eligible above $200k / 10 hunted; selection.method: all 10 eligible (at or under cap 20), seed eu-2026-09-30 unused. by_market uk 5, de 2, fr 1, se 1, it 1; es/pl/dk/no/fi 0. market_concentration: uk 0.50 of the day, 5 markets. No market_closed.
 - Registers read: uk (09-28), de (09-28), fr (09-25), it (09-28), se (09-28). anchor_covered 6 of 10 (DEBS GXI KOF PINE SAGA SPI). session_unresolved 8 of 10 (all bmo?; PINE and SKIS_B resolved bmo). history.basis observed_rns for 5 UK, estimated_from_cadence for ADE GXI DIB KOF SKIS_B. Two waves of 5: UK first, then DE/FR/IT/SE.
+
+## Stage EU — wave 1 complete
+- Logged at 2026-09-29 13:51 UTC
+- 5 of 5 UK hunters returned: SAGA +1.1 (guide firm/raise, fuel hedge), AVG 0 (FY26 pre-released in line), PINE 0 (448p scheme, court 7 Oct), SPI 0 (250p final offer, vote 30 Oct), DEBS 0 event_confirmed false (H1 update already 17 Sep; interims likely Nov, vendor date probable phantom).
+- Wave 2 early return: ADE event_confirmed false — H1 report published 2026-09-29 09:00 CEST (EQS), before the seal; neither window contains it. At resolve, amend ADE baseline with event_occurred: false + that URL (German archive cannot reach it automatically).
