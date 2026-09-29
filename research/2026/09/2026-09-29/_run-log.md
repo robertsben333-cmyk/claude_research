@@ -34,3 +34,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-09-29 01:05 UTC
 - Plan: jp_universe -> jp_priced_in seal -> one unpriced-hunter-jp per name in waves of 5 -> edge_score -> japan-note. No orders. Fired 01:04 UTC 2026-09-29 (10:04 JST).
+
+## Stage J — universe + baselines sealed
+- Logged at 2026-09-29 01:05 UTC
+- 8 scheduled / 4 eligible / 4 hunted (2792 ハニーズ, 3050 DCM, 7921 TAKARA & CO, 8217 オークワ); method: all 4 eligible at or under cap 25, no draw. calendar_as_of 2026-09-03. Short register file 20260918 (11 days stale); all four absent from it (truncated zero). One wave of 4 hunters.
