@@ -73,3 +73,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-09-29 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside 13:30–16:05 ET; CLAUDE.md present, no clone. Plan: intraday screen K=15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 09-28 run (09-25 now scoreable too), note before 16:00 ET (shed names if late).
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-09-29 19:14 UTC
+- Clone: CLAUDE.md was present (no clone needed). Intraday screen at 15:04 ET, K=15, 47 above floors, largest sector Consumer Discretionary 3/15 (20%), SPY -0.09%. 15 baselines sealed 15:05 ET before any hunter (and published pre-hunt); 15/15 hunted (concurrency cap 8, remaining 7 launched as slots freed; nothing shed). edge_score: 15 rankable, 3 above floor (CTNT -5.00, LGHL -3.00, OPTT -3.00; all leg 2 supply). Leg 1 empty on all 15. Resolve: 09-25 run d1 impact_sum rho -0.024 (p 0.94, 14 names); pooled 09-22..09-25 over 59 names rho -0.165 (p 0.22) vs neg_atr14 -0.015, neg_ret_d -0.071; lean_vs_free_control_rho 0.054 — no free control beaten. 09-28 run pending (window closes today). DEFECT (not fixed, constants untouched): screen admitted USDEW, a SPAC warrant, into a common-stock universe; hunter returned zero findings. Reverse-split artefacts in ATR/run-up for CTNT, NCT, CCG, OPTT noted in note. No orders; no execution block exists in this stage.
