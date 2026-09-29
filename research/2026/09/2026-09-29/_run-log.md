@@ -38,3 +38,11 @@
 ## Stage J — universe + baselines sealed
 - Logged at 2026-09-29 01:05 UTC
 - 8 scheduled / 4 eligible / 4 hunted (2792 ハニーズ, 3050 DCM, 7921 TAKARA & CO, 8217 オークワ); method: all 4 eligible at or under cap 25, no draw. calendar_as_of 2026-09-03. Short register file 20260918 (11 days stale); all four absent from it (truncated zero). One wave of 4 hunters.
+
+## Stage J — wave 1 complete
+- Logged at 2026-09-29 01:14 UTC
+- 4 of 4 hunters returned: 2792 -1.5 (Q1 月次 93.3% vs plan 99.1% -> OP progress ~20%), 3050 +0.5 (Q1 cushion > Q2 月次 shortfall), 7921 +1.0 (FY-end backlog +23%), 8217 0 (H1 pre-revised 09-25, no findings).
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-09-29 01:14 UTC
+- 4 ranked, 0 above floor: 7921 +1.00, 3050 +0.50, 8217 0.00, 2792 -1.50. Register 20260918 (11 days stale). 8217 release time unconfirmed (last H1 at 13:00 JST, intraday). Note: japan/japan-note.md. No orders.
