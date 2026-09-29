@@ -46,3 +46,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-09-29 01:14 UTC
 - 4 ranked, 0 above floor: 7921 +1.00, 3050 +0.50, 8217 0.00, 2792 -1.50. Register 20260918 (11 days stale). 8217 release time unconfirmed (last H1 at 13:00 JST, intraday). Note: japan/japan-note.md. No orders.
+
+## Close AMC (stage X) — 2026-09-29 10:10 UTC
+- Logged at 2026-09-29 10:16 UTC
+- Guard mode --require-exit-tif opg: exit 0 (amc open as day). verify: 14 legs, all ok, none held, no UNFILLED. close --submit: no legs due today, nothing sent, no refusals. status: no open positions in scanned books.
