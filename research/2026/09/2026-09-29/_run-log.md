@@ -65,3 +65,7 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-09-29 18:33 UTC
 - Fired 18:33 UTC (14:33 ET, inside the session). Plan: ca_universe → seal baselines before 16:00 ET → one unpriced-hunter-ca per name in waves of 5 → edge_score → canada-note. Research only, no orders.
+
+## Stage CA — Canada researcher — DONE (empty)
+- Logged at 2026-09-29 18:34 UTC
+- Universe: 5 scheduled / 0 eligible / 0 hunted; market open, all five TSXV names below the $200k floor (FX fallback 0.71, Yahoo silent). Calendar: vendor_only 5. No baselines sealed, no hunters, no scores. Normal thin-season outcome, not a fault; TMX archive and scanner both answered.
