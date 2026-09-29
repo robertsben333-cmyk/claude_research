@@ -30,3 +30,7 @@
 ## Stage EU — publish check
 - Logged at 2026-09-28 14:08 UTC
 - git log -1 origin/main after publish: de6ac0d4 'stage EU: Europe ranking for 2026-09-29' — the ranking is on main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-09-29 01:05 UTC
+- Plan: jp_universe -> jp_priced_in seal -> one unpriced-hunter-jp per name in waves of 5 -> edge_score -> japan-note. No orders. Fired 01:04 UTC 2026-09-29 (10:04 JST).
