@@ -13,3 +13,7 @@
 - Logged at 2026-09-29 06:47 UTC
 - 12 scheduled / 4 eligible / 4 hunted / 4 rankable / 0 above floor 3.0. AUE MKR PDI USL all impact_sum 0.00, no findings on any name: day has no ranking.
 - All four vendor rows are the June-FY statutory annual report (due 30 Sep), fourth run running; ends after today. Register 20260923, lag 4. Filer mix 4 quarterly_report_only. Note: research/2026/09/2026-09-30/australia/australia-note.md
+
+## Stage EU — Europe researcher — STARTED
+- Logged at 2026-09-29 13:39 UTC
+- Fired Tue 2026-09-29 13:38 UTC (15:38 Amsterdam, markets open) on main (380e15971); sealing for next European session Wed 2026-09-30. Plan: eu_universe -> eu_priced_in seal -> one market hunter per name in waves of 5 -> edge_score -> europe-note. No orders. Pushing to main (EARNINGS_DATA_BRANCH=main pinned).
