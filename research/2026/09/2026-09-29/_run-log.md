@@ -50,3 +50,8 @@
 ## Close AMC (stage X) — 2026-09-29 10:10 UTC
 - Logged at 2026-09-29 10:16 UTC
 - Guard mode --require-exit-tif opg: exit 0 (amc open as day). verify: 14 legs, all ok, none held, no UNFILLED. close --submit: no legs due today, nothing sent, no refusals. status: no open positions in scanned books.
+
+## Edge hunt — 2026-09-29 amc + 2026-09-30 bmo — STARTED
+- Logged at 2026-09-29 17:09 UTC
+- Fired 17:05 UTC. Window: 6 of 33 calendar rows (CNXC amc 09-29; JBL, FDS, CAG, CALM, YRD bmo 09-30). session_resolve over the 21 time-not-supplied rows: 1 killed, 20 carried unresolved, 0 confirmed by press release — none added. Baselines sealed for all 6 (YRD has no option chain). Plan: 1 sweep + 6 hunters.
+- STEP 0b NOT RUN: the session's permission classifier refused the broker call (alpaca_trade.py verify/close --submit) as a real-world transaction. No order was placed, cancelled or re-sent by this session. Any bmo leg due to exit today is still held unless sold elsewhere; step 7 (the entry) will be refused the same way. The operator must run the exit/entry by hand or grant the permission.
