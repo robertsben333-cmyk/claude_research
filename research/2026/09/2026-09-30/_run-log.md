@@ -17,3 +17,8 @@
 ## Stage EU — Europe researcher — STARTED
 - Logged at 2026-09-29 13:39 UTC
 - Fired Tue 2026-09-29 13:38 UTC (15:38 Amsterdam, markets open) on main (380e15971); sealing for next European session Wed 2026-09-30. Plan: eu_universe -> eu_priced_in seal -> one market hunter per name in waves of 5 -> edge_score -> europe-note. No orders. Pushing to main (EARNINGS_DATA_BRANCH=main pinned).
+
+## Stage EU — universe and seal
+- Logged at 2026-09-29 13:41 UTC
+- 41 scheduled / 10 eligible above $200k / 10 hunted; selection.method: all 10 eligible (at or under cap 20), seed eu-2026-09-30 unused. by_market uk 5, de 2, fr 1, se 1, it 1; es/pl/dk/no/fi 0. market_concentration: uk 0.50 of the day, 5 markets. No market_closed.
+- Registers read: uk (09-28), de (09-28), fr (09-25), it (09-28), se (09-28). anchor_covered 6 of 10 (DEBS GXI KOF PINE SAGA SPI). session_unresolved 8 of 10 (all bmo?; PINE and SKIS_B resolved bmo). history.basis observed_rns for 5 UK, estimated_from_cadence for ADE GXI DIB KOF SKIS_B. Two waves of 5: UK first, then DE/FR/IT/SE.
