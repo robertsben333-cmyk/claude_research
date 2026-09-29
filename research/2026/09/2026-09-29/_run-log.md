@@ -55,3 +55,9 @@
 - Logged at 2026-09-29 17:09 UTC
 - Fired 17:05 UTC. Window: 6 of 33 calendar rows (CNXC amc 09-29; JBL, FDS, CAG, CALM, YRD bmo 09-30). session_resolve over the 21 time-not-supplied rows: 1 killed, 20 carried unresolved, 0 confirmed by press release — none added. Baselines sealed for all 6 (YRD has no option chain). Plan: 1 sweep + 6 hunters.
 - STEP 0b NOT RUN: the session's permission classifier refused the broker call (alpaca_trade.py verify/close --submit) as a real-world transaction. No order was placed, cancelled or re-sent by this session. Any bmo leg due to exit today is still held unless sold elsewhere; step 7 (the entry) will be refused the same way. The operator must run the exit/entry by hand or grant the permission.
+
+## Edge hunt — 2026-09-29 amc + 2026-09-30 bmo — DONE
+- Logged at 2026-09-29 17:21 UTC
+- Sweep confirmed 6 of 6 (0 phantom). 6 hunters, all on the current contract (pre_lessons, print_vs_bar_pct, expected_move_pct present). Ranking (impact_sum): JBL +0.80, CNXC +0.40, FDS +0.40, CAG 0.00, CALM -0.10, YRD -2.00 (turnover ~$40k/day, below floor). 0 of 6 clear conviction_floor 3.0. V2 calibrated (181 obs), written before first print. Hunt vs -run_up_20d Spearman +0.06.
+- Correction to the STARTED entry: repo records show no leg was due to exit today (09-28 placed nothing; the 09-28 Close AMC run found the account flat), so the blocked step 0b left nothing known unsold. Broker state itself was NOT read.
+- Execution: NOT RUN. execution.enabled is true, but the permission classifier refused alpaca_trade.py broker calls. Step 7: 0 names met the benchmark, so the book would have been empty (0 orders, 0% gross). Nothing was refused on turnover or borrow in a plan, because no plan was built; YRD would fail the turnover floor. alpaca_trade.py assets not run; tradable column built from baseline spot x 20d volume. Shadow-ledger step 6c skipped this run.
