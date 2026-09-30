@@ -61,3 +61,9 @@
 - Logged at 2026-09-30 17:08 UTC
 - Fired 17:04 UTC (13:05 ET). 6 names in window (MU, PRGS, BSET amc 09-30; ACN, MKC, AYI bmo 10-01); MKC.V folded into MKC. Thin day (<10), so dropped time-not-supplied rows checked with session_resolve.py: 22 unresolved, 2 killed (HUBG, SA), 0 confirmed by announcement, 20 carried on cadence only — NOT added (measured phantom rate 20/20 on 09-17, 8/8 on 08-31). Baselines sealed for all 6 (5 with a live option chain; BSET none). Plan: 1 sweep + 6 hunters.
 - Step 0b NOT RUN: the session's permission classifier refused alpaca_trade.py verify --fix --submit as a real-world transaction. No broker order was sent by this session, and step 7 will not be either. Close AMC's 10:10 UTC run reported no leg due today, so nothing appears to be left unsold, but this session did not verify that.
+
+## Edge hunt — 2026-09-30 amc + 2026-10-01 bmo — DONE
+- Logged at 2026-09-30 17:19 UTC
+- 6 in window, sweep confirmed 6, 0 phantom. 6 hunters (all returned with pre_lessons, print_vs_bar_pct, expected_move_pct). Ranking key impact_sum: BSET +1.30, MKC +0.80, PRGS +0.30, AYI 0.00, MU 0.00, ACN -0.30. 0 of 6 clear the 3.0 floor. V2 calibrated (181 obs), written before the first print.
+- Execution: execution.enabled is true, but this session placed NO orders. Step 0b (verify/close --submit) was refused by the session's permission classifier as a real-world transaction. Step 7 was not attempted: 0 names met the benchmark, so the book would have been empty. Close AMC at 10:10 UTC reported no leg due today; this session did not re-verify the account.
+- Budget: 1 sweep + 6 hunters = 7 of 20. Nothing shed.
