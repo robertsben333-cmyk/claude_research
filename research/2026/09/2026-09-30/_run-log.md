@@ -36,3 +36,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-09-30 01:05 UTC
 - Fired 01:04 UTC 2026-09-30 (10:04 JST). Plan: jp_universe -> seal baselines -> unpriced-hunter-jp in waves of 5 -> edge_score -> japan-note. No orders.
+
+## Stage J — universe + baselines sealed
+- Logged at 2026-09-30 01:06 UTC
+- 10 scheduled / 5 eligible / 5 hunted (2354 YE DIGITAL, 2685 and ST HD, 2975 Star Mica, 6083 ERI HD, 9369 KRS); method: all 5 eligible at or under cap 25, no draw. calendar_as_of 2026-09-03 (sheets kessan07_0904, kessan08_0918). Short register file 20260918 (12 days stale); 2354 and 2685 in it, other three truncated zero. One wave of 5 hunters launched.
