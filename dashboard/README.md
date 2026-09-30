@@ -470,6 +470,64 @@ would look exactly like a day on which the hunt had no outcome. A resolved file 
 realised move and at least one live row is fetched again; one that carries even a single
 move is left alone, because the window it priced has closed.
 
+## Werkt de prompt? Prompt, Kalibratie en Vondsten (2026-09-30)
+
+Three tabs on every market that places no orders, in their own group `Prompt`
+beside `Taal`. They ask a different question from Score: not "does the hunt rank
+the day" but **does the hunter do what its definition asks, is the size it names
+right, and does anything change when the definition changes**.
+
+**Every hunt is attributed to a prompt version, from git.** The hunters do not
+record which definition they ran under, so `build_markets.py` reads the version of
+the hunter definition (`.claude/agents/unpriced-hunter-<x>.md`), the market's skill
+and its `LESSONS.md` that sat in the tree of the commit that first added the hunt
+file. A version is a distinct blob on the first-parent history of `HEAD`, named after
+the commit that introduced it, so it counts from the day it landed on `main` and one
+commit that changed all seven European hunters is one version, not seven. A blob that
+never reached `main` is shown as `tak:<blob>`. **This needs full history**: the
+workflow checks out with `fetch-depth: 0`, and a shallow clone is detected and carries
+the previous `markets.json` attribution over rather than crediting everything to
+today's prompt.
+
+- **Prompt**: per version of the hunter definition, skill or LESSONS.md (a switch):
+  findings per hunt, hunts with no finding, how often LESSONS.md changed the sum, sign
+  rate, board return, ρ for the hunt **and for the free control on the same names**,
+  and the median ratio of realised to predicted size. Then what each version's commit
+  says it changed, and a **compliance** table that needs no outcome at all: does the
+  hunter fill the fields its version asks for (`event_confirmed`, `language_note`, the
+  four fields of 2026-09-28), give a source URL, quote non-English sources, keep its
+  point inside its own band and keep `resolves_by` inside the window. Europe also gets
+  the same result columns per hunter definition.
+- **Kalibratie**: the three numbers the prompt asks for beside the key. Size
+  (`abs_move_pct`, else `|expected_move_pct|`) against `|realised move|`, per version
+  and per predicted bucket; `p_up` against how often the stock rose, with a Brier score;
+  and the bar, split in three rows that separate a research error (was the print
+  called right?) from a market error (did the price follow the print?). Where a
+  post-mortem exists, whether the hunter's size reacts to the two facts that post-mortem
+  found decide the size (pre-released period, changed guidance).
+- **Vondsten**: every finding on its own, by `lands_on`, by source language, by
+  `resolves_by` against the event date, and by size, with the sign rate and board return
+  per finding; the `language_note` split (a word filter on prose, labelled as one); and
+  from the post-mortems, how often the finding's fact was correct and whether the largest
+  finding landed on the line the price actually moved on.
+
+**A version comparison is not an experiment.** Each version ran on different days and
+different names, so the free control sits in the same row: if the hunt and the control
+move together between versions, it was the period. A new market-wide switch,
+**alleen de huidige hunter-prompt**, recomputes every tab of that market over the hunts
+that ran under the definition in force now. Like the threshold it narrows numbers and
+never closes the tab a reader is on.
+
+What it read on 2026-09-30, Europe, real runs only: the 2026-09-28 definition moved the
+realised-to-predicted size ratio from about 3.1–3.4× to **0.89×** on nine names, which
+is the change doing what it was written for; findings per hunt fell from 4.2 to 1.5 to
+1.2 across the three versions and hunts with no finding rose from 0 to 27%; every
+`p_up` it has emitted lies between 40 and 60, with a Brier score of 0.254 against 0.250
+for always saying 50. The hunter called the print against the bar right on 13 of 16
+post-mortem names, but the print's sign matched the price on 9 of 18, so on this sample
+the loss is in the reaction and not in the research. None of it is established on these
+counts.
+
 ## The design pass of 2026-09-22, and the two tokens it added
 
 Run with the Impeccable design skill (`detect` + audit + polish) over the whole page, not

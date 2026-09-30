@@ -2566,7 +2566,7 @@ function tabWeging() {
    er geen beweging, dan is de run nog niet opgelost. */
 const MRAW = document.getElementById('markets');
 const M = MRAW ? JSON.parse(MRAW.textContent) : {markets:{}, problems:[]};
-const MS = {val:false, thr:0};
+const MS = {val:false, thr:0, art:'hunter', cur:false};
 function mSet(k, v) {
   MS[k] = (k === 'thr' ? +v : v);
   /* De validatieknop kan een analysetabblad openen of sluiten, dus de rij wordt
@@ -2620,8 +2620,12 @@ const mRows = (code, allThr) => {
   const d = (M.markets || {})[code] || {names: [], runs: []};
   const val = new Set(d.runs.filter(r => r.validation_only).map(r => r.run));
   const thr = allThr ? 0 : MS.thr;
+  /* De promptknop smalt net als de drempel een getal en sluit nooit het
+     tabblad waar de lezer op staat, dus ook die telt niet mee voor de poort. */
+  const cur = allThr ? false : MS.cur;
   return d.names.filter(r => (MS.val || !val.has(r.run))
-                          && (!thr || Math.abs(r.impact_sum || 0) >= thr));
+                          && (!thr || Math.abs(r.impact_sum || 0) >= thr)
+                          && (!cur || mIsCurrent(code, r)));
 };
 const mRuns = code => {
   const d = (M.markets || {})[code] || {runs: []};
@@ -2690,6 +2694,14 @@ function mControls(c, want) {
   if (want !== 'val') h += `<span class="seg" role="group" aria-label="conviction-drempel">
       <button aria-pressed="${!MS.thr}" onclick="mSet('thr',0)">alle namen</button>
       <button aria-pressed="${MS.thr === c.floor}" onclick="mSet('thr',${c.floor})">|impact_sum| ≥ ${c.floor}</button>
+    </span>`;
+  /* Alleen de huidige hunter-definitie: elk getal op elk tabblad van deze markt
+     herberekend over de hunts die onder de prompt draaiden die nu geldt. Pas
+     zinvol als er meer dan één versie in de namen zit. */
+  const nv = new Set(c.d.names.map(r => (r.prompt || {}).hunter).filter(Boolean)).size;
+  if (nv > 1) h += `<span class="seg" role="group" aria-label="promptversie">
+      <button aria-pressed="${!MS.cur}" onclick="mSet('cur',false)">elke promptversie</button>
+      <button aria-pressed="${MS.cur}" onclick="mSet('cur',true)">alleen de huidige hunter-prompt</button>
     </span>`;
   if (c.hasVal) h += `<span class="seg" role="group" aria-label="validatieruns">
       <button aria-pressed="${!MS.val}" onclick="mSet('val',false)">alleen echte runs</button>
@@ -3146,6 +3158,457 @@ function mtData(code) {
   return html;
 }
 
+/* ====================================================== de prompt-tabbladen
+   Drie tabbladen over één vraag: werkt de prompt? Niet "rangschikt de jacht
+   goed", dat staat op Score, maar: doet de hunter wat zijn definitie vraagt,
+   klopt de omvang die hij noemt, en verandert er iets als de definitie
+   verandert.
+
+   Dat laatste kan alleen omdat build_markets.py elke hunt toeschrijft aan de
+   versie van de hunter-definitie, de skill en LESSONS.md die in de boom stond
+   van de commit die het huntbestand toevoegde. De hunters schrijven dat zelf
+   niet op; git wel. Een versie is een eigen inhoud op de first-parent
+   geschiedenis van main, en haar naam is de commit die haar invoerde. Veranderde
+   één commit alle zeven Europese hunters, dan delen ze die naam, en is "vóór en
+   ná 2026-09-28" één vergelijking en niet zeven.
+
+   Wat een versievergelijking NIET is: een experiment. Elke versie draaide op
+   andere dagen, andere namen en een andere markt, dus een verschil tussen twee
+   versies is een verschil tussen twee perioden. Daarom staat de gratis controle
+   naast elke rij: die ziet dezelfde namen en geen prompt. Verbetert de jacht en
+   de controle evenveel, dan was het de periode. */
+const MART = {hunter:'hunter-definitie', skill:'skill', lessons:'LESSONS.md'};
+
+/* Alle versies van één soort promptbestand voor deze markt, samengevoegd over
+   de bestanden heen: {id -> {date, subject, commit, files}}. */
+function mVersions(code, art) {
+  const cat = ((((M.markets || {})[code] || {}).prompts) || {})[art] || {};
+  const by = {};
+  Object.entries(cat).forEach(([file, vs]) => (vs || []).forEach(v => {
+    const o = by[v.id] || (by[v.id] = Object.assign({}, v, {files: []}));
+    o.files.push(file.replace('.claude/agents/', '').replace('.claude/skills/', '')
+                     .replace(/\/SKILL\.md$|\.md$/, ''));
+  }));
+  return by;
+}
+/* De huidige versie van de definitie die deze naam jaagde. */
+function mLatest(code, hunter) {
+  const vs = (((((M.markets || {})[code] || {}).prompts) || {}).hunter || {})[hunter] || [];
+  return vs.length ? vs[vs.length - 1].id : null;
+}
+const mIsCurrent = (code, r) => !!(r.prompt && r.prompt.hunter && r.hunter
+                                   && r.prompt.hunter === mLatest(code, r.hunter));
+
+const mMed = xs => {
+  const v = xs.filter(x => x !== null && x !== undefined && !isNaN(x)).sort((a, b) => a - b);
+  if (!v.length) return null;
+  return v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2;
+};
+const has = x => x !== null && x !== undefined;
+const pctOf = (a, b) => b ? `${a}/${b} <span class="meta">${n1(100 * a / b)}%</span>` : '–';
+const isRes = r => has(r.realised_move_pct);
+
+/* De omvang die de hunter noemde. Sinds 2026-09-28 vraagt de Europese definitie
+   een aparte, ongetekende abs_move_pct naast de getekende expected_move_pct;
+   waar die er is, telt die, want dát is het antwoord op "hoe groot". */
+function predSize(r) {
+  const h = r.hunt;
+  if (!h) return null;
+  const x = has(h.abs_move_pct) ? h.abs_move_pct : h.expected_move_pct;
+  return has(x) ? Math.abs(x) : null;
+}
+
+/* Eén rij resultaat voor een groep namen. Dezelfde kolommen voor een
+   promptversie en voor een hunter, zodat de twee tabellen naast elkaar lezen. */
+function mGroup(g) {
+  const res = g.filter(isRes);
+  const nz = res.filter(r => r.impact_sum);
+  const hunts = g.filter(r => r.hunt);
+  const lch = hunts.filter(r => has(r.hunt.lessons_changed));
+  const mag = res.map(r => ({p: predSize(r), a: Math.abs(r.realised_move_pct)}))
+                 .filter(x => has(x.p));
+  const ctl = res.filter(r => has(r.run_up_20d_pct));
+  return {
+    n: g.length, hunts: hunts.length,
+    fph: hunts.length ? hunts.reduce((s, r) => s + r.hunt.findings.length, 0) / hunts.length : null,
+    zero: hunts.filter(r => !r.hunt.findings.length).length,
+    lch: lch.filter(r => r.hunt.lessons_changed).length, lchN: lch.length,
+    res: res.length, signN: nz.length, signRight: nz.filter(r => r.sign_right).length,
+    book: book(nz.map(r => r.ret)),
+    rho: res.length >= MMIN ? corr(ranks(res.map(r => r.impact_sum)),
+                                   ranks(res.map(r => r.realised_move_pct))) : null,
+    ctl: ctl.length >= MMIN ? corr(ranks(ctl.map(r => -r.run_up_20d_pct)),
+                                   ranks(ctl.map(r => r.realised_move_pct))) : null,
+    ratio: mMed(mag.filter(x => x.p > 0).map(x => x.a / x.p)),
+    under: mag.filter(x => x.a > x.p).length, magN: mag.length,
+  };
+}
+const MGCOLS = [
+  {h:'namen', f:r => r.n},
+  {h:'vondsten / hunt', f:r => n1(r.fph)},
+  {h:'zonder vondst', f:r => pctOf(r.zero, r.hunts)},
+  {h:'lessons wijzigde', f:r => pctOf(r.lch, r.lchN)},
+  {h:'opgelost', f:r => r.res},
+  {h:'teken goed', f:r => pctOf(r.signRight, r.signN)},
+  {h:'bord %', f:r => r.book.n ? `<span class="${sgn(r.book.mean)}">${pc(r.book.mean)}</span>` : '–'},
+  {h:'ρ jacht', f:r => n3(r.rho)},
+  {h:'ρ controle', f:r => n3(r.ctl)},
+  {h:'|beweging| ÷ |voorspeld|', f:r => has(r.ratio) ? n2x(r.ratio) : '–'},
+  {h:'te klein', f:r => pctOf(r.under, r.magN)},
+];
+const n2x = x => (+x).toFixed(2) + '×';
+
+/* Namen gegroepeerd op de versie van één soort promptbestand, oudste eerst. */
+function mByVersion(c, art) {
+  const vers = mVersions(c.code, art);
+  const groups = {};
+  c.ranked.forEach(r => {
+    const id = (r.prompt || {})[art] || 'onbekend';
+    (groups[id] = groups[id] || []).push(r);
+  });
+  return Object.entries(groups).map(([id, g]) => Object.assign(
+    {id, v: vers[id] || null}, mGroup(g)))
+    .sort((a, b) => ((a.v || {}).date || 'z').localeCompare((b.v || {}).date || 'z'));
+}
+const vCell = r => r.v
+  ? `<span title="${esc(r.v.subject)}"><b>${esc(r.v.date.slice(0, 10))}</b> <code>${esc(r.id)}</code></span>`
+  : `<span class="meta">${esc(r.id)}</span>`;
+
+function mArtControl() {
+  return `<div class="mctl"><span class="seg" role="group" aria-label="promptbestand">` +
+    Object.entries(MART).map(([k, l]) =>
+      `<button aria-pressed="${MS.art === k}" onclick="mSet('art','${k}')">${esc(l)}</button>`).join('') +
+    `</span><span class="hint">Groepeer op de versie van dit bestand. Beweeg over een versie
+     voor wat die commit veranderde.</span></div>`;
+}
+
+/* ---------------------------------------------------------------- Prompt */
+function mtPrompt(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  const art = MS.art || 'hunter';
+  let html = `<p class="lead">Werkt de prompt? Elke hunt is hier toegeschreven aan de versie
+    van de ${esc(MART[art])} die gold toen hij draaide, uit de git-geschiedenis en niet uit wat
+    de hunter over zichzelf zegt. Zo is een promptwijziging te lezen als een voor en een na.
+    <b>Het is geen experiment:</b> elke versie draaide op andere dagen en andere namen. Lees
+    daarom de jacht altijd tegen de gratis controle in dezelfde rij.</p>`;
+  html += mControls(c, 'both') + mArtControl();
+
+  const rows = mByVersion(c, art);
+  html += `<div class="card"><h3>Resultaat per versie van de ${esc(MART[art])}</h3>` +
+    table([{h:'versie', f:vCell}, ...MGCOLS], rows) +
+    `<p class="meta"><b>vondsten / hunt</b> en <b>zonder vondst</b> meten wat de prompt
+     oplevert voordat er één uitkomst is: een hunt zonder vondst geeft een som van nul, en een
+     nul is geen rangschikking. <b>lessons wijzigde</b> telt de hunts waarin de som of het
+     aantal vondsten na het lezen van LESSONS.md anders was dan de bevroren draft.
+     <b>|beweging| ÷ |voorspeld|</b> is de mediane verhouding tussen de gerealiseerde beweging
+     en de omvang die de hunter noemde (<code>abs_move_pct</code> waar die bestaat, anders
+     <code>|expected_move_pct|</code>): 1× is goed gekalibreerd, 3× betekent drie keer te
+     klein. ρ staat er pas vanaf ${MMIN} opgeloste namen.</p></div>`;
+
+  /* Wat elke versie veranderde. Zonder deze tabel is een versie een hash. */
+  const vers = Object.values(mVersions(code, art))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const used = {};
+  c.rows.forEach(r => { const id = (r.prompt || {})[art]; if (id) used[id] = (used[id] || 0) + 1; });
+  if (vers.length) html += `<div class="card"><h3>Wat er per versie veranderde</h3>` + table([
+    {h:'landde op main', f:r => `<b>${esc(r.date)}</b>`},
+    {h:'commit', f:r => `<code>${esc(r.id)}</code>`},
+    {h:'wat de commit zegt', f:r => esc(r.subject)},
+    {h:'bestanden', f:r => `<span class="meta">${esc(r.files.join(', '))}</span>`},
+    {h:'hunts eronder', f:r => used[r.id] || `<span class="meta">0</span>`}], vers.reverse()) +
+    `<p class="meta">Een versie telt vanaf het moment dat ze op main landde, niet vanaf het
+     moment dat haar tak werd geschreven, want de Routines draaien op main. Een hunt uit een
+     tak waarvan de prompt later nog veranderde, staat als <code>tak:…</code>.</p></div>`;
+
+  /* Naleving: doet de hunter wat de definitie vraagt? Dit is de goedkoopste en
+     snelste maat van een prompt, want er hoeft niets voor opgelost te zijn. */
+  const comp = mByVersion(c, art).map(v => {
+    const g2 = c.ranked.filter(r => ((r.prompt || {})[art] || 'onbekend') === v.id && r.hunt);
+    const F = g2.flatMap(r => r.hunt.findings);
+    const nonEn = F.filter(f => f.lang && f.lang !== 'en');
+    const ranged = F.filter(f => has(f.x) && has(f.lo) && has(f.hi));
+    const dated = F.filter(f => has(f.dt));
+    const four = g2.filter(r => ['abs_move_pct', 'p_up', 'already_public', 'new_in_release']
+                               .every(k => has(r.hunt[k])));
+    return {id: v.id, v: v.v, h: g2.length, F: F.length,
+            ev: g2.filter(r => has(r.hunt.event_confirmed)).length,
+            ln: g2.filter(r => r.hunt.has_language_note).length,
+            four: four.length,
+            src: F.filter(f => f.src).length,
+            quote: nonEn.filter(f => f.quote).length, nonEn: nonEn.length,
+            inr: ranged.filter(f => f.lo <= f.x && f.x <= f.hi).length, ranged: ranged.length,
+            win: dated.filter(f => f.dt <= 1).length, dated: dated.length};
+  }).filter(r => r.h);
+  if (comp.length) html += `<div class="card"><h3>Volgt de hunter de prompt?</h3>` + table([
+    {h:'versie', f:vCell}, {h:'hunts', f:r => r.h}, {h:'vondsten', f:r => r.F},
+    {h:'event_confirmed', f:r => pctOf(r.ev, r.h)},
+    ...(code === 'EU' || code === 'CA' ? [{h:'language_note', f:r => pctOf(r.ln, r.h)}] : []),
+    ...(code === 'EU' ? [{h:'omvang + p_up + al openbaar + nieuw', f:r => pctOf(r.four, r.h)}] : []),
+    {h:'vondst met bron-URL', f:r => pctOf(r.src, r.F)},
+    {h:'niet-Engels met citaat', f:r => pctOf(r.quote, r.nonEn)},
+    {h:'punt binnen eigen band', f:r => pctOf(r.inr, r.ranged)},
+    {h:'resolves_by ≤ event + 1 dag', f:r => pctOf(r.win, r.dated)}], comp) +
+    `<p class="meta">Dit is de maat die geen uitkomst nodig heeft. Een veld dat een versie
+     invoerde en dat de hunter niet invult, is een prompt die niet aankomt, en dat is op dag
+     één te zien in plaats van na een maand opgeloste namen. <b>omvang + p_up + al openbaar +
+     nieuw</b> zijn de vier velden die de Europese definitie sinds 2026-09-28 vraagt; vóór die
+     versie hoort daar 0% te staan. <b>resolves_by ≤ event + 1 dag</b> telt de vondsten die
+     binnen het gescoorde venster vallen; Tokio loopt tot de volgende opening, dus één dag
+     speling. Een vondst daarbuiten kan de rangschikking niet raken en hoort in
+     <code>outside_window</code>.</p></div>`;
+
+  if (code === 'EU') {
+    const hs = [...new Set(c.ranked.map(r => r.hunter || 'onbekend'))].sort();
+    const hr = hs.map(h => Object.assign({h}, mGroup(c.ranked.filter(r => (r.hunter || 'onbekend') === h))));
+    html += `<div class="card"><h3>Per hunter-definitie</h3>` +
+      table([{h:'hunter', f:r => `<b>${esc(r.h.replace('unpriced-hunter-', ''))}</b>`}, ...MGCOLS], hr) +
+      `<p class="meta">Zeven definities, één scorer. Een hunter met veel namen en een lage
+       ρ zegt meer dan een hunter met twee namen en een hoge; onder ${MMIN} opgeloste namen
+       staat er geen ρ. De Britse hunter draagt het grootste deel van de steekproef, dus een
+       gepoolde Europese ρ is grotendeels een Britse.</p></div>`;
+  }
+  return html;
+}
+
+/* ------------------------------------------------------------ Kalibratie */
+function mtKalibratie(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  let html = `<p class="lead">Klopt wat de hunter naast de rangschikkingssleutel voorspelt?
+    De sleutel is een rangorde en wordt op Score beoordeeld. Hier staan de drie getallen die
+    de prompt daarnaast vraagt: hoe groot de beweging wordt, hoe waarschijnlijk omhoog, en of
+    het cijfer de lat haalt. Elk daarvan is apart te toetsen, en elk faalt op een andere
+    manier.</p>` + mControls(c, 'both');
+
+  const res = c.resolved.filter(r => r.hunt);
+  if (res.length < MMIN) return html + mNeeds(c, MMIN);
+
+  /* 1. Omvang */
+  const byV = mByVersion(Object.assign({}, c, {ranked: res}), 'hunter');
+  const magRow = (label, g2) => {
+    const m = g2.map(r => ({p: predSize(r), a: Math.abs(r.realised_move_pct)})).filter(x => has(x.p));
+    return {label, n: m.length, p: mMed(m.map(x => x.p)), a: mMed(m.map(x => x.a)),
+            ratio: mMed(m.filter(x => x.p > 0).map(x => x.a / x.p)),
+            under: m.filter(x => x.a > x.p).length,
+            rho: m.length >= MMIN ? corr(ranks(m.map(x => x.p)), ranks(m.map(x => x.a))) : null};
+  };
+  const magRows = [magRow('alle opgeloste hunts', res),
+    ...byV.map(v => magRow(`hunter-definitie ${v.v ? v.v.date.slice(0, 10) : v.id}`,
+      res.filter(r => ((r.prompt || {}).hunter || 'onbekend') === v.id)))].filter(r => r.n);
+  html += `<div class="card"><h3>Omvang: hoe groot, voorspeld tegen gerealiseerd</h3>` + table([
+    {h:'', f:r => esc(r.label)}, {h:'n', f:r => r.n},
+    {h:'mediaan voorspeld', f:r => has(r.p) ? n2(r.p) + '%' : '–'},
+    {h:'mediaan |beweging|', f:r => has(r.a) ? n2(r.a) + '%' : '–'},
+    {h:'verhouding', f:r => has(r.ratio) ? n2x(r.ratio) : '–'},
+    {h:'te klein', f:r => pctOf(r.under, r.n)},
+    {h:'ρ omvang ↔ |beweging|', f:r => n3(r.rho)}], magRows) +
+    `<p class="meta">De post-mortem van de eerste 28 Europese namen vond de beweging op 18 van
+     23 namen onderschat, met een mediane factor van ongeveer 3, en de Europese definitie vraagt
+     daarom sinds 2026-09-28 een aparte ongetekende <code>abs_move_pct</code>. Deze tabel is de
+     toets van die wijziging: de verhouding hoort naar 1× te gaan en <b>te klein</b> naar de
+     helft. <b>ρ omvang ↔ |beweging|</b> vraagt iets anders: of een hunter die een grotere
+     beweging noemt ook een grotere krijgt. Een goede verhouding met een ρ rond nul is een
+     hunter die het gemiddelde heeft geleerd en niet de naam.</p></div>`;
+
+  const B = [[0, 0, 'nul'], [0, 2, '0–2%'], [2, 5, '2–5%'], [5, 1e9, '≥ 5%']];
+  const bins = B.map(([lo, hi, label]) => {
+    const g2 = res.filter(r => { const p = predSize(r);
+      return has(p) && (hi === 0 ? p === 0 : p > lo && p <= hi); });
+    const a = g2.map(r => Math.abs(r.realised_move_pct));
+    return {label, n: g2.length, med: mMed(a), mean: a.length ? a.reduce((s, x) => s + x, 0) / a.length : null};
+  }).filter(r => r.n);
+  html += `<div class="card"><h3>Per voorspelde omvang</h3>` + table([
+    {h:'voorspeld', f:r => `<b>${esc(r.label)}</b>`}, {h:'n', f:r => r.n},
+    {h:'mediaan |beweging|', f:r => has(r.med) ? n2(r.med) + '%' : '–'},
+    {h:'gemiddelde |beweging|', f:r => has(r.mean) ? n2(r.mean) + '%' : '–'}], bins) +
+    `<p class="meta">Loopt de rechterkolom niet op, dan onderscheidt de genoemde omvang de namen
+     niet. De rij <b>nul</b> is de hunt die zei dat er niets zou gebeuren.</p></div>`;
+
+  /* 2. p_up */
+  const pu = res.filter(r => has(r.hunt.p_up));
+  if (pu.length) {
+    const PB = [[0, 40, '< 40'], [40, 60.0001, '40–60'], [60.0001, 101, '> 60']];
+    const prow = PB.map(([lo, hi, label]) => {
+      const g2 = pu.filter(r => r.hunt.p_up >= lo && r.hunt.p_up < hi);
+      return {label, n: g2.length,
+              mean: g2.length ? g2.reduce((s, r) => s + r.hunt.p_up, 0) / g2.length : null,
+              up: g2.filter(r => r.realised_move_pct > 0).length};
+    }).filter(r => r.n);
+    const brier = pu.reduce((s, r) => s + Math.pow(r.hunt.p_up / 100 - (r.realised_move_pct > 0 ? 1 : 0), 2), 0) / pu.length;
+    html += `<div class="card"><h3>p_up: hoe waarschijnlijk omhoog</h3>` + table([
+      {h:'p_up', f:r => `<b>${esc(r.label)}</b>`}, {h:'n', f:r => r.n},
+      {h:'gemiddelde p_up', f:r => n1(r.mean)},
+      {h:'werkelijk omhoog', f:r => pctOf(r.up, r.n)}], prow) +
+      `<p class="meta">Brier-score ${n3(brier)} over ${pu.length} namen; altijd 50 zeggen geeft
+       0,250, en lager is beter. Goed gekalibreerd betekent dat de kolom <b>werkelijk omhoog</b>
+       ongeveer gelijk is aan <b>gemiddelde p_up</b>. Het veld bestaat sinds de Europese
+       definitie van 2026-09-28, dus oudere hunts staan hier niet.</p></div>`;
+  }
+
+  /* 3. De lat */
+  const bar = res.filter(r => r.pm && has(r.pm.print_vs_bar_actual_pct) && has(r.hunt.print_vs_bar_pct)
+                            && r.hunt.print_vs_bar_pct !== 0 && r.pm.print_vs_bar_actual_pct !== 0);
+  const barMv = res.filter(r => has(r.hunt.print_vs_bar_pct) && r.hunt.print_vs_bar_pct !== 0
+                              && r.realised_move_pct !== 0);
+  if (bar.length || barMv.length) html += `<div class="card"><h3>De lat: haalt het cijfer de verwachting?</h3>` +
+    table([{h:'', f:r => esc(r.label)}, {h:'raak', f:r => pctOf(r.k, r.n)}], [
+      {label:'teken van print_vs_bar_pct tegen de werkelijke print (post-mortem)',
+       n: bar.length, k: bar.filter(r => (r.hunt.print_vs_bar_pct > 0) === (r.pm.print_vs_bar_actual_pct > 0)).length},
+      {label:'teken van print_vs_bar_pct tegen de koersbeweging',
+       n: barMv.length, k: barMv.filter(r => (r.hunt.print_vs_bar_pct > 0) === (r.realised_move_pct > 0)).length},
+      {label:'teken van de werkelijke print tegen de koersbeweging (post-mortem)',
+       n: res.filter(r => r.pm && has(r.pm.print_vs_bar_actual_pct) && r.pm.print_vs_bar_actual_pct !== 0 && r.realised_move_pct !== 0).length,
+       k: res.filter(r => r.pm && has(r.pm.print_vs_bar_actual_pct) && r.pm.print_vs_bar_actual_pct !== 0 && r.realised_move_pct !== 0
+                       && (r.pm.print_vs_bar_actual_pct > 0) === (r.realised_move_pct > 0)).length}].filter(r => r.n)) +
+    `<p class="meta">Deze drie rijen scheiden twee fouten die op Score samenvallen. De eerste
+     rij meet het onderzoek: had de hunter het cijfer goed? De derde meet de markt: beweegt de
+     koers met het cijfer mee? Is de eerste hoog en de derde laag, dan ligt het probleem niet in
+     de prompt maar in de aanname dat een beter cijfer een hogere koers geeft, en dan helpt een
+     betere prompt niet. De post-mortem bestaat alleen waar iemand hem heeft ingevuld
+     (<code>*-postmortem.json</code> in de runmap).</p></div>`;
+
+  /* 4. Wat de post-mortem zegt dat de omvang bepaalt */
+  const pm = res.filter(r => r.pm);
+  if (pm.length >= MMIN) {
+    const split = (label, f) => {
+      const A = pm.filter(r => f(r) === true), Bb = pm.filter(r => f(r) === false);
+      const s = g2 => ({n: g2.length, a: mMed(g2.map(r => Math.abs(r.realised_move_pct))),
+                        p: mMed(g2.map(predSize))});
+      return {label, A: s(A), B: s(Bb)};
+    };
+    const sp = [split('cijfers vooraf gepubliceerd (prior_update)', r => r.pm.prior_update),
+                split('guidance gewijzigd', r => has(r.pm.guidance_change)
+                  ? !/none|unchanged|maintained|reiterat/i.test(r.pm.guidance_change) : null),
+                split('release binnen het venster', r => r.pm.release_in_window)];
+    const cell = s => s.n ? `${n2(s.a)}% <span class="meta">voorspeld ${has(s.p) ? n2(s.p) + '%' : '–'} · n ${s.n}</span>` : '–';
+    html += `<div class="card"><h3>Wat de omvang bepaalt, en of de hunter het zag</h3>` + table([
+      {h:'feit uit de post-mortem', f:r => esc(r.label)},
+      {h:'ja: mediaan |beweging|', f:r => cell(r.A)},
+      {h:'nee: mediaan |beweging|', f:r => cell(r.B)}], sp) +
+      `<p class="meta">De eerste Europese post-mortem vond dat twee controleerbare feiten de
+       omvang bepalen: was het kwartaal al vooraf gepubliceerd (3,1% tegen 7,4%) en veranderde
+       de guidance (9,0% tegen 2,3%). Een prompt die die feiten laat wegen, laat de kolom
+       <b>voorspeld</b> hetzelfde verschil maken als de kolom ervoor. Doet hij dat niet, dan
+       vraagt de prompt ernaar en gebruikt de hunter het antwoord niet.</p></div>`;
+  }
+
+  /* 5. De nullen */
+  const zero = res.filter(r => !r.impact_sum), nz = res.filter(r => r.impact_sum);
+  html += `<div class="card"><h3>Wat de jacht liet liggen</h3>` + table([
+    {h:'', f:r => esc(r.label)}, {h:'n', f:r => r.n},
+    {h:'mediaan |beweging|', f:r => has(r.a) ? n2(r.a) + '%' : '–'}], [
+      {label:'impact_sum = 0: de hunter vond niets om te wegen', n: zero.length,
+       a: mMed(zero.map(r => Math.abs(r.realised_move_pct)))},
+      {label:'impact_sum ≠ 0', n: nz.length, a: mMed(nz.map(r => Math.abs(r.realised_move_pct)))}]) +
+    `<p class="meta">Een nul is geen voorspelling dat er niets gebeurt; het is het ontbreken
+     van een voorspelling, en hij telt nergens in het teken-goed-percentage mee. Bewegen de
+     nullen even hard als de rest, dan lag daar informatie die de prompt niet heeft gevonden.</p></div>`;
+  return html;
+}
+
+/* -------------------------------------------------------------- Vondsten */
+function mtVondsten(code) {
+  const c = mCtx(code), g = mGuard(c, code);
+  if (g) return g;
+  let html = `<p class="lead">Elke vondst apart, niet opgeteld per naam. De som verbergt welke
+    soort vondst het werk doet; deze tabellen laten zien waar de prompt de hunter heen stuurt en
+    welke van die plekken iets opleveren. Een vondst is <b>raak</b> als zijn teken gelijk is aan
+    dat van de gerealiseerde beweging.</p>` + mControls(c, 'both');
+
+  const F = c.ranked.filter(r => r.hunt).flatMap(r => r.hunt.findings.map(f =>
+    Object.assign({}, f, {mv: r.realised_move_pct, pm: r.pm, hunt: r.hunt})));
+  if (!F.length) return html + `<div class="card warnbox"><h3>Nog geen vondst</h3></div>`;
+  const scored = F.filter(f => has(f.mv) && f.x && f.mv !== 0);
+  const hitOf = g2 => { const s = g2.filter(f => has(f.mv) && f.x && f.mv !== 0);
+    return {n: s.length, k: s.filter(f => (f.x > 0) === (f.mv > 0)).length,
+            ret: s.length ? s.reduce((a, f) => a + (f.x > 0 ? f.mv : -f.mv), 0) / s.length : null}; };
+  const nonEn = F.filter(f => f.lang && f.lang !== 'en');
+  html += tiles([
+    {k:'vondsten', v: F.length, s:`over ${c.ranked.filter(r => r.hunt).length} hunts`},
+    {k:'met bron-URL', v: n1(100 * F.filter(f => f.src).length / F.length) + '%'},
+    {k:'bron niet in het Engels', v: n1(100 * nonEn.length / F.length) + '%', s:`${nonEn.length} vondsten`},
+    {k:'mediane |omvang|', v: n2(mMed(F.map(f => has(f.x) ? Math.abs(f.x) : null))) + '%'},
+    {k:'raak', v: scored.length ? pctOf(scored.filter(f => (f.x > 0) === (f.mv > 0)).length, scored.length) : '–',
+     s:'vondsten ≠ 0 op opgeloste namen'}]);
+
+  const cut = (title, keyf, order, note) => {
+    const keys = [...new Set(F.map(keyf))];
+    keys.sort((a, b) => order ? order.indexOf(a) - order.indexOf(b) : String(a).localeCompare(String(b)));
+    const rows = keys.map(k => { const g2 = F.filter(f => keyf(f) === k); const h = hitOf(g2);
+      return {k, n: g2.length, sz: mMed(g2.map(f => has(f.x) ? Math.abs(f.x) : null)),
+              hitN: h.n, hitK: h.k, ret: h.ret}; });
+    return `<div class="card"><h3>${title}</h3>` + table([
+      {h:'', f:r => `<b>${esc(r.k)}</b>`}, {h:'vondsten', f:r => r.n},
+      {h:'mediane |omvang|', f:r => has(r.sz) ? n2(r.sz) + '%' : '–'},
+      {h:'raak', f:r => pctOf(r.hitK, r.hitN)},
+      {h:'bord per vondst', f:r => has(r.ret) ? `<span class="${sgn(r.ret)}">${pc(r.ret)}</span>` : '–'}], rows) +
+      `<p class="meta">${note}</p></div>`;
+  };
+
+  html += cut('Waar de vondst landt (lands_on)', f => f.on || 'onbekend', null,
+    `Sinds 2026-09-15 moet elke vondst zeggen op welke regel hij landt. De Europese post-mortem
+     vond dat de koers vaak op iets anders bewoog dan waar de hunter zocht; staat een soort
+     vondst hier vaak en raak rond de helft, dan stuurt de prompt de moeite naar een plek die
+     de koers niet volgt.`);
+  html += cut('Taal van de bron', f => !f.lang ? 'onbekend' : f.lang === 'en' ? 'Engels' : `lokaal · ${f.lang}`, null,
+    `Dit is wat er overblijft van de taalcontrole die op 2026-09-22 stopte: geen bevroren
+     Engelse draft meer, maar wel per vondst de taal van zijn bron. Het is geen gecontroleerde
+     meting, want een Franse bron over een Frans bedrijf is geen toeval, maar het laat zien of
+     de lokale bronnen vondsten opleveren die anders gewogen of anders raak zijn.`);
+  html += cut('Binnen of buiten het venster (resolves_by tegen de eventdatum)',
+    f => !has(f.dt) ? 'geen datum' : f.dt <= 0 ? 'op of vóór de eventdag' : f.dt === 1 ? 'dag erna' : 'later dan dat',
+    ['op of vóór de eventdag', 'dag erna', 'later dan dat', 'geen datum'],
+    `Een vondst die pas na het venster oplost, kan de gescoorde beweging niet raken en hoort
+     volgens de definitie in <code>outside_window</code>. Staan hier vondsten in de onderste rijen,
+     dan komt die regel van de prompt niet aan. Voor Tokio is de dag erna nog binnen het venster.`);
+  html += cut('Per omvang van de vondst', f => !has(f.x) ? 'geen' : Math.abs(f.x) < 1 ? '< 1' : Math.abs(f.x) < 3 ? '1–3' : '≥ 3',
+    ['< 1', '1–3', '≥ 3', 'geen'],
+    `In de VS zat de richting in de grote voorspellingen: boven de mediaan was het teken 74%
+     van de keren goed, eronder 53%. Loopt de kolom <b>raak</b> hier niet op met de omvang,
+     dan weet de hunter niet welke van zijn vondsten zwaar weegt.`);
+
+  /* De taalnotitie per hunt, grof ingedeeld. */
+  const ln = c.ranked.filter(r => r.hunt && has(r.hunt.lang_added));
+  if (ln.length) {
+    const arm = v => { const g2 = ln.filter(r => r.hunt.lang_added === v);
+      const res = g2.filter(r => isRes(r) && r.impact_sum);
+      return {label: v ? 'de lokale bronnen voegden iets toe' : 'niets wat de Engelse niet al hadden',
+              n: g2.length, res: res.length, k: res.filter(r => r.sign_right).length,
+              ret: res.length ? book(res.map(r => r.ret)).mean : null}; };
+    html += `<div class="card"><h3>language_note: voegde de eigen taal iets toe?</h3>` + table([
+      {h:'', f:r => esc(r.label)}, {h:'hunts', f:r => r.n},
+      {h:'teken goed', f:r => pctOf(r.k, r.res)},
+      {h:'bord %', f:r => has(r.ret) ? `<span class="${sgn(r.ret)}">${pc(r.ret)}</span>` : '–'}],
+      [arm(true), arm(false)]) +
+      `<p class="meta">Ingedeeld door een woordfilter op de proza van <code>language_note</code>
+       (“nothing”, “identical”, “no additional” en dergelijke), dus een benadering. Het Britse
+       geval telt mee en is ontaard: daar is de tweede helft bronlokaliteit en geen taal.</p></div>`;
+  }
+
+  /* De post-mortem: klopten de feiten, en bewoog de koers waar de hunter zocht? */
+  const pmH = c.ranked.filter(r => r.pm && r.hunt);
+  if (pmH.length) {
+    const facts = pmH.reduce((a, r) => [a[0] + r.pm.facts_right, a[1] + r.pm.facts_n], [0, 0]);
+    const mo = [...new Set(pmH.map(r => r.pm.moved_on || 'onbekend'))].sort();
+    const top = r => { const f = [...r.hunt.findings].filter(x => has(x.x))
+                                   .sort((a, b) => Math.abs(b.x) - Math.abs(a.x))[0];
+                       return f ? f.on : null; };
+    html += `<div class="card"><h3>De post-mortem: feiten en waar de koers op bewoog</h3>
+      <p>Van de ${facts[1]} vondsten die een post-mortem naliep, klopte het feit bij
+      <b>${pctOf(facts[0], facts[1])}</b>. Dat is de controle die de adversary vroeger deed en die
+      sinds 2026-09-09 niemand meer doet.</p>` + table([
+      {h:'koers bewoog op', f:r => `<b>${esc(r.k)}</b>`}, {h:'namen', f:r => r.n},
+      {h:'grootste vondst landde daar ook', f:r => pctOf(r.m, r.n)}],
+      mo.map(k => { const g2 = pmH.filter(r => (r.pm.moved_on || 'onbekend') === k);
+        return {k, n: g2.length, m: g2.filter(r => top(r) === k).length}; })) +
+      `<p class="meta">De rechterkolom vraagt of de hunter op de goede plek zocht: landde zijn
+       zwaarste vondst op de regel waarop de koers daarna echt bewoog? Een laag percentage is een
+       aanwijzing voor de prompt, niet voor de scorer.</p></div>`;
+  }
+  return html;
+}
+
 /* De suite per markt. `when` bepaalt of een tabblad vandaag iets onder zich
    heeft; wat dicht is, staat met zijn voorwaarde op Overzicht, zodat een korte
    rij niet leest als een dashboard dat die analyse niet kent. */
@@ -3170,6 +3633,12 @@ const MTABDEFS = [
   {name:'Taal',      fn:mtTaal,      needs:'een run van vóór 2026-09-22 met een bevroren pre_local-draft', only:'EU',
    when:c => c.ranked.some(r => r.impact_sum_pre_local !== null
                              && r.impact_sum_pre_local !== undefined)},
+  {name:'Prompt',    fn:mtPrompt,    needs:'een hunt met een toegeschreven promptversie',
+   when:c => c.ranked.some(r => r.prompt && r.prompt.hunter)},
+  {name:'Kalibratie', fn:mtKalibratie, needs:`${MMIN} opgeloste namen met een hunt`,
+   when:c => c.resolved.filter(r => r.hunt).length >= MMIN},
+  {name:'Vondsten',  fn:mtVondsten,  needs:'een vondst',
+   when:c => c.ranked.some(r => r.hunt && r.hunt.findings.length)},
   {name:'Namen',     fn:mtNamen,     needs:'een gejaagde naam',
    when:c => c.rows.length > 0},
   {name:'Runs',      fn:mtRuns,      needs:'een run op schijf',
@@ -3309,7 +3778,7 @@ function tabV2() {
    de hash (`#eu/score`), dus een tabblad is te bookmarken, te delen en te herladen
    — en de Ververs-knop, die de pagina met een cache-buster herlaadt, brengt je
    terug waar je stond in plaats van op Overzicht. */
-const TABGROUPS = ['Stand', 'Rangschikking', 'Klok', 'Doorsnedes', 'Register', 'Bronnen'];
+const TABGROUPS = ['Stand', 'Rangschikking', 'Klok', 'Doorsnedes', 'Register', 'Prompt', 'Bronnen'];
 const TABMETA = {
   /* Stand */
   'Overzicht':  {g:'Stand', q:'Wat staat er vandaag, op één scherm: dagen, namen, vondsten en of er al iets is opgelost.'},
@@ -3329,12 +3798,16 @@ const TABMETA = {
   'Deelmarkt':  {g:'Doorsnedes', q:'Per beurs: namen, vondsten, ankerdekking, omzet en rangcorrelatie — en hoe scheef de trekking zat.'},
   'Ankerarm':   {g:'Doorsnedes', q:'Mét optie-anker tegen alleen het short-register, binnen één markt en één dag. De reden dat stage CA bestaat.'},
   'Soort':      {g:'Doorsnedes', q:'Winstcijfer tegen Appendix 4C/5B-kasstroomrapport: twee verschillende latten in één getal.'},
-  'Taal':       {g:'Doorsnedes', q:'Leverde de aparte ronde in de eigen taal rangcorrelatie op? (controle gestopt 2026-09-22; alleen runs van vóór die datum)'},
+  'Taal':       {g:'Prompt', q:'Leverde de aparte ronde in de eigen taal rangcorrelatie op? (controle gestopt 2026-09-22; alleen runs van vóór die datum)'},
   /* Register */
   'Lessons':    {g:'Register', q:'Kost of levert LESSONS.md: de bevroren draft tegen de uiteindelijke som.'},
   'V2':         {g:'Register', q:'Pre-lessons, post-lessons en V2 naast elkaar, en of κ iets toevoegt boven V1 × σ.'},
   'Hypotheses': {g:'Register', q:'Het hypotheseregister met één verdictregel, en wat er tot nu toe overeind blijft.'},
   'Weging':     {g:'Register', q:'De bevroren wegingen w1 en w2 naast de vlakke regel, per dag meegerekend.'},
+  /* Prompt: werkt de hunter-definitie? Alleen de markten zonder broker. */
+  'Prompt':     {g:'Prompt', q:'Per versie van de hunter-definitie, skill of LESSONS.md: vondsten, naleving, teken, ρ tegen de controle en kalibratie.'},
+  'Kalibratie': {g:'Prompt', q:'Klopt de omvang, p_up en de lat die de hunter naast de sleutel noemt, en welke feiten mist hij?'},
+  'Vondsten':   {g:'Prompt', q:'Per vondst: waar hij landt, in welke taal, binnen het venster of niet, en welke soort raak is.'},
   /* Bronnen */
   'Agenda':     {g:'Bronnen', q:'Wat er de komende week rapporteert, met beide poorten apart geteld. Geen voorspelling.'},
   'Namen':      {g:'Bronnen', q:'Elke gerangschikte naam met zijn sleutel, zijn baseline en zijn uitkomst.'},

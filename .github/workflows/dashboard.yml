@@ -55,7 +55,14 @@ jobs:
     outputs:
       pages: ${{ steps.pages.outcome }}
     steps:
+      # Full history, not the default depth of 1. build_markets.py attributes
+      # every foreign hunt to the version of its hunter definition, skill and
+      # LESSONS.md from git, and a shallow clone makes every file look added in
+      # the one commit it has -- which would credit every hunt to today's prompt.
+      # A shallow clone is detected and falls back to the previous attribution.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:

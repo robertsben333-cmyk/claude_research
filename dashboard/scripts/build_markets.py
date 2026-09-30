@@ -29,6 +29,7 @@ under `resolver_stats` so the two can be compared.
 import argparse
 import glob
 import json
+import re
 import subprocess
 import sys
 from datetime import date, datetime, timezone
@@ -41,17 +42,254 @@ DATA = ROOT / "dashboard" / "data"
 STAGES = {
     "EU": {"dir": "europe", "label": "Europa", "stage": "EU",
            "resolver": "researcher_europe/scripts/eu_resolve.py",
-           "resolved": "eu-resolved.json"},
+           "resolved": "eu-resolved.json",
+           "skill": ".claude/skills/researcher-europe-hunt/SKILL.md",
+           "lessons": "researcher_europe/LESSONS.md"},
     "JP": {"dir": "japan", "label": "Japan", "stage": "J",
            "resolver": "researcher_japan/scripts/jp_resolve.py",
-           "resolved": "jp-resolved.json"},
+           "resolved": "jp-resolved.json",
+           "skill": ".claude/skills/researcher-japan-hunt/SKILL.md",
+           "lessons": "researcher_japan/LESSONS.md"},
     "AU": {"dir": "australia", "label": "Australië", "stage": "AU",
            "resolver": "researcher_australia/scripts/au_resolve.py",
-           "resolved": "au-resolved.json"},
+           "resolved": "au-resolved.json",
+           "skill": ".claude/skills/researcher-australia-hunt/SKILL.md",
+           "lessons": "researcher_australia/LESSONS.md"},
     "CA": {"dir": "canada", "label": "Canada", "stage": "CA",
            "resolver": "researcher_canada/scripts/ca_resolve.py",
-           "resolved": "canada-resolved.json"},
+           "resolved": "canada-resolved.json",
+           "skill": ".claude/skills/researcher-canada-hunt/SKILL.md",
+           "lessons": "researcher_canada/LESSONS.md"},
 }
+
+# Which agent definition hunted a name. Europe has seven, keyed on the
+# submarket, exactly as the stage EU skill's dispatch table says; the other
+# three markets have one each.
+EU_HUNTER = {"uk": "uk", "de": "de", "fr": "fr", "it": "it", "es": "es",
+             "pl": "pl", "se": "nordic", "dk": "nordic", "no": "nordic",
+             "fi": "nordic"}
+ONE_HUNTER = {"EU": None, "JP": "jp", "AU": "au", "CA": "ca"}
+
+
+def hunter_of(code, submarket):
+    h = ONE_HUNTER[code] or EU_HUNTER.get((submarket or "").lower())
+    return f"unpriced-hunter-{h}" if h else None
+
+
+def agent_path(hunter):
+    return f".claude/agents/{hunter}.md" if hunter else None
+
+
+# ------------------------------------------------------------------ prompts
+#
+# "Is the prompt working" is only answerable if every hunt carries the prompt it
+# ran under. The hunters do not write that down, so it is recovered from git:
+# the version of an agent definition (or skill, or LESSONS.md) that sat in the
+# tree of the commit that first ADDED the hunt file. That is the closest commit
+# to the moment the hunter was spawned, and the session that spawned it had that
+# tree checked out, give or take a prompt change merged mid-run.
+#
+# A version is a distinct blob on the first-parent history of HEAD, so a merge
+# counts on the day it landed on main and not on the day its branch was
+# written. Its id is the commit that introduced it, which is shared across the
+# seven European hunters when one commit changed all seven -- that is what makes
+# "before and after 2026-09-28" one comparison and not seven.
+#
+# A shallow clone cannot do any of this: every file looks added in the one
+# commit it has, which would attribute every hunt to today's prompt. So a
+# shallow clone carries the attribution over from the previous markets.json and
+# marks what it cannot attribute, rather than inventing it.
+
+def git(*args, inp=None):
+    try:
+        p = subprocess.run(["git", *args], cwd=str(ROOT), capture_output=True,
+                           text=True, input=inp, timeout=120)
+    except Exception:
+        return None
+    return p.stdout if p.returncode == 0 else None
+
+
+def is_shallow():
+    out = git("rev-parse", "--is-shallow-repository")
+    return out is None or out.strip() != "false"
+
+
+def blobs(specs):
+    """{'<commit>:<path>': blob or None}, in one git call."""
+    specs = sorted(set(specs))
+    if not specs:
+        return {}
+    out = git("cat-file", "--batch-check", inp="\n".join(specs) + "\n") or ""
+    res = {}
+    for spec, line in zip(specs, out.splitlines()):
+        parts = line.split()
+        res[spec] = parts[0] if len(parts) >= 2 and parts[1] == "blob" else None
+    return res
+
+
+def history(path):
+    """Distinct versions of one file on the first-parent history of HEAD,
+    oldest first: [{id, commit, date, subject, blob}]."""
+    out = git("log", "--first-parent", "--reverse",
+              "--format=%H%x09%cI%x09%s", "--", path) or ""
+    commits = [l.split("\t", 2) for l in out.splitlines() if l.count("\t") >= 2]
+    bl = blobs(f"{c[0]}:{path}" for c in commits)
+    vers, last = [], None
+    for h, when, subj in commits:
+        b = bl.get(f"{h}:{path}")
+        if not b or b == last:
+            continue
+        last = b
+        vers.append({"id": h[:8], "commit": h[:8], "date": when[:16].replace("T", " "),
+                     "subject": subj[:140], "blob": b})
+    return vers
+
+
+def added_commits(globs_):
+    """{repo-relative path: commit that first added it}."""
+    out = git("log", "--diff-filter=A", "--format=@@%H", "--name-only", "--",
+              *globs_) or ""
+    first, cur = {}, None
+    for line in out.splitlines():
+        if line.startswith("@@"):
+            cur = line[2:]
+        elif line.strip() and cur:
+            first[line.strip()] = cur          # log is newest first: keep oldest
+    return first
+
+
+class Prompts:
+    """Attributes each hunt to the prompt versions it ran under."""
+
+    def __init__(self, previous):
+        self.shallow = is_shallow()
+        self.previous = previous or {}
+        self.hist = {}
+        self.added = {}
+        self.pending = []
+
+    def versions(self, path):
+        if path not in self.hist:
+            self.hist[path] = [] if self.shallow else history(path)
+        return self.hist[path]
+
+    def index(self, code, dirname):
+        if not self.shallow:
+            self.added.update(added_commits(
+                [f"research/*/*/*/{dirname}/hunts/*.json"]))
+
+    def attribute(self, hunt_rel, paths, prev_key):
+        """{'hunter': id, 'skill': id, 'lessons': id} for one hunt file."""
+        if self.shallow:
+            return (self.previous.get(prev_key) or {}).get("prompt") or {
+                k: None for k in paths}
+        commit = self.added.get(hunt_rel)
+        if not commit:
+            return {k: None for k in paths}
+        specs = {k: f"{commit}:{p}" for k, p in paths.items() if p}
+        bl = blobs(specs.values())
+        out = {}
+        for k, p in paths.items():
+            b = bl.get(specs.get(k))
+            if not p or not b:
+                out[k] = None
+                continue
+            v = next((v for v in self.versions(p) if v["blob"] == b), None)
+            # A blob that never sat on main: the hunt ran from a branch whose
+            # prompt was later changed again before merging. Named, not guessed.
+            out[k] = v["id"] if v else f"tak:{b[:7]}"
+        return out
+
+
+# Hunter prose -> did the local-language sources add anything. A heuristic and
+# labelled as one on the page: language_note is free text by design, and the
+# control that measured this with a number was retired on 2026-09-22.
+NOTHING = re.compile(
+    r"\bnothing\b|\bno (additional|new|extra|further)\b|identical|same content|"
+    r"did not (add|carry)|confirmation rather than|added no\b|not add", re.I)
+
+
+def lang_added(note):
+    if not note:
+        return None
+    items = note if isinstance(note, list) else [note]
+    items = [str(x) for x in items if str(x).strip()]
+    if not items:
+        return None
+    return any(not NOTHING.search(x) for x in items)
+
+
+def days_between(a, b):
+    try:
+        return (date.fromisoformat(str(a)[:10]) - date.fromisoformat(str(b)[:10])).days
+    except Exception:
+        return None
+
+
+def hunt_summary(h, event_date):
+    """The parts of one hunt file that say whether the prompt was followed and
+    what it predicted beside the ranked number."""
+    if not h:
+        return None
+    fs = h.get("findings") or []
+    pre = h.get("pre_lessons") or {}
+    final_sum = sum((f.get("expected_impact_pct") or 0) for f in fs)
+    pre_sum = pre.get("impact_sum_pct")
+    lessons_changed = None
+    if pre_sum is not None:
+        lessons_changed = (abs((pre_sum or 0) - final_sum) > 1e-9
+                           or (pre.get("findings_count") is not None
+                               and pre.get("findings_count") != len(fs)))
+    finds = []
+    for f in fs:
+        lang = (f.get("source_language") or "").lower() or None
+        finds.append({
+            "x": f.get("expected_impact_pct"),
+            "lo": f.get("impact_low_pct"),
+            "hi": f.get("impact_high_pct"),
+            "on": f.get("lands_on"),
+            "dt": days_between(f.get("resolves_by"), event_date),
+            "lang": lang,
+            "pass": f.get("found_in_pass"),
+            "src": bool(str(f.get("source") or "").startswith("http")),
+            "quote": bool(f.get("original_quote")),
+            "ind": f.get("independence"),
+        })
+    return {
+        "synthetic": bool(h.get("SYNTHETIC")),
+        "event_confirmed": h.get("event_confirmed"),
+        "expected_move_pct": h.get("expected_move_pct"),
+        "abs_move_pct": h.get("abs_move_pct"),
+        "p_up": h.get("p_up"),
+        "print_vs_bar_pct": h.get("print_vs_bar_pct"),
+        "already_public": h.get("already_public"),
+        "new_in_release": h.get("new_in_release"),
+        "sources_used": h.get("sources_used"),
+        "n_outside": len(h.get("outside_window") or []),
+        "n_nothing": len(h.get("searched_and_found_nothing") or []),
+        "lessons_changed": lessons_changed,
+        "has_language_note": h.get("language_note") is not None,
+        "lang_added": lang_added(h.get("language_note")),
+        "findings": finds,
+    }
+
+
+def postmortem_of(p):
+    if not p:
+        return None
+    fsc = p.get("findings_scored") or []
+    right = [x.get("fact_correct") for x in fsc if x.get("fact_correct") is not None]
+    prior = p.get("prior_update")
+    return {
+        "release_found": p.get("release_found"),
+        "release_in_window": p.get("release_in_window"),
+        "print_vs_bar_actual_pct": p.get("print_vs_bar_actual_pct"),
+        "guidance_change": p.get("guidance_change"),
+        "prior_update": (prior.get("value") if isinstance(prior, dict) else prior),
+        "moved_on": p.get("moved_on"),
+        "facts_n": len(right),
+        "facts_right": sum(1 for x in right if x),
+    }
 
 
 def rd(x, n=3):
@@ -121,7 +359,7 @@ def resolve_run(run, spec, timeout=300):
     return None
 
 
-def collect_run(run, spec, problems):
+def collect_run(run, spec, problems, code=None, prompts=None):
     """One run directory -> (meta, rows). Rows exist with or without an outcome."""
     rp = Path(run)
     rel = str(rp.relative_to(ROOT)) if str(rp).startswith(str(ROOT)) else str(rp)
@@ -139,6 +377,19 @@ def collect_run(run, spec, problems):
 
     ranking = scores.get("ranking") or []
     hunts = sorted(rp.glob("hunts/*.json"))
+    # One hunt per name under the current contract; the first file wins if a
+    # name was hunted twice, which is the h1 by sort order.
+    hunt_by = {}
+    for hp in hunts:
+        hd = load(hp)
+        tk = (hd or {}).get("ticker") or hp.stem.rsplit("-h", 1)[0]
+        hunt_by.setdefault(str(tk), (hp, hd))
+    pms = {}
+    for pp in sorted(rp.glob("*-postmortem.json")):
+        doc = load(pp)
+        for p in (doc if isinstance(doc, list) else (doc or {}).get("rows") or []):
+            if isinstance(p, dict) and p.get("ticker"):
+                pms[str(p["ticker"])] = p
     rows = []
     for r in ranking:
         tk = r.get("ticker")
@@ -192,6 +443,17 @@ def collect_run(run, spec, problems):
             "move_pending": rr.get("move_pending"),
             "realised_move_pct": rd(move, 3),
         }
+        hp, hd = hunt_by.get(str(tk), (None, None))
+        row["hunter"] = hunter_of(code, row["submarket"]) if code else None
+        row["hunt"] = hunt_summary(hd, row["event_date"])
+        row["pm"] = postmortem_of(pms.get(str(tk)))
+        row["prompt"] = None
+        if prompts is not None and hp is not None:
+            hrel = str(hp.relative_to(ROOT))
+            row["prompt"] = prompts.attribute(
+                hrel, {"hunter": agent_path(row["hunter"]),
+                       "skill": spec.get("skill"), "lessons": spec.get("lessons")},
+                f"{rel}|{tk}")
         # The board return: what the hunt's own sign earned. Short a negative
         # prediction, long a positive one -- the same convention the US ledger
         # uses, so the two are read the same way.
@@ -252,6 +514,24 @@ def collect_run(run, spec, problems):
     return meta, rows
 
 
+def prompt_catalogue(code, spec, rows, prompts, prev_doc):
+    """Every version of every prompt file this market's hunts ran under, with
+    the commit subject that says what changed. The page groups by `id`."""
+    if prompts.shallow:
+        return ((prev_doc.get("markets") or {}).get(code) or {}).get("prompts") or {}
+    hunters = sorted({r["hunter"] for r in rows if r.get("hunter")})
+    if code != "EU" and ONE_HUNTER[code]:
+        hunters = [f"unpriced-hunter-{ONE_HUNTER[code]}"]
+    cat = {"hunter": {}, "skill": {}, "lessons": {}}
+    for h in hunters:
+        cat["hunter"][h] = [{k: v for k, v in x.items() if k != "blob"}
+                            for x in prompts.versions(agent_path(h))]
+    for k in ("skill", "lessons"):
+        cat[k][spec[k]] = [{kk: v for kk, v in x.items() if kk != "blob"}
+                           for x in prompts.versions(spec[k])]
+    return cat
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -269,7 +549,17 @@ def main():
 
     today = date.today().isoformat()
     problems, markets = [], {}
+    prev_doc = load(a.out) or {}
+    previous = {f"{r.get('run')}|{r.get('ticker')}": r
+                for m in (prev_doc.get("markets") or {}).values()
+                for r in (m.get("names") or [])}
+    prompts = Prompts(previous)
+    if prompts.shallow:
+        problems.append("shallow git clone: promptversies overgenomen uit de vorige "
+                        "markets.json; nieuwe hunts staan als onbekend. CI moet "
+                        "met fetch-depth: 0 uitchecken.")
     for code, spec in STAGES.items():
+        prompts.index(code, spec["dir"])
         pats = a.runs or [f"research/*/*/*/{spec['dir']}"]
         runs = []
         for pat in pats:
@@ -294,7 +584,7 @@ def main():
 
         metas, rows = [], []
         for run in runs:
-            m, rs = collect_run(run, spec, problems)
+            m, rs = collect_run(run, spec, problems, code, prompts)
             metas.append(m)
             rows.extend(rs)
         metas.sort(key=lambda m: m["run_date"])
@@ -311,6 +601,7 @@ def main():
             "n_runs": len(metas),
             "n_names": len(rows),
             "n_resolved": sum(1 for r in rows if r["realised_move_pct"] is not None),
+            "prompts": prompt_catalogue(code, spec, rows, prompts, prev_doc),
         }
         print(f"{code}: {len(metas)} runs, {len(rows)} names, "
               f"{markets[code]['n_resolved']} with a realised move")

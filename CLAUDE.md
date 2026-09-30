@@ -358,6 +358,20 @@ shut exchange is not a failed run; and **ρ is withheld below five names**, beca
 three a rank correlation of 1.0 arrives one time in six and `au_resolve.py` already says
 so.
 
+**The foreign markets have a `Prompt` group since 2026-09-30: `Prompt`, `Kalibratie`,
+`Vondsten`.** They ask whether the hunter definitions work, not whether the day ranks.
+`build_markets.py` attributes every hunt to the version of its hunter definition, skill
+and `LESSONS.md` from git (the tree of the commit that first added the hunt file; a
+version is a distinct blob on first-parent `main`), so a prompt change reads as a
+before and after — **beside the free control on the same names, because a version
+comparison is a period comparison and not an experiment**. That needs full history: the
+workflow checks out with `fetch-depth: 0`, and a shallow clone carries the previous
+attribution over instead of crediting every hunt to today's prompt. First reading,
+Europe: the 2026-09-28 definition took the realised-to-predicted size ratio from ~3× to
+0.89× on nine names; findings per hunt fell 4.2 → 1.2 over three versions; every `p_up`
+sits in 40–60; the print was called right against the bar 13 of 16 times while the
+print's sign matched the price 9 of 18. See `dashboard/README.md`.
+
 **Three new questions, three near-nulls and one lead (2026-09-18).** They are tabs on
 that dashboard — `Instap`, `Aanloop`, `Zoekvolume`, plus `Agenda` — not separate pages.
 An earlier standalone set under `researcher_us/analysis/dashboard/` was deleted the same day: two
