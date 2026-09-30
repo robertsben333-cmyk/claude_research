@@ -101,3 +101,7 @@
 ## Stage R — reversal researcher — DONE
 - Logged at 2026-09-28 19:14 UTC
 - Clone: CLAUDE.md was present (no clone needed). Intraday screen at 15:04 ET, K=15, 46 above floors, largest sector Health Care 4/15 (27%), SPY -0.62%. 15 baselines sealed 15:05 ET before any hunter; 15/15 hunted (concurrency cap 8, so 7 hunters launched as slots freed; nothing shed). edge_score: 15 rankable, 1 above floor (LABT -6.50, leg 2, supply). Leg 1 empty on all 15. Resolve: 09-25 run pending (window closes today); pooled 09-22..09-24 d1 over 45 names impact_sum rho -0.201 (p 0.21) vs neg_atr14 -0.060, neg_ret_d +0.026; lean_vs_free_control_rho 0.123 — no free control beaten. Process note: two hunter results (CCG, SMX) were briefly written into the session transcript by the orchestrator before the real files existed; they were discarded and every number in the note comes from the files on disk. No orders; no execution block exists in this stage.
+
+## Edge hunt — 2026-09-28 — RESOLVED
+- Logged at 2026-09-30 12:48 UTC
+- edge_resolve.py: Spearman key vs move -0.451 (p=0.22, n=9); conviction vs sign -0.405 (1/6 signs right); pre-lessons -0.412; V2 -0.254; control -run_up_20d +0.183. Top third minus bottom third -17.70pp, dominated by SANG +37.33% on a ~$26k/day US line and CCL +13.41%. No name above the floor, no book.
