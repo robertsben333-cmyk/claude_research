@@ -52,3 +52,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-09-30 01:16 UTC
 - Wave 1: 5 of 5 hunters returned. 5 ranked, 0 above floor 3.0: 2685 +1.50, 2354 +1.00, 2975 +1.00, 6083 +1.00, 9369 -0.80. Register sealed on 20260918 (stale by defect, fixed in e336548; baselines not revised). Note: japan/japan-note.md. No orders.
+
+## Close AMC — 2026-09-30 10:10 UTC
+- Logged at 2026-09-30 10:19 UTC
+- Guard passed (amc open as day). verify: 14 legs, none UNFILLED-with-shares-held (all still held 0.0). close --submit: no leg due today, nothing sent, no refusals. Account reachable.
