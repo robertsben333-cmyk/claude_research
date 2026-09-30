@@ -139,13 +139,28 @@ def load(on_or_before=None, refresh=False):
 
     want = (on_or_before or date.today().isoformat()).replace("-", "")
     have = sorted([d for d in cache if d <= want], reverse=True)
-    if have and not refresh:
+    if have and not refresh and have[0] == want:
         return have[0], cache[have[0]]
 
-    for day, url in available_files():
+    # A cached day OLDER than `want` is not an answer: returning it without looking
+    # froze every seal from 2026-09-19 to 09-30 on the 20260918 file while JPX was
+    # publishing daily. So look for a newer file first, and fall back to the cache
+    # only when the index cannot be read or has nothing newer.
+    try:
+        listed = available_files()
+    except Exception:
+        listed = []
+    for day, url in listed:
         if day > want:
             continue
-        blob = _fetch(url, referer=INDEX)
+        if have and not refresh and day <= have[0]:
+            return have[0], cache[have[0]]
+        if day in cache and not refresh:
+            return day, cache[day]
+        try:
+            blob = _fetch(url, referer=INDEX)
+        except Exception:
+            continue
         if len(blob) < 10000:
             continue
         try:
@@ -156,6 +171,8 @@ def load(on_or_before=None, refresh=False):
         CACHE.parent.mkdir(parents=True, exist_ok=True)
         CACHE.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
         return day, rows
+    if have:
+        return have[0], cache[have[0]]
     return None, {}
 
 
