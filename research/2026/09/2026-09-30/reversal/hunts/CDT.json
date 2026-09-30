@@ -1,0 +1,73 @@
+{
+  "ticker": "CDT",
+  "drop_date": "2026-09-30",
+  "window": {"from": "close of 2026-09-30", "to": "close of 2026-10-01"},
+  "expected_move_pct": -3.5,
+  "conviction_note": "One leg-2 finding at -4.0: a toxic convertible (J.J. Astor, converts at 70% of the lowest 20-day VWAP, resale registered effective 2026-09-17) and an open A.G.P. ATM both sell stock on any trading day, on a name down 96.5% in 20 sessions that has closed lower after every one of its last 12 drops. Trimmed 0.5 to -3.5 because today's volume is ordinary (1.26x, $381k against a $1.17m median), which is the low-volume bucket that bounces cross-sectionally. No leg-1 overshoot with a mechanism was found.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -4.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "this name's own history in the sealed baseline (n=271 drops of 4.59% or more, median next close -2.51%, 36.9% up; the September sequence was 12 of 12 negative next closes) plus 14-day ATR 55.0%. No option chain (no_options_market). Baseline: /home/user/claude_research/research/2026/09/2026-09-30/reversal/baselines/CDT.json",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 15,
+    "confidence_pct": 55,
+    "what_happened": "No company news on 2026-09-30 (the last release was 07:00 ET 09-29, a Sarborg IP promotion). The fall is the ongoing dilution spiral on its second split-adjusted day after the 1-for-25 reverse split (market-effective 09-29 open): a senior secured convertible that converts at a discount to the lowest VWAP, an open ATM, and 12.1m pre-split Sarborg acquisition shares made resellable by the S-1 declared effective 09-17. All of it happened on ordinary volume, with no gap and the whole move intraday.",
+    "evidence": [
+      {"claim": "1-for-25 reverse split effective 5:00 pm ET 2026-09-28, market-effective 2026-09-29 open, about 1,013,515 shares outstanding afterwards", "url": "https://www.sec.gov/Archives/edgar/data/1896212/000149315226044248/form8-k.htm", "timestamp": "2026-09-25"},
+      {"claim": "J.J. Astor senior secured convertible, $2,126,250 principal, 24 weekly installments of $88,593.75 every Monday from 2026-09-21, payable in shares, conversion at the greater of 70% of the lowest 20-day VWAP or a $0.05 floor. 80% of net ATM proceeds (A.G.P.) go to repaying the note", "url": "https://www.sec.gov/Archives/edgar/data/1896212/000149315226043398/ex10-1.htm", "timestamp": "2026-09-18"},
+      {"claim": "Resale prospectus for 16,825,644 pre-split shares, including 12,131,122 issued to Sarborg shareholders and 3,523,125 Astor conversion shares", "url": "https://www.sec.gov/Archives/edgar/data/1896212/000149315226043404/form424b3.htm", "timestamp": "2026-09-18"},
+      {"claim": "The S-1 was declared effective", "url": "https://www.sec.gov/Archives/edgar/data/1896212/999999999526003001/xslEFFECTX01/primary_doc.xml", "timestamp": "2026-09-17"},
+      {"claim": "News list: nothing dated 2026-09-30. The latest item is 09-29 07:00 AM, a Sarborg quantum IP release", "url": "https://www.stocktitan.net/news/CDT/", "timestamp": "2026-09-29 07:00 ET"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -65,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Astor weekly installment on Monday 2026-10-05, payable in shares (outside the window). Conversions and ATM draws carry no date and can land on 2026-10-01",
+    "what_would_change_my_mind": "An 8-K before the 10-01 open saying the Astor note was repaid or restructured, or the ATM terminated, which would remove the discount-priced supply."
+  },
+  "positioning_check": "Nasdaq short interest at the 2026-09-15 settlement: 239,903 pre-split shares (about 9.6k post-split), days to cover 1.0, up 467.9% from 42,243 at 08-31. That is about 8 business days of publication lag, it predates the 09-29 reverse split, and the position carried into today is not observable. Shares outstanding are about 1.01m post-split (09-25 8-K). Split-adjusted volume from 09-17 to 09-29 was about 5.0m shares, roughly 5x the post-split share count (Yahoo v8 bars, cut off before 2026-09-30). There is no option chain, so no skew read.",
+  "findings": [
+    {
+      "finding": "Discount-priced convertible and ATM supply is unfinished and can hit the tape on 2026-10-01. Astor can convert at 70% of the lowest 20-day VWAP, below any bounce price, into a registered and effective resale line, and the A.G.P. ATM stays open with 80% of its proceeds pledged to repaying the note.",
+      "leg": "new_information",
+      "mechanism_in_window": "Conversion is at the lender's option on any trading day and the resale registration has been effective since 2026-09-17. The ATM can draw on 10-01 with no further filing. The first weekly installments (Mondays from 09-21) are already running, so the holder is converting now and has not started later. Every share converted at 70% of the lowest VWAP is profitable to sell straight away on 10-01.",
+      "expected_impact_pct": -4.0,
+      "impact_low_pct": -15.0,
+      "impact_high_pct": 8.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-01",
+      "reaction_history_on_this_line": "The baseline's September sequence: every one of the 12 drops since 09-10 closed lower the next day (-27.54, -12.40, -7.31, -2.46, -11.49, -7.79, -4.93, -10.37, -33.88, -5.00, -23.68, -6.55). That is the whole period in which this note and the resale line were live. Own 3-year history: median next close -2.51%, 36.9% up, n=271.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1896212/000149315226043398/ex10-1.htm",
+      "source_date": "2026-09-18",
+      "why_not_priced": "The price has taken today's selling, not tomorrow's. A conversion priced 30% or more below the lowest VWAP gives the holder a reason to sell at any price above the conversion price, so a close that held this supply would be at or below the conversion price, around $0.95 against a spot of $1.355. The note's principal of about $2.1m, plus the other Astor tranches, converts into more shares than the roughly 1.01m now outstanding. The 4.99% cap slows that and does not stop it.",
+      "independence": "The resale prospectus registering 3,523,125 pre-split Astor conversion shares plus 12.1m Sarborg shares: https://www.sec.gov/Archives/edgar/data/1896212/000149315226043404/form424b3.htm. The 09-01 8-K confirming the ATM program exists: https://www.sec.gov/Archives/edgar/data/1896212/000149315226041016/form8-k.htm. Both are the same issuer's filings, so this is not an independent observer."
+    }
+  ],
+  "outside_window": [
+    {"finding": "Nasdaq bid-price exposure: the 1-for-10 split (effective 2026-07-17) and the 1-for-25 split (market-effective 2026-09-29) already reach a cumulative 250:1 inside two years, with an earlier 2026-03 split on top. Under Nasdaq's 2025 rule a new bid-price failure would carry no compliance period, but a failure needs 30 consecutive business days below $1, and spot is $1.355.", "expected_impact_pct": -5.0, "resolves_by": "2026-11-12", "source": "https://www.sec.gov/Archives/edgar/data/1896212/000149315226033455/form8-k.htm"},
+    {"finding": "Astor weekly installments in shares every Monday to 2027-03-01. The next one is 2026-10-05.", "expected_impact_pct": -3.0, "resolves_by": "2026-10-05", "source": "https://www.sec.gov/Archives/edgar/data/1896212/000149315226043398/ex10-1.htm"},
+    {"finding": "A stockholder meeting must be called on or before 2026-10-31 if the August approval does not cover the new conversion shares. It would allow more conversion supply.", "expected_impact_pct": -2.0, "resolves_by": "2026-10-31", "source": "https://www.sec.gov/Archives/edgar/data/1896212/000149315226043398/ex10-1.htm"},
+    {"finding": "Management values its 22.7% Sarborg stake at about $709m against a market cap of about $1.4m (09-29 release). This is a 'cheap' argument with no mechanism, so it is not a repricing finding.", "expected_impact_pct": 0.0, "resolves_by": "2026-12-31", "source": "https://www.stocktitan.net/news/CDT/"}
+  ],
+  "searched_and_found_nothing": [
+    "A company release or 8-K dated 2026-09-30: the stocktitan news list shows none after 09-29 07:00 ET, and the latest 8-K in the baseline submissions is 09-25",
+    "A leg-1 mechanism: no analyst coverage, no Form 4 buys (Nasdaq insider summary shows 0 trades over 3 and 12 months), no 13D/G buyer after 09-09, no wrong wire fact found",
+    "Countable spent supply: 12.1m pre-split Sarborg shares (about 485k post-split) went resellable on 09-17 and about 5.0m split-adjusted shares traded 09-17 to 09-29, but who sold cannot be attributed, so this is not claimed as spent",
+    "Going concern: the efts probe returned 0 hits",
+    "Clinical trials: ClinicalTrials.gov returned n=0 per the baseline",
+    "Event of default tied to the share price or the reverse split in the Astor note: none specified (ex10-1)",
+    "Contamination: Yahoo bars were requested with period2=1790726400 (2026-09-30 00:00 UTC), so no drop-day or later bar was fetched. A search snippet quoted a 09-07 price and a September 'close' of $0.64 from an unadjusted aggregator (upstox). It came before the screen instant, was not used, and is noted here"
+  ],
+  "baseline_tension": "The finding agrees with the ATR (55%, the highest-volatility tail keeps falling) and with this name's own 12-of-12 run of lower next closes. It cuts against the ordinary volume (1.26x) and the shrinking dollar turnover, which put today in the low-volume bucket that bounces cross-sectionally, so expected_move is 0.5 smaller than the finding sum.",
+  "pre_lessons": {
+    "impact_sum_pct": -4.0,
+    "expected_move_pct": -3.5,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-4.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
