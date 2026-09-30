@@ -40,3 +40,7 @@
 ## Stage J — universe + baselines sealed
 - Logged at 2026-09-30 01:06 UTC
 - 10 scheduled / 5 eligible / 5 hunted (2354 YE DIGITAL, 2685 and ST HD, 2975 Star Mica, 6083 ERI HD, 9369 KRS); method: all 5 eligible at or under cap 25, no draw. calendar_as_of 2026-09-03 (sheets kessan07_0904, kessan08_0918). Short register file 20260918 (12 days stale); 2354 and 2685 in it, other three truncated zero. One wave of 5 hunters launched.
+
+## Stage J — resolved 2026-09-28
+- Logged at 2026-09-30 01:06 UTC
+- jp_resolve on the 09-28 run: 8227 impact_sum -0.5, realised +2.76%, event confirmed. 1 row, no statistics.
