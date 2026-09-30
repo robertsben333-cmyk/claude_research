@@ -54,17 +54,20 @@ OPEN_LOCAL = "09:30"
 # calendar for it, and a holiday read wrong is a day of baselines sealed on a stale
 # spot. Verified against TMX's published 2026 and 2027 trading schedules. Dates that
 # fall on a weekend are already observed on the Monday here.
+# National Day for Truth and Reconciliation (30 Sep) is a federal holiday the TSX does
+# NOT observe: it was listed here until 2026-09-30, when RY printed 885k shares by
+# 14:30 ET and the stage had written the day off as `market_closed`.
 TSX_HOLIDAYS = {
     "2026-01-01": "New Year's Day", "2026-02-16": "Family Day",
     "2026-04-03": "Good Friday", "2026-05-18": "Victoria Day",
     "2026-07-01": "Canada Day", "2026-08-03": "Civic Holiday",
-    "2026-09-07": "Labour Day", "2026-09-30": "National Day for Truth and Reconciliation",
+    "2026-09-07": "Labour Day",
     "2026-10-12": "Thanksgiving", "2026-12-25": "Christmas Day",
     "2026-12-28": "Boxing Day (observed)",
     "2027-01-01": "New Year's Day", "2027-02-15": "Family Day",
     "2027-03-26": "Good Friday", "2027-05-24": "Victoria Day",
     "2027-07-01": "Canada Day", "2027-08-02": "Civic Holiday",
-    "2027-09-06": "Labour Day", "2027-09-30": "National Day for Truth and Reconciliation",
+    "2027-09-06": "Labour Day",
     "2027-10-11": "Thanksgiving", "2027-12-27": "Christmas Day (observed)",
     "2027-12-28": "Boxing Day (observed)",
 }
