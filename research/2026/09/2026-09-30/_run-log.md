@@ -32,3 +32,7 @@
 - Logged at 2026-09-29 13:59 UTC
 - 10 hunted / 6 rankable / 0 above floor 3.0. SAGA +1.10, GXI +0.50, AVG 0, PINE 0 (448p scheme), SPI 0 (250p final offer), SKIS_B -0.50. Not ranked (no event in window): ADE (H1 out 09-29 09:00 CEST), DIB (FY out 09-24 evening), KOF (9M amc 1 Oct per issuer), DEBS (probable phantom, interims Nov).
 - At resolve: hand-amend ADE and DIB baselines with event_occurred: false (DE/IT cannot reach it automatically). Resolve SKIS_B within ~a week. Note: research/2026/09/2026-09-30/europe/europe-note.md. No orders. Published to main (EARNINGS_DATA_BRANCH=main).
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-09-30 01:05 UTC
+- Fired 01:04 UTC 2026-09-30 (10:04 JST). Plan: jp_universe -> seal baselines -> unpriced-hunter-jp in waves of 5 -> edge_score -> japan-note. No orders.
