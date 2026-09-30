@@ -67,3 +67,7 @@
 - 6 in window, sweep confirmed 6, 0 phantom. 6 hunters (all returned with pre_lessons, print_vs_bar_pct, expected_move_pct). Ranking key impact_sum: BSET +1.30, MKC +0.80, PRGS +0.30, AYI 0.00, MU 0.00, ACN -0.30. 0 of 6 clear the 3.0 floor. V2 calibrated (181 obs), written before the first print.
 - Execution: execution.enabled is true, but this session placed NO orders. Step 0b (verify/close --submit) was refused by the session's permission classifier as a real-world transaction. Step 7 was not attempted: 0 names met the benchmark, so the book would have been empty. Close AMC at 10:10 UTC reported no leg due today; this session did not re-verify the account.
 - Budget: 1 sweep + 6 hunters = 7 of 20. Nothing shed.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-09-30 18:33 UTC
+- 18:33 UTC (14:33 ET, inside the Toronto session). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves of 5 -> edge_score -> note. No orders.
