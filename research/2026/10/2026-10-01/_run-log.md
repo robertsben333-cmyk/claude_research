@@ -15,3 +15,7 @@
 - Logged at 2026-09-30 13:43 UTC
 - 6 scheduled (uk 3, fr 2, no 1) / 2 eligible above $200k / 2 hunted; selection.method: all 2 eligible (under cap 20), seed eu-2026-10-01 unused. by_market uk 1 (JHD James Halstead, $0.73m/day), no 1 (SNI Stolt-Nielsen, $1.09m/day). market_concentration: uk 0.50, 2 markets. No market_closed. Off-primary filtered: se 231, pl 326.
 - Registers read: uk (09-29, 420 rows), no (09-29, 96 rows). anchor_covered 1 of 2 (JHD disclosed; SNI register read, no position = truncated zero). session_unresolved 0 of 2 (both bmo, vendor flag). history.basis observed_rns (JHD, 13) and observed_newsweb (SNI, 27) — both observed, no cadence estimates. es/pl 0, de 0. One wave of 2 hunters.
+
+## Stage EU — JHD hunter returned
+- Logged at 2026-09-30 13:45 UTC
+- JHD event_confirmed false: FY26 results delayed from 1 Oct to Wed 14 Oct 2026 by RNS 28 Sep 07:00 (BDO needs more audit time) https://www.investegate.co.uk/announcement/rns/james-halstead--jhd/delay-in-publication-of-fy26-audited-results/9792824. Vendor calendar had not picked it up. UK archive can reach event_occurred: false at resolve. SNI hunter still running.
