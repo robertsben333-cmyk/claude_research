@@ -1,0 +1,73 @@
+{
+  "ticker": "JAGX",
+  "drop_date": "2026-09-30",
+  "window": {"from": "close of 2026-09-30", "to": "close of 2026-10-01"},
+  "expected_move_pct": -2.0,
+  "conviction_note": "The one sized finding is an open, effective ATM (Ladenburg, $9.82m capacity per the 2026-09-24 424B5, about the whole market cap at $4.43 on ~1.95m shares), which is now the only equity channel the company can use: the PRER14A shows CVP debt exchanges blocked under Nasdaq 5635 until the 2026-11-06 vote, and the ELOC floor ($16.50) sits far above spot. That sizes at -1.5; the name's own 52 comparable falls (median -2.88, 30.8% up) and its extreme ATR pull the number to -2.0; I found no repricing mechanism, so leg 1 is 0.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.5,
+  "print_vs_bar_pct": 0.0,
+  "bar": "Own comparable falls from the sealed baseline (n=52, median next close -2.88%, up-rate 30.8%, median |move| 6.42%) plus the ATM capacity in the 424B5 supplement https://www.sec.gov/Archives/edgar/data/1585608/000119312526400348/d155719d424b5.htm; no option chain (no_options_market)",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 30,
+    "confidence_pct": 50,
+    "what_happened": "Nothing was filed on EDGAR on 2026-09-30 and there was no company press release; the fall is the third straight large down day (-21.8% on 09-28, -11.6% on 09-29) after debt-for-equity exchanges with Streeterville roughly quadrupled the share count, from ~520k after the 1-for-15 split effective 09-17 to ~1.95m by 09-25, while a $9.8m ATM supplement went effective on 09-24.",
+    "evidence": [
+      {"claim": "1-for-15 reverse split effective 2026-09-17; ~520,088 shares outstanding after it", "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526396752/d79729d8k.htm", "timestamp": "2026-09-21 16:47 ET"},
+      {"claim": "547,898 shares issued to Streeterville on 2026-09-23 against $5.05m of the 2025 note; ~1,281,867 shares outstanding after it", "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526400087/d161376d8k.htm", "timestamp": "2026-09-24 06:01 ET"},
+      {"claim": "182,091 more shares issued to Streeterville against the 2021 note; 2025 note paid and cancelled", "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526401239/d130901d8k.htm", "timestamp": "2026-09-25 17:36 ET"},
+      {"claim": "481,584 more shares issued to Streeterville on 2026-09-25 for a $3.4m reduction of the 2021 note (~$7.06/share implied), under Section 3(a)(9), with no lock-up disclosed", "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526403356/d187815d8k.htm", "timestamp": "2026-09-28 07:00 ET"},
+      {"claim": "ATM Supplement No. 8: up to $9,824,188 still available through Ladenburg Thalmann; last sale $8.91 on 09-23", "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526400348/d155719d424b5.htm", "timestamp": "2026-09-24 09:22 ET"},
+      {"claim": "No EDGAR filing on 2026-09-30; the latest is the PRER14A of 09-29 16:15", "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001585608&type=&dateb=&owner=include&count=20&output=atom", "timestamp": "2026-09-30"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -40,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "ACG meeting presentation of crofelemer SBS data, 2026-10-09 to 10-14 (outside the window); special meeting 2026-11-06 (outside the window). Nothing dated inside the window.",
+    "what_would_change_my_mind": "An 8-K or 424B3 before the 10-01 open saying the ATM was suspended or terminated, or a filing showing a named buyer or a financing that removes the need to sell stock, would take the supply finding to zero or flip it."
+  },
+  "positioning_check": "Nasdaq/FINRA: 326,132 shares short at the 2026-09-15 settlement (+34.8% vs 08-31), days to cover 1.0. That settlement predates the 1-for-15 split effective 09-17, and whether Nasdaq's figure is split-adjusted is not stated, so it cannot be set against the ~1.95m post-split shares. It publishes about 8 business days after settlement, so nothing about the position carried into this fall is observable. No insider trades in 3 or 12 months (Nasdaq insider-trades). Joshua Mailman 13G/A shows 9.99% (event date 09-12). No options market, so there is no skew. Source: https://api.nasdaq.com/api/quote/JAGX/short-interest?assetclass=stocks",
+  "findings": [
+    {
+      "finding": "An effective ATM through Ladenburg Thalmann with $9.82m of capacity left (Supplement No. 8, filed 2026-09-24), about the entire market cap at $4.43 on ~1.95m shares, can sell into the 10-01 session. It is the only equity channel still open: CVP/Streeterville debt exchanges are blocked under Nasdaq 5635 until the 2026-11-06 vote, and the ELOC with C/M Capital cannot draw below its $16.50 floor until that same vote lowers it.",
+      "leg": "new_information",
+      "mechanism_in_window": "The ATM is effective and continuously drawable; the issuer has used it before ($4.90m in the prior 12 months, and this is its eighth supplement), so sales can happen in the 10-01 session itself. The company cannot fund itself any other way before 11-06, because both other equity channels are shut until the vote.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-01",
+      "reaction_history_on_this_line": "Since the 09-24 supplement went effective, the stock's recorded comparable falls went: 09-24 -20.76% then +9.07%; 09-28 -21.82% then -11.63%. Across September, 6 of 8 comparable falls were followed by another down close (baseline history block).",
+      "source": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526400348/d155719d424b5.htm",
+      "source_date": "2026-09-24",
+      "why_not_priced": "The fall prices the shares already issued. It does not price ATM supply still to come against a thin float. Today's ~$2.7m of turnover is less than a third of the remaining ATM capacity, so the company can go on supplying into any bounce. If the price already held this supply, a heavy-volume day would end with a bounce rather than a third straight large fall. Part of this is surely in the name's -2.88 median already, which is why it is sized below that median.",
+      "independence": "The PRER14A (filed 2026-09-29) confirms the other two channels are shut and that the ELOC floor is $16.50: https://www.sec.gov/Archives/edgar/data/1585608/000119312526407517/d78419dprer14a.htm. It proposes a warrant repricing to $1.00 and a further 1-for-2 to 1-for-150 reverse split, which shows the company plans more issuance."
+    }
+  ],
+  "outside_window": [
+    {"finding": "2026-11-06 special meeting: approve issuance to CVP affiliates beyond the Nasdaq caps (~$2.9m of CVP debt plus 899.82 Series Q preferred still outstanding; press coverage cites ~3.6m shares), reprice investor warrants to $1.00, cut the ELOC floor, and allow a reverse split of 1-for-2 to 1-for-150. Each item reopens a dilution channel that is shut today.", "expected_impact_pct": -10.0, "resolves_by": "2026-11-06", "source": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526407517/d78419dprer14a.htm"},
+    {"finding": "Crofelemer adult short bowel syndrome study accepted for presentation at ACG, October 9-14 2026 (press release 2026-09-29 04:30). A scheduled but minor positive, after the window.", "expected_impact_pct": 1.0, "resolves_by": "2026-10-14", "source": "https://www.stocktitan.net/news/JAGX/"},
+    {"finding": "Q3 earnings: Zacks estimated date 2026-11-13, a cadence prior and not a company announcement.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-13", "source": "https://api.nasdaq.com/api/analyst/JAGX/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "Same-day cause: EDGAR atom feed shows no filing on 2026-09-30 (latest PRER14A 09-29 16:15): https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001585608&type=&dateb=&owner=include&count=20&output=atom",
+    "Company press releases: none on 2026-09-30 (latest 09-29 ACG acceptance): https://www.stocktitan.net/news/JAGX/",
+    "Repricing mechanisms: no analyst note, no insider buying (Nasdaq insider-trades 0/0), no 13D, no wire error found. The fact that exchange supply is blocked until 11-06 was public from the PRER14A at 09-29 16:15, a full session before today's fall, so it is not a new-audience mechanism and is not sized as an overshoot.",
+    "Going-concern and non-reliance full-text probes: no hits in the last 550 days (baseline text_probes)",
+    "Clinical trials: ClinicalTrials.gov returned 0 studies in the baseline",
+    "Nasdaq deficiency: the PRER14A mentions no deficiency letter with a dated deadline; price $4.43 is above $1",
+    "CONTAMINATION: a WebSearch summary asserted a 2026-09-30 high/low/close ($6.10 / $5.00 / $5.32) that contradicts the $4.43 screen price. It is either mislabeled or post-screen; it was excluded and entered no reasoning or number."
+  ],
+  "baseline_tension": "Broadly agrees: the name's own history (median -2.88, 30.8% up), its extreme ATR and a still-open supply channel all point down. Moderate 3.78x volume and the cross-section band prior (+0.27 for -25..-15) cut the other way, so the emitted -2.0 sits between the -1.5 finding and the -2.88 own-history median rather than beyond it.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.5,
+    "expected_move_pct": -2.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-1.5]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 11
+}

@@ -1,0 +1,72 @@
+{
+  "ticker": "EMAT",
+  "drop_date": "2026-09-30",
+  "window": {"from": "close of 2026-09-30", "to": "close of 2026-10-01"},
+  "expected_move_pct": -1.0,
+  "conviction_note": "No same-day catalyst was found. The one dated-to-the-window item is a pending Yorkville resale S-1/A that this issuer took from filing to effectiveness in two days last time, so the risk is on the downside. It is sized at -1.0, which matches the name's own comparable-fall median (-1.85) and the baseline lean (-1.18) and is pulled toward zero by the low-volume signature (1.66x, the bucket that phase 0 has mildly positive).",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "the sealed baseline: own 12 comparable falls median next close -1.85%, median abs 4.63%, ATR14 20.3%, cross-section prior -0.33% (/home/user/claude_research/research/2026/09/2026-09-30/reversal/baselines/EMAT.json); no option chain",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 35,
+    "confidence_pct": 35,
+    "what_happened": "A -14.8% fall that was entirely intraday (no gap) on only 1.66x volume, extending a -21.8% five-day and -50.9% sixty-day slide. No 8-K, press release or news for 2026-09-30 was found. The documented background is a Yorkville variable-price convertible (95% of the lowest daily VWAP over five days, floor $0.76) under which 5.4M shares had been issued by 2026-09-23 and were resellable, and a sector backdrop of rare-earth names losing their scarcity premium on US-China thaw headlines.",
+    "evidence": [
+      {"claim": "On 2026-09-17 EMAT signed a Yorkville SPA for $30.9M of convertible debentures: $22M issued at signing, $2M on registration filing, $6.93M on effectiveness. Conversion is at the lower of $5.02 or 95% of the lowest daily VWAP in the prior 5 trading days. Resale S-1 due by 2026-10-17.", "url": "https://www.sec.gov/Archives/edgar/data/1866226/000121390026101116/ea0305908-8k_evolution.htm", "timestamp": "2026-09-18 06:03 ET"},
+      {"claim": "The S-1/A filed 2026-09-24 contains '5,400,000 shares'. A secondary summary says Yorkville had converted $13.34M of principal into 5.4M shares under the two debentures through 2026-09-23, and that the filing registers up to 7.5M shares for resale.", "url": "https://www.sec.gov/Archives/edgar/data/1866226/000121390026102787/ea0304499-02.htm", "timestamp": "2026-09-24"},
+      {"claim": "Conversion floor price of $0.76. Stock down about 72% YTD and about 10% on the prior session.", "url": "https://www.tikr.com/blog/evolution-metals-30-9-million-convertible-debentures-yorkville", "timestamp": "2026-09 (snippet_only)"},
+      {"claim": "Rare-earth equities sold off on US-China thaw hopes eroding the scarcity premium. This is sector context and the article date was not verified.", "url": "https://finance.yahoo.com/markets/stocks/articles/rare-earth-stocks-tumble-u-164104081.html", "timestamp": "undated (snippet_only)"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -40,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Resale S-1 filing deadline under the Sept Yorkville SPA, 2026-10-17 (outside the window). Inside the window: nothing with a date. The S-1/A (filed 2026-09-24) can be declared effective at any time.",
+    "what_would_change_my_mind": "An EFFECT notice or 424B3 for the 7.5M-share resale posting on 2026-09-30 or 2026-10-01 would make this more negative. A company 8-K showing the Yorkville facility terminated or converted at the fixed price would take it to zero or positive."
+  },
+  "positioning_check": "Nasdaq/FINRA: 1,436,796 shares short at the 2026-09-15 settlement, up 14.2% from 1,257,983 on 08-31 and from 593,183 on 08-14; days to cover 1.38. This lags by about 8 business days, so the position carried into today's fall is not observable. Float is not sourced (market cap ~$2.48bn on 621.8M shares at an earlier price, snippet_only; much of it held by 13D filers). No option chain, so there is no skew. Source: https://api.nasdaq.com/api/quote/EMAT/short-interest?assetclass=stocks",
+  "findings": [
+    {
+      "finding": "The resale S-1/A for up to 7.5M further Yorkville conversion shares (filed 2026-09-24, not yet effective per EDGAR submissions as of the screen) can be declared effective overnight or during 2026-10-01. That would reopen registered supply from a holder converting at 95% of the lowest 5-day VWAP, and would also trigger the $6.93M third debenture.",
+      "leg": "new_information",
+      "mechanism_in_window": "This issuer's previous resale S-1 went from filing (2026-07-08) to EFFECT plus 424B3 (2026-07-10) in two days. The current amendment has been on file for 4 sessions, so effectiveness is a live possibility on any given night, including this one. The registered 5.4M-share capacity was already fully issued by 2026-09-23, which is why a new registration is needed.",
+      "expected_impact_pct": -1.0,
+      "impact_low_pct": -6.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-01",
+      "reaction_history_on_this_line": "Around the July resale effectiveness (EFFECT 2026-07-10) and the later conversions, the stock fell from the teens to $2.48 (60-day run-up -50.9%). Of this name's 12 comparable falls, 8 were followed by a lower next close (median -1.85%).",
+      "source": "https://www.sec.gov/Archives/edgar/data/1866226/000121390026102787/ea0304499-02.htm",
+      "source_date": "2026-09-24",
+      "why_not_priced": "Today's fall came with no filing and ordinary volume, so it reads as ongoing supply rather than a priced registration event. If the market already held effectiveness as certain tonight, the fall would have come on the heavier volume of a known supply date. As it stands, an EFFECT posting is a discrete, visible event the close does not contain.",
+      "independence": "The EDGAR submissions JSON (https://data.sec.gov/submissions/CIK0001866226.json) shows no EFFECT or 424B3 after 2026-09-24, and the July EFFECT/424B3 on 2026-07-10 two days after the S-1 sets the precedent."
+    }
+  ],
+  "outside_window": [
+    {"finding": "Resale S-1 filing deadline for the Sept Yorkville debenture conversion shares under the registration-rights terms. Failure or a later effectiveness lapse can trigger monthly amortization at a 5% premium (trigger iii: registration unavailable 10 consecutive trading days).", "expected_impact_pct": -1.5, "resolves_by": "2026-10-17", "source": "https://www.sec.gov/Archives/edgar/data/1866226/000121390026101116/ea0305908-8k_evolution.htm"},
+    {"finding": "Toxic-structure overhang: $22M Sept debenture plus the remainder of the $100M May facility convert at 95% of the lowest 5-day VWAP down to a $0.76 floor. This is continuous dilution with no dated end.", "expected_impact_pct": -3.0, "resolves_by": "2028-09-17", "source": "https://www.sec.gov/Archives/edgar/data/1866226/000121390026101116/ea0305908-8k_evolution.htm"},
+    {"finding": "Earlier 12b-25 late filings (NT 10-Q 2026-05-15 and 2026-08-14) point to a repeat risk at the Q3 10-Q, due around mid-November.", "expected_impact_pct": -1.0, "resolves_by": "2026-11-16", "source": "https://www.sec.gov/Archives/edgar/data/1866226/000121390026090003/ea0302206-nt10q_evolution.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions JSON: no filing of any form from 2026-09-25 to 2026-09-30, so no drop-day 8-K was found (https://data.sec.gov/submissions/CIK0001866226.json)",
+    "Web search for a 2026-09-30 EMAT press release, news or downgrade: only paid-promotion style pieces (webdisclosure/newsdirect) with no dated drop-day content",
+    "TipRanks 'why shares are sinking' pieces turned out to be dated 2026-05-18 and 2026-07-06, not today",
+    "Listing deficiency: price $2.48, above the $1 bid rule. 'minimum bid price' hits are S-1 risk-factor text, not a notice",
+    "Going concern / non-reliance: no recent hits in the baseline text probes",
+    "No option chain (baseline options.status no_options_market)",
+    "Contamination: a search snippet showed rare-earth peers' moves labelled 2026-09-30 (fool.com). It was not used for anything and is excluded; no EMAT price after the screen instant was seen",
+    "minichart.com.sg Yorkville article: HTTP 403; stocktitan S-1/A summary: content too large to fetch"
+  ],
+  "baseline_tension": "It agrees with the name's own history (8 of 12 lower next close, median -1.85) and with the very high ATR. It cuts against the low 1.66x volume (a bucket phase 0 has mildly positive) and against the most recent comparable fall on 2026-09-21, which bounced +8.45%. So the number is held at -1.0, about the size of the single finding and not larger.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.0,
+    "expected_move_pct": -1.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-1.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
