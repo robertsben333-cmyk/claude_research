@@ -86,3 +86,11 @@
 - Logged at 2026-09-30 19:07 UTC
 - 15 names, 0 pending. lean_vs_free_control_rho -0.589 (lean is not the free control). impact_sum rho +0.115 (perm p 0.68) vs neg_atr14 -0.200, neg_ret_d +0.107, neg_run_up_20d +0.389. One day, nothing established: the hunt does not beat neg_run_up_20d on this day and no ranker is significant. All 10 finding-bearing names were leg 2 only; leg1/overshoot unrankable (no repricing findings). Written to research/2026/09/2026-09-30/resolve-2026-09-28.json. The 2026-09-29 run is not resolvable until today's close prints.
 - Housekeeping: scripts/run_paths.py created empty 02-dossiers/ and 03-panel/ under today's day dir (retired stage folders); removed, never committed.
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-09-30 19:13 UTC
+- Intraday screen 2026-09-30 15:04 EDT (--intraday), 38 passed floors, 15 hunted, 15 rankable, largest sector Health Care 4/15 (27%), SPY +0.33%. Concurrency cap of 8 subagents: 7 hunters ran as a second wave; none shed.
+- Above floor: CDT -4.00 (leg 2, discount convertible + ATM). Leg 1: one finding (NCT -1.00, mechanism_in_window stated). Six zeros.
+- Resolved 2026-09-28 at d1: impact_sum rho +0.115 (p 0.68) vs neg_atr14 -0.200, neg_run_up_20d +0.389; lean_vs_free_control_rho -0.589. Nothing established.
+- Defect (not fixed, per rules): rev_priced_in.py labels spot_basis 'unadjusted close of the drop day' on an intraday seal where spot is the 15:04 screen price. Note: scripts/run_paths.py creates empty 02-dossiers/ 03-panel/ dirs for retired stages.
+- No orders placed; stage has no execution path.
