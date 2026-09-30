@@ -81,3 +81,8 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-09-30 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside the 13:30-16:05 ET window. Plan: intraday screen of 2026-09-30, K=15, seal baselines, one reversal-hunter per name, edge_score.py, resolve 2026-09-29 run, note before 16:00 ET. No orders.
+
+## Stage R — resolve of 2026-09-28 run (d1 = 09-29 close)
+- Logged at 2026-09-30 19:07 UTC
+- 15 names, 0 pending. lean_vs_free_control_rho -0.589 (lean is not the free control). impact_sum rho +0.115 (perm p 0.68) vs neg_atr14 -0.200, neg_ret_d +0.107, neg_run_up_20d +0.389. One day, nothing established: the hunt does not beat neg_run_up_20d on this day and no ranker is significant. All 10 finding-bearing names were leg 2 only; leg1/overshoot unrankable (no repricing findings). Written to research/2026/09/2026-09-30/resolve-2026-09-28.json. The 2026-09-29 run is not resolvable until today's close prints.
+- Housekeeping: scripts/run_paths.py created empty 02-dossiers/ and 03-panel/ under today's day dir (retired stage folders); removed, never committed.
