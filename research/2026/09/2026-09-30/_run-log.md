@@ -48,3 +48,7 @@
 ## Stage J — DEFECT found and fixed: stale JPX short register
 - Logged at 2026-09-30 01:15 UTC
 - jp_positioning.load() returned the newest CACHED register file <= today without ever checking JPX for a newer one, so every seal since 2026-09-19 used the 20260918 file (the '11/12 days stale' in the 09-29 and 09-30 logs was this bug, not JPX). Caught by the 2354 hunter, who read files up to 20260929. Fixed: load() now checks the JPX index for a newer file and uses the cache only as a fallback. Tested: load('2026-09-30') -> 20260929, 598 codes (2354 at 4.17% vs 3.17% sealed). Today's baselines stay SEALED on 20260918; not revised.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-09-30 01:16 UTC
+- Wave 1: 5 of 5 hunters returned. 5 ranked, 0 above floor 3.0: 2685 +1.50, 2354 +1.00, 2975 +1.00, 6083 +1.00, 9369 -0.80. Register sealed on 20260918 (stale by defect, fixed in e336548; baselines not revised). Note: japan/japan-note.md. No orders.
