@@ -44,3 +44,7 @@
 ## Stage J — resolved 2026-09-28
 - Logged at 2026-09-30 01:06 UTC
 - jp_resolve on the 09-28 run: 8227 impact_sum -0.5, realised +2.76%, event confirmed. 1 row, no statistics.
+
+## Stage J — DEFECT found and fixed: stale JPX short register
+- Logged at 2026-09-30 01:15 UTC
+- jp_positioning.load() returned the newest CACHED register file <= today without ever checking JPX for a newer one, so every seal since 2026-09-19 used the 20260918 file (the '11/12 days stale' in the 09-29 and 09-30 logs was this bug, not JPX). Caught by the 2354 hunter, who read files up to 20260929. Fixed: load() now checks the JPX index for a newer file and uses the cache only as a fallback. Tested: load('2026-09-30') -> 20260929, 598 codes (2354 at 4.17% vs 3.17% sealed). Today's baselines stay SEALED on 20260918; not revised.
