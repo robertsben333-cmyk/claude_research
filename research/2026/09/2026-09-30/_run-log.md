@@ -71,3 +71,9 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-09-30 18:33 UTC
 - 18:33 UTC (14:33 ET, inside the Toronto session). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves of 5 -> edge_score -> note. No orders.
+
+## Stage CA — Canada researcher — empty universe
+- Logged at 2026-09-30 18:34 UTC
+- Nobody eligible was scheduled; the TSX was open. 2,514 scanner rows, 4 scheduled for 2026-09-30 (LIO, CCDS, SR, WEST; calendar split confirmed 0 / agreed 0 / wsh_only 0 / vendor_only 4 / disputed 0, moved_off_target_by_wsh none). All 4 fell below the $200k/day turnover floor (largest LIO $53,975), so 0 eligible and 0 hunted. 3 of the 4 are filing_only, but the turnover floor removed them first. No baselines sealed, no hunters spawned, no scoring, so no register snapshot today and no anchor-arm split.
+- DEFECT FOUND AND FIXED: the first ca_universe run (18:33 UTC) wrote market_closed='National Day for Truth and Reconciliation'. The TSX does NOT observe 30 September; TMX bars show RY trading 885,397 shares on 2026-09-30 by the time of the run. Removed 2026-09-30 and 2027-09-30 from TSX_HOLIDAYS in researcher_canada/scripts/ca_market.py. ca_smoke.py passes. Without the fix, every future 30 September would have been published as an exchange closure.
+- FX: Yahoo did not answer, so the floor used the fallback constant CAD/USD 0.71. It cannot have changed the outcome: the largest name is 3.7x under the floor.
