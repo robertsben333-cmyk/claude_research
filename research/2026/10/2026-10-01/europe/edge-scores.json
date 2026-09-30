@@ -1,0 +1,167 @@
+{
+ "generated_utc": "2026-09-30T13:51:11+00:00",
+ "run": "research/2026/10/2026-10-01/europe",
+ "legacy_rescore": false,
+ "names": 2,
+ "rankable": 1,
+ "ranking_key": "impact_sum",
+ "conviction_floor": 3.0,
+ "lessons_control": {
+  "names_with_pre_lessons": 2,
+  "names_moved_by_lessons": 1,
+  "note": "pre_lessons is each hunter's own sum before it read researcher_us/LESSONS.md. edge_resolve.py ranks it against the same realised move as the key, which is the only thing that can tell the guidance file apart from a habit."
+ },
+ "language_control": {
+  "names_with_pre_local": 0,
+  "names_moved_by_local_pass": 0,
+  "note": "RETIRED 2026-09-22: the European and Canadian hunters now run one bilingual pass and emit no freeze, so this is 0/0 on every run sealed after that date. On earlier runs pre_local is each hunter's own sum after the ENGLISH pass and before the local pass; eu_resolve.py ranks it against the same realised move as the key, per market, and does not pool the UK (where the second pass varied source locality) with Germany and France (where it varied language)."
+ },
+ "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added up, in points of spot. No call and no threshold -- cut wherever you like afterwards, which is what keeps the ranking question answerable at every k. `conviction` (abs of the key) is where the direction skill lives: over all events the sign is a coin flip, above the median conviction it is 74%. conviction_floor is a floor on emphasis in the note, never a filter on this file. Everything under `diagnostics` was measured as neutral or subtractive and decides nothing -- see researcher_us/EDGE_ANALYSIS.md.",
+ "ranking": [
+  {
+   "ticker": "SNI",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -1.0,
+   "conviction": 1.0,
+   "priced_lean_pct": -0.685,
+   "hunter_view": {
+    "expected_move_pct": -1.0,
+    "print_vs_bar_pct": 1.5,
+    "bar": "Company statement: Q3 2026 Stolt Tankers TCE around the ~$24,500/day May level, 'improved performance in the third quarter' against Q2 EBITDA of $177.3m (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=677877 ; https://norwaystocks.substack.com/p/stolt-nielsen-q2-2026-key-takeaways). No consensus EPS/EBITDA could be sourced (Yahoo consensus empty, MarketScreener blocked), so the numeric bar is the company's own directional statement and sizes are held small.",
+    "positioning_check": "Finanstilsynet SSR read 2026-09-29: no disclosed net short position at or above 0.5% (short_ratio_pct 0.0, last position change 2025-07-04, change over 10 days 0.0). That zero is the truncation floor, not a measurement (anchor_covered false), so there is no positioning anchor and priced_lean_pct (-0.685) is just the run-up. https://ssr.finanstilsynet.no/api/v2/instruments",
+    "baseline_tension": "The finding agrees in sign with the priced lean (-0.685, which is the run-up with no short anchor) and argues against the +13.7% 20d / +22.9% 60d run-up continuing through the print. The run-up is sector-wide rather than SNI-specific, which is why p_up sits at 42 and not lower."
+   },
+   "flags": [
+    "hunter expects the number and the stock to go opposite ways (print +1.5% vs bar, stock -1.0%): read conviction_note",
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "SNI-h1",
+     "key": "SNI-h1#0",
+     "finding": "The Q3 print's Q4 tanker outlook is likely flat to softer. ICIS has chemical spot rates ex-US Gulf weakening from mid-June and flat through late September, and Odfjell guided its Jul-Sep result lower on 'strong competition and reduced global volumes'. SNI goes in +13.7% over 20 days (Odfjell +~18% since 1 Sep) on a sector re-rating, and it fell on both prior Q3 prints when management flagged softer Q4 rates.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=680427",
+     "source_date": "2026-08-20T18:00:25Z",
+     "expected_impact_pct": -1.0,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-01",
+     "reaction_history_on_this_line": "Q3 2024 (2024-10-02, E24: 'Stolt-Nielsen venter lavere skipsrater i fjerde kvartal') -6.83%; Q3 2025 (2025-10-02, E24: 'Resultatfall for Stolt-Nielsen') -4.93%; Q4 2024 (2025-01-30, 'Stolt-Nielsen venter lavere skipsrater', better than expected) -4.79%; guidance withdrawal 2026-04-09 -4.17%. Negative on 7 of the last 10 results days.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.35,
+     "_legacy_residual_pct": -0.35
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Avenir LNG deconsolidation (50% sold to NYK, completed 2026-09-01) cuts debt and capex and may book a gain or loss, but it falls in Q4 (Sep-Nov) and in the Q4 release, not this print",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-01-28",
+     "source": "https://www.nyk.com/english/news/2026/20260901_02.html"
+    },
+    {
+     "finding": "Interim dividend: last year declared by separate notice on 2025-11-06, so it is expected in November and not in this release",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-15",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=SNI&fromDate=2025-09-01&toDate=2026-06-01"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -2.9,
+    "baseline_quality": 0.612,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.5,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 27,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "api3.oslo.oslobors.no"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.9,
+    "lessons_delta": -0.1,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "Dropped the +0.3 reported_quarter finding (Q3 TCE at or above $24.5k): it lands inside the bar the company itself stated, and the lesson prices findings on already-told numbers at 0 (reported_quarter went 4 of 14 on sign).",
+     "Raised abs_move_pct from 5.5 to 6.5: the numbers are new and a guidance reinstatement is possible, so I sized from the measured European base (7% new numbers, 9% guide change) rather than capping at SNI's own results-day median of about 4.9%.",
+     "Kept p_up at 42 and put the reaction history (negative on 7 of 10 results days) into direction, not size; the guidance finding went from -1.2 to -1.0 so the sum matches (2*0.42-1)*6.5 = -1.04.",
+     "Trimmed print_vs_bar from +2.0 to +1.5, since the bar is the company's own directional statement with no sourced consensus behind it."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 1
+  },
+  {
+   "ticker": "JHD",
+   "rankable": false,
+   "not_rankable_because": "hunter found no event on this date",
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": 0.257,
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "bar": "Company's own pre-release of 22 Jul 2026: FY26 sales marginally below FY25, profit about 10-15% lower (https://www.investegate.co.uk/announcement/rns/james-halstead--jhd/trading-update/9680620). Irrelevant to this window because no results are released in it.",
+    "positioning_check": "FCA aggregated register (as of 2026-09-29, position dated 2026-09-11) shows a 0.2% net short, unchanged from the previous reading (0.0 pts), so it is neither building nor covering. The baseline flags it anchor_covered/disclosed, though 0.2% is below the 0.5% per-holder threshold. Either way it is small and not a factor. https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "baseline_tension": "Nothing cuts either way. The small positive lean (+0.26) and the flat run-up (-2.7% over 20 days, +2.8% over 5) face a session with no event, so there is nothing to beat."
+   },
+   "flags": [
+    "1 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [],
+   "outside_window": [
+    {
+     "finding": "FY26 audited results now due Wed 14 Oct 2026 after BDO asked for more audit time. Sales and profit are already pre-released (profit -10-15%), so what is new on that day is the dividend, the FY27 outlook and a clean audit. The delay is a mild governance flag, but the company says it has no material audit issues and the stock rose 0.95% on the delay day. There is no signed view.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-10-14",
+     "source": "https://www.investegate.co.uk/announcement/rns/james-halstead--jhd/delay-in-publication-of-fy26-audited-results/9792824"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.688,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.5,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 13,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": null
+  }
+ ]
+}

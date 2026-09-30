@@ -19,3 +19,8 @@
 ## Stage EU — JHD hunter returned
 - Logged at 2026-09-30 13:45 UTC
 - JHD event_confirmed false: FY26 results delayed from 1 Oct to Wed 14 Oct 2026 by RNS 28 Sep 07:00 (BDO needs more audit time) https://www.investegate.co.uk/announcement/rns/james-halstead--jhd/delay-in-publication-of-fy26-audited-results/9792824. Vendor calendar had not picked it up. UK archive can reach event_occurred: false at resolve. SNI hunter still running.
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-09-30 13:51 UTC
+- 2 hunted / 1 rankable / 0 above floor 3.0. SNI -1.00 (Q4 tanker-rate guidance line; abs 6.5, p_up 42). JHD not ranked: results delayed to 14 Oct (RNS 28 Sep), kill reachable automatically via UK archive at resolve.
+- Note: research/2026/10/2026-10-01/europe/europe-note.md. No orders. Published to main (EARNINGS_DATA_BRANCH=main).
