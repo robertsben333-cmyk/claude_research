@@ -10,7 +10,7 @@ by side so nobody has to open a file to see them:
   impact_scaled  version 3. (2 * p_up / 100 - 1) * abs_move_pct, the hunter's second,
                  separate measurement of the whole print. From edge-scores-scaled.json,
                  its own file. Not ranked on, not traded, never pooled with the key.
-  V2             US only (stage E and stage E-S): the grounded score from
+  V2             US only (stages E, E-S and E-P): the grounded score from
                  edge-scores-grounded.json, at its primary horizon. Shown as
                  "not run" when the file is absent, never left out silently.
 
@@ -25,7 +25,7 @@ import json
 import sys
 from pathlib import Path
 
-US_DIRS = {"edge", "edge-sonnet"}
+US_DIRS = {"edge", "edge-sonnet", "edge-panel"}
 
 
 def load(p):
