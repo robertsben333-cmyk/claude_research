@@ -22,15 +22,19 @@ key = {r['id']: r for r in json.load(open(f'{D}/key.json'))}
 pid = {r.get('pid', r['id']): r['id'] for r in key.values()}
 # file suffix -> arm; the order is the chart's fixed series order
 ARMS = {'opus5': 'Opus 5', 'opus': 'Opus 5.5', 'sonnet': 'Sonnet 5.5', 'fable': 'Fable 5.1'}
-arms = {k: {} for k in ARMS}
+arms = {k: {} for k in ARMS}; pups = {k: {} for k in ARMS}
 for f in glob.glob(f'{D}/out-*-*.json'):
     m = os.path.basename(f)[:-5].split('-')[-1]
     for o in json.load(open(f)):
         if o['id'] in pid:
             arms[m][pid[o['id']]] = float(o.get('impact_sum') or 0)
+            pups[m][pid[o['id']]] = float(o['p_up']) - 50
 arms = {k: v for k, v in arms.items() if v}
 # score only names every present re-judge covered, so all arms share one sample
 ids = sorted(set.intersection(*(set(v) for v in arms.values())))
+# second key: direction only, p_up - 50 in points, without the expected size of the move.
+# The live hunts before the shared core carry no p_up, so this key has no live arm.
+pups = {k: {i: pups[k][i] for i in ids} for k in arms}
 arms = {'live': {i: float(key[i]['live'] or 0) for i in ids}, **{k: {i: v[i] for i in ids} for k, v in arms.items()}}
 LABEL = {'live': 'Live hunt', **ARMS}
 
@@ -119,37 +123,46 @@ G = {'all': ids, 'us': [i for i in ids if key[i]['region'] == 'us'],
 # share of the live hunt's nonzero tradable US names that 3.0 selected on its Opus 5 days
 e5 = G['us_opus5_era']; nz = [i for i in e5 if arms['live'][i] != 0 and tradable(i)]
 SHARE = sum(abs(arms['live'][i]) >= 3 for i in nz)/len(nz)
-out = {'n': len(ids), 'arms': {a: LABEL[a] for a in arms}, 'floor_share': SHARE, 'groups': {}}
-for g, sub in G.items():
-    if not sub: continue
-    mv = {i: key[i]['move'] for i in sub}
-    tr = [i for i in sub if tradable(i)]
-    gg = out['groups'][g] = {'short_all': st.mean([-mv[i] for i in tr]) if tr else None}
-    for a, sc in arms.items():
-        r, p = rho(sc, sub)
-        fw = familywise(sc, sub) if g in ('all', 'us', 'ex_us', 'all_clean', 'us_clean') else (None, None)
-        cut = cut_at_share(sc, sub, SHARE)
-        loo, chosen = loo_floor(sc, sub) if g in ('all', 'us', 'ex_us', 'all_clean', 'us_clean') else ({}, [])
-        gg[a] = {'n': len(sub), 'zeros': sum(1 for i in sub if sc[i] == 0),
-            'median_abs': st.median([abs(sc[i]) for i in sub]), 'rho': r, 'p': p,
-            'best_t': fw[0], 'familywise_p': fw[1],
-            'floor_same_share': cut, 'book_same_share': summ(rets(sc, sub, cut, mv)) if cut else None,
-            'loo': loo, 'loo_thresholds': sorted(set(chosen)),
-            'curve': [dict(thr=t, **summ(rets(sc, sub, t, mv))) for t in fine],
-            'pct_curve': [dict(pct=q, **summ(rets(sc, sub, cut_at_share(sc, sub, (100-q)/100) or 1e9, mv)))
-                          for q in pcts]}
+def run(arms):
+    res = {}
+    for g, sub in G.items():
+        if not sub: continue
+        mv = {i: key[i]['move'] for i in sub}
+        tr = [i for i in sub if tradable(i)]
+        gg = res[g] = {'short_all': st.mean([-mv[i] for i in tr]) if tr else None}
+        for a, sc in arms.items():
+            r, p = rho(sc, sub)
+            fw = familywise(sc, sub) if g in ('all', 'us', 'ex_us', 'all_clean', 'us_clean') else (None, None)
+            cut = cut_at_share(sc, sub, SHARE)
+            loo, chosen = loo_floor(sc, sub) if g in ('all', 'us', 'ex_us', 'all_clean', 'us_clean') else ({}, [])
+            gg[a] = {'n': len(sub), 'zeros': sum(1 for i in sub if sc[i] == 0),
+                'median_abs': st.median([abs(sc[i]) for i in sub]), 'rho': r, 'p': p,
+                'best_t': fw[0], 'familywise_p': fw[1],
+                'floor_same_share': cut, 'book_same_share': summ(rets(sc, sub, cut, mv)) if cut else None,
+                'loo': loo, 'loo_thresholds': sorted(set(chosen)),
+                'curve': [dict(thr=t, **summ(rets(sc, sub, t, mv))) for t in fine],
+                'pct_curve': [dict(pct=q, **summ(rets(sc, sub, cut_at_share(sc, sub, (100-q)/100) or 1e9, mv)))
+                              for q in pcts]}
+    return res
+impact_groups = run(arms)
+thresholds = list(range(0, 25)); fine = list(range(0, 36))   # points of p_up - 50
+pup_groups = run(pups)
+out = {'n': len(ids), 'arms': {a: LABEL[a] for a in arms}, 'floor_share': SHARE,
+       'groups': impact_groups, 'keys': {'impact': impact_groups, 'pup': pup_groups}}
 json.dump(out, open(f'{D}/scores.json', 'w'), indent=1)
 f2 = lambda x: '-' if x is None else f'{x:+.2f}'
 print(f"n={len(ids)}  3.0 selected {SHARE:.0%} of live's nonzero tradable US names on its Opus 5 days")
-for g in out['groups']:
-    gg = out['groups'][g]
+for kname, groups, A in (('impact_sum', impact_groups, arms), ('p_up - 50', pup_groups, pups)):
+  print(f'######## key: {kname}')
+  for g in groups:
+    gg = groups[g]
     print(f"== {g}  n={len(G[g])}  short all {f2(gg['short_all'])}%")
-    for a in arms:
-        s = gg[a]; c = {round(x['thr'], 1): x for x in s['curve']}
+    for a in A:
+        s = gg[a]; c = {round(x['thr'], 1): x for x in s['curve']}; T = 3.0 if kname == 'impact_sum' else 10
         fm = lambda t: f"{c[t]['n']:3d} {c[t]['hits']:3d}/{c[t]['n']:<3d} {c[t]['mean']:+6.2f}%" if c[t]['n'] else "  0"
         rr = f"{s['rho']:+.3f} (p {s['p']:.2f})" if s['rho'] is not None else '-'
         b = s['book_same_share'] or {}
-        print(f"  {a:6s} zeros {s['zeros']:3d} med|x| {s['median_abs']:.2f} rho {rr} | >=0: {fm(0)} | >=3: {fm(3.0)}")
+        print(f"  {a:6s} zeros {s['zeros']:3d} med|x| {s['median_abs']:.2f} rho {rr} | >=0: {fm(0)} | >={T}: {fm(T)}")
         extra = f"         floor at same share {f2(s['floor_same_share'])} -> {b.get('n',0)} names {f2(b.get('mean'))}%"
         if s['familywise_p'] is not None:
             l = s['loo']

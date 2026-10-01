@@ -67,6 +67,25 @@ on, every arm is negative at every cut with enough names. The anonymised names r
 of all (live rho +0.42), which is what recognition would look like, so they are reported
 apart and the clean rows above leave them out.
 
+## Without the size: ranking on p_up - 50
+
+`scores.json` carries a second key, `keys.pup`: each re-judge ranked on p_up - 50 alone,
+in points, without multiplying by abs_move_pct. The live hunts before the shared core
+carry no p_up, so this key has no live arm. The chart switches between the two keys.
+
+| US, no anonymised (128) | rho impact / p_up | fw p impact / p_up | best t impact / p_up |
+|---|---|---|---|
+| Opus 5 | -0.06 / -0.09 | 0.01 / 0.24 | 5.08 / 2.18 |
+| Opus 5.5 | -0.08 / -0.06 | 0.19 / 0.12 | 1.79 / 2.28 |
+| Sonnet 5.5 | +0.01 / -0.02 | 0.00 / 0.01 | 6.30 / 3.98 |
+| Fable 5.1 | -0.03 / -0.03 | 0.19 / 0.24 | 1.88 / 1.93 |
+
+Dropping the size costs the US tail for the two re-judges that had one: Opus 5 loses it,
+Sonnet 5.5 keeps a weaker one. In Europe direction alone ranks slightly better
+(rho +0.29 to +0.37 against +0.27 to +0.34). So the expected size carries information
+in the US, mostly by putting the names that move most at the top, and adds little
+elsewhere.
+
 ## Caveats
 
 Gross of every cost. Five arms and several groups were looked at, so the best family-wise
