@@ -104,9 +104,9 @@ const R=__DATA__;
 const ARMS=[["live","Live hunt"],["opus5","Opus 5"],["opus","Opus 5.5"],["sonnet","Sonnet 5.5"],["fable","Fable 5.1"]];
 const IDX={impact:{live:7,opus5:8,opus:9,sonnet:10,fable:11},pup:{opus5:12,opus:13,sonnet:14,fable:15}};
 const col=a=>`var(--s${ARMS.findIndex(x=>x[0]==a)})`,LAB=Object.fromEntries(ARMS);
-const st={arm:"live",key:"impact",mkt:"us",sel:"abs",thr:3,pct:30,cap:50,wt:"eq",start:10000,clean:true};
-try{Object.assign(st,JSON.parse(localStorage.getItem("pf1")||"{}"))}catch(e){}
-const save=()=>{try{localStorage.setItem("pf1",JSON.stringify(st))}catch(e){}};
+const st={arm:"live",key:"impact",mkt:"us",sel:"abs",thr:3,pct:30,cap:50,wt:"eq",start:10000,clean:false};
+try{Object.assign(st,JSON.parse(localStorage.getItem("pf2")||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem("pf2",JSON.stringify(st))}catch(e){}};
 const usd=x=>"$"+Math.round(x).toLocaleString("nl-NL");
 const pc=(x,d=1)=>x==null||!isFinite(x)?"–":(x>0?"+":"")+x.toFixed(d).replace(".",",")+"%";
 const inMkt=r=>st.mkt=="all"||(st.mkt=="apac"?(r[0]=="japan"||r[0]=="australia"):r[0]==st.mkt);

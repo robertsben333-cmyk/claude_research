@@ -92,3 +92,13 @@ Gross of every cost. Five arms and several groups were looked at, so the best fa
 p here is itself a selection. The tail results rest on 10 to 30 trades, several of them
 under $1m of daily turnover. The re-judges see only what the live hunter found; they test
 judgement, not search.
+
+## Which sample is the headline (operator's decision, 2026-10-01)
+
+The full 231 names, anonymised ones included, are the headline sample, and the portfolio
+calculator defaults to it. Leaving them out would drop the most informative cases,
+the big convictions and trades this repo wrote about. The leakage check found no
+sign that the judges used CLAUDE.md's quoted outcomes: on the anonymised names the
+re-judges get the sign right 51-55% of the time against 50% for the live hunt, and
+change the live sign on one or two names each. What the group does carry is selection:
+larger live scores (median 3.00 against 1.10) and larger moves (6.5% against 4.6%).
