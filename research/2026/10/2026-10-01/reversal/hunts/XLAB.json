@@ -1,0 +1,62 @@
+{
+  "ticker": "XLAB",
+  "drop_date": "2026-10-01",
+  "window": {"from": "close of 2026-10-01", "to": "close of 2026-10-02"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "No sourced fact lands inside the window and no repricing mechanism exists. The fall is another leg of a de-SPAC slide (-82% over 60 sessions) on 1.78x volume with no news found today. The name's own 12 comparable falls lean down (median -7.1%, 25% up), but under the core that history is a scale, not a finding. So p_up is 50 and the signed number is 0.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced: no consensus, no option chain (baseline options.status no_options_market). Sized against the baseline's own reaction history (median |next close| 10.18%, ATR14 25.5%)",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 10,
+    "confidence_pct": 35,
+    "what_happened": "A fall of 11.35% at the 15:04 ET screen, all of it intraday (no gap), on 1.78x normal volume. It is the third straight daily fall of 10% or more after the de-SPAC listing on 2026-08-28. No same-day release, 8-K or news item was found. The last company documents are the FY2026 results and 10-K on 2026-09-28 and a CFO change 8-K on 2026-09-30.",
+    "evidence": [
+      {"claim": "FY2026 (June YE) revenue was $14.8m, up 111%. Net loss widened to $12.2m. Cash was $2.7m at 6/30, plus about $11.8m of net proceeds from the 8/27 business combination.", "url": "https://www.sec.gov/Archives/edgar/data/2109869/000182912626010494/exascalelabs_ex99-1.htm", "timestamp": "2026-09-28"},
+      {"claim": "The interim CFO stepped down on 9/25 with no disagreement. Jake Carney was appointed CFO at $6,000 per month.", "url": "https://www.sec.gov/Archives/edgar/data/2109869/000182912626010623/exascalelabs_8k.htm", "timestamp": "2026-09-30"},
+      {"claim": "The business combination closed on 2026-08-27. 26,865,211 SPAC shares were redeemed. There are 33.69m Class A shares and 30.65m Class B shares. The lock-up runs six months after closing.", "url": "https://www.sec.gov/Archives/edgar/data/2109869/000182912626009632/exascalelabs_8k.htm", "timestamp": "2026-09-02"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "none found inside the window. The six-month lock-up after the 2026-08-27 closing expires around 2027-02-27, which is outside the window.",
+    "what_would_change_my_mind": "Signs of an overnight supply event: a resale S-1, an equity-line or SEPA 8-K, or a Nasdaq Global Market deficiency 8-K filed after the close on 2026-10-01."
+  },
+  "positioning_check": "Nasdaq/FINRA short interest was 73,108 shares at the 2026-09-15 settlement (1.0 days to cover), down 85.9% from 518,598 at 08/31. It is about eight business days lagged, so the position carried into today is unobservable. There are 33.69m Class A shares, most locked up. 10-K non-affiliate market value was $87.6m on 2026-09-02. There is no options market, so no skew. Source: https://api.nasdaq.com/api/quote/XLAB/short-interest?assetclass=stocks",
+  "findings": [],
+  "outside_window": [
+    {"finding": "The six-month lock-up on Exascale stockholders and SAFE holders runs from the 2026-08-27 closing. It is a dated supply release about 2027-02-27.", "expected_impact_pct": -3.0, "resolves_by": "2027-02-27", "source": "https://www.sec.gov/Archives/edgar/data/2109869/000182912626009632/exascalelabs_8k.htm"},
+    {"finding": "Cash runway: $2.7m at 6/30 plus about $11.8m of net combination proceeds, against a $12.2m FY26 net loss (including $7.4m of non-cash SAFE fair-value charges) and stated capacity expansion on three continents. A later financing is plausible but nothing is filed or dated.", "expected_impact_pct": -2.0, "resolves_by": "2027-01-01", "source": "https://www.sec.gov/Archives/edgar/data/2109869/000182912626010494/exascalelabs_ex99-1.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions (baseline forward block): no filing dated 2026-10-01. The latest is the 2026-09-30 8-K Item 5.02 (CFO change), which is not adverse.",
+    "efts full-text search, CIK 2109869, 2026-09-25 to 2026-10-01: only the 10-K, the 8-K/A and two 8-Ks. No new S-1, S-3, 424B or 8-K after 09-30.",
+    "efts full-text search for 'standby equity' / 'equity line' / 'purchase agreement' since 2026-08-01: hits only in the 2026-09-02 8-K exhibits 10.1/10.2, which are the lock-up agreements. No equity line found.",
+    "Baseline text probes: ATM language only in a 2026-06 S-4 exhibit (pre-merger). No minimum-bid-price language. No non-reliance language.",
+    "10-K exhibit 10.7 (the covenant hit) is the CFO employment agreement, not a debt covenant.",
+    "WebSearch for XLAB news / share fall: no 2026-10-01 news. A Benzinga movers piece dated 2026-09 covers an earlier session.",
+    "Insider trades: none in 3 or 12 months (Nasdaq insider API in the baseline).",
+    "Options: no options market.",
+    "Nasdaq Listing Center is unreachable from here (403). No deficiency 8-K exists, so no listing finding."
+  ],
+  "abs_move_pct": 12.0,
+  "p_up": 50,
+  "rejected_candidates": [
+    {"candidate": "The name's own comparable falls (12 events, median next close -7.1%, 25% up) as a continuation finding", "source": "/home/user/claude_research/research/2026/10/2026-10-01/reversal/baselines/XLAB.json", "reason": "no_source", "detail": "This is the baseline's reaction function, not a sourced fact about something landing in the window. It sets abs_move_pct and is already in priced_lean_pct."},
+    {"candidate": "Six-month lock-up expiry", "source": "https://www.sec.gov/Archives/edgar/data/2109869/000182912626009632/exascalelabs_8k.htm", "reason": "outside_window", "detail": "It expires about 2027-02-27 and is filed in outside_window."},
+    {"candidate": "CFO change (Item 5.02)", "source": "https://www.sec.gov/Archives/edgar/data/2109869/000182912626010623/exascalelabs_8k.htm", "reason": "outside_window", "detail": "Filed 2026-09-30 and already public before the drop day. The departure was not due to any disagreement. Nothing about it resolves inside the window."}
+  ],
+  "baseline_tension": "The research is a non-result and the baseline cuts both ways. Ordinary volume (<2x) and the cross-section prior lean up. The name's own history of falls, its 25.5% ATR and its 82% 60-day slide lean down. With nothing sourced inside the window, the signed number stays 0.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed (researcher_reversal/LESSONS.md is deliberately empty)"],
+  "sources_used": 9
+}
