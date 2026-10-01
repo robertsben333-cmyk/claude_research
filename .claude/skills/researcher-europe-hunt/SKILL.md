@@ -225,6 +225,19 @@ python3 researcher_us/scripts/edge_score.py --run <RUN>
 The ranking key is whatever `edge-scores.json` reports in `ranking_key`. Read it; do not
 carry a remembered contract into the run.
 
+**4b. Report both keys in the chat reply.** `edge_score.py` also writes
+`edge-scores-scaled.json`, ranked on `impact_scaled` = (2 × `p_up` / 100 − 1) ×
+`abs_move_pct`: the hunter's second, separate measurement (version 3 of the sizing, the
+hunter core step 3). `impact_sum` stays the key (version 2: each finding sized on its own,
+added up). Print both side by side:
+
+```bash
+python3 scripts/score_report.py --run <RUN> --label "Stage EU"
+```
+
+and paste its output verbatim at the top of your closing chat reply. Never rank on,
+pool or quote `impact_scaled` as the key, and do not apply the 3.0 floor to it.
+
 **5. Note.** Write `<RUN>/europe-note.md`, answer first: the ranked table with the market
 on every row, then the finding and URL driving the top and bottom name, then the names
 that could not be ranked and why.
