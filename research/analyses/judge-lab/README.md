@@ -153,3 +153,55 @@ fewer cases for the early days.
 adding arms here. (2) If more arms are tested, fold the re-judge prompt into this
 contract (a certainty field) so they compete on one footing. (3) Open the test set once,
 for at most two arms.
+
+## Round 2: five Sonnet runs, and do the surest names move most? (2026-10-01)
+
+**Five Sonnet 5.5 re-judges** (`sonnet-x5/`, `sonnet_x5.py`) of the same 126 Opus 5-hunted
+development names, same brief as the four-model re-judge. Top 15% by score, net:
+
+| arm | all | US |
+|---|---|---|
+| live | 11/17 +2.7% | 8/14 +2.3% |
+| the earlier Sonnet run | 14/17 +8.6% | 11/14 +8.5% |
+| five new Sonnet runs, each | +1.1% to +6.4% (mean +4.0%) | −0.7% to +5.7% (mean +3.1%) |
+| mean of the five | 12/17 +5.2% | 9/14 +4.1% |
+| unanimous five | 11/17 +4.8% | 9/14 +5.3% |
+| unanimous four models | 13/17 +7.8% | 10/14 +7.3% |
+
+The earlier Sonnet run was a lucky draw. Two runs agree on the sign of 94% of names and
+still pick different tops, because they differ in size. Averaging runs of one model does
+not beat the four-model ensemble; repetition is not diversity.
+
+**Magnitude, sign ignored** (`magnitude.py`, on the operator's question: are the names a
+judge is surest about the ones that really move?). Ranked on |score|, top 15% within
+bucket, Opus 5-hunted development names (126):
+
+| arm | mean \|move\| of top 15% (all names 8.1%) | lift | p | share among the real top-15% movers | \|move\| / expected, top vs all |
+|---|---|---|---|---|---|
+| control: option-implied move | 12.2% | 1.51 | 0.00 | 24% | 0.63 |
+| control: 20-day volatility | 9.5% | 1.17 | 0.31 | 18% | 1.28 |
+| **live \|impact_sum\|** | **7.0%** | **0.86** | 0.83 | **12%** | 0.73 |
+| single re-judges | 10.2–12.2% | 1.26–1.51 | | 29–35% | 1.15–1.35 |
+| **four models, median \|x\|** | **12.9%** | **1.59** | 0.01 | **41%** | 1.31 |
+| five Sonnet runs, mean \|x\| | 11.0% | 1.35 | 0.07 | 29% | 1.07 |
+| all nine judges, mean \|x\| | 11.8% | 1.45 | 0.03 | 35% | 1.17 |
+
+What it says:
+
+- **The live hunter's surest names move LESS than the average name** (lift 0.86, 12% of
+  its top are real big movers against 15% for a random pick). Its conviction carries no
+  size information.
+- **Re-judging the same evidence restores it**, and aggregating **different models**
+  sharpens it most: the four-model median picks names that move 1.6x the average and
+  catches 41% of the real big movers, against 24% for the option-implied move.
+- **Repeating one model dilutes it**: five Sonnet runs average to 1.35, and adding them to
+  the four models (nine judges) falls to 1.45. Diversity, not count.
+- **It is mostly not beyond the market across the whole ranking**: the within-day rank
+  correlation of |score| with |move| / expected is ~0 for every arm. The edge sits at the
+  top, where the ensemble's picks move ~1.3x what was priced, which the 20-day volatility
+  control also reaches (1.28). So read it as: the ensemble finds the names that will
+  move, partly by recognising volatile names and partly by more.
+
+Sign and size want different aggregators. Unanimous sign, sized by the **weakest** of the
+four: 13/17 +7.8%, big-mover lift 1.40. Unanimous sign, sized by the **median**: 12/17
++5.8%, lift 1.60. The weakest makes the direction safer; the median finds bigger moves.
