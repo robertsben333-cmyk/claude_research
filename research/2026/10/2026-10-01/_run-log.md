@@ -36,3 +36,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-01 01:16 UTC
 - 4/4 hunted, 4/4 rankable, 0 above floor. Ranking: 7545 +1.6, 7447 -1.0, 8276 -1.6, 3549 -2.0, the exact reverse of -run_up_20d. 8276 may release intraday at 13:30 JST (prints 2024-10 to 2026-04 did), which would put part of the reaction outside the window. No orders: research only.
+
+## Close AMC (stage E exit Routine) 10:10 UTC
+- Logged at 2026-10-01 10:16 UTC
+- Guard exit 0 (amc open as day). verify: 14 legs, none UNFILLED, 0 held. close --submit: no new exit legs due today (none sent), no refusals. Account reachable.
