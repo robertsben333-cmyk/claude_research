@@ -95,3 +95,40 @@ sure it is, or let one model dominate.
   ensemble's advantage is **robustness across regions**, which is a structural argument
   the literature supports, more than its level, which is not established.
 - Realistic expectations from the literature are ~60% direction, not 80%.
+
+## 6. Certainty and agreement as weights, not gates (2026-10-01, `panel_weights.py`)
+
+The operator's design: do not demand that every judge agrees; let their certainty and
+their agreement shape the expected move and the size. What the literature says:
+
+| idea | source | what it implies |
+|---|---|---|
+| Disagreement across ensemble members is the **epistemic** part of predictive variance | [Lakshminarayanan et al. 2017](https://arxiv.org/pdf/1612.01474) | size ∝ mean / variance, with the spread across judges in the variance |
+| Dispersion across model forecasts predicts **lower** returns (−14%/yr decile spread) | [Bali, Kelly, Mörke, Rahman 2023](https://www.nber.org/papers/w31583) | high judge disagreement should cut, not just scale, a position |
+| Confidence-weighted voting beats plain voting, but confidence is **model-specific** | [CISC, ACL Findings 2025](https://arxiv.org/pdf/2502.06233) | standardise each model's certainty within the model before combining |
+| Estimation error makes full-Kelly sizes 3x wrong below ~50 trades; use a fraction, shrink with the interval | [Conformal Kelly 2026](https://arxiv.org/html/2608.01494) | keep sizes close to equal until the track record exists |
+| Confidence-weighted Bayesian pooling + quarter-Kelly in a live LLM trading swarm | [PolySwarm 2026](https://arxiv.org/html/2604.03888v1) | the same structure, with heavy shrinkage |
+
+What our four judges show on the 187 development names (`panel-weights.json`):
+
+1. **Agreement on the sign carries no information by itself.** All four agree on the
+   sign for 127 of 151 names, and those are right 50% of the time with a mean signed move
+   of +0.0%. Sign agreement is the common case, not a signal.
+2. **The models' own certainty (`p_up`) is weak.** High, middle and low tertiles hit
+   59%, 43% and 62%. Not monotonic.
+3. **Weighting the whole day by the panel score earns nothing** (+0.1%/day, t 0.1): the
+   information is in the tail, not spread over the ranking.
+4. **Agreement on SIZE is the signal**: names that three or four members each put in
+   their own top 20% (`consensus_top.py`) hit 18/24 at +6.7% net.
+5. **Inside that selection, weights barely matter**: equal +6.68%, by panel size +6.88%,
+   by members-in-top +6.80%, by certainty +6.54%, by precision 1/(sd+τ) +7.04%. Spreads
+   of ±0.3 points on 24 names are noise.
+6. Calibration: one unit of the panel's median scaled score is worth ~1.7 points of
+   signed move across all names, against a move sd of 9.7. It is a ranking, not a
+   return forecast.
+
+**So the design takes the operator's principle and puts it where the data says it
+works**: agreement and certainty do not gate, and they do not linearly size; agreement
+**about magnitude** (how many members put a name in their own top) selects, and the
+panel's mean over its spread (`μ/(sd+τ)`) is carried as the size tilt, capped and
+shrunk toward equal until a forward track record exists. Certainty is recorded, not used.
