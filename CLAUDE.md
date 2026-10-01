@@ -800,11 +800,19 @@ good" in the definition collided with "a proxy is a hypothesis" in rule 5, and t
 model settled it for rule 5). A blinded re-judge of the same evidence by Opus 5
 (`researcher_us/analysis/rejudge-2026-10-01/`) sized it 1.77× larger with the same sign
 on 18 of 18 names and no better ranking, so the change is scale and filing, not
-direction. The definition now names the only four reasons a candidate may be dropped,
-records every drop in `rejected_candidates`, says the lessons resize and do not veto,
-anchors sizes on the name's own reaction scale, and allows 90 turns. **The 3.0 floor was
-measured on Opus 5's scale and has not been re-derived**; read the first forward days
-under the new prompt before trusting it either way.
+direction. **Every live hunter in every region now opens with one shared core,
+`config/hunter-core.md`**, copied verbatim by `scripts/sync_hunter_core.py` (the smoke
+test fails on drift; edit the source, never a copy). It says: search the places a print
+turns on and stop when they are empty, because a non-result is a real result; file every
+sourced fact, dropping only for no source, outside the window, duplicate or contradicted
+by a document, each drop listed in `rejected_candidates`; and size in three steps taken
+from stage EU's resolved days: `abs_move_pct` (never shrunk for uncertainty), `p_up`
+(where all the uncertainty goes, 50 = non-result), and findings that add up to
+(2·p_up/100 − 1)·abs_move_pct. A table maps each lesson to the one number it may move, so
+no lesson is applied twice. The corpus hunter is left as it was, for the backtest. The
+Opus 5-era prompts are kept in `archive/prompts-opus-5/`. **The 3.0 floor was measured
+on Opus 5's scale and has not been re-derived**; read the first forward days under the
+new prompt before trusting it either way.
 
 **The hunters learn from the resolved days through one file, `researcher_us/LESSONS.md`** (since
 2026-09-15). It holds the patterns that repeated across the post-mortems of 09-08 through

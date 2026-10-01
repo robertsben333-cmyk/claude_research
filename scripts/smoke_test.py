@@ -1186,6 +1186,13 @@ def main():
           '"pre_lessons"' in us_agent and "lessons_applied" in us_agent)
     check("LESSONS.md says its rules resize and do not veto",
           "These rules resize; they do not veto" in us_lessons)
+    # ONE CORE, EVERY REGION (2026-10-01). config/hunter-core.md is copied verbatim into
+    # each live hunter by scripts/sync_hunter_core.py; a hand edit to one copy, or a new
+    # hunter nobody synced, fails here instead of drifting silently.
+    sync = subprocess.run([sys.executable, os.path.join(REPO, "scripts", "sync_hunter_core.py"),
+                           "--check"], capture_output=True, text=True)
+    check("every live hunter carries the current hunter core", sync.returncode == 0,
+          sync.stdout.strip())
 
     # The stage places no orders, and the skill and hunter must not acquire one.
     au_skill = open(os.path.join(REPO, ".claude", "skills",
