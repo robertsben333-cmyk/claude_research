@@ -1,3 +1,6 @@
+"""Build key.json and the re-judge packs. First pass wrote packs-us1..apac; the second
+pass (packs-x1, x2) adds US hunts saved under suffixed names and the names first left out
+for leakage, anonymised: ticker, company name and every URL replaced by placeholders."""
 import json,glob,os,re
 R='/home/user/claude_research'; os.chdir(R)
 OUT='researcher_us/analysis/rejudge-full-2026-10-01'
@@ -64,29 +67,7 @@ def leaked(r):
     return None
 for r in rows: r['leak']=leaked(r)
 # ---- extension 2026-10-01 (second pass) ----
-# 1. the sealed backtest corpus: US prints hunted from point-in-time captures
-C='archive/backtest/runs/edge-corpus'
-cont={(r['ticker'],r['event_date']) for r in json.load(open(f'{C}/contamination.json'))['rows'] if r.get('contaminated')}
-livekeys=[(r['ticker'],r['day']) for r in rows if r['region']=='us']
-import datetime as dt
-def near_live(t,day):
-    d0=dt.date.fromisoformat(day)
-    return any(t==lt and abs((dt.date.fromisoformat(ld)-d0).days)<=4 for lt,ld in livekeys)
-for d in sorted(glob.glob(f'{C}/2026-*')):
-    day=os.path.basename(d)
-    o=json.load(open(f'{d}/edge-outcome.json'))['per_day'][0]['rows']
-    for r in o:
-        t=r['ticker']
-        if r.get('outcome')!='resolved' or r.get('move_pct') is None or t in ('BF.A','WLYB'): continue
-        b=f'{d}/baselines/{t}.json'; hs=sorted(glob.glob(f'{d}/hunts/{t}.json')+glob.glob(f'{d}/hunts/{t}-*.json'))
-        if not hs or not os.path.exists(b): continue
-        bj=json.load(open(b))
-        if (t,bj.get('event_date')) in cont: continue
-        live=round(sum((f.get('expected_impact_pct') or 0) for h in hs for f in (json.load(open(h)).get('findings') or [])),3)
-        tape=bj.get('tape') or {}
-        dv=(tape.get('spot') or 0)*(tape.get('avg_volume_20d') or 0) or None
-        rows.append(dict(region='corpus',day=day,ticker=t,company=bj.get('company'),hunter='unpriced-hunter',lessons='researcher_us/LESSONS.md',run=d,hunts=hs,baseline=b,
-          move=r['move_pct'],move_basis='close before print to close after (corpus resolver)',live=live,dollar_vol=dv,same_print_as_live=near_live(t,day)))
+# The sealed backtest corpus is deliberately left out (operator's instruction).
 for r in rows:
     r['leak']=leaked(r); r['id']=f"{r['region']}/{r['day']}/{r['ticker']}"
 # 2. anonymise the names whose ticker or company appears in the context every judge sees
@@ -123,6 +104,5 @@ for r in new:
 import collections
 print('all rows',len(rows),collections.Counter(r['region'] for r in rows))
 print('new to judge',len(new),collections.Counter((r['region'],bool(r['leak'])) for r in new))
-print('corpus same print as live',sum(1 for r in rows if r.get('same_print_as_live')))
-json.dump([{k:v for k,v in r.items() if k!='hunts'} for r in rows],open('/tmp/claude-0/-home-user-claude-research/6dc1c6c2-fdc8-5fd8-97a8-16311f29aa9a/scratchpad/full2/key2.json','w'),indent=0)
-json.dump(packs,open('/tmp/claude-0/-home-user-claude-research/6dc1c6c2-fdc8-5fd8-97a8-16311f29aa9a/scratchpad/full2/packs_new.json','w'))
+json.dump([{k:v for k,v in r.items() if k!='hunts'} for r in rows],open('/tmp/rejudge-key2.json','w'),indent=0)
+json.dump(packs,open('/tmp/rejudge-packs_new.json','w'))
