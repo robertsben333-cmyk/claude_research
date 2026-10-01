@@ -5,6 +5,9 @@ description: Stage E-S. The US earnings edge hunt run exactly as stage E runs it
 
 # Stage E-S — stage E with Sonnet hunters
 
+**Superseded on 2026-10-01 by stage E-P (`earnings-edge-panel`) on the same Routine.** Kept so
+the E-S runs already on disk (`<RUN>/edge-sonnet/`) stay reproducible; nothing fires it.
+
 This stage asks one question: **does the hunter model change the ranking?** Everything
 else is stage E. It is an overlay, not a copy: you follow
 `.claude/skills/earnings-edge-hunt/SKILL.md` step by step, and this file lists the only

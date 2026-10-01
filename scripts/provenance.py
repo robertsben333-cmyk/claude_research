@@ -54,6 +54,7 @@ REGISTRY = ROOT / "config" / "prompt-versions.json"
 HUNTERS = {
     "unpriced-hunter": "us",
     "unpriced-hunter-sonnet": "us-sonnet",
+    "unpriced-searcher": "us-searcher",
     "unpriced-hunter-jp": "jp",
     "unpriced-hunter-uk": "uk",
     "unpriced-hunter-de": "de",
@@ -76,6 +77,11 @@ MARKETS = {
     "US-S": {"dir": "edge-sonnet", "hunters": ["unpriced-hunter-sonnet"],
              "lessons": "researcher_us/LESSONS.md",
              "skill": ".claude/skills/earnings-edge-hunt-sonnet/SKILL.md"},
+    # Stage E-P (2026-10-01): the searcher is the only hunter; the four panel judges are
+    # not hunters and are recorded by the stage in provenance.json's `panel` block.
+    "US-P": {"dir": "edge-panel", "hunters": ["unpriced-searcher"],
+             "lessons": "researcher_us/LESSONS.md",
+             "skill": ".claude/skills/earnings-edge-panel/SKILL.md"},
     "JP": {"dir": "japan", "hunters": ["unpriced-hunter-jp"],
            "lessons": "researcher_japan/LESSONS.md",
            "skill": ".claude/skills/researcher-japan-hunt/SKILL.md"},
@@ -118,7 +124,8 @@ MODEL_TIMELINE = {
     "sonnet": [],
 }
 SHORT_MODEL = {"claude-opus-5": "Opus 5", "claude-opus-5-5": "Opus 5.5",
-               "claude-sonnet-5": "Sonnet 5", "claude-sonnet-5-5": "Sonnet 5.5"}
+               "claude-sonnet-5": "Sonnet 5", "claude-sonnet-5-5": "Sonnet 5.5",
+               "claude-fable-5-1": "Fable 5.1"}
 
 
 def git(*args, check=True):
@@ -162,6 +169,10 @@ def parse_utc(s):
 def served_model(alias, at):
     """(model, basis) for an alias at a moment. basis: alias_timeline / ambiguous /
     not_recorded."""
+    # A frontmatter that pins a full model id (stage E-P, 2026-10-01) names its model;
+    # nothing has to be inferred from a timeline.
+    if (alias or "").startswith("claude-"):
+        return alias, "pinned_in_frontmatter"
     tl = MODEL_TIMELINE.get(alias or "")
     if not tl or at is None:
         return None, "not_recorded"
@@ -226,7 +237,7 @@ def build_registry(ref="origin/main"):
     return out
 
 
-STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "JP": "jp", "EU": "eu", "AU": "au",
+STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "JP": "jp", "EU": "eu", "AU": "au",
                "CA": "ca", "R": "rev"}
 
 

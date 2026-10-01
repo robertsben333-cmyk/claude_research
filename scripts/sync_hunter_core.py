@@ -44,7 +44,7 @@ VARIANTS = {
         "name": "unpriced-searcher",
         "model": "claude-opus-5-5",
         "description": ("Stage E-P. The unpriced-hunter run as the evidence SEARCHER for a "
-                        "four-model judging panel: same search and output contract, with "
+                        "four-model judging panel, with the same search and output contract and "
                         "breadth over polish because its own sizes are not used to rank. "
                         "Generated from unpriced-hunter.md plus config/searcher-addendum.md "
                         "by scripts/sync_hunter_core.py; never edit this copy. Give it the "

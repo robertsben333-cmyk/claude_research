@@ -39,7 +39,7 @@ material below is kept because the live stages reference it, not because it runs
 | ~~C~~ | `earnings-capture` **ARCHIVED** | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
-| E-S | `earnings-edge-hunt-sonnet` | 19:06 | **Stage E-S — stage E with Sonnet hunters.** Same universe script, sealed baselines, Opus sweep and scorer; only the hunters are `unpriced-hunter-sonnet`. Writes `research/<date>/edge-sonnet/`, **places no orders**. `trig_01QJzV84MhL3xnFwUjdzEvW7`, created 2026-10-01 by a session, model reads `claude-opus-5-5`, cron `6 17 * * 1-5` = 17:06 UTC, two minutes after stage E. See "Stage E-S" below |
+| E-P | `earnings-edge-panel` | 19:06 | **Stage E-P — the searcher and the four-model panel (replaced E-S on the same Routine, 2026-10-01).** Opus 5.5 `unpriced-searcher` collects the evidence; four blind judges pinned to Opus 5, Opus 5.5, Sonnet 5.5 and Fable 5.1 size it; `panel_score.py` selects names that 3 of 4 put in their own top 20%. Writes `research/<date>/edge-panel/`, **places no orders**. `trig_01QJzV84MhL3xnFwUjdzEvW7`, cron `6 17 * * 1-5`. See "Stage E-P" below |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
 | CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
@@ -1044,7 +1044,26 @@ specify.
 
 ## Where things go
 
-**Stage E-S is stage E with the hunters on Sonnet, added 2026-10-01.** One question:
+**Stage E-P replaced stage E-S on the same Routine on 2026-10-01, on the operator's
+instruction.** It separates search from judgement. `unpriced-searcher` is stage E's hunter
+plus `config/searcher-addendum.md` (breadth over polish, because its sizes do not rank),
+pinned to `claude-opus-5-5`. `researcher_us/scripts/panel_packs.py` strips its sizes into
+blind packs; four judges generated from `config/panel-judge.md` by
+`scripts/sync_hunter_core.py`, each pinned to a full model id (`claude-opus-5`,
+`claude-opus-5-5`, `claude-sonnet-5-5`, `claude-fable-5-1`), Read and Write only, size the
+evidence independently; `researcher_us/scripts/panel_score.py` reads each member against
+its own recent history (`researcher_us/analysis/panel-history.json`) and writes
+`edge-scores-panel.json`, which `edge_resolve.py` ranks beside the key as `spearman_panel`.
+Every rule was chosen on development names in `research/analyses/judge-lab/` and is frozen
+in `config/pipeline.yaml` `edge_panel`: **selected when 3 of 4 members put the name in
+their own top 20% on the panel's side** (18/24, +6.7% net in sample); sign agreement by
+itself carried nothing (127 of 151 names, 50%); the members' own certainty (`p_up`) was
+not monotonic and decides nothing; inside the selection weights moved ±0.3 points, so the
+live weight is equal and a precision tilt is logged beside it. **Opus 5 has no alias**: if
+the pinned id is refused the stage runs three judges and says so. The E-S skill, its hunter
+and its runs stay in the tree for history.
+
+**Stage E-S was stage E with the hunters on Sonnet, added and superseded on 2026-10-01.** One question:
 does the hunter model change the ranking? `.claude/skills/earnings-edge-hunt-sonnet/` is
 an OVERLAY on the stage E skill, not a copy, so the two cannot drift: it lists the only
 differences — output in `<RUN>/edge-sonnet/`, hunters `unpriced-hunter-sonnet`, no

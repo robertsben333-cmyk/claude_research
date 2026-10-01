@@ -59,7 +59,7 @@ def member_stats(hist, window):
             'q80': v_sorted[int(0.8 * len(v_sorted))]}
 
 
-def score(run, C):
+def score(run, C, dry_run=False):
     run = Path(run)
     hist = json.load(open(HISTORY)) if HISTORY.exists() else {}
     window = int(C.get('history_window', 200)); share_q = C.get('member_top_share', 0.2)
@@ -124,6 +124,7 @@ def score(run, C):
                                  'panel_selected': r['selected'], 'consensus_k': r['consensus_k']} for r in rows]
     json.dump(out, open(run / 'edge-scores-panel.json', 'w'), indent=1)
     added = 0
+    if dry_run: return out, 0
     for m in present:
         seen = {x['id'] for x in hist.get(m, [])}
         for i, o in verdicts[m].items():
@@ -136,8 +137,9 @@ def score(run, C):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--run', required=True)
+    ap.add_argument('--dry-run', action='store_true', help='score without appending to the history')
     a = ap.parse_args()
-    out, added = score(a.run, cfg())
+    out, added = score(a.run, cfg(), a.dry_run)
     print(f"members {', '.join(out['members_present'])}"
           + (f" (MISSING {', '.join(out['members_missing'])})" if out['members_missing'] else '')
           + f"; selection {out['selection']}; {added} sizes added to the history")

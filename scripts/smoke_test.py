@@ -1228,6 +1228,47 @@ def main():
     check("stage E-S config carries places_orders: false",
           (cfg.get("edge_hunt_sonnet") or {}).get("places_orders") is False)
 
+    # STAGE E-P (2026-10-01): the Opus 5.5 searcher and a blind four-model panel. The
+    # searcher is stage E's hunter plus the searcher addendum; each judge is pinned to a
+    # full model id, reads and writes only, and the stage never reaches the broker.
+    ep_agent = open(os.path.join(REPO, ".claude", "agents", "unpriced-searcher.md"), encoding="utf-8").read()
+    ep_skill = open(os.path.join(REPO, ".claude", "skills", "earnings-edge-panel", "SKILL.md"), encoding="utf-8").read()
+    check("stage E-P searcher is stage E's hunter plus the addendum",
+          "## You are the searcher for a panel" in ep_agent
+          and us_agent.split("<!-- HUNTER-CORE END -->", 1)[1].strip() in ep_agent)
+    check("stage E-P searcher is pinned to Opus 5.5", "\nmodel: claude-opus-5-5\n" in ep_agent.split("---", 2)[1] + "\n")
+    for m, mid in (("opus5", "claude-opus-5"), ("opus55", "claude-opus-5-5"),
+                   ("sonnet55", "claude-sonnet-5-5"), ("fable51", "claude-fable-5-1")):
+        j = open(os.path.join(REPO, ".claude", "agents", f"panel-judge-{m}.md"), encoding="utf-8").read()
+        fm = j.split("---", 2)[1]
+        check(f"panel judge {m} is pinned to {mid} with Read and Write only",
+              f"\nmodel: {mid}\n" in fm + "\n" and "\ntools: Read, Write\n" in fm + "\n")
+    check("stage E-P writes to edge-panel and places no orders",
+          "<RUN>/edge-panel/" in ep_skill and "No `alpaca_trade.py` call of any kind" in ep_skill)
+    epc = cfg.get("edge_panel") or {}
+    check("stage E-P config carries places_orders: false and an equal live weight",
+          epc.get("places_orders") is False and epc.get("live_weight") == "equal")
+    # the aggregator on a synthetic day: a 3-of-4 consensus is selected, a lone judge is not,
+    # and a dry run leaves the history alone
+    import tempfile as _tf
+    sys.path.insert(0, os.path.join(REPO, "researcher_us", "scripts"))
+    import panel_score
+    hist_before = open(panel_score.HISTORY).read()
+    with _tf.TemporaryDirectory() as td:
+        rd = os.path.join(td, "edge-panel"); os.makedirs(os.path.join(rd, "panel"))
+        big = {"opus5": 6.0, "opus55": 4.0, "sonnet55": 3.0, "fable51": -0.2}
+        for m in panel_score.MEMBERS:
+            json.dump([{"id": "us/2026-10-02/AAA", "impact_sum": big[m], "p_up": 70},
+                       {"id": "us/2026-10-02/BBB", "impact_sum": 6.0 if m == "opus5" else 0.1, "p_up": 55},
+                       {"id": "us/2026-10-02/CCC", "impact_sum": 0.0, "p_up": 50}],
+                      open(os.path.join(rd, "panel", m + ".json"), "w"))
+        out, added = panel_score.score(rd, epc, dry_run=True)
+        sel = {r["ticker"]: r["selected"] for r in out["ranking"]}
+        check("panel selects a 3-of-4 consensus and not a lone judge",
+              sel.get("AAA") is True and sel.get("BBB") is False and sel.get("CCC") is False, str(sel))
+    check("a dry panel run leaves the history untouched",
+          added == 0 and open(panel_score.HISTORY).read() == hist_before)
+
     # The stage places no orders, and the skill and hunter must not acquire one.
     au_skill = open(os.path.join(REPO, ".claude", "skills",
                               "researcher-australia-hunt", "SKILL.md"),
