@@ -815,6 +815,27 @@ Opus 5-era prompts are kept in `archive/prompts-opus-5/`. **The 3.0 floor was me
 on Opus 5's scale and has not been re-derived**; read the first forward days under the
 new prompt before trusting it either way.
 
+**Every hunter answers twice since 2026-10-01 (evening), and `impact_sum` is version 2
+again (operator's instruction).** The three-step core of the same morning made the
+findings ADD UP to (2·p_up/100 − 1)·abs_move_pct, so the key became a probability tier
+times the option-implied move and the number of findings stopped mattering. The core's
+step 3 now asks for two measurements that are never fitted to each other: (a) each
+finding sized on its own, as before 09-22, whose sum is **`impact_sum`, the key** — what
+the 3.0 floor was measured on and the only number stage E trades; and (b) `abs_move_pct`
+and `p_up`, which `edge_score.py` turns into **`impact_scaled`** and writes to its OWN
+file, `edge-scores-scaled.json`, so nothing reading the key (`alpaca_trade.py`, the
+dashboard, `edge_sample.py`) can pick it up. `edge_resolve.py` ranks it as
+`spearman_impact_scaled`. The filing rules of the morning's core (file every sourced
+fact, four reasons to drop) are unchanged. **Every hunt stage pastes
+`scripts/score_report.py`'s table at the top of its closing reply**: per name
+`impact_sum`, floor, `impact_scaled`, `abs_move_pct`, `p_up`, and for the US (stage E and
+E-S) the V2 grounded score, printed as `not run` rather than dropped. Stage E-S now runs
+`edge_grounded_score.py` on its own directory (it only reads the shadow ledger) and still
+never feeds that ledger. On the NKE runs of 2026-10-01 the two keys are equal by
+construction, because those hunts were sized under the morning's rule; they diverge from
+the next run. Prompt versions `us.v9`, `us-sonnet.v2`, `uk.v7` and so on: never pool
+them with the versions before.
+
 **The hunters learn from the resolved days through one file, `researcher_us/LESSONS.md`** (since
 2026-09-15). It holds the patterns that repeated across the post-mortems of 09-08 through
 09-14 — a verified fact is not a predicted reaction, name the line a finding lands on,

@@ -438,7 +438,8 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
             and (em > 0) != (impact_sum > 0):
         flags.append(f"hunter's own expected_move_pct ({em:+.2f}) has the opposite sign "
                      f"to the sum of its findings ({impact_sum:+.2f})")
-    if hunts and isinstance(em, (int, float)) and impact_sum \
+    scaled_contract = any(h.get("p_up") is not None for _, h in hunts)
+    if hunts and not scaled_contract and isinstance(em, (int, float)) and impact_sum \
             and abs(em) < 0.5 * abs(impact_sum):
         flags.append(f"hunter's expected_move_pct ({em:+.2f}) is under half the sum of "
                      f"its findings ({impact_sum:+.2f}): its own caveats did not reach the sum")
@@ -496,6 +497,44 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
                     "subtractive against the realised move.",
         },
     }
+
+
+def scaled_view(hunts):
+    """The SECOND measurement, kept out of the key and out of edge-scores.json.
+
+    Since 2026-10-01 every hunter answers twice: each finding sized on its own (their
+    sum is `impact_sum`, the ranking key, as it was from 2026-09-09) and, separately,
+    `abs_move_pct` and `p_up` for the print as a whole. This is the second one:
+
+        impact_scaled = (2 * p_up / 100 - 1) * abs_move_pct
+
+    recomputed here from the two inputs rather than read off `expected_move_pct`, so
+    a hunter that mis-multiplied cannot move it. It is written to its own file,
+    `edge-scores-scaled.json`, so nothing that reads the live key (alpaca_trade.py, the
+    dashboard, edge_sample.py) can pick it up by accident. A hunt sealed before
+    2026-10-01 carries no `p_up` and gets null, never a reconstruction.
+    """
+    vals, absm, pups, emitted = [], [], [], []
+    for _, h in hunts:
+        a, pu = h.get("abs_move_pct"), h.get("p_up")
+        if isinstance(a, (int, float)) and isinstance(pu, (int, float)):
+            vals.append((2.0 * pu / 100.0 - 1.0) * a)
+            absm.append(float(a))
+            pups.append(float(pu))
+        if isinstance(h.get("expected_move_pct"), (int, float)):
+            emitted.append(float(h["expected_move_pct"]))
+    if not vals:
+        return {"impact_scaled": None, "abs_move_pct": None, "p_up": None,
+                "expected_move_pct_emitted": emitted[0] if emitted else None,
+                "why_null": "no hunt carries both abs_move_pct and p_up" if hunts
+                            else "no hunt"}
+    n = len(vals)
+    return {"impact_scaled": round(sum(vals) / n, 3),
+            "abs_move_pct": round(sum(absm) / n, 3),
+            "p_up": round(sum(pups) / n, 2),
+            "expected_move_pct_emitted": round(sum(emitted) / len(emitted), 3)
+                                         if emitted else None,
+            "hunts_scaled": n}
 
 
 def main():
@@ -595,19 +634,60 @@ def main():
     out = Path(a.out) if a.out else run / "edge-scores.json"
     out.write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
 
+    # THE SECOND MEASUREMENT, in its own file (2026-10-01, operator's instruction):
+    # `impact_sum` stays the key and the only thing anything trades or ranks on;
+    # `impact_scaled` is version 3 of the sizing, kept apart so the two can be
+    # resolved against the same move without ever being pooled.
+    scaled = {}
+    for r in rows:
+        sv = scaled_view(hunts.get(r["ticker"], []))
+        sv.update({"ticker": r["ticker"], "rankable": r["rankable"],
+                   "not_rankable_because": r["not_rankable_because"],
+                   "impact_sum": r["impact_sum"]})
+        scaled[r["ticker"]] = sv
+    srows = sorted(scaled.values(),
+                   key=lambda x: (not (x["rankable"] and x["impact_scaled"] is not None),
+                                  -(x["impact_scaled"] or 0.0)))
+    srank = 0
+    for x in srows:
+        if x["rankable"] and x["impact_scaled"] is not None:
+            srank += 1
+            x["rank"] = srank
+        else:
+            x["rank"] = None
+    sdoc = {
+        "generated_utc": doc["generated_utc"],
+        "run": str(run),
+        "ranking_key": "impact_scaled",
+        "is_live_key": False,
+        "names": len(srows),
+        "scaled": sum(1 for x in srows if x["impact_scaled"] is not None),
+        "note": "Version 3 of the sizing, NOT the ranking key. impact_scaled = "
+                "(2 * p_up / 100 - 1) * abs_move_pct, recomputed from the hunter's "
+                "two inputs. The live key is impact_sum in edge-scores.json: each "
+                "finding sized on its own and added up (version 2). impact_sum is "
+                "repeated here for side-by-side reading only. The 3.0 conviction floor "
+                "was measured on impact_sum and does not apply to this number. Never "
+                "pool the two keys.",
+        "ranking": srows,
+    }
+    sout = (Path(a.out).with_name(Path(a.out).stem + "-scaled.json") if a.out
+            else run / "edge-scores-scaled.json")
+    sout.write_text(json.dumps(sdoc, indent=1) + "\n", encoding="utf-8")
+
     nr = sum(1 for r in rows if r["rankable"])
     print(f"{nr} of {len(rows)} names rankable"
           + ("  [LEGACY re-score: synthetic impacts, machinery only]" if a.legacy else ""))
     above = sum(1 for r in rows if r["rankable"] and r["conviction"] >= FLOOR)
     print(f"{above} of {nr} clear the conviction floor of {FLOOR:.1f} points\n")
     print(f"{'#':>2} {'ticker':8s}{'impact':>9s}{'convict':>9s}{'floor':>7s}"
-          f"{'lean':>9s}{'resid':>8s}{'legacy':>8s}")
+          f"{'scaled':>9s}{'lean':>9s}{'resid':>8s}{'legacy':>8s}")
     for r in rows:
         lean = r["priced_lean_pct"]
         ln = f"{lean:+.2f}%" if lean is not None else "n/a"
         d = r["diagnostics"]
         if not r["rankable"]:
-            print(f"{'--':>2} {r['ticker']:8s}{'':>9s}{'':>9s}{'':>7s}{ln:>9s}"
+            print(f"{'--':>2} {r['ticker']:8s}{'':>9s}{'':>9s}{'':>7s}{'':>9s}{ln:>9s}"
                   f"{'':>8s}{'':>8s}  not ranked: {r['not_rankable_because']}")
             continue
         # residual_sum and edge_score_legacy are both None when a name carries no
@@ -618,10 +698,13 @@ def main():
         lg = d.get("edge_score_legacy")
         rs_s = f"{rs:+.2f}" if rs is not None else "n/a"
         lg_s = f"{lg:+.1f}" if lg is not None else "n/a"
+        sc = scaled[r["ticker"]]["impact_scaled"]
+        sc_s = f"{sc:+.2f}" if sc is not None else "n/a"
         print(f"{r['rank']:>2} {r['ticker']:8s}{r['impact_sum']:>+9.2f}"
               f"{r['conviction']:>9.2f}{('yes' if r['conviction'] >= FLOOR else '-'):>7s}"
-              f"{ln:>9s}{rs_s:>8s}{lg_s:>8s}")
+              f"{sc_s:>9s}{ln:>9s}{rs_s:>8s}{lg_s:>8s}")
     print(f"\nwrote {out}")
+    print(f"wrote {sout}  (impact_scaled: version 3, not the key)")
 
 
 if __name__ == "__main__":

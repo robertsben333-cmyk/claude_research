@@ -19,11 +19,12 @@ this definition, in a LESSONS file or in your brief says otherwise on those thre
 things, this block wins.** Everything else (where to look in your market, the event
 check, the hard source rule, the output fields) stands as written below.
 
-Two older instructions are superseded by name, because they appear further down in most
-definitions: an instruction to make `expected_move_pct` "visibly smaller than the sum of
-your findings", and any instruction to leave a sourced fact out because it is a proxy,
-an inference, partly priced or in agreement with the skew. Both are replaced by the
-steps below.
+Three older instructions are superseded by name, because they appear further down in
+some definitions: an instruction to make `expected_move_pct` "visibly smaller than the
+sum of your findings"; any instruction to leave a sourced fact out because it is a proxy,
+an inference, partly priced or in agreement with the skew; and any instruction that your
+findings' sizes "must add up to" `(2 × p_up / 100 − 1) × abs_move_pct`. All three are
+replaced by the steps below.
 
 ### 1. Search in proportion, and a non-result is a real result
 
@@ -45,9 +46,25 @@ this definition also applies (stage R: a `repricing` finding needs a
 `mechanism_in_window`). Nothing else removes a finding. Every candidate you drop goes in
 `rejected_candidates` with its reason.
 
-### 3. Size in three steps, in this order
+### 3. Size twice: each finding on its own, then the print as a whole
 
-**a. `abs_move_pct`: how far the stock moves over the window, whatever the direction.**
+You emit two measurements of the same print. They are scored apart, stored apart and
+ranked apart, and **neither is fitted to the other**.
+
+**a. Each finding on its own: `expected_impact_pct`. Their sum is `impact_sum`, the
+ranking key.** Size every finding at what THAT finding alone would move the stock over
+the window, signed, in points of spot, with `impact_low_pct` and `impact_high_pct` as an
+honest range. Size it against what actually moves this stock: a usable option-implied
+move, the base rates this definition gives, the name's own reaction when that line
+surprised before. A finding worth more than the implied move needs to be extraordinary.
+Do not divide a total among your findings, and do not shrink them afterwards so their sum
+matches anything: a decisive finding carries its full size even when weaker ones sit
+beside it. Where two findings rest on one fact, merge them rather than counting the fact
+twice. A caveat that applies to a finding makes THAT finding smaller, once (step 4).
+With no findings, or findings that genuinely offset, the sum is 0, and that is a correct
+answer.
+
+**b. `abs_move_pct`: how far the stock moves over the window, whatever the direction.**
 Start from the best scale you have: a usable option-implied move; else the base rates
 this definition gives for your market; else the name's own median reaction in the
 baseline. Move it for what is new in this release (a guidance change or first guide moves
@@ -56,47 +73,49 @@ uncertainty about the sign never shrinks this number.** On every resolved sample
 repo the hunters' numbers were too small: US regression slope 0.72-0.76, Europe a median
 factor of three under the realised move.
 
-**b. `p_up`: the probability, 0 to 100, that the stock closes the window higher.** This
-is where all your uncertainty goes, and nowhere else.
+**c. `p_up`: the probability, 0 to 100, that the stock closes the window higher.** This
+is where the uncertainty of this second measurement goes, and nowhere else.
 - 50: nothing found, or the evidence is balanced. This is the non-result.
 - 55-60, or 40-45: a lean from proxies, inference or partly priced facts.
 - 60-70, or 30-40: a lean resting on a company-level number in a primary document.
 - 70-85, or 15-30: a sourced number the market has not seen that decides this print.
 
-**c. The findings carry the signed total.** `expected_move_pct` = (2 × p_up / 100 − 1) ×
-abs_move_pct, and the findings' `expected_impact_pct` values must add up to it, because
-the day is ranked on their sum. Give each finding a share in proportion to its weight:
-the finding that sets your `p_up` carries most of the total. A minor finding gets a small
-share; do not cancel a decisive finding with a stack of weak opposite ones. With `p_up`
-at 50 the findings sum to 0, whether there are none or several that offset.
+**d. `expected_move_pct` = (2 × p_up / 100 − 1) × abs_move_pct.** The scorer recomputes
+it from your two numbers and stores it in a separate file as `impact_scaled`. It is not
+the ranking key, and your findings do not have to add up to it. If the two measurements
+disagree in sign, or one is several times the other, say why in `conviction_note`: the
+gap is information, not an inconsistency to tidy away.
 
-### 4. Each lesson moves one number, once
+### 4. Each lesson moves one number per measurement, once
 
-Choose `abs_move_pct` and `p_up` with every caveat in mind, then stop. Do not apply a
-lesson a second time by shrinking the findings afterwards.
+Size the findings with every caveat in mind, then stop; size `abs_move_pct` and `p_up`
+with every caveat in mind, then stop. Do not apply a lesson a second time by shrinking
+the findings, or the sum, afterwards.
 
-| lesson | the number it moves |
-| --- | --- |
-| a verified fact is not a predicted reaction; this name sells its beats | `p_up` toward 50 |
-| the finding lands inside what the company already guided | `p_up` toward 50 |
-| the bar is unsourced or disputed | `p_up` toward 50, for the findings that depend on it |
-| your own caveat argues against the finding | `p_up` toward 50, or merge or drop it if a document contradicts it |
-| a proxy, an inference or macro-to-company transmission | the finding's weight inside the total, never its filing |
-| a sign against a strong skew, or a crowded short against a negative | `p_up` toward 50 unless you can say why the market is wrong |
-| thin coverage with a confirmed, unpriced, company-level number | `abs_move_pct` up |
-| a guidance change, first guide or new period likely | `abs_move_pct` up |
-| the period is already pre-released and the guide is not expected to move | `abs_move_pct` down |
-| a one-off below operating income with no path to the guide | the finding's weight inside the total |
-| financing | the sign, after you have asked what the money buys |
-| a segment finding | its weight, net of the rest of the company |
-| dated after the exit window | `outside_window`, not `findings` |
+| lesson | in your findings (3a) | in the scaled number (3b-3d) |
+| --- | --- | --- |
+| a verified fact is not a predicted reaction; this name sells its beats | that finding smaller | `p_up` toward 50 |
+| the finding lands inside what the company already guided | that finding toward 0 | `p_up` toward 50 |
+| the bar is unsourced or disputed | the findings that depend on it capped small | `p_up` toward 50 |
+| your own caveat argues against the finding | that finding smaller, or merged or dropped if a document contradicts it | `p_up` toward 50 |
+| a proxy, an inference or macro-to-company transmission | that finding smaller, never left unfiled | its weight in `p_up` |
+| a sign against a strong skew, or a crowded short against a negative | that finding smaller unless you can say why the market is wrong | `p_up` toward 50, same exception |
+| thin coverage with a confirmed, unpriced, company-level number | that finding larger | `abs_move_pct` up |
+| a guidance change, first guide or new period likely | the guidance finding sized on the guidance scale | `abs_move_pct` up |
+| the period is already pre-released and the guide is not expected to move | findings on the pre-released lines toward 0 | `abs_move_pct` down |
+| a one-off below operating income with no path to the guide | that finding at a fraction of the same money as operating profit | its weight in `p_up` |
+| financing | the sign, after you have asked what the money buys | the same |
+| a segment finding | its size, net of the rest of the company | its weight in `p_up` |
+| dated after the exit window | `outside_window`, not `findings` | neither |
 
 ### 5. What you emit for this block
 
 Add `abs_move_pct` and `p_up` to your top-level output if your schema below does not
-already carry them, add `rejected_candidates` (each with `candidate`, `source`, `reason`
-from the four in step 2, and `detail`), and keep `pre_lessons` as your definition
-describes, with the same three steps applied to the draft. The hard rule is unchanged:
+already carry them, set `expected_move_pct` by the formula in 3d, add
+`rejected_candidates` (each with `candidate`, `source`, `reason` from the four in step 2,
+and `detail`), and keep `pre_lessons` as your definition describes, with both
+measurements applied to the draft: `impact_sum_pct` is the sum of the draft findings'
+own sizes and `expected_move_pct` the draft's scaled number. The hard rule is unchanged:
 every finding carries a real URL and date, and nothing you remember about how this print
 went may enter your answer.
 
@@ -364,7 +383,8 @@ So you answer two questions and emit both numbers:
 
 - `print_vs_bar_pct` — **what will the number be**, relative to the bar the market is
   holding, in percent of that bar. Positive is a beat. The fundamental read.
-- `expected_move_pct` — **what will the stock do**. The reaction, and what gets ranked.
+- `expected_move_pct` — **what will the stock do**. The reaction as a whole, (2 × p_up / 100 − 1) ×
+  abs_move_pct, stored apart as `impact_scaled`; the day is ranked on the sum of your findings.
 
 They are different objects and they are allowed to disagree. When they do, say why in
 `conviction_note`. **The reaction function has veto power over the fundamental read**:
@@ -502,11 +522,13 @@ uncertainty in the one field built for it.
   disclosures (`print_vs_bar_pct` +25; actual +53) and the stock rose 11%. A pre-released
   period with an unchanged guide sits between 45 and 55 whatever the findings say.
 
-`expected_move_pct` stays the signed expectation and should read as roughly
-`(2 × p_up / 100 − 1) × abs_move_pct`. **Your findings' sizes must add up to it**, because
-the day is ranked on their sum. That is the practical change: on a name where new
-numbers and a guidance change are in play and you are 75% sure of the sign, the sum is
-around +4.5, not +1.4.
+`expected_move_pct` is the signed expectation, `(2 × p_up / 100 − 1) × abs_move_pct`, and
+the scorer stores it apart as `impact_scaled`. **Your findings are sized separately, each
+on its own** (the core, step 3a), and their sum is the ranking key; do not fit them to
+`expected_move_pct`. What these days measured applies to both numbers: on a name where new
+numbers and a guidance change are in play and you are 75% sure of the sign, the scaled
+number is around +4.5, not +1.4, and the decisive finding alone belongs on that scale
+rather than divided down to leave room for the others.
 
 **The reaction history vetoes the direction, not the size.** "Beats have been sold here"
 is a reason to pull `p_up` toward 50. It is not a reason to cap `abs_move_pct` at the
