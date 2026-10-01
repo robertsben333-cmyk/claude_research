@@ -1169,6 +1169,24 @@ def main():
           broken["short_pct"] is None and not broken["covered"]
           and "missing data" in broken["basis"], broken)
 
+    # THE US HUNTER FILES WHAT IT FINDS (2026-10-01). After the move to a stricter model
+    # the hunts filed 34% of what they surfaced and the day stopped being rankable. The
+    # definition now names the four reasons a candidate may be dropped and makes every
+    # drop visible in `rejected_candidates`; LESSONS.md says its rules resize, not veto.
+    # An edit that quietly restores the old filing rule fails here.
+    us_agent = open(os.path.join(REPO, ".claude", "agents", "unpriced-hunter.md"),
+                    encoding="utf-8").read()
+    us_lessons = open(os.path.join(REPO, "researcher_us", "LESSONS.md"),
+                      encoding="utf-8").read()
+    check("the US hunter reports every dropped candidate with one of four reasons",
+          '"rejected_candidates"' in us_agent and all(
+              r in us_agent for r in ("no_source", "outside_window", "duplicate",
+                                       "contradicted_by_document")))
+    check("the US hunter keeps the pre_lessons control",
+          '"pre_lessons"' in us_agent and "lessons_applied" in us_agent)
+    check("LESSONS.md says its rules resize and do not veto",
+          "These rules resize; they do not veto" in us_lessons)
+
     # The stage places no orders, and the skill and hunter must not acquire one.
     au_skill = open(os.path.join(REPO, ".claude", "skills",
                               "researcher-australia-hunt", "SKILL.md"),

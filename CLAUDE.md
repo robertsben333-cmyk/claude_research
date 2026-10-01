@@ -789,6 +789,23 @@ that flagged four company-confirmed reporters as non-events, an adversary agent 
 `Write` tool, and two entries of `budget.edge_degrade_order` that each contradicted a
 hard rule stated elsewhere. All four are fixed.
 
+**The hunters moved to Opus 5.5 on 2026-09-22 and became too strict; the prompt was
+loosened on 2026-10-01.** `model: opus` is an alias, and between 18:56 and 19:09 UTC on
+09-22 it began serving Opus 5.5, with no change in this repo. From 09-23 the US median
+|impact_sum| fell from ~1.7–3.0 to ~0.0–0.4 and findings per name from ~3.5 to ~1.1, in
+every market at once, and no name cleared the 3.0 floor after 09-23. Searching did not
+shrink (sources per hunt 13.9 → 16.6). Filing did: 75% of surfaced items became findings
+before, 34% after, and what was rejected was mostly sourced proxy evidence ("weird is
+good" in the definition collided with "a proxy is a hypothesis" in rule 5, and the new
+model settled it for rule 5). A blinded re-judge of the same evidence by Opus 5
+(`researcher_us/analysis/rejudge-2026-10-01/`) sized it 1.77× larger with the same sign
+on 18 of 18 names and no better ranking, so the change is scale and filing, not
+direction. The definition now names the only four reasons a candidate may be dropped,
+records every drop in `rejected_candidates`, says the lessons resize and do not veto,
+anchors sizes on the name's own reaction scale, and allows 90 turns. **The 3.0 floor was
+measured on Opus 5's scale and has not been re-derived**; read the first forward days
+under the new prompt before trusting it either way.
+
 **The hunters learn from the resolved days through one file, `researcher_us/LESSONS.md`** (since
 2026-09-15). It holds the patterns that repeated across the post-mortems of 09-08 through
 09-14 — a verified fact is not a predicted reaction, name the line a finding lands on,
