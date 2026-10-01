@@ -35,3 +35,10 @@ else:
 [{"id":"us/2026-09-23/SFIX","abs_move_pct":8.0,"p_up":55,"impact_sum":0.8,"findings":[{"i":0,"expected_impact_pct":0.8}],"note":"one short sentence"}]
 
 `impact_sum` is the sum of your findings' `expected_impact_pct`. Cover every company.
+
+## Second pass (packs-x1 to packs-x4)
+
+Some packs are anonymised: their id starts with `anon/`, and the company's name, ticker
+and every URL are replaced by placeholders. Judge them like any other company, from the
+evidence alone. Do not try to work out which company it is, and use the pack's `id`
+exactly as given in your output.
