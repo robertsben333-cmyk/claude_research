@@ -11,7 +11,7 @@ cost: four blind re-judges (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) and the liv
 Every member is scaled within its bucket (US or not x before/after 09-23) before it is
 combined, because the members size on different scales. The test set stays sealed.
 
-  python3 ensemble.py
+  python3 ensemble.py [--hunter opus5|opus55]   (only names hunted by that model)
 """
 import json, math, os, statistics as st, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -63,7 +63,11 @@ class Stacked:
 
 
 def main():
-    rows = J.load(); F = J.make_folds(rows, json.load(open(J.SPLIT)))
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument('--hunter', choices=['opus5', 'opus55']); a = ap.parse_args()
+    rows = J.load()
+    if a.hunter: rows = [r for r in rows if r['hunter_model'] == a.hunter]
+    F = J.make_folds(rows, json.load(open(J.SPLIT)))
     rej = J.rejudge_arms()
     dev = [r for r in rows if J.fold_of(r, F) is not None and all(r['id'] in rej.get(m, {}) for m in MEMBERS)]
     arms = {m: rej[m] for m in MEMBERS}; arms['live'] = {r['id']: r['live'] for r in dev}
@@ -85,7 +89,8 @@ def main():
             J.TOP = 0.15; pp = J.perm_p(sub, p); res['perm_p_15'] = pp
             out['rows'].setdefault(name, {})[g] = res
             print(f"  {name:22s} {cells[0]:>14s} {cells[1]:>16s} p {pp if pp is None else round(pp, 2)!s:>4s} {cells[2]:>14s}")
-    json.dump(out, open(os.path.join(J.D, 'ensemble.json'), 'w'), indent=1)
+    out['hunter'] = a.hunter or 'all'
+    json.dump(out, open(os.path.join(J.D, f"ensemble{'-' + a.hunter if a.hunter else ''}.json"), 'w'), indent=1)
 
 
 if __name__ == '__main__':

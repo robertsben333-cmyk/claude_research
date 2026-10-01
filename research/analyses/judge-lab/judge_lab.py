@@ -48,6 +48,10 @@ LESSON_DAYS = {'us': {'2026-09-08', '2026-09-09', '2026-09-10', '2026-09-11', '2
 TOP = 0.15
 SHARES_REPORTED = (0.10, 0.15, 0.20)
 ERA_BREAK = '2026-09-23'   # hunters moved to Opus 5.5; the scale of impact_sum fell
+# The alias `opus` began serving Opus 5.5 between 18:56 and 19:09 UTC on 2026-09-22. A hunt
+# belongs to the hunter model of the session that sealed its baseline, so the era is read
+# off the seal time, not the run directory (Europe seals days ahead of its event date).
+HUNTER_SWITCH_UTC = '2026-09-22T18:56'
 # assumed round trip in % by 20-day turnover, as in score_full.py: an assumption, not a fit
 COST = [(1e6, 2.0), (5e6, 1.0), (25e6, 0.5), (float('inf'), 0.2)]
 
@@ -103,7 +107,8 @@ def load():
             width=st.mean(width) if width else None, emv=st.mean(emv) if emv else None,
             run20=num(tape.get('run_up_20d_pct')), run5=num(tape.get('run_up_5d_pct')),
             implied=implied, hist=num(hist.get('median_abs_move_pct')),
-            lean=num(b.get('priced_lean_pct')), vol=num(tape.get('realised_vol_20d_annualised_pct'))))
+            lean=num(b.get('priced_lean_pct')), vol=num(tape.get('realised_vol_20d_annualised_pct')),
+            hunter_model='opus5' if (b.get('sealed_utc') or b.get('as_of_utc') or '9')[:16] < HUNTER_SWITCH_UTC else 'opus55'))
     return rows
 
 def tradable(r): return r['region'] != 'us' or r['dv'] >= 2e5
