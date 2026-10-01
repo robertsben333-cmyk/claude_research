@@ -189,6 +189,30 @@ edge_hunt_sonnet:
   places_orders: false
   shadow_ledger: false            # stage E feeds the one shared ledger already
 
+# Stage E-P (2026-10-01, replaces stage E-S on the same Routine): the US hunt with the
+# Opus 5.5 hunter as SEARCHER, then a blind panel of four different models judging the
+# evidence, combined by researcher_us/scripts/panel_score.py. Research only, no orders.
+# Every number below was chosen on development names in research/analyses/judge-lab/
+# (APPROACH.md section 6) and is frozen; measure forward before moving any of them.
+edge_panel:
+  inherits: edge_hunt
+  output_dir: edge-panel
+  searcher_agent: unpriced-searcher
+  judges:
+    opus5: panel-judge-opus5
+    opus55: panel-judge-opus55
+    sonnet55: panel-judge-sonnet55
+    fable51: panel-judge-fable51
+  member_top_share: 0.2        # a member's "top": |impact_sum| at its own 80th percentile
+  history_window: 200          # names of each member's own recent history the top is read on
+  consensus_fraction: 0.75     # selected when ceil(0.75 x members) put it in their top: 3 of 4
+  live_weight: equal           # within the selection weights moved +-0.3pp; equal until measured
+  selected_prior_net_pct: 6.7  # development, 24 names, in sample
+  prior_shrink: 0.5            # so expected_edge_pct on a selected name is +-3.35
+  orchestrator_model: opus
+  places_orders: false
+  shadow_ledger: false
+
 japan_hunt:
   # Stage J. The same question as `edge_hunt`, asked of the Tokyo market, and
   # deliberately scored by the SAME scorer (researcher_us/scripts/edge_score.py) so

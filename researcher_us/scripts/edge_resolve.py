@@ -277,6 +277,14 @@ def resolve_run(run, seed):
         v3 = {x["ticker"]: x for x in
               json.loads(sp.read_text(encoding="utf-8")).get("ranking", [])}
 
+    # Stage E-P's four-model panel (2026-10-01) lives in its own file and is ranked beside
+    # the key, never pooled into it. Absent on every run that is not stage E-P.
+    v4 = {}
+    pp = run / "edge-scores-panel.json"
+    if pp.exists():
+        v4 = {x["ticker"]: x for x in
+              json.loads(pp.read_text(encoding="utf-8")).get("ranking_by_ticker", [])}
+
     rows, pending = [], 0
     for r in scores["ranking"]:
         t = r["ticker"]
@@ -294,6 +302,7 @@ def resolve_run(run, seed):
                "deadband_pct": b.get("deadband_pct"),
                "score_v2": (v2.get(t) or {}).get("impact_sum_grounded"),
                "score_scaled": (v3.get(t) or {}).get("impact_scaled"),
+               "score_panel": (v4.get(t) or {}).get("panel_score"),
                "control_vol_only": (v2.get(t) or {}).get("control_vol_only")}
         # Which denominator normalised this name. The fallback to the reaction-history
         # proxy has always been here, but the anchor it used was never recorded, so a
@@ -356,6 +365,7 @@ def stats_for(live, seed):
                      ("score_pre_lessons", "spearman_pre_lessons"),
                      ("score_v2", "spearman_v2_grounded"),
                      ("score_scaled", "spearman_impact_scaled"),
+                     ("score_panel", "spearman_panel"),
                      ("control_vol_only", "control_vol_only")):
         c = [r for r in live if r.get(key) is not None]
         if len(c) >= 3:
@@ -420,6 +430,7 @@ def pooled_block(days, seed):
                      ("score_pre_lessons", "spearman_pre_lessons"),
                      ("score_v2", "spearman_v2_grounded"),
                      ("score_scaled", "spearman_impact_scaled"),
+                     ("score_panel", "spearman_panel"),
                      ("control_vol_only", "control_vol_only")):
         s, n = pooled_within_days(days, key)
         if s is not None:
@@ -508,6 +519,7 @@ def main():
                              ("spearman_pre_lessons", "before LESSONS.md     "),
                              ("spearman_v2_grounded", "V2 grounded           "),
                              ("spearman_impact_scaled", "impact_scaled (v3)    "),
+                             ("spearman_panel", "E-P panel score       "),
                              ("control_vol_only", "control: V1 x sigma   "),
                              ("calibration_slope_pre_lessons", "slope move on pre-less"),
                              ("calibration_slope_v1", "slope move on V1      "),
@@ -539,6 +551,8 @@ def main():
         print(f"  legacy edge_score key       {p.get('spearman_legacy_key')}")
         if p.get("spearman_impact_scaled") is not None:
             print(f"  impact_scaled (v3)          {p.get('spearman_impact_scaled')}")
+        if p.get("spearman_panel") is not None:
+            print(f"  E-P panel score             {p.get('spearman_panel')}")
         if p.get("spearman_v2_grounded") is not None:
             print(f"  V2 grounded                 {p.get('spearman_v2_grounded')}")
             print(f"  control: V1 x sigma         {p.get('control_vol_only')}")

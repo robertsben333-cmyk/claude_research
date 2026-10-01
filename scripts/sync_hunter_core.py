@@ -36,6 +36,20 @@ HUNTERS = [
 # hunters on Sonnet and everything else unchanged, so the hunter model is the only
 # variable. Never hand-edit a variant; edit its source and run this script.
 VARIANTS = {
+    # stage E-P (2026-10-01): the US hunter on Opus 5.5 as the SEARCHER for a four-model
+    # judging panel. Same definition with config/searcher-addendum.md inserted after the
+    # core, so the search, the event check, the hard source rule and the output contract
+    # stay identical to stage E's hunter.
+    "unpriced-searcher.md": ("unpriced-hunter.md", {
+        "name": "unpriced-searcher",
+        "model": "claude-opus-5-5",
+        "description": ("Stage E-P. The unpriced-hunter run as the evidence SEARCHER for a "
+                        "four-model judging panel: same search and output contract, with "
+                        "breadth over polish because its own sizes are not used to rank. "
+                        "Generated from unpriced-hunter.md plus config/searcher-addendum.md "
+                        "by scripts/sync_hunter_core.py; never edit this copy. Give it the "
+                        "ticker, the event window and the path to the sealed baseline."),
+    }, "searcher-addendum.md"),
     "unpriced-hunter-sonnet.md": ("unpriced-hunter.md", {
         "name": "unpriced-hunter-sonnet",
         "model": "sonnet",
@@ -47,11 +61,35 @@ VARIANTS = {
                         "priced-in baseline."),
     }),
 }
+# Stage E-P judges (2026-10-01): one source, config/panel-judge.md, one definition per
+# model, each pinned to a full model ID. Four DIFFERENT models because the measured gain
+# came from model diversity: five runs of one model added nothing over one
+# (research/analyses/judge-lab/). Never hand-edit a judge; edit the source.
+PANEL_SOURCE = os.path.join(REPO, "config", "panel-judge.md")
+PANEL_JUDGES = {
+    "panel-judge-opus5.md": "claude-opus-5",
+    "panel-judge-opus55.md": "claude-opus-5-5",
+    "panel-judge-sonnet55.md": "claude-sonnet-5-5",
+    "panel-judge-fable51.md": "claude-fable-5-1",
+}
+PANEL_NOTE = ("<!-- GENERATED from config/panel-judge.md by scripts/sync_hunter_core.py; "
+              "edit the source, not this copy -->\n\n")
+
+
+def render_judge(name, model, body):
+    desc = ("Stage E-P panel judge on %s. Judges the day's searcher evidence blind, from a "
+            "packs file with the searcher's sizes removed, and returns abs_move_pct, p_up and "
+            "a signed impact_sum per company. Read and Write only; one instance per model per "
+            "day; give it the packs file and the output path." % model)
+    return ("---\nname: %s\ndescription: %s\ntools: Read, Write\nmodel: %s\neffort: high\n"
+            "maxTurns: 60\ncolor: cyan\n---\n\n" % (name[:-3], desc, model)) + PANEL_NOTE + body.strip() + "\n"
+
+
 VARIANT_NOTE = ("<!-- GENERATED from %s by scripts/sync_hunter_core.py with the frontmatter "
                 "above replaced; edit the source, not this copy -->\n\n")
 
 
-def render_variant(src_text, fields, src_name):
+def render_variant(src_text, fields, src_name, addendum=None):
     m = re.match(r"---\n(.*?)\n---\n", src_text, re.S)
     if not m:
         raise SystemExit("no frontmatter in " + src_name)
@@ -59,8 +97,13 @@ def render_variant(src_text, fields, src_name):
     for line in m.group(1).split("\n"):
         key = line.split(":", 1)[0]
         lines.append("%s: %s" % (key, fields[key]) if key in fields else line)
-    return "---\n" + "\n".join(lines) + "\n---\n\n" + VARIANT_NOTE % src_name + \
-        src_text[m.end():].lstrip("\n")
+    body = src_text[m.end():].lstrip("\n")
+    if addendum:
+        if END not in body:
+            raise SystemExit("an addendum needs the hunter core in " + src_name)
+        pre, post = body.split(END, 1)
+        body = pre + END + "\n\n" + addendum.strip() + "\n" + post
+    return "---\n" + "\n".join(lines) + "\n---\n\n" + VARIANT_NOTE % src_name + body
 
 
 BEGIN = "<!-- HUNTER-CORE BEGIN: generated from config/hunter-core.md by scripts/sync_hunter_core.py; edit the source, not this copy -->"
@@ -114,12 +157,23 @@ def main():
             drift.append(name)
             if not check:
                 open(path, "w", encoding="utf-8").write(new)
-    for name, (src, fields) in VARIANTS.items():
+    for name, spec in VARIANTS.items():
+        src, fields = spec[0], spec[1]
+        add = open(os.path.join(REPO, "config", spec[2]), encoding="utf-8").read() if len(spec) > 2 else None
         path = os.path.join(AGENTS, name)
         src_text = open(os.path.join(AGENTS, src), encoding="utf-8").read()
         if src in HUNTERS:
             src_text = render(src_text, core)
-        new = render_variant(src_text, fields, src)
+        new = render_variant(src_text, fields, src, add)
+        old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+        if new != old:
+            drift.append(name)
+            if not check:
+                open(path, "w", encoding="utf-8").write(new)
+    body = open(PANEL_SOURCE, encoding="utf-8").read()
+    for name, model in PANEL_JUDGES.items():
+        path = os.path.join(AGENTS, name)
+        new = render_judge(name, model, body)
         old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
         if new != old:
             drift.append(name)
@@ -129,9 +183,11 @@ def main():
         if drift:
             print("hunter core out of date in: " + ", ".join(drift))
             sys.exit(1)
-        print("hunter core current in all %d hunters and %d variants" % (len(HUNTERS), len(VARIANTS)))
+        print("hunter core current in all %d hunters, %d variants and %d panel judges"
+              % (len(HUNTERS), len(VARIANTS), len(PANEL_JUDGES)))
     else:
-        print("updated %d of %d hunters and variants" % (len(drift), len(HUNTERS) + len(VARIANTS)))
+        print("updated %d of %d hunters, variants and panel judges"
+              % (len(drift), len(HUNTERS) + len(VARIANTS) + len(PANEL_JUDGES)))
 
 
 if __name__ == "__main__":
