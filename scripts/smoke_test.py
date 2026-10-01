@@ -1194,6 +1194,20 @@ def main():
     check("every live hunter carries the current hunter core", sync.returncode == 0,
           sync.stdout.strip())
 
+    # STAGE E-S (2026-10-01): the Sonnet copy of stage E differs in the hunter model only,
+    # and must never reach the broker or write into stage E's directory.
+    es_agent = open(os.path.join(REPO, ".claude", "agents", "unpriced-hunter-sonnet.md"),
+                    encoding="utf-8").read()
+    es_skill = open(os.path.join(REPO, ".claude", "skills", "earnings-edge-hunt-sonnet",
+                                 "SKILL.md"), encoding="utf-8").read()
+    check("stage E-S hunter runs on sonnet", "\nmodel: sonnet\n" in es_agent.split("---", 2)[1] + "\n")
+    check("stage E-S hunter body is stage E's", es_agent.split("-->", 1)[1].strip()
+          == us_agent.split("---", 2)[2].strip())
+    check("stage E-S writes to edge-sonnet and places no orders",
+          "<RUN>/edge-sonnet/" in es_skill and "No `alpaca_trade.py` call of any kind" in es_skill)
+    check("stage E-S config carries places_orders: false",
+          (cfg.get("edge_hunt_sonnet") or {}).get("places_orders") is False)
+
     # The stage places no orders, and the skill and hunter must not acquire one.
     au_skill = open(os.path.join(REPO, ".claude", "skills",
                               "researcher-australia-hunt", "SKILL.md"),

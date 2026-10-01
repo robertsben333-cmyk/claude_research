@@ -174,6 +174,21 @@ edge_v2:
   max_filings_per_ticker: 8
   input_max_chars: 12000
 
+# Stage E-S (2026-10-01): stage E with the hunters on Sonnet. Everything not named here
+# is read from edge_hunt above -- caps, waves, degrade order, conviction floor -- so the
+# hunter model is the only variable. Skill: .claude/skills/earnings-edge-hunt-sonnet/.
+# Hunter: unpriced-hunter-sonnet, GENERATED from unpriced-hunter.md by
+# scripts/sync_hunter_core.py. It places no orders and has no execution block.
+edge_hunt_sonnet:
+  inherits: edge_hunt
+  output_dir: edge-sonnet
+  hunter_agent: unpriced-hunter-sonnet
+  model: sonnet                   # the hunters
+  sweep_model: opus               # held on Opus so the hunted universe is comparable
+  orchestrator_model: opus        # the Routine's own model
+  places_orders: false
+  shadow_ledger: false            # stage E feeds the one shared ledger already
+
 japan_hunt:
   # Stage J. The same question as `edge_hunt`, asked of the Tokyo market, and
   # deliberately scored by the SAME scorer (researcher_us/scripts/edge_score.py) so

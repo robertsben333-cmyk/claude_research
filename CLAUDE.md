@@ -39,6 +39,7 @@ material below is kept because the live stages reference it, not because it runs
 | ~~C~~ | `earnings-capture` **ARCHIVED** | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
+| E-S | `earnings-edge-hunt-sonnet` | 19:06 | **Stage E-S — stage E with Sonnet hunters.** Same universe script, sealed baselines, Opus sweep and scorer; only the hunters are `unpriced-hunter-sonnet`. Writes `research/<date>/edge-sonnet/`, **places no orders**. `trig_01QJzV84MhL3xnFwUjdzEvW7`, created 2026-10-01 by a session, model reads `claude-opus-5-5`, cron `6 17 * * 1-5` = 17:06 UTC, two minutes after stage E. See "Stage E-S" below |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
 | CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
@@ -1021,6 +1022,23 @@ workflow — later stages read the files earlier stages wrote, in the shapes the
 specify.
 
 ## Where things go
+
+**Stage E-S is stage E with the hunters on Sonnet, added 2026-10-01.** One question:
+does the hunter model change the ranking? `.claude/skills/earnings-edge-hunt-sonnet/` is
+an OVERLAY on the stage E skill, not a copy, so the two cannot drift: it lists the only
+differences — output in `<RUN>/edge-sonnet/`, hunters `unpriced-hunter-sonnet`, no
+`alpaca_trade.py` call of any kind, no V2 shadow ledger. The sweep stays `edge-sweep` on
+Opus so the hunted universe is comparable, and the Routine's own model is Opus.
+`unpriced-hunter-sonnet.md` is GENERATED from `unpriced-hunter.md` by
+`scripts/sync_hunter_core.py` with only `name`, `model` and `description` replaced, and
+`smoke_test.py` fails if its body drifts; **never hand-edit it**. Config is
+`edge_hunt_sonnet`, which inherits every cap from `edge_hunt`. Its prompt is in
+`researcher_us/routine-prompts/edge-hunt-sonnet.md` and the Routine was created by a
+session, so `update_trigger` works on it. Nothing reads `edge-sonnet/` yet: the
+dashboard, `edge_sample.py` and every `research/*/*/*/edge` glob ignore it by design, and
+the comparison is `edge_resolve.py --run <RUN>/edge-sonnet` beside stage E's own.
+**The 3.0 conviction floor was set on Opus 5's scale** and Sonnet's sizes may not sit on
+it; compare rankings (ρ), not floor-clearers, until days pool.
 
 **Stage J is a second market, added 2026-09-18: `researcher_japan/`.** The same
 hunt, the same hunter contract and — deliberately — the *same scorer*

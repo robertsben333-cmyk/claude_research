@@ -26,6 +26,7 @@ simply finds an empty universe and stops cheaply.
 | 12:22 | 2B · Deep dive, batch 2 | `earnings-deep-dive` | 3 Opus/high, in waves of 2 | **high** |
 | 17:52 | 3 · Panel & advice | `earnings-panel-advice` | 14 Opus/high | **highest** |
 | 19:04 | E · Edge hunt, and the book it places | `earnings-edge-hunt` | 1 sweep + ≤19 hunters, Opus/high | **high** |
+| 19:06 | E-S · Edge hunt, Sonnet hunters, no orders | `earnings-edge-hunt-sonnet` | 1 Opus sweep + ≤19 Sonnet hunters | medium |
 | 12:00 | X · Close AMC (second exit Routine) | none | 0 — a no-op while `exit_mode` is `uniform` | none |
 | 17:03 | C · Forward capture | `earnings-capture` | 0 (script) + ≤6 Sonnet | low |
 

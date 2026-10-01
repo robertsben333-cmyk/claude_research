@@ -31,6 +31,38 @@ HUNTERS = [
     "reversal-hunter.md",
 ]
 
+# Model variants: a definition generated WHOLE from another one, with only frontmatter
+# fields replaced. unpriced-hunter-sonnet is stage E-S (2026-10-01): the US hunt with the
+# hunters on Sonnet and everything else unchanged, so the hunter model is the only
+# variable. Never hand-edit a variant; edit its source and run this script.
+VARIANTS = {
+    "unpriced-hunter-sonnet.md": ("unpriced-hunter.md", {
+        "name": "unpriced-hunter-sonnet",
+        "model": "sonnet",
+        "description": ("Stage E-S. The unpriced-hunter, byte for byte, run on Sonnet instead "
+                        "of Opus so the hunter model is the only thing that differs from "
+                        "stage E. Generated from unpriced-hunter.md by "
+                        "scripts/sync_hunter_core.py; never edit this copy. Same contract - "
+                        "give it the ticker, the event window and the path to the sealed "
+                        "priced-in baseline."),
+    }),
+}
+VARIANT_NOTE = ("<!-- GENERATED from %s by scripts/sync_hunter_core.py with the frontmatter "
+                "above replaced; edit the source, not this copy -->\n\n")
+
+
+def render_variant(src_text, fields, src_name):
+    m = re.match(r"---\n(.*?)\n---\n", src_text, re.S)
+    if not m:
+        raise SystemExit("no frontmatter in " + src_name)
+    lines = []
+    for line in m.group(1).split("\n"):
+        key = line.split(":", 1)[0]
+        lines.append("%s: %s" % (key, fields[key]) if key in fields else line)
+    return "---\n" + "\n".join(lines) + "\n---\n\n" + VARIANT_NOTE % src_name + \
+        src_text[m.end():].lstrip("\n")
+
+
 BEGIN = "<!-- HUNTER-CORE BEGIN: generated from config/hunter-core.md by scripts/sync_hunter_core.py; edit the source, not this copy -->"
 END = "<!-- HUNTER-CORE END -->"
 
@@ -82,13 +114,24 @@ def main():
             drift.append(name)
             if not check:
                 open(path, "w", encoding="utf-8").write(new)
+    for name, (src, fields) in VARIANTS.items():
+        path = os.path.join(AGENTS, name)
+        src_text = open(os.path.join(AGENTS, src), encoding="utf-8").read()
+        if src in HUNTERS:
+            src_text = render(src_text, core)
+        new = render_variant(src_text, fields, src)
+        old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+        if new != old:
+            drift.append(name)
+            if not check:
+                open(path, "w", encoding="utf-8").write(new)
     if check:
         if drift:
             print("hunter core out of date in: " + ", ".join(drift))
             sys.exit(1)
-        print("hunter core current in all %d hunters" % len(HUNTERS))
+        print("hunter core current in all %d hunters and %d variants" % (len(HUNTERS), len(VARIANTS)))
     else:
-        print("updated %d of %d hunters" % (len(drift), len(HUNTERS)))
+        print("updated %d of %d hunters and variants" % (len(drift), len(HUNTERS) + len(VARIANTS)))
 
 
 if __name__ == "__main__":
