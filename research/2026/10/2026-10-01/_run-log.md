@@ -32,3 +32,7 @@
 ## Stage J — Japan researcher — universe sealed
 - Logged at 2026-10-01 01:06 UTC
 - 6 scheduled / 4 eligible / 4 hunted (all eligible, no draw). Dropped on turnover: 2493, 5942. 4 baselines sealed on short register 20260929; all four truncated zeros on the register, 信用倍率 resolved on all four. Also resolved the 2026-09-29 run: 4/4 usable, lean_vs_free_control_rho -0.4.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-01 01:16 UTC
+- 4/4 hunted, 4/4 rankable, 0 above floor. Ranking: 7545 +1.6, 7447 -1.0, 8276 -1.6, 3549 -2.0, the exact reverse of -run_up_20d. 8276 may release intraday at 13:30 JST (prints 2024-10 to 2026-04 did), which would put part of the reaction outside the window. No orders: research only.
