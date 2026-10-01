@@ -24,3 +24,7 @@
 - Logged at 2026-09-30 13:51 UTC
 - 2 hunted / 1 rankable / 0 above floor 3.0. SNI -1.00 (Q4 tanker-rate guidance line; abs 6.5, p_up 42). JHD not ranked: results delayed to 14 Oct (RNS 28 Sep), kill reachable automatically via UK archive at resolve.
 - Note: research/2026/10/2026-10-01/europe/europe-note.md. No orders. Published to main (EARNINGS_DATA_BRANCH=main).
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-01 01:05 UTC
+- Tokyo window after 15:00 JST 2026-10-01. Universe via jp_universe.py, seal baselines, one unpriced-hunter-jp per name in waves of 5, score with edge_score.py. No orders.
