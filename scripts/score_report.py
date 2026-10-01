@@ -10,7 +10,7 @@ by side so nobody has to open a file to see them:
   impact_scaled  version 3. (2 * p_up / 100 - 1) * abs_move_pct, the hunter's second,
                  separate measurement of the whole print. From edge-scores-scaled.json,
                  its own file. Not ranked on, not traded, never pooled with the key.
-  V2             US only (stage E and stage E-S): the grounded score from
+  V2             US only (stages E, E-S and E-P): the grounded score from
                  edge-scores-grounded.json, at its primary horizon. Shown as
                  "not run" when the file is absent, never left out silently.
 
@@ -56,7 +56,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import provenance  # noqa: E402
 
-US_DIRS = {"edge", "edge-sonnet"}
+US_DIRS = {"edge", "edge-sonnet", "edge-panel"}
 DIR_MARKET = {v["dir"]: k for k, v in provenance.MARKETS.items()}
 MIN_HISTORY = 20
 
@@ -140,7 +140,9 @@ def model_history(run, reg):
         return hist.setdefault(m, {"impact_sum": [], "impact_scaled": []})
 
     for d in sorted((ROOT / "research").glob("[0-9]*/[0-9]*/[0-9]*-*-*/*/")):
-        if d.name not in DIR_MARKET:
+        # edge-panel's searcher sizes for breadth and is never ranked on its own
+        # sizes (config/searcher-addendum.md), so it is not a reference for the hunters.
+        if d.name not in DIR_MARKET or d.name == "edge-panel":
             continue
         model = run_model(d, reg)
         models[d.resolve()] = model
