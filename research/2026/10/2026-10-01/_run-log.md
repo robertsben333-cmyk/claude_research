@@ -73,3 +73,7 @@
 - Resolved 2026-09-29 at d1 (resolve-2026-09-29.json): impact_sum rho +0.034 (p 0.90) vs neg_atr14 +0.356; lean_vs_free_control_rho -0.314. Did not beat the free control. 2026-09-30 run not resolvable until today's close.
 - Contamination: JAGX hunter saw a WebSearch summary carrying a 2026-10-01 'close' dated after the screen instant; discarded, entered no number. Typos with no numeric effect left as written in BBGI.json (date '2026-09-30-2027' = 2027-09-30) and INDP.json ('4/1' = 9/4). KDK hunter had no rejection reason for 'no mechanism' and used contradicted_by_document.
 - No floor, weight or horizon moved. No orders; no execution step exists in this stage.
+
+## Edge hunt (Sonnet) — 2026-10-01 amc + 2026-10-02 bmo — STARTED
+- Logged at 2026-10-01 19:19 UTC
+- Operator RE-RUN after the 17:06 UTC fire's pushes were refused (403); no edge-sonnet/ existed on origin/main or locally, so nothing to discard. Fired 19:18 UTC. Universe 1 of 19 rows (NKE amc), same as stage E. Thin-day --include-unknown check SKIPPED for time (stage E's found none in window). Baseline NKE sealed ~19:18 UTC: spot 35.915, implied 8.91% — about 2h14m after stage E's 17:04 seal (stage E: implied 9.22%), a difference that is NOT the hunter model. Plan: 1 edge-sweep (Opus) + 1 unpriced-hunter-sonnet. Hard stop 20:10 UTC. No orders, no V2 ledger.
