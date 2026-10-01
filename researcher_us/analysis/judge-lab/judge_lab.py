@@ -422,7 +422,7 @@ def cmd_prepare(a):
         n = max(1, round(len(mine) / CHUNK))
         for c in range(n):
             part = mine[c::n]
-            json.dump([P[r['id']] for r in part], open(f'{JUDGES}/_in/fold{k}-c{c}.json', 'w'), ensure_ascii=False)
+            json.dump([P[r['id']] for r in part], open(f'{JUDGES}/_in/fold{k}-c{c}.json', 'w'), ensure_ascii=False, indent=1)
         other = sorted([r for r in dev if fold_of(r, F) != k], key=lambda r: (r['region'], r['day'], r['id']))
         txt = [f"# Casebook for fold {k}: {len(other)} resolved cases from OTHER days\n",
                "Each case: what the hunter filed, with its own signed size in points, its impact_sum, and the move that followed (US: the strategy exit; elsewhere the market's resolver window). Positive move = the stock rose.\n"]
