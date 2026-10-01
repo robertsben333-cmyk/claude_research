@@ -159,7 +159,7 @@ prevent.
 
 In season the calendar carries up to 125 names on one date and TDnet saw 456 releases
 in a day. One hunter per name means the day has to be cut, so: drop microcaps on median
-20-day turnover (default ¥30m ≈ $200k/day, the same capacity bar the US run screens
+20-day turnover (default ¥15m ≈ $100k/day since 2026-10-01, the non-US bar and half the US one; it was ¥30m ≈ $200k/day, the same capacity bar the US run screens
 on), then if more than 25 remain take a **random sample seeded by the date**.
 
 Random, because any other cut is a second ranking the scorer cannot see. The US run has

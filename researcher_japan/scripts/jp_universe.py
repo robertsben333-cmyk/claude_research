@@ -290,10 +290,10 @@ def main():
     ap.add_argument("--date", help="event date, JST. Default: today in Tokyo.")
     ap.add_argument("--cap", type=int, default=25,
                     help="most names to hunt in a day (default 25)")
-    ap.add_argument("--min-turnover-jpy", type=int, default=30_000_000,
+    ap.add_argument("--min-turnover-jpy", type=int, default=15_000_000,
                     help="median 20-day turnover floor; below it is a microcap and "
-                         "is dropped before the draw (default 3e7 JPY, ~$200k/day, "
-                         "the same capacity bar the US run screens on)")
+                         "is dropped before the draw (default 1.5e7 JPY, ~$100k/day, "
+                         "the non-US floor, half the US bar; was 3e7 until 2026-10-01)")
     ap.add_argument("--no-tape", action="store_true",
                     help="skip Yahoo entirely; emits the calendar with no screen "
                          "and no draw, for inspecting what JPX is publishing")

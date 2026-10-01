@@ -1040,6 +1040,17 @@ the comparison is `edge_resolve.py --run <RUN>/edge-sonnet` beside stage E's own
 **The 3.0 conviction floor was set on Opus 5's scale** and Sonnet's sizes may not sit on
 it; compare rankings (ρ), not floor-clearers, until days pool.
 
+**Every non-US stage screens at $100k a day since 2026-10-01 (operator's instruction).**
+Stages J (¥15m, was ¥30m), EU, CA and AU dropped their median 20-day turnover floor from
+$200k to $100k, in `config/pipeline.yaml` AND in each `*_universe.py` default, because the
+scripts read the argparse default and not the config. Stage E (`min_dollar_volume_usd`) and
+stage R stay at $200k, so **the US and non-US universes are no longer cut on one number**:
+a cross-market comparison must re-cut both sides at $200k to be like for like, and every
+universe file already records its own `min_turnover_usd` / `min_turnover_jpy`. Every name
+the move adds sits below the band where a short register resolves, so `by_anchor_covered`
+is the first split to read on any pooled non-US number. Paragraphs below that say "$200k"
+for those four stages describe the floor they were built and validated on.
+
 **Stage J is a second market, added 2026-09-18: `researcher_japan/`.** The same
 hunt, the same hunter contract and — deliberately — the *same scorer*
 (`researcher_us/scripts/edge_score.py`, unchanged), run over Tokyo. It exists to ask

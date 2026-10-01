@@ -88,7 +88,7 @@ python3 researcher_australia/scripts/au_universe.py -o <RUN>/universe.json
 ```
 
 It scans the vendor calendar, shifts every date to Sydney time, keeps the rows landing
-on the target session, drops names below $200k/day of turnover, folds second share
+on the target session, drops names below $100k/day of turnover (was $200k until 2026-10-01), folds second share
 classes into their issuer, and if more than `cap` survive takes a **random sample seeded
 by the date**. Report `selection.method`, `eligible` and `hunted` in the note. The draw
 is random on purpose: any other cut is a second ranking the scorer cannot see, and the US

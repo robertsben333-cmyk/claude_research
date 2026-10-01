@@ -144,7 +144,9 @@ Three consequences worth stating plainly:
   larger for the same real crowding. Deliberately not rescaled — a correction factor
   nobody has measured is worse than a difference everyone can see.
 
-**The floor is $200k/day since 2026-09-19, down from $1m, on the operator's
+**The floor is $100k/day since 2026-10-01**, on the operator's instruction that every
+non-US stage screens at $100k; everything below about the $200k move applies to it with
+more force. **It was $200k/day from 2026-09-19, down from $1m, on the operator's
 instruction** — the same bar the US and Japanese stages screen on, so all ten markets
 are cut the same way and their resolved numbers are comparable. Measured over the ten
 sessions 2026-09-21 → 10-02 on the live vendor calendar and live tape, it is not
@@ -334,7 +336,7 @@ Measured 2026-09-19: `.PA` and `.DE` symbols carried timestamps for 09-17 and 09
 `eu_resolve.py` carries `last_bar_date` and `move_pending` per row and warns when every
 row is pending, so an unresolvable morning is never read as a day on which nothing moved.
 
-## The selection is random on purpose, and the floor is $200k
+## The selection is random on purpose, and the floor is $100k (was $200k)
 
 Two steps: drop everything below **$200k a day** of median 20-session turnover,
 normalised to USD off a live FX rate written into the universe file; then if more than

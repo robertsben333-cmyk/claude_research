@@ -96,7 +96,7 @@ python3 researcher_canada/scripts/ca_universe.py -o <RUN>/universe.json
 ```
 
 It scans TradingView's Canada universe, reconciles every candidate against Wall Street
-Horizon through TMX, drops names below $200k a day of turnover, drops **filing-only
+Horizon through TMX, drops names below $100k a day of turnover (was $200k until 2026-10-01), drops **filing-only
 issuers** and **disputed dates**, folds second share classes, and if more than `cap`
 survive takes a **random sample seeded by the date**. Report `selection.method`,
 `calendar_reconciliation` and `moved_off_target_by_wsh` in the note.

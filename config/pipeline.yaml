@@ -208,16 +208,18 @@ japan_hunt:
   # rather than the finding. A seeded draw cannot do that, and `eligible_codes` in the
   # universe file carries the population the draw came from.
   cap: 25
-  # Median 20-day turnover floor, in yen. 3e7 JPY is about $200k/day at 150, which is
-  # the same capacity bar `execution.benchmark.min_dollar_volume_usd` screens on, so
-  # the two markets' universes are cut on one number rather than two chosen apart.
+  # Median 20-day turnover floor, in yen. 1.5e7 JPY is about $100k/day at 150.
+  # LOWERED FROM 3e7 (~$200k) TO 1.5e7 ON 2026-10-01, on the operator's instruction
+  # that every non-US stage screens at $100k. It is therefore HALF the US bar
+  # (`execution.benchmark.min_dollar_volume_usd`), no longer the same number; a
+  # cross-market comparison must cut both sides at the higher floor to be like for like.
   #
   # BE CLEAR WHAT IT COSTS: the Japanese tail is far thinner than the US one. On the
   # 62 names scheduled for 2026-10-09 the median was 7,367,800 JPY a day (~$49k) and
-  # this floor kept 40%. The ranked universe is the liquid half of the day and is not
+  # the old 3e7 floor kept 40%. The ranked universe is the liquid half of the day and is not
   # a sample of Japanese listed companies. That is the "deselect microcaps" step and
   # it is intended, but it is a selection and it belongs in the note.
-  min_turnover_jpy: 30000000
+  min_turnover_jpy: 15000000
   # ONE HUNTER PER NAME, for the reason edge_hunt.double_hunt_top_n records: over
   # twelve paired US names the gap between two hunters predicted neither the error
   # (+0.203) nor whether the sign was right (+0.028).
@@ -280,11 +282,12 @@ canada_hunt:
   # fail independently, Canada fails all at once, and no second source for the register
   # exists anywhere. See researcher_canada/SOURCES.md.
   cap: 20
-  # The same $200k/day capacity bar stages E, J and EU screen on, so the four markets'
-  # universes are cut on one number rather than four chosen apart. Applied in USD off a
+  # $100k/day since 2026-10-01 (was $200k), on the operator's instruction that every
+  # non-US stage screens at $100k: the same bar as stages J, EU and AU, half of stage
+  # E's. Applied in USD off a
   # LIVE CAD rate, with the fallback constant recorded in the universe file when Yahoo
   # refuses -- a silent constant would move the floor by whatever the currency did.
-  min_turnover_usd: 200000
+  min_turnover_usd: 100000
   hunters_per_name: 1
   wave_size: 5
   max_concurrent_subagents: 5
@@ -442,9 +445,14 @@ europe_hunt:
   # register-read absence the same 0.45 as a real disclosure, and eu_resolve.py reports
   # the Spearman SPLIT BY `anchor_covered` with the count in each arm. If the uncovered
   # half ranks at zero, that is readable within a fortnight instead of never.
+  # LOWERED AGAIN, FROM $200k TO $100k, ON 2026-10-01, on the operator's instruction
+  # that every non-US stage screens at $100k. Same direction, same cost as the move
+  # above, larger: every added name sits below the band where the register resolves,
+  # so `by_anchor_covered` is now the first split to read on any pooled number. The
+  # cross-market comparability that justified $200k no longer holds against stage E.
   # Normalised to USD off a live FX rate that is written into every universe file, because
   # three currencies and a constant is a floor that moves 10% a year without saying so.
-  min_turnover_usd: 200000
+  min_turnover_usd: 100000
   #
   # NO SIZE-BAND CUT ABOVE THE FLOOR, and this is deliberate against the operator's own
   # prior. Phase 1 measured sell-side coverage at 1-2 analysts below $1m/day, 5-7 at
@@ -562,12 +570,13 @@ australia_hunt:
   # UTC, after the 16:00 Sydney close and about fifteen hours before the first release.
   # A run that seals on the morning of the print seals after the event.
   cap: 20
-  # Median 20-day turnover floor in USD, the same bar stages E, J and EU screen on, so
-  # the four markets' universes are cut on one number rather than four chosen apart.
+  # Median 20-day turnover floor in USD. $100k since 2026-10-01 (was $200k), on the
+  # operator's instruction that every non-US stage screens at $100k: the same bar as
+  # stages J, EU and CA, half of stage E's.
   # AUD is converted at a LIVE rate written into the universe file: a constant would
   # silently move the floor by 10% a year, and the floor is the only selection this
   # stage makes that is not random.
-  min_turnover_usd: 200000
+  min_turnover_usd: 100000
   # ONE HUNTER PER NAME, for the reason edge_hunt.double_hunt_top_n records: over twelve
   # paired US names the gap between two hunters predicted neither the error (+0.203) nor
   # whether the sign was right (+0.028).

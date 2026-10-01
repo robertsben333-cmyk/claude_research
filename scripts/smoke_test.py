@@ -1268,8 +1268,10 @@ def main():
           '"pre_lessons"' in au_agent and "lessons_applied" in au_agent)
     check("config says language_pass is off for Australia",
           cfg["australia_hunt"]["language_pass"] is False)
-    check("config gives Australia the same turnover floor as the other stages",
-          cfg["australia_hunt"]["min_turnover_usd"] == 200000)
+    check("config gives Australia the same turnover floor as the other non-US stages",
+          cfg["australia_hunt"]["min_turnover_usd"] == 100000
+          == cfg["europe_hunt"]["min_turnover_usd"]
+          == cfg["canada_hunt"]["min_turnover_usd"])
     check("stage AU has no execution block",
           "execution" not in cfg["australia_hunt"])
     check("researcher_australia/LESSONS.md carries no rules yet",
