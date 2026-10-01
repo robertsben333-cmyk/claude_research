@@ -65,3 +65,11 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-10-01 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen window. Plan: rev_universe --intraday --k 15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-09-30, note before 16:00 ET (shedding names if needed).
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-01 19:13 UTC
+- Screen: --intraday at 15:04 EDT on 2026-10-01 (bars not final); 46 names passed floors; 15 hunted, 15 rankable; sectors CD 5 / HC 5 (33% each), no warning. SPY +0.22% at screen.
+- Hunters: 15 reversal-hunters; concurrency cap of 8 subagents meant 7 launched as slots freed. Nothing shed. edge_score.py ran unchanged: 1 of 15 clears the 3.0 floor (ONEN -3.00, leg 2 supply, no leg-1 mechanism). Zero repricing (leg 1) findings across 15 hunts.
+- Resolved 2026-09-29 at d1 (resolve-2026-09-29.json): impact_sum rho +0.034 (p 0.90) vs neg_atr14 +0.356; lean_vs_free_control_rho -0.314. Did not beat the free control. 2026-09-30 run not resolvable until today's close.
+- Contamination: JAGX hunter saw a WebSearch summary carrying a 2026-10-01 'close' dated after the screen instant; discarded, entered no number. Typos with no numeric effect left as written in BBGI.json (date '2026-09-30-2027' = 2027-09-30) and INDP.json ('4/1' = 9/4). KDK hunter had no rejection reason for 'no mechanism' and used contradicted_by_document.
+- No floor, weight or horizon moved. No orders; no execution step exists in this stage.
