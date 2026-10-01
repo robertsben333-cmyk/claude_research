@@ -829,7 +829,12 @@ dashboard, `edge_sample.py`) can pick it up. `edge_resolve.py` ranks it as
 fact, four reasons to drop) are unchanged. **Every hunt stage pastes
 `scripts/score_report.py`'s table at the top of its closing reply**: per name
 `impact_sum`, floor, `impact_scaled`, `abs_move_pct`, `p_up`, and for the US (stage E and
-E-S) the V2 grounded score, printed as `not run` rather than dropped. Stage E-S now runs
+E-S) the V2 grounded score, printed as `not run` rather than dropped. **Since 2026-10-01
+`impact_sum` and `impact_scaled` each carry a percentile in brackets**, `+3.40 (p87)`: the
+share of earlier rankable names sized by the SAME hunter model whose |value| is lower,
+every stage pooled, synthetic validation runs excluded, `n<20` until 20 exist. It reads
+SIZE against that model's own habit (Opus 5.5 files a zero on ~38% of names, so a zero
+reads p19), it pools prompt versions, and it is not a rank or a probability. Stage E-S runs
 `edge_grounded_score.py` on its own directory (it only reads the shadow ledger) and still
 never feeds that ledger. On the NKE runs of 2026-10-01 the two keys are equal by
 construction, because those hunts were sized under the morning's rule; they diverge from
