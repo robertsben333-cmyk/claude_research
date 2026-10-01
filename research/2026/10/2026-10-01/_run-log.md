@@ -28,3 +28,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-01 01:05 UTC
 - Tokyo window after 15:00 JST 2026-10-01. Universe via jp_universe.py, seal baselines, one unpriced-hunter-jp per name in waves of 5, score with edge_score.py. No orders.
+
+## Stage J — Japan researcher — universe sealed
+- Logged at 2026-10-01 01:06 UTC
+- 6 scheduled / 4 eligible / 4 hunted (all eligible, no draw). Dropped on turnover: 2493, 5942. 4 baselines sealed on short register 20260929; all four truncated zeros on the register, 信用倍率 resolved on all four. Also resolved the 2026-09-29 run: 4/4 usable, lean_vs_free_control_rho -0.4.
