@@ -10,7 +10,7 @@ book only ever trades the top.
 ## Data and split
 
 - 231 resolved, hunted names (US 154, Europe 48, Australia 16, Japan 13), taken from
-  `../rejudge-full-2026-10-01/key.json`: the live hunter's findings with its own
+  `../rejudge-four-models/key.json`: the live hunter's findings with its own
   sizes, the sealed baseline and the realised move (US: the strategy exit, $200k
   turnover floor; elsewhere the market's resolver window).
 - **Split by whole days, frozen in `split.json`**: train 141, validation 46, test 44

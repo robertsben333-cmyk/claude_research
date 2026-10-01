@@ -3,7 +3,7 @@ pass (packs-x1, x2) adds US hunts saved under suffixed names and the names first
 for leakage, anonymised: ticker, company name and every URL replaced by placeholders."""
 import json,glob,os,re
 R='/home/user/claude_research'; os.chdir(R)
-OUT='researcher_us/analysis/rejudge-full-2026-10-01'
+OUT='research/analyses/rejudge-four-models'
 SIZE=re.compile(r'\b[Ss]ized? (at|to) [^.;]*|\bcut (it )?from [-+]?\d[^.;]*|\(lesson[^)]*\)|\blesson \d+\b[^.;]*|\bp_up\b[^.;]*|\babs_move[^.;]*',re.I)
 sc=lambda s: SIZE.sub('[sizing note removed]',s) if isinstance(s,str) else s
 NORDIC={'se','dk','no','fi','nordic'}

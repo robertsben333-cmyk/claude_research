@@ -35,8 +35,8 @@ from datetime import datetime, timezone
 
 R = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../..'))
 D = os.path.dirname(os.path.abspath(__file__))
-KEY = f'{R}/researcher_us/analysis/rejudge-full-2026-10-01/key.json'
-REJ = f'{R}/researcher_us/analysis/rejudge-full-2026-10-01'
+KEY = f'{R}/research/analyses/rejudge-four-models/key.json'
+REJ = f'{R}/research/analyses/rejudge-four-models'
 SPLIT = f'{D}/split.json'
 TESTLOG = f'{D}/TEST-LOG.md'
 SEED = 20261001

@@ -799,7 +799,7 @@ shrink (sources per hunt 13.9 → 16.6). Filing did: 75% of surfaced items becam
 before, 34% after, and what was rejected was mostly sourced proxy evidence ("weird is
 good" in the definition collided with "a proxy is a hypothesis" in rule 5, and the new
 model settled it for rule 5). A blinded re-judge of the same evidence by Opus 5
-(`researcher_us/analysis/rejudge-2026-10-01/`) sized it 1.77× larger with the same sign
+(`research/analyses/rejudge-opus5-vs-opus55/`) sized it 1.77× larger with the same sign
 on 18 of 18 names and no better ranking, so the change is scale and filing, not
 direction. **Every live hunter in every region now opens with one shared core,
 `config/hunter-core.md`**, copied verbatim by `scripts/sync_hunter_core.py` (the smoke
@@ -1967,6 +1967,10 @@ scripts/                               shared: run_paths, publish, run_log, get_
 config/pipeline.yaml                   one config for all of it
 .claude/{agents,skills}/               where the harness looks; cannot move
 
+research/analyses/                     cross-cutting analyses, one folder per question,
+  README.md                            indexed in its README (re-judges, portfolio
+                                       simulator, judge lab, prompt trial). Not read
+                                       by any stage; the daily globs skip it
 research/<YYYY>/<MM>/<YYYY-MM-DD>/
   00-universe.json  00-universe.md      stage 0 — still written every day
   edge/                                 stage E's run for that day
