@@ -408,7 +408,7 @@ const DEFAULTS = {
   lens: 'research', horizon: 'strategy',
   thrOn: false, thr: D.conviction_floor ?? 3,
   tradeOn: false, minLong: 200000, minShort: 1000000, reqShort: true,
-  session: 'all', sector: 'all',
+  session: 'all', sector: 'all', version: 'all',
   from: DATES[0] || '', to: DATES[DATES.length-1] || '',
   capOn: false, capPct: 33, grossPct: 100
 };
@@ -426,7 +426,13 @@ const boardOf = r => r['ret_' + F.horizon];
    a name that was never traded simply leaves the lens. */
 const retOf = r => F.lens === 'trading' ? (r.trade_ret_pct ?? null) : boardOf(r);
 
+/* One argument only: it is passed straight to Array.filter, which hands it the index
+   as a second argument. Versies is the one tab that ignores the version filter. */
 function passesFilters(r) {
+  if (F.version !== 'all' && (r.prov_key || 'onbekend') !== F.version) return false;
+  return passesFiltersExceptVersion(r);
+}
+function passesFiltersExceptVersion(r) {
   if (F.from && r.run_date < F.from) return false;
   if (F.to && r.run_date > F.to) return false;
   if (F.session !== 'all' && r.session !== F.session) return false;
@@ -460,7 +466,8 @@ function tradesFiltered(closedOnly) {
   return D.trades.filter(t => {
     if (closedOnly && (t.ret_pct === null || t.ret_pct === undefined)) return false;
     const r = nameOfTrade(t);
-    if (!r) return !(F.thrOn || F.tradeOn || F.sector !== 'all' || F.session !== 'all');
+    if (!r) return !(F.thrOn || F.tradeOn || F.sector !== 'all' || F.session !== 'all'
+                     || F.version !== 'all');
     return passesFilters(r);
   });
 }
@@ -1488,6 +1495,7 @@ function tabData() {
 
 /* --------------------------------------------------------------- controls */
 const SECTORS = [...new Set(ALL.map(r => r.sector || 'onbekend'))].sort();
+const VERSIONS = [...new Set(ALL.map(r => r.prov_key || 'onbekend'))].sort();
 function renderControls() {
   const c = document.getElementById('controls');
   const days = ALL.filter(r => inRange(r.run_date)).length;
@@ -1547,6 +1555,11 @@ function renderControls() {
         <select id="f-sector"><option value="all">alle</option>${SECTORS.map(x =>
           `<option value="${esc(x)}" ${x===F.sector?'selected':''}>${esc(x)}</option>`).join('')}
         </select></div>
+      <div class="ctl" title="Welke versie van de hunter-prompt en welk model de naam rangschikten. Zie het tabblad Versies.">
+        <label>versie</label>
+        <select id="f-version"><option value="all">alle (${VERSIONS.length})</option>${VERSIONS.map(x =>
+          `<option value="${esc(x)}" ${x===F.version?'selected':''}>${esc(x)}</option>`).join('')}
+        </select></div>
       <button class="btn small" id="f-help" aria-expanded="false">? uitleg</button>
       <button class="btn small" id="f-reset">herstel</button>
     </div>
@@ -1579,6 +1592,10 @@ function renderControls() {
           namen en 33% is de rekening voor 99% belegd, bij één naam voor 33%, bij tien
           namen voor 100% met 10% per naam. Uit betekent gelijk gewogen en altijd volledig
           belegd — dat is het onderzoeksgetal, niet wat een rekening doet.</dd>
+        <dt>versie</dt><dd>De versie van de hunter-prompt en het model dat de naam
+          rangschikte, bijvoorbeeld <code>us.v8 · Opus 5.5</code>. Alle versies samen mengen
+          methodes die op verschillende dagen verschillend waren; het tabblad <b>Versies</b>
+          zet ze naast elkaar.</dd>
         <dt>sessie en sector</dt><dd>amc rapporteert na de slotbel, bmo vóór de opening; op
           deze steekproef gedragen ze zich tegengesteld. Sector komt van Yahoo.</dd>
       </dl>
@@ -1608,6 +1625,7 @@ function renderControls() {
   on('f-grosspct','change', e => { F.grossPct = +e.target.value; F.capOn = true; redraw(); });
   on('f-session','change', e => { F.session = e.target.value; redraw(); });
   on('f-sector','change', e => { F.sector = e.target.value; redraw(); });
+  on('f-version','change', e => { F.version = e.target.value; redraw(); });
   on('f-reset','click', () => { Object.assign(F, DEFAULTS); redraw(); });
   on('f-help','click', e => {
     const box = document.getElementById('helpbox');
@@ -1642,6 +1660,7 @@ function filterLine() {
   if (F.capOn) bits.push(`max ${F.capPct}% per naam, bruto ${F.grossPct}%`);
   if (F.session !== 'all') bits.push(F.session);
   if (F.sector !== 'all') bits.push(F.sector);
+  if (F.version !== 'all') bits.push('versie ' + F.version);
   bits.push(F.horizon === 'strategy'
     ? 'uitstap strategie (amc 15:30, bmo 20:00 CET)'
     : `uitstap ${F.horizon} (${HZ_CET[F.horizon]} CET)`);
@@ -2566,9 +2585,10 @@ function tabWeging() {
    er geen beweging, dan is de run nog niet opgelost. */
 const MRAW = document.getElementById('markets');
 const M = MRAW ? JSON.parse(MRAW.textContent) : {markets:{}, problems:[]};
-const MS = {val:false, thr:0};
+const MS = {val:false, thr:0, ver:{}};
 function mSet(k, v) {
-  MS[k] = (k === 'thr' ? +v : v);
+  if (k === 'ver') MS.ver[MKT] = v;
+  else MS[k] = (k === 'thr' ? +v : v);
   /* De validatieknop kan een analysetabblad openen of sluiten, dus de rij wordt
      opnieuw gezet en hetzelfde tabblad bij naam teruggezocht. */
   if (MKT !== 'US') {
@@ -2593,7 +2613,12 @@ const MNOTE = {
   JP: `Tokio. Geen optie-anker, dus de lean komt uit het JPX short-register, de
        verandering daarin en 信用倍率. Samen brengen die de
        <code>baseline_quality</code> op 0,725, tegen 0,40 toen de lean nog de run-up
-       zelf was. Het venster loopt van de slotbel naar de volgende opening. De beurs
+       zelf was. De beurs sluit om <b>15:30</b>, en een deel van de bedrijven publiceert
+       daarvóór (13:00, 13:30, 15:00): die namen lopen van de verzegelde spot naar de
+       volgende slotkoers, de rest van de slotkoers naar de volgende. Tot 2026-10-01 liep
+       elke naam vanaf de slotkoers, waardoor drie van de eerste acht een venster kregen dat
+       na hun eigen reactie begon. Versie <b>jp.v5</b> is de hunter die op de Japanse
+       context is aangepast; zie het tabblad Versies. De beurs
        is vaker dicht dan de cron: een lege dag met <code>market_closed</code> is een
        feestdag en geen storing.`,
   CA: `Toronto, en de reden is niet de agenda. Canada is de enige markt hier waar de
@@ -2616,12 +2641,19 @@ const MNOTE = {
        <code>filer_type</code> zegt welke van de twee.`,
 };
 
-const mRows = (code, allThr) => {
+/* De versie is een filter zoals de drempel: welke hunter-prompt en welk model de
+   naam rangschikten. Zonder filter mengt elk getal hieronder methodes die op
+   verschillende dagen verschillend waren; `allVer` zet hem uit voor het tabblad
+   Versies, dat ze juist naast elkaar zet. */
+const mVer = code => MS.ver[code] || 'all';
+const mRows = (code, allThr, allVer) => {
   const d = (M.markets || {})[code] || {names: [], runs: []};
   const val = new Set(d.runs.filter(r => r.validation_only).map(r => r.run));
   const thr = allThr ? 0 : MS.thr;
+  const ver = allVer ? 'all' : mVer(code);
   return d.names.filter(r => (MS.val || !val.has(r.run))
-                          && (!thr || Math.abs(r.impact_sum || 0) >= thr));
+                          && (!thr || Math.abs(r.impact_sum || 0) >= thr)
+                          && (ver === 'all' || (r.prov_key || 'onbekend') === ver));
 };
 const mRuns = code => {
   const d = (M.markets || {})[code] || {runs: []};
@@ -2659,10 +2691,10 @@ function mStat(rows) {
    Eén context per render. Elk tabblad hieronder werkt op dezelfde gefilterde
    verzameling, zodat een getal op het ene tabblad en een getal op het andere
    over dezelfde namen gaan. */
-function mCtx(code, allThr) {
+function mCtx(code, allThr, allVer) {
   const d = (M.markets || {})[code] || null;
   if (!d) return null;
-  const runs = mRuns(code), rows = mRows(code, allThr);
+  const runs = mRuns(code), rows = mRows(code, allThr, allVer);
   /* Een naam zonder jacht is geen nul, het is een lege plek. Op 2026-09-23 bleven
      zeven Britse namen ongejaagd omdat de sessie geen subagenten kon starten, en
      die staan in edge-scores.json met impact_sum 0 en rankable false. Ze horen in
@@ -2691,6 +2723,13 @@ function mControls(c, want) {
       <button aria-pressed="${!MS.thr}" onclick="mSet('thr',0)">alle namen</button>
       <button aria-pressed="${MS.thr === c.floor}" onclick="mSet('thr',${c.floor})">|impact_sum| ≥ ${c.floor}</button>
     </span>`;
+  const keys = [...new Set(c.d.names.map(r => r.prov_key || 'onbekend'))].sort();
+  if (want !== 'val' && want !== 'thr-only' && keys.length) h += `<span class="ctl" title="Welke versie van de hunter-prompt en welk model de naam rangschikten. Zie het tabblad Versies.">
+      <label>versie</label>
+      <select onchange="mSet('ver', this.value)">
+        <option value="all" ${mVer(c.code) === 'all' ? 'selected' : ''}>alle (${keys.length})</option>
+        ${keys.map(k => `<option value="${esc(k)}" ${mVer(c.code) === k ? 'selected' : ''}>${esc(k)}</option>`).join('')}
+      </select></span>`;
   if (c.hasVal) h += `<span class="seg" role="group" aria-label="validatieruns">
       <button aria-pressed="${!MS.val}" onclick="mSet('val',false)">alleen echte runs</button>
       <button aria-pressed="${MS.val}" onclick="mSet('val',true)">validatieruns meetellen</button>
@@ -3057,6 +3096,11 @@ function mtNamen(code) {
     {h:'ticker', f:r=>`<b>${esc(r.ticker)}</b>`},
     {h:'bedrijf', f:r=>esc((r.company||'').slice(0,34))},
     {h:'sessie', f:r=>esc(r.session)},
+    {h:'versie', f:r=>verCell(r)},
+    ...(code === 'JP' ? [{h:'release', f:r=>r.release_time_jst
+        ? `${esc(r.release_time_jst)}${r.entry_basis && r.entry_basis !== 'close_event_date'
+             ? ' <span class="meta" title="in de sessie: instap op de verzegelde spot of de vorige slot">· in sessie</span>' : ''}`
+        : '–'}] : []),
     {h:'impact_sum', f:r=> r.rankable === false
         ? `<span class="meta">${esc(r.not_rankable_because || 'niet gerangschikt')}</span>`
         : `<span class="${sgn(r.impact_sum)}">${n1(r.impact_sum)}</span>`},
@@ -3087,6 +3131,7 @@ function mtRuns(code) {
     {h:'vondsten', f:r=>r.n_findings},
     {h:'opgelost', f:r=>r.n_rows ? `${r.n_resolved}/${r.n_rows}` : '–'},
     {h:'gedood', f:r=>r.n_killed || '–'},
+    {h:'versie', f:r=>(r.prov_keys || []).length ? (r.prov_keys || []).map(esc).join('<br>') : '–'},
     {h:'lean vs controle', f:r=>n2((r.resolver_stats||{}).lean_vs_free_control_rho)},
     {h:'trekking', f:r=>{
       const s = r.selection || {};
@@ -3128,7 +3173,8 @@ function mtData(code) {
     uitvoering.</p>
     <p><b>Het venster is niet van dit dashboard.</b> Europa en Australië rapporteren vóór de
     opening, dus daar loopt het van <code>slot(D−1)</code> tot <code>slot(D)</code>; Tokio loopt
-    van de slotbel naar de volgende opening. Die logica hoort in de resolver van de markt zelf
+    van de laatste koers vóór de publicatie naar de volgende slotkoers (de verzegelde spot als
+    het bedrijf vóór de slotbel van 15:30 publiceert, anders de slotkoers). Die logica hoort in de resolver van de markt zelf
     en staat nergens hier. Een gerealiseerde beweging op deze tabbladen is door die resolver
     berekend of hij staat er niet.</p></div>`;
   html += `<div class="card"><h3>Per run</h3>` + table([
@@ -3143,6 +3189,95 @@ function mtData(code) {
     {h:'omzetdrempel', f:r=>usdM(r.min_turnover_usd)}], c.d.runs) + `</div>`;
   if ((M.problems || []).length) html += `<div class="card warnbox"><h3>Problemen bij het verzamelen</h3>
     <ul>${M.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`;
+  return html;
+}
+
+/* ---------------------------------------------------------------- Versies
+   Welke hunter-prompt en welk model elk getal maakten. Een versie is een
+   inhoud van de hunterdefinitie zoals die op main stond (config/prompt-versions.json,
+   uit de git-geschiedenis), het model is wat de alias `opus` op dat moment
+   leverde. Een run die het zelf heeft vastgelegd heet `vastgelegd`; een oudere run
+   is achteraf uit git gehaald en heet `uit git`. */
+const PROVBASIS = {recorded_at_run:'vastgelegd', backfilled_from_git:'uit git',
+                   inferred_by_date:'op datum', unknown:'onbekend'};
+function verCell(r) {
+  if (!r.prov_key || r.prov_key === 'onbekend') return '<span class="meta">onbekend</span>';
+  const t = [r.prompt_label, r.hunter_version && r.hunter_version !== r.prompt_version
+              ? 'hunter ' + r.hunter_version : '', r.hunter_agent,
+             'model: ' + (r.model || r.model_short || '?') + ' (' + (r.model_basis || '?') + ')',
+             'herkomst: ' + (PROVBASIS[r.prov_basis] || r.prov_basis || '?')]
+            .filter(Boolean).join(' · ');
+  const approx = r.prov_basis === 'recorded_at_run' ? '' : '<span class="meta" title="niet tijdens de run vastgelegd">≈</span>';
+  return `<span title="${esc(t)}">${approx}${esc(r.prov_key)}</span>`;
+}
+function versionTable(groups, regVersions) {
+  /* groups: [{key, rows:[...]}] where rows carry impact_sum, move, ret, run */
+  const meta = new Map((regVersions || []).map(v => [v.id, v]));
+  const out = groups.map(g => {
+    const r0 = g.rows[0] || {};
+    const v = g.rows.filter(r => r.mv !== null && r.mv !== undefined
+                              && r.impact_sum !== null && r.impact_sum !== undefined);
+    const signed = v.filter(r => r.impact_sum);
+    const days = new Set(g.rows.map(r => r.run)).size;
+    return {key: g.key, label: r0.prompt_label, from: r0.prompt_from_utc,
+            model: r0.model || r0.model_short, mbasis: r0.model_basis,
+            basis: [...new Set(g.rows.map(r => PROVBASIS[r.prov_basis] || r.prov_basis))].join(', '),
+            days, n: g.rows.length, nres: v.length,
+            sign: signed.length ? `${signed.filter(r => (r.impact_sum > 0) === (r.mv > 0)).length}/${signed.length}` : '–',
+            rho: v.length >= MMIN ? corr(ranks(v.map(r => r.impact_sum)), ranks(v.map(r => r.mv))) : null,
+            neg: signed.length ? `${signed.filter(r => r.impact_sum < 0).length}/${signed.length}` : '–',
+            bk: book(v.filter(r => r.impact_sum).map(r => r.impact_sum > 0 ? r.mv : -r.mv))};
+  });
+  return table([
+    {h:'versie · model', f:r=>`<b>${esc(r.key)}</b>`},
+    {h:'wat veranderde', f:r=>esc(r.label || '–')},
+    {h:'op main sinds', f:r=>esc(r.from ? r.from.slice(0,16).replace('T',' ') : 'nog niet')},
+    {h:'model', f:r=>`${esc(r.model || '–')} <span class="meta">${esc(r.mbasis === 'alias_timeline' ? 'afgeleid' : r.mbasis === 'recorded' ? 'vastgelegd' : (r.mbasis || ''))}</span>`},
+    {h:'herkomst', f:r=>esc(r.basis)},
+    {h:'dagen', f:r=>r.days},
+    {h:'namen', f:r=>r.n},
+    {h:'opgelost', f:r=>r.nres},
+    {h:'negatief', f:r=>r.neg},
+    {h:'teken goed', f:r=>r.sign},
+    {h:'ρ', f:r=>r.rho === null ? `<span class="meta">&lt; ${MMIN}</span>` : n2(r.rho)},
+    {h:'bord gem. %', f:r=>r.bk.n ? `<span class="${sgn(r.bk.mean)}">${pc(r.bk.mean)}</span>` : '–'},
+  ], out);
+}
+const VERSIESNOTE = `<p class="meta"><b>Wat een versie is.</b> Een versie is één inhoud van de
+  hunterdefinitie (<code>.claude/agents/…</code>) zoals die op <code>main</code> stond, genummerd in
+  volgorde van verschijnen; Europa telt zijn zeven taalhunters als één reeks. Het register staat in
+  <code>config/prompt-versions.json</code> en wordt gebouwd door
+  <code>scripts/provenance.py registry</code>. Elke run legt vanaf 2026-10-01 zelf vast welke
+  versie zijn hunters lazen (<code>provenance.json</code>); oudere runs zijn achteraf uit git
+  gehaald op het moment dat ze verzegelden, en een ≈ in de namentabel zegt dat. <b>Het model is
+  afgeleid</b>, tenzij er 'vastgelegd' staat: een hunter kan niet zien welk model hem draait, en
+  de alias <code>opus</code> wisselde op 2026-09-22 tussen 18:56 en 19:09 UTC van Opus 5 naar
+  Opus 5.5 zonder dat hier iets veranderde.</p>
+  <p class="meta"><b>Lees dit niet als een wedstrijd.</b> Elke versie draaide op andere dagen,
+  dus een verschil tussen twee rijen is ook een verschil tussen markten-in-de-tijd. Onder
+  ${MMIN} opgeloste namen staat er geen ρ. Wat deze tabel wel doet: hij laat zien dat een
+  gepoold getal over alle versies samen methodes mengt die niet hetzelfde waren.</p>`;
+function mtVersies(code) {
+  const c = mCtx(code, false, true), g = mGuard(c, code);
+  if (g) return g;
+  const by = new Map();
+  c.ranked.forEach(r => { const k = r.prov_key || 'onbekend';
+    if (!by.has(k)) by.set(k, []); by.get(k).push({...r, mv: r.realised_move_pct}); });
+  const groups = [...by.entries()].sort((a,b) => a[0] < b[0] ? -1 : 1)
+                                  .map(([key, rows]) => ({key, rows}));
+  const reg = (c.d.versions || []);
+  let html = mControls(c, 'thr-only') + `<div class="card"><h3>Per versie en model</h3>` +
+    versionTable(groups, reg) + VERSIESNOTE + `</div>`;
+  if (reg.length) html += `<div class="card"><h3>Alle versies van deze stage</h3>` + table([
+    {h:'versie', f:r=>`<b>${esc(r.id)}</b>`},
+    {h:'wat veranderde', f:r=>esc(r.label || r.subject || '–')},
+    {h:'op main sinds', f:r=>r.from_utc ? esc(r.from_utc.slice(0,16).replace('T',' '))
+        : '<span class="c-anti">nog niet op main</span>'},
+    {h:'hunters', f:r=>esc(Object.values(r.hunters || {}).filter(Boolean).join(', '))},
+    {h:'runs', f:r=>c.runs.filter(x => (x.prov_keys || []).some(k => k.startsWith(r.id + ' '))).length},
+  ], [...reg].reverse()) + `<p class="meta">Een versie zonder runs is er een die nog geen
+    dag heeft gedraaid. "Nog niet op main" betekent dat hij op een branch staat: de Routine
+    kloont <code>main</code> en leest hem pas na de merge.</p></div>`;
   return html;
 }
 
@@ -3170,6 +3305,8 @@ const MTABDEFS = [
   {name:'Taal',      fn:mtTaal,      needs:'een run van vóór 2026-09-22 met een bevroren pre_local-draft', only:'EU',
    when:c => c.ranked.some(r => r.impact_sum_pre_local !== null
                              && r.impact_sum_pre_local !== undefined)},
+  {name:'Versies',   fn:mtVersies,   needs:'een gejaagde naam',
+   when:c => c.rows.length > 0},
   {name:'Namen',     fn:mtNamen,     needs:'een gejaagde naam',
    when:c => c.rows.length > 0},
   {name:'Runs',      fn:mtRuns,      needs:'een run op schijf',
@@ -3179,7 +3316,7 @@ const MTABDEFS = [
 ];
 
 function marketTabs(code) {
-  const c = mCtx(code, true);
+  const c = mCtx(code, true, true);
   return byGroup(MTABDEFS
     .filter(t => !t.only || t.only === code)
     .filter(t => !t.when || !c || t.when(c))
@@ -3302,6 +3439,34 @@ function tabV2() {
   return html;
 }
 
+/* ---------------------------------------------------------- Versies (VS)
+   Dezelfde tabel als op de andere markten, op de rijen van de ledger en onder
+   alle filters behalve de versie zelf. De beweging is die van de gekozen
+   uitstap, zodat dit tabblad dezelfde horizon leest als Score. */
+function tabVersies() {
+  const rows = ALL.filter(passesFiltersExceptVersion);
+  const by = new Map();
+  rows.forEach(r => { const k = r.prov_key || 'onbekend';
+    if (!by.has(k)) by.set(k, []); by.get(k).push({...r, mv: mvOf(r)}); });
+  const groups = [...by.entries()].sort((a,b) => a[0] < b[0] ? -1 : 1)
+                                  .map(([key, rows]) => ({key, rows}));
+  const reg = D.versions || [];
+  let html = `<p class="lead">Welke hunter-prompt en welk model elke Amerikaanse naam
+    rangschikten. De versiekeuze in de filterbalk werkt op elk tabblad; hier staan ze
+    naast elkaar.</p><div class="card"><h3>Per versie en model</h3>` +
+    versionTable(groups, reg) + VERSIESNOTE + `</div>`;
+  if (reg.length) html += `<div class="card"><h3>Alle versies van de Amerikaanse hunter</h3>` + table([
+    {h:'versie', f:r=>`<b>${esc(r.id)}</b>`},
+    {h:'wat veranderde', f:r=>esc(r.label || r.subject || '–')},
+    {h:'op main sinds', f:r=>r.from_utc ? esc(r.from_utc.slice(0,16).replace('T',' '))
+        : '<span class="c-anti">nog niet op main</span>'},
+  ], [...reg].reverse()) + `<p class="meta">us.v4 loopt van 2026-08-31 tot 2026-09-16 en
+    bevat de verwijdering van de adversary en de dubbele jacht op 2026-09-09: die zaten in de
+    skill, niet in de hunterdefinitie, dus ze vormen geen eigen versie. De blob van de skill
+    staat wel in elke <code>provenance.json</code>.</p></div>`;
+  return html;
+}
+
 /* ------------------------------------------------------- de index van de pagina
    Twintig tabbladen in één platte rij zijn geen index. Drie dingen maken er wel
    een van: elk tabblad hoort bij een groep, elk tabblad heeft één regel die zegt
@@ -3335,6 +3500,7 @@ const TABMETA = {
   'V2':         {g:'Register', q:'Pre-lessons, post-lessons en V2 naast elkaar, en of κ iets toevoegt boven V1 × σ.'},
   'Hypotheses': {g:'Register', q:'Het hypotheseregister met één verdictregel, en wat er tot nu toe overeind blijft.'},
   'Weging':     {g:'Register', q:'De bevroren wegingen w1 en w2 naast de vlakke regel, per dag meegerekend.'},
+  'Versies':    {g:'Register', q:'Welke hunter-prompt en welk model elke voorspelling maakten, en hoe elke versie het tot nu toe doet.'},
   /* Bronnen */
   'Agenda':     {g:'Bronnen', q:'Wat er de komende week rapporteert, met beide poorten apart geteld. Geen voorspelling.'},
   'Namen':      {g:'Bronnen', q:'Elke gerangschikte naam met zijn sleutel, zijn baseline en zijn uitkomst.'},
@@ -3397,6 +3563,7 @@ const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel],
               ['Sector',tabSector], ['Zoekvolume',tabZoek],
               ['Capaciteit',tabCapaciteit], ['Kosten',tabKosten],
               ['Lessons',tabLessons], ['V2',tabV2], ['Hypotheses',tabHypotheses], ['Weging',tabWeging],
+              ['Versies',tabVersies],
               ['Agenda',tabAgenda], ['Data',tabData], ['Index',tabIndex]];
 US_TABS.splice(0, US_TABS.length, ...byGroup(US_TABS));
 const MARKETS = [['US','Verenigde Staten'], ['EU','Europa'], ['JP','Japan'],

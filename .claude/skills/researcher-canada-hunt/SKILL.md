@@ -114,6 +114,21 @@ python3 researcher_canada/scripts/ca_priced_in.py --universe <RUN>/universe.json
 Sealed means sealed. Nothing downstream may revise a baseline. This step also writes the
 day's short-register snapshot, which is what makes tomorrow's change computable.
 
+**2b. Record which prompt and model this run uses. Before any hunter.**
+
+```bash
+python3 scripts/provenance.py stamp --run <RUN> --market CA --orchestrator-model "<model>"
+```
+
+`<model>` is `session_context.model` from the `get_session` tool when you can call it;
+leave the flag out otherwise. It writes `<RUN>/provenance.json`: the version of the
+hunter definition the hunters are about to read (for example `jp.v5`), the model its
+alias serves, and the blobs of the LESSONS file, the shared hunter core and this skill.
+The dashboard groups every number by version and model, so a run without this file is
+placed by date and labelled as inferred. If it prints `unregistered-…`, the definition
+changed on `main` without `config/prompt-versions.json` being rebuilt; carry on, and say
+so in the run log, because the blob still identifies the exact text.
+
 **3. One hunter per name.** Spawn `unpriced-hunter-ca`, in waves of
 `canada_hunt.wave_size`, publishing after each wave. Give each hunter only its own
 ticker, the window, and the path to its own baseline. Never another name's baseline,

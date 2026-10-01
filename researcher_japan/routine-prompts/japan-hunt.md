@@ -10,11 +10,20 @@ file, because an empty calendar otherwise has two causes that look identical and
 opposite things — the exchange is shut (nothing to wait for) or the fiscal cohort's
 sheet is not up yet (wait).
 
-Why that hour: Tokyo trades 09:00–11:30 and 12:30–15:00 JST, and Japanese results land
-overwhelmingly after the 15:00 close (386 of 456 `決算短信` on 2026-08-14, all 24 on
-09-01). Firing at 10:04 JST puts the run an hour into the session, with live prices for
+Why that hour: Tokyo trades 09:00–11:30 and 12:30–15:30 JST (the close moved from
+15:00 to 15:30 on 2024-11-05; this file said 15:00 until 2026-10-01). Most results land
+at or after 15:00 (386 of 456 `決算短信` on 2026-08-14), but 15:00 is now inside the
+session and so are the 13:00 and 13:30 releases retailers favour: four of the first
+seventeen hunted names released before the close. The resolver reads the TDnet time and
+measures those from the sealed spot. Firing at 10:04 JST puts the run an hour into the session, with live prices for
 the sealed baseline and just under five hours before the first release. The US stage E
 fires at 17:04 UTC, so the two never overlap and neither can starve the other.
+
+**RE-PASTED 2026-10-01 at 18:12 UTC** (`updated_at` confirms it, model reads
+`claude-opus-5-5`): the TSE close corrected to 15:30 and the note deadline moved to 13:00
+JST. Nothing else changed in the prompt; the jp.v5 hunter, the release-time resolver and
+the provenance stamp all reach the Routine through the skill and the tree on `main`, so
+they take effect when this work is merged, not before.
 
 **THE PROMPT IS EDITABLE FROM A SESSION — confirmed 2026-09-18 at 17:38 UTC**, when
 `update_trigger` rewrote it and the Routine's `updated_at` moved. That is the one thing
@@ -60,7 +69,7 @@ Run stage J, the Japan researcher, for today's Tokyo window.
 
 Now invoke the skill `researcher-japan-hunt` and follow it exactly. Read CLAUDE.md first.
 
-Re-read the clock with `date -u` rather than trusting any date you were told at startup. You fire at 01:04 UTC, which is 10:04 in Tokyo and 03:04 in Amsterdam. The Tokyo close is 15:00 JST, five hours out, and essentially every release lands after it. That is your deadline for the note, not for an order: THIS STAGE PLACES NO ORDERS. There is no broker step, no alpaca_trade.py call and no execution block. If you find yourself reaching for one, stop - that is the US stage and it is not this one.
+Re-read the clock with `date -u` rather than trusting any date you were told at startup. You fire at 01:04 UTC, which is 10:04 in Tokyo and 03:04 in Amsterdam. The Tokyo close is 15:30 JST, five and a half hours out. Most releases land at or after 15:00 and some as early as 13:00, so treat 13:00 JST as your deadline for the note, not for an order: THIS STAGE PLACES NO ORDERS. There is no broker step, no alpaca_trade.py call and no execution block. If you find yourself reaching for one, stop - that is the US stage and it is not this one.
 
 WHAT THIS STAGE PRODUCES: one signed number per company, so today's names can be RANKED. No call, no threshold, no direction label anywhere in the output. The question under test is whether these companies can be ranked at all, and it is only answerable at every cut if nothing has been rounded into a bucket upstream.
 

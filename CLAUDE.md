@@ -1124,7 +1124,25 @@ days against +4.38% over five, on a US-parent read-through), so `run_up_5d_pct` 
 and `jp_resolve.py` ranks it as its own free control, deliberately NOT folded into
 `priced_lean_pct`; and the holiday handling above.
 
-Nothing has resolved in Japan. The stack was validated end to end on 2026-09-18 against
+**Japan was not performing, and a third of that was the ruler (2026-10-01, `jp.v5`).**
+Four days resolved, eight names, and on the old window one sign right in seven. **The TSE
+closes at 15:30 since 2024-11-05, not 15:00**, and Japanese companies release at fixed
+times that are often inside the session (13:00, 13:30, 15:00): four of the first
+seventeen hunted names did. `jp_resolve.py` entered everything at the event-day close,
+so those names were scored from a price that already held their reaction; it now reads
+the TDnet release time and enters an in-session release at the sealed 10:05 JST spot
+(same-morning seals only, else the previous close), with `entry_basis`,
+`release_time_jst` and the old window in `move_close_to_close_pct`. Re-resolved: **three
+of seven**, still no edge. The other cause was the hunter: told the company plan is the
+bar, it filed "the 月次 show a miss against plan" four times, negative five calls in
+seven, and two of those four fell. The miss was public. `unpriced-hunter-jp` now ranks
+what a release ADDS (a forecast revision against 四季報/IFIS, shareholder returns, the
+new year's guide, then the quarter against the company's own progress-rate history),
+asks for the release time, and treats a visible miss as priced; `researcher_japan/LESSONS.md`
+holds the two measured rules with their counts. **Eight names is not a result**: `jp.v5`
+is compared forward against `jp.v3` on the dashboard's Versies tab, never pooled with it.
+
+The stack was first validated end to end on 2026-09-18 against
 2026-09-11 (76 scheduled, 34 eligible, 25 drawn, 24 of 25 confirmed on TDnet, one
 correctly killed as `event_occurred: false`, median realised move 2.87%) using
 *synthetic* findings, which ranked at ρ=0.154, p=0.47 — what random findings should do.
@@ -1963,8 +1981,10 @@ archive/                               retired 2026-09-18 — see archive/README
   pipeline/LEDGER.md PREDICTIONS.*     the forecast ledger and the flat prediction table
 scripts/                               shared: run_paths, publish, run_log, get_earnings,
                                        build_predictions, update_index, validate_stage,
-                                       synthesize, smoke_test — and four shims
+                                       synthesize, smoke_test, provenance — and four shims
 config/pipeline.yaml                   one config for all of it
+config/prompt-versions.json            every hunter prompt version, from git; see
+                                       "Every prediction carries its prompt version"
 .claude/{agents,skills}/               where the harness looks; cannot move
 
 research/<YYYY>/<MM>/<YYYY-MM-DD>/
@@ -1989,6 +2009,23 @@ python3 scripts/run_paths.py --json
 ```
 
 ## Rules that apply to every stage
+
+**Every prediction carries its prompt version and model (since 2026-10-01).** Each hunt
+skill runs `python3 scripts/provenance.py stamp --run <RUN> --market <M>` before its
+hunters, writing `<RUN>/provenance.json`: the stage's prompt version (`jp.v5`,
+`eu.v7`, `us.v8`), the exact hunter-definition blob, the model its alias serves, and the
+blobs of LESSONS, the shared core and the skill. Every earlier run was backfilled from
+git as of its seal time (`basis: backfilled_from_git`). Versions are DERIVED, not typed:
+`config/prompt-versions.json` is built by `scripts/provenance.py registry` from main's
+first-parent history plus the working tree, and **the smoke test fails if a live hunter
+definition is not registered — so after editing any hunter, run `registry` (it needs
+`git fetch --unshallow origin`) and commit the file.** A version edited on a branch is
+`pending_merge` until main carries it; re-run `registry` after the merge so its
+`from_utc` is the merge time. The model is inferred from the alias timeline in
+`provenance.py` (`opus` → claude-opus-5 until 2026-09-22 18:56 UTC, claude-opus-5-5 from
+19:09) unless a run recorded it. The dashboard shows the version on every row, filters
+on it on every market, and puts versions side by side on the Versies tab. **Never pool
+two versions to judge either one.**
 
 **`scripts/publish.sh` pushes to `main`, not to your branch.** `BRANCH="${EARNINGS_DATA_BRANCH:-main}"`
 is deliberate: a Routine session's job is to put the day's research on the data branch, and

@@ -1194,6 +1194,26 @@ def main():
     check("every live hunter carries the current hunter core", sync.returncode == 0,
           sync.stdout.strip())
 
+    # PROVENANCE (2026-10-01). Every prediction is labelled with the hunter prompt version
+    # and model that made it, and a version is a registered blob of the definition. A
+    # definition edited without rebuilding config/prompt-versions.json would stamp runs
+    # `unregistered-…` and split the dashboard's version groups, so it fails here.
+    prov = subprocess.run([sys.executable, os.path.join(REPO, "scripts", "provenance.py"),
+                           "check"], capture_output=True, text=True)
+    check("every live hunter definition is a registered prompt version",
+          prov.returncode == 0, prov.stdout.strip())
+    for sk in ("earnings-edge-hunt", "researcher-japan-hunt", "researcher-europe-hunt",
+               "researcher-australia-hunt", "researcher-canada-hunt",
+               "researcher-reversal-hunt"):
+        txt = open(os.path.join(REPO, ".claude", "skills", sk, "SKILL.md"),
+                   encoding="utf-8").read()
+        check(f"{sk} stamps provenance before its hunters",
+              "scripts/provenance.py stamp" in txt)
+    jp_res = open(os.path.join(REPO, "researcher_japan", "scripts", "jp_resolve.py"),
+                  encoding="utf-8").read()
+    check("jp_resolve enters an in-session release before the release",
+          'TSE_CLOSE = "15:30"' in jp_res and "sealed_spot_before_release" in jp_res)
+
     # STAGE E-S (2026-10-01): the Sonnet copy of stage E differs in the hunter model only,
     # and must never reach the broker or write into stage E's directory.
     es_agent = open(os.path.join(REPO, ".claude", "agents", "unpriced-hunter-sonnet.md"),

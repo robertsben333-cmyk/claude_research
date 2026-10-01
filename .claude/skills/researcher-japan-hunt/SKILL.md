@@ -18,9 +18,9 @@ step here and there must not be one. It is research.
 | | US (stage E) | Japan (stage J) |
 | --- | --- | --- |
 | Calendar | Nasdaq vendor feed, `time-not-supplied` 20/20 phantom on one day | JPX `決算発表予定日`, the issuer's own notified date |
-| Event window | after US close → before next open | after 15:00 JST → before 09:00 JST next session |
+| Event window | after US close → before next open | last price before the release → next close; the TSE closes at **15:30** and 13:00/13:30/15:00 releases land inside the session, so those enter at the sealed 10:05 JST spot |
 | Option anchor | implied move + 25d skew | none; substituted by JPX short register + 信用倍率 |
-| The bar | sell-side consensus EPS | the company's own 会社予想 and the 進捗率 against it |
+| The bar | sell-side consensus EPS | what the release ADDS to a 会社予想 the market already knows: a revision against 四季報/IFIS, shareholder returns, the new year's guide; the 進捗率 last, because 月次 make most quarters visible |
 | Names per day | 17–22, all hunted | 8–125 scheduled; microcaps cut, then **capped at 25 by random draw** |
 | Tail | uncapped | daily 値幅制限 price limit truncates large moves |
 
@@ -77,6 +77,21 @@ python3 researcher_japan/scripts/jp_priced_in.py --universe <RUN>/universe.json 
 
 Sealed means sealed. Nothing downstream may revise a baseline.
 
+**2b. Record which prompt and model this run uses. Before any hunter.**
+
+```bash
+python3 scripts/provenance.py stamp --run <RUN> --market JP --orchestrator-model "<model>"
+```
+
+`<model>` is `session_context.model` from the `get_session` tool when you can call it;
+leave the flag out otherwise. It writes `<RUN>/provenance.json`: the version of the
+hunter definition the hunters are about to read (for example `jp.v5`), the model its
+alias serves, and the blobs of the LESSONS file, the shared hunter core and this skill.
+The dashboard groups every number by version and model, so a run without this file is
+placed by date and labelled as inferred. If it prints `unregistered-…`, the definition
+changed on `main` without `config/prompt-versions.json` being rebuilt; carry on, and say
+so in the run log, because the blob still identifies the exact text.
+
 **3. One hunter per name.** Spawn `unpriced-hunter-jp`, in waves of
 `japan_hunt.wave_size`, publishing after each wave. Give each hunter only its own
 securities code, the window, and the path to its own baseline. Never another name's
@@ -105,6 +120,10 @@ The note must also say, every time:
   it is the check that the lean has not collapsed back into the free control
 - that the lean's weights are priors, and which positioning components resolved
 - the `history` basis is an estimated cadence, a scale and not a record of dates
+- each name's `release_time_jst` as the hunter found it, and how many release inside
+  the session
+- how many calls are negative and how many positive; the first resolved days were five
+  of seven negative
 - which names sit above `conviction_floor`, and that over the whole US sample the
   sign was a coin flip below it
 - that one day is not a result
@@ -122,8 +141,12 @@ scripts/publish.sh "stage J: Japan ranking for <YYYY-MM-DD>"
 python3 researcher_japan/scripts/jp_resolve.py --run <RUN>
 ```
 
-Confirms each release against TDnet, measures close-to-next-close, and reports
-Spearman against the realised move with a permutation p and three controls. A name
+Confirms each release against TDnet and reads its TIME. A release at or after the
+15:30 JST close is measured from that day's close to the next close; a release before
+it (13:00, 13:30 and 15:00 are all common) is measured from the sealed spot, struck
+before any release, to the next close. `entry_basis` and `release_time_jst` say which,
+and `move_close_to_close_pct` keeps the old window beside it. Reports Spearman against
+the realised move with a permutation p and three controls. A name
 TDnet cannot confirm gets `event_occurred: false` and leaves every ranking. TDnet keeps
 about 31 days, so resolve promptly or the confirmation is lost.
 

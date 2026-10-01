@@ -342,6 +342,21 @@ One cheap agent replaces those eight.
 
 Write to `<RUN>/edge/sweep.json`. Publish it.
 
+## 2b. Record which prompt and model this run uses
+
+```bash
+python3 scripts/provenance.py stamp --run <RUN> --market US --orchestrator-model "<model>"
+```
+
+`<model>` is `session_context.model` from the `get_session` tool when you can call it;
+leave the flag out otherwise. It writes `<RUN>/provenance.json`: the version of the
+hunter definition the hunters are about to read (for example `jp.v5`), the model its
+alias serves, and the blobs of the LESSONS file, the shared hunter core and this skill.
+The dashboard groups every number by version and model, so a run without this file is
+placed by date and labelled as inferred. If it prints `unregistered-…`, the definition
+changed on `main` without `config/prompt-versions.json` being rebuilt; carry on, and say
+so in the run log, because the blob still identifies the exact text.
+
 ## 3. Hunt — one agent per name, all of them
 
 Launch `unpriced-hunter` on the confirmed names, ordered by `hunt_priority`:

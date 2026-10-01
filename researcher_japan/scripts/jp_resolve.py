@@ -10,14 +10,23 @@ Three jobs, in that order, because the first one gates the other two.
    on 2026-09-18 after TRT was ranked, traded and never reported, and it takes
    precedence over every other reason a row might not rank.
 
-2. MEASURE. Entry is the close on the event date, which is 15:00 JST and before
-   essentially every Japanese release. Exit is the close of the next session. That
-   is the same window `researcher_us/scripts/edge_resolve.py` uses, deliberately, so
-   the two markets' numbers mean the same thing. Nobody chose this window on evidence
-   in either market -- the US analysis found the entry-to-open leg carried the whole
-   result and the session leg carried none -- but changing it here before there is a
-   Japanese sample to change it on would just be an untested difference between two
-   things meant to be comparable.
+2. MEASURE. Exit is the close of the session after the event date. Entry depends on
+   WHEN the company released, which TDnet records to the minute and this script reads:
+
+   - at or after the 15:30 JST close (the TSE has closed at 15:30, not 15:00, since
+     2024-11-05): entry is the close on the event date. This is the same window
+     `researcher_us/scripts/edge_resolve.py` uses for an amc print.
+   - BEFORE the close (13:00, 13:30, 15:00 are all common): the release moved the stock
+     inside the session, so the event-date close already holds part of the reaction.
+     Entry is the sealed spot instead -- the live price the baseline was struck at,
+     10:05 JST, before any release and the price a reader of the note could have
+     traded. `entry_basis` says which, and `move_close_to_close_pct` keeps the old
+     window beside it so the change is inspectable.
+
+   Until 2026-10-01 every row entered at the event-date close. On the first four
+   resolved days that put 3 of 8 names (13:00, 13:00 and 15:00 releases) on a window
+   that started after their own reaction: TAKARA & CO (7921), released at 15:00, rose
+   3.3% into the close on a +1.0 call and was scored on the next day's -1.9%.
 
 3. RANK. Spearman of the day's `impact_sum` against the realised move, with a
    permutation p-value, and the same three controls the US run carries: the free
@@ -49,13 +58,15 @@ def sh(c):
 
 
 def tdnet_codes(d):
-    """Every securities code that disclosed a 決算短信 on date `d` (YYYYMMDD).
+    """Every securities code that disclosed a 決算短信 on date `d` (YYYYMMDD), with the
+    earliest such release time, as {code: "HH:MM"} (JST). A code whose time could not
+    be read maps to None.
 
     TDnet keeps roughly 31 days online, so this can only confirm a recent run. An
     older run resolves with `event_occurred: null` rather than false -- absence of
     the page is not absence of the release.
     """
-    codes, seen_any = set(), False
+    codes, seen_any = {}, False
     for p in range(1, 15):
         html = sh(f"curl -sS --max-time 30 -H 'User-Agent: {UA}' '{TDNET.format(p=p, d=d)}'")
         if len(html) < 3000 or "該当する適時開示情報はありません" in html:
@@ -64,15 +75,22 @@ def tdnet_codes(d):
         got = 0
         for row in re.findall(r"<tr[^>]*>(.*?)</tr>", html, re.S):
             text = re.sub(r"<[^>]+>", " ", row)
-            m = re.search(r"\b(\d{4}|\d{3}[A-Z])0?\b", row)
             if "決算短信" in text:
                 mc = re.search(r">\s*(\d{4}0|\d{3}[A-Z]0)\s*<", row)
                 if mc:
-                    codes.add(mc.group(1)[:-1])
+                    code = mc.group(1)[:-1]
+                    mt = re.search(r"\b([0-2]\d:[0-5]\d)\b", text)
+                    t = mt.group(1) if mt else None
+                    prev = codes.get(code)
+                    codes[code] = (t if prev is None or (t and t < prev) else prev)
                     got += 1
         if got == 0 and p > 1:
             break
     return (codes if seen_any else None)
+
+
+# The TSE close since 2024-11-05. A release before it lands in a live session.
+TSE_CLOSE = "15:30"
 
 
 def closes(code, start, end):
@@ -171,18 +189,43 @@ def main():
         now_jst = datetime.now(ZoneInfo("Asia/Tokyo"))
         if now_jst.hour * 60 + now_jst.minute < 15 * 60 + 30:
             cs = [b for b in cs if b[0] < now_jst.date()]
-        entry = exitp = exit_d = None
+        entry = exitp = exit_d = prev_close = None
         limit_hit = False
         for i, (dd, c, hi, lo) in enumerate(cs):
             if dd == d0:
                 entry = c
+                prev_close = cs[i - 1][1] if i > 0 else None
                 if i + 1 < len(cs):
                     nd, nc, nh, nl = cs[i + 1]
                     exitp, exit_d = nc, nd
                     if nh is not None and nl is not None and nh == nl:
                         limit_hit = True      # locked limit: one price all session
                 break
-        move = round((exitp / entry - 1) * 100, 2) if entry and exitp else None
+        close_entry = entry
+        released_at = (confirmed or {}).get(code)
+        in_session = bool(released_at and released_at < TSE_CLOSE)
+        spot = (bl.get("tape") or {}).get("spot")
+        sealed = bl.get("sealed_utc")
+        # The sealed spot is a pre-release price only if it was struck on the event
+        # date in Tokyo. The 2026-09-18 verification run sealed 2026-09-25's names a
+        # week early, and that spot is a stale price, not an entry.
+        sealed_same_day = False
+        if sealed:
+            try:
+                sealed_same_day = (datetime.fromisoformat(sealed).astimezone(JST).date()
+                                   == d0)
+            except ValueError:
+                pass
+        entry_basis = "close_event_date"
+        if in_session:
+            # The release moved the stock before the close. Enter at the sealed spot
+            # (10:05 JST, before any release), else at the previous close.
+            if spot and sealed_same_day:
+                entry, entry_basis = spot, "sealed_spot_before_release"
+            elif prev_close:
+                entry, entry_basis = prev_close, "previous_close"
+        pct = lambda a_, b_: round((b_ / a_ - 1) * 100, 2) if a_ and b_ else None
+        move = pct(entry, exitp)
         occurred = None
         if confirmed is not None:
             occurred = code in confirmed
@@ -197,9 +240,15 @@ def main():
             "lean_components": bl.get("lean_components") or {},
             "short_ratio_pct": (bl.get("positioning") or {}).get("short_ratio_pct"),
             "margin_ratio": (bl.get("positioning") or {}).get("margin_ratio"),
-            "entry_close": entry, "exit_close": exitp,
+            "release_time_jst": released_at,
+            "released_in_session": in_session if released_at else None,
+            "entry_basis": entry_basis,
+            "entry_price": entry,
+            "entry_close": close_entry, "exit_close": exitp,
             "exit_date": exit_d.isoformat() if exit_d else None,
             "realised_move_pct": move,
+            # The pre-2026-10-01 window, kept beside the primary one.
+            "move_close_to_close_pct": pct(close_entry, exitp),
             "limit_locked_next_session": limit_hit,
             "event_occurred": occurred,
             "rankable": r.get("rankable"),
@@ -213,6 +262,10 @@ def main():
            "tdnet_confirmation": ("skipped" if confirmed is None and a.no_confirm
                                   else "unavailable (page expired)" if confirmed is None
                                   else f"{len(confirmed)} codes disclosed 決算短信 that day"),
+           "window_rule": ("exit = close of the next session; entry = event-date close "
+                           "for a release at or after 15:30 JST, the sealed 10:05 JST "
+                           "spot for a release before it (since 2026-10-01)"),
+           "n_in_session": sum(1 for x in rows if x.get("released_in_session")),
            "n_rows": len(rows), "n_usable": len(usable), "rows": rows}
 
     if len(usable) >= 3:

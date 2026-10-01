@@ -11,12 +11,49 @@ and the same measurement window, the two are directly comparable.
 
 ## Status
 
-**Nothing has resolved. There is no Japanese result, good or bad.**
+**Four days have resolved, eight names, and it is not a result.** On the corrected
+window three of seven signs were right; the stage has not yet beaten anything.
 Built and validated end to end on 2026-09-18 against a real past date (2026-09-11:
 76 scheduled, 34 eligible, 25 drawn, 24 of 25 confirmed on TDnet, one correctly killed
 as `event_occurred: false`, median realised move 2.87%). That run used synthetic
 findings to exercise the plumbing and ranked at ρ=0.154, p=0.47, which is what random
 findings should do and is not a result about anything.
+
+## What changed on 2026-10-01, and why (`jp.v5`)
+
+The first resolved days read as one sign right in seven. Two causes were found, and
+only one of them was the hunter.
+
+**The measurement was wrong for a third of the names.** The TSE has closed at 15:30
+since 2024-11-05, not at 15:00 as every file here said, and Japanese companies release
+at fixed times that are often INSIDE the session: 13:00 and 13:30 for retailers, 15:00
+widely. `jp_resolve.py` entered every name at the event-day close, so a 13:00 release
+was scored from a price that already held its reaction. Of the first seventeen hunted
+names four released before the close, three of them on resolved days. TAKARA & CO
+(7921), +1.0 on a 15:00 release, rose 3.3% into the close and was scored on the next
+day's −1.9%. The resolver now reads the release time off TDnet and enters an
+in-session release at the sealed 10:05 JST spot (only if it was sealed that same
+morning, else the previous close). `entry_basis`, `release_time_jst` and
+`move_close_to_close_pct` say which window was used and keep the old one beside it.
+Re-resolved, the record is three of seven.
+
+**The hunter was sizing against the wrong bar.** The definition told it the company
+plan is the bar and the 進捗率 is where the edge is. Five of seven calls came back
+negative, four on "the 月次 show the quarter missing the company's own plan", and two
+of those four stocks fell. The monthly series is public; the miss was priced before
+anyone found it, and a known bad number often lifts a Japanese stock when it lands
+(悪材料出尽くし). The definition now ranks what a release ADDS: a forecast revision
+against 四季報 or IFIS rather than against the plan, shareholder returns (増配, 自社株買い,
+優待), the new year's guide, and only then the quarter, read against the company's own
+progress-rate history. It asks for the release time, gives the hunter a Japanese scale
+and treats a visible miss as priced unless the release adds to it.
+`LESSONS.md` holds the two measured rules, with their counts, so the `pre_lessons`
+control still measures them separately from the definition.
+
+**What this does not establish.** Eight names over four days. The change is a
+hypothesis about this market and is compared forward: every run since carries its
+prompt version in `provenance.json`, and the dashboard's **Versies** tab puts `jp.v5`
+beside `jp.v3`. Do not pool the two when judging either.
 
 ## The pieces
 
@@ -24,7 +61,7 @@ findings should do and is not a result about anything.
 | --- | --- |
 | `scripts/jp_universe.py` | JPX `決算発表予定日` → today's names, microcap cut, cap-25 random draw |
 | `scripts/jp_priced_in.py` | the sealed baseline, in the shape `edge_score.py` reads |
-| `scripts/jp_resolve.py` | TDnet confirmation, realised move, Spearman + permutation p |
+| `scripts/jp_resolve.py` | TDnet confirmation and release TIME, realised move from before the release, Spearman + permutation p |
 | `scripts/jp_positioning.py` | JPX disclosed short register + 信用倍率, the substitute anchors |
 | `researcher_us/scripts/edge_score.py` | **shared** — same scorer for both markets, so the numbers are comparable |
 | `.claude/agents/unpriced-hunter-jp.md` | the hunter; same output contract as the US one |

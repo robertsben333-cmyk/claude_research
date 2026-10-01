@@ -47,6 +47,13 @@ a sealed baseline is only comparable with stage E's if it was struck the same af
 launch**. Without it the fallback inherits the session's Opus and the run silently tests
 nothing. Record in the run log which form ran.
 
+## Provenance
+
+Step 2b of the stage E skill runs here with `--market US-S` and `<RUN>/edge-sonnet` as the
+run, so `provenance.json` names `unpriced-hunter-sonnet` and its version. The `sonnet`
+alias has no observed model in `scripts/provenance.py`'s timeline, so the file says
+`not_recorded` for the hunters rather than guessing; that is the honest state.
+
 ## What the note must add
 
 Everything stage E's note says, plus three lines at the top:

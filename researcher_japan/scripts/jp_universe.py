@@ -21,12 +21,15 @@ job, after the fact, against TDnet. Nothing here predicts.
 
 THE SESSION
 -----------
-Tokyo trades 09:00-11:30 and 12:30-15:00 JST. Earnings land overwhelmingly after the
-15:00 close: on 2026-08-14, 386 of 456 `決算短信` were timestamped 15:00 or later, and
-on 2026-09-01 all 24 were. So a name scheduled for date D is an `amc` event on D, and
-the window this stage ranks is D 15:00 JST to D+1 09:00 JST. There is no US-style
-BMO cohort to speak of, and `session` is written anyway so the scorer and the
-resolver read the same field name they read for the US run.
+Tokyo trades 09:00-11:30 and 12:30-15:30 JST: the TSE moved its close from 15:00 to
+15:30 on 2024-11-05, and this docstring said 15:00 until 2026-10-01. On 2026-08-14,
+386 of 456 `決算短信` were timestamped 15:00 or later -- but 15:00 is now INSIDE the
+session, and so are the 13:00 and 13:30 releases that retailers favour. On the first
+seventeen hunted names (2026-09-24 to 10-01) four released before the close: 13:00,
+13:00, 13:30 and 15:00. So `session` stays `amc` (it is the field name the shared
+scorer reads) and the window is decided after the fact by jp_resolve.py from the
+TDnet timestamp: an in-session release is measured from the sealed 10:05 JST spot,
+a release at or after 15:30 from the event-date close, both to the next close.
 
 SELECTION, AND WHY IT IS RANDOM
 -------------------------------
@@ -305,7 +308,7 @@ def main():
     out = {
         "market": "JP",
         "event_date": target,
-        "window": f"{target} 15:00 JST -> next open 09:00 JST",
+        "window": f"{target}: entry before the release (sealed spot if it lands before the 15:30 JST close, else the close) -> next session close",
         "session": "amc",
         "calendar_as_of": as_of,
         "calendar_sheets": files,

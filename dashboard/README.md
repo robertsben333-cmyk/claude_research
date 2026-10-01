@@ -150,6 +150,32 @@ threshold you cannot move is a threshold you cannot test.
 | **positiecap** | the sizing rule, recomputed: a gross budget split equally over the day's names, capped per name. Off means equal weight and always fully invested, which is the research number and not what an account does |
 | **periode** | which runs count, by preset or by two dates. Every chart's x-axis follows it |
 | **sessie / sector** | amc against bmo, and one sector at a time |
+| **versie** | the hunter prompt version and model that ranked the name (`us.v8 · Opus 5.5`). Off by default; on, every tab holds only that version. The same selector sits beside the threshold on every other market |
+
+## Every prediction carries the prompt version and model that made it (2026-10-01)
+
+Each name on every market shows `versie`: the stage's prompt version and the model,
+for example `jp.v3 · Opus 5.5` or `eu.v6 · Opus 5.5`. It comes from the run's
+`provenance.json`, which `scripts/provenance.py stamp` writes before the hunters are
+spawned, and which was backfilled from git for every run before that day (marked ≈ on
+the page and `backfilled_from_git` in the file). A version is one distinct text of the
+hunter definition as it stood on `main`, numbered in order; stage EU counts its seven
+language hunters as one sequence because they change together, and each row keeps the
+exact hunter version beside it. The registry is `config/prompt-versions.json`, built
+from git by `scripts/provenance.py registry`; the smoke test fails if a live hunter
+definition is not in it.
+
+**The model is inferred unless a run recorded it.** A hunter cannot see which model
+serves it, and its frontmatter names an alias. The `opus` alias served claude-opus-5
+until 2026-09-22 18:56 UTC and claude-opus-5-5 from 19:09 UTC; `model_basis` says
+`alias_timeline` for that. The orchestrating session's model is recorded only when the
+skill passes it.
+
+The **Versies** tab (group Register, every market) puts the versions side by side with
+days, names, resolved names, the share of negative calls, signs right, ρ at five names
+or more and the board return, and lists every version the stage has had, including one
+that is not yet on `main`. Read it as a record of which method ran when, not as a
+contest: each version ran on different days.
 
 ## The default exit is the strategy's, not a single horizon
 
