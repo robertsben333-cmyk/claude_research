@@ -40,3 +40,8 @@
 ## Close AMC (stage E exit Routine) 10:10 UTC
 - Logged at 2026-10-01 10:16 UTC
 - Guard exit 0 (amc open as day). verify: 14 legs, none UNFILLED, 0 held. close --submit: no new exit legs due today (none sent), no refusals. Account reachable.
+
+## Edge hunt — 2026-10-01 amc + 2026-10-02 bmo — STARTED
+- Logged at 2026-10-01 17:07 UTC
+- Step 0b: the scheduled verify/close --submit was DENIED by this session's permission classifier (real-world transactions); no exit was sent. Read-only status: no position open since the 2026-09-22 book closed 09-23, and Close AMC at 10:16 UTC found 0 held — so nothing was owed. Universe: 1 of 19 rows (NKE amc). Thin-day check: --include-unknown gave 14 time-not-supplied rows; session_resolve killed 4 (DAVA, ENLV + 2 already reported), put VFS at bmo 10-01 (outside window), confirmed none, carried 10 not applied (HUBG reported 16 days ago). Baseline NKE sealed (options usable, implied 9.22%). Plan: 1 sweep + 1 hunter.
+- Routine prompt still says 13:04 NY firing at 17:04 UTC — consistent with clock today (17:04 UTC).
