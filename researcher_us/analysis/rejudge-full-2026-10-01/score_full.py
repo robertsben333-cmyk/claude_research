@@ -48,19 +48,36 @@ def book(sc, sub, thr):
 groups = {'all': ids, 'us': [i for i in ids if key[i]['region'] == 'us'],
           'ex_us': [i for i in ids if key[i]['region'] != 'us'],
           'europe': [i for i in ids if key[i]['region'] == 'europe'],
-          'apac': [i for i in ids if key[i]['region'] in ('japan', 'australia')]}
-thresholds = [x/2 for x in range(0, 13)]
+          'apac': [i for i in ids if key[i]['region'] in ('japan', 'australia')],
+          # the hunter model moved to Opus 5.5 between stage E's 09-22 run and its 09-23 run
+          'us_opus5_era': [i for i in ids if key[i]['region'] == 'us' and key[i]['day'] < '2026-09-23'],
+          'us_opus55_era': [i for i in ids if key[i]['region'] == 'us' and key[i]['day'] >= '2026-09-23']}
+thresholds = [x/4 for x in range(0, 25)]
+pcts = list(range(0, 100, 10))
+def pct_book(sc, sub, q):
+    # rank-relative cut: keep the top (100-q)% of this arm's nonzero tradable |scores|, so
+    # arms on different scales are compared at the same selectivity
+    t = sorted((abs(sc[i]) for i in sub if sc[i] != 0 and tradable(i)), reverse=True)
+    if not t: return 0, 0, None
+    k = max(1, round(len(t)*(100-q)/100))
+    n, h, m = book(sc, sub, t[k-1])
+    return n, h, m
+def short_all(sub):
+    r = [-key[i]['move'] for i in sub if tradable(i)]
+    return st.mean(r) if r else None
 out = {'n': len(ids), 'groups': {}}
 for g, sub in groups.items():
-    out['groups'][g] = {}
+    out['groups'][g] = {'short_all': short_all(sub)}
     for a, sc in arms.items():
         r, p = rho(sc, sub)
         out['groups'][g][a] = {'n': len(sub), 'zeros': sum(1 for i in sub if sc[i] == 0),
             'median_abs': st.median([abs(sc[i]) for i in sub]) if sub else None, 'rho': r, 'p': p,
-            'curve': [dict(zip(('n', 'hits', 'mean'), book(sc, sub, t)), thr=t) for t in thresholds]}
+            'curve': [dict(zip(('n', 'hits', 'mean'), book(sc, sub, t)), thr=t) for t in thresholds],
+            'pct_curve': [dict(zip(('n', 'hits', 'mean'), pct_book(sc, sub, q)), pct=q) for q in pcts]}
 json.dump(out, open(f'{D}/scores.json', 'w'), indent=1)
 for g in groups:
     print(f"== {g}  n={len(groups[g])}")
+    print(f"  short every tradable name: {out['groups'][g]['short_all']:+.2f}%")
     for a in arms:
         s = out['groups'][g][a]; c = {x['thr']: x for x in s['curve']}
         fm = lambda t: f"{c[t]['n']:3d} {c[t]['hits']:3d}/{c[t]['n']:<3d} {c[t]['mean']:+6.2f}%" if c[t]['n'] else "  0"
