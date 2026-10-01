@@ -205,3 +205,24 @@ What it says:
 Sign and size want different aggregators. Unanimous sign, sized by the **weakest** of the
 four: 13/17 +7.8%, big-mover lift 1.40. Unanimous sign, sized by the **median**: 12/17
 +5.8%, lift 1.60. The weakest makes the direction safer; the median finds bigger moves.
+
+### Consensus at the top (`consensus_top.py`)
+
+Each member keeps its own top 20% by |score| within bucket; a name is selected when at
+least k of n members kept it. Opus 5-hunted development names (126), net per pick, side
+from the members' mean (every consensus pick had all members on the same side):
+
+| group | rule | names | hits | net/pick | mean \|move\| lift | real big movers |
+|---|---|---|---|---|---|---|
+| five Sonnet runs | all 5 | 8 | 5/8 | +4.1% | 1.27 | 38% |
+| | ≥4 of 5 | 18 | 12/18 | +4.1% | 1.56 | 33% |
+| four models | all 4 | 13 | 10/13 | +7.1% | 1.37 | 38% |
+| | **≥3 of 4** | **16** | **12/16** | **+8.0%** | **1.47** | **38%** |
+| | ≥2 of 4 | 26 | 19/26 | +5.0% | 1.35 | 31% |
+| four + live | all 5 | 7 | 4/7 | +2.4% | 1.15 | 29% |
+| | ≥4 of 5 | 15 | 11/15 | +7.9% | 1.47 | 40% |
+
+Full consensus is too strict: it shrinks the set without improving it, because each
+member's top is noisy at its edge. Requiring the live hunt to agree hurts (its top holds
+the wrong names). The best rule is three of four DIFFERENT models; five runs of one model
+in full agreement is worse than three models in partial agreement.
