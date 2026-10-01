@@ -77,3 +77,7 @@
 ## Edge hunt (Sonnet) — 2026-10-01 amc + 2026-10-02 bmo — STARTED
 - Logged at 2026-10-01 19:19 UTC
 - Operator RE-RUN after the 17:06 UTC fire's pushes were refused (403); no edge-sonnet/ existed on origin/main or locally, so nothing to discard. Fired 19:18 UTC. Universe 1 of 19 rows (NKE amc), same as stage E. Thin-day --include-unknown check SKIPPED for time (stage E's found none in window). Baseline NKE sealed ~19:18 UTC: spot 35.915, implied 8.91% — about 2h14m after stage E's 17:04 seal (stage E: implied 9.22%), a difference that is NOT the hunter model. Plan: 1 edge-sweep (Opus) + 1 unpriced-hunter-sonnet. Hard stop 20:10 UTC. No orders, no V2 ledger.
+
+## Edge hunt (Sonnet) — 2026-10-01 amc + 2026-10-02 bmo — DONE
+- Logged at 2026-10-01 19:22 UTC
+- 1 name in window (same as stage E), sweep (edge-sweep, Opus) confirmed 1, 0 phantom. 1 unpriced-hunter-sonnet (native agent type, not the general-purpose fallback), sealed 19:21 UTC before the 20:15 UTC print. NKE impact_sum +0.84 (pre_lessons +0.84), 0 of 1 above floor 3.0; current contract returned. Stage E: NKE -0.38 — opposite sign, Spearman undefined on n=1. CONFOUND: E-S sealed 19:18 UTC vs stage E 17:07 UTC; implied 8.91% vs 9.22%, skew -11.22 vs +2.03, priced_lean +5.00 vs -0.94, and the Sonnet hunter's +1.6 finding cites that skew — not attributable to the hunter model. Thin-day --include-unknown check skipped for time. No orders, no alpaca_trade.py, no V2. Note: research/2026/10/2026-10-01/edge-sonnet/edge-note.md.
