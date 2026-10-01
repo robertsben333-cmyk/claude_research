@@ -831,10 +831,14 @@ fact, four reasons to drop) are unchanged. **Every hunt stage pastes
 `impact_sum`, floor, `impact_scaled`, `abs_move_pct`, `p_up`, and for the US (stage E and
 E-S) the V2 grounded score, printed as `not run` rather than dropped. **Since 2026-10-01
 `impact_sum` and `impact_scaled` each carry a percentile in brackets**, `+3.40 (p87)`: the
-share of earlier rankable names sized by the SAME hunter model whose |value| is lower,
-every stage pooled, synthetic validation runs excluded, `n<20` until 20 exist. It reads
-SIZE against that model's own habit (Opus 5.5 files a zero on ~38% of names, so a zero
-reads p19), it pools prompt versions, and it is not a rank or a probability. Stage E-S runs
+share of reference names sized by the SAME model whose |value| is lower, `n<20` until 20
+exist. The reference set is the live runs to date (every stage pooled, validation runs
+out) plus the blind re-judges already run (`rejudge-opus55-v2-sizing` for Opus 5.5, both
+numbers; `rejudge-four-models` for Opus 5, Sonnet 5.5 and Fable 5.1, `impact_scaled`
+only). **The September Opus 5.5 hunts are excluded from it** (operator's instruction): a
+live Opus 5.5 run with no `hunter_core` blob in its provenance, and every re-judge row
+that judged such a hunt's evidence. It reads SIZE against that model's habit, not a rank
+or a probability. Stage E-S runs
 `edge_grounded_score.py` on its own directory (it only reads the shadow ledger) and still
 never feeds that ledger. On the NKE runs of 2026-10-01 the two keys are equal by
 construction, because those hunts were sized under the morning's rule; they diverge from

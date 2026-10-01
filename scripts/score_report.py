@@ -15,14 +15,30 @@ by side so nobody has to open a file to see them:
                  "not run" when the file is absent, never left out silently.
 
 Each of the two numbers carries a percentile in brackets, e.g. `+3.40 (p87)`: the share
-of earlier rankable names, sized by the SAME hunter model, whose |value| sits below this
-one's (ties count half). Model per run from its provenance.json (provenance.for_row,
-which infers by date where a run has none). Every stage is pooled per model, synthetic
-validation runs and the run itself are left out, and only run dates up to this one's
-count, so re-running the report on an old day gives the same brackets. Under 20 earlier
-names the bracket reads `n<20` rather than a percentile. It describes SIZE against the
-model's own habit, not rank within the day and not a probability, and it pools prompt
-versions, which CLAUDE.md forbids for judging a version: read it as scale, nothing more.
+of reference names sized by the SAME model whose |value| sits below this one's (ties
+count half). Under 20 reference names the bracket reads `n<20`. It describes SIZE against
+that model's own habit, not rank within the day and not a probability. The reference set
+per model has two parts:
+
+  live runs     every rankable name in research/<date>/<stage>/ up to this run's date,
+                model from provenance.for_row, every stage pooled, synthetic validation
+                runs and the run itself left out. impact_scaled from
+                edge-scores-scaled.json once live runs write it.
+  evaluations   the blind re-judges already run over resolved names (EVALUATIONS):
+                Opus 5.5 under the two-measurement core (rejudge-opus55-v2-sizing, both
+                numbers) and Opus 5, Sonnet 5.5 and Fable 5.1 from rejudge-four-models
+                (impact_scaled only: that brief made findings sum to the scaled number,
+                so its impact_sum is not version 2). impact_scaled is recomputed as
+                (2·p_up/100 − 1)·abs_move_pct, as edge_score.scaled_view does.
+
+THE SEPTEMBER OPUS 5.5 HUNTS ARE LEFT OUT, from both parts (operator's instruction,
+2026-10-01). Between the alias switch on 2026-09-22 and the shared hunter core, Opus 5.5
+filed a third of what it surfaced and sized near zero; that prompt was a mistake, not a
+habit to measure against. A live run counts as one when its hunter model is Opus 5.5 and
+its provenance carries no `hunter_core` blob; an evaluation row is dropped when the live
+hunt whose evidence it judged was one. The re-judges judge evidence only and ran below
+live scale even on Opus 5 (rejudge-opus55-v2-sizing README), so a bracket read off them
+is conservative about how large a live number is.
 
     python3 scripts/score_report.py --run research/2026/10/2026-10-02/edge
     python3 scripts/score_report.py --run <RUN>/europe --label "Stage EU"
@@ -81,31 +97,91 @@ def impact_of(r):
     return sum(x.get("expected_impact_pct") or 0 for x in fs) if fs else None
 
 
+SEPT_OPUS55 = "claude-opus-5-5"
+
+# Blind re-judges of resolved names: (glob, model, which numbers count as reference).
+EVALUATIONS = [
+    ("research/analyses/rejudge-opus55-v2-sizing/out-*.json", "claude-opus-5-5",
+     ("impact_sum", "impact_scaled")),
+    ("research/analyses/rejudge-four-models/out-*-opus5.json", "claude-opus-5",
+     ("impact_scaled",)),
+    ("research/analyses/rejudge-four-models/out-*-sonnet.json", "claude-sonnet-5-5",
+     ("impact_scaled",)),
+    ("research/analyses/rejudge-four-models/out-*-fable.json", "claude-fable-5-1",
+     ("impact_scaled",)),
+]
+EVAL_KEY = "research/analyses/rejudge-four-models/key.json"
+
+
+def september_opus55(run, model):
+    """An Opus 5.5 hunt from before the shared hunter core: the too-strict prompt."""
+    if model != SEPT_OPUS55:
+        return False
+    prov = load(Path(run) / "provenance.json") or {}
+    return not (prov.get("files") or {}).get("hunter_core")
+
+
+def scaled_of(r):
+    p, m = r.get("p_up"), r.get("abs_move_pct")
+    if p is None or m is None:
+        return None
+    return (2 * p / 100 - 1) * m
+
+
 def model_history(run, reg):
     """{model: {"impact_sum": sorted |values|, "impact_scaled": sorted |values|}} over
-    every earlier run on disk, this one excluded."""
+    the live runs up to this one and the blind evaluations, September Opus 5.5 out."""
     run = Path(run).resolve()
     day = run.parent.name
     hist = {}
+    models, tainted = {}, set()
+
+    def slot(m):
+        return hist.setdefault(m, {"impact_sum": [], "impact_scaled": []})
+
     for d in sorted((ROOT / "research").glob("[0-9]*/[0-9]*/[0-9]*-*-*/*/")):
-        if d.resolve() == run or d.parent.name > day or d.name not in DIR_MARKET:
+        if d.name not in DIR_MARKET:
+            continue
+        model = run_model(d, reg)
+        models[d.resolve()] = model
+        if september_opus55(d, model):
+            tainted.add(str(d.relative_to(ROOT)).rstrip("/"))
+            continue
+        if d.resolve() == run or d.parent.name > day or not model:
             continue
         key = load(d / "edge-scores.json")
         if not key or key.get("legacy_rescore"):
             continue
         if (load(d / "universe.json") or {}).get("validation_only"):
             continue
-        model = run_model(d, reg)
-        if not model:
-            continue
-        h = hist.setdefault(model, {"impact_sum": [], "impact_scaled": []})
         for r in key.get("ranking", []):
             v = impact_of(r) if r.get("rankable") else None
             if v is not None:
-                h["impact_sum"].append(abs(v))
+                slot(model)["impact_sum"].append(abs(v))
         for r in (load(d / "edge-scores-scaled.json") or {}).get("ranking", []):
             if r.get("impact_scaled") is not None:
-                h["impact_scaled"].append(abs(r["impact_scaled"]))
+                slot(model)["impact_scaled"].append(abs(r["impact_scaled"]))
+
+    # Each evaluation row judged the evidence of one live hunt; key.json says which.
+    # Anonymised packs carry `pid` (anon/us/007) in place of the id. Corpus names are
+    # in no key and drop out, as score_full.py drops them.
+    origin = {}
+    for k in load(ROOT / EVAL_KEY) or []:
+        for i in (k.get("id"), k.get("pid")):
+            if i:
+                origin[i] = k.get("run")
+    here = str(run.relative_to(ROOT)) if run.is_relative_to(ROOT) else None
+    for pattern, model, numbers in EVALUATIONS:
+        for f in sorted(ROOT.glob(pattern)):
+            for r in load(f) or []:
+                src = origin.get(r.get("id"))
+                if src is None or src in tainted or src == here:
+                    continue
+                if "impact_sum" in numbers and r.get("impact_sum") is not None:
+                    slot(model)["impact_sum"].append(abs(r["impact_sum"]))
+                v = scaled_of(r) if "impact_scaled" in numbers else None
+                if v is not None:
+                    slot(model)["impact_scaled"].append(abs(v))
     for h in hist.values():
         for v in h.values():
             v.sort()
@@ -165,9 +241,10 @@ def main():
         print(v2_state)
     short = provenance.SHORT_MODEL.get(model, model) if model else None
     if short:
-        print(f"Brackets: percentile of |value| among earlier rankable names sized by "
-              f"{short} (impact_sum n={len(hist['impact_sum'])}, impact_scaled "
-              f"n={len(hist['impact_scaled'])}; all stages pooled). Scale, not rank.")
+        print(f"Brackets: percentile of |value| among reference names sized by {short} "
+              f"(impact_sum n={len(hist['impact_sum'])}, impact_scaled "
+              f"n={len(hist['impact_scaled'])}): live runs to date plus the blind "
+              f"re-judges, September Opus 5.5 hunts left out. Scale, not rank.")
     else:
         print("Brackets: no percentile, the hunter model of this run is not recorded.")
     print()
