@@ -51,3 +51,7 @@
 - 1 name in window, sweep confirmed 1 (company release, amc ~16:15 ET), 0 phantom. 1 hunter (6 min). NKE impact_sum -0.38 (pre_lessons -0.76, V2 -0.22), 0 of 1 above floor 3.0. Hunt returned print_vs_bar_pct, pre_lessons, lands_on — current contract. ranking_key: impact_sum.
 - Execution: enabled in config, but this session's permission classifier DENIED order submission at step 0b (verify/close --submit). Nothing was owed (0 held). Step 7: plan only, 0 names meet the benchmark, so no order would have gone in; open --submit not attempted. 0 orders, gross 0%. Refused: NKE below floor (0.38 < 3.00). The operator should note that future days WITH floor-clearers will not trade from this Routine until that permission is resolved.
 - Step 6c V2 shadow ledger skipped (optional, shed first). Note: research/2026/10/2026-10-01/edge/edge-note.md.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-01 18:33 UTC
+- Fired 18:33 UTC (14:33 Toronto). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves of 5 -> edge_score -> note. No orders.
