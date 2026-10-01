@@ -17,3 +17,8 @@
 - Logged at 2026-10-01 13:39 UTC
 - 3 scheduled (uk 1, fr 1, pl 1) / 1 eligible above $200k / 1 hunted; selection.method: all 1 eligible (under cap 20), seed eu-2026-10-02 unused. by_market uk 1 (JDW J D Wetherspoon, $1.12m/day). market_concentration: uk 1.00, 1 market. Dropped below floor: ALBPK (fr, $8.8k/day), KER (pl, $41k/day). No market_closed. Off-primary filtered: se 231, pl 325.
 - Register read: uk (2026-09-29, 420 rows). anchor_covered 1 of 1 (JDW disclosed 4.57%, change -0.01pp). session_unresolved 0 (bmo, vendor flag). history.basis observed_rns (n 8, median |move| 4.91%). es/pl 0, de 0. One wave of 1 hunter (unpriced-hunter-uk).
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-10-01 13:46 UTC
+- 1 hunted / 1 rankable / 0 above floor 3.0. JDW -0.91 (FY27 outlook line after +13.5% rally from July warning; abs 6.5, p_up 43; pre_lessons -0.88). Event confirmed by issuer's 22 Jul RNS.
+- Note: research/2026/10/2026-10-02/europe/europe-note.md. No orders. Published to main (EARNINGS_DATA_BRANCH=main).
