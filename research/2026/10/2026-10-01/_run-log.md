@@ -45,3 +45,9 @@
 - Logged at 2026-10-01 17:07 UTC
 - Step 0b: the scheduled verify/close --submit was DENIED by this session's permission classifier (real-world transactions); no exit was sent. Read-only status: no position open since the 2026-09-22 book closed 09-23, and Close AMC at 10:16 UTC found 0 held — so nothing was owed. Universe: 1 of 19 rows (NKE amc). Thin-day check: --include-unknown gave 14 time-not-supplied rows; session_resolve killed 4 (DAVA, ENLV + 2 already reported), put VFS at bmo 10-01 (outside window), confirmed none, carried 10 not applied (HUBG reported 16 days ago). Baseline NKE sealed (options usable, implied 9.22%). Plan: 1 sweep + 1 hunter.
 - Routine prompt still says 13:04 NY firing at 17:04 UTC — consistent with clock today (17:04 UTC).
+
+## Edge hunt — 2026-10-01 amc + 2026-10-02 bmo — DONE
+- Logged at 2026-10-01 17:16 UTC
+- 1 name in window, sweep confirmed 1 (company release, amc ~16:15 ET), 0 phantom. 1 hunter (6 min). NKE impact_sum -0.38 (pre_lessons -0.76, V2 -0.22), 0 of 1 above floor 3.0. Hunt returned print_vs_bar_pct, pre_lessons, lands_on — current contract. ranking_key: impact_sum.
+- Execution: enabled in config, but this session's permission classifier DENIED order submission at step 0b (verify/close --submit). Nothing was owed (0 held). Step 7: plan only, 0 names meet the benchmark, so no order would have gone in; open --submit not attempted. 0 orders, gross 0%. Refused: NKE below floor (0.38 < 3.00). The operator should note that future days WITH floor-clearers will not trade from this Routine until that permission is resolved.
+- Step 6c V2 shadow ledger skipped (optional, shed first). Note: research/2026/10/2026-10-01/edge/edge-note.md.
