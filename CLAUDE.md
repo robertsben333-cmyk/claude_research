@@ -1062,6 +1062,12 @@ not monotonic and decides nothing; inside the selection weights moved ±0.3 poin
 live weight is equal and a precision tilt is logged beside it. **Opus 5 has no alias**: if
 the pinned id is refused the stage runs three judges and says so. The E-S skill, its hunter
 and its runs stay in the tree for history.
+**Validated end to end on 2026-10-01** on the six names of the 2026-09-30 US run (stage E's
+Opus 5.5 hunts as the searcher input, outside `research/`): packs built with no size left in
+them, all four pinned judges ran (each reported its own model id, **`claude-opus-5` was
+accepted**), and the aggregator selected one name, BSET, 4 of 4, while PRGS, where Opus 5 was
+strongly negative and the other three mildly positive, was correctly not selected. That is a
+plumbing check on an unresolved day, not evidence about the panel.
 
 **Stage E-S was stage E with the hunters on Sonnet, added and superseded on 2026-10-01.** One question:
 does the hunter model change the ranking? `.claude/skills/earnings-edge-hunt-sonnet/` is
