@@ -1068,6 +1068,8 @@ them, all four pinned judges ran (each reported its own model id, **`claude-opus
 accepted**), and the aggregator selected one name, BSET, 4 of 4, while PRGS, where Opus 5 was
 strongly negative and the other three mildly positive, was correctly not selected. That is a
 plumbing check on an unresolved day, not evidence about the panel.
+**The Routine was re-pasted from `researcher_us/routine-prompts/edge-panel.md` on 2026-10-01 at
+20:10:11 UTC** and read back identical; its first E-P fire is 2026-10-02 17:06 UTC.
 
 **Stage E-S was stage E with the hunters on Sonnet, added and superseded on 2026-10-01.** One question:
 does the hunter model change the ranking? `.claude/skills/earnings-edge-hunt-sonnet/` is

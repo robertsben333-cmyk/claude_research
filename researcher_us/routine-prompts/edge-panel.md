@@ -7,6 +7,12 @@ clones the repo itself. **Keep this file and the Routine in step: any re-paste c
 both in the same commit.** The block below is the exact text the Routine holds.
 `edge-hunt-sonnet.md` is the text it held before, kept as history.
 
+**Pasted 2026-10-01 at 20:10:11 UTC** (`updated_at`), renamed "Stage E-P — US edge hunt, Opus 5.5
+searchers + four-model panel (no orders)". Read back: prompt identical to the block below,
+model `claude-opus-5-5`, cron `6 17 * * 1-5`, enabled, next run 2026-10-02 17:06 UTC, a
+populated repository source and an `outcomes` branch of `claude/upbeat-hopper` (which the
+prompt's `EARNINGS_DATA_BRANCH=main` overrides for the data).
+
 - Cron `6 17 * * 1-5` = 17:06 UTC, two minutes after stage E, so both seal their baselines
   on the same afternoon quotes.
 - Fresh session per fire. Searchers `unpriced-searcher` (Opus 5.5), sweep `edge-sweep`,
