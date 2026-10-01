@@ -15,7 +15,7 @@ bucket, net of the assumed cost:
 - the four-model unanimous ensemble, and that ensemble with Sonnet replaced by the
   five-run consensus.
 
-  python3 sonnet_x5.py
+  python3 sonnet_x5.py            (SONNET_RUNS=s1,s2,s3 for an interim read; writes nothing)
 """
 import glob, json, os, statistics as st, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -43,6 +43,8 @@ def unanimous_min(vals):
 def main():
     rows = J.load(); F = J.make_folds(rows, json.load(open(J.SPLIT)))
     R = runs(); rej = J.rejudge_arms()
+    only = [x for x in os.environ.get('SONNET_RUNS', '').split(',') if x]
+    if only: R = {k: v for k, v in R.items() if k in only}
     if not R: sys.exit('no runs in sonnet-x5/out yet')
     have = [k for k in sorted(R)]
     dev = [r for r in rows if J.fold_of(r, F) is not None and r['hunter_model'] == 'opus5'
@@ -83,7 +85,7 @@ def main():
     if agree:
         print(f"sign agreement between two Sonnet runs: mean {st.mean(agree):.0%} (range {min(agree):.0%}-{max(agree):.0%})")
         out['sign_agreement_between_runs'] = {'mean': st.mean(agree), 'min': min(agree), 'max': max(agree)}
-    json.dump(out, open(os.path.join(J.D, 'sonnet-x5.json'), 'w'), indent=1)
+    if not only: json.dump(out, open(os.path.join(J.D, 'sonnet-x5.json'), 'w'), indent=1)
 
 
 if __name__ == '__main__':
