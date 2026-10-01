@@ -131,9 +131,9 @@ def main():
                                    "because this stage seals the evening before.")
     ap.add_argument("--cap", type=int, default=20,
                     help="most names to hunt in a day (default 20)")
-    ap.add_argument("--min-turnover-usd", type=int, default=200_000,
-                    help="median 20-day turnover floor in USD (default 200000, the "
-                         "same capacity bar stages E, J and EU screen on)")
+    ap.add_argument("--min-turnover-usd", type=int, default=100_000,
+                    help="median 20-day turnover floor in USD (default 100000 since "
+                         "2026-10-01, was 200000; the non-US bar stages J, EU and CA screen on)")
     ap.add_argument("--no-tape", action="store_true",
                     help="emit the shifted calendar with no screen and no draw")
     ap.add_argument("-o", "--out")

@@ -78,7 +78,7 @@ France and Italy and failed it. If a pooled ρ is quoted without saying how much
 | Option anchor | implied move + 25d skew | none; JPX shorts + 信用倍率 | **none**; eight national short registers, **two markets have none at all** |
 | Tail | uncapped | 値幅制限 truncates | **uncapped** — maxima 42% / 27% / 52% |
 | Names per day | 17–22, all hunted | 8–125, capped at 25 by random draw | 65 eligible on 2026-10-22; capped at **20** |
-| Turnover floor | $200k | ¥30m (~$200k) | **$200k** since 2026-09-19 (was $1m); below $1m the register names 12% of issuers, and `anchor_covered` carries that |
+| Turnover floor | $200k | ¥15m (~$100k) | **$100k** since 2026-10-01 ($200k from 2026-09-19, $1m before); below $1m the register names 12% of issuers, and `anchor_covered` carries that |
 | Hunters | one, English | one, Japanese | **seven definitions over ten markets, one bilingual pass each** |
 
 **Europe reports before the open.** 339 of 379 measured UK results announcements landed
@@ -133,8 +133,8 @@ python3 researcher_europe/scripts/eu_universe.py --date <EVENT-DATE> -o <RUN>/un
 
 `<EVENT-DATE>` is the day the print lands, which for a `bmo` name is the day AFTER the
 session you are sealing against. It reads the vendor calendar for **all ten markets**,
-drops anything below **$200k** a day of turnover (normalised to USD off a live FX rate in
-six currencies, written into the file — it was $1m until 2026-09-19), and if more than
+drops anything below **$100k** a day of turnover (normalised to USD off a live FX rate in
+six currencies, written into the file — $100k since 2026-10-01, $200k from 2026-09-19, $1m before), and if more than
 `cap` survive (**20** since 2026-09-19) takes a **random sample seeded by the date**.
 Report `selection.method`, `eligible`, `eligible_by_market`, `hunted` and `by_market` in
 the note.
@@ -237,7 +237,7 @@ The note must also say, every time:
 - that `options` is null in all ten markets and Europe runs in the anchor-less regime
 - which markets' short registers resolved, and **how many names carry
   `anchor_covered: true`** — a name the register was read for but does not name is a
-  truncated zero, not an anchor, and under the $200k floor that is most of them
+  truncated zero, not an anchor, and under the $100k floor that is most of them
 - **how many of the day's names came from Spain or Poland**, which have no positioning
   anchor and no way to be confirmed after the fact, and how many from Germany, which
   cannot reach `event_occurred: false` either

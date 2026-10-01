@@ -108,9 +108,9 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--date", help="event date, Toronto. Default: today.")
     ap.add_argument("--cap", type=int, default=20)
-    ap.add_argument("--min-turnover-usd", type=int, default=200_000,
-                    help="median 20-day turnover floor in USD; the same capacity bar "
-                         "stages E, J and EU screen on (default 200000)")
+    ap.add_argument("--min-turnover-usd", type=int, default=100_000,
+                    help="median 20-day turnover floor in USD; the non-US bar stages "
+                         "J, EU and AU screen on (default 100000 since 2026-10-01, was 200000)")
     ap.add_argument("--window-days", type=int, default=7,
                     help="how far either side of the target a vendor date may sit and "
                          "still be a candidate, since the two calendars disagree")
