@@ -441,6 +441,34 @@ def load_judge(name):
             sc[i] = d * (c + min(im, 50) / 100)
     return sc
 
+
+def cmd_compare(a):
+    """Every judge and re-judge against live on the names they all covered, out of sample:
+    agent judges that learn only ever saw the other two folds."""
+    rows = load(); F = make_folds(rows, json.load(open(SPLIT)))
+    dev = [r for r in rows if fold_of(r, F) is not None]
+    arms = {'live': {r['id']: r['live'] for r in dev}}
+    for m, sc in sorted(rejudge_arms().items()): arms['rejudge_' + m] = sc
+    for j in sorted(os.listdir(JUDGES)):
+        if not j.startswith('_') and glob.glob(f'{JUDGES}/{j}/out/*.json'): arms['judge_' + j] = load_judge(j)
+    common = [r for r in dev if all(r['id'] in v for v in arms.values())]
+    out = {'n': len(common), 'arms': {}}
+    print(f"{len(common)} development names judged by every arm; pooled top share within bucket, net of assumed cost; p = within-day shuffle")
+    for g, f in [('all', lambda r: True), ('us', lambda r: r['region'] == 'us'), ('ex_us', lambda r: r['region'] != 'us')]:
+        sub = [r for r in common if f(r)]
+        print(f"== {g} ({len(sub)} names)   {'top 10%':>24s} {'top 15%':>30s} {'top 20%':>24s}")
+        for name, sc in arms.items():
+            p = {r['id']: sc[r['id']] for r in sub}; cells = []
+            for q in SHARES_REPORTED:
+                m = top_metrics(sub, p, q)
+                out['arms'].setdefault(name, {}).setdefault(g, {})[f'{q:.2f}'] = {k: v for k, v in m.items() if k != 'ids'}
+                cells.append(f"{m['hits']:2d}/{m['n']:<2d} {m['net']:+6.2f}%" if m['n'] else '   -   ')
+            global TOP
+            old, TOP = TOP, 0.15; pp = perm_p(sub, p); TOP = old
+            out['arms'][name][g]['perm_p_15'] = pp
+            print(f"  {name:18s} {cells[0]:>16s}   {cells[1]:>16s} p {pp:.2f}   {cells[2]:>16s}")
+    json.dump(out, open(f'{D}/compare.json', 'w'), indent=1)
+
 # ---------------------------------------------------------------- commands
 def fmt(m):
     if not m['n']: return f"{'0':>3s} {'':>6s} {'':>7s} {'':>7s} {'':>5s}"
@@ -500,10 +528,12 @@ if __name__ == '__main__':
     ap = argparse.ArgumentParser(); sp = ap.add_subparsers(dest='cmd', required=True)
     sp.add_parser('split')
     sp.add_parser('prepare')
+    sp.add_parser('compare')
     s = sp.add_parser('score'); s.add_argument('--unseal'); s.add_argument('--region', choices=['us', 'ex_us'])
     p = sp.add_parser('packs'); p.add_argument('--split', required=True, choices=list(SHARES)); p.add_argument('--out', required=True)
     a = ap.parse_args()
     if a.cmd == 'split': make_split(load())
     elif a.cmd == 'score': cmd_score(a)
     elif a.cmd == 'prepare': cmd_prepare(a)
+    elif a.cmd == 'compare': cmd_compare(a)
     else: cmd_packs(a)
