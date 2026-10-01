@@ -79,9 +79,9 @@ td.pos{text-align:left;font-size:12.5px;line-height:1.55}
  <div><label>Model</label><div class="seg" id="arm"></div></div>
  <div><label>Sleutel</label><div class="seg" id="key"><button data-v="impact">impact_sum</button><button data-v="pup">p_up − 50</button></div></div>
  <div><label>Markt</label><div class="seg" id="mkt"><button data-v="us">US</button><button data-v="europe">Europa</button><button data-v="apac">Japan + Australië</button><button data-v="all">Alles</button></div></div>
- <div><label>Selectie</label><div class="seg" id="sel"><button data-v="abs">Absolute drempel</button><button data-v="pct">Top % per dag</button></div></div>
+ <div><label>Selectie</label><div class="seg" id="sel"><button data-v="abs">Absolute drempel</button><button data-v="pct">Top % per dag</button><button data-v="pool">Top % van alle scores</button></div></div>
  <div id="thrbox"><label for="thr">Drempel |score| ≥</label><div class="rng"><input type="range" id="thr"><output id="thro"></output></div></div>
- <div id="pctbox"><label for="pct">Top % van de namen van die dag</label><div class="rng"><input type="range" id="pct" min="5" max="100" step="5"><output id="pcto"></output></div></div>
+ <div id="pctbox"><label for="pct" id="pctlab">Top % van de namen van die dag</label><div class="rng"><input type="range" id="pct" min="5" max="100" step="5"><output id="pcto"></output></div></div>
  <div><label for="cap">Max % van het vermogen per aandeel</label><div class="rng"><input type="range" id="cap" min="5" max="100" step="5"><output id="capo"></output></div></div>
  <div><label>Weging</label><div class="seg" id="wt"><button data-v="eq">Gelijk</button><button data-v="score">Naar |score|</button></div></div>
  <div><label for="start">Startvermogen ($)</label><div class="rng"><input type="number" id="start" min="100" step="100"></div></div>
@@ -96,7 +96,7 @@ td.pos{text-align:left;font-size:12.5px;line-height:1.55}
 <div class="card tw" id="cmp"></div>
 <h2>Per dag: <span id="dayarm"></span></h2>
 <div class="card tw" id="days"></div>
-<p style="margin-top:14px;font-size:13px">Gelijke weging: elke naam krijgt 1/N van het vermogen, maximaal het ingestelde percentage; bij weinig namen blijft dus cash over. Weging naar |score|: aandelen naar grootte van de score, waarbij een naam boven het maximum wordt afgetopt en het overschot over de rest wordt verdeeld zolang er ruimte is. Top % per dag rondt naar boven af en neemt alleen namen met een score ongelijk aan 0. Een short op een aandeel dat meer dan verdubbelt kan meer dan zijn inleg verliezen; dat wordt niet afgekapt. "Alles shorten": elke verhandelbare naam van die dag short, gelijk gewogen met hetzelfde maximum. Rijen op dezelfde datum uit verschillende markten vallen bij "Alles" in één boek.</p>
+<p style="margin-top:14px;font-size:13px">Gelijke weging: elke naam krijgt 1/N van het vermogen, maximaal het ingestelde percentage; bij weinig namen blijft dus cash over. Weging naar |score|: aandelen naar grootte van de score, waarbij een naam boven het maximum wordt afgetopt en het overschot over de rest wordt verdeeld zolang er ruimte is. Top % per dag rondt naar boven af en neemt alleen namen met een score ongelijk aan 0. Top % van alle scores zet per model één drempel: de |score| die de bovenste X% afsnijdt van alle verhandelbare scores ongelijk aan 0 in de gekozen markt en steekproef. Die drempel geldt dan elke dag, dus op drukke dagen gaan er meer namen in en op stille dagen minder of geen. Omdat de drempel uit de hele periode komt, zit er vooruitkijken in: live had je die verdeling vooraf niet gekend. Een short op een aandeel dat meer dan verdubbelt kan meer dan zijn inleg verliezen; dat wordt niet afgekapt. "Alles shorten": elke verhandelbare naam van die dag short, gelijk gewogen met hetzelfde maximum. Rijen op dezelfde datum uit verschillende markten vallen bij "Alles" in één boek.</p>
 </main><div id="tip" role="status"></div>
 <script>
 const R=__DATA__;
@@ -121,10 +121,14 @@ function weights(sc,cap){const n=sc.length;if(!n)return[];
 function simulate(arm){const ix=IDX[st.key][arm];if(ix==null)return null;
  const rows=R.filter(r=>inMkt(r)&&(!st.clean||!r[6]));
  const days=[...new Set(rows.map(r=>r[1]))].sort();const cap=st.cap/100;
+ // pooled cut: the |score| that keeps the top pct% of every nonzero tradable score in the sample
+ let cut=null;if(st.sel=="pool"){const all=rows.filter(r=>r[4]&&r[ix]!=0).map(r=>Math.abs(r[ix])).sort((a,b)=>b-a);
+  if(all.length)cut=all[Math.max(1,Math.ceil(all.length*st.pct/100))-1]}
  let eq=st.start,peak=eq,mdd=0,eqS=st.start;const out=[];let trades=0,hits=0,tdays=0,wins=0,expo=0;
  for(const d of days){const dr=rows.filter(r=>r[1]==d);const cand=dr.filter(r=>r[4]&&r[ix]!=0);
   let pick;
   if(st.sel=="abs")pick=cand.filter(r=>Math.abs(r[ix])>=st.thr-1e-9);
+  else if(st.sel=="pool")pick=cut==null?[]:cand.filter(r=>Math.abs(r[ix])>=cut-1e-9);
   else{const k=Math.ceil(cand.length*st.pct/100);pick=cand.slice().sort((a,b)=>Math.abs(b[ix])-Math.abs(a[ix])).slice(0,k)}
   const w=weights(pick.map(r=>r[ix]),cap);
   const pos=pick.map((r,i)=>({t:r[2],m:r[0],side:r[ix]>0?1:-1,w:w[i],mv:r[3],sc:r[ix],dv:r[5]}));
@@ -133,7 +137,7 @@ function simulate(arm){const ix=IDX[st.key][arm];if(ix==null)return null;
   if(pos.length){tdays++;if(ret>0)wins++;expo+=gross;trades+=pos.length;hits+=pos.filter(p=>p.side*p.mv>0).length}
   const sh=dr.filter(r=>r[4]),ws=Math.min(1/Math.max(1,sh.length),cap),sret=sh.reduce((s,r)=>s-ws*r[3]/100,0);eqS*=1+sret;
   out.push({d,mk:[...new Set(dr.map(r=>r[0]))],n:dr.length,nc:cand.length,pos,ret,gross,before,eq,eqS})}
- return {days:out,eq,ret:eq/st.start-1,mdd,tdays,wins,trades,hits,expo:tdays?expo/tdays:0,eqS}}
+ return {cut:st.sel=="abs"?st.thr:cut,days:out,eq,ret:eq/st.start-1,mdd,tdays,wins,trades,hits,expo:tdays?expo/tdays:0,eqS}}
 function stats(s){const dr=s.days.filter(x=>x.pos.length).map(x=>x.ret);const m=dr.length?dr.reduce((a,b)=>a+b,0)/dr.length:null;
  const sd=dr.length>1?Math.sqrt(dr.reduce((a,b)=>a+(b-m)**2,0)/(dr.length-1)):null;return {m,sd,t:sd?m/(sd/Math.sqrt(dr.length)):null}}
 function segs(){
@@ -145,7 +149,8 @@ function sliders(){const t=document.getElementById("thr");if(st.key=="pup"){t.mi
  const p=document.getElementById("pct");p.value=st.pct;document.getElementById("pcto").textContent=st.pct+"%";
  const c=document.getElementById("cap");c.value=st.cap;document.getElementById("capo").textContent=st.cap+"%";
  document.getElementById("start").value=st.start;document.getElementById("clean").checked=st.clean;
- document.getElementById("thrbox").style.display=st.sel=="abs"?"":"none";document.getElementById("pctbox").style.display=st.sel=="pct"?"":"none"}
+ document.getElementById("thrbox").style.display=st.sel=="abs"?"":"none";document.getElementById("pctbox").style.display=st.sel!="abs"?"":"none";
+ document.getElementById("pctlab").textContent=st.sel=="pool"?"Top % van alle scores in de steekproef (zet de drempel)":"Top % van de namen van die dag"}
 function draw(){segs();sliders();
  const sims={};ARMS.forEach(([a])=>{const s=simulate(a);if(s)sims[a]=s});const S=sims[st.arm];
  if(!S||!S.days.length){document.getElementById("chart").innerHTML="<p>Geen dagen in deze selectie.</p>";return}
@@ -187,9 +192,10 @@ function draw(){segs();sliders();
   tip.style.display="block";const tw=tip.offsetWidth;tip.style.left=Math.min(ev.clientX+14,innerWidth-tw-8)+"px";tip.style.top=(ev.clientY+14)+"px"});
  svg.querySelector("#hit").addEventListener("pointerleave",()=>{tip.style.display="none";xh.setAttribute("visibility","hidden")});
  // comparison
- document.getElementById("cmp").innerHTML=`<table><tr><th>model</th><th>eindvermogen</th><th>rendement</th><th>max drawdown</th><th>handelsdagen</th><th>winstdagen</th><th>trades</th><th>goed teken</th><th>gem./handelsdag</th><th>t</th></tr>`+
-  ARMS.filter(([a])=>sims[a]).map(([a,l])=>{const q=sims[a],zz=stats(q);return `<tr${a==st.arm?' style="font-weight:650"':""}><td><span style="color:${col(a)}">●</span> ${l}</td><td>${usd(q.eq)}</td><td class="${q.ret>=0?"up":"dn"}">${pc(100*q.ret)}</td><td>${pc(100*q.mdd)}</td><td>${q.tdays}</td><td>${q.wins}</td><td>${q.trades}</td><td>${q.trades?Math.round(100*q.hits/q.trades)+"%":"–"}</td><td>${pc(100*(zz.m??NaN),2)}</td><td>${zz.t!=null?zz.t.toFixed(2).replace(".",","):"–"}</td></tr>`}).join("")+
-  `<tr><td>alles shorten</td><td>${usd(S.eqS)}</td><td>${pc(100*(S.eqS/st.start-1))}</td><td colspan="7"></td></tr></table>`;
+ document.getElementById("cmp").innerHTML=`<table><tr><th>model</th><th title="de |score| die de selectie afsnijdt">drempel</th><th>eindvermogen</th><th>rendement</th><th>max drawdown</th><th>handelsdagen</th><th>winstdagen</th><th>trades</th><th>goed teken</th><th>gem./handelsdag</th><th>t</th></tr>`+
+  ARMS.filter(([a])=>sims[a]).map(([a,l])=>{const q=sims[a],zz=stats(q);const cv=st.sel=="pct"?"per dag":q.cut==null?"–":"≥ "+(st.key=="pup"?q.cut:(+q.cut).toFixed(2).replace(".",","));
+  return `<tr${a==st.arm?' style="font-weight:650"':""}><td><span style="color:${col(a)}">●</span> ${l}</td><td>${cv}</td><td>${usd(q.eq)}</td><td class="${q.ret>=0?"up":"dn"}">${pc(100*q.ret)}</td><td>${pc(100*q.mdd)}</td><td>${q.tdays}</td><td>${q.wins}</td><td>${q.trades}</td><td>${q.trades?Math.round(100*q.hits/q.trades)+"%":"–"}</td><td>${pc(100*(zz.m??NaN),2)}</td><td>${zz.t!=null?zz.t.toFixed(2).replace(".",","):"–"}</td></tr>`}).join("")+
+  `<tr><td>alles shorten</td><td></td><td>${usd(S.eqS)}</td><td>${pc(100*(S.eqS/st.start-1))}</td><td colspan="7"></td></tr></table>`;
  // days
  document.getElementById("dayarm").textContent=LAB[st.arm];
  document.getElementById("days").innerHTML=`<table><tr><th>dag</th><th>markt</th><th>namen</th><th>posities (zijde, gewicht, koers)</th><th>belegd</th><th>dagrendement</th><th>vermogen</th></tr>`+
