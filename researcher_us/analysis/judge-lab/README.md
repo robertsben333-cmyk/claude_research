@@ -24,10 +24,12 @@ book only ever trades the top.
 
 ## The metric
 
-Per day, the `max(1, round(0.2 x n))` names with the largest |score| are traded on the
-sign of the score. Per day and not on one absolute threshold, because the hunter's scale
-moved twice (Opus 5.5 on 09-23, the shared core on 10-01) and a pooled threshold would
-select one era. Reported: picks, hits, mean return gross and net of an assumed cost by
+**Pooled, not per day** (changed 2026-10-01 after the first reading, on the operator's
+correction: per day, a four-name day always trades one name, which dilutes exactly the
+top the book is about). Within each bucket (US or not, before or after the 09-23 scale
+change) the names with the largest |score| up to 10, 15 or 20% of the bucket are traded
+on the sign. The bucket exists because the hunter's scale moved on 09-23; an absolute
+threshold would select one era. The per-day figures are still in the JSON. Reported: picks, hits, mean return gross and net of an assumed cost by
 turnover band, t, and for the leave-one-day-out column a permutation p (the share of
 within-day shuffles of the scores whose top 20% does at least as well).
 
@@ -96,3 +98,58 @@ days are few and partly validation days.
    with their outcomes as worked examples is the direct form of "training the judge".
    Expect validation to be too small to decide it; the comparison has to pool forward.
 3. Open the test set once, when the short list is final.
+
+## Round 1 of agent judges (2026-10-01)
+
+Three judges written as skills in `judges/`, one shared output contract
+(`judges/_contract.md`: direction, certainty 0-100, and the book trades the top ~15% by
+certainty):
+
+- **rubric**: a fixed checklist per evidence item (fact, window, line, new, size) and a
+  pre-mortem. No outcomes.
+- **casebook**: studies ~125 resolved cases from the OTHER two folds of days, with their
+  outcomes, then judges by analogy.
+- **learned**: a learner agent writes its own SKILL.md from those cases
+  (`judges/learned/skill-fold<k>.md`, 9 to 14 counted rules); a fresh judge applies it
+  without seeing the cases. The closest thing to training the judge.
+
+`folds.json` puts the 187 development days into three folds, by whole day, no outcome
+read; each judge is scored on folds it never learned from. 27 judge agents, Opus, Read
+and Write only. `python3 judge_lab.py compare` prints the table; `compare.json` holds it.
+
+Top 15%, all regions, 187 names, net of the assumed cost, p from a within-day shuffle:
+
+| arm | top 10% | top 15% | p | top 20% |
+|---|---|---|---|---|
+| live `impact_sum` | 12/16 +2.28% | 15/25 +1.59% | 0.09 | 19/34 +1.04% |
+| re-judge Sonnet 5.5 (hunter core, other session) | 13/16 +5.92% | **20/25 +6.87%** | 0.00 | 25/34 +4.78% |
+| re-judge Opus 5 | 13/16 +6.18% | 18/25 +5.42% | 0.00 | 24/34 +3.63% |
+| re-judge Opus 5.5 | 11/16 +2.28% | 17/25 +2.38% | 0.10 | 22/34 +2.71% |
+| judge casebook | 13/16 +5.16% | 19/25 +2.83% | 0.12 | 23/34 +1.60% |
+| judge rubric | 12/16 +3.49% | 16/25 +2.35% | 0.04 | 21/34 +1.00% |
+| judge learned | 10/16 +1.03% | 16/25 +0.88% | 0.12 | 19/34 −1.00% |
+
+Shorting every one of these names returns −0.77% net, so no arm is riding the drift.
+
+**What it says.** Teaching the judge from outcomes did not help on this sample: the
+learned skill is the worst arm and the casebook is middling. The two best arms are plain
+re-judges under the existing hunter core, on a different model than the one that hunted
+(Sonnet 5.5, Opus 5). The agent judges also tilt hard short (learned 20 of 25 picks,
+casebook 18), which their skills did not ask for; the learned rules read like a fit to
+the cases ("a crowded short points up", "proxies are anti-informative") and did not
+transfer.
+
+**What it does not say.** Seven arms on one sample: the best one is chosen after the
+fact. Twenty-five picks per arm; a 5-point gap between two arms is about one standard
+error. The re-judges and the judges overlap on only 10 to 14 of 25 picks, so they are
+picking genuinely different names. Every subagent loads CLAUDE.md, which quotes results
+from these same days, for every arm alike. And the casebook leaks across days: a
+Europe case on 09-30 mentioned a US name's 09-29 result that one casebook judge was
+judging (it flagged it and held that name at certainty 20, outside the top). A
+walk-forward casebook (only days before the judged day) closes that, at the cost of
+fewer cases for the early days.
+
+**Next.** (1) Run the leading arms forward on the days after 2026-10-01 rather than
+adding arms here. (2) If more arms are tested, fold the re-judge prompt into this
+contract (a certainty field) so they compete on one footing. (3) Open the test set once,
+for at most two arms.
