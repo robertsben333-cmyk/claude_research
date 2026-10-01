@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Write portfolio.html: a day-by-day account simulator over the re-judge sample.
 
-Reads key.json and the out-*-*.json files (the same 231 names score_full.py scores) and
+Reads key.json and the out-*-*.json files in ../rejudge-four-models (the same 231 names
+score_full.py scores there) and
 inlines one row per name. Everything else happens in the page: per day the selected arm's
 names that pass the cut go into one book, the equity is split over them (equal or by
 score) with a per-name cap, the rest stays in cash, and the day's return compounds into
@@ -9,11 +10,12 @@ the next. Gross: no spread, commission or borrow. Research level, not the broker
 """
 import json, glob, os
 D = os.path.dirname(os.path.abspath(__file__))
-key = {r['id']: r for r in json.load(open(f'{D}/key.json'))}
+SRC = os.path.join(D, '..', 'rejudge-four-models')   # the re-judge this simulator reads
+key = {r['id']: r for r in json.load(open(f'{SRC}/key.json'))}
 pid = {r.get('pid', r['id']): r['id'] for r in key.values()}
 ARMS = ['opus5', 'opus', 'sonnet', 'fable']
 imp = {a: {} for a in ARMS}; pup = {a: {} for a in ARMS}
-for f in glob.glob(f'{D}/out-*-*.json'):
+for f in glob.glob(f'{SRC}/out-*-*.json'):
     m = os.path.basename(f)[:-5].split('-')[-1]
     for o in json.load(open(f)):
         if o['id'] in pid:
