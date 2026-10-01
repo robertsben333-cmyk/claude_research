@@ -815,6 +815,27 @@ Opus 5-era prompts are kept in `archive/prompts-opus-5/`. **The 3.0 floor was me
 on Opus 5's scale and has not been re-derived**; read the first forward days under the
 new prompt before trusting it either way.
 
+**Every hunter answers twice since 2026-10-01 (evening), and `impact_sum` is version 2
+again (operator's instruction).** The three-step core of the same morning made the
+findings ADD UP to (2·p_up/100 − 1)·abs_move_pct, so the key became a probability tier
+times the option-implied move and the number of findings stopped mattering. The core's
+step 3 now asks for two measurements that are never fitted to each other: (a) each
+finding sized on its own, as before 09-22, whose sum is **`impact_sum`, the key** — what
+the 3.0 floor was measured on and the only number stage E trades; and (b) `abs_move_pct`
+and `p_up`, which `edge_score.py` turns into **`impact_scaled`** and writes to its OWN
+file, `edge-scores-scaled.json`, so nothing reading the key (`alpaca_trade.py`, the
+dashboard, `edge_sample.py`) can pick it up. `edge_resolve.py` ranks it as
+`spearman_impact_scaled`. The filing rules of the morning's core (file every sourced
+fact, four reasons to drop) are unchanged. **Every hunt stage pastes
+`scripts/score_report.py`'s table at the top of its closing reply**: per name
+`impact_sum`, floor, `impact_scaled`, `abs_move_pct`, `p_up`, and for the US (stage E and
+E-S) the V2 grounded score, printed as `not run` rather than dropped. Stage E-S now runs
+`edge_grounded_score.py` on its own directory (it only reads the shadow ledger) and still
+never feeds that ledger. On the NKE runs of 2026-10-01 the two keys are equal by
+construction, because those hunts were sized under the morning's rule; they diverge from
+the next run. Prompt versions `us.v9`, `us-sonnet.v2`, `uk.v7` and so on: never pool
+them with the versions before.
+
 **The hunters learn from the resolved days through one file, `researcher_us/LESSONS.md`** (since
 2026-09-15). It holds the patterns that repeated across the post-mortems of 09-08 through
 09-14 — a verified fact is not a predicted reaction, name the line a finding lands on,
@@ -1040,6 +1061,17 @@ the comparison is `edge_resolve.py --run <RUN>/edge-sonnet` beside stage E's own
 **The 3.0 conviction floor was set on Opus 5's scale** and Sonnet's sizes may not sit on
 it; compare rankings (ρ), not floor-clearers, until days pool.
 
+**Every non-US stage screens at $100k a day since 2026-10-01 (operator's instruction).**
+Stages J (¥15m, was ¥30m), EU, CA and AU dropped their median 20-day turnover floor from
+$200k to $100k, in `config/pipeline.yaml` AND in each `*_universe.py` default, because the
+scripts read the argparse default and not the config. Stage E (`min_dollar_volume_usd`) and
+stage R stay at $200k, so **the US and non-US universes are no longer cut on one number**:
+a cross-market comparison must re-cut both sides at $200k to be like for like, and every
+universe file already records its own `min_turnover_usd` / `min_turnover_jpy`. Every name
+the move adds sits below the band where a short register resolves, so `by_anchor_covered`
+is the first split to read on any pooled non-US number. Paragraphs below that say "$200k"
+for those four stages describe the floor they were built and validated on.
+
 **Stage J is a second market, added 2026-09-18: `researcher_japan/`.** The same
 hunt, the same hunter contract and — deliberately — the *same scorer*
 (`researcher_us/scripts/edge_score.py`, unchanged), run over Tokyo. It exists to ask
@@ -1124,7 +1156,25 @@ days against +4.38% over five, on a US-parent read-through), so `run_up_5d_pct` 
 and `jp_resolve.py` ranks it as its own free control, deliberately NOT folded into
 `priced_lean_pct`; and the holiday handling above.
 
-Nothing has resolved in Japan. The stack was validated end to end on 2026-09-18 against
+**Japan was not performing, and a third of that was the ruler (2026-10-01, `jp.v5`).**
+Four days resolved, eight names, and on the old window one sign right in seven. **The TSE
+closes at 15:30 since 2024-11-05, not 15:00**, and Japanese companies release at fixed
+times that are often inside the session (13:00, 13:30, 15:00): four of the first
+seventeen hunted names did. `jp_resolve.py` entered everything at the event-day close,
+so those names were scored from a price that already held their reaction; it now reads
+the TDnet release time and enters an in-session release at the sealed 10:05 JST spot
+(same-morning seals only, else the previous close), with `entry_basis`,
+`release_time_jst` and the old window in `move_close_to_close_pct`. Re-resolved: **three
+of seven**, still no edge. The other cause was the hunter: told the company plan is the
+bar, it filed "the 月次 show a miss against plan" four times, negative five calls in
+seven, and two of those four fell. The miss was public. `unpriced-hunter-jp` now ranks
+what a release ADDS (a forecast revision against 四季報/IFIS, shareholder returns, the
+new year's guide, then the quarter against the company's own progress-rate history),
+asks for the release time, and treats a visible miss as priced; `researcher_japan/LESSONS.md`
+holds the two measured rules with their counts. **Eight names is not a result**: `jp.v5`
+is compared forward against `jp.v3` on the dashboard's Versies tab, never pooled with it.
+
+The stack was first validated end to end on 2026-09-18 against
 2026-09-11 (76 scheduled, 34 eligible, 25 drawn, 24 of 25 confirmed on TDnet, one
 correctly killed as `event_occurred: false`, median realised move 2.87%) using
 *synthetic* findings, which ranked at ρ=0.154, p=0.47 — what random findings should do.
@@ -1963,8 +2013,10 @@ archive/                               retired 2026-09-18 — see archive/README
   pipeline/LEDGER.md PREDICTIONS.*     the forecast ledger and the flat prediction table
 scripts/                               shared: run_paths, publish, run_log, get_earnings,
                                        build_predictions, update_index, validate_stage,
-                                       synthesize, smoke_test — and four shims
+                                       synthesize, smoke_test, provenance — and four shims
 config/pipeline.yaml                   one config for all of it
+config/prompt-versions.json            every hunter prompt version, from git; see
+                                       "Every prediction carries its prompt version"
 .claude/{agents,skills}/               where the harness looks; cannot move
 
 research/analyses/                     cross-cutting analyses, one folder per question,
@@ -1993,6 +2045,23 @@ python3 scripts/run_paths.py --json
 ```
 
 ## Rules that apply to every stage
+
+**Every prediction carries its prompt version and model (since 2026-10-01).** Each hunt
+skill runs `python3 scripts/provenance.py stamp --run <RUN> --market <M>` before its
+hunters, writing `<RUN>/provenance.json`: the stage's prompt version (`jp.v5`,
+`eu.v7`, `us.v8`), the exact hunter-definition blob, the model its alias serves, and the
+blobs of LESSONS, the shared core and the skill. Every earlier run was backfilled from
+git as of its seal time (`basis: backfilled_from_git`). Versions are DERIVED, not typed:
+`config/prompt-versions.json` is built by `scripts/provenance.py registry` from main's
+first-parent history plus the working tree, and **the smoke test fails if a live hunter
+definition is not registered — so after editing any hunter, run `registry` (it needs
+`git fetch --unshallow origin`) and commit the file.** A version edited on a branch is
+`pending_merge` until main carries it; re-run `registry` after the merge so its
+`from_utc` is the merge time. The model is inferred from the alias timeline in
+`provenance.py` (`opus` → claude-opus-5 until 2026-09-22 18:56 UTC, claude-opus-5-5 from
+19:09) unless a run recorded it. The dashboard shows the version on every row, filters
+on it on every market, and puts versions side by side on the Versies tab. **Never pool
+two versions to judge either one.**
 
 **`scripts/publish.sh` pushes to `main`, not to your branch.** `BRANCH="${EARNINGS_DATA_BRANCH:-main}"`
 is deliberate: a Routine session's job is to put the day's research on the data branch, and

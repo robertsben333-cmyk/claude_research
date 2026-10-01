@@ -251,7 +251,7 @@ def build(name, event_date):
         "industry": name.get("industry_en"),
         "event_date": event_date,
         "session": "amc",
-        "window": f"{event_date} 15:00 JST -> next open 09:00 JST",
+        "window": f"{event_date}: entry before the release (this sealed spot if it lands before the 15:30 JST close, else the close) -> next session close",
         "quarter": name.get("quarter"),
         "fiscal_year_end": name.get("fiscal_year_end"),
         "sealed_utc": datetime.now(UTC).isoformat(timespec="seconds"),

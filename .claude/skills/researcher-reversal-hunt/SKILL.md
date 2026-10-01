@@ -149,6 +149,21 @@ a summary of the hunt. If a name's baseline comes back `no_bars` or
 `too_little_history`, drop the name and record it in the run log rather than hunting it
 blind.
 
+**2b. Record which prompt and model this run uses. Before any hunter.**
+
+```bash
+python3 scripts/provenance.py stamp --run <RUN> --market R --orchestrator-model "<model>"
+```
+
+`<model>` is `session_context.model` from the `get_session` tool when you can call it;
+leave the flag out otherwise. It writes `<RUN>/provenance.json`: the version of the
+hunter definition the hunters are about to read (for example `jp.v5`), the model its
+alias serves, and the blobs of the LESSONS file, the shared hunter core and this skill.
+The dashboard groups every number by version and model, so a run without this file is
+placed by date and labelled as inferred. If it prints `unregistered-…`, the definition
+changed on `main` without `config/prompt-versions.json` being rebuilt; carry on, and say
+so in the run log, because the blob still identifies the exact text.
+
 **3. One hunter per name, in parallel, with the `reversal-hunter` agent.**
 
 Give each hunter its ticker, the drop date, the next session's date, the path to its
@@ -168,6 +183,19 @@ It is the US stage's script and it is not copied, forked or wrapped. It reads
 `<RUN>/baselines/*.json` and `<RUN>/hunts/*.json`, and the reversal baseline supplies
 `anchor_quality`, `priced_lean_pct`, `history.n` and `event_plausibility.verdict`, which
 are the four keys it reads. Output is `<RUN>/edge-scores.json`, ranked on `impact_sum`.
+
+**4b. Report both keys in the chat reply.** `edge_score.py` also writes
+`edge-scores-scaled.json`, ranked on `impact_scaled` = (2 × `p_up` / 100 − 1) ×
+`abs_move_pct`: the hunter's second, separate measurement (version 3 of the sizing, the
+hunter core step 3). `impact_sum` stays the key (version 2: each finding sized on its own,
+added up). Print both side by side:
+
+```bash
+python3 scripts/score_report.py --run <RUN> --label "Stage R"
+```
+
+and paste its output verbatim at the top of your closing chat reply. Never rank on,
+pool or quote `impact_scaled` as the key, and do not apply the 3.0 floor to it.
 
 **5. Resolve the PREVIOUS run, which is now scoreable.**
 

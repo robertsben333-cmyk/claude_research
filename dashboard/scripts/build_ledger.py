@@ -40,6 +40,8 @@ sys.path.insert(0, str(ROOT / "researcher_us" / "scripts"))
 
 import edge_exit as EX                                            # noqa: E402
 from alpaca_trade import Alpaca                                   # noqa: E402
+sys.path.insert(0, str(ROOT / "scripts"))
+import provenance as PROV                                         # noqa: E402
 
 DATA = ROOT / "dashboard" / "data"
 ET = timezone(timedelta(hours=-4))
@@ -320,6 +322,8 @@ def load_names(runs, cache):
                 r[f"ret_{h}"] = (None if mv is None
                                  else rd(mv if r["impact_sum"] > 0 else -mv, 3))
             attach_strategy_exit(r)
+            # Which hunter prompt version and which model made this number.
+            r.update(PROV.for_row(ROOT / r["run"], "US"))
             rows.append(r)
 
     # One issuer reporting once is one event. The 09-04 run re-hunted five names
@@ -1204,6 +1208,8 @@ def main():
         # The forward week, carried through so the dashboard has one file to read.
         # It is a plan, not a measurement: no prediction, no ranking, no score.
         "calendar": calendar_block(),
+        # Every version the US hunter has had, for the Versies tab.
+        "versions": (PROV.load_registry().get("stages") or {}).get("US", []),
         "problems": problems}
 
     Path(a.out).write_text(json.dumps(doc, indent=1, default=str) + "\n", encoding="utf-8")

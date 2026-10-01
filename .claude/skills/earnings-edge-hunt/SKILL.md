@@ -342,6 +342,21 @@ One cheap agent replaces those eight.
 
 Write to `<RUN>/edge/sweep.json`. Publish it.
 
+## 2b. Record which prompt and model this run uses
+
+```bash
+python3 scripts/provenance.py stamp --run <RUN> --market US --orchestrator-model "<model>"
+```
+
+`<model>` is `session_context.model` from the `get_session` tool when you can call it;
+leave the flag out otherwise. It writes `<RUN>/provenance.json`: the version of the
+hunter definition the hunters are about to read (for example `jp.v5`), the model its
+alias serves, and the blobs of the LESSONS file, the shared hunter core and this skill.
+The dashboard groups every number by version and model, so a run without this file is
+placed by date and labelled as inferred. If it prints `unregistered-…`, the definition
+changed on `main` without `config/prompt-versions.json` being rebuilt; carry on, and say
+so in the run log, because the blob still identifies the exact text.
+
 ## 3. Hunt — one agent per name, all of them
 
 Launch `unpriced-hunter` on the confirmed names, ordered by `hunt_priority`:
@@ -508,6 +523,28 @@ script refuses to write once the run's earliest print (a bmo name's 09:30 ET ope
 name's 16:00 ET close) has passed, and prints `V2 not written`. A resumed or late session
 records that in the run log; it does not work around it.
 
+### 5c. Two keys, one table, straight into the chat reply
+
+`edge_score.py` writes a second file beside `edge-scores.json`:
+`edge-scores-scaled.json`, ranked on **`impact_scaled`** = (2 × `p_up` / 100 − 1) ×
+`abs_move_pct`. Since 2026-10-01 every hunter answers twice (the hunter core, step 3):
+each finding sized on its own, whose sum is **`impact_sum`, the key** (version 2, what
+the 3.0 floor was measured on and the only number the book trades), and separately the
+whole print as a probability times a size (version 3). The two are kept in two files so
+nothing that reads the key can pick up the other. Never rank, trade or pool on
+`impact_scaled`.
+
+After 5b, print the table every reply carries:
+
+```bash
+python3 scripts/score_report.py --run <RUN>/edge --label "Stage E"
+```
+
+**Paste its output verbatim at the top of your closing chat reply**, before anything
+else: per name, `impact_sum` (key) | floor | `impact_scaled` | `abs_move_pct` | `p_up` |
+V2 grounded. On a run where V2 was refused or failed, the V2 column reads `not run`;
+leave it in. A reply that quotes only one of the keys has not reported the run.
+
 ## 6. The note
 
 `<RUN>/edge/edge-note.md`, answer first: the ranked table, then for each of the top
@@ -515,7 +552,7 @@ and bottom names the finding driving it, its URL, and what the price already say
 Then the names that could not be ranked and why. End with the disclaimer from
 `config/pipeline.yaml`.
 
-### The ranked table carries eight columns, always
+### The ranked table carries nine columns, always
 
 | column | what it is |
 | --- | --- |
@@ -523,6 +560,7 @@ Then the names that could not be ranked and why. End with the disclaimer from
 | **session** | `amc` or `bmo`, with the event date — the print is not today for every row |
 | **pre-lessons** | `impact_sum_pre_lessons`: the hunters' sum before they read `LESSONS.md` |
 | **post-lessons** | `impact_sum`, the ranking key: signed, points of spot. **The only score the book trades on** |
+| **scaled** | `impact_scaled` from `edge-scores-scaled.json`: the hunter's second, separate measurement (version 3). Beside the key, never traded |
 | **V2** | `impact_sum_grounded`, percent of spot, or `uncalibrated` while the shadow ledger is below `edge_v2.min_n` |
 | floor | does `conviction` clear `conviction_floor` |
 | **tradable** | `yes`, `elsewhere`, `no` or `unknown` — see below — with turnover, liquidity (`ok` / `thin`) and, for a short, whether Alpaca lends it |
@@ -533,7 +571,7 @@ columns from `edge_grounded_score.py`'s printed table (step 5b) rather than copy
 numbers by hand; it prints all three side by side from the files on disk. Print
 `uncalibrated` in the V2 column instead of leaving it out: a column that disappears
 on thin days reads as a V2 that stopped running. And say in one line under the table
-that pre-lessons and V2 are measured beside the key, not traded.
+that pre-lessons, scaled and V2 are measured beside the key, not traded.
 
 Generate the session and tradable columns rather than assembling them by hand:
 

@@ -1,6 +1,6 @@
 # Stage E-S Routine prompt — stage E with Sonnet hunters
 
-`trig_01QJzV84MhL3xnFwUjdzEvW7`, "Stage E-S — US edge hunt, Sonnet hunters (no orders)". Created 2026-10-01 at 10:59 UTC from a session, so `update_trigger` works on it. Model pinned and read back as `claude-opus-5-5`; it stores no MCP connectors and empty `sources`, like stages J, EU, AU and CA, so step 0 clones the repo itself. **Keep this file and
+`trig_01QJzV84MhL3xnFwUjdzEvW7`, "Stage E-S — US edge hunt, Sonnet hunters (no orders)". Created 2026-10-01 at 10:59 UTC from a session, so `update_trigger` works on it. Model pinned and read back as `claude-opus-5-5`; it stores no MCP connectors. Its `sources` were EMPTY at creation, so the 17:06 UTC fire on 2026-10-01 cloned the repo itself and every push was refused with a 403; the operator added the repository to `sources` at 19:16 UTC the same day and the 19:18 re-fire pushed normally. Step 0's clone is now the fallback, not the path. **Keep this file and
 the Routine in step: any re-paste changes both in the same commit.** The block below is
 the exact text the Routine holds.
 
@@ -27,11 +27,11 @@ Re-read the clock with `date -u`. You fire at 17:06 UTC, 13:06 New York, two min
 
 THE ONLY VARIABLE IS THE HUNTER MODEL. Hunters are `unpriced-hunter-sonnet`. The sweep is `edge-sweep` on Opus. You, the orchestrator, are Opus. If you have to fall back to `general-purpose` for a hunter, pass model sonnet on the launch, or the run tests nothing.
 
-YOU PLACE NO ORDERS. Do not run alpaca_trade.py in any form - not mode, not plan, not status. Stage E trades the one paper account; a second book on it would stack exposure. Do not run the V2 shadow ledger either.
+YOU PLACE NO ORDERS. Do not run alpaca_trade.py in any form - not mode, not plan, not status. Stage E trades the one paper account; a second book on it would stack exposure. Do not run the V2 shadow ledger either. DO run `edge_grounded_score.py --run <RUN>/edge-sonnet` before the first print: it only reads the ledger and writes V2 into your own directory.
 
 export EARNINGS_DATA_BRANCH=main before every scripts/publish.sh, and after the last one run `git fetch origin main && git log --oneline -1 origin/main` and say in your reply if your own commit is not there. Publish something on every fire, even an empty day or a failure: a fire that publishes nothing looks exactly like a Routine that never fired.
 
 NEVER FABRICATE A NUMBER. Every company-specific figure carries a source URL or is marked unavailable.
 
-Report at the end: names in the window, how many the sweep confirmed, the ranked table with the key the scorer names, the overlap and Spearman rho against stage E's impact_sum if its file exists by then, and anything that failed. One day is an anecdote. This is a forecasting exercise over public information, not investment advice.
+Report at the end. FIRST, paste verbatim the output of `python3 scripts/score_report.py --run <RUN>/edge-sonnet --label "Stage E-S"`: per name impact_sum (the key, version 2), impact_scaled (version 3, separate file) and V2 grounded. Then the same command on <RUN>/edge with --label "Stage E" if stage E's files exist, so both hunter models sit side by side. Then: names in the window, how many the sweep confirmed, the overlap and Spearman rho against stage E on both impact_sum and impact_scaled, and anything that failed. One day is an anecdote. This is a forecasting exercise over public information, not investment advice.
 ```

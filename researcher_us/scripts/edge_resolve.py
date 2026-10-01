@@ -40,6 +40,9 @@ Three more numbers, added 2026-09-09 because without them a run cannot be judged
                        across days lets market-wide drift into the rank structure and
                        understates every ranker (0.189 against 0.243 for the old key)
 
+And, since 2026-10-01, `impact_scaled` from `edge-scores-scaled.json` (the hunter's
+second measurement, (2*p_up/100-1)*abs_move_pct), ranked as `spearman_impact_scaled`.
+
 And, since 2026-09-23, stage E V2 beside V1 (`edge_grounded_score.py`):
 
   v2 grounded          the hunters' sizes mapped through the shadow ledger's kappa
@@ -266,6 +269,14 @@ def resolve_run(run, seed):
         if g.get("forward") is True:
             v2 = {x["ticker"]: x for x in g.get("ranking", [])}
 
+    # impact_scaled (version 3 of the sizing, 2026-10-01) lives in its own file and is
+    # ranked beside the key, never pooled into it. Absent before 2026-10-01.
+    v3 = {}
+    sp = run / "edge-scores-scaled.json"
+    if sp.exists():
+        v3 = {x["ticker"]: x for x in
+              json.loads(sp.read_text(encoding="utf-8")).get("ranking", [])}
+
     rows, pending = [], 0
     for r in scores["ranking"]:
         t = r["ticker"]
@@ -282,6 +293,7 @@ def resolve_run(run, seed):
                                   is None else -(b["tape"]["run_up_20d_pct"])),
                "deadband_pct": b.get("deadband_pct"),
                "score_v2": (v2.get(t) or {}).get("impact_sum_grounded"),
+               "score_scaled": (v3.get(t) or {}).get("impact_scaled"),
                "control_vol_only": (v2.get(t) or {}).get("control_vol_only")}
         # Which denominator normalised this name. The fallback to the reaction-history
         # proxy has always been here, but the anchor it used was never recorded, so a
@@ -343,6 +355,7 @@ def stats_for(live, seed):
                      ("priced_lean_pct", "control_priced_lean"),
                      ("score_pre_lessons", "spearman_pre_lessons"),
                      ("score_v2", "spearman_v2_grounded"),
+                     ("score_scaled", "spearman_impact_scaled"),
                      ("control_vol_only", "control_vol_only")):
         c = [r for r in live if r.get(key) is not None]
         if len(c) >= 3:
@@ -406,6 +419,7 @@ def pooled_block(days, seed):
                      ("priced_lean_pct", "control_priced_lean"),
                      ("score_pre_lessons", "spearman_pre_lessons"),
                      ("score_v2", "spearman_v2_grounded"),
+                     ("score_scaled", "spearman_impact_scaled"),
                      ("control_vol_only", "control_vol_only")):
         s, n = pooled_within_days(days, key)
         if s is not None:
@@ -493,6 +507,7 @@ def main():
                              ("control_priced_lean", "control: priced lean  "),
                              ("spearman_pre_lessons", "before LESSONS.md     "),
                              ("spearman_v2_grounded", "V2 grounded           "),
+                             ("spearman_impact_scaled", "impact_scaled (v3)    "),
                              ("control_vol_only", "control: V1 x sigma   "),
                              ("calibration_slope_pre_lessons", "slope move on pre-less"),
                              ("calibration_slope_v1", "slope move on V1      "),
@@ -522,6 +537,8 @@ def main():
         print(f"  control: priced lean        {p.get('control_priced_lean')}")
         print(f"  before LESSONS.md           {p.get('spearman_pre_lessons')}")
         print(f"  legacy edge_score key       {p.get('spearman_legacy_key')}")
+        if p.get("spearman_impact_scaled") is not None:
+            print(f"  impact_scaled (v3)          {p.get('spearman_impact_scaled')}")
         if p.get("spearman_v2_grounded") is not None:
             print(f"  V2 grounded                 {p.get('spearman_v2_grounded')}")
             print(f"  control: V1 x sigma         {p.get('control_vol_only')}")

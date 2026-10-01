@@ -59,7 +59,10 @@ and a WAF-intermittent archive; **Spain and Poland have neither**, so a name fro
 two is hunted with no positioning anchor at all and can never be confirmed or killed
 after the fact. See `eu_market.CAPABILITY`.
 
-THE FLOOR IS $200k/DAY SINCE 2026-09-19, DOWN FROM $1m, ON THE OPERATOR'S INSTRUCTION.
+THE FLOOR IS $100k/DAY SINCE 2026-10-01 (operator's instruction: every non-US stage
+screens at $100k), HALF THE US BAR. Before that it was $200k from 2026-09-19, and $1m
+before that. The history of the $200k move, kept for its reasoning:
+THE FLOOR WAS $200k/DAY FROM 2026-09-19, DOWN FROM $1m, ON THE OPERATOR'S INSTRUCTION.
 Two reasons were given and both are about comparability and depth: $200k is what the US
 and Japanese stages screen on, so the three markets are now cut the same way and their
 resolved numbers mean the same thing; and it adds names on exactly the thin days.
@@ -102,10 +105,10 @@ Two steps, and the second is deliberately not a judgement:
 
   1. Drop everything below `--min-turnover-usd` on median 20-session turnover,
      currency-normalised to USD with a live rate that is written into the output.
-     $200k/day since 2026-09-19, the same bar the US and Japanese stages use, so the
-     three markets' resolved numbers are comparable. Below $1m the FCA register
+     $100k/day since 2026-10-01 ($200k from 2026-09-19), the same bar the other
+     non-US stages use and half the US one. Below $1m the FCA register
      returns a disclosed position for 12% of names against 89% in the $1-5m band, so
-     the names between $200k and $1m are mostly unanchored -- carried explicitly as
+     the names between the floor and $1m are mostly unanchored -- carried explicitly as
      `anchor_covered: false` rather than screened out.
   2. If more than `--cap` survive, take a RANDOM sample seeded by the date.
 
@@ -343,9 +346,9 @@ def main():
     ap.add_argument("--cap", type=int, default=20,
                     help="most names to hunt in a day (default 20, raised from 12 on "
                          "2026-09-19 with the seven new markets)")
-    ap.add_argument("--min-turnover-usd", type=float, default=200_000,
-                    help="median 20-session turnover floor in USD (default 2e5, the "
-                         "same bar the US and Japanese stages use, since 2026-09-19). "
+    ap.add_argument("--min-turnover-usd", type=float, default=100_000,
+                    help="median 20-session turnover floor in USD (default 1e5, the "
+                         "non-US floor since 2026-10-01; 2e5 from 2026-09-19). "
                          "It was 1e6: below $1m the short register returns a disclosed "
                          "position for 12%% of names against 89%% at $1-5m and nothing "
                          "is tradeable. See SUBMARKET.md section 4 and the "
@@ -492,9 +495,9 @@ def main():
                      "draw is deliberately not stratified; this field is how that shows "
                      "up in the note and in eu_resolve.py's per_market block.",
         },
-        "basis": "Turnover floor, then a seeded random draw. The floor is $200k/day "
-                 "since 2026-09-19 -- the same bar the US and Japanese stages use, so "
-                 "all ten markets are cut the same way. It is NOT a size-band cut: "
+        "basis": "Turnover floor, then a seeded random draw. The floor is $100k/day "
+                 "since 2026-10-01 ($200k from 2026-09-19) -- the bar every non-US stage "
+                 "uses and half the US one, so all ten markets are cut the same way. It is NOT a size-band cut: "
                  "Phase 1 found coverage runs 5-7 analysts at $1-5m of turnover against "
                  "16-19 above $25m, and selecting on that band would bake this stage's "
                  "own thesis into its universe. Turnover and `anchor_covered` ride in "

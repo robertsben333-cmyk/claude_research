@@ -81,7 +81,7 @@ date was sealed for. A stage-2 session in this repo once concluded the platform 
 
 ## The prompt, as pasted
 
-The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-09-19, re-pasted from this file by a session** when the stage went from three markets to ten. It is quoted verbatim, so keep the two in step; nothing else will.
+The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-10-01, re-pasted from this file by a session** when the turnover floor went to $100k (earlier pastes: 2026-09-19 for ten markets, 2026-09-22 for the bilingual pass). It is quoted verbatim, so keep the two in step; nothing else will.
 
 > You are running **stage EU**, the European researcher, for the next European session.
 >
@@ -122,7 +122,7 @@ The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-09-1
 > - **TEN MARKETS SINCE 2026-09-19**: uk, de, fr, se, dk, no, fi, it, es, pl. The cap is **20** names. Read `config/pipeline.yaml`'s `europe_hunt` block rather than this line.
 > - **Spawn one isolated subagent per name**, dispatched on each baseline's `submarket` field. The mapping is `MARKETS[<submarket>]["hunter"]` in `researcher_europe/scripts/eu_market.py`, so read it rather than recalling it: `unpriced-hunter-uk`, `-de`, `-fr`, `-it`, `-es`, `-pl`, and **`unpriced-hunter-nordic` for se/dk/no/fi — that one agent covers four markets, so tell it which of the four it is hunting.** Give each only its own ticker, its own window and the path to its own baseline. Running several names in one context destroys both controls the stage exists to measure and leaves names unhunted.
 > - **ONE BILINGUAL PASS PER HUNTER SINCE 2026-09-22.** Each hunter searches English and its own local language together in a single pass. It no longer freezes an English-only `pre_local` draft: that control was retired on the operator's instruction because sequencing the two halves stopped them informing each other. Do not ask a hunter for `pre_local` and do not add it back to the contract. What each one emits instead is `language_note` — prose, one line per thing the local sources carried that the English ones did not. Nothing ranks it; quote it in the note where it is interesting. The `pre_lessons` freeze still runs and is still load-bearing. `eu_resolve.py`'s language-pass section will report 0 names, and that is the honest report of a retired control, not a hunter that forgot to freeze.
-> - A two-name day is a normal outcome for this stage, not a failure. Hunt the names there are. **Do not lower the turnover floor to fill a wave.** The floor is $200k a day, set by the operator on 2026-09-19 to match the US and Japanese stages.
+> - A two-name day is a normal outcome for this stage, not a failure. Hunt the names there are. **Do not lower the turnover floor to fill a wave.** The floor is $100k a day since 2026-10-01, set by the operator for every non-US stage (it was $200k from 2026-09-19); stage E stays at $200k, so do not compare a European day with a US one without re-cutting both at $200k.
 > - **Never fabricate a number.** Every company-specific figure carries a source URL or is marked `unavailable`/`null`, and a non-English source gets its original string quoted beside the translation.
 > - **Leave a heartbeat before you spend anything**, publish after every wave, and append to `_run-log.md` rather than rewriting it. A run that publishes nothing is indistinguishable from a Routine that never fired, and those have completely different fixes.
 >

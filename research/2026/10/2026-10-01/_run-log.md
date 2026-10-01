@@ -51,3 +51,33 @@
 - 1 name in window, sweep confirmed 1 (company release, amc ~16:15 ET), 0 phantom. 1 hunter (6 min). NKE impact_sum -0.38 (pre_lessons -0.76, V2 -0.22), 0 of 1 above floor 3.0. Hunt returned print_vs_bar_pct, pre_lessons, lands_on — current contract. ranking_key: impact_sum.
 - Execution: enabled in config, but this session's permission classifier DENIED order submission at step 0b (verify/close --submit). Nothing was owed (0 held). Step 7: plan only, 0 names meet the benchmark, so no order would have gone in; open --submit not attempted. 0 orders, gross 0%. Refused: NKE below floor (0.38 < 3.00). The operator should note that future days WITH floor-clearers will not trade from this Routine until that permission is resolved.
 - Step 6c V2 shadow ledger skipped (optional, shed first). Note: research/2026/10/2026-10-01/edge/edge-note.md.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-01 18:33 UTC
+- Fired 18:33 UTC (14:33 Toronto). Plan: ca_universe -> seal baselines before 16:00 ET -> one unpriced-hunter-ca per name in waves of 5 -> edge_score -> note. No orders.
+
+## Stage CA — Canada researcher — EMPTY DAY
+- Logged at 2026-10-01 18:34 UTC
+- Universe: 2512 scanner rows, 5 candidates within ±7 days, scheduled_today 0, market_closed null. Nobody scheduled — a normal Canadian weekday outcome, not a fault.
+- Vendor stack is UP: WSH via TMX answered for the in-window candidates (ATZ 10-08 amc CON, FTG 10-07 amc CON, RCH 10-07 CON; TMQ and RPX had no WSH row). calendar_reconciliation all zero; moved_off_target_by_wsh empty; filing_only dropped 0.
+- FX: Yahoo did not answer, CAD/USD fallback constant 0.71 used (recorded in universe.json). No baselines sealed, no hunters spawned, so no register snapshot stored today; anchor-arm split 0/0. No orders (this stage places none).
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-10-01 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen window. Plan: rev_universe --intraday --k 15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-09-30, note before 16:00 ET (shedding names if needed).
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-01 19:13 UTC
+- Screen: --intraday at 15:04 EDT on 2026-10-01 (bars not final); 46 names passed floors; 15 hunted, 15 rankable; sectors CD 5 / HC 5 (33% each), no warning. SPY +0.22% at screen.
+- Hunters: 15 reversal-hunters; concurrency cap of 8 subagents meant 7 launched as slots freed. Nothing shed. edge_score.py ran unchanged: 1 of 15 clears the 3.0 floor (ONEN -3.00, leg 2 supply, no leg-1 mechanism). Zero repricing (leg 1) findings across 15 hunts.
+- Resolved 2026-09-29 at d1 (resolve-2026-09-29.json): impact_sum rho +0.034 (p 0.90) vs neg_atr14 +0.356; lean_vs_free_control_rho -0.314. Did not beat the free control. 2026-09-30 run not resolvable until today's close.
+- Contamination: JAGX hunter saw a WebSearch summary carrying a 2026-10-01 'close' dated after the screen instant; discarded, entered no number. Typos with no numeric effect left as written in BBGI.json (date '2026-09-30-2027' = 2027-09-30) and INDP.json ('4/1' = 9/4). KDK hunter had no rejection reason for 'no mechanism' and used contradicted_by_document.
+- No floor, weight or horizon moved. No orders; no execution step exists in this stage.
+
+## Edge hunt (Sonnet) — 2026-10-01 amc + 2026-10-02 bmo — STARTED
+- Logged at 2026-10-01 19:19 UTC
+- Operator RE-RUN after the 17:06 UTC fire's pushes were refused (403); no edge-sonnet/ existed on origin/main or locally, so nothing to discard. Fired 19:18 UTC. Universe 1 of 19 rows (NKE amc), same as stage E. Thin-day --include-unknown check SKIPPED for time (stage E's found none in window). Baseline NKE sealed ~19:18 UTC: spot 35.915, implied 8.91% — about 2h14m after stage E's 17:04 seal (stage E: implied 9.22%), a difference that is NOT the hunter model. Plan: 1 edge-sweep (Opus) + 1 unpriced-hunter-sonnet. Hard stop 20:10 UTC. No orders, no V2 ledger.
+
+## Edge hunt (Sonnet) — 2026-10-01 amc + 2026-10-02 bmo — DONE
+- Logged at 2026-10-01 19:22 UTC
+- 1 name in window (same as stage E), sweep (edge-sweep, Opus) confirmed 1, 0 phantom. 1 unpriced-hunter-sonnet (native agent type, not the general-purpose fallback), sealed 19:21 UTC before the 20:15 UTC print. NKE impact_sum +0.84 (pre_lessons +0.84), 0 of 1 above floor 3.0; current contract returned. Stage E: NKE -0.38 — opposite sign, Spearman undefined on n=1. CONFOUND: E-S sealed 19:18 UTC vs stage E 17:07 UTC; implied 8.91% vs 9.22%, skew -11.22 vs +2.03, priced_lean +5.00 vs -0.94, and the Sonnet hunter's +1.6 finding cites that skew — not attributable to the hunter model. Thin-day --include-unknown check skipped for time. No orders, no alpaca_trade.py, no V2. Note: research/2026/10/2026-10-01/edge-sonnet/edge-note.md.

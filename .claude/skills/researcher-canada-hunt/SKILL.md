@@ -96,7 +96,7 @@ python3 researcher_canada/scripts/ca_universe.py -o <RUN>/universe.json
 ```
 
 It scans TradingView's Canada universe, reconciles every candidate against Wall Street
-Horizon through TMX, drops names below $200k a day of turnover, drops **filing-only
+Horizon through TMX, drops names below $100k a day of turnover (was $200k until 2026-10-01), drops **filing-only
 issuers** and **disputed dates**, folds second share classes, and if more than `cap`
 survive takes a **random sample seeded by the date**. Report `selection.method`,
 `calendar_reconciliation` and `moved_off_target_by_wsh` in the note.
@@ -114,6 +114,21 @@ python3 researcher_canada/scripts/ca_priced_in.py --universe <RUN>/universe.json
 Sealed means sealed. Nothing downstream may revise a baseline. This step also writes the
 day's short-register snapshot, which is what makes tomorrow's change computable.
 
+**2b. Record which prompt and model this run uses. Before any hunter.**
+
+```bash
+python3 scripts/provenance.py stamp --run <RUN> --market CA --orchestrator-model "<model>"
+```
+
+`<model>` is `session_context.model` from the `get_session` tool when you can call it;
+leave the flag out otherwise. It writes `<RUN>/provenance.json`: the version of the
+hunter definition the hunters are about to read (for example `jp.v5`), the model its
+alias serves, and the blobs of the LESSONS file, the shared hunter core and this skill.
+The dashboard groups every number by version and model, so a run without this file is
+placed by date and labelled as inferred. If it prints `unregistered-…`, the definition
+changed on `main` without `config/prompt-versions.json` being rebuilt; carry on, and say
+so in the run log, because the blob still identifies the exact text.
+
 **3. One hunter per name.** Spawn `unpriced-hunter-ca`, in waves of
 `canada_hunt.wave_size`, publishing after each wave. Give each hunter only its own
 ticker, the window, and the path to its own baseline. Never another name's baseline,
@@ -130,6 +145,19 @@ python3 researcher_us/scripts/edge_score.py --run <RUN>
 
 The ranking key is whatever `edge-scores.json` reports in `ranking_key`. Read it; do not
 carry a remembered contract into the run.
+
+**4b. Report both keys in the chat reply.** `edge_score.py` also writes
+`edge-scores-scaled.json`, ranked on `impact_scaled` = (2 × `p_up` / 100 − 1) ×
+`abs_move_pct`: the hunter's second, separate measurement (version 3 of the sizing, the
+hunter core step 3). `impact_sum` stays the key (version 2: each finding sized on its own,
+added up). Print both side by side:
+
+```bash
+python3 scripts/score_report.py --run <RUN> --label "Stage CA"
+```
+
+and paste its output verbatim at the top of your closing chat reply. Never rank on,
+pool or quote `impact_scaled` as the key, and do not apply the 3.0 floor to it.
 
 **5. Note.** Write `<RUN>/canada-note.md`, answer first: the ranked table, then the
 finding and URL driving the top and bottom name, then the names that could not be ranked

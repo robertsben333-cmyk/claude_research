@@ -36,6 +36,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "dashboard" / "data"
+sys.path.insert(0, str(ROOT / "scripts"))
+import provenance as PROV                                     # noqa: E402
 
 # stage -> (directory name, market code, resolver, its default output file)
 STAGES = {
@@ -192,6 +194,14 @@ def collect_run(run, spec, problems):
             "move_pending": rr.get("move_pending"),
             "realised_move_pct": rd(move, 3),
         }
+        # Which hunter prompt and which model made this number. Read from the run's
+        # provenance.json (recorded, or backfilled from git); inferred by date and
+        # labelled so where neither exists. Never a git call: CI clones shallow.
+        row.update(PROV.for_row(rp, spec["stage"] if spec["stage"] != "J" else "JP",
+                                row["submarket"]))
+        # Japan only: when the company released, and which entry the resolver used.
+        row["release_time_jst"] = rr.get("release_time_jst")
+        row["entry_basis"] = rr.get("entry_basis")
         # The board return: what the hunt's own sign earned. Short a negative
         # prediction, long a positive one -- the same convention the US ledger
         # uses, so the two are read the same way.
@@ -214,6 +224,10 @@ def collect_run(run, spec, problems):
         "n_hunts": len(hunts),
         "n_findings": sum(r["n_findings"] for r in rows),
         "n_resolved": sum(1 for r in rows if r["realised_move_pct"] is not None),
+        "prov_keys": sorted({r["prov_key"] for r in rows if r.get("prov_key")}),
+        "prov_basis": sorted({r["prov_basis"] for r in rows if r.get("prov_basis")}),
+        "orchestrator_model": next((r["orchestrator_model"] for r in rows
+                                    if r.get("orchestrator_model")), None),
         "n_killed": sum(1 for r in rows if r["event_occurred"] is False),
         "scored_utc": scores.get("generated_utc"),
         "sealed_utc": universe.get("generated_utc"),
@@ -311,6 +325,10 @@ def main():
             "n_runs": len(metas),
             "n_names": len(rows),
             "n_resolved": sum(1 for r in rows if r["realised_move_pct"] is not None),
+            # Every version this stage has had, including any not yet on main, so the
+            # page can show a version that has not run a day yet.
+            "versions": (PROV.load_registry().get("stages") or {}).get(
+                "JP" if code == "JP" else code, []),
         }
         print(f"{code}: {len(metas)} runs, {len(rows)} names, "
               f"{markets[code]['n_resolved']} with a realised move")

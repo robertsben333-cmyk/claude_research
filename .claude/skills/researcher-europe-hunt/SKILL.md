@@ -78,7 +78,7 @@ France and Italy and failed it. If a pooled ρ is quoted without saying how much
 | Option anchor | implied move + 25d skew | none; JPX shorts + 信用倍率 | **none**; eight national short registers, **two markets have none at all** |
 | Tail | uncapped | 値幅制限 truncates | **uncapped** — maxima 42% / 27% / 52% |
 | Names per day | 17–22, all hunted | 8–125, capped at 25 by random draw | 65 eligible on 2026-10-22; capped at **20** |
-| Turnover floor | $200k | ¥30m (~$200k) | **$200k** since 2026-09-19 (was $1m); below $1m the register names 12% of issuers, and `anchor_covered` carries that |
+| Turnover floor | $200k | ¥15m (~$100k) | **$100k** since 2026-10-01 ($200k from 2026-09-19, $1m before); below $1m the register names 12% of issuers, and `anchor_covered` carries that |
 | Hunters | one, English | one, Japanese | **seven definitions over ten markets, one bilingual pass each** |
 
 **Europe reports before the open.** 339 of 379 measured UK results announcements landed
@@ -133,8 +133,8 @@ python3 researcher_europe/scripts/eu_universe.py --date <EVENT-DATE> -o <RUN>/un
 
 `<EVENT-DATE>` is the day the print lands, which for a `bmo` name is the day AFTER the
 session you are sealing against. It reads the vendor calendar for **all ten markets**,
-drops anything below **$200k** a day of turnover (normalised to USD off a live FX rate in
-six currencies, written into the file — it was $1m until 2026-09-19), and if more than
+drops anything below **$100k** a day of turnover (normalised to USD off a live FX rate in
+six currencies, written into the file — $100k since 2026-10-01, $200k from 2026-09-19, $1m before), and if more than
 `cap` survive (**20** since 2026-09-19) takes a **random sample seeded by the date**.
 Report `selection.method`, `eligible`, `eligible_by_market`, `hunted` and `by_market` in
 the note.
@@ -180,6 +180,21 @@ python3 researcher_europe/scripts/eu_priced_in.py --universe <RUN>/universe.json
 
 Sealed means sealed. Nothing downstream may revise a baseline.
 
+**2b. Record which prompt and model this run uses. Before any hunter.**
+
+```bash
+python3 scripts/provenance.py stamp --run <RUN> --market EU --orchestrator-model "<model>"
+```
+
+`<model>` is `session_context.model` from the `get_session` tool when you can call it;
+leave the flag out otherwise. It writes `<RUN>/provenance.json`: the version of the
+hunter definition the hunters are about to read (for example `jp.v5`), the model its
+alias serves, and the blobs of the LESSONS file, the shared hunter core and this skill.
+The dashboard groups every number by version and model, so a run without this file is
+placed by date and labelled as inferred. If it prints `unregistered-…`, the definition
+changed on `main` without `config/prompt-versions.json` being rebuilt; carry on, and say
+so in the run log, because the blob still identifies the exact text.
+
 **3. One hunter per name, in the market's own agent.** Dispatch on each baseline's
 `submarket` field — the mapping is `MARKETS[<submarket>]["hunter"]`, so read it rather
 than remembering it:
@@ -210,6 +225,19 @@ python3 researcher_us/scripts/edge_score.py --run <RUN>
 The ranking key is whatever `edge-scores.json` reports in `ranking_key`. Read it; do not
 carry a remembered contract into the run.
 
+**4b. Report both keys in the chat reply.** `edge_score.py` also writes
+`edge-scores-scaled.json`, ranked on `impact_scaled` = (2 × `p_up` / 100 − 1) ×
+`abs_move_pct`: the hunter's second, separate measurement (version 3 of the sizing, the
+hunter core step 3). `impact_sum` stays the key (version 2: each finding sized on its own,
+added up). Print both side by side:
+
+```bash
+python3 scripts/score_report.py --run <RUN> --label "Stage EU"
+```
+
+and paste its output verbatim at the top of your closing chat reply. Never rank on,
+pool or quote `impact_scaled` as the key, and do not apply the 3.0 floor to it.
+
 **5. Note.** Write `<RUN>/europe-note.md`, answer first: the ranked table with the market
 on every row, then the finding and URL driving the top and bottom name, then the names
 that could not be ranked and why.
@@ -222,7 +250,7 @@ The note must also say, every time:
 - that `options` is null in all ten markets and Europe runs in the anchor-less regime
 - which markets' short registers resolved, and **how many names carry
   `anchor_covered: true`** — a name the register was read for but does not name is a
-  truncated zero, not an anchor, and under the $200k floor that is most of them
+  truncated zero, not an anchor, and under the $100k floor that is most of them
 - **how many of the day's names came from Spain or Poland**, which have no positioning
   anchor and no way to be confirmed after the fact, and how many from Germany, which
   cannot reach `event_occurred: false` either
