@@ -1,0 +1,2584 @@
+[
+ {
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "[REDACTED]",
+   "event_date": "2026-09-08",
+   "session": "bmo",
+   "as_of_utc": "2026-09-07T14:07:33+00:00",
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-04",
+    "spot": 47.05,
+    "run_up_5d_pct": -0.32,
+    "run_up_20d_pct": -3.07,
+    "pct_from_52w_high": -4.68,
+    "pct_from_52w_low": 25.84,
+    "realised_vol_20d_annualised_pct": 15.1,
+    "avg_volume_20d": 343210
+   },
+   "cik": "0000771497",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-06-05",
+      "session": "bmo",
+      "move_pct": 6.67
+     },
+     {
+      "event_date": "2026-03-10",
+      "session": "bmo",
+      "move_pct": -4.62
+     },
+     {
+      "event_date": "2025-12-17",
+      "session": "bmo",
+      "move_pct": 5.49
+     },
+     {
+      "event_date": "2025-09-05",
+      "session": "bmo",
+      "move_pct": 0.33
+     },
+     {
+      "event_date": "2025-06-06",
+      "session": "bmo",
+      "move_pct": -9.07,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 3249600,
+       "next_day_volume": 1165600,
+       "median_20d_before": 313650,
+       "move_as_tagged_pct": -9.07,
+       "move_if_bmo_pct": -9.07,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-03-12",
+      "session": "bmo",
+      "move_pct": -8.67
+     },
+     {
+      "event_date": "2024-12-18",
+      "session": "bmo",
+      "move_pct": -8.36
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 6.67,
+    "max_abs_move_pct": 9.07,
+    "up_count": 3,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 95,
+    "median_gap_days": 86.5,
+    "ratio": 1.1,
+    "last_print": "2026-06-05",
+    "verdict": "fits_cadence",
+    "reason": "95 days since the last print against a 86-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-09-18",
+    "days_to_expiry": 11,
+    "atm_strike": 45.0,
+    "atm_iv_pct": 53.8,
+    "straddle_implied_move_pct": 8.4,
+    "event_implied_move_pct": 8.13,
+    "event_implied_move_basis": "8.4% straddle over 11 calendar days less 2.67% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.32,
+    "total_open_interest": 93,
+    "atm_spread_frac_of_mid": 0.778,
+    "warnings": [
+     "ATM bid-ask spread 78% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 3.33,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 8.13,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok",
+   "company": "[REDACTED]"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "[THE COMPANY].json",
+    "text": "US energy storage installed a record 20.2 GWh in calendar Q2 2026 (17.9-18.0 GWh utility-scale, 1.8 GWh commercial/industrial), 30.8 GWh in H1, and SEIA/Benchmark RAISED the full-year 2026 forecast to 71 GWh versus 59 GWh installed in 2025 - published 2026-09-01, twelve weeks after [THE COMPANY] last spoke, and covering the two months (May, June) that sit inside [THE COMPANY]'s fiscal Q3.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "[url removed]",
+    "source_date": "2026-09-01",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "[THE COMPANY]'s Technical Solutions grew 27.2% in Q2 FY26 explicitly on battery energy storage, and the entire FY26 adjusted-EPS guide rests on management's claim that 'volume will ramp meaningfully in ATS' in the back half - the single most doubted line in the guide, because ATS margin was diluted in Q2 by equipment-heavy BESS work. The datapoint that validates it sits in solar/storage trade press a week before the print, on a $2.8bn company with only three published estimates; no [THE COMPANY] preview carries it. If the market had made the connection, [THE COMPANY] would not be sitting 4.68% below its 52-week high with 15.1% annualised realised vol into a print where its fastest-growing segment's end market just set an all-time quarterly record and had its annual outlook raised 20%. Note this also refutes the Wood Mackenzie call (published 2025-07-01) that US grid-scale BESS would contract 29% in 2026 on FEOC and tariff constraints, which is the version of this story that was current when [THE COMPANY] guided.",
+    "independence": "Independently reported the same day by a different trade outlet from the same SEIA/Benchmark release: [url removed] (2026-09-01). Directionally corroborated by a separate, unrelated demand channel - hyperscaler capex guidance was raised again at the late-July/early-August 2026 prints (Amazon to ~$220bn from ~$200bn, Alphabet to $195-205bn from $180-190bn) per [url removed] - which feeds the same ATS data-centre electrical book. Shares no document with any other finding in this file.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "[THE COMPANY].json",
+    "text": "CBRE's Q2 2026 US office report (2026-07-29) shows national vacancy falling 30bp to 18.3% - 'the largest quarterly decline since 2015' - net absorption of 12.6m sq ft, nearly double the prior quarter and a ninth straight positive quarter, leasing +16% y/y, with CBRE projecting 2026 annual leasing to surpass the 2022 record; San Francisco, the exact market [THE COMPANY]'s CEO singled out on 2026-06-05 as having vacancy 'probably 2 or 3x worse than New York City', posted +963,980 sq ft of net absorption in the quarter.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "[url removed]",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "Business & Industry is ~44% of [THE COMPANY] revenue ($1,015.8m of $2,290.0m in Q2) and was flat y/y, which management attributed to UK and West Coast client exits driven by CRE weakness. The office inflection is fully priced in office REITs, which are the constituency that reads CBRE Figures; it is not priced in a janitorial contractor covered by three analysts, because the transmission runs through re-scoping, occupancy-linked hours and win rates rather than through any line an [THE COMPANY] preview models. If it were priced you would see [THE COMPANY] bid into the print rather than -3.07% over 20 days, and you would see at least one of the three estimates moving after 2026-07-29. Sized small deliberately: janitorial scope lags leasing by several quarters, and near-term reported B&I is dominated by the disclosed Transport for London exit worth ~300bp of back-half B&I growth, so this is a tone-and-FY27 item more than a Q3 revenue item.",
+    "independence": "A different firm, different methodology, same direction and published separately: Colliers' Q2 2026 US office statistics report the strongest quarterly net absorption in seven years with national vacancy at ~18% - [url removed] San Francisco detail is a second CBRE document ([url removed] 2026-07-10), so treat the two CBRE files as one source cluster with Colliers as the genuinely independent leg.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "[THE COMPANY].json",
+    "text": "[THE COMPANY] Aviation grew 19.5% in Q2 and its CEO warned on 2026-06-05 that 'rising fuel costs will likely create some near-term challenges for our airline clients'; since then the airline cost shock deepened rather than resolved - American Airlines cut FY26 guidance a second time in July (to a -$0.65 to +$0.65 adjusted EPS range from -$0.40 to +$1.10, with a Q3 loss guide, on ~$3.75/gal fuel), Southwest cut FY26 to $3.25-$4.25 from 'at least $4' after a ~$900m y/y Q2 fuel increase, and Alaska has had guidance suspended since April.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "[url removed]",
+    "source_date": "2026-07-23",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "Aviation is 13.5% of [THE COMPANY] revenue ($310.8m, $16.3m segment operating profit in Q2) and was the second-fastest-growing segment, and the market is extrapolating the Heathrow ramp. Airline distress is completely priced in airline equities - it is not priced in a name screened as defensive facility services, and none of the three published [THE COMPANY] estimates models an airline procurement squeeze on outsourced cabin, ground and passenger-assistance scope. If the market had priced it, [THE COMPANY]'s 25-delta skew would be visibly bid for downside and the stock would be more than 4.68% off its high with realised vol above 15%. Sized small on purpose and honestly: TSA throughput set records through June and July 2026 so in-quarter volumes were fine, the direct Q3 EPS arithmetic of even a 5% Aviation revenue shortfall is roughly a penny, most [THE COMPANY] airline contracts pass through labour, and the industry capacity trim was already partly visible before [THE COMPANY] guided on 2026-06-05. The risk here is to forward commentary and FY27 framing, not to the Q3 number.",
+    "independence": "Partial only. BofA's carrier-capacity tracking (Q3 2026 domestic growth cut to ~0.8%, American to 7.5% from 9.3%, Delta to 1.2%) points the same way - [url removed] - but that page carries a corrupt primary timestamp and a 2026-05-26 update stamp, i.e. it may pre-date [THE COMPANY]'s guide, so I am not resting the finding on it. The [THE COMPANY]-side leg is management's own 2026-06-05 remark in the transcript: [url removed]",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "[THE COMPANY].json",
+    "text": "Note 8 of the Q2 FY26 10-Q states that [THE COMPANY] performed its review of the majority of its casualty insurance programmes during Q2 2026 and 'it was determined that there was no adjustment required for our total reserves related to prior years during the six months ended April 30, 2026' - so the item that produced a $(22.2)m pre-tax hit (~100bp of adjusted EBITDA margin, ~$0.26/sh) in Q4 FY25 is a Q2/Q4 event and is very unlikely to appear in the Q3 print, even though [THE COMPANY]'s adjusted EPS definition now includes it while its guidance range is stated 'before any impact from prior-year self-insurance adjustments'.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "[url removed]",
+    "source_date": "2026-06-05",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "[THE COMPANY] changed its non-GAAP definition after SEC staff comment (disclosed 2025-12-17) so that reported adjusted EPS now INCLUDES prior-year self-insurance adjustments, while the $3.85-$4.15 guide explicitly excludes them. That mismatch is the mechanical reason FY25 landed at $3.44 against a $3.65-$3.80 range, and it is the most plausible single source of a headline 'miss' on this name. Three analysts on a $2.8bn company are not reading Note 8 of a June 10-Q to work out the actuarial cadence, and there is no aggregator field for 'timing of casualty reserve reviews'. If the market had priced the absence of this risk you would not see an indicative 8.13% implied move on a 93-contract chain with a 1.32 put/call OI ratio. This is a left-tail-removal finding, not a mean finding, which is why it is [sizing note removed].",
+    "independence": "The $(22.2)m Q4 FY25 magnitude and the non-GAAP definition change come from a different document - the FY25 results release, [url removed] (2025-12-17). No other finding in this file rests on the 10-Q, so there is no source-cluster overlap.",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "EDGAR full filing list: nothing filed since 2026-07-17 (last Form 4) and no 8-K since 2026-06-05 - no quiet 8-K, no August insider activity, no acquisition, no credit-agreement amendment ahead of the print",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "[THE COMPANY]'s own newsroom June-September 2026: only a LaGuardia Terminal B autonomous-robotics pilot (2026-07-28), an Atlanta Braves/Truist Park venues agreement (2026-06-16) and a sales-award PR - no material contract win or loss announced in the quarter",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "CEO/CFO succession or executive departures - nothing since the January 2026 CIO/CSO promotions",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "Activist or strategic-alternatives angle: JCP Investment Management showed a ~$6.2m [THE COMPANY] position in Q2 2026 13Fs, which is ~0.2% of the market cap and not a campaign; the two April 2026 Schedule 13Gs are passive (one is Vanguard Capital Management LLC)",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "ICE/I-9 worksite enforcement against [THE COMPANY] specifically - the sector-level risk is real and rising but no [THE COMPANY]-specific audit, raid, notice of inspection or fine is findable",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "Semiconductor fab construction as a WGNSTAR risk: the US fab delays that are findable (Intel Ohio to 2030, Micron Clay NY to 2030) were announced in Feb 2025 and Nov 2025 respectively, i.e. long before [THE COMPANY] guided, so they are not new information into this print",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "BLS Employment Cost Index for Q2 2026 (private wages decelerating to 3.1% from 3.4%, real wages -0.4%) - a genuine labour-cost tailwind for the most labour-intensive name in the group, but macro, widely published on 2026-07-31 and not [THE COMPANY]-specific enough to carry as a finding",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "Segment backlog: [THE COMPANY] discloses no segment backlog; the only quantified figure in the Q2 10-Q is $222.3m of remaining performance obligations, which excludes variable consideration and series contracts and is therefore not comparable to the Comfort Systems / EMCOR backlog figures the sweep suggested cross-checking",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "ERP / internal-control angle: the ERP transition survives only as a forward-looking-statement risk factor; the working-capital reset already happened and is visible in a +$179m six-month operating cash-flow swing reported on 2026-06-05, so it is priced",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "careers.[url removed] does not resolve, so no job-postings-by-title count was obtainable",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "No [THE COMPANY] app-store, status-page, changelog or customer-forum surface exists to read - it is a B2B labour services company",
+    "i": 14
+   }
+  ],
+  "id": "anon/us/004"
+ },
+ {
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "[REDACTED]",
+   "event_date": "2026-09-10",
+   "session": "amc",
+   "as_of_utc": "2026-09-10T14:08:00+00:00",
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-10",
+    "spot": 13.5,
+    "run_up_5d_pct": -4.46,
+    "run_up_20d_pct": -14.93,
+    "pct_from_52w_high": -19.83,
+    "pct_from_52w_low": 1.35,
+    "realised_vol_20d_annualised_pct": 58.6,
+    "avg_volume_20d": 326140
+   },
+   "cik": "0001787117",
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "no 8-K item 2.02 filings found before the cutoff",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 3.69,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": null,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok",
+   "company": "[REDACTED]"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "[THE COMPANY].json",
+    "text": "[THE COMPANY]'s most recent full quarter before the pre-announced one, Q1 2026, was a GAAP NET LOSS of $12.1m, and its headline 70.3% gross margin was inflated by 904 basis points of a one-time IEEPA tariff refund recovering duties expensed in 2025 - so the entire 'profitable DTC' IPO narrative rests on a non-recurring credit, and the 10 September guide is the first time the company must show a margin without it.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "[url removed]",
+    "source_date": "2026-07-23",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "It is one sentence inside a 'Competitive Strengths' bullet in a 300-page S-1, and the sentence disclosing the $(12.1)m net loss is embedded in a bullet titled 'Adjusted EBITDA'. If the market had focused on it the coverage would not read '[THE COMPANY]'s IPO filing shows profitable DTC is possible' (Retail Dive, [url removed] the wire summary of the company would not be 'FY2025 net income $12.6m', and 8 of 10 analysts would not have initiated on 2026-08-24 at a $19.25 consensus target, 43% above a $13.50 spot. Ex the 904bp credit the Q1 gross margin was 61.3% against FY2025's 60.2% - i.e. no underlying expansion at all - and no published note or article I could find makes that subtraction.",
+    "independence": "Revolve Group's Q2 (reported 2026-08-04) separately booked a 162bp gross-margin benefit from IEEPA tariff refunds, [url removed] - confirming the refunds are a sector-wide 2026 one-timer being recognised now and not a run-rate, and that [THE COMPANY]'s 904bp version is 5.6x the size of a comparable DTC peer's. NOTE: this finding and finding 3 and finding 4 all rest on the same S-1/424B4 document cluster and should be collapsed to their largest residual.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "[THE COMPANY].json",
+    "text": "The IPO over-allotment option was almost entirely unexercised and this was never announced: the two Form 4s filed 2026-09-03 show the underwriters took only 60,298 shares from the Aflalo Family Trust and 149,596 from Refo SCSp (Permira) against a 2,109,375-share option, exactly 5.008% of each holder's base sale, implying the syndicate exercised only ~11% of the greenshoe and covered roughly 1.9m shares - about 5.8 sessions of the 326k-share average daily volume - by buying stock in the open market through August; that stabilising bid ended on 1 September.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "[url removed]",
+    "source_date": "2026-09-03",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "There is no 8-K and no press release announcing the closing of the over-allotment - EDGAR shows exactly one 8-K since listing (2026-08-03, items 5.03/8.01/9.01) and the company's newsroom carries no such release. Recovering the exercise ratio requires pro-rating two separate 09-03 Form 4s against two separate 07-31 Form 4s and against the 2,109,375-share grant in the prospectus. If the market had this, the withdrawal of ~$27m of syndicate demand would have been written up somewhere and the stock's -4.46% five-day slide since 1 September would have a named cause; instead nothing at all was published. The conservative alternative allocation (shoe pro-rated at 15% of each holder's own sale) still gives only a 33% exercise and ~1.4m shares covered, so the finding survives either reading; I size on the conservative end.",
+    "independence": "Confirmed by a second, independently-filed Form 4 for a different holder showing the identical 5.008% ratio: Aflalo greenshoe 60,298 [url removed] against base sale 1,204,029 [url removed] Also independently, short interest rose 147.4% to 879,261 shares between 30 July and 14 August, [url removed] - real selling pressure was being absorbed by something during the stabilisation window.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "[THE COMPANY].json",
+    "text": "The Q2 result itself carries essentially zero surprise capacity: the 424B4 pre-announced net revenue of $154.0-155.0m, gross profit $102.6-103.4m, net income $11.726-11.999m and adjusted EBITDA $24.9-25.3m for the thirteen weeks ended 2026-06-27 - a range one million dollars wide on $154m - so the classic first-post-IPO 'blowout beat' pop is arithmetically unavailable and the entire move is the first-ever Q3/FY guide.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "[url removed]",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "Newly-listed companies overwhelmingly beat their first print and pop, and that base rate is what a reader with no baseline history reaches for - the sealed baseline here has n=0 reactions and no option chain, so nothing in the price is stating an expected move at all. This name specifically cannot beat, because it told everyone in July what the quarter would be. If that asymmetry were priced you would not see a $19.25 consensus target set on 2026-08-24 sitting 43% above spot; the sell-side is still underwriting a re-rate that only a guide can deliver. Also note the pre-announced range implies +23.1% to +23.9% revenue growth against Q1 2026's +30.4% - a 6.5pt deceleration that the 'twenty consecutive quarters of double-digit growth' wire framing obscures.",
+    "independence": "none - this rests on the same prospectus document as findings 1 and 4 and should be collapsed into that source cluster; the analyst-target side is corroborated separately at [url removed]",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "[THE COMPANY].json",
+    "text": "Cutting the other way and genuinely material: 9,478,821 of the 14,062,500 IPO shares were PRIMARY, and the company is applying ~$125.1m of net proceeds to repay term loans that stood at $246.7m at 2026-06-27 - so interest expense roughly halves from Q3 onward, which is the single biggest driver of the gap between Q1's $15.9m adjusted EBITDA and its $(12.1)m net loss, and it means the first guided quarter's below-the-line is structurally better than any quarter in the historicals.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "[url removed]",
+    "source_date": "2026-07-23",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The popular framing of this deal is a Permira cash-out - Refo SCSp still holds 28.9m shares and 49.2% - and the widely-quoted headline number is the $210.9m 'IPO raise', not the $125.1m of debt retirement. Combined with the permanent removal of the IEEPA tariff drag (which cost FY2025 364bp of gross margin), FY2026 adjusted EBITDA can be guided well above FY2025's $45.0m even with the refund stripped out, which is the plausible route to this print going the other way. If this were fully in the price the stock would not be at a 52-week low with a levered-equity discount still visibly applied.",
+    "independence": "Sector demand is holding up, which is what this needs to work: URBN reported record Q2 sales on 2026-08-26 with Anthropologie retail comps +6%, [url removed] - the closest listed read on the [THE COMPANY] customer, given after [THE COMPANY] last spoke on 2026-07-30. Shares the S-1 source with findings 1 and 3.",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "Promotional intensity: the live sale page on 2026-09-10 shows 'up to 70% off' across 1,284 items ([url removed] but Who What Wear's 2025 coverage shows the identical cadence - summer sale starting 12 August, stepping 30% then 50% then 70% into Labor Day ([url removed] and [url removed] Same start date, same terminal depth as last year. NOT a signal, and the 2026-labelled articles describing '30 to 50 to 70' were serving the 2025 pattern.",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "The 9-14 September flagship NY sample sale ([url removed] is on the brand's routine clearance cadence and I found no prior-year baseline to call it unusual.",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "Lock-up early-release provisions: could not extract the Underwriting / Shares Eligible for Future Sale sections of the 424B4 (the fetcher truncates the document at the summary). Third-party sources give only the standard 180 days on 45,013,708 shares (76.2%), expiring ~2027-01-25 - well after this print - and I found no evidence of an earnings-triggered early release, but I could not read the clause itself, so treat this as unresolved rather than clear.",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "No 8-K naming the 10 September date exists on EDGAR (CIK 0001787117 shows one 8-K only, 2026-08-03, items 5.03/8.01/9.01), and investors.[url removed] returned HTTP 403, so the date remains wire-confirmed only.",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "No 8-K, S-1 resale registration or press release announcing the over-allotment closing.",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "No executive departures, no new Form 4 sales beyond the greenshoe mechanics, no Form 3/4 cluster of open-market selling.",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "[url removed] returns 404; could not build an 'opening soon' store count as a forward read on unit growth.",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "[THE COMPANY].json",
+    "text": "No consensus Q3 or FY2026 EPS/revenue estimate is published anywhere I could reach - MarketBeat carries ratings and targets only - so I could not test directly whether the sell-side has already modelled the post-refund margin step-down.",
+    "i": 11
+   }
+  ],
+  "id": "anon/us/015"
+ },
+ {
+  "id": "us/2026-09-09/KEQU",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "KEQU",
+   "event_date": "2026-09-09",
+   "session": "amc",
+   "as_of_utc": "2026-09-09T14:08:40+00:00",
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-09",
+    "spot": 36.01,
+    "run_up_5d_pct": -4.41,
+    "run_up_20d_pct": -0.52,
+    "pct_from_52w_high": -34.16,
+    "pct_from_52w_low": 6.01,
+    "realised_vol_20d_annualised_pct": 19.6,
+    "avg_volume_20d": 2073
+   },
+   "cik": "0000055529",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-06-23",
+      "session": "amc",
+      "move_pct": -3.63
+     },
+     {
+      "event_date": "2026-03-11",
+      "session": "amc",
+      "move_pct": -13.08
+     },
+     {
+      "event_date": "2025-12-10",
+      "session": "amc",
+      "move_pct": -4.35
+     },
+     {
+      "event_date": "2025-09-10",
+      "session": "amc",
+      "move_pct": -21.23
+     },
+     {
+      "event_date": "2025-06-25",
+      "session": "amc",
+      "move_pct": 35.38
+     },
+     {
+      "event_date": "2025-03-12",
+      "session": "amc",
+      "move_pct": -2.01
+     },
+     {
+      "event_date": "2024-12-11",
+      "session": "amc",
+      "move_pct": 26.08
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 13.08,
+    "max_abs_move_pct": 35.38,
+    "up_count": 2,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 78,
+    "median_gap_days": 91.0,
+    "ratio": 0.86,
+    "last_print": "2026-06-23",
+    "verdict": "fits_cadence",
+    "reason": "78 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 6.54,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 13.08,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "KEQU-h1.json",
+    "text": "Kewaunee ran a book-to-bill of roughly 0.83 for all of FY26 -- consolidated backlog fell $214.6m -> $205.0m -> $192.9m -> $183.2m -> $165.9m across five straight quarters (an accelerating burn, -$17.3m in Q4 alone) while quarterly revenue was held flat at $71.1m / $70.1m / $69.4m / $71.4m -- and the FY26 10-K states 'not less than 90% of our order backlog at April 30, 2026 will be shipped during fiscal year 2027', i.e. >=$149m of shipments from backlog against $282m of FY26 revenue; with FY26 opex of $63.7m (~$15.9m/quarter, largely fixed) and a 28.5% gross margin, breakeven revenue is ~$56m per quarter, so Q1 FY27 revenue anywhere in the $55-63m range against the $71.1m year-ago comp puts EPS near zero versus $1.04.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000020/kequ-20260430.htm",
+    "source_date": "2026-06-26",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "If this arithmetic were priced there would be a published FY27 revenue estimate below $240m and a sell-side note on the operating-leverage cliff; instead stockanalysis.com shows 'Analyst Forecast: Not available', the sweep found a single estimate, there is no conference call and no option chain, and the stock trades ~2,000 shares a day (368 shares today). Most tellingly, the 2026-06-23 release that disclosed the single largest backlog drop of the cycle produced only a -3.63% reaction, versus -21.23% and -13.08% on prior, smaller backlog disappointments -- that is not a market that has run the conversion math. And the stock at $36.01 is 11.2x trailing $3.22, which is not a multiple that embeds an EPS collapse.",
+    "independence": "The backlog chain comes from four separate 8-K exhibits rather than one document: Q1 FY26 ($205.0m) https://www.sec.gov/Archives/edgar/data/55529/000005552925000033/prfy26q1earningsrelease.htm , Q2 FY26 ($192.9m) https://www.sec.gov/Archives/edgar/data/55529/000005552925000051/prfy26q2earningsrelease.htm , Q3 FY26 ($183.2m) https://www.sec.gov/Archives/edgar/data/55529/000005552926000006/prfy26q3earningsrelease.htm , Q4 FY26 ($165.9m, LPG $118.8m / International $47.1m) https://www.sec.gov/Archives/edgar/data/55529/000005552926000017/prfy26q4earningsrelease.htm . Note that the >=90% shipment statement and the $165.9m level are the same underlying fact as the Q4 release, so the 10-K and the Q4 8-K should be collapsed to one source; the four-quarter revenue-flat-while-backlog-falls series is the genuinely additive part.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "KEQU-h1.json",
+    "text": "US hot-rolled coil, the primary input to Kewaunee's steel laboratory casework and fume hoods, rose from ~$1,070/short ton at the start of Kewaunee's fiscal Q1 FY27 (SMU average, week of 2026-05-01) to $1,180/st by 2026-08-12, a four-year high with Section 232 at 50% -- a ~10% sequential input-cost step inside a quarter whose revenue is delivered against fixed-price project backlog booked 6-18 months earlier.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.steelmarketupdate.com/2026/08/12/us-hot-band-prices-hold-import-gap-eases-marginally/",
+    "source_date": "2026-08-12",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "Steel prices are public but nobody maps them onto a $103m lab-furniture microcap with no analyst model; if this link were being made there would be a gross-margin-driven estimate cut, and there is no estimate to cut. Kewaunee already flagged 'higher input costs and tariff-related cost pressure' in the FY26 Q4 release, which is the wire version -- what is not in the wire is that the sharpest leg of the HRC move landed precisely inside the May-July quarter being reported tonight. I have sized this small deliberately: Q4 FY26 (Feb-Apr 2026) ran on $1,000-1,050 HRC and still posted the year's best gross margin of 29.7%, which is direct counter-evidence that the pass-through is manageable.",
+    "independence": "The May 2026 level is a different SMU article: https://www.steelmarketupdate.com/2026/05/01/gap-between-us-hr-prices-imports-little-changed/ (2026-05-01, SMU average $1,070/st). Both URL paths carry /2026/ so neither is a relabelled 2025 story.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "KEQU-h1.json",
+    "text": "On 2026-06-30 CEO Thomas D. Hull III settled 54,388 shares of vesting performance RSUs (which paid out at 150% of target) and elected cash settlement for 17,000 of them at $36.25 rather than taking the stock, with a further 16,243 withheld for tax -- i.e. the CEO converted roughly 60% of a large equity vest away from shares at a price essentially identical to today's $36.01.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/55529/000165707026000008/wk-form4_1783007218.xml",
+    "source_date": "2026-07-02",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "A cash-settlement election inside a Form 4 footnote is not picked up by insider-transaction aggregators as a sale (no open-market transaction code), so it never reaches a screen; if it had been read as a signal, the 2,000-share-a-day tape would show distribution in July, and it does not. This is the weakest of my three and I have sized it accordingly -- cash settlement is often a dilution- or tax-management choice by the company rather than a view by the executive, and I could not distinguish the two from the filing.",
+    "independence": "none",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "KEQU-h1.json",
+    "text": "Counter-evidence, filed deliberately because it cuts against my main finding: Avantor -- whose VWR arm is the closest public proxy for the US lab distribution channel Kewaunee sells through (two domestic dealers plus a national stocking distributor were 34% of FY26 sales) -- reported on 2026-07-29, after Kewaunee last spoke, that VWR organic growth swung from -4.8% in Q1 to +1.7% in Q2 and raised full-year guidance; Dodge's institutional planning index was also +7.8% year over year in August 2026.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.prnewswire.com/news-releases/avantor-reports-second-quarter-2026-results-302836954.html",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "KEQU is flat over 20 days (-0.52%) and 6% off its 52-week low, so nothing in its price reflects a channel inflection at its distributors; if it did, the stock would have re-rated off the lows in August. This matters because two of KEQU's last seven prints were +26.08% and +35.38%, both on backlog/story turns -- a Q1 booking recovery that stabilises the July 31 backlog above $165.9m is a live tail I cannot rule out and have no direct evidence against.",
+    "independence": "Dodge Momentum Index, published 2026-09-08: https://www.construction.com/dodge-momentum-index-flat-in-august/ -- institutional planning +4.9% month on month and +7.8% versus August 2025, with education specifically called out as a stronger pipeline. Different publisher, different dataset, same direction.",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "WARN notices in Minnesota (NuAire, Plymouth/Long Lake) and North Carolina (Statesville) for 2026 -- no Kewaunee or NuAire filing found in any state or aggregator database",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "Kewaunee careers portal and NuAire hiring -- job listings sit behind an external UltiPro portal with no crawlable count, so no headcount signal was obtainable either way",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "Kewaunee Labway India tender awards, Indian project announcements and Middle East contract news for May-August 2026 -- nothing dated inside the quarter; kewaunee.in surfaces only marketing pages",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "Kewaunee's own newsroom May-September 2026 -- only three marketing blog posts (2026-07-13, 2026-08-12) and an analytica trade-show note; no project wins, no price-increase announcement, no product launch",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "A new acquisition to accompany the print, despite the CEO's 2026-08-26 language about 'disciplined opportunities that complement our businesses' -- no 8-K item 1.01 or 2.01 since the 2025-12-04 credit agreement",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "A published FY27 consensus -- stockanalysis.com returns 'Analyst Forecast: Not available' and no revenue or EPS estimate for the quarter could be sourced anywhere",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "Insider open-market buying or selling since the June 23 print -- the only Form 4 activity is routine annual director grants (2026-05-04) and RSU vesting settlements (2026-06-25 and 2026-07-02)",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "Ownership change -- Minerva Advisors' 13G/A of 2026-06-29 reports 149,410 shares / 5.2%, an amendment with no evident position change",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "NIH FY2026 appropriations as a discrete catalyst -- the +1% base and the Buildings & Facilities request cut are budget documents with a multi-year lag and the 15% indirect-cost cap has been litigated since early 2025, so nothing there is new information into tonight",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "Unusual tape into the print -- the only volume anomaly is 7,720 shares on 2026-09-02 (3.7x ADV) alongside a -3.6% move, one seller in an illiquid name and not enough to read",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "KEQU-h1.json",
+    "text": "A live intraday quote of $38.00 (+5.53%) on stockanalysis.com that would have implied a 5.5% run-in today -- cross-checked against the Yahoo daily bar series and it is stale; the tape is $36.01 on 368 shares, matching the sealed baseline",
+    "i": 14
+   }
+  ]
+ },
+ {
+  "id": "us/2026-09-22/MANU",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "MANU",
+   "event_date": "2026-09-23",
+   "session": "bmo",
+   "as_of_utc": "2026-09-22T17:09:02+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-22",
+    "spot": 20.44,
+    "run_up_5d_pct": 2.35,
+    "run_up_20d_pct": -13.76,
+    "pct_from_52w_high": -15.5,
+    "pct_from_52w_low": 35.36,
+    "realised_vol_20d_annualised_pct": 24.4,
+    "avg_volume_20d": 340561
+   },
+   "cik": "0001549107",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-09-09",
+      "session": "bmo",
+      "move_pct": -1.5
+     },
+     {
+      "event_date": "2026-06-22",
+      "session": "bmo",
+      "move_pct": -2.1
+     },
+     {
+      "event_date": "2026-06-12",
+      "session": "bmo",
+      "move_pct": -1.36
+     },
+     {
+      "event_date": "2026-05-28",
+      "session": "amc",
+      "move_pct": 4.58
+     },
+     {
+      "event_date": "2026-05-27",
+      "session": "bmo",
+      "move_pct": 12.68
+     },
+     {
+      "event_date": "2026-05-22",
+      "session": "bmo",
+      "move_pct": -0.15
+     },
+     {
+      "event_date": "2026-05-13",
+      "session": "bmo",
+      "move_pct": 1.02
+     },
+     {
+      "event_date": "2026-02-26",
+      "session": "amc",
+      "move_pct": 2.21
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 1.8,
+    "max_abs_move_pct": 12.68,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 14,
+    "median_gap_days": 10,
+    "ratio": 1.4,
+    "last_print": "2026-09-09",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 10 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 24,
+    "atm_strike": 20.0,
+    "atm_iv_pct": 55.7,
+    "straddle_implied_move_pct": 11.25,
+    "event_implied_move_pct": 10.04,
+    "event_implied_move_basis": "11.25% straddle over 24 calendar days less 6.36% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.86,
+    "total_open_interest": 1201,
+    "atm_spread_frac_of_mid": 0.667,
+    "warnings": [
+     "ATM bid-ask spread 67% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 10.04,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Company's own raised FY2026 guidance of revenue GBP655-665m and adjusted EBITDA GBP200-210m, with nine-month revenue already reported at GBP520.1m — both from the Q3 FY2026 release filed as a 6-K exhibit, https://www.sec.gov/Archives/edgar/data/1549107/000110465926066584/tm2615476d1_ex99-1.htm (2026-05-27). That arithmetic implies Q4 revenue of GBP134.9-144.9m. The sell-side bar is Q4 revenue of GBP148.17m / $192.226m (https://www.investing.com/news/earnings/manchester-united-earnings-on-deck-champions-league-boost-in-focus-93CH-4911041, 2026-09-22, agreeing with https://www.nasdaq.com/press-release/manchester-united-plc-announces-fourth-quarter-fiscal-2026-earnings-report-date-2026) and FY revenue of GBP665.16m, i.e. the exact top of the guided range.",
+   "positioning_check": "3.07m shares short, 10.54% of 172.43m shares outstanding and 8.04% of the 38.19m-share float, short ratio 9.25 days to cover, up from 2.77m the prior month (+10.8%): https://stockanalysis.com/stocks/manu/statistics/, read 2026-09-22. ADV is 332k-341k shares, so the short book is nine sessions of volume against a float that is 22% of shares outstanding. The baseline carries skew_25d_vol_points as null; put/call open interest is 1.86 but on total open interest of 1,201 contracts with an ATM bid-ask spread at 66.7% of mid, so the chain makes no directional statement I can use — the ~10.04% event-implied move is indicative only and I am not treating the put tilt as information. Shorts building 11% into a print whose headline is a record forward guide is the squeeze mechanism, and it is the reason both negative findings below are sized small.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MANU.json",
+    "text": "The sell-side Q4 bar is arithmetically above what the company's own guidance allows: nine-month revenue is GBP520.1m and full-year guidance is GBP655-665m, so the guided Q4 is GBP134.9-144.9m, while consensus Q4 is GBP148.17m and consensus FY is GBP665.16m — the top of the range to the penny. Manchester United can only meet consensus by exceeding a guide it raised on 27 May with five weeks of the fiscal year left.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-09-23",
+    "source": "https://www.sec.gov/Archives/edgar/data/1549107/000110465926066584/tm2615476d1_ex99-1.htm",
+    "source_date": "2026-05-27",
+    "reaction_history_on_this_line": "The directly comparable event is last year's full-year print, 2025-09-17: Q4 FY2025 revenue GBP164.1m against a GBP169.96m estimate, a 3.4% miss, with adjusted EPS of -3.16p against +7.14p expected, and the stock fell roughly 7.4% in pre-market (https://www.chartmill.com/news/MANU/Chartmill-34431-Manchester-United-PLC---CL-A-NYSEMANU-Reports-Q4-and-Full-Year-2025-Earnings-Misses-EPS-Estimates). The identical shape — sell-side Q4 above the guide-implied residual, seasonally empty April-June quarter — produced a mid-single-digit down move once. [sizing note removed].5 because it lands INSIDE a range the company published four months ago [sizing note removed] and because a crowded short is a reason to shrink a negative [sizing note removed].",
+    "why_not_priced": "This is a two-analyst name and the consensus is a mechanical -9.76% year-on-year roll of last year's GBP164.1m Q4 rather than a residual off the company's own guide; if the market had done the subtraction, the previews would be framing a GBP135-145m quarter rather than quoting GBP148.17m as the number to beat, and the FY estimate would not sit at exactly the top of a range the company gave itself. The same arithmetic gap existed a year ago and resolved as a printed 'revenue miss'.",
+    "independence": "Two independent estimate sources agree on the level being above the guide-implied maximum — Investing.com's GBP148.17m (https://www.investing.com/news/earnings/manchester-united-earnings-on-deck-champions-league-boost-in-focus-93CH-4911041, 2026-09-22) and the $192.226m carried by the Nasdaq/MarketBeat feed. Both rest on the same underlying consensus, so treat them as one bar and two witnesses, not two facts; the guide-implied residual is from a different document (the 6-K exhibit).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MANU.json",
+    "text": "Two commercial deals were signed AFTER the 30 June 2026 balance-sheet date and after the company last gave guidance on 27 May 2026, and both land only in the FY2027 outlook this release will introduce: a Betway training-kit partnership at a record ~GBP20m a year, which the club itself calls the biggest training-kit deal in world football (4 August 2026), and a SumUp shirt-sleeve deal the club calls its biggest ever sleeve partnership, against a prior DXC sleeve deal in the GBP10-20m a season range (8 September 2026).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-09-23",
+    "source": "https://insidersport.com/2026/08/04/manchester-united-record-betway-deal",
+    "source_date": "2026-08-04",
+    "reaction_history_on_this_line": "Guidance is the line this stock has actually paid on. On 2026-05-27, the one unambiguous earnings reaction in the baseline, Manchester United raised FY2026 revenue guidance to GBP655-665m and adjusted EBITDA to GBP200-210m and the stock rose +12.68% — the largest move in the eight-row history by a factor of nearly three. The 2025-09-17 full-year print guided FY2026 to GBP640-660m, BELOW the GBP666.5m just reported, and fell ~7.4%. Same name, same line, opposite signs, both double-digit-capable: the guide direction is the reaction.",
+    "why_not_priced": "Both were sponsorship-trade and football-press stories, not financial-wire stories, and the equity market visibly did not reprice on them: the stock fell in 9 of the 10 sessions to 2026-09-10 and is -13.76% over 20 sessions, straight through the 8 September SumUp announcement, and is -15.5% from its 52-week high. If these were in the price, a name with a 38m-share float would not have made new short-term lows in the week its biggest-ever sleeve deal was signed. With two analysts covering and the last published model dated 27 May 2026 (Seeking Alpha's FY27 build, which lists only Champions League money, sporting bonuses and the Adidas clause), no sell-side FY2027 number can contain either deal. Combined they are roughly GBP20-30m of incremental, near-100%-margin annual commercial revenue against an adjusted EBITDA base of GBP200-210m.",
+    "independence": "The SumUp deal is a separate document and a separate date from the Betway one: https://insidersport.com/2026/09/08/manchester-united-sumup-sponsorship/ (2026-09-08), corroborated by https://sports.yahoo.com/articles/man-utd-agree-multi-million-101301094.html. The Betway deal is separately reported at https://www.insideworldfootball.com/2026/08/04/man-utd-agree-betway-training-kit-deal/ (2026-08-04). Both dates confirmed from the URL path, not the snippet. Net of the rest of the company [sizing note removed]: the offsetting question is whether broadcasting falls — it cannot, because FY2027 contains a full Champions League league phase against zero European football in FY2026, so commercial upside is additive rather than a mix shift.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MANU.json",
+    "text": "8.04% of a 38.19m-share free float is short with 9.25 days to cover — the highest days-to-cover in the day's universe — and the position was built by 10.8% in the last month, into a print at which the company is near-certain to introduce a record FY2027 revenue and adjusted EBITDA guide.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-09-23",
+    "source": "https://stockanalysis.com/stocks/manu/statistics/",
+    "source_date": "2026-09-22",
+    "reaction_history_on_this_line": "The baseline's eight-row history is not earnings (the sweep set baseline_history_trustworthy false and the 10-day inferred cadence is impossible for a quarterly reporter), so the base rate is rebuilt from the two confirmed releases: +12.68% on 2026-05-27 and roughly -7.4% on 2025-09-17. This name moves 7-13% on a real print, and the 1.8% median in the baseline is a measurement of club operational 6-Ks, not of earnings. A 332k-share ADV means a covering short cannot get out inside the exit window.",
+    "why_not_priced": "The float is the unpriced part. Class A outstanding is 172.43m but the tradeable float is 38.19m after the Glazer Class B holding and the INEOS stake, so the quoted 10.54%-of-outstanding figure that screens and previews carry understates the real squeeze pressure by a factor of 2.6. Nothing in the baseline carries short interest at all, the option chain has 1,201 contracts of total open interest and a 66.7%-of-mid spread so it offers no hedge and no directional read, and the last four weeks of tape (-13.76%) are consistent with a short adding into a name nobody is defending. If the squeeze risk were priced, the chain would not be this empty and the borrow would show in a wider put skew rather than a null one.",
+    "independence": "Independently, the sweep row records the same 3.07m / 10.54% / 9.25 days figure and notes days-to-cover is the highest of the eight names it screened. The float number and the short number come from one page, so treat this as one document; the corroboration that the shorts are pressing rather than static is the month-on-month move from 2.77m to 3.07m on that same page.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MANU.json",
+    "text": "The 10 June 2026 private placement of $550m of 5.36% senior secured notes due 2031, used to prepay the 3.79% notes due 2027, roughly doubles cash interest on the notes from about $16m to about $30m a year and adds $125m of net new principal — a real FY2027 drag on the net result that an adjusted-EBITDA guide will not show, plus write-off of unamortised issue costs on the prepaid notes in the reported quarter.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-09-23",
+    "source": "https://insidersport.com/2026/06/15/manchester-united-new-debt-of-700m/",
+    "source_date": "2026-06-15",
+    "reaction_history_on_this_line": "There is no clean reaction in the record to a MANU financing event; the two 6-K dates nearest the June financing in the baseline (2026-06-12, -1.36% and 2026-06-22, -2.10%) are small and are not confirmed to be the refinancing. That is precisely why this is [sizing note removed].5 and not larger.",
+    "why_not_priced": "It is priced as a headline and unpriced as arithmetic: the deal was covered as 'maturities extended', and the +$14m a year of cash interest does not appear in either of the two numbers the company guides on (revenue and adjusted EBITDA), so a record FY2027 EBITDA guide can print while the net-loss line and free cash flow stay where they are. If the market had done this arithmetic the previews would be discussing interest cover rather than only the Champions League revenue pool.",
+    "independence": "I asked the financing question rather than assuming distress, and the answer is a ramp, which is why this carries a small negative and not a large one: the $125m of net new money sits against GBP145m of disclosed incoming transfer fees in the summer 2026 window (https://psrwatch.com/insights/man-utd-summer-2026-transfer-window-review), a return to the Champions League group stage, and a squad-cost ratio of 56.7% against an 85% threshold — visible demand and visible use, not covenant pressure. The negative sized here is only the interest arithmetic; no distress reading is included.",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MANU.json",
+    "text": "Whether the Hojlund permanent transfer to Napoli (EUR44m / ~GBP37m) completed before or after 30 June 2026 — it matters because a pre-30-June completion puts roughly GBP10m of profit on disposal into the reported quarter against a -GBP0.20 adjusted EPS consensus. Search snippets say 'early June 2026' but manutd.com returns HTTP 403 and I could not confirm the date from a primary document or a URL path, so I dropped the finding rather than build on an unverified date.",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MANU.json",
+    "text": "Any dated Old Trafford stadium financing decision inside the exit window — the GBP2bn / 100,000-seat project is live and the club and the freightliner remain apart on the land valuation, but nothing carries a date on or before 2026-09-23, so it is neither a finding nor an outside_window item.",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MANU.json",
+    "text": "A published FY2027 revenue or adjusted EBITDA consensus — none exists in any source I could reach, which is itself why the guide is the unpriced object here.",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MANU.json",
+    "text": "Any dividend or buyback signal ahead of the print; dividends have been suspended since 2022 and nothing in the record points to reinstatement at this release.",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MANU.json",
+    "text": "Glazer stake-sale specifics behind the 'sale speculation' in the 2026-09-17 TipRanks piece — no named buyer, no process, no date; rumour with no document, so worth 0.",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MANU.json",
+    "text": "A 25-delta skew reading: the baseline carries it null and the chain is too thin (1,201 contracts, 66.7%-of-mid ATM spread) to reconstruct one.",
+    "i": 9
+   }
+  ]
+ },
+ {
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "DOO",
+   "event_date": "2026-09-03",
+   "session": "bmo",
+   "as_of_utc": "2026-09-02T14:10:13+00:00",
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-02",
+    "spot": 63.67,
+    "run_up_5d_pct": 3.41,
+    "run_up_20d_pct": -1.23,
+    "pct_from_52w_high": -22.01,
+    "pct_from_52w_low": 25.01,
+    "realised_vol_20d_annualised_pct": 45.6,
+    "avg_volume_20d": 209797
+   },
+   "cik": "0001748797",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-05-28",
+      "session": "bmo",
+      "move_pct": 0.93
+     },
+     {
+      "event_date": "2026-05-28",
+      "session": "bmo",
+      "move_pct": 0.93
+     },
+     {
+      "event_date": "2026-04-22",
+      "session": "bmo",
+      "move_pct": -5.27
+     },
+     {
+      "event_date": "2026-03-26",
+      "session": "bmo",
+      "move_pct": 3.45
+     },
+     {
+      "event_date": "2026-01-29",
+      "session": "bmo",
+      "move_pct": -0.52
+     },
+     {
+      "event_date": "2025-12-04",
+      "session": "bmo",
+      "move_pct": 6.39
+     },
+     {
+      "event_date": "2025-12-04",
+      "session": "bmo",
+      "move_pct": 6.39
+     }
+    ],
+    "n": 7,
+    "basis": "6-K exhibit text matched results language (16 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 3.45,
+    "max_abs_move_pct": 6.39,
+    "up_count": 5
+   },
+   "event_plausibility": {
+    "days_since_last_print": 98,
+    "median_gap_days": 31.5,
+    "ratio": 3.11,
+    "last_print": "2026-05-28",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 32 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 7 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-09-18",
+    "days_to_expiry": 16,
+    "atm_strike": 65.0,
+    "atm_iv_pct": 63.4,
+    "straddle_implied_move_pct": 10.13,
+    "event_implied_move_pct": 6.53,
+    "event_implied_move_basis": "10.13% straddle over 16 calendar days less 9.71% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.01,
+    "total_open_interest": 7102,
+    "atm_spread_frac_of_mid": 0.65,
+    "warnings": [
+     "ATM bid-ask spread 65% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 1.73,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 6.53,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DOO-1.json",
+    "text": "The 50% Section 338 tariff on Canadian imports that took DOO from C$93.82 to C$83.67 between 21 and 26 August explicitly does not apply to goods already subject to Section 232 duties - and BRP's snowmobiles and 'the majority of ORV models' have been Section 232 derivative articles at 25% of full value since 6 April 2026, by BRP's own disclosure.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://zonos.com/docs/guides/country-guides/united-states/section-338-canada-tariffs",
+    "source_date": "2026-08-22 (effective date stated in document; Section 338 took effect 12:01am ET 22 Aug 2026)",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "If the market had worked through the non-stacking carve-out, DOO would not have tracked Magna one-for-one on 24 August (DOO -5.94%, Magna -6.56%) when Magna IS the Section 232 auto/parts complex and BRP is Mexico-origin recreational vehicles already inside Section 232. And the gap would have closed over the following six sessions as trade counsel published the annex analyses - instead DOO closed 2 Sep at 85.90, still 8.4% below the 21 Aug close. A targeted search for any note, wire item or trade-press piece connecting BRP to the Section 232 exclusion returned nothing: BRP has issued no release since 18 August and its next scheduled communication is tomorrow's 09:00 EDT call. Coverage that had priced this would read 'BRP largely exempt from Section 338'; no such sentence exists.",
+    "independence": "Holland & Knight, a separate firm, states the same exclusion independently and adds that the proclamation named for 'motor vehicles' does not in fact reach vehicles because they are already under Section 232 (https://www.hklaw.com/en/insights/publications/2026/07/50-percent-opening-bid-canadian-imports-subject-to-section-338-tariffs). Separately, the Globe and Mail documents that ~75% of BRP units are produced across four Mexican facilities in Juarez and Queretaro with 60% of output sold in the US, so the Canada-origin share of US-bound volume is a minority regardless of the carve-out (https://www.theglobeandmail.com/business/article-us-tariffs-turn-ski-doo-maker-brps-mexico-production-hub-into-a/, 2025-02-03).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DOO-1.json",
+    "text": "BRP has never once mentioned an IEEPA tariff refund - not in the Q1 FY27 call, not in the FY26 financial statements - while Polaris booked US$74m of IEEPA refunds in the exactly-overlapping quarter with ~US$40m more pending, and BRP's own FY26 tariff drag was described as falling 'mainly on PA&A', the Asia-sourced, IEEPA-dutiable and therefore refundable part of its cost base.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.fool.com/earnings/call-transcripts/2026/07/28/polaris-pii-q2-2026-earnings-call-transcript/",
+    "source_date": "2026-07-28",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "Consensus of $(0.46) sits exactly on BRP's own 28 May guidance of 'earnings to decline by approximately CAD 1.60 to CAD 1.65 year-over-year' - an estimate anchored purely to the Section 232 cost and set before CBP's refund channel, which opened 20 April 2026, had processed anything. Q2 FY27 (1 May - 31 Jul) is BRP's first full quarter inside that window. If the street had modelled a recovery, at least one estimate in a four-estimate sample would sit above the company's own guide rather than on it, and BRP's coverage would frame the name as an IEEPA refund beneficiary rather than exclusively as a Section 232 victim. Every BRP note is about the CAD 500-550m Section 232 number; none is about the refundable pre-February tariff base.",
+    "independence": "Different company, different document, same refund channel: the Polaris transcript is the evidence that the mechanism is live and being recognised in this exact calendar quarter, and it is independent of BRP's own disclosure. BRP's side of it is the absence in its own Q1 FY27 transcript (https://www.investing.com/news/transcripts/earnings-call-transcript-brp-inc-q1-2027-surpasses-forecasts-stock-rises-93CH-4714754, 2026-05-28), which mentions no refund, no IEEPA, no Supreme Court and no drawback. Note this finding shares a theme (tariffs) with finding 1 but no source and no legal instrument - Section 338 and IEEPA refunds are separate.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DOO-1.json",
+    "text": "BRP's model-year 2027 ORV price sheet, revealed with the 17 August product launch, holds price increases near 1% and outright lowers prices on selected Can-Am Commander, Defender and Outlander models while adding factory-installed content - i.e. BRP is absorbing the 25% ad valorem tariff in margin rather than pricing it, and its CAD 200m mitigation plan is overhead and lean initiatives, not price.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.autofinancenews.net/allposts/powersports/brp-adds-features-holds-orv-price-hikes-near-1/",
+    "source_date": "2026-08 (published after BRP's 17 Aug 2026 MY27 reveal; article headline and body describe the MY27 price sheet)",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The actual MY27 price sheet exists only in powersports trade press; it is on no terminal and in no wire preview, which carry the guidance range and the consensus loss instead. If it were priced, H2 gross-margin estimates would already be pinned to the bottom of the CAD 925-975m EBITDA guide and TD would not have moved the name to Buy on 18 August. Cuts against my two positive findings, which is why I keep it.",
+    "independence": "Partly confirmatory rather than new: the Globe and Mail's 28 May report on the guidance restoration already recorded that BRP planned 'no major U.S. pricing changes' and that the CAD 200m mitigation was overhead and travel (https://www.theglobeandmail.com/business/article-brp-restores-financial-outlook-expects-major-profit-hit-amid-us-tariff/, 2026-05-28). The August price sheet is the confirmation, not the announcement, so I have sized it small and flag that it should not be counted as a second independent margin datapoint.",
+    "i": 2
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "Whether ORVs or snowmobiles got into the 1 June 2026 Section 232 Annex I-C relief (mobile industrial equipment, origin-based 15%/25% and a USMCA value-content formula, effective 8 June). Global Trade Alert lists only forklifts, earth-moving machinery, non-agricultural tractors and mobile cranes; I could not extract the CBP code list, and Powersports Business's tariffs tag has no entry between 23 April and 1 July, which is strong evidence ORVs got nothing - https://globaltradealert.org/blog/s232-metals-update-june-2026 and https://powersportsbusiness.com/tag/tariffs/",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "Direct confirmation that HTS 8703/8711/8903 are absent from the Section 338 Annex II lists. CBP's own HTS list PDF (https://content.govdelivery.com/attachments/USDHSCBP/2026/08/21/file_attachments/3754630/Section%20338%20Canada%20HTS%20LIST%20Final.pdf) would not render in this environment; I relied on the general Section 232 exclusion instead",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "Canada's 8 September counter-tariff list including powersports - the Finance Canada release of 25 August names steel, dairy, appliances, agricultural equipment, pulp and paper and electronics and does not reach 8703/8711/8903, and Moto Canada was still lobbying against inclusion on 25 August, so the competitive windfall against US-assembled OEMs in Canada is not in place - https://www.canada.ca/en/department-finance/news/2026/08/canada-announces-targeted-countermeasures-and-substantive-support-for-workers-and-businesses-in-response-to-us-tariffs.html",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "A material new recall or warranty event in the quarter - the May 2026 Can-Am Outlander Pro speed-limiter recall is a sub-one-hour ECM software update, and the Sea-Doo Switch front-overload recall is Bulletin 2026-1 dated 17 October 2025, i.e. already in FY26",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "Quebec or Mexico layoff/production-cut notices at BRP over the summer - the only Quebec collective dismissal filings I could find are from November 2024",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "Any 2026 secondary offering, Beaudier/Bain/CDPQ selldown, or NCIB suspension; the December 2025 NCIB renewal runs to 9 December 2026 and I found no change",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "A credit rating action in June-August 2026; net leverage was 1.8x at Q4 FY26 and the October 2025 term loan repricing is the last balance-sheet event I could source",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "FX as a distinct edge - USD/CAD sat around 1.376-1.39 through the quarter versus roughly 1.37-1.38 a year earlier, a mild translation tailwind but nowhere near a finding, and BRP hedges forward",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DOO-1.json",
+    "text": "Any signal that July retail deteriorated - Polaris said July tracked consistent with Q2, utility strong and recreational soft, which is a read-through already public since 28 July",
+    "i": 11
+   }
+  ],
+  "id": "us/2026-09-02/DOO"
+ },
+ {
+  "id": "us/2026-09-17/UPXI",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "UPXI",
+   "event_date": "2026-09-17",
+   "session": "amc",
+   "as_of_utc": "2026-09-17T17:08:49+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-17",
+    "spot": 1.05,
+    "run_up_5d_pct": 5.63,
+    "run_up_20d_pct": 19.32,
+    "pct_from_52w_high": -86.36,
+    "pct_from_52w_low": 85.84,
+    "realised_vol_20d_annualised_pct": 98.2,
+    "avg_volume_20d": 4570070
+   },
+   "cik": "0001775194",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-05-13",
+      "session": "amc",
+      "move_pct": 9.35
+     },
+     {
+      "event_date": "2026-02-10",
+      "session": "amc",
+      "move_pct": -16.31
+     },
+     {
+      "event_date": "2025-11-12",
+      "session": "amc",
+      "move_pct": -4.73
+     },
+     {
+      "event_date": "2025-09-26",
+      "session": "amc",
+      "move_pct": 7.77
+     },
+     {
+      "event_date": "2025-05-16",
+      "session": "amc",
+      "move_pct": -5.4
+     },
+     {
+      "event_date": "2024-12-23",
+      "session": "amc",
+      "move_pct": -4.05
+     }
+    ],
+    "n": 6,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 6.58,
+    "max_abs_move_pct": 16.31,
+    "up_count": 2,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 127,
+    "median_gap_days": 92,
+    "ratio": 1.38,
+    "last_print": "2026-05-13",
+    "verdict": "fits_cadence",
+    "reason": "127 days since the last print against a 92-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-09-18",
+    "days_to_expiry": 1,
+    "atm_strike": 1.0,
+    "atm_iv_pct": 187.5,
+    "straddle_implied_move_pct": 11.43,
+    "event_implied_move_pct": 11.43,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.06,
+    "total_open_interest": 11453,
+    "atm_spread_frac_of_mid": 0.667,
+    "warnings": [
+     "ATM bid-ask spread 67% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 3.29,
+   "deadband_basis": "half the median of 6 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 11.43,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 6,
+    "history_usable": 6,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Single syndicated estimate: 1 analyst, ($0.09) EPS and $7.00m revenue for the quarter (https://www.defenseworld.net/2026/09/17/upexi-upxi-projected-to-release-quarterly-earnings-on-thursday.html, MarketBeat family; TipRanks shows the same -0.09 figure but attached to fiscal Q1 2027, https://www.tipranks.com/stocks/upxi/earnings). That is ONE source, not two agreeing ones, and no company guide exists — so per the bar rule every size on this name is capped small and said to be. My own build: staking revenue scales with the SOL price, SOL averaged roughly $78 in Apr-Jun 2026 against roughly $110-115 in Jan-Mar, Q3 digital-asset revenue was $3.5m, so Q4 staking lands near $2.4-2.8m plus $1.1-1.5m legacy consumer products = $3.5-4.2m against the $7.00m bar, i.e. about -40%.",
+   "positioning_check": "14,780,000 shares short = 27.33% of a 54.06m float and 21.03% of shares outstanding, short ratio 5.41 days to cover; prior month 15.08m (https://stockanalysis.com/stocks/upxi/statistics/, retrieved 2026-09-17; page prints no FINRA settlement date so treat as the 2026-08-31 settlement). The baseline carries skew_25d_vol_points: null, so the option market makes no usable directional statement here — but put/call open interest is 0.06 on 11,453 total contracts with an ATM spread 67% of mid, i.e. essentially nobody owns downside protection into this print, while 27% of the float is short. The downside is expressed in the equity, not the options. That is a reason to shrink, not press, a negative.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "The FY2026 audited balance sheet is struck at SOL $75.01 (2026-06-30) — 26% below today's ~$101 — and on my walk-forward from the 2026-03-31 10-Q it will show a stockholders' DEFICIT of roughly -$50m to -$60m (-$51.9m at 3/31, less ~$16m of Q4 unrealised SOL markdown, plus $19.5m of debt retired for equity, less ~$6m cash opex and interest), against $161.5m of convertible notes plus ~$57m of BitGo borrowings.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-09-18",
+    "source": "https://www.sec.gov/Archives/edgar/data/1775194/000147793226003001/upxi_10q.htm",
+    "source_date": "2026-05-12",
+    "reaction_history_on_this_line": "Only one baseline reaction survives EDGAR verification as an item-2.02 8-K: 2026-02-10, -16.31%, a print dominated by SOL marks and new convertible debt. The 2026-05-13 item-2.02 8-K is the second confirmed one and the baseline's +9.35% for it is measured a session late. So n=1 clean, and both confirmed prints sit in a 9-16% absolute band; the sweep set baseline_history_trustworthy FALSE and I have not used median_abs_move 6.58 or the 2-of-6 up count.",
+    "why_not_priced": "Every channel the marginal buyer of this stock uses publishes GROSS mNAV with no debt adjustment and a stale share count: The Block shows 2,174,583 SOL = $220.3m, market cap $68.8m, mNAV 0.31x and no debt line at all (https://www.theblock.co/treasuries/upxi). The day's own sweep row independently computed 0.35x gross. If the market had priced the net position there would be no 0.31x 'cheapest DAT' framing circulating, the put/call OI would not be 0.06, and a name with negative book equity and $218m of debt would not be up 19% in 20 days. The FY2026 annual report is the first AUDITED document to put treasury, debt and share count on one page as of a balance-sheet date.",
+    "independence": "The SOL closing price of $75.01 at 2026-06-30 is from an independent source (https://api.coingecko.com/api/v3/coins/solana/history?date=30-06-2026), cross-validated because the same API gives $82.45 at 2026-03-31 against the 10-Q's own stated $83.11 quarter-end mark. NOTE: this finding shares the 2026-05-12 10-Q with nothing else in this set, but it shares the share-count input with finding 2 — they are [sizing note removed]. tokens-per-share).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "Adjusted SOL per share — the metric the company itself markets, most recently in a release headlined 'Adjusted SOL per Share Increases 129% Since Treasury Launch' — has gone backwards: the company's own methodology counts convertible-note shares, so adjusted shares go from 94,185,467 (2025-09-10, when the metric was 0.0197) to roughly 123m now (73,452,358 outstanding at 2026-07-02, plus 6,992,300 pre-funded warrants issued to Hivemind, plus 35.57m convert shares at $4.25 and 6.87m at $2.39), against adjusted SOL of 1,858,213 rising to 2,174,583. Shares +30%, tokens +17%: the KPI is down roughly 10% over the fiscal year's second half, and on a simple fully-diluted basis it fell ~15-20% in the June quarter alone (66,895,799 basic at 3/31 to 80.44m fully diluted at 7/2).",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-09-18",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001775194/000147793226004358/upxi_424b3.htm",
+    "source_date": "2026-07-16",
+    "reaction_history_on_this_line": "This is the line the sweep identifies as the plausible driver: the 2026-05-12 Q3 release led with SOL-per-share growth, token count +9% and buyback/staking economics rather than revenue or EPS. There is no clean prior observation of the metric going DOWN, so no reaction history exists for a decline on this line — which is itself the point.",
+    "why_not_priced": "The pre-funded warrants (6,992,300) do not appear in any published share count — stockanalysis.com shows 70.26m and The Block's market cap implies ~68m, both below the 73.45m the 424B3 states as of 2026-07-02 and well below the 80.44m fully diluted. Every SOL-per-share figure in public circulation is therefore computed on a share base 10-18% too small. If this were priced, the trackers would not all agree on 0.31x and the company would not still be headlining a +129% cumulative KPI. The honest counterweight, which is why this is [sizing note removed].2 and not larger: the 12.24m securities were issued to retire $19,542,634.54 of convertible principal, not to raise cash, so SOL per share NET of debt improved even as the gross metric fell — that offset is already inside the -1.2.",
+    "independence": "Token count of 2,174,583 is from a different source (https://www.theblock.co/treasuries/upxi, 2026-09-17), and the company's own adjusted-share methodology is from its own IR release (https://ir.upexi.com/news-events/press-releases/detail/132/upexi-adjusted-sol-per-share-increases-129-since-treasury). Shares the 424B3 with nothing else scored here; the 10-Q basic count is shared with finding 1 as an input only.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "Upexi is carrying TWO live Nasdaq deficiencies that no financial media has covered: a 2026-06-24 Staff determination that it violated Listing Rule 5635(a) by issuing $151,169,169 of convertible notes at $4.25 (2025-07-09) and ~$36m at $2.39 (2026-01-09) convertible into 20%+ of pre-transaction shares WITHOUT shareholder approval — a remediation plan was due 2026-08-10 and no 8-K has since reported acceptance, and no proxy for a ratification vote has been filed — plus a 2026-07-31 notice of non-compliance with the $1.00 minimum bid price (Rule 5550(a)(2)) after 30 sessions from 2026-06-16 to 2026-07-29, with a 2027-01-26 deadline and an explicit reverse-split path. The 10-K risk factors and the call are where this gets re-surfaced.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-09-18",
+    "source": "https://www.sec.gov/Archives/edgar/data/1775194/000147793226004047/upxi_8k.htm",
+    "source_date": "2026-06-26",
+    "reaction_history_on_this_line": "No confirmed earnings reaction to a listing item exists for this name. The only adjacent precedent is the 2024 20-for-1 reverse split done for the same $1.00 rule, which triggered a round-up fraud costing ~19% dilution (https://www.nasdaq.com/articles/upexi-take-action-against-apparent-stock-manipulation) — this shareholder base has direct experience of a reverse split going badly, which is why the reverse-split path is a live negative rather than a formality.",
+    "why_not_priced": "A targeted search on 'Upexi Nasdaq Listing Rule 5635(a)' returns only the SEC document itself and generic law-firm explainers — zero wire pickup, zero analyst note, no Seeking Alpha or crypto-media coverage, in contrast with the BitGo amendment three days ago which was picked up everywhere. If a $187m shareholder-approval violation with an unresolved Nasdaq plan were priced, this name would carry a bid-price discount and a visible put bid; instead put/call OI is 0.06. The honest risk, and why this sits at -1.2: the 10-K may not be filed by the 2026-09-18 close (the FY2025 10-K went in 2025-09-24 against a 2026-09-28 deadline this year), in which case the risk factors are not visible in the window and only the call can surface it.",
+    "independence": "The bid-price deficiency is a separate 8-K from a separate date (https://www.sec.gov/Archives/edgar/data/1775194/000147793226004640/upxi_8k.htm, 2026-07-31). Shares no document with any other finding here.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "Quarterly revenue is very likely to land near $3.5-4.2m against a $7.00m estimate, because digital-asset (staking) revenue is a direct function of the SOL price and SOL averaged ~30% lower in Apr-Jun 2026 ($82.45 falling to $75.01) than in Jan-Mar ($154.74 falling to $83.11, per the 10-Q); Q3 digital-asset revenue was $3.5m on the higher deck, with only ~$1.1m of legacy consumer-products revenue underneath it.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-09-18",
+    "source": "https://www.globenewswire.com/news-release/2026/05/12/3293452/0/en/Upexi-Reports-Fiscal-Third-Quarter-2026-Financial-Results.html",
+    "source_date": "2026-05-12",
+    "reaction_history_on_this_line": "This name demonstrably does NOT trade on the revenue line. Its one EDGAR-confirmed item-2.02 print, 2026-02-10, delivered $5.8m of revenue against a ~$1m consensus — a ~5x beat — and the stock fell 16.31%. A revenue miss here should be sized as near-noise for exactly the same reason.",
+    "why_not_priced": "The $7.00m figure appears to be a single analyst's mechanical roll-forward that never marked SOL down; nothing in the public record reconciles it to a $75 SOL deck. But the reason this is capped at -0.4 rather than sized on a 40% miss is twofold and both halves are honest: the bar has one source and cannot be corroborated, and this name's only confirmed print showed revenue surprise carries no sign information for the stock.",
+    "independence": "The Apr-Jun and Jan-Mar SOL price path is from CoinGecko, independent of the company (https://api.coingecko.com/api/v3/coins/solana/history?date=30-06-2026 and ?date=31-03-2026). Shares the Q3 release with nothing else scored.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "BitGo Prime amended the secured credit facility on 2026-09-14 — three days before the audited FY2026 results — cutting the rate 11.5% to 7.5%, the collateral requirement 260% to 200% and the margin-call trigger 175% to 150%, a stated >$2m/yr saving. A secured lender easing terms on ~$57m of borrowings immediately before a fiscal-year audit is evidence AGAINST a going-concern paragraph and makes management's 2026-05-12 claim — that by 2026-07-01 cash operating expenses plus interest would be below staking revenue — arithmetically reachable (staking ~$16-17m annualised at current SOL against ~$7.5m interest post-amendment plus ~$6-8m cash opex).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-09-18",
+    "source": "https://www.globenewswire.com/news-release/2026/09/14/3361016/0/en/Upexi-Amends-Bitgo-Credit-Facility.html",
+    "source_date": "2026-09-14",
+    "reaction_history_on_this_line": "The 2026-05-12 release led with treasury and staking economics rather than an operating result, and the confirmed item-2.02 8-K for it was followed by a mid-single-digit-to-+9% move; treasury-economics statements are the line this stock has actually paid on. No confirmed prior observation of the cash-flow crossover being declared.",
+    "why_not_priced": "The amendment itself is in the wire and I am not sizing it. What is unpriced is the inference: the market is reading a 0.31x gross mNAV and has no view on whether the FY2026 audit carries substantial-doubt language, which on a company with -$52m of book equity, $3.5m of cash and $218m of debt is the single largest binary in the release. If the market had priced 'no going concern', the stock would not sit at 0.31x of a number that ignores the debt. I answered the financing question rather than assuming distress: the June $19.5m issuance bought a DEBT RETIREMENT, not cash, and the lender then cut the rate — that is the non-distress answer.",
+    "independence": "The June transaction being a retirement of $19,542,634.54 of convertible principal (leaving $16,419,340.46 outstanding on the Hivemind note) comes from a different document, the 424B3 (https://www.sec.gov/Archives/edgar/data/0001775194/000147793226004358/upxi_424b3.htm). Shares the 424B3 with finding 2, but as an opposite-signed reading — and finding 2's size is already net of it.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "A crowded short into a print with effectively no options market: 14.78m shares short = 27.33% of a 54.06m float, 5.41 days to cover, while the entire option chain carries 11,453 contracts of open interest at a put/call ratio of 0.06 and an ATM bid-ask 67% of mid.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-09-18",
+    "source": "https://stockanalysis.com/stocks/upxi/statistics/",
+    "source_date": "2026-09-17",
+    "reaction_history_on_this_line": "The name is up 19.32% over 20 days and 5.63% over 5 days into the print with SOL +35% since the fiscal year end, which is consistent with shorts already being squeezed by the SOL rally rather than with disappointment being priced. The prior month's short interest was 15.08m, so the position has barely been reduced.",
+    "why_not_priced": "Short interest is not in the sealed baseline and nothing in the options tells you about it — there is no 25-delta skew to read at all here. If the squeeze risk were priced, days-to-cover would not still be 5.41 on a name whose short base shrank only 2% month-on-month. [sizing note removed].0 rather than higher specifically so it does not double-count with the shrink already applied to the four negatives above.",
+    "independence": "none — this rests on one source and I am not treating a second aggregator as confirmation; a MarketBeat-sourced figure claiming 12.4m shares 'as of September 15th' is unusable because FINRA does not publish a 09-15 settlement until ~09-24.",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "The $151,169,169 of secured convertible notes at a $4.25 conversion price carry a 24-month maturity from July 2025, i.e. July 2027, with the stock at $1.05 — they will not convert and must be settled in cash or collateral. That maturity falls INSIDE the 12-month going-concern evaluation window from the 10-K issuance date, so the audit opinion is the place it first has to be addressed, but the wall itself is ~22 months away.",
+    "resolves_by": "2027-07-16",
+    "source": "https://www.globenewswire.com/news-release/2025/07/17/3117156/0/en/Upexi-Announces-Closing-of-Approximately-150-Million-Private-Placement-of-Convertible-Notes-as-Part-of-Previously-Announced-200-Million-Concurrent-Offering.html",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "Nasdaq $1.00 minimum bid price compliance deadline of 2027-01-26, with any reverse split required to complete ten business days before it — a reverse split announcement is the likely remedy and this shareholder base was badly burned by the 2024 20-for-1.",
+    "resolves_by": "2027-01-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/1775194/000147793226004640/upxi_8k.htm",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "The Rule 5635(a) remediation plan, if accepted, buys up to 180 calendar days from the 2026-06-24 letter, i.e. to approximately 2026-12-21; rejection would produce a Staff delisting determination.",
+    "resolves_by": "2026-12-21",
+    "source": "https://www.sec.gov/Archives/edgar/data/1775194/000147793226004047/upxi_8k.htm",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "UPXI.json",
+    "text": "Residual $16,419,340.46 principal on the Hivemind secured convertible note due 2028-01-09 at a $2.39 conversion price.",
+    "resolves_by": "2028-01-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001775194/000147793226004358/upxi_424b3.htm",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UPXI.json",
+    "text": "Any September 2026 news of a convertible-note repurchase, exchange or restructuring at a discount — the deleveraging trade DATs have been doing this year. Nothing in EDGAR or the wires since the June 2026 Hivemind swap.",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UPXI.json",
+    "text": "Any 8-K reporting that Nasdaq accepted the Rule 5635(a) remediation plan, or any PRE/DEF 14A calling a special meeting to ratify the note issuances. Neither exists as of 2026-09-17 — five weeks past the 2026-08-10 plan deadline.",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UPXI.json",
+    "text": "Whether the FY2025 audit opinion carried a going-concern explanatory paragraph, which would calibrate the FY2026 probability. Could not extract the auditor's report from https://www.sec.gov/Archives/edgar/data/1775194/000147793225006996/upxi_10k.htm.",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UPXI.json",
+    "text": "A second independent source for the $7.00m revenue / ($0.09) EPS bar. defenseworld.net returned HTTP 403 to direct fetch; stockanalysis.com/stocks/upxi/forecast/ returned 404; TipRanks carries -0.09 but attached to fiscal Q1 2027. The bar stands on one syndicated source and is capped accordingly.",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UPXI.json",
+    "text": "Whether the FY2026 10-K will actually be filed before the 2026-09-18 close. FY2025's went in 2025-09-24 against a 2026-09-28 deadline this year, so there is a real chance the audited statements and risk factors are not visible inside the exit window.",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UPXI.json",
+    "text": "Any disposal, impairment or discontinued-operations signal on the legacy consumer-products business. No 8-K, no press release, nothing in the Q3 release.",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UPXI.json",
+    "text": "Hiring-page, app-store, support-forum and Form 4 angles: the 2026-07-20 Form 4 cluster (five filings) could not be retrieved — EDGAR returned HTTP 503 on the index.",
+    "i": 16
+   }
+  ]
+ },
+ {
+  "id": "us/2026-09-14/COE",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "COE",
+   "event_date": "2026-09-15",
+   "session": "bmo",
+   "as_of_utc": "2026-09-14T17:07:42+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-14",
+    "spot": 11.08,
+    "run_up_5d_pct": -21.33,
+    "run_up_20d_pct": -43.67,
+    "pct_from_52w_high": -80.06,
+    "pct_from_52w_low": 4.53,
+    "realised_vol_20d_annualised_pct": 71.8,
+    "avg_volume_20d": 60200
+   },
+   "cik": "0001659494",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-06-12",
+      "session": "bmo",
+      "move_pct": -8.45
+     },
+     {
+      "event_date": "2026-03-27",
+      "session": "bmo",
+      "move_pct": 2.55
+     },
+     {
+      "event_date": "2025-12-08",
+      "session": "bmo",
+      "move_pct": -12.2,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 40000,
+       "next_day_volume": 3000,
+       "median_20d_before": 2250,
+       "move_as_tagged_pct": -12.2,
+       "move_if_bmo_pct": -12.2,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-12-08",
+      "session": "bmo",
+      "move_pct": -12.2,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 40000,
+       "next_day_volume": 3000,
+       "median_20d_before": 2250,
+       "move_as_tagged_pct": -12.2,
+       "move_if_bmo_pct": -12.2,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-09-03",
+      "session": "bmo",
+      "move_pct": 3.98,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 39700,
+       "next_day_volume": 18700,
+       "median_20d_before": 6800,
+       "move_as_tagged_pct": 3.98,
+       "move_if_bmo_pct": 3.98,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-09-03",
+      "session": "bmo",
+      "move_pct": 3.98,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 39700,
+       "next_day_volume": 18700,
+       "median_20d_before": 6800,
+       "move_as_tagged_pct": 3.98,
+       "move_if_bmo_pct": 3.98,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-06-09",
+      "session": "bmo",
+      "move_pct": 13.56
+     },
+     {
+      "event_date": "2025-03-21",
+      "session": "bmo",
+      "move_pct": -8.45
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 8.45,
+    "max_abs_move_pct": 13.56,
+    "up_count": 4,
+    "session_conflicts": 4
+   },
+   "event_plausibility": {
+    "days_since_last_print": 95,
+    "median_gap_days": 80,
+    "ratio": 1.19,
+    "last_print": "2026-06-12",
+    "verdict": "fits_cadence",
+    "reason": "95 days since the last print against a 80-day cadence"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 4.22,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 8.45,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "COE.json",
+    "text": "CEO/10%-owner Jack Jiajia Huang bought COE ADSs on the open market under a Rule 10b5-1 plan almost every week from April through 2026-08-13 (about 29 Form 4s between 04-13 and 08-21, longest gap ~8 days, purchases at $25.74 on 05-29, $16.45-16.72 on 07-06/07/08, $19.61-$20.83 on 08-11/12/13), and has filed nothing since 2026-08-21 — 17 trading sessions and a 46% decline to $10.60 with zero purchases — while last quarter the same plan was buying on 06-05 and filing on 06-10, two days before the 06-12 Q1 release, proving the plan is not suspended by an earnings blackout.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001659494&type=4&dateb=&owner=include&count=100",
+    "source_date": "2026-09-14 (EDGAR filing index; most recent Form 4 filed 2026-08-21, accession 0002029760-26-000009, period of report 2026-04-10, acceptance 2026-08-21 06:48:20; prior filing 0002029760-26-000008 reports 08-11 and 08-12 purchases; 0001104659-26-072099 filed 2026-06-10 reports purchases 05-29 through 06-05)",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The market demonstrably reacted to the buying and cannot react to its absence: StockTitan headlines every Form 4 ('Insider buying at 51Talk (COE): CEO-linked entities add 1,444,920 shares') and COE rallied 33% from $16.00 on 07-31 to a $21.32 high on 08-13 across exactly the sessions the plan was lifting 18-20% of daily volume, then round-tripped to below where it started once the filings stopped. Nobody publishes a non-filing, so the withdrawal of that bid produced a monotonic 48% slide on 7k-90k ADS/day with no crash day. If the market had priced this, the slide would have come on a datable gap day with a news catalyst and there would be commentary attributing it; instead EDGAR full-text search returns no 6-K, no F-3, no 13D/A and no company filing of any kind between the 06-12 Q1 6-K and today, and no analyst action is findable. The second-order consequence is the part that matters tomorrow: the baseline hands the market a -43.67% run-up that reads as 'priced for disaster, primed to bounce', and the free control -run_up_20d_pct would rank COE among the day's strongest longs on that number alone — but the decline carries no fundamental information, so there is no disappointment discount to relieve, and no price-insensitive buyer left to absorb a soft print in a ~4m ADS float.",
+    "independence": "The price and volume series that makes the mechanism visible is a separate source from EDGAR: https://stockanalysis.com/stocks/coe/history/ (fetched 2026-09-14) shows $16.00 close 07-31, $20.60 on 08-13, then an uninterrupted slide to $10.60 on 09-10 on 7,182-89,848 ADS/day with no single gap. NOTE: the 'insider stopped buying' reading and the 'run-up is mechanical, not informational' reading rest on the same Form 4 cluster plus that price series, so they are deliberately filed as ONE finding rather than two.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "COE.json",
+    "text": "Q1 2026 cash fell $3.5m (from $39.0m to $35.5m) even though advances from students rose $2.4m (from $76.569m to $78.930m) and the operating loss was only $1.4m — roughly $4.4m of cash outflow that the published results cannot account for — and 51Talk publishes no cash flow statement with its earnings releases, against a shareholders' deficit of -$33.579m (total assets $65.327m, total liabilities $98.809m) and a $66m market cap.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/1659494/000110465926073181/tm2617806d1_ex99-1.htm",
+    "source_date": "2026-06-12",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "One estimate exists on this $66m name and no sell-side preview does; the wire-level coverage of the Q1 print was 'revenue +70.9%, active students +63.9%' (StockTitan, TipRanks) and the headline on the coming print will be billings against the $36-38m guide and EPS. If the balance-sheet composition were priced you would see previews framed around the cash line and the $78.9m student-prepayment liability rather than around growth rates, and the $10m buyback authorised in December 2025 would not have been the last balance-sheet item any aggregator mentioned. Cash is 54% of market cap and the reconciliation gap is unresolvable from anything the company publishes, so the Q2 cash balance — a number no consensus covers — is the swing item in tomorrow's release, and a repeat of the Q1 gap takes cash to ~$31m against an unchanged delivery obligation.",
+    "independence": "Independent confirmation of the negative equity from a different source: https://simplywall.st/stocks/us/consumer-services/nysemkt-coe/51talk-online-education-group (accessed 2026-09-14) reports negative equity of -US$33m. Separately, I checked and REJECTED the obvious inference: NYSE American Company Guide Sec. 1003(a)(i)-(iii) does not bite here because FY2025 total assets ($66.1m) and revenue ($95.6m) both exceed $50m, satisfying the alternative test, so there is no listing-deficiency finding to make.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "COE.json",
+    "text": "51Talk launched Saudi-specific courseware built on licensed Oxford University Press content at the Saudi 2026 Back-to-School Exhibition on 14-17 August 2026, fronted by national brand ambassador Yasser Al-Hazimi, off a Middle East hub opened in Riyadh in 2025 — a higher-ARPU demand geography that is nowhere in the company's own Q1 call, which contained no geographic commentary at all.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.indexbox.io/blog/51talk-launches-new-english-courseware-for-saudi-learners-at-2026-back-to-school-exhibition/",
+    "source_date": "2026-08-23",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "It ran in Saudi Gazette and regional aggregators, not on the US tape, and the company's own Q1 earnings call transcript contains zero references to Saudi Arabia, the Middle East, the Philippines, Indonesia or Malaysia — management has given US holders no geographic decomposition to attach it to. If this were priced, the sell-side framing would be about a Gulf ARPU mix shift rather than about a Philippines teacher-supply story, and the 70.9% revenue growth against 63.9% student growth in Q1 (i.e. ARPU doing real work) would be the number being previewed. Small size because it is a Q3 event that can only reach tomorrow's print through forward commentary, and no enrolment or revenue figure is attached to it anywhere.",
+    "independence": "https://www.prnewswire.com/news-releases/51talk-marks-15th-anniversary-with-global-curriculum-upgrade-to-enhance-childrens-english-communication-skills-302818215.html — the July 2026 'Global Communicator' global curriculum upgrade and 'Toki' brand refresh, a separate release describing the same product cycle this Saudi courseware sits inside.",
+    "i": 2
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "Any explanation for the 2026-08-27 volume spike of 315,099 ADS (about 25x the surrounding days, 5% of all ADSs outstanding, on only a -4.3% close) — no block-trade report, no index rebalance I could date to it, no 13D/A or 13G filed",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "Any SEC filing at all by or about the company between the 2026-06-12 Q1 6-K and today: EDGAR full-text search over 2026-08-01 to 2026-09-14 returns only Form 4s and third-party 13F-HRs, so no shelf, no ATM, no equity raise and no 13D/A",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "Any analyst downgrade, price-target cut or coverage initiation in August or September 2026 that would explain the slide",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "NYSE American continued-listing deficiency on the shareholders' deficit — checked and rejected, the FY2025 assets/revenue alternative test under Sec. 1003(a) is met",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "Philippine teacher-side signal: Indeed/JobStreet/Glassdoor/Trustpilot pay, penalty and refund complaints are all undated or pre-2026 and carry no quarter-specific information; ph.jobstreet.com returned 403 so I could not count live postings by title",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "The 'centre-based' teaching role on 51talk.ph/teach-with-us, which is genuinely odd for an asset-light online model but carries no date anywhere on the page, so it is dropped under the URL-date rule",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "Google Play / App Store review volume and rating trend for the student app — the package id I tried 404s and I could not establish the correct listing",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "ir.51talk.com (403) and saudigazette.com.sa (402) were both unreachable; the Saudi launch date was recovered from a third-party aggregator instead",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "Whether the $10m buyback authorised in December 2025 has been drawn — the Q1 release carries no repurchase disclosure and there is no interim filing that would show it",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "COE.json",
+    "text": "Any Philippine or Gulf regulatory change affecting online tutoring in Q2/Q3 2026",
+    "i": 12
+   }
+  ]
+ },
+ {
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "YQ",
+   "event_date": "2026-09-08",
+   "session": "amc",
+   "as_of_utc": "2026-09-08T14:07:49+00:00",
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-08",
+    "spot": 3.42,
+    "run_up_5d_pct": 74.49,
+    "run_up_20d_pct": 42.5,
+    "pct_from_52w_high": -45.1,
+    "pct_from_52w_low": 97.69,
+    "realised_vol_20d_annualised_pct": 116.1,
+    "avg_volume_20d": 157802
+   },
+   "cik": "0001821468",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-09-03",
+      "session": "bmo",
+      "move_pct": 21.49,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 2789500,
+       "next_day_volume": 48900,
+       "median_20d_before": 4600,
+       "move_as_tagged_pct": 21.49,
+       "move_if_bmo_pct": 21.49,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2026-06-17",
+      "session": "bmo",
+      "move_pct": -4.58
+     },
+     {
+      "event_date": "2026-05-28",
+      "session": "bmo",
+      "move_pct": -3.99
+     },
+     {
+      "event_date": "2026-03-25",
+      "session": "bmo",
+      "move_pct": 0.0
+     },
+     {
+      "event_date": "2026-03-24",
+      "session": "bmo",
+      "move_pct": -2.42,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 24300,
+       "next_day_volume": 8500,
+       "median_20d_before": 1700,
+       "move_as_tagged_pct": -2.42,
+       "move_if_bmo_pct": -2.42,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-12-10",
+      "session": "bmo",
+      "move_pct": -10.0
+     },
+     {
+      "event_date": "2025-09-04",
+      "session": "bmo",
+      "move_pct": 19.02,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 174900,
+       "next_day_volume": 12500,
+       "median_20d_before": 4850,
+       "move_as_tagged_pct": 19.02,
+       "move_if_bmo_pct": 19.02,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-06-11",
+      "session": "bmo",
+      "move_pct": -3.03
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 4.29,
+    "max_abs_move_pct": 21.49,
+    "up_count": 2,
+    "session_conflicts": 3
+   },
+   "event_plausibility": {
+    "days_since_last_print": 5,
+    "median_gap_days": 78,
+    "ratio": 0.06,
+    "last_print": "2026-09-03",
+    "verdict": "unknown",
+    "reason": "UPGRADE off 'suspect', which is the amendment that matters today: edge_score.py sets rankable=False on a suspect verdict and multiplies baseline_quality by 0.05, so 17 Education would have been arithmetically incapable of ranking anywhere despite a company-confirmed event. The event is real: the company's own GlobeNewswire release of 2026-09-02 states Q2 2026 unaudited results after the close of US markets on 2026-09-08 with a 9:00pm ET call. The 'suspect' verdict rests on a 5-day gap against a 78-day median, and that 5-day gap is the 2026-09-03 6-K announcing a US$10m share repurchase authori…",
+    "amended_from": {
+     "verdict": "suspect",
+     "reason": "an event 5 days after the last print does not fit a 78-day cadence; the calendar row may be stale"
+    },
+    "amended_utc": "2026-09-08T14:24:07+00:00",
+    "amended_by": "edge sweep, company-sourced; before any hunter launched",
+    "amended_source": "https://www.globenewswire.com/news-release/2026/09/02/3354907/0/en/17-education-technology-group-inc-to-report-second-quarter-2026-unaudited-financial-results-on-september-8-2026.html"
+   },
+   "options": {
+    "status": "empty_chain",
+    "expiry": "2026-09-18"
+   },
+   "deadband_pct": 2.15,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 4.29,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 8,
+    "history_usable": 0,
+    "event_plausibility": "suspect",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline.",
+    "history_discount_note": "reaction history is present but not counted toward the tier: the event date does not fit this company's own filing cadence, so the history may describe a reporting regime it no longer follows"
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "YQ-a.json",
+    "text": "The US$10m buyback that drove the stock +21.5% on 2026-09-03 and anchored the +76% five-session run is 17 Education's sixth consecutive annual US$10m authorisation (Nov 2021, Sep 2022, Sep 2023, Sep 2024, Sep 2025, Sep 2026) and is a straight rollover of the identical US$10m program that ran 2025-09-04 to 2026-09-04 and expired four days before this one started.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.globenewswire.com/news-release/2026/09/03/3355722/0/en/17-education-technology-group-inc-announces-new-share-repurchase-program-of-up-to-us-10-million.html",
+    "source_date": "2026-09-03 06:00 ET",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The 2026-09-03 release makes no reference to any prior program, and the identical predecessor was buried inside the 2025-09-04 Q2 earnings 6-K rather than issued as its own headline. Volume on 2026-09-03 was 2,789,500 ADS against a 20-day median of 4,600 before the event - a ~600x spike in a 10.86m-ADS name with no sell-side coverage and no option chain. If the market had recognised this as an expiring-program rollover rather than new capital, the tape would show a low-volume drift, not a 600x-volume +21.5% day followed by three more up sessions on no news at all; and the stock would not still be adding +18% intraday on 2026-09-08 on roughly average volume with nothing in the wire since 2026-09-03.",
+    "independence": "Independent primary confirmation of the recurrence pattern from four separate filings, none of which is the 2026 release: the 2023-09-21 6-K authorising US$10m from 2023-11-02 (https://www.sec.gov/Archives/edgar/data/1821468/000095017023049313/yq-6k-09-22-2023.htm), the 2022-09-29 6-K authorising US$10m from 2022-11-02 (https://www.sec.gov/Archives/edgar/data/1821468/000119312522254314/d300245d6k.htm), the 2021-11-02 announcement of US$10m (https://www.globenewswire.com/news-release/2021/11/02/2325327/0/en/17-Education-Technology-Group-Inc-Announces-US-10-Million-Share-Repurchase-Program-and-Plan-to-Implement-ADS-Ratio-Change.html), and the 2025-09-04 Q2 2025 release carrying the immediately-preceding US$10m authorisation (https://www.sec.gov/Archives/edgar/data/1821468/000095017025112952/yq-ex99_1.htm). The FY2025 20-F's XBRL tagging separately names ShareRepurchaseProgramInSeptemberTwoThousandAndTwentyFourMember and ...TwentyFiveMember (https://www.sec.gov/Archives/edgar/data/0001821468/000119312526191472/yq-20251231.htm).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "YQ-a.json",
+    "text": "Q1 2026's headline RMB99.5m revenue (+359% YoY) was drawn largely out of a one-off pre-sale balance rather than new demand: deferred revenue and advances from customers fell from RMB165.9m at 2025-12-31 to RMB104.5m at 2026-03-31, a RMB61.5m drawdown equal to 62% of the quarter's revenue, and cash plus term deposits fell RMB54.6m (RMB406.9m to RMB352.3m) against a reported net loss of only RMB19.4m - 2.8x the loss.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/0001821468/000119312526273326/yq-ex99_1.htm",
+    "source_date": "2026-06-17 (6-K filed; release dated 2026-06-16)",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "There is no sell-side model on a US$37.4m-market-cap name, no consensus estimate published, and every piece of wire copy on the quarter carried only the two lines the company led with - '+359.0% year-over-year' and 'Yiqi Aixue revenue more than quadrupled'. The Q1 earnings call had no Q&A at all (the operator recorded no questions), so the drawdown was never put to management. Had the market modelled the unwind, a stock at 0.73x its own liquid assets would not need a recurring buyback authorisation to re-rate 76%; the re-rating is being justified by the growth narrative, which is precisely the thing the deferred-revenue line qualifies. The remaining RMB104.5m balance also caps how much of this can repeat.",
+    "independence": "The year-ago control comes from a DIFFERENT filing and shows the drawdown is not seasonal: in Q1 2025 deferred revenue fell only RMB40.4m to RMB36.9m, i.e. RMB3.5m or 16% of that quarter's RMB21.7m revenue, versus 62% this year, and cash plus deposits fell RMB25.9m against a LARGER net loss of RMB30.9m - https://www.sec.gov/Archives/edgar/data/1821468/000095017025084635/yq-ex99_1.htm (2025-06-11). The Q4/FY2025 release shows where the balance came from - RMB40.4m at 2024-12-31 and RMB36.5m at 2025-09-30 building to RMB165.9m at 2025-12-31 on pre-sales of the new consumer product: https://www.sec.gov/Archives/edgar/data/1821468/000119312526122709/yq-ex99_1.htm (2026-03-25) and https://www.sec.gov/Archives/edgar/data/1821468/000119312525313418/yq-ex99_1.htm (2025-12-10). NOTE: the RMB61.5m deferred-revenue drawdown and the RMB54.6m cash decline are two readings of the same Q1 2026 document and are filed here as one finding, not two.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "YQ-a.json",
+    "text": "The company dismissed Deloitte Touche Tohmatsu as its auditor effective 2026-05-27 and appointed Marcum Asia CPAs LLP for the year ending 2026-12-31 - i.e. it dropped a Big Four auditor two quarters after its revenue recognition profile changed beyond recognition, and the Q2 2026 numbers about to be released are the first reported under the new firm.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526243134/yq-6k-05-26-2026.htm",
+    "source_date": "2026-05-28 (6-K filed; dismissal effective 2026-05-27)",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "It was disclosed in a 6-K with no press release and no GlobeNewswire distribution - it does not appear in the company's news feed alongside the buyback, the earnings date or the Q1 results, and the stock's reaction that day was -4.0%. It is a dismissal initiated by the company, not a resignation, with no disagreements or reportable events cited, so there is no headline to attach it to. If the market had weighted it, a name that just re-rated 76% on a boilerplate buyback would not be paying up for the same audited growth story; the coverage would carry a governance qualifier and it carries none.",
+    "independence": "Points the same way as, but is documented separately from, the revenue-quality finding above (different filing, different date, different subject matter). No third-party source independently flags it - no analyst, ratings agency or short report on this name was found.",
+    "i": 2
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Buyback fundability/capacity: the 'is the US$10m actually payable offshore' angle is dead. The FY2025 20-F condensing schedule shows Cayman-plus-other-subsidiary cash of RMB34.5m and term deposits of RMB160.5m - roughly US$27m of offshore liquidity against a US$10m authorisation, so capacity is not the constraint. The constraint is willingness, which is what finding 1 is about.",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Insider-buying cluster: the 13 Form 4s between 2026-07-06 and 2026-09-04 look like a CEO accumulating into the print, but today's 13D/A (https://www.sec.gov/Archives/edgar/data/1821468/000119312526384376/xslSCHEDULE_13D_X02/primary_doc.xml, 2026-09-08) discloses them as 110,628 ADS for ~US$0.24m total bought 2026-06-30 to 2026-09-03 under a Rule 10b5-1 plan running to 2028-03-31. Automated, pre-committed, ~US$24k a clip, and therefore carries zero information about the quarter. This is a lead that dies on inspection.",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Going-private / take-private setup: Andy Chang Liu holds 41.30% of shares and 95.0% of votes and the company trades below net cash, but the 13D/A of 2026-09-08 states the purchases are 'for investment purposes' with no mention of a merger, tender offer or going-private proposal.",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Nasdaq listing deficiency: no minimum bid price, market-value-of-publicly-held-shares or ADS-ratio notice found in the FY2025 20-F or anywhere in the 2026 filing stream. Last ADS ratio change was 2021 (to 1 ADS : 10 Class A, now 1:50); nothing pending.",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Any news at all in the window that would justify the 2026-09-04 to 2026-09-08 second leg (+18% intraday on 2026-09-08 on roughly average volume): the company news feed is empty between 2026-09-03 and the print. Checked stocktitan, GlobeNewswire, Yahoo press releases, EDGAR.",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Consumer footprint for Yiqi Aixue, the product carrying the entire growth story: no App Store or Google Play listing findable under that exact name, no appearance in any of the 2026 618 or summer Chinese learning-device buying guides (which list 作业帮, 小猿, 学而思, 科大讯飞, 步步高), and no ranking or download data on Qimai reachable. Treated as unsourced absence and NOT filed as a finding - Chinese app and e-commerce data are poorly indexed from here and an absence in US search is not evidence.",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Paying-user, subscription or hardware-unit metrics: the company has never disclosed one. Not in the Q1 2026 release, not in the Q1 call (which had no Q&A), not in the Chinese-language Q1 PR. So there is no user metric to trend into this print.",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Q2 2026 guidance: none exists. The only forward statement on the Q1 call was qualitative - 'strong year-over-year revenue growth and continued improvement in operating performance throughout 2026' with an explicit warning that 'quarterly results may vary'. There is no number for the print to beat or miss.",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-a.json",
+    "text": "Government/school tender awards for the To-G and To-B smart-education lines: not retrievable from here; Chinese public procurement portals were not reachable through the available tooling.",
+    "i": 11
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "YQ-b.json",
+    "text": "Deferred revenue and advances from customers fell from RMB165.9m at 31-Dec-2025 to RMB104.5m at 31-Mar-2026, so RMB61.4m of the RMB99.5m of Q1 revenue that produced the headline '+359% YoY' was a drawdown of Q4 2025 pre-sale orders: implied new billings were only about RMB38m, less than the RMB43.2m spent on sales and marketing in the same quarter, and cash plus restricted cash plus term deposits fell RMB54.6m (RMB407.0m to RMB352.4m) against a reported net loss of just RMB19.4m.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/0001821468/000119312526273326/yq-ex99_1.htm",
+    "source_date": "2026-06-17",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The wire copy on this quarter is 'AI learning app lifts 17EdTech revenue 359%, net loss down 37.4%' — headline growth and headline loss. The deferred-revenue line sits in the condensed balance sheet at the back of the same release and nobody has subtracted it: no sell-side analyst publishes an estimate on YQ, stockanalysis.com's news feed carries only the three headline items, and the release contains no cash-flow statement so the RMB54.6m cash decline versus a RMB19.4m loss has to be computed by differencing two balance sheets. If this were priced, the stock would not have closed the entire discount to book — shareholders' equity of RMB269.1m (US$39.0m) at 31-Mar-2026 against a US$37.5m market cap at $3.45 puts YQ at roughly 1.0x a book value that is falling about RMB18m a quarter, i.e. the deep-value cushion that justified the whole run has already gone. With only RMB104.5m of deferred balance left, the Q2 release's own deferred-revenue and cash lines are where this becomes visible for a second consecutive quarter.",
+    "independence": "Chinese trade coverage independently describes the Q4 2025 launch as a membership product sold on pre-orders ('achieved strong pre-sale orders'), which is the mechanism: https://www.sec.gov/Archives/edgar/data/1821468/000119312526122709/yq-ex99_1.htm (2026-03-25). Separately, Tencent News coverage of 2026-07-12 attributes the growth to a To-B/To-G 'smart paper-pen + AI' school solution covering 2,000+ schools rather than to the consumer app the English release credits, which is a second, unrelated reason to doubt the revenue narrative: https://news.qq.com/rain/a/20260712A066GD00. Note the RMB61.4m, RMB38m and RMB54.6m figures all come from the single Q1 6-K exhibit and are one finding, not three.",
+    "i": 12
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "YQ-b.json",
+    "text": "The US$10 million buyback authorisation announced 2026-09-03 that triggered the +21.5% jump is at least the fourth identical US$10 million 12-month authorisation the company has issued (November 2021, September 2024, September 2025, September 2026), and the FY2024 20-F discloses that only approximately US$0.1 million had actually been repurchased under the September 2024 programme as of 31-Dec-2024 — about 1% of the authorisation.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.globenewswire.com/news-release/2026/09/03/3355722/0/en/17-education-technology-group-inc-announces-new-share-repurchase-program-of-up-to-us-10-million.html",
+    "source_date": "2026-09-03",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "Volume on the announcement day was 2,789,500 ADSs against a 20-day pre-event median of 4,600 — a 600x spike. That is a buyer base that arrived on the headline, not one that pulled the 2024 20-F. If the recycling were priced, the third and fourth iterations of an identical press release would have produced no move at all, and the aggregator write-ups would say 'renews' rather than 'Approves $10M Share Buyback' and 'announces NEW share repurchase program'. The company also has RMB104.5m of deferred revenue and a RMB54.6m quarterly cash decline standing in front of the RMB71m the authorisation would cost, which is a capacity constraint the 2024 execution rate already demonstrated.",
+    "independence": "The prior identical authorisations are documented in three separate places: the 2021 release at https://www.globenewswire.com/news-release/2021/11/02/2325327/0/en/17-Education-Technology-Group-Inc-Announces-US-10-Million-Share-Repurchase-Program-and-Plan-to-Implement-ADS-Ratio-Change.html (URL path confirms 2021, not 2026), the FY2024 20-F which contains the phrase 'repurchased approximately US$0.1 million' (single hit for this CIK on EDGAR full-text search) at https://www.sec.gov/Archives/edgar/data/1821468/000095017025058824/yq-20241231.htm, and the FY2025 20-F whose inline-XBRL tags include 'ShareRepurchaseProgramInSeptemberTwoThousandAndTwentyFive' at https://www.sec.gov/Archives/edgar/data/1821468/000119312526191472/yq-20251231.htm.",
+    "i": 13
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "YQ-b.json",
+    "text": "The CEO's near-daily Form 4 open-market ADS purchases through August and early September — reported by aggregators as conviction buying — are executions of a Rule 10b5-1 trading plan entered into on 2026-03-31 with Tiger Brokers (NZ) Limited covering 30-Jun-2026 to 31-Mar-2028, a fact disclosed for the first time in Item 6 of a Schedule 13D/A filed on the morning of the print itself.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526384376/primary_doc.xml",
+    "source_date": "2026-09-08",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The plan was signed on 31-Mar-2026, before Q2 even began, so the purchases carry zero information about the quarter being reported — yet the coverage that exists reads the opposite way: 'Chang Liu Purchases 10,000 Shares of 17 Education & Technology Group' framed as insider conviction, on a site that even gets the exchange wrong (NYSE:YQ; YQ is Nasdaq). The 13D/A was filed hours before the release, has no wire pickup, and its only exhibit is a boilerplate joint filing agreement with no economics in it — so if the market had read it, today's roughly +18% would not be happening on a day whose sole company document adds nothing. The purchases are also tiny in dollars: 10,000 ADSs at $2.3788 is $23,800, and the transactions coded 'L' are Rule 16a-6 small acquisitions of 2 to 1,857 ADSs.",
+    "independence": "The Form 4s themselves, filed by a different route, show the mechanical daily cadence and the trivial size: https://www.sec.gov/Archives/edgar/data/0001821468/000119312526341197/ownership.xml (filed 2026-08-10, transactions 3-6 Aug at $2.11-$2.16) and https://www.sec.gov/Archives/edgar/data/1821468/000119312526382783/ownership.xml (filed 2026-09-04, 10,000 ADS at $2.3788). The misreading in third-party coverage is at https://www.thecerbatgem.com/2026/09/04/chang-liu-purchases-10000-shares-of-17-education-technology-group-nyseyq-stock.html. Shares its source document with the +2.0 structural-bid finding below.",
+    "i": 14
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "YQ-b.json",
+    "text": "Deloitte Touche Tohmatsu was dismissed as auditor effective 2026-05-27 — four weeks after signing the FY2025 20-F and three weeks before the Q1 revenue inflection was reported — and replaced by Marcum Asia CPAs LLP, a firm the PCAOB censured and fined US$100,000 on 2025-09-23.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526243134/yq-6k-05-26-2026.htm",
+    "source_date": "2026-05-28",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The 6-K disclosing the change moved the stock -3.99% on 4,600-share median volume — that is not a market clearing an information event, that is a filing nobody read. There is no analyst coverage to write it up, the change was reported as a dismissal with no disagreements and no reportable events so it generated no wire story, and it has never been connected in print to the fact that the revenue line inflected 359% in the very quarter that straddles the change. If it were priced, a Big-Four-to-second-tier downgrade at a China ADR carrying a large deferred-revenue balance would show as a persistent governance discount rather than a 1.0x book multiple after a 76% run. Q2 is the first release published under the new engagement.",
+    "independence": "PCAOB's own sanction release, an entirely separate source: https://pcaobus.org/news-events/news-releases/news-release-detail/pcaob-sanctions-u.s.-audit-firm-for-violations-related-to-communications-between-predecessor-and-successor-auditors (2025-09-23). A same-quarter CFO change points the same way — Sishi Zhou was confirmed as CFO on 2026-03-24 after nine months as Acting CFO: https://www.sec.gov/Archives/edgar/data/1821468/000119312526120598/yq-ex99_1.htm.",
+    "i": 15
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "YQ-b.json",
+    "text": "There is a real structural bid under the stock that cuts against the fade: the CEO's 10b5-1 plan runs to 31-Mar-2028 and the US$10m authorisation is live, against a non-Liu share base of only about 6.4m ADS-equivalent (542.2m shares outstanding less Andy Chang Liu's 223.9m / 41.30%) and a pre-spike median volume of 4,600 ADSs a day.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/1821468/000119312526384376/primary_doc.xml",
+    "source_date": "2026-09-08",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The float arithmetic requires combining the 13D/A percentages with the 20-F share count, and no aggregator does it: stockanalysis.com reports 10.86m shares outstanding and a US$37.45m market cap with no float adjustment at all. A stock where 41.3% is held by one person and baseline turnover is 4,600 ADSs a day cannot absorb even partial execution of a US$10m programme without gapping, so the downside from the four negative findings above is genuinely dampened relative to what the fundamentals alone would imply — which is why my net number is -9.5 and not the -11.5 the negatives sum to.",
+    "independence": "Share count from the FY2025 20-F cover: 'As of December 31, 2025, there were 542,229,838 ordinary shares outstanding' — https://www.sec.gov/Archives/edgar/data/1821468/000119312526191472/yq-20251231.htm (2026-04-29). Market cap and 10.86m ADS from https://stockanalysis.com/stocks/yq/ (2026-09-08). Shares its source document with the 10b5-1 finding above and is the opposite-signed reading of it.",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-b.json",
+    "text": "Third-party app metrics for Yiqi Aixue / 一起爱学 — no Qimai, App Store or Android-store download or MAU series located, and the app is absent from the 36kr education-AI ranking of Feb 2026 (https://36kr.com/p/3681345039282048, dated 2026-02-13) and from the CNPP 2026 top-ten learning-app list; nothing trendable to test whether Q2 momentum held",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-b.json",
+    "text": "Nasdaq listing compliance — no 6-K, no press release and no 20-F disclosure of any minimum bid price, minimum market value of publicly held shares, or ADS-ratio-change notice; the only ADS ratio change on record is the 2021 one",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-b.json",
+    "text": "Equity financing / dilution risk — the EDGAR F-series browse endpoint returned HTTP 503 so this is unresolved rather than clean; no F-3, ATM or 424B appeared in any other filing list or search",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-b.json",
+    "text": "Company guidance and sell-side estimates — YQ has never issued a revenue or EPS guidance range and I found no published analyst estimate, so there is no consensus to beat or miss and no 'whisper' to trade against",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-b.json",
+    "text": "Government tender / procurement data for the To-G smart paper-pen business in Q2 2026 — no award notices found despite the AI-general-education procurement policy coverage of 2026-08-09",
+    "i": 21
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-b.json",
+    "text": "Hiring signal — no accessible careers page job-posting count or team-level change found for 17zuoye / 一起教育科技",
+    "i": 22
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-b.json",
+    "text": "Customer, supplier, distributor or competitor read-through — no China K-12 hardware or edtech peer gave post-June-2026 commentary that references this company",
+    "i": 23
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "YQ-b.json",
+    "text": "Item 16E of the FY2025 20-F (the mandatory issuer-repurchase table) — the document is too large for the fetch tool to reach that section, so 2025-programme execution is inferred from the persistence of the tag rather than measured",
+    "i": 24
+   }
+  ],
+  "id": "us/2026-09-08/YQ"
+ },
+ {
+  "id": "us/2026-09-09/SHOE",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "SHOE",
+   "event_date": "2026-09-10",
+   "session": "bmo",
+   "as_of_utc": "2026-09-09T14:10:03+00:00",
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-09",
+    "spot": 13.37,
+    "run_up_5d_pct": 4.13,
+    "run_up_20d_pct": -15.16,
+    "pct_from_52w_high": -43.92,
+    "pct_from_52w_low": 4.13,
+    "realised_vol_20d_annualised_pct": 52.3,
+    "avg_volume_20d": 788765
+   },
+   "cik": "0000895447",
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "all 105 prior print(s) on this CIK were filed under a former name before 2026-06-11, so they belong to a predecessor entity and are not this company's reaction history",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-09-18",
+    "days_to_expiry": 9,
+    "atm_strike": 12.5,
+    "atm_iv_pct": 184.9,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 26.6,
+    "total_open_interest": 28591,
+    "atm_spread_frac_of_mid": 0.909,
+    "warnings": [
+     "ATM bid-ask spread 91% of mid; too wide to mean anything"
+    ]
+   },
+   "deadband_pct": 3.29,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": null,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SHOE-h1.json",
+    "text": "Caleres reported 2026-09-09 that Famous Footwear comparable sales fell 5.9% in the quarter ended 2026-08-01 — the identical fiscal window to SHOE's Q2 — blaming 'a later Back-to-School season and softness in lifestyle athletic'; Famous Footwear comped -2.3% in Q1 against Shoe Carnival's -2.1%, so the two banners were running in lockstep before this 360bp step-down, while SHOE's Q2 revenue consensus of $299.19m implies only about -2.4% YoY.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/0000014707/000001470726000138/cal-20260909xex99d1.htm",
+    "source_date": "2026-09-09",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "Caleres' headline was an EPS beat and a raised floor, and CAL traded up on it; SHOE closed -0.67% on the day the datapoint landed and is still up 4.1% over five sessions. If the market had read the Famous Footwear line as a comp read-through, SHOE would have broken its 52-week low of $12.78 on 09-09 rather than sitting a fraction above it, and the sell-side note flow would show Q2 revenue cuts after 09-09 rather than the last visible action being a Williams Trading target cut dated ~09-02 that still carries a Buy. Both causes Caleres named are channel-wide, not company-specific, and SHOE is more exposed to them than Famous Footwear: management said on the Q1 call that back-to-school 'begins the third week of July, and it really is an August play' and that '70% of our business is still athletic during that time period' — a later back-to-school and soft lifestyle athletic hit precisely SHOE's Q2 mix.",
+    "independence": "Genesco, quarter also ended 2026-08-01, reported 2026-09-03 that consolidated comps fell 1% and that it CUT its full-year comp guidance to flat from +1-2%, corroborating that the May-July window itself was weak in footwear retail: https://www.sec.gov/Archives/edgar/data/0000018498/000119312526381023/gco-ex99_1.htm . Management's own 70%-athletic and August-play quotes are from a third document, the 2026-05-21 Q1 call transcript: https://www.fool.com/earnings/call-transcripts/2026/05/21/shoe-carnival-scvl-q1-2026-earnings-transcript/",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SHOE-h1.json",
+    "text": "SHOE has no IEEPA tariff-refund windfall available to cushion the quarter — its 10-K states 'Substantially all of our footwear product is manufactured overseas, including the merchandise we purchase from domestic vendors and the smaller portion we import directly from overseas manufacturers', so it is importer of record on only a small slice, whereas Caleres booked $55.6m of IEEPA recoveries plus $1.8m interest in the very quarter whose beat is being read across to SHOE.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/895447/000119312526126279/scvl-20260131.htm",
+    "source_date": "2026-03-26",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "SHOE's Q1 10-Q filed 2026-06-05 carries no tariff receivable and the 2026-05-21 call spoke of tariffs only as ongoing 'average unit cost pressures' — three months after the Supreme Court struck IEEPA on 2026-02-20 and a month after CBP opened the CAPE refund process. If the market expected a refund, the stock would not be making 52-week lows into a print with $116m of cash and a debt-free balance sheet, and the FY gross margin guide of ~34% (-260bp) would have been challenged as stale rather than reaffirmed unremarked. The asymmetry is the point: the part of Caleres' print SHOE shares is the retail banner that comped -5.9%, and the parts that produced the beat — the refund and a +23.6% brand portfolio — SHOE does not have, which also removes the mechanism Caleres used to lift its full-year floor.",
+    "independence": "SOURCE CLUSTER NOTE: the $55.6m refund figure comes from the same Caleres 8-K as finding 1 and should be collapsed with it; the load-bearing, independent element here is the 10-K sourcing language and the absence of any tariff receivable in the Q1 10-Q, https://www.sec.gov/Archives/edgar/data/0000895447/000119312526258362/scvl-20260502.htm (filed 2026-06-05).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SHOE-h1.json",
+    "text": "The same later-back-to-school shift that damages SHOE's Q2 lands squarely in its Q3: Genesco said on 2026-09-03 that Journeys accelerated to a mid-single-digit comp in August and raised its FY EPS outlook to the high end, and Caleres said Famous Footwear comps are flat quarter-to-date through Labor Day — a 590bp sequential improvement — so SHOE, whose FY2026 guide of $1.40-$1.60 was explicitly framed as 'down first half and then up second half', has a credible constructive August update to give from a 52-week low.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/0000018498/000119312526381023/gco-ex99_1.htm",
+    "source_date": "2026-09-03",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "SHOE fell from $16.11 on 08-10 to $12.84 on 09-01, -20% on no company news at all — no 8-K since 06-11 and no Form 4 since 06-22 — which is the market pricing a bad quarter without pricing the offsetting Q3 handoff. If the August handoff were priced, SHOE would not be trading within 4% of its 52-week low three sessions after the two most comparable retailers both described August as materially better than May-July. This is the mechanism by which a revenue miss can still produce an up day, exactly as it did for CAL on 09-09.",
+    "independence": "Caleres' 'quarter to date through Labor Day, Famous Footwear comparable store sales are flat' is in a different filing, https://www.sec.gov/Archives/edgar/data/0000014707/000001470726000138/cal-20260909xex99d1.htm (2026-09-09) — note this is the same document as finding 1 and points the opposite way, which is why finding 1 is sized below the raw comp read-through.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SHOE-h1.json",
+    "text": "The baseline's put/call open-interest ratio of 26.6 on 28,591 contracts is a data artifact, not a positioning signal: the actual 2026-09-18 chain carries open interest in the hundreds, roughly 488 puts against 309 calls across the strikes shown, a ratio near 1.6.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.marketbeat.com/stocks/NASDAQ/SHOE/options/",
+    "source_date": "2026-09-09",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "This is a correction to the baseline rather than a market inefficiency, and it should be recorded so no downstream reader treats it as evidence. 28,591 contracts would be 2.86m shares of exposure, about 3.6 days of the 788,765-share ADV and roughly 10% of shares outstanding, in a name whose ATM bid-ask is 91% of mid and whose ATM IV prints at 184.9% — the same vendor feed producing all three numbers is unusable, most likely stitched across the 2026-06-12 SCVL-to-SHOE ticker change. Nothing in the price needs to change; what changes is that the loudest number in the baseline carries no information.",
+    "independence": "none",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SHOE-h1.json",
+    "text": "Any 8-K, pre-announcement or guidance update since the 2026-06-11 name-change filing — EDGAR shows nothing on CIK 895447 after that except two routine 13G/A amendments on 2026-07-14",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SHOE-h1.json",
+    "text": "Insider buying at the 52-week low — no Form 4 on this CIK since 2026-06-22, despite the stock falling from $16.11 to $12.84 in August",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SHOE-h1.json",
+    "text": "An explanation for the -8.39% single session on 2026-08-25 and the -4.90% on 2026-09-08 — no company news, no filing and no dated analyst action found for either date",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SHOE-h1.json",
+    "text": "A permanent CEO announcement — Cliff Sifford has been interim since 2026-02-24 and the search is still open, so a named successor alongside the print is a live but unforecastable catalyst",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SHOE-h1.json",
+    "text": "Local-press evidence of store closures beyond the guided 12-14 for FY2026 that would imply a larger Q2 impairment charge",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SHOE-h1.json",
+    "text": "Any SHOE-specific IEEPA refund claim, receivable or CBP CAPE filing",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SHOE-h1.json",
+    "text": "A usable option-implied move — the front chain's spread is 91% of mid and Yahoo, Barchart and Nasdaq option pages were unreachable or empty",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SHOE-h1.json",
+    "text": "Designer Brands as a same-day read — DBI also reports 2026-09-10, so it offers no pre-print information",
+    "i": 11
+   }
+  ]
+ },
+ {
+  "id": "us/2026-09-09/M",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "M",
+   "event_date": "2026-09-10",
+   "session": "bmo",
+   "as_of_utc": "2026-09-09T14:08:50+00:00",
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-09",
+    "spot": 22.525,
+    "run_up_5d_pct": 2.71,
+    "run_up_20d_pct": -8.14,
+    "pct_from_52w_high": -14.06,
+    "pct_from_52w_low": 36.43,
+    "realised_vol_20d_annualised_pct": 27.2,
+    "avg_volume_20d": 5134722
+   },
+   "cik": "0000794367",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-06-03",
+      "session": "bmo",
+      "move_pct": 0.6
+     },
+     {
+      "event_date": "2026-03-18",
+      "session": "bmo",
+      "move_pct": 4.73
+     },
+     {
+      "event_date": "2025-12-03",
+      "session": "bmo",
+      "move_pct": -1.1
+     },
+     {
+      "event_date": "2025-09-03",
+      "session": "bmo",
+      "move_pct": 20.68
+     },
+     {
+      "event_date": "2025-05-28",
+      "session": "bmo",
+      "move_pct": -0.33
+     },
+     {
+      "event_date": "2025-03-06",
+      "session": "bmo",
+      "move_pct": -0.68
+     },
+     {
+      "event_date": "2024-12-11",
+      "session": "bmo",
+      "move_pct": -0.84,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 28762100,
+       "next_day_volume": 9700600,
+       "median_20d_before": 5010500,
+       "move_as_tagged_pct": -0.84,
+       "move_if_bmo_pct": -0.84,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2024-11-25",
+      "session": "bmo",
+      "move_pct": -2.21
+     }
+    ],
+    "n": 8,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 0.97,
+    "max_abs_move_pct": 20.68,
+    "up_count": 3,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 99,
+    "median_gap_days": 85,
+    "ratio": 1.16,
+    "last_print": "2026-06-03",
+    "verdict": "fits_cadence",
+    "reason": "99 days since the last print against a 85-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-09-11",
+    "days_to_expiry": 2,
+    "atm_strike": 22.5,
+    "atm_iv_pct": 109.3,
+    "straddle_implied_move_pct": 7.9,
+    "event_implied_move_pct": 7.73,
+    "event_implied_move_basis": "7.9% straddle over 2 calendar days less 2.05% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -15.72,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.23,
+    "total_open_interest": 11462,
+    "atm_spread_frac_of_mid": 0.462,
+    "warnings": [
+     "ATM bid-ask spread 46% of mid; implied move is indicative only"
+    ],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 7.73,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "M-h1.json",
+    "text": "Macy's told the Street on 2026-06-04 that IEEPA tariff refunds are 'not incorporated in our outlook', yet both department stores with the identical quarter-end (1 Aug 2026) booked large refunds in that quarter — Kohl's ~$150m received, ~$100m through gross margin; Dillard's $37.2m, $1.82/share — and both stocks fell or went nowhere on the resulting monster beats, so the near-certain headline beat at Macy's is worth roughly nothing and possibly less than nothing to the price.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/0000885639/000119312526365860/d171200dex991.htm",
+    "source_date": "2026-08-26",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The Q2 consensus of $0.37 embeds a 9.8% YoY EPS *decline* and the Zacks metric detail published 2026-09-04 carries no refund line at all; the investing.com preview published this morning (2026-09-09) contains zero mentions of tariff refunds, Kohl's or Dillard's. If the read-across were priced, consensus would not still be modelling a YoY decline and the FY Street number would not sit at $2.23 against a company guide of $2.00-$2.20. The unpriced part is not the beat — it is the reaction function: at -15.7 vol points of skew the option market is paying up for calls into a catalyst whose two nearest analogues, three and four weeks ago, produced -3.5% and -0.1% because both were punished on the top line while the one-time gain was discounted entirely. Second-order risk in the same cluster and pointing the same way: the CIT's July order gives a confirmed refund path only to importers that sued, Macy's is not identifiable among the CIT plaintiffs and its own language was that 'timing and amounts remain uncertain' — so Macy's may book materially less than the ~$0.24 Jefferies has publicly penciled in, or nothing, while peers banked theirs.",
+    "independence": "Dillard's 8-K/release of 2026-08-13 quantifies the same catalyst independently at $37.2m ($1.82/share) with the stock closing down ~3.5% that day: https://investor.dillards.com/news-releases/news-release-details/dillards-inc-reports-second-quarter-and-year-date-results-3 . Separately, Holland & Knight (2026-07-27) documents that non-plaintiff importers have no confirmed refund path: https://www.hklaw.com/en/insights/publications/2026/07/file-now-cits-order-confirms-only-importers-that-have-sued . These are different documents from the Kohl's 8-K but sit in one tariff-refund source cluster with it — treat as one finding, not three.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "M-h1.json",
+    "text": "Sell-side models Q2 credit card revenue at $166.2m, +8.6% YoY, but management guided on 2026-06-04 that credit card growth would decelerate to 'more in line with the overall business' — roughly +1% to +2% on a $153m base, i.e. about $156m — a ~$10m gap on a line that drops straight to EBIT in a quarter consensus puts at only ~$0.37 of EPS.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.fool.com/earnings/call-transcripts/2026/06/04/macys-m-q1-2026-earnings-call-transcript/",
+    "source_date": "2026-06-04",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "The consensus line item is published (Zacks, 2026-09-04) at +8.6% while the company's own stated forward growth rate is low single digit; if the market had reconciled the two, the modelled 'other revenue' of $200.2m would have been marked down toward the FY $920m other-revenue guide's implied run-rate rather than extrapolating Q1's +11.7%. Nobody writes previews off a guidance verb ('more in line with the overall business') because it carries no number, which is exactly why it survives unmodelled.",
+    "independence": "Consensus segment detail from a different source, Zacks via Yahoo 2026-09-04: https://ca.finance.yahoo.com/news/wall-streets-insights-key-metrics-131503279.html . No third source corroborates the deceleration; Citi's own card master-trust delinquency and charge-off data (July 2026: delinquencies 1.32%, NCO 1.90%) shows portfolio credit still benign, which cuts the other way and is why the band is wide and the size small.",
+    "i": 1
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "M-h1.json",
+    "text": "Citi credit-card master-trust monthly delinquency/charge-off series as a lead on the Macy's profit share — the trust that files publicly is Citi's own branded-card Issuance Trust, not the Citi Retail Services private-label book that houses Macy's, and the published July 2026 data (delinquencies 1.32%, NCO 1.90%) shows nothing deteriorating; the door named as the best one in the brief is not actually mapped to this line",
+    "i": 2
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "M-h1.json",
+    "text": "Renewed Arkhouse/Brigade takeover activity — everything found dates to 2024 and mid-2025, nothing in 2026, so the -15.7 calls-bid skew is not explained by a live bid",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "M-h1.json",
+    "text": "Macy's 8-K filings since 2026-06-03 — there are none; no pre-announcement, no material event, no quiet 8-K",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "M-h1.json",
+    "text": "Insider Form 4 clusters — only routine director RSU/phantom grants and one SVP/controller sale of 10,077 shares at $25.63 on 2026-06-25; no buying cluster",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "M-h1.json",
+    "text": "Macy's as a named plaintiff in the CIT IEEPA refund litigation — could not confirm either way from public search, which is itself the reason the refund size is uncertain rather than a finding on its own",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "M-h1.json",
+    "text": "Real-estate/asset-sale gains as a swing factor — Q1 2026 was $15m against Q2 2025's $16m and Q2 2024's $36m, no evidence of a lumpy Q2 2026 monetisation",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "M-h1.json",
+    "text": "A company-specific cause for the -8.1% 20-day drawdown — general-merchandise retail is down ~5.6% over the same month, so most of it is sector beta, not a Macy's signal",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "M-h1.json",
+    "text": "Census department-store-specific sales for May-July 2026 — only the headline retail aggregate was retrievable (June +0.2% m/m, July -0.6% m/m), no department-store line",
+    "i": 9
+   }
+  ]
+ },
+ {
+  "id": "us/2026-09-10/CPRT",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "CPRT",
+   "event_date": "2026-09-10",
+   "session": "amc",
+   "as_of_utc": "2026-09-10T14:07:32+00:00",
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-09-10",
+    "spot": 32.125,
+    "run_up_5d_pct": -0.11,
+    "run_up_20d_pct": 10.81,
+    "pct_from_52w_high": -34.3,
+    "pct_from_52w_low": 18.24,
+    "realised_vol_20d_annualised_pct": 44.5,
+    "avg_volume_20d": 9455376
+   },
+   "cik": "0000900075",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-05-21",
+      "session": "amc",
+      "move_pct": -1.77
+     },
+     {
+      "event_date": "2026-02-19",
+      "session": "amc",
+      "move_pct": -3.11
+     },
+     {
+      "event_date": "2025-11-20",
+      "session": "amc",
+      "move_pct": -0.71
+     },
+     {
+      "event_date": "2025-09-04",
+      "session": "amc",
+      "move_pct": -2.8
+     },
+     {
+      "event_date": "2025-05-22",
+      "session": "amc",
+      "move_pct": -11.52
+     },
+     {
+      "event_date": "2025-02-20",
+      "session": "amc",
+      "move_pct": -2.8
+     },
+     {
+      "event_date": "2024-11-21",
+      "session": "amc",
+      "move_pct": 10.19
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 2.8,
+    "max_abs_move_pct": 11.52,
+    "up_count": 1,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 112,
+    "median_gap_days": 91.0,
+    "ratio": 1.23,
+    "last_print": "2026-05-21",
+    "verdict": "fits_cadence",
+    "reason": "112 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-09-18",
+    "days_to_expiry": 8,
+    "atm_strike": 32.5,
+    "atm_iv_pct": 56.3,
+    "straddle_implied_move_pct": 7.16,
+    "event_implied_move_pct": 4.76,
+    "event_implied_move_basis": "7.16% straddle over 8 calendar days less 6.7% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -2.33,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.71,
+    "total_open_interest": 28072,
+    "atm_spread_frac_of_mid": 0.113,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 4.76,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": null,
+   "positioning_check": null,
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CPRT.json",
+    "text": "IAA/RB Global reported automotive unit volume of 658,800 lots, +11% year-over-year for Apr-Jun 2026 — two of the three months in Copart's fiscal Q4 — calling it the 'sixth consecutive quarter of outperforming the broader market,' with the CFO stating 'unit volume growth was supported by continued net market share gains, while broader industry volumes remain under pressure'; against a flat industry that arithmetic implies Copart's US insurance units were down roughly 5-7% in the quarter it is about to report, worse than the -4.2% it posted for Feb-Apr.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.theglobeandmail.com/investing/markets/stocks/RBA-N/pressreleases/3793022/rb-global-rba-q2-2026-earnings-call-transcript/",
+    "source_date": "2026-08-04",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "Copart's entire 20-day run-up window opens AFTER RB Global's 2026-08-04 print, and on 2026-09-03 the stock rose 4% on a JPMorgan upgrade whose stated thesis was that Copart 'appears to be picking up share in some states from an insurer' — the literal inverse of what the competitor reported for the same months. If the market had weighted IAA's own disclosed number you would see the 25-delta skew positive rather than -2.33, put/call open interest above rather than 0.71, and no 4% upgrade day into a name that has fallen after six of its last seven prints. The competitive story in the wire is generic ('IAA pressure'); the unpriced part is that the specific quarter being reported is one in which the competitor has already published its side of the ledger.",
+    "independence": "Copart's own last disclosure points the same way from a different document: Q3 FY2026 (quarter ended 2026-04-30) global insurance units -2.7% and US insurance units -4.2%, https://www.businesswire.com/news/home/20260521385731/en/Copart-Reports-Third-Quarter-Fiscal-2026-Financial-Results (2026-05-21). Note the offset inside my own primary source, which is why the band reaches +0.5: the same RB Global transcript reports total-loss frequency up 90bp to a record 23.3% with 'leading indicators of the total loss frequency have improved modestly in recent months' — an industry tailwind for Copart assignments that I have deliberately not filed as a separate finding because it rests on the same document.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CPRT.json",
+    "text": "Copart is in a live, reported process to acquire CCC Intelligent Solutions (~$4.2bn equity value plus net debt), it upsized its revolver on 2026-01-23 to $1.25bn with a $500m incremental option explicitly permitting acquisitions, and on 2026-08-13 it seated David J. Berger — Wilson Sonsini's senior M&A-litigation and shareholder-activism partner — on the board, announced 2026-08-17, one day before the Bloomberg leak; the earnings call is a natural venue for a deal that would consume essentially all of the $4.2bn cash the current holder base owns this stock for.",
+    "lands_on": null,
+    "leg": null,
+    "resolves_by": null,
+    "source": "https://www.sec.gov/Archives/edgar/data/900075/000119312526354640/d77107d8k.htm",
+    "source_date": "2026-08-18",
+    "reaction_history_on_this_line": null,
+    "why_not_priced": "CPRT rose across the window in which the CCC report broke, so the market is treating a possible $5bn+ cash-and-debt acquisition as free strategic optionality rather than as balance-sheet consumption. If it were pricing deal risk you would see puts bid into the print; instead the 25-delta skew is -2.33 with calls paid. No coverage I could find connects the Berger board seat, the January revolver upsizing and the CCC process as one sequence — each was reported as a standalone item. I size this small and with a wide two-sided band precisely because the announcement may not land on this call and because parts of the bull side (JPMorgan) read the deal as a positive.",
+    "independence": "Different document, same direction: the 2026-01-23 $1,250m unsecured revolver with a $500m incremental facility maturing 2031, sized and permitted for acquisitions and buybacks, replacing the 2021 BofA facility — https://www.sec.gov/Archives/edgar/data/900075/000119312526022730/d64083d8k.htm (filed 2026-01-26). The underlying deal report is Bloomberg, https://www.bloomberg.com/news/articles/2026-08-18/car-seller-copart-is-among-suitors-for-car-insurance-software-firm-ccc (2026-08-18). Caveat that cuts against me: Wilson Sonsini was already Copart's outside counsel before Berger joined the board, so the appointment is partly a formalization rather than a fresh signal.",
+    "i": 1
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CPRT.json",
+    "text": "Jeff Liaw separation agreement as a hidden ASC 718 modification charge in the reported quarter — chased it properly and it is immaterial: the modified grants are 100,000 options (2021-03-09) and 175,000 options (2022-04-01) at a $106.31 exercise price with a $132.88 hurdle, i.e. 550,000 post-split options struck near $53.16 against a $32.13 spot, so eliminating the price goal has negligible incremental fair value; cash consideration totals only $900k. https://www.sec.gov/Archives/edgar/data/0000900075/000119312526286982/d70617dex101.htm and https://www.sec.gov/Archives/edgar/data/900075/000090007522000052/cprt2022proxystatement.htm",
+    "i": 2
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CPRT.json",
+    "text": "Catastrophe activity in the May-July window as an assignment-volume swing factor — the sources contradict each other and give no vehicle-specific read: Swiss Re calls severe convective storm the leading H1 2026 insured peril at $28bn while Moody's titles its H1 review 'quieter and less costly'. https://www.swissre.com/institute/research/topics-and-risk-dialogues/climate-and-natural-catastrophe-risk/first-half-2026-insured-catastrophe-losses.html and https://www.moodys.com/web/en/us/insights/insurance/united-states-severe-convective-storm-losses-quieter-and-less-costly-during-first-half-2026.html",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CPRT.json",
+    "text": "Manheim ASP deceleration as a standalone finding — July 2026 MUVVI +1.3% YoY vs June's +2.1% (https://www.coxautoinc.com/insights/manheim-used-vehicle-value-index-july-2026-trends/, published 2026-08-07) looked like a lever failing, but IAA reported US insurance ASP +4% for the overlapping months and consensus already models only ~1.4% revenue growth, so it is priced and it is not what salvage ASP actually did",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CPRT.json",
+    "text": "Interest income on the ~$4.2bn cash balance as an EPS swing — arithmetic makes it ~$0.008/share per quarter per 100bp, about 2% of the $0.39 consensus, too small to size",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CPRT.json",
+    "text": "Copart careers/Workday job postings and yard-manager counts — 264 US openings on Glassdoor with no historical baseline to compare against, so the number carries no information",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CPRT.json",
+    "text": "Insider transactions — no Form 4 purchases; aggregators show ~107,745 shares sold over three months and zero bought, including no purchase by the returning CEO, but no cluster or filing distinct enough to file as evidence",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CPRT.json",
+    "text": "Any 8-K, pre-announcement or company disclosure between 2026-09-01 and 2026-09-10 beyond the earnings-date press release",
+    "i": 8
+   }
+  ]
+ }
+]
