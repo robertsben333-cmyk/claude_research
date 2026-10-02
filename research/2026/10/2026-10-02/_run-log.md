@@ -26,3 +26,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-02 01:05 UTC
 - Fired 01:05Z 2026-10-02 (10:05 JST) on main (4b54850). Plan: jp_universe -> jp_priced_in seal -> provenance stamp -> one unpriced-hunter-jp per name in waves of 5 -> edge_score -> japan-note. No orders.
+
+## Stage J — universe and seal
+- Logged at 2026-10-02 01:06 UTC
+- 9 scheduled / 5 eligible (4 dropped below ¥15m turnover floor) / 5 hunted; selection.method: all 5 eligible names (at or under the cap 25), seed jp-2026-10-02 unused. market_closed null. Sheets kessan07_0904 (as_of 09-03), kessan08_0918 (as_of 09-17). Short register 20260929 read (598 codes); margin ratio resolved 4 of 5 (4394 None). baseline_quality direction 0.6 x4, 0.45 x1. One wave of 5 unpriced-hunter-jp.
