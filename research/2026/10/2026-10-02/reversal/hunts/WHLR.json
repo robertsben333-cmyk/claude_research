@@ -1,0 +1,74 @@
+{
+  "ticker": "WHLR",
+  "drop_date": "2026-10-02",
+  "window": {"from": "close of 2026-10-02", "to": "close of 2026-10-05"},
+  "expected_move_pct": -2.4,
+  "conviction_note": "One dated negative inside the window: the monthly Series D Holder Redemption Date is 2026-10-05 and the company has been settling those in newly issued common at a VWAP-based price, on a share base that the 9/21 1-for-9 split cut to ~568k before 9/23 exchanges added ~729k; no repricing mechanism found, so abs 12% (ATR 54%, own median |next| 6.05%) times p_up 40 gives -2.4, while the finding alone is sized -3.0.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -3.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "Own history of 319 comparable falls (median next close -2.84%, up rate 33.5%, median |next| 6.05%) and the cross-section prior -1.04%, from the sealed baseline /home/user/claude_research/research/2026/10/2026-10-02/reversal/baselines/WHLR.json; no option chain (no_options_market).",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 15,
+    "confidence_pct": 45,
+    "what_happened": "No news item found for 2026-10-02; the stock gapped +4.6% and then fell 10.6% intraday on ordinary volume (0.82x), the latest leg of a -96% 60-day slide driven by serial preferred-for-common exchanges and Series D redemptions settled in new common, with the next redemption settlement dated 2026-10-05.",
+    "evidence": [
+      {"claim": "Sept 8 Holder Redemption: 8,200 Series D redeemed, settled by issuing 348,896 common shares (pre-split); next Holder Redemption Date is 2026-10-05, request deadline 2026-09-25", "url": "https://www.sec.gov/Archives/edgar/data/1527541/000152754126000340/whlr-20260908.htm", "timestamp": "2026-09-09"},
+      {"claim": "1-for-9 reverse split effective 2026-09-21 17:00 ET; ~5,113,901 shares became ~568,211", "url": "https://www.sec.gov/Archives/edgar/data/1527541/000152754126000349/whlr-20260917.htm", "timestamp": "2026-09-17"},
+      {"claim": "Sept 23 3(a)(9) exchanges issued 162,244 + 566,670 common for Series B/D preferred, no cash to the company", "url": "https://www.sec.gov/Archives/edgar/data/1527541/000152754126000360/whlr-20260923.htm", "timestamp": "2026-09-29"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -60,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "Series D Holder Redemption Date 2026-10-05 (settlement in common stock at company's option), per the 2026-09-09 8-K",
+    "what_would_change_my_mind": "An 8-K before the Oct 5 close saying the October redemptions were settled in cash, were nil, or that the Series D redemption right was suspended or exchanged out."
+  },
+  "positioning_check": "Nasdaq short interest settlement 2026-09-15: 258,807 shares, days to cover 1.0, down 54.3% from 566,046 on 2026-08-31 (published ~8 business days after settlement, so the position into today's fall is unobserved; settlement predates the 9/21 1-for-9 split and its share basis is unclear). https://api.nasdaq.com/api/quote/WHLR/short-interest?assetclass=stocks. No option chain, so no skew.",
+  "findings": [
+    {
+      "finding": "The monthly Series D Holder Redemption Date falls on 2026-10-05, inside the window, and the company has settled recent rounds by issuing new common stock (348,896 pre-split shares for September's 8,200 Series D), on a common base of roughly 1.3m post-split shares after the 9/23 exchanges.",
+      "leg": "new_information",
+      "mechanism_in_window": "The redemption date is 2026-10-05, the next session itself; shares issued in settlement reach redeeming holders that day and can be sold into the window, and the VWAP-referenced settlement price gives holders and arbs a reason to sell into the pricing period that ends there.",
+      "expected_impact_pct": -3.0,
+      "impact_low_pct": -9.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "September's redemption date 2026-09-08 was itself a -7.42% day and the next close was -1.29% (baseline events); the session before it (9/4) fell 18.36% and the next close -7.42%. One observation, not a rule.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1527541/000152754126000340/whlr-20260908.htm",
+      "source_date": "2026-09-09",
+      "why_not_priced": "The date is public and recurring, so part is priced; what the price cannot yet hold is the share count, which depends on how many requests arrived by 9/25 and on a VWAP that today's fall lowers further. If it were fully priced the stock would not still be losing ground in the sessions just before each redemption date.",
+      "independence": "EDGAR full-text search returns 50 2026 filings carrying both 'Holder Redemption Date' and 'volume weighted average', including monthly redemption-update 424B3s on 2026-08-10 and 2026-09-09: https://efts.sec.gov/LATEST/search-index?q=%22Holder%20Redemption%20Date%22%20%22volume%20weighted%20average%22&ciks=0001527541&startdt=2026-01-01&enddt=2026-10-02"
+    }
+  ],
+  "outside_window": [
+    {"finding": "8-K reporting the October 5 redemption share count; the September one came the day after the redemption date (9/8 -> 9/9), so this one most likely lands 2026-10-06, after the window", "expected_impact_pct": -3.0, "resolves_by": "2026-10-06", "source": "https://www.sec.gov/Archives/edgar/data/1527541/000152754126000340/whlr-20260908.htm"},
+    {"finding": "7.00% Subordinated Convertible Notes due 2031 carry a conversion price that resets to a 45% discount to the lowest Series D conversion price (adjusted to ~$0.54 pre-split in September; $4.85 per share stated on the 10-01 Form 4); a further reset is a later dilution overhang", "expected_impact_pct": -2.0, "resolves_by": "2026-11-05", "source": "https://www.sec.gov/Archives/edgar/data/1527541/000152754126000340/whlr-20260908.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "News for WHLR on 2026-10-02: web search returned nothing dated in October 2026 (https://finance.yahoo.com/quote/WHLR surfaced only as a link; no quote content read)",
+    "Going-concern and non-reliance language: zero hits ever (baseline text probes)",
+    "Minimum bid price deficiency: most recent hit 2026-03-20; spot $2.67 is above $1 post-split, so no clock is running in the window",
+    "ATM language: most recent hit is the 2026-09-17 reverse-split 8-K, and fetching it found no ATM program described; no new 8-K or 424B5 after 2026-09-29 on the EDGAR submissions list",
+    "Stilwell Value Form 144 (2026-09-30) covers 32,069 convertible notes, not common, so it is not common-stock supply in the window",
+    "No 8-K with a four-business-day clock still running on a drop-day event: no drop-day filing found"
+  ],
+  "abs_move_pct": 12.0,
+  "p_up": 40,
+  "rejected_candidates": [
+    {"candidate": "Director Gregory Hannon (via Oakmont Capital) bought $125,000 of 7.00% convertible notes on 2026-09-30", "source": "https://www.sec.gov/Archives/edgar/data/1527541/000153818626000012/xslF345X06/wk-form4_1790892059.xml", "reason": "outside_window", "detail": "Public on 2026-10-01 before the fall and a notes purchase rather than common; as a repricing finding it has no mechanism inside the window (stage R admission rule)"},
+    {"candidate": "9/23 exchanges issued 728,914 common, larger than the ~568k post-split base, of which 162,244 went to an unaffiliated holder free to sell", "source": "https://www.sec.gov/Archives/edgar/data/1527541/000152754126000360/whlr-20260923.htm", "reason": "outside_window", "detail": "Issued 9/23 and disclosed 9/29; a standing overhang with no dated sale inside the window; carried in cause, not as a finding"}
+  ],
+  "baseline_tension": "Agrees with this name's own history (33.5% up rate, median next close -2.84%) and with its ATR; cuts against the ordinary volume (0.82x), which in the cross-section points to a slight bounce, and the September run shows the stock can jump +39% to +191% in a day, so the sign is held at p_up 40 rather than lower.",
+  "pre_lessons": {
+    "impact_sum_pct": -3.0,
+    "expected_move_pct": -2.4,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-3.0]
+  },
+  "lessons_applied": ["nothing changed: researcher_reversal/LESSONS.md is deliberately empty until a run resolves"],
+  "sources_used": 9
+}
