@@ -1056,6 +1056,58 @@ function pctCurve(sel) {
             models: countBy(g, modelOf).map(([m, n]) => `${m} ${n}`).join(', ')};
   });
 }
+/* Return per percentile BAND rather than per cut: the names whose |impact_sum| sits
+   between two percentiles of their own model's reference. A cut ("top 20%") mixes
+   everything above it; a band shows where along the scale the return actually is,
+   so a top band that pays and a second band that does not are told apart. */
+function pctBandBlock(rows, retF, step, title) {
+  const ok = rows.filter(r => hasPct(r) && retF(r) !== null && retF(r) !== undefined);
+  const models = countBy(ok, modelOf).map(x => x[0]);
+  const bands = [];
+  for (let lo = 0; lo < 100; lo += step) {
+    const hi = lo + step;
+    const g = ok.filter(r => pctOf(r) >= lo && (hi >= 100 ? pctOf(r) <= 100 : pctOf(r) < hi));
+    const b = book(g.map(retF));
+    bands.push({lo, hi, g, ...b, by: models.map(m => {
+      const gm = g.filter(r => modelOf(r) === m);
+      return {m, n: gm.length, mean: gm.length ? book(gm.map(retF)).mean : null};
+    })});
+  }
+  const id = mId(), idL = mId();
+  draw.push(() => {
+    barChart(document.getElementById(id), {height: 230, fmtY: v => v.toFixed(0) + '%', fmtT: pc,
+      labelY: 'gem. rendement per naam',
+      items: bands.filter(b => b.n).map(b => ({label: `p${b.lo}–${b.hi}`, v: b.mean, sub: `n=${b.n}`,
+        tip: `<b>percentiel ${b.lo}–${b.hi}</b><br>${b.n} namen, teken goed ${n1(b.hit)}%<br>
+              gemiddeld ${pc(b.mean)}, mediaan ${pc(b.median)}<br>` +
+             b.by.filter(x => x.n).map(x => `${esc(x.m)}: ${pc(x.mean)} (n=${x.n})`).join('<br>')}))});
+    if (models.length > 1) lineChart(document.getElementById(idL), {
+      x: bands.map(b => `p${b.lo}–${b.hi}`),
+      series: models.map((m, i) => ({label: m, color: [css('--s1'), css('--s2'), css('--s3')][i % 3],
+        values: bands.map(b => { const x = b.by[i]; return x.n ? x.mean : null; })})),
+      zero: true, fmtY: v => v.toFixed(0) + '%', fmtT: pc, height: 220,
+      tipX: i => `percentiel ${bands[i].lo}–${bands[i].hi}: ` +
+                 bands[i].by.map(x => `${x.m} n=${x.n}`).join(', ')});
+  });
+  return `<div class="card"><h3>${title}</h3>
+    ${legend([{color:css('--good'), label:'band in de plus'}, {color:css('--bad'), label:'in de min'}])}
+    ${ok.length ? chartBlock(id, 230) : '<div class="empty">geen naam met een percentiel en een uitkomst</div>'}
+    ${models.length > 1 ? `<h3>Per model</h3>` + legend(models.map((m, i) =>
+        ({color: [css('--s1'), css('--s2'), css('--s3')][i % 3], label: m}))) + chartBlock(idL, 220) : ''}` +
+    table([{h:'percentiel', f:b=>`<b>p${b.lo}–${b.hi}</b>`}, {h:'n', f:b=>b.n},
+      {h:'raak %', f:b=>b.n ? n1(b.hit) : '–'},
+      {h:'gem. %', f:b=>b.n ? `<span class="${sgn(b.mean)}">${pc(b.mean)}</span>` : '–'},
+      {h:'mediaan %', f:b=>b.n ? pc(b.median) : '–'},
+      ...models.map((m, i) => ({h: m, f: b => b.by[i].n
+        ? `<span class="${sgn(b.by[i].mean)}">${pc(b.by[i].mean)}</span> <span class="meta">(${b.by[i].n})</span>` : '–'}))],
+      bands) +
+    `<p class="meta">Elke naam staat in de band van zijn eigen model: p80–90 is voor een Opus
+     5-naam een andere |impact_sum| dan voor een Opus 5.5-naam. Referentie:
+     <b>${F.pctRef === 'pit' ? 'tot die dag' : 'volledig'}</b>. Bij een volledige referentie
+     valt ongeveer evenveel van de referentie in elke band, maar niet evenveel van déze
+     namen: een band met weinig namen is een band waar dit model zelden kwam. Elke filter
+     telt behalve de drempel. ${mThin(ok.length, 20)}</p></div>`;
+}
 function thresholdCurve(sel) {
   const base = curveBase(sel);
   return THR_GRID.map(t => {
@@ -1134,6 +1186,7 @@ function tabDrempel() {
             {label:'bmo', color:css('--s3'), values:pBmo.map(r=>r.n>=3?r.mean:null)}],
     zero:true, fmtY:v=>v.toFixed(0)+'%', fmtT:pc, height:250,
     tipX:i=>`top ${PCT_GRID[i]}% per model · n=${pAll[i].n} · ${pAll[i].models}`}));
+  html += pctBandBlock(curveBase(null), retOf, 10, 'Rendement per percentielband');
 
   const cols = [
     {h:'drempel', f:r=>`≥ ${n1(r.thr)}`},
@@ -3289,6 +3342,7 @@ function mtDrempel(code) {
     series: [{label: 'bord %', color: css('--s1'), values: prow.map(r => r.mean)}],
     zero: true, fmtY: v => v.toFixed(1) + '%', fmtT: pc, height: 220,
     tipX: i => `top ${prow[i].x}% · ${prow[i].models}`}));
+  html += pctBandBlock(c.resolved, r => r.ret, 20, 'Rendement per percentielband');
   return html;
 }
 
