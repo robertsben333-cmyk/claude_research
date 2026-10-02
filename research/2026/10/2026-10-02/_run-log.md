@@ -50,3 +50,7 @@
 ## Edge hunt (panel) — 2026-10-02 amc + 2026-10-05 bmo — EMPTY WINDOW
 - Logged at 2026-10-02 17:09 UTC
 - Stage E-P fired 17:07 UTC on main (dd2b274). Own edge_universe.py --window into edge-panel/: 0 of 3 rows (all time-not-supplied, dated 10-05). Thin-day check --include-unknown + session_resolve.py (dry run): 0 killed, 0 confirmed, 3 carried; AEHR is company-announced for 10-05 amc (next window), NCPL 291d and MSS 563d past cadence. Stopped cheaply: 0 searchers, 0 judges, no packs, no edge-scores, no V2. No alpaca_trade.py call of any kind. Note: research/2026/10/2026-10-02/edge-panel/edge-note.md.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-02 18:33 UTC
+- Fired 18:33Z. Plan: ca_universe -> seal baselines before 20:00 UTC close -> provenance -> one unpriced-hunter-ca per name -> edge_score -> note. No orders.
