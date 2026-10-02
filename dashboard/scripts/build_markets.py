@@ -38,6 +38,9 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "dashboard" / "data"
 sys.path.insert(0, str(ROOT / "scripts"))
 import provenance as PROV                                     # noqa: E402
+import score_report as SR                                              # noqa: E402
+# One reference per model, cached: the same brackets score_report.py prints.
+PCT = SR.Percentiles()
 
 # stage -> (directory name, market code, resolver, its default output file)
 STAGES = {
@@ -199,6 +202,11 @@ def collect_run(run, spec, problems):
         # labelled so where neither exists. Never a git call: CI clones shallow.
         row.update(PROV.for_row(rp, spec["stage"] if spec["stage"] != "J" else "JP",
                                 row["submarket"]))
+        # |impact_sum| against the reference names of the SAME model (live runs of every
+        # stage plus the blind re-judges), for the top-X% filter.
+        row["impact_pctile"], row["impact_pctile_all"] = PCT.of(
+            rp, row.get("model"), row.get("impact_sum") if row.get("rankable") is not False
+            else None)
         # Japan only: when the company released, and which entry the resolver used.
         row["release_time_jst"] = rr.get("release_time_jst")
         row["entry_basis"] = rr.get("entry_basis")

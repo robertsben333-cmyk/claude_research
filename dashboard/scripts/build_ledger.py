@@ -42,6 +42,9 @@ import edge_exit as EX                                            # noqa: E402
 from alpaca_trade import Alpaca                                   # noqa: E402
 sys.path.insert(0, str(ROOT / "scripts"))
 import provenance as PROV                                         # noqa: E402
+import score_report as SR                                              # noqa: E402
+# One reference per model, cached: the same brackets score_report.py prints.
+PCT = SR.Percentiles()
 
 DATA = ROOT / "dashboard" / "data"
 ET = timezone(timedelta(hours=-4))
@@ -324,6 +327,10 @@ def load_names(runs, cache):
             attach_strategy_exit(r)
             # Which hunter prompt version and which model made this number.
             r.update(PROV.for_row(ROOT / r["run"], "US"))
+            # |impact_sum| against the reference names of the SAME model, for the
+            # dashboard's top-X% filter: point-in-time and against the whole reference.
+            r["impact_pctile"], r["impact_pctile_all"] = PCT.of(
+                ROOT / r["run"], r.get("model"), r.get("impact_sum"))
             rows.append(r)
 
     # One issuer reporting once is one event. The 09-04 run re-hunted five names

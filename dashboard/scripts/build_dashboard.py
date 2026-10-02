@@ -407,7 +407,7 @@ function ols(pts) {
 const DATES = [...new Set(D.names.map(r => r.run_date))].sort();
 const DEFAULTS = {
   lens: 'research', horizon: 'strategy',
-  thrOn: false, thr: D.conviction_floor ?? 3,
+  thrOn: false, thr: D.conviction_floor ?? 3, thrMode: 'abs', thrPct: 20, pctRef: 'all',
   tradeOn: false, minLong: 200000, minShort: 1000000, reqShort: true,
   session: 'all', sector: 'all', prompt: 'all', model: 'all', noSept: true,
   from: DATES[0] || '', to: DATES[DATES.length-1] || '',
@@ -438,20 +438,42 @@ const modelOf = r => r.model_short || 'onbekend';
    whole page, every market; it is not a version filter, so Versies obeys it too. */
 const isSept = r => r.sept_opus55 === true;
 
-/* One argument only: it is passed straight to Array.filter, which hands it the index
-   as a second argument. Versies is the one tab that ignores the version filter. */
-function passesFilters(r) {
-  if (F.prompt !== 'all' && promptOf(r) !== F.prompt) return false;
-  if (F.model !== 'all' && modelOf(r) !== F.model) return false;
-  return passesFiltersExceptVersion(r);
+/* The threshold has two modes. `abs` is |impact_sum| >= a number, one scale for
+   every name. `pct` is the top X% PER MODEL: the name's |impact_sum| percentile
+   among the reference names sized by the same model (live runs of every stage plus
+   the blind re-judges, September Opus 5.5 out; scripts/score_report.py
+   Percentiles). Opus 5 and Opus 5.5 size on different scales -- p80 is 5.25 for one
+   and 2.8 for the other -- so one number is a different cut on each. `pctRef`
+   picks the reference: `all` is the whole reference as it stands today, `pit` is
+   what existed before the name's own run, which is what score_report printed that
+   day and has no hindsight in its live part. A name with no model, or fewer than
+   20 reference names for its model, has no percentile and drops out in `pct` mode. */
+const pctOf = r => F.pctRef === 'pit' ? r.impact_pctile : r.impact_pctile_all;
+const hasPct = r => pctOf(r) !== null && pctOf(r) !== undefined;
+function passThr(r) {
+  if (!F.thrOn) return true;
+  if (F.thrMode === 'pct') return hasPct(r) && pctOf(r) >= 100 - F.thrPct;
+  return Math.abs(r.impact_sum) >= F.thr;
 }
-function passesFiltersExceptVersion(r) {
+const thrLabel = () => F.thrMode === 'pct'
+  ? `top ${F.thrPct}% per model (${F.pctRef === 'pit' ? 'referentie tot die dag' : 'volledige referentie'})`
+  : `|impact_sum| ≥ ${F.thr}`;
+
+/* One argument only: it is passed straight to Array.filter, which hands it the index
+   as a second argument. Versies is the one tab that ignores the version filter;
+   Drempel sweeps the threshold itself, so it reads every filter but that one. */
+function passesFilters(r) { return passCore(r, false, false); }
+function passesFiltersExceptVersion(r) { return passCore(r, true, false); }
+function passesFiltersExceptThreshold(r) { return passCore(r, false, true); }
+function passCore(r, skipVer, skipThr) {
+  if (!skipVer && F.prompt !== 'all' && promptOf(r) !== F.prompt) return false;
+  if (!skipVer && F.model !== 'all' && modelOf(r) !== F.model) return false;
+  if (!skipThr && !passThr(r)) return false;
   if (F.noSept && isSept(r)) return false;
   if (F.from && r.run_date < F.from) return false;
   if (F.to && r.run_date > F.to) return false;
   if (F.session !== 'all' && r.session !== F.session) return false;
   if (F.sector !== 'all' && (r.sector || 'onbekend') !== F.sector) return false;
-  if (F.thrOn && Math.abs(r.impact_sum) < F.thr) return false;
   if (F.tradeOn) {
     const adv = advOf(r), short = r.impact_sum < 0;
     if (adv === null) return false;
@@ -996,7 +1018,7 @@ function tabScore() {
   draw.push(() => {
     barChart(document.getElementById('c-buckets'), {
       items: buckets.map(b => ({label:b.label, v:b.mean, sub:`n=${b.n}`,
-        color: b.lo >= (F.thrOn ? F.thr : D.conviction_floor) ? css('--s1') : css('--muted'),
+        color: b.lo >= (F.thrOn && F.thrMode === 'abs' ? F.thr : D.conviction_floor) ? css('--s1') : css('--muted'),
         tip:`<b>|impact_sum| ${esc(b.label)}</b><br>n=${b.n}, trefkans ${n1(b.hit)}%<br>
              gemiddeld ${pc(b.mean)}, mediaan ${pc(b.median)}, t=${n2(b.t)}`})),
       fmtY: v=>v.toFixed(0)+'%', fmtT: pc, height:230});
@@ -1017,17 +1039,25 @@ const THR_GRID = [0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,6,7,8,10];
 /* One sweep of the threshold, on a given subset. The filters other than the
    threshold still apply, so this answers "given what I am willing to trade, where
    does the cut belong" rather than a question about a different universe. */
-function thresholdCurve(sel) {
-  const base = ALL.filter(r => {
-    if (F.session !== 'all' && r.session !== F.session) return false;
-    if (F.sector !== 'all' && (r.sector||'onbekend') !== F.sector) return false;
-    if (F.tradeOn) {
-      const adv = advOf(r), short = r.impact_sum < 0;
-      if (adv === null || adv < (short ? F.minShort : F.minLong)) return false;
-      if (short && F.reqShort && r.shortable !== true) return false;
-    }
-    return retOf(r) !== null && retOf(r) !== undefined && (!sel || sel(r));
+/* Every filter but the threshold: period, session, sector, turnover, prompt, model
+   and the September switch. (Until 2026-10-02 this read only session, sector and
+   turnover, so the sweep ignored the period and the version filters.) */
+const curveBase = sel => ALL.filter(r => passesFiltersExceptThreshold(r)
+  && retOf(r) !== null && retOf(r) !== undefined && (!sel || sel(r)));
+/* The same sweep in the other unit: top X% of each model's own reference. */
+const PCT_GRID = [100, 50, 40, 30, 25, 20, 15, 10, 5];
+function pctCurve(sel) {
+  const base = curveBase(sel).filter(hasPct);
+  return PCT_GRID.map(x => {
+    const g = base.filter(r => pctOf(r) >= 100 - x);
+    const days = byDay(g.filter(r => mvOf(r) !== null && mvOf(r) !== undefined));
+    return {x, ...book(g.map(retOf)), rho: pooledRho(days, r=>r.impact_sum, mvOf),
+            names: g.length, days: days.length,
+            models: countBy(g, modelOf).map(([m, n]) => `${m} ${n}`).join(', ')};
   });
+}
+function thresholdCurve(sel) {
+  const base = curveBase(sel);
   return THR_GRID.map(t => {
     const g = base.filter(r => Math.abs(r.impact_sum) >= t);
     const b = book(g.map(retOf));
@@ -1057,7 +1087,7 @@ function tabDrempel() {
     {k:'rendement daar', v:pc(best.mean), cls:sgn(best.mean),
      s:`t=${n2(best.t)}, 95% ${best.ci?n1(best.ci[0])+' … '+n1(best.ci[1]):'–'}`},
     {k:'ρ daar', v:n3(best.rho), s:`${best.days} dagen`},
-    {k:'nu ingesteld', v: F.thrOn ? `≥ ${n1(F.thr)}` : 'uit',
+    {k:'nu ingesteld', v: !F.thrOn ? 'uit' : F.thrMode === 'pct' ? `top ${F.thrPct}%` : `≥ ${n1(F.thr)}`,
      s:'de rest van het dashboard gebruikt deze'}]);
 
   html += `<div class="card"><h3>Rendement tegen drempel</h3>
@@ -1078,6 +1108,32 @@ function tabDrempel() {
     ${chartBlock('c-thr-adv', 230)}
     <small>Als het rendement alleen in de dunne helft met de drempel meeloopt, koopt de
     drempel illiquiditeit en geen informatie.</small></div>`;
+
+  const pAll = pctCurve(null), pAmc = pctCurve(r=>r.session==='amc'),
+        pBmo = pctCurve(r=>r.session==='bmo');
+  html += `<div class="card"><h3>Per modelpercentiel: de top X% van elk model</h3>
+    ${legend([{color:css('--s1'), label:'alles'}, {color:css('--s2'), label:'amc'},
+              {color:css('--s3'), label:'bmo'}])}
+    ${chartBlock('c-pct-ret', 250)}` + table([
+    {h:'top', f:r=>`<b>${r.x === 100 ? 'alle' : r.x + '%'}</b>`}, {h:'n', f:r=>r.n},
+    {h:'dagen', f:r=>r.days}, {h:'raak %', f:r=>n1(r.hit)},
+    {h:'gem. %', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+    {h:'t', f:r=>n2(r.t)}, {h:'ρ', f:r=>n3(r.rho)},
+    {h:'per model', f:r=>`<span class="meta">${esc(r.models)}</span>`}], pAll) +
+    `<small>Elke naam staat op het percentiel van zijn |impact_sum| onder de referentienamen
+     van <b>hetzelfde model</b>: de live runs van elke stage plus de blinde re-judges,
+     september-Opus 5.5 eruit. Opus 5 en Opus 5.5 maten op een andere schaal (p80 is 5,25
+     tegen 2,8), dus één absolute drempel snijdt bij elk model iets anders. Referentie nu:
+     <b>${F.pctRef === 'pit' ? 'tot die dag' : 'volledig'}</b>; wissel in de filterbalk.
+     Een naam zonder model of met minder dan 20 referentienamen heeft geen percentiel en
+     telt hier niet.</small></div>`;
+  draw.push(() => lineChart(document.getElementById('c-pct-ret'), {
+    x: PCT_GRID.map(x => x === 100 ? 'alle' : 'top ' + x + '%'), sub: pAll.map(r => 'n=' + r.n),
+    series:[{label:'alles', color:css('--s1'), values:pAll.map(r=>r.mean ?? null)},
+            {label:'amc', color:css('--s2'), values:pAmc.map(r=>r.n>=3?r.mean:null)},
+            {label:'bmo', color:css('--s3'), values:pBmo.map(r=>r.n>=3?r.mean:null)}],
+    zero:true, fmtY:v=>v.toFixed(0)+'%', fmtT:pc, height:250,
+    tipX:i=>`top ${PCT_GRID[i]}% per model · n=${pAll[i].n} · ${pAll[i].models}`}));
 
   const cols = [
     {h:'drempel', f:r=>`≥ ${n1(r.thr)}`},
@@ -1222,7 +1278,7 @@ function tabTiming() {
   const H = D.horizons, rk = rankRows(), days = byDay(rk);
   const stat = (h, sel) => {
     const g = rk.filter(r => (!sel || sel(r)) && r['mv_'+h] !== null && r['mv_'+h] !== undefined
-                          && Math.abs(r.impact_sum) >= (F.thrOn ? F.thr : 0));
+                          && passThr(r));
     const b = book(g.map(r => r.impact_sum > 0 ? r['mv_'+h] : -r['mv_'+h]));
     const dd = byDay(rk.filter(r => (!sel||sel(r)) && r['mv_'+h] !== null && r['mv_'+h] !== undefined));
     return {...b, rho: pooledRho(dd, r=>r.impact_sum, r=>r['mv_'+h])};
@@ -1230,7 +1286,7 @@ function tabTiming() {
   const hourStat = (h, sel) => {
     const k = 'hr_' + h;
     const g = rk.filter(r => (!sel||sel(r)) && r[k] !== null && r[k] !== undefined
-                          && Math.abs(r.impact_sum) >= (F.thrOn ? F.thr : 0));
+                          && passThr(r));
     return g.length >= 3 ? book(g.map(r => r.impact_sum > 0 ? r[k] : -r[k])) : {n:g.length};
   };
   const rows = H.map(h => ({h, all:stat(h), amc:stat(h, r=>r.session==='amc'),
@@ -1513,8 +1569,15 @@ const SECTORS = [...new Set(ALL.map(r => r.sector || 'onbekend'))].sort();
 const countBy = (rows, f) => { const m = new Map();
   rows.forEach(r => m.set(f(r), (m.get(f(r)) || 0) + 1));
   return [...m.entries()].sort((a, b) => a[0] < b[0] ? -1 : 1); };
-const PROMPTS = countBy(ALL, promptOf), MODELS = countBy(ALL, modelOf);
+/* The counts follow the September switch, so "Opus 5.5 (39)" does not advertise names
+   the page is hiding. A chosen value stays in the list at zero rather than vanish. */
+function optionCounts(rows, f, cur) {
+  const list = countBy(rows.filter(r => !F.noSept || !isSept(r)), f);
+  if (cur !== 'all' && !list.some(([k]) => k === cur)) list.push([cur, 0]);
+  return list;
+}
 const N_SEPT = ALL.filter(isSept).length;
+let PROMPTS = [], MODELS = [];
 function renderControls() {
   const c = document.getElementById('controls');
   const days = ALL.filter(r => inRange(r.run_date)).length;
@@ -1543,11 +1606,22 @@ function renderControls() {
       </div>
     </div>
     <div class="ctlrow">
-      <div class="ctl ${F.thrOn?'':'off'}" title="Alleen namen waarvan |impact_sum| minstens deze waarde is. Aan betekent dat élke tabel en grafiek op de pagina alleen die namen gebruikt.">
+      <div class="ctl ${F.thrOn?'':'off'}" title="Alleen namen boven de drempel. Absoluut: |impact_sum| minstens deze waarde, één schaal voor elk model. Per model: de top X% van de referentienamen van hetzelfde model, live runs plus re-judges. Aan betekent dat élke tabel en grafiek op de pagina alleen die namen gebruikt.">
         <label class="sw"><input type="checkbox" id="f-thron" ${F.thrOn?'checked':''}>
-          <b>drempel</b> |impact_sum| ≥</label>
+          <b>drempel</b></label>
+        <select id="f-thrmode">
+          <option value="abs" ${F.thrMode==='abs'?'selected':''}>|impact_sum| ≥</option>
+          <option value="pct" ${F.thrMode==='pct'?'selected':''}>top % per model</option></select>
+        ${F.thrMode === 'pct' ? `
+        <span class="seg" id="seg-pct">${[25,20,15,10].map(x =>
+          `<button data-v="${x}" aria-pressed="${F.thrPct===x}">${x}%</button>`).join('')}</span>
+        <input type="number" id="f-thrpct" step="1" min="1" max="100" value="${F.thrPct}">
+        <label>% ·</label>
+        <select id="f-pctref" title="Volledig: de hele referentie zoals die nu is. Tot die dag: alleen wat er vóór de run van de naam bestond, wat score_report die dag zelf printte.">
+          <option value="all" ${F.pctRef==='all'?'selected':''}>volledige referentie</option>
+          <option value="pit" ${F.pctRef==='pit'?'selected':''}>referentie tot die dag</option></select>` : `
         <input type="number" id="f-thr" step="0.5" min="0" max="20" value="${F.thr}">
-        <input type="range" id="f-thrr" step="0.5" min="0" max="12" value="${F.thr}">
+        <input type="range" id="f-thrr" step="0.5" min="0" max="12" value="${F.thr}">`}
       </div>
       <div class="ctl ${F.tradeOn?'':'off'}" title="Namen die te dun verhandeld worden of niet te lenen zijn, eruit. De vloer voor shorts ligt hoger, want een short heeft omvang én een borrow nodig.">
         <label class="sw"><input type="checkbox" id="f-tradeon" ${F.tradeOn?'checked':''}>
@@ -1574,6 +1648,8 @@ function renderControls() {
         <select id="f-sector"><option value="all">alle</option>${SECTORS.map(x =>
           `<option value="${esc(x)}" ${x===F.sector?'selected':''}>${esc(x)}</option>`).join('')}
         </select></div>
+      ${(() => { PROMPTS = optionCounts(ALL, promptOf, F.prompt);
+                  MODELS = optionCounts(ALL, modelOf, F.model); return ''; })()}
       <div class="ctl" title="Welke versie van de hunter-prompt en welk model de naam rangschikten. Prompt en model zijn twee assen: kies er één of allebei. Zie het tabblad Versies.">
         <label>prompt</label>
         <select id="f-prompt"><option value="all">alle (${PROMPTS.length})</option>${PROMPTS.map(([x,n]) =>
@@ -1604,6 +1680,15 @@ function renderControls() {
         <dt>periode</dt><dd>Welke runs meedoen. De knoppen nemen de laatste N handelsdagen
           uit de archieven; de twee datumvelden zetten een eigen venster. Elke grafiek
           volgt: dit is ook de x-as.</dd>
+        <dt>drempel, top % per model</dt><dd>Dezelfde drempel in een andere eenheid: de
+          top X% van <b>elk model apart</b>. Elke naam krijgt het percentiel van zijn
+          |impact_sum| onder de referentienamen die door hetzelfde model zijn gemaakt (de live
+          runs van elke stage plus de blinde re-judges, september-Opus 5.5 eruit), dezelfde
+          referentie als de haakjes in <code>score_report.py</code>. Opus 5 en Opus 5.5 maten
+          op een andere schaal: de top 20% begint bij 5,25 voor Opus 5 en bij 2,8 voor Opus
+          5.5. <b>Volledige referentie</b> gebruikt alles wat er nu is; <b>tot die dag</b>
+          alleen wat er vóór de run van de naam bestond. Een naam zonder percentiel valt in
+          deze stand weg.</dd>
         <dt>drempel</dt><dd>De conviction-floor. Alleen namen met |impact_sum| ≥ deze
           waarde tellen mee — in élke tabel en grafiek, niet alleen in het overzicht.
           Uit is de volledige steekproef. De config staat op
@@ -1651,6 +1736,12 @@ function renderControls() {
   on('f-thron','change', e => { F.thrOn = e.target.checked; redraw(); });
   on('f-thr','change', e => { F.thr = +e.target.value; F.thrOn = true; redraw(); });
   on('f-thrr','input', e => { F.thr = +e.target.value; F.thrOn = true; redraw(); });
+  on('f-thrmode','change', e => { F.thrMode = e.target.value; F.thrOn = true; redraw(); });
+  on('f-thrpct','change', e => { F.thrPct = Math.min(100, Math.max(1, +e.target.value || 20));
+                                 F.thrOn = true; redraw(); });
+  on('f-pctref','change', e => { F.pctRef = e.target.value; redraw(); });
+  document.querySelectorAll('#seg-pct button').forEach(b =>
+    b.addEventListener('click', () => { F.thrPct = +b.dataset.v; F.thrOn = true; redraw(); }));
   on('f-tradeon','change', e => { F.tradeOn = e.target.checked; redraw(); });
   on('f-minlong','change', e => { F.minLong = +e.target.value; redraw(); });
   on('f-minshort','change', e => { F.minShort = +e.target.value; redraw(); });
@@ -1691,7 +1782,7 @@ function filterLine() {
   const pend = kept.filter(r => r.pending).length;
   const nDays = new Set(withRet.map(r=>r.run_date)).size;
   const bits = [F.lens === 'trading' ? 'lens handel' : 'lens onderzoek'];
-  bits.push(F.thrOn ? `|impact_sum| ≥ ${F.thr}` : 'geen drempel');
+  bits.push(F.thrOn ? thrLabel() : 'geen drempel');
   if (F.tradeOn) bits.push(`long ≥ ${usdM(F.minLong)}/dag, short ≥ ${usdM(F.minShort)}/dag` +
     (F.reqShort ? ', alleen leenbaar' : ''));
   if (F.capOn) bits.push(`max ${F.capPct}% per naam, bruto ${F.grossPct}%`);
@@ -2624,12 +2715,16 @@ function tabWeging() {
    er geen beweging, dan is de run nog niet opgelost. */
 const MRAW = document.getElementById('markets');
 const M = MRAW ? JSON.parse(MRAW.textContent) : {markets:{}, problems:[]};
-const MS = {val:false, thr:0, prompt:{}, model:{}};
+const MS = {val:false, thr:0, pct:0, prompt:{}, model:{}};
 function mSet(k, v) {
   if (k === 'prompt' || k === 'model') MS[k][MKT] = v;
   /* Eén schakelaar voor de hele pagina: dezelfde als in de filterbalk van de VS. */
   else if (k === 'nosept') F.noSept = !!v;
-  else MS[k] = (k === 'thr' ? +v : v);
+  else if (k === 'pctref') F.pctRef = v;
+  /* Absoluut en per model sluiten elkaar uit: één drempel tegelijk. */
+  else if (k === 'thr') { MS.thr = +v; MS.pct = 0; }
+  else if (k === 'pct') { MS.pct = +v; MS.thr = 0; }
+  else MS[k] = v;
   /* De validatieknop kan een analysetabblad openen of sluiten, dus de rij wordt
      opnieuw gezet en hetzelfde tabblad bij naam teruggezocht. */
   if (MKT !== 'US') {
@@ -2694,10 +2789,11 @@ const mModel = code => MS.model[code] || 'all';
 const mRows = (code, allThr, allVer, allSept) => {
   const d = (M.markets || {})[code] || {names: [], runs: []};
   const val = new Set(d.runs.filter(r => r.validation_only).map(r => r.run));
-  const thr = allThr ? 0 : MS.thr;
+  const thr = allThr ? 0 : MS.thr, top = allThr ? 0 : MS.pct;
   const pr = allVer ? 'all' : mPrompt(code), mo = allVer ? 'all' : mModel(code);
   return d.names.filter(r => (MS.val || !val.has(r.run))
                           && (!thr || Math.abs(r.impact_sum || 0) >= thr)
+                          && (!top || (hasPct(r) && pctOf(r) >= 100 - top))
                           && (pr === 'all' || promptOf(r) === pr)
                           && (mo === 'all' || modelOf(r) === mo)
                           && (allSept || !F.noSept || !isSept(r)));
@@ -2772,8 +2868,15 @@ function mControls(c, want) {
   if (want !== 'val') h += `<span class="seg" role="group" aria-label="conviction-drempel">
       <button aria-pressed="${!MS.thr}" onclick="mSet('thr',0)">alle namen</button>
       <button aria-pressed="${MS.thr === c.floor}" onclick="mSet('thr',${c.floor})">|impact_sum| ≥ ${c.floor}</button>
+      ${[20, 15].map(x => `<button aria-pressed="${MS.pct === x}" onclick="mSet('pct',${x})"
+         title="De top ${x}% van elk model apart, tegen de referentienamen van hetzelfde model (live runs plus re-judges).">top ${x}% per model</button>`).join('')}
     </span>`;
-  const prompts = countBy(c.d.names, promptOf), models = countBy(c.d.names, modelOf);
+  if (want !== 'val' && MS.pct) h += `<span class="ctl"><label>referentie</label>
+      <select onchange="mSet('pctref', this.value)">
+        <option value="all" ${F.pctRef === 'all' ? 'selected' : ''}>volledig</option>
+        <option value="pit" ${F.pctRef === 'pit' ? 'selected' : ''}>tot die dag</option></select></span>`;
+  const prompts = optionCounts(c.d.names, promptOf, mPrompt(c.code)),
+        models = optionCounts(c.d.names, modelOf, mModel(c.code));
   const opt = (list, cur) => `<option value="all" ${cur === 'all' ? 'selected' : ''}>alle (${list.length})</option>` +
     list.map(([k, n]) => `<option value="${esc(k)}" ${cur === k ? 'selected' : ''}>${esc(k)} (${n})</option>`).join('');
   if (want !== 'val' && want !== 'thr-only' && prompts.length) h += `<span class="ctl" title="Welke versie van de hunter-prompt en welk model de naam rangschikten, als twee assen. Zie het tabblad Versies.">
@@ -2953,7 +3056,7 @@ function mtOverzicht(code) {
   html += tiles([
     {k:'jachtdagen', v:c.hunted.length, s:`${c.runs.length} runs in de map`},
     {k:'namen', v:c.ranked.length,
-     s: (MS.thr ? `boven ${MS.thr}` : 'gejaagd en gerangschikt')
+     s: (MS.thr ? `boven ${MS.thr}` : MS.pct ? `top ${MS.pct}% per model` : 'gejaagd en gerangschikt')
         + (c.unranked ? ` · ${c.unranked} ongejaagd` : '')},
     {k:'vondsten', v:c.ranked.reduce((s,r)=>s+(r.n_findings||0),0), s:'over die namen'},
     {k:'opgelost', v:c.st.n, s:'met een gerealiseerde beweging'},
@@ -3154,6 +3257,38 @@ function mtDrempel(code) {
      een familiegewijze correctie doorstond, en hij is daar op dertien dagen gekozen, op de
      schaal van Opus 5. Deze tabel toont of hij hier iets doet; hij is géén uitnodiging om de
      drempel te verzetten op de dagen die hem hebben voortgebracht.</p></div>`;
+
+  /* Dezelfde vraag in de eenheid van elk model zelf: de top X% van zijn eigen
+     referentie. Op een markt waar Opus 5 en Opus 5.5 elkaar afwisselden, is dit de
+     snede die per model hetzelfde betekent. */
+  const withPct = c.resolved.filter(hasPct);
+  const prow = PCT_GRID.map(x => {
+    const g2 = withPct.filter(r => pctOf(r) >= 100 - x);
+    if (!g2.length) return null;
+    const b = book(g2.map(r => r.ret).filter(v => v !== null && v !== undefined));
+    return {x, n: g2.length, hit: b.hit, mean: b.mean, rho: mRho(g2),
+            models: countBy(g2, modelOf).map(([m, n]) => `${m} ${n}`).join(', ')};
+  }).filter(Boolean);
+  const idP = mId();
+  html += `<div class="card"><h3>Per modelpercentiel: de top X% van elk model</h3>
+    ${legend([{color:css('--s1'), label:'gem. bord % per naam'}])}
+    ${prow.length ? chartBlock(idP, 220) : '<div class="empty">geen opgeloste naam met een percentiel</div>'}` +
+    table([{h:'top', f:r=>`<b>${r.x === 100 ? 'alle' : r.x + '%'}</b>`}, {h:'namen', f:r=>r.n},
+      {h:'teken goed %', f:r=>n1(r.hit)},
+      {h:'bord %', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+      {h:'ρ', f:r=>r.rho === null ? `<span class="meta">&lt; ${MMIN}</span>` : n3(r.rho)},
+      {h:'per model', f:r=>`<span class="meta">${esc(r.models)}</span>`}], prow) +
+    `<p class="meta">Het percentiel van |impact_sum| onder de referentienamen van <b>hetzelfde
+     model</b>, over alle stages gepoold plus de blinde re-judges (september-Opus 5.5 eruit);
+     referentie nu: <b>${F.pctRef === 'pit' ? 'tot die dag' : 'volledig'}</b>.
+     ${c.resolved.length - withPct.length ? `${c.resolved.length - withPct.length} opgeloste
+     namen hebben geen percentiel (geen model vastgelegd, of minder dan 20 referentienamen)
+     en tellen hier niet.` : ''}</p></div>`;
+  if (prow.length) draw.push(() => lineChart(document.getElementById(idP), {
+    x: prow.map(r => r.x === 100 ? 'alle' : 'top ' + r.x + '%'), sub: prow.map(r => 'n=' + r.n),
+    series: [{label: 'bord %', color: css('--s1'), values: prow.map(r => r.mean)}],
+    zero: true, fmtY: v => v.toFixed(1) + '%', fmtT: pc, height: 220,
+    tipX: i => `top ${prow[i].x}% · ${prow[i].models}`}));
   return html;
 }
 
@@ -3943,13 +4078,20 @@ const bar = document.getElementById('marketbar');
 const nav = document.getElementById('tabs'), panels = document.getElementById('panels');
 
 /* Eén regel per markt met wat erachter zit, zodat de keuze niet blind is. */
+/* De tellingen volgen de septemberschakelaar, anders adverteert de balk namen die
+   de pagina verbergt. */
+const keepSept = r => !F.noSept || !isSept(r);
 const mCount = code => {
-  if (code === 'US') return `${D.runs.length} runs · ${ALL.length} namen · handel`;
+  if (code === 'US') return `${D.runs.length} runs · ${ALL.filter(keepSept).length} namen · handel`;
   const d = (M.markets || {})[code];
   if (!d) return 'geen data';
-  return d.n_runs ? `${d.n_runs} runs · ${d.n_names} namen · ${d.n_resolved} opgelost`
+  const names = d.names.filter(keepSept);
+  return d.n_runs ? `${d.n_runs} runs · ${names.length} namen · ` +
+                    `${names.filter(r => r.realised_move_pct !== null && r.realised_move_pct !== undefined).length} opgelost`
                   : 'nog geen run';
 };
+const paintBar = () => [...bar.children].forEach((b, i) => {
+  const mc = b.querySelector('.mc'); if (mc) mc.textContent = mCount(MARKETS[i][0]); });
 MARKETS.forEach(([code, label]) => {
   const b = document.createElement('button');
   b.innerHTML = `<span class="mk">${esc(label)}</span>` +
@@ -4048,6 +4190,7 @@ function readHash() {
 addEventListener('hashchange', () => { if (!readHash()) refresh(); });
 buildTabs();
 function refresh() {
+  paintBar();
   navBtns.forEach((b,j) => {
     b.setAttribute('aria-selected', j===active ? 'true':'false');
     b.tabIndex = j === active ? 0 : -1;
