@@ -1,0 +1,106 @@
+{
+  "ticker": "GCTK",
+  "drop_date": "2026-10-02",
+  "window": {"from": "close of 2026-10-02", "to": "close of 2026-10-05"},
+  "expected_move_pct": -1.76,
+  "conviction_note": "No news and no filing behind today's fall; it is the third leg of a 60% 20-day slide in a ~2.3m-share float sitting under $11.6m of convertible notes that convert at 80% of the lowest 15-day VWAP and a 43.4m-share resale S-1. Spot $1.17 is 17% above the $1.00 closing bid that the Nasdaq Panel says must hold through 2026-11-09. A 6-month no-issuance covenant from the 09-25 registered direct rules out a fresh offering tonight. abs_move 11 (own median abs next-day 8.09%, ATR 28.7%), p_up 42, so the scaled number is -1.76 against an impact_sum of -3.0. The two agree in sign; the scaled number is smaller because no single finding decides the session.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -3.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "own comparable falls (n=52, median next close -1.88%, up 40.4%, median abs 8.09%) and the cross-section prior (+0.34%), from the sealed baseline research/2026/10/2026-10-02/reversal/baselines/GCTK.json. No option chain. No sourced external bar.",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 15,
+    "confidence_pct": 35,
+    "what_happened": "No 8-K or news on 2026-10-02 (EDGAR's latest filing is the 09-28 8-K). The stock fell 17% (gap -5%, then -12.7% intraday) on 2.1x volume, continuing a slide from about $3 after the 1-for-15 split. Behind it sits a dilution overhang: the September convertible notes, the 09-25 registered direct at $2.04 whose buyers are now underwater, and a pending 43.4m-share resale S-1 against 798k shares outstanding.",
+    "evidence": [
+      {"claim": "No filing since the 2026-09-28 8-K (accepted 21:29 UTC)", "url": "https://data.sec.gov/submissions/CIK0001506983.json", "timestamp": "2026-10-02"},
+      {"claim": "September notes: $11.6m principal; conversion at the lower of $3.12 and 80% of the lowest daily VWAP in the prior 15 trading days; floor at 20% of the Nasdaq Minimum Price", "url": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226042428/form8-k.htm", "timestamp": "2026-09-11"},
+      {"claim": "Resale S-1 registers 43,447,017 shares (18.7m from note conversions, 12.1m from September warrants, 8.35m ELOC) against 798,390 shares outstanding", "url": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226043195/forms-1.htm", "timestamp": "2026-09-18"},
+      {"claim": "Registered direct: 169,388 shares at $2.04 and 1,350,220 pre-funded warrants, about $3.1m gross, closing 2026-09-25", "url": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226044182/form8-k.htm", "timestamp": "2026-09-24"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -40,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Nasdaq Panel condition: maintain a closing bid of at least $1.00 through 2026-11-09 (S-1, 2026-09-18). The resale S-1 effectiveness deadline is about 2026-10-25 (45 days after the 09-10 closing).",
+    "what_would_change_my_mind": "A company 8-K before Monday's open showing note conversions settled or holders standstilled, or a non-dilutive contract or financing, would remove the supply leg. A close under $1.00 on Monday or a CORRESP acceleration request on the S-1 would deepen it."
+  },
+  "positioning_check": "Nasdaq/FINRA short interest at the 2026-09-15 settlement was 96,610 shares, 1.0 days to cover, up 287% from 24,951 on 08-31. That is about 4-12% of a roughly 0.8-2.3m share float (outstanding 798,390 as of 09-14 plus the registered direct). It lags by about 8 business days, so the position carried into today is not observable. No options market, so no skew. Source: https://api.nasdaq.com/api/quote/GCTK/short-interest?assetclass=stocks. No insider trades in the last 12 months (https://api.nasdaq.com/api/company/GCTK/insider-trades).",
+  "findings": [
+    {
+      "finding": "The September convertible notes ($11.6m principal) convert at 80% of the lowest daily VWAP of the prior 15 trading days. Today's lower VWAP therefore cuts the conversion price for any note converted in the window and raises the share count against a float of about 2.3m. Holders have every reason to keep converting and selling into any bounce on Monday.",
+      "leg": "new_information",
+      "mechanism_in_window": "Conversion is at the holder's option on any trading day. The reset is mechanical off the VWAP printed today, so Monday's session is the first that trades against the lower conversion price.",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -6.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "Since the notes closed on 09-10, the name has fallen more than 12% on 09-11, 09-25, 10-01 and 10-02, and the next close was negative after each (-3.92, -1.10, -17.02). Baseline history.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226042428/form8-k.htm",
+      "source_date": "2026-09-11",
+      "why_not_priced": "The price has taken today's selling, not the next reset. The conversion shares can only reach the market under Rule 144 or the S-1 once it is effective, so how much stock actually hits Monday's tape is unknowable from here. That is why this is sized small. If it were priced, the stock would sit at the 80%-of-VWAP conversion level, not above it.",
+      "independence": "The 43.4m-share resale S-1 (https://www.sec.gov/Archives/edgar/data/1506983/000149315226043195/forms-1.htm) points the same way. The 09-28 8-K (https://www.sec.gov/Archives/edgar/data/1506983/000149315226044657/form8-k.htm) shows the company amending the notes to add an absolute floor price and cash-only true-ups, which is evidence the issuer itself saw the spiral."
+    },
+    {
+      "finding": "The Nasdaq Hearings Panel's continued listing requires a closing bid of at least $1.00 through 2026-11-09. Spot is $1.17, one 15% move away with a 28.7% ATR. A Monday close under $1.00 would put the conditional listing visibly at risk and invite delisting-driven selling.",
+      "leg": "new_information",
+      "mechanism_in_window": "Only a close on 2026-10-05 can breach the condition, and a sub-$1 print is reachable inside one session for this name. A breach is immediately visible on the tape, before any 8-K.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "listing",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "None observed. This is the first time since the 08-28 1-for-15 split that the stock has traded this close to $1.00.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226043195/forms-1.htm",
+      "source_date": "2026-09-18",
+      "why_not_priced": "The condition is public, but at $1.17 it is not yet binding. A print under $1.00 would turn it from a distant condition into an active delisting risk with a second reverse split likely, and that is not in a price that still has a 17% cushion. This is a reflexive risk, so it is sized below the supply finding.",
+      "independence": "The baseline's listing_bid_price block independently flags within_25pct_of_1_dollar: true. There is no second document."
+    },
+    {
+      "finding": "The 2026-09-25 registered direct bars the company from issuing common stock or equivalents, including variable-rate transactions, for six months after closing. A new offering or ATM draw cannot price tonight, which removes the commonest second shoe for a microcap faller.",
+      "leg": "new_information",
+      "mechanism_in_window": "The covenant runs from 2026-09-25 to about 2026-03-25 and so covers the whole window. It removes a negative that other fallers on this day can carry.",
+      "expected_impact_pct": 0.5,
+      "impact_low_pct": 0.0,
+      "impact_high_pct": 1.5,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "n/a",
+      "source": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226044182/form8-k.htm",
+      "source_date": "2026-09-24",
+      "why_not_priced": "The fall may partly price fear of another raise, which the covenant contractually rules out in the window. It is small, because conversions of existing notes and the ELOC are probably excepted and still bring supply.",
+      "independence": "none"
+    }
+  ],
+  "outside_window": [
+    {"finding": "If the resale S-1 (43.4m shares: note conversions, warrants, ELOC) goes effective, noteholders can sell freely against a float of about 2.3m. The 45-day effectiveness deadline is about 2026-10-25. No S-1/A or acceleration request was on EDGAR at 2026-10-02.", "expected_impact_pct": -8.0, "resolves_by": "2026-10-25", "source": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226043195/forms-1.htm"},
+    {"finding": "Conversion of the Lokahi merger Series A preferred (former Lokahi holders receive 90% of fully diluted equity) is pending Nasdaq requirements. It is a further supply overhang with no date.", "expected_impact_pct": -3.0, "resolves_by": "2026-11-09", "source": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226043844/ex99-1.htm"},
+    {"finding": "The Panel's $1.00 closing-bid condition runs to 2026-11-09.", "expected_impact_pct": -2.0, "resolves_by": "2026-11-09", "source": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226043195/forms-1.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions for any filing dated 2026-09-29 to 2026-10-02: none (https://data.sec.gov/submissions/CIK0001506983.json)",
+    "Web search for Glucotrack news in October 2026: no dated item for 2026-10-02",
+    "Repricing leg: no named mechanism (no note, no disclosed buyer, no wrong wire story, no dated finished seller), so no repricing finding was filed",
+    "Insider Form 4s: none in 12 months (Nasdaq insider-trades)",
+    "Option chain: none (baseline no_options_market)",
+    "No price, quote or market summary dated after the screen instant was seen"
+  ],
+  "abs_move_pct": 11.0,
+  "p_up": 42,
+  "rejected_candidates": [
+    {"candidate": "The 2026-09-23 shareholder update says the LT-100 trial will start 'in the near term'", "source": "https://www.sec.gov/Archives/edgar/data/1506983/000149315226043844/ex99-1.htm", "reason": "outside_window", "detail": "It carries no date and nothing places it inside 2026-10-05."},
+    {"candidate": "Zacks-estimated next earnings date of 2026-11-12", "source": "https://api.nasdaq.com/api/analyst/GCTK/earnings-date", "reason": "outside_window", "detail": "It is an estimate only and falls after the window."}
+  ],
+  "baseline_tension": "The findings agree with the name's own history (40% up, median -1.88%) and with its high ATR. Volume is only 2.1x, and the cross-section prior for a 2x, sub-$1m-turnover name is mildly positive (+0.34%). That is why p_up sits at 42 and not lower.",
+  "pre_lessons": {
+    "impact_sum_pct": -3.0,
+    "expected_move_pct": -1.76,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 3,
+    "sizes_pct": [-2.0, -1.5, 0.5]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
