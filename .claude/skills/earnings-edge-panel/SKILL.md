@@ -115,6 +115,11 @@ so the packs hold exactly the names the stage ranks.
 
 Then stage E's standing note sections apply where they fit.
 
+Run stage E's step 6d on this directory before the closing reply
+(`python3 researcher_us/scripts/edge_context.py --run <RUN>/edge-panel || true`), so the
+table's retail and search columns are filled. Context only, as in stage E: the panel
+decides nothing on them.
+
 **The closing chat reply** starts with the verbatim output of
 `python3 scripts/score_report.py --run <RUN>/edge-panel --label "Stage E-P (searcher)"`
 (the searcher's impact_sum, impact_scaled and V2), then the same command on `<RUN>/edge`

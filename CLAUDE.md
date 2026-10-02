@@ -865,6 +865,18 @@ construction, because those hunts were sized under the morning's rule; they dive
 the next run. Prompt versions `us.v9`, `us-sonnet.v2`, `uk.v7` and so on: never pool
 them with the versions before.
 
+**Every US name carries two context labels since 2026-10-02, and nothing acts on them
+(operator's instruction).** `researcher_us/scripts/edge_context.py` writes
+`<RUN>/edge-context.json`: retail tilt ≥ 50 (the dashboard's definition, percentiles
+against the ledger) and a Google search spike under 1.0x, taken on the last COMPLETE
+Trends day because the run's own day is still being counted and reads low. It never
+writes `trends-cache.json`. `score_report.py` prints them as `retail ≥50` and
+`search quiet` for every name whatever its score; stage E runs it as step 6d, AFTER the
+book, so the Google queries cannot cost the entry; stage E-P runs it before its reply.
+`alpaca_trade.py`, `edge_score.py` and `panel_score.py` must not read the file and the
+smoke test checks it. Below the floor the labels do not make the sign usable
+(`research/analyses/below-floor-factors/`).
+
 **The hunters learn from the resolved days through one file, `researcher_us/LESSONS.md`** (since
 2026-09-15). It holds the patterns that repeated across the post-mortems of 09-08 through
 09-14 — a verified fact is not a predicted reaction, name the line a finding lands on,
