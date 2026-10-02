@@ -451,6 +451,24 @@ def _rel(p):
 
 
 # ------------------------------------------------------- what a build reads
+SEPT_OPUS55 = "claude-opus-5-5"
+
+
+def september_opus55(run, model):
+    """An Opus 5.5 hunt from before the shared hunter core: the too-strict prompt.
+
+    Between the alias switch on 2026-09-22 and `config/hunter-core.md`, Opus 5.5 filed a
+    third of what it surfaced and sized near zero; the operator ruled that prompt a
+    mistake, not a habit to measure against (2026-10-01). A run counts as one when its
+    hunter model is Opus 5.5 and its provenance.json carries no `hunter_core` blob. The
+    one definition: `score_report.py` leaves these runs out of its reference set and the
+    dashboard offers to leave them out of every number, both through this function."""
+    if model != SEPT_OPUS55:
+        return False
+    prov = _load(Path(run) / "provenance.json") or {}
+    return not (prov.get("files") or {}).get("hunter_core")
+
+
 def for_row(run, market, submarket=None, reg=None):
     """Flat provenance for one ranked name, for the dashboard. Reads the run's
     provenance.json; without one, infers from the registry by seal time and says so.
@@ -498,6 +516,7 @@ def for_row(run, market, submarket=None, reg=None):
         "model_basis": h.get("model_basis"),
         "orchestrator_model": (doc or {}).get("orchestrator_model"),
         "prov_basis": h.get("basis"),
+        "sept_opus55": september_opus55(run, model),
         "prov_key": ("onbekend" if not ver else f"{ver} · " + (
             SHORT_MODEL.get(model, model) if model else
             f"{h.get('model_alias')} (model niet vastgelegd)" if h.get("model_alias")
