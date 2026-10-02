@@ -1641,6 +1641,13 @@ def main():
     trade_src = open(os.path.join(REPO, "researcher_us", "scripts", "alpaca_trade.py"),
                      encoding="utf-8").read()
     check("alpaca_trade.py does not read V2", "grounded" not in trade_src)
+    # edge_context.py's labels are context for the reader only (operator, 2026-10-02):
+    # nothing that ranks, selects or trades may read them.
+    for name in ("alpaca_trade.py", "edge_score.py", "panel_score.py"):
+        src = open(os.path.join(REPO, "researcher_us", "scripts", name),
+                   encoding="utf-8").read()
+        check(f"{name} does not read the context labels", "edge-context" not in src
+              and "edge_context" not in src)
     scorer = open(os.path.join(REPO, ".claude", "agents", "shadow-scorer.md"),
                   encoding="utf-8").read()
     check("the shadow scorer has no web tools",
