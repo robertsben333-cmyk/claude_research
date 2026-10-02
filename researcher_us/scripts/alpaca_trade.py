@@ -103,6 +103,9 @@ def execution_config(cfg):
     ex = dict(cfg.get("execution") or {})
     bench = dict(ex.get("benchmark") or {})
     if bench.get("min_conviction") is None:
+        if bench.get("key", "impact_sum") != "impact_sum":
+            raise SystemExit(f"execution.benchmark.key is {bench.get('key')!r} but "
+                             "min_conviction is null: the stage E floor is on impact_sum")
         bench["min_conviction"] = float((cfg.get("edge_hunt") or {}).get("conviction_floor", 3.0))
     ex["benchmark"] = bench
     ex["sizing"] = dict(ex.get("sizing") or {})
@@ -352,6 +355,23 @@ def window(days, event_date, session):
 def load_run(run):
     run = Path(run)
     scores = json.loads((run / "edge-scores.json").read_text(encoding="utf-8"))
+    # Since 2026-10-02 the book selects on `impact_scaled` (operator's instruction,
+    # execution.benchmark.key), which edge_score.py writes to its own file. Its three
+    # numbers are copied onto the ranked rows by ticker; rankability still comes from
+    # edge-scores.json. A run without the file leaves the field absent, so select()
+    # refuses every name ("no impact_scaled on the row") rather than falling back.
+    sp = run / "edge-scores-scaled.json"
+    if sp.exists():
+        try:
+            sc = {r["ticker"]: r for r in
+                  json.loads(sp.read_text(encoding="utf-8")).get("ranking", [])}
+            for row in scores.get("ranking", []):
+                x = sc.get(row.get("ticker")) or {}
+                for k in ("impact_scaled", "abs_move_pct", "p_up"):
+                    if k in x:
+                        row[k] = x[k]
+        except Exception:
+            pass
     baselines = {}
     for p in sorted((run / "baselines").glob("*.json")):
         try:
@@ -607,9 +627,10 @@ def build_plan(run, api, ex, equity_override=None):
                                       else None),
             "shorting_enabled": (acct.get("shorting_enabled") if acct else None),
             "names_in_run": scores.get("names"),
-            "note": ("Selection is |impact_sum| >= conviction_floor, sign for side, "
-                     "plus a turnover floor and a shortability check. The rule is 21 "
-                     "trades over 5 independent days; treat it as a lead. This is "
+            "note": (f"Selection is |{bench.get('key', 'impact_sum')}| >= "
+                     f"{bench.get('min_conviction') or 'conviction_floor'}, sign for side, "
+                     "plus a turnover floor and a shortability check. Nothing at this "
+                     "floor has been measured; treat it as a lead. This is "
                      "research, not investment advice."),
             "positions": keep, "rejected": rejected}
 

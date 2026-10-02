@@ -815,6 +815,15 @@ Opus 5-era prompts are kept in `archive/prompts-opus-5/`. **The 3.0 floor was me
 on Opus 5's scale and has not been re-derived**; read the first forward days under the
 new prompt before trusting it either way.
 
+**And the book selects on `impact_scaled`, not `impact_sum`, since 2026-10-02 (operator's
+instruction).** `execution.benchmark.key: impact_scaled`, `min_conviction: 1.76`: p80 of
+|impact_scaled| over the 133 Opus 5.5 reference names, frozen. `alpaca_trade.py` merges
+the field in from `edge-scores-scaled.json` and refuses a name without it, so a run with
+no scaled file buys nothing. On the Opus 5.5 re-judge it ranked +0.148 against +0.087 for
+`impact_sum`, neither significant; nothing at this floor has been measured. `impact_sum`
+stays the ranking key and the 2.8 floor stays its floor; the paragraph below saying
+nothing reading the key picks up `impact_scaled` describes the files, not the book.
+
 **The floor is 2.8 since 2026-10-02 (operator's instruction): Opus 5.5's own top 20%.**
 p80 of |impact_sum| over the 135 Opus 5.5 reference names `score_report.py` uses (128
 blind re-judges, 7 live hunts under the shared core, September Opus 5.5 out); 3.0 was
