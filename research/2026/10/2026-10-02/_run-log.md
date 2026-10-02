@@ -34,3 +34,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-02 01:15 UTC
 - 5 hunted / 5 rankable / 0 above floor 3.0. Ranking: 3321 +0.60, 7611 +0.40, 7965 +0.10, 6279 -0.25, 4394 -1.00. 3 positive / 2 negative. One in-session release (7611, 15:00). Prompt jp.v6. Last resolved lean_vs_free_control_rho 0.80 (09-30, n=5). Note: research/2026/10/2026-10-02/japan/japan-note.md. No orders.
+
+## Stage X — Close AMC — 2026-10-02
+- Logged at 2026-10-02 10:15 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no legs due today, no exits sent, no refusals; account reachable. status: no open positions.
