@@ -22,3 +22,7 @@
 - Logged at 2026-10-01 13:46 UTC
 - 1 hunted / 1 rankable / 0 above floor 3.0. JDW -0.91 (FY27 outlook line after +13.5% rally from July warning; abs 6.5, p_up 43; pre_lessons -0.88). Event confirmed by issuer's 22 Jul RNS.
 - Note: research/2026/10/2026-10-02/europe/europe-note.md. No orders. Published to main (EARNINGS_DATA_BRANCH=main).
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-02 01:05 UTC
+- Fired 01:05Z 2026-10-02 (10:05 JST) on main (4b54850). Plan: jp_universe -> jp_priced_in seal -> provenance stamp -> one unpriced-hunter-jp per name in waves of 5 -> edge_score -> japan-note. No orders.
