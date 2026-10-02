@@ -349,3 +349,41 @@ indicator is er nu, dus als dat kantelt is het te zien.
 **Read.** Niets aan de gepoolde cijfers veranderd. Wat erbij kwam is het vermogen om
 vragen te stellen: periode, drempel, verhandelbaarheid, positiecap, sessie en sector
 leiden nu elk getal op de pagina opnieuw af, en de lopende dag is niet langer onzichtbaar.
+
+## 2026-10-02 — update over 09-18 t/m 10-01, per promptversie
+
+Gebouwd met `--offline`: deze sessie heeft geen broker-sleutels, dus de trades zijn die van
+de CI-build van 10:18 UTC. Er is sinds 09-23 niets gehandeld, dus dat kost niets.
+
+**Gesloten sinds de vorige log (09-17): vijf posities, drie door stage E en twee met de
+hand.** De drie van stage E: +1.43%, −0.73% en −9.32%. De rekening staat op $11,200.86,
++12.0% sinds 09-08, en is vlak sinds 09-23: de laatste drie weken kwam er geen naam
+boven de vloer, en sinds 09-28 weigert de classifier van de Routine bovendien elke
+`alpaca_trade.py`-call (zie de run-logs van 09-28, 09-30 en 10-01).
+
+**Afgewikkeld:** 163 US-namen over 24 runs (was 102 over 11), plus EU 69, JP 17, AU 16
+en CA 1 met een gerealiseerde beweging.
+
+**Gepoold, US, standaardfilters:** ρ = −0.147 tegen −0.106 voor de gratis controle
+(n 157 over 21 dagen). Dit mag niet gelezen worden, want het mengt vijf promptversies
+en twee modellen. Per versie, binnen dagen, op de strategie-exit:
+
+| versie | model | n | dagen | ρ impact_sum (p) | ρ controle (p) | boek ≥ 3.0 |
+|---|---|---|---|---|---|---|
+| us.v4 | Opus 5 | 97 | 11 | +0.105 (0.35) | −0.058 (0.59) | 52 namen, +3.33%, t 1.80 |
+| us.v6 | Opus 5 | 13 | 2 | −0.046 (0.89) | +0.152 (0.63) | 4 namen, −2.20% |
+| us.v6 | Opus 5.5 | 38 | 6 | −0.204 (0.24) | +0.167 (0.35) | 1 naam (UXIN, −22.5%) |
+
+us.v9, de versie waaronder de vloer van 2.8 vanaf vandaag geldt, heeft nog geen enkele
+afgewikkelde naam (NKE van 10-01 staat nog open).
+
+**Buiten de VS, alleen versies met meer dan tien namen:** EU eu.v4 (Opus 5) ρ +0.237
+(p 0.37, n 18), eu.v5 (Opus 5.5) +0.118 (p 0.70, n 14), eu.v6 +0.269 (p 0.36, n 15).
+JP jp.v3 −0.271 (p 0.41, n 13) tegen een controle van +0.723 (p 0.02). AU au.v2 −0.266
+(p 0.26, n 16). jp.v5 en jp.v6 hebben nog niets afgewikkeld.
+
+**Read.** Geen enkele versie op geen enkele markt rangschikt aantoonbaar: elke p ligt
+boven 0.2. Opus 5.5 onder us.v6 staat in de VS op −0.20 en Japan's controle versloeg de
+hunt op de enige versie die genoeg namen heeft. Pas wanneer us.v9 tien dagen heeft, is
+er iets om de vloer van 2.8 op te beoordelen. Tot die tijd is de vloer een keuze over
+schaal, geen bevinding.
