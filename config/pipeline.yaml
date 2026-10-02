@@ -147,7 +147,17 @@ edge_hunt:
   # 16/21 and +6.37% per trade; >= 8 gave 8/9. Best-of-seven-thresholds still clears
   # family-wise correction at p=0.034. Re-derive this from the pooled sample rather
   # than treating 3.0 as settled.
-  conviction_floor: 3.0
+  #
+  # 2.8 SINCE 2026-10-02 (operator's instruction): the top 20% of Opus 5.5's own
+  # |impact_sum|, because 3.0 was measured on Opus 5's scale and the hunters have
+  # served Opus 5.5 since 2026-09-22. Derived once and frozen, not recomputed per day:
+  # p80 over the 135 Opus 5.5 reference names scripts/score_report.py uses (128 blind
+  # re-judges in research/analyses/rejudge-opus55-v2-sizing/, 7 live hunts under the
+  # shared core, September Opus 5.5 hunts out) is 2.80. Opus 5's 3.0 sat at its own
+  # p53. On the re-judge's 119 US names it buys 20 names, 13 right, +2.69% gross
+  # (t 1.32), against 17 names, 12 right, +3.76% (t 1.66) at 3.0: neither clears
+  # t = 2 and the sample is the one every earlier rule was chosen on.
+  conviction_floor: 2.8
 
 # Stage E V2 (PR #9, RobinBaumeister; rebuilt 2026-09-23). Runs BESIDE V1 and never
 # instead of it: V1's impact_sum ranks the day and is the only thing alpaca_trade.py
@@ -751,7 +761,7 @@ execution:
     # +4.87% after a 1.5% cost); over all 38 events it is 53%, a coin flip. That is
     # 5 independent days. Do not raise the exposure below on the strength of it.
     key: impact_sum
-    min_conviction: null         # null inherits edge_hunt.conviction_floor (3.0)
+    min_conviction: null         # null inherits edge_hunt.conviction_floor (2.8 since 2026-10-02)
     require_rankable: true       # an unconfirmed event is not a trade
     # Capacity, which is in neither the scorer nor the budget. Names below this floor
     # are dropped outright rather than sized down.

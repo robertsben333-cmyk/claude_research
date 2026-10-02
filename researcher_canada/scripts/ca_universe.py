@@ -54,6 +54,7 @@ TV_COLUMNS = ["name", "description", "close", "currency", "market_cap_basic",
               "earnings_release_next_time", "exchange", "sector"]
 SESSION_FLAG = {-1: "bmo", 1: "amc", 0: None}
 FX_FALLBACK = 0.71
+BOC = "https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?recent=5"
 
 
 def curl_json(args, timeout=60, post=None):
@@ -77,7 +78,17 @@ def fx_cadusd():
             return round(c[-1], 5), f"{YQ}/v8/finance/chart/CADUSD=X"
         except Exception:
             pass
-    return FX_FALLBACK, f"FALLBACK CONSTANT {FX_FALLBACK} -- yahoo did not answer"
+    # Second source before the constant: the Bank of Canada's published daily USD/CAD
+    # (Valet API, no key). It is a daily average, not a live quote, and says so.
+    try:
+        d = curl_json([BOC], 25)
+        ob = max((o for o in d["observations"] if (o.get("FXUSDCAD") or {}).get("v")),
+                 key=lambda o: o["d"])
+        return (round(1 / float(ob["FXUSDCAD"]["v"]), 5),
+                f"{BOC} (daily average {ob['d']}, yahoo did not answer)")
+    except Exception:
+        pass
+    return FX_FALLBACK, f"FALLBACK CONSTANT {FX_FALLBACK} -- yahoo and the Bank of Canada did not answer"
 
 
 def scan():

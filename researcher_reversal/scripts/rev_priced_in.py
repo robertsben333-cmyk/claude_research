@@ -56,6 +56,7 @@ import statistics
 import sys
 import time
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -201,6 +202,10 @@ def build(ticker, drop_date, meta=None, with_options=True, bars=None,
                else "fits_cadence" if (spike or 0) >= 2
                else "unknown")
 
+    # An --intraday screen seals while the drop day is still trading, so the last bar
+    # is the live partial one and its "close" is the price at the seal, not the close.
+    now_et = datetime.now(ZoneInfo("America/New_York"))
+    live_bar = drop_date == now_et.date().isoformat() and now_et.hour < 16
     doc = {
         "ticker": ticker,
         "company": meta.get("company"),
@@ -210,7 +215,11 @@ def build(ticker, drop_date, meta=None, with_options=True, bars=None,
         "predicted_window": "close of drop_date -> close of the next regular session",
         "as_of_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "spot": round(cur["raw_close"], 4),
-        "spot_basis": "unadjusted close of the drop day, which is the entry price",
+        "spot_basis": (f"live price of the drop day at {now_et:%H:%M %Z}, session still "
+                       "open (intraday seal), which is the entry price"
+                       if live_bar else
+                       "unadjusted close of the drop day, which is the entry price"),
+        "bars_are_final": not live_bar,
         "drop": {
             "ret_d_pct": ret,
             "gap_pct": gap,

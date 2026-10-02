@@ -529,7 +529,7 @@ records that in the run log; it does not work around it.
 `edge-scores-scaled.json`, ranked on **`impact_scaled`** = (2 × `p_up` / 100 − 1) ×
 `abs_move_pct`. Since 2026-10-01 every hunter answers twice (the hunter core, step 3):
 each finding sized on its own, whose sum is **`impact_sum`, the key** (version 2, what
-the 3.0 floor was measured on and the only number the book trades), and separately the
+the conviction floor is measured on and the only number the book trades), and separately the
 whole print as a probability times a size (version 3). The two are kept in two files so
 nothing that reads the key can pick up the other. Never rank, trade or pool on
 `impact_scaled`.

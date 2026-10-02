@@ -815,6 +815,17 @@ Opus 5-era prompts are kept in `archive/prompts-opus-5/`. **The 3.0 floor was me
 on Opus 5's scale and has not been re-derived**; read the first forward days under the
 new prompt before trusting it either way.
 
+**The floor is 2.8 since 2026-10-02 (operator's instruction): Opus 5.5's own top 20%.**
+p80 of |impact_sum| over the 135 Opus 5.5 reference names `score_report.py` uses (128
+blind re-judges, 7 live hunts under the shared core, September Opus 5.5 out); 3.0 was
+Opus 5's p53. Frozen, not recomputed per day. On the re-judge's 119 US names it buys 20
+(13 right, +2.69% gross, t 1.32) against 17 at 3.0 (12, +3.76%, t 1.66): neither clears
+t = 2. It is the first line in `config/pipeline.yaml` that `edge_score.py` reads, so every
+stage that inherits the floor moved with it. **Execution has been blocked since 09-28**:
+in auto mode the broad `Bash` allow rule is dropped and the classifier refuses every
+`alpaca_trade.py` broker call; the fix is a narrow allow rule for that script in
+`.claude/settings.json`, which a session may not write itself.
+
 **Every hunter answers twice since 2026-10-01 (evening), and `impact_sum` is version 2
 again (operator's instruction).** The three-step core of the same morning made the
 findings ADD UP to (2·p_up/100 − 1)·abs_move_pct, so the key became a probability tier
