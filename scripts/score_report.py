@@ -124,11 +124,13 @@ def scaled_of(r):
     return (2 * p / 100 - 1) * m
 
 
-def model_history(run, reg):
+def model_history(run, reg, everything=False):
     """{model: {"impact_sum": sorted |values|, "impact_scaled": sorted |values|}} over
-    the live runs up to this one and the blind evaluations, September Opus 5.5 out."""
+    the live runs up to this one and the blind evaluations, September Opus 5.5 out.
+    `everything` keeps every live run, this one and later ones included: the fixed
+    reference the dashboard's top-X% filter reads beside the point-in-time one."""
     run = Path(run).resolve()
-    day = run.parent.name
+    day = "9999-12-31" if everything else run.parent.name
     hist = {}
     models, tainted = {}, set()
 
@@ -145,7 +147,7 @@ def model_history(run, reg):
         if september_opus55(d, model):
             tainted.add(str(d.relative_to(ROOT)).rstrip("/"))
             continue
-        if d.resolve() == run or d.parent.name > day or not model:
+        if (d.resolve() == run and not everything) or d.parent.name > day or not model:
             continue
         key = load(d / "edge-scores.json")
         if not key or key.get("legacy_rescore"):
@@ -168,7 +170,8 @@ def model_history(run, reg):
         for i in (k.get("id"), k.get("pid")):
             if i:
                 origin[i] = k.get("run")
-    here = str(run.relative_to(ROOT)) if run.is_relative_to(ROOT) else None
+    here = (str(run.relative_to(ROOT)) if run.is_relative_to(ROOT) and not everything
+            else None)
     for pattern, model, numbers in EVALUATIONS:
         for f in sorted(ROOT.glob(pattern)):
             for r in load(f) or []:
@@ -186,15 +189,45 @@ def model_history(run, reg):
     return hist
 
 
+def percentile(value, ref):
+    """Mid-rank percentile of |value| in a sorted list of |values|; None when there is
+    no value or fewer than MIN_HISTORY reference names."""
+    if value is None or len(ref) < MIN_HISTORY:
+        return None
+    x = abs(value)
+    below, upto = bisect_left(ref, x), bisect_right(ref, x)
+    return 100 * (below + 0.5 * (upto - below)) / len(ref)
+
+
 def pct(value, ref):
-    """Mid-rank percentile of |value| in a sorted list of |values|, as a bracket."""
+    """The same percentile as a bracket for the table."""
     if value is None:
         return ""
     if len(ref) < MIN_HISTORY:
         return " (n<20)"
-    x = abs(value)
-    below, upto = bisect_left(ref, x), bisect_right(ref, x)
-    return f" (p{round(100 * (below + 0.5 * (upto - below)) / len(ref))})"
+    return f" (p{round(percentile(value, ref))})"
+
+
+class Percentiles:
+    """|impact_sum| percentile of a name against the reference names sized by the SAME
+    model, for the dashboard: `pit` against what existed before its run (what
+    score_report printed that day), `all` against the whole reference. Cached per run."""
+
+    def __init__(self, reg=None):
+        self.reg = reg or provenance.load_registry()
+        self._pit, self._all = {}, None
+
+    def of(self, run, model, value):
+        if not model or value is None:
+            return None, None
+        key = str(Path(run).resolve())
+        if key not in self._pit:
+            self._pit[key] = model_history(run, self.reg)
+        if self._all is None:
+            self._all = model_history(run, self.reg, everything=True)
+        ref = lambda h: (h.get(model) or {}).get("impact_sum") or []
+        p, a = percentile(value, ref(self._pit[key])), percentile(value, ref(self._all))
+        return (None if p is None else round(p, 1)), (None if a is None else round(a, 1))
 
 
 def main():

@@ -859,7 +859,9 @@ numbers; `rejudge-four-models` for Opus 5, Sonnet 5.5 and Fable 5.1, `impact_sca
 only). **The September Opus 5.5 hunts are excluded from it, and from the dashboard by
 default** (operator's instruction; the dashboard's `zonder sept. Opus 5.5` switch is ON on
 load, every market, and `scripts/provenance.py september_opus55()` is the one definition
-both use — every Australian name to date is one, so Australia opens empty): a
+both use — every Australian name to date is one, so Australia opens empty; the dashboard's
+threshold also has a *top X% per model* mode that reads this same reference through
+`score_report.Percentiles`): a
 live Opus 5.5 run with no `hunter_core` blob in its provenance, and every re-judge row
 that judged such a hunt's evidence. It reads SIZE against that model's habit, not a rank
 or a probability. Stage E-S runs
