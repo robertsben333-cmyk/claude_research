@@ -1,0 +1,88 @@
+{
+  "ticker": "AKAN",
+  "drop_date": "2026-10-02",
+  "window": {"from": "close of 2026-10-02", "to": "close of 2026-10-05"},
+  "expected_move_pct": -1.28,
+  "conviction_note": "Two supply findings, both negative and both still live in the window: a $15M firm-commitment F-1 filed 2026-10-01 that is roughly ten times a ~$1.5M market cap and could price at a discount once it is declared effective, and toxic convertible notes converting at 85% of VWAP with the post-split floor (~$1.14) still below spot. Nothing repricing-side carries a mechanism, so the scaled number is a mild negative lean (p_up 42) on an abs move set by the 15.5% ATR and the name's own 4% median next-day move; the findings sum (-3.5) is larger than the scaled number because the F-1 finding carries a low-probability, large-loss tail.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -3.5,
+  "print_vs_bar_pct": 0.0,
+  "bar": "No consensus or option chain (options.status no_options_market). Sized against the baseline's own comparable falls (n=90, median next close -0.81%, up rate 42.2%, median abs 4.0%) and ATR14 15.5%, from /home/user/claude_research/research/2026/10/2026-10-02/reversal/baselines/AKAN.json",
+  "cause": {
+    "label": "equity_offering",
+    "seller_is_finished_pct": 10,
+    "confidence_pct": 70,
+    "what_happened": "Akanda filed a preliminary F-1 on 2026-10-01 for a ~$15M firm-commitment offering (up to 4,823,151 shares at an assumed $3.11) via Univest, reported on 2026-10-02 by TheFly, a day after a 6-K showing $755k cash at 2026-06-30, going-concern doubt and about five months of runway; the stock fell 14% on 10-01 and another ~12% by 15:04 ET on 10-02, on below-normal volume.",
+    "evidence": [
+      {"claim": "F-1 filed 2026-10-01: firm commitment, Univest Securities, up to 4,823,151 common shares or pre-funded warrants at assumed $3.11, ~$15,000,000 gross, 1.5% underwriting discount, closing date left blank", "url": "https://www.sec.gov/Archives/edgar/data/1888014/000121390026105921/ea0302976-f1_akanda.htm", "timestamp": "2026-10-01"},
+      {"claim": "H1 2026 interim: cash $755,238, net loss $6.25M, substantial doubt about going concern, about five months of cash at current burn", "url": "https://www.sec.gov/Archives/edgar/data/1888014/000121390026105355/ea0306489-6k_akanda.htm", "timestamp": "2026-09-30"},
+      {"claim": "Headline 'Akanda files to sell 4.82M common shares' (TheFly), shares outstanding ~785.64K, market cap ~$1.53M", "url": "https://stockanalysis.com/stocks/akan/", "timestamp": "2026-10-02"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -70,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "F-1 effectiveness and pricing: undated (preliminary prospectus leaves closing date blank); Univest's 2024 deal for this issuer priced and closed overnight (priced 2024-10-02, closing ~2024-10-03) once effective",
+    "what_would_change_my_mind": "An F-1/A or 6-K showing the offering withdrawn or cut far below $15M, or a 6-K disclosing the convertible notes fully converted or repaid, would remove both supply legs."
+  },
+  "positioning_check": "Nasdaq short interest 47,737 shares at the 2026-09-15 settlement (up 25% from 38,204 on 2026-08-31), days to cover 1.0, against ~785.64K shares outstanding (stockanalysis); published ~8 business days after settlement, so the position carried into this fall is not observable. No insider trades in 3 or 12 months (Nasdaq insider API). No option chain, no skew. Source: https://api.nasdaq.com/api/quote/AKAN/short-interest?assetclass=stocks",
+  "findings": [
+    {
+      "finding": "A $15M firm-commitment offering via Univest, filed as a preliminary F-1 on 2026-10-01, is about ten times the ~$1.5M market cap and can price at a discount overnight once the SEC declares it effective, which could happen inside the window.",
+      "leg": "new_information",
+      "mechanism_in_window": "A firm-commitment F-1 with Univest prices and is announced the night it goes effective (this issuer's Oct-2024 Univest deal priced on 2024-10-02 and closed about a day later). The registration was filed 2026-10-01 and the closing date is left blank, so pricing by the 2026-10-05 close is possible but not likely. A fresh F-1 normally needs SEC review or a no-review notice; this issuer's January 2026 F-1 took three amendments to 2026-03-20. That probability is what keeps the size small.",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -25.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-05 if declared effective and priced; otherwise later and outside the window",
+      "reaction_history_on_this_line": "Baseline own falls: 2026-08-17 to 08-19 was a three-day cluster (-16%, -10%, -16%) with next closes of -10.2%, -16.5% and -3.9%. 2026-10-01's -14% was followed by today's -11.8%. Clustered supply has repeatedly carried this name lower for several sessions.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1888014/000121390026105921/ea0302976-f1_akanda.htm",
+      "source_date": "2026-10-01",
+      "why_not_priced": "The two-day fall prices the filing as an overhang, but not the deal terms. At $1.95 a $15M raise needs about 7.7M shares, roughly ten times the shares outstanding, so a priced deal would come at a deep discount to the close plus pre-funded warrants. If the price held that, it would already trade near a discounted offer level and not at a price set by a $0.33M-turnover tape on 0.66x volume.",
+      "independence": "The issuer's own 6-K of 2026-09-30 (cash $755k, going-concern doubt, ~5 months of runway) shows the money is needed now, https://www.sec.gov/Archives/edgar/data/1888014/000121390026105355/ea0306489-6k_akanda.htm; the Univest precedent of 2024-10-02, https://www.sec.gov/Archives/edgar/data/1888014/000121390024084330/ea021643601ex99-1_akanda.htm"
+    },
+    {
+      "finding": "The January 2026 convertible notes (resale of up to 3,752,212 shares registered on a 424B3 of 2026-01-21) convert at the lower of a fixed price, 85% of 5-day VWAP or 85% of the prior close. The floor of $0.254 pre-split is about $1.14 after the April 4.5-for-1 reverse split, still below spot, so note holders can convert and sell into every session of the window.",
+      "leg": "new_information",
+      "mechanism_in_window": "Conversion is daily and at the holder's option, at 85% of the prior close, so it supplies stock on 2026-10-05 as on any session. The resale is already registered (424B3, 2026-01-21), so nothing has to be filed first.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -6.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "The 60-day run-up is -78.2% and the 20-day is -40.9%, with 12 falls of 8% or more since 2026-07-21 and a median next close of -0.81% (up rate 42.2%) over 90 comparable falls, which is consistent with continuous conversion selling. No filing gives the remaining note balance, so this is inference from the terms and the tape.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1888014/000121390026006025/ea0273549-424b3_akanda.htm",
+      "source_date": "2026-01-21",
+      "why_not_priced": "A discount-to-VWAP convertible resets lower with every close, so each session's fall widens the share count the next conversion delivers. The price takes in yesterday's supply, not tomorrow's. If the seller were finished, a disclosed full conversion or repayment would exist, and none is filed.",
+      "independence": "The 6-K of 2026-01-20 gives the same conversion terms and Univest as placement agent: https://www.sec.gov/Archives/edgar/data/1888014/000121390026005399/ea0273313-6k_akanda.htm. The 6-K of 2026-09-30 lists finance expense up to $820k in H1 2026, consistent with notes still outstanding."
+    }
+  ],
+  "outside_window": [
+    {"finding": "Going-concern doubt with about five months of runway from 2026-06-30 cash of $755k means more financing after this offering, likely before year end.", "expected_impact_pct": -5.0, "resolves_by": "2026-12-31", "source": "https://www.sec.gov/Archives/edgar/data/1888014/000121390026105355/ea0306489-6k_akanda.htm"},
+    {"finding": "Convertible notes issued 2026-01-21 mature 12 months later (10% interest, 18% default rate), a repayment or default point.", "expected_impact_pct": -3.0, "resolves_by": "2027-01-21", "source": "https://www.sec.gov/Archives/edgar/data/1888014/000121390026005399/ea0273313-6k_akanda.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "Repricing mechanisms: no note, upgrade, insider buy, index trade or wire correction found. No analyst coverage, Nasdaq insider API shows 0 trades in 12 months. Below-normal volume (0.66x) argues against a spent capitulation seller.",
+    "Positive company news in the window: the latest operating release is 2026-09-04 (fiber cash flow, newsfilecorp/finviz), nothing dated 2026-10-02 to 10-05.",
+    "Nasdaq deficiency notice (stockholders' equity or bid price): not searched to a primary filing for lack of time. Bid price is $1.95, above $1, so no bid-price clock.",
+    "Clinical trials: n=0 (baseline forward block).",
+    "A Yahoo search snippet showing an undated 'Previous close 1.6400' appeared in a search result (sg.finance.yahoo.com/quote/AKAN/). It may postdate the screen instant, so it was excluded and not used in any number."
+  ],
+  "abs_move_pct": 8.0,
+  "p_up": 42,
+  "rejected_candidates": [
+    {"candidate": "Going-concern doubt and $755k cash at 2026-06-30 (6-K 2026-09-30)", "source": "https://www.sec.gov/Archives/edgar/data/1888014/000121390026105355/ea0306489-6k_akanda.htm", "reason": "duplicate", "detail": "Merged into the F-1 finding as why the offering has to happen; the forward refinancing need is in outside_window."},
+    {"candidate": "Board exit from cannabis and termination of the BC property option (6-K 2026-09-25)", "source": "https://www.sec.gov/Archives/edgar/data/1888014/000121390026103621/ea0306755-6k_akanda.htm", "reason": "contradicted_by_document", "detail": "Not contradicted; it has no in-window path. Listed for completeness: it is a 2026-09-24 decision, published, and its write-off (~$3.6M of prior investment) is in the 2026-09-30 interim. No separate in-window event."}
+  ],
+  "baseline_tension": "The findings agree with this name's own history (42% up rate, clustered multi-day falls) and with the deep 60-day drawdown and high ATR, but cut against the low volume (0.66x, where the cross-section base rate is positive) and the cross-section prior of +0.4. That tension is why p_up is 42 and not lower, and why the scaled number (-1.28) is well under the findings sum (-3.5).",
+  "pre_lessons": {
+    "impact_sum_pct": -3.5,
+    "expected_move_pct": -1.28,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 2,
+    "sizes_pct": [-2.0, -1.5]
+  },
+  "lessons_applied": ["researcher_reversal/LESSONS.md not read: time constraint (file due 19:45 UTC). The emitted set equals the pre_lessons draft by construction, not as a measured no-change."],
+  "sources_used": 8
+}
