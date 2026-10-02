@@ -416,10 +416,15 @@ def main():
     if ex.get("enabled"):
         print("        note: execution is ON. Orders go out on `--submit`; the "
               "endpoint gate still requires paper unless overridden.")
-    check("the conviction floor is inherited from stage E",
+    # Since 2026-10-02 the book may select on a key other than impact_sum
+    # (impact_scaled); only impact_sum inherits stage E's floor, any other key must
+    # carry its own, and execution_config() refuses a null floor on another key.
+    _bk = ex["benchmark"].get("key", "impact_sum")
+    check("the conviction floor is stage E's on impact_sum, explicit on any other key",
           ex["benchmark"]["min_conviction"]
-          == float(cfg["edge_hunt"]["conviction_floor"]),
-          str(ex["benchmark"]["min_conviction"]))
+          == float(cfg["edge_hunt"]["conviction_floor"]) if _bk == "impact_sum"
+          else (cfg["execution"]["benchmark"].get("min_conviction") is not None),
+          f"key={_bk} floor={ex['benchmark']['min_conviction']}")
 
     # -- the price the budget is divided by (added 2026-09-10)
     #
@@ -496,12 +501,12 @@ def main():
           str(_fb[0]["price_source"]))
 
     scores = {"ranking_key": "impact_sum", "ranking": [
-        {"ticker": "BIGL", "rankable": True, "impact_sum": 9.0},     # long, liquid
-        {"ticker": "BIGS", "rankable": True, "impact_sum": -6.0},    # short, liquid
-        {"ticker": "TINY", "rankable": True, "impact_sum": 12.0},    # illiquid
+        {"ticker": "BIGL", "rankable": True, _bk: 9.0},     # long, liquid
+        {"ticker": "BIGS", "rankable": True, _bk: -6.0},    # short, liquid
+        {"ticker": "TINY", "rankable": True, _bk: 12.0},    # illiquid
         {"ticker": "WEAK", "rankable": True,                         # under the floor
-         "impact_sum": ex["benchmark"]["min_conviction"] - 0.1},
-        {"ticker": "NOEV", "rankable": False, "impact_sum": 8.0,
+         _bk: ex["benchmark"]["min_conviction"] - 0.1},
+        {"ticker": "NOEV", "rankable": False, _bk: 8.0,
          "not_rankable_because": "event unconfirmed"}]}
     base = {t: {"ticker": t, "event_date": "2026-09-09", "session": s,
                 "as_of_utc": "2026-09-09T14:00:00+00:00",

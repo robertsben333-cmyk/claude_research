@@ -760,8 +760,16 @@ execution:
     # the floor the sign was right on 16 of 21 events, +6.37% per trade (t=2.74,
     # +4.87% after a 1.5% cost); over all 38 events it is 53%, a coin flip. That is
     # 5 independent days. Do not raise the exposure below on the strength of it.
-    key: impact_sum
-    min_conviction: null         # null inherits edge_hunt.conviction_floor (2.8 since 2026-10-02)
+    #
+    # SINCE 2026-10-02 (operator's instruction) THE BOOK SELECTS ON impact_scaled, NOT
+    # impact_sum: (2 * p_up / 100 - 1) * abs_move_pct, read from edge-scores-scaled.json.
+    # Floor 1.76 = p80 of |impact_scaled| over the 133 Opus 5.5 reference names
+    # scripts/score_report.py uses (top 20% of the hunter model's own scale). Frozen.
+    # On the Opus 5.5 re-judge it ranked marginally better than impact_sum (+0.148 vs
+    # +0.087, neither significant); nothing at this floor has been measured.
+    # impact_sum stays the ranking key of edge-scores.json and keeps its own floor.
+    key: impact_scaled
+    min_conviction: 1.76         # its own floor; edge_hunt.conviction_floor is on impact_sum
     require_rankable: true       # an unconfirmed event is not a trade
     # Capacity, which is in neither the scorer nor the budget. Names below this floor
     # are dropped outright rather than sized down.

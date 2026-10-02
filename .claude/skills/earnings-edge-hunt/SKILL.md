@@ -529,10 +529,12 @@ records that in the run log; it does not work around it.
 `edge-scores-scaled.json`, ranked on **`impact_scaled`** = (2 × `p_up` / 100 − 1) ×
 `abs_move_pct`. Since 2026-10-01 every hunter answers twice (the hunter core, step 3):
 each finding sized on its own, whose sum is **`impact_sum`, the key** (version 2, what
-the conviction floor is measured on and the only number the book trades), and separately the
+the conviction floor is measured on and what the file ranks on), and separately the
 whole print as a probability times a size (version 3). The two are kept in two files so
-nothing that reads the key can pick up the other. Never rank, trade or pool on
-`impact_scaled`.
+nothing that reads the key can pick up the other by accident. **Since 2026-10-02 the
+book selects on `impact_scaled`** (operator's instruction): `alpaca_trade.py` merges it
+in from the scaled file and buys |`impact_scaled`| ≥ 1.76, Opus 5.5's own p80, set in
+`execution.benchmark`. Never pool it with `impact_sum`.
 
 After 5b, print the table every reply carries:
 
@@ -560,7 +562,7 @@ Then the names that could not be ranked and why. End with the disclaimer from
 | **session** | `amc` or `bmo`, with the event date — the print is not today for every row |
 | **pre-lessons** | `impact_sum_pre_lessons`: the hunters' sum before they read `LESSONS.md` |
 | **post-lessons** | `impact_sum`, the ranking key: signed, points of spot. **The only score the book trades on** |
-| **scaled** | `impact_scaled` from `edge-scores-scaled.json`: the hunter's second, separate measurement (version 3). Beside the key, never traded |
+| **scaled** | `impact_scaled` from `edge-scores-scaled.json`: the hunter's second, separate measurement (version 3). Beside the key; since 2026-10-02 the book SELECTS on it (`execution.benchmark.key`, floor 1.76) |
 | **V2** | `impact_sum_grounded`, percent of spot, or `uncalibrated` while the shadow ledger is below `edge_v2.min_n` |
 | floor | does `conviction` clear `conviction_floor` |
 | **tradable** | `yes`, `elsewhere`, `no` or `unknown` — see below — with turnover, liquidity (`ok` / `thin`) and, for a short, whether Alpaca lends it |
