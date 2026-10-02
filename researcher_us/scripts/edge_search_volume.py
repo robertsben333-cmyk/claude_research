@@ -93,8 +93,12 @@ def _strip(raw):
     return json.loads(raw.decode("utf8").split("\n", 1)[1])
 
 
-def fetch_series(keyword, start, end, geo="US", tries=4):
-    """Daily interest for [start, end]. Returns (list of (date, value), error)."""
+def fetch_series(keyword, start, end, geo="US", tries=4, partial=False):
+    """Daily interest for [start, end]. Returns (list of (date, value), error).
+
+    `partial=True` returns (date, value, is_partial) instead: Google flags the day that
+    is still being counted, which only matters to a caller asking about TODAY
+    (edge_context.py). The analysis here runs after the fact and never sees one."""
     tf = f"{start} {end}"
     for i in range(tries):
         try:
@@ -112,6 +116,7 @@ def fetch_series(keyword, start, end, geo="US", tries=4):
                   + urllib.parse.quote(json.dumps(w["request"])) + "&token=" + w["token"])
             d = _strip(op.open(u2, timeout=40).read())
             pts = [(p.get("formattedTime") or p.get("formattedAxisTime"), p["value"][0])
+                   + ((bool(p.get("isPartial")),) if partial else ())
                    for p in d["default"]["timelineData"]]
             return pts, None
         except Exception as e:                            # noqa: BLE001

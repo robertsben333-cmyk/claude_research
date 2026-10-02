@@ -13,6 +13,13 @@ by side so nobody has to open a file to see them:
   V2             US only (stages E, E-S and E-P): the grounded score from
                  edge-scores-grounded.json, at its primary horizon. Shown as
                  "not run" when the file is absent, never left out silently.
+  retail, search, vol
+                 US only, since 2026-10-02: CONTEXT, NOT A SCORE. Whether the name has
+                 a retail tilt >= 50, a quiet Google search spike (< 1.0x) and a 20-day
+                 realised volatility >= 58% (frozen), from
+                 researcher_us/scripts/edge_context.py's edge-context.json, for every
+                 name whatever its score. Nothing ranks, selects, sizes or trades on
+                 them (operator's instruction). "not run" when the file is absent.
 
 Each of the two numbers carries a percentile in brackets, e.g. `+3.40 (p87)`: the share
 of reference names sized by the SAME model whose |value| sits below this one's (ties
@@ -86,6 +93,26 @@ def run_model(run, reg):
     if row.get("model"):
         return row["model"]
     return row.get("model_short") if row.get("model_basis") == "not_recorded" else None
+
+
+def context_cells(ctx, ticker):
+    """The two context columns for one name. `ctx` is edge-context.json or None."""
+    if ctx is None:
+        return ["not run", "not run", "not run"]
+    c = next((n for n in ctx.get("names", []) if n.get("ticker") == ticker), None)
+    if c is None:
+        return ["n/a", "n/a", "n/a"]
+    yn = {True: "yes", False: "no", None: "?"}
+    rt = c.get("retail") or {}
+    retail = (f"{yn[rt.get('favourable')]} ({rt['retail_tilt']:.0f})"
+              if rt.get("retail_tilt") is not None else "n/a")
+    se = c.get("search") or {}
+    search = (f"{yn[se.get('favourable')]} ({se['spike']:.2f}x)"
+              if se.get("spike") is not None else f"n/a ({se.get('state', '?')})")
+    vo = c.get("vol") or {}
+    vol = (f"{yn[vo.get('high')]} ({vo['realised_vol_20d']:.0f})"
+           if vo.get("realised_vol_20d") is not None else "n/a")
+    return [retail, search, vol]
 
 
 def impact_of(r):
@@ -248,6 +275,10 @@ def main():
     sc = {r["ticker"]: r for r in (scaled or {}).get("ranking", [])}
     us = a.us or run.name in US_DIRS
     grounded = load(run / "edge-scores-grounded.json") if us else None
+    # stage E-P runs edge_context.py on its own directory; stage E's is the fallback,
+    # since both rank the same day's names
+    ctx = (load(run / "edge-context.json") or load(run.parent / "edge" / "edge-context.json")
+           if us else None)
     gr = {r["ticker"]: r for r in (grounded or {}).get("ranking", [])}
     floor = key.get("conviction_floor", 3.0)
     reg = provenance.load_registry()
@@ -283,7 +314,7 @@ def main():
     head = ["#", "ticker", "impact_sum (key)", "floor", "impact_scaled (v3)",
             "abs_move", "p_up"]
     if us:
-        head.append("V2 grounded")
+        head += ["V2 grounded", "retail ≥50", "search quiet", "vol ≥58"]
     print("| " + " | ".join(head) + " |")
     print("|" + "|".join(" --- " for _ in head) + "|")
     dropped = []
@@ -309,13 +340,19 @@ def main():
                                       if g.get("not_grounded_because") else ""))
             else:
                 cells.append(f(g["impact_sum_grounded"]))
+            cells += context_cells(ctx, r["ticker"])
         print("| " + " | ".join(cells) + " |")
     if not key.get("ranking"):
-        print("| | no names | | | | | |" + (" |" if us else ""))
+        print("| | no names | | | | | |" + (" | | | |" if us else ""))
     for r in dropped:
         print(f"\nNot ranked: {r['ticker']}: {r.get('not_rankable_because')}")
     print("\n`impact_scaled` is the hunter's second, separate measurement, "
           "(2·p_up/100 − 1)·abs_move. It is not the key and is never pooled with it.")
+    if us:
+        print("`retail`, `search` and `vol` are context for the reader, shown for every "
+              "name whatever its score: retail tilt ≥ 50, a Google search spike under "
+              "1.0x on the last complete day, and 20-day realised volatility ≥ 58% "
+              "annualised. Nothing ranks, selects, sizes or trades on them.")
 
 
 if __name__ == "__main__":
