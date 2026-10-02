@@ -58,3 +58,7 @@
 ## Stage CA — Canada researcher — EMPTY DAY
 - Logged at 2026-10-02 18:33 UTC
 - 18:33Z: ca_universe.py: 2510 scanner rows, 6 candidates in the ±window, 0 reconciled to 2026-10-02. market_closed null and scheduled_today 0 = nobody scheduled (normal Canadian weekday outside the peaks), not a closed exchange. Reconciliation all zero; moved_off_target_by_wsh empty; 0 filing_only drops. No baselines sealed, so no short-register snapshot stored today. No hunters spawned. No orders (stage places none).
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-10-02 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen window. Plan: rev_universe --intraday --k 15 for 2026-10-02, seal 15 baselines, one reversal-hunter per name, edge_score, resolve 2026-10-01, note before 16:00 ET. Repo was present in the working directory (no clone).
