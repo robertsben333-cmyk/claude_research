@@ -1,0 +1,104 @@
+{
+  "ticker": "GRML",
+  "drop_date": "2026-10-02",
+  "window": {"from": "close of 2026-10-02", "to": "close of 2026-10-05"},
+  "expected_move_pct": -0.84,
+  "conviction_note": "No news and no new filing today; the fall reads as the continuing unwind of two registered direct offerings priced a week ago at $12 and $13 (about 4.5m shares on ~13.3m outstanding, all now 35-40% underwater and freely tradable), partly offset by a 30-day no-financing covenant that keeps the issuer itself out of the market through the window; p_up 47 on abs 14 gives -0.84, close to the -1.1 sum of findings, both small against an ATR of 40%.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.1,
+  "print_vs_bar_pct": 0.0,
+  "bar": "no option chain (baseline options.status no_options_market); sized against the name's own 71 comparable falls (median next close -0.7%, median abs 7.97%, up rate 45.1%) and atr14 39.8% from the sealed baseline /home/user/claude_research/research/2026/10/2026-10-02/reversal/baselines/GRML.json",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 30,
+    "confidence_pct": 45,
+    "what_happened": "No release or filing on 2026-10-02 (EDGAR full-text shows only a director's Form 144 on 10-01); GRML fell about 14% by 15:04 ET, mostly intraday, on 1.5x volume, its fourth double-digit daily fall in five sessions, trading well below the $12.00 (9-23) and $13.00 (9-28) registered direct offering prices, consistent with offering buyers exiting.",
+    "evidence": [
+      {"claim": "Registered direct, 9-23: 1,765,420 shares plus 1,434,580 pre-funded warrants at $12.00, net ~$38.4m, closing ~9-24", "url": "https://www.sec.gov/Archives/edgar/data/1907223/000121390026102691/ea0306408-8k_greenland.htm", "timestamp": "2026-09-23"},
+      {"claim": "Registered direct, 9-28: 1,320,000 shares at $13.00, no placement agent; 12,027,132 shares outstanding before, 13,347,132 after; 30-day no-financing and 6-month no-variable-rate covenants; 30-day D&O lock-up", "url": "https://www.sec.gov/Archives/edgar/data/1907223/000121390026104114/ea0306753-424b5_green.htm", "timestamp": "2026-09-28"},
+      {"claim": "8-K 9-28: ATM with A.G.P. ($50m capacity, ~$1.39m sold) terminated; offering closes ~9-29", "url": "https://www.sec.gov/Archives/edgar/data/1907223/000121390026104099/ea0306751-8k_greenland.htm", "timestamp": "2026-09-28"},
+      {"claim": "No filings between 2026-09-29 and 2026-10-02 other than a director's Form 144", "url": "https://efts.sec.gov/LATEST/search-index?q=%22Greenland%20Mines%22&ciks=0001907223&startdt=2026-09-29&enddt=2026-10-02", "timestamp": "2026-10-02"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -20,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "end of the 30-day no-financing covenant, about 2026-10-29 (outside the window); no dated company event inside it",
+    "what_would_change_my_mind": "A new 8-K before Monday's open (a financing under a covenant exception, a drill-result release, or a Form 4 buy) would move the sign hard either way."
+  },
+  "positioning_check": "Short interest 508,658 shares at the 2026-09-15 settlement (down 21% from 643,675 on 08-31), 1.0 days to cover, about 4% of the 12.0m shares outstanding before the 9-28 deal (https://api.nasdaq.com/api/quote/GRML/short-interest?assetclass=stocks). That settlement predates both offerings and FINRA publishes ~8 business days late, so the position carried into this fall is not observable. No option chain, so no skew.",
+  "findings": [
+    {
+      "finding": "Two registered direct offerings priced a week ago, 3.2m shares/pre-funded warrants at $12.00 (9-23) and 1.32m shares at $13.00 (9-28), about a third of the 13.3m post-deal share count, are now 35-40% underwater at $7.85 and freely tradable; that seller is not shown to be finished.",
+      "leg": "new_information",
+      "mechanism_in_window": "The shares are registered and already delivered (closings ~9-24 and ~9-29), so any remaining holder can sell into Monday's session; no lock-up binds the investors (the 30-day lock-up covers directors and officers only).",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -6.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "Since the 9-23 deal the stock fell -20.9% (9-23), -19.2% (9-28), -12.5% (9-29), -14.2% (10-01) and today about -13.8%, with next-close moves of +33.1, -12.5, +2.4 and -13.8 (baseline history.events): continuation on two of four, violent bounces on the others.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1907223/000121390026104114/ea0306753-424b5_green.htm",
+      "source_date": "2026-09-28",
+      "why_not_priced": "The price has taken the overhang so far, but how many of the ~4.5m deal shares are still held is not disclosed anywhere; if it were spent, volume would have collapsed and the falls stopped, and instead the stock printed another double-digit fall today on 1.5x normal volume.",
+      "independence": "Baseline run_up_5d_pct -38.8% against run_up_20d_pct +87.1%: the whole post-deal week is a decline from above the deal prices. Same baseline, not independent of the price."
+    },
+    {
+      "finding": "The 9-28 purchase agreement bars the company from any financing for 30 days after the ~9-29 closing and from variable-rate deals for six months, and the A.G.P. ATM was terminated, so no issuer offering or ATM draw can land inside the window.",
+      "leg": "new_information",
+      "mechanism_in_window": "The covenant runs from ~2026-09-29 to ~2026-10-29 and therefore covers the whole window; it removes the commonest second shoe for a serial issuer (six 424B5s since August).",
+      "expected_impact_pct": 0.5,
+      "impact_low_pct": 0.0,
+      "impact_high_pct": 1.5,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "None directly comparable: in every earlier post-deal week (8-24, 8-27, 9-23, 9-28) a further offering followed within days, so this is the first stretch with the issuer contractually out of the market.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1907223/000121390026104099/ea0306751-8k_greenland.htm",
+      "source_date": "2026-09-28",
+      "why_not_priced": "Public since 9-28, so mostly priced; what it adds is that, unlike most fallers with an open ATM, no fresh issuer supply can arrive overnight. A 'subject to certain exceptions' carve-out means it is not absolute, which is why it is small.",
+      "independence": "The 424B5 states the same covenant: https://www.sec.gov/Archives/edgar/data/1907223/000121390026104114/ea0306753-424b5_green.htm"
+    },
+    {
+      "finding": "Director Riad El-Dada filed a Form 144 on 2026-10-01 to sell 3,500 RSU shares (~$31.9k), a token sale.",
+      "leg": "new_information",
+      "mechanism_in_window": "The sale was dated 10-01 and is done; the matching Form 4 may post within the window and could be read as an insider selling into weakness.",
+      "expected_impact_pct": -0.1,
+      "impact_low_pct": -0.5,
+      "impact_high_pct": 0.0,
+      "lands_on": "positioning",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "none found",
+      "source": "https://www.sec.gov/Archives/edgar/data/1907223/000195824426000632/xsl144X01/primary_doc.xml",
+      "source_date": "2026-10-01",
+      "why_not_priced": "Immaterial in size (0.03% of shares); filed because it is a sourced fact inside the window, not because it carries weight.",
+      "independence": "none"
+    }
+  ],
+  "outside_window": [
+    {"finding": "30-day no-financing covenant from the 9-28 SPA expires around 2026-10-29, after which the serial issuer (six 424B5s since 2026-08-24, $100m shelf) can return to the market.", "expected_impact_pct": -3.0, "resolves_by": "2026-10-29", "source": "https://www.sec.gov/Archives/edgar/data/1907223/000121390026104114/ea0306753-424b5_green.htm"},
+    {"finding": "Next 10-Q estimated 2026-11-12 (Zacks cadence prior, not company-announced).", "expected_impact_pct": 0.0, "resolves_by": "2026-11-12", "source": "https://api.nasdaq.com/api/analyst/GRML/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR full-text search scoped to CIK 1907223, 2026-09-29 to 2026-10-02: only the director's Form 144, no 8-K for today (https://efts.sec.gov/LATEST/search-index?q=%22Greenland%20Mines%22&ciks=0001907223&startdt=2026-09-29&enddt=2026-10-02)",
+    "WebSearch for Greenland Mines news October 2026: only paid-promotion articles and older field-season releases, nothing dated today",
+    "Going-concern language: last hit 2025-03-31, before the mining pivot (baseline text_probes)",
+    "Minimum bid price: price $7.85 after the reverse split, no deficiency in reach (baseline listing_bid_price)",
+    "Non-reliance / Item 4.02: no hits (baseline text_probes)",
+    "ClinicalTrials.gov: no studies (baseline trials)",
+    "Option chain: none (baseline options.status no_options_market)",
+    "No price after the 15:04 ET screen instant was seen or used"
+  ],
+  "abs_move_pct": 14.0,
+  "p_up": 47,
+  "rejected_candidates": [],
+  "baseline_tension": "Mixed: under-2x volume favours a bounce by the phase 0 base rate and this name's own post-deal falls have bounced violently twice, while the 40% ATR, the ongoing five-day slide and an unspent offering overhang point to continuation; the lean is slightly negative and both measurements are small against the scale.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.1,
+    "expected_move_pct": -0.84,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 3,
+    "sizes_pct": [-1.5, 0.5, -0.1]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 7
+}

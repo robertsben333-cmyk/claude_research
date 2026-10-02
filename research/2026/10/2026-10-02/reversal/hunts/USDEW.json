@@ -1,0 +1,69 @@
+{
+  "ticker": "USDEW",
+  "drop_date": "2026-10-02",
+  "window": {"from": "close of 2026-10-02", "to": "close of 2026-10-05"},
+  "expected_move_pct": 0.48,
+  "conviction_note": "No cause and no dated catalyst found for a -13% day on 1.02x volume in a $4 warrant (strike $11.50) on an ENA-treasury SPAC that is +180% in 20 days and carries a 27% ATR; the only in-window dated item is the ENA lock-up Waiver Letter, effective 2026-10-05 but public since 2026-09-17, sized near zero and slightly negative, while p_up sits at 52 on the name's own drop history (8 of 13 up) and the sub-2x volume cut, so the two measurements disagree in sign only at noise level.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -0.5,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced: no cause for the fall was found; sizes measured against the name's own 13 comparable falls (median |next close| 11.11%) and 14-day ATR 27.2% from the sealed baseline, every finding capped small",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 0,
+    "confidence_pct": 15,
+    "what_happened": "The public warrant of StablecoinX (USDE, Ethena/ENA treasury company, ex-TLGY SPAC) fell 13.2% to $4.08 by 15:04 ET, 5.3% at the open and 8.3% intraday, on normal volume; no 8-K or other EDGAR filing since 2026-09-17 and no news item was found, so the most likely driver is the underlying common and ENA token, which was not sourced.",
+    "evidence": [
+      {"claim": "No EDGAR filing by the issuer after 2026-09-17 12:02 UTC", "url": "https://data.sec.gov/submissions/CIK0002080215.json", "timestamp": "2026-10-02"},
+      {"claim": "Warrants exercisable at $11.50; company holds ENA tokens; common was $7.61 on 2026-09-08", "url": "https://www.sec.gov/Archives/edgar/data/0002080215/000121390026099731/ea0305435-424b3_stable.htm", "timestamp": "2026-09-14"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -10,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Ethena Waiver Letter releasing lock-up on the company's ENA tokens, effective 2026-10-05 (inside the window); any ENA Funding Sale needs five business days' notice, so none can occur before 2026-10-09",
+    "what_would_change_my_mind": "A filing or release on 2026-10-05 announcing an ENA Funding Sale notice or an equity raise (negative), or evidence the drop was a dated ENA-specific event that has reversed (positive)."
+  },
+  "positioning_check": "Short interest in USDEW 8,064 warrants at the 2026-09-15 settlement (down 35.2% from 12,435 on 08-31), days to cover 1.0, per https://api.nasdaq.com/api/quote/USDEW/short-interest?assetclass=stocks; lags about eight business days so the position into today's fall is not observable; immaterial against ~$0.7m/day turnover. No option chain, so no skew.",
+  "findings": [
+    {
+      "finding": "The Ethena parties' Waiver Letter permanently terminating the lock-up/vesting on StablecoinX's ENA tokens becomes effective on 2026-10-05, the window's session, permitting ENA 'Funding Sales' for working capital after five business days' notice and subject to a Foundation ROFR and consent.",
+      "leg": "new_information",
+      "mechanism_in_window": "The waiver's effective date is 2026-10-05, inside the window; it lands as a status change on that day, though no sale can occur before the five-business-day notice runs out (2026-10-09 at the earliest) and the terms were public on 2026-09-17.",
+      "expected_impact_pct": -0.5,
+      "impact_low_pct": -3.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-05",
+      "reaction_history_on_this_line": "The 8-K was filed 2026-09-17 12:00 UTC; the baseline shows the warrant up 17.5% over the last 5 sessions and +180% over 20 days since then, so the market did not sell the disclosure.",
+      "source": "https://www.sec.gov/Archives/edgar/data/2080215/000121390026100751/ea0305686-8k_stablecoinx.htm",
+      "source_date": "2026-09-17",
+      "why_not_priced": "The terms are priced since 2026-09-17; what is not in the close is whether the company acts on the new freedom (a notice of ENA sales, which would pressure the token the equity and warrant are levered to). Nothing indicates a notice on 2026-10-05, so this is near zero.",
+      "independence": "none"
+    }
+  ],
+  "outside_window": [
+    {"finding": "Resale registration (S-1 effective 2026-09-14, 424B3 2026-09-14 and 2026-09-17) keeps PIPE/sponsor shares freely resalable; ongoing, undated supply on the common the warrant is levered to", "expected_impact_pct": -1.0, "resolves_by": "undated, ongoing beyond 2026-10-05", "source": "https://www.sec.gov/Archives/edgar/data/2080215/000121390026099731/ea0305435-424b3_stable.htm"},
+    {"finding": "First possible ENA Funding Sale under the waiver, after five business days' notice from 2026-10-05", "expected_impact_pct": -1.0, "resolves_by": "2026-10-09 at the earliest", "source": "https://www.sec.gov/Archives/edgar/data/2080215/000121390026100751/ea0305686-8k_stablecoinx.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions for CIK 2080215: no filing after 2026-09-17 (https://data.sec.gov/submissions/CIK0002080215.json)",
+    "News search for StablecoinX / USDE / USDEW: only listing-era and CEO-appointment items, nothing dated 2026-10-01 or 10-02",
+    "ENA token price for 2026-10-02: search returned only undated aggregator pages, no sourced intraday move",
+    "Baseline text probes: no ATM language ever, no minimum-bid-price language, no non-reliance; insider trades 0 in 3 and 12 months",
+    "No price or quote dated after the 15:04 ET screen instant was seen or used"
+  ],
+  "abs_move_pct": 12.0,
+  "p_up": 52,
+  "rejected_candidates": [],
+  "baseline_tension": "Cuts mildly against nothing: volume is ordinary (1.02x, the sub-2x cut that averages +1.46%) and the name's own comparable falls rose 8 of 13 times with median +9.76%, but the 27% ATR and +787% 60-day run-up are the high-volatility profile phase 0 says keeps falling, so the read stays near 50.",
+  "pre_lessons": {
+    "impact_sum_pct": -0.5,
+    "expected_move_pct": 0.48,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-0.5]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 6
+}
