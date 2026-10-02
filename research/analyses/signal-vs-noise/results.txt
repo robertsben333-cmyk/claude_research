@@ -1,0 +1,191 @@
+
+
+######## LIVE, strategy exit: n=141, days=22, book=62
+
+P1 mechanism: hit rate by REALISED |move| (raw, market-adjusted, sector-adjusted)
+  all names
+    low  absmv    0.08..   4.11   hit n= 47   55.3   hit_mkt n= 46   52.2   hit_sec n= 46   54.3
+    mid  absmv    4.26..  10.70   hit n= 47   53.2   hit_mkt n= 46   52.2   hit_sec n= 46   52.2
+    high absmv   10.74..  37.88   hit n= 47   48.9   hit_mkt n= 47   48.9   hit_sec n= 47   48.9
+  book
+    low  absmv    0.28..   4.08   hit n= 20   45.0   hit_mkt n= 19   36.8   hit_sec n= 19   36.8
+    mid  absmv    4.93..  11.70   hit n= 20   65.0   hit_mkt n= 19   63.2   hit_sec n= 19   63.2
+    high absmv   13.39..  33.12   hit n= 22   68.2   hit_mkt n= 22   68.2   hit_sec n= 22   68.2
+  all names, |move| / expected move
+    low  absmv_over_exp    0.01..   0.54   hit n= 44   47.7   hit_mkt n= 44   45.5   hit_sec n= 44   47.7
+    mid  absmv_over_exp    0.57..   1.27   hit n= 44   61.4   hit_mkt n= 43   60.5   hit_sec n= 43   60.5
+    high absmv_over_exp    1.30..  21.90   hit n= 45   46.7   hit_mkt n= 45   46.7   hit_sec n= 45   46.7
+  outside deadband n=109   52.3   inside deadband n= 32   53.1
+
+P2 ex-ante indicators, Spearman with the hit rate (raw | market-adjusted) and with the normalised return, within-day permutation p
+  -- all
+    realised vol 20d                              n=141  hit +0.161 p0.083   hit_mkt +0.091 p0.308   ret/exp +0.161 p0.121
+    daily sd 60d                                  n=141  hit +0.093 p0.313   hit_mkt +0.038 p0.658   ret/exp +0.125 p0.233
+    idiosyncratic daily sd 1y                     n=139  hit +0.097 p0.321   hit_mkt +0.056 p0.524   ret/exp +0.168 p0.120
+    median past earnings reaction                 n=129  hit -0.050 p0.609   hit_mkt -0.082 p0.382   ret/exp -0.028 p0.721
+    option-implied event move                     n= 75  hit +0.069 p0.481   hit_mkt +0.066 p0.521   ret/exp +0.052 p0.610
+    baseline expected move                        n=133  hit -0.098 p0.207   hit_mkt -0.113 p0.142   ret/exp -0.080 p0.291
+    event-to-noise (past reaction / daily sd)     n=129  hit -0.086 p0.399   hit_mkt -0.095 p0.284   ret/exp -0.068 p0.457
+    implied-to-noise                              n= 74  hit +0.052 p0.663   hit_mkt +0.085 p0.559   ret/exp +0.072 p0.623
+    market R^2 (high = more market noise)         n=139  hit -0.060 p0.435   hit_mkt -0.051 p0.486   ret/exp -0.006 p0.942
+    sector R^2                                    n=139  hit -0.098 p0.201   hit_mkt -0.072 p0.382   ret/exp -0.052 p0.514
+    |impact_sum|                                  n=141  hit +0.118 p0.079   hit_mkt +0.110 p0.117   ret/exp +0.180 p0.024
+    |impact_sum| / expected move                  n=133  hit +0.120 p0.109   hit_mkt +0.126 p0.109   ret/exp +0.170 p0.026
+  -- book
+    realised vol 20d                              n= 62  hit +0.285 p0.044   hit_mkt +0.201 p0.084   ret/exp +0.251 p0.065
+    daily sd 60d                                  n= 62  hit +0.221 p0.112   hit_mkt +0.118 p0.263   ret/exp +0.220 p0.100
+    idiosyncratic daily sd 1y                     n= 60  hit +0.249 p0.168   hit_mkt +0.163 p0.229   ret/exp +0.316 p0.065
+    median past earnings reaction                 n= 55  hit +0.082 p0.373   hit_mkt -0.001 p0.996   ret/exp +0.005 p0.952
+    option-implied event move                     n= 25  hit +0.094 p0.557   hit_mkt +0.061 p0.742   ret/exp -0.015 p0.920
+    baseline expected move                        n= 57  hit -0.036 p0.728   hit_mkt -0.071 p0.545   ret/exp -0.107 p0.274
+    event-to-noise (past reaction / daily sd)     n= 55  hit -0.014 p0.892   hit_mkt -0.037 p0.753   ret/exp -0.080 p0.424
+    implied-to-noise                              n= 24  hit -0.120 p0.782   hit_mkt +0.060 p0.625   ret/exp +0.010 p0.925
+    market R^2 (high = more market noise)         n= 60  hit +0.126 p0.269   hit_mkt +0.066 p0.555   ret/exp +0.115 p0.368
+    sector R^2                                    n= 60  hit -0.003 p0.985   hit_mkt -0.054 p0.639   ret/exp -0.014 p0.899
+    |impact_sum|                                  n= 62  hit +0.076 p0.547   hit_mkt +0.137 p0.206   ret/exp +0.145 p0.180
+    |impact_sum| / expected move                  n= 57  hit +0.073 p0.457   hit_mkt +0.130 p0.244   ret/exp +0.154 p0.138
+
+P3 market noise: volatility halves, raw against adjusted hit rate
+  all  vol low  hit n= 70   42.9  hit_mkt n= 70   45.7  hit_sec n= 70   44.3  median |beta*mkt|/|move| 0.06
+  all  vol high hit n= 71   62.0  hit_mkt n= 69   56.5  hit_sec n= 69   59.4  median |beta*mkt|/|move| 0.06
+  book vol low  hit n= 22   50.0  hit_mkt n= 22   54.5  hit_sec n= 22   50.0  median |beta*mkt|/|move| 0.05
+  book vol high hit n= 40   65.0  hit_mkt n= 38   57.9  hit_sec n= 38   60.5  median |beta*mkt|/|move| 0.05
+
+P4 per unit of risk: mean return and return / expected move by volatility half
+  all  vol low  ret n= 70   -0.9%  ret/expected n= 65   -0.4  ret_mkt n= 70   -1.0%
+  all  vol high ret n= 71    0.7%  ret/expected n= 68    0.1  ret_mkt n= 69    0.6%
+  book vol low  ret n= 22    4.2%  ret/expected n= 20    0.4  ret_mkt n= 22    4.0%
+  book vol high ret n= 40    1.9%  ret/expected n= 37    0.1  ret_mkt n= 38    1.8%
+
+P5 conviction against move size
+  rho(|impact_sum|, rv20) +0.251 (n=141)
+  rho(|impact_sum|, expected_move) +0.174 (n=133)
+  rho(|impact_sum|, hist_median_abs) +0.232 (n=129)
+  rho(|impact_sum|, implied_move) +0.319 (n=75)
+  vol low  above floor n= 22   50.0 ret n= 22    4.2   below floor n= 48   39.6 ret n= 48   -3.3   share above floor 22/70
+  vol high above floor n= 40   65.0 ret n= 40    1.9   below floor n= 31   58.1 ret n= 31   -0.8   share above floor 40/71
+
+
+######## LIVE, close: n=140, days=21, book=62
+
+P1 mechanism: hit rate by REALISED |move| (raw, market-adjusted, sector-adjusted)
+  all names
+    low  absmv    0.00..   4.49   hit n= 46   60.9   hit_mkt n= 45   62.2   hit_sec n= 45   57.8
+    mid  absmv    4.52..  10.28   hit n= 46   56.5   hit_mkt n= 45   57.8   hit_sec n= 45   57.8
+    high absmv   10.66..  42.41   hit n= 48   45.8   hit_mkt n= 48   45.8   hit_sec n= 48   45.8
+  book
+    low  absmv    0.04..   4.60   hit n= 20   65.0   hit_mkt n= 19   63.2   hit_sec n= 19   63.2
+    mid  absmv    5.01..  13.16   hit n= 20   70.0   hit_mkt n= 19   73.7   hit_sec n= 19   73.7
+    high absmv   14.04..  42.41   hit n= 22   59.1   hit_mkt n= 22   59.1   hit_sec n= 22   59.1
+  all names, |move| / expected move
+    low  absmv_over_exp    0.00..   0.54   hit n= 44   54.5   hit_mkt n= 44   56.8   hit_sec n= 44   52.3
+    mid  absmv_over_exp    0.55..   1.35   hit n= 44   54.5   hit_mkt n= 43   53.5   hit_sec n= 43   53.5
+    high absmv_over_exp    1.41..  21.58   hit n= 44   54.5   hit_mkt n= 44   54.5   hit_sec n= 44   54.5
+  outside deadband n=105   52.4   inside deadband n= 35   60.0
+
+P2 ex-ante indicators, Spearman with the hit rate (raw | market-adjusted) and with the normalised return, within-day permutation p
+  -- all
+    realised vol 20d                              n=140  hit +0.111 p0.391   hit_mkt +0.076 p0.517   ret/exp +0.094 p0.457
+    daily sd 60d                                  n=140  hit +0.109 p0.382   hit_mkt +0.081 p0.461   ret/exp +0.065 p0.563
+    idiosyncratic daily sd 1y                     n=138  hit +0.118 p0.370   hit_mkt +0.096 p0.367   ret/exp +0.111 p0.363
+    median past earnings reaction                 n=128  hit -0.060 p0.405   hit_mkt -0.055 p0.464   ret/exp -0.098 p0.205
+    option-implied event move                     n= 74  hit -0.013 p0.887   hit_mkt -0.026 p0.797   ret/exp -0.023 p0.808
+    baseline expected move                        n=132  hit -0.112 p0.140   hit_mkt -0.104 p0.178   ret/exp -0.154 p0.040
+    event-to-noise (past reaction / daily sd)     n=128  hit -0.107 p0.208   hit_mkt -0.091 p0.290   ret/exp -0.114 p0.233
+    implied-to-noise                              n= 73  hit -0.069 p0.485   hit_mkt -0.039 p0.714   ret/exp +0.026 p0.806
+    market R^2 (high = more market noise)         n=138  hit -0.017 p0.844   hit_mkt -0.039 p0.627   ret/exp +0.040 p0.616
+    sector R^2                                    n=138  hit -0.095 p0.238   hit_mkt -0.117 p0.139   ret/exp -0.104 p0.222
+    |impact_sum|                                  n=140  hit +0.169 p0.057   hit_mkt +0.166 p0.059   ret/exp +0.137 p0.105
+    |impact_sum| / expected move                  n=132  hit +0.184 p0.031   hit_mkt +0.177 p0.041   ret/exp +0.203 p0.016
+  -- book
+    realised vol 20d                              n= 62  hit +0.202 p0.110   hit_mkt +0.164 p0.200   ret/exp +0.197 p0.153
+    daily sd 60d                                  n= 62  hit +0.234 p0.058   hit_mkt +0.173 p0.137   ret/exp +0.196 p0.113
+    idiosyncratic daily sd 1y                     n= 60  hit +0.257 p0.134   hit_mkt +0.217 p0.129   ret/exp +0.287 p0.104
+    median past earnings reaction                 n= 55  hit +0.114 p0.615   hit_mkt +0.073 p0.551   ret/exp -0.050 p0.533
+    option-implied event move                     n= 25  hit +0.085 p0.579   hit_mkt +0.051 p0.784   ret/exp -0.123 p0.459
+    baseline expected move                        n= 57  hit -0.010 p0.952   hit_mkt -0.010 p0.934   ret/exp -0.163 p0.087
+    event-to-noise (past reaction / daily sd)     n= 55  hit +0.019 p0.911   hit_mkt +0.002 p0.991   ret/exp -0.115 p0.218
+    implied-to-noise                              n= 24  hit -0.118 p0.986   hit_mkt +0.068 p0.673   ret/exp -0.063 p0.743
+    market R^2 (high = more market noise)         n= 60  hit +0.193 p0.169   hit_mkt +0.146 p0.291   ret/exp +0.208 p0.138
+    sector R^2                                    n= 60  hit +0.007 p0.952   hit_mkt -0.027 p0.795   ret/exp +0.008 p0.947
+    |impact_sum|                                  n= 62  hit +0.032 p0.808   hit_mkt +0.049 p0.687   ret/exp -0.025 p0.808
+    |impact_sum| / expected move                  n= 57  hit +0.002 p0.992   hit_mkt +0.023 p0.821   ret/exp +0.103 p0.293
+
+P3 market noise: volatility halves, raw against adjusted hit rate
+  all  vol low  hit n= 70   45.7  hit_mkt n= 70   50.0  hit_sec n= 70   45.7  median |beta*mkt|/|move| 0.07
+  all  vol high hit n= 70   62.9  hit_mkt n= 68   60.3  hit_sec n= 68   61.8  median |beta*mkt|/|move| 0.08
+  book vol low  hit n= 23   52.2  hit_mkt n= 23   56.5  hit_sec n= 23   56.5  median |beta*mkt|/|move| 0.07
+  book vol high hit n= 39   71.8  hit_mkt n= 37   70.3  hit_sec n= 37   70.3  median |beta*mkt|/|move| 0.12
+
+P4 per unit of risk: mean return and return / expected move by volatility half
+  all  vol low  ret n= 70   -0.5%  ret/expected n= 65   -0.3  ret_mkt n= 70   -0.6%
+  all  vol high ret n= 70    0.9%  ret/expected n= 67    0.2  ret_mkt n= 68    0.9%
+  book vol low  ret n= 23    2.4%  ret/expected n= 21    0.2  ret_mkt n= 23    2.2%
+  book vol high ret n= 39    2.7%  ret/expected n= 36    0.3  ret_mkt n= 37    2.8%
+
+P5 conviction against move size
+  rho(|impact_sum|, rv20) +0.240 (n=140)
+  rho(|impact_sum|, expected_move) +0.176 (n=132)
+  rho(|impact_sum|, hist_median_abs) +0.233 (n=128)
+  rho(|impact_sum|, implied_move) +0.315 (n=74)
+  vol low  above floor n= 23   52.2 ret n= 23    2.4   below floor n= 47   42.6 ret n= 47   -2.0   share above floor 23/70
+  vol high above floor n= 39   71.8 ret n= 39    2.7   below floor n= 31   51.6 ret n= 31   -1.4   share above floor 39/70
+
+
+######## CORPUS, close to close (31 contaminated left out): n=52, days=7, book=21
+
+P1 mechanism: hit rate by REALISED |move| (raw, market-adjusted, sector-adjusted)
+  all names
+    low  absmv    0.24..   3.70   hit n= 17   52.9   hit_mkt n= 16   50.0   hit_sec    n=0
+    mid  absmv    3.74..   9.32   hit n= 17   58.8   hit_mkt n= 17   58.8   hit_sec    n=0
+    high absmv   10.98..  74.95   hit n= 18   50.0   hit_mkt n= 18   50.0   hit_sec    n=0
+  book
+    low  absmv    0.58..   4.50   hit n=  7   71.4   hit_mkt n=  6   66.7   hit_sec    n=0
+    mid  absmv    5.01..  16.02   hit n=  7   57.1   hit_mkt n=  7   57.1   hit_sec    n=0
+    high absmv   16.63..  44.66   hit n=  7   57.1   hit_mkt n=  7   57.1   hit_sec    n=0
+  all names, |move| / expected move
+    low  absmv_over_exp    0.02..   0.46   hit n= 17   58.8   hit_mkt n= 16   56.2   hit_sec    n=0
+    mid  absmv_over_exp    0.48..   1.34   hit n= 17   47.1   hit_mkt n= 17   47.1   hit_sec    n=0
+    high absmv_over_exp    1.39..   7.85   hit n= 17   52.9   hit_mkt n= 17   52.9   hit_sec    n=0
+  outside deadband n= 33   51.5   inside deadband n= 19   57.9
+
+P2 ex-ante indicators, Spearman with the hit rate (raw | market-adjusted) and with the normalised return, within-day permutation p
+  -- all
+    realised vol 20d                              n= 52  hit +0.184 p0.166   hit_mkt +0.171 p0.198   ret/exp +0.196 p0.172
+    daily sd 60d                                  n= 52  hit +0.064 p0.644   hit_mkt +0.144 p0.316   ret/exp +0.129 p0.375
+    idiosyncratic daily sd 1y                     n= 51  hit +0.133 p0.366   hit_mkt +0.192 p0.167   ret/exp +0.212 p0.167
+    median past earnings reaction                 n= 51  hit -0.119 p0.387   hit_mkt -0.068 p0.614   ret/exp -0.080 p0.586
+    baseline expected move                        n= 51  hit -0.119 p0.393   hit_mkt -0.068 p0.597   ret/exp -0.080 p0.574
+    event-to-noise (past reaction / daily sd)     n= 51  hit -0.099 p0.481   hit_mkt -0.111 p0.430   ret/exp -0.138 p0.300
+    market R^2 (high = more market noise)         n= 51  hit -0.195 p0.115   hit_mkt -0.168 p0.177   ret/exp -0.129 p0.276
+    |impact_sum|                                  n= 52  hit +0.099 p0.442   hit_mkt +0.100 p0.511   ret/exp +0.068 p0.648
+    |impact_sum| / expected move                  n= 51  hit +0.155 p0.238   hit_mkt +0.111 p0.435   ret/exp +0.134 p0.251
+  -- book
+    realised vol 20d                              n= 21  hit +0.405 p0.070   hit_mkt +0.372 p0.103   ret/exp +0.418 p0.081
+    daily sd 60d                                  n= 21  hit +0.146 p0.576   hit_mkt +0.142 p0.612   ret/exp +0.170 p0.527
+    idiosyncratic daily sd 1y                     n= 20  hit +0.301 p0.245   hit_mkt +0.301 p0.216   ret/exp +0.298 p0.222
+    median past earnings reaction                 n= 20  hit -0.159 p0.471   hit_mkt -0.117 p0.642   ret/exp -0.147 p0.470
+    baseline expected move                        n= 20  hit -0.159 p0.482   hit_mkt -0.117 p0.629   ret/exp -0.147 p0.452
+    event-to-noise (past reaction / daily sd)     n= 20  hit -0.106 p0.626   hit_mkt -0.058 p0.799   ret/exp -0.152 p0.457
+    market R^2 (high = more market noise)         n= 20  hit +0.088 p0.782   hit_mkt +0.088 p0.783   ret/exp -0.070 p0.769
+    |impact_sum|                                  n= 21  hit +0.480 p0.040   hit_mkt +0.462 p0.067   ret/exp +0.301 p0.226
+    |impact_sum| / expected move                  n= 20  hit +0.301 p0.131   hit_mkt +0.253 p0.217   ret/exp +0.224 p0.253
+
+P3 market noise: volatility halves, raw against adjusted hit rate
+  all  vol low  hit n= 26   46.2  hit_mkt n= 26   46.2  hit_sec    n=0  median |beta*mkt|/|move| 0.05
+  all  vol high hit n= 26   61.5  hit_mkt n= 25   60.0  hit_sec    n=0  median |beta*mkt|/|move| 0.07
+  book vol low  hit n=  7   42.9  hit_mkt n=  7   42.9  hit_sec    n=0  median |beta*mkt|/|move| 0.03
+  book vol high hit n= 14   71.4  hit_mkt n= 13   69.2  hit_sec    n=0  median |beta*mkt|/|move| 0.09
+
+P4 per unit of risk: mean return and return / expected move by volatility half
+  all  vol low  ret n= 26   -3.8%  ret/expected n= 26   -0.3  ret_mkt n= 26   -3.9%
+  all  vol high ret n= 26    5.0%  ret/expected n= 25    0.6  ret_mkt n= 25    5.2%
+  book vol low  ret n=  7   -5.1%  ret/expected n=  7   -0.6  ret_mkt n=  7   -5.2%
+  book vol high ret n= 14    4.1%  ret/expected n= 13    0.8  ret_mkt n= 13    4.5%
+
+P5 conviction against move size
+  rho(|impact_sum|, rv20) +0.279 (n=52)
+  rho(|impact_sum|, expected_move) -0.004 (n=51)
+  rho(|impact_sum|, hist_median_abs) -0.004 (n=51)
+  vol low  above floor n=  7   42.9 ret n=  7   -5.1   below floor n= 19   47.4 ret n= 19   -3.3   share above floor 7/26
+  vol high above floor n= 14   71.4 ret n= 14    4.1   below floor n= 12   50.0 ret n= 12    6.0   share above floor 14/26
