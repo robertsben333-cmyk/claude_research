@@ -62,3 +62,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-10-02 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen window. Plan: rev_universe --intraday --k 15 for 2026-10-02, seal 15 baselines, one reversal-hunter per name, edge_score, resolve 2026-10-01, note before 16:00 ET. Repo was present in the working directory (no clone).
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-02 19:12 UTC
+- Screened intraday at 15:04 EDT (--intraday), drop date 2026-10-02, window to close 2026-10-05. 50 passed floors, 15 hunted, 15 rankable, none shed. Health Care 8/15 (53%): one-bet warning. Floor (2.8) clearers, all negative, all leg-2 supply, no leg-1 finding: JAGX -6.00, AKAN -3.50, GCTK -3.00, WHLR -3.00. Zero repricing findings in 15 hunts. Provenance rev.v7 / claude-opus-5-5. Resolved 2026-09-30 at d1: impact_sum rho +0.160 (p 0.57) vs neg_atr14 +0.271 and lean +0.349; lean_vs_free_control_rho 0.004; hunt did not beat the free control. 2026-10-01 pending (window closes today). DEFECTS: (1) rev_universe admitted USDEW, a warrant (StablecoinX warrants), while rejecting other W-suffix tickers — outside phase 0's population; constant not changed. (2) 8 hunters set pipeline.overshoot_has_mechanism=true with overshoot_pct 0 and no repricing finding (HOST NBTX GLND FHTX TRDA USDEW SWMR GCTK), so rev_resolve's by_overshoot_mechanism split will mis-bucket them. (3) Session subagent concurrency cap is 8, so hunts ran in two waves; all finished by 19:11 UTC. No orders, no constants moved.
