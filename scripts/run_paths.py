@@ -56,8 +56,10 @@ def main():
     pp = paths_for(d)
 
     if not args.no_create:
-        for key in ("run_dir", "dossier_dir", "panel_dir"):
-            os.makedirs(pp[key], exist_ok=True)
+        # Only the day directory. 02-dossiers/ and 03-panel/ belong to stages 2 and 3,
+        # retired 2026-09-18; their keys stay so old readers resolve, but nothing may
+        # recreate the folders (CLAUDE.md, "Do not write them again").
+        os.makedirs(pp["run_dir"], exist_ok=True)
 
     if args.json:
         print(json.dumps(pp, indent=2))

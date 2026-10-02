@@ -400,8 +400,8 @@ def main():
     sys.path.insert(0, os.path.join(REPO, "researcher_us", "scripts"))
     import alpaca_trade as at                                     # noqa: E402
 
-    ex = at.execution_config(yaml.safe_load(
-        open(os.path.join(REPO, "config/pipeline.yaml"), encoding="utf-8")))
+    cfg = yaml.safe_load(open(os.path.join(REPO, "config/pipeline.yaml"), encoding="utf-8"))
+    ex = at.execution_config(cfg)
     # This asserted `enabled is False` until 2026-09-10, when the operator turned
     # the switch on deliberately for the paper account and the check started failing
     # on every run. A permanently red check is worse than no check: it trains the
@@ -417,7 +417,8 @@ def main():
         print("        note: execution is ON. Orders go out on `--submit`; the "
               "endpoint gate still requires paper unless overridden.")
     check("the conviction floor is inherited from stage E",
-          ex["benchmark"]["min_conviction"] == 3.0,
+          ex["benchmark"]["min_conviction"]
+          == float(cfg["edge_hunt"]["conviction_floor"]),
           str(ex["benchmark"]["min_conviction"]))
 
     # -- the price the budget is divided by (added 2026-09-10)
@@ -498,7 +499,8 @@ def main():
         {"ticker": "BIGL", "rankable": True, "impact_sum": 9.0},     # long, liquid
         {"ticker": "BIGS", "rankable": True, "impact_sum": -6.0},    # short, liquid
         {"ticker": "TINY", "rankable": True, "impact_sum": 12.0},    # illiquid
-        {"ticker": "WEAK", "rankable": True, "impact_sum": 2.9},     # under the floor
+        {"ticker": "WEAK", "rankable": True,                         # under the floor
+         "impact_sum": ex["benchmark"]["min_conviction"] - 0.1},
         {"ticker": "NOEV", "rankable": False, "impact_sum": 8.0,
          "not_rankable_because": "event unconfirmed"}]}
     base = {t: {"ticker": t, "event_date": "2026-09-09", "session": s,

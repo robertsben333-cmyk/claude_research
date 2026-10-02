@@ -120,7 +120,7 @@ python3 scripts/score_report.py --run <RUN> --label "Stage J"
 ```
 
 and paste its output verbatim at the top of your closing chat reply. Never rank on,
-pool or quote `impact_scaled` as the key, and do not apply the 3.0 floor to it.
+pool or quote `impact_scaled` as the key, and do not apply the conviction floor to it.
 
 **5. Note.** Write `<RUN>/japan-note.md`, answer first: the ranked table, then the
 finding and URL driving the top and bottom name, then the names that could not be
