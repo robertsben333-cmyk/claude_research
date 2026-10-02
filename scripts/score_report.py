@@ -13,8 +13,10 @@ by side so nobody has to open a file to see them:
   V2             US only (stages E, E-S and E-P): the grounded score from
                  edge-scores-grounded.json, at its primary horizon. Shown as
                  "not run" when the file is absent, never left out silently.
-  retail, search US only, since 2026-10-02: CONTEXT, NOT A SCORE. Whether the name has
-                 a retail tilt >= 50 and a quiet Google search spike (< 1.0x), from
+  retail, search, vol
+                 US only, since 2026-10-02: CONTEXT, NOT A SCORE. Whether the name has
+                 a retail tilt >= 50, a quiet Google search spike (< 1.0x) and a 20-day
+                 realised volatility >= 58% (frozen), from
                  researcher_us/scripts/edge_context.py's edge-context.json, for every
                  name whatever its score. Nothing ranks, selects, sizes or trades on
                  them (operator's instruction). "not run" when the file is absent.
@@ -96,10 +98,10 @@ def run_model(run, reg):
 def context_cells(ctx, ticker):
     """The two context columns for one name. `ctx` is edge-context.json or None."""
     if ctx is None:
-        return ["not run", "not run"]
+        return ["not run", "not run", "not run"]
     c = next((n for n in ctx.get("names", []) if n.get("ticker") == ticker), None)
     if c is None:
-        return ["n/a", "n/a"]
+        return ["n/a", "n/a", "n/a"]
     yn = {True: "yes", False: "no", None: "?"}
     rt = c.get("retail") or {}
     retail = (f"{yn[rt.get('favourable')]} ({rt['retail_tilt']:.0f})"
@@ -107,7 +109,10 @@ def context_cells(ctx, ticker):
     se = c.get("search") or {}
     search = (f"{yn[se.get('favourable')]} ({se['spike']:.2f}x)"
               if se.get("spike") is not None else f"n/a ({se.get('state', '?')})")
-    return [retail, search]
+    vo = c.get("vol") or {}
+    vol = (f"{yn[vo.get('high')]} ({vo['realised_vol_20d']:.0f})"
+           if vo.get("realised_vol_20d") is not None else "n/a")
+    return [retail, search, vol]
 
 
 def impact_of(r):
@@ -276,7 +281,7 @@ def main():
     head = ["#", "ticker", "impact_sum (key)", "floor", "impact_scaled (v3)",
             "abs_move", "p_up"]
     if us:
-        head += ["V2 grounded", "retail ≥50", "search quiet"]
+        head += ["V2 grounded", "retail ≥50", "search quiet", "vol ≥58"]
     print("| " + " | ".join(head) + " |")
     print("|" + "|".join(" --- " for _ in head) + "|")
     dropped = []
@@ -305,16 +310,16 @@ def main():
             cells += context_cells(ctx, r["ticker"])
         print("| " + " | ".join(cells) + " |")
     if not key.get("ranking"):
-        print("| | no names | | | | | |" + (" | | |" if us else ""))
+        print("| | no names | | | | | |" + (" | | | |" if us else ""))
     for r in dropped:
         print(f"\nNot ranked: {r['ticker']}: {r.get('not_rankable_because')}")
     print("\n`impact_scaled` is the hunter's second, separate measurement, "
           "(2·p_up/100 − 1)·abs_move. It is not the key and is never pooled with it.")
     if us:
-        print("`retail` and `search` are context for the reader, shown for every name "
-              "whatever its score: retail tilt ≥ 50 and a Google search spike under "
-              "1.0x on the last complete day. Nothing ranks, selects, sizes or trades "
-              "on them.")
+        print("`retail`, `search` and `vol` are context for the reader, shown for every "
+              "name whatever its score: retail tilt ≥ 50, a Google search spike under "
+              "1.0x on the last complete day, and 20-day realised volatility ≥ 58% "
+              "annualised. Nothing ranks, selects, sizes or trades on them.")
 
 
 if __name__ == "__main__":

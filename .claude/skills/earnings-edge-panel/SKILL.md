@@ -117,7 +117,7 @@ Then stage E's standing note sections apply where they fit.
 
 Run stage E's step 6d on this directory before the closing reply
 (`python3 researcher_us/scripts/edge_context.py --run <RUN>/edge-panel || true`), so the
-table's retail and search columns are filled. Context only, as in stage E: the panel
+table's retail, search and volatility columns are filled. Context only, as in stage E: the panel
 decides nothing on them.
 
 **The closing chat reply** starts with the verbatim output of

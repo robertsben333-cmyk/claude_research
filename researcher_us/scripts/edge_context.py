@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Two context labels per name, for the reader: retail tilt and search attention.
+"""Three context labels per name, for the reader: retail tilt, search attention and
+recent volatility.
 
 INFORMATION ONLY (operator's instruction, 2026-10-02). Nothing ranks, selects, sizes or
 trades on this file. `alpaca_trade.py`, `edge_score.py`, the dashboard and every
@@ -19,6 +20,13 @@ hypothesis register found the hunt doing better under are present.
            edge_search_volume.py: the company name minus its legal suffix, never the
            ticker. `sparse` and `silent` mean Google reports too little for a baseline;
            that is no label at all, not a quiet name.
+  vol      20-day realised volatility, annualised, at or above VOL_SPLIT = 58%, from
+           the sealed baseline's tape. Added 2026-10-02 on the operator's instruction and
+           FROZEN at that value: the only measured indicator that tracked the hit rate
+           (research/analyses/signal-vs-noise/: the book's top volatility third, which
+           starts near 58%, was right 82% of the time against 45-50%), but in the live
+           sample it did not raise the return per name. The split was read off those
+           days, so it is a forward test, never a filter. Do not re-tune it.
 
 TODAY IS STILL BEING COUNTED. At run time Google flags the entry day as partial, and a
 partial day reads low, which would call every name quiet. So the spike is taken on the
@@ -53,6 +61,7 @@ import edge_search_volume as SV   # noqa: E402
 import weighting as W             # noqa: E402
 
 LEDGER = REPO / "dashboard" / "data" / "ledger.json"
+VOL_SPLIT = 58.0      # frozen 2026-10-02, see the docstring
 OUT = "edge-context.json"
 
 
@@ -158,6 +167,9 @@ def main():
         row = {"ticker": t, "company": r.get("company"),
                "market_cap_usd": r.get("market_cap_usd"), **tape_of(run, t)}
         row["retail"] = retail(row, ref)
+        rv = row.get("realised_vol_20d")
+        row["vol"] = {"realised_vol_20d": rv,
+                      "high": None if rv is None else rv >= VOL_SPLIT}
         if a.no_search:
             row["search"] = {"state": "not_run", "favourable": None}
         elif time.monotonic() - t0 > a.budget_seconds:
@@ -169,6 +181,7 @@ def main():
         rt, s = row["retail"], row["search"]
         print(f"  {t:7s} retail {rt['retail_tilt'] if rt['retail_tilt'] is not None else 'n/a':>5}"
               f" {'yes' if rt['favourable'] else ('no' if rt['favourable'] is False else '?'):3s}"
+              f"   vol {row['vol']['realised_vol_20d'] if row['vol']['realised_vol_20d'] is not None else 'n/a':>5}"
               f"   search {s['state']:9s}"
               + (f" {s['spike']:.2f}x on {s['basis']}" if s.get("spike") is not None else ""))
 
@@ -176,6 +189,7 @@ def main():
            "run": str(run), "use": "information only: nothing ranks, selects, sizes or "
                                    "trades on this file",
            "spec": {"retail_split": W.RETAIL_SPLIT, "search_split": W.SEARCH_SPLIT,
+                    "vol_split": VOL_SPLIT,
                     "retail_reference_n": {k: len(v) for k, v in ref.items()},
                     "search_basis": "last complete Google Trends day before the run"},
            "names": out}

@@ -869,13 +869,16 @@ construction, because those hunts were sized under the morning's rule; they dive
 the next run. Prompt versions `us.v9`, `us-sonnet.v2`, `uk.v7` and so on: never pool
 them with the versions before.
 
-**Every US name carries two context labels since 2026-10-02, and nothing acts on them
+**Every US name carries three context labels since 2026-10-02, and nothing acts on them
 (operator's instruction).** `researcher_us/scripts/edge_context.py` writes
 `<RUN>/edge-context.json`: retail tilt ≥ 50 (the dashboard's definition, percentiles
-against the ledger) and a Google search spike under 1.0x, taken on the last COMPLETE
-Trends day because the run's own day is still being counted and reads low. It never
-writes `trends-cache.json`. `score_report.py` prints them as `retail ≥50` and
-`search quiet` for every name whatever its score; stage E runs it as step 6d, AFTER the
+against the ledger), a Google search spike under 1.0x, taken on the last COMPLETE
+Trends day because the run's own day is still being counted and reads low, and 20-day
+realised volatility ≥ 58% annualised, frozen at that value as a forward test
+(`research/analyses/signal-vs-noise/`: the hit rate tracks RECENT volatility, the live
+return per name does not, and the signal-against-noise explanation was refuted). It never
+writes `trends-cache.json`. `score_report.py` prints them as `retail ≥50`,
+`search quiet` and `vol ≥58` for every name whatever its score; stage E runs it as step 6d, AFTER the
 book, so the Google queries cannot cost the entry; stage E-P runs it before its reply.
 `alpaca_trade.py`, `edge_score.py` and `panel_score.py` must not read the file and the
 smoke test checks it. Below the floor the labels do not make the sign usable

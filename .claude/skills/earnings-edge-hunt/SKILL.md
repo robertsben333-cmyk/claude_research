@@ -544,9 +544,9 @@ python3 scripts/score_report.py --run <RUN>/edge --label "Stage E"
 
 **Paste its output verbatim at the top of your closing chat reply**, before anything
 else: per name, `impact_sum` (key) | floor | `impact_scaled` | `abs_move_pct` | `p_up` |
-V2 grounded | retail ≥50 | search quiet. On a run where V2 was refused or failed, the V2
+V2 grounded | retail ≥50 | search quiet | vol ≥58. On a run where V2 was refused or failed, the V2
 column reads `not run`; leave it in. A reply that quotes only one of the keys has not
-reported the run. The two context columns are filled by step 6d, which runs after the
+reported the run. The three context columns are filled by step 6d, which runs after the
 book, so **re-run this command after 6d** and paste that version; before 6d they read
 `not run`.
 
@@ -792,11 +792,13 @@ horizons were still open, so running it daily is what fills the 5d and 1m column
 Put one line in the run log: collected, scored, refused (with the reason `ingest`
 printed), and the pooled n at `session_close`.
 
-## 6d. Context labels: retail and search, after the book
+## 6d. Context labels: retail, search and volatility, after the book
 
-Since 2026-10-02 (operator's instruction) every name carries two labels, **whatever its
-score**: is its retail tilt ≥ 50, and is its Google search spike under 1.0x. They are
-the two conditions the dashboard's hypothesis register found the hunt doing better under
+Since 2026-10-02 (operator's instruction) every name carries three labels, **whatever
+its score**: is its retail tilt ≥ 50, is its Google search spike under 1.0x, and is its
+20-day realised volatility ≥ 58% annualised (frozen; `research/analyses/signal-vs-noise/`
+found the hit rate tracks recent volatility, not the return per name). The first two are
+the conditions the dashboard's hypothesis register found the hunt doing better under
 above the floor. **They are context for the reader and nothing else**: nothing ranks,
 selects, sizes or trades on them, and no step of this skill may use them to decide
 anything. Below the floor they do not make the sign usable
@@ -812,9 +814,9 @@ four seconds each, capped at `--budget-seconds 240`) and must never cost the ent
 margin. If it fails, the columns read `not run` and the run carries on. If the session is
 short of time, `--no-search` gives the retail half in under a second. The search spike is
 taken on the last **complete** Trends day, because today is still being counted and reads
-low; `edge-context.json` records which day. Append the two columns to the note as a short
-section headed **Context: retail and search (not used for selection)**, one line per
-name, and say there in one line that they are context only.
+low; `edge-context.json` records which day. Append the three columns to the note as a
+short section headed **Context: retail, search and volatility (not used for selection)**,
+one line per name, and say there in one line that they are context only.
 
 ## 7. Resolve, once the window closes
 
