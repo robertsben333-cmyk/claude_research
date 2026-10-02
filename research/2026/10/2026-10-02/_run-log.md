@@ -30,3 +30,7 @@
 ## Stage J — universe and seal
 - Logged at 2026-10-02 01:06 UTC
 - 9 scheduled / 5 eligible (4 dropped below ¥15m turnover floor) / 5 hunted; selection.method: all 5 eligible names (at or under the cap 25), seed jp-2026-10-02 unused. market_closed null. Sheets kessan07_0904 (as_of 09-03), kessan08_0918 (as_of 09-17). Short register 20260929 read (598 codes); margin ratio resolved 4 of 5 (4394 None). baseline_quality direction 0.6 x4, 0.45 x1. One wave of 5 unpriced-hunter-jp.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-02 01:15 UTC
+- 5 hunted / 5 rankable / 0 above floor 3.0. Ranking: 3321 +0.60, 7611 +0.40, 7965 +0.10, 6279 -0.25, 4394 -1.00. 3 positive / 2 negative. One in-session release (7611, 15:00). Prompt jp.v6. Last resolved lean_vs_free_control_rho 0.80 (09-30, n=5). Note: research/2026/10/2026-10-02/japan/japan-note.md. No orders.
