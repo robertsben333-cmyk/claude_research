@@ -38,3 +38,11 @@
 ## Stage X — Close AMC — 2026-10-02
 - Logged at 2026-10-02 10:15 UTC
 - Guard mode --require-exit-tif opg exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no legs due today, no exits sent, no refusals; account reachable. status: no open positions.
+
+## Edge hunt — 2026-10-02 amc + 2026-10-05 bmo — EMPTY WINDOW
+- Logged at 2026-10-02 17:06 UTC
+- Step 0b: execution.enabled is true, but alpaca_trade.py (mode/verify --fix --submit) was DENIED by this session's auto-mode permission classifier (real-world transactions); no exit was sent and none attempted another way. Repo record: no position held since the 2026-09-22 book closed 09-23, and 2026-09-25 onward placed 0 entries, so nothing appears owed. This session did not verify the account at the broker.
+- Universe: edge_universe.py --window found 0 of 3 calendar rows in the window (2026-10-02 amc + 2026-10-05 bmo). All 3 are time-not-supplied rows dated 2026-10-05.
+- Thin-day check: --include-unknown + session_resolve.py: 0 killed, 0 confirmed, 3 carried (not applied). AEHR: company has pre-announced Q1 FY27 for Mon 2026-10-05 AFTER the close (call 17:00 ET), per https://www.marketbeat.com/instant-alerts/upcoming-aehr-test-systems-aehr-set-to-announce-quarterly-earnings-on-monday-2026-09-28/ — that is 10-05 amc, which belongs in Monday's window and not this one. NCPL (last results 291 days ago) and MSS (563 days ago) are well past cadence and read as phantom rows.
+- Result: empty universe, stopped cheaply per the skill. No baselines, no sweep, no hunters (0 of 20 subagents), no edge-scores.json, no V2. Step 7: no names, so no book; open --submit not attempted (and would be refused by the same classifier). 0 orders, gross 0%.
+- Standing blocker for the operator: until a narrow allow rule for researcher_us/scripts/alpaca_trade.py is added to .claude/settings.json (a session may not write it), any day WITH floor-clearers will not trade from this Routine. Fifth consecutive run (since 09-28) with the denial.
