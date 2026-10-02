@@ -54,3 +54,7 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-10-02 18:33 UTC
 - Fired 18:33Z. Plan: ca_universe -> seal baselines before 20:00 UTC close -> provenance -> one unpriced-hunter-ca per name -> edge_score -> note. No orders.
+
+## Stage CA — Canada researcher — EMPTY DAY
+- Logged at 2026-10-02 18:33 UTC
+- 18:33Z: ca_universe.py: 2510 scanner rows, 6 candidates in the ±window, 0 reconciled to 2026-10-02. market_closed null and scheduled_today 0 = nobody scheduled (normal Canadian weekday outside the peaks), not a closed exchange. Reconciliation all zero; moved_off_target_by_wsh empty; 0 filing_only drops. No baselines sealed, so no short-register snapshot stored today. No hunters spawned. No orders (stage places none).
