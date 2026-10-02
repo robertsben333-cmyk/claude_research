@@ -146,6 +146,7 @@ section[hidden] { display:none; }
   display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
   padding:0 0 12px; margin:0 0 4px; border-bottom:1px solid var(--grid);
 }
+.grid2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap:0 16px; }
 .mctl .hint { font-size:12.5px; color:var(--muted); max-width:62ch; }
 .ctl { display:flex; align-items:center; gap:7px; }
 .ctl > label { font-size:12.5px; color:var(--muted); }
@@ -408,7 +409,7 @@ const DEFAULTS = {
   lens: 'research', horizon: 'strategy',
   thrOn: false, thr: D.conviction_floor ?? 3,
   tradeOn: false, minLong: 200000, minShort: 1000000, reqShort: true,
-  session: 'all', sector: 'all', version: 'all',
+  session: 'all', sector: 'all', prompt: 'all', model: 'all', noSept: true,
   from: DATES[0] || '', to: DATES[DATES.length-1] || '',
   capOn: false, capPct: 33, grossPct: 100
 };
@@ -426,13 +427,26 @@ const boardOf = r => r['ret_' + F.horizon];
    a name that was never traded simply leaves the lens. */
 const retOf = r => F.lens === 'trading' ? (r.trade_ret_pct ?? null) : boardOf(r);
 
+/* Prompt version and model are two axes, filtered apart: `us.v6` alone holds both
+   models, `Opus 5.5` alone holds every prompt it ran. Both together are one variant. */
+const promptOf = r => r.prompt_version || 'onbekend';
+const modelOf = r => r.model_short || 'onbekend';
+/* The September Opus 5.5 hunts: Opus 5.5 hunters on the prompt before the shared
+   hunter core (scripts/provenance.py september_opus55, the same definition
+   score_report.py uses). That prompt filed a third of what it found and sized near
+   zero, so the operator ruled it a mistake rather than a method. One switch for the
+   whole page, every market; it is not a version filter, so Versies obeys it too. */
+const isSept = r => r.sept_opus55 === true;
+
 /* One argument only: it is passed straight to Array.filter, which hands it the index
    as a second argument. Versies is the one tab that ignores the version filter. */
 function passesFilters(r) {
-  if (F.version !== 'all' && (r.prov_key || 'onbekend') !== F.version) return false;
+  if (F.prompt !== 'all' && promptOf(r) !== F.prompt) return false;
+  if (F.model !== 'all' && modelOf(r) !== F.model) return false;
   return passesFiltersExceptVersion(r);
 }
 function passesFiltersExceptVersion(r) {
+  if (F.noSept && isSept(r)) return false;
   if (F.from && r.run_date < F.from) return false;
   if (F.to && r.run_date > F.to) return false;
   if (F.session !== 'all' && r.session !== F.session) return false;
@@ -467,7 +481,7 @@ function tradesFiltered(closedOnly) {
     if (closedOnly && (t.ret_pct === null || t.ret_pct === undefined)) return false;
     const r = nameOfTrade(t);
     if (!r) return !(F.thrOn || F.tradeOn || F.sector !== 'all' || F.session !== 'all'
-                     || F.version !== 'all');
+                     || F.prompt !== 'all' || F.model !== 'all');
     return passesFilters(r);
   });
 }
@@ -1495,7 +1509,12 @@ function tabData() {
 
 /* --------------------------------------------------------------- controls */
 const SECTORS = [...new Set(ALL.map(r => r.sector || 'onbekend'))].sort();
-const VERSIONS = [...new Set(ALL.map(r => r.prov_key || 'onbekend'))].sort();
+/* Option lists with counts, so a choice is not blind: `us.v6 (51)`. */
+const countBy = (rows, f) => { const m = new Map();
+  rows.forEach(r => m.set(f(r), (m.get(f(r)) || 0) + 1));
+  return [...m.entries()].sort((a, b) => a[0] < b[0] ? -1 : 1); };
+const PROMPTS = countBy(ALL, promptOf), MODELS = countBy(ALL, modelOf);
+const N_SEPT = ALL.filter(isSept).length;
 function renderControls() {
   const c = document.getElementById('controls');
   const days = ALL.filter(r => inRange(r.run_date)).length;
@@ -1555,11 +1574,18 @@ function renderControls() {
         <select id="f-sector"><option value="all">alle</option>${SECTORS.map(x =>
           `<option value="${esc(x)}" ${x===F.sector?'selected':''}>${esc(x)}</option>`).join('')}
         </select></div>
-      <div class="ctl" title="Welke versie van de hunter-prompt en welk model de naam rangschikten. Zie het tabblad Versies.">
-        <label>versie</label>
-        <select id="f-version"><option value="all">alle (${VERSIONS.length})</option>${VERSIONS.map(x =>
-          `<option value="${esc(x)}" ${x===F.version?'selected':''}>${esc(x)}</option>`).join('')}
+      <div class="ctl" title="Welke versie van de hunter-prompt en welk model de naam rangschikten. Prompt en model zijn twee assen: kies er één of allebei. Zie het tabblad Versies.">
+        <label>prompt</label>
+        <select id="f-prompt"><option value="all">alle (${PROMPTS.length})</option>${PROMPTS.map(([x,n]) =>
+          `<option value="${esc(x)}" ${x===F.prompt?'selected':''}>${esc(x)} (${n})</option>`).join('')}
+        </select>
+        <label>model</label>
+        <select id="f-model"><option value="all">alle (${MODELS.length})</option>${MODELS.map(([x,n]) =>
+          `<option value="${esc(x)}" ${x===F.model?'selected':''}>${esc(x)} (${n})</option>`).join('')}
         </select></div>
+      <div class="ctl ${F.noSept?'':'off'}" title="De Opus 5.5-jachten op de prompt van vóór de gedeelde hunter-core (september). Die prompt vond een derde van wat hij zag de moeite van opschrijven waard en maakte alles bijna nul; de operator heeft hem een vergissing genoemd, geen methode. Aan haalt die namen uit elk getal, op elke markt.">
+        <label class="sw"><input type="checkbox" id="f-nosept" ${F.noSept?'checked':''}>
+          <b>zonder sept. Opus 5.5</b> (${N_SEPT})</label></div>
       <button class="btn small" id="f-help" aria-expanded="false">? uitleg</button>
       <button class="btn small" id="f-reset">herstel</button>
     </div>
@@ -1592,10 +1618,19 @@ function renderControls() {
           namen en 33% is de rekening voor 99% belegd, bij één naam voor 33%, bij tien
           namen voor 100% met 10% per naam. Uit betekent gelijk gewogen en altijd volledig
           belegd — dat is het onderzoeksgetal, niet wat een rekening doet.</dd>
-        <dt>versie</dt><dd>De versie van de hunter-prompt en het model dat de naam
-          rangschikte, bijvoorbeeld <code>us.v8 · Opus 5.5</code>. Alle versies samen mengen
-          methodes die op verschillende dagen verschillend waren; het tabblad <b>Versies</b>
-          zet ze naast elkaar.</dd>
+        <dt>prompt en model</dt><dd>De versie van de hunter-prompt en het model dat de naam
+          rangschikte, als twee aparte keuzes: <code>us.v6</code> alleen bevat beide modellen,
+          <code>Opus 5.5</code> alleen bevat elke prompt waarop het draaide, en samen kiezen ze
+          één variant. Alle versies samen mengen methodes die op verschillende dagen
+          verschillend waren; het tabblad <b>Versies</b> zet ze naast elkaar.</dd>
+        <dt>zonder sept. Opus 5.5</dt><dd>Haalt de jachten eruit die Opus 5.5 deed op de
+          prompt van vóór de gedeelde hunter-core (<code>config/hunter-core.md</code>): het
+          model is Opus 5.5 en de <code>provenance.json</code> van de run heeft geen
+          <code>hunter_core</code>. Die prompt was te streng, vond een derde van wat hij zag
+          de moeite waard en maakte de sommen bijna nul. Het is dezelfde regel waarmee
+          <code>score_report.py</code> die jachten uit zijn referentie laat. Eén schakelaar
+          voor de hele pagina: hij werkt ook op Europa, Japan, Australië en Canada, en ook op
+          het tabblad Versies.</dd>
         <dt>sessie en sector</dt><dd>amc rapporteert na de slotbel, bmo vóór de opening; op
           deze steekproef gedragen ze zich tegengesteld. Sector komt van Yahoo.</dd>
       </dl>
@@ -1625,7 +1660,9 @@ function renderControls() {
   on('f-grosspct','change', e => { F.grossPct = +e.target.value; F.capOn = true; redraw(); });
   on('f-session','change', e => { F.session = e.target.value; redraw(); });
   on('f-sector','change', e => { F.sector = e.target.value; redraw(); });
-  on('f-version','change', e => { F.version = e.target.value; redraw(); });
+  on('f-prompt','change', e => { F.prompt = e.target.value; redraw(); });
+  on('f-model','change', e => { F.model = e.target.value; redraw(); });
+  on('f-nosept','change', e => { F.noSept = e.target.checked; redraw(); });
   on('f-reset','click', () => { Object.assign(F, DEFAULTS); redraw(); });
   on('f-help','click', e => {
     const box = document.getElementById('helpbox');
@@ -1660,7 +1697,9 @@ function filterLine() {
   if (F.capOn) bits.push(`max ${F.capPct}% per naam, bruto ${F.grossPct}%`);
   if (F.session !== 'all') bits.push(F.session);
   if (F.sector !== 'all') bits.push(F.sector);
-  if (F.version !== 'all') bits.push('versie ' + F.version);
+  if (F.prompt !== 'all') bits.push('prompt ' + F.prompt);
+  if (F.model !== 'all') bits.push('model ' + F.model);
+  if (F.noSept) bits.push('zonder sept. Opus 5.5');
   bits.push(F.horizon === 'strategy'
     ? 'uitstap strategie (amc 15:30, bmo 20:00 CET)'
     : `uitstap ${F.horizon} (${HZ_CET[F.horizon]} CET)`);
@@ -2585,9 +2624,11 @@ function tabWeging() {
    er geen beweging, dan is de run nog niet opgelost. */
 const MRAW = document.getElementById('markets');
 const M = MRAW ? JSON.parse(MRAW.textContent) : {markets:{}, problems:[]};
-const MS = {val:false, thr:0, ver:{}};
+const MS = {val:false, thr:0, prompt:{}, model:{}};
 function mSet(k, v) {
-  if (k === 'ver') MS.ver[MKT] = v;
+  if (k === 'prompt' || k === 'model') MS[k][MKT] = v;
+  /* Eén schakelaar voor de hele pagina: dezelfde als in de filterbalk van de VS. */
+  else if (k === 'nosept') F.noSept = !!v;
   else MS[k] = (k === 'thr' ? +v : v);
   /* De validatieknop kan een analysetabblad openen of sluiten, dus de rij wordt
      opnieuw gezet en hetzelfde tabblad bij naam teruggezocht. */
@@ -2641,19 +2682,25 @@ const MNOTE = {
        <code>filer_type</code> zegt welke van de twee.`,
 };
 
-/* De versie is een filter zoals de drempel: welke hunter-prompt en welk model de
-   naam rangschikten. Zonder filter mengt elk getal hieronder methodes die op
-   verschillende dagen verschillend waren; `allVer` zet hem uit voor het tabblad
-   Versies, dat ze juist naast elkaar zet. */
-const mVer = code => MS.ver[code] || 'all';
-const mRows = (code, allThr, allVer) => {
+/* Prompt en model zijn filters zoals de drempel: welke hunter-prompt en welk model
+   de naam rangschikten, als twee assen. Zonder filter mengt elk getal hieronder
+   methodes die op verschillende dagen verschillend waren; `allVer` zet ze uit voor
+   het tabblad Versies, dat ze juist naast elkaar zet. De september-Opus 5.5-
+   schakelaar is geen versiefilter en geldt ook daar; alleen de tabbladenrij
+   (`allSept`) kijkt eroverheen, zodat een schakelaar nooit het tabblad onder je
+   wegtrekt. */
+const mPrompt = code => MS.prompt[code] || 'all';
+const mModel = code => MS.model[code] || 'all';
+const mRows = (code, allThr, allVer, allSept) => {
   const d = (M.markets || {})[code] || {names: [], runs: []};
   const val = new Set(d.runs.filter(r => r.validation_only).map(r => r.run));
   const thr = allThr ? 0 : MS.thr;
-  const ver = allVer ? 'all' : mVer(code);
+  const pr = allVer ? 'all' : mPrompt(code), mo = allVer ? 'all' : mModel(code);
   return d.names.filter(r => (MS.val || !val.has(r.run))
                           && (!thr || Math.abs(r.impact_sum || 0) >= thr)
-                          && (ver === 'all' || (r.prov_key || 'onbekend') === ver));
+                          && (pr === 'all' || promptOf(r) === pr)
+                          && (mo === 'all' || modelOf(r) === mo)
+                          && (allSept || !F.noSept || !isSept(r)));
 };
 const mRuns = code => {
   const d = (M.markets || {})[code] || {runs: []};
@@ -2691,10 +2738,10 @@ function mStat(rows) {
    Eén context per render. Elk tabblad hieronder werkt op dezelfde gefilterde
    verzameling, zodat een getal op het ene tabblad en een getal op het andere
    over dezelfde namen gaan. */
-function mCtx(code, allThr, allVer) {
+function mCtx(code, allThr, allVer, allSept) {
   const d = (M.markets || {})[code] || null;
   if (!d) return null;
-  const runs = mRuns(code), rows = mRows(code, allThr, allVer);
+  const runs = mRuns(code), rows = mRows(code, allThr, allVer, allSept);
   /* Een naam zonder jacht is geen nul, het is een lege plek. Op 2026-09-23 bleven
      zeven Britse namen ongejaagd omdat de sessie geen subagenten kon starten, en
      die staan in edge-scores.json met impact_sum 0 en rankable false. Ze horen in
@@ -2706,7 +2753,10 @@ function mCtx(code, allThr, allVer) {
           unranked: rows.length - ranked.length,
           st: mStat(ranked),
           hasVal: d.runs.some(r => r.validation_only),
-          floor: (d.runs.find(r => r.conviction_floor) || {}).conviction_floor || 3,
+          /* De floor van de LAATSTE run: hij is verzet (3,0 → 2,8 op 2026-10-02), en een
+             tabblad hoort de geldende waarde te tonen, niet de oudste. */
+          floor: ([...d.runs].sort((a, b) => a.run_date < b.run_date ? 1 : -1)
+                   .find(r => r.conviction_floor) || {}).conviction_floor || 3,
           hunted: runs.filter(r => r.n_rows > 0),
           resolved: ranked.filter(r => r.realised_move_pct !== null
                                     && r.realised_move_pct !== undefined)};
@@ -2723,13 +2773,21 @@ function mControls(c, want) {
       <button aria-pressed="${!MS.thr}" onclick="mSet('thr',0)">alle namen</button>
       <button aria-pressed="${MS.thr === c.floor}" onclick="mSet('thr',${c.floor})">|impact_sum| ≥ ${c.floor}</button>
     </span>`;
-  const keys = [...new Set(c.d.names.map(r => r.prov_key || 'onbekend'))].sort();
-  if (want !== 'val' && want !== 'thr-only' && keys.length) h += `<span class="ctl" title="Welke versie van de hunter-prompt en welk model de naam rangschikten. Zie het tabblad Versies.">
-      <label>versie</label>
-      <select onchange="mSet('ver', this.value)">
-        <option value="all" ${mVer(c.code) === 'all' ? 'selected' : ''}>alle (${keys.length})</option>
-        ${keys.map(k => `<option value="${esc(k)}" ${mVer(c.code) === k ? 'selected' : ''}>${esc(k)}</option>`).join('')}
-      </select></span>`;
+  const prompts = countBy(c.d.names, promptOf), models = countBy(c.d.names, modelOf);
+  const opt = (list, cur) => `<option value="all" ${cur === 'all' ? 'selected' : ''}>alle (${list.length})</option>` +
+    list.map(([k, n]) => `<option value="${esc(k)}" ${cur === k ? 'selected' : ''}>${esc(k)} (${n})</option>`).join('');
+  if (want !== 'val' && want !== 'thr-only' && prompts.length) h += `<span class="ctl" title="Welke versie van de hunter-prompt en welk model de naam rangschikten, als twee assen. Zie het tabblad Versies.">
+      <label>prompt</label>
+      <select onchange="mSet('prompt', this.value)">${opt(prompts, mPrompt(c.code))}</select>
+      <label>model</label>
+      <select onchange="mSet('model', this.value)">${opt(models, mModel(c.code))}</select></span>`;
+  const nSept = c.d.names.filter(isSept).length;
+  if (want !== 'val' && nSept) h += `<span class="ctl ${F.noSept ? '' : 'off'}" title="De Opus 5.5-jachten op de prompt van vóór de gedeelde hunter-core (september): te streng, sommen bijna nul. Aan haalt ze uit elk getal, op elke markt. Dezelfde schakelaar als in de filterbalk van de VS.">
+      <label class="sw"><input type="checkbox" ${F.noSept ? 'checked' : ''} onchange="mSet('nosept', this.checked)">
+      <b>zonder sept. Opus 5.5</b> (${nSept} van ${c.d.names.length})</label></span>`;
+  if (want !== 'val' && F.noSept && nSept && !c.rows.length) h += `<span class="hint"><b>Alles
+      wat hier staat is een september-Opus 5.5-jacht</b>, dus de standaardstand laat niets over.
+      Zet de schakelaar uit om ze te zien.</span>`;
   if (c.hasVal) h += `<span class="seg" role="group" aria-label="validatieruns">
       <button aria-pressed="${!MS.val}" onclick="mSet('val',false)">alleen echte runs</button>
       <button aria-pressed="${MS.val}" onclick="mSet('val',true)">validatieruns meetellen</button>
@@ -2759,6 +2817,13 @@ function mGuard(c, code) {
    tabel: een leeg vak leest als een meting die nul opleverde. */
 function mNeeds(c, need) {
   const pend = c.runs.filter(r => !r.has_resolved_file && r.n_rows).length;
+  /* Leeg door de septemberschakelaar is iets anders dan leeg door de tijd. */
+  const hidden = F.noSept ? mCtx(c.code, false, false, true).st.n : 0;
+  if (!c.st.n && hidden) return `<div class="card warnbox"><h3>Alles wat hier is opgelost, is september-Opus 5.5</h3>
+    <p>${hidden} opgeloste namen in ${MNAAM[c.code]}, en elk ervan komt uit een jacht die Opus 5.5
+    deed op de prompt van vóór de gedeelde hunter-core. De schakelaar <b>zonder sept. Opus 5.5</b>
+    staat standaard aan en laat ze daarom weg. Zet hem uit om ze te zien, en lees ze dan als de
+    meting van een prompt die de operator een vergissing heeft genoemd.</p></div>`;
   if (!c.st.n) return `<div class="card warnbox"><h3>Nog niets opgelost</h3>
     <p>Er is in ${MNAAM[c.code]} nog geen enkele naam met een gerealiseerde beweging, dus
     staat hier geen prestatiegetal. Dat is de stand, niet een fout in dit tabblad.</p>
@@ -2767,11 +2832,114 @@ function mNeeds(c, need) {
     dicht is; daarna vult dit tabblad zich vanzelf met
     <code>python3 dashboard/scripts/build_markets.py --resolve</code>, of per dag met
     <code>python3 ${esc(c.d.resolver)} --run &lt;rundir&gt; -o &lt;rundir&gt;/${esc(c.d.resolved_file)}</code>.</p></div>`;
-  return `<div class="card warnbox"><h3>${c.st.n} opgeloste namen, en dit vraagt er ${need}</h3>
+  return `<div class="card warnbox"><h3>${c.st.n} opgeloste namen, en een getal vraagt er ${need}</h3>
     <p>Op drie namen komt een rangcorrelatie van precies 1,0 één keer op de zes toevallig
     uit; <code>au_resolve.py</code> schrijft dat zelf op nadat de eerste synthetische
-    Australische run er netjes een produceerde. Onder ${need} namen staat hier daarom niets
-    in plaats van een getal dat blijft hangen. De namen zelf staan op <b>Namen</b>.</p></div>`;
+    Australische run er netjes een produceerde. Onder ${need} namen staat hier daarom geen ρ
+    in plaats van een getal dat blijft hangen. De grafieken hieronder staan er wel: ze laten
+    zien wat er is, en ze zeggen er zelf bij op hoeveel namen ze rusten.</p></div>`;
+}
+
+/* ---------------------------------------------------- grafieken per markt
+   Dezelfde vier tekenfuncties als de VS (lijn, staaf, histogram, spreiding), op de
+   rijen van de markt en onder dezelfde knoppen. Ze worden getekend zodra er één
+   punt is, ook als dat nog niets betekent: de grafiek staat er, en de regel eronder
+   zegt op hoeveel namen hij rust. De ρ blijft onder vijf namen weg, want een getal
+   blijft hangen en drie stippen niet. */
+let MCID = 0;
+const mId = () => 'mc-' + (++MCID);
+const isRes = r => r.realised_move_pct !== null && r.realised_move_pct !== undefined;
+const mRho = rows => rows.length >= MMIN
+  ? corr(ranks(rows.map(r => r.impact_sum)), ranks(rows.map(r => r.realised_move_pct))) : null;
+/* Eén regel onder een grafiek die op te weinig rust. Geen waarschuwingskaart: de
+   grafiek is het punt, de regel zegt alleen hoe zwaar hij weegt. */
+const mThin = (n, need) => n >= need ? '' :
+  `<p class="meta"><b>n=${n}.</b> Te weinig om te lezen; dit is wat er staat, niet wat het
+   betekent. De ρ verschijnt vanaf ${MMIN} namen, een patroon pas ruim daarboven.</p>`;
+/* Per run, op eventdatum: de eenheid waarin de markt handelt. */
+function mDays(rows) {
+  const m = new Map();
+  rows.forEach(r => { if (!m.has(r.run)) m.set(r.run, []); m.get(r.run).push(r); });
+  return [...m.values()].map(g => ({run: g[0].run, date: g[0].event_date || g[0].run_date,
+                                    rows: g}))
+    .sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+}
+const mTip = (r, c) => `<b>${esc(r.ticker)}</b> ${esc(r.event_date || r.run_date)}` +
+  `${c.code === 'EU' ? ' · ' + esc(r.submarket) : ''} · ${esc(r.session || '?')}<br>` +
+  `${esc((r.company || '').slice(0, 40))}<br>impact_sum ${n1(r.impact_sum)}` +
+  (isRes(r) ? ` → beweging ${pc(r.realised_move_pct)}` : ' · niet opgelost') +
+  `<br>${esc(r.prov_key || 'versie onbekend')}${isSept(r) ? ' · <b>sept. Opus 5.5</b>' : ''}`;
+/* Kleur per deelmarkt voor Europa, per sessie elders. Tien markten krijgen geen tien
+   kleuren: de drie die de dag dragen krijgen er een, de rest is grijs. */
+function mColorer(c) {
+  if (c.code !== 'EU') return {f: r => r.session === 'bmo' ? css('--s2') : css('--s1'),
+    legend: [{color:css('--s1'), label:'amc'}, {color:css('--s2'), label:'bmo'}]};
+  const top = countBy(c.ranked, r => r.submarket || '?').sort((a, b) => b[1] - a[1])
+    .slice(0, 3).map(x => x[0]);
+  const col = [css('--s1'), css('--s2'), css('--s3')];
+  return {f: r => { const i = top.indexOf(r.submarket || '?');
+                    return i >= 0 ? col[i] : css('--muted'); },
+    legend: [...top.map((t, i) => ({color: col[i], label: t})),
+             {color: css('--muted'), label: 'overige markten'}]};
+}
+/* Spreiding: voorspelling tegen uitkomst. Open stip = september-Opus 5.5. */
+function mScatter(c, rows, fx, labelX, opts) {
+  const id = mId(), col = mColorer(c), o = opts || {};
+  draw.push(() => scatterChart(document.getElementById(id), {
+    points: rows.map(r => ({x: fx(r), y: r.realised_move_pct, color: col.f(r),
+                            r: 5.5, open: isSept(r), tip: mTip(r, c)})),
+    labelX, labelY: 'gerealiseerde beweging %', fmtY: v => v.toFixed(0) + '%',
+    trend: rows.length >= MMIN, height: o.height || 320}));
+  return legend([...col.legend,
+    ...(rows.some(isSept) ? [{color: css('--muted'), label: 'open stip: sept. Opus 5.5'}] : []),
+    ...(rows.length >= MMIN ? [{color: css('--s2'), label: 'kleinste-kwadratenlijn', dash: true}] : [])]) +
+    chartBlock(id, o.height || 320);
+}
+/* Samengesteld bord-rendement per eventdag, gelijk gewogen, naast alles shorten. */
+function mCumChart(c, rows) {
+  const id = mId(), days = mDays(rows.filter(r => r.ret !== null && r.ret !== undefined));
+  if (!days.length) return `<div class="empty">nog geen opgeloste dag</div>`;
+  let a = 1, b = 1;
+  const pts = days.map(d => {
+    const m = d.rows.reduce((s, r) => s + r.ret, 0) / d.rows.length;
+    const ct = d.rows.reduce((s, r) => s - r.realised_move_pct, 0) / d.rows.length;
+    a *= 1 + m / 100; b *= 1 + ct / 100;
+    return {date: d.date, n: d.rows.length, m, ct, cum: (a - 1) * 100, cumC: (b - 1) * 100};
+  });
+  draw.push(() => lineChart(document.getElementById(id), {
+    x: pts.map(p => p.date.slice(5)), sub: pts.map(p => `n=${p.n}`),
+    series: [{label: 'boek', color: css('--s1'), values: pts.map(p => p.cum)},
+             {label: 'alles shorten', color: css('--s2'), values: pts.map(p => p.cumC)}],
+    zero: true, fmtY: v => v.toFixed(0) + '%', fmtT: pc, height: 250,
+    tipX: i => `${pts[i].date} · ${pts[i].n} namen · dag ${pc(pts[i].m)} · shorten ${pc(pts[i].ct)}`}));
+  return legend([{color: css('--s1'), label: 'het boek: elke opgeloste naam in de richting van het teken'},
+                 {color: css('--s2'), label: 'gratis controle: alles shorten'}]) + chartBlock(id, 250);
+}
+/* Staven per groep: bord % per groep, met n eronder. */
+function mGroupBars(groups, opts) {
+  const id = mId(), o = opts || {};
+  const items = groups.filter(g => g.v !== null && g.v !== undefined).map(g => ({
+    label: g.label, v: g.v, sub: g.sub, color: g.color,
+    tip: g.tip || `<b>${esc(g.label)}</b><br>${o.fmtT ? o.fmtT(g.v) : pc(g.v)}`}));
+  if (!items.length) return `<div class="empty">${esc(o.empty || 'nog niets om te tekenen')}</div>`;
+  draw.push(() => barChart(document.getElementById(id), {items,
+    fmtY: o.fmtY || (v => v.toFixed(0) + '%'), fmtT: o.fmtT || pc, labelY: o.labelY,
+    height: o.height || 220}));
+  return chartBlock(id, o.height || 220);
+}
+const SCOREBK = [[0,1],[1,2],[2,3],[3,5],[5,8],[8,1e9]];
+function mBuckets(c, rows) {
+  return SCOREBK.map(([lo, hi]) => {
+    const g = rows.filter(r => Math.abs(r.impact_sum) >= lo && Math.abs(r.impact_sum) < hi
+                            && r.ret !== null && r.ret !== undefined);
+    if (!g.length) return null;
+    const b = book(g.map(r => r.ret));
+    return {label: `${lo}–${hi > 1e8 ? '∞' : hi}`, v: b.mean, sub: `n=${g.length}`,
+            color: lo >= c.floor ? css('--s1') : css('--muted'),
+            tip: `<b>|impact_sum| ${lo}–${hi > 1e8 ? '∞' : hi}</b><br>n=${g.length}, teken goed
+                  ${n1(b.hit)}%<br>gemiddeld ${pc(b.mean)}, mediaan ${pc(b.median)}<br>
+                  ${esc(g.map(r => r.ticker).join(', '))}`};
+  }).filter(Boolean);
 }
 
 /* ------------------------------------------------------------- Overzicht */
@@ -2802,10 +2970,54 @@ function mtOverzicht(code) {
     html += mNeeds(c, MMIN);
   }
 
+  if (c.st.n) html += `<div class="card"><h3>Samengesteld bord-rendement per eventdag</h3>` +
+    mCumChart(c, c.resolved) +
+    `<p class="meta">Per eventdag het gemiddelde van de opgeloste namen, gelijk gewogen en
+     samengesteld, zonder kosten en zonder uitvoering: deze stage plaatst geen orders. De
+     controle shortt elke naam van die dag zonder onderzoek.</p>${mThin(c.st.n, MMIN)}</div>`;
+
+  /* De voorspellingskant heeft geen uitkomst nodig: hoe groot de sommen zijn en hoe
+     ze over de dagen liggen, is vandaag al te tekenen. Daar was de Opus 5.5-instorting
+     van september in de VS als eerste te zien. */
+  const idH = mId(), idD = mId(), idR = mId();
+  const days = mDays(c.ranked);
+  html += `<div class="grid2"><div class="card"><h3>Verdeling van impact_sum</h3>
+    ${legend([{color:css('--good'), label:'long'}, {color:css('--bad'), label:'short'},
+              {color:css('--muted'), label:'rond nul'}])}
+    ${chartBlock(idH, 210)}
+    <p class="meta">Elke gerangschikte naam, opgelost of niet. Een hoop rond nul is een hunter
+     die weinig vond, of een prompt die weinig opschreef.</p></div>`;
+  html += `<div class="card"><h3>Bord-rendement per naam</h3>
+    ${legend([{color:css('--good'), label:'in de plus'}, {color:css('--bad'), label:'in de min'}])}
+    ${chartBlock(idR, 210)}
+    <p class="meta">Waar de staart zit; de tooltip noemt de namen.</p>
+    ${mThin(c.st.n, MMIN)}</div></div>`;
+  html += `<div class="card"><h3>Namen per eventdag</h3>
+    ${legend([{color:css('--s1'), label:'opgelost'}, {color:css('--muted'), label:'nog niet opgelost'}])}
+    ${chartBlock(idD, 200)}</div>`;
+  draw.push(() => {
+    histChart(document.getElementById(idH), {values: c.ranked.map(r => r.impact_sum || 0),
+      labels: c.ranked.map(r => r.ticker), unit: '', bins: 9, height: 210,
+      labelY: 'aantal namen'});
+    histChart(document.getElementById(idR), {values: c.resolved.map(r => r.ret)
+      .filter(x => x !== null && x !== undefined),
+      labels: c.resolved.filter(r => r.ret !== null && r.ret !== undefined).map(r => r.ticker),
+      unit: '%', bins: 9, height: 210, labelY: 'aantal namen'});
+    barChart(document.getElementById(idD), {height: 200, fmtY: v => v.toFixed(0),
+      fmtT: v => v.toFixed(0), labelY: 'namen',
+      items: days.map(d => { const nr = d.rows.filter(isRes).length;
+        return {label: d.date.slice(5), v: d.rows.length,
+                color: nr === d.rows.length ? css('--s1') : css('--muted'),
+                sub: nr < d.rows.length ? `${nr}/${d.rows.length}` : '',
+                tip: `<b>${esc(d.date)}</b><br>${d.rows.length} namen, ${nr} opgelost<br>
+                      ${d.rows.reduce((s, r) => s + (r.n_findings || 0), 0)} vondsten<br>
+                      ${esc([...new Set(d.rows.map(r => r.prov_key))].join(', '))}`}; })});
+  });
+
   /* Welke tabbladen er nog niet staan, en wat ze openzet. Zonder deze regel is
      een korte tabbladenrij niet te onderscheiden van een dashboard dat die
      analyses niet kent. */
-  const cg = mCtx(code, true);
+  const cg = mCtx(code, true, true, true);
   const gated = MTABDEFS.filter(t => (!t.only || t.only === code)
                                   && t.when && !t.when(cg));
   if (gated.length) html += `<div class="card"><h3>Wat hier nog niet staat</h3>
@@ -2825,9 +3037,9 @@ function mtScore(code) {
   const c = mCtx(code), g = mGuard(c, code);
   if (g) return g;
   let html = mControls(c, 'both');
-  if (c.st.n < MMIN) return html + mNeeds(c, MMIN);
-
-  html += `<div class="card"><h3>Rangschikking tegen de gerealiseerde beweging</h3>` +
+  if (!c.st.n) return html + mNeeds(c, 1);
+  if (c.st.n < MMIN) html += mNeeds(c, MMIN);
+  else html += `<div class="card"><h3>Rangschikking tegen de gerealiseerde beweging</h3>` +
     table([{h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n}, {h:'ρ', f:r=>n3(r.rho)}],
       [{label:'de jacht · impact_sum', n:c.st.n, rho:c.st.rho},
        {label:'gratis controle · −run_up_20d_pct', n:c.st.ctlN, rho:c.st.ctl}]) +
@@ -2837,19 +3049,51 @@ function mtScore(code) {
      gratis controle verslaan om iets te hebben vastgesteld; gelijk spel is geen
      resultaat.</p></div>`;
 
+  html += `<div class="card"><h3>Score tegen realisatie</h3>` +
+    mScatter(c, c.resolved, r => r.impact_sum, 'impact_sum (punten van spot)') +
+    `<p class="meta">Rechtsboven en linksonder klopt het teken. Een helling die door nul
+     loopt is een rangschikking die niets sorteert.</p>${mThin(c.st.n, MMIN)}</div>`;
+
+  html += `<div class="card"><h3>Bord-rendement per score-emmer</h3>
+    ${legend([{color:css('--s1'), label:`|impact_sum| ≥ ${c.floor}, de floor`},
+              {color:css('--muted'), label:'eronder'}])}
+    ${mGroupBars(mBuckets(c, c.resolved))}
+    <p class="meta">In de VS zit de richting alleen in de grote voorspellingen: onder de floor
+     is het teken een muntworp. Of dat hier ook zo is, is wat deze staven moeten laten zien;
+     een emmer van twee namen zegt het niet.</p></div>`;
+
   if (c.st.book.n) html += `<div class="card"><h3>Bord-rendement</h3>` +
-    table(BOOKCOLS, [bookRow('elke opgeloste naam, in de richting van het teken', c.st.book)].filter(Boolean)) +
+    table(BOOKCOLS, [bookRow('elke opgeloste naam, in de richting van het teken', c.st.book),
+      bookRow('short (impact < 0)', book(c.resolved.filter(r=>r.impact_sum<0).map(r=>r.ret))),
+      bookRow('long (impact > 0)', book(c.resolved.filter(r=>r.impact_sum>0).map(r=>r.ret)))
+    ].filter(Boolean)) +
     `<p class="meta">Bord-rendement: de beweging in de richting van het teken van
      <code>impact_sum</code>. Deze stage plaatst geen orders, dus er zit geen spread, geen
      instapmoment en geen uitvoering in. Dit is wat het onderzoek zei, niet wat het
      opbracht.</p></div>`;
 
+  const days = mDays(c.resolved);
+  const perDay = days.map(d => ({date: d.date, n: d.rows.length, rho: mRho(d.rows),
+    mean: book(d.rows.map(r => r.ret)).mean,
+    ctl: d.rows.reduce((s, r) => s - r.realised_move_pct, 0) / d.rows.length,
+    right: d.rows.filter(r => r.sign_right).length}));
+  html += `<div class="card"><h3>Per dag</h3>
+    ${legend([{color:css('--good'), label:'dag in de plus'}, {color:css('--bad'), label:'in de min'}])}
+    ${mGroupBars(perDay.map(d => ({label: d.date.slice(5), v: d.mean, sub: `n=${d.n}`,
+      tip: `<b>${esc(d.date)}</b><br>${d.n} namen, teken goed ${d.right}/${d.n}<br>
+            boek ${pc(d.mean)} · alles shorten ${pc(d.ctl)}`})))}` +
+    table([{h:'eventdag', f:r=>r.date}, {h:'namen', f:r=>r.n},
+           {h:'teken goed', f:r=>`${r.right}/${r.n}`},
+           {h:'ρ', f:r=>r.rho === null ? `<span class="meta">&lt; ${MMIN}</span>` : `<span class="${sgn(r.rho)}">${n3(r.rho)}</span>`},
+           {h:'boek %', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
+           {h:'alles shorten %', f:r=>pc(r.ctl)}], perDay) +
+    `<p class="meta">Eén dag is een anekdote: op acht namen springt ρ van +0,9 naar −0,3 op
+     ruis alleen.</p></div>`;
+
   const bySess = ['amc','bmo'].map(s => {
     const g2 = c.resolved.filter(r => r.session === s);
     return g2.length ? {label:s, ...book(g2.map(r=>r.ret).filter(x=>x!==null&&x!==undefined)),
-                        rho: g2.length >= MMIN
-                          ? corr(ranks(g2.map(r=>r.impact_sum)), ranks(g2.map(r=>r.realised_move_pct)))
-                          : null} : null;
+                        rho: mRho(g2)} : null;
   }).filter(Boolean);
   if (bySess.length) html += `<div class="card"><h3>Per sessie</h3>` + table([
     {h:'sessie', f:r=>`<b>${esc(r.label)}</b>`}, {h:'n', f:r=>r.n},
@@ -2862,34 +3106,54 @@ function mtScore(code) {
 }
 
 /* --------------------------------------------------------------- Drempel */
-const MTHR = [0, 1, 2, 3, 4, 5, 6, 8];
+const MTHR = [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 8];
 function mtDrempel(code) {
   const c = mCtx(code), g = mGuard(c, code);
   if (g) return g;
   let html = mControls(c, 'val');
-  if (c.st.n < MDREMPEL) return html + mNeeds(c, MDREMPEL);
+  if (!c.st.n) return html + mNeeds(c, 1);
+  if (c.st.n < MDREMPEL) html += mNeeds(c, MDREMPEL);
 
   const rows = MTHR.map(t => {
     const g2 = c.resolved.filter(r => Math.abs(r.impact_sum) >= t);
-    if (g2.length < 3) return null;
+    if (!g2.length) return null;
     const b = book(g2.map(r=>r.ret).filter(x=>x!==null&&x!==undefined));
-    return {t, n:g2.length, hit:b.hit, mean:b.mean,
-            rho: g2.length >= MMIN
-              ? corr(ranks(g2.map(r=>r.impact_sum)), ranks(g2.map(r=>r.realised_move_pct)))
-              : null};
+    return {t, n:g2.length, hit:b.hit, mean:b.mean, rho: mRho(g2)};
   }).filter(Boolean);
 
+  const idR = mId(), idH = mId();
+  html += `<div class="card"><h3>Bord-rendement en trefkans per drempel</h3>
+    ${legend([{color:css('--s1'), label:'gem. bord % per naam'}])}
+    ${chartBlock(idR, 220)}
+    ${legend([{color:css('--s2'), label:'teken goed %'},
+              {color:css('--muted'), label:'50%: een muntworp', dash:true}])}
+    ${chartBlock(idH, 200)}
+    <p class="meta">Elk punt draagt zijn n eronder. Naar rechts wordt de groep kleiner en het
+     getal luider; de rij met de hoogste waarde is bijna altijd de rij met de minste namen.
+     De floor van de laatste run is ${c.floor}; die rij is gemarkeerd in de tabel.</p></div>`;
+  draw.push(() => {
+    const x = rows.map(r => '≥' + r.t), sub = rows.map(r => `n=${r.n}`);
+    lineChart(document.getElementById(idR), {x, sub, zero: true,
+      series: [{label: 'bord %', color: css('--s1'), values: rows.map(r => r.mean)}],
+      fmtY: v => v.toFixed(1) + '%', fmtT: pc, height: 220,
+      tipX: i => `|impact_sum| ≥ ${rows[i].t} · ${rows[i].n} namen`});
+    lineChart(document.getElementById(idH), {x, sub,
+      series: [{label: 'teken goed', color: css('--s2'), values: rows.map(r => r.hit)},
+               {label: '50%', color: css('--muted'), dash: '5 4', values: rows.map(() => 50)}],
+      fmtY: v => v.toFixed(0) + '%', fmtT: v => n1(v) + '%', height: 200,
+      tipX: i => `|impact_sum| ≥ ${rows[i].t} · ${rows[i].n} namen`});
+  });
+
   html += `<div class="card"><h3>De drempel doorgerekend</h3>` + table([
-    {h:'|impact_sum| ≥', f:r=>`<b>${n1(r.t)}</b>`},
+    {h:'|impact_sum| ≥', f:r=>`<b>${n1(r.t)}</b>${r.t === c.floor ? ' <span class="meta">floor</span>' : ''}`},
     {h:'namen', f:r=>r.n},
     {h:'teken goed %', f:r=>n1(r.hit)},
     {h:'bord %', f:r=>`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
-    {h:'ρ', f:r=>n3(r.rho)}], rows) +
+    {h:'ρ', f:r=>r.rho === null ? `<span class="meta">&lt; ${MMIN}</span>` : n3(r.rho)}], rows) +
     `<p class="meta">De conviction-floor is de enige regel in dit onderzoek die in de VS ooit
-     een familiegewijze correctie doorstond, en hij is daar op dertien dagen gekozen. Deze
-     tabel toont of hij hier iets doet; hij is géén uitnodiging om de drempel te verzetten op
-     de dagen die hem hebben voortgebracht. De rij met de hoogste waarde is bijna altijd de
-     rij met de minste namen.</p></div>`;
+     een familiegewijze correctie doorstond, en hij is daar op dertien dagen gekozen, op de
+     schaal van Opus 5. Deze tabel toont of hij hier iets doet; hij is géén uitnodiging om de
+     drempel te verzetten op de dagen die hem hebben voortgebracht.</p></div>`;
   return html;
 }
 
@@ -2898,30 +3162,50 @@ function mtAanloop(code) {
   const c = mCtx(code), g = mGuard(c, code);
   if (g) return g;
   let html = mControls(c, 'both');
-  if (c.st.n < MMIN) return html + mNeeds(c, MMIN);
+  if (!c.st.n) return html + mNeeds(c, 1);
+  if (c.st.n < MMIN) html += mNeeds(c, MMIN);
 
   const ctl = (key, label) => {
     const v = c.resolved.filter(r => r[key] !== null && r[key] !== undefined);
-    if (v.length < MMIN) return {label, n:v.length, rho:null, agree:null, dis:null};
-    const rho = corr(ranks(v.map(r => -r[key])), ranks(v.map(r => r.realised_move_pct)));
     const A = v.filter(r => (r.impact_sum > 0) === (r[key] < 0));
     const B = v.filter(r => (r.impact_sum > 0) !== (r[key] < 0));
-    return {label, n:v.length, rho,
+    return {label, n:v.length,
+            rho: v.length >= MMIN
+              ? corr(ranks(v.map(r => -r[key])), ranks(v.map(r => r.realised_move_pct))) : null,
             agree: A.length ? book(A.map(r=>r.ret)).mean : null, an:A.length,
             dis: B.length ? book(B.map(r=>r.ret)).mean : null, bn:B.length};
   };
+  const t = [ctl('run_up_20d_pct','−run-up 20 sessies · de gratis controle'),
+             ctl('run_up_5d_pct','−run-up 5 sessies')];
   html += `<div class="card"><h3>De aanloop naar de print</h3>` + table([
-    {h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n}, {h:'ρ tegen de beweging', f:r=>n3(r.rho)},
+    {h:'', f:r=>esc(r.label)}, {h:'n', f:r=>r.n},
+    {h:'ρ tegen de beweging', f:r=>r.rho === null ? `<span class="meta">&lt; ${MMIN}</span>` : n3(r.rho)},
     {h:'eens met de jacht', f:r=>r.agree===null?'–':`${pc(r.agree)} <span class="meta">(${r.an})</span>`},
-    {h:'oneens', f:r=>r.dis===null?'–':`${pc(r.dis)} <span class="meta">(${r.bn})</span>`}],
-    [ctl('run_up_20d_pct','−run-up 20 sessies · de gratis controle'),
-     ctl('run_up_5d_pct','−run-up 5 sessies')]) +
+    {h:'oneens', f:r=>r.dis===null?'–':`${pc(r.dis)} <span class="meta">(${r.bn})</span>`}], t) +
     `<p class="meta">De gratis controle is één getal uit de verzegelde baseline, beschikbaar
      vóór er één subagent draait. In de VS gaven de twee deelverzamelingen — alle namen en het
      verhandelde boek — tegengestelde tekens met overlappende intervallen, wat ruis is die
      twee keer is gemeten. Lees deze tabel dus als twee getallen naast elkaar en niet als een
      regel. Bij stage J is <code>run_up_5d_pct</code> apart verzegeld omdat de 20-daagse de
      beweging verborg die ertoe deed.</p></div>`;
+
+  const res20 = c.resolved.filter(r => r.run_up_20d_pct !== null && r.run_up_20d_pct !== undefined);
+  const res5 = c.resolved.filter(r => r.run_up_5d_pct !== null && r.run_up_5d_pct !== undefined);
+  html += `<div class="grid2"><div class="card"><h3>Run-up 20 sessies tegen de beweging</h3>` +
+    mScatter(c, res20, r => r.run_up_20d_pct, 'run-up 20 sessies %', {height: 280}) +
+    `<p class="meta">De gratis controle wedt op een dalende helling: wat opliep, valt terug.</p>
+    ${mThin(res20.length, MMIN)}</div>` +
+    `<div class="card"><h3>Run-up 5 sessies tegen de beweging</h3>` +
+    mScatter(c, res5, r => r.run_up_5d_pct, 'run-up 5 sessies %', {height: 280}) +
+    `${mThin(res5.length, MMIN)}</div></div>`;
+
+  const lean = c.resolved.filter(r => r.priced_lean_pct !== null && r.priced_lean_pct !== undefined);
+  if (lean.length) html += `<div class="card"><h3>De verzegelde prijs-lean tegen de beweging</h3>` +
+    mScatter(c, lean, r => r.priced_lean_pct, 'priced_lean_pct (verzegeld)', {height: 280}) +
+    `<p class="meta">De lean is wat de baseline denkt dat de markt al verwacht. In de VS
+     verdiende de jacht het meest waar hij het mét de lean eens was, wat precies de verkeerde
+     kant op wijst voor een stage die zoekt wat de markt mist. Waar Spanje en Polen geen
+     register hebben, ís de lean de run-up.</p>${mThin(lean.length, MMIN)}</div>`;
   return html;
 }
 
@@ -2951,6 +3235,13 @@ function mtDeelmarkt(code) {
     {h:'mediane omzet', f:r=>usdM(r.turn)},
     {h:'bord %', f:r=>r.mean===null?'–':`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
     {h:'ρ', f:r=>n3(r.rho)}], rows) +
+    `<div class="grid2"><div>${legend([{color:css('--s1'), label:'namen'}])}` +
+    mGroupBars(rows.map(r => ({label: r.sub, v: r.n, sub: `${r.res} opg.`, color: css('--s1'),
+      tip: `<b>${esc(r.sub)}</b><br>${r.n} namen, ${r.res} opgelost, ${r.find} vondsten`})),
+      {fmtY: v => v.toFixed(0), fmtT: v => v.toFixed(0), labelY: 'namen'}) +
+    `</div><div>${legend([{color:css('--good'), label:'bord % in de plus'}, {color:css('--bad'), label:'in de min'}])}` +
+    mGroupBars(rows.filter(r => r.mean !== null).map(r => ({label: r.sub, v: r.mean, sub: `n=${r.res}`})),
+      {empty: 'nog geen deelmarkt opgelost'}) + `</div></div>` +
     `<p class="meta">Een dag kan één markt zijn: 15 van de 20 namen waren Zweeds op
      2026-10-22. De trekking is bewust <b>niet</b> gestratificeerd, want een quotum per markt
      is een tweede selectie die de scorer niet ziet, en deze stage heeft al één keer betaald
@@ -2981,6 +3272,8 @@ function mtAnker(code) {
     {h:'', f:r=>esc(r.label)}, {h:'namen', f:r=>r.n}, {h:'opgelost', f:r=>r.res},
     {h:'bord %', f:r=>r.mean===null?'–':`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
     {h:'ρ', f:r=>n3(r.rho)}], [arm(true), arm(false)]) +
+    mGroupBars([arm(true), arm(false)].map(a => ({label: a.label.split(',')[0], v: a.mean,
+      sub: `n=${a.res}`})), {empty: 'nog geen arm opgelost'}) +
     `<p class="meta">Dit is de reden dat stage CA bestaat, en niet de agenda. Canada is de
      enige markt hier waar beide regimes in <b>één dag namen</b> zitten: de Montréal Exchange
      noteert opties op 360 namen, het CIRO short-register dekt 87–88% van elke omzetband.
@@ -3011,6 +3304,8 @@ function mtFiler(code) {
     {h:'soort', f:r=>`<b>${esc(r.k)}</b>`}, {h:'namen', f:r=>r.n}, {h:'opgelost', f:r=>r.res},
     {h:'bord %', f:r=>r.mean===null?'–':`<span class="${sgn(r.mean)}">${pc(r.mean)}</span>`},
     {h:'ρ', f:r=>n3(r.rho)}], rows) +
+    mGroupBars(rows.map(r => ({label: r.k, v: r.mean, sub: `n=${r.res}`})),
+      {empty: 'nog geen soort opgelost'}) +
     `<p class="meta">De helft van de ASX levert een Appendix 4C of 5B kwartaalrapport onder
      Listing Rule 4.7B in plaats van een winstcijfer. Dat is een echt koersbewegend event —
      de elf waargenomen van IperionX hebben een mediane absolute reactie van 4,66% — maar met
@@ -3045,6 +3340,16 @@ function mDelta(c, key, title, note) {
     {h:'verschil', f:r=>`<span class="${sgn(r.impact_sum-r[key])}">${n1(r.impact_sum-r[key])}</span>`},
     {h:'beweging', f:r=>r.realised_move_pct===null||r.realised_move_pct===undefined
         ? '<span class="meta">niet opgelost</span>' : pc(r.realised_move_pct)}], v);
+  const id = mId();
+  h += legend([{color:css('--s1'), label:'opgelost'}, {color:css('--muted'), label:'niet opgelost'},
+               {color:css('--muted'), label:'y = x: het bestand veranderde niets', dash:true}]) +
+    chartBlock(id, 280);
+  draw.push(() => scatterChart(document.getElementById(id), {
+    points: v.map(r => ({x: r[key], y: r.impact_sum, r: 5.5, open: isSept(r),
+      color: isRes(r) ? css('--s1') : css('--muted'), tip: mTip(r, c) +
+        `<br>vóór ${n1(r[key])} → ná ${n1(r.impact_sum)}`})),
+    diagonal: true, trend: false, labelX: 'vóór (bevroren draft)', labelY: 'ná (impact_sum)',
+    height: 280}));
   return h + `<p class="meta">${note}</p></div>`;
 }
 
@@ -3124,7 +3429,31 @@ function mtNamen(code) {
 function mtRuns(code) {
   const c = mCtx(code), g = mGuard(c, code);
   if (g) return g;
-  return mControls(c, 'val') + `<div class="card"><h3>Elke run op schijf</h3>` + table([
+  /* De schaal over de tijd, per eventdag: hoeveel namen, hoeveel vondsten per naam en
+     hoe groot de mediane som. Volgt de knoppen, dus ook de septemberschakelaar. */
+  const days = mDays(c.ranked).map(d => {
+    const a = d.rows.map(r => Math.abs(r.impact_sum || 0)).sort((x, y) => x - y);
+    return {date: d.date, n: d.rows.length,
+            fpn: d.rows.reduce((s, r) => s + (r.n_findings || 0), 0) / d.rows.length,
+            med: a.length % 2 ? a[(a.length - 1) / 2] : (a[a.length / 2 - 1] + a[a.length / 2]) / 2,
+            keys: [...new Set(d.rows.map(r => r.prov_key))].join(', '),
+            sept: d.rows.some(isSept)};
+  });
+  const id = mId();
+  draw.push(() => lineChart(document.getElementById(id), {
+    x: days.map(d => d.date.slice(5)), sub: days.map(d => `n=${d.n}`),
+    series: [{label: 'mediane |impact_sum|', color: css('--s1'), values: days.map(d => d.med)},
+             {label: 'vondsten per naam', color: css('--s2'), values: days.map(d => d.fpn)},
+             {label: `floor ${c.floor}`, color: css('--muted'), dash: '5 4', values: days.map(() => c.floor)}],
+    zero: true, fmtY: v => v.toFixed(1), fmtT: n2, height: 240,
+    tipX: i => `${days[i].date} · ${days[i].n} namen · ${days[i].keys}${days[i].sept ? ' · sept. Opus 5.5' : ''}`}));
+  return mControls(c, 'both') + `<div class="card"><h3>De schaal per eventdag</h3>
+    ${legend([{color:css('--s1'), label:'mediane |impact_sum|'}, {color:css('--s2'), label:'vondsten per naam'},
+              {color:css('--muted'), label:'de conviction-floor', dash:true}])}
+    ${chartBlock(id, 240)}
+    <p class="meta">Zonder uitkomst te tekenen. Een knik die op één datum in elke markt tegelijk
+     valt, is de hunter of het model en niet de markt: zo werd de overgang naar Opus 5.5 op
+     2026-09-22 gevonden.</p></div>` + `<div class="card"><h3>Elke run op schijf</h3>` + table([
     {h:'dag', f:r=>`<b>${esc(r.run_date)}</b>`},
     {h:'namen', f:r=>r.n_rows || (r.quiet_reason ? `<span class="meta">${esc(r.quiet_reason)}</span>` : 0)},
     {h:'hunters', f:r=>r.n_hunts},
@@ -3210,6 +3539,37 @@ function verCell(r) {
   const approx = r.prov_basis === 'recorded_at_run' ? '' : '<span class="meta" title="niet tijdens de run vastgelegd">≈</span>';
   return `<span title="${esc(t)}">${approx}${esc(r.prov_key)}</span>`;
 }
+/* De schaal per versie, zonder uitkomst: hoe groot de sommen zijn en hoeveel
+   vondsten een naam krijgt. Hier was de september-instorting van Opus 5.5 te zien
+   voordat er één naam was opgelost. */
+function versionCharts(groups) {
+  const ok = groups.filter(g => g.rows.length);
+  if (!ok.length) return '';
+  const med = xs => { const v = xs.filter(x => x !== null && x !== undefined).sort((a, b) => a - b);
+    return v.length ? (v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2) : null; };
+  const lab = k => k.replace(' · ', ' ');
+  const colOf = g => g.rows.every(isSept) ? css('--warn') : css('--s1');
+  const idA = mId(), idB = mId();
+  draw.push(() => {
+    barChart(document.getElementById(idA), {height: 220, fmtY: v => v.toFixed(1),
+      fmtT: v => n2(v), labelY: 'mediane |impact_sum|',
+      items: ok.map(g => ({label: lab(g.key), v: med(g.rows.map(r => Math.abs(r.impact_sum || 0))),
+        sub: `n=${g.rows.length}`, color: colOf(g),
+        tip: `<b>${esc(g.key)}</b><br>mediane |impact_sum| ${n2(med(g.rows.map(r => Math.abs(r.impact_sum || 0))))}
+              over ${g.rows.length} namen`}))});
+    barChart(document.getElementById(idB), {height: 220, fmtY: v => v.toFixed(1),
+      fmtT: v => n2(v), labelY: 'vondsten per naam',
+      items: ok.map(g => ({label: lab(g.key), v: g.rows.reduce((s, r) => s + (r.n_findings || 0), 0) / g.rows.length,
+        sub: `n=${g.rows.length}`, color: colOf(g)}))});
+  });
+  return `<div class="grid2"><div><h3>Mediane |impact_sum| per versie</h3>${chartBlock(idA, 220)}</div>
+    <div><h3>Vondsten per naam</h3>${chartBlock(idB, 220)}</div></div>` +
+    legend([{color:css('--s1'), label:'versie'},
+            {color:css('--warn'), label:'alleen september-Opus 5.5'}]) +
+    `<p class="meta">De schaal, niet de kwaliteit: een versie die kleiner sommeert rangschikt
+     daarom nog niet slechter. Maar een floor die op één schaal is gemeten, koopt op een andere
+     schaal iets anders.</p>`;
+}
 function versionTable(groups, regVersions) {
   /* groups: [{key, rows:[...]}] where rows carry impact_sum, move, ret, run */
   const meta = new Map((regVersions || []).map(v => [v.id, v]));
@@ -3226,7 +3586,8 @@ function versionTable(groups, regVersions) {
             sign: signed.length ? `${signed.filter(r => (r.impact_sum > 0) === (r.mv > 0)).length}/${signed.length}` : '–',
             rho: v.length >= MMIN ? corr(ranks(v.map(r => r.impact_sum)), ranks(v.map(r => r.mv))) : null,
             neg: signed.length ? `${signed.filter(r => r.impact_sum < 0).length}/${signed.length}` : '–',
-            bk: book(v.filter(r => r.impact_sum).map(r => r.impact_sum > 0 ? r.mv : -r.mv))};
+            bk: book(v.filter(r => r.impact_sum).map(r => r.impact_sum > 0 ? r.mv : -r.mv)),
+            sept: g.rows.filter(isSept).length};
   });
   return table([
     {h:'versie · model', f:r=>`<b>${esc(r.key)}</b>`},
@@ -3241,6 +3602,7 @@ function versionTable(groups, regVersions) {
     {h:'teken goed', f:r=>r.sign},
     {h:'ρ', f:r=>r.rho === null ? `<span class="meta">&lt; ${MMIN}</span>` : n2(r.rho)},
     {h:'bord gem. %', f:r=>r.bk.n ? `<span class="${sgn(r.bk.mean)}">${pc(r.bk.mean)}</span>` : '–'},
+    {h:'sept. Opus 5.5', f:r=>r.sept ? `<span class="c-anti" title="Opus 5.5 op de prompt van vóór de hunter-core">${r.sept}/${r.n}</span>` : '–'},
   ], out);
 }
 const VERSIESNOTE = `<p class="meta"><b>Wat een versie is.</b> Een versie is één inhoud van de
@@ -3267,7 +3629,8 @@ function mtVersies(code) {
                                   .map(([key, rows]) => ({key, rows}));
   const reg = (c.d.versions || []);
   let html = mControls(c, 'thr-only') + `<div class="card"><h3>Per versie en model</h3>` +
-    versionTable(groups, reg) + VERSIESNOTE + `</div>`;
+    versionTable(groups, reg) + VERSIESNOTE + `</div>` +
+    `<div class="card">${versionCharts(groups)}</div>`;
   if (reg.length) html += `<div class="card"><h3>Alle versies van deze stage</h3>` + table([
     {h:'versie', f:r=>`<b>${esc(r.id)}</b>`},
     {h:'wat veranderde', f:r=>esc(r.label || r.subject || '–')},
@@ -3287,12 +3650,16 @@ function mtVersies(code) {
 const MDREMPEL = 10;
 const MTABDEFS = [
   {name:'Overzicht', fn:mtOverzicht},
-  {name:'Score',     fn:mtScore,     needs:`${MMIN} opgeloste namen`,
-   when:c => c.st.n >= MMIN},
-  {name:'Drempel',   fn:mtDrempel,   needs:`${MDREMPEL} opgeloste namen`,
-   when:c => c.st.n >= MDREMPEL},
-  {name:'Aanloop',   fn:mtAanloop,   needs:`${MMIN} opgeloste namen`,
-   when:c => c.st.n >= MMIN},
+  /* De analysetabbladen gaan open bij één opgeloste naam, op verzoek: liever een
+     grafiek met drie stippen die zegt dat het er drie zijn, dan geen grafiek. De ρ
+     zelf blijft onder ${MMIN} namen weg, en de drempeltabel onder ${MDREMPEL} draagt
+     een waarschuwing. */
+  {name:'Score',     fn:mtScore,     needs:'één opgeloste naam',
+   when:c => c.st.n >= 1},
+  {name:'Drempel',   fn:mtDrempel,   needs:'één opgeloste naam',
+   when:c => c.st.n >= 1},
+  {name:'Aanloop',   fn:mtAanloop,   needs:'één opgeloste naam',
+   when:c => c.st.n >= 1},
   {name:'Deelmarkt', fn:mtDeelmarkt, needs:'een gejaagde naam', only:'EU',
    when:c => c.ranked.length > 0},
   {name:'Ankerarm',  fn:mtAnker,     needs:'een naam met een ankerstatus', only:'CA',
@@ -3316,7 +3683,7 @@ const MTABDEFS = [
 ];
 
 function marketTabs(code) {
-  const c = mCtx(code, true, true);
+  const c = mCtx(code, true, true, true);
   return byGroup(MTABDEFS
     .filter(t => !t.only || t.only === code)
     .filter(t => !t.when || !c || t.when(c))
@@ -3454,7 +3821,8 @@ function tabVersies() {
   let html = `<p class="lead">Welke hunter-prompt en welk model elke Amerikaanse naam
     rangschikten. De versiekeuze in de filterbalk werkt op elk tabblad; hier staan ze
     naast elkaar.</p><div class="card"><h3>Per versie en model</h3>` +
-    versionTable(groups, reg) + VERSIESNOTE + `</div>`;
+    versionTable(groups, reg) + VERSIESNOTE + `</div>` +
+    `<div class="card">${versionCharts(groups)}</div>`;
   if (reg.length) html += `<div class="card"><h3>Alle versies van de Amerikaanse hunter</h3>` + table([
     {h:'versie', f:r=>`<b>${esc(r.id)}</b>`},
     {h:'wat veranderde', f:r=>esc(r.label || r.subject || '–')},

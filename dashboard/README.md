@@ -150,7 +150,8 @@ threshold you cannot move is a threshold you cannot test.
 | **positiecap** | the sizing rule, recomputed: a gross budget split equally over the day's names, capped per name. Off means equal weight and always fully invested, which is the research number and not what an account does |
 | **periode** | which runs count, by preset or by two dates. Every chart's x-axis follows it |
 | **sessie / sector** | amc against bmo, and one sector at a time |
-| **versie** | the hunter prompt version and model that ranked the name (`us.v8 · Opus 5.5`). Off by default; on, every tab holds only that version. The same selector sits beside the threshold on every other market |
+| **prompt · model** | the hunter prompt version and the model that ranked the name, as two separate selectors with counts (`us.v6 (51)`, `Opus 5.5 (39)`): one alone filters one axis, both together pick one variant. Off by default; on, every tab except Versies holds only that variant. The same pair sits beside the threshold on every other market |
+| **zonder sept. Opus 5.5** | **ON by default (operator's instruction, 2026-10-02).** Leaves out every name an Opus 5.5 hunter sized on the prompt before the shared hunter core: model Opus 5.5 and no `hunter_core` blob in the run's `provenance.json`. That prompt filed a third of what it found and sized near zero. It is `scripts/provenance.py september_opus55()`, the same function `score_report.py` uses for its reference set, carried on every row as `sept_opus55`. One switch for the whole page: it applies on every market and on Versies too. Hand trades with no ranked name are never dropped by it |
 
 ## Every prediction carries the prompt version and model that made it (2026-10-01)
 
@@ -440,9 +441,28 @@ tab that market does not have, opens that market's Overzicht and rewrites itself
 than sitting there broken.
 
 Without the Index's last column a short tab row would read as a dashboard that does not know
-those analyses. **ρ is withheld below five names** and the threshold sweep below ten,
-which is `au_resolve.py`'s own rule: on three names a rank correlation of 1.0 comes up one
-time in six. A control may narrow a number and may never close the tab a reader is
+those analyses. **ρ is withheld below five names**, which is `au_resolve.py`'s own rule: on
+three names a rank correlation of 1.0 comes up one time in six.
+
+**Every market tab carries the US charts since 2026-10-02, and Score, Drempel and Aanloop
+open at ONE resolved name** (they opened at 5, 5 and 10), on the operator's instruction that
+the graphs should exist before the data makes them readable. What changed is the gate, not
+the rule: ρ is still withheld below five, the Drempel table carries a warning below ten, and
+every chart on a thin sample says `n=…` underneath. The charts, all recomputed under the
+market's own controls:
+
+| tab | charts |
+| --- | --- |
+| Overzicht | compounded board return per event day against shorting every name · distribution of `impact_sum` (needs no outcome) · board return per name · names per event day, resolved or not |
+| Score | `impact_sum` against the realised move, coloured by session (Europe: by the three largest submarkets), September Opus 5.5 as open dots · board return per `\|impact_sum\|` bucket with the floor bucket marked · board return per event day |
+| Drempel | board return and sign-right rate at eleven thresholds, n under every point |
+| Aanloop | run-up 20d, run-up 5d and the sealed price lean, each against the move |
+| Deelmarkt · Ankerarm · Soort | names and board return per group |
+| Lessons · Taal | frozen draft against the final sum, y = x dashed |
+| Versies (every market and the US) | median `\|impact_sum\|` and findings per name per version — the September collapse is visible here without a single outcome |
+| Runs | median `\|impact_sum\|` and findings per name per event day, with the floor |
+
+The floor a market tab marks is the LATEST run's (`2.8` since 2026-10-02), not the first one's. A control may narrow a number and may never close the tab a reader is
 standing on, so the gate is computed with the threshold off; the validation switch can
 open a tab, and the row is then rebuilt with the same tab found again by name.
 

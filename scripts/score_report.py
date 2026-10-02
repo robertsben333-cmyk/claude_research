@@ -119,7 +119,7 @@ def impact_of(r):
     return sum(x.get("expected_impact_pct") or 0 for x in fs) if fs else None
 
 
-SEPT_OPUS55 = "claude-opus-5-5"
+SEPT_OPUS55 = provenance.SEPT_OPUS55
 
 # Blind re-judges of resolved names: (glob, model, which numbers count as reference).
 EVALUATIONS = [
@@ -135,12 +135,8 @@ EVALUATIONS = [
 EVAL_KEY = "research/analyses/rejudge-four-models/key.json"
 
 
-def september_opus55(run, model):
-    """An Opus 5.5 hunt from before the shared hunter core: the too-strict prompt."""
-    if model != SEPT_OPUS55:
-        return False
-    prov = load(Path(run) / "provenance.json") or {}
-    return not (prov.get("files") or {}).get("hunter_core")
+# One definition, shared with the dashboard's "zonder sept. Opus 5.5" switch.
+september_opus55 = provenance.september_opus55
 
 
 def scaled_of(r):

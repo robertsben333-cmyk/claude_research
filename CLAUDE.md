@@ -309,8 +309,9 @@ them, so it cannot trigger itself** — do not add `dashboard/**` to that filter
 rebuilt under it.** A bar above the tabs picks US, Europa, Japan, Australië or Canada;
 the US keeps its sixteen tabs and each other market gets the same suite minus what it
 cannot have — **Handel, Capaciteit, Kosten and Weging do not exist off the US**, because
-those stages have no broker. An analysis tab appears only when its data carries it (Score
-and Aanloop at 5 resolved names, Drempel at 10, Lessons at a frozen `pre_lessons` draft,
+those stages have no broker. An analysis tab appears only when its data carries it (Score,
+Aanloop and Drempel at ONE resolved name since 2026-10-02, with the US charts on every
+market tab and ρ still withheld below five; Lessons at a frozen `pre_lessons` draft,
 Taal at a `pre_local` one, which only runs sealed before 2026-09-22 carry, plus `Deelmarkt` for EU, `Ankerarm` for CA and `Soort` for AU),
 and **Overzicht lists what is still shut and what opens it** — without that a short row
 reads as a dashboard that does not know those analyses.
@@ -855,7 +856,10 @@ share of reference names sized by the SAME model whose |value| is lower, `n<20` 
 exist. The reference set is the live runs to date (every stage pooled, validation runs
 out) plus the blind re-judges already run (`rejudge-opus55-v2-sizing` for Opus 5.5, both
 numbers; `rejudge-four-models` for Opus 5, Sonnet 5.5 and Fable 5.1, `impact_scaled`
-only). **The September Opus 5.5 hunts are excluded from it** (operator's instruction): a
+only). **The September Opus 5.5 hunts are excluded from it, and from the dashboard by
+default** (operator's instruction; the dashboard's `zonder sept. Opus 5.5` switch is ON on
+load, every market, and `scripts/provenance.py september_opus55()` is the one definition
+both use — every Australian name to date is one, so Australia opens empty): a
 live Opus 5.5 run with no `hunter_core` blob in its provenance, and every re-judge row
 that judged such a hunt's evidence. It reads SIZE against that model's habit, not a rank
 or a probability. Stage E-S runs
@@ -2128,7 +2132,7 @@ definition is not registered — so after editing any hunter, run `registry` (it
 `from_utc` is the merge time. The model is inferred from the alias timeline in
 `provenance.py` (`opus` → claude-opus-5 until 2026-09-22 18:56 UTC, claude-opus-5-5 from
 19:09) unless a run recorded it. The dashboard shows the version on every row, filters
-on it on every market, and puts versions side by side on the Versies tab. **Never pool
+on prompt and model as two separate selectors on every market, and puts versions side by side on the Versies tab. **Never pool
 two versions to judge either one.**
 
 **`scripts/publish.sh` pushes to `main`, not to your branch.** `BRANCH="${EARNINGS_DATA_BRANCH:-main}"`
