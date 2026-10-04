@@ -7,3 +7,9 @@
 ## Stage EU — Europe researcher — DONE (empty day)
 - Logged at 2026-10-02 13:39 UTC
 - Event date 2026-10-05. All ten calendars read, none market_closed. 1 scheduled (BON.PA, fr), 0 eligible: dropped below the $100k floor at $84,308/day. Floor not lowered. 0 hunted, no baselines, no scoring, nothing to resolve. Universe and note in research/2026/10/2026-10-05/europe/. No orders. Pushed to main (EARNINGS_DATA_BRANCH=main).
+
+## Stage AU — Australia researcher — EMPTY DAY
+- Logged at 2026-10-04 06:40 UTC
+- Fired 2026-10-04 06:40 UTC (Sunday), sealing for ASX session 2026-10-05. Repo: existing checkout, reset local main to origin/main (force-updated remote).
+- Universe: 1575 vendor rows scanned, 0 scheduled, 0 eligible, 0 hunted. market_open true (basis: weekday not an ASX holiday, beyond the tape) — a genuinely thin off-season Australian session, not a fault. No hunters spawned, no baselines sealed.
+- Universe file: research/2026/10/2026-10-05/australia/universe.json
