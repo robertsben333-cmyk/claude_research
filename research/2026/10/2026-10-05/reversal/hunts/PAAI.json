@@ -1,0 +1,61 @@
+{
+  "ticker": "PAAI",
+  "drop_date": "2026-10-05",
+  "window": {"from": "close of 2026-10-05", "to": "close of 2026-10-06"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Zero findings: no filing by or naming Paradium since 2026-09-18, no news since the RTB deal, and today's -5.6% came on 0.46x volume with nothing behind it, so this is a non-result at p_up 50; the scale (abs 5%) comes from the name's own median absolute next-day move after comparable falls (4.17%) nudged up for a 49% ATR.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "baseline own comparable falls (n=199, median next close 0.0%, up rate 46.2%, median |next| 4.17%) from /home/user/claude_research/research/2026/10/2026-10-05/reversal/baselines/PAAI.json; no option anchor (unusable_chain)",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 30,
+    "confidence_pct": 55,
+    "what_happened": "A low-volume (0.46x, ~$315k by 15:04 ET) -5.6% leg in a continuing unwind of the 2026-09-17 RTB-deal spike (stock nearly tripled to $3.34 intraday 09-17, fell ~55% on 09-18); no new filing or news on 2026-10-05.",
+    "evidence": [
+      {"claim": "Paradium fell 49% to $1.69 on Friday 2026-09-18 after nearly tripling on the Roundtable agreement on 09-17", "url": "https://www.itiger.com/news/2668209924", "timestamp": "2026-09-18"},
+      {"claim": "Last 8-Ks are 2026-09-18 (Item 8.01 RTB Strategic Platform Agreement; Item 7.01 press release); nothing filed since", "url": "https://data.sec.gov/submissions/CIK0000894871.json", "timestamp": "2026-10-05"},
+      {"claim": "EDGAR full-text search for 'Paradium' across all filers 2026-09-20 to 2026-10-05 returns zero hits", "url": "https://efts.sec.gov/LATEST/search-index?q=%22Paradium%22&startdt=2026-09-20&enddt=2026-10-05", "timestamp": "2026-10-05"},
+      {"claim": "RTB minority purchase (49.5% at $3.80/share cash, $89.6m total) is conditional on RTB's capital raise and diligence, closing expected Q4 2026", "url": "https://www.sec.gov/Archives/edgar/data/894871/000149315226043382/form8-k.htm", "timestamp": "2026-09-18"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "none found inside the window; RTB deal closing 'expected Q4 2026' (undated); Q3 earnings estimated 2026-11-12 (Zacks cadence prior, not company-announced)",
+    "what_would_change_my_mind": "An RTB or Paradium filing/press release before the 2026-10-06 close on the status of RTB's capital raise (the closing condition for the $3.80/share minority purchase), or an offering by either party."
+  },
+  "positioning_check": "not found: Nasdaq short-interest API returned 503 at 2026-10-05; baseline forward.short_interest status unavailable. Options chain unusable (ATM legs not two-sided), put/call OI 0.16 on 2,574 contracts, no skew. Insider trades: 0 in 3 and 12 months (Nasdaq).",
+  "findings": [],
+  "outside_window": [
+    {"finding": "RTB's $73.6m cash purchase of a 49.5% Paradium stake at $3.80/share requires RTB to complete a capital raise; RTB raised only $5.1m at $11.13 on 2026-09-11. Closing expected Q4 2026 with no date; a failed or completed raise would reprice PAAI materially, but nothing dates it inside the window.", "expected_impact_pct": 0.0, "resolves_by": "2026-12-31", "source": "https://www.sec.gov/Archives/edgar/data/894871/000149315226043382/form8-k.htm"},
+    {"finding": "Price is $1.095, within 25% of the NYSE American / exchange $1 threshold; no deficiency letter found in any issuer filing ('minimum bid price' 0 hits in 550 days).", "expected_impact_pct": 0.0, "resolves_by": "unknown", "source": "https://data.sec.gov/submissions/CIK0000894871.json"}
+  ],
+  "searched_and_found_nothing": [
+    "Issuer filings since 2026-09-18 via data.sec.gov submissions (baseline forward block): none",
+    "EDGAR full-text 'Paradium' scoped to CIK 894871, 2026-09-19..2026-10-05: 0 hits",
+    "EDGAR full-text 'Paradium' across all filers (incl. RTB Digital), 2026-09-20..2026-10-05: 0 hits, so no RTB offering/update naming the deal",
+    "WebSearch Paradium/RTB news October 2026, 'PAAI shares fall', Roundtable closing update: only 2026-09-17/18 deal coverage and RTB's 2026-09-11 private placement",
+    "stocktitan PAAI news list: latest item 2026-09-18",
+    "ATM / shelf language: 0 hits in 550 days (baseline text probe); reverse split, lock-up, non-reliance: nothing recent",
+    "Nasdaq short-interest API: HTTP 503",
+    "A WebSearch snippet showed an undated '$1.05' PAAI quote of unknown timestamp; it may postdate the screen instant and was excluded from all reasoning and numbers"
+  ],
+  "abs_move_pct": 5.0,
+  "p_up": 50,
+  "rejected_candidates": [
+    {"candidate": "RTB capital-raise condition for the $3.80/share minority purchase as a second-shoe risk", "source": "https://www.sec.gov/Archives/edgar/data/894871/000149315226043382/form8-k.htm", "reason": "outside_window", "detail": "closing 'expected Q4 2026', no dated milestone inside 2026-10-06; filed in outside_window"},
+    {"candidate": "Going-concern language in the 2025 10-K", "source": "https://www.sec.gov/Archives/edgar/data/894871/000162828026018153/aren-20251231.htm", "reason": "outside_window", "detail": "dated 2026-03-16, no payment or test date inside the window; current ratio 2.4 per aggregators"}
+  ],
+  "baseline_tension": "Agrees: ordinary-to-thin volume (0.46x, base rate +1.46% under 2x) and the name's own falls (median next close 0.0%, 46% up) point to no edge, while the 49% ATR points the other way, so the honest answer is a non-result rather than a lean.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}

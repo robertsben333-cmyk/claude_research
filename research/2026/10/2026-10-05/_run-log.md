@@ -77,3 +77,12 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-10-05 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside 13:30–16:05 ET. Repo was present in the working directory (no clone). Plan: --intraday screen K=15, seal baselines, one reversal-hunter per name, edge_score.py, resolve 2026-10-02, note before 16:00 ET.
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-05 19:12 UTC
+- rev_universe --intraday at 15:04 EDT for drop date 2026-10-05: 5977 screened, 36 passed floors, 15 hunted, 15 rankable. Largest sector Health Care 6/15 (40%), no concentration warning. SPY +0.83% at screen. Five names repeat from the 10-02 run (WHLR WCT HOST GCTK GRML).
+- Provenance: reversal-hunter rev.v7, claude-opus-5-5. Hunters ran 8 at a time (concurrency cap); all 15 written by 19:11 UTC. Nothing shed.
+- Floor-clearer (|impact_sum|>=2.8): WHLR -3.00 (Series D holder redemption 10-05, settled in stock; 8-K expected before 10-06 open). Range -3.00..+0.50. Zero repricing (leg 1) findings; every overshoot_pct 0. 5 hunts returned zero findings.
+- Defect (repeat of 10-02): overshoot_has_mechanism=true on 8 hunts with no repricing finding (VOGX HOST GRML BGS NNNN CRDL GCTK WCT); by_overshoot_mechanism will mis-bucket them. Constant/brief not changed.
+- Resolve: 2026-10-01 run resolved at d1 (resolve-2026-10-01.json): impact_sum rho +0.324 (p 0.24) vs neg_atr14 +0.196, neg_vol_spike +0.296, neg_ret_d -0.614 (p 0.018); lean_vs_free_control_rho 0.029; book ONEN short +2.60% gross. 2026-10-02 run all 15 move_pending (window closes today); resolve-2026-10-02.json written as pending.
+- Nasdaq short-interest API returned 503 to PAAI and BGS hunters. No orders, no broker step. Note: research/2026/10/2026-10-05/reversal/reversal-note.md

@@ -1,0 +1,79 @@
+{
+  "ticker": "SGRX",
+  "drop_date": "2026-10-05",
+  "window": {"from": "close of 2026-10-05", "to": "close of 2026-10-06"},
+  "expected_move_pct": -1.08,
+  "conviction_note": "No catalyst and no filing since 2026-09-23, so leg 1 has no mechanism and is 0. Leg 2 is one inferred supply finding at -2.0: the share count rose about 2.3x in a month and the money owed is many times the market cap. abs_move 9 comes from ATR 21% and the stock's own recent falls (median |next close| about 9 since July); p_up 44 is a proxy lean, giving -1.08. The scaled number is half the finding sum because the evidence is an inference with no date.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -2.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "No option chain and no analyst coverage. Sized against the baseline's own comparable falls (n=112, median next close 0.0%, median |move| 5.4%; 12 falls since July, 5 up) and ATR14 21.2%, research/2026/10/2026-10-05/reversal/baselines/SGRX.json. No market bar, so sizes are capped small.",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 20,
+    "confidence_pct": 30,
+    "what_happened": "This is the third fall of 9% or more in four sessions (10-01, 10-02, 10-05). Today opened -16.7% and recovered 6.7% intraday, to -11.1% at the 15:04 ET screen, on 10x normal volume ($1.79m traded against a market cap of about $2.1m). There was no press release, no 6-K and no EDGAR full-text hit after 2026-09-23. The likeliest driver is continued selling of newly issued shares.",
+    "evidence": [
+      {"claim": "1,881,935 Class A shares outstanding after the DOGE-placement shares were cancelled on 2026-09-22", "url": "https://www.sec.gov/Archives/edgar/data/1735556/000110465926110020/tm2625944d1_6k.htm", "timestamp": "2026-09-23 17:00 ET"},
+      {"claim": "1-for-5 reverse split effective 2026-08-21 left about 799,914 Class A and 21,043 Class B shares", "url": "https://www.sec.gov/Archives/edgar/data/1735556/000110465926099708/tm2623750d1_ex99-1.htm", "timestamp": "2026-08-21"},
+      {"claim": "Pre-funded warrants for 1,291,573 post-split Class A shares were issued in the 2026-06-28 GPU asset acquisition; $14.5m principal of secured convertible debentures is outstanding", "url": "https://www.sec.gov/Archives/edgar/data/1735556/000110465926108989/btog-20260630x20f.htm", "timestamp": "2026-09-18"},
+      {"claim": "EDGAR full-text search for 'Sangrix' over 2026-09-24 to 2026-10-05 returns 0 hits", "url": "https://efts.sec.gov/LATEST/search-index?q=%22Sangrix%22&startdt=2026-09-24&enddt=2026-10-05", "timestamp": "2026-10-05"},
+      {"claim": "The latest news headlines are 2026-09-15 (website and logo) and 2026-09-09 (DOGE sale); nothing in October", "url": "https://www.stocktitan.net/news/SGRX/", "timestamp": "2026-10-05"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -30,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "None found inside the window. Nasdaq's earnings-date estimate is not company-announced, so nothing rests on it.",
+    "what_would_change_my_mind": "A 6-K tonight would change the read: a GPU lease contract or a debenture restructuring would be positive; a new note draw, a warrant reset or a resale registration would be negative."
+  },
+  "positioning_check": "Nasdaq/FINRA short interest at the 2026-09-15 settlement was 29,321 shares (down 19.8% from 08-31), 1.0 days to cover, about 1.6% of the 1.88m shares. It lags about eight business days, so the position carried into this fall is not visible. The 3- and 12-month Form 4 summaries show no insider trades. There is no options market, so there is no skew. Sources: https://api.nasdaq.com/api/quote/SGRX/short-interest?assetclass=stocks and https://api.nasdaq.com/api/company/SGRX/insider-trades",
+  "findings": [
+    {
+      "finding": "Supply overhang still working: Class A shares rose from about 0.82m after the 2026-08-21 split to 1.88m on 2026-09-23. That is consistent with exercise of the 1.29m post-split pre-funded warrants from the GPU deal, so up to about 0.2m warrant shares may remain. On top sit $14.5m of secured convertible debentures with down-round features, about 7x the roughly $2.1m market cap, plus a going-concern flag (20-F, 2026-09-18) and a restated shareholders' deficit of $6.0m. Holders who receive near-free shares are sellers into any bounce in the 2026-10-06 session.",
+      "leg": "new_information",
+      "mechanism_in_window": "There is no dated event. The supply is continuous: warrant shares carry only nominal exercise cost and can be sold in any session, including 2026-10-06. Today's turnover of about 85% of the share count in one day shows the holders are active now.",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -8.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-06",
+      "reaction_history_on_this_line": "Since the warrants were issued, the stock's falls have mostly continued: of the 12 baseline events from 2026-07-06 to 2026-10-02, 7 fell further by the next close (10-01 -9.35%, 10-02 -11.12%). Over all 112 comparable falls the median is 0.0%.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1735556/000110465926110020/tm2625944d1_6k.htm",
+      "source_date": "2026-09-23",
+      "why_not_priced": "The close prices a seller who has been active today, not whether the remaining warrant and conversion supply keeps coming tomorrow. If the overhang were spent, the 6.7% intraday recovery would have held up the gap and volume would be falling; instead this is the third heavy-volume fall in four sessions.",
+      "independence": "Separate filings agree: the 20-F (https://www.sec.gov/Archives/edgar/data/1735556/000110465926108989/btog-20260630x20f.htm) gives the pre-funded warrants and debentures, and the 6-K/A (https://www.sec.gov/Archives/edgar/data/1735556/000110465926108949/tm2625631d1_6ka.htm) gives the down-round warrant deemed dividend ($7.7m) and the shareholders' deficit. Both are the issuer's own documents; there is no outside confirmation of who is selling."
+    }
+  ],
+  "outside_window": [
+    {"finding": "Bid price is $1.12, within 25% of the $1 Nasdaq minimum. The company has done 1:60 (2026-01-20) and 1:5 (2026-08-21) reverse splits within the past year, so a renewed deficiency may get no cure period. Any notice needs 30 consecutive business days below $1, far beyond 2026-10-06.", "expected_impact_pct": -3.0, "resolves_by": "2026-11-17", "source": "https://www.sec.gov/Archives/edgar/data/1735556/000110465926099708/tm2623750d1_ex99-1.htm"},
+    {"finding": "Further draws on the convertible note facility: $2m of a $10m maximum closed on 2026-06-29, at a conversion price of $1.63 pre-split, subject to adjustment. A new draw is possible at any time, but none is dated.", "expected_impact_pct": -2.0, "resolves_by": "undated", "source": "https://www.sec.gov/Archives/edgar/data/1735556/000110465926078555/tm2619272d1_6k.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR full-text search 'Sangrix' 2026-09-24 to 2026-10-05: 0 hits; the submissions JSON shows the latest filing is the 2026-09-23 6-K (https://data.sec.gov/submissions/CIK0001735556.json)",
+    "News: stocktitan SGRX feed (latest 2026-09-15), WebSearch 'Sangrix Inc October 2026' and 'Sangrix announces': no October press release",
+    "Registered ATM or shelf: the form list since 2025-10 has no F-3 or 424B, and the 2026-06-09 RW withdrew a registration. The 'at-the-market' probe hit on 2026-06-29 is the convertible-note SPA, not an ATM, so nothing can be drawn tonight under a registered program",
+    "Insiders: Nasdaq insider-trades shows 0 trades over 3 and 12 months; no disclosed buyer",
+    "Analyst coverage and notes: none found",
+    "Options: no_options_market per baseline",
+    "Clinical trials and FDA: not applicable (SIC 6199)",
+    "Search snippets carried stale quote widgets (early-September prices). None was dated after the screen instant, and none was used"
+  ],
+  "abs_move_pct": 9.0,
+  "p_up": 44,
+  "rejected_candidates": [
+    {"candidate": "Going concern in the FY2026 20-F and a restated shareholders' deficit of $6.0m", "source": "https://www.sec.gov/Archives/edgar/data/1735556/000110465926108989/btog-20260630x20f.htm", "reason": "duplicate", "detail": "It is the reason the issuer keeps needing dilutive financing, so it is merged into the supply finding rather than counted twice"},
+    {"candidate": "Redemption of the 66,668 DOGE-placement shares, cancelled 2026-09-22", "source": "https://www.sec.gov/Archives/edgar/data/1735556/000110465926110020/tm2625944d1_6k.htm", "reason": "duplicate", "detail": "It reduces the share count slightly and is already in the 1,881,935 figure used by the supply finding"},
+    {"candidate": "Nasdaq earnings date estimate (a snippet said 2026-10-30)", "source": "https://www.wallstreetzen.com/stocks/us/nasdaq/sgrx/stock-forecast", "reason": "outside_window", "detail": "Not company-announced and after 2026-10-06"}
+  ],
+  "baseline_tension": "Partly at odds with the baseline. The lean (+0.175) and the cross-section prior (+0.4) point up, but the volume (10x, near the whole float), ATR 21% and the recent run of continued falls point down. I lean down at 44 rather than lower because the stock's own 112-event median is 0.0% and the intraday leg already recovered 6.7%.",
+  "pre_lessons": {
+    "impact_sum_pct": -2.0,
+    "expected_move_pct": -1.08,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-2.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 11
+}
