@@ -25,3 +25,7 @@
 ## Stage J — wave 1 banked
 - Logged at 2026-10-05 01:13 UTC
 - 4 of 5 back (1376 2753 3148 3498); 3186 still running. Wave 2 spawned: 3612 6474 7630 7679. Note: 2753 released 09:00 JST, BEFORE the 10:05 seal, so its sealed-spot entry is post-release (residual drift only).
+
+## Stage J — hunt 7679 banked, scratch collision
+- Logged at 2026-10-05 01:20 UTC
+- 7679 hunter reports a parallel hunter (7630) wrote a same-named file in the shared scratch directory and overwrote its Q1 短信 text copy; it re-read from a private subdirectory and logged the wrong reading under rejected_candidates. 7630's hunt may carry the same risk — check its sources before trusting it. Defect: hunters share scratch filenames.
