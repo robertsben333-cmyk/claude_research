@@ -17,7 +17,9 @@ Nothing live was edited.
 2. **The one "probably works" cell: the company's own disclosures in small caps** ($300m–2bn):
    55 voting items, 67% right, shrunk DV\* +0.17 [0.00, 0.33], same sign on 83% of held-out
    days. It does not replicate in the dossiers (only 2 small caps there) or clearly in
-   Europe/Japan/Australia (turnover $1–25m: +0.40, p 0.06; under $1m: 0.0).
+   Europe/Japan/Australia (turnover $1–25m: +0.40, p 0.06; under $1m: 0.0). The ablation
+   arm points the same way: a judge without the company's own disclosures does slightly worse
+   (t −1.7).
 3. **Two leads held on a second, independent stratum** (the retired dossiers): items citing
    ownership filings (Form 4, 144, 13D/G) point the WRONG way (US hunts −0.43, p 0.015;
    dossiers −0.37, p 0.008), and items about the company itself beat items about others
@@ -34,6 +36,9 @@ Nothing live was edited.
 What it means for the operator: on 158 US prints there is not enough data to rank source types
 by usefulness, and the large-cap successes look like the hunt being right for case-specific
 reasons, not for a reusable kind of source. Section "What would change this" says what would.
+
+**Registry v1 is frozen as of 2026-10-05.** No US hunt has resolved since the cut-off, so the
+forward column is empty and no verdict is CONFIRMED yet.
 
 ## Data and strata (Phase 0, `scripts/build.py`)
 
@@ -132,9 +137,33 @@ negative in B), the company's own results releases +0.43 (20 votes, 61%), histor
 
 **Marginal value, observational**: the four judges are not right more often where a group's
 net vote agrees with them (company-own +0.10, p 0.33; every other group negative and
-insignificant). **Ablation** (`results/ablation.json`): see the table below.
+insignificant).
 
-ABLATION_TABLE
+**Ablation** (`scripts/ablation.py`, `results/ablation.json`, Sonnet 5.5 judge on the panel brief,
+$75 of the $120 cap): the intact arm twice, then 31 codes (every subtype or group in at least
+about 15 packs, the eight groups, and the six most prevalent search-note types) re-judged with
+their items removed. Per changed pack, the change in sgn(impact) × move/priced against the mean
+of the two intact runs; positive means the judge does better WITHOUT the source.
+
+| removed | packs | paired change | t | reading |
+|---|---|---|---|---|
+| all of the company's own disclosures | 129 | −0.13 | −1.69 | the judge does worse without them |
+| prior earnings-call commentary | 22 | −0.09 | −1.60 | helps, weakly |
+| the company's guidance | 18 | −0.41 | −1.29 | helps, weakly |
+| all "searched, found nothing" notes | 158 | +0.03 | +0.58 | no effect (ρ +0.06, top-20% +3.4 pp on 19 picks: within noise) |
+| all other-company read-across | 60 | +0.05 | +0.77 | no effect |
+| all market data | 45 | +0.14 | +1.29 | the judge does slightly better without |
+| the company's periodic reports | 53 | +0.15 | +1.67 | better without, weakly |
+| media (press, trade press, portals) | 20 | +0.43 | +1.79 | better without, weakly |
+| "no insider or ownership signal" notes | 122 | +0.06 | +2.06 | better without |
+| the company's contract, partnership or product news | 29 | +0.28 | +2.55 | **better without** |
+
+Two of 31 codes pass |t| = 2, about what chance gives (1.6 expected at p < 0.05), so none of
+this is established. The pattern agrees with the registry where they overlap: the company's own
+disclosures as a whole help (the small-cap cell), media and market data do not. The full table
+is in `registry/REGISTRY.md`. Every ablation changes the within-day ρ by less than 0.06 and the
+intact runs themselves differ by 0.01; the top-20% book moves by up to 3 points on 19 picks,
+which is inside its noise.
 
 ## Where the hunt gets large caps right (Phase 5, `casestudy/`)
 

@@ -228,8 +228,8 @@ def build(forward=None):
                 mgv = {'hit_agree': st.mean(agree), 'n_agree': len(agree), 'hit_other': st.mean(other), 'n_other': len(other),
                        'lift': st.mean(agree) - st.mean(other)}
         ab = None
-        akey = (code if not isgrp else None)
-        if akey and akey.replace(':', '_') in abl['codes'] and band is None:
+        akey = code
+        if akey.replace(':', '_') in abl['codes'] and band is None:
             ab = abl['codes'][akey.replace(':', '_')]
         q = LI.get((code, band))
         fwd = (forward or {}).get(f'{code}|{band}')
@@ -275,6 +275,20 @@ def write_md(reg, path):
                      f"{fmt(r['DVstar_shrunk'])} [{fmt(r['ci80'][0])}, {fmt(r['ci80'][1])}] | {fmt(r['MV_lift'])} | "
                      f"{fmt(rp['B']['DVstar_raw'])} ({rp['B']['n_vote']:.0f}) / {fmt(rp['C']['DVstar_raw'])} ({rp['C']['n_vote']:.0f}) | "
                      f"{fmt(r['lodo_sign_share'] and r['lodo_sign_share'] * 100, 0)}% | {r['guidance']} |")
+        L.append('')
+    ab = [r for r in rows if r.get('MgV_ablation') and r['band'] == 'all']
+    if ab:
+        L += ['## Marginal value by ablation (overall rows)', '',
+              'Sonnet 5.5 judge re-judges every pack holding the code with its items removed. Paired change per changed pack in',
+              'sgn(impact) x move/priced, ablated minus the mean of two intact runs: **positive means the judge does better WITHOUT',
+              'the source** (it was misleading the judge), negative means the source was helping. No correction for the number of codes.', '',
+              '| source | packs changed | paired change | t | within-day rho change | top-20% net change (pp) |', '|---|---|---|---|---|---|']
+        for r in sorted(ab, key=lambda r: (r['MgV_ablation']['paired'] or {}).get('t') or 0):
+            a = r['MgV_ablation']
+            p = a.get('paired') or {}
+            dl = a['delta_vs_intact_mean']
+            L.append(f"| {r['name']} (`{r['code']}`) | {a['n_packs_changed']} | {fmt(p.get('mean_change_signed_score'))} | {fmt(p.get('t'))} | "
+                     f"{fmt(dl.get('rho'), 3)} | {fmt(dl.get('top20_net'), 1)} |")
         L.append('')
     open(path, 'w').write('\n'.join(L))
 

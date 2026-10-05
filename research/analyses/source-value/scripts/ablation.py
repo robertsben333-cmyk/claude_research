@@ -160,7 +160,20 @@ def cmd_score():
         # paired per-pack: sign agreement of ablated vs each intact run on changed packs
         flips = sum(1 for k in changed if k in i0 and ab[k] is not None and (ab[k] > 0) != (i0[k] > 0) and ab[k] != 0 and i0[k] != 0)
         flips_noise = sum(1 for k in changed if k in i0 and k in i1 and i0[k] and i1[k] and (i0[k] > 0) != (i1[k] > 0))
-        out['codes'][d[6:]] = {'n_packs_changed': len(changed), 'ablated': mA,
+        # paired per pack (changed packs only): signed score sgn(impact) x move/priced (Winsorised at 4)
+        mn = {e['pack_id']: max(-4, min(4, e['move'] / e['priced_move'])) for e in E}
+        sg = lambda v: (v > 0) - (v < 0) if v is not None else 0  # noqa: E731
+        dd, nn = [], []
+        for k in changed:
+            if k in i0 and k in i1 and ab.get(k) is not None:
+                dd.append(sg(ab[k]) * mn[k] - (sg(i0[k]) + sg(i1[k])) / 2 * mn[k])
+                nn.append((sg(i0[k]) - sg(i1[k])) / 2 * mn[k])
+        paired = None
+        if len(dd) > 2:
+            m, sdv = st.mean(dd), st.stdev(dd)
+            paired = {'n': len(dd), 'mean_change_signed_score': m, 'se': sdv / len(dd) ** .5, 't': m / (sdv / len(dd) ** .5) if sdv else None,
+                      'noise_sd_per_pack': st.pstdev(nn), 'packs_sign_changed': sum(1 for k in changed if k in i0 and ab.get(k) and i0.get(k) and sg(ab[k]) != sg((i0[k] + i1.get(k, i0[k])) / 2))}
+        out['codes'][d[6:]] = {'n_packs_changed': len(changed), 'ablated': mA, 'paired': paired,
                                'delta_vs_intact_mean': {k: (mA[k] - base['intact_mean'][k]) if mA[k] is not None and base['intact_mean'][k] is not None else None for k in ('rho', 'hit', 'top20_net')},
                                'noise_intact0_vs_intact1_same_packs': noise, 'sign_flips_vs_intact0': flips, 'sign_flips_intact0_vs_intact1': flips_noise}
     json.dump(out, open(f'{SV}/results/ablation.json', 'w'), indent=1)

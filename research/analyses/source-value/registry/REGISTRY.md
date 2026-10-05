@@ -341,3 +341,43 @@ None.
 ## Misleads (0 cells)
 
 None.
+
+## Marginal value by ablation (overall rows)
+
+Sonnet 5.5 judge re-judges every pack holding the code with its items removed. Paired change per changed pack in
+sgn(impact) x move/priced, ablated minus the mean of two intact runs: **positive means the judge does better WITHOUT
+the source** (it was misleading the judge), negative means the source was helping. No correction for the number of codes.
+
+| source | packs changed | paired change | t | within-day rho change | top-20% net change (pp) |
+|---|---|---|---|---|---|
+| group: company_own (`GROUP:company_own`) | 129 | -0.13 | -1.69 | -0.015 | +0.2 |
+| Prior earnings-call commentary (`own_call_commentary`) | 22 | -0.09 | -1.60 | -0.022 | +0.3 |
+| Officer or director share dealing (`own_insider_transaction`) | 20 | -0.19 | -1.42 | -0.021 | +0.0 |
+| Official or exchange statistics (`off_official_statistics`) | 18 | -0.10 | -1.39 | -0.006 | -0.2 |
+| Executive, board or governance change (`own_management_governance`) | 22 | -0.07 | -1.32 | -0.001 | -0.0 |
+| Company guidance or investor-day targets (`own_guidance_targets`) | 18 | -0.41 | -1.29 | -0.015 | +0.0 |
+| Company's prior earnings release (`own_results_release`) | 22 | -0.28 | -1.03 | -0.003 | +0.0 |
+| G:company_own (`G:company_own`) | 25 | -0.06 | -0.72 | -0.008 | -1.8 |
+| Alternative data unavailable or empty (`srch_alt_data`) | 96 | -0.01 | -0.22 | +0.009 | +0.8 |
+| Researcher arithmetic across sources (`res_arithmetic`) | 61 | -0.04 | -0.20 | -0.018 | +3.0 |
+| Short interest or borrow data (`mkt_short_interest`) | 16 | -0.02 | -0.19 | -0.013 | -1.8 |
+| Expected disclosure is missing (`res_absence_of_disclosure`) | 17 | -0.02 | -0.14 | +0.009 | +0.0 |
+| group: researcher_own (`GROUP:researcher_own`) | 91 | +0.01 | +0.03 | +0.018 | +2.0 |
+| No contract, deal or operational event (`srch_business_events`) | 121 | +0.00 | +0.04 | +0.036 | +1.8 |
+| No usable peer or macro read-through (`srch_external_readthrough`) | 95 | +0.01 | +0.22 | -0.004 | +0.5 |
+| Peer earnings result or guidance (`oth_peer_results`) | 37 | +0.03 | +0.35 | -0.047 | +0.9 |
+| group: search_note (`GROUP:search_note`) | 158 | +0.03 | +0.58 | +0.060 | +3.4 |
+| Source unreachable or discarded as stale (`srch_source_unusable`) | 101 | +0.03 | +0.76 | -0.014 | +0.7 |
+| group: other_company (`GROUP:other_company`) | 60 | +0.05 | +0.77 | -0.002 | +1.6 |
+| Customer, supplier or counterparty disclosure (`oth_customer_supplier`) | 16 | +0.09 | +0.79 | +0.028 | +0.8 |
+| Company financing or offering document (`own_financing`) | 26 | +0.04 | +0.85 | -0.013 | -1.5 |
+| G:researcher_own (`G:researcher_own`) | 36 | +0.22 | +0.86 | +0.014 | +1.2 |
+| group: media (`GROUP:media`) | 24 | +0.20 | +1.09 | -0.004 | -0.4 |
+| No financing, payout or distress change (`srch_balance_sheet_capital`) | 103 | +0.06 | +1.11 | +0.009 | -1.7 |
+| group: market_data (`GROUP:market_data`) | 45 | +0.14 | +1.29 | +0.029 | -0.2 |
+| group: alt_data (`GROUP:alt_data`) | 11 | +0.12 | +1.43 | -0.002 | +0.0 |
+| group: official_record (`GROUP:official_record`) | 36 | +0.11 | +1.58 | +0.025 | +0.4 |
+| Company's 10-Q/10-K or annual report (`own_periodic_report`) | 53 | +0.15 | +1.67 | +0.006 | +1.8 |
+| G:media (`G:media`) | 20 | +0.43 | +1.79 | +0.021 | +0.0 |
+| No insider or ownership signal (`srch_insider_ownership`) | 122 | +0.06 | +2.06 | +0.007 | +0.2 |
+| Company contract, partnership or product news (`own_business_announcement`) | 29 | +0.28 | +2.55 | +0.028 | +0.3 |
