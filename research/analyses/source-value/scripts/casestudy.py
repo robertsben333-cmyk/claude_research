@@ -21,6 +21,7 @@ sys.path.insert(0, HERE)
 import core  # noqa: E402
 
 OUT = f'{SV}/casestudy'
+RULES = {}
 
 
 def callers(e):
@@ -76,7 +77,8 @@ def cmd_hits():
 def rule_fires(rule, e, items):
     """A rule is {id, when: {item filter}, min_items, call: 'vote'|'+'|'-'}; returns a sign or 0."""
     import questions as QQ
-    its = [x for x in items if x['ev']['id'] == e['id'] and QQ.match(x, rule['when'])]
+    whens = [rule['when']] if 'when' in rule else [RULES[r]['when'] for r in rule['when_any']]
+    its = [x for x in items if x['ev']['id'] == e['id'] and any(QQ.match(x, w) for w in whens)]
     if len(its) < rule.get('min_items', 1):
         return 0
     if rule.get('call') in ('+', '-'):
@@ -88,6 +90,8 @@ def rule_fires(rule, e, items):
 def cmd_test():
     E, I = core.load()
     rules = json.load(open(f'{OUT}/rules.json'))
+    global RULES
+    RULES = {r['id']: r for r in rules['rules']}
     used = set(rules['derived_from'])
     A = [e for e in E if e['stratum'] == 'A']
     out = {'rules': []}

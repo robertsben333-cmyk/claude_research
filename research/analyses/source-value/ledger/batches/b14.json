@@ -1,0 +1,371 @@
+{
+ "batch": "b14",
+ "questions": [
+  {
+   "id": "b14-01",
+   "question": "Lead b07-age-fresh-vs-old, tested on stratum C: do fresh sources (<=30 days) carry the sign worse than older ones?",
+   "hypothesis": "-",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "age_bucket": [
+     "<=7",
+     "8-30"
+    ]
+   },
+   "why": "lead from b07 (A), z -3.74; tested on a different stratum",
+   "cut_b": {
+    "age_bucket": [
+     "31-90",
+     ">90"
+    ]
+   },
+   "stratum": "C"
+  },
+  {
+   "id": "b14-02",
+   "question": "Lead b07-age->90, stratum C: do sources older than 90 days carry the sign?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "age_bucket": ">90"
+   },
+   "why": "lead from b07",
+   "stratum": "C"
+  },
+  {
+   "id": "b14-03",
+   "question": "Lead b01-24, stratum B: do prints holding a large-move claim move more than priced?",
+   "hypothesis": "+",
+   "unit": "name",
+   "metric": "MV",
+   "cut": {
+    "magnitude_claim": "large"
+   },
+   "why": "lead from b01-24 (A), p 0.004",
+   "stratum": "B"
+  },
+  {
+   "id": "b14-04",
+   "question": "Lead b01-24, stratum C: do prints holding a large-move claim move more than their past reactions?",
+   "hypothesis": "+",
+   "unit": "name",
+   "metric": "MV",
+   "cut": {
+    "magnitude_claim": "large"
+   },
+   "why": "lead from b01-24",
+   "stratum": "C"
+  },
+  {
+   "id": "b14-05",
+   "question": "Lead b08-lean-agree, stratum C: do votes agreeing with the sealed lean beat votes against it?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "lean_agree": true
+   },
+   "why": "lead from b08 (A), p 0.021",
+   "cut_b": {
+    "lean_agree": false
+   },
+   "stratum": "C"
+  },
+  {
+   "id": "b14-06",
+   "question": "Lead b07-about_focal_company, stratum B: do items about the company beat items about others?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "about_focal_company": true
+   },
+   "why": "lead from b07 (A), p 0.03",
+   "cut_b": {
+    "about_focal_company": false
+   },
+   "stratum": "B"
+  },
+  {
+   "id": "b14-07",
+   "question": "Lead b07-about_focal_company, stratum C.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "about_focal_company": true
+   },
+   "why": "lead from b07",
+   "cut_b": {
+    "about_focal_company": false
+   },
+   "stratum": "C"
+  },
+  {
+   "id": "b14-08",
+   "question": "Lead b07-secform-ownership, stratum B: do items citing ownership filings (Form 4, 144, 13D/G) point the wrong way?",
+   "hypothesis": "-",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "sec_family": "ownership"
+   },
+   "why": "lead from b07 (A), p 0.015",
+   "stratum": "B"
+  },
+  {
+   "id": "b14-09",
+   "question": "Lead b07-secform-ownership, stratum C (insider dealings and holder filings).",
+   "hypothesis": "-",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": [
+     "own_insider_transaction",
+     "oth_holder_filing"
+    ]
+   },
+   "why": "lead from b07",
+   "stratum": "C"
+  },
+  {
+   "id": "b14-10",
+   "question": "Lead b02-mkt_commodity_fx (A -0.87, B -1.08), stratum C.",
+   "hypothesis": "-",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": "mkt_commodity_fx"
+   },
+   "why": "lead from b02 and b13",
+   "stratum": "C"
+  },
+  {
+   "id": "b14-11",
+   "question": "Lead b09-G-researcher_own, stratum B: do prints with researcher-own items move more than priced?",
+   "hypothesis": "+",
+   "unit": "name",
+   "metric": "MV",
+   "cut": {
+    "group": "researcher_own"
+   },
+   "why": "lead from b09 (A), p 0.014",
+   "stratum": "B"
+  },
+  {
+   "id": "b14-12",
+   "question": "Lead b09-G-researcher_own, stratum C.",
+   "hypothesis": "+",
+   "unit": "name",
+   "metric": "MV",
+   "cut": {
+    "group": "researcher_own"
+   },
+   "why": "lead from b09",
+   "stratum": "C"
+  },
+  {
+   "id": "b14-13",
+   "question": "Lead b08-market_data-session, stratum B: market data carries the sign worse in amc than in bmo prints?",
+   "hypothesis": "-",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "group": "market_data",
+    "session": "amc"
+   },
+   "why": "lead from b08 (A), p 0.025",
+   "cut_b": {
+    "group": "market_data",
+    "session": "bmo"
+   },
+   "stratum": "B"
+  },
+  {
+   "id": "b14-14",
+   "question": "Lead b08-company_own-vol_high, stratum C: company's own items carry the sign better in high-volatility names?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "group": "company_own",
+    "vol_high": true
+   },
+   "why": "lead from b08 (A), p 0.029",
+   "cut_b": {
+    "group": "company_own",
+    "vol_high": false
+   },
+   "stratum": "C"
+  },
+  {
+   "id": "b14-15",
+   "question": "Registry lead (company_own, small caps, probably works), stratum C, turnover under $1m.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "company_own",
+    "turnover_band": "lt1m"
+   },
+   "why": "registry cell, tested elsewhere",
+   "stratum": "C"
+  },
+  {
+   "id": "b14-16",
+   "question": "Registry lead, stratum C, turnover $1-25m.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "company_own",
+    "turnover_band": "1to25m"
+   },
+   "why": "registry cell, tested elsewhere",
+   "stratum": "C"
+  },
+  {
+   "id": "b14-17",
+   "question": "Phase 5 rule R6 (large claims, quantified, not widely reported), derived on large-cap hits, scored on A micro and small caps.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "magnitude_claim": "large",
+    "quantified": true,
+    "already_widely_reported": false,
+    "cap_band": [
+     "micro",
+     "small"
+    ]
+   },
+   "why": "phase 5 rule, derived on other prints"
+  },
+  {
+   "id": "b14-18",
+   "question": "Phase 5 rule R6, stratum C.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "magnitude_claim": "large",
+    "quantified": true,
+    "already_widely_reported": false
+   },
+   "why": "phase 5 rule",
+   "stratum": "C"
+  },
+  {
+   "id": "b14-19",
+   "question": "Phase 5 rule R6, stratum B.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "magnitude_claim": "large",
+    "quantified": true,
+    "already_widely_reported": false
+   },
+   "why": "phase 5 rule",
+   "stratum": "B"
+  },
+  {
+   "id": "b14-20",
+   "question": "Phase 5 rule R3 (unread own-document detail), A micro and small caps.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": [
+     "own_periodic_report",
+     "own_results_release",
+     "own_guidance_targets"
+    ],
+    "primary_document": true,
+    "quantified": true,
+    "already_widely_reported": false,
+    "cap_band": [
+     "micro",
+     "small"
+    ]
+   },
+   "why": "phase 5 rule"
+  },
+  {
+   "id": "b14-21",
+   "question": "Phase 5 rule R3, stratum B.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": [
+     "own_periodic_report",
+     "own_results_release",
+     "own_guidance_targets"
+    ],
+    "primary_document": true,
+    "quantified": true,
+    "already_widely_reported": false
+   },
+   "why": "phase 5 rule",
+   "stratum": "B"
+  },
+  {
+   "id": "b14-22",
+   "question": "Phase 5 rule R1 (same-period read-across), A large caps other than the hits it came from.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": [
+     "oth_peer_results",
+     "oth_customer_supplier",
+     "G:other_company",
+     "med_industry_report"
+    ],
+    "quantified": true,
+    "dated_in_window": true,
+    "cap_band": "large"
+   },
+   "why": "phase 5 rule; note: this cell includes the derivation prints, see casestudy/rules-test.json for the leave-out version"
+  },
+  {
+   "id": "b14-23",
+   "question": "Phase 5 rule R1, stratum B large caps (dossiers, independent of the hunts).",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": [
+     "oth_peer_results",
+     "oth_customer_supplier",
+     "G:other_company",
+     "med_industry_report"
+    ],
+    "cap_band": "large"
+   },
+   "why": "phase 5 rule; B has no dated_in_window reliability, uses all read-across",
+   "stratum": "B"
+  },
+  {
+   "id": "b14-24",
+   "question": "Phase 5 rule R1, stratum B mid caps.",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": [
+     "oth_peer_results",
+     "oth_customer_supplier",
+     "G:other_company",
+     "med_industry_report"
+    ],
+    "cap_band": "mid"
+   },
+   "why": "phase 5 rule",
+   "stratum": "B"
+  }
+ ]
+}
