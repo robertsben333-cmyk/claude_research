@@ -1,0 +1,18 @@
+{
+  "reasoning": "Both groups open a '## Judging rules' section after the same anchor, so the section header appears once and the rules are chained in order. The three failure edits (support 10) come first and are kept almost verbatim. They cover four points: positioning is never proof that something is unpriced; a net against priced_direction_lean needs a direct datum about the company; evidence that is only proxies caps the lean; and abs_move_pct is tied to the baseline. Success edits are kept only where they add something the failure edits do not cover. Success rule 4 ('Scale from confirmed prints') partly conflicts with failure edit 3: raising abs_move above a netted straddle that sits far below past reactions is exactly what made wrong-sign losses bigger. That part is dropped. Its compatible part is folded into failure edit 3: when expected_move is a default or the baseline flags it as unusable, use the median of confirmed earnings reactions. Its 'thin float / no options' point duplicates failure edit 3. From 'Net, don't drop', the 'count a shared cluster once' point duplicates the failure proxy rule and is removed. The new points are kept: an opposing item still gets a signed share and is not dropped, and a residual under about a tenth of abs_move_pct means p_up 50, which matches the failure rule against keeping a small residual lean. 'What may lead' drops 'a close peer's same-quarter print' as an example of a lead item, because the failure edits classify peer read-across as a proxy. It keeps the rest: in-window filings and bookings may lead; the judge's own sums, governance changes and insider patterns are support with small shares; items that make no market claim get no share. 'Lean strength' (thin tier within about 10 of 50 unless independently corroborated) is kept as an extra cap that applies even with direct evidence, so it sits alongside the tighter failure caps without conflict. No edit touches the SLOW_UPDATE protected markers. [optimizer-ranked: selected 1/6 edits]",
+  "edits": [
+    {
+      "op": "insert_after",
+      "target": "that sizes every name alike adds nothing.",
+      "content": "\n## Judging rules\n\n- **Positioning is never proof that something is unpriced.** A why_not_priced of the form \"if this were priced, the skew / put-call / short interest / run-up / drawdown / price target would not look like this\" uses the baseline to argue against the baseline. Strike that sentence and judge the item only on what is left. If `priced_direction_lean` is set and your findings net against it, at least one finding must be an in-window datum about this company's own quarter or guide that the market did not have, such as a filing, company-released figures, contract text, or a datum that names the company. A macro series, a peer or competitor read-across, web traffic, or a sum on public guidance or consensus does not count. Without such a finding, keep `p_up` within 3 of 50.",
+      "support_count": 10,
+      "source_type": "failure"
+    }
+  ],
+  "ranking_details": {
+    "reasoning": "Edits 1–5 are chained: each one is inserted after text that only exists once the edit before it has been applied. Edit 0 is the only one whose target ('that sizes every name alike adds nothing.') is already in the current skill, so it is the only one that can be applied on its own with a budget of 1. It also has the highest support (10) and fixes a common, recurring failure: using the baseline's own positioning (skew, short interest, run-up) as proof that something is unpriced. It also requires direct, company-specific, in-window evidence before p_up may lean against the priced direction. That makes it general, concrete, and a gap in the current skill.",
+    "selected_indices": [
+      0
+    ]
+  }
+}

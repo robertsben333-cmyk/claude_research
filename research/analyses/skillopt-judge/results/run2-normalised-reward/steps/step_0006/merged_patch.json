@@ -1,0 +1,47 @@
+{
+  "reasoning": "Both groups open a '## Judging rules' section after the same anchor, so the section header appears once and the rules are chained in order. The three failure edits (support 10) come first and are kept almost verbatim. They cover four points: positioning is never proof that something is unpriced; a net against priced_direction_lean needs a direct datum about the company; evidence that is only proxies caps the lean; and abs_move_pct is tied to the baseline. Success edits are kept only where they add something the failure edits do not cover. Success rule 4 ('Scale from confirmed prints') partly conflicts with failure edit 3: raising abs_move above a netted straddle that sits far below past reactions is exactly what made wrong-sign losses bigger. That part is dropped. Its compatible part is folded into failure edit 3: when expected_move is a default or the baseline flags it as unusable, use the median of confirmed earnings reactions. Its 'thin float / no options' point duplicates failure edit 3. From 'Net, don't drop', the 'count a shared cluster once' point duplicates the failure proxy rule and is removed. The new points are kept: an opposing item still gets a signed share and is not dropped, and a residual under about a tenth of abs_move_pct means p_up 50, which matches the failure rule against keeping a small residual lean. 'What may lead' drops 'a close peer's same-quarter print' as an example of a lead item, because the failure edits classify peer read-across as a proxy. It keeps the rest: in-window filings and bookings may lead; the judge's own sums, governance changes and insider patterns are support with small shares; items that make no market claim get no share. 'Lean strength' (thin tier within about 10 of 50 unless independently corroborated) is kept as an extra cap that applies even with direct evidence, so it sits alongside the tighter failure caps without conflict. No edit touches the SLOW_UPDATE protected markers.",
+  "edits": [
+    {
+      "op": "insert_after",
+      "target": "that sizes every name alike adds nothing.",
+      "content": "\n## Judging rules\n\n- **Positioning is never proof that something is unpriced.** A why_not_priced of the form \"if this were priced, the skew / put-call / short interest / run-up / drawdown / price target would not look like this\" uses the baseline to argue against the baseline. Strike that sentence and judge the item only on what is left. If `priced_direction_lean` is set and your findings net against it, at least one finding must be an in-window datum about this company's own quarter or guide that the market did not have, such as a filing, company-released figures, contract text, or a datum that names the company. A macro series, a peer or competitor read-across, web traffic, or a sum on public guidance or consensus does not count. Without such a finding, keep `p_up` within 3 of 50.",
+      "support_count": 10,
+      "source_type": "failure"
+    },
+    {
+      "op": "insert_after",
+      "target": "Without such a finding, keep `p_up` within 3 of 50.",
+      "content": "- **Proxies cap the lean.** Some findings are only indirect: an industry or macro series cut to the fiscal quarter, a read-across from a peer, competitor, supplier or customer, third-party traffic or app data, or your own arithmetic on guidance, seasonality, KPIs or consensus. If every finding is of that kind, keep `p_up` within 6 of 50. Items that argue the same thesis count once, at the size of the strongest. Items that point in opposite directions cancel; do not keep a small residual lean from them. If your note would describe the findings as proxies or inference, the number must be small. Large values belong to direct evidence.",
+      "support_count": 10,
+      "source_type": "failure"
+    },
+    {
+      "op": "insert_after",
+      "target": "Large values belong to direct evidence.",
+      "content": "- **`abs_move_pct` is the baseline's expected move.** Set it to `expected_move_pct`. Raise it only if a specific finding names a mechanism that the implied move or the history does not hold. Large past reactions, a crowded short, a thin chain or a wide spread are not such mechanisms. If `expected_move_pct` is null, is a default, or the baseline flags its history as unusable, use the median of the reactions the pack confirms as earnings (including ones a pack item rebuilds), or else the deadband-scale default, and do not invent a larger move.",
+      "support_count": 10,
+      "source_type": "failure"
+    },
+    {
+      "op": "insert_after",
+      "target": "or else the deadband-scale default, and do not invent a larger move.",
+      "content": "- **Net, don't drop.** An item that cuts against your lean is still a finding. Give it its own signed share and let `impact_sum` be the residual. If the residual is under about a tenth of `abs_move_pct`, output `p_up` 50.",
+      "support_count": 9,
+      "source_type": "success"
+    },
+    {
+      "op": "insert_after",
+      "target": "If the residual is under about a tenth of `abs_move_pct`, output `p_up` 50.",
+      "content": "- **What may lead.** Most of the share may go to an item only if it is a dated, in-window datum that covers the period being reported, comes from outside the company's own past releases, and is not a proxy under the rule above. Examples: a filing by a related vehicle, or awards booked inside the quarter. Your own sums on the company's guidance, comps, balance sheet or covenants, governance changes, and insider-trading patterns are support, each with a small share. Items that make no market claim (baseline defects, searches that found nothing) get no share.",
+      "support_count": 9,
+      "source_type": "success"
+    },
+    {
+      "op": "insert_after",
+      "target": "Items that make no market claim (baseline defects, searches that found nothing) get no share.",
+      "content": "- **Lean strength.** On a thin or partial tier, keep `p_up` within about 10 points of 50 even with direct evidence. Go further only when the leading item is a direct, in-window datum corroborated by a second independent source, and nothing of similar weight points the other way.",
+      "support_count": 9,
+      "source_type": "success"
+    }
+  ]
+}
