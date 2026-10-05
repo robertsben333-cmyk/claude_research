@@ -1,0 +1,809 @@
+{
+ "meta": {
+  "model_usage": [
+   "claude-haiku-4-5-20251001",
+   "claude-opus-5-5"
+  ],
+  "cost_usd": 1.6509580000000001,
+  "duration_ms": 310435
+ },
+ "raw": "{\"version\":\"v1\",\"groups\":{\"company_own\":\"Disclosures made by the focal company itself: SEC filings, releases, RNS, TDnet and ASX announcements, calls, decks and IR pages. Includes the same content republished verbatim by aggregators.\",\"other_company\":\"Disclosures by other companies or holders: peers, customers, suppliers, lenders, competitors, and outside shareholders filing ownership reports.\",\"official_record\":\"Records produced by courts, regulators, governments and statistical agencies.\",\"market_data\":\"Prices, estimates, positioning and sell-side outputs about securities and commodities, from data vendors or relayed through portals.\",\"media\":\"Articles and posts whose claim is the outlet's own reporting, opinion or survey rather than a relayed primary document or data series.\",\"alt_data\":\"Observational data not published by the company or the market: web traffic, apps, reviews, jobs, footfall, vessel tracking, direct site observation, search share.\",\"researcher_own\":\"Claims that rest on the researcher's own derivation: arithmetic across sources, historical patterns, absence of an expected disclosure, corrections and synthesis.\",\"search_note\":\"Items of kind listed_as_searched_and_found_nothing, coded by WHAT was searched for or why the search failed.\"},\"subtypes\":[{\"id\":\"own_results_release\",\"group\":\"company_own\",\"name\":\"Company's prior earnings release\",\"definition\":\"Reported figures from the company's own earnings release or results 8-K (Item 2.02), RNS results, tanshin or results 6-K.\",\"decision_rule\":\"Use for reported actuals. Forward ranges in the release go to own_guidance_targets. The same numbers in a 10-Q or 10-K go to own_periodic_report. A results release by another company goes to oth_peer_results.\",\"examples\":[\"Prior-quarter release: subscription orders were a record 84.4% of net sales.\",\"Year-ago segment operating profit taken from the company's earnings 8-K exhibit.\"]},{\"id\":\"own_periodic_report\",\"group\":\"company_own\",\"name\":\"Company's 10-Q/10-K or annual report\",\"definition\":\"Figures, notes, risk factors or MD&A wording from the company's periodic report (10-Q, 10-K, 20-F, half-year or annual report).\",\"decision_rule\":\"Includes risk-factor or MD&A wording changes. Covenant or going-concern language goes to own_distress_compliance. Prospectus or 424B figures go to own_financing.\",\"examples\":[\"10-Q says about $8m of tariff refund claims were filed but none recognised until cash is received.\",\"10-K states at least 90% of year-end backlog will ship next fiscal year.\"]},{\"id\":\"own_guidance_targets\",\"group\":\"company_own\",\"name\":\"Company guidance or investor-day targets\",\"definition\":\"The company's standing forward guidance or medium-term targets, as given at the last print, on its call, or at an investor or capital markets day.\",\"decision_rule\":\"A guidance change issued BETWEEN prints, or a pre-announcement, goes to own_interim_update. Qualitative call remarks with no range go to own_call_commentary.\",\"examples\":[\"Company guided the quarter to $3.30-3.33bn at its last print.\",\"Capital markets day reaffirmed a high-single-digit through-cycle growth target.\"]},{\"id\":\"own_interim_update\",\"group\":\"company_own\",\"name\":\"Pre-announcement, trading or monthly update\",\"definition\":\"Between-print company disclosures of performance: pre-announced results, trading statements, guidance revisions, monthly sales, production or booking figures.\",\"decision_rule\":\"Use own_guidance_targets only if the figure was given with the last results. Use own_date_notice if the release only schedules the print.\",\"examples\":[\"Trading-update RNS pre-announces H1 adjusted EPS of 38-42p and an order book of 17.3 weeks.\",\"Monthly TDnet release shows parent same-store sales of -0.8% for the quarter.\"]},{\"id\":\"own_call_commentary\",\"group\":\"company_own\",\"name\":\"Prior earnings-call commentary\",\"definition\":\"Statements by management on a prior earnings call or transcript.\",\"decision_rule\":\"Numeric ranges for future periods go to own_guidance_targets. A portal article quoting the call is still coded here (see precedence).\",\"examples\":[\"CFO said on the June call that tariff refunds had been 'kind of paused'.\",\"Management called the July quarter 'more or less the trough' for product gross margin.\"]},{\"id\":\"own_business_announcement\",\"group\":\"company_own\",\"name\":\"Company contract, partnership or product news\",\"definition\":\"Company announcements of contract or customer wins, partnerships, licences, acquisitions by the company, product launches or store openings.\",\"decision_rule\":\"Closures, exits, layoffs and impairments go to own_restructuring_impairment. If the claim is that such news is MISSING, use res_absence_of_disclosure.\",\"examples\":[\"Subsidiary announced a personal-loan acquisition partnership with a bank three days before the print.\",\"Company release announced an autonomous-robotics pilot at an airport terminal.\"]},{\"id\":\"own_management_governance\",\"group\":\"company_own\",\"name\":\"Executive, board or governance change\",\"definition\":\"Officer or director departures and hires, AGM or EGM business and votes, standstill agreements, and compensation actions disclosed by the company.\",\"decision_rule\":\"Insider share dealings go to own_insider_transaction. Outside activists' ownership filings go to oth_holder_filing.\",\"examples\":[\"8-K Item 5.02 only: co-CEO demoted to run a subsidiary, with no press release.\",\"Compensation committee rescinded CEO awards that exceeded the plan limit.\"]},{\"id\":\"own_restructuring_impairment\",\"group\":\"company_own\",\"name\":\"Restructuring, impairment or divestiture\",\"definition\":\"Company-disclosed restructuring, layoffs, closures, impairments, write-downs or asset sales.\",\"decision_rule\":\"Distress language (going concern, covenant breach) goes to own_distress_compliance.\",\"examples\":[\"$120m pre-tax impairment after a subsidiary's subscription model was ended.\",\"Three stores sold to a franchisee, terms undisclosed.\"]},{\"id\":\"own_financing\",\"group\":\"company_own\",\"name\":\"Company financing or offering document\",\"definition\":\"Equity or debt raises, ATMs, convertibles, shelves, credit agreements and term loans, and ANY figures disclosed in prospectuses (424B, S-1, S-3, F-3, ABB).\",\"decision_rule\":\"Every claim sourced to an offering document goes here, even operating figures such as backlog or cash. Buybacks and dividends go to own_capital_return.\",\"examples\":[\"Prospectus supplement discloses quarter-end cash of $6.1m and drawn debt of $56.5m.\",\"Company signed a $600m secured seven-year term loan, per an 8-K under Items 1.01 and 2.03.\"]},{\"id\":\"own_capital_return\",\"group\":\"company_own\",\"name\":\"Company buyback or dividend\",\"definition\":\"Buyback authorisations, executions or suspensions, dividend declarations, and dividend policies.\",\"decision_rule\":\"Dividend-timing patterns inferred by the researcher go to res_history_pattern.\",\"examples\":[\"Buyback suspended 'voluntarily' with 61% of the maximum unexecuted.\",\"Written policy of at least 10% annual dividend growth implies a 36p interim.\"]},{\"id\":\"own_distress_compliance\",\"group\":\"company_own\",\"name\":\"Going-concern, covenant or listing-compliance item\",\"definition\":\"Going-concern or covenant language, listing deficiency notices, late-filing notices, material weaknesses, auditor changes, and filing delays.\",\"decision_rule\":\"General balance-sheet figures without distress language go to own_periodic_report.\",\"examples\":[\"Exchange $1.00 deficiency notice: the month-end close passes the cure test.\",\"Company delayed the release four days 'to complete final review'.\"]},{\"id\":\"own_insider_transaction\",\"group\":\"company_own\",\"name\":\"Officer or director share dealing\",\"definition\":\"Form 3, Form 4 and Form 144, PDMR or Appendix 3Y dealings by the company's officers and directors: open-market buys or sells, plan sales, grants, vesting and withholding.\",\"decision_rule\":\"Holders that are not officers or directors (activists, funds, sponsors filing 13D/13G, TR-1) go to oth_holder_filing.\",\"examples\":[\"Two independent directors each sold about half their stake during the run-up.\",\"CEO elected cash settlement for 17,000 vesting performance RSUs.\"]},{\"id\":\"own_date_notice\",\"group\":\"company_own\",\"name\":\"Results-date or scheduling notice\",\"definition\":\"Company notices of the report date, call time, or a change in reporting cadence.\",\"decision_rule\":\"If the notice carries performance numbers, use own_interim_update.\",\"examples\":[\"Report date pulled forward three weeks against a stable four-year pattern.\",\"Earnings-date release published, naming the same three executives as prior calls.\"]},{\"id\":\"own_other\",\"group\":\"company_own\",\"name\":\"Other company-own disclosure\",\"definition\":\"Company disclosures that fit no other own_ subtype: own litigation disclosures, corrections of press stories, newsroom or pipeline pages.\",\"decision_rule\":\"Use only after every other own_ subtype has been ruled out.\",\"examples\":[\"Company announcement that a lawsuit claiming 8.34m PLN was served.\",\"Company corrected a wire story the same day about a grant project.\"]},{\"id\":\"oth_peer_results\",\"group\":\"other_company\",\"name\":\"Peer earnings result or guidance\",\"definition\":\"Results, guidance or call remarks of a peer or comparable company, used as a read-through.\",\"decision_rule\":\"If the text names the other company as the focal company's customer, supplier, distributor, lender or partner, use oth_customer_supplier.\",\"examples\":[\"Peer reported US electrophysiology growth of only 3% in the overlapping quarter.\",\"Closest pure-play beat and raised but fell 14% on the week on gross-margin concerns.\"]},{\"id\":\"oth_customer_supplier\",\"group\":\"other_company\",\"name\":\"Customer, supplier or counterparty disclosure\",\"definition\":\"Disclosures by a named customer, supplier, distributor, lender, licensee or partner of the focal company.\",\"decision_rule\":\"The text must state the relationship to the focal company. Otherwise use oth_peer_results.\",\"examples\":[\"Lender's quarterly report confirms the company's collateralised facility was repaid.\",\"Largest customer's physical-stores segment grew 4% over two-thirds of the quarter.\"]},{\"id\":\"oth_competitor_sector_move\",\"group\":\"other_company\",\"name\":\"Competitor action or sector M&A\",\"definition\":\"Competitor pricing, capacity or market entry, and M&A among other companies in the sector.\",\"decision_rule\":\"Competitor earnings figures go to oth_peer_results.\",\"examples\":[\"Rival brand opened a marketplace flagship with record first-day sales.\",\"Two other drug companies announced a merger.\"]},{\"id\":\"oth_holder_filing\",\"group\":\"other_company\",\"name\":\"Outside holder ownership filing\",\"definition\":\"13D or 13G filings and amendments, TR-1 holdings notices, AMF threshold crossings, Japanese large-holding reports, and activist or sponsor stake disclosures.\",\"decision_rule\":\"Officers and directors go to own_insider_transaction. Short positions go to mkt_short_interest.\",\"examples\":[\"Activist's 13D/A chain shows it selling into strength for three months.\",\"An individual's passive 13G reports 5.17% of units.\"]},{\"id\":\"oth_other\",\"group\":\"other_company\",\"name\":\"Other third-company item\",\"definition\":\"Other-company items that fit no oth_ subtype.\",\"decision_rule\":\"Use only after the peer, customer/supplier, competitor and holder subtypes have been ruled out.\",\"examples\":[\"Two directors pushed off the board of an investee company.\",\"An unrelated brand signed a celebrity ambassador.\"]},{\"id\":\"off_court_docket\",\"group\":\"official_record\",\"name\":\"Court or litigation record\",\"definition\":\"Court judgments, dockets, case filings and settlements from court records.\",\"decision_rule\":\"A company's own disclosure that it was sued goes to own_other. Regulator actions go to off_health_regulator or off_trade_policy.\",\"examples\":[\"District court entered a final judgment and injunction against federal registration rules.\",\"Filing in a consumer class action says about one-third of refunds were passed on as lower prices.\"]},{\"id\":\"off_health_regulator\",\"group\":\"official_record\",\"name\":\"FDA, EMA, recall or trial record\",\"definition\":\"Drug and device regulator actions, recalls, and clinical-trial registry entries.\",\"decision_rule\":\"Company press releases about trial timing go to own_ subtypes.\",\"examples\":[\"Trial registry still shows RECRUITING with a past primary-completion date.\",\"Class I recall covering about 101,000 catheter units.\"]},{\"id\":\"off_trade_policy\",\"group\":\"official_record\",\"name\":\"Tariff, sanction or government policy\",\"definition\":\"Tariffs, customs refunds, sanctions, export bans, legislation, budgets, draft decrees and policy units.\",\"decision_rule\":\"Statistical series go to off_official_statistics. Procurement awards go to off_government_contracts.\",\"examples\":[\"Trade ministry banned exports of dual-use substrates.\",\"Government's new insourcing unit targets consultancy spending.\"]},{\"id\":\"off_government_contracts\",\"group\":\"official_record\",\"name\":\"Government contract or tender record\",\"definition\":\"Public procurement databases and award notices (FPDS, SAM, Contracts Finder, Find a Tender).\",\"decision_rule\":\"A company's own contract press release goes to own_business_announcement.\",\"examples\":[\"Procurement portal lists only a £0.9m and a £31k award since March.\",\"Tender database shows no award naming the company.\"]},{\"id\":\"off_official_statistics\",\"group\":\"official_record\",\"name\":\"Official or exchange statistics\",\"definition\":\"Government or exchange statistical series: BLS, EIA, Census, NICS, TSA, NOAA, mint sales, benefit enrolment, exchange turnover.\",\"decision_rule\":\"Commodity spot or contract prices from vendors go to mkt_commodity_fx. Surveys by industry bodies go to med_industry_report.\",\"examples\":[\"Benefit enrolment fell 13% year on year, published after the last guide.\",\"Adjusted background checks for the exact fiscal quarter were up 7.7%.\"]},{\"id\":\"off_other\",\"group\":\"official_record\",\"name\":\"Other official record\",\"definition\":\"Other official records: foreign company registries, WARN notices, SEC comment letters, regulator registers.\",\"decision_rule\":\"Use only after the court, health, trade/policy, contracts and statistics subtypes have been ruled out.\",\"examples\":[\"SEC staff closed its review of the 10-K with no further comment.\",\"State WARN notice for 443 jobs at a distribution centre.\"]},{\"id\":\"mkt_short_interest\",\"group\":\"market_data\",\"name\":\"Short interest or borrow data\",\"definition\":\"Short interest level and change, days to cover, borrow cost, and national net-short registers.\",\"decision_rule\":\"Options data goes to mkt_options. A search note saying short data was unavailable goes to srch_positioning.\",\"examples\":[\"8.07% of shares short at 8 days to cover, up from the prior settlement.\",\"National short register shows 5.61% across seven holders, rotating to quant funds.\"]},{\"id\":\"mkt_options\",\"group\":\"market_data\",\"name\":\"Options, implied move or skew\",\"definition\":\"Implied volatility, implied move, skew, term structure, put/call ratios and unusual options flow.\",\"decision_rule\":\"Researcher statistics comparing implied with realised moves stay here if built only from options data.\",\"examples\":[\"Weekly straddle implies a 10.65% move.\",\"Skew is essentially flat across Sep-18 strikes.\"]},{\"id\":\"mkt_price_valuation\",\"group\":\"market_data\",\"name\":\"Price move, volume or valuation multiple\",\"definition\":\"Stock price run-ups or drawdowns, volume, technicals, liquidity and valuation multiples.\",\"decision_rule\":\"Past earnings-day reaction patterns go to res_history_pattern. An unexplained move in a search note goes to srch_unexplained_move.\",\"examples\":[\"Stock enters the print up 11.6% in six sessions on ordinary volume.\",\"Forward EV/EBITDA compressed from about 24x to 10.8x.\"]},{\"id\":\"mkt_analyst_view\",\"group\":\"market_data\",\"name\":\"Analyst rating, target or note view\",\"definition\":\"Sell-side rating or price-target changes and the content of broker notes or previews.\",\"decision_rule\":\"Numeric estimates and their revisions go to mkt_consensus.\",\"examples\":[\"A wall of target cuts after the June print, with one downgrade to Neutral.\",\"Broker sees growing potential for a special dividend within a year.\"]},{\"id\":\"mkt_consensus\",\"group\":\"market_data\",\"name\":\"Consensus estimates and revisions\",\"definition\":\"Consensus revenue, EPS or KPI estimates, estimate revisions, analyst counts, whisper numbers and model ranks.\",\"decision_rule\":\"Use this even when the figures come via a retail portal. Rating or target changes go to mkt_analyst_view.\",\"examples\":[\"Q2 revenue consensus $3.32bn, +6.8% year on year.\",\"Three analysts raised and none cut over 60 days; consensus moved $0.98 to $1.01.\"]},{\"id\":\"mkt_commodity_fx\",\"group\":\"market_data\",\"name\":\"Commodity, freight, FX or rate prices\",\"definition\":\"Commodity, metal, energy, memory, freight-rate, crypto, FX and interest-rate prices and premiums.\",\"decision_rule\":\"Volumes from official agencies go to off_official_statistics.\",\"examples\":[\"Hot-rolled coil rose to $1,180 per short ton, a four-year high.\",\"Conventional server DRAM contract prices up 13-18% quarter on quarter.\"]},{\"id\":\"mkt_other\",\"group\":\"market_data\",\"name\":\"Other market data\",\"definition\":\"Other market data: institutional ownership share, fund flows, index rebalances, credit marks.\",\"decision_rule\":\"Use only after the other mkt_ subtypes have been ruled out.\",\"examples\":[\"Institutions hold 109.8% of shares outstanding.\",\"Stock was not among the index removals at the September rebalance.\"]},{\"id\":\"med_major_press\",\"group\":\"media\",\"name\":\"Major business or national press\",\"definition\":\"Reporting by major national or business outlets.\",\"decision_rule\":\"If the article only relays company figures, consensus or ratings, code the underlying source (see precedence).\",\"examples\":[\"National outlet reports a viral boycott that drew 50m views mid-quarter.\",\"Business press reports a promised deal still unannounced seven months on.\"]},{\"id\":\"med_trade_press\",\"group\":\"media\",\"name\":\"Industry trade press\",\"definition\":\"Reporting by industry or trade publications.\",\"decision_rule\":\"Surveys and data reports by industry bodies go to med_industry_report.\",\"examples\":[\"Retail trade site reports a competitor's record marketplace launch.\",\"Trade press says a concession relaunch starts in August next year.\"]},{\"id\":\"med_local_news\",\"group\":\"media\",\"name\":\"Local or regional news\",\"definition\":\"Local or regional outlets covering company sites or events.\",\"decision_rule\":\"Use med_foreign_language only for non-English national or financial press.\",\"examples\":[\"Local reporting still gives a gallery opening as 'spring/summer'.\",\"Regional paper describes the family holding company's long-term intent.\"]},{\"id\":\"med_foreign_language\",\"group\":\"media\",\"name\":\"Non-English financial press\",\"definition\":\"Non-English national or financial press reporting news or opinion.\",\"decision_rule\":\"A non-English aggregator relaying RNS, ESPI, TDnet or CNMV filings goes to own_ subtypes. Consensus tables go to mkt_consensus.\",\"examples\":[\"Spanish financial site reports a policy story that knocked the stock 3.7%.\",\"Polish press agency story on a grant project the company did not win.\"]},{\"id\":\"med_retail_portal\",\"group\":\"media\",\"name\":\"Retail-finance portal opinion article\",\"definition\":\"Opinion or auto-generated articles on retail portals and blogs (Motley Fool, Seeking Alpha, Simply Wall St style).\",\"decision_rule\":\"Code here only when the claim is the article's own framing. Portal-relayed consensus, ratings, short data or call quotes go to their own subtypes.\",\"examples\":[\"Piece framing the stock as 'down 80% from its high, a no-brainer buy'.\",\"Options blog framing the print as a 10% coin flip.\"]},{\"id\":\"med_social_forum\",\"group\":\"media\",\"name\":\"Social media or forum sentiment\",\"definition\":\"Stocktwits, Reddit, message boards and social sentiment scores.\",\"decision_rule\":\"Consumer complaints about products go to alt_app_consumer_reviews.\",\"examples\":[\"Stocktwits sentiment described as 'extremely bearish' in July.\",\"Reddit sentiment score of 77/100, bullish.\"]},{\"id\":\"med_industry_report\",\"group\":\"media\",\"name\":\"Industry body or consultancy report\",\"definition\":\"Surveys, outlooks and data reports by industry associations, consultancies, brokers' research arms or councils.\",\"decision_rule\":\"Government series go to off_official_statistics. Price assessments go to mkt_commodity_fx.\",\"examples\":[\"Manufacturers' survey shows June new orders +11% and backlogs +11%.\",\"Brokerage report: office leasing at a post-pandemic high.\"]},{\"id\":\"med_other\",\"group\":\"media\",\"name\":\"Other media or NGO report\",\"definition\":\"Other published reporting, including NGO, advocacy and watchdog reports.\",\"decision_rule\":\"Use only after the other med_ subtypes have been ruled out.\",\"examples\":[\"NGO vessel-tracking report names which tankers a sanctions carve-out protects.\",\"Environmental group's monthly Arctic shipping report.\"]},{\"id\":\"alt_web_traffic\",\"group\":\"alt_data\",\"name\":\"Web traffic or e-commerce estimates\",\"definition\":\"Similarweb-type visits and rank data, and third-party e-commerce revenue estimates.\",\"decision_rule\":\"Search or AI-assistant share goes to alt_search_trends.\",\"examples\":[\"Site global rank fell over three months, with visits down 6.5% month on month.\",\"Third-party estimate puts the site's July revenue at $66.4M.\"]},{\"id\":\"alt_app_consumer_reviews\",\"group\":\"alt_data\",\"name\":\"App ranks or consumer reviews\",\"definition\":\"App downloads and ranks, app-store ratings, and consumer reviews or complaints.\",\"decision_rule\":\"Investor sentiment goes to med_social_forum.\",\"examples\":[\"App-store rating trend for the shopping apps.\",\"Trustpilot complaints about buyback payment delays.\"]},{\"id\":\"alt_jobs_employees\",\"group\":\"alt_data\",\"name\":\"Job postings or employee reviews\",\"definition\":\"Job-posting counts, hiring pages and employee-review data.\",\"decision_rule\":\"Official layoff notices go to off_other.\",\"examples\":[\"1,039 active job postings this year, +70.7%.\",\"About 23 openings listed at the main plant.\"]},{\"id\":\"alt_foot_traffic\",\"group\":\"alt_data\",\"name\":\"Foot-traffic data\",\"definition\":\"Location-visit panels such as Placer.ai.\",\"decision_rule\":\"Card or POS panels also go here.\",\"examples\":[\"Visits down 4.1% in the latest foot-traffic series.\",\"Chain traffic rose in the quarter, per a footfall vendor.\"]},{\"id\":\"alt_shipping_ais\",\"group\":\"alt_data\",\"name\":\"Vessel or shipping tracking\",\"definition\":\"AIS vessel positions, port calls and shipping-movement data.\",\"decision_rule\":\"Freight rates go to mkt_commodity_fx.\",\"examples\":[\"Vessel idle at anchor in ballast for 33 days with no destination.\",\"Second tanker loaded normally and is bound for a Baltic terminal.\"]},{\"id\":\"alt_website_observation\",\"group\":\"alt_data\",\"name\":\"Direct website or price observation\",\"definition\":\"Researcher observation of live company or retailer web pages: prices, discounts, listings, product offerings.\",\"decision_rule\":\"Use this even when the site is the company's own, if the claim is an observation of the page rather than an announcement.\",\"examples\":[\"Capsule still live at full price on a department-store site amid 50%-off clearance.\",\"Product site sells small GPU instances with no customer logos.\"]},{\"id\":\"alt_search_trends\",\"group\":\"alt_data\",\"name\":\"Search or AI-assistant share data\",\"definition\":\"Search trends, paid-search click share and AI-assistant recommendation share.\",\"decision_rule\":\"Site visits go to alt_web_traffic.\",\"examples\":[\"Company overtook a rival in AI-assistant recommendation share, 20.9% to 29.7%.\",\"Company holds 35.8% paid-search click share.\"]},{\"id\":\"alt_other\",\"group\":\"alt_data\",\"name\":\"Other alternative data\",\"definition\":\"Alternative data that fits no other alt_ subtype: marketplace rankings, composite alt-data scores.\",\"decision_rule\":\"Use only after the other alt_ subtypes have been ruled out.\",\"examples\":[\"Marketplace best-seller rankings.\",\"Alt-data vendor's composite verdict of 'hold'.\"]},{\"id\":\"res_arithmetic\",\"group\":\"researcher_own\",\"name\":\"Researcher arithmetic across sources\",\"definition\":\"Numbers the researcher derives by combining figures from two or more different sources.\",\"decision_rule\":\"If every input comes from one document, code that document's subtype instead.\",\"examples\":[\"Guide minus H1 actuals implies Q4 GMV needs only EUR616m against a EUR654m run-rate.\",\"Industry checks for the two months the guide could not see ran 3-4x stronger.\"]},{\"id\":\"res_history_pattern\",\"group\":\"researcher_own\",\"name\":\"Seasonality or history pattern\",\"definition\":\"Patterns in the company's past behaviour: beat history, reaction history, dividend timing, reporting cadence.\",\"decision_rule\":\"A single-period price move goes to mkt_price_valuation.\",\"examples\":[\"Company beat its last three quarterly guides by 12-14%.\",\"No ex-dividend date has fallen in September in any year.\"]},{\"id\":\"res_absence_of_disclosure\",\"group\":\"researcher_own\",\"name\":\"Expected disclosure is missing\",\"definition\":\"Filed finding that an expected or promised disclosure has not appeared.\",\"decision_rule\":\"Use for filed or dossier items only. Search notes saying 'nothing found' go to srch_ subtypes.\",\"examples\":[\"No monthly production update for 82 days against a monthly cadence.\",\"Investor day promised for mid-2026 still has no date.\"]},{\"id\":\"res_baseline_correction\",\"group\":\"researcher_own\",\"name\":\"Correction of baseline or premise\",\"definition\":\"Researcher correcting a mis-dated, mis-attributed or wrong input or premise.\",\"decision_rule\":\"If the note only discards a stale search hit, use srch_source_unusable.\",\"examples\":[\"Baseline keyed the last print to the wrong session.\",\"Triage premise of a 'bad EPS miss' is wrong; the selloff was a guidance cut.\"]},{\"id\":\"res_synthesis\",\"group\":\"researcher_own\",\"name\":\"Researcher synthesis or judgement\",\"definition\":\"Qualitative inference or verdict combining several sources without new arithmetic.\",\"decision_rule\":\"Use res_arithmetic if the core of the claim is a computed number.\",\"examples\":[\"Peer season splits along consumables versus discretionary spend.\",\"Crowding verdict: moderate and cooling.\"]},{\"id\":\"res_other\",\"group\":\"researcher_own\",\"name\":\"Other or placeholder item\",\"definition\":\"Placeholder or synthetic text, or a header with no claim and no identifiable source.\",\"decision_rule\":\"Use only when no topic or source can be read from the text.\",\"examples\":[\"'SYNTHETIC validation finding 1'.\",\"Section header line with no content.\"]},{\"id\":\"srch_preannouncement_guidance\",\"group\":\"search_note\",\"name\":\"No pre-announcement or guidance change\",\"definition\":\"Searched for a pre-announcement, profit warning, guidance revision or leaked results; none found.\",\"decision_rule\":\"If the search covered ALL filings or news, use srch_filing_stream_quiet.\",\"examples\":[\"No profit warning or guidance change on the regulator's inside-information list.\",\"No leaked Q2 release on the IR site or wires as of mid-afternoon.\"]},{\"id\":\"srch_filing_stream_quiet\",\"group\":\"search_note\",\"name\":\"No filings or company news at all\",\"definition\":\"Checked the whole filing or news stream (8-K, 6-K, RNS, TDnet) and found it quiet.\",\"decision_rule\":\"If the check targets a named event type, use that topic's srch_ subtype.\",\"examples\":[\"No 8-K of any kind filed since the June print.\",\"Company news since May is limited to two scheduling releases.\"]},{\"id\":\"srch_insider_ownership\",\"group\":\"search_note\",\"name\":\"No insider or ownership signal\",\"definition\":\"Searched Form 4, 13D/13G, PDMR or holdings filings; nothing informative found.\",\"decision_rule\":\"Board or executive changes go to srch_management_governance.\",\"examples\":[\"Form 4s are all code-A grants, with no open-market trades.\",\"Only a routine passive 13G since June.\"]},{\"id\":\"srch_litigation_regulatory\",\"group\":\"search_note\",\"name\":\"No litigation, recall or regulatory event\",\"definition\":\"Searched for lawsuits, investigations, recalls, licence or regulatory actions; nothing new found.\",\"decision_rule\":\"Listing-compliance and auditor checks go to srch_balance_sheet_capital.\",\"examples\":[\"No securities class action found for 2026.\",\"Tax Court has issued no decision on the remand.\"]},{\"id\":\"srch_balance_sheet_capital\",\"group\":\"search_note\",\"name\":\"No financing, payout or distress change\",\"definition\":\"Checked financing, dilution, shelf takedowns, buybacks, dividends, covenants, going concern, auditor or listing compliance; nothing new found.\",\"decision_rule\":\"Use srch_earnings_item for a single P&L or accounting line.\",\"examples\":[\"Shelf is a routine three-year renewal with no takedown.\",\"Undrawn ABL, no covenant trip, no going-concern language.\"]},{\"id\":\"srch_management_governance\",\"group\":\"search_note\",\"name\":\"No management or governance change\",\"definition\":\"Searched for executive departures or appointments, board changes, activism, or AGM or EGM items; nothing new found.\",\"decision_rule\":\"Ownership filings go to srch_insider_ownership.\",\"examples\":[\"No permanent CFO named since the interim appointment.\",\"Scheduling release names the same three executives as before.\"]},{\"id\":\"srch_business_events\",\"group\":\"search_note\",\"name\":\"No contract, deal or operational event\",\"definition\":\"Searched for contracts, customer wins or losses, M&A, partnerships, closures, layoffs, WARN notices, labour or operational disruptions; nothing new found.\",\"decision_rule\":\"Regulatory or legal events go to srch_litigation_regulatory.\",\"examples\":[\"No new WARN notice or distribution-centre closure.\",\"No acquisition announced since the last deal.\"]},{\"id\":\"srch_consensus_analyst\",\"group\":\"search_note\",\"name\":\"No consensus or analyst preview found\",\"definition\":\"Consensus, estimates, previews or sell-side notes were unavailable or uninformative.\",\"decision_rule\":\"Use srch_source_unusable if the failure was a blocked site rather than an absence of data.\",\"examples\":[\"No published quarterly consensus; only FY totals from two analysts.\",\"No sell-side note after the July reiteration.\"]},{\"id\":\"srch_unexplained_move\",\"group\":\"search_note\",\"name\":\"Cause of price or volume move not found\",\"definition\":\"Searched for the cause of a price or volume move and found none.\",\"decision_rule\":\"This takes precedence over srch_positioning.\",\"examples\":[\"No news or filing explains the -6% morning drop.\",\"Volume spike with a +6.7% close; no cause found, worth 0.\"]},{\"id\":\"srch_positioning\",\"group\":\"search_note\",\"name\":\"Short interest or options unavailable/flat\",\"definition\":\"Short interest, borrow, option chain or index-flow checks that were unavailable or showed nothing notable.\",\"decision_rule\":\"Moves with no cause go to srch_unexplained_move.\",\"examples\":[\"No usable option chain, so no skew to test against.\",\"Short interest 0.9% of float, not a squeeze setup.\"]},{\"id\":\"srch_alt_data\",\"group\":\"search_note\",\"name\":\"Alternative data unavailable or empty\",\"definition\":\"Web traffic, app, review, job, foot-traffic or complaint data was searched for and not found or not usable.\",\"decision_rule\":\"Use srch_source_unusable if the main point is an HTTP error on a document.\",\"examples\":[\"No usable public web-traffic data for the rebrand.\",\"No dated forum complaints about shipping delays in the quarter.\"]},{\"id\":\"srch_external_readthrough\",\"group\":\"search_note\",\"name\":\"No usable peer or macro read-through\",\"definition\":\"Peer, customer or supplier read-through, macro, FX, tariff, commodity or policy inputs were checked and showed no surprise or no lead.\",\"decision_rule\":\"Peer read-throughs that come too late (simultaneous reporting) also go here.\",\"examples\":[\"Sibling company reports the same evening, so it gives no lead.\",\"FX barely moved since the guide was set; no FX-driven revision.\"]},{\"id\":\"srch_earnings_item\",\"group\":\"search_note\",\"name\":\"Specific P&L item checked, immaterial\",\"definition\":\"A specific accounting or P&L line (remeasurement gain, refund, dilution, production, impairment) was checked and found immaterial or already priced.\",\"decision_rule\":\"Financing and payout items go to srch_balance_sheet_capital.\",\"examples\":[\"Step-acquisition remeasurement gain is too small to move EPS.\",\"Implied Q4 production is already inside consensus.\"]},{\"id\":\"srch_source_unusable\",\"group\":\"search_note\",\"name\":\"Source unreachable or discarded as stale\",\"definition\":\"A source could not be fetched or read (403, 503, paywall, unreadable PDF), or a hit was dropped as stale or misdated.\",\"decision_rule\":\"Code here when the note is about the source failing, whatever the topic.\",\"examples\":[\"IR site returned HTTP 503 on six attempts.\",\"An apparently current article turned out to be dated a year earlier and was dropped.\"]},{\"id\":\"srch_general\",\"group\":\"search_note\",\"name\":\"Broad search, nothing found\",\"definition\":\"Broad or open-ended search with no specific target, which found nothing.\",\"decision_rule\":\"Use only when no topic is named.\",\"examples\":[\"No source anywhere points to a non-obvious upside catalyst.\",\"Event confirmation not spent; already confirmed.\"]},{\"id\":\"srch_other\",\"group\":\"search_note\",\"name\":\"Other search note\",\"definition\":\"Search notes on a named topic not covered above, or placeholder search text.\",\"decision_rule\":\"Use only after every other srch_ subtype has been ruled out.\",\"examples\":[\"'synthetic'.\",\"Could not confirm the company's place on a conference agenda.\"]}],\"precedence\":[\"1. If kind is listed_as_searched_and_found_nothing, always use a srch_ subtype, even if the note quotes a filing or a figure. First check srch_source_unusable (fetch failure or stale hit), then srch_unexplained_move, then the topic subtype.\",\"2. For all other kinds (filed, put outside window, rejected, dossier claim), code the source the claim rests on, then the claim type. Whether it is good or bad news is irrelevant.\",\"3. A verbatim republication of a company's regulated announcement (Investegate RNS, bankier ESPI, kabutan or TDnet, CNMV OIR or IP, stocktitan with newswire_own) is the company's own disclosure: use own_.\",\"4. An article or portal that relays a primary item: company figures, call quotes or guidance go to own_; consensus or revisions go to mkt_consensus; ratings, targets or note content go to mkt_analyst_view; short data goes to mkt_short_interest. Use a med_ subtype only for the outlet's own reporting or opinion.\",\"5. Another company's 8-K or earnings release is oth_, never own_. Within oth_, a stated customer, supplier, lender or partner relationship beats peer.\",\"6. Ranking within the company's own documents: offering documents → own_financing; distress or compliance language → own_distress_compliance; forward ranges → own_guidance_targets; between-print performance → own_interim_update; otherwise use the document type.\",\"7. Share dealings: officers and directors → own_insider_transaction, even when announced by press release. Outside holders, activists and sponsors → oth_holder_filing.\",\"8. Arithmetic: inputs from two or more source types → res_arithmetic; inputs from one source → that source's subtype.\",\"9. A claim that an expected disclosure is missing, in a filed or dossier item → res_absence_of_disclosure, even if it cites the company site.\",\"10. Dossier table rows and headers: code by the metric named in the row (e.g. a 'Short interest' header → mkt_short_interest). Rows or headers with no content → res_other.\"],\"notes\":\"There are 70 subtypes. Use the mechanical fields as hints only: sec_form and sec_items help tell own_ from oth_ (check whose filing it is) and own_management_governance (5.02, 5.07) from own_financing (1.01 with 2.03). domain_class 'retail_finance' usually maps by claim to mkt_consensus, mkt_analyst_view or own_call_commentary, not to med_retail_portal. Non-US equivalents are covered: national short registers go to mkt_short_interest, TR-1 and AMF threshold filings to oth_holder_filing, PDMR and Appendix 3Y dealings to own_insider_transaction, and Japanese 月次 (monthly sales) to own_interim_update. Synthetic placeholders are res_other (filed) or srch_other (search). Keep the catch-alls for genuine leftovers.\"}",
+ "parsed": {
+  "version": "v1",
+  "groups": {
+   "company_own": "Disclosures made by the focal company itself: SEC filings, releases, RNS, TDnet and ASX announcements, calls, decks and IR pages. Includes the same content republished verbatim by aggregators.",
+   "other_company": "Disclosures by other companies or holders: peers, customers, suppliers, lenders, competitors, and outside shareholders filing ownership reports.",
+   "official_record": "Records produced by courts, regulators, governments and statistical agencies.",
+   "market_data": "Prices, estimates, positioning and sell-side outputs about securities and commodities, from data vendors or relayed through portals.",
+   "media": "Articles and posts whose claim is the outlet's own reporting, opinion or survey rather than a relayed primary document or data series.",
+   "alt_data": "Observational data not published by the company or the market: web traffic, apps, reviews, jobs, footfall, vessel tracking, direct site observation, search share.",
+   "researcher_own": "Claims that rest on the researcher's own derivation: arithmetic across sources, historical patterns, absence of an expected disclosure, corrections and synthesis.",
+   "search_note": "Items of kind listed_as_searched_and_found_nothing, coded by WHAT was searched for or why the search failed."
+  },
+  "subtypes": [
+   {
+    "id": "own_results_release",
+    "group": "company_own",
+    "name": "Company's prior earnings release",
+    "definition": "Reported figures from the company's own earnings release or results 8-K (Item 2.02), RNS results, tanshin or results 6-K.",
+    "decision_rule": "Use for reported actuals. Forward ranges in the release go to own_guidance_targets. The same numbers in a 10-Q or 10-K go to own_periodic_report. A results release by another company goes to oth_peer_results.",
+    "examples": [
+     "Prior-quarter release: subscription orders were a record 84.4% of net sales.",
+     "Year-ago segment operating profit taken from the company's earnings 8-K exhibit."
+    ]
+   },
+   {
+    "id": "own_periodic_report",
+    "group": "company_own",
+    "name": "Company's 10-Q/10-K or annual report",
+    "definition": "Figures, notes, risk factors or MD&A wording from the company's periodic report (10-Q, 10-K, 20-F, half-year or annual report).",
+    "decision_rule": "Includes risk-factor or MD&A wording changes. Covenant or going-concern language goes to own_distress_compliance. Prospectus or 424B figures go to own_financing.",
+    "examples": [
+     "10-Q says about $8m of tariff refund claims were filed but none recognised until cash is received.",
+     "10-K states at least 90% of year-end backlog will ship next fiscal year."
+    ]
+   },
+   {
+    "id": "own_guidance_targets",
+    "group": "company_own",
+    "name": "Company guidance or investor-day targets",
+    "definition": "The company's standing forward guidance or medium-term targets, as given at the last print, on its call, or at an investor or capital markets day.",
+    "decision_rule": "A guidance change issued BETWEEN prints, or a pre-announcement, goes to own_interim_update. Qualitative call remarks with no range go to own_call_commentary.",
+    "examples": [
+     "Company guided the quarter to $3.30-3.33bn at its last print.",
+     "Capital markets day reaffirmed a high-single-digit through-cycle growth target."
+    ]
+   },
+   {
+    "id": "own_interim_update",
+    "group": "company_own",
+    "name": "Pre-announcement, trading or monthly update",
+    "definition": "Between-print company disclosures of performance: pre-announced results, trading statements, guidance revisions, monthly sales, production or booking figures.",
+    "decision_rule": "Use own_guidance_targets only if the figure was given with the last results. Use own_date_notice if the release only schedules the print.",
+    "examples": [
+     "Trading-update RNS pre-announces H1 adjusted EPS of 38-42p and an order book of 17.3 weeks.",
+     "Monthly TDnet release shows parent same-store sales of -0.8% for the quarter."
+    ]
+   },
+   {
+    "id": "own_call_commentary",
+    "group": "company_own",
+    "name": "Prior earnings-call commentary",
+    "definition": "Statements by management on a prior earnings call or transcript.",
+    "decision_rule": "Numeric ranges for future periods go to own_guidance_targets. A portal article quoting the call is still coded here (see precedence).",
+    "examples": [
+     "CFO said on the June call that tariff refunds had been 'kind of paused'.",
+     "Management called the July quarter 'more or less the trough' for product gross margin."
+    ]
+   },
+   {
+    "id": "own_business_announcement",
+    "group": "company_own",
+    "name": "Company contract, partnership or product news",
+    "definition": "Company announcements of contract or customer wins, partnerships, licences, acquisitions by the company, product launches or store openings.",
+    "decision_rule": "Closures, exits, layoffs and impairments go to own_restructuring_impairment. If the claim is that such news is MISSING, use res_absence_of_disclosure.",
+    "examples": [
+     "Subsidiary announced a personal-loan acquisition partnership with a bank three days before the print.",
+     "Company release announced an autonomous-robotics pilot at an airport terminal."
+    ]
+   },
+   {
+    "id": "own_management_governance",
+    "group": "company_own",
+    "name": "Executive, board or governance change",
+    "definition": "Officer or director departures and hires, AGM or EGM business and votes, standstill agreements, and compensation actions disclosed by the company.",
+    "decision_rule": "Insider share dealings go to own_insider_transaction. Outside activists' ownership filings go to oth_holder_filing.",
+    "examples": [
+     "8-K Item 5.02 only: co-CEO demoted to run a subsidiary, with no press release.",
+     "Compensation committee rescinded CEO awards that exceeded the plan limit."
+    ]
+   },
+   {
+    "id": "own_restructuring_impairment",
+    "group": "company_own",
+    "name": "Restructuring, impairment or divestiture",
+    "definition": "Company-disclosed restructuring, layoffs, closures, impairments, write-downs or asset sales.",
+    "decision_rule": "Distress language (going concern, covenant breach) goes to own_distress_compliance.",
+    "examples": [
+     "$120m pre-tax impairment after a subsidiary's subscription model was ended.",
+     "Three stores sold to a franchisee, terms undisclosed."
+    ]
+   },
+   {
+    "id": "own_financing",
+    "group": "company_own",
+    "name": "Company financing or offering document",
+    "definition": "Equity or debt raises, ATMs, convertibles, shelves, credit agreements and term loans, and ANY figures disclosed in prospectuses (424B, S-1, S-3, F-3, ABB).",
+    "decision_rule": "Every claim sourced to an offering document goes here, even operating figures such as backlog or cash. Buybacks and dividends go to own_capital_return.",
+    "examples": [
+     "Prospectus supplement discloses quarter-end cash of $6.1m and drawn debt of $56.5m.",
+     "Company signed a $600m secured seven-year term loan, per an 8-K under Items 1.01 and 2.03."
+    ]
+   },
+   {
+    "id": "own_capital_return",
+    "group": "company_own",
+    "name": "Company buyback or dividend",
+    "definition": "Buyback authorisations, executions or suspensions, dividend declarations, and dividend policies.",
+    "decision_rule": "Dividend-timing patterns inferred by the researcher go to res_history_pattern.",
+    "examples": [
+     "Buyback suspended 'voluntarily' with 61% of the maximum unexecuted.",
+     "Written policy of at least 10% annual dividend growth implies a 36p interim."
+    ]
+   },
+   {
+    "id": "own_distress_compliance",
+    "group": "company_own",
+    "name": "Going-concern, covenant or listing-compliance item",
+    "definition": "Going-concern or covenant language, listing deficiency notices, late-filing notices, material weaknesses, auditor changes, and filing delays.",
+    "decision_rule": "General balance-sheet figures without distress language go to own_periodic_report.",
+    "examples": [
+     "Exchange $1.00 deficiency notice: the month-end close passes the cure test.",
+     "Company delayed the release four days 'to complete final review'."
+    ]
+   },
+   {
+    "id": "own_insider_transaction",
+    "group": "company_own",
+    "name": "Officer or director share dealing",
+    "definition": "Form 3, Form 4 and Form 144, PDMR or Appendix 3Y dealings by the company's officers and directors: open-market buys or sells, plan sales, grants, vesting and withholding.",
+    "decision_rule": "Holders that are not officers or directors (activists, funds, sponsors filing 13D/13G, TR-1) go to oth_holder_filing.",
+    "examples": [
+     "Two independent directors each sold about half their stake during the run-up.",
+     "CEO elected cash settlement for 17,000 vesting performance RSUs."
+    ]
+   },
+   {
+    "id": "own_date_notice",
+    "group": "company_own",
+    "name": "Results-date or scheduling notice",
+    "definition": "Company notices of the report date, call time, or a change in reporting cadence.",
+    "decision_rule": "If the notice carries performance numbers, use own_interim_update.",
+    "examples": [
+     "Report date pulled forward three weeks against a stable four-year pattern.",
+     "Earnings-date release published, naming the same three executives as prior calls."
+    ]
+   },
+   {
+    "id": "own_other",
+    "group": "company_own",
+    "name": "Other company-own disclosure",
+    "definition": "Company disclosures that fit no other own_ subtype: own litigation disclosures, corrections of press stories, newsroom or pipeline pages.",
+    "decision_rule": "Use only after every other own_ subtype has been ruled out.",
+    "examples": [
+     "Company announcement that a lawsuit claiming 8.34m PLN was served.",
+     "Company corrected a wire story the same day about a grant project."
+    ]
+   },
+   {
+    "id": "oth_peer_results",
+    "group": "other_company",
+    "name": "Peer earnings result or guidance",
+    "definition": "Results, guidance or call remarks of a peer or comparable company, used as a read-through.",
+    "decision_rule": "If the text names the other company as the focal company's customer, supplier, distributor, lender or partner, use oth_customer_supplier.",
+    "examples": [
+     "Peer reported US electrophysiology growth of only 3% in the overlapping quarter.",
+     "Closest pure-play beat and raised but fell 14% on the week on gross-margin concerns."
+    ]
+   },
+   {
+    "id": "oth_customer_supplier",
+    "group": "other_company",
+    "name": "Customer, supplier or counterparty disclosure",
+    "definition": "Disclosures by a named customer, supplier, distributor, lender, licensee or partner of the focal company.",
+    "decision_rule": "The text must state the relationship to the focal company. Otherwise use oth_peer_results.",
+    "examples": [
+     "Lender's quarterly report confirms the company's collateralised facility was repaid.",
+     "Largest customer's physical-stores segment grew 4% over two-thirds of the quarter."
+    ]
+   },
+   {
+    "id": "oth_competitor_sector_move",
+    "group": "other_company",
+    "name": "Competitor action or sector M&A",
+    "definition": "Competitor pricing, capacity or market entry, and M&A among other companies in the sector.",
+    "decision_rule": "Competitor earnings figures go to oth_peer_results.",
+    "examples": [
+     "Rival brand opened a marketplace flagship with record first-day sales.",
+     "Two other drug companies announced a merger."
+    ]
+   },
+   {
+    "id": "oth_holder_filing",
+    "group": "other_company",
+    "name": "Outside holder ownership filing",
+    "definition": "13D or 13G filings and amendments, TR-1 holdings notices, AMF threshold crossings, Japanese large-holding reports, and activist or sponsor stake disclosures.",
+    "decision_rule": "Officers and directors go to own_insider_transaction. Short positions go to mkt_short_interest.",
+    "examples": [
+     "Activist's 13D/A chain shows it selling into strength for three months.",
+     "An individual's passive 13G reports 5.17% of units."
+    ]
+   },
+   {
+    "id": "oth_other",
+    "group": "other_company",
+    "name": "Other third-company item",
+    "definition": "Other-company items that fit no oth_ subtype.",
+    "decision_rule": "Use only after the peer, customer/supplier, competitor and holder subtypes have been ruled out.",
+    "examples": [
+     "Two directors pushed off the board of an investee company.",
+     "An unrelated brand signed a celebrity ambassador."
+    ]
+   },
+   {
+    "id": "off_court_docket",
+    "group": "official_record",
+    "name": "Court or litigation record",
+    "definition": "Court judgments, dockets, case filings and settlements from court records.",
+    "decision_rule": "A company's own disclosure that it was sued goes to own_other. Regulator actions go to off_health_regulator or off_trade_policy.",
+    "examples": [
+     "District court entered a final judgment and injunction against federal registration rules.",
+     "Filing in a consumer class action says about one-third of refunds were passed on as lower prices."
+    ]
+   },
+   {
+    "id": "off_health_regulator",
+    "group": "official_record",
+    "name": "FDA, EMA, recall or trial record",
+    "definition": "Drug and device regulator actions, recalls, and clinical-trial registry entries.",
+    "decision_rule": "Company press releases about trial timing go to own_ subtypes.",
+    "examples": [
+     "Trial registry still shows RECRUITING with a past primary-completion date.",
+     "Class I recall covering about 101,000 catheter units."
+    ]
+   },
+   {
+    "id": "off_trade_policy",
+    "group": "official_record",
+    "name": "Tariff, sanction or government policy",
+    "definition": "Tariffs, customs refunds, sanctions, export bans, legislation, budgets, draft decrees and policy units.",
+    "decision_rule": "Statistical series go to off_official_statistics. Procurement awards go to off_government_contracts.",
+    "examples": [
+     "Trade ministry banned exports of dual-use substrates.",
+     "Government's new insourcing unit targets consultancy spending."
+    ]
+   },
+   {
+    "id": "off_government_contracts",
+    "group": "official_record",
+    "name": "Government contract or tender record",
+    "definition": "Public procurement databases and award notices (FPDS, SAM, Contracts Finder, Find a Tender).",
+    "decision_rule": "A company's own contract press release goes to own_business_announcement.",
+    "examples": [
+     "Procurement portal lists only a £0.9m and a £31k award since March.",
+     "Tender database shows no award naming the company."
+    ]
+   },
+   {
+    "id": "off_official_statistics",
+    "group": "official_record",
+    "name": "Official or exchange statistics",
+    "definition": "Government or exchange statistical series: BLS, EIA, Census, NICS, TSA, NOAA, mint sales, benefit enrolment, exchange turnover.",
+    "decision_rule": "Commodity spot or contract prices from vendors go to mkt_commodity_fx. Surveys by industry bodies go to med_industry_report.",
+    "examples": [
+     "Benefit enrolment fell 13% year on year, published after the last guide.",
+     "Adjusted background checks for the exact fiscal quarter were up 7.7%."
+    ]
+   },
+   {
+    "id": "off_other",
+    "group": "official_record",
+    "name": "Other official record",
+    "definition": "Other official records: foreign company registries, WARN notices, SEC comment letters, regulator registers.",
+    "decision_rule": "Use only after the court, health, trade/policy, contracts and statistics subtypes have been ruled out.",
+    "examples": [
+     "SEC staff closed its review of the 10-K with no further comment.",
+     "State WARN notice for 443 jobs at a distribution centre."
+    ]
+   },
+   {
+    "id": "mkt_short_interest",
+    "group": "market_data",
+    "name": "Short interest or borrow data",
+    "definition": "Short interest level and change, days to cover, borrow cost, and national net-short registers.",
+    "decision_rule": "Options data goes to mkt_options. A search note saying short data was unavailable goes to srch_positioning.",
+    "examples": [
+     "8.07% of shares short at 8 days to cover, up from the prior settlement.",
+     "National short register shows 5.61% across seven holders, rotating to quant funds."
+    ]
+   },
+   {
+    "id": "mkt_options",
+    "group": "market_data",
+    "name": "Options, implied move or skew",
+    "definition": "Implied volatility, implied move, skew, term structure, put/call ratios and unusual options flow.",
+    "decision_rule": "Researcher statistics comparing implied with realised moves stay here if built only from options data.",
+    "examples": [
+     "Weekly straddle implies a 10.65% move.",
+     "Skew is essentially flat across Sep-18 strikes."
+    ]
+   },
+   {
+    "id": "mkt_price_valuation",
+    "group": "market_data",
+    "name": "Price move, volume or valuation multiple",
+    "definition": "Stock price run-ups or drawdowns, volume, technicals, liquidity and valuation multiples.",
+    "decision_rule": "Past earnings-day reaction patterns go to res_history_pattern. An unexplained move in a search note goes to srch_unexplained_move.",
+    "examples": [
+     "Stock enters the print up 11.6% in six sessions on ordinary volume.",
+     "Forward EV/EBITDA compressed from about 24x to 10.8x."
+    ]
+   },
+   {
+    "id": "mkt_analyst_view",
+    "group": "market_data",
+    "name": "Analyst rating, target or note view",
+    "definition": "Sell-side rating or price-target changes and the content of broker notes or previews.",
+    "decision_rule": "Numeric estimates and their revisions go to mkt_consensus.",
+    "examples": [
+     "A wall of target cuts after the June print, with one downgrade to Neutral.",
+     "Broker sees growing potential for a special dividend within a year."
+    ]
+   },
+   {
+    "id": "mkt_consensus",
+    "group": "market_data",
+    "name": "Consensus estimates and revisions",
+    "definition": "Consensus revenue, EPS or KPI estimates, estimate revisions, analyst counts, whisper numbers and model ranks.",
+    "decision_rule": "Use this even when the figures come via a retail portal. Rating or target changes go to mkt_analyst_view.",
+    "examples": [
+     "Q2 revenue consensus $3.32bn, +6.8% year on year.",
+     "Three analysts raised and none cut over 60 days; consensus moved $0.98 to $1.01."
+    ]
+   },
+   {
+    "id": "mkt_commodity_fx",
+    "group": "market_data",
+    "name": "Commodity, freight, FX or rate prices",
+    "definition": "Commodity, metal, energy, memory, freight-rate, crypto, FX and interest-rate prices and premiums.",
+    "decision_rule": "Volumes from official agencies go to off_official_statistics.",
+    "examples": [
+     "Hot-rolled coil rose to $1,180 per short ton, a four-year high.",
+     "Conventional server DRAM contract prices up 13-18% quarter on quarter."
+    ]
+   },
+   {
+    "id": "mkt_other",
+    "group": "market_data",
+    "name": "Other market data",
+    "definition": "Other market data: institutional ownership share, fund flows, index rebalances, credit marks.",
+    "decision_rule": "Use only after the other mkt_ subtypes have been ruled out.",
+    "examples": [
+     "Institutions hold 109.8% of shares outstanding.",
+     "Stock was not among the index removals at the September rebalance."
+    ]
+   },
+   {
+    "id": "med_major_press",
+    "group": "media",
+    "name": "Major business or national press",
+    "definition": "Reporting by major national or business outlets.",
+    "decision_rule": "If the article only relays company figures, consensus or ratings, code the underlying source (see precedence).",
+    "examples": [
+     "National outlet reports a viral boycott that drew 50m views mid-quarter.",
+     "Business press reports a promised deal still unannounced seven months on."
+    ]
+   },
+   {
+    "id": "med_trade_press",
+    "group": "media",
+    "name": "Industry trade press",
+    "definition": "Reporting by industry or trade publications.",
+    "decision_rule": "Surveys and data reports by industry bodies go to med_industry_report.",
+    "examples": [
+     "Retail trade site reports a competitor's record marketplace launch.",
+     "Trade press says a concession relaunch starts in August next year."
+    ]
+   },
+   {
+    "id": "med_local_news",
+    "group": "media",
+    "name": "Local or regional news",
+    "definition": "Local or regional outlets covering company sites or events.",
+    "decision_rule": "Use med_foreign_language only for non-English national or financial press.",
+    "examples": [
+     "Local reporting still gives a gallery opening as 'spring/summer'.",
+     "Regional paper describes the family holding company's long-term intent."
+    ]
+   },
+   {
+    "id": "med_foreign_language",
+    "group": "media",
+    "name": "Non-English financial press",
+    "definition": "Non-English national or financial press reporting news or opinion.",
+    "decision_rule": "A non-English aggregator relaying RNS, ESPI, TDnet or CNMV filings goes to own_ subtypes. Consensus tables go to mkt_consensus.",
+    "examples": [
+     "Spanish financial site reports a policy story that knocked the stock 3.7%.",
+     "Polish press agency story on a grant project the company did not win."
+    ]
+   },
+   {
+    "id": "med_retail_portal",
+    "group": "media",
+    "name": "Retail-finance portal opinion article",
+    "definition": "Opinion or auto-generated articles on retail portals and blogs (Motley Fool, Seeking Alpha, Simply Wall St style).",
+    "decision_rule": "Code here only when the claim is the article's own framing. Portal-relayed consensus, ratings, short data or call quotes go to their own subtypes.",
+    "examples": [
+     "Piece framing the stock as 'down 80% from its high, a no-brainer buy'.",
+     "Options blog framing the print as a 10% coin flip."
+    ]
+   },
+   {
+    "id": "med_social_forum",
+    "group": "media",
+    "name": "Social media or forum sentiment",
+    "definition": "Stocktwits, Reddit, message boards and social sentiment scores.",
+    "decision_rule": "Consumer complaints about products go to alt_app_consumer_reviews.",
+    "examples": [
+     "Stocktwits sentiment described as 'extremely bearish' in July.",
+     "Reddit sentiment score of 77/100, bullish."
+    ]
+   },
+   {
+    "id": "med_industry_report",
+    "group": "media",
+    "name": "Industry body or consultancy report",
+    "definition": "Surveys, outlooks and data reports by industry associations, consultancies, brokers' research arms or councils.",
+    "decision_rule": "Government series go to off_official_statistics. Price assessments go to mkt_commodity_fx.",
+    "examples": [
+     "Manufacturers' survey shows June new orders +11% and backlogs +11%.",
+     "Brokerage report: office leasing at a post-pandemic high."
+    ]
+   },
+   {
+    "id": "med_other",
+    "group": "media",
+    "name": "Other media or NGO report",
+    "definition": "Other published reporting, including NGO, advocacy and watchdog reports.",
+    "decision_rule": "Use only after the other med_ subtypes have been ruled out.",
+    "examples": [
+     "NGO vessel-tracking report names which tankers a sanctions carve-out protects.",
+     "Environmental group's monthly Arctic shipping report."
+    ]
+   },
+   {
+    "id": "alt_web_traffic",
+    "group": "alt_data",
+    "name": "Web traffic or e-commerce estimates",
+    "definition": "Similarweb-type visits and rank data, and third-party e-commerce revenue estimates.",
+    "decision_rule": "Search or AI-assistant share goes to alt_search_trends.",
+    "examples": [
+     "Site global rank fell over three months, with visits down 6.5% month on month.",
+     "Third-party estimate puts the site's July revenue at $66.4M."
+    ]
+   },
+   {
+    "id": "alt_app_consumer_reviews",
+    "group": "alt_data",
+    "name": "App ranks or consumer reviews",
+    "definition": "App downloads and ranks, app-store ratings, and consumer reviews or complaints.",
+    "decision_rule": "Investor sentiment goes to med_social_forum.",
+    "examples": [
+     "App-store rating trend for the shopping apps.",
+     "Trustpilot complaints about buyback payment delays."
+    ]
+   },
+   {
+    "id": "alt_jobs_employees",
+    "group": "alt_data",
+    "name": "Job postings or employee reviews",
+    "definition": "Job-posting counts, hiring pages and employee-review data.",
+    "decision_rule": "Official layoff notices go to off_other.",
+    "examples": [
+     "1,039 active job postings this year, +70.7%.",
+     "About 23 openings listed at the main plant."
+    ]
+   },
+   {
+    "id": "alt_foot_traffic",
+    "group": "alt_data",
+    "name": "Foot-traffic data",
+    "definition": "Location-visit panels such as Placer.ai.",
+    "decision_rule": "Card or POS panels also go here.",
+    "examples": [
+     "Visits down 4.1% in the latest foot-traffic series.",
+     "Chain traffic rose in the quarter, per a footfall vendor."
+    ]
+   },
+   {
+    "id": "alt_shipping_ais",
+    "group": "alt_data",
+    "name": "Vessel or shipping tracking",
+    "definition": "AIS vessel positions, port calls and shipping-movement data.",
+    "decision_rule": "Freight rates go to mkt_commodity_fx.",
+    "examples": [
+     "Vessel idle at anchor in ballast for 33 days with no destination.",
+     "Second tanker loaded normally and is bound for a Baltic terminal."
+    ]
+   },
+   {
+    "id": "alt_website_observation",
+    "group": "alt_data",
+    "name": "Direct website or price observation",
+    "definition": "Researcher observation of live company or retailer web pages: prices, discounts, listings, product offerings.",
+    "decision_rule": "Use this even when the site is the company's own, if the claim is an observation of the page rather than an announcement.",
+    "examples": [
+     "Capsule still live at full price on a department-store site amid 50%-off clearance.",
+     "Product site sells small GPU instances with no customer logos."
+    ]
+   },
+   {
+    "id": "alt_search_trends",
+    "group": "alt_data",
+    "name": "Search or AI-assistant share data",
+    "definition": "Search trends, paid-search click share and AI-assistant recommendation share.",
+    "decision_rule": "Site visits go to alt_web_traffic.",
+    "examples": [
+     "Company overtook a rival in AI-assistant recommendation share, 20.9% to 29.7%.",
+     "Company holds 35.8% paid-search click share."
+    ]
+   },
+   {
+    "id": "alt_other",
+    "group": "alt_data",
+    "name": "Other alternative data",
+    "definition": "Alternative data that fits no other alt_ subtype: marketplace rankings, composite alt-data scores.",
+    "decision_rule": "Use only after the other alt_ subtypes have been ruled out.",
+    "examples": [
+     "Marketplace best-seller rankings.",
+     "Alt-data vendor's composite verdict of 'hold'."
+    ]
+   },
+   {
+    "id": "res_arithmetic",
+    "group": "researcher_own",
+    "name": "Researcher arithmetic across sources",
+    "definition": "Numbers the researcher derives by combining figures from two or more different sources.",
+    "decision_rule": "If every input comes from one document, code that document's subtype instead.",
+    "examples": [
+     "Guide minus H1 actuals implies Q4 GMV needs only EUR616m against a EUR654m run-rate.",
+     "Industry checks for the two months the guide could not see ran 3-4x stronger."
+    ]
+   },
+   {
+    "id": "res_history_pattern",
+    "group": "researcher_own",
+    "name": "Seasonality or history pattern",
+    "definition": "Patterns in the company's past behaviour: beat history, reaction history, dividend timing, reporting cadence.",
+    "decision_rule": "A single-period price move goes to mkt_price_valuation.",
+    "examples": [
+     "Company beat its last three quarterly guides by 12-14%.",
+     "No ex-dividend date has fallen in September in any year."
+    ]
+   },
+   {
+    "id": "res_absence_of_disclosure",
+    "group": "researcher_own",
+    "name": "Expected disclosure is missing",
+    "definition": "Filed finding that an expected or promised disclosure has not appeared.",
+    "decision_rule": "Use for filed or dossier items only. Search notes saying 'nothing found' go to srch_ subtypes.",
+    "examples": [
+     "No monthly production update for 82 days against a monthly cadence.",
+     "Investor day promised for mid-2026 still has no date."
+    ]
+   },
+   {
+    "id": "res_baseline_correction",
+    "group": "researcher_own",
+    "name": "Correction of baseline or premise",
+    "definition": "Researcher correcting a mis-dated, mis-attributed or wrong input or premise.",
+    "decision_rule": "If the note only discards a stale search hit, use srch_source_unusable.",
+    "examples": [
+     "Baseline keyed the last print to the wrong session.",
+     "Triage premise of a 'bad EPS miss' is wrong; the selloff was a guidance cut."
+    ]
+   },
+   {
+    "id": "res_synthesis",
+    "group": "researcher_own",
+    "name": "Researcher synthesis or judgement",
+    "definition": "Qualitative inference or verdict combining several sources without new arithmetic.",
+    "decision_rule": "Use res_arithmetic if the core of the claim is a computed number.",
+    "examples": [
+     "Peer season splits along consumables versus discretionary spend.",
+     "Crowding verdict: moderate and cooling."
+    ]
+   },
+   {
+    "id": "res_other",
+    "group": "researcher_own",
+    "name": "Other or placeholder item",
+    "definition": "Placeholder or synthetic text, or a header with no claim and no identifiable source.",
+    "decision_rule": "Use only when no topic or source can be read from the text.",
+    "examples": [
+     "'SYNTHETIC validation finding 1'.",
+     "Section header line with no content."
+    ]
+   },
+   {
+    "id": "srch_preannouncement_guidance",
+    "group": "search_note",
+    "name": "No pre-announcement or guidance change",
+    "definition": "Searched for a pre-announcement, profit warning, guidance revision or leaked results; none found.",
+    "decision_rule": "If the search covered ALL filings or news, use srch_filing_stream_quiet.",
+    "examples": [
+     "No profit warning or guidance change on the regulator's inside-information list.",
+     "No leaked Q2 release on the IR site or wires as of mid-afternoon."
+    ]
+   },
+   {
+    "id": "srch_filing_stream_quiet",
+    "group": "search_note",
+    "name": "No filings or company news at all",
+    "definition": "Checked the whole filing or news stream (8-K, 6-K, RNS, TDnet) and found it quiet.",
+    "decision_rule": "If the check targets a named event type, use that topic's srch_ subtype.",
+    "examples": [
+     "No 8-K of any kind filed since the June print.",
+     "Company news since May is limited to two scheduling releases."
+    ]
+   },
+   {
+    "id": "srch_insider_ownership",
+    "group": "search_note",
+    "name": "No insider or ownership signal",
+    "definition": "Searched Form 4, 13D/13G, PDMR or holdings filings; nothing informative found.",
+    "decision_rule": "Board or executive changes go to srch_management_governance.",
+    "examples": [
+     "Form 4s are all code-A grants, with no open-market trades.",
+     "Only a routine passive 13G since June."
+    ]
+   },
+   {
+    "id": "srch_litigation_regulatory",
+    "group": "search_note",
+    "name": "No litigation, recall or regulatory event",
+    "definition": "Searched for lawsuits, investigations, recalls, licence or regulatory actions; nothing new found.",
+    "decision_rule": "Listing-compliance and auditor checks go to srch_balance_sheet_capital.",
+    "examples": [
+     "No securities class action found for 2026.",
+     "Tax Court has issued no decision on the remand."
+    ]
+   },
+   {
+    "id": "srch_balance_sheet_capital",
+    "group": "search_note",
+    "name": "No financing, payout or distress change",
+    "definition": "Checked financing, dilution, shelf takedowns, buybacks, dividends, covenants, going concern, auditor or listing compliance; nothing new found.",
+    "decision_rule": "Use srch_earnings_item for a single P&L or accounting line.",
+    "examples": [
+     "Shelf is a routine three-year renewal with no takedown.",
+     "Undrawn ABL, no covenant trip, no going-concern language."
+    ]
+   },
+   {
+    "id": "srch_management_governance",
+    "group": "search_note",
+    "name": "No management or governance change",
+    "definition": "Searched for executive departures or appointments, board changes, activism, or AGM or EGM items; nothing new found.",
+    "decision_rule": "Ownership filings go to srch_insider_ownership.",
+    "examples": [
+     "No permanent CFO named since the interim appointment.",
+     "Scheduling release names the same three executives as before."
+    ]
+   },
+   {
+    "id": "srch_business_events",
+    "group": "search_note",
+    "name": "No contract, deal or operational event",
+    "definition": "Searched for contracts, customer wins or losses, M&A, partnerships, closures, layoffs, WARN notices, labour or operational disruptions; nothing new found.",
+    "decision_rule": "Regulatory or legal events go to srch_litigation_regulatory.",
+    "examples": [
+     "No new WARN notice or distribution-centre closure.",
+     "No acquisition announced since the last deal."
+    ]
+   },
+   {
+    "id": "srch_consensus_analyst",
+    "group": "search_note",
+    "name": "No consensus or analyst preview found",
+    "definition": "Consensus, estimates, previews or sell-side notes were unavailable or uninformative.",
+    "decision_rule": "Use srch_source_unusable if the failure was a blocked site rather than an absence of data.",
+    "examples": [
+     "No published quarterly consensus; only FY totals from two analysts.",
+     "No sell-side note after the July reiteration."
+    ]
+   },
+   {
+    "id": "srch_unexplained_move",
+    "group": "search_note",
+    "name": "Cause of price or volume move not found",
+    "definition": "Searched for the cause of a price or volume move and found none.",
+    "decision_rule": "This takes precedence over srch_positioning.",
+    "examples": [
+     "No news or filing explains the -6% morning drop.",
+     "Volume spike with a +6.7% close; no cause found, worth 0."
+    ]
+   },
+   {
+    "id": "srch_positioning",
+    "group": "search_note",
+    "name": "Short interest or options unavailable/flat",
+    "definition": "Short interest, borrow, option chain or index-flow checks that were unavailable or showed nothing notable.",
+    "decision_rule": "Moves with no cause go to srch_unexplained_move.",
+    "examples": [
+     "No usable option chain, so no skew to test against.",
+     "Short interest 0.9% of float, not a squeeze setup."
+    ]
+   },
+   {
+    "id": "srch_alt_data",
+    "group": "search_note",
+    "name": "Alternative data unavailable or empty",
+    "definition": "Web traffic, app, review, job, foot-traffic or complaint data was searched for and not found or not usable.",
+    "decision_rule": "Use srch_source_unusable if the main point is an HTTP error on a document.",
+    "examples": [
+     "No usable public web-traffic data for the rebrand.",
+     "No dated forum complaints about shipping delays in the quarter."
+    ]
+   },
+   {
+    "id": "srch_external_readthrough",
+    "group": "search_note",
+    "name": "No usable peer or macro read-through",
+    "definition": "Peer, customer or supplier read-through, macro, FX, tariff, commodity or policy inputs were checked and showed no surprise or no lead.",
+    "decision_rule": "Peer read-throughs that come too late (simultaneous reporting) also go here.",
+    "examples": [
+     "Sibling company reports the same evening, so it gives no lead.",
+     "FX barely moved since the guide was set; no FX-driven revision."
+    ]
+   },
+   {
+    "id": "srch_earnings_item",
+    "group": "search_note",
+    "name": "Specific P&L item checked, immaterial",
+    "definition": "A specific accounting or P&L line (remeasurement gain, refund, dilution, production, impairment) was checked and found immaterial or already priced.",
+    "decision_rule": "Financing and payout items go to srch_balance_sheet_capital.",
+    "examples": [
+     "Step-acquisition remeasurement gain is too small to move EPS.",
+     "Implied Q4 production is already inside consensus."
+    ]
+   },
+   {
+    "id": "srch_source_unusable",
+    "group": "search_note",
+    "name": "Source unreachable or discarded as stale",
+    "definition": "A source could not be fetched or read (403, 503, paywall, unreadable PDF), or a hit was dropped as stale or misdated.",
+    "decision_rule": "Code here when the note is about the source failing, whatever the topic.",
+    "examples": [
+     "IR site returned HTTP 503 on six attempts.",
+     "An apparently current article turned out to be dated a year earlier and was dropped."
+    ]
+   },
+   {
+    "id": "srch_general",
+    "group": "search_note",
+    "name": "Broad search, nothing found",
+    "definition": "Broad or open-ended search with no specific target, which found nothing.",
+    "decision_rule": "Use only when no topic is named.",
+    "examples": [
+     "No source anywhere points to a non-obvious upside catalyst.",
+     "Event confirmation not spent; already confirmed."
+    ]
+   },
+   {
+    "id": "srch_other",
+    "group": "search_note",
+    "name": "Other search note",
+    "definition": "Search notes on a named topic not covered above, or placeholder search text.",
+    "decision_rule": "Use only after every other srch_ subtype has been ruled out.",
+    "examples": [
+     "'synthetic'.",
+     "Could not confirm the company's place on a conference agenda."
+    ]
+   }
+  ],
+  "precedence": [
+   "1. If kind is listed_as_searched_and_found_nothing, always use a srch_ subtype, even if the note quotes a filing or a figure. First check srch_source_unusable (fetch failure or stale hit), then srch_unexplained_move, then the topic subtype.",
+   "2. For all other kinds (filed, put outside window, rejected, dossier claim), code the source the claim rests on, then the claim type. Whether it is good or bad news is irrelevant.",
+   "3. A verbatim republication of a company's regulated announcement (Investegate RNS, bankier ESPI, kabutan or TDnet, CNMV OIR or IP, stocktitan with newswire_own) is the company's own disclosure: use own_.",
+   "4. An article or portal that relays a primary item: company figures, call quotes or guidance go to own_; consensus or revisions go to mkt_consensus; ratings, targets or note content go to mkt_analyst_view; short data goes to mkt_short_interest. Use a med_ subtype only for the outlet's own reporting or opinion.",
+   "5. Another company's 8-K or earnings release is oth_, never own_. Within oth_, a stated customer, supplier, lender or partner relationship beats peer.",
+   "6. Ranking within the company's own documents: offering documents → own_financing; distress or compliance language → own_distress_compliance; forward ranges → own_guidance_targets; between-print performance → own_interim_update; otherwise use the document type.",
+   "7. Share dealings: officers and directors → own_insider_transaction, even when announced by press release. Outside holders, activists and sponsors → oth_holder_filing.",
+   "8. Arithmetic: inputs from two or more source types → res_arithmetic; inputs from one source → that source's subtype.",
+   "9. A claim that an expected disclosure is missing, in a filed or dossier item → res_absence_of_disclosure, even if it cites the company site.",
+   "10. Dossier table rows and headers: code by the metric named in the row (e.g. a 'Short interest' header → mkt_short_interest). Rows or headers with no content → res_other."
+  ],
+  "notes": "There are 70 subtypes. Use the mechanical fields as hints only: sec_form and sec_items help tell own_ from oth_ (check whose filing it is) and own_management_governance (5.02, 5.07) from own_financing (1.01 with 2.03). domain_class 'retail_finance' usually maps by claim to mkt_consensus, mkt_analyst_view or own_call_commentary, not to med_retail_portal. Non-US equivalents are covered: national short registers go to mkt_short_interest, TR-1 and AMF threshold filings to oth_holder_filing, PDMR and Appendix 3Y dealings to own_insider_transaction, and Japanese 月次 (monthly sales) to own_interim_update. Synthetic placeholders are res_other (filed) or srch_other (search). Keep the catch-alls for genuine leftovers."
+ }
+}
