@@ -1,0 +1,40 @@
+{
+  "reasoning": "None of the five edits conflict, and none touch the protected SLOW_UPDATE section. Both failure-driven edits are kept unchanged, since they fix the main defect: share leaking from anchors the judge itself had disqualified. Failure edit 1 rewrites the one-off bullet so that a one-off keeps a small share only beside a qualifying anchor, and gets zero when its arrival or amount in the quarter is inferred rather than disclosed. Failure edit 2 makes removal at the anchor check complete and adds a self-test against the judge's own note. All three success-driven edits are kept because each covers a pattern the failure edits leave out, and each only tightens which evidence qualifies. Success edit 1 adds company-action absences (a pre-recorded or no-Q&A call, a press release that was not issued, no update in a period that never carries one) to the amplifier and absence list, which gives them size only. Success edit 2 adds a stale-consensus rule: a mechanical headline beat or miss against an outdated consensus gets about zero share. Success edit 3 adds a check on whether the tape already reacted, plus a materiality scale against market cap. Its permission for a very large item to carry the sign is explicitly made subject to the anchor check, so it cannot weaken the failure edits. The five edits target separate text: the one-off bullet, the amplifiers sentence, the end of the 'Size only what is still open' bullet, the end of the 'Collapse clusters' bullet, and the anchor check. They do not overlap, so nothing needed deduplicating. Ordering puts the failure edits first.",
+  "edits": [
+    {
+      "op": "replace",
+      "target": "Otherwise give it a small share and put the weight on the recurring and guide evidence. If the pack's own analogues traded flat or down on the same kind of one-off, give it zero or the analogues' sign.",
+      "content": "Otherwise it may keep a small share only beside a qualifying anchor (see the anchor check); on its own it gets zero. If the one-off's arrival, timing or amount inside the reported quarter is inferred from peers, aggregate data or an accounting model (e.g. a gain-contingency claim not yet recognised) rather than stated by the company, it is also second-hand and gets zero. If the pack's own analogues traded flat or down on the same kind of one-off, give it zero or the analogues' sign.",
+      "support_count": 8,
+      "source_type": "failure"
+    },
+    {
+      "op": "replace",
+      "target": "Remove its share and re-sum from what is left. If nothing that remains qualifies, the answer is `p_up` 50 and `impact_sum` 0.",
+      "content": "Remove its share entirely; cutting it to a 'small' or 'modest' lean is not removal. Re-sum from what is left. If nothing that remains qualifies, the answer is `p_up` 50 and every share 0, not a tilt of a few points. Self-test: if your note describes the item carrying the number as a one-off, inferred, a hint, of uncertain path, or says no fact decides the print, you have already failed this check, so output 50/0.",
+      "support_count": 8,
+      "source_type": "failure"
+    },
+    {
+      "op": "replace",
+      "target": "Short interest, days-to-cover, thin float, an illiquid chain, a missing filing or missing news, controls language going back to boilerplate, and routine insider sales say how big the move can be, not which way.",
+      "content": "Short interest, days-to-cover, thin float, an illiquid chain, a missing filing or missing news, controls language going back to boilerplate, and routine insider sales say how big the move can be, not which way. The same holds for absences of a company action: a call switched to pre-recorded or no-Q&A, a press release the company did not issue, or no dividend or update in a period that never carries one.",
+      "support_count": 10,
+      "source_type": "success"
+    },
+    {
+      "op": "insert_after",
+      "target": "Move p_up more than about 8 from 50 only when a primary-sourced, quantified finding shows the bar or narrative is stale against it.",
+      "content": "\n- **Stale consensus is not a surprise.** Sometimes an aggregator or few-analyst consensus has not caught up with the company's own pre-announcement, guide arithmetic or deal close. The resulting headline miss or beat against it is mechanical, and the price already trades on the disclosed figure. Give that item about zero share and size only what the disclosure left open.",
+      "support_count": 10,
+      "source_type": "success"
+    },
+    {
+      "op": "insert_after",
+      "target": "Opposite-signed readings of one document may both stand.",
+      "content": "\n- **Check whether the tape already answered it, then check materiality.** Sometimes the pack shows a price move on the item's disclosure date, or a run-in that the evidence itself ties to the item. Treat the headline as priced and size only a quantified consequence the reaction could not have held. Then scale every quantified company item by its dollar value against market cap or the quarter's earnings. An item worth well under about 2% of market cap takes about zero share, whatever its type. An open, primary-disclosed item comparable to a large fraction of market cap can carry the sign if it passes the anchor check.",
+      "support_count": 10,
+      "source_type": "success"
+    }
+  ]
+}

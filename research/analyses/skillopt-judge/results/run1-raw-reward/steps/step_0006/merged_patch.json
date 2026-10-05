@@ -1,0 +1,26 @@
+{
+  "reasoning": "All three edits are kept. None of them targets the protected SLOW_UPDATE section, and each replaces a different sentence, so there are no overlapping targets to deduplicate. The failure edit (support 10) has top priority and is kept verbatim. It replaces the advisory 'tilt is noise' sentence with a hard rounding rule: if |impact_sum| is below about a tenth of abs_move_pct, the answer is p_up 50 and every share 0. It also restates the identity p_up = 50 x (1 + impact_sum / abs_move_pct), which checks out against the skill's own definition of impact_sum. Success edit 1 (scale anchoring when history is discarded for a mechanical reason, or when the netted implied move is less than half the straddle) covers a pattern the failure edit does not touch. It does not conflict with it and is kept verbatim. Success edit 2 (a quantified one-off may set the sign) partly conflicts with the failure edit. Its lean of '3 to 7 points of p_up' falls mostly inside the band of about 45 to 55 that the failure edit rounds to zero, so a lean that qualified under its own rule would be wiped out. The failure edit wins on that point, so the range is raised to about 5 to 8 points. The low end now meets the rounding bar, and the high end matches the skill's existing rule that p_up moves more than about 8 from 50 only on a primary-sourced, quantified finding. A clause also states that this is not the enlarged weak lean the rounding rule forbids. The rest of success edit 2 is unchanged: the three conditions that must all hold, and the list of items that cannot set the sign.",
+  "edits": [
+    {
+      "op": "replace",
+      "target": "If your own note calls the evidence weak, mixed, offsetting or proxy-based, a tilt of a few points is noise that the panel reads as conviction.",
+      "content": "If your own note calls the evidence weak, mixed, offsetting, near-neutral or proxy-based, the answer is exactly `p_up` 50 with every share 0. Round small leans to zero: if |impact_sum| comes out below about a tenth of `abs_move_pct` (p_up between about 45 and 55), set every share to 0 and p_up to exactly 50. Do not enlarge a weak lean to clear this bar. A lean survives only when the anchor check below passes. Keep the numbers consistent: p_up = 50 x (1 + impact_sum / abs_move_pct), so impact_sum 0 means p_up 50, not 48 or 52.",
+      "support_count": 10,
+      "source_type": "failure"
+    },
+    {
+      "op": "replace",
+      "target": "When the expected move comes from history the pack flags as unreliable (cadence_implausible, discarded or misdated prints, n=0, unusable chain), do not anchor on it. Rebuild the scale from 20d realised vol, any real earnings reactions the evidence identifies, float and liquidity, and the size of the open items.",
+      "content": "When the expected move comes from history the pack flags as unreliable (cadence_implausible, discarded or misdated prints, n=0, unusable chain), do not anchor on it. Rebuild the scale from 20d realised vol, any real earnings reactions the evidence identifies, float and liquidity, and the size of the open items. Sometimes history is discarded for a mechanical reason, such as a former-name or predecessor-entity flag on the same CIK, or a cadence flag the pack itself amends. Those listed or cited reactions are still this company's own, so use them as the main scale anchor, not the deadband or a default. If the event-implied move is under about half the raw straddle because a high realised vol was netted out, treat it as unreliable too. Set the scale between the straddle and the median prior reaction.",
+      "support_count": 9,
+      "source_type": "success"
+    },
+    {
+      "op": "replace",
+      "target": "If instead it is a one-off, an amplifier or absence, second-hand inference, or a future capital action that the release may or may not show, it cannot set the sign.",
+      "content": "Some items cannot set the sign: an amplifier or absence, second-hand inference, a future capital action that the release may or may not show, or a one-off that is unquantified or of a kind this stock has looked through on a past print. A one-off or balance-sheet item can set the sign if three things hold. Its size is quantified in the company's own filing, at several percent of market cap or a large part of the quarter's revenue or bar. The guide and consensus leave it out. The last reaction did not already hold it. Even then it carries only a modest lean, about 5 to 8 points of p_up. That is the smallest lean that clears the rounding bar above, and it is a qualified finding, not an enlarged weak lean.",
+      "support_count": 9,
+      "source_type": "success"
+    }
+  ]
+}

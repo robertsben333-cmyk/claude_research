@@ -1,0 +1,33 @@
+{
+  "reasoning": "The failure-driven edits take priority. All 9 failures were small calls with the wrong sign, and in each one the lead share rested on read-across, on arithmetic over the public guide, or on items that cannot carry a sign. Failure edits 1 and 2 both targeted the same sentence (one insert_after, one replace). Applied in sequence, they could leave the insert without its anchor, so I folded them into one replace that holds the tightened 50/0 rule followed by the 'Inference is not disclosure' bullet. The 'Check the anchor' edit is kept unchanged. Success edit 1 (scale anchor when the baseline is thin, and zero share for items that only correct the baseline) touches a different rule and conflicts with nothing, so it is kept as is. Success edit 2 ('Lead with the company's own arithmetic') partly conflicts with the failure edits. Its first example, a guide that needs an inflection the reported trend does not show, is the same as failure category (b), arithmetic on the public guide. Its hard-comparison example is close to (b)'s 'company's past sequential pattern'. Because failure edits win, I kept the success insight that is not already covered: rank a quantified company disclosure from after the quarter above peer read-across and two-sided items, with a lead share of about 10-20% of abs_move_pct. I removed the conflicting examples and added a cross-reference so that guide or consensus arithmetic stays under the inference cap. No edits touch a protected section, since the skill has no SLOW_UPDATE markers. No edit sets a direction or names a company, and the Output contract is unchanged.",
+  "edits": [
+    {
+      "op": "replace",
+      "target": "If the signed findings that remain are only weak proxies that roughly offset, the answer is `p_up` 50 and `impact_sum` 0, not a small tilt.",
+      "content": "If the signed findings that remain are only weak evidence (proxies, public arithmetic, one-offs, absences), the answer is `p_up` 50 and `impact_sum` 0, whether they offset or lean one way. If your own note calls the evidence weak, mixed, offsetting or proxy-based, a tilt of a few points is noise that the panel reads as conviction.\n- **Inference is not disclosure.** Three kinds of item are second-hand, and any model could produce them from public data. (a) Read-across from someone else's numbers: a macro or price index, weather, an industry panel, web traffic, regulatory report counts, or a peer's or supplier's results. (b) Arithmetic on the public guide and consensus: an implied second half, consensus sitting on the guide path, the company's past sequential pattern, or a guide called 'stretched'. (c) A why_not_priced that rests only on 'if this were priced, the skew, run-up or price would look different'. That argument is circular, because the tape may hold information the item lacks. Treat all items of these kinds in one pack as a single cluster. Give that cluster at most about a quarter of the share that a same-sized company disclosure from inside the quarter would get. Give it zero when the item itself admits the proxy may not transfer, or names a counterweight of similar size.",
+      "support_count": 9,
+      "source_type": "failure"
+    },
+    {
+      "op": "insert_after",
+      "target": "Move p_up more than about 8 from 50 only when a primary-sourced, quantified finding shows the bar or narrative is stale against it.",
+      "content": "- **Check the anchor before you answer.** Name the item that carries your largest share. It must be a primary-sourced, company-specific fact about the quarter or guide being reported, and the baseline must not already hold it. If instead it is a one-off, an amplifier or absence, second-hand inference, or a future capital action that the release may or may not show, it cannot set the sign. Remove its share and re-sum from what is left. If nothing that remains qualifies, the answer is `p_up` 50 and `impact_sum` 0.",
+      "support_count": 9,
+      "source_type": "failure"
+    },
+    {
+      "op": "replace",
+      "target": "Rebuild the scale from 20d realised vol, any real earnings reactions the evidence identifies, float and liquidity, and the size of the open items.",
+      "content": "Rebuild the scale from 20d realised vol, any real earnings reactions the evidence identifies, float and liquidity, and the size of the open items. With no usable history and no usable chain, about three times the one-day realised move (the deadband) is a fair starting scale. Raise it toward any real past reactions the evidence quotes. An item that only corrects the baseline (a former-name or ticker-change artifact, a stitched or stale chain, a misdated print) informs this scale and gets zero share.",
+      "support_count": 10,
+      "source_type": "success"
+    },
+    {
+      "op": "insert_after",
+      "target": "Opposite-signed readings of one document may both stand.",
+      "content": "- **Lead with the company's own disclosure.** Give the largest share to an item from the company's own filings or releases that shows the bar or guide is stale. An example is a charge, liability or financing that is quantified after the quarter and is not in the bar. A lead share of about 10-20% of `abs_move_pct` is typical. Read-across from a peer covering the same fiscal window, and items with a credible opposite sign, take smaller shares and stay in the list. Do not let a peer read or a two-sided item carry the lead when a company-sourced item exists. Arithmetic on the public guide or consensus is not a company disclosure. It stays under the inference cap above.",
+      "support_count": 10,
+      "source_type": "success"
+    }
+  ]
+}

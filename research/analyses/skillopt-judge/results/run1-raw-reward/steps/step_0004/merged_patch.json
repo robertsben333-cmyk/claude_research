@@ -1,0 +1,47 @@
+{
+  "reasoning": "All three failure-driven edits are kept unchanged and take priority. They narrow inference clause (b) so that facts from company documents count as disclosure, loosen the anchor check to accept a company-document fact that is new since the last reaction, and make offsetting a weighted net rather than a cancel. Success edits 1 (separating an unusable chain from unreliable history, plus a concrete rebuild anchor) and 2 (seller overhangs and structural event features set size, not sign) cover points the failure edits do not touch, use different target sentences, and are kept as written. Success edit 3 partly conflicts with the failure edits. As written, it forces exactly 50/0 whenever the judge's note says 'arithmetic' or 'offsetting'. That would undo failure edit 1, under which arithmetic on company filings is disclosure, and failure edit 3, under which offsetting gives 50 only when the qualifying items on each side are of similar size. Failure priority wins, so success edit 3 is kept but reworded. 'Arithmetic' is narrowed to public guide/consensus arithmetic, 'offsetting' is tied to similar-sized qualifying items, and an explicit exception is added for a qualifying company-document item that survives the anchor check. Its useful core stays: an exact 50/0 with no residual shares of a few tenths when no anchor qualifies. No edit targets the protected SLOW_UPDATE section.",
+  "edits": [
+    {
+      "op": "replace",
+      "target": "(b) Arithmetic on the public guide and consensus: an implied second half, consensus sitting on the guide path, the company's past sequential pattern, or a guide called 'stretched'.",
+      "content": "(b) Arithmetic on the public guide and consensus alone, with no new company fact: an implied second half, consensus sitting on the guide path, the company's past sequential pattern, or a guide called 'stretched'. This clause does not cover a fact read from the company's own filings, releases, transcripts or filing record. Examples are a new or changed paragraph in a 10-Q, 20-F or 8-K, a boilerplate change, an undisclosed asset sale, share issuance inside the quarter, a financing or covenant term, a disclosed obligation, or an accrual or test that falls in the reported quarter. Those are company disclosures even when a sum is needed to size them. Judge them on their size and on whether the last reaction already held them, not as part of the proxy cluster.",
+      "support_count": 10,
+      "source_type": "failure"
+    },
+    {
+      "op": "replace",
+      "target": "- **Check the anchor before you answer.** Name the item that carries your largest share. It must be a primary-sourced, company-specific fact about the quarter or guide being reported, and the baseline must not already hold it.",
+      "content": "- **Check the anchor before you answer.** Name the item that carries your largest share. It must be a primary-sourced, company-specific fact, and the baseline must not already hold it. It qualifies if it comes from the company's own documents or filing record, is dated after the last print's reaction, and bears on the quarter, guide, balance sheet or share count that this release reports. It does not have to be a disclosure of the quarter's numbers, which does not exist before the print. If such an item has a sign you can state in one clause, it keeps a share in proportion to its size against `abs_move_pct`. Do not zero it because other items in the pack are weak.",
+      "support_count": 10,
+      "source_type": "failure"
+    },
+    {
+      "op": "replace",
+      "target": "Counter-evidence enters as negative shares, not dropped.",
+      "content": "Counter-evidence enters as negative shares, not dropped. Net opposite-signed items by their weights: a proxy or read-across cluster counts at its reduced weight, and an item the pack calls stale or partly priced counts at its residual. Do not cancel a qualifying company-document item against weaker items on the other side. `p_up` 50 because of offsetting is right only when the qualifying items on each side are of similar size.",
+      "support_count": 10,
+      "source_type": "failure"
+    },
+    {
+      "op": "replace",
+      "target": "When the expected move comes from history the pack flags as unreliable (cadence_implausible, discarded or misdated prints, n=0, unusable chain), do not anchor on it. Rebuild the scale from 20d realised vol, any real earnings reactions the evidence identifies, float and liquidity, and the size of the open items.",
+      "content": "A chain the pack calls indicative only (very wide ATM spread) may be blended with reliable history. An unusable chain alone does not discredit history dated from exact 8-K acceptance times: use that median, and go above it only for a named open item. When the history itself is flagged (cadence_implausible, discarded or misdated prints, n=0), do not anchor on it. Rebuild from one day's realised move (20d annualised vol / 16), taking about 1.5-3x that, then adjust for real earnings reactions the evidence identifies, float, liquidity and the size of the open items. A rebuilt number above twice both that anchor and any reliable history needs a named reason.",
+      "support_count": 8,
+      "source_type": "success"
+    },
+    {
+      "op": "replace",
+      "target": "Short interest, days-to-cover, thin float, an illiquid chain, a missing filing or missing news, controls language going back to boilerplate, and routine insider sales say how big the move can be, not which way.",
+      "content": "Short interest, days-to-cover, thin float, an illiquid chain, a missing filing or missing news, controls language going back to boilerplate, routine insider sales, a seller overhang (Form 144 programme, sponsor sell-down, lock-up expiry), and structural event features (a first-ever or fiscal-year guide, a new CFO's first call, an unclosed deal folded into the outlook) say how big the move can be, not which way, unless a primary item quantifies the guide against the bar.",
+      "support_count": 8,
+      "source_type": "success"
+    },
+    {
+      "op": "replace",
+      "target": "If your own note calls the evidence weak, mixed, offsetting or proxy-based, a tilt of a few points is noise that the panel reads as conviction.",
+      "content": "If your own note calls the evidence weak, mixed, proxy-based, public guide/consensus arithmetic or 'not decisive', or the qualifying items on each side are of similar size, a tilt of a few points is noise that the panel reads as conviction: output exactly `p_up` 50 and `impact_sum` 0, with no residual shares of a few tenths. This does not apply when a qualifying company-document item survives the anchor check; size that item instead.",
+      "support_count": 8,
+      "source_type": "success"
+    }
+  ]
+}
