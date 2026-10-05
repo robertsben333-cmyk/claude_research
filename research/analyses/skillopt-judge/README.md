@@ -139,3 +139,45 @@ Rerun: `pip install -e "<SkillOpt checkout>[claude]"` in a venv, then
 `python3 prepare.py`, `python3 evaluate.py --skillopt-dir <checkout> --skill seed_skill.md --split val --runs 2 --tag seed`,
 and `python3 run.py --skillopt-dir <checkout> --out <dir> --margin <from the noise run>`
 (prefix `USJUDGE_REWARD=normalised` for run 2).
+
+## Follow-up: should the judge also rate "is it reliable" and "is it enough"? (2026-10-05)
+
+Pre-registered in `RATINGS-PREREG.md` (committed before the run), scored by `ratings.py`,
+numbers in `results/ratings.json`. The judge sizes exactly as before, then rates
+`evidence_reliability` and `evidence_sufficiency` (0-100) and names its `key_gap`
+(`seed_skill_rated.md`). Sonnet 5.5, two runs, all 134 US names in `data/`; the judge-lab
+test days stay sealed.
+
+| test (Bonferroni: \|t\| >= 2.4) | at or above median | below median | gap | t | verdict |
+|---|---|---|---|---|---|
+| H1: sufficiency filters the top-20% book | 17 picks, +2.1% | 6 picks, **+12.4%** | −10.3 pp | −1.86 | not supported |
+| H2: reliability filters the top-20% book | 13 picks, +3.3% | 10 picks, +6.8% | −3.5 pp | −0.60 | not supported |
+| H3: sufficiency tells when the sign is right | 28/60 | **35/60** | −11.7 pts | −1.28 | not supported |
+
+All three point the WRONG way and none clears the bar, so the honest reading is "no use
+as a filter", not "use it inverted" (that would be a rule chosen after seeing the data).
+
+What the ratings ARE:
+
+- **Stable.** Run A against run B: Spearman 0.87 for sufficiency, 0.86 for reliability.
+  The judge means something consistent by them; it is not noise.
+- **Not the sizing again.** Spearman with |impact_sum| 0.17 (sufficiency) and 0.00
+  (reliability). Asking for them did not change the sizing: rated against seed
+  `impact_sum` on 74 names, Spearman 0.97.
+- **Sufficiency is "a well-covered, liquid, calm name".** Spearman +0.44 with log
+  turnover and −0.31 with 20-day volatility; median turnover $23m above the median
+  against $2m below. Those are the names where the market also has the full picture,
+  which fits the repo's finding that the hunt works where recent volatility is high
+  (`../signal-vs-noise/`). Within each volatility half the inverse lean persists in the
+  calm half (13/35 against 11/22) and nearly vanishes in the volatile half (15/25
+  against 24/38). Exploratory, not tested.
+- **Reliability tracks primary sourcing** (Spearman +0.35 with the share of sec.gov
+  sources) and says nothing about the outcome.
+
+**The one finding that is actionable is the `key_gap`.** In 211 of 268 judgements (79%)
+the judge names the same missing piece: the consensus bar (what the print has to beat),
+usually with the guide (194). No US baseline carries a consensus figure, and the
+searcher's `bar` field is empty in 93 of 134 packs. That is a gap in what the searcher
+and the baseline deliver, not in how the judge judges. Whether filling it helps the
+ranking is untested: the rating that measures "enough to judge" did not predict a right
+call, so a better-informed pack is not automatically a better-ranked one.
