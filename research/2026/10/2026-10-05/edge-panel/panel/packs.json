@@ -1,0 +1,898 @@
+[
+ {
+  "id": "us/2026-10-05/APOG",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "APOG",
+   "event_date": "2026-10-06",
+   "session": "bmo",
+   "as_of_utc": "2026-10-05T17:08:49+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-05",
+    "spot": 36.1891,
+    "run_up_5d_pct": -0.61,
+    "run_up_20d_pct": -9.46,
+    "pct_from_52w_high": -26.02,
+    "pct_from_52w_low": 14.05,
+    "realised_vol_20d_annualised_pct": 24.3,
+    "avg_volume_20d": 252040
+   },
+   "cik": "0000006845",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-06-26",
+      "session": "bmo",
+      "move_pct": 15.16,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 1465400,
+       "next_day_volume": 675000,
+       "median_20d_before": 263650,
+       "move_as_tagged_pct": 15.16,
+       "move_if_bmo_pct": 15.16,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2026-04-24",
+      "session": "bmo",
+      "move_pct": 7.59
+     },
+     {
+      "event_date": "2026-01-07",
+      "session": "bmo",
+      "move_pct": -13.89
+     },
+     {
+      "event_date": "2025-10-09",
+      "session": "amc",
+      "move_pct": -4.44
+     },
+     {
+      "event_date": "2025-06-26",
+      "session": "amc",
+      "move_pct": 5.85
+     },
+     {
+      "event_date": "2025-04-23",
+      "session": "amc",
+      "move_pct": -12.72
+     },
+     {
+      "event_date": "2025-01-07",
+      "session": "bmo",
+      "move_pct": -19.02
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 12.72,
+    "max_abs_move_pct": 19.02,
+    "up_count": 3,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 102,
+    "median_gap_days": 97.5,
+    "ratio": 1.05,
+    "last_print": "2026-06-26",
+    "verdict": "fits_cadence",
+    "reason": "102 days since the last print against a 98-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 11,
+    "atm_strike": 35.0,
+    "atm_iv_pct": 70.0,
+    "straddle_implied_move_pct": 10.29,
+    "event_implied_move_pct": 9.7,
+    "event_implied_move_basis": "10.29% straddle over 11 calendar days less 4.29% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 0.99,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.78,
+    "total_open_interest": 272,
+    "atm_spread_frac_of_mid": 0.182,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 6.36,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 9.7,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Adj EPS $0.63, from two agreeing sources: MarketBeat https://www.marketbeat.com/instant-alerts/upcoming-apogee-enterprises-apog-set-to-release-quarterly-earnings-on-tuesday-2026-09-29/ and TradingView https://www.tradingview.com/news/tradingview:74b9b23617b40:0-apog-q2-26-earnings-revenue-estimate-is-359-46m-usd/. Revenue is disputed: $359.5m on MarketBeat and TradingView, but StockStory (2026-10-05) has -1.9% y/y, about $351m (https://stockstory.org/us/stocks/nasdaq/apog/news/earnings/apogee-apog-reports-earnings-tomorrow-what-to-expect-2). The company's own Q2 guide is qualitative: 'net sales slightly lower and adjusted EPS lower on a year over year basis' against Q2 FY26 sales $358m and adj EPS $0.98 (https://www.fool.com/earnings/call-transcripts/2026/06/26/apogee-apog-q1-2027-earnings-call-transcript/). FY27 guide: adj EPS $2.70-3.25, sales $1.43-1.48bn including Kalwall (https://www.sec.gov/Archives/edgar/data/0000006845/000000684526000058/a53026fy27q1results.htm). FY consensus is about $3.00, the midpoint. print_vs_bar_pct is on EPS, assuming about $0.75.",
+   "positioning_check": "Short interest 935,284 shares, 4.63% of float, 4.48 days to cover, up from 840,316 the month before (stockanalysis.com, read 2026-10-05, settlement date not shown; https://stockanalysis.com/stocks/apog/statistics/). Not crowded. The 25-delta skew is +0.99 vol points, which is balanced, and put/call OI is 0.78 on only 272 contracts, so the options market makes no directional statement. Run-up is -9.46% over 20 days and -26% from the 52-week high. The stock gave back the whole +15% Q1 reaction, from about $42 on 2026-06-24 (the director grant price) to $36.19, and is down 8.1% over the month against -3.3% for peers (StockStory, 2026-10-05). The price is leaning negative into the print, not positive.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "The CFO's Q2 guide on 2026-06-26 is word for word the guide he gave for Q1 on 2026-04-24 ('net sales slightly lower and adjusted EPS lower on a year over year basis'). Q1 then printed sales -1.1% and adj EPS $0.57 against $0.55 a year earlier, flat, versus a $0.41-0.43 consensus. 'Q1 profit exceeded our internal expectations', and pricing and surcharges put in during Q1 'benefit results through the remainder of the fiscal year'. The Q2 consensus of $0.63 is 36% below last year's $0.98 and only about 10% above Q1's $0.57. Last year Q2 ran 78% above Q1 ($0.98 against about $0.55, from the FY26 total of $3.47 less Q2-Q4). The bar looks set at the bottom of what 'lower' allows.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.fool.com/earnings/call-transcripts/2026/06/26/apogee-apog-q1-2027-earnings-call-transcript/",
+    "source_date": "2026-06-26",
+    "reaction_history_on_this_line": "Q1 FY27 (2026-06-26) beat EPS by about 35% with the guide held: +15.16%. Q2 FY26 (2025-10-09) beat ($0.98 vs $0.86) with the FY guide lowered: -4.44%. Q3 FY26 (2026-01-07) missed with the guide cut: -13.89%. Beats pay only when the guide holds.",
+    "why_not_priced": "Consensus did not move after the Q1 beat ($0.63 still a 36% y/y decline), and the stock has fallen about 14% since the Q1 reaction, to below the pre-print level. If the market expected another beat, the stock would not have round-tripped the June move, and the street number would sit nearer Q2's usual seasonal step-up. On 2-4 analysts, the bar is the mechanical result of applying 'lower' to the guide's midpoint.",
+    "independence": "Same management language in a different document, the Q4 FY26 call of 2026-04-24 (https://www.fool.com/earnings/call-transcripts/2026/04/24/apogee-apog-q4-2026-earnings-transcript/). Q1 actuals are in the 8-K (https://www.sec.gov/Archives/edgar/data/0000006845/000000684526000058/a53026fy27q1results.htm). Year-ago $0.98 is in the Q2 FY26 8-K (https://www.sec.gov/Archives/edgar/data/0000006845/000000684525000154/a83025fy26q2results.htm). The 'beat 100% of the time over 2 years' figure comes from StockStory. All of this is one inference about guide conservatism, not a number from the quarter.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "Kalwall closed 2026-07-01 ($105m cash plus up to $10m earnout), so it carries two months of Q2 (Jul-Aug). Management sized it at about $85m revenue in the first 12 months at about 15% EBITDA, roughly $14m of revenue and $2m of EBITDA in Q2. Organic 'slightly lower' than $358m (about $350m) plus Kalwall implies about $362-366m. That is above both the $359.5m and the about $351m (-1.9% y/y) consensus figures.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000006845/000000684526000068/ex991.htm",
+    "source_date": "2026-07-01",
+    "reaction_history_on_this_line": "Revenue moved the stock less than EPS and the guide. Q1 FY27 revenue beat ($342.7m vs about $334m) came alongside the EPS beat at +15%. Q2 FY26 revenue beat ($358m vs $334m) still fell 4.4% on the guide.",
+    "why_not_priced": "The two revenue consensus figures disagree by about $8m, and the lower one (-1.9% y/y) reads as if Kalwall is excluded. Management called Q2 Kalwall impact 'minimal', which may have kept it out of models. If it were priced, both sources would sit at or above $362m.",
+    "independence": "Kalwall revenue and margin figures are from the Q1 call (https://www.fool.com/earnings/call-transcripts/2026/06/26/apogee-apog-q1-2027-earnings-call-transcript/). That shares a document with finding 1 but rests on a different fact. Capped small because the revenue bar is disputed.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "GroGlass was announced 2026-09-02 and closed 2026-09-18: about EUR62.5m (about $72m) including up to EUR10m earnout, about $30m of first-12-month revenue at about 25% adj EBITDA, funded from cash and the revolver. The company said it 'will discuss additional strategic and financial details during its second quarter fiscal 2027 earnings call', so the FY27 guide will very likely be restated to include it. That adds about $12-15m of FY27 sales at a margin above the group's.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.sec.gov/Archives/edgar/data/6845/000000684526000087/ex991-apogacquisitionann.htm",
+    "source_date": "2026-09-02",
+    "reaction_history_on_this_line": "When Kalwall was folded into the guide in June 2026, the sales range rose $50m with EPS unchanged, and the stock rose 15% on the quarter. The acquisition line has no separate reaction history.",
+    "why_not_priced": "The deal is public, but no accretion or guide figure has been given. The stock fell after the announcement (about $37.9 on 2026-09-11 to $36.2), which does not look like a market crediting accretion. The financing question has an answer: the money buys a 25%-margin coatings business, and leverage was 1.3x at Q1 with $419m of revolver capacity, so this is not a distress read.",
+    "independence": "Closing release reported by Investing.com (https://www.investing.com/news/company-news/apogee-enterprises-completes-groglass-acquisition-for-718m-93CH-4907842). Liquidity is from the Q1 10-Q (https://www.sec.gov/Archives/edgar/data/0000006845/000000684526000063/apog-20260530.htm).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "Direct peer Tecnoglass reported on 2026-08-06 that the all-in US aluminum price was up about 77% y/y, cut its gross margin to 37.3% from 44.7%, and narrowed FY26 guidance on 'sustained high aluminum costs'. It said commercial pricing passes through slowly: late 2026 for small projects, late 2027 for large ones. Apogee's Architectural Services runs long fixed-price contracts, and its margin was already 5.3% in Q1 against 7.5% in Q4 and 9.7% in Q3. LME stayed at about $3,270/t through August 2026, so the cost pressure persisted through Apogee's Q2 and is the main risk to the guide holding.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001534675/000149315226036252/ex99-1.htm",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "Apogee fell 13.89% on 2026-01-07 when it cut the FY26 guide on a tariff and aluminum drag of about $0.30. Aluminum and tariffs are the line that has produced its largest down moves.",
+    "why_not_priced": "This is a peer's print landing after Apogee last spoke (2026-06-26). Apogee's FY guide has not been revisited since, and FY consensus sits at the $3.00 midpoint. It is partly priced: Apogee's 20-day run-up is -9.5% and it is underperforming peers.",
+    "independence": "LME August 2026 average of about $3,273/t (https://www.alcircle.com/news/lme-aluminium-price-rises-above-1-as-stocks-drop-to-246-825t-on-august-26-120941). Apogee's own April call cited aluminum +87% y/y (https://www.fool.com/earnings/call-transcripts/2026/04/24/apogee-apog-q4-2026-earnings-transcript/). Tecnoglass is a proxy: Apogee has said its pricing and surcharges offset the cost, so this is filed small.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "On 2026-08-20 the US signaled tariffs on some Canadian aluminum could drop to 25% from 50% under a tentative deal. The September Midwest premium fell 8.2% to 95c/lb and Oct/Nov contracts fell more than 12%. Apogee's FY26 guide cut blamed tariffs on Canadian aluminum. Offsetting this, a secondary source (2026-09-17) says Section 338 duties stacked onto Canadian aluminum bars, rods and tubes from 2026-09-15; another source says goods already under Section 232 were carved out. Net, a mild easing of the H2 input-cost outlook with real two-way uncertainty.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://aegis-hedging.com/insights/metals/daily-first-look/2026-08-21",
+    "source_date": "2026-08-21",
+    "reaction_history_on_this_line": "The tariff line drove the -13.89% January 2026 reaction. The CFO called FY26's $9m tariff impact 'a tailwind now in 27' (April 2026 call).",
+    "why_not_priced": "Macro news the stock has not visibly reacted to: it fell through late August and September. Management has not yet said whether forward premiums change its H2 cost view, and the call will be the first place it does.",
+    "independence": "Bloomberg 2026-08-20 (https://www.bloomberg.com/news/articles/2026-08-20/aluminum-premium-slips-as-us-set-to-cut-tariffs-on-canada-metal). The contrary Section 338 stacking claim is at https://discoveryalert.com/analysis/us-canada-aluminum-tariffs-september-2026/, and the carve-out at https://www.tariffstool.com/guides/canada-tariff-50-percent-section-338-august-2026. This is macro-to-company transmission, unconfirmed by Apogee.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "The AIA/Deltek Architecture Billings Index was 47.2 in August 2026 (46.6 in July), still contracting in what AIA calls the longest slump in the index's history, with weaker forward expectations (25% expect Q4 billings to rise, 29% to fall). The Dodge Momentum Index was flat at 282.0 in August, with commercial planning down 3.0%. This is a soft backdrop for Glass, where Q1 already showed 'softer conditions in new construction and lower demand for premium offerings', and for Metals volume.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.aia.org/resource-center/abi-august-2026-architecture-firm-billings-continue-decline",
+    "source_date": "2026-09-23",
+    "reaction_history_on_this_line": "No clean history. Apogee's guide said results weight to H2 'reflecting anticipated improvement in underlying market conditions'. These series do not show that improvement yet.",
+    "why_not_priced": "Largely priced: it is a public series and the slump is four years old. The incremental point is that management's H2 assumption of market improvement is not visible in the data, which could make the guide's top end harder to defend. Against this, Services backlog was $734.5m, up 8% y/y in Q1.",
+    "independence": "Dodge Momentum Index for August (https://www.steelmarketupdate.com/2026/09/08/dodge-momentum-index-slowed-in-august/). Against it: Tecnoglass's COO said US demand is 'surprisingly high everywhere' (https://www.investing.com/news/transcripts/earnings-call-transcript-tecnoglass-q2-2026-revenue-hits-record-as-shares-fall-93CH-4843134). These are broad series, sized small.",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "Christopher Ede (new Architectural Glass president) 'bought' 10,115 shares for $402k on 2026-07-21, read as an insider purchase.",
+    "source": "https://www.benzinga.com/news/26/07/60611054/major-purchase-alert-christopher-w-ede-invests-402k-apogee-enterprises-stock",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "A search snippet gave an alternative Q2 consensus EPS of $0.84.",
+    "source": "https://stockstory.org/us/stocks/nasdaq/apog/news/earnings/apogee-apog-reports-earnings-tomorrow-what-to-expect-2",
+    "first_hunter_reason": "no_source",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "APOG.json",
+    "text": "Section 338 50% duty stacking to about 100% on Canadian aluminum bars, rods and tubes from 2026-09-15.",
+    "source": "https://discoveryalert.com/analysis/us-canada-aluminum-tariffs-september-2026/",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "APOG.json",
+    "text": "EDGAR filings since the Q1 print: 8-Ks of 2026-07-01 (Kalwall close), 2026-08-05 (two new directors, board from 6 to 8), 2026-09-03 (GroGlass agreement), 2026-09-14 (director Julie Streich, ex-CFO of Barnes Group), 2026-09-23 (GroGlass close). No officer departure, no pre-announcement, no covenant amendment.",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "APOG.json",
+    "text": "Form 4s: only grants. The 2026-10-02 cluster is quarterly director deferred units (period ending 2026-09-30). No open-market insider buying or selling found.",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "APOG.json",
+    "text": "Activist or 13D: none. 13G filers are BlackRock 15.1% and Dimensional 5.5%, both passive.",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "APOG.json",
+    "text": "Q1 10-Q footnotes: Services cumulative catch-up adjustments net unfavorable $0.67m (small). Sealant product liability language unchanged. Nothing new.",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "APOG.json",
+    "text": "Analyst notes since June: no fresh price-target changes found. Zacks downgraded strong-buy to hold on 2026-08-31 (MarketBeat). Peers: StockStory says Apogee reports first among its peers this season.",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "APOG.json",
+    "text": "Dodge Momentum Index for September 2026: not yet found.",
+    "i": 14
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-05/LW",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "LW",
+   "event_date": "2026-10-06",
+   "session": "bmo",
+   "as_of_utc": "2026-10-05T17:08:47+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-05",
+    "spot": 43.925,
+    "run_up_5d_pct": 1.73,
+    "run_up_20d_pct": -11.92,
+    "pct_from_52w_high": -34.02,
+    "pct_from_52w_low": 14.15,
+    "realised_vol_20d_annualised_pct": 33.1,
+    "avg_volume_20d": 1720185
+   },
+   "cik": "0001679273",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-24",
+      "session": "bmo",
+      "move_pct": 0.81
+     },
+     {
+      "event_date": "2026-04-01",
+      "session": "bmo",
+      "move_pct": -8.94
+     },
+     {
+      "event_date": "2025-12-19",
+      "session": "bmo",
+      "move_pct": -25.94,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 23430300,
+       "next_day_volume": 8135000,
+       "median_20d_before": 1040600,
+       "move_as_tagged_pct": -25.94,
+       "move_if_bmo_pct": -25.94,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-09-30",
+      "session": "bmo",
+      "move_pct": 4.33
+     },
+     {
+      "event_date": "2025-07-23",
+      "session": "bmo",
+      "move_pct": 16.31
+     },
+     {
+      "event_date": "2025-04-03",
+      "session": "bmo",
+      "move_pct": 10.01
+     },
+     {
+      "event_date": "2024-12-19",
+      "session": "bmo",
+      "move_pct": -20.1
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 10.01,
+    "max_abs_move_pct": 25.94,
+    "up_count": 4,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 74,
+    "median_gap_days": 104.0,
+    "ratio": 0.71,
+    "last_print": "2026-07-24",
+    "verdict": "fits_cadence",
+    "reason": "74 days since the last print against a 104-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 11,
+    "atm_strike": 45.0,
+    "atm_iv_pct": 67.9,
+    "straddle_implied_move_pct": 10.13,
+    "event_implied_move_pct": 8.99,
+    "event_implied_move_basis": "10.13% straddle over 11 calendar days less 5.84% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 1.39,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 4.05,
+    "total_open_interest": 45876,
+    "atm_spread_frac_of_mid": 0.338,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 5.0,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 8.99,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q1 FY27 consensus EPS $0.59 (vs $0.74 a year ago) on revenue $1.65-1.66B, from two agreeing sources: potatoes.news 2026-09-30 (https://potatoes.news/us-lamb-weston-to-report-first-quarter-results-on-october-6-as-analysts-expect-eps-to-fall-to-0-59/) and Investing.com (https://www.investing.com/news/earnings/lamb-weston-earnings-up-next-can-it-repeat-last-quarters-beat-93CH-4932357). Company guide: Q1 adj EBITDA down 'low teens' from $302.2M (implies about $260-268M) per the Q4 FY26 call (https://www.investing.com/news/transcripts/earnings-call-transcript-lamb-weston-tops-q4-2026-estimates-as-volume-rises-93CH-4812068); FY27 adj EBITDA $1.1-1.2B, EPS $2.95-3.25, sales +0-1% (https://www.sec.gov/Archives/edgar/data/0001679273/000167927326000024/a-lwx20260531xexx991fy26v2.htm). FY consensus EPS about $3.02, below the guide midpoint of $3.10 (https://www.marketbeat.com/instant-alerts/lamb-weston-nyselw-issues-fy-2027-earnings-guidance-2026-07-24/). The stock trades on the FY guide.",
+   "positioning_check": "Short interest 4.6% of shares and 4.8 days to cover at the 2026-08-31 settlement (https://equibles.com/stocks/lw/short-interest); stockanalysis.com on 2026-10-05: 6.66m shares, 4.89% of float, 5.06 days to cover (https://stockanalysis.com/stocks/lw/statistics/). Ortex 2026-10-03: 4.73% of free float, up about 15% in a month; borrow 0.51% and very loose; put/call volume 2.56 against a 20-day average of 1.22, near its 52-week high (https://ortex.news/articles/179722/lamb-weston-bears-pile-into-puts-before-tuesday-print). Not a crowded short. Baseline skew_25d is +1.39 vol points, which the baseline reads as 'balanced'. Open-interest put/call is 4.05, partly from a 14,130-lot of Oct-16 $37.50 puts on 2026-09-18, which IV behaviour suggests was sold rather than bought (https://www.investing.com/news/stock-market-news/lamb-weston-options-flow-shows-nearpure-bearish-positioning-at-3750-strike-93CH-4907597). The event-implied move is 8.99%.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "The 2026 north-west European potato crop is forecast at about 20.7-20.8m t, down 24-25% on 2025's 27.3m t (NEPG). Yields are 7-21% below the five-year average, about half of Belgium's main processing variety fails buyers' size requirements, and free-buy prices sit at EUR 20-27.50/100kg against 2026 contracts struck 15-25% below last year. Stephens (2026-09-28) says the crop 'worsened materially since' the July call. The company guided International EBITDA +40-50% for FY27 before this deterioration. The risk is a trim to the International guide or to the $1.1-1.2B EBITDA range; the offset is the CFO's own 2026-08-14 view that industry-wide cost pressure is 'a stronger base for price increases' and that LW is 'mostly contracted'.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://ukragroconsult.com/en/news/europe-could-harvest-its-smallest-potato-crop-in-decades/",
+    "source_date": "2026-09-26",
+    "reaction_history_on_this_line": "LW trades on the FY guide: -25.9% on 2025-12-19 and -20.1% on 2024-12-19 (guide cuts), +16.3% on 2025-07-23 and +10.0% on 2025-04-03 (baseline). The July 2026 guide moved it +0.8%.",
+    "why_not_priced": "Partly priced: JPM ($52 to $46, 2026-09-30) and Stephens ($55 to $50, 2026-09-28) both cut targets on this crop, and the stock fell 24% in September. If the market already held a cut to the International guide, the skew would not be balanced (+1.39) and consensus FY EPS ($3.02) would sit below the guide's low end. It sits at the low-to-mid of the range, so a quantified cost hit is not in estimates.",
+    "independence": "Same direction from potatoes.news 2026-10-03, contracts vs spot (https://potatoes.news/eu-potato-market-splits-in-two-as-spot-prices-leave-2026-contracts-behind/), and Stephens via Investing.com (https://www.investing.com/news/analyst-ratings/stephens-cuts-lamb-weston-stock-price-target-on-europe-concerns-93CH-4919969). The company's own CFO, 2026-08-14, confirmed a heat-challenged crop with lower yields but also 'mostly contracted' and 'stronger base for price increases' (https://www.just-food.com/news/lamb-weston-flags-price-risks-from-heat-impacted-potato-crop/). Net of the rest: North America is about two-thirds of sales and FY26 segment EBITDA was overwhelmingly NA; International Q4 EBITDA was $11.8M.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "The North American 2026 crop is smaller but of good quality. Idaho planted 298,915 acres, its smallest crop since 2011, and some growers report yields up to 20% below 2025 after six weeks of 90F+ heat; quality is 'solid' but sizes run small, and the Columbia Basin lost only 'the top end' of yield. This follows a 2025 crop so large that LW wrote off excess potatoes in FY26, and 2026 NA contract prices were guided down low-to-mid single digits in April. The net cost effect on FY27 is ambiguous: less waste and lower contract prices against smaller sizing, which hurts fry recovery.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://capitalpress.com/2026/09/29/weather-shrinks-2026-idaho-potato-yields-butquality-remains-high/",
+    "source_date": "2026-09-29",
+    "reaction_history_on_this_line": "There is no clean prior on a crop-only surprise. The 2025-12-19 -25.9% guide cut was attributed partly to industry supply and utilisation (Q3 FY26 commentary: https://finance.yahoo.com/markets/stocks/articles/frozen-lamb-weston-beats-earnings-165200833.html).",
+    "why_not_priced": "Analyst cuts named Europe, not North America. Management said in July that the NA crop was 'off to a strong start' with contracted acreage 'modestly higher', so a smaller Idaho crop is news since the guide. Its sign is unclear, which is why it is small.",
+    "independence": "Freshplaza, yields down up to 20% (https://www.freshplaza.com/north-america/article/9879009/idaho-potato-yields-fall-up-to-20-due-to-water-shortage/); potatoes.news 2026-09-30 on 'smallest crop since 2011' (https://potatoes.news/us-lamb-weston-to-report-first-quarter-results-on-october-6-as-analysts-expect-eps-to-fall-to-0-59/). These are proxies: the company has not spoken on the NA crop since July.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "The company itself guided Q1 FY27 adj EBITDA down 'low teens' from $302.2M (about $260-268M) because of carryover old-crop potato cost and edible-oil inflation, with growth ramping after Q1. Consensus EPS of $0.59 (-20% YoY) on $1.65-1.66B sits on that guide. LW has cleared its bar in recent quarters (Q4 FY26 EPS $0.87 against $0.62-0.63; sales and EBITDA above the top of the FY26 guide), so a modest beat on the quarter is the base case.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.investing.com/news/transcripts/earnings-call-transcript-lamb-weston-tops-q4-2026-estimates-as-volume-rises-93CH-4812068",
+    "source_date": "2026-07-24",
+    "reaction_history_on_this_line": "This name sells or ignores beats: Q3 FY26 (2026-04-01) beat EPS and revenue and fell 8.9%; Q4 FY26 (2026-07-24) beat by about 40% on EPS and moved +0.8% (baseline; https://finance.yahoo.com/markets/stocks/articles/frozen-lamb-weston-beats-earnings-165200833.html).",
+    "why_not_priced": "Mostly priced: the quarter lands inside what the company told the market. Only the size of the beat is open. Because beats here have not been paid, the finding is small.",
+    "independence": "The Q4 FY26 8-K exhibit shows the beat record (https://www.sec.gov/Archives/edgar/data/0001679273/000167927326000024/a-lwx20260531xexx991fy26v2.htm). This shares the company as its source with the bar field.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "At the BofA SMID conference on 2026-08-14, three weeks after the guide, the CFO flagged input-cost pressure from the Middle East conflict (oil, polypropylene packaging, soy oil) and freight and packaging costs up 'since February'. He did not say whether this was inside the FY27 guide.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.just-food.com/news/lamb-weston-flags-price-risks-from-heat-impacted-potato-crop/",
+    "source_date": "2026-08-14",
+    "reaction_history_on_this_line": "Cost-driven guide cuts have produced the name's largest moves (-25.9%, -20.1%), but those were demand and pricing resets, not input-cost items.",
+    "why_not_priced": "Edible-oil inflation was already named in the July Q1 guide, so much of this sits inside the guide; that is why it is small. What is not priced is any quantification beyond what was guided. If the market held one, FY consensus would sit at the guide's low end.",
+    "independence": "Shares one document (the 2026-08-14 CFO remarks) with the price-increase offset cited in finding 1. Freshplaza covers the same event (https://www.freshplaza.com/north-america/article/9863554/lamb-weston-flags-european-potato-yield-and-price-risks/).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "McDonald's, LW's swing customer, reported US Q2 2026 comps of only +0.8% (against +2.5% a year earlier) with negative guest counts. It said the US business was 'falling short', with traffic problems that 'persisted into July', which overlaps LW's June-August Q1. LW's July call put QSR burger traffic at -4% in its Q4.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.cnbc.com/2026/08/04/mcdonalds-mcd-q2-2026-earnings.html",
+    "source_date": "2026-08-04",
+    "reaction_history_on_this_line": "Traffic softness was cited in the 2024-12-19 guide cut (-20.1%). FY26 NA volume (+9 to 11%) came from share and contract wins rather than traffic, which weakens the link.",
+    "why_not_priced": "Public for two months and probably mostly priced. The open question is whether LW's share-gain volume (FY27 guide: low single-digit volume growth) offsets it. If it were fully priced, Q1 revenue consensus would be below flat; it is flat to -0.6%.",
+    "independence": "Placer.ai via QSRweb (2026-09-14) shows late-August QSR traffic 1.6% above the H1 average and McDonald's +3.0%, which partly offsets (https://www.qsrweb.com/news/restaurant-traffic-moderates-but-qsrs-remain-above-2026-average/). This is a proxy, not an LW number.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "Conagra, reporting 2026-09-30 for a quarter ended 2026-08-30 (the same months as LW's Q1), showed Foodservice organic sales +3.3% with volume +2.5%, about 1.5 points of that from order timing, and segment operating profit +11.4%. It reaffirmed its FY guide. This points to US foodservice demand that did not deteriorate over June-August.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.conagrabrands.com/files/events/2026-09-30/Q1FY27-Earnings-Press-Release",
+    "source_date": "2026-09-30",
+    "reaction_history_on_this_line": "No direct history of LW reacting to a Conagra print.",
+    "why_not_priced": "A peer print after LW last spoke, in a small segment ($273M) that no LW preview cites. The read-across is weak, which is why it is small.",
+    "independence": "General Mills (2026-09-23) and Darden (2026-09-24) both reaffirmed FY guides for August-ending quarters (https://www.cnbc.com/2026/09/24/darden-restaurants-dri-q1-2027-earnings.html). This is a proxy.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "Positioning is washed out into the print. LW fell 24.2% in September, the worst in consumer staples (GuruFocus 2026-10-01). It is 34% off its 52-week high and 11.9% down over 20 days. Put/call volume ran at 2.56 against a 1.22 average on 2026-10-03, and OI put/call is 4.05. Yet short interest is a modest 4.7-4.9% with loose borrow, and the 25-delta skew is only +1.39. A reaffirmed FY guide with a constructive pricing or contracting update would land against heavy protective put demand.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://ortex.news/articles/179722/lamb-weston-bears-pile-into-puts-before-tuesday-print",
+    "source_date": "2026-10-03",
+    "reaction_history_on_this_line": "After a heavy pre-print drawdown into the 2025-07-23 print, the stock rose 16.3% (baseline). The July 2026 beat with an in-line guide moved it only +0.8%.",
+    "why_not_priced": "Ortex itself reads the put demand as protection against a large move rather than a directional view, so the downside is hedged rather than shorted. A balanced skew alongside a 24% monthly fall says the price has absorbed the crop news rather than the options paying up for more.",
+    "independence": "GuruFocus, September performance (https://www.gurufocus.com/news/9105329/lamb-weston-holdings-lw-leads-consumer-staples-decline-in-september-2026); Trefis 2026-09-11, eight straight down days with no named catalyst (https://www.trefis.com/stock/lw/articles/615030/lamb-weston-stock-8-straight-red-days-down-14/2026-09-11).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "LW bought back about 1.5M shares at $41.04 average ($63.2M) in Q4 FY26 and has $245M of authorisation left. With the stock at about $44 through most of Q1, a continued buyback, disclosed in the release, is likely.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001679273/000167927326000024/a-lwx20260531xexx991fy26v2.htm",
+    "source_date": "2026-07-24",
+    "reaction_history_on_this_line": "Buybacks have not visibly moved LW's prints.",
+    "why_not_priced": "Small and partly in EPS estimates; it shows only in Q1 share count and the disclosure.",
+    "independence": "none",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "JPMorgan cut its target $52 to $46 (2026-09-30) and Stephens $55 to $50 (2026-09-28); EPS estimates drifted down",
+    "source": "https://www.marketbeat.com/instant-alerts/analyst-jpmorgan-chase-co-has-lowered-expectations-for-lamb-weston-nyse-lw-stock-price-2026-09-30/",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "Placer.ai: QSR traffic down 3.4% YoY in August",
+    "source": "https://www.restaurantdive.com/news/placer-ai-restaurant-fast-food-grocery-competition/811732/",
+    "first_hunter_reason": "no_source",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LW.json",
+    "text": "Oct-16 $37.50 put block of 14,130 contracts on 2026-09-18 read as a bearish bet",
+    "source": "https://www.investing.com/news/stock-market-news/lamb-weston-options-flow-shows-nearpure-bearish-positioning-at-3750-strike-93CH-4907597",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LW.json",
+    "text": "EDGAR since July: the only 8-K is the 2026-09-16 annual meeting vote; no 13D amendment by Jana or Continental Grain found; no insider open-market buys found since April 2026 (July Forms 4 are RSU grants)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LW.json",
+    "text": "Any rumoured transaction behind the 2026-09-28 Halper Sadeh notice: nothing found; it is a generic law-firm solicitation",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LW.json",
+    "text": "Company conference remarks in September 2026: none found beyond the 2026-08-14 BofA SMID appearance",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LW.json",
+    "text": "North American frozen-fry customer price increases or new contract announcements in 2026: none found",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LW.json",
+    "text": "Europe frozen-fry selling-price increases by McCain, Agristo or Clarebout in autumn 2026: none found",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LW.json",
+    "text": "A cause for the 8-day early-September decline beyond the crop and staples rotation: Trefis found none",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LW.json",
+    "text": "IEEPA tariff refund exposure at LW: nothing LW-specific found",
+    "i": 17
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-05/RPM",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "RPM",
+   "event_date": "2026-10-06",
+   "session": "bmo",
+   "as_of_utc": "2026-10-05T17:08:45+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-05",
+    "spot": 98.95,
+    "run_up_5d_pct": -1.25,
+    "run_up_20d_pct": -6.23,
+    "pct_from_52w_high": -17.66,
+    "pct_from_52w_low": 6.14,
+    "realised_vol_20d_annualised_pct": 19.3,
+    "avg_volume_20d": 918029
+   },
+   "cik": "0000110621",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-22",
+      "session": "bmo",
+      "move_pct": 5.81
+     },
+     {
+      "event_date": "2026-04-08",
+      "session": "bmo",
+      "move_pct": 12.42
+     },
+     {
+      "event_date": "2026-01-08",
+      "session": "bmo",
+      "move_pct": 1.71
+     },
+     {
+      "event_date": "2025-10-01",
+      "session": "bmo",
+      "move_pct": -0.59
+     },
+     {
+      "event_date": "2025-07-24",
+      "session": "bmo",
+      "move_pct": 8.58
+     },
+     {
+      "event_date": "2025-04-08",
+      "session": "bmo",
+      "move_pct": -9.12
+     },
+     {
+      "event_date": "2025-01-07",
+      "session": "bmo",
+      "move_pct": 1.09
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 5.81,
+    "max_abs_move_pct": 12.42,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 76,
+    "median_gap_days": 95.0,
+    "ratio": 0.8,
+    "last_print": "2026-07-22",
+    "verdict": "fits_cadence",
+    "reason": "76 days since the last print against a 95-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 11,
+    "atm_strike": 100.0,
+    "atm_iv_pct": 44.4,
+    "straddle_implied_move_pct": 6.32,
+    "event_implied_move_pct": 5.71,
+    "event_implied_move_basis": "6.32% straddle over 11 calendar days less 3.41% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 10.48,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.98,
+    "total_open_interest": 385,
+    "atm_spread_frac_of_mid": 0.571,
+    "warnings": [
+     "ATM bid-ask spread 57% of mid; implied move is indicative only"
+    ],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 2.9,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 5.71,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q1 FY27 adj EPS $1.95 (+3.7% y/y vs $1.88) and revenue $2.22bn (+4.9-5.2%), with the EPS consensus down 0.5% over 30 days (Zacks via Yahoo, 2026-10-01: https://finance.yahoo.com/markets/stocks/articles/exploring-analyst-estimates-rpm-international-121502287.html ; Investing.com preview 2026-10-05: https://www.investing.com/news/earnings/rpm-international-earnings-in-focus-as-construction-slows-93CH-4932363). Segment consensus: Consumer $717.7m (+3.4%), CPG $939.4m (+6.6%), PCG $559.6m (+3.9%). Company Q1 guide (2026-07-22 call): mid-single-digit sales growth and mid-single-digit adj EBITDA growth, raw material inflation 5-6%, $25m of SG&A savings (https://www.rpminc.com/media/qffpsp3a/rpm-4q26-earnings-transcript.pdf). FY27 guide: sales +3-7%, adj EBITDA +5-10%. The two estimate sources agree, and the consensus sits at or slightly below the guide midpoint.",
+   "positioning_check": "Short interest 3.28m shares, 2.61% of float, 2.04 days to cover, down from 3.67m the month before (stockanalysis.com, read 2026-10-05 by the sweep; the FINRA settlement date is not shown: https://stockanalysis.com/stocks/rpm/statistics/). Not a crowded short. Skew is +10.48 vol points (25d put IV minus call IV), so downside is being paid for, but the chain is thin: total OI 385 and an ATM spread of 57% of mid. The skew is weak evidence. The stock is -6.2% over 20 sessions on the baseline (Investing.com says about -15% over a month), -17.7% from its 52-week high and +6.1% off the low. Sell-side is still Buy-heavy (14 of 15 Buy per Investing.com) while targets drift down: Morgan Stanley $117->$114 EW on 2026-09-28, Wells Fargo $135->$130 OW on 2026-10-05.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "H.B. Fuller, a direct adhesives/sealants peer whose fiscal Q3 (to 2026-08-29) covers almost exactly RPM's Q1 (Jun-Aug), reported on 2026-09-23: pricing +7.4% more than offset a 3.0% volume decline, Building Adhesive Solutions +5.2% organic, adj EBITDA +9% with margin +80bp to a record 19.9%, adjusted gross margin +120bp, and it RAISED its FY2026 guide (adj EBITDA $655-670m, EPS $4.70-4.85). RPM guided Q1 price/cost as 'somewhat negative', with gross margin pressure from 5-6% raw inflation. A peer showing price ahead of raws in the same months points to RPM's gross margin landing at or above its own cautious framing.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000039368/000143774926031113/ex_1019044.htm",
+    "source_date": "2026-09-23",
+    "reaction_history_on_this_line": "RPM trades on the quarter's EPS surprise: +12.4% on 2026-04-08 (adj EPS $0.57 vs $0.35, margin-driven) and +5.8% on 2026-07-22 ($1.89 vs $1.83). The Q2 FY26 miss on margins/demand drew a negative reaction (baseline 2025-04-08 -9.1% was a prior miss).",
+    "why_not_priced": "RPM consensus EPS was trimmed 0.5% over the last 30 days and the stock fell about 15% in the month, so analysts did not mark RPM's Q1 margin up after Fuller's print. If the peer read-through had been priced, Q1 estimates would have moved toward the top of the mid-single-digit EBITDA guide rather than down.",
+    "independence": "Sherwin-Williams Q2 (July) also beat, raised guidance and announced an 8% price increase effective 2026-09-01, showing the coatings chain passing inflation through (https://seekingalpha.com/news/4580909-sherwin-williams-keeps-2026-guidance-unchanged-while-raising-raw-material-inflation-outlook). It is a different document and an earlier quarter. Proxy: Fuller's raw-material basket differs from RPM's (RPM is more exposed to PO/MDI and solvents).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "Brent crude went back above $100 in September and early October 2026: $101.21 on 09-09, $104.82 on 09-17, near $108 intraday on 09-28, $102.31 on 10-01. It had been $88-93 through August and ~$72-78 in late June/early July. On 2026-07-22 RPM framed the FY27 guide (+5-10% adj EBITDA) as assuming 'current raw material costs remain stable', with inflation moderating in H2, and already guided Q2 raw inflation to as high as 6-8%. The Q2 outlook given with the print, and any comment on the FY guide, now has to absorb higher petrochemical inputs.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://en.wikipedia.org/wiki/2026%E2%80%932028_world_oil_market_chronology",
+    "source_date": "2026-10-05 (chronology read; Sept/Oct entries)",
+    "reaction_history_on_this_line": "On 2025-10-01 (Q1 FY26, a record quarter with a cautious outlook) the stock moved -0.59%. The negative reactions in the baseline (-9.1% on 2025-04-08) came with margin and outlook pressure. On the July call the CEO called the H2 raw-material assumption 'a swag'.",
+    "why_not_priced": "Largely priced: RPM fell about 15% in the month the oil spike happened, Sherwin-Williams also sits ~15% off its high, and the put skew is bid. What is not priced is whether management cuts the FY27 EBITDA range or only widens the H2 caveat. A cut would show as a gap below the low end; a hold would remove the overhang.",
+    "independence": "Al Jazeera 2026-09-28 on Brent nearing $108 (https://www.aljazeera.com/economy/2026/9/28/oil-prices-surge-after-trump-rejects-irans-plan-to-reopen-strait-of-hormuz). Company transmission comes from RPM's own July transcript (https://www.rpminc.com/media/qffpsp3a/rpm-4q26-earnings-transcript.pdf). This is macro-to-company transmission, and the cost hit lands with a FIFO lag, mostly in Q2-Q3 rather than in the reported Q1.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "Consensus Q1 EPS of $1.95 (+3.7% y/y) and revenue of $2.22bn (+4.9%) sit at or slightly below the company's own Q1 guide: mid-single-digit sales growth, mid-single-digit adj EBITDA growth, $25m of incremental SG&A savings, and buybacks stepped up to $25m+/quarter with $815m authorized. The EPS consensus was cut 0.5% in the last 30 days. RPM has beaten EPS on its last two prints ($0.57 vs $0.35; $1.89 vs $1.83).",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://finance.yahoo.com/markets/stocks/articles/exploring-analyst-estimates-rpm-international-121502287.html",
+    "source_date": "2026-10-01",
+    "reaction_history_on_this_line": "EPS beats were bought: +12.4% (2026-04-08) and +5.8% (2026-07-22). The tough-comp October print (2025-10-01, record $1.88) drew -0.59%.",
+    "why_not_priced": "The bar sits inside the guide, so an in-line-to-modest beat is what the market was told to expect. That is why this finding is small. If a beat were not already the base case, the consensus would sit above the guide midpoint rather than below it.",
+    "independence": "Company guide from the July transcript (https://www.rpminc.com/media/qffpsp3a/rpm-4q26-earnings-transcript.pdf). The second estimate source, Investing.com (https://www.investing.com/news/earnings/rpm-international-earnings-in-focus-as-construction-slows-93CH-4932363), agrees on $1.95/$2.22bn.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "The DIY channel in RPM's quarter was mixed but not worse. Home Depot Q2 (to 2026-08-02) comps were +1.7% against +0.9% expected, with paint among 13 of 16 positive departments, though Pro outpaced DIY. Lowe's Q2 (to 2026-07-31) comps were +0.2% with paint positive, but it cut FY sales to the bottom of its range on persistent DIY pressure. RPM's Consumer segment (consensus $717.7m, +3.4%, helped by acquisitions) was guided to 'stabilization' after unit volume of -2 to -3% in Q4.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.cnbc.com/2026/08/18/home-depot-hd-q2-2026-earnings.html",
+    "source_date": "2026-08-18",
+    "reaction_history_on_this_line": "Consumer weakness was named in the Q2 FY26 miss (late Oct/Nov DIY softening). Consumer is about 32% of sales, so a consumer miss has been offset by CPG/PCG in recent prints.",
+    "why_not_priced": "Small and mostly public. If retail paint/DIY strength were priced into RPM Consumer, its segment consensus would sit above the acquisition-aided +3.4%. Net of the rest of the company: CPG/PCG (~68% of sales) carry the print, so this moves the total little.",
+    "independence": "Lowe's Q2 release (https://www.nasdaq.com/press-release/lowes-reports-second-quarter-2026-sales-and-earnings-results-2026-08-19) points the other way on DIY and the same way on paint. Proxy: RPM's Rust-Oleum/DAP mix is not interior paint.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "Non-residential construction stayed soft through RPM's quarter. The AIA/Deltek ABI was 47.2 in August (46.6 in July), inquiries were only modestly up, newly signed design contracts declined, and the share of firms expecting declines rose to 29%. Carlisle (Q2, 2026-08-07) put reroofing at +3% and commercial new construction down mid-single digits. RPM CPG consensus is +6.6% and PCG +3.9%, and RPM itself said 'underlying commercial construction continues to be weak' and that 95% of Tremco Roofing is restoration/reroofing.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.aia.org/resource-center/abi-august-2026-architecture-firm-billings-continue-decline",
+    "source_date": "2026-09 (August ABI release)",
+    "reaction_history_on_this_line": "CPG/PCG beats drove the last two positive prints (+12.4%, +5.8%). Construction slowdown commentary preceded the Q2 FY26 miss.",
+    "why_not_priced": "Mostly priced. The Investing.com preview leads with 'construction slows', and RPM guided assuming weak new construction. The open question is only whether CPG's acquisition- and price-aided +6.6% consensus is too high.",
+    "independence": "Carlisle Q2 2026 call (https://www.fool.com/earnings/call-transcripts/2026/08/07/carlisle-csl-q2-2026-earnings-call-transcript/). It is a direct roofing peer and shows reroofing resilient, which partly offsets the ABI read.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "RPM flagged on 2026-07-22 that a fire at a primary chemical supplier (LyondellBasell's Bayport propylene-oxide unit, force majeure after the 2026-03-12 fire) would hit Tremco Roofing Q1 costs and 'some negative impact on sales growth', with relief expected by the end of summer. It also flagged tight MDI supply.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.rpminc.com/media/qffpsp3a/rpm-4q26-earnings-transcript.pdf",
+    "source_date": "2026-07-22",
+    "reaction_history_on_this_line": "No prior instance of this line in the baseline.",
+    "why_not_priced": "It sits inside the guide: the company told the market and the guide includes it. It is only worth anything if the disruption ran past August and spills into the Q2 outlook.",
+    "independence": "ChemAnalyst 2026-06-02 on Bayport force majeure easing and PO prices declining 3% in late May (https://www.chemanalyst.com/NewsAndDeals/NewsDetails/us-propylene-oxide-prices-decline-3-07-as-softer-feedstock-42581) suggests the supply side was normalizing.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "Buyback capacity against a weaker price. In July the board added $700m to the remaining $115m authorization, and the CEO said RPM would be 'opportunistic in the event of weakness in our stock price'. The stock was ~$117 on 2026-08-05 and is $98.95 now, about 15% lower. The Q1 10-Q/release will show the pace, and the call may signal acceleration.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.rpminc.com/media/qffpsp3a/rpm-4q26-earnings-transcript.pdf",
+    "source_date": "2026-07-22",
+    "reaction_history_on_this_line": "The 2026-07-22 +5.8% reaction came with the record Q4 and the $700m buyback increase together.",
+    "why_not_priced": "The authorization is known. An explicit accelerated repurchase after a 15% drawdown would be news, and the absence of any 8-K since July means nothing has been announced.",
+    "independence": "The CEO Form 4 of 2026-08-05 records an option exercise and a sale at $116.72, establishing the price level (https://www.sec.gov/Archives/edgar/data/0000110621/000119312526340385/ownership.xml).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "CEO Frank Sullivan exercised 200,000 options at $62.17 on 2026-08-05, sold 106,529 shares at $116.72 (~$12.4m) and withheld 40,753 for tax/exercise, keeping 1,065,995 shares directly. Sales came near the subsequent high.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000110621/000119312526340385/ownership.xml",
+    "source_date": "2026-08-05",
+    "reaction_history_on_this_line": "none",
+    "why_not_priced": "It is public and routine (an option exercise with a partial sale), so it is close to nothing. Filed for completeness.",
+    "independence": "none",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "RPM closed the acquisition of Volteco, an Italian below-grade waterproofing maker with ~€28m of 2025 sales, into Tremco CPG on 2026-10-01. That is about 0.3% of RPM sales, with terms undisclosed.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-06",
+    "source": "https://www.coatingsworld.com/breaking-news/rpm-completes-acquisition-of-volteco/",
+    "source_date": "2026-10-01",
+    "reaction_history_on_this_line": "Bolt-on M&A has not moved the stock on prints.",
+    "why_not_priced": "Immaterial and public.",
+    "independence": "Investing.com preview names it as a monitoring point (https://www.investing.com/news/earnings/rpm-international-earnings-in-focus-as-construction-slows-93CH-4932363).",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "Investor Day on 2026-11-09 will detail MAP 3.0 (the next operating-improvement plan, with a >$30m Green Belt savings pipeline) and the strategy update. Management may hold back new targets until then, so the Oct 6 call may be light on forward detail.",
+    "resolves_by": "2026-11-09",
+    "source": "https://www.rpminc.com/media/qffpsp3a/rpm-4q26-earnings-transcript.pdf",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "Morgan Stanley PT cut $117->$114 (2026-09-28) and Wells Fargo PT cut $135->$130 (2026-10-05)",
+    "source": "https://stockanalysis.com/stocks/rpm/ratings/",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "RPM.json",
+    "text": "KeyBanc initiation Overweight $123 on 2026-09-11, calling the pullback 'an attractive entry point'",
+    "source": "https://www.investing.com/news/earnings/rpm-international-earnings-in-focus-as-construction-slows-93CH-4932363",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RPM.json",
+    "text": "RPM 8-Ks since 2026-07-22: none besides the July results; only ARS/DEF 14A (2026-08-25) and Form 4s (EDGAR submissions API)",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RPM.json",
+    "text": "Rust-Oleum/DAP consumer price increase announcement 2026: nothing found",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RPM.json",
+    "text": "PPG intra-quarter update: none, only the Q3 date (Oct 27) and the July Q3 guide of low-to-mid-single-digit organic growth",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RPM.json",
+    "text": "Benzinga 'most accurate analysts' preview: 403",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RPM.json",
+    "text": "Nasdaq copy of the July RPM release: 503; used the LSEG transcript PDF on rpminc.com instead",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RPM.json",
+    "text": "openinsider: 503",
+    "i": 17
+   }
+  ]
+ }
+]

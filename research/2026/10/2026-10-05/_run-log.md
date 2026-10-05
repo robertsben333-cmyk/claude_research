@@ -57,3 +57,7 @@
 ## Edge hunt (panel) — sweep
 - Logged at 2026-10-05 17:12 UTC
 - edge-sweep: 3 of 3 confirmed from company releases, all 2026-10-06 bmo (APOG 63, LW 47, RPM 29), 0 phantom. AEHR (time-not-supplied, calendar 10-05) checked by hand: no company date announcement found, not hunted; its baseline moved to edge-panel/_not-hunted/. provenance: us-searcher.v1 · claude-opus-5-5.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-05 17:21 UTC
+- 3 searchers back (APOG +3.40 above floor, RPM +0.30, LW -0.10). edge_score + V2 grounded written 17:21Z, before the first print (V2 3/3 grounded on 180 obs). LW: hunter's prose said impact_sum -0.4 but its findings sum to -0.1; scorer uses the findings. Packs built; launching four judges.
