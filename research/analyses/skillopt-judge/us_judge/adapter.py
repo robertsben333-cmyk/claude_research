@@ -64,7 +64,7 @@ class USJudgeAdapter(EnvAdapter):
     def get_success_minibatch_prompt(self) -> str | None:
         return self._with_rules('analyst_success')
 
-    def _one(self, item: dict, skill: str, pred_dir: Path) -> dict:
+    def _call(self, item: dict, skill: str) -> tuple:
         system = skill + '\n\n---\n\n' + self._reference
         user = judge_call.user_prompt(item['pack'])
         meta, judged, text = {}, None, ''
@@ -79,7 +79,11 @@ class USJudgeAdapter(EnvAdapter):
                 impact = float(judged.get('impact_sum') or 0)
             except (TypeError, ValueError):
                 impact = None
-        sc = reward.score(impact, item['outcome'])
+        return user, text, meta, judged, impact
+
+    def _finish(self, item: dict, skill: str, pred_dir: Path, called: tuple, scale: float) -> dict:
+        user, text, meta, judged, impact = called
+        sc = reward.score(impact, item['outcome'], scale)
         if judged is None:
             sc['fail_reason'] = 'Output was not one parseable JSON object. ' + sc['fail_reason']
         tdir = pred_dir / item['id']
@@ -88,12 +92,12 @@ class USJudgeAdapter(EnvAdapter):
                 {'role': 'user', 'content': user},
                 {'role': 'assistant', 'content': text}]
         (tdir / 'conversation.json').write_text(json.dumps(conv, ensure_ascii=False, indent=1), encoding='utf-8')
-        (tdir / 'judged.json').write_text(json.dumps({'judged': judged, 'meta': meta, 'score': sc},
+        (tdir / 'judged.json').write_text(json.dumps({'judged': judged, 'meta': meta, 'score': sc, 'scale': scale},
                                                      ensure_ascii=False, indent=1), encoding='utf-8')
         return {
             'id': item['id'], 'name_id': item['name_id'], 'hard': sc['hard'], 'soft': sc['soft'],
             'r': sc['r'], 'impact_sum': impact, 'p_up': (judged or {}).get('p_up'),
-            'abs_move_pct': (judged or {}).get('abs_move_pct'),
+            'abs_move_pct': (judged or {}).get('abs_move_pct'), 'reward_mode': reward.MODE, 'scale': scale,
             'predicted_answer': json.dumps(judged, ensure_ascii=False) if judged else text[:500],
             'task_description': f"Judge the blinded evidence pack for {item['name_id']} and size it.",
             'task_type': item['task_type'], 'fail_reason': sc['fail_reason'],
@@ -107,6 +111,8 @@ class USJudgeAdapter(EnvAdapter):
         pred_dir = Path(out_dir) / 'predictions'
         pred_dir.mkdir(parents=True, exist_ok=True)
         with ThreadPoolExecutor(max_workers=self.workers) as ex:
-            results = list(ex.map(lambda it: self._one(it, skill_content, pred_dir), items))
+            called = list(ex.map(lambda it: self._call(it, skill_content), items))
+        scale = reward.batch_scale([(c[4] or 0.0) / it['outcome']['priced_move_pct'] for it, c in zip(items, called)])
+        results = [self._finish(it, skill_content, pred_dir, c, scale) for it, c in zip(items, called)]
         Path(out_dir, 'rollouts.json').write_text(json.dumps(results, ensure_ascii=False, indent=1), encoding='utf-8')
         return results
