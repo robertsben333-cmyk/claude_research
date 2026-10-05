@@ -45,3 +45,7 @@
 ## Stage AU — Australia researcher — DONE (empty session)
 - Logged at 2026-10-05 06:42 UTC
 - Sealed for 2026-10-06: 0 scheduled / 0 eligible / 0 hunted, thin open session. See research/2026/10/2026-10-06/_run-log.md.
+
+## Stage X — Close AMC — 2026-10-05 10:10 UTC
+- Logged at 2026-10-05 10:16 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc_open; amc -> day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg with exit date today, 0 orders sent, 0 refusals. Account reachable. Unfilled-at-expiry legs (FEIM, RH, VRA, FPS, RLGT, LUXE, ALMU, LEN) are historical and show 0 still held.
