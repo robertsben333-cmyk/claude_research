@@ -129,3 +129,25 @@ of prevalence; the arm stops at $120.
 
 Packs with no outcome, anonymised where the context names the company, opaque ids, the
 isolated call of `scripts/llm.py`. Outcomes are joined only in `scripts/core.py`.
+
+## Amendment 1 (2026-10-05, before any real outcome was joined to a v1 label)
+
+A dry run of `scripts/registry.py` on **fake outcomes** (`SV_FAKE=1`: every move replaced by
+seeded Gaussian noise, so nothing real was read) showed two defects in the rules above:
+
+1. With a separate DerSimonian–Laird τ² per sibling set, most sets have few siblings and τ²
+   comes out 0, so every cell collapses onto its parent and **inherits the parent's
+   interval**. On pure noise the overall mean happened to sit just below 0 and 315 of 350
+   cells were labelled "probably misleads".
+2. The verdict could then rest on the parent alone, with no evidence in the cell itself.
+
+Changes, made before the real outcomes are joined:
+
+- **One τ² per level** (group / subtype / band), a moment estimator over every
+  (child, parent) pair at that level: τ² = max(0, (Σ w (y − p)² − k) / Σ w), w = 1/s².
+- **A directional verdict (any of the four) also needs the cell's own raw evidence**: at
+  least 10 voting items, the raw DV\* 80% interval (raw ± 1.2816 · cluster se) excluding 0,
+  and the same sign as the shrunk estimate. Otherwise the cell is "no evidence".
+
+On the same fake outcomes the amended rules give 344 "no evidence" and 6 "probably
+misleads" of 350 cells, about what an 80% interval should produce on noise.

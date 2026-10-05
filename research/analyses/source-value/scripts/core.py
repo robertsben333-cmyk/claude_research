@@ -111,6 +111,12 @@ def load(version=VERSION, label_root=None):
     L = load_labels(version, label_root)
     keep = [e for e in E if not e['duplicate_hunt']]
     ev = {e['id']: e for e in keep}
+    if os.environ.get('SV_FAKE'):  # code testing without reading a real outcome
+        rnd = random.Random(1)
+        for e in keep:
+            for k in ('move', 'move_strategy', 'move_open', 'move_close'):
+                if e.get(k) is not None:
+                    e[k] = rnd.gauss(0, 8)
     for e in keep:
         pm = e['priced_move']
         y = {}
@@ -295,9 +301,22 @@ def dl_tau2(ys, ss):
     return max(0.0, (Q - (len(pairs) - 1)) / c) if c > 0 else 0.0
 
 
-def shrink_level(children, parent_est, parent_sd):
+def level_tau2(pairs):
+    """One between-cell variance per LEVEL (METHODS amendment 1): moment estimator over every
+    (child estimate y, its se s, its parent estimate p) at that level:
+    tau2 = max(0, (sum w (y - p)^2 - k) / sum w), w = 1/s^2."""
+    pr = [(y, s, p) for y, s, p in pairs if y is not None and s and p is not None]
+    if len(pr) < 3:
+        return 0.0
+    w = [1 / s ** 2 for _, s, _ in pr]
+    Q = sum(wi * (y - p) ** 2 for wi, (y, _, p) in zip(w, pr))
+    return max(0.0, (Q - len(pr)) / sum(w))
+
+
+def shrink_level(children, parent_est, parent_sd, tau2=None):
     """children: {key: (y, s, n_vote)} -> {key: (shrunk, post_sd, B)}"""
-    tau2 = dl_tau2([c[0] for c in children.values()], [c[1] for c in children.values()])
+    if tau2 is None:
+        tau2 = dl_tau2([c[0] for c in children.values()], [c[1] for c in children.values()])
     out = {}
     for k, (y, s, n) in children.items():
         if y is None or s is None or n < 3 or s == 0:

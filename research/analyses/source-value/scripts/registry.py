@@ -73,9 +73,16 @@ def ledger_index():
     return idx
 
 
-def verdict(sh, lo, hi, q, lodo, repl_ok, fwd_ok=None):
+def verdict(sh, lo, hi, q, lodo, repl_ok, fwd_ok=None, raw=None, se=None, n=0):
     if lo is None:
         return 'not computable'
+    # amendment 1: a directional verdict also needs the cell's OWN raw 80% interval to exclude 0
+    # and at least 10 voting items, so a cell cannot inherit a verdict from its parent alone
+    own = raw is not None and se and n >= 10
+    if not own or (raw - Z80 * se <= 0 <= raw + Z80 * se):
+        return 'no evidence'
+    if core.sgn(raw) != core.sgn(sh or 0):
+        return 'no evidence'
     held = (repl_ok or fwd_ok)
     if lo > 0:
         full = q is not None and q.get('q_ledger') is not None and q['q_ledger'] < 0.10 and (lodo or 0) >= 0.65 and held
@@ -133,20 +140,26 @@ def build(forward=None):
         raw[(c, None)] = stat_set(items_of(c), engs['A'])
         for b in BANDS:
             raw[(c, b)] = stat_set(items_of(c, b), engs['A'])
-    # ---------- shrinkage, top-down
+    # ---------- shrinkage, top-down, one tau2 per level (METHODS amendment 1)
     ov_est, ov_se = ov[0], ov[1]
-    gsh, _ = core.shrink_level({g: (raw[('GROUP:' + g, None)][0], raw[('GROUP:' + g, None)][1], raw[('GROUP:' + g, None)][2]) for g in groups}, ov_est, ov_se)
+    ok = lambda k: raw[k][2] >= 3  # noqa: E731
+    t_grp = core.level_tau2([(raw[('GROUP:' + g, None)][0], raw[('GROUP:' + g, None)][1], ov_est) for g in groups if ok(('GROUP:' + g, None))])
+    t_sub = core.level_tau2([(raw[(c, None)][0], raw[(c, None)][1], raw[('GROUP:' + group_of(c), None)][0]) for c in codes if ok((c, None))])
+    t_band = core.level_tau2([(raw[(c, b)][0], raw[(c, b)][1], raw[(c, None)][0]) for c in codes for b in BANDS if ok((c, b))] +
+                             [(raw[('GROUP:' + g, b)][0], raw[('GROUP:' + g, b)][1], raw[('GROUP:' + g, None)][0]) for g in groups for b in BANDS if ok(('GROUP:' + g, b))])
+    tau = {'group': t_grp, 'subtype': t_sub, 'band': t_band}
+    gsh, _ = core.shrink_level({g: (raw[('GROUP:' + g, None)][0], raw[('GROUP:' + g, None)][1], raw[('GROUP:' + g, None)][2]) for g in groups}, ov_est, ov_se, t_grp)
     sh = {}
     for g in groups:
         sh[('GROUP:' + g, None)] = gsh[g]
-        bs, _ = core.shrink_level({b: raw[('GROUP:' + g, b)][0:2] + (raw[('GROUP:' + g, b)][2],) for b in BANDS}, gsh[g][0], gsh[g][1])
+        bs, _ = core.shrink_level({b: raw[('GROUP:' + g, b)][0:2] + (raw[('GROUP:' + g, b)][2],) for b in BANDS}, gsh[g][0], gsh[g][1], t_band)
         for b in BANDS:
             sh[('GROUP:' + g, b)] = bs[b]
         kids = [c for c in codes if group_of(c) == g]
-        ks, _ = core.shrink_level({c: raw[(c, None)][0:2] + (raw[(c, None)][2],) for c in kids}, gsh[g][0], gsh[g][1])
+        ks, _ = core.shrink_level({c: raw[(c, None)][0:2] + (raw[(c, None)][2],) for c in kids}, gsh[g][0], gsh[g][1], t_sub)
         for c in kids:
             sh[(c, None)] = ks[c]
-            cs_, _ = core.shrink_level({b: raw[(c, b)][0:2] + (raw[(c, b)][2],) for b in BANDS}, ks[c][0], ks[c][1])
+            cs_, _ = core.shrink_level({b: raw[(c, b)][0:2] + (raw[(c, b)][2],) for b in BANDS}, ks[c][0], ks[c][1], t_band)
             for b in BANDS:
                 sh[(c, b)] = cs_[b]
     # ---------- per row extras
@@ -221,7 +234,7 @@ def build(forward=None):
         q = LI.get((code, band))
         fwd = (forward or {}).get(f'{code}|{band}')
         fwd_ok = None if not fwd else (fwd.get('n_vote', 0) >= 5 and core.sgn(fwd.get('DVstar_raw') or 0) == core.sgn(est or 0))
-        vd = verdict(est, lo, hi, q, lodo, repl_ok, fwd_ok)
+        vd = verdict(est, lo, hi, q, lodo, repl_ok, fwd_ok, v, se, n)
         rows.append({'code': code, 'group': g, 'name': ('group: ' + g) if isgrp else names.get(code, code), 'band': band or 'all',
                      'n_items': round(sum(x['w'] for x in its), 1), 'n_vote': round(n, 1), 'prints_vote': npr, 'prevalence': prev,
                      'DV': dv_raw, 'hit_rate': hit, 'DVstar_raw': v, 'DVstar_se': se, 'DVstar_shrunk': est, 'shrink_B': B,
@@ -231,7 +244,7 @@ def build(forward=None):
                      'forward': fwd, 'forward_agrees': fwd_ok, 'verdict': vd,
                      'confirmed': bool(fwd_ok) and vd in ('works', 'probably works', 'misleads', 'probably misleads'),
                      'guidance': guidance(vd, mv, None, n)})
-    meta = {'version': 'v1', 'built_from': 'stratum A (US edge hunts) with B and C as replication', 'overall_DVstar': ov_est, 'overall_se': ov_se,
+    meta = {'tau2': tau, 'version': 'v1', 'built_from': 'stratum A (US edge hunts) with B and C as replication', 'overall_DVstar': ov_est, 'overall_se': ov_se,
             'note': 'Diagnostic only. No scorer, no book and no hunter reads this file.'}
     return {'meta': meta, 'rows': rows}
 
