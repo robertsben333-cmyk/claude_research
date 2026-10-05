@@ -29,3 +29,7 @@
 ## Stage J — hunt 7679 banked, scratch collision
 - Logged at 2026-10-05 01:20 UTC
 - 7679 hunter reports a parallel hunter (7630) wrote a same-named file in the shared scratch directory and overwrote its Q1 短信 text copy; it re-read from a private subdirectory and logged the wrong reading under rejected_candidates. 7630's hunt may carry the same risk — check its sources before trusting it. Defect: hunters share scratch filenames.
+
+## Stage J — hunt 7630 banked
+- Logged at 2026-10-05 01:22 UTC
+- 7630 hunter confirms it wrote q1.txt etc. into shared /tmp/claude-0/ instead of its scratchpad; it was the overwriter, not the overwritten — its findings cite its own Ichibanya documents (eir-parts 月次, kabutan 短信 PDFs). 7679 already caught and rejected the contaminated reading.
