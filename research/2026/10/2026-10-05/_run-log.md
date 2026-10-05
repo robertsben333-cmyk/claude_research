@@ -33,3 +33,7 @@
 ## Stage J — hunt 7630 banked
 - Logged at 2026-10-05 01:22 UTC
 - 7630 hunter confirms it wrote q1.txt etc. into shared /tmp/claude-0/ instead of its scratchpad; it was the overwriter, not the overwritten — its findings cite its own Ichibanya documents (eir-parts 月次, kabutan 短信 PDFs). 7679 already caught and rejected the contaminated reading.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-05 01:27 UTC
+- 11/11 hunted and rankable; 0 above the 2.8 floor; top 3498 +1.70, bottom 7679 -1.20; 7 positive / 4 negative; 2753 released 09:00 before the seal (residual-drift window). Note: research/2026/10/2026-10-05/japan/japan-note.md. No orders.
