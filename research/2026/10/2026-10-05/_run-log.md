@@ -21,3 +21,7 @@
 ## Stage J — sealed
 - Logged at 2026-10-05 01:06 UTC
 - universe: 15 scheduled / 11 eligible (4 dropped on ¥15m turnover) / 11 hunted, selection 'all 11 eligible names (at or under the cap)', calendar_as_of 2026-10-01. 11 baselines sealed 01:05Z, short register file 20260929. provenance jp.v6 · claude-opus-5-5 (alias_timeline). Wave 1 (1376 2753 3148 3186 3498) spawned.
+
+## Stage J — wave 1 banked
+- Logged at 2026-10-05 01:13 UTC
+- 4 of 5 back (1376 2753 3148 3498); 3186 still running. Wave 2 spawned: 3612 6474 7630 7679. Note: 2753 released 09:00 JST, BEFORE the 10:05 seal, so its sealed-spot entry is post-release (residual drift only).
