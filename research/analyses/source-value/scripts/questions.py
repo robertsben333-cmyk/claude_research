@@ -18,6 +18,7 @@ Metrics:
   DV, DVstar, hit           item votes in the cut (DVstar uses the residual outcome)
   contrast_DVstar           DVstar(cut) - DVstar(cut_b)
   contrast_hit              hit(cut) - hit(cut_b)
+  presence_res              name level: mean residual move (res_n) of prints holding a cut item minus the rest of `base_events`
   MV                        name level: P(big | a cut item present) - P(big | absent), within `base` prints
   oversize                  item level: mean(|live_size| / priced) - mean(|move| / priced) over FILED items in
                             the cut (positive = the hunter sized bigger than what came); a print's items share one move
@@ -123,6 +124,9 @@ def run_one(q, C):
     h = q.get('outcome_horizon', 'strategy')
     base_items = [x for x in C.items if x['stratum'] == s and match(x, q.get('base') or {})]
     cut = q.get('cut') or {}
+    vf = q.get('vote_field')
+    if vf:
+        base_items = [dict(x, vote=x.get(vf) or 0) for x in base_items]
     sub_a = subset(base_items, cut, cut.get('subtype'))
     m = q['metric']
     res = {}
@@ -155,8 +159,8 @@ def run_one(q, C):
         mper = (res['n'] / res['prints']) if res['prints'] else 1
         res['power_n_prints'] = core.power_n(mper, two_arm=m.startswith('contrast'))
         r = core.perm_test(fn, eng)
-    elif m == 'MV':
-        y = eng.vec('big', h)
+    elif m in ('MV', 'presence_res'):
+        y = eng.vec('big' if m == 'MV' else 'res', h)
         idxs = [eng.idx[e['id']] for e in eng.events if match({'ev': e}, q.get('base_events') or {})]
         present = {eng.idx[x['ev']['id']] for x in sub_a} & set(idxs)
         res['n'] = len(present)

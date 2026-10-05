@@ -123,6 +123,8 @@ def load(version=VERSION, label_root=None):
         e['y_raw'] = e['move'] / pm
         e['big'] = abs(e['move']) / pm > 1
     naive_fit(keep)
+    for e in keep:
+        derive_event(e)
     items = []
     for it in I:
         e = ev.get(it['event'])
@@ -135,8 +137,37 @@ def load(version=VERSION, label_root=None):
         x.update(M.get(f"{it['pack_id']}#{it['i']}", {}))
         x.update(merged_label(runs, mm, groups))
         x['ev'] = e
+        derive_item(x)
         items.append(x)
     return keep, items
+
+
+def derive_event(e):
+    e['runup_dir'] = 'up' if (e.get('runup_20d') or 0) > 0 else 'down'
+    e['vol_high'] = (e.get('vol20') or 0) >= 58
+    e['retail_high'] = (e.get('retail_tilt') or 0) >= 50 if e.get('retail_tilt') is not None else None
+    sp = e.get('search_spike')
+    e['search_spike_high'] = (sp >= 1.0) if isinstance(sp, (int, float)) else None
+    im = e.get('implied_move')
+    e['implied_big'] = (im >= 10) if im else None
+    hm = str(e.get('hunter_model') or '')
+    e['hunter_era'] = 'opus55' if ('5.5' in hm or '5-5' in hm) else ('opus5' if hm else 'unknown')
+    e['lean_sign'] = sgn(e.get('priced_lean_pct') or 0)
+    e['bar'] = bool(e.get('bar_present'))
+
+
+def derive_item(x):
+    x['corroborated'] = (x.get('n_indep') or 0) >= 2
+    x['non_english'] = x.get('language') not in (None, 'en')
+    x['lean_agree'] = (x['vote'] * x['ev']['lean_sign'] > 0) if x['vote'] and x['ev']['lean_sign'] else None
+    ls = x.get('live_size')
+    x['hunter_vote'] = sgn(ls) if (x.get('kind') == 'filed_by_first_hunter' and ls is not None) else 0
+    x['hunter_agrees_labeller'] = (x['hunter_vote'] == x['vote']) if (x['hunter_vote'] and x['vote']) else None
+    x['magnitude_large'] = x.get('magnitude_claim') == 'large'
+    sf = x.get('sec_form')
+    x['sec_family'] = None if not sf else ('8-K' if sf in ('8-K', '6-K') else 'periodic' if sf in ('10-Q', '10-K', '20-F') else
+                                           'financing' if sf in ('S-1', 'S-3', '424B') else 'ownership' if sf in ('4', '144', 'SC 13D', 'SC 13G') else 'other')
+    x['is_8k_202'] = '2.02' in (x.get('sec_items') or [])
 
 
 # ------------------------------------------------------------------ permutation engine
