@@ -1,0 +1,110 @@
+{
+ "frozen": "2026-10-05, before the misses were opened",
+ "derived_from": [
+  "us/2026-09-01/DELL",
+  "us/2026-09-01/PANW",
+  "us/2026-09-03/LULU",
+  "us/2026-09-08/SUNB",
+  "us/2026-09-21/AZO",
+  "us/2026-10-01/NKE"
+ ],
+ "rules": [
+  {
+   "id": "R1",
+   "text": "same-period read-across",
+   "when": {
+    "subtype": [
+     "oth_peer_results",
+     "oth_customer_supplier",
+     "G:other_company",
+     "med_industry_report"
+    ],
+    "quantified": true,
+    "dated_in_window": true,
+    "vote": [
+     1,
+     -1
+    ]
+   }
+  },
+  {
+   "id": "R2",
+   "text": "corroborated read-across (2+ items)",
+   "when": {
+    "subtype": [
+     "oth_peer_results",
+     "oth_customer_supplier",
+     "G:other_company",
+     "med_industry_report"
+    ],
+    "quantified": true,
+    "dated_in_window": true,
+    "vote": [
+     1,
+     -1
+    ]
+   },
+   "min_items": 2
+  },
+  {
+   "id": "R3",
+   "text": "unread own-document detail",
+   "when": {
+    "subtype": [
+     "own_periodic_report",
+     "own_results_release",
+     "own_guidance_targets"
+    ],
+    "primary_document": true,
+    "quantified": true,
+    "already_widely_reported": false,
+    "vote": [
+     1,
+     -1
+    ]
+   }
+  },
+  {
+   "id": "R4",
+   "text": "fresh, not widely reported, not company-own",
+   "when": {
+    "group": [
+     "other_company",
+     "official_record",
+     "market_data",
+     "media",
+     "alt_data",
+     "researcher_own"
+    ],
+    "dated_in_window": true,
+    "quantified": true,
+    "already_widely_reported": false,
+    "vote": [
+     1,
+     -1
+    ]
+   }
+  },
+  {
+   "id": "R5",
+   "text": "R1 or R3 items together",
+   "when_any": [
+    "R1",
+    "R3"
+   ]
+  },
+  {
+   "id": "R6",
+   "text": "large claims, quantified, not widely reported",
+   "when": {
+    "magnitude_claim": "large",
+    "quantified": true,
+    "already_widely_reported": false,
+    "vote": [
+     1,
+     -1
+    ]
+   }
+  }
+ ]
+}

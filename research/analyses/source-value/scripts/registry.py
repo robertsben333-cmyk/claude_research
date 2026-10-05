@@ -68,7 +68,7 @@ def ledger_index():
         if set(c) - {'subtype', 'group', 'cap_band'}:
             continue
         key = (c.get('subtype') or ('GROUP:' + c['group'] if isinstance(c.get('group'), str) else None), c.get('cap_band'))
-        if key[0] and not isinstance(key[0], list):
+        if key[0] and not isinstance(key[0], list) and not isinstance(key[1], list):
             idx[key] = q
     return idx
 

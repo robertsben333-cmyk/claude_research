@@ -87,12 +87,20 @@ def cmd_intact():
 
 
 def cmd_ablate(codes):
-    cbi = codes_by_item()
+    import core
+    grp = {x['id']: x['group'] for x in core.codebook()['subtypes']}
+    cbi0 = codes_by_item()
+    cbi = cbi0
     P = packs()
     from collections import Counter
     for c in codes:
         d = f'{OUT}/minus-{c.replace(":", "_")}'
         os.makedirs(d, exist_ok=True)
+        if c.startswith('GROUP:'):  # a whole group: map every item's codes to their group
+            g = c[6:]
+            cbi = {k: [c if ((x[2:] if x.startswith('G:') else grp.get(x)) == g) else x for x in v] for k, v in cbi0.items()}
+        else:
+            cbi = cbi0
         jobs = []
         for p in P:
             keep = [e for e in p['evidence'] if sum(x == c for x in cbi.get((p['id'], e['i']), [])) * 2 < max(1, len(cbi.get((p['id'], e['i']), [])))]

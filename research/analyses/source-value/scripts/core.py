@@ -163,6 +163,16 @@ def derive_event(e):
 
 
 def derive_item(x):
+    if x.get('age_days') is None and x.get('source_date') and x['ev'].get('event_date'):
+        try:
+            from datetime import date
+            a = date.fromisoformat(str(x['source_date'])[:10])
+            b = date.fromisoformat(str(x['ev']['event_date'])[:10])
+            x['age_days'] = (b - a).days
+            ag = x['age_days']
+            x['age_bucket'] = '<=7' if ag <= 7 else '8-30' if ag <= 30 else '31-90' if ag <= 90 else '>90'
+        except ValueError:
+            pass
     x['corroborated'] = (x.get('n_indep') or 0) >= 2
     x['non_english'] = x.get('language') not in (None, 'en')
     x['lean_agree'] = (x['vote'] * x['ev']['lean_sign'] > 0) if x['vote'] and x['ev']['lean_sign'] else None
