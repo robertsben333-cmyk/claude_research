@@ -65,3 +65,7 @@
 ## Edge hunt (panel) — DONE
 - Logged at 2026-10-05 17:26 UTC
 - 4 of 4 judges ran (opus5, opus55, sonnet55, fable51; pinned agents, no fallback), 3/3 ids covered each. Panel selected APOG (k 4/4, panel_score +1.65, expected_edge 3.35); RPM +0.67, LW +0.18 not selected. Searcher key: APOG +3.40 (floor), RPM +0.30, LW -0.10. Stage E edge/ not on main at note time: no comparison. No alpaca_trade.py call, no shadow ledger. Note: research/2026/10/2026-10-05/edge-panel/edge-note.md.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-05 18:33 UTC
+- 18:34 UTC (14:34 ET, Toronto open). Plan: ca_universe -> seal baselines before 16:00 ET -> provenance stamp -> unpriced-hunter-ca one per name in waves -> edge_score -> note. No orders.
