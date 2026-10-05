@@ -37,3 +37,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-05 01:27 UTC
 - 11/11 hunted and rankable; 0 above the 2.8 floor; top 3498 +1.70, bottom 7679 -1.20; 7 positive / 4 negative; 2753 released 09:00 before the seal (residual-drift window). Note: research/2026/10/2026-10-05/japan/japan-note.md. No orders.
+
+## Stage AU — Australia researcher — STARTED
+- Logged at 2026-10-05 06:41 UTC
+- 06:42 UTC fire: universe for next ASX session, seal baselines, one unpriced-hunter-au per name in waves of 5, score with edge_score.py, note. No orders.
