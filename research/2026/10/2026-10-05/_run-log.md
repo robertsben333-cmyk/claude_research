@@ -53,3 +53,7 @@
 ## Edge hunt (panel) — 2026-10-05 amc + 2026-10-06 bmo — STARTED
 - Logged at 2026-10-05 17:08 UTC
 - 17:10 UTC fire. Window: 3 confirmed-session names (RPM, LW, APOG, all 2026-10-06 bmo). Thin day, so time-not-supplied rows checked with session_resolve.py: 5 carried unresolved (AEHR, VLGEA, ARTW, NCPL, MSS), 0 killed, 0 confirmed — not hunted (no announced date; base-universe kept comparable with stage E). 3 baselines sealed 17:12Z, all with option chains. Plan: 1 edge-sweep, up to 3 unpriced-searchers, then 4 blind judges. No orders.
+
+## Edge hunt (panel) — sweep
+- Logged at 2026-10-05 17:12 UTC
+- edge-sweep: 3 of 3 confirmed from company releases, all 2026-10-06 bmo (APOG 63, LW 47, RPM 29), 0 phantom. AEHR (time-not-supplied, calendar 10-05) checked by hand: no company date announcement found, not hunted; its baseline moved to edge-panel/_not-hunted/. provenance: us-searcher.v1 · claude-opus-5-5.
