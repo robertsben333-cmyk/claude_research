@@ -73,3 +73,7 @@
 ## Stage CA — Canada researcher — EMPTY UNIVERSE
 - Logged at 2026-10-05 18:33 UTC
 - TSX open (market_closed null); scheduled_today 1 of 2510 scanner rows (7 candidates in window). Calendar: confirmed 0 / agreed 0 / wsh_only 0 / vendor_only 1 / disputed 0; moved_off_target_by_wsh none. Dropped: YAY (THS Maple, TSXV) below the $100k turnover floor at $666/day. filing_only drops: 0. Eligible 0, hunted 0. No baselines sealed, so no short-register snapshot stored today and no anchor-arm split (0 options / 0 register). Normal off-peak outcome, not a fault; TMX stack answered (WSH + news archive read). FX from Bank of Canada because Yahoo did not answer.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-10-05 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside 13:30–16:05 ET. Repo was present in the working directory (no clone). Plan: --intraday screen K=15, seal baselines, one reversal-hunter per name, edge_score.py, resolve 2026-10-02, note before 16:00 ET.
