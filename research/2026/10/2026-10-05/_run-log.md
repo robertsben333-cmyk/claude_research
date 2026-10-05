@@ -13,3 +13,7 @@
 - Fired 2026-10-04 06:40 UTC (Sunday), sealing for ASX session 2026-10-05. Repo: existing checkout, reset local main to origin/main (force-updated remote).
 - Universe: 1575 vendor rows scanned, 0 scheduled, 0 eligible, 0 hunted. market_open true (basis: weekday not an ASX holiday, beyond the tape) — a genuinely thin off-season Australian session, not a fault. No hunters spawned, no baselines sealed.
 - Universe file: research/2026/10/2026-10-05/australia/universe.json
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-05 01:05 UTC
+- Fired 01:05Z on main @ 119187b. Plan: jp_universe -> seal baselines -> provenance stamp -> unpriced-hunter-jp in waves of 5 -> edge_score -> note. Research only, no orders.
