@@ -19,7 +19,7 @@ GROUPS = ['company_own', 'other_company', 'official_record', 'market_data', 'med
 BANDS = ['micro', 'small', 'mid', 'large']
 
 
-def label_counts():
+def label_counts(stratum='A'):
     """codes -> voting items / all items in stratum A (labels only; no move is touched)."""
     cb = core.codebook()
     grp = {s['id']: s['group'] for s in cb['subtypes']}
@@ -29,7 +29,7 @@ def label_counts():
     E = {e['id']: e for e in json.load(open(f'{SV}/data/events.json'))}
     vote, allc = Counter(), Counter()
     for it in I:
-        if it['stratum'] != 'A' or E[it['event']]['duplicate_hunt']:
+        if it['stratum'] != stratum or E[it['event']]['duplicate_hunt']:
             continue
         runs = [r[it['i']] for r in L.get(it['pack_id'], []) if it['i'] in r]
         if not runs:
@@ -68,7 +68,7 @@ def b01():
         Q('b01-07', "Do peer earnings results carry the sign better in micro and small caps than in mid and large?", 'contrast_DVstar',
           {'subtype': 'oth_peer_results', 'cap_band': ['micro', 'small']}, '+', cut_b={'subtype': 'oth_peer_results', 'cap_band': ['mid', 'large']}, why='seed 3'),
         Q('b01-08', "Do peer earnings results carry the sign in micro and small caps?", 'DVstar', {'subtype': 'oth_peer_results', 'cap_band': ['micro', 'small']}, '+', why='seed 3'),
-        Q('b01-09', "Are retail-finance portal articles worse than noise?", 'DVstar', {'subtype': 'med_retail_portal'}, '-', why='seed 4'),
+        Q('b01-09', "Are media items (merged group: press, trade press, retail-finance portal opinion, foreign press) worse than noise? (med_retail_portal itself fell below 80% labeller agreement and was merged into G:media)", 'DVstar', {'subtype': 'G:media'}, '-', why='seed 4; retail portal merged by the agreement rule'),
         Q('b01-10', "Are retail-finance-domain items (any subtype) worse than noise?", 'DVstar', {'domain_class': 'retail_finance', 'not_subtype': [c for c in ['G:search_note'] ] , 'kind': ['filed_by_first_hunter', 'put_outside_window_by_first_hunter', 'rejected_by_first_hunter']}, '-', why='seed 4, by domain'),
         Q('b01-11', "Among retail-finance-domain items, do those already widely reported do worse than the rest?", 'contrast_DVstar',
           {'domain_class': 'retail_finance', 'already_widely_reported': True}, '-', cut_b={'domain_class': 'retail_finance', 'already_widely_reported': False}, why='seed 4, mechanism'),
@@ -219,7 +219,24 @@ def b12():
     return qs
 
 
-GEN = {'b01': b01, 'b02': b02, 'b07': b07, 'b08': b08, 'b09': b09, 'b10': b10, 'b11': b11, 'b12': b12}
+def b13():
+    """Strata B and C on their own most common voting codes (B is mostly mid and large caps)."""
+    qs = []
+    for s in ('B', 'C'):
+        vote, allc, grp, mm = label_counts(s)
+        for c, n in vote.most_common():
+            if n < 8 or c.startswith('srch_'):
+                continue
+            qs.append(Q(f'b13-{s}-{c}', f"Stratum {s}: does {c} carry the sign (DV*)? ({n:.0f} voting items)", 'DVstar', {'subtype': c}, 'any', stratum=s,
+                        why='replication stratum, own most common codes'))
+            if s == 'B' and n >= 16:
+                for b in ('mid', 'large'):
+                    qs.append(Q(f'b13-B-{c}-{b}', f"Stratum B: does {c} carry the sign in {b} caps?", 'DVstar', {'subtype': c, 'cap_band': b}, 'any',
+                                stratum='B', why='large-cap question, dossier stratum'))
+    return qs
+
+
+GEN = {'b13': b13, 'b01': b01, 'b02': b02, 'b07': b07, 'b08': b08, 'b09': b09, 'b10': b10, 'b11': b11, 'b12': b12}
 
 
 def main():

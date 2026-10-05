@@ -1,0 +1,439 @@
+{
+ "batch": "b01",
+ "questions": [
+  {
+   "id": "b01-01",
+   "question": "Do the company's own quantified disclosures dated inside the window carry the sign in large caps?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "company_own",
+    "quantified": true,
+    "dated_in_window": true,
+    "cap_band": "large"
+   },
+   "why": "seed 1"
+  },
+  {
+   "id": "b01-02",
+   "question": "Same, mid and large caps together (more prints).",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "company_own",
+    "quantified": true,
+    "dated_in_window": true,
+    "cap_band": [
+     "mid",
+     "large"
+    ]
+   },
+   "why": "seed 1, power"
+  },
+  {
+   "id": "b01-03",
+   "question": "In large caps, do option-market items (implied move, skew, flow) carry the sign?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": "mkt_options",
+    "cap_band": "large"
+   },
+   "why": "seed 2"
+  },
+  {
+   "id": "b01-04",
+   "question": "In large caps, do short-interest items carry the sign?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": "mkt_short_interest",
+    "cap_band": "large"
+   },
+   "why": "seed 2"
+  },
+  {
+   "id": "b01-05",
+   "question": "In large caps, do consensus and estimate-revision items carry the sign?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": "mkt_consensus",
+    "cap_band": "large"
+   },
+   "why": "seed 2"
+  },
+  {
+   "id": "b01-06",
+   "question": "In large caps, does the market-data group as a whole carry the sign?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "market_data",
+    "cap_band": "large"
+   },
+   "why": "seed 2"
+  },
+  {
+   "id": "b01-07",
+   "question": "Do peer earnings results carry the sign better in micro and small caps than in mid and large?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "subtype": "oth_peer_results",
+    "cap_band": [
+     "micro",
+     "small"
+    ]
+   },
+   "why": "seed 3",
+   "cut_b": {
+    "subtype": "oth_peer_results",
+    "cap_band": [
+     "mid",
+     "large"
+    ]
+   }
+  },
+  {
+   "id": "b01-08",
+   "question": "Do peer earnings results carry the sign in micro and small caps?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": "oth_peer_results",
+    "cap_band": [
+     "micro",
+     "small"
+    ]
+   },
+   "why": "seed 3"
+  },
+  {
+   "id": "b01-09",
+   "question": "Are media items (merged group: press, trade press, retail-finance portal opinion, foreign press) worse than noise? (med_retail_portal itself fell below 80% labeller agreement and was merged into G:media)",
+   "hypothesis": "-",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": "G:media"
+   },
+   "why": "seed 4; retail portal merged by the agreement rule"
+  },
+  {
+   "id": "b01-10",
+   "question": "Are retail-finance-domain items (any subtype) worse than noise?",
+   "hypothesis": "-",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "domain_class": "retail_finance",
+    "not_subtype": [
+     "G:search_note"
+    ],
+    "kind": [
+     "filed_by_first_hunter",
+     "put_outside_window_by_first_hunter",
+     "rejected_by_first_hunter"
+    ]
+   },
+   "why": "seed 4, by domain"
+  },
+  {
+   "id": "b01-11",
+   "question": "Among retail-finance-domain items, do those already widely reported do worse than the rest?",
+   "hypothesis": "-",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "domain_class": "retail_finance",
+    "already_widely_reported": true
+   },
+   "why": "seed 4, mechanism",
+   "cut_b": {
+    "domain_class": "retail_finance",
+    "already_widely_reported": false
+   }
+  },
+  {
+   "id": "b01-12",
+   "question": "Does alternative data carry the sign anywhere (all bands)?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "alt_data"
+   },
+   "why": "seed 5"
+  },
+  {
+   "id": "b01-13",
+   "question": "Does alternative data with 2+ independent sources do better than uncorroborated alt data?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "group": "alt_data",
+    "corroborated": true
+   },
+   "why": "seed 5",
+   "cut_b": {
+    "group": "alt_data",
+    "corroborated": false
+   }
+  },
+  {
+   "id": "b01-14",
+   "question": "Do micro caps holding a financing item (ATM, S-3, 424B, convertible) fall more than other micro caps, beyond drift?",
+   "hypothesis": "-",
+   "unit": "name",
+   "metric": "presence_res",
+   "cut": {
+    "subtype": "own_financing"
+   },
+   "why": "seed 6",
+   "base_events": {
+    "cap_band": "micro"
+   }
+  },
+  {
+   "id": "b01-15",
+   "question": "Do financing items' votes carry the sign in micro caps?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "subtype": "own_financing",
+    "cap_band": "micro"
+   },
+   "why": "seed 6"
+  },
+  {
+   "id": "b01-16",
+   "question": "Do absence items (an expected disclosure missing, or a search note with a direction) carry the sign?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": [
+     "researcher_own",
+     "search_note"
+    ],
+    "subtype": [
+     "res_absence_of_disclosure",
+     "srch_preannouncement_guidance",
+     "srch_filing_stream_quiet",
+     "srch_insider_ownership",
+     "srch_litigation_regulatory",
+     "srch_balance_sheet_capital",
+     "srch_management_governance",
+     "srch_business_events",
+     "srch_consensus_analyst",
+     "srch_unexplained_move",
+     "srch_positioning",
+     "srch_alt_data",
+     "srch_external_readthrough",
+     "srch_earnings_item",
+     "srch_source_unusable",
+     "srch_general",
+     "srch_other",
+     "G:search_note"
+    ]
+   },
+   "why": "seed 7"
+  },
+  {
+   "id": "b01-17",
+   "question": "Do prints whose hunter found no pre-announcement or guidance change move differently (residual) from the rest?",
+   "hypothesis": "any",
+   "unit": "name",
+   "metric": "presence_res",
+   "cut": {
+    "subtype": [
+     "srch_preannouncement_guidance"
+    ]
+   },
+   "why": "seed 7, name level"
+  },
+  {
+   "id": "b01-18",
+   "question": "Does the hunter oversize market-data (positioning, options, prices) findings relative to the realised move?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "oversize",
+   "cut": {
+    "group": "market_data"
+   },
+   "why": "seed 8"
+  },
+  {
+   "id": "b01-19",
+   "question": "Does the hunter oversize macro and commodity findings (official statistics, commodity/FX prices, trade policy)?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "oversize",
+   "cut": {
+    "subtype": [
+     "off_official_statistics",
+     "mkt_commodity_fx",
+     "off_trade_policy"
+    ]
+   },
+   "why": "seed 8"
+  },
+  {
+   "id": "b01-20",
+   "question": "Reference: does the hunter oversize the company's own disclosures?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "oversize",
+   "cut": {
+    "group": "company_own"
+   },
+   "why": "seed 8 reference"
+  },
+  {
+   "id": "b01-21",
+   "question": "Do the items the hunter FILED carry the sign (labeller vote)?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "kind": "filed_by_first_hunter"
+   },
+   "why": "seed 9"
+  },
+  {
+   "id": "b01-22",
+   "question": "Do the items the hunter put OUTSIDE the window carry the sign?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "kind": "put_outside_window_by_first_hunter"
+   },
+   "why": "seed 9"
+  },
+  {
+   "id": "b01-23",
+   "question": "Filed against put-outside-window items: is the value concentrated in filed items?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "contrast_DVstar",
+   "cut": {
+    "kind": "filed_by_first_hunter"
+   },
+   "why": "seed 9",
+   "cut_b": {
+    "kind": "put_outside_window_by_first_hunter"
+   }
+  },
+  {
+   "id": "b01-24",
+   "question": "Do items claiming a LARGE move (relative to priced) come in names that move more than priced?",
+   "hypothesis": "+",
+   "unit": "name",
+   "metric": "MV",
+   "cut": {
+    "magnitude_claim": "large"
+   },
+   "why": "seed 10"
+  },
+  {
+   "id": "b01-g-company_own",
+   "question": "Main effect: does the company_own group carry the sign (DV*) in US hunts?",
+   "hypothesis": "+",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "company_own"
+   },
+   "why": "main effect, group"
+  },
+  {
+   "id": "b01-g-other_company",
+   "question": "Main effect: does the other_company group carry the sign (DV*) in US hunts?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "other_company"
+   },
+   "why": "main effect, group"
+  },
+  {
+   "id": "b01-g-official_record",
+   "question": "Main effect: does the official_record group carry the sign (DV*) in US hunts?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "official_record"
+   },
+   "why": "main effect, group"
+  },
+  {
+   "id": "b01-g-market_data",
+   "question": "Main effect: does the market_data group carry the sign (DV*) in US hunts?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "market_data"
+   },
+   "why": "main effect, group"
+  },
+  {
+   "id": "b01-g-media",
+   "question": "Main effect: does the media group carry the sign (DV*) in US hunts?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "media"
+   },
+   "why": "main effect, group"
+  },
+  {
+   "id": "b01-g-alt_data",
+   "question": "Main effect: does the alt_data group carry the sign (DV*) in US hunts?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "alt_data"
+   },
+   "why": "main effect, group"
+  },
+  {
+   "id": "b01-g-researcher_own",
+   "question": "Main effect: does the researcher_own group carry the sign (DV*) in US hunts?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "researcher_own"
+   },
+   "why": "main effect, group"
+  },
+  {
+   "id": "b01-g-search_note",
+   "question": "Main effect: does the search_note group carry the sign (DV*) in US hunts?",
+   "hypothesis": "any",
+   "unit": "item",
+   "metric": "DVstar",
+   "cut": {
+    "group": "search_note"
+   },
+   "why": "main effect, group"
+  }
+ ]
+}

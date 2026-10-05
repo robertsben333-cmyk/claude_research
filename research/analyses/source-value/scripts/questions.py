@@ -276,15 +276,34 @@ def requery():
     write_ledger(rows)
 
 
+def power_pre(qs):
+    """Counts and the power requirement for each question, from LABELS only: computed with every
+    outcome replaced by noise (SV_FAKE), so registering a batch reads no real move."""
+    import subprocess
+    tmp = f'{SV}/ledger/.power-tmp.json'
+    json.dump(qs, open(tmp, 'w'))
+    code = ('import json,sys; sys.path.insert(0, %r); import questions as Q; qs=json.load(open(%r)); C=Q.Ctx(20); out={}\n'
+            'for q in qs:\n r,_=Q.run_one(q,C); out[q["id"]]={k:r.get(k) for k in ("n","prints","n_b","prints_b","power_n_prints","underpowered")}\n'
+            'json.dump(out,open(%r,"w"))') % (HERE, tmp, tmp + '.out')
+    subprocess.run([sys.executable, '-c', code], check=True, env=dict(os.environ, SV_FAKE='1'))
+    out = json.load(open(tmp + '.out'))
+    os.remove(tmp)
+    os.remove(tmp + '.out')
+    return out
+
+
 def register(path):
     rows = read_ledger()
     ids = {q['id'] for q in rows}
     new = json.load(open(path))
     for q in new['questions']:
-        assert q['id'] not in ids, q['id']
         q['batch'] = new['batch']
         q.setdefault('stratum', 'A')
         q.setdefault('outcome_horizon', 'strategy')
+    pw = power_pre(new['questions'])
+    for q in new['questions']:
+        assert q['id'] not in ids, q['id']
+        q['power_pre'] = pw.get(q['id'])
         rows.append(q)
     write_ledger(rows)
     print('registered', len(new['questions']), 'total', len(rows))
