@@ -17,3 +17,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-05 01:05 UTC
 - Fired 01:05Z on main @ 119187b. Plan: jp_universe -> seal baselines -> provenance stamp -> unpriced-hunter-jp in waves of 5 -> edge_score -> note. Research only, no orders.
+
+## Stage J — sealed
+- Logged at 2026-10-05 01:06 UTC
+- universe: 15 scheduled / 11 eligible (4 dropped on ¥15m turnover) / 11 hunted, selection 'all 11 eligible names (at or under the cap)', calendar_as_of 2026-10-01. 11 baselines sealed 01:05Z, short register file 20260929. provenance jp.v6 · claude-opus-5-5 (alias_timeline). Wave 1 (1376 2753 3148 3186 3498) spawned.
