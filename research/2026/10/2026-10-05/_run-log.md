@@ -41,3 +41,7 @@
 ## Stage AU — Australia researcher — STARTED
 - Logged at 2026-10-05 06:41 UTC
 - 06:42 UTC fire: universe for next ASX session, seal baselines, one unpriced-hunter-au per name in waves of 5, score with edge_score.py, note. No orders.
+
+## Stage AU — Australia researcher — DONE (empty session)
+- Logged at 2026-10-05 06:42 UTC
+- Sealed for 2026-10-06: 0 scheduled / 0 eligible / 0 hunted, thin open session. See research/2026/10/2026-10-06/_run-log.md.
