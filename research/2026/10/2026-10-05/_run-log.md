@@ -49,3 +49,7 @@
 ## Stage X — Close AMC — 2026-10-05 10:10 UTC
 - Logged at 2026-10-05 10:16 UTC
 - Guard mode --require-exit-tif opg exit 0 (amc_open; amc -> day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg with exit date today, 0 orders sent, 0 refusals. Account reachable. Unfilled-at-expiry legs (FEIM, RH, VRA, FPS, RLGT, LUXE, ALMU, LEN) are historical and show 0 still held.
+
+## Edge hunt (panel) — 2026-10-05 amc + 2026-10-06 bmo — STARTED
+- Logged at 2026-10-05 17:08 UTC
+- 17:10 UTC fire. Window: 3 confirmed-session names (RPM, LW, APOG, all 2026-10-06 bmo). Thin day, so time-not-supplied rows checked with session_resolve.py: 5 carried unresolved (AEHR, VLGEA, ARTW, NCPL, MSS), 0 killed, 0 confirmed — not hunted (no announced date; base-universe kept comparable with stage E). 3 baselines sealed 17:12Z, all with option chains. Plan: 1 edge-sweep, up to 3 unpriced-searchers, then 4 blind judges. No orders.
