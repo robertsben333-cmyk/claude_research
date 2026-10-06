@@ -78,3 +78,7 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-10-06 18:33 UTC
 - 18:33Z fire. Universe, seal before 20:00Z close, one unpriced-hunter-ca per name, score, note.
+
+## Stage CA — Canada researcher — EMPTY
+- Logged at 2026-10-06 18:33 UTC
+- TSX open (market_closed null). 2524 scanner rows, 7 candidates in window, 1 scheduled today (YAY THS Maple Holdings, TSXV, vendor_only), dropped below the $100k turnover floor ($665/day). 0 eligible, 0 hunted. Calendar reconciliation: confirmed 0 / agreed 0 / wsh_only 0 / vendor_only 1 / disputed 0; moved_off_target_by_wsh none; filing_only drops 0. No baselines sealed, so no short-register snapshot stored today and no anchor-arm split. Bank of Canada FX used (Yahoo did not answer). Normal off-peak outcome, not a fault.
