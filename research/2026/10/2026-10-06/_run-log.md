@@ -40,3 +40,7 @@
 ## Edge hunt — 2026-10-06 amc + 2026-10-07 bmo — STARTED
 - Logged at 2026-10-06 17:07 UTC
 - Fired 17:04 UTC. Step 0b: execution.enabled true, exit_mode amc_open, but alpaca_trade.py verify --fix --submit DENIED by the auto-mode classifier (real-world transactions), 7th run since 09-28; nothing sold, positions unknown from here. edge_universe.py was also denied once (misclassified), then ran after a read showed it only GETs Nasdaq's calendar. Universe: 6 of 14 rows, all 2026-10-06 amc (STZ PENG NEOG WS SAR AXIL), 0 bmo rows for 10-07 with a session. Baselines sealed 17:12 UTC; option chain on STZ/PENG/NEOG, historical fallback on WS/SAR/AXIL. Plan: 1 sweep + 6 hunters, must finish before the 20:00 UTC amc releases.
+
+## Edge hunt — unknown-session check
+- Logged at 2026-10-06 17:07 UTC
+- Thin day (6 names), so time-not-supplied rows checked: 1 extra row, ARTW ($0.02bn), session_resolve unresolved / fits cadence (last results 2026-07-10, 88 days). Cadence prior only — the TRT failure mode — so not hunted. provenance stamped: us.v9 · claude-opus-5-5.
