@@ -104,6 +104,9 @@ paths=()
 # Investegate on every stage EU run; a session that does not push it makes the next
 # one re-crawl every day since the last push.
 [[ -e researcher_europe/analysis/uk-rns-calendar.json ]] && paths+=(researcher_europe/analysis/uk-rns-calendar.json)
+# ...and the continental calendars' caches (eu_calendars.py): the Nasdaq Nordic
+# Financial Calendar table and bankier's symbol -> ISIN map.
+[[ -d researcher_europe/analysis/calendars ]] && paths+=(researcher_europe/analysis/calendars)
 for f in "${GENERATED[@]}"; do
   [[ -e "$f" ]] && paths+=("$f")
 done

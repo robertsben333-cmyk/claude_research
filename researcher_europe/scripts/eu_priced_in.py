@@ -159,16 +159,7 @@ RESULTS_RE = re.compile(r"""(?ix)\b(
 # and Italian wordings are here for the same reason the archive's classifier carries
 # their results vocabulary: `innkalling`, `inbjudan` and `kutsu` are the words actually
 # used, and an English-only guard lets them all through.
-NOTICE_RE = re.compile(r"""(?ix)(
-   \bnotice\s+of\s+(results|interim|final|half|annual|quarter)
-  |\binvitation\s+to\b |\binvites?\s+(you\s+)?to\b
-  |\bpresentation\s+of\s+(the\s+)?(results|interim|quarter)
-  |\b(webcast|conference\s+call|audiocast|capital\s+markets\s+day)\b
-  |\bwill\s+(be\s+)?(publish|present|report|release)
-  |\b(financial|reporting)\s+calendar\b |\bdate\s+of\s+(the\s+)?(results|report)
-  |innkalling |inbjudan |inbjuder |indbydelse |kutsu\b |einladung
-  |convocazione |invito\s+a |convocatoria
- )""")
+from eu_archive import NOTICE_RE  # noqa: E402  (one definition, shared with the archives)
 
 
 def sh(cmd):

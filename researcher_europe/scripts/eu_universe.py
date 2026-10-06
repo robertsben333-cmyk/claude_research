@@ -146,7 +146,7 @@ HOLIDAY_CACHE = REPO / "researcher_europe" / "analysis" / "eu-holidays.json"
 TV_COLUMNS = ["name", "description", "close", "currency", "market_cap_basic",
               "average_volume_10d_calc", "earnings_release_date",
               "earnings_release_time", "earnings_release_next_date",
-              "earnings_release_next_time", "exchange", "sector", "country"]
+              "earnings_release_next_time", "exchange", "sector", "country", "isin"]
 
 # The vendor's session flag. 0 is an admission of ignorance and is treated as one.
 SESSION_FLAG = {-1: "bmo", 1: "amc", 0: None}
@@ -379,6 +379,52 @@ def yahoo_scheduled(market, rows, target, got):
                    "skipped_yahoo_estimates": estimates}
 
 
+def issuer_calendars(market, rows, target, got):
+    """Rows the continental issuer calendars (eu_calendars.py) date for `target` that
+    the vendor does not: EQS for Germany, Euronext Oslo for Norway, bankier.pl for
+    Poland, Inderes and Nasdaq Nordic's Financial Calendar releases for Finland, Sweden
+    and Denmark. A vendor row one of them also dates is marked `+<source>`. Never
+    raises; each source's state is reported."""
+    try:
+        import eu_calendars as EC
+        events, status = EC.collect(market, target)
+        pairs = EC.match(market, rows, events)
+    except Exception as exc:
+        return [], {"state": "unavailable", "error": str(exc)[:300]}
+    if not status:
+        return [], None
+    have = {r["tv_symbol"]: r for r in got}
+    added = {}
+    for e, r in pairs:
+        src = {k: e[k] for k in ("source", "title", "kind", "source_url", "time_utc")
+               if e.get(k)}
+        if r["tv_symbol"] in have:
+            g = have[r["tv_symbol"]]
+            if e["source"] not in g.get("calendar_source", "vendor").split("+"):
+                g["calendar_source"] = g.get("calendar_source", "vendor") + "+" + e["source"]
+            g.setdefault("issuer_calendar", []).append(src)
+            continue
+        if r["tv_symbol"] in added:
+            a = added[r["tv_symbol"]]
+            if e["source"] not in a["calendar_source"].split("+"):
+                a["calendar_source"] += "+" + e["source"]
+            a["issuer_calendar"].append(src)
+            continue
+        added[r["tv_symbol"]] = {
+            **r, "scheduled_date": target, "session": "bmo", "session_unresolved": True,
+            "session_basis": (f"dated by {e['source']}, which gives no release time; "
+                              "defaulted to bmo because Europe reports before the open "
+                              "-- the resolver measures BOTH windows for this row"),
+            "calendar_source": e["source"], "issuer_calendar": [src]}
+    for st in status.values():
+        st.setdefault("added", [])
+    for a in added.values():
+        for k in a["calendar_source"].split("+")[:1]:
+            status[k]["added"].append(a["name"])
+    return list(added.values()), {"state": "read", "sources": status,
+                                  "joined": len(pairs), "dated_for_target": len(events)}
+
+
 # --- holidays ---------------------------------------------------------------------
 def closed_reason(market, day):
     d = date.fromisoformat(day)
@@ -474,9 +520,13 @@ def main():
                     help="UK only: do NOT add the issuer-dated rows from "
                          "uk_rns_calendar.py, i.e. reproduce the vendor-only universe "
                          "every run before 2026-10-06 was built on")
+    ap.add_argument("--no-issuer-calendars", action="store_true",
+                    help="do NOT add rows from eu_calendars.py (EQS, Euronext Oslo, "
+                         "bankier, Inderes, Nasdaq Nordic Financial Calendar)")
     ap.add_argument("--no-yahoo", action="store_true",
                     help="do NOT add Yahoo-dated rows (eu_yahoo_calendar.py); with "
-                         "--no-rns this reproduces the vendor-only universe")
+                         "--no-rns and --no-issuer-calendars this reproduces the "
+                         "vendor-only universe")
     ap.add_argument("-o", "--out")
     a = ap.parse_args()
 
@@ -533,6 +583,10 @@ def main():
         if m == "uk" and not closed and not a.use_last_release and not a.no_rns:
             extra, rns_info = rns_scheduled(rows, target, got)
             got.extend(extra)
+        cal_info = None
+        if not closed and not a.use_last_release and not a.no_issuer_calendars:
+            extra, cal_info = issuer_calendars(m, rows, target, got)
+            got.extend(extra)
         yahoo_info = None
         if not closed and not a.use_last_release and not a.no_yahoo:
             extra, yahoo_info = yahoo_scheduled(m, rows, target, got)
@@ -560,6 +614,8 @@ def main():
             out["per_market"][m]["rns_calendar"] = rns_info
         if yahoo_info is not None:
             out["per_market"][m]["yahoo_calendar"] = yahoo_info
+        if cal_info is not None:
+            out["per_market"][m]["issuer_calendars"] = cal_info
 
     out["scheduled_today"] = len(todays)
     if all(closed_all.get(m) for m in markets):

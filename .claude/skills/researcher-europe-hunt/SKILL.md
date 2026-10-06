@@ -139,12 +139,14 @@ six currencies, written into the file — $100k since 2026-10-01, $200k from 202
 Report `selection.method`, `eligible`, `eligible_by_market`, `hunted` and `by_market` in
 the note.
 
-**The calendar is three sources since 2026-10-06**, because the vendor's measured UK recall
-was 45 of 126: TradingView, the issuers' own dated RNS notices (UK, `uk_rns_calendar.py`,
-which crawls Investegate incrementally on every run) and Yahoo's firm dates (all ten). Every
-row carries `calendar_source`; report the count per source from
-`per_market[*].rns_calendar` and `per_market[*].yahoo_calendar`, and say if either reads
-`state: unavailable`. A row added by `rns` or `yahoo` is `session_unresolved` unless the
+**The calendar is several sources since 2026-10-06**, because the vendor's measured UK
+recall was 45 of 126: TradingView, the issuers' own dated RNS notices (UK,
+`uk_rns_calendar.py`, which crawls Investegate incrementally on every run), Yahoo's firm
+dates (all ten), and the issuer calendars in `eu_calendars.py` (EQS for DE, Euronext Oslo
+for NO, bankier for PL, Inderes and Nasdaq Nordic Financial Calendar releases for
+FI/SE/DK). Every row carries `calendar_source`; report the count per source from
+`per_market[*].rns_calendar`, `.yahoo_calendar` and `.issuer_calendars`, and say which
+read `unavailable` or `read_short`. A row added by `rns` or `yahoo` is `session_unresolved` unless the
 issuer's notice says morning.
 
 **Read `selection.market_concentration` and put it in the note.** The draw is random and

@@ -217,6 +217,24 @@ FIGURE_RE = re.compile(r"""(?ix)(
   |chiffre\s+d.affaires |r[ée]sultat |produit\s+net )""")
 
 
+# A NOTICE about a coming print is not the print. Defined here once and imported by
+# eu_priced_in: until 2026-10-06 only the reaction history applied it, so the day
+# archives classified "Invitation to presentation of Q3 report" (Atrium Ljungberg, Enea),
+# Orkla's "Jotun Interim Report" notice and "Notice of Interim Results" as results
+# releases -- which confirms a print on the wrong day and inflates any recall measured
+# against the archive.
+NOTICE_RE = re.compile(r"""(?ix)(
+   \bnotice\s+of\s+(results|interim|final|half|annual|quarter)
+  |\binvitation\s+to\b |\binvites?\s+(you\s+)?to\b
+  |\bpresentation\s+of\s+(the\s+)?(results|interim|quarter)
+  |\b(webcast|conference\s+call|audiocast|capital\s+markets\s+day)\b
+  |\bwill\s+(be\s+)?(publish|present|report|release)
+  |\b(financial|reporting)\s+calendar\b |\bdate\s+of\s+(the\s+)?(results|report)
+  |innkalling |inbjudan |inbjuder |indbydelse |kutsu\b |einladung
+  |convocazione |invito\s+a |convocatoria
+ )""")
+
+
 def looks_like_results(headline):
     h = headline or ""
     return bool(RESULTS_RE.search(h)) or bool(PERIOD_RE.search(h)
@@ -265,7 +283,8 @@ def _row(market, issuer, isin, ts, headline, category, is_results, how, url,
     return {"market": market, "issuer": issuer, "issuer_norm": norm(issuer),
             "isin": isin, "ticker_hint": ticker_hint, "ts": ts,
             "headline": (headline or "").strip(), "category": category,
-            "is_results": bool(is_results), "classified_by": how, "url": url}
+            "is_results": bool(is_results) and not NOTICE_RE.search(headline or ""),
+            "classified_by": how, "url": url}
 
 
 # --- UK ----------------------------------------------------------------------------

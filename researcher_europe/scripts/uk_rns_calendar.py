@@ -81,10 +81,21 @@ CARRIER_HEAD = re.compile(
 # The event a date belongs to, read from the words just before it.
 EVENT_CTX = re.compile(
     r"(interim|half[- ]year(ly)?|full[- ]year|final|preliminary|annual|quarter(ly)?|"
-    r"q[1-4]|nine[- ]month|first[- ]half|h[12]|year[- ]end)?\s*"
+    r"q[1-4](/20\d\d)?|nine[- ]month|first[- ]half|h[12](/20\d\d)?|year[- ]end|"
+    r"(january|april|july|october)\s*[-\u2013]\s*(march|june|september|december)(\s+20\d\d)?)?"
+    r"\s*(financial\s+)?"
     r"(results?|trading (update|statement)|pre-close (trading )?(update|statement)|"
-    r"(business|operational|operating) update|interim management statement|"
+    r"(business|operational|operating) (update|review)|interim management statement|"
+    # Nordic and continental vocabulary: the release is an "interim report", a
+    # "business review" (Finland's Q1/Q3) or a "financial statements bulletin"
+    r"(interim|quarterly|half[- ]year(ly)?|year[- ]end|six[- ]month|nine[- ]month) report|"
+    r"business review|financial statements? (bulletin|release)|"
     r"financial (report|statements|results))", re.I)
+# The date an issuer is MOVING AWAY from: "Previously ... stated it will publish ... on
+# Tuesday, November 3" (IQM, 2026-10-05). Read as an event date, it would put the
+# company on a day it has just said it will not report.
+SUPERSEDED = re.compile(r"previously|originally|instead of|rather than|was (scheduled|planned)"
+                        r"|earlier (announced|stated|communicated)|postpone|from (the )?previous", re.I)
 ANNOUNCE_VERB = re.compile(
     r"(announce|publish|release|report|issue|present|expect|intend|schedul|due|will be"
     r"|on|date|calendar)", re.I)
@@ -93,7 +104,9 @@ NOT_EVENT_CTX = re.compile(
     r"paid|payment|webinar|capital markets day|investor day|conference|deadline|expir|"
     r"maturity|completion|closing date|long-?stop)", re.I)
 CAL_HEADING = re.compile(r"financial (calendar|diary)|key dates|forthcoming (dates|events)"
-                         r"|reporting (calendar|dates)|dates for (the )?diary", re.I)
+                         r"|reporting (calendar|dates)|dates for (the )?diary"
+                         r"|financial report(ing|s) (in|for) 20\d\d|publish the following"
+                         r"|financial information (in|for) 20\d\d", re.I)
 # A date that ENDS a period ("six months ending 30 September") is not the event date.
 PERIOD_END = re.compile(
     r"(ended|ending|end(ed)? on|to|as at|as of|since|until|through|period end(ed|ing)?)"
@@ -208,10 +221,21 @@ def forward_dates(text, ref, horizon_days=200):
             # A "Financial calendar" / "Key dates" table lists "Interim results  24
             # November 2026" with no verb; the table heading is the context instead.
             in_table = CAL_HEADING.search(text[max(0, m.start() - 700):m.start()])
+            if SUPERSEDED.search(pre[-140:]):
+                continue
+            # The phrase belongs to the NEAREST date after it: in "Bulletin: 19 Feb 2027
+            # Annual Report: 2 April 2027" the bulletin is not on 2 April. A date that
+            # closes a period ("six months ending 30 September") does not count.
+            gap = pre[last.end():]
+            if any(not PERIOD_END.search(gap[:x.start()][-30:])
+                   for rx2 in (DATE_DMY, DATE_MDY) for x in rx2.finditer(gap)):
+                continue
             if (NOT_EVENT_CTX.search(between) or PERIOD_END.search(pre[-30:])
                     or not (in_table or ANNOUNCE_VERB.search(pre[last.start():]))):
                 continue
-            kind = ("trading_update" if re.search(r"trading|update|statement", last.group(0), re.I)
+            kind = ("trading_update"
+                    if re.search(r"trading|pre-close|(business|operational|operating) "
+                                 r"update|management statement", last.group(0), re.I)
                     else "results")
             found.append((d, kind, (pre[last.start():] + m.group(0))[-200:].strip()))
     return found

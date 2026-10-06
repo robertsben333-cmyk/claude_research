@@ -12,16 +12,35 @@ and it was sealed on 0 of the 4 that landed on 10-05. The mechanism, seen cleanl
 Germany: for many issuers the vendor skips the Q1/Q3 statement or trading update and dates
 the next FULL report.
 
-**What was shipped (branch `claude/clever-gates-as6min`, 2026-10-06).**
+**What was shipped (2026-10-06, merged to `main`).** Every free source that answered:
 
-| source | markets | what it adds | file |
+| source | markets | join | file |
 |---|---|---|---|
-| issuer-dated RNS notices + financial calendars, off Investegate | uk | 43 of 126 alone; vendor+RNS **53 of 126**; 49 of 64 RNS-dated rows reported on the day | `researcher_europe/scripts/uk_rns_calendar.py`, table in `researcher_europe/analysis/uk-rns-calendar.json` |
-| Yahoo v7 `quote` `earningsTimestamp`, FIRM dates only | all ten | ~32 names over seven sample dates (10-07..11-05), about 4-5 a day | `researcher_europe/scripts/eu_yahoo_calendar.py` |
+| issuer-dated RNS notices + financial calendars, off Investegate | uk | EPIC | `researcher_europe/scripts/uk_rns_calendar.py`, table `researcher_europe/analysis/uk-rns-calendar.json` |
+| Yahoo v7 `quote` `earningsTimestamp`, FIRM dates only | all ten | Yahoo symbol | `researcher_europe/scripts/eu_yahoo_calendar.py` |
+| EQS-News events search (issuer-entered, typed) | de | ISIN | `researcher_europe/scripts/eu_calendars.py` |
+| Euronext Oslo financial-events | no | name | same |
+| bankier.pl kalendarium, results filter (issuers' statutory January schedules) | pl | ISIN via bankier's company page, cached | same |
+| Inderes calendar (inderes.fi / .se / .dk) | fi, se, dk | name | same |
+| Nasdaq Nordic "Financial Calendar" releases, parsed | se, dk, fi | name | same, table `researcher_europe/analysis/calendars/` |
 
-Both merge in `eu_universe.py`; every row carries `calendar_source`
-(`vendor`, `rns`, `yahoo`, `vendor+rns`, `vendor+yahoo`...), and `--no-rns --no-yahoo`
-rebuilds the vendor-only universe every run before 2026-10-06 used.
+All merge in `eu_universe.py`; every row carries `calendar_source` (`vendor`, `rns`,
+`yahoo`, `eqs_events`, `euronext_oslo`, `bankier`, `inderes`, `nasdaq_fincal`, joined with
+`+` where several agree), each market's file reports every source's `state`
+(`read`, `read_short` where a page ended on or before the target day, `unavailable`), and
+`--no-rns --no-yahoo --no-issuer-calendars` rebuilds the vendor-only universe. A full
+build took 57 s on 2026-10-06. Name joins strip legal forms and accents and take an exact
+match before the lenient one; on 2026-10-22 there were no fuzzy joins, and the unjoined
+events were foreign listings (Tallink, Telia, Nokia in Stockholm), abbreviations (SEB) and
+non-equity issuers.
+
+**What it adds, forward:** 2026-10-22 schedules 121 names against 105 from the vendor
+alone (+3 RNS, +1 EQS, +6 Inderes/Yahoo in Sweden, +2 Euronext Oslo, +2 Inderes in
+Finland, +1 Inderes in Denmark, +1 Yahoo in Italy).
+
+**Also fixed:** `eu_archive.NOTICE_RE` (moved from `eu_priced_in`) now applies to every
+archive row, so "Invitation to presentation of Q3 report" and "Notice of Interim Results"
+no longer confirm a print; the vendor scan carries `isin` (4,488 of 4,489 rows).
 
 ## The UK measurement
 
@@ -50,23 +69,12 @@ client also 403; a headless browser was refused by the session's permission clas
 not pursued), lse.co.uk, sharecast, proactiveinvestors, ADVFN, MarketScreener,
 directorstalk (403), digitallook (502), Shares/AJ Bell diary (redirect, no data).
 
-## Not yet built, ranked (from the source probe below)
+## Still not covered
 
-1. **Germany, EQS events search** -- ISIN-keyed, typed, issuer-entered, ~9 pages for all 753
-   forward events; adds 1-3 liquid names a day in late October and 6 on 11-12.
-2. **Poland, bankier.pl kalendarium** -- the issuers' statutory January schedules; needs a
-   bankier-name -> GPW ticker map. Past week 09-24..09-30: vendor had no date for 4 of 15
-   liquid names bankier scheduled.
-3. **Norway, Euronext Oslo financial-events** -- 813 future events, roughly the vendor's
-   coverage, with issuer dates that disagree with it on a few names.
-4. **Finland, Inderes calendar** -- adds the Q1/Q3 business reviews the vendor lacks.
-5. **Add `isin` to `TV_COLUMNS`** -- returned on 431 of 431 German rows; exact joins instead
-   of name normalisation.
-6. **Fix the resolver's classifier:** `eu_archive.looks_like_results` does not apply
-   `eu_priced_in.NOTICE_RE`, so "Invitation to Q3 presentation" counts as a results release
-   in the Nordic and Oslo archives.
-
-France, Italy and Spain have no free forward source other than Yahoo that answered.
+France, Italy and Spain have no free forward source other than Yahoo that answered
+(MarketScreener and the Spanish press are bot-walled, Borsa Italiana's calendar PDF and
+pages are 404, Euronext's Paris/Milan event views do not exist). Norway's Inderes site is
+404. The UK residual is issuers that date nothing publicly.
 
 **Not measured:** past-day recall of Yahoo, EQS, bankier, Euronext Oslo and Inderes (each
 was compared with the vendor forward, not against a resolved day). The first stage EU runs

@@ -260,11 +260,14 @@ So `eu_universe.py` now reads two more sources and every row says which in
 (`scripts/uk_rns_calendar.py`, an incrementally crawled table in
 `analysis/uk-rns-calendar.json` that `publish.sh` pushes), and Yahoo's FIRM per-symbol
 dates in all ten markets (`scripts/eu_yahoo_calendar.py`; an estimated Yahoo date is a
-cadence prior and never adds a row). Vendor+RNS caught 53 of 126; most of the rest dated
-nothing publicly in the seven months before reporting. `--no-rns --no-yahoo` rebuilds the
-old universe. Split any pooled number by `calendar_source` before believing it. The
-measurement, what failed (investing.com and every free UK diary) and the ranked list of
-sources still to build (EQS for DE, bankier for PL, Euronext Oslo, Inderes) are in
+cadence prior and never adds a row), plus the continental issuer calendars in
+`scripts/eu_calendars.py` -- EQS events for Germany (ISIN), Euronext Oslo for Norway,
+bankier.pl for Poland (ISIN via bankier), Inderes and Nasdaq Nordic's Financial Calendar
+releases for Finland, Sweden and Denmark. Vendor+RNS caught 53 of 126; most of the rest dated
+nothing publicly in the seven months before reporting. `--no-rns --no-yahoo --no-issuer-calendars`
+rebuilds the old universe. Split any pooled number by `calendar_source` before believing it. The
+measurement, what failed (investing.com and every free UK diary) and the
+France/Italy/Spain gap (no free source but Yahoo) are in
 `research/analyses/eu-calendar-sources/`.
 
 TradingView's public scanner is the forward calendar for all ten markets. Against the
