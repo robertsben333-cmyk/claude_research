@@ -82,3 +82,7 @@
 ## Stage CA — Canada researcher — EMPTY
 - Logged at 2026-10-06 18:33 UTC
 - TSX open (market_closed null). 2524 scanner rows, 7 candidates in window, 1 scheduled today (YAY THS Maple Holdings, TSXV, vendor_only), dropped below the $100k turnover floor ($665/day). 0 eligible, 0 hunted. Calendar reconciliation: confirmed 0 / agreed 0 / wsh_only 0 / vendor_only 1 / disputed 0; moved_off_target_by_wsh none; filing_only drops 0. No baselines sealed, so no short-register snapshot stored today and no anchor-arm split. Bank of Canada FX used (Yahoo did not answer). Normal off-peak outcome, not a fault.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-10-06 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET window. Repo present in working dir (no clone). Intraday screen K=15, seal, 15 reversal-hunters, score, resolve 2026-10-05, note before 16:00 ET.
