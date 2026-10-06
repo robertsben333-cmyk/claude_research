@@ -337,6 +337,48 @@ def rns_scheduled(rows, target, vendor_got):
                    "calendar_file": "researcher_europe/analysis/uk-rns-calendar.json"}
 
 
+def yahoo_scheduled(market, rows, target, got):
+    """Rows Yahoo dates for `target` that the vendor does not (eu_yahoo_calendar).
+
+    Only FIRM Yahoo dates add a row: one Yahoo marks `isEarningsDateEstimate` is a
+    cadence prior, and a cadence prior is how TRT was ranked, traded and never
+    reported. A vendor row Yahoo also dates for `target` is marked `vendor+yahoo`;
+    one Yahoo dates elsewhere is marked `yahoo_dates_it` so a disagreement is visible.
+    Never raises: a Yahoo failure leaves the vendor calendar exactly as it was."""
+    try:
+        import eu_yahoo_calendar as Y
+        by_sym = {yahoo_symbol(market, r["tv_symbol"]): r for r in rows}
+        yd = Y.dates(list(by_sym))
+    except Exception as exc:
+        return [], {"state": "unavailable", "error": str(exc)[:300]}
+    have = {r["tv_symbol"] for r in got}
+    added, agreed, estimates = [], [], []
+    for g in got:
+        y = yd.get(yahoo_symbol(market, g["tv_symbol"]))
+        if y:
+            g["yahoo_date"] = y
+            if y["date"] == target and not y["is_estimate"]:
+                g["calendar_source"] = (g.get("calendar_source", "vendor") + "+yahoo")
+                agreed.append(g["name"])
+    for sym, y in yd.items():
+        r = by_sym.get(sym)
+        if r is None or y["date"] != target or r["tv_symbol"] in have:
+            continue
+        if y["is_estimate"]:
+            estimates.append(r["name"])
+            continue
+        added.append({**r, "scheduled_date": target, "session": "bmo",
+                      "session_unresolved": True,
+                      "session_basis": "Yahoo-dated; Yahoo's time of day is a "
+                                       "placeholder, so the session is unknown. "
+                                       "Defaulted to bmo because Europe reports before "
+                                       "the open -- the resolver measures BOTH windows",
+                      "calendar_source": "yahoo", "yahoo_date": y})
+    return added, {"state": "read", "yahoo_dated_symbols": len(yd),
+                   "added": [r["name"] for r in added], "agreed_with_vendor": agreed,
+                   "skipped_yahoo_estimates": estimates}
+
+
 # --- holidays ---------------------------------------------------------------------
 def closed_reason(market, day):
     d = date.fromisoformat(day)
@@ -432,6 +474,9 @@ def main():
                     help="UK only: do NOT add the issuer-dated rows from "
                          "uk_rns_calendar.py, i.e. reproduce the vendor-only universe "
                          "every run before 2026-10-06 was built on")
+    ap.add_argument("--no-yahoo", action="store_true",
+                    help="do NOT add Yahoo-dated rows (eu_yahoo_calendar.py); with "
+                         "--no-rns this reproduces the vendor-only universe")
     ap.add_argument("-o", "--out")
     a = ap.parse_args()
 
@@ -454,8 +499,16 @@ def main():
         "fx": fx,
         "cap": a.cap,
         "min_turnover_usd": a.min_turnover_usd,
-        "calendar_source": "TradingView public scanner (vendor). Measured phantom rate "
-                           "on the UK: 2 of 90 rows over 20 sampled days. Confirmation "
+        "calendar_source": "THREE sources since 2026-10-06, and every row says which in "
+                           "its own `calendar_source`: TradingView's public scanner "
+                           "(vendor), plus for the UK the issuer's own dated RNS "
+                           "notices and financial calendars (uk_rns_calendar.py), plus "
+                           "Yahoo's FIRM per-symbol dates in all ten markets "
+                           "(eu_yahoo_calendar.py). The vendor's measured UK phantom "
+                           "rate is 2 of 90 rows, but its RECALL was 45 of 126 UK "
+                           "results/trading updates over 2026-09-22 -> 10-05, and it "
+                           "skips Q1/Q3 statements for many continental issuers. "
+                           "Confirmation "
                            "is eu_resolve.py's job, and whether event_occurred: false "
                            "is reachable DIFFERS BY MARKET -- see per_market[*]."
                            "event_occurred_false_reachable. It is false for Germany "
@@ -480,6 +533,12 @@ def main():
         if m == "uk" and not closed and not a.use_last_release and not a.no_rns:
             extra, rns_info = rns_scheduled(rows, target, got)
             got.extend(extra)
+        yahoo_info = None
+        if not closed and not a.use_last_release and not a.no_yahoo:
+            extra, yahoo_info = yahoo_scheduled(m, rows, target, got)
+            got.extend(extra)
+        for r in got:
+            r.setdefault("calendar_source", "vendor")
         for r in got:
             r["_market"] = m
         todays.extend(got)
@@ -499,6 +558,8 @@ def main():
         }
         if rns_info is not None:
             out["per_market"][m]["rns_calendar"] = rns_info
+        if yahoo_info is not None:
+            out["per_market"][m]["yahoo_calendar"] = yahoo_info
 
     out["scheduled_today"] = len(todays)
     if all(closed_all.get(m) for m in markets):

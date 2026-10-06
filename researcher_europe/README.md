@@ -250,6 +250,23 @@ them.**
 
 ## The calendar is a vendor calendar, and its error rate was measured
 
+**AND ITS RECALL WAS NOT, UNTIL 2026-10-06 -- IT IS ABOUT A THIRD IN THE UK.** The 2.2%
+below is a PHANTOM rate (precision). Against Investegate's RNS record over 2026-09-22 ->
+10-05 the vendor carried **45 of 126** UK equity results and trading updates above ~$100k a
+day; for many issuers it skips the Q1/Q3 statement or trading update and dates the next
+full report, and the same shape shows in Germany, France, Italy, Spain, Norway and Finland.
+So `eu_universe.py` now reads two more sources and every row says which in
+`calendar_source`: the issuers' own dated RNS notices and financial calendars for the UK
+(`scripts/uk_rns_calendar.py`, an incrementally crawled table in
+`analysis/uk-rns-calendar.json` that `publish.sh` pushes), and Yahoo's FIRM per-symbol
+dates in all ten markets (`scripts/eu_yahoo_calendar.py`; an estimated Yahoo date is a
+cadence prior and never adds a row). Vendor+RNS caught 53 of 126; most of the rest dated
+nothing publicly in the seven months before reporting. `--no-rns --no-yahoo` rebuilds the
+old universe. Split any pooled number by `calendar_source` before believing it. The
+measurement, what failed (investing.com and every free UK diary) and the ranked list of
+sources still to build (EQS for DE, bankier for PL, Euronext Oslo, Inderes) are in
+`research/analyses/eu-calendar-sources/`.
+
 TradingView's public scanner is the forward calendar for all ten markets. Against the
 actual RNS record over 20 fully scraped days, **90 of its UK rows fell on a scraped day
 and 88 had a same-day results announcement from the same issuer — a 2.2% phantom rate.**
