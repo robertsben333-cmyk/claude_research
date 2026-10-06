@@ -24,3 +24,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-06 01:05 UTC
 - 01:06 UTC fire: universe for 2026-10-06, seal baselines, one unpriced-hunter-jp per name in waves of 5, score with edge_score.py. No orders.
+
+## Stage J — resolve 2026-10-02
+- Logged at 2026-10-06 01:07 UTC
+- jp_resolve.py on 2026-10-02/japan: 5/5 confirmed, rho=0.4 p=0.51, lean_vs_free_control_rho=0.9 (n=5, up from 0.6 on 10-01 and 0.8 on 09-30)
