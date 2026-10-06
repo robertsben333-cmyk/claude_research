@@ -90,3 +90,7 @@
 ## Edge hunt — 2026-10-05 amc + 2026-10-06 bmo — STARTED (LATE)
 - Logged at 2026-10-06 06:55 UTC
 - Routine fired 17:04 UTC 10-05; step 0b verify/close --submit DENIED by auto-mode classifier (real-world transactions), and the session then stalled ~14h on a second denial (edge_universe.py). Resumed 06:55 UTC 10-06. Close AMC 10:16 UTC 10-05 found 0 held, so no exit was owed. 10-05 amc half: 0 confirmed rows (AEHR company-announced 10-05 amc but time-not-supplied, already printed, not hunted). 10-06 bmo half still ahead of its prints: RPM, LW, APOG; baselines sealed 06:57 UTC 10-06 pre-market, implied move None on all three (no two-sided chain pre-market) so the baseline takes the historical-median fallback. Plan: 1 sweep + 3 hunters, must finish before ~10:30 UTC (06:30 ET) bmo releases.
+
+## Edge hunt — sweep (late)
+- Logged at 2026-10-06 06:58 UTC
+- edge-sweep: 3 of 3 confirmed from company releases, all 2026-10-06 bmo (APOG 66, LW 52, RPM 31), 0 phantom, 0 session unsettled; no release out at ~07:00 UTC. provenance us.v9 · claude-opus-5-5. 3 unpriced-hunters launched ~06:59 UTC.
