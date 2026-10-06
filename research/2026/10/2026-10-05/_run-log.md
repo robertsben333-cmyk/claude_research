@@ -94,3 +94,7 @@
 ## Edge hunt — sweep (late)
 - Logged at 2026-10-06 06:58 UTC
 - edge-sweep: 3 of 3 confirmed from company releases, all 2026-10-06 bmo (APOG 66, LW 52, RPM 31), 0 phantom, 0 session unsettled; no release out at ~07:00 UTC. provenance us.v9 · claude-opus-5-5. 3 unpriced-hunters launched ~06:59 UTC.
+
+## Edge hunt — hunt RPM banked
+- Logged at 2026-10-06 07:03 UTC
+- RPM impact_sum +0.3 (pre_lessons +0.1), abs 6.5 p_up 52, print_vs_bar +0.5. Near non-result.
