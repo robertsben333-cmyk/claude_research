@@ -86,3 +86,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-10-06 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET window. Repo present in working dir (no clone). Intraday screen K=15, seal, 15 reversal-hunters, score, resolve 2026-10-05, note before 16:00 ET.
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-06 19:13 UTC
+- Intraday screen 15:04 EDT (5,977 screened, 40 passed floors, K=15). XTND dropped (too_little_history); 14 hunted, 14 rankable; provenance rev.v7 · claude-opus-5-5. One floor-clearer: SXTC −8.00 (leg 2, supply; no leg-1 mechanism). Leg 1 non-zero on DCX (+1.0) and NXH (+0.3), both with a mechanism_in_window. 2026-10-05 run resolved: all 15 pending (window closes at today's close); lean_vs_free_control_rho −0.18. Pooled d1 over 10 live runs 09-21→10-02 (134 names): impact_sum ρ +0.020 (p 0.82) vs neg_atr14 +0.109, neg_ret_d −0.153 — hunt has not beaten a free control. Defects carried, constants untouched: overshoot_has_mechanism true on 12/14 with only 2 repricing findings (4th run); DCX ATR14 282% is a consolidation artefact; efts HTTP 500 to several hunters; Nasdaq SI API 503; requests module had to be installed before rev_universe.py would run. No orders placed. Note: reversal/reversal-note.md

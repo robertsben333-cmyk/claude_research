@@ -1,0 +1,58 @@
+{
+  "ticker": "RDIB",
+  "drop_date": "2026-10-06",
+  "window": {"from": "close of 2026-10-06", "to": "close of 2026-10-07"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Non-result: no filing, release or news dated on 2026-10-05 or 2026-10-06 explains the fall, and nothing dated lands inside the window. The fall is a second thin day (0.35x volume, $159k traded) in the illiquid Class B voting stock after a +70% 60-day run that rests on the Cinemas 1,2,3 sale contract of 2026-09-04. With no findings, p_up is 50, so expected_move is 0. abs_move_pct is 4.5, set from this name's own median absolute next-day move of 2.63% and moved up for its 12% ATR and the 5-17% next-day swings in its recent comparable falls.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced: no option chain (baseline options.status no_options_market). Scale is this name's own 129 comparable falls in the sealed baseline (median abs next close 2.63%, up-rate 42.6%)",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 30,
+    "confidence_pct": 55,
+    "what_happened": "RDIB is the 1.68m-share Class B voting line. It gapped -3.1% and lost another -2.4% intraday on 0.35x normal volume, the day after a -10.1% fall on 2026-10-05. Nothing new was filed with the SEC: the newest filing is still the 2026-09-04 8-K. The likeliest explanation is a thin unwind of the run-up that followed the $41m Cinemas 1,2,3 sale contract, but no source establishes it.",
+    "evidence": [
+      {"claim": "The newest SEC filing is the 8-K (Item 1.01) accepted 2026-09-04 19:11 UTC. Nothing has been filed since.", "url": "https://data.sec.gov/submissions/CIK0000716634.json", "timestamp": "2026-10-06"},
+      {"claim": "Contract to sell Cinemas 1,2,3 for $41.0m with a $4.1m deposit and no further diligence or financing contingency. The ~$19m mortgage is repaid at closing, expected on or about 2026-10-30.", "url": "https://www.sec.gov/Archives/edgar/data/716634/000071663426000032/rdi-20260831x8k.htm", "timestamp": "2026-09-04"},
+      {"claim": "Class B shares outstanding: 1,680,590", "url": "https://www.sec.gov/Archives/edgar/data/716634/000071663426000028/rdi-20260630x10q.htm", "timestamp": "2026-08-14"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "The Cinemas 1,2,3 sale is expected to close on or about 2026-10-30 (8-K of 2026-09-04). Q3 results are probably mid-November, but that date is not company-announced. Neither falls in the window.",
+    "what_would_change_my_mind": "An 8-K filed tonight on the October bank-facility maturity (an extension, or a default), or one saying the Cinemas 1,2,3 contract was terminated."
+  },
+  "positioning_check": "Short interest was 17,713 shares at the 2026-09-15 settlement, 1.0 day to cover, down 50.9% from 36,102 at 08-31. Against 1.68m Class B shares that is about 1%. Source: https://api.nasdaq.com/api/quote/RDIB/short-interest?assetclass=stocks. FINRA publishes about 8 business days after settlement, so the position carried into this fall is not observable. No options market, so no skew. Nasdaq shows zero insider trades in the last 3 and 12 months.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "The $41.0m Cinemas 1,2,3 sale is expected to close on or about 2026-10-30, with no financing contingency. It repays about $19m of mortgage and eases the liquidity squeeze.", "expected_impact_pct": 3.0, "resolves_by": "2026-10-30", "source": "https://www.sec.gov/Archives/edgar/data/716634/000071663426000032/rdi-20260831x8k.htm"},
+    {"finding": "Bank facilities fall due in 'October and December 2026', against $5.7m of cash and $108m of short-term debt (Q2 analysis, 2026-08-14). No exact maturity date could be sourced from the filings, so this cannot be placed inside the window.", "expected_impact_pct": -2.0, "resolves_by": "2026-10-31", "source": "https://www.panabee.com/news/reading-earnings-q2-2026"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions JSON for CIK 716634: no filing after the 2026-09-04 8-K, so there is no open 8-K clock and no offering, S-3 or 424B (https://data.sec.gov/submissions/CIK0000716634.json)",
+    "Baseline text probes: ATM language 0 hits in 550 days, going concern 0, minimum bid price 0, lock-up 0, reverse split 0 in 550 days, non-reliance 0 in 550 days",
+    "EFTS full-text search for \"October 31, 2026\" in CIK 716634 filings from 2026-08-01 to 2026-10-06: zero hits. No dated October maturity was sourceable",
+    "Searched the web for RDIB / Reading International news for October 2026 and September 2026: no article, release or analyst note dated 2026-10-05 or 2026-10-06",
+    "Insider trades (Nasdaq): 0 in 3 and 12 months. There is no buyer to cite",
+    "Search snippets showed RDIB quotes of '$1.90' and '$0.00 on 2026-09-30', which contradict the sealed bars. They look like aggregator artefacts, probably the RDI line or a stale feed, and were discarded. No price dated after the screen instant appeared or was used"
+  ],
+  "abs_move_pct": 4.5,
+  "p_up": 50,
+  "rejected_candidates": [
+    {"candidate": "Cinemas 1,2,3 sale closing as a positive", "source": "https://www.sec.gov/Archives/edgar/data/716634/000071663426000032/rdi-20260831x8k.htm", "reason": "outside_window", "detail": "Closing is expected on or about 2026-10-30, after the 2026-10-07 close. Filed in outside_window"},
+    {"candidate": "October 2026 bank-facility maturity as a second shoe", "source": "https://www.panabee.com/news/reading-earnings-q2-2026", "reason": "outside_window", "detail": "No day-level date is sourceable, and the EFTS search for an Oct-31 date returned nothing. It cannot be shown to land by 2026-10-07. Filed in outside_window"}
+  ],
+  "baseline_tension": "Nothing found cuts against the baseline. The volume (0.35x, the cohort that historically does about +1.5%) and the name's own flat median next-day move (0.0%, 42.6% up) both point to a coin flip, and the 12% ATR says the absolute move will be large.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 6
+}

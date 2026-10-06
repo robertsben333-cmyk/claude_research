@@ -1,0 +1,74 @@
+{
+  "ticker": "IMC",
+  "drop_date": "2026-10-06",
+  "window": {"from": "close of 2026-10-06", "to": "close of 2026-10-07"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "No sourced company, sector or supply event lands on 2026-10-06 or inside the window: the last 6-K (2026-09-22) is a positive metallurgy release, no ATM/going-concern/deficiency language exists in EDGAR full text, the only registered supply (10.11M-share resale by the CEO-owned holder) is gated on an undated lock-up expiry or waiver, and the fall came on 0.54x volume after a +3.7% gap, so the sum is 0 and p_up stays at 50 with an abs move set from the name's own 7.07% median next-session reaction and 13.2% ATR.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced — no option chain (no_options_market); scale taken from the sealed baseline's own 11 comparable falls (median |next close| 7.07%) and atr14 13.16%",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 0,
+    "confidence_pct": 15,
+    "what_happened": "IMC opened +3.7% and sold off ~10.4% intraday to $7.62 by 15:05 ET on 0.54x normal dollar volume ($276k vs $491k median), the second consecutive down day after -9.99% on 2026-10-05, with no company filing or headline found for the day.",
+    "evidence": [
+      {"claim": "Latest SEC filing is a 6-K dated 2026-09-22; nothing filed on or after 2026-10-05", "url": "https://data.sec.gov/submissions/CIK0002098395.json", "timestamp": "2026-10-06"},
+      {"claim": "The 2026-09-22 press release (Exhibit 99.1) reports positive ISR metallurgical testwork with no dated upcoming milestone", "url": "https://www.sec.gov/Archives/edgar/data/0002098395/000149315226043651/ex99-1.htm", "timestamp": "2026-09-22"},
+      {"claim": "MarketBeat's IMC news feed shows no company headline on 2026-10-06 (only an ad); the latest items are a Sidoti comment 2026-09-26 and a short-interest update 2026-09-25", "url": "https://www.marketbeat.com/stocks/NYSEAMERICAN/IMC/news/", "timestamp": "2026-10-06"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "none found",
+    "what_would_change_my_mind": "A 6-K announcing a lock-up waiver or sales under the 10.11M-share resale prospectus, or a dated sector headline (US-China rare-earth policy) on 2026-10-06/07."
+  },
+  "positioning_check": "not found — baseline short_interest status unavailable and api.nasdaq.com short-interest returned HTTP 503; no options market so no skew. Insider trades: zero open-market buys or sells in 3 and 12 months (Nasdaq insider API via baseline). Float is thin: 4.0M IPO shares (+ over-allotment) against a ~$760M market cap per stockanalysis snippet.",
+  "findings": [],
+  "outside_window": [
+    {
+      "finding": "Resale prospectus (424B3, 2026-09-01, effective 2026-08-31) registers 10,110,000 ordinary shares for Americas Rare Earths Holdings Ltd., wholly owned by CEO Francesco Scolaro, to be sold 'upon expiration or waiver of the' applicable lock-up; the prospectus itself says these shares will be a considerable percentage of the public float. No waiver is filed and the lock-up expiry date could not be read from the document here, so it carries no date inside the window.",
+      "expected_impact_pct": -3.0,
+      "resolves_by": "undated — on lock-up expiry or waiver; IPO priced 2026-07-28",
+      "source": "https://www.sec.gov/Archives/edgar/data/2098395/000149315226041014/form424b3.htm"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions for CIK 2098395: no filing after the 2026-09-22 6-K (https://data.sec.gov/submissions/CIK0002098395.json)",
+    "EDGAR full-text probes in the sealed baseline: zero hits for 'at-the-market', going-concern, 'minimum bid price', 'non-reliance'",
+    "efts.sec.gov full-text search for 'lock-up period' scoped to the 424B4 returned HTTP 500; the 424B4 and 424B3 pages fetched did not surface the lock-up length in the sections read",
+    "MarketBeat IMC news feed: no company headline dated 2026-10-06 (https://www.marketbeat.com/stocks/NYSEAMERICAN/IMC/news/)",
+    "WebSearch 'IMC Rare Earths stock October 2026' and '\"IMC Rare Earths\" announces': nothing dated 2026-10-05/06",
+    "Sector: searches for rare-earth sector moves on 2026-10-06 returned only 2024-2025 articles (relabelled), nothing dated today; streetinsider MP Materials article 403",
+    "Short interest: api.nasdaq.com/api/quote/IMC/short-interest returned 503; baseline reports unavailable",
+    "No price, quote or chart dated after the 15:05 ET screen instant was seen or used"
+  ],
+  "abs_move_pct": 7.5,
+  "p_up": 50,
+  "rejected_candidates": [
+    {
+      "candidate": "10.11M-share resale registration by the CEO-owned Americas Rare Earths Holdings, sellable upon lock-up expiry or waiver",
+      "source": "https://www.sec.gov/Archives/edgar/data/2098395/000149315226041014/form424b3.htm",
+      "reason": "outside_window",
+      "detail": "Sales are conditioned on lock-up expiry or waiver; no waiver 6-K exists and no expiry date inside 2026-10-07 was found; filed in outside_window."
+    },
+    {
+      "candidate": "Positive ISR metallurgy release (73% REE recovery) of 2026-09-22",
+      "source": "https://www.sec.gov/Archives/edgar/data/0002098395/000149315226043651/ex99-1.htm",
+      "reason": "outside_window",
+      "detail": "Public since 2026-09-22 with no dated next milestone; nothing about it lands or is re-read inside the window."
+    }
+  ],
+  "baseline_tension": "Nothing found cuts against the baseline: thin 0.54x volume points to the low-volume bounce bucket while the name's own history (11 falls, 54.5% up, median +1.99% but mean -0.25%, two prior consecutive-drop sequences that kept falling) is two-sided, so with no finding the number stays at 0.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 7
+}

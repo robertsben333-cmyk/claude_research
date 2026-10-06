@@ -1,0 +1,101 @@
+{
+  "ticker": "DCX",
+  "drop_date": "2026-10-06",
+  "window": {"from": "close of 2026-10-06", "to": "close of 2026-10-07"},
+  "expected_move_pct": -2.08,
+  "conviction_note": "Scaled number from abs_move 13 (this name's own recent post-split falls, not the 3-year 6.25% median) and p_up 42 (own history 38.8% up, ATR extreme, warrant supply capping any bounce above the ~$3.4 reset, partly offset by the reset window having closed on 10-05 and a 30-day issuance standstill blocking a new offering tonight); the findings sum to +0.5 because they net two weak positives against one supply cap, and the gap to -2.08 is the base-rate continuation that no single document carries.",
+  "overshoot_pct": 1.0,
+  "more_to_come_pct": -0.5,
+  "print_vs_bar_pct": 1.0,
+  "bar": "this name's own comparable falls in the sealed baseline (n=121, median next close -2.46%, up rate 38.8%; last 12 events since 2026-09-14 mostly continued) and the warrant reset terms in https://www.sec.gov/Archives/edgar/data/1957413/000149315226044083/form6-k.htm; no option chain",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 30,
+    "confidence_pct": 35,
+    "what_happened": "No new filing or release on 2026-10-06 (latest EDGAR item is the 2026-09-24 6-K); the -11.8% by 15:05 ET on 1.23x volume, 90% intraday, is the continuation of a death-spiral after a $5.0m registered direct at $0.21 with Series A/B warrants (closed 2026-09-21) whose exercise prices reset to the lowest daily VWAP of a window around the 160-for-1 consolidation effective 2026-09-28, with aggregate exercise price held constant so share counts balloon against ~2.35m post-split shares.",
+    "evidence": [
+      {"claim": "Registered direct: 23,809,530 shares at $0.21 with Series A ($0.44, 5y) and Series B unit warrants ($0.21, 30 days), Maxim placement agent, closed 2026-09-21; 375,387,811 shares after", "url": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226043493/form424b5.htm", "timestamp": "2026-09-21 09:27 ET"},
+      {"claim": "160-for-1 consolidation effective 2026-09-28, ~2,346,174 Class A shares after; Series A/B exercise price reset to lowest daily VWAP from five trading days before to five trading days after the effective date; share count may exceed proportional adjustment", "url": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226044083/form6-k.htm", "timestamp": "2026-09-24 09:00 ET"},
+      {"claim": "Series B and Series A warrants hold aggregate exercise price constant on a share combination; Series B expires 30 days from issuance; no alternative/zero-price cashless exercise", "url": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226043615/ex4-2.htm", "timestamp": "2026-09-22"},
+      {"claim": "No filing after 2026-09-24 in the issuer's submissions feed", "url": "https://data.sec.gov/submissions/CIK0001957413.json", "timestamp": "2026-10-06"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Series B unit warrants expire ~2026-10-21 (30 days from 2026-09-21 issuance), which is also when the company's 30-day issuance standstill lapses; nothing dated inside the window",
+    "what_would_change_my_mind": "A 6-K tonight announcing a new financing (would contradict the standstill reading) or warrant exercises/sales, or a price above ~$3.4 at which the reset warrants come into the money."
+  },
+  "positioning_check": "Short interest 126,637 shares at the 2026-09-15 settlement (pre-split, ~790 post-split), 1.06 days to cover, +99% vs 08-31; published with ~8 business-day lag and predates the 160:1 consolidation, so positioning into this fall is unobservable and immaterial in size (https://api.nasdaq.com/api/quote/DCX/short-interest?assetclass=stocks). Insider: no Form 4 activity in 3 months per Nasdaq; CEO bought 41,000 pre-split shares at $1.25 on 2026-07-31. No options market, no skew.",
+  "findings": [
+    {
+      "finding": "The warrant reset window closed at the 2026-10-05 close (fifth trading day after the 2026-09-28 consolidation), so warrant holders' incentive to depress the daily VWAP that sets their exercise price is spent and dated.",
+      "leg": "repricing",
+      "mechanism_in_window": "The seller-that-set-the-price is finished and dated: reset period per Series A warrant §3(b) and the 2026-09-24 6-K ended 2026-10-05; from 2026-10-06 holders are long fixed-strike warrants (~$3.4, estimated from the 10-05 bar 3.18-3.90, close 3.38) and benefit from a higher price, not a lower one.",
+      "expected_impact_pct": 1.0,
+      "impact_low_pct": -2.0,
+      "impact_high_pct": 4.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-07",
+      "reaction_history_on_this_line": "No prior reset expiry for this name; today (first session after the window closed) still fell 11.8% on 1.23x volume, which argues the reset-gaming seller was not the only seller.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226044083/form6-k.htm",
+      "source_date": "2026-09-24",
+      "why_not_priced": "If the tape had registered that the reset-driven selling ended, 10-06 would have stabilised; it fell 11.8% instead, so either other sellers remain or the change has not been read. Sized small because today's tape is partial evidence against it.",
+      "independence": "Warrant text itself: https://www.sec.gov/Archives/edgar/data/1957413/000149315226043615/ex4-1.htm (Series A §3(b), five trading days before through fifth trading day after the Share Combination Event Date)."
+    },
+    {
+      "finding": "Reset warrant overhang caps any rebound: Series B (~$5.0m aggregate at ~$3.4 = ~1.47m units, each a share plus a Series A warrant, expiring ~2026-10-21) and Series A (~$10.5m aggregate = ~3.1m shares) against ~2.35m shares outstanding become exercisable-and-sellable above ~$3.4, about 14% over spot.",
+      "leg": "new_information",
+      "mechanism_in_window": "Exercise and sale can happen any session the price trades above the reset; Series B holders face a ~2026-10-21 expiry so they exercise into the first strength, which lands inside the window if a bounce of >14% occurs.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-07",
+      "reaction_history_on_this_line": "Since the 2026-09-21 deal the name has risen on 2 of 12 qualifying next sessions (+37.5% on 09-17, +2.8% on 09-30); the stock is -98% over 60 sessions.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226043615/ex4-2.htm",
+      "source_date": "2026-09-22",
+      "why_not_priced": "The overhang is public, but it acts as a ceiling on the right tail of tomorrow's distribution rather than a level; a price that held it would show bounces failing near $3.4, which is not yet observable because the reset is newly set. The reset level is my estimate from the 10-05 bar, not a published number.",
+      "independence": "Share count and consolidation from https://www.sec.gov/Archives/edgar/data/1957413/000149315226044083/form6-k.htm; offering size from https://www.sec.gov/Archives/edgar/data/1957413/000149315226043493/form424b5.htm"
+    },
+    {
+      "finding": "The 2026-09-18 securities purchase agreement bars the company from issuing new securities for 30 days after the 2026-09-21 closing, so a fresh offering cannot price tonight or tomorrow.",
+      "leg": "new_information",
+      "mechanism_in_window": "The standstill runs to ~2026-10-21, covering the whole window; it removes the commonest second shoe (an overnight offering) for this serial issuer (424B5s on 2025-10-02, 2025-11-25, 2026-09-21).",
+      "expected_impact_pct": 1.0,
+      "impact_low_pct": 0.0,
+      "impact_high_pct": 2.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-07",
+      "reaction_history_on_this_line": "Each prior financing coincided with sharp falls (09-18 -69.8% the day the SPA was announced).",
+      "source": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226043615/form6-k.htm",
+      "source_date": "2026-09-22",
+      "why_not_priced": "A price holding a live offering risk would carry a further discount; with issuance contractually blocked, that risk is absent in the window. Small because warrant exercises are typically exempt and the market may not have discounted a new deal anyway.",
+      "independence": "none"
+    }
+  ],
+  "outside_window": [
+    {"finding": "Series B unit warrants expire ~2026-10-21 and the company's 30-day issuance standstill lapses about the same day; a new financing becomes possible after that, and the 90-day insider lock-up runs to ~2026-12-20.", "expected_impact_pct": -3.0, "resolves_by": "2026-10-21", "source": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226043615/form6-k.htm"},
+    {"finding": "Two consolidations within a year (12-for-1 in January 2026, 160-for-1 effective 2026-09-28) put the cumulative ratio above Nasdaq's 250 threshold, so a renewed sub-$1 bid would bring a delisting determination without a compliance period; spot is $2.98, so not reachable inside the window.", "expected_impact_pct": -1.0, "resolves_by": "2026-11-30", "source": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226044083/form6-k.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions for CIK 1957413: no filing after 2026-09-24, so no 6-K explains today's fall (https://data.sec.gov/submissions/CIK0001957413.json)",
+    "Web search for DCX news on 2026-10-06: nothing dated today; only older items (Jan 2026 Nasdaq notice, Jul 2026 CEO buy, Jun 2026 $700m unit PIPE)",
+    "Nasdaq compliance: hearing cancelled and compliance regained 2026-02-17 per https://www.sec.gov/Archives/edgar/data/1957413/000149315226007534/ex99-1.htm; no current deficiency notice in filings",
+    "Insider trades: none in 3 months per Nasdaq feed",
+    "Daily bars pulled with period2=2026-10-06 00:00 UTC so today's and later prices could not enter; none appeared after the screen instant"
+  ],
+  "abs_move_pct": 13.0,
+  "p_up": 42,
+  "rejected_candidates": [],
+  "baseline_tension": "Volume is ordinary (1.23x), which in the cross-section leans to a bounce, but this name's own comparable falls (38.8% up, recent cluster 2 of 12 up) and its extreme ATR lean to continuation; the findings net slightly positive, so the scaled number (-2.08) is pulled by the reaction function more than by the documents.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.5,
+    "expected_move_pct": -2.08,
+    "print_vs_bar_pct": 1.0,
+    "findings_count": 3,
+    "sizes_pct": [1.0, -1.5, 1.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 10
+}

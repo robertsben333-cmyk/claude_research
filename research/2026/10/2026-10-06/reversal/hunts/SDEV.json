@@ -1,0 +1,81 @@
+{
+  "ticker": "SDEV",
+  "drop_date": "2026-10-06",
+  "window": {"from": "close of 2026-10-06", "to": "close of 2026-10-07"},
+  "expected_move_pct": -2.6,
+  "conviction_note": "One leg-2 supply finding (live $83.2m ATM on an effective shelf plus 33.5m exercisable $0.05 pre-funded warrant shares, against a stock still ~3.3x fully-diluted NAV) at -2.0, no dated in-window catalyst either way; abs_move 13 set off ATR14 42.8% and the name's own 8.4% median absolute next-day move, p_up 40 because the lean rests on primary-document numbers but this meme name rebounded +41% after its 9-30 drop and spot sits under BASIC NAV ($4.08), which dip-buyers can read.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -2.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "NAV from the issuer's 2026-10-05 8-K Ex.99.1 (2,321,910,691 SKY held 2026-10-02, $7.2m cash, no debt, 51,751,359 basic and ~219.3m fully-diluted shares) https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/ex_1016832.htm , marked at SKY $0.0879 (CoinGecko daily series, last point 2026-10-06 ~19:06 UTC) https://api.coingecko.com/api/v3/coins/sky/market_chart?vs_currency=usd&days=14&interval=daily : NAV ~$211m = $4.08/basic share, $0.96/fully-diluted share; spot $3.19 = 0.78x basic, ~3.3x fully diluted.",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 25,
+    "confidence_pct": 50,
+    "what_happened": "After a ~575% meme/altcoin-treasury run in late September (+108% on 9-29, an 'unusual market activity' 8-K that night), SDEV fell 47% on 10-05 on the day an 08:05 ET 8-K (Ex.99.1) spelled out ~219.3m fully-diluted shares and $83.2m left on its ATM, and fell a further 19% today (gap -11.7%, intraday -8.3%) on 31.7x volume while the SKY token itself was roughly flat today; the 8-K-as-trigger is an inference from timing, no article names the cause.",
+    "evidence": [
+      {"claim": "8-K accepted 2026-10-05 08:05 ET; Ex.99.1 states pre-funded warrants for 167,539,227 shares would take outstanding from 51,751,359 to ~219.3m, and $83.2m of the $100m Virtu ATM remained at 9-30", "url": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/ex_1016832.htm", "timestamp": "2026-10-05 08:05 ET"},
+      {"claim": "8-K of 9-29: company not aware of any material non-public information explaining unusual trading activity", "url": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031464/sdev20260929_8k.htm", "timestamp": "2026-09-29"},
+      {"claim": "SKY price $0.0976 at 10-05 00:00 UTC, $0.0876 at 10-06 00:00 UTC, $0.0879 at ~10-06 19:06 UTC: the token did not crash today, so today's leg is equity-specific", "url": "https://api.coingecko.com/api/v3/coins/sky/market_chart?vs_currency=usd&days=14&interval=daily", "timestamp": "2026-10-06"},
+      {"claim": "Trailing-30-day rise ~575% from ~$0.86, +108% on 9-29 amid altcoin-treasury rally", "url": "https://marketchameleon.com/Overview/SDEV/IV/", "timestamp": "undated search snippet, snippet_only"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -40,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "2026-10-16: second pre-funded warrant tranche (30%, ~50.3m shares at $0.05) becomes exercisable — outside the window; nothing dated inside it found",
+    "what_would_change_my_mind": "A company buyback or a statement that the ATM will not be used below NAV, or an S-3 effectiveness notice / 424B3 for the 212.9m-share resale registration landing tonight (which would make the negative larger)."
+  },
+  "positioning_check": "not found: Nasdaq short-interest API returned HTTP 503; baseline short_interest status 'unavailable'. No option chain (no_options_market), so no skew. Insider summary: 0 open-market buys and 0 sells in 3 months (https://api.nasdaq.com/api/company/SDEV/insider-trades?limit=15&type=ALL, from baseline).",
+  "findings": [
+    {
+      "finding": "Supply that can act inside the window: $83.2m (≈26m shares at $3.19, ~50% of the basic float) remains on the Virtu ATM under an effective shelf (last EFFECT 2025-11-26, file 333-290712), and the first 20% tranche of January 2026 pre-funded warrants (~33.5m shares at $0.05, exercisable since 2026-07-16) is live, while the stock still trades ~3.3x fully-diluted NAV, which makes every ATM share sold accretive to the company.",
+      "leg": "new_information",
+      "mechanism_in_window": "The ATM needs no further filing to sell during the 10-07 session; the company's Q3 cash/token update was published 10-05, so any self-imposed quarter-end restraint is plausibly lifted (inference). Shares outstanding were unchanged 9-18 → 10-02 (51,751,359 both dates), so the company did NOT sell into the spike — the supply is unspent, not finished.",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -6.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-07 — sales would hit the tape during the session; they become VISIBLE only in the Q3 10-Q (Nov), so the price effect is in window, the disclosure is not",
+      "reaction_history_on_this_line": "Q3 ATM use was small: $84.5m remaining at 6-30 (10-Q) vs $83.2m at 9-30 (8-K), i.e. ~$1.3m sold in the quarter; H1 2026 sold 2,693,853 shares for $15.5m. So the company has used the ATM sparingly and not into this spike — which is why this finding is sized small.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/ex_1016832.htm",
+      "source_date": "2026-10-05",
+      "why_not_priced": "The price has re-rated toward fully-diluted value but at $3.19 still sits ~3.3x FD NAV ($0.96); if the market held a live, accretive ATM and exercisable warrants as near-certain supply, it would trade much nearer FD NAV. What it has not taken is the company/warrant holders actually selling into the remaining premium.",
+      "independence": "10-Q (June 30) ATM terms and remaining capacity https://www.sec.gov/Archives/edgar/data/1389545/000143774926025065/nby20260630_10q.htm ; resale S-3/A of 2026-09-16 registering 212,876,259 shares incl. 167,539,227 warrant shares, 10%-of-ADTV daily sale cap https://www.sec.gov/Archives/edgar/data/1389545/000143774926030554/sdev20260914_s3a.htm ; CryptoSlate on the 7-16 tranche of ~33.5m shares https://cryptoslate.com/sdevs-2-2m-sky-staking-revenue-is-dwarfed-by-a-50-6m-unrealized-token-loss/"
+    }
+  ],
+  "outside_window": [
+    {"finding": "Stock still ~3.3x fully-diluted NAV after a 57% two-day fall ($699m FD cap vs ~$211m SKY+cash); a rerating toward NAV has no in-window mechanism (the 8-K that states the FD count was already read on 10-05), so it is a multi-week claim, not a next-session one.", "expected_impact_pct": -20.0, "resolves_by": "2026-11-06", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/ex_1016832.htm"},
+    {"finding": "Second pre-funded warrant tranche (30% of 167.5m ≈ 50.3m shares at $0.05) becomes exercisable 2026-10-16; remaining 50% on 2027-01-16.", "expected_impact_pct": -5.0, "resolves_by": "2026-10-16", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926030554/sdev20260914_s3a.htm"},
+    {"finding": "Resale S-3 (filed 2026-08-11, amended 2026-09-16) for 212,876,259 shares by R01 Fund, Framework Ventures IV, Tether Investments and Sky Frontier Foundation is not yet effective (no EFFECT notice after 2025-11-26); effectiveness date unknown, could land any day.", "expected_impact_pct": -4.0, "resolves_by": "undated", "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001389545&type=EFFECT&dateb=&owner=include&count=10&output=atom"},
+    {"finding": "Annual meeting 2026-11-10 (directors, auditor only; no reverse split or share authorisation proposal).", "expected_impact_pct": 0.0, "resolves_by": "2026-11-10", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031344/sdev20260921_def14a.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "Any 8-K, 424B or EFFECT filed 2026-10-06: none in the EDGAR atom feed (latest 8-K 2026-10-05) — https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001389545&type=&dateb=&owner=include&count=20&output=atom",
+    "News article naming the cause of the 10-05 -47% or today's fall: WebSearch returned only older pieces (rebrand, Q2 results); none dated 10-05/10-06",
+    "Analyst coverage / note that could land before the open: none found",
+    "Buyback authorisation: none in the 10-05 8-K or 10-Q",
+    "Going-concern / covenant / minimum-bid language in last 550 days: none (baseline text probes); price $3.19, no bid-price clock",
+    "Short interest: Nasdaq API HTTP 503",
+    "SKY token crash as the cause: CoinGecko shows SKY flat today (+0.3% from 00:00 UTC) and only ~10% off its 10-05 00:00 UTC level, so the token does not explain a two-day 57% equity fall",
+    "Form 4 / insider buying: Nasdaq summary shows 0 trades in 3 months",
+    "No SDEV price dated after the 15:05 ET screen instant was seen; search snippets quoting $1.10 and $5.80 were undated/stale and not used for any number"
+  ],
+  "abs_move_pct": 13.0,
+  "p_up": 40,
+  "rejected_candidates": [
+    {"candidate": "Separate finding for the exercisable warrant tranche as its own supply line", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926030554/sdev20260914_s3a.htm", "reason": "duplicate", "detail": "merged into the single supply finding with the ATM; both rest on the same overhang and would double-count"},
+    {"candidate": "Spot is below BASIC NAV ($4.08) so the fall overshot", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/ex_1016832.htm", "reason": "contradicted_by_document", "detail": "the same Ex.99.1 states ~219.3m fully-diluted shares at a $0.05 exercise price, putting NAV at ~$0.96/share; the basic-NAV discount is a misreading of the issuer's own document (it still informs p_up via retail dip-buying, not as a finding)"},
+    {"candidate": "Second warrant tranche exercisable 2026-10-16", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926030554/sdev20260914_s3a.htm", "reason": "outside_window", "detail": "dated 2026-10-16, after the 10-07 close"}
+  ],
+  "baseline_tension": "Agrees with the baseline: 31.7x volume (>15x bucket -2.44%), a two-day -57% fall, ATR14 42.8% and this name's own 30 comparable falls (median -2.38%, 36.7% up) all point down, and the document read adds an unsold supply overhang; the one thing cutting against it is the name's 9-30 +41% rebound after a -20.8% day, which is why p_up is 40 and not lower.",
+  "pre_lessons": {
+    "impact_sum_pct": -2.0,
+    "expected_move_pct": -2.6,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-2.0]
+  },
+  "lessons_applied": ["nothing changed — researcher_reversal/LESSONS.md is deliberately empty (no resolved runs)"],
+  "sources_used": 14
+}
