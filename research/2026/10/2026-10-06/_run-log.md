@@ -63,3 +63,7 @@
 ## Edge hunt — 2026-10-06 amc — DONE
 - Logged at 2026-10-06 17:18 UTC
 - 6 in window, 6 confirmed by sweep, 0 phantom. Ranked on impact_sum: PENG +2.80 (floor, exactly), NEOG +1.50, SAR +0.40, STZ +0.20, AXIL -0.10, WS -1.50. V2 calibrated (180 obs). Execution: enabled; step 0b verify/close DENIED by auto-mode classifier (7th run since 09-28), nothing sold from here. Step 7: plan (dry run) selected 0 names on impact_scaled >= 1.76 (best PENG 1.60), so no order owed; open not called. Gross 0%. Refused names: all six below the impact_scaled floor; AXIL also below the $200k turnover floor; SAR short not lendable at Alpaca. Note: research/2026/10/2026-10-06/edge/edge-note.md.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-06 17:22 UTC
+- 6/6 searchers returned (PENG +4.40 above 2.8 floor; NEOG +2.00, STZ +0.60, AXIL +0.50, SAR -0.80, WS -0.80). V2 grounded 6/6 before the first print. 6 packs, four judges launched in one message.
