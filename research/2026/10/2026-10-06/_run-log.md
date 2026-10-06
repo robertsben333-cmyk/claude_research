@@ -44,3 +44,7 @@
 ## Edge hunt — unknown-session check
 - Logged at 2026-10-06 17:07 UTC
 - Thin day (6 names), so time-not-supplied rows checked: 1 extra row, ARTW ($0.02bn), session_resolve unresolved / fits cadence (last results 2026-07-10, 88 days). Cadence prior only — the TRT failure mode — so not hunted. provenance stamped: us.v9 · claude-opus-5-5.
+
+## Edge hunt (panel) — 2026-10-06 amc — STARTED
+- Logged at 2026-10-06 17:08 UTC
+- 17:15 UTC. Window 2026-10-06 amc + 10-07 bmo: 6 names (STZ PENG NEOG WS SAR AXIL), all 10-06 amc; 0 bmo. Thin day: --include-unknown added ARTW (unresolved, cadence prior only) — not hunted. Baselines sealed into edge-panel/baselines (3 of 6 with option chains: STZ PENG NEOG). Plan: 1 edge-sweep, 6 unpriced-searcher, then 4 panel judges. No orders.
