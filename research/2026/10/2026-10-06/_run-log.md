@@ -52,3 +52,10 @@
 ## Edge hunt — hunts AXIL, SAR banked
 - Logged at 2026-10-06 17:15 UTC
 - AXIL impact_sum -0.1 (pre -0.4), bar unsourced, ~$80k/day turnover. SAR +0.4 (pre +0.5), scaled -0.5, bar disputed.
+## Edge hunt (panel) — 2026-10-06 amc — STARTED
+- Logged at 2026-10-06 17:08 UTC
+- 17:15 UTC. Window 2026-10-06 amc + 10-07 bmo: 6 names (STZ PENG NEOG WS SAR AXIL), all 10-06 amc; 0 bmo. Thin day: --include-unknown added ARTW (unresolved, cadence prior only) — not hunted. Baselines sealed into edge-panel/baselines (3 of 6 with option chains: STZ PENG NEOG). Plan: 1 edge-sweep, 6 unpriced-searcher, then 4 panel judges. No orders.
+
+## Edge hunt (panel) — sweep
+- Logged at 2026-10-06 17:12 UTC
+- 6 of 6 confirmed amc 2026-10-06 by company releases, 0 phantom, 0 session unsettled. Priority PENG 74, NEOG 66, WS 58, SAR 46, AXIL 36, STZ 28. Provenance: unpriced-searcher us-searcher.v1 · claude-opus-5-5. Launching 6 searchers in one wave.
