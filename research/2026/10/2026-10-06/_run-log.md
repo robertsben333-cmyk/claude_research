@@ -48,3 +48,7 @@
 ## Edge hunt — hunt NEOG banked
 - Logged at 2026-10-06 17:14 UTC
 - NEOG impact_sum +1.5 (pre-lessons +2.2), abs_move 13, p_up 53. Investor Day 10-07 09:00 ET falls inside the window.
+
+## Edge hunt — hunts AXIL, SAR banked
+- Logged at 2026-10-06 17:15 UTC
+- AXIL impact_sum -0.1 (pre -0.4), bar unsourced, ~$80k/day turnover. SAR +0.4 (pre +0.5), scaled -0.5, bar disputed.
