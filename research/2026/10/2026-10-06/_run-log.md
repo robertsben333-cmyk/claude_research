@@ -67,3 +67,6 @@
 ## Stage E V2 — shadow ledger
 - Logged at 2026-10-06 17:23 UTC
 - collected 18 8-Ks (6 tickers), scored 18 blind, refused 0; pooled kappa at session_close +0.355 (se 0.069), n 185.
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-06 17:22 UTC
+- 6/6 searchers returned (PENG +4.40 above 2.8 floor; NEOG +2.00, STZ +0.60, AXIL +0.50, SAR -0.80, WS -0.80). V2 grounded 6/6 before the first print. 6 packs, four judges launched in one message.
