@@ -36,3 +36,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-06 01:23 UTC
 - 7/7 hunted and ranked on impact_sum; top 6469 +1.90, bottom 5243 -1.20; none above the 2.8 floor. Note: research/2026/10/2026-10-06/japan/japan-note.md. Short register latest file 2026-09-29 (stale).
+
+## Close AMC — 2026-10-06 10:10 UTC
+- Logged at 2026-10-06 10:17 UTC
+- guard mode --require-exit-tif opg exit 0 (amc_open, amc -> day queued for open). verify: 14 legs, 0 UNFILLED, 0 held. close --submit: no leg with exit date 2026-10-06, nothing sent, no refusals. Account reachable.
