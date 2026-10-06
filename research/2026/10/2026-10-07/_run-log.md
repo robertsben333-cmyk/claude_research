@@ -16,3 +16,7 @@
 - Logged at 2026-10-06 13:41 UTC
 - eu_universe.py --date 2026-10-07: 7 scheduled, 2 eligible at $100k floor, 2 hunted (all eligible, under cap 20): uk NET (Netcall, session_unresolved, RNS-confirmed date), se INDU_A (Industrivärden A). Concentration 50/50, 2 markets. All ten market calendars read; none market_closed.
 - Baselines sealed ~13:50 UTC on intraday prices (not closes). anchor_covered false on both (registers read: se 337 rows, uk 424 rows; neither names the issuer -> truncated zero). History: NET observed_rns, INDU_A estimated_from_cadence. provenance stamped (uk/nordic hunters on claude-opus-5-5). Wave 1 of 1: 2 hunters launched.
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-10-06 13:47 UTC
+- Event date sealed for: 2026-10-07. 2 hunters, 2 hunts returned, 0 shed. edge_score ranking_key impact_sum: NET +0.10, INDU_A +0.00; 0 of 2 above floor 2.8. Note: europe-note.md. Publishing with EARNINGS_DATA_BRANCH=main.
