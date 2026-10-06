@@ -98,3 +98,7 @@
 ## Edge hunt — hunt RPM banked
 - Logged at 2026-10-06 07:03 UTC
 - RPM impact_sum +0.3 (pre_lessons +0.1), abs 6.5 p_up 52, print_vs_bar +0.5. Near non-result.
+
+## Edge hunt — hunt LW banked
+- Logged at 2026-10-06 07:04 UTC
+- LW impact_sum -0.8 (pre_lessons -0.7), abs 10.0 p_up 48, print_vs_bar +1.0. Near non-result; crop negatives vs put/call 2.08 relief.
