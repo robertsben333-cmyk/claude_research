@@ -74,3 +74,7 @@
 ## Edge hunt (panel) — DONE
 - Logged at 2026-10-06 17:49 UTC
 - 6 names, 6/6 confirmed, 6/6 searched (unpriced-searcher, us-searcher.v1). Panel: all four ran on pinned models (opus5, opus55, sonnet55, fable51; Fable's first launch hit a session classifier timeout and was relaunched once). Selected: PENG 4/4 +2.58, NEOG 4/4 +2.11, WS 3/4 -1.25. Spearman stage E impact_sum vs panel_score 0.77 over 6. V2 grounded 6/6 pre-print. No orders and no successful alpaca_trade.py call (an attempted read-only 'assets' call was refused by the permission classifier and dropped; the Routine forbids it anyway). Note: edge-panel/edge-note.md.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-06 18:33 UTC
+- 18:33Z fire. Universe, seal before 20:00Z close, one unpriced-hunter-ca per name, score, note.
