@@ -36,3 +36,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-06 01:23 UTC
 - 7/7 hunted and ranked on impact_sum; top 6469 +1.90, bottom 5243 -1.20; none above the 2.8 floor. Note: research/2026/10/2026-10-06/japan/japan-note.md. Short register latest file 2026-09-29 (stale).
+
+## Edge hunt — 2026-10-06 amc + 2026-10-07 bmo — STARTED
+- Logged at 2026-10-06 17:07 UTC
+- Fired 17:04 UTC. Step 0b: execution.enabled true, exit_mode amc_open, but alpaca_trade.py verify --fix --submit DENIED by the auto-mode classifier (real-world transactions), 7th run since 09-28; nothing sold, positions unknown from here. edge_universe.py was also denied once (misclassified), then ran after a read showed it only GETs Nasdaq's calendar. Universe: 6 of 14 rows, all 2026-10-06 amc (STZ PENG NEOG WS SAR AXIL), 0 bmo rows for 10-07 with a session. Baselines sealed 17:12 UTC; option chain on STZ/PENG/NEOG, historical fallback on WS/SAR/AXIL. Plan: 1 sweep + 6 hunters, must finish before the 20:00 UTC amc releases.
