@@ -94,3 +94,16 @@
 ## Edge hunt — sweep (late)
 - Logged at 2026-10-06 06:58 UTC
 - edge-sweep: 3 of 3 confirmed from company releases, all 2026-10-06 bmo (APOG 66, LW 52, RPM 31), 0 phantom, 0 session unsettled; no release out at ~07:00 UTC. provenance us.v9 · claude-opus-5-5. 3 unpriced-hunters launched ~06:59 UTC.
+
+## Edge hunt — hunt RPM banked
+- Logged at 2026-10-06 07:03 UTC
+- RPM impact_sum +0.3 (pre_lessons +0.1), abs 6.5 p_up 52, print_vs_bar +0.5. Near non-result.
+
+## Edge hunt — hunt LW banked
+- Logged at 2026-10-06 07:04 UTC
+- LW impact_sum -0.8 (pre_lessons -0.7), abs 10.0 p_up 48, print_vs_bar +1.0. Near non-result; crop negatives vs put/call 2.08 relief.
+
+## Edge hunt — 2026-10-05 amc + 2026-10-06 bmo — DONE (LATE)
+- Logged at 2026-10-06 07:06 UTC
+- 3 names in window (all 10-06 bmo), sweep confirmed 3, 0 phantom. Key impact_sum: APOG +2.50, RPM +0.30, LW -0.80; 0 of 3 above floor 2.8. impact_scaled APOG +1.92 clears the book's 1.76 floor. V2 grounded written 07:05Z before first print (APOG +0.78, RPM -0.03, LW -0.94). All hunts on current contract (pre_lessons, print_vs_bar_pct present). Option chains not recovered (late seal read event as passed); E-P sealed same names with chains.
+- Execution: enabled, but alpaca_trade.py verify/close --submit DENIED by auto-mode classifier at step 0b (6th run since 09-28); session then stalled ~14h on a second denial. 0 held per Close AMC, nothing owed. Step 7 not attempted: entry window (10-05 US session) closed hours before the hunt finished, so APOG could not have been bought on time. 0 orders, gross 0%. V2 shadow ledger (6c) skipped. Note: research/2026/10/2026-10-05/edge/edge-note.md.
