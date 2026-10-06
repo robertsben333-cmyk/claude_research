@@ -44,3 +44,7 @@
 ## Edge hunt — unknown-session check
 - Logged at 2026-10-06 17:07 UTC
 - Thin day (6 names), so time-not-supplied rows checked: 1 extra row, ARTW ($0.02bn), session_resolve unresolved / fits cadence (last results 2026-07-10, 88 days). Cadence prior only — the TRT failure mode — so not hunted. provenance stamped: us.v9 · claude-opus-5-5.
+
+## Edge hunt — hunt NEOG banked
+- Logged at 2026-10-06 17:14 UTC
+- NEOG impact_sum +1.5 (pre-lessons +2.2), abs_move 13, p_up 53. Investor Day 10-07 09:00 ET falls inside the window.
