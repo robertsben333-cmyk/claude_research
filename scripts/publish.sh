@@ -100,6 +100,10 @@ paths=()
 # that are rebuilt on purpose and committed by hand.
 [[ -e researcher_us/analysis/shadow-ledger.json ]] && paths+=(researcher_us/analysis/shadow-ledger.json)
 [[ -d researcher_us/analysis/shadow ]] && paths+=(researcher_us/analysis/shadow)
+# Stage EU's issuer-dated UK calendar (uk_rns_calendar.py). Built incrementally from
+# Investegate on every stage EU run; a session that does not push it makes the next
+# one re-crawl every day since the last push.
+[[ -e researcher_europe/analysis/uk-rns-calendar.json ]] && paths+=(researcher_europe/analysis/uk-rns-calendar.json)
 for f in "${GENERATED[@]}"; do
   [[ -e "$f" ]] && paths+=("$f")
 done

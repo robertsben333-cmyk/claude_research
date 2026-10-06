@@ -124,6 +124,7 @@ instead of assuming it.
 import argparse
 import json
 import random
+import re
 import subprocess
 import sys
 from datetime import date, datetime, timedelta
@@ -271,6 +272,71 @@ def scheduled_on(rows, target, past=False):
     return out
 
 
+def rns_scheduled(rows, target, vendor_got):
+    """UK rows dated for `target` by the issuer's OWN announcements (uk_rns_calendar).
+
+    MEASURED 2026-10-06: over 2026-09-22 -> 10-05 the vendor carried 47 of 135 UK
+    equity results and trading updates above ~$100k a day. Issuers date their own
+    reports in RNS notices and in the financial calendars of earlier releases, so this
+    adds every vendor-universe EPIC that the RNS record dates for `target`, using only
+    announcements public at the moment this runs. A vendor row the issuer has since
+    re-dated is NOT dropped here -- it is marked `rns_redated_to`, because a kill on a
+    parsed date is exactly the kind of quiet error this stage keeps paying for.
+
+    Returns (added_rows, info). Never raises: an unreachable Investegate leaves the
+    vendor calendar exactly as it was, and says so in `info`.
+    """
+    try:
+        import uk_rns_calendar as RC
+        cal = RC.update()
+        now_london = datetime.now(ZoneInfo("Europe/London")).replace(tzinfo=None)
+        hits = RC.on(target, known_by=now_london, cal=cal)
+    except Exception as exc:
+        return [], {"state": "unavailable", "error": str(exc)[:300]}
+    by_epic = {str(r.get("name", "")).upper(): r for r in rows}
+    have = {str(r.get("name", "")).upper() for r in vendor_got}
+    added, outside, confirmed = [], [], []
+    for e in hits:
+        v = by_epic.get(e["epic"])
+        if v is None:
+            outside.append(e["epic"])        # fund, debt line, or not primary-listed
+            continue
+        src = {k: e[k] for k in ("event_date", "kind", "basis", "quote", "source_url",
+                                 "source_headline", "source_ts_london")}
+        if e["epic"] in have:
+            confirmed.append(e["epic"])
+            for g in vendor_got:
+                if str(g.get("name", "")).upper() == e["epic"]:
+                    g["calendar_source"] = "vendor+rns"
+                    g["rns_dated"] = src
+            continue
+        morning = re.search(r"morning|7[.:]00|07[.:]00|before (the )?(market )?open",
+                            e["quote"], re.I)
+        added.append({**v, "scheduled_date": target, "session": "bmo",
+                      "session_unresolved": not morning,
+                      "session_basis": ("issuer's notice says morning" if morning else
+                                        "RNS-dated, time not stated; defaulted to bmo "
+                                        "because 339 of 379 measured UK results "
+                                        "announcements landed before 08:00 -- the "
+                                        "resolver measures BOTH windows for this row"),
+                      "calendar_source": "rns", "rns_dated": src,
+                      "event_kind": e["kind"]})
+    # vendor rows the issuer has re-dated since
+    for g in vendor_got:
+        g.setdefault("calendar_source", "vendor")
+        ep = str(g.get("name", "")).upper()
+        later = [x for x in cal["events"] if x["epic"] == ep
+                 and x["event_date"] != target
+                 and abs((date.fromisoformat(x["event_date"]) -
+                          date.fromisoformat(target)).days) < 45]
+        if later and g["calendar_source"] == "vendor":
+            g["rns_redated_to"] = max(later, key=lambda x: x["source_ts_london"])["event_date"]
+    return added, {"state": "read", "rns_dated_for_target": len(hits),
+                   "added": [r["name"] for r in added], "confirmed_vendor": confirmed,
+                   "outside_vendor_universe": outside,
+                   "calendar_file": "researcher_europe/analysis/uk-rns-calendar.json"}
+
+
 # --- holidays ---------------------------------------------------------------------
 def closed_reason(market, day):
     d = date.fromisoformat(day)
@@ -362,6 +428,10 @@ def main():
     ap.add_argument("--no-tape", action="store_true",
                     help="skip Yahoo entirely: emits the raw calendar with no screen "
                          "and no draw, for inspecting what the vendor is publishing")
+    ap.add_argument("--no-rns", action="store_true",
+                    help="UK only: do NOT add the issuer-dated rows from "
+                         "uk_rns_calendar.py, i.e. reproduce the vendor-only universe "
+                         "every run before 2026-10-06 was built on")
     ap.add_argument("-o", "--out")
     a = ap.parse_args()
 
@@ -406,6 +476,10 @@ def main():
         closed = closed_reason(m, target)
         closed_all[m] = closed
         got = [] if closed else scheduled_on(rows, target, a.use_last_release)
+        rns_info = None
+        if m == "uk" and not closed and not a.use_last_release and not a.no_rns:
+            extra, rns_info = rns_scheduled(rows, target, got)
+            got.extend(extra)
         for r in got:
             r["_market"] = m
         todays.extend(got)
@@ -423,6 +497,8 @@ def main():
             "capability": capability(m),
             "event_occurred_false_reachable": false_reachable(m),
         }
+        if rns_info is not None:
+            out["per_market"][m]["rns_calendar"] = rns_info
 
     out["scheduled_today"] = len(todays)
     if all(closed_all.get(m) for m in markets):
