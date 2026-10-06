@@ -59,3 +59,7 @@
 ## Edge hunt (panel) — sweep
 - Logged at 2026-10-06 17:12 UTC
 - 6 of 6 confirmed amc 2026-10-06 by company releases, 0 phantom, 0 session unsettled. Priority PENG 74, NEOG 66, WS 58, SAR 46, AXIL 36, STZ 28. Provenance: unpriced-searcher us-searcher.v1 · claude-opus-5-5. Launching 6 searchers in one wave.
+
+## Edge hunt — 2026-10-06 amc — DONE
+- Logged at 2026-10-06 17:18 UTC
+- 6 in window, 6 confirmed by sweep, 0 phantom. Ranked on impact_sum: PENG +2.80 (floor, exactly), NEOG +1.50, SAR +0.40, STZ +0.20, AXIL -0.10, WS -1.50. V2 calibrated (180 obs). Execution: enabled; step 0b verify/close DENIED by auto-mode classifier (7th run since 09-28), nothing sold from here. Step 7: plan (dry run) selected 0 names on impact_scaled >= 1.76 (best PENG 1.60), so no order owed; open not called. Gross 0%. Refused names: all six below the impact_scaled floor; AXIL also below the $200k turnover floor; SAR short not lendable at Alpaca. Note: research/2026/10/2026-10-06/edge/edge-note.md.
