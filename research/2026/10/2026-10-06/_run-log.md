@@ -28,3 +28,7 @@
 ## Stage J — resolve 2026-10-02
 - Logged at 2026-10-06 01:07 UTC
 - jp_resolve.py on 2026-10-02/japan: 5/5 confirmed, rho=0.4 p=0.51, lean_vs_free_control_rho=0.9 (n=5, up from 0.6 on 10-01 and 0.8 on 09-30)
+
+## Stage J — wave 1 done
+- Logged at 2026-10-06 01:14 UTC
+- 5/5 hunts banked: 1377 +0.6, 2659 +0.6, 2726 -0.3, 2734 0.0, 5243 -1.2. Wave 2 (6469, 8011) running.
