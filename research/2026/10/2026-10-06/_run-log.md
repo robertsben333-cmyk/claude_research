@@ -32,3 +32,7 @@
 ## Stage J — wave 1 done
 - Logged at 2026-10-06 01:14 UTC
 - 5/5 hunts banked: 1377 +0.6, 2659 +0.6, 2726 -0.3, 2734 0.0, 5243 -1.2. Wave 2 (6469, 8011) running.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-06 01:23 UTC
+- 7/7 hunted and ranked on impact_sum; top 6469 +1.90, bottom 5243 -1.20; none above the 2.8 floor. Note: research/2026/10/2026-10-06/japan/japan-note.md. Short register latest file 2026-09-29 (stale).
