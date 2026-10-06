@@ -86,3 +86,7 @@
 - Defect (repeat of 10-02): overshoot_has_mechanism=true on 8 hunts with no repricing finding (VOGX HOST GRML BGS NNNN CRDL GCTK WCT); by_overshoot_mechanism will mis-bucket them. Constant/brief not changed.
 - Resolve: 2026-10-01 run resolved at d1 (resolve-2026-10-01.json): impact_sum rho +0.324 (p 0.24) vs neg_atr14 +0.196, neg_vol_spike +0.296, neg_ret_d -0.614 (p 0.018); lean_vs_free_control_rho 0.029; book ONEN short +2.60% gross. 2026-10-02 run all 15 move_pending (window closes today); resolve-2026-10-02.json written as pending.
 - Nasdaq short-interest API returned 503 to PAAI and BGS hunters. No orders, no broker step. Note: research/2026/10/2026-10-05/reversal/reversal-note.md
+
+## Edge hunt — 2026-10-05 amc + 2026-10-06 bmo — STARTED (LATE)
+- Logged at 2026-10-06 06:55 UTC
+- Routine fired 17:04 UTC 10-05; step 0b verify/close --submit DENIED by auto-mode classifier (real-world transactions), and the session then stalled ~14h on a second denial (edge_universe.py). Resumed 06:55 UTC 10-06. Close AMC 10:16 UTC 10-05 found 0 held, so no exit was owed. 10-05 amc half: 0 confirmed rows (AEHR company-announced 10-05 amc but time-not-supplied, already printed, not hunted). 10-06 bmo half still ahead of its prints: RPM, LW, APOG; baselines sealed 06:57 UTC 10-06 pre-market, implied move None on all three (no two-sided chain pre-market) so the baseline takes the historical-median fallback. Plan: 1 sweep + 3 hunters, must finish before ~10:30 UTC (06:30 ET) bmo releases.
