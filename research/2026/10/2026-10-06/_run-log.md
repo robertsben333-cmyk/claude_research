@@ -20,3 +20,7 @@
 - Operator reported many UK names on investing.com's calendar for 2026-10-05 that stage EU did not see. Confirmed against Investegate (RNS): 2026-10-05 carried ENSI final results, RMV, SRE and QTX trading updates (>= $100k/day); the 10-02 seal for 10-05 had 0 UK vendor rows.
 - Over 2026-09-22 → 10-05 the TradingView scanner MISSED 88 of 135 UK equity results/trading-update RNS above ~$100k/day (rough GBX→USD cut on current 10d volume). Trading updates are never in the vendor feed; but real interims/finals were missed too (e.g. FXPO, AEX, ROCK, ENET, CVSG, MDH, ATOM), and several vendor 'phantoms' reported days later (BILN, HUW, KEFI, RKH), i.e. the vendor dates are estimates. The 2.2% phantom rate in SUBMARKET.md measured PRECISION; RECALL was never measured and is ~35%.
 - investing.com: 403 from Cloudflare (not the agent proxy); TLS-impersonating client also 403; a headless-browser load was refused by the session's permission classifier. Not pursued further. Nothing about the 10-06 universe changed.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-06 01:05 UTC
+- 01:06 UTC fire: universe for 2026-10-06, seal baselines, one unpriced-hunter-jp per name in waves of 5, score with edge_score.py. No orders.
