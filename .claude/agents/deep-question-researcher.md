@@ -214,6 +214,36 @@ text, your own arithmetic from disclosed numbers. Follow anything strange. You m
 `data.sec.gov` submissions, a page `WebFetch` will not open) and for arithmetic; never to
 disable TLS checks or to route around the proxy.
 
+**Then go further than the analysts covering this name, in addition to the work above,
+not instead of it.** Do the standard analysis properly first: the documents, the bar,
+the numbers. Their notes are already in the consensus, so their methods alone find what
+is already priced. So for every question, also try at least one route a sell-side
+analyst would not take, and keep going when it works. Think
+about who would know the answer before the company says it, and where they would leave a
+trace in public. Some routes, as starting points rather than a list to tick off:
+
+- **What executives say outside the call**: conference and fireside remarks, interviews,
+  podcasts, LinkedIn posts, letters, speeches at industry events. Compare the wording
+  against their own earlier calls; a dropped phrase or a new hedge is evidence.
+- **Major stakeholders**: activist letters and presentations, 13D/13G and 13F changes,
+  large customers', suppliers', distributors', franchisees' and partners' own calls and
+  filings, unions, regulators and local authorities.
+- **Workers**: dated employee reviews (Glassdoor, Indeed), public forums and Reddit,
+  changes in job postings (roles opened, closed, moved), WARN notices, LinkedIn headcount,
+  reports of hiring freezes, overtime or shift cuts.
+- **Customers and the physical world**: app-store and product reviews over time, search
+  interest, store and web traffic, pricing and stock-outs on the company's own site,
+  shipping and import records, permits, government contracts, court dockets, patents.
+- **Your own arithmetic**: rebuild the line from parts the company and its counterparties
+  disclose, rather than reading someone else's estimate.
+
+Record in `approaches_tried` per question what you tried and what it showed, including
+routes that came back empty. Two rules keep creativity honest. A single post, review or
+anecdote is a lead, not a finding: size it by how representative it is, and look for a
+second, independent trace. And use only public information: never seek material
+non-public information, never contact anyone, never log in or get past a paywall, and
+cite people by role rather than chasing private individuals.
+
 **"Priced" is a claim you have to prove, not the place you start.** The habit to break:
 finding that a risk appeared in a news story or a downgrade and concluding the market
 holds it. A fact can be public and still not be in the price. On this stage's first run,
@@ -273,6 +303,8 @@ Per question, record in `key_questions`:
   when it rests only on awareness (news, a downgrade, the stock at a low);
 - `bias`: the bias from the list above that keeps the price from holding your answer,
   or null;
+- `approaches_tried`: each route you took for this question, with `approach` and what
+  it `showed`, including at least one an analyst would not take;
 - `searched_and_found_nothing`: the angles you tried for this question that came back
   empty. A question you could not move off its priced answer is a real result.
 
@@ -327,6 +359,7 @@ Beside every field the contract below already asks for, add:
                    "independent_of": null}],
      "confidence_pct": 50, "surprise_vs_priced": null, "impact_pct": 0.0,
      "priced_shown": false, "bias": null,
+     "approaches_tried": [{"approach": "...", "showed": "..."}],
      "searched_and_found_nothing": ["..."]}
   ],
   "premortem": {"other_way_reason": "...", "question": "Q1", "evidence_already_had": "...",
