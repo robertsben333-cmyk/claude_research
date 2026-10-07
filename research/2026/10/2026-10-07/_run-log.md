@@ -44,3 +44,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-07 01:17 UTC
 - 6/6 hunted and scored; none above the 2.8 floor; range +0.20 (3391) to -1.70 (428A). Note: japan/japan-note.md. No orders.
+
+## Stage AU — Australia researcher — STARTED
+- Logged at 2026-10-07 06:41 UTC
+- Fired 06:40 UTC 2026-10-07; sealing for the next ASX session (expected 2026-10-08). Plan: universe -> seal baselines -> provenance -> unpriced-hunter-au waves -> edge_score -> note.
