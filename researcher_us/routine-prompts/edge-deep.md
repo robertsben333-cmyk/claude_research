@@ -9,7 +9,7 @@ read-back model and cron here and in `CLAUDE.md`'s stage table, in the same comm
 - Proposed cron `0 14 * * 1-5` = 14:00 UTC = **10:00 New York**, half an hour into the
   session so the option chain the baseline reads is live. **Move it to `0 15 * * 1-5` on or
   after 2026-11-02**, when US daylight saving ends and 14:00 UTC becomes 09:00 ET, before
-  the open. Earlier than stage E (17:04 UTC) on purpose: a deep hunt needs about two hours
+  the open. Earlier than stage E (17:04 UTC) on purpose: a deep hunt can take four hours
   and tonight's amc names must be finished before their 16:00 ET release. The realised
   move is scored from daily closes, so sealing the baseline earlier than stage E does not
   change what is measured.

@@ -29,7 +29,7 @@ back here.
 | --- | --- | --- |
 | writes to `<RUN>/edge/` | writes to **`<RUN>/edge-deep/`**, every file, same layout, plus `pick.json` | Stage E and E-P write to their own directories the same day. |
 | hunts every confirmed name | hunts **three names, drawn at random** by `deep_pick.py` | Depth costs turns. Random, seeded by date, so nobody chooses the names and each pick also has a stage E and E-P score. |
-| launches `unpriced-hunter` | launches **`deep-question-researcher`** (Opus 5.5, about twice a hunter's turns, `Bash` for curl and arithmetic) | Generated from `unpriced-hunter.md` plus `config/deep-addendum.md` by `scripts/sync_hunter_core.py`; same event check, source rule and output contract, so `impact_sum` sits on stage E's scale. |
+| launches `unpriced-hunter` | launches **`deep-question-researcher`** (Opus 5.5 at maximum effort, up to 400 turns, `Bash` for curl and arithmetic; cost is not a constraint on this stage) | Generated from `unpriced-hunter.md` plus `config/deep-addendum.md` by `scripts/sync_hunter_core.py`; same event check, source rule and output contract, so `impact_sum` sits on stage E's scale. |
 | launches `edge-sweep` | **the same `edge-sweep`**, on the whole universe | The pool the draw comes from must be the names stage E would hunt. |
 | step 0b sells, step 6b buys | **neither. No `alpaca_trade.py` call of any kind, not `mode`, not `plan`, not `status`.** | Stage E trades the one paper account. |
 | runs the V2 shadow ledger (6c) and `edge_grounded_score.py` (5b) | **skips both** | The shadow ledger is stage E's to feed; V2 on three names adds nothing to read. |
@@ -57,8 +57,8 @@ EARNINGS_DATA_BRANCH=main scripts/publish.sh "deep research: started for <D>"
 python3 researcher_us/scripts/deep_pick.py --run <RUN>/edge-deep
 ```
 
-Re-read the clock with `date -u` first. If it is past **13:30 ET** and the window has amc
-names, add `--no-amc`: a deep hunt needs about two hours and an amc name has to be done
+Re-read the clock with `date -u` first. If it is past **11:30 ET** and the window has amc
+names, add `--no-amc`: a deep hunt can take four hours and an amc name has to be done
 before its 16:00 ET release. The flag is recorded in `pick.json` because it changes the
 pool. Never re-draw to get "better" names, and never swap a picked name by hand; a name
 whose hunt fails stays in `pick.json` and goes in the note as failed.

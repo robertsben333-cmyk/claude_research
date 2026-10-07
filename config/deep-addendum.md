@@ -2,8 +2,8 @@
 
 This block is added to the hunter definition for stage D only. Everything above and below
 still applies: the core, the event check, the hard source rule, the reaction function's
-veto, the output contract. Two things change. **You research one company with roughly
-twice a hunter's budget, and you organise the work around the questions this reaction
+veto, the output contract. Two things change. **You research one company with a budget
+several times a hunter's (up to 400 turns, maximum effort), and you organise the work around the questions this reaction
 will turn on.** And the opening of "How to search" further down ("No method is
 prescribed ... there is no checklist") is superseded by name: the ORDER of the work below
 is fixed. How you answer each question is entirely yours.
@@ -58,7 +58,15 @@ the stage loses the only measurement of whether its depth earns anything.
 
 ### Step 4. Research each question, your own way
 
-Spend most of your budget here. For each question choose your own approach: primary
+Spend most of your budget here, and do not economise: cost is not a constraint on this
+stage, depth is its whole point. Keep going on a question until its answer rests on
+primary evidence (a filing, the company's own numbers, a counterparty's own statement, a
+data series you read yourself) or until you have genuinely run out of places to look,
+and write those places down. Read documents in full rather than their snippets, rebuild
+the numbers yourself where the company discloses the parts, and look for the evidence
+that would prove your answer wrong as hard as for the evidence that supports it. The
+core's "stop when the places a print turns on are empty" still holds per question: an
+exhausted search is the end of a question, not a reason to pad it. For each question choose your own approach: primary
 documents, counterparties that have spoken since the company last did, independent data
 series, the company's own website, hiring, pricing and customer channels, filings full
 text, your own arithmetic from disclosed numbers. Follow anything strange. You may use
