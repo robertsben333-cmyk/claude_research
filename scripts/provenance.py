@@ -55,6 +55,7 @@ HUNTERS = {
     "unpriced-hunter": "us",
     "unpriced-hunter-sonnet": "us-sonnet",
     "unpriced-searcher": "us-searcher",
+    "deep-question-researcher": "us-deep",
     "unpriced-hunter-jp": "jp",
     "unpriced-hunter-uk": "uk",
     "unpriced-hunter-de": "de",
@@ -82,6 +83,11 @@ MARKETS = {
     "US-P": {"dir": "edge-panel", "hunters": ["unpriced-searcher"],
              "lessons": "researcher_us/LESSONS.md",
              "skill": ".claude/skills/earnings-edge-panel/SKILL.md"},
+    # Stage D (2026-10-07): three names a day, one deep researcher each, frozen key
+    # questions and a frozen quick first read. Research only.
+    "US-D": {"dir": "edge-deep", "hunters": ["deep-question-researcher"],
+             "lessons": "researcher_us/LESSONS.md",
+             "skill": ".claude/skills/earnings-deep-research/SKILL.md"},
     "JP": {"dir": "japan", "hunters": ["unpriced-hunter-jp"],
            "lessons": "researcher_japan/LESSONS.md",
            "skill": ".claude/skills/researcher-japan-hunt/SKILL.md"},
@@ -237,7 +243,7 @@ def build_registry(ref="origin/main"):
     return out
 
 
-STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "JP": "jp", "EU": "eu", "AU": "au",
+STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
                "CA": "ca", "R": "rev"}
 
 
