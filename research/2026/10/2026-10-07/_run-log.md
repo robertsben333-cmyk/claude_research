@@ -32,3 +32,7 @@
 ## Stage J — wave 1 partial
 - Logged at 2026-10-07 01:12 UTC
 - 2670 (-1.3) and 2918 (0.0) banked; 428A file written; 3391, 5932 and 6255 still hunting.
+
+## Stage J — wave 1 progress
+- Logged at 2026-10-07 01:13 UTC
+- 428A (-1.7) and 5932 (-0.7) banked. 3391 and 6255 still hunting.
