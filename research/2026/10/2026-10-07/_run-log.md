@@ -36,3 +36,7 @@
 ## Stage J — wave 1 progress
 - Logged at 2026-10-07 01:13 UTC
 - 428A (-1.7) and 5932 (-0.7) banked. 3391 and 6255 still hunting.
+
+## Stage J — wave 1 complete
+- Logged at 2026-10-07 01:14 UTC
+- 3391 (+0.2) banked. Wave 1: 5/5 hunts written. Wave 2 (6255) in progress.
