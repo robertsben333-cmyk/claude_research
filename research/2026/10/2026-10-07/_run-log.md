@@ -96,3 +96,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-07 17:27 UTC
 - 10 searches done (unpriced-searcher, all 10 ran as the named agent); edge-scores.json written, 1 of 10 clears the 2.8 floor (RELL +5.0); V2 grounded 10/10. 10 packs, four judges launching.
+
+## Edge hunt (panel) — 2026-10-07 amc + 2026-10-08 bmo — DONE
+- Logged at 2026-10-07 17:34 UTC
+- 10/10 confirmed by sweep, 10 searched (unpriced-searcher named agent), 1 clears the 2.8 floor in the searcher key (RELL +5.0). Panel: all four judges ran on pinned models (opus5, opus55, sonnet55, fable51), full coverage, no retries. Selected (k>=3 of 4): RELL, 4/4. Stage E comparison: 10 overlap, Spearman(E impact_sum, panel_score)=+0.49. V2 grounded 10/10 before first print. No orders, no alpaca_trade.py, no shadow ledger.
