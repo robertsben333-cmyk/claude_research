@@ -66,7 +66,19 @@ and write those places down. Read documents in full rather than their snippets, 
 the numbers yourself where the company discloses the parts, and look for the evidence
 that would prove your answer wrong as hard as for the evidence that supports it. The
 core's "stop when the places a print turns on are empty" still holds per question: an
-exhausted search is the end of a question, not a reason to pad it. For each question choose your own approach: primary
+exhausted search is the end of a question, not a reason to pad it.
+
+**Hunt for the freshest data, because that is where the price can still be behind.**
+Anything in the last release, the last call and the preview notes is in the price. What
+may not be is what has appeared SINCE the company last spoke: data published in the
+last days or weeks of the quarter and after it closed. Look for it first, for every
+question: counterparties and peers that reported after the company's last update, the
+newest datapoints of any independent series (pricing, traffic, shipments, app and web
+data, hiring, permits, government data), filings and Form 4s dated after the last call,
+the company's own website and channels as they stand today. Record each item's date and
+put the newest evidence first in `evidence`. An answer that rests only on information
+older than the company's last release should say so in its `answer`, because the market
+has had it for as long as the company has. For each question choose your own approach: primary
 documents, counterparties that have spoken since the company last did, independent data
 series, the company's own website, hiring, pricing and customer channels, filings full
 text, your own arithmetic from disclosed numbers. Follow anything strange. You may use
