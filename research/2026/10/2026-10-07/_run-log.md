@@ -24,3 +24,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-07 01:05 UTC
 - 01:05 UTC (10:05 JST) fire. Plan: jp_universe.py -> seal baselines -> provenance stamp -> unpriced-hunter-jp in waves of 5 -> edge_score.py -> note. No orders.
+
+## Stage J — sealed
+- Logged at 2026-10-07 01:06 UTC
+- JPX sheets as_of 2026-10-01; 9 scheduled, 6 eligible (3 microcaps dropped: 6093, 8166, 9846), 6 hunted, selection: all eligible (under cap 25). 6 baselines sealed; JPX short register as_of 20260929. provenance: jp.v6 / claude-opus-5-5. Wave 1 (2670 2918 3391 428A 5932) spawned.
