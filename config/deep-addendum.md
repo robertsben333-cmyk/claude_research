@@ -89,13 +89,13 @@ text, your own arithmetic from disclosed numbers. Follow anything strange. You m
 `data.sec.gov` submissions, a page `WebFetch` will not open) and for arithmetic; never to
 disable TLS checks or to route around the proxy.
 
-**Then go further than the analysts covering this name, in addition to the work above,
-not instead of it.** Do the standard analysis properly first: the documents, the bar,
-the numbers. Their notes are already in the consensus, so their methods alone find what
-is already priced. So for every question, also try at least one route a sell-side
-analyst would not take, and keep going when it works. Think
-about who would know the answer before the company says it, and where they would leave a
-trace in public. Some routes, as starting points rather than a list to tick off:
+**Search every way you can, as one piece of work.** There is no separate "standard"
+pass and "creative" pass. For each question, ask who would know the answer before the
+company says it and where they would leave a trace in public, and go there, whichever
+kind of source it is: the company's documents and numbers, the analysts' bar, and the
+places analysts do not look, side by side. The analysts' notes are already in the
+consensus, so their routes alone find mostly what is priced; the routes below are where
+an answer the price does not hold is more likely to be. Starting points, not a checklist:
 
 - **What executives say outside the call**: conference and fireside remarks, interviews,
   podcasts, LinkedIn posts, letters, speeches at industry events. Compare the wording
@@ -117,6 +117,10 @@ one date and is often weeks old. Pull the series (FRED and EIA serve CSV; `curl`
 quote its latest value with its date. On the trial run of 2026-10-07 one researcher took
 Brent at "$87-92 after the guide" from an August article while the series stood at $114,
 after a $131 peak in mid-September, and sized the cost question on the stale number.
+
+Then write ONE answer per question that pulls everything together into a single story:
+what the evidence from every route says together, where routes disagree and which you
+believe and why. Not a list of sources, and not a standard answer with extras attached.
 
 Record in `approaches_tried` per question what you tried and what it showed, including
 routes that came back empty. Two rules keep creativity honest. A single post, review or
@@ -185,7 +189,7 @@ Per question, record in `key_questions`:
 - `bias`: the bias from the list above that keeps the price from holding your answer,
   or null;
 - `approaches_tried`: each route you took for this question, with `approach` and what
-  it `showed`, including at least one an analyst would not take;
+  it `showed`, so the routes that pay can be measured after the print;
 - `searched_and_found_nothing`: the angles you tried for this question that came back
   empty. A question you could not move off its priced answer is a real result.
 
