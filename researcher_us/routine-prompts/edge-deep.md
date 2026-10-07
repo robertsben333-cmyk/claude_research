@@ -9,8 +9,8 @@ read-back model and cron here and in `CLAUDE.md`'s stage table, in the same comm
 - Proposed cron `0 14 * * 1-5` = 14:00 UTC = **10:00 New York**, half an hour into the
   session so the option chain the baseline reads is live. **Move it to `0 15 * * 1-5` on or
   after 2026-11-02**, when US daylight saving ends and 14:00 UTC becomes 09:00 ET, before
-  the open. Earlier than stage E (17:04 UTC) on purpose: a deep hunt can take four hours
-  and tonight's amc names must be finished before their 16:00 ET release. The realised
+  the open. Earlier than stage E (17:04 UTC) on purpose: every name, amc tonight or bmo
+  tomorrow, is researched and scored before today's 16:00 ET close. The realised
   move is scored from daily closes, so sealing the baseline earlier than stage E does not
   change what is measured.
 - Pin the model to `claude-opus-5` (it reads back as `claude-opus-5-5`); an empty model
@@ -32,7 +32,7 @@ Read CLAUDE.md, then invoke the skill `earnings-deep-research` and follow it exa
 
 Re-read the clock with `date -u`. You fire at 14:00 UTC, before stage E (17:04) and E-P (17:06). You write ONLY to <RUN>/edge-deep/ and you seal your own baselines. The researchers never see stage E's or E-P's files; you read those only at the very end, for the comparison table in the note, and only if they exist by then. Do not wait for them.
 
-THE DRAW IS RANDOM AND IT STANDS. Never re-draw, never swap a name. An amc name's researcher stops at 15:45 ET.
+THE DRAW IS RANDOM AND IT STANDS. Never re-draw, never swap a name. Every researcher, amc and bmo alike, stops at 15:30 ET, and the run is scored before the 16:00 ET close. If you fire after 15:00 ET, publish that it was too late and stop.
 
 YOU PLACE NO ORDERS. Do not run alpaca_trade.py in any form - not mode, not plan, not status. Do not run the V2 shadow ledger.
 

@@ -57,11 +57,14 @@ EARNINGS_DATA_BRANCH=main scripts/publish.sh "deep research: started for <D>"
 python3 researcher_us/scripts/deep_pick.py --run <RUN>/edge-deep
 ```
 
-Re-read the clock with `date -u` first. If it is past **11:30 ET** and the window has amc
-names, add `--no-amc`: a deep hunt can take four hours and an amc name has to be done
-before its 16:00 ET release. The flag is recorded in `pick.json` because it changes the
-pool. Never re-draw to get "better" names, and never swap a picked name by hand; a name
-whose hunt fails stays in `pick.json` and goes in the note as failed.
+**Everything is scored before today's US close, for every name** (operator's instruction,
+2026-10-07). An amc name reports after today's close and a bmo name before tomorrow's
+open, and both windows start at today's close, so both are researched and scored today.
+Re-read the clock with `date -u` first. If it is past **15:00 ET**, there is no time to
+research before the close: publish a run-log line and a note saying the fire was too late,
+and stop. `--no-amc` is kept in the script for history and is no longer used. Never re-draw
+to get "better" names, and never swap a picked name by hand; a name whose hunt fails stays
+in `pick.json` and goes in the note as failed.
 
 If the pool is empty, publish the run log line and the note saying so, and stop.
 
@@ -75,9 +78,9 @@ python3 scripts/provenance.py stamp --run <RUN>/edge-deep --market US-D --orches
 
 Launch one `deep-question-researcher` per picked name. Give each exactly: ticker,
 company, event date and session, the absolute path to its `baselines/<TICKER>.json`, its
-output path `<RUN>/edge-deep/hunts/<TICKER>.json`, its row from `sweep.json`, and for an
-amc name the line **"Your research stops at 15:45 ET today (run `date -u`); emit what you
-have by then."** Nothing else: not your view, not the other names, not stage E's or E-P's
+output path `<RUN>/edge-deep/hunts/<TICKER>.json`, its row from `sweep.json`, and for
+EVERY name, amc and bmo alike, the line **"Your research stops at 15:30 ET today (run
+`date -u`); emit what you have by then."** Nothing else: not your view, not the other names, not stage E's or E-P's
 files.
 
 **If `deep-question-researcher` comes back "not found"** (an agent definition added on a
@@ -90,7 +93,11 @@ Check each hunt as it lands: it must carry `questions_frozen`, `pre_research`,
 `pre_research` is scored like any other, flagged in the run log, and never repaired by
 hand: a reconstructed freeze is not a freeze. Publish after each hunt lands.
 
-## 5. Score
+## 5. Score, before 16:00 ET
+
+Score as soon as the last hunt lands and in any case before the 16:00 ET close: a score
+written after the close of the day the window starts is not a forecast. If a hunt is still
+running at 15:40 ET, score without it and say so in the note.
 
 ```bash
 python3 researcher_us/scripts/edge_score.py --run <RUN>/edge-deep

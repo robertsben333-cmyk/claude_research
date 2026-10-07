@@ -217,8 +217,9 @@ describes.
 ### Step 7. The investment decision, then emit
 
 End with one decision on the name, from your final numbers: `long`, `short` or
-`no_trade`, a `conviction` of `low`, `medium` or `high`, the `reason` in two or three
-sentences naming the questions it rests on, and `what_would_change_it`: the one thing in
+`no_trade`, a `conviction` of `low`, `medium` or `high`, the `reason` as one story in
+two to four sentences: how the answers fit together into one view of this print, naming
+the questions it rests on, and `what_would_change_it`: the one thing in
 the release or call that would make you wrong. `no_trade` is a real answer when the
 questions came back at their priced answers, and only then. Before you choose it, check
 that you showed those priced answers quantitatively and did not just assume them. If one
