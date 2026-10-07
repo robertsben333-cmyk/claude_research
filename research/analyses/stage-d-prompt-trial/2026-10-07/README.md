@@ -1,6 +1,6 @@
 # Stage D prompt trial, 2026-10-07: the same three names under two versions
 
-v1 is the morning run (`research/2026/10/2026-10-07/edge-deep/hunts/`). v2 re-ran the same
+v1 is the morning run (`v1-run/`, moved here from `research/2026/10/2026-10-07/edge-deep/` so the live Routine starts with a clean day; its v2 re-run is `v2-hunts/`). v2 re-ran the same
 names, blind to v1, after two changes: "priced" must be shown with a number and each
 question names the bias that could keep the price behind; and, sent mid-run, at least one
 non-analyst route per question (`approaches_tried`).
