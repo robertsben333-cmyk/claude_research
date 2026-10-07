@@ -33,7 +33,7 @@ back here.
 | launches `edge-sweep` | **the same `edge-sweep`**, on the whole universe | The pool the draw comes from must be the names stage E would hunt. |
 | step 0b sells, step 6b buys | **neither. No `alpaca_trade.py` call of any kind, not `mode`, not `plan`, not `status`.** | Stage E trades the one paper account. |
 | runs the V2 shadow ledger (6c) and `edge_grounded_score.py` (5b) | **skips both** | The shadow ledger is stage E's to feed; V2 on three names adds nothing to read. |
-| step 2b stamps `--market US` | step 2d stamps **`--market US-D`** on the run, after the draw | Records `deep-question-researcher`'s prompt version (`us-deep.vN`). |
+| step 2b stamps `--market US` | step 2d stamps **`--market US-D`** on `<RUN>/edge-deep`, after the draw | Records `deep-question-researcher`'s prompt version (`us-deep.vN`). |
 | run-log headings `Edge hunt — …`, publish `edge hunt: …` | **`Deep research — …`** and **`deep research: …`** | All stages append to one `_run-log.md`. |
 
 Every `--run <RUN>/edge` in the stage E skill becomes `--run <RUN>/edge-deep`. Never read
@@ -68,7 +68,7 @@ If the pool is empty, publish the run log line and the note saying so, and stop.
 ## 2d. Stamp provenance (after the draw, before the researchers)
 
 ```bash
-python3 scripts/provenance.py stamp --run <RUN> --market US-D --orchestrator-model "<model>"
+python3 scripts/provenance.py stamp --run <RUN>/edge-deep --market US-D --orchestrator-model "<model>"
 ```
 
 ## 3. Three deep researchers, in ONE message, in parallel
