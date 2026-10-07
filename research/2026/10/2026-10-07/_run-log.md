@@ -64,3 +64,7 @@
 ## Stage EU — universe and baselines sealed
 - Logged at 2026-10-07 13:43 UTC
 - eu_universe.py --date 2026-10-08: 9 scheduled, 6 eligible at $100k floor, 6 hunted (all eligible, under cap 20): uk TSCO, NFG, FAN; de SZU; fr ALLIX; fi ADMCM. Largest market uk at 50%, 4 markets. No market_closed. Calendar sources: UK RNS calendar read (confirmed NFG/TSCO/FAN), Yahoo read in all ten, issuer calendars read (EQS, Inderes, Nasdaq fincal, Euronext Oslo, bankier). Baselines sealed ~13:43 UTC on intraday prices (not closes). anchor_covered true on 2 (FAN, NFG). provenance stamped (all hunters claude-opus-5-5). Wave 1: TSCO, NFG, FAN, SZU, ALLIX; wave 2: ADMCM.
+
+## Stage EU — wave 1 banked
+- Logged at 2026-10-07 13:52 UTC
+- 5 of 5 hunts returned: TSCO -1.2, NFG +0.2, FAN +0.3, SZU +0.2, ALLIX -0.4 (impact_sum). SESSION ERROR: ALLIX (Wallix) was sealed bmo/session_unresolved for 2026-10-08, but the issuer's own 16 Jul release plus ABC Bourse's 'Après clôture' listing and prior H1 timestamps (18:30/18:45 Paris) put it AMC on 2026-10-08; the reaction window is 10-08 close -> 10-09 close. Baseline left sealed; hunter's session_check says amc; resolve must use the amc window. Wave 2: ADMCM (fi, nordic hunter).
