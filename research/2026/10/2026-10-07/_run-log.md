@@ -81,3 +81,7 @@
 - Logged at 2026-10-07 17:07 UTC
 - Universe 10 names (PEP, LEVI, APLD, NG, ANGO, HELE, TLRY, RELL, RGP, BYRN); baselines sealed for all 10, 8 with an option chain (RGP, BYRN none). Plan: 1 sweep + 1 unpriced-hunter per confirmed name.
 - Step 0b NOT run: auto-mode classifier refused alpaca_trade.py verify (Real-World Transactions), the same block recorded since 2026-09-28. No exit placed from this session; amc_open bmo legs due today (if any) were not sold here. Fix needs a narrow allow rule for alpaca_trade.py in .claude/settings.json, which a session may not write.
+
+## Edge hunt (panel) — 2026-10-07 amc + 2026-10-08 bmo — STARTED
+- Logged at 2026-10-07 17:09 UTC
+- Stage E-P: 10 names in window (PEP, LEVI, APLD, NG, ANGO, HELE, TLRY, RELL, RGP, BYRN), own baselines sealed in edge-panel/baselines; plan: 1 edge-sweep, up to 10 unpriced-searcher, then 4 blind judges. No orders.
