@@ -1,13 +1,15 @@
 # Stage D Routine prompt — three names a day, researched in depth
 
-**NOT INSTALLED YET (merged to main 2026-10-07).** The operator asked for the Routine on
-2026-10-07, and `create_trigger` refused to make a fresh-session Routine from a session
-inside a private project ("create_new_session_on_fire is not supported for routines
-created from a private project"), so it has to be created in the Routines UI. Create it as
-a standalone Routine (a fresh session per fire, like stages J, EU, AU, CA, R and E-P), not
-inside the project: a project Routine fires into one existing session, so every run would
-share one growing context. Then record the trigger id, the read-back model and cron here
-and in `CLAUDE.md`'s stage table, in the same commit.
+**INSTALLED 2026-10-07: "US - Deep Search", `trig_01VkHFt9yWxUD9bjhNQ7CYpy`**, created by
+the operator in the Routines UI at 12:55 UTC (`create_trigger` refuses a fresh-session
+Routine from a session inside a private project). Read back at 18:55 UTC: cron
+**`35 17 * * 1-5` UTC** (13:35 New York, not 13:30), enabled, fresh session per fire,
+Claude Docs connector attached, and **`model` EMPTY**, so it resolves to the account
+default: its first fire (2026-10-07 17:35 UTC, `cse_01SN11L8UQ6HcAj9zo9VuDxY`) ran the
+orchestrating session on **`claude-sonnet-5-5`**. The researchers are pinned to Opus 5.5 in
+their own definition, so the research itself is unaffected; the orchestrator is not. A
+session did not change it, because a Routine's model moves only on the operator's word.
+**The UTC cron must move to `35 18 * * 1-5` on or after 2026-11-02.**
 
 - **Schedule: weekdays at 13:30 America/New_York.** In the UI pick that time zone, so it
   follows US daylight saving by itself. In a UTC cron it is `30 17 * * 1-5`, and **that

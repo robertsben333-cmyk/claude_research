@@ -1293,6 +1293,9 @@ def main():
     check("stage D writes to edge-deep, stamps US-D and places no orders",
           "<RUN>/edge-deep/" in d_skill and "--market US-D" in d_skill
           and "No `alpaca_trade.py` call of any kind" in d_skill)
+    check("stage D researchers each keep their own work directory",
+          "<RUN>/edge-deep/work/<TICKER>/" in d_agent
+          and "<RUN>/edge-deep/work/<TICKER>/" in d_skill)
     dc = cfg.get("edge_deep") or {}
     check("stage D config carries places_orders: false and three names a day",
           dc.get("places_orders") is False and dc.get("names_per_day") == 3)

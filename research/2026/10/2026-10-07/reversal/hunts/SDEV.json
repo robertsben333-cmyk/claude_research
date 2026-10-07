@@ -1,0 +1,67 @@
+{
+  "ticker": "SDEV",
+  "drop_date": "2026-10-07",
+  "window": {"from": "close of 2026-10-07", "to": "close of 2026-10-08"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Zero findings, so 0. This is the third session of selling after the Fugazi Research short report of 2026-10-05 (-47%, -17.5%, now -14%). Every overhang I could source is either already public and read by the tape (FD NAV of about $0.89 a share against $2.80 spot, a 212.9m-share resale S-3/A filed 16:40 ET 10-06) or lands after the window (EFFECT date unknown, the 30% warrant tranche on 10-16, the 10-Q, the 11-10 meeting). I found no dated event and no gap-closing mechanism inside 10-07 close to 10-08 close. abs_move stays large because this name's ATR14 is 50%.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "My own fully diluted NAV, built from the company's 8-K of 2026-10-05 (SKY fair value $180.2m plus $7.2m cash, no debt; https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/sdev20260914_8k.htm) and the S-3/A of 2026-10-06 (51,751,359 shares outstanding, about 219.3m on full warrant exercise; https://www.sec.gov/Archives/edgar/data/1389545/000143774926032232/sdev20261004_s3a.htm). That gives about $0.89 a share fully diluted and $3.62 on the basic count. Spot $2.795 is 0.77x basic and about 3.1x fully diluted. No finding is sized against this bar, because nothing moves it inside the window.",
+  "cause": {
+    "label": "short_report",
+    "seller_is_finished_pct": 30,
+    "confidence_pct": 75,
+    "what_happened": "Fugazi Research published a short report on the morning of Monday 2026-10-05, calling the stock 'uninvestable at any price above zero'. It cited the 167.5m-share pre-funded warrant overhang (next tranche 10-16), the SKY concentration and governance. The stock fell from $7.48 to $3.94 that day, then -17.5% on 10-06. Today is -14%, all of it intraday and none of it gap, on 7.9x volume. The tape was still digesting the resale S-3/A No. 2 filed at 16:40 ET on 10-06. I found no new company-specific item dated today.",
+    "evidence": [
+      {"claim": "Fugazi Research short report on 10-05: the stock fell about 55% intraday from a $7.48 prior close; warrants for 167.5m shares unlock in tranches, the next on Oct 16", "url": "https://tickeron.com/blogs/why-is-stablecoin-development-corporation-sdev-stock-down-55-35-today-17822/", "timestamp": "2026-10-05"},
+      {"claim": "Benzinga: shares falling Monday on the Fugazi short report (page 403; snippet only)", "url": "https://www.benzinga.com/trading-ideas/short-ideas/26/10/62166937/why-is-stablecoin-development-stock-falling-monday", "timestamp": "2026-10-05"},
+      {"claim": "Resale S-3/A Pre-Effective Amendment No. 2 registers 212,876,259 shares for R01, Framework, Tether and Sky Frontier; 51,751,359 shares outstanding; R01 and Framework hold 87.6% combined", "url": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926032232/sdev20261004_s3a.htm", "timestamp": "2026-10-06 16:40 ET"},
+      {"claim": "Preliminary Q3: 2.32bn SKY, fair value $180.2m at $0.07764, cash $7.2m, no debt, no SKY sold", "url": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/sdev20260914_8k.htm", "timestamp": "2026-10-05 08:05 ET"},
+      {"claim": "NYSE American 401(d) statement: the company knows of no reason for the unusual trading (this was during the run-up)", "url": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031464/sdev20260929_8k.htm", "timestamp": "2026-09-29 16:17 ET"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -20,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "A further 30% of the January 2026 pre-funded warrants becomes exercisable on 2026-10-16 (S-3/A). That is after the window. The resale S-3 can be declared effective on an undated business day.",
+    "what_would_change_my_mind": "Any of these on EDGAR before the 10-08 close would give a dated sign: an EFFECT notice or a 424B3 for registration 333-298229 (negative), or a company rebuttal 8-K to the short report (positive)."
+  },
+  "positioning_check": "Not found. The Nasdaq short-interest API returned HTTP 503 and the baseline marks short interest unavailable. No option chain exists (no_options_market), so there is no skew. The float is the structural fact: R01 and Framework hold about 87.6% of 51.75m shares (S-3/A, 2026-10-06), which leaves roughly 6.4m shares outside them. Tether and Sky Frontier hold about 5.74m exercisable each. Today's turnover of about $60m at around $3 is several times that float. Fugazi Research is a disclosed short. I have no dated borrow or short-interest figure, so a squeeze cannot be sized.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Resale S-3 333-298229 is at Pre-Effective Amendment No. 2 (16:40 ET, 2026-10-06), registering 212.9m shares, about 4.1x the shares outstanding. An EFFECT order lets R01, Framework, Tether and Sky Frontier resell, each capped at 10% of trailing 30-day ADV a day. No CORRESP, EFFECT or 424B3 was on EDGAR at the screen and no effectiveness date is stated, so I cannot place it inside the window.", "expected_impact_pct": -4.0, "resolves_by": "undated; earliest plausibly 2026-10-08, more likely later", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926032232/sdev20261004_s3a.htm"},
+    {"finding": "A further 30% of the 167.5m January 2026 pre-funded warrants ($0.05 exercise, $0.85 cost basis) becomes exercisable on 2026-10-16. R01 and Framework are currently above their beneficial-ownership caps, so Tether and Sky Frontier are the near-term exercisers.", "expected_impact_pct": -3.0, "resolves_by": "2026-10-16", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926032232/sdev20261004_s3a.htm"},
+    {"finding": "Spot is about 3.1x fully diluted NAV (about $0.89 a share from $187.4m of SKY plus cash over about 219.3m FD shares). Before the run-up, at $0.86 on 2026-09-10, it was near 1x. That is a repricing gap with no mechanism that closes it inside the window.", "expected_impact_pct": -5.0, "resolves_by": "undated", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/sdev20260914_8k.htm"},
+    {"finding": "The Q3 10-Q is referenced in the 8-K as forthcoming. Zacks estimates 2026-11-06 (is_estimate: true, not a company date).", "expected_impact_pct": 0.0, "resolves_by": "2026-11-06 (estimate)", "source": "https://api.nasdaq.com/api/analyst/SDEV/earnings-date"},
+    {"finding": "Annual meeting on 2026-11-10: Class I directors and auditor ratification only. No dilution proposal.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-10", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031344/sdev20260921_def14a.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR atom feed for CIK 1389545: nothing filed after the 2026-10-06 16:40 ET S-3/A. No CORRESP, EFFECT, 424B3, Form 4, Form 144 or new 8-K (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001389545&type=&dateb=&owner=include&count=20&output=atom)",
+    "A company response or rebuttal to the Fugazi Research report, via WebSearch: none found",
+    "October 2026 company press releases, via WebSearch: none found beyond the 8-Ks",
+    "Nasdaq short-interest API: HTTP 503 (https://api.nasdaq.com/api/quote/SDEV/short-interest?assetclass=stocks)",
+    "Insider buying: the baseline Nasdaq insider summary shows 0 open-market buys over 3 and 12 months",
+    "Going-concern and minimum-bid-price language: no hits in 550 days (baseline text probes)",
+    "SKY token price for 2026-10-07: search snippets were undated (Coinbase showed about $0.0587), so I did not use them; NAV transmission inside the window cannot be sourced",
+    "DEF 14A for a dilution or warrant vote inside the window: the meeting is 2026-11-10, directors and auditor only",
+    "Tickeron showed a 2026-10-07 11:37 EDT price of $2.88. That is before the screen instant and consistent with the baseline, so it is not contamination. No price after the screen instant appeared."
+  ],
+  "abs_move_pct": 11.0,
+  "p_up": 50,
+  "rejected_candidates": [
+    {"candidate": "Resale S-3 effectiveness would release 212.9m registered shares", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926032232/sdev20261004_s3a.htm", "reason": "outside_window", "detail": "No EFFECT notice or acceleration request on EDGAR and no stated date, so it cannot be placed in the 10-07 to 10-08 window; filed in outside_window"},
+    {"candidate": "Spot at about 3.1x fully diluted NAV, so the fall has further to go", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926031972/sdev20260914_8k.htm", "reason": "outside_window", "detail": "A repricing claim with no in-window mechanism: the short report put it in front of the tape on 10-05 and the S-3/A share count was public all of 10-07; filed in outside_window"},
+    {"candidate": "Warrant tranche of 30% unlocks on 10-16", "source": "https://www.sec.gov/Archives/edgar/data/1389545/000143774926032232/sdev20261004_s3a.htm", "reason": "outside_window", "detail": "Dated 2026-10-16, after the 10-08 close"}
+  ],
+  "baseline_tension": "Two signals point negative: 7.9x volume and a 50% ATR. The name's own 57 comparable falls are flat (median next close 0.0%, 45.6% up), and two of the last four drops bounced hard (+15.2% after 09-23, +41.3% after 09-30) on a tiny float with a public short seller. I found no in-window evidence to break that tie, so p_up stays at 50 and abs_move stays wide.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed: researcher_reversal/LESSONS.md is deliberately empty (nothing has resolved)"],
+  "sources_used": 9
+}

@@ -1,0 +1,59 @@
+{
+  "ticker": "CBAT",
+  "drop_date": "2026-10-07",
+  "window": {"from": "close of 2026-10-07", "to": "close of 2026-10-08"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "Zero: no cause for the fall could be sourced, no dated event lands inside the window (the 2026-10-05 6-K closed the Nasdaq bid-price matter, the $500m F-3 shelf has no ATM sales agreement or 424B5 takedown on file), so p_up stays at 50 and the scaled number is 0. The baseline's own lean (low 0.6x volume, 65.7% up-rate over 35 comparable falls) is already in the sealed priced_lean and is not a finding.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced: no cause, no option anchor (chain unusable), sized against the baseline's own comparable falls (median |next close| 4.76%, n=35) and ATR14 14.2%",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 0,
+    "confidence_pct": 20,
+    "what_happened": "Second consecutive ~-9% session (-9.16% on 2026-10-06, -9.66% to 15:05 ET today), almost all intraday, on 0.6x normal volume, after a 138% 60-day run-up and two days after Nasdaq confirmed regained bid-price compliance; no filing, press release or news item found for either day.",
+    "evidence": [
+      {"claim": "Nasdaq notified CBAK on 2026-10-05 that it regained compliance with Rule 5550(a)(2) after 13 consecutive closing bids at or above $1.00 (2026-09-16 to 2026-10-02); matter closed. No offering, ATM or reverse split in the filing.", "url": "https://www.sec.gov/Archives/edgar/data/2086841/000121390026106829/ea030773001-6k_cbakenergy.htm", "timestamp": "2026-10-05"},
+      {"claim": "EDGAR full-text search for 'at-the-market' from 2026-08-01 to 2026-10-07 returns only the F-3 of 2026-08-26; no 424B5 or sales agreement filed since the shelf went effective 2026-09-04.", "url": "https://efts.sec.gov/LATEST/search-index?q=%22at-the-market%22&ciks=0002086841&startdt=2026-08-01&enddt=2026-10-07", "timestamp": "2026-10-07"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "none found inside the window; next earnings 2026-11-09 is a Zacks cadence estimate, not a company announcement",
+    "what_would_change_my_mind": "A 424B5 / registered-direct 6-K under the effective $500m F-3 filed tonight, or a company press release explaining the two-day slide."
+  },
+  "positioning_check": "Short interest 882,475 shares at the 2026-09-15 settlement, up 47.7% from 597,523 on 2026-08-31, days to cover 1.89 (https://api.nasdaq.com/api/quote/CBAT/short-interest?assetclass=stocks); lags about eight business days, so the position carried into the 10-06/10-07 fall is not observable. Float not sourced. Option chain unusable (ATM legs not two-sided), so no skew. No insider trades in 3 or 12 months (Nasdaq insider-trades API).",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Effective $500m universal F-3 shelf (filed 2026-08-26, EFFECT 2026-09-04) with going-concern language in its risk factors; any takedown or ATM agreement would be supply, but none is filed or dated.", "expected_impact_pct": 0.0, "resolves_by": "undated", "source": "https://www.sec.gov/Archives/edgar/data/2086841/000121390026093997/ea0303356-f3_cbak.htm"},
+    {"finding": "Spot $1.075 sits within 7.5% of $1.00; a renewed sub-$1 run would restart a 30-business-day Nasdaq bid-price clock, which cannot produce a notice inside the window.", "expected_impact_pct": 0.0, "resolves_by": "2026-11 or later", "source": "https://www.sec.gov/Archives/edgar/data/2086841/000121390026106829/ea030773001-6k_cbakenergy.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions (baseline forward block): last filing the 2026-10-05 6-K, nothing on 10-06 or 10-07",
+    "EDGAR full-text 'at-the-market' 2026-08-01..2026-10-07: only the F-3 (https://efts.sec.gov/LATEST/search-index?q=%22at-the-market%22&ciks=0002086841&startdt=2026-08-01&enddt=2026-10-07)",
+    "WebSearch 'CBAK Energy CBAT October 2026' and '\"CBAK Energy\" news': latest company news is the 2026-08-20 Nanjing Phase II capacity release; nothing dated October",
+    "WebSearch 'CBAT stock falls CBAK Energy shares down': no explanation for 10-06 or 10-07",
+    "WebSearch for China battery sector moves on 2026-10-07: nothing dated that day (China mainland markets are typically shut for Golden Week in early October, not verified)",
+    "Baseline text probes: no going-concern hit in EDGAR full text (though the F-3 body contains the auditor's substantial-doubt language), no lock-up, reverse split or non-reliance",
+    "No price or quote dated after the 15:05 ET screen instant was seen"
+  ],
+  "abs_move_pct": 6.0,
+  "p_up": 50,
+  "rejected_candidates": [
+    {"candidate": "Effective $500m F-3 shelf could support an overnight registered direct", "source": "https://www.sec.gov/Archives/edgar/data/2086841/000121390026093997/ea0303356-f3_cbak.htm", "reason": "outside_window", "detail": "no sales agreement, 424B5 or dated takedown; capacity, not an event inside the window"},
+    {"candidate": "Going-concern doubt stated in F-3 risk factors", "source": "https://www.sec.gov/Archives/edgar/data/2086841/000121390026093997/ea0303356-f3_cbak.htm", "reason": "outside_window", "detail": "disclosed 2026-08-26, nothing dated to re-surface it before 2026-10-08 close"},
+    {"candidate": "Regained Nasdaq bid-price compliance", "source": "https://www.sec.gov/Archives/edgar/data/2086841/000121390026106829/ea030773001-6k_cbakenergy.htm", "reason": "outside_window", "detail": "public since 2026-10-05, before both down days; no further event in the window"}
+  ],
+  "baseline_tension": "Nothing found cuts against the baseline: low 0.6x volume and the name's own 65.7% next-day up-rate lean mildly positive, but with no sourced cause or mechanism that lean stays in the sealed baseline rather than in a finding.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 5
+}

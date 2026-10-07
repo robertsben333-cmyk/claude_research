@@ -116,3 +116,15 @@
 ## Stage CA — Canada researcher — DONE
 - Logged at 2026-10-07 18:43 UTC
 - 3 scheduled / 2 eligible / 2 hunted (FTG, RCH); anchor arms options 0 / register 2 (sealed 14:34 ET, neither name has a Montreal chain); calendar confirmed 2, vendor_only 1; register_business_date 2026-10-06; filing_only drops 0. impact_sum FTG -1.00, RCH -1.70, 0 above floor 2.8. Defects: short-register snapshot stores only the day's names, so short_change_pct_pts can never compute across different-name days; publish.sh leaves the snapshot untracked (committed by hand 4e85f81); eu_pdftext.py garbled RCH's Q2 MD&A.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-10-07 19:04 UTC
+- 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET window. Plan: --intraday screen K=15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-10-06, note before 16:00 ET (shed names if needed). Repo was already checked out (CLAUDE.md present), no clone.
+
+## Stage R — reversal researcher — sealed
+- Logged at 2026-10-07 19:08 UTC
+- Intraday screen 15:05 ET: 5,962 screened, 65 passed floors, 15 hunted; largest sector Health Care 5/15 (33%), no warning; SPY -0.23%. 15 baselines sealed 19:05:56 UTC before any hunter. Hunters capped at 8 concurrent by the session; 7 queued. 2026-10-06 run all pending (window closes today); resolved 2026-10-05 and pooled 09-21→10-05 instead. Note: requests was missing from the container and had to be pip-installed before the screen ran.
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-07 19:14 UTC
+- 15 of 15 hunted and rankable; no name clears the 2.8 floor; impact_sum −2.00…+2.00 (AUUD +2.00 top, YFOR/SAIQ −2.00 bottom); overshoot_pct 0 on all 15 (no leg-1 finding). Resolved 2026-10-05 (impact_sum ρ +0.34 vs neg_atr14 +0.25, n 15); pooled 09-21→10-05 d1 impact_sum ρ +0.053 vs neg_atr14 +0.124 — has not beaten the free control. 2026-10-06 pending. Note published ~15:16 ET, before the close. No orders.

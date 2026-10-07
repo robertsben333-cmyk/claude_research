@@ -1,0 +1,76 @@
+{
+  "ticker": "SAIQ",
+  "drop_date": "2026-10-07",
+  "window": {"from": "close of 2026-10-07", "to": "close of 2026-10-08"},
+  "expected_move_pct": -3.0,
+  "conviction_note": "No dated event lands inside the window. The only filed finding is a small negative supply inference: freely tradable rights-conversion shares make up most of a float of under 1M shares. abs_move is set from this name's own 48% median absolute next-day move and its 58% ATR, cut to 30 because the sample is four days. p_up of 45 leans slightly on the base rate (18x volume, deep fall, high ATR, 1 of 4 own falls up), giving (0.90-1)*30 = -3.0. That is close to impact_sum (-2.0), and both are small against a stock that moved +260% one session last week.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -2.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced: no consensus, no option chain, no short interest. Sized against the baseline's own comparable falls (median abs next close 48.06%, n=4, all within the first week of trading) and ATR14 58.1%",
+  "cause": {
+    "label": "index_or_flow",
+    "seller_is_finished_pct": 20,
+    "confidence_pct": 30,
+    "what_happened": "SAIQ started trading 2026-10-02 after the de-SPAC with Columbus Acquisition closed on 10-01. On 10-07, its fourth session after a +260% spike on 10-05, it gapped down 18% overnight and fell another 13.5% intraday to $3.65 at 15:05 ET on 18x volume. That trading is about 0.9M shares, roughly the whole tradable float. The previous day, at 13:29 ET, the company had disclosed that SEALSQ's $10M PIPE was priced at $10.79 with a price-protection reset of up to 1,073,216 extra shares. No same-day news was found.",
+    "evidence": [
+      {"claim": "Business combination closed 2026-10-01; SAIQ began trading on Nasdaq 2026-10-02", "url": "https://www.sec.gov/Archives/edgar/data/2101411/000121390026105923/ea0307430-6k_wisesat.htm", "timestamp": "2026-10-02 01:28 UTC"},
+      {"claim": "2,515,182 CAC shares redeemed out of 4,494,439 entitled to vote (incl. 1.5M insider, 234,290 private-unit and 210,000 representative shares), so roughly 35k public shares remain (derived); units carried one right per unit at 1/7 share", "url": "https://www.sec.gov/Archives/edgar/data/2028201/000121390026107198/ea0307185-8k_columbus.htm", "timestamp": "2026-10-06"},
+      {"claim": "SEALSQ $10M PIPE at $10.79 per share, closed 10-01, with up to 1,073,216 additional shares if the 10-day VWAP ending on the 60th day after closing is below the purchase price; SEALSQ under customary lock-up", "url": "https://www.sec.gov/Archives/edgar/data/2101411/000121390026107012/ea030782301ex99-1.htm", "timestamp": "2026-10-06 17:29 UTC"},
+      {"claim": "CAC IPO was 6,000,000 units of one share plus one right (1/7 share); sponsor 234,290 private units; 1,500,000 insider shares", "url": "https://www.sec.gov/Archives/edgar/data/2028201/000101376225004333/ea023354601ex4-5_columbus.htm", "timestamp": "2025 (FY2024 10-K exhibit 4.5)"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -10,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Nasdaq Opening Bell ceremony 2026-10-09 09:30 ET, one session after the window closes. Nothing dated inside the window was found.",
+    "what_would_change_my_mind": "A shell-company 20-F or 6-K filed tonight with a cap table showing the rights shares locked or not yet delivered, or a resale registration (F-1) for the sponsor or PIPE shares filed inside the window."
+  },
+  "positioning_check": "Short interest unavailable: no Nasdaq settlement yet for a ticker listed 2026-10-02, and the FINRA lag would hide any position taken during the fall anyway. No option market, so no skew. No Form 4s (foreign private issuer). Derived float: about 35k unredeemed public shares plus about 890k shares from converting 6,234,290 rights at 1/7, plus 210k representative shares whose lock-up status was not checked. WISeKey's 25M shares, the 1.5M insider shares and the about 927k PIPE shares are presumed locked (the PIPE lock-up is sourced; the others were not verified in the 424B3, which was too large to fetch). Today's roughly 0.9M shares traded is about one float turnover.",
+  "findings": [
+    {
+      "finding": "Most of SAIQ's tradable float is roughly 890k shares from the 1/7 conversion of 6,234,290 CAC rights, acquired at a rights-level cost basis. With only about 35k public shares left after 2,515,182 were redeemed, that holder base keeps supplying stock into 2026-10-08. After a 50% five-day slide it is plausibly but not demonstrably spent.",
+      "leg": "new_information",
+      "mechanism_in_window": "The rights shares became deliverable at the 2026-10-01 closing and are freely tradable, so whatever is left of that supply can sell in the 2026-10-08 session. It is undated and there is no evidence it is spent, so it sits in the window rather than later.",
+      "expected_impact_pct": -2.0,
+      "impact_low_pct": -15.0,
+      "impact_high_pct": 10.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-08",
+      "reaction_history_on_this_line": "In the four sessions since listing the stock fell 35% (10-02), rose 260% (10-05), fell 22.6% (10-06) and fell 29.3% today, so a sub-1M float swings both ways. Baseline own-falls: 1 of 4 up next day, median next close -32.3%.",
+      "source": "https://www.sec.gov/Archives/edgar/data/2028201/000121390026107198/ea0307185-8k_columbus.htm",
+      "source_date": "2026-10-06",
+      "why_not_priced": "The tape trades on price. The float composition (about 96% from rights holders with near-zero cost, about 35k true public shares) appears in no document as a single number; it has to be derived from the CAC vote 8-K and the IPO description of securities. If the price held a spent seller, today's close would sit on falling volume, but volume is 18x.",
+      "independence": "The CAC description of securities gives the rights structure independently of the redemption count: https://www.sec.gov/Archives/edgar/data/2028201/000101376225004333/ea023354601ex4-5_columbus.htm. Nothing independent establishes whether the supply is spent."
+    }
+  ],
+  "outside_window": [
+    {"finding": "SEALSQ PIPE price protection: at spot $3.65, far below $10.79, the cap of 1,073,216 extra shares (more than today's whole tradable float) is effectively certain to be issued. It is measured on the 10-day VWAP ending about 2026-11-30 (60 days after the 10-01 closing).", "expected_impact_pct": -3.0, "resolves_by": "2026-11-30", "source": "https://www.sec.gov/Archives/edgar/data/2101411/000121390026107012/ea030782301ex99-1.htm"},
+    {"finding": "Nasdaq Opening Bell ceremony at Nasdaq MarketSite on Friday 2026-10-09 09:30 ET, an attention event one session after the window closes.", "expected_impact_pct": 1.0, "resolves_by": "2026-10-09", "source": "https://www.sec.gov/Archives/edgar/data/2101411/000121390026106117/ea030750401ex99-1.htm"},
+    {"finding": "Going-concern language appears in every F-4 and DRS (most recently 2026-08-06), and it will recur in the first 20-F or shell-company report. The filing date is not established.", "expected_impact_pct": -1.0, "resolves_by": "2027-04-30", "source": "https://www.sec.gov/Archives/edgar/data/2101411/000121390026086250/ea0270467-12.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions for CIK 2101411: the latest filing is the 6-K of 2026-10-06 17:29 UTC; nothing filed on 10-07 by screen time (https://data.sec.gov/submissions/CIK0002101411.json)",
+    "Full-text search for 'equity purchase agreement' in CIK 2101411: 0 hits, so no equity line found; baseline probe for 'at-the-market': 0 hits; 'minimum bid price' and 'reverse stock split': 0 hits",
+    "Web news search for SAIQ / WISeSat / SPACEAIQ on 2026-10-06 and 10-07: no same-day article explaining the fall",
+    "WISeKey / SEALSQ news on 10-06 and 10-07: nothing dated found, so no sympathy cause was identified",
+    "424B3 of 2026-08-19 (lock-up terms, cap table) exceeded the fetch size limit and could not be read, so lock-up status for the founder and representative shares is unverified",
+    "No price, quote or chart dated after the 15:05 ET screen instant was seen or used"
+  ],
+  "abs_move_pct": 30.0,
+  "p_up": 45,
+  "rejected_candidates": [
+    {"candidate": "A shell-company report on Form 20-F due about four business days after the 10-01 closing (about 10-07), which could land tonight with the cap table", "source": "https://www.sec.gov/files/form20-f.pdf", "reason": "no_source", "detail": "General Instruction A(d) applies to issuers that were shell companies immediately before the transaction, and Pubco may not be one. The four-day deadline sits in Rule 13a-19, which was not read. Neither applicability nor the due date is established by a document."},
+    {"candidate": "Speculative buying ahead of the 2026-10-09 Nasdaq bell during the 10-08 session", "source": "https://www.sec.gov/Archives/edgar/data/2101411/000121390026106117/ea030750401ex99-1.htm", "reason": "outside_window", "detail": "The event is dated 10-09; a run-in on 10-08 is an inference with no source and is listed under outside_window."}
+  ],
+  "baseline_tension": "The research agrees with the volume (18x, which phase 0 ties to continuation) and the high ATR, and finds nothing dated to set against them. The name's own +260% session shows a sub-1M float can reverse violently with no news, which is why p_up sits near 50 and is not lower.",
+  "pre_lessons": {
+    "impact_sum_pct": -2.0,
+    "expected_move_pct": -3.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-2.0]
+  },
+  "lessons_applied": ["nothing changed (researcher_reversal/LESSONS.md is deliberately empty)"],
+  "sources_used": 9
+}
