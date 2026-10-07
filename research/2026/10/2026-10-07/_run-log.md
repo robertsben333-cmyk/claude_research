@@ -120,3 +120,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-10-07 19:04 UTC
 - 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET window. Plan: --intraday screen K=15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-10-06, note before 16:00 ET (shed names if needed). Repo was already checked out (CLAUDE.md present), no clone.
+
+## Stage R — reversal researcher — sealed
+- Logged at 2026-10-07 19:08 UTC
+- Intraday screen 15:05 ET: 5,962 screened, 65 passed floors, 15 hunted; largest sector Health Care 5/15 (33%), no warning; SPY -0.23%. 15 baselines sealed 19:05:56 UTC before any hunter. Hunters capped at 8 concurrent by the session; 7 queued. 2026-10-06 run all pending (window closes today); resolved 2026-10-05 and pooled 09-21→10-05 instead. Note: requests was missing from the container and had to be pip-installed before the screen ran.
