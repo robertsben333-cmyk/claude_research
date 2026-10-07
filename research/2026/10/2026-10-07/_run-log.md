@@ -52,3 +52,7 @@
 ## Stage AU — Australia researcher — EMPTY SESSION
 - Logged at 2026-10-07 06:41 UTC
 - Event date 2026-10-08 (next ASX session). 1575 vendor rows, 0 scheduled, 0 eligible, 0 hunted. market_open true (basis: 'beyond the tape: a weekday that is not an ASX holiday') — a genuinely thin session outside the Feb/Aug reporting seasons, not a fetch fault. Empty universe published at research/2026/10/2026-10-08/australia/universe.json; no baselines, no hunters, no ranking.
+
+## Close AMC — 2026-10-07 10:11 UTC
+- Logged at 2026-10-07 10:17 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc_open; amc exit placed as market DAY). verify: 14 legs, none UNFILLED, nothing held. close --submit: no legs due today, nothing sent, no refusals. Fill re-check clean; alpaca-orders.json rewritten with refreshed fill status only.
