@@ -112,6 +112,12 @@ trace in public. Some routes, as starting points rather than a list to tick off:
 - **Your own arithmetic**: rebuild the line from parts the company and its counterparties
   disclose, rather than reading someone else's estimate.
 
+**Read any price or data series yourself, up to its latest point.** A news snippet gives
+one date and is often weeks old. Pull the series (FRED and EIA serve CSV; `curl` it) and
+quote its latest value with its date. On the trial run of 2026-10-07 one researcher took
+Brent at "$87-92 after the guide" from an August article while the series stood at $114,
+after a $131 peak in mid-September, and sized the cost question on the stale number.
+
 Record in `approaches_tried` per question what you tried and what it showed, including
 routes that came back empty. Two rules keep creativity honest. A single post, review or
 anecdote is a lead, not a finding: size it by how representative it is, and look for a
