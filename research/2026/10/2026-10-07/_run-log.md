@@ -60,3 +60,7 @@
 ## Stage EU — Europe researcher — STARTED
 - Logged at 2026-10-07 13:39 UTC
 - Fired 13:39 UTC 2026-10-07 (European markets still open; sealed spots are intraday, not closes). Sealing for event date 2026-10-08 (next European session). Plan: eu_universe -> seal baselines -> provenance -> one market hunter per name in waves of 5 -> edge_score -> note. No orders. Note: container's local main was a stale clone; checked out origin/main (275c92d6) before starting.
+
+## Stage EU — universe and baselines sealed
+- Logged at 2026-10-07 13:43 UTC
+- eu_universe.py --date 2026-10-08: 9 scheduled, 6 eligible at $100k floor, 6 hunted (all eligible, under cap 20): uk TSCO, NFG, FAN; de SZU; fr ALLIX; fi ADMCM. Largest market uk at 50%, 4 markets. No market_closed. Calendar sources: UK RNS calendar read (confirmed NFG/TSCO/FAN), Yahoo read in all ten, issuer calendars read (EQS, Inderes, Nasdaq fincal, Euronext Oslo, bankier). Baselines sealed ~13:43 UTC on intraday prices (not closes). anchor_covered true on 2 (FAN, NFG). provenance stamped (all hunters claude-opus-5-5). Wave 1: TSCO, NFG, FAN, SZU, ALLIX; wave 2: ADMCM.
