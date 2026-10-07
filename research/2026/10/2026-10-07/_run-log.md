@@ -124,3 +124,7 @@
 ## Stage R — reversal researcher — sealed
 - Logged at 2026-10-07 19:08 UTC
 - Intraday screen 15:05 ET: 5,962 screened, 65 passed floors, 15 hunted; largest sector Health Care 5/15 (33%), no warning; SPY -0.23%. 15 baselines sealed 19:05:56 UTC before any hunter. Hunters capped at 8 concurrent by the session; 7 queued. 2026-10-06 run all pending (window closes today); resolved 2026-10-05 and pooled 09-21→10-05 instead. Note: requests was missing from the container and had to be pip-installed before the screen ran.
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-07 19:14 UTC
+- 15 of 15 hunted and rankable; no name clears the 2.8 floor; impact_sum −2.00…+2.00 (AUUD +2.00 top, YFOR/SAIQ −2.00 bottom); overshoot_pct 0 on all 15 (no leg-1 finding). Resolved 2026-10-05 (impact_sum ρ +0.34 vs neg_atr14 +0.25, n 15); pooled 09-21→10-05 d1 impact_sum ρ +0.053 vs neg_atr14 +0.124 — has not beaten the free control. 2026-10-06 pending. Note published ~15:16 ET, before the close. No orders.
