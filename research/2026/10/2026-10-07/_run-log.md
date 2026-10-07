@@ -108,3 +108,7 @@
 ## Deep research — 2026-10-07 — DONE
 - Logged at 2026-10-07 18:19 UTC
 - Drew LEVI, PEP, TLRY (seed 110544768784710). All three hunts landed with questions_frozen, pre_research, key_questions, premortem, pre_lessons, investment_decision; scored 18:18 UTC (14:18 ET). Agent form: deep-question-researcher (not inlined). Flag: researchers shared one scratchpad; PEP's freeze file was overwritten by LEVI's and restored from the PEP researcher's own copy; cross-reads not ruled out. No orders, no alpaca_trade.py, no V2.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-07 18:33 UTC
+- 18:33 UTC fire. Plan: ca_universe -> seal baselines inside the Toronto session -> one unpriced-hunter-ca per name -> edge_score -> note.
