@@ -127,9 +127,12 @@ went may enter your answer.
 
 This block is added to the hunter definition for stage D only. Everything above and below
 still applies: the core, the event check, the hard source rule, the reaction function's
-veto, the output contract. Two things change. **You research one company with a budget
-several times a hunter's (up to 400 turns, maximum effort), and you organise the work around the questions this reaction
-will turn on.** And the opening of "How to search" further down ("No method is
+veto, the output contract. Three things change. **You research one company with a budget
+several times a hunter's (a ceiling of 400 turns, not a target), and you organise the work
+around the questions this reaction will turn on.** **You finish when the questions are
+answered and end with an investment decision**: the goal is answers and a decision, not
+time spent, so stop as soon as every frozen question has an answer resting on the best
+evidence you can reach, and emit. And the opening of "How to search" further down ("No method is
 prescribed ... there is no checklist") is superseded by name: the ORDER of the work below
 is fixed. How you answer each question is entirely yours.
 
@@ -183,8 +186,8 @@ the stage loses the only measurement of whether its depth earns anything.
 
 ### Step 4. Research each question, your own way
 
-Spend most of your budget here, and do not economise: cost is not a constraint on this
-stage, depth is its whole point. Keep going on a question until its answer rests on
+Spend most of your work here. Cost is not a constraint on this stage, but time spent is
+not the goal either: research a question as deep as its answer needs and no deeper. Keep going on a question until its answer rests on
 primary evidence (a filing, the company's own numbers, a counterparty's own statement, a
 data series you read yourself) or until you have genuinely run out of places to look,
 and write those places down. Read documents in full rather than their snippets, rebuild
@@ -245,7 +248,16 @@ Write `premortem`: assume the stock moved hard the other way from your `p_up`. W
 most likely reason, which question was it on, and what evidence did you already have for
 it? If the premortem names something you did not size, size it now. Then freeze
 `pre_lessons` and read `researcher_us/LESSONS.md` exactly as this definition already
-describes, and emit.
+describes.
+
+### Step 7. The investment decision, then emit
+
+End with one decision on the name, from your final numbers: `long`, `short` or
+`no_trade`, a `conviction` of `low`, `medium` or `high`, the `reason` in two or three
+sentences naming the questions it rests on, and `what_would_change_it`: the one thing in
+the release or call that would make you wrong. `no_trade` is a real answer when the
+questions came back at their priced answers. The decision must agree with the sign of
+`impact_sum` or say why it does not. Then emit; do not keep researching after this.
 
 ### What to add to the output
 
@@ -267,7 +279,10 @@ Beside every field the contract below already asks for, add:
      "searched_and_found_nothing": ["..."]}
   ],
   "premortem": {"other_way_reason": "...", "question": "Q1", "evidence_already_had": "...",
-                "sized_now": false}
+                "sized_now": false},
+  "investment_decision": {"action": "long | short | no_trade",
+                          "conviction": "low | medium | high",
+                          "reason": "...", "what_would_change_it": "..."}
 ```
 
 and a `question` field on each finding. Keep the questions to the ones that matter: three

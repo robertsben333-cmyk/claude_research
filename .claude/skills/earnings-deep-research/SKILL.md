@@ -29,7 +29,7 @@ back here.
 | --- | --- | --- |
 | writes to `<RUN>/edge/` | writes to **`<RUN>/edge-deep/`**, every file, same layout, plus `pick.json` | Stage E and E-P write to their own directories the same day. |
 | hunts every confirmed name | hunts **three names, drawn at random** by `deep_pick.py` | Depth costs turns. Random, seeded by date, so nobody chooses the names and each pick also has a stage E and E-P score. |
-| launches `unpriced-hunter` | launches **`deep-question-researcher`** (Opus 5.5 at maximum effort, up to 400 turns, `Bash` for curl and arithmetic; cost is not a constraint on this stage) | Generated from `unpriced-hunter.md` plus `config/deep-addendum.md` by `scripts/sync_hunter_core.py`; same event check, source rule and output contract, so `impact_sum` sits on stage E's scale. |
+| launches `unpriced-hunter` | launches **`deep-question-researcher`** (Opus 5.5 at maximum effort, a ceiling of 400 turns, `Bash` for curl and arithmetic; it finishes when its questions are answered and ends with an investment decision) | Generated from `unpriced-hunter.md` plus `config/deep-addendum.md` by `scripts/sync_hunter_core.py`; same event check, source rule and output contract, so `impact_sum` sits on stage E's scale. |
 | launches `edge-sweep` | **the same `edge-sweep`**, on the whole universe | The pool the draw comes from must be the names stage E would hunt. |
 | step 0b sells, step 6b buys | **neither. No `alpaca_trade.py` call of any kind, not `mode`, not `plan`, not `status`.** | Stage E trades the one paper account. |
 | runs the V2 shadow ledger (6c) and `edge_grounded_score.py` (5b) | **skips both** | The shadow ledger is stage E's to feed; V2 on three names adds nothing to read. |
@@ -86,7 +86,7 @@ invisible to it), launch `general-purpose` with `.claude/agents/deep-question-re
 body pasted in and `model: opus`. Record which form ran in the run log.
 
 Check each hunt as it lands: it must carry `questions_frozen`, `pre_research`,
-`key_questions`, `premortem` and `pre_lessons`. A hunt missing `questions_frozen` or
+`key_questions`, `premortem`, `pre_lessons` and `investment_decision`. A hunt missing `questions_frozen` or
 `pre_research` is scored like any other, flagged in the run log, and never repaired by
 hand: a reconstructed freeze is not a freeze. Publish after each hunt lands.
 
@@ -110,8 +110,10 @@ three-name order is evidence.
    anecdote.
 2. One section per name: the frozen key questions in a table (question, priced answer,
    our answer, confidence, impact), then `p_up`, `abs_move_pct`, `impact_sum` and the
-   quick first read beside them (how far did depth move the number?), then the
-   premortem in two lines.
+   quick first read beside them (how far did depth move the number?), the premortem in
+   two lines, and the **investment decision** (action, conviction, reason, what would
+   change it). The decision is research output for the operator; this stage places no
+   orders.
 3. **Only now** read `<RUN>/edge/edge-scores.json` and `<RUN>/edge-panel/edge-scores-panel.json`
    if they exist, and add a table: per name, stage D `impact_sum`, stage E `impact_sum`,
    E-P `panel_score` and `selected`. Where the signs disagree, one line each. If either
