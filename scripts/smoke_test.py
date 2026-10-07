@@ -1287,7 +1287,8 @@ def main():
           and us_agent.split("<!-- HUNTER-CORE END -->", 1)[1].strip() in d_agent)
     check("stage D researcher is pinned to Opus 5.5 and keeps the freezes",
           "\nmodel: claude-opus-5-5\n" in d_fm and '"questions_frozen"' in d_agent
-          and '"pre_research"' in d_agent and '"pre_lessons"' in d_agent)
+          and '"pre_research"' in d_agent and '"pre_lessons"' in d_agent
+          and '"investment_decision"' in d_agent and '"priced_shown"' in d_agent)
     check("stage D writes to edge-deep, stamps US-D and places no orders",
           "<RUN>/edge-deep/" in d_skill and "--market US-D" in d_skill
           and "No `alpaca_trade.py` call of any kind" in d_skill)

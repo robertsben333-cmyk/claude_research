@@ -89,6 +89,48 @@ text, your own arithmetic from disclosed numbers. Follow anything strange. You m
 `data.sec.gov` submissions, a page `WebFetch` will not open) and for arithmetic; never to
 disable TLS checks or to route around the proxy.
 
+**"Priced" is a claim you have to prove, not the place you start.** The habit to break:
+finding that a risk appeared in a news story or a downgrade and concluding the market
+holds it. A fact can be public and still not be in the price. On this stage's first run,
+every one of three researchers did that on every name and ended at "no trade". PEP is
+the worked example: Q3 consensus had not moved in 30 days while oil rose 29% after the
+guide was set, and the researcher still sized the cost question as "partly priced". A
+flat consensus after a move like that is evidence the price is behind.
+
+For each question, write `priced_answer` only from something that shows the market
+HOLDS it: a consensus number that already reflects it, estimate revisions after the
+datapoint, a preview that quantifies it, or a price move you can tie to it. "It was in
+the news", "the stock is at a low" and "analysts downgraded" show the market is aware.
+They do not show it has put a number on it. When you cannot show the priced answer
+quantitatively, say so in `priced_answer` and treat the gap between your answer and the
+stale number as unpriced.
+
+Then ask, per question, **which bias could keep the price from holding your answer**.
+Name it in `why_not_priced` when one applies:
+- **Stale estimates**: consensus not revised since the data you found (count the days).
+- **Anchoring on the company's guide**: the street sits at the guide midpoint while
+  independent data has moved since the guide was set.
+- **Slow data the market underweights**: series that move a little each week (input
+  costs, traffic, pricing, hiring) rather than in one headline.
+- **Thin coverage**: few analysts, small turnover, no options. Fewer people have done
+  the arithmetic you just did.
+- **Extrapolation of the last print**: the market expects the last reaction again (the
+  last guide step-down, the last miss) when your evidence says this quarter differs.
+- **A distorted mean**: one outlier estimate moves the headline consensus away from where
+  most estimates sit.
+- **Positioning**: a crowded short, washed-out sentiment or one-way previews, where a
+  small surprise moves the stock more than its size.
+
+Apply "partly priced" once, at the share you can show is priced, in that finding's size.
+Do not cut it again in `p_up`, in the LESSONS revision, or in the decision. Be as willing
+to find an upside the market is missing as a downside. Three names leaning negative on
+one day is the pessimism LESSONS describes, not a finding.
+
+The opposite error is just as real. Retired stage 2's deep dossiers were too sure of
+themselves: their ten most confident calls went 4/10. So a larger size needs its
+mechanism: the dated evidence, the bias that hides it, and why the release will reveal
+it inside the window. A size without that mechanism stays small.
+
 Per question, record in `key_questions`:
 
 - `answer`: your answer, and how it differs from `priced_answer`;
@@ -101,6 +143,11 @@ Per question, record in `key_questions`:
 - `impact_pct`: what this question's answer alone moves the stock over the window,
   signed, in points of spot. It is sized like a finding (core step 3a), with the reaction
   function's veto applied, and it is 0 when your answer equals the priced answer;
+- `priced_shown`: true when `priced_answer` rests on a number that shows the market
+  holds it (a revised consensus, a quantified preview, a price move tied to it), false
+  when it rests only on awareness (news, a downgrade, the stock at a low);
+- `bias`: the bias from the list above that keeps the price from holding your answer,
+  or null;
 - `searched_and_found_nothing`: the angles you tried for this question that came back
   empty. A question you could not move off its priced answer is a real result.
 
@@ -131,7 +178,10 @@ End with one decision on the name, from your final numbers: `long`, `short` or
 `no_trade`, a `conviction` of `low`, `medium` or `high`, the `reason` in two or three
 sentences naming the questions it rests on, and `what_would_change_it`: the one thing in
 the release or call that would make you wrong. `no_trade` is a real answer when the
-questions came back at their priced answers. The decision must agree with the sign of
+questions came back at their priced answers, and only then. Before you choose it, check
+that you showed those priced answers quantitatively and did not just assume them. If one
+question carries an unpriced answer with a named bias behind it, that question can carry
+a decision by itself. The decision must agree with the sign of
 `impact_sum` or say why it does not. Then emit; do not keep researching after this.
 
 ### What to add to the output
@@ -151,6 +201,7 @@ Beside every field the contract below already asks for, add:
      "evidence": [{"source": "https://...", "source_date": "YYYY-MM-DD", "shows": "...",
                    "independent_of": null}],
      "confidence_pct": 50, "surprise_vs_priced": null, "impact_pct": 0.0,
+     "priced_shown": false, "bias": null,
      "searched_and_found_nothing": ["..."]}
   ],
   "premortem": {"other_way_reason": "...", "question": "Q1", "evidence_already_had": "...",
