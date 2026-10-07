@@ -1209,7 +1209,7 @@ def main():
                            "check"], capture_output=True, text=True)
     check("every live hunter definition is a registered prompt version",
           prov.returncode == 0, prov.stdout.strip())
-    for sk in ("earnings-edge-hunt", "researcher-japan-hunt", "researcher-europe-hunt",
+    for sk in ("earnings-edge-hunt", "earnings-deep-research", "researcher-japan-hunt", "researcher-europe-hunt",
                "researcher-australia-hunt", "researcher-canada-hunt",
                "researcher-reversal-hunt"):
         txt = open(os.path.join(REPO, ".claude", "skills", sk, "SKILL.md"),
@@ -1275,6 +1275,56 @@ def main():
               sel.get("AAA") is True and sel.get("BBB") is False and sel.get("CCC") is False, str(sel))
     check("a dry panel run leaves the history untouched",
           added == 0 and open(panel_score.HISTORY).read() == hist_before)
+
+    # STAGE D (2026-10-07): three names a day drawn at random, one deep researcher each.
+    # The researcher is stage E's hunter plus the deep addendum, so its impact_sum sits on
+    # stage E's scale; the draw is seeded and reproducible; the stage never reaches the broker.
+    d_agent = open(os.path.join(REPO, ".claude", "agents", "deep-question-researcher.md"), encoding="utf-8").read()
+    d_skill = open(os.path.join(REPO, ".claude", "skills", "earnings-deep-research", "SKILL.md"), encoding="utf-8").read()
+    d_fm = d_agent.split("---", 2)[1] + "\n"
+    check("stage D researcher is stage E's hunter plus the deep addendum",
+          "## You are the deep researcher (stage D)" in d_agent
+          and us_agent.split("<!-- HUNTER-CORE END -->", 1)[1].strip() in d_agent)
+    check("stage D researcher is pinned to Opus 5.5 and keeps the freezes",
+          "\nmodel: claude-opus-5-5\n" in d_fm and '"questions_frozen"' in d_agent
+          and '"pre_research"' in d_agent and '"pre_lessons"' in d_agent)
+    check("stage D writes to edge-deep, stamps US-D and places no orders",
+          "<RUN>/edge-deep/" in d_skill and "--market US-D" in d_skill
+          and "No `alpaca_trade.py` call of any kind" in d_skill)
+    dc = cfg.get("edge_deep") or {}
+    check("stage D config carries places_orders: false and three names a day",
+          dc.get("places_orders") is False and dc.get("names_per_day") == 3)
+    import deep_pick, deep_compare
+    sweep = {"names": [{"ticker": t, "event_confirmed": t != "ZZZ", "hunt_priority": p}
+                       for t, p in (("AAA", 90), ("BBB", 80), ("CCC", 70), ("DDD", 60),
+                                    ("EEE", 50), ("ZZZ", 99))]}
+    bases = {"AAA": {"session": "amc"}, "BBB": {"session": "bmo"}, "CCC": {"session": "bmo"},
+             "DDD": {"session": "bmo", "event_plausibility": "suspect"}, "EEE": {"session": "amc"}}
+    pool, _ = deep_pick.pool_from(sweep, bases, 19, False)
+    seed = deep_pick.seed_for("2026-10-07")
+    picks = deep_pick.draw(pool, 3, seed)
+    check("stage D draws from confirmed, plausible names only, reproducibly",
+          sorted(n["ticker"] for n in pool) == ["AAA", "BBB", "CCC", "EEE"]
+          and picks == deep_pick.draw(pool, 3, seed) and len(picks) == 3, str(picks))
+    pool_late, _ = deep_pick.pool_from(sweep, bases, 19, True)
+    check("stage D --no-amc drops tonight's amc names",
+          sorted(n["ticker"] for n in pool_late) == ["BBB", "CCC"])
+    rows = [{"day": "d", "ticker": t, "deep": dv, "stage_e": ev, "move_pct": mv}
+            for t, dv, ev, mv in (("A", 2.0, 1.0, 5.0), ("B", -1.0, 1.0, -3.0),
+                                  ("C", 1.0, -1.0, -2.0), ("D", 0.0, 1.0, 1.0))]
+    st_deep = deep_compare.arm_stats(rows, "deep")
+    mc = deep_compare.mcnemar(rows, "deep", "stage_e")
+    check("deep_compare counts signs and pairs on the same names",
+          st_deep["n_signed"] == 3 and st_deep["sign_hits"] == 2
+          and mc["n_both_signed"] == 3 and mc["deep_right_stage_e_wrong"] == 1
+          and mc["stage_e_right_deep_wrong"] == 1, str((st_deep, mc)))
+    qs = deep_compare.question_stats([{"names": [{"ticker": "A", "questions": [
+        {"was_the_line": True, "answered_right": True},
+        {"was_the_line": False, "answered_right": False},
+        {"was_the_line": None, "answered_right": None}]}]}])
+    check("deep_compare scores filled question verdicts only",
+          qs["questions_scored"] == 2 and qs["line_questions_answered_right"] == 1
+          and qs["names_where_a_frozen_question_was_the_line"] == 1, str(qs))
 
     # The stage places no orders, and the skill and hunter must not acquire one.
     au_skill = open(os.path.join(REPO, ".claude", "skills",

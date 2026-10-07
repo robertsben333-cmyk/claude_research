@@ -63,7 +63,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import provenance  # noqa: E402
 
-US_DIRS = {"edge", "edge-sonnet", "edge-panel"}
+US_DIRS = {"edge", "edge-sonnet", "edge-panel", "edge-deep"}
 DIR_MARKET = {v["dir"]: k for k, v in provenance.MARKETS.items()}
 MIN_HISTORY = 20
 
@@ -167,7 +167,9 @@ def model_history(run, reg, everything=False):
     for d in sorted((ROOT / "research").glob("[0-9]*/[0-9]*/[0-9]*-*-*/*/")):
         # edge-panel's searcher sizes for breadth and is never ranked on its own
         # sizes (config/searcher-addendum.md), so it is not a reference for the hunters.
-        if d.name not in DIR_MARKET or d.name == "edge-panel":
+        # edge-deep (stage D) sizes three names with twice the depth and is kept out
+        # until its scale has been compared with the hunters' on resolved names.
+        if d.name not in DIR_MARKET or d.name in ("edge-panel", "edge-deep"):
             continue
         model = run_model(d, reg)
         models[d.resolve()] = model

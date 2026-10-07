@@ -40,6 +40,7 @@ material below is kept because the live stages reference it, not because it runs
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
 | E-P | `earnings-edge-panel` | 19:06 | **Stage E-P — the searcher and the four-model panel (replaced E-S on the same Routine, 2026-10-01).** Opus 5.5 `unpriced-searcher` collects the evidence; four blind judges pinned to Opus 5, Opus 5.5, Sonnet 5.5 and Fable 5.1 size it; `panel_score.py` selects names that 3 of 4 put in their own top 20%. Writes `research/<date>/edge-panel/`, **places no orders**. `trig_01QJzV84MhL3xnFwUjdzEvW7`, cron `6 17 * * 1-5`. See "Stage E-P" below |
+| D | `earnings-deep-research` | not installed | **Stage D — three names a day, researched in depth (built 2026-10-07, operator's idea).** A date-seeded random draw of 3 names from what stage E hunts; one Opus 5.5 `deep-question-researcher` per name freezes the 3-6 key questions the reaction turns on and a quick first read, then researches each question its own way. Same finding contract, so `impact_sum` is on stage E's scale. Writes `research/<date>/edge-deep/`, **places no orders**. `deep_compare.py` pools names against stage E and E-P on the same names. **No Routine yet**: proposed cron `0 14 * * 1-5`, standalone, prompt in `researcher_us/routine-prompts/edge-deep.md`. See "Stage D" below |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
 | CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
@@ -1093,6 +1094,19 @@ workflow — later stages read the files earlier stages wrote, in the shapes the
 specify.
 
 ## Where things go
+
+**Stage D was built on 2026-10-07 and has no Routine yet.** It tests the operator's idea
+that a few names researched in depth beat stage E's breadth. Retired stage 2 tried a deep
+dossier per name and lost to shorting blind (39/75), so every stage D hunt carries two
+freezes made before the depth: `questions_frozen` (scored after the print in
+`question-verdicts.json`: was a frozen question the line the stock traded on, and was it
+answered right) and `pre_research` (the same model's quick first read, the depth
+control). The agent is GENERATED from `unpriced-hunter.md` plus `config/deep-addendum.md`
+by `scripts/sync_hunter_core.py`; never hand-edit it. The three names are drawn at random
+by `deep_pick.py` and never re-drawn, so the comparison with stage E and E-P on the same
+names is unbiased. Three names cannot be ranked within a day: judge it only through
+`deep_compare.py`, pooled over names, and expect it to say "too small" for weeks (about
+200 names to tell a 60% hit rate from a coin).
 
 **Stage E-P replaced stage E-S on the same Routine on 2026-10-01, on the operator's
 instruction.** It separates search from judgement. `unpriced-searcher` is stage E's hunter

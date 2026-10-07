@@ -50,6 +50,25 @@ VARIANTS = {
                         "by scripts/sync_hunter_core.py; never edit this copy. Give it the "
                         "ticker, the event window and the path to the sealed baseline."),
     }, "searcher-addendum.md"),
+    # stage D (2026-10-07): the US hunter as a DEEP researcher on three names a day, with
+    # config/deep-addendum.md inserted after the core: key questions frozen before the
+    # research, a frozen quick first read as the depth control, a premortem. Bash for curl
+    # and arithmetic, and about twice a hunter's turns. Same event check, source rule and
+    # output contract, so its impact_sum sits on stage E's scale.
+    "deep-question-researcher.md": ("unpriced-hunter.md", {
+        "name": "deep-question-researcher",
+        "model": "claude-opus-5-5",
+        "tools": "WebSearch, WebFetch, Read, Write, Bash",
+        "maxTurns": "180",
+        "description": ("Stage D. Researches ONE US company reporting earnings imminently in "
+                        "depth. It writes and freezes the 3-6 questions the reaction will turn on, "
+                        "freezes a quick first read, researches each question its own way, and "
+                        "returns stage E's finding contract plus the questions, the evidence "
+                        "and a confidence per question. Generated from unpriced-hunter.md plus "
+                        "config/deep-addendum.md by scripts/sync_hunter_core.py; never edit "
+                        "this copy. Give it the ticker, the event window, the sealed baseline "
+                        "and its sweep row."),
+    }, "deep-addendum.md"),
     "unpriced-hunter-sonnet.md": ("unpriced-hunter.md", {
         "name": "unpriced-hunter-sonnet",
         "model": "sonnet",

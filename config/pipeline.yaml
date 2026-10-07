@@ -223,6 +223,26 @@ edge_panel:
   places_orders: false
   shadow_ledger: false
 
+edge_deep:
+  # Stage D (2026-10-07, operator's idea). One deep researcher per name on THREE names a
+  # day, drawn at random (date-seeded) from the names stage E hunts, so every pick also
+  # carries a stage E impact_sum and an E-P panel_score. The researcher freezes its key
+  # questions and a quick first read before it goes deep, so the questions can be scored
+  # after the print and depth can be measured against no depth on the same name.
+  # Research only: no orders, no shadow ledger. Compared by deep_compare.py, pooled over
+  # names, never within a day (three names cannot be ranked).
+  inherits: edge_hunt
+  output_dir: edge-deep
+  agent: deep-question-researcher
+  names_per_day: 3
+  key_questions: [3, 6]
+  sweep_agents: 1
+  max_subagents: 4             # one sweep + three deep researchers
+  amc_deadline_et: "15:45"     # an amc name's research stops here, before a 16:00 release
+  orchestrator_model: opus
+  places_orders: false
+  shadow_ledger: false
+
 japan_hunt:
   # Stage J. The same question as `edge_hunt`, asked of the Tokyo market, and
   # deliberately scored by the SAME scorer (researcher_us/scripts/edge_score.py) so
