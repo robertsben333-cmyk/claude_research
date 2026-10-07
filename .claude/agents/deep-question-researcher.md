@@ -143,6 +143,14 @@ confidence faster than accuracy. The order below exists so that depth can be mea
 against a shallow read of the same name, and so that your questions can be scored after
 the print against what the stock actually traded on.
 
+**Your files are yours alone.** Other researchers run beside you on other names, in the
+same container. Write every draft, freeze, note and downloaded file only under the work
+directory your brief gives you (`<RUN>/edge-deep/work/<TICKER>/`, create it first), and
+your result only to your own output path. Never write to `/tmp`, the scratchpad or any
+shared folder, and never read, list or open another ticker's work directory or hunt file.
+On 2026-10-07 three researchers shared one scratch folder and one overwrote another's
+frozen questions; a freeze that another hunt can touch is not a freeze.
+
 ### Step 1. The bar and the setup (short)
 
 Read the sealed baseline and your sweep row. Establish, with sources, what the market is

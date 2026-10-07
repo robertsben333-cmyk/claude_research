@@ -78,7 +78,10 @@ python3 scripts/provenance.py stamp --run <RUN>/edge-deep --market US-D --orches
 
 Launch one `deep-question-researcher` per picked name. Give each exactly: ticker,
 company, event date and session, the absolute path to its `baselines/<TICKER>.json`, its
-output path `<RUN>/edge-deep/hunts/<TICKER>.json`, its row from `sweep.json`, and for
+output path `<RUN>/edge-deep/hunts/<TICKER>.json`, its own work directory
+`<RUN>/edge-deep/work/<TICKER>/` (create all three before launching) with the line **"Write
+drafts, freezes and downloads only in your work directory; never use /tmp or a shared
+scratch folder, and never read another ticker's files"**, its row from `sweep.json`, and for
 EVERY name, amc and bmo alike, the line **"Your research stops at 15:30 ET today (run
 `date -u`); emit what you have by then."** Nothing else: not your view, not the other names, not stage E's or E-P's
 files.
