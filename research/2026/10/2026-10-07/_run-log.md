@@ -20,3 +20,7 @@
 ## Stage EU — Europe researcher — DONE
 - Logged at 2026-10-06 13:47 UTC
 - Event date sealed for: 2026-10-07. 2 hunters, 2 hunts returned, 0 shed. edge_score ranking_key impact_sum: NET +0.10, INDU_A +0.00; 0 of 2 above floor 2.8. Note: europe-note.md. Publishing with EARNINGS_DATA_BRANCH=main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-07 01:05 UTC
+- 01:05 UTC (10:05 JST) fire. Plan: jp_universe.py -> seal baselines -> provenance stamp -> unpriced-hunter-jp in waves of 5 -> edge_score.py -> note. No orders.
