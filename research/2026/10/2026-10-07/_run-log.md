@@ -40,3 +40,7 @@
 ## Stage J — wave 1 complete
 - Logged at 2026-10-07 01:14 UTC
 - 3391 (+0.2) banked. Wave 1: 5/5 hunts written. Wave 2 (6255) in progress.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-07 01:17 UTC
+- 6/6 hunted and scored; none above the 2.8 floor; range +0.20 (3391) to -1.70 (428A). Note: japan/japan-note.md. No orders.
