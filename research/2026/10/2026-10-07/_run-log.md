@@ -68,3 +68,7 @@
 ## Stage EU — wave 1 banked
 - Logged at 2026-10-07 13:52 UTC
 - 5 of 5 hunts returned: TSCO -1.2, NFG +0.2, FAN +0.3, SZU +0.2, ALLIX -0.4 (impact_sum). SESSION ERROR: ALLIX (Wallix) was sealed bmo/session_unresolved for 2026-10-08, but the issuer's own 16 Jul release plus ABC Bourse's 'Après clôture' listing and prior H1 timestamps (18:30/18:45 Paris) put it AMC on 2026-10-08; the reaction window is 10-08 close -> 10-09 close. Baseline left sealed; hunter's session_check says amc; resolve must use the amc window. Wave 2: ADMCM (fi, nordic hunter).
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-10-07 13:59 UTC
+- Event date sealed for: 2026-10-08. 6 hunters, 6 hunts returned, 0 shed. edge_score ranking_key impact_sum: FAN +0.30, NFG +0.20, SZU +0.20, ADMCM -0.30, ALLIX -0.40, TSCO -1.20; 0 of 6 above floor 2.8. ALLIX is amc (resolve on 10-08 close -> 10-09 close). Note: europe-note.md. Publishing with EARNINGS_DATA_BRANCH=main.
