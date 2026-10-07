@@ -112,3 +112,7 @@
 ## Stage CA — Canada researcher — STARTED
 - Logged at 2026-10-07 18:33 UTC
 - 18:33 UTC fire. Plan: ca_universe -> seal baselines inside the Toronto session -> one unpriced-hunter-ca per name -> edge_score -> note.
+
+## Stage CA — Canada researcher — DONE
+- Logged at 2026-10-07 18:43 UTC
+- 3 scheduled / 2 eligible / 2 hunted (FTG, RCH); anchor arms options 0 / register 2 (sealed 14:34 ET, neither name has a Montreal chain); calendar confirmed 2, vendor_only 1; register_business_date 2026-10-06; filing_only drops 0. impact_sum FTG -1.00, RCH -1.70, 0 above floor 2.8. Defects: short-register snapshot stores only the day's names, so short_change_pct_pts can never compute across different-name days; publish.sh leaves the snapshot untracked (committed by hand 4e85f81); eu_pdftext.py garbled RCH's Q2 MD&A.
