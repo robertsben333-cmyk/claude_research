@@ -6,13 +6,15 @@ AU, CA, R and E-P), not inside the project: a project Routine fires into one exi
 session, so every run would share one growing context. Then record the trigger id, the
 read-back model and cron here and in `CLAUDE.md`'s stage table, in the same commit.
 
-- Proposed cron `0 14 * * 1-5` = 14:00 UTC = **10:00 New York**, half an hour into the
-  session so the option chain the baseline reads is live. **Move it to `0 15 * * 1-5` on or
-  after 2026-11-02**, when US daylight saving ends and 14:00 UTC becomes 09:00 ET, before
-  the open. Earlier than stage E (17:04 UTC) on purpose: every name, amc tonight or bmo
-  tomorrow, is researched and scored before today's 16:00 ET close. The realised
-  move is scored from daily closes, so sealing the baseline earlier than stage E does not
-  change what is measured.
+- Proposed cron `30 17 * * 1-5` = 17:30 UTC = **13:30 New York** (operator's instruction,
+  2026-10-07). **Move it to `30 18 * * 1-5` on or after 2026-11-02**, when US daylight
+  saving ends and 17:30 UTC becomes 12:30 ET. Anchor on New York time, never on the cron
+  string. That leaves two hours to the 15:30 ET research stop and 2.5 to the close: every
+  name, amc tonight or bmo tomorrow, is researched and scored before today's 16:00 ET
+  close. Today's six trial hunts took 10 to 30 minutes each; the universe, baselines and
+  sweep come on top, so a slow sweep is the main risk to the deadline. The market is open,
+  so the option chain the baseline reads is live. It fires after stage E (17:04 UTC) and
+  E-P (17:06); the researchers never read their files.
 - Pin the model to `claude-opus-5` (it reads back as `claude-opus-5-5`); an empty model
   resolves to the account default.
 - Places no orders. Writes to `research/<YYYY>/<MM>/<DATE>/edge-deep/`.
@@ -30,7 +32,7 @@ Run stage D: deep, one-by-one research on three US companies reporting in today'
 
 Read CLAUDE.md, then invoke the skill `earnings-deep-research` and follow it exactly. It is an overlay on `earnings-edge-hunt`: you run stage E's steps 0 to 2 into <RUN>/edge-deep/, draw three names with deep_pick.py, and launch one deep-question-researcher per name.
 
-Re-read the clock with `date -u`. You fire at 14:00 UTC, before stage E (17:04) and E-P (17:06). You write ONLY to <RUN>/edge-deep/ and you seal your own baselines. The researchers never see stage E's or E-P's files; you read those only at the very end, for the comparison table in the note, and only if they exist by then. Do not wait for them.
+Re-read the clock with `date -u`. You fire at 13:30 New York (17:30 UTC in summer), after stage E (17:04 UTC) and E-P (17:06 UTC) have started. You write ONLY to <RUN>/edge-deep/ and you seal your own baselines. The researchers never see stage E's or E-P's files; you read those only at the very end, for the comparison table in the note, and only if they exist by then. Do not wait for them.
 
 THE DRAW IS RANDOM AND IT STANDS. Never re-draw, never swap a name. Every researcher, amc and bmo alike, stops at 15:30 ET, and the run is scored before the 16:00 ET close. If you fire after 15:00 ET, publish that it was too late and stop.
 
