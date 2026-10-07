@@ -28,3 +28,7 @@
 ## Stage J — sealed
 - Logged at 2026-10-07 01:06 UTC
 - JPX sheets as_of 2026-10-01; 9 scheduled, 6 eligible (3 microcaps dropped: 6093, 8166, 9846), 6 hunted, selection: all eligible (under cap 25). 6 baselines sealed; JPX short register as_of 20260929. provenance: jp.v6 / claude-opus-5-5. Wave 1 (2670 2918 3391 428A 5932) spawned.
+
+## Stage J — wave 1 partial
+- Logged at 2026-10-07 01:12 UTC
+- 2670 (-1.3) and 2918 (0.0) banked; 428A file written; 3391, 5932 and 6255 still hunting.
