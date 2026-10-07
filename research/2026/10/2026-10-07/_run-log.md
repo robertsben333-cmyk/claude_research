@@ -72,3 +72,7 @@
 ## Stage EU — Europe researcher — DONE
 - Logged at 2026-10-07 13:59 UTC
 - Event date sealed for: 2026-10-08. 6 hunters, 6 hunts returned, 0 shed. edge_score ranking_key impact_sum: FAN +0.30, NFG +0.20, SZU +0.20, ADMCM -0.30, ALLIX -0.40, TSCO -1.20; 0 of 6 above floor 2.8. ALLIX is amc (resolve on 10-08 close -> 10-09 close). Note: europe-note.md. Publishing with EARNINGS_DATA_BRANCH=main.
+
+## Stage EU — publish verified
+- Logged at 2026-10-07 13:59 UTC
+- git log -1 origin/main shows f6f6cae4 'stage EU: Europe ranking for 2026-10-08' — the run is on main.
