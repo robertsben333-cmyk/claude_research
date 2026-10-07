@@ -100,3 +100,7 @@
 ## Edge hunt (panel) — 2026-10-07 amc + 2026-10-08 bmo — DONE
 - Logged at 2026-10-07 17:34 UTC
 - 10/10 confirmed by sweep, 10 searched (unpriced-searcher named agent), 1 clears the 2.8 floor in the searcher key (RELL +5.0). Panel: all four judges ran on pinned models (opus5, opus55, sonnet55, fable51), full coverage, no retries. Selected (k>=3 of 4): RELL, 4/4. Stage E comparison: 10 overlap, Spearman(E impact_sum, panel_score)=+0.49. V2 grounded 10/10 before first print. No orders, no alpaca_trade.py, no shadow ledger.
+
+## Deep research — 2026-10-07 — STARTED
+- Logged at 2026-10-07 17:37 UTC
+- 10 names in the window (4 amc 10-07, 6 bmo 10-08); universe and baselines sealed, sweep running; fired 17:36 UTC = 13:36 ET
