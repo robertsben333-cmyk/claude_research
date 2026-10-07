@@ -53,7 +53,25 @@ None. All 10 rows were confirmed by the sweep from company sources, with session
 
 ## Execution
 
-EXECUTION_PLACEHOLDER
+`execution.enabled` is true. **No order was placed.** The session's auto-mode permission classifier refused the broker calls as "Real-World Transactions", the same block recorded on every run since 2026-09-28.
+- **Step 0b.** `verify --scan … --fix --submit` was refused, so `close` and `status` were not run. Whatever bmo exit legs were due today were not sold from this session, and nothing here re-reads the account.
+- **Step 7.** `plan` ran, since it is read-only. It priced equity at $11,201 and selected **one name: RELL long, 193 shares, $3,679 notional, 32.8% of equity**, entry 2026-10-07 and exit 2026-10-08 (amc → the opening print). `open --submit --no-flatten` was then refused. The plan is on disk as `alpaca-plan.json`.
+
+Result: 0 orders, 0% gross. Nine names were not traded, all below the 1.76 `impact_scaled` floor. The fix is a narrow allow rule for `researcher_us/scripts/alpaca_trade.py` in `.claude/settings.json`, which a session may not write itself.
+
+## Context: retail, search and volatility (not used for selection)
+
+These are context only. Nothing ranks, selects, sizes or trades on them.
+- RELL: retail 52 (yes), search sparse, vol 43% (no)
+- LEVI: retail 28 (no), search sparse, vol 21% (no)
+- APLD: retail 63 (yes), search 1.32x (not quiet), vol 71% (yes)
+- ANGO: retail 53 (yes), search sparse, vol 31% (no)
+- TLRY: retail 70 (yes), search sparse, vol 41% (no)
+- PEP: retail 13 (no), search 1.23x (not quiet), vol 14% (no)
+- NG: retail 61 (yes), search failed, vol 54% (no)
+- BYRN: retail 72 (yes), search sparse, vol 46% (no)
+- RGP: retail 63 (yes), search sparse, vol 37% (no)
+- HELE: retail 57 (yes), search 0.38x (quiet), vol 41% (no)
 
 ---
 This is research, not financial advice. Earnings reactions are highly uncertain and can be driven by market positioning, guidance, macro conditions, and management commentary rather than reported results alone.

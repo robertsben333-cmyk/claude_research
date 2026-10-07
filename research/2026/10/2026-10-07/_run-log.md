@@ -85,3 +85,10 @@
 ## Edge hunt (panel) — 2026-10-07 amc + 2026-10-08 bmo — STARTED
 - Logged at 2026-10-07 17:09 UTC
 - Stage E-P: 10 names in window (PEP, LEVI, APLD, NG, ANGO, HELE, TLRY, RELL, RGP, BYRN), own baselines sealed in edge-panel/baselines; plan: 1 edge-sweep, up to 10 unpriced-searcher, then 4 blind judges. No orders.
+
+## Edge hunt — 2026-10-07 amc + 2026-10-08 bmo — DONE
+- Logged at 2026-10-07 17:26 UTC
+- Window 10 names, sweep confirmed 10 of 10 (0 phantoms, 0 sessions unsettled). 10 unpriced-hunter runs, all came back with pre_lessons, print_vs_bar_pct, abs_move_pct and p_up. Prompt us.v9 on claude-opus-5-5.
+- Ranking key impact_sum: RELL +4.80 (the only name clearing the 2.8 floor), LEVI +2.10, APLD +1.30, ANGO +0.30, TLRY +0.30, PEP +0.20, NG +0.10, BYRN -0.40, RGP -0.50, HELE -0.60. Sign balance 7 positive / 3 negative. Spearman of the hunt against -run_up_20d is -0.17. V2 calibrated (186 obs).
+- Execution enabled, and NOTHING PLACED. The auto-mode classifier refused step 0b (verify --fix --submit) and step 7 (open --submit). The plan selected RELL long, 193 sh, $3,679, 32.8% of $11,201 equity, on impact_scaled +3.00 >= 1.76. 9 names were below the floor. Bmo exits due today were not sold from this session. Needs a narrow allow rule for alpaca_trade.py in .claude/settings.json.
+- Step 6c (shadow ledger) skipped this run; tomorrow can collect it.
