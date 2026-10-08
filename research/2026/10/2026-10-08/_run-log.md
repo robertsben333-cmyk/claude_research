@@ -59,3 +59,11 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-08 17:25 UTC
 - 4 packs, four judges. Searchers done: PKE +1.30, ODC +0.10, DAL -0.20, HOVR -0.50 (impact_sum; 0 of 4 above 2.8). V2 written 17:25 UTC (before first print), 186 ledger obs.
+## Edge hunt — sweep
+- Logged at 2026-10-08 17:13 UTC
+- Sweep: 6 in, 4 confirmed (ODC, PKE amc 10-08; DAL, HOVR bmo 10-09), 0 phantom, 2 unconfirmed (NRIX: no company date, vendors disagree 10-08/10-09/10-12; GLDG: interim 6-K filer with no release, not an earnings event). 4 hunters launched in parallel at ~17:20 UTC; NRIX and GLDG not hunted and enter as rankable:false.
+
+## Edge hunt — 2026-10-08 amc + 2026-10-09 bmo — DONE
+- Logged at 2026-10-08 17:21 UTC
+- 4 hunted, 4 rankable, 0 clear 2.8 on impact_sum and 0 clear 1.76 on impact_scaled. Key impact_sum: ODC +0.80, PKE +0.60, DAL -0.90, HOVR -0.90. All 4 hunts under us.v9 with pre_lessons and print_vs_bar_pct present. V2 REFUSED: edge_grounded_score.py dated the first print 2026-10-08 09:30 ET, apparently from the unconfirmed NRIX row (date 10-08, session unknown); the real first print (ODC/PKE amc) had not passed. Defect, not worked around.
+- Execution: enabled (paper, amc_open). Step 0b: account all cash at $11,200.86, no positions; verify/close --submit DENIED by the auto-mode classifier [Real-World Transactions] even in the exact allow-rule form 'python3 researcher_us/scripts/alpaca_trade.py ...', so the 2026-10-08 settings.json rule does NOT hold in this Routine session (read-only plan/assets/status calls did run). Step 7: plan says no name meets the benchmark, so open was not called; 0 orders, gross 0% of equity. Refusals: ODC 0.90, PKE 0.68, DAL 0.22, HOVR 1.26 < 1.76; GLDG and NRIX not rankable (no hunt). Context labels written (edge-context.json). Step 6c shadow ledger skipped (optional, nothing waits on it).
