@@ -144,6 +144,10 @@ def collect_run(run, spec, problems):
 
     ranking = scores.get("ranking") or []
     hunts = sorted(rp.glob("hunts/*.json"))
+    # The four-model panel (scripts/market_panel.py, since 2026-10-08) ranks beside the
+    # key in its own file. Carried per name so the page can show it; absent before.
+    panel_doc = load(rp / "edge-scores-panel.json") or {}
+    panel = {x.get("ticker"): x for x in panel_doc.get("ranking") or []}
     rows = []
     for r in ranking:
         tk = r.get("ticker")
@@ -217,6 +221,10 @@ def collect_run(run, spec, problems):
                       else rd(move if impact > 0 else -move, 3))
         row["sign_right"] = (None if move is None or not impact
                              else (impact > 0) == (move > 0))
+        pn = panel.get(tk) or {}
+        row["panel_score"] = rd(pn.get("panel_score"), 3)
+        row["panel_selected"] = pn.get("selected")
+        row["panel_consensus_k"] = pn.get("consensus_k")
         rows.append(row)
 
     meta = {
@@ -246,6 +254,8 @@ def collect_run(run, spec, problems):
         "cap": universe.get("cap"),
         "min_turnover_usd": universe.get("min_turnover_usd"),
         "selection": universe.get("selection") or {},
+        "panel_members": panel_doc.get("members_present"),
+        "panel_missing": panel_doc.get("members_missing"),
         "resolver_stats": {k: v for k, v in (resolved or {}).items()
                            if k in ("stats", "rankers", "components",
                                     "by_anchor_covered", "by_filer_type",
