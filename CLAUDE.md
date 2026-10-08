@@ -832,10 +832,17 @@ blind re-judges, 7 live hunts under the shared core, September Opus 5.5 out); 3.
 Opus 5's p53. Frozen, not recomputed per day. On the re-judge's 119 US names it buys 20
 (13 right, +2.69% gross, t 1.32) against 17 at 3.0 (12, +3.76%, t 1.66): neither clears
 t = 2. It is the first line in `config/pipeline.yaml` that `edge_score.py` reads, so every
-stage that inherits the floor moved with it. **Execution has been blocked since 09-28**:
-in auto mode the broad `Bash` allow rule is dropped and the classifier refuses every
-`alpaca_trade.py` broker call; the fix is a narrow allow rule for that script in
-`.claude/settings.json`, which a session may not write itself.
+stage that inherits the floor moved with it. **Execution was blocked from 09-28 to
+10-07**: in auto mode the broad `Bash` allow rule is dropped and the classifier refused
+every `alpaca_trade.py` broker call (step 0b on every run, step 7 on 10-07, when RELL went
+unbought). Close AMC reached the account throughout, so it was never credentials. Fixed
+2026-10-08 with three narrow allow rules in `.claude/settings.json`, one per path the
+prompt and skill use (`researcher_us/scripts/`, the `scripts/` shim, `edge/scripts/`).
+An auto-mode session refuses to write that file itself ("Self-Modification"), so it was
+written from a session outside auto mode at the operator's instruction. A call written
+any other way (`python`, an absolute path, an env-var prefix) does not match and is
+classified again. The first run after the merge settles whether the rule holds: step 0b
+in the run log shows a `verify` result, not DENIED.
 
 **Every hunter answers twice since 2026-10-01 (evening), and `impact_sum` is version 2
 again (operator's instruction).** The three-step core of the same morning made the
