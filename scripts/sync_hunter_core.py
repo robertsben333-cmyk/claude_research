@@ -94,15 +94,36 @@ PANEL_JUDGES = {
 }
 PANEL_NOTE = ("<!-- GENERATED from config/panel-judge.md by scripts/sync_hunter_core.py; "
               "edit the source, not this copy -->\n\n")
+# The same four models for the non-US stages (EU, J, AU, CA; 2026-10-08, operator's
+# instruction). A separate source because each pack names its own market's hunter and
+# lessons file, which the E-P judges are not allowed to open; the E-P judges are left
+# exactly as they were.
+INTL_PANEL_SOURCE = os.path.join(REPO, "config", "panel-judge-intl.md")
+INTL_PANEL_JUDGES = {
+    "panel-judge-intl-opus5.md": "claude-opus-5",
+    "panel-judge-intl-opus55.md": "claude-opus-5-5",
+    "panel-judge-intl-sonnet55.md": "claude-sonnet-5-5",
+    "panel-judge-intl-fable51.md": "claude-fable-5-1",
+}
+INTL_PANEL_NOTE = ("<!-- GENERATED from config/panel-judge-intl.md by scripts/sync_hunter_core.py; "
+                   "edit the source, not this copy -->\n\n")
 
 
-def render_judge(name, model, body):
-    desc = ("Stage E-P panel judge on %s. Judges the day's searcher evidence blind, from a "
-            "packs file with the searcher's sizes removed, and returns abs_move_pct, p_up and "
-            "a signed impact_sum per company. Read and Write only; one instance per model per "
-            "day; give it the packs file and the output path." % model)
+def render_judge(name, model, body, intl=False):
+    if intl:
+        desc = ("Non-US panel judge (stages EU, J, AU, CA) on %s. Judges the day's hunter "
+                "evidence blind, from a packs file with the hunters' sizes removed, under the "
+                "hunter definition and lessons file each pack names, and returns abs_move_pct, "
+                "p_up and a signed impact_sum per company. Read and Write only; one instance per "
+                "model per run; give it the packs file and the output path." % model)
+    else:
+        desc = ("Stage E-P panel judge on %s. Judges the day's searcher evidence blind, from a "
+                "packs file with the searcher's sizes removed, and returns abs_move_pct, p_up and "
+                "a signed impact_sum per company. Read and Write only; one instance per model per "
+                "day; give it the packs file and the output path." % model)
     return ("---\nname: %s\ndescription: %s\ntools: Read, Write\nmodel: %s\neffort: high\n"
-            "maxTurns: 60\ncolor: cyan\n---\n\n" % (name[:-3], desc, model)) + PANEL_NOTE + body.strip() + "\n"
+            "maxTurns: 60\ncolor: cyan\n---\n\n" % (name[:-3], desc, model)) + \
+        (INTL_PANEL_NOTE if intl else PANEL_NOTE) + body.strip() + "\n"
 
 
 VARIANT_NOTE = ("<!-- GENERATED from %s by scripts/sync_hunter_core.py with the frontmatter "
@@ -199,15 +220,24 @@ def main():
             drift.append(name)
             if not check:
                 open(path, "w", encoding="utf-8").write(new)
+    body = open(INTL_PANEL_SOURCE, encoding="utf-8").read()
+    for name, model in INTL_PANEL_JUDGES.items():
+        path = os.path.join(AGENTS, name)
+        new = render_judge(name, model, body, intl=True)
+        old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+        if new != old:
+            drift.append(name)
+            if not check:
+                open(path, "w", encoding="utf-8").write(new)
     if check:
         if drift:
             print("hunter core out of date in: " + ", ".join(drift))
             sys.exit(1)
         print("hunter core current in all %d hunters, %d variants and %d panel judges"
-              % (len(HUNTERS), len(VARIANTS), len(PANEL_JUDGES)))
+              % (len(HUNTERS), len(VARIANTS), len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES)))
     else:
         print("updated %d of %d hunters, variants and panel judges"
-              % (len(drift), len(HUNTERS) + len(VARIANTS) + len(PANEL_JUDGES)))
+              % (len(drift), len(HUNTERS) + len(VARIANTS) + len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES)))
 
 
 if __name__ == "__main__":

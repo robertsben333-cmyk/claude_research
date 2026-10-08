@@ -42,10 +42,10 @@ material below is kept because the live stages reference it, not because it runs
 | E-P | `earnings-edge-panel` | 19:06 | **Stage E-P — the searcher and the four-model panel (replaced E-S on the same Routine, 2026-10-01).** Opus 5.5 `unpriced-searcher` collects the evidence; four blind judges pinned to Opus 5, Opus 5.5, Sonnet 5.5 and Fable 5.1 size it; `panel_score.py` selects names that 3 of 4 put in their own top 20%. Writes `research/<date>/edge-panel/`, **places no orders**. `trig_01QJzV84MhL3xnFwUjdzEvW7`, cron `6 17 * * 1-5`. See "Stage E-P" below |
 | D | `earnings-deep-research` | 13:35 New York | **Stage D — three names a day, researched in depth (built 2026-10-07, operator's idea).** A date-seeded random draw of 3 names from what stage E hunts; one Opus 5.5 `deep-question-researcher` per name freezes the 3-6 key questions the reaction turns on and a quick first read, then researches each question its own way. Same finding contract, so `impact_sum` is on stage E's scale. Writes `research/<date>/edge-deep/`, **places no orders**. `deep_compare.py` pools names against stage E and E-P on the same names. **Routine "US - Deep Search", `trig_01VkHFt9yWxUD9bjhNQ7CYpy`**, made by the operator in the Routines UI on 2026-10-07 (a session inside the private project cannot create a fresh-session Routine): cron `35 17 * * 1-5` UTC = 13:35 New York, **must move to `35 18` on or after 2026-11-02**; its `model` is EMPTY and the first fire's orchestrator served `claude-sonnet-5-5` (the researchers are pinned to Opus 5.5 regardless). The operator asked on 2026-10-08 for the Routine to be pinned to Opus, and `update_trigger` refuses it because a person created it, so the model is set in the Routines UI; read it back before trusting it. Prompt in `researcher_us/routine-prompts/edge-deep.md`. Each researcher writes only to `<RUN>/edge-deep/work/<TICKER>/` since `us-deep.v2`, after the first run's researchers shared a scratch folder and one overwrote another's frozen questions. See "Stage D" below |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
-| J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
-| CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
-| EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
-| AU | `researcher-australia-hunt` | 08:30 | **Stage AU — the Australia researcher.** Same question, ASX, research only, no orders. One English hunting pass and no local-language pass, deliberately. `trig_01Qy7FjBpjY4dEGcZsYGnpt3`, cron `30 6 * * 0-4` = 06:30 UTC **Sunday to Thursday**, after the 16:00 Sydney close. Seals for the NEXT session, because 91% of ASX results land before the open, so the fire that seals for Monday is the Sunday one |
+| J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** **Since 2026-10-08 it also runs stage E-P's four-model panel on its own hunts (step 4p, `scripts/market_panel.py`, judges `panel-judge-intl-*`); its own `impact_sum` is unchanged.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
+| CA | `researcher-canada-hunt` | 20:30 | **Stage CA — the Canada researcher.** **Since 2026-10-08 it also runs stage E-P's four-model panel on its own hunts (step 4p, `scripts/market_panel.py`, judges `panel-judge-intl-*`); its own `impact_sum` is unchanged.** Same question, Toronto market, research only, no orders. `trig_01Qv4Yyo6K8K3nNyGbiESeAv`, cron `30 18 * * 1-5` = 18:30 UTC = 14:30 Toronto, INSIDE the session so the Montréal option chain quotes two-sided; a seal outside 09:30–16:00 ET loses the option arm entirely |
+| EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Since 2026-10-08 it also runs stage E-P's four-model panel on its own hunts (step 4p, `scripts/market_panel.py`, judges `panel-judge-intl-*`); its own `impact_sum` is unchanged.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
+| AU | `researcher-australia-hunt` | 08:30 | **Stage AU — the Australia researcher.** **Since 2026-10-08 it also runs stage E-P's four-model panel on its own hunts (step 4p, `scripts/market_panel.py`, judges `panel-judge-intl-*`); its own `impact_sum` is unchanged.** Same question, ASX, research only, no orders. One English hunting pass and no local-language pass, deliberately. `trig_01Qy7FjBpjY4dEGcZsYGnpt3`, cron `30 6 * * 0-4` = 06:30 UTC **Sunday to Thursday**, after the 16:00 Sydney close. Seals for the NEXT session, because 91% of ASX results land before the open, so the fire that seals for Monday is the Sunday one |
 | R | `researcher-reversal-hunt` | 21:00 | **Stage R — the reversal researcher.** Not an earnings stage: TODAY's biggest US losers, screened while the session is still open, and whether each keeps falling or bounces over the next session. Research only, no orders. `trig_012Dt6bbiL4dJp9r4bpJtWME`, cron `0 19 * * 1-5` = 19:00 UTC = **15:00 New York, one hour BEFORE the close**, on the operator's instruction, so the names can still be bought today. **Must move to `0 20 * * 1-5` on or after 2026-11-02**, when the US DST change would otherwise leave it at 14:00 ET. Created by a session, so `update_trigger` works on it |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
@@ -1144,6 +1144,31 @@ plumbing check on an unresolved day, not evidence about the panel.
 **The Routine was re-pasted from `researcher_us/routine-prompts/edge-panel.md` on 2026-10-01 at
 20:10:11 UTC** and read back identical; its first E-P fire is 2026-10-02 17:06 UTC.
 
+**Stages EU, J, AU and CA run the same four-model panel since 2026-10-08 (operator's
+instruction), on their OWN hunts; the US stages are untouched.** After `edge_score.py`
+each skill runs step 4p from `config/market-panel-step.md`: `scripts/market_panel.py
+packs` strips the hunters' sizes into blind packs that name each name's own hunter
+definition and lessons file, four judges size them in one wave, and `market_panel.py
+score` combines them through `panel_score.py` with the frozen `edge_panel` rules (3 of 4
+in their own top 20%), writing `<RUN>/edge-scores-panel.json` beside the key and a
+`panel` block into `provenance.json`. Four things differ from stage E-P and each is
+deliberate. **The hunters are not swapped for a searcher**, so each stage's `impact_sum`,
+prompt version and resolved series carry on unbroken; the four-model re-judge the rules
+were measured on judged ordinary hunter evidence, including 77 non-US names. **The judges
+are a second set, `panel-judge-intl-*`, generated from `config/panel-judge-intl.md`**,
+because the E-P judges may open only the US hunter definition; the E-P judges are
+byte-identical. **Each market keeps its own history**
+(`researcher_<market>/analysis/panel-history.json`), seeded once with a frozen copy of the
+E-P history so every member has a scale on day one; nothing writes the E-P history.
+`panel_score.score()` gained `history` and `stage` keywords for this, and an E-P day
+rescores identically. **`expected_edge_pct` is null off the US**, because the +6.7% prior
+is a mostly-American development number. What the re-judge said, and nobody should
+forget: the judges ranked Europe BETTER than the live hunt (ρ +0.33/+0.34 on 48 names)
+and Japan + Australia WORSE for every arm (−0.25 to −0.31 on 29); Canada had nothing
+resolved. `market_panel.py resolve` writes `panel-resolved.json` after the market's own
+resolver, `pool` pools it; judge it only pooled. The Routines were NOT re-pasted: each
+prompt only invokes its skill, so the step reaches them through `main`.
+
 **Stage E-S was stage E with the hunters on Sonnet, added and superseded on 2026-10-01.** One question:
 does the hunter model change the ranking? `.claude/skills/earnings-edge-hunt-sonnet/` is
 an OVERLAY on the stage E skill, not a copy, so the two cannot drift: it lists the only
@@ -2111,6 +2136,9 @@ archive/                               retired 2026-09-18 — see archive/README
   claude_naive/                        stage N, disabled 2026-09-09
   pipeline/<YYYY>/<MM>/<date>/         stages 1-4's output, day by day
   pipeline/LEDGER.md PREDICTIONS.*     the forecast ledger and the flat prediction table
+scripts/market_panel.py                the four-model panel for EU/J/AU/CA (packs, check,
+                                       score, resolve, pool); procedure in
+                                       config/market-panel-step.md
 scripts/                               shared: run_paths, publish, run_log, get_earnings,
                                        build_predictions, update_index, validate_stage,
                                        synthesize, smoke_test, provenance — and four shims
