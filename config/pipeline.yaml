@@ -223,6 +223,38 @@ edge_panel:
   places_orders: false
   shadow_ledger: false
 
+# The four-model panel on the non-US stages (EU, J, AU, CA; 2026-10-08, operator's
+# instruction: "the 4-agent judging method the US one already uses"). Each stage keeps
+# its own hunters and its own impact_sum key; after scoring, scripts/market_panel.py
+# packs the hunts blind, four judges on four models size them, and panel_score.py
+# combines them with the SAME frozen rules as edge_panel above (read from there, not
+# copied, so the two cannot drift). The US stages are untouched: separate judge agents,
+# separate history files, nothing here writes researcher_us/analysis/panel-history.json.
+#
+# Not measured anywhere: in the four-model re-judge the judges ranked Europe better than
+# the live hunt (rho +0.33/+0.34 for Opus 5.5 and Fable on 48 names) and Japan +
+# Australia worse for every arm (-0.25 to -0.31 on 29); Canada had no resolved name. The
+# 3-of-4 selection rule was chosen on development names that were mostly American.
+market_panel:
+  rules_from: edge_panel         # member_top_share, history_window, consensus_fraction
+  stages: [EU, JP, AU, CA]
+  judges:                        # generated from config/panel-judge-intl.md
+    opus5: panel-judge-intl-opus5
+    opus55: panel-judge-intl-opus55
+    sonnet55: panel-judge-intl-sonnet55
+    fable51: panel-judge-intl-fable51
+  # One per market, seeded once with a frozen copy of the E-P history (`market_panel.py
+  # seed`) so each member has a scale on day one; the market's own sizes push the seed
+  # out of the 200-name window as they accumulate.
+  history:
+    EU: researcher_europe/analysis/panel-history.json
+    JP: researcher_japan/analysis/panel-history.json
+    AU: researcher_australia/analysis/panel-history.json
+    CA: researcher_canada/analysis/panel-history.json
+  expected_edge_pct: null        # E-P's +6.7% prior is a US development number
+  extra_subagents: 4             # one wave of four judges after the last hunter wave
+  places_orders: false
+
 edge_deep:
   # Stage D (2026-10-07, operator's idea). One deep researcher per name on THREE names a
   # day, drawn at random (date-seeded) from the names stage E hunts, so every pick also
