@@ -220,3 +220,14 @@
 - Outcome files (05-outcome.md/.json) for this run were scored 2026-09-10 on branch determined-bardeen-pdvo4v and merged into main's research/ tree by the same-day repo-cleanup commit (e99aa239), but LEDGER.md itself was never updated with this run's numbers — that commit touched no LEDGER.md lines.
 - Closed 2026-09-11: TTAN (panelled, High certainty, Neutral call, -29.98% actual vs 13.14% implied — largest magnitude miss in the ledger, on the tightest panel agreement scored to date) and CHWY (panelled, High, Neutral, -10.83% actual vs 10.65% implied — hit) added to the Runs table; panelled n 13->15 (9/15, 60%), independent-event n 11->13 (7/13, 54%); preliminary n 29->35 (15/35, 43%); certainty-tier High n 5->7 (3/7, 43%) vs Med steady at 6/8 (75%).
 - No new research or WebSearch was needed — the outcome data already existed and was internally consistent with the merged 05-outcome.json; this pass only integrated it into the ledger's summary, certainty table and Runs table.
+
+## Recovered — Routine output that never reached main
+- Logged at 2026-10-08 UTC, by a maintenance session
+- The section(s) below were written by a Routine session on that day but published to its own branch `claude/determined-bardeen-pdvo4v` (commit f7899875) instead of `main`. Copied verbatim; nothing re-run, nothing edited.
+
+### Stage 4 — calibration — DONE
+- Logged at 2026-09-10 06:28 UTC
+- Scored 2026-09-10 against the 2026-09-08 close -> 2026-09-09 close window (all six names resolve on the same window; all reported on schedule).
+- TTAN: Neutral miss, -29.98% vs 13.14% implied/5.8-18.4% band -- largest magnitude break in the ledger. CHWY: Neutral hit, -10.83% vs 10.65% implied. Prelim 3/6 for the day (SAIL, BRZE, SIG hit; TTAN, CHWY, ASO missed).
+- LEDGER.md updated: panelled 9/15 (60%), independent-event panelled 7/13 (54%), prelim 15/35 (43%). High-certainty tier now 3/7 (43%) vs Med 6/8 (75%) -- gap persists.
+- Published research/2026/09/2026-09-08/05-outcome.md + 05-outcome.json.

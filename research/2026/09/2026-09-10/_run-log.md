@@ -54,3 +54,14 @@
 ## Repo cleanup — branches merged, stage E grouped into edge/
 - Logged at 2026-09-10 18:54 UTC
 - Salvaged unmerged research from 4 stale branches; merged the edge-corpus backtest (104 events, no rank signal) and edge_hunter_control.py (the double hunt inflates conviction by about a third); moved stage E into edge/ with four shims at the old scripts/ paths for the frozen Routine prompt; made the exit-Routine guard executable (alpaca_trade.py mode --require) and refused exit_mode != uniform while flatten_before_entry is true; corrected the stage E cron to 4 17 * * 1-5 and recorded the live Close AMC Routine.
+
+## Recovered — Routine output that never reached main
+- Logged at 2026-10-08 UTC, by a maintenance session
+- The section(s) below were written by a Routine session on that day but published to its own branch `claude/kind-tesla-4v6cvy` (commit 93d47dbf, 5a2e2b4f) instead of `main`. Copied verbatim; nothing re-run, nothing edited.
+
+### Stage 3 — panel & advice — STARTED
+- Logged at 2026-09-10 15:55 UTC
+- Stage 2 batch 2 never logged FINISHED and never wrote 02-ranking.json (KR, CPRT dossiers exist; DSGX, RH do not). Built 02-ranking.json in this stage from the 4 available dossiers (ADBE, CPRT, KR, ORCL), per earnings-panel-advice skill step 1.
+- Ranking (panel_priority, change_expectation term dropped, all null): KR 39.3, ORCL 38.6, CPRT 37.5, ADBE 37.0
+- panel.names=2 (config default, already at first budget.degrade_order step): panelling KR, ORCL
+- Plan: refresh spot/implied-move anchors for KR and ORCL, run 7 isolated personas per name (14 subagents total), synthesize, write dossiers and 04-advice
