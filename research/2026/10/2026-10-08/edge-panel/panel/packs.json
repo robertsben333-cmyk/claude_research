@@ -1,0 +1,1126 @@
+[
+ {
+  "id": "us/2026-10-08/DAL",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "DAL",
+   "event_date": "2026-10-09",
+   "session": "bmo",
+   "as_of_utc": "2026-10-08T17:09:42+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-08",
+    "spot": 81.66,
+    "run_up_5d_pct": -2.94,
+    "run_up_20d_pct": 4.37,
+    "pct_from_52w_high": -12.81,
+    "pct_from_52w_low": 46.74,
+    "realised_vol_20d_annualised_pct": 25.7,
+    "avg_volume_20d": 7697121
+   },
+   "cik": "0000027904",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-10",
+      "session": "bmo",
+      "move_pct": -1.81
+     },
+     {
+      "event_date": "2026-04-08",
+      "session": "bmo",
+      "move_pct": 3.75
+     },
+     {
+      "event_date": "2026-01-13",
+      "session": "bmo",
+      "move_pct": -2.39
+     },
+     {
+      "event_date": "2025-10-09",
+      "session": "bmo",
+      "move_pct": 4.29
+     },
+     {
+      "event_date": "2025-07-10",
+      "session": "bmo",
+      "move_pct": 11.99
+     },
+     {
+      "event_date": "2025-04-09",
+      "session": "bmo",
+      "move_pct": 23.38
+     },
+     {
+      "event_date": "2025-01-10",
+      "session": "bmo",
+      "move_pct": 9.0
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 4.29,
+    "max_abs_move_pct": 23.38,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91.5,
+    "ratio": 0.99,
+    "last_print": "2026-07-10",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 92-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 8,
+    "atm_strike": 82.0,
+    "atm_iv_pct": 51.1,
+    "straddle_implied_move_pct": 6.42,
+    "event_implied_move_pct": 5.63,
+    "event_implied_move_basis": "6.42% straddle over 8 calendar days less 3.87% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 0.03,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.12,
+    "total_open_interest": 160635,
+    "atm_spread_frac_of_mid": 0.082,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 2.15,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 5.63,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 adjusted EPS consensus about $1.96-2.02, from two-plus agreeing sources: Zacks $1.96 via Parameter (https://parameter.io/delta-air-lines-dal-faces-rising-fuel-costs-as-q3-earnings-approach-october-9/, 2026-10-06; it also cites $1.94 and UBS $1.70), Pluang $2.01 (https://aerohaber.com/delta-air-lines-stock-gains-ahead-of-october-earnings-update/, 2026-09-20) and Benzinga $2.02. The bar sits at or below the LOW end of Delta's own Q3 guide of $2.00-2.50 (mid-teens revenue growth, 11-13% operating margin, all-in fuel ~$3.15/gal off the 2026-07-02 curve with a 5c refinery benefit; https://news.delta.com/sites/default/files/2026-07/delta-air-lines-announces-june-quarter-2026-results.pdf). Revenue consensus is about $17.7bn (Parameter; that is about +16% on adjusted, despite the article's '6%' typo). FY26 consensus is $5.99 (Zacks, per preview) against the company's unchanged $6.50-7.50 guide, which implies Q4 consensus near $1.83 (5.99 - H1 2.20 - Q3 1.96). UBS expects a Q4 guide of $1.25-1.75 at $4.00-4.10 fuel. print_vs_bar_pct is on EPS.",
+   "positioning_check": "Short interest 26.2M shares at the 2026-09-15 FINRA settlement, up from 25.3M on 08-31; about 4.0% of shares outstanding, 4.9 days to cover, borrow fee 0.4% (https://curvedtrading.com/stocks/dal/, read 2026-10-08). The year's high was 29.1M on 06-30. Moderate, not a crowded short. Baseline: 25d skew +0.03 vol points (balanced, priced_direction_lean 'balanced'), put/call open-interest ratio 0.12 (very call-heavy open interest), event-implied move 5.63%, run-up +4.37% over 20d and -2.94% over 5d, 12.8% below the 52-week high. The stock was ~$92-94 in early August (insider sale prices) and $81.66 now, so roughly 12% of fuel de-rating is already in the price.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "Q3 jet fuel ran far above the curve Delta guided on. US Gulf Coast kerosene-jet averaged about $3.40 in July, $3.72 in August and $4.39 in September, a Q3 mean of about $3.84/gal. Spot was $2.71 on 2026-07-02, the date of the forward curve behind Delta's ~$3.15 all-in Q3 assumption. On roughly 1.15bn gallons (Q2 was $4.41bn at $3.93/gal, about 1.12bn) that is a gross overrun of roughly $1.0-1.3bn pre-tax, about $1.2-1.5 per share after tax before refinery offsets and fare recapture. Consensus fell only ~11% over 60 days, to ~$1.96 from ~$2.2, and UBS sits at $1.70.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DJFUELUSGULF&cosd=2026-06-01",
+    "source_date": "2026-10-06 (latest observation in series)",
+    "reaction_history_on_this_line": "July 2026: Delta beat Q2 EPS ($1.56 against ~$1.48) and guided Q3 above consensus, yet closed -1.81% (baseline) as the focus went to fuel-driven YoY EPS decline. Q2 itself beat the TOP of a $1.00-1.50 guide, helped by fuel falling below the $4.30 assumption; this quarter the fuel move runs the other way.",
+    "why_not_priced": "Partly priced. The stock is ~12% below its early-August level and consensus was cut ~11%. But a $0.25-0.30 consensus cut is small next to a gross ~$1.2-1.5/share fuel overrun, unless analysts assume large refinery and recapture offsets. If the overrun were fully marked, consensus would sit nearer UBS's $1.70 than the $1.96-2.02 the aggregators show.",
+    "independence": "AAL's CFO said on 2026-09-16 that Q4 fuel runs ~$1/gal above its July projection (https://www.foxbusiness.com/markets/major-airlines-cut-flights-higher-jet-fuel-prices-hit-carriers). The UBS $1.70 estimate is via https://parameter.io/delta-air-lines-dal-faces-rising-fuel-costs-as-q3-earnings-approach-october-9/. This is a proxy: Delta's actual all-in price includes taxes, NY Harbor differentials and the refinery, which is the next finding.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "Delta's Trainer refinery (Monroe) is an offset the Q3 guide barely counted. The guide assumed only a 5c/gal refinery benefit. The refinery made $351M of operating income in Q2 2026 even with a mid-June outage (10-Q), and implied Q3 jet cracks against Brent were very wide: ~$59/bbl in July, ~$65 in August, ~$70 in September (FRED jet $3.40/$3.72/$4.39 per gal against Brent $83.8/$91.1/$114.2). A Q3 refinery benefit of 30-45c/gal on ~1.15bn gallons is $350-500M pre-tax, against the ~$60M assumed. UBS cites a 40-45c refinery gain.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000027904/000002790426000031/dal-20260630.htm",
+    "source_date": "2026-07-10",
+    "reaction_history_on_this_line": "No clean history. The refinery helped the Q2 2026 beat above the top of the guide, and the stock still fell 1.81%.",
+    "why_not_priced": "The preview wire (Zacks via Parameter) still quotes the guide's 'net positive ~5c' refinery framing. Only UBS quantifies 40-45c, and even UBS sits at $1.70. If the refinery offset were widely modelled, the spread between the gross fuel overrun and the consensus cut would be explained in the previews, and it is not.",
+    "independence": "The Brent series is a different source: https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILBRENTEU&cosd=2026-06-01. The UBS refinery view is in the parameter.io preview. Shares the jet series with finding 1, but the two are opposite components of one fuel line and are not double-counted.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "The independent revenue series ran at or above Delta's 'mid-teens' Q3 revenue guide. ARC agency air sales were $9.8bn in August 2026, +19% YoY, with average domestic round-trip fare $624 (+17%), premium $1,454 (+11%) and trips +5%. CPI airline fares were +23.4% YoY in August. The offset is that TSA screenings fell 2.7% over the summer and 4.4% in August. Revenue consensus is ~$17.7bn (~+16%).",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.travelmarketreport.com/air/articles/arc-air-ticket-sales-jump-5-in-august-as-average-fare-hits-624",
+    "source_date": "2026-09 (August 2026 ARC release; page undated in fetch)",
+    "reaction_history_on_this_line": "Q2 2026 revenue +14% (top of expectations) with record premium and Amex remuneration of $2.4bn (+16%): the stock fell 1.81%. Revenue strength has not been paid on its own while fuel dominates.",
+    "why_not_priced": "Industry proxies, not Delta's own numbers. A revenue beat is partly expected given the fare inflation headlines, but consensus at ~+16% sits inside the guide rather than above it. If the market had priced the ARC +19%, revenue consensus would sit above the guided mid-teens.",
+    "independence": "CPI airline fares +23.4% YoY in August: https://www.travelpulse.com/news/impacting-travel/airfare-prices-surge-as-travel-costs-push-inflation-higher (2026-09-12). Proxy: ARC is agency-settled tickets across all carriers, not Delta.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "The Q4/FY guide will be set into fuel well above the July plan. Gulf Coast jet was $4.34/gal on 2026-10-06, versus a $3.84 Q3 mean and $2.71 at the July guide date, and Brent was $125.44 on 2026-10-06 against a $114 September mean, still rising. AAL said Q4 fuel runs ~$1/gal above its July plan. Delta's unchanged FY $6.50-7.50 implies Q4 of $1.80-3.30 against a ~$1.83 consensus. UBS expects a Q4 guide of $1.25-1.75 at $4.00-4.10 fuel, yet current spot plus the usual all-in premium sits at or above that fuel band. A FY cut toward ~$5.25-5.75 against the $5.99 Zacks consensus is the likely shape.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DJFUELUSGULF&cosd=2026-06-01",
+    "source_date": "2026-10-06",
+    "reaction_history_on_this_line": "April 2026: Delta withdrew the FY guide at peak fuel and the stock rose 3.75%. July 2026: it guided Q3 above consensus and reaffirmed FY, and the stock fell 1.81%. In April 2025 the FY guide was withdrawn and the stock rose 23.38%, on the tariff-pause day, so that one is market-driven. On this line the stock has looked through bad guides more than it punished them.",
+    "why_not_priced": "Largely anticipated. Zacks Rank #5 and falling estimates show the buy side expects a cut, and the stock is ~12% off its August level. What may not be priced is the size: aggregated FY consensus of $5.99 and implied Q4 of ~$1.83 sit above UBS's $1.25-1.75 Q4 band, and fuel spot has not eased since UBS wrote. If the cut were fully priced, consensus would already sit near $5.5.",
+    "independence": "AAL CFO Devon May, Q4 fuel ~$1/gal above the July projection: https://www.foxbusiness.com/markets/major-airlines-cut-flights-higher-jet-fuel-prices-hit-carriers (2026-09-17). UBS Q4 view: https://parameter.io/delta-air-lines-dal-faces-rising-fuel-costs-as-q3-earnings-approach-october-9/. FY consensus $5.99: Zacks preview via search. Shares the jet series with finding 1, but a different quarter.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "Three direct peers spoke at Morgan Stanley Laguna on 2026-09-16, after Delta last guided on 07-10, and all described strong demand. AAL reaffirmed Q3 revenue +16-19% ('Overall for the third quarter, we feel great'). United's CFO called Q4 bookings 'tremendously strong' with 'very little evidence of demand destruction' and is cutting December flights. Southwest kept its Q3 EPS guide because stronger-than-expected fall bookings offset fuel. Industry Q4 capacity cuts support the unit-revenue guide Delta will give.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.foxbusiness.com/markets/major-airlines-cut-flights-higher-jet-fuel-prices-hit-carriers",
+    "source_date": "2026-09-17",
+    "reaction_history_on_this_line": "Delta's July 2026 constructive December-quarter revenue commentary did not stop a -1.81% close. When fuel is the narrative, revenue optimism is partially paid at best.",
+    "why_not_priced": "Public for three weeks and probably partly behind DAL's +4.4% 20-day run-up. But Delta itself has said nothing since July. If the market had fully carried the peer read to Delta's Q4 RASM, consensus revenue would sit above guide and the Q3 EPS consensus would not have kept falling.",
+    "independence": "ARC August data (finding 3) is a separate series pointing the same way. Southwest and United statements are in the same Reuters-sourced article, so they count once.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "Delta has been silent since 2026-07-10: no 8-K after the Q2 release (EDGAR submissions show only Form 4/144/13G/N-PX since) and no September investor-conference appearance. In September 2025 Delta presented at Morgan Stanley Laguna on 09-11 and reaffirmed its outlook, while in 2026 peers presented and Delta did not.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://data.sec.gov/submissions/CIK0000027904.json",
+    "source_date": "2026-10-08 (fetched)",
+    "reaction_history_on_this_line": "none",
+    "why_not_priced": "It cannot be read either way. Not reaffirming into a $1/gal fuel move may mean Q3 sits below the guide floor, or simply that Delta chose not to speak. [sizing note removed].",
+    "independence": "The 2025 Laguna appearance and reaffirmation: https://news.delta.com/delta-air-lines-present-morgan-stanley-laguna-conference-1 (2025-08-28).",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "Insiders sold right after the Q2 print. CEO Bastian exercised and sold 206,510 shares at a $92.80 average on 2026-08-04 (~$19.2M), and President Carter, EVP Sear and director Huerta also sold on 08-04/05 at $92.98-94.12. These were option exercises in the open window. The stock is now $81.66.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.fool.com/coverage/filings/2026/08/06/delta-air-lines-ceo-edward-bastian-sells-company-shares-worth-usd19-2-million-here-s-a-deeper-look-at-the-transaction/",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "none",
+    "why_not_priced": "Public since August and routine option monetisation. It carries almost no information about this print.",
+    "independence": "EDGAR submissions show the matching Form 4/144 cluster on 2026-08-03 to 08-06: https://data.sec.gov/submissions/CIK0000027904.json",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "United reports Q3 around mid-October (dates listed 10-14 to 10-21). Its read on fuel recapture (it guided 80-90% recapture of the July fuel increase in Q3) is a sector catalyst after Delta's window.",
+    "resolves_by": "2026-10-14",
+    "source": "https://transcripts.platformaeronaut.com/summaries/UAL-2Q26-AI-Summary",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "ARC September 2026 ticket sales release, expected around 10-16 based on the 2025 cadence. It is the next independent read on September fares.",
+    "resolves_by": "2026-10-16",
+    "source": "https://www2.arccorp.com/about-us/newsroom/2025-news-releases/september-2025-air-ticket-sales/",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "Zacks Rank #5 (Strong Sell) and Earnings ESP of -2.81% into the print",
+    "source": "https://parameter.io/delta-air-lines-dal-faces-rising-fuel-costs-as-q3-earnings-approach-october-9/",
+    "first_hunter_reason": "duplicate",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "TickerLeague Q3 consensus of $2.25 on 13 analysts, and Stocktwits $2.21",
+    "source": "https://tickerleague.com/companies/DAL/estimates",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DAL.json",
+    "text": "Delta-Hyatt strategic and loyalty partnership announced 2026-09-10/14",
+    "source": "https://ch.zonebourse.com/cours/action/DELTA-AIR-LINES-INC-49285/actualite-communiques/",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DAL.json",
+    "text": "Delta intra-quarter guidance update: no 8-K since 2026-07-10 on EDGAR, and no September 2026 conference appearance found (searched news.delta.com, Laguna 2026 listings)",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DAL.json",
+    "text": "September 2026 operational disruption at Delta: none found beyond a single cancelled flight; the August ATL ground stops were FAA-wide",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DAL.json",
+    "text": "Analyst rating changes in October 2026: none found",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DAL.json",
+    "text": "Current Delta Q4 capacity or bookings commentary: none since the July call",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DAL.json",
+    "text": "September 2026 ARC data: not yet released",
+    "i": 16
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-08/HOVR",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "HOVR",
+   "event_date": "2026-10-09",
+   "session": "bmo",
+   "as_of_utc": "2026-10-08T17:09:44+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-08",
+    "spot": 1.535,
+    "run_up_5d_pct": -8.08,
+    "run_up_20d_pct": -5.25,
+    "pct_from_52w_high": -60.74,
+    "pct_from_52w_low": 27.92,
+    "realised_vol_20d_annualised_pct": 37.3,
+    "avg_volume_20d": 416284
+   },
+   "cik": "0001930021",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-16",
+      "session": "bmo",
+      "move_pct": -12.28
+     },
+     {
+      "event_date": "2026-04-14",
+      "session": "bmo",
+      "move_pct": 0.0
+     },
+     {
+      "event_date": "2026-01-14",
+      "session": "bmo",
+      "move_pct": 5.03
+     },
+     {
+      "event_date": "2025-10-10",
+      "session": "bmo",
+      "move_pct": -16.08
+     }
+    ],
+    "n": 4,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 8.65,
+    "max_abs_move_pct": 16.08,
+    "up_count": 1,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 85,
+    "median_gap_days": 93,
+    "ratio": 0.91,
+    "last_print": "2026-07-16",
+    "verdict": "fits_cadence",
+    "reason": "85 days since the last print against a 93-day cadence"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 4.33,
+   "deadband_basis": "half the median of 4 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 8.65,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 4,
+    "history_usable": 4,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "GAAP EPS consensus -$0.08 per share for fiscal Q1 2027, from one source only (Earnings Whispers, https://beta.earningswhispers.com/go/w/HOVR, undated page that confirms the 2026-10-09 bmo date). No company guide and no second agreeing estimate, so every finding that depends on it is capped small. No revenue bar (pre-revenue). The line the stock likely trades on is cash/burn and the business update, not EPS. Prior quarter: Q4 FY26 EPS about -$0.13 vs -$0.11 estimate per Benzinga (https://www.benzinga.com/quote/HOVR/earnings).",
+   "positioning_check": "Short interest 2,726,039 shares, 4.57% of float, days to cover 4.4 at about 1.32m average volume, record date 2026-09-15, published 2026-09-24 (MarketBeat, https://www.marketbeat.com/stocks/NASDAQ/HOVR/short-interest/). Against the baseline's 20-day average volume of 416k it is about 6.5 days. Down 3.4% from the prior report. Not crowded, so it gives no squeeze reason to shrink the negatives. No options market, so no skew. Tape: spot $1.535, -8.1% over 5 sessions, -5.3% over 20, -60.7% from the 52-week high and 27.9% above the low. Volume roughly doubled Oct 5-7 (568k, 581k, 577k vs about 280-330k on Sep 28-Oct 2) as the stock went 1.68 -> 1.53 with no news found. Alyeska Investment Group holds 6.72% (13G, event 2026-06-30), partly through RDO pre-funded warrants.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "GAAP net loss for Q1 FY27 (Jun-Aug 2026) will probably be much narrower than the -$0.08 consensus because of a non-cash warrant fair-value GAIN. The company carries warrant liabilities marked to the stock (FY26 fair-value loss CAD 10.80m; quarterly CAD +5.14m Q1, +3.99m Q2, -0.995m Q3, about +2.67m Q4), and HOVR fell from $2.93 (2026-05-29) to $1.67 (2026-08-31), -43%. Outstanding at May 31: 12,065,375 warrants at $11.50 plus RDO I/II and general warrants. In Q1 FY26 the same line ran the other way (a CAD 5.14m loss turned a CAD ~5.8m operating loss into -10.9m) and the stock fell 16% on that print.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://data.sec.gov/api/xbrl/companyconcept/CIK0001930021/us-gaap/FairValueAdjustmentOfWarrants.json",
+    "source_date": "2026-07-16 (latest value, from the 10-K); prices from https://query1.finance.yahoo.com/v8/finance/chart/HOVR?period1=1780000000&period2=1791000000&interval=1d",
+    "reaction_history_on_this_line": "Q1 FY26 (2025-10-10): warrant loss, EPS reported as a miss (-0.16 vs -0.13 per aggregators), stock -16.08%, but it had risen 15.5% the day before. Q4 FY26 (2026-07-16): EPS -0.13 vs -0.11, a miss, stock -12.28%. The one up print (2026-01-14, +5.03%) followed Q2's CAD 3.99m warrant loss, so EPS headlines do not map cleanly to reactions.",
+    "why_not_priced": "Consensus -$0.08 (about USD 5.4m on 67m shares) looks like an operating-loss run-rate, i.e. about the Q4 FY26 loss with no remeasurement. If the warrant gain were modelled, the estimate would sit nearer -$0.02 to -$0.05. On a 1-2 analyst name nobody updates for it. It is a below-the-line remeasurement with no path to cash or the guide, so even if it lands, holders who look through it are right to.",
+    "independence": "Same-direction evidence from a different source: warrant count and $11.50 strike from the 10-K MD&A (https://www.sec.gov/Archives/edgar/data/0001930021/000121390026078490/ea0295260-10k_newhorizon.htm). The size of the gain is an inference: no warrant price for May 29 / Aug 31 could be sourced, and HOVRW traded $0.31 on 2026-10-07.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "Financing: on 2026-09-04 the company filed a 424B5 for a new $50m at-the-market program with JonesTrading (up to 3% commission) under its $200m shelf (S-3, 2026-08-28). The last price in the filing was $1.81 on Aug 27, with 67,123,941 shares outstanding. That is about half the current ~$103m market cap, on top of 9.04m ATM shares sold in FY26 and two RDOs in May ($2.15 and $2.51). The stock is now $1.535 (-15% since the supplement) and volume doubled on Oct 5-7 with no news. The 10-Q cover share count and subsequent-events note will show how much was sold after Aug 31. The 10-K and the prospectus also say there is 'substantial doubt' about going concern beyond 12 months without more capital, against the press-release line of 'more than 24 months of liquidity'. What the money buys: the use of proceeds is aircraft development. That use is corroborated (RAMPF fuselage, BETA flight computers, headcount 56 -> 100+ by summer 2027), but it is a pre-revenue build with no backlog to fund, so the sign stays negative.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/1930021/000121390026097676/ea0304433-424b5_newhorizon.htm",
+    "source_date": "2026-09-04",
+    "reaction_history_on_this_line": "May 2026 RDOs at $2.15 and $2.51 were followed by the stock sliding from $2.93 (May 29) to about $1.76 by July 10. The baseline does not isolate the reaction to dilution disclosures in a print.",
+    "why_not_priced": "The ATM's existence is public and the drift since Sep 4 probably reflects it. What is not public is how many shares were sold in Sep-Oct at $1.6-1.7. If heavy selling were known, the stock would already have reset on volume. Instead the selling looks gradual (Oct 5-7 volume about 2x the prior week). Light usage would be a mild relief.",
+    "independence": "Volume and price series from Yahoo (https://query1.finance.yahoo.com/v8/finance/chart/HOVR?range=10d&interval=1d). Going-concern wording from the 10-K (https://www.sec.gov/Archives/edgar/data/0001930021/000121390026078490/ea0295260-10k_newhorizon.htm). The prospectus and the 10-K are different documents but come from one issuer.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "Cash burn will step up as guided. FY26 operating cash outflow was CAD 16.5m (quarters: 2.36, 2.61, 6.82, 4.70). The company guided that FY27 spend steps up as major components arrive and engineering headcount roughly doubles, while liquidity stays above 24 months. A Q1 FY27 outflow of CAD 6-9m would leave cash near CAD 70m against CAD 78.3m at May 31, before any ATM proceeds.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://data.sec.gov/api/xbrl/companyconcept/CIK0001930021/us-gaap/NetCashProvidedByUsedInOperatingActivities.json",
+    "source_date": "2026-07-16",
+    "reaction_history_on_this_line": "Not isolable. The July print (-12.28%) showed an FY burn of CAD 16m and the 24-month liquidity claim together.",
+    "why_not_priced": "It is largely priced: the step-up was guided on the July 16 call (https://quartr.com/events/new-horizon-aircraft-ltd-hovr-q4-2026_FRQBx1ni). Only a burn well above about CAD 9m a quarter would be news, and nothing was found pointing to that.",
+    "independence": "Guidance from the Quartr Q4 FY26 summary, a different source from the XBRL cash-flow data.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "Demonstrator schedule risk in the business update. Aviation Week reported the full-scale Cavorite X7 demonstrator slipped about one quarter to spring 2027, which the company attributed to prioritising certification readiness. The July 16 release then said initial testing is on track for calendar Q1 2027. The update will either reaffirm the date or slip it again. Nothing found indicates a second slip.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://aviationweek.com/business-aviation/aircraft-propulsion/horizon-targets-spring-2027-completion-full-scale-cavorite-x7",
+    "source_date": "2026 (paywalled; summary only, exact date not confirmed from the page)",
+    "reaction_history_on_this_line": "The slip appears to have surfaced around the July FY print (-12.28%), but its share of that move cannot be separated out.",
+    "why_not_priced": "The first slip is priced. A second slip is a tail risk the stock, at a 60% drawdown, may partly carry already. A reaffirmation is the base case and is worth about zero.",
+    "independence": "The July 16 release's 'on track for initial testing in Q1 calendar 2027' (https://www.sec.gov/Archives/edgar/data/1930021/000121390026078500/ea029810101ex99-1.htm) argues against a further slip. The finding is sized net of that.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "Two non-binding LOIs to convert or recap in the business update: V-Star Powered Lift (2026-07-21, 5 firm plus 95 options, 'up to $600m', a deposit only when a definitive agreement is signed) and Great Lakes Helicopter (2026-09-29, MRO, pilot training and some aircraft purchases, no terms). The company named converting V-Star to a definitive agreement as its next goal. A signed definitive agreement with a deposit would be new; a recap would not.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.newswire.com/news/horizon-aircraft-signs-loi-with-great-lakes-helicopter-for-cavorite-x7-22865202",
+    "source_date": "2026-09-29",
+    "reaction_history_on_this_line": "The Great Lakes LOI on 2026-09-29 moved the stock 0.0% ($1.70 to $1.70). The V-Star LOI came after the July print, and the stock was about $1.97 by Aug 6.",
+    "why_not_priced": "Both LOIs are public and the Great Lakes one drew no reaction, so a recap is priced. Only a conversion to a definitive agreement with a deposit would be unpriced, and no evidence of one was found.",
+    "independence": "V-Star LOI release: https://www.newswire.com/news/horizon-aircraft-secures-loi-with-v-star-powered-lift-aviation-for-the-purchase. It is a separate document.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "RDO holders sit under water. Alyeska Investment Group filed a 13G showing 6.72% (4,148,433 shares, including 2,160,897 via pre-funded warrants, event date 2026-06-30). Those positions came from the May registered directs at $2.15 and $2.51, and the stock is now $1.535. Shares outstanding rose from the 61.76m Alyeska used to 67.12m by Aug 27, consistent with pre-funded warrant exercises and ATM sales.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/1453072/000117266126003806/xslSCHEDULE_13G_X02/primary_doc.xml",
+    "source_date": "2026-08-14",
+    "reaction_history_on_this_line": "none available",
+    "why_not_priced": "The holding is public. Whether Alyeska is a seller is an inference, and the drift since May would already reflect any selling.",
+    "independence": "The share count of 67,123,941 at Aug 27 comes from the 424B5 (https://www.sec.gov/Archives/edgar/data/1930021/000121390026097676/ea0304433-424b5_newhorizon.htm).",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "Full-scale Cavorite X7 demonstrator completion and initial ground testing, targeted spring / calendar Q1 2027.",
+    "resolves_by": "2027-03-31",
+    "source": "https://www.sec.gov/Archives/edgar/data/1930021/000121390026078500/ea029810101ex99-1.htm",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "The going-concern horizon. The 10-K says cash covers 'at least 12 months' with substantial doubt beyond that without new capital, so the question becomes binding around mid-2027.",
+    "resolves_by": "2027-07-31",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001930021/000121390026078490/ea0295260-10k_newhorizon.htm",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "Board change: Trisha Nomura resigned as director and audit chair for personal reasons ('no disagreement'), replaced by Tom Hearne (8-K 5.02, 2026-09-04; Form 3 2026-09-14)",
+    "source": "https://www.sec.gov/Archives/edgar/data/1930021/000121390026097738/ea030461001ex99-1.htm",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "INSAT grant of about $10.5m said to bring cash to about $35m, lasting 'through end of calendar 2026'",
+    "source": "https://www.accessnewswire.com/newsroom/en/industrial-and-manufacturing/horizon-aircraft-provides-business-update-and-second-quarter-of-fiscal-1126665",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HOVR.json",
+    "text": "Earnings Whispers alternative date of 2026-10-15",
+    "source": "https://beta.earningswhispers.com/go/w/HOVR",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HOVR.json",
+    "text": "Company news dated Oct 5-8 2026 explaining the 1.68 -> 1.53 slide on doubled volume (no release found)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HOVR.json",
+    "text": "Pre-release of Q1 FY27 numbers in the 424B5 of 2026-09-04 (none: it carries May 31 figures only)",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HOVR.json",
+    "text": "New government grant or non-dilutive funding since the INSAT award (none found in 2026 H2)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HOVR.json",
+    "text": "RAMPF / North Aircraft Industries / BETA counterparty announcements on component deliveries since July (none found)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HOVR.json",
+    "text": "Insider buying: the Aug 2026 Form 4s are grant-type acquisitions at $0 (e.g. director Jameel Janjua, 14,145 shares, code A), not open-market buys",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HOVR.json",
+    "text": "eVTOL peer read-through dated Sep-Oct 2026 (search returned only August material on Archer/Joby)",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HOVR.json",
+    "text": "Second EPS estimate source to corroborate -$0.08 (none found; the bar stays single-source)",
+    "i": 17
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-08/ODC",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "ODC",
+   "event_date": "2026-10-08",
+   "session": "amc",
+   "as_of_utc": "2026-10-08T17:09:38+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-08",
+    "spot": 85.4091,
+    "run_up_5d_pct": -6.56,
+    "run_up_20d_pct": -0.92,
+    "pct_from_52w_high": -19.76,
+    "pct_from_52w_low": 84.83,
+    "realised_vol_20d_annualised_pct": 26.3,
+    "avg_volume_20d": 121321
+   },
+   "cik": "0000074046",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-06-08",
+      "session": "amc",
+      "move_pct": 17.38
+     },
+     {
+      "event_date": "2026-03-11",
+      "session": "amc",
+      "move_pct": 0.83
+     },
+     {
+      "event_date": "2025-12-08",
+      "session": "amc",
+      "move_pct": -12.55
+     },
+     {
+      "event_date": "2025-10-09",
+      "session": "amc",
+      "move_pct": 8.23
+     },
+     {
+      "event_date": "2025-06-05",
+      "session": "amc",
+      "move_pct": 7.72
+     },
+     {
+      "event_date": "2025-03-12",
+      "session": "amc",
+      "move_pct": -4.39
+     },
+     {
+      "event_date": "2024-12-12",
+      "session": "amc",
+      "move_pct": 1.18
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 7.72,
+    "max_abs_move_pct": 17.38,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 122,
+    "median_gap_days": 89.5,
+    "ratio": 1.36,
+    "last_print": "2026-06-08",
+    "verdict": "fits_cadence",
+    "reason": "122 days since the last print against a 90-day cadence"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 3.86,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 7.72,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "No sell-side consensus could be sourced: TipRanks shows an empty consensus field from 0 analysts (https://www.tipranks.com/stocks/ODC/earnings), and the sweep reports 2 estimates. The effective bar is the company's own statement in the Q3 release (2026-06-08, https://www.sec.gov/Archives/edgar/data/0000074046/000162828026041544/odcf26q3ex991-earningsrele.htm): 'we expect to achieve our annual plan and surpass last year's net income'. FY25 net income was $54.0M (https://finviz.com/news/188665/oil-dri-delivers-strongest-annual-financial-results-in-history-bolstered-by-solid-fourth-quarter-performance) and 9M FY26 net income was $42.6M, so the company's floor is Q4 NI > $11.4M. Prior-year Q4 was net sales $125.2M, NI $13.0M and diluted EPS $0.89. print_vs_bar_pct is measured on Q4 revenue against the prior-year $125.2M: R&W should grow (Q3 +13%) while B2B laps a +24% Q4 FY25 comp. Because the bar is unsourced, every finding is capped small.",
+   "positioning_check": "There is no option chain (baseline options.status no_options_market), so there is no skew. Short interest is about 376k shares, 2.6% of float, 3.8 days to cover, as of 2026-08-20 (https://equibles.com/stocks/odc/short-interest). FINRA's 2026-07-15 settlement shows about 404.7k shares and about 3.4 days (https://curvedtrading.com/stocks/odc/short-interest/). That is not a crowded short. Tape: run_up_5d -6.56%, run_up_20d -0.92%, 19.8% below the 52-week high (about $104.9 in July 2026 per MarketBeat) and +84.8% above the 52-week low. A GuruFocus headline reports a -4.3% day on 2026-09-25 with no stated cause. 20-day average volume is about 121k shares, so turnover is thin.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ODC.json",
+    "text": "US on-highway diesel, which drives Oil-Dri's outbound freight on heavy, low-value litter and absorbents, rose through fiscal Q4 (May-July 2026). EIA readings were $4.668 on Jun 29, $4.578 on Jul 6 (84c above a year earlier), $4.796 on Jul 13, $5.134 on Jul 20 and $5.31 on Jul 27. Q4 FY25 ran near $3.6-3.8. In Q3 domestic COGS per ton was already +6% and gross margin fell 190bp to 26.7%; the prior-year Q4 margin was 27.8%. Q4 gross margin below about 26.5% would mark a further step down.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://shawmedia-agrinews-prod.cdn.arcpublishing.com/community-contributed/2026/07/21/fuel-gauge-for-week-ending-july-20/",
+    "source_date": "2026-07-21",
+    "reaction_history_on_this_line": "Q3 FY26 showed a 190bp gross-margin decline but +9% sales and +25% NI; the stock rose +17.38%, so margin pressure was looked through when sales and NI beat. Dec 2025 fell -12.55% (Q1 FY26, H1 described as 'challenging comparisons'); the driver of that drop was not established.",
+    "why_not_priced": "Management named transportation and input-cost headwinds on 2026-06-08 and 2026-06-09 ('We are continuing to see increases in freight costs'), but the July leg of the spike, roughly +$0.75/gal inside the quarter, came after the call. With 0-2 analysts there is no published model updating Q4 margin for it. Had it been priced, the stock would have de-rated on the diesel move in July-August. Instead it drifted from about $98 at the start of August to about $92 by late August, and the 5-day -6.6% came in October.",
+    "independence": "The same series is reported by Work Truck ($5.31 on Jul 27, https://www.worktruckonline.com/news/july-diesel-trends-update-v2). Company confirmation of freight pressure comes from the Q3 call (https://allmind.ai/earnings/event/2916921). Both are a macro proxy, not a company-level number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ODC.json",
+    "text": "Arm & Hammer cat litter was named a driver of Church & Dwight's Q2 2026 organic growth: Consumer Domestic organic sales +5.1% with +3.6% volume, for the April-June quarter that overlaps Oil-Dri's fiscal Q4. Clorox's Household segment, which includes Fresh Step litter, fell 18% in its June quarter (16 points of volume, partly lapping ERP shipments), and Fresh Step is described as in a turnaround. Together these point to firm category demand and share moving away from Clorox, which favours private-label and value suppliers. Oil-Dri's management said on 2026-06-09 that it expects 'additional shifting to private label'. Its R&W segment was a record $82.5M in Q3 (+13%), and co-packaged litter was +94%.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://sec.gov/Archives/edgar/data/313927/000119312526326749/chd-ex99_1.htm",
+    "source_date": "2026-07-31",
+    "reaction_history_on_this_line": "Q3 FY26: R&W +13% on cat litter, and the stock rose +17.38% (baseline; Zacks recap 'record sales drive the stock'). Q4 FY25: R&W +3% and total sales +10%, and the stock rose +8.23%.",
+    "why_not_priced": "Peer prints from July 31 and August 3 landed after Oil-Dri last spoke on June 8-9, and no analyst on Oil-Dri publicly bridged them. Had they been priced, the stock would not have drifted about 19% off its July high into the print. Note that part of Q3's litter gain was a storm-delayed order shift that does not recur in Q4.",
+    "independence": "The Clorox Q4 FY26 release, 2026-08-03 (https://www.sec.gov/Archives/edgar/data/0000021076/000002107626000028/ex991-pressreleasedatedaug.htm), is a different company and a different document. Oil-Dri's own Q3 call comment on the private-label shift is at https://allmind.ai/earnings/event/2916921. Both peers are proxies.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ODC.json",
+    "text": "US renewable diesel output hit a record in June 2026: 327 million gallons per EPA data cited by Clean Fuels, and a record per EIA via Quantum. EIA raised its 2026 RD production forecast to 241k b/d in the August STEO. This supports Oil-Dri's fluids-purification (bleaching clay) line, which was down about 1% in Q3. Oil-Dri's fluids-purification VP said on the call that refinery margins were 'running real high', with a stable market for 12-18 months. Netted against B2B lapping a +24% Q4 FY25 ($48.1M), B2B is probably flat to down year on year.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.biobased-diesel.com/post/us-renewable-diesel-manufacturing-hits-all-time-monthly-high-in-june",
+    "source_date": "2026-08 (June data; date from page context, not URL)",
+    "reaction_history_on_this_line": "B2B drove FY25 (+21% sales, +31% operating income) and Q4 FY25 (+24%), when the stock rose +8.23%. In Q3 FY26 B2B was +3% with operating income -3%, while R&W carried the +17% reaction.",
+    "why_not_priced": "This is an industry series that no Oil-Dri preview ties to the fluids line. The stock's 2026 weakness does not look like a priced RD recovery. The B2B comp makes the year-on-year optics hard, which limits the size.",
+    "independence": "Argus reports the EIA August STEO raise (https://www.argusmedia.com/en/news-and-insights/latest-market-news/2863954-eia-raises-renewable-diesel-output-view). Company commentary is at https://allmind.ai/earnings/event/2916921. All of it is proxy.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ODC.json",
+    "text": "8-K accepted 2026-10-07 20:02, the evening before the print. Oil-Dri amended its BMO credit agreement: revolver $75M -> $100M, maturity extended to 2031-10-07, pricing reduced, accordion raised to the greater of $125M or 100% of consolidated EBITDA, and the $100M cumulative permitted-acquisitions limit removed. It also doubled its Prudential private shelf from $75M to $150M (window to 2029). A new restricted-payments covenant governs dividends and buybacks. The company had $62.9M cash and $39.8M debt at 2026-04-30, so this is acquisition capacity, not a liquidity need.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/74046/000162828026065374/odc-20261007.htm",
+    "source_date": "2026-10-07",
+    "reaction_history_on_this_line": "The prior acquisition, Ultra Pet ($46M, 2024), added about 3% to FY25 sales, but no clean reaction to it on a print is recorded. No earlier financing 8-K reaction is available.",
+    "why_not_priced": "It was filed after the close on Oct 7, and no wire story about it was found. Its read-through (lifting the acquisition cap and adding up to about $200M+ of capacity) has not been explained by the company. If the call or release names a deal or an M&A pipeline, this is the item behind it. On what the money buys: there is no corroborated use; it is not distress (net cash about $23M, record sales); it is a positive or a zero.",
+    "independence": "none (single document; no acquisition news found in searches)",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ODC.json",
+    "text": "Q3 SG&A fell $2.5M (13%) to $16.6M 'primarily [from] a lower corporate bonus accrual', and 9M SG&A was $51.8M against $55.7M. Yet the CEO said FY26 would achieve plan and beat FY25 NI. If plan is achieved, the incentive accrual may normalise or catch up in Q4, so a Q4 NI at or above last year's $13.0M has a higher SG&A hurdle than Q3's $14.5M suggests.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000074046/000162828026041544/odcf26q3ex991-earningsrele.htm",
+    "source_date": "2026-06-08",
+    "reaction_history_on_this_line": "Q3's NI beat (+25%) was flattered by this bonus line, and the stock rose +17.38%. No prior instance of a Q4 true-up reaction is recorded.",
+    "why_not_priced": "Headline recaps (Zacks, 'Q3 earnings jump 25%') carried the NI figure and not its bonus-accrual source. If priced, Q3's +17% would have been read as partly non-recurring. This is an inference from a primary document, not a disclosed Q4 number.",
+    "independence": "none (same document as the bar; the inference is mine)",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ODC.json",
+    "text": "Henry Hub spot (kiln fuel for clay drying) averaged about $3.15/MMBtu in June 2026 and about $2.89 in July 2026, falling to $2.59 by Jul 31 per Argus. That is roughly flat-to-lower year on year and below EIA's $3.37 Q3 forecast, so energy input cost is not a fresh headwind beyond freight.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.woodriverenergy.com/blog/july-2026-energy-news",
+    "source_date": "2026-07-09",
+    "reaction_history_on_this_line": "Gross margin moved with cost per ton: FY25 margin +90bp, and the stock rose; Q3 FY26 -190bp, yet the stock rose +17%. Energy has not been isolated as a reaction driver.",
+    "why_not_priced": "It is a small offset that nobody bridges to Oil-Dri, and the company's hedging is not disclosed in the sources read. It is a proxy only.",
+    "independence": "AGA market indicators, Aug 7 2026 (https://www.aga.org/research-policy/resource-library/natural-gas-market-indicators-august-7-2026/). Proxy.",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ODC.json",
+    "text": "The 5-day -6.6% and -19.8% from the 52-week high into the print as a setup for a bounce (5 of 7 prior prints up)",
+    "source": "/home/user/claude_research/research/2026/10/2026-10-08/edge-panel/baselines/ODC.json",
+    "first_hunter_reason": "no_source",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ODC.json",
+    "text": "The company's FY statement 'achieve annual plan and surpass last year's net income' implies only Q4 NI > $11.4M, below the prior-year Q4's $13.0M: a low bar",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000074046/000162828026041544/odcf26q3ex991-earningsrele.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ODC.json",
+    "text": "EDGAR filings since 2026-06-08: only a 13G (2026-08-14) and the 2026-10-07 credit 8-K; no Form 4 insider transactions listed since June (browse-edgar owner=include)",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ODC.json",
+    "text": "Company news in August-October 2026 (acquisition, Walmart, pricing announcement): none found",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ODC.json",
+    "text": "A cause for the -6.6% 5-day decline and the 2026-09-25 -4.3% day: none found beyond a GuruFocus headline",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ODC.json",
+    "text": "Sell-side consensus for Q4 FY26: none sourced (TipRanks empty; no Zacks figure retrievable)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ODC.json",
+    "text": "Capital return in the window: the dividend raise (+10% to $0.225, 23rd year) and the 500k-share buyback authorisation were already announced on 2026-06-03, and nothing new was found for the window",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ODC.json",
+    "text": "Amlan Q4 data: nothing after the Q3 call comment (key account partly regained)",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-08/PKE",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "PKE",
+   "event_date": "2026-10-08",
+   "session": "amc",
+   "as_of_utc": "2026-10-08T17:09:40+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-08",
+    "spot": 30.085,
+    "run_up_5d_pct": 1.23,
+    "run_up_20d_pct": -2.04,
+    "pct_from_52w_high": -21.31,
+    "pct_from_52w_low": 62.18,
+    "realised_vol_20d_annualised_pct": 27.7,
+    "avg_volume_20d": 241269
+   },
+   "cik": "0000076267",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-20",
+      "session": "amc",
+      "move_pct": 7.35
+     },
+     {
+      "event_date": "2026-05-28",
+      "session": "amc",
+      "move_pct": -12.47
+     },
+     {
+      "event_date": "2026-01-13",
+      "session": "amc",
+      "move_pct": 9.58
+     },
+     {
+      "event_date": "2025-10-09",
+      "session": "amc",
+      "move_pct": -5.29
+     },
+     {
+      "event_date": "2025-07-15",
+      "session": "amc",
+      "move_pct": 11.53
+     },
+     {
+      "event_date": "2025-05-15",
+      "session": "amc",
+      "move_pct": 1.23
+     },
+     {
+      "event_date": "2025-01-14",
+      "session": "amc",
+      "move_pct": 1.55
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 7.35,
+    "max_abs_move_pct": 12.47,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 80,
+    "median_gap_days": 91.0,
+    "ratio": 0.88,
+    "last_print": "2026-07-20",
+    "verdict": "fits_cadence",
+    "reason": "80 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 8,
+    "atm_strike": 30.0,
+    "atm_iv_pct": 68.4,
+    "straddle_implied_move_pct": 8.56,
+    "event_implied_move_pct": 7.89,
+    "event_implied_move_basis": "8.56% straddle over 8 calendar days less 4.17% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.32,
+    "total_open_interest": 102,
+    "atm_spread_frac_of_mid": 0.468,
+    "warnings": [
+     "ATM bid-ask spread 47% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 3.67,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 7.89,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Revenue: company Q2 FY27 projection of $19.5-21.0m sales and $4.3-5.1m adjusted EBITDA, with GE engine-program sales of $7.5-8.25m, given on the 2026-07-20 call (transcript https://www.webull.com/news/15261981797278720; https://www.stocktaper.com/earningsCallSummary/PKE/2027/Q1). Revenue consensus is $19.54m per Chartmill (https://www.chartmill.com/news/PKE/Chartmill-51213-Park-Aerospace-Corp-NYSEPKE-Surges-After-Strong-Earnings-Beat) and $20.0m per Benzinga (https://www.benzinga.com/quote/PKE/earnings-forecasts), both inside the guide. The EPS consensus is DISPUTED: $0.13 (Chartmill) against $0.16 (Benzinga). Findings that rest on EPS are capped small. Park landed at the top of its Q1 ranges ($18.31m against 17.7-18.4; EBITDA $4.58m against 4.1-4.6) and inside its Q4 range ($24.19m against 23.5-24.5). print_vs_bar assumes about $20.6m against $20.0m.",
+   "positioning_check": "Short interest is about 1.1m shares, 4.34 days to cover, at the 2026-07-15 FINRA settlement (https://curvedtrading.com/stocks/pke/short-interest/), with 1.3m and 2.2 days at 06-30. Equibles shows 1.2m, 5.6% of float and 3.4 days, settlement undated, about August 2026 (https://equibles.com/stocks/pke/shortinterest). No September settlement found. That is moderate, not crowded, but up roughly 3x on the ~340k of September 2025. The 25-delta skew is null and the chain is unusable: total OI 102, put/call OI 1.32, ATM spread 47% of mid. The option market therefore makes no directional statement. Tape: spot $30.09, -2.0% over 20 days, +1.2% over 5 days, -21% from the 52-week high. The fall is mostly the slide from a $38.20 close on 2026-08-14 to about $30 by mid-September (https://stockanalysis.com/stocks/pke/history/), with no company news found to explain it.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "Park's own Q2 adjusted-EBITDA range ($4.3-5.1m) implies GAAP EPS of about $0.16-0.185, against a consensus of $0.13 (Chartmill) or $0.16 (Benzinga). The calculation takes off Q1 depreciation of $469k and stock-option expense of $92k, adds interest and other income of about $1.0m (Q1 was $786k on $89m of cash, now plus $27.2m of June ATM proceeds), and applies Q1's 26.4% tax rate over about 22.1m diluted shares (21.23m Q1 diluted plus the 870k ATM shares sold in June). So the lower consensus sits below the company's own floor.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000076267/000143774926023877/ex_990131.htm",
+    "source_date": "2026-07-20",
+    "reaction_history_on_this_line": "Q1 FY27 EPS $0.17 against $0.14 consensus (a 21% beat), landing at the top of its own range: +7.35% on 2026-07-20. Q4 FY26 also beat on EPS and revenue and fell -12.47% on 2026-05-28, which shows beats are not reliably bought.",
+    "why_not_priced": "The $0.13 Chartmill consensus looks like it has not been rebuilt for the extra interest income or for the guide. If the market held the company-implied number, both estimate sources would read about $0.17 rather than disagreeing. Coverage is two analysts. However, the beat lands INSIDE what management guided, so an attentive holder already expects it.",
+    "independence": "The ATM completion and its proceeds come from the 10-Q (https://www.sec.gov/Archives/edgar/data/0000076267/000143774926023883/pke20260708_10q.htm). The EBITDA guide comes from the call transcript (https://www.webull.com/news/15261981797278720). The calculation is my inference from those documents, not an analyst's number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "Q2 gross margin is exposed to the return of low-margin resold ArianeGroup C2B fabric. Q1 had zero fabric sales and a 34.8% gross margin. For Q2 management said the mix would be 'more balanced between the fabric and the prepreg', but 'not significant' to the bottom line. In Q4 FY26, about $7.2m of fabric at 'very light margins' produced a 28.7% gross margin. The company's own EBITDA guide, with Q1 SG&A of $2.36m, implies Q2 gross margin of about 31-33%, just above the 30% floor management says it dislikes breaching.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.webull.com/news/15261981797278720",
+    "source_date": "2026-07-21",
+    "reaction_history_on_this_line": "May 2026 (Q4 FY26): revenue inside its guide, 28.7% gross margin below 30%, stock -12.47% (driver per https://tickeron.com/blogs/why-is-park-aerospace-corp-pke-stock-down-14-today-13814/). July 2026: margin recovered to 34.8%, stock +7.35%.",
+    "why_not_priced": "The fabric mix was disclosed on the call, and the EBITDA guide already embeds it. This is mostly priced and inside guidance. The residual risk is a headline gross margin under 30% if fabric runs heavier than guided, because the timing is set by the customer, not Park. If that were priced, the stock would not have shown the -12.5% sensitivity to this line in May.",
+    "independence": "The Q4 fabric amounts of about $7.2m (quarter) and $9.8m (year) come from the Q3 FY26 forecast as summarised in https://finance.yahoo.com/news/park-aerospace-q3-earnings-call-001451609.html. The Q4 gross margin is from the 8-K exhibit https://www.sec.gov/Archives/edgar/data/0000076267/000143774926023877/ex_990131.htm. This finding shares the call transcript with the GE/H2 finding.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "On the July call management said GE Aerospace's customer-supplied FY27 total for Park's GE engine programs is about $34.4m, 'haircut slightly'. Q1 was $7.1m and Q2 is guided at $7.5-8.25m, so H2 needs about $19.4m, roughly $9.7m a quarter. Since that call, GE raised its 2026 guide on 2026-07-16 (LEAP deliveries +41% in H1), and Airbus deliveries ran +9% year to date through August (475 against 434). Both support a higher Q3 projection on tonight's call.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.webull.com/news/15261981797278720",
+    "source_date": "2026-07-21",
+    "reaction_history_on_this_line": "The next-quarter projection has driven the reactions. May 2026: the Q1 projection of $17.7-18.4m was a sequential drop from $24.2m, and the stock fell -12.47%. January 2026: a Q4 projection of $23.5-24.5m, and the stock rose +9.58%.",
+    "why_not_priced": "Mostly priced. Chartmill's FY27 consensus of $83.1m revenue already implies H2 of about $44.5m, roughly $22m a quarter, which is a ramp. The unpriced part is only whether Park's Q3 projection lands above about $22m. If the market expected that clearly, the stock would not be 21% below its August high.",
+    "independence": "Proxy: GE Q2 2026 release https://geaerospace.com/news/press-releases/ge-aerospace-announces-second-quarter-2026-results (2026-07-16). Airbus August deliveries: https://aerocorner.com/news/airbus-august-2026-deliveries-target/. Neither is a Park number. GE also flagged spare-parts material constraints, which cuts the other way.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "Two counterparty contracts post-date Park's 2026-07-20 call. On 2026-07-29 Lockheed received a seven-year PAC-3 MSE multiyear action of up to $53.86bn, $58.62bn in total, to triple output by 2030. On 2026-09-09 Lockheed gave L3Harris (ex-Aerojet) a $4.7bn undefinitized subcontract for PAC-3 MSE solid rocket motors. Park says it is sole-source qualified for ablative materials in those motors and signed a 2026-07-09 letter of agreement with a large PAC-3 contractor. The call is the first chance for Park to quantify orders against these awards.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://thedefensepost.com/2026/09/09/l3harris-pac3-mse-propulsion/amp/",
+    "source_date": "2026-09-09",
+    "reaction_history_on_this_line": "No clean prior: the July call introduced the PAC-3 letter of agreement and the ArianeGroup term sheet, and the stock rose +7.35%, but that call also carried a margin recovery.",
+    "why_not_priced": "The prime and subcontract awards are public. What is unpublished is any Park-level order or rate number; the July call gave none ('a little higher' than 600 a year). The stock slid from $38 to $30 after the awards, so the market has not paid for the read-through.",
+    "independence": "The Lockheed multiyear is reported separately at https://www.calibredefence.co.uk/lockheed-pac-3-mse-58-62bn-contract/. Park's sole-source claim comes from the call summary https://www.stocktaper.com/earningsCallSummary/PKE/2027/Q1. This is a proxy, with no Park confirmation of orders.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "Insiders sold at prices well above today's. CEO Brian Shore exercised and sold about 156k shares at $37.09-38.17 on 2026-08-10 to 08-13, leaving his direct holding at 621,369. President/COO Mark Esquivel sold about 60k shares for about $1.99m in July. CLO (now CFO) Petropoulos exercised and sold 2.5k at $36 on 2026-07-27. The stock is now $30.09.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000076267/000143774926027225/rdgdoc.xml",
+    "source_date": "2026-08-12",
+    "reaction_history_on_this_line": "None on record.",
+    "why_not_priced": "Form 4s are public and two months old. These are exercise-and-sell trades of old options ($11-14 strikes), the usual diversification pattern. This is information about insiders' view of the price at $37-38, not about the quarter.",
+    "independence": "Form 4 list: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000076267&type=4&dateb=&owner=include&count=10. The Esquivel sale is from an aggregator, https://www.stockalarm.io/ (snippet_only via search).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "The finance and operating team has turned over since the last full close. An SVP/GM was terminated without stated reason on 2026-07-07 (8-K). The company filed an NT 10-Q for Q1 on 2026-07-15. The VP/Corporate Controller died suddenly on 2026-07-21. A new CFO (Petropoulos, previously Chief Legal and Capital Markets Officer) was named 2026-08-13. This is the first quarter he closes, which raises the risk of a messy release or a late 10-Q.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/76267/000143774926023215/0001437749-26-023215.txt",
+    "source_date": "2026-07-09",
+    "reaction_history_on_this_line": "July 2026: the NT 10-Q preceded a clean Q1 print the stock bought +7.35%. A 2024 NT 10-K is also on file, with no reaction measured.",
+    "why_not_priced": "Each item is public. Together they are a risk-of-error flag, not a directional fact. The release date was set on schedule (2026-10-05 PR), which argues against a delay.",
+    "independence": "NT 10-Q: https://www.sahmcapital.com/news/content/park-aerospace-delays-quarterly-10-q-filing-for-period-ended-may-31-2026-2026-07-15. Filing list: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000076267&type=&dateb=&owner=include&count=40.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "On 2026-09-24, two weeks before the print, the Compensation Committee raised President/COO Mark Esquivel's base salary from $270,000 to $400,000 (+48%), effective 2026-09-28. The 8-K was signed by the new CFO.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.sec.gov/Archives/edgar/data/76267/000143774926031284/0001437749-26-031284.txt",
+    "source_date": "2026-09-25",
+    "reaction_history_on_this_line": "None.",
+    "why_not_priced": "It is a quiet 8-K with no wire coverage found. It is a weak board-confidence or retention signal, and could equally reflect a widened role after the July departures.",
+    "independence": "None.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "The ArianeGroup term sheet of 2026-07-18 gives Park 100% of the output of a planned US C2B fabric plant, against $25m of Park advance payments in 2026-27 applied to purchases from 2030. Management said 'hundreds of millions' of revenue over 2030-36 and a definitive agreement 'before year-end'. The call could update this, including timing of the $25m cash outflow.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://www.webull.com/news/15261981797278720",
+    "source_date": "2026-07-21",
+    "reaction_history_on_this_line": "First disclosed on the July call, which rose +7.35% alongside the margin recovery.",
+    "why_not_priced": "The term sheet is public. A definitive signing would be new, but none had been announced by 2026-10-08, and 'before year-end' may fall outside the window. Financing question asked: the $25m buys secured C2B supply for the PAC-3 ramp, a demand-backed use. Sign is neutral to positive.",
+    "independence": "Shares the call transcript with the GE/H2 and fabric findings. Secondary: https://www.stocktaper.com/earningsCallSummary/PKE/2027/Q1.",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "The stock fell from a $38.20 close on 2026-08-14 to about $29.3-31.3 through September and early October (-21%), on ordinary volume apart from 825k on 2026-09-18 (quarterly expiry/rebalance day). No company-specific cause was found, so it enters the print with a lower bar than at the July call.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-09",
+    "source": "https://stockanalysis.com/stocks/pke/history/",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "None isolated.",
+    "why_not_priced": "An unexplained drawdown is not evidence of over-reaction, so this is near zero. It may reflect defense-sector de-rating (a Dow Jones note on 2026-08-19 had large defense primes down about 17% on average since the Iran fighting began) or the insider sales.",
+    "independence": "Defense sector context is snippet_only from a search on Dow Jones / Barron's 2026-08-19; no URL resolved.",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "Definitive ArianeGroup agreement for a US C2B plant, guided 'before year-end' 2026. If signed after 2026-10-09, it is outside the window.",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.webull.com/news/15261981797278720",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "Boeing 777X certification is expected 'early next year' per management; it accelerates Park's 777X-related sales later.",
+    "resolves_by": "2027-03-31",
+    "source": "https://www.webull.com/news/15261981797278720",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "Defense-sector de-rating since the Iran fighting began (Dow Jones, 2026-08-19), as a cause of PKE's slide",
+    "source": "search snippet, Dow Jones/Barron's 2026-08-19",
+    "first_hunter_reason": "no_source",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "TipRanks/TheFly 'Park Aerospace falls 8.6%' to $14.45",
+    "source": "https://www.tipranks.com/news/the-fly/park-aerospace-falls-8-6",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "PKE.json",
+    "text": "GM Defense delivering PAC-3 MSE housing components on 2026-09-16",
+    "source": "https://defence-blog.com/?p=101206",
+    "first_hunter_reason": "duplicate",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PKE.json",
+    "text": "Park press releases or 8-Ks since 2026-08-17 other than the 2026-09-28 salary 8-K and the 2026-10-05 date notice. No contract, order or pre-announcement found.",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PKE.json",
+    "text": "September 2026 FINRA short-interest settlement for PKE: not found.",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PKE.json",
+    "text": "A company-specific cause for the -21% slide from 2026-08-14 to mid-September: none found.",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PKE.json",
+    "text": "Definitive ArianeGroup agreement announcement: none found as of 2026-10-08.",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PKE.json",
+    "text": "Fresh sell-side preview for Q2 FY27: none beyond the Chartmill and Benzinga consensus.",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PKE.json",
+    "text": "parkaerospace.com Q1 deck and release PDFs: HTTP 403. Used the SEC exhibit and the transcript instead.",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PKE.json",
+    "text": "A usable option skew: none, because the chain is too thin (OI 102).",
+    "i": 20
+   }
+  ]
+ }
+]

@@ -55,3 +55,7 @@
 ## Edge hunt (panel) — NRIX/GLDG dropped
 - Logged at 2026-10-08 17:14 UTC
 - Second edge-sweep (sweep-unknown.json): NRIX and GLDG event_confirmed false, priority 0 - no company date notice for the window (NRIX cadence fits, 7/8 past prints amc, last results 8-K 2026-07-09; GLDG files 6-K unannounced, baseline history built on exploration 6-Ks, untrustworthy). Not phantoms, just unconfirmed; not hunted, so they sit out of the ranking as rankable:false.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-08 17:25 UTC
+- 4 packs, four judges. Searchers done: PKE +1.30, ODC +0.10, DAL -0.20, HOVR -0.50 (impact_sum; 0 of 4 above 2.8). V2 written 17:25 UTC (before first print), 186 ledger obs.
