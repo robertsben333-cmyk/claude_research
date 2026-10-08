@@ -146,10 +146,13 @@ def main():
     print(f"members {', '.join(out['members_present'])}"
           + (f" (MISSING {', '.join(out['members_missing'])})" if out['members_missing'] else '')
           + f"; selection {out['selection']}; {added} sizes added to the history")
-    print(f"{'rank':>4s} {'ticker':8s} {'sel':3s} {'k':>2s} {'agree':>5s} {'score':>6s} {'sd':>5s}  members (z)")
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
+    import score_report as SR
+    sess = SR.session_labels(a.run)
+    print(f"{'rank':>4s} {'ticker':8s} {'session':7s} {'sel':3s} {'k':>2s} {'agree':>5s} {'score':>6s} {'sd':>5s}  members (z)")
     for r in out['ranking']:
         zz = ' '.join(f"{m}:{x['z']:+.2f}{'*' if x['in_own_top'] else ''}" for m, x in r['members'].items())
-        print(f"{r['rank']:4d} {r['ticker']:8s} {'yes' if r['selected'] else '':3s} {r['consensus_k']:2d} "
+        print(f"{r['rank']:4d} {r['ticker']:8s} {sess.get(r['ticker'], 'n/a'):7s} {'yes' if r['selected'] else '':3s} {r['consensus_k']:2d} "
               f"{r['sign_agree']:2d}/{r['n_members']}  {r['panel_score']:+6.2f} {r['panel_sd_z']:5.2f}  {zz}")
 
 

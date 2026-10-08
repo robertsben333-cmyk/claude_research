@@ -115,6 +115,26 @@ def context_cells(ctx, ticker):
     return [retail, search, vol]
 
 
+def session_labels(run):
+    """{ticker: 'amc' | 'bmo' | 'bmo?'} for one run. The sealed baseline carries the
+    session; `?` marks one the sweep could not confirm (session_unresolved). A ticker
+    with none (stage R screens fallers, not prints) is absent and reads `n/a`."""
+    run = Path(run)
+    out = {}
+    for b in sorted((run / "baselines").glob("*.json")):
+        d = load(b) or {}
+        if d.get("session"):
+            out[b.stem] = d["session"] + ("?" if d.get("session_unresolved") else "")
+    u = load(run / "universe.json") or {}
+    names = u.get("names") if isinstance(u.get("names"), list) else []
+    for n in names:
+        t = n.get("ticker") or n.get("symbol") or n.get("code")
+        sess = n.get("session") or u.get("session")
+        if t and sess and str(t) not in out:
+            out[str(t)] = sess + ("?" if n.get("session_unresolved") else "")
+    return out
+
+
 def impact_of(r):
     """impact_sum; before 2026-09-09 it was not a top-level field and is the sum of the
     findings' sizes by definition, exactly as edge_sample.py re-derives it."""
@@ -313,7 +333,8 @@ def main():
         print("Brackets: no percentile, the hunter model of this run is not recorded.")
     print()
 
-    head = ["#", "ticker", "impact_sum (key)", "floor", "impact_scaled (v3)",
+    sess = session_labels(run)
+    head = ["#", "ticker", "session", "impact_sum (key)", "floor", "impact_scaled (v3)",
             "abs_move", "p_up"]
     if us:
         head += ["V2 grounded", "retail ≥50", "search quiet", "vol ≥58"]
@@ -325,7 +346,7 @@ def main():
             dropped.append(r)
             continue
         s = sc.get(r["ticker"], {})
-        cells = [str(r.get("rank")), r["ticker"],
+        cells = [str(r.get("rank")), r["ticker"], sess.get(r["ticker"], "n/a"),
                  f"**{f(r['impact_sum'])}**" + (pct(r["impact_sum"], hist["impact_sum"])
                                                  if model else ""),
                  "yes" if r.get("conviction", 0) >= floor else "no",
@@ -345,10 +366,12 @@ def main():
             cells += context_cells(ctx, r["ticker"])
         print("| " + " | ".join(cells) + " |")
     if not key.get("ranking"):
-        print("| | no names | | | | | |" + (" | | | |" if us else ""))
+        print("| | no names | | | | | | |" + (" | | | |" if us else ""))
     for r in dropped:
         print(f"\nNot ranked: {r['ticker']}: {r.get('not_rankable_because')}")
-    print("\n`impact_scaled` is the hunter's second, separate measurement, "
+    print("\n`session` is when the print lands: `amc` after the close, `bmo` before the "
+          "open; `?` = not confirmed by the sweep, `n/a` = no print (stage R).")
+    print("`impact_scaled` is the hunter's second, separate measurement, "
           "(2·p_up/100 − 1)·abs_move. It is not the key and is never pooled with it.")
     if us:
         print("`retail`, `search` and `vol` are context for the reader, shown for every "
