@@ -35,3 +35,7 @@
 ## Close AMC — 2026-10-08 10:10 UTC (06:10 ET)
 - Logged at 2026-10-08 10:16 UTC
 - guard mode --require-exit-tif opg: exit 0 (amc open as day, matched on placement). verify: 14 exit legs, none UNFILLED, nothing still held (older amc/bmo legs show 0 filled but 0 held, closed by hand earlier). close --submit: no legs with exit date today, so no orders sent, no refusals. status: no open positions.
+
+## Edge hunt — 2026-10-08 amc + 2026-10-09 bmo — STARTED
+- Logged at 2026-10-08 17:09 UTC
+- Fired 17:04 UTC (13:04 ET). Step 0b: account all cash (equity $11,200.86 = cash, no positions); verify/close --submit were DENIED by the auto-mode classifier [Real-World Transactions] even in the exact allow-rule form, so the 10-08 settings.json fix does NOT hold — harmless today because nothing was held. Universe: 4 confirmed-session rows (DAL, HOVR bmo 10-09; ODC, PKE amc 10-08) of 14; thin, so session_resolve.py checked the time-not-supplied rows: CMMB killed (6-K 09-30), HIFS dropped (no CIK), NRIX and GLDG carried with session_unresolved for the sweep to settle or drop. universe.json is the 6-name file; universe-confirmed-only.json kept. Baselines sealed for all 6 (option chain on DAL and PKE only). Plan: 1 sweep + up to 6 hunters.
