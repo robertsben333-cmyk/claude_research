@@ -39,3 +39,7 @@
 ## Edge hunt — 2026-10-08 amc + 2026-10-09 bmo — STARTED
 - Logged at 2026-10-08 17:09 UTC
 - Fired 17:04 UTC (13:04 ET). Step 0b: account all cash (equity $11,200.86 = cash, no positions); verify/close --submit were DENIED by the auto-mode classifier [Real-World Transactions] even in the exact allow-rule form, so the 10-08 settings.json fix does NOT hold — harmless today because nothing was held. Universe: 4 confirmed-session rows (DAL, HOVR bmo 10-09; ODC, PKE amc 10-08) of 14; thin, so session_resolve.py checked the time-not-supplied rows: CMMB killed (6-K 09-30), HIFS dropped (no CIK), NRIX and GLDG carried with session_unresolved for the sweep to settle or drop. universe.json is the 6-name file; universe-confirmed-only.json kept. Baselines sealed for all 6 (option chain on DAL and PKE only). Plan: 1 sweep + up to 6 hunters.
+
+## Edge hunt — sweep
+- Logged at 2026-10-08 17:13 UTC
+- Sweep: 6 in, 4 confirmed (ODC, PKE amc 10-08; DAL, HOVR bmo 10-09), 0 phantom, 2 unconfirmed (NRIX: no company date, vendors disagree 10-08/10-09/10-12; GLDG: interim 6-K filer with no release, not an earnings event). 4 hunters launched in parallel at ~17:20 UTC; NRIX and GLDG not hunted and enter as rankable:false.
