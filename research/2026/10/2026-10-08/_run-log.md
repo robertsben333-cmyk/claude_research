@@ -23,3 +23,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-08 01:40 UTC
 - 29/19/19; 19 of 19 rankable, 0 above the 2.8 floor; top 9983 +1.60, bottom 3907 -1.50; 14 positive / 5 negative. Note: research/2026/10/2026-10-08/japan/japan-note.md. Hunter scratch dirs hunts/h9765, hunts/h9861 left in tree (not read by scorer).
+
+## Stage AU — Australia researcher — STARTED
+- Logged at 2026-10-08 06:41 UTC
+- Fired 06:41 UTC 2026-10-08; sealing for the next ASX session (expected 2026-10-09). Plan: universe -> seal baselines -> provenance -> unpriced-hunter-au waves of 5 -> edge_score -> note. No orders.
