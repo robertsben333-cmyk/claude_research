@@ -51,3 +51,7 @@
 ## Edge hunt (panel) — sweep and searchers
 - Logged at 2026-10-08 17:14 UTC
 - edge-sweep confirmed 4 of 4 from company sources (PKE amc 71, ODC amc 58, HOVR bmo 39, DAL bmo 22; DAL session inferred from a 10:00 ET call + 7 prior bmo prints). 4 unpriced-searchers launched 17:2x UTC in one wave. NRIX/GLDG second sweep pending. Publishing BLOCKED: git push 403 and GitHub MCP push_files 403 'Resource not accessible by integration' on main and on a branch - work is committed locally only.
+
+## Edge hunt (panel) — NRIX/GLDG dropped
+- Logged at 2026-10-08 17:14 UTC
+- Second edge-sweep (sweep-unknown.json): NRIX and GLDG event_confirmed false, priority 0 - no company date notice for the window (NRIX cadence fits, 7/8 past prints amc, last results 8-K 2026-07-09; GLDG files 6-K unannounced, baseline history built on exploration 6-Ks, untrustworthy). Not phantoms, just unconfirmed; not hunted, so they sit out of the ranking as rankable:false.
