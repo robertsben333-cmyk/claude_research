@@ -841,7 +841,9 @@ prompt and skill use (`researcher_us/scripts/`, the `scripts/` shim, `edge/scrip
 An auto-mode session refuses to write that file itself ("Self-Modification"), so it was
 written from a session outside auto mode at the operator's instruction. A call written
 any other way (`python`, an absolute path, an env-var prefix) does not match and is
-classified again. The first run after the merge settles whether the rule holds: step 0b
+classified again. `edge_universe.py` got the same three rules, because a misclassified
+refusal of it stalled the 10-05 run for about 14 hours and cost the entry. The first run
+after the merge settles whether the rule holds: step 0b
 in the run log shows a `verify` result, not DENIED.
 
 **Every hunter answers twice since 2026-10-01 (evening), and `impact_sum` is version 2
