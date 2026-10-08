@@ -15,3 +15,7 @@
 ## Stage J — wave 1 banked
 - Logged at 2026-10-08 01:17 UTC
 - 2809 +1.3, 3382 +0.4, 3907 -1.5, 4763 +1.4, 4825 +0.3 (impact_sum). Rolling 5-concurrent: 6323, 7513, 7649, 8016, 8125 in flight; 8194..9983 queued.
+
+## Stage J — wave 2 banked
+- Logged at 2026-10-08 01:24 UTC
+- 6323 +1.1, 7513 -0.3, 7649 +0.2, 8016 +0.7. In flight: 8125, 8194, 8203, 8278, 9414; queued 9716, 9765, 9861, 9946, 9983.
