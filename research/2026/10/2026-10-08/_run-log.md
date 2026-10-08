@@ -11,3 +11,7 @@
 ## Stage J — resolved earlier runs
 - Logged at 2026-10-08 01:07 UTC
 - jp_resolve.py on 2026-10-05 (11/11 usable, rho -0.336 p 0.32, lean_vs_free_control_rho 0.482) and 2026-10-06 (7/7, rho -0.126 p 0.79, lean_vs_free_control_rho 0.679). 2026-10-07 window not closed yet.
+
+## Stage J — wave 1 banked
+- Logged at 2026-10-08 01:17 UTC
+- 2809 +1.3, 3382 +0.4, 3907 -1.5, 4763 +1.4, 4825 +0.3 (impact_sum). Rolling 5-concurrent: 6323, 7513, 7649, 8016, 8125 in flight; 8194..9983 queued.
