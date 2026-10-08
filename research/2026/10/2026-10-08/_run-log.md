@@ -27,3 +27,7 @@
 ## Stage AU — Australia researcher — STARTED
 - Logged at 2026-10-08 06:41 UTC
 - Fired 06:41 UTC 2026-10-08; sealing for the next ASX session (expected 2026-10-09). Plan: universe -> seal baselines -> provenance -> unpriced-hunter-au waves of 5 -> edge_score -> note. No orders.
+
+## Stage AU — Australia researcher — EMPTY SESSION
+- Logged at 2026-10-08 06:41 UTC
+- Event date 2026-10-09 (next ASX session). 1575 vendor rows, 0 scheduled, 0 eligible, 0 hunted, 0 session_unresolved. market_open true (basis: 'beyond the tape: a weekday that is not an ASX holiday') — a genuinely thin session outside the Feb/Aug reporting seasons, not a fetch fault. Empty universe published at research/2026/10/2026-10-09/australia/universe.json; no baselines, no hunters, no ranking, no orders.
