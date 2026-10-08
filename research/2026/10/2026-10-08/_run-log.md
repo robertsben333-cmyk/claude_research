@@ -19,3 +19,7 @@
 ## Stage J — wave 2 banked
 - Logged at 2026-10-08 01:24 UTC
 - 6323 +1.1, 7513 -0.3, 7649 +0.2, 8016 +0.7. In flight: 8125, 8194, 8203, 8278, 9414; queued 9716, 9765, 9861, 9946, 9983.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-08 01:40 UTC
+- 29/19/19; 19 of 19 rankable, 0 above the 2.8 floor; top 9983 +1.60, bottom 3907 -1.50; 14 positive / 5 negative. Note: research/2026/10/2026-10-08/japan/japan-note.md. Hunter scratch dirs hunts/h9765, hunts/h9861 left in tree (not read by scorer).
