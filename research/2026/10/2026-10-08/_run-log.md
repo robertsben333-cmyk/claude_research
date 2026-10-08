@@ -47,3 +47,7 @@
 ## Edge hunt (panel) — universe widened
 - Logged at 2026-10-08 17:13 UTC
 - Matched stage E's thin-day procedure: session_resolve.py --apply carried NRIX (10-08) and GLDG (10-09) with session_unresolved; baselines sealed provisionally (NRIX amc, GLDG bmo); a second edge-sweep settles them or drops them. universe-confirmed-only.json kept. git push to origin is refused 403 from this container; publishing through the GitHub MCP push_files instead.
+
+## Edge hunt (panel) — sweep and searchers
+- Logged at 2026-10-08 17:14 UTC
+- edge-sweep confirmed 4 of 4 from company sources (PKE amc 71, ODC amc 58, HOVR bmo 39, DAL bmo 22; DAL session inferred from a 10:00 ET call + 7 prior bmo prints). 4 unpriced-searchers launched 17:2x UTC in one wave. NRIX/GLDG second sweep pending. Publishing BLOCKED: git push 403 and GitHub MCP push_files 403 'Resource not accessible by integration' on main and on a branch - work is committed locally only.
