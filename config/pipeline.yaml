@@ -237,7 +237,9 @@ edge_panel:
 # 3-of-4 selection rule was chosen on development names that were mostly American.
 market_panel:
   rules_from: edge_panel         # member_top_share, history_window, consensus_fraction
-  stages: [EU, JP, AU, CA]
+  stages: [EU, JP, AU, CA, IPO]
+  # Stage IPO uses its own set, panel-judge-ipo-*, generated from config/panel-judge-ipo.md
+  # (intraday window), and a 60-name history window (scripts/market_panel.py MARKETS).
   judges:                        # generated from config/panel-judge-intl.md
     opus5: panel-judge-intl-opus5
     opus55: panel-judge-intl-opus55
@@ -251,6 +253,7 @@ market_panel:
     JP: researcher_japan/analysis/panel-history.json
     AU: researcher_australia/analysis/panel-history.json
     CA: researcher_canada/analysis/panel-history.json
+    IPO: researcher_ipo/analysis/panel-history.json
   expected_edge_pct: null        # E-P's +6.7% prior is a US development number
   extra_subagents: 4             # one wave of four judges after the last hunter wave
   places_orders: false
@@ -1160,3 +1163,52 @@ reversal_hunt:
   hunters_per_name: 1
   language_pass: false          # one English pass; there is no second locality to vary
   place_orders: false           # and there is no code path that could
+
+ipo_hunt:
+  # Stage IPO (2026-10-09, operator's instruction). Stage E-P's method -- hunters collect
+  # the evidence, four blind judges on four different models size it -- asked of two dated
+  # events in the life of a new US listing, on NYSE, NYSE American and Nasdaq alike:
+  #
+  #   debut   the first session a newly priced IPO trades.
+  #           WINDOW: the first trade (the opening cross) -> that session's close.
+  #   lockup  the first session after Nasdaq's lock-up expiration date.
+  #           WINDOW: that session's open -> its close.
+  #
+  # One window SHAPE for both, chosen by the operator for the debut: the first price a
+  # person using this repo can trade at, to the same day's close. The offer-to-open pop
+  # is measured and ranks nothing, because nobody here gets an allocation. The quiet-
+  # period expiry was considered and left out (operator's choice): its evidence is the
+  # oldest and thinnest of the three IPO events.
+  #
+  # RESEARCH ONLY. No execution block and no code path to a broker. Scored by the SAME
+  # scorer as every other stage (researcher_us/scripts/edge_score.py, unchanged).
+  #
+  # THE STREAM IS THIN AND THAT DECIDES HOW THE STAGE IS JUDGED. 170 operating-company
+  # IPOs priced in the year to 2026-10 (SPACs out), 107 of them at $50m or more, and the
+  # lock-ups lag them by about six months: about one event a session, and most sessions
+  # carry none or one. A within-day rank correlation, which is how every other stage is
+  # judged, mostly does not exist here. ipo_resolve.py --pool ranks all resolved names
+  # together on the move NET OF IWM, with the debut and lock-up legs reported apart.
+  cap: 12
+  # A debut has no tape, so the floor is on the deal: $25m keeps the $4 x 2.5m-share
+  # microcap listings out (the $10-15m deals that dominate the Nasdaq Capital Market
+  # rows), which trade on a handful of accounts and are not a market a hunt can read.
+  min_deal_usd: 25000000
+  # Lock-ups have a tape: stage E's floor, median of the last twenty sessions.
+  min_turnover_usd: 200000
+  lockup_lookback_months: 15
+  hunters_per_name: 1
+  wave_size: 6
+  max_concurrent_subagents: 6
+  model: opus
+  effort: high
+  sweep_agents: 0                # the calendar is checked in code; the hunter confirms the event
+  # Inherits edge_hunt.conviction_floor unless set. Measured on earnings prints, not on
+  # an intraday IPO window: a floor on EMPHASIS in the note, never a filter.
+  conviction_floor: null
+  # The Routine fires before the US open so both windows are in the future when the
+  # baselines are sealed. 12:35 UTC = 08:35 New York until 2026-11-01; MOVE TO 13:35 UTC
+  # ON OR AFTER 2026-11-02, or it fires at 07:35 ET (harmless, an hour more pre-market).
+  fire_time_et: "08:35"
+  panel: true                    # step 4p, scripts/market_panel.py --market IPO
+  place_orders: false

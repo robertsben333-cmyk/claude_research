@@ -189,7 +189,9 @@ def model_history(run, reg, everything=False):
         # sizes (config/searcher-addendum.md), so it is not a reference for the hunters.
         # edge-deep (stage D) sizes three names with twice the depth and is kept out
         # until its scale has been compared with the hunters' on resolved names.
-        if d.name not in DIR_MARKET or d.name in ("edge-panel", "edge-deep"):
+        # ipo (stage IPO) sizes an INTRADAY window on a different event, so its sizes
+        # are not a reference for an earnings hunt's, nor theirs for it.
+        if d.name not in DIR_MARKET or d.name in ("edge-panel", "edge-deep", "ipo"):
             continue
         model = run_model(d, reg)
         models[d.resolve()] = model

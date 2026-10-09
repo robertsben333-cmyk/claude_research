@@ -1211,7 +1211,7 @@ def main():
           prov.returncode == 0, prov.stdout.strip())
     for sk in ("earnings-edge-hunt", "earnings-deep-research", "researcher-japan-hunt", "researcher-europe-hunt",
                "researcher-australia-hunt", "researcher-canada-hunt",
-               "researcher-reversal-hunt"):
+               "researcher-reversal-hunt", "researcher-ipo-hunt"):
         txt = open(os.path.join(REPO, ".claude", "skills", sk, "SKILL.md"),
                    encoding="utf-8").read()
         check(f"{sk} stamps provenance before its hunters",
@@ -1576,6 +1576,89 @@ def main():
           "Deliberately empty" in
           open(os.path.join(REPO, "researcher_reversal", "LESSONS.md"),
                encoding="utf-8").read())
+
+    # STAGE IPO (2026-10-09): US debuts and lock-up expiries, intraday window, the four-
+    # model panel on its own judges. Research only; nothing reaches the broker.
+    print("\nStage IPO — debuts and lock-ups")
+    sys.path.insert(0, os.path.join(REPO, "researcher_ipo", "scripts"))
+    import ipo_market  # noqa: E402
+    from datetime import date as _d  # noqa: E402
+    ic = cfg.get("ipo_hunt") or {}
+    check("stage IPO places no orders and has no execution block",
+          ic.get("place_orders") is False and "execution" not in ic)
+    check("stage IPO keeps one hunter per name and the $200k lock-up floor",
+          ic.get("hunters_per_name") == 1 and ic.get("min_turnover_usd") == 200000)
+    for name in os.listdir(os.path.join(REPO, "researcher_ipo", "scripts")):
+        if name.endswith(".py"):
+            src = open(os.path.join(REPO, "researcher_ipo", "scripts", name), encoding="utf-8").read()
+            check(f"researcher_ipo/scripts/{name} never touches the broker",
+                  "alpaca" not in src.lower())
+    check("a SPAC unit is not an IPO for this stage",
+          ipo_market.is_spac({"companyName": "Pine Tree Acquisition Corp.",
+                              "proposedTickerSymbol": "PAXGU", "proposedSharePrice": "10.00"})
+          and ipo_market.is_spac({"companyName": "Some Holdings", "proposedTickerSymbol": "SOMEU",
+                                  "proposedSharePrice": "10.00"})
+          and not ipo_market.is_spac({"companyName": "Accelevation Holdings Corp.",
+                                      "proposedTickerSymbol": "ACCV", "proposedSharePrice": "18.00"}))
+    check("the lock-up session is the first one strictly after the last restricted day",
+          ipo_market.lockup_event_day(_d(2027, 3, 29)) == _d(2027, 3, 30)
+          and ipo_market.lockup_event_day(_d(2026, 8, 7)) == _d(2026, 8, 10))
+    check("lock-up terms prefer Nasdaq's date, then its day count, then an assumed 180",
+          ipo_market.lockup_terms({"LockupPeriodExpirationDate": "03/29/2027",
+                                   "LockupPeriodNumberofDays": "180"}, _d(2026, 9, 30))
+          == (_d(2027, 3, 29), 180, "nasdaq_overview_date")
+          and ipo_market.lockup_terms({}, _d(2026, 1, 2))[2] == "assumed_180")
+    ipo_agent = open(os.path.join(REPO, ".claude", "agents", "unpriced-hunter-ipo.md"), encoding="utf-8").read()
+    check("the IPO hunter scores the debut from the first trade, never the offer",
+          "first trade" in ipo_agent and "pop" in ipo_agent and "event_confirmed" in ipo_agent)
+    check("the IPO hunter keeps the pre_lessons control and reads its own LESSONS",
+          "pre_lessons" in ipo_agent and "researcher_ipo/LESSONS.md" in ipo_agent)
+    check("the IPO hunter carries the measured phase 0 table, not a placeholder",
+          "PHASE0-PLACEHOLDER" not in ipo_agent and "189 debuts" in ipo_agent)
+    check("the IPO hunter is forbidden from reading the outcome",
+          "do not use it in any number" in ipo_agent)
+    for m, mid in (("opus5", "claude-opus-5"), ("opus55", "claude-opus-5-5"),
+                   ("sonnet55", "claude-sonnet-5-5"), ("fable51", "claude-fable-5-1")):
+        j = open(os.path.join(REPO, ".claude", "agents", f"panel-judge-ipo-{m}.md"), encoding="utf-8").read()
+        fm = j.split("---", 2)[1]
+        check(f"IPO panel judge {m} is pinned to {mid}, Read and Write only, told the window",
+              f"\nmodel: {mid}\n" in fm + "\n" and "\ntools: Read, Write\n" in fm + "\n"
+              and "FIRST TRADE" in j)
+    check("stage IPO's panel uses the IPO judges and a shorter history window than E-P's",
+          market_panel.judges_for("IPO")["opus5"][0] == "panel-judge-ipo-opus5"
+          and market_panel.judges_for("CA")["opus5"][0] == "panel-judge-intl-opus5"
+          and market_panel.cfg("IPO")["history_window"] < market_panel.cfg("CA")["history_window"])
+    ipo_skill = open(os.path.join(REPO, ".claude", "skills", "researcher-ipo-hunt", "SKILL.md"),
+                     encoding="utf-8").read()
+    check("researcher-ipo-hunt scores, then runs the panel with the IPO judges",
+          "market_panel.py score --market IPO" in ipo_skill
+          and ipo_skill.index("**4p.") > ipo_skill.index("**4. Score.**")
+          and "panel-judge-ipo-opus5" in ipo_skill and "panel-judge-intl-opus5" not in ipo_skill)
+    with _tf.TemporaryDirectory() as td:
+        rd = os.path.join(td, "2026-08-05", "ipo")
+        for sub in ("baselines", "hunts"):
+            os.makedirs(os.path.join(rd, sub))
+        for t, ev in (("AAA", "debut"), ("BBB", "lockup")):
+            json.dump({"ticker": t, "event_type": ev, "session": ev, "event_date": "2026-08-05"},
+                      open(os.path.join(rd, "baselines", t + ".json"), "w"))
+            json.dump({"ticker": t, "bar": "b", "abs_move_pct": 5.0, "p_up": 60,
+                       "findings": [{"finding": "book covered, sized at +1.5 points",
+                                     "expected_impact_pct": 1.5, "source": "https://x"}]},
+                      open(os.path.join(rd, "hunts", t + ".json"), "w"))
+        json.dump({"ranking": [{"ticker": t, "rankable": True} for t in ("AAA", "BBB")]},
+                  open(os.path.join(rd, "edge-scores.json"), "w"))
+        packs = market_panel.build_packs("IPO", rd)
+        txt = json.dumps(packs)
+        check("IPO packs: the IPO hunter's definition, no sizes",
+              [p["id"] for p in packs] == ["ipo/2026-08-05/AAA", "ipo/2026-08-05/BBB"]
+              and packs[0]["hunter_definition"].endswith("unpriced-hunter-ipo.md")
+              and "expected_impact_pct" not in txt and '"p_up"' not in txt and "+1.5" not in txt, txt[:300])
+    import ipo_priced_in  # noqa: E402
+    check("the IPO baseline cuts EDGAR at the event date",
+          "cut_at" in open(ipo_priced_in.__file__, encoding="utf-8").read())
+    check("researcher_ipo/LESSONS.md carries no rules yet",
+          "Deliberately empty" in open(os.path.join(REPO, "researcher_ipo", "LESSONS.md"),
+                                       encoding="utf-8").read())
 
     print("\nStage E V2 (grounded, beside V1)")
     sys.path.insert(0, os.path.join(REPO, "researcher_us", "scripts"))

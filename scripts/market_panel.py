@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The four-model judging panel for the non-US researcher stages (EU, J, AU, CA).
+"""The four-model judging panel for the non-US researcher stages (EU, J, AU, CA) and stage IPO.
 
 Stage E-P's method, applied to the hunts each regional stage already runs (2026-10-08,
 operator's instruction): the day's hunter evidence goes into blind packs with every size
@@ -65,20 +65,39 @@ MARKETS = {
     "CA": {"dir": "canada", "id": "ca", "hunter": "unpriced-hunter-ca",
            "lessons": "researcher_canada/LESSONS.md", "resolved": "canada-resolved.json",
            "history": "researcher_canada/analysis/panel-history.json"},
+    # Stage IPO (2026-10-09, operator's instruction): US debuts and lock-up expiries, the
+    # stage E-P method on a different event. Its own judges (panel-judge-ipo-*), because
+    # the window is intraday and the judge has to be told so; its own, SHORTER history
+    # window, because at about one name a session a 200-name window would keep the
+    # borrowed earnings-scale seed in charge of "own top 20%" for most of a year.
+    "IPO": {"dir": "ipo", "id": "ipo", "hunter": "unpriced-hunter-ipo",
+            "lessons": "researcher_ipo/LESSONS.md", "resolved": "ipo-resolved.json",
+            "history": "researcher_ipo/analysis/panel-history.json",
+            "judge_set": "ipo", "history_window": 60},
 }
-JUDGES = {"opus5": ("panel-judge-intl-opus5", "claude-opus-5"),
-          "opus55": ("panel-judge-intl-opus55", "claude-opus-5-5"),
-          "sonnet55": ("panel-judge-intl-sonnet55", "claude-sonnet-5-5"),
-          "fable51": ("panel-judge-intl-fable51", "claude-fable-5-1")}
-STAGE = {"EU": "EU-P", "JP": "J-P", "AU": "AU-P", "CA": "CA-P"}
+MODELS = {"opus5": "claude-opus-5", "opus55": "claude-opus-5-5",
+          "sonnet55": "claude-sonnet-5-5", "fable51": "claude-fable-5-1"}
+JUDGES = {m: (f"panel-judge-intl-{m}", model) for m, model in MODELS.items()}
+STAGE = {"EU": "EU-P", "JP": "J-P", "AU": "AU-P", "CA": "CA-P", "IPO": "IPO-P"}
 
 
-def cfg():
+def judges_for(market):
+    """{member: (agent, pinned model)} for one market: the -intl- set unless the market
+    names its own."""
+    js = MARKETS[market].get("judge_set")
+    if not js:
+        return JUDGES
+    return {m: (f"panel-judge-{js}-{m}", model) for m, model in MODELS.items()}
+
+
+def cfg(market=None):
     import yaml
     c = yaml.safe_load(open(REPO / "config" / "pipeline.yaml"))
     rules = dict(c.get("edge_panel") or {})
     rules.update({k: v for k, v in (c.get("market_panel") or {}).items()
                   if k in ("member_top_share", "history_window", "consensus_fraction")})
+    if market and MARKETS[market].get("history_window"):
+        rules["history_window"] = MARKETS[market]["history_window"]
     return rules
 
 
@@ -175,18 +194,25 @@ def cmd_score(a):
     hist = REPO / spec["history"]
     if not hist.exists():
         sys.exit(f"{hist} does not exist: run `market_panel.py seed --market {a.market}` once")
-    out, added = PS.score(run, cfg(), dry_run=a.dry_run, history=hist, stage=STAGE[a.market])
+    out, added = PS.score(run, cfg(a.market), dry_run=a.dry_run, history=hist, stage=STAGE[a.market])
     for r in out["ranking"]:
         r["expected_edge_pct"] = None
     out["market"] = a.market
     out["rules_from"] = "edge_panel"
     out["history_file"] = spec["history"]
-    out["note"] += (" Non-US stage: the hunters are the stage's own, the judges are "
-                    "panel-judge-intl-*, and expected_edge_pct is null because stage E-P's "
-                    "development prior was measured mostly on US names.")
+    if a.market == "IPO":
+        out["note"] += (" Stage IPO: the hunters are unpriced-hunter-ipo, the judges are "
+                        "panel-judge-ipo-*, the window is intraday (first trade or open to the "
+                        "same session's close), and expected_edge_pct is null because stage "
+                        "E-P's development prior was measured on earnings prints.")
+    else:
+        out["note"] += (" Non-US stage: the hunters are the stage's own, the judges are "
+                        "panel-judge-intl-*, and expected_edge_pct is null because stage E-P's "
+                        "development prior was measured mostly on US names.")
+    out["history_window"] = cfg(a.market).get("history_window")
     json.dump(out, open(run / "edge-scores-panel.json", "w"), indent=1)
     if not a.dry_run:
-        stamp_provenance(run, out, a.fallback or [])
+        stamp_provenance(run, out, a.fallback or [], a.market)
     print(f"members {', '.join(out['members_present'])}"
           + (f" (MISSING {', '.join(out['members_missing'])})" if out["members_missing"] else "")
           + f"; selection {out['selection']}; {added} sizes added to {spec['history']}")
@@ -198,7 +224,7 @@ def cmd_score(a):
               f"{r['sign_agree']:2d}/{r['n_members']}  {r['panel_score']:+6.2f} {r['panel_sd_z']:5.2f}  {zz}")
 
 
-def stamp_provenance(run, out, fallbacks):
+def stamp_provenance(run, out, fallbacks, market=None):
     """Write the panel block into <RUN>/provenance.json: per member, the agent that ran,
     the model pinned in its frontmatter, or `missing`. --fallback member=agent[:model]
     records a member that ran through stage E-P's general-purpose fallback."""
@@ -213,7 +239,7 @@ def stamp_provenance(run, out, fallbacks):
     block = {"stamped_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
              "rules_from": "edge_panel", "history_file": out["history_file"],
              "selection": out["selection"], "members": {}}
-    for m, (agent, model) in JUDGES.items():
+    for m, (agent, model) in (judges_for(market) if market else JUDGES).items():
         if m not in out["members_present"]:
             block["members"][m] = {"status": "missing", "agent": agent, "model_pinned": model}
         else:

@@ -67,6 +67,7 @@ HUNTERS = {
     "unpriced-hunter-au": "au",
     "unpriced-hunter-ca": "ca",
     "reversal-hunter": "rev",
+    "unpriced-hunter-ipo": "ipo",
 }
 
 # Run directory name -> market code, the hunters it uses, and the files that shape a
@@ -106,6 +107,11 @@ MARKETS = {
     "R": {"dir": "reversal", "hunters": ["reversal-hunter"],
           "lessons": "researcher_reversal/LESSONS.md",
           "skill": ".claude/skills/researcher-reversal-hunt/SKILL.md"},
+    # Stage IPO (2026-10-09): US debuts and lock-up expiries, intraday window, the
+    # four-model panel on the hunters' evidence. Research only.
+    "IPO": {"dir": "ipo", "hunters": ["unpriced-hunter-ipo"],
+            "lessons": "researcher_ipo/LESSONS.md",
+            "skill": ".claude/skills/researcher-ipo-hunt/SKILL.md"},
 }
 DIR_TO_MARKET = {v["dir"]: k for k, v in MARKETS.items()}
 CORE = "config/hunter-core.md"
@@ -244,7 +250,7 @@ def build_registry(ref="origin/main"):
 
 
 STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
-               "CA": "ca", "R": "rev"}
+               "CA": "ca", "R": "rev", "IPO": "ipo"}
 
 
 def stage_versions(reg):

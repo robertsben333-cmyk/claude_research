@@ -47,6 +47,7 @@ material below is kept because the live stages reference it, not because it runs
 | EU | `researcher-europe-hunt` | 15:30 | **Stage EU — the Europe researcher.** **Since 2026-10-08 it also runs stage E-P's four-model panel on its own hunts (step 4p, `scripts/market_panel.py`, judges `panel-judge-intl-*`); its own `impact_sum` is unchanged.** **Ten markets pooled since 2026-09-19** — UK, France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain, Poland — one stage, seven language-specific hunters, research only, no orders. `trig_018WGfdq2fUm1ZqJhCGQ1wde`, cron `30 13 * * 1-5` = 13:30 UTC, **two hours before the European close on the operator's instruction**, so it seals an intraday spot and not a close. Seals for the NEXT trading day, because Europe reports before the open |
 | AU | `researcher-australia-hunt` | 08:30 | **Stage AU — the Australia researcher.** **Since 2026-10-08 it also runs stage E-P's four-model panel on its own hunts (step 4p, `scripts/market_panel.py`, judges `panel-judge-intl-*`); its own `impact_sum` is unchanged.** Same question, ASX, research only, no orders. One English hunting pass and no local-language pass, deliberately. `trig_01Qy7FjBpjY4dEGcZsYGnpt3`, cron `30 6 * * 0-4` = 06:30 UTC **Sunday to Thursday**, after the 16:00 Sydney close. Seals for the NEXT session, because 91% of ASX results land before the open, so the fire that seals for Monday is the Sunday one |
 | R | `researcher-reversal-hunt` | 21:00 | **Stage R — the reversal researcher.** Not an earnings stage: TODAY's biggest US losers, screened while the session is still open, and whether each keeps falling or bounces over the next session. Research only, no orders. `trig_012Dt6bbiL4dJp9r4bpJtWME`, cron `0 19 * * 1-5` = 19:00 UTC = **15:00 New York, one hour BEFORE the close**, on the operator's instruction, so the names can still be bought today. **Must move to `0 20 * * 1-5` on or after 2026-11-02**, when the US DST change would otherwise leave it at 14:00 ET. Created by a session, so `update_trigger` works on it |
+| IPO | `researcher-ipo-hunt` | 14:35 | **Stage IPO — the IPO researcher (built 2026-10-09, operator's instruction).** Stage E-P's method on two US IPO events, NYSE and Nasdaq alike: the **debut**, scored from the first trade to that day's close, and the **lock-up expiry**, scored from that session's open to its close. One `unpriced-hunter-ipo` per name, the shared scorer, then four blind `panel-judge-ipo-*` judges via `scripts/market_panel.py --market IPO`. Research only, no orders. **Routine NOT yet created**: proposed cron `35 12 * * 1-5` = 08:35 New York, moving to `35 13` on or after 2026-11-02; text in `researcher_ipo/routine-prompts/ipo-hunt.md`. See "Stage IPO" below |
 | X | (no skill) | 12:00 | "Close AMC" — the second exit Routine. Live since 2026-09-11; `exit_mode` is `amc_open` since 2026-09-15, so it places the amc `opg` legs while stage E sells bmo at market on its own run. See "`exit_mode` moved to `amc_open`" below |
 
 **`list_triggers` IS SCOPED TO THE CALLING ACCOUNT, AND STAGE E IS ON A DIFFERENT ONE.**
@@ -1104,6 +1105,29 @@ specify.
 
 ## Where things go
 
+**Stage IPO was built on 2026-10-09: `researcher_ipo/`.** The operator asked for another
+US routine on IPOs with stage E-P's approach. It hunts two events: the **debut** (window:
+the FIRST TRADE, the opening cross, to that day's close; the offer-to-open pop is
+recorded and ranks nothing, because nobody here gets an allocation) and the **lock-up
+expiry** (window: the open to the close of the first session after Nasdaq's expiration
+date). The quiet-period expiry was left out on the operator's choice. Phase 0
+(`researcher_ipo/analysis/phase0-base-rates.json`, 751 priced deals 2024-09 to 2026-10,
+318 SPACs out) measured both windows before any agent existed: **debuts median −0.48%
+first trade to close (189, 42% up), lock-ups median +0.32% open to close (137, 55% up),
+and the textbook lock-up sell-off is not in that window.** The pop (median +11.1%, t 8.2)
+ranks the session at ρ +0.01 and nothing else known before the cross ranks it either, so
+there is no free control to beat. **0.81 events a session**, so a within-day ρ mostly
+does not exist and the stage is judged POOLED on moves net of IWM
+(`ipo_resolve.py --pool`). The panel runs through `scripts/market_panel.py --market IPO`
+with its OWN judges, `panel-judge-ipo-*` from `config/panel-judge-ipo.md` (told the
+window is intraday, so they do not size the pop), and a **60-name** history window
+instead of 200, so its own sizes replace the borrowed E-P seed within months. IPO runs
+are kept out of `score_report.py`'s percentile reference: an intraday window is not on
+an earnings scale. The baseline's EDGAR block is cut at the event date, so a validation
+or backfill run cannot hand a hunter a later filing. Validated end to end on 2026-08-05
+with SYNTHETIC findings (`researcher_ipo/analysis/validation/`). **The Routine does not
+exist yet** and the dashboard has no IPO tab. See `researcher_ipo/README.md`.
+
 **Stage D was built and merged on 2026-10-07 and its Routine first fired that day** (`trig_01VkHFt9yWxUD9bjhNQ7CYpy`, see the stage table). It tests the operator's idea
 that a few names researched in depth beat stage E's breadth. Retired stage 2 tried a deep
 dossier per name and lost to shorting blind (39/75), so every stage D hunt carries two
@@ -2115,6 +2139,15 @@ researcher_reversal/                   stage R — see researcher_reversal/READM
                                        report is auditable without refetching
   routine-prompts/                     the text to paste, NOT yet installed anywhere
   LESSONS.md                           deliberately empty until a run resolves
+researcher_ipo/                        stage IPO — see researcher_ipo/README.md
+  scripts/                             ipo_market (calendar, deal pages, SPAC filter,
+                                       the lock-up date rule), ipo_universe,
+                                       ipo_priced_in, ipo_resolve, ipo_backtest (phase 0),
+                                       ipo_synth (validation only)
+  analysis/                            phase0-base-rates.json + rows, panel-history.json,
+                                       validation/; cache/ is gitignored
+  routine-prompts/                     the text to paste, NOT yet installed anywhere
+  LESSONS.md                           deliberately empty until runs resolve
 researcher_europe/                     stage EU — see researcher_europe/README.md
   scripts/                             eu_market (incl. CAPABILITY), eu_universe,
                                        eu_positioning, eu_priced_in, eu_archive,

@@ -29,6 +29,7 @@ HUNTERS = [
     "unpriced-hunter-nordic.md",
     "unpriced-hunter-jp.md", "unpriced-hunter-au.md", "unpriced-hunter-ca.md",
     "reversal-hunter.md",
+    "unpriced-hunter-ipo.md",
 ]
 
 # Model variants: a definition generated WHOLE from another one, with only frontmatter
@@ -107,10 +108,29 @@ INTL_PANEL_JUDGES = {
 }
 INTL_PANEL_NOTE = ("<!-- GENERATED from config/panel-judge-intl.md by scripts/sync_hunter_core.py; "
                    "edit the source, not this copy -->\n\n")
+# Stage IPO (2026-10-09): the same four models judging the IPO hunter's evidence. Its own
+# source because the window is intraday (first trade or open to the same close) and a
+# judge left to its earnings habits would size the offer-to-open pop, which the window
+# excludes. The E-P and -intl- judges are left exactly as they were.
+IPO_PANEL_SOURCE = os.path.join(REPO, "config", "panel-judge-ipo.md")
+IPO_PANEL_JUDGES = {
+    "panel-judge-ipo-opus5.md": "claude-opus-5",
+    "panel-judge-ipo-opus55.md": "claude-opus-5-5",
+    "panel-judge-ipo-sonnet55.md": "claude-sonnet-5-5",
+    "panel-judge-ipo-fable51.md": "claude-fable-5-1",
+}
+IPO_PANEL_NOTE = ("<!-- GENERATED from config/panel-judge-ipo.md by scripts/sync_hunter_core.py; "
+                  "edit the source, not this copy -->\n\n")
 
 
-def render_judge(name, model, body, intl=False):
-    if intl:
+def render_judge(name, model, body, intl=False, ipo=False):
+    if ipo:
+        desc = ("Stage IPO panel judge on %s. Judges the day's IPO hunter evidence (US debuts "
+                "and lock-up expiries, intraday window) blind, from a packs file with the hunters' "
+                "sizes removed, and returns abs_move_pct, p_up and a signed impact_sum per company. "
+                "Read and Write only; one instance per model per run; give it the packs file and "
+                "the output path." % model)
+    elif intl:
         desc = ("Non-US panel judge (stages EU, J, AU, CA) on %s. Judges the day's hunter "
                 "evidence blind, from a packs file with the hunters' sizes removed, under the "
                 "hunter definition and lessons file each pack names, and returns abs_move_pct, "
@@ -123,7 +143,7 @@ def render_judge(name, model, body, intl=False):
                 "day; give it the packs file and the output path." % model)
     return ("---\nname: %s\ndescription: %s\ntools: Read, Write\nmodel: %s\neffort: high\n"
             "maxTurns: 60\ncolor: cyan\n---\n\n" % (name[:-3], desc, model)) + \
-        (INTL_PANEL_NOTE if intl else PANEL_NOTE) + body.strip() + "\n"
+        (IPO_PANEL_NOTE if ipo else INTL_PANEL_NOTE if intl else PANEL_NOTE) + body.strip() + "\n"
 
 
 VARIANT_NOTE = ("<!-- GENERATED from %s by scripts/sync_hunter_core.py with the frontmatter "
@@ -229,15 +249,24 @@ def main():
             drift.append(name)
             if not check:
                 open(path, "w", encoding="utf-8").write(new)
+    body = open(IPO_PANEL_SOURCE, encoding="utf-8").read()
+    for name, model in IPO_PANEL_JUDGES.items():
+        path = os.path.join(AGENTS, name)
+        new = render_judge(name, model, body, ipo=True)
+        old = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+        if new != old:
+            drift.append(name)
+            if not check:
+                open(path, "w", encoding="utf-8").write(new)
     if check:
         if drift:
             print("hunter core out of date in: " + ", ".join(drift))
             sys.exit(1)
         print("hunter core current in all %d hunters, %d variants and %d panel judges"
-              % (len(HUNTERS), len(VARIANTS), len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES)))
+              % (len(HUNTERS), len(VARIANTS), len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES) + len(IPO_PANEL_JUDGES)))
     else:
         print("updated %d of %d hunters, variants and panel judges"
-              % (len(drift), len(HUNTERS) + len(VARIANTS) + len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES)))
+              % (len(drift), len(HUNTERS) + len(VARIANTS) + len(PANEL_JUDGES) + len(INTL_PANEL_JUDGES) + len(IPO_PANEL_JUDGES)))
 
 
 if __name__ == "__main__":
