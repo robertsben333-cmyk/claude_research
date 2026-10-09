@@ -458,6 +458,7 @@ def _rel(p):
 
 # ------------------------------------------------------- what a build reads
 SEPT_OPUS55 = "claude-opus-5-5"
+HUNTER_CORE_FROM = "2026-10-01"  # config/hunter-core.md reached main this day
 
 
 def september_opus55(run, model):
@@ -471,7 +472,12 @@ def september_opus55(run, model):
     dashboard offers to leave them out of every number, both through this function."""
     if model != SEPT_OPUS55:
         return False
-    prov = _load(Path(run) / "provenance.json") or {}
+    prov = _load(Path(run) / "provenance.json")
+    if prov is None:
+        # No stamp at all (the 2026-10-05 run never wrote one): the absence of a
+        # `hunter_core` blob proves nothing, so decide by date. The core was on main
+        # from HUNTER_CORE_FROM; a run sealed before it is the September prompt.
+        return Path(run).resolve().parent.name < HUNTER_CORE_FROM
     return not (prov.get("files") or {}).get("hunter_core")
 
 
