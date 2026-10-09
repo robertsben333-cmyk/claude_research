@@ -116,3 +116,7 @@
 ## Stage CA — Canada researcher — DONE
 - Logged at 2026-10-09 18:39 UTC
 - Funnel 2 scheduled / 1 eligible / 1 hunted. GOLD impact_sum 0.00, no findings, bar unsourced. Anchor arms options 0 / register 1 (sealed 14:34 ET; GOLD has no chain). Panel 4/4 members ran, all 0, nothing selected. DEFECT: GOLD is a filing-only interim reporter (6 interims with no release) but universe tagged event_shape=release; history classifier also counted an AGM-voting-results release as a print. Not fixed in this run.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-10-09 19:04 UTC
+- 19:05 UTC = 15:05 ET, inside screen window. Plan: intraday screen k=15, seal baselines, 15 reversal-hunters, edge_score, resolve previous run, note before 16:00 ET (shed names if late).
