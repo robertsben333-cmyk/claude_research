@@ -1276,6 +1276,53 @@ def main():
     check("a dry panel run leaves the history untouched",
           added == 0 and open(panel_score.HISTORY).read() == hist_before)
 
+    # THE PANEL ON THE NON-US STAGES (2026-10-08): EU, J, AU and CA run stage E-P's
+    # judging method on their own hunts. Separate judges (each pack names its market's
+    # hunter), one history per market, E-P's rules read from edge_panel, never E-P's
+    # history written, and the hunters' own key untouched.
+    sys.path.insert(0, os.path.join(REPO, "scripts"))
+    import market_panel
+    for m, mid in (("opus5", "claude-opus-5"), ("opus55", "claude-opus-5-5"),
+                   ("sonnet55", "claude-sonnet-5-5"), ("fable51", "claude-fable-5-1")):
+        j = open(os.path.join(REPO, ".claude", "agents", f"panel-judge-intl-{m}.md"), encoding="utf-8").read()
+        fm = j.split("---", 2)[1]
+        check(f"non-US panel judge {m} is pinned to {mid} with Read and Write only",
+              f"\nmodel: {mid}\n" in fm + "\n" and "\ntools: Read, Write\n" in fm + "\n"
+              and "hunter_definition" in j)
+    mpc = cfg.get("market_panel") or {}
+    check("market_panel reads its rules from edge_panel and places no orders",
+          mpc.get("rules_from") == "edge_panel" and mpc.get("places_orders") is False
+          and set(mpc.get("stages") or []) == set(market_panel.MARKETS))
+    for code, skill in (("EU", "researcher-europe-hunt"), ("JP", "researcher-japan-hunt"),
+                        ("AU", "researcher-australia-hunt"), ("CA", "researcher-canada-hunt")):
+        sk = open(os.path.join(REPO, ".claude", "skills", skill, "SKILL.md"), encoding="utf-8").read()
+        check(f"{skill} runs the four-model panel after scoring",
+              f"market_panel.py score --market {code}" in sk
+              and sk.index("**4p.") > sk.index("**4. Score.**") and "panel-judge-intl-" in sk)
+        check(f"{code} has its own seeded panel history, apart from stage E-P's",
+              os.path.exists(os.path.join(REPO, market_panel.MARKETS[code]["history"]))
+              and market_panel.MARKETS[code]["history"] != os.path.relpath(panel_score.HISTORY, REPO))
+    with _tf.TemporaryDirectory() as td:
+        rd = os.path.join(td, "2026-10-08", "europe")
+        for sub in ("baselines", "hunts"):
+            os.makedirs(os.path.join(rd, sub))
+        for t, sm in (("AAA", "uk"), ("BBB", "se"), ("CCC", "de")):
+            json.dump({"ticker": t, "submarket": sm, "tape": {"spot": 1.0}},
+                      open(os.path.join(rd, "baselines", t + ".json"), "w"))
+            json.dump({"ticker": t, "bar": "b", "abs_move_pct": 6.0, "p_up": 70,
+                       "findings": [{"finding": "fact sized at +2.0 points", "expected_impact_pct": 2.0,
+                                     "source": "https://x"}]},
+                      open(os.path.join(rd, "hunts", t + ".json"), "w"))
+        json.dump({"ranking": [{"ticker": t, "rankable": t != "CCC"} for t in ("AAA", "BBB", "CCC")]},
+                  open(os.path.join(rd, "edge-scores.json"), "w"))
+        packs = market_panel.build_packs("EU", rd)
+        txt = json.dumps(packs)
+        check("non-US packs: rankable names only, each with its market's hunter, no sizes",
+              [p["id"] for p in packs] == ["eu/2026-10-08/AAA", "eu/2026-10-08/BBB"]
+              and packs[0]["hunter_definition"].endswith("unpriced-hunter-uk.md")
+              and packs[1]["hunter_definition"].endswith("unpriced-hunter-nordic.md")
+              and "expected_impact_pct" not in txt and '"p_up"' not in txt and "+2.0" not in txt, txt[:300])
+
     # STAGE D (2026-10-07): three names a day drawn at random, one deep researcher each.
     # The researcher is stage E's hunter plus the deep addendum, so its impact_sum sits on
     # stage E's scale; the draw is seeded and reproducible; the stage never reaches the broker.

@@ -59,9 +59,12 @@ def member_stats(hist, window):
             'q80': v_sorted[int(0.8 * len(v_sorted))]}
 
 
-def score(run, C, dry_run=False):
+def score(run, C, dry_run=False, history=None, stage='E-P'):
+    # `history` and `stage` exist for scripts/market_panel.py (the non-US stages), which
+    # keep one history file per market; the defaults are stage E-P's, unchanged.
     run = Path(run)
-    hist = json.load(open(HISTORY)) if HISTORY.exists() else {}
+    HIST = Path(history) if history else HISTORY
+    hist = json.load(open(HIST)) if HIST.exists() else {}
     window = int(C.get('history_window', 200)); share_q = C.get('member_top_share', 0.2)
     present, verdicts = [], {}
     for m in MEMBERS:
@@ -109,7 +112,7 @@ def score(run, C, dry_run=False):
     rows.sort(key=lambda r: (not r['selected'], -r['consensus_k'], -abs(r['panel_score']), r['id']))
     for n, r in enumerate(rows, 1): r['rank'] = n
     out = {'generated_utc': datetime.now(timezone.utc).isoformat(timespec='seconds'), 'run': str(run),
-           'stage': 'E-P', 'members_present': present, 'members_missing': [m for m in MEMBERS if m not in present],
+           'stage': stage, 'members_present': present, 'members_missing': [m for m in MEMBERS if m not in present],
            'ranking_key': 'panel_score', 'selection': f'consensus_k >= {k_min} of {len(present)}',
            'live_weight': 'weight_equal', 'frozen_variant_weights': ['weight_precision_tilt'],
            'member_reference': {m: stats[m] for m in present}, 'tau': tau,
@@ -131,7 +134,7 @@ def score(run, C, dry_run=False):
             if i not in seen:
                 hist.setdefault(m, []).append({'id': i, 'impact_sum': num(o.get('impact_sum')) or 0.0, 'source': str(run)})
                 added += 1
-    json.dump(hist, open(HISTORY, 'w'), indent=1)
+    json.dump(hist, open(HIST, 'w'), indent=1)
     return out, added
 
 
@@ -143,10 +146,13 @@ def main():
     print(f"members {', '.join(out['members_present'])}"
           + (f" (MISSING {', '.join(out['members_missing'])})" if out['members_missing'] else '')
           + f"; selection {out['selection']}; {added} sizes added to the history")
-    print(f"{'rank':>4s} {'ticker':8s} {'sel':3s} {'k':>2s} {'agree':>5s} {'score':>6s} {'sd':>5s}  members (z)")
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
+    import score_report as SR
+    sess = SR.session_labels(a.run)
+    print(f"{'rank':>4s} {'ticker':8s} {'session':7s} {'sel':3s} {'k':>2s} {'agree':>5s} {'score':>6s} {'sd':>5s}  members (z)")
     for r in out['ranking']:
         zz = ' '.join(f"{m}:{x['z']:+.2f}{'*' if x['in_own_top'] else ''}" for m, x in r['members'].items())
-        print(f"{r['rank']:4d} {r['ticker']:8s} {'yes' if r['selected'] else '':3s} {r['consensus_k']:2d} "
+        print(f"{r['rank']:4d} {r['ticker']:8s} {sess.get(r['ticker'], 'n/a'):7s} {'yes' if r['selected'] else '':3s} {r['consensus_k']:2d} "
               f"{r['sign_agree']:2d}/{r['n_members']}  {r['panel_score']:+6.2f} {r['panel_sd_z']:5.2f}  {zz}")
 
 

@@ -171,3 +171,17 @@
 - Resolve of 2026-09-21: PENDING, correctly — its window closes at today's close. DEFECT FOUND AND FIXED: rev_resolve.py was scoring d1 off today's still-open partial daily bar (reported SCTX +2.8%, CUE −1.0% at 15:10 ET as if final). It now drops a bar dated today before 16:30 ET, and book_block no longer crashes when every row is pending. lean_vs_free_control_rho and rho vs neg_atr14: n/a (nothing resolved).
 - Baseline caveats: NFE's run-ups/volume spike/ATR straddle the 1-for-50 reverse split of 2026-09-11 (artefacts, flagged by its hunter). spot_basis text in rev_priced_in.py still says 'unadjusted close of the drop day' on an intraday seal — label defect, not fixed today. CMPX baseline shows intraday_pct exactly 0.0 (whole fall as gap) — plausible, unverified.
 - EVER: finding sum +0.5 but hunter expected_move −0.8 (opposite sign); only the sum is ranked. No constant moved. No orders; no execution path exists.
+
+## Recovered — Routine output that never reached main
+- Logged at 2026-10-08 UTC, by a maintenance session
+- The section(s) below were written by a Routine session on that day but published to its own branch `claude/friendly-clarke-i1u7dm` (commit 68685813, 31f2089a) instead of `main`. Copied verbatim; nothing re-run, nothing edited.
+
+### Close AMC — opening-auction exit sweep — 2026-09-22
+- Logged at 2026-09-22 10:11 UTC
+- Fired 10:04-10:14 UTC (05:04-05:14 ET), before the 09:28 ET opg-rejection cutoff.
+- Guard: python3 edge/scripts/alpaca_trade.py mode --require-exit-tif opg -> exit 0. execution.enabled true, orders.exit_mode amc_open, amc exit placed as a market DAY order queued for the open (auction_orders: False, so no literal opg is sent -- guarded on placement, not tif, per this file's own note on the 2026-09-15 guard failure).
+- verify --scan before close: 12 exit legs checked across 8 runs (2026-09-10, 09-11, 09-14, 09-15, 09-16, 09-17, 09-18, 09-21) -- all 12 already 'ok', 0.0 residual held. Nothing open.
+- close --scan ... --submit: windows: {} on every one of the 8 runs -- no leg had an exit date of today, so nothing new was sent. Re-verified after the 300s fill-check wait: still 12/12 closed, 0.0 residual.
+- status --scan: account flat, equity == cash == $11,582.19, buying power $46,328.76. No open positions anywhere in the scan.
+- No refusals, no UNFILLED legs, no rescue sends. This firing had nothing to do -- every prior book was already closed (several by the operator's own hand-closes recorded in CLAUDE.md, e.g. ALMU/LEN on 09-17).
+- Published to this session's designated branch (claude/friendly-clarke-i1u7dm), not main: this session carries an explicit 'never push to a different branch without permission' restriction that conflicts with scripts/publish.sh's main default. CLAUDE.md's own guidance for a session bound to a feature branch is to set EARNINGS_DATA_BRANCH rather than push to main, so that is what this run did. A human should merge/reconcile this branch into main so today's Close AMC record is visible where other Routines look for it.

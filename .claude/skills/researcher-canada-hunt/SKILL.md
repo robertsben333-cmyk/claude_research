@@ -1,6 +1,6 @@
 ---
 name: researcher-canada-hunt
-description: The unpriced-information hunt, run over the Canadian market — TSX, TSX Venture, CSE and NEO. Seals what the market has priced into each company reporting into the next Toronto session, sends one hunter per name to find what is not in that price, and sums their signed finding sizes into one number per company so the day's names can be ranked. Research only, no orders. Use when asked to run the Canada researcher, run stage CA, rank the day's Canadian earnings names, or hunt Toronto, TSX or TSXV prints.
+description: The unpriced-information hunt, run over the Canadian market — TSX, TSX Venture, CSE and NEO. Seals what the market has priced into each company reporting into the next Toronto session, sends one hunter per name to find what is not in that price, and sums their signed finding sizes into one number per company so the day's names can be ranked. A blind four-model panel (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) then re-sizes the hunters' evidence and ranks beside that number. Research only, no orders. Use when asked to run the Canada researcher, run stage CA, rank the day's Canadian earnings names, or hunt Toronto, TSX or TSXV prints.
 ---
 
 # Stage CA — the Canadian researcher
@@ -159,6 +159,26 @@ python3 scripts/score_report.py --run <RUN> --label "Stage CA"
 and paste its output verbatim at the top of your closing chat reply. Never rank on,
 pool or quote `impact_scaled` as the key, and do not apply the conviction floor to it.
 
+**4p. The four-model panel (since 2026-10-08).** Stage E-P's judging method, run on
+this stage's own hunts: blind packs, four judges on four different models, the same
+frozen selection rule. Follow `config/market-panel-step.md` exactly, with
+`--market CA`, run-log heading `Stage CA — panel STARTED` and publish prefix
+`stage CA:`. In short:
+
+```bash
+python3 scripts/market_panel.py packs --market CA --run <RUN>
+# heartbeat + publish, then the four judges in ONE message:
+#   panel-judge-intl-opus5, -opus55, -sonnet55, -fable51, each given only the packs file
+python3 scripts/market_panel.py check --market CA --run <RUN>
+python3 scripts/market_panel.py score --market CA --run <RUN>
+```
+
+It changes nothing above it: the hunters, `impact_sum`, the conviction floor and
+`edge-scores.json` are exactly what they were, and the panel writes its own
+`edge-scores-panel.json` beside them. Use the **`-intl-`** judges, never stage E-P's
+`panel-judge-*`, and never give a judge anything beyond the packs file. If the packs step
+reports 0 packs, say so and go on to the note.
+
 **5. Note.** Write `<RUN>/canada-note.md`, answer first: the ranked table, then the
 finding and URL driving the top and bottom name, then the names that could not be ranked
 and why.
@@ -171,6 +191,10 @@ Besides the four live uncertainties above, the note must say every time:
 - which names sit above `conviction_floor`, and that over the whole US sample the sign
   was a coin flip below it
 - that nothing has resolved in Canada yet and one day is not a result
+
+The note also carries the **panel section** described in `config/market-panel-step.md`
+("In the note"), directly under the ranked table, and the closing chat reply pastes the
+panel table right after the `score_report.py` output.
 
 **6. Publish.**
 
@@ -195,10 +219,20 @@ two names that had simply not reported yet. A name neither archive can confirm o
 date gets `event_occurred: false` and leaves every ranking, which is the retrospective
 kill the US stage added after TRT.
 
+**Then the panel.** Once the resolved file exists, `python3 scripts/market_panel.py
+resolve --market CA --run <RUN>` writes `<RUN>/panel-resolved.json` (`panel_score` and
+`impact_sum` ranked on the same names, the selected names against the above-floor book),
+and `python3 scripts/market_panel.py pool --market CA` pools every resolved panel day.
+Judge the panel only pooled.
+
 ## Budget
 
 `config/pipeline.yaml`, `canada_hunt`. When the day would exceed the cap, shed by
 `canada_hunt.degrade_order` and record what you shed in the run log.
+
+The panel adds one wave of four judges after the last hunter wave
+(`market_panel.extra_subagents`). Shed names before the panel, never a judge: a panel of
+three is allowed only when a model is refused, and the note says which.
 
 ## The rule that outranks the rest
 

@@ -90,3 +90,11 @@
 ## Stage R — reversal researcher — DONE
 - Logged at 2026-10-06 19:13 UTC
 - Intraday screen 15:04 EDT (5,977 screened, 40 passed floors, K=15). XTND dropped (too_little_history); 14 hunted, 14 rankable; provenance rev.v7 · claude-opus-5-5. One floor-clearer: SXTC −8.00 (leg 2, supply; no leg-1 mechanism). Leg 1 non-zero on DCX (+1.0) and NXH (+0.3), both with a mechanism_in_window. 2026-10-05 run resolved: all 15 pending (window closes at today's close); lean_vs_free_control_rho −0.18. Pooled d1 over 10 live runs 09-21→10-02 (134 names): impact_sum ρ +0.020 (p 0.82) vs neg_atr14 +0.109, neg_ret_d −0.153 — hunt has not beaten a free control. Defects carried, constants untouched: overshoot_has_mechanism true on 12/14 with only 2 repricing findings (4th run); DCX ATR14 282% is a consolidation artefact; efts HTTP 500 to several hunters; Nasdaq SI API 503; requests module had to be installed before rev_universe.py would run. No orders placed. Note: reversal/reversal-note.md
+
+## Recovered — Routine output that never reached main
+- Logged at 2026-10-08 UTC, by a maintenance session
+- The section(s) below were written by a Routine session on that day but published to its own branch `claude/friendly-clarke-46c97r` (commit a24b78e5) instead of `main`. Copied verbatim; nothing re-run, nothing edited.
+
+### Close AMC — 2026-10-06 10:10 UTC
+- Logged at 2026-10-06 10:17 UTC
+- guard mode --require-exit-tif opg exit 0 (amc_open, amc -> day queued for open). verify: 14 legs, 0 UNFILLED, 0 held. close --submit: no leg with exit date 2026-10-06, nothing sent, no refusals. Account reachable.

@@ -64,3 +64,26 @@
 - Findings are SYNTHETIC and every hunt file carries "SYNTHETIC": true. researcher_us/scripts/edge_score.py scored them UNCHANGED: 15 of 15 rankable, 6 above the 3.0 conviction floor.
 - rev_resolve.py: impact_sum ranked at rho=0.418, perm p=0.127 at d1 — what random findings on one day should do. lean_vs_free_control_rho = -0.075, so the baseline's lean is NOT the free control (the stage J failure mode is absent).
 - NOTHING HERE IS EVIDENCE ABOUT THE HUNT. Do not pool this day.
+
+## Recovered — Routine output that never reached main
+- Logged at 2026-10-08 UTC, by a maintenance session
+- The section(s) below were written by a Routine session on that day but published to its own branch `claude/funny-shannon-a2zamh` (commit 5e04fc2f) instead of `main`. Copied verbatim; nothing re-run, nothing edited. Main's own Stage 0 section above is a later run (06:40 UTC) of the same stage with the same result, 1 eligible of 4.
+
+### Stage 0 — universe (07:30 CEST)
+- Logged at 2026-09-11 05:16 UTC
+- Window: After the US close on Friday 11 September 2026 through before the US open on Monday 14 September 2026 (Friday roll to Monday, correct).
+- Source: nasdaq (get_earnings.py exit 0).
+- Universe: 4 total (0 AMC, 4 BMO); 1 eligible after qualification.
+- Excluded: 3, all below_market_cap_floor (CODA $112.9M, RFIL $110.7M, HAIN $57.9M vs $500M floor) -- not close calls, corroborated independently.
+- CSHR ($0.70B) passed floor; options listing and BMO timing for 2026-09-14 cross-confirmed via WebSearch against the company's own press release. No network issues, no holiday.
+- Stage 1 will be SKIPPED: 1 eligible name is at or below triage.skip_if_universe_at_or_below (10) -- CSHR goes straight to the deep-dive stage per config.
+
+## Recovered — Routine output that never reached main
+- Logged at 2026-10-08 UTC, by a maintenance session
+- The section(s) below were written by a Routine session on that day but published to its own branch `claude/youthful-goodall-x4ltcc` (commit a687a703) instead of `main`. Copied verbatim; nothing re-run, nothing edited.
+
+### Stage 2 — deep dive, batch 1 — STARTED
+- Logged at 2026-09-11 08:24 UTC
+- Shortlist: 1 name; this batch: CSHR
+- Already on disk, skipping: none
+- Plan: 1 researcher (single wave, wave_size=2 not needed), publish after it completes

@@ -1,0 +1,1756 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="keywords" content="決算銘柄,業績予想,決算スケジュール,コンセンサス,ファンダメンタルズ,アナリスト予想,業績進捗,四半期決算">
+<meta name="description" content="企業の業績を分析。四半期ごとの進捗状況、プロのアナリストの予想との比較など、さまざまな視点で企業の業績を分析します。決算スケジュールを事前に確認し、その企業の業績の状況を確認し株式投資に役立ててください。">
+<meta name="verify-v1" content="qNH1c7hBJWIduC/9KACEqyvIUOG6pzJg40F2+iIai80=" />
+<meta property="og:image" content="https://kabuyoho.ifis.co.jp/img/logo.png"/>
+
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({
+            'gtm.start': new Date().getTime(),event:'gtm.js'});
+            var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+            j.async=true;
+            j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+            f.parentNode.insertBefore(j,f);
+        })
+        (window,document,'script','dataLayer','GTM-WSF4JNH');
+    </script>
+    <!-- End Google Tag Manager -->
+
+
+<title>IFIS株予報 - 業績予想と決算スケジュール</title>
+
+<link rel="stylesheet" type="text/css" href="css/common.css?20221205" />
+<link rel="stylesheet" type="text/css" href="css/common_parts.css?20221205" />
+<link rel="stylesheet" type="text/css" href="https://i.yimg.jp/images/finance/common/css/yf_navigation.css?20221205" media="screen, print">
+<script type="text/javascript" src="js/ad.js?20221205"></script>
+
+<!-- jQuery-ranking -->
+<link rel="stylesheet" href="css/ranking.css?20221205" />
+<script type="text/javascript" src="js/jquery-1.11.1.min.js?20221205"></script>
+<script src="js/jquery-ui.js?20221205"></script>
+<link rel="stylesheet" href="css/jquery-ui.css?20221205">
+
+<!-- FourM Head Tag -->
+
+<script type="application/javascript" src="//anymind360.com/js/7224/ats.js"></script>
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+    window.googletag = window.googletag || {cmd: []};
+    googletag.cmd.push(function() {
+        googletag.defineSlot('/117614822/kabuyoho_295x70_right', [295, 70], 'div-gpt-ad-1487670833008-0').addService(googletag.pubads());
+        googletag.defineSlot('/117614822/kabuyoho_130x60_top', [130, 60], 'div-gpt-ad-1487728276212-0').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_right_1st', [[1, 1], [300, 250], [336, 280]], 'JP_KBY_PC_all_right_1st').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_right_3rd', [[336, 280], [1, 1], [300, 250]], 'JP_KBY_PC_all_right_3rd').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_footer_left', [[1, 1], [300, 250], [336, 280]], 'JP_KBY_PC_all_footer_left').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_footer_right', [[336, 280], [1, 1], [300, 250]], 'JP_KBY_PC_all_footer_right').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_header', [[320, 50], [468, 60], [300, 50]], 'JP_KBY_PC_all_header').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_middle_1st_left', [[1, 1], [300, 250]], 'JP_KBY_PC_all_middle_1st_left').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_middle_1st_right', [[1, 1], [300, 250]], 'JP_KBY_PC_all_middle_1st_right').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_middle_2nd_left', [[1, 1], [300, 250]], 'JP_KBY_PC_all_middle_2nd_left').addService(googletag.pubads());
+        googletag.defineSlot('/83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_middle_2nd_right', [[300, 250], [1, 1]], 'JP_KBY_PC_all_middle_2nd_right').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.pubads().collapseEmptyDivs();
+        googletag.enableServices();
+    });
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4713242280404037" crossorigin="anonymous"></script>
+
+<!-- FourM Head Tag -->
+</head>
+
+
+<!--Adomik randomizer for ad call key value targeting-->
+<script type='text/javascript'>
+window.Adomik = window.Adomik || {};
+Adomik.randomAdGroup = function() {
+    var rand = Math.random();
+    switch (false) {
+        case !(rand < 0.09): return "ad_ex" + (Math.floor(100 * rand));
+        case !(rand < 0.10): return "ad_bc";
+        default: return "ad_opt";
+    }
+};
+</script>
+
+<script>
+    //スマホかどうかの確認
+    $(document).ready(function(){
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        if(userAgent.indexOf('iphone') > 0 ||
+        (userAgent.indexOf('android') > 0 && userAgent.indexOf('mobile') > 0)){
+            if(document.getElementById("mv_mobile_link") !== null){
+                document.getElementById("mv_mobile_link").style.display="block";
+            }
+        }
+    });
+</script>
+
+
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSF4JNH" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!--head-->
+<div id="head">
+    <a href="index.php"><img title="IFIS株予報" alt="IFIS株予報" id="logo-img"  src="img/logo.v2.png" width="115px" height="40px" /></a>
+    <div id="yahoo-logo">
+        <a href="https://finance.yahoo.co.jp/" target="_blank"><img title="Yahoo!ファイナンス" alt="Yahoo!ファイナンス" id="yahoo-fin-img" src="img/yahoo_fin.png" /></a>
+    </div>
+</div>
+<!--/head-->
+
+
+<div id="search_bar">
+    <div class="search_area">
+        <div class="left">
+            <form name="search" method="get" action="index.php">
+                <input type="text" name="wd" value="" id="ip_search" autocomplete="off">
+                <input type="submit" value="銘柄検索" id="bt_search">
+                <input type="hidden" name="action" value="tp1">
+                <input type="hidden" name="sa" value="find">
+                <a href="index.php?action=tp1&sa=help&p=h107">銘柄検索の使い方</a>
+            </form>
+        </div>
+        <div class="right">
+                        <div class="pr_area">
+                <div class="title">PR</div>
+                <div class="item"><div id="h-menu1">&nbsp;</div></div>
+                <div class="item"><div id="h-menu2">&nbsp;</div></div>
+                <div class="item"><div id="h-menu3">&nbsp;</div></div>
+                <div class="item"><div id="h-menu4">&nbsp;</div></div>
+                <div class="pr_area_ed"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 共通メニューバー -->
+<div id="menu_bar">
+    <div class="menu_area">
+        <ul>
+            <li>
+                <a href="index.php" class="on">
+                    株予報トップ
+                </a>
+            </li>
+            <li>
+                <a href="index.php?action=tp1&sa=schedule" class="">
+                    スケジュール
+                </a>
+            </li>
+            <li>
+                <a href="index.php?action=tp1&sa=consNews" class="">
+                    ニュース
+                </a>
+                <ul>
+                    <li>
+                        <a href="index.php?action=tp1&sa=consNews" class="">
+                            業績トピックス
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.php?action=tp1&sa=fisco_news_list" class="">
+                            FISCOニュース
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="index.php?action=tp1&sa=trend_sig_ov" class="">
+                    シグナル
+                </a>
+            </li>
+            <li>
+                <a href="index.php?action=tp1&sa=ranking" class="">
+                    ランキング
+                </a>
+            </li>
+            <li class="small">
+                <a href="https://column.ifis.co.jp/" target="brank" class="">
+                    レポート・コラム
+                </a>
+            </li>
+            <li class="small">
+                <a href="index.php?action=tp1&sa=sdb" class="">
+                    デイトレ/スイング<img src="img/icon/ico_new_2.gif" alt="アイコン">
+                </a>
+            </li>
+        </ul>
+        <!-- 警告・注意喚起 -->
+        <!-- 
+        <div class="announce">
+            <details class="details">
+                <summary class="details-summary">【重要】株予報/株予報Proを装った偽サイト、偽アカウント、偽広告にご注意ください</summary>
+                <div class="details-body">
+                    <p>株予報/株予報Pro等の当社サービスを装ったり、当社の名を騙った偽サイト、偽アカウント、偽広告が確認されております。</p>
+                    <p>偽サイト及び偽アカウントは、不正サイトへの誘導、個人情報の取得及び悪用、投資詐欺に遭う可能性がございますのでアクセスされないようにご注意ください。</p>
+                    <p>当社では投資勧誘は行っておりません。LINEなどのSNSを利用した投資詐欺にご注意ください。</p>
+                </div>
+            </details>
+        </div>
+        -->
+        <!-- 警告・注意喚起 -->
+    </div>
+</div>
+
+<!-- /共通メニューバー -->
+
+<div class="contents_end"></div>
+<div id="contentsTop"><hr /></div>
+<div id="contents">
+    <div id="main">
+
+        
+                                    <div id="ad_centents">
+                <div class="cn_left">
+                    
+                    <!-- /83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_header -->
+                    <div id='JP_KBY_PC_all_header' style='min-width: 300px; min-height: 50px;'>
+                        <script>
+                            googletag.cmd.push(function() { googletag.display('JP_KBY_PC_all_header'); });
+                        </script>
+                    </div>
+                    
+
+                </div>
+                <div class="cn_right">
+                    
+                    <div id='div-gpt-ad-1487728276212-0' style='height:60px; width:130px;'>
+                        <script>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1487728276212-0'); });</script>
+                    </div>
+                    
+                </div>
+                <div class="cn_ed"></div>
+            </div>
+        
+        
+        	<link rel="stylesheet" type="text/css" href="css/schedule.css?20221205" />
+
+	<div id="contents_subtitle_l">
+		<h2>
+			<a href="index.php?action=tp1&sa=schedule">
+				<img src="img/common/ico_sch_m.png" alt="アイコン" class="mark">
+				<span>決算スケジュール</span>
+				<img src="img/common/ico_link_m.png" alt="アイコン" class="mark">
+			</a>
+		</h2>
+	</div>
+
+		<div id="ad_centents">
+		<div class="cn_left"><div id="ad_text_main"></div></div>
+		<div class="cn_right"><div id="ad_text_main2"></div></div>
+		<div class="cn_ed"></div>
+	</div>
+
+	<div class="sch_date_base">
+		<div id="sch_date"></div>
+	</div>
+	<div class="sch_calendar_base">
+		<div id="sch_calendar"></div>
+	</div>
+	<div class="sch_base_ed"></div>
+
+
+	
+	<script type="text/javascript">
+
+		
+		
+		
+		var jsonData = function() {
+			system_date: null;								
+			select_date: null;								
+			select_date_calendar: null;				
+			data_list: null; [];						
+		};
+		var jsonDataSub1 = function() {
+			ann_day: null;										
+			ann_cnt: null;										
+			ann_list: [];										
+		};
+		var jsonDataSub2 = function() {
+			stock_cd: null;										
+			name_short: null;									
+			market_cap: null;									
+		};
+
+		
+		$(function () {
+			var hiduke=new Date();
+			mainProc(getDateFormat(hiduke,"yyyy/MM/dd"), getDateFormat(hiduke,"yyyy/MM/dd"));
+
+			
+			$(document).on("click", "#sch_calendar a#prev_month", function(){
+				
+				var select_date = "";						
+				var select_month = "";					
+
+				select_date = document.getElementById("calendar_date").innerHTML;
+				select_month = document.getElementById("calendar_month_prev").innerHTML;
+
+				
+				mainProc(select_date, select_month);
+
+				return false;
+			});
+
+			
+			$(document).on("click", "#sch_calendar a#next_month", function(){
+				
+				var select_date = "";						
+				var select_month = "";					
+
+				select_date = document.getElementById("calendar_date").innerHTML;
+				select_month = document.getElementById("calendar_month_next").innerHTML;
+
+				
+				mainProc(select_date, select_month);
+
+				return false;
+			});
+
+			
+			$(document).on("click", "#sch_calendar table tbody tr td div a", function(){
+				
+				var select_date = "";						
+				var select_month = "";					
+
+				select_date = $(this).closest('td').find(".calendar_date_select").first().text();
+				select_month = document.getElementById("calendar_month").innerHTML;
+
+				
+				select_month = getSelectYM(select_date, select_month);
+
+				
+				mainProc(select_date, select_month);
+
+				return false;
+			});
+
+			
+			$(document).on("click", "#sch_date .date_main_prev", function(){
+				
+				var select_date = "";						
+				var select_month = "";					
+
+				select_date = document.getElementById("schedule_date_prev").innerHTML;
+				select_month = document.getElementById("schedule_month").innerHTML;
+
+				
+				select_month = getSelectYM(select_date, select_month);
+
+				
+				mainProc(select_date, select_month);
+
+				return false;
+			});
+
+			
+			$(document).on("click", "#sch_date .date_main_next", function(){
+				
+				var select_date = "";						
+				var select_month = "";					
+
+				select_date = document.getElementById("schedule_date_next").innerHTML;
+				select_month = document.getElementById("schedule_month").innerHTML;
+
+				
+				select_month = getSelectYM(select_date, select_month);
+
+				
+				mainProc(select_date, select_month);
+
+				return false;
+			});
+
+		});
+
+
+
+
+		
+		
+
+		
+		function mainProc(select_date, select_date_calendar) {
+			$.ajax({
+				url : 'index.php?sa=js_top_schedule',
+				dataType: 'json',
+				async: false,
+				error:function(jqXHR, textStatus, errorThrown){
+					if(window.console && typeof window.console.log === 'function') {
+						console.log("エラー：" + textStatus);
+						console.log("テキスト：" + jqXHR.responseText);
+					}
+				},
+				success: function(json) {
+					if(window.console && typeof window.console.log === 'function') {
+						console.log("読込成功");
+					}
+
+					
+					var jData = new jsonData();
+					jData.system_date = json.system_date;
+					jData.select_date = select_date;
+					jData.select_date_calendar = select_date_calendar;
+					
+					createDataHotStock(jData, json);
+
+					
+					
+
+					
+					printDataCalendar('sch_calendar', jData);
+
+					
+					printDataHotStock('sch_date', jData);
+				}
+			});
+		}
+
+
+		
+		function createDataHotStock(jData, json) {
+			var obj1List = [];
+
+			if (json.schedule_list != null) {
+				for (var i = 0; i < json.schedule_list.length; i++) {
+
+					var obj1 = new jsonDataSub1;
+					var obj2List = [];
+
+					var value1 = json.schedule_list[i].ann_day;
+					var value2 = json.schedule_list[i].ann_day_status;
+					var value3 = json.schedule_list[i].ann_cnt;
+
+					if (json.schedule_list[i].ann_list != null) {
+						for (var j = 0; j < json.schedule_list[i].ann_list.length; j++) {
+
+							var value4 = json.schedule_list[i].ann_list[j].stock_cd;
+					   	var value5 = json.schedule_list[i].ann_list[j].name_short;
+					   	var value6 = json.schedule_list[i].ann_list[j].market_cap;
+
+					   	var obj2 = new jsonDataSub2;
+					   	obj2.stock_cd = value4;
+							obj2.name_short = value5;
+							obj2.market_cap = value6;
+
+							obj2List.push(obj2);
+						}
+					}
+
+					obj1.ann_day = value1;
+					obj1.ann_day_status = value2;
+					obj1.ann_cnt = value3;
+					obj1.ann_list = obj2List;
+
+					obj1List.push(obj1);
+				}
+			}
+
+			jData.data_list = obj1List;
+		}
+
+
+		
+
+		
+		function printDataHotStock(divId, jData) {
+			var html = '';							
+
+			
+			var POS_ROW_MAX = 2;				
+			var count = 0;							
+			var count_max = 7;					
+			var month_max = 1;					
+
+			
+			
+			var hizuke = jData.select_date;			
+			var obj = new jsonData;
+			for (var i = 0; i < jData.data_list.length; i++) {
+				var obj1 = jData.data_list[i];
+
+				if (hizuke == obj1.ann_day) {
+					obj = $.extend(true, [], obj1);
+
+					break;
+				}
+			}
+			
+			count_max = obj.ann_list.length;
+
+			
+			var dtDayPrev = null;			
+			var dtDayNext= null;			
+
+			dtDayPrev = new Date(hizuke);
+			dtDayPrev.setDate(dtDayPrev.getDate() - 1);
+			dtDayNext = new Date(hizuke);
+			dtDayNext.setDate(dtDayNext.getDate() + 1);
+
+			
+			var dtDayPrevMin = null;	
+			var dtDayNextMax = null;	
+			// 説明：・setMonth()では、31日単位加算するため、月初にしてから月加算を行うようにする。
+			// 　　：　月末になると問題が発生する可能性が高いです。
+			var systemDt = new Date(jData.system_date);
+			var systemDtY = systemDt.getFullYear();
+			var systemDtM = systemDt.getMonth();
+			systemDt = new Date(systemDtY, systemDtM, 1);			// 月初
+			dtDayPrevMin = new Date(systemDt.getTime());
+			dtDayPrevMin.setMonth(dtDayPrevMin.getMonth() - month_max);
+			dtDayPrevMin = new Date(dtDayPrevMin.getFullYear(), dtDayPrevMin.getMonth(), 1);
+			dtDayNextMax = new Date(systemDt.getTime());
+			dtDayNextMax.setMonth(dtDayNextMax.getMonth() + month_max);
+			dtDayNextMax = new Date(dtDayNextMax.getFullYear(), dtDayNextMax.getMonth() + 1, 0);
+
+			
+			obj.ann_list.sort(function(a, b) {
+				return (a.market_cap > b.market_cap) ? -1 : 1;
+			});
+
+
+			
+			html += '<div class="date_main">';
+			html += '<div class="date_main_prev">';
+			html += '<span>';
+			if ( this.getDateFormat(dtDayPrevMin, "yyyyMMdd") <= this.getDateFormat(dtDayPrev, "yyyyMMdd") ) {
+				html += '<a id="prev_date" href="#"><div id="schedule_date_prev" style="display: none;">' + this.getDateFormat(dtDayPrev, "yyyy/MM/dd") + '</div>&laquo;</a>';
+			} else {
+				html += '<div id="schedule_date_prev" style="display: none;">' + this.getDateFormat(obj.ann_day, "yyyy/MM/dd") + '</div>&laquo;';
+			}
+			html += '</span>';
+			html += '</div>';
+
+			html += '<div class="date_main_label">';
+			html += '<div id="schedule_month" style="display: none;">' + jData.select_date_calendar + '</div>';
+			html += '<div id="schedule_date" style="display: none;">' + jData.select_date + '</div>';
+			html += '<span>';
+			html += '<p>' + this.getDateFormat(obj.ann_day, "M/d") + '</p>&nbsp;';
+			if ( obj.ann_day_status == 1 ) {
+				html += '(<p class="sunday">' + this.getDateFormat(obj.ann_day, "E") + '</p>)の予定';
+			} else if ( obj.ann_day_status == 2 ) {
+				html += '(<p class="saturday">' + this.getDateFormat(obj.ann_day, "E") + '</p>)の予定';
+			} else {
+				html += '(<p class="weekday">' + this.getDateFormat(obj.ann_day, "E") + '</p>)の予定';
+			}
+			html += '</span>';
+			html += '</div>';
+
+			
+			html += '<div class="date_main_next">';
+			html += '<span>';
+			if ( this.getDateFormat(dtDayNextMax, "yyyyMMdd") >= this.getDateFormat(dtDayNext, "yyyyMMdd") ) {
+				html += '<a id="next_date" href="#"><div id="schedule_date_next" style="display: none;">' + this.getDateFormat(dtDayNext, "yyyy/MM/dd") + '</div>&raquo;</a>';
+			} else {
+				html += '<div id="schedule_date_next" style="display: none;">' + this.getDateFormat(obj.ann_day, "yyyy/MM/dd") + '</div>&raquo;';
+			}
+			html += '</span>';
+			html += '</div>';
+
+			html += '<div class="date_main_number">';
+			html += '<span>';
+			html += '<p>' + obj.ann_cnt + '</p>&nbsp;件';
+			html += '</span>';
+			html += '</div>';
+
+			html += '<div class="date_main_ed"></div>';
+
+			html += '</div>';
+
+			
+			html += '<div class="title_sub1">';
+			html += '<div class="title_sub1_title">主な発表予定銘柄</div>';
+			if ( obj.ann_cnt > 0) {
+				html += '<div class="title_sub1_link"><a href="./index.php?action=tp1&sa=schedule&ym=' + this.getDateFormat(obj.ann_day, "yyyyMM") + '&lst=' + this.getDateFormat(obj.ann_day, "yyyyMMdd") + '">もっと見る</a></div>';
+			}
+			html += '<div class="title_sub1_ed"></div>';
+			html += '</div>';
+			html += '<div class="stock_list">';
+			html += '<table>';
+			html += '<tbody>';
+
+			
+			if (count_max == 0) {
+				html += '<tr><td class="no_date">';
+				html += '・主な発表予定銘柄はありません。<br>';
+				html += '<br>';
+				html += '・他の日付の発表予定を見たい場合は<br>';
+				html += '赤枠内の&#12300;&laquo;&#12301;&#12300;&raquo;&#12301;をクリックするか、または<br>';
+				html += 'カレンダーの社数部分をクリックしてください。';
+				html += '</td></tr>';
+			}
+
+
+			
+			for (count = 0; count < count_max ; count++) {
+				var pos_row = 0;			
+				pos_row = (count % POS_ROW_MAX) + 1;
+
+				
+				if (pos_row == 1) {
+					html += '<tr>';
+				}
+
+				
+				var obj1 = obj.ann_list[count];
+
+				
+				html += '<td>';
+				html += '<a href="./index.php?action=tp1&sa=report_top&bcode=' + obj1.stock_cd + '" class="textlink">' + obj1.name_short + '</a>&nbsp;<span class="code">(' + obj1.stock_cd + ')</span>';
+				html += '</td>';
+
+				
+				if (pos_row == POS_ROW_MAX) {
+					html += '</tr>';
+				}
+
+
+				
+				if ( count + 1 == count_max ) {
+					
+					if (pos_row != POS_ROW_MAX) {
+						var count_emp = 0;				
+						var count_emp_max = 0;		
+
+						count_emp_max = POS_ROW_MAX - pos_row;
+						for (count_emp = 0; count_emp < count_emp_max; count_emp++) {
+							html += '<td>&nbsp;</td>';
+						}
+					}
+				}
+			}
+
+			html += '</tbody>';
+			html += '</table>';
+			html += '</div>';
+
+			document.getElementById(divId).innerHTML = html;
+		}
+
+
+		
+		function printDataCalendar(divId, jData) {
+			var html = '';							
+
+			
+			var POS_ROW_MAX = 7;				
+			var count = 0;							
+			var month_max = 1;					
+
+
+			
+			
+			var seletDt = jData.select_date_calendar;
+			var dt = new Date(seletDt);
+			var dtMin = null;						
+			var dtMax = null;						
+
+			
+			dt = new Date(seletDt);
+			dt = new Date(dt.getFullYear(), dt.getMonth(), 1);
+			dt.setDate(dt.getDate() - dt.getDay());
+			dtMin = new Date(dt.getTime());
+			
+			dt = new Date(seletDt);
+			dt = new Date(dt.getFullYear(), dt.getMonth() + 1, 0);
+			dt.setDate(dt.getDate() + (POS_ROW_MAX - 1 - dt.getDay()) );
+			dtMax = new Date(dt.getTime());
+
+			
+			
+			var hizuke = this.getDateFormat(dtMin, "yyyy/MM/dd");			
+			var idxMin = -1;																				
+			for (var i = 0; i < jData.data_list.length; i++) {
+				var obj1 = jData.data_list[i];
+
+				if (hizuke == obj1.ann_day) {
+					idxMin = i;
+					break;
+				}
+			}
+
+			
+			var dtMonthPrev = null;			
+			var dtMonthNext = null;			
+
+			dtMonthPrev = new Date(dtMin.getTime());
+			dtMonthPrev.setDate(dtMonthPrev.getDate() - 1);
+			dtMonthNext = new Date(dtMax.getTime());
+			dtMonthNext.setDate(dtMonthNext.getDate() + 1);
+
+			
+			var dtMonthPrevMin = null;	
+			var dtMonthNextMax = null;	
+			// 説明：・setMonth()では、31日単位加算するため、月初にしてから月加算を行うようにする。
+			// 　　：　月末になると問題が発生する可能性が高いです。
+			var systemDt = new Date(jData.system_date);
+			var systemDtY = systemDt.getFullYear();
+			var systemDtM = systemDt.getMonth();
+			systemDt = new Date(systemDtY, systemDtM, 1);			// 月初
+			dtMonthPrevMin = new Date(systemDt.getTime());
+			dtMonthPrevMin.setMonth(dtMonthPrevMin.getMonth() - month_max);
+			dtMonthNextMax = new Date(systemDt.getTime());
+			dtMonthNextMax.setMonth(dtMonthNextMax.getMonth() + month_max);
+
+
+			
+			html += '<div id="calendar_navi_s">';
+			html += '<table class="cns_ta">';
+			html += '<tbody>';
+			html += '<tr class="cns_tr">';
+			if ( this.getDateFormat(dtMonthPrevMin, "yyyyMM") <= this.getDateFormat(dtMonthPrev, "yyyyMM") ) {
+				html += '<td class="cns_month"><div id="calendar_month_prev" style="display: none;">'+ this.getDateFormat(dtMonthPrev, "yyyy/MM/dd") + '</div><a id="prev_month" href="#">《前の月</a></td>';
+			} else {
+				html += '<td class="cns_month">《前の月</td>';
+			}
+
+			html += '<td class="cns_td">';
+			html += '<div id="calendar_month" style="display: none;">' + jData.select_date_calendar + '</div>';
+			html += '<div id="calendar_date" style="display: none;">' + jData.select_date + '</div>';
+			html += this.getDateFormat(seletDt, "yyyy年M月");
+			html += '</td>';
+
+			if ( this.getDateFormat(dtMonthNextMax, "yyyyMM") >= this.getDateFormat(dtMonthNext, "yyyyMM") ) {
+				html += '<td class="cns_month"><div id="calendar_month_next" style="display: none;">' + this.getDateFormat(dtMonthNext, "yyyy/MM/dd") + '</div><a id="next_month" href="#">次の月》</a></td>';
+			} else {
+				html += '<td class="cns_month">次の月》</td>';
+			}
+			html += '</tr>';
+			html += '</tbody>';
+			html += '</table>';
+			html += '</div>';
+
+
+			
+			html += '<div id="calendar_s">';
+			html += '<div class="cal">';
+			html += '<table>';
+			html += '<tbody>';
+			html += '<tr>';
+			html += '<th>日</th>';
+			html += '<th>月</th>';
+			html += '<th>火</th>';
+			html += '<th>水</th>';
+			html += '<th>木</th>';
+			html += '<th>金</th>';
+			html += '<th>土</th>';
+			html += '</tr>';
+
+			
+			
+			
+			
+			dt = dtMin;
+			idx = idxMin;
+			while (dt <= dtMax) {
+				
+				var w = dt.getDay() + 1;
+
+				
+				if (w == 1) {
+					html += '<tr>';
+				}
+
+
+				
+				
+				
+				
+				
+				var obj2 = jData.data_list[idx];
+
+				if ( checkDay(jData.select_date ,obj2.ann_day) ) {
+					html += '<td class="today">';
+				} else if ( !checkMonth(jData.select_date_calendar ,obj2.ann_day) ) {
+					html += '<td class="gr">';
+				} else {
+					html += '<td>';
+				}
+
+				html += '<div class="calendar_date_select" style="display: none;">' + this.getDateFormat(obj2.ann_day, "yyyy/MM/dd") + '</div>';
+				if ( obj2.ann_day_status == 1 ) {
+					html += '<div class="sunday">' + this.getDateFormat(obj2.ann_day, "d") + '</div>';
+				} else if ( obj2.ann_day_status == 2 ) {
+					html += '<div class="saturday">' + this.getDateFormat(obj2.ann_day, "d") + '</div>';
+				} else {
+					html += '<div class="weekday">' + this.getDateFormat(obj2.ann_day, "d") + '</div>';
+				}
+
+				if ( obj2.ann_cnt == 0 ) {
+					html += '<div class="schlink">&nbsp;</div>';
+				} else {
+					html += '<div class="schlink"><a href="#">' + obj2.ann_cnt + '件' + '</a></div>';
+				}
+				html += '</td>';
+
+
+				
+				if (w == POS_ROW_MAX) {
+					html += '</tr>';
+				}
+
+
+				
+				dt.setDate (dt.getDate() + 1);
+				idx += 1;
+			}
+
+
+			
+			html += '</tbody>';
+			html += '</table>';
+			html += '</div>';
+			html += '</div>';
+
+			document.getElementById(divId).innerHTML = html;
+		}
+
+		
+		function getSelectYM(value1, value2){
+			var ret = value2;
+			var dtDf1 = new Date(value1);
+			var dtDf2 = new Date(value2);
+			if ( this.getDateFormat(dtDf1,"yyyyMM") != this.getDateFormat(dtDf2,"yyyyMM") ) {
+				ret = value1;
+			}
+			return ret;
+		}
+
+
+		
+		function checkMonth(value1, value2) {
+			var ret = false;
+
+			var dt1 = new Date(value1);
+			var dt2 = new Date(value2);
+
+			if ( dt1.getFullYear() == dt2.getFullYear() && dt1.getMonth() == dt2.getMonth() ) {
+				ret = true;
+			}
+
+			return ret;
+		}
+
+		
+		function checkDay(value1, value2) {
+			var ret = false;
+
+			var dt1 = new Date(value1);
+			var dt2 = new Date(value2);
+			if ( dt1.getFullYear() == dt2.getFullYear() && dt1.getMonth() == dt2.getMonth() && dt1.getDate() == dt2.getDate()) {
+				ret = true;
+			}
+
+			return ret;
+		}
+
+
+		
+		function getDateFormat(date, format) {
+			
+			var dt = new Date(date);
+
+			var ret = format;																
+			var w = ["日","月","火","水","木","金","土"];
+
+			
+			var wk = "";																		
+			if (ret.indexOf("yyyy") >= 0) {
+				 wk = dt.getFullYear().toString();
+				ret = ret.replace(/yyyy/g,wk);
+			}
+
+			if (ret.indexOf("yy") >= 0) {
+				 wk = dt.getFullYear().toString().slice(-2);
+				ret = ret.replace(/yyyy/g,wk);
+			}
+
+			if (ret.indexOf("MM") >= 0) {
+				 wk = ('0'+(dt.getMonth()+1).toString()).slice(-2);
+				ret = ret.replace(/MM/g,wk);
+			}
+
+			if (ret.indexOf("M") >= 0) {
+				 wk = (dt.getMonth()+1).toString();
+				ret = ret.replace(/M/g,wk);
+			}
+
+			if (ret.indexOf("dd") >= 0) {
+				 wk = ('0'+(dt.getDate()).toString()).slice(-2);
+				ret = ret.replace(/dd/g,wk);
+			}
+
+			if (ret.indexOf("d") >= 0) {
+				 wk = dt.getDate().toString();
+				ret = ret.replace(/d/g,wk);
+			}
+
+			if (ret.indexOf("E") >= 0) {
+				wk = w[dt.getDay()];
+
+				ret = ret.replace(/E/g,wk);
+			}
+
+			return ret;
+		}
+
+
+	</script>
+	
+
+                                
+
+                        
+        	<!-- Start fisco news -->
+	<div id="contents_subtitle_l">
+		<h2>
+			<a href="index.php?action=tp1&sa=fisco_news_list">
+				<img src="img/common/ico_tpx_m.png" class="mark">
+				フィスコニュース
+				<img src="img/common/ico_link_s.png" alt="アイコン" class="mark">
+			</a>
+		</h2>
+	</div>
+
+	<link rel="stylesheet" type="text/css" href="css/news.css?20221205" />
+	<div id="fisco_top">
+					<div class="context">
+				<div class="left"><img src="img/icon/ico_circle.gif"></div>
+				<div class="right">
+						<a class="title" href="index.php?action=tp1&sa=fisco_news&nid=0009350020261009016">
+						ソフトバンクＧ---大幅続落、オープンAIの売上高下振れ報道を受け
+						</a>
+						<span class="contsub">[注目トピックス　日本株]</span>
+						<span class="contsub"> 2026/10/09 10:19</span>
+				</div>
+			</div>
+					<div class="context">
+				<div class="left"><img src="img/icon/ico_circle.gif"></div>
+				<div class="right">
+						<a class="title" href="index.php?action=tp1&sa=fisco_news&nid=0009340020261009020">
+						東京為替：ドル・円は上昇一服でやや軟化
+						</a>
+						<span class="contsub">[注目トピックス　市況・概況]</span>
+						<span class="contsub"> 2026/10/09 10:08</span>
+				</div>
+			</div>
+					<div class="context">
+				<div class="left"><img src="img/icon/ico_circle.gif"></div>
+				<div class="right">
+						<a class="title" href="index.php?action=tp1&sa=fisco_news&nid=0007030020261009002">
+						アドベンチャー---反発、「Googleフライト」と連携し米国向け航空券販売を開始
+						</a>
+						<span class="contsub">[新興市場スナップショット]</span>
+						<span class="contsub"> 2026/10/09 10:00</span>
+				</div>
+			</div>
+					<div class="context">
+				<div class="left"><img src="img/icon/ico_circle.gif"></div>
+				<div class="right">
+						<a class="title" href="index.php?action=tp1&sa=fisco_news&nid=0009350020261009015">
+						サーラコーポレーション---3Q累計でデリバティブ評価益10億2,100万円を営業外収益に計上
+						</a>
+						<span class="contsub">[注目トピックス　日本株]</span>
+						<span class="contsub"> 2026/10/09 09:54</span>
+				</div>
+			</div>
+					<div class="context">
+				<div class="left"><img src="img/icon/ico_circle.gif"></div>
+				<div class="right">
+						<a class="title" href="index.php?action=tp1&sa=fisco_news&nid=0009350020261009014">
+						サーラコーポレーション---3Qは大幅増益、全セグメントが増益
+						</a>
+						<span class="contsub">[注目トピックス　日本株]</span>
+						<span class="contsub"> 2026/10/09 09:53</span>
+				</div>
+			</div>
+				<div class="context_end">
+			<div class="footer"><a class="title" href="index.php?action=tp1&sa=fisco_news_list">他のフィスコニュースを見る</a></div>
+		</div>
+	</div>
+
+        
+        
+        
+        <!-- Start Cons news -->
+<link rel="stylesheet" type="text/css" href="css/topix.css?20221205" />
+<div id="contents_subtitle_l">
+    <h2>
+        <a href="index.php?action=tp1&sa=consNewsTop">
+            <img src="img/common/ico_tpx_m.png" class="mark">
+            業績トピックス
+            <img src="img/common/ico_link_s.png" alt="アイコン" class="mark">
+        </a>
+    </h2>
+    <p>企業やアナリストの業績予想修正や決算発表があった銘柄について、新着情報をお知らせします。</p>
+</div>
+<div id="topix">
+    <div id="topix_list_short">
+        <div class="header">
+            <div class="left"><span>日時/評価/タイトル</span></div>
+        </div>
+        <div class="contents_end"></div>
+
+                    <div class="context_short">
+                <span class="date">
+                    10/08 22:46
+                </span>
+                <img src="img/icon/news_type_03_s.png" alt="">
+                <img src="img/ico_w_03_sss.png">
+                <a href="index.php?action=tp1&sa=consNewsDetail&nid=8282_20261008_cons_20261008_224607_17" class="title">
+                    【アナリスト予想】Ｋ’ｓＨ、27年3月期経常予想。対前週3.2%下降。
+                </a>
+            </div>
+            <div class="contents_end"></div>
+                    <div class="context_short">
+                <span class="date">
+                    10/08 22:46
+                </span>
+                <img src="img/icon/news_type_03_s.png" alt="">
+                <img src="img/ico_w_01_sss.png">
+                <a href="index.php?action=tp1&sa=consNewsDetail&nid=8473_20261008_cons_20261008_224607_18" class="title">
+                    【アナリスト予想】ＳＢＩＨ、27年3月期経常予想。対前週9.8%上昇。
+                </a>
+            </div>
+            <div class="contents_end"></div>
+                    <div class="context_short">
+                <span class="date">
+                    10/08 22:46
+                </span>
+                <img src="img/icon/news_type_03_s.png" alt="">
+                <img src="img/ico_w_02_sss.png">
+                <a href="index.php?action=tp1&sa=consNewsDetail&nid=9009_20261008_cons_20261008_224607_19" class="title">
+                    【アナリスト予想】京成電鉄、27年3月期経常予想。対前週0.2%上昇。
+                </a>
+            </div>
+            <div class="contents_end"></div>
+                    <div class="context_short">
+                <span class="date">
+                    10/08 22:46
+                </span>
+                <img src="img/icon/news_type_03_s.png" alt="">
+                <img src="img/ico_w_03_sss.png">
+                <a href="index.php?action=tp1&sa=consNewsDetail&nid=9044_20261008_cons_20261008_224607_20" class="title">
+                    【アナリスト予想】ＮＡＮＫＡＩ、27年3月期経常予想。対前週1.3%下降。
+                </a>
+            </div>
+            <div class="contents_end"></div>
+                    <div class="context_short">
+                <span class="date">
+                    10/08 18:00
+                </span>
+                <img src="img/icon/news_type_07_s.png" alt="">
+                <img src="img/ico_w_00_sss.png">
+                <a href="index.php?action=tp1&sa=consNewsDetail&nid=8473_20261008_rep_20261008_180006_17" class="title">
+                    【アナリスト評価】ＳＢＩＨ、レーティング中立を据置き、目標株価3,660円に引上げ（米系大手証券）
+                </a>
+            </div>
+            <div class="contents_end"></div>
+        
+        <div class="footer"><a href="index.php?action=tp1&sa=consNews">他の業績トピックスを見る</a></div>
+    </div>
+</div>
+<!-- Start Cons news -->
+
+
+                        
+        
+        
+        
+        
+        	<!-- Start sector search -->
+	<link rel="stylesheet" type="text/css" href="css/sector.css" />
+	<div id="contents_subtitle_l">
+		<h2>
+			<span class="main_h2">
+				<img src="img/common/ico_rank_m.png" class="mark">
+				業種から銘柄を検索
+			</span>
+		</h2>
+		<p>業種名をクリックするとその業種の銘柄一覧をご覧いただけます。業種の下に表示されている各業種の予想増益率（経常利益）を参考にして、業績が好調そうな業種、そうでない業種などから銘柄を探してみてください。</p>
+	</div>
+	<div id="sector_matrix">
+		<table>
+			<tr>
+												<td><a href="index.php?action=tp1&sa=find&wd=@1">水産・農林</a><br/>(-2.52%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@2">鉱業</a><br/>(21.30%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@3">建設</a><br/>(-2.44%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@4">食料品</a><br/>(23.61%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@5">繊維製品</a><br/>(89.20%)</td>
+																				</tr>
+					<tr>
+						<td><a href="index.php?action=tp1&sa=find&wd=@6">パルプ・紙</a><br/>(0.80%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@7">化学</a><br/>(29.93%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@8">医薬品</a><br/>(34.68%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@9">石油・石炭</a><br/>(27.91%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@10">ゴム</a><br/>(26.66%)</td>
+																				</tr>
+					<tr>
+						<td><a href="index.php?action=tp1&sa=find&wd=@11">ガラス土石</a><br/>(9.57%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@12">鉄鋼</a><br/>(58.50%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@13">非鉄金属</a><br/>(44.58%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@14">金属製品</a><br/>(0.48%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@15">機械</a><br/>(23.82%)</td>
+																				</tr>
+					<tr>
+						<td><a href="index.php?action=tp1&sa=find&wd=@16">電気機器</a><br/>(117.93%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@17">輸送用機器</a><br/>(25.73%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@18">精密機器</a><br/>(38.98%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@19">その他製品</a><br/>(15.94%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@20">電気・ガス</a><br/>(-23.97%)</td>
+																				</tr>
+					<tr>
+						<td><a href="index.php?action=tp1&sa=find&wd=@21">陸運</a><br/>(1.33%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@22">海運</a><br/>(58.79%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@23">空運</a><br/>(-28.69%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@24">倉庫・運輸</a><br/>(0.55%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@25">情報・通信</a><br/>(-27.13%)</td>
+																				</tr>
+					<tr>
+						<td><a href="index.php?action=tp1&sa=find&wd=@26">卸売業</a><br/>(18.84%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@27">小売業</a><br/>(12.80%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@28">銀行業</a><br/>(23.38%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@29">証券・先物</a><br/>(11.13%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@30">保険業</a><br/>(18.10%)</td>
+																				</tr>
+					<tr>
+						<td><a href="index.php?action=tp1&sa=find&wd=@31">その他金融</a><br/>(31.04%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@32">不動産業</a><br/>(10.21%)</td>
+																				<td><a href="index.php?action=tp1&sa=find&wd=@33">サービス業</a><br/>(39.57%)</td>
+																										<td>&nbsp;</td>
+													<td>&nbsp;</td>
+																					</tr>
+		</table>
+	</div>
+	<br />
+	<!-- End sector search -->
+
+        
+        	<!-- Start Ranking summary -->
+	<link rel="stylesheet" type="text/css" href="css/ranking.css" />
+	<div id="contents_subtitle_l">
+		<h2>
+			<a href="index.php?action=tp1&sa=ranking" name="rank">
+				<img src="img/common/ico_rank_m.png" class="mark">
+				ランキング情報
+				<img src="img/common/ico_link_s.png" alt="アイコン" class="mark">
+			</a>
+		</h2>
+		
+				<div id="ad_centents">
+			<div class="cn_left"><div id="ad_text_main"></div></div>
+			<div class="cn_right"><div id="ad_text_main2"></div></div>
+			<div class="cn_ed"></div>
+		</div>
+		
+		<p>コンセンサス予想の変化や集計値の変化をランキング形式でお知らせします。</p>
+	</div>
+	<div id="ranking_navi">
+		<ul>
+			<li><a href="index.php?action=tp1&sa=ranking&ex=up" class="textlink">経常上昇</a></li>
+			<li><a href="index.php?action=tp1&sa=ranking&ex=down" class="textlink">経常下降</a></li>
+			<li><a href="index.php?action=tp1&sa=ranking&ex=tp" class="textlink">目標株価</a></li>
+			<li><a href="index.php?action=tp1&sa=ranking&ex=ar" class="textlink">注目銘柄</a></li>
+			<li><a href="index.php?action=tp1&sa=ranking&ex=sa" class="textlink">業種 増収率</a></li>
+			<li><a href="index.php?action=tp1&sa=ranking&ex=rp" class="textlink">業種 増益率</a></li>
+			<li><a href="index.php?action=tp1&sa=ranking&ex=sarp" class="textlink">業種 収益性</a></li>
+			<li><a href="index.php?action=tp1&sa=ranking&ex=per" class="textlink">業種 PER</a></li>
+		</ul>
+	</div>
+	<div id="ranking_summary">
+		<div id="left">
+			<h3>経常利益予想 上昇銘柄</h3>
+			<table>
+				<tr>
+					<th>Code</th>
+					<th>会社名</th>
+					<th>上昇率</th>
+				</tr>
+												<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=6962">6962</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=6962">大真空</a></td>
+					<td class="right">33.90%</td>
+				</tr>
+																<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=6958">6958</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=6958">日本ＣＭＫ</a></td>
+					<td class="right">25.30%</td>
+				</tr>
+																<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=6999">6999</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=6999">ＫＯＡ</a></td>
+					<td class="right">25.00%</td>
+				</tr>
+																<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=8473">8473</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=8473">ＳＢＩＨ</a></td>
+					<td class="right">9.80%</td>
+				</tr>
+																<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=5741">5741</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=5741">ＵＡＣＪ</a></td>
+					<td class="right">5.80%</td>
+				</tr>
+																																																																																																																																																																																																																			</table>
+		</div>
+		<div id="right">
+			<h3>経常利益予想 下降銘柄</h3>
+			<table>
+				<tr>
+					<th>Code</th>
+					<th>会社名</th>
+					<th>下降率</th>
+												<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=4552">4552</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=4552">ＪＣＲファーマ</a></td>
+					<td class="right">-21.00%</td>
+				</tr>
+																<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=4547">4547</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=4547">キッセイ薬品工業</a></td>
+					<td class="right">-16.40%</td>
+				</tr>
+																<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=6753">6753</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=6753">シャープ</a></td>
+					<td class="right">-14.00%</td>
+				</tr>
+																<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=8591">8591</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=8591">オリックス</a></td>
+					<td class="right">-6.80%</td>
+				</tr>
+																<tr>
+					<td class="center"><a href="index.php?action=tp1&sa=report_top&bcode=1911">1911</a></td>
+					<td class="left"><a href="index.php?action=tp1&sa=report_top&bcode=1911">住友林業</a></td>
+					<td class="right">-4.50%</td>
+				</tr>
+																																																																																																																																																																																																																			</table>
+		</div>
+		<div class="contents_end"></div>
+	</div>
+	<!-- End Ranking summary -->
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        		<div id="pro_link_hotstock">
+			<a href="https://kabuyoho.jp/hotStock?jsonType=investor&jsonId=2#stocklist">予想配当利回りランキング</a>
+			<a href="https://kabuyoho.jp/hotStock?jsonType=investor&jsonId=0#stocklist">低PER銘柄ランキング</a>
+			<a href="https://kabuyoho.jp/hotStock?jsonType=investor&jsonId=1#stocklist">低PBR銘柄ランキング</a>
+			<a href="https://kabuyoho.jp/hotStock?jsonType=ar_score&jsonId=2#stocklist">ROEランキング</a>
+			<a href="https://kabuyoho.jp/hotStock?jsonType=ar_score&jsonId=0#stocklist">目標株価かい離率ランキング</a>
+			<a href="/index.php?action=tp1&sa=sdb&cat=1">スイング買い銘柄</a>
+			<a href="/index.php?action=tp1&sa=sdb&cat=2">スイング売り銘柄</a>
+			<a href="/index.php?action=tp1&sa=sdb&cat=3">デイトレ買い銘柄</a>
+			<a href="/index.php?action=tp1&sa=sdb&cat=4">デイトレ売り銘柄</a>
+
+		</div>
+
+        
+
+                                    	<!-- Start Column_new  -->
+	<link rel="stylesheet" type="text/css" href="css/column.css" />
+	<div id="contents_subtitle_l">
+		<h2>
+			<a href="http://column.ifis.co.jp/" name="rank">
+				<img src="img/common/ico_column_new.png" class="mark">
+				新着コラム/レポート
+			</a>
+		</h2>
+	</div>
+	<div id="column_m_summary">
+
+				<div id="left">
+			<!--<h3>新着コラム<div class="h_rss"><a href="https://column.ifis.co.jp/category/toshicolumn/feed"><img src="img/icon/rss.png"></a></div></h3>-->
+			<h3>新着コラム</h3>
+			<div id="column_m_summary">
+										<div class="context">
+							<div class="image"><a href="https://column.ifis.co.jp/toshicolumn/bell/175497" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '1']);"><img align="left" src="img/column/clm_cat_top_bell_s.png" alt="株式会社日本ベル投資研究所" target="brank"></a></div>
+							<div class="subject">
+								<a href="https://column.ifis.co.jp/toshicolumn/bell/175497" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '1']);">ファンダムの中での情報の活かし方</a>
+							</div>
+							<div class="category"><a href="https://column.ifis.co.jp/category/bell" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '1']);">日本ベル投資研究所</a></div>
+							<div class="date">2026/10/08</div>
+							<div class="clear"></div>
+						</div>
+												<div class="context">
+							<div class="subject_w">
+								<a href="https://column.ifis.co.jp/toshicolumn/smam-01/175475" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">3カ月ぶりに終値で7万円台を回復した日経平均株価の今後を展望する</a>
+							</div>
+							<div class="category_w"><a href="https://column.ifis.co.jp/category/smam-01" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">市川レポート　経済・相場のここに注目</a></div>
+							<div class="date_w">2026/10/07</div>
+							<div class="clear"></div>
+						</div>
+												<div class="context">
+							<div class="subject_w">
+								<a href="https://column.ifis.co.jp/toshicolumn/smam-01/175470" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">米中間選挙と日本株のアノマリー</a>
+							</div>
+							<div class="category_w"><a href="https://column.ifis.co.jp/category/smam-01" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">市川レポート　経済・相場のここに注目</a></div>
+							<div class="date_w">2026/10/06</div>
+							<div class="clear"></div>
+						</div>
+												<div class="context">
+							<div class="subject_w">
+								<a href="https://column.ifis.co.jp/toshicolumn/monex-hint/175467" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">10月優待は「AB＆Company」「ギフトホールディングス」他</a>
+							</div>
+							<div class="category_w"><a href="https://column.ifis.co.jp/category/monex-hint" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">マネックス証券「投資のヒント」</a></div>
+							<div class="date_w">2026/10/05</div>
+							<div class="clear"></div>
+						</div>
+												<div class="context">
+							<div class="subject_w">
+								<a href="https://column.ifis.co.jp/toshicolumn/smam-01/175460" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">米中間選挙と米国株のアノマリー</a>
+							</div>
+							<div class="category_w"><a href="https://column.ifis.co.jp/category/smam-01" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">市川レポート　経済・相場のここに注目</a></div>
+							<div class="date_w">2026/10/05</div>
+							<div class="clear"></div>
+						</div>
+									</div>
+		</div>
+
+		<div id="right">
+<!-- 			<h3>新着レポート<div class="h_rss"><a href="https://column.ifis.co.jp/category/company/feed"><img src="img/icon/rss.png"></a></div></h3> -->
+			<h3>新着レポート</h3>
+			<div id="column_m_summary">
+										<div class="context">
+							<div class="image"><a href="https://column.ifis.co.jp/company/walden/175494" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '1']);"><img align="left" src="img/column/clm_cat_top_walden_s.png" alt="株式会社ウォールデンリサーチジャパン" target="brank"></a></div>
+							<div class="subject">
+								<a href="https://column.ifis.co.jp/company/walden/175494" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '1']);">サイプレス・ホールディングス（428A）成長軌道</a>
+							</div>
+							<div class="category"><a href="https://column.ifis.co.jp/category/walden" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '1']);">Walden Research Japan</a></div>
+							<div class="date">2026/10/08</div>
+							<div class="clear"></div>
+						</div>
+												<div class="context">
+							<div class="subject_w">
+								<a href="https://column.ifis.co.jp/company/bridge/175489" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">サンバイオ（4592）　薬価基準に収載され、販売も開始</a>
+							</div>
+							<div class="category_w"><a href="https://column.ifis.co.jp/category/bridge" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">ブリッジレポート</a></div>
+							<div class="date_w">2026/10/08</div>
+							<div class="clear"></div>
+						</div>
+												<div class="context">
+							<div class="subject_w">
+								<a href="https://column.ifis.co.jp/company/bridge/175486" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">エリアクエスト（8912）　営業利益率改善 資本配分にも注目</a>
+							</div>
+							<div class="category_w"><a href="https://column.ifis.co.jp/category/bridge" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">ブリッジレポート</a></div>
+							<div class="date_w">2026/10/08</div>
+							<div class="clear"></div>
+						</div>
+												<div class="context">
+							<div class="subject_w">
+								<a href="https://column.ifis.co.jp/company/bridge/175483" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">ウイルプラスホールディングス（3538）　増収増益予想 売上高は過去最高更…</a>
+							</div>
+							<div class="category_w"><a href="https://column.ifis.co.jp/category/bridge" target="brank" onclick="_gaq.push(['_trackEvent', 'column', 'new', '2-4']);">ブリッジレポート</a></div>
+							<div class="date_w">2026/10/08</div>
+							<div class="clear"></div>
+						</div>
+											<div class="context">
+						<div class="subject_w">
+							<a href="https://column.ifis.co.jp/company/kessan-vision/175141" target="brank">日本リート投資法人(3296)の第28期決算は、DPU・EPUとも予想を上回る着地…</a>
+						</div>
+						<div class="category_w"><a href="https://column.ifis.co.jp/category/kessan-vision" target="brank">決算中継「社長のビジョン」</a></div>
+						<div class="date_w">2026/09/08</div>
+						<div class="clear"></div>
+					</div>
+								</div>
+		</div>
+		<div class="contents_end"></div>
+		<div>&nbsp;</div>
+		<!-- End Column_new -->
+	</div>
+
+                <br>
+
+                <div id="ad_centents_end">
+<div class="cn_flex">
+
+    
+    <!-- /83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_footer_left -->
+    <div id='JP_KBY_PC_all_footer_left' style='min-width: 300px; min-height: 250px;'>
+        <script>
+            googletag.cmd.push(function() { googletag.display('JP_KBY_PC_all_footer_left'); });
+        </script>
+    </div>
+    <!-- /83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_footer_right -->
+    <div id='JP_KBY_PC_all_footer_right' style='min-width: 300px; min-height: 250px;'>
+        <script>
+            googletag.cmd.push(function() { googletag.display('JP_KBY_PC_all_footer_right'); });
+        </script>
+    </div>
+    
+
+</div>
+<div class="cn_ed"></div>
+</div>
+
+    </div>
+
+    <div id="sub">
+                <div style='width:300px; height:250px;'>
+											
+		<!-- /83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_right_1st -->
+		<div id='JP_KBY_PC_all_right_1st' style='min-width: 300px; min-height: 250px;'>
+			<script>
+				googletag.cmd.push(function() { googletag.display('JP_KBY_PC_all_right_1st'); });
+			</script>
+		</div>
+		
+
+	</div>
+<div>&nbsp;</div>
+                        <div id="announce-side">
+            <details class="details">
+                <summary class="details-summary">【重要】株予報/株予報Proを装った偽サイト、偽アカウント、偽広告にご注意ください</summary>
+                <div class="details-body">
+                    <p>株予報/株予報Pro等の当社サービスを装ったり、当社の名を騙った偽サイト、偽アカウント、偽広告が確認されております。</p>
+                    <p>偽サイト及び偽アカウントは、不正サイトへの誘導、個人情報の取得及び悪用、投資詐欺に遭う可能性がございますのでアクセスされないようにご注意ください。</p>
+                    <p>当社では投資勧誘は行っておりません。LINEなどのSNSを利用した投資詐欺にご注意ください。</p>
+                </div>
+            </details>
+        </div>
+
+                
+
+
+	<div id="riskon_s">
+		<table class="tb_trend_sig">
+			<thead>
+				<tr>
+					<td colspan="3" class="h_titile">
+						<div class="left str_b3 title">株予報 トレンドシグナル&nbsp;&reg;</div>
+						<div class="right str_gry date">
+															<p class="str_right">
+									2026/10/08 15:30 現在
+								</p>
+								<p class="str_right">（更新タイミング：翌営業日8時頃）</p>
+													</div>
+						<div class="fc"></div>
+					</td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td colspan="3">
+						<div class="div_bar_title">
+							<div class="left">
+								<span class="str_red str_b2">買い</span>
+								&nbsp;
+								<span class="str_b6">
+									<a href="./index.php?action=tp1&sa=trend_sig_list&ts=B">
+										771 <span class="str_n str_s2">銘柄</span>
+									</a>
+								</span>
+							</div>
+							<div class="right">
+								<span class="str_b6">
+									<a href="./index.php?action=tp1&sa=trend_sig_list&ts=S">
+										2,364 <span class="str_n str_s2">銘柄</span>
+									</a>
+								</span>
+								&nbsp;
+								<span class="str_grn str_b2">売り</span>
+							</div>
+							<div class="fc"></div>
+						</div>
+						<div class="div_bar" title="買い：771 銘柄 20.5 %&#13;&#10;ニュートラル：623 銘柄 16.6 %&#13;&#10;売り：2,364 銘柄 62.9 %&#13;&#10;">
+							<div class="left bar_red" style="width: 20.5162%;">&nbsp;</div>
+							<div class="left bar_gry" style="width: 16.5780%;">&nbsp;</div>
+							<div class="left bar_grn" style="width: 62.9058%;">&nbsp;</div>
+							<div class="fc"></div>
+						</div>
+					</td>
+				</tr>
+
+									<tr>
+						<td class="td_border_none_t td_border_none_r td_stock_code td_border_dotted_b">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=7182">
+								7182
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_border_none_r td_stock_name td_border_dotted_b">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=7182">
+								ゆうちょ銀行
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_stock_ts td_border_dotted_b">
+																								<span class="str_b str_grn">売り転換</span>
+																					</td>
+					</tr>
+									<tr>
+						<td class="td_border_none_t td_border_none_r td_stock_code td_border_dotted_b">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=6503">
+								6503
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_border_none_r td_stock_name td_border_dotted_b">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=6503">
+								三菱電機
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_stock_ts td_border_dotted_b">
+																								<span class="str_b str_grn">売り転換</span>
+																					</td>
+					</tr>
+									<tr>
+						<td class="td_border_none_t td_border_none_r td_stock_code td_border_dotted_b">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=6971">
+								6971
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_border_none_r td_stock_name td_border_dotted_b">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=6971">
+								京セラ
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_stock_ts td_border_dotted_b">
+																								<span class="str_b str_grn">売り転換</span>
+																					</td>
+					</tr>
+									<tr>
+						<td class="td_border_none_t td_border_none_r td_stock_code td_border_dotted_b">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=4452">
+								4452
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_border_none_r td_stock_name td_border_dotted_b">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=4452">
+								花王
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_stock_ts td_border_dotted_b">
+																								<span class="str_b str_red">買い転換</span>
+																					</td>
+					</tr>
+									<tr>
+						<td class="td_border_none_t td_border_none_r td_stock_code ">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=6326">
+								6326
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_border_none_r td_stock_name ">
+							<a href="./index.php?action=tp1&sa=report_ts&bcode=6326">
+								クボタ
+							</a>
+						</td>
+						<td class="td_border_none_t td_border_none_l td_stock_ts ">
+																								<span class="str_b str_grn">売り転換</span>
+																					</td>
+					</tr>
+							</tbody>
+		</table>
+	</div>
+	<br>
+         <div id='div-gpt-ad-1487670833008-0' style='height:70px; width:295px;'>
+    <script>
+        googletag.cmd.push(function() {
+            googletag.display('div-gpt-ad-1487670833008-0');
+        });
+    </script>
+</div>
+        	<div id="ad_text_side"></div>
+		<br>
+
+<script type="text/javascript" src="/js/ad_list.js?20221205" async></script>
+                <div id="kabuyohopro_link">
+    <div class="a_link">
+        <a href="https://kabuyoho.jp/analystRevision#stocklist">【アナリスト予想】上方修正が多い銘柄は！？</a><br/>
+    </div>
+    <a href="https://kabuyoho.jp/comparison">【銘柄比較】気になる銘柄を徹底比較！</a><br/>
+</div>
+<br />        <link rel="stylesheet" type="text/css" href="css/column.css" />
+<div class="subcont_area"><h3>注目コラムランキング</h3>
+<div id="column_summary">
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/toshicolumn/smam-01/175475" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '1']);"><img align="left" src="img/column/rank_1.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_smam-01_s.png" alt="市川レポート　経済・相場のここに注目" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/toshicolumn/smam-01/175475" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '1']);">3カ月ぶりに終値で7万円台を回復した日経平均株価の今後を展望する</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/smam-01" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '1']);">市川レポート　経済・相場のここに注目</a></div><div class="date">2026/10/7 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/company/bridge/175489" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '2']);"><img align="left" src="img/column/rank_2.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_bridge_s.png" alt="ブリッジレポート" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/company/bridge/175489" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '2']);">サンバイオ（4592）　薬価基準に収載され、販売も開始</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/bridge" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '2']);">ブリッジレポート</a></div><div class="date">2026/10/8 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/company/kessan-vision/175010" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '3']);"><img align="left" src="img/column/rank_3.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_kessan-vision_s.png" alt="決算中継「社長のビジョン」" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/company/kessan-vision/175010" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '3']);">インテージHD(4326)の通期決算は、連結売上高は通期予想に届かなかったものの、営業利益は各セグメントで収益性の改善が進み、前年・予想ともに上回り、過去最高水準での着地</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/kessan-vision" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '3']);">決算中継「社長のビジョン」</a></div><div class="date">2026/8/28 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/company/175158" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '4']);"><img align="left" src="img/column/rank_4.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_tiw-an_s.png" alt="ANALYSTNET企業レポート" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/company/175158" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '4']);">オンコリスバイオファーマ株式会社（4588 Growth）<br/>TOPIX銘柄に採用へ</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/tiw-an" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '4']);">ANALYSTNET企業レポート</a></div><div class="date">2026/9/9 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/toshicolumn/bell/175497" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '5']);"><img align="left" src="img/column/rank_5.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_bell_s.png" alt="日本ベル投資研究所" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/toshicolumn/bell/175497" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '5']);">ファンダムの中での情報の活かし方</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/bell" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '5']);">日本ベル投資研究所</a></div><div class="date">2026/10/8 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/toshicolumn/monex-hint/175467" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '6']);"><img align="left" src="img/column/rank_6.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_monex-hint_s.png" alt="マネックス証券「投資のヒント」" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/toshicolumn/monex-hint/175467" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '6']);">10月優待は「AB＆Company」「ギフトホールディングス」他</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/monex-hint" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '6']);">マネックス証券「投資のヒント」</a></div><div class="date">2026/10/5 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/toshicolumn/skam-01/175438" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '7']);"><img align="left" src="img/column/rank_7.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_skam-01_s.png" alt="しんきん投信「来週の金融市場見通し」" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/toshicolumn/skam-01/175438" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '7']);">来週の金融市場見通し（2026年10月5日～2026年10月9日）</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/skam-01" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '7']);">しんきん投信「来週の金融市場見通し」</a></div><div class="date">2026/10/2 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/company/walden/175494" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '8']);"><img align="left" src="img/column/rank_8.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_walden_s.png" alt="Walden Research Japan" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/company/walden/175494" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '8']);">サイプレス・ホールディングス（428A）成長軌道</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/walden" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '8']);">Walden Research Japan</a></div><div class="date">2026/10/8 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/toshicolumn/monex-strategy/175446" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '9']);"><img align="left" src="img/column/rank_9.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_monex-strategy_s.png" alt="広木隆「ストラテジーレポート」" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/toshicolumn/monex-strategy/175446" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '9']);">米中デタントの衝撃</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/monex-strategy" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '9']);">広木隆「ストラテジーレポート」</a></div><div class="date">2026/10/2 </div></div>
+<div class="context">
+<div class="image"><a href="https://column.ifis.co.jp/toshicolumn/smtam-01/175448" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '10']);"><img align="left" src="img/column/rank_10.png" target="brank"><br><img align="left" src="img/column/clm_cat_top_smtam-01_s.png" alt="三井住友トラスト・アセットマネジメント「投資INSIDE-OUT」" target="brank"></a></div>
+<div class="subject"><a href="https://column.ifis.co.jp/toshicolumn/smtam-01/175448" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '10']);">企業の資金繰りはなぜ悪化しないのか</a></div>
+<div class="category"><a href="https://column.ifis.co.jp/category/smtam-01" target="brank" onclick="_gaq.push (['_trackEvent', 'column', 'rank', '10']);">三井住友トラスト・アセットマネジメント「投資INSIDE-OUT」</a></div><div class="date">2026/10/2 </div></div>
+</div></div>
+
+        <style type="text/css">
+#div-gpt-ad-1428916799683-0 {
+  margin: 10px 0;
+}
+
+</style>
+<script type='text/javascript'>
+googletag.cmd.push(function() {
+googletag.defineSlot('/117614822/kabuyoho_300x500', [[300, 500], [300, 250]], 'div-gpt-ad-1428916799683-0').addService(googletag.pubads());
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();});
+</script>
+<div id='div-gpt-ad-1428916799683-0'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1428916799683-0'); });
+</script>
+</div>
+        <!-- /83555300,117614822/IFISJAPAN/Kabuyohou/JP_KBY_PC_all_right_3rd -->
+<div id='JP_KBY_PC_all_right_3rd' style='min-width: 300px; min-height: 250px; margin: 0 0 10px 0;'>
+    <script>
+        googletag.cmd.push(function() { googletag.display('JP_KBY_PC_all_right_3rd'); });
+    </script>
+</div>
+
+
+        
+<script async src="https://yads.c.yimg.jp/js/yads-async.js"></script>
+
+<div id="ad_text_sub">
+		
+	<script>
+		(function (window) {
+			window.YJ_YADS = window.YJ_YADS || { tasks: [] };
+			window.YJ_YADS.tasks.push(
+				{ yads_ad_ds:
+					'25170_7221',
+					yads_parent_element: 'ad_text_sub'
+				}
+			);
+		})(window);
+	</script>
+	
+</div>
+
+        <div>&nbsp;</div>
+    </div>
+</div>
+<div id="contentsFooter"></div>
+
+<div id="FooterTop">
+    <div id="Footerlink">
+        <a href="https://www.ifis.co.jp/" target="_blank">株式会社アイフィスジャパン</a><img src="img/ico_extlink.png" width="12" height="12">
+        ｜<a href="index.php?action=tp1&sa=help&p=g101">サイトポリシー</a>
+        ｜<a href="index.php?action=tp1&sa=help&p=g104">プライバシーポリシー</a>
+        ｜<a href="index.php?action=tp1&sa=help&p=g102">お問合せ</a>
+        ｜<a href="index.php?action=tp1&sa=help">ヘルプ</a>
+        ｜<a href="qa/QA.htm" target="_brank">Q&A</a>
+    </div>
+</div>
+
+<div id="Footercontents">
+    <div id="attentionTxt">
+        本情報の正確性には万全を期しておりますが、情報は変更になる場合があります。
+        また、第三者による人為的改ざん、機器の誤作動などの理由により本情報に誤りが生じる可能性があります。
+        本情報は、情報の提供のみを目的としており、金融商品の販売又は勧誘を目的としたものではありません。
+        投資にあたっての最終決定は利用者ご自身の判断でなさるようにお願いいたします。
+        本情報に基づいて行われる判断について、株式会社アイフィスジャパンは一切の責任を負いません。
+        なお、本情報の著作権は、株式会社アイフィスジャパン及び情報提供者に帰属します。
+        TOPIX及び東証業種別株価指数の指数値及びそれらに係る標章又は商標は、株式会社JPX総研又は株式会社JPX総研の関連会社の知的財産です。
+        本情報の転用、複製、販売等の一切を固く禁じております。
+    </div>
+    <div id="logoArea">
+        <a href="http://www.ifis.co.jp/" target="_blank"><img src="img/footer_logo.png" width="59" height="67" title="IFIS" alt="IFIS" /></a>
+    </div>
+    <div id="Copyright">
+        <p>(C) 2007 IFIS Japan Ltd.All Rights Reserved.</p>
+    </div>
+</div>
+<div id="FooterFooter"></div>
+
+
+
+<!-- Yahoo Code for your Target List -->
+<script defer>
+/* <![CDATA[ */
+var yahoo_retargeting_id = '798KPCNMF7';
+var yahoo_retargeting_label = '';
+var yahoo_retargeting_page_type = '';
+var yahoo_retargeting_items = [{item_id: '', category_id: '', price: '', quantity: ''}];
+/* ]]> */
+</script>
+<script type="text/javascript" language="javascript" src="//b92.yahoo.co.jp/js/s_retargeting.js"></script>
+
+<!-- リマーケティング タグの Google コード -->
+<script defer>
+/* <![CDATA[ */
+var google_conversion_id = 880406699;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/880406699/?value=0&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- Facebook Pixel Code -->
+<script defer>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '1084897774915103');
+fbq('track', "PageView");</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1084897774915103&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+
+
+</body>
+</html>
