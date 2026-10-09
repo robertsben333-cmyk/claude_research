@@ -31,3 +31,7 @@
 ## Stage J — wave 4 banked
 - Logged at 2026-10-09 01:34 UTC
 - 6264 -1.50, 6506 +1.50 (16:00 JST), 7713 +1.60 (15:00 JST, in session), 8008 banked. In flight: 7888, 8200, 8244, 9270, 9740, 9974 (last six).
+
+## Stage J — scored
+- Logged at 2026-10-09 01:42 UTC
+- 25 of 25 rankable; 0 above the 2.8 floor; top 7713 +1.60, bottom 4829 -1.90; 13 positive / 12 negative (impact_sum).
