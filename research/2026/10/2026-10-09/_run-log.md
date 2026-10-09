@@ -78,3 +78,7 @@
 ## Edge hunt (panel) — 2026-10-09 amc + 2026-10-12 bmo — DONE (no confirmed name)
 - Logged at 2026-10-09 17:15 UTC
 - Sweep (1 edge-sweep, Opus) over the 5 time-not-supplied rows: confirmed 0, phantom 2 (NCPL, MSS are delinquent filers), unconfirmed 3 (HIFS and GLDG have no announced date and their cadence points to about 10-15/16; RMCF would print amc 10-12, outside the window). No searchers, packs or judges spent. provenance stamped us-searcher.v1. No alpaca_trade.py call. Note: edge-panel/edge-note.md.
+
+## Edge hunt — operator override, all 5 hunted
+- Logged at 2026-10-09 17:31 UTC
+- 17:30 UTC: operator said a quick search confirms GLDG reports amc today and the others probably do too; asked for a less critical sweep and a full run. 5 unpriced-hunters launched 17:30 UTC on the baselines sealed at 17:1x (before any finding), sweep verdicts kept on file with operator_override. The earlier DONE section is superseded.
