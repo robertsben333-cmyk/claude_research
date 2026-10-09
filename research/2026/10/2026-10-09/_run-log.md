@@ -74,3 +74,7 @@
 ## Edge hunt (panel) — 2026-10-09 amc + 2026-10-12 bmo — STARTED
 - Logged at 2026-10-09 17:11 UTC
 - Fired 17:07 UTC. edge_universe.py --window: 0 of 7 rows confirmed. Following stage E's universe for comparability: 5 time-not-supplied rows (HIFS, GLDG on 10-09; NCPL, RMCF, MSS on 10-12), session_resolve 0 confirmed / RMCF reads as a vendor projection / 4 carried unresolved. Baselines sealed 17:15 UTC in edge-panel/baselines/ (sessions assumed amc for 10-09 and bmo for 10-12 for sealing only; the sweep settles them). Plan: 1 edge-sweep, unpriced-searcher on confirmed survivors, then the four-judge panel. No orders.
+
+## Edge hunt (panel) — 2026-10-09 amc + 2026-10-12 bmo — DONE (no confirmed name)
+- Logged at 2026-10-09 17:15 UTC
+- Sweep (1 edge-sweep, Opus) over the 5 time-not-supplied rows: confirmed 0, phantom 2 (NCPL, MSS are delinquent filers), unconfirmed 3 (HIFS and GLDG have no announced date and their cadence points to about 10-15/16; RMCF would print amc 10-12, outside the window). No searchers, packs or judges spent. provenance stamped us-searcher.v1. No alpaca_trade.py call. Note: edge-panel/edge-note.md.
