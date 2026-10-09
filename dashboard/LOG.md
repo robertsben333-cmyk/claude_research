@@ -396,3 +396,7 @@ Newly resolved: research side moved from 158 names / 22 days to 186 names priced
 Pooled ranking rho -0.143 against -0.104 for the free control; conviction rho +0.143. Short-everything control -1.06% per name.
 
 Read: the ranking still does not beat the free control, and nothing here is established. The trading figures are not refreshed and must not be quoted as current.
+
+## 2026-10-09 — fix: 2026-10-05 run was hidden as "sept. Opus 5.5"
+
+The 2026-10-05 US run (events 2026-10-06: APOG, RPM, LW) has no provenance.json. `september_opus55()` read the missing `hunter_core` blob as "September prompt", so the run was hidden by the default `zonder sept. Opus 5.5` switch and left out of the per-model percentile reference. A run with no stamp is now judged by date (core on main from 2026-10-01). The three names show again and their percentiles are against the corrected reference.
