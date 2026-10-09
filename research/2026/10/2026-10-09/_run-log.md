@@ -15,3 +15,7 @@
 ## Stage J — first hunt banked
 - Logged at 2026-10-09 01:11 UTC
 - 2698 +0.20 (rolling 5 concurrent; 2735, 3046, 3048, 3063, 3201 in flight).
+
+## Stage J — wave 1 banked
+- Logged at 2026-10-09 01:14 UTC
+- 2698 +0.20, 2735 +0.40, 3046 +0.10, 3048 -0.50 (releases 12:00 JST, in session), 3063 -0.25. Rolling 5: 3201, 3222, 3501, 4440, 4443 in flight.
