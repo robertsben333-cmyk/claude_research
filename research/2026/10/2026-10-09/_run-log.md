@@ -82,3 +82,6 @@
 ## Edge hunt — operator override, all 5 hunted
 - Logged at 2026-10-09 17:31 UTC
 - 17:30 UTC: operator said a quick search confirms GLDG reports amc today and the others probably do too; asked for a less critical sweep and a full run. 5 unpriced-hunters launched 17:30 UTC on the baselines sealed at 17:1x (before any finding), sweep verdicts kept on file with operator_override. The earlier DONE section is superseded.
+## Edge hunt (panel) — operator override — hunting all 5
+- Logged at 2026-10-09 17:30 UTC
+- 17:30 UTC. Operator: a quick search confirms GLDG reports amc today, and likely others too; be less critical and run it. Sweep's 0-confirmed verdict overridden: unpriced-searcher launched on all 5 (GLDG, HIFS, RMCF, NCPL, MSS); each searcher's own event check decides rankability via edge_score.py. The earlier DONE entry is superseded.
