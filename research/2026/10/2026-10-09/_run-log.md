@@ -11,3 +11,7 @@
 ## Stage J — resolved earlier run
 - Logged at 2026-10-09 01:07 UTC
 - jp_resolve.py on 2026-10-07: 6/6 usable, rho -0.087 p 0.86, free control 0.543, lean_vs_free_control_rho 0.029 (well below 1.0; positioning still resolving). 2026-10-08 window closes at today's close, not yet.
+
+## Stage J — first hunt banked
+- Logged at 2026-10-09 01:11 UTC
+- 2698 +0.20 (rolling 5 concurrent; 2735, 3046, 3048, 3063, 3201 in flight).
