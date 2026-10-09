@@ -1,0 +1,673 @@
+[
+ {
+  "id": "us/2026-10-09/GLDG",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "GLDG",
+   "event_date": "2026-10-09",
+   "session": "amc",
+   "as_of_utc": "2026-10-09T17:11:33+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-09",
+    "spot": 0.8939,
+    "run_up_5d_pct": -4.9,
+    "run_up_20d_pct": -14.05,
+    "pct_from_52w_high": -58.23,
+    "pct_from_52w_low": 9.01,
+    "realised_vol_20d_annualised_pct": 36.9,
+    "avg_volume_20d": 508149
+   },
+   "cik": "0001538847",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-10-06",
+      "session": "intraday",
+      "move_pct": -1.1
+     },
+     {
+      "event_date": "2026-07-22",
+      "session": "intraday",
+      "move_pct": 0.0
+     },
+     {
+      "event_date": "2026-07-14",
+      "session": "amc",
+      "move_pct": 0.0
+     },
+     {
+      "event_date": "2026-06-25",
+      "session": "intraday",
+      "move_pct": 1.14
+     },
+     {
+      "event_date": "2026-06-11",
+      "session": "intraday",
+      "move_pct": 10.59
+     },
+     {
+      "event_date": "2026-06-08",
+      "session": "intraday",
+      "move_pct": -2.11
+     },
+     {
+      "event_date": "2026-05-26",
+      "session": "intraday",
+      "move_pct": 1.83
+     },
+     {
+      "event_date": "2026-05-15",
+      "session": "bmo",
+      "move_pct": -6.78
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 1.48,
+    "max_abs_move_pct": 10.59,
+    "up_count": 3,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 3,
+    "median_gap_days": 13,
+    "ratio": 0.23,
+    "last_print": "2026-10-06",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 13 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 1.48,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Effectively none. Earnings Whispers shows a consensus loss of US$0.02/share (https://beta.earningswhispers.com/go/w/GLDG, retrieved 2026-10-09), with one source, no company guide and no second agreeing estimate. Every size is capped small. For reference, Q2 FY26 net loss was C$8.8m or C$0.04/share (https://www.sec.gov/Archives/edgar/data/0001538847/000143774926023556/ex_985515.htm). Nobody trades this name on EPS.",
+   "positioning_check": "Short interest: 5.9M shares at the 2026-09-15 settlement, 11.1 days to cover (5.7M and 6.4 days on 2026-08-31). That is about 2.7% of shares outstanding (https://curvedtrading.com/stocks/gldg/short-interest/, retrieved 2026-10-09). Days to cover are high because volume is thin, but the short is not crowded. There is no option market (baseline options.status = no_options_market), so there is no skew. Tape: spot US$0.894, -4.9% over 5 days, -14.05% over 20 days, -58% from the 52-week high of 2.14 (2026-01-26). The 20-day fall tracks the 33% slide in subsidiary U.S. GoldMining (USGO 8.95 -> 6.03, 2026-08-31 to 2026-10-08) while Gold Royalty was flat. Gold is around $4,140-4,170/oz.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GLDG.json",
+    "text": "Q3 FY26 (Jun-Aug 2026) will most likely show a net loss of several million C$, against a reported near-breakeven Q3 FY25 (net loss C$0.1m, C$0.4m attributable income). Last year's quarter was propped up by a C$7.1m deferred tax recovery from remeasuring the Gold Royalty shares. This quarter GROY was roughly flat (US$3.25 on 2026-05-29 to US$3.32 on 2026-08-31), so no comparable recovery is likely, and the headline will read as a swing to loss year on year against an operating loss run-rate of about C$7-8m a quarter.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://www.sec.gov/Archives/edgar/data/1538847/000143774925030866/ex_866937.htm",
+    "source_date": "2025-10-10",
+    "reaction_history_on_this_line": "Q3 FY25 printed a profit swing and the stock moved +1.2% the next session (1.71 on 2025-10-10 to 1.73 on 2025-10-13, Yahoo daily closes). Q1 FY26 moved +0.8% (2026-04-10) and H1 FY26, a C$8.8m quarterly loss, moved 0.0% (2026-07-14). The net-income line has never moved this stock.",
+    "why_not_priced": "Nobody models the deferred tax line for an exploration holdco, so a YoY swing to loss would be new as a headline. It is also irrelevant to value. If the market cared, the prior three filings would not have moved the stock by 0-1.2%.",
+    "independence": "The H1 FY26 MD&A shows the deferred tax line swung to a C$2.8m expense and the quarterly loss ran at C$8.8m (https://www.sec.gov/Archives/edgar/data/0001538847/000143774926023556/ex_985515.htm). GROY prices come from the Yahoo chart. These are different documents from the source, but all of it is inference about a statement nobody has seen yet.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GLDG.json",
+    "text": "Funding: at 2026-05-31 group cash was C$21.4m, of which C$8.2m sits in U.S. GoldMining and is not available to the parent. The parent funds exploration through a US$50m ATM that expires on 2026-12-08; it raised C$10.1m in H1 (4.77M shares) but only C$0.8m in Q2. The Q3 MD&A will show how much stock was sold at about US$1 or less and may flag a replacement shelf or ATM. Asking what the money buys: the 2026 Yarumalito drilling (completed 'on schedule and within budget' per the 2026-10-06 release) and São Jorge/La Mina follow-up after three PEAs, with no going-concern language and US$70m of liquid GROY shares behind it.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001538847/000143774926023556/ex_985515.htm",
+    "source_date": "2026-07-14",
+    "reaction_history_on_this_line": "H1 FY26 disclosed C$10.1m of ATM issuance and the stock was unchanged the next session (0.85 to 0.85, 2026-07-14 to 2026-07-15).",
+    "why_not_priced": "The quarter's issuance count and any new shelf are not public until the filing. If the market expected heavy dilution at these prices, the stock would trade at a wider discount to its stakes. Market cap is about US$190m against roughly US$60m USGO + US$70m GROY + ~US$40m NevGold + cash, which already points to a holdco discount.",
+    "independence": "The Q3 FY25 MD&A shows the parent ran on C$6.5m of cash at 2025-08-31 and kept funding through the ATM, so low cash is normal for this company and not distress (https://www.sec.gov/Archives/edgar/data/1538847/000143774925030866/ex_866937.htm).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GLDG.json",
+    "text": "Holdings marked at quarter end: USGO (about 74% owned, 10.0M shares, consolidated) fell from US$10.20 to US$8.95 over the quarter and has since dropped to US$6.03 (2026-10-08). GROY (21.5M shares) was flat at about US$3.3, now US$3.03-3.09. The MD&A will restate the stake values at the Aug-31 marks plus the subsequent-events section. The USGO slide also produces a P&L gain on USGO warrant derivative liabilities (+C$1.9m in Q2 on a smaller move).",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/USGO?range=6mo&interval=1d",
+    "source_date": "2026-10-09",
+    "reaction_history_on_this_line": "None separable: the stake values are published every quarter in the MD&A, and the next-session moves were 0 to +1.2%.",
+    "why_not_priced": "It is priced. Both stakes are listed and quoted daily, and GLDG's -14% over 20 days already tracks the USGO slide. It is filed so the judges can see the main value driver is outside the print.",
+    "independence": "The GROY price series (https://query1.finance.yahoo.com/v8/finance/chart/GROY?range=6mo&interval=1d) and the H1 MD&A stake table come from different sources but describe the same public marks.",
+    "i": 2
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "GLDG.json",
+    "text": "The filing date is not confirmed. If GoldMining files on 2026-10-13 to 10-15 (Earnings Whispers projects 10-13 bmo; the deadline is about 10-15), the print falls after the 2026-10-09 amc exit window and the window holds no event at all.",
+    "resolves_by": "2026-10-15",
+    "source": "https://beta.earningswhispers.com/go/w/GLDG",
+    "i": 3
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "GLDG.json",
+    "text": "Yarumalito assays for YAR-46 to YAR-48 are pending, and resource-model integration follows. Drill news is the line that actually moves this stock (São Jorge PEA day +10.6%), but no date is given and it is unlikely to be bundled into a statement filing.",
+    "resolves_by": "unknown",
+    "source": "https://www.sec.gov/Archives/edgar/data/1538847/000143774926032098/ex_1022557.htm",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "GLDG.json",
+    "text": "Ventum Financial initiation, Buy, $4.30 target (2026-09-02)",
+    "source": "https://wwww.stockwatch.com/News/Item/Z-C!GOLD-3859931/C/GOLD",
+    "first_hunter_reason": "no_source",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "GLDG.json",
+    "text": "Baseline 8-event reaction history (median 1.48%, max 10.59%)",
+    "source": "/home/user/claude_research/research/2026/10/2026-10-09/edge-panel/baselines/GLDG.json",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GLDG.json",
+    "text": "EDGAR 6-K list for CIK 1538847: no filing dated 2026-10-09 as of 13:32 ET. Latest is 2026-10-06 (Yarumalito drill results) (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001538847&type=6-K)",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GLDG.json",
+    "text": "Company date announcement: none. MarketScreener shows 'no date scheduled' (https://de.marketscreener.com/kurs/aktie/GOLDMINING-INC-7982445/termine/)",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GLDG.json",
+    "text": "Stocktitan GLDG news: nothing between 2026-07-22 (São Jorge technical report filed) and 2026-10-06. No financing, management change or asset sale (https://www.stocktitan.net/news/GLDG/)",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GLDG.json",
+    "text": "Sale of Gold Royalty or NevGold shares in 2026: nothing found. The NevGold stake is sale-restricted until 2027-02-27",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GLDG.json",
+    "text": "September 2026 news: only a Ventum Financial initiation on 2026-09-02 (Buy, per Globe and Mail snippet via search). The stated target of $4.30 against a C$1.44 share price looks inconsistent and could not be verified, so it was not used",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GLDG.json",
+    "text": "Gold price: about $4,140-4,170/oz in early October 2026. This is macro and not company-specific",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GLDG.json",
+    "text": "Options and skew: no option market",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-09/HIFS",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "HIFS",
+   "event_date": "2026-10-09",
+   "session": "amc",
+   "as_of_utc": "2026-10-09T17:11:32+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-09",
+    "spot": 292.98,
+    "run_up_5d_pct": 1.81,
+    "run_up_20d_pct": -6.24,
+    "pct_from_52w_high": -12.12,
+    "pct_from_52w_low": 15.6,
+    "realised_vol_20d_annualised_pct": 24.7,
+    "avg_volume_20d": 37966
+   },
+   "cik": null,
+   "history": {
+    "moves": [],
+    "n": 0,
+    "basis": "no CIK on EDGAR for this ticker",
+    "median_abs_move_pct": null,
+    "max_abs_move_pct": null,
+    "up_count": 0,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 1.56,
+   "deadband_basis": "one day at 20d realised vol (no earnings history on EDGAR)",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": null,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 0,
+    "history_usable": 0,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "thin",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "unsourced. I found no consensus EPS from any two agreeing sources (chartmill lists 'analyst ratings' but I could not verify a number). Hingham gives no guidance. The informal bar is Q2 2026 core EPS of $4.82 diluted and GAAP EPS of $11.49 (https://www.hinghamsavings.com/assets/2026/07/PRESS-RELEASE-Q2-2026.pdf), and Q3 2025 GAAP of $7.85 / core $3.86 (https://seekingalpha.com/pr/20262448-hingham-savings-reports-third-quarter-2025-results). Every size is capped small for this reason.",
+   "positioning_check": "Short interest was 295.7K shares at the 2026-09-15 FINRA settlement, up 10.6% from 267.3K on 08-31, with 8.0 days to cover. The past-year peak was 343.2K on 2026-02-13, around the Wolfpack report. IBKR borrow fee was 0.8% at the 2026-10-08 close with 3.0K shares available (https://curvedtrading.com/stocks/hifs/). Shares outstanding were 2,198,250 at 6/30/26 (Q2 release). The float is smaller after large Gaughen family holdings, so the short is roughly 13-16% of float, which is crowded. The sweep's stale figure was 12.96% of float at the 2025-09-15 settlement. There is no options market, so no skew. The stock is down 6.24% over 20 days, 12% below its 52-week high and 15.6% above its 52-week low, and it traded up 1.8% intraday today.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIFS.json",
+    "text": "The equity securities book probably took a Q3 mark-to-market LOSS. Marketable equities were $155.5m at 6/30/26, about 32% of $482m equity, and Alphabet was the largest holding (10-Q note 5). The rest is financial-services stocks. GOOGL closed 357.37 on 6/30 and 344.08 on 9/30 (−3.7%), and KBWB went 92.98 to 87.23 (−6.2%). At −4 to −6% on the book, the after-tax loss is about $4.5-7m, or −$2 to −$3 a share. GAAP EPS would then be roughly $2-3, against $11.49 in Q2 2026 and $7.85 in Q3 2025, while core EPS is unaffected. Conditional on a print today the size is −0.3; weighted by about 25% probability of a print in the window it is −0.08.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-09 if the release comes at 16:01 ET today, giving a 10-12 close; most likely 2026-10-16, which is outside the window",
+    "source": "https://www.hinghamsavings.com/assets/2026/08/Form-10-Q-Q22026.pdf",
+    "source_date": "2026-08-05",
+    "reaction_history_on_this_line": "Q2 2026 brought a +168% YoY GAAP EPS jump driven by equity gains. HIFS closed 295.14 on 7/17 (release at 16:01) and 291.63 on 7/20, −1.2% (https://www.financialcontent.com/quote/NQ%3AHIFS/historical?Month=10&Year=2025&Range=1). Q1 2026 brought a $9.9m equity loss and GAAP EPS down 60% YoY. Holders look through the GAAP line.",
+    "why_not_priced": "The direction is computable from public prices, but the holdings beyond Alphabet are not disclosed quarterly, so nobody can state the size of the mark. HIFS has no sell-side model publishing a GAAP number. If the loss were priced, I would expect a visible pre-print discount relative to book. Instead the stock trades at about 1.27x the 6/30 book of $230.83, with no visible discount.",
+    "independence": "GOOGL monthly closes (https://www.digrin.com/stocks/detail/GOOGL/price) and KBWB monthly closes (https://www.digrin.com/stocks/detail/KBWB/price) are price series, not a company number. This finding shares the 10-Q with no other finding.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIFS.json",
+    "text": "The Fed hiked 25bp to 3.75-4.00% on 2026-09-16, its first hike since 2023, and projected another this year. CME had priced the hike above 90% beforehand, so short-term rate expectations rose through Q3. Hingham is liability-sensitive: $1.405bn of FHLB advances and $1.915bn of wholesale funds against $2.084bn of retail and commercial deposits. Its NIM expansion was already slowing: +15bp in Q1 to 2.04%, then +10bp in Q2 to 2.14%, with the cost of interest-bearing liabilities falling only 5bp in Q2 against 14bp in Q1. Q3 NIM is likely flat to only slightly up, and Q4 NIM faces a reversal. That would break the narrative of core returns 'improving materially over time'. Conditional on a print the size is −0.6; probability-weighted it is −0.15.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09 if released today; most likely 2026-10-16, which is outside the window",
+    "source": "https://www.axios.com/2026/09/16/fed-rates-warsh-trump",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "There is no reaction history in the baseline (FDIC filer). Q1 2026's +15bp NIM step and Q2's +10bp step came with a flat core EPS ($4.79, then $4.82), and the stock fell −1.2% after the Q2 print.",
+    "why_not_priced": "Partly priced. The stock is −6.2% over 20 days and KBWB fell 8.5% in September. What is not priced is the company-level number: Hingham does not guide, so its Q3 NIM and cost of funds are seen for the first time in the release. If the stall were priced, HIFS would have lagged the bank index in September, and it did not: HIFS ran 288 (8/31) to 283 (9/30), −2%, against KBWB −8.5%.",
+    "independence": "The Q2 2026 release (https://www.hinghamsavings.com/assets/2026/07/PRESS-RELEASE-Q2-2026.pdf) shows the slowing deceleration in the cost of interest-bearing liabilities. The macro-to-company transmission is a proxy that the company has not confirmed.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIFS.json",
+    "text": "Q2 2026 operating expenses included a $928k one-off Fiserv termination fee and a $201k check-fraud loss. Q2 efficiency was 37.46% against 34.87% in Q1, and opex/assets was 0.79% against 0.69%. About $1.13m pre-tax, roughly $0.37 a share after tax, falls away in Q3 unless the Q2 Technologies online-banking go-live in 2H26 brings new conversion costs. Core EPS is therefore mechanically helped against the Q2 base. Conditional size +0.3; probability-weighted +0.08.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09 if released today; most likely 2026-10-16, which is outside the window",
+    "source": "https://www.hinghamsavings.com/assets/2026/07/PRESS-RELEASE-Q2-2026.pdf",
+    "source_date": "2026-07-17",
+    "reaction_history_on_this_line": "The Q2 print carried the fee in core and the stock moved −1.2%. There is no other history on this line.",
+    "why_not_priced": "The release states it, but there is no consensus model to carry the add-back, so a reader comparing core EPS quarter on quarter sees it only on the day.",
+    "independence": "This shares a document with the credit finding (the same Q2 release). Nothing independent points the same way.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIFS.json",
+    "text": "Washington DC credit workouts were moving to cash after quarter-end. The Q2 release says the bank 'placed two additional properties under agreement shortly after quarter end' and is marketing the rest of the nine foreclosed properties, booked at no loss on contemporaneous appraisals. It sold its $3.7m construction-loan interest at no loss. NPAs were 0.78% of assets at 6/30, against 0.87% at 3/31. The $30.6m DC development-site CRE loan, carrying a $2.5m specific reserve, is unresolved. A Q3 with sales at or above carrying value would answer the February 2026 Wolfpack thesis; any loss on the $30.6m credit would revive it. Conditional size +0.2 (two-sided); probability-weighted +0.05.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-09 if released today; most likely 2026-10-16, which is outside the window",
+    "source": "https://www.hinghamsavings.com/assets/2026/07/PRESS-RELEASE-Q2-2026.pdf",
+    "source_date": "2026-07-17",
+    "reaction_history_on_this_line": "The Wolfpack report of 2026-02-25 alleged more than $125m of undisclosed NPLs and foreclosures. The stock fell about 8% that day (secondary summary). The bank's rebuttal came on 2026-02-26 (https://www.barchart.com/story/news/452251/recent-reporting-regarding-hingham). There has been no realised loss since.",
+    "why_not_priced": "Short interest is still near 296K shares (8 days to cover). If the market had accepted that the DC book is resolving at no loss, the short base would have come down, and it rose 10.6% in early September.",
+    "independence": "This shares a document with the Fiserv finding. The February 2026 bank rebuttal (https://www.barchart.com/story/news/452251/recent-reporting-regarding-hingham) is consistent with the bank's position but is not independent.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIFS.json",
+    "text": "The short base is crowded and rebuilt into the print. It was 295.7K shares at 9/15, up from 267.3K at 8/31, with 8.0 days to cover, roughly 13-16% of float. Average volume is only 38K shares a day. A clean credit quarter would give the activist short little new material, and the thin float makes a squeeze plausible, while a credit loss would feed the short. Conditional size +0.4; probability-weighted +0.10.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-09 if released today; most likely 2026-10-16, which is outside the window",
+    "source": "https://curvedtrading.com/stocks/hifs/",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "Short interest peaked at 343K on 2026-02-13 around the Wolfpack report. HIFS's daily moves in Aug-Sep 2026 frequently exceeded 3-4% on 30-60K-share volume (financialcontent history), which is consistent with thin-float sensitivity.",
+    "why_not_priced": "A low borrow fee (0.8%) means the short is not visibly squeezed or expensive. The positioning is known but only matters through the print.",
+    "independence": "The baseline's 20-day run-up of −6.24% and 5-day of +1.81% (sealed baseline) are consistent with a short base pressing into the quarter. That is weak support.",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "HIFS.json",
+    "text": "The Q3 2026 release itself, most likely Friday 2026-10-16 at 16:01 ET on the 2026 third-Friday cadence (Jan 16, Apr 17, Jul 17). If it lands then, the five findings above resolve after this window. Their conditional net is about −0.0 to +0.2, with the equity-mark and NIM negatives offset by the one-off add-back, the credit workouts and a crowded short.",
+    "resolves_by": "2026-10-16",
+    "source": "https://www.hinghamsavings.com/assets/2026/07/PRESS-RELEASE-Q2-2026.pdf",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HIFS.json",
+    "text": "Bank-index drawdown in September 2026 (KBWB 95.38 to 87.23) as evidence of sector credit stress hitting HIFS",
+    "source": "https://www.digrin.com/stocks/detail/KBWB/price",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HIFS.json",
+    "text": "Q1 2026 NPAs of 0.87% and NPLs of 0.97% (Seeking Alpha via simplywall.st) as a worsening-credit signal",
+    "source": "https://www.finanznachrichten.de/nachrichten-2026-04/68234150-hingham-institution-for-savings-hingham-savings-reports-first-quarter-2026-results-399.htm",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIFS.json",
+    "text": "No Q3 2026 release found on GlobeNewswire, Nasdaq or hinghamsavings.com by 13:32 ET (search '\"Hingham Reports Third Quarter 2026 Results\"')",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIFS.json",
+    "text": "No company-announced Q3 2026 release date. Hingham does not pre-announce; aggregators split between 10/9 (https://nextearningsdate.com/hifs.html) and 10/15 (https://beta.earningswhispers.com/go/w/HIFS)",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIFS.json",
+    "text": "No Hingham press releases between 2026-07-17 and today were found: no special dividend, no buyback execution and no new Wolfpack follow-up",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIFS.json",
+    "text": "No consensus EPS from any verifiable source",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIFS.json",
+    "text": "No options market (baseline), so no skew",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIFS.json",
+    "text": "No reaction history in the baseline (FDIC filer). Only the Q2 2026 reaction (−1.2%) was rebuilt from the price history; Q1 2026 and earlier dates were not retrievable from financialcontent",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-09/RMCF",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "RMCF",
+   "event_date": "2026-10-12",
+   "session": "bmo",
+   "as_of_utc": "2026-10-09T17:11:43+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-09",
+    "spot": 1.0398,
+    "run_up_5d_pct": 18.16,
+    "run_up_20d_pct": 15.53,
+    "pct_from_52w_high": -64.27,
+    "pct_from_52w_low": 55.19,
+    "realised_vol_20d_annualised_pct": 57.4,
+    "avg_volume_20d": 97767
+   },
+   "cik": "0001616262",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-14",
+      "session": "amc",
+      "move_pct": -1.96
+     },
+     {
+      "event_date": "2026-06-01",
+      "session": "intraday",
+      "move_pct": -5.08
+     },
+     {
+      "event_date": "2026-01-13",
+      "session": "amc",
+      "move_pct": -7.01
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "amc",
+      "move_pct": 5.73
+     },
+     {
+      "event_date": "2025-07-16",
+      "session": "intraday",
+      "move_pct": 1.57
+     },
+     {
+      "event_date": "2025-06-20",
+      "session": "amc",
+      "move_pct": 3.65,
+      "session_conflict": {
+       "tagged_session": "amc",
+       "volume_says": "bmo",
+       "event_day_volume": 63400,
+       "next_day_volume": 22800,
+       "median_20d_before": 9700,
+       "move_as_tagged_pct": 3.65,
+       "move_if_bmo_pct": -11.04,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     }
+    ],
+    "n": 6,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 4.37,
+    "max_abs_move_pct": 7.01,
+    "up_count": 3,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 90,
+    "median_gap_days": 90,
+    "ratio": 1.0,
+    "last_print": "2026-07-14",
+    "verdict": "fits_cadence",
+    "reason": "90 days since the last print against a 90-day cadence"
+   },
+   "options": {
+    "status": "no_options_market"
+   },
+   "deadband_pct": 2.19,
+   "deadband_basis": "half the median of 6 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 4.37,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 6,
+    "history_usable": 6,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Unsourced. No consensus could be found: Earnings Whispers shows '-' for EPS and revenue (https://beta.earningswhispers.com/go/w/RMCF), and the company gives no numeric guidance (Q1 FY2027 release, https://ir.rmcf.com/news-events/press-releases/detail/317/rocky-mountain-chocolate-factory-reports-fiscal-first). The year-ago quarter is used as the implicit bar: revenue $6.823m, product and retail gross profit -$33k, net loss $0.662m ($-0.09) (https://ir.rmcf.com/news-events/press-releases/detail/301/rocky-mountain-chocolate-factory-reports-second-quarter). print_vs_bar_pct is revenue against that year-ago $6.82m. Every finding is capped small because of this.",
+   "positioning_check": "FINRA short interest, via CurvedTrading (https://curvedtrading.com/stocks/rmcf/short-interest/, read 2026-10-09): 63.9k shares at the 2026-09-15 settlement, days to cover 1.9; 38.0k at 08-31; a one-off 570.5k at 08-14; 98.4k at 07-31. That is about 0.7% of the 9.44m shares outstanding, so the short is not crowded and no squeeze mechanism exists. No options market (baseline: no_options_market), so there is no skew. Baseline tape: spot $1.04, +18.2% over 5 days and +15.5% over 20 days, mostly after the 2026-10-06 sale-leaseback; 64% below the 52-week high (the stock was $2.66 on 2026-05-06 and $0.89 on 2026-06-30 per the 424B5). 20-day average volume is 97.8k shares, about $100k a day, and market cap is about $9.8m. Insider Form 4s from August to September 2026 are all board stock grants (Keating, Lynn, Geygan). Geygan's GVIC lost 16,605 shares of managed-account positions on 2026-09-09. There were no open-market buys.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RMCF.json",
+    "text": "Q1 FY2027 (quarter to 2026-05-31) showed franchise and royalty fees down 26% year on year ($1.232m vs $1.655m) because of revised franchise agreements with lower royalty and marketing fees. G&A rose 28% ($1.280m vs $1.001m) on the franchise website and delivery-platform rollout, and the net loss widened to $1.168m from $0.324m. Both are structural and carry into Q2. If royalty fees fall about 26% again against Q2 FY2026's $1.640m (about -$0.4m), total revenue lands below the year-ago $6.82m and the loss lands wider than the year-ago $0.66m, unless product sales (+3.5% in Q1 on price, plus the fifth company store from 2026-07-15) make up the difference.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13 if the print is 2026-10-12 amc (last year's pattern); no later than 2026-10-16 if the release comes by the 2026-10-15 10-Q deadline. This is AFTER the sealed 10-12 bmo window.",
+    "source": "https://ir.rmcf.com/news-events/press-releases/detail/317/rocky-mountain-chocolate-factory-reports-fiscal-first",
+    "source_date": "2026-07-14",
+    "reaction_history_on_this_line": "The Q1 FY2027 print that first showed the royalty cut and wider loss moved -1.96% (baseline, 2026-07-14 amc). Q3 FY2026 moved -7.01% and FY2026 (2026-06-01) -5.08%. The last three prints all fell.",
+    "why_not_priced": "The Q1 numbers are public, but nobody publishes a Q2 estimate, so no bar mechanically carries the royalty cut forward. If the market had priced a wider Q2 loss, the stock would not have run up 18% in the five sessions before the print. The run-up came on the sale-leaseback, which bears on the balance sheet, not the P&L.",
+    "independence": "Same company document as finding 4 (cash and going concern come from the Q1 10-Q, a sibling filing). The 10-Q store table (https://www.sec.gov/Archives/edgar/data/1616262/000119312526303159/rmcf-20260531.htm) shows total stores falling from 253 to 250 in Q1 (3 Cold Stone co-branded closures), which points the same way on royalties.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RMCF.json",
+    "text": "ICE cocoa traded about $5,600-6,650/t in August 2026, with a 28-day average of $5,928 (Farms.com, week ending 2026-08-28). RMCF's Q2 FY2026 product and retail gross profit was -$33k, which the company blamed on higher input costs and operational inefficiencies. Against that near-zero base, with cocoa well below its 2024-25 peaks and 3% price increases in place, a year-on-year gross-profit improvement in Q2 FY2027 is plausible. However, the company's own Q1 FY2027 margin fell to about 3.7% from 6.9% despite the same cost environment, so the transmission is unconfirmed.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13 if the print is 2026-10-12 amc; no later than 2026-10-16. This is AFTER the sealed 10-12 bmo window.",
+    "source": "https://www.farms.com/markets/commodity/cocoa-commodity-update-for-the-week-ending-aug-28-2026",
+    "source_date": "2026-08-28",
+    "reaction_history_on_this_line": "The Q2 FY2026 print that showed the gross loss moved +5.73% (baseline row 2025-10-14, which is the reaction to the 2025-10-13 amc release), so the market looked past a gross loss when revenue grew. In Q1 FY2027 the gross margin fell and the stock fell -1.96%.",
+    "why_not_priced": "No analyst covers the name, so nobody maps cocoa into RMCF's margin. If they had, a gross-margin recovery would already be in a bar. It is a proxy, and the company's own Q1 number contradicts it, so it is sized small.",
+    "independence": "Proxy only. The company's Q2 FY2026 release (https://ir.rmcf.com/news-events/press-releases/detail/301/rocky-mountain-chocolate-factory-reports-second-quarter) attributes the year-ago gross loss to input costs, which sets a low base. The Q1 FY2027 release (detail/317) cuts against the finding.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RMCF.json",
+    "text": "On 2026-10-06 RMCF sold its Durango HQ, factory and warehouse for $6.6m (independent appraisal) to American Heritage Legacies, a company controlled by Interim CEO Allen Harper's family. It will use the proceeds to repay the $6.6m 12% note owed to RMC Credit Facility LLC, which is affiliated with director Steven Craig and secured on Durango, maturing 2027-09-30. RMCF leases the property back for 10 years at $624k in year one (9.45%) with 2% annual escalators. Interest falls by about $792k a year against $624k of rent, and the 2027 maturity and that lender's security go away. Expect the Q2 10-Q to carry this as a subsequent event, possibly with a gain on sale and revised going-concern or covenant language.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-13 if the print is 2026-10-12 amc; no later than 2026-10-16 (10-Q subsequent-events note). This is AFTER the sealed 10-12 bmo window.",
+    "source": "https://ir.rmcf.com/news-events/press-releases/detail/321/rocky-mountain-chocolate-factory-announces-6-6-million",
+    "source_date": "2026-10-06",
+    "reaction_history_on_this_line": "No earnings print has carried a financing change. The announcement itself coincides with the +18.2% five-day run-up in the baseline.",
+    "why_not_priced": "Mostly priced: the stock rose about 18% in five sessions after the announcement. What is not yet visible is the accounting, meaning the size of any gain, whether the TL/TNW covenant is cured and whether the going-concern paragraph is softened. These appear only in the 10-Q. What the money buys: it refinances expensive related-party debt. It does not fund growth or working capital.",
+    "independence": "The lender, rate and maturity come from a different document: the 2025-08-28 8-K amending the RMC note (https://www.sec.gov/Archives/edgar/data/1616262/000143774925028281/rmcfd20250829_8k.htm), as summarised in search results. It shares the covenant question with finding 4. A separate $1.2m 12% loan from RMCF2 Credit LLC remains outstanding.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RMCF.json",
+    "text": "The Q1 FY2027 10-Q carries substantial-doubt going-concern language. It says the company breached its total-liabilities-to-tangible-net-worth covenant (5.3:1 against a 2.0:1 maximum at 2026-05-31) and that lender waivers run only through the quarter ended 2026-08-31. Cash was $609k against $4.59m of accounts payable. A $6.0m S-3 shelf became effective 2026-07-01 at a time when the stock was $0.89. The Q2 10-Q must show the covenant position at 2026-08-31 after another quarterly loss and the pre-holiday inventory build. Going-concern language is near-certain to remain, and the shelf leaves room for dilution after the print.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-13 if the print is 2026-10-12 amc; no later than 2026-10-16. This is AFTER the sealed 10-12 bmo window.",
+    "source": "https://www.sec.gov/Archives/edgar/data/1616262/000119312526303159/rmcf-20260531.htm",
+    "source_date": "2026-07-14",
+    "reaction_history_on_this_line": "Going-concern language and covenant breaches were in the Q1 10-Q filed with the 2026-07-14 print, which moved -1.96%. The stock fell from $2.66 (2026-05-06) to $0.89 (2026-06-30) through the 10-K, the auditor change and the CEO change.",
+    "why_not_priced": "Partly priced: the stock trades at about $1 and about 64% off its high. Nobody has said whether the waiver was extended past 2026-08-31. The 10-Q will say, and any covenant default that is not waived, or a dilutive raise, would come on top of the going-concern disclosure the market already has. Financing question answered: the money does not fund a ramp; this is covenant pressure plus a going-concern flag.",
+    "independence": "Shares the Q1 10-Q with finding 1. The 424B5 base prospectus (https://www.sec.gov/Archives/edgar/data/1616262/000121390026075602/0001213900-26-075602.txt, 2026-07-06) establishes the $6.0m shelf and the $0.89 price. Finding 3's debt repayment partly offsets this one.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RMCF.json",
+    "text": "On 2026-08-11 the board disclosed under Reg FD, after the interim CEO told employees and franchisees, that it is exploring strategic alternatives including a sale, merger or going-private transaction, and that it has received third-party expressions of interest. The interim CEO controls AHR, which holds about 8.6% (810k shares), and his family has just bought the HQ. The Q1 release said a call is expected with Q2, which would be the first call since the review began, so any update or Q&A would surface there. The company says it will not comment further unless a deal is approved.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-13 if the print is 2026-10-12 amc; no later than 2026-10-16. This is AFTER the sealed 10-12 bmo window.",
+    "source": "https://www.sec.gov/Archives/edgar/data/1616262/000121390026087922/ea0301684-8k_rocky.htm",
+    "source_date": "2026-08-12",
+    "reaction_history_on_this_line": "No prior print carried a strategic-review update. Baseline reaction history has a median absolute move of 4.37%.",
+    "why_not_priced": "The review is public, but the stock at about $1 (market cap about $10m) carries little takeover premium. If the market expected a bid, the stock would trade at or above the $2-3 of spring 2026. The call is the first forum where management can be asked, and the sale-leaseback to an insider's family is a new data point on who may be positioning. The company's no-comment policy makes a substantive update unlikely, which is why the size is small with a wide upper tail.",
+    "independence": "Harper's AHR stake and appointment: 8-K item 5.02 of 2026-07-06 (https://www.sec.gov/Archives/edgar/data/1616262/000121390026075603/ea0297189-8k_rocky.htm). Related-party buyer: sale-leaseback release (detail/321), a document shared with finding 3. InsideArbitrage flagged a potential deal on 2026-08-12 (https://www.insidearbitrage.com/?p=174010, paywalled).",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "RMCF.json",
+    "text": "Leadership churn: Geygan resigned as interim CEO effective 2026-06-26, Allen Harper (81) was named interim CEO for 180 days from 2026-06-29, and David Denker was named COO on 2026-08-24. A permanent-CEO announcement could come with the print.",
+    "source": "https://www.sec.gov/Archives/edgar/data/1616262/000121390026072160/ea0296011-8k_rocky.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "RMCF.json",
+    "text": "A $312k equipment loan on 2026-06-15 at 6.25%, maturing 2027-12-15 (Q1 10-Q, Note 16 subsequent event).",
+    "source": "https://www.sec.gov/Archives/edgar/data/1616262/000119312526303159/rmcf-20260531.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "RMCF.json",
+    "text": "The sweep's session claim of 2026-10-12 bmo.",
+    "source": "https://ir.rmcf.com/news-events/press-releases/detail/301/rocky-mountain-chocolate-factory-reports-second-quarter",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RMCF.json",
+    "text": "Company-confirmed Q2 FY2027 date or call notice: ir.rmcf.com press-release list (latest 2026-10-06), EDGAR 8-K list (no item 2.02 after 2026-07-14), GlobeNewswire (403), web search for a scheduling release. Nothing found.",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RMCF.json",
+    "text": "Consensus EPS or revenue: Earnings Whispers shows '-'; nasdaq.com earnings page returned 503. No bar found.",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RMCF.json",
+    "text": "Insider open-market buying or selling in August to October 2026: every Form 4 is a board grant (code A) except one GVIC account-termination disposal (code J, 16,605 shares).",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RMCF.json",
+    "text": "September 2026 franchise or store news, beyond the 2026-09-16 Miraculous caramel-apple promotion, which falls in Q3: nothing.",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RMCF.json",
+    "text": "Nasdaq minimum-bid deficiency (item 3.01 8-K): none filed despite sub-$1 trading around 2026-06-30.",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RMCF.json",
+    "text": "Annual meeting (2026-08-03): no reverse split proposal. A 530k-share plan increase passed narrowly (2.62m for, 1.86m against).",
+    "i": 13
+   }
+  ]
+ }
+]

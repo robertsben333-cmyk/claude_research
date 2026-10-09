@@ -89,3 +89,22 @@
 ## Deep research — 2026-10-09 — DONE (empty pool)
 - Logged at 2026-10-09 17:36 UTC
 - Fired 17:36 UTC (13:36 ET). edge_universe.py --window: 0 of 7 rows with a confirmed session, pool empty, so no draw, no researchers, no baselines. Stage E/E-P's 17:30 operator override (hunt the 5 unconfirmed rows) is not part of this Routine's prompt and was not followed. No orders.
+
+## Edge hunt — 2026-10-09 — DONE (after operator override)
+- Logged at 2026-10-09 17:38 UTC
+- 5 hunted, 3 rankable (HIFS -0.10, GLDG -0.30, RMCF -0.50 impact_sum; scaled -0.18/-0.10/-0.52), 0 clear 2.8 or 1.76. NCPL and MSS: the hunters found no event (event_confirmed false). HIFS date doubtful (third-Friday cadence points to 10-16); RMCF likely amc 10-12 or later. All under us.v9 with pre_lessons. V2 written 17:38 UTC, before the first print. Context labels written. Execution: 0 names meet the benchmark, open not called, 0 orders; broker calls denied by the classifier all session. 6 subagents used.
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-09 17:40 UTC
+- 5 searchers returned, all event_confirmed false (NCPL: auditor resigned, no filing possible; MSS: delinquent, no date; HIFS ~25% today, cadence points 10-16; RMCF likely amc 10-12..10-15; GLDG plausible amc today, unconfirmed). Operator override applied to GLDG, HIFS, RMCF (event_confirmed_override in each hunt; searcher verdict kept). edge_score: 3 rankable, 0 clear 2.8 (HIFS +0.00, GLDG -0.20, RMCF -0.50). V2 written. 3 packs, four judges.
+
+## Edge hunt (panel) — 2026-10-09 — DONE
+- Logged at 2026-10-09 17:44 UTC
+- Panel: 4 of 4 members ran on their pinned agents (opus5 reported claude-opus-5), coverage 3/3 each. Selected 0 (consensus_k 0 on all). panel_score RMCF -0.39 (4/4 negative), GLDG -0.09, HIFS 0.00. vs stage E impact_sum: 3 common names, rho 1.0 (n=3, meaningless). The ranking rests on an operator override of event_confirmed for GLDG/HIFS/RMCF; if they do not print in the window, resolve them as event_occurred false. No orders.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-09 18:33 UTC
+- 18:33 UTC fire (14:33 ET). Plan: universe, seal before 16:00 ET, one unpriced-hunter-ca per name, edge_score, four-model panel, note.
+
+## Stage CA — sealed
+- Logged at 2026-10-09 18:34 UTC
+- Universe: 2 scheduled (agreed 1, vendor_only 1), 1 eligible (YAY below $100k floor), 1 hunted: GOLD (GoldMining, TSX, amc, WSH status UNC). Baseline sealed 18:34 UTC = 14:34 ET, inside the session; anchor arm register (no Montreal chain), register_business_date 2026-10-08, short_change null (GOLD absent from 2026-10-07 snapshot). Window close 10-09 -> close 10-13 (10-12 Thanksgiving). Defect noted: history classifier counted 'GoldMining Announces 2026 Annual Meeting Voting Results' (2026-05-15, -6.71%) as a results reaction; it inflates the scale, not fixed today. provenance ca.v4 / claude-opus-5-5.
