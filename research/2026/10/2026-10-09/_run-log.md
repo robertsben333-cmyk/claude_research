@@ -85,3 +85,7 @@
 ## Edge hunt (panel) — operator override — hunting all 5
 - Logged at 2026-10-09 17:30 UTC
 - 17:30 UTC. Operator: a quick search confirms GLDG reports amc today, and likely others too; be less critical and run it. Sweep's 0-confirmed verdict overridden: unpriced-searcher launched on all 5 (GLDG, HIFS, RMCF, NCPL, MSS); each searcher's own event check decides rankability via edge_score.py. The earlier DONE entry is superseded.
+
+## Deep research — 2026-10-09 — DONE (empty pool)
+- Logged at 2026-10-09 17:36 UTC
+- Fired 17:36 UTC (13:36 ET). edge_universe.py --window: 0 of 7 rows with a confirmed session, pool empty, so no draw, no researchers, no baselines. Stage E/E-P's 17:30 operator override (hunt the 5 unconfirmed rows) is not part of this Routine's prompt and was not followed. No orders.
