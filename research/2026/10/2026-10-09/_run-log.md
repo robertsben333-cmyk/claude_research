@@ -23,3 +23,7 @@
 ## Stage J — wave 2 banked
 - Logged at 2026-10-09 01:21 UTC
 - 3201 +0.30, 3222 -0.20, 3501 -0.05, 4440 -0.60 (12:00 JST, in session), 4443 banked. In flight: 4829, 4992, 6264, 6289, 6506, 6814; queued 7603..9974.
+
+## Stage J — wave 3 banked
+- Logged at 2026-10-09 01:28 UTC
+- 4443 -0.10, 4829 -1.90 (16:00 JST), 4992 +0.25, 6289 +1.10, 6814 +1.20 (H1 pre-released 10-06; FY forecast and dividend deferred to this print), 7603 -0.30. In flight: 6264, 6506, 7713, 7888, 8008; queued 8200, 8244, 9270, 9740, 9974.
