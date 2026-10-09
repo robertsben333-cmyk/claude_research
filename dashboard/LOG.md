@@ -387,3 +387,12 @@ boven 0.2. Opus 5.5 onder us.v6 staat in de VS op −0.20 en Japan's controle ve
 hunt op de enige versie die genoeg namen heeft. Pas wanneer us.v9 tien dagen heeft, is
 er iets om de vloer van 2.8 op te beoordelen. Tot die tijd is de vloer een keuze over
 schaal, geen bevinding.
+
+## 2026-10-09 — update
+
+Closed since the last build: none visible. The broker was unreachable (no Alpaca credentials in this session), so trades and equity are the 2026-10-06 build's: 14 closed, 57.1% up, mean +4.86%, P&L $1,201.
+Newly resolved: research side moved from 158 names / 22 days to 186 names priced; 177 ranked over 25 days. Two problems: DOMO 09-03 window not closed, and the 10-02 run has no edge-scores.json.
+
+Pooled ranking rho -0.143 against -0.104 for the free control; conviction rho +0.143. Short-everything control -1.06% per name.
+
+Read: the ranking still does not beat the free control, and nothing here is established. The trading figures are not refreshed and must not be quoted as current.
