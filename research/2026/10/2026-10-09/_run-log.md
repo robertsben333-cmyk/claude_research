@@ -35,3 +35,7 @@
 ## Stage J — scored
 - Logged at 2026-10-09 01:42 UTC
 - 25 of 25 rankable; 0 above the 2.8 floor; top 7713 +1.60, bottom 4829 -1.90; 13 positive / 12 negative (impact_sum).
+
+## Stage J — panel STARTED
+- Logged at 2026-10-09 01:42 UTC
+- 25 packs, four judges (panel-judge-intl-opus5/-opus55/-sonnet55/-fable51)
