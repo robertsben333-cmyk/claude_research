@@ -59,3 +59,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-09 13:48 UTC
 - Hunts: 3 of 3 returned. SDG +1.10 (rankable, below 2.8 floor); FXPO and SWC not rankable, hunter found no event (both RNS-calendar phantoms: FXPO = a Supreme Court hearing date misread as results, real next release 3Q production 2026-10-14; SWC = MORE preferred IPO retail-offer result, not earnings). 1 pack, four judges (panel-judge-intl-opus5/-opus55/-sonnet55/-fable51).
+
+## Stage EU — Europe researcher — DONE
+- Logged at 2026-10-09 13:51 UTC
+- Event date sealed for: 2026-10-12 (Monday). 3 hunters, 3 returned, 0 shed. edge_score ranking_key impact_sum: SDG +1.10 (only rankable name, below 2.8 floor); FXPO and SWC not rankable, hunter found no event. Both are uk_rns_calendar.py phantoms on basis financial_calendar: FXPO quote was a Supreme Court hearing date (real next release 3Q production 2026-10-14), SWC quote was the MORE preferred IPO result. Scraper needs a court/hearing/IPO/offer guard; not fixed in this run. Panel: 4 of 4 members, no fallback; SDG not selected (k=1, sonnet55 only), sign agreement 4/4, panel_score +0.68. Note: research/2026/10/2026-10-12/europe/europe-note.md. Publishing with EARNINGS_DATA_BRANCH=main; origin/main had been force-rewritten before this run, so this run worked on a branch off origin/main and pushed HEAD:main.
