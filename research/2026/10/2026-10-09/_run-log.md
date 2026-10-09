@@ -19,3 +19,7 @@
 ## Stage J — wave 1 banked
 - Logged at 2026-10-09 01:14 UTC
 - 2698 +0.20, 2735 +0.40, 3046 +0.10, 3048 -0.50 (releases 12:00 JST, in session), 3063 -0.25. Rolling 5: 3201, 3222, 3501, 4440, 4443 in flight.
+
+## Stage J — wave 2 banked
+- Logged at 2026-10-09 01:21 UTC
+- 3201 +0.30, 3222 -0.20, 3501 -0.05, 4440 -0.60 (12:00 JST, in session), 4443 banked. In flight: 4829, 4992, 6264, 6289, 6506, 6814; queued 7603..9974.
