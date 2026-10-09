@@ -1,0 +1,221 @@
+[
+ {
+  "id": "ca/2026-10-09/GOLD",
+  "hunter_definition": ".claude/agents/unpriced-hunter-ca.md",
+  "lessons_file": "researcher_canada/LESSONS.md",
+  "baseline": {
+   "market": "CA",
+   "ticker": "GOLD",
+   "company": "GoldMining Inc.",
+   "exchange": "TSX",
+   "sector": "Non-Energy Minerals",
+   "event_date": "2026-10-09",
+   "session": "amc",
+   "session_unresolved": false,
+   "window": "close 2026-10-09 -> close 2026-10-13 (amc)",
+   "sealed_utc": "2026-10-09T18:34:00+00:00",
+   "sources": {
+    "tape": "getCompanyPriceHistory via app-money.tmx.com",
+    "options": "https://www.m-x.ca/en/trading/data/quotes",
+    "register": "getCompanyShortInterest via app-money.tmx.com",
+    "archive": "getNewsForSymbol via app-money.tmx.com"
+   },
+   "tape": {
+    "spot": 1.275,
+    "currency": "CAD",
+    "run_up_20d_pct": -12.07,
+    "run_up_5d_pct": -2.67,
+    "median_turnover_cad_20d": 299814,
+    "turnover_usd_20d": 181383,
+    "realised_vol_20d_pct": 38.32,
+    "realised_vol_60d_pct": 47.04,
+    "last_bar": "2026-10-09"
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No listed options at the Montreal Exchange for this underlying. 360 of about 2,500 Canadian listings have a chain, and coverage falls from 96% above $25m a day to 10% below $1m, so an absent chain is the normal case in the band this stage is for."
+   },
+   "history": {
+    "n": 4,
+    "basis": "observed",
+    "news_rows_read": 293,
+    "median_abs_move_pct": 2.4,
+    "events": [
+     {
+      "move_pct": -1.87,
+      "date_used": "2024-02-28",
+      "announced": "2024-02-27",
+      "basis": "observed",
+      "headline": "GoldMining Announces Filing of Financial Statements, MD&A, Annual Information Form and Annual Report on Form 40-F",
+      "source": "Canada Newswire via QuoteMedia"
+     },
+     {
+      "move_pct": 1.77,
+      "date_used": "2025-02-28",
+      "announced": "2025-02-27",
+      "basis": "observed",
+      "headline": "GOLDMINING ANNOUNCES FILING OF FINANCIAL STATEMENTS, MD&A, ANNUAL INFORMATION FORM AND ANNUAL REPORT ON FORM 40-F",
+      "source": "Canada Newswire via QuoteMedia"
+     },
+     {
+      "move_pct": -2.93,
+      "date_used": "2026-02-27",
+      "announced": "2026-02-27",
+      "basis": "observed",
+      "headline": "GoldMining Announces Filing of Financial Statements, MD&A, Annual Information Form and Annual Report on Form 40-F",
+      "source": "Canada Newswire via QuoteMedia"
+     },
+     {
+      "move_pct": -6.71,
+      "date_used": "2026-05-15",
+      "announced": "2026-05-14",
+      "basis": "observed",
+      "headline": "GoldMining Announces 2026 Annual Meeting Voting Results",
+      "source": "PR Newswire via QuoteMedia"
+     }
+    ],
+    "caveat": "Dates are REAL: each row is a dated financial-results release from the TMX news archive, not a cadence estimate. The move is the larger of the release session and the one after it, because an after-hours release reacts the next day. The headline classifier excludes drill and assay results, which is the single most common false positive on the TSXV."
+   },
+   "positioning": {
+    "short_interest_shares": 589143,
+    "short_ratio_pct": 0.29,
+    "days_to_cover_30d": 2.46,
+    "register_business_date": "2026-10-08",
+    "short_change_pct_pts": null,
+    "short_change_vs": "2026-10-07",
+    "analysts": {
+     "totalAnalysts": 2,
+     "priceTarget": {
+      "lowPriceTarget": 3.920204585,
+      "highPriceTarget": 4.3,
+      "priceTarget": 4.1101022925,
+      "priceTargetUpside": 221.1
+     },
+     "consensusAnalysts": {
+      "consensus": "Buy",
+      "buy": 2,
+      "sell": 0,
+      "hold": 0
+     }
+    },
+    "analyst_band": "1-2",
+    "basis": "CIRO's consolidated short position, served by TMX because ciro.ca is 0 of 8 from this container. There is NO history endpoint and no date argument, so `short_change_pct_pts` is null until two runs have stored a snapshot, and `register_business_date` is carried so the question of how often that feed moves is settled by the accumulating files. There is also NO EPS consensus anywhere in this API: the bar this print will be judged against is not in this baseline and the hunter has to source it."
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 2.41,
+    "from_option_implied_pct": null,
+    "from_history_median_pct": 2.4,
+    "from_realised_vol_1d_pct": 2.41,
+    "basis": "the option-implied move where the chain quotes two-sided, otherwise the larger of an observed reaction history and a one-session move implied by 20-day realised vol. The fallbacks are a SCALE for how far this name travels and carry no information about this print."
+   },
+   "lean_components": {
+    "option_lean": null,
+    "short_squeeze": 0.174,
+    "short_building": null,
+    "days_to_cover": 0.135,
+    "analyst_gap": -1.5,
+    "runup": 0.604
+   },
+   "priced_lean_pct": -0.587,
+   "priced_lean_basis": "Sum of lean_components. Every weight is a PRIOR carried over from stage J and none is measured on Canadian data; ca_resolve.py ranks each component separately so they can be replaced by measurement. What matters today is that it is not identical to -0.05 * run_up_20d_pct, so the free control is a real rival rather than the baseline's own number.",
+   "anchor_covered": "register",
+   "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.5,
+    "basis": "Read by the shared scorer ONLY when there is no option-implied move. magnitude is capped at 0.5 because an observed reaction history plus realised vol is still not an option price; direction at 0.6 because none of the four components is 25-delta skew."
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "date_confidence": "agreed",
+    "vendor_date": "2026-10-09",
+    "wsh": {
+     "date": "2026-10-09",
+     "confirmed": false,
+     "status": "UNC",
+     "session": "amc",
+     "name": "Q3 2026 Earnings Announcement-After Mkt",
+     "isin": "CA38149E1016"
+    },
+    "issuer_announced": null,
+    "event_shape": "release",
+    "basis": "Two calendars that disagree on 172 of 277 forward dates, reconciled in ca_universe.py. `confirmed` is Wall Street Horizon's own CON flag, which no other calendar in this repo carries."
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "unsourced/disputed: aggregator EPS 'consensus' of -$0.02 (Earnings Whispers search snippet, not visible on fetch: https://beta.earningswhispers.com/go/w/GLDG) against -$0.03 (https://wealthawesome.com/will-goldmining-inc-gold-beat-earnings-estimates-in-its-next-report-10072026-earnings); no company guidance exists for a pre-revenue explorer, and net loss is driven by exploration spend, share-based comp, deferred tax and USGO warrant revaluation, not by anything a bar captures. Every size capped at 0.",
+   "positioning_check": "CIRO short position 589,143 shares, 0.29% short ratio, 2.46 days to cover (register business date 2026-10-08, sealed baseline via TMX); no change series; no option chain at the Montreal Exchange, so no skew or option lean; 2 analysts, both Buy, target ~C$4.11 vs C$1.275 spot. Stock -12.07% over 20 sessions, -2.67% over 5, ~47% below its 2026-02-27 level of C$2.39. Nothing crowded.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "GOLD-h1.json",
+    "text": "Yarumalito drill result: 400 m of continuous gold-copper mineralization",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001538847/000143774926032098/ex_1022557.htm",
+    "first_hunter_reason": "outside_window",
+    "i": 0
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "GOLD-h1.json",
+    "text": "Q3 net loss vs an aggregator EPS bar of -0.02/-0.03",
+    "source": "https://wealthawesome.com/will-goldmining-inc-gold-beat-earnings-estimates-in-its-next-report-10072026-earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 1
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GOLD-h1.json",
+    "text": "Issuer IR/newsroom and TMX news archive for a 'to release Q3 results' notice: none exists for any interim in two years; only annual filings get a release ('Announces Filing of Financial Statements...').",
+    "i": 2
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GOLD-h1.json",
+    "text": "TMX/SEDAR+ filing index 2024-09 to 2026-10-09: interim statements filed without a news release every quarter; Q3 FY2026 not yet filed at seal.",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GOLD-h1.json",
+    "text": "EDGAR submissions for CIK 0001538847: last 6-K 2026-10-06 (Yarumalito drill results, public and traded through); no Q3 6-K yet.",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GOLD-h1.json",
+    "text": "Q2 FY2026 MD&A and statements (6-K 2026-07-14): working capital C$82.1m, no debt, US$50m ATM used for C$10.1m in H1 at prices well above today's, GRC 21.5m shares / NevGold 19.1m shares / USGO 10.0m shares all marked to market and publicly visible; a comparative revision for USGO warrants already disclosed in July. Nothing in it points to a surprise in the Q3 filing.",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GOLD-h1.json",
+    "text": "SEDAR+ 'Interim MD&A' dated 2026-09-24: PDF text did not extract (garbled font encoding) and there is no matching 6-K on EDGAR; could not establish what it is, so nothing is filed on it.",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GOLD-h1.json",
+    "text": "Gold price context (independent series): spot ~US$4,120-4,180 in the first week of October 2026, drifting lower; the window's gold move is unknowable and is not company information.",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GOLD-h1.json",
+    "text": "Past reactions to interim filing dates from TMX bars: next-session moves -1.52/+5.31/-3.74/-1.27/+1.14/-2.46%, mixed sign, inside ordinary volatility.",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GOLD-h1.json",
+    "text": "Analyst consensus: two aggregators disagree (-0.02 vs -0.03), no broker note found.",
+    "i": 9
+   }
+  ]
+ }
+]

@@ -108,3 +108,11 @@
 ## Stage CA — sealed
 - Logged at 2026-10-09 18:34 UTC
 - Universe: 2 scheduled (agreed 1, vendor_only 1), 1 eligible (YAY below $100k floor), 1 hunted: GOLD (GoldMining, TSX, amc, WSH status UNC). Baseline sealed 18:34 UTC = 14:34 ET, inside the session; anchor arm register (no Montreal chain), register_business_date 2026-10-08, short_change null (GOLD absent from 2026-10-07 snapshot). Window close 10-09 -> close 10-13 (10-12 Thanksgiving). Defect noted: history classifier counted 'GoldMining Announces 2026 Annual Meeting Voting Results' (2026-05-15, -6.71%) as a results reaction; it inflates the scale, not fixed today. provenance ca.v4 / claude-opus-5-5.
+
+## Stage CA — panel STARTED
+- Logged at 2026-10-09 18:38 UTC
+- 1 pack (GOLD), four judges. Hunter returned 0 findings; reports GOLD is filing-only for interims (no release on 6 prior interims) so the filing_only screen missed it — defect in ca_universe event_shape for this issuer.
+
+## Stage CA — Canada researcher — DONE
+- Logged at 2026-10-09 18:39 UTC
+- Funnel 2 scheduled / 1 eligible / 1 hunted. GOLD impact_sum 0.00, no findings, bar unsourced. Anchor arms options 0 / register 1 (sealed 14:34 ET; GOLD has no chain). Panel 4/4 members ran, all 0, nothing selected. DEFECT: GOLD is a filing-only interim reporter (6 interims with no release) but universe tagged event_shape=release; history classifier also counted an AGM-voting-results release as a print. Not fixed in this run.
