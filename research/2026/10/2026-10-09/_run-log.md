@@ -47,3 +47,7 @@
 ## Close AMC — 2026-10-09 10:15 UTC
 - Logged at 2026-10-09 10:20 UTC
 - mode --require-exit-tif opg exit 0 (amc_open, amc->day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no exit orders sent, no refusals. alpaca-orders.json rewritten for 12 runs (fill refresh only).
+
+## Stage EU — Europe researcher — STARTED
+- Logged at 2026-10-09 13:40 UTC
+- Fired 13:38 UTC 2026-10-09 (Friday; European markets still open, sealed spots are intraday, not closes). Sealing for event date 2026-10-12 (Monday, next European session). Plan: eu_universe -> seal baselines -> provenance -> one market hunter per name in waves of 5 -> edge_score -> panel -> note. No orders. Note: origin/main was force-rewritten (no merge base with the container's stale local main); working from a branch off origin/main ea9ad133, pushing HEAD:main.
