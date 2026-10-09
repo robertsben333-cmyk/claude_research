@@ -7,3 +7,7 @@
 ## Stage J — universe and baselines sealed
 - Logged at 2026-10-09 01:06 UTC
 - 65 scheduled / 31 eligible (34 under ¥15m) / 25 hunted; selection: random sample of 31 eligible, seed jp-2026-10-09. calendar_as_of 2026-10-01. Baselines quality 0.6 (0.45 for 2698, 7603, 7713: no margin ratio). JPX short register as_of 20260929. Provenance jp.v6 · claude-opus-5-5.
+
+## Stage J — resolved earlier run
+- Logged at 2026-10-09 01:07 UTC
+- jp_resolve.py on 2026-10-07: 6/6 usable, rho -0.087 p 0.86, free control 0.543, lean_vs_free_control_rho 0.029 (well below 1.0; positioning still resolving). 2026-10-08 window closes at today's close, not yet.
