@@ -3,22 +3,88 @@
   "drop_date": "2026-10-09",
   "window": {"from": "close of 2026-10-09", "to": "close of 2026-10-12"},
   "expected_move_pct": -1.28,
-  "conviction_note": "DRAFT pre-lessons; refined below.",
+  "conviction_note": "Two small negative supply findings (an F-3 resale prospectus filed after the 10-08 close registering 2,799,276 shares, about 170% of the 1,647,494 outstanding, plus variable-price notes, read over a weekend; and 655,000 freely tradable registered-direct shares bought at US$2.00 now underwater at $1.61) sum to -2.5. Against that are an ATR of 32.7% that swamps any lean, today's 0.52x volume (the under-2x cohort averages +1.46%) and this name's own mixed history of next-day moves. So abs_move is 8 and p_up 42, which scales to -1.28. Nothing dated lands inside the window.",
   "overshoot_pct": -1.5,
   "more_to_come_pct": -1.0,
   "print_vs_bar_pct": -1.5,
-  "bar": "unsourced",
-  "cause": {"label": "dilution_or_going_concern", "seller_is_finished_pct": 10, "confidence_pct": 55, "what_happened": "draft", "evidence": []},
-  "pipeline": {"news_flow_balance": -40, "overshoot_has_mechanism": true, "next_dated_event": "none found", "what_would_change_my_mind": "draft"},
-  "positioning_check": "draft",
-  "findings": [],
-  "outside_window": [],
-  "searched_and_found_nothing": [],
+  "bar": "unsourced: no consensus, no option chain (baseline options.status no_options_market). Sized against the baseline's own comparable falls (n 181, median next close -0.98%, median abs 4.0%) and ATR14 32.7%, so every size is capped small",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 10,
+    "confidence_pct": 50,
+    "what_happened": "On 10-09 the stock extended a slide from $4.14 (close 9-22) to about $1.61, falling 6.9% intraday on 0.52x normal volume. This was the first session after IMCC filed, at 16:06 ET on 10-08, an F-3 resale registration for 2,799,276 shares (about 170% of the 1,647,494 outstanding). Those shares sit under notes that convert at 90% of the lowest 20-day VWAP, floored at $0.40. No same-day press release or 6-K was found, so the F-3 is the cause by timing, not by an explicit headline.",
+    "evidence": [
+      {"claim": "F-3 resale registration of 2,799,276 shares by selling shareholders (Pure Capital 1,234,642, CEO Oren Shuster 577,008, Rafi Gabay 575,557, Rocfrim 317,607, Ontario holder 94,462). It is about 170% of the 1,647,494 shares outstanding at 10-07, is not yet effective, and carries no ATM", "url": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm", "timestamp": "2026-10-08 16:06 ET"},
+      {"claim": "October 7, 2026 settlement notes (US$490,770) convert at the lower of US$2.00 or 90% of the lowest daily VWAP over the 20 prior trading days, with a US$0.40 floor. They auto-convert on 2027-03-31 and are not repayable in cash", "url": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm", "timestamp": "2026-10-08"},
+      {"claim": "Registered direct offering of 655,000 shares at US$2.00 against a US$4.14 close on 9-22, with no placement agent. Shares outstanding went from 992,494 to 1,647,494", "url": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004583/zk2636150.htm", "timestamp": "2026-09-24 08:15 ET"},
+      {"claim": "EDGAR atom feed: the F-3 of 10-08 16:06 ET is the latest filing. Nothing was filed on 10-09 before the screen", "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001792030&type=&dateb=&owner=include&count=10&output=atom", "timestamp": "2026-10-09"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -35,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "none found inside the window. The F-3 resale has no effectiveness date (no EFFECT filed). The four-month hold periods on the PIPE and settlement shares end from about November 2026",
+    "what_would_change_my_mind": "A 6-K before the 10-12 open announcing a contract, the Space Defense Innovations acquisition closing, or the F-3 being withdrawn. Or an SEC EFFECT notice on the F-3 dated inside the window, which would make the negative larger."
+  },
+  "positioning_check": "Nasdaq short interest at the 2026-09-15 settlement was 45,409 shares, about 2.8% of 1,647,494 outstanding, with 1.0 days to cover, up 262% from 12,539 on 08-31. That is lagged about eight business days, and the position carried into this fall is not observable. It is too small to be a squeeze or a crowded short. L.I.A. Pure Capital filed a 13G for 164,585 shares (9.99%, event date 2026-09-24), and it is also the largest resale holder. No option chain, so no skew. Insider Form 4 summary: zero trades over 3 and 12 months (the company is a foreign private issuer, so insiders are not required to file Form 4s). Sources: https://api.nasdaq.com/api/quote/IMCC/short-interest?assetclass=stocks ; https://www.sec.gov/Archives/edgar/data/1792030/000121390026105248/xslSCHEDULE_13G_X02/primary_doc.xml",
+  "findings": [
+    {
+      "finding": "The F-3 resale prospectus filed at 16:06 ET on 2026-10-08 registers 2,799,276 shares, about 170% of shares outstanding, held by Pure Capital, the CEO and others. The underlying notes convert at 90% of the lowest 20-day VWAP, so every lower print lowers the conversion price. Monday's session (10-12) is the first after a weekend in which the full document is read.",
+      "leg": "repricing",
+      "mechanism_in_window": "A wider audience reads the document. It was filed after the 10-08 close and traded for one session on 0.52x volume. The weekend reader sees '170% of outstanding' and the death-spiral conversion formula on the cover and in the note terms (F-3, 2026-10-08) before the 10-12 open.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-12",
+      "reaction_history_on_this_line": "After the 9-23 registered direct at $2.00 (52% below the 9-22 close) the name fell -29.71% on 9-23, then +9.28%, then a run of -10.69, -12.68, -8.16, -5.99 and -4.90% drops with mostly negative next closes (baseline history.events). The 10-08 fall of -9.47% came before this F-3 was filed.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm",
+      "source_date": "2026-10-08",
+      "why_not_priced": "Today's fall came on about half normal volume ($220k against a $604k median), so the document has been traded by a thin intraday tape. Had it been fully read, today's volume would show a spike like 9-23's and not a 0.52x day. The shares cannot be sold under it until it is effective, so what can reprice is the expectation of the overhang, not actual supply.",
+      "independence": "The 424B5 of 2026-09-24 shows the same financiers' pattern of deeply discounted issuance (655,000 shares at $2.00 against $4.14): https://www.sec.gov/Archives/edgar/data/1792030/000117891326004583/zk2636150.htm"
+    },
+    {
+      "finding": "655,000 shares from the 9-23 registered direct (40% of outstanding) were bought at US$2.00, are registered and freely tradable, and sit about 20% underwater at $1.61. Pure Capital holds 9.99% (13G, event 9-24). That gives sellers who can act in the 10-12 session.",
+      "leg": "new_information",
+      "mechanism_in_window": "These are registered shares that can be sold in any session, including 10-12. The resale-registration filing gives their holders a fresh reason to cut before the restricted supply behind them becomes saleable.",
+      "expected_impact_pct": -1.0,
+      "impact_low_pct": -4.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-12",
+      "reaction_history_on_this_line": "Since the 9-24 closing the stock has gone from about $2.84 (9-25, per a secondary aggregator) to $1.61, with negative next closes after 7 of the 9 drops since 9-25 in the baseline events list.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004583/zk2636150.htm",
+      "source_date": "2026-09-24",
+      "why_not_priced": "Part of this supply has visibly been sold already, given the slide from $4.14 to $1.61, so much of it is priced. What is not is whether the remaining underwater block is spent. Nothing dates its exhaustion, and today's low volume says it has not capitulated in size.",
+      "independence": "Pure Capital 13G, 164,585 shares at 9.99%, event 2026-09-24: https://www.sec.gov/Archives/edgar/data/1792030/000121390026105248/xslSCHEDULE_13G_X02/primary_doc.xml"
+    }
+  ],
+  "outside_window": [
+    {"finding": "The F-3 resale registration (2,799,276 shares) becoming effective unlocks the selling-shareholder supply. It is not effective as of 2026-10-08 and no EFFECT notice has been filed. The date is unknown and almost certainly after 10-12.", "expected_impact_pct": -5.0, "resolves_by": "after 2026-10-12 (date unknown, needs SEC EFFECT)", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm"},
+    {"finding": "The four-month Canadian hold periods on the July, August, September and October 2026 PIPE and settlement shares expire from about November 2026 to early February 2027.", "expected_impact_pct": -3.0, "resolves_by": "2026-11-01", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm"},
+    {"finding": "The October settlement notes auto-convert on 2027-03-31 at the lower of $2.00 or 90% of the lowest 20-day VWAP, floored at $0.40.", "expected_impact_pct": -2.0, "resolves_by": "2027-03-31", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm"},
+    {"finding": "Q3 2026 results. The only date is the Zacks cadence estimate of 2026-11-12, not company-announced.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-12", "source": "https://api.nasdaq.com/api/analyst/IMCC/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR atom feed for CIK 1792030: no filing on 2026-10-09 before the screen. The latest is the F-3 of 10-08 16:06 ET (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001792030&type=&dateb=&owner=include&count=10&output=atom)",
+    "Web search 'IM Cannabis IMCC October 2026': no October press release or news indexed",
+    "6-K of 2026-10-02 (closing of the IMC Holdings / European operations sale on 9-29): a completed event and not forward-dated (https://www.sec.gov/Archives/edgar/data/1792030/000117891326004699/zk2636170.htm)",
+    "6-K and corporate update of 2026-09-28 (director resignation 9-27, no disagreement): no dated October event (https://www.sec.gov/Archives/edgar/data/1792030/000117891326004635/exhibit_99-1.htm)",
+    "ATM: the baseline probe hit on 'at-the-market' in the 10-08 F-3 and the 9-24 424B5, but both documents say there is no ATM program. The 424B5 is a registered direct, so no ATM draw can price tonight",
+    "Listing: the company regained Nasdaq minimum-bid compliance on 2026-09-23 (424B5 / F-3 text). At $1.61 there is no bid-price clock running",
+    "ClinicalTrials.gov: 0 studies (baseline). Insiders: 0 Form 4 trades over 12 months (baseline)",
+    "Event plausibility: not a corporate action. The 1-for-30 consolidation was effective 2026-08-27, well before the window, and the bars are adjusted",
+    "No price, quote or chart dated after the 15:05 ET screen instant was seen or used"
+  ],
   "abs_move_pct": 8.0,
   "p_up": 42,
-  "rejected_candidates": [],
-  "baseline_tension": "draft",
+  "rejected_candidates": [
+    {"candidate": "Proposed acquisition of 51% of Space Defense Innovations LLC as a possible positive catalyst", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004583/zk2636150.htm", "reason": "outside_window", "detail": "424B5 of 2026-09-24 describes it as non-binding and subject to conditions, with no date. Nothing places a definitive agreement inside 10-09 to 10-12"},
+    {"candidate": "An ATM sells into any bounce", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm", "reason": "contradicted_by_document", "detail": "The F-3 of 2026-10-08 states the company has no at-the-market program. The baseline text-probe hit was the phrase in a negative context"},
+    {"candidate": "Going-concern language as a fresh negative", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326001877/zk2634906.htm", "reason": "outside_window", "detail": "It appeared in the 20-F of 2026-03-30, is long public and lands on no in-window date. The next annual audit is in 2027"}
+  ],
+  "baseline_tension": "Mixed. Both findings are negative supply facts, which agrees with this name's drift since the 9-23 discounted raise and with its 32.7% ATR, the high-vol cohort that keeps falling. But today's 0.52x volume puts it in the under-2x cohort that averaged +1.46%, and this name's own history includes +34% and +9% rebounds. So p_up sits at 42, not lower, and the scaled -1.28 is about half the -2.5 findings sum.",
   "pre_lessons": {"impact_sum_pct": -2.5, "expected_move_pct": -1.28, "print_vs_bar_pct": -1.5, "findings_count": 2, "sizes_pct": [-1.5, -1.0]},
-  "lessons_applied": [],
-  "sources_used": 0
+  "lessons_applied": ["nothing changed: researcher_reversal/LESSONS.md is deliberately empty (nothing has resolved)"],
+  "sources_used": 9
 }
