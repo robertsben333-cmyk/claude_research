@@ -55,3 +55,7 @@
 ## Stage EU — universe and baselines sealed
 - Logged at 2026-10-09 13:43 UTC
 - eu_universe.py --date 2026-10-12: 5 scheduled (uk 4, pl 1), 3 eligible at $100k floor, 3 hunted (all eligible, under cap 20): uk FXPO (Ferrexpo, rns), SDG (Sanderson Design, vendor+rns), SWC (Smarter Web Company, rns). Dropped below floor: AREC ($27k/day), pl HPM ($2k/day). Concentration 100% uk, 1 market. No market_closed. Calendar: UK RNS calendar read (added AREC/SWC/FXPO, confirmed SDG), Yahoo read in all ten (0 added), issuer calendars read (EQS, Inderes, Nasdaq fincal, Euronext Oslo, bankier). All three session_unresolved (defaulted bmo). Baselines sealed ~13:45 UTC on intraday prices (not closes); FCA register read as_of 2026-10-08, anchor_covered true on 1 (FXPO 0.38%); history observed_rns on all 3. provenance stamped (uk.v7, claude-opus-5-5). Wave 1 of 1: 3 unpriced-hunter-uk launched.
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-09 13:48 UTC
+- Hunts: 3 of 3 returned. SDG +1.10 (rankable, below 2.8 floor); FXPO and SWC not rankable, hunter found no event (both RNS-calendar phantoms: FXPO = a Supreme Court hearing date misread as results, real next release 3Q production 2026-10-14; SWC = MORE preferred IPO retail-offer result, not earnings). 1 pack, four judges (panel-judge-intl-opus5/-opus55/-sonnet55/-fable51).
