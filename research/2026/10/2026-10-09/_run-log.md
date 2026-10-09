@@ -96,3 +96,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-09 17:40 UTC
 - 5 searchers returned, all event_confirmed false (NCPL: auditor resigned, no filing possible; MSS: delinquent, no date; HIFS ~25% today, cadence points 10-16; RMCF likely amc 10-12..10-15; GLDG plausible amc today, unconfirmed). Operator override applied to GLDG, HIFS, RMCF (event_confirmed_override in each hunt; searcher verdict kept). edge_score: 3 rankable, 0 clear 2.8 (HIFS +0.00, GLDG -0.20, RMCF -0.50). V2 written. 3 packs, four judges.
+
+## Edge hunt (panel) — 2026-10-09 — DONE
+- Logged at 2026-10-09 17:44 UTC
+- Panel: 4 of 4 members ran on their pinned agents (opus5 reported claude-opus-5), coverage 3/3 each. Selected 0 (consensus_k 0 on all). panel_score RMCF -0.39 (4/4 negative), GLDG -0.09, HIFS 0.00. vs stage E impact_sum: 3 common names, rho 1.0 (n=3, meaningless). The ranking rests on an operator override of event_confirmed for GLDG/HIFS/RMCF; if they do not print in the window, resolve them as event_occurred false. No orders.
