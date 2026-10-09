@@ -1,0 +1,60 @@
+{
+  "ticker": "FGC",
+  "drop_date": "2026-10-09",
+  "window": {"from": "close of 2026-10-09", "to": "close of 2026-10-12"},
+  "expected_move_pct": 0.0,
+  "conviction_note": "No dated event lands in the window and there is no identifiable cause for either today's -6.0% or yesterday's -14.8% (no EDGAR filing since 2026-09-25, no news found), so there are zero findings, p_up 50 and expected_move 0; abs_move is set from the name's own 3.7% median absolute next-day move and its 12.4% ATR.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": 0.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "unsourced: no news or filing explains the fall, so there is nothing to measure a mispricing against. Scale only from the baseline's own history (146 comparable drops, median next close -0.03%, up rate 47.9%, median |next| 3.7%) in research/2026/10/2026-10-09/reversal/baselines/FGC.json",
+  "cause": {
+    "label": "no_identifiable_cause",
+    "seller_is_finished_pct": 0,
+    "confidence_pct": 25,
+    "what_happened": "FG Communities Holdings (formerly FG Nexus, ticker FGNX until 2026-09-28) fell about 6% intraday to $6.13 by 15:05 ET on ordinary volume (0.97x, ~$347k), the day after a -14.8% session. No 8-K since 2026-09-25 and no news item was found for either day. It looks like continued selling in a ~$29m-cap microcap (4.71m shares at 2026-09-14) after its pivot from an ETH treasury to manufactured-housing communities and its related-party $10m investment in FG Communities, Inc.",
+    "evidence": [
+      {"claim": "No filing by CIK 1591890 after 2026-09-25 (atom feed read on the drop day)", "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1591890&type=&dateb=&owner=include&count=20&output=atom", "timestamp": "2026-10-09"},
+      {"claim": "Renamed FG Communities Holdings; ticker FGNX became FGC at the open on 2026-09-28", "url": "https://www.sec.gov/Archives/edgar/data/1591890/000149315226044257/form8-k.htm", "timestamp": "2026-09-25"},
+      {"claim": "Bought 1,818,182 shares of private FG Communities, Inc. for $10.0m ($5.50/share) in a related-party deal (CEO Cerminara chairs both companies); closed 2026-09-21", "url": "https://www.sec.gov/Archives/edgar/data/1591890/000149315226043961/form8-k.htm", "timestamp": "2026-09-23"},
+      {"claim": "4,707,615 common shares outstanding at 2026-09-14 after buybacks", "url": "https://www.sec.gov/Archives/edgar/data/1591890/000149315226042810/form8-k.htm", "timestamp": "2026-09-16"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": 0,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "none found inside the window. The next earnings date, 2026-11-13, is only a Zacks estimate and was not announced by the company.",
+    "what_would_change_my_mind": "An 8-K filed tonight or Monday: a definitive business-combination agreement with FG Communities, Inc. paid for in stock, a share issuance or a resumed ATM (negative), or a buyback update (positive)."
+  },
+  "positioning_check": "Short interest 303,354 shares at the 2026-09-15 settlement, down 12.5% from 346,569 on 08-31, with 4.35 days to cover. That is about 6.4% of the 4.71m shares outstanding (8-K of 2026-09-16). Source: https://api.nasdaq.com/api/quote/FGC/short-interest?assetclass=stocks. FINRA publishes about eight business days after settlement, so the position carried into the 10-08/10-09 falls cannot be seen yet. No usable option chain (no_paired_strikes), so there is no skew. Insiders: 14 open-market buys in the last 12 months, none in the last 3, no sells.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Possible business combination with related party FG Communities, Inc. (board talks disclosed 2026-04-07, special committee formed 2026-05-04). Further acquisitions are expected to be paid for with debt and new stock, a dilution risk with no date attached.", "expected_impact_pct": -3.0, "resolves_by": "undated; no definitive agreement filed as of 2026-10-09", "source": "https://www.boardroomalpha.com/sec/fgnx-8-k-2026-04-07-0001493152-26-015507"},
+    {"finding": "Common and preferred stock buyback programs were active through mid-September (shares outstanding cut to 4.71m). They could absorb supply, but no repurchase is dated inside the window.", "expected_impact_pct": 0.5, "resolves_by": "undated; next disclosure most likely the Q3 10-Q around mid-November", "source": "https://www.sec.gov/Archives/edgar/data/1591890/000149315226042810/form8-k.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR filings feed for CIK 1591890: nothing after 2026-09-25, so no 8-K explains the 10-08 or 10-09 falls (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1591890&output=atom)",
+    "Baseline text probes: last at-the-market language 2025-10-21, so no recent ATM sign; going-concern 0 hits; minimum-bid-price 0 hits; non-reliance 0 hits",
+    "Web news search for FGC / FG Communities Holdings / FG Nexus in October 2026: no dated item found (WebSearch, three queries)",
+    "Insider trades: none in the last 3 months (Nasdaq insider API in the baseline)",
+    "Options: no usable chain, so no implied move and no skew",
+    "No price or quote dated after the 15:05 ET screen instant was seen or used"
+  ],
+  "abs_move_pct": 4.5,
+  "p_up": 50,
+  "rejected_candidates": [
+    {"candidate": "Active common-stock buyback as support under the price in the window", "source": "https://www.sec.gov/Archives/edgar/data/1591890/000149315226042810/form8-k.htm", "reason": "outside_window", "detail": "No repurchase or update is dated inside 10-09 close to 10-12 close; filed under outside_window"},
+    {"candidate": "Dilution from stock-funded affordable-housing acquisitions or an FG Communities combination", "source": "https://briefglance.com/articles/the-land-lease-gold-rush-fg-nexus-rebrands-as-fg-communities", "reason": "outside_window", "detail": "No agreement, registration draw or vote is dated inside the window; filed under outside_window"},
+    {"candidate": "Zacks next-earnings estimate of 2026-11-13", "source": "https://api.nasdaq.com/api/analyst/FGC/earnings-date", "reason": "outside_window", "detail": "A cadence estimate, and in any case after the window"}
+  ],
+  "baseline_tension": "No tension: ordinary volume (0.97x), no named cause and this name's own 146 comparable drops (median next close -0.03%, 47.9% up) all point to a coin flip with a wide range. The high 12.4% ATR justifies a large abs_move but gives no sign.",
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed (researcher_reversal/LESSONS.md is deliberately empty)"],
+  "sources_used": 7
+}
