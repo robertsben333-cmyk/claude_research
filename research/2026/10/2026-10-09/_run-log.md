@@ -43,3 +43,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-09 01:52 UTC
 - 65/31/25 (random draw seed jp-2026-10-09); 25 of 25 rankable, 0 above the 2.8 floor; top 7713 +1.60, bottom 4829 -1.90; 13 positive / 12 negative. Panel: 4 of 4 members, selected 6264 (-1.51, k=4). Note: research/2026/10/2026-10-09/japan/japan-note.md. JPX short register as_of 2026-09-29 (10 days stale).
+
+## Close AMC — 2026-10-09 10:15 UTC
+- Logged at 2026-10-09 10:20 UTC
+- mode --require-exit-tif opg exit 0 (amc_open, amc->day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no exit orders sent, no refusals. alpaca-orders.json rewritten for 12 runs (fill refresh only).
