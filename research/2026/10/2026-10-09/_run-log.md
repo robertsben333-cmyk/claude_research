@@ -100,3 +100,7 @@
 ## Edge hunt (panel) — 2026-10-09 — DONE
 - Logged at 2026-10-09 17:44 UTC
 - Panel: 4 of 4 members ran on their pinned agents (opus5 reported claude-opus-5), coverage 3/3 each. Selected 0 (consensus_k 0 on all). panel_score RMCF -0.39 (4/4 negative), GLDG -0.09, HIFS 0.00. vs stage E impact_sum: 3 common names, rho 1.0 (n=3, meaningless). The ranking rests on an operator override of event_confirmed for GLDG/HIFS/RMCF; if they do not print in the window, resolve them as event_occurred false. No orders.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-09 18:33 UTC
+- 18:33 UTC fire (14:33 ET). Plan: universe, seal before 16:00 ET, one unpriced-hunter-ca per name, edge_score, four-model panel, note.
