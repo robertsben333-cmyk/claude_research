@@ -93,3 +93,6 @@
 ## Edge hunt — 2026-10-09 — DONE (after operator override)
 - Logged at 2026-10-09 17:38 UTC
 - 5 hunted, 3 rankable (HIFS -0.10, GLDG -0.30, RMCF -0.50 impact_sum; scaled -0.18/-0.10/-0.52), 0 clear 2.8 or 1.76. NCPL and MSS: the hunters found no event (event_confirmed false). HIFS date doubtful (third-Friday cadence points to 10-16); RMCF likely amc 10-12 or later. All under us.v9 with pre_lessons. V2 written 17:38 UTC, before the first print. Context labels written. Execution: 0 names meet the benchmark, open not called, 0 orders; broker calls denied by the classifier all session. 6 subagents used.
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-09 17:40 UTC
+- 5 searchers returned, all event_confirmed false (NCPL: auditor resigned, no filing possible; MSS: delinquent, no date; HIFS ~25% today, cadence points 10-16; RMCF likely amc 10-12..10-15; GLDG plausible amc today, unconfirmed). Operator override applied to GLDG, HIFS, RMCF (event_confirmed_override in each hunt; searcher verdict kept). edge_score: 3 rankable, 0 clear 2.8 (HIFS +0.00, GLDG -0.20, RMCF -0.50). V2 written. 3 packs, four judges.
