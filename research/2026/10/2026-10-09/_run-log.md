@@ -89,3 +89,7 @@
 ## Deep research — 2026-10-09 — DONE (empty pool)
 - Logged at 2026-10-09 17:36 UTC
 - Fired 17:36 UTC (13:36 ET). edge_universe.py --window: 0 of 7 rows with a confirmed session, pool empty, so no draw, no researchers, no baselines. Stage E/E-P's 17:30 operator override (hunt the 5 unconfirmed rows) is not part of this Routine's prompt and was not followed. No orders.
+
+## Edge hunt — 2026-10-09 — DONE (after operator override)
+- Logged at 2026-10-09 17:38 UTC
+- 5 hunted, 3 rankable (HIFS -0.10, GLDG -0.30, RMCF -0.50 impact_sum; scaled -0.18/-0.10/-0.52), 0 clear 2.8 or 1.76. NCPL and MSS: the hunters found no event (event_confirmed false). HIFS date doubtful (third-Friday cadence points to 10-16); RMCF likely amc 10-12 or later. All under us.v9 with pre_lessons. V2 written 17:38 UTC, before the first print. Context labels written. Execution: 0 names meet the benchmark, open not called, 0 orders; broker calls denied by the classifier all session. 6 subagents used.

@@ -1,14 +1,14 @@
 {
- "generated_utc": "2026-10-09T17:11:31+00:00",
+ "generated_utc": "2026-10-09T17:37:42+00:00",
  "run": "research/2026/10/2026-10-09/edge",
  "legacy_rescore": false,
  "names": 5,
- "rankable": 0,
+ "rankable": 3,
  "ranking_key": "impact_sum",
  "conviction_floor": 2.8,
  "lessons_control": {
-  "names_with_pre_lessons": 0,
-  "names_moved_by_lessons": 0,
+  "names_with_pre_lessons": 5,
+  "names_moved_by_lessons": 3,
   "note": "pre_lessons is each hunter's own sum before it read researcher_us/LESSONS.md. edge_resolve.py ranks it against the same realised move as the key, which is the only thing that can tell the guidance file apart from a habit."
  },
  "language_control": {
@@ -19,62 +19,126 @@
  "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added up, in points of spot. No call and no threshold -- cut wherever you like afterwards, which is what keeps the ranking question answerable at every k. `conviction` (abs of the key) is where the direction skill lives: over all events the sign is a coin flip, above the median conviction it is 74%. conviction_floor is a floor on emphasis in the note, never a filter on this file. Everything under `diagnostics` was measured as neutral or subtractive and decides nothing -- see researcher_us/EDGE_ANALYSIS.md.",
  "ranking": [
   {
-   "ticker": "GLDG",
-   "rankable": false,
-   "not_rankable_because": "no hunt",
-   "impact_sum": 0,
-   "conviction": 0,
-   "priced_lean_pct": 0.703,
-   "hunter_view": {},
-   "flags": [],
-   "findings": [],
-   "outside_window": [],
-   "diagnostics": {
-    "outside_window_sum_pct": 0,
-    "residual_sum": null,
-    "adversary_judged": "0/0",
-    "edge_score_legacy": 0.0,
-    "baseline_quality": 0.24,
-    "quality_parts": {
-     "history": 1.0,
-     "options": 0.0,
-     "priced_direction": 0.0,
-     "event_plausibility": 0.6,
-     "history_events": 8,
-     "atm_spread_frac": null
-    },
-    "independent_clusters": 0,
-    "cluster_names": [],
-    "hunter_dispersion_pct": 0.0,
-    "hunters": 0,
-    "impact_sum_pre_lessons": null,
-    "lessons_delta": null,
-    "hunts_with_pre_lessons": "0/0",
-    "lessons_applied": [],
-    "impact_sum_pre_local": null,
-    "local_delta": null,
-    "pre_local_variable": null,
-    "hunts_with_pre_local": "0/0",
-    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
-   },
-   "rank": null
-  },
-  {
    "ticker": "HIFS",
-   "rankable": false,
-   "not_rankable_because": "no hunt",
-   "impact_sum": 0,
-   "conviction": 0,
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.1,
+   "conviction": 0.1,
    "priced_lean_pct": 0.31,
-   "hunter_view": {},
-   "flags": [],
-   "findings": [],
-   "outside_window": [],
+   "hunter_view": {
+    "expected_move_pct": -0.18,
+    "print_vs_bar_pct": 7.0,
+    "bar": "unsourced. No consensus exists: MarketBeat lists the Q2 2026 estimate as N/A (https://www.marketbeat.com/earnings/reports/2026-7-17-hingham-institution-for-savings-stock/) and finviz shows no estimate or coverage (https://finviz.com/quote.ashx?t=HIFS). Sized against Q2 2026 core diluted EPS of $4.82 as a run-rate reference (https://www.hinghamsavings.com/assets/2026/07/PRESS-RELEASE-Q2-2026.pdf), so every finding is capped small. Note that GAAP EPS has no bar either.",
+    "positioning_check": "finviz snapshot on 2026-10-09 (https://finviz.com/quote.ashx?t=HIFS): short float 16.61%, short ratio 6.82 days, 0.30M shares short on a 1.78M float; settlement date not stated. This is a crowded short, built since Wolfpack Research's February 2026 short report on Washington DC CRE credit, which the bank rebutted (https://www.barchart.com/story/news/452251/recent-reporting-regarding-hingham). There is no options market, so there is no skew. Perf month -5.25%, run_up_20d -6.19%, 12% below the 52-week high. Every negative below is shrunk for squeeze risk.",
+    "baseline_tension": "There is no skew to agree with. The findings net slightly negative, in line with the -6.19% 20-day run-up and the weak bank tape, but a 16.6% short float cuts against any negative, so every negative was shrunk and p_up sits at 48 rather than lower."
+   },
+   "flags": [
+    "hunter expects the number and the stock to go opposite ways (print +7.0% vs bar, stock -0.2%): read conviction_note",
+    "bar unsourced: sizes should have been capped",
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key",
+    "findings split 2 positive / 3 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "HIFS",
+     "key": "HIFS#0",
+     "finding": "The marketable equity book barely moved in Q3 2026, so the 'gain on equity securities' line that made Q2 GAAP EPS $11.49 (an $18.95m gain) should be near zero. On the 13F's top eight holdings (~$122m of the $134m 13F book), weighted Q3 price moves net to about +$0.7m: GOOGL -3.7% (357.37 to 344.08, 28% weight), V +4.7%, BRK.B -0.5%, CBNA +9.6%, MA +7.4%, HEI.A -11.5%, PGR -5.1%, SPGI +2.4%. GAAP EPS therefore prints near core, about $5.3-5.7, down roughly 30% from Q3 2025's $7.85 and about half of Q2. The AP/RTT headline will read as an earnings drop.",
+     "source": "https://stockzoa.com/fund/hingham-institution-for-savings/",
+     "source_date": "2026-07-21 (13F-HR for Q2 2026); Q3 prices from https://query1.finance.yahoo.com/v8/finance/chart/GOOGL (and V, BRK-B, CBNA, MA, HEI-A, PGR, SPGI), closes 2026-06-30 and 2026-09-30",
+     "expected_impact_pct": -0.4,
+     "cluster": "stockzoa.com",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "Q1 2026 GAAP EPS fell ~60% YoY on a $9.9m equity loss while core rose 72%, and the sweep row (unsourced) has the stock -5.96% after it. Q3 2025, with a large gain, was followed by -6.89% (unsourced). After Q2 2026's $18.95m gain the stock drifted lower (stockscan aggregator, approximate). The line has not been rewarded when positive, and its negative may have been sold once.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.14,
+     "_legacy_residual_pct": -0.14
+    },
+    {
+     "hunter": "HIFS",
+     "key": "HIFS#1",
+     "finding": "Core EPS should be a record of about $5.1-5.4 against $4.82 in Q2. Q2 operating expense carried a $928k Fiserv termination fee and a $201k check-fraud loss, about $0.38 per share after tax, and neither recurs. Net interest income rose $1.47m QoQ on a 10bp NIM expansion to 2.14%, as interest-bearing deposit cost fell 5bp and non-interest-bearing deposits grew 15.6% annualised.",
+     "source": "https://www.hinghamsavings.com/assets/2026/07/PRESS-RELEASE-Q2-2026.pdf",
+     "source_date": "2026-07-17",
+     "expected_impact_pct": 0.5,
+     "cluster": "hinghamsavings.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "Core EPS rose QoQ in Q4 2025 ($4.54), Q1 2026 ($4.79) and Q2 2026 ($4.82), and the stock was weak after at least two of those prints per the sweep row and the stockscan aggregator. Core beats have not been bought.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    },
+    {
+     "hunter": "HIFS",
+     "key": "HIFS#2",
+     "finding": "The Fed raised the funds target 25bp to 3.75-4.00% on 2026-09-17, after a July meeting with three hike dissents. That works against a bank funded by $1.405bn of FHLB advances and $510m of wholesale deposits, whose Q2 NIM gains came from adding lower-rate FHLB advances and repricing deposits down. The Q3 release's cost-of-funds line and the chairman's commentary are where a turn in the margin story would show.",
+     "source": "https://www.federalreserve.gov/monetarypolicy/openmarket.htm",
+     "source_date": "2026-09-17",
+     "expected_impact_pct": -0.4,
+     "cluster": "federalreserve.gov",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "No sourced reaction history. Margin expansion has been the bank's stated driver, and its quotes in the Q2 release lean on it ('sustained expansion in the net interest margin through asset repricing and falling funding costs').",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.14,
+     "_legacy_residual_pct": -0.14
+    },
+    {
+     "hunter": "HIFS",
+     "key": "HIFS#3",
+     "finding": "Hingham scheduled a foreclosure auction for 2026-06-30 on One Lewis Wharf, a Boston North End office building it financed with a $9.65m loan in Feb 2020 against a $13.2m purchase. The loan was not 90+ days past due or nonaccrual at June 30 per the 10-Q, so any foreclosed asset, specific reserve or first charge-off would first appear in Q3. That would feed the Wolfpack credit narrative.",
+     "source": "https://bankerandtradesman.com/foreclosure-auction-scheduled-for-lewis-wharf-offices/",
+     "source_date": "2026-06-05",
+     "expected_impact_pct": -0.2,
+     "cluster": "bankerandtradesman.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "Hingham has recorded no charge-offs in H1 2025 or H1 2026. The stock fell ~8% on the February 2026 Wolfpack credit report (secondary source), so credit headlines move it.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.07,
+     "_legacy_residual_pct": -0.07
+    },
+    {
+     "hunter": "HIFS",
+     "key": "HIFS#4",
+     "finding": "16.6% of float is short (6.8 days to cover) on a $11m-a-day name, built around Wolfpack's February 2026 thesis of hidden DC CRE losses. The Q3 release is the first test since Q2. That release showed NPAs at 0.78%, no charge-offs and foreclosed DC properties being sold without loss, so another clean credit table is a squeeze mechanism.",
+     "source": "https://finviz.com/quote.ashx?t=HIFS",
+     "source_date": "2026-10-09",
+     "expected_impact_pct": 0.4,
+     "cluster": "finviz.com",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "No sourced history of a squeeze on a print. After the clean-credit Q2 the stock drifted lower rather than squeezing (stockscan, approximate).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.14,
+     "_legacy_residual_pct": 0.14
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "If the release follows 2026's third-Friday cadence, it lands on 2026-10-16. In that case every finding above resolves outside a 2026-10-09 to 2026-10-12 window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-10-19",
+     "source": "https://www.hinghamsavings.com/assets/2026/07/PRESS-RELEASE-Q2-2026.pdf"
+    },
+    {
+     "finding": "California lawsuit over $2.2m of unauthorised wire transfers ($341k recovered); the bank deems a loss possible but not probable and gives no estimate.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "unknown",
+     "source": "https://www.hinghamsavings.com/assets/2026/08/Form-10-Q-Q22026.pdf"
+    }
+   ],
    "diagnostics": {
-    "outside_window_sum_pct": 0,
+    "outside_window_sum_pct": 0.0,
     "residual_sum": null,
-    "adversary_judged": "0/0",
-    "edge_score_legacy": 0.0,
+    "adversary_judged": "0/5",
+    "edge_score_legacy": -0.1,
     "baseline_quality": 0.0,
     "quality_parts": {
      "history": 0.0,
@@ -84,35 +148,311 @@
      "history_events": 0,
      "atm_spread_frac": null
     },
-    "independent_clusters": 0,
-    "cluster_names": [],
+    "independent_clusters": 5,
+    "cluster_names": [
+     "bankerandtradesman.com",
+     "federalreserve.gov",
+     "finviz.com",
+     "hinghamsavings.com",
+     "stockzoa.com"
+    ],
     "hunter_dispersion_pct": 0.0,
-    "hunters": 0,
-    "impact_sum_pre_lessons": null,
-    "lessons_delta": null,
-    "hunts_with_pre_lessons": "0/0",
-    "lessons_applied": [],
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.5,
+    "lessons_delta": 0.4,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "Lesson 2 (one-offs): equity-securities mark sized as one_off, -0.6 to -0.4; a public-stock remeasurement computable from the 13F has no path to the multiple",
+     "Lesson 6 (unsourced bar): no consensus exists, so core finding capped +0.6 to +0.5 and print_vs_bar trimmed 8 to 7",
+     "Lessons 5 and 7 (macro proxy, crowded short): Fed-hike finding -0.6 to -0.4 and Lewis Wharf -0.3 to -0.2, both shrunk for the 16.6% short float and for being unconfirmed by the company",
+     "Lesson 8 (thin coverage) and the core table: abs_move raised 4.0 to 4.5 for a no-coverage, thin, crowded name whose two sweep-cited reactions were ~6-7%",
+     "Lesson 3 (own caveats): finding 4's independence argues against it; resolved by keeping it small rather than dropping it, since there is no contradicting document for Q3",
+     "Positioning finding (+0.4) left standing"
+    ],
     "impact_sum_pre_local": null,
     "local_delta": null,
     "pre_local_variable": null,
-    "hunts_with_pre_local": "0/0",
+    "hunts_with_pre_local": "0/1",
     "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
    },
-   "rank": null
+   "rank": 1
+  },
+  {
+   "ticker": "GLDG",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.3,
+   "conviction": 0.3,
+   "priced_lean_pct": 0.703,
+   "hunter_view": {
+    "expected_move_pct": -0.1,
+    "print_vs_bar_pct": -20.0,
+    "bar": "Consensus EPS of -$0.02 (loss) per earningswhispers/TradingView aggregator snippets (https://beta.earningswhispers.com/go/w/GLDG). It rests on one weakly sourced estimate, the company gives no guide, and the name does not trade on EPS. Every size here is capped small. The prior quarter's actual was C$-0.04 (net loss C$8.8M, https://www.sec.gov/Archives/edgar/data/0001538847/000143774926023556/ex_985515.htm).",
+    "positioning_check": "No options market (baseline). FINRA short interest via curvedtrading (https://curvedtrading.com/stocks/gldg/short-interest/): 5.9M shares at the 2026-09-15 settlement, 11.1 days to cover. Earlier settlements: 5.7M / 6.4 days on 08-31 and 6.2M / 7.6 days on 08-14. That is about 2.7% of shares out. Days to cover is high only because US turnover is thin (about 508k shares a day), so the short is not crowded by share of float. No skew is available. The tape is weak: -14.05% over 20 days, -4.9% over 5 days, 58% off the 52-week high, and AAII headlined the stock down 7.02% on 2026-10-09 (https://www.aaii.com/investingideas/article/534729-why-goldmining-inc8217s-gldg-stock-is-down-702).",
+    "baseline_tension": "Both findings lean slightly negative, the same way as the -14% 20-day run-up. There is no skew to read. Both findings are small and mostly priced, so this does not cut against the baseline and adds almost nothing to it."
+   },
+   "flags": [],
+   "findings": [
+    {
+     "hunter": "GLDG",
+     "key": "GLDG#0",
+     "finding": "Q3 holdings markdown. GoldMining holds 21.5M Gold Royalty shares (US$70.0M at May 31, at fair value through OCI), 19.1M NevGold shares (C$57.8M) and 74% of consolidated U.S. GoldMining. GROY drifted down toward $2.97 by 2026-10-02 and USGO went from about $10.20 in May to about $8.13 in July. Q3 OCI and reported investment values will therefore show a markdown. None of it touches operating loss, and all of it is quoted daily.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001538847/000143774926023556/ex_985515.htm",
+     "source_date": "2026-07-14",
+     "expected_impact_pct": -0.1,
+     "cluster": "sec.gov",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "The Q2 release (2026-07-14, Q2 OCI loss C$7.0M) moved 0.0% per the baseline. No confirmed earnings release has a measurable reaction on this line.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.035,
+     "_legacy_residual_pct": -0.035
+    },
+    {
+     "hunter": "GLDG",
+     "key": "GLDG#1",
+     "finding": "Parent liquidity and ATM dilution. At May 31 cash was C$21.4M, of which C$8.2M sat inside USGO and was ring-fenced from the parent. The H1 operating loss was C$15.2M. Q3 carried the S\u00e3o Jorge 8,000 m RC program, the 1,218 m Yarumalito program (completed per the Oct 6 6-K) and Whistler drilling. The Q3 MD&A will therefore disclose ATM sales at prices below the C$1.66 Q2 average, or a sale of GROY shares, to fund the parent.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001538847/000143774926023556/ex_985515.htm",
+     "source_date": "2026-07-14",
+     "expected_impact_pct": -0.2,
+     "cluster": "sec.gov",
+     "lands_on": "financing",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "The Q2 release disclosed H1 ATM sales of 4.77M shares for C$10.1M, and the stock moved 0.0% (baseline, 2026-07-14).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.07,
+     "_legacy_residual_pct": -0.07
+    }
+   ],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -0.7,
+    "baseline_quality": 0.24,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.0,
+     "priced_direction": 0.0,
+     "event_plausibility": 0.6,
+     "history_events": 8,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.7,
+    "lessons_delta": 0.4,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "Rule 4 (financing is a question): the ATM and liquidity finding went from -0.5 to -0.2. The money funds drilling after three PEAs, there is no going-concern flag, and working capital includes C$157M of listed investments.",
+     "Rule 2 (one-offs): the OCI holdings markdown is filed as one_off and went from -0.2 to -0.1. It sits below operating income and has no path to any guide.",
+     "Rule 6 (bar): the EPS bar is a single weak aggregator estimate, so every size stays capped small. This was already applied in the draft.",
+     "Last section (wrong-event history): the baseline history was rebuilt from confirmed releases only. Q2 on 2026-07-14 moved 0.0%. This moved abs_move_pct from 3.0 to 2.5 and p_up from 46 to 48.",
+     "Rule 7: short interest was checked at 2.7% of shares out, not crowded. No change."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 2
+  },
+  {
+   "ticker": "RMCF",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.5,
+   "conviction": 0.5,
+   "priced_lean_pct": -0.889,
+   "hunter_view": {
+    "expected_move_pct": -0.52,
+    "print_vs_bar_pct": -5.0,
+    "bar": "unsourced: no analyst consensus exists (MarketBeat https://www.marketbeat.com/stocks/NASDAQ/RMCF/earnings/ shows dashes for every quarter; Yahoo and Benzinga show none). The only reference is the year-ago Q2 FY26: revenue $6.823m, EPS -$0.09 (https://www.sec.gov/Archives/edgar/data/0001616262/000143774925030944/ex_869724.htm). print_vs_bar_pct is against that year-ago revenue, and every finding is capped small.",
+    "positioning_check": "Short interest 63.9K shares at the 2026-09-15 settlement, 1.9 days to cover; 38.0K at 08-31; a one-off 570.5K at 08-14 (https://curvedtrading.com/stocks/rmcf/short-interest/, read 2026-10-09). That is about 0.7% of 9.44m shares outstanding (10-Q cover, 2026-07-07): not crowded, no squeeze mechanism. No options market, so no skew. The tape shows +20.45% over 5d and +17.78% over 20d into the print, at $1.06, -63.6% off the 52-week high. The five-day move follows the 2026-10-06 sale-leaseback 8-K. Concentrated insider and activist holders: interim CEO Harper's family (~13%), Geygan/GVIC, Craig.",
+    "baseline_tension": "The findings net slightly negative against a +20% five-day run-up, with no skew to read. The run-up is a known event (the sale-leaseback), not a priced disappointment. That argues for a modest give-back but is not evidence, so p_up stays near 50."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key",
+    "findings split 3 positive / 2 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "RMCF",
+     "key": "RMCF#0",
+     "finding": "Royalty and marketing fees are falling structurally under revised franchise agreements: Q1 FY27 franchise and royalty fees were $1.232m vs $1.655m (-26%). Units also fell 253 -> 250 in Q1, including Cold Stone co-branded 101 -> 98. Against Q2 FY26's $1.640m royalty line that is roughly -$0.4m of revenue. Net of product sales up ~3% on price, Q2 revenue likely prints below last year's $6.82m.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001616262/000121390026078026/ea029805101ex99-1.htm",
+     "source_date": "2026-07-14",
+     "expected_impact_pct": -0.6,
+     "cluster": "sec.gov",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "Q1 FY27 (revenue -4% YoY, wider loss) drew -1.96% (baseline, 2026-07-14). The Q3 FY26 print drew -7.01% (2026-01-13).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.21,
+     "_legacy_residual_pct": -0.21
+    },
+    {
+     "hunter": "RMCF",
+     "key": "RMCF#1",
+     "finding": "Q2 FY26 product and retail gross profit was negative (-$33k on $5.18m of sales), an easy comp. ICE cocoa traded around $5,000/t in mid-2026, against a 52-week high of $8,823, so a lagged input-cost tailwind is plausible. Against this, Q1 FY27 product margin fell to ~3.7% from ~6.9% despite cheaper cocoa.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001616262/000143774925030944/ex_869724.htm",
+     "source_date": "2025-10-13",
+     "expected_impact_pct": 0.2,
+     "cluster": "sec.gov",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "Margin narrative on the FY26 print ('strongest product margin profile in two years') drew -5.08% (2026-06-01, baseline). Margin has not been rewarded.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    },
+    {
+     "hunter": "RMCF",
+     "key": "RMCF#2",
+     "finding": "The $6.6m Durango sale-leaseback (closing ~2026-10-15) repays the 12% notes held by entities affiliated with directors Craig and Geygan. Those notes carry the breached liabilities-to-tangible-net-worth covenant (5.3:1 vs 2.0:1, waived only through 2026-08-31). The Q2 10-Q must therefore address covenant status and going concern with this as a subsequent event. Interest of ~$792k a year is replaced by $624k of rent rising 2% a year.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1616262/000121390026107214/ea0307800-8k_rocky.htm",
+     "source_date": "2026-10-06",
+     "expected_impact_pct": 0.2,
+     "cluster": "sec.gov",
+     "lands_on": "financing",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "No prior print turned on financing. The announcement itself coincides with the +20% five-day run-up in the baseline.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    },
+    {
+     "hunter": "RMCF",
+     "key": "RMCF#3",
+     "finding": "The board is running a strategic-alternatives review that includes a possible sale, with expressions of interest received (8-K 2026-08-12). The new lease's change-of-control buy-back clause shows a transaction is being planned for. Any update alongside the print, or on the first Q2 call under interim CEO Harper, is upside optionality.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1616262/000121390026087922/ea0301684-8k_rocky.htm",
+     "source_date": "2026-08-12",
+     "expected_impact_pct": 0.2,
+     "cluster": "sec.gov",
+     "lands_on": "other",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "None: the review is new.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    },
+    {
+     "hunter": "RMCF",
+     "key": "RMCF#4",
+     "finding": "Q2 costs carry several leadership and process changes: interim CEO Harper from 2026-06-30 (a 180-day term), a new COO on 2026-08-24, an auditor change on 2026-06-12, strategic-review advisers, and litigation professional fees cited in the FY26 release. Q1 FY27's operating loss had already widened to -$1.006m from -$0.145m. The Q2 loss is likely worse than last year's -$0.09/share.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001616262/000121390026078026/ea029805101ex99-1.htm",
+     "source_date": "2026-07-14",
+     "expected_impact_pct": -0.5,
+     "cluster": "sec.gov",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-12",
+     "reaction_history_on_this_line": "Wider losses: Q1 FY27 -1.96%, Q3 FY26 -7.01%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.175,
+     "_legacy_residual_pct": -0.175
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Sale-leaseback closing 'on or about 2026-10-15': cash moves and notes repaid. Whether the related-party put-like buy-back clause allows sale accounting and a gain that rebuilds equity is a Q3 matter.",
+     "expected_impact_pct": 0.3,
+     "resolves_by": "2026-10-15",
+     "source": "https://www.sec.gov/Archives/edgar/data/1616262/000121390026107214/ea0307800-8k_rocky.htm"
+    },
+    {
+     "finding": "Nasdaq equity cushion: stockholders' equity was $4.144m at 2026-05-31 and falls about $1m a quarter. A Q2 loss leaves it near $3m, still above the $2.5m Capital Market minimum. A breach is a Q3 (Nov 30) risk, visible in January 2027.",
+     "expected_impact_pct": -0.3,
+     "resolves_by": "2027-01-15",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001616262/000121390026078026/ea029805101ex99-1.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/5",
+    "edge_score_legacy": -1.4,
+    "baseline_quality": 0.4,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.0,
+     "priced_direction": 0.0,
+     "event_plausibility": 1.0,
+     "history_events": 6,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.4,
+    "lessons_delta": -0.1,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "Rule 6 (bar unsourced, no consensus anywhere): capped the two reported-quarter negatives, royalty attrition -0.8 -> -0.6 and costs/one-offs -0.6 -> -0.5, and moved p_up 45 -> 46",
+     "Rule 5 (proxy vs company number): cocoa tailwind +0.4 -> +0.2, because the company's own Q1 product margin fell despite cheaper cocoa",
+     "Rule 4 (financing is a question): answered. The money retires breached, related-party 12% debt and does not fund growth, and it is already in the run-up. Sign kept slightly positive, +0.3 -> +0.2",
+     "Rule 3 (caveat reaches the number): strategic review +0.3 -> +0.2, since the company said it will not update unless a deal is approved",
+     "Rule 9 (net of the rest): royalty finding sized net of product sales up ~3%",
+     "Rule 8 and the core: abs_move kept at 6.5, above the 4.37% median, for thin turnover; not shrunk for sign uncertainty"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 3
   },
   {
    "ticker": "MSS",
    "rankable": false,
-   "not_rankable_because": "no hunt",
+   "not_rankable_because": "hunter found no event on this date",
    "impact_sum": 0,
    "conviction": 0,
    "priced_lean_pct": 0.334,
-   "hunter_view": {},
-   "flags": [],
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": null,
+    "bar": "There is no bar. No consensus, guidance or analyst estimate could be sourced for FY2026 or Q1 FY2027. The last company numbers are Q3 FY2026: revenue $29.5M (down 8.7% year on year), gross margin 25.5%, net loss $5.2M (https://www.stocktitan.net/news/MSS/maison-solutions-inc-reports-fiscal-2026-third-quarter-crw0osgobxju.html, 2026-03-17).",
+    "positioning_check": "Not found for September 2026. The latest figure found is the 2026-06-30 settlement: 149,598 shares short, 1.0 days to cover (https://altindex.com/ticker/mss/short-interest). It predates the 1-for-5 reverse split on 2026-07-22 and the volume spikes since (69M and 99M shares in the weeks of 08-17 and 09-21). There is no option market and so no skew. The 20-day run-up is -6.7%, the 5-day +8.0%, and the stock is 96% below its 52-week high.",
+    "baseline_tension": "There is no skew to agree or disagree with. The baseline's 9.83% median reaction comes from two 2024-25 8-K 2.02 prints and misses the 2026-03-17 Q3 FY2026 release, which was not filed as item 2.02. That week the stock went from 10.45 to 7.70, roughly -26%. It is also irrelevant, because no print is scheduled."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
    "findings": [],
-   "outside_window": [],
+   "outside_window": [
+    {
+     "finding": "The overdue FY2026 10-K is the actual 'print'. The NT 10-K checked 'Yes' for a significant change in results against FY2025 but gave no numbers, and the audit was still incomplete. The company must submit a compliance plan by 2026-10-19 and may take until 2027-02-09 to file. A filing would cure part of the delinquency (good) and disclose a year of losses on a shrinking store base (bad), so the sign is unclear.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-10-19 at the earliest for the plan; 2027-02-09 is the outer limit for the 10-K",
+     "source": "https://www.sec.gov/Archives/edgar/data/1892292/000121390026082680/ea0299494-nt10k_maison.htm"
+    },
+    {
+     "finding": "The San Gabriel and Monrovia stores are being divested for $4.5M plus inventory, with closing expected on or before 2026-12-31.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.stocktitan.net/news/MSS/maison-solutions-issues-letter-to-shareholders-on-operational-reset-nqiya3qnnb95.html"
+    }
+   ],
    "diagnostics": {
-    "outside_window_sum_pct": 0,
+    "outside_window_sum_pct": 0.0,
     "residual_sum": null,
     "adversary_judged": "0/0",
     "edge_score_legacy": 0.0,
@@ -128,15 +468,17 @@
     "independent_clusters": 0,
     "cluster_names": [],
     "hunter_dispersion_pct": 0.0,
-    "hunters": 0,
-    "impact_sum_pre_lessons": null,
-    "lessons_delta": null,
-    "hunts_with_pre_lessons": "0/0",
-    "lessons_applied": [],
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed: 'a calendar row is a claim' and 'rebuild an untrustworthy reaction history from confirmed releases' agree with the draft. The rebuild (adding the 2026-03-17 release, about -26% on the week) only matters if a print exists, and none is scheduled."
+    ],
     "impact_sum_pre_local": null,
     "local_delta": null,
     "pre_local_variable": null,
-    "hunts_with_pre_local": "0/0",
+    "hunts_with_pre_local": "0/1",
     "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
    },
    "rank": null
@@ -144,16 +486,43 @@
   {
    "ticker": "NCPL",
    "rankable": false,
-   "not_rankable_because": "no hunt",
+   "not_rankable_because": "hunter found no event on this date",
    "impact_sum": 0,
    "conviction": 0,
    "priced_lean_pct": -6.833,
-   "hunter_view": {},
-   "flags": [],
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": null,
+    "bar": "none. There is no consensus, no guide and no confirmed release. The last results 8-K (Item 2.02) was 2025-12-15, and Q3 FY26 came only as a 10-Q on 2026-03-19. https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001414767&type=&dateb=&owner=include&count=40",
+    "positioning_check": "Short interest is negligible on the last readings found: about 53k shares, 0.7% of float, 0.3 days to cover as of 2026-07-15 (MarketBeat syndication, https://www.themarketsdaily.com/?p=9870615), and 113.6k shares, 1 day to cover and a 25.5% borrow fee as of 2026-06-30 (https://curvedtrading.com/stocks/ncpl/). Nothing found after July. Since then 20-day average volume has reached 21.9M, so the July figures do not describe the current float churn. The name has no options market, so there is no skew. The tape shows +136.7% over 20 days and -23.9% over 5 days, with 312% realised volatility: a retail momentum vehicle, not a positioned print.",
+    "baseline_tension": "The baseline itself flags the event as suspect (301 days since the last 2.02, ratio 3.44 to cadence), and the documents confirm the suspicion. The +137% 20-day run-up and -24% 5-day reversal are retail momentum on a name with no print to resolve them, so there is nothing to set against the tape."
+   },
+   "flags": [
+    "3 finding(s) worth -5.00 dated after the exit window, kept out of the key"
+   ],
    "findings": [],
-   "outside_window": [],
+   "outside_window": [
+    {
+     "finding": "The deadline for the Nasdaq plan to regain compliance under Rule 5250(c)(1), covering the delinquent FY2026 10-K and the Q1 FY27 10-Q, is 2026-10-23. Nasdaq may grant an exception to 2027-02-09, or the company can appeal to a Hearings Panel if the plan is rejected. Any outcome is disclosed after the exit window.",
+     "expected_impact_pct": -2.0,
+     "resolves_by": "2026-10-23",
+     "source": "https://www.sec.gov/Archives/edgar/data/1414767/000149315226044363/form8-k.htm"
+    },
+    {
+     "finding": "The minimum-bid-price compliance period runs to 2027-02-01, with any reverse split due 10 business days before. The stock is back near $1.06 after closing below $1 in the summer, so compliance or a reverse-split decision lands well after the window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-02-01",
+     "source": "https://www.sec.gov/Archives/edgar/data/1414767/000149315226036916/form8-k.htm"
+    },
+    {
+     "finding": "Restating FY2022-FY2025 and auditing FY2026 both still need a successor auditor, and none was named in the 2026-08-18 8-K or in any later filing. The 10-K is therefore months away, and the restatement size is still unquantified against about $13.9M of revenue the SEC alleges was improperly recognised.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2027-02-09",
+     "source": "https://www.sec.gov/Archives/edgar/data/1414767/000149315226038853/form8-k.htm"
+    }
+   ],
    "diagnostics": {
-    "outside_window_sum_pct": 0,
+    "outside_window_sum_pct": -5.0,
     "residual_sum": null,
     "adversary_judged": "0/0",
     "edge_score_legacy": 0.0,
@@ -169,56 +538,17 @@
     "independent_clusters": 0,
     "cluster_names": [],
     "hunter_dispersion_pct": 0.0,
-    "hunters": 0,
-    "impact_sum_pre_lessons": null,
-    "lessons_delta": null,
-    "hunts_with_pre_lessons": "0/0",
-    "lessons_applied": [],
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed: the draft already had zero findings because the event is not real ('A calendar row is a claim'), and the rule on untrustworthy history did not bite because no history was used for sizing"
+    ],
     "impact_sum_pre_local": null,
     "local_delta": null,
     "pre_local_variable": null,
-    "hunts_with_pre_local": "0/0",
-    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
-   },
-   "rank": null
-  },
-  {
-   "ticker": "RMCF",
-   "rankable": false,
-   "not_rankable_because": "no hunt",
-   "impact_sum": 0,
-   "conviction": 0,
-   "priced_lean_pct": -0.889,
-   "hunter_view": {},
-   "flags": [],
-   "findings": [],
-   "outside_window": [],
-   "diagnostics": {
-    "outside_window_sum_pct": 0,
-    "residual_sum": null,
-    "adversary_judged": "0/0",
-    "edge_score_legacy": 0.0,
-    "baseline_quality": 0.4,
-    "quality_parts": {
-     "history": 1.0,
-     "options": 0.0,
-     "priced_direction": 0.0,
-     "event_plausibility": 1.0,
-     "history_events": 6,
-     "atm_spread_frac": null
-    },
-    "independent_clusters": 0,
-    "cluster_names": [],
-    "hunter_dispersion_pct": 0.0,
-    "hunters": 0,
-    "impact_sum_pre_lessons": null,
-    "lessons_delta": null,
-    "hunts_with_pre_lessons": "0/0",
-    "lessons_applied": [],
-    "impact_sum_pre_local": null,
-    "local_delta": null,
-    "pre_local_variable": null,
-    "hunts_with_pre_local": "0/0",
+    "hunts_with_pre_local": "0/1",
     "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
    },
    "rank": null
