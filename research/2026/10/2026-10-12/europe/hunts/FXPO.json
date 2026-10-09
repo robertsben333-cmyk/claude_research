@@ -1,0 +1,48 @@
+{
+  "ticker": "FXPO",
+  "market": "UK",
+  "expected_move_pct": 0.0,
+  "conviction_note": "No results release exists on 2026-10-12. The row came from the UK RNS-calendar scraper, which read the sentence 'The next hearing before the Supreme Court is scheduled for 12 October 2026' in the FY2025 results RNS as a results date. Ferrexpo's own financial calendar (and its ICS entry) puts the next scheduled release, 3Q Production Results, on 2026-10-14, two sessions after the window closes. So event_confirmed is false, there are no findings and expected_move_pct is 0. abs_move_pct is 3.5 only because the stock still trades: an ordinary session at 66.6% annualised 20d vol (about 4.2% one-day sd), plus a small tail from the Ukrainian Supreme Court hearing that falls inside the window. That hearing has been adjourned repeatedly without a ruling, and nobody can say which way it goes, so p_up is 50.",
+  "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 3.5,
+  "p_up": 50,
+  "already_public": [
+    {"what": "1H 2026 interim results: revenue US$196m, underlying EBITDA -US$4m, net cash US$21m at 30 June; no interim dividend; no numeric guidance, outlook conditional on power, logistics, VAT refunds and legal proceedings", "date": "2026-09-25", "source": "https://www.investegate.co.uk/announcement/rns/ferrexpo--fxpo/interim-results-for-the-six-months-to-30-june-2026/9790278"},
+    {"what": "US$100m equity fundraise completed; share count now 1,046,985,626", "date": "2026-10-09", "source": "https://www.investegate.co.uk/announcement/rns/ferrexpo--fxpo/result-of-meeting/9816048"},
+    {"what": "General Meeting of 9 Oct 2026 passed all resolutions (2025 accounts, auditor) with about 99.7% support", "date": "2026-10-09", "source": "https://www.investegate.co.uk/announcement/rns/ferrexpo--fxpo/result-of-meeting/9816048"}
+  ],
+  "new_in_release": [
+    {"line": "other", "expect": "no release is scheduled inside the window. The next scheduled release is 3Q Production Results on 2026-10-14, outside it"}
+  ],
+  "bar": "unsourced: there is no print and a single analyst covers the name (baseline analyst_count 1)",
+  "event_confirmed": false,
+  "session_check": "not applicable: no release on 2026-10-12. The issuer's calendar ICS (https://www.ferrexpo.com/umbraco/Surface/EventsSurface/AddToCalendar?itemId=5535) dates 3Q Production Results 2026-10-14 (DTSTART 20261014T120000Z, probably a placeholder time). Ferrexpo's quarterly production RNSs have gone out at 07:00 London (Investegate, https://www.investegate.co.uk/company/FXPO).",
+  "positioning_check": "FCA aggregated register as of 2026-10-08 (position date 2026-09-21): 0.38% disclosed net short, down from 0.60%, so shorts are covering. This is small, not crowded. Source: https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+  "findings": [],
+  "outside_window": [
+    {"finding": "3Q 2026 Production Results, dated 2026-10-14 by the issuer's own financial calendar. It is the first quarterly production report since the US$100m raise and the 7 Sep 'Restart of production' RNS. This is the real event the vendor row was reaching for, and it falls two sessions after the window.", "expected_impact_pct": 0.0, "resolves_by": "2026-10-14", "source": "https://www.ferrexpo.com/investors/financial-calendar/"},
+    {"finding": "Appeal hearing on the arrest (freeze) of Fevamotinico/FAG's shares, scheduled for 13 October 2026 (interim results, note 21)", "expected_impact_pct": 0.0, "resolves_by": "2026-10-13", "source": "https://www.investegate.co.uk/announcement/rns/ferrexpo--fxpo/interim-results-for-the-six-months-to-30-june-2026/9790278"},
+    {"finding": "NOT a results event, but dated inside the window: the Ukrainian Supreme Court (17-judge panel) hearing on the UAH4.7bn (US$105.4m) contested-sureties claim against FPM is scheduled for 12 October 2026. The interim report says an adverse final ruling could let the claimant start enforcement and 'could have a material negative impact on the Group's business activities and its ability to continue as a going concern'. The hearing has been adjourned several times without a substantive decision, and the claim is fully provisioned. It is recorded here and not as a finding because this stage ranks a results print and none exists. Unsized: sign and timing are unknowable, and it feeds only the tail in abs_move_pct.", "expected_impact_pct": 0.0, "resolves_by": "2026-10-12", "source": "https://www.investegate.co.uk/announcement/rns/ferrexpo--fxpo/interim-results-for-the-six-months-to-30-june-2026/9790278"}
+  ],
+  "searched_and_found_nothing": [
+    "event check: https://www.investegate.co.uk/company/FXPO lists no results notice for 2026-10-12. The latest RNSs are Result of Meeting (09 Oct 12:00), TVR (30 Sep) and Interims (25 Sep 07:00)",
+    "event check: https://www.ferrexpo.com/investors/financial-calendar/ lists one upcoming event, '3Q Production Results', October 14th; the ICS confirms 2026-10-14",
+    "event check: universe.json's rns_dated quote for this row is 'The next hearing before the Supreme Court is scheduled for 12 October 2026' from https://www.investegate.co.uk/announcement/rns/ferrexpo--fxpo/full-year-financial-results-for-2025/9754947. That is a court-hearing date the scraper misclassified as a results date. The vendor's own next-earnings field reads 2027-03-17",
+    "web search 'Ferrexpo Supreme Court hearing October 2026': no press coverage of the 12 Oct hearing beyond the company's own filings",
+    "Sharecast, Proactive and Investors' Chronicle are known 403 on this path and were not retried"
+  ],
+  "rejected_candidates": [],
+  "baseline_tension": "Nothing here agrees or disagrees with the lean (+0.02) or the 20d run-up (+12.9%), because there is no print to weigh them against. Note that run_up_60d_pct (11026%) and realised_vol_60d_pct are Yahoo artefacts: the shares were suspended until 7 Sep 2026 and Yahoo carried the suspended price as 0.2858 (a pence/pounds unit error) through August.",
+  "language_note": ["Nothing the English sources did not already carry. The decisive documents were the issuer's own: the RNS record on Investegate and the financial calendar on ferrexpo.com. No domestic-UK press source added anything."],
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 3.5,
+    "p_up": 50,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed: with no event there are no findings for the file to resize, and its keep-findings-inside-the-window rule was already applied by putting the 14 Oct production report in outside_window"],
+  "sources_used": 7
+}
