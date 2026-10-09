@@ -51,3 +51,7 @@
 ## Stage EU — Europe researcher — STARTED
 - Logged at 2026-10-09 13:40 UTC
 - Fired 13:38 UTC 2026-10-09 (Friday; European markets still open, sealed spots are intraday, not closes). Sealing for event date 2026-10-12 (Monday, next European session). Plan: eu_universe -> seal baselines -> provenance -> one market hunter per name in waves of 5 -> edge_score -> panel -> note. No orders. Note: origin/main was force-rewritten (no merge base with the container's stale local main); working from a branch off origin/main ea9ad133, pushing HEAD:main.
+
+## Stage EU — universe and baselines sealed
+- Logged at 2026-10-09 13:43 UTC
+- eu_universe.py --date 2026-10-12: 5 scheduled (uk 4, pl 1), 3 eligible at $100k floor, 3 hunted (all eligible, under cap 20): uk FXPO (Ferrexpo, rns), SDG (Sanderson Design, vendor+rns), SWC (Smarter Web Company, rns). Dropped below floor: AREC ($27k/day), pl HPM ($2k/day). Concentration 100% uk, 1 market. No market_closed. Calendar: UK RNS calendar read (added AREC/SWC/FXPO, confirmed SDG), Yahoo read in all ten (0 added), issuer calendars read (EQS, Inderes, Nasdaq fincal, Euronext Oslo, bankier). All three session_unresolved (defaulted bmo). Baselines sealed ~13:45 UTC on intraday prices (not closes); FCA register read as_of 2026-10-08, anchor_covered true on 1 (FXPO 0.38%); history observed_rns on all 3. provenance stamped (uk.v7, claude-opus-5-5). Wave 1 of 1: 3 unpriced-hunter-uk launched.
