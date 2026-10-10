@@ -1120,8 +1120,11 @@ there is no free control to beat. **0.81 events a session**, so a within-day ρ 
 does not exist and the stage is judged POOLED on moves net of IWM
 (`ipo_resolve.py --pool`). The panel runs through `scripts/market_panel.py --market IPO`
 with its OWN judges, `panel-judge-ipo-*` from `config/panel-judge-ipo.md` (told the
-window is intraday, so they do not size the pop), and a **60-name** history window
-instead of 200, so its own sizes replace the borrowed E-P seed within months. IPO runs
+window is intraday, so they do not size the pop), and a **60-name** history window.
+**Each judge's top 20% starts from our own estimate (operator, 2026-10-10, to be
+refined)**: E-P's sizes × 0.674, the ratio of the IPO windows' median |move| (3.70%) to
+stage E's (5.49%), seeded as 60 quantiles so day one reads Opus 5 1.42, Opus 5.5 0.97,
+Sonnet 5.5 0.85, Fable 5.1 1.04 (`ipo_hunt.panel_seed`); debuts and lock-ups share it. IPO runs
 are kept out of `score_report.py`'s percentile reference: an intraday window is not on
 an earnings scale. The baseline's EDGAR block is cut at the event date, so a validation
 or backfill run cannot hand a hunter a later filing. Validated end to end on 2026-08-05

@@ -123,12 +123,13 @@ Each judge gets this prompt and nothing else: *"Follow your definition. Your pac
 Read and Write."* Never give a judge the hunts, the scores, another judge's file or your
 own view.
 
-**The first IPO panel run seeds the history.** If `score` stops on a missing
-`researcher_ipo/analysis/panel-history.json`, run
-`python3 scripts/market_panel.py seed --market IPO` once and score again. The seed is
-stage E-P's earnings-scale history; this stage reads only the last 60 names, so its own
-sizes replace the seed within a few months. Until then "own top 20%" is measured against
-earnings prints and the selection will be sparse. Say so in the note.
+**The panel history is already seeded, with our own estimate of each judge's top 20%**
+(`config/pipeline.yaml`, `ipo_hunt.panel_seed`): stage E-P's sizes scaled by 0.674, the
+ratio of the IPO windows' median move (3.70%) to an earnings print's (5.49%), so the
+first day's lines are Opus 5 1.42, Opus 5.5 0.97, Sonnet 5.5 0.85 and Fable 5.1 1.04
+points. Never re-seed from a run. The judges' own IPO sizes replace the seed one for one
+over the first 60 names. Say in the note that the thresholds are still the estimate, and
+that debuts and lock-ups share one threshold although debuts move almost twice as much.
 
 **5. Note.** `<RUN>/ipo-note.md`, answer first:
 

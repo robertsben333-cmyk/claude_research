@@ -383,17 +383,43 @@ def cmd_pool(a):
 # ---------------------------------------------------------------- seed
 
 def cmd_seed(a):
+    """Seed a market's history once. `--scale k` multiplies every borrowed size by k, for
+    a market whose window moves on a different scale from an earnings print (stage IPO:
+    the ratio of its median absolute move to stage E's, from config `ipo_hunt.panel_seed`).
+    A member's "top 20%" is the 80th percentile of |impact_sum|, so scaling the seed
+    scales that line by exactly k and leaves the ranking within the seed unchanged."""
     dest = REPO / MARKETS[a.market]["history"]
     if dest.exists():
-        sys.exit(f"{dest} exists; the seed is written once and never refreshed")
+        sys.exit(f"{dest} exists; the seed is written once and never refreshed "
+                 "(delete it deliberately to re-seed before the market's first panel day)")
     us = json.load(open(PS.HISTORY))
+    k = float(a.scale) if a.scale else 1.0
     doc = {"_seed": {"from": str(PS.HISTORY.relative_to(REPO)),
                      "copied_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                     "scale": k, "scale_basis": a.basis,
                      "note": ("Frozen copy of stage E-P's member history, so each member has a "
-                              "scale before this market's first panel day. This market's own "
-                              "sizes are appended after it and push it out of the window.")}}
+                              "scale before this market's first panel day"
+                              + (f", every size multiplied by {k}" if k != 1.0 else "")
+                              + ". This market's own sizes are appended after it and push it "
+                              "out of the window.")}}
+    win = MARKETS[a.market].get("history_window")
     for m in PS.MEMBERS:
-        doc[m] = list(us.get(m, []))
+        src = us.get(m, [])
+        if win:
+            # A market that reads a SHORTER window than E-P's 200 gets that many evenly
+            # spaced quantiles of E-P's 200-name window, not E-P's last `win` sizes, so
+            # its first day's thresholds are E-P's thresholds (times k) rather than
+            # whatever E-P's most recent days happened to size.
+            ref = sorted(abs(x.get("impact_sum") or 0.0) for x in src[-int(cfg().get("history_window", 200)):])
+            pick = [ref[min(len(ref) - 1, int((i + 0.5) * len(ref) / win))] for i in range(win)]
+            doc[m] = [{"id": f"seed/{a.market.lower()}/q{i:02d}", "impact_sum": round(v * k, 4),
+                       "seed_scaled_from": v, "source": "seed"} for i, v in enumerate(pick)]
+            doc["_seed"]["method"] = (f"{win} evenly spaced quantiles of |impact_sum| over stage "
+                                      f"E-P's last {len(ref)} sizes per member, times {k}")
+        else:
+            doc[m] = [dict(x, impact_sum=round((x.get("impact_sum") or 0.0) * k, 4),
+                           **({"seed_scaled_from": x.get("impact_sum")} if k != 1.0 else {}))
+                      for x in src]
     dest.parent.mkdir(parents=True, exist_ok=True)
     json.dump(doc, open(dest, "w"), indent=1)
     print(f"{dest.relative_to(REPO)}: seeded {', '.join(f'{m} {len(doc[m])}' for m in PS.MEMBERS)}")
@@ -407,6 +433,9 @@ def main():
         p.add_argument("--market", choices=sorted(MARKETS), required=name != "pool")
         if name not in ("pool", "seed"):
             p.add_argument("--run", required=True)
+        if name == "seed":
+            p.add_argument("--scale", help="multiply every borrowed size by this factor")
+            p.add_argument("--basis", help="one line: where the factor comes from")
         if name == "score":
             p.add_argument("--dry-run", action="store_true",
                            help="score without appending to the history or stamping provenance")

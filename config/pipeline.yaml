@@ -1211,4 +1211,20 @@ ipo_hunt:
   # ON OR AFTER 2026-11-02, or it fires at 07:35 ET (harmless, an hour more pre-market).
   fire_time_et: "08:35"
   panel: true                    # step 4p, scripts/market_panel.py --market IPO
+  # OUR OWN ESTIMATE OF EACH JUDGE'S "TOP 20%" (2026-10-10, operator's instruction; to be
+  # refined). The panel selects a name when 3 of 4 judges put it in their own top 20%,
+  # read off each judge's recent history. A new market has no history, so the regional
+  # stages borrow stage E-P's, which is on an EARNINGS scale. An IPO window moves less:
+  # median |move| 3.70% over phase 0's 189 debuts and 137 lock-ups pooled, against 5.49%
+  # for stage E's 182 resolved names (dashboard/data/ledger.json, mv_close). So the seed
+  # is 60 evenly spaced quantiles of each judge's last 200 E-P sizes, x 0.674, which
+  # moves each judge's 80th-percentile line by that factor: Opus 5 2.10 -> 1.42, Opus 5.5
+  # 1.40 -> 0.97, Sonnet 5.5 1.25 -> 0.85, Fable 5.1 1.44 -> 1.04 (read back from
+  # panel_score.member_stats on the seeded file). REFINE FIRST: debuts (4.83%) and lock-ups
+  # (2.78%) share one threshold, so lock-ups will reach a judge's top 20% less often; and
+  # the judges' own IPO sizes replace the seed after 60 names (history_window).
+  panel_seed:
+    scale: 0.674
+    ipo_median_abs_move_pct: 3.70
+    earnings_median_abs_move_pct: 5.49
   place_orders: false

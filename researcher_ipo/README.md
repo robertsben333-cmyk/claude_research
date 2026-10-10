@@ -91,11 +91,32 @@ ipo_backtest.py     phase 0
 
 The panel's judges are their own set, `panel-judge-ipo-*`, generated from
 `config/panel-judge-ipo.md` by `scripts/sync_hunter_core.py`, because a judge left to its
-earnings habits would size the offer-to-open pop. The panel history
-(`analysis/panel-history.json`) was seeded once with stage E-P's history and is read
-over the last **60** names rather than 200, so this stage's own sizes replace the
-earnings-scale seed within a few months rather than most of a year. Until they do, "own
-top 20%" is measured against earnings prints, and the selection will be sparse.
+earnings habits would size the offer-to-open pop.
+
+**Each judge's "top 20%" starts from our own estimate, not from earnings prints**
+(2026-10-10, operator's instruction, to be refined). The selection rule reads each
+judge's sizes against its own recent history, and a new stage has none. The regional
+stages borrow stage E-P's, which is on an earnings scale. An IPO window moves less: a
+median absolute move of **3.70%** over phase 0's 326 events against **5.49%** for stage
+E's 182 resolved names (`dashboard/data/ledger.json`, `mv_close`). So
+`analysis/panel-history.json` holds 60 evenly spaced quantiles of each judge's last 200
+E-P sizes, times **0.674**, and the first day's lines are:
+
+| judge | E-P top 20% from | IPO estimate |
+| --- | --- | --- |
+| Opus 5 | 2.10 | **1.42** |
+| Opus 5.5 | 1.40 | **0.97** |
+| Sonnet 5.5 | 1.25 | **0.85** |
+| Fable 5.1 | 1.44 | **1.04** |
+
+The panel reads only the last 60 sizes, so each judged IPO name pushes out one seed entry
+and the judges' own scale has fully replaced the estimate after 60 names (about three
+months). Two refinements to make first: debuts (median 4.83%) and lock-ups (2.78%) share
+one threshold, so lock-ups will reach a top 20% less often; and the ratio assumes the
+judges size an IPO event in proportion to how far it moves, which their first weeks will
+show or refute. The factor is in `config/pipeline.yaml`, `ipo_hunt.panel_seed`;
+`market_panel.py seed --market IPO --scale <k>` rebuilds the file before the first panel
+day, never after.
 
 ## Validation, 2026-10-09
 
