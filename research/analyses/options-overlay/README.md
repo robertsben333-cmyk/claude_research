@@ -74,6 +74,29 @@ The binary gated on the judge's own `p_up` beating the price paid: `us.v9` 7 nam
    top quarter is 59% or wider. The stock book's names are thin, and their options are
    thinner.
 
+## Follow-up: the vertical spread (bull call / bear put), 2026-10-10
+
+Xavier asked for the two-option combination that limits both the loss and the gain and is
+meant for a big move one way. That is a vertical spread: buy the ATM call, sell a higher
+call (or the put mirror for a short call). Priced the same way, with the short strike one
+or two event-implied moves away, the short leg paying the same dollar half spread as the
+long leg, and a spread worth less than its closing costs left to lapse rather than closed.
+
+| `us.v4` Opus 5, \|impact_sum\| >= 3.0 | n | stock | bull/bear 1x implied | bull/bear 2x implied |
+|---|---|---|---|---|
+| all confident names, net | 21 | +2.3% (p 0.54) | -34.2% (p 0.08) | -6.6% (p 0.83) |
+| at mid | 21 | | +26.4% (p 0.36) | +41.8% (p 0.28) |
+| filled halfway inside the spread | 21 | | -15.3% (p 0.49) | +10.7% (p 0.75) |
+| long calls only (bull call spread), net | 10 | +8.5% (70% right, p 0.10) | -11.0% (p 0.66) | +14.9% (p 0.69) |
+
+Opus 5.5 October: stage E 2 names -35% / -45%, E-P 3 names -27% / -33%. Too few.
+
+It does not rescue the trade, for two reasons. Two legs means paying the spread twice on
+thin chains. And the short strike sells exactly the big move the market already
+overprices: the cap sits at the implied move, which these names usually do not reach
+(median realised 0.65x implied), so the spread rarely pays its maximum (about +90% of
+the debit at 1x) and often expires worthless (median -100%).
+
 ## What would change the answer
 
 The binary on panel-selected names is the only arm that leans positive on every sample,

@@ -104,6 +104,23 @@ def price_name(n, opt, tape, seal_utc, side, abs_pred=None, p_up=None,
         out['option'] = rt(c0, c1); out['binary'] = rt(dc0, dc1); q = dc0
     else:
         out['option'] = rt(p0, p1); out['binary'] = rt(dp0, dp1); q = dp0
+    # vertical spread (bull call / bear put): buy ATM, sell the strike one or two
+    # event-implied moves away. The short leg pays the same DOLLAR half spread as
+    # the ATM leg (adjacent strikes quote similar widths), so both legs cost.
+    w = (opt.get('event_implied_move_pct') or opt.get('straddle_implied_move_pct') or 0) / 100
+    hs_atm = h * (c0 if side > 0 else p0)
+    for mult in (1, 2):
+        K2 = S0 * (1 + side * mult * w)
+        a0, b0, _, _ = bs(S0, K2, Te, ve)
+        a1, b1, _, _ = bs(S1, K2, Tx, vx)
+        if side > 0:
+            long0, long1, sh0, sh1 = c0, c1, a0, a1
+        else:
+            long0, long1, sh0, sh1 = p0, p1, b0, b1
+        debit = (long0 + hs_atm) - max(sh0 - hs_atm, 0)
+        exitv = max(max(long1 - hs_atm, 0) - (sh1 + hs_atm), 0)   # never pay to close: let it lapse
+        out[f'vertical_{mult}x'] = (exitv - debit) / debit * 100 if debit > 0 else None
+        out[f'vertical_{mult}x_max_gain'] = (mult * w * S0 - debit) / debit * 100 if debit > 0 else None
     st0, st1 = c0 + p0, c1 + p1
     out['straddle'] = rt(st0, st1)
     # option P&L expressed per unit of stock notional, to compare leverage-free
@@ -172,7 +189,7 @@ def usable(n, b):
         return 'quote spread >= 100% of mid'
     return None
 
-STRATS = ['stock', 'option', 'binary', 'straddle', 'straddle_cond']
+STRATS = ['stock', 'option', 'vertical_1x', 'vertical_2x', 'binary', 'straddle', 'straddle_cond']
 
 def evaluate(group, members, **kw):
     """members: list of (ledger_row, side, abs_pred, p_up)."""
@@ -323,7 +340,13 @@ def main():
                           ('IV only half crushed (post vol 1.5x realised)', {'crush': 1.5})):
             e = evaluate(g['group'], members, **kw)
             sens.append({'group': g['group'], 'variant': label,
-                         'summary': {s: e['summary'][s] for s in ('option', 'binary', 'straddle')}})
+                         'summary': {s: e['summary'][s] for s in ('option', 'vertical_1x', 'vertical_2x', 'binary', 'straddle')}})
+    # the vertical on the long side only (the 'big positive move' case)
+    for g in out:
+        up = [r for r in g['rows'] if r['side'] > 0]
+        g['summary']['vertical_1x_longs_only'] = summarise([r.get('vertical_1x') for r in up])
+        g['summary']['vertical_2x_longs_only'] = summarise([r.get('vertical_2x') for r in up])
+        g['summary']['stock_longs_only'] = summarise([r['stock'] for r in up])
     json.dump({'generated_utc': dt.datetime.now(dt.timezone.utc).isoformat(), 'note': __doc__,
                'groups': out, 'sensitivity': sens, 'market': market},
               open(os.path.join(HERE, 'results.json'), 'w'), indent=1, default=str)
