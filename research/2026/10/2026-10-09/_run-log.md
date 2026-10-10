@@ -120,3 +120,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-10-09 19:04 UTC
 - 19:05 UTC = 15:05 ET, inside screen window. Plan: intraday screen k=15, seal baselines, 15 reversal-hunters, edge_score, resolve previous run, note before 16:00 ET (shed names if late).
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-09 19:15 UTC
+- Intraday screen 15:05 EDT (rev_universe --intraday), 46 passed floors, 15 hunted, all 15 baselines sealed 19:05 UTC before hunters, all rankable, nothing shed. One floor-clearer: GMEX -3.00 (leg-2 supply, no repricing leg). Leg 1 non-zero on 2/15 (IMCC -1.5 with weekend-F-3 mechanism, ARQQ +0.4 pattern-dated). Resolved 10-07 (hunt rho -0.525 d1 vs neg_atr14 -0.171, lean_vs_free_control -0.22) and 10-06 (hunt -0.093 vs neg_atr14 +0.547): neither beats the free controls. No 10-08 stage R run exists and no 10-08 run-log entry: check list_triggers. Hunter concurrency capped at 8, so hunts ran in two waves. requests module was missing from the container and was pip-installed before the screen. provenance rev.v7 / claude-opus-5-5. Note published ~15:16 ET, before the close.
