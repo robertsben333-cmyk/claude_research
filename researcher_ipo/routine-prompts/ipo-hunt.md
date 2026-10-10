@@ -15,11 +15,15 @@ baseline is written before any hunter starts.
 **It does not collide with anything.** Stage EU fires at 13:30 UTC, stage D at 17:35,
 stage E at 17:04, E-P at 17:06, stage R at 19:00, stage CA at 18:30.
 
-**Not yet created.** Create it as a fresh-session-per-fire Routine, pinned to Opus, with
-the text below, once `researcher_ipo/` is on `main`. If it is created from a session,
-`update_trigger` works on it and this file and the Routine must move in the same commit.
-Read the model back after creating it: on this account `claude-opus-5` is stored as
-`claude-opus-5-5`.
+**The Routine exists: `trig_0151AcWhPPsmpobGGeDQ1JbA`, "Stage IPO — IPO researcher
+(debuts + lock-ups)", created from a session on 2026-10-10 at 21:56 UTC, enabled, a fresh
+session per fire, cron `35 12 * * 1-5`, first fire 2026-10-12 12:35 UTC.** It came back
+with an empty `model`, was pinned the same minute, and reads back `claude-opus-5-5`. Like
+stages CA and R it stores no MCP connectors and empty `sources`, `outcomes` and
+`allowed_tools`, so step 0 clones the repo itself; the first fire is the check that this
+path works for this stage too. Created by a session, so `update_trigger` works on it and
+**this file and the Routine must move in the same commit.** The text below is the text
+pasted.
 
 ---
 
@@ -51,7 +55,7 @@ FOUR THINGS THAT BELONG IN THE NOTE EVERY TIME:
   - THE FUNNEL: debuts and lock-ups scheduled, SPACs dropped, under the deal-size or turnover floor, already trading, kept.
   - WHICH DEBUTS WERE SEALED ON A RANGE (`offer_price_final: false`): the deal had not flipped to priced on Nasdaq's calendar at 08:35 ET.
   - FOR EVERY LOCK-UP, WHETHER THE HUNTER FOUND AN EARLY RELEASE, A WAIVER OR A FOLLOW-ON. Nasdaq's date is nominal; a staged release or a follow-on with its own lock-up can mean the shares were freed weeks ago, and then the event is not today's.
-  - THE PANEL'S STATE: which judges ran, and that its member scales are still mostly the borrowed earnings-scale seed until about 60 IPO names have been judged.
+  - THE PANEL'S STATE: which judges ran, and that each judge's top-20% line is still our own ESTIMATE (stage E-P's sizes x 0.674, config ipo_hunt.panel_seed) until about 60 IPO names have been judged, with debuts and lock-ups sharing one threshold.
 
 Work on the `main` branch. Publish the STARTED heartbeat before you spawn a single hunter, publish after each wave and after the panel, and finish with `python3 scripts/update_index.py` then `scripts/publish.sh "stage IPO: IPO ranking for <date>"`. This session is ephemeral; anything not pushed is lost. Publish SOMETHING even on an empty day or a failure: a fire that publishes nothing cannot be told apart from a Routine that never fired.
 

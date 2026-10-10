@@ -132,9 +132,10 @@ before the nominal lock-up date.
 
 ## Not yet done
 
-- **The Routine does not exist yet.** The text is in `routine-prompts/ipo-hunt.md`;
-  proposed cron `35 12 * * 1-5` (08:35 New York), moving to `35 13` on or after
-  2026-11-02.
+- **The Routine exists but has not fired.** `trig_0151AcWhPPsmpobGGeDQ1JbA`, created
+  2026-10-10, cron `35 12 * * 1-5` (08:35 New York, **move to `35 13` on or after
+  2026-11-02**), model read back as `claude-opus-5-5`, first fire 2026-10-12. Its text is
+  `routine-prompts/ipo-hunt.md`.
 - **No real hunter has run.** The first live day is the first test of the hunter
   definition.
 - **The dashboard has no IPO tab.** `dashboard/scripts/build_markets.py` does not read
