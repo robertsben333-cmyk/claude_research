@@ -23,3 +23,7 @@
 ## Stage IPO — IPO researcher — STARTED
 - Logged at 2026-10-12 12:38 UTC
 - 2026-10-12 (Mon). Universe → seal → provenance → one unpriced-hunter-ipo per name → edge_score → four-model IPO panel → note. No orders.
+
+## Stage IPO — IPO researcher — EMPTY DAY
+- Logged at 2026-10-12 12:51 UTC
+- NYSE open (market_closed null); eligible 0: no debut first-trades 2026-10-12 and no lock-up's first free session is today. Funnel all zeros (debut_scheduled 0, lockup_scheduled 0). Cross-checked against Nasdaq's IPO calendar at 12:51 UTC: last priced RTSN/TRXB 10-09, next upcoming IAM 10-15 and CTY 10-16. No hunters, no panel, no orders. Note: ipo_universe.py needed 'pip install requests' in this container and took ~12 min to run.
