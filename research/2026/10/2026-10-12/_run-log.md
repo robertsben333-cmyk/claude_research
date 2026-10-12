@@ -15,3 +15,7 @@
 ## Stage J — Japan researcher — market closed
 - Logged at 2026-10-12 01:05 UTC
 - 2026-10-12 is スポーツの日 (国民の祝日): universe.json market_closed='public holiday: スポーツの日', scheduled_today 0. Nothing to hunt, no hunters spawned, no panel. Sheets read: kessan08_1002 (as_of 2026-10-01), kessan09_1009 (as_of 2026-10-08). No orders (stage J never places any).
+
+## Close AMC — 2026-10-12 10:14 UTC
+- Logged at 2026-10-12 10:21 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc_open, amc -> day order queued for open). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no orders sent, no refusals. Account reachable.
