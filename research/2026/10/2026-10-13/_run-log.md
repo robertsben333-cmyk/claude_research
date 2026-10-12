@@ -23,3 +23,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-12 13:58 UTC
 - 5 packs, four judges
+
+## Stage EU — Europe ranking for 2026-10-13 — DONE
+- Logged at 2026-10-12 14:03 UTC
+- Sealed for 2026-10-13 (next European session). 6 eligible (uk 5, no 1), 5 ranked, 0 above floor 2.8. Top GNC +0.90, bottom BWY -1.00. ENSI phantom (results 2026-10-05; rns calendar read an IMC presentation date). Panel: 4/4 members, 0 selected. Pushed to main via publish.sh (EARNINGS_DATA_BRANCH=main).
