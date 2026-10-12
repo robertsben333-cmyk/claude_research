@@ -25,6 +25,9 @@ dashboard/
   data/assets.json          shortability per ticker (cached, Alpaca)
   data/costs.csv            measured tokens per run, if you have them — else a proxy
   scripts/serve.py          localhost server that makes the page's refresh button real
+  scripts/build_scorebord.py  the compact scorebord.html: only the strong calls (top 20%
+                            of the model's own reference, or a 3-of-4 panel pick), live
+                            and resolved per prompt version; served at <site>/scorebord.html
   dashboard.html            open it from disk; no server, no network, no CDN
   LOG.md                    what each update changed, and what it now reads
 ```

@@ -72,6 +72,11 @@ python3 dashboard/scripts/build_v2.py \
 python3 dashboard/scripts/build_ledger.py "${LEDGER_ARGS[@]+"${LEDGER_ARGS[@]}"}"
 python3 dashboard/scripts/build_dashboard.py
 
+# The compact scorebord: only the strong calls, live and resolved. It reads the two
+# files above and Yahoo; a failure leaves the last scorebord.html standing.
+python3 dashboard/scripts/build_scorebord.py \
+  || echo "update: scorebord failed, scorebord.html keeps the last one"
+
 echo
 if curl -fsS --max-time 1 "http://127.0.0.1:$PORT/ping" >/dev/null 2>&1; then
   echo "open: http://127.0.0.1:$PORT/dashboard.html  (server draait — de knop werkt)"
