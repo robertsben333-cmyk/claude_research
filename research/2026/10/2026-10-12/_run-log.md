@@ -43,3 +43,7 @@
 ## Edge hunt — 2026-10-12 amc + 2026-10-13 bmo — DONE
 - Logged at 2026-10-12 17:28 UTC
 - Sweep confirmed 9 of 9 (all bmo 10-13, company sources), 0 phantoms. 9 hunters (one per name, us.v9, all returned pre_lessons + print_vs_bar_pct). 0 of 9 clear the 2.8 key floor; 0 of 9 clear the 1.76 impact_scaled book floor. Key range +1.00 (UNH) to -2.10 (DPZ). V2 calibrated (186 obs). Step 7: execution.enabled true; plan (read-only) -> no name meets the benchmark, nothing to trade; open not called, no orders. Step 0b: verify --fix --submit DENIED twice by auto-mode classifier [Real-World Transactions] despite the narrow allow rule in .claude/settings.json; read-only status shows equity = cash $11,200.86, no open positions, so nothing was left unsold. The allow rule did NOT hold for --submit calls this run; read-only subcommands (assets, plan, status) ran. edge_context: Trends search failed for all names. 6c shadow ledger skipped (optional). Routine prompt still says 17:04 UTC fire / step-0b flatten; skill's amc_open three-call form was attempted instead.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-12 17:31 UTC
+- 9 of 9 searchers returned (all hunts on the current contract). edge_score: 9 rankable, 0 clear the 2.8 floor (max |impact_sum| 0.90, ACI/GS). V2 grounded written (9/9, 186 ledger obs). 9 packs, four judges.
