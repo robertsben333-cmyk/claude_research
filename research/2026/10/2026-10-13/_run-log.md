@@ -19,3 +19,7 @@
 ## Stage EU — wave 1 done
 - Logged at 2026-10-12 13:57 UTC
 - 5 UK hunters returned: BWY -1.0, BYIT -0.85, GNC +0.9, YOU +0.4, ENSI event_confirmed false (results were 2026-10-05; 13 Oct is an IMC presentation). ABG (no) running.
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-12 13:58 UTC
+- 5 packs, four judges
