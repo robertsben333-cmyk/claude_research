@@ -48,14 +48,16 @@ permissions:
   pages: write
   id-token: write
 
-# One at a time: two runs would race on the same commit to main.
-concurrency:
-  group: dashboard
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    # One build at a time: two would race on the same commit to main. The group is
+    # on the build job, NOT the workflow: from 2026-10-06 to 10-12 one deploy job sat
+    # "waiting" on the github-pages environment for six days, and with the group on
+    # the whole workflow every later run queued behind it and was cancelled unbuilt.
+    concurrency:
+      group: dashboard
+      cancel-in-progress: false
     outputs:
       pages: ${{ steps.pages.outcome }}
     steps:
@@ -178,6 +180,11 @@ jobs:
     needs: build
     if: needs.build.outputs.pages == 'success'
     runs-on: ubuntu-latest
+    # A newer deploy replaces a stuck one rather than queueing behind it.
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
