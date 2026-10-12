@@ -8,7 +8,7 @@ Two questions, one page (`dashboard/scorebord.html`):
 
 A "strong score" is one of two things, nothing else:
 
-  * hunter stages (US E, D, R, EU, JP, AU, CA): |impact_sum| in the top 20% of the
+  * hunter stages (US E, D, EU, JP, AU, CA): |impact_sum| in the top 20% of the
     SAME model's reference names, as `score_report.Percentiles` measured it before
     that run (the bracket score_report printed that day). For Opus 5.5 that cut is
     the 2.8 floor; for Opus 5 it is 5.25.
@@ -17,8 +17,8 @@ A "strong score" is one of two things, nothing else:
 
 Resolved outcomes are read, never recomputed, wherever a resolver already wrote one:
 the US ledger's strategy exit (`mv_strategy`) for E, E-P and D, the market resolvers
-through `markets.json` for EU/JP/AU/CA. Stage R has no resolver output on disk, so its
-window (close of the drop day to the next close) is priced here from Yahoo daily bars.
+through `markets.json` for EU/JP/AU/CA. Stage R is left out on purpose: it is a
+different event (yesterday's losers, not an earnings print) and does not belong here.
 Live returns come from Yahoo at build time. Read-only: no order is ever touched.
 
 Run after `build_ledger.py` and `build_markets.py`; `update.sh` does that.
@@ -276,26 +276,9 @@ us_side_stage("research/*/*/*/edge-panel/edge-scores-panel.json", "US · E-P pan
               "US-P", pick_panel)
 us_side_stage("research/*/*/*/edge-deep/edge-scores.json", "US · D", "US-D", pick_top)
 
-# Stage R: no resolver output on disk, so the window is priced here.
-for f in sorted(glob.glob(str(ROOT / "research/*/*/*/reversal/edge-scores.json"))):
-    doc = load(f) or {}
-    if "synthetic" in json.dumps(doc.get("note") or "").lower():
-        continue
-    run = str(Path(f).parent.relative_to(ROOT))
-    run_date = Path(f).parent.parent.name
-    ver, model, mshort, sept = prov(run, "R")
-    if sept:
-        continue
-    for r, side, why in pick_top(run, f, model):
-        b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
-        w = window(r["ticker"], b.get("drop_date") or run_date, False)
-        if w and w["state"] == "gesloten":
-            resolved.append(dict(stage="US · R", version=ver, model=mshort,
-                                 ticker=r["ticker"], run_date=run_date,
-                                 ret=side * w["move"], kind=why))
-        elif recent(run_date):
-            live_row(stage="US · R", ticker=r["ticker"], company=b.get("company"),
-                     run_date=run_date, score=r["impact_sum"], why=why, side=side, w=w)
+# Stage R (the reversal researcher) is deliberately absent (operator, 2026-10-12): it
+# predicts a different event with a different model of the market, so its calls are
+# not comparable with the earnings stages and must not sit in the same table.
 
 # The four order-less markets, through markets.json and their own resolvers.
 SUFFIX = {"JP": ".T", "AU": ".AX", "CA": ".TO"}
