@@ -58,3 +58,7 @@
 ## Deep research — 2026-10-12 — DONE
 - Logged at 2026-10-12 18:13 UTC
 - Drew ACI,DPZ,JNJ; all 3 hunts carry freezes; scored 18:13 UTC (14:13 ET), none above floor; all no_trade low; deep-question-researcher ran as the registered agent; no orders
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-12 18:33 UTC
+- 18:33 UTC fire. Plan: ca_universe.py -> seal baselines -> unpriced-hunter-ca waves -> edge_score -> four-model panel -> note. Note: 2026-10-12 is Canadian Thanksgiving; universe will report market_closed if TSX is shut.
