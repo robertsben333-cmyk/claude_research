@@ -7,3 +7,7 @@
 ## Stage AU — Australia researcher — EMPTY UNIVERSE
 - Logged at 2026-10-12 06:41 UTC
 - au_universe.py: 1575 vendor rows, 0 scheduled for 2026-10-13, 0 eligible, 0 hunted. market_open=true (basis: weekday, not an ASX holiday; the index tape read cleanly, so this is not a fetch fault). A thin Australian session outside the Feb/Aug reporting seasons. No baselines sealed, no hunters, no panel. Published universe.json and stopped.
+
+## Stage EU — Europe researcher — STARTED
+- Logged at 2026-10-12 13:40 UTC
+- Fired 13:39 UTC 2026-10-12. Sealing for event date 2026-10-13 (next European session). Plan: universe -> baselines -> provenance -> hunters in waves of 5 -> score -> 4-model panel -> note. Local main was a stale divergent snapshot; worked from origin/main on a local branch, publish pushes HEAD:main.
