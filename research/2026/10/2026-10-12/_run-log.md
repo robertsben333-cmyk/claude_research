@@ -51,3 +51,6 @@
 ## Edge hunt (panel) — 2026-10-12 — DONE
 - Logged at 2026-10-12 17:37 UTC
 - Panel ran with all 4 pinned judges (opus5, opus55, sonnet55, fable51); full coverage, no retries. 0 of 9 selected (DPZ closest: k=2, sign 4/4, panel_score -1.06). Searcher: 0 of 9 above the 2.8 floor. Spearman stage E impact_sum vs panel_score +0.53 (n=9). V2 grounded written before the print. No alpaca_trade.py call, no shadow ledger. Note in edge-panel/edge-note.md.
+## Deep research — 2026-10-12 — STARTED
+- Logged at 2026-10-12 17:39 UTC
+- 9 names in the window (JPM,JNJ,UNH,GS,WFC,C,DPZ,ACI,FBK, all bmo 10-13); sweep running; fired 17:36 UTC = 13:36 ET
