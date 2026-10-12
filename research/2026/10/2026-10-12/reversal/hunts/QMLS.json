@@ -1,0 +1,79 @@
+{
+  "ticker": "QMLS",
+  "drop_date": "2026-10-12",
+  "window": {"from": "close of 2026-10-12", "to": "close of 2026-10-13"},
+  "expected_move_pct": -1.2,
+  "conviction_note": "No company-specific cause and no dated event in the window. The one in-window fact is that ATW's floorless senior secured convertible notes allow accelerated installment conversions at 93% of the lowest 8-day VWAP on any trading day, which is a standing supply source (-1.0). Against that, the fall came on only 1.78x volume (the <2x base rate is +1.46%). abs_move 12 is anchored on the 18% ATR, and p_up 45 gives -1.2. Both measurements point the same way at similar size.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "No option chain (crumb_failed) and no consensus. Sized against the baseline's ATR14 of 18.1%, the name's own 5 comparable falls (median next close -9.64%, 1 of 5 up, mostly July direct-listing chaos) and the phase-0 band rates (-25..-15: +0.27%; <2x volume: +1.46%). Source: the baseline file research/2026/10/2026-10-12/reversal/baselines/QMLS.json",
+  "cause": {
+    "label": "sympathy",
+    "seller_is_finished_pct": 10,
+    "confidence_pct": 30,
+    "what_happened": "A -17.9% fall that was entirely intraday (0% gap) on 1.78x volume. No QMLS 8-K, press release or news was found for 2026-10-12. The same morning, neocloud names (CoreWeave, Nebius) were under pressure on funding-need and AI-spend-return worries. The background supply is ATW convertible-note conversion shares that are registered for resale, on a stock down 75% in 60 sessions and at its 52-week low.",
+    "evidence": [
+      {"claim": "CoreWeave and Nebius fell premarket on 2026-10-12 on funding-need and AI-return worries; QumulusAI is not named", "url": "https://www.tipranks.com/news/coreweave-and-nebius-stocks-fall-while-iren-rises-in-premarket-today-october-12-whats-driving-the-moves", "timestamp": "2026-10-12 premarket"},
+      {"claim": "Latest EDGAR filings are RSU Form 4s accepted 2026-10-06 and a 2026-09-22 7.01 investor-presentation 8-K; nothing filed on 2026-10-12", "url": "https://data.sec.gov/submissions/CIK0002084026.json", "timestamp": "2026-10-12"},
+      {"claim": "Newest company press release is the 9/29/26 $240.9M B300 contracts release; nothing dated October", "url": "https://www.qumulusai.com/articles", "timestamp": "2026-10-12"},
+      {"claim": "The note's installment conversion price is the lower of the conversion price and 93% of the lowest 8-trading-day VWAP. The alternate conversion price is 85% of the lowest 8-day VWAP. Installments fall monthly, and the holder may accelerate up to four installments per period. The fixed conversion prices of $11.50-$30 are far above the $4.31 spot", "url": "https://www.sec.gov/Archives/edgar/data/2084026/000143774926020200/ex_973416.htm", "timestamp": "2026-06-10"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -20,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Next ATW note installment date is the first trading day of November (2026-11-02), outside the window. The Zacks-estimated Q3 report of 2026-11-24 is a cadence prior only",
+    "what_would_change_my_mind": "An 8-K tonight would change this: a GPU financing on non-dilutive terms (up), or an additional-note tranche, equity raise or conversion-driven share issuance (down)."
+  },
+  "positioning_check": "Nasdaq/FINRA short interest was 992,995 shares at the 2026-09-30 settlement, up 74.2% from 570,032 on 09-15, with 1.52 days to cover (avg daily volume 652k). It is lagged about eight business days, so the position carried into today's fall is not observable. On a ~33M share count that is about 3% of shares, so not crowded. No option chain was available (crumb_failed), so there is no skew. Source: https://api.nasdaq.com/api/quote/QMLS/short-interest?assetclass=stocks",
+  "findings": [
+    {
+      "finding": "ATW's senior secured convertible notes (about $90M of facilities, 7%, fixed conversion prices of $11.50-$30 against a $4.31 spot) convert in practice only at market-linked prices: 93% of the lowest 8-day VWAP on installments, with up to four installments accelerable per period. That makes the holder a continuous, price-insensitive seller of registered resale shares on any trading day, including 2026-10-13.",
+      "leg": "new_information",
+      "mechanism_in_window": "Note section 8(e) lets the holder accelerate installment conversions on any trading day within the installment period, and the conversion shares are already registered for resale (424B4, 2026-07-15). The supply therefore can land on 2026-10-13 without a new filing. It is not dated to that day, which is why it is sized small.",
+      "expected_impact_pct": -1.0,
+      "impact_low_pct": -3.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-13",
+      "reaction_history_on_this_line": "The stock is down 75.5% over 60 sessions and sits at a 52-week position of 0.003, with 4 of its 5 comparable falls followed by a lower close (baseline). That is consistent with persistent supply but not attributable to it from a document.",
+      "source": "https://www.sec.gov/Archives/edgar/data/2084026/000143774926020200/ex_973416.htm",
+      "source_date": "2026-06-10",
+      "why_not_priced": "The price has taken today's selling but not the next round of conversions, which are discounted to the trailing low VWAP and so rise in share count as the price falls. If it held this, the stock would trade at a discount to peers' bounce days. That cannot be observed, so the finding is small.",
+      "independence": "The 10-Q for Q2 shows a $55.5M convertible note payable, a $38.7M additional-notes option liability, and going-concern language: https://www.sec.gov/Archives/edgar/data/2084026/000143774926028924/quma20260630_10q.htm"
+    }
+  ],
+  "outside_window": [
+    {"finding": "Next ATW note installment date (first trading day of November), priced at 93% of the lowest 8-day VWAP before it, which is a dated supply event", "expected_impact_pct": -2.0, "resolves_by": "2026-11-02", "source": "https://www.sec.gov/Archives/edgar/data/2084026/000143774926020200/ex_973416.htm"},
+    {"finding": "Six-month lock-up on directors, officers and >10% holders after the 2026-07-16 direct listing", "expected_impact_pct": -3.0, "resolves_by": "2027-01-16", "source": "https://www.sec.gov/Archives/edgar/data/2084026/000143774926023622/quma20260714_424b4.htm"},
+    {"finding": "Handoff of the $29.1M B300 cluster in December 2026 and the $211.9M one in early 2027. Neither has a disclosed GPU financing plan, so a financing announcement is a likely future event", "expected_impact_pct": 0.0, "resolves_by": "2026-12-31", "source": "https://mugglehead.com/qumulusai-us2409m-b300-gpu-contracts-customer-handoff/"},
+    {"finding": "Q3 results (Zacks cadence estimate only, not company-announced)", "expected_impact_pct": 0.0, "resolves_by": "2026-11-24", "source": "https://api.nasdaq.com/api/analyst/QMLS/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions: no filing on 2026-10-12 and no 8-K since 2026-09-22 (https://data.sec.gov/submissions/CIK0002084026.json)",
+    "Company newsroom: nothing after 2026-09-29 (https://www.qumulusai.com/articles)",
+    "Web search for QumulusAI news in October 2026 and for today's drop: no company-specific item found",
+    "The 2026-09-22 8-K is only a furnished investor presentation (https://www.sec.gov/Archives/edgar/data/2084026/000143774926030947/quma20260911_8k.htm)",
+    "No option chain (baseline crumb_failed); no analyst note or coverage action found",
+    "No listing-deficiency, non-reliance or reverse-split vote in the window (baseline text probes)",
+    "No price or quote dated after the screen instant appeared or was used"
+  ],
+  "abs_move_pct": 12.0,
+  "p_up": 45,
+  "rejected_candidates": [
+    {"candidate": "Nasdaq insider summary shows 19 open-market buys with 0 sells, read as a disclosed buyer", "source": "https://www.sec.gov/Archives/edgar/data/2084026/000154120126000003/xslF345X06/primary_doc.xml", "reason": "contradicted_by_document", "detail": "The 2026-10-05 Form 4 is code A, an RSU grant at $0 vesting 2027-10-01, not an open-market purchase"},
+    {"candidate": "Going-concern language in the Q2 10-Q", "source": "https://www.sec.gov/Archives/edgar/data/2084026/000143774926028924/quma20260630_10q.htm", "reason": "outside_window", "detail": "Public since 2026-08-25; it recurs at the next 10-Q, which is not dated in the window. It is used as independence for the supply finding"},
+    {"candidate": "Neocloud sector pressure on 2026-10-12 (CoreWeave and Nebius funding worries)", "source": "https://www.tipranks.com/news/coreweave-and-nebius-stocks-fall-while-iren-rises-in-premarket-today-october-12-whats-driving-the-moves", "reason": "duplicate", "detail": "This is the probable cause of today's fall, recorded in cause.evidence. No forward dated element in the window"}
+  ],
+  "baseline_tension": "The finding agrees with the name's own history (1 of 5 comparable falls up) and with its high ATR, but cuts against the low 1.78x volume (the <2x base rate is +1.46%) and the -25..-15 band (+0.27%). So p_up was held at 45 rather than lower.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.0,
+    "expected_move_pct": -1.2,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-1.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 11
+}

@@ -70,3 +70,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-10-12 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen. Repo was present (no clone). Plan: intraday screen K=15, seal baselines, 15 reversal-hunters, edge_score, resolve 2026-10-09, note before 16:00 ET.
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-12 19:17 UTC
+- Intraday screen 15:05 EDT (rev_universe.py --intraday): 5,967 screened, 47 passed floors, 15 hunted, largest sector Consumer Discretionary 33%, SPY -0.16%. 15/15 baselines sealed before hunters; 15/15 hunts written by ~15:16 ET (8-subagent concurrency cap, last 7 queued). 0 of 15 clear the 2.8 floor; impact_sum -1.50..+1.00; leg 1 (overshoot) 0 on every name; all non-zero findings are leg-2 supply. Prior run 2026-10-09 pending (window closes today); pooled d1 over 12 live runs 09-22..10-07, 178 names: hunt rho -0.008 vs neg_atr14 +0.128, neg_ret_d -0.132 — the hunt has not beaten the free controls. Env: 'requests' was missing and was pip-installed. No orders; no constants moved.

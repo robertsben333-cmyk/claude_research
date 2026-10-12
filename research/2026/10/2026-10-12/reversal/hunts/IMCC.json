@@ -1,0 +1,81 @@
+{
+  "ticker": "IMCC",
+  "drop_date": "2026-10-12",
+  "window": {"from": "close of 2026-10-12", "to": "close of 2026-10-13"},
+  "expected_move_pct": -0.8,
+  "conviction_note": "Nothing new was filed today and no news came out. The fall is the third straight day of decay, on 0.33x volume, in a $2.3m-cap name whose capital structure has an unfinished, price-sensitive seller (variable-price convertible notes that convert at 90% of the lowest 20-day VWAP, with resales registered under an effective shelf), so I lean slightly down (p_up 45) on a wide abs_move of 8%. That lean is pulled toward 50 by the low-volume base rate (+1.46%) and the cross-section prior (+0.5%). The one big dated supply event, a 2.8M-share resale F-3 equal to 170% of the shares outstanding, is not yet effective and most likely lands after the window.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.5,
+  "print_vs_bar_pct": 0.0,
+  "bar": "Unsourced as a consensus, since there is no analyst coverage and no option chain (crumb_failed). Sizes are set against the name's own comparable falls in the sealed baseline (n=104, median next close -1.18%, median |next| 4.78%, 14-day ATR 24.8%) and phase 0's <2x-volume base rate. Baseline: /home/user/claude_research/research/2026/10/2026-10-12/reversal/baselines/IMCC.json",
+  "cause": {
+    "label": "dilution_or_going_concern",
+    "seller_is_finished_pct": 15,
+    "confidence_pct": 35,
+    "what_happened": "No company filing or release on 2026-10-12. EDGAR's latest filing is the F-3 accepted at 2026-10-09 00:06 UTC. The stock fell 9.8% by 15:05 ET (gap -1.9%, intraday -8.1%) on 0.33x normal volume. That extends a slide that started 10-08 (-9.5%, -8.1%, now -9.8%) as the stock trades well below the $2.00 registered-direct price of 09-23 and the market absorbs a resale F-3, filed after the 10-08 close, covering 2.8M shares, which is 170% of the 1.65M outstanding. The specific seller today is not identifiable from public sources.",
+    "evidence": [
+      {"claim": "Resale F-3 for up to 2,799,276 shares (selling holders L.I.A. Pure Capital 1,234,642, CEO Oren Shuster 577,008, Rafi Gabay 575,557, Rocfrim 317,607). 1,647,494 shares outstanding at 2026-10-07; fully converted 4,408,146. Preliminary prospectus marked 'Subject to Completion', not effective. Last sale $1.90 on 10-07.", "url": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm", "timestamp": "2026-10-09 00:06 UTC (EDGAR acceptance)"},
+      {"claim": "Registered direct offering of 655,000 shares at US$2.00 (no warrants, no agent), ~US$1.31m gross, taking shares outstanding from 992,494 to 1,647,494.", "url": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004583/zk2636150.htm", "timestamp": "2026-09-24"},
+      {"claim": "L.I.A. Pure Capital, the PIPE note investor, holds 164,585 shares, 9.99% of the class, as of 2026-09-24.", "url": "https://www.sec.gov/Archives/edgar/data/1792030/000121390026105248/xslSCHEDULE_13G_X02/primary_doc.xml", "timestamp": "2026-09-30"},
+      {"claim": "EDGAR submissions list: no filing after the 2026-10-08 F-3.", "url": "https://data.sec.gov/submissions/CIK0001792030.json", "timestamp": "2026-10-12 (fetched ~19:15 UTC)"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -40,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Effectiveness of the 2026-10-08 resale F-3. The two prior F-3s went effective 6-7 days after filing, one to two days after a CORRESP acceleration request, and no CORRESP has been filed yet, so the likely date is after 2026-10-13. That date is my inference from the prior filing pattern and was not announced.",
+    "what_would_change_my_mind": "A CORRESP acceleration request or EFFECT notice for the 10-08 F-3 inside the window would make it more negative. A signed definitive agreement for the Space Defense Innovations 51% stake (the LOI set roughly 60 days from 09-23) landing on 10-13 would be the positive surprise."
+  },
+  "positioning_check": "Nasdaq short interest at the 2026-09-30 settlement: 74,661 shares (~4.5% of 1.65M outstanding), up 64.4% from 45,409 at 09-15. Days to cover reads 1.0, because average daily volume is distorted by the 09-21/09-23 spikes. The data lags about 8 business days, so the position carried into this fall cannot be seen. Insider trades: none in 3 or 12 months per Nasdaq. No option chain (crumb_failed), so there is no skew. Source: https://api.nasdaq.com/api/quote/IMCC/short-interest?assetclass=stocks",
+  "findings": [
+    {
+      "finding": "The seller is structurally unfinished. L.I.A. Pure Capital holds variable-price convertible notes that settle only in shares, at the lower of a fixed price or 90% of the lowest daily VWAP over the prior 20 trading days, above a floor. Resales of the April-June 2026 notes are registered under an F-3 that went effective on 2026-06-16, so conversion shares can be sold any session, including 2026-10-13, and each lower print lowers the next conversion price.",
+      "leg": "new_information",
+      "mechanism_in_window": "Conversions and resales under an already-effective resale registration need no new filing or approval, so the supply can arrive inside the next session. The company has run a monthly cadence of new note financings (07-01, 08-06, 09-02, then the 10-07 settlement notes), which means the convertible supply is replenished and not running out.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-13",
+      "reaction_history_on_this_line": "The name's last 12 comparable falls in the baseline (2026-08-28 to 10-09) were followed by a lower next close 8 times, 0.0 once and a higher close 3 times (+34.2% on 09-22 after the SDI LOI, +9.28%). That pattern fits steady convertible-holder selling punctuated by news-driven spikes.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326003150/zk2635519.htm",
+      "source_date": "2026-06-09",
+      "why_not_priced": "The price has taken today's fall but not the mechanics: the conversion reference price is the lowest VWAP of the trailing 20 days, so today's low resets the conversion price downward and gives the converter a fresh discount to sell into on 10-13. A price that held this would show buyers at the low on volume, and today's turnover was $123k against a 20-day median of $604k, a third of normal, so no buyer stepped in.",
+      "independence": "The Oct 2026 resale F-3 documents the July-September PIPE notes on the same 90%-of-lowest-VWAP terms with Pure Capital as selling holder, and new October settlement notes with a US$0.40 floor (https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm). The Sept 29 sale-closing release itself flags liquidity and going-concern risk (https://www.sec.gov/Archives/edgar/data/1792030/000117891326004699/exhibit_99-1.htm). Whether any April-June note principal is still unconverted is NOT established, which is why this finding is sized small."
+    }
+  ],
+  "outside_window": [
+    {"finding": "Resale F-3 filed 2026-10-08 for 2,799,276 shares (170% of the 1,647,494 outstanding), including 1,226,927 shares on October 2026 settlement notes with a US$0.40 floor and 577,008 for the CEO. It is not effective. The prior F-3s went effective 2026-02-11 (filed 02-05, CORRESP 02-09) and 2026-06-16 (filed 06-09, CORRESP 06-15), and no CORRESP had been filed by 2026-10-12, so effectiveness most likely falls on or after 2026-10-14. That date is my inference from the prior filing pattern.", "expected_impact_pct": -4.0, "resolves_by": "2026-10-16", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm"},
+    {"finding": "Definitive agreement for the 51% stake in Space Defense Innovations (Polish tactical UAS reseller/manufacturer). The LOI of 2026-09-23 expects definitive agreements within about 60 days, i.e. by about 2026-11-22. No date inside the window.", "expected_impact_pct": 3.0, "resolves_by": "2026-11-22", "source": "https://www.prnewswire.com/il/news-releases/im-cannabis-enters-non-binding-agreement-to-acquire-51-of-space-defense-innovations-operating-in-the-european-tactical-uas-market-814934772.html"},
+    {"finding": "Next monthly convertible-note financing, following the 07-01, 08-06, 09-02 and 10-07 cadence. Estimated early November from that cadence; not announced.", "expected_impact_pct": -1.5, "resolves_by": "2026-11-06", "source": "https://www.streetinsider.com/PRNewswire/IM+Cannabis+Raises+US%24225%2C000+of+Gross+Proceeds+in+Convertible+Note+Financing/26720460.html"},
+    {"finding": "Q3 results. The next_earnings_estimated date of 2026-11-12 is a Zacks cadence estimate, not a company announcement.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-12", "source": "https://api.nasdaq.com/api/analyst/IMCC/earnings-date"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions: no 6-K, F-3 amendment, CORRESP or EFFECT dated 2026-10-09 to 2026-10-12 (https://data.sec.gov/submissions/CIK0001792030.json)",
+    "WebSearch 'IM Cannabis IMCC October 2026' and 'IM Cannabis prnewswire convertible settlement notes October 2026': no October press release found",
+    "Nasdaq listing: the bid-price deficiency closed on 2026-09-23 (https://www.sec.gov/Archives/edgar/data/1792030/000117891326004574/exhibit_99-1.htm). Spot is $1.425 and no stockholders'-equity notice was found in the issuer's filings",
+    "Corporate update of 2026-09-28 (director resignation, no figures): nothing forward-dated (https://www.sec.gov/Archives/edgar/data/1792030/000117891326004635/exhibit_99-1.htm)",
+    "European sale closing 2026-09-29 (related party, CEO-controlled buyer Slil): completed, nothing dated inside the window (https://www.sec.gov/Archives/edgar/data/1792030/000117891326004699/exhibit_99-1.htm)",
+    "Blackaxe LOI: dated 2026-03-17, stale (https://www.prnewswire.com/il/news-releases/imc-announces-a-strategic-entry-to-the-cyber-drone-interception-and-satellite-intelligence-markets-by-signing-a-non-binding-agreement-to-acquire-51-of-blackaxe-technologies-857769335.html)",
+    "Repricing leg: no analyst coverage, no disclosed buyer, no wrong wire story and no spent dated seller, so no mechanism and no repricing finding",
+    "Insiders: none in 3 or 12 months per the Nasdaq insider summary in the baseline",
+    "Trials: none (ClinicalTrials.gov n=0 in the baseline)",
+    "No price or quote dated after the 15:05 ET screen instant was seen or used"
+  ],
+  "abs_move_pct": 8.0,
+  "p_up": 45,
+  "rejected_candidates": [
+    {"candidate": "Shares from the October settlement notes could be sold immediately under Rule 144 if their holding period tacks to older creditor debt", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000117891326004744/zk2636210.htm", "reason": "contradicted_by_document", "detail": "The company is registering these shares for resale in a not-yet-effective F-3, which indicates they are not freely saleable now. No document supports tacking."},
+    {"candidate": "The registered-direct buyers of 09-23 at $2.00 (Pure Capital among them, 9.99%) are now underwater and could be today's seller", "source": "https://www.sec.gov/Archives/edgar/data/1792030/000121390026105248/xslSCHEDULE_13G_X02/primary_doc.xml", "reason": "duplicate", "detail": "Merged into the single supply finding: same holder, same overhang."}
+  ],
+  "baseline_tension": "The finding agrees with this name's own recent falls (8 of 12 lower next close) and its 24.8% ATR. It cuts against the volume (0.33x, where phase 0's <2x arm averages +1.46%) and the +0.5% cross-section prior, so p_up sits at 45 rather than lower and the scaled number (-0.8) is about half the finding's -1.5.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.5,
+    "expected_move_pct": -0.8,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-1.5]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 12
+}
