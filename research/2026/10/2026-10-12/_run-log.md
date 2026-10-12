@@ -11,3 +11,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-12 01:05 UTC
 - Routine fire 01:05 UTC 2026-10-12: universe -> seal -> provenance -> unpriced-hunter-jp waves -> edge_score -> 4-model panel -> note. No orders.
+
+## Stage J — Japan researcher — market closed
+- Logged at 2026-10-12 01:05 UTC
+- 2026-10-12 is スポーツの日 (国民の祝日): universe.json market_closed='public holiday: スポーツの日', scheduled_today 0. Nothing to hunt, no hunters spawned, no panel. Sheets read: kessan08_1002 (as_of 2026-10-01), kessan09_1009 (as_of 2026-10-08). No orders (stage J never places any).
