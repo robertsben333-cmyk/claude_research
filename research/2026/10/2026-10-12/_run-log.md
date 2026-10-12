@@ -35,3 +35,7 @@
 ## Edge hunt (panel) — 2026-10-12 amc + 2026-10-13 bmo — STARTED
 - Logged at 2026-10-12 17:09 UTC
 - Fired 17:08 UTC. 9 names in window (all 2026-10-13 bmo): JPM JNJ UNH GS WFC C DPZ ACI FBK. time-not-supplied check: 6 rows, session_resolve killed 0 / confirmed 0 / carried 6 (UNTY, FNGR fit cadence; RMCF reads as vendor projection; BMRA/MSS/NCPL stale) — dropped per rule, none announced. Baselines sealed (9/9 ok, all with option chains). Plan: edge-sweep -> 9 unpriced-searchers -> edge_score -> grounded V2 -> 4-judge panel -> note. No orders.
+
+## Edge hunt (panel) — sweep and wave 1
+- Logged at 2026-10-12 17:16 UTC
+- Sweep: 9 of 9 confirmed from company sources, all bmo 2026-10-13, 0 phantoms (FBK bmo is a session change from its amc habit; WFC moved 10-14 -> 10-13). Provenance us-searcher.v2 / claude-opus-5-5. Wave 1: 8 unpriced-searchers (ACI DPZ FBK UNH WFC C GS JPM); JNJ queued behind the 8-agent concurrency ceiling.
