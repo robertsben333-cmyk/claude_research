@@ -47,3 +47,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-12 17:31 UTC
 - 9 of 9 searchers returned (all hunts on the current contract). edge_score: 9 rankable, 0 clear the 2.8 floor (max |impact_sum| 0.90, ACI/GS). V2 grounded written (9/9, 186 ledger obs). 9 packs, four judges.
+
+## Edge hunt (panel) — 2026-10-12 — DONE
+- Logged at 2026-10-12 17:37 UTC
+- Panel ran with all 4 pinned judges (opus5, opus55, sonnet55, fable51); full coverage, no retries. 0 of 9 selected (DPZ closest: k=2, sign 4/4, panel_score -1.06). Searcher: 0 of 9 above the 2.8 floor. Spearman stage E impact_sum vs panel_score +0.53 (n=9). V2 grounded written before the print. No alpaca_trade.py call, no shadow ledger. Note in edge-panel/edge-note.md.
