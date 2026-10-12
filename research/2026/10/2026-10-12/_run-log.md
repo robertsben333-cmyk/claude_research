@@ -54,3 +54,7 @@
 ## Deep research — 2026-10-12 — STARTED
 - Logged at 2026-10-12 17:39 UTC
 - 9 names in the window (JPM,JNJ,UNH,GS,WFC,C,DPZ,ACI,FBK, all bmo 10-13); sweep running; fired 17:36 UTC = 13:36 ET
+
+## Deep research — 2026-10-12 — DONE
+- Logged at 2026-10-12 18:13 UTC
+- Drew ACI,DPZ,JNJ; all 3 hunts carry freezes; scored 18:13 UTC (14:13 ET), none above floor; all no_trade low; deep-question-researcher ran as the registered agent; no orders
