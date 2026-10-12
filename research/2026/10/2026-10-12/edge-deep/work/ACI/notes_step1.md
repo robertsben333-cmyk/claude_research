@@ -1,0 +1,11 @@
+# ACI step 1 notes (written 2026-10-12 ~17:55 UTC)
+- Spot 12.29 (baseline 17:37 UTC), 5d +6.79, 20d -3.37, -37.7% from 52w high. Event implied 6.22%, skew +4.7 (downside paid). History median |move| 5.96, 5 of 7 down; Q1 FY26 -21.6% on guide cut.
+- Yahoo consensus (fetched ~17:52 UTC, quoteSummary earningsTrend): Q2 (period end 2026-08-31 label) EPS 0.328 (0.29-0.36, n18), yago 0.44; rev 18.86B (18.68-19.10, n15) yago 18.92B. FY Feb-27 EPS 1.792 (1.65-1.912, n19) = guide midpoint 1.80. Trend: Q2 est 0.327 60d ago -> 0.328 now (flat); 90d 0.461. FY 1.790 60d -> 1.792 now; 90d 2.275. 15 down revisions in 30d? (Yahoo says down30=15 but the trend is flat - likely stale counter).
+- Nasdaq (Zacks) consensus: Q2 0.31 (0.27-0.33, n6), FY 1.65 (1.60-1.69, n6), no revisions 4 wks.
+- Guide (Q1 8-K 2026-07-23): ID -1.5% to -0.5% incl ~150bp IRA; adj EBITDA 3.550-3.625B; adj EPS 1.75-1.85; capex 1.9-2.0B. CFO on call: Q2 adj EBITDA "very similarly to Q1, including on a y/y basis" (Q1 -8.8% y/y: 1013.2 vs 1111.0).
+- Short interest (Yahoo defaultKeyStatistics): 59.50M short at 2026-09-30, prior 54.43M at 2026-08-31; 18.15% of float (float 325.0M; shares out 485.3M); short ratio 7.25 days.
+- Ratings: RBC reit Outperform PT 13 on 2026-10-07. Late July: multiple downgrades (WFC, Citi, UBS, BMO, Telsey). Mean PT 14.19, median 13.
+- Governance: 2026-09-08 Meg Whitman Executive Chair ($8.9M RSU, 733,114 units); 2026-09-30 three new directors effective 2026-10-14 (Boltz/Lowe's, Drumgoole/tech, Ham/ex-Food Lion). CFO McCollam retiring (announced 7/23), successor not yet named in any 8-K.
+- Insider buys after Q1: Morris 39,409 sh ~$11.4 (7/28), Moriarty 170,500 sh $11.51 (7/27), McCollam 9,000 sh $11.48 (7/31).
+- Kroger Q2 (ended 8/15, rep 9/11): ID ex fuel +0.2%; FY ID guide cut to 0.2-0.8% from 1-2% incl ~140bp IRA; profit guide held; fuel sales +25.6%.
+- EIA US regular gasoline weekly: Q2 FY26 window (6/21-9/12) ~3.78-4.16, 9/14 4.32, 9/21 4.48, 9/28 4.47, 10/5 4.35; year-ago Q2 ~3.1-3.2.
