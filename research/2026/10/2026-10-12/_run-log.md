@@ -31,3 +31,7 @@
 ## Edge hunt — 2026-10-12 amc + 2026-10-13 bmo — STARTED
 - Logged at 2026-10-12 17:08 UTC
 - Fired 17:04 UTC (13:05 ET). execution.enabled true, exit_mode amc_open. STEP 0b DENIED: alpaca_trade.py verify (bare form, matching the settings.json allow rule) refused twice by the auto-mode classifier [Real-World Transactions]; nothing sold. Close AMC at 10:14 UTC reported 14 legs, none UNFILLED, nothing held, so no position is believed open. Universe: 9 names, all bmo 2026-10-13 (JPM JNJ UNH GS WFC C DPZ ACI FBK), all with an option chain; baselines sealed. Thin-day check: --include-unknown adds 6 time-not-supplied rows (UNTY FNGR RMCF NCPL BMRA MSS); session_resolve killed 0, confirmed 0 by press release, carried 6 — not hunted (no announcement; four are microcaps well past cadence). edge_universe.py needed 'python3 -m pip install requests'. Plan: 1 sweep + 9 hunters.
+
+## Edge hunt (panel) — 2026-10-12 amc + 2026-10-13 bmo — STARTED
+- Logged at 2026-10-12 17:09 UTC
+- Fired 17:08 UTC. 9 names in window (all 2026-10-13 bmo): JPM JNJ UNH GS WFC C DPZ ACI FBK. time-not-supplied check: 6 rows, session_resolve killed 0 / confirmed 0 / carried 6 (UNTY, FNGR fit cadence; RMCF reads as vendor projection; BMRA/MSS/NCPL stale) — dropped per rule, none announced. Baselines sealed (9/9 ok, all with option chains). Plan: edge-sweep -> 9 unpriced-searchers -> edge_score -> grounded V2 -> 4-judge panel -> note. No orders.
