@@ -27,6 +27,10 @@ on:
     # day's daily bar exists and the fills of stage E's own run are in.
     - cron: "40 11 * * 1-5"
     - cron: "40 21 * * 1-5"
+    # The scorebord's live returns: mid-session in New York (15:30 and 18:30 UTC in
+    # summer), after the European close and while the US is still trading.
+    - cron: "30 15 * * 1-5"
+    - cron: "30 18 * * 1-5"
   push:
     branches: [main]
     # Only the inputs. The outputs (dashboard/data, dashboard.html) are deliberately
@@ -111,6 +115,7 @@ jobs:
           tmp="$(mktemp -d)"
           mkdir -p "$tmp/dashboard" "$tmp/feeders"
           cp dashboard/dashboard.html "$tmp/dashboard/"
+          [ -f dashboard/scorebord.html ] && cp dashboard/scorebord.html "$tmp/dashboard/" || true
           cp -r dashboard/data "$tmp/dashboard/"
           for f in $FEEDERS; do [ -f "$f" ] && cp "$f" "$tmp/feeders/" || true; done
 
@@ -118,6 +123,7 @@ jobs:
             git fetch -q origin main
             git reset -q --hard origin/main
             cp "$tmp/dashboard/dashboard.html" dashboard/dashboard.html
+            [ -f "$tmp/dashboard/scorebord.html" ] && cp "$tmp/dashboard/scorebord.html" dashboard/scorebord.html || true
             cp -r "$tmp/dashboard/data/." dashboard/data/
             for f in $FEEDERS; do
               [ -f "$tmp/feeders/$(basename "$f")" ] && cp "$tmp/feeders/$(basename "$f")" "$f" || true
@@ -142,6 +148,7 @@ jobs:
           set -euo pipefail
           mkdir -p _site/data
           cp dashboard/dashboard.html _site/index.html
+          [ -f dashboard/scorebord.html ] && cp dashboard/scorebord.html _site/scorebord.html || true
           cp dashboard/data/*.csv dashboard/data/ledger.json _site/data/
           cp dashboard/README.md _site/README.md
 
