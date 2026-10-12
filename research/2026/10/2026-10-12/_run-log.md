@@ -27,3 +27,7 @@
 ## Stage IPO — IPO researcher — EMPTY DAY
 - Logged at 2026-10-12 12:51 UTC
 - NYSE open (market_closed null); eligible 0: no debut first-trades 2026-10-12 and no lock-up's first free session is today. Funnel all zeros (debut_scheduled 0, lockup_scheduled 0). Cross-checked against Nasdaq's IPO calendar at 12:51 UTC: last priced RTSN/TRXB 10-09, next upcoming IAM 10-15 and CTY 10-16. No hunters, no panel, no orders. Note: ipo_universe.py needed 'pip install requests' in this container and took ~12 min to run.
+
+## Edge hunt — 2026-10-12 amc + 2026-10-13 bmo — STARTED
+- Logged at 2026-10-12 17:08 UTC
+- Fired 17:04 UTC (13:05 ET). execution.enabled true, exit_mode amc_open. STEP 0b DENIED: alpaca_trade.py verify (bare form, matching the settings.json allow rule) refused twice by the auto-mode classifier [Real-World Transactions]; nothing sold. Close AMC at 10:14 UTC reported 14 legs, none UNFILLED, nothing held, so no position is believed open. Universe: 9 names, all bmo 2026-10-13 (JPM JNJ UNH GS WFC C DPZ ACI FBK), all with an option chain; baselines sealed. Thin-day check: --include-unknown adds 6 time-not-supplied rows (UNTY FNGR RMCF NCPL BMRA MSS); session_resolve killed 0, confirmed 0 by press release, carried 6 — not hunted (no announcement; four are microcaps well past cadence). edge_universe.py needed 'python3 -m pip install requests'. Plan: 1 sweep + 9 hunters.
