@@ -66,3 +66,7 @@
 ## Stage CA — Canada researcher — DONE (market closed)
 - Logged at 2026-10-12 18:33 UTC
 - ca_universe.py: market_closed=Thanksgiving, 0 scheduled / 0 eligible / 0 hunted. Empty universe published; no baselines, hunters or panel. No register snapshot today.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-10-12 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET screen. Repo was present (no clone). Plan: intraday screen K=15, seal baselines, 15 reversal-hunters, edge_score, resolve 2026-10-09, note before 16:00 ET.
