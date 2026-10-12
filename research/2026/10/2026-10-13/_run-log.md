@@ -15,3 +15,7 @@
 ## Stage EU — universe sealed
 - Logged at 2026-10-12 13:50 UTC
 - 11 scheduled, 6 eligible (uk 5, no 1), all 6 hunted (under cap 20). Concentration: uk 83%. Baselines sealed for ABG, BWY, BYIT, ENSI, GNC, YOU. Yahoo quote calendar unavailable on every batch. Wave 1 = 5 UK hunters; wave 2 = ABG (nordic/no).
+
+## Stage EU — wave 1 done
+- Logged at 2026-10-12 13:57 UTC
+- 5 UK hunters returned: BWY -1.0, BYIT -0.85, GNC +0.9, YOU +0.4, ENSI event_confirmed false (results were 2026-10-05; 13 Oct is an IMC presentation). ABG (no) running.
