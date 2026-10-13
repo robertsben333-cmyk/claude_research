@@ -20,3 +20,8 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-13 13:59 UTC
 - 7 hunts done (DEMANT phantom: Q3 IMS is 2026-11-03; 14 Oct is the start of its quiet period). 6 ranked, 0 above 2.8. Packs built; four judges next.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-13 14:05 UTC
+- Event date 2026-10-14. 6 ranked (AVARDA +1.60, VTU +1.60, BOOM +1.20, CRED_A +0.10, SCT +0.10, JHD -0.60), 0 above floor 2.8. DEMANT not ranked: phantom row (Q3 IMS is 2026-11-03; amend event_occurred:false after the window).
+- Panel: 4/4 members, no fallback, 0 selected (AVARDA k=2). Note: europe-note.md. Resolve within ~a week (SE/DK Nordic feed window). Published with EARNINGS_DATA_BRANCH=main.
