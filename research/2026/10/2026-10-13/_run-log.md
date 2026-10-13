@@ -108,3 +108,7 @@
 ## Stage CA — note on duplicate event
 - Logged at 2026-10-13 18:37 UTC
 - GOLD is the SAME unfiled Q3 FY2026 event already hunted in the 2026-10-09 run: WSH's UNC date rolled 10-09 -> 10-13, and TMX's SEDAR+ index shows no Q3 filing between 10-05 and 10-13 (only a 10-06 news release). At most one of the two runs can resolve against a real print; the resolver should kill the other with event_occurred:false. Do not pool both.
+
+## Stage CA — Canada researcher — DONE
+- Logged at 2026-10-13 18:37 UTC
+- Funnel 3 scheduled / 1 eligible / 1 hunted / 0 rankable. GOLD: hunter returned event_confirmed:false, 0 findings, bar unsourced. Filing-only for interims (4 prior interims with no release); filing_only screen missed it again (defect in ca_universe event_shape). Anchors options 0 / register 1 (no chain). Panel: 0 packs, no judges spawned. register_business_date 2026-10-12, change -0.02pp vs 10-09.
