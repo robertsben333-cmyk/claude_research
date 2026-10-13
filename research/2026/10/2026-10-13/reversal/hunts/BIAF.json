@@ -1,0 +1,95 @@
+{
+  "ticker": "BIAF",
+  "drop_date": "2026-10-13",
+  "window": {"from": "close of 2026-10-13", "to": "close of 2026-10-14"},
+  "expected_move_pct": -0.9,
+  "conviction_note": "This is the fourth straight down session since an Oct 8 registered direct at $6.122. Spot is $3.51, 43% under the deal price. The investor's up to 653k registered shares (116,545 common plus 536,836 pre-funded warrants at $0.007) look like a seller that has not finished. That outweighs the one sourced positive, that the company is contractually barred from issuing stock or drawing its ATM inside the window. So p_up is 45 on a 9-point absolute move, giving -0.9. The findings sum (-1.0) is close to it by coincidence, not by fitting.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "Sized against this name's own reaction function in the sealed baseline: 108 drops of 7% or more, median next close -1.48%, median |next| 5.05%, up-rate 42.6%. The last three consecutive drops (10-08, 10-09, 10-12) were each followed by a further fall of 10-17%. Also ATR14 of 24.0%. No option chain (no_options_market). Baseline: /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/BIAF.json",
+  "cause": {
+    "label": "equity_offering",
+    "seller_is_finished_pct": 35,
+    "confidence_pct": 55,
+    "what_happened": "On Oct 8 an intraday spike to $9.38 on 35.3M shares was followed by a $4.0M registered direct to one institutional investor at $6.122, with 980,072 unregistered warrants at $6.122 that become exercisable on stockholder approval. Since then the stock has slid on every session ($5.64, $4.72, $3.90, now $3.51). Today it gapped 10% at the open with no new company news beyond a CHEST-2026 conference PR and a revised preliminary proxy (PRER14A) seeking approval of those warrants. That is consistent with the deal's buyer, and holders of the August pre-funded warrants, liquidating.",
+    "evidence": [
+      {"claim": "SPA dated Oct 8 2026: 116,545 shares at $6.122 and 536,836 pre-funded warrants at $6.115, about $4M gross, closed Oct 9; 980,072 private warrants at $6.122 exercisable from stockholder approval; ATM suspended Oct 8", "url": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046548/form8-k.htm", "timestamp": "2026-10-09"},
+      {"claim": "1,166,625 shares outstanding before the offering, 1,283,170 after, 1,820,006 including the pre-funded warrants; the pre-funded warrants are exercisable at $0.007 and their underlying shares are registered", "url": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046454/form424b5.htm", "timestamp": "2026-10-08"},
+      {"claim": "Revised preliminary proxy filed on the drop day: Proposal 1 approves the August warrants (1,128,272 shares), Proposal 2 the October warrants (980,072), Proposal 3 seeks authority for non-public offerings under Nasdaq 5635(d); meeting date blank", "url": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046675/formprer14a.htm", "timestamp": "2026-10-13"},
+      {"claim": "Drop-day 8-K is only a CHEST 2026 presentation PR (poster Oct 20, discussion Oct 21)", "url": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046755/ex99-1.htm", "timestamp": "2026-10-13"},
+      {"claim": "Daily bars truncated at 2026-10-13 ~15:00 ET: 10-08 high 9.38, close 5.64, volume 35.25M; 10-09 close 4.72, volume 651.5k; 10-12 close 3.90, volume 283.2k; 10-13 open 3.50, intraday 3.51, volume 840.7k", "url": "https://query1.finance.yahoo.com/v8/finance/chart/BIAF?range=1mo&interval=1d", "timestamp": "2026-10-13 15:00 ET"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -15,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "CHEST 2026 poster on Oct 20 and discussion on Oct 21, both outside the window. No dated company event was found for Oct 14.",
+    "what_would_change_my_mind": "A filing tonight showing the October investor has already exercised and sold its whole position, for example a 13G/A at zero. Or the definitive proxy carrying a meeting date with a reverse-split or reset feature that hits the warrants."
+  },
+  "positioning_check": "Nasdaq/FINRA short interest at the 09/30/2026 settlement was 115,467 shares (+62.2% vs 71,167 on 09/15), 1.0 day to cover. That is about 10% of the 1.17M pre-deal shares outstanding. The figure is lagged about 8 business days, so it does not show the position carried into this fall (source: https://api.nasdaq.com/api/quote/BIAF/short-interest?assetclass=stocks). No insider trades in 3 or 12 months. No option chain, so no skew.",
+  "findings": [
+    {
+      "finding": "The October registered-direct investor holds up to 653,381 freely tradable registered shares (116,545 common plus 536,836 pre-funded warrants exercisable at $0.007), bought at about $6.12 and now 43% under water. Post-deal volume (1.78M shares over 10-09 to 10-13) is the right size for that position to be still unwinding into the window.",
+      "leg": "new_information",
+      "mechanism_in_window": "The shares and pre-funded-warrant shares were sold off the effective S-3 (333-275608), so they can be exercised and sold on Oct 14 with no further filing. Nothing in the SPA shown limits the purchaser's sales after the announcement. The selling is continuing supply, not a dated, finished event.",
+      "expected_impact_pct": -1.5,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-14",
+      "reaction_history_on_this_line": "After the Oct 8 pricing the next three closes were -16.22%, -17.46% and today about -10%. After the Sept 2026 offering/resale cycle the falls alternated between continuation (-15.34%, -15.88%) and violent rebounds (+17.58%, +63.55%) (baseline history).",
+      "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046454/form424b5.htm",
+      "source_date": "2026-10-08",
+      "why_not_priced": "The price has taken the fact of dilution but not how much of the 653k registered shares remain to be sold. If the seller were finished, today's tape would show the gap being bought (intraday is only +0.3% off the open, with the low at 3.23) rather than 840k shares trading flat at the lows.",
+      "independence": "The volume signature from the daily bars (https://query1.finance.yahoo.com/v8/finance/chart/BIAF?range=1mo&interval=1d) is consistent with it but does not identify the seller. No 13G or Form 4 was found."
+    },
+    {
+      "finding": "The company cannot issue or announce new common stock, or use its ATM, inside the window. SPA §4.12(a) bars any issuance until 30 days after the Effective Date, the ATM carve-out opens only 30 days after the Effective Date, and the ATM prospectus was suspended on Oct 8. The commonest second leg down for a microcap, a fresh offering priced overnight, is ruled out for Oct 14.",
+      "leg": "new_information",
+      "mechanism_in_window": "A contractual bar that runs through the whole window, dated by the Oct 8 SPA. It lands here because it removes the event that most often produces the next-session gap for names like this.",
+      "expected_impact_pct": 0.5,
+      "impact_low_pct": 0.0,
+      "impact_high_pct": 1.5,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-14",
+      "reaction_history_on_this_line": "This issuer has raised repeatedly: Oct 2025 RD at $2.50, Aug 2026 PIPE, Oct 2026 RD. Its own falls after earlier raises continued when a new raise followed. None can follow inside this window.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046548/ex10-1.htm",
+      "source_date": "2026-10-08",
+      "why_not_priced": "Partly priced: it is public. Its value is relative to the other fallers ranked today, many of which carry an open ATM that can be drawn tonight. A price that held it would show no discount for an overnight raise, which the tape cannot show directly.",
+      "independence": "The 8-K Item 8.01 suspends the ATM until a new prospectus supplement is filed: https://www.sec.gov/Archives/edgar/data/1712762/000149315226046548/form8-k.htm"
+    }
+  ],
+  "outside_window": [
+    {"finding": "A special meeting (date blank in the PRER14A) will approve 1,128,272 August warrants (about $7.09 post-split strike) and 980,072 October warrants at $6.122, plus authority for discounted private placements under 5635(d). This is a future overhang of about 2.1M shares against 1.28M outstanding, which becomes exercisable only after the vote.", "expected_impact_pct": -3.0, "resolves_by": "2026-11-30", "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046675/formprer14a.htm"},
+    {"finding": "CHEST 2026 sputum-test poster (Oct 20) and CyPath Lung discussion (Oct 21) in Phoenix. The tests are investigational.", "expected_impact_pct": 0.3, "resolves_by": "2026-10-21", "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046755/ex99-1.htm"},
+    {"finding": "The resale registration for the October PIPE warrant shares must be filed within 45 days of Oct 8. The 30-day issuance bar ends 30 days after the Effective Date, after which the ATM with WallachBeth can reopen.", "expected_impact_pct": -1.0, "resolves_by": "2026-11-22", "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046548/form8-k.htm"},
+    {"finding": "Q3 results. The date is the Zacks cadence estimate of 2026-11-13, not company-announced. The company pre-announced CyPath Lung sales up more than 100% YTD through Q3 on Oct 6.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-13", "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226045867/form8-k.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "Drop-day news beyond the CHEST PR and PRER14A: WebSearch for 'bioAffinity Technologies announces' and BIAF offering news returned only 2024-2025 items, nothing dated 2026-10-12/13",
+    "Nasdaq compliance: the Sept 9 2026 8-K says bid-price and 5560(a) compliance were regained on Sept 8 and the Panel hearing was cancelled; no deficiency clock is open (https://www.sec.gov/Archives/edgar/data/1712762/000149315226041894/form8-k.htm)",
+    "Going-concern and non-reliance text probes: 0 hits in the last 550 days (baseline forward block)",
+    "Insider trades: 0 in 3 and 12 months (api.nasdaq.com insider-trades via baseline)",
+    "Trials: NCT03457415 primary completion 2025-12 (stale), NCT07168993 completes 2029; nothing dated in the window",
+    "Analyst notes or initiations dated Oct 13/14: none found",
+    "The new reverse split I suspected from the PRER14A share figures is not one: the 15:1 ratio refers to the August 2026 split already effected (Aug 20 8-K Items 3.03/5.03)",
+    "No price dated after the 15:05 ET screen instant was seen. The Yahoo bar fetch was limited to bars on or before 2026-10-13, and its last bar is intraday at about 15:00 ET"
+  ],
+  "abs_move_pct": 9.0,
+  "p_up": 45,
+  "rejected_candidates": [
+    {"candidate": "Oct 8 Japan Patent Office notice of allowance PR as a positive catalyst", "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046266/form8-k.htm", "reason": "outside_window", "detail": "Released Oct 8 and already traded through the 35M-share spike and three down sessions. Nothing about it lands on Oct 14."},
+    {"candidate": "Proxy Proposal 4, the cut in authorized shares from 350M to 200M, as an anti-dilution positive", "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046675/formprer14a.htm", "reason": "outside_window", "detail": "It takes effect only at a special meeting whose date is still blank."}
+  ],
+  "baseline_tension": "The findings agree with the name's recent reaction function: three consecutive post-deal falls each continued, ATR 24% puts it in the high-vol tail that keeps falling, and the 52-week position is 0.004. They cut slightly against the moderate 3.18x volume (under the 15x bucket) and the -10..-7.5 drop band's +0.59% cross-section prior. That is why p_up sits at 45 rather than lower.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.0,
+    "expected_move_pct": -0.9,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 2,
+    "sizes_pct": [-1.5, 0.5]
+  },
+  "lessons_applied": ["nothing changed (researcher_reversal/LESSONS.md is deliberately empty; nothing has resolved)"],
+  "sources_used": 13
+}
