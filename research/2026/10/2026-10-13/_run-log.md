@@ -39,3 +39,11 @@
 ## Stage J — wave 1 banked
 - Logged at 2026-10-13 01:18 UTC
 - 1401 1419 2379 2653 2791 hunted (5/5 non-empty). Running rolling at wave_size 5 concurrency.
+
+## Stage J — hunts complete
+- Logged at 2026-10-13 01:44 UTC
+- 25/25 hunted, 0 empty. Scoring.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-13 01:44 UTC
+- 25 packs, four judges (panel-judge-intl-*)
