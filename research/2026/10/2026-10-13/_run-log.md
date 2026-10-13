@@ -85,3 +85,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-13 17:31 UTC
 - 9 of 9 searchers returned (unpriced-searcher, native agent). edge_score: 9/9 rankable, 0 clear the 2.8 floor (max |impact_sum| 0.97 BAC). V2 grounded written 17:31Z, 9/9 calibrated. 9 packs, four judges launching.
+
+## Edge hunt (panel) — DONE
+- Logged at 2026-10-13 17:39 UTC
+- Four judges ran on pinned agents (opus5, opus55, sonnet55, fable51), 9/9 ids each, no retries. panel_score: 0 selected (SOTK k=2, PGR k=1). rho stage E impact_sum vs panel_score +0.745 (n=9). Searcher: 0 over 2.8 floor. No alpaca_trade.py call, no shadow ledger. Note at edge-panel/edge-note.md.
