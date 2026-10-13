@@ -272,6 +272,7 @@ for n in ledger["names"]:
 
 
 def us_side_stage(glob_pat, stage, market, picker):
+    key_is_panel = picker is pick_panel
     """E-P and D: pick the strong names of each run, outcome from the stage E ledger
     (same universe, same window), else live."""
     for f in sorted(glob.glob(str(ROOT / glob_pat))):
@@ -283,7 +284,8 @@ def us_side_stage(glob_pat, stage, market, picker):
         for r, side, why in picker(run, f, model):
             n = by_run_ticker.get((run_date, r["ticker"]))
             if n and n.get("mv_strategy") is not None and not n.get("pending"):
-                resolved.append(dict(stage=stage, version=ver, model=mshort,
+                resolved.append(dict(stage=stage, version=ver,
+                                     model="panel" if key_is_panel else mshort,
                                      ticker=r["ticker"], run_date=run_date,
                                      ret=side * n["mv_strategy"], kind=why))
             elif recent(run_date):
@@ -427,7 +429,7 @@ for glob_pat, stage, market, key in (
             n = by_run_ticker.get((run_date, r["ticker"]))
             b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
             done = n and n.get("mv_strategy") is not None and not n.get("pending")
-            week_row(stage, ver, mshort, r["ticker"], b.get("company"), run_date,
+            week_row(stage, ver, "panel" if key == "panel_score" else mshort, r["ticker"], b.get("company"), run_date,
                      b.get("event_date"), score, strong, why,
                      move=n["mv_strategy"] if done else None,
                      live_w=None if done or not recent(run_date) else window(

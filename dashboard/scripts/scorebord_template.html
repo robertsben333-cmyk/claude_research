@@ -60,6 +60,7 @@ tr.grp td{background:var(--chip);font-weight:600;font-size:.82rem}
 .filters select,.filters input[type=search]{font:inherit;padding:4px 8px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg);min-width:0}
 .filters input[type=search]{flex:1 1 140px;max-width:220px}
 .star{color:var(--warn)}
+.wrap>*,section>*,details.ag{min-width:0}
 details.ag{background:var(--panel);border:1px solid var(--line);border-radius:6px;margin-bottom:8px}
 details.ag>summary{cursor:pointer;padding:9px 12px;display:grid;gap:2px;list-style-position:inside}
 details.ag>summary .t{font-weight:600}
@@ -95,6 +96,7 @@ details.ag .tbl{border:0;border-top:1px solid var(--line);border-radius:0 0 6px 
     <div class="head"><h2>Afgelopen week, per ticker</h2><span class="small" id="wkspan"></span></div>
     <div class="filters">
       <select id="wkstage" aria-label="Stage"><option value="">Alle stages</option></select>
+      <select id="wkmodel" aria-label="Model"><option value="">Alle modellen</option></select>
       <label><input type="checkbox" id="wkstrong" checked> alleen sterke calls</label>
       <label><input type="checkbox" id="wkdone"> alleen opgelost</label>
       <input type="search" id="wkq" placeholder="Zoek ticker" aria-label="Zoek ticker">
@@ -105,6 +107,7 @@ details.ag .tbl{border:0;border-top:1px solid var(--line);border-radius:0 0 6px 
 
   <section>
     <div class="head"><h2>Per agent: alle calls</h2><span class="small">ook de calls die de eis voor sterk niet haalden</span></div>
+    <div class="filters"><select id="agmodel" aria-label="Model"><option value="">Alle modellen</option></select></div>
     <div id="agents"></div>
   </section>
 
@@ -177,13 +180,18 @@ for (const st of Object.keys(byS).sort()) {
 const W = D.week || [];
 document.getElementById('wkspan').textContent = `laatste ${D.week_days || 7} dagen, ook de zwakke als je het vinkje uitzet`;
 const sel = document.getElementById('wkstage');
+// One model list for both filters; "panel" is the four-judge panel, not a single model.
+const MODELS = [...new Set([...W, ...(D.agents || [])].map(x => x.model).filter(Boolean))].sort();
+const modelOpts = id => MODELS.forEach(m => document.getElementById(id).insertAdjacentHTML('beforeend',
+  `<option value="${esc(m)}">${m === 'panel' ? 'Panel (4 modellen)' : esc(m)}</option>`));
+modelOpts('wkmodel'); modelOpts('agmodel');
 [...new Set(W.map(x => x.stage))].sort().forEach(s => sel.insertAdjacentHTML('beforeend', `<option>${esc(s)}</option>`));
 const UK = {opgelost:'opgelost', loopt:'loopt', gesloten:'net gesloten', wacht:'start nog', 'geen koers':'geen koers'};
 function renderWeek() {
-  const st = sel.value, strong = document.getElementById('wkstrong').checked,
+  const st = sel.value, md = document.getElementById('wkmodel').value, strong = document.getElementById('wkstrong').checked,
         done = document.getElementById('wkdone').checked,
         q = document.getElementById('wkq').value.trim().toUpperCase();
-  const rows = W.filter(x => (!st || x.stage === st) && (!strong || x.strong)
+  const rows = W.filter(x => (!st || x.stage === st) && (!md || x.model === md) && (!strong || x.strong)
     && (!done || x.state === 'opgelost') && (!q || String(x.ticker).toUpperCase().includes(q)));
   const res = rows.filter(x => x.state === 'opgelost' && x.ret != null);
   document.getElementById('wksum').innerHTML = rows.length
@@ -195,7 +203,7 @@ function renderWeek() {
   let day = null;
   for (const x of rows) {
     if (x.run_date !== day) { day = x.run_date; h += `<tr class="grp"><td colspan="8">Run ${esc(day)}</td></tr>`; }
-    const out = x.ret == null ? `<span class="chip ${x.state.replace(' ','-')}">${UK[x.state]||esc(x.state)}</span>`
+    const out = !x.side && x.state === 'opgelost' ? '<span class="mut">geen richting</span>' : x.ret == null ? `<span class="chip ${x.state.replace(' ','-')}">${UK[x.state]||esc(x.state)}</span>`
       : x.state !== 'opgelost' ? `<span class="chip loopt">${x.right?'ligt goed':'ligt fout'}</span>`
       : x.right ? '<span class="pos">goed</span>' : '<span class="neg">fout</span>';
     h += `<tr><td title="${esc(x.company)}"><b>${esc(x.ticker)}</b></td>
@@ -207,7 +215,7 @@ function renderWeek() {
   }
   document.getElementById('week').innerHTML = `<table>${h}</table>`;
 }
-['wkstage','wkstrong','wkdone','wkq'].forEach(id => document.getElementById(id).addEventListener('input', renderWeek));
+['wkstage','wkmodel','wkstrong','wkdone','wkq'].forEach(id => document.getElementById(id).addEventListener('input', renderWeek));
 renderWeek();
 
 // ---- per agent: every call, strong or not
@@ -217,10 +225,10 @@ const statLine = (label, s) => !s.n ? `${label}: nog niets opgelost`
 function callRows(rows) {
   let h = `<tr><th>Run</th><th>Naam</th><th>Call</th><th class="n">Rendement</th><th>Uitkomst</th><th class="n">Score</th><th class="n">Beweging</th></tr>`;
   for (const x of rows) {
-    const out = x.ret == null ? `<span class="chip ${x.state.replace(' ','-')}">${UKA[x.state]||esc(x.state)}</span>`
+    const out = !x.side && x.state === 'opgelost' ? '<span class="mut">geen richting</span>' : x.ret == null ? `<span class="chip ${x.state.replace(' ','-')}">${UKA[x.state]||esc(x.state)}</span>`
       : x.state !== 'opgelost' ? `<span class="chip loopt">${x.right?'ligt goed':'ligt fout'}</span>`
       : x.right ? '<span class="pos">goed</span>' : '<span class="neg">fout</span>';
-    h += `<tr><td class="mut">${esc(x.run_date)}</td><td title="${esc(x.company)}"><b>${esc(x.ticker)}</b></td>
+    h += `<tr><td class="mut">${esc(String(x.run_date).slice(5))}</td><td title="${esc(x.company)}"><b>${esc(x.ticker)}</b></td>
       <td>${x.side>0?'long':x.side<0?'short':'<span class="mut">geen</span>'}</td>
       <td class="n ${cls(x.ret)}">${pct(x.ret)}</td><td>${out}</td>
       <td class="n ${cls(x.score)}" title="${esc(x.why)}">${x.strong?'<span class="star">★</span> ':''}${f(x.score)}</td>
@@ -228,9 +236,10 @@ function callRows(rows) {
   }
   return `<div class="tbl"><table>${h}</table></div>`;
 }
-(() => {
-  const A = D.agents || [];
-  if (!A.length) { document.getElementById('agents').innerHTML = '<div class="empty">Nog geen calls.</div>'; return; }
+function renderAgents() {
+  const md = document.getElementById('agmodel').value;
+  const A = (D.agents || []).filter(a => !md || a.model === md);
+  if (!A.length) { document.getElementById('agents').innerHTML = '<div class="empty">Geen agents bij dit model.</div>'; return; }
   const byStage = {};
   A.forEach(a => (byStage[a.stage] ??= []).push(a));
   let h = '';
@@ -251,7 +260,9 @@ function callRows(rows) {
   box.querySelectorAll('details.ag').forEach((d, i) => d.addEventListener('toggle', () => {
     if (d.open && !d.dataset.done) { d.insertAdjacentHTML('beforeend', callRows(flat[i].calls)); d.dataset.done = 1; }
   }));
-})();
+}
+document.getElementById('agmodel').addEventListener('input', renderAgents);
+renderAgents();
 
 document.getElementById('eff').innerHTML = D.table.length ? `<table>${e}</table>` : '<div class="empty">Nog geen opgeloste sterke calls.</div>';
 
