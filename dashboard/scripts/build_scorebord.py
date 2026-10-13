@@ -92,7 +92,9 @@ def window(sym, start, start_is_close_before, end_at_open=False):
     q = chart(sym)
     if not q or not q["bars"]:
         return None
-    days = sorted(q["bars"])
+    # Yahoo leaves a null close on some European sessions for a day or more; a day
+    # without a close can be neither the reference nor the end of a window.
+    days = sorted(d for d, (o, c) in q["bars"].items() if c is not None)
     before = [d for d in days if (d < start if start_is_close_before else d <= start)]
     if not before:
         return None
@@ -308,6 +310,119 @@ for mk, v in markets.items():
                 live_row(stage=stage, ticker=n["ticker"], company=n.get("company"),
                          run_date=n["run_date"], score=score, why=why, side=side, w=w)
 
+# ---------------------------------------------------------------- the last week, per ticker
+# Every call of the last WEEK_DAYS calendar days, strong or not (operator, 2026-10-13:
+# "de resultaten van de laatste week specifiek ... per ticker"). Same sources and the
+# same exclusions as above; a call with no outcome yet is priced live like the open
+# strong calls, so the page shows what each name did whether or not it has resolved.
+WEEK_DAYS = 7
+week = []
+
+
+def in_week(run_date):
+    try:
+        return TODAY - timedelta(days=WEEK_DAYS) <= date.fromisoformat(run_date) <= TODAY
+    except Exception:
+        return False
+
+
+def week_row(stage, version, model, ticker, company, run_date, event_date, score,
+             strong, why, move=None, live_w=None):
+    side = sign(score)
+    if move is not None:
+        state = "opgelost"
+    elif live_w and live_w.get("move") is not None:
+        move, state = live_w["move"], live_w["state"]
+    else:
+        state = (live_w or {}).get("state", "geen koers")
+    ret = None if move is None or not side else side * move
+    week.append(dict(stage=stage, version=version, model=model, ticker=ticker,
+                     company=company, run_date=run_date, event_date=event_date,
+                     score=None if score is None else round(score, 2), side=side,
+                     strong=strong, why=why, state=state,
+                     move=None if move is None else round(move, 2),
+                     ret=None if ret is None else round(ret, 2),
+                     right=None if ret is None else ret > 0))
+
+
+for n in ledger["names"]:
+    if not in_week(n["run_date"]) or n.get("sept_opus55") or n.get("duplicate_event") \
+            or n.get("rankable") is False:
+        continue
+    p = n.get("impact_pctile_all")
+    done = n.get("mv_strategy") is not None and not n.get("pending")
+    week_row("US · E", n["prompt_version"], n["model_short"], n["ticker"], n.get("company"),
+             n["run_date"], n.get("event_date"), n.get("impact_sum"),
+             bool(n.get("impact_sum")) and (p or 0) >= TOP,
+             None if p is None else f"p{p:.0f}",
+             move=n["mv_strategy"] if done else None,
+             live_w=None if done else window(n["ticker"], n["event_date"],
+                                             n["session"] == "bmo",
+                                             end_at_open=n["session"] == "amc"))
+
+for glob_pat, stage, market, key in (
+        ("research/*/*/*/edge-panel/edge-scores-panel.json", "US · E-P panel", "US-P",
+         "panel_score"),
+        ("research/*/*/*/edge-deep/edge-scores.json", "US · D", "US-D", "impact_sum")):
+    for f in sorted(glob.glob(str(ROOT / glob_pat))):
+        run = str(Path(f).parent.relative_to(ROOT))
+        run_date = Path(f).parent.parent.name
+        if not in_week(run_date):
+            continue
+        ver, model, mshort, sept = prov(run, market)
+        if sept:
+            continue
+        for r in (load(f) or {}).get("ranking", []):
+            if not r.get("rankable", True) or r.get(key) is None:
+                continue
+            score = r[key]
+            if key == "panel_score":
+                strong, why = bool(r.get("selected")), f"panel {r.get('consensus_k')}/4"
+                if r.get("side"):
+                    score = abs(score) * sign(r["side"])
+            else:
+                pc = pctile(run, model, score)
+                strong, why = (pc or 0) >= TOP, None if pc is None else f"p{pc:.0f}"
+            n = by_run_ticker.get((run_date, r["ticker"]))
+            b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
+            done = n and n.get("mv_strategy") is not None and not n.get("pending")
+            week_row(stage, ver, mshort, r["ticker"], b.get("company"), run_date,
+                     b.get("event_date"), score, strong, why,
+                     move=n["mv_strategy"] if done else None,
+                     live_w=None if done else window(
+                         r["ticker"], b.get("event_date") or run_date,
+                         b.get("session") == "bmo", end_at_open=b.get("session") == "amc"))
+
+for mk, v in markets.items():
+    for n in v.get("names", []):
+        if not in_week(n.get("run_date") or "") or n.get("sept_opus55") \
+                or not n.get("rankable") or n.get("event_occurred") is False:
+            continue
+        done = n.get("realised_move_pct") is not None and not n.get("move_pending")
+        w = None
+        if not done:
+            b = load(ROOT / n["run"] / "baselines" / f"{n['ticker']}.json") or {}
+            sym = b.get("yahoo_symbol") or n["ticker"] + SUFFIX.get(mk, "")
+            if mk == "CA" and str(b.get("exchange", "")).upper().startswith("TSXV"):
+                sym = n["ticker"] + ".V"
+            w = window(sym, n["event_date"], n.get("session") != "amc")
+        move = n["realised_move_pct"] if done else None
+        label = v.get("label", mk)
+        p = n.get("impact_pctile_all")
+        if n.get("impact_sum") is not None:
+            week_row(f"{label} · hunter", n.get("prompt_version"), n.get("model_short"),
+                     n["ticker"], n.get("company"), n["run_date"], n.get("event_date"),
+                     n["impact_sum"], bool(n["impact_sum"]) and (p or 0) >= TOP,
+                     None if p is None else f"p{p:.0f}", move=move, live_w=w)
+        if n.get("panel_score") is not None:
+            week_row(f"{label} · panel", n.get("prompt_version"), "panel",
+                     n["ticker"], n.get("company"), n["run_date"], n.get("event_date"),
+                     n["panel_score"], bool(n.get("panel_selected")),
+                     f"panel {n.get('panel_consensus_k')}/4", move=move, live_w=w)
+
+week.sort(key=lambda x: (x["run_date"], x["stage"], -abs(x["score"] or 0)), reverse=False)
+week.sort(key=lambda x: x["run_date"], reverse=True)
+
 # ---------------------------------------------------------------- assemble
 
 groups = {}
@@ -338,6 +453,8 @@ payload = {
     "live": sorted(live, key=lambda x: (x["state"] != "loopt", x["stage"], x["ticker"])),
     "table": table,
     "n_resolved": len(resolved),
+    "week": week,
+    "week_days": WEEK_DAYS,
 }
 OUT_JSON.write_text(json.dumps(payload, indent=1, default=str))
 
@@ -345,4 +462,4 @@ tpl = (ROOT / "dashboard" / "scripts" / "scorebord_template.html").read_text()
 data = json.dumps(payload, default=str).replace("</", "<\\/")
 OUT_HTML.write_text(tpl.replace("__DATA__", data))
 print(f"scorebord: {len(live)} open strong calls, {len(resolved)} resolved strong calls, "
-      f"{len(table)} version rows -> {OUT_HTML.relative_to(ROOT)}")
+      f"{len(table)} version rows, {len(week)} calls in the last {WEEK_DAYS} days -> {OUT_HTML.relative_to(ROOT)}")
