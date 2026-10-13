@@ -68,3 +68,6 @@
 - Logged at 2026-10-13 17:09 UTC
 - 17:05 UTC fire. 9 of 26 calendar rows in window (AZZ amc; ASML BAC MS BLK PGR FAST STT SOTK bmo). Baselines sealed (8 with option chains, SOTK none). Plan: 1 sweep + up to 9 hunters.
 - Step 0b: execution.enabled true, exit_mode amc_open. 'alpaca_trade.py verify --fix --submit' was DENIED by the auto-mode classifier [Real-World Transactions] - the narrow allow rules did not hold. Read-only 'status' worked: equity $11,200.86 = cash, no open positions, so nothing was due to sell and the denial cost nothing today.
+## Edge hunt (panel) — 2026-10-13 amc + 2026-10-14 bmo — STARTED
+- Logged at 2026-10-13 17:09 UTC
+- Stage E-P, 17:09Z. 9 names in window (ASML BAC MS BLK PGR FAST STT AZZ SOTK); 13 with --include-unknown, session_resolve killed UNTY (8-K 2.02 filed 10-13), carried BMRA/FNGR/NXTT unresolved, none confirmed, so they stay out. Baselines sealed into edge-panel/baselines (8 with option chain, SOTK none). Plan: 1 edge-sweep, up to 9 unpriced-searcher, 4 blind judges. No orders.
