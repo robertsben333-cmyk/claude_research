@@ -1,0 +1,822 @@
+{
+  "market": "EU",
+  "markets": [
+    "uk",
+    "de",
+    "fr",
+    "se",
+    "dk",
+    "no",
+    "fi",
+    "it",
+    "es",
+    "pl"
+  ],
+  "event_date": "2026-10-14",
+  "window": "2026-10-14 close of the PREVIOUS session -> 2026-10-14 close, for a `bmo` name; 2026-10-14 close -> next close for an `amc` one. Europe reports before the open: 339 of 379 measured UK results announcements landed before 08:00 London.",
+  "fx": {
+    "USD": 1.0,
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/<pair>=X",
+    "as_of": "2026-10-13T13:39:25+00:00",
+    "GBP": 1.32514,
+    "EUR": 1.12045,
+    "SEK": 0.10036,
+    "DKK": 0.14984,
+    "NOK": 0.10501,
+    "PLN": 0.25609,
+    "GBp": 0.0132514,
+    "GBX": 0.0132514
+  },
+  "cap": 20,
+  "min_turnover_usd": 100000,
+  "calendar_source": "THREE sources since 2026-10-06, and every row says which in its own `calendar_source`: TradingView's public scanner (vendor), plus for the UK the issuer's own dated RNS notices and financial calendars (uk_rns_calendar.py), plus Yahoo's FIRM per-symbol dates in all ten markets (eu_yahoo_calendar.py). The vendor's measured UK phantom rate is 2 of 90 rows, but its RECALL was 45 of 126 UK results/trading updates over 2026-09-22 -> 10-05, and it skips Q1/Q3 statements for many continental issuers. Confirmation is eu_resolve.py's job, and whether event_occurred: false is reachable DIFFERS BY MARKET -- see per_market[*].event_occurred_false_reachable. It is false for Germany (EQS has no whole-day query) and for Spain and Poland (no archive reachable at all).",
+  "generated_utc": "2026-10-13T13:39:27+00:00",
+  "validation_only": false,
+  "per_market": {
+    "uk": {
+      "universe_size": 1081,
+      "vendor_total": 1081,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 5,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Investegate (RNS mirror)",
+      "short_register": "FCA aggregated net short positions",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "observed",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "rns_calendar": {
+        "state": "read",
+        "rns_dated_for_target": 5,
+        "added": [
+          "RWA",
+          "BOOM",
+          "JHD"
+        ],
+        "confirmed_vendor": [
+          "VTU",
+          "SCT"
+        ],
+        "outside_vendor_universe": [],
+        "calendar_file": "researcher_europe/analysis/uk-rns-calendar.json"
+      },
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "de": {
+      "universe_size": 427,
+      "vendor_total": 427,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "EQS-News search (per issuer, paginated, back years)",
+      "short_register": "Bundesanzeiger Netto-Leerverkaufspositionen",
+      "capability": {
+        "archive": "issuer",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "eqs_events": {
+            "state": "read",
+            "dated_for_target": 1,
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 1
+      }
+    },
+    "fr": {
+      "universe_size": 586,
+      "vendor_total": 586,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 1,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "AMF regulated-information flux (info-financiere.gouv.fr)",
+      "short_register": "AMF positions courtes nettes (data.gouv.fr, per-holder history since 2012)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": false
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "se": {
+      "universe_size": 664,
+      "vendor_total": 901,
+      "off_primary_exchange_filtered": 237,
+      "scheduled_today": 3,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finansinspektionen aggregerade korta nettopositioner (ODS, snapshot; the date is when the level last changed)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 3,
+            "reaches_to": "2026-10-22",
+            "added": [
+              "CRED_A"
+            ]
+          },
+          "nasdaq_fincal": {
+            "state": "read",
+            "dated_for_target": 0,
+            "added": []
+          }
+        },
+        "joined": 3,
+        "dated_for_target": 3
+      }
+    },
+    "dk": {
+      "universe_size": 135,
+      "vendor_total": 135,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 1,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finanstilsynet aggregerede korte nettopositioner (HTML table, 0.1% threshold)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 0,
+            "reaches_to": "2027-08-24",
+            "added": []
+          },
+          "nasdaq_fincal": {
+            "state": "read",
+            "dated_for_target": 1,
+            "added": [
+              "DEMANT"
+            ]
+          }
+        },
+        "joined": 1,
+        "dated_for_target": 1
+      }
+    },
+    "no": {
+      "universe_size": 274,
+      "vendor_total": 274,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Oslo Bors NewsWeb (true day query, ticker-keyed, categorised)",
+      "short_register": "Finanstilsynet SSR register (JSON, dated events per issuer)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "euronext_oslo": {
+            "state": "read",
+            "dated_for_target": 1,
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 1
+      }
+    },
+    "fi": {
+      "universe_size": 183,
+      "vendor_total": 183,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finanssivalvonta net short positions (JSON, per holder)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 0,
+            "reaches_to": "2027-01-28",
+            "added": []
+          },
+          "nasdaq_fincal": {
+            "state": "read",
+            "dated_for_target": 0,
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 0
+      }
+    },
+    "it": {
+      "universe_size": 387,
+      "vendor_total": 387,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "eMarket STORAGE (Borsa Italiana OAM; WAF-intermittent, retried)",
+      "short_register": "CONSOB posizioni nette corte (PncPubbl.xlsx, per holder)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": false
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "es": {
+      "universe_size": 277,
+      "vendor_total": 277,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "none reachable (CNMV OIR returns 403 from this container)",
+      "short_register": "none reachable (CNMV grid is an ASP.NET postback that returns no rows from this container)",
+      "capability": {
+        "archive": null,
+        "register": false,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "pl": {
+      "universe_size": 709,
+      "vendor_total": 709,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "none reachable (GPW and espi.pap.pl both 0 of 8 tries)",
+      "short_register": "none reachable (KNF RssOuterView returns 403)",
+      "capability": {
+        "archive": null,
+        "register": false,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "bankier": {
+            "state": "read",
+            "dated_for_target": 0,
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 0
+      }
+    }
+  },
+  "scheduled_today": 10,
+  "selection": {
+    "method": "all 7 eligible names (at or under the cap)",
+    "seed": "eu-2026-10-14",
+    "eligible": 7,
+    "dropped": 3,
+    "hunted": 7,
+    "by_market": {
+      "uk": 4,
+      "de": 0,
+      "fr": 0,
+      "se": 2,
+      "dk": 1,
+      "no": 0,
+      "fi": 0,
+      "it": 0,
+      "es": 0,
+      "pl": 0
+    },
+    "eligible_by_market": {
+      "uk": 4,
+      "de": 0,
+      "fr": 0,
+      "se": 2,
+      "dk": 1,
+      "no": 0,
+      "fi": 0,
+      "it": 0,
+      "es": 0,
+      "pl": 0
+    },
+    "market_concentration": {
+      "largest_market": "uk",
+      "largest_market_share": 0.571,
+      "markets_represented": 3,
+      "basis": "a day whose names are mostly one market is one market's day. The draw is deliberately not stratified; this field is how that shows up in the note and in eu_resolve.py's per_market block."
+    },
+    "basis": "Turnover floor, then a seeded random draw. The floor is $100k/day since 2026-10-01 ($200k from 2026-09-19) -- the bar every non-US stage uses and half the US one, so all ten markets are cut the same way. It is NOT a size-band cut: Phase 1 found coverage runs 5-7 analysts at $1-5m of turnover against 16-19 above $25m, and selecting on that band would bake this stage's own thesis into its universe. Turnover and `anchor_covered` ride in every baseline so the resolver can rank performance by band and by whether the name had a positioning anchor at all."
+  },
+  "eligible_symbols": [
+    "dk:DEMANT",
+    "se:AVARDA",
+    "se:CRED_A",
+    "uk:BOOM",
+    "uk:JHD",
+    "uk:SCT",
+    "uk:VTU"
+  ],
+  "names": [
+    {
+      "name": "DEMANT",
+      "description": "Demant A/S",
+      "close": 355.6,
+      "currency": "DKK",
+      "market_cap_basic": 71904774652,
+      "average_volume_10d_calc": 299406.2,
+      "earnings_release_date": 1786462920,
+      "earnings_release_time": 1,
+      "earnings_release_next_date": 1802174400,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXCOP",
+      "sector": "Health Technology",
+      "country": "Denmark",
+      "isin": "DK0060738599",
+      "tv_symbol": "OMXCOP:DEMANT",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by nasdaq_fincal, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "nasdaq_fincal",
+      "issuer_calendar": [
+        {
+          "source": "nasdaq_fincal",
+          "title": "Interim Report 2026 14 October",
+          "kind": "results",
+          "source_url": "https://view.news.eu.nasdaq.com/view?id=b0bdfc2ea6d7161a83b5c1d7c7ef65070&lang=en&src=listed"
+        }
+      ],
+      "_market": "dk",
+      "yahoo_symbol": "DEMANT.CO",
+      "tape": {
+        "spot": 355.8,
+        "currency": "DKK",
+        "run_up_20d_pct": 19.32,
+        "run_up_5d_pct": 11.47,
+        "median_turnover_native_20d": 73504920,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 11013977
+    },
+    {
+      "name": "AVARDA",
+      "description": "Avarda Bank AB",
+      "close": 197.6,
+      "currency": "SEK",
+      "market_cap_basic": 12697259905,
+      "average_volume_10d_calc": 50050.70000000001,
+      "earnings_release_date": 1783659600,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1791952200,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Finance",
+      "country": "Sweden",
+      "isin": "SE0025666969",
+      "tv_symbol": "OMXSTO:AVARDA",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Avarda Bank 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/Avarda-Bank"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "AVARDA.ST",
+      "tape": {
+        "spot": 197.6,
+        "currency": "SEK",
+        "run_up_20d_pct": -6.13,
+        "run_up_5d_pct": -1.45,
+        "median_turnover_native_20d": 10197600,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 1023431
+    },
+    {
+      "name": "CRED_A",
+      "description": "Creades AB Class A",
+      "close": 86.8,
+      "currency": "SEK",
+      "market_cap_basic": 11804539196,
+      "average_volume_10d_calc": 95877.1,
+      "earnings_release_date": null,
+      "earnings_release_time": null,
+      "earnings_release_next_date": null,
+      "earnings_release_next_time": null,
+      "exchange": "OMXSTO",
+      "sector": "Miscellaneous",
+      "country": "Sweden",
+      "isin": "SE0015661236",
+      "tv_symbol": "OMXSTO:CRED_A",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Creades 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/Creades"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "CRED-A.ST",
+      "tape": {
+        "spot": 86.6,
+        "currency": "SEK",
+        "run_up_20d_pct": -3.67,
+        "run_up_5d_pct": -0.29,
+        "median_turnover_native_20d": 10294713,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 1033177
+    },
+    {
+      "name": "BOOM",
+      "description": "Audioboom Group PLC",
+      "close": 501.11,
+      "currency": "GBX",
+      "market_cap_basic": 89655514,
+      "average_volume_10d_calc": 39738.4,
+      "earnings_release_date": 1784095200,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1808308800,
+      "earnings_release_next_time": 0,
+      "exchange": "LSE",
+      "sector": "Technology Services",
+      "country": "United Kingdom",
+      "isin": "JE00BJYJFG60",
+      "tv_symbol": "LSE:BOOM",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "RNS-dated, time not stated; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "rns",
+      "rns_dated": {
+        "event_date": "2026-10-14",
+        "kind": "trading_update",
+        "basis": "financial_calendar",
+        "quote": "Q3 trading update for the period ended 30 September 2026 on 14 October 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/audioboom-group--boom/notice-of-investor-presentation/9816830",
+        "source_headline": "Notice of Investor Presentation",
+        "source_ts_london": "2026-10-12T07:00"
+      },
+      "event_kind": "trading_update",
+      "_market": "uk",
+      "yahoo_symbol": "BOOM.L",
+      "tape": {
+        "spot": 501.11,
+        "currency": "GBp",
+        "run_up_20d_pct": 6.17,
+        "run_up_5d_pct": 2.27,
+        "median_turnover_native_20d": 15948627,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 211341
+    },
+    {
+      "name": "JHD",
+      "description": "James Halstead plc",
+      "close": 128.8,
+      "currency": "GBX",
+      "market_cap_basic": 537113516,
+      "average_volume_10d_calc": 431143.6,
+      "earnings_release_date": 1774941000,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1806494400,
+      "earnings_release_next_time": 0,
+      "exchange": "LSE",
+      "sector": "Producer Manufacturing",
+      "country": "United Kingdom",
+      "isin": "GB00B0LS8535",
+      "tv_symbol": "LSE:JHD",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "RNS-dated, time not stated; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "rns",
+      "rns_dated": {
+        "event_date": "2026-10-14",
+        "kind": "results",
+        "basis": "financial_calendar",
+        "quote": "results for the year ended 30 June 2026 on Wednesday 14 October 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/james-halstead--jhd/delay-in-publication-of-fy26-audited-results/9792824",
+        "source_headline": "Delay in publication of FY26 Audited Results",
+        "source_ts_london": "2026-09-28T07:00"
+      },
+      "event_kind": "results",
+      "_market": "uk",
+      "yahoo_symbol": "JHD.L",
+      "tape": {
+        "spot": 128.8,
+        "currency": "GBp",
+        "run_up_20d_pct": 2.06,
+        "run_up_5d_pct": 4.04,
+        "median_turnover_native_20d": 55579537,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 736506
+    },
+    {
+      "name": "SCT",
+      "description": "Softcat Plc",
+      "close": 1897,
+      "currency": "GBX",
+      "market_cap_basic": 4095248359,
+      "average_volume_10d_calc": 461287.3,
+      "earnings_release_date": 1773822060,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1791979200,
+      "earnings_release_next_time": 0,
+      "exchange": "LSE",
+      "sector": "Technology Services",
+      "country": "United Kingdom",
+      "isin": "GB00BYZDVK82",
+      "tv_symbol": "LSE:SCT",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+rns",
+      "rns_dated": {
+        "event_date": "2026-10-14",
+        "kind": "results",
+        "basis": "financial_calendar",
+        "quote": "preliminary results are scheduled for release on 14 October 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/softcat--sct/acquisition-of-gdt-and-full-year-trading-update/9778378",
+        "source_headline": "Acquisition of GDT and full year trading update",
+        "source_ts_london": "2026-09-17T17:05"
+      },
+      "_market": "uk",
+      "yahoo_symbol": "SCT.L",
+      "tape": {
+        "spot": 1893.0,
+        "currency": "GBp",
+        "run_up_20d_pct": 1.83,
+        "run_up_5d_pct": 3.16,
+        "median_turnover_native_20d": 735864588,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 9751236
+    },
+    {
+      "name": "VTU",
+      "description": "Vertu Motors PLC",
+      "close": 81.4,
+      "currency": "GBX",
+      "market_cap_basic": 249836131,
+      "average_volume_10d_calc": 270569.6,
+      "earnings_release_date": 1778673600,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1791979200,
+      "earnings_release_next_time": 0,
+      "exchange": "LSE",
+      "sector": "Retail Trade",
+      "country": "United Kingdom",
+      "isin": "GB00B1GK4645",
+      "tv_symbol": "LSE:VTU",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+rns",
+      "rns_dated": {
+        "event_date": "2026-10-14",
+        "kind": "results",
+        "basis": "financial_calendar",
+        "quote": "interim results will be announced on Wednesday 14 October 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/vertu-motors--vtu/trading-statement/9742123",
+        "source_headline": "Trading Statement",
+        "source_ts_london": "2026-08-27T07:00"
+      },
+      "_market": "uk",
+      "yahoo_symbol": "VTU.L",
+      "tape": {
+        "spot": 81.7,
+        "currency": "GBp",
+        "run_up_20d_pct": -5.55,
+        "run_up_5d_pct": -3.77,
+        "median_turnover_native_20d": 17453016,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 231276
+    }
+  ],
+  "dropped": [
+    {
+      "name": "RWA",
+      "description": "Robert Walters Plc",
+      "close": 131,
+      "currency": "GBX",
+      "market_cap_basic": 84520787,
+      "average_volume_10d_calc": 31336.4,
+      "earnings_release_date": 1785391200,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1804766400,
+      "earnings_release_next_time": 0,
+      "exchange": "LSE",
+      "sector": "Commercial Services",
+      "country": "United Kingdom",
+      "isin": "GB0008475088",
+      "tv_symbol": "LSE:RWA",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "RNS-dated, time not stated; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "rns",
+      "rns_dated": {
+        "event_date": "2026-10-14",
+        "kind": "trading_update",
+        "basis": "financial_calendar",
+        "quote": "trading update for the third quarter ending 30 September 2026 on Wednesday 14 October 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/robert-walters--rwa/2026-half-year-results/9694660",
+        "source_headline": "2026 Half-Year Results",
+        "source_ts_london": "2026-07-30T07:00"
+      },
+      "event_kind": "trading_update",
+      "_market": "uk",
+      "yahoo_symbol": "RWA.L",
+      "tape": {
+        "spot": 131.0,
+        "currency": "GBp",
+        "run_up_20d_pct": 4.8,
+        "run_up_5d_pct": -1.13,
+        "median_turnover_native_20d": 6330841,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 83892,
+      "drop_reason": "below the turnover floor: $83,893 < $100,000 a day"
+    },
+    {
+      "name": "ALSMA",
+      "description": "S.M.A.I.O S.A.",
+      "close": 5.7,
+      "currency": "EUR",
+      "market_cap_basic": 34423877,
+      "average_volume_10d_calc": 1858.9,
+      "earnings_release_date": 1776168000,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1791979200,
+      "earnings_release_next_time": 0,
+      "exchange": "EURONEXT",
+      "sector": "Health Technology",
+      "country": "France",
+      "isin": "FR0014005I80",
+      "tv_symbol": "EURONEXT:ALSMA",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor",
+      "_market": "fr",
+      "yahoo_symbol": "ALSMA.PA",
+      "tape": {
+        "spot": 5.7,
+        "currency": "EUR",
+        "run_up_20d_pct": -24.0,
+        "run_up_5d_pct": -13.11,
+        "median_turnover_native_20d": 5494,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 6155,
+      "drop_reason": "below the turnover floor: $6,156 < $100,000 a day"
+    },
+    {
+      "name": "DUST",
+      "description": "Dustin Group AB",
+      "close": 1.758,
+      "currency": "SEK",
+      "market_cap_basic": 2413502167,
+      "average_volume_10d_calc": 520106.7999999978,
+      "earnings_release_date": 1782885600,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1791957600,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Distribution Services",
+      "country": "Sweden",
+      "isin": "SE0006625471",
+      "tv_symbol": "OMXSTO:DUST",
+      "scheduled_date": "2026-10-14",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Dustin Group 2026 ANNUAL_REPORT",
+          "kind": "annual_report",
+          "source_url": "https://www.inderes.se/companies/Dustin-Group",
+          "time_utc": "2026-10-14T07:30:00.000Z"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "DUST.ST",
+      "tape": {
+        "spot": 1.776,
+        "currency": "SEK",
+        "run_up_20d_pct": 3.14,
+        "run_up_5d_pct": 3.5,
+        "median_turnover_native_20d": 818097,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 82104,
+      "drop_reason": "below the turnover floor: $82,104 < $100,000 a day"
+    }
+  ]
+}
