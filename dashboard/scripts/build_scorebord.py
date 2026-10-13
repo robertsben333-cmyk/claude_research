@@ -16,7 +16,8 @@ A "strong score" is one of two things, nothing else:
     judges with it in their own top 20%. The side is the panel's.
 
 Resolved outcomes are read, never recomputed, wherever a resolver already wrote one:
-the US ledger's strategy exit (`mv_strategy`) for E, E-P and D, the market resolvers
+the US ledger's own bars for E, E-P and D on the operator's window (see US_ENTRY_HM),
+frozen once resolved, the market resolvers
 through `markets.json` for EU/JP/AU/CA. Stage R is left out on purpose: it is a
 different event (yesterday's losers, not an earnings print) and does not belong here.
 Live returns come from Yahoo at build time. Read-only: no order is ever touched.
@@ -46,10 +47,14 @@ OUT_JSON = DATA / "scorebord.json"
 TODAY = datetime.now(timezone.utc).date()
 LOOKBACK_DAYS = 6                   # runs this recent can still have an open window
 ET = ZoneInfo("America/New_York")
-# The US strategy exit, as the ledger resolves it (STRATEGY_EXIT in build_ledger.py):
-# amc at the next opening print, bmo at 14:00 ET on the report day (`hr_22`). A
-# running bmo call is priced to that same minute, never to the close.
-BMO_EXIT_HM = 14 * 60
+# The US window, as the operator set it (2026-10-13): BUY at 13:30 ET on the entry
+# day (the report day for amc, the session before it for bmo); SELL amc at the next
+# day's opening print and bmo at 13:00 ET on the report day. Resolved and running
+# calls are priced on this one window. It is NOT the ledger's `mv_strategy`, which
+# enters at the close and sells bmo at 14:00 ET.
+US_ENTRY_HM = 13 * 60 + 30
+BMO_EXIT_HM = 13 * 60
+FROZEN_PATH = DATA / "scorebord-frozen.json"
 
 
 def load(p):
@@ -69,7 +74,7 @@ def chart(sym):
     if sym in _cache:
         return _cache[sym]
     url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}"
-           "?range=1mo&interval=1d")
+           "?range=3mo&interval=1d")
     out = None
     for i in range(3):
         try:
@@ -153,6 +158,87 @@ def window(sym, start, start_is_close_before, end_at_open=False, end_hm=None):
         return None
     return {"ref": ref, "ref_day": ref_day, "end_day": end_day, "last": last,
             "move": (last / ref - 1) * 100, "state": state}
+
+
+def _hm_now():
+    n = datetime.now(ET)
+    return n.date().isoformat(), n.hour * 60 + n.minute
+
+
+# A resolved US move is frozen the first time it is computed with its exit day behind
+# us, so a later build cannot move it: on 2026-10-13 PENG's opening print came back as
+# 67.28 on one CI build and 66.00 on the next, which moved the call by two points.
+FROZEN = load(FROZEN_PATH) or {}
+
+
+def us_move(n):
+    """Resolved US move on the operator's window, from the ledger's own bars:
+    13:30 ET entry (`enpx`), amc out at the next day's opening print (Yahoo's daily
+    open, the consolidated one, else the ledger's 09:30 bar), bmo out at 13:00 ET on
+    the report day (`hr_21`). None while the exit has not happened or a price is
+    missing. Never the close: a call with no 13:30 price is left unresolved."""
+    key = f"{n['run_date']}|{n['ticker']}"
+    if key in FROZEN:
+        return FROZEN[key]["move"]
+    entry = (n.get("enpx") or {}).get("1330")
+    px, ed = n.get("px") or {}, n.get("entry_date")
+    if not entry or not ed or n.get("pending"):
+        return None
+    exit_px, exit_day = None, None
+    if n.get("session") == "amc":
+        q = chart(n["ticker"])
+        later = sorted(d for d in (q or {}).get("bars", {}) if d > ed)
+        if later and q["bars"][later[0]][0]:
+            exit_day, exit_px = later[0], q["bars"][later[0]][0]
+        elif px.get("open"):
+            exit_px, exit_day = px["open"], n.get("reaction_date") or n.get("event_date")
+    elif n.get("hr_21") is not None and n.get("entry_close"):
+        exit_px = n["entry_close"] * (1 + n["hr_21"] / 100)
+        exit_day = n.get("reaction_date") or n.get("event_date")
+    if not exit_px:
+        return None
+    move = (exit_px / entry - 1) * 100
+    if exit_day and exit_day < TODAY.isoformat():
+        FROZEN[key] = {"entry": round(entry, 4), "exit": round(exit_px, 4),
+                       "move": round(move, 3), "session": n.get("session"),
+                       "exit_day": exit_day}
+    return move
+
+
+def us_live(sym, event_date, session):
+    """A running US call on the same window: entry at 13:30 ET, amc out at the next
+    open, bmo out at 13:00 ET on the report day; the live price in between."""
+    q = chart(sym)
+    if not q or not q["bars"] or not event_date:
+        return None
+    days = sorted(d for d, (o, c) in q["bars"].items() if c is not None)
+    today, now = _hm_now()
+    if session == "amc":
+        entry_day = event_date if event_date in days else None
+    else:
+        before = [d for d in days if d < event_date]
+        entry_day = before[-1] if before else None
+    if not entry_day or (entry_day == today and now < US_ENTRY_HM):
+        return {"ref": None, "ref_day": entry_day, "last": None, "move": None, "state": "wacht"}
+    entry = intraday_at(sym, entry_day, US_ENTRY_HM)
+    if not entry:
+        return None
+    after = [d for d in days if d > entry_day]
+    exit_day = after[0] if after else None
+    if session == "amc":
+        if exit_day and q["bars"][exit_day][0]:
+            last, state = q["bars"][exit_day][0], "gesloten"
+        else:
+            last, state = q.get("price"), "loopt"
+    else:
+        if exit_day and (exit_day < today or now >= BMO_EXIT_HM):
+            last, state = intraday_at(sym, exit_day, BMO_EXIT_HM), "gesloten"
+        else:
+            last, state = q.get("price"), "loopt"
+    if not last:
+        return None
+    return {"ref": entry, "ref_day": entry_day, "end_day": exit_day, "last": last,
+            "move": (last / entry - 1) * 100, "state": state}
 
 
 # ---------------------------------------------------------------- statistics
@@ -256,15 +342,14 @@ for n in ledger["names"]:
     if not n.get("impact_sum") or (n.get("impact_pctile_all") or 0) < TOP:
         continue
     side = sign(n["impact_sum"])
-    if n.get("mv_strategy") is not None and not n.get("pending"):
+    mv = us_move(n)
+    if mv is not None:
         resolved.append(dict(stage="US · E", version=n["prompt_version"],
                              model=n["model_short"], ticker=n["ticker"],
-                             run_date=n["run_date"], ret=side * n["mv_strategy"],
+                             run_date=n["run_date"], ret=side * mv,
                              kind="top 20%"))
     elif recent(n["run_date"]):
-        w = window(n["ticker"], n["event_date"], n["session"] == "bmo",
-                   end_at_open=n["session"] == "amc",
-                   end_hm=BMO_EXIT_HM if n["session"] == "bmo" else None)
+        w = us_live(n["ticker"], n["event_date"], n["session"])
         live_row(stage="US · E", ticker=n["ticker"], company=n.get("company"),
                  run_date=n["run_date"], score=n["impact_sum"],
                  why=f"top {100 - n['impact_pctile_all']:.0f}% {n['model_short']}",
@@ -283,16 +368,15 @@ def us_side_stage(glob_pat, stage, market, picker):
             continue
         for r, side, why in picker(run, f, model):
             n = by_run_ticker.get((run_date, r["ticker"]))
-            if n and n.get("mv_strategy") is not None and not n.get("pending"):
+            mv = us_move(n) if n else None
+            if mv is not None:
                 resolved.append(dict(stage=stage, version=ver,
                                      model="panel" if key_is_panel else mshort,
                                      ticker=r["ticker"], run_date=run_date,
-                                     ret=side * n["mv_strategy"], kind=why))
+                                     ret=side * mv, kind=why))
             elif recent(run_date):
                 b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
-                w = window(r["ticker"], b.get("event_date") or run_date,
-                           b.get("session") == "bmo", end_at_open=b.get("session") == "amc",
-                           end_hm=BMO_EXIT_HM if b.get("session") == "bmo" else None)
+                w = us_live(r["ticker"], b.get("event_date") or run_date, b.get("session"))
                 live_row(stage=stage, ticker=r["ticker"], company=b.get("company"),
                          run_date=run_date, score=r.get("panel_score", r.get("impact_sum")),
                          why=why, side=side, w=w)
@@ -393,17 +477,14 @@ for n in ledger["names"]:
     if n.get("sept_opus55") or n.get("duplicate_event") or n.get("rankable") is False:
         continue
     p = n.get("impact_pctile_all")
-    done = n.get("mv_strategy") is not None and not n.get("pending")
+    mv = us_move(n)
     week_row("US · E", n["prompt_version"], n["model_short"], n["ticker"], n.get("company"),
              n["run_date"], n.get("event_date"), n.get("impact_sum"),
              bool(n.get("impact_sum")) and (p or 0) >= TOP,
              None if p is None else f"p{p:.0f}",
-             move=n["mv_strategy"] if done else None,
-             live_w=None if done or not recent(n["run_date"]) else window(
-                 n["ticker"], n["event_date"],
-                                             n["session"] == "bmo",
-                                             end_at_open=n["session"] == "amc",
-                   end_hm=BMO_EXIT_HM if n["session"] == "bmo" else None))
+             move=mv,
+             live_w=None if mv is not None or not recent(n["run_date"]) else us_live(
+                 n["ticker"], n["event_date"], n["session"]))
 
 for glob_pat, stage, market, key in (
         ("research/*/*/*/edge-panel/edge-scores-panel.json", "US · E-P panel", "US-P",
@@ -428,14 +509,12 @@ for glob_pat, stage, market, key in (
                 strong, why = (pc or 0) >= TOP, None if pc is None else f"p{pc:.0f}"
             n = by_run_ticker.get((run_date, r["ticker"]))
             b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
-            done = n and n.get("mv_strategy") is not None and not n.get("pending")
+            mv = us_move(n) if n else None
             week_row(stage, ver, "panel" if key == "panel_score" else mshort, r["ticker"], b.get("company"), run_date,
                      b.get("event_date"), score, strong, why,
-                     move=n["mv_strategy"] if done else None,
-                     live_w=None if done or not recent(run_date) else window(
-                         r["ticker"], b.get("event_date") or run_date,
-                         b.get("session") == "bmo", end_at_open=b.get("session") == "amc",
-                           end_hm=BMO_EXIT_HM if b.get("session") == "bmo" else None))
+                     move=mv,
+                     live_w=None if mv is not None or not recent(run_date) else us_live(
+                         r["ticker"], b.get("event_date") or run_date, b.get("session")))
 
 for mk, v in markets.items():
     for n in v.get("names", []):
@@ -519,6 +598,7 @@ payload = {
     "week_days": WEEK_DAYS,
 }
 OUT_JSON.write_text(json.dumps(payload, indent=1, default=str))
+FROZEN_PATH.write_text(json.dumps(FROZEN, indent=1, sort_keys=True) + "\n")
 
 tpl = (ROOT / "dashboard" / "scripts" / "scorebord_template.html").read_text()
 data = json.dumps(payload, default=str).replace("</", "<\\/")
