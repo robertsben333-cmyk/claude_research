@@ -71,3 +71,7 @@
 ## Edge hunt (panel) — 2026-10-13 amc + 2026-10-14 bmo — STARTED
 - Logged at 2026-10-13 17:09 UTC
 - Stage E-P, 17:09Z. 9 names in window (ASML BAC MS BLK PGR FAST STT AZZ SOTK); 13 with --include-unknown, session_resolve killed UNTY (8-K 2.02 filed 10-13), carried BMRA/FNGR/NXTT unresolved, none confirmed, so they stay out. Baselines sealed into edge-panel/baselines (8 with option chain, SOTK none). Plan: 1 edge-sweep, up to 9 unpriced-searcher, 4 blind judges. No orders.
+
+## Edge hunt — sweep
+- Logged at 2026-10-13 17:14 UTC
+- Sweep confirmed 9 of 9 from company sources, 0 phantom, 0 session unsettled. Unknown-session check (session_resolve.py): 4 time-not-supplied rows, UNTY killed (8-K 2.02 filed 2026-10-13), BMRA/FNGR/NXTT carried unresolved with no announcement - not added. 9 hunters, one per name; 8 launched at once, BAC queued on the 8-concurrent ceiling.
