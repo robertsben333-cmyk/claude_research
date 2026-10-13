@@ -89,3 +89,6 @@
 ## Deep research — 2026-10-13 — STARTED
 - Logged at 2026-10-13 17:37 UTC
 - 9 names in the window (ASML BAC MS BLK PGR FAST STT AZZ SOTK); sweep running; fired 17:35 UTC = 13:35 ET
+## Edge hunt (panel) — DONE
+- Logged at 2026-10-13 17:39 UTC
+- Four judges ran on pinned agents (opus5, opus55, sonnet55, fable51), 9/9 ids each, no retries. panel_score: 0 selected (SOTK k=2, PGR k=1). rho stage E impact_sum vs panel_score +0.745 (n=9). Searcher: 0 over 2.8 floor. No alpaca_trade.py call, no shadow ledger. Note at edge-panel/edge-note.md.
