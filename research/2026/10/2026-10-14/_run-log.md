@@ -12,3 +12,7 @@
 - Logged at 2026-10-13 13:39 UTC
 - Fired 13:38 UTC 2026-10-13 (European markets still open; sealed spot is intraday). Sealing for EVENT DATE 2026-10-14 (Wed), the next European trading day.
 - Plan: eu_universe (cap 20, $100k floor, seeded draw) -> seal baselines -> provenance -> one hunter per name in waves of 5 -> edge_score -> 4-model panel -> note. No orders.
+
+## Stage EU — universe and baselines sealed
+- Logged at 2026-10-13 13:49 UTC
+- 10 scheduled, 7 eligible (uk 4, se 2, dk 1), all 7 hunted (under cap 20). Dropped below $100k: RWA, ALSMA, DUST. Largest market uk 57%. Yahoo quote calendar unavailable on every market. Provenance stamped (orchestrator model flag omitted: get_session not callable here). Wave 1: BOOM JHD SCT VTU DEMANT; wave 2: AVARDA CRED_A.
