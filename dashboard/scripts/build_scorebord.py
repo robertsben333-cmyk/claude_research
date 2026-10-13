@@ -31,6 +31,7 @@ import time
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -44,6 +45,11 @@ OUT_HTML = ROOT / "dashboard" / "scorebord.html"
 OUT_JSON = DATA / "scorebord.json"
 TODAY = datetime.now(timezone.utc).date()
 LOOKBACK_DAYS = 6                   # runs this recent can still have an open window
+ET = ZoneInfo("America/New_York")
+# The US strategy exit, as the ledger resolves it (STRATEGY_EXIT in build_ledger.py):
+# amc at the next opening print, bmo at 14:00 ET on the report day (`hr_22`). A
+# running bmo call is priced to that same minute, never to the close.
+BMO_EXIT_HM = 14 * 60
 
 
 def load(p):
@@ -84,7 +90,28 @@ def chart(sym):
     return out
 
 
-def window(sym, start, start_is_close_before, end_at_open=False):
+def intraday_at(sym, day, hm):
+    """Last 5-minute close at or before `hm` (minutes ET) on `day`, within an hour."""
+    url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}"
+           "?range=10d&interval=5m")
+    for i in range(3):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            r = json.load(urllib.request.urlopen(req, timeout=20))["chart"]["result"][0]
+            q = r["indicators"]["quote"][0]
+            best = None
+            for ts, c in zip(r.get("timestamp") or [], q["close"]):
+                d = datetime.fromtimestamp(ts, ET)
+                m = d.hour * 60 + d.minute
+                if c is not None and d.date().isoformat() == day and hm - 60 <= m <= hm:
+                    best = c
+            return best
+        except Exception:
+            time.sleep(1 + i)
+    return None
+
+
+def window(sym, start, start_is_close_before, end_at_open=False, end_hm=None):
     """Price a window that starts at a close and ends at the next session's close
     (or open). `start` is the event date; when `start_is_close_before` the reference is
     the last close strictly before it (a bmo print), else the close on it.
@@ -99,6 +126,9 @@ def window(sym, start, start_is_close_before, end_at_open=False):
     if not before:
         return None
     ref_day = before[-1]
+    if not start_is_close_before and ref_day != start:
+        # The reference is the event day's own close and it is not printed yet.
+        return {"ref": None, "ref_day": None, "last": None, "move": None, "state": "wacht"}
     ref = q["bars"][ref_day][1]
     after = [d for d in days if d > ref_day]
     if not after:
@@ -106,7 +136,13 @@ def window(sym, start, start_is_close_before, end_at_open=False):
                 "state": "wacht"}
     end_day = after[0]
     o, c = q["bars"][end_day]
-    if end_at_open:
+    now_et = datetime.now(ET)
+    if end_hm is not None and end_day == now_et.date().isoformat() \
+            and now_et.hour * 60 + now_et.minute < end_hm:
+        last, state = q.get("price"), "loopt"
+    elif end_hm is not None:
+        last, state = intraday_at(sym, end_day, end_hm), "gesloten"
+    elif end_at_open:
         last, state = o, "gesloten"
     elif end_day == TODAY.isoformat() and q.get("time") and \
             time.time() - q["time"] < 3600 and q.get("price"):
@@ -227,7 +263,8 @@ for n in ledger["names"]:
                              kind="top 20%"))
     elif recent(n["run_date"]):
         w = window(n["ticker"], n["event_date"], n["session"] == "bmo",
-                   end_at_open=n["session"] == "amc")
+                   end_at_open=n["session"] == "amc",
+                   end_hm=BMO_EXIT_HM if n["session"] == "bmo" else None)
         live_row(stage="US · E", ticker=n["ticker"], company=n.get("company"),
                  run_date=n["run_date"], score=n["impact_sum"],
                  why=f"top {100 - n['impact_pctile_all']:.0f}% {n['model_short']}",
@@ -235,6 +272,7 @@ for n in ledger["names"]:
 
 
 def us_side_stage(glob_pat, stage, market, picker):
+    key_is_panel = picker is pick_panel
     """E-P and D: pick the strong names of each run, outcome from the stage E ledger
     (same universe, same window), else live."""
     for f in sorted(glob.glob(str(ROOT / glob_pat))):
@@ -246,13 +284,15 @@ def us_side_stage(glob_pat, stage, market, picker):
         for r, side, why in picker(run, f, model):
             n = by_run_ticker.get((run_date, r["ticker"]))
             if n and n.get("mv_strategy") is not None and not n.get("pending"):
-                resolved.append(dict(stage=stage, version=ver, model=mshort,
+                resolved.append(dict(stage=stage, version=ver,
+                                     model="panel" if key_is_panel else mshort,
                                      ticker=r["ticker"], run_date=run_date,
                                      ret=side * n["mv_strategy"], kind=why))
             elif recent(run_date):
                 b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
                 w = window(r["ticker"], b.get("event_date") or run_date,
-                           b.get("session") == "bmo", end_at_open=b.get("session") == "amc")
+                           b.get("session") == "bmo", end_at_open=b.get("session") == "amc",
+                           end_hm=BMO_EXIT_HM if b.get("session") == "bmo" else None)
                 live_row(stage=stage, ticker=r["ticker"], company=b.get("company"),
                          run_date=run_date, score=r.get("panel_score", r.get("impact_sum")),
                          why=why, side=side, w=w)
@@ -306,17 +346,20 @@ for mk, v in markets.items():
                 sym = b.get("yahoo_symbol") or n["ticker"] + SUFFIX.get(mk, "")
                 if mk == "CA" and str(b.get("exchange", "")).upper().startswith("TSXV"):
                     sym = n["ticker"] + ".V"
-                w = window(sym, n["event_date"], n.get("session") != "amc")
+                # Tokyo is scored close to the NEXT OPEN (jp_resolve.py); the others close to close.
+                w = window(sym, n["event_date"], n.get("session") != "amc",
+                           end_at_open=mk == "JP")
                 live_row(stage=stage, ticker=n["ticker"], company=n.get("company"),
                          run_date=n["run_date"], score=score, why=why, side=side, w=w)
 
 # ---------------------------------------------------------------- the last week, per ticker
-# Every call of the last WEEK_DAYS calendar days, strong or not (operator, 2026-10-13:
-# "de resultaten van de laatste week specifiek ... per ticker"). Same sources and the
-# same exclusions as above; a call with no outcome yet is priced live like the open
-# strong calls, so the page shows what each name did whether or not it has resolved.
+# Every call, strong or not, with the same sources and exclusions as above. Two views
+# read it (operator, 2026-10-13): the last WEEK_DAYS calendar days per ticker, and one
+# expandable block per agent (stage x prompt x model) with all of its calls, whether
+# or not they met the strong requirement. A call with no outcome yet is priced live
+# while its run is recent, and is shown as not yet resolved after that.
 WEEK_DAYS = 7
-week = []
+calls = []
 
 
 def in_week(run_date):
@@ -334,9 +377,10 @@ def week_row(stage, version, model, ticker, company, run_date, event_date, score
     elif live_w and live_w.get("move") is not None:
         move, state = live_w["move"], live_w["state"]
     else:
-        state = (live_w or {}).get("state", "geen koers")
+        state = live_w["state"] if live_w else \
+            "geen koers" if recent(run_date) else "niet opgelost"
     ret = None if move is None or not side else side * move
-    week.append(dict(stage=stage, version=version, model=model, ticker=ticker,
+    calls.append(dict(stage=stage, version=version, model=model, ticker=ticker,
                      company=company, run_date=run_date, event_date=event_date,
                      score=None if score is None else round(score, 2), side=side,
                      strong=strong, why=why, state=state,
@@ -346,8 +390,7 @@ def week_row(stage, version, model, ticker, company, run_date, event_date, score
 
 
 for n in ledger["names"]:
-    if not in_week(n["run_date"]) or n.get("sept_opus55") or n.get("duplicate_event") \
-            or n.get("rankable") is False:
+    if n.get("sept_opus55") or n.get("duplicate_event") or n.get("rankable") is False:
         continue
     p = n.get("impact_pctile_all")
     done = n.get("mv_strategy") is not None and not n.get("pending")
@@ -356,9 +399,11 @@ for n in ledger["names"]:
              bool(n.get("impact_sum")) and (p or 0) >= TOP,
              None if p is None else f"p{p:.0f}",
              move=n["mv_strategy"] if done else None,
-             live_w=None if done else window(n["ticker"], n["event_date"],
+             live_w=None if done or not recent(n["run_date"]) else window(
+                 n["ticker"], n["event_date"],
                                              n["session"] == "bmo",
-                                             end_at_open=n["session"] == "amc"))
+                                             end_at_open=n["session"] == "amc",
+                   end_hm=BMO_EXIT_HM if n["session"] == "bmo" else None))
 
 for glob_pat, stage, market, key in (
         ("research/*/*/*/edge-panel/edge-scores-panel.json", "US · E-P panel", "US-P",
@@ -367,8 +412,6 @@ for glob_pat, stage, market, key in (
     for f in sorted(glob.glob(str(ROOT / glob_pat))):
         run = str(Path(f).parent.relative_to(ROOT))
         run_date = Path(f).parent.parent.name
-        if not in_week(run_date):
-            continue
         ver, model, mshort, sept = prov(run, market)
         if sept:
             continue
@@ -386,26 +429,27 @@ for glob_pat, stage, market, key in (
             n = by_run_ticker.get((run_date, r["ticker"]))
             b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
             done = n and n.get("mv_strategy") is not None and not n.get("pending")
-            week_row(stage, ver, mshort, r["ticker"], b.get("company"), run_date,
+            week_row(stage, ver, "panel" if key == "panel_score" else mshort, r["ticker"], b.get("company"), run_date,
                      b.get("event_date"), score, strong, why,
                      move=n["mv_strategy"] if done else None,
-                     live_w=None if done else window(
+                     live_w=None if done or not recent(run_date) else window(
                          r["ticker"], b.get("event_date") or run_date,
-                         b.get("session") == "bmo", end_at_open=b.get("session") == "amc"))
+                         b.get("session") == "bmo", end_at_open=b.get("session") == "amc",
+                           end_hm=BMO_EXIT_HM if b.get("session") == "bmo" else None))
 
 for mk, v in markets.items():
     for n in v.get("names", []):
-        if not in_week(n.get("run_date") or "") or n.get("sept_opus55") \
-                or not n.get("rankable") or n.get("event_occurred") is False:
+        if n.get("sept_opus55") or not n.get("rankable") or n.get("event_occurred") is False:
             continue
         done = n.get("realised_move_pct") is not None and not n.get("move_pending")
         w = None
-        if not done:
+        if not done and recent(n.get("run_date") or ""):
             b = load(ROOT / n["run"] / "baselines" / f"{n['ticker']}.json") or {}
             sym = b.get("yahoo_symbol") or n["ticker"] + SUFFIX.get(mk, "")
             if mk == "CA" and str(b.get("exchange", "")).upper().startswith("TSXV"):
                 sym = n["ticker"] + ".V"
-            w = window(sym, n["event_date"], n.get("session") != "amc")
+            w = window(sym, n["event_date"], n.get("session") != "amc",
+                       end_at_open=mk == "JP")
         move = n["realised_move_pct"] if done else None
         label = v.get("label", mk)
         p = n.get("impact_pctile_all")
@@ -420,8 +464,25 @@ for mk, v in markets.items():
                      n["panel_score"], bool(n.get("panel_selected")),
                      f"panel {n.get('panel_consensus_k')}/4", move=move, live_w=w)
 
-week.sort(key=lambda x: (x["run_date"], x["stage"], -abs(x["score"] or 0)), reverse=False)
-week.sort(key=lambda x: x["run_date"], reverse=True)
+calls.sort(key=lambda x: (x["run_date"], x["stage"], -abs(x["score"] or 0)))
+calls.sort(key=lambda x: x["run_date"], reverse=True)
+week = [c for c in calls if in_week(c["run_date"])]
+
+# One block per agent: every call it made, and the same statistics as the scorecard
+# for all its resolved calls beside the strong ones only. Never pooled over versions.
+by_agent = {}
+for c in calls:
+    if c["version"] and c["version"] != "onbekend":
+        by_agent.setdefault((c["stage"], c["version"], c["model"] or "?"), []).append(c)
+agents = []
+for (stage, ver, model), rows in by_agent.items():
+    done = [r for r in rows if r["state"] == "opgelost" and r["ret"] is not None]
+    agents.append(dict(stage=stage, version=ver, model=model, n_calls=len(rows),
+                       last=rows[0]["run_date"], first=rows[-1]["run_date"],
+                       all=summarise([r["ret"] for r in done]),
+                       strong=summarise([r["ret"] for r in done if r["strong"]]),
+                       calls=rows))
+agents.sort(key=lambda a: (a["stage"], a["last"]))
 
 # ---------------------------------------------------------------- assemble
 
@@ -454,6 +515,7 @@ payload = {
     "table": table,
     "n_resolved": len(resolved),
     "week": week,
+    "agents": agents,
     "week_days": WEEK_DAYS,
 }
 OUT_JSON.write_text(json.dumps(payload, indent=1, default=str))
@@ -462,4 +524,5 @@ tpl = (ROOT / "dashboard" / "scripts" / "scorebord_template.html").read_text()
 data = json.dumps(payload, default=str).replace("</", "<\\/")
 OUT_HTML.write_text(tpl.replace("__DATA__", data))
 print(f"scorebord: {len(live)} open strong calls, {len(resolved)} resolved strong calls, "
-      f"{len(table)} version rows, {len(week)} calls in the last {WEEK_DAYS} days -> {OUT_HTML.relative_to(ROOT)}")
+      f"{len(table)} version rows, {len(week)} calls in the last {WEEK_DAYS} days, "
+      f"{len(agents)} agents over {len(calls)} calls -> {OUT_HTML.relative_to(ROOT)}")
