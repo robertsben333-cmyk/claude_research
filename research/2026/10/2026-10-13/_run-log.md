@@ -92,3 +92,7 @@
 ## Edge hunt (panel) — DONE
 - Logged at 2026-10-13 17:39 UTC
 - Four judges ran on pinned agents (opus5, opus55, sonnet55, fable51), 9/9 ids each, no retries. panel_score: 0 selected (SOTK k=2, PGR k=1). rho stage E impact_sum vs panel_score +0.745 (n=9). Searcher: 0 over 2.8 floor. No alpaca_trade.py call, no shadow ledger. Note at edge-panel/edge-note.md.
+
+## Deep research — 2026-10-13 — DONE
+- Logged at 2026-10-13 18:14 UTC
+- Drawn BAC BLK STT (seed 48522036461030); all three hunts carry the freezes; impact_sum BAC +1.00 BLK +0.20 STT -0.25, none above floor. Agent form: deep-question-researcher (native). Python needed 'pip install requests pyyaml' for default python3.
