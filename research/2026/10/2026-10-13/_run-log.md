@@ -75,3 +75,9 @@
 ## Edge hunt — sweep
 - Logged at 2026-10-13 17:14 UTC
 - Sweep confirmed 9 of 9 from company sources, 0 phantom, 0 session unsettled. Unknown-session check (session_resolve.py): 4 time-not-supplied rows, UNTY killed (8-K 2.02 filed 2026-10-13), BMRA/FNGR/NXTT carried unresolved with no announcement - not added. 9 hunters, one per name; 8 launched at once, BAC queued on the 8-concurrent ceiling.
+
+## Edge hunt — 2026-10-13 amc + 2026-10-14 bmo — DONE
+- Logged at 2026-10-13 17:25 UTC
+- 9 hunters returned, all with pre_lessons and print_vs_bar_pct (us.v9, claude-opus-5-5). edge_score.py: 9/9 rankable, ranking_key impact_sum, 0 clear the 2.8 floor. Top ASML/MS +1.60, bottom SOTK -0.70. V2 grounded written (9/9, 186 ledger obs). Spearman vs -run_up_20d +0.23.
+- Step 7: execution.enabled true, but 'plan' found NO name meeting |impact_scaled| >= 1.76 (max 0.65 SOTK), so 'open --submit' was not called - nothing to place. Step 0b sold nothing (the account held no positions; the verify/close --submit call was denied by the auto-mode classifier). Orders accepted 0, gross 0% of equity ($11,201). All 9 refused: below the conviction floor.
+- Step 6c (shadow ledger) skipped this run. Step 6d context written (search failed for MS and SOTK). Operator notified that broker submit calls are denied again in auto mode despite the narrow allow rules in .claude/settings.json.
