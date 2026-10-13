@@ -1,0 +1,81 @@
+{
+  "ticker": "MDCX",
+  "drop_date": "2026-10-13",
+  "window": {"from": "close of 2026-10-13", "to": "close of 2026-10-14"},
+  "expected_move_pct": -1.08,
+  "conviction_note": "One small sourced negative: an open, effective ATM (Yorkville as agent, upsized to $50m, about $36m nominally unused) at an issuer with going-concern language and a $12m Pfizer upfront already paid. It has sold into every stretch of 2026 and can sell into any post-split bounce tomorrow. No repricing mechanism was found and no dated catalyst lands in the window. With abs_move 9 and p_up 44 the scaled number is -1.08, which matches the -1.0 impact_sum.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.0,
+  "print_vs_bar_pct": 0.0,
+  "bar": "this name's own comparable falls (n=101, median next close +0.83%, median abs 4.02%) and the 2026-10-08 to 10-12 post-split sequence in the sealed baseline; ATR14 23.3%. No option chain. Baseline: /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/MDCX.json",
+  "cause": {
+    "label": "corporate_action",
+    "seller_is_finished_pct": 25,
+    "confidence_pct": 70,
+    "what_happened": "This is the fourth straight down session after the 50:1 reverse split. The split was announced in an 8-K accepted 2026-10-07 20:05 ET, and the stock fell 36% on 10-08. Consolidated trading began 2026-10-12. Today's -7.1% to 15:05 ET came on 0.87x normal volume with no new filing or release. It is the classic post-reverse-split bleed of a going-concern microcap with an open ATM, and the baseline's adjusted bars are not an unadjusted-split artefact.",
+    "evidence": [
+      {"claim": "50-to-1 share consolidation effective at the open on 2026-10-12, to regain Nasdaq minimum bid compliance", "url": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326005226/form8k.htm", "timestamp": "2026-10-07 20:05 ET (EDGAR acceptance 2026-10-08T00:05:35Z)"},
+      {"claim": "Pre-split last price $0.1592 on 2026-10-06 ($7.96 split-adjusted); 3,245,595 warrant shares at $4.64 pre-split registered for resale", "url": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326005229/form424b3.htm", "timestamp": "2026-10-07"},
+      {"claim": "No EDGAR filing after the 2026-10-07 8-K/424B3 as of the screen", "url": "https://data.sec.gov/submissions/CIK0001997296.json", "timestamp": "2026-10-13"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -30,
+    "overshoot_has_mechanism": true,
+    "next_dated_event": "Nasdaq MVLS ($35m) compliance deadline 2026-11-16 (8-K of 2026-05-27), outside the window; nothing dated inside it",
+    "what_would_change_my_mind": "An 8-K or release before the 10-14 open (a CD228V/SkinJect update, ATM termination, or an insider buy after the split) would remove the supply lean; an 8-K announcing a priced offering would deepen it."
+  },
+  "positioning_check": "Nasdaq short interest at the 2026-09-30 settlement was 3,686,994 pre-split shares (about 73.7k post-split), days to cover 1.0, down 26.2% from 4,998,570 at 09-15. The position carried into the 10-08 to 10-13 fall is not observable because of the roughly eight-business-day FINRA lag. Source: https://api.nasdaq.com/api/quote/MDCX/short-interest?assetclass=stocks. Shares outstanding were 89,762,721 pre-split at 2026-09-10 (13D), about 1.8m post-split, so the market cap is about $6m at $3.325. No options market, so there is no skew. Insider trades: 0 open-market in 3/12 months per Nasdaq; CEO Bokhari holds 5.3% (13D, 2026-09-14).",
+  "findings": [
+    {
+      "finding": "MDCX has an open, effective at-the-market Equity Distribution Agreement (12/29/2025, Yorkville Securities as agent, upsized to $50m on 2026-04-23). It sold 28.2m shares for $12.9m in H1 2026 and 2.8m more after quarter end. It carries going-concern language and paid Pfizer $12m upfront on 2026-09-02, so it can sell into any bounce on 2026-10-14.",
+      "leg": "new_information",
+      "mechanism_in_window": "ATM sales need no new filing and settle daily. The registration is effective and the issuer has drawn repeatedly. The 2026-09-14 8-K confirms Yorkville remains sales agent under the EDA after the SEPA was terminated, so supply can hit the 10-14 session.",
+      "expected_impact_pct": -1.0,
+      "impact_low_pct": -3.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-14",
+      "reaction_history_on_this_line": "Through 2026 the ATM ran alongside a -81% 60-day path. The baseline's post-split sequence shows next-day closes of -9.8%, -22.2% and the -7.1% today, with no rebound session yet.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326004230/form10q.htm",
+      "source_date": "2026-08-12",
+      "why_not_priced": "The price holds the split and the dilution done so far, not the sales still to come. If the market believed the ATM was idle (baby-shelf capacity exhausted or terminated), a fall on 0.87x volume would be expected to stabilise, as the under-2x base rate (+1.46%) suggests. Further sales would show as a fifth down session on rising volume with no news.",
+      "independence": "The 8-K of 2026-09-14 (Yorkville remains agent under the 12/29/2025 EDA): https://www.sec.gov/Archives/edgar/data/1997296/000106299326004906/form8k.htm. Remaining usable capacity under the baby-shelf limit is NOT sourced, so the finding is sized small."
+    }
+  ],
+  "outside_window": [
+    {"finding": "Nasdaq MVLS deficiency (below $35m since 2026-05-20). The compliance deadline is 2026-11-16, and at about $6m market cap a delisting determination looks likely after it (appealable).", "expected_impact_pct": -8.0, "resolves_by": "2026-11-16", "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326002900/form8k.htm"},
+    {"finding": "Streeterville secured notes ($22.9m principal). Limited redemptions in cash start 6 months after 2026-05-27 and monthly $500k redemptions after 7 months, a cash drain that forces more ATM use.", "expected_impact_pct": -3.0, "resolves_by": "2026-11-27", "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326002900/form8k.htm"},
+    {"finding": "Q3 10-Q (Zacks cadence estimate 2026-11-13, not company-announced). It is likely to repeat going-concern language and disclose further ATM sales.", "expected_impact_pct": -2.0, "resolves_by": "2026-11-13", "source": "https://api.nasdaq.com/api/analyst/MDCX/earnings-date"},
+    {"finding": "$15m deferred CD228V payment owed to Pfizer on the first anniversary of 2026-09-02", "expected_impact_pct": -2.0, "resolves_by": "2027-09-02", "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326004806/form8k.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions: no filing after the 2026-10-07 8-K/424B3 (https://data.sec.gov/submissions/CIK0001997296.json)",
+    "No dated release found for October 2026 in WebSearch for Medicus Pharma news (results stale or quote pages only)",
+    "Newsfile company page (https://www.newsfilecorp.com/company/7378) carries only 2025 releases; the company moved to GlobeNewswire and no October release surfaced",
+    "No Nasdaq minimum-bid deficiency letter surfaced beyond the split 8-K; the MVLS notice is dated 2026-11-16, outside the window",
+    "No restatement / non-reliance language (baseline probe, 0 hits)",
+    "No ClinicalTrials.gov studies registered under the issuer (baseline)",
+    "Insider buying: none in 3/12 months (Nasdaq insider API in baseline)",
+    "Repricing leg: no analyst note, disclosed buyer, wrong wire story or spent dated seller found; no overshoot finding filed",
+    "No post-screen price data was encountered; the search snippets showed only pre-split quotes from 10-02 and 10-09, which were not used for any number"
+  ],
+  "abs_move_pct": 9.0,
+  "p_up": 44,
+  "rejected_candidates": [
+    {"candidate": "Nasdaq MVLS delisting clock", "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326002900/form8k.htm", "reason": "outside_window", "detail": "deadline 2026-11-16"},
+    {"candidate": "Streeterville note redemptions", "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326002900/form8k.htm", "reason": "outside_window", "detail": "redemption rights begin about 2026-11-27 / 2026-12-27"},
+    {"candidate": "8.53m restricted bonus shares issued to officers at $0.1705 (pre-split)", "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326004898/form8k.htm", "reason": "outside_window", "detail": "Restricted under 4(a)(2) and issued 2026-09-04; Rule 144 holding period not met inside the window"},
+    {"candidate": "Warrant shares registered for resale (3,245,595 pre-split at $4.64)", "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326005229/form424b3.htm", "reason": "contradicted_by_document", "detail": "The exercise price is $232 post-split against $3.325 spot, so the warrants are deep out of the money and no supply comes in the window"}
+  ],
+  "baseline_tension": "The sub-1x volume and this name's own n=101 history (median next close +0.83%) lean toward a bounce. The 23% ATR, the unbroken post-split sequence and the open ATM lean the other way, so the call is a small negative held near 50.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.0,
+    "expected_move_pct": -1.08,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 1,
+    "sizes_pct": [-1.0]
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 9
+}
