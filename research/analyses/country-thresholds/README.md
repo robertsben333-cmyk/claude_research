@@ -73,3 +73,21 @@ Australia has had no names since 2026-10-02 (off-season, Feb/Aug reporting).
 The re-judge's non-US names are Opus 5-era hunts and few (Europe 35, Japan 10, Australia
 16). Live panel days are 1-2 per market. Nothing here is a measured edge; it is a
 measurement of which share of names each line lets through.
+
+## Addendum 2026-10-13: Europe's OWN top 20% (operator: "the top 20% in Europe is accurate")
+
+Relative to Europe's own sizes, not the US-scale line. Resolved, non-validation, gross.
+
+| what ranks | Europe's top 20% | all non-zero names |
+|---|---|---|
+| hunter `impact_sum`, Sept Opus 5.5 out (dashboard default) | 3 of 5, +1.7% | 13 of 25, -0.4% |
+| hunter `impact_sum`, Sept Opus 5.5 in | 7 of 10, +3.5% (binom p 0.17) | 27 of 48, +0.3% |
+| re-judge Opus 5 / Sonnet 5.5 / Fable 5.1 (35 names, anonymised out) | 6 of 7 each, +4.8 / +6.8 / +5.2% (p 0.06 each) | 15-17 of 28 |
+| re-judge Opus 5.5 | 5 of 7, +3.1% | 15 of 27 |
+| re-judge median of the four | 6 of 7, +5.9% (p 0.06) | |
+
+The judges' top 20% is mostly the same names (LIKE, SAGA, MTEC, KGF), so the four rows are
+one test, not four. Every one of these names falls BELOW the lines now in use, which is the
+argument for rescaling: the part that looks good is exactly what the US-scale line blocks.
+Seven names from 09-16..09-30, mostly UK, several definitions tried: a lead to run forward,
+about 20 selected names (seven weeks at 3-4 names a run) before it can tell 80% from 55%.
