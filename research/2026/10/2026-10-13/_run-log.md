@@ -35,3 +35,7 @@
 ## Stage J — universe sealed
 - Logged at 2026-10-13 01:07 UTC
 - 51 scheduled, 30 eligible above ¥15m turnover, 25 hunted by random draw seed jp-2026-10-13. 25 baselines sealed. Provenance jp.v5 · claude-opus-5-5. JPX short register as_of 20260929 (stale vs run date). Wave 1 (1401 1419 2379 2653 2791) launched 01:11 UTC.
+
+## Stage J — wave 1 banked
+- Logged at 2026-10-13 01:18 UTC
+- 1401 1419 2379 2653 2791 hunted (5/5 non-empty). Running rolling at wave_size 5 concurrency.
