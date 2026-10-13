@@ -112,3 +112,7 @@
 ## Stage CA — Canada researcher — DONE
 - Logged at 2026-10-13 18:37 UTC
 - Funnel 3 scheduled / 1 eligible / 1 hunted / 0 rankable. GOLD: hunter returned event_confirmed:false, 0 findings, bar unsourced. Filing-only for interims (4 prior interims with no release); filing_only screen missed it again (defect in ca_universe event_shape). Anchors options 0 / register 1 (no chain). Panel: 0 packs, no judges spawned. register_business_date 2026-10-12, change -0.02pp vs 10-09.
+
+## Stage R — reversal researcher — STARTED
+- Logged at 2026-10-13 19:04 UTC
+- Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET window. Plan: rev_universe --intraday --k 15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-10-12, note before 16:00 ET (shed names if needed).
