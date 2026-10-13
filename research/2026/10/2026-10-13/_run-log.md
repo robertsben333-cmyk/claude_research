@@ -96,3 +96,7 @@
 ## Deep research — 2026-10-13 — DONE
 - Logged at 2026-10-13 18:14 UTC
 - Drawn BAC BLK STT (seed 48522036461030); all three hunts carry the freezes; impact_sum BAC +1.00 BLK +0.20 STT -0.25, none above floor. Agent form: deep-question-researcher (native). Python needed 'pip install requests pyyaml' for default python3.
+
+## Stage CA — Canada researcher — STARTED
+- Logged at 2026-10-13 18:33 UTC
+- 18:35 UTC fire. Plan: ca_universe -> seal baselines before 20:00 UTC close -> provenance -> unpriced-hunter-ca waves -> edge_score -> 4-model panel -> note. No orders.
