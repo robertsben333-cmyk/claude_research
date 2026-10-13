@@ -116,3 +116,7 @@
 ## Stage R — reversal researcher — STARTED
 - Logged at 2026-10-13 19:04 UTC
 - Fired 19:04 UTC = 15:04 ET, inside the 13:30–16:05 ET window. Plan: rev_universe --intraday --k 15, seal baselines, 15 reversal-hunters in parallel, edge_score, resolve 2026-10-12, note before 16:00 ET (shed names if needed).
+
+## Stage R — reversal researcher — DONE
+- Logged at 2026-10-13 19:15 UTC
+- Intraday screen 15:05 ET (rev_universe --intraday), 46 passed floors, 15 hunted, nothing shed. Health Care 7/15 (47%). impact_sum −2.50…+0.50, none ≥ 2.8; leg 1 empty on all 15, every non-zero number is leg-2 supply. Resolved 2026-10-09 at d1: hunt ρ +0.231 vs neg_ret_d +0.246, neg_atr14 −0.139. Pooled 09-22→10-09 (193 names): hunt ρ +0.011 vs neg_atr14 +0.107 — has not beaten the free controls. 2026-10-12 pending until today's close. requests module missing again, pip-installed. No constants moved; no orders.

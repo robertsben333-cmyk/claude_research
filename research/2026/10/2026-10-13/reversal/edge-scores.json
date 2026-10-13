@@ -1,0 +1,1459 @@
+{
+ "generated_utc": "2026-10-13T19:13:57+00:00",
+ "run": "research/2026/10/2026-10-13/reversal",
+ "legacy_rescore": false,
+ "names": 15,
+ "rankable": 15,
+ "ranking_key": "impact_sum",
+ "conviction_floor": 2.8,
+ "lessons_control": {
+  "names_with_pre_lessons": 15,
+  "names_moved_by_lessons": 0,
+  "note": "pre_lessons is each hunter's own sum before it read researcher_us/LESSONS.md. edge_resolve.py ranks it against the same realised move as the key, which is the only thing that can tell the guidance file apart from a habit."
+ },
+ "language_control": {
+  "names_with_pre_local": 0,
+  "names_moved_by_local_pass": 0,
+  "note": "RETIRED 2026-09-22: the European and Canadian hunters now run one bilingual pass and emit no freeze, so this is 0/0 on every run sealed after that date. On earlier runs pre_local is each hunter's own sum after the ENGLISH pass and before the local pass; eu_resolve.py ranks it against the same realised move as the key, per market, and does not pool the UK (where the second pass varied source locality) with Germany and France (where it varied language)."
+ },
+ "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added up, in points of spot. No call and no threshold -- cut wherever you like afterwards, which is what keeps the ranking question answerable at every k. `conviction` (abs of the key) is where the direction skill lives: over all events the sign is a coin flip, above the median conviction it is 74%. conviction_floor is a floor on emphasis in the note, never a filter on this file. Everything under `diagnostics` was measured as neutral or subtractive and decides nothing -- see researcher_us/EDGE_ANALYSIS.md.",
+ "ranking": [
+  {
+   "ticker": "DCX",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.5,
+   "conviction": 0.5,
+   "priced_lean_pct": -0.556,
+   "hunter_view": {
+    "expected_move_pct": -1.92,
+    "print_vs_bar_pct": 0.0,
+    "bar": "No option chain, no analyst coverage. Sized against the name's own comparable falls in the sealed baseline (12 falls since 2026-09-18, median next-close move about -9%, 10 of 12 down) and its 14-day ATR of 60.6%: /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/DCX.json",
+    "positioning_check": "Nasdaq/FINRA short interest is 131,514 shares at the 2026-09-30 settlement (126,637 at 09-15, +3.9%), days to cover 1.0 (https://api.nasdaq.com/api/quote/DCX/short-interest?assetclass=stocks). The 09-30 settlement is after the 160:1 split of 09-28; if that count is post-split it is about 5.6% of the roughly 2.35m shares. The position carried into this fall is not observable: the 10-15 settlement publishes around 10-27. Insider trades are zero over 3 and 12 months per Nasdaq; the CEO's July open-market buy of 41,000 shares at $1.25 was pre-split. There is no option chain, so no skew. Not a crowded short.",
+    "baseline_tension": "The one finding leans mildly positive, which cuts against the 46x volume, the 60.6% ATR and this name's own 10-of-12 continuation since 09-18. The reaction function therefore takes p_up to 42 and the scaled number to -1.92, despite a +0.5 impact_sum."
+   },
+   "flags": [
+    "hunter's own expected_move_pct (-1.92) has the opposite sign to the sum of its findings (+0.50)",
+    "2 finding(s) worth -3.50 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "DCX",
+     "key": "DCX#0",
+     "finding": "The 2026-09-18 securities purchase agreement bars the company from issuing ordinary shares or convertible securities from 09-18 until 30 days after the 09-21 closing (to about 2026-10-21). By my derivation from baseline bars, both reset warrant series sit above today's ~$2 spot. So no new primary supply can price tonight, and no fresh cashless-exercise supply is in the money inside the window.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226043615/form6-k.htm",
+     "source_date": "2026-09-22",
+     "expected_impact_pct": 0.5,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "Since the 09-21 closing the stock fell on 10 of 12 >=6% drop days. The supply came from the raise itself, the reverse split and warrant resets, not from a new offering. There is no prior instance of a new offering inside this standstill, because none was permitted.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Series B warrants (cashless into units of one share plus one Series A warrant) expire 2026-10-21, and the company's issuance standstill ends at the same time. After that an F-3 takedown or ATM becomes possible again (F-3 333-281314 effective). Cash after the $4m Whales AI commitment is roughly $2m, so another raise is likely.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2026-10-21",
+     "source": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226043615/ex4-2.htm"
+    },
+    {
+     "finding": "Insider and 5%-holder lock-up of 90 days from the 2026-09-21 closing ends around 2026-12-20",
+     "expected_impact_pct": -0.5,
+     "resolves_by": "2026-12-20",
+     "source": "https://www.sec.gov/Archives/edgar/data/1957413/000149315226043615/form6-k.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -3.5,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": 2.7,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 169,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.5,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed (researcher_reversal/LESSONS.md is deliberately empty; nothing has resolved)"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 1
+  },
+  {
+   "ticker": "CUE",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0,
+   "conviction": 0,
+   "priced_lean_pct": -1.296,
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "bar": "unsourced. No option-implied move (chain unusable, baseline); sized against the name's own 33 comparable falls (median next close -2.03%, median |next| 5.33%) and 14-day ATR 15.1%, from the sealed baseline",
+    "positioning_check": "Short interest 702,198 shares at the 2026-09-30 settlement, up 111.4% from 332,105 on 09-15, 1.05 days to cover on 666,076 ADV (Nasdaq API, https://api.nasdaq.com/api/quote/CUE/short-interest?assetclass=stocks); about 9.7% of the 7,264,414 shares outstanding at 2026-08-12 (10-Q cover). It lags by roughly eight business days, so the position carried into the Oct 9 pop and the Oct 12-13 fall is not observable. No usable option chain, so there is no skew (baseline: unusable_chain, OI 425).",
+    "baseline_tension": "Nothing found cuts either way. The ordinary volume (0.85x, the under-2x bucket that bounced historically) and the own-history drift (median -2.03%, 33% up) and high ATR (15%, which continues) point in opposite directions, and no sourced fact breaks the tie, so the number is 0."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "4 finding(s) worth -0.80 dated after the exit window, kept out of the key"
+   ],
+   "findings": [],
+   "outside_window": [
+    {
+     "finding": "Resale registration (S-3 filed 2026-08-12, effective 2026-08-20) covers 1,505,570 PIPE shares held by Cormorant, Seligman and Vivo, bought at $33.21. At $20.74 they are about 38% underwater, so the shares can be sold any day but no date makes it likely inside the window",
+     "expected_impact_pct": -0.5,
+     "resolves_by": "undated, continuous",
+     "source": "https://www.sec.gov/Archives/edgar/data/1645460/000119312526346867/d136967ds3.htm"
+    },
+    {
+     "finding": "October 2021 Jefferies ATM sales agreement (up to $80m) is still disclosed. It was barely used (34,652 shares in H1 2026, none in Q2), and the company states its runway covers at least the next twelve months after the $49.8m July PIPE. No draw is dated",
+     "expected_impact_pct": -0.3,
+     "resolves_by": "undated",
+     "source": "https://www.sec.gov/Archives/edgar/data/1645460/000119312526352128/cue-20260630.htm"
+    },
+    {
+     "finding": "CUE-221 next steps: the Phase 2b/3 CSU trial and the Phase 2 food-allergy trial are 'subject to FDA review of the CSU data'. No meeting or date has been disclosed",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "undated",
+     "source": "https://www.sec.gov/Archives/edgar/data/1645460/000119312526396094/d21238d8k.htm"
+    },
+    {
+     "finding": "CUE-401 IND and Phase 1 start guided for year-end 2026",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1645460/000119312526352128/cue-20260630.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -0.8,
+    "residual_sum": null,
+    "adversary_judged": "0/0",
+    "edge_score_legacy": 0.0,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 33,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 0,
+    "cluster_names": [],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed (researcher_reversal/LESSONS.md is deliberately empty)"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 2
+  },
+  {
+   "ticker": "CRVO",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.2,
+   "conviction": 0.2,
+   "priced_lean_pct": -0.944,
+   "hunter_view": {
+    "expected_move_pct": -0.48,
+    "print_vs_bar_pct": 0.0,
+    "bar": "No option chain (baseline options.status no_options_market). Sized against the name's own 43 comparable falls (median next close -1.99%, median |move| 4.26%, up-rate 39.5%) and ATR14 11.56%, from the sealed baseline /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/CRVO.json",
+    "positioning_check": "Nasdaq/FINRA short interest at the 2026-09-30 settlement: 1,339,771 shares (+9.1% vs 09-15), 7.05 days to cover. Against 15,119,096 shares outstanding (10-Q, as of 2026-08-06) that is about 8.9%. The data were published about 8 business days after settlement, so the position carried into the 10-12 data and into today is not observable. Source: https://api.nasdaq.com/api/quote/CRVO/short-interest?assetclass=stocks. No options market, so there is no skew. Insiders: 19 open-market buys in 12 months and 0 in 3 months (https://api.nasdaq.com/api/company/CRVO/insider-trades?limit=15&type=ALL).",
+    "baseline_tension": "The findings mostly agree with the reaction function. Moderate 2.25x volume, the name's own 39.5% up-rate and a high ATR give a mild negative lean, and the two offsetting supply facts do not override it. The cross-section prior for the -15..-10 band and under-$1m turnover is mildly positive (+0.4), which is why p_up is 46 and not lower."
+   },
+   "flags": [
+    "4 finding(s) worth +1.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "CRVO",
+     "key": "CRVO#0",
+     "finding": "The company has used almost all of its baby-shelf (S-3 I.B.6) capacity: the June 2026 424B5 put public float at $32.1m (cap about $10.7m per 12 months), and the $10.0m registered direct closed 2026-06-22. A meaningful ATM draw or shelf takedown into the window is therefore close to impossible, which removes the most common second shoe for a small-cap biotech after weak data.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1053691/000143774926021218/crvo20260619c_424b5.htm",
+     "source_date": "2026-06-22",
+     "expected_impact_pct": 0.4,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "The June 2026 financings (PIPE on 06-10, RD on 06-18/22) came during the 06-10 (-22.15%) and 06-17 (-15.71%) falls, which were followed by +8.44% and +11.29% next closes in the baseline history.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.14,
+     "_legacy_residual_pct": 0.14
+    },
+    {
+     "hunter": "CRVO",
+     "key": "CRVO#1",
+     "finding": "3,360,377 PIPE units bought at $3.14 on 2026-06-11 are resale-registered (S-3 effective 2026-07-10, 424B3) and now sit about 29% underwater at $2.23. After a disappointing readout, those holders are a seller who can keep selling into the next session.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1053691/000143774926023357/crvo20260709c_424b3.htm",
+     "source_date": "2026-07-10",
+     "expected_impact_pct": -0.6,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "On two-day sequences in the baseline, 06-23 (-9.93%) was followed by -12.37% and then +2.76%, and 05-15 by -11.63% and then -4.93%. The history is mixed, with continuation slightly more common.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.21,
+     "_legacy_residual_pct": -0.21
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "RESTORE Phase 2a stroke trial topline, guided to 2H 2026 with primary completion 2026-09-30. A binary that could land on any day but carries no date, so it cannot be placed in the window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1053691/000143774926026771/ex_1002031.htm"
+    },
+    {
+     "finding": "Fuller 12-week and initial 24-week nfvPPA biomarker data at CTAD, Boston, 2026-11-16 to 11-19",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-19",
+     "source": "https://www.sec.gov/Archives/edgar/data/1053691/000143774926032502/ex_1024863.htm"
+    },
+    {
+     "finding": "Possible overshoot: a cumulative ~31% two-day fall on open-label biomarker data that the company called 'encouraging', on a name with 6 Buy-rated analysts. I found no dated note or buyer that closes the gap inside the window.",
+     "expected_impact_pct": 1.0,
+     "resolves_by": "2026-11-19",
+     "source": "https://www.sec.gov/Archives/edgar/data/1053691/000143774926032502/ex_1024863.htm"
+    },
+    {
+     "finding": "Short interest of about 8.9% of shares, 7 days to cover, rising into the data. A short-cover bounce has no dated trigger, and the 10-15 settlement publishes around 10-27.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-10-27",
+     "source": "https://api.nasdaq.com/api/quote/CRVO/short-interest?assetclass=stocks"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 1.0,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -1.8,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 43,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.2,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 3
+  },
+  {
+   "ticker": "FTH",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.2,
+   "conviction": 0.2,
+   "priced_lean_pct": -0.759,
+   "hunter_view": {
+    "expected_move_pct": -0.22,
+    "print_vs_bar_pct": 0.0,
+    "bar": "Two things. FTH's own 119 comparable falls in the baseline (median next close 0.0%, up rate 47.9%, median |next| 3.18%). And phase 0's under-2x-volume conditional (+1.46%). There is no option chain (no_options_market). Baseline: /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/FTH.json",
+    "positioning_check": "Nasdaq/FINRA short interest at the 2026-09-30 settlement was 2,067,445 shares, up 56.8% from 1,318,893 on 09-15 and up from 615k in mid-June. Days to cover were 3.63. Against about 25.8M shares outstanding as of 2026-06-15 (8-K of 2026-06-18), that is roughly 8% of shares. Settlement data lag about 8 business days, so the position carried into this fall is not observable. Source: https://api.nasdaq.com/api/quote/FTH/short-interest?assetclass=stocks. Nasdaq insider summary shows 0 trades in the last 3 months. There is no options market, so no skew.",
+    "baseline_tension": "Low volume (0.7x) and FTH's own flat history of falls (median 0.0%) point to a coin flip or a slight bounce. The 11.4% ATR, the 40% 20-day slide, a rising short count and the open ATM point to continuation. The findings are small and offsetting, so p_up stays near 50."
+   },
+   "flags": [
+    "3 finding(s) worth -0.50 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "FTH",
+     "key": "FTH#0",
+     "finding": "A $150M at-the-market program with TD Securities (8-K and S-3ASR, 2026-06-18) is open and can sell stock into any bounce on 2026-10-14. Sales are disclosed only in the next 10-Q.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1829802/000119312526276093/d82589d8k.htm",
+     "source_date": "2026-06-18",
+     "expected_impact_pct": -0.5,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "Tickeron attributed the 2026-07-16 fall of -17.57% partly to dilution worries after the shelf filing. That is a secondary, weakly sourced attribution. The baseline's own falls since July show next-close continuation on 7 of 12.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.175,
+     "_legacy_residual_pct": -0.175
+    },
+    {
+     "hunter": "FTH",
+     "key": "FTH#1",
+     "finding": "Management met investors at an Oppenheimer-hosted meeting in New York on the drop day, 2026-10-13. Per stockanalysis's event list, it puts a sell-side counterparty in front of the stock as it falls.",
+     "source": "https://stockanalysis.com/stocks/FTH/",
+     "source_date": "2026-10-13",
+     "expected_impact_pct": 0.3,
+     "cluster": "AGGREGATOR",
+     "lands_on": "estimates",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "The September conference and initiation run (Guggenheim and TD Cowen Buy initiations, about 2026-09-15/16) did not stop the slide: the stock fell from about $39 to about $33 that week.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "PIK-201 Phase 2 topline in second-line endometrial cancer is guided 'by year-end 2026'. It is the binary the 40% de-rating is probably running into. No date has been given.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.businesswire.com/news/home/20260804105795/en/Faeth-Therapeutics-Reports-Second-Quarter-2026-Financial-Results-and-Operational-Updates"
+    },
+    {
+     "finding": "Q3 10-Q will disclose any ATM sales and the cash runway. The date is not company-announced (Yahoo 2026-11-03, Zacks 2026-11-13).",
+     "expected_impact_pct": -0.5,
+     "resolves_by": "2026-11-13",
+     "source": "https://api.nasdaq.com/api/analyst/FTH/earnings-date"
+    },
+    {
+     "finding": "Short interest rose 56.8% to 2.07M shares at the 2026-09-30 settlement. The next settlement (2026-10-15) publishes around 2026-10-26.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-10-26",
+     "source": "https://api.nasdaq.com/api/quote/FTH/short-interest?assetclass=stocks"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -0.5,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -0.3,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 119,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 2,
+    "cluster_names": [
+     "AGGREGATOR",
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.2,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed: researcher_reversal/LESSONS.md is deliberately empty because nothing has resolved"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 4
+  },
+  {
+   "ticker": "UPB",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.3,
+   "conviction": 0.3,
+   "priced_lean_pct": -0.391,
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "bar": "this name's own 23 comparable falls (median next close -0.44%, median |next| 3.29%) and ATR14 9.1% from the sealed baseline; no usable option chain (no_paired_strikes)",
+    "positioning_check": "Nasdaq/FINRA: 4,514,865 shares short at the 2026-09-30 settlement, +0.5% vs 09-15, 7.68 days to cover on 587,966 avg daily volume; about 8.2% of the 54.77m shares outstanding (10-Q cover). The position carried into the 10-12/10-13 fall is not yet observable (about eight business days of publication lag). No usable option chain, so no skew.",
+    "baseline_tension": "Low volume (0.76x) leans toward a bounce in phase 0 while the 9.1% ATR and a 52-week-low slide with a financing overhang lean the other way, and this name's own comparable falls are a coin flip (47.8% up, median -0.44%); nothing found breaks that balance, so the number stays at 0."
+   },
+   "flags": [
+    "3 finding(s) worth -3.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "UPB",
+     "key": "UPB#0",
+     "finding": "An at-the-market programme of up to $150m with Leerink (entered 2026-03-26) is open with only ~$2.1m net raised through 2026-06-30, so the issuer can sell stock into any bounce on 2026-10-14 without a new filing.",
+     "source": "https://www.sec.gov/Archives/edgar/data/2022626/000119312526343417/upb-20260630.htm",
+     "source_date": "2026-08-11",
+     "expected_impact_pct": -0.3,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "No observed ATM-driven reaction in the baseline; usage has been negligible (239,797 shares through Q2) and at a market cap near cash a draw is unattractive for the issuer.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Market cap at the $3.685 screen price is about $202m (54.77m shares) against $261.3m cash at 2026-06-30, roughly $220m after one more quarter at the Q2 loss rate: the stock trades near or below cash, but nothing dated closes that gap inside the window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-04",
+     "source": "https://www.sec.gov/Archives/edgar/data/2022626/000119312526343417/upb-20260630.htm"
+    },
+    {
+     "finding": "A Phase 3 of ~1,500 patients starting Q1 2027 against a runway stated only as at least twelve months implies an equity raise before or around the start; timing undated.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2027-03-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/2022626/000119312526377485/upb-20260901.htm"
+    },
+    {
+     "finding": "Competing long-acting TSLP antibody WIN378 (Windward/Kelun) reported positive interim Phase 2 data in September 2026 and moved to Phase 3 with twice-yearly dosing, a competitive overhang versus verekitug's every-12-week regimen; not dated to this fall.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-06-30",
+     "source": "https://www.biospectrumasia.com/news/48/28342/kelun-biotech-partner-advances-ultra-long-acting-asthma-antibody-into-phase-iii.html"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -3.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -0.7,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 23,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.3,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed (researcher_reversal/LESSONS.md is deliberately empty)"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 5
+  },
+  {
+   "ticker": "SHIM",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.4,
+   "conviction": 0.4,
+   "priced_lean_pct": 0.718,
+   "hunter_view": {
+    "expected_move_pct": 0.18,
+    "print_vs_bar_pct": 0.0,
+    "bar": "unsourced: no option chain (no_options_market), no news cause; sized against the baseline's own comparable falls (n 64, median next close +0.89%, median |move| 3.93%) and ATR14 7.99%, so every size is capped small",
+    "positioning_check": "Nasdaq/FINRA short interest 310,493 shares at the 2026-09-30 settlement (+94% vs 159,885 at 09-15), 1.6 days to cover, about 0.75% of 41.34m shares outstanding; the position carried into the October fall is not observable (next settlement 10-15 publishes ~10-26). AECOM holds 18.7% (7.745m shares incl. escrow) per 13D/A filed 2026-08-12, no sales reported. No insider open-market buys in 12 months, 3 sells in 12 months, none in 3 months. No options market, so no skew. Source: https://api.nasdaq.com/api/quote/SHIM/short-interest?assetclass=stocks",
+    "baseline_tension": "What I found (no cause, ordinary volume, a small undated supply channel) sits with the baseline's low-volume and own-history readings (median next close +0.89%, 51.6% up) and against the high ATR (7.99%) and the second consecutive fall, so the net is near zero and nothing I found overrides the reaction function."
+   },
+   "flags": [
+    "hunter's own expected_move_pct (+0.18) has the opposite sign to the sum of its findings (-0.40)",
+    "bar unsourced: sizes should have been capped",
+    "3 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "SHIM",
+     "key": "SHIM#0",
+     "finding": "An at-the-market program through Roth Capital (agreement 2025-09-08) remains registered at up to $4,986,750 per the 2026-05-22 424B5, with no shares sold as of that date and no termination disclosed; it can sell into the 2026-10-14 session.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1887944/000119312526237198/d46914d424b5.htm",
+     "source_date": "2026-05-22",
+     "expected_impact_pct": -0.4,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "No observed ATM draw on this name; the May 2026 underwritten offering at $3.50 (3.73m shares) is the only financing in the baseline's window, and the 2026-05-22 drop (-8.19%) was followed by +3.51% the next session.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.14,
+     "_legacy_residual_pct": -0.14
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Q3 2026 results, estimated around 2026-11-09 to 11-12 (not company-announced); Q2 revenue missed ($106.6m vs $121.9m) and FY revenue guide is $525-575m with adj. EBITDA $15-30m, so the next print carries the real risk.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-12",
+     "source": "https://api.nasdaq.com/api/analyst/SHIM/earnings-date"
+    },
+    {
+     "finding": "AECOM's 18.7% stake (13D/A filed 2026-08-12, no sales) is a standing overhang with no dated disposal.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1887944/000110465926094873/xslSCHEDULE_13D_X02/primary_doc.xml"
+    },
+    {
+     "finding": "Short interest settlement of 2026-10-15 publishes ~2026-10-26.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-10-26",
+     "source": "https://api.nasdaq.com/api/quote/SHIM/short-interest?assetclass=stocks"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -1.7,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 64,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.4,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed (researcher_reversal/LESSONS.md is deliberately empty; nothing has resolved)"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 6
+  },
+  {
+   "ticker": "CEPL",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.5,
+   "conviction": 0.5,
+   "priced_lean_pct": -2.112,
+   "hunter_view": {
+    "expected_move_pct": -0.72,
+    "print_vs_bar_pct": 0.0,
+    "bar": "this name's own comparable falls (n=8, median next close -3.5%, 12.5% up) and the cross-section prior (-0.33%) from the sealed baseline; no option chain (no_options_market). There is no consensus or event bar, so every size is capped small",
+    "positioning_check": "Nasdaq/FINRA short interest at the 2026-09-30 settlement: 1,269,256 shares, 1.98 days to cover, up 45.7% from 870,989 at 09-15 and about 5x the 247,924 of 07-15. That is about 3.9% of the 32.2m common shares outstanding (424B5 cover). It is lagged about eight business days, so the position carried into this fall is not observable. No options market, so there is no skew. Insider summary: 7 open-market buys in 3 months and 0 sells (Nasdaq), but none is dated in the window. The most recent Form 4 (CEO, 09-09) is a code-F tax withholding.",
+    "baseline_tension": "What I found agrees with the reaction function (own falls continue 7 of 8, ATR 11%, a 61% 60-day slide) and with only 2x volume, which phase 0 links to milder continuation. Nothing cuts against it, but nothing company-level confirms it either."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "CEPL",
+     "key": "CEPL#0",
+     "finding": "The $500M universal shelf has been effective since 2026-08-06 and its base prospectus (424B5, 2026-08-07) lists at-the-market offerings under Rule 415(a)(4), so a takedown supplement could be filed tonight. No sales agreement or draw has been filed to date.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1009759/000110465926092475/tm2619464-7_424b5.htm",
+     "source_date": "2026-08-07",
+     "expected_impact_pct": -0.3,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "This issuer has filed no takedown under this shelf. The earlier 2026-04-28 S-3 (effective 05-04, 424B3) was not a primary raise. No own-history reaction to an offering is available.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "CEPL",
+     "key": "CEPL#1",
+     "finding": "Short interest rose 45.7% between the 09-15 and 09-30 settlements to 1.27m shares (~3.9% of common), five times the July level, while the stock slid. Shorts were building into the decline.",
+     "source": "https://api.nasdaq.com/api/quote/CEPL/short-interest?assetclass=stocks",
+     "source_date": "2026-09-30 settlement",
+     "expected_impact_pct": -0.2,
+     "cluster": "api.nasdaq.com",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "Over the same period that short interest rose (Jul-Sep), the name's own falls continued 7 of 8 times (baseline history)",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.07,
+     "_legacy_residual_pct": -0.07
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "The next earnings date is a Zacks estimate (2026-11-12), not company-announced; Q2 FY27 results would be the next fundamental reset",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-12",
+     "source": "https://api.nasdaq.com/api/analyst/CEPL/earnings-date"
+    },
+    {
+     "finding": "Monarch's 16m-share Series A conversion is a latent overhang (40.1% holder); no sale has been reported",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1009759/000121390026073244/xslSCHEDULE_13D_X02/primary_doc.xml"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -1.1,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 8,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 2,
+    "cluster_names": [
+     "api.nasdaq.com",
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.5,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 7
+  },
+  {
+   "ticker": "OPNW",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.5,
+   "conviction": 0.5,
+   "priced_lean_pct": -0.593,
+   "hunter_view": {
+    "expected_move_pct": -0.4,
+    "print_vs_bar_pct": 0.0,
+    "bar": "This name's own 26 comparable falls (median next close -1.32%, up 38.5%, median |next| 9.07%) and the cross-section prior for the -25..-15 band and <$1m turnover (+0.34%), from the sealed baseline. No option chain (no_options_market).",
+    "positioning_check": "Nasdaq short interest at the 2026-09-30 settlement: 95,379 shares, days to cover 1.0, up 59.7% from 59,711 on 09-15. That is under 1% of about 13.4M shares outstanding and a small share of the roughly 3M-share free float. The data lags about 8 business days, so the position carried into this fall is unobserved. Source: https://api.nasdaq.com/api/quote/OPNW/short-interest?assetclass=stocks. No option chain, so no skew. CEO Matthew Shaw holds 47.2% via Webslinger/Beech (13D, 10-07).",
+    "baseline_tension": "Mixed. Low volume (0.58x) and the cross-section prior lean slightly up. This name's own falls (38.5% up, median -1.32%) and the uninterrupted post-merger slide lean down. With nothing dated in the window, p_up sits near 50 and the 42% ATR sets the scale."
+   },
+   "flags": [
+    "4 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "OPNW",
+     "key": "OPNW#0",
+     "finding": "The 9-30 merger 8-K says the co-transfer-agent period (West Coast Stock Transfer alongside Vinyl Equity) is expected to end around 2026-10-13. Consolidating the register after the 10% lock-up release eases deposit and sale of the freely tradeable legacy shares in the days around the window.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1104038/000121465926012283/w92926108k.htm",
+     "source_date": "2026-09-30",
+     "expected_impact_pct": -0.5,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "None on this line. Since the merger closed, the name has fallen on 10-01 (-25.9%), 10-08 (-12.9%), 10-09 (-15.3%) and today, with no news on the last three. That fits continuing float supply but is not specific to the transfer agent.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.175,
+     "_legacy_residual_pct": -0.175
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Day-60 lock-up release: restricted holders (about 76% of shares) go from 10% to 25% released, about 2026-11-29 counted from the 9-30 close",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2026-11-29",
+     "source": "https://www.sec.gov/Archives/edgar/data/1104038/000121465926012283/w92926108k.htm"
+    },
+    {
+     "finding": "BeyondAI/Eidos IP-backed tokenized financing of up to $130M: term sheet only, no date, conditional on diligence and definitive documents",
+     "expected_impact_pct": 2.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1104038/000121465926012609/z1062638k.htm"
+    },
+    {
+     "finding": "Planned Figure OPEN dual listing, which the company expects to be live by November 2026",
+     "expected_impact_pct": 1.0,
+     "resolves_by": "2026-11-30",
+     "source": "https://finviz.com/news/397750/openworld-announces-proposed-acquisition-of-blocksight-advancing-agentic-tokenization-infrastructure-for-its-real-world-assets-platform"
+    },
+    {
+     "finding": "Registration-rights demand opens 2026-09-30 + 1 year (2027-09-30)",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-09-30",
+     "source": "https://www.sec.gov/Archives/edgar/data/1104038/000121465926012283/w92926108k.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -1.2,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 26,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.5,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 8
+  },
+  {
+   "ticker": "PSNY",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.5,
+   "conviction": 0.5,
+   "priced_lean_pct": -0.773,
+   "hunter_view": {
+    "expected_move_pct": -0.44,
+    "print_vs_bar_pct": 0.0,
+    "bar": "this name's own 132 comparable falls (median next close 0.0%, up-rate 49.2%, median |move| 4.04%) and ATR14 8.9% from the sealed baseline; no usable option chain (unusable_chain, ATM legs not two-sided)",
+    "positioning_check": "Nasdaq/FINRA: 2,560,484 shares short at the 2026-09-30 settlement (+1.8% vs 2,515,627 on 09-15), 11.2 days to cover on 227,689 avg daily volume; the position carried into this week's fall is not observable (about eight business days of publication lag). Float not sourced: the 13D/A of 2026-09-08 puts Li Shufu entities at 60.5% of Class A, so the public float is a minority of the 163.3M Class A ADSs. Insiders: 0 trades in 3 months (Nasdaq). Skew: no usable chain (ATM legs not two-sided); put/call OI 0.53 on 1,012 contracts. Source https://api.nasdaq.com/api/quote/PSNY/short-interest?assetclass=stocks",
+    "baseline_tension": "Mixed: the sub-2x volume (1.62x) and this name's own 132 falls (median 0.0%, 49% up) argue against continuation, while the last five comparable falls since 2026-09-09 all continued the next session and the cross-sectional prior is -1.77%; my small negative lean sits between them, so p_up is held near 50 and the expected move is small relative to an ATR of 8.9%."
+   },
+   "flags": [
+    "3 finding(s) worth -1.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "PSNY",
+     "key": "PSNY#0",
+     "finding": "An effective automatic resale shelf (F-3ASR, 2026-09-28) lets three Li Shufu-controlled holders sell 58.6M Class A ADSs, about 36% of the class, on any session including 2026-10-14, into a market that trades about $1.7m a day.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1884082/000110465926111366/tm2626167-1_f3asr.htm",
+     "source_date": "2026-09-28",
+     "expected_impact_pct": -0.5,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "The stock closed at $6.93 on 2026-09-25, before the filing, and is $4.275 at the screen (-38%), with no sale ever disclosed under the shelf; the 2026-09-08 13D/A Item 5(c) reports no transactions in the prior 60 days and Item 4 discloses no plan to sell.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.175,
+     "_legacy_residual_pct": -0.175
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Geely's USD 400m term loan (2026-09-03) is convertible into Issuer shares at the 5-day average Nasdaq close, subject to regulatory approval, with a new F-3 due within 90 days of any conversion; a lower price means more conversion shares. No conversion date.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1884082/000110465926105649/xslSCHEDULE_13D_X02/primary_doc.xml"
+    },
+    {
+     "finding": "Selected Q3 2026 financial results and conference call planned 'next month', with no date announced (the Q2 date notice came two days ahead, on 2026-08-27/09-01).",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-30",
+     "source": "https://www.finanztrends.de/news/polestar-auto-adr-a-aktie-barclays-senkt-kursziel-drastisch/"
+    },
+    {
+     "finding": "Class C ADSs exercisable at $345 expire 2027-06-23; far out of the money, flagged as resale and dilution supply in the F-3ASR risk factors.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-06-23",
+     "source": "https://www.sec.gov/Archives/edgar/data/1884082/000110465926111366/tm2626167-1_f3asr.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -1.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -1.2,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 132,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.5,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed (researcher_reversal/LESSONS.md is deliberately empty; nothing has resolved)"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 9
+  },
+  {
+   "ticker": "BIAF",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -1.0,
+   "conviction": 1.0,
+   "priced_lean_pct": -0.933,
+   "hunter_view": {
+    "expected_move_pct": -0.9,
+    "print_vs_bar_pct": 0.0,
+    "bar": "Sized against this name's own reaction function in the sealed baseline: 108 drops of 7% or more, median next close -1.48%, median |next| 5.05%, up-rate 42.6%. The last three consecutive drops (10-08, 10-09, 10-12) were each followed by a further fall of 10-17%. Also ATR14 of 24.0%. No option chain (no_options_market). Baseline: /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/BIAF.json",
+    "positioning_check": "Nasdaq/FINRA short interest at the 09/30/2026 settlement was 115,467 shares (+62.2% vs 71,167 on 09/15), 1.0 day to cover. That is about 10% of the 1.17M pre-deal shares outstanding. The figure is lagged about 8 business days, so it does not show the position carried into this fall (source: https://api.nasdaq.com/api/quote/BIAF/short-interest?assetclass=stocks). No insider trades in 3 or 12 months. No option chain, so no skew.",
+    "baseline_tension": "The findings agree with the name's recent reaction function: three consecutive post-deal falls each continued, ATR 24% puts it in the high-vol tail that keeps falling, and the 52-week position is 0.004. They cut slightly against the moderate 3.18x volume (under the 15x bucket) and the -10..-7.5 drop band's +0.59% cross-section prior. That is why p_up sits at 45 rather than lower."
+   },
+   "flags": [
+    "4 finding(s) worth -3.70 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "BIAF",
+     "key": "BIAF#0",
+     "finding": "The October registered-direct investor holds up to 653,381 freely tradable registered shares (116,545 common plus 536,836 pre-funded warrants exercisable at $0.007), bought at about $6.12 and now 43% under water. Post-deal volume (1.78M shares over 10-09 to 10-13) is the right size for that position to be still unwinding into the window.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046454/form424b5.htm",
+     "source_date": "2026-10-08",
+     "expected_impact_pct": -1.5,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "After the Oct 8 pricing the next three closes were -16.22%, -17.46% and today about -10%. After the Sept 2026 offering/resale cycle the falls alternated between continuation (-15.34%, -15.88%) and violent rebounds (+17.58%, +63.55%) (baseline history).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.525,
+     "_legacy_residual_pct": -0.525
+    },
+    {
+     "hunter": "BIAF",
+     "key": "BIAF#1",
+     "finding": "The company cannot issue or announce new common stock, or use its ATM, inside the window. SPA \u00a74.12(a) bars any issuance until 30 days after the Effective Date, the ATM carve-out opens only 30 days after the Effective Date, and the ATM prospectus was suspended on Oct 8. The commonest second leg down for a microcap, a fresh offering priced overnight, is ruled out for Oct 14.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046548/ex10-1.htm",
+     "source_date": "2026-10-08",
+     "expected_impact_pct": 0.5,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "This issuer has raised repeatedly: Oct 2025 RD at $2.50, Aug 2026 PIPE, Oct 2026 RD. Its own falls after earlier raises continued when a new raise followed. None can follow inside this window.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "A special meeting (date blank in the PRER14A) will approve 1,128,272 August warrants (about $7.09 post-split strike) and 980,072 October warrants at $6.122, plus authority for discounted private placements under 5635(d). This is a future overhang of about 2.1M shares against 1.28M outstanding, which becomes exercisable only after the vote.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2026-11-30",
+     "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046675/formprer14a.htm"
+    },
+    {
+     "finding": "CHEST 2026 sputum-test poster (Oct 20) and CyPath Lung discussion (Oct 21) in Phoenix. The tests are investigational.",
+     "expected_impact_pct": 0.3,
+     "resolves_by": "2026-10-21",
+     "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046755/ex99-1.htm"
+    },
+    {
+     "finding": "The resale registration for the October PIPE warrant shares must be filed within 45 days of Oct 8. The 30-day issuance bar ends 30 days after the Effective Date, after which the ATM with WallachBeth can reopen.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2026-11-22",
+     "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226046548/form8-k.htm"
+    },
+    {
+     "finding": "Q3 results. The date is the Zacks cadence estimate of 2026-11-13, not company-announced. The company pre-announced CyPath Lung sales up more than 100% YTD through Q3 on Oct 6.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-13",
+     "source": "https://www.sec.gov/Archives/edgar/data/1712762/000149315226045867/form8-k.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -3.7,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -4.5,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 108,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -1.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed (researcher_reversal/LESSONS.md is deliberately empty; nothing has resolved)"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 10
+  },
+  {
+   "ticker": "MDCX",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -1.0,
+   "conviction": 1.0,
+   "priced_lean_pct": 0.013,
+   "hunter_view": {
+    "expected_move_pct": -1.08,
+    "print_vs_bar_pct": 0.0,
+    "bar": "this name's own comparable falls (n=101, median next close +0.83%, median abs 4.02%) and the 2026-10-08 to 10-12 post-split sequence in the sealed baseline; ATR14 23.3%. No option chain. Baseline: /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/MDCX.json",
+    "positioning_check": "Nasdaq short interest at the 2026-09-30 settlement was 3,686,994 pre-split shares (about 73.7k post-split), days to cover 1.0, down 26.2% from 4,998,570 at 09-15. The position carried into the 10-08 to 10-13 fall is not observable because of the roughly eight-business-day FINRA lag. Source: https://api.nasdaq.com/api/quote/MDCX/short-interest?assetclass=stocks. Shares outstanding were 89,762,721 pre-split at 2026-09-10 (13D), about 1.8m post-split, so the market cap is about $6m at $3.325. No options market, so there is no skew. Insider trades: 0 open-market in 3/12 months per Nasdaq; CEO Bokhari holds 5.3% (13D, 2026-09-14).",
+    "baseline_tension": "The sub-1x volume and this name's own n=101 history (median next close +0.83%) lean toward a bounce. The 23% ATR, the unbroken post-split sequence and the open ATM lean the other way, so the call is a small negative held near 50."
+   },
+   "flags": [
+    "4 finding(s) worth -15.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "MDCX",
+     "key": "MDCX#0",
+     "finding": "MDCX has an open, effective at-the-market Equity Distribution Agreement (12/29/2025, Yorkville Securities as agent, upsized to $50m on 2026-04-23). It sold 28.2m shares for $12.9m in H1 2026 and 2.8m more after quarter end. It carries going-concern language and paid Pfizer $12m upfront on 2026-09-02, so it can sell into any bounce on 2026-10-14.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326004230/form10q.htm",
+     "source_date": "2026-08-12",
+     "expected_impact_pct": -1.0,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "Through 2026 the ATM ran alongside a -81% 60-day path. The baseline's post-split sequence shows next-day closes of -9.8%, -22.2% and the -7.1% today, with no rebound session yet.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.35,
+     "_legacy_residual_pct": -0.35
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Nasdaq MVLS deficiency (below $35m since 2026-05-20). The compliance deadline is 2026-11-16, and at about $6m market cap a delisting determination looks likely after it (appealable).",
+     "expected_impact_pct": -8.0,
+     "resolves_by": "2026-11-16",
+     "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326002900/form8k.htm"
+    },
+    {
+     "finding": "Streeterville secured notes ($22.9m principal). Limited redemptions in cash start 6 months after 2026-05-27 and monthly $500k redemptions after 7 months, a cash drain that forces more ATM use.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2026-11-27",
+     "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326002900/form8k.htm"
+    },
+    {
+     "finding": "Q3 10-Q (Zacks cadence estimate 2026-11-13, not company-announced). It is likely to repeat going-concern language and disclose further ATM sales.",
+     "expected_impact_pct": -2.0,
+     "resolves_by": "2026-11-13",
+     "source": "https://api.nasdaq.com/api/analyst/MDCX/earnings-date"
+    },
+    {
+     "finding": "$15m deferred CD228V payment owed to Pfizer on the first anniversary of 2026-09-02",
+     "expected_impact_pct": -2.0,
+     "resolves_by": "2027-09-02",
+     "source": "https://www.sec.gov/Archives/edgar/data/1997296/000106299326004806/form8k.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -15.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -4.3,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 101,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -1.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 11
+  },
+  {
+   "ticker": "DAIC",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -1.8,
+   "conviction": 1.8,
+   "priced_lean_pct": -0.615,
+   "hunter_view": {
+    "expected_move_pct": -1.2,
+    "print_vs_bar_pct": 0.0,
+    "bar": "The baseline's own 75 comparable falls (median next close -1.48%, up rate 42.7%, median |move| 6.61%) and its ATR14 of 22.1%, in /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/DAIC.json. There is no option chain.",
+    "positioning_check": "Nasdaq short interest for settlement 2026-09-30 is 185,077 shares, 1.0 days to cover, down 5.6% from 195,957 on 09-15. Shares outstanding were 2,337,767 on 2026-09-24 (10-Q cover). FINRA publishes about eight business days after settlement, so the position carried into the 10-12/10-13 fall is not observable. The short is not crowded: about 8% of shares, against a day's volume that is a large fraction of the float. There is no options market, so there is no skew. No insider trades in 3 or 12 months (Nasdaq insider API).",
+    "baseline_tension": "The findings agree with the volume (6x, heavy, so something is still being learned or sold) and with this name's own history (42.7% up rate, median -1.48%). The cross-section prior for a <$1m-turnover, -7.5 to -10 fall is +0.5%, but this name's ATR of 22% puts it in the high-volatility group that phase 0 found keeps falling."
+   },
+   "flags": [
+    "3 finding(s) worth -5.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "DAIC",
+     "key": "DAIC#0",
+     "finding": "Holders of paper priced well below spot can convert and sell inside the window. H Capital's $550k note converts at the lower of $1.50 or 90% of the 10-day VWAP (floor $0.50), which is below today's $1.565. LHT took 2,815,506 shares at $0.386, more than the 2,337,767 shares outstanding on 09-24.",
+     "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026100595/ea0305699-8k_cidhold.htm",
+     "source_date": "2026-09-16",
+     "expected_impact_pct": -1.0,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "After the conversion paper was disclosed and the Envoy term sheet spiked the stock (2026-09-16 +163.7%), the baseline shows -33.0% on 09-18 and repeated 7-14% falls through 09-29. The supply sold into every rally.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.35,
+     "_legacy_residual_pct": -0.35
+    },
+    {
+     "hunter": "DAIC",
+     "key": "DAIC#1",
+     "finding": "The Envoy closing 8-K, with the Series C certificate, the closing share issuance and the amended terms of Blink's $12.5m convertible note (which the 10-12 release says now converts into DAIC common rather than Envoy equity), is due within four business days of the undisclosed closing date and may be filed tonight or tomorrow.",
+     "source": "https://rallies.ai/news/dot-ai-completes-65-million-all-stock-acquisition-of-envoy-technologies-2d0ec302612eb9e0",
+     "source_date": "2026-10-12",
+     "expected_impact_pct": -0.8,
+     "cluster": "rallies.ai",
+     "lands_on": "the_document",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "Deal documents on this name moved it hard both ways. The 09-16 term-sheet 8-K came before +163.7%. The 09-29 SPA 8-K came before a -13.5% day and then -4.96%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.28,
+     "_legacy_residual_pct": -0.28
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "A Nasdaq Hearings Panel written decision on the MVLS ($50m), MVPHS ($15m) and late 10-Q deficiencies has been pending since the 2026-09-15 hearing. A delisting decision would be a large negative, an exception a positive. No date is disclosed, so it cannot be placed in the window.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2026-11-15",
+     "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026096294/ea030431201-8k_cidholdco.htm"
+    },
+    {
+     "finding": "Going concern: cash of $456k at 2026-06-30, a $9.5m working-capital deficit, operations furloughed since 2026-05-25, Executive Notes due 2026-12-31, and a ~$700k Envoy lease letter of credit due within 30 days of closing.",
+     "expected_impact_pct": -2.0,
+     "resolves_by": "2026-11-12",
+     "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026103514/ea0306501-10q_cidhold.htm"
+    },
+    {
+     "finding": "Stockholder vote on Series C conversion and the change of control is targeted for 2027-01-31. The BladeRanger lock-up runs to 2027-04-01 or 6 months after conversion, and the Blink lock-up is 12 months.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-01-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026104296/ea0306797-8k_cidhold.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -5.0,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -3.8,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 75,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 2,
+    "cluster_names": [
+     "rallies.ai",
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -1.8,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed: researcher_reversal/LESSONS.md is deliberately empty until a run resolves"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 12
+  },
+  {
+   "ticker": "VBIO",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -2.0,
+   "conviction": 2.0,
+   "priced_lean_pct": -0.711,
+   "hunter_view": {
+    "expected_move_pct": -1.12,
+    "print_vs_bar_pct": 0.0,
+    "bar": "This name's own 136 comparable falls (median next close -1.65%, 37.5% up, median abs 4.01%) and phase 0's under-2x-volume conditional (+1.46%), both from the sealed baseline. There is no option chain.",
+    "positioning_check": "Nasdaq short interest at the 2026-09-30 settlement was 87,968 shares (+128.9% from 38,427 on 09-15), with 1.0 days to cover. That is about 4.5% of the 1,947,783 common shares outstanding on Oct 5. FINRA publishes about eight business days after settlement, so the position carried into this fall is not observable. There is no options market, so there is no skew. Insiders: no open-market buys in 3 or 12 months and one sale. Source: https://api.nasdaq.com/api/quote/VBIO/short-interest?assetclass=stocks",
+    "baseline_tension": "The finding agrees with this name's own reaction function (median -1.65%, 37.5% up) and its extreme ATR (34%), but cuts against phase 0's low-volume conditional (+1.46%) and the band prior (+0.50%). So p_up is set at 42 rather than lower."
+   },
+   "flags": [
+    "3 finding(s) worth -6.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "VBIO",
+     "key": "VBIO#0",
+     "finding": "3i, LP is a convertible-preferred seller that has not finished. Per the 10-08 S-3, Series B and C convert into 8,475,207 shares against 1,947,783 common. The common count grew 51% between 09-15 and 10-05, and 3i added Series B on 10-07. That supply keeps selling into the 10-14 session.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1787740/000168316826007707/valion_s3.htm",
+     "source_date": "2026-10-08",
+     "expected_impact_pct": -2.0,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "Through the conversion period (Aug 20 to Oct 12) this name's comparable falls were followed by next-session moves of +0.82, -1.63, +1.63, -1.07, -4.00, +2.73, +0.48, -10.89, +4.81, +3.19, +0.91 and -7.74. That is 7 of 12 up, with a mean near -0.9: mixed, with fat left tails.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.7,
+     "_legacy_residual_pct": -0.7
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "The $5M ATM with Rodman & Renshaw is on an S-3 filed 2026-10-08 and not yet effective. As of the baseline seal there was no EFFECT, CORRESP or 424B5 in the submissions feed. Once effective it can sell more than 1.5x today's roughly $3.0M market cap. The effectiveness date is unknown and not shown to fall inside the window.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2026-10-20",
+     "source": "https://www.sec.gov/Archives/edgar/data/1787740/000168316826007707/valion_s3.htm"
+    },
+    {
+     "finding": "The 3i resale registration was due for filing about Sep 30, with effectiveness about Oct 30 (commercially reasonable efforts). No resale registration has been filed, so the effectiveness date is about Oct 30.",
+     "expected_impact_pct": -2.0,
+     "resolves_by": "2026-10-30",
+     "source": "https://www.sec.gov/Archives/edgar/data/1787740/000168316826006848/valion_8k.htm"
+    },
+    {
+     "finding": "The PRE 14A seeks reverse-split authority (1-for-2 to 1-for-12) and 272,000 more plan shares, with the meeting date blank. The DEF 14A and the meeting fall after the window.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2026-11-30",
+     "source": "https://www.sec.gov/Archives/edgar/data/1787740/000168316826007588/valion_pre14a.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -6.0,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -4.7,
+    "baseline_quality": 0.402,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 0.6,
+     "history_events": 136,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -2.0,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 13
+  },
+  {
+   "ticker": "VIVK",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -2.5,
+   "conviction": 2.5,
+   "priced_lean_pct": 0.782,
+   "hunter_view": {
+    "expected_move_pct": -2.1,
+    "print_vs_bar_pct": 0.0,
+    "bar": "No option chain (no_options_market), so there is no implied move. The bar is the name's own comparable falls in the baseline (n=76, median next close +1.08%, up rate 55.3%, median abs 7.74%) and its 14-day ATR of 58.5%. Source: sealed baseline research/2026/10/2026-10-13/reversal/baselines/VIVK.json",
+    "positioning_check": "Nasdaq short interest at the 2026-09-30 settlement: 1,030,582 shares, 1.7 days to cover, down 15.7% from 1,223,117 on 09-15. Both settlements are pre-split, so roughly 69k post-split shares; the position carried into the Oct 12-13 falls is not observable (about 8 business days of lag). Insiders: zero Form 4 trades in 3 and 12 months. No option chain, so no skew. Source: https://api.nasdaq.com/api/quote/VIVK/short-interest?assetclass=stocks",
+    "baseline_tension": "The finding cuts against the name's own reaction function (55% up after 76 comparable falls, median +1.08%) and the +0.4 cross-section prior. It agrees with the extreme ATR (58.5%), the -79% 20-day run-up and the 8.2x volume, so p_up sits only modestly below 50."
+   },
+   "flags": [
+    "3 finding(s) worth -4.20 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "VIVK",
+     "key": "VIVK#0",
+     "finding": "Supply from at least three convertible facilities is still converting into unlegended, freely saleable stock, priced off recent lows, with no sourced end. These are the J.J. Astor junior secured note ($5.94m), the Lender Notes ($5.12m) and the May 2026 $15m note programme at 80% of the lowest 5-day VWAP. The Oct 5-6 conversion alone was ~21% of the post-split share count.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1450704/000182912626010995/vivakorinc_8k.htm",
+     "source_date": "2026-10-09",
+     "expected_impact_pct": -2.5,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "After the Sept 9 3.02 8-K (Sept 2 conversions), the baseline shows a -12.3% fall on Sept 4 followed by +7.65% next close, and -11.1% on Sept 14 followed by -7.06%. After the Oct 9 8-K: -42.9% on Oct 12 and about -14.7% on Oct 13 at the screen. Mixed next-day reactions to individual dilution days, under a persistent downtrend (-93.6% over 60 days).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.875,
+     "_legacy_residual_pct": -0.875
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Direct Midstream LOI requires Vivakor to fund a $10m capital investment at closing, with no source stated, and to issue ~$29m of Series B preferred. A definitive agreement or its financing would be a further dilution or financing event; no date is given.",
+     "expected_impact_pct": -3.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1450704/000182912626010995/vivakorinc_ex99-1.htm"
+    },
+    {
+     "finding": "A $100m Standby Equity Purchase Agreement exists but needs its own registration statement; none was filed as of the screen.",
+     "expected_impact_pct": -1.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1450704/000182912626007718/vivakor_424b3.htm"
+    },
+    {
+     "finding": "Former COO Patterson's consulting agreement, due by Oct 9, is to be paid in S-8 registered common stock. The share count is not disclosed; it is small supply.",
+     "expected_impact_pct": -0.2,
+     "resolves_by": "2026-11-30",
+     "source": "https://www.sec.gov/Archives/edgar/data/1450704/000182912626010624/vivakorinc_8k.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -4.2,
+    "residual_sum": null,
+    "adversary_judged": "0/1",
+    "edge_score_legacy": -13.7,
+    "baseline_quality": 0.67,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.45,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 76,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -2.5,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 14
+  },
+  {
+   "ticker": "ZBAO",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -2.5,
+   "conviction": 2.5,
+   "priced_lean_pct": -1.837,
+   "hunter_view": {
+    "expected_move_pct": -1.4,
+    "print_vs_bar_pct": 0.0,
+    "bar": "this name's own comparable falls (n=5, median next close -3.39%, 40% up, median |move| 3.45%) and the cross-section prior for the -40..-25 band (mean -0.76%), from the sealed baseline; no option chain",
+    "positioning_check": "Nasdaq/FINRA short interest at the 2026-09-30 settlement was 650,165 pre-split shares (about 13k post-split), 1.0 days to cover, up 538% from 101,927 at the 09-15 settlement. That data is two weeks stale and pre-split, so the position carried into today is not observable and it is negligible against the float. No insider trades in 3 or 12 months (Nasdaq insider API). There is no option chain, so no skew. Source: https://api.nasdaq.com/api/quote/ZBAO/short-interest?assetclass=stocks",
+    "baseline_tension": "Supply findings and this name's own post-registration history (3 of 3 comparable falls since late July continued) point down, and the 49% ATR backs continuation. Ordinary 1.69x volume is the phase-0 under-2x bucket, which bounces on average. So p_up is held at 43 rather than lower, and the scaled -1.4 sits visibly under the -2.5 findings sum."
+   },
+   "flags": [
+    "3 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "ZBAO",
+     "key": "ZBAO#0",
+     "finding": "The 3i senior convertible notes have had their floor price removed (2026-09-17 amendment). Installments are payable in shares at 92% of the lowest VWAP over the 10 trading days before each installment date. The third note's initial installment date is 2026-10-17, and the installment notice was due six trading days earlier. The holder therefore has a live incentive and a live share supply that runs through 2026-10-14.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1966750/000121390026100775/ea030582501ex4-1.htm",
+     "source_date": "2026-09-17",
+     "expected_impact_pct": -1.5,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "After its previous comparable falls under this financing (2026-07-24, 2026-09-14, 2026-10-08) the stock fell another 7.73%, 8.70% and 3.39% the next session (baseline history). The two July falls that bounced came before the floor was removed.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.525,
+     "_legacy_residual_pct": -0.525
+    },
+    {
+     "hunter": "ZBAO",
+     "key": "ZBAO#1",
+     "finding": "The resale registration effective since 2026-09-10 covers 414.3M PIPE and management shares plus 395.7M warrant shares, about 180% of outstanding. The PIPE units were bought at about $0.39 (2,380 BTC for $154.7M) against about $0.035 pre-split-equivalent now, so the registered holders are about 91% under water and free to sell into the thin post-split book on 2026-10-14.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1966750/000121390026095337/ea0303198-f1_zhibao.htm",
+     "source_date": "2026-08-31 (EFFECT 2026-09-10: https://www.sec.gov/Archives/edgar/data/1966750/999999999526002938/xslEFFECTX01/primary_doc.xml)",
+     "expected_impact_pct": -1.0,
+     "cluster": "sec.gov",
+     "lands_on": "supply",
+     "resolves_by": "2026-10-14",
+     "reaction_history_on_this_line": "Since the resale registration went effective on 2026-09-10, two comparable falls (2026-09-14 and 2026-10-08) were followed by -8.70% and -3.39% next sessions (baseline history). The 60-day run-up is -78.8%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.35,
+     "_legacy_residual_pct": -0.35
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "FY2026 (June year-end) results promised 'by October 31, 2026', with a pre-announcement of 10-20% revenue growth and a net loss near break-even. No specific date, so it cannot be placed in the window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-10-31",
+     "source": "https://earningswhispers.com/article/ZBAO/26093055_1"
+    },
+    {
+     "finding": "Market value of about $16M post-split (about 9M shares x $1.74, derived from the 449M pre-split count) against 2,380 BTC contributed in the August PIPE. Any discount to the treasury has no catalyst inside the window, and whether the BTC is still held is unverified.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-10-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1966750/000121390026095337/ea0303198-f1_zhibao.htm"
+    },
+    {
+     "finding": "Closing of the NEXSYS TECH acquisition (definitive agreement 2026-09-28); no closing date found.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.sec.gov/Archives/edgar/data/1966750/000121390026103756/ea0306837-6k_zhibao.htm"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -3.2,
+    "baseline_quality": 0.325,
+    "quality_parts": {
+     "history": 0.833,
+     "options": 0.45,
+     "priced_direction": 0.2,
+     "event_plausibility": 0.6,
+     "history_events": 5,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -2.5,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "nothing changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 15
+  }
+ ]
+}

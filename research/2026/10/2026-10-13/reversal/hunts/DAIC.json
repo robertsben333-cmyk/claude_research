@@ -1,0 +1,93 @@
+{
+  "ticker": "DAIC",
+  "drop_date": "2026-10-13",
+  "window": {"from": "close of 2026-10-13", "to": "close of 2026-10-14"},
+  "expected_move_pct": -1.2,
+  "conviction_note": "Today is day two of a sell-the-news unwind after the Envoy closing release of 2026-10-12, with live convertible supply priced below spot and a closing 8-K still due; there is no repricing mechanism, so a 10% scale at p_up 44 gives -1.2, a little smaller than the -1.8 findings sum because this name's own history is a wide, sign-noisy distribution.",
+  "overshoot_pct": 0.0,
+  "more_to_come_pct": -1.8,
+  "print_vs_bar_pct": 0.0,
+  "bar": "The baseline's own 75 comparable falls (median next close -1.48%, up rate 42.7%, median |move| 6.61%) and its ATR14 of 22.1%, in /home/user/claude_research/research/2026/10/2026-10-13/reversal/baselines/DAIC.json. There is no option chain.",
+  "cause": {
+    "label": "corporate_action",
+    "seller_is_finished_pct": 15,
+    "confidence_pct": 55,
+    "what_happened": "On 2026-10-12 a release, 'Dot Ai Completes $65 Million All-Stock Acquisition of Envoy Technologies', lifted the open 18.8% and an intraday high near $3.99. The stock then reversed to a 28.9% loss on the day, and today's -7.9% at 15:05 ET on 6x volume continues that unwind. The tape is carrying holders of cheap paper: LHT converted at $0.386 and H Capital's note converts at or below $1.50. No separate cause for today was found.",
+    "evidence": [
+      {"claim": "Release on 2026-10-12: Dot Ai (CID Holdco) completed the all-stock acquisition of Envoy from BladeRanger at a $6.00 reference price; Blink's amended $12.5m convertible note remains outstanding and converts into DAIC common", "url": "https://rallies.ai/news/dot-ai-completes-65-million-all-stock-acquisition-of-envoy-technologies-2d0ec302612eb9e0", "timestamp": "2026-10-12"},
+      {"claim": "Securities Purchase Agreement of 2026-09-25: 10,833,333 shares (233,543 common, the rest Series C preferred), target closing 2026-10-06", "url": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026104296/ea0306797-8k_cidhold.htm", "timestamp": "2026-09-29 07:00 ET"},
+      {"claim": "LHT converted $1,086,785 into 2,815,506 shares at $0.386. The H Capital $550k note converts at the lower of $1.50 or 90% of the 10-day VWAP, with a $0.50 floor", "url": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026100595/ea0305699-8k_cidhold.htm", "timestamp": "2026-09-16 17:23 ET"}
+    ]
+  },
+  "pipeline": {
+    "news_flow_balance": -40,
+    "overshoot_has_mechanism": false,
+    "next_dated_event": "The closing 8-K (Items 2.01, 3.02, 5.03 and any Blink note amendment) is due four business days after the closing date, which is not public. 2026-10-12 was an EDGAR holiday. If the deal closed between 2026-10-06 and 10-12, the deadline falls between 2026-10-13 and 10-16. The Nasdaq Hearings Panel decision has been pending since the 2026-09-15 hearing and carries no date.",
+    "what_would_change_my_mind": "A filed 8-K showing the Blink note converts at or above $6.00 and confirming no equity line was put in at closing, or a Panel 8-K granting an exception, would push this toward a bounce. A Panel delisting decision or an ELOC/S-1 tonight would push it lower."
+  },
+  "positioning_check": "Nasdaq short interest for settlement 2026-09-30 is 185,077 shares, 1.0 days to cover, down 5.6% from 195,957 on 09-15. Shares outstanding were 2,337,767 on 2026-09-24 (10-Q cover). FINRA publishes about eight business days after settlement, so the position carried into the 10-12/10-13 fall is not observable. The short is not crowded: about 8% of shares, against a day's volume that is a large fraction of the float. There is no options market, so there is no skew. No insider trades in 3 or 12 months (Nasdaq insider API).",
+  "findings": [
+    {
+      "finding": "Holders of paper priced well below spot can convert and sell inside the window. H Capital's $550k note converts at the lower of $1.50 or 90% of the 10-day VWAP (floor $0.50), which is below today's $1.565. LHT took 2,815,506 shares at $0.386, more than the 2,337,767 shares outstanding on 09-24.",
+      "leg": "new_information",
+      "mechanism_in_window": "Both instruments are live today with no lock-up. Like an open ATM, they can be converted and sold into the 2026-10-14 session, and the 2026-10-12 spike to about $3.99 handed these holders very large gains to realise.",
+      "expected_impact_pct": -1.0,
+      "impact_low_pct": -6.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "supply",
+      "resolves_by": "2026-10-14",
+      "reaction_history_on_this_line": "After the conversion paper was disclosed and the Envoy term sheet spiked the stock (2026-09-16 +163.7%), the baseline shows -33.0% on 09-18 and repeated 7-14% falls through 09-29. The supply sold into every rally.",
+      "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026100595/ea0305699-8k_cidhold.htm",
+      "source_date": "2026-09-16",
+      "why_not_priced": "The terms are public, but how much of the paper remains to be sold is not. Today's $2.78m turnover (about 1.7m shares) is on the order of the whole pre-LHT float, so the selling is ongoing rather than spent. If the price held all of it, volume would be falling back toward the $0.93m median, and it is not.",
+      "independence": "The 10-Q of 2026-09-25 repeats the H Capital terms and the LHT conversion, and says White Lion exercised warrants for 371,725 more shares after June 30: https://www.sec.gov/Archives/edgar/data/2033770/000121390026103514/ea0306501-10q_cidhold.htm"
+    },
+    {
+      "finding": "The Envoy closing 8-K, with the Series C certificate, the closing share issuance and the amended terms of Blink's $12.5m convertible note (which the 10-12 release says now converts into DAIC common rather than Envoy equity), is due within four business days of the undisclosed closing date and may be filed tonight or tomorrow.",
+      "leg": "new_information",
+      "mechanism_in_window": "Form 8-K's four-business-day clock started at closing. The release came on 2026-10-12, the 2026-10-06 target date has passed, and 10-12 was an EDGAR holiday, so a closing between 10-06 and 10-09 makes the deadline 2026-10-13 to 10-15. Landing inside the window is likely, not certain.",
+      "expected_impact_pct": -0.8,
+      "impact_low_pct": -5.0,
+      "impact_high_pct": 3.0,
+      "lands_on": "the_document",
+      "resolves_by": "2026-10-14",
+      "reaction_history_on_this_line": "Deal documents on this name moved it hard both ways. The 09-16 term-sheet 8-K came before +163.7%. The 09-29 SPA 8-K came before a -13.5% day and then -4.96%.",
+      "source": "https://rallies.ai/news/dot-ai-completes-65-million-all-stock-acquisition-of-envoy-technologies-2d0ec302612eb9e0",
+      "source_date": "2026-10-12",
+      "why_not_priced": "The release gave no conversion price for the amended Blink note and no closing financing terms. The term sheet allowed an equity line 'in connection with the Closing', and proceeds above $2.0m must go to Envoy. A conversion price below $6.00, or an ELOC, adds common-share supply the tape has not yet seen in a primary document. A price that held this would show the 8-K already on EDGAR, and EDGAR's last filing is the 2026-10-02 10-Q/A.",
+      "independence": "EDGAR submissions show no 8-K after 2026-09-29, so the closing filing is still outstanding: https://data.sec.gov/submissions/CIK0002033770.json"
+    }
+  ],
+  "outside_window": [
+    {"finding": "A Nasdaq Hearings Panel written decision on the MVLS ($50m), MVPHS ($15m) and late 10-Q deficiencies has been pending since the 2026-09-15 hearing. A delisting decision would be a large negative, an exception a positive. No date is disclosed, so it cannot be placed in the window.", "expected_impact_pct": -3.0, "resolves_by": "2026-11-15", "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026096294/ea030431201-8k_cidholdco.htm"},
+    {"finding": "Going concern: cash of $456k at 2026-06-30, a $9.5m working-capital deficit, operations furloughed since 2026-05-25, Executive Notes due 2026-12-31, and a ~$700k Envoy lease letter of credit due within 30 days of closing.", "expected_impact_pct": -2.0, "resolves_by": "2026-11-12", "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026103514/ea0306501-10q_cidhold.htm"},
+    {"finding": "Stockholder vote on Series C conversion and the change of control is targeted for 2027-01-31. The BladeRanger lock-up runs to 2027-04-01 or 6 months after conversion, and the Blink lock-up is 12 months.", "expected_impact_pct": 0.0, "resolves_by": "2027-01-31", "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026104296/ea0306797-8k_cidhold.htm"}
+  ],
+  "searched_and_found_nothing": [
+    "EDGAR submissions JSON: no filing after the 2026-10-02 10-Q/A, so no closing 8-K and no Panel 8-K (https://data.sec.gov/submissions/CIK0002033770.json)",
+    "EDGAR full-text search for 'Envoy' scoped to CIK 2033770, 2026-10-01 to 10-13: only the 10-Q/A",
+    "News search for a separate cause of today's -7.9%: only templated spam pages from May 2026 and quote widgets. None was found",
+    "GlobeNewswire original of the 10-12 closing release: not reachable through search, so the aggregator copy is used",
+    "BladeRanger TASE (Maya) disclosure on the closing: searched in English and Hebrew, nothing found",
+    "ts2.tech article on the share math: HTTP 403",
+    "Insider trades (Nasdaq API in the baseline): none in 12 months",
+    "Repricing mechanisms (note before the open, disclosed buyer, wrong wire fact): none found. The name has no analyst coverage in any source seen",
+    "Quote snippets (Robinhood, eToro, Morningstar) appeared in search results. Any figure that could date after the 15:05 ET screen instant was ignored and none entered a number"
+  ],
+  "abs_move_pct": 10.0,
+  "p_up": 44,
+  "rejected_candidates": [
+    {"candidate": "Tickeron piece attributing an earlier -21% day to profit-taking after the Envoy term-sheet spike", "source": "https://tickeron.com/blogs/why-is-cid-holdco-daic-stock-down-20-95-today-16812/", "reason": "outside_window", "detail": "It describes the September post-term-sheet session, not anything inside the 10-13/10-14 window"},
+    {"candidate": "The 10-Q/A of 2026-10-02 (a cover-page check-box correction)", "source": "https://www.sec.gov/Archives/edgar/data/2033770/000121390026106414/ea0307584-10qa1_cidhold.htm", "reason": "outside_window", "detail": "A clerical amendment that is already public and has no bearing on the window"}
+  ],
+  "baseline_tension": "The findings agree with the volume (6x, heavy, so something is still being learned or sold) and with this name's own history (42.7% up rate, median -1.48%). The cross-section prior for a <$1m-turnover, -7.5 to -10 fall is +0.5%, but this name's ATR of 22% puts it in the high-volatility group that phase 0 found keeps falling.",
+  "pre_lessons": {
+    "impact_sum_pct": -1.8,
+    "expected_move_pct": -1.2,
+    "print_vs_bar_pct": 0.0,
+    "findings_count": 2,
+    "sizes_pct": [-1.0, -0.8]
+  },
+  "lessons_applied": ["nothing changed: researcher_reversal/LESSONS.md is deliberately empty until a run resolves"],
+  "sources_used": 9
+}
