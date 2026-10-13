@@ -85,3 +85,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-13 17:31 UTC
 - 9 of 9 searchers returned (unpriced-searcher, native agent). edge_score: 9/9 rankable, 0 clear the 2.8 floor (max |impact_sum| 0.97 BAC). V2 grounded written 17:31Z, 9/9 calibrated. 9 packs, four judges launching.
+
+## Deep research — 2026-10-13 — STARTED
+- Logged at 2026-10-13 17:37 UTC
+- 9 names in the window (ASML BAC MS BLK PGR FAST STT AZZ SOTK); sweep running; fired 17:35 UTC = 13:35 ET
