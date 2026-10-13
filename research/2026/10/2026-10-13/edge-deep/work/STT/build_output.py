@@ -49,21 +49,22 @@ U = {
     'boe': 'https://forexfundamentals.com/economic-calendar/boe/2026-09-17',
     'q2_2025_react': 'https://finviz.com/news/104262/state-streets-q2-earnings-top-as-fee-income-rises-yy-stock-down',
     'santander': 'https://www.businesswire.com/news/home/20260805934584/en/',
+    'citi_pdf': 'https://www.citigroup.com/rcs/citigpa/storage/public/Earnings/Q32026/2026prqtr3rslt.pdf',
     'event': 'https://newsroom.statestreet.com/press-releases/press-release-details/2026/State-Street-Corporation-NYSE-STT-Announces-Remaining-2026-Quarterly-Financial-Results-Release-Dates-and-Conference-Call-Webcasts/default.aspx',
 }
 
 findings = [
     {
-        'finding': "Industry FX volumes rose into Q3 rather than moderating: CLS average daily traded volume was $2.658trn in July and $2.730trn in August 2026 against a Q2 average of $2.629trn (April 2.534, May 2.528, June 2.825), +14.7% and +15.4% YoY, and BNY's CFO said on 14 Sept that volumes 'kicked back into September'; the street has State Street's FX trading at $443m, -10% QoQ from the $494m Q2 record.",
+        'finding': "Q3 fees net to about the $3.20bn priced, line against line. FX volumes rose into Q3 rather than moderating: CLS average daily traded volume was $2.658trn in July and $2.730trn in August 2026 against a Q2 average of $2.629trn (+14.7% and +15.4% YoY), and BNY's CFO said volumes 'kicked back into September', while the street has State Street's FX at $443m, -10% QoQ. Against that, the custody peers that printed on 13 Oct grew less than State Street's servicing consensus of +3.5% QoQ ($1.52bn vs $1,468m): JPM Securities Services fell 2% QoQ to $1,626m with period-end AUC -1.7% to $44.1trn, and Citi Securities Services fees rose 2% QoQ with AUC/A flat at $35trn.",
         'question': 'Q1',
-        'expected_impact_pct': 0.15, 'impact_low_pct': -0.3, 'impact_high_pct': 0.6,
+        'expected_impact_pct': 0.1, 'impact_low_pct': -0.5, 'impact_high_pct': 0.6,
         'lands_on': 'reported_quarter',
         'reaction_history_on_this_line': "Q2 2026 printed record FX ($494m, +14% QoQ) inside an EPS beat ($3.65 vs ~$3.34) and a raised guide, and the stock fell 0.5% (baseline, 2026-07-16). This name has not paid for fee beats in 2025-26.",
         'resolves_by': '2026-10-14',
         'source': U['cls_aug'],
         'source_date': '2026-09-23',
-        'why_not_priced': "Anchoring on the company's guide: the FX line sits on the CFO's 'some moderation in the markets business' (14 Sept) and the July outlook's 'moderating a bit from the record'. If the CLS volumes were in the number, the FX estimate would sit near flat QoQ, not -10%. The counterweights are sized in: State Street's own CFO had seen July and August when he said moderation, and realised FX volatility fell in Q3 for EUR (4.2% vs 5.3% annualised), GBP (5.2 vs 6.6) and AUD (6.2 vs 9.2), my computation from Yahoo daily closes. So this is a proxy and stays small.",
-        'independence': "BNY CFO at Barclays, 14 Sept 2026 ('Volumes are strong and have kicked back into September'): " + U['barclays_bny'] + " ; JPM 3Q26 release, 13 Oct: Fixed Income down 4% 'largely offset by higher revenue in Currencies & Emerging Markets': " + U['jpm'] + ". Shares the Zacks consensus document with F4 (a different line).",
+        'why_not_priced': "Anchoring on the company's guide: the FX line sits on the CFO's 'some moderation in the markets business' (14 Sept) and the July outlook's 'moderating a bit from the record'. If the CLS volumes were in the number, the FX estimate would sit near flat QoQ, not -10%. The counterweights are sized in: State Street's own CFO had seen July and August when he said moderation, and realised FX volatility fell in Q3 for EUR (4.2% vs 5.3% annualised), GBP (5.2 vs 6.6) and AUD (6.2 vs 9.2), my computation from Yahoo daily closes. So this is a proxy and stays small. The servicing side cuts the other way and is also only partly comparable: on a YoY basis the peers (JPM +14%, Citi fees +13%) match or beat State Street's servicing consensus (+12%), and JPM's Q2 had jumped 10.5% QoQ, so the QoQ dip is partly a high base. Net of both lines the finding is +0.10.",
+        'independence': "BNY CFO at Barclays, 14 Sept 2026 ('Volumes are strong and have kicked back into September'): " + U['barclays_bny'] + " ; JPM 3Q26 release, 13 Oct: Fixed Income down 4% 'largely offset by higher revenue in Currencies & Emerging Markets': " + U['jpm'] + " ; JPM 3Q26 supplement (Securities Services 1,626/1,657/1,499/1,489/1,423; AUC $44,107bn vs $44,869bn): " + U['jpm_supp'] + " ; Citi 3Q26 release (Securities Services $1,712m vs $1,643m, NIR $911m vs $893m, AUC/A $35trn both quarters): " + U['citi_pdf'] + ". Shares the Zacks consensus document with F4 (a different line).",
     },
     {
         'finding': "Consensus ($3.63-3.68 EPS on $4.04bn revenue) implies Q3 expenses of about $2.645-2.66bn, flat on Q2's $2,659m, while the CFO said on 14 Sept that full-year expenses 'come in slightly higher' than the ~8% guide 'in reaction to some of that revenue'. With Q4 seasonally higher (4Q25 ex-notables $2,535m vs 3Q25 $2,434m, +4%), the formal FY expense number is likely ~8.5-9% on my rebuilt FY2025 ex-notable base of $9,831m.",
@@ -146,9 +147,11 @@ expected_move = round((2 * p_up / 100 - 1) * abs_move, 2)
 key_questions = [
     {
         'id': 'Q1', 'added_after_freeze': False,
-        'answer': "In line. Q3 fees ~$3.18-3.24bn, centred near $3.205bn against the $3.20bn priced. Servicing ~$1.50-1.52bn: the S&P 500 averaged 7,619 in Q3 against 7,271 in Q2 (+4.8%), offset by bonds (AGG average -1.8%, period-end -4.5%) and a ~1% stronger dollar. Management ~$0.79-0.81bn. FX ~$0.45-0.47bn, above the $443m line because CLS volumes rose QoQ, though State Street's CFO saw 'moderation' and EUR/GBP/AUD volatility fell. The answer differs from the priced one only on the FX line, by ~$10-25m, and partly rests on data newer than the CFO's 14 Sept remarks (CLS August data of 23 Sept, BNY's September comment, the peer prints of 13 Oct).",
+        'answer': "In line. Q3 fees ~$3.18-3.24bn, centred near $3.205bn against the $3.20bn priced. Servicing ~$1.50-1.52bn: the S&P 500 averaged 7,619 in Q3 against 7,271 in Q2 (+4.8%), offset by bonds (AGG average -1.8%, period-end -4.5%) and a ~1% stronger dollar. Management ~$0.79-0.81bn. FX ~$0.45-0.47bn, above the $443m line because CLS volumes rose QoQ, though State Street's CFO saw 'moderation' and EUR/GBP/AUD volatility fell. Servicing may come in $10-25m under its $1.52bn line: the custody peers that printed on 13 Oct grew less QoQ (JPM Securities Services -2%, AUC -1.7% at period end; Citi Securities Services fees +2%, AUC/A flat), although on a YoY basis they match the consensus. The two line differences roughly cancel, so the total is at the priced answer with a slight upward tilt. Much of this rests on data newer than the CFO's 14 Sept remarks: the CLS August data of 23 Sept, BNY's September comment and the peer prints of 13 Oct.",
         'evidence': [
-            {'source': U['jpm'], 'source_date': '2026-10-13', 'shows': 'JPM Securities Services $1.6bn, +14% YoY on higher market levels and client activity; higher Currencies & EM revenue', 'independent_of': None},
+            {'source': U['jpm_supp'], 'source_date': '2026-10-13', 'shows': 'JPM Securities Services $1,626m vs $1,657m in 2Q26 (-2% QoQ, +14% YoY); period-end AUC $44,107bn vs $44,869bn (-1.7%); FX VaR -23% QoQ', 'independent_of': None},
+            {'source': U['citi_pdf'], 'source_date': '2026-10-13', 'shows': 'Citi Securities Services $1,712m vs $1,643m (+4% QoQ): fees (NIR) $911m vs $893m (+2%), NII $801m vs $750m; AUC/A $35trn both quarters, +16% YoY', 'independent_of': None},
+            {'source': U['jpm'], 'source_date': '2026-10-13', 'shows': 'JPM Securities Services up 14% YoY on higher market levels and client activity; higher Currencies & EM revenue', 'independent_of': 'Same JPM filing as the supplement above'},
             {'source': U['citi_tx'], 'source_date': '2026-10-13', 'shows': 'Citi Services revenue +15%, fees +12%, AUC/A +16%', 'independent_of': None},
             {'source': U['zacks_keymetrics'], 'source_date': '2026-10-09', 'shows': 'Consensus fee revenue $3.20bn, servicing $1.52bn, management $811.83m, FX $443.37m, other $112.65m', 'independent_of': None},
             {'source': U['cls_aug'], 'source_date': '2026-09-23', 'shows': 'CLS August ADV $2.730trn, +15.4% YoY', 'independent_of': None},
@@ -160,15 +163,15 @@ key_questions = [
             {'source': U['q2deck'], 'source_date': '2026-07-16', 'shows': 'Five-quarter fee lines (servicing 1,304/1,357/1,388/1,409/1,468; management 600/664/717/724/772; FX 390/364/350/435/494); outlook assumes equities flat from 2Q quarter-end', 'independent_of': None},
         ],
         'confidence_pct': 55,
-        'surprise_vs_priced': '+0.2% of fee revenue (~+$5m); FX line +$10-25m',
-        'impact_pct': 0.15,
+        'surprise_vs_priced': '~0 to +0.2% of fee revenue: FX line +$10-25m, servicing line -$10-25m',
+        'impact_pct': 0.1,
         'priced_shown': True,
         'bias': "Anchoring on the company's guide (the FX line)",
         'approaches_tried': [
             {'approach': 'Rebuilt servicing and management fees from quarter-average market levels (S&P 500, VT, EFA, AGG, DXY daily closes) against the five-quarter fee history in the Q2 deck', 'showed': 'servicing ~+2.5-3.5% QoQ and management ~+2.5-4%: consistent with the consensus total'},
             {'approach': 'CLS monthly FX volume releases April-August 2026, read in full', 'showed': 'July-August average +2.5% on the Q2 average and +15% YoY; September not yet published'},
             {'approach': 'Realised FX volatility by quarter from daily closes (EUR, JPY, GBP, TWD, KRW, CNY, AUD, INR)', 'showed': 'lower in Q3 for EUR, GBP, AUD, CNY and TWD; higher for JPY (11.3% in September)'},
-            {'approach': 'Peer prints that landed after State Street last spoke (JPM and Citi, 13 Oct)', 'showed': 'custody fees +12-14% YoY on market levels and activity, consistent with consensus'},
+            {'approach': 'Peer prints that landed after State Street last spoke: JPM 3Q26 supplement (re-fetched after an SEC rate limit) and the Citi 3Q26 release PDF read with the repo stdlib PDF reader', 'showed': 'custody revenue +13-14% YoY, matching consensus; QoQ JPM -2%, Citi fees +2%, below the +3.5% QoQ in STT servicing consensus; period-end AUC -1.7% at JPM and flat at Citi'},
             {'approach': "Management's own words ten weeks into the quarter (Barclays, 14 Sept) and BNY's at the same conference", 'showed': "STT: stable QoQ, servicing and management a little better, markets moderating; BNY: volumes kicked back into September"},
             {'approach': 'SPDR and State Street Investment Management flow data', 'showed': 'only year-to-date figures (SPY ~$11bn, SPYM ~$57bn by early September); no Q3 total'},
         ],
@@ -280,7 +283,7 @@ out = {
     'impact_sum_pct': impact_sum,
     'abs_move_pct': abs_move,
     'p_up': p_up,
-    'conviction_note': "Every frozen question came back within about 1% of the answer the price holds: fees ~$3.20bn, NII ~$858-870m, expenses ~flat with a slightly higher FY guide, capital intact, and a FY raise the consensus already implies. The seven findings sum to -0.25, and p_up of 49 on a 4.4% scale gives -0.09. The two measurements agree there is no edge. The small negative lean comes from the expense tail and a sector that sold beats on 13 Oct, offset by steady deposits and industry FX volumes.",
+    'conviction_note': "Every frozen question came back within about 1% of the answer the price holds: fees ~$3.20bn, NII ~$858-870m, expenses ~flat with a slightly higher FY guide, capital intact, and a FY raise the consensus already implies. The seven findings sum to -0.30, and p_up of 49 on a 4.4% scale gives -0.09. The two measurements agree there is no edge. The small negative lean comes from the expense tail and a sector that sold beats on 13 Oct, offset by steady deposits and FX volumes against peers' slower custody fees.",
     'print_vs_bar_pct': 0.5,
     'bar': "Q3 2026 EPS $3.63 (Zacks, 9 Oct: " + U['zacks_keymetrics'] + "), $3.66 (Benzinga via ad-hoc-news, 2-4 Oct: " + U['adhoc'] + "), $3.68 (Alphastreet, 13 analysts, range $3.59-3.89, snippet: " + U['alphastreet'] + "). Revenue $4.04bn in all three; fee revenue $3.20bn and NII $857.9m (Zacks). Company guide (Q2 deck, 16 Jul: " + U['q2deck'] + "): FY26 fees +12-13%, NII +14-15%, expenses ~+8%, ~500bp operating leverage, ~32% pre-tax margin. CFO on 14 Sept (" + U['barclays_stt'] + "): fees 'a little better', NII 'upper end', expenses 'slightly higher', Q3 'pretty stable quarter-over-quarter'. The sweep row's 2026 guide (fees +4-6%, expenses +3-4%) is the superseded January guide. print_vs_bar_pct is on EPS: my ~$3.68 against a $3.66 mid-consensus.",
     'positioning_check': "Short interest ~4.9m shares, ~1.8% of float, ~2.0 days to cover (Equibles snapshot of 19 Aug 2026: " + U['si_equibles'] + "); FINRA settlement of 15 Jul 2026 5.1m shares, 2.09 days (CurvedTrading: " + U['si_curved'] + "); borrow fee 0.3% on 11 Sept. Both snippet-only, and no September settlement was found. Not crowded, so no squeeze adjustment. Skew +7.57 vol points (downside paid) on a thin chain (ATM spread 25% of mid, front-expiry OI 4,051); put/call OI 0.79. The stock is -6.6% over 20 days and -10.6% from 11 Sept, with the custody group (BNY -13.3%, NTRS -11.4%, BKX -10.0% over the same span, Yahoo closes) after BNY's 14 Sept deposit remark and the September rate shock.",
@@ -301,7 +304,6 @@ out = {
         'Custody mandate wins or losses dated August-September 2026 (the Principal $215bn win was June)',
         'A preview quantifying Q3 expenses or a 2027 outlook',
         'Coverage explaining the custody-bank sell-off beyond BNY on 14 Sept and the rate shock',
-        'JPM and Citi Securities Services QoQ figures (only YoY found; the JPM supplement was rate-limited by SEC)',
         'A September short-interest settlement for STT',
     ],
     'rejected_candidates': [
@@ -324,6 +326,7 @@ out = {
     },
     'lessons_applied': [
         'Rule 1 (a verified fact is not a reaction): F1 FX-volume proxy cut from +0.25 to +0.15 and F3 deposits from +0.20 to +0.15, because this name sold its Q2 beat-and-raise (-0.5%) and 5 of its last 7 prints',
+        'Not a lesson, recorded so the pre/post comparison stays honest: after reading LESSONS I re-fetched the JPM 3Q26 supplement (SEC had returned 429 earlier) and read the Citi 3Q26 release. JPM Securities Services fell 2% QoQ with AUC -1.7%, and Citi Securities Services fees rose 2% QoQ with AUC/A flat, against +3.5% QoQ in STT servicing consensus. This was merged into F1, which moved from +0.15 to +0.10; it would have been in the draft had the supplement loaded',
         "Rule 6 (inside the guide): F2 expenses cut from -0.30 to -0.15 because the CFO had already said 'slightly higher' for the year and 'stability' for Q3; F4 cut from -0.20 to -0.15 on the same ground",
         'Rule 7 (positioning): F5 sector-beats-sold cut from -0.30 to -0.20 because it agrees with the +7.57 skew sealed after the 13 Oct tape; short interest checked (~1.8% of float, ~2 days), so no squeeze adjustment; p_up moved from 48 to 49',
         'Rule 4 (financing is a question): added F6 (Series L preferred and bank notes) at 0.0 after asking what the money buys: leverage-ratio room for the payout, with Tier 1 leverage at 5.3%',
@@ -331,7 +334,7 @@ out = {
         'Rule 8 (understatement): abs_move_pct raised from 4.2 to 4.4, toward the 4.74% implied move',
         "Rule 5 (a company number beats a proxy): F1 and F3 kept small because the CFO's own 14 Sept statements outrank the CLS and H.8 aggregates",
     ],
-    'sources_used': 34,
+    'sources_used': 36,
     'questions_frozen': frozen['questions_frozen'],
     'pre_research': pre_r['pre_research'],
     'key_questions': key_questions,
@@ -344,7 +347,7 @@ out = {
     'investment_decision': {
         'action': 'no_trade',
         'conviction': 'low',
-        'reason': "All five frozen questions came back within about 1% of what the price holds. The street's $3.20bn fees, $857.9m NII and roughly flat expenses sit on the CFO's 14 Sept 'stable quarter-over-quarter' steer (Q1, Q2, Q3). The street's Q3 fee number already implies the ~14% full-year raise (Q5), and the September bond rout costs CET1 only tens of basis points (Q4). The small tilts offset: industry FX volumes and steady large-bank deposits lean up, the expense tail and a sector that sold Citi's beat on 13 Oct lean down, so impact_sum of -0.25 on a 4.4% scale agrees with not trading.",
+        'reason': "All five frozen questions came back within about 1% of what the price holds. The street's $3.20bn fees, $857.9m NII and roughly flat expenses sit on the CFO's 14 Sept 'stable quarter-over-quarter' steer (Q1, Q2, Q3). The street's Q3 fee number already implies the ~14% full-year raise (Q5), and the September bond rout costs CET1 only tens of basis points (Q4). The small tilts offset: industry FX volumes and steady large-bank deposits lean up, peers' custody fees growing less than STT's servicing line leans down, the expense tail and a sector that sold Citi's beat on 13 Oct lean down, so impact_sum of -0.30 on a 4.4% scale agrees with not trading.",
         'what_would_change_it': "Q3 average deposits and the Q4 NII guide. Deposits at or above ~$275bn with NII guided up on the hikes would make this a long into the custody de-rating. A full-year expense guide at or above ~9% with cost commentary on 2027 would make it a short.",
     },
 }
