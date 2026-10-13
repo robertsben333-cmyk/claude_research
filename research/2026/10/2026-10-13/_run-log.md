@@ -55,3 +55,7 @@
 ## Close AMC — 10:00 UTC routine
 - Logged at 2026-10-13 10:16 UTC
 - mode --require-exit-tif opg: exit 0 (amc_open, amc exit queued as DAY market for the open). verify: 14 legs, none UNFILLED, nothing still held. close --submit: no leg due today, nothing sent, no refusals. alpaca-orders.json files rewritten by the fill re-read.
+
+## Stage IPO — IPO researcher — STARTED
+- Logged at 2026-10-13 12:37 UTC
+- Routine fire 12:36 UTC; universe for 2026-10-13, seal, hunt up to 12 names in waves of 6, score, four-model IPO panel. No orders.
