@@ -16,3 +16,7 @@
 ## Stage EU — universe and baselines sealed
 - Logged at 2026-10-13 13:49 UTC
 - 10 scheduled, 7 eligible (uk 4, se 2, dk 1), all 7 hunted (under cap 20). Dropped below $100k: RWA, ALSMA, DUST. Largest market uk 57%. Yahoo quote calendar unavailable on every market. Provenance stamped (orchestrator model flag omitted: get_session not callable here). Wave 1: BOOM JHD SCT VTU DEMANT; wave 2: AVARDA CRED_A.
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-13 13:59 UTC
+- 7 hunts done (DEMANT phantom: Q3 IMS is 2026-11-03; 14 Oct is the start of its quiet period). 6 ranked, 0 above 2.8. Packs built; four judges next.
