@@ -59,3 +59,7 @@
 ## Stage IPO — IPO researcher — STARTED
 - Logged at 2026-10-13 12:37 UTC
 - Routine fire 12:36 UTC; universe for 2026-10-13, seal, hunt up to 12 names in waves of 6, score, four-model IPO panel. No orders.
+
+## Stage IPO — IPO researcher — EMPTY DAY
+- Logged at 2026-10-13 12:49 UTC
+- NYSE open (market_closed null); eligible 0: no debut first-trades today and no lock-up's first free session is today. Funnel all zeros (debut_scheduled 0, lockup_scheduled 0). Nasdaq calendar fetched OK at 12:37 UTC (Oct: 5 priced, 2 upcoming — IAM expected 10/15, CTY 10/16), so this is a real empty day, not a fetch failure. No hunters, no panel, no orders. Note: the container lacked the 'requests' module; installed with pip before ipo_universe.py would run.
