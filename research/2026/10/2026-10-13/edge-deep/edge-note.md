@@ -39,7 +39,7 @@ Premortem: I lean marginally up (p_up 52), so the other way is a 4-6% fall. The 
 | Q4 | Does the September bond sell-off (10y 4.64% -> 5.29%) cut the Q3 CET1 ratio through AOCI enough that State Street slows buybacks (Q3 repurchases below Q2's $400m, or a lower Q4 plan / payout below ~80%)? | Total payout ~80% for 2026 (July call; CFO repeated 'about 80%' on 14 Sept). No quantified street expectation for Q3 CET1 or buyback found before freezing. | Same as priced: no buyback cut. The September bond rout (30 Jun to 30 Sep: 2y +74bp, 5y +90bp, 10y +85bp) costs CET1 only about 10-25bp through AOCI, because State Street's AFS book ($72.3bn; portfolio duration 2.0 years including hedges) has barely moved AOCI | 65 | 0.0 |
 | Q5 | Does State Street formally raise the FY2026 fee revenue guide above 12-13% (to ~13-14% or more) and frame 2027 with positive operating leverage, or does it hold the July range? | Street partly holds a raise: CFO said fees 'a little better' than 12-13% and one summary reported 'tracking toward 13-14%'. Consensus FY figures not seen before freezing. | The likely outcome is a formal raise to ~13-14% fee growth, NII ~15% and expenses ~8.5-9%, with ~500bp or more of operating leverage. But the street's Q3 fee number already implies FY ~14.1% (H2 at ~$3.20bn a quarter), so the raise meets the street rather than | 55 | -0.15 |
 
-p_up 49, abs_move_pct 4.4, impact_sum -0.25; quick first read: impact_sum +0.4, abs_move 4.3, p_up 52.
+p_up 49, abs_move_pct 4.4, impact_sum -0.30; quick first read: impact_sum +0.4, abs_move 4.3, p_up 52.
 Premortem: With p_up at 49 the other way is a hard rally. State Street would show Q3 average deposits at or above ~$270bn and NII above $870m, guide Q4 and 2027 NII up on the Fed and ECB hikes, and raise the fee guide to ~14% with operating leverage above 500bp. As the first custody print after BNY's 14 Sept deposit warning, it would unwind part of the group's 11% de-rating (the April 2025 print after a -11.7% run-up rose 2.05%).
 **Decision:** no_trade / low — All five frozen questions came back within about 1% of what the price holds. The street's $3.20bn fees, $857.9m NII and roughly flat expenses sit on the CFO's 14 Sept 'stable quarter-over-quarter' steer (Q1, Q2, Q3). The street's Q3 fee number already implies the ~14% full-year raise (Q5), and the September bond rout costs CET1 only tens of basis points (Q4). The small tilts offset: industry FX volumes and steady large-bank deposits lean up, the expense tail and a sector that sold Citi's beat on 13 Oct lean down, so impact_sum of -0.25 on a 4.4% scale agrees with not trading. *Would change it:* Q3 average deposits and the Q4 NII guide. Deposits at or above ~$275bn with NII guided up on the hikes would make this a long into the custody de-rating. A full-year expense guide at or above ~9% with cost commentary on 2027 would make it a short.
 
@@ -49,8 +49,8 @@ Premortem: With p_up at 49 the other way is a hard rally. State Street would sho
 |---|---|---|---|
 | BAC | +1.00 | 0.9 | not there yet (edge-scores-panel.json absent) |
 | BLK | +0.20 | 0.6 | not there yet (edge-scores-panel.json absent) |
-| STT | -0.25 | 0.2 | not there yet (edge-scores-panel.json absent) |
-- STT: signs disagree (D -0.25, E +0.20).
+| STT | -0.30 | 0.2 | not there yet (edge-scores-panel.json absent) |
+- STT: signs disagree (D -0.30, E +0.20).
 
 ## What the numbers are not
 
