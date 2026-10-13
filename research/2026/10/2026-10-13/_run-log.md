@@ -104,3 +104,7 @@
 ## Stage CA — universe + seal
 - Logged at 2026-10-13 18:34 UTC
 - Universe: 2501 scanner rows, 7 in window, 3 scheduled today (agreed 1, vendor_only 2, confirmed 0, wsh_only 0, disputed 0), 1 eligible (YAY, INEO under the $100k floor), 0 filing_only drops, 1 hunted: GOLD (GoldMining, amc). Sealed 18:34 UTC inside the session. Anchor: register 1 / options 0 — GOLD has no Montreal chain at all, so this is not a seal-time failure. register_business_date 2026-10-12, change vs 2026-10-09 snapshot -0.02pp. Baseline history n=4 includes a 2026-05-14 'Annual Meeting Voting Results' row (-6.71%) misclassified as a results release — classifier defect, not fixed here.
+
+## Stage CA — note on duplicate event
+- Logged at 2026-10-13 18:37 UTC
+- GOLD is the SAME unfiled Q3 FY2026 event already hunted in the 2026-10-09 run: WSH's UNC date rolled 10-09 -> 10-13, and TMX's SEDAR+ index shows no Q3 filing between 10-05 and 10-13 (only a 10-06 news release). At most one of the two runs can resolve against a real print; the resolver should kill the other with event_occurred:false. Do not pool both.
