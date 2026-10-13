@@ -47,3 +47,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-13 01:44 UTC
 - 25 packs, four judges (panel-judge-intl-*)
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-13 01:54 UTC
+- 51 scheduled / 30 eligible / 25 hunted (seeded draw). 25/25 rankable, none above floor 2.8; top 9278 +2.20, bottom 2791 -1.30. Panel 4/4 members, selected 6432, 9278, 2791. JPX short register as_of 2026-09-29 (stale). Note: japan/japan-note.md. No orders.
