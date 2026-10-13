@@ -63,3 +63,8 @@
 ## Stage IPO — IPO researcher — EMPTY DAY
 - Logged at 2026-10-13 12:49 UTC
 - NYSE open (market_closed null); eligible 0: no debut first-trades today and no lock-up's first free session is today. Funnel all zeros (debut_scheduled 0, lockup_scheduled 0). Nasdaq calendar fetched OK at 12:37 UTC (Oct: 5 priced, 2 upcoming — IAM expected 10/15, CTY 10/16), so this is a real empty day, not a fetch failure. No hunters, no panel, no orders. Note: the container lacked the 'requests' module; installed with pip before ipo_universe.py would run.
+
+## Edge hunt — 2026-10-13 amc + 2026-10-14 bmo — STARTED
+- Logged at 2026-10-13 17:09 UTC
+- 17:05 UTC fire. 9 of 26 calendar rows in window (AZZ amc; ASML BAC MS BLK PGR FAST STT SOTK bmo). Baselines sealed (8 with option chains, SOTK none). Plan: 1 sweep + up to 9 hunters.
+- Step 0b: execution.enabled true, exit_mode amc_open. 'alpaca_trade.py verify --fix --submit' was DENIED by the auto-mode classifier [Real-World Transactions] - the narrow allow rules did not hold. Read-only 'status' worked: equity $11,200.86 = cash, no open positions, so nothing was due to sell and the denial cost nothing today.
