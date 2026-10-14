@@ -7,6 +7,13 @@ the output directory and the labels changed, and nothing else. Created by a sess
 `update_trigger` works on it. **Keep this file and the Routine in step: any re-paste
 changes both in the same commit.** The block below is the exact text the Routine holds.
 
+**Routine `trig_018ZcJBitxYfubdnMET8wN8U`**, created 2026-10-14 at 11:36:55 UTC and named
+"Stage E-PF — US edge hunt, Fable 5.1 searchers + four-model panel (no orders)". Read back
+at 11:36:59 UTC: prompt identical to the block below, model `claude-opus-5-5` (pinned with
+`update_trigger` because creation left it empty), cron `8 17 * * 1-5`, enabled, first run
+2026-10-14 17:08 UTC, no MCP connectors, empty `sources` and `outcomes` (step 0 clones the
+repo; the prompt's `EARNINGS_DATA_BRANCH=main` decides where the data lands).
+
 - Cron `8 17 * * 1-5` = 17:08 UTC, two minutes after stage E-P (`6 17`) and four after
   stage E, so all three seal their baselines on the same afternoon quotes.
 - Fresh session per fire, model `claude-opus-5-5` for the orchestrating session, as
