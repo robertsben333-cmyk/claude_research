@@ -49,3 +49,7 @@
 ## Stage IPO — IPO researcher — STARTED
 - Logged at 2026-10-14 12:36 UTC
 - Fired 12:36 UTC (08:36 ET). Plan: universe → seal → hunters (waves of 6) → score → four-model IPO panel → note. No orders.
+
+## Stage IPO — panel STARTED
+- Logged at 2026-10-14 12:47 UTC
+- 1 pack (MAIR), four IPO judges. ARXS not ranked: hunter found lock-up lapsed 2026-10-13 (424B4 dated 2026-04-15, 180 days → 10-12); Nasdaq date one day late.
