@@ -1303,6 +1303,67 @@ def main():
     check("a dry panel run leaves the history untouched",
           added == 0 and open(panel_score.HISTORY).read() == hist_before)
 
+    # STAGE E-PI (2026-10-14): stage E-P re-run at fixed New York times, one snapshot
+    # directory per run. The first snapshot freezes the day's names, later ones reuse
+    # them; a 16:00 snapshot hunts bmo only; an amc hunt written after 16:00 ET on its
+    # event date is guarded out; the panel never writes stage E-P's history; no orders.
+    pi_skill = open(os.path.join(REPO, ".claude", "skills", "earnings-edge-panel-intraday", "SKILL.md"),
+                    encoding="utf-8").read()
+    pic = cfg.get("edge_panel_intraday") or {}
+    check("stage E-PI places no orders, stamps US-PI and scores the panel dry",
+          pic.get("places_orders") is False and pic.get("writes_panel_history") is False
+          and "No `alpaca_trade.py` call of any kind" in pi_skill and "--market US-PI" in pi_skill
+          and "--dry-run --stage E-PI" in pi_skill and "intraday.py guard" in pi_skill)
+    import intraday as _ipi
+    from datetime import datetime as _dt, timezone as _tz
+    _slots = {t: _ipi.slot_for(_dt.fromisoformat(t), pic)["slot"] for t in
+              ("2026-10-14T14:02:00+00:00", "2026-10-14T15:31:00+00:00", "2026-10-14T20:04:00+00:00",
+               "2026-11-03T15:00:00+00:00")}
+    check("stage E-PI labels its snapshots in New York time across the clock change",
+          list(_slots.values()) == ["1000", "1130", "1600", "1000"], str(_slots))
+    with _tf.TemporaryDirectory() as td:
+        day = os.path.join(td, "2026-10-14")
+        s1, s4, s5 = (os.path.join(day, f"edge-intraday-{x}") for x in ("1000", "1430", "1600"))
+        os.makedirs(s1)
+        uni = {"names": [{"ticker": "AMCX", "session": "amc", "event_date": "2026-10-14"},
+                         {"ticker": "BMOX", "session": "bmo", "event_date": "2026-10-15"}]}
+        json.dump(uni, open(os.path.join(s1, "universe.json"), "w"))
+        json.dump({"names": [{"ticker": "AMCX", "event_confirmed": True},
+                             {"ticker": "BMOX", "event_confirmed": True}]},
+                  open(os.path.join(s1, "sweep.json"), "w"))
+        fr = _ipi.freeze(s1, pic)
+        again = _ipi.freeze(s1, pic)
+        sd4, sd5 = _ipi.seed(s4, pic), _ipi.seed(s5, pic)
+        check("the first snapshot freezes the names once and later snapshots reuse them",
+              fr["frozen"] and not again["frozen"] and sd4["hunt"] == ["AMCX", "BMOX"], str(sd4))
+        check("a 16:00 snapshot hunts bmo names only",
+              sd5["hunt"] == ["BMOX"] and "AMCX" in sd5["excluded"], str(sd5))
+        os.makedirs(os.path.join(s5, "x"), exist_ok=True)
+        check("a snapshot that excludes amc names never freezes the day's set",
+              not _ipi.freeze(s5, pic)["frozen"])
+        for d in ("baselines", "hunts"):
+            os.makedirs(os.path.join(s4, d))
+        for t, sess, ev in (("AMCX", "amc", "2026-10-14"), ("BMOX", "bmo", "2026-10-15")):
+            json.dump({"ticker": t, "session": sess, "event_date": ev}, open(os.path.join(s4, "baselines", t + ".json"), "w"))
+            json.dump({"ticker": t, "findings": []}, open(os.path.join(s4, "hunts", t + ".json"), "w"))
+        late = _dt(2026, 10, 14, 20, 10, tzinfo=_tz.utc).timestamp()     # 16:10 ET
+        os.utime(os.path.join(s4, "hunts", "AMCX.json"), (late, late))
+        os.utime(os.path.join(s4, "hunts", "BMOX.json"), (late, late))
+        g = _ipi.guard(s4, pic)
+        check("the guard moves an amc hunt written after the release, and leaves bmo alone",
+              list(g["moved"]) == ["AMCX"] and not os.path.exists(os.path.join(s4, "hunts", "AMCX.json"))
+              and not os.path.exists(os.path.join(s4, "baselines", "AMCX.json"))
+              and os.path.exists(os.path.join(s4, "hunts", "BMOX.json")), str(g))
+        for s_, pct in ((s1, 9.0), (s4, 2.0)):
+            json.dump({"members_present": list(panel_score.MEMBERS), "ranking": [
+                {"ticker": "BMOX", "panel_pct": 85.0 if pct > 5 else 40.0, "side": 1 if pct > 5 else -1,
+                 "selected": pct > 5, "members": {}}]}, open(os.path.join(s_, "edge-scores-panel.json"), "w"))
+        tl = _ipi.timeline(day)
+        b = next(r for r in tl["names"] if r["ticker"] == "BMOX")
+        check("the timeline lays out each name's call per snapshot and counts side flips",
+              tl["slots"] == ["1000", "1430"] and b["side_flips"] == 1 and b["times_selected"] == 1
+              and os.path.exists(os.path.join(day, "edge-intraday", "timeline.md")), str(b))
+
     # THE PANEL ON THE NON-US STAGES (2026-10-08): EU, J, AU and CA run stage E-P's
     # judging method on their own hunts. Separate judges (each pack names its market's
     # hunter), one history per market, E-P's rules read from edge_panel, never E-P's

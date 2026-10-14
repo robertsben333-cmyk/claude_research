@@ -237,6 +237,33 @@ edge_panel:
   places_orders: false
   shadow_ledger: false
 
+# Stage E-PI (2026-10-14, operator's instruction): stage E-P re-run from scratch at fixed
+# New York times through the session, every run saved as its own snapshot, so the
+# development of each name's call through the day can be read. Every scoring rule is
+# edge_panel's, read from there. The day's name set is frozen by the first snapshot.
+# Snapshots go to research/<Y>/<M>/<DATE>/edge-intraday-<HHMM>/, the day's timeline to
+# edge-intraday/timeline.{json,md}. Provenance market US-PI, stage versions
+# us-panel-intraday.vN: never pooled with stage E-P (project rule 3).
+edge_panel_intraday:
+  inherits: edge_panel
+  output_prefix: edge-intraday
+  slots_et: ["10:00", "11:30", "13:00", "14:30", "16:00"]   # New York; the cron is UTC
+  slot_tolerance_min: 45       # a fire further than this from every slot keeps its own clock
+  earliest_et: "09:15"
+  latest_et: "16:45"
+  # The leak stage E-P does not have: a late snapshot's searchers can read tonight's amc
+  # releases. A snapshot at or after amc_last_slot_et hunts bmo names only; an amc hunt
+  # written at or after amc_release_cutoff_et on its event date is moved out of the
+  # scored set by `intraday.py guard` before edge_score.py runs.
+  amc_last_slot_et: "16:00"
+  amc_release_cutoff_et: "16:00"
+  # The panel history is stage E-P's reference and is never written by a snapshot
+  # (panel_score.py --dry-run): five snapshots a day would swamp it with one day's names.
+  writes_panel_history: false
+  orchestrator_model: opus
+  places_orders: false
+  shadow_ledger: false
+
 # The four-model panel on the non-US stages (EU, J, AU, CA; 2026-10-08, operator's
 # instruction: "the 4-agent judging method the US one already uses"). Each stage keeps
 # its own hunters and its own impact_sum key; after scoring, scripts/market_panel.py
