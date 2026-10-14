@@ -1940,6 +1940,18 @@ def main():
           all(it.get("input_sha256") and (it["status"] == "collected"
               or it.get("llm_impact_score") is not None) for it in ledger0["items"]))
 
+    print("\nRoutine environment")
+    sys.path.insert(0, os.path.join(REPO, "scripts", "env"))
+    import check as env_check
+    only_req, only_setup = env_check.drift()
+    check("scripts/env/setup.sh installs exactly what requirements.txt lists",
+          not only_req and not only_setup)
+    hook = os.path.join(REPO, ".claude", "hooks", "session-start.sh")
+    settings = json.load(open(os.path.join(REPO, ".claude", "settings.json")))
+    check("the SessionStart hook exists, is executable and is registered",
+          os.access(hook, os.X_OK) and "session-start.sh" in json.dumps(
+              settings.get("hooks", {}).get("SessionStart", [])))
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:

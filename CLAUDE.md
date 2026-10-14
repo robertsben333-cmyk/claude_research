@@ -2285,6 +2285,14 @@ definition is not registered — so after editing any hunter, run `registry` (it
 on prompt and model as two separate selectors on every market, and puts versions side by side on the Versies tab. **Never pool
 two versions to judge either one.**
 
+**The Routines' environment is code since 2026-10-14: `scripts/env/`.** Every Routine on this
+account fires into the cloud environment "full env" (`env_01HBKyy2ZpubuvsBDUY2onkn`).
+`scripts/env/setup.sh` is the text pasted into its Setup script, `requirements.txt` the
+packages (PyYAML, requests, xlrd, openpyxl), and `.claude/hooks/session-start.sh` re-checks
+them at every session start. `xlrd` was missing everywhere, so stage J's JPX short register
+sealed all nine October runs (10-01 to 10-14) on the 2026-09-29 cache. Add a package to BOTH `requirements.txt` and
+`setup.sh`; the smoke test fails on drift. See `scripts/env/README.md`.
+
 **`scripts/publish.sh` pushes to `main`, not to your branch.** `BRANCH="${EARNINGS_DATA_BRANCH:-main}"`
 is deliberate: a Routine session's job is to put the day's research on the data branch, and
 every stage's closing step depends on it. It is a trap for a *development* session working
