@@ -20,3 +20,7 @@
 ## Stage EU — universe and baselines sealed
 - Logged at 2026-10-14 13:42 UTC
 - 28 scheduled, 18 eligible (uk 6, se 8, no 2, de 1, fi 1), all 18 hunted (under cap 20). Largest market se 44%. Calendar adds: RNS added 7 UK names (all session_unresolved), Yahoo added EQT, Inderes added PCOM_B (not eligible). All five registers read (uk de se no fi). Provenance stamped (orchestrator model flag omitted). Waves: [2GB NDA_FI ENTRA NEL AQ] [CARA EMIL_B EQT ERIC_A OEM_B] [SLP_B WALL_B AVCT CAML] [DNLM ENT WTB XPS].
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-14 14:01 UTC
+- 18 hunts done; 15 ranked, 0 above 2.8. Not ranked (no event on 10-15): AVCT (investor presentation of 09-30 interims), CAML (date is Cygnus scheme Effective Date — uk_rns_calendar misparsed it as results), WTB (interims brought forward to 10-13). OEM_B hunter says release is in-session on 10-15 (vendor said amc). NEL hunter: NO register lists issuer as 'NEL' at 0.59% (Tages), baseline read 0.0 — eu_positioning NO join likely needs ISIN match. 15 packs, four judges next.
