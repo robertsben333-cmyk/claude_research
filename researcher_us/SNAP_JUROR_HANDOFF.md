@@ -1,0 +1,155 @@
+# Handoff: SubQ Snap as a fifth, non-Anthropic juror on stage E-P
+
+Written 2026-10-14 by a session that could not hold the API key. Pick this up in a new
+session whose environment carries `SUBQ_API_KEY` and allows `api.subq.ai`. Everything a
+decision was needed for is decided below; build it as written and change a decision only
+for a measured reason, recorded here.
+
+## Why
+
+The E-P panel counts "3 of 4 members agree" as independent confirmation, but all four
+members (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) are Anthropic models and their errors
+are probably correlated. SubQ Snap (Subquadratic, public preview since 2026-10-12) is a
+decision model from another lab on another architecture: it answers declared questions
+over declared answers and returns a probability for every answer. It is the first juror
+whose mistakes could plausibly be uncorrelated with the panel's.
+
+**It is a shadow column, not a member.** It ranks beside the panel in `edge_resolve.py`
+and nothing that selects, sizes or trades reads it. Promotion into `panel_score.py` is a
+separate decision for after it has pooled, and it needs the operator.
+
+## The API (from docs.subq.ai, read 2026-10-14)
+
+- `POST https://api.subq.ai/v1/systemone`, header `Authorization: Bearer $SUBQ_API_KEY`,
+  `Content-Type: application/json`.
+- Body: `model` = `subq-snap-preview` (the only id), `state` (text, object or array),
+  `questions` = 1-16 named questions. Optional `images`, not used here.
+- Question types: `noul` (yes/no; answer `noul` = P(yes)); `choice` (`criteria` = 2-255
+  named options, each a description or null; answer `choice`, `probabilities`,
+  `confidence`); `score` (`criteria` = 2-10 ordered level strings; answer `score`
+  (fractional), `legend`, `probabilities`, `confidence`).
+- Response: `model`, `answers` keyed by question name, `usage.input_tokens`
+  (`output_tokens` is always 0). Price $0.05 per M input tokens.
+- Limits: 384K context (a request at or near it fails 400), question names <= 100 chars.
+- Errors: `detail.error_type` + `detail.message`; 400 too long or rejected, 401 key,
+  402 credits, 403 key cannot use model, 422 invalid request, 429 rate limit, 503 down.
+- No published rate limits and no published calibration data. All benchmarks are the
+  vendor's own.
+
+## First thing in the new session
+
+1. `echo ${SUBQ_API_KEY:+set}` must print `set`. Never print the key itself.
+2. One smoke call with a trivial `noul` question. A 403 with an HTML body is the
+   network policy (the host is not allowed); a 403 with a JSON `detail` is the key not
+   having access to the model. They have different fixes; report which.
+3. Only then build.
+
+## What to build
+
+Work on your session's own branch and bring this file across from
+`claude/vibrant-newton-lsndrf` if it is not on `main` yet. Do not use
+`scripts/publish.sh` while building; it pushes to `main`. Do not merge to `main` without
+the operator: the E-P Routine runs whatever `main` holds.
+
+### 1. `researcher_us/scripts/snap_juror.py --run <RUN>/edge-panel [--dry-run]`
+
+- Reads `<RUN>/edge-panel/panel/packs.json` (built by `panel_packs.py`; a list of packs
+  with `id`, `hunter_definition`, `lessons_file`, `baseline`, `first_hunter_context`,
+  `evidence`). A pack is about 4-5k tokens, so one pack per request is far under the
+  limit.
+- `state` = the pack minus `hunter_definition` and `lessons_file` (Snap cannot open
+  files), plus a short fixed preamble naming the window: entry at the regular close
+  before the print, exit at the regular close after the first full session, moves in
+  percent of spot. The preamble is a constant in the script and is versioned with it.
+- HTTP with `urllib.request`, as `alpaca_trade.py` does. No SDK, no pip install: a
+  Routine must not need one. Timeout 30 s, at most two retries with backoff on 429/5xx,
+  none on 4xx.
+- Three questions per pack:
+  - `move` (choice): where the move over the window lands. Bins with edges
+    `-inf,-20,-15,-12,-10,-8,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,8,10,12,15,20,+inf`
+    (24 options), each described in words ("falls between 3% and 4%"). Representative
+    values: bin midpoints, tails at -25 / +25. Derived per name:
+    `snap_impact` = E[move], `snap_p_up` = 100 x P(move > 0), `snap_abs` = E[|move|].
+    `snap_impact` is the ranked number; it is on the same footing as a judge's
+    `impact_sum`, which is (2 p_up/100 - 1) x abs_move_pct.
+  - `up` (noul): will the stock close the window above the entry price. Kept as a cross
+    check on the `move` distribution; its disagreement with `snap_p_up` is logged, not
+    used.
+  - `vs_implied` (score): `|move|` against the sealed implied move, five levels from
+    "well under half" to "well over 1.5x". Logged, not ranked.
+- Writes `<RUN>/edge-panel/panel/snap.json` (raw response per pack, plus the request
+  hash, the `model` string the API returned, the script version and the UTC time) and
+  `<RUN>/edge-panel/edge-scores-snap.json` with `ranking_by_ticker`:
+  `{ticker, snap_impact, snap_p_up, snap_abs, snap_vs_implied, confidence_move,
+  p_up_noul}`.
+- Never fatal. No key, host denied, 4xx, a pack over the limit: write the file with
+  `status` and `reason` per name and exit 0, so the stage run carries on.
+- On the first live day only, call each pack twice and record whether the two answers
+  were identical (`repeat_identical`). Determinism is unverified and it matters for
+  whether one call per name is enough.
+
+### 2. `edge_resolve.py`
+
+Add `score_snap` from `edge-scores-snap.json` exactly the way `score_panel` is read from
+`edge-scores-panel.json` (around line 280), and `spearman_snap` everywhere
+`spearman_panel` appears (the two ranking tuples and the two print blocks).
+
+### 3. `config/pipeline.yaml`
+
+A `snap_juror` block: `enabled: true`, `model: subq-snap-preview`, `host:
+api.subq.ai`, the bin edges, timeout, retries, `places_orders: false`,
+`reads_into_selection: false`. The script reads the bins from here, not a literal.
+
+### 4. The E-P skill
+
+In `.claude/skills/earnings-edge-panel/SKILL.md`, a step 5p.7 after the panel is
+recorded: run `snap_juror.py`, then add a `snap` entry to the `panel` block of
+`provenance.json` (model string as returned, script version, status). The note gets one
+line under the panel: Snap's top and bottom name, or why it did not run. Snap's numbers
+never enter the panel table, the selection or the reply's `score_report.py` table.
+
+### 5. `scripts/smoke_test.py`
+
+- `alpaca_trade.py`, `edge_score.py` and `panel_score.py` must not contain `snap`
+  (same pattern as the `edge-context` check near line 1830).
+- An offline test with a canned response: the expected value, P(up) and E|move| from a
+  known distribution, and the never-fatal path when `SUBQ_API_KEY` is unset. No network
+  in the smoke test.
+
+### 6. Allow rule
+
+Auto mode drops the broad Bash rule; see the 2026-10-08 note in `CLAUDE.md`. Add
+`Bash(python3 researcher_us/scripts/snap_juror.py:*)` to `.claude/settings.json` the
+way the `alpaca_trade.py` rules were added. An auto-mode session refuses to write that
+file itself, so this may need the operator.
+
+## Rules that are already decided
+
+- **Forward only, with one exception.** No backfill of runs sealed before 2026-10-12,
+  the model's release: its training may contain those outcomes. Runs sealed on or after
+  2026-10-12 (`2026-10-12/edge-panel`, `2026-10-13/edge-panel`) may be scored now,
+  flagged `basis: retro_post_release`, because their outcomes did not exist when the
+  model was built.
+- **Version.** `subq-snap-preview` is a preview alias and can change underneath us, as
+  `opus` did on 2026-09-22. Record the returned `model` string on every call; if it
+  changes, that is a new version and the two are never pooled. Register it in
+  `config/prompt-versions.json` via `scripts/provenance.py registry` like a hunter.
+- **One primary number.** `spearman_snap` on `snap_impact` is the pre-registered test.
+  `up`, `vs_implied` and confidence are logged and are not candidates; adding arms is the
+  multiple-comparison problem this repo already has.
+- **Judge it pooled, and against the panel on the same names**, not alone. About 200
+  names before a difference in rho means anything.
+- **Data retention.** Set the shortest retention in console.subq.ai. Everything sent is
+  public information, but there is no reason to keep it there.
+- Never put the key in a file, a log, a commit or a reply.
+
+## Not in scope here (ideas for later, in order)
+
+1. The same juror on the non-US panels (`scripts/market_panel.py`). English-first
+   caveat: check how much non-English text the packs carry.
+2. Classification gates (event confirmation, headline classifiers, the file/drop call
+   over `rejected_candidates`), tested against the labelled rows of 2026-08-31 and the
+   20 phantoms of 2026-09-17. Date comparisons stay in code.
+3. A whole-day call: all packs in one `state`, one `move_<ticker>` question per name
+   (16 per request). Interesting because the stage is judged on rank within a day; do
+   it only after the per-name arm has pooled.
