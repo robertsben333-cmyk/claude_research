@@ -25,3 +25,7 @@
 - Logged at 2026-10-13 14:05 UTC
 - Event date 2026-10-14. 6 ranked (AVARDA +1.60, VTU +1.60, BOOM +1.20, CRED_A +0.10, SCT +0.10, JHD -0.60), 0 above floor 2.8. DEMANT not ranked: phantom row (Q3 IMS is 2026-11-03; amend event_occurred:false after the window).
 - Panel: 4/4 members, no fallback, 0 selected (AVARDA k=2). Note: europe-note.md. Resolve within ~a week (SE/DK Nordic feed window). Published with EARNINGS_DATA_BRANCH=main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-14 01:05 UTC
+- 2026-10-14T01:05:20Z: universe (JPX kessan, ¥15m floor, cap 25 random draw) -> seal baselines -> one unpriced-hunter-jp per name in waves of 5 -> edge_score -> four-model panel -> note. No orders.
