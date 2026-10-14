@@ -1,5 +1,9 @@
 # Handoff: SubQ Snap as a fifth, non-Anthropic juror on stage E-P
 
+**STATUS: CLOSED (2026-10-14).** Snap does not become a panel member and is not wired into
+stage E-P; see "Decision" at the end. The build instructions below are history, not a
+task. The code lives only on branch `claude/gallant-bohr-hzsesq`.
+
 Written 2026-10-14 by a session that could not hold the API key. Pick this up in a new
 session whose environment carries `SUBQ_API_KEY` and allows `api.subq.ai`. Everything a
 decision was needed for is decided below; build it as written and change a decision only
