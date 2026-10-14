@@ -152,6 +152,64 @@ def portfolio(rows, cap, start=10000.0):
     return out
 
 
+# Score-dependent sizing (Xavier, 2026-10-14): the weight per name rises with |panel_pct|,
+# never above 50% of equity; gross exposure at most 100% (scaled down pro rata). Fixed here
+# before scoring. 'curve' reads the frozen expected-return curve, which was FITTED ON THESE
+# SAME NAMES (backtest + October), so it is in sample by construction.
+CURVE = {c['abs_pct']: c['expected'] for c in
+         json.load(open(HERE.parent / 'panel-mean-pct/expected-return-2026-10-13.json'))['curve']}
+SIZING = [
+    ('gelijk vast80', lambda p: 0.5 if p >= 80 else 0.0, 'equal'),
+    ('gelijk aanvul 2/50', None, 'fill2'),
+    ('lineair 50-100', lambda p: 0.5 * max(0.0, (p - 50) / 50), 'abs'),
+    ('lineair 60-100', lambda p: 0.5 * max(0.0, (p - 60) / 40), 'abs'),
+    ('staffel', lambda p: 0.5 if p >= 90 else 0.33 if p >= 80 else 0.2 if p >= 70 else 0.1 if p >= 60 else 0.0, 'abs'),
+    ('curve (in sample)', lambda p: 0.5 * max(0.0, ER.at([CURVE[g] for g in ER.GRID], p) - CURVE[50]) / (CURVE[100] - CURVE[50]), 'abs'),
+]
+
+
+def sized(rows, start=10000.0):
+    by = defaultdict(list)
+    for r in rows:
+        by[r['date']].append(r)
+    days = sorted(by)
+    out, daily_all = {}, {}
+    for name, f, mode in SIZING:
+        eq, peak, mdd, daily, dep, ncalls = start, start, 0.0, [], [], 0
+        for d in days:
+            rs = by[d]
+            if mode == 'equal':
+                sel = [r for r in rs if abs(r['pct']) >= 80]
+                w = {id(r): min(1 / len(sel), 0.5) for r in sel} if sel else {}
+            elif mode == 'fill2':
+                sel = select(rs, ('fill', 2, 50))
+                w = {id(r): min(1 / len(sel), 0.5) for r in sel} if sel else {}
+            else:
+                w = {id(r): f(abs(r['pct'])) for r in rs if f(abs(r['pct'])) > 0}
+                tot = sum(w.values())
+                if tot > 1:
+                    w = {k: v / tot for k, v in w.items()}
+            ret = sum(w.get(id(r), 0) * r['ret'] / 100 for r in rs)
+            ncalls += len(w)
+            eq *= 1 + ret; daily.append(ret * 100); dep.append(sum(w.values()))
+            peak = max(peak, eq); mdd = min(mdd, eq / peak - 1)
+        daily_all[name] = daily
+        diff = [a - b for a, b in zip(daily, daily_all['gelijk vast80'])]
+        out[name] = {'end': eq, 'total_pct': (eq / start - 1) * 100, 'max_dd_pct': mdd * 100,
+                     'mean_day_pct': st.mean(daily), 't_day': tstat(daily), 'calls': ncalls,
+                     'deployed_pct': st.mean(dep) * 100, 'days_invested': sum(x > 0 for x in dep),
+                     'vs_vast80_pp': st.mean(diff), 't_vs_vast80': tstat(diff) if any(diff) else float('nan')}
+    return out
+
+
+def print_sized(label, res):
+    print(f"\n--- gewicht naar score, {label}, max 50% per naam, max 100% bruto, start $10.000 ---")
+    print(f"{'schema':20s} {'calls':>5s} {'eind':>8s} {'max dd':>7s} {'gem/dag':>8s} {'t':>5s} {'belegd':>7s} {'vs vast80':>9s} {'t':>5s}")
+    for n, r in res.items():
+        print(f"{n:20s} {r['calls']:5d} {r['total_pct']:+7.1f}% {r['max_dd_pct']:6.1f}% {r['mean_day_pct']:+7.2f}% "
+              f"{r['t_day']:5.2f} {r['deployed_pct']:6.0f}% {r['vs_vast80_pp']:+8.2f}pp {r['t_vs_vast80']:5.2f}")
+
+
 def print_portfolio(label, res, cap):
     print(f"\n--- portefeuille {label}, cap {cap*100:.0f}% per naam, start $10.000, bruto ---")
     print(f"{'regel':14s} {'eind':>9s} {'totaal':>8s} {'max dd':>7s} {'gem/dag':>8s} {'t':>5s} {'belegd':>7s} {'dagen':>5s}")
@@ -186,6 +244,10 @@ def main():
             pr = portfolio(rows, cap)
             print_portfolio(key, pr, cap)
             res['portfolio'][f'{key}_cap{int(cap*100)}'] = pr
+    res['sizing'] = {}
+    for key, rows in (('backtest_opus5', back), ('oktober_v1', v1), ('oktober_v2', v2)):
+        res['sizing'][key] = sized(rows)
+        print_sized(key, res['sizing'][key])
     json.dump(res, open(HERE / 'day-rules.json', 'w'), indent=1, default=lambda x: None)
 
 

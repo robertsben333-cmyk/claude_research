@@ -97,6 +97,39 @@ het, op vier extra calls. Oktober v2: één dag, aanvullen +1,9% tegen 0.
 een dunne dag stil ligt. De richting in de backtest is gunstig voor aanvullen tot 2 namen,
 in oktober ongunstig, en geen van beide is genoeg om op te handelen.
 
+## Vervolg (Xavier, 2026-10-14): gewicht naar score, nooit meer dan 50% per naam
+
+Vier schema's, vooraf vastgelegd. Het gewicht per naam loopt op met |panel_pct|, met een
+maximum van 50% per naam en 100% bruto (daarboven pro rata teruggeschaald), en de rest
+staat in kas:
+
+- `lineair 50-100`: 0% op 50, oplopend tot 50% op 100
+- `lineair 60-100`: 0% op 60, oplopend tot 50% op 100
+- `staffel`: 90+ 50%, 80–89 33%, 70–79 20%, 60–69 10%
+- `curve`: evenredig met het verwachte rendement uit `../panel-mean-pct/` boven dat op 50.
+  Die curve is op dezelfde namen gefit, dus dit schema is per definitie in sample.
+
+Backtest, 15 dagen, start $10.000, bruto:
+
+| schema | calls | eind | max dd | t per dag | belegd | vs vast80 per dag (t) |
+|---|---|---|---|---|---|---|
+| gelijk vast80 | 19 | +56.8% | −19.0% | 1.71 | 57% | |
+| gelijk aanvul 2/50 | 29 | +91.0% | −19.6% | 2.15 | 90% | +1.44 pp (1.33) |
+| lineair 50-100 | 54 | +50.8% | −10.5% | 2.10 | 70% | −0.39 pp (−0.48) |
+| lineair 60-100 | 42 | +49.6% | −10.2% | 2.09 | 61% | −0.45 pp (−0.63) |
+| staffel | 42 | +56.5% | −7.8% | 2.38 | 65% | −0.15 pp (−0.18) |
+| curve (in sample) | 55 | +52.9% | −10.3% | 2.19 | 64% | −0.30 pp (−0.41) |
+
+Oktober v1 (5 dagen): vast80 +22.2%, de vier schema's +20.7% tot +21.2%, max dd −0.4% of
+minder. Oktober v2: één dag, +0.6% tot +0.9%.
+
+**Lezing.** Gewicht naar score levert ongeveer hetzelfde eindbedrag op als vast80, met
+ongeveer de helft van de grootste daling (−8 tot −10% tegen −19%) en een hogere t per dag
+(2.1 tot 2.4 tegen 1.7). Het spreidt het geld over meer namen en zet minder in op een
+enkele naam van 80. Het rendement verbetert niet; de rit wordt rustiger. Geen verschil met
+vast80 komt in de buurt van twee standaardfouten, en de schema's zijn op dezelfde data
+gekozen als getoetst.
+
 ## Europa
 
 Niet doorgerekend. Het EU-panel draait sinds 2026-10-12 en heeft één opgeloste dag; de
