@@ -29,3 +29,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-14 01:05 UTC
 - 2026-10-14T01:05:20Z: universe (JPX kessan, ¥15m floor, cap 25 random draw) -> seal baselines -> one unpriced-hunter-jp per name in waves of 5 -> edge_score -> four-model panel -> note. No orders.
+
+## Stage J — resolved 2026-10-09 run (from the 10-14 session)
+- Logged at 2026-10-14 01:07 UTC
+- jp_resolve: 25/25 usable, rho impact_sum 0.535 p 0.0073, free control -0.112, sign right 0.72, lean_vs_free_control_rho 0.367. Panel: rho 0.471 p 0.018; 1 selected, 0 hits (-1.43%). One day is not a result.
