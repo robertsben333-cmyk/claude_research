@@ -802,7 +802,7 @@ payload = {
     "table": table,
     "n_resolved": len(resolved),
     "own": {"live": live_own, "table": table_own, "n_resolved": n_resolved_own, "min_calls": OWN_MIN},
-    "week": week,
+    "week": calls,          # every call; the page cuts the period (7 days by default)
     "agents": agents,
     "week_days": WEEK_DAYS,
     "panel_top": panel_top,
