@@ -53,3 +53,7 @@
 ## Stage IPO — panel STARTED
 - Logged at 2026-10-14 12:47 UTC
 - 1 pack (MAIR), four IPO judges. ARXS not ranked: hunter found lock-up lapsed 2026-10-13 (424B4 dated 2026-04-15, 180 days → 10-12); Nasdaq date one day late.
+
+## Stage IPO — IPO researcher — DONE
+- Logged at 2026-10-14 12:49 UTC
+- 2 lock-ups hunted (ARXS, MAIR), 0 debuts (1 SPAC dropped). MAIR ranked: impact_sum +0.45, panel_pct 10, not selected; all four judges ran. ARXS not ranked: the hunter dates its first free session to 2026-10-13. Possible off-by-one in the lock-up event date in ipo_universe.py, flagged in the note and not fixed. No price from inside the window was seen.
