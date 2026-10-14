@@ -1,0 +1,14 @@
+# Python packages the live Routines import at run time.
+# Installed by scripts/env/setup.sh (the cloud environment's setup script) and
+# re-checked by .claude/hooks/session-start.sh. Everything else is stdlib.
+#
+# PyYAML    config/pipeline.yaml: alpaca_trade, edge_calendar, deep_pick, ipo_*, dashboard
+# requests  scripts/get_earnings.py (stage 0 universe)
+# xlrd      researcher_japan/scripts/jp_positioning.py reads JPX's .xls short register.
+#           Without it parse() raises, the loader swallows the error and serves the
+#           last cached file, so stage J sealed on the 2026-09-29 register for weeks.
+# openpyxl  researcher_japan/scripts/jp_universe.py (has a stdlib fallback)
+PyYAML>=6.0
+requests>=2.31
+xlrd==2.0.2
+openpyxl>=3.1
