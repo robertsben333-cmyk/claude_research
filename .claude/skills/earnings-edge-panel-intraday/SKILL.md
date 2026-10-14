@@ -1,13 +1,14 @@
 ---
 name: earnings-edge-panel-intraday
-description: Stage E-PI. Stage E-P (Opus 5.5 searchers and a blind four-model panel) re-run from scratch at fixed New York times through the US session - 10:00, 11:30, 13:00, 14:30 and 16:00 - each run saved as its own snapshot so the development of every name's call through the day can be read. Writes edge-intraday-<HHMM>/ snapshots and an edge-intraday/timeline.md, never touches stage E-P's files or its panel history, and places no orders. Use when asked to run stage E-PI, the intraday panel, or an intraday snapshot of the US panel.
+description: Stage E-PI. Stage E-P (Opus 5.5 searchers and a blind four-model panel) re-run from scratch at fixed New York times through the US session - 10:00, 12:00, 14:00 and 16:00 - each run saved as its own snapshot so the development of every name's call through the day can be read. Writes edge-intraday-<HHMM>/ snapshots and an edge-intraday/timeline.md, never touches stage E-P's files or its panel history, and places no orders. Use when asked to run stage E-PI, the intraday panel, or an intraday snapshot of the US panel.
 ---
 
 # Stage E-PI — the intraday panel
 
 Built 2026-10-14 on the operator's instruction: *"a routine for the US that does the same
 as US-panel, but runs it independently every 1,5 hours starting from 10.00, and saves
-these so we can see the development"*.
+these so we can see the development"*, moved the same day to every two hours so one
+Routine covers it: 10:00, 12:00, 14:00 and 16:00 New York.
 
 Each fire is ONE snapshot. It is stage E-P, run exactly as
 `.claude/skills/earnings-edge-panel/SKILL.md` runs it (which is itself an overlay on
@@ -28,7 +29,7 @@ beside the snapshots as a reference column only.
 | builds its own universe and sweep | **the first snapshot of the day builds them and freezes them** (`intraday.py freeze`); every later snapshot copies them in (`intraday.py seed`) and skips the sweep | Every snapshot answers about the same names, so the only things that move are the evidence and the clock. |
 | hunts every confirmed name | **a snapshot at or after 16:00 ET hunts bmo names only** | At 16:00 tonight's amc names are releasing; a searcher reading the release is reporting the outcome. |
 | scores whatever the searchers wrote | **runs `intraday.py guard` between the searchers and `edge_score.py`** | An amc hunt written at or after 16:00 ET on its event date may have read the release. The guard moves it and its baseline to `<SNAP>/_after_release/`, which nothing scores. |
-| `panel_score.py --run <RUN>/edge-panel` | **`panel_score.py --run <SNAP> --dry-run --stage E-PI`** | `--dry-run` keeps `researcher_us/analysis/panel-history.json` untouched: it is the reference every judge's percentile is read against, and five snapshots a day of one day's names would swamp it. Each judge is still read against stage E-P's live range from runs dated before today. |
+| `panel_score.py --run <RUN>/edge-panel` | **`panel_score.py --run <SNAP> --dry-run --stage E-PI`** | `--dry-run` keeps `researcher_us/analysis/panel-history.json` untouched: it is the reference every judge's percentile is read against, and four snapshots a day of one day's names would swamp it. Each judge is still read against stage E-P's live range from runs dated before today. |
 | stamps `provenance.py stamp --market US-P` | stamps **`--market US-PI`** on `<SNAP>` | Its own stage label and prompt version. |
 | runs `edge_grounded_score.py` (step 5b) and `edge_context.py` (step 6d) | **skips both** | The V2 grounded score and the context labels describe the name, not the time of day, and stage E-P already writes them for these names. |
 | run-log headings `Edge hunt (panel) — …`, publish `edge hunt panel: …` | **`Intraday panel <HH:MM> — …`** and **`intraday panel <HH:MM>: …`** | Several sessions append to one `_run-log.md`. |
@@ -50,7 +51,7 @@ itself.
 python3 researcher_us/scripts/intraday.py slot
 ```
 
-It prints the New York time, the snapshot label (`1000`, `1130`, `1300`, `1430`, `1600`;
+It prints the New York time, the snapshot label (`1000`, `1200`, `1400`, `1600`;
 a fire more than 45 minutes from every slot keeps its own clock and says `on_slot:
 false`), `<RUN>`, `<SNAP>`, whether the day's names are frozen, whether amc names are
 excluded, and the snapshot's `status`.
@@ -114,7 +115,7 @@ E-P gives it (ticker, company, event date and session, its baseline path, its ou
 searcher that sees the 10:00 call is no longer independent of it.
 
 **amc names first.** An amc name must be hunted before 16:00 ET or the guard drops it.
-On the 14:30 snapshot start every amc searcher in the first wave.
+On the 14:00 snapshot start every amc searcher in the first wave.
 
 ## 3. The guard, then score
 

@@ -1320,10 +1320,10 @@ def main():
               ("2026-10-14T14:02:00+00:00", "2026-10-14T15:31:00+00:00", "2026-10-14T20:04:00+00:00",
                "2026-11-03T15:00:00+00:00")}
     check("stage E-PI labels its snapshots in New York time across the clock change",
-          list(_slots.values()) == ["1000", "1130", "1600", "1000"], str(_slots))
+          list(_slots.values()) == ["1000", "1200", "1600", "1000"], str(_slots))
     with _tf.TemporaryDirectory() as td:
         day = os.path.join(td, "2026-10-14")
-        s1, s4, s5 = (os.path.join(day, f"edge-intraday-{x}") for x in ("1000", "1430", "1600"))
+        s1, s4, s5 = (os.path.join(day, f"edge-intraday-{x}") for x in ("1000", "1400", "1600"))
         os.makedirs(s1)
         uni = {"names": [{"ticker": "AMCX", "session": "amc", "event_date": "2026-10-14"},
                          {"ticker": "BMOX", "session": "bmo", "event_date": "2026-10-15"}]}
@@ -1361,7 +1361,7 @@ def main():
         tl = _ipi.timeline(day)
         b = next(r for r in tl["names"] if r["ticker"] == "BMOX")
         check("the timeline lays out each name's call per snapshot and counts side flips",
-              tl["slots"] == ["1000", "1430"] and b["side_flips"] == 1 and b["times_selected"] == 1
+              tl["slots"] == ["1000", "1400"] and b["side_flips"] == 1 and b["times_selected"] == 1
               and os.path.exists(os.path.join(day, "edge-intraday", "timeline.md")), str(b))
 
     # THE PANEL ON THE NON-US STAGES (2026-10-08): EU, J, AU and CA run stage E-P's
