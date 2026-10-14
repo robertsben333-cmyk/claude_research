@@ -303,6 +303,7 @@ def resolve_run(run, seed):
                "score_v2": (v2.get(t) or {}).get("impact_sum_grounded"),
                "score_scaled": (v3.get(t) or {}).get("impact_scaled"),
                "score_panel": (v4.get(t) or {}).get("panel_score"),
+               "score_panel_pct": (v4.get(t) or {}).get("panel_pct"),
                "control_vol_only": (v2.get(t) or {}).get("control_vol_only")}
         # Which denominator normalised this name. The fallback to the reaction-history
         # proxy has always been here, but the anchor it used was never recorded, so a
@@ -366,6 +367,7 @@ def stats_for(live, seed):
                      ("score_v2", "spearman_v2_grounded"),
                      ("score_scaled", "spearman_impact_scaled"),
                      ("score_panel", "spearman_panel"),
+                     ("score_panel_pct", "spearman_panel_pct"),
                      ("control_vol_only", "control_vol_only")):
         c = [r for r in live if r.get(key) is not None]
         if len(c) >= 3:
@@ -431,6 +433,7 @@ def pooled_block(days, seed):
                      ("score_v2", "spearman_v2_grounded"),
                      ("score_scaled", "spearman_impact_scaled"),
                      ("score_panel", "spearman_panel"),
+                     ("score_panel_pct", "spearman_panel_pct"),
                      ("control_vol_only", "control_vol_only")):
         s, n = pooled_within_days(days, key)
         if s is not None:
@@ -520,6 +523,7 @@ def main():
                              ("spearman_v2_grounded", "V2 grounded           "),
                              ("spearman_impact_scaled", "impact_scaled (v3)    "),
                              ("spearman_panel", "E-P panel score       "),
+                             ("spearman_panel_pct", "E-P panel % (mean pct)"),
                              ("control_vol_only", "control: V1 x sigma   "),
                              ("calibration_slope_pre_lessons", "slope move on pre-less"),
                              ("calibration_slope_v1", "slope move on V1      "),
@@ -553,6 +557,8 @@ def main():
             print(f"  impact_scaled (v3)          {p.get('spearman_impact_scaled')}")
         if p.get("spearman_panel") is not None:
             print(f"  E-P panel score             {p.get('spearman_panel')}")
+        if p.get("spearman_panel_pct") is not None:
+            print(f"  E-P panel % (mean pct)      {p.get('spearman_panel_pct')}")
         if p.get("spearman_v2_grounded") is not None:
             print(f"  V2 grounded                 {p.get('spearman_v2_grounded')}")
             print(f"  control: V1 x sigma         {p.get('control_vol_only')}")

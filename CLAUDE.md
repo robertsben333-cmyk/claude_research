@@ -39,7 +39,7 @@ material below is kept because the live stages reference it, not because it runs
 | ~~C~~ | `earnings-capture` **ARCHIVED** | 17:03 | Track B: capture the run-in to *upcoming* prints, before the outcome exists |
 | N | `earnings-naive-forecast` | 19:30 | `claude_naive` — the backtest-winning naive method, run live |
 | E | `earnings-edge-hunt` | 19:04 | Seal what the market priced, hunt for what it did not, rank the day on one signed number |
-| E-P | `earnings-edge-panel` | 19:06 | **Stage E-P — the searcher and the four-model panel (replaced E-S on the same Routine, 2026-10-01).** Opus 5.5 `unpriced-searcher` collects the evidence; four blind judges pinned to Opus 5, Opus 5.5, Sonnet 5.5 and Fable 5.1 size it; `panel_score.py` selects names that 3 of 4 put in their own top 20%. Writes `research/<date>/edge-panel/`, **places no orders**. `trig_01QJzV84MhL3xnFwUjdzEvW7`, cron `6 17 * * 1-5`. See "Stage E-P" below |
+| E-P | `earnings-edge-panel` | 19:06 | **Stage E-P — the searcher and the four-model panel (replaced E-S on the same Routine, 2026-10-01).** Opus 5.5 `unpriced-searcher` collects the evidence; four blind judges pinned to Opus 5, Opus 5.5, Sonnet 5.5 and Fable 5.1 size it; `panel_score.py` reports each judge as a percentile of its own live range and, **since 2026-10-14, selects names whose mean percentile is in the top 20%** (3 of 4 before; still recorded). Writes `research/<date>/edge-panel/`, **places no orders**. `trig_01QJzV84MhL3xnFwUjdzEvW7`, cron `6 17 * * 1-5`. See "Stage E-P" below |
 | D | `earnings-deep-research` | 13:35 New York | **Stage D — three names a day, researched in depth (built 2026-10-07, operator's idea).** A date-seeded random draw of 3 names from what stage E hunts; one Opus 5.5 `deep-question-researcher` per name freezes the 3-6 key questions the reaction turns on and a quick first read, then researches each question its own way. Same finding contract, so `impact_sum` is on stage E's scale. Writes `research/<date>/edge-deep/`, **places no orders**. `deep_compare.py` pools names against stage E and E-P on the same names. **Routine "US - Deep Search", `trig_01VkHFt9yWxUD9bjhNQ7CYpy`**, made by the operator in the Routines UI on 2026-10-07 (a session inside the private project cannot create a fresh-session Routine): cron `35 17 * * 1-5` UTC = 13:35 New York, **must move to `35 18` on or after 2026-11-02**; its `model` is EMPTY and the first fire's orchestrator served `claude-sonnet-5-5` (the researchers are pinned to Opus 5.5 regardless). The operator asked on 2026-10-08 for the Routine to be pinned to Opus, and `update_trigger` refuses it because a person created it, so the model is set in the Routines UI; read it back before trusting it. Prompt in `researcher_us/routine-prompts/edge-deep.md`. Each researcher writes only to `<RUN>/edge-deep/work/<TICKER>/` since `us-deep.v2`, after the first run's researchers shared a scratch folder and one overwrote another's frozen questions. See "Stage D" below |
 | P | `edge-performance` | on demand | Fold every closed position and resolved run into `dashboard/`, rebuild the dashboard, log what it now reads |
 | J | `researcher-japan-hunt` | 03:04 | **Stage J — the Japan researcher.** **Since 2026-10-08 it also runs stage E-P's four-model panel on its own hunts (step 4p, `scripts/market_panel.py`, judges `panel-judge-intl-*`); its own `impact_sum` is unchanged.** Same question, Tokyo market, research only, no orders. `trig_0192kQeqhumBKpNGzzyQrS1H`, cron `4 1 * * 1-5` = 01:04 UTC = 10:04 JST |
@@ -1166,6 +1166,23 @@ not monotonic and decides nothing; inside the selection weights moved ±0.3 poin
 live weight is equal and a precision tilt is logged beside it. **Opus 5 has no alias**: if
 the pinned id is refused the stage runs three judges and says so. The E-S skill, its hunter
 and its runs stay in the tree for history.
+**Since 2026-10-14 every panel reports each judge as a PERCENTILE of its own range, and the
+US selection is the mean of those percentiles in the top 20% (operator's instruction).**
+`pct` per member is the share of that judge's live sizes from runs dated BEFORE this one
+(`panel_score.live_reference`, the last 200) with a smaller |impact_sum|, signed; the
+re-judge seed is left out of that reference and only tops it up below 20 live sizes (a
+market panel tops up from stage E-P's live sizes instead, stage IPO from its own seed).
+`panel_pct` is the mean, `panel_pct_sd` the spread (recorded, decides nothing). Stage E-P
+(`edge_panel.selection: mean_pct`) selects when all members are present and |panel_pct| >= 80
+and ranks on `panel_pct`; the market panels keep `selection: consensus`, 3 of 4, on the
+operator's scoping. Both verdicts are on every row (`selected_mean_pct`,
+`selected_consensus`) and the old z, `panel_score` and `consensus_k` are still written, so
+the switch can be measured. Measured first in `research/analyses/panel-mean-pct/`: October
+US 35 names (top 20% +7.2%, 7 names) and the Aug-Sep blind backtest of Opus 5-era hunts
+(119 names, top 20% +6.9% on 19), against roughly zero for shorting everything; neither
+shows the new rule beats 3 of 4, which picked near-identical sets on the live days, and
+a spread gate or penalty did not help measurably. The scorebord carries the forward
+version: a "Panel per eigen top" table per panel, top 10% to 100%, and the spread split.
 **Validated end to end on 2026-10-01** on the six names of the 2026-09-30 US run (stage E's
 Opus 5.5 hunts as the searcher input, outside `research/`): packs built with no size left in
 them, all four pinned judges ran (each reported its own model id, **`claude-opus-5` was
@@ -1181,7 +1198,8 @@ each skill runs step 4p from `config/market-panel-step.md`: `scripts/market_pane
 packs` strips the hunters' sizes into blind packs that name each name's own hunter
 definition and lessons file, four judges size them in one wave, and `market_panel.py
 score` combines them through `panel_score.py` with the frozen `edge_panel` rules (3 of 4
-in their own top 20%), writing `<RUN>/edge-scores-panel.json` beside the key and a
+in their own top 20%; the market panels kept this selection when stage E-P moved to the
+mean percentile on 2026-10-14, and report the same per-judge percentiles), writing `<RUN>/edge-scores-panel.json` beside the key and a
 `panel` block into `provenance.json`. Four things differ from stage E-P and each is
 deliberate. **The hunters are not swapped for a searcher**, so each stage's `impact_sum`,
 prompt version and resolved series carry on unbroken; the four-model re-judge the rules

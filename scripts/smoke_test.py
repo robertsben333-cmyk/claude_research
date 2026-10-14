@@ -1255,24 +1255,39 @@ def main():
     epc = cfg.get("edge_panel") or {}
     check("stage E-P config carries places_orders: false and an equal live weight",
           epc.get("places_orders") is False and epc.get("live_weight") == "equal")
-    # the aggregator on a synthetic day: a 3-of-4 consensus is selected, a lone judge is not,
-    # and a dry run leaves the history alone
+    # the aggregator on a synthetic day. Since 2026-10-14 the US selection is the MEAN of
+    # the four judges' own percentiles in the top 20%; the 3-of-4 verdict is still
+    # written. A name all four size large is selected by both; three large and one
+    # small on the other side is a 3-of-4 consensus but not a top-20% mean; a lone judge
+    # and a zero are selected by neither; and a dry run leaves the history alone
     import tempfile as _tf
     sys.path.insert(0, os.path.join(REPO, "researcher_us", "scripts"))
     import panel_score
     hist_before = open(panel_score.HISTORY).read()
     with _tf.TemporaryDirectory() as td:
         rd = os.path.join(td, "edge-panel"); os.makedirs(os.path.join(rd, "panel"))
-        big = {"opus5": 6.0, "opus55": 4.0, "sonnet55": 3.0, "fable51": -0.2}
+        big = {"opus5": 9.0, "opus55": 9.0, "sonnet55": 9.0, "fable51": 9.0}
+        split = {"opus5": 6.0, "opus55": 4.0, "sonnet55": 3.0, "fable51": -0.2}
         for m in panel_score.MEMBERS:
-            json.dump([{"id": "us/2026-10-02/AAA", "impact_sum": big[m], "p_up": 70},
+            json.dump([{"id": "us/2026-10-02/AAA", "impact_sum": big[m], "p_up": 80},
+                       {"id": "us/2026-10-02/DDD", "impact_sum": split[m], "p_up": 70},
                        {"id": "us/2026-10-02/BBB", "impact_sum": 6.0 if m == "opus5" else 0.1, "p_up": 55},
                        {"id": "us/2026-10-02/CCC", "impact_sum": 0.0, "p_up": 50}],
                       open(os.path.join(rd, "panel", m + ".json"), "w"))
         out, added = panel_score.score(rd, epc, dry_run=True)
-        sel = {r["ticker"]: r["selected"] for r in out["ranking"]}
-        check("panel selects a 3-of-4 consensus and not a lone judge",
+        R = {r["ticker"]: r for r in out["ranking"]}
+        sel = {t: r["selected"] for t, r in R.items()}
+        check("stage E-P selects on the mean of the judges' own percentiles",
+              epc.get("selection") == "mean_pct" and out.get("selection_rule") == "mean_pct"
+              and out.get("ranking_key") == "panel_pct")
+        check("panel selects four large judges and not a lone judge or a zero",
               sel.get("AAA") is True and sel.get("BBB") is False and sel.get("CCC") is False, str(sel))
+        check("a 3-of-4 consensus with a small dissent is recorded but not selected by the mean",
+              R["DDD"]["selected_consensus"] is True and R["DDD"]["selected_mean_pct"] is False
+              and R["DDD"]["selected"] is False, str({k: R["DDD"][k] for k in ("panel_pct", "consensus_k")}))
+        check("every member carries its own signed percentile and the old z is still written",
+              all(-100 <= x["pct"] <= 100 and "z" in x for r in R.values() for x in r["members"].values())
+              and R["AAA"]["panel_pct"] >= 80 and R["CCC"]["panel_pct"] == 0)
     check("a dry panel run leaves the history untouched",
           added == 0 and open(panel_score.HISTORY).read() == hist_before)
 
@@ -1293,6 +1308,10 @@ def main():
     check("market_panel reads its rules from edge_panel and places no orders",
           mpc.get("rules_from") == "edge_panel" and mpc.get("places_orders") is False
           and set(mpc.get("stages") or []) == set(market_panel.MARKETS))
+    check("the market panels keep the 3-of-4 selection; only the US moved to the mean percentile",
+          all(market_panel.cfg(c).get("selection") == "consensus" for c in market_panel.MARKETS)
+          and market_panel.cfg("IPO").get("reference_fallback") == "seed"
+          and market_panel.cfg("EU").get("reference_fallback") == "us_live")
     for code, skill in (("EU", "researcher-europe-hunt"), ("JP", "researcher-japan-hunt"),
                         ("AU", "researcher-australia-hunt"), ("CA", "researcher-canada-hunt")):
         sk = open(os.path.join(REPO, ".claude", "skills", skill, "SKILL.md"), encoding="utf-8").read()

@@ -76,9 +76,11 @@ Put a panel section directly under the ranked table:
 - one line: **four blind judges (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) re-sized the
   hunters' evidence; the panel ranks beside `impact_sum` and replaces nothing**; which
   members ran, and any fallback;
-- the panel table as `score` printed it: rank, ticker, `selected`, `consensus_k`, sign
-  agreement, `panel_score`, each member's z (`*` where in its own top 20%), and the
-  hunter's own `impact_sum` beside it;
+- the panel table as `score` printed it: rank, ticker, `selected` (3 of 4 judges in their
+  own top 20%), `panel_pct` (the mean of the four judges' signed percentiles, each read
+  against that judge's own live range; since 2026-10-14 the number to report), its spread,
+  each member's percentile (`*` where in its own top 20%), `consensus_k` and the old
+  `panel_score`, and the hunter's own `impact_sum` beside it;
 - one paragraph per **selected** name: the evidence items the members' notes name, and the
   strongest case against;
 - where the panel and the hunter's `impact_sum` disagree most (opposite sign, or a name

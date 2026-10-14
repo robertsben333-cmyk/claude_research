@@ -1,6 +1,6 @@
 ---
 name: earnings-edge-panel
-description: Stage E-P. The US earnings edge hunt run as stage E runs it, except that the Opus 5.5 hunter works as a SEARCHER and a blind panel of four different models (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) judges its evidence; panel_score.py combines them into a ranking, a selection by agreement about size, and a weight. Writes to its own edge-panel/ directory and places no orders. Use when asked to run stage E-P, the panel edge hunt, or the four-model judging panel.
+description: Stage E-P. The US earnings edge hunt run as stage E runs it, except that the Opus 5.5 hunter works as a SEARCHER and a blind panel of four different models (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) judges its evidence; panel_score.py reports each judge as a percentile of its own range and combines them into a ranking, a selection (the mean percentile in the top 20%), and a weight. Writes to its own edge-panel/ directory and places no orders. Use when asked to run stage E-P, the panel edge hunt, or the four-model judging panel.
 ---
 
 # Stage E-P — the searcher and the four-model panel
@@ -84,10 +84,13 @@ so the packs hold exactly the names the stage ranks.
    ```bash
    python3 researcher_us/scripts/panel_score.py --run <RUN>/edge-panel
    ```
-   It reads each member's sizes against that member's own recent history
-   (`researcher_us/analysis/panel-history.json`), writes `<RUN>/edge-panel/edge-scores-panel.json`
+   It reads each member's sizes against that member's own live history from earlier runs
+   (`researcher_us/analysis/panel-history.json`) as a signed PERCENTILE, averages the four
+   into `panel_pct`, and **selects a name when every member is present and |panel_pct| is
+   80 or more** (the mean in the top 20%; since 2026-10-14). The 3-of-4 verdict, the z
+   and `panel_score` are still written. It writes `<RUN>/edge-panel/edge-scores-panel.json`
    and appends the day's sizes to the history. Fewer than four members is allowed: the
-   selection becomes all of three, and the note must say which model was missing.
+   mean is then over the members that ran, and the note must say which model was missing.
 
 6. **Record the panel** in `<RUN>/edge-panel/provenance.json`: add a `panel` block with,
    per member, the agent that ran (`panel-judge-…` or the fallback), the model pinned in
@@ -101,14 +104,16 @@ so the packs hold exactly the names the stage ranks.
 1. Three lines at the top: **this is stage E-P: Opus 5.5 searchers, a blind four-model
    panel, no orders**; which members ran; that one day is an anecdote.
 2. **The panel table**, every rankable name: rank, ticker, session, `selected`,
-   `consensus_k` (members with the name in their own top 20%), sign agreement,
-   `panel_score`, each member's z (`*` where in its top), the searcher's own `impact_sum`,
-   `expected_edge_pct` for a selected name, `weight_equal` and `weight_precision_tilt`.
+   `panel_pct` (the mean of the four signed percentiles), its spread, each member's own
+   percentile (`*` where in its own top 20%), then `consensus_k` and the old `panel_score`,
+   the searcher's own `impact_sum`, `expected_edge_pct` for a selected name, `weight_equal`
+   and `weight_precision_tilt`. Report the judges in percentiles, never in raw sizes: a
+   top-10% Opus 5 and a top-10% Opus 5.5 are the same statement at different sizes.
 3. One paragraph per **selected** name: the evidence items the members' notes name, and
    the strongest case against.
 4. Where the panel and the searcher disagree most, one line each.
 5. If stage E's `edge-scores.json` exists by then: the names both ranked and the Spearman
-   ρ between stage E's `impact_sum` and `panel_score`. If not, say so; do not wait.
+   ρ between stage E's `impact_sum` and `panel_pct`. If not, say so; do not wait.
 6. What the numbers are not: `expected_edge_pct` is a shrunk in-sample prior, not a
    forecast; the weights are research, nothing trades them; certainty (`p_up`) is
    recorded and decides nothing because it did not predict on the development names.

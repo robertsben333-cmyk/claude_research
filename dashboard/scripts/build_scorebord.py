@@ -12,8 +12,17 @@ A "strong score" is one of two things, nothing else:
     SAME model's reference names, as `score_report.Percentiles` measured it before
     that run (the bracket score_report printed that day). For Opus 5.5 that cut is
     the 2.8 floor; for Opus 5 it is 5.25.
-  * panel stages (US E-P and the market panels): the panel selected the name, 3 of 4
-    judges with it in their own top 20%. The side is the panel's.
+  * US E-P panel (since 2026-10-14): the MEAN of the four judges' percentiles, each
+    judge read against its own live range before that run, is in the top 20%
+    (|panel_pct| >= 80). Applied to every E-P run, the ones scored under the old rule
+    included, so the page measures the rule in force. The side is the mean's.
+  * the market panels (EU/JP/AU/CA): unchanged, 3 of 4 judges with the name in their
+    own top 20%. Their score column shows panel_pct as well.
+
+A third question since 2026-10-14: the panel per own top, forward. For every panel and
+every top X% (10..100), what did trading every name with |panel_pct| >= 100 - X earn,
+and inside the top, did the names the judges agreed on most do better than the ones
+they agreed on least? Measured on this page's own windows, point in time.
 
 Resolved outcomes are read, never recomputed, wherever a resolver already wrote one:
 the US ledger's own bars for E, E-P and D on the operator's window (see US_ENTRY_HM),
@@ -38,6 +47,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 import provenance as PROV          # noqa: E402
 import score_report as SR          # noqa: E402
+sys.path.insert(0, str(ROOT / "researcher_us" / "scripts"))
+import panel_score as PS           # noqa: E402
 
 PCT = SR.Percentiles()
 TOP = 80.0                          # top 20% of the model's own reference
@@ -315,6 +326,54 @@ def sign(v):
     return 1 if v and v > 0 else -1 if v and v < 0 else 0
 
 
+# ---------------------------------------------------------------- panel percentiles
+# One definition with the scorer: panel_score.live_reference reads each judge's live
+# sizes from runs dated before this one. A run scored since 2026-10-14 carries its own
+# `panel_pct`; an older run is computed here the same way, point in time.
+PANEL_HIST = {"US": ("researcher_us/analysis/panel-history.json", "seed"),
+              "EU": ("researcher_europe/analysis/panel-history.json", "us_live"),
+              "JP": ("researcher_japan/analysis/panel-history.json", "us_live"),
+              "AU": ("researcher_australia/analysis/panel-history.json", "us_live"),
+              "CA": ("researcher_canada/analysis/panel-history.json", "us_live")}
+PANEL_TOP = 80.0
+_hist, _ppct = {}, {}
+
+
+def panel_pcts(run, region):
+    """ticker -> {panel_pct, sd, full} for one panel run, recorded or computed."""
+    key = (str(run), region)
+    if key in _ppct:
+        return _ppct[key]
+    doc = load(ROOT / run / "edge-scores-panel.json") or {}
+    rows = doc.get("ranking") or []
+    out = {}
+    present = doc.get("members_present") or list(PS.MEMBERS)
+    if rows and all("panel_pct" in r for r in rows):
+        for r in rows:
+            out[r["ticker"]] = {"panel_pct": r["panel_pct"], "sd": r.get("panel_pct_sd"),
+                                "full": r.get("n_members") == len(present)}
+    elif rows:
+        path, fb = PANEL_HIST[region]
+        if path not in _hist:
+            _hist[path] = load(ROOT / path) or {}
+        hist = _hist[path]
+        before = PS.date_of(Path(run).parent.name)
+        ids = {r.get("id") for r in rows}
+        refs = {m: PS.live_reference(hist, m, 200, before=before, exclude=ids,
+                                     fallback=PS.fallback_rows(fb, hist))[0] for m in present}
+        for r in rows:
+            ps = [PS.pct_of(refs[m], (r["members"].get(m) or {}).get("impact_sum") or 0.0)
+                  for m in present if m in r["members"]]
+            if not ps:
+                continue
+            mu = sum(ps) / len(ps)
+            out[r["ticker"]] = {"panel_pct": round(mu, 1),
+                                "sd": round(math.sqrt(sum((x - mu) ** 2 for x in ps) / len(ps)), 1),
+                                "full": len(ps) == len(present)}
+    _ppct[key] = out
+    return out
+
+
 resolved = []          # dicts: stage, market, version, model, ticker, run_date, side, ret, kind
 live = []
 
@@ -378,15 +437,17 @@ def us_side_stage(glob_pat, stage, market, picker):
                 b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
                 w = us_live(r["ticker"], b.get("event_date") or run_date, b.get("session"))
                 live_row(stage=stage, ticker=r["ticker"], company=b.get("company"),
-                         run_date=run_date, score=r.get("panel_score", r.get("impact_sum")),
+                         run_date=run_date, score=r.get("panel_pct", r.get("impact_sum")),
                          why=why, side=side, w=w)
 
 
 def pick_panel(run, f, model):
+    pp = panel_pcts(run, "US")
     for r in (load(f) or {}).get("ranking", []):
-        if r.get("selected"):
-            yield r, sign(r.get("side") or r.get("panel_score")), \
-                f"panel {r.get('consensus_k')}/4"
+        p = pp.get(r["ticker"])
+        if p and p["full"] and abs(p["panel_pct"]) >= PANEL_TOP:
+            yield dict(r, panel_pct=p["panel_pct"]), sign(p["panel_pct"]), \
+                f"panel p{abs(p['panel_pct']):.0f}"
 
 
 def pick_top(run, f, model):
@@ -417,8 +478,10 @@ for mk, v in markets.items():
             picks.append((f"{v.get('label', mk)} · hunter", sign(n["impact_sum"]),
                           f"top {100 - n['impact_pctile_all']:.0f}%", n["impact_sum"]))
         if n.get("panel_selected"):
+            pp = panel_pcts(n["run"], mk).get(n["ticker"]) or {}
             picks.append((f"{v.get('label', mk)} · panel", sign(n.get("panel_score")),
-                          f"panel {n.get('panel_consensus_k')}/4", n.get("panel_score")))
+                          f"panel {n.get('panel_consensus_k')}/4",
+                          pp.get("panel_pct", n.get("panel_score"))))
         for stage, side, why, score in picks:
             if n.get("realised_move_pct") is not None and not n.get("move_pending"):
                 resolved.append(dict(stage=stage, version=n.get("prompt_version"),
@@ -501,9 +564,10 @@ for glob_pat, stage, market, key in (
                 continue
             score = r[key]
             if key == "panel_score":
-                strong, why = bool(r.get("selected")), f"panel {r.get('consensus_k')}/4"
-                if r.get("side"):
-                    score = abs(score) * sign(r["side"])
+                p = panel_pcts(run, "US").get(r["ticker"]) or {}
+                score = p.get("panel_pct", 0.0)
+                strong = bool(p.get("full")) and abs(score) >= PANEL_TOP
+                why = f"p{abs(score):.0f}"
             else:
                 pc = pctile(run, model, score)
                 strong, why = (pc or 0) >= TOP, None if pc is None else f"p{pc:.0f}"
@@ -538,9 +602,13 @@ for mk, v in markets.items():
                      n["impact_sum"], bool(n["impact_sum"]) and (p or 0) >= TOP,
                      None if p is None else f"p{p:.0f}", move=move, live_w=w)
         if n.get("panel_score") is not None:
+            pp = panel_pcts(n["run"], mk).get(n["ticker"]) or {}
+            pscore = pp.get("panel_pct", n["panel_score"])
+            if n.get("panel_selected") and sign(pscore) != sign(n["panel_score"]):
+                pscore = n["panel_score"]          # the consensus side decides a selected call
             week_row(f"{label} · panel", n.get("prompt_version"), "panel",
                      n["ticker"], n.get("company"), n["run_date"], n.get("event_date"),
-                     n["panel_score"], bool(n.get("panel_selected")),
+                     pscore, bool(n.get("panel_selected")),
                      f"panel {n.get('panel_consensus_k')}/4", move=move, live_w=w)
 
 calls.sort(key=lambda x: (x["run_date"], x["stage"], -abs(x["score"] or 0)))
@@ -562,6 +630,60 @@ for (stage, ver, model), rows in by_agent.items():
                        strong=summarise([r["ret"] for r in done if r["strong"]]),
                        calls=rows))
 agents.sort(key=lambda a: (a["stage"], a["last"]))
+
+# ---------------------------------------------------------------- the panel per own top
+# Every panel name with an outcome, its panel_pct and the spread of its four judges.
+# Top X% = |panel_pct| >= 100 - X, traded on the sign of panel_pct. The US uses this
+# page's window (13:30 ET in, amc out at the next open, bmo out at 13:00 ET); the
+# markets their own resolver. Point in time, never pooled with the hunters.
+TOPS = list(range(10, 101, 10))
+pt_rows = {}
+for f in sorted(glob.glob(str(ROOT / "research/*/*/*/edge-panel/edge-scores-panel.json"))):
+    run = str(Path(f).parent.relative_to(ROOT))
+    run_date = Path(f).parent.parent.name
+    if prov(run, "US-P")[3]:
+        continue
+    for t, p in panel_pcts(run, "US").items():
+        n = by_run_ticker.get((run_date, t))
+        mv = us_move(n) if n else None
+        if mv is not None and p["full"]:
+            pt_rows.setdefault("US", []).append(dict(run_date=run_date, ticker=t, pct=p["panel_pct"],
+                                                    sd=p["sd"], move=mv))
+for mk, v in markets.items():
+    for n in v.get("names", []):
+        if n.get("sept_opus55") or not n.get("rankable") or n.get("event_occurred") is False \
+                or n.get("panel_score") is None or n.get("realised_move_pct") is None or n.get("move_pending"):
+            continue
+        p = panel_pcts(n["run"], mk).get(n["ticker"])
+        if p and p["full"]:
+            pt_rows.setdefault(mk, []).append(dict(run_date=n["run_date"], ticker=n["ticker"],
+                                                   pct=p["panel_pct"], sd=p["sd"], move=n["realised_move_pct"]))
+PT_LABEL = {"US": "VS · E-P panel", **{mk: v.get("label", mk) + " · panel" for mk, v in markets.items()}}
+panel_top = []
+for mk, rows in pt_rows.items():
+    rows = [r for r in rows if r["pct"]]
+    if not rows:
+        continue
+    curve = []
+    for t in TOPS:
+        pick = [r for r in rows if abs(r["pct"]) >= 100 - t]
+        s_ = summarise([sign(r["pct"]) * r["move"] for r in pick])
+        s_.update(top=t, days=len({r["run_date"] for r in pick}))
+        curve.append(s_)
+    split = []
+    for t in (20, 30, 50):
+        pick = [r for r in rows if abs(r["pct"]) >= 100 - t and r["sd"] is not None]
+        if len(pick) < 4:
+            continue
+        med = sorted(r["sd"] for r in pick)[len(pick) // 2]
+        lo = [sign(r["pct"]) * r["move"] for r in pick if r["sd"] <= med]
+        hi = [sign(r["pct"]) * r["move"] for r in pick if r["sd"] > med]
+        split.append(dict(top=t, median_sd=med, low=summarise(lo), high=summarise(hi)))
+    panel_top.append(dict(region=mk, label=PT_LABEL.get(mk, mk), n=len(rows),
+                          days=len({r["run_date"] for r in rows}),
+                          first=min(r["run_date"] for r in rows), last=max(r["run_date"] for r in rows),
+                          short_all=summarise([-r["move"] for r in rows]), curve=curve, split=split))
+panel_top.sort(key=lambda x: (x["region"] != "US", -x["n"]))
 
 # ---------------------------------------------------------------- assemble
 
@@ -596,6 +718,7 @@ payload = {
     "week": week,
     "agents": agents,
     "week_days": WEEK_DAYS,
+    "panel_top": panel_top,
 }
 OUT_JSON.write_text(json.dumps(payload, indent=1, default=str))
 FROZEN_PATH.write_text(json.dumps(FROZEN, indent=1, sort_keys=True) + "\n")

@@ -215,7 +215,17 @@ edge_panel:
     fable51: panel-judge-fable51
   member_top_share: 0.2        # a member's "top": |impact_sum| at its own 80th percentile
   history_window: 200          # names of each member's own recent history the top is read on
-  consensus_fraction: 0.75     # selected when ceil(0.75 x members) put it in their top: 3 of 4
+  consensus_fraction: 0.75     # the old rule, still recorded: ceil(0.75 x members) in their own top
+  # Since 2026-10-14 (operator's instruction): every member is reported as a signed
+  # percentile of its OWN live range, point in time (panel_score.live_reference), and the
+  # US selection is the MEAN of those percentiles in the top 20%. The 3-of-4 verdict is
+  # still written on every row as `selected_consensus`. Measured before the switch in
+  # research/analyses/panel-mean-pct/ (October 35 names, Aug-Sep blind backtest 119);
+  # neither sample is evidence the new rule beats the old one, which picked a near-
+  # identical set. A spread penalty or gate did not help and is recorded only.
+  selection: mean_pct          # mean_pct | consensus
+  selection_top_share: 0.2     # |panel_pct| >= 80
+  reference_fallback: seed     # below 20 live sizes, top up from the re-judge seed
   live_weight: equal           # within the selection weights moved +-0.3pp; equal until measured
   selected_prior_net_pct: 6.7  # development, 24 names, in sample
   prior_shrink: 0.5            # so expected_edge_pct on a selected name is +-3.35
@@ -237,6 +247,10 @@ edge_panel:
 # 3-of-4 selection rule was chosen on development names that were mostly American.
 market_panel:
   rules_from: edge_panel         # member_top_share, history_window, consensus_fraction
+  # The non-US panels report the same per-member percentiles but keep the 3-of-4
+  # selection: the operator moved only the US decision (2026-10-14).
+  selection: consensus
+  reference_fallback: us_live    # below 20 live sizes of its own, top up from stage E-P's live sizes
   stages: [EU, JP, AU, CA, IPO]
   # Stage IPO uses its own set, panel-judge-ipo-*, generated from config/panel-judge-ipo.md
   # (intraday window), and a 60-name history window (scripts/market_panel.py MARKETS).

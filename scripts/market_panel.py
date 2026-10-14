@@ -73,7 +73,9 @@ MARKETS = {
     "IPO": {"dir": "ipo", "id": "ipo", "hunter": "unpriced-hunter-ipo",
             "lessons": "researcher_ipo/LESSONS.md", "resolved": "ipo-resolved.json",
             "history": "researcher_ipo/analysis/panel-history.json",
-            "judge_set": "ipo", "history_window": 60},
+            "judge_set": "ipo", "history_window": 60,
+            # its seed is its own intraday scale, not the re-judge's, so it is the right top-up
+            "reference_fallback": "seed"},
 }
 MODELS = {"opus5": "claude-opus-5", "opus55": "claude-opus-5-5",
           "sonnet55": "claude-sonnet-5-5", "fable51": "claude-fable-5-1"}
@@ -95,9 +97,11 @@ def cfg(market=None):
     c = yaml.safe_load(open(REPO / "config" / "pipeline.yaml"))
     rules = dict(c.get("edge_panel") or {})
     rules.update({k: v for k, v in (c.get("market_panel") or {}).items()
-                  if k in ("member_top_share", "history_window", "consensus_fraction")})
-    if market and MARKETS[market].get("history_window"):
-        rules["history_window"] = MARKETS[market]["history_window"]
+                  if k in ("member_top_share", "history_window", "consensus_fraction",
+                           "selection", "reference_fallback")})
+    for k in ("history_window", "reference_fallback"):
+        if market and MARKETS[market].get(k):
+            rules[k] = MARKETS[market][k]
     return rules
 
 
@@ -216,12 +220,7 @@ def cmd_score(a):
     print(f"members {', '.join(out['members_present'])}"
           + (f" (MISSING {', '.join(out['members_missing'])})" if out["members_missing"] else "")
           + f"; selection {out['selection']}; {added} sizes added to {spec['history']}")
-    sess = score_report.session_labels(run)
-    print(f"{'rank':>4s} {'ticker':8s} {'session':7s} {'sel':3s} {'k':>2s} {'agree':>5s} {'score':>6s} {'sd':>5s}  members (z)")
-    for r in out["ranking"]:
-        zz = " ".join(f"{m}:{x['z']:+.2f}{'*' if x['in_own_top'] else ''}" for m, x in r["members"].items())
-        print(f"{r['rank']:4d} {r['ticker']:8s} {sess.get(r['ticker'], 'n/a'):7s} {'yes' if r['selected'] else '':3s} {r['consensus_k']:2d} "
-              f"{r['sign_agree']:2d}/{r['n_members']}  {r['panel_score']:+6.2f} {r['panel_sd_z']:5.2f}  {zz}")
+    PS.print_table(out, score_report.session_labels(run))
 
 
 def stamp_provenance(run, out, fallbacks, market=None):
@@ -323,7 +322,7 @@ def resolve_rows(market, run):
                 or r.get("rankable") is False:
             continue
         p, k = panel[t], key.get(t) or {}
-        rows.append({"ticker": t, "move_pct": mv, "panel_score": p["panel_score"],
+        rows.append({"ticker": t, "move_pct": mv, "panel_score": p["panel_score"], "panel_pct": p.get("panel_pct"),
                      "panel_selected": p["selected"], "consensus_k": p["consensus_k"],
                      "side": p["side"], "impact_sum": k.get("impact_sum") or 0.0,
                      "above_floor": floor is not None and abs(k.get("impact_sum") or 0.0) >= floor})
@@ -338,6 +337,10 @@ def stats_of(rows, floor):
         mv = [r["move_pct"] for r in rows]
         ps, ks = [r["panel_score"] for r in rows], [r["impact_sum"] for r in rows]
         r3 = lambda x: None if x is None else round(x, 3)              # noqa: E731
+        pc = [(r["panel_pct"], r["move_pct"]) for r in rows if r.get("panel_pct") is not None]
+        if len(pc) >= 5:
+            out.update({"spearman_panel_pct": r3(spearman([a for a, _ in pc], [b for _, b in pc])),
+                        "p_panel_pct": r3(perm_p([a for a, _ in pc], [b for _, b in pc]))})
         out.update({"spearman_panel": r3(spearman(ps, mv)), "p_panel": r3(perm_p(ps, mv)),
                     "spearman_impact_sum": r3(spearman(ks, mv)), "p_impact_sum": r3(perm_p(ks, mv))})
     else:

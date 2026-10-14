@@ -104,6 +104,7 @@ def resolve_run(run):
         r.update({"rankable": bool(s.get("rankable")) and r.get("event_occurred") is not False,
                   "impact_sum": s.get("impact_sum"),
                   "panel_score": (panel.get(b["ticker"]) or {}).get("panel_score"),
+                  "panel_pct": (panel.get(b["ticker"]) or {}).get("panel_pct"),
                   "panel_selected": (panel.get(b["ticker"]) or {}).get("selected"),
                   "vs_offer_pct": (b.get("tape") or {}).get("vs_offer_pct"),
                   "run_up_20d_pct": b.get("run_up_20d_pct"),

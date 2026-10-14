@@ -1,6 +1,32 @@
 #!/usr/bin/env python3
 """Stage E-P: combine the four panel judges into one ranking, a selection and a weight.
 
+SINCE 2026-10-14 (operator's instruction) every member is reported as a PERCENTILE of
+its own range, and the US selection reads the mean of those percentiles:
+
+- `pct` per member: the share of that member's own reference sizes with a smaller
+  |impact_sum|, x 100, signed by the member's sign (a zero size is 0). "Top 10%" of
+  Opus 5 and "top 10%" of Opus 5.5 are then the same statement whatever scale each
+  model sizes on, and a future model joins without rescaling the others.
+- The reference is POINT IN TIME: the member's LIVE sizes from runs dated before this
+  one (`live_reference`), the last `history_window` of them. The re-judge seed is not
+  live and is left out (it judged September and Opus 5-era evidence, on another scale);
+  it is only a fallback when fewer than MIN_REFERENCE live sizes exist, as is the US
+  E-P history for a market panel that has not built its own yet
+  (`reference_fallback`).
+- `panel_pct` = the mean of the members' signed percentiles; `panel_pct_sd` their
+  spread, recorded and deciding nothing (research/analyses/panel-mean-pct/: it did not
+  help measurably as a gate or a penalty).
+- `selection: mean_pct` (stage E-P): selected when every member is present and
+  |panel_pct| >= 100 x (1 - selection_top_share), i.e. the mean is in the top 20%. The
+  side is the sign of panel_pct. `selection: consensus` (the market panels, unchanged):
+  3 of 4 members in their own top 20% on the panel's side. Both verdicts are written on
+  every row (`selected_mean_pct`, `selected_consensus`) so each can be measured forward.
+- The old score is still recorded: z, panel_score, consensus_k, in_own_top.
+
+What follows is the rule as it was built on 2026-10-01, kept because every field it
+describes is still written.
+
 What the development data said (research/analyses/judge-lab/, APPROACH.md section 6) and
 how each finding becomes a rule here:
 
@@ -28,13 +54,52 @@ Reads <RUN>/panel/<member>.json for the members present; writes
 <RUN>/edge-scores-panel.json (ranked beside the key by edge_resolve.py) and appends the
 day's member sizes to the history file, once per id.
 """
-import argparse, json, math, statistics as st, sys
+import argparse, bisect, json, math, re, statistics as st, sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 HISTORY = REPO / 'researcher_us' / 'analysis' / 'panel-history.json'
 MEMBERS = ('opus5', 'opus55', 'sonnet55', 'fable51')
+MIN_REFERENCE = 20
+
+
+def date_of(path):
+    m = re.search(r'(\d{4}-\d{2}-\d{2})', str(path or ''))
+    return m.group(1) if m else None
+
+
+def is_live(x):
+    return not str(x.get('source') or '').startswith('seed')
+
+
+def live_reference(hist, member, window, before=None, exclude=(), fallback=None):
+    """|impact_sum| of `member`'s live sizes from runs dated before `before` (all when
+    None), never an id in `exclude`, the last `window` of them, sorted. Below
+    MIN_REFERENCE it is topped up from `fallback` (a callable member -> rows, oldest
+    first). Returns (sorted sizes, basis)."""
+    def ok(x):
+        d = date_of(x.get('source'))
+        return x['id'] not in exclude and (before is None or (d is not None and d < before))
+    rows = [x for x in hist.get(member, []) if is_live(x) and ok(x)]
+    basis = 'live'
+    if len(rows) < MIN_REFERENCE and fallback:
+        have = {x['id'] for x in rows}
+        extra = [x for x in fallback(member) if x['id'] not in have and x['id'] not in exclude
+                 and (not is_live(x) or ok(x))]
+        took = extra[-(MIN_REFERENCE - len(rows)):]
+        rows = took + rows
+        basis = f'live+{len(took)} fallback' if took else 'live'
+    rows = rows[-window:]
+    return sorted(abs(x['impact_sum']) for x in rows), basis
+
+
+def pct_of(ref_sorted, v):
+    """Signed percentile of `v` in a member's own reference: the share with a smaller
+    |size|, x 100; a zero size is 0."""
+    if not ref_sorted or not v:
+        return 0.0
+    return sgn(v) * 100.0 * bisect.bisect_left(ref_sorted, abs(v)) / len(ref_sorted)
 
 
 def cfg():
@@ -59,6 +124,17 @@ def member_stats(hist, window):
             'q80': v_sorted[int(0.8 * len(v_sorted))]}
 
 
+def fallback_rows(kind, hist):
+    """Rows to top a thin live reference up with: the history's own seed, or stage E-P's
+    live sizes (for a market panel that has not built its own yet)."""
+    if kind == 'seed':
+        return lambda m: [x for x in hist.get(m, []) if not is_live(x)]
+    if kind == 'us_live':
+        us = json.load(open(HISTORY)) if HISTORY.exists() else {}
+        return lambda m: [x for x in us.get(m, []) if is_live(x)]
+    return None
+
+
 def score(run, C, dry_run=False, history=None, stage='E-P'):
     # `history` and `stage` exist for scripts/market_panel.py (the non-US stages), which
     # keep one history file per market; the defaults are stage E-P's, unchanged.
@@ -80,6 +156,14 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
         stats[m] = member_stats(h, window)
         if stats[m] is None: sys.exit(f'too little history for {m}: seed panel-history.json first')
     k_min = math.ceil(C.get('consensus_fraction', 0.75) * len(present))
+    rule = C.get('selection', 'consensus')
+    top_share = C.get('selection_top_share', share_q)
+    pct_min = 100.0 * (1 - top_share)
+    run_date = date_of(run.resolve().parent.name)      # research/<Y>/<M>/<DATE>/<stage>
+    fb = fallback_rows(C.get('reference_fallback', 'seed'), hist)
+    pref = {}
+    for m in present:
+        pref[m] = live_reference(hist, m, window, before=run_date, exclude=today, fallback=fb)
     rows = []
     for i in ids:
         mem = {}
@@ -88,19 +172,28 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
             if o is None: continue
             imp = num(o.get('impact_sum')) or 0.0
             mem[m] = {'impact_sum': imp, 'p_up': num(o.get('p_up')), 'abs_move_pct': num(o.get('abs_move_pct')),
+                      'pct': round(pct_of(pref[m][0], imp), 1),
                       'z': imp / stats[m]['rms'], 'in_own_top': abs(imp) >= stats[m]['q80'] and imp != 0,
                       'note': o.get('note')}
         zs = [x['z'] for x in mem.values()]
+        ps = [x['pct'] for x in mem.values()]
         mu = st.mean(zs) if zs else 0.0; side = sgn(mu)
+        ppct = st.mean(ps) if ps else 0.0
         rows.append({'id': i, 'ticker': i.split('/')[-1], 'members': mem, 'n_members': len(mem),
+                     'panel_pct': round(ppct, 1), 'panel_pct_sd': round(st.pstdev(ps), 1) if len(ps) > 1 else 0.0,
                      'panel_score': st.median(zs) if zs else 0.0, 'panel_mean_z': mu,
-                     'panel_sd_z': st.pstdev(zs) if len(zs) > 1 else 0.0, 'side': side,
+                     'panel_sd_z': st.pstdev(zs) if len(zs) > 1 else 0.0, 'side_z': side,
+                     'side_pct': sgn(ppct),
                      'sign_agree': sum(sgn(x['z']) == side != 0 for x in mem.values()),
                      'consensus_k': sum(x['in_own_top'] and sgn(x['z']) == side != 0 for x in mem.values())})
     tau = (st.median([r['panel_sd_z'] for r in rows]) or 1.0) if rows else 1.0
     prior = C.get('selected_prior_net_pct', 6.7) * C.get('prior_shrink', 0.5)
     for r in rows:
-        r['selected'] = r['side'] != 0 and r['n_members'] == len(present) and r['consensus_k'] >= k_min
+        full = r['n_members'] == len(present)
+        r['selected_consensus'] = r['side_z'] != 0 and full and r['consensus_k'] >= k_min
+        r['selected_mean_pct'] = r['side_pct'] != 0 and full and abs(r['panel_pct']) >= pct_min
+        r['selected'] = r['selected_mean_pct'] if rule == 'mean_pct' else r['selected_consensus']
+        r['side'] = r['side_pct'] if rule == 'mean_pct' else r['side_z']
         prec = abs(r['panel_mean_z']) / (r['panel_sd_z'] + tau)
         r['precision'] = prec
         r['weight_equal'] = 1.0 if r['selected'] else 0.0
@@ -109,21 +202,35 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
     ref = st.median([r['precision'] for r in sel]) if sel else 1.0
     for r in rows:
         r['weight_precision_tilt'] = (max(0.75, min(1.25, r['precision'] / ref)) if r['selected'] and ref else 0.0)
-    rows.sort(key=lambda r: (not r['selected'], -r['consensus_k'], -abs(r['panel_score']), r['id']))
+    if rule == 'mean_pct':
+        rows.sort(key=lambda r: (not r['selected'], -abs(r['panel_pct']), r['id']))
+    else:
+        rows.sort(key=lambda r: (not r['selected'], -r['consensus_k'], -abs(r['panel_score']), r['id']))
     for n, r in enumerate(rows, 1): r['rank'] = n
     out = {'generated_utc': datetime.now(timezone.utc).isoformat(timespec='seconds'), 'run': str(run),
            'stage': stage, 'members_present': present, 'members_missing': [m for m in MEMBERS if m not in present],
-           'ranking_key': 'panel_score', 'selection': f'consensus_k >= {k_min} of {len(present)}',
+           'ranking_key': 'panel_pct' if rule == 'mean_pct' else 'panel_score',
+           'selection_rule': rule,
+           'selection': (f'|panel_pct| >= {pct_min:.0f}, all {len(present)} members present' if rule == 'mean_pct'
+                         else f'consensus_k >= {k_min} of {len(present)}'),
+           'member_pct_reference': {m: {'n': len(pref[m][0]), 'basis': pref[m][1], 'before': run_date,
+                                        **{f'top{t}': (pref[m][0][min(len(pref[m][0]) - 1, int(len(pref[m][0]) * (1 - t / 100)))]
+                                                       if pref[m][0] else None) for t in (10, 20, 30)}}
+                                    for m in present},
            'live_weight': 'weight_equal', 'frozen_variant_weights': ['weight_precision_tilt'],
            'member_reference': {m: stats[m] for m in present}, 'tau': tau,
-           'note': ('panel_score is the signed median of the members\' sizes, each read against its own '
+           'note': ('Each member is reported as a signed percentile of its own live range (pct); '
+                    'panel_pct is their mean and panel_pct_sd their spread. '
+                    + ('The selection is |panel_pct| in the top 20%. ' if rule == 'mean_pct' else
+                       'The selection is 3 of 4 members in their own top 20% (consensus_k). ')
+                    + 'panel_score is the signed median of the members\' sizes, each read against its own '
                     'recent history. consensus_k counts members that put the name in their own top 20% '
                     'on the panel\'s side; that, not sign agreement, is what selected well on the '
                     'development names. Certainty (p_up) is recorded and decides nothing. '
                     'expected_edge_pct is a shrunk in-sample prior, not a forecast. Research only.'),
            'ranking': rows}
     # ticker-keyed copy for edge_resolve.py, which ranks this beside the key
-    out['ranking_by_ticker'] = [{'ticker': r['ticker'], 'panel_score': r['panel_score'],
+    out['ranking_by_ticker'] = [{'ticker': r['ticker'], 'panel_score': r['panel_score'], 'panel_pct': r['panel_pct'],
                                  'panel_selected': r['selected'], 'consensus_k': r['consensus_k']} for r in rows]
     json.dump(out, open(run / 'edge-scores-panel.json', 'w'), indent=1)
     added = 0
@@ -148,12 +255,23 @@ def main():
           + f"; selection {out['selection']}; {added} sizes added to the history")
     sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
     import score_report as SR
-    sess = SR.session_labels(a.run)
-    print(f"{'rank':>4s} {'ticker':8s} {'session':7s} {'sel':3s} {'k':>2s} {'agree':>5s} {'score':>6s} {'sd':>5s}  members (z)")
+    print_table(out, SR.session_labels(a.run))
+
+
+def print_table(out, sess):
+    """The panel table every stage pastes: each member as a signed percentile of its own
+    range (* where in its own top 20%), the mean and spread, then the old score."""
+    ref = out.get('member_pct_reference') or {}
+    print('own top 20% starts at: ' + ', '.join(f"{m} |{v['top20']:.2f}|" if v.get('top20') is not None else f"{m} -"
+                                               for m, v in ref.items())
+          + f"  (live sizes before {next(iter(ref.values()), {}).get('before')}, "
+          + ', '.join(f"{m} n={v['n']} {v['basis']}" for m, v in ref.items()) + ')')
+    print(f"{'rank':>4s} {'ticker':8s} {'session':7s} {'sel':3s} {'pct':>5s} {'sd':>4s}  {'members (own percentile)':44s} "
+          f"{'k':>2s} {'score':>6s}")
     for r in out['ranking']:
-        zz = ' '.join(f"{m}:{x['z']:+.2f}{'*' if x['in_own_top'] else ''}" for m, x in r['members'].items())
-        print(f"{r['rank']:4d} {r['ticker']:8s} {sess.get(r['ticker'], 'n/a'):7s} {'yes' if r['selected'] else '':3s} {r['consensus_k']:2d} "
-              f"{r['sign_agree']:2d}/{r['n_members']}  {r['panel_score']:+6.2f} {r['panel_sd_z']:5.2f}  {zz}")
+        pp = ' '.join(f"{m}:{x['pct']:+4.0f}{'*' if abs(x['pct']) >= 80 else ' '}" for m, x in r['members'].items())
+        print(f"{r['rank']:4d} {r['ticker']:8s} {sess.get(r['ticker'], 'n/a'):7s} {'yes' if r['selected'] else '':3s} "
+              f"{r['panel_pct']:+5.0f} {r['panel_pct_sd']:4.0f}  {pp:44s} {r['consensus_k']:2d} {r['panel_score']:+6.2f}")
 
 
 if __name__ == '__main__':

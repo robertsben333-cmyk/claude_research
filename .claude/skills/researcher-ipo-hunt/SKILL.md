@@ -137,7 +137,8 @@ that debuts and lock-ups share one threshold although debuts move almost twice a
    close, lock-ups from the open to the close, a blind four-model panel, no orders**;
    which judges ran; that one day is an anecdote and this stage is judged pooled.
 2. The ranked table: rank, ticker, event type, `impact_sum`, `impact_scaled`, the panel's
-   `selected`, `consensus_k` and `panel_score`.
+   `selected`, `panel_pct` (the mean of the judges' own percentiles), `consensus_k` and
+   `panel_score`.
 3. The panel section from `config/market-panel-step.md` ("In the note").
 4. Per name, the finding and URL driving its number, and the strongest case against.
 5. Per debut: the offer price or range it was sealed on, the deal size, and the recent
