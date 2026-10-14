@@ -97,3 +97,11 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-14 18:17 UTC
 - Resumed 18:2x UTC from a second session after the first hit a usage limit. 16 of 17 searchers done; PNC's searcher did not finish and is shed (not ranked: no hunt). Scored 16/16 rankable, 0 clear 2.8. V2 written before the first print. 16 packs, four judges.
+
+## Intraday panel 12:00 — RESUMED
+- Logged at 2026-10-14 18:20 UTC
+- Resumed 18:3x UTC (14:3x ET) from a second session after the first hit a usage limit; status partial: 7 of 17 hunts, baselines kept (sealed at the 12:00 slot). Relaunching the 10 missing unpriced-searchers (CMTL amc first). These 10 hunts search at ~14:30 ET, not 12:00, so this snapshot is a 12:00 seal with mixed search times; recorded, not corrected.
+
+## Edge hunt (panel, Fable) — RESUMED
+- Logged at 2026-10-14 18:20 UTC
+- Resumed 18:3x UTC from a second session after the first hit a usage limit: 8 of 17 hunts on disk, baselines kept. Relaunching the 9 missing unpriced-searcher-fable (all bmo 10-15).
