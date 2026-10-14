@@ -33,3 +33,7 @@
 ## Stage J — resolved 2026-10-09 run (from the 10-14 session)
 - Logged at 2026-10-14 01:07 UTC
 - jp_resolve: 25/25 usable, rho impact_sum 0.535 p 0.0073, free control -0.112, sign right 0.72, lean_vs_free_control_rho 0.367. Panel: rho 0.471 p 0.018; 1 selected, 0 hits (-1.43%). One day is not a result.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-14 01:41 UTC
+- 25 hunts banked and scored (edge-scores.json, key impact_sum). 25 packs, four judges.
