@@ -1,0 +1,367 @@
+[
+ {
+  "id": "us/2026-10-14/CMC",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "CMC",
+   "event_date": "2026-10-15",
+   "session": "bmo",
+   "as_of_utc": "2026-10-14T11:10:47+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-13",
+    "spot": 64.77,
+    "run_up_5d_pct": -0.22,
+    "run_up_20d_pct": -0.64,
+    "pct_from_52w_high": -22.16,
+    "pct_from_52w_low": 17.02,
+    "realised_vol_20d_annualised_pct": 29.6,
+    "avg_volume_20d": 1161215
+   },
+   "cik": "0000022444",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-06-25",
+      "session": "intraday",
+      "move_pct": 3.94
+     },
+     {
+      "event_date": "2026-03-26",
+      "session": "intraday",
+      "move_pct": -4.69
+     },
+     {
+      "event_date": "2026-01-08",
+      "session": "intraday",
+      "move_pct": -3.56
+     },
+     {
+      "event_date": "2025-10-16",
+      "session": "intraday",
+      "move_pct": -7.26
+     },
+     {
+      "event_date": "2025-06-23",
+      "session": "intraday",
+      "move_pct": 1.21
+     },
+     {
+      "event_date": "2025-03-20",
+      "session": "intraday",
+      "move_pct": 1.07
+     },
+     {
+      "event_date": "2025-01-06",
+      "session": "intraday",
+      "move_pct": 3.11
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 3.56,
+    "max_abs_move_pct": 7.26,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 112,
+    "median_gap_days": 87.5,
+    "ratio": 1.28,
+    "last_print": "2026-06-25",
+    "verdict": "fits_cadence",
+    "reason": "112 days since the last print against a 88-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 2,
+    "atm_strike": 65.0,
+    "atm_iv_pct": null,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.39,
+    "total_open_interest": 495,
+    "atm_spread_frac_of_mid": null,
+    "warnings": [
+     "ATM legs not two-sided; no live bid/ask to price a straddle from"
+    ]
+   },
+   "deadband_pct": 1.78,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.56,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q4 FY26 adjusted EPS consensus $1.96 (9 analysts, AAII, 2026-10-14: https://www.aaii.com/investingideas/article/507487-what-you-need-to-know-about-commercial-metals-companys-q4-earnings) and $1.98 on $2.56B revenue (Simply Wall St via Webull, 2026-10-04: https://www.webull.com/news/15687819044455424). An older Zacks Research figure was $1.91 (MarketBeat, 2026-07-27). The company guide is qualitative plus a CFO bridge: core EBITDA up sequentially, NA Steel +~$40M (a $20M outage absent plus a similar volume/margin benefit), CSG up mid-teens, Europe ex-CO2 up $3-5M, no CO2 credit in Q4 (Q3 had $20.4M), total sequential EBITDA +$40-50M on Q3's $353.6M (https://www.sec.gov/Archives/edgar/data/0000022444/000002244426000038/cmc-5312026xearningsreleas.htm; call transcript https://earningswhispers.com/transcript/CMC/Q32026). Two estimate sources agree within $0.02, so the bar counts as sourced. Q1 FY27 bar: Zacks Research $1.79 (MarketBeat note on the 2026-08-06 revision), one source only.",
+   "positioning_check": "Short interest 5.74% of float, days to cover 5.16, up 2.08% month on month (MarketBeat CMC page as of the 2026-10-13 close: https://www.marketbeat.com/instant-alerts/bank-of-america-issues-pessimistic-forecast-for-commercial-metals-nysecmc-stock-price-2026-07-09/). Not crowded. Options: the chain is unusable (ATM legs not two-sided), so there is no implied move and no skew. Put/call open-interest ratio 0.39 on only 495 contracts total, which is too thin to read. Stock -12.6% since the 2026-06-25 print against SPY +6.0% (AAII 2026-10-14), 22% below its 52-week high of $84.87, 20-day run-up -0.64%. Estimate revisions are negative over the last month: 1 down, 0 up (AAII). Consensus rating Moderate Buy, mean target $80.27.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Q4 FY26 (Jun-Aug) North America metal margins look set to expand as guided. The late-May +$30/st rebar increase (Nucor/Gerdau/Optimus following CMC) largely held: US rebar +0.96% m/m in July and -0.94% on Aug 7, then flat. Shredded scrap went soft-sideways in July, fell $10/gt in August and was flat in September, against Q3's elevated $379/t scrap cost and $610/t metal margin. Guide-implied EPS is about $2.00 against a $1.96-1.98 consensus, a small beat that sits inside the guide.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://www.chemanalyst.com/NewsAndDeals/NewsDetails/us-steel-rebar-prices-stay-range-bound-as-buyers-adopt-44010",
+    "source_date": "2026-08-20",
+    "reaction_history_on_this_line": "Beats on the reported quarter have been sold. Q1 FY26 adjusted EPS $1.84 against a $1.56 estimate, stock -3.56% on the day (-5.14% intraday) on a weak Q2 outlook (itiger 2026-01-08). Q4 FY25 $1.37 against $1.34, stock -7.26%. Q3 FY26 $1.73 against $1.70, stock +3.94%, then -12.6% to date.",
+    "why_not_priced": "Mostly priced. Consensus moved from $1.83 (June) to $1.96-1.98 by following management's bridge. What is not in the estimate is any upside from scrap falling through the quarter. If the market expected a clear beat, revisions would be positive; they are negative (1 down, 0 up last month).",
+    "independence": "Scrap settles from a different source: SMU September 2026, shredded flat at $417.50/gt and busheling +$10 (https://www.steelmarketupdate.com/2026/09/08/smu-scrap-tags-for-shredded-hms-flat-while-busheling-ticks-up/); SMU July 2026 'soft sideways' (https://www.steelmarketupdate.com/2026/07/14/smus-scrap-tags-settle-soft-sideways-in-july/). Late-May rebar increase: https://gmk.center/en/news/nucor-gerdau-and-optimus-are-raising-rebar-prices-in-the-us/. Steel Dynamics' 2026-09-17 Q3 guide cites wider steel metal margins and lower recycling spreads, the same direction (https://www.steelorbis.com/steel-news/latest-news/steel-dynamics-issues-q3-2026-guidance-on-record-steel-shipments-and-wider-metal-margins-1479096.htm).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "The Q1 FY27 (Sep-Nov) metal-margin setup has turned against CMC. Fastmarkets' October 2026 survey models US ferrous scrap +6.6% m/m on tight inventories and higher demand. In mid-September US rebar was 'held back by the availability of imports' (GMK, 2026-09-17), and Nucor's new 430k st Lexington NC rebar micro mill opened in late May in CMC's eastern market. Rising scrap against flat rebar compresses the spread in the quarter CMC will guide on the call.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://www.fastmarkets.com/?p=136986",
+    "source_date": "2026-10 (Fastmarkets 'US scrap trends outlook: October 2026')",
+    "reaction_history_on_this_line": "The next-quarter outlook has decided this stock's reaction. Jan 2026: a 'modest decline' Q2 core EBITDA outlook outweighed an 18% EPS beat, stock -3.56% close and -5.14% intraday. Mar 2026: -4.69%. Oct 2025: -7.26% on a small beat.",
+    "why_not_priced": "Partly priced: the stock is -12.6% since June and the Zacks Q1 FY27 estimate is $1.79, below Q4's $1.96-1.98, although that Q1 figure probably includes the returning semiannual CO2 credit. If the market fully expected a margin squeeze, the bar would sit lower still. The October scrap settle is not yet confirmed in any source I could reach.",
+    "independence": "Proxy, not company-confirmed. GMK 2026-09-17 on US import pressure (https://gmk.center/en/news/key-global-markets-are-set-for-a-rise-in-rebar-prices/). Nucor Lexington opening, a different source (https://www.steelorbis.com/steel-news/latest-news/nucor-opens-lexington-rebar-micro-mill-in-north-carolina-1455681.htm). AISI August 2026 permits +8.9% m/m, finished import share 18% against 16% YTD (https://www.steel.org/?p=12406). Against it: the CFO expected 'a lot of stability' in scrap for the rest of FY26, and ChemAnalyst projects modest rebar gains through autumn.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Steel West Virginia (500k st rebar micro mill) was due to hot-commission 'later this summer' after about 100 days of weather delay. The CFO guided carrying costs to roughly double from $4-5M a quarter, and FY27 output to 250-300k st including inventory build. I found no first-heat announcement in any source, so start-up drag and timing will be updated on the call.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://earningswhispers.com/transcript/CMC/Q32026",
+    "source_date": "2026-06-25",
+    "reaction_history_on_this_line": "No resolved print turned on this line alone. Start-up costs and acquisition expenses were among the causes cited for the January 2026 guide sell-off.",
+    "why_not_priced": "The cost level is guided and largely priced. The open question is whether commissioning slipped again: the project was originally due in late calendar 2025. A known delay would show up as a revised FY27 volume figure in estimates, and none is visible.",
+    "independence": "The original late-2025 schedule is in a 2023 company statement (https://www.steelmarketupdate.com/2023/07/18/cmc-gets-go-ahead-for-west-virginia-micro-mill/news/22862-cmc-picks-west-virginia-site-for-new-micro-mill). No independent confirmation of the current status.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "The Europe Steel CO2 credit is semiannual: $20.4M in Q3, none in Q4 (so Q4 reported Europe EBITDA falls sequentially), and the next one arrives in Q1 FY27. That gives the Q1 core EBITDA guide a roughly $20M cushion against a seasonal NA decline.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://earningswhispers.com/transcript/CMC/Q32026",
+    "source_date": "2026-06-25",
+    "reaction_history_on_this_line": "None isolated. CO2 credits are routinely called out in Europe segment results.",
+    "why_not_priced": "Disclosed by the CFO, so probably in models. A headline reader comparing Q4 reported Europe EBITDA with Q3 will see a drop, and the Q1 cushion only becomes visible in the guide.",
+    "independence": "Same transcript as the West Virginia finding; the Q3 release confirms the $20.4M credit (https://www.sec.gov/Archives/edgar/data/0000022444/000002244426000038/cmc-5312026xearningsreleas.htm).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Leverage was 2.1x at Q3 with 'clear visibility to <2x', and management said buybacks would return to 'a more elevated level' once 2.0x is reached. The board added $600M to the authorization on 2026-08-05 (about $717M available, roughly 10% of market cap). Q3 repurchases were only $18.9M. Q4 is seasonally strong for cash, so a sub-2x print and a stepped-up buyback pace are plausible on this call.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000022444/000119312526333797/d95091dex991.htm",
+    "source_date": "2026-08-05",
+    "reaction_history_on_this_line": "No prior print has turned on buybacks. The authorization increase at the August Investor Day week coincided with a +9% weekly move (68.72 to 75.13), which then fully reversed.",
+    "why_not_priced": "The authorization is public. The pace is not: Q3 repurchases were small and the stock has fallen 12.6% since. A market pricing an accelerated buyback would not show negative revisions and a de-rating to $64.",
+    "independence": "Management's 2.0x trigger statement is in the Q3 call (https://earningswhispers.com/transcript/CMC/Q32026); the leverage figure is in the Q3 8-K (https://www.sec.gov/Archives/edgar/data/0000022444/000002244426000038/cmc-5312026xearningsreleas.htm).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Both large US EAF peers issued Q3 guides below consensus on 2026-09-17: Nucor $5.55-5.65 against $5.99-6.17, and Steel Dynamics $5.34-5.38, stock -~5%. The sector tape into steel prints is guide-disappointment, and CMC's estimate revisions over the last month are 1 down and 0 up.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://www.tikr.com/blog/nucor-stock-estimates-bake-in-a-60-earnings-rebound-but-q3-guidance-just-missed",
+    "source_date": "2026-09-29",
+    "reaction_history_on_this_line": "None for CMC on peer guides specifically. CMC fell in the weeks after both peer guides (67.17 to 64.50 the week of Sep 14).",
+    "why_not_priced": "Mostly priced: the peers spoke four weeks ago and CMC drifted lower afterwards. The residual is that sell-side models may not have reset to a softer sector tone. Both peers' misses were driven partly by their own one-offs (Nucor's $130M Q2 refund), which limits the read-through.",
+    "independence": "Steel Dynamics reaction from a different source (https://tradersunion.com/news/stocks/show/3390538-steel-dynamics-slides-4-74percent-to/). Revisions: AAII 2026-10-14.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Going into the print the stock is de-rated: -12.6% since the June print against SPY +6.0%, 22% below its 52-week high, about 20% below the $80.27 mean target. Short interest is a moderate 5.74% (5.2 days). A guide merely in line with seasonality may already be in the price.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://www.aaii.com/investingideas/article/507487-what-you-need-to-know-about-commercial-metals-companys-q4-earnings",
+    "source_date": "2026-10-14",
+    "reaction_history_on_this_line": "The baseline shows 4 up / 3 down over 7 prints, median absolute move 3.56%, max 7.26%. The June print came after a run-up and was bought (+3.94%) before fading.",
+    "why_not_priced": "This is the price itself, so by construction it is priced. It is included as the context against which a soft guide lands. A name expected to beat and raise would not be trading 20% below its mean target with negative revisions.",
+    "independence": "MarketBeat short interest and target data, 2026-10-13 close (see positioning_check).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "US-Canada steel talks collapsed in late August. The Section 232 50% rate stays, with the US threatening to take Canadian steel to 50% from 2027-01-01, and Canada doubled its counter-tariff on US steel to 50% from 2026-09-08. CMC's Investor Day FY29 targets assumed a 25% tariff at the low end, so the current regime is above the plan's floor assumption.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-15",
+    "source": "https://www.aist.org/u-s-,-canada-threaten-hiked-steel-tariffs-after-failed-trade-negotiations",
+    "source_date": "2026-08 (late August 2026)",
+    "reaction_history_on_this_line": "None isolated for CMC. Nucor fell on the 2026-08-19 deal report and rebounded when the talks collapsed (2026-08-24).",
+    "why_not_priced": "Sector-wide and public, so largely priced. Management commentary on the call about tariff durability is the only new element.",
+    "independence": "Canada's counter-tariff from a different source (https://www.steelorbis.com/steel-news/latest-news/canada-doubles-counter-tariff-on-us-steel-to-50-percent-effective-september-8-1473263.htm). The Investor Day tariff assumption is from Nasdaq coverage (https://www.nasdaq.com/articles/commercial-metals-targets-18b-ebitda-expands-construction-solutions-strategy).",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "On 2026-10-13, two days before the print, the board declared the quarterly dividend unchanged at $0.20 (8-K item 8.01), the 248th consecutive one. There was no increase alongside the leverage milestone.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/22444/000002244426000048/cmc-8312026xdividendxex991.htm",
+    "source_date": "2026-10-13",
+    "reaction_history_on_this_line": "None; routine declaration.",
+    "why_not_priced": "Already public and almost certainly irrelevant. It is filed because it is a dated company document inside the window, and it slightly tilts the capital-return choice towards buybacks rather than the dividend.",
+    "independence": "none",
+    "i": 8
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "The Form 4 filings of 2026-10-05 and 2026-10-13 are routine: director retainer shares taken in stock (McPherson, 577 shares at $62.72, code A) and RSU tax withholding (Doucet, 751 shares at $63.10, code F). No open-market insider selling or buying cluster into the print.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/22444/000153118326000020/wk-form4_1791214263.xml",
+    "source_date": "2026-10-05",
+    "reaction_history_on_this_line": "None.",
+    "why_not_priced": "Nothing to price; it shows the insider record carries no signal.",
+    "independence": "Second Form 4: https://www.sec.gov/Archives/edgar/data/22444/000177237626000009/wk-form4_1791902336.xml",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Nucor's Q3 2026 results on 2026-10-26 will give bar-mill commentary that could re-rate the rebar outlook. This is after the exit window.",
+    "resolves_by": "2026-10-26",
+    "source": "https://www.tikr.com/blog/nucor-stock-estimates-bake-in-a-60-earnings-rebound-but-q3-guidance-just-missed",
+    "i": 10
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "The US threat to raise tariffs on Canadian steel to 50% from 2027-01-01 resolves after the window.",
+    "resolves_by": "2027-01-01",
+    "source": "https://www.aist.org/u-s-,-canada-threaten-hiked-steel-tariffs-after-failed-trade-negotiations",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Simply Wall St Q4 consensus $1.98 EPS / $2.56B revenue as a separate bar finding",
+    "source": "https://www.webull.com/news/15687819044455424",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Late-May $30/st rebar price increase as its own finding",
+    "source": "https://gmk.center/en/news/nucor-gerdau-and-optimus-are-raising-rebar-prices-in-the-us/",
+    "first_hunter_reason": "duplicate",
+    "i": 13
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Steel Dynamics guide citing wider steel metal margins and lower recycling spreads, as a positive Q4 read",
+    "source": "https://www.steelorbis.com/steel-news/latest-news/steel-dynamics-issues-q3-2026-guidance-on-record-steel-shipments-and-wider-metal-margins-1479096.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 14
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Zacks Research Q1 FY27 estimate raised to $1.79 (2026-08-06)",
+    "source": "https://www.marketbeat.com/instant-alerts/what-is-zacks-researchs-forecast-for-cmc-fy2026-earnings-2026-07-27/",
+    "first_hunter_reason": "duplicate",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Any CMC 8-K, pre-announcement or guidance update between the 2026-08-05 Investor Day and the print: only the 2026-10-13 dividend 8-K exists (EDGAR filing list).",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Investor Day 8-K exhibit: no comment on Q4 trends or reaffirmation of the guide.",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Sell-side Q4 FY26 previews (KeyBanc, UBS, BMO, Goldman) dated October 2026: none found.",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Confirmed October 2026 US scrap settle figures: not found, only the Fastmarkets survey forecast.",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "US rebar transaction prices for September and October 2026 (SteelOrbis, SMU): not retrievable.",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "First-heat or commissioning announcement for Steel West Virginia: not found.",
+    "i": 21
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Dodge Momentum Index and other nonresidential leading indicators for September 2026: not found.",
+    "i": 22
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Copper/commodity hedge marks for Q4: excluded from adjusted EPS in past quarters; no Q4-specific item found.",
+    "i": 23
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Precast/CSG peer read-through: no listed peer reported after June with a relevant read.",
+    "i": 24
+   }
+  ]
+ }
+]

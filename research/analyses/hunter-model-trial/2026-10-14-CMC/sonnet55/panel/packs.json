@@ -1,0 +1,165 @@
+[
+ {
+  "id": "us/2026-10-14/CMC",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "CMC",
+   "event_date": "2026-10-15",
+   "session": "bmo",
+   "as_of_utc": "2026-10-14T11:10:47+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-13",
+    "spot": 64.77,
+    "run_up_5d_pct": -0.22,
+    "run_up_20d_pct": -0.64,
+    "pct_from_52w_high": -22.16,
+    "pct_from_52w_low": 17.02,
+    "realised_vol_20d_annualised_pct": 29.6,
+    "avg_volume_20d": 1161215
+   },
+   "cik": "0000022444",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-06-25",
+      "session": "intraday",
+      "move_pct": 3.94
+     },
+     {
+      "event_date": "2026-03-26",
+      "session": "intraday",
+      "move_pct": -4.69
+     },
+     {
+      "event_date": "2026-01-08",
+      "session": "intraday",
+      "move_pct": -3.56
+     },
+     {
+      "event_date": "2025-10-16",
+      "session": "intraday",
+      "move_pct": -7.26
+     },
+     {
+      "event_date": "2025-06-23",
+      "session": "intraday",
+      "move_pct": 1.21
+     },
+     {
+      "event_date": "2025-03-20",
+      "session": "intraday",
+      "move_pct": 1.07
+     },
+     {
+      "event_date": "2025-01-06",
+      "session": "intraday",
+      "move_pct": 3.11
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 3.56,
+    "max_abs_move_pct": 7.26,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 112,
+    "median_gap_days": 87.5,
+    "ratio": 1.28,
+    "last_print": "2026-06-25",
+    "verdict": "fits_cadence",
+    "reason": "112 days since the last print against a 88-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 2,
+    "atm_strike": 65.0,
+    "atm_iv_pct": null,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.39,
+    "total_open_interest": 495,
+    "atm_spread_frac_of_mid": null,
+    "warnings": [
+     "ATM legs not two-sided; no live bid/ask to price a straddle from"
+    ]
+   },
+   "deadband_pct": 1.78,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.56,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Fiscal Q4 2026 adjusted EPS consensus disagrees across sources: ~$1.94 / revenue ~$2.55B (https://www.chartmill.com/news/CMC/Chartmill-50275-Commercial-Metals-Co-NYSECMC-Delivers-Revenue-Beat-but-Earnings-Miss-Sinks-Stock), $2.00 / $2.54B (https://www.benzinga.com/quote/CMC/earnings-forecasts), $1.91 Zacks (https://www.marketbeat.com/instant-alerts/what-is-zacks-researchs-forecast-for-cmc-fy2026-earnings-2026-07-27/); TipRanks ~$1.6. Not sourced to two agreeing estimates or a company guide, so unresolved and no finding is sized on it.",
+   "positioning_check": "Short interest and days to cover not found in this session; baseline options chain unusable (ATM legs not two-sided, open interest 495, put/call OI 0.39), so no skew. Run-up 5d -0.22%, 20d -0.64%, 22% below 52w high.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "2025 rebar price increase of $60/st by Nucor, CMC, SDI, Gerdau",
+    "source": "https://www.argusmedia.com/metals-platform/newsandanalysis/article/2712486-US-rebar-producers-raise-prices-by--60-st",
+    "first_hunter_reason": "outside_window",
+    "i": 0
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CMC.json",
+    "text": "Zacks note that CMC expects higher North American steel margins as price hikes offset scrap costs",
+    "source": "https://www.zacks.com/stock/news/2813999/should-you-buy-sell-or-hold-cmc-stock-before-q1-earnings-release",
+    "first_hunter_reason": "outside_window",
+    "i": 1
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Company Q4 FY2026 preview or pre-announcement (only prior-year and Q1 FY2026 material surfaced)",
+    "i": 2
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Peer rebar pricing / Nucor and Steel Dynamics guidance dated Sept-Oct 2026 (only mid-2025 $60/st increase stories returned, wrong year)",
+    "i": 3
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Dated 2026 consensus revision trail beyond the July-August marketbeat/benzinga/chartmill snapshots",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CMC.json",
+    "text": "Short interest and days to cover",
+    "i": 5
+   }
+  ]
+ }
+]
