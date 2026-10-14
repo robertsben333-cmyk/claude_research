@@ -64,11 +64,11 @@ Opus 5-zoektochten van 2026-08-31 tot 2026-09-22 over: VS 119 namen over 15 dage
 
 | top (VS, `impact_sum`) | namen | instap 19:30 | instap slot |
 |---|---|---|---|
-| 10% | 8 | +11.66% | |
-| 20% | 19 | +6.85% (79% goed) | |
-| 30% | 33 | +4.64% | |
-| 50% | 54 | +3.05% | |
-| alles | 115 | +1.41% | |
+| 10% | 8 | +11.66% (8/8 goed) | +11.02% (9 namen) |
+| 20% | 19 | +6.85% (79% goed) | +7.30% (20) |
+| 30% | 33 | +4.64% | +4.46% (34) |
+| 50% | 54 | +3.05% | +3.13% (55) |
+| alles | 115 | +1.41% | +1.54% (118) |
 
 Alles shorten: +0.32%. Het patroon van oktober komt terug: het rendement loopt op naar
 de top. Kanttekeningen: het bewijs komt van de Opus 5-hunters, niet van de oktoberzoeker;
