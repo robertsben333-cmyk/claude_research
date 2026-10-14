@@ -4,6 +4,10 @@
 en draai de volledige backtest zonder de Opus 5.5-zoektochten van september. Heeft Snap
 toegevoegde waarde?
 
+**Besluit (operator, 2026-10-14): Snap wordt geen panellid**, en draait ook niet als
+schaduwkolom mee. De koppeling staat op branch `claude/gallant-bohr-hzsesq` en is niet
+gemerged; de E-P Routine is ongewijzigd.
+
 **Antwoord: nee, niet aantoonbaar.** Snap rangschikt de dag zwakker dan elk van de vier
 rechters (ρ +0.159 tegen +0.177 tot +0.286), en als vijfde lid verandert het de selectie nauwelijks: 80 tot 100% van de
 namen in de top blijft dezelfde, en in de top 20% van het panel spreekt Snap het panel op
@@ -84,7 +88,9 @@ de benoemde backtestnamen.
 ## Bestanden
 
 - `snap_backtest.py`: steekproef, calls (met cache), analyse. `--analyse-only` rekent
-  opnieuw zonder te bellen.
+  opnieuw zonder te bellen. Het importeert `researcher_us/scripts/snap_juror.py` en het
+  `snap_juror`-blok in `config/pipeline.yaml`, die alleen op branch
+  `claude/gallant-bohr-hzsesq` staan: daar draait het, op `main` niet.
 - `responses.jsonl`: elk antwoord van Snap, per arm, met de requesthash. Model overal
   `subq-snap-preview`; 3,8 miljoen input tokens, $0,19.
 - `results.json`: alle tabellen en de rijen per naam.

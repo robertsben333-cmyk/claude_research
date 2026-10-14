@@ -296,3 +296,12 @@ operator's instruction, and the live script still refuses a run sealed before
 Snap's ρ approaches the panel's, or where the five-member book beats the four at equal
 names by more than its standard error (about 3 points per name in the top 20%). At about
 9 names a day that is months, for about $0.01 a day.
+
+## Decision, 2026-10-14: Snap does not become a panel member
+
+The operator's call, after the backtest above. Snap is not promoted into `panel_score.py`
+and does not run as a shadow column either: the wiring (`snap_juror.py`, the E-P skill's
+step 5p.7, the `snap_juror` config block, the edge_resolve column, the allow rule) stays on
+branch `claude/gallant-bohr-hzsesq` and is NOT merged, so the E-P Routine is unchanged.
+Only the analysis (`research/analyses/snap-juror-backtest/`) and this file went to `main`,
+as the record. Reopening it needs a new reason, not a re-run of this sample.
