@@ -28,15 +28,21 @@ td:nth-child(-n+2),th:nth-child(-n+2){text-align:left}
 .wrap{overflow-x:auto}
 </style></head><body><main>
 <h1>Het panel per eigen top: betalen de hoogste scores?</h1>
-<p>Elk model krijgt zijn eigen drempel. Per model telt waar een naam valt in de eigen verdeling van dat model (alle oktobernamen in die regio, zonder uitkomsten), met het teken van het model. Het panel is het gemiddelde van die vier percentielen; "top 10%" zijn de namen met een gemiddelde van 90 of hoger. Gehandeld op het teken, gelijk gewogen, bruto. Alleen oktober; de Opus 5.5-zoektochten van september tellen niet mee.</p>
+<p>Elk model krijgt zijn eigen drempel. Per model telt waar een naam valt in de eigen verdeling van dat model (alle oktobernamen in die regio, zonder uitkomsten), met het teken van het model. Het panel is het gemiddelde van die vier percentielen; "top 10%" zijn de namen met een gemiddelde van 90 of hoger. Gehandeld op het teken, gelijk gewogen, bruto. De Opus 5.5-zoektochten van september tellen niet mee. "Oktober" zijn de live panels; "backtest" is de blinde herbeoordeling door dezelfde vier modellen van de Opus 5-zoektochten van 31 augustus tot 22 september.</p>
+<div class="bar" id="ds"><span class="lab">Data</span></div>
 <div class="bar" id="regions"><span class="lab">Regio</span></div>
 <div class="bar" id="keys"><span class="lab">Score</span></div>
+<div class="bar" id="var"><span class="lab">Combinatie</span></div>
 <div class="bar" id="mode"><span class="lab">Lijnen</span></div>
+<p id="vardesc" style="font-size:12.5px"></p>
 <div class="kpis" id="kpis"></div>
 <div class="legend" id="legend"></div>
 <svg id="ret" viewBox="0 0 900 330" role="img" aria-label="Rendement per trade per top-percentage"></svg>
 <h2>Aantal namen per top-percentage</h2>
 <svg id="cnt" viewBox="0 0 900 160" role="img" aria-label="Aantal namen per top-percentage"></svg>
+<h2>Helpt onenigheid? Binnen de top: de helft met de minste spreiding tegen de helft met de meeste</h2>
+<div class="wrap"><table id="split"></table></div>
+<p style="font-size:12.5px">Spreiding = standaardafwijking van de vier percentielen. Het verschil is nergens twee standaardfouten groot.</p>
 <h2>Waar de eigen top van elk model begint</h2>
 <div class="wrap"><table id="thr"></table></div>
 <h2>De namen</h2>
@@ -44,30 +50,36 @@ td:nth-child(-n+2),th:nth-child(-n+2){text-align:left}
 <p style="margin-top:14px">Bruto, zonder kosten. Onderzoek, geen beleggingsadvies.</p>
 <div id="tip"></div>
 <script>
-const ALL=__DATA__, TOPS=__TOPS__, W=900, L=56, R=20, MS=['opus5','opus55','sonnet55','fable51'];
+const DS=__DATA__, TOPS=__TOPS__, VARS=__VARS__, W=900, L=56, R=20, MS=['opus5','opus55','sonnet55','fable51'];
 const NAME={opus5:'Opus 5',opus55:'Opus 5.5',sonnet55:'Sonnet 5.5',fable51:'Fable 5.1'};
 const MOVE={e1930:'instap 19:30 CET → strategie-exit',e2200:'instap slot 22:00 CET → strategie-exit',market:'venster van de markt'};
 const MCOL={opus5:'var(--s3)',opus55:'var(--s4)',sonnet55:'var(--s5)',fable51:'var(--s6)'};
 const KEYN={impact_sum:'impact_sum',impact_scaled:'impact_scaled'};
 const f=(v,d=2)=>v==null?'–':(v>=0?'+':'')+v.toFixed(d);
-const S={region:Object.keys(ALL).find(k=>ALL[k].impact_sum),key:'impact_sum',mode:'panel'};
+const VARN={gemiddelde:'gemiddelde',eensgezind:'alleen eensgezind teken',zwakste:'zwakste schakel',gem_min_spreiding:'gemiddelde min spreiding'};
+const VARD={gemiddelde:'Het gemiddelde van de vier percentielen.',eensgezind:'Het gemiddelde, maar alleen als alle vier hetzelfde teken geven.',zwakste:'Het laagste van de vier percentielen, alleen bij hetzelfde teken. Top 10% betekent hier: alle vier zetten de naam in hun eigen top 10%.',gem_min_spreiding:'Het gemiddelde, verkleind met de spreiding van de vier percentielen.'};
+const S={ds:'oktober',region:'US',key:'impact_sum',mode:'panel',v:'gemiddelde'};
+let ALL=DS[S.ds];
 function ns(t,a){const e=document.createElementNS('http://www.w3.org/2000/svg',t);for(const k in a)e.setAttribute(k,a[k]);return e}
 function buttons(id,items,cur,set){const b=document.getElementById(id);b.querySelectorAll('button').forEach(x=>x.remove());
  for(const [k,lab,dis] of items){const x=document.createElement('button');x.textContent=lab;x.disabled=!!dis;x.setAttribute('aria-pressed',k===cur);x.onclick=()=>{set(k);draw()};b.append(x)}}
 function draw(){
+ buttons('ds',[['oktober','oktober, live'],['backtest','backtest aug-sep (blind herbeoordeeld)']],S.ds,k=>{S.ds=k;ALL=DS[k];if(!ALL[S.region].impact_sum)S.region='US'});
+ buttons('var',VARS.map(v=>[v,VARN[v]]),S.v,k=>S.v=k);
+ document.getElementById('vardesc').textContent=VARD[S.v];
  buttons('regions',Object.entries(ALL).map(([k,r])=>[k,r.label.replace(/ \(.*\)/,'')+(r.impact_sum?` · ${r.resolved}`:' · nog geen uitkomsten'),!r.impact_sum]),S.region,k=>S.region=k);
  buttons('keys',[['impact_sum','impact_sum'],['impact_scaled','impact_scaled']],S.key,k=>S.key=k);
  const D=ALL[S.region],K=D[S.key],mks=D.move_keys;
  buttons('mode',[['panel','panel ('+mks.length+' instap'+(mks.length>1?'pen':'')+')'],['models','panel + losse modellen']],S.mode,k=>S.mode=k);
  const main=mks[0];
- const at=t=>K.panel[main].find(b=>b.top===t);
- const t10=at(10)||K.panel[main][0],t20=at(20),all=at(100);
+ const PV=K.variants[S.v];const at=t=>PV[main].find(b=>b.top===t);
+ const t10=at(10)||PV[main][0],t20=at(20),all=at(100);
  document.getElementById('kpis').innerHTML=
   `<div class="kpi"><b>${D.resolved} namen</b><span>${D.days.length} dagen, ${D.days[0].slice(5)} t/m ${D.days.at(-1).slice(5)}</span></div>`+
   [[t10,'top 10%'],[t20,'top 20%'],[all,'alle namen']].filter(x=>x[0]).map(([b,l])=>`<div class="kpi"><b>${f(b.mean)}%</b><span>${l}: ${b.n} namen, ${Math.round(b.hit*100)}% goed</span></div>`).join('')+
   `<div class="kpi"><b>${f(D.all_names_short[main])}%</b><span>alles shorten, geen onderzoek</span></div>`+
-  `<div class="kpi"><b>${f(D.current_rule[main].mean)}%</b><span>huidige 3-van-4-regel, ${D.current_rule[main].n} namen</span></div>`;
- const series=mks.map((mk,i)=>({id:mk,lab:'panel, '+MOVE[mk],col:i?'var(--s2)':'var(--s1)',pts:K.panel[mk],band:i===0,w:2.5}));
+  (D.current_rule?`<div class="kpi"><b>${f(D.current_rule[main].mean)}%</b><span>huidige 3-van-4-regel, ${D.current_rule[main].n} namen</span></div>`:'')+(D.leaked?`<div class="kpi"><b>${D.leaked}</b><span>namen geanonimiseerd beoordeeld</span></div>`:'');
+ const series=mks.map((mk,i)=>({id:mk,lab:'panel, '+MOVE[mk],col:i?'var(--s2)':'var(--s1)',pts:PV[mk],band:i===0,w:2.5}));
  if(S.mode==='models')MS.forEach(m=>series.push({id:m,lab:NAME[m]+' alleen ('+(mks.length>1?'19:30':'venster')+')',col:MCOL[m],pts:K.models[main][m],w:1.5,dash:'4 3'}));
  document.getElementById('legend').innerHTML=series.map(s=>`<span><span class="sw" style="background:${s.col}"></span>${s.lab}</span>`).join('')+`<span><span class="sw" style="background:var(--muted)"></span>alles shorten (stippel)</span>`+`<span>band = ± 1 se rond de blauwe lijn</span>`;
  const X=t=>L+(W-L-R)*(t-0)/100;
@@ -94,11 +106,13 @@ function draw(){
   const g=ns('g',{class:'ax'});for(let v=0;v<=nmax;v+=10){g.append(ns('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v)}));const t=ns('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'});t.textContent=v;g.append(t)}s.append(g);axisX(s,T,H);
   const bw=(W-L-R)/20-6;for(const p of pts){s.append(ns('rect',{x:X(p.top)-bw/2,y:Y(p.n),width:bw,height:Y(0)-Y(p.n),fill:'var(--s1)',opacity:.8,rx:3}));const t=ns('text',{x:X(p.top),y:Y(p.n)-4,'text-anchor':'middle',fill:'var(--text2)','font-size':10});t.textContent=p.n;s.append(t)}
   hover(s,T,H)}
+ document.getElementById('split').innerHTML='<tr><th>top</th><th>instap</th><th>weinig spreiding</th><th>veel spreiding</th><th>verschil</th></tr>'+
+  mks.flatMap(mk=>K.split[mk].map(x=>{const a=x.weinig_spreiding,b=x.veel_spreiding,se=Math.hypot(a.se||0,b.se||0);return `<tr><td>top ${x.top}%</td><td>${mk==='e1930'?'19:30':mk==='e2200'?'slot':'venster'}</td><td>${f(a.mean)}% · ${a.n} namen · ${Math.round(a.hit*100)}% goed</td><td>${f(b.mean)}% · ${b.n} namen · ${Math.round(b.hit*100)}% goed</td><td>${f(a.mean-b.mean)} (se ${se.toFixed(1)})</td></tr>`})).join('')||'<tr><td>te weinig namen</td></tr>';
  document.getElementById('thr').innerHTML='<tr><th>model</th><th>top 10% vanaf</th><th>top 20% vanaf</th><th>top 30% vanaf</th></tr>'+
   MS.map(m=>`<tr><td>${NAME[m]}</td>${[10,20,30].map(t=>`<td>|${S.key}| ≥ ${K.threshold_at_top[m][t].toFixed(2)}</td>`).join('')}</tr>`).join('');
- const rows=D.rows.slice().sort((a,b)=>Math.abs(b.panel[S.key])-Math.abs(a.panel[S.key]));
- document.getElementById('tbl').innerHTML='<tr><th>datum</th><th>ticker</th><th>panel pct</th>'+MS.map(m=>`<th>${NAME[m]}</th>`).join('')+'<th>3 van 4</th>'+mks.map(mk=>`<th>${mk==='e1930'?'trade 19:30':mk==='e2200'?'trade slot':'trade'}</th>`).join('')+'</tr>'+
-  rows.map(r=>{const p=r.panel[S.key];return `<tr><td>${r.date}</td><td>${r.ticker}</td><td>${f(p,0)}</td>${MS.map(m=>`<td>${f(r.pct[S.key][m],0)} <span style="color:var(--muted)">(${f(r[S.key][m],1)})</span></td>`).join('')}<td>${r.selected?'ja':''}</td>${mks.map(mk=>`<td>${r.moves[mk]==null?'–':f(Math.sign(p)*r.moves[mk])+'%'}</td>`).join('')}</tr>`}).join('');
+ const sc=r=>r.comb[S.key][S.v];const rows=D.rows.slice().sort((a,b)=>Math.abs(sc(b))-Math.abs(sc(a))||Math.abs(b.comb[S.key].gemiddelde)-Math.abs(a.comb[S.key].gemiddelde));
+ document.getElementById('tbl').innerHTML='<tr><th>datum</th><th>ticker</th><th>score</th><th>spreiding</th>'+MS.map(m=>`<th>${NAME[m]}</th>`).join('')+(D.current_rule?'<th>3 van 4</th>':'')+mks.map(mk=>`<th>${mk==='e1930'?'trade 19:30':mk==='e2200'?'trade slot':'trade'}</th>`).join('')+'</tr>'+
+  rows.map(r=>{const p=sc(r)||r.comb[S.key].gemiddelde;return `<tr><td>${r.date}</td><td>${r.ticker}${r.leak?' *':''}</td><td>${f(sc(r),0)}</td><td>${r.comb[S.key].spreiding.toFixed(0)}</td>${MS.map(m=>`<td>${f(r.pct[S.key][m],0)} <span style="color:var(--muted)">(${f(r[S.key][m],1)})</span></td>`).join('')}${D.current_rule?`<td>${r.selected?'ja':''}</td>`:''}${mks.map(mk=>`<td>${r.moves[mk]==null?'–':f(Math.sign(p)*r.moves[mk])+'%'}</td>`).join('')}</tr>`}).join('');
 }
 draw();
 </script></main></body></html>

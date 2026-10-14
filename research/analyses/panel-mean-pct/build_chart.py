@@ -4,6 +4,6 @@ import json
 from pathlib import Path
 D = Path(__file__).resolve().parent
 data = json.load(open(D / 'panel-mean-pct.json'))
-html = (D / 'chart_template.html').read_text().replace('__DATA__', json.dumps(data['regions'])).replace('__TOPS__', json.dumps(data['tops']))
+html = (D / 'chart_template.html').read_text().replace('__DATA__', json.dumps(data['datasets'])).replace('__TOPS__', json.dumps(data['tops'])).replace('__VARS__', json.dumps(data['variants']))
 (D / 'panel-mean-pct.html').write_text(html)
 print('wrote', D / 'panel-mean-pct.html')
