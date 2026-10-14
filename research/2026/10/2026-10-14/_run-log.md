@@ -117,3 +117,7 @@
 ## Edge hunt (panel) — 2026-10-14 amc + 2026-10-15 bmo — DONE
 - Logged at 2026-10-14 18:27 UTC
 - 16/17 hunted (unpriced-searcher, Opus 5.5); PNC shed, its searcher unfinished when the first session hit a usage limit. Resumed and finished by a second session from 18:17 UTC. All four judges 16/16 (pinned agents). panel_score: selected CMTL short (panel_pct 93, 4/4 own top 20%, E[return] +4.44%). Searcher: 0 over the 2.8 floor. rho stage E vs panel +0.355 (n=16). No orders. Panel history +64 sizes.
+
+## Intraday panel 12:00 — done
+- Logged at 2026-10-14 18:28 UTC
+- 7/17 hunted (unpriced-searcher, Opus 5.5; the 10 missing searchers stopped on the operator's instruction, so only slot-time searches count), guard moved nothing, all four judges 7/7, panel scored --dry-run --stage E-PI (history untouched). Selected: none (ERIC 74 long closest). No orders. Timeline rebuilt.
