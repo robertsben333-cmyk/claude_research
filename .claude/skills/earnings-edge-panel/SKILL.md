@@ -97,6 +97,21 @@ so the packs hold exactly the names the stage ranks.
    its frontmatter, the model it reported if it reported one, and `missing` where it did
    not run. The searcher's block is already there from step 2b.
 
+7. **The shadow juror, SubQ Snap** (since 2026-10-14; `researcher_us/SNAP_JUROR_HANDOFF.md`).
+   A model from another lab, asked about the same blind packs. It is a shadow column, not
+   a member:
+   ```bash
+   python3 researcher_us/scripts/snap_juror.py --run <RUN>/edge-panel || true
+   ```
+   It writes `<RUN>/edge-panel/edge-scores-snap.json` and `panel/snap.json`, adds a
+   `snap` entry to the `panel` block of `provenance.json` (the model string the API
+   returned, the script version, the status), and prints one line. It never fails the
+   run: with no `SUBQ_API_KEY`, a denied host or an API error it records why and exits 0.
+   **Snap's numbers never enter the panel table, the selection, the weights or the
+   reply's `score_report.py` table**; `edge_resolve.py` ranks them later as
+   `spearman_snap`. Never give Snap anything beyond the packs file, and never write the
+   key anywhere.
+
 ## 6. The note (stage E's note, with the panel first)
 
 `<RUN>/edge-panel/edge-note.md`, answer first:
@@ -113,6 +128,8 @@ so the packs hold exactly the names the stage ranks.
    separate forecast. Say that it is gross, on the scorebord's window, and flat at about
    +0.3% below a percentile of 50. Report the judges in percentiles, never in raw sizes: a
    top-10% Opus 5 and a top-10% Opus 5.5 are the same statement at different sizes.
+   Directly under the table, ONE line: the line `snap_juror.py` printed (Snap's top and
+   bottom name, or why it did not run). Nothing else about Snap goes in the note.
 3. One paragraph per **selected** name: the evidence items the members' notes name, and
    the strongest case against.
 4. Where the panel and the searcher disagree most, one line each.
@@ -142,7 +159,9 @@ with `--label "Stage E"` if stage E's files exist, then the panel table from
 ## 7. Resolve
 
 `edge_resolve.py --run <RUN>/edge-panel` ranks the searcher's key and, beside it,
-`spearman_panel` from `edge-scores-panel.json`. The question that matters for this stage
+`spearman_panel` from `edge-scores-panel.json`, and the shadow juror's `spearman_snap`
+from `edge-scores-snap.json` (one pre-registered number, `snap_impact`; judge it pooled
+and against the panel on the same names, never alone). The question that matters for this stage
 is not ρ over the whole day but whether the **selected** names moved and paid: the
 judge-lab scripts (`research/analyses/judge-lab/magnitude.py`, `consensus_top.py`) are how
 that was measured, and forward days should be added to them, not judged one at a time.

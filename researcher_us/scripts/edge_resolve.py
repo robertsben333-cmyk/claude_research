@@ -285,6 +285,15 @@ def resolve_run(run, seed):
         v4 = {x["ticker"]: x for x in
               json.loads(pp.read_text(encoding="utf-8")).get("ranking_by_ticker", [])}
 
+    # Stage E-P's shadow juror, SubQ Snap (2026-10-14), lives in its own file and is
+    # ranked beside the panel, never pooled into it. Only rows Snap actually answered.
+    v5 = {}
+    snp = run / "edge-scores-snap.json"
+    if snp.exists():
+        v5 = {x["ticker"]: x for x in
+              json.loads(snp.read_text(encoding="utf-8")).get("ranking_by_ticker", [])
+              if x.get("status") == "ok"}
+
     rows, pending = [], 0
     for r in scores["ranking"]:
         t = r["ticker"]
@@ -304,6 +313,7 @@ def resolve_run(run, seed):
                "score_scaled": (v3.get(t) or {}).get("impact_scaled"),
                "score_panel": (v4.get(t) or {}).get("panel_score"),
                "score_panel_pct": (v4.get(t) or {}).get("panel_pct"),
+               "score_snap": (v5.get(t) or {}).get("snap_impact"),
                "control_vol_only": (v2.get(t) or {}).get("control_vol_only")}
         # Which denominator normalised this name. The fallback to the reaction-history
         # proxy has always been here, but the anchor it used was never recorded, so a
@@ -368,6 +378,7 @@ def stats_for(live, seed):
                      ("score_scaled", "spearman_impact_scaled"),
                      ("score_panel", "spearman_panel"),
                      ("score_panel_pct", "spearman_panel_pct"),
+                     ("score_snap", "spearman_snap"),
                      ("control_vol_only", "control_vol_only")):
         c = [r for r in live if r.get(key) is not None]
         if len(c) >= 3:
@@ -434,6 +445,7 @@ def pooled_block(days, seed):
                      ("score_scaled", "spearman_impact_scaled"),
                      ("score_panel", "spearman_panel"),
                      ("score_panel_pct", "spearman_panel_pct"),
+                     ("score_snap", "spearman_snap"),
                      ("control_vol_only", "control_vol_only")):
         s, n = pooled_within_days(days, key)
         if s is not None:
@@ -524,6 +536,7 @@ def main():
                              ("spearman_impact_scaled", "impact_scaled (v3)    "),
                              ("spearman_panel", "E-P panel score       "),
                              ("spearman_panel_pct", "E-P panel % (mean pct)"),
+                             ("spearman_snap", "Snap (shadow juror)   "),
                              ("control_vol_only", "control: V1 x sigma   "),
                              ("calibration_slope_pre_lessons", "slope move on pre-less"),
                              ("calibration_slope_v1", "slope move on V1      "),
@@ -559,6 +572,8 @@ def main():
             print(f"  E-P panel score             {p.get('spearman_panel')}")
         if p.get("spearman_panel_pct") is not None:
             print(f"  E-P panel % (mean pct)      {p.get('spearman_panel_pct')}")
+        if p.get("spearman_snap") is not None:
+            print(f"  Snap (shadow juror)         {p.get('spearman_snap')}")
         if p.get("spearman_v2_grounded") is not None:
             print(f"  V2 grounded                 {p.get('spearman_v2_grounded')}")
             print(f"  control: V1 x sigma         {p.get('control_vol_only')}")

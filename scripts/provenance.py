@@ -70,6 +70,14 @@ HUNTERS = {
     "unpriced-hunter-ipo": "ipo",
 }
 
+# Jurors that are not agent definitions: a script whose text IS the prompt (its preamble
+# and questions). Versioned the same way, from the script's blob on main, and kept apart
+# from `hunters` so nothing that lists hunter versions picks them up. The model string an
+# external API returns is recorded per call in the run, not here.
+JURORS = {
+    "snap-juror": {"file": "researcher_us/scripts/snap_juror.py", "short": "us-snap"},
+}
+
 # Run directory name -> market code, the hunters it uses, and the files that shape a
 # prediction besides the hunter definition.
 MARKETS = {
@@ -211,42 +219,53 @@ def build_registry(ref="origin/main"):
            "model_timeline": MODEL_TIMELINE, "hunters": {}}
     for agent, short in HUNTERS.items():
         path = f".claude/agents/{agent}.md"
-        commits = git("rev-list", "--first-parent", "--reverse",
-                      "--format=%H %cI", ref, "--", path).splitlines()
-        seen, versions, prev = {}, [], None
-        for line in commits:
-            if line.startswith("commit "):
-                continue
-            sha, when = line.split(" ", 1)
-            b = blob_at(sha, path)
-            if b is None or b == prev:
-                prev = b
-                continue
-            prev = b
-            if b not in seen:      # a revert to an earlier text keeps its old id
-                seen[b] = len(seen) + 1
-            text = git("show", f"{sha}:{path}")
-            versions.append({
-                "id": f"{short}.v{seen[b]}", "blob": b,
-                "from_utc": parse_utc(when).astimezone(timezone.utc).isoformat(),
-                "commit": sha[:10],
-                "subject": git("log", "-1", "--format=%s", sha),
-                "model_alias": frontmatter_model(text),
-            })
-        cur = blob_of_file(path)
-        if cur and cur not in seen:
-            text = (ROOT / path).read_text(encoding="utf-8")
-            versions.append({"id": f"{short}.v{len(seen) + 1}", "blob": cur,
-                             "from_utc": None, "commit": None,
-                             "subject": "working tree, not yet on main",
-                             "pending_merge": True,
-                             "model_alias": frontmatter_model(text)})
-        for v in versions:
-            if v["blob"] in labels:
-                v["label"] = labels[v["blob"]]
-        out["hunters"][agent] = {"file": path, "short": short, "versions": versions}
+        out["hunters"][agent] = {"file": path, "short": short,
+                                 "versions": _file_versions(path, short, ref, labels)}
+    out["jurors"] = {j: {"file": spec["file"], "short": spec["short"],
+                         "versions": _file_versions(spec["file"], spec["short"], ref,
+                                                    labels)}
+                     for j, spec in JURORS.items()}
     out["stages"] = stage_versions(out)
     return out
+
+
+def _file_versions(path, short, ref, labels):
+    """Every distinct text of `path` on the first-parent history of `ref`, plus the
+    working tree when it differs. A revert to an earlier text keeps its old id."""
+    commits = git("rev-list", "--first-parent", "--reverse",
+                  "--format=%H %cI", ref, "--", path).splitlines()
+    seen, versions, prev = {}, [], None
+    for line in commits:
+        if line.startswith("commit "):
+            continue
+        sha, when = line.split(" ", 1)
+        b = blob_at(sha, path)
+        if b is None or b == prev:
+            prev = b
+            continue
+        prev = b
+        if b not in seen:      # a revert to an earlier text keeps its old id
+            seen[b] = len(seen) + 1
+        text = git("show", f"{sha}:{path}")
+        versions.append({
+            "id": f"{short}.v{seen[b]}", "blob": b,
+            "from_utc": parse_utc(when).astimezone(timezone.utc).isoformat(),
+            "commit": sha[:10],
+            "subject": git("log", "-1", "--format=%s", sha),
+            "model_alias": frontmatter_model(text),
+        })
+    cur = blob_of_file(path)
+    if cur and cur not in seen:
+        text = (ROOT / path).read_text(encoding="utf-8")
+        versions.append({"id": f"{short}.v{len(seen) + 1}", "blob": cur,
+                         "from_utc": None, "commit": None,
+                         "subject": "working tree, not yet on main",
+                         "pending_merge": True,
+                         "model_alias": frontmatter_model(text)})
+    for v in versions:
+        if v["blob"] in labels:
+            v["label"] = labels[v["blob"]]
+    return versions
 
 
 STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
@@ -330,6 +349,11 @@ def check():
         b = blob_of_file(f".claude/agents/{agent}.md")
         if b and not version_of(agent, b, reg):
             bad.append(agent)
+    for j, spec in JURORS.items():
+        b = blob_of_file(spec["file"])
+        known = ((reg.get("jurors") or {}).get(j) or {}).get("versions") or []
+        if b and not any(v["blob"] == b for v in known):
+            bad.append(j)
     return bad
 
 
@@ -569,6 +593,9 @@ def main():
                             encoding="utf-8")
         for agent, h in reg["hunters"].items():
             print(f"{agent:26s} " + "  ".join(
+                v["id"] + ("*" if v.get("pending_merge") else "") for v in h["versions"]))
+        for j, h in reg["jurors"].items():
+            print(f"{j:26s} " + "  ".join(
                 v["id"] + ("*" if v.get("pending_merge") else "") for v in h["versions"]))
         print(f"-> {REGISTRY.relative_to(ROOT)}   (* = not yet on main)")
     elif a.cmd == "check":

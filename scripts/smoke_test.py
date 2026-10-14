@@ -1867,7 +1867,134 @@ def main():
                    encoding="utf-8").read()
         check(f"{name} does not read the context labels", "edge-context" not in src
               and "edge_context" not in src)
-    scorer = open(os.path.join(REPO, ".claude", "agents", "shadow-scorer.md"),
+        # Stage E-P's shadow juror (2026-10-14): ranked beside the panel, never read by
+        # anything that selects, sizes or trades. Matched on the juror's own names, not
+        # on "snap", because alpaca_trade.py has carried quote_snapshot() since 09-10.
+        check(f"{name} does not read the Snap juror",
+              not any(w in src for w in ("snap_juror", "edge-scores-snap", "snap_impact",
+                                         "subq")))
+
+    print("\nStage E-P shadow juror (researcher_us/scripts/snap_juror.py, no network)")
+    import importlib
+    import urllib.error
+    sj = importlib.import_module("snap_juror")
+    sjc = sj.cfg()
+    sjb = sj.bins(sjc)
+    check("snap: 24 bins from the config edges, tails at -25/+25",
+          len(sjb) == 24 and sjb[0]["value"] == -25 and sjb[-1]["value"] == 25
+          and [x["lo"] for x in sjb[1:]] == [float(e) for e in sjc["bin_edges_inner"]])
+    check("snap: places no orders and feeds no selection",
+          sjc.get("places_orders") is False and sjc.get("reads_into_selection") is False)
+    # A known distribution: 0.5 on rises_2_to_3pct (2.5), 0.3 on falls_4_to_5pct (-4.5),
+    # 0.2 on rises_more_than_20pct (25). E = 1.25 - 1.35 + 5 = 4.9; P(up) = 70;
+    # E|move| = 1.25 + 1.35 + 5 = 7.6. Probabilities keyed by name, unnormalised x2.
+    names = [x["name"] for x in sjb]
+    probs = {n: 0.0 for n in names}
+    probs.update({"rises_2_to_3pct": 1.0, "falls_4_to_5pct": 0.6,
+                  "rises_more_than_20pct": 0.4})
+    canned = {"model": "subq-snap-preview-test", "usage": {"input_tokens": 1000},
+              "answers": {"move": {"choice": "rises_2_to_3pct", "probabilities": probs,
+                                   "confidence": 0.4},
+                          "up": {"noul": 0.65},
+                          "vs_implied": {"score": 2.3, "confidence": 0.5}}}
+    d = sj.derive(canned, sjb)
+    check("snap: E[move], P(up) and E|move| from a known distribution",
+          abs(d["snap_impact"] - 4.9) < 1e-9 and abs(d["snap_p_up"] - 70) < 1e-9
+          and abs(d["snap_abs"] - 7.6) < 1e-9, d)
+    check("snap: the noul cross-check is logged beside P(up), not used",
+          d["p_up_noul"] == 65.0 and d["p_up_disagreement"] == -5.0)
+    as_list = dict(canned, answers=dict(canned["answers"], move=dict(
+        canned["answers"]["move"], probabilities=[probs[n] for n in names])))
+    check("snap: probabilities as a list read the same as keyed by name",
+          sj.derive(as_list, sjb)["snap_impact"] == d["snap_impact"])
+    try:
+        sj.derive({"answers": {}}, sjb)
+        check("snap: a response with no move distribution is refused", False)
+    except ValueError:
+        check("snap: a response with no move distribution is refused", True)
+
+    class _Resp:
+        def __init__(self, body): self.body = body
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self): return json.dumps(self.body).encode()
+
+    def _http_err(code, body):
+        import io
+        return urllib.error.HTTPError("https://x", code, "x", {}, io.BytesIO(body.encode()))
+
+    calls = []
+
+    def _opener_seq(*outcomes):
+        it = iter(outcomes)
+
+        def op(req, timeout=None):
+            calls.append(req)
+            o = next(it)
+            if isinstance(o, Exception):
+                raise o
+            return _Resp(o)
+        return op
+
+    fast = dict(sjc, backoff_s=[0, 0])
+    r, st, why, n = sj.post({"x": 1}, fast, "k", opener=_opener_seq(canned))
+    check("snap: a 200 parses", st == "ok" and r["model"] == "subq-snap-preview-test")
+    check("snap: the key goes in the Authorization header only",
+          calls[-1].get_header("Authorization") == "Bearer k"
+          and b'"k"' not in calls[-1].data)
+    r, st, why, n = sj.post({"x": 1}, fast, "k", opener=_opener_seq(
+        _http_err(429, '{"detail":{"error_type":"rate_limit","message":"slow"}}'),
+        _http_err(503, "down"), canned))
+    check("snap: 429 and 5xx are retried, twice at most", st == "ok" and n == 3)
+    r, st, why, n = sj.post({"x": 1}, fast, "k", opener=_opener_seq(
+        _http_err(422, '{"detail":{"error_type":"validation_error","message":"bad"}}'),
+        canned))
+    check("snap: a 4xx is not retried", st == "invalid_request" and n == 1)
+    check("snap: a 403 with an HTML body is the egress policy",
+          sj.classify(403, "<html>blocked</html>")[0] == "host_denied")
+    check("snap: a 403 with a JSON detail is the key",
+          sj.classify(403, '{"detail":{"error_type":"permission_error","message":"no"}}')[0]
+          == "model_forbidden")
+    with tempfile.TemporaryDirectory() as tmp:
+        prun = os.path.join(tmp, "2026", "10", "2026-10-13", "edge-panel")
+        os.makedirs(os.path.join(prun, "panel"))
+        pk = [{"id": "us/2026-10-13/AAA", "hunter_definition": ".claude/agents/x.md",
+               "lessons_file": "researcher_us/LESSONS.md",
+               "baseline": {"ticker": "AAA"}, "evidence": []},
+              {"id": "us/2026-10-13/BBB", "hunter_definition": ".claude/agents/x.md",
+               "lessons_file": "researcher_us/LESSONS.md",
+               "baseline": {"ticker": "BBB"}, "evidence": []}]
+        json.dump(pk, open(os.path.join(prun, "panel", "packs.json"), "w"))
+        check("snap: the state carries neither file path",
+              "hunter_definition" not in json.dumps(sj.state_of(pk[0]))
+              and "lessons_file" not in json.dumps(sj.state_of(pk[0])))
+        env = {k: v for k, v in os.environ.items() if k != "SUBQ_API_KEY"}
+        res = subprocess.run([sys.executable, os.path.join(REPO, "researcher_us", "scripts",
+                                                           "snap_juror.py"), "--run", prun],
+                             capture_output=True, text=True, env=env, timeout=60)
+        sc = json.load(open(os.path.join(prun, "edge-scores-snap.json")))
+        check("snap: no key is never fatal and calls nothing",
+              res.returncode == 0 and sc["status"] == "no_key" and sc["n_ok"] == 0
+              and all(r["status"] == "no_key" for r in sc["ranking_by_ticker"])
+              and all("response" not in c for c in
+                      json.load(open(os.path.join(prun, "panel", "snap.json")))["calls"]),
+              res.stdout + res.stderr)
+        old = os.path.join(tmp, "2026", "10", "2026-10-09", "edge-panel")
+        os.makedirs(os.path.join(old, "panel"))
+        json.dump([dict(pk[0], id="us/2026-10-09/AAA")],
+                  open(os.path.join(old, "panel", "packs.json"), "w"))
+        subprocess.run([sys.executable, os.path.join(REPO, "researcher_us", "scripts",
+                                                     "snap_juror.py"), "--run", old],
+                       capture_output=True, text=True, env=dict(env, SUBQ_API_KEY="x"),
+                       timeout=60)
+        sc = json.load(open(os.path.join(old, "edge-scores-snap.json")))
+        check("snap: a run sealed before the model's release is refused, not called",
+              sc["basis"] == "refused_pre_release" and sc["status"] == "refused_pre_release")
+    res_src = open(os.path.join(REPO, "researcher_us", "scripts", "edge_resolve.py"),
+                   encoding="utf-8").read()
+    check("edge_resolve ranks Snap beside the panel",
+          res_src.count("spearman_snap") >= 5 and "edge-scores-snap.json" in res_src)
+    scorer =open(os.path.join(REPO, ".claude", "agents", "shadow-scorer.md"),
                   encoding="utf-8").read()
     check("the shadow scorer has no web tools",
           re.search(r"^tools:\s*Read, Write\s*$", scorer, re.M) is not None)

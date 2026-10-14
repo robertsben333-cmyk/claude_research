@@ -237,6 +237,30 @@ edge_panel:
   places_orders: false
   shadow_ledger: false
 
+# Stage E-P's shadow juror (2026-10-14, researcher_us/SNAP_JUROR_HANDOFF.md): SubQ Snap,
+# a decision model from another lab, asked about the same blind packs as the four judges.
+# researcher_us/scripts/snap_juror.py reads every number here. A SHADOW COLUMN: it writes
+# edge-scores-snap.json, edge_resolve.py ranks it as spearman_snap, and nothing that
+# selects, sizes or trades reads it. One pre-registered number, snap_impact = E[move].
+# Forward only: a run sealed before release_date is refused (training may hold its
+# outcome). The key is SUBQ_API_KEY and is never written down.
+snap_juror:
+  enabled: true
+  model: subq-snap-preview     # a preview alias; the returned model string is recorded per call
+  host: api.subq.ai
+  path: /v1/systemone
+  release_date: 2026-10-12
+  # 24 bins: (-inf,-20], (-20,-15], ... (20,+inf). Representative value: the midpoint,
+  # the two tails at tail_values.
+  bin_edges_inner: [-20, -15, -12, -10, -8, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20]
+  tail_values: [-25, 25]
+  timeout_s: 30
+  retries: 2                   # only on 429, 5xx and network errors; never on another 4xx
+  backoff_s: [2, 4]
+  usd_per_m_input_tokens: 0.05
+  places_orders: false
+  reads_into_selection: false
+
 # The four-model panel on the non-US stages (EU, J, AU, CA; 2026-10-08, operator's
 # instruction: "the 4-agent judging method the US one already uses"). Each stage keeps
 # its own hunters and its own impact_sum key; after scoring, scripts/market_panel.py
