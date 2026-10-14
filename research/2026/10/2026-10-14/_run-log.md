@@ -105,3 +105,7 @@
 ## Edge hunt (panel, Fable) — RESUMED
 - Logged at 2026-10-14 18:20 UTC
 - Resumed 18:3x UTC from a second session after the first hit a usage limit: 8 of 17 hunts on disk, baselines kept. Relaunching the 9 missing unpriced-searcher-fable (all bmo 10-15).
+
+## Intraday panel 12:00 — panel STARTED
+- Logged at 2026-10-14 18:22 UTC
+- The 10 relaunched searchers were stopped on the operator's instruction; the snapshot is scored on the 7 hunts the first session wrote (CMC EDUC EQBK ERIC HOMB MAN WIT); the other 10 names are not ranked (no hunt). Guard run. 7 packs, four judges.
