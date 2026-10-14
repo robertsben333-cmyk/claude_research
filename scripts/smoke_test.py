@@ -1303,6 +1303,21 @@ def main():
     check("a dry panel run leaves the history untouched",
           added == 0 and open(panel_score.HISTORY).read() == hist_before)
 
+    # STAGE E-PF (2026-10-14): stage E-P with the searcher on Fable 5.1. The searcher is
+    # stage E-P's byte for byte below the frontmatter; the panel is scored dry against
+    # stage E-P's history; no orders.
+    pf_agent = open(os.path.join(REPO, ".claude", "agents", "unpriced-searcher-fable.md"), encoding="utf-8").read()
+    pf_skill = open(os.path.join(REPO, ".claude", "skills", "earnings-edge-panel-fable", "SKILL.md"),
+                    encoding="utf-8").read()
+    pfc = cfg.get("edge_panel_fable") or {}
+    check("stage E-PF searcher is stage E-P's searcher on Fable 5.1",
+          "\nmodel: claude-fable-5-1\n" in pf_agent.split("---", 2)[1] + "\n"
+          and pf_agent.split("-->", 1)[1].strip() == ep_agent.split("-->", 1)[1].strip())
+    check("stage E-PF places no orders, stamps US-PF and scores the panel dry",
+          pfc.get("places_orders") is False and pfc.get("writes_panel_history") is False
+          and "<RUN>/edge-panel-fable/" in pf_skill and "No `alpaca_trade.py` call of any kind" in pf_skill
+          and "--market US-PF" in pf_skill and "--dry-run --stage E-PF" in pf_skill)
+
     # STAGE E-PI (2026-10-14): stage E-P re-run at fixed New York times, one snapshot
     # directory per run. The first snapshot freezes the day's names, later ones reuse
     # them; a 16:00 snapshot hunts bmo only; an amc hunt written after 16:00 ET on its

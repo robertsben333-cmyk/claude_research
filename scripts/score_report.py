@@ -63,7 +63,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import provenance  # noqa: E402
 
-US_DIRS = {"edge", "edge-sonnet", "edge-panel", "edge-deep"}
+US_DIRS = {"edge", "edge-sonnet", "edge-panel", "edge-panel-fable", "edge-deep"}
 DIR_MARKET = {v["dir"]: k for k, v in provenance.MARKETS.items()}
 MIN_HISTORY = 20
 
@@ -186,12 +186,13 @@ def model_history(run, reg, everything=False):
 
     for d in sorted((ROOT / "research").glob("[0-9]*/[0-9]*/[0-9]*-*-*/*/")):
         # edge-panel's searcher sizes for breadth and is never ranked on its own
-        # sizes (config/searcher-addendum.md), so it is not a reference for the hunters.
+        # sizes (config/searcher-addendum.md), so it is not a reference for the hunters;
+        # nor is edge-panel-fable's (stage E-PF), the same searcher on Fable 5.1.
         # edge-deep (stage D) sizes three names with twice the depth and is kept out
         # until its scale has been compared with the hunters' on resolved names.
         # ipo (stage IPO) sizes an INTRADAY window on a different event, so its sizes
         # are not a reference for an earnings hunt's, nor theirs for it.
-        if d.name not in DIR_MARKET or d.name in ("edge-panel", "edge-deep", "ipo"):
+        if d.name not in DIR_MARKET or d.name in ("edge-panel", "edge-panel-fable", "edge-deep", "ipo"):
             continue
         model = run_model(d, reg)
         models[d.resolve()] = model

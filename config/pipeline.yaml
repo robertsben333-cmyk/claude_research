@@ -237,6 +237,24 @@ edge_panel:
   places_orders: false
   shadow_ledger: false
 
+# Stage E-PF (2026-10-14, operator's instruction: "an exact copy of US-panel ... but
+# uses Fable 5.1 as a searcher instead of Opus"): stage E-P run as it runs, with
+# unpriced-searcher-fable (claude-fable-5-1) as the searcher. Every scoring rule is
+# edge_panel's, read from there. The same sweep (edge-sweep), the same four judges.
+# Its panel is scored --dry-run against stage E-P's history, so each judge's percentile
+# is read on the same scale as stage E-P's and that history is never written. Output in
+# research/<Y>/<M>/<DATE>/edge-panel-fable/, provenance market US-PF, stage versions
+# us-panel-fable.vN: never pooled with stage E-P (project rule 3).
+edge_panel_fable:
+  inherits: edge_panel
+  output_dir: edge-panel-fable
+  searcher_agent: unpriced-searcher-fable
+  searcher_model: claude-fable-5-1
+  writes_panel_history: false
+  orchestrator_model: opus
+  places_orders: false
+  shadow_ledger: false
+
 # Stage E-PI (2026-10-14, operator's instruction): stage E-P re-run from scratch at fixed
 # New York times through the session, every run saved as its own snapshot, so the
 # development of each name's call through the day can be read. Every scoring rule is

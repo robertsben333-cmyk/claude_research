@@ -55,6 +55,7 @@ HUNTERS = {
     "unpriced-hunter": "us",
     "unpriced-hunter-sonnet": "us-sonnet",
     "unpriced-searcher": "us-searcher",
+    "unpriced-searcher-fable": "us-searcher-fable",
     "deep-question-researcher": "us-deep",
     "unpriced-hunter-jp": "jp",
     "unpriced-hunter-uk": "uk",
@@ -90,6 +91,11 @@ MARKETS = {
               "since_utc": "2026-10-14T00:00:00+00:00",
               "lessons": "researcher_us/LESSONS.md",
               "skill": ".claude/skills/earnings-edge-panel-intraday/SKILL.md"},
+    # Stage E-PF (2026-10-14): stage E-P with the searcher on Fable 5.1, same judges,
+    # same rules, its own directory. Never pooled with stage E-P.
+    "US-PF": {"dir": "edge-panel-fable", "hunters": ["unpriced-searcher-fable"],
+              "lessons": "researcher_us/LESSONS.md",
+              "skill": ".claude/skills/earnings-edge-panel-fable/SKILL.md"},
     # Stage D (2026-10-07): three names a day, one deep researcher each, frozen key
     # questions and a frozen quick first read. Research only.
     "US-D": {"dir": "edge-deep", "hunters": ["deep-question-researcher"],
@@ -255,7 +261,7 @@ def build_registry(ref="origin/main"):
     return out
 
 
-STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
+STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-PF": "us-panel-fable", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
                "CA": "ca", "R": "rev", "IPO": "ipo"}
 
 

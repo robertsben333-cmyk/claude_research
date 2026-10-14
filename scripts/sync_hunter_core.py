@@ -51,6 +51,19 @@ VARIANTS = {
                         "by scripts/sync_hunter_core.py; never edit this copy. Give it the "
                         "ticker, the event window and the path to the sealed baseline."),
     }, "searcher-addendum.md"),
+    # stage E-PF (2026-10-14, operator's instruction): stage E-P with the searcher on
+    # Fable 5.1 instead of Opus 5.5. The same source and the same addendum, so the
+    # searcher model is the only thing that differs from stage E-P's searcher.
+    "unpriced-searcher-fable.md": ("unpriced-hunter.md", {
+        "name": "unpriced-searcher-fable",
+        "model": "claude-fable-5-1",
+        "description": ("Stage E-PF. The stage E-P searcher, byte for byte, run on Fable 5.1 "
+                        "instead of Opus 5.5 so the searcher model is the only thing that "
+                        "differs from stage E-P. Generated from unpriced-hunter.md plus "
+                        "config/searcher-addendum.md by scripts/sync_hunter_core.py; never "
+                        "edit this copy. Give it the ticker, the event window and the path "
+                        "to the sealed baseline."),
+    }, "searcher-addendum.md"),
     # stage D (2026-10-07): the US hunter as a DEEP researcher on three names a day, with
     # config/deep-addendum.md inserted after the core: key questions frozen before the
     # research, a frozen quick first read as the depth control, a premortem. Bash for curl
