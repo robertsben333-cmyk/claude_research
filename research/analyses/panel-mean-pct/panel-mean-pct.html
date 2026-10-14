@@ -28,7 +28,7 @@ td:nth-child(-n+2),th:nth-child(-n+2){text-align:left}
 .wrap{overflow-x:auto}
 </style></head><body><main>
 <h1>Het panel per eigen top: betalen de hoogste scores?</h1>
-<p>Elk model krijgt zijn eigen drempel. Per model telt waar een naam valt in de eigen verdeling van dat model (alle oktobernamen in die regio, zonder uitkomsten), met het teken van het model. Het panel is het gemiddelde van die vier percentielen; "top 10%" zijn de namen met een gemiddelde van 90 of hoger. Gehandeld op het teken, gelijk gewogen, bruto. De Opus 5.5-zoektochten van september tellen niet mee. "Oktober" zijn de live panels; "backtest" is de blinde herbeoordeling door dezelfde vier modellen van de Opus 5-zoektochten van 31 augustus tot 22 september.</p>
+<p>Elk model krijgt zijn eigen drempel. Per model telt waar een naam valt in de eigen verdeling van dat model (alle oktobernamen in die regio, zonder uitkomsten): een getal van 0 tot 100, met de kant (long of short) apart. Het panel is het gemiddelde van die vier, waarbij een model dat de andere kant kiest het getal omlaag trekt; "top 10%" zijn de namen met een panelgetal van 90 of hoger. Gehandeld op het teken, gelijk gewogen, bruto. De Opus 5.5-zoektochten van september tellen niet mee. "Oktober" zijn de live panels; "backtest" is de blinde herbeoordeling door dezelfde vier modellen van de Opus 5-zoektochten van 31 augustus tot 22 september.</p>
 <div class="bar" id="ds"><span class="lab">Data</span></div>
 <div class="bar" id="regions"><span class="lab">Regio</span></div>
 <div class="bar" id="keys"><span class="lab">Score</span></div>
@@ -111,8 +111,8 @@ function draw(){
  document.getElementById('thr').innerHTML='<tr><th>model</th><th>top 10% vanaf</th><th>top 20% vanaf</th><th>top 30% vanaf</th></tr>'+
   MS.map(m=>`<tr><td>${NAME[m]}</td>${[10,20,30].map(t=>`<td>|${S.key}| ≥ ${K.threshold_at_top[m][t].toFixed(2)}</td>`).join('')}</tr>`).join('');
  const sc=r=>r.comb[S.key][S.v];const rows=D.rows.slice().sort((a,b)=>Math.abs(sc(b))-Math.abs(sc(a))||Math.abs(b.comb[S.key].gemiddelde)-Math.abs(a.comb[S.key].gemiddelde));
- document.getElementById('tbl').innerHTML='<tr><th>datum</th><th>ticker</th><th>score</th><th>spreiding</th>'+MS.map(m=>`<th>${NAME[m]}</th>`).join('')+(D.current_rule?'<th>3 van 4</th>':'')+mks.map(mk=>`<th>${mk==='e1930'?'trade 19:30':mk==='e2200'?'trade slot':'trade'}</th>`).join('')+'</tr>'+
-  rows.map(r=>{const p=sc(r)||r.comb[S.key].gemiddelde;return `<tr><td>${r.date}</td><td>${r.ticker}${r.leak?' *':''}</td><td>${f(sc(r),0)}</td><td>${r.comb[S.key].spreiding.toFixed(0)}</td>${MS.map(m=>`<td>${f(r.pct[S.key][m],0)} <span style="color:var(--muted)">(${f(r[S.key][m],1)})</span></td>`).join('')}${D.current_rule?`<td>${r.selected?'ja':''}</td>`:''}${mks.map(mk=>`<td>${r.moves[mk]==null?'–':f(Math.sign(p)*r.moves[mk])+'%'}</td>`).join('')}</tr>`}).join('');
+ document.getElementById('tbl').innerHTML='<tr><th>datum</th><th>ticker</th><th>panel %</th><th>kant</th><th>spreiding</th>'+MS.map(m=>`<th>${NAME[m]}</th>`).join('')+(D.current_rule?'<th>3 van 4</th>':'')+mks.map(mk=>`<th>${mk==='e1930'?'trade 19:30':mk==='e2200'?'trade slot':'trade'}</th>`).join('')+'</tr>'+
+  rows.map(r=>{const p=sc(r)||r.comb[S.key].gemiddelde;return `<tr><td>${r.date}</td><td>${r.ticker}${r.leak?' *':''}</td><td>${Math.abs(sc(r)).toFixed(0)}</td><td>${p>0?'long':p<0?'short':'–'}</td><td>${r.comb[S.key].spreiding.toFixed(0)}</td>${MS.map(m=>{const v=r.pct[S.key][m];return `<td>${Math.abs(v).toFixed(0)}${v>0?' L':v<0?' S':''} <span style="color:var(--muted)">(${f(r[S.key][m],1)})</span></td>`}).join('')}${D.current_rule?`<td>${r.selected?'ja':''}</td>`:''}${mks.map(mk=>`<td>${r.moves[mk]==null?'–':f(Math.sign(p)*r.moves[mk])+'%'}</td>`).join('')}</tr>`}).join('');
 }
 draw();
 </script></main></body></html>

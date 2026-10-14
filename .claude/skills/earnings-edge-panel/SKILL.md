@@ -104,8 +104,9 @@ so the packs hold exactly the names the stage ranks.
 1. Three lines at the top: **this is stage E-P: Opus 5.5 searchers, a blind four-model
    panel, no orders**; which members ran; that one day is an anecdote.
 2. **The panel table**, every rankable name: rank, ticker, session, `selected`,
-   `panel_pct` (the mean of the four signed percentiles), its spread, each member's own
-   percentile (`*` where in its own top 20%), then `consensus_k` and the old `panel_score`,
+   `panel_pct` (0-100) and its side (long/short) in two columns, its spread, each member's
+   own percentile 0-100 with L or S (`*` where in its own top 20%), then `consensus_k` and
+   the old `panel_score`. Never print a negative percentile: the side is its own column,
    the searcher's own `impact_sum`, the **expected return at that percentile**
    (`expected_return_pct` with its 80% band and `p_right`), `weight_equal` and
    `weight_precision_tilt`. The percentile leads: every name at the same `panel_pct` has the

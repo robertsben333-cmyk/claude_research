@@ -77,9 +77,10 @@ Put a panel section directly under the ranked table:
   hunters' evidence; the panel ranks beside `impact_sum` and replaces nothing**; which
   members ran, and any fallback;
 - the panel table as `score` printed it: rank, ticker, `selected` (3 of 4 judges in their
-  own top 20%), `panel_pct` (the mean of the four judges' signed percentiles, each read
-  against that judge's own live range; since 2026-10-14 the number to report), its spread,
-  each member's percentile (`*` where in its own top 20%), `consensus_k` and the old
+  own top 20%), `panel_pct` (0-100: the size of the mean of the four judges' signed
+  percentiles, each read against that judge's own live range; since 2026-10-14 the number
+  to report) with its side (long/short) in its own column, its spread, each member's
+  percentile 0-100 with L or S (`*` where in its own top 20%), `consensus_k` and the old
   `panel_score`, and the hunter's own `impact_sum` beside it;
 - one paragraph per **selected** name: the evidence items the members' notes name, and the
   strongest case against;

@@ -106,8 +106,9 @@ def on_grid(c, x):
 
 def expected(cal, panel_pct, baseline=None):
     """What panel_score.py calls: the expected return for a percentile, its 80% band and
-    the hit rate, or None for a zero percentile. `baseline` is accepted and ignored: the
-    percentile alone decides."""
+    the hit rate, or None for a zero percentile. Pass the SIGNED value (panel_pct_signed)
+    so expected_move_pct carries the side; the 0-100 strength alone gives the same return.
+    `baseline` is accepted and ignored: the percentile alone decides."""
     if not cal or not panel_pct:
         return None
     x = abs(panel_pct)

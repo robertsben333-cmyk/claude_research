@@ -303,7 +303,7 @@ def resolve_run(run, seed):
                "score_v2": (v2.get(t) or {}).get("impact_sum_grounded"),
                "score_scaled": (v3.get(t) or {}).get("impact_scaled"),
                "score_panel": (v4.get(t) or {}).get("panel_score"),
-               "score_panel_pct": (v4.get(t) or {}).get("panel_pct"),
+               "score_panel_pct": (v4.get(t) or {}).get("panel_pct_signed"),
                "control_vol_only": (v2.get(t) or {}).get("control_vol_only")}
         # Which denominator normalised this name. The fallback to the reaction-history
         # proxy has always been here, but the anchor it used was never recorded, so a

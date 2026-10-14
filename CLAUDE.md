@@ -1169,11 +1169,15 @@ and its runs stay in the tree for history.
 **Since 2026-10-14 every panel reports each judge as a PERCENTILE of its own range, and the
 US selection is the mean of those percentiles in the top 20% (operator's instruction).**
 `pct` per member is the share of that judge's live sizes from runs dated BEFORE this one
-(`panel_score.live_reference`, the last 200) with a smaller |impact_sum|, signed; the
+(`panel_score.live_reference`, the last 200) with a smaller |impact_sum|, **reported 0-100
+with the direction apart in `side`** (operator: no negative percentiles on any report;
+`pct_signed` and `panel_pct_signed` carry side x strength for arithmetic and rank
+correlations); the
 re-judge seed is left out of that reference and only tops it up below 20 live sizes (a
 market panel tops up from stage E-P's live sizes instead, stage IPO from its own seed).
-`panel_pct` is the mean, `panel_pct_sd` the spread (recorded, decides nothing). Stage E-P
-(`edge_panel.selection: mean_pct`) selects when all members are present and |panel_pct| >= 80
+`panel_pct` is the size of the mean of the signed percentiles (a judge on the other side
+pulls it down), `side` its direction, `panel_pct_sd` the spread (recorded, decides
+nothing). Stage E-P (`edge_panel.selection: mean_pct`) selects when all members are present and panel_pct >= 80
 and ranks on `panel_pct`; the market panels keep `selection: consensus`, 3 of 4, on the
 operator's scoping. Both verdicts are on every row (`selected_mean_pct`,
 `selected_consensus`) and the old z, `panel_score` and `consensus_k` are still written, so

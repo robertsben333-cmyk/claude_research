@@ -1295,8 +1295,10 @@ def main():
               and all(r.get("expected_return_pct") is not None and r.get("p_right") is not None
                       for r in R.values() if r["panel_pct"])
               and R["CCC"]["expected_return_pct"] is None)
-        check("every member carries its own signed percentile and the old z is still written",
-              all(-100 <= x["pct"] <= 100 and "z" in x for r in R.values() for x in r["members"].values())
+        check("every member carries a 0-100 percentile with its side apart, and the old z is still written",
+              all(0 <= x["pct"] <= 100 and x["side"] in (-1, 0, 1) and "z" in x
+                  for r in R.values() for x in r["members"].values())
+              and all(0 <= r["panel_pct"] <= 100 and abs(r["panel_pct_signed"]) == r["panel_pct"] for r in R.values())
               and R["AAA"]["panel_pct"] >= 80 and R["CCC"]["panel_pct"] == 0)
     check("a dry panel run leaves the history untouched",
           added == 0 and open(panel_score.HISTORY).read() == hist_before)

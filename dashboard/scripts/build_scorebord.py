@@ -347,7 +347,9 @@ _hist, _ppct = {}, {}
 
 
 def panel_pcts(run, region):
-    """ticker -> {panel_pct, sd, full} for one panel run, recorded or computed."""
+    """ticker -> {panel_pct, sd, full} for one panel run, recorded or computed. Here
+    panel_pct is SIGNED (side x strength), for arithmetic; every display shows the 0-100
+    strength and the side apart."""
     key = (str(run), region)
     if key in _ppct:
         return _ppct[key]
@@ -355,9 +357,9 @@ def panel_pcts(run, region):
     rows = doc.get("ranking") or []
     out = {}
     present = doc.get("members_present") or list(PS.MEMBERS)
-    if rows and all("panel_pct" in r for r in rows):
+    if rows and all("panel_pct_signed" in r for r in rows):
         for r in rows:
-            out[r["ticker"]] = {"panel_pct": r["panel_pct"], "sd": r.get("panel_pct_sd"),
+            out[r["ticker"]] = {"panel_pct": r["panel_pct_signed"], "sd": r.get("panel_pct_sd"),
                                 "full": r.get("n_members") == len(present)}
     elif rows:
         path, fb = PANEL_HIST[region]
@@ -453,8 +455,8 @@ def pick_panel(run, f, model):
     for r in (load(f) or {}).get("ranking", []):
         p = pp.get(r["ticker"])
         if p and p["full"] and abs(p["panel_pct"]) >= PANEL_TOP:
-            yield dict(r, panel_pct=p["panel_pct"]), sign(p["panel_pct"]), \
-                f"panel p{abs(p['panel_pct']):.0f}"
+            yield dict(r, panel_pct=abs(p["panel_pct"])), sign(p["panel_pct"]), \
+                f"panel {abs(p['panel_pct']):.0f}"
 
 
 def pick_top(run, f, model):
@@ -488,7 +490,7 @@ for mk, v in markets.items():
             pp = panel_pcts(n["run"], mk).get(n["ticker"]) or {}
             picks.append((f"{v.get('label', mk)} · panel", sign(n.get("panel_score")),
                           f"panel {n.get('panel_consensus_k')}/4",
-                          pp.get("panel_pct", n.get("panel_score"))))
+                          abs(pp["panel_pct"]) if "panel_pct" in pp else n.get("panel_score")))
         for stage, side, why, score in picks:
             if n.get("realised_move_pct") is not None and not n.get("move_pending"):
                 resolved.append(dict(stage=stage, version=n.get("prompt_version"),
@@ -524,8 +526,8 @@ def in_week(run_date):
 
 
 def week_row(stage, version, model, ticker, company, run_date, event_date, score,
-             strong, why, move=None, live_w=None):
-    side = sign(score)
+             strong, why, move=None, live_w=None, side=None):
+    side = sign(score) if side is None else side
     if move is not None:
         state = "opgelost"
     elif live_w and live_w.get("move") is not None:
@@ -572,9 +574,10 @@ for glob_pat, stage, market, key in (
             score = r[key]
             if key == "panel_score":
                 p = panel_pcts(run, "US").get(r["ticker"]) or {}
-                score = p.get("panel_pct", 0.0)
-                strong = bool(p.get("full")) and abs(score) >= PANEL_TOP
-                why = f"p{abs(score):.0f}"
+                signed = p.get("panel_pct", 0.0)
+                score, pside = abs(signed), sign(signed)
+                strong = bool(p.get("full")) and score >= PANEL_TOP
+                why = f"panel {score:.0f}"
             else:
                 pc = pctile(run, model, score)
                 strong, why = (pc or 0) >= TOP, None if pc is None else f"p{pc:.0f}"
@@ -583,6 +586,7 @@ for glob_pat, stage, market, key in (
             mv = us_move(n) if n else None
             week_row(stage, ver, "panel" if key == "panel_score" else mshort, r["ticker"], b.get("company"), run_date,
                      b.get("event_date"), score, strong, why,
+                     side=pside if key == "panel_score" else None,
                      move=mv,
                      live_w=None if mv is not None or not recent(run_date) else us_live(
                          r["ticker"], b.get("event_date") or run_date, b.get("session")))
@@ -610,13 +614,12 @@ for mk, v in markets.items():
                      None if p is None else f"p{p:.0f}", move=move, live_w=w)
         if n.get("panel_score") is not None:
             pp = panel_pcts(n["run"], mk).get(n["ticker"]) or {}
-            pscore = pp.get("panel_pct", n["panel_score"])
-            if n.get("panel_selected") and sign(pscore) != sign(n["panel_score"]):
-                pscore = n["panel_score"]          # the consensus side decides a selected call
+            signed = pp.get("panel_pct", n["panel_score"])
+            pside = sign(n["panel_score"]) if n.get("panel_selected") else sign(signed)   # a selected call keeps the consensus side
             week_row(f"{label} · panel", n.get("prompt_version"), "panel",
                      n["ticker"], n.get("company"), n["run_date"], n.get("event_date"),
-                     pscore, bool(n.get("panel_selected")),
-                     f"panel {n.get('panel_consensus_k')}/4", move=move, live_w=w)
+                     abs(signed) if "panel_pct" in pp else n["panel_score"], bool(n.get("panel_selected")),
+                     f"panel {n.get('panel_consensus_k')}/4", move=move, live_w=w, side=pside)
 
 calls.sort(key=lambda x: (x["run_date"], x["stage"], -abs(x["score"] or 0)))
 calls.sort(key=lambda x: x["run_date"], reverse=True)
@@ -743,10 +746,10 @@ for f in sorted(glob.glob(str(ROOT / "research/*/*/*/edge-panel/edge-scores-pane
         er.pop("expected_move_pct", None)
         c = week_ep.get((r["ticker"], run_date)) or {}
         panel_names.append(dict(run_date=run_date, ticker=r["ticker"], company=c.get("company"),
-                                panel_pct=pct_, spread=p.get("sd"),
+                                panel_pct=abs(pct_), spread=p.get("sd"),
                                 selected=bool(p.get("full")) and abs(pct_) >= PANEL_TOP,
                                 side=sign(pct_), state=c.get("state"), ret=c.get("ret"), **er))
-panel_names.sort(key=lambda x: (x["run_date"], abs(x["panel_pct"])), reverse=True)
+panel_names.sort(key=lambda x: (x["run_date"], x["panel_pct"]), reverse=True)
 
 payload = {
     "built_utc": datetime.now(timezone.utc).isoformat(timespec="minutes"),

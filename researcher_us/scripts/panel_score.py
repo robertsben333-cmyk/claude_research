@@ -5,7 +5,9 @@ SINCE 2026-10-14 (operator's instruction) every member is reported as a PERCENTI
 its own range, and the US selection reads the mean of those percentiles:
 
 - `pct` per member: the share of that member's own reference sizes with a smaller
-  |impact_sum|, x 100, signed by the member's sign (a zero size is 0). "Top 10%" of
+  |impact_sum|, x 100: a STRENGTH from 0 to 100, with the member's direction beside it in
+  `side` (+1 long, -1 short, 0 no view; operator, 2026-10-14: no negative percentiles on
+  any report). `pct_signed` keeps side x pct for arithmetic. "Top 10%" of
   Opus 5 and "top 10%" of Opus 5.5 are then the same statement whatever scale each
   model sizes on, and a future model joins without rescaling the others.
 - The reference is POINT IN TIME: the member's LIVE sizes from runs dated before this
@@ -14,24 +16,26 @@ its own range, and the US selection reads the mean of those percentiles:
   it is only a fallback when fewer than MIN_REFERENCE live sizes exist, as is the US
   E-P history for a market panel that has not built its own yet
   (`reference_fallback`).
-- `panel_pct` = the mean of the members' signed percentiles; `panel_pct_sd` their
-  spread, recorded and deciding nothing (research/analyses/panel-mean-pct/: it did not
+- `panel_pct` (0-100) = the size of the mean of the members' SIGNED percentiles, so
+  members who disagree on the side pull it down; `side` is that mean's direction and
+  `panel_pct_signed` the mean itself, kept for rank correlations. `panel_pct_sd` is the
+  spread of the signed percentiles, recorded and deciding nothing (research/analyses/panel-mean-pct/: it did not
   help measurably as a gate or a penalty).
 - `selection: mean_pct` (stage E-P): selected when every member is present and
-  |panel_pct| >= 100 x (1 - selection_top_share), i.e. the mean is in the top 20%. The
-  side is the sign of panel_pct. `selection: consensus` (the market panels, unchanged):
+  panel_pct >= 100 x (1 - selection_top_share), i.e. the mean is in the top 20%, on
+  `side`. `selection: consensus` (the market panels, unchanged):
   3 of 4 members in their own top 20% on the panel's side. Both verdicts are written on
   every row (`selected_mean_pct`, `selected_consensus`) so each can be measured forward.
 - The old score is still recorded: z, panel_score, consensus_k, in_own_top.
 - `expected_return_pct` (since 2026-10-14, stage E-P only, `expected_return: calibrated`):
-  the percentile leads, and each |panel_pct| is referenced to ONE expected return on the
+  the percentile leads, and each panel_pct is referenced to ONE expected return on the
   trade, the same for every name at that percentile, read off the frozen curve in
   `researcher_us/analysis/panel-calibration.json` (panel_calibrate.py, which also holds
   the out-of-sample check). With it: an 80% band for how well that expectation is known
   and `p_right`, the hit rate at that percentile. On a selected name `expected_edge_pct`
   is now that expectation as a signed move instead of the shrunk development prior. On
   the scorebord's window, gross of costs. The curve is flat at about +0.3% below
-  |panel_pct| 50 and rises from there.
+  panel_pct 50 and rises from there.
 
 What follows is the rule as it was built on 2026-10-01, kept because every field it
 describes is still written.
@@ -181,15 +185,17 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
             if o is None: continue
             imp = num(o.get('impact_sum')) or 0.0
             mem[m] = {'impact_sum': imp, 'p_up': num(o.get('p_up')), 'abs_move_pct': num(o.get('abs_move_pct')),
-                      'pct': round(pct_of(pref[m][0], imp), 1),
+                      'pct_signed': round(pct_of(pref[m][0], imp), 1),
                       'z': imp / stats[m]['rms'], 'in_own_top': abs(imp) >= stats[m]['q80'] and imp != 0,
                       'note': o.get('note')}
         zs = [x['z'] for x in mem.values()]
-        ps = [x['pct'] for x in mem.values()]
+        for x in mem.values():
+            x['pct'], x['side'] = abs(x['pct_signed']), sgn(x['pct_signed'])
+        ps = [x['pct_signed'] for x in mem.values()]
         mu = st.mean(zs) if zs else 0.0; side = sgn(mu)
         ppct = st.mean(ps) if ps else 0.0
         rows.append({'id': i, 'ticker': i.split('/')[-1], 'members': mem, 'n_members': len(mem),
-                     'panel_pct': round(ppct, 1), 'panel_pct_sd': round(st.pstdev(ps), 1) if len(ps) > 1 else 0.0,
+                     'panel_pct': round(abs(ppct), 1), 'panel_pct_signed': round(ppct, 1), 'panel_pct_sd': round(st.pstdev(ps), 1) if len(ps) > 1 else 0.0,
                      'panel_score': st.median(zs) if zs else 0.0, 'panel_mean_z': mu,
                      'panel_sd_z': st.pstdev(zs) if len(zs) > 1 else 0.0, 'side_z': side,
                      'side_pct': sgn(ppct),
@@ -200,7 +206,7 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
     for r in rows:
         full = r['n_members'] == len(present)
         r['selected_consensus'] = r['side_z'] != 0 and full and r['consensus_k'] >= k_min
-        r['selected_mean_pct'] = r['side_pct'] != 0 and full and abs(r['panel_pct']) >= pct_min
+        r['selected_mean_pct'] = r['side_pct'] != 0 and full and r['panel_pct'] >= pct_min
         r['selected'] = r['selected_mean_pct'] if rule == 'mean_pct' else r['selected_consensus']
         r['side'] = r['side_pct'] if rule == 'mean_pct' else r['side_z']
         prec = abs(r['panel_mean_z']) / (r['panel_sd_z'] + tau)
@@ -213,7 +219,7 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
         import panel_calibrate as PC
         cal = PC.load_calibration()
     for r in rows:
-        er = PC.expected(cal, r['panel_pct']) if cal else None
+        er = PC.expected(cal, r['panel_pct_signed']) if cal else None
         r.update(er or {'expected_return_pct': None, 'expected_return_lo80': None, 'expected_return_hi80': None,
                         'p_right': None, 'expected_move_pct': None})
         if cal and r['selected']:
@@ -223,7 +229,7 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
     for r in rows:
         r['weight_precision_tilt'] = (max(0.75, min(1.25, r['precision'] / ref)) if r['selected'] and ref else 0.0)
     if rule == 'mean_pct':
-        rows.sort(key=lambda r: (not r['selected'], -abs(r['panel_pct']), r['id']))
+        rows.sort(key=lambda r: (not r['selected'], -r['panel_pct'], r['id']))
     else:
         rows.sort(key=lambda r: (not r['selected'], -r['consensus_k'], -abs(r['panel_score']), r['id']))
     for n, r in enumerate(rows, 1): r['rank'] = n
@@ -231,7 +237,7 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
            'stage': stage, 'members_present': present, 'members_missing': [m for m in MEMBERS if m not in present],
            'ranking_key': 'panel_pct' if rule == 'mean_pct' else 'panel_score',
            'selection_rule': rule,
-           'selection': (f'|panel_pct| >= {pct_min:.0f}, all {len(present)} members present' if rule == 'mean_pct'
+           'selection': (f'panel_pct >= {pct_min:.0f}, all {len(present)} members present' if rule == 'mean_pct'
                          else f'consensus_k >= {k_min} of {len(present)}'),
            'expected_return': ({'basis': 'researcher_us/analysis/panel-calibration.json',
                                 'fitted_utc': cal.get('generated_utc'), 'sample': cal.get('sample'),
@@ -242,9 +248,10 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
                                     for m in present},
            'live_weight': 'weight_equal', 'frozen_variant_weights': ['weight_precision_tilt'],
            'member_reference': {m: stats[m] for m in present}, 'tau': tau,
-           'note': ('Each member is reported as a signed percentile of its own live range (pct); '
-                    'panel_pct is their mean and panel_pct_sd their spread. '
-                    + ('The selection is |panel_pct| in the top 20%. ' if rule == 'mean_pct' else
+           'note': ('Each member is reported as a percentile of its own live range, 0-100 (pct), with '
+                    'its direction in side; panel_pct (0-100) is the size of the mean of the signed '
+                    'percentiles and side its direction; panel_pct_sd their spread. '
+                    + ('The selection is panel_pct in the top 20%. ' if rule == 'mean_pct' else
                        'The selection is 3 of 4 members in their own top 20% (consensus_k). ')
                     + 'panel_score is the signed median of the members\' sizes, each read against its own '
                     'recent history. consensus_k counts members that put the name in their own top 20% '
@@ -254,6 +261,7 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
            'ranking': rows}
     # ticker-keyed copy for edge_resolve.py, which ranks this beside the key
     out['ranking_by_ticker'] = [{'ticker': r['ticker'], 'panel_score': r['panel_score'], 'panel_pct': r['panel_pct'],
+                                 'panel_pct_signed': r['panel_pct_signed'], 'side': r['side'],
                                  'panel_selected': r['selected'], 'consensus_k': r['consensus_k']} for r in rows]
     json.dump(out, open(run / 'edge-scores-panel.json', 'w'), indent=1)
     added = 0
@@ -290,18 +298,19 @@ def print_table(out, sess):
           + f"  (live sizes before {next(iter(ref.values()), {}).get('before')}, "
           + ', '.join(f"{m} n={v['n']} {v['basis']}" for m, v in ref.items()) + ')')
     er = out.get('expected_return')
-    print(f"{'rank':>4s} {'ticker':8s} {'session':7s} {'sel':3s} {'pct':>5s} {'sd':>4s}  {'members (own percentile)':44s} "
+    print(f"{'rank':>4s} {'ticker':8s} {'session':7s} {'sel':3s} {'pct':>3s} {'side':5s} {'sd':>4s}  {'members (own percentile, L/S)':44s} "
           f"{'k':>2s} {'score':>6s}" + ('  E[return] at this pct (80% band)  P(right)' if er else ''))
     for r in out['ranking']:
-        pp = ' '.join(f"{m}:{x['pct']:+4.0f}{'*' if abs(x['pct']) >= 80 else ' '}" for m, x in r['members'].items())
+        pp = ' '.join(f"{m}:{x['pct']:3.0f}{'L' if x['side'] > 0 else 'S' if x['side'] < 0 else '-'}"
+                      f"{'*' if x['pct'] >= 80 else ' '}" for m, x in r['members'].items())
         e = ''
         if er and r.get('expected_return_pct') is not None:
             e = (f"  {r['expected_return_pct']:+5.2f}% [{r['expected_return_lo80']:+.2f}, {r['expected_return_hi80']:+.2f}]"
                  f"           {r['p_right']:.2f}")
         print(f"{r['rank']:4d} {r['ticker']:8s} {sess.get(r['ticker'], 'n/a'):7s} {'yes' if r['selected'] else '':3s} "
-              f"{r['panel_pct']:+5.0f} {r['panel_pct_sd']:4.0f}  {pp:44s} {r['consensus_k']:2d} {r['panel_score']:+6.2f}{e}")
+              f"{r['panel_pct']:3.0f} {'long' if r['side'] > 0 else 'short' if r['side'] < 0 else '-':5s} {r['panel_pct_sd']:4.0f}  {pp:44s} {r['consensus_k']:2d} {r['panel_score']:+6.2f}{e}")
     if er:
-        print(f"E[return]: what a name at this |panel_pct| has earned on the panel's side (one number per "
+        print(f"E[return]: what a name at this panel_pct has earned on the panel's side (one number per "
               f"percentile, scorebord window, gross); curve fitted {er['fitted_utc']} on "
               f"{er['sample']['panel_names']} resolved panel names.")
 

@@ -223,7 +223,8 @@ def collect_run(run, spec, problems):
                              else (impact > 0) == (move > 0))
         pn = panel.get(tk) or {}
         row["panel_score"] = rd(pn.get("panel_score"), 3)
-        row["panel_pct"] = pn.get("panel_pct")
+        row["panel_pct"] = pn.get("panel_pct")              # 0-100, direction in panel_side
+        row["panel_side"] = pn.get("side") if pn.get("panel_pct") is not None else None
         row["panel_selected"] = pn.get("selected")
         row["panel_consensus_k"] = pn.get("consensus_k")
         rows.append(row)

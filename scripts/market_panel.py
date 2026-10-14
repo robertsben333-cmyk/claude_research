@@ -322,7 +322,7 @@ def resolve_rows(market, run):
                 or r.get("rankable") is False:
             continue
         p, k = panel[t], key.get(t) or {}
-        rows.append({"ticker": t, "move_pct": mv, "panel_score": p["panel_score"], "panel_pct": p.get("panel_pct"),
+        rows.append({"ticker": t, "move_pct": mv, "panel_score": p["panel_score"], "panel_pct": p.get("panel_pct_signed"),
                      "panel_selected": p["selected"], "consensus_k": p["consensus_k"],
                      "side": p["side"], "impact_sum": k.get("impact_sum") or 0.0,
                      "above_floor": floor is not None and abs(k.get("impact_sum") or 0.0) >= floor})
