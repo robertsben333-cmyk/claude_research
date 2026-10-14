@@ -631,6 +631,31 @@ by_agent = {}
 for c in calls:
     if c["version"] and c["version"] != "onbekend":
         by_agent.setdefault((c["stage"], c["version"], c["model"] or "?"), []).append(c)
+# The second meaning of "strong" (Xavier, 2026-10-14): a call whose |score| is in the
+# top 20% of that agent's OWN calls (one stage, one prompt version, one model), instead
+# of the top 20% of a model-wide reference. The cut is the 80th percentile of the
+# agent's nonzero |scores| over all its calls, so it uses later scores but never an
+# outcome; an agent with fewer than OWN_MIN calls has no cut. The page picks the meaning.
+OWN_MIN = 5
+
+
+def p80(xs):
+    xs = sorted(xs)
+    k = 0.8 * (len(xs) - 1)
+    lo = int(k)
+    return xs[lo] + (xs[min(lo + 1, len(xs) - 1)] - xs[lo]) * (k - lo)
+
+
+own_cut = {}
+for c in calls:
+    c["own"] = False
+for key, rows in by_agent.items():
+    sc = [abs(r["score"]) for r in rows if r["score"] and r["side"]]
+    if len(sc) >= OWN_MIN:
+        own_cut[key] = cut = p80(sc)
+        for r in rows:
+            r["own"] = bool(r["score"] and r["side"]) and abs(r["score"]) >= cut - 1e-9
+
 agents = []
 for (stage, ver, model), rows in by_agent.items():
     done = [r for r in rows if r["state"] == "opgelost" and r["ret"] is not None]
@@ -638,6 +663,9 @@ for (stage, ver, model), rows in by_agent.items():
                        last=rows[0]["run_date"], first=rows[-1]["run_date"],
                        all=summarise([r["ret"] for r in done]),
                        strong=summarise([r["ret"] for r in done if r["strong"]]),
+                       own=summarise([r["ret"] for r in done if r["own"]]),
+                       own_cut=None if (stage, ver, model) not in own_cut
+                       else round(own_cut[(stage, ver, model)], 2),
                        calls=rows))
 agents.sort(key=lambda a: (a["stage"], a["last"]))
 
@@ -719,6 +747,22 @@ for x in live:
     x["end_day"] = (w or {}).get("end_day")
     x["score"] = None if x["score"] is None else round(x["score"], 2)
 
+# The same three blocks under the agent's own top 20%.
+groups_own = {}
+for c in calls:
+    if c["own"] and c["state"] == "opgelost" and c["ret"] is not None:
+        groups_own.setdefault((c["stage"], c["version"], c["model"] or "?"), []).append(c)
+table_own = []
+for (stage, ver, model), rows in groups_own.items():
+    s = summarise([r["ret"] for r in rows])
+    s.update(stage=stage, version=ver, model=model, last=max(r["run_date"] for r in rows))
+    table_own.append(s)
+table_own.sort(key=lambda s: (s["stage"], s["last"]))
+live_own = [dict(c, why=(c["why"] or "") + " · eigen top 20%") for c in calls
+            if c["own"] and c["state"] not in ("opgelost", "niet opgelost")]
+live_own.sort(key=lambda x: (x["state"] != "loopt", x["stage"], x["ticker"]))
+n_resolved_own = sum(len(v) for v in groups_own.values())
+
 # ---------------------------------------------------------------- the panel tab
 CAL = PC.load_calibration()
 calibration = None
@@ -757,6 +801,7 @@ payload = {
     "live": sorted(live, key=lambda x: (x["state"] != "loopt", x["stage"], x["ticker"])),
     "table": table,
     "n_resolved": len(resolved),
+    "own": {"live": live_own, "table": table_own, "n_resolved": n_resolved_own, "min_calls": OWN_MIN},
     "week": week,
     "agents": agents,
     "week_days": WEEK_DAYS,
