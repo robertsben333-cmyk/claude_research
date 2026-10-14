@@ -1,46 +1,57 @@
-# Het panel in procenten: betalen de hoogste scores? (oktober, per regio)
+# Het panel per eigen top: betalen de hoogste scores? (oktober, per regio)
 
 **Vraag (operator, 2026-10-14).** Laat de 3-van-4-regel voor deze lezing los en stel de
-vaste vraag: als we elke naam boven een drempel handelen, wat levert dat op en hoeveel
-namen zijn dat? Werk in procenten, zodat het getal direct leesbaar is en een toekomstig
-model erbij kan zonder de andere te herschalen. Doe het voor elke regio.
+vaste vraag: betalen de hoogste scores, en hoeveel namen zijn dat? "Top 10%" is per model
+de eigen top 10%: bij Opus 5 kan dat bij 1,8 beginnen, bij Opus 5.5 bij 0,9. Zo weegt elk
+model eerlijk mee, op welke schaal het ook scoort, en kan een nieuw model erbij zonder de
+andere te herschalen. Doe het voor `impact_sum` en `impact_scaled`, en voor elke regio.
+VS: alleen de strategie-exit, met instap om 19:30 CET en op de slotkoers.
 
-**Methode.** `panel_mean_pct.py`. Een rechter geeft al een percentage terug:
-impact_sum = (2 × p_up / 100 − 1) × abs_move_pct, de verwachte beweging met teken in
-procent van de koers (`config/panel-judge.md`). Per naam wordt het gemiddelde van de vier
-genomen zoals ze het geven, zonder schaling, fit of historie. Alleen oktober: de
-Opus 5.5-zoektochten van september tellen niet mee. VS: stage E-P, beweging close tot
-close en strategie-exit uit `dashboard/data/ledger.json`. Andere regio's: het panel dat de
-marktstages sinds 2026-10-08 draaien, in het eigen venster van elke markt. Japan 10-13 en
-Europa 10-12 zijn voor deze analyse opgelost en staan in `resolved/`, niet in de dagmap.
-`build_chart.py` maakt `panel-mean-pct.html`, met een tab per regio.
+**Methode.** `panel_mean_pct.py`.
 
-**Waarom niet per model omgerekend.** De voor de hand liggende kalibratie (de beweging die
-een model verwacht naast de werkelijke) verandert niets: alle vier schatten de beweging
-even groot in (VS mediaan 7 tot 8%, Japan 3,5 tot 4,5%). Het verschil tussen de modellen
-zit in `p_up`, hoe zeker ze zijn: Opus 5 is twee keer zo zeker als Sonnet 5.5. Een
-omrekening die dat gelijktrekt heeft het teken van de uitkomst nodig (κ, gerealiseerde
-beweging per gesteld procentpunt). Die staat per model in de JSON en op de pagina, maar
-wordt nergens voor gebruikt: op 35 en 50 namen is hij ruis. Hij ligt nu voor bijna elk
-model tussen 1,5 en 2,1, dus de modellen zijn in procenten eerder te voorzichtig dan te
-stellig.
+- Per regio en per model is de referentie elke oktobernaam die dat model in die regio
+  beoordeelde, opgelost of niet; er gaat geen uitkomst in. Het percentiel van een naam is
+  het aandeel van die referentie met een kleinere |score|, × 100 (score 0 telt als 0),
+  met het teken van het model.
+- Het panel is het gemiddelde van de vier percentielen. "Top X%" zijn de namen met een
+  |gemiddelde| van 100 − X of hoger, gehandeld op het teken, gelijk gewogen, bruto. Elk
+  model wordt ook los zo berekend.
+- `impact_sum` zoals de rechter hem schreef; `impact_scaled` = (2 × p_up / 100 − 1) ×
+  abs_move_pct, opnieuw berekend zoals `edge_score.py` dat doet. De VS-rechters moeten die
+  twee gelijk houden (`config/panel-judge.md`), dus daar vallen ze vrijwel samen; in Japan
+  verschillen ze.
+- VS: stage E-P. Strategie-exit uit `dashboard/data/ledger.json` (`px.strategy`: amc op
+  de openingsprint, bmo om 20:00 CET), vanaf twee instappen: 19:30 CET (`enpx['1330']`) en
+  de slotkoers voor de cijfers (`mv_strategy`).
+- Andere regio's: het panel dat de marktstages sinds 2026-10-08 draaien, in het eigen
+  venster van elke markt. Daar bestaan geen strategie-exit en geen instap om 19:30. Japan
+  10-13 en Europa 10-12 zijn voor deze analyse opgelost en staan in `resolved/`, niet in
+  de dagmap.
+- Alleen oktober: de Opus 5.5-zoektochten van september tellen niet mee.
 
-**Resultaat.**
+`build_chart.py` maakt `panel-mean-pct.html`, met knoppen voor regio, score en losse
+modellen.
 
-| drempel \|gem.\| | VS namen | VS rendement | Japan namen | Japan rendement |
-|---|---|---|---|---|
-| 0% (alles) | 35 | +2.04% (se 1.23) | 50 | +1.99% (se 1.09) |
-| 0,5% | 23 | +3.38% (se 1.45) | 24 | +2.89% (se 1.42) |
-| 1,0% | 11 | +3.33% (se 2.49) | 12 | +1.32% (se 2.02) |
-| 1,5% | 7 | +4.73% (se 2.39) | 6 | +4.37% (se 3.01) |
-| 2,0% | 4 | +5.69% (se 4.03) | 5 | +1.96% (se 2.22) |
+**Resultaat, `impact_sum`.**
 
-Alles shorten zonder onderzoek: VS +1.17%, Japan −0.38%. Europa, Australië en Canada
-hebben nog geen opgeloste panelnaam (Europa 1, Canada 0).
+| top | VS namen | VS instap 19:30 | VS instap slot | Japan namen | Japan |
+|---|---|---|---|---|---|
+| 10% | 4 | +10.15% (4/4 goed) | +6.58% | 5 | +1.96% |
+| 20% | 7 | +7.24% (6/7) | +4.92% | 8 | +1.94% |
+| 30% | 11 | +5.56% | +3.80% | 14 | +1.24% |
+| 50% | 17 | +5.02% | +3.97% | 21 | +2.56% |
+| alles | 35 | +2.63% | +2.14% | 50 | +1.99% |
 
-**Wat het niet laat zien.** De VS zijn zes dagen, Japan twee. Boven 1% rust elk punt op
-twaalf namen of minder en valt de band over de lijn van alles shorten. De curve is over
-alle drempels gelezen, dus het beste punt is het optimistische. Bruto, zonder kosten.
+Alles shorten zonder onderzoek: VS +0.12% (19:30) en +0.53% (slot), Japan −0.38%. De
+huidige 3-van-4-regel: VS 5 namen, +9.50% (19:30); Japan 4 namen, +2.17%. `impact_scaled`
+geeft in de VS bijna hetzelfde (top 20%: 6 namen, +7.78%) en in Japan wat meer in de top
+20% (+3.84%).
+
+**Wat het niet laat zien.** De VS zijn zes dagen en 35 namen, Japan twee dagen. De top 10%
+en 20% rusten op vier tot acht namen; de band is breed. In de VS loopt het rendement netjes
+op naar de top, in Japan niet. De curve is over alle drempels gelezen, dus het beste punt
+is het optimistische. De percentielen komen uit dezelfde oktobernamen en schuiven als er
+dagen bijkomen. Bruto, zonder kosten.
 
   python3 research/analyses/panel-mean-pct/panel_mean_pct.py
   python3 research/analyses/panel-mean-pct/build_chart.py

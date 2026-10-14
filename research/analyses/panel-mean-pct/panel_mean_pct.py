@@ -1,44 +1,47 @@
 #!/usr/bin/env python3
-"""The four-model panel in %, October only: do the highest average expected moves pay?
+"""The four-model panel in each model's OWN percentiles, October only, per region.
 
-Operator's question (2026-10-14): drop the 3-of-4 rule for this read and ask the usual
-thing, whether the HIGHEST scores pay, with every number in % so that it reads directly
-and a future model can be added without re-scaling the others.
+Operator's design (2026-10-14): "10%" means the names in a model's own top 10%. The
+threshold is the model's, not a shared number: Opus 5's top 10% might start at 1.8 and
+Opus 5.5's at 0.9. That weighs the models fairly whatever scale each one sizes on, and a
+future model joins without rescaling anyone else.
 
-What a judge returns is already a percentage: impact_sum = (2 x p_up / 100 - 1) x
-abs_move_pct, the expected signed move in % of spot (config/panel-judge.md). The four are
-averaged per name as stated (`pct_stated`), with no fitting and no history, so a new model
-adds its own number without changing anyone else's.
+Per region and per model, the reference is every October panel name that model judged in
+that region, resolved or not; no outcome is used. A name's percentile for a model is the
+share of that reference with a smaller |size|, x 100 (a zero size scores 0), signed by
+the model's sign. The panel's number is the mean of the four signed percentiles, so a
+name every judge puts at its 95th percentile on the same side reads 95, and a name the
+judges split on reads near zero. "Top X%" is every name with |mean| >= 100 - X, traded on
+the sign of the mean, equal weight, gross. Each model on its own is computed the same way
+for comparison.
 
-Two diagnostics are written per region, neither used to rank:
-- `k_magnitude` = median |realised move| / the model's median abs_move_pct. It tests
-  whether the models disagree about how BIG a move is. In October they do not (US 7-8%
-  for all four, Japan 3.5-4.5%), so this calibration moves every model alike and cannot
-  balance them: the difference between the models is in p_up, how sure they are.
-- `kappa` = realised move per stated point, a through-origin slope on the signed outcome.
-  This is the only per-model % calibration that would balance them, and it needs the sign
-  of the outcome, so on a few dozen names it is in sample and noisy. Measure it forward;
-  use it only once a region has enough resolved names to freeze it.
+Done twice: on `impact_sum` as the judge wrote it, and on `impact_scaled` =
+(2 x p_up / 100 - 1) x abs_move_pct, recomputed from the judge's two inputs as
+edge_score.py does. The US judges are told to make the two equal (config/panel-judge.md),
+so there they mostly coincide; the market judges are not, and in Japan they differ.
 
-For every threshold x: every resolved name with |average| >= x, traded on the sign of the
-average, equal weight, gross. US: stage E-P runs, the dashboard ledger's close-to-close
-move (`mv_close`) and strategy exit. Other regions: the four-model panel the market stages
-run since 2026-10-08, each market's own resolver window. September Opus 5.5 hunts are out
-on the operator's instruction; every run read here is October, after the shared core.
+US (operator, 2026-10-14): the strategy exit only (amc at the next opening print, bmo
+at 20:00 CET, the ledger's `px.strategy`), from two entries: 19:30 CET (13:30 ET, the
+ledger's half-hour price `enpx['1330']`) and the close before the print (`mv_strategy`).
+Other regions have no strategy exit and no 19:30 entry: the panel the market stages run
+since 2026-10-08, in each market's own resolver window. September Opus 5.5 hunts are out on the operator's instruction: every run read
+here is October, after the shared core.
 
   python3 research/analyses/panel-mean-pct/panel_mean_pct.py
 """
-import glob, json, statistics as st
+import bisect, glob, json, statistics as st
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 OUT = Path(__file__).resolve().parent
 MEMBERS = ('opus5', 'opus55', 'sonnet55', 'fable51')
+KEYS = ('impact_sum', 'impact_scaled')
+TOPS = list(range(5, 101, 5))
 REGIONS = {  # dir under research/<Y>/<M>/<D>/, the market resolver's file, label
-    'US': ('edge-panel', None, 'United States (stage E-P)'),
-    'EU': ('europe', 'eu-resolved.json', 'Europe (10 markets)'),
+    'US': ('edge-panel', None, 'Verenigde Staten (stage E-P)'),
+    'EU': ('europe', 'eu-resolved.json', 'Europa (10 markten)'),
     'JP': ('japan', 'jp-resolved.json', 'Japan'),
-    'AU': ('australia', 'au-resolved.json', 'Australia'),
+    'AU': ('australia', 'au-resolved.json', 'Australië'),
     'CA': ('canada', 'canada-resolved.json', 'Canada'),
 }
 
@@ -65,6 +68,11 @@ def market_moves(run, fname, region, date):
     return {}
 
 
+def scaled(x):
+    p, a = x.get('p_up'), x.get('abs_move_pct')
+    return None if p is None or a is None else (2 * p / 100 - 1) * a
+
+
 def load_region(region, led):
     sub, fname, _ = REGIONS[region]
     names = []
@@ -77,36 +85,41 @@ def load_region(region, led):
             if not all(m in r['members'] for m in MEMBERS): continue
             if region == 'US':
                 l = led.get((date, r['ticker'])) or {}
-                move, strat = l.get('mv_close'), l.get('mv_strategy')
+                e, x = (l.get('enpx') or {}).get('1330'), (l.get('px') or {}).get('strategy')
+                moves = {'e1930': (x / e - 1) * 100 if e and x and not l.get('pending') else None,
+                         'e2200': None if l.get('pending') else l.get('mv_strategy')}
             else:
-                move, strat = mv.get(r['ticker']), None
+                moves = {'market': mv.get(r['ticker'])}
+            mem = r['members']
             names.append({'date': date, 'ticker': r['ticker'], 'selected': r['selected'],
-                          'stated': {m: r['members'][m]['impact_sum'] for m in MEMBERS},
-                          'abs_move': {m: r['members'][m].get('abs_move_pct') for m in MEMBERS},
-                          'move': move, 'move_strategy': strat})
+                          'impact_sum': {m: mem[m]['impact_sum'] for m in MEMBERS},
+                          'impact_scaled': {m: scaled(mem[m]) for m in MEMBERS},
+                          'moves': moves})
     return names
 
 
-def curve_of(res, key):
-    out = []
-    for x in sorted({abs(r[key]) for r in res}):
-        v = [r for r in res if abs(r[key]) >= x]
-        s = [sgn(r[key]) * r['move'] for r in v]
-        s2 = [sgn(r[key]) * r['move_strategy'] for r in v if r['move_strategy'] is not None]
-        out.append({'x': round(x, 3), 'n': len(v), 'days': len({r['date'] for r in v}),
-                    'mean': st.mean(s), 'se': st.stdev(s) / len(s) ** .5 if len(s) > 1 else None,
-                    'hit': sum(y > 0 for y in s) / len(s),
-                    'mean_strategy': st.mean(s2) if s2 else None})
-    return out
+def pct(ref_sorted, v):
+    """share of the reference with a smaller |size|, x 100; a zero size scores 0."""
+    if v is None or v == 0: return 0.0
+    return 100.0 * bisect.bisect_left(ref_sorted, abs(v)) / len(ref_sorted)
+
+
+def book(res, score, top, mk):
+    v = [r for r in res if r['moves'].get(mk) is not None and score(r) and abs(score(r)) >= 100 - top]
+    if not v: return None
+    s = [sgn(score(r)) * r['moves'][mk] for r in v]
+    return {'top': top, 'n': len(v), 'days': len({r['date'] for r in v}), 'mean': st.mean(s),
+            'se': st.stdev(s) / len(s) ** .5 if len(s) > 1 else None, 'hit': sum(y > 0 for y in s) / len(s)}
 
 
 def main():
     L = json.load(open(REPO / 'dashboard/data/ledger.json'))
     led = {(n['run_date'], n['ticker']): n for n in L['names']}
-    doc = {'generated_from': 'research/2026/10/*, October only', 'regions': {}}
+    doc = {'generated_from': 'research/2026/10/*, October only', 'tops': TOPS, 'regions': {}}
     for region in REGIONS:
         names = load_region(region, led)
-        res = [n for n in names if n['move'] is not None]
+        mkeys = list(names[0]['moves']) if names else []
+        res = [n for n in names if any(v is not None for v in n['moves'].values())]
         R = {'label': REGIONS[region][2], 'names': len(names), 'resolved': len(res),
              'days': sorted({n['date'] for n in res})}
         if len(res) < 5:
@@ -114,35 +127,38 @@ def main():
             doc['regions'][region] = R
             print(f"{region}: {len(names)} panel names, {len(res)} resolved, skipped")
             continue
-        real = st.median(abs(n['move']) for n in res)
-        k = {}
-        for m in MEMBERS:
-            am = [n['abs_move'][m] for n in res if n['abs_move'][m]]
-            k[m] = real / st.median(am) if am else None
-        for n in names:
-            n['pct_stated'] = round(st.mean(n['stated'].values()), 3)
-        res = [n for n in res if n['pct_stated'] != 0]
-        kappa = {m: sum(n['stated'][m] * n['move'] for n in res) / (sum(n['stated'][m] ** 2 for n in res) or 1)
-                 for m in MEMBERS}
-        sel = [sgn(n['pct_stated']) * n['move'] for n in res if n['selected']]
-        R.update({'median_abs_realised_move': real,
-                  'model_median_abs_move_pct': {m: st.median(n['abs_move'][m] for n in res if n['abs_move'][m]) for m in MEMBERS},
-                  'k_magnitude': k, 'kappa': kappa,
-                  'model_median_abs_stated': {m: st.median(abs(n['stated'][m]) for n in res) for m in MEMBERS},
-                  'all_names_short': st.mean(-n['move'] for n in res),
-                  'current_rule': {'n': len(sel), 'mean': st.mean(sel) if sel else None},
-                  'curve': curve_of(res, 'pct_stated'),
-                  'rows': [{kk: n[kk] for kk in ('date', 'ticker', 'selected', 'stated', 'abs_move',
-                                                  'pct_stated', 'move', 'move_strategy')} for n in res]})
+        R['move_keys'] = mkeys
+        R['all_names_short'], R['current_rule'] = {}, {}
+        for mk in mkeys:
+            v = [n for n in res if n['moves'][mk] is not None]
+            sel = [sgn(sum(n['impact_sum'].values())) * n['moves'][mk] for n in v if n['selected']]
+            R['all_names_short'][mk] = st.mean(-n['moves'][mk] for n in v)
+            R['current_rule'][mk] = {'n': len(sel), 'mean': st.mean(sel) if sel else None}
+            print(f"\n{region} [{mk}]: {len(names)} panel names (the percentile reference), {len(v)} resolved over "
+                  f"{len({n['date'] for n in v})} days; short every name {R['all_names_short'][mk]:+.2f}%; 3-of-4 rule "
+                  f"{len(sel)} names" + (f" {R['current_rule'][mk]['mean']:+.2f}%" if sel else ''))
+        for key in KEYS:
+            ref = {m: sorted(abs(n[key][m]) for n in names if n[key][m] is not None) for m in MEMBERS}
+            thr = {m: {t: ref[m][min(len(ref[m]) - 1, int(len(ref[m]) * (1 - t / 100)))] for t in (10, 20, 30)}
+                   for m in MEMBERS}
+            for n in names:
+                n.setdefault('pct', {})[key] = {m: round(sgn(n[key][m] or 0) * pct(ref[m], n[key][m]), 1) for m in MEMBERS}
+                n.setdefault('panel', {})[key] = round(st.mean(n['pct'][key].values()), 1)
+            K = {'threshold_at_top': thr, 'panel': {}, 'models': {}}
+            for mk in mkeys:
+                K['panel'][mk] = [b for t in TOPS if (b := book(res, lambda r: r['panel'][key], t, mk))]
+                K['models'][mk] = {m: [b for t in TOPS if (b := book(res, lambda r, m=m: r['pct'][key][m], t, mk))]
+                                   for m in MEMBERS}
+            R[key] = K
+            print(f"  {key}: own top-10% threshold " + ', '.join(f"{m} {thr[m][10]:.2f}" for m in MEMBERS))
+            for mk in mkeys:
+                for b in K['panel'][mk]:
+                    if b['top'] in (10, 20, 30, 50, 100):
+                        print(f"    [{mk}] top {b['top']:3d}%  n {b['n']:2d} ({b['days']} d)  {b['mean']:+6.2f}%"
+                              f"  se {b['se'] or 0:4.2f}  right {b['hit']:.0%}")
+        R['rows'] = [{k: n[k] for k in ('date', 'ticker', 'selected', 'impact_sum', 'impact_scaled', 'pct',
+                                        'panel', 'moves')} for n in res]
         doc['regions'][region] = R
-        print(f"\n{region}: {len(names)} panel names, {len(res)} resolved over {len(R['days'])} days; "
-              f"median |move| {real:.2f}%; kappa " + ', '.join(f"{m} {v:.2f}" for m, v in kappa.items())
-              + f"; short every name {R['all_names_short']:+.2f}%; 3-of-4 rule n {len(sel)}"
-              + (f" {R['current_rule']['mean']:+.2f}%" if sel else ''))
-        for p in R['curve']:
-            if p['n'] == len(res) or p['n'] % 5 == 0 or p['n'] <= 3:
-                print(f"    |avg| >= {p['x']:5.2f}%  n {p['n']:2d} ({p['days']} d)  {p['mean']:+6.2f}%"
-                      f"  se {p['se'] or 0:4.2f}  right {p['hit']:.0%}")
     json.dump(doc, open(OUT / 'panel-mean-pct.json', 'w'), indent=1)
 
 

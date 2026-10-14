@@ -1,95 +1,104 @@
 <!doctype html>
 <html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Panel in procenten</title>
+<title>Panel per eigen top</title>
 <style>
-:root{--surface:#fcfcfb;--text:#0b0b0b;--text2:#52514e;--muted:#8a8984;--grid:#e6e5e1;--s1:#2a78d6;--s2:#eb6834;--band:rgba(42,120,214,.14);--chip:#efeeea}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#8f8e86;--grid:#2e2e2c;--s1:#3987e5;--s2:#d95926;--band:rgba(57,135,229,.20);--chip:#262624}}
-:root[data-theme="dark"]{--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#8f8e86;--grid:#2e2e2c;--s1:#3987e5;--s2:#d95926;--band:rgba(57,135,229,.20);--chip:#262624}
+:root{--surface:#fcfcfb;--text:#0b0b0b;--text2:#52514e;--muted:#8a8984;--grid:#e6e5e1;--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#6250d6;--band:rgba(42,120,214,.13);--chip:#efeeea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#8f8e86;--grid:#2e2e2c;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#9085e9;--band:rgba(57,135,229,.20);--chip:#262624}}
+:root[data-theme="dark"]{--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--muted:#8f8e86;--grid:#2e2e2c;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#9085e9;--band:rgba(57,135,229,.20);--chip:#262624}
 body{margin:0;background:var(--surface);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
 main{max-width:980px;margin:0 auto;padding:20px 16px 40px}
 h1{font-size:20px;margin:0 0 4px}h2{font-size:15px;margin:22px 0 6px}
 p{color:var(--text2);margin:4px 0}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 6px}
-.tabs button{font:inherit;border:1px solid var(--grid);background:var(--chip);color:var(--text);border-radius:6px;padding:5px 12px;cursor:pointer}
-.tabs button[aria-pressed="true"]{background:var(--s1);border-color:var(--s1);color:#fff}
-.tabs button:disabled{opacity:.45;cursor:default}
-.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
-.kpi{border:1px solid var(--grid);border-radius:8px;padding:8px 12px;min-width:150px}
-.kpi b{display:block;font-size:18px;color:var(--text)}.kpi span{font-size:12px;color:var(--text2)}
-.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--text2);margin:8px 0}
+.bar{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px;align-items:center}
+.bar .lab{font-size:12px;color:var(--text2);margin-right:4px;min-width:64px}
+.bar button{font:inherit;font-size:13px;border:1px solid var(--grid);background:var(--chip);color:var(--text);border-radius:6px;padding:4px 11px;cursor:pointer}
+.bar button[aria-pressed="true"]{background:var(--s1);border-color:var(--s1);color:#fff}
+.bar button:disabled{opacity:.45;cursor:default}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.kpi{border:1px solid var(--grid);border-radius:8px;padding:8px 12px;min-width:140px}
+.kpi b{display:block;font-size:18px}.kpi span{font-size:12px;color:var(--text2)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--text2);margin:8px 0}
 .sw{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
 svg{width:100%;height:auto;display:block;overflow:visible}
 .ax text{fill:var(--muted);font-size:11px}.ax line{stroke:var(--grid)}
-#tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--grid);border-radius:6px;padding:8px 10px;font-size:12px;box-shadow:0 2px 10px rgba(0,0,0,.15);display:none;color:var(--text)}
+#tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--grid);border-radius:6px;padding:8px 10px;font-size:12px;box-shadow:0 2px 10px rgba(0,0,0,.15);display:none;color:var(--text);max-width:260px}
 table{border-collapse:collapse;width:100%;font-size:12.5px;font-variant-numeric:tabular-nums}
 th,td{padding:4px 6px;white-space:nowrap;border-bottom:1px solid var(--grid);text-align:right}th{color:var(--text2);font-weight:600}
 td:nth-child(-n+2),th:nth-child(-n+2){text-align:left}
 .wrap{overflow-x:auto}
 </style></head><body><main>
-<h1>Het panel in procenten: betalen de hoogste scores?</h1>
-<p>Per naam het gemiddelde van de vier rechters (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1), elk in hun eigen verwachte beweging in procent: (2 × p_up − 1) × abs_move_pct. Niets geschaald of gefit. Per drempel: elke naam met een |gemiddelde| op of boven de drempel, gehandeld op het teken, gelijk gewogen, bruto. Alleen oktober; de Opus 5.5-zoektochten van september tellen niet mee.</p>
-<div class="tabs" id="tabs"></div>
+<h1>Het panel per eigen top: betalen de hoogste scores?</h1>
+<p>Elk model krijgt zijn eigen drempel. Per model telt waar een naam valt in de eigen verdeling van dat model (alle oktobernamen in die regio, zonder uitkomsten), met het teken van het model. Het panel is het gemiddelde van die vier percentielen; "top 10%" zijn de namen met een gemiddelde van 90 of hoger. Gehandeld op het teken, gelijk gewogen, bruto. Alleen oktober; de Opus 5.5-zoektochten van september tellen niet mee.</p>
+<div class="bar" id="regions"><span class="lab">Regio</span></div>
+<div class="bar" id="keys"><span class="lab">Score</span></div>
+<div class="bar" id="mode"><span class="lab">Lijnen</span></div>
 <div class="kpis" id="kpis"></div>
 <div class="legend" id="legend"></div>
-<svg id="ret" viewBox="0 0 900 330" role="img" aria-label="Gemiddeld rendement per trade per drempel"></svg>
-<h2>Aantal namen per drempel</h2>
-<svg id="cnt" viewBox="0 0 900 170" role="img" aria-label="Aantal namen per drempel"></svg>
-<h2>Per model: hoe groot en hoe zeker</h2>
-<div class="wrap"><table id="models"></table></div>
-<p style="font-size:12.5px">De modellen schatten de beweging even groot in; ze verschillen in zekerheid. κ is de gerealiseerde beweging per gestelde procentpunt (helling door de oorsprong, op de uitkomst zelf): boven 1 betekent dat het model te voorzichtig is. Op deze aantallen is κ ruis en wordt hij nergens voor gebruikt.</p>
+<svg id="ret" viewBox="0 0 900 330" role="img" aria-label="Rendement per trade per top-percentage"></svg>
+<h2>Aantal namen per top-percentage</h2>
+<svg id="cnt" viewBox="0 0 900 160" role="img" aria-label="Aantal namen per top-percentage"></svg>
+<h2>Waar de eigen top van elk model begint</h2>
+<div class="wrap"><table id="thr"></table></div>
 <h2>De namen</h2>
 <div class="wrap"><table id="tbl"></table></div>
 <p style="margin-top:14px">Bruto, zonder kosten. Onderzoek, geen beleggingsadvies.</p>
 <div id="tip"></div>
 <script>
-const ALL=__DATA__, W=900, L=56, R=20, MS=['opus5','opus55','sonnet55','fable51'];
+const ALL=__DATA__, TOPS=__TOPS__, W=900, L=56, R=20, MS=['opus5','opus55','sonnet55','fable51'];
 const NAME={opus5:'Opus 5',opus55:'Opus 5.5',sonnet55:'Sonnet 5.5',fable51:'Fable 5.1'};
+const MOVE={e1930:'instap 19:30 CET → strategie-exit',e2200:'instap slot 22:00 CET → strategie-exit',market:'venster van de markt'};
+const MCOL={opus5:'var(--s3)',opus55:'var(--s4)',sonnet55:'var(--s5)',fable51:'var(--s6)'};
+const KEYN={impact_sum:'impact_sum',impact_scaled:'impact_scaled'};
 const f=(v,d=2)=>v==null?'–':(v>=0?'+':'')+v.toFixed(d);
-let cur=Object.keys(ALL).find(k=>ALL[k].curve);
+const S={region:Object.keys(ALL).find(k=>ALL[k].impact_sum),key:'impact_sum',mode:'panel'};
 function ns(t,a){const e=document.createElementNS('http://www.w3.org/2000/svg',t);for(const k in a)e.setAttribute(k,a[k]);return e}
-function tabs(){const t=document.getElementById('tabs');t.innerHTML='';
- for(const [k,r] of Object.entries(ALL)){const b=document.createElement('button');b.textContent=r.label.replace(/ \(.*\)/,'')+(r.curve?` · ${r.resolved}`:' · nog geen uitkomsten');
-  b.disabled=!r.curve;b.setAttribute('aria-pressed',k===cur);b.onclick=()=>{cur=k;draw()};t.append(b)}}
-function draw(){tabs();const D=ALL[cur],C=D.curve;
- const top=C.filter(p=>p.n>=Math.min(9,D.resolved)).slice(-1)[0];
+function buttons(id,items,cur,set){const b=document.getElementById(id);b.querySelectorAll('button').forEach(x=>x.remove());
+ for(const [k,lab,dis] of items){const x=document.createElement('button');x.textContent=lab;x.disabled=!!dis;x.setAttribute('aria-pressed',k===cur);x.onclick=()=>{set(k);draw()};b.append(x)}}
+function draw(){
+ buttons('regions',Object.entries(ALL).map(([k,r])=>[k,r.label.replace(/ \(.*\)/,'')+(r.impact_sum?` · ${r.resolved}`:' · nog geen uitkomsten'),!r.impact_sum]),S.region,k=>S.region=k);
+ buttons('keys',[['impact_sum','impact_sum'],['impact_scaled','impact_scaled']],S.key,k=>S.key=k);
+ const D=ALL[S.region],K=D[S.key],mks=D.move_keys;
+ buttons('mode',[['panel','panel ('+mks.length+' instap'+(mks.length>1?'pen':'')+')'],['models','panel + losse modellen']],S.mode,k=>S.mode=k);
+ const main=mks[0];
+ const at=t=>K.panel[main].find(b=>b.top===t);
+ const t10=at(10)||K.panel[main][0],t20=at(20),all=at(100);
  document.getElementById('kpis').innerHTML=
   `<div class="kpi"><b>${D.resolved} namen</b><span>${D.days.length} dagen, ${D.days[0].slice(5)} t/m ${D.days.at(-1).slice(5)}</span></div>`+
-  `<div class="kpi"><b>${f(C[0].mean)}%</b><span>alle namen op het teken</span></div>`+
-  `<div class="kpi"><b>${f(top.mean)}%</b><span>hoogste ${top.n} (|gem.| ≥ ${top.x.toFixed(2)}%)</span></div>`+
-  `<div class="kpi"><b>${f(D.all_names_short)}%</b><span>alles shorten, geen onderzoek</span></div>`+
-  `<div class="kpi"><b>${f(D.current_rule.mean)}%</b><span>huidige 3-van-4-regel, ${D.current_rule.n} namen</span></div>`;
- const hasS=C.some(p=>p.mean_strategy!=null);
- document.getElementById('legend').innerHTML=`<span><span class="sw" style="background:var(--s1)"></span>${cur==='US'?'close tot close':'venster van de markt'} (± 1 se)</span>`+(hasS?`<span><span class="sw" style="background:var(--s2)"></span>strategie-exit</span>`:'')+`<span><span class="sw" style="background:var(--muted)"></span>alles shorten (stippel)</span>`;
- const xmax=Math.max(0.5,Math.ceil(Math.max(...C.map(p=>p.x))*2)/2),X=x=>L+(W-L-R)*x/xmax;
- const tick=xmax>3?1:0.5;
- function axisX(s,y0,h,lab){const g=ns('g',{class:'ax'});for(let x=0;x<=xmax+1e-9;x+=tick){g.append(ns('line',{x1:X(x),x2:X(x),y1:y0,y2:y0+h}));const t=ns('text',{x:X(x),y:y0+h+16,'text-anchor':'middle'});t.textContent=x.toFixed(1)+'%';g.append(t)}s.append(g);
-  if(lab){const t=ns('text',{x:(L+W-R)/2,y:y0+h+32,'text-anchor':'middle',fill:'var(--text2)','font-size':12});t.textContent=lab;s.append(t)}}
+  [[t10,'top 10%'],[t20,'top 20%'],[all,'alle namen']].filter(x=>x[0]).map(([b,l])=>`<div class="kpi"><b>${f(b.mean)}%</b><span>${l}: ${b.n} namen, ${Math.round(b.hit*100)}% goed</span></div>`).join('')+
+  `<div class="kpi"><b>${f(D.all_names_short[main])}%</b><span>alles shorten, geen onderzoek</span></div>`+
+  `<div class="kpi"><b>${f(D.current_rule[main].mean)}%</b><span>huidige 3-van-4-regel, ${D.current_rule[main].n} namen</span></div>`;
+ const series=mks.map((mk,i)=>({id:mk,lab:'panel, '+MOVE[mk],col:i?'var(--s2)':'var(--s1)',pts:K.panel[mk],band:i===0,w:2.5}));
+ if(S.mode==='models')MS.forEach(m=>series.push({id:m,lab:NAME[m]+' alleen ('+(mks.length>1?'19:30':'venster')+')',col:MCOL[m],pts:K.models[main][m],w:1.5,dash:'4 3'}));
+ document.getElementById('legend').innerHTML=series.map(s=>`<span><span class="sw" style="background:${s.col}"></span>${s.lab}</span>`).join('')+`<span><span class="sw" style="background:var(--muted)"></span>alles shorten (stippel)</span>`+`<span>band = ± 1 se rond de blauwe lijn</span>`;
+ const X=t=>L+(W-L-R)*(t-0)/100;
+ function axisX(s,y0,h,lab){const g=ns('g',{class:'ax'});for(const t of [0,10,20,30,40,50,60,70,80,90,100]){g.append(ns('line',{x1:X(t),x2:X(t),y1:y0,y2:y0+h}));const x=ns('text',{x:X(t),y:y0+h+16,'text-anchor':'middle'});x.textContent=t?'top '+t+'%':'';g.append(x)}s.append(g);
+  if(lab){const x=ns('text',{x:(L+W-R)/2,y:y0+h+32,'text-anchor':'middle',fill:'var(--text2)','font-size':12});x.textContent=lab;s.append(x)}}
  function hover(s,T,H){const tip=document.getElementById('tip'),hl=ns('line',{y1:T,y2:T+H,stroke:'var(--muted)',visibility:'hidden'});s.append(hl);
   const hit=ns('rect',{x:L,y:T,width:W-L-R,height:H,fill:'transparent'});s.append(hit);
-  hit.onmousemove=e=>{const r=s.getBoundingClientRect(),v=((e.clientX-r.left)*W/r.width-L)/(W-L-R)*xmax;let p=C[0];for(const q of C)if(q.x<=v)p=q;
-   hl.setAttribute('x1',X(p.x));hl.setAttribute('x2',X(p.x));hl.setAttribute('visibility','visible');
-   tip.innerHTML=`<b>|gemiddelde| ≥ ${p.x.toFixed(2)}%</b><br>${p.n} namen over ${p.days} dagen<br>rendement per trade <b>${f(p.mean)}%</b>${p.se?` (se ${p.se.toFixed(2)})`:''}<br>${Math.round(p.hit*100)}% goed`+(p.mean_strategy!=null?`<br>strategie-exit ${f(p.mean_strategy)}%`:'');
-   tip.style.display='block';tip.style.left=Math.min(e.clientX+14,innerWidth-220)+'px';tip.style.top=(e.clientY+14)+'px'};
+  hit.onmousemove=e=>{const r=s.getBoundingClientRect(),v=((e.clientX-r.left)*W/r.width-L)/(W-L-R)*100;const t=TOPS.reduce((a,b)=>Math.abs(b-v)<Math.abs(a-v)?b:a);
+   hl.setAttribute('x1',X(t));hl.setAttribute('x2',X(t));hl.setAttribute('visibility','visible');
+   tip.innerHTML=`<b>top ${t}%</b>`+series.map(sr=>{const b=sr.pts.find(p=>p.top===t);return b?`<br><span style="color:${sr.col}">■</span> ${sr.lab.replace('panel, ','')}: <b>${f(b.mean)}%</b>, ${b.n} namen, ${Math.round(b.hit*100)}% goed`:''}).join('');
+   tip.style.display='block';tip.style.left=Math.min(e.clientX+14,innerWidth-275)+'px';tip.style.top=(e.clientY+14)+'px'};
   hit.onmouseleave=()=>{tip.style.display='none';hl.setAttribute('visibility','hidden')}}
- const step=(pts,val)=>pts.map((p,i)=>{const x2=i<pts.length-1?pts[i+1].x:p.x;return `${i?'L':'M'}${X(p.x)},${val(p)} L${X(x2)},${val(p)}`}).join(' ');
- {const s=document.getElementById('ret');s.innerHTML='';const T=12,H=280,pts=C.filter(p=>p.n>=2);
-  const vals=pts.flatMap(p=>[p.mean-(p.se||0),p.mean+(p.se||0),p.mean_strategy??p.mean]).concat([D.all_names_short,0]);
-  const ymin=Math.floor(Math.min(...vals)/2)*2,ymax=Math.ceil(Math.max(...vals)/2)*2,Y=v=>T+H*(ymax-v)/(ymax-ymin);
-  const g=ns('g',{class:'ax'});for(let v=ymin;v<=ymax;v+=2){g.append(ns('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v),'stroke-width':v===0?1.5:1}));const t=ns('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'});t.textContent=f(v,0)+'%';g.append(t)}s.append(g);
-  axisX(s,T,H,'drempel op |gemiddelde verwachte beweging van het panel|');
-  const up=step(pts,p=>Y(p.mean+(p.se||0))),dn=pts.slice().reverse().map((p,i)=>{const j=pts.length-1-i,x2=j<pts.length-1?pts[j+1].x:p.x,v=Y(p.mean-(p.se||0));return `L${X(x2)},${v} L${X(p.x)},${v}`}).join(' ');
-  s.append(ns('path',{d:up+' '+dn+' Z',fill:'var(--band)'}));
-  s.append(ns('line',{x1:L,x2:W-R,y1:Y(D.all_names_short),y2:Y(D.all_names_short),stroke:'var(--muted)','stroke-dasharray':'5 4','stroke-width':1.5}));
-  if(hasS)s.append(ns('path',{d:step(pts,p=>Y(p.mean_strategy)),fill:'none',stroke:'var(--s2)','stroke-width':2}));
-  s.append(ns('path',{d:step(pts,p=>Y(p.mean)),fill:'none',stroke:'var(--s1)','stroke-width':2}));hover(s,T,H)}
- {const s=document.getElementById('cnt');s.innerHTML='';const T=8,H=130,nmax=Math.max(...C.map(p=>p.n)),Y=v=>T+H*(1-v/nmax);
+ {const s=document.getElementById('ret');s.innerHTML='';const T=12,H=280;
+  const vals=series.flatMap(sr=>sr.pts.flatMap(p=>sr.band?[p.mean-(p.se||0),p.mean+(p.se||0)]:[p.mean])).concat([D.all_names_short[main],0]);
+  const ymin=Math.floor(Math.min(...vals)/2)*2,ymax=Math.ceil(Math.max(...vals)/2)*2,step=(ymax-ymin)>16?4:2,Y=v=>T+H*(ymax-v)/(ymax-ymin);
+  const g=ns('g',{class:'ax'});for(let v=ymin;v<=ymax;v+=step){g.append(ns('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v),'stroke-width':v===0?1.5:1}));const t=ns('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'});t.textContent=f(v,0)+'%';g.append(t)}s.append(g);
+  axisX(s,T,H,'de hoogste X% van de namen, gemeten aan de eigen top van elk model');
+  const b=series[0].pts;s.append(ns('path',{d:b.map((p,i)=>`${i?'L':'M'}${X(p.top)},${Y(p.mean+(p.se||0))}`).join(' ')+' '+b.slice().reverse().map(p=>`L${X(p.top)},${Y(p.mean-(p.se||0))}`).join(' ')+' Z',fill:'var(--band)'}));
+  s.append(ns('line',{x1:L,x2:W-R,y1:Y(D.all_names_short[main]),y2:Y(D.all_names_short[main]),stroke:'var(--muted)','stroke-dasharray':'5 4','stroke-width':1.5}));
+  for(const sr of series.slice().reverse()){s.append(ns('path',{d:sr.pts.map((p,i)=>`${i?'L':'M'}${X(p.top)},${Y(p.mean)}`).join(' '),fill:'none',stroke:sr.col,'stroke-width':sr.w,'stroke-dasharray':sr.dash||'','stroke-linejoin':'round'}));
+   if(!sr.dash)for(const p of sr.pts)s.append(ns('circle',{cx:X(p.top),cy:Y(p.mean),r:4,fill:sr.col,stroke:'var(--surface)','stroke-width':2}))}
+  hover(s,T,H)}
+ {const s=document.getElementById('cnt');s.innerHTML='';const T=8,H=120,pts=series[0].pts,nmax=Math.max(...pts.map(p=>p.n)),Y=v=>T+H*(1-v/nmax);
   const g=ns('g',{class:'ax'});for(let v=0;v<=nmax;v+=10){g.append(ns('line',{x1:L,x2:W-R,y1:Y(v),y2:Y(v)}));const t=ns('text',{x:L-8,y:Y(v)+4,'text-anchor':'end'});t.textContent=v;g.append(t)}s.append(g);axisX(s,T,H);
-  C.forEach((p,i)=>{const x2=i<C.length-1?C[i+1].x:xmax;s.append(ns('rect',{x:X(p.x)+1,y:Y(p.n),width:Math.max(1,X(x2)-X(p.x)-2),height:Y(0)-Y(p.n),fill:'var(--s1)',opacity:.75,rx:2}))});hover(s,T,H)}
- document.getElementById('models').innerHTML='<tr><th>model</th><th>mediaan abs_move_pct</th><th>mediaan |verwachte beweging|</th><th>κ</th></tr>'+
-  MS.map(m=>`<tr><td>${NAME[m]}</td><td>${D.model_median_abs_move_pct[m].toFixed(1)}%</td><td>${D.model_median_abs_stated[m].toFixed(2)}%</td><td>${D.kappa[m].toFixed(2)}</td></tr>`).join('')+
-  `<tr><td>gerealiseerd</td><td>${D.median_abs_realised_move.toFixed(2)}%</td><td></td><td></td></tr>`;
- const rows=D.rows.slice().sort((a,b)=>Math.abs(b.pct_stated)-Math.abs(a.pct_stated));
- document.getElementById('tbl').innerHTML='<tr><th>datum</th><th>ticker</th><th>gemiddeld</th>'+MS.map(m=>`<th>${NAME[m]}</th>`).join('')+'<th>3 van 4</th><th>beweging</th><th>rendement trade</th></tr>'+
-  rows.map(r=>`<tr><td>${r.date}</td><td>${r.ticker}</td><td>${f(r.pct_stated)}%</td>${MS.map(m=>`<td>${f(r.stated[m])}</td>`).join('')}<td>${r.selected?'ja':''}</td><td>${f(r.move)}%</td><td>${f(Math.sign(r.pct_stated)*r.move)}%</td></tr>`).join('')}
+  const bw=(W-L-R)/20-6;for(const p of pts){s.append(ns('rect',{x:X(p.top)-bw/2,y:Y(p.n),width:bw,height:Y(0)-Y(p.n),fill:'var(--s1)',opacity:.8,rx:3}));const t=ns('text',{x:X(p.top),y:Y(p.n)-4,'text-anchor':'middle',fill:'var(--text2)','font-size':10});t.textContent=p.n;s.append(t)}
+  hover(s,T,H)}
+ document.getElementById('thr').innerHTML='<tr><th>model</th><th>top 10% vanaf</th><th>top 20% vanaf</th><th>top 30% vanaf</th></tr>'+
+  MS.map(m=>`<tr><td>${NAME[m]}</td>${[10,20,30].map(t=>`<td>|${S.key}| ≥ ${K.threshold_at_top[m][t].toFixed(2)}</td>`).join('')}</tr>`).join('');
+ const rows=D.rows.slice().sort((a,b)=>Math.abs(b.panel[S.key])-Math.abs(a.panel[S.key]));
+ document.getElementById('tbl').innerHTML='<tr><th>datum</th><th>ticker</th><th>panel pct</th>'+MS.map(m=>`<th>${NAME[m]}</th>`).join('')+'<th>3 van 4</th>'+mks.map(mk=>`<th>${mk==='e1930'?'trade 19:30':mk==='e2200'?'trade slot':'trade'}</th>`).join('')+'</tr>'+
+  rows.map(r=>{const p=r.panel[S.key];return `<tr><td>${r.date}</td><td>${r.ticker}</td><td>${f(p,0)}</td>${MS.map(m=>`<td>${f(r.pct[S.key][m],0)} <span style="color:var(--muted)">(${f(r[S.key][m],1)})</span></td>`).join('')}<td>${r.selected?'ja':''}</td>${mks.map(mk=>`<td>${r.moves[mk]==null?'–':f(Math.sign(p)*r.moves[mk])+'%'}</td>`).join('')}</tr>`}).join('');
+}
 draw();
 </script></main></body></html>
