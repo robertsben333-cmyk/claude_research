@@ -674,12 +674,17 @@ by_agent = {}
 for c in calls:
     if c["version"] and c["version"] != "onbekend":
         by_agent.setdefault((c["stage"], c["version"], c["model"] or "?"), []).append(c)
-# The second meaning of "strong" (Xavier, 2026-10-14): a call whose |score| is in the
-# top 20% of that agent's OWN calls (one stage, one prompt version, one model), instead
-# of the top 20% of a model-wide reference. The cut is the 80th percentile of the
-# agent's nonzero |scores| over all its calls, so it uses later scores but never an
-# outcome; an agent with fewer than OWN_MIN calls has no cut. The page picks the meaning.
+# The second meaning of "strong" (Xavier, 2026-10-14, corrected the same day): a call
+# whose |score| clears that STAGE's fixed top-20% benchmark, measured over all its calls
+# and pooled over prompt versions, never per day and never per version. For the US E-P
+# panel that is the benchmark it was built on, |panel_pct| >= PANEL_TOP with all four
+# judges; for stage E it is the model-wide reference (impact_pctile_all >= TOP). Every
+# other stage (the market panels score lower, so their bar is lower) gets the 80th
+# percentile of its nonzero |scores| over all its calls, per hunter model; it uses later
+# scores but never an outcome, and a stage with fewer than OWN_MIN calls has no bar.
 OWN_MIN = 5
+FIXED_BENCH = {"US · E-P panel": PANEL_TOP}
+REF_BENCH = {"US · E"}
 
 
 def p80(xs):
@@ -689,15 +694,39 @@ def p80(xs):
     return xs[lo] + (xs[min(lo + 1, len(xs) - 1)] - xs[lo]) * (k - lo)
 
 
-own_cut = {}
+def bench_key(c):
+    return (c["stage"], c["model"] or "?")
+
+
+by_bench = {}
 for c in calls:
     c["own"] = False
-for key, rows in by_agent.items():
-    sc = [abs(r["score"]) for r in rows if r["score"] and r["side"]]
-    if len(sc) >= OWN_MIN:
-        own_cut[key] = cut = p80(sc)
+    by_bench.setdefault(bench_key(c), []).append(c)
+bench = {}                                   # (stage, model) -> cut, or "ref"
+for key, rows in by_bench.items():
+    stage = key[0]
+    if stage in REF_BENCH:
+        bench[key] = "ref"
+        for r in rows:
+            r["own"] = bool(r["strong"])
+        continue
+    if stage in FIXED_BENCH:
+        cut = FIXED_BENCH[stage]
+        for r in rows:
+            r["own"] = bool(r["strong"])     # strong already is full and |panel_pct| >= 80
+    else:
+        sc = [abs(r["score"]) for r in rows if r["score"] and r["side"]]
+        if len(sc) < OWN_MIN:
+            continue
+        cut = p80(sc)
         for r in rows:
             r["own"] = bool(r["score"] and r["side"]) and abs(r["score"]) >= cut - 1e-9
+    bench[key] = round(cut, 2)
+own_cut = {}
+for key in by_agent:
+    b = bench.get((key[0], key[2]))
+    if b is not None:
+        own_cut[key] = b
 
 agents = []
 for (stage, ver, model), rows in by_agent.items():
@@ -707,8 +736,7 @@ for (stage, ver, model), rows in by_agent.items():
                        all=summarise([r["ret"] for r in done]),
                        strong=summarise([r["ret"] for r in done if r["strong"]]),
                        own=summarise([r["ret"] for r in done if r["own"]]),
-                       own_cut=None if (stage, ver, model) not in own_cut
-                       else round(own_cut[(stage, ver, model)], 2),
+                       own_cut=own_cut.get((stage, ver, model)),
                        calls=rows))
 agents.sort(key=lambda a: (a["stage"], a["last"]))
 
@@ -803,7 +831,7 @@ for (stage, ver, model), rows in groups_own.items():
     s.update(stage=stage, version=ver, model=model, last=max(r["run_date"] for r in rows))
     table_own.append(s)
 table_own.sort(key=lambda s: (s["stage"], s["last"]))
-live_own = [dict(c, why=(c["why"] or "") + " · eigen top 20%") for c in calls
+live_own = [dict(c, why=(c["why"] or "") + " · top 20% benchmark") for c in calls
             if c["own"] and c["state"] not in ("opgelost", "niet opgelost")]
 live_own.sort(key=lambda x: (x["state"] != "loopt", x["stage"], x["ticker"]))
 n_resolved_own = sum(len(v) for v in groups_own.values())
@@ -846,7 +874,8 @@ payload = {
     "live": sorted(live, key=lambda x: (x["state"] != "loopt", x["stage"], x["ticker"])),
     "table": table,
     "n_resolved": len(resolved),
-    "own": {"live": live_own, "table": table_own, "n_resolved": n_resolved_own, "min_calls": OWN_MIN},
+    "own": {"live": live_own, "table": table_own, "n_resolved": n_resolved_own, "min_calls": OWN_MIN,
+            "bench": [dict(stage=k[0], model=k[1], cut=v) for k, v in sorted(bench.items())]},
     "week": calls,          # every call; the page cuts the period (7 days by default)
     "agents": agents,
     "week_days": WEEK_DAYS,
