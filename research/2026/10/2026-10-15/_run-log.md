@@ -24,3 +24,8 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-14 14:01 UTC
 - 18 hunts done; 15 ranked, 0 above 2.8. Not ranked (no event on 10-15): AVCT (investor presentation of 09-30 interims), CAML (date is Cygnus scheme Effective Date — uk_rns_calendar misparsed it as results), WTB (interims brought forward to 10-13). OEM_B hunter says release is in-session on 10-15 (vendor said amc). NEL hunter: NO register lists issuer as 'NEL' at 0.59% (Tages), baseline read 0.0 — eu_positioning NO join likely needs ISIN match. 15 packs, four judges next.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-14 14:09 UTC
+- Event date 2026-10-15. 15 ranked (top CARA/XPS +0.70, bottom NEL -1.60), 0 above floor 2.8. Not ranked: AVCT, CAML, WTB (no event on 10-15; all three from uk_rns_calendar; CAML = parser read a scheme Effective Date as results). Amend event_occurred:false after the window.
+- Panel: 4/4 members, no fallback, 0 selected (NEL closest, k=1... panel_pct 68 short). Note: europe-note.md. Resolve within ~a week (se/fi Nordic feed window). Published with EARNINGS_DATA_BRANCH=main.
