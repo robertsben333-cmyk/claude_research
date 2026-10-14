@@ -84,6 +84,12 @@ MARKETS = {
     "US-P": {"dir": "edge-panel", "hunters": ["unpriced-searcher"],
              "lessons": "researcher_us/LESSONS.md",
              "skill": ".claude/skills/earnings-edge-panel/SKILL.md"},
+    # Stage E-PI (2026-10-14): stage E-P re-run at fixed times through the session, one
+    # snapshot directory per run (edge-intraday-<HHMM>); "dir" names the day directory.
+    "US-PI": {"dir": "edge-intraday", "hunters": ["unpriced-searcher"],
+              "since_utc": "2026-10-14T00:00:00+00:00",
+              "lessons": "researcher_us/LESSONS.md",
+              "skill": ".claude/skills/earnings-edge-panel-intraday/SKILL.md"},
     # Stage D (2026-10-07): three names a day, one deep researcher each, frozen key
     # questions and a frozen quick first read. Research only.
     "US-D": {"dir": "edge-deep", "hunters": ["deep-question-researcher"],
@@ -249,7 +255,7 @@ def build_registry(ref="origin/main"):
     return out
 
 
-STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
+STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
                "CA": "ca", "R": "rev", "IPO": "ipo"}
 
 
@@ -261,6 +267,9 @@ def stage_versions(reg):
     for market, spec in MARKETS.items():
         times = sorted({v["from_utc"] for a in spec["hunters"]
                         for v in reg["hunters"][a]["versions"] if v.get("from_utc")})
+        if spec.get("since_utc"):
+            # a stage that started after its hunter did numbers from its own start
+            times = sorted({t for t in times if t >= spec["since_utc"]} | {spec["since_utc"]})
         epochs, last = [], None
         for t in times:
             at = parse_utc(t)
