@@ -190,3 +190,60 @@ before it checks the key, which is how this was learned without one.
 9 packs, 18-24 KB per request body, `--dry-run` and the no-key path both exit 0 and
 write both files plus the `provenance.json` `snap` entry; `edge_resolve.py` reads the
 file and skips it while no name is answered. `smoke_test.py` passes.
+
+## First live test 2026-10-14
+
+A session with `SUBQ_API_KEY` in its environment, `snap.v1` unchanged. Outputs stayed in
+that session's scratchpad; nothing was written to `research/`.
+
+**What the API returned.** Every call answered first time (`attempts: 1`), no 4xx, no
+retry. The returned `model` was `subq-snap-preview` on every call, the same string as
+requested, so the alias does not reveal a dated build: a silent change underneath it
+would not show in that field. The shape matches what the script already parsed, so
+nothing had to change:
+
+- `move` (choice): `type`, `choice` (the modal bin), `probabilities` **keyed by bin
+  name**, all 24 present, summing to 1.0000, and `confidence` (0.08-0.35 here).
+- `up` (noul): `type` and `noul`, a float in 0-1. The field really is called `noul`.
+- `vs_implied` (score): `type`, `score` (fractional, 1.35-1.93 here), `legend` and
+  `probabilities` both keyed by the level's INDEX as a string (`"0"`-`"4"`), not by its
+  text, and `confidence`. The script reads only `score`, so this is harmless, but anything
+  that later reads these probabilities must key on the index.
+- `usage.input_tokens` 6,632-8,622 per pack, `output_tokens` 0.
+
+`snap_impact`, `snap_p_up`, `snap_abs` and `p_up_noul` were filled for 18 of 18 names,
+no NaN. `snap_impact` ran from -2.80 to +1.61, `snap_abs` 3.0-5.2. The `up` answer agrees
+in rank with `snap_p_up` (Spearman 0.90 and 0.97 per day) and is more extreme (FAST 8.7
+against 23.9, BLK 90.1 against 75.6); logged, not used.
+
+**Cost.** 2026-10-13: 66,421 input tokens, $0.0033 for nine names. 2026-10-12: 68,537,
+$0.0034. About $0.0004 a name; the whole test, every call included, was under $0.02.
+
+**Repeatability: deterministic, but not invariant to formatting.** The same request
+sent three times (one `--no-repeat` run, then `--repeat`, which calls twice) returned
+byte-identical answers on 9 of 9 names: `repeat_identical: true`, every probability equal
+to the last digit. So a second call of the same request adds nothing. But a request that
+is the SAME CONTENT with the pack's keys and the three questions in reverse order (an
+extra probe, scratchpad only) moved `snap_impact` by a median 0.22 points and at most
+1.02 (PGR -2.68 to -1.66, BLK +1.61 to +0.99), and flipped AZZ from -0.39 to +0.18,
+against a cross-name spread of 1.6. The day's ranking held (Spearman 0.967 between the
+two). Read: the number is a deterministic function of the exact request bytes, so
+**the request layout is part of the version**. Any change to `PREAMBLE`, the question
+text or order, or to the pack layout `panel_packs.py` builds is a new version and must
+not be pooled with the old, even with `SCRIPT_VERSION` unchanged on the Snap side; the
+`request_sha256` on every call is what makes that checkable.
+
+**Basis.** 2026-10-12 and 2026-10-13 both came back `retro_post_release`. 2026-10-09 was
+refused (`refused_pre_release`, 0 tokens, nothing sent).
+
+**Beside the panel, descriptive only.** The two sealed panel files predate the
+mean-percentile rule, so `panel_pct` was recomputed with `panel_score.py --dry-run` on a
+scratchpad copy (point-in-time: its reference uses runs dated before each day; the
+history file was not touched). No name was selected on either day, under either rule.
+Spearman `snap_impact` against `panel_pct`: +0.35 on 10-12, +0.70 on 10-13; against the
+searcher's `impact_sum`: +0.08 and +0.63. Resolved on 10-12 only (the 10-13 names close
+their window on 10-14): `spearman_snap` **+0.083** against `spearman_panel` +0.833 and
+`spearman_panel_pct` +0.75, n = 9. Snap's top name, FBK +0.55, fell 4.21%; its bottom,
+ACI -1.87, rose 1.44%. Nine names is an anecdote; nothing is judged before about 200.
+
+**Script changes: none.** The parser already handled the real shape.
