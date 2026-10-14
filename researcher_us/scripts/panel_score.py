@@ -24,14 +24,14 @@ its own range, and the US selection reads the mean of those percentiles:
   every row (`selected_mean_pct`, `selected_consensus`) so each can be measured forward.
 - The old score is still recorded: z, panel_score, consensus_k, in_own_top.
 - `expected_return_pct` (since 2026-10-14, stage E-P only, `expected_return: calibrated`):
-  what the trade on the panel's side is expected to earn on the scorebord's window, from
-  the name's |panel_pct| and its own sealed baseline, through the frozen fit in
+  the percentile leads, and each |panel_pct| is referenced to ONE expected return on the
+  trade, the same for every name at that percentile, read off the frozen curve in
   `researcher_us/analysis/panel-calibration.json` (panel_calibrate.py, which also holds
-  the out-of-sample check). With it: an 80% band for how well that expectation is known,
-  `p_right` and `expected_abs_move_pct`. On a selected name `expected_edge_pct` is now
-  that expected move instead of the shrunk development prior. Gross of costs. Below
-  about |panel_pct| 80 the fit could not tell the names apart out of sample, so read the
-  number there as "small", not as a ranking.
+  the out-of-sample check). With it: an 80% band for how well that expectation is known
+  and `p_right`, the hit rate at that percentile. On a selected name `expected_edge_pct`
+  is now that expectation as a signed move instead of the shrunk development prior. On
+  the scorebord's window, gross of costs. The curve is flat at about +0.3% below
+  |panel_pct| 50 and rises from there.
 
 What follows is the rule as it was built on 2026-10-01, kept because every field it
 describes is still written.
@@ -213,16 +213,9 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
         import panel_calibrate as PC
         cal = PC.load_calibration()
     for r in rows:
-        er = None
-        if cal:
-            base = None
-            try:
-                base = json.load(open(run / 'baselines' / f"{r['ticker']}.json"))
-            except Exception:
-                pass
-            er = PC.expected(cal, r['panel_pct'], base)
+        er = PC.expected(cal, r['panel_pct']) if cal else None
         r.update(er or {'expected_return_pct': None, 'expected_return_lo80': None, 'expected_return_hi80': None,
-                        'p_right': None, 'expected_abs_move_pct': None, 'expected_move_pct': None})
+                        'p_right': None, 'expected_move_pct': None})
         if cal and r['selected']:
             r['expected_edge_pct'] = r['expected_move_pct']
     sel = [r for r in rows if r['selected']]
@@ -298,18 +291,19 @@ def print_table(out, sess):
           + ', '.join(f"{m} n={v['n']} {v['basis']}" for m, v in ref.items()) + ')')
     er = out.get('expected_return')
     print(f"{'rank':>4s} {'ticker':8s} {'session':7s} {'sel':3s} {'pct':>5s} {'sd':>4s}  {'members (own percentile)':44s} "
-          f"{'k':>2s} {'score':>6s}" + ('  E[return] (80% band)  P(right)  E|move|' if er else ''))
+          f"{'k':>2s} {'score':>6s}" + ('  E[return] at this pct (80% band)  P(right)' if er else ''))
     for r in out['ranking']:
         pp = ' '.join(f"{m}:{x['pct']:+4.0f}{'*' if abs(x['pct']) >= 80 else ' '}" for m, x in r['members'].items())
         e = ''
         if er and r.get('expected_return_pct') is not None:
             e = (f"  {r['expected_return_pct']:+5.2f}% [{r['expected_return_lo80']:+.2f}, {r['expected_return_hi80']:+.2f}]"
-                 f"  {r['p_right']:.2f}  {r['expected_abs_move_pct']:4.1f}%")
+                 f"           {r['p_right']:.2f}")
         print(f"{r['rank']:4d} {r['ticker']:8s} {sess.get(r['ticker'], 'n/a'):7s} {'yes' if r['selected'] else '':3s} "
               f"{r['panel_pct']:+5.0f} {r['panel_pct_sd']:4.0f}  {pp:44s} {r['consensus_k']:2d} {r['panel_score']:+6.2f}{e}")
     if er:
-        print(f"E[return]: the trade on the panel's side, scorebord window, gross; fit {er['fitted_utc']} on "
-              f"{er['sample']['panel_names']} panel names. Below |pct| 80 it does not rank names out of sample.")
+        print(f"E[return]: what a name at this |panel_pct| has earned on the panel's side (one number per "
+              f"percentile, scorebord window, gross); curve fitted {er['fitted_utc']} on "
+              f"{er['sample']['panel_names']} resolved panel names.")
 
 
 if __name__ == '__main__':

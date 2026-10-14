@@ -122,12 +122,12 @@ correlatie +0,32 en helling 1,66; het is dus eerder te voorzichtig dan te stelli
 Bruto, zonder kosten. Japan en de andere markten hebben te weinig opgeloste namen om zo'n
 curve te schatten.
 
-**Opgevolgd door `researcher_us/scripts/panel_calibrate.py` (zelfde dag).** De live
-versie splitst het verwachte rendement in de kans op de goede kant (monotone curve op
-|panel_pct|) maal de verwachte bewegingsgrootte van de naam zelf uit zijn baseline. Die
-versie won de leave-one-day-out vergelijking van vijf varianten (correlatie +0,13 tegen
-+0,12 voor de gepoolde curve hierboven) en staat per naam in de panel-output en op het
-scorebord. Deze curve blijft als referentie. `expected-return-<dag>.json` bevat de curve en de namen van die dag.
+**Live gezet via `researcher_us/scripts/panel_calibrate.py` (zelfde dag).** Precies deze
+curve, één verwacht rendement per percentiel, met een 80%-band uit een bootstrap over
+hele dagen en de trefkans per percentiel. Een variant die per naam ook de verwachte
+bewegingsgrootte meenam, is gebouwd en op instructie van de operator dezelfde dag
+teruggedraaid: het percentiel leidt. Hij staat per naam in de panel-output en op het
+scorebord (tab "Panel %"). `expected-return-<dag>.json` bevat de curve en de namen van die dag.
 
   python3 research/analyses/panel-mean-pct/panel_mean_pct.py
   python3 research/analyses/panel-mean-pct/build_chart.py

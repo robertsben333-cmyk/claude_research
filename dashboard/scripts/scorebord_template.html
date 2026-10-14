@@ -151,9 +151,9 @@ details.ag .tbl{border:0;border-top:1px solid var(--line);border-radius:0 0 6px 
   </section>
 
   <section>
-    <div class="head"><h2>Voorspeld tegen gerealiseerd</h2><span class="small">elke naam voorspeld zonder zijn eigen dag (leave-one-day-out)</span></div>
+    <div class="head"><h2>Panel % naar verwacht rendement</h2><span class="small">de curve, en wat elke band van percentielen echt opleverde</span></div>
     <div class="filters" id="calsrc"></div>
-    <div class="chartbox"><svg id="calchart" viewBox="0 0 720 340" role="img" aria-label="Voorspeld tegen gerealiseerd rendement"></svg></div>
+    <div class="chartbox"><svg id="calchart" viewBox="0 0 720 340" role="img" aria-label="Verwacht rendement per panel percentiel"></svg></div>
     <div class="tbl" id="calstats"></div>
   </section>
 
@@ -167,8 +167,8 @@ details.ag .tbl{border:0;border-top:1px solid var(--line);border-radius:0 0 6px 
   </section>
   <div class="small">
     <p><b>Panel %.</b> Elke rechter krijgt per naam een percentiel in zijn eigen bereik: het aandeel van zijn eigen live scores uit eerdere runs dat kleiner is, met het teken van zijn oordeel. Het panelgetal is het gemiddelde van de vier. Het VS-panel selecteert vanaf 80 (de top 20%).</p>
-    <p><b>Verwacht rendement.</b> Twee stukken die elk op meer data te schatten zijn dan de drempelcurve: de kans dat de kant goed is, als functie van het percentiel (148 opgeloste panelnamen, monotoon, naar een munt toe getrokken waar weinig namen liggen), maal hoe groot de beweging van juist deze naam naar verwachting is (de door opties geïmpliceerde beweging, de historische reactie en de recente volatiliteit, gefit op alle opgeloste VS-namen). De band is hoe goed die verwachting bekend is, niet waar de trade kan landen: die spreiding is vele malen breder.</p>
-    <p><b>Lezen.</b> Buiten de steekproef onderscheidt het model alleen de bovenste vijfde van de rest; daaronder ligt de verwachting rond +0,3 tot +1,4% en zijn de namen niet van elkaar te onderscheiden. Een verwachting onder ongeveer 1% verdwijnt in de kosten.</p>
+    <p><b>Verwacht rendement.</b> Het panel % leidt. Elk percentiel heeft één verwacht rendement, voor elke naam met dat percentiel hetzelfde: wat namen rond dat percentiel op de kant van het panel opleverden (148 opgeloste panelnamen, backtest en oktober), naar nul getrokken waar weinig namen liggen en nooit lager bij een hoger percentiel. De band is hoe goed die verwachting bekend is, niet waar de trade kan landen: die spreiding is vele malen breder.</p>
+    <p><b>Lezen.</b> De curve is vlak rond +0,3% tot een panel % van 50 en stijgt daarna. Buiten de steekproef (elke dag voorspeld zonder die dag) onderscheidt ze alleen de bovenkant; daaronder liggen de echte uitkomsten per band kris-kras rond nul. Een verwachting onder ongeveer 1% verdwijnt in de kosten.</p>
   </div>
   </div>
 </div>
@@ -348,64 +348,65 @@ const niceStep = span => span > 24 ? 6 : span > 12 ? 4 : 2;
 // ---- expected return per name, last week
 const PN = D.panel_names || [];
 {
-  let h = `<tr><th>Naam</th><th>Run</th><th class="n">Panel %</th><th class="n">Spreiding</th><th>Call</th><th class="n">Verwacht</th><th class="n">80%-band</th><th class="n lc">P(goed)</th><th class="n lc">E|beweging|</th><th class="n">Nu / uitkomst</th></tr>`;
+  let h = `<tr><th>Naam</th><th>Run</th><th class="n">Panel %</th><th class="n">Spreiding</th><th>Call</th><th class="n">Verwacht bij dit %</th><th class="n">80%-band</th><th class="n lc">P(goed)</th><th class="n">Nu / uitkomst</th></tr>`;
   for (const x of PN) {
     h += `<tr><td title="${esc(x.company)}"><b>${esc(x.ticker)}</b>${x.selected ? ' <span class="star">★</span>' : ''}</td><td>${esc(x.run_date)}</td>
-      <td class="n ${cls(x.panel_pct)}">${f(x.panel_pct, 0)}</td><td class="n">${x.spread == null ? '–' : x.spread.toFixed(0)}</td>
+      <td class="n ${cls(x.panel_pct)}"><b>${f(x.panel_pct, 0)}</b></td><td class="n">${x.spread == null ? '–' : x.spread.toFixed(0)}</td>
       <td>${x.side > 0 ? 'long' : x.side < 0 ? 'short' : 'geen'}</td>
       <td class="n ${cls(x.expected_return_pct)}">${pct(x.expected_return_pct)}</td>
       <td class="n mut">${x.expected_return_lo80 == null ? '–' : f(x.expected_return_lo80) + ' … ' + f(x.expected_return_hi80)}</td>
       <td class="n">${x.p_right == null ? '–' : Math.round(x.p_right * 100) + '%'}</td>
-      <td class="n">${x.expected_abs_move_pct == null ? '–' : x.expected_abs_move_pct.toFixed(1) + '%'}</td>
       <td class="n ${cls(x.ret)}">${pct(x.ret)} <span class="chip ${String(x.state || '').replace(' ', '-')}">${esc(x.state || '')}</span></td></tr>`;
   }
   document.getElementById('pnames').innerHTML = PN.length ? `<table>${h}</table>` : '<div class="empty">Geen VS-panelnamen in de laatste week.</div>';
   const C = D.calibration;
-  document.getElementById('pnote').innerHTML = C ? `★ = geselecteerd (panel % ≥ 80). Model gefit ${when(C.fitted_utc)} op ${C.sample.panel_names} panelnamen (${C.sample.panel_backtest} backtest, ${C.sample.panel_october} oktober) en ${C.sample.magnitude_names} namen voor de bewegingsgrootte.` : 'Nog geen kalibratie.';
+  document.getElementById('pnote').innerHTML = C ? `★ = geselecteerd (panel % ≥ 80). Elke naam met hetzelfde panel % krijgt hetzelfde verwachte rendement: de curve hieronder, gefit ${when(C.fitted_utc)} op ${C.sample.panel_names} opgeloste panelnamen (${C.sample.panel_backtest} backtest, ${C.sample.panel_october} oktober).` : 'Nog geen kalibratie.';
 }
 
-// ---- predicted against realised (out of sample)
+// ---- panel % -> expected return, against what each band earned
 const CAL = D.calibration;
 let calSrc = 'all';
 function renderCal() {
   const svg = document.getElementById('calchart'); svg.innerHTML = '';
   if (!CAL) { svg.outerHTML = '<div class="empty">Nog geen kalibratie.</div>'; return; }
   const W = 720, H = 340, L = 54, R = 16, T = 14, B = 46;
-  const pts = CAL.points.filter(p => calSrc === 'all' || p.src === calSrc);
-  const qs = CAL.quintiles[calSrc] || [];
-  const xs = pts.map(p => p.pred), xmax = Math.max(1, Math.ceil(Math.max(...xs) + .5)), xmin = Math.min(0, Math.floor(Math.min(...xs)));
-  const ylo = Math.max(-30, Math.floor(Math.min(...pts.map(p => p.real)) / 5) * 5), yhi = Math.min(40, Math.ceil(Math.max(...pts.map(p => p.real)) / 5) * 5);
-  const X = v => L + (W - L - R) * (v - xmin) / (xmax - xmin), Y = v => T + (H - T - B) * (yhi - Math.max(ylo, Math.min(yhi, v))) / (yhi - ylo);
-  yAxis(svg, Y, ylo, yhi, niceStep(yhi - ylo) * 2.5, L, R, W);
+  const G = CAL.grid, E = CAL.fit.expected_return, lo = CAL.band.lo80, hi = CAL.band.hi80;
+  const bands = (CAL.by_band || {})[calSrc] || [];
+  const vals = E.concat(lo, hi, bands.map(b => b.realised + (b.se || 0)), bands.map(b => b.realised - (b.se || 0)), [0]);
+  const ylo = Math.floor(Math.min(...vals) / 2) * 2, yhi = Math.ceil(Math.max(...vals) / 2) * 2;
+  const X = v => L + (W - L - R) * v / 100, Y = v => T + (H - T - B) * (yhi - v) / (yhi - ylo);
+  yAxis(svg, Y, ylo, yhi, niceStep(yhi - ylo), L, R, W);
   const g = el('g', {class: 'ax'});
-  for (let v = xmin; v <= xmax; v += 1) { const t = el('text', {x: X(v), y: H - B + 16, 'text-anchor': 'middle'}); t.textContent = (v > 0 ? '+' : '') + v + '%'; g.append(t); }
-  const xl = el('text', {x: (L + W - R) / 2, y: H - 8, 'text-anchor': 'middle'}); xl.textContent = 'voorspeld rendement per trade'; g.append(xl);
+  for (let v = 0; v <= 100; v += 10) { const t = el('text', {x: X(v), y: H - B + 16, 'text-anchor': 'middle'}); t.textContent = v; g.append(t); }
+  const xl = el('text', {x: (L + W - R) / 2, y: H - 8, 'text-anchor': 'middle'}); xl.textContent = '|panel %|'; g.append(xl);
   svg.append(g);
-  svg.append(el('line', {x1: X(Math.max(xmin, ylo)), y1: Y(Math.max(xmin, ylo)), x2: X(xmax), y2: Y(xmax), stroke: 'var(--muted)', 'stroke-dasharray': '4 4'}));
-  for (const p of pts) {
-    const c = el('circle', {cx: X(p.pred), cy: Y(p.real), r: 3.2, fill: p.src === 'oktober' ? 'var(--warn)' : 'var(--accent)', opacity: .35});
-    tipOn(c, `<b>${esc(p.ticker)}</b> ${esc(p.date)} (${p.src})<br>panel % ${f(p.pct, 0)}<br>voorspeld ${f(p.pred)}% · gerealiseerd ${f(p.real)}%`);
+  svg.append(el('line', {x1: X(80), x2: X(80), y1: T, y2: H - B, stroke: 'var(--warn)', 'stroke-dasharray': '3 4'}));
+  const sel = el('text', {x: X(80) + 4, y: T + 12, fill: 'var(--warn)', 'font-size': 11}); sel.textContent = 'selectie ≥ 80'; svg.append(sel);
+  svg.append(el('path', {d: G.map((x, i) => `${i ? 'L' : 'M'}${X(x)},${Y(hi[i])}`).join(' ') + ' ' + G.slice().reverse().map((x, j) => `L${X(x)},${Y(lo[G.length - 1 - j])}`).join(' ') + ' Z', fill: 'var(--accent)', opacity: .14}));
+  svg.append(el('path', {d: G.map((x, i) => `${i ? 'L' : 'M'}${X(x)},${Y(E[i])}`).join(' '), fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2.5}));
+  for (let i = 0; i < G.length; i++) {
+    const hit = el('circle', {cx: X(G[i]), cy: Y(E[i]), r: 7, fill: 'transparent'});
+    tipOn(hit, `<b>panel % ${G[i]}</b><br>verwacht ${f(E[i])}% per trade<br>80%-band ${f(lo[i])} … ${f(hi[i])}<br>P(goed) ${Math.round(CAL.fit.p_right[i] * 100)}% · ${CAL.fit.names_near[i]} namen in de buurt`);
+    svg.append(hit);
+  }
+  for (const b of bands) {
+    const cx = X((b.from + b.to) / 2);
+    if (b.se) svg.append(el('line', {x1: cx, x2: cx, y1: Y(b.realised - b.se), y2: Y(b.realised + b.se), stroke: 'var(--fg)', 'stroke-width': 1.5}));
+    const c = el('circle', {cx, cy: Y(b.realised), r: Math.max(3.5, Math.min(9, 2 + Math.sqrt(b.n) * 1.3)), fill: 'var(--fg)', stroke: 'var(--panel)', 'stroke-width': 2});
+    tipOn(c, `<b>panel % ${b.from}–${b.to}</b> (${b.n} namen)<br>gerealiseerd ${f(b.realised)}% ± ${b.se == null ? '–' : b.se.toFixed(1)}<br>voorspeld (zonder eigen dag) ${f(b.predicted)}%<br>${Math.round(b.hit * 100)}% goed`);
     svg.append(c);
   }
-  const path = qs.map((q, i) => `${i ? 'L' : 'M'}${X(q.predicted)},${Y(q.realised)}`).join(' ');
-  svg.append(el('path', {d: path, fill: 'none', stroke: 'var(--fg)', 'stroke-width': 2}));
-  for (const q of qs) {
-    if (q.se) svg.append(el('line', {x1: X(q.predicted), x2: X(q.predicted), y1: Y(q.realised - q.se), y2: Y(q.realised + q.se), stroke: 'var(--fg)', 'stroke-width': 1.5}));
-    const c = el('circle', {cx: X(q.predicted), cy: Y(q.realised), r: 6, fill: 'var(--fg)', stroke: 'var(--panel)', 'stroke-width': 2});
-    tipOn(c, `<b>Kwintiel ${q.q}</b> (${q.n} namen)<br>voorspeld ${f(q.predicted)}%<br>gerealiseerd ${f(q.realised)}% ± ${q.se == null ? '–' : q.se.toFixed(1)}<br>${Math.round(q.hit * 100)}% goed`);
-    svg.append(c);
-  }
-  const M = (CAL.models || {}), lab = {model: 'dit model', pooled_curve: 'gepoolde curve', flat: 'vlak gemiddelde'};
-  let h = `<tr><th>Model</th><th class="n">n</th><th class="n lc">corr</th><th class="n lc">rang-corr</th><th class="n lc">helling</th><th class="n">Gem. voorspeld</th><th class="n">Gem. echt</th><th class="n">Top 1/5 voorspeld</th><th class="n">Top 1/5 echt</th></tr>`;
-  for (const k of ['model', 'pooled_curve', 'flat']) {
+  const M = (CAL.models || {}), lab = {curve: 'curve per %', flat: 'vlak gemiddelde'};
+  let h = `<tr><th>Model</th><th class="n">n</th><th class="n lc">corr</th><th class="n lc">helling</th><th class="n">Gem. voorspeld</th><th class="n">Gem. echt</th><th class="n">Top 1/5 voorspeld</th><th class="n">Top 1/5 echt</th></tr>`;
+  for (const k of ['curve', 'flat']) {
     const s = (M[k] || {})[calSrc]; if (!s) continue;
-    h += `<tr><td>${k === 'model' ? '<b>' + lab[k] + '</b>' : lab[k]}</td><td class="n">${s.n}</td><td class="n">${f(s.corr, 3)}</td><td class="n">${f(s.spearman, 3)}</td><td class="n">${f(s.slope)}</td>
+    h += `<tr><td>${k === 'curve' ? '<b>' + lab[k] + '</b>' : lab[k]}</td><td class="n">${s.n}</td><td class="n">${f(s.corr, 3)}</td><td class="n">${f(s.slope)}</td>
       <td class="n">${pct(s.mean_predicted)}</td><td class="n">${pct(s.mean_realised)}</td><td class="n">${pct(s.top20pct_predicted)}</td><td class="n ${cls(s.top20pct_realised)}">${pct(s.top20pct_realised)}</td></tr>`;
   }
   document.getElementById('calstats').innerHTML = `<table>${h}</table>`;
   document.getElementById('calsrc').innerHTML = '<div class="seg">' + [['all', 'alles'], ['backtest', 'backtest aug-sep'], ['oktober', 'oktober live']]
     .map(([k, l]) => `<button type="button" data-k="${k}" aria-pressed="${k === calSrc}">${l}</button>`).join('') + '</div>'
-    + '<span class="small">punten: losse namen (blauw backtest, oranje oktober); zwart: gemiddelde per kwintiel ± 1 se; stippellijn: voorspeld = echt</span>';
+    + '<span class="small">blauwe lijn: verwacht rendement per panel % (band = 80%); zwarte punten: wat elke band van 10 punten echt opleverde ± 1 se, grootte = aantal namen</span>';
   document.querySelectorAll('#calsrc button').forEach(b => b.addEventListener('click', () => { calSrc = b.dataset.k; renderCal(); }));
 }
 renderCal();

@@ -106,11 +106,12 @@ so the packs hold exactly the names the stage ranks.
 2. **The panel table**, every rankable name: rank, ticker, session, `selected`,
    `panel_pct` (the mean of the four signed percentiles), its spread, each member's own
    percentile (`*` where in its own top 20%), then `consensus_k` and the old `panel_score`,
-   the searcher's own `impact_sum`, the **expected return on the trade** (`expected_return_pct`
-   with its 80% band, `p_right`, `expected_abs_move_pct`), `weight_equal` and
-   `weight_precision_tilt`. Say in the note that the expected return is gross, on the
-   scorebord's window, and that out of sample it separated only the top fifth: below
-   |panel_pct| ~80 it means "small", not a ranking. Report the judges in percentiles, never in raw sizes: a
+   the searcher's own `impact_sum`, the **expected return at that percentile**
+   (`expected_return_pct` with its 80% band and `p_right`), `weight_equal` and
+   `weight_precision_tilt`. The percentile leads: every name at the same `panel_pct` has the
+   same expected return, so present it as the translation of the percentile, never as a
+   separate forecast. Say that it is gross, on the scorebord's window, and flat at about
+   +0.3% below a percentile of 50. Report the judges in percentiles, never in raw sizes: a
    top-10% Opus 5 and a top-10% Opus 5.5 are the same statement at different sizes.
 3. One paragraph per **selected** name: the evidence items the members' notes name, and
    the strongest case against.
@@ -118,9 +119,9 @@ so the packs hold exactly the names the stage ranks.
 5. If stage E's `edge-scores.json` exists by then: the names both ranked and the Spearman
    ρ between stage E's `impact_sum` and `panel_pct`. If not, say so; do not wait.
 6. What the numbers are not: `expected_return_pct` (and `expected_edge_pct`, which on a
-   selected name now carries the same expectation as a signed move) is a calibrated
-   expectation with a weak out-of-sample record (correlation +0.13 with the realised
-   return over 148 names), not a forecast to size on; the weights are research, nothing trades them; certainty (`p_up`) is
+   selected name now carries the same expectation as a signed move) is what names at that
+   percentile have earned, with a weak out-of-sample record (correlation +0.12 with the
+   realised return over 148 names), not a forecast to size on; the weights are research, nothing trades them; certainty (`p_up`) is
    recorded and decides nothing because it did not predict on the development names.
 
 Then stage E's standing note sections apply where they fit.

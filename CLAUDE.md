@@ -1183,22 +1183,22 @@ US 35 names (top 20% +7.2%, 7 names) and the Aug-Sep blind backtest of Opus 5-er
 shows the new rule beats 3 of 4, which picked near-identical sets on the live days, and
 a spread gate or penalty did not help measurably. The scorebord carries the forward
 version: a "Panel per eigen top" table per panel, top 10% to 100%, and the spread split.
-**Every US panel name also carries an EXPECTED RETURN on the trade since 2026-10-14**
-(`expected_return_pct`, an 80% band for how well it is known, `p_right`,
-`expected_abs_move_pct`): E|move| x (P(right) x k_right - (1 - P(right)) x k_wrong), where
-P(right) is a monotone kernel curve on |panel_pct| fitted on 148 resolved panel names (the
-blind backtest plus October) and E|move| comes from the name's own sealed baseline (implied
-move, historical reaction, realised vol) fitted on every resolved US ledger name. It is
-frozen in `researcher_us/analysis/panel-calibration.json`, refit with
-`researcher_us/scripts/panel_calibrate.py`, and on the scorebord's window, gross. **Read
-its out-of-sample check before quoting it**: leave-one-day-out it correlates +0.13 with
-the realised return (rank +0.10, slope 0.92, best of five variants, chosen on the same
-names), and it separates only the top fifth: in the backtest the top quintile was
-predicted at +3.7% and earned +6.3%, while the four lower quintiles (predicted +0.3 to
-+1.4%) earned −3.2 to +2.3% in no order. Below |panel_pct| ~80 the number means "small",
-not a rank. The market panels write none (`expected_return: none`). The scorebord shows
-all of it on its own tab, "Panel %" (`scorebord.html#panel`), with the predicted-against-
-realised chart.
+**Every US panel name also carries an EXPECTED RETURN on the trade since 2026-10-14, and
+the percentile leads it (operator's instruction): each |panel_pct| maps to ONE expected
+return, the same for every name at that percentile.** `expected_return_pct`, an 80% band
+for how well it is known, and `p_right` (the hit rate at that percentile) are read off a
+monotone kernel curve of the signed return on |panel_pct|, shrunk to zero, fitted on 148
+resolved panel names (the blind backtest plus October), frozen in
+`researcher_us/analysis/panel-calibration.json` and refit with
+`researcher_us/scripts/panel_calibrate.py`; scorebord window, gross. Today it reads about
++0.3% up to 50, +1.6% at 70, +2.6% at 80, +4.1% at 90, +5.1% at 100. A variant that also
+scaled by each name's own expected move size was built and withdrawn the same day: the
+percentile is the number, the return is its translation. **Out of sample** (each day
+predicted without itself) it correlates +0.12 with the realised return, slope 0.93; per
+10-point band the realised average is noise below 80 and +4.0% / +11.0% in the 80-90 and
+90-100 bands against +3.2% / +4.5% predicted. The market panels write none
+(`expected_return: none`). The scorebord shows it on its own tab, "Panel %"
+(`scorebord.html#panel`): the curve with each band's realised average on it.
 **Validated end to end on 2026-10-01** on the six names of the 2026-09-30 US run (stage E's
 Opus 5.5 hunts as the searcher input, outside `research/`): packs built with no size left in
 them, all four pinned judges ran (each reported its own model id, **`claude-opus-5` was

@@ -25,9 +25,9 @@ and inside the top, did the names the judges agreed on most do better than the o
 they agreed on least? Measured on this page's own windows, point in time.
 
 And since the same day, per US panel name the expected return on the trade
-(`panel_calibrate.py`): recorded by the scorer on runs scored since then, computed here
-from the frozen calibration for older ones, with the calibration's own out-of-sample
-check (predicted against realised, backtest and October) drawn beside it. All of it sits
+(`panel_calibrate.py`), one number per percentile: recorded by the scorer on runs scored
+since then, read off the frozen curve here for older ones, with the curve drawn beside
+what each band of percentiles actually earned (backtest and October). All of it sits
 on its own tab, "Panel %".
 
 Resolved outcomes are read, never recomputed, wherever a resolver already wrote one:
@@ -722,11 +722,8 @@ calibration = None
 if CAL:
     cvb = CAL.get("cross_validation") or {}
     calibration = {"fitted_utc": CAL.get("generated_utc"), "sample": CAL.get("sample"),
-                   "window": CAL.get("window"), "formula": CAL.get("formula"),
-                   "models": cvb.get("models"), "quintiles": cvb.get("quintiles"),
-                   "points": [{k: r[k] for k in ("date", "ticker", "src", "pct", "pred", "real")}
-                              for r in cvb.get("rows") or []],
-                   "p_right_grid": (CAL.get("fit") or {}).get("p_right_grid")}
+                   "window": CAL.get("window"), "grid": CAL.get("grid"), "fit": CAL.get("fit"),
+                   "band": CAL.get("band"), "models": cvb.get("models"), "by_band": cvb.get("by_band")}
 week_ep = {(c["ticker"], c["run_date"]): c for c in calls if c["stage"] == "US · E-P panel"}
 panel_names = []
 for f in sorted(glob.glob(str(ROOT / "research/*/*/*/edge-panel/edge-scores-panel.json"))):
@@ -740,10 +737,10 @@ for f in sorted(glob.glob(str(ROOT / "research/*/*/*/edge-panel/edge-scores-pane
         pct_ = p.get("panel_pct")
         if pct_ is None:
             continue
-        er = {k: r.get(k) for k in ("expected_return_pct", "expected_return_lo80", "expected_return_hi80",
-                                    "p_right", "expected_abs_move_pct")}
+        er = {k: r.get(k) for k in ("expected_return_pct", "expected_return_lo80", "expected_return_hi80", "p_right")}
         if er["expected_return_pct"] is None and CAL:
-            er = PC.expected(CAL, pct_, load(ROOT / run / "baselines" / f"{r['ticker']}.json")) or er
+            er = PC.expected(CAL, pct_) or er
+        er.pop("expected_move_pct", None)
         c = week_ep.get((r["ticker"], run_date)) or {}
         panel_names.append(dict(run_date=run_date, ticker=r["ticker"], company=c.get("company"),
                                 panel_pct=pct_, spread=p.get("sd"),

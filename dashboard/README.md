@@ -30,8 +30,8 @@ dashboard/
                             judges' own percentiles in the top 20%, for the other panels a
                             3-of-4 pick), live and resolved per prompt version, plus the
                             panel per own top, forward, and on its own tab (#panel) the
-                            expected return per US panel name with the calibration's
-                            predicted-against-realised check; served at <site>/scorebord.html
+                            expected return per US panel percentile (one number per %),
+                            drawn against what each band earned; served at <site>/scorebord.html
   dashboard.html            open it from disk; no server, no network, no CDN
   LOG.md                    what each update changed, and what it now reads
 ```
