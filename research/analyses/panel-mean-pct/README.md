@@ -98,5 +98,30 @@ Conclusie: onenigheid als poort of straf toevoegen helpt niet aantoonbaar. Leg d
 spreiding vast als variabele, met de voorspelling vooraf (minder spreiding is beter), en
 meet die vooruit.
 
+## Vervolg 3: van percentiel naar verwacht rendement per trade
+
+`expected_return.py`. De drempelcurve is geen verwacht rendement: "top 20%: +7%" is het
+gemiddelde van alles op of boven 80, dus een naam op precies 80 verdient minder en een
+naam op 98 meer. Per naam is nodig E[kant × beweging | |panel_pct|]. Model: kernelregressie
+op |panel_pct| (bandbreedte 12 punten), gekrompen naar nul met een prior van 8 namen,
+monotoon gemaakt (hoger percentiel nooit lager verwacht), en een bootstrap over hele dagen
+voor een 80%-interval. Steekproef: 148 opgeloste VS-panelnamen (115 backtest, 33 oktober)
+op het venster van het scorebord (13:30 ET in; amc uit op de volgende opening, bmo om
+13:00 ET). Buiten de steekproef getoetst: gefit op de backtest voorspelt het oktober met
+correlatie +0,32 en helling 1,66; het is dus eerder te voorzichtig dan te stellig.
+
+| \|panel_pct\| | verwacht per trade | 80%-interval |
+|---|---|---|
+| 0 tot 50 | +0.29% | ongeveer −0.6 tot +0.9 |
+| 60 | +0.82% | −0.09 tot +2.27 |
+| 70 | +1.55% | +0.26 tot +3.16 |
+| 80 | +2.61% | +0.69 tot +4.52 |
+| 90 | +4.10% | +2.03 tot +6.09 |
+| 100 | +5.11% | +3.41 tot +6.74 |
+
+Bruto, zonder kosten. Japan en de andere markten hebben te weinig opgeloste namen om zo'n
+curve te schatten. `expected-return-<dag>.json` bevat de curve en de namen van die dag.
+
   python3 research/analyses/panel-mean-pct/panel_mean_pct.py
   python3 research/analyses/panel-mean-pct/build_chart.py
+  python3 research/analyses/panel-mean-pct/expected_return.py --day <YYYY-MM-DD>
