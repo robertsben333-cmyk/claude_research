@@ -78,3 +78,7 @@
 - Logged at 2026-10-14 17:07 UTC
 - Fired 17:04 UTC. Universe 17 of 40 calendar rows (4 amc 10-14: HOMB EQBK CMTL EDUC; 13 bmo 10-15). Baselines sealed for all 17 (9 with option-implied move). Plan: 1 sweep + up to 17 hunters (cap 19).
 - Step 0b: execution.enabled true, exit_mode amc_open. 'alpaca_trade.py verify --scan ... --fix --submit' DENIED by the auto-mode classifier [Real-World Transactions], twice, including the exact narrow form. Read-only status: equity $11,200.86 = cash, no open positions, so nothing was due and the denial cost nothing.
+
+## Edge hunt (panel) — 2026-10-14 amc + 2026-10-15 bmo — STARTED
+- Logged at 2026-10-14 17:09 UTC
+- Fired 17:06 UTC (13:06 ET). Universe 17 of 40 rows (4 amc 10-14, 13 bmo 10-15); own baselines sealed for all 17 in edge-panel/. Plan: 1 edge-sweep + up to 17 unpriced-searcher (Opus 5.5), then 4 blind judges. No orders.
