@@ -497,8 +497,8 @@ async function lastRun() {
     return r.ok ? ((await r.json()).workflow_runs || [])[0] || null : null;
   } catch (_) { return null; }
 }
-function askToken() {
-  showHTML(`Deze knop start de workflow <code>${WF}</code> op GitHub. Daarvoor is één keer een GitHub-token nodig ` +
+function askToken(lead) {
+  showHTML((lead ? `<b>${lead}</b>\n` : '') + `Deze knop start de workflow <code>${WF}</code> op GitHub. Daarvoor is één keer een GitHub-token nodig ` +
     `met alleen <b>Actions: read and write</b> op deze repo. Heb je dat al in het grote dashboard gezet, dan werkt het hier ook.\n` +
     `Zonder token: <a href="${WFURL}" target="_blank" rel="noopener">open de workflow</a> en kies "Run workflow".` +
     `<div class="row"><input type="password" id="ghtok" placeholder="github_pat_…" autocomplete="off" spellcheck="false">` +
@@ -522,6 +522,13 @@ async function rebuild() {
     r = await fetch(`${API}/actions/workflows/${WF}/dispatches`, {method:'POST',
       headers: gh({'Content-Type':'application/json'}), body: JSON.stringify({ref:'main', inputs:{}})});
   } catch (err) { r = null; }
+  if (r && (r.status === 401 || r.status === 403)) {
+    // A rejected token is useless; drop it and ask for a new one right here, so the
+    // reader never has to clear browser storage by hand to replace it.
+    setTok('');
+    askToken('Het bewaarde token werd geweigerd (verlopen, of zonder Actions-schrijfrecht) en is gewist. Plak hieronder een nieuw token.');
+    btn.disabled = false; btn.textContent = 'Ververs'; return;
+  }
   if (!r || !r.ok) {
     const why = !r ? 'geen verbinding met GitHub' : (r.status === 401 || r.status === 403)
       ? 'het token wordt niet geaccepteerd (verlopen, of zonder Actions-schrijfrecht)' : `HTTP ${r.status}`;
