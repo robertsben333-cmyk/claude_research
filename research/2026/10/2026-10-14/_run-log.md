@@ -121,3 +121,7 @@
 ## Intraday panel 12:00 — done
 - Logged at 2026-10-14 18:28 UTC
 - 7/17 hunted (unpriced-searcher, Opus 5.5; the 10 missing searchers stopped on the operator's instruction, so only slot-time searches count), guard moved nothing, all four judges 7/7, panel scored --dry-run --stage E-PI (history untouched). Selected: none (ERIC 74 long closest). No orders. Timeline rebuilt.
+
+## Edge hunt (panel, Fable) — 2026-10-14 amc + 2026-10-15 bmo — DONE
+- Logged at 2026-10-14 18:30 UTC
+- 8/17 hunted (unpriced-searcher-fable, claude-fable-5-1); no further searchers on the operator's instruction, 9 bmo names not ranked (no hunt). All four judges 8/8. panel_score --dry-run --stage E-PF (history untouched): selected CMTL short (panel_pct 94, 4/4), same as stage E-P. rho E-PF vs E-P panel +0.548 (n=8). No orders.
