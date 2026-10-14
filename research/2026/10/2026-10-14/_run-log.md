@@ -82,3 +82,7 @@
 ## Edge hunt (panel) — 2026-10-14 amc + 2026-10-15 bmo — STARTED
 - Logged at 2026-10-14 17:09 UTC
 - Fired 17:06 UTC (13:06 ET). Universe 17 of 40 rows (4 amc 10-14, 13 bmo 10-15); own baselines sealed for all 17 in edge-panel/. Plan: 1 edge-sweep + up to 17 unpriced-searcher (Opus 5.5), then 4 blind judges. No orders.
+
+## Edge hunt (panel, Fable) — 2026-10-14 amc + 2026-10-15 bmo — STARTED
+- Logged at 2026-10-14 17:11 UTC
+- Stage E-PF: 17 names in window (4 amc 10-14, 13 bmo 10-15), baselines sealed 17:11Z in edge-panel-fable/baselines. Plan: one edge-sweep, one unpriced-searcher-fable (claude-fable-5-1) per confirmed name, four blind judges, panel_score --dry-run --stage E-PF. No orders.
