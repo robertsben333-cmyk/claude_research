@@ -2,7 +2,9 @@
 
 Every research Routine on Xavier's account fires into the cloud environment **"full
 env"** (`env_01HBKyy2ZpubuvsBDUY2onkn`), read back from the sessions of stages J, EU and
-D on 2026-10-13/14. Stage E and "Close AMC" live on another account, so their
+D on 2026-10-13/14. **A Routine created by hand in the Routines UI must be given "full env"
+too** (for example the two stage E-PI Routines, "US - Intraday panel (:00)" and "(:30)");
+they need nothing beyond what the setup script installs. Stage E and "Close AMC" live on another account, so their
 environment is configured there and cannot be seen from here.
 
 Three files keep that environment right:
