@@ -65,3 +65,7 @@
 ## Intraday panel 10:00 — panel STARTED
 - Logged at 2026-10-14 14:24 UTC
 - 17 searchers done (unpriced-searcher, Opus 5.5), guard moved nothing (ran 14:24 UTC), 17 packs, four judges.
+
+## Intraday panel 10:00 — done
+- Logged at 2026-10-14 14:31 UTC
+- 17/17 hunted (unpriced-searcher, Opus 5.5), guard moved nothing, all four judges 17/17, panel scored --dry-run --stage E-PI (history untouched). Selected: CMTL short (panel_pct 96, 4/4 own top 20%). No orders. Timeline at edge-intraday/timeline.md.
