@@ -226,6 +226,10 @@ edge_panel:
   selection: mean_pct          # mean_pct | consensus
   selection_top_share: 0.2     # |panel_pct| >= 80
   reference_fallback: seed     # below 20 live sizes, top up from the re-judge seed
+  # Per name, the expected return on the trade (2026-10-14): researcher_us/analysis/
+  # panel-calibration.json, refit with researcher_us/scripts/panel_calibrate.py. Frozen
+  # between refits; never refit on the day being scored.
+  expected_return: calibrated
   live_weight: equal           # within the selection weights moved +-0.3pp; equal until measured
   selected_prior_net_pct: 6.7  # development, 24 names, in sample
   prior_shrink: 0.5            # so expected_edge_pct on a selected name is +-3.35
@@ -251,6 +255,7 @@ market_panel:
   # selection: the operator moved only the US decision (2026-10-14).
   selection: consensus
   reference_fallback: us_live    # below 20 live sizes of its own, top up from stage E-P's live sizes
+  expected_return: none          # the calibration is US-only; no market has the resolved names for one
   stages: [EU, JP, AU, CA, IPO]
   # Stage IPO uses its own set, panel-judge-ipo-*, generated from config/panel-judge-ipo.md
   # (intraday window), and a 60-name history window (scripts/market_panel.py MARKETS).

@@ -98,7 +98,7 @@ def cfg(market=None):
     rules = dict(c.get("edge_panel") or {})
     rules.update({k: v for k, v in (c.get("market_panel") or {}).items()
                   if k in ("member_top_share", "history_window", "consensus_fraction",
-                           "selection", "reference_fallback")})
+                           "selection", "reference_fallback", "expected_return")})
     for k in ("history_window", "reference_fallback"):
         if market and MARKETS[market].get(k):
             rules[k] = MARKETS[market][k]

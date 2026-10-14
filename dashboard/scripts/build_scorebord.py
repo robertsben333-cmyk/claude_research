@@ -24,6 +24,12 @@ every top X% (10..100), what did trading every name with |panel_pct| >= 100 - X 
 and inside the top, did the names the judges agreed on most do better than the ones
 they agreed on least? Measured on this page's own windows, point in time.
 
+And since the same day, per US panel name the expected return on the trade
+(`panel_calibrate.py`): recorded by the scorer on runs scored since then, computed here
+from the frozen calibration for older ones, with the calibration's own out-of-sample
+check (predicted against realised, backtest and October) drawn beside it. All of it sits
+on its own tab, "Panel %".
+
 Resolved outcomes are read, never recomputed, wherever a resolver already wrote one:
 the US ledger's own bars for E, E-P and D on the operator's window (see US_ENTRY_HM),
 frozen once resolved, the market resolvers
@@ -49,6 +55,7 @@ import provenance as PROV          # noqa: E402
 import score_report as SR          # noqa: E402
 sys.path.insert(0, str(ROOT / "researcher_us" / "scripts"))
 import panel_score as PS           # noqa: E402
+import panel_calibrate as PC       # noqa: E402
 
 PCT = SR.Percentiles()
 TOP = 80.0                          # top 20% of the model's own reference
@@ -709,6 +716,41 @@ for x in live:
     x["end_day"] = (w or {}).get("end_day")
     x["score"] = None if x["score"] is None else round(x["score"], 2)
 
+# ---------------------------------------------------------------- the panel tab
+CAL = PC.load_calibration()
+calibration = None
+if CAL:
+    cvb = CAL.get("cross_validation") or {}
+    calibration = {"fitted_utc": CAL.get("generated_utc"), "sample": CAL.get("sample"),
+                   "window": CAL.get("window"), "formula": CAL.get("formula"),
+                   "models": cvb.get("models"), "quintiles": cvb.get("quintiles"),
+                   "points": [{k: r[k] for k in ("date", "ticker", "src", "pct", "pred", "real")}
+                              for r in cvb.get("rows") or []],
+                   "p_right_grid": (CAL.get("fit") or {}).get("p_right_grid")}
+week_ep = {(c["ticker"], c["run_date"]): c for c in calls if c["stage"] == "US · E-P panel"}
+panel_names = []
+for f in sorted(glob.glob(str(ROOT / "research/*/*/*/edge-panel/edge-scores-panel.json"))):
+    run = str(Path(f).parent.relative_to(ROOT))
+    run_date = Path(f).parent.parent.name
+    if not in_week(run_date):
+        continue
+    pp = panel_pcts(run, "US")
+    for r in (load(f) or {}).get("ranking", []):
+        p = pp.get(r["ticker"]) or {}
+        pct_ = p.get("panel_pct")
+        if pct_ is None:
+            continue
+        er = {k: r.get(k) for k in ("expected_return_pct", "expected_return_lo80", "expected_return_hi80",
+                                    "p_right", "expected_abs_move_pct")}
+        if er["expected_return_pct"] is None and CAL:
+            er = PC.expected(CAL, pct_, load(ROOT / run / "baselines" / f"{r['ticker']}.json")) or er
+        c = week_ep.get((r["ticker"], run_date)) or {}
+        panel_names.append(dict(run_date=run_date, ticker=r["ticker"], company=c.get("company"),
+                                panel_pct=pct_, spread=p.get("sd"),
+                                selected=bool(p.get("full")) and abs(pct_) >= PANEL_TOP,
+                                side=sign(pct_), state=c.get("state"), ret=c.get("ret"), **er))
+panel_names.sort(key=lambda x: (x["run_date"], abs(x["panel_pct"])), reverse=True)
+
 payload = {
     "built_utc": datetime.now(timezone.utc).isoformat(timespec="minutes"),
     "ledger_utc": ledger.get("generated_utc"),
@@ -719,6 +761,8 @@ payload = {
     "agents": agents,
     "week_days": WEEK_DAYS,
     "panel_top": panel_top,
+    "calibration": calibration,
+    "panel_names": panel_names,
 }
 OUT_JSON.write_text(json.dumps(payload, indent=1, default=str))
 FROZEN_PATH.write_text(json.dumps(FROZEN, indent=1, sort_keys=True) + "\n")

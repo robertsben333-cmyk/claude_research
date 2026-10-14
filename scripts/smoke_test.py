@@ -1266,6 +1266,11 @@ def main():
     hist_before = open(panel_score.HISTORY).read()
     with _tf.TemporaryDirectory() as td:
         rd = os.path.join(td, "edge-panel"); os.makedirs(os.path.join(rd, "panel"))
+        os.makedirs(os.path.join(rd, "baselines"))
+        for t in ("AAA", "DDD", "BBB", "CCC"):
+            json.dump({"ticker": t, "expected_move_pct": 6.0, "history": {"median_abs_move_pct": 7.0},
+                       "tape": {"realised_vol_20d_annualised_pct": 60.0}},
+                      open(os.path.join(rd, "baselines", t + ".json"), "w"))
         big = {"opus5": 9.0, "opus55": 9.0, "sonnet55": 9.0, "fable51": 9.0}
         split = {"opus5": 6.0, "opus55": 4.0, "sonnet55": 3.0, "fable51": -0.2}
         for m in panel_score.MEMBERS:
@@ -1285,6 +1290,11 @@ def main():
         check("a 3-of-4 consensus with a small dissent is recorded but not selected by the mean",
               R["DDD"]["selected_consensus"] is True and R["DDD"]["selected_mean_pct"] is False
               and R["DDD"]["selected"] is False, str({k: R["DDD"][k] for k in ("panel_pct", "consensus_k")}))
+        check("stage E-P prices every name with the frozen calibration, and says it is gross",
+              epc.get("expected_return") == "calibrated" and out.get("expected_return")
+              and all(r.get("expected_return_pct") is not None and r.get("p_right") is not None
+                      for r in R.values() if r["panel_pct"])
+              and R["CCC"]["expected_return_pct"] is None)
         check("every member carries its own signed percentile and the old z is still written",
               all(-100 <= x["pct"] <= 100 and "z" in x for r in R.values() for x in r["members"].values())
               and R["AAA"]["panel_pct"] >= 80 and R["CCC"]["panel_pct"] == 0)
@@ -1312,6 +1322,11 @@ def main():
           all(market_panel.cfg(c).get("selection") == "consensus" for c in market_panel.MARKETS)
           and market_panel.cfg("IPO").get("reference_fallback") == "seed"
           and market_panel.cfg("EU").get("reference_fallback") == "us_live")
+    check("the expected-return calibration is US-only and carries its out-of-sample check",
+          all(market_panel.cfg(c).get("expected_return") == "none" for c in market_panel.MARKETS)
+          and os.path.exists(os.path.join(REPO, "researcher_us", "analysis", "panel-calibration.json"))
+          and (json.load(open(os.path.join(REPO, "researcher_us", "analysis", "panel-calibration.json")))
+               .get("cross_validation") or {}).get("scheme") == "leave one panel day out")
     for code, skill in (("EU", "researcher-europe-hunt"), ("JP", "researcher-japan-hunt"),
                         ("AU", "researcher-australia-hunt"), ("CA", "researcher-canada-hunt")):
         sk = open(os.path.join(REPO, ".claude", "skills", skill, "SKILL.md"), encoding="utf-8").read()
