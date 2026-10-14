@@ -69,3 +69,7 @@
 ## Intraday panel 10:00 — done
 - Logged at 2026-10-14 14:31 UTC
 - 17/17 hunted (unpriced-searcher, Opus 5.5), guard moved nothing, all four judges 17/17, panel scored --dry-run --stage E-PI (history untouched). Selected: CMTL short (panel_pct 96, 4/4 own top 20%). No orders. Timeline at edge-intraday/timeline.md.
+
+## Intraday panel 12:00 — STARTED
+- Logged at 2026-10-14 15:58 UTC
+- Fired 15:58 UTC (11:58 ET). Names frozen by 10:00: seed, re-seal baselines, one unpriced-searcher per name (amc first), guard, score, four judges, panel_score --dry-run --stage E-PI. No orders.
