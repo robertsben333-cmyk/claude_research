@@ -45,3 +45,7 @@
 ## Close AMC — 2026-10-14 10:10 UTC
 - Logged at 2026-10-14 10:15 UTC
 - Guard mode --require-exit-tif opg exit 0 (amc_open, amc->day queued for open). verify: 14 legs, none still held, none UNFILLED with shares held. close --submit: 12 runs scanned, no leg due today, 0 orders sent, 0 refusals. Account reachable.
+
+## Stage IPO — IPO researcher — STARTED
+- Logged at 2026-10-14 12:36 UTC
+- Fired 12:36 UTC (08:36 ET). Plan: universe → seal → hunters (waves of 6) → score → four-model IPO panel → note. No orders.
