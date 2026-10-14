@@ -130,6 +130,36 @@ def evaluate(rows, label):
     return out
 
 
+def portfolio(rows, cap, start=10000.0):
+    """The portfolio simulator's rule (../portfolio-simulator): per day, equity split
+    equally over the picks with at most `cap` per name, the rest in cash, compounding."""
+    by = defaultdict(list)
+    for r in rows:
+        by[r['date']].append(r)
+    days = sorted(by)
+    out = {}
+    for name, rule in RULES:
+        eq, peak, mdd, daily, dep = start, start, 0.0, [], []
+        for d in days:
+            sel = select(by[d], rule)
+            w = min(1 / len(sel), cap) if sel else 0.0
+            ret = sum(w * r['ret'] / 100 for r in sel)
+            eq *= 1 + ret; daily.append(ret * 100); dep.append(w * len(sel))
+            peak = max(peak, eq); mdd = min(mdd, eq / peak - 1)
+        out[name] = {'end': eq, 'total_pct': (eq / start - 1) * 100, 'max_dd_pct': mdd * 100,
+                     'mean_day_pct': st.mean(daily), 't_day': tstat(daily),
+                     'deployed_pct': st.mean(dep) * 100, 'days_invested': sum(x > 0 for x in dep)}
+    return out
+
+
+def print_portfolio(label, res, cap):
+    print(f"\n--- portefeuille {label}, cap {cap*100:.0f}% per naam, start $10.000, bruto ---")
+    print(f"{'regel':14s} {'eind':>9s} {'totaal':>8s} {'max dd':>7s} {'gem/dag':>8s} {'t':>5s} {'belegd':>7s} {'dagen':>5s}")
+    for n, r in res.items():
+        print(f"{n:14s} {r['end']:9.0f} {r['total_pct']:+7.1f}% {r['max_dd_pct']:6.1f}% {r['mean_day_pct']:+7.2f}% "
+              f"{r['t_day']:5.2f} {r['deployed_pct']:6.0f}% {r['days_invested']:5d}")
+
+
 def main():
     L = json.load(open(REPO / 'dashboard/data/ledger.json'))
     led = {(n['run_date'], n['ticker']): n for n in L['names']}
@@ -150,6 +180,12 @@ def main():
            'backtest_opus5': evaluate(back, 'Backtest (blinde herbeoordeling, Opus 5-hunters, aug-sep)'),
            'oktober_v1': evaluate(v1, 'Oktober live E-P, us-searcher.v1 (10-02 t/m 10-09)'),
            'oktober_v2': evaluate(v2, 'Oktober live E-P, us-searcher.v2 (10-12, 10-13)')}
+    res['portfolio'] = {}
+    for key, rows in (('backtest_opus5', back), ('oktober_v1', v1), ('oktober_v2', v2)):
+        for cap in (0.5, 0.33):
+            pr = portfolio(rows, cap)
+            print_portfolio(key, pr, cap)
+            res['portfolio'][f'{key}_cap{int(cap*100)}'] = pr
     json.dump(res, open(HERE / 'day-rules.json', 'w'), indent=1, default=lambda x: None)
 
 

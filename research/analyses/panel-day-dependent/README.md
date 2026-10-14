@@ -63,6 +63,40 @@ Per band: 50–59 +2,0% (n 12), 60–69 −2,2% (n 9), 70–79 +1,8% (n 14); gee
 - **us-searcher.v2 (10-12), 9 namen, 1 opgeloste dag.** Niemand boven 80; aanvullen had
   één naam gekocht (+3,8%). Eén naam op één dag zegt niets.
 
+## Vervolg (Xavier, 2026-10-14): meer meetdagen en een portefeuillerun
+
+Het punt is niet de winst per dag, maar dat je op meer dagen meet. Twee lezingen erbij.
+
+**Meetkracht per call (backtest).** vast80 geeft calls op 11 van de 15 dagen: 19 calls,
+t 1,97. Aanvul 2/50 geeft 14 dagen, 29 calls, t 2,43; 2/60 26 calls, t 2,20; 2/70 25 calls,
+t 2,15. Aanvullen tot 3 verlaagt de t (1,65 tot 1,88). Voor het meten zelf is selectie
+niet nodig: elke beoordeelde naam wordt opgelost en telt mee in de kalibratiecurve.
+
+**Portefeuille** (de regel van `../portfolio-simulator/`: gelijk gewogen, maximaal X% per
+naam, rest in kas, samengesteld; start $10.000, bruto). Backtest, 15 dagen:
+
+| regel | cap 50%: eind | max dd | belegd | cap 33%: eind | belegd |
+|---|---|---|---|---|---|
+| vast80 | +56.8% | −19.0% | 57% | +48.5% | 42% |
+| aanvul 2/50 | +91.0% | −19.6% | 90% | +69.8% | 64% |
+| aanvul 2/60 | +71.7% | −19.6% | 80% | +57.9% | 57% |
+| aanvul 2/70 | +68.8% | −19.6% | 77% | +56.1% | 55% |
+| aanvul 3/50 | +69.9% | −10.1% | 90% | +58.5% | 79% |
+| staffel | +53.8% | −19.6% | 63% | +47.4% | 48% |
+
+Met een cap per naam staat op een dag met één naam de helft (of twee derde) in kas, en
+aanvullen zet dat geld aan het werk. Daarom wint aanvullen hier wel, waar het in het
+volledig belegde boek van boven niet won. Gepaard per dag tegen vast80 (cap 50%): 2/50
++1,44 pp per dag, t 1,33, 4 dagen beter en 4 slechter; 2/60 +0,65 pp, t 0,89; 2/70
++0,53 pp, t 0,73. Niet significant, en het verschil zit in een handvol dagen.
+
+Oktober v1 (5 dagen, cap 50%): vast80 +22,2%, aanvulregels +17,5% tot +19,8%. Daar kost
+het, op vier extra calls. Oktober v2: één dag, aanvullen +1,9% tegen 0.
+
+**Lezing.** Of aanvullen loont, hangt vooral af van de cap: die bepaalt hoeveel geld er op
+een dunne dag stil ligt. De richting in de backtest is gunstig voor aanvullen tot 2 namen,
+in oktober ongunstig, en geen van beide is genoeg om op te handelen.
+
 ## Europa
 
 Niet doorgerekend. Het EU-panel draait sinds 2026-10-12 en heeft één opgeloste dag; de
