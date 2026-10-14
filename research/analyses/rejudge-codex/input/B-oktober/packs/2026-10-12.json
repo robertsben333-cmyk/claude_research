@@ -1,0 +1,2768 @@
+[
+ {
+  "id": "us/2026-10-12/ACI",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "ACI",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:31+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 12.315,
+    "run_up_5d_pct": 6.99,
+    "run_up_20d_pct": -3.18,
+    "pct_from_52w_high": -37.61,
+    "pct_from_52w_low": 11.65,
+    "realised_vol_20d_annualised_pct": 29.7,
+    "avg_volume_20d": 7662015
+   },
+   "cik": "0001646972",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-23",
+      "session": "bmo",
+      "move_pct": -21.64,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 47789700,
+       "next_day_volume": 21368500,
+       "median_20d_before": 6200650,
+       "move_as_tagged_pct": -21.64,
+       "move_if_bmo_pct": -21.64,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2026-04-14",
+      "session": "bmo",
+      "move_pct": -3.03
+     },
+     {
+      "event_date": "2026-01-07",
+      "session": "bmo",
+      "move_pct": -5.96
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "bmo",
+      "move_pct": 13.63
+     },
+     {
+      "event_date": "2025-07-15",
+      "session": "bmo",
+      "move_pct": -5.06
+     },
+     {
+      "event_date": "2025-04-15",
+      "session": "bmo",
+      "move_pct": -7.56
+     },
+     {
+      "event_date": "2025-01-08",
+      "session": "bmo",
+      "move_pct": 0.81
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 5.96,
+    "max_abs_move_pct": 21.64,
+    "up_count": 2,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 82,
+    "median_gap_days": 94.0,
+    "ratio": 0.87,
+    "last_print": "2026-07-23",
+    "verdict": "fits_cadence",
+    "reason": "82 days since the last print against a 94-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 12.5,
+    "atm_iv_pct": 74.6,
+    "straddle_implied_move_pct": 7.11,
+    "event_implied_move_pct": 6.65,
+    "event_implied_move_basis": "7.11% straddle over 4 calendar days less 3.16% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 9.38,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.44,
+    "total_open_interest": 20498,
+    "atm_spread_frac_of_mid": 0.182,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 2.98,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 6.65,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q2 FY26 (12 weeks to 2026-09-12). EPS consensus: $0.31 at Earnings Whispers (whisper $0.34, revenue $18.83B; https://beta.earningswhispers.com/go/w/ACI) and ~$0.33 at Investing.com 2026-10-12 (revenue $18.9B, EPS estimates 'edged up modestly over 60 days'; https://investing.com/news/earnings/albertsons-earnings-up-next-can-aci-edge-turn-around-grocery-93CH-4944664). Adjusted EBITDA consensus ~$770M; RBC is at $761M with identical sales -1% (https://finimize.com/content/rbc-thinks-albertsons-q2-could-miss-by-a-hair, undated page). Company FY26 guide from 2026-07-23: identical sales -1.5% to -0.5% (incl. ~150bp IRA headwind), adjusted EBITDA $3.55-3.625B, adjusted EPS $1.75-1.85 (https://www.sec.gov/Archives/edgar/data/1646972/000164697226000041/aciq126earningsrelease.htm). The two EPS sources roughly agree. The EBITDA bar rests on one source. print_vs_bar_pct is measured on adjusted EBITDA.",
+   "positioning_check": "Short interest (FINRA via equibles, https://equibles.com/stocks/aci/shortinterest, read 2026-10-12): 59,495,647 shares at the 2026-09-30 settlement, 7.48 days to cover. That is up from 48.3M on 2026-07-31 (+23%) and 55.96M on 2026-09-15, so shorts have built steadily since the guide cut. Against 485.3M Class A shares outstanding on 2026-07-24 (10-Q cover) that is ~12.3% of shares outstanding, and a higher share of float if insiders and sponsors hold a block. That counts as crowded for a large-cap grocer. Options (baseline): 25-delta skew +9.38 vol pts (downside paid), event-implied move 6.65%, put/call OI 0.44 (call OI heavier), ATM spread 18% of mid. Tape: 5-day run-up +6.99%, 20-day -3.18%, 37.6% below the 52-week high. Insider buys after the July cut: EVP Moriarty $1.96M at $11.51 (07-27), CEO Morris $450k at $11.42 (07-28), CFO McCollam $103k (07-31).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "Kroger, whose Q2 (May 24-Aug 15, 2026) overlaps most of ACI's Q2 (Jun 21-Sep 12), saw identical sales ex-fuel slow from +1.0% in Q1 to +0.2% in Q2 (IRA drag 130bp then 138bp, so ex-IRA ~2.3% to ~1.6%). It cut its FY identical-sales guide to 0.2-0.8% from 1.0-2.0%, citing 'the macro environment'. Circana data (Grocery Dive, 2026-09-17) show August unit sales of produce -6.7%, bakery -4.3% and meat -2.3% y/y. Applying Kroger's ~60bp two-year-stack slowdown to ACI's Q1 (-0.8% on a +2.8% compare; Q2 compare is +2.2%) gives Q2 identical sales of roughly -0.8% to -1.2%. That is near RBC's -1% and inside ACI's own FY guide of -1.5% to -0.5%.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000056873/000110465926106890/tm2625060d1_ex99-1.htm",
+    "source_date": "2026-09-11",
+    "reaction_history_on_this_line": "On 2026-07-23, Q1 identical sales of -0.8% with a guide cut gave -21.64%. On 2025-10-14, Q2 identical sales of +2.2% with a beat and raise gave +13.63%. Identical sales and the guide move this stock together.",
+    "why_not_priced": "Partly priced: RBC's -1% and the -1.5% to -0.5% guide already assume a negative comp. What is new is the direction of change: a direct peer slowed in the overlapping weeks, after ACI last spoke on 07-23. If the market had fully priced a weaker-than-Q1 comp, EPS estimates would have drifted down. Instead they 'edged up modestly over 60 days' (Investing.com 2026-10-12), and the stock is +7% over 5 days.",
+    "independence": "Circana August unit data via Grocery Dive, a different source: https://www.grocerydive.com/news/august-tough-month-grocery-unit-sales-perishables/830644/ (2026-09-17). Kroger Q1 baseline: https://www.sec.gov/Archives/edgar/data/0000056873/000110465926075395/tm2618219d1_ex99-1.htm. This is a peer proxy, not an ACI number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "Walmart U.S. (Q2 FY27, reported 2026-08-20) posted mid-single-digit grocery comps 'driven by unit volume gains and share gains' and is putting ~$2.9B of tariff refunds into price rollbacks. ACI's CEO named Walmart, Amazon and Aldi as the main share-takers on the July call. RBC says further downside would come from more ACI 'price investment', which would squeeze the margin the guide depends on.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.grocerydive.com/news/walmart-second-quarter-fiscal-2027-earnings-grocery/828292/",
+    "source_date": "2026-08-20",
+    "reaction_history_on_this_line": "The July 2026 cut (-21.6%) was blamed on consumer pressure and share loss to price-led competitors, with investment accelerated 'ahead of expected productivity benefits'. Margin and guide news moves this stock in double digits.",
+    "why_not_priced": "The share-loss story has been public since July, and the put skew already pays for downside. The new element is a competitor funding rollbacks with a one-off refund during ACI's Q2 and Q3. If that were priced, the Q2 EBITDA bar would sit at or below RBC's $761M rather than $770M, and EPS estimates would not be rising.",
+    "independence": "ACI CEO on July competition: https://www.webull.com/news/15282425096463360. RBC price-investment risk: https://finimize.com/content/rbc-thinks-albertsons-q2-could-miss-by-a-hair. This is a proxy plus inference. ACI has not confirmed new price investment since 07-23.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "Kroger kept its FY26 profit guide (adjusted FIFO operating profit $5.0-5.2B, EPS $5.10-5.30) despite cutting sales. Its FIFO gross margin ex-fuel rose 13bp, helped by 'favorable pharmacy mix' and 'strong pharmacy' performance. ACI's Q1 10-Q says pharmacy margins improved 'mainly because of the IRA's impact'. So the same IRA drag that hurts comps (Walmart 125bp, Kroger 138bp, ACI guided ~150bp) supports gross margin, which makes holding the $3.55-3.625B EBITDA guide more plausible than the sales trend alone suggests.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000056873/000110465926106890/tm2625060d1_ex99-1.htm",
+    "source_date": "2026-09-11",
+    "reaction_history_on_this_line": "On 2025-10-14, a guide raise gave +13.63%. On 2026-07-23, a guide cut gave -21.64%. A reaffirmation after a cut has no clean precedent in the seven prints. Kroger's own reaction on 2026-09-11 could not be sourced.",
+    "why_not_priced": "The stock trades at ~6.7x the midpoint of its own EPS guide and sits 11.7% above its 52-week low. With 59.5M shares short and the put skew paying for downside, the market is pricing a second cut more than a hold. If a hold were the base case, short interest would not have risen 23% since July and the skew would be flatter. RBC expects the guide to be held.",
+    "independence": "Shares one document with the first finding (Kroger 8-K), read for a different line (profit vs sales). ACI's own pharmacy-margin language: https://www.sec.gov/Archives/edgar/data/1646972/000164697226000046/aci-20260620.htm. Walmart IRA 125bp: https://www.grocerydive.com/news/walmart-second-quarter-fiscal-2027-earnings-grocery/828292/.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "The Q2 bar is set below the pace the FY guide implies. FY guide adjusted EBITDA is $3.55-3.625B less Q1's $1,013M, which leaves $2.54-2.61B for the remaining 36 weeks. FY25 delivered $3,901.5M less Q1's $1,111M less ~$68M for the 53rd week, about $2.72B, so the guide implies -4% to -7% y/y for the rest of the year. Q2 consensus EBITDA of ~$770M is ~-9% and EPS of $0.31-0.33 is -25% to -30% vs $0.44, both worse than that pace and in line with or worse than Q1 (-8.8% EBITDA, -24% EPS). An in-line or slightly better Q2 with a reaffirmed guide would show the guide holding, while a Q2 at consensus forces a back-half acceleration that the market will question.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/1646972/000164697226000028/aciq425earningsrelease.htm",
+    "source_date": "2026-04-14",
+    "reaction_history_on_this_line": "Q1 FY26 EPS of $0.42 missed consensus of $0.54 (-22%) together with a guide cut: -21.64%. Q2 FY25 EPS of $0.44 beat ~$0.39-0.40: +13.63%.",
+    "why_not_priced": "Arithmetic from two company releases, against estimates sourced at Earnings Whispers and Investing.com. If the market read Q2 as the trough, sell-side previews would frame a beat as likely. RBC instead previews a small miss ($761M vs $770M), and Earnings Whispers' whisper of $0.34 is the only sign of a lean the other way.",
+    "independence": "Q1 FY26 figures and the guide: https://www.sec.gov/Archives/edgar/data/1646972/000164697226000041/aciq126earningsrelease.htm. Consensus: https://beta.earningswhispers.com/go/w/ACI. This is my inference across these documents.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "Three insiders bought in the open market after the July cut, about $2.5M in total: EVP M&A/Corporate Affairs Thomas Moriarty 170,500 shares at $11.51 ($1.96M, 2026-07-27), CEO Susan Morris 39,409 shares at $11.42 ($450k, 2026-07-28) and CFO Sharon McCollam 9,000 shares at $11.48 ($103k, 2026-07-31). Spot is $12.315.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.marketbeat.com/instant-alerts/insider-buying-albertsons-companies-nyseaci-ceo-acquires-45005078-in-stock-2026-07-30/",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "None measured on this name.",
+    "why_not_priced": "Mostly priced: the Form 4s are 2.5 months old. What it adds is that management bought into the guide they had just set, one week after setting it. That is evidence against a second cut being planned at that time, though not proof.",
+    "independence": "ACI EDGAR Form 4 list: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001646972&type=4&dateb=&owner=include&count=20.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "Leadership has been overhauled since the last print. Meg Whitman was named to the new role of Executive Chair on 2026-09-08 ($8.9M RSU grant, also advising the CEO on strategy). Three new directors join effective 2026-10-14, taking the board from 11 to 14. CFO McCollam stepped down and SVP Treasury/IR Cody Perdue became interim CFO on 2026-09-30, so this is his first call. The retail-media head left and media was folded into merchandising (Grocery Dive, 2026-10-09). A new executive chair and an interim CFO raise the odds of a reset on the call (a new strategy framing, ACI Edge cost targets, or a rebased guide), and the sign of that reset is genuinely uncertain.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/1646972/000164697226000057/aci-20260930.htm",
+    "source_date": "2026-09-30",
+    "reaction_history_on_this_line": "The CFO retirement and restructuring were announced alongside the 07-23 guide cut (-21.64%). There is no clean precedent for a print under new leadership.",
+    "why_not_priced": "Each event was public, but none has been read through to the guide. No preview found ties Whitman's arrival to a guide or capital-allocation reset. If it were priced, the event-implied move (6.65%) would sit nearer the last print's 21.6% than the 5.96% median.",
+    "independence": "Whitman 8-K: https://www.sec.gov/Archives/edgar/data/1646972/000164697226000054/aci-20260908.htm. Media reorganisation: https://www.grocerydive.com/news/albertsons-media-collective-consolidating-departments-merchandising-media-operations/832605/. All are company-sourced facts, and the direction is my inference.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "Short interest rose from 48.3M shares (2026-07-31) to 59.5M (2026-09-30), 7.48 days to cover, ~12.3% of the 485.3M shares outstanding. The 5-day run-up is +7.0%, so some covering or positioning has started. A print that merely reaffirms the guide into this short base gives a squeeze its own mechanism, as the +13.6% on the October 2025 beat-and-raise showed.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://equibles.com/stocks/aci/shortinterest",
+    "source_date": "2026-10-12",
+    "reaction_history_on_this_line": "2025-10-14 beat and raise: +13.63%. Upside moves on this name are large when the guide surprises up. Short interest at that time is unknown.",
+    "why_not_priced": "The skew still pays for downside (+9.4 vol pts), so options are positioned for a miss, not a squeeze. If the squeeze risk were priced, the skew would be flatter and call implied vol bid.",
+    "independence": "Share count from the 10-Q cover: https://www.sec.gov/Archives/edgar/data/1646972/000164697226000046/aci-20260620.htm. Run-up from the sealed baseline.",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "ACI's Delaware Chancery suit against Kroger, seeking the $600M merger termination fee (about $1.24 per share, ~10% of market cap) plus damages, goes to trial on 2026-10-19 per the Q1 10-Q, with Kroger counterclaiming. The trial date is after the window. A pre-trial settlement disclosed on the 10-13 call would land inside it, but nothing points to one.",
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/1646972/000164697226000046/aci-20260620.htm",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "The Washington State opioid bench trial against Albertsons/Safeway began 2026-07-13, and the statute-of-limitations defense was struck on 2026-07-29. It is excluded from the $773.8M settlement framework. No verdict date has been found, so it is not expected inside the window.",
+    "resolves_by": "unknown, after 2026-10-13",
+    "source": "https://washingtonstatestandard.com/2026/07/13/trial-begins-in-wa-suit-against-albertsons-over-opioid-epidemic-liability/",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "GuruFocus/Yahoo 'ACI Q2 2026: everything you need to know' with Q2 EPS $0.31, FY $1.78, FY27 $1.92",
+    "source": "https://finance.yahoo.com/news/albertsons-companies-inc-aci-q2-131626619.html",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "IRA drag on comps at Walmart (125bp) and Kroger (138bp)",
+    "source": "https://www.grocerydive.com/news/walmart-second-quarter-fiscal-2027-earnings-grocery/828292/",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "Retail-media head Brian Monahan departs, media folded into merchandising; OpenAI/ChatGPT Safeway plugin",
+    "source": "https://www.grocerydive.com/news/albertsons-media-collective-consolidating-departments-merchandising-media-operations/832605/",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ACI.json",
+    "text": "Kroger v. Albertsons Delaware trial 2026-10-19 ($600M fee)",
+    "source": "https://www.sec.gov/Archives/edgar/data/1646972/000164697226000046/aci-20260620.htm",
+    "first_hunter_reason": "outside_window",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ACI.json",
+    "text": "ACI-specific foot-traffic data for Q2 (Placer.ai has Aldi, H-E-B and Trader Joe's 2026 data but nothing for Albertsons or Safeway)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ACI.json",
+    "text": "Any Albertsons conference presentation or intra-quarter update between 07-23 and 10-12: none found",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ACI.json",
+    "text": "Analyst rating or target changes in September or October 2026: none found after the late-July UBS and Citi downgrades",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ACI.json",
+    "text": "IEEPA tariff refund at Albertsons: nothing ACI-specific",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ACI.json",
+    "text": "Safeway/Vons labor disruption during Q2 2026: none (the last dispute settled July 2025)",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ACI.json",
+    "text": "Activist or 13D filing: none on EDGAR (last 13G/A 2024)",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ACI.json",
+    "text": "Kroger's share reaction on 2026-09-11: could not be sourced",
+    "i": 19
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-12/C",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "C",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:27+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 131.22,
+    "run_up_5d_pct": 2.08,
+    "run_up_20d_pct": -3.64,
+    "pct_from_52w_high": -9.92,
+    "pct_from_52w_low": 39.7,
+    "realised_vol_20d_annualised_pct": 20.6,
+    "avg_volume_20d": 9447169
+   },
+   "cik": "0000831001",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-14",
+      "session": "intraday",
+      "move_pct": -5.29
+     },
+     {
+      "event_date": "2026-04-14",
+      "session": "intraday",
+      "move_pct": 2.61
+     },
+     {
+      "event_date": "2026-01-14",
+      "session": "intraday",
+      "move_pct": -3.34
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "intraday",
+      "move_pct": 3.89
+     }
+    ],
+    "n": 4,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 3.62,
+    "max_abs_move_pct": 5.29,
+    "up_count": 2,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91,
+    "ratio": 1.0,
+    "last_print": "2026-07-14",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 131.0,
+    "atm_iv_pct": 45.4,
+    "straddle_implied_move_pct": 4.18,
+    "event_implied_move_pct": 3.8,
+    "event_implied_move_basis": "4.18% straddle over 4 calendar days less 2.19% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 2.38,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.01,
+    "total_open_interest": 166102,
+    "atm_spread_frac_of_mid": 0.032,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 1.81,
+   "deadband_basis": "half the median of 4 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.8,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 4,
+    "history_usable": 4,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 EPS of about $2.65-2.68 on revenue of about $23.66-23.76bn. Zacks has $2.66 (revised down over the last 7 days) on $23.66bn: https://www.zacks.com/stock/news/3004113/citigroup-(c)-laps-the-stock-market:-here's-why. FMP has $2.65 on $23.70bn: https://site.financialmodelingprep.com/market-news/citigroup-q3-earnings-preview-estimates-outlook. Hudson Labs has $2.68 on $23,756m: https://www.hudson-labs.com/research/citigroup-q3-2026-earnings-c-revenue-eps-preview. WSJ consensus checked 2026-10-12 is $2.65: https://www.indmoney.com/blog/us-stocks/us-bank-earnings-q3-jpm-bac-gs-wfc-citi-blk-ms-stock-earnings. Several sources agree, and it sits on the company's own Sept 14 guide: FY RoTCE a bit above 11%, efficiency a bit better than 60%, NII ex-Markets +5-6% at the top end or better, Q3 Markets +MSD YoY, Q3 IB +LSD YoY (https://www.citigroup.com/rcs/citigpa/storage/public/2026-citigroup-barclays-global-financial-services-conference-transcript.pdf). print_vs_bar is on revenue; Citi has beaten EPS 8 quarters running and beat Q2 revenue by about 5.5% ($24.77bn vs $23.47bn).",
+   "positioning_check": "Short interest is light. Equibles shows 24.7M shares short, 1.4% of float, 2.1 days to cover at the 2026-08-19 settlement, down 4.1M (https://equibles.com/stocks/c/shortinterest). shortsqueeze.com shows 28.77M and 2.3 days on 2026-08-03 (https://shortsqueeze.com/?symbol=C). Not a crowded short. Options: 25-delta skew +2.38 vol points (downside paid, mild), put/call OI 1.01, event-implied move 3.80% (straddle 4.18%), ATM IV 45.4%. Tape: 20-day run-up -3.64% (much of it the 2026-09-15 sector sell-off on BofA's IB warning), 5-day +2.08%, 9.9% below the 52-week high.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "C.json",
+    "text": "At the 2026-09-14 Barclays conference the CFO effectively raised the FY2026 guide. RoTCE is now 'a bit above our 11%', against the 10-11% guided in July. Efficiency is 'a bit better than the 60%' (July: around 60%). NII ex-Markets is 'top end of [5-6%] or a bit better'. He cited 'really good momentum in the third quarter'. H1 RoTCE was about 13%, so a FY a bit above 11% implies H2 at about 9.5-10%. Consensus Q3 EPS of $2.66 against Q2's $3.15 implies a Q3 RoTCE of about 10.5%. The bar therefore sits on the guide, and the print is where the July 'unchanged guide' is formally replaced by the raised one.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.citigroup.com/rcs/citigpa/storage/public/2026-citigroup-barclays-global-financial-services-conference-transcript.pdf",
+    "source_date": "2026-09-14",
+    "reaction_history_on_this_line": "In Q2 2026 (2026-07-14) Citi beat EPS ($3.15) with the FY guide unchanged and 'muddied' H2 spend messaging. The stock fell 5.29% over the window (-4.4% per Kalkine). Q1 2026 +2.61%, Q4 2025 -3.34%, Q3 2025 +3.89%. This name trades on the guide and the expense outlook, not on the beat.",
+    "why_not_priced": "Mostly priced. It was said publicly four weeks ago, and the stock still fell 1-2% that day with the sector on BofA's warning. What the market has not yet seen is the formal number in the release, or whether the CFO lifts it again given his statement that 'a couple of months have gone by'. If the raise were fully priced, the stock would not be 9.9% below its high with a -3.6% 20-day run-up and puts bid.",
+    "independence": "The consensus RoTCE-implied arithmetic draws on several preview sources (Zacks, FMP and Hudson Labs, links in bar). Hudson Labs summarises the same transcript, so it is not independent of the source.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "C.json",
+    "text": "Citi is pulling forward about $500m of its $5bn multi-year investment into H2 2026, 'weighted towards severance' plus card and wealth marketing (Barclays, 2026-09-14). On the Q2 call it said 'in some of the next few quarters, we do expect expense growth to outpace revenue growth'. H1 severance was already about $800m ($500m Q1, $300m Q2). Q2 expenses were $14.2bn. The Q3 expense step-up and its split between Q3 and Q4 are not disclosed. The same H2-spend line sold the Q2 beat.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.fool.com/earnings/call-transcripts/2026/07/21/citi-c-q2-2026-earnings-call-transcript/",
+    "source_date": "2026-07-14",
+    "reaction_history_on_this_line": "Q2 2026 traded -5.29% on 'muddied messaging on H2 spend' despite an EPS beat (https://www.fxleaders.com/news/2026/07/15/citigroup-c-stock-price-forecast-citi-slides-as-strong-earnings-fail-to-ease-spending-concerns/).",
+    "why_not_priced": "Largely inside the guide. The $500m was quantified on Sept 14, and consensus EPS already steps down from $3.15 to about $2.66. The unpriced part is the timing: if most of the severance lands in Q3, the reported efficiency ratio and EPS could look worse than a model that spreads it evenly. If that were priced, consensus would carry a wide range; TickerLeague shows $2.30-2.73.",
+    "independence": "The Barclays transcript (https://www.citigroup.com/rcs/citigpa/storage/public/2026-citigroup-barclays-global-financial-services-conference-transcript.pdf) is a second company document with the $500m figure. It is the same company voice, so not independent.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "C.json",
+    "text": "Peer read since Citi last spoke is soft on the lines Citi leans on. Jefferies' fiscal Q3 (Jun-Aug, reported 2026-09-28) had fixed income revenue -26% YoY and debt underwriting -21%, while advisory (+25%) and ECM (+69%) were records. Goldman's CEO said on 2026-09-16 that FICC would be 'slightly softer' and IB 'much more muted'. BofA guided Q3 IB fees down 10-20% YoY with trading flat. Citi's Markets is FICC-heavy and its IB leans to DCM, but Citi guided Markets +MSD and IB +LSD on 2026-09-14 with about 2.5 months of the quarter known.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://secure.businesswire.com/news/home/20260928078906/en/Jefferies-Announces-Third-Quarter-2026-Financial-Results",
+    "source_date": "2026-09-28",
+    "reaction_history_on_this_line": "Markets drove the Q1 and Q2 2026 beats (Q2 Markets +17%). The July call warned that the H1-to-H2 Markets decline (historically about 20%) 'could be greater this year'. No resolved print to cite where Markets alone missed.",
+    "why_not_priced": "Partly priced. The sector sold off 2026-09-15 on BofA (C -1-2%), and the Jefferies print came after Citi spoke but covers Jun-Aug only. Citi's own later guide on the same quarter is the more direct series, so this proxy is sized below it. If it were unpriced, C would not already have underperformed 20d (-3.6%).",
+    "independence": "Goldman CFO/CEO remarks: https://kfgo.com/2026/09/16/goldman-ceo-says-fixed-income-currencies-commodities-business-slightly-softer-in-q3/. BofA warning: https://parameter.io/bank-of-america-bac-slides-5-on-investment-banking-revenue-warning-for-q3/. Three separate counterparties.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "C.json",
+    "text": "The Citibank Credit Card Issuance Trust 10-D for the due period ending 2026-08-26 shows 30+ day delinquency of about 1.29%. That is down from 1.32% in July and from 1.42% a year earlier. The credit-loss component is 2.03% (July 1.90%, June 2.25%). Card credit looks benign into Q3, consistent with U.S. card NCL toward the low end of the 4-4.5% FY guide and room for reserve stability or release.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/921864/000119312526391696/d79973dex99.htm",
+    "source_date": "2026-09-15",
+    "reaction_history_on_this_line": "Credit has not been the line Citi traded on in the last four prints. Moves were explained by guide and expense messaging.",
+    "why_not_priced": "Mostly priced. The CFO said credit is stable and delinquencies are down YoY on 2026-09-14. The trust is a small (~$19bn), seasoned slice of the card book, so it is a proxy for the reported NCL rather than the number itself.",
+    "independence": "July 10-D (https://www.sec.gov/Archives/edgar/data/0001108348/000119312526353756/d138267dex99.htm) and Barclays transcript credit remarks.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "C.json",
+    "text": "The Fed raised rates 25bp to 3.75-4.00% on 2026-09-16, its first hike since 2023, with a hawkish dot plot. Citi's NII ex-Markets is volume-driven and asset-sensitive, so this supports the 'top end or better' NII guide and a firmer Q4/2027 NII outlook. It is a headwind to AOCI, TBV and CET1 (12.8% vs a 12.6% target). The rate decision source is secondhand.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://capitalandcompute.net/blog/federal-reserve-interest-rates-september-2026/",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "None specific to Citi in the baseline.",
+    "why_not_priced": "Macro, public and transmitted through models already. The only unpriced part is whether management quantifies an NII upgrade on the call. If it were fully priced, Visible Alpha's +11% Q3 NII estimate would already include it; the 2026-10-10 Visible Alpha preview shows NIM declining.",
+    "independence": "Proxy. The CFO said on 2026-09-14 that 'rates around the world [have] an upward bias' (Barclays transcript), but did not quantify it.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "C.json",
+    "text": "JPMorgan and Wells Fargo (about 7:00 ET) and Goldman Sachs (7:30 ET) all report on 2026-10-13 before Citi's 8:00 ET release, so the sector's read of trading and IB will be set before Citi's numbers land, inside the same window. BofA and Morgan Stanley report the following morning, outside the window.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.indmoney.com/blog/us-stocks/us-bank-earnings-q3-jpm-bac-gs-wfc-citi-blk-ms-stock-earnings",
+    "source_date": "2026-10-12",
+    "reaction_history_on_this_line": "On 2026-07-14 the same cluster reported the same morning and Citi fell 5.29%.",
+    "why_not_priced": "The sign cannot be known before the release. It is filed so that judges know a large part of the window's move is sector beta set by three peers' prints.",
+    "independence": "Calendar also in the sweep row and Citi's own release (https://www.citigroup.com/global/news/press-release/2026/citi-third-quarter-2026-earnings-call).",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "C.json",
+    "text": "Capital return. Citi bought back $10.3bn in H1 2026, but the CFO's FY framing is only 'ahead of what we did last year, which was about $13 billion', and he said CET1 (12.8% vs a ~12.6% target) will not make 'very sharp movements'. A Q3 buyback well below the H1 run-rate (~$5bn a quarter) would fit that language, and the Fed hike's AOCI drag makes it more likely.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.citigroup.com/rcs/citigpa/storage/public/2026-citigroup-barclays-global-financial-services-conference-transcript.pdf",
+    "source_date": "2026-09-14",
+    "reaction_history_on_this_line": "No resolved print where the buyback pace alone was the move.",
+    "why_not_priced": "An inference from wording. A Q3 buyback of about $4bn (the Q2 pace) is plausibly what models carry. If a slowdown were expected, previews would flag it, and none found does.",
+    "independence": "Shares the Barclays transcript with finding 1. Q2 call: $4bn bought back in Q2, CET1 target about 12.6% (https://www.fool.com/earnings/call-transcripts/2026/07/21/citi-c-q2-2026-earnings-call-transcript/).",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "C.json",
+    "text": "Banamex: Citi now owns about 51% after closing the last 1.4% tranche. Deconsolidation is expected 'early next year' (2027), with an expected CTA loss of about $9bn through the P&L and no impact on regulatory capital or TCE. No further sales in 2026. The call may restate timing, but the event is in 2027.",
+    "resolves_by": "2027-03-31",
+    "source": "https://www.citigroup.com/rcs/citigpa/storage/public/2026-citigroup-barclays-global-financial-services-conference-transcript.pdf",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "C.json",
+    "text": "The September-period card trust 10-D (the third month of Q3) will be filed around 2026-10-15, after the window.",
+    "resolves_by": "2026-10-15",
+    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001108348&type=10-D&dateb=&owner=include&count=10",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "C.json",
+    "text": "Reuters item: Citi CFO expects IB fees and markets revenue up mid-single digits in Q3, revenue above the $84bn guide",
+    "source": "https://finance.yahoo.com/news/citigroup-cfo-expects-investment-banking-180251826.html",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "C.json",
+    "text": "Zacks preview of Citi Q3 (NII $14.6bn, Markets $4.9bn, Zacks ESP +0.97%)",
+    "source": "https://finviz.com/news/188528/citigroup-set-to-report-q3-earnings-how-to-approach-the-stock-now",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "C.json",
+    "text": "Banamex 22.6% stake sale completed 2026-04-29",
+    "source": "https://www.citigroup.com/global/news/press-release/2026/citi-announces-completion-22-6-percent-sale-equity-stake-banamex",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "C.json",
+    "text": "Disallowed DTA burn-down of about $800m in 2026 from $13.9bn",
+    "source": "https://www.citigroup.com/rcs/citigpa/storage/public/2026-citigroup-barclays-global-financial-services-conference-transcript.pdf",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "C.json",
+    "text": "Citi 8-Ks since the Q2 print: only a 2026-09-24 item 9.01 securities-registration exhibit. No item 2.05 (restructuring) or 8.01 disclosures (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000831001&type=8-K)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "C.json",
+    "text": "Analyst rating or target changes dated October 2026: none found. The latest found are from June and July 2026",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "C.json",
+    "text": "October 2026 Citi-specific news on the consent order or layoffs: none beyond the CFO's 'at the discretion of our regulators' remark",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "C.json",
+    "text": "A JPMorgan Petno Q3 2026 guide could not be confirmed from a dated primary source",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "C.json",
+    "text": "Zacks Q3 2026 Markets revenue consensus: the $6.1bn figure in one snippet could not be dated to 2026",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "C.json",
+    "text": "September 2026 FINRA short interest: no settlement after 2026-08-19 found",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-12/DPZ",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "DPZ",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:29+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 313.62,
+    "run_up_5d_pct": 5.5,
+    "run_up_20d_pct": -3.13,
+    "pct_from_52w_high": -28.47,
+    "pct_from_52w_low": 10.81,
+    "realised_vol_20d_annualised_pct": 25.8,
+    "avg_volume_20d": 767802
+   },
+   "cik": "0001286681",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-20",
+      "session": "intraday",
+      "move_pct": 2.11
+     },
+     {
+      "event_date": "2026-04-27",
+      "session": "intraday",
+      "move_pct": -8.84,
+      "session_conflict": {
+       "tagged_session": "intraday",
+       "volume_says": "bmo",
+       "event_day_volume": 4092200,
+       "next_day_volume": 1669400,
+       "median_20d_before": 756550,
+       "move_as_tagged_pct": -8.84,
+       "move_if_bmo_pct": -8.84,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2026-02-23",
+      "session": "intraday",
+      "move_pct": 4.1
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "intraday",
+      "move_pct": 3.91
+     },
+     {
+      "event_date": "2025-07-21",
+      "session": "intraday",
+      "move_pct": -0.8
+     },
+     {
+      "event_date": "2025-04-28",
+      "session": "intraday",
+      "move_pct": 0.63
+     },
+     {
+      "event_date": "2025-02-24",
+      "session": "intraday",
+      "move_pct": -1.46
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 2.11,
+    "max_abs_move_pct": 8.84,
+    "up_count": 4,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 85,
+    "median_gap_days": 84.0,
+    "ratio": 1.01,
+    "last_print": "2026-07-20",
+    "verdict": "fits_cadence",
+    "reason": "85 days since the last print against a 84-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 310.0,
+    "atm_iv_pct": 69.4,
+    "straddle_implied_move_pct": 6.5,
+    "event_implied_move_pct": 6.12,
+    "event_implied_move_basis": "6.5% straddle over 4 calendar days less 2.75% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 7.07,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.89,
+    "total_open_interest": 5886,
+    "atm_spread_frac_of_mid": 0.115,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 6.12,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "US same-store sales +1.1% (year-ago +5.2%), EPS $4.33, revenue $1.17B, from the Zacks key-metrics preview dated 2026-10-08 (https://finance.yahoo.com/markets/stocks/articles/analyst-projections-key-metrics-reveal-121521174.html). WSJ shows EPS $4.36 per the 2026-10-12 indmoney preview (https://www.indmoney.com/blog/us-stocks/dominos-q3-earnings-preview-dpz-stock). Two EPS sources roughly agree. The US comp bar has one source, so findings that depend on it are capped small. Company FY26 guide: US and international comps low single digits, operating income growth mid-to-high single digits ex-FX, about 175 US and 800 international net stores. print_vs_bar_pct is expressed on revenue.",
+   "positioning_check": "Short interest was 2,594,111 shares, 7.91% of float, 3.1 days to cover at the 2026-09-30 settlement, down 20.5% from 3,261,588 on 2026-09-15 (FINRA via MarketBeat, published 2026-10-09: https://www.marketbeat.com/stocks/NASDAQ/DPZ/short-interest/). That is not crowded, and shorts were covering into the print. Earlier, on 2026-06-15, Benzinga showed 14.6% of float and 5.8 days to cover. Baseline: 25-delta skew +7.07 vol points (downside paid), put/call OI 0.89, event-implied move 6.12%, 5-day run-up +5.5%, 20-day -3.1%, 28.5% below the 52-week high.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "The US comp bar of +1.1% requires a two-year stack acceleration. Q2 2026 US comps were +0.1% on a +3.4% lap (two-year stack +3.5). Q3 laps +5.2% (Q3 2025, the Best Deal Ever plus Parmesan Stuffed Crust quarter), so holding the Q2 two-year stack implies about -1.7%. The Q3 product innovation (the Detroit-style 'Domino') launched only on 2026-08-31, about one week before the 12-week fiscal Q3 closed (~2026-09-06, since Q2 ended 2026-06-14). Q3's main lever was re-running the same $9.99 Best Deal Ever with Stuffed Crust added (2026-06-15 to 07-26), against last year's version of that same deal. Offset: the CFO said on the Q2 call that the ticket drag would be 'much more modest' in Q3, and order counts grew 'meaningfully' in Q2.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.franchising.com/news/20260720_dominos_pizza_announces_second_quarter_2026_financial_results.html",
+    "source_date": "2026-07-20",
+    "reaction_history_on_this_line": "US comps are the line this stock trades on. Q1 2026: +0.9% vs ~2.5% expected plus a guide cut, -8.84%. Q2 2026: +0.1% vs ~0.6% expected, but order counts grew, +2.11% (about +7% premarket). Q4 2025: comps beat, +4.1%. Q3 2025: +5.2% beat, +3.91%. A comp miss without a guide cut has not been punished.",
+    "why_not_priced": "The Zacks consensus still sits at +1.1%, which assumes the two-year stack improves by ~2.8 points. If the market had priced the lap, the comp bar would be near zero or negative. Partly priced: the +7.1 put skew and a run of target cuts already lean this way.",
+    "independence": "Q3 2025 comp of +5.2% from the company's own Q3 2025 release (https://ir.dominos.com/node/24041, 2025-10-14). Launch date of the Domino from NRN (https://nrn.com/quick-service/domino-s-new-pizza-targets-solo-diners). Promo dates from the company release (https://dominos.gcs-web.com/node/24646, 2026-06-15). Counter-evidence on ticket: Q2 call transcript (https://www.investing.com/news/transcripts/earnings-call-transcript-dominos-pizza-posts-mixed-q2-2026-results-93CH-4801429). All are company documents; the inference is mine.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "Neither FY26 guide line has room left after Q3. US comps are +0.5% year to date against a 'low single digits' FY guide. International comps are -0.2% year to date against a low-single-digit guide that already includes a World Cup benefit. FY26 operating income growth is guided at mid-to-high single digits ex-FX, against Q2 operating income of only +2.6% ex-FX. The US store-growth guide was already trimmed in July to about 175. This is Joe Jordan's first call as CEO (effective 2026-10-01); he was COO and US president, so he is an internal successor. The CFO said 2027 detail comes with Q4.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investing.com/news/transcripts/earnings-call-transcript-dominos-pizza-posts-mixed-q2-2026-results-93CH-4801429",
+    "source_date": "2026-07-20",
+    "reaction_history_on_this_line": "The April 2026 cut of the US comp guide (from ~3% to low single digits) plus a comp miss gave -8.84%, the largest reaction in the history. In July the guide was reaffirmed apart from a trim to US units, and the stock rose 2.11%.",
+    "why_not_priced": "Partly priced. Seven price-target cuts between 2026-09-23 and 2026-10-09 (Guggenheim 440 to 325, JPM 380 to 350, Redburn 270 to 260, Baird 350 to 325, RBC 350 to 325, Gordon Haskett 370 to 340, Morgan Stanley 370 to 357) suggest the Street models the bottom of the ranges. A formal cut of the international or operating-income guide would still be a new statement; if fully priced, the skew would be flatter after the drop.",
+    "independence": "YTD comp figures come from the Q2 release (https://www.franchising.com/news/20260720_dominos_pizza_announces_second_quarter_2026_financial_results.html), which shares its numbers with the first finding. The CEO effective date is from the Form 4 grant of 2026-10-01 (https://www.sec.gov/Archives/edgar/data/1286681/000180469526000012/0001804695-26-000012.txt).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "International read-throughs from master franchisees for the overlapping period are mixed but better than Q2, against an easier lap. Jubilant FoodWorks: Domino's India LFL +4.1% for Jul-Sep 2026, up from +2.5% in Apr-Jun (NSE filing 2026-10-07). Domino's Pizza Group UK: H1 to 28 June LFL +4.9% on a World Cup lift, and 'carried positive momentum into July'. Domino's Pizza Enterprises: first 8 weeks of FY27 to 23 Aug at -5.8%, 'consistent with the H2 run-rate' (secondary source; the primary ASX release does not carry the figure). DPZ's Q2 international comp was -0.1% against a +2.4% lap. Q3 laps +1.7%.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://nsearchives.nseindia.com/corporate/JUBLFOOD_07102026170048_Q2FY27_Business_Update.pdf",
+    "source_date": "2026-10-07",
+    "reaction_history_on_this_line": "International rarely drives this stock; in Q1 2026 international comps of -0.4% came with US weakness, and the reaction is attributed to US comps and guidance. International franchise royalties are estimated at $78.5M of $1.17B in revenue.",
+    "why_not_priced": "The Jubilant figure is five days old and sits on an Indian exchange that US restaurant analysts do not quote. The consensus international royalty line is -0.1% year on year, which would not be flat if an improvement were in the numbers. DMP pulls the other way, so the net is small.",
+    "independence": "DPG UK half-year (https://www.ajbell.co.uk/news/articles/dominos-pizza-enjoys-world-cup-boost-interim-sales-and-orders-rise, 2026-08-04). DMP FY27 first-8-weeks figure (https://stockwirex.com/?p=40434, 2026-08-26). The DMP primary release of 2026-08-26 (https://announcements.asx.com.au/asxpdf/20260826/pdf/0737mmzqz6rk1c.pdf) confirms FY26 SSS -4.1% and 'order volumes remain below where the business wants them'. These are three separate counterparties.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "The bar was lowered into the print and shorts covered. Between 2026-09-23 and 2026-10-09 the brokers cut targets: Guggenheim 440 to 325, Redburn 270 to 260, JPM 380 to 350, Baird 350 to 325, RBC 350 to 325, Gordon Haskett 370 to 340, Morgan Stanley 370 to 357. Only Evercore raised (350 to 375, 2026-10-08). Short interest fell 20.5% to 7.91% of float (3.1 days) at the 2026-09-30 settlement. The stock is +5.5% over the last 5 sessions. This is the July setup, when a comp miss on lowered expectations traded up.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://in.marketscreener.com/quote/stock/DOMINO-S-PIZZA-INC-12338/news-broker-research/",
+    "source_date": "2026-10-09",
+    "reaction_history_on_this_line": "July 2026: EPS estimates had been trimmed ~6.5% over 90 days, comps and EPS both missed, and the stock rose +2.11% close to close (~7% premarket).",
+    "why_not_priced": "The cuts are public, so this is partly priced. The +7.1 put skew shows the option market still pays for downside rather than for a low-bar relief rally. This is the one item that argues the skew may be over-paying.",
+    "independence": "Short interest from FINRA via MarketBeat (https://www.marketbeat.com/stocks/NASDAQ/DPZ/short-interest/, settlement 2026-09-30). The 5-day run-up is from the sealed baseline.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "UBS (Dennis Geiger, Buy), 2026-10-05, a week before the print, under the headline 'Domino's Pizza Benefiting From Improving Sales, Market Share Gains, UBS Says'. Only the headline was reachable; the note's comp number was not.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://in.marketscreener.com/quote/stock/DOMINO-S-PIZZA-INC-12338/news-broker-research/",
+    "source_date": "2026-10-05",
+    "reaction_history_on_this_line": "Pre-print broker sales reads have no measured history on this name.",
+    "why_not_priced": "It is a wire headline, so largely priced. It is filed because it is the only pre-print read on improving Q3 sales I found, and it contradicts the stack arithmetic in finding 1. If the market believed it, consensus comps would have moved above +1.1%, and they have not.",
+    "independence": "Same aggregator page as the positioning finding, so the two share one document. RBC's July note expected US comps in line with consensus (https://www.webull.com.au/news-detail/15221763910411264).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "Domino's ran 50% off menu-priced pizzas 2026-10-05 to 10-11 (fiscal Q4) for National Pizza Month, including the new Domino. A week of deep discount right before the call can be read either as a share push or as pressure on ticket and franchisee margin, and it will be asked about on the call.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.nrn.com/quick-service/domino-s-flexes-its-promotional-muscle-for-national-pizza-month",
+    "source_date": "2026-10 (published before the 2026-10-05 promotion start; exact day not shown)",
+    "reaction_history_on_this_line": "Q2 2026: a ticket shortfall from an unconvincing premium promotion was the stated cause of the comp miss, and the stock rose anyway on order counts.",
+    "why_not_priced": "The promotion is public. What it does to Q4 ticket and franchisee profitability will only be stated on the call. The sign is ambiguous, hence the small size.",
+    "independence": "The CFO said on the Q2 call that the company would lean further into promotions in Q3 and Q4 (https://www.investing.com/news/transcripts/earnings-call-transcript-dominos-pizza-posts-mixed-q2-2026-results-93CH-4801429).",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "The FIFA Men's World Cup in North America (June-July 2026) fell inside DPZ's fiscal Q3, and Domino's tied its Best Deal Ever plus Stuffed Crust offer and an in-app game to the matches (release 2026-06-15). The CFO cited a World Cup benefit for international only. A US delivery lift from match-day occasions is an inference.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://dominos.gcs-web.com/node/24646",
+    "source_date": "2026-06-15",
+    "reaction_history_on_this_line": "none specific",
+    "why_not_priced": "This is a proxy inference that management has not confirmed for the US. If analysts had built a US World Cup lift into their models, consensus comps would sit above the +1.1% the two-year stack implies, and some of that +1.1% may be exactly this.",
+    "independence": "DPG UK reported a World Cup order lift, with 45,000 extra orders on one match day (https://www.nationalworld.com/news/dominos-world-cup-orders-sales-growth-takeaway-demand-8842402). That is a different market, so it is a proxy.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "CME 40-lb block cheese fell from $1.66/lb (2026-07-21) to $1.3275/lb (2026-09-24). Supply chain revenue (consensus $726M, +4.2%, ~62% of revenue) passes cheese through, so headline revenue against the $1.17B bar faces pressure while supply-chain margin percent and franchisee economics benefit.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://dairynews.today/news/u_s_cheese_prices_diverged_in_cme_cash_trading_2929734.html",
+    "source_date": "2026-09-24",
+    "reaction_history_on_this_line": "Revenue beats or misses have not moved this stock: in Q2 2026 a revenue beat came with a rise driven by order counts, and in Q1 the move came from comps.",
+    "why_not_priced": "Revenue is not the line the stock trades on, and the effect on margin offsets the effect on revenue, so this is [sizing note removed]. It explains why print_vs_bar_pct on revenue is slightly negative.",
+    "independence": "none",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "The only 8-K since the Q2 release (filed 2026-10-08, item 5.02) is director Patricia Lopez retiring for personal reasons, 'not the result of any disagreement'. The October Form 4s are a routine CEO RSU grant on 2026-10-01 and director fees taken in stock. There is no pre-announcement, no insider sales cluster after July, and no financing filing.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-12",
+    "source": "https://www.sec.gov/Archives/edgar/data/1286681/000119312526417912/dpz-20261002.htm",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "none",
+    "why_not_priced": "It is public and benign. It is filed so the panel sees that the filing record was checked.",
+    "independence": "Form 4 for J. Jordan (https://www.sec.gov/Archives/edgar/data/1286681/000180469526000012/0001804695-26-000012.txt).",
+    "i": 8
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "The only restaurant peer to have reported this season, Darden, met revenue expectations (+5.1%) and fell 6.5% on its results. The restaurant group has averaged -3.1% over the last month, against -4.7% for DPZ.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://stockstory.org/us/stocks/nasdaq/dpz/news/earnings/what-to-expect-from-dominos-dpz-q3-earnings",
+    "source_date": "2026-10-12",
+    "reaction_history_on_this_line": "none",
+    "why_not_priced": "It is a casual-dining peer, so this is a narrow proxy and largely priced. It is filed only as a read on the season's reaction function.",
+    "independence": "none",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "Papa John's and Yum (Pizza Hut) report Q3 in early November. Their US comps (PZZA North America -8.3% in Q2) will confirm or refute Domino's share gains.",
+    "resolves_by": "2026-11-05",
+    "source": "https://www.nrn.com/top-500-restaurants/papa-johns-shakes-up-marketing-leadership-as-struggles-continue",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "Octagon AI page projecting Q3 US comps of +4.6-4.9% and 84% odds above 0.5%",
+    "source": "https://octagonai.co/markets/financials/companies/domino-s-us-same-store-sales-growth-in-q3/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "Sweep row says incoming CEO is Andrew Gregory",
+    "source": "https://announcements.asx.com.au/asxpdf/20260826/pdf/0737mmzqz6rk1c.pdf",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "Berenberg 'upgrade to Strong-Buy' on 2026-10-05 listed on MarketBeat",
+    "source": "https://www.tradingpedia.com/2026/10/06/dominos-pizza-up-as-berenberg-starts-coverage/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 13
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DPZ.json",
+    "text": "Leverage of 4.3x and two note series due for refinancing before July 2027",
+    "source": "https://www.indmoney.com/blog/us-stocks/dominos-q3-earnings-preview-dpz-stock",
+    "first_hunter_reason": "outside_window",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DPZ.json",
+    "text": "Card-spend panels (Second Measure, YipitData, Consumer Edge) for Domino's in Q3 2026: nothing public",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DPZ.json",
+    "text": "Placer.ai pizza foot traffic for Jul-Sep 2026: nothing public (only Q2 Yum data)",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DPZ.json",
+    "text": "Black Box Intelligence QSR comps for Jul-Sep 2026: not indexed",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DPZ.json",
+    "text": "Post-launch reviews or sales response for the Domino individual pizza: only pre-launch coverage",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DPZ.json",
+    "text": "Domino's Pizza Group UK Q3 2026 trading statement: not yet released (due early November)",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DPZ.json",
+    "text": "Visible Alpha or StreetAccount US comp consensus: not reachable; only the Zacks +1.1% figure",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DPZ.json",
+    "text": "EDGAR since 2026-07-20: no pre-announcement, financing or unusual insider activity",
+    "i": 21
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DPZ.json",
+    "text": "Barchart and FMP Q3 previews: 403 or empty body",
+    "i": 22
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-12/FBK",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "FBK",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:33+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 53.48,
+    "run_up_5d_pct": 1.71,
+    "run_up_20d_pct": -3.05,
+    "pct_from_52w_high": -13.85,
+    "pct_from_52w_low": 5.03,
+    "realised_vol_20d_annualised_pct": 16.1,
+    "avg_volume_20d": 647147
+   },
+   "cik": "0001649749",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-13",
+      "session": "amc",
+      "move_pct": 3.23
+     },
+     {
+      "event_date": "2026-04-13",
+      "session": "amc",
+      "move_pct": -2.3
+     },
+     {
+      "event_date": "2026-01-21",
+      "session": "amc",
+      "move_pct": -1.41
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "intraday",
+      "move_pct": 4.07
+     },
+     {
+      "event_date": "2025-07-14",
+      "session": "amc",
+      "move_pct": -4.57
+     },
+     {
+      "event_date": "2025-04-14",
+      "session": "amc",
+      "move_pct": -1.97
+     },
+     {
+      "event_date": "2025-01-21",
+      "session": "intraday",
+      "move_pct": 2.21
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 2.3,
+    "max_abs_move_pct": 4.57,
+    "up_count": 3,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 92,
+    "median_gap_days": 91.0,
+    "ratio": 1.01,
+    "last_print": "2026-07-13",
+    "verdict": "fits_cadence",
+    "reason": "92 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 55.0,
+    "atm_iv_pct": 127.3,
+    "straddle_implied_move_pct": 12.01,
+    "event_implied_move_pct": 11.93,
+    "event_implied_move_basis": "12.01% straddle over 4 calendar days less 1.71% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.43,
+    "total_open_interest": 33,
+    "atm_spread_frac_of_mid": 0.655,
+    "warnings": [
+     "ATM bid-ask spread 66% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 11.93,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 adjusted EPS $1.21. Benzinga earnings page (https://www.benzinga.com/quote/FBK/earnings-forecasts, ~2026-10-01) and Earnings Whispers (https://beta.earningswhispers.com/go/w/FBK) agree; a second Benzinga forecast page shows $1.19. Revenue consensus is about $179.7-181.7M. Company guidance from the Q2 call (https://www.webull.com/news/15226549103125504, 2026-07-13): FY NIM ex-accretion 3.70-3.80% with a couple of bp of drift per quarter, assuming one Fed hike in Q3; loan growth mid-to-high single digits; deposits at the lower end of mid-to-high single digits; banking-segment noninterest expense $325-335M; efficiency ratio about 50% by year end; tax rate about 20%. Own build: Q2 adjusted NI $58.9M; average diluted shares about 51.9M in Q2 against 49.98M outstanding at 7/31; NII +2%; provision $6-10M against $10.1M in Q2. That gives roughly $1.22-1.29 EPS, so the bar looks met to slightly beaten, and the swing is the provision.",
+   "positioning_check": "FINRA short interest at the 2026-09-30 settlement was 3.0M shares, up 40.5% from 2.2M at 09-15. That is the fourth straight increase and a one-year high, about 6.1% of shares outstanding, with 3.8 days to cover (https://curvedtrading.com/stocks/fbk/, read 2026-10-12). It is rising but not crowded. Skew is null in the baseline. Put/call OI is 0.43 on only 33 contracts and the ATM spread is 66% of mid, so the options say nothing usable. Tape: spot $53.48, 13.85% below the 52-week high and 5.0% above the 52-week low, 20-day -3.05%, 5-day +1.71%. The stock traded around $58 in late August (https://stockanalysis.com/stocks/FBK).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "The 10-Q cover shows 49,978,138 shares outstanding at 2026-07-31. Q2 average diluted shares were about 51.9M ($58.6M GAAP NI / $1.13 diluted EPS), after 1.55M shares (3.01%) were bought back in Q2. Flat Q2 adjusted earnings of $58.9M on about 50.1M Q3 diluted shares gives about $1.18. With NII growth on Q2's 11.6% annualised loan growth, a provision back below Q2's $10.1M, or both, the $1.21 consensus is reachable to modestly beatable.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/1649749/000164974926000060/fbk-20260630.htm",
+    "source_date": "2026-08-03",
+    "reaction_history_on_this_line": "Q2 2026 EPS of $1.14 against $1.15 (a slight miss) and a revenue miss still traded +3.23% over the session window. Q3 2025, a $1.07 adjusted beat against $1.03, traded +4.07%. The EPS line has been rewarded mildly or forgiven.",
+    "why_not_priced": "Sell-side models will include the buyback, so this is mostly priced. What may not be priced is the provision normalising after Q2's $10.1M spike, which was taken on three NPL relationships. If the market fully expected a clean beat, the stock would not sit 5% above its 52-week low with shorts up 40% in the last fortnight of September.",
+    "independence": "Q2 release (https://www.sec.gov/Archives/edgar/data/0001649749/000164974926000052/a2q26pressreleasetablesfor.htm) for the buyback, Q2 provision and NI. It is a different document from the 10-Q cover but the same company data, so read it as one company-level arithmetic, not two independent sources.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "The Q2 NIM guide (FY ex-accretion 3.70-3.80%) explicitly assumed one Fed hike in Q3 2026. The FOMC did hike 25bp to 3.75-4.00% on 2026-09-16, 12-0. FBK says it is slightly asset sensitive and that a hike helps 'to the tune of a couple million dollars'. The rate path therefore matched the guide's assumption, so the margin guide is unlikely to be cut on rates, but the Q3 benefit is only about two weeks.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "NIM has been stable to rising (3.68% in Q2 2025, 3.94% in Q1 2026, 3.95% in Q2 2026). I found no clean record of the stock reacting to a NIM surprise in isolation.",
+    "why_not_priced": "Mostly priced: the hike is public and inside the company's own guide. It matters only because a guide cut on rates is less likely. If the market feared margin pressure, regional-bank peers would have sold off on the hike, and I found no evidence that they did.",
+    "independence": "Q2 call transcript, rate assumption and asset-sensitivity quotes (https://www.webull.com/news/15226549103125504), a different document from the Fed release.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "On 2026-09-24 FBK issued $125M of 6.625% fixed-to-floating subordinated notes due 2036, 'to support [FirstBank's] growth'. The prospectus says FirstBank's dividend capacity to the parent under Tennessee law 'has been substantially utilized'. That follows Q2 buybacks of 3.01% of shares and CET1 falling to 11.0% from 11.5%. Rule 4 question, what does the money buy: growth capital, corroborated by Q2 loans HFI +11.6% annualised, above the mid-to-high-single-digit guide. It also signals that holdco buyback capacity is constrained and adds about $2M a quarter of interest from Q4.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001649749/000121390026101669/ea0306006-01.htm",
+    "source_date": "2026-09-21",
+    "reaction_history_on_this_line": "No prior print followed a debt raise in the record I could see.",
+    "why_not_priced": "The raise is public, but the call will show whether the Q3 buyback pace and loan growth continue. If the market had read the raise as a growth signal, the stock would not have drifted from about $58 to $53 since late August. If it had read it as distress, I would expect a sharper drop and wider credit spreads, and I found neither.",
+    "independence": "8-K of 2026-09-24 (https://www.sec.gov/Archives/edgar/data/0001649749/000121390026103052/ea0306481-8k_fbfinancial.htm), the same transaction. Loan growth from the Q2 release (https://www.sec.gov/Archives/edgar/data/0001649749/000164974926000052/a2q26pressreleasetablesfor.htm) corroborates the growth use.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "Credit is the swing line. Q2 NPAs rose to 1.14% of assets from 0.98% on three relationships: two individually evaluated CRE credits with about $3.5M of specific reserves, and one 'well-collateralized credit with a near-term workout plan'. The Sept 17 investor deck shows the CECL macro inputs as 'modestly softer' (Moody's national unemployment 4.5% in 3Q26 and 4.8% in 4Q26, house price index -1.5% and -2.9%). Further migration or a reserve build would keep Q3 provision at or above Q2's $10.1M. A successful workout would let NPAs fall.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/1649749/000121390026100750/ea030565201ex99-1.htm",
+    "source_date": "2026-09-17",
+    "reaction_history_on_this_line": "The Q2 print with rising NPAs and a provision jump to $10.1M from $3.0M still closed the session window +3.23%. Credit has not been punished on this name so far.",
+    "why_not_priced": "The direction of the workout is unknowable before the release, and the deck's macro inputs are Q2-dated. If the market expected a clean resolution, short interest would not be at a one-year high. If it expected a large loss, the stock would be below its 52-week low.",
+    "independence": "Q2 call commentary on the three credits (https://www.webull.com/news/15226549103125504) and the Q2 release. These are company documents, not an independent credit series. I searched Tennessee courts for borrower litigation and found nothing.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "FINRA short interest rose 40.5% to 3.0M shares (about 6.1% of shares outstanding, 3.8 days to cover) at the 2026-09-30 settlement. That is the fourth consecutive increase and a one-year high, into a stock 5% above its 52-week low. A clean print would push shorts to cover, a supporting flow. A credit surprise would validate them.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://curvedtrading.com/stocks/fbk/",
+    "source_date": "2026-09-30 settlement (read 2026-10-12)",
+    "reaction_history_on_this_line": "Reactions alternate in sign: +3.23, -2.30, -1.41, +4.07, -4.57, -1.97, +2.21. Median absolute 2.3%.",
+    "why_not_priced": "Short interest is published but seldom priced into a regional bank's day-of reaction. At 6% and 3.8 days it is not crowded, so this is a small asymmetry, not a squeeze setup.",
+    "independence": "Stock about $58 in late August against $53.48 now (https://stockanalysis.com/stocks/FBK) and the sealed baseline tape: -13.85% from the 52-week high. Same direction, different source.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "Mortgage rates rose in early Q3: the MBA put the 30-year fixed at 6.65% in the week ending July 10, the highest since August 2025. That points to FBK's mortgage banking income (already down to $11.2M in Q2 from $12.3M in Q1) staying flat to lower in Q3. Mortgage is about 6% of revenue.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.mba.org/news-and-research/newsroom/news/2026/07/15/mortgage-applications-decrease-in-latest-mba-weekly-survey",
+    "source_date": "2026-07-15",
+    "reaction_history_on_this_line": "Mortgage has drifted lower for several quarters with no visible reaction.",
+    "why_not_priced": "Small and likely already in models. It is a proxy for a minor segment. The rest of the company (NII, about 85% of revenue) would have to soften too for this to matter.",
+    "independence": "This is a proxy; the company has not confirmed Q3 mortgage volumes. The MBA release of 2026-07-22 showed applications +1.9%, purchase +6% (https://www.mba.org/news-and-research/newsroom/news/2026/07/22/mortgage-applications-increase-in-latest-mba-weekly-survey), which partly offsets it.",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "Event-implied move of 11.93% from the front-expiry straddle",
+    "source": "/home/user/claude_research/research/2026/10/2026-10-12/edge-panel/baselines/FBK.json",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "Chartmill report of FBK -12.4% after hours on the Q2 release",
+    "source": "https://www.chartmill.com/news/FBK/Chartmill-50918-FB-Financial-Corp-NYSEFBK-Earnings-Miss-Estimates-Stock-Falls-12",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "Aggregator pages (AAII, Quartr) describing Q3 2026 as already reported ($1.14 EPS, YTD $2.24)",
+    "source": "https://www.aaii.com/investingideas/article/513318-what-you-need-to-know-about-fb-financial-corporations-q3-earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "CAO Lynn Joyce sold 7,000 shares at $59.03 (Form 4 filed 2026-07-16)",
+    "source": "https://www.sec.gov/Archives/edgar/data/1649749/000124915826000007/0001249158-26-000007-index.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FBK.json",
+    "text": "Session change: first bmo release, after 5 of 7 recent amc prints",
+    "source": "https://finviz.com/news/396662/fb-financial-corporation-announces-2026-third-quarter-earnings-call",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FBK.json",
+    "text": "Peer Q3 2026 regional-bank prints before 2026-10-12: none found (the big banks start 10-13, the same day)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FBK.json",
+    "text": "Tennessee court filings or receiverships naming FirstBank as lender in 2026: none found",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FBK.json",
+    "text": "Any 8-K item 2.06 or other credit 8-K since Q2: none (EDGAR list since 2026-07-01 shows only the sub-debt offering, the Sept 17 deck, the July 27 KBW deck, the 10-Q and Form 4s)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FBK.json",
+    "text": "Quarter-to-date data in the Sept 17 investor deck and the sub-debt prospectus: none after 2026-06-30, and no Recent Developments section",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FBK.json",
+    "text": "FBK-specific news or downgrades explaining the slide from about $58 (late August) to $53.48: none found",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FBK.json",
+    "text": "Regional-bank sector stress in October 2026 (KRE): results were October 2025 stories, nothing current",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FBK.json",
+    "text": "Insider Form 4s on 2026-10-08: tax withholding on RSU vesting (code F), not open-market trades",
+    "i": 17
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-12/GS",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "GS",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:24+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 892.06,
+    "run_up_5d_pct": -0.16,
+    "run_up_20d_pct": -9.75,
+    "pct_from_52w_high": -22.57,
+    "pct_from_52w_low": 19.8,
+    "realised_vol_20d_annualised_pct": 21.9,
+    "avg_volume_20d": 2204179
+   },
+   "cik": "0000886982",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-14",
+      "session": "intraday",
+      "move_pct": 9.0
+     },
+     {
+      "event_date": "2026-04-13",
+      "session": "intraday",
+      "move_pct": -1.87
+     },
+     {
+      "event_date": "2026-01-15",
+      "session": "intraday",
+      "move_pct": 4.63
+     },
+     {
+      "event_date": "2026-01-08",
+      "session": "amc",
+      "move_pct": 0.44
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "intraday",
+      "move_pct": -2.04
+     }
+    ],
+    "n": 5,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 2.04,
+    "max_abs_move_pct": 9.0,
+    "up_count": 3,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 87.0,
+    "ratio": 1.05,
+    "last_print": "2026-07-14",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 87-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 892.5,
+    "atm_iv_pct": 47.5,
+    "straddle_implied_move_pct": 4.27,
+    "event_implied_move_pct": 3.84,
+    "event_implied_move_basis": "4.27% straddle over 4 calendar days less 2.33% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -1.27,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.83,
+    "total_open_interest": 54547,
+    "atm_spread_frac_of_mid": 0.094,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 5 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.84,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 5,
+    "history_usable": 5,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "EPS ~$12.86-13.02 and revenue ~$16.71-16.87bn, from three agreeing sources dated Oct 12: LSEG via IG ($13.02 / $16.71bn, https://www.ig.com/en-ch/news-and-trade-ideas/goldman-sachs-stock-q3-2026-earnings-preview-261012), Zacks ($12.90 / $16.87bn, https://www.tradingview.com/news/zacks:e051c3096094b:0-goldman-stock-before-q3-earnings-buy-now-or-wait-for-results/) and MarketBeat ($12.86 / $16.83bn, https://www.tradingkey.com/analysis/stocks/us-stocks/262211245-us-flcc-goldman-gs-tradingkey). Older late-September figures ($15.39 / $17.42bn, $15.18) are superseded. Segment bars are single-source: equities $4.68bn and IB fees $2.97bn (LSEG via IG), IB $2.76bn (Zacks). There is no FICC consensus found, so the FICC figure (~$4.1-4.3bn) is my own derivation and the findings resting on segment bars are capped small. GS gives no formal guide; the mid-quarter steers are from the Barclays conference on Sep 16.",
+   "positioning_check": "Short interest is about 6.3M shares with 3.36 days to cover at the 2026-07-15 FINRA settlement (6.5M / 2.5 days at 06-30), about 2% of shares and not crowded (https://curvedtrading.com/stocks/gs/short-interest/). No September settlement was found. The baseline 25d skew is -1.27 vol points, so calls are slightly richer, and put/call OI is 0.83; priced lean is balanced. The event-implied move is 3.84% (straddle 4.27%, ATM IV 47.5%); IG cites ±4.6%. The stock is -9.75% over 20 days, -22.6% off its July high of $1,153.99 and -12.2% in Q3, with the KBW bank index -13% from its August peak (Reuters via Globe and Mail, Oct 8).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "The LSEG equities-trading consensus for Q3 is $4.68bn (IG, Oct 12). That is 37% below Q2's record $7.42bn and 12% below Q1's $5.33bn, although Q2 equities FINANCING alone was $3.26bn (Q1 $2.61bn, Q2'25 $1.71bn) and is balance-driven and sticky. Solomon said on Sep 16 that equities 'continues to be very strong'. Holding financing at $2.8-3.2bn plus intermediation near last year's Q3 level gives about $5.0-5.6bn, a $0.3-0.9bn beat on the line, worth roughly $0.5-1.5 of EPS against a $13 bar at about $1.7 EPS per $1bn of revenue.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.ig.com/en-ch/news-and-trade-ideas/goldman-sachs-stock-q3-2026-earnings-preview-261012",
+    "source_date": "2026-10-12",
+    "reaction_history_on_this_line": "Q2 2026: record equities of $7.42bn against a ~$5bn estimate, with a 45% EPS beat, and the stock rose +9.0% (baseline 2026-07-14). Q3 2025 beat on trading but fell -2.04% on expenses and headcount.",
+    "why_not_priced": "The segment consensus models equities near Q3 2025 levels (+8% YoY) while the Q2 10-K-level line shows financing up 91% YoY. If the street had priced the financing run-rate, the equities consensus would be at or above $5bn and the EPS bar would not have been cut 17 times with no upgrades. The segment bar is single-source (IG/LSEG), so this is capped.",
+    "independence": "Q2 line items are from the Q2 8-K (https://www.sec.gov/Archives/edgar/data/0000886982/000088698226000294/a2q26gsearningsresults.htm). Solomon's Sep 16 'very strong' is from https://www.investing.com/news/transcripts/goldman-sachs-at-barclays-conference-solomon-touts-longterm-growth-93CH-4904307. Jefferies (Jun-Aug quarter) posted record equities revenue of $626m (https://secure.businesswire.com/news/home/20260928078906/en/Jefferies-Announces-Third-Quarter-2026-Financial-Results).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "FICC is the offsetting line. Solomon said on Sep 16 that FICC was 'a little bit softer', and Jefferies' fixed income for Jun-Aug fell 26% YoY to $176m. BofA guided trading flat and Citi mid-single-digit growth, and Q3 Treasuries had their worst quarter since 1994 (10y +87bp to 5.29%). The consensus revenue of $16.71bn less IB $2.97bn, equities $4.68bn, AWM ~$4.45bn and Platform ~$0.25bn implies FICC of about $4.1-4.3bn, close to Q2's $4.59bn and far above Q3 2025's $3.47bn. A FICC print of $3.6-3.9bn would be a $0.3-0.6bn shortfall.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investing.com/news/transcripts/goldman-sachs-at-barclays-conference-solomon-touts-longterm-growth-93CH-4904307",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "No clean single-line FICC reaction in the baseline. Q2 FICC rose 32% to $4.59bn inside a +9.0% day driven by equities.",
+    "why_not_priced": "The softness was public on Sep 16 and the EPS bar was cut afterwards, so part is priced. The residual is that the implied FICC consensus still sits near Q2 levels. That is an inference from a total, because no FICC consensus was found, so it is sized small.",
+    "independence": "Jefferies FI -26% YoY (https://www.zacks.com/stock/news/2998277/jefferies-q3-ib-equities-offset-weak-asset-management-fixed-income). Peer guides from BofA, Citi and JPM come via Reuters/Globe and Mail (https://www.theglobeandmail.com/business/article-us-bank-third-quarter-earnings-preview/). The derived FICC bar uses the same IG document as finding 1.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "LSEG league-table fees imply GS Q3 IB fees of about $2.45bn: 9M $8.2bn (Investment Executive, Oct 5) less H1 7.2% of $79.9bn, or about $5.75bn. Scaled by the reported/LSEG H1 ratio (6.235/5.75 = 1.08), that is about $2.65bn reported, against consensus of $2.76bn (Zacks) to $2.97bn (LSEG/IG). Industry fees fell 19% QoQ, BofA guided IB down more than 10% YoY citing Dealogic, and US IPO proceeds excluding SK hynix were only $6.2bn as deals were postponed in late September. GS keeps the #1 M&A adviser ranking and was a lead on SK hynix's $26.5bn ADR (~$260m fee pool split four-plus ways).",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investmentexecutive.com/news/markets/strong-markets-boost-bankers-fortunes/",
+    "source_date": "2026-10-05",
+    "reaction_history_on_this_line": "Q2 IB fees rose 55% to $3.40bn inside the +9.0% day. No isolated IB reaction is visible in the baseline.",
+    "why_not_priced": "Consensus IB still sits at or above the league-table-implied figure. If the market had marked it, consensus would sit near $2.6bn. It is a proxy (league-table imputation, my subtraction across two LSEG releases), so it is small, and advisory is booked on completion, which the tables only approximate.",
+    "independence": "LSEG H1 share via https://www.investmentexecutive.com/news/research-and-markets/first-half-delivers-fee-feast-for-investment-banks/. BofA's guide and Dealogic -10% via https://www.insiderfinance.io/news/bank-of-america-q3-investment-banking-fees-fall. Renaissance 3Q review (https://www.renaissancecapital.com/IPO-Center/News/121864/updated-renaissance-capitals-3q-2026-us-ipo-market-review). Offsetting: GS stays #1 in 9M M&A (https://ionanalytics.com/insights/mergermarket/goldman-sachs-jpmorgan-sustain-9m26-ma-rankings-lead-amid-3q-slowdown/).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "The EPS bar was cut sharply into the print, from $15.39 / $17.42bn (Sep 28-29 feeds) and $15.18 (Barchart, Sep 29) to $13.02 (LSEG), $12.90 (Zacks) and $12.86 (MarketBeat) by Oct 12. IG counts 17 downward revisions and no upgrades in 30 days, StarMine SmartEstimate is $12.80 and Zacks ESP is -5.9%, against a record of four straight beats averaging 20% (Q2: $20.98 vs $14.47).",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.ig.com/en-ch/news-and-trade-ideas/goldman-sachs-stock-q3-2026-earnings-preview-261012",
+    "source_date": "2026-10-12",
+    "reaction_history_on_this_line": "Beats are not always bought: Q2 2026 +9.0% on a 45% beat, Q4 2025 +4.63%, but Q1 2026 -1.87% and Q3 2025 -2.04% despite beats.",
+    "why_not_priced": "The cut itself is public and the stock is already 22.6% off its high, so the downside case is largely in the price. What is not obviously priced is that the bar now sits about 6% above Q3 2025 EPS of $12.25, on revenue expected up 10-11%. If the market were still braced for a miss, the skew would be put-bid; it is -1.27 (calls slightly richer).",
+    "independence": "Zacks (https://www.tradingview.com/news/zacks:e051c3096094b:0-goldman-stock-before-q3-earnings-buy-now-or-wait-for-results/) and MarketBeat via TradingKey (https://www.tradingkey.com/analysis/stocks/us-stocks/262211245-us-flcc-goldman-gs-tradingkey) agree on ~$12.9. The earlier $15.39 is from https://scanx.trade/stock-market-news/companies/goldman-sachs-q3fy26-results-eps-seen-15-39-revenue-17-42-billion/52232381. This shares the IG document with finding 1, but rests on revisions rather than segment mix.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "Company-guided headwinds for Q3, from Solomon on Sep 16: non-comp expenses 'more than $500 million higher sequentially' (Q2 non-comp ~$5.57bn), including a tax-efficient pull-forward of charitable giving; Investments 'much more muted' after Q2's $441m; provisions 'slightly higher' than Q3 2025's level (Q2 $102m) on idiosyncratic items. 'More than' is open-ended, and Q3's 10y +87bp could push private-equity marks negative rather than just muted.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investing.com/news/transcripts/goldman-sachs-at-barclays-conference-solomon-touts-longterm-growth-93CH-4904307",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "Q3 2025: an EPS and revenue beat fell -2.04% on higher expenses and headcount (Seeking Alpha headline, Oct 14 2025).",
+    "why_not_priced": "Mostly priced: these items land inside what the company guided and preceded the estimate cuts. The residual is the open-ended 'more than $500m' and rate-driven marks.",
+    "independence": "Hudson Labs preview repeats the same guidance (https://www.hudson-labs.com/research/goldman-sachs-q3-2026-earnings-gs-results-preview). Same underlying document as findings 1 and 2's Solomon quotes.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "The forward pipeline the call will discuss. GS is a reported lead (with Morgan Stanley; FT says MS lead-left, GS stabilisation agent) on Anthropic's IPO, which Renaissance expects to headline 4Q26. Against that: late-September postponements (Oura, SB Energy), Solomon saying sponsor activity is slower than expected, and IB backlog having risen at end of Q2.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://news.bloomberglaw.com/banking-law/anthropic-said-to-pick-morgan-stanley-goldman-sachs-to-lead-ipo",
+    "source_date": "2026-06 (Bloomberg; FT update reported 2026-09-04 via https://en.fnnews.com/news/202609050702137639)",
+    "reaction_history_on_this_line": "GS gives no formal guide. Backlog commentary accompanied the +9.0% Q2 day; the Q3 2025 -2.04% came despite deal optimism.",
+    "why_not_priced": "The mandate is public; what is not priced is how much a Q4 mega-IPO and the backlog figure lift the Q4 IB run-rate after a soft Q3. With the stock 22% off its high on rates, a constructive backlog comment has room. Small, because it is widely reported.",
+    "independence": "Renaissance 3Q26 review on the Q4 pipeline and postponements (https://www.renaissancecapital.com/IPO-Center/News/121864/updated-renaissance-capitals-3q-2026-us-ipo-market-review). Reuters on IPO delays (https://www.theglobeandmail.com/business/article-us-bank-third-quarter-earnings-preview/).",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "Consensus EPS $15.39 / revenue $17.42bn (ViewTrade/Benzinga, Sep 28-29) and $15.18 (Barchart, Sep 29) as the bar",
+    "source": "https://scanx.trade/stock-market-news/companies/goldman-sachs-q3fy26-results-eps-seen-15-39-revenue-17-42-billion/52232381",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "Traders Union: GS fell 2.71% because no new buyback authorization was made",
+    "source": "https://tradersunion.com/news/financial-news/show/2499345-goldman-sachs-drops-2-71percent-to/",
+    "first_hunter_reason": "no_source",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "GS.json",
+    "text": "Hudson Labs segment table (GBM $15.52bn, AWM $4.597bn, Platform $221m as Q3 consensus)",
+    "source": "https://www.hudson-labs.com/research/goldman-sachs-q3-2026-earnings-gs-results-preview",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GS.json",
+    "text": "No September 2026 FINRA short-interest settlement for GS was found; the latest is 2026-07-15.",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GS.json",
+    "text": "No Q3 2026 FICC consensus figure from any provider (Visible Alpha, LSEG, Zacks).",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GS.json",
+    "text": "No Morgan Stanley Sep 15 Barclays commentary on Q3 equities/IB; only the event notice was found.",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GS.json",
+    "text": "No GS-specific negative news (litigation, regulatory, credit event) explaining the -22.6% drawdown beyond rates/macro. Private-credit items found were GSBD's Q1 2026 NAV (-3.7%, May 2026), which is stale and immaterial to GS's Q3.",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GS.json",
+    "text": "No September 2026 GS prime-brokerage leverage data (latest found: gross leverage at a record end-2025 and the fastest 5-month build in 2026).",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "GS.json",
+    "text": "No status update on the Apple Card transfer to JPMorgan (held for sale since Q4 2025; Q2 had markdowns).",
+    "i": 14
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-12/JNJ",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "JNJ",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:20+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 263.2305,
+    "run_up_5d_pct": 4.07,
+    "run_up_20d_pct": -1.16,
+    "pct_from_52w_high": -5.46,
+    "pct_from_52w_low": 41.52,
+    "realised_vol_20d_annualised_pct": 16.1,
+    "avg_volume_20d": 6702622
+   },
+   "cik": "0000200406",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-15",
+      "session": "bmo",
+      "move_pct": -2.69
+     },
+     {
+      "event_date": "2026-04-14",
+      "session": "bmo",
+      "move_pct": 0.9
+     },
+     {
+      "event_date": "2026-01-21",
+      "session": "bmo",
+      "move_pct": -0.09
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "bmo",
+      "move_pct": -0.03
+     },
+     {
+      "event_date": "2025-07-16",
+      "session": "bmo",
+      "move_pct": 6.19
+     },
+     {
+      "event_date": "2025-04-15",
+      "session": "bmo",
+      "move_pct": -0.48
+     },
+     {
+      "event_date": "2025-01-22",
+      "session": "bmo",
+      "move_pct": -1.94
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 0.9,
+    "max_abs_move_pct": 6.19,
+    "up_count": 2,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 90,
+    "median_gap_days": 91.0,
+    "ratio": 0.99,
+    "last_print": "2026-07-15",
+    "verdict": "fits_cadence",
+    "reason": "90 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 262.5,
+    "atm_iv_pct": 36.4,
+    "straddle_implied_move_pct": 3.3,
+    "event_implied_move_pct": 3.0,
+    "event_implied_move_basis": "3.3% straddle over 4 calendar days less 1.71% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 1.85,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.87,
+    "total_open_interest": 64709,
+    "atm_spread_frac_of_mid": 0.065,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.0,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Revenue: consensus $25.29B (Hudson Labs, 2026-09-28, https://www.hudson-labs.com/research/johnson-johnson-q3-2026-earnings-preview-jnj-results), $25.37B (Zacks, cited by Guggenheim note https://www.investing.com/news/analyst-ratings/guggenheim-reiterates-johnson--johnson-stock-rating-ahead-of-earnings-93CH-4936583) and $25.38B (TipRanks, 2026-10-12, https://www.tipranks.com/news/johnson-johnson-stock-could-move-by-9-51-after-q3-results), so roughly $25.3-25.4B and agreeing. Adjusted EPS bar is DISPUTED: $2.48 (TIKR via Yahoo, https://finance.yahoo.com/markets/stocks/articles/johnson-johnson-stock-fell-nearly-152331021.html), $2.51 (AAII, 11 analysts), $2.52 (TipRanks), $2.66 (Zacks), $2.69 (Guggenheim's consensus), $2.81 (RBC's consensus). Informed estimates that include the Q3 Firefly/Sail IPR&D are $2.49 (Guggenheim), $2.53 (BofA) and $2.55 (RBC). Company guide: FY26 adj EPS $10.96-11.11 after the 2026-07-29 cut of $0.64 for Firefly ($0.46) and Sail ($0.18) (https://www.sec.gov/Archives/edgar/data/0000200406/000020040626000163/jnj-20260729.htm); FY reported sales $100.8-101.4B. Every EPS-dependent finding is capped small.",
+   "positioning_check": "Short interest is not crowded: 22.3M shares and 2.74 days to cover at the 2026-04-30 settlement (https://www.optionsanalysissuite.com/stocks/jnj/short-interest, no fresher settlement found), about 0.9% of float. Baseline skew is +1.85 vol points (mild put premium, priced_direction_lean 'balanced'), put/call OI 0.87. The event-implied move is 3.0% (straddle 3.3%; TipRanks 3.64%) against a historical median reaction of 0.9% over 7 prints, so options price more movement than the name has delivered. Tape: down about 5.9% from 9/28 to 10/2 (BofA warned Q3 EPS below Street, per Yahoo/TIKR 10/5), then +4.07% over 5 days to spot $263.23, -1.16% over 20 days, 5.5% below the 52-week high. No crowding in either direction.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "Pharma-led revenue beat looks likely. RBC (2026-10-06) models Q3 sales 1% above consensus, with pharma 1.3% above on Tremfya and Icotyde. Guggenheim (2026-10-07) models $25.49B vs $25.37B consensus and cites strong script trends for Tremfya, Caplyta and Erleada, offset by Opsumit generic erosion. CFO Wolk (DB conference 9/17) said Icotyde had 17,000 patients after about 5 months with all three major PBMs covering it, and Tremfya IBD grew 80% in Q2. J&J beat Street sales in each of the last 5 quarters by 1.0-3.9%. The bar is about $25.3-25.4B; a print near $25.5-25.6B is about +0.5-1%.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investing.com/news/analyst-ratings/rbc-capital-raises-johnson--johnson-stock-price-target-on-pharma-strength-93CH-4933954",
+    "source_date": "2026-10-06",
+    "reaction_history_on_this_line": "Q2 2026 (7/15): sales $25.31B vs about $25.0B, adj EPS $2.90 vs $2.85, guide raised, and the stock fell 2.7% on MedTech softness and an HCA volume warning the same day. Q1 2026 beat-and-raise: +0.9%. Q3 2025 beat-and-raise plus ortho separation: -0.03%. The name has not paid for revenue beats.",
+    "why_not_priced": "Partly priced. The sell-side is publishing above-consensus sales, and J&J's 5-quarter beat streak is known, so a beat of about 1% is the expectation. A beat would be unpriced only if Icotyde or Tremfya land well above the 'north of 17,000 patients' framing. If it were fully priced, the consensus revenue line would already sit at $25.5B+; it sits at $25.3-25.4B.",
+    "independence": "Guggenheim script-data note (https://www.investing.com/news/analyst-ratings/guggenheim-reiterates-johnson--johnson-stock-rating-ahead-of-earnings-93CH-4936583) and the Wolk DB transcript (https://www.investing.com/news/transcripts/johnson--johnson-at-deutsche-bank-healthcare-summit-growth-outlook-lifts-93CH-4906149) are separate sources. The beat-history fact comes from https://finance.yahoo.com/markets/stocks/articles/johnson-johnson-stock-fell-nearly-152331021.html.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "The FY26 reported-sales guide ($100.8-101.4B, midpoint $101.1B, unchanged on 7/29) minus H1 actuals ($24.1B Q1 + $25.31B Q2 = $49.4B) implies H2 of about $51.7B. That is about +6.4% vs H2 2025's about $48.6B, but 1.5-2 points of FY growth (about $1.4-1.9B) is the 53rd week (Wolk, 9/17), so the guide implies only about 3% H2 growth ex-extra-week, against H1 at +8.2% reported (about 6% operational). Q3 consensus of $25.3-25.4B (+5.5-5.8%) already runs above the guided pace, so a sales-guide raise is likely; J&J raised in Q3 2025, Q1 2026 and Q2 2026. RBC does not expect an EPS raise and says one would be bullish ahead of the 12/8 Enterprise Business Review.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000200406/000020040626000163/jnj-20260729.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "Raises in April 2026 (+0.9%) and July 2026 (-2.7%) and Q3 2025 (-0.03%). Guidance raises have been expected and not paid for.",
+    "why_not_priced": "The arithmetic is public, but every preview frames the bar as 'firm guidance', not a raise (asktraders 10/11; RBC expects no EPS raise). An adjusted-EPS raise above $11.11 despite the IPR&D would be the unpriced part. If priced, previews would carry a raised-range expectation; they do not.",
+    "independence": "H1 actuals come from the Q1 release (https://www.investor.jnj.com/investor-news/news-details/2026/Johnson--Johnson-reports-Q1-2026-results-raises-2026-outlook/) and the Q2 exhibit (https://www.sec.gov/Archives/edgar/data/0000200406/000020040626000146/a2026q2exhibit991.htm); the 53rd-week size comes from the Wolk DB transcript. RBC's view on a raise: https://www.investing.com/news/analyst-ratings/rbc-capital-raises-johnson--johnson-stock-price-target-on-pharma-strength-93CH-4933954. FX is a slight headwind: EUR/USD drifted to about 1.15 by mid-September vs about 1.168 in Q3 2025, and the guide assumed 1.15.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "The adjusted-EPS headline will likely print below several published consensus figures ($2.66 Zacks, $2.69, $2.81) because the $1bn Firefly IPR&D charge (about $0.46/share) and the Sail charge (about $0.18) land in Q3 and are inside adjusted EPS. Informed estimates are $2.49-2.55; aggregators at $2.48-2.52 have caught up, others have not. Expect 'misses EPS' headlines pre-market, on a charge the company guided to on 7/29.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000200406/000020040626000163/exhibit991firefly.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "No baseline print turned on an IPR&D-driven EPS miss. J&J guided the charge, and the RBC and BofA previews flagged that consensus does not fully reflect it.",
+    "why_not_priced": "Mostly priced. The charge is in company guidance and in three broker previews, so only stale-consensus headline noise and algorithmic pre-market selling remain. That noise should fade by the close, which is why this is small.",
+    "independence": "BofA $2.53 / Guggenheim $2.49 / RBC $2.55 vs consensus (https://www.investing.com/news/analyst-ratings/guggenheim-reiterates-johnson--johnson-stock-rating-ahead-of-earnings-93CH-4936583). This shares the 7/29 8-K with the guidance finding but lands on a different line: the reported-quarter headline, not the FY guide.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "MedTech cardiovascular is the line that sank July and is set up weak again. US Impella demand fell 2% in Q2 after +14% in Q1, following a UK study questioning Impella in high-risk PCI. Abiomed then had Class I recalls posted June-July 2026 (Impella CP SmartAssist set, CP introducer kits, RP Flex). On 9/17 Wolk said J&J is working with the FDA on the field actions and guided a return to double-digit Abiomed growth only 'this time next year', implying a weak Q3 with a full quarter of impact. EP faces Farapulse competition, China VBP from H2 2026 (Hudson Labs), and RBC flagged EP 'competitive pressures and geopolitical headwinds' with MedTech only in line. Net of the rest: cardio is roughly 9-10% of sales and pharma (about 65%) is tracking above consensus, so this is sized as a narrative and segment-miss risk, not a revenue-bar risk.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investing.com/news/transcripts/johnson--johnson-at-deutsche-bank-healthcare-summit-growth-outlook-lifts-93CH-4906149",
+    "source_date": "2026-09-17",
+    "reaction_history_on_this_line": "Q2 2026: MedTech +3.6% operational, cardio/Abiomed softness, stock -2.7% on a beat-and-raise (Reuters via The Star, https://www.thestar.com.my/business/business-news/2026/07/17/jj-miss-overshadows-earnings-beat). This is the one line on which this name has recently been sold.",
+    "why_not_priced": "Partly priced: the CFO flagged it and RBC models MedTech in line. Not fully priced because no preview quantifies Abiomed's Q3 decline or the combined effect of the recalls and the UK study over a full quarter. If priced, MedTech consensus would have been cut and previews would call cardio a known miss; they say 'MedTech expected to improve in H2' (asktraders 10/11).",
+    "independence": "FDA recall notice (https://www.fda.gov/medical-devices/medical-device-recalls-and-early-alerts/heart-pump-recall-abiomed-removes-impella-cp-sets-smartassist), the Q2 Impella data (The Star/Reuters 2026-07-17), RBC's EP comment (investing.com 10/06) and the China VBP risk (Hudson Labs 9/28) are separate sources.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "Bloomberg reported on 2026-09-11 that Apollo was in advanced talks to buy DePuy Synthes (orthopaedics, about $9.3B 2025 sales, about 1% growth) for about $20B, with 'an agreement could be reached within several weeks'. No deal was announced as of early October and EDGAR shows no 8-K since 8/4. J&J announced the ortho separation alongside Q3 2025 results on 2025-10-14, so the Q3 release is a demonstrated venue for this news. A cash sale at about 2.1x sales of a low-growth unit would bring clarity, roughly $20B to redeploy, and a margin lift.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.fiercebiotech.com/medtech/jj-looking-offload-orthopedics-unit-20b-deal-apollo-bloomberg",
+    "source_date": "2026-09-14",
+    "reaction_history_on_this_line": "2025-10-14: the ortho separation was announced with Q3 results and the stock moved -0.03%. Portfolio news has not moved this name much on the day.",
+    "why_not_priced": "The talk is known; whether it lands this morning is not. If the market expected an announcement on the print, implied vol would be well above 3% and previews would lead with it; previews mention it only in passing ('no agreement as of early October', Yahoo 10/5).",
+    "independence": "J&J's 2025-10-14 announcement timing (https://www.businesswire.com/news/home/20251014819650/en/Johnson-Johnson-Announces-Intent-to-Separate-Its-Orthopaedics-Business). Separate reporting: https://www.massdevice.com/johnson-johnson-medtech-reportedly-could-sell-depuy-synthes-to-apollo/",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "The call is likely to carry first 2027 colour, as J&J did on its Q3 2025 call, ahead of the 12/8 Enterprise Business Review, and 2027 has three known headwinds. First, $4-4.5B of LOE (Xarelto about $2B, PAH about $1.5B, Simponi and Stelara about $1B; Wolk, 9/17). Second, a 53rd-week comp worth 1.5-2 points. Third, Sail dilution of about $1.28 per share in 2027 if milestones are hit and J&J exercises the option, plus $0.08 from Firefly (7/29 8-K). Wolk guided 'equivalent reported growth' in 2027. Any hedge on that, or on 2027 EPS growth given the Sail dilution, lands on the guide.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000200406/000020040626000163/jnj-20260729.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "No baseline print turned explicitly on next-year commentary. After the Q3 2025 call, which included next-year framing, the stock moved -0.03%.",
+    "why_not_priced": "Partly priced. The stock fell about 5.9% between 9/28 and 10/2 as commentary turned to the $4B 2027 cliff, so some of this is in the price. Not fully priced because the contingent $1.28 Sail dilution is not in most 2027 EPS models; if it were, 2027 consensus EPS would sit visibly below the 2026 guide-plus-growth path. Management may defer all of it to 12/8, in which case this is about 0.",
+    "independence": "The Wolk LOE quantification (DB transcript, https://www.investing.com/news/transcripts/johnson--johnson-at-deutsche-bank-healthcare-summit-growth-outlook-lifts-93CH-4906149) is independent of the 7/29 8-K. The 8-K is shared with the EPS-headline and guidance findings, but this finding lands on 2027, a different period.",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "Talc MDL: the 2026-07-22 order requires plaintiffs to show cause why remaining claims should not be dismissed for lack of specific causation, with responses reportedly due 2026-11-19. The $5.5B ovarian settlement needs 95% participation and has no published progress. Wolk (9/17) said no further exposure after finalization.",
+    "resolves_by": "2026-11-19",
+    "source": "https://amp.insurancejournal.com/news/national/2026/07/23/878767.htm",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "The 2026-12-08 Enterprise Business Review is the venue for 2027 guidance and the Icotyde/launch detail; Guggenheim expects estimates to rise around it.",
+    "resolves_by": "2026-12-08",
+    "source": "https://www.investing.com/news/analyst-ratings/guggenheim-reiterates-johnson--johnson-stock-rating-ahead-of-earnings-93CH-4936583",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "Caplyta Phase III bipolar mania met its primary endpoint (UBS reiterated Buy, PT $320)",
+    "source": "https://www.investing.com/news/analyst-ratings/rbc-capital-raises-johnson--johnson-stock-price-target-on-pharma-strength-93CH-4933954",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "Innovative Medicine head Jennifer Taubert retiring, Tom Cavanaugh succeeding from September 2026 (8-K item 5.02, 2026-08-04)",
+    "source": "https://www.sec.gov/Archives/edgar/data/200406/000020040626000167/pressrelease08042026.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "Admiralmarkets/aggregator claim that FY26 adjusted EPS guidance is $10.86-11.01",
+    "source": "https://admiralmarkets.com/es/stocks/jnj",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "JNJ.json",
+    "text": "An earnings calendar listing the print on 2026-10-19 with $2.95 consensus",
+    "source": "https://beta.earningswhispers.com/go/x/JNJ",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JNJ.json",
+    "text": "Cause of the 10/6-10/12 rebound (+4% in 5 days, +1.93% on 10/9): no company-specific news found",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JNJ.json",
+    "text": "Fresh short-interest settlement after 2026-04-30: not found",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JNJ.json",
+    "text": "IQVIA weekly Icotyde/Tremfya script counts: not public beyond the Guggenheim and Wolk summaries",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JNJ.json",
+    "text": "Protagonist disclosure of Icotyde sales or royalty after its Q2 report: none",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JNJ.json",
+    "text": "EDGAR since 2026-08-04: no 8-K; Form 4s and 144s are routine sales (Taubert retirement 8-K 5.02, successor Cavanaugh effective Sept)",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JNJ.json",
+    "text": "Peer medtech Q3 prints before 10/13 (Abbott, BSX, ISRG report later): none to read through",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JNJ.json",
+    "text": "Talc docket developments in September-October 2026: none found",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JNJ.json",
+    "text": "Pharma tariff or MFN news specific to J&J in October 2026: none found",
+    "i": 19
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-12/JPM",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "JPM",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:18+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 334.32,
+    "run_up_5d_pct": 0.58,
+    "run_up_20d_pct": -4.52,
+    "pct_from_52w_high": -8.45,
+    "pct_from_52w_low": 18.2,
+    "realised_vol_20d_annualised_pct": 16.6,
+    "avg_volume_20d": 8311486
+   },
+   "cik": "0000019617",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-14",
+      "session": "intraday",
+      "move_pct": 2.5
+     },
+     {
+      "event_date": "2026-04-14",
+      "session": "intraday",
+      "move_pct": -0.82
+     },
+     {
+      "event_date": "2026-01-13",
+      "session": "intraday",
+      "move_pct": -4.19
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "intraday",
+      "move_pct": -1.91
+     }
+    ],
+    "n": 4,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 2.21,
+    "max_abs_move_pct": 4.19,
+    "up_count": 1,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91,
+    "ratio": 1.0,
+    "last_print": "2026-07-14",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 335.0,
+    "atm_iv_pct": 36.9,
+    "straddle_implied_move_pct": 3.36,
+    "event_implied_move_pct": 3.05,
+    "event_implied_move_basis": "3.36% straddle over 4 calendar days less 1.77% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 1.96,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.55,
+    "total_open_interest": 116696,
+    "atm_spread_frac_of_mid": 0.067,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 4 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.05,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 4,
+    "history_usable": 4,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 consensus EPS $5.86-5.94 and revenue $50.8-52.2bn, from two agreeing sources: Hudson Labs, 2026-09-28, EPS $5.86 / rev $50,847M (https://www.hudson-labs.com/research/jpmorgan-q3-2026-earnings-preview-revenue-guidance-outlook), and MarketPulse/Google Finance, 2026-10-07, EPS $5.91 / rev $51.15bn (https://www.marketpulse.com/markets/jpmorgan-q3-earnings-preview-can-strong-banking-momentum-continue/). Zacks reportedly has EPS $5.94 / rev $52.21bn. Company guide, from the Q2 call on 2026-07-14: FY26 NII ex-Markets ~$96.5bn, total NII ~$105.5bn, adjusted expense ~$107.5bn, card NCO ~3.2%. Q3 guide from 2026-09-15: IB fees and markets revenue up mid-to-high teens YoY on Q3'25 bases of $2.63bn and $8.9bn, which implies IB ~$3.0-3.1bn and markets ~$10.2-10.5bn. No sourced Q3 NII consensus was found; H2 run-rate arithmetic on the guide implies ~$24.7bn/quarter NII ex-Markets.",
+   "positioning_check": "Short interest is about 1.06% of float with 3.4 days to cover per equibles (undated, https://equibles.com/stocks/JPM). The 2026-07-15 settlement had 29.5M shares short and 2.63 days to cover (curvedtrading, via the sweep row). Not crowded, so no squeeze mechanism. Skew_25d is +1.96 vol points: mild put bid, and the baseline reads the lean as 'balanced'. Put/call OI is 0.55. Event-implied move is 3.05% (straddle 3.36%, front expiry 2026-10-16). Run-up is -4.52% over 20 days, and the stock is -8.45% from its 52-week high. MarketPulse puts the ATH at 366.50 on 2026-08-13 and a low of 325.87 on 2026-10-01, with RSI 31.6 on 09-30. Truist (via 24/7 Wall St, 2026-10-02) says financials had their worst month against the S&P since 1990, and calls it fund-flow rotation rather than results.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "At Barclays on 2026-09-15, co-president Doug Petno guided Q3 IB fees and markets revenue up 'mid-to-high teens' YoY. On Q3'25 bases of $2.63bn IB and $8.9bn markets, that is about $3.0-3.1bn and $10.2-10.5bn. JPM has a record of printing above its September conference guide: in Q3'25 it guided IB up low double digits and printed +16%, with markets +25%. The guide is public and consensus moved up after it (Zacks EPS revised to $5.94), so this is a reported-quarter item inside the guide; only an above-guide print would be new.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.kitco.com/news/off-the-wire/2026-09-15/jpmorgan-expects-investment-banking-trading-shine-third-quarter",
+    "source_date": "2026-09-15",
+    "reaction_history_on_this_line": "Q3'25 beat its own IB/markets guide (IB +16% vs low-double-digit guide, markets +25%) and EPS beat ($5.07 vs $4.83), yet the stock fell 1.91% on the print (baseline 2025-10-14). Q2'26: IB +30%, markets +35%, plus a raised NII guide, and the stock gained 2.5%. Beats on this line have been sold unless the guide moved.",
+    "why_not_priced": "Largely priced: the guide is four weeks old, the stock rose 0.7% on it, and consensus EPS ticked up. If the market expected a big upside surprise here, the 25d skew would lean to calls rather than +1.96 put-over-call, and the stock would not be 8% off its high. What remains unpriced is only JPM's habit of beating its own conference guide.",
+    "independence": "Q3'25 base and the prior guide-vs-print pattern: https://www.zacks.com/stock/news/2768224/jpm%27s-q3-earnings-beat-as-ib-%26-trading-businesses-shine-nii-view. Jefferies' Jun-Aug quarter (IB +17%, equities +29%) is a separate counterparty read, filed below.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "LSEG fee league tables imply JPM Q3 2026 IB fees of about $3.3bn (LSEG-estimated). JPM was at $10.1bn for 9M 2026 (published 2026-10-05) against $6.8bn for H1 2026 (2026-07-06). That is an implied Q3 share of ~8.9% against 8.5% in H1, while industry fees fell sequentially in Q3. This corroborates the mid-to-high-teens guide, possibly toward its upper end. LSEG's estimates are not JPM's reported numbers, and H1 is usually revised up in later releases, which would understate the implied Q3 figure.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investmentexecutive.com/news/markets/strong-markets-boost-bankers-fortunes/",
+    "source_date": "2026-10-05",
+    "reaction_history_on_this_line": "Same line as the guide finding above; IB-fee beats on their own have not lifted the stock (Q3'25 -1.91%).",
+    "why_not_priced": "The Q3 figure for JPM has to be derived by subtracting two LSEG releases three months apart, and nothing aggregates that number. If the share gain were priced, previews would quote a Q3 IB number above the guide; they quote only the guide.",
+    "independence": "The H1 base comes from a separate release of the same vendor: https://www.investmentexecutive.com/news/research-and-markets/first-half-delivers-fee-feast-for-investment-banks/ (2026-07-06). It supports the same direction as the company guide in the finding above but is a different source.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "Chase Issuance Trust card credit was benign into Q3. Monthly net credit losses were 1.58% in July and 1.66% in August 2026, against 1.68/1.73/1.62% for April-June (Q2 card NCO rate 3.34%). Total delinquency was 0.80% in August, against 0.85% in September 2025 and 0.92% in February 2026. This is consistent with Q3 card NCOs at or below the ~3.2% FY guide, and with no reserve build driven by card credit.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/asset-back-securities/chase-issuance-trust/chait-historical-trust-2026-08.pdf",
+    "source_date": "2026-09 (August 2026 trust data)",
+    "reaction_history_on_this_line": "The card NCO guide was [sizing note removed].4% to 3.2% at Q2 and the stock gained 2.5% (with the NII raise). No print in the baseline window turned on card credit alone.",
+    "why_not_priced": "Trust data is public but rarely quoted in previews, which talk about consumer 'fragility' and macro rather than these numbers. The trust is a seasoned, prime-weighted subset that runs well below the bank-wide card NCO rate, so it confirms direction but not level. A priced read would show up as previews flagging card NCOs below guide; none do.",
+    "independence": "H.8 shows card/revolving balance growth slowing to +0.4% annualized in August (https://www.federalreserve.gov/releases/h8/20261002/), which points to low balance-driven loss growth but also slower card NII. 24/7 Wall St (2026-10-02) notes Citi's card delinquencies fell.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "The FOMC raised the funds rate 25bp to 3.75-4.00% on 2026-09-16 by a 12-0 vote, its first hike since 2023. JPM's July NII guide (~$105.5bn total, ~$96.5bn ex-Markets) assumed the forward curve; going into the meeting a hike was priced at only ~36-52%. For an asset-sensitive balance sheet that supports holding or nudging up the FY NII guide and a higher Q4 exit rate. That would be a guidance item, but small: only part of a hike was unpriced, over 3.5 months.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "NII guide is the line this stock trades on: July's NII raise brought +2.5%, April's guide trim -0.82% (baseline and sweep row). January 2026 -4.19% came with 2026 expense guidance.",
+    "why_not_priced": "Bank stocks FELL after the hike (S&P Global: bank index -6.9% from 09-16 to month-end against S&P 500 +0.9%), so the market treated the hike as a valuation and credit negative, not an NII positive. If the NII benefit were priced, JPM would not have de-rated through the hike. This is macro-to-company transmission the company has not confirmed.",
+    "independence": "S&P Global on banks after the hike: https://www.spglobal.com/market-intelligence/en/news-insights/articles/2026/10/most-us-bank-stocks-trade-lower-in-september-106462675. Pre-meeting hike odds: https://cryptobriefing.com/fomc-meeting-expected-to-result-in-first-rate-hike-since-2023-bloomberg/. Proxy, not company-confirmed.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "Industry balance growth slowed sharply in Q3, per Fed H.8 (2026-10-02 release). Large domestic bank deposits went from $12,204bn (June) to $12,288bn (August), with September weekly values of $12,298-12,384bn: about 4% annualized, against 8.1% in Q2. Large-bank loans grew about 1% annualized June to August against 7.5% in Q2. All-bank card balances grew +0.4% annualized in August. The July NII raise rested mainly on deposit balances, so slower deposit and loan growth caps upside to NII ex-Markets, partly offsetting the rate benefit in the finding above.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.federalreserve.gov/releases/h8/20261002/",
+    "source_date": "2026-10-02",
+    "reaction_history_on_this_line": "NII guide line: +2.5% on the July deposit-driven raise, -0.82% on the April trim.",
+    "why_not_priced": "Previews quote Q2's +7% YoY deposit growth and the raised guide, not the Q3 industry deceleration. If priced, previews would flag NII ex-Markets risk; they do not. It is an industry proxy: JPM gained wholesale deposit share in H1 and may diverge.",
+    "independence": "Barnum on the Q2 call called yield-seeking deposit flows 'probably a little bit of a risk' and expected consumer deposits to grow only low single digits (https://www.webull.com/news/15271033854174208). Proxy; the Fed-hike finding above pushes NII the other way through rates, not balances.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "The sector de-rating into the print looks flow-driven, not results-driven. Financials had their worst month against the S&P since 1990 (Truist). The KBW bank index is ~13-14% off its August record, and the S&P bank index fell 6.8% in September. JPM fell ~11% from its 2026-08-13 ATH (366.50) to 325.87 on 10-01 and sits at 334.32, 8.45% off its high with a -4.52% 20-day run-up. Meanwhile the company guided Q3 capital-markets revenue up. With low short interest, the setup is light positioning into an intact print, unlike the last two prints, when the stock went in near highs.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://247wallst.com/investing/etf/2026/10/02/bank-stocks-are-lagging-the-sp-500-by-the-most-since-1990/",
+    "source_date": "2026-10-02",
+    "reaction_history_on_this_line": "Of the last four prints, the one up reaction (+2.5%, July 2026) came with a raised guide; Jan 2026 -4.19% and Oct 2025 -1.91% came with the stock at or near highs.",
+    "why_not_priced": "This is about where the price sits, not a hidden fact. It is weak by construction: a de-rated stock is not by itself a reason to rise. It would be priced if the skew had turned to calls or the stock had already recovered to its 50-day MA (351.55); it has done neither.",
+    "independence": "S&P Global September bank-stock review: https://www.spglobal.com/market-intelligence/en/news-insights/articles/2026/10/most-us-bank-stocks-trade-lower-in-september-106462675. Price levels: https://www.marketpulse.com/markets/jpmorgan-q3-earnings-preview-can-strong-banking-momentum-continue/",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "Jefferies' fiscal Q3 (June-August 2026, reported 2026-09-28) was mixed. IB revenue was a record $1.33bn (+17%), with equity underwriting +69% and debt underwriting -21%. Equities were a record $626m (+29%), but fixed income fell 26%. FICC was ~60% of JPM's Q3'25 markets revenue ($5.6bn of $8.9bn), so the peer read supports the IB and equities lines and is a caution for FICC. It is net neutral against JPM's mid-to-high-teens markets guide.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://pulse2.com/jefferies-reports-q3-net-revenue-of-2-22-billion-as-investment-banking-and-equities-hit-records/",
+    "source_date": "2026-09-28",
+    "reaction_history_on_this_line": "Markets revenue beats have not lifted the stock by themselves (Q3'25: markets +25%, stock -1.91%).",
+    "why_not_priced": "Public peer print, but Jefferies' FICC is idiosyncratic and much smaller. It came out after JPM's 09-15 guide, so it is the one counterparty read later than the company's own remarks.",
+    "independence": "Jefferies' own release: https://secure.businesswire.com/news/home/20260928078906/en/Jefferies-Announces-Third-Quarter-2026-Financial-Results",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "Expense risk on the call: the July guide was raised $2.5bn to ~$107.5bn, of which ~$1bn of volume-linked cost was implied for H2. A Q3 with IB and markets up mid-to-high teens brings more compensation accrual and a possible further nudge to the FY expense guide, or early 2027 expense signals. Expenses are the line that gave this stock its worst recent reactions.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.kitco.com/news/off-the-wire/2025-12-09/jpmorgan-expects-higher-expected-2026-expenses",
+    "source_date": "2025-12-09",
+    "reaction_history_on_this_line": "2025-12-09: -4.7% when Marianne Lake guided 2026 expense to ~$105bn against ~$101bn expected. 2026-01-13 print: -4.19%. July's +$2.5bn expense raise was absorbed by the NII raise (+2.5%).",
+    "why_not_priced": "A volume-linked expense rise sits inside what the company already flagged, so it is mostly priced. What is not priced is any early 2027 expense framing, which JPM usually saves for December and January; that is the tail.",
+    "independence": "July guide raise and its volume-linked composition: https://www.webull.com/news/15271033854174208",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "JPM typically gives its formal 2027 NII and expense outlook at the December industry conference and the Q4 print in January; the December 2025 expense guide moved the stock -4.7%.",
+    "resolves_by": "2026-12-08",
+    "source": "https://www.kitco.com/news/off-the-wire/2025-12-09/jpmorgan-expects-higher-expected-2026-expenses",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "BofA's Moynihan (2026-09-14) guided its own Q3 IB fees to $1.6-1.8bn vs $2.0bn and markets flat, saying the industry IB market was 'down 10% or so'. JPM fell 1.7% that day, then recovered on Petno's guide the next day.",
+    "source": "https://www.tikr.com/blog/bank-of-america-stock-fell-8-last-week-after-its-ceo-spoke-at-an-industry-conference-heres-what-he-said-that-spooked-investors",
+    "first_hunter_reason": "duplicate",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "Options-implied move of ±4.4% as of 2026-10-05, per MarketPulse, above JPM's 10-year average of ±3.4%.",
+    "source": "https://www.marketpulse.com/markets/jpmorgan-q3-earnings-preview-can-strong-banking-momentum-continue/",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "JPM.json",
+    "text": "Peers Wells Fargo, Citi and Goldman reportedly print the same morning (2026-10-13), and their reads will affect JPM's close.",
+    "source": "https://www.zacks.com/stock/news/3004030/{https:/www.zackstrade.com/2019-1-dollar}",
+    "first_hunter_reason": "no_source",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JPM.json",
+    "text": "A Q3 2026 NII consensus: not found in free sources (Hudson Labs and MarketPulse give only revenue and EPS)",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JPM.json",
+    "text": "September 2026 conference remarks by CFO Barnum or Dimon on NII, expenses or buyback: none found; only Petno's IB/markets remarks",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JPM.json",
+    "text": "JPM 8-Ks since the Q2 print: only two on 2026-07-23 (items 8.01/9.01 and 5.03), nothing material found (EDGAR full-text search)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JPM.json",
+    "text": "Legal settlements, fines or one-off charges in Q3 2026: none found",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JPM.json",
+    "text": "Dimon's Bloomberg TV appearance around 2026-10-06: scheduled, but no coverage of what he said was found",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "JPM.json",
+    "text": "Chase Issuance Trust September 2026 data: not yet published",
+    "i": 17
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-12/UNH",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "UNH",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:22+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 375.29,
+    "run_up_5d_pct": -0.87,
+    "run_up_20d_pct": -2.15,
+    "pct_from_52w_high": -13.99,
+    "pct_from_52w_low": 44.89,
+    "realised_vol_20d_annualised_pct": 18.5,
+    "avg_volume_20d": 4933272
+   },
+   "cik": "0000731766",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-16",
+      "session": "intraday",
+      "move_pct": 1.16
+     },
+     {
+      "event_date": "2026-04-21",
+      "session": "intraday",
+      "move_pct": 6.96
+     },
+     {
+      "event_date": "2026-01-27",
+      "session": "intraday",
+      "move_pct": -19.61,
+      "session_conflict": {
+       "tagged_session": "intraday",
+       "volume_says": "bmo",
+       "event_day_volume": 65836900,
+       "next_day_volume": 23396900,
+       "median_20d_before": 7044950,
+       "move_as_tagged_pct": -19.61,
+       "move_if_bmo_pct": -19.61,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-10-28",
+      "session": "intraday",
+      "move_pct": 0.51
+     },
+     {
+      "event_date": "2025-07-29",
+      "session": "intraday",
+      "move_pct": -7.46
+     },
+     {
+      "event_date": "2025-04-17",
+      "session": "intraday",
+      "move_pct": -22.38,
+      "session_conflict": {
+       "tagged_session": "intraday",
+       "volume_says": "bmo",
+       "event_day_volume": 29120200,
+       "next_day_volume": 13029900,
+       "median_20d_before": 4902350,
+       "move_as_tagged_pct": -22.38,
+       "move_if_bmo_pct": -22.38,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-01-16",
+      "session": "intraday",
+      "move_pct": -6.04
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 6.96,
+    "max_abs_move_pct": 22.38,
+    "up_count": 3,
+    "session_conflicts": 2
+   },
+   "event_plausibility": {
+    "days_since_last_print": 89,
+    "median_gap_days": 91.0,
+    "ratio": 0.98,
+    "last_print": "2026-07-16",
+    "verdict": "fits_cadence",
+    "reason": "89 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 375.0,
+    "atm_iv_pct": 72.5,
+    "straddle_implied_move_pct": 6.76,
+    "event_implied_move_pct": 6.57,
+    "event_implied_move_basis": "6.76% straddle over 4 calendar days less 1.97% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -7.2,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.23,
+    "total_open_interest": 93703,
+    "atm_spread_frac_of_mid": 0.052,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 3.48,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 6.57,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 adjusted EPS $4.12. Sources: ChartRow, 8 estimates, as of the 2026-10-09 close (https://chartrow.com/quote/unh/earnings); IG preview of 2026-10-06, $4.12 on revenue of $111.38B (https://www.ig.com/en-ch/news-and-trade-ideas/unitedhealth-stock-q3-2026-earnings-preview-261006); TipRanks of 2026-10-12, $4.14 (https://www.tipranks.com/news/unitedhealth-q3-earnings-tomorrow-3-make-or-break-factors-for-unh-stock). The two estimate sources agree. Q3 MCR consensus is 90.1% (TipRanks, single source). The company guide: FY26 adjusted EPS $19.50-20.00, MCR 88.1% +/-25bp (https://www.sec.gov/Archives/edgar/data/0000731766/000073176626000191/earningsrelease2q26_7152.htm). H1 adjusted EPS was $13.61, so the guide implies H2 of $5.89-6.39, and the company said 'slightly more earnings in 3Q relative to 4Q', which puts guide-implied Q3 at about $3.0-3.4. FY26 consensus was $19.81 and FY27 $22.44 as of 2026-09-09 (https://247wallst.com/investing/2026/09/09/unitedhealth-slips-3-as-tpg-buys-into-florida-wellmed-clinics-ahead-of-guidance-reaffirmation/).",
+   "positioning_check": "Short interest is about 15.1M shares, ~1.7% of float, ~2.5 days to cover, per Equibles' 2026-08-19 snapshot, down ~13% m/m (https://equibles.com/stocks/UNH). It was 17.3M / 3.5 DTC on 2026-07-15 (https://curvedtrading.com/stocks/unh/short-interest/). Not crowded. Baseline 25-delta skew is -7.2 vol points, so upside is paid, with put/call OI 1.23 and an event-implied move of 6.57%. Spot $375.29 is -14% from the 52-week high (~$461, touched after the July print), with a 20-day run-up of -2.15% and 5-day of -0.87%. Sell-side is Strong Buy (17 Buy / 4 Hold) with an average target of about $485, so consensus is long and positioned for a beat.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "At the Wells Fargo conference on 2026-09-09, CFO Wayne DeVeydt said the medical-cost improvement behind the Q2 beat continued through July-August ('that durability has not dissipated'). He also said MA margins are tracking the upper half of the 2-4% range and Optum Health will reach a 2% margin this year, ahead of prior expectations. Against the guide-implied Q3 MCR (about 90-91% for H2 on an 88.1% FY guide with H1 near 85.3%) and the 90.1% consensus, this points to a Q3 MCR at or below consensus and a likely third FY raise above $19.50-20.00.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.tikr.com/blog/unitedhealths-cfo-says-the-cost-trend-held-into-q3-heres-what-the-turnaround-could-be-worth",
+    "source_date": "2026-09-11",
+    "reaction_history_on_this_line": "Q1 2026 MCR beat plus raise: +6.96% (baseline). Q2 2026 MCR beat ($6.38 vs ~$4.9) plus raise to $19.50-20.00: +7.3% pre-market faded to +1.16% close (baseline), then -18% over the next three months. The same line has paid once fully and once barely.",
+    "why_not_priced": "It is partly priced. Q3 consensus rose from $3.66 (Zacks, 2026-07-30) to $4.12, about $0.8 above the guide's own cadence, so the street has already moved for it. If it were fully priced, the stock would not sit 18% below the post-Q2 high on flat estimates. The residual is the size of the FY raise and of the MCR beat beyond 90.1%, which the CFO did not quantify.",
+    "independence": "TD Cowen (Ryan Langston) models Optum Health Q3 operating earnings of $299M against management's ~$150M (https://www.tipranks.com/news/unitedhealth-q3-earnings-tomorrow-3-make-or-break-factors-for-unh-stock, 2026-10-12). HCA's July guide cut on weak outpatient surgery (finding 6) is a counterparty pointing the same way. Hudson Labs' preview (2026-09-28) restates MA above 3% (https://www.hudson-labs.com/research/unitedhealth-q3-2026-earnings-preview-unh-guidance-margins), but that rests on the same company statements.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "On the Q2 call the company guided a 'two-thirds, one-third first half to back half mix' with 'slightly more earnings in 3Q relative to 4Q'. On H1 adjusted EPS of $13.61 and an FY guide of $19.50-20.00, that implies Q3 of about $3.0-3.4. The $4.12 consensus therefore already requires Q3 to beat the company's own cadence by ~$0.7-1.1 (20-35%). A Q3 that beats the guide's cadence but lands below $4.12 would headline as a miss.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.mitrade.com/ae-en/insights/news/live-news/article-8-1910297-20260717",
+    "source_date": "2026-07-17",
+    "reaction_history_on_this_line": "The last two quarters beat consensus by ~10% (Q1, $7.23 vs ~$6.6) and ~30% (Q2, $6.38 vs ~$4.9) while the guide sat far below. Management has consistently printed above both cadence and street this year, so this bar risk has not materialised in 2026.",
+    "why_not_priced": "Previews quote $4.12 against last year's $2.92 and do not reconcile it with the company's H2 cadence. If the market were anchoring on the guide-implied ~$3.2, consensus would sit near that, as Zacks' $3.66 in July roughly did. The $4.12 bar means the street expects a beat versus the guide, so the risk is that the beat is smaller than the street has built in.",
+    "independence": "The arithmetic uses the H1 EPS in the Q2 8-K (https://www.sec.gov/Archives/edgar/data/0000731766/000073176626000191/earningsrelease2q26_7152.htm). Zacks' July estimates of Q3 $3.66 / Q4 $2.25 (https://www.marketbeat.com/instant-alerts/zacks-research-issues-positive-forecast-for-unh-earnings-2026-07-31/) were consistent with the guide before consensus rose. It shares no source with finding 1 but bears on the same print: finding 1 says the trend is better than plan, this says the bar has already moved for it.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "The Q3 call is the first likely look at 2027. The CFO has publicly set Optum Health margin at 4% in 2027 (from ~2% in 2026), Medicaid back toward breakeven (from -1% to -1.7%), and MA 'positioned for stability' in the upper half of 2-4%. On ~$94B of Optum Health revenue, +2pts is about +$1.9B pre-tax, or ~+$1.6/share. Together with Medicaid that supports the $22.44 FY27 consensus (+13%), even though commercial recovery is pushed beyond 2027 and 2026 carries $860M of PPD and a light flu season.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://247wallst.com/investing/2026/09/09/unitedhealth-slips-3-as-tpg-buys-into-florida-wellmed-clinics-ahead-of-guidance-reaffirmation/",
+    "source_date": "2026-09-09",
+    "reaction_history_on_this_line": "Forward-year guide reactions are the large moves on this name: the January 2026 2026 guide plus MA rate shock was -19.6%, and the April 2025 guide cut was -22.4% (baseline). The Q3 2025 print, with a first 2026 growth view, was +0.5%.",
+    "why_not_priced": "At $375 the stock is ~16.7x the $22.44 FY27 consensus and 18% below the July high. If the market believed $22.44, the multiple would not sit at what TIKR calls a trough of ~18x forward. The discount looks like doubt about 2027 (2.48% MA final rate, 15% stars decline, sticky commercial trend), which a confirming 2027 view would address. The size of the 2027 view is inference from company targets, not a disclosed number.",
+    "independence": "Hudson Labs preview (2026-09-28) lists the same 2027 segment targets from company statements (https://www.hudson-labs.com/research/unitedhealth-q3-2026-earnings-preview-unh-guidance-margins), so it is not independent. Elevance reaffirmed at least 12% 2027 EPS growth in June (https://quartr.com/events/elevance-health-inc-elv-goldman-sachs-47th-annual-global-healthcare-conference-2026_3e3sMZqa), a peer pointing to sector 2027 recovery.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "KFF's 2027 plan landscape (2026-10-09) shows UnitedHealth exiting 228 counties and entering 9, so it offers MA-PDs in ~70% of counties against ~80% in 2026. The preliminary list shared with brokers in August named 34 counties and ~20,000 members. That points to a larger 2027 MA membership and revenue decline than the August list suggested, after ~1.1M members lost in 2026. It is margin-accretive but a revenue headwind for the 2027 view.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.kff.org/medicare/medicare-advantage-plan-availability-varies-widely-by-county-for-2027/",
+    "source_date": "2026-10-09",
+    "reaction_history_on_this_line": "In 2026 the market rewarded margin over membership: the MA retreat and ~1.1M member loss came with the Q1/Q2 beat-and-raises (+6.96%, +1.16%). The January 2026 revenue-decline guide was part of the -19.6% day.",
+    "why_not_priced": "Published two sessions before the print, and the stock was flat over 5 days (-0.87%), so it has had little time to be digested. The membership consequence is not quantified until management gives a 2027 MA enrollment view. If priced as a negative, the stock would have dropped on 10-09.",
+    "independence": "The 34-county preliminary list (https://www.healthcaredive.com/news/unitedhealthcare-medicare-advantage-2027-market-competitive/829889/) is the contrast. Budget Seniors (2026-10-06) reports plans covering 390,000 members shut for 2027 (https://www.budgetseniors.com/?p=6344), a less established source. ConsumerAffairs cites ~140 counties. The sources disagree on scale.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "In CMS's 2027 Star Ratings released 2026-10-08, UnitedHealth's average rating fell ~15% (Oppenheimer), against Humana's rise to ~95% of members in 4+ star plans. UNH said the results were in line with its expectations, and shares fell ~0.5% in extended trading. The ratings drive 2028 quality bonus payments, so the effect for this print is only through call commentary on 2028 and the competitive position.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://whbl.com/2026/10/08/cms-says-71-of-medicare-advantage-prescription-drug-enrollees-in-4-star-or-higher-plans-for-2027/",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "On the September 2025 preliminary stars update (78% in 4+) UNH rose ~9% in a session. On this release it fell 0.5% after hours. Stars news has moved this name before but did not on 10-08.",
+    "why_not_priced": "Mostly priced: the stock barely moved, and the company called it expected. The residual is whether management quantifies the 2028 bonus hit on the call, which no one has sized publicly.",
+    "independence": "Healthcare Dive 2026-10-09 reports UNH and CVS with 'double-digit percentage reductions' in 4+ star membership (https://healthcaredive.com/news/medicare-advantage-stars-2027-winners-losers/832582).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "HCA, the largest US hospital counterparty, cut its 2026 net income outlook in July to $6.3-6.7B. Q2 outpatient surgeries fell 4.4% consolidated (3.4% same-facility) and admissions grew 2.5%, so provider volumes were softening going into Q3. That is consistent with payer cost trend below plan.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.beckershospitalreview.com/finance/hca-posts-1-7b-net-income-cuts-2026-profit-outlook-8-things-to-know/",
+    "source_date": "2026-07 (HCA Q2 2026 results; URL undated, content references Q2 2026 and the 10-Q for 2026-06-30)",
+    "reaction_history_on_this_line": "No direct history. Payer prints have tracked provider volume commentary loosely.",
+    "why_not_priced": "It is old (July), and UNH raised its guide after seeing the same quarter. It is a proxy for July-September utilization, not a Q3 company number, so it carries little that is new.",
+    "independence": "HCA 10-Q for 2026-06-30 (https://www.sec.gov/Archives/edgar/data/0000860730/000119312526321077/hca-20260630.htm). This is a proxy and does not confirm UNH's Q3 directly.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "No managed-care peer pre-announced a Q3 problem. Centene reaffirmed adjusted EPS >$4.80 on 2026-08-17 and again in its Deutsche Bank conference 8-K of 2026-09-16 (valid through 09-25). This contrasts with July 2025, when a peer guidance withdrawal preceded UNH's sector-wide reset.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001071739/000107173926000172/cnc-20260916.htm",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "Peer guidance withdrawals in 2025 preceded UNH's -7.5% (2025-07-29) print. Their absence this quarter removes that setup.",
+    "why_not_priced": "It is largely priced as an absence of bad news. It is filed because it removes a known negative route into the print rather than adding a positive.",
+    "independence": "Centene 8-K 2026-08-17 (https://www.sec.gov/Archives/edgar/data/0001071739/000107173926000165/a20260817formex991pressrel.htm). Humana reaffirmed at least $9.00 (https://www.newsquawk.com/headlines/humana-hum-reaffirms-fy26-adj-eps-guidance-of-at-least-usd-900, undated).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "Positioning leans long into the print. The skew is -7.2 (calls bid over puts), the sell-side is 17 Buy / 4 Hold with an average target of ~$485 (+28%), short interest is ~1.7% of float, and Q3 consensus has already risen from $3.66 to $4.12. On the last beat-and-raise (Q2, $6.38 vs ~$4.9, guide up to $19.50-20.00) the stock went +7.3% pre-market, closed only +1.16%, then fell 18% over three months.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.itiger.com/news/2651447857",
+    "source_date": "2026-07-16",
+    "reaction_history_on_this_line": "Q2 2026: a large beat plus raise gave +1.16% close (baseline). Q3 2025: a modest beat gave +0.51%. Q1 2026: beat plus raise gave +6.96%.",
+    "why_not_priced": "This is the price itself: upside skew and a raised bar mean a good print is expected. Any residual is in how the session handles a beat. Pre-market strength faded last time, and the window is close to close.",
+    "independence": "The baseline's skew -7.2 and put/call OI 1.23 are sealed. The TipRanks preview of 2026-10-12 gives the Strong Buy consensus and $485 target (https://www.tipranks.com/news/unitedhealth-q3-earnings-tomorrow-3-make-or-break-factors-for-unh-stock).",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "Capital return was stepped up: at least $5.0B of 2026 buybacks against an initial $2.5B, $4.0B done by mid-July, operating cash flow guide ~$24B (from >$18B), and debt/capital 41.2% against a ~40% year-end target. That leaves room for an increased buyback or a 2027 capital-return figure on the call.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000731766/000073176626000191/earningsrelease2q26_7152.htm",
+    "source_date": "2026-07-16",
+    "reaction_history_on_this_line": "None isolated. Buyback increases came bundled with the Q1/Q2 raises.",
+    "why_not_priced": "It is mostly priced. Only a fresh increase would be new, and none has been signalled.",
+    "independence": "TIKR 2026-09-11 says buybacks roughly doubled (https://www.tikr.com/blog/unitedhealths-cfo-says-the-cost-trend-held-into-q3-heres-what-the-turnaround-could-be-worth), but that rests on the same company statement.",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "Humana's 2027 stars at ~95% of members in 4+ plans (Oppenheimer estimates +$3.6B of revenue) against UNH's ~15% average decline gives Humana a 2028 bonus-funded benefit advantage in MA competition. The economic effect falls in the 2028 plan year.",
+    "resolves_by": "2027-06-01",
+    "source": "https://whbl.com/2026/10/08/cms-says-71-of-medicare-advantage-prescription-drug-enrollees-in-4-star-or-higher-plans-for-2027/",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "The 2027 MA open-enrollment outcome (2026-10-15 to 12-07) after exits from 228 counties. It decides actual 2027 MA membership and is only visible in January 2027.",
+    "resolves_by": "2027-01-20",
+    "source": "https://www.kff.org/medicare/medicare-advantage-plan-availability-varies-widely-by-county-for-2027/",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "Bernstein/GuruFocus note: Q3 EPS consensus $2.84, MLR 90.7%, report date Oct 28",
+    "source": "https://it.tradingview.com/news/gurufocus%3Af0ad9d0ce094b%3A0-unitedhealth-stock-set-for-rebound-as-analyst-sees-stronger-q3-brighter-2026-outlook",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "Baird downgrade to Underperform, target cut to $198",
+    "source": "https://benzinga.com/z/46773050",
+    "first_hunter_reason": "no_source",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "Zacks Q3 2026 EPS estimate $3.66 (2026-07-30) as the bar",
+    "source": "https://www.marketbeat.com/instant-alerts/zacks-research-issues-positive-forecast-for-unh-earnings-2026-07-31/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 13
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "A 5.2% intraday drop on 2026-09-09 attributed to rate-hike fears from jobs data and ex-dividend selling",
+    "source": "https://parameter.io/unitedhealth-unh-stock-plunges-over-5-why-wall-street-still-sees-upside-ahead/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 14
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "WellMed Florida clinics stake sold to TPG (terms undisclosed); the CFO said 'we didn't need the dollars'",
+    "source": "https://www.healthcarefinancenews.com/news/unitedhealth-sells-stake-florida-wellmed-clinics",
+    "first_hunter_reason": "duplicate",
+    "i": 15
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "UNH.json",
+    "text": "Budget Seniors: UNH shutting plans covering 390,000 members for 2027",
+    "source": "https://www.budgetseniors.com/?p=6344",
+    "first_hunter_reason": "duplicate",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UNH.json",
+    "text": "A 2026 update to the DOJ criminal/civil Medicare Advantage probe: searches returned only 2025 items",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UNH.json",
+    "text": "A primary transcript of the September 2026 Wells Fargo conference: only secondary summaries (TIKR, 247wallst)",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UNH.json",
+    "text": "HCA or other hospital Q3 2026 volume commentary at September conferences: nothing dated in Q3",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UNH.json",
+    "text": "An Elevance Q3 2026 pre-announcement or September conference remark: nothing found; its Q3 print comes after UNH",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UNH.json",
+    "text": "Short interest for the 2026-09-30 settlement: none found; latest is 2026-08-19",
+    "i": 21
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UNH.json",
+    "text": "Any 8-K from UNH between 2026-07-16 and the print other than the date announcement: none surfaced in searches",
+    "i": 22
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "UNH.json",
+    "text": "An analyst note giving a formal 2027 EPS initial-guide expectation in October 2026: none beyond the $22.44 consensus quoted 2026-09-09",
+    "i": 23
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-12/WFC",
+  "hunter_definition": "_claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "WFC",
+   "event_date": "2026-10-13",
+   "session": "bmo",
+   "as_of_utc": "2026-10-12T17:09:25+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-12",
+    "spot": 83.61,
+    "run_up_5d_pct": 2.66,
+    "run_up_20d_pct": -5.75,
+    "pct_from_52w_high": -13.26,
+    "pct_from_52w_low": 13.88,
+    "realised_vol_20d_annualised_pct": 24.5,
+    "avg_volume_20d": 14208883
+   },
+   "cik": "0000072971",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-14",
+      "session": "intraday",
+      "move_pct": -2.71
+     },
+     {
+      "event_date": "2026-04-14",
+      "session": "intraday",
+      "move_pct": -5.7
+     },
+     {
+      "event_date": "2026-01-14",
+      "session": "intraday",
+      "move_pct": -4.61
+     },
+     {
+      "event_date": "2025-10-14",
+      "session": "intraday",
+      "move_pct": 7.15
+     }
+    ],
+    "n": 4,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 5.16,
+    "max_abs_move_pct": 7.15,
+    "up_count": 1,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91,
+    "ratio": 1.0,
+    "last_print": "2026-07-14",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-16",
+    "days_to_expiry": 4,
+    "atm_strike": 84.0,
+    "atm_iv_pct": 48.8,
+    "straddle_implied_move_pct": 4.46,
+    "event_implied_move_pct": 3.94,
+    "event_implied_move_basis": "4.46% straddle over 4 calendar days less 2.61% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 1.0,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.63,
+    "total_open_interest": 216635,
+    "atm_spread_frac_of_mid": 0.063,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 2.58,
+   "deadband_basis": "half the median of 4 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.94,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 4,
+    "history_usable": 4,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Zacks consensus (TradingView/Zacks, ~2026-10-08): EPS $1.85, revenue $22.15bn, NII $12.63bn, noninterest income $9.58-9.59bn, IB fees $903.8m, avg earning assets $2,089.8bn, efficiency ratio 62.5%, NCOs $985.6m, CET1 10.1% (https://www.tradingview.com/news/zacks:8404cace6094b:0-wells-fargo-q3-earnings-on-the-deck-what-s-in-store-for-the-stock/ ; https://finance.yahoo.com/markets/stocks/articles/wells-fargo-wfc-q3-earnings-121520212.html). Earnings Whispers has $1.84 and $22.22bn, and Visible Alpha has NII +5.5% y/y, roughly $12.6bn (https://seekingalpha.com/article/4953201-visible-alpha-breakdown-of-us-banks-q3-2026-earnings-expectations), so two sources agree. Company guide: FY26 NII ~$50bn ± (ex-markets ~$48bn, markets ~$2bn), FY expense ~$55.7bn, Q3 NIM down 1bp to flat (updated 2026-09-15 from down 3-4bp).",
+   "positioning_check": "Short interest about 29.0M shares, ~0.96% of float. Days to cover 1.8 at the 2026-07-15 FINRA settlement (curvedtrading, https://curvedtrading.com/stocks/wfc/short-interest/) or 3.30 per Fintel (undated, https://fintel.io/ss/us/wfc). No September settlement found. Not crowded, so no squeeze mechanism. Baseline 25-delta skew is +1.0 vol point (balanced), put/call OI 0.63, event-implied move 3.94% (straddle 4.46%). Tape: run_up_5d +2.66%, run_up_20d -5.75%, 13.3% below the 52-week high. The stock fell 3% on the 2026-09-16 Fed hike and was down 8.4% from the hike by 09-24 against ~4% for XLF, then recovered from ~$80 on Oct 2 to $83.61 after a Morgan Stanley upgrade and a weak September jobs report (TIKR, last updated 2026-10-05).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "On 2026-09-15 at Barclays the CFO said Q3 NIM would be 'maybe down 1, maybe flat' from Q2's 2.43%, against the 3-4bp decline management expected entering the quarter. Zacks consensus is NII $12.63bn on avg earning assets $2,089.8bn, which implies about 2.41% NIM after a ~1.5bp taxable-equivalent adjustment calibrated on Q3'25 (NII $11.95bn on AEA $1,832.5bn, reported 2.60%). At the CFO's 2.42-2.43% the same assets give NII of about $12.67-12.72bn, a $40-90m (0.3-0.7%) beat on the line this stock trades on.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investing.com/news/transcripts/wells-fargo-at-barclays-global-financial-services-conference-growth-broadens-93CH-4901834",
+    "source_date": "2026-09-15",
+    "reaction_history_on_this_line": "The last three prints were EPS beats sold on NII/NIM: 2026-01-14 -4.61%, 2026-04-14 -5.70% (Q1 NII $12.10bn, ~$200m below the $12.3bn bar), 2026-07-14 -2.71% (NII/NIM a touch light, guide held). 2025-10-14 rose +7.15%. The stock punishes NII misses and has not rewarded small NII beats in this sample.",
+    "why_not_priced": "The remark is public and was widely quoted (Bloomberg 2026-09-15), but the Zacks NII bar still implies ~2.41% NIM, i.e. about -2bp, between the old and the new guide. If the bar fully reflected it, consensus NII would sit near $12.7bn on the same earning-asset estimate. The stock fell 8% after the update because of the Fed hike, so the margin news never showed up in the price either.",
+    "independence": "TIKR 2026-09-30 quotes the same CFO line (https://www.tikr.com/blog/wells-fargo-stock-is-down-14-in-2026-time-to-sell-or-load-up). Same underlying remark, so not independent. The Q2 call (July) also said Q3 compression would be modest and 'maybe even better' (https://www.webull.com/news/15267023079547904).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "The FY26 NII guide (~$50bn ±) looks likely to be reaffirmed, not raised. H1 NII was $24.41bn (1Q $12,096m + 2Q $12,317m, per the 2Q26 8-K), so H2 needs ~$25.59bn. A Q3 near $12.7bn plus a Q4 with stable NIM (CFO guide) and ~2% earning-asset growth (~$12.95bn) lands at about $50.0-50.1bn. The 16 Sept 25bp Fed hike helps the modestly asset-sensitive banking book only from late Q3. Against it, management says markets NII falls as rates rise, deposit costs rise modestly in H2, and non-interest-bearing deposits are only 'relatively stable'. The last two holds of this same guide were sold.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000072971/000007297126000288/wfc2qer07-14x26ex991xrelea.htm",
+    "source_date": "2026-07-14",
+    "reaction_history_on_this_line": "April 2026 (guide held at ~$50bn after an NII miss) -5.70%. July 2026 (guide 'unchanged, not raised') -2.71%. The 2025-10-14 print (+7.15%) carried a raised ROTCE target rather than an NII change.",
+    "why_not_priced": "Previews quote '$50bn maintained' and NIM 'better than expected', which together read as a setup for a raise. The arithmetic says the better NIM is roughly what the $50bn already needed. If the market expected a plain reaffirmation, the stock would not have bounced 4% into the print on a 'NIM stabilise then improve' upgrade thesis (Morgan Stanley). It might be partly priced through the 11x NTM P/E de-rating.",
+    "independence": "The Barclays transcript (2026-09-15) confirms the ~$50bn hold incl. ~$2bn markets and 'markets NII lower as rates rise' (https://www.investing.com/news/transcripts/wells-fargo-at-barclays-global-financial-services-conference-growth-broadens-93CH-4901834). The Q2 call confirms modestly rising deposit costs and stable NIB (https://www.webull.com/news/15267023079547904). Fed hike: Star-Advertiser 2026-09-17 (https://www.staradvertiser.com/2026/09/17/breaking-news/major-u-s-banks-raise-prime-rate-after-fed-rate-hike/). This finding and the NIM finding both rest partly on the CFO's Q3 NIM remark: the NIM finding is the Q3 print, this one is the FY guide.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "Fed H.8 (2026-10-02 release, large domestically chartered banks, seasonally adjusted) shows industry loan growth slowing from ~7.5% annualised in Q2 to ~5.9% in Q3-to-date and deposits from ~8.2% to ~4.2%. That is a proxy for WFC's balance-sheet growth, which the CFO already said would slow from the H1 pace of ~12% y/y loans. Zacks' earning-asset bar ($2,089.8bn, ~+2.1% q/q or ~8.6% annualised) is ahead of the industry pace.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.federalreserve.gov/releases/h8/20261002/",
+    "source_date": "2026-10-02",
+    "reaction_history_on_this_line": "There is no clean history of reactions to earning-asset or loan-growth surprises alone. Loan growth beating guidance in H1 did not stop the NII-led selloffs.",
+    "why_not_priced": "Previews anchor on WFC's own 12% H1 loan growth and the CFO's 'beat original guidance' line, not on the industry series. If it were priced, the earning-asset bar would show deceleration nearer the industry's ~1.5% q/q.",
+    "independence": "This is a proxy. The company itself said loan growth would slow from the H1 pace (https://www.investing.com/news/transcripts/wells-fargo-at-barclays-global-financial-services-conference-growth-broadens-93CH-4901834), but WFC has outgrown the industry since the asset cap was lifted, so transmission is uncertain.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "Fee lines sit at or inside guidance. The CFO guided Q3 IB fees up mid-single digits y/y and markets/trading up mid-single digits y/y, with venture gains 'roughly flat' after ~$850m in H1. Zacks has IB fees at $903.8m (+7.6% y/y, a touch above guide) and total noninterest income at $9.58bn, already down ~$0.7bn from Q2's $10.31bn, which absorbs the venture swing.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.tradingview.com/news/zacks:8404cace6094b:0-wells-fargo-q3-earnings-on-the-deck-what-s-in-store-for-the-stock/",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "Q2's strong venture and IB fees produced a revenue beat that was still sold (-2.71%). Fee beats have not driven this stock's reaction.",
+    "why_not_priced": "Mostly priced: the bar sits on the guide. The only gap is IB consensus ~2-3 points above the CFO's mid-single-digit guide, worth about $20m.",
+    "independence": "Peer guidance diverged at the same conference: JPM IB and markets up mid-to-high teens, BofA IB down ≥10% with trading flat (https://pulse2.com/jpmorgan-expects-q3-investment-banking-fees-and-markets-revenue-to-rise-mid-to-high-teens/ ; https://theedgemalaysia.com/node/818142).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "Morgan Stanley upgraded WFC from Equal-Weight to Overweight and named it a top pick ($102 PT) around early October, on the thesis that NIM stabilises then improves. WFC had been the worst performer in MS's coverage. The stock rose from ~$80 on Oct 2 to $83.61. Before that it had de-rated from ~14x to ~11x NTM P/E and fell 8.4% after the Sept 16 hike against ~4% for XLF.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.tikr.com/de/blog/wells-fargo-stock-morgan-stanley-upgrade-overweight",
+    "source_date": "2026-10-05",
+    "reaction_history_on_this_line": "Low-expectation entries have helped before: October 2025 +7.15% came after a period of scepticism. 2026 prints came off higher multiples and were sold.",
+    "why_not_priced": "Partly priced through the +2.66% 5-day run-up. What remains is that the multiple is already low (11x), so a held guide is less likely to be punished as hard as in April and July. If the bar were demanding, skew would be bid to the upside rather than balanced at +1.",
+    "independence": "TIKR 2026-09-30 documents the de-rating and the post-hike underperformance (https://www.tikr.com/blog/wells-fargo-stock-is-down-14-in-2026-time-to-sell-or-load-up). StreetInsider shows an average PT of $97.66 (https://www.streetinsider.com/rating_history.php?q=WFC).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "JPMorgan (EPS bar ~$5.94) and Citigroup report Q3 2026 on the same morning, 2026-10-13, before the open, and BofA on Oct 14. WFC's reaction will be read against JPM's NII guide and IB/markets print, which JPM pre-guided up mid-to-high teens. That creates a sector cross-current of unknown sign within the window.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.tradingview.com/news/zacks:8404cace6094b:0-wells-fargo-q3-earnings-on-the-deck-what-s-in-store-for-the-stock/",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "Big-bank prints cluster on the same day, and WFC's reactions (-2.71% to +7.15%) share that day's sector tape.",
+    "why_not_priced": "It is not directional: the timing is known and the sign is unknown. It is filed so judges can see that the window carries the peer read-through.",
+    "independence": "JPM's Oct 13 date: Zacks via search; JPM Barclays guide: https://pulse2.com/jpmorgan-expects-q3-investment-banking-fees-and-markets-revenue-to-rise-mid-to-high-teens/",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "Capital return capacity is visible but not in the bar. CET1 was 10.3% at Q2 against a 10-10.5% target. The CFO said buybacks run $3-6bn a quarter (Q2 was $3.0bn, 37.4m shares) and that proposed capital rules would cut RWA ~7%, though not before year-end. Zacks expects CET1 to fall to 10.1%, consistent with buybacks above $3bn or balance-sheet growth absorbing capital.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-13",
+    "source": "https://www.investing.com/news/transcripts/wells-fargo-at-barclays-global-financial-services-conference-growth-broadens-93CH-4901834",
+    "source_date": "2026-09-15",
+    "reaction_history_on_this_line": "Buyback size has not been the line WFC traded on in 2026.",
+    "why_not_priced": "Mostly priced: the range is public. A Q3 buyback toward $5-6bn would be the only surprise, and nothing seen indicates which end.",
+    "independence": "The Q2 release confirms $3.0bn of Q2 repurchases and CET1 of 10.3% (https://www.sec.gov/Archives/edgar/data/0000072971/000007297126000288/wfc2qer07-14x26ex991xrelea.htm). Zacks CET1 bar: https://finance.yahoo.com/markets/stocks/articles/wells-fargo-wfc-q3-earnings-121520212.html",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "Finalisation of proposed capital rules (RWA down ~7% per the CFO) would free buyback capacity. The CFO said it is unlikely before year-end.",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.investing.com/news/transcripts/wells-fargo-at-barclays-global-financial-services-conference-growth-broadens-93CH-4901834",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "The 2027 NII and expense outlook is normally given with Q4 results on 2027-01-14. The CFO gave no 2027 numbers in September.",
+    "resolves_by": "2027-01-14",
+    "source": "https://newsroom.wf.com/news-releases/news-details/2026/Wells-Fargo-Updates-2026-Earnings-Release-Date-Information/default.aspx",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "Wells Fargo to pay $48.5M to settle a senior-banker overtime suit (Law360)",
+    "source": "https://www.law360.co.uk/amp/articles/2389744",
+    "first_hunter_reason": "no_source",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "Zacks claims the Sept 2026 Barclays coverage says NII $50bn and expenses $55.7bn (malformed URL)",
+    "source": "https://www.zacks.com/stock/news/2990716/",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "Finviz 'Wells Fargo Highlights Future Growth Path at Barclays Conference' (NII in line with 2024's $47.7bn)",
+    "source": "https://finviz.com/news/164090/wells-fargo-highlights-future-growth-path-at-barclays-conference",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "WFC.json",
+    "text": "June 2026 CFO comment 'very confident' on the $50bn NII and a step-up in Q2 NII",
+    "source": "https://www.pymnts.com/news/banking/2026/wells-fargo-cfo-forecasts-rising-net-interest-income-amid-loan-growth/",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WFC.json",
+    "text": "WFC-specific credit event or bankruptcy exposure in Q3 2026 (searched private credit and NBFI losses; only Q1 exposure data, $36.2bn private credit)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WFC.json",
+    "text": "Layoffs, severance, fines or new litigation dated Q3 2026 (none dated 2026 found)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WFC.json",
+    "text": "Deposit-pricing moves (CD/savings APY) after the Sept 16 hike (no October 2026 data)",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WFC.json",
+    "text": "FINRA short-interest settlement for September 2026 (latest found was 2026-07-15)",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WFC.json",
+    "text": "The Q2 2026 10-Q legal and RPL section (document too large to fetch)",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WFC.json",
+    "text": "The reason the Q3 date moved from Oct 14 to Oct 13 (the Feb 20 release gives none)",
+    "i": 18
+   }
+  ]
+ }
+]
