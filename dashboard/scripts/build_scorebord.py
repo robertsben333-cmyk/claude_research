@@ -31,10 +31,12 @@ what each band of percentiles actually earned (backtest and October). All of it 
 on its own tab, "Panel %".
 
 Resolved outcomes are read, never recomputed, wherever a resolver already wrote one:
-the US ledger's own bars for E, E-P and D on the operator's window (see US_ENTRY_HM),
+the US ledger's own bars for E and E-P on the operator's window (see US_ENTRY_HM),
 frozen once resolved, the market resolvers
 through `markets.json` for EU/JP/AU/CA. Stage R is left out on purpose: it is a
 different event (yesterday's losers, not an earnings print) and does not belong here.
+Stage D (three deep names a day) is left out too, on the operator's instruction of
+2026-10-14.
 Live returns come from Yahoo at build time. Read-only: no order is ever touched.
 
 Run after `build_ledger.py` and `build_markets.py`; `update.sh` does that.
@@ -504,7 +506,7 @@ def pick_top(run, f, model):
 
 us_side_stage("research/*/*/*/edge-panel/edge-scores-panel.json", "US · E-P panel",
               "US-P", pick_panel)
-us_side_stage("research/*/*/*/edge-deep/edge-scores.json", "US · D", "US-D", pick_top)
+# Stage D is left out on the operator's instruction (Xavier, 2026-10-14).
 
 # Stage R (the reversal researcher) is deliberately absent (operator, 2026-10-12): it
 # predicts a different event with a different model of the market, so its calls are
@@ -598,8 +600,7 @@ for n in ledger["names"]:
 
 for glob_pat, stage, market, key in (
         ("research/*/*/*/edge-panel/edge-scores-panel.json", "US · E-P panel", "US-P",
-         "panel_score"),
-        ("research/*/*/*/edge-deep/edge-scores.json", "US · D", "US-D", "impact_sum")):
+         "panel_score"),):
     for f in sorted(glob.glob(str(ROOT / glob_pat))):
         run = str(Path(f).parent.relative_to(ROOT))
         run_date = Path(f).parent.parent.name
@@ -684,6 +685,11 @@ for c in calls:
 # scores but never an outcome, and a stage with fewer than OWN_MIN calls has no bar.
 OWN_MIN = 5
 FIXED_BENCH = {"US · E-P panel": PANEL_TOP}
+# The market panels are already scaled to each judge's own range, so their bar is a
+# fixed percentile too; 70 for now (Xavier, 2026-10-14), not a cut fitted on the day.
+MARKET_PANEL_TOP = 70.0
+for _m in ("Europa", "Japan", "Australië", "Canada"):
+    FIXED_BENCH[f"{_m} · panel"] = MARKET_PANEL_TOP
 REF_BENCH = {"US · E"}
 
 
@@ -713,7 +719,10 @@ for key, rows in by_bench.items():
     if stage in FIXED_BENCH:
         cut = FIXED_BENCH[stage]
         for r in rows:
-            r["own"] = bool(r["strong"])     # strong already is full and |panel_pct| >= 80
+            if stage == "US · E-P panel":
+                r["own"] = bool(r["strong"])     # strong already is full and |panel_pct| >= 80
+            else:
+                r["own"] = bool(r["score"] and r["side"]) and abs(r["score"]) >= cut - 1e-9
     else:
         sc = [abs(r["score"]) for r in rows if r["score"] and r["side"]]
         if len(sc) < OWN_MIN:
