@@ -93,3 +93,7 @@
 - Scored: ranking_key impact_sum. 17/17 rankable, 0 clear the 2.8 floor (max BNY +1.85). impact_scaled max |CMTL -1.50| < 1.76. V2 calibrated on 186 obs. Sign balance 9+/1 zero/7-. Spearman(key, -run_up_20d) = +0.10.
 - Step 7: execution.enabled true; 'plan' found NO name meeting |impact_scaled| >= 1.76, so 'open --submit' was not called. Orders accepted 0, gross 0% of equity ($11,200.86). All 17 refused: below the conviction floor. Step 0b sold nothing (account flat); its verify/close --submit call was DENIED by the auto-mode classifier [Real-World Transactions], same as 10-13 - the narrow allow rules in .claude/settings.json are still not holding for --submit calls.
 - Step 6c (shadow ledger) skipped. Step 6d context written (search failed for BNY, SCHW, PNC, HOMB, EQBK).
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-14 18:17 UTC
+- Resumed 18:2x UTC from a second session after the first hit a usage limit. 16 of 17 searchers done; PNC's searcher did not finish and is shed (not ranked: no hunt). Scored 16/16 rankable, 0 clear 2.8. V2 written before the first print. 16 packs, four judges.
