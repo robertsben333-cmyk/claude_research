@@ -86,3 +86,10 @@
 ## Edge hunt (panel, Fable) — 2026-10-14 amc + 2026-10-15 bmo — STARTED
 - Logged at 2026-10-14 17:11 UTC
 - Stage E-PF: 17 names in window (4 amc 10-14, 13 bmo 10-15), baselines sealed 17:11Z in edge-panel-fable/baselines. Plan: one edge-sweep, one unpriced-searcher-fable (claude-fable-5-1) per confirmed name, four blind judges, panel_score --dry-run --stage E-PF. No orders.
+
+## Edge hunt — 2026-10-14 amc + 2026-10-15 bmo — DONE
+- Logged at 2026-10-14 17:31 UTC
+- Sweep: 17 of 17 confirmed, 0 phantom, 0 session unsettled. 17 hunters, one per name, all returned under the current contract (pre_lessons, print_vs_bar_pct, abs_move_pct/p_up present). Correction to the STARTED line: 10 of 17 baselines had a live option chain, not 9.
+- Scored: ranking_key impact_sum. 17/17 rankable, 0 clear the 2.8 floor (max BNY +1.85). impact_scaled max |CMTL -1.50| < 1.76. V2 calibrated on 186 obs. Sign balance 9+/1 zero/7-. Spearman(key, -run_up_20d) = +0.10.
+- Step 7: execution.enabled true; 'plan' found NO name meeting |impact_scaled| >= 1.76, so 'open --submit' was not called. Orders accepted 0, gross 0% of equity ($11,200.86). All 17 refused: below the conviction floor. Step 0b sold nothing (account flat); its verify/close --submit call was DENIED by the auto-mode classifier [Real-World Transactions], same as 10-13 - the narrow allow rules in .claude/settings.json are still not holding for --submit calls.
+- Step 6c (shadow ledger) skipped. Step 6d context written (search failed for BNY, SCHW, PNC, HOMB, EQBK).
