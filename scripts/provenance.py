@@ -76,6 +76,10 @@ HUNTERS = {
 # external API returns is recorded per call in the run, not here.
 JURORS = {
     "snap-juror": {"file": "researcher_us/scripts/snap_juror.py", "short": "us-snap"},
+    # snap.v2 (2026-10-14) moved the task text into a brief the script inlines, so the
+    # brief is versioned beside the script; the hunter definition and lessons it also
+    # inlines are versioned as the hunter's.
+    "snap-judge-brief": {"file": "config/snap-judge.md", "short": "us-snap-brief"},
 }
 
 # Run directory name -> market code, the hunters it uses, and the files that shape a

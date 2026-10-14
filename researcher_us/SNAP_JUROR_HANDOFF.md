@@ -247,3 +247,52 @@ their window on 10-14): `spearman_snap` **+0.083** against `spearman_panel` +0.8
 ACI -1.87, rose 1.44%. Nine names is an anecdote; nothing is judged before about 200.
 
 **Script changes: none.** The parser already handled the real shape.
+
+## snap.v2 and the full backtest, 2026-10-14
+
+**The question changed, on the operator's instruction: Snap is now asked what the four
+judges are asked.** `config/snap-judge.md` is the task section of `config/panel-judge.md`
+word for word, with only the reading and output rules changed (Snap cannot open files or
+write JSON). The script inlines it with the window, the pack's hunter definition (which
+opens with the shared core) and its lessons file, the same texts the judges read; none of
+the three has changed since 2026-10-01, so October's judges and Snap read identical text.
+Two questions replace v1's three: `abs_move_pct` (choice over |move| bins
+`abs_bin_edges`, open tail at `abs_tail_value`) and `p_up` (noul).
+`snap_impact` = (2 x p_up/100 - 1) x E|move|, the judges' own `impact_sum`, stays the one
+pre-registered number. `SCRIPT_VERSION` is `snap.v2`; v1's bins left the config.
+`edge_resolve.py` is unchanged (it reads `snap_impact`). A request is now about 19k input
+tokens, $0.001 a name.
+
+Versioning: the brief is registered as a second juror entry, `snap-judge-brief`, so an
+edit to it is a new version like an edit to the script. The registry derives ids from
+main's history and neither file has been on main, so both read `.v1*` (pending merge)
+while the script calls itself `snap.v2`; the script string is the one recorded per call.
+Each call also records `docs_sha256` over the inlined texts.
+
+**The backtest: no demonstrable added value.** `research/analyses/snap-juror-backtest/`,
+154 US names over 21 days (the 119 Opus 5-era re-judge names and 35 October panel names,
+the same sample and returns as `research/analyses/panel-mean-pct/`), 437 calls, all `ok`,
+model `subq-snap-preview` throughout, $0.19. Pooled, strategy exit entered 19:30 CET:
+Snap v2 within-day ρ +0.159 (p 0.066) against +0.271 for the four-judge mean and +0.177
+to +0.286 for each judge; Snap's own top 20% +4.1% against +7.3%. The five-member mean
+(judges + Snap) against the four: top 20% +6.8% against +7.3%, top 10% +11.5% on 8 names
+against +9.9% on 11; at equal numbers of names it wins at k=10 and 20 and loses at 15 and
+30, with 80-100% of the names the same. Inside the panel's top 20% Snap agreed on the
+sign 25 times of 25, so it cannot act as a veto either. Its percentiles are less
+correlated with the judges (0.84-0.87) than the judges are with each other (0.91-0.95),
+but where it departs from them it ranks worse. v2 beats v1 in the tail (top 20% +4.1%
+against +1.3%), not in rank (ρ +0.159 against +0.195).
+
+**Leakage is not ruled out, and it does not change the answer.** 145 of the 154 names
+were sealed before Snap's release. A control arm with only ticker, name, date and session
+ranks the 94 named backtest names at ρ +0.170 (p 0.11), where v2 reaches -0.023 on the
+same names; in October the control is +0.04. Leakage could only favour Snap, so a
+negative result here stands, while a positive one would not have. The forward-only rule
+in the live script is untouched: this backtest ran from the analysis folder on the
+operator's instruction, and the live script still refuses a run sealed before
+2026-10-12.
+
+**What it would take to change the verdict:** a forward sample, post-release, where
+Snap's ρ approaches the panel's, or where the five-member book beats the four at equal
+names by more than its standard error (about 3 points per name in the top 20%). At about
+9 names a day that is months, for about $0.01 a day.

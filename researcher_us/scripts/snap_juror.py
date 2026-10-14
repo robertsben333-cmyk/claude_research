@@ -16,15 +16,23 @@ or trades reads it: `alpaca_trade.py`, `edge_score.py` and `panel_score.py` must
 mention this file and the smoke test checks that. Promotion is the operator's call,
 after it has pooled.
 
-Per pack, one request with three questions:
+Per pack, one request that asks THE PANEL JUDGES' QUESTION (snap.v2, 2026-10-14). The
+state carries the same texts the four judges read: `config/snap-judge.md` (the task
+section of `config/panel-judge.md` word for word, with the reading and output rules
+changed because Snap cannot open files or write JSON), the window, the pack's hunter
+definition (which opens with the shared core) and its lessons file, inlined, and the
+pack. Two questions, in the order the judges set them:
 
-- `move` (choice): where the move over the window lands, 24 bins from
-  `snap_juror.bin_edges_inner` in config/pipeline.yaml. Derived: `snap_impact` = E[move]
-  (bin midpoints, tails at `tail_values`), `snap_p_up` = 100 x P(move > 0), `snap_abs` =
-  E[|move|]. `snap_impact` is the one pre-registered number; it is on the footing of a
-  judge's impact_sum, (2 p_up/100 - 1) x abs_move_pct.
-- `up` (noul): closes the window above the entry. A cross-check on `move`; logged only.
-- `vs_implied` (score): |move| against the sealed implied move, five levels. Logged only.
+- `abs_move_pct` (choice): the core's abs_move_pct, how far the stock moves over the
+  window whatever the direction, over the bins `snap_juror.abs_bin_edges` in
+  config/pipeline.yaml. Derived: `snap_abs` = E[|move|] (bin midpoints, the open tail at
+  `abs_tail_value`).
+- `p_up` (noul): the core's p_up, the probability the stock closes the window higher.
+  Derived: `snap_p_up` = 100 x P(yes).
+
+`snap_impact` = (2 x snap_p_up / 100 - 1) x snap_abs, the judges' own impact_sum, is the
+one pre-registered number. snap.v1 asked for a signed 24-bin distribution with a short
+preamble and no hunter definition; its numbers are not pooled with these.
 
 NEVER FATAL. No key, host denied, a 4xx, a pack over the limit: the files are still
 written, with `status` and `reason` per name, and the exit code is 0, so the stage run
@@ -56,29 +64,23 @@ REPO = Path(__file__).resolve().parents[2]
 
 # Bump with any change to the preamble, the questions or the derivation: it is the
 # version of what Snap is asked, and runs on two versions are not pooled.
-SCRIPT_VERSION = "snap.v1"
+SCRIPT_VERSION = "snap.v2"
 
 PREAMBLE = (
-    "You are judging one US-listed company that reports quarterly earnings in the window "
-    "below. The pack holds a sealed baseline (prices, the option-implied move, the "
-    "company's past earnings reactions) and research evidence collected before the "
-    "print. The window: entry at the regular-session close before the earnings release, "
-    "exit at the regular-session close after the first full trading session that follows "
-    "the release. For a 'bmo' release (before the open on event_date) that is the close "
-    "of the session before event_date to the close of event_date; for an 'amc' release "
-    "(after the close on event_date) it is the close of event_date to the close of the "
-    "next session. Moves are in percent of the entry price. Answer only from the pack.")
+    "The company is US-listed and reports quarterly earnings in this window. Entry is at "
+    "the regular-session close before the earnings release; exit is at the regular-session "
+    "close after the first full trading session that follows the release. For a 'bmo' "
+    "release (before the open on event_date) that is the close of the session before "
+    "event_date to the close of event_date; for an 'amc' release (after the close on "
+    "event_date) it is the close of event_date to the close of the next session. Moves are "
+    "in percent of the entry price.")
 
 # Keys of a pack that name files Snap cannot open.
 DROP_KEYS = ("hunter_definition", "lessons_file")
 
-VS_IMPLIED_LEVELS = [
-    "well under half of the implied move (|move| < 0.5x implied)",
-    "under the implied move (0.5x to 0.8x)",
-    "about the implied move (0.8x to 1.2x)",
-    "over the implied move (1.2x to 1.5x)",
-    "well over the implied move (|move| > 1.5x implied)",
-]
+BRIEF = REPO / "config" / "snap-judge.md"
+DEFAULT_HUNTER = ".claude/agents/unpriced-hunter.md"
+DEFAULT_LESSONS = "researcher_us/LESSONS.md"
 
 FATAL_FOR_ALL = {"no_key", "bad_key", "no_credits", "model_forbidden", "host_denied"}
 
@@ -94,58 +96,74 @@ def cfg():
 
 
 def bins(c):
-    """The 24 bins as (name, description, lo, hi, representative value)."""
-    inner = [float(x) for x in c["bin_edges_inner"]]
-    lo_tail, hi_tail = (float(x) for x in c["tail_values"])
-    edges = [float("-inf")] + inner + [float("inf")]
+    """The |move| bins as (name, description, lo, hi, representative value)."""
+    edges = [float(x) for x in c["abs_bin_edges"]] + [float("inf")]
+    tail = float(c["abs_tail_value"])
     out = []
 
     def f(x):
-        return f"{abs(x):g}"
+        return f"{x:g}"
 
     for lo, hi in zip(edges, edges[1:]):
-        if lo == float("-inf"):
-            name, desc, mid = f"falls_more_than_{f(hi)}pct", f"falls more than {f(hi)}%", lo_tail
-        elif hi == float("inf"):
-            name, desc, mid = f"rises_more_than_{f(lo)}pct", f"rises more than {f(lo)}%", hi_tail
-        elif hi <= 0:
-            name = f"falls_{f(hi)}_to_{f(lo)}pct"
-            desc = f"falls between {f(hi)}% and {f(lo)}%"
-            mid = (lo + hi) / 2
+        if hi == float("inf"):
+            name, desc, mid = (f"moves_more_than_{f(lo)}pct",
+                               f"moves more than {f(lo)}%, up or down", tail)
         else:
-            name = f"rises_{f(lo)}_to_{f(hi)}pct"
-            desc = f"rises between {f(lo)}% and {f(hi)}%"
-            mid = (lo + hi) / 2
+            name, desc, mid = (f"moves_{f(lo)}_to_{f(hi)}pct",
+                               f"moves between {f(lo)}% and {f(hi)}%, up or down",
+                               (lo + hi) / 2)
         out.append({"name": name, "description": desc, "lo": lo, "hi": hi, "value": mid})
     return out
 
 
 # --------------------------------------------------------------------------- request
+_DOCS = {}
+
+
+def doc(rel):
+    """The text of a repo file a judge reads, cached. A pack naming a file that does not
+    exist raises, so that pack is refused rather than judged without its definition."""
+    if rel not in _DOCS:
+        _DOCS[rel] = (REPO / rel).read_text(encoding="utf-8")
+    return _DOCS[rel]
+
+
 def state_of(pack):
-    return {"instructions_for_reading": PREAMBLE,
+    """The judges' texts, inlined because Snap cannot open files, then the pack without
+    the two paths. The order is fixed: Snap is deterministic for identical bytes and not
+    for reordered ones (SNAP_JUROR_HANDOFF.md, first live test)."""
+    return {"brief": doc(str(BRIEF.relative_to(REPO))),
+            "window": PREAMBLE,
+            "hunter_definition": doc(pack.get("hunter_definition") or DEFAULT_HUNTER),
+            "lessons": doc(pack.get("lessons_file") or DEFAULT_LESSONS),
             "pack": {k: v for k, v in pack.items() if k not in DROP_KEYS}}
+
+
+def docs_sha(pack):
+    """One hash over the texts that set the question, so a change to the brief, the
+    hunter definition or the lessons is visible as a new request family."""
+    st = state_of(pack)
+    return sha({k: st[k] for k in ("brief", "window", "hunter_definition", "lessons")})
 
 
 def questions(b):
     return {
-        "move": {
+        "abs_move_pct": {
             "type": "choice",
-            "instructions": ("Where does the stock's move over the window land? Choose the "
-                             "range that holds the close-to-close move in percent."),
+            "instructions": ("The core's abs_move_pct (step 3b): how far does the stock move "
+                             "over the window, whatever the direction, in percent of the "
+                             "entry price? Start from the best scale the baseline gives, "
+                             "move it for what is new in this release, thin turnover and a "
+                             "crowded short, and never shrink it for uncertainty about the "
+                             "sign."),
             "criteria": {x["name"]: x["description"] for x in b},
         },
-        "up": {
+        "p_up": {
             "type": "noul",
-            "instructions": ("Will the stock close the window above the entry price "
-                             "(a positive close-to-close move)?"),
-        },
-        "vs_implied": {
-            "type": "score",
-            "instructions": ("How large is the absolute move over the window against the "
-                             "sealed option-implied move (baseline.options."
-                             "event_implied_move_pct, or baseline.expected_move_pct when "
-                             "there is no straddle)?"),
-            "criteria": VS_IMPLIED_LEVELS,
+            "instructions": ("The core's p_up (step 3c): does the stock close the window "
+                             "higher than the entry price? All your uncertainty goes here; "
+                             "when nothing qualifies as a finding, or the evidence is "
+                             "balanced, answer 0.5."),
         },
     }
 
@@ -235,29 +253,25 @@ def _probs(ans, names):
 
 
 def derive(resp, b):
-    """The per-name numbers from one response. Raises ValueError if `move` is unusable."""
+    """The per-name numbers from one response. Raises ValueError if either answer is
+    unusable."""
     answers = (resp or {}).get("answers") or {}
-    mv = answers.get("move") or {}
-    p = _probs(mv, [x["name"] for x in b])
+    am = answers.get("abs_move_pct") or {}
+    p = _probs(am, [x["name"] for x in b])
     if p is None:
-        raise ValueError("no usable probabilities on `move`")
-    impact = sum(pi * x["value"] for pi, x in zip(p, b))
-    p_up = 100.0 * sum(pi for pi, x in zip(p, b) if x["lo"] >= 0)
-    absm = sum(pi * abs(x["value"]) for pi, x in zip(p, b))
-    up = answers.get("up")
-    p_up_noul = (up.get("noul") if isinstance(up, dict) else up)
-    p_up_noul = None if p_up_noul is None else 100.0 * float(p_up_noul)
-    vi = answers.get("vs_implied") or {}
+        raise ValueError("no usable probabilities on `abs_move_pct`")
+    up = answers.get("p_up")
+    q = up.get("noul") if isinstance(up, dict) else up
+    if q is None:
+        raise ValueError("no `p_up` answer")
+    p_up = 100.0 * float(q)
+    absm = sum(pi * x["value"] for pi, x in zip(p, b))
     return {
-        "snap_impact": round(impact, 3),
+        "snap_impact": round((2 * p_up / 100 - 1) * absm, 3),
         "snap_p_up": round(p_up, 2),
         "snap_abs": round(absm, 3),
-        "snap_vs_implied": vi.get("score"),
-        "confidence_move": mv.get("confidence"),
-        "move_choice": mv.get("choice"),
-        "p_up_noul": None if p_up_noul is None else round(p_up_noul, 2),
-        "p_up_disagreement": (None if p_up_noul is None
-                              else round(p_up_noul - p_up, 2)),
+        "confidence_abs": am.get("confidence"),
+        "abs_choice": am.get("choice"),
     }
 
 
@@ -333,12 +347,18 @@ def main():
     raw, rows, models, tokens = [], [], set(), 0
     for p in packs:
         t = (p.get("baseline") or {}).get("ticker") or str(p.get("id", "")).split("/")[-1]
-        body = body_of(p, c, b)
-        rec = {"id": p.get("id"), "ticker": t, "request_sha256": sha(body),
-               "request_bytes": len(json.dumps(body, ensure_ascii=False).encode("utf-8"))}
         row = {"ticker": t, "status": None, "reason": None, "snap_impact": None,
-               "snap_p_up": None, "snap_abs": None, "snap_vs_implied": None,
-               "confidence_move": None, "p_up_noul": None}
+               "snap_p_up": None, "snap_abs": None, "confidence_abs": None}
+        try:
+            body = body_of(p, c, b)
+        except OSError as e:
+            row["status"], row["reason"] = "bad_pack", f"{type(e).__name__}: {e}"[:300]
+            raw.append({"id": p.get("id"), "ticker": t, "status": "bad_pack"})
+            rows.append(row)
+            continue
+        rec = {"id": p.get("id"), "ticker": t, "request_sha256": sha(body),
+               "docs_sha256": docs_sha(p),
+               "request_bytes": len(json.dumps(body, ensure_ascii=False).encode("utf-8"))}
         if stop:
             row["status"], row["reason"] = stop
         else:
@@ -385,7 +405,8 @@ def main():
             "cost_usd": round(tokens * float(c["usd_per_m_input_tokens"]) / 1e6, 6),
             "places_orders": False, "reads_into_selection": False}
     (out / "panel" / "snap.json").write_text(
-        json.dumps({**head, "preamble": PREAMBLE, "bins": b, "calls": raw},
+        json.dumps({**head, "preamble": PREAMBLE, "brief": str(BRIEF.relative_to(REPO)),
+                    "bins": b, "calls": raw},
                    indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     ranked = sorted(ok, key=lambda r: -r["snap_impact"])
     scores = {**head, "ranking_key": "snap_impact", "n": len(rows), "n_ok": len(ok),

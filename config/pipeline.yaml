@@ -238,10 +238,13 @@ edge_panel:
   shadow_ledger: false
 
 # Stage E-P's shadow juror (2026-10-14, researcher_us/SNAP_JUROR_HANDOFF.md): SubQ Snap,
-# a decision model from another lab, asked about the same blind packs as the four judges.
+# a decision model from another lab, asked THE PANEL JUDGES' QUESTION about the same blind
+# packs (snap.v2): config/snap-judge.md plus the hunter definition and lessons inlined,
+# answered as abs_move_pct (a choice over the bins below) and p_up (yes/no).
 # researcher_us/scripts/snap_juror.py reads every number here. A SHADOW COLUMN: it writes
 # edge-scores-snap.json, edge_resolve.py ranks it as spearman_snap, and nothing that
-# selects, sizes or trades reads it. One pre-registered number, snap_impact = E[move].
+# selects, sizes or trades reads it. One pre-registered number, snap_impact =
+# (2 p_up/100 - 1) x E|move|, the judges' own impact_sum.
 # Forward only: a run sealed before release_date is refused (training may hold its
 # outcome). The key is SUBQ_API_KEY and is never written down.
 snap_juror:
@@ -250,11 +253,11 @@ snap_juror:
   host: api.subq.ai
   path: /v1/systemone
   release_date: 2026-10-12
-  # 24 bins: (-inf,-20], (-20,-15], ... (20,+inf). Representative value: the midpoint,
-  # the two tails at tail_values.
-  bin_edges_inner: [-20, -15, -12, -10, -8, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20]
-  tail_values: [-25, 25]
-  timeout_s: 30
+  # |move| bins: [0,1), [1,2), ... [20,30), [30,+inf). Representative value: the
+  # midpoint, the open tail at abs_tail_value.
+  abs_bin_edges: [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30]
+  abs_tail_value: 35
+  timeout_s: 60
   retries: 2                   # only on 429, 5xx and network errors; never on another 4xx
   backoff_s: [2, 4]
   usd_per_m_input_tokens: 0.05

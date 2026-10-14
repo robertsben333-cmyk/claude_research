@@ -1880,38 +1880,48 @@ def main():
     sj = importlib.import_module("snap_juror")
     sjc = sj.cfg()
     sjb = sj.bins(sjc)
-    check("snap: 24 bins from the config edges, tails at -25/+25",
-          len(sjb) == 24 and sjb[0]["value"] == -25 and sjb[-1]["value"] == 25
-          and [x["lo"] for x in sjb[1:]] == [float(e) for e in sjc["bin_edges_inner"]])
+    check("snap: |move| bins from the config edges, open tail at abs_tail_value",
+          [x["lo"] for x in sjb] == [float(e) for e in sjc["abs_bin_edges"]]
+          and sjb[-1]["hi"] == float("inf") and sjb[-1]["value"] == float(sjc["abs_tail_value"])
+          and sjb[0]["value"] == 0.5)
     check("snap: places no orders and feeds no selection",
           sjc.get("places_orders") is False and sjc.get("reads_into_selection") is False)
-    # A known distribution: 0.5 on rises_2_to_3pct (2.5), 0.3 on falls_4_to_5pct (-4.5),
-    # 0.2 on rises_more_than_20pct (25). E = 1.25 - 1.35 + 5 = 4.9; P(up) = 70;
-    # E|move| = 1.25 + 1.35 + 5 = 7.6. Probabilities keyed by name, unnormalised x2.
+    # The judges' number from a known answer: 0.5 on moves_2_to_3pct (2.5), 0.3 on
+    # moves_4_to_5pct (4.5), 0.2 on the open tail (abs_tail_value). E|move| = 1.25 + 1.35
+    # + 0.2 x tail; p_up 0.7; impact = (2 x 0.7 - 1) x E|move|. Keyed by name, x2.
     names = [x["name"] for x in sjb]
+    tail = float(sjc["abs_tail_value"])
     probs = {n: 0.0 for n in names}
-    probs.update({"rises_2_to_3pct": 1.0, "falls_4_to_5pct": 0.6,
-                  "rises_more_than_20pct": 0.4})
+    probs.update({"moves_2_to_3pct": 1.0, "moves_4_to_5pct": 0.6, names[-1]: 0.4})
     canned = {"model": "subq-snap-preview-test", "usage": {"input_tokens": 1000},
-              "answers": {"move": {"choice": "rises_2_to_3pct", "probabilities": probs,
-                                   "confidence": 0.4},
-                          "up": {"noul": 0.65},
-                          "vs_implied": {"score": 2.3, "confidence": 0.5}}}
+              "answers": {"abs_move_pct": {"choice": "moves_2_to_3pct",
+                                           "probabilities": probs, "confidence": 0.4},
+                          "p_up": {"noul": 0.7}}}
     d = sj.derive(canned, sjb)
-    check("snap: E[move], P(up) and E|move| from a known distribution",
-          abs(d["snap_impact"] - 4.9) < 1e-9 and abs(d["snap_p_up"] - 70) < 1e-9
-          and abs(d["snap_abs"] - 7.6) < 1e-9, d)
-    check("snap: the noul cross-check is logged beside P(up), not used",
-          d["p_up_noul"] == 65.0 and d["p_up_disagreement"] == -5.0)
-    as_list = dict(canned, answers=dict(canned["answers"], move=dict(
-        canned["answers"]["move"], probabilities=[probs[n] for n in names])))
+    e_abs = 1.25 + 1.35 + 0.2 * tail
+    check("snap: the judges' impact_sum, (2 p_up - 1) x E|move|, from a known answer",
+          abs(d["snap_abs"] - e_abs) < 1e-6 and abs(d["snap_p_up"] - 70) < 1e-9
+          and abs(d["snap_impact"] - round(0.4 * e_abs, 3)) < 1e-9, d)
+    as_list = dict(canned, answers=dict(canned["answers"], abs_move_pct=dict(
+        canned["answers"]["abs_move_pct"], probabilities=[probs[n] for n in names])))
     check("snap: probabilities as a list read the same as keyed by name",
           sj.derive(as_list, sjb)["snap_impact"] == d["snap_impact"])
-    try:
-        sj.derive({"answers": {}}, sjb)
-        check("snap: a response with no move distribution is refused", False)
-    except ValueError:
-        check("snap: a response with no move distribution is refused", True)
+    for lab, bad in (("no |move| distribution", {"answers": {"p_up": {"noul": 0.6}}}),
+                     ("no p_up", {"answers": {"abs_move_pct": canned["answers"]["abs_move_pct"]}})):
+        try:
+            sj.derive(bad, sjb)
+            check(f"snap: a response with {lab} is refused", False)
+        except ValueError:
+            check(f"snap: a response with {lab} is refused", True)
+    st0 = sj.state_of({"id": "us/2026-10-13/AAA", "hunter_definition":
+                       ".claude/agents/unpriced-hunter.md",
+                       "lessons_file": "researcher_us/LESSONS.md", "baseline": {}})
+    check("snap: the state carries the judges' texts (brief, hunter definition, lessons)",
+          st0["brief"] == open(os.path.join(REPO, "config", "snap-judge.md"),
+                               encoding="utf-8").read()
+          and st0["hunter_definition"].startswith(open(os.path.join(
+              REPO, ".claude", "agents", "unpriced-hunter.md"), encoding="utf-8").read()[:200])
+          and "The task" in st0["brief"] and st0["lessons"])
 
     class _Resp:
         def __init__(self, body): self.body = body
@@ -1958,16 +1968,16 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         prun = os.path.join(tmp, "2026", "10", "2026-10-13", "edge-panel")
         os.makedirs(os.path.join(prun, "panel"))
-        pk = [{"id": "us/2026-10-13/AAA", "hunter_definition": ".claude/agents/x.md",
+        pk = [{"id": "us/2026-10-13/AAA", "hunter_definition": ".claude/agents/unpriced-hunter.md",
                "lessons_file": "researcher_us/LESSONS.md",
                "baseline": {"ticker": "AAA"}, "evidence": []},
-              {"id": "us/2026-10-13/BBB", "hunter_definition": ".claude/agents/x.md",
+              {"id": "us/2026-10-13/BBB", "hunter_definition": ".claude/agents/unpriced-hunter.md",
                "lessons_file": "researcher_us/LESSONS.md",
                "baseline": {"ticker": "BBB"}, "evidence": []}]
         json.dump(pk, open(os.path.join(prun, "panel", "packs.json"), "w"))
-        check("snap: the state carries neither file path",
-              "hunter_definition" not in json.dumps(sj.state_of(pk[0]))
-              and "lessons_file" not in json.dumps(sj.state_of(pk[0])))
+        check("snap: the pack in the state carries neither file path",
+              "hunter_definition" not in json.dumps(sj.state_of(pk[0])["pack"])
+              and "lessons_file" not in json.dumps(sj.state_of(pk[0])["pack"]))
         env = {k: v for k, v in os.environ.items() if k != "SUBQ_API_KEY"}
         res = subprocess.run([sys.executable, os.path.join(REPO, "researcher_us", "scripts",
                                                            "snap_juror.py"), "--run", prun],
