@@ -109,3 +109,7 @@
 ## Intraday panel 12:00 — panel STARTED
 - Logged at 2026-10-14 18:22 UTC
 - The 10 relaunched searchers were stopped on the operator's instruction; the snapshot is scored on the 7 hunts the first session wrote (CMC EDUC EQBK ERIC HOMB MAN WIT); the other 10 names are not ranked (no hunt). Guard run. 7 packs, four judges.
+
+## Edge hunt (panel, Fable) — panel STARTED
+- Logged at 2026-10-14 18:24 UTC
+- On the operator's instruction no further searchers were run, so the hunted set matches what the first session had: 8 of 17 hunts (CMC CMTL EDUC EQBK ERIC HOMB MAN WIT); the other 9 are not ranked (no hunt). 8 packs, four judges.
