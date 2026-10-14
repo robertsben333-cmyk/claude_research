@@ -194,12 +194,42 @@ def sized(rows, start=10000.0):
             eq *= 1 + ret; daily.append(ret * 100); dep.append(sum(w.values()))
             peak = max(peak, eq); mdd = min(mdd, eq / peak - 1)
         daily_all[name] = daily
+        dn = [min(0.0, x) for x in daily]
+        sd, dsd = (st.stdev(daily) if len(daily) > 1 else 0.0), math.sqrt(sum(x * x for x in dn) / len(dn))
+        gains, losses = sum(x for x in daily if x > 0), -sum(x for x in daily if x < 0)
+        ann = ((eq / start) ** (252 / len(days)) - 1) * 100
+        kpi = {'vol_ann_pct': sd * math.sqrt(252), 'sharpe_ann': st.mean(daily) / sd * math.sqrt(252) if sd else None,
+               'sortino_ann': st.mean(daily) / dsd * math.sqrt(252) if dsd else None,
+               'calmar': ann / abs(mdd * 100) if mdd else None, 'cagr_pct': ann,
+               'day_hit_pct': 100 * sum(x > 0 for x in daily) / max(1, sum(x != 0 for x in daily)),
+               'profit_factor': gains / losses if losses else None,
+               'best_day_pct': max(daily), 'worst_day_pct': min(daily),
+               'sharpe_day': st.mean(daily) / sd if sd else None}
+        # net of a 1% round-trip cost on what was deployed that day (spread + borrow, a guess)
+        net = [x - 1.0 * w for x, w in zip(daily, dep)]
+        nsd = st.stdev(net) if len(net) > 1 else 0.0
+        eqn = start
+        for x in net:
+            eqn *= 1 + x / 100
+        kpi.update({'net1_total_pct': (eqn / start - 1) * 100, 'net1_mean_day_pct': st.mean(net),
+                    'net1_sharpe_day': st.mean(net) / nsd if nsd else None,
+                    'net1_sharpe_ann': st.mean(net) / nsd * math.sqrt(252) if nsd else None})
         diff = [a - b for a, b in zip(daily, daily_all['gelijk vast80'])]
         out[name] = {'end': eq, 'total_pct': (eq / start - 1) * 100, 'max_dd_pct': mdd * 100,
                      'mean_day_pct': st.mean(daily), 't_day': tstat(daily), 'calls': ncalls,
                      'deployed_pct': st.mean(dep) * 100, 'days_invested': sum(x > 0 for x in dep),
-                     'vs_vast80_pp': st.mean(diff), 't_vs_vast80': tstat(diff) if any(diff) else float('nan')}
+                     'kpi': kpi, 'vs_vast80_pp': st.mean(diff), 't_vs_vast80': tstat(diff) if any(diff) else float('nan')}
     return out
+
+
+def print_kpi(label, res):
+    print(f"\n--- kengetallen, {label} (dagrendementen, 0 rf, x252 is extrapolatie) ---")
+    print(f"{'schema':20s} {'vol/dag':>7s} {'Sh/dag':>6s} {'Sh/jr':>6s} {'Sortino':>7s} {'dag+':>5s} {'PF':>5s} {'beste':>7s} {'slechtste':>9s} {'netto1%':>8s} {'Sh/jr netto':>11s}")
+    for n, r in res.items():
+        k = r['kpi']; f = lambda v, w=6, d=2: f"{v:{w}.{d}f}" if v is not None else ' ' * (w - 1) + '-'
+        print(f"{n:20s} {k['vol_ann_pct']/math.sqrt(252):6.2f}% {f(k['sharpe_day'])} {f(k['sharpe_ann'])} {f(k['sortino_ann'],7)} "
+              f"{k['day_hit_pct']:4.0f}% {f(k['profit_factor'],5)} {k['best_day_pct']:+6.1f}% {k['worst_day_pct']:+8.1f}% "
+              f"{k['net1_total_pct']:+7.1f}% {f(k['net1_sharpe_ann'],11)}")
 
 
 def print_sized(label, res):
@@ -248,6 +278,7 @@ def main():
     for key, rows in (('backtest_opus5', back), ('oktober_v1', v1), ('oktober_v2', v2)):
         res['sizing'][key] = sized(rows)
         print_sized(key, res['sizing'][key])
+        print_kpi(key, res['sizing'][key])
     json.dump(res, open(HERE / 'day-rules.json', 'w'), indent=1, default=lambda x: None)
 
 

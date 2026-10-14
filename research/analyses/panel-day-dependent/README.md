@@ -130,6 +130,34 @@ enkele naam van 80. Het rendement verbetert niet; de rit wordt rustiger. Geen ve
 vast80 komt in de buurt van twee standaardfouten, en de schema's zijn op dezelfde data
 gekozen als getoetst.
 
+## Vervolg (Xavier, 2026-10-14): beleggingskengetallen
+
+Uit de dagrendementen van de schema's hierboven (cap 50%, max 100% bruto). Sharpe met
+risicovrije rente 0. "Netto 1%" trekt per dag 1% af over het belegde deel, een ruwe gok
+voor spread en leenkosten die niet gemeten is.
+
+Backtest, 15 dagen:
+
+| schema | vol per dag | Sharpe per dag | Sortino (jr) | winstdagen | profit factor | slechtste dag | eind netto 1% |
+|---|---|---|---|---|---|---|---|
+| gelijk vast80 | 7.5% | 0.44 | 15.9 | 73% | 3.5 | −9.6% | +44.4% |
+| gelijk aanvul 2/50 | 8.5% | 0.56 | 22.5 | 71% | 4.2 | −9.6% | +67.7% |
+| lineair 50-100 | 5.4% | 0.54 | 27.0 | 71% | 4.8 | −5.2% | +36.1% |
+| staffel | 5.1% | 0.61 | 39.4 | 71% | 6.7 | −4.0% | +42.3% |
+| curve (in sample) | 5.3% | 0.57 | 28.9 | 71% | 5.1 | −4.5% | +39.3% |
+
+Oktober v1, 5 dagen: Sharpe per dag 0.91 (vast80) tegen 0.93 tot 0.98 (score-gewogen),
+aanvul 2/50 0.67. Bij vast80 was er geen verliesdag, dus Sortino en profit factor bestaan
+daar niet.
+
+**Lezing.** Op 15 dagen is de standaardfout van een Sharpe per dag ongeveer 1/√15 ≈ 0.26,
+dus 0.44 en 0.61 liggen ruim binnen elkaars marge. Op jaarbasis (× √252) worden dat
+Sharpes van 7 tot 10. Die zijn niet geloofwaardig: bruto, in sample, op drie weken, en de
+judge lab is op deze data ontwikkeld. Wat wel overeind blijft is de volgorde. Gewicht naar
+score verlaagt de volatiliteit per dag met ongeveer een derde en halveert de slechtste dag
+bij een vergelijkbaar rendement. Na kosten wordt het verschil kleiner, omdat de
+score-gewogen schema's meer namen handelen.
+
 ## Europa
 
 Niet doorgerekend. Het EU-panel draait sinds 2026-10-12 en heeft één opgeloste dag; de
