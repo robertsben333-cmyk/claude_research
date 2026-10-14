@@ -57,3 +57,7 @@
 ## Stage IPO — IPO researcher — DONE
 - Logged at 2026-10-14 12:49 UTC
 - 2 lock-ups hunted (ARXS, MAIR), 0 debuts (1 SPAC dropped). MAIR ranked: impact_sum +0.45, panel_pct 10, not selected; all four judges ran. ARXS not ranked: the hunter dates its first free session to 2026-10-13. Possible off-by-one in the lock-up event date in ipo_universe.py, flagged in the note and not fixed. No price from inside the window was seen.
+
+## Intraday panel 10:00 — STARTED
+- Logged at 2026-10-14 13:58 UTC
+- First snapshot of the day: build universe (--window), one edge-sweep, freeze names, seal baselines, one unpriced-searcher per name, guard, score, four judges, panel_score --dry-run --stage E-PI. No orders.
