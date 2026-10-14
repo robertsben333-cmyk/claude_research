@@ -247,7 +247,7 @@ edge_panel:
 edge_panel_intraday:
   inherits: edge_panel
   output_prefix: edge-intraday
-  slots_et: ["10:00", "11:30", "13:00", "14:30", "16:00"]   # New York; the cron is UTC
+  slots_et: ["10:00", "12:00", "14:00", "16:00"]   # New York, every two hours; the cron is UTC
   slot_tolerance_min: 45       # a fire further than this from every slot keeps its own clock
   earliest_et: "09:15"
   latest_et: "16:45"
@@ -258,7 +258,7 @@ edge_panel_intraday:
   amc_last_slot_et: "16:00"
   amc_release_cutoff_et: "16:00"
   # The panel history is stage E-P's reference and is never written by a snapshot
-  # (panel_score.py --dry-run): five snapshots a day would swamp it with one day's names.
+  # (panel_score.py --dry-run): four snapshots a day would swamp it with one day's names.
   writes_panel_history: false
   orchestrator_model: opus
   places_orders: false

@@ -3,7 +3,8 @@
 
 Built 2026-10-14 on the operator's instruction: "a routine for the US that does the same
 as US-panel, but runs it independently every 1,5 hours starting from 10.00, and saves
-these so we can see the development". Each fire is a fresh session that seals its own
+these so we can see the development", then on the same day "let's instead run each two
+hour, so you can make one routine". Each fire is a fresh session that seals its own
 baselines, launches its own searchers and its own four judges, and writes one SNAPSHOT
 directory. The day's name set is frozen by the first snapshot (universe + sweep) so every
 snapshot answers about the same names and only the evidence and the clock move.
@@ -13,7 +14,7 @@ per-run script (edge_score, panel_packs, panel_score, edge_resolve) works unchan
 
   research/<Y>/<M>/<DATE>/edge-intraday/            the day: names.json, timeline.{json,md}
   research/<Y>/<M>/<DATE>/edge-intraday-1000/       one snapshot per slot, E-P's layout
-  research/<Y>/<M>/<DATE>/edge-intraday-1130/ ...
+  research/<Y>/<M>/<DATE>/edge-intraday-1200/ ...
 
 Nothing pools these with stage E-P: the directory names match no `edge-panel` glob, the
 provenance market is `US-PI`, the panel is scored with --dry-run so the panel history
@@ -27,7 +28,7 @@ provenance market is `US-PI`, the panel is scored with --dry-run so the panel hi
   python3 researcher_us/scripts/intraday.py timeline --run <RUN>       the day's development, per name
 
 THE ONE LEAK THIS STAGE HAS AND STAGE E-P DOES NOT. Stage E-P starts at 13:06 ET and is
-done long before an amc release. A snapshot started at 14:30 or 16:00 ET is not: its
+done long before an amc release. A snapshot started at 14:00 or 16:00 ET is not: its
 searchers can still be searching when tonight's amc names publish results, and a searcher
 that reads the release is reporting the outcome. Two rules close it, both mechanical:
 `seed`/`freeze` leave every amc name out of a snapshot whose slot is at or after
@@ -63,11 +64,11 @@ def run_dir(d):
 
 def slot_for(now_utc, C):
     """The snapshot this fire is. The nearest configured slot within the tolerance gives
-    the label (`1130`); a fire outside every slot keeps its own clock (`1347`) and says
+    the label (`1200`); a fire outside every slot keeps its own clock (`1347`) and says
     so, rather than being filed under a slot it did not run at."""
     et = now_utc.astimezone(ET)
     mins = et.hour * 60 + et.minute
-    slots = [hm(s) for s in C.get("slots_et", ["10:00", "11:30", "13:00", "14:30", "16:00"])]
+    slots = [hm(s) for s in C.get("slots_et", ["10:00", "12:00", "14:00", "16:00"])]
     tol = int(C.get("slot_tolerance_min", 45))
     best = min(slots, key=lambda s: abs(s - mins))
     on_slot = abs(best - mins) <= tol

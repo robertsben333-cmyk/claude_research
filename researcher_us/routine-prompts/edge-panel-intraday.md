@@ -1,25 +1,25 @@
 # Stage E-PI Routine prompt — the intraday panel
 
-Stage E-P re-run from scratch at 10:00, 11:30, 13:00, 14:30 and 16:00 New York, each run
-saved as its own snapshot (operator's instruction, 2026-10-14). **Not installed yet**: a
-session inside the private project cannot create a fresh-session Routine, so the operator
-creates it in the Routines UI from the block below. Record the id(s) in `CLAUDE.md` once
-it exists, and keep this file and the Routine in step: any re-paste changes both in the
+Stage E-P re-run from scratch every two hours, at 10:00, 12:00, 14:00 and 16:00 New York,
+each run saved as its own snapshot (operator's instruction, 2026-10-14; first asked as every
+1.5 hours, moved the same day to every two hours so one Routine covers it). **Not installed
+yet**: a session inside the private project cannot create a fresh-session Routine, so the
+operator creates it in the Routines UI from the block below. Record its id in `CLAUDE.md`
+once it exists, and keep this file and the Routine in step: any re-paste changes both in the
 same commit.
 
 ## What to create
 
-One cron expression cannot hold both :00 and :30 slots, so it is **two Routines with the
-same prompt**:
+One Routine, "US - Intraday panel":
 
-| Routine | cron (UTC) until 2026-11-01 | cron (UTC) from 2026-11-02 | fires (New York) |
-| --- | --- | --- | --- |
-| "US - Intraday panel (:00)" | `0 14,17,20 * * 1-5` | `0 15,18,21 * * 1-5` | 10:00, 13:00, 16:00 |
-| "US - Intraday panel (:30)" | `30 15,18 * * 1-5` | `30 16,19 * * 1-5` | 11:30, 14:30 |
+| cron (UTC) until 2026-11-01 | cron (UTC) from 2026-11-02 | fires (New York) |
+| --- | --- | --- |
+| `0 14,16,18,20 * * 1-5` | `0 15,17,19,21 * * 1-5` | 10:00, 12:00, 14:00, 16:00 |
 
 - **Model: `claude-opus-5-5`**, the model stage E-P's Routine reads back. Read it back
   after saving; an empty model resolves to the account default (the stage D Routine
   served Sonnet 5.5 that way).
+- **Environment: "full env"**, the one every research Routine on this account uses.
 - **Fresh session per fire.** Repository `robertsben333-cmyk/claude_research`, branch
   `main`. No connectors needed.
 - The cron must move an hour on or after 2026-11-02, when New York leaves daylight time.
@@ -39,7 +39,7 @@ Run stage E-PI: one intraday snapshot of the US earnings panel (stage E-P re-run
 
 Read CLAUDE.md, then invoke the skill `earnings-edge-panel-intraday` and follow it exactly. It is an overlay on `earnings-edge-panel`, which is an overlay on `earnings-edge-hunt`.
 
-Start with `python3 researcher_us/scripts/intraday.py slot`. It reads the clock in New York and tells you which snapshot this fire is, where it writes, and whether the day's names are already frozen. You fire at 10:00, 11:30, 13:00, 14:30 or 16:00 New York. Other sessions run the other snapshots, stage E and stage E-P on the same day: you write ONLY to your own snapshot directory and the day's edge-intraday/ timeline, and you never read another snapshot's hunts or panel.
+Start with `python3 researcher_us/scripts/intraday.py slot`. It reads the clock in New York and tells you which snapshot this fire is, where it writes, and whether the day's names are already frozen. You fire at 10:00, 12:00, 14:00 or 16:00 New York. Other sessions run the other snapshots, stage E and stage E-P on the same day: you write ONLY to your own snapshot directory and the day's edge-intraday/ timeline, and you never read another snapshot's hunts or panel.
 
 EVERY SNAPSHOT IS INDEPENDENT. Seal your own baselines, launch your own searchers, launch the four judges in one message with only the packs file and their output path. Never show a searcher or a judge an earlier snapshot, stage E-P's output or your own view.
 
