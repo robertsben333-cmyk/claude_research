@@ -41,3 +41,7 @@
 ## Stage J — hunts in progress
 - Logged at 2026-10-15 01:13 UTC
 - 1418 +4.5, 1430 -0.3, 1407 +3.0 banked. 1407: 決算短信 hit TDnet at 10:00 JST, six minutes BEFORE the 10:06 seal, so its hunter read the release itself (release_preceded_seal: true). Sealed spot 2101 matches pre-10:00 quotes, so the window holds the reaction, but the finding is knowledge of the print, not a forecast; flagged in the note and must not count as evidence for the hunt. Hunters also collided in the shared scratchpad; later hunters are given their own subfolders.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-15 01:35 UTC
+- 25 hunts banked and scored (edge-scores.json, key impact_sum). Above floor 2.8: 1418 +4.5, 5817 +3.1, 1407 +3.0 (1407 release preceded seal). 25 packs, four judges. Note: two hunters ran over the concurrency cap of 5 briefly (7 at once) at the end.
