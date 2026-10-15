@@ -61,3 +61,7 @@
 ## Edge hunt (panel) — sweep done
 - Logged at 2026-10-15 17:14 UTC
 - Sweep: 13 of 13 confirmed from company sources, 0 phantom, 0 session unsettled. Wave 1: 8 amc searchers (CTW LOOP JBHT AA SFNC INDB IBKR CNS) launched 17:14Z; wave 2 (TRV TFC MTB CFG RF, bmo 10-16) as slots free. CTW and LOOP under the $200k turnover floor; six regional banks are one correlated exposure.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-15 17:29 UTC
+- 13 of 13 searcher hunts banked and scored (key impact_sum; 1 above floor 2.8: LOOP -3.00). V2 grounded written pre-print (13/13). 13 packs, four judges.
