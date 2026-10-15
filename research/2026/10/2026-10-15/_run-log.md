@@ -37,3 +37,7 @@
 ## Stage J — resolved 2026-10-13 run (from the 10-15 session)
 - Logged at 2026-10-15 01:07 UTC
 - jp_resolve: 25/25 usable, rho impact_sum 0.27 p 0.199, free control -0.277, sign right 0.56, lean_vs_free_control_rho 0.406. Panel: rho 0.118 p 0.565; 3 selected, 2 hits (+3.37%). One day is not a result.
+
+## Stage J — hunts in progress
+- Logged at 2026-10-15 01:13 UTC
+- 1418 +4.5, 1430 -0.3, 1407 +3.0 banked. 1407: 決算短信 hit TDnet at 10:00 JST, six minutes BEFORE the 10:06 seal, so its hunter read the release itself (release_preceded_seal: true). Sealed spot 2101 matches pre-10:00 quotes, so the window holds the reaction, but the finding is knowledge of the print, not a forecast; flagged in the note and must not count as evidence for the hunt. Hunters also collided in the shared scratchpad; later hunters are given their own subfolders.
