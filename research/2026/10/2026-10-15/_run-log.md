@@ -45,3 +45,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-15 01:35 UTC
 - 25 hunts banked and scored (edge-scores.json, key impact_sum). Above floor 2.8: 1418 +4.5, 5817 +3.1, 1407 +3.0 (1407 release preceded seal). 25 packs, four judges. Note: two hunters ran over the concurrency cap of 5 briefly (7 at once) at the end.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-15 01:44 UTC
+- 129 scheduled / 67 eligible / 25 hunted (seeded random draw). 25/25 hunts, 0 empty. Above floor 2.8: 1418 +4.50, 5817 +3.10, 1407 +3.00 (1407 release at 10:00 JST preceded the 10:06 seal: contaminated). Bottom 3547 -1.00. 12+/10-/3 zero. Panel 4/4 members, no fallback: 7 selected (1418, 1407, 5817, 367A long; 3547, 414A, 6224 short). Register as_of 2026-10-14 (current). Prov jp.v5. Note: japan-note.md. No orders.
