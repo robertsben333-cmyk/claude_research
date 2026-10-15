@@ -12,3 +12,8 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-15 14:02 UTC
 - 5 hunts done; 5 ranked, 0 above 2.8 (top AZA +0.80, bottom INVE_A/ITECH 0.00). 5 packs, four judges.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-15 14:06 UTC
+- Event date 2026-10-16. 5 ranked, all se (top AZA +0.80, then PLAZ_B +0.60, NP3 +0.50; INVE_A and ITECH 0.00), 0 above floor 2.8. No phantoms; all 5 sessions confirmed bmo by the issuer.
+- Panel: 4/4 members, no fallback, 0 selected (PLAZ_B closest: k=1, panel_pct 60, long). Note: europe-note.md. Resolve within ~a week (Nordic feed window). Published with EARNINGS_DATA_BRANCH=main.
