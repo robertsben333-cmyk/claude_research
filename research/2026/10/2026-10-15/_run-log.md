@@ -49,3 +49,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-15 01:44 UTC
 - 129 scheduled / 67 eligible / 25 hunted (seeded random draw). 25/25 hunts, 0 empty. Above floor 2.8: 1418 +4.50, 5817 +3.10, 1407 +3.00 (1407 release at 10:00 JST preceded the 10:06 seal: contaminated). Bottom 3547 -1.00. 12+/10-/3 zero. Panel 4/4 members, no fallback: 7 selected (1418, 1407, 5817, 367A long; 3547, 414A, 6224 short). Register as_of 2026-10-14 (current). Prov jp.v5. Note: japan-note.md. No orders.
+
+## Close AMC — 2026-10-15 10:10 UTC
+- Logged at 2026-10-15 10:17 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no exit sent, no refusals. status: no open positions.
