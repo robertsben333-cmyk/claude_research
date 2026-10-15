@@ -57,3 +57,7 @@
 ## Edge hunt (panel) — 2026-10-15 amc + 2026-10-16 bmo — STARTED
 - Logged at 2026-10-15 17:08 UTC
 - Fired 17:06 UTC (13:06 ET). 13 names in window (8 amc 10-15, 5 bmo 10-16), baselines sealed into edge-panel/. Plan: one edge-sweep, one unpriced-searcher per confirmed name, edge_score, V2 grounded, four blind judges, panel_score. No orders.
+
+## Edge hunt (panel) — sweep done
+- Logged at 2026-10-15 17:14 UTC
+- Sweep: 13 of 13 confirmed from company sources, 0 phantom, 0 session unsettled. Wave 1: 8 amc searchers (CTW LOOP JBHT AA SFNC INDB IBKR CNS) launched 17:14Z; wave 2 (TRV TFC MTB CFG RF, bmo 10-16) as slots free. CTW and LOOP under the $200k turnover floor; six regional banks are one correlated exposure.
