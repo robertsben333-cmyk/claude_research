@@ -29,3 +29,7 @@
 - Logged at 2026-10-14 14:09 UTC
 - Event date 2026-10-15. 15 ranked (top CARA/XPS +0.70, bottom NEL -1.60), 0 above floor 2.8. Not ranked: AVCT, CAML, WTB (no event on 10-15; all three from uk_rns_calendar; CAML = parser read a scheme Effective Date as results). Amend event_occurred:false after the window.
 - Panel: 4/4 members, no fallback, 0 selected (NEL closest, k=1... panel_pct 68 short). Note: europe-note.md. Resolve within ~a week (se/fi Nordic feed window). Published with EARNINGS_DATA_BRANCH=main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-15 01:05 UTC
+- Fired 01:04 UTC (10:04 JST). Plan: jp_universe -> seal baselines -> provenance -> one unpriced-hunter-jp per name in waves of 5 -> edge_score -> four-model panel -> note. No orders.
