@@ -53,3 +53,50 @@ NEVER FABRICATE A NUMBER. Every company-specific figure carries a source URL or 
 
 Report at the end: the panel table as `panel_score.py` printed it, then the day's timeline as `intraday.py timeline` printed it, which judges ran and on which model, what was excluded or guarded, and anything that failed. One day is an anecdote. This is a forecasting exercise over public information, not investment advice.
 ```
+
+---
+
+## Installed: the 12:00 snapshot (2026-10-15)
+
+On the operator's instruction ("zet ook de 12.00 NYT review erin op dit account, wel met
+opus searchers"), replacing a Routine on another account that fired the 2026-10-14 12:00
+snapshot at 15:58 UTC. Only the 12:00 slot is installed here; 10:00, 14:00 and 16:00 have
+no Routine on this account.
+
+**Routine `trig_01Lb2ZBuVsHyYKaj4iWuX7Gn`**, "Stage E-PI 12:00 — US intraday panel, Opus 5.5
+searchers + four-model panel (no orders)", created from a session 2026-10-15 09:59:56 UTC,
+so `update_trigger` works on it. Read back 09:59:59 UTC: model `claude-opus-5-5` (pinned
+with `update_trigger` because creation left it empty), cron
+`CRON_TZ=America/New_York 58 11 * * 1-5`, enabled, first run 2026-10-15 15:58 UTC, fresh
+session per fire, no MCP connectors, empty `sources` and `outcomes` (step 0 clones the
+repo). The cron is written in New York time, so unlike the table above it does **not**
+move on 2026-11-02. The text it holds is the block above with the fire time pinned to
+12:00 and the searcher model made explicit:
+
+```text
+Run stage E-PI: the 12:00 New York intraday snapshot of the US earnings panel (stage E-P re-run from scratch), for today's window.
+
+0. GET THE REPO. If /home/user/claude_research/CLAUDE.md does not exist:
+   - add_repo with owner robertsben333-cmyk, repo claude_research, access push
+   - git clone --depth 1 -b main https://github.com/robertsben333-cmyk/claude_research /home/user/claude_research
+   - register_repo_root on that directory
+   Then verify that .claude/skills/earnings-edge-panel-intraday/SKILL.md, .claude/skills/earnings-edge-panel/SKILL.md, .claude/skills/earnings-edge-hunt/SKILL.md, .claude/agents/unpriced-searcher.md, the four .claude/agents/panel-judge-*.md, researcher_us/scripts/intraday.py, researcher_us/scripts/panel_packs.py and researcher_us/scripts/panel_score.py all exist. If any is missing, the work is not on main yet: append one line saying so to today's run log, publish, and stop. Do not improvise a substitute.
+
+Read CLAUDE.md, then invoke the skill `earnings-edge-panel-intraday` and follow it exactly. It is an overlay on `earnings-edge-panel`, which is an overlay on `earnings-edge-hunt`.
+
+Start with `python3 researcher_us/scripts/intraday.py slot`. It reads the clock in New York and tells you which snapshot this fire is, where it writes, and whether the day's names are already frozen. This Routine fires at 11:58 New York for the 12:00 snapshot; if `slot` says otherwise, follow `slot` and say so. If no earlier snapshot froze the day's names, this snapshot is the first and freezes them. Other sessions may run other snapshots, stage E-P and stage E-PF on the same day: you write ONLY to your own snapshot directory and the day's edge-intraday/ timeline, and you never read another snapshot's hunts or panel.
+
+THE SEARCHERS ARE OPUS 5.5. Launch `unpriced-searcher` (pinned to claude-opus-5-5), one per name. Never substitute a Fable or Sonnet searcher; if the agent is not found, use the fallback the skill names with model opus.
+
+EVERY SNAPSHOT IS INDEPENDENT. Seal your own baselines, launch your own searchers, launch the four judges in one message with only the packs file and their output path. Never show a searcher or a judge an earlier snapshot, stage E-P's output or your own view.
+
+THE RELEASE GUARD IS NOT OPTIONAL. Hunt amc names first; run `intraday.py guard` on your snapshot before `edge_score.py`. Score the panel with `panel_score.py --run <SNAP> --dry-run --stage E-PI`: never write the panel history.
+
+YOU PLACE NO ORDERS. Do not run alpaca_trade.py in any form. Do not run the V2 shadow ledger.
+
+export EARNINGS_DATA_BRANCH=main before every scripts/publish.sh, and after the last one run `git fetch origin main && git log --oneline -1 origin/main` and say in your reply if your own commit is not there. Publish something on every fire, even an empty day, a re-fire or a failure: a fire that publishes nothing looks exactly like a Routine that never fired.
+
+NEVER FABRICATE A NUMBER. Every company-specific figure carries a source URL or is marked unavailable.
+
+Report at the end: the panel table as `panel_score.py` printed it, then the day's timeline as `intraday.py timeline` printed it, which judges ran and on which model, which model the searchers ran on, what was excluded or guarded, and anything that failed. One day is an anecdote. This is a forecasting exercise over public information, not investment advice.
+```
