@@ -312,6 +312,16 @@ to dispatch, without which the click opens the workflow page instead. **Its comm
 touches only `dashboard/` and the three feeder files, and its `paths:` filter excludes
 them, so it cannot trigger itself** — do not add `dashboard/**` to that filter.
 
+**The dashboard opens on Stand since 2026-10-15, on the scorebord's approach
+(operator's request: "what is critical and easily viewed, what is details").** Stand answers
+four things in one column: what needs attention (a broker not read, an unfinished run, a
+silent market), what is open now, whether each stage's CURRENT version's strong calls earn
+(the scorebord's verdicts, older versions folded), and the account. It reads "strong" from
+`data/scorebord.json`, inlined, so `update.sh` builds the scorebord BEFORE the dashboard;
+do not swap them back. Everything below this paragraph now lives one level down, under
+**Verdieping per markt**, with every `#market/tab` address unchanged. See
+`dashboard/README.md`, "Two layers".
+
 **The market is the top axis of the dashboard since 2026-09-22, and the tab row is
 rebuilt under it.** A bar above the tabs picks US, Europa, Japan, Australië or Canada;
 the US keeps its sixteen tabs and each other market gets the same suite minus what it
@@ -324,7 +334,7 @@ and **Overzicht lists what is still shut and what opens it** — without that a 
 reads as a dashboard that does not know those analyses.
 
 **The row is the index, and every tab has an address (2026-09-22).** The tabs sit in six
-named groups (Stand · Rangschikking · Klok · Doorsnedes · Register · Bronnen) printed above
+named groups (Kern · Rangschikking · Klok · Doorsnedes · Register · Bronnen; Kern was Stand until 2026-10-15) printed above
 each block, and both rows are **sorted by group** because the heading is drawn when the
 group changes — a non-contiguous group printed `DOORSNEDES` twice on the European row.
 Every tab carries the question it answers, on hover and in full on the new **Index** tab,

@@ -32,9 +32,46 @@ dashboard/
                             panel per own top, forward, and on its own tab (#panel) the
                             expected return per US panel percentile (one number per %),
                             drawn against what each band earned; served at <site>/scorebord.html
-  dashboard.html            open it from disk; no server, no network, no CDN
+  dashboard.html            open it from disk; no server, no network needed (fonts fall back);
+                            opens on Stand, the analyses are under Verdieping per markt
   LOG.md                    what each update changed, and what it now reads
 ```
+
+## Two layers: Stand first, Verdieping behind it (since 2026-10-15)
+
+The page opens on **Stand**, built on the scorebord's approach: the answer first, one
+column, details a click away. It answers four questions, in the order it costs to miss
+them, and nothing else:
+
+| block | the question | read from |
+| --- | --- | --- |
+| **Vraagt aandacht** | is anything broken? A broker that was not read (and how stale the account is), a run that did not finish, a feeder problem, the scorebord data lagging the ledger, a market with no run for more than three weekdays | `ledger.json` `problems` + `broker_error`, `markets.json` `problems`, the runs |
+| **Wat nu loopt** | what is open now: positions at the broker, then the strong calls of every market | the ledger's trades; `scorebord.json` `own.live` |
+| **Verdienen de sterke calls?** | per stage, the prompt version that runs NOW, with the scorebord's verdict (verdient / verliest / geen bewijs / te klein below 20); older versions fold away, never pooled | `scorebord.json` `own.table` + `agents` |
+| **Rekening** | the equity curve and the closed positions, as the broker reports them | the ledger's account and trades |
+
+Below those: one row per market (last run, names, resolved, waiting, a link into it), a
+map of every Verdieping tab by group, and three paragraphs on how to read the page.
+
+**"Strong" is the scorebord's own definition, read from its own data.** `build_dashboard.py`
+inlines a slim copy of `data/scorebord.json` (open calls, the scorecard, which version
+each stage runs), so the two pages cannot disagree about which calls count. That is why
+`update.sh` now runs `build_scorebord.py` BEFORE `build_dashboard.py`. A missing
+scorebord file is not an error: Stand says so and still shows the account and the
+markets. **The windows differ and Stand says so**: its call blocks use the scorebord's
+window (US: in at 13:30 New York), Verdieping prices on the strategy exit.
+
+**Verdieping per markt** is the page as it was: the market bar, the grouped tab row and
+the filters. Only two things changed there: the second row of filters (drempel,
+verhandelbaar, positiecap, sessie, sector, prompt, model, september switch) folds behind
+**Meer filters**, which says how many differ from the default; and the group that held
+Overzicht and Handel is called **Kern**, because Stand is now the front page's name.
+Every `#market/tab` address still opens its tab one level down; no address, or `#stand`,
+opens Stand. The scorebord links back to the dashboard and Stand links to the scorebord.
+
+The look is the scorebord's: its palette under this page's variable names (so no chart
+changed), IBM Plex and Fraunces with a system-font fallback offline, 6px cards, kpi
+tiles, uppercase table heads. On a phone the Stand tables drop their secondary columns.
 
 ## Three levels, and they are not the same thing
 
@@ -436,8 +473,8 @@ so it is hidden off the US.
 | **Data** | provenance, and what is deliberately absent | always |
 
 **The row itself is the index, and every tab has an address.** Three things carry it.
-The tabs sit in six named groups — **Stand · Rangschikking · Klok · Doorsnedes · Register ·
-Bronnen** — with the group printed above its block, so twenty tabs do not read as one
+The tabs sit in six named groups — **Kern · Rangschikking · Klok · Doorsnedes · Register ·
+Bronnen** (Kern was Stand until 2026-10-15) — with the group printed above its block, so twenty tabs do not read as one
 undifferentiated run; the row is sorted by group, because the heading is drawn when the
 group changes and a non-contiguous group printed its name twice. Every tab carries one line
 saying which question it answers, on hover and in full on the **Index** tab, which lists

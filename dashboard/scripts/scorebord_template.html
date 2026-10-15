@@ -89,7 +89,8 @@ details.ag .tbl{border:0;border-top:1px solid var(--line);border-radius:0 0 6px 
       <h1>Earnings scorebord</h1>
       <p class="sub" id="stamp"></p>
     </div>
-    <button class="btn" id="refresh" type="button">Ververs</button>
+    <div style="display:flex;gap:12px;align-items:center"><a id="todash" href="index.html">← Dashboard</a>
+    <button class="btn" id="refresh" type="button">Ververs</button></div>
   </header>
   <div id="log" hidden></div>
 
@@ -182,6 +183,8 @@ details.ag .tbl{border:0;border-top:1px solid var(--line);border-radius:0 0 6px 
 
 <script>
 const D = __DATA__;
+// On disk the dashboard is dashboard.html beside this file; on the site it is index.html.
+if (location.protocol === 'file:') document.getElementById('todash').href = 'dashboard.html';
 // Which meaning of "strong": the agent's own top 20% (default since 14 Oct) or the
 // model-wide reference. The page is built once; switching reloads it.
 let DEF = 'eigen';
