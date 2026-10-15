@@ -70,12 +70,14 @@ python3 dashboard/scripts/build_v2.py \
   || echo "update: V2 feeder failed, the V2 tab keeps the last one"
 
 python3 dashboard/scripts/build_ledger.py "${LEDGER_ARGS[@]+"${LEDGER_ARGS[@]}"}"
-python3 dashboard/scripts/build_dashboard.py
 
 # The compact scorebord: only the strong calls, live and resolved. It reads the two
-# files above and Yahoo; a failure leaves the last scorebord.html standing.
+# files above and Yahoo; a failure leaves the last scorebord.html standing. It runs
+# BEFORE the dashboard, because the dashboard's Stand inlines data/scorebord.json so
+# both pages count the same strong calls.
 python3 dashboard/scripts/build_scorebord.py \
   || echo "update: scorebord failed, scorebord.html keeps the last one"
+python3 dashboard/scripts/build_dashboard.py
 
 echo
 if curl -fsS --max-time 1 "http://127.0.0.1:$PORT/ping" >/dev/null 2>&1; then

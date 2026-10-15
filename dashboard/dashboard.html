@@ -3,36 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Edge hunt — performance</title>
+<title>Earnings dashboard</title>
+<!-- Same type as the scorebord. Offline the stack falls back to the system font,
+     so the page still opens off the disk with no network. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600&display=swap">
 <style>
+/* The scorebord's palette, under the names this page already used, so every tab
+   picks it up without touching a chart. --s1..--s3 stay series colours; a filled
+   control gets --fill, because white on a series blue fails AA. */
 :root {
   color-scheme: light;
-  --plane:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
-  --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
-  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
-  --good:#0ca30c; --bad:#d03b3b; --warn:#fab219;
-  /* A filled control is not a chart line. --s1 is tuned to read as a series on
-     the plane; white on it is 4.4:1 light and 3.6:1 dark, which fails AA both
-     ways. So the filled state gets its own pair, darker in light mode and
-     dark-on-bright in dark mode, and the series colour stays untouched. */
-  --fill:#1a5fb4; --on-fill:#ffffff;
-  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --plane:#f6f7f9; --surface:#ffffff; --ink:#17202b; --ink2:#3e4a5a; --muted:#5d6878;
+  --grid:#e6e9ee; --axis:#c5ccd6; --ring:#dfe3e9; --chip:#eaeef4;
+  --s1:#2f6db5; --s2:#d0632a; --s3:#17734a;
+  --good:#17734a; --bad:#b3261e; --warn:#8a5a00;
+  --fill:#1f4f8a; --on-fill:#ffffff;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --display:"Fraunces",Georgia,serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --plane:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
-    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
-    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#0ca30c; --bad:#d03b3b;
-    --fill:#3987e5; --on-fill:#0b0b0b;
+    --plane:#0f141b; --surface:#161d26; --ink:#e4e9f0; --ink2:#c0c9d4; --muted:#97a3b3;
+    --grid:#232c38; --axis:#3a4555; --ring:#2a3441; --chip:#212b37;
+    --s1:#6fa3e6; --s2:#f08a50; --s3:#5ccf94; --good:#5ccf94; --bad:#ff8a80; --warn:#e6b65c;
+    --fill:#8db6ea; --on-fill:#0f141b;
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --plane:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
-  --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.10);
-  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#0ca30c; --bad:#d03b3b;
-  --fill:#3987e5; --on-fill:#0b0b0b;
+  --plane:#0f141b; --surface:#161d26; --ink:#e4e9f0; --ink2:#c0c9d4; --muted:#97a3b3;
+  --grid:#232c38; --axis:#3a4555; --ring:#2a3441; --chip:#212b37;
+  --s1:#6fa3e6; --s2:#f08a50; --s3:#5ccf94; --good:#5ccf94; --bad:#ff8a80; --warn:#e6b65c;
+  --fill:#8db6ea; --on-fill:#0f141b;
 }
 * { box-sizing:border-box; }
 /* The parts of the page the stylesheet did not draw still carry the design. A
@@ -55,13 +59,16 @@
 }
 body {
   margin:0; background:var(--plane); color:var(--ink);
-  font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+  font:14px/1.5 var(--body);
 }
+/* Stand is read top to bottom like the scorebord, so it gets the scorebord's
+   column; Verdieping keeps the width its tables need. */
 .wrap { max-width:1240px; margin:0 auto; padding:20px 16px 72px; }
+body.lvl-stand .wrap { max-width:960px; }
 header { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-start; justify-content:space-between; }
-h1 { font-size:22px; margin:0; letter-spacing:-0.01em; }
-h2 { font-size:17px; margin:26px 0 6px; }
-h3 { font-size:14px; margin:0 0 10px; color:var(--ink2); font-weight:600; }
+h1 { font-family:var(--display); font-weight:600; font-size:1.7rem; margin:0; }
+h2 { font-size:1rem; margin:26px 0 6px; font-weight:600; }
+h3 { font-size:14px; margin:0 0 10px; color:var(--ink); font-weight:600; }
 p  { margin:8px 0; color:var(--ink2); max-width:80ch; }
 /* Een regel van 110 tekens leest niet. De tabellen mogen de volle breedte
    hebben, de lopende tekst erboven niet. */
@@ -84,7 +91,7 @@ button, select, input { font:inherit; }
 .marketbar button {
   display:flex; flex-direction:column; gap:1px; text-align:left; cursor:pointer;
   background:var(--surface); color:var(--ink2); border:1px solid var(--ring);
-  border-radius:10px; padding:7px 13px;
+  border-radius:6px; padding:7px 13px;
 }
 .marketbar button:hover { border-color:var(--axis); }
 .marketbar button[aria-pressed="true"] {
@@ -156,7 +163,7 @@ select {
 .ctl .dash { color:var(--muted); }
 input[type=date] { background:var(--surface); color:var(--ink); border:1px solid var(--ring);
                    border-radius:7px; padding:3px 6px; font-size:13px; }
-.help { width:100%; background:var(--surface); border:1px solid var(--ring); border-radius:12px;
+.help { width:100%; background:var(--surface); border:1px solid var(--ring); border-radius:6px;
         padding:14px 18px; margin:6px 0 2px; }
 .help dl { margin:6px 0; color:var(--ink2); max-width:86ch; }
 .help dt { font-weight:600; color:var(--ink); margin-top:9px; }
@@ -165,18 +172,20 @@ input[type=date] { background:var(--surface); color:var(--ink); border:1px solid
 .filterline { font-size:12.5px; color:var(--muted); margin:2px 0 0; }
 
 .card {
-  background:var(--surface); border:1px solid var(--ring); border-radius:12px;
-  padding:16px 18px; margin:14px 0;
+  background:var(--surface); border:1px solid var(--ring); border-radius:6px;
+  padding:14px 16px; margin:14px 0;
 }
-.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:10px; margin:14px 0; }
-.tile { background:var(--surface); border:1px solid var(--ring); border-radius:12px; padding:13px 15px; }
-.tile .k { font-size:12px; color:var(--muted); }
-.tile .v { font-size:25px; margin-top:3px; letter-spacing:-0.02em; }
+/* A tile is the scorebord's kpi: a small uppercase label, one mono number. */
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin:14px 0; }
+.tile { background:var(--surface); border:1px solid var(--ring); border-radius:6px; padding:10px 14px; min-width:0; }
+.tile .k { font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+.tile .v { font-family:var(--mono); font-size:1.3rem; font-weight:500; margin-top:2px; }
 .tile .s { font-size:12px; color:var(--ink2); margin-top:2px; }
 .pos { color:var(--good); } .neg { color:var(--bad); }
 table { border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums; }
 th, td { text-align:right; padding:6px 8px; border-bottom:1px solid var(--grid); white-space:nowrap; }
-th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--surface); }
+th { color:var(--muted); font-weight:500; position:sticky; top:0; background:var(--surface);
+     font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; }
 th:first-child, td:first-child { text-align:left; }
 td.t { font-family:var(--mono); }
 .scroll { overflow:auto; max-height:520px; }
@@ -223,14 +232,71 @@ li { margin:4px 0; }
 .log input { background:var(--surface); color:var(--ink); border:1px solid var(--ring);
              border-radius:7px; padding:4px 7px; font:12px var(--mono); min-width:260px; }
 .badge.ci { color:var(--ink2); border-color:var(--ring); }
-@media (max-width:640px){ .wrap{padding:14px 16px 60px;} h1{font-size:19px;} .controls{position:static;} }
+/* --- two levels: Stand first, Verdieping behind it (the scorebord's tab row) --- */
+.levels { display:flex; gap:4px; border-bottom:1px solid var(--ring); margin:16px 0 4px; }
+.levels button {
+  font:inherit; font-weight:500; background:none; border:0; border-bottom:2px solid transparent;
+  color:var(--muted); padding:8px 14px; cursor:pointer; margin-bottom:-1px;
+}
+.levels button[aria-selected="true"] { color:var(--ink); border-bottom-color:var(--fill); }
+.levels a { margin-left:auto; align-self:center; font-size:.85rem; }
+#stand[hidden], #deep[hidden] { display:none; }
+
+/* --- Stand: the scorebord's blocks --- */
+#stand { display:grid; gap:24px; padding-top:14px; }
+#stand > *, #stand section > * { min-width:0; }
+#stand section { display:grid; gap:10px; }
+.shead { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+.shead h2 { margin:0; }
+.shead .small { text-align:right; }
+.small { font-size:.8rem; color:var(--muted); }
+.strip { display:flex; flex-wrap:wrap; gap:10px; }
+.kpi { background:var(--surface); border:1px solid var(--ring); border-radius:6px; padding:10px 14px;
+       flex:1 1 160px; min-width:0; }
+.kpi b { display:block; font-family:var(--mono); font-size:1.25rem; font-weight:500; }
+.kpi span { color:var(--muted); font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; }
+.kpi i { display:block; font-style:normal; color:var(--ink2); font-size:.78rem; margin-top:2px; }
+.tbl { overflow-x:auto; background:var(--surface); border:1px solid var(--ring); border-radius:6px; }
+.tbl table td, .tbl table th { text-align:left; padding:7px 10px; }
+.tbl table td.n, .tbl table th.n { text-align:right; font-family:var(--mono); }
+.tbl table th { position:static; }
+.tbl tr:last-child td { border-bottom:0; }
+.tbl tr.grp td { background:var(--chip); font-weight:600; font-size:.82rem; }
+.mut { color:var(--muted); }
+.tag { display:inline-block; padding:1px 7px; border-radius:99px; font-size:.72rem;
+       background:var(--chip); color:var(--muted); white-space:nowrap; }
+.tag.loopt { color:var(--good); } .tag.wacht { color:var(--warn); } .tag.gesloten { color:var(--fill); }
+.flag { color:var(--warn); font-size:.75rem; }
+.alerts { list-style:none; margin:0; padding:0; display:grid; gap:6px; max-width:none; }
+.alerts li { margin:0; background:var(--surface); border:1px solid var(--ring); border-left:3px solid var(--muted);
+             border-radius:6px; padding:8px 12px; color:var(--ink); }
+.alerts li.hi { border-left-color:var(--bad); }
+.alerts li.mid { border-left-color:var(--warn); }
+.alerts li.ok { border-left-color:var(--good); color:var(--ink2); }
+.alerts li small { display:block; color:var(--muted); font-size:.78rem; margin-top:1px; }
+details.more { background:var(--surface); border:1px solid var(--ring); border-radius:6px; }
+details.more > summary { cursor:pointer; padding:8px 12px; color:var(--ink2); font-size:.85rem; }
+details.more .tbl { border:0; border-top:1px solid var(--ring); border-radius:0 0 6px 6px; }
+.goto { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:8px; }
+.goto div { background:var(--surface); border:1px solid var(--ring); border-radius:6px; padding:9px 12px; }
+.goto b { display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:500; }
+.goto a { margin-right:10px; white-space:nowrap; }
+.reading { font-size:.8rem; color:var(--muted); max-width:78ch; }
+.reading p { margin:.4em 0; color:var(--muted); }
+/* the filters: the first row stays, the rest folds away */
+details.fmore > summary { cursor:pointer; font-size:12.5px; color:var(--ink2); padding:2px 6px; }
+details.fmore[open] > summary { margin-bottom:8px; }
+@media (max-width:640px){ .wrap{padding:14px 16px 60px;} h1{font-size:1.4rem;} .controls{position:static;}
+  .hm { display:none; } .shead .small { text-align:left; }
+  .tbl table td, .tbl table th { padding:7px 6px; } .tbl table { font-size:12.5px; }
+  .tbl table th { letter-spacing:.02em; } }
 </style>
 </head>
-<body>
+<body class="lvl-stand">
 <div class="wrap">
 <header>
   <div>
-    <h1>Edge hunt — performance</h1>
+    <h1>Earnings dashboard</h1>
     <div class="meta" id="stamp"></div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
@@ -241,6 +307,17 @@ li { margin:4px 0; }
 </header>
 <div class="log" id="refreshlog" hidden></div>
 
+<!-- Twee lagen. Stand beantwoordt in één scherm wat er mis is, wat er loopt en of
+     het werkt; Verdieping is de oude pagina: markt, dan tabblad, dan filters. -->
+<nav class="levels" role="tablist" aria-label="laag">
+  <button type="button" role="tab" id="lv-stand" data-level="stand" aria-selected="true">Stand</button>
+  <button type="button" role="tab" id="lv-deep" data-level="deep" aria-selected="false">Verdieping per markt</button>
+  <a id="tosb" href="scorebord.html">Scorebord →</a>
+</nav>
+
+<div id="stand" role="tabpanel" aria-labelledby="lv-stand"></div>
+
+<div id="deep" role="tabpanel" aria-labelledby="lv-deep" hidden>
 <!-- Markt, dan tabblad, dan filters. Dat is ook de volgorde van de beslissing,
      en op een telefoon duwde de filterbalk de marktkiezer anders een heel scherm
      naar beneden: de bovenste as stond onder de onderste. -->
@@ -250,6 +327,7 @@ li { margin:4px 0; }
 <div class="controls" id="controls"></div>
 <div class="filterline" id="filterline"></div>
 <div id="panels"></div>
+</div>
 <div class="tip" id="tip"></div>
 </div>
 
@@ -1795,6 +1873,7 @@ li { margin:4px 0; }
   }
  ]
 }</script>
+<script id="scorebord" type="application/json">{"built_utc":"2026-10-15T09:45+00:00","ledger_utc":"2026-10-15T09:45:15+00:00","live":[{"stage":"Europa \u00b7 hunter","version":"eu.v8","model":"Opus 5.5","ticker":"AQ","company":"AQ Group AB","run_date":"2026-10-15","event_date":"2026-10-15","score":-1.0,"side":-1,"strong":false,"why":"p64 \u00b7 top 20% benchmark","state":"loopt","session":"bmo","buy":239.6,"sell":247.6,"move":3.34,"ret":-3.34,"right":false,"own":true},{"stage":"Europa \u00b7 hunter","version":"eu.v8","model":"Opus 5.5","ticker":"NEL","company":"NEL ASA","run_date":"2026-10-15","event_date":"2026-10-15","score":-1.6,"side":-1,"strong":false,"why":"p78 \u00b7 top 20% benchmark","state":"loopt","session":"bmo","buy":2.165,"sell":2.1,"move":-3.0,"ret":3.0,"right":true,"own":true},{"stage":"US \u00b7 E","version":"us.v9","model":"Opus 5.5","ticker":"BNY","company":"The Bank of New York Mellon Corporation","run_date":"2026-10-14","event_date":"2026-10-15","score":1.85,"side":1,"strong":true,"why":"p82 \u00b7 top 20% benchmark","state":"loopt","session":"bmo","buy":135.93,"sell":137.64,"move":1.26,"ret":1.26,"right":true,"own":true},{"stage":"US \u00b7 E-P panel","version":"us-panel.v2","model":"panel","ticker":"CMTL","company":null,"run_date":"2026-10-14","event_date":"2026-10-14","score":92.6,"side":-1,"strong":true,"why":"panel 93 \u00b7 top 20% benchmark","state":"loopt","session":"amc","buy":1.2599,"sell":1.28,"move":1.6,"ret":-1.6,"right":false,"own":true},{"stage":"Japan \u00b7 hunter","version":"jp.v5","model":"Opus 5.5","ticker":"1407","company":"West Holdings Corporation","run_date":"2026-10-15","event_date":"2026-10-15","score":3.0,"side":1,"strong":true,"why":"p94 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 hunter","version":"jp.v5","model":"Opus 5.5","ticker":"1418","company":"INTERLIFE HOLDINGS CO.,LTD.","run_date":"2026-10-15","event_date":"2026-10-15","score":4.5,"side":1,"strong":true,"why":"p98 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 hunter","version":"jp.v5","model":"Opus 5.5","ticker":"367A","company":"Primo Global Holdings Co.,Ltd.","run_date":"2026-10-15","event_date":"2026-10-15","score":2.2,"side":1,"strong":true,"why":"p87 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 hunter","version":"jp.v5","model":"Opus 5.5","ticker":"5817","company":"JMACS Japan Co.,Ltd.","run_date":"2026-10-15","event_date":"2026-10-15","score":3.1,"side":1,"strong":true,"why":"p95 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","ticker":"1407","company":"West Holdings Corporation","run_date":"2026-10-15","event_date":"2026-10-15","score":98.1,"side":1,"strong":true,"why":"panel 4/4 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","ticker":"1418","company":"INTERLIFE HOLDINGS CO.,LTD.","run_date":"2026-10-15","event_date":"2026-10-15","score":99.0,"side":1,"strong":true,"why":"panel 4/4 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","ticker":"3547","company":"UNISIA HOLDINGS CO.","run_date":"2026-10-15","event_date":"2026-10-15","score":90.4,"side":-1,"strong":true,"why":"panel 4/4 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","ticker":"367A","company":"Primo Global Holdings Co.,Ltd.","run_date":"2026-10-15","event_date":"2026-10-15","score":83.8,"side":1,"strong":true,"why":"panel 4/4 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","ticker":"414A","company":"OVERLAP Holdings,Inc.","run_date":"2026-10-15","event_date":"2026-10-15","score":88.6,"side":-1,"strong":true,"why":"panel 4/4 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","ticker":"5817","company":"JMACS Japan Co.,Ltd.","run_date":"2026-10-15","event_date":"2026-10-15","score":92.6,"side":1,"strong":true,"why":"panel 4/4 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true},{"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","ticker":"6224","company":"JRC Co.,Ltd.","run_date":"2026-10-15","event_date":"2026-10-15","score":75.5,"side":-1,"strong":true,"why":"panel 3/4 \u00b7 top 20% benchmark","state":"wacht","session":"amc","buy":null,"sell":null,"move":null,"ret":null,"right":null,"own":true}],"table":[{"n":2,"hit":50.0,"mean":1.8499999999999999,"t":null,"p":null,"stage":"Europa \u00b7 hunter","version":"eu.v1","model":"Opus 5","last":"2026-09-17"},{"n":2,"hit":50.0,"mean":5.075,"t":null,"p":null,"stage":"Europa \u00b7 hunter","version":"eu.v4","model":"Opus 5","last":"2026-09-23"},{"n":6,"hit":50.0,"mean":1.0316666666666665,"t":0.5514829507675465,"p":0.6050412287450395,"stage":"Europa \u00b7 hunter","version":"eu.v8","model":"Opus 5.5","last":"2026-10-14"},{"n":1,"hit":100.0,"mean":7.76,"t":null,"p":null,"stage":"Europa \u00b7 panel","version":"eu.v8","model":"panel","last":"2026-10-14"},{"n":19,"hit":57.89473684210526,"mean":2.4110526315789476,"t":1.3256597880080334,"p":0.20153189641627922,"stage":"Japan \u00b7 hunter","version":"jp.v6","model":"Opus 5.5","last":"2026-10-09"},{"n":5,"hit":40.0,"mean":0.25,"t":0.08176140964788436,"p":0.9387641945990468,"stage":"Japan \u00b7 hunter","version":"jp.v5","model":"Opus 5.5","last":"2026-10-14"},{"n":2,"hit":50.0,"mean":-0.15000000000000002,"t":null,"p":null,"stage":"Japan \u00b7 panel","version":"jp.v6","model":"panel","last":"2026-10-09"},{"n":7,"hit":42.857142857142854,"mean":0.24000000000000035,"t":0.06115367317531971,"p":0.9532229815812987,"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","last":"2026-10-14"},{"n":2,"hit":100.0,"mean":8.69,"t":null,"p":null,"stage":"US \u00b7 E","version":"us.v3","model":"Opus 5","last":"2026-08-31"},{"n":25,"hit":64.0,"mean":3.4296,"t":1.2656064167859593,"p":0.21780307171346425,"stage":"US \u00b7 E","version":"us.v4","model":"Opus 5","last":"2026-09-14"},{"n":5,"hit":80.0,"mean":7.925999999999999,"t":1.8661541964138508,"p":0.1354323332005299,"stage":"US \u00b7 E","version":"us.v9","model":"Opus 5.5","last":"2026-10-12"},{"n":5,"hit":100.0,"mean":10.225999999999999,"t":3.4194882330197793,"p":0.026792763986091987,"stage":"US \u00b7 E-P panel","version":"us-panel.v1","model":"panel","last":"2026-10-07"}],"n_resolved":81,"bench":[{"stage":"Australi\u00eb \u00b7 panel","model":"panel","cut":70.0},{"stage":"Europa \u00b7 hunter","model":"Opus 5","cut":3.54},{"stage":"Europa \u00b7 hunter","model":"Opus 5.5","cut":1.0},{"stage":"Europa \u00b7 panel","model":"panel","cut":70.0},{"stage":"Japan \u00b7 hunter","model":"Opus 5.5","cut":1.12},{"stage":"Japan \u00b7 panel","model":"panel","cut":70.0},{"stage":"US \u00b7 E","model":"Opus 5","cut":"ref"},{"stage":"US \u00b7 E","model":"Opus 5.5","cut":"ref"},{"stage":"US \u00b7 E-P panel","model":"panel","cut":80.0}],"agents":[{"stage":"Australi\u00eb \u00b7 hunter","version":"au.v4","model":"Opus 5.5","n_calls":1,"first":"2026-10-15","last":"2026-10-15"},{"stage":"Australi\u00eb \u00b7 panel","version":"au.v4","model":"panel","n_calls":1,"first":"2026-10-15","last":"2026-10-15"},{"stage":"Canada \u00b7 hunter","version":"ca.v4","model":"Opus 5.5","n_calls":2,"first":"2026-10-07","last":"2026-10-07"},{"stage":"Europa \u00b7 hunter","version":"eu.v1","model":"Opus 5","n_calls":3,"first":"2026-09-17","last":"2026-09-17"},{"stage":"Europa \u00b7 hunter","version":"eu.v4","model":"Opus 5","n_calls":18,"first":"2026-09-22","last":"2026-09-23"},{"stage":"Europa \u00b7 hunter","version":"eu.v7","model":"Opus 5.5","n_calls":1,"first":"2026-10-02","last":"2026-10-02"},{"stage":"Europa \u00b7 hunter","version":"eu.v8","model":"Opus 5.5","n_calls":34,"first":"2026-10-07","last":"2026-10-15"},{"stage":"Europa \u00b7 panel","version":"eu.v8","model":"panel","n_calls":27,"first":"2026-10-12","last":"2026-10-15"},{"stage":"Japan \u00b7 hunter","version":"jp.v2","model":"Opus 5","n_calls":3,"first":"2026-09-24","last":"2026-09-25"},{"stage":"Japan \u00b7 hunter","version":"jp.v6","model":"Opus 5.5","n_calls":73,"first":"2026-10-02","last":"2026-10-09"},{"stage":"Japan \u00b7 hunter","version":"jp.v5","model":"Opus 5.5","n_calls":75,"first":"2026-10-13","last":"2026-10-15"},{"stage":"Japan \u00b7 panel","version":"jp.v6","model":"panel","n_calls":25,"first":"2026-10-09","last":"2026-10-09"},{"stage":"Japan \u00b7 panel","version":"jp.v5","model":"panel","n_calls":75,"first":"2026-10-13","last":"2026-10-15"},{"stage":"US \u00b7 E","version":"us.v3","model":"Opus 5","n_calls":8,"first":"2026-08-31","last":"2026-08-31"},{"stage":"US \u00b7 E","version":"us.v4","model":"Opus 5","n_calls":97,"first":"2026-09-01","last":"2026-09-16"},{"stage":"US \u00b7 E","version":"us.v5","model":"Opus 5","n_calls":1,"first":"2026-09-17","last":"2026-09-17"},{"stage":"US \u00b7 E","version":"us.v6","model":"Opus 5","n_calls":13,"first":"2026-09-21","last":"2026-09-22"},{"stage":"US \u00b7 E","version":"us.v8","model":"Opus 5.5","n_calls":1,"first":"2026-10-01","last":"2026-10-01"},{"stage":"US \u00b7 E","version":"us.v9","model":"Opus 5.5","n_calls":61,"first":"2026-10-05","last":"2026-10-14"},{"stage":"US \u00b7 E-P panel","version":"us-panel.v1","model":"panel","n_calls":26,"first":"2026-10-05","last":"2026-10-09"},{"stage":"US \u00b7 E-P panel","version":"us-panel.v2","model":"panel","n_calls":34,"first":"2026-10-12","last":"2026-10-14"}]}</script>
 <script>
 const D = JSON.parse(document.getElementById('ledger').textContent);
 /* ------------------------------------------------------------- formatting */
@@ -3149,6 +3228,9 @@ function optionCounts(rows, f, cur) {
 }
 const N_SEPT = ALL.filter(isSept).length;
 let PROMPTS = [], MODELS = [];
+/* The second row of filters folds away. Its state survives a redraw, because
+   every control rebuilds the bar. */
+let FOPEN = false;
 function renderControls() {
   const c = document.getElementById('controls');
   const days = ALL.filter(r => inRange(r.run_date)).length;
@@ -3175,7 +3257,13 @@ function renderControls() {
         <span class="dash">–</span>
         <input type="date" id="f-to" value="${F.to}" min="${DATES[0]}" max="${DATES[DATES.length-1]}">
       </div>
+      <button class="btn small" id="f-help" aria-expanded="false">? uitleg</button>
+      <button class="btn small" id="f-reset">herstel</button>
     </div>
+    <details class="fmore" id="fmore" ${FOPEN ? 'open' : ''}>
+    <summary>Meer filters${(() => { const k = ['thrOn','tradeOn','capOn','session','sector','prompt','model','noSept']
+      .filter(x => F[x] !== DEFAULTS[x]).length; return k ? ` · ${k} afwijkend van standaard` : ''; })()}
+      <span class="meta">drempel, verhandelbaar, positiecap, sessie, sector, prompt, model</span></summary>
     <div class="ctlrow">
       <div class="ctl ${F.thrOn?'':'off'}" title="Alleen namen boven de drempel. Absoluut: |impact_sum| minstens deze waarde, één schaal voor elk model. Per model: de top X% van de referentienamen van hetzelfde model, live runs plus re-judges. Aan betekent dat élke tabel en grafiek op de pagina alleen die namen gebruikt.">
         <label class="sw"><input type="checkbox" id="f-thron" ${F.thrOn?'checked':''}>
@@ -3233,9 +3321,8 @@ function renderControls() {
       <div class="ctl ${F.noSept?'':'off'}" title="De Opus 5.5-jachten op de prompt van vóór de gedeelde hunter-core (september). Die prompt vond een derde van wat hij zag de moeite van opschrijven waard en maakte alles bijna nul; de operator heeft hem een vergissing genoemd, geen methode. Aan haalt die namen uit elk getal, op elke markt.">
         <label class="sw"><input type="checkbox" id="f-nosept" ${F.noSept?'checked':''}>
           <b>zonder sept. Opus 5.5</b> (${N_SEPT})</label></div>
-      <button class="btn small" id="f-help" aria-expanded="false">? uitleg</button>
-      <button class="btn small" id="f-reset">herstel</button>
     </div>
+    </details>
     <div class="help" id="helpbox" hidden>
       <h3>Wat de knoppen doen</h3>
       <dl>
@@ -3326,6 +3413,7 @@ function renderControls() {
   on('f-model','change', e => { F.model = e.target.value; redraw(); });
   on('f-nosept','change', e => { F.noSept = e.target.checked; redraw(); });
   on('f-reset','click', () => { Object.assign(F, DEFAULTS); redraw(); });
+  on('fmore','toggle', e => { FOPEN = e.target.open; });
   on('f-help','click', e => {
     const box = document.getElementById('helpbox');
     box.hidden = !box.hidden;
@@ -5549,11 +5637,11 @@ function tabVersies() {
    de hash (`#eu/score`), dus een tabblad is te bookmarken, te delen en te herladen
    — en de Ververs-knop, die de pagina met een cache-buster herlaadt, brengt je
    terug waar je stond in plaats van op Overzicht. */
-const TABGROUPS = ['Stand', 'Rangschikking', 'Klok', 'Doorsnedes', 'Register', 'Bronnen'];
+const TABGROUPS = ['Kern', 'Rangschikking', 'Klok', 'Doorsnedes', 'Register', 'Bronnen'];
 const TABMETA = {
-  /* Stand */
-  'Overzicht':  {g:'Stand', q:'Wat staat er vandaag, op één scherm: dagen, namen, vondsten en of er al iets is opgelost.'},
-  'Handel':     {g:'Stand', q:'Elke positie die de rekening echt heeft geopend en gesloten, met de spread en de uitstap die er werkelijk was.'},
+  /* Kern. Was 'Stand' until the front page took that name. */
+  'Overzicht':  {g:'Kern', q:'Wat staat er vandaag, op één scherm: dagen, namen, vondsten en of er al iets is opgelost.'},
+  'Handel':     {g:'Kern', q:'Elke positie die de rekening echt heeft geopend en gesloten, met de spread en de uitstap die er werkelijk was.'},
   /* Rangschikking */
   'Score':      {g:'Rangschikking', q:'Rangschikt de jacht de dag beter dan de gratis controle, en wat levert het teken op?'},
   'Drempel':    {g:'Rangschikking', q:'Wat doet de conviction-floor als je hem verzet: rendement, raakpercentage, ρ en n bij elke snede.'},
@@ -5624,12 +5712,230 @@ function tabIndex() {
   return html;
 }
 
+/* ==================================================================== Stand
+   The front page, on the scorebord's approach: the answer first, one column,
+   details a click away. It answers four questions in this order and nothing
+   else: is anything broken, what is open now, do the strong calls earn, and
+   what did the account do. Everything that explains WHY lives in Verdieping.
+
+   "Strong" is the scorebord's definition, read from its own data
+   (data/scorebord.json, inlined below), so the two pages can never disagree
+   about which calls count. Its window is the scorebord's (13:30 ET entry), not
+   the strategy exit Verdieping prices on; the page says so where it matters. */
+const SBRAW = document.getElementById('scorebord');
+const S = (() => { try { return SBRAW ? JSON.parse(SBRAW.textContent) : null; } catch (_) { return null; } })();
+/* Japan and Europe report through their panels (as on the scorebord): their
+   hunters stay in the scorecard but leave the list of open calls. */
+const sbQuiet = x => /^(Japan|Europa) · hunter$/.test(x.stage);
+const sbPct = v => v === null || v === undefined ? '<span class="mut">–</span>'
+  : `<span class="${sgn(v)}">${(v > 0 ? '+' : '') + (+v).toFixed(2)}%</span>`;
+const dayOf = s => String(s || '').slice(0, 10);
+/* Weekdays from a to b, so a quiet weekend never reads as a silent stage. */
+function weekdaysBetween(a, b) {
+  if (!a || !b || a >= b) return 0;
+  let n = 0; const d = new Date(a + 'T12:00:00Z'), end = new Date(b + 'T12:00:00Z');
+  while (d < end) { d.setUTCDate(d.getUTCDate() + 1); const w = d.getUTCDay(); if (w && w < 6) n++; }
+  return n;
+}
+const runDateOf = p => (/(\d{4}-\d{2}-\d{2})/.exec(p || '') || [])[1] || null;
+const BUILT = dayOf(D.generated_utc);
+
+/* One row per market: when it last ran and how much of it has resolved. US is
+   stage E's ledger; the four others are the order-less researchers. */
+function standMarkets() {
+  const out = [];
+  const us = ALL.filter(keepSept);
+  out.push({code:'US', label:'Verenigde Staten', stage:'E',
+            last: runDateOf(D.runs[D.runs.length - 1]), runs: D.runs.length,
+            names: us.length, resolved: us.filter(r => !r.pending && r.mv_strategy != null).length,
+            pending: us.filter(r => r.pending).length});
+  for (const [code, label] of MARKETS.slice(1)) {
+    const d = (M.markets || {})[code];
+    if (!d) { out.push({code, label, missing:true}); continue; }
+    const names = d.names.filter(keepSept);
+    const runs = (d.runs || []).filter(r => !r.validation_only);
+    out.push({code, label, stage:code,
+              last: runs.length ? runs.map(r => r.run_date).sort().pop() : null,
+              runs: runs.length, names: names.length,
+              resolved: names.filter(r => r.realised_move_pct != null).length,
+              pending: names.filter(r => r.realised_move_pct == null).length});
+  }
+  return out;
+}
+
+/* What a reader must not miss. Ordered by how much it costs to miss it. */
+function standAlerts(mk) {
+  const out = [];
+  const curve = (D.account && D.account.curve) || [];
+  const lastEq = curve.length ? curve[curve.length - 1].date : null;
+  const eqAge = weekdaysBetween(lastEq, BUILT);
+  if (D.broker_error || eqAge > 2) {
+    out.push({lvl:'hi', t:`De broker is bij deze build niet gelezen; rekening en posities staan op de stand van ${lastEq || 'onbekend'}` +
+      (eqAge ? `, ${eqAge} handelsdagen oud.` : '.'),
+      s:`${D.broker_error ? 'Reden: ' + D.broker_error + '. ' : ''}In CI betekent dit meestal dat ALPACA_API_KEY_ID en ALPACA_API_SECRET_KEY als repository secret ontbreken. Stage E kan intussen wel orders plaatsen; deze pagina ziet ze dan niet.`});
+  }
+  const own = [...(D.problems || []).filter(p => !/has not closed yet/.test(p) && !/^broker unreachable/.test(p))
+                 .map(p => 'VS: ' + p),
+               ...(M.problems || []).map(p => 'Markten: ' + p)];
+  own.forEach(p => out.push({lvl:'mid', t: esc(p)}));
+  if (S && S.built_utc && D.generated_utc &&
+      new Date(D.generated_utc) - new Date(S.built_utc) > 6 * 3600e3)
+    out.push({lvl:'mid', t:`De scorebord-data is van ${S.built_utc}, ouder dan de ledger; de blokken over sterke calls lopen achter.`});
+  if (!S) out.push({lvl:'mid', t:'Geen scorebord-data ingebouwd: de blokken over sterke calls ontbreken. Draai dashboard/scripts/build_scorebord.py vóór build_dashboard.py.'});
+  for (const m of mk) {
+    if (m.missing) { out.push({lvl:'mid', t:`${m.label}: geen data in markets.json.`}); continue; }
+    const age = weekdaysBetween(m.last, BUILT);
+    if (m.last && age > 3)
+      out.push({lvl:'lo', t:`${m.label}: laatste run ${m.last}, ${age} handelsdagen geleden.`,
+                s:'Kan een lege agenda zijn of een Routine die niet vuurde. De run-log van die dag zegt welke.'});
+  }
+  return out;
+}
+
+/* Per stage the version that runs now goes in front; older versions fold away.
+   Never pooled across versions, as on the scorebord. */
+function standScorecard() {
+  if (!S) return {current:[], older:[]};
+  const latest = {};
+  for (const a of S.agents || []) {
+    const k = a.stage, cur = latest[k];
+    if (!cur || a.last > cur.last || (a.last === cur.last && a.version.localeCompare(cur.version, undefined, {numeric:true}) > 0))
+      latest[k] = a;
+  }
+  const rowsOf = S.table || [];
+  const key = r => `${r.stage}|${r.version}|${r.model}`;
+  const curKeys = new Set(Object.values(latest).map(key));
+  const current = Object.values(latest).map(a => Object.assign(
+    {stage:a.stage, version:a.version, model:a.model, n:0, hit:null, mean:null, p:null, calls:a.n_calls, first:a.first, last:a.last},
+    rowsOf.find(r => key(r) === key(a)) || {})).sort((a, b) => a.stage.localeCompare(b.stage));
+  const older = rowsOf.filter(r => !curKeys.has(key(r)))
+    .sort((a, b) => a.stage.localeCompare(b.stage) || b.last.localeCompare(a.last));
+  return {current, older};
+}
+const MIN_N = 20;
+const verdictOf = s => !s.n ? '<span class="mut">nog niets opgelost</span>'
+  : s.n < MIN_N ? '<span class="flag">te klein</span>'
+  : s.p != null && s.p < 0.05 ? (s.mean > 0 ? '<span class="pos">verdient, p &lt; 0,05</span>'
+                                             : '<span class="neg">verliest, p &lt; 0,05</span>')
+  : '<span class="mut">geen bewijs</span>';
+function cardRows(rows, withStage) {
+  let h = `<tr><th>${withStage ? 'Stage · ' : ''}prompt · model</th><th class="n" title="opgeloste sterke calls">n</th><th class="n hm">Hit</th>` +
+          `<th class="n">Gem./call</th><th class="n hm">p</th><th>Oordeel</th></tr>`;
+  for (const s of rows) h += `<tr><td>${withStage ? `<b>${esc(s.stage)}</b><br>` : ''}
+    <span class="mut">${esc(s.version)} · ${esc(s.model)}</span></td><td class="n">${s.n || 0}</td>
+    <td class="n hm">${s.hit == null ? '–' : Math.round(s.hit) + '%'}</td><td class="n">${sbPct(s.mean)}</td>
+    <td class="n hm">${s.p == null ? '<span class="mut">–</span>' : s.p.toFixed(3)}</td><td>${verdictOf(s)}</td></tr>`;
+  return `<div class="tbl"><table>${h}</table></div>`;
+}
+
+function tabStand() {
+  const mk = standMarkets();
+  const alerts = standAlerts(mk);
+  const live = S ? (S.live || []).filter(x => !sbQuiet(x)) : [];
+  const liveRet = live.filter(x => x.ret != null);
+  const open = D.trades.filter(t => !t.closed);
+  const closed = D.trades.filter(t => t.closed && t.ret_pct != null);
+  const curve = (D.account && D.account.curve) || [];
+  const eq = D.account && D.account.equity, cum = curve.length ? curve[curve.length - 1].cum_ret_pct : null;
+  const {current, older} = standScorecard();
+  const judged = current.filter(s => s.n >= MIN_N).length;
+  const mean = a => a.length ? a.reduce((s, v) => s + v, 0) / a.length : null;
+
+  let h = '';
+  /* 1. the four numbers */
+  const kp = [
+    [usd(eq), 'rekening', cum == null ? '' : `${pc(cum)} sinds de start · stand ${curve.length ? curve[curve.length-1].date : '–'}`],
+    [open.length, 'open bij de broker', open.length ? open.map(t => t.symbol).join(', ') : 'geen positie open'],
+    [live.length, 'sterke calls open', liveRet.length ? `${liveRet.filter(x => x.ret > 0).length} van ${liveRet.length} liggen goed, gem. ${pc(mean(liveRet.map(x => x.ret)))}` : 'nog geen koers'],
+    [`${judged} / ${current.length}`, 'stages met een oordeel', `huidige versie met ≥ ${MIN_N} opgeloste sterke calls`],
+  ];
+  h += `<div class="strip">` + kp.map(([b, s, i]) =>
+    `<div class="kpi"><b>${b}</b><span>${s}</span>${i ? `<i>${i}</i>` : ''}</div>`).join('') + `</div>`;
+
+  /* 2. what needs attention */
+  h += `<section><div class="shead"><h2>Vraagt aandacht</h2><span class="small">van ernstig naar ter info</span></div>
+    <ul class="alerts">${alerts.length ? alerts.map(a => `<li class="${a.lvl}">${a.t}${a.s ? `<small>${esc(a.s)}</small>` : ''}</li>`).join('')
+      : '<li class="ok">Niets: de broker is gelezen, elke run is af en elke markt heeft recent gedraaid.</li>'}</ul></section>`;
+
+  /* 3. what is open now */
+  const ST = {loopt:'loopt', gesloten:'net gesloten', wacht:'start nog', 'geen koers':'geen koers'};
+  let lt = '';
+  if (open.length) {
+    lt += `<div class="tbl"><table><tr><th>Positie</th><th>Kant</th><th>Sessie</th><th class="n">Inzet</th><th>In</th><th>Geplande uitstap</th></tr>` +
+      open.map(t => `<tr><td><b>${esc(t.symbol)}</b></td><td>${esc(t.side)}</td><td>${esc(t.session || '–')}</td>
+        <td class="n">${usd(t.entry_notional_usd)}</td><td>${esc(String(t.entry_utc || '').slice(0, 16).replace('T', ' '))}</td>
+        <td>${esc(t.planned_exit_date || '–')}</td></tr>`).join('') + `</table></div>`;
+  }
+  if (live.length) {
+    /* A panel's score is a percentile, 0-100 with the side apart; a hunter's is a
+       signed impact_sum. Only the second gets a sign. */
+    const scoreOf = x => x.score == null ? '–' : /panel/.test(x.stage) ? (+x.score).toFixed(1)
+      : (x.score > 0 ? '+' : '') + (+x.score).toFixed(2);
+    lt += `<div class="tbl"><table><tr><th>Naam</th><th class="hm">Run</th><th>Call</th><th class="n hm">Score</th>` +
+      `<th class="hm">Sessie</th><th class="n hm">Beweging</th><th class="n">Rendement</th><th class="hm">Status</th></tr>` +
+      live.map(x => `<tr><td title="${esc(x.company)}"><b>${esc(x.ticker)}</b><br><span class="mut">${esc(x.stage)}</span></td>
+        <td class="hm">${esc(x.run_date)}</td><td>${x.side > 0 ? 'long' : x.side < 0 ? 'short' : 'geen'}</td>
+        <td class="n hm" title="${esc(x.why)}">${scoreOf(x)}</td>
+        <td class="hm">${esc(x.session || '–')}</td><td class="n hm">${sbPct(x.move)}</td>
+        <td class="n">${x.ret == null ? `<span class="mut">${ST[x.state] || esc(x.state)}</span>` : sbPct(x.ret)}</td>
+        <td class="hm"><span class="tag ${esc(String(x.state).replace(' ', '-'))}">${ST[x.state] || esc(x.state)}</span></td></tr>`).join('') +
+      `</table></div>`;
+  }
+  if (!lt) lt = `<div class="tbl"><div class="empty">Geen open positie en geen open sterke call.</div></div>`;
+  h += `<section><div class="shead"><h2>Wat nu loopt</h2><span class="small">${open.length ? 'posities bij de broker, daarna ' : ''}sterke calls van alle markten · koersen van ${esc(S ? S.built_utc : '–')}</span></div>${lt}</section>`;
+
+  /* 4. do the strong calls earn */
+  h += `<section><div class="shead"><h2>Verdienen de sterke calls?</h2><span class="small">per stage de versie die nu draait; nooit gepoold over versies</span></div>` +
+    (current.length ? cardRows(current, true) : `<div class="tbl"><div class="empty">Geen scorebord-data.</div></div>`) +
+    (older.length ? `<details class="more"><summary>Oudere versies (${older.length})</summary>${cardRows(older, true)}</details>` : '') +
+    `<p class="small" style="margin:0">n telt alleen sterke calls met een uitkomst. Onder ${MIN_N} staat "te klein": daar valt niets uit af te leiden.
+     Elke call per ticker en per agent staat op het <a href="scorebord.html" class="sblink">scorebord</a>.</p></section>`;
+
+  /* 5. the account */
+  const pnl = closed.reduce((s, t) => s + (t.pnl_usd || 0), 0);
+  const cb = closed.length ? book(closed.map(t => t.ret_pct)) : null;
+  h += `<section><div class="shead"><h2>Rekening</h2><span class="small">papier, zoals de broker hem rapporteert · <a href="#us/handel">alle posities →</a></span></div>
+    <div class="tbl" style="padding:8px 8px 2px">${chartBlock('st-eq', 200)}</div>
+    <p class="small" style="margin:0">${closed.length} afgeronde posities, ${cb ? `${Math.round(cb.hit)}% met winst, gemiddeld ${pc(cb.mean)} per positie, ` : ''}samen ${usd(pnl)}.
+    Dit is wat er werkelijk gehandeld is, met spread en met de hand gesloten posities; het is geen oordeel over de methode.</p></section>`;
+
+  /* 6. per market */
+  h += `<section><div class="shead"><h2>Per markt</h2><span class="small">onderzoek; alleen de VS plaatst orders</span></div>
+    <div class="tbl"><table><tr><th>Markt</th><th>Laatste run</th><th class="n hm">Runs</th><th class="n hm">Namen</th><th class="n">Opgelost</th><th class="n hm">Wacht</th><th></th></tr>` +
+    mk.map(m => m.missing ? `<tr><td><b>${esc(m.label)}</b></td><td colspan="6" class="mut">geen data</td></tr>` : `<tr>
+      <td><b>${esc(m.label)}</b></td>
+      <td>${esc(m.last || '–')}${weekdaysBetween(m.last, BUILT) > 3 ? ` <span class="flag">stil</span>` : ''}</td>
+      <td class="n hm">${m.runs}</td><td class="n hm">${m.names}</td><td class="n">${m.resolved}</td><td class="n hm">${m.pending}</td>
+      <td><a href="#${slug(m.code)}/overzicht">open →</a></td></tr>`).join('') + `</table></div></section>`;
+
+  /* 7. where the detail is */
+  const groups = {};
+  US_TABS.forEach(([n]) => (groups[tabGroup(n)] ??= []).push(n));
+  h += `<section><div class="shead"><h2>Verdieping</h2><span class="small">elk tabblad beantwoordt één vraag; zweef erover voor de vraag</span></div>
+    <div class="goto">` + TABGROUPS.filter(g => groups[g]).map(g => `<div><b>${esc(g)}</b>` +
+      groups[g].map(n => `<a href="#us/${slug(n)}" title="${esc(tabQ(n))}">${esc(n)}</a>`).join('') + `</div>`).join('') +
+    `<div><b>Andere markten</b>${MARKETS.slice(1).map(([c, l]) => `<a href="#${slug(c)}/overzicht">${esc(l)}</a>`).join('')}</div></div></section>`;
+
+  /* 8. how to read it */
+  h += `<div class="reading">
+    <p><b>Sterk</b> betekent hier wat het op het scorebord betekent: een call waarvan de |score| de vaste top-20%-benchmark van zijn stage haalt (VS-panel: gemiddeld percentiel van de vier rechters ≥ 80). Beide pagina's lezen dezelfde data, dus ze tellen dezelfde calls.</p>
+    <p><b>Twee vensters.</b> De blokken over sterke calls rekenen op het venster van het scorebord (VS: instap 13:30 New York, uitstap bij amc op de volgende opening, bij bmo om 13:00). Verdieping rekent op de strategie-exit van stage E en kan per tabblad een andere horizon kiezen. Een getal uit de ene laag is daarom niet hetzelfde getal als in de andere.</p>
+    <p><b>Lezen.</b> Hit is het aandeel calls met het goede teken; p toetst of het gemiddelde rendement per call van nul verschilt. Rekening is papiergeld. Onderzoek, geen beleggingsadvies.</p></div>`;
+
+  document.getElementById('stand').innerHTML = h;
+  if (curve.length) lineChart(document.getElementById('st-eq'), {
+    x: curve.map(c => c.date.slice(5)), height: 200, label: false,
+    series: [{label:'equity', color: css('--s1'), values: curve.map(c => c.equity)}],
+    fmtY: v => '$' + (v / 1000).toFixed(1) + 'k', fmtT: usd, tipX: i => curve[i].date});
+  else noData(document.getElementById('st-eq'));
+}
+
 /* ------------------------------------------------------------------- boot */
 /* De markt is de bovenste as van deze pagina, en de tabbladenrij hangt eronder.
    De VS heeft een broker, dus die houdt zijn handels-, capaciteits-, kosten- en
    wegingstabbladen. De andere vier plaatsen geen orders, dus die tabbladen
    bestaan daar niet: een rij die per markt verschilt, vertelt precies dat. */
-/* Op groepsvolgorde, want de rij zelf is de index. Stand · Rangschikking ·
+/* Op groepsvolgorde, want de rij zelf is de index. Kern · Rangschikking ·
    Klok · Doorsnedes · Register · Bronnen; zie TABMETA voor wat elk tabblad
    beantwoordt. */
 const US_TABS = [['Overzicht',tabOverzicht], ['Handel',tabHandel],
@@ -5740,15 +6046,20 @@ nav.addEventListener('keydown', e => {
    van die markt in plaats van een foutmelding. */
 let hashLock = false;
 function writeHash() {
-  if (hashLock) return;
+  if (hashLock || LEVEL !== 'deep') return;
   const h = '#' + slug(MKT) + '/' + slug((TABS[active] || [''])[0]);
   if (location.hash !== h) history.replaceState(null, '', location.pathname + location.search + h);
 }
 function readHash() {
-  const m = /^#([a-z]{2})\/(.+)$/.exec(location.hash.toLowerCase());
+  const h = location.hash.toLowerCase();
+  /* No address, or #stand: the front page. Every old #markt/tabblad address
+     still opens its tab, one level down. */
+  if (!h || h === '#' || h === '#stand') { setLevel('stand'); return true; }
+  const m = /^#([a-z]{2})\/(.+)$/.exec(h);
   if (!m) return false;
   const code = MARKETS.find(([c]) => slug(c) === m[1]);
   if (!code) return false;
+  LEVEL = 'deep'; showLevel();
   hashLock = true;
   setMarket(code[0]);
   hashLock = false;
@@ -5759,7 +6070,31 @@ function readHash() {
 }
 /* Een adres dat nergens heen wijst, wordt rechtgezet in plaats van te blijven
    staan: refresh schrijft de hash terug naar waar de pagina werkelijk staat. */
-addEventListener('hashchange', () => { if (!readHash()) refresh(); });
+addEventListener('hashchange', () => { if (!readHash()) setLevel('deep'); });
+
+/* ---- the two levels ---------------------------------------------------------
+   Stand renders once per visit (and again on a theme or width change, for its
+   chart); Verdieping keeps its own refresh, which only runs while it is shown,
+   because a chart drawn into a hidden box measures zero wide. */
+let LEVEL = 'stand';
+const LV = {stand: document.getElementById('stand'), deep: document.getElementById('deep')};
+function showLevel() {
+  document.body.className = 'lvl-' + LEVEL;
+  LV.stand.hidden = LEVEL !== 'stand'; LV.deep.hidden = LEVEL !== 'deep';
+  document.querySelectorAll('.levels [data-level]').forEach(b =>
+    b.setAttribute('aria-selected', b.dataset.level === LEVEL ? 'true' : 'false'));
+}
+function setLevel(l) {
+  LEVEL = l; showLevel();
+  if (l === 'stand') {
+    tabStand();
+    if (location.hash && location.hash !== '#stand')
+      history.replaceState(null, '', location.pathname + location.search + '#stand');
+  } else refresh();
+}
+document.querySelectorAll('.levels [data-level]').forEach(b =>
+  b.addEventListener('click', () => { setLevel(b.dataset.level); scrollTo(0, 0); }));
+const render = () => LEVEL === 'stand' ? tabStand() : refresh();
 buildTabs();
 function refresh() {
   paintBar();
@@ -5782,18 +6117,16 @@ function refresh() {
   draw.forEach(fn => fn());
 }
 document.getElementById('stamp').textContent =
-  `gebouwd ${D.generated_utc}` +
+  `Gebouwd ${stamp(D.generated_utc)}` +
   ((D.build || {}).where === 'github-actions'
      ? ` door GitHub Actions (${(D.build.sha || '?')})` : '') +
-  ` · ${D.runs.length} runs · ${D.names.length} namen` +
-  (ALL.length !== D.names.length ? ` (${ALL.length} na aftrek dubbele events)` : '') + ` · ` +
-  `${D.trades.filter(t=>t.closed).length} afgeronde posities · ` +
-  `conviction-floor uit de config ${D.conviction_floor}`;
+  ` · ${D.runs.length} VS-runs, ${ALL.length} namen, ${D.trades.filter(t=>t.closed).length} afgeronde posities` +
+  ` · conviction-floor ${D.conviction_floor}`;
 document.getElementById('theme').onclick = () => {
   const now = document.documentElement.getAttribute('data-theme');
   const dark = now ? now === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
-  refresh();
+  render();
 };
 /* The refresh button, three ways, and it says which one it is in.
 
@@ -6041,11 +6374,12 @@ btn.onclick = () => {
 probe();
 probe();
 let rt;
-addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(refresh, 150); });
+addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(render, 150); });
 renderControls();
 /* Pas hier, want readHash kan een markt en een tabblad zetten en die render moet
-   de filterbalk al kennen. Geen adres in de URL: gewoon de VS op Overzicht. */
-if (!readHash()) refresh();
+   de filterbalk al kennen. Geen adres in de URL: de Stand. Een adres dat nergens
+   heen wijst: Verdieping, VS, Overzicht. */
+if (!readHash()) setLevel('deep');
 </script>
 </body>
 </html>
