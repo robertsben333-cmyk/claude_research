@@ -65,3 +65,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-15 17:29 UTC
 - 13 of 13 searcher hunts banked and scored (key impact_sum; 1 above floor 2.8: LOOP -3.00). V2 grounded written pre-print (13/13). 13 packs, four judges.
+
+## Edge hunt (panel) — DONE
+- Logged at 2026-10-15 17:37 UTC
+- 13 in window, 13/13 confirmed, 13 searchers (unpriced-searcher, Opus 5.5), 0 fallbacks. Searcher key: 1 above 2.8 (LOOP -3.00). V2 written pre-print 13/13. Panel 4/4 members on pinned agents (opus5 accepted): selected LOOP short (pct 96, 4/4) and JBHT long (pct 86, 4/4). LOOP ~$45k/day, under the turnover floor. Stage E edge/ absent at ~17:45Z (no dir, no heartbeat): no comparison rho. No orders. Note: edge-panel/edge-note.md.
