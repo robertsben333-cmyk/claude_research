@@ -53,3 +53,7 @@
 ## Close AMC — 2026-10-15 10:10 UTC
 - Logged at 2026-10-15 10:17 UTC
 - Guard mode --require-exit-tif opg exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no exit sent, no refusals. status: no open positions.
+
+## Edge hunt (panel) — 2026-10-15 amc + 2026-10-16 bmo — STARTED
+- Logged at 2026-10-15 17:08 UTC
+- Fired 17:06 UTC (13:06 ET). 13 names in window (8 amc 10-15, 5 bmo 10-16), baselines sealed into edge-panel/. Plan: one edge-sweep, one unpriced-searcher per confirmed name, edge_score, V2 grounded, four blind judges, panel_score. No orders.
