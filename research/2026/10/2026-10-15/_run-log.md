@@ -33,3 +33,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-15 01:05 UTC
 - Fired 01:04 UTC (10:04 JST). Plan: jp_universe -> seal baselines -> provenance -> one unpriced-hunter-jp per name in waves of 5 -> edge_score -> four-model panel -> note. No orders.
+
+## Stage J — resolved 2026-10-13 run (from the 10-15 session)
+- Logged at 2026-10-15 01:07 UTC
+- jp_resolve: 25/25 usable, rho impact_sum 0.27 p 0.199, free control -0.277, sign right 0.56, lean_vs_free_control_rho 0.406. Panel: rho 0.118 p 0.565; 3 selected, 2 hits (+3.37%). One day is not a result.
