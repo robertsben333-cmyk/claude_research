@@ -49,3 +49,7 @@
 ## Intraday panel 12:00 — panel STARTED
 - Logged at 2026-10-16 16:12 UTC
 - 3 hunts back (CLF +2.7, FITB +0.1, DX 0.0); guard ran, no amc names. 3 packs, four judges.
+
+## Intraday panel 12:00 — DONE
+- Logged at 2026-10-16 16:14 UTC
+- 3 names (CLF, FITB, DX; 2026-10-19 bmo). Panel 4/4 judges, no fallback, scored --dry-run --stage E-PI (panel-history untouched). Selected: CLF 95L (4/4 top 20%). FITB 26L, DX 9L. Guard: nothing moved (no amc). No orders. Timeline rebuilt.
