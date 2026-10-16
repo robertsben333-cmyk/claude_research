@@ -17,3 +17,7 @@
 - Logged at 2026-10-15 14:06 UTC
 - Event date 2026-10-16. 5 ranked, all se (top AZA +0.80, then PLAZ_B +0.60, NP3 +0.50; INVE_A and ITECH 0.00), 0 above floor 2.8. No phantoms; all 5 sessions confirmed bmo by the issuer.
 - Panel: 4/4 members, no fallback, 0 selected (PLAZ_B closest: k=1, panel_pct 60, long). Note: europe-note.md. Resolve within ~a week (Nordic feed window). Published with EARNINGS_DATA_BRANCH=main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-16 01:05 UTC
+- Fired 01:05 UTC (10:05 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp in waves of 5 -> edge_score -> four-model intl panel -> note. No orders.
