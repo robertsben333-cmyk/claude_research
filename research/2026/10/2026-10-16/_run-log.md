@@ -75,3 +75,7 @@
 ## Edge hunt (panel, Fable) — panel STARTED
 - Logged at 2026-10-16 17:24 UTC
 - 3 hunts back (CLF +0.80, FITB -1.00, DX +0.20; none above 2.8 floor). V2 grounded written before the first print. 3 packs, four judges.
+
+## Edge hunt (panel) — DONE
+- Logged at 2026-10-16 17:28 UTC
+- 3 names (CLF, FITB, DX; 2026-10-19 bmo). Searcher (us-searcher.v2, Opus 5.5): CLF +1.90, FITB +0.60, DX -0.20, none above the 2.8 floor. Panel 4/4 judges on pinned agents, no fallback. Selected: CLF 94L (4/4 top 20%, E[ret] +4.68%). DX 23S, FITB 15L. V2 written. Stage E had published nothing for today on main at ~17:40 UTC, so no comparison. No orders, no alpaca_trade.py call.
