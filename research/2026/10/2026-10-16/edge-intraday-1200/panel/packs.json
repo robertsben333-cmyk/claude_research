@@ -1,0 +1,922 @@
+[
+ {
+  "id": "us/2026-10-16/CLF",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "CLF",
+   "event_date": "2026-10-19",
+   "session": "bmo",
+   "as_of_utc": "2026-10-16T16:01:13+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-16",
+    "spot": 12.3006,
+    "run_up_5d_pct": -5.23,
+    "run_up_20d_pct": -1.6,
+    "pct_from_52w_high": -23.98,
+    "pct_from_52w_low": 57.3,
+    "realised_vol_20d_annualised_pct": 57.0,
+    "avg_volume_20d": 17274183
+   },
+   "cik": "0000764065",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-23",
+      "session": "bmo",
+      "move_pct": 15.98
+     },
+     {
+      "event_date": "2026-04-20",
+      "session": "bmo",
+      "move_pct": -2.11
+     },
+     {
+      "event_date": "2026-02-09",
+      "session": "bmo",
+      "move_pct": -16.43
+     },
+     {
+      "event_date": "2025-10-20",
+      "session": "bmo",
+      "move_pct": 21.47
+     },
+     {
+      "event_date": "2025-07-21",
+      "session": "bmo",
+      "move_pct": 12.45
+     },
+     {
+      "event_date": "2025-05-07",
+      "session": "amc",
+      "move_pct": -15.78
+     },
+     {
+      "event_date": "2025-02-24",
+      "session": "amc",
+      "move_pct": -3.23
+     },
+     {
+      "event_date": "2025-02-03",
+      "session": "amc",
+      "move_pct": 8.01
+     }
+    ],
+    "n": 8,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 14.11,
+    "max_abs_move_pct": 21.47,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 88,
+    "median_gap_days": 75,
+    "ratio": 1.17,
+    "last_print": "2026-07-23",
+    "verdict": "fits_cadence",
+    "reason": "88 days since the last print against a 75-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-23",
+    "days_to_expiry": 7,
+    "atm_strike": 12.5,
+    "atm_iv_pct": 104.1,
+    "straddle_implied_move_pct": 12.44,
+    "event_implied_move_pct": 10.66,
+    "event_implied_move_basis": "12.44% straddle over 7 calendar days less 8.03% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -15.8,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.59,
+    "total_open_interest": 70500,
+    "atm_spread_frac_of_mid": 0.079,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 7.05,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 10.66,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Company guide: Q3 2026 adjusted EBITDA approximately $575m (8-K ex99.1, 2026-07-23, https://www.sec.gov/Archives/edgar/data/0000764065/000076406526000097/clf-202606308xkex991.htm); Q4 'expected to even further exceed' Q3; FY shipments 16.5-17.0Mt, capex ~$700m. EPS consensus is disputed: $0.19 (Tiger/Earnings Agent, 2026-10-12, https://www.itiger.com/news/1150861578) vs $0.24 (Benzinga/The Right Trader) vs $0.25 (Earnings Whispers). Revenue consensus $5.55-5.72bn, also disputed. No sourced EBITDA consensus, so the EBITDA guide is the bar.",
+   "positioning_check": "No dated September/October FINRA settlement was found (Nasdaq short-interest API returned 503). Last dated figure: 84.5M shares short at the 2026-04-30 settlement, 3.67 days to cover (https://www.optionsanalysissuite.com/stocks/clf/short-interest). Benzinga's sentiment page, updated about 2026-08-10, shows 14.8% of float, rising (https://www.benzinga.com/quote/CLF/sentiment). The sweep has MarketBeat at ~15.5% of float and 3.2 DTC, undated. Skew is -15.8 vol pts (25d put IV minus call IV), so upside is paid; put/call OI 0.59. That is a crowded short with the option market leaning up, so negatives are shrunk.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "US HRC spot kept climbing through Q3 and into Q4, after CLF set its Q3 guide on 23 July. Nucor CSP was $1,135/st on 20 Jul and $1,145/st on 27 Jul, then rose $10 a week to $1,190 (8 Sep), $1,220 (28 Sep), $1,230 (5 Oct) and $1,240 (12 Oct). SMU's HR assessment was $1,280/st for the week of 15 Oct, +$40 m/m, against $1,165/st on 21 Jul. Spot sits roughly $100+/st above the level the Q3 guide and the 'Q4 further exceeds Q3' language were set on, which points to a Q4 guide well above $575m and supports the ~$500m 2027 contract-reset uplift (2027 EBITDA up to $3.3bn per the July call).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.steelmarketupdate.com/2026/07/20/nucor-holds-spot-hr-price-at-1135-ton/",
+    "source_date": "2026-07-20 (page also carries the 2026-10-12 Nucor CSP $1,240/st and the SMU 15 Oct $1,280/st assessment)",
+    "reaction_history_on_this_line": "The guide line has driven the large moves: 2026-07-23 +15.98% (Q2 EPS miss, Q3 guide ~2x Q2); 2025-10-20 +21.47%; 2026-02-09 -16.43% on a weak outlook and slipped POSCO timing. The name pays heavily for guidance surprises in both directions.",
+    "why_not_priced": "Partly priced: the Wells Fargo upgrade (6 Oct) cites prices up from $900 to $1,300 and beats in late 2026/2027. But the stock is $12.30, down 5.2% over 5 days and -24% from its 52-week high, below the WF $14 target and roughly at the consensus PT ($11.80-11.96). If the market had priced a Q4 guide materially above Q3, the stock would not be flat over 20 days (-1.6%) while spot rose $40 m/m. The 'Q4 > Q3' language is unquantified, so the number itself is not in the price.",
+    "independence": "Peer guides on 2026-09-17 point the same way: Steel Dynamics expects higher realised prices with backlog ~50% above prior-year Q3 and extending into Q1 2027; Nucor expects higher mill earnings on price (https://www.steelorbis.com/steel-news/latest-news/steel-dynamics-issues-q3-2026-guidance-on-record-steel-shipments-and-wider-metal-margins-1479096.htm). Nucor CSP $1,230 on 5 Oct via GMK (https://gmk.center/en/news/nucor-has-raised-the-price-of-hot-rolled-coils-to-1-230-per-tonne/). Industry proxy, not a CLF number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "The Q3 quarter is likely to land at or slightly above the $575m adjusted EBITDA guide. The guide assumed ASP +$55/t vs Q2's $1,124/t (about $1,179/t), unit cost -$10/t and shipments >4.3Mt, all set when spot was ~$1,135-1,165/st. Spot then rose through the quarter (Nucor CSP $1,160 on 10 Aug, $1,190 on 8 Sep, $1,220 on 28 Sep), and the spot/index-linked share of the book reprices with a 1-2 month lag, so realised price should come in at or above the guided uplift. Estimated beat about +2% on EBITDA, inside the 'approximately' range.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000764065/000076406526000097/clf-202606308xkex991.htm",
+    "source_date": "2026-07-23",
+    "reaction_history_on_this_line": "Reported-quarter beats and misses have mattered less than the guide: Q2 2026 missed EPS (-$0.20 vs -$0.19) and rose 15.98% on the guide; Q1 2026 beat (narrower loss) and fell 2.11% on costs.",
+    "why_not_priced": "Mostly inside what the company guided, so mostly priced; that is why the size is small. The unpriced part is the late-quarter spot climb above the July level, which no published Q3 EBITDA consensus reflects (none was sourced).",
+    "independence": "Nucor and STLD both guided Q3 mill earnings up on price (2026-09-17). Shares the spot price series with the first finding, but lands on a different line (the reported quarter, not the guide).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "US natural gas was cheaper in Q3 than forecast: Henry Hub averaged about $2.78/MMBtu in August 2026 (FRED via MarketXLS), down from $2.89 in July and well below EIA's July STEO Q3 forecast of $3.37. That is a cost tailwind for an integrated BF/DRI steelmaker that took an $80m energy spike in Q1 2026, and supports the guided -$10/t unit cost.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://marketxls.com/indicators/natural-gas-price",
+    "source_date": "2026-08 monthly (page undated snapshot)",
+    "reaction_history_on_this_line": "Costs drove the Q1 2026 print: an $80m energy cost spike, and the stock fell 2.11% (reported 5%+ intraday) despite a beat.",
+    "why_not_priced": "A macro input, partly inside the guided cost decline; small. Nobody quantifies CLF's energy line in previews.",
+    "independence": "EIA STEO forecast of $3.37 for Q3 (https://eia.gov:443/outlooks/steo/report/natgas.php). Proxy: CLF has not confirmed its Q3 energy cost.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "Stelco (CLF's Canadian segment) is indefinitely idling Hamilton's cold-rolled and coated lines from 9 Oct, with 330-500 layoffs. Stelco's memo says demand for its cold-rolled and galvanized products fell almost 25% in Q2 2026 vs the 2024 quarterly average. Canada doubled its counter-tariff on US steel to 50% from 8 Sep, and the CEO said 'there's no market in Canada for the amount of galvanized steel we produce.' Ottawa (Carney, Joly) threatens legal action over the 2024 takeover commitments. Likely effects: Q4/2027 commentary on Stelco, idle costs, and a dent in the July claim that 'Stelco's improving performance' drives the $3.3bn 2027 figure.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.hcamag.com/ca/specialization/leadership/stelco-layoffs-cleveland-cliffs-ceo-defends-idling-hamilton-plant/591950",
+    "source_date": "2026-10-01",
+    "reaction_history_on_this_line": "Canada has hurt before: the Feb 2026 print (-16.43%) cited a sluggish Canadian market. The stock fell to $11.3 in late August on a rumoured US-Canada tariff cut and rose 8% on 5 Oct as Canada-related pressure eased.",
+    "why_not_priced": "The layoffs were widely covered, so the event is known. The P&L effect is not quantified anywhere (idle costs, mix shift to Lake Erie, any legal provision), and the call will be the first time the company sizes it. Net of the rest: Stelco says steel output will not drop (mix shift only), and the US operations, where the HRC upside sits, are most of EBITDA, so this is sized well below the HRC finding. Shrunk further for the crowded short and upside skew.",
+    "independence": "Canada 50% counter-tariff from 2026-09-08 (https://www.steelorbis.com/steel-news/latest-news/canada-doubles-counter-tariff-on-us-steel-to-50-percent-effective-september-8-1473263.htm); BNN Bloomberg 2026-10-08 on layoff notices (https://www.bnnbloomberg.ca/business/company-news/2026/10/08/stelco-begins-issuing-layoff-notices-as-first-job-cuts-set-to-take-effect-sunday). Shares the US-Canada trade breakdown event with the sixth finding but lands on a different line (Stelco volumes vs US pricing protection).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "Stellantis, a major Detroit Three customer of CLF auto steel, reported Q3 2026 North American shipments down 12% y/y (-47k to 357k). Planned summer production pauses cut Jeep Grand Cherokee and Compass output by about 25k units each, partly offset by Ram (+17k). GM and Ford Q3 US sales fell 6% and 6.6%. CLF guided about half of its +300kt Q3 volume increase to come from automotive, and Q3 shipments of more than 4.3Mt.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.just-auto.com/newsletters/stellantis-q3-vehicle-shipments-fall-1",
+    "source_date": "2026-10-14",
+    "reaction_history_on_this_line": "Auto volume disappointment was part of the Feb 2026 -16.43% (the automotive market 'didn't provide a boost').",
+    "why_not_priced": "Published 14 Oct, after most previews. Comparison is y/y, while CLF's guide is q/q vs a maintenance-heavy Q2, so the transmission is uncertain. Ram pickup (steel-heavy) was up. Proxy, sized small, and shrunk for positioning.",
+    "independence": "GM/Ford Q3 sales down 6%/6.6% (https://www.dbusiness.com/daily-news/stellantis-sales-tick-up-3-in-q3-gm-sales-down-6-ford-sales-slip-6-6/). Sales, not production. Proxy.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "Steel Dynamics guided Q3 on 17 Sep (after CLF last spoke) with record steel shipments, rising realised prices and an order backlog nearly 50% above prior-year Q3, extending through Q1 2027. Nucor guided Q3 EPS to $5.55-5.65 vs $4.84 adjusted in Q2, with steel mills up on higher prices. This is order-book evidence that flat-rolled demand and pricing hold into Q4/Q1, which supports CLF's Q4 guide and its leverage in 2027 contract talks (non-auto talks conclude late Nov/early Dec).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.steelorbis.com/steel-news/latest-news/steel-dynamics-issues-q3-2026-guidance-on-record-steel-shipments-and-wider-metal-margins-1479096.htm",
+    "source_date": "2026-09-17",
+    "reaction_history_on_this_line": "As the first finding: the guide line has moved this stock +16% to +21% and -16%.",
+    "why_not_priced": "Public for a month and mostly priced into the sector; the CLF read-through is indirect. Sized small. Nucor's guide was below consensus ($5.84-6.17), so the market may doubt the magnitude of mill margin gains.",
+    "independence": "Nucor Q3 guide (https://finviz.com/news/393374/nucor-announces-guidance-for-the-third-quarter-of-2026-earnings). Overlaps the HRC price theme of the first finding, but the evidence here is backlog and order book, not the spot quote.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "The US-Canada steel tariff deal (50% to 25% on Canadian steel) that drove CLF's August sell-off to ~$11.3 did not happen. The US imposed Section 338 duties on Canadian goods from 22 Aug, Section 232 duties on Canadian steel stay at 50%, and Canada retaliated on 8 Sep. Import protection for CLF's US mills, the basis of management's pricing and 2027 reset thesis, is intact into the call.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.osler.com/en/insights/updates/elbows-back-up-u-s-section-338-tariffs-canada-retaliatory-surtaxes-current-landscape/",
+    "source_date": "2026-09 (Osler update; Section 338 effective 2026-08-22, Canada surtaxes 2026-09-08)",
+    "reaction_history_on_this_line": "Tariff headlines move this name: down to $11.3 on the rumoured cut (Aug 26 note), +8% on 5 Oct on tariff tailwinds.",
+    "why_not_priced": "The stock recovered only to $12.30 from $11.3, still well below the $16.70 high, so the market has not fully restored the tariff premium. The call is where management will state the pricing benefit. Largely public, so small.",
+    "independence": "Freedom Broker 2026-08-26 on the rumoured cut and sell-off (https://fbroker.kz/en/news/51687-fb-cleveland-cliffs-akciialarynyn-aleueti-20-ga-deiin-kk-2); Quiver 2026-10-05 on renewed tariff focus (https://www.quiverquant.com/news/Cleveland-Cliffs+gains+as+investors+refocus+on+tariff+tailwinds+and+upcoming+earnings). Shares the trade-war event with the Stelco finding, but they sit on opposite sides of the border and both can be true.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "No asset-sale or POSCO filing since the Q2 print. EDGAR for CIK 764065 shows only an 8-K item 5.02 (24 Jul), an SD, a 13G and Form 4s since 23 Jul. As of the July call only ~$100m of the ~$425m idled-property sale programme had been received, Toledo HBI offers fell 'short of our value threshold', and POSCO talks had 'made little progress' (the H1 2026 signing target was missed). Long-term debt rose to $7.70bn at 30 Jun from $7.25bn at year-end.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://data.sec.gov/submissions/CIK0000764065.json",
+    "source_date": "2026-10-16 (read)",
+    "reaction_history_on_this_line": "POSCO timing slippage contributed to the 2026-02-09 -16.43% (shares fell more than 15% as the CEO pushed the timeline).",
+    "why_not_priced": "Small idled-property sales may not need an 8-K, so the absence of a filing is weak evidence [sizing note removed]. The question is what the money buys: the proceeds are for deleveraging, and rising HRC EBITDA does that faster anyway. Near zero; filed so the panel can see the POSCO/asset-sale status going into the call.",
+    "independence": "IndustryWeek 2026-07-27 on $100m received, Toledo HBI and POSCO delays (https://www.industryweek.com/leadership/companies-executives/news/55393737/cleveland-cliffs-sees-much-stronger-second-half-more-growth-into-27).",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "Positioning is crowded short into a guide-driven print: about 14.8-15.5% of float short (Benzinga ~Aug 10; MarketBeat undated), 84.5M shares at the last dated settlement (30 Apr, 3.67 DTC). The option market pays for upside (25d skew -15.8 vol pts, put/call OI 0.59), and the 5-day run-up is -5.23%. On a guide that is at least in line, short covering adds an upside mechanism; a weak guide meets shorts already positioned.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.benzinga.com/quote/CLF/sentiment",
+    "source_date": "~2026-08-10 (page updated)",
+    "reaction_history_on_this_line": "Positive guide prints gapped +15.98% (Jul 2026), +21.47% (Oct 2025) and +12.45% (Jul 2025), consistent with short covering amplifying up-moves.",
+    "why_not_priced": "The skew already prices the upside asymmetry, so this is mostly priced and kept small. The 5-day drawdown into the print suggests some de-risking that a confirming guide would reverse.",
+    "independence": "Dated FINRA-based 84.5M at 2026-04-30 (https://www.optionsanalysissuite.com/stocks/clf/short-interest). The baseline skew is independent of the short-interest data.",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "2027 non-automotive fixed-price contract negotiations typically conclude by late November/early December; their final reset level (vs ~$800/t prior-year basis and ~$1,150+ now) settles after the window. Only call commentary lands inside it.",
+    "resolves_by": "2026-12-05",
+    "source": "https://www.industryweek.com/leadership/companies-executives/news/55393737/cleveland-cliffs-sees-much-stronger-second-half-more-growth-into-27",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "Steel Dynamics reports Q3 after the close on 2026-10-19 and Nucor on 2026-10-26, both after CLF's exit window closes (close of 2026-10-19).",
+    "resolves_by": "2026-10-26",
+    "source": "https://finviz.com/news/393373/steel-dynamics-provides-third-quarter-2026-earnings-guidance",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "CME HRC futures curve at 870-898 for Oct 2026 through 2027",
+    "source": "https://www.tradingview.com/symbols/COMEX-HRC1%21/contracts",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "Earnings date of 2026-10-26 (Investing.com, Earnings Whispers)",
+    "source": "https://beta.earningswhispers.com/go/w/CLF",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "March 2026 multi-year fixed-price auto contracts (GM among them, up to 3 years) that could cap the 2027 auto reset",
+    "source": "https://www.tipranks.com/news/the-fly/automakers-sign-multi-year-deals-with-cleveland-cliffs-bloomberg-says-thefly",
+    "first_hunter_reason": "duplicate",
+    "i": 13
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CLF.json",
+    "text": "Wells Fargo upgrade to Overweight, PT $12 to $14, citing late-2026/2027 EBITDA above estimates and steel prices up from $900 to $1,300",
+    "source": "https://pluang.com/en/news-feed/cleveland-cliffs-clf-mendapatkan-upgrade-harga-baja-naik",
+    "first_hunter_reason": "duplicate",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "EDGAR CIK 764065 since 2026-07-23: no 8-K beyond item 5.02 (2026-07-24); no asset-sale, financing or POSCO 8-K",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "POSCO definitive agreement: no signing found after the H1 2026 target",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "Dated September/October FINRA short-interest settlement for CLF: not found; Nasdaq short-interest API returned 503",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "CLF options unusual activity October 2026: nothing dated",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "Published Q3 adjusted EBITDA consensus: not found",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "Q3 2026 Detroit Three North American production by OEM: Omdia tracker paywalled",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "Cause of the 5-day -5.2% drift into the print: no CLF-specific news found",
+    "i": 21
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "HRC futures curve (CME) dated to October 2026: only undated/stale TradingView snapshots",
+    "i": 22
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CLF.json",
+    "text": "Form 4s dated 2026-10-01: not read (likely routine director grants); not filed",
+    "i": 23
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-16/DX",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "DX",
+   "event_date": "2026-10-19",
+   "session": "bmo",
+   "as_of_utc": "2026-10-16T16:01:15+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-16",
+    "spot": 10.98,
+    "run_up_5d_pct": 1.1,
+    "run_up_20d_pct": -9.85,
+    "pct_from_52w_high": -25.51,
+    "pct_from_52w_low": 3.88,
+    "realised_vol_20d_annualised_pct": 23.5,
+    "avg_volume_20d": 7694153
+   },
+   "cik": "0000826675",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-20",
+      "session": "intraday",
+      "move_pct": -1.58
+     },
+     {
+      "event_date": "2026-04-20",
+      "session": "intraday",
+      "move_pct": 0.81
+     },
+     {
+      "event_date": "2026-01-26",
+      "session": "intraday",
+      "move_pct": -0.14
+     },
+     {
+      "event_date": "2025-10-20",
+      "session": "intraday",
+      "move_pct": 0.37
+     },
+     {
+      "event_date": "2025-07-21",
+      "session": "intraday",
+      "move_pct": 0.08
+     },
+     {
+      "event_date": "2025-04-21",
+      "session": "intraday",
+      "move_pct": -1.8
+     },
+     {
+      "event_date": "2025-01-27",
+      "session": "intraday",
+      "move_pct": 1.19
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 0.81,
+    "max_abs_move_pct": 1.8,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91.0,
+    "ratio": 1.0,
+    "last_print": "2026-07-20",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 35,
+    "atm_strike": 10.0,
+    "atm_iv_pct": 40.6,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.09,
+    "total_open_interest": 1866,
+    "atm_spread_frac_of_mid": 1.448,
+    "warnings": [
+     "ATM bid-ask spread 145% of mid; too wide to mean anything"
+    ]
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 0.81,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "The name trades on book value per share, and there is no sourced consensus for Q3 BV. My own estimate is Sept 30 BV of about $10.8-11.2, from Q2 BV $12.90 (https://www.sec.gov/Archives/edgar/data/0000826675/000082667526000074/a2q26earningsrelease.htm) with peer Q3 drops applied: ORC 8-K Oct 14 (https://www.sec.gov/Archives/edgar/data/0001518621/000143774926032635/ex_1025559.htm), IVR 8-K Oct 14 (https://www.sec.gov/Archives/edgar/data/0001437071/000143707126000076/ivr10142026-8kxex991.htm). The single-source EPS consensus is $0.53 non-GAAP per Benzinga (https://www.benzinga.com/quote/DX/earnings-forecasts, Oct 9), against Q2 EAD of $0.36. DX has 'missed' this consensus four quarters running with small moves, so it is not the bar the stock trades on. Price targets were cut Oct 6-7 to $12.50 (KBW) and $12 (BTIG) (https://stockanalysis.com/stocks/dx.prd/). The bar is unsourced, so every finding is capped small.",
+   "positioning_check": "Short interest: about 10.4M shares, 4.2% of float, 1.6 days to cover per equibles on the ~2026-08-21 snapshot (https://equibles.com/stocks/dx/shortinterest). This is not FINRA-verified, the Nasdaq short-interest API returned 503, and I found no October settlement. It is not a crowded short. Skew: there is no usable chain (ATM spread 145% of mid, skew null). The front-month put/call OI ratio is 1.09 on only 1,866 contracts, so options give no directional statement. Run-up: -9.85% over 20 days and +1.1% over 5 days. The stock did not fall further on the Oct 14 ORC and IVR pre-releases.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "Two agency-mREIT peers pre-announced Q3 2026 on Oct 14, after DX last spoke (Jul 20). Orchid Island: estimated BV $6.02 at Sept 30 against $7.22 at June 30 (-16.6%), total return on equity -12.5%. Invesco Mortgage Capital: estimated BV $6.74 at Sept 30 against $8.03 at June 30 (-16.1%), of which -12.9% came in September alone ($7.74 at Aug 31). Applied to DX's $12.90 June BV at a similar ~8x leverage (8.1x incl. TBAs at Q2), that implies a Sept 30 BV of about $10.8-11.2. Spot $10.98 already trades at about 1.0x that estimate, so the hit looks largely priced. The residual risk is DX landing at the bad end, having added leverage in July (10M ATM shares) just before the widening.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001437071/000143707126000076/ivr10142026-8kxex991.htm",
+    "source_date": "2026-10-14",
+    "reaction_history_on_this_line": "On Q1 2026, BV fell 6.3% ($13.45 to $12.60), in line with peers (IVR -7.3%, ORC -6.1%, AGNC TBV -5.6%), and the stock moved +0.81% (2026-04-20). On Q2 2026, BV rose 2.4% and the stock moved -1.58% (2026-07-20). BV surprises in line with peers have produced sub-2% moves on all 7 prints in the baseline.",
+    "why_not_priced": "Mostly priced. DX is down about 18.6% since the July print against an implied BV drop of about 14-16%, and it fell no further on the Oct 14 peer releases (5-day run-up +1.1%). If the market had not absorbed the peer numbers, DX would still trade near 0.85x the June BV with no post-Oct-14 drift. Instead it sits at about 1.0x the peer-implied BV. The unpriced part is only DX's relative outcome against peers, which is unknown.",
+    "independence": "ORC 8-K Oct 14 (https://www.sec.gov/Archives/edgar/data/0001518621/000143774926032635/ex_1025559.htm, via https://www.quiverquant.com/news/Orchid+Island+Capital+Estimates+%240.90+Third-Quarter+GAAP+Loss+Per+Share) and a market series: Agency MBS -3.3% total, -1.0% vs Treasuries in September (https://www.zerohedge.com/markets/3-year-lows-3-year-highs-nine-months-mortgage-rates-surge-749-bond-rout-hits-main-street, ~2026-10-07); Bloomberg MBS index July -1.42% total, -0.44% excess, OAS +7bp (https://insuranceaum.com/agency-mortgage-backed-securities-mbs-market-july-2026, 2026-08-25). The peer, market-series and price evidence all point the same way and describe one fact, so they are merged into this one finding.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "Fourth-quarter-to-date rates have reversed part of the September rout. The 10-year closed near 5.29% on Sept 30 (MND recap), peaked around 5.34% in early October, and was about 5.06-5.09% on Oct 15 after its biggest one-day rally in over a year. Freddie/MND 30-year mortgage rates fell from 7.49% (Oct 2) to 7.38% (Oct 14). If DX gives a quarter-to-date BV comment on the 10:00 call, it is more likely flat-to-up than down. However, MBS lagged Treasuries on Sept 30 and again on the Oct 15 rally day (UMBS 6.0 slightly down while the 10-year rallied), so the spread leg is not confirmed.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://in.investing.com/news/economy-news/us-treasury-yields-slide-after-cpidriven-spike-5634166",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "No sourced record of a DX quarter-to-date BV comment moving the stock. Every print in the baseline moved less than 1.8%.",
+    "why_not_priced": "The rates rally is public and priced in Treasuries. What is not visible is how much of it reached DX's hedged book, given swap and futures hedges and MBS lagging. If the market had priced a QTD BV recovery, DX would have bounced more than +1.1% over 5 days off a level near 1.0x the estimated Sept BV.",
+    "independence": "Mortgage rates 7.38% on Oct 14, down 6bp on the week (https://themortgagereports.com/mortgage-rates-now/mortgage-rates-today-october-15-2026). Against it: MBS lagged Treasuries on Sept 30 and Oct 15 (https://www.mortgagenewsdaily.com/markets/mbs-recap-09302026, https://www.mortgagenewsdaily.com/markets/mbs-morning-10152026). This is a proxy; the company has said nothing about Q4.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "DX kept raising capital through the widening and deployed it into Agency MBS. It sold about 10M common shares between June 30 and July 24 (237.41M to 247.43M on the 10-Q cover), when the stock traded above the $12.90 BV, which is accretive. It then priced $120M of 9.375% Series D cumulative preferred on Sept 22 (closing Sept 29; ~$115.9M net, overallotment up to 720k more shares), explicitly to buy Agency and other securities. The preferred is non-dilutive to common BV and funds purchases at current-coupon spreads of about 120bp (BofA), which supports forward EAD and the case for an offensive posture on the call. The cost is a high fixed charge ahead of common.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000826675/000082667526000104/exhibit991preferredofferin.htm",
+    "source_date": "2026-09-22",
+    "reaction_history_on_this_line": "Q2 2026: $391M raised and deployed, BV +2.4%, stock -1.58% on the print. Capital deployment has not been paid for on the print day.",
+    "why_not_priced": "The offering is public, but its EAD effect (new MBS at wide spreads against a 9.375% preferred coupon) will only show in Q3/Q4 EAD and in management's commentary on return on new capital. If it were priced as distress, the stock would have broken below the estimated BV after Sept 22. It traded ~$11.18 on Sept 25 and ~$10.98 now.",
+    "independence": "Share count from the 10-Q cover (https://www.sec.gov/Archives/edgar/data/826675/000082667526000078/dx-20260630.htm, filed 2026-07-27); July 2026 ATM supplement (https://www.sec.gov/Archives/edgar/data/0000826675/000082667526000084/july2026atmprospectus.htm). These are separate documents but the same company's capital decisions.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "The Chief Investment Officer, Terrence Connelly, bought 2,500 DX common shares in the open market at $11.18 on 2026-09-25 (Form 4, code P), about $28k, raising his direct holding to 58,695 shares. It is small but sits right after the September BV drawdown. The co-CEO's Sept 8 Form 4 is a tax withholding (code F, 19,528 shares at $12.89), not a sale.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000826675/000082667526000107/wk-form4_1790599428.xml",
+    "source_date": "2026-09-28",
+    "reaction_history_on_this_line": "none sourced",
+    "why_not_priced": "It is too small to move anything by itself. It is filed because the person who runs the portfolio bought after seeing the quarter-end marks were near, which weakly argues that DX's Q3 is not worse than peers.",
+    "independence": "Popenoe Form 4, Sept 8 (code F) (https://www.sec.gov/Archives/edgar/data/0000826675/000082667526000088/wk-form4_1789075318.xml). Same filer stream, different document.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "Dividend coverage. Q2 2026 EAD was $0.36 per share against $0.51 of quarterly dividends ($0.17 monthly). The October $0.17 was declared on Oct 12, so management has not signalled a cut. Funding costs moved up in Q3: IVR's repo rate was 3.97% at Sept 30, and a ZeroHedge timeline notes a September Fed hike. A call discussion of EAD under-earning the dividend is a modest negative risk. A cut inside the window is unlikely given the Oct 12 declaration.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://finviz.com/news/401422/dynex-capital-inc-declares-october-monthly-common-stock-dividend-of-017",
+    "source_date": "2026-10-12",
+    "reaction_history_on_this_line": "EAD has 'missed' the $0.50-ish consensus on each of the last four prints (Benzinga) and the moves stayed under 1.8%, so the market has looked through EAD coverage before.",
+    "why_not_priced": "Partly priced: the yield at $10.98 is about 18.6%, which implies some cut risk. If a cut were fully priced, the stock would trade at a discount to estimated BV. It trades at about par.",
+    "independence": "Q2 EAD $0.36 and dividend $0.51 (https://www.sec.gov/Archives/edgar/data/0000826675/000082667526000074/a2q26earningsrelease.htm); IVR repo 3.97% (https://www.sec.gov/Archives/edgar/data/0001437071/000143707126000076/ivr10142026-8kxex991.htm). Cuts against: the Oct 12 declaration held at $0.17.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "Sell-side cut price targets before the print but after September: KBW to $12.50 from $15 (Outperform, ~Oct 7) and BTIG to $12 from $14.50 (Buy, ~Oct 6). Both predate the Oct 14 peer pre-releases, so street BV estimates may still be slightly stale against the -16% peer prints. Both ratings stayed Buy, about 9-14% above spot.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://stockanalysis.com/stocks/dx.prd/",
+    "source_date": "2026-10-07",
+    "reaction_history_on_this_line": "none sourced",
+    "why_not_priced": "The cuts are in the wire and priced. They are filed so the judges can see where the street bar sits; the snippets do not give the BV estimates behind the targets.",
+    "independence": "Google Finance listing of the same actions (https://www.google.com/finance/labs/quote/DX:NYSE). Same underlying notes.",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "AGNC reports Q3 2026 after the close on 2026-10-19, with its call on Oct 20. Its tangible BV print is the largest peer read-through but lands after DX's exit close.",
+    "resolves_by": "2026-10-20",
+    "source": "https://finviz.com/news/397275/agnc-investment-corp-announces-date-for-third-quarter-earnings-release-and-stockholder-call",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "Claim that the 'spread holding payouts together just hit a one-year low' (24/7 Wall St, Oct 14)",
+    "source": "https://247wallst.com/investing/etf/2026/10/14/why-a-10-yield-on-rem-still-lost-investors-money-the-mortgage-reit-trap/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DX.json",
+    "text": "Earnings-date aggregator 'market priced in +/-8.13% earnings reaction'",
+    "source": "https://beta.earningswhispers.com/go/w/DX",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DX.json",
+    "text": "DX intra-quarter or Q3 preliminary BV update (none found; DX does not pre-release)",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DX.json",
+    "text": "Series D prospectus 'Recent Developments' with an estimated BV (cap table still as of 2026-06-30; no recent-BV disclosure in the portion read)",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DX.json",
+    "text": "Q2 10-Q interest-rate and spread sensitivity table (not in the portion of the document retrieved)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DX.json",
+    "text": "ARMOUR Residential Sept 30 2026 BV estimate (none found)",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DX.json",
+    "text": "DX conference presentations in Sept 2026 (none found)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DX.json",
+    "text": "FINRA short interest for Sept/Oct 2026 settlements (Nasdaq API 503; only an Aug snapshot found)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DX.json",
+    "text": "October 2026 MBS-vs-Treasury spread series (no dated source beyond the MND daily notes)",
+    "i": 15
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-16/FITB",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "FITB",
+   "event_date": "2026-10-19",
+   "session": "bmo",
+   "as_of_utc": "2026-10-16T16:01:11+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-16",
+    "spot": 50.73,
+    "run_up_5d_pct": 0.18,
+    "run_up_20d_pct": -4.12,
+    "pct_from_52w_high": -14.55,
+    "pct_from_52w_low": 25.69,
+    "realised_vol_20d_annualised_pct": 16.1,
+    "avg_volume_20d": 6912166
+   },
+   "cik": "0000035527",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-17",
+      "session": "bmo",
+      "move_pct": -2.29
+     },
+     {
+      "event_date": "2026-04-17",
+      "session": "bmo",
+      "move_pct": 1.66
+     },
+     {
+      "event_date": "2026-01-20",
+      "session": "bmo",
+      "move_pct": 1.95
+     },
+     {
+      "event_date": "2025-10-17",
+      "session": "bmo",
+      "move_pct": 1.31
+     },
+     {
+      "event_date": "2025-07-17",
+      "session": "bmo",
+      "move_pct": -1.02
+     },
+     {
+      "event_date": "2025-04-17",
+      "session": "bmo",
+      "move_pct": -0.73
+     },
+     {
+      "event_date": "2025-01-21",
+      "session": "bmo",
+      "move_pct": 1.17
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 1.31,
+    "max_abs_move_pct": 2.29,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 94,
+    "median_gap_days": 91.0,
+    "ratio": 1.03,
+    "last_print": "2026-07-17",
+    "verdict": "fits_cadence",
+    "reason": "94 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 35,
+    "atm_strike": 50.0,
+    "atm_iv_pct": 30.6,
+    "straddle_implied_move_pct": 7.34,
+    "event_implied_move_pct": 6.12,
+    "event_implied_move_basis": "7.34% straddle over 35 calendar days less 5.07% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -1.13,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.42,
+    "total_open_interest": 6386,
+    "atm_spread_frac_of_mid": 0.101,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 6.12,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Adjusted EPS about $1.08-1.09: Earnings Whispers $1.08 (https://beta.earningswhispers.com/go/w/FITB) and AlphaQuery $1.09 (https://www.alphaquery.com/stock/FITB/earnings-history) agree. Revenue $3.33-3.34bn (Earnings Whispers $3.33bn, Benzinga $3.34bn, https://jp.benzinga.com/quote/FITB/earnings-forecasts). TipRanks $0.84 and Tickerleague $0.85 look like GAAP figures that include merger charges, so they are not used. Company guide for 3Q26, reaffirmed 2026-09-15 (https://www.sec.gov/Archives/edgar/data/0000035527/000003552726000219/a2026barclaysconference-.htm): NII up 2-2.5% from $2.22bn (about $2.264-2.276bn), fees up 1-3% from $1.04bn, expenses down 1-2% from $1.86bn, NCOs 30-35bp, merger charges about $50-100m. Consensus revenue sits at the guide's midpoint.",
+   "positioning_check": "Short interest is low and has been falling: 52.1M shares at the 2026-06-30 settlement, 42.7M on 07-31, 33.8M on 08-14 (7.3 days to cover) per curvedtrading (https://curvedtrading.com/stocks/fitb/short-interest/), and 3.4% of float with 5.7 days to cover at 2026-08-31 per tapeboard (https://tapeboard.com/stock/FITB/short-squeeze/). No September settlement was found. The sweep row has 4.7% of float and 6.6 days to cover per equibles (2026-08-19). Not a crowded short. Baseline skew is -1.13 vol points (calls slightly bid), put/call OI is 0.42, and the priced lean reads 'balanced'. The 20-day run-up is -4.12%, roughly in line with KRE (-3.7% since 09-16). Since the Q2 print FITB is down 14.7% (59.37 to 50.66) against KRE -10.1% (77.92 to 70.05), per Yahoo daily bars (https://query1.finance.yahoo.com/v8/finance/chart/FITB?range=3mo&interval=1d, https://query1.finance.yahoo.com/v8/finance/chart/KRE?range=3mo&interval=1d). The stock is 14.55% off its 52-week high.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "Rates are now above what FITB's guide assumed. The July guide assumed one 25bp hike in September off the end-of-June forward curve. That hike came on 2026-09-16 (to 3.75-4.00%), and PNC's 2026-10-15 baseline now assumes two more (December 2026 and March 2027, to 4.25-4.50%). FITB disclosed year-two asset sensitivity of just under 10% plus fixed-rate asset repricing. PNC, on the same rate path, raised its FY26 NII outlook to about +15.5% (from 15-15.5%) and guided 4Q26 NII up about 4%. So a raised or firmed 4Q26/2027 NII outlook from FITB on 10-19 is more likely than the FY guide of $8.74-8.80bn implies.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000713676/000162828026065997/a3q26earningsslides_vfx2.htm",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "Last print (2026-07-17) FITB raised its FY NII guide to $8.74-8.80bn, cut expense guidance and beat EPS ($1.02 against $0.98), and the stock fell 2.29%, so this name has recently sold a raise. Of the last seven prints, four were up, with a median absolute move of 1.31%.",
+    "why_not_priced": "The hike and the curve are public. What is not public is FITB's own translation: the July guide was built on a curve with one hike, and FITB has not updated its full-year number since (on 09-15 it said 'unchanged from July 17'). If the market had priced a raise, FITB would have outperformed KRE since PNC's 10-15 raise. FITB closed 10-15 at +1.4% against KRE +1.8%, and has lagged KRE by about 4.6 points since July.",
+    "independence": "FITB's own sensitivity disclosure is in the Q2 call (https://www.fool.com/earnings/call-transcripts/2026/07/17/fifth-third-fitb-q2-2026-earnings-call-transcript/): asset sensitivity just under 10%, and the guide assumed a September hike. The rate path is in the PNC deck. A Zacks snippet (date not verified, snippet_only) has the CFO at Barclays calling FITB 'fairly well positioned' for higher rates: https://www.zacks.com/stock/news/2994708/. This is a proxy: FITB itself has not confirmed a raise.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "Q3 AOCI and tangible book will take a hit from the long end. The 10-year went from about 4.4% in late June (4.41% on 06-24) to about 5.1-5.2% by late September and 5.24% on 10-09. FITB entered the quarter with AOCI of -$3.345bn, CET1 including AOCI of 8.7%, TCE including AOCI of 7.3%, TBV of $23.15, and $44.5bn of AFS securities. Peers who reported this week showed the size of it: PNC's AOCI went from -$4.1bn to -$6.5bn and TBV fell 3.1%, and Regions' TBV fell 8.2% ($13.78 to $12.65). A visible TBV decline and a lower AOCI-inclusive capital ratio raise the risk that the H2 buyback restart (guided as a smaller Q3, then $200-300m a quarter in Q4) is deferred or trimmed.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001281761/000128176126000063/rf-2026930xexhibit991.htm",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "Nothing in the baseline isolates this line. In Q2 2026 the CET1 rise to 9.93% with no buybacks in H1 did not stop a -2.29% reaction.",
+    "why_not_priced": "Rates are public and the KBW bank index fell 9.7% in the month to 10-12, so the sector-wide AOCI hit is largely in the price. What is not known is FITB's own number, its hedge offset, and whether management sticks with the Q4 $200-300m buyback pace. If that were priced, FITB would trade at a discount to its own TBV path. Instead it has tracked KRE since mid-September.",
+    "independence": "PNC Q3 release (https://www.sec.gov/Archives/edgar/data/0000713676/000162828026065936/q32026financialhighlightsa.htm): AOCI -$6.5bn against -$4.1bn, TBV -3.1%, CET1 9.8% from 9.9%, while PNC kept its buybacks at $0.6bn and guided Q4 at the same level, which cuts against the deferral half of this finding and is why it is sized small. FITB's starting AOCI figures are from the Q2 8-K (https://www.sec.gov/Archives/edgar/data/0000035527/000003552726000193/q22026earningsrelease.htm). Rates: https://capital.com/en-eu/news/five-big-banks-two-days-one-question-can-record-trading. This is macro-to-company transmission.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "On 2026-09-15, one week after the Comerica conversion, FITB reaffirmed every 3Q26 guide line as 'unchanged from July 17': NII up 2-2.5% from $2.22bn, average loans up about 1%, fees up 1-3%, expenses down 1-2%, NCOs 30-35bp. A Zacks snippet of the same appearance has the CFO saying deposit growth was stronger than expected. Peers that have printed landed NII inside comparable ranges (PNC +2.4% q/q, Regions +1.6%). The reported quarter is therefore likely in line with a bar the company set itself.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000035527/000003552726000219/a2026barclaysconference-.htm",
+    "source_date": "2026-09-15",
+    "reaction_history_on_this_line": "FITB beat EPS in Q2 2026 ($1.02 against $0.98) and fell 2.29%. Reactions on in-line or beat quarters have been small, with a median absolute move of 1.31% over seven prints.",
+    "why_not_priced": "Largely priced: consensus revenue of $3.33-3.34bn is the guide's midpoint. The part the market may not have weighed is that the guide held through quarter-end after the conversion; the deposit-growth remark is snippet-only. This finding sits inside the guide, so it is sized near 0.",
+    "independence": "The deposit remark is snippet-only from https://www.zacks.com/stock/news/2994708/ (could not be fetched, date not verified). Peer NII: https://www.sec.gov/Archives/edgar/data/0001281761/000128176126000063/rf-2026930xexhibit991.htm. Shares the 09-15 deck with no other finding.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "Regional peers that printed this week were bought, mildly. US Bancorp closed +2.0% on its 10-15 print day (56.26 to 57.39) and was up another 1.8% intraday on 10-16. Truist was +2.2% on 10-15 and +1.1% intraday on its 10-16 print, despite a $1.45bn securities loss. Regions was +0.5% intraday on its 10-16 print. PNC was -0.4% on its 10-15 print despite a raised outlook. The money-centres fell on 10-13: WFC -1.3% after an NII miss, JPM, C and GS all red. FITB enters having lagged KRE by about 4.6 points since its Q2 print.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/USB?range=1mo&interval=1d",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "No baseline line for this. In Q2 2026, peers' beat-and-raise prints were sold and FITB was sold too (-2.29%), so peer tone has carried over to FITB before.",
+    "why_not_priced": "Peer tone is visible to everyone, and FITB rose 1.4% with the group on 10-15, so this is partly priced. What is left is the relative underperformance since July: if the market had closed it, FITB would have outperformed KRE this week, and it has not.",
+    "independence": "Price series: https://query1.finance.yahoo.com/v8/finance/chart/PNC?range=1mo&interval=1d, https://query1.finance.yahoo.com/v8/finance/chart/TFC?range=1mo&interval=1d, https://query1.finance.yahoo.com/v8/finance/chart/RF?range=1mo&interval=1d. Money-centre reaction: https://stocktwits.com/news-articles/markets/equity/jpm-citi-wells-fargo-or-goldman-sachs-which-big-bank-is-the-better-buy-after-q3-results/cZxfWqERBpB. Peer prices are a proxy, not FITB evidence.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "Peers show commercial deposit pressure under rising rates. Regions' average deposits fell 1.2% q/q ($1.55bn), mainly as large corporate clients moved balances off balance sheet, and PNC's interest-bearing deposit rate rose 7bp to 1.98%. FITB's acquired Comerica franchise is heavily commercial and noninterest-bearing. On the Q2 call FITB said deposit costs would be 'stable to slightly up' and 'it certainly is getting more expensive to grow deposits'. That is a risk to Q4 NIM and to the deposit-mix commentary on 10-19.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001281761/000128176126000063/rf-2026930xexhibit991.htm",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "In Q2 2026 analysts pushed on deposit competition and beta (BofA, UBS, Goldman) and the stock fell 2.29% on the day, though the cause was not established.",
+    "why_not_priced": "Regions' outflow was published only this morning (10-16), and FITB's commercial-deposit exposure through Comerica is larger than most peers'. If it were priced, FITB would have traded down on Regions' print today, but it is up modestly intraday with the group.",
+    "independence": "PNC deposit rate in the deck (https://www.sec.gov/Archives/edgar/data/0000713676/000162828026065997/a3q26earningsslides_vfx2.htm). Cutting the other way: PNC spot deposits rose 4%, and the snippet-only Zacks report has FITB's CFO calling deposit growth stronger than expected (see finding 3). That offset is why this is sized small. Proxy.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "The Comerica systems conversion (about 600k accounts and 293 branches, completed 2026-09-08) produced visible customer friction in Detroit and Dallas: account-access problems, crowded lobbies, long phone waits, the legacy app retired, bill-pay complaints, and a fraud warning. There is no evidence of deposit attrition or of a lasting outage after the first days.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.fox2detroit.com/news/comerica-customers-report-account-access-issues-after-fifth-third-merger",
+    "source_date": "2026-09-08",
+    "reaction_history_on_this_line": "No prior conversion print in the baseline.",
+    "why_not_priced": "These were local TV reports, not wire stories. If attrition had been material, FITB would have reported deposit softness at the 09-15 conference instead of reaffirming its guide. The finding is mostly a question for the call.",
+    "independence": "https://www.wxyz.com/news/fifth-third-banks-merger-with-comerica-frustrates-local-customers and https://www.nbcdfw.com/news/local/comerica-customer-accounts-close-and-transition-to-fifth-third/4072803/. Cutting against it: the 09-15 deck reaffirmed the guide and the synergy target (finding 3).",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "Peer credit in Q3 2026 was benign to mixed, with no new NDFI or fraud event found in 2026. Regions' NCOs fell to 0.29% from 0.42%, its business criticized ratio fell to 4.71% from 5.01%, and its NPLs fell to 0.59%. PNC's NCOs were 0.28% (from 0.25%) with commercial NPLs up 8%. FITB guides 2H NCOs at 30-35bp, and its NDFI book is about 7% of loans, with private credit and BDCs under 1%.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001281761/000128176126000063/rf-2026930xexhibit991.htm",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "The October 2025 print (+1.31%) carried the roughly $178m Tricolor fraud loss and was still bought. FITB has absorbed a credit one-off before.",
+    "why_not_priced": "Small. Credit fear was the 2025 sector driver. If this quarter's benign peer credit were fully priced, the bank index would not have fallen 9.7% in a month, though most of that fall is rates. The NDFI tail is the downside (a single-name fraud is not visible in advance), which is why the range is skewed negative.",
+    "independence": "PNC credit metrics: https://www.sec.gov/Archives/edgar/data/0000713676/000162828026065997/a3q26earningsslides_vfx2.htm. FITB's NDFI share is from the Q2 call transcript (https://www.fool.com/earnings/call-transcripts/2026/07/17/fifth-third-fitb-q2-2026-earnings-call-transcript/). Proxy.",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "Truist booked about $1.45bn of securities losses in 3Q26 (a repositioning). By analogy FITB could announce a further repositioning loss with an NII pickup.",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000092230/000009223026000108/ex991-3q26.htm",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "Analyst price-target cuts in early October 2026 (UBS $65 to $63, JPM $62 to $58, Evercore $61 to $57), ratings unchanged",
+    "source": "https://www.benzinga.com/node/62269195",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FITB.json",
+    "text": "Tipranks and Tickerleague consensus EPS of $0.84-0.85 as the bar",
+    "source": "https://www.tipranks.com/stocks/GB:0IM1/earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FITB.json",
+    "text": "Any FITB credit, fraud or NDFI event in 2026: everything found was the 2025 Tricolor case",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FITB.json",
+    "text": "FITB 8-Ks since 2026-07-17: only debt-exchange (09-22), note-redemption (09-24) and registered-exchange (08-21) items, the 07-30 and 09-14 7.01 decks; no pre-announcement, no buyback or ASR 8-K",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FITB.json",
+    "text": "Cause of FITB's relative drops on 2026-08-19 (-4.1% against KRE -2.4%) and 2026-09-16 (-4.1% against KRE -1.8%): no dated news found",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FITB.json",
+    "text": "Comerica deposit attrition after conversion: only early-September access complaints",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FITB.json",
+    "text": "Fed H.8 Q3 large-bank deposit and loan data: the 10-02 release was found but its values could not be read",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FITB.json",
+    "text": "September 2026 short-interest settlement: not found",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FITB.json",
+    "text": "Sell-side preview with a non-consensus angle: only price-target trims in early October (UBS 65 to 63, JPM 62 to 58, Evercore 61 to 57), all wire copy",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FITB.json",
+    "text": "Peer reactions for Citizens, M&T, Huntington and KeyCorp: not yet reported or not found",
+    "i": 17
+   }
+  ]
+ }
+]

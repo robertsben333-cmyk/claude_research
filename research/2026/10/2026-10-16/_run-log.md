@@ -45,3 +45,7 @@
 ## Intraday panel 12:00 — searchers launched
 - Logged at 2026-10-16 16:04 UTC
 - Sweep: 3 of 3 confirmed by company releases, 0 phantoms, all bmo 2026-10-19. Names frozen (edge-intraday/names.json). Provenance US-PI, us-searcher.v2 · claude-opus-5-5. 3 unpriced-searcher (Opus 5.5) launched in one wave: CLF, DX, FITB.
+
+## Intraday panel 12:00 — panel STARTED
+- Logged at 2026-10-16 16:12 UTC
+- 3 hunts back (CLF +2.7, FITB +0.1, DX 0.0); guard ran, no amc names. 3 packs, four judges.
