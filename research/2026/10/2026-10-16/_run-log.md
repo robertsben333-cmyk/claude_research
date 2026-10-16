@@ -72,3 +72,6 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-16 17:24 UTC
 - 3 hunts back (CLF +1.90, FITB +0.60, DX -0.20; none above the 2.8 floor). V2 grounded written before the first print (CLF +3.39, FITB +0.22, DX -0.30). 3 packs, four judges.
+## Edge hunt (panel, Fable) — panel STARTED
+- Logged at 2026-10-16 17:24 UTC
+- 3 hunts back (CLF +0.80, FITB -1.00, DX +0.20; none above 2.8 floor). V2 grounded written before the first print. 3 packs, four judges.
