@@ -25,3 +25,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-16 01:13 UTC
 - 2 packs, four judges (intl)
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-16 01:17 UTC
+- 3 scheduled / 2 eligible / 2 hunted (both J-REITs). 3462 +0.25, 2972 +0.00 (tender-pinned). None above floor; panel (4 of 4 members) selected none.
