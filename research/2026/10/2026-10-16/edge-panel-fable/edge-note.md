@@ -31,7 +31,7 @@ Strongest case against: the option market already pays for upside (25-delta skew
 ## Comparison with stages E and E-P
 
 - Stage E (`<RUN>/edge/edge-scores.json`): not on `main` at 17:29 UTC, so no comparison line.
-- Stage E-P (`<RUN>/edge-panel/edge-scores-panel.json`): COMPARISON_PLACEHOLDER
+- Stage E-P (`<RUN>/edge-panel/edge-scores-panel.json`): present by 17:33 UTC. Both ranked CLF, DX, FITB. Selected sets identical: CLF only in both (E-P 94.5 long, E-PF 92.5 long). Spearman ρ between the two `panel_pct_signed` columns +0.50 on 3 names (E-P: CLF +94.5, FITB +15.4, DX −23.3; E-PF: CLF +92.5, DX +3.8, FITB −38.7). The two searchers disagree on the side of FITB and DX, both below any selection line. Three names: an anecdote.
 
 ## Context: retail, search and volatility (not used for selection)
 

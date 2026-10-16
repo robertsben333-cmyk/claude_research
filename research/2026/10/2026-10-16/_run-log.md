@@ -79,3 +79,7 @@
 ## Edge hunt (panel) — DONE
 - Logged at 2026-10-16 17:28 UTC
 - 3 names (CLF, FITB, DX; 2026-10-19 bmo). Searcher (us-searcher.v2, Opus 5.5): CLF +1.90, FITB +0.60, DX -0.20, none above the 2.8 floor. Panel 4/4 judges on pinned agents, no fallback. Selected: CLF 94L (4/4 top 20%, E[ret] +4.68%). DX 23S, FITB 15L. V2 written. Stage E had published nothing for today on main at ~17:40 UTC, so no comparison. No orders, no alpaca_trade.py call.
+
+## Edge hunt (panel, Fable) — DONE
+- Logged at 2026-10-16 17:33 UTC
+- 3 names (CLF, FITB, DX; 2026-10-19 bmo). Searchers unpriced-searcher-fable (claude-fable-5-1), no fallback. Panel 4/4 judges on pinned models, scored --dry-run --stage E-PF (panel-history untouched). Selected: CLF 92 long (4/4 top 20%). FITB 39 short, DX 4 long. Against E-P: same selection (CLF), rho +0.50 on panel_pct_signed over 3 names. Stage E edge/ not on main at 17:33 UTC. Trends search failed in edge_context (retail/vol filled). No orders, no shadow ledger.
