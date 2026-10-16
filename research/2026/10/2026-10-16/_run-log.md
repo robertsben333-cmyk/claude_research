@@ -41,3 +41,7 @@
 ## Intraday panel 12:00 — universe and baselines sealed
 - Logged at 2026-10-16 16:01 UTC
 - Window 2026-10-16 amc + 2026-10-19 bmo: 3 of 46 rows (FITB, CLF, DX, all 10-19 bmo; no amc tonight). Thin-day check: --include-unknown gave 23; session_resolve killed 5 (HDB, IBN, PAC, PBAM already reported; HIFS no CIK... counted as unresolved by script: 5 killed, 15 carried, 0 confirmed by press release), so unknowns withheld. Baselines sealed 16:0x UTC: FITB impl 7.34%, CLF impl 12.44%, DX no chain.
+
+## Intraday panel 12:00 — searchers launched
+- Logged at 2026-10-16 16:04 UTC
+- Sweep: 3 of 3 confirmed by company releases, 0 phantoms, all bmo 2026-10-19. Names frozen (edge-intraday/names.json). Provenance US-PI, us-searcher.v2 · claude-opus-5-5. 3 unpriced-searcher (Opus 5.5) launched in one wave: CLF, DX, FITB.
