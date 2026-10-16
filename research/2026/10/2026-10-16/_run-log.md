@@ -33,3 +33,7 @@
 ## Stage X — Close AMC
 - Logged at 2026-10-16 10:17 UTC
 - Guard mode --require-exit-tif opg exit 0 (amc_open, amc -> day order queued for open). verify: 14 exit legs, none UNFILLED, nothing still held. close --submit: no leg due today, no order sent, no refusals. Account reachable. Only alpaca-orders.json fill-status refreshes changed.
+
+## Intraday panel 12:00 — STARTED
+- Logged at 2026-10-16 15:59 UTC
+- Fired 15:59 UTC (11:59 ET), slot 1200, first snapshot of the day (no 10:00 snapshot on disk), so it builds universe + sweep and freezes names. Plan: universe -> sweep -> freeze -> seal -> unpriced-searcher (Opus 5.5) per name, amc first -> guard -> edge_score -> packs -> 4 judges -> panel_score --dry-run --stage E-PI -> timeline. No orders.
