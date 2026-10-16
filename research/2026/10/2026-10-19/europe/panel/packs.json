@@ -1,0 +1,1374 @@
+[
+ {
+  "id": "eu/2026-10-19/AIRA",
+  "hunter_definition": ".claude/agents/unpriced-hunter-nordic.md",
+  "lessons_file": "researcher_europe/LESSONS.md",
+  "baseline": {
+   "market": "EU",
+   "submarket": "se",
+   "submarket_name": "Sweden",
+   "language": "sv",
+   "ticker": "AIRA",
+   "yahoo_symbol": "AIRA.ST",
+   "tv_symbol": "OMXSTO:AIRA",
+   "company": "AI Revenue Assistant Software Stockholm AB",
+   "industry": "Technology Services",
+   "event_date": "2026-10-19",
+   "session": "bmo",
+   "session_unresolved": true,
+   "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+   "window": "close of the session before 2026-10-19 -> 2026-10-19 close",
+   "sealed_utc": "2026-10-16T13:50:16+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/AIRA.ST?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)"
+   },
+   "tape": {
+    "spot": 6.6,
+    "currency": "SEK",
+    "run_up_20d_pct": 67.51,
+    "run_up_5d_pct": -2.65,
+    "run_up_60d_pct": 94.12,
+    "median_turnover_usd_20d": 122683,
+    "realised_vol_20d_pct": 132.29,
+    "realised_vol_60d_pct": 97.34,
+    "bars_3y": 97
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on …"
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/AIRA.ST?modules=earningsHistory%2CfinancialData",
+    "quarters": [],
+    "analyst_count": null,
+    "analyst_band": "unknown",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+   },
+   "history": {
+    "n": 0,
+    "basis": "estimated_from_cadence",
+    "source": "TradingView last/next release dates, stepped backwards",
+    "median_abs_move_pct": null,
+    "events": [],
+    "caveat": "Dates are ESTIMATED by stepping the measured cadence gap backwards from the vendor's last release date; the move is the largest within +/-2 trading days of that estimate. A cadence prior, not a record that a print happened on that date. Use it as a SCALE for how far this name travels, never as evidence about a particular past date -- TRT was ranked, traded and never reported on exactly this mistake. AND THE SCALE IS BIASED LOW: most estimated dates land on ordinary sessions, so this median is ordinary-session volatility and not event volatility. Treat it as a LOWER BOUND on how far this name m…",
+    "scale_is_lower_bound": true
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "disclosed_sellers": 0,
+    "covered": true,
+    "basis": "absent from a register that downloaded successfully, so no disclosed net short position at or above the 0.5% public threshold. A real zero -- but the threshold truncates, so 0.4% and 0.0% are both recorded here as 0.0, and the join is on the issuer NAME, so a name spelled differently in the register reads as a zero it should not.",
+    "as_of": "2026-10-16",
+    "source": "https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/"
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 8.33,
+    "from_realised_vol_1d_pct": 8.33,
+    "from_history_median_pct": null,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "runup": -3.376
+   },
+   "priced_lean_pct": -3.376,
+   "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_covered": false,
+   "anchor_coverage": {
+    "state": "register_read_no_position",
+    "register": "Finansinspektionen aggregerade korta nettopositioner (ODS, snapshot; the date is when the level last changed)",
+    "as_of": "2026-10-16",
+    "source": "https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+   },
+   "anchor_quality": {
+    "magnitude": 0.3,
+    "direction": 0.15,
+    "anchor_state": "register_read_no_position",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move, and cut to 0.35 where that history is a cadence estimate rather than observed dates -- measured 2026-09-22, an estimated history lands mostly on ordinary sessions and its median absolute move runs about half an observed one. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a di…"
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "unsourced. No consensus exists: Yahoo returns no estimates (https://query1.finance.yahoo.com/v10/finance/quoteSummary/AIRA.ST?modules=earningsHistory%2CfinancialData) and the only coverage (Kalqyl, commissioned, 2026-08-18) 'har valt att avvakta med finansiella estimat' (has chosen to hold off on financial estimates): https://storage.mfn.se/058f28f0-baff-40d7-9036-dedc2d4e7850/aira-pa-standig-jakt-efter-nasta-affar.pdf. Every finding is therefore capped small.",
+   "positioning_check": "Finansinspektionen aggregate register read 2026-10-16 (https://www.fi.se/sv/vara-register/blankningsregistret/GetBlankningsregisterAggregat/). It does not name AIRA, so 0.0 is the 0.5% truncation floor, not a measurement; anchor_covered false, building or covering unknown. There is no positioning anchor, and priced_lean_pct (-3.38) is the run-up alone (+67.5% over 20 days, -2.65% over 5, and the stock is down about 18% from its 8.05 close on 10-12). The FI insider register shows only the spin-off receipts of May 2026 (the CEO's related party 7,370,493 shares, about 44%) and no sales into the rally: https://marknadssok.fi.se/publiceringsklient/sv-SE/Search/Search?SearchFunctionType=Insyn&Utgivare=AI+Revenue+Assistant&button=search",
+   "already_public": [
+    {
+     "what": "Q2 2026 (first report as listed company): ARR KSEK 1,767, net sales KSEK 456, EBITDA KSEK -4,593, operating cash flow KSEK -4,118, cash KSEK 14,311, no debt, 16,828,375 shares",
+     "date": "2026-07-17",
+     "source": "https://storage.mfn.se/235f4e56-c739-42ab-b9e1-4f1649ae481b/aira-interim-report-q2-2026.pdf"
+    },
+    {
+     "what": "Aira for Fortnox announced: SEK 699/month, rolls out in November, SEK 2.2bn Swedish addressable market claimed. Stock went from 3.97 (09-28) to 8.05 (10-12)",
+     "date": "2026-09-29",
+     "source": "https://mfn.se/a/aira/aira-announces-aira-for-fortnox-rolling-out-in-november-addressing-a-sek-2-2-bsek-market"
+    },
+    {
+     "what": "Q3 report brought forward from Fri 23 Oct to Mon 19 Oct 08:30 CEST, 'because the work is expected to be completed earlier than planned'",
+     "date": "2026-10-07",
+     "source": "https://mfn.se/a/aira/aira-tidigarelagger-offentliggorandet-av-delarsrapporten-for-tredje-kvartalet-2026"
+    },
+    {
+     "what": "Investor presentation of Aira for Fortnox (14 Oct; recording published 16 Oct): no customer, ARR or sign-up numbers given",
+     "date": "2026-10-16",
+     "source": "https://mfn.se/a/aira/aira-publicerar-inspelningen-fran-investerarpresentationen-av-aira-for-fortnox"
+    },
+    {
+     "what": "Commissioned coverage (Kalqyl) initiated with no financial estimates; company ambition of SEK 100m ARR within three years",
+     "date": "2026-08-18",
+     "source": "https://storage.mfn.se/058f28f0-baff-40d7-9036-dedc2d4e7850/aira-pa-standig-jakt-efter-nasta-affar.pdf"
+    }
+   ],
+   "new_in_release": [
+    {
+     "line": "reported_quarter",
+     "expect": "Q3 ARR, the first full quarter of Aira Connect (first paying customer in early July). Expected to be small growth off SEK 1.77m, with no Fortnox contribution because the rollout starts 1 Nov; the direction against a story-driven valuation is unknown to mildly negative"
+    },
+    {
+     "line": "cash_flow",
+     "expect": "Cash at 30 Sep. On Q2's burn (operating cash flow -4.1, capitalised development 1.2 MSEK) it is roughly SEK 9-10m, before the heavier Q4 marketing push. Expected to raise runway questions; mildly negative"
+    },
+    {
+     "line": "guidance",
+     "expect": "No formal guide exists. The 100 MSEK ARR in three years ambition may be reiterated and is unlikely to move"
+    },
+    {
+     "line": "other",
+     "expect": "Possibly the first count of Fortnox early-access / golden-ticket applications (programme opened 15 Oct, after quarter end). Upside if disclosed; unknown whether it will be"
+    },
+    {
+     "line": "dividend",
+     "expect": "none"
+    }
+   ],
+   "session_check": "bmo. The issuer's own release of 2026-10-07 says the Q3 report is published Monday 19 Oct 2026 at 08:30 CEST, before the 09:00 Stockholm open, with the earnings call at 09:00 CEST (https://mfn.se/a/aira/aira-tidigarelagger-offentliggorandet-av-delarsrapporten-for-tredje-kvartalet-2026 ; https://mfn.se/a/aira/invitation-to-airas-q3-2026-earnings-call). Window: close 2026-10-16 to close 2026-10-19."
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AIRA.json",
+    "text": "Q3 is the last quarter before Aira for Fortnox exists commercially (it opens to all Fortnox customers on 1 Nov; early access began 15 Oct). So the reported ARR is the HubSpot/standalone base off SEK 1.77m, against a SEK ~111m market cap that more than doubled on the Fortnox story; the print cannot validate the story it is priced on.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://mfn.se/a/aira/aira-oppnar-early-access-till-aira-for-fortnox-med-guldbiljetter",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "One prior print: the Q2 report (2026-07-17, ARR 1.8 MSEK) took the stock from 3.55 to 3.40, -4.2% on the day (Yahoo daily bars).",
+    "why_not_priced": "Partly priced: the stock already fell about 18% from its 10-12 peak after the investor presentation. With no estimates, nobody has published what Q3 ARR should be. If the market were treating Q3 as a non-event, the pre-report fade would have stopped; it was still falling on 10-16 (7.18 to 6.60).",
+    "independence": "The Q2 report gives the ARR base (KSEK 1,767) and says the first Aira Connect paying customer was signed in early July: https://storage.mfn.se/235f4e56-c739-42ab-b9e1-4f1649ae481b/aira-interim-report-q2-2026.pdf",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AIRA.json",
+    "text": "Cash was SEK 14.3m at 30 June on a quarterly operating cash burn of SEK 4.1m plus SEK 1.2m of capitalised development, and Q3/Q4 add a paid DI advertorial, an investor event and an eight-city seminar tour. Q3 cash is likely about SEK 9-10m, roughly two quarters of runway, which the release will make visible. The company has said this is 'more than sufficient to carry Aira to profitability'.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://storage.mfn.se/235f4e56-c739-42ab-b9e1-4f1649ae481b/aira-interim-report-q2-2026.pdf",
+    "source_date": "2026-07-17",
+    "reaction_history_on_this_line": "None. No financing has been announced since listing.",
+    "why_not_priced": "The Q3 cash figure is not public. A doubled share price is when a pre-profit microcap raises money, and the report was brought forward four days. If the market had priced a raise, the stock would trade with a discount around a likely placing price; instead it holds about 60x ARR. Financing is a question, though: money raised would buy the Fortnox go-to-market, so the sign is uncertain and the size is held small.",
+    "independence": "The spend corroborating a higher Q3/Q4 burn: the seminar tour (https://mfn.se/a/aira/aira-publicerar-alla-detaljer-om-aira-for-fortnox-och-presenterar-lanseringsturne) and the DI paid content 'Innehåll från Aira Annons', published 2026-10-09 (https://www.di.se/brandstudio/ai-utmanaren-hjalper-fortnox-kunder-att-hitta-nya-affarer-i-den-egna-datan/)",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AIRA.json",
+    "text": "The golden-ticket early-access programme for Aira for Fortnox opened on 15 Oct, four days before the report, so the release and 09:00 call are the first place management can quantify early Fortnox demand (applications, activations). A company in heavy promotion mode is likely to cite such a number if it is flattering.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://mfn.se/a/aira/aira-oppnar-early-access-till-aira-for-fortnox-med-guldbiljetter",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "None. The Fortnox announcement itself (2026-09-29) started a run from 3.97 to 8.05 over nine sessions.",
+    "why_not_priced": "No demand number has been published: the 10-14 investor presentation gave the TAM and the go-to-market but no counts. A priced demand number would show as a stable or rising price into the report; instead the stock faded 18% after the presentation.",
+    "independence": "The company has invested heavily in investor communication around the launch (investor presentation, recording, podcasts, Kalqyl interview): https://mfn.se/a/aira/aira-publicerar-inspelningen-fran-investerarpresentationen-av-aira-for-fortnox",
+    "i": 2
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "AIRA.json",
+    "text": "Aira for Fortnox opens to all of Fortnox's 600,000+ customer companies on 1 Nov, with a seminar tour 12 Nov to 3 Dec; the first real ARR test is the Q4 report",
+    "resolves_by": "2026-11-01",
+    "source": "https://mfn.se/a/aira/aira-publicerar-alla-detaljer-om-aira-for-fortnox-och-presenterar-lanseringsturne",
+    "i": 3
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "AIRA.json",
+    "text": "The report being brought forward from 23 Oct to 19 Oct as a signal (good news, or a raise attached)",
+    "source": "https://mfn.se/a/aira/aira-tidigarelagger-offentliggorandet-av-delarsrapporten-for-tredje-kvartalet-2026",
+    "first_hunter_reason": "duplicate",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "AIRA.json",
+    "text": "Kalqyl's ARR-multiple comparison (Briox 26x, private AI peers 35-56x) as valuation support",
+    "source": "https://storage.mfn.se/058f28f0-baff-40d7-9036-dedc2d4e7850/aira-pa-standig-jakt-efter-nasta-affar.pdf",
+    "first_hunter_reason": "duplicate",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AIRA.json",
+    "text": "Nasdaq Nordic disclosure feed by company name (api.news.eu.nasdaq.com, company=AI Revenue Assistant): 0 items. Aira distributes via MFN, not the Nasdaq feed",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AIRA.json",
+    "text": "No vinstvarning / pre-release of Q3: the MFN issuer feed (https://mfn.se/all/a/aira) carries no trading update",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AIRA.json",
+    "text": "No nyemission / riktad emission / kapitalanskaffning found in any source",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AIRA.json",
+    "text": "Consensus: Yahoo has no estimates; Kalqyl coverage carries none",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AIRA.json",
+    "text": "Tradevenue/Kalqyl CEO interview page (https://tradevenue.se/artiklar/aira-vd-intervju-med-daniel-wikberg-om-aira-for-fortnox-221608) returned no interview text",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AIRA.json",
+    "text": "aira.app investor-presentation page: no customer or sign-up figures",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AIRA.json",
+    "text": "affarsvarlden.se 'Aira: AI-hausse efter avknoppningen' not fetched (the host is known to refuse both tools)",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AIRA.json",
+    "text": "FI insider register: no transactions after the May 2026 spin-off receipts",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "eu/2026-10-19/BKS",
+  "hunter_definition": ".claude/agents/unpriced-hunter-uk.md",
+  "lessons_file": "researcher_europe/LESSONS.md",
+  "baseline": {
+   "market": "EU",
+   "submarket": "uk",
+   "submarket_name": "United Kingdom",
+   "language": "en",
+   "ticker": "BKS",
+   "yahoo_symbol": "BKS.L",
+   "tv_symbol": "LSE:BKS",
+   "company": "Beeks Financial Cloud Group Plc",
+   "industry": "Technology Services",
+   "event_date": "2026-10-19",
+   "session": "bmo",
+   "session_unresolved": false,
+   "session_basis": "vendor flag -1",
+   "window": "close of the session before 2026-10-19 -> 2026-10-19 close",
+   "sealed_utc": "2026-10-16T13:50:17+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/BKS.L?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Investegate (RNS mirror)"
+   },
+   "tape": {
+    "spot": 173.22,
+    "currency": "GBp",
+    "run_up_20d_pct": -20.36,
+    "run_up_5d_pct": -5.08,
+    "run_up_60d_pct": -16.52,
+    "median_turnover_usd_20d": 144054,
+    "realised_vol_20d_pct": 34.38,
+    "realised_vol_60d_pct": 29.36,
+    "bars_3y": 761
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on …"
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/BKS.L?modules=earningsHistory%2CfinancialData",
+    "quarters": [],
+    "analyst_count": null,
+    "analyst_band": "unknown",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+   },
+   "history": {
+    "n": 10,
+    "basis": "observed_rns",
+    "source": "https://www.investegate.co.uk/company/BKS",
+    "median_abs_move_pct": 6.8,
+    "events": [
+     {
+      "move_pct": 31.94,
+      "date_used": "2024-02-06",
+      "headline": "Significant Contract Wins and Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 1.16,
+      "date_used": "2024-03-05",
+      "headline": "Interim Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 4.27,
+      "date_used": "2024-07-08",
+      "headline": "Notice of Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 3.0,
+      "date_used": "2024-07-22",
+      "headline": "Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 7.09,
+      "date_used": "2024-10-07",
+      "headline": "Final Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -22.05,
+      "date_used": "2025-03-17",
+      "headline": "Interim Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -4.95,
+      "date_used": "2025-07-14",
+      "headline": "Significant Proximity Cloud Wins &amp; Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -7.73,
+      "date_used": "2025-10-06",
+      "headline": "Final Results for the year ended 30 June 2025",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -11.58,
+      "date_used": "2026-03-16",
+      "headline": "Interim Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -6.51,
+      "date_used": "2026-07-15",
+      "headline": "FY26 Trading Update",
+      "basis": "observed_rns"
+     }
+    ],
+    "caveat": "Dates are REAL: each row is a results announcement the market's own archive records on that date, and the move is over this stage's own window. Only the UK (Investegate) and Norway (Oslo NewsWeb) reach this state; the other eight markets are estimated.",
+    "scale_is_lower_bound": false
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Investegate (RNS mirror) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "disclosed_sellers": 0,
+    "covered": true,
+    "basis": "absent from a register that downloaded successfully, so no disclosed net short position at or above the 0.5% public threshold. A real zero -- but the threshold truncates, so 0.4% and 0.0% are both recorded here as 0.0, and the join is on the issuer NAME, so a name spelled differently in the register reads as a zero it should not.",
+    "as_of": "2026-10-15",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv"
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 6.8,
+    "from_realised_vol_1d_pct": 2.17,
+    "from_history_median_pct": 6.8,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "runup": 1.018
+   },
+   "priced_lean_pct": 1.018,
+   "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_covered": false,
+   "anchor_coverage": {
+    "state": "register_read_no_position",
+    "register": "FCA aggregated net short positions",
+    "as_of": "2026-10-15",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+   },
+   "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.15,
+    "anchor_state": "register_read_no_position",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move, and cut to 0.35 where that history is a cadence estimate rather than observed dates -- measured 2026-09-22, an estimated history lands mostly on ordinary sessions and its median absolute move runs about half an observed one. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a di…"
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "FY26: the company's own pre-release (https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/fy26-trading-update/9668956), stated as in line with market expectations. FY27: only Progressive Equity Research's 16 Feb 2026 note (revenue GBP44.5m, adj EBITDA GBP17.6m, fully adj PBT GBP7.4m, EPS 10.0p; https://beeksgroup.com/wp-content/uploads/2026/02/BKS-20260216.pdf), a paid-for note that predates the July update; no second agreeing estimate source found, so FY27-dependent findings are capped small.",
+   "positioning_check": "FCA aggregated net short register (as of 2026-10-15) read successfully and does not name Beeks: 0.0%, unchanged (neither building nor covering). anchor_covered is false, so this is the 0.5% truncation floor, not evidence that nobody is short; priced_lean_pct (+1.02) is purely the run-up term. https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+   "already_public": [
+    {
+     "what": "FY26 trading update: revenue c.GBP40.0m (+11%), underlying EBITDA c.GBP16.0m (+18%), underlying PBT c.GBP6.2m (+13%), exit ACMRR GBP34.0m (+15% cc), gross cash GBP5.37m, net cash c.GBP0.63m (FY25 GBP6.96m), 'in line with market expectations', record H2",
+     "date": "2026-07-15",
+     "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/fy26-trading-update/9668956"
+    },
+    {
+     "what": "H1 FY26 interims: revenue GBP14.65m (down from GBP15.79m), underlying PBT loss GBP0.69m, net cash GBP3.29m; full year in line with Board expectations",
+     "date": "2026-03-16",
+     "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/interim-results/9474626"
+    },
+    {
+     "what": "Multi-year Exchange Cloud win with the Stock Exchange of Thailand, revenue share, go-live H1 FY27 (eighth exchange)",
+     "date": "2026-09-01",
+     "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/stock-exchange-of-thailand-exchange-cloud-win/9747171"
+    },
+    {
+     "what": "Notice of Results: FY26 finals on 19 October 2026, investor presentation 21 October 13:00 BST",
+     "date": "2026-10-07",
+     "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/notice-of-results-and-investor-presentation/9810776"
+    }
+   ],
+   "new_in_release": [
+    {
+     "line": "guidance",
+     "expect": "First outlook statement for FY27; Beeks gives qualitative guidance ('in line with expectations'), likely reiterated on the GBP34.0m ACMRR underpin and SET go-live; risk is H2-weighting/revenue-share phasing language. Direction unknown, lean neutral."
+    },
+    {
+     "line": "cash_flow",
+     "expect": "Full cash-flow statement and capex for the year in which net cash fell from GBP6.96m to GBP0.63m (GBP2.7m of it in H2); likely shows weak/negative free cash flow and rising asset-finance; lean negative unless paired with a facility or capex-normalisation message."
+    },
+    {
+     "line": "reported_quarter",
+     "expect": "Audited FY26 figures at or near the July pre-release; no change expected."
+    },
+    {
+     "line": "dividend",
+     "expect": "Historically none; no change expected."
+    },
+    {
+     "line": "other",
+     "expect": "Possible new contract announcements alongside results (Beeks has paired wins with updates before); unknown."
+    }
+   ],
+   "session_check": "bmo -- the issuer's Notice of Results (RNS 2026-10-07 07:52) dates FY26 finals to 19 October 2026, and every prior Beeks results RNS on Investegate went out at 07:00 London (e.g. 2026-07-15 07:00, 2026-03-16 07:00, 2025-10-06 07:00): https://www.investegate.co.uk/company/BKS"
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BKS.json",
+    "text": "Exit ACMRR of GBP34.0m covers about 76% of the only published FY27 revenue estimate (Progressive GBP44.5m), the same coverage FY26 had going in (GBP29.5m ACMRR vs GBP40.0m outturn, 74%), and the SET Exchange Cloud contract goes live in H1 FY27, so a reiterated FY27 outlook is the likely first guide.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/fy26-trading-update/9668956",
+    "source_date": "2026-07-15",
+    "reaction_history_on_this_line": "Outlook reiterations have been sold: Oct 2025 finals said 'confident' in FY26 with no number and fell -7.7% (AJ Bell: -9.1% intraday); Mar 2026 interims kept the full year in line and fell -11.6%; Jul 2026 'in line' update fell -6.5%.",
+    "why_not_priced": "The stock has fallen from 225p (15 Sep) to 173p with no RNS, against a one-analyst Buy target of 335p and about 10x trailing EBITDA; if the market were pricing a routine FY27 reiteration the 20-day run-up would not be -20% against the AIM All-Share's c.-4%. Coverage is one house broker plus one paid note, so nobody publishes the ACMRR-to-forecast coverage arithmetic. Capped small because the FY27 bar is a single, pre-July, issuer-sponsored estimate.",
+    "independence": "Progressive 16 Feb 2026 note (FY27E revenue GBP44.5m): https://beeksgroup.com/wp-content/uploads/2026/02/BKS-20260216.pdf ; SET win RNS: https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/stock-exchange-of-thailand-exchange-cloud-win/9747171",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BKS.json",
+    "text": "Net cash fell from GBP6.96m (Jun 2025) to GBP3.29m (Dec 2025) to GBP0.63m (Jun 2026) on upfront Exchange Cloud and capacity capex, so the audited cash-flow statement in the release will show the full capex and free-cash-flow drain the July update only summarised, the line that sank Luceco on a raised-guide day.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/fy26-trading-update/9668956",
+    "source_date": "2026-07-15",
+    "reaction_history_on_this_line": "Not isolated before; the Mar 2026 interims (net cash halved to GBP3.29m, H1 underlying loss) fell -11.6%, and the Jul 2026 update disclosing net cash of GBP0.63m fell -6.5%.",
+    "why_not_priced": "The headline net cash is public, so this is sized small: what is not yet public is the capex total, operating cash conversion and any financing arrangement. On the financing question the money buys revenue-share Exchange Cloud deployments that the company says are already cash-flow positive (Kraken, ASX) and that are corroborated by ACMRR +15%, which is why it is not larger. A placing or facility announced with results would move this either way.",
+    "independence": "Interims H1 net cash GBP3.29m after 'upfront investment to support contract wins': https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/interim-results/9474626",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BKS.json",
+    "text": "The shares fell from 225p on 15 Sep to 173.22p at the 16 Oct seal (20-day -20.4%) with no RNS between the 1 Sep SET win and the 7 Oct Notice of Results, against an AIM All-Share index that went from 783 to 771 over the same span, and with no disclosed short.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/BKS.L?range=4mo&interval=1d",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "No prior instance of a comparable unexplained pre-results slide in the baseline history.",
+    "why_not_priced": "Sized 0 on purpose: an unexplained drawdown is worth nothing until a cause is found, and in a $144k/day AIM name the filing record is not the information set (a fund seller would look identical to informed selling). It is filed because it sets both sides of the reaction: a reiterated outlook against an oversold tape, or confirmation of whatever the sellers know.",
+    "independence": "Investegate RNS list shows no announcement between 2026-09-01 and 2026-10-07: https://www.investegate.co.uk/company/BKS ; AIM All-Share: https://query1.finance.yahoo.com/v8/finance/chart/%5EFTAI?range=2mo&interval=1d",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BKS.json",
+    "text": "The CFO exercised 50,000 nil-cost options on 20 July and sold 50,000 shares at 209.5p on 29 July, the only PDMR dealing since the trading update.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/pdmr-shareholding/9694161",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "No measurable reaction: the stock closed 210p on 29 Jul and 202p on 30 Jul, within its usual range.",
+    "why_not_priced": "Largely priced: it is public and 2.5 months old, and it looks like an exercise-and-sell rather than a view. Kept as a near-zero finding because it is the only insider signal and it is a sale, not a buy, into a 20% drawdown.",
+    "independence": "Option exercise RNS 2026-07-20: https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/exercise-of-share-options/9678325",
+    "i": 3
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "BKS.json",
+    "text": "Investor Meet Company results presentation on 21 October 2026 13:00 BST, after the one-session bmo window closes on 19 October; any Q&A colour on FY27 phasing lands outside the window.",
+    "resolves_by": "2026-10-21",
+    "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/notice-of-results-and-investor-presentation/9810776",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BKS.json",
+    "text": "FY26 audited figures will match the July pre-release (revenue GBP40.0m, EBITDA GBP16.0m, PBT GBP6.2m)",
+    "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/fy26-trading-update/9668956",
+    "first_hunter_reason": "duplicate",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BKS.json",
+    "text": "SET Exchange Cloud win (multi-year, revenue share, go-live H1 FY27)",
+    "source": "https://www.investegate.co.uk/announcement/rns/beeks-financial-cloud-group--bks/stock-exchange-of-thailand-exchange-cloud-win/9747171",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BKS.json",
+    "text": "News or broker commentary explaining the Sep-Oct 2026 slide (WebSearch for September/October 2026 Beeks share coverage): nothing found",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BKS.json",
+    "text": "Post-July FY27 consensus or Canaccord forecast: none public; MarketBeat lists one analyst, Buy, 335p target reiterated 2026-07-15 (https://www.marketbeat.com/stocks/LON/BKS/forecast/), snippet only",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BKS.json",
+    "text": "Progressive Research notes after Feb 2026 on beeksgroup.com (2026/07 and 2026/09 PDF paths 404)",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BKS.json",
+    "text": "TechMarketView 'Record H2 saves Beeks blushes' (2026-07-15) is paywalled; headline only (https://www.techmarketview.com/ukhotviews/archive/2026/07/15/record-h2-saves-beeks-blushes)",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BKS.json",
+    "text": "TR-1 / Holding(s) in Company RNS in 2026: none on Investegate since Feb 2025",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BKS.json",
+    "text": "Domestic Scottish press (Herald, Scotsman, Times, Insider.co.uk) for 2026 Beeks items: nothing relevant",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BKS.json",
+    "text": "Sharecast, Proactive Investors, Investors' Chronicle: known 403 to both tools, not retried",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "eu/2026-10-19/ITM",
+  "hunter_definition": ".claude/agents/unpriced-hunter-uk.md",
+  "lessons_file": "researcher_europe/LESSONS.md",
+  "baseline": {
+   "market": "EU",
+   "submarket": "uk",
+   "submarket_name": "United Kingdom",
+   "language": "en",
+   "ticker": "ITM",
+   "yahoo_symbol": "ITM.L",
+   "tv_symbol": "LSE:ITM",
+   "company": "ITM Power PLC",
+   "industry": "Producer Manufacturing",
+   "event_date": "2026-10-19",
+   "session": "bmo",
+   "session_unresolved": true,
+   "session_basis": "RNS-dated, time not stated; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+   "window": "close of the session before 2026-10-19 -> 2026-10-19 close",
+   "sealed_utc": "2026-10-16T13:50:20+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/ITM.L?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Investegate (RNS mirror)"
+   },
+   "tape": {
+    "spot": 92.7,
+    "currency": "GBp",
+    "run_up_20d_pct": -12.46,
+    "run_up_5d_pct": -1.23,
+    "run_up_60d_pct": -12.96,
+    "median_turnover_usd_20d": 3239246,
+    "realised_vol_20d_pct": 49.06,
+    "realised_vol_60d_pct": 43.74,
+    "bars_3y": 761
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on …"
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/ITM.L?modules=earningsHistory%2CfinancialData",
+    "quarters": [],
+    "analyst_count": null,
+    "analyst_band": "unknown",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+   },
+   "history": {
+    "n": 11,
+    "basis": "observed_rns",
+    "source": "https://www.investegate.co.uk/company/ITM",
+    "median_abs_move_pct": 2.73,
+    "events": [
+     {
+      "move_pct": 17.31,
+      "date_used": "2023-12-04",
+      "headline": "Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 24.45,
+      "date_used": "2024-01-31",
+      "headline": "Interim Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -1.42,
+      "date_used": "2024-06-06",
+      "headline": "Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -2.4,
+      "date_used": "2024-08-08",
+      "headline": "Notice of Preliminary Results and Presentation",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -6.36,
+      "date_used": "2024-08-15",
+      "headline": "Preliminary results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 0.41,
+      "date_used": "2024-12-05",
+      "headline": "Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 1.43,
+      "date_used": "2025-01-30",
+      "headline": "Interim Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 9.01,
+      "date_used": "2025-08-14",
+      "headline": "Preliminary Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -2.49,
+      "date_used": "2025-12-04",
+      "headline": "Trading update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -5.97,
+      "date_used": "2026-01-29",
+      "headline": "Half-year Financial Report",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 2.73,
+      "date_used": "2026-10-08",
+      "headline": "Notice of Preliminary Results and Guidance Update",
+      "basis": "observed_rns"
+     }
+    ],
+    "caveat": "Dates are REAL: each row is a results announcement the market's own archive records on that date, and the move is over this stage's own window. Only the UK (Investegate) and Norway (Oslo NewsWeb) reach this state; the other eight markets are estimated.",
+    "scale_is_lower_bound": false
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Investegate (RNS mirror) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+   },
+   "positioning": {
+    "short_ratio_pct": 2.22,
+    "isin": "GB00B0130H42",
+    "position_date": "2026-10-14",
+    "issuer_as_published": "ITM POWER PLC",
+    "short_ratio_prev_pct": 2.42,
+    "short_change_pct_pts": -0.2,
+    "stale_cache_days": null,
+    "covered": true,
+    "as_of": "2026-10-15",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "basis": "sum of disclosed net short positions at or above 0.5% of shares outstanding, as published by the national regulator"
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 3.09,
+    "from_realised_vol_1d_pct": 3.09,
+    "from_history_median_pct": 2.73,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+   },
+   "lean_components": {
+    "short_squeeze": 1.332,
+    "short_building": 0.4,
+    "runup": 0.623
+   },
+   "priced_lean_pct": 2.355,
+   "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_covered": true,
+   "anchor_coverage": {
+    "state": "disclosed",
+    "register": "FCA aggregated net short positions",
+    "as_of": "2026-10-15",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+   },
+   "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.45,
+    "anchor_state": "disclosed",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move, and cut to 0.35 where that history is a cadence estimate rather than observed dates -- measured 2026-09-22, an estimated history lands mostly on ordinary sessions and its median absolute move runs about half an observed one. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a di…"
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "FY26: the company's own ranges (revenue £40-43m, adj. EBITDA loss £20-21m, cash £210-215m), per RNS https://www.investegate.co.uk/announcement/rns/itm-power--itm/notice-of-preliminary-results-and-guidance-update/9812291 and https://www.investegate.co.uk/announcement/rns/itm-power--itm/gb-energy-40m-investment-and-desnz-46-5m-grant/9511375. FY27 consensus is UNSOURCED: only a Simply Wall St/S&P snippet of ~£58m revenue (July 2026 snapshot, page 403 to both tools), plus Morgan Stanley's April note citing FY28 consensus revenue £109m and EBITDA -£4m via secondary press. The FY27-dependent findings are capped small.",
+   "positioning_check": "FCA aggregated net short 2.22% as of 2026-10-14, down from 2.42%, so covering (-0.20pp) (https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv, per baseline). FCA historic per-holder file (to 10 Jul 2026) shows Helikon cut from 2.63% (13 Apr) to 0.83% (27 May) and Qube from 1.30% to below 0.5% by May. This is a modest and declining short, not a crowded one.",
+   "already_public": [
+    {
+     "what": "FY26 revenue guidance raised to £40m-£43m (from £35m-£40m), helped by percentage-of-completion adoption",
+     "date": "2026-02-17",
+     "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/fy26-revenue-guidance-raised-/9433435"
+    },
+    {
+     "what": "FY26 cash guidance raised to £210m-£215m after the £40m GB Energy subscription; £46.5m DESNZ grant for Chronos 1 GW line (formally awarded 9 Jul)",
+     "date": "2026-04-09",
+     "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/gb-energy-40m-investment-and-desnz-46-5m-grant/9511375"
+    },
+    {
+     "what": "FY26 adjusted EBITDA loss guidance cut to £20m-£21m (27% better than £27m-£29m; FY25 £33.0m); revenue and cash guidance unchanged; prelims confirmed for 19 Oct with presentation 09:00",
+     "date": "2026-10-08",
+     "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/notice-of-preliminary-results-and-guidance-update/9812291"
+    },
+    {
+     "what": "Results delayed to second half of October because of the first-year audit by the new auditor BDO; Annual Report will not be laid at the 30 Oct AGM",
+     "date": "2026-10-05",
+     "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/notice-of-agm/9805355"
+    },
+    {
+     "what": "Hydropulse Heads of Terms for 150 MW, 10-year BOO project with a European refinery, FID targeted 2027, bank project-finance talks",
+     "date": "2026-10-12",
+     "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/hydropulse-signs-heads-of-terms-for-150-mw-project/9816832"
+    }
+   ],
+   "new_in_release": [
+    {
+     "line": "guidance",
+     "expect": "First FY27 (year to Apr 2027) guide for revenue, adjusted EBITDA and cash. Management 'never guide beyond our current financial year', so this is new. Direction unknown, with a slight lean: thin firm intake since January caps revenue, and the lower FY26 loss base helps EBITDA. Bar unconfirmed (S&P-sourced snippet ~£58m FY27 revenue)."
+    },
+    {
+     "line": "other",
+     "expect": "Year-end (30 Apr 2026) contracted backlog, against £152m 'to date' at the January interims. Likely flat to down, since about £22-25m of H2 revenue was burned and only the 20 MW MorGen POSEIDON converted to firm in the RNS record."
+    },
+    {
+     "line": "h2_trading",
+     "expect": "Commentary on H1 FY27 (May-Oct 2026), which is almost complete at release. Unknown."
+    },
+    {
+     "line": "cash_flow",
+     "expect": "FY27 cash guide including Chronos line capex (grant-backed) and any Hydropulse spend. Modest negative risk."
+    },
+    {
+     "line": "reported_quarter",
+     "expect": "FY26 revenue, EBITDA and cash should land inside the pre-released ranges. Audit-adjustment tail is small after the 8 Oct upgrade."
+    }
+   ],
+   "session_check": "bmo: the issuer's 8 Oct 2026 RNS sets an analyst presentation for 09:00 on 19 Oct, and every ITM results RNS on Investegate (interims 29 Jan 2026, prelims 14 Aug 2025) is stamped 07:00 AM. https://www.investegate.co.uk/announcement/rns/itm-power--itm/notice-of-preliminary-results-and-guidance-update/9812291 ; https://www.investegate.co.uk/company/ITM"
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "Since the January interims (backlog £152m 'to date'), the RNS record shows only one order converting to firm backlog: MorGen's 20 MW POSEIDON at FID (NtP 16 Feb, confirmed 11 Mar). Everything else is non-binding (DB Systemtechnik LOI, Protium partnership, Rheinmetall collaboration, Hydropulse 150 MW HoT; Stablegrid's 30 MW FID 'expected in 2026' and RWE's 150 MW call-offs are not announced). Meanwhile about £22-25m of H2 FY26 revenue was recognised, so the year-end backlog and the first FY27 revenue guide are constrained.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/company/ITM",
+    "source_date": "2026-10-16 (RNS list read; items 2026-01-29 to 2026-10-12)",
+    "reaction_history_on_this_line": "First-guide days: FY26 guide at the Aug 2025 prelims (+50% revenue growth guided) +9.0%; Aug 2024 prelims -6.4%; Jan 2026 interims (guide reiterated, backlog £152m) -6.0%.",
+    "why_not_priced": "Partly priced: the stock is -12.5% over 20 sessions. But that move tracks the sector (Plug -30.6%, Ceres -23.0% over the same 20 sessions, Yahoo tape), not an ITM order shortfall. Nobody publishes an ITM backlog roll-forward, and the size of the FY27 guide is not knowable until the release. If the shortfall were priced, the 8 Oct EBITDA upgrade would not have closed +2.7%, and the consensus FY27 revenue would have been cut on the record. The only snippet shows a cut from ~£71m to ~£58m between March and July, so it may be partly in.",
+    "independence": "Interims call (3 Feb 2026): CFO declined to predict book-to-bill; the backlog 'comprises only of fully contracted orders without any starting conditions' https://www.investing.com/news/transcripts/earnings-call-transcript-itm-power-sees-record-revenue-in-h1-2026-93CH-4480839 ; secondary German press reports book-to-bill fell from 5.5 to about 4 (snippet only, unverified) https://trading-treff.de/trading/itm-power-aktie-42-prozent-crash-vor-juni-entscheidungen",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "The 8 Oct RNS cut the FY26 adjusted EBITDA loss to £20-21m, 27% better than guided and 38% better year on year, with revenue unchanged. That lowers the cost and legacy-loss base the FY27 EBITDA guide starts from: legacy contracts were 29% of backlog in January and due to roll off over about 18 months.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/notice-of-preliminary-results-and-guidance-update/9812291",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "The 8 Oct EBITDA upgrade itself closed +2.73% (89.60p to 92.05p) and the gain had faded to 90.00p by 15 Oct. The name sells its pre-released good news.",
+    "why_not_priced": "The FY26 number is priced (public 8 Oct). The transmission into FY27 EBITDA is not knowable until the guide, and the stock gave back the upgrade, which is what an unpriced read-through would look like. Only an inference, so sized small.",
+    "independence": "Interims RNS: 71% of the £152m backlog was profitable, up from 60%, with the legacy portion being worked through https://www.investegate.co.uk/announcement/rns/itm-power--itm/half-year-financial-report/9392466",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "Hydropulse's 150 MW BOO Heads of Terms (12 Oct) commits ITM to a capital-heavy model ('constructive discussions with banks on project-level financing'). The first FY27 cash guide must carry FEED and Hydropulse build-out alongside the Chronos line capex. The money buys 10-year contracted recurring revenue, but FID is 2027, so most capex falls after FY27.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/hydropulse-signs-heads-of-terms-for-150-mw-project/9816832",
+    "source_date": "2026-10-12",
+    "reaction_history_on_this_line": "12 Oct HoT day closed +0.7% (93.85p to 94.55p) after intraday gains reported at 4-7%. The 9 Apr GB Energy equity plus grant (a cash-guide raise) started the run from ~63p to ~194p.",
+    "why_not_priced": "The cash cost of the BOO model has not been quantified anywhere. FY26 cash guidance (£210-215m) predates the HoT and excludes Hydropulse, so the first number arrives with the FY27 cash guide.",
+    "independence": "Interims call: CEO had 'not given a specific price' on Hydropulse capex and described modelling full CapEx and OpEx https://www.investing.com/news/transcripts/earnings-call-transcript-itm-power-sees-record-revenue-in-h1-2026-93CH-4480839",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "The pre-print drawdown is sector-wide and the short is covering. ITM -12.5% over 20 sessions against Plug -30.6%, Ceres -23.0% and thyssenkrupp nucera -6.7% on the same tape. FCA aggregate short fell 2.42% to 2.22% by 14 Oct, and the large spring shorts (Helikon 2.63%, Qube 1.30%) were cut below disclosure by May.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/ITM.L?range=3mo&interval=1d",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "No clean precedent. The June 2026 sector rout (Goldman sell, Ballard -19%) took ITM down 27% in a week.",
+    "why_not_priced": "Mostly priced. It agrees with the baseline's positive short-squeeze/covering lean, so it is sized near zero. Filed because the sector beta, not company news, explains the 20-day run-up the free control reads.",
+    "independence": "FCA historic per-holder disclosures (sheet 'Historic Disclosures 10.07.2026') https://www.fca.org.uk/publication/data/short-positions-daily-update.xlsx",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "This is the first-year audit by new auditor BDO, under a newly adopted percentage-of-completion policy. Results came about 9 weeks later than FY25's (14 Aug 2025 vs 19 Oct 2026), and the Annual Report will miss the AGM. This leaves a small tail risk of audit-driven changes to the reported FY26 numbers or disclosures.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/notice-of-agm/9805355",
+    "source_date": "2026-10-05",
+    "reaction_history_on_this_line": "No prior audit-related event at ITM in the RNS record read.",
+    "why_not_priced": "The delay is public, and the 8 Oct EBITDA upgrade three days later suggests the audited numbers were essentially settled. So this is near zero and only the tail is unpriced.",
+    "independence": "Interims RNS describing the move to percentage-of-completion for non-standard NEPTUNE, POSEIDON and ALPHA https://www.investegate.co.uk/announcement/rns/itm-power--itm/half-year-financial-report/9392466",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "Hydropulse 150 MW refinery project FID targeted 2027, production 2029",
+    "resolves_by": "2027-12-31",
+    "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/hydropulse-signs-heads-of-terms-for-150-mw-project/9816832",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "Stablegrid Netzbrücke 410 (30 MW) FID 'expected in 2026'; 680 MW project FID 2028",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/selected-for-710-mw-of-projects-in-germany/9248270",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "AGM 30 Oct 2026; Annual Report to a later General Meeting",
+    "resolves_by": "2026-10-30",
+    "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/notice-of-agm/9805355",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "CTO Simon Bourne sold ~873,000 shares at ~157p after exercising options at 32p",
+    "source": "https://www.boerse-express.com/news/articles/itm-power-cto-verkauft-873000-aktien-902676",
+    "first_hunter_reason": "outside_window",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "CFO custodian sale of 111 shares at £1.0053",
+    "source": "https://www.investegate.co.uk/announcement/rns/itm-power--itm/director-pdmr-shareholding/9807445",
+    "first_hunter_reason": "duplicate",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "Book-to-bill fell from 5.5 to about 4 (German retail press)",
+    "source": "https://trading-treff.de/trading/itm-power-aktie-42-prozent-crash-vor-juni-entscheidungen",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ITM.json",
+    "text": "Goldman Sachs reaffirmed Sell in June 2026; stock -27% in a week",
+    "source": "https://www.ad-hoc-news.de/boerse/news/ueberblick/itm-power-tumbles-27-percent-in-a-week-as-goldman-msci-and-project/69490781",
+    "first_hunter_reason": "outside_window",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ITM.json",
+    "text": "FY27 consensus revenue/EBITDA: Simply Wall St future page 403/Cloudflare to both tools (https://simplywall.st/stocks/gb/capital-goods/aim-itm/itm-power-shares/future); Yahoo quoteSummary earningsTrend 'Invalid Crumb'",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ITM.json",
+    "text": "Broker preview of the 19 Oct prelims (Berenberg, JPM Cazenove house brokers; Peel Hunt, Morgan Stanley, Goldman): none found dated October 2026",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ITM.json",
+    "text": "lse.co.uk ITM news page: Cloudflare challenge; Sharecast and Proactive are known 403 and were not retried",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ITM.json",
+    "text": "HAR2 contract awards (could affect Uniper 120 MW FEED conversion): no 2026 award announcement found",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ITM.json",
+    "text": "Stablegrid 30 MW Netzbrücke 410 FID: no announcement found",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ITM.json",
+    "text": "Peer counterparties: Nel Q3 2026 not yet out; no RWE/Shell/Linde project statement on ITM found since August",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ITM.json",
+    "text": "Company medium-term targets: the Aug 2025 CMD PDF is image-based and yielded no text via eu_pdftext.py",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ITM.json",
+    "text": "FCA current per-holder positions: the per-holder xlsx is historic to 10 Jul 2026 only",
+    "i": 19
+   }
+  ]
+ },
+ {
+  "id": "eu/2026-10-19/TSTL",
+  "hunter_definition": ".claude/agents/unpriced-hunter-uk.md",
+  "lessons_file": "researcher_europe/LESSONS.md",
+  "baseline": {
+   "market": "EU",
+   "submarket": "uk",
+   "submarket_name": "United Kingdom",
+   "language": "en",
+   "ticker": "TSTL",
+   "yahoo_symbol": "TSTL.L",
+   "tv_symbol": "LSE:TSTL",
+   "company": "Tristel Plc",
+   "industry": "Health Technology",
+   "event_date": "2026-10-19",
+   "session": "bmo",
+   "session_unresolved": false,
+   "session_basis": "vendor flag -1",
+   "window": "close of the session before 2026-10-19 -> 2026-10-19 close",
+   "sealed_utc": "2026-10-16T13:50:24+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/TSTL.L?range=3y&interval=1d",
+    "calendar": "TradingView public scanner",
+    "confirmation": "Investegate (RNS mirror)"
+   },
+   "tape": {
+    "spot": 427.2,
+    "currency": "GBp",
+    "run_up_20d_pct": 8.15,
+    "run_up_5d_pct": -1.23,
+    "run_up_60d_pct": 8.84,
+    "median_turnover_usd_20d": 370468,
+    "realised_vol_20d_pct": 15.32,
+    "realised_vol_60d_pct": 40.07,
+    "bars_3y": 761
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No European single-stock option chain is retrievable from a free source. Yahoo returns 0 expiries and 0 contracts for .L, .DE and .PA symbols against 21 and 196 for AAPL on the same crumb; Eurex's daily reference file carries trading parameters but no settlement prices, no open interest and no underlying ISIN map, and its statistics page is JavaScript with no JSON endpoint. So there is no event-implied move and no skew, and this baseline supplies its own priced_lean_pct and anchor_quality from the national short registers instead. This holds for all ten markets; nothing measured in 2026-09 on …"
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/TSTL.L?modules=earningsHistory%2CfinancialData",
+    "quarters": [],
+    "analyst_count": null,
+    "analyst_band": "unknown",
+    "basis": "Sell-side coverage, carried because it is the measurable proxy for this stage's thesis. Phase 1 measured 1-2 analysts below $1m/day of turnover, 5-7 at $1-5m, 11-13 at $5-25m and 16-19 above, consistently across all three markets. eu_resolve.py ranks the hunt BY this band so the thesis is tested rather than selected on."
+   },
+   "history": {
+    "n": 13,
+    "basis": "observed_rns",
+    "source": "https://www.investegate.co.uk/company/TSTL",
+    "median_abs_move_pct": 1.3,
+    "events": [
+     {
+      "move_pct": 4.44,
+      "date_used": "2024-02-26",
+      "headline": "Half-year Report",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 8.89,
+      "date_used": "2024-07-22",
+      "headline": "Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 0.0,
+      "date_used": "2024-10-01",
+      "headline": "Notice of Preliminary Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -1.9,
+      "date_used": "2024-10-21",
+      "headline": "Final Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -4.42,
+      "date_used": "2025-01-13",
+      "headline": "Confirmation of Interim Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -0.58,
+      "date_used": "2025-02-24",
+      "headline": "Unaudited Interim Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -3.24,
+      "date_used": "2025-06-02",
+      "headline": "Investor Presentations &amp; Notice of Trading Update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 1.73,
+      "date_used": "2025-07-29",
+      "headline": "Trading update",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 0.0,
+      "date_used": "2025-09-16",
+      "headline": "Notice of Preliminary Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 0.56,
+      "date_used": "2025-10-13",
+      "headline": "Final Results",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": 0.63,
+      "date_used": "2026-01-22",
+      "headline": "Positive H1 Trading Update &amp; Directorate Change",
+      "basis": "observed_rns"
+     },
+     {
+      "move_pct": -0.75,
+      "date_used": "2026-03-02",
+      "headline": "Half-year Financial Report",
+      "basis": "observed_rns"
+     }
+    ],
+    "caveat": "Dates are REAL: each row is a results announcement the market's own archive records on that date, and the move is over this stage's own window. Only the UK (Investegate) and Norway (Oslo NewsWeb) reach this state; the other eight markets are estimated.",
+    "scale_is_lower_bound": false
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "vendor forward calendar (TradingView), measured at a 2.2% phantom rate on 90 UK rows against the RNS record. Confirmation against Investegate (RNS mirror) is eu_resolve.py's job, after the fact.",
+    "calendar_source": "TradingView public scanner"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "disclosed_sellers": 0,
+    "covered": true,
+    "basis": "absent from a register that downloaded successfully, so no disclosed net short position at or above the 0.5% public threshold. A real zero -- but the threshold truncates, so 0.4% and 0.0% are both recorded here as 0.0, and the join is on the issuer NAME, so a name spelled differently in the register reads as a zero it should not.",
+    "as_of": "2026-10-15",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv"
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 1.3,
+    "from_realised_vol_1d_pct": 0.97,
+    "from_history_median_pct": 1.3,
+    "basis": "the larger of (a) the median of this name's prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels. Phase 1 median realised move was 2.81% (UK), 3.12% (DE), 4.19% (FR) against Japan's 2.87%, with the tail intact in all three -- 42%, 27% and 52% maxima and no price limit to truncate them."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "runup": -0.408
+   },
+   "priced_lean_pct": -0.408,
+   "priced_lean_basis": "Sum of the components above. Read eu_priced_in.lean_components(): every weight is a PRIOR borrowed from the US runs, none is measured on European data, and eu_resolve.py ranks each component separately so measurement can replace them. What matters is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_covered": false,
+   "anchor_coverage": {
+    "state": "register_read_no_position",
+    "register": "FCA aggregated net short positions",
+    "as_of": "2026-10-15",
+    "source": "https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "basis": "`anchor_covered` is true only where the national short register returned a disclosed net short position for THIS issuer. A name the register was read for and does not name reads 0.0 -- real, but the 0.5% truncation floor rather than a measurement, and below $1m/day of turnover 168 of 190 sampled UK issuers read exactly that. The turnover floor moved from $1m to $200k on 2026-09-19, so this field is how the cost of that move is made visible: eu_resolve.py reports the Spearman split by it, with the count in each arm."
+   },
+   "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.15,
+    "anchor_state": "register_read_no_position",
+    "basis": "magnitude: realised vol plus a reaction history, capped at 0.5 because neither is an option-implied move, and cut to 0.35 where that history is a cadence estimate rather than observed dates -- measured 2026-09-22, an estimated history lands mostly on ordinary sessions and its median absolute move runs about half an observed one. direction: how many of the two positioning components resolved, capped at 0.45 because neither is 25-delta skew and Europe has no margin-balance component to add, and held to 0.15 where the register was read and does not name this issuer -- a truncated zero is not a di…"
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "FY26 consensus per company footnote: revenue GBP51.1m, adjusted PBT GBP11.4m (https://www.investegate.co.uk/announcement/rns/tristel--tstl/positive-trading-update/9680616); company already guided adj PBT >= GBP11.5m. No sourced FY27 consensus found, so outlook-dependent findings are capped small.",
+   "positioning_check": "FCA aggregated register (as of 2026-10-15) does not name Tristel: no disclosed net short at or above 0.5%, a truncated zero, anchor_covered false, no change; priced_lean_pct -0.41 is effectively the run-up. Long side: Canaccord discretionary clients 5.18% (12 Jun 2026) and Artemis up from 3.00% to 4.02% (6 Jul 2026) per TR-1s on Investegate.",
+   "already_public": [
+    {
+     "what": "FY26 trading update: revenue +10% to GBP51.1m, adjusted PBT no less than GBP11.5m (consensus GBP11.4m), adj. EBITDA margin comfortably above 25%, cash GBP16.0m, debt free",
+     "date": "2026-07-22",
+     "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/positive-trading-update/9680616"
+    },
+    {
+     "what": "H1 FY26: revenue GBP25.65m (+14%), adj PBT GBP5.47m, interim dividend held at 5.68p; 'comfortably in line with expectations' for FY26",
+     "date": "2026-03-02",
+     "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/half-year-financial-report/9452092"
+    },
+    {
+     "what": "Notice of results for 19 Oct 2026; new CEO Chris Lee will present 'my vision for the Company's future'",
+     "date": "2026-09-30",
+     "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/notice-of-results/9797743"
+    },
+    {
+     "what": "CEO change: Matt Sassone left 30 June; Chris Lee CEO from 1 Aug 2026",
+     "date": "2026-06-17",
+     "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/appointment-of-ceo-/9621835"
+    }
+   ],
+   "new_in_release": [
+    {
+     "line": "guidance",
+     "expect": "unknown: first outlook for FY27 and the new CEO's strategy/vision; Tristel gives no numeric guide, but a reset of investment levels (US build-out) or of the double-digit growth / 25% EBITDA targets is possible in either direction"
+    },
+    {
+     "line": "h2_trading",
+     "expect": "Q1 FY27 current trading commentary; implied H2 FY26 revenue growth slowed to ~6% (GBP25.45m vs GBP23.93m) from 14% in H1, so the FY27 double-digit growth claim needs re-acceleration; slight downside risk"
+    },
+    {
+     "line": "dividend",
+     "expect": "progressive policy; final likely modestly up on FY25 total 14.20p; cash GBP16.0m allows it; no sign of a special"
+    },
+    {
+     "line": "cash_flow",
+     "expect": "cash already disclosed at GBP16.0m; little new"
+    },
+    {
+     "line": "reported_quarter",
+     "expect": "statutory numbers within a whisker of the July pre-release; adj PBT 'no less than' GBP11.5m could print slightly above"
+    },
+    {
+     "line": "other",
+     "expect": "US revenue split (H1 US only GBP262k), OPH/ULT traction, ORL FDA submission timing, 3T Pro early uptake; small in group terms"
+    }
+   ],
+   "session_check": "bmo: Notice of Results RNS (30 Sep 2026) sets results for Monday 19 Oct 2026 with a 9:30am analyst briefing, i.e. a pre-open RNS as with all prior Tristel finals; https://www.investegate.co.uk/announcement/rns/tristel--tstl/notice-of-results/9797743"
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSTL.json",
+    "text": "FY26 revenue GBP51.1m and adjusted PBT >= GBP11.5m (vs GBP11.4m consensus) were pre-released on 22 July; the results will restate them.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/positive-trading-update/9680616",
+    "source_date": "2026-07-22",
+    "reaction_history_on_this_line": "FY25 finals after a pre-release moved +0.56% (2025-10-13); FY24 finals -1.9% (2024-10-21); the July 2026 pre-release itself +1.3%",
+    "why_not_priced": "It is priced: the number has been public for three months and the stock is up from 386.5p on the day to 427p; included only because it is a sourced fact on the print, [sizing note removed].",
+    "independence": "H1 report says FY firmly on track: https://www.investegate.co.uk/announcement/rns/tristel--tstl/half-year-financial-report/9452092",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSTL.json",
+    "text": "Implied H2 FY26 revenue was GBP25.45m (51.1 - 25.65), only +6.4% on H2 FY25's GBP23.93m (46.5 - 22.57) and sequentially below H1, against +14% in H1, so the double-digit growth target needs re-acceleration in FY27 current trading.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/half-year-financial-report/9452092",
+    "source_date": "2026-03-02",
+    "reaction_history_on_this_line": "no prior Tristel print with a growth-target miss in the record; the stock moved under 2% on every finals day in the baseline",
+    "why_not_priced": "The arithmetic is derivable from two public RNS and the full-year revenue matched consensus, so the H2 slowdown itself is priced; what is not priced is whether Q1 FY27 trading shows re-acceleration. If the market were worried the stock would not have run +8% over 20 days into the print.",
+    "independence": "FY26 revenue figure from https://www.investegate.co.uk/announcement/rns/tristel--tstl/positive-trading-update/9680616 (same company, different document); no external series",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSTL.json",
+    "text": "Results are the new CEO Chris Lee's first, and he has said he will share 'my vision for the Company's future', making a strategy/investment reset a scheduled possibility in this release.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/notice-of-results/9797743",
+    "source_date": "2026-09-30",
+    "reaction_history_on_this_line": "no prior CEO-transition results in the baseline record; the June 2026 CEO appointment RNS sat in a period the baseline does not record as a move",
+    "why_not_priced": "Content is unknown to everyone; the sign is an inference (new CEOs often step up investment, which on a margin-target name reads negative), so it is sized small with a wide band. Same notice repeats the double-digit growth / >=25% EBITDA targets, which argues against a target cut.",
+    "independence": "Chair's statement that Lee's US experience suits 'further growth and overseas expansion' points to US investment: https://www.investegate.co.uk/announcement/rns/tristel--tstl/appointment-of-ceo-/9621835",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSTL.json",
+    "text": "Institutions were building ahead of the period end: Artemis crossed 4% (4.02% from 3.00%) on 6 July 2026 and Canaccord discretionary clients disclosed 5.18% on 12 June 2026.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/holding-s-in-company/9656752",
+    "source_date": "2026-07-07",
+    "reaction_history_on_this_line": "none recorded",
+    "why_not_priced": "Public TR-1s three months old; largely in the price and in the run-up.",
+    "independence": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/holding-s-in-company/9621175",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSTL.json",
+    "text": "The main US ultrasound-HLD competitor Nanosonics reported record North American trophon upgrades (+32%) in FY26 on 25 Aug 2026, a competitive read against Tristel ULT's early US ramp (Tristel H1 US revenue only GBP262k).",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-19",
+    "source": "https://www.fool.com.au/2026/08/25/nanosonics-posts-fy26-revenue-growth-and-prepares-to-launch-coris/",
+    "source_date": "2026-08-25",
+    "reaction_history_on_this_line": "none; US is <2% of group revenue",
+    "why_not_priced": "A competitor proxy, not a Tristel number; US is too small in Tristel's revenue for it to matter net of the rest of the company (UK/EMEA ~98%).",
+    "independence": "none",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "TSTL.json",
+    "text": "Dividend tracker listing a 12 Oct 2026 declaration date",
+    "source": "https://www.dividendmax.com/united-kingdom/london-stock-exchange/health-care-equipment-and-services/tristel/dividends",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "TSTL.json",
+    "text": "3T Pro paid digital tier launch as a recurring-revenue upside",
+    "source": "https://www.investegate.co.uk/announcement/rns/tristel--tstl/3t-pro-commercial-launch/9687777",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSTL.json",
+    "text": "Investegate TSTL company page: no RNS after the 30 Sep Notice of Results (no profit warning, no PDMR dealing by the new CEO since Feb 2026)",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSTL.json",
+    "text": "FY27 consensus / Cavendish (house broker) forecasts: none found in public sources",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSTL.json",
+    "text": "Tristel ORL FDA submission / clearance news after June 2026: none",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSTL.json",
+    "text": "investors.tristel.com investor hub: Cloudflare 'Just a moment' interstitial to curl",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSTL.json",
+    "text": "lse.co.uk news: 403 to WebFetch",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSTL.json",
+    "text": "Sharecast, Proactive, Investors' Chronicle: known 403, not retried",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSTL.json",
+    "text": "October 2026 press coverage of Tristel: none found",
+    "i": 13
+   }
+  ]
+ }
+]
