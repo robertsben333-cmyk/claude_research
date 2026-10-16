@@ -37,3 +37,7 @@
 ## Intraday panel 12:00 — STARTED
 - Logged at 2026-10-16 15:59 UTC
 - Fired 15:59 UTC (11:59 ET), slot 1200, first snapshot of the day (no 10:00 snapshot on disk), so it builds universe + sweep and freezes names. Plan: universe -> sweep -> freeze -> seal -> unpriced-searcher (Opus 5.5) per name, amc first -> guard -> edge_score -> packs -> 4 judges -> panel_score --dry-run --stage E-PI -> timeline. No orders.
+
+## Intraday panel 12:00 — universe and baselines sealed
+- Logged at 2026-10-16 16:01 UTC
+- Window 2026-10-16 amc + 2026-10-19 bmo: 3 of 46 rows (FITB, CLF, DX, all 10-19 bmo; no amc tonight). Thin-day check: --include-unknown gave 23; session_resolve killed 5 (HDB, IBN, PAC, PBAM already reported; HIFS no CIK... counted as unresolved by script: 5 killed, 15 carried, 0 confirmed by press release), so unknowns withheld. Baselines sealed 16:0x UTC: FITB impl 7.34%, CLF impl 12.44%, DX no chain.
