@@ -65,3 +65,6 @@
 ## Edge hunt (panel, Fable) — searchers launched
 - Logged at 2026-10-16 17:14 UTC
 - Sweep: 3 of 3 confirmed by company sources, 0 phantoms, all 2026-10-19 bmo. Provenance US-PF, us-searcher-fable.v1 · claude-fable-5-1. 3 unpriced-searcher-fable launched in one wave: CLF, DX, FITB.
+## Edge hunt (panel) — searchers launched
+- Logged at 2026-10-16 17:12 UTC
+- Sweep: 3 of 3 confirmed by company sources, 0 phantoms, all 2026-10-19 bmo (DX baseline_history_trustworthy false, searcher told). Provenance US-P, us-searcher.v2 · claude-opus-5-5. 3 unpriced-searcher launched in one wave: CLF, DX, FITB.
