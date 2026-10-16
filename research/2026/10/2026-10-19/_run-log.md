@@ -11,3 +11,8 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-16 14:02 UTC
 - 4 hunts done; 4 ranked, 0 above 2.8 (BKS -0.60, TSTL -0.60, ITM -1.10, AIRA -1.20). 4 packs, four judges (intl).
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-16 14:06 UTC
+- Event date 2026-10-19. 4 ranked (uk 3, se 1): BKS -0.60, TSTL -0.60, ITM -1.10, AIRA -1.20; 0 above floor 2.8. AIRA and ITM sealed bmo? and both confirmed bmo by the issuer. Yahoo calendar unavailable on all ten markets.
+- Panel: 4/4 members, no fallback; 1 selected: ITM short (k=3, panel_pct 80). AIRA panel_pct 82 at k=2. Note: europe-note.md. Resolve AIRA within ~a week (Nordic feed window; issuer publishes via MFN). Published with EARNINGS_DATA_BRANCH=main.
