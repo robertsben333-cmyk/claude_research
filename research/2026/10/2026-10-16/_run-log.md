@@ -53,3 +53,7 @@
 ## Intraday panel 12:00 — DONE
 - Logged at 2026-10-16 16:14 UTC
 - 3 names (CLF, FITB, DX; 2026-10-19 bmo). Panel 4/4 judges, no fallback, scored --dry-run --stage E-PI (panel-history untouched). Selected: CLF 95L (4/4 top 20%). FITB 26L, DX 9L. Guard: nothing moved (no amc). No orders. Timeline rebuilt.
+
+## Edge hunt (panel) — 2026-10-16 amc + 2026-10-19 bmo — STARTED
+- Logged at 2026-10-16 17:09 UTC
+- Fired 17:06 UTC (13:08 ET start). Window 3 of 46 rows (FITB, CLF, DX, all 2026-10-19 bmo; no amc tonight). Thin-day check: --include-unknown 23 rows, session_resolve killed 5, carried 15, confirmed 0 by press release, so unknowns withheld. Baselines sealed ~17:10 UTC into edge-panel/baselines: FITB impl 7.0%, CLF impl 12.33%, DX no chain. Plan: edge-sweep -> 3 unpriced-searcher (Opus 5.5) -> edge_score -> V2 grounded -> packs -> 4 judges -> panel_score. No orders.
