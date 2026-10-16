@@ -29,3 +29,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-16 01:17 UTC
 - 3 scheduled / 2 eligible / 2 hunted (both J-REITs). 3462 +0.25, 2972 +0.00 (tender-pinned). None above floor; panel (4 of 4 members) selected none.
+
+## Stage X — Close AMC
+- Logged at 2026-10-16 10:17 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc_open, amc -> day order queued for open). verify: 14 exit legs, none UNFILLED, nothing still held. close --submit: no leg due today, no order sent, no refusals. Account reachable. Only alpaca-orders.json fill-status refreshes changed.
