@@ -68,3 +68,7 @@
 ## Edge hunt (panel) — searchers launched
 - Logged at 2026-10-16 17:12 UTC
 - Sweep: 3 of 3 confirmed by company sources, 0 phantoms, all 2026-10-19 bmo (DX baseline_history_trustworthy false, searcher told). Provenance US-P, us-searcher.v2 · claude-opus-5-5. 3 unpriced-searcher launched in one wave: CLF, DX, FITB.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-16 17:24 UTC
+- 3 hunts back (CLF +1.90, FITB +0.60, DX -0.20; none above the 2.8 floor). V2 grounded written before the first print (CLF +3.39, FITB +0.22, DX -0.30). 3 packs, four judges.
