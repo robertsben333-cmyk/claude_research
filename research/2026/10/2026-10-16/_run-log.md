@@ -61,3 +61,7 @@
 ## Edge hunt (panel, Fable) — 2026-10-16 amc + 2026-10-19 bmo — STARTED
 - Logged at 2026-10-16 17:11 UTC
 - Fired 17:08 UTC (13:10 ET start). Window 3 of 46 rows (FITB, CLF, DX, all 2026-10-19 bmo; no amc tonight). Thin-day check: --include-unknown 23 rows, session_resolve killed 5, carried 15, 0 confirmed by press release, so unknowns withheld. Baselines sealed 17:11 UTC into edge-panel-fable/baselines: FITB impl 7.01%, CLF impl 12.3%, DX no chain. Plan: edge-sweep -> 3 unpriced-searcher-fable (Fable 5.1) -> edge_score -> V2 grounded -> packs -> 4 judges -> panel_score --dry-run --stage E-PF. No orders.
+
+## Edge hunt (panel, Fable) — searchers launched
+- Logged at 2026-10-16 17:14 UTC
+- Sweep: 3 of 3 confirmed by company sources, 0 phantoms, all 2026-10-19 bmo. Provenance US-PF, us-searcher-fable.v1 · claude-fable-5-1. 3 unpriced-searcher-fable launched in one wave: CLF, DX, FITB.
