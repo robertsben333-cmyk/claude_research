@@ -1955,6 +1955,49 @@ def main():
           all(it.get("input_sha256") and (it["status"] == "collected"
               or it.get("llm_impact_score") is not None) for it in ledger0["items"]))
 
+    # STAGE M (2026-10-18): the morning-after exit review. Pure functions only; no
+    # network. It must never reach a broker, and a limit on the wrong side of the
+    # pre-market price is a market order, so it is refused rather than scored as a limit.
+    print("\nStage M — morning exit review")
+    sys.path.insert(0, os.path.join(REPO, "researcher_us", "scripts"))
+    import morning as MX
+    from datetime import date as _date
+    mcfg = MX.cfg()
+    check("stage M reads E-P names at panel_pct >= 60 and places no orders",
+          mcfg.get("min_panel_pct") == 60 and mcfg.get("source_dir") == "edge-panel"
+          and mcfg.get("places_orders") is False)
+    msrc = open(os.path.join(REPO, "researcher_us", "scripts", "morning.py"),
+                encoding="utf-8").read()
+    check("morning.py has no broker path", "alpaca" not in msrc.lower())
+    check("stage M's source run is the previous TRADING day",
+          MX.prev_trading_day(_date(2026, 10, 19)) == _date(2026, 10, 16)
+          and MX.prev_trading_day(_date(2026, 11, 27)) == _date(2026, 11, 25))
+    check("the control is the scorebord's exit (amc open, bmo 13:00 ET)",
+          MX.static_rule("amc", mcfg) == "exit_open"
+          and MX.static_rule("bmo", mcfg) == "exit_1300")
+    px = {"open": 10.0, "close": 9.0, "high": 10.6, "low": 9.5}
+    check("a long's sell limit through the open fills at the open",
+          MX.limit_exit(1, 9.8, px) == (10.0, "filled_at_open"))
+    check("a long's sell limit traded through intraday fills at the limit",
+          MX.limit_exit(1, 10.5, px) == (10.5, "filled_intraday"))
+    check("a limit only touched is not a fill; it goes at the close",
+          MX.limit_exit(1, 10.6, px) == (9.0, "unfilled_out_at_close"))
+    check("a short's cover limit traded through intraday fills at the limit",
+          MX.limit_exit(-1, 9.6, px) == (9.6, "filled_intraday"))
+    pk = {"side": 1}
+    good = {"release": {"found": True, "source_url": "https://x"},
+            "expected": {"open_pct_vs_prev_close": 1.0, "open_to_close_pct": 0.5},
+            "recommendation": {"action": "exit_limit", "limit_price": 11.0}}
+    check("a well-formed limit review passes", MX.check_review(good, pk, {"last": 10.5}) == [])
+    check("a limit on the wrong side of the pre-market price is refused",
+          len(MX.check_review(good, pk, {"last": 11.5})) == 1)
+    bad = dict(good, recommendation={"action": "sell"})
+    check("an action outside the three is refused", MX.check_review(bad, pk, {"last": 10}) != [])
+    mag = open(os.path.join(REPO, ".claude", "agents", "morning-reaction-analyst.md"),
+               encoding="utf-8").read()
+    check("the morning analyst has web and file tools only",
+          re.search(r"^tools:\s*WebSearch, WebFetch, Read, Write\s*$", mag, re.M) is not None)
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:
