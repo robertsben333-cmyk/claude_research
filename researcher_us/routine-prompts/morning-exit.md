@@ -6,9 +6,11 @@ reaction and the pre-market move, with one recommended exit each (sell at the op
 limit, or wait until the close). **Keep this file and the Routine in step: any re-paste
 changes both in the same commit.** The block below is the exact text the Routine holds.
 
-- Cron `CRON_TZ=America/New_York 26 8 * * 1-5`: 08:26 New York, about an hour before the
-  open, in New York time so it survives the 2026-11-02 clock change without an edit.
-  The minute is jittered off the half hour on purpose.
+- Cron `CRON_TZ=America/New_York 56 8 * * 1-5`: 08:56 New York, about half an hour before
+  the open, in New York time so it survives the 2026-11-02 clock change without an edit.
+  Created at 08:26 and moved half an hour later the same day on the operator's
+  instruction, so the bmo releases of 08:00-08:30 are out before it reads them. That
+  leaves the analysts about 25 minutes: the advice is compiled at 09:24.
 - Fresh session per fire, model `claude-opus-5-5` for the orchestrating session; the
   analysts are `morning-reaction-analyst` (`model: opus`).
 - Places no orders. Writes to `research/<YYYY>/<MM>/<DATE>/morning/`, DATE being the
@@ -17,7 +19,9 @@ changes both in the same commit.** The block below is the exact text the Routine
   session and named "Stage M — US morning exit review (no orders)". Read back at
   14:23:54 UTC: prompt identical to the block below, model `claude-opus-5-5` (pinned
   with `update_trigger` because creation left it empty), enabled, push notification on,
-  first run 2026-10-19 12:26 UTC, no MCP connectors and empty `sources` and `outcomes`.
+  first run 2026-10-19 12:26 UTC (moved to 12:56 UTC the same day, see the cron line), no MCP connectors and empty `sources` and `outcomes`.
+- Re-pasted with `update_trigger` at 15:12:27 UTC the same day (cron `56 8`, prompt
+  08:56 / 09:24) and read back: next run 2026-10-19 12:56 UTC, model `claude-opus-5-5`.
 - **Must be on `main` before it fires**, or step 0 logs "not on main" and stops.
 
 ---
@@ -33,7 +37,7 @@ Run stage M: the morning-after exit review of yesterday's US panel names, before
 
 Read CLAUDE.md, then invoke the skill `earnings-morning-exit` and follow it exactly.
 
-Re-read the clock with `date -u` and in New York. You fire at about 08:26 New York, an hour before the open. The advice must be compiled and published by 09:20 New York, with or without every review: an exit review published after the open is worth nothing.
+Re-read the clock with `date -u` and in New York. You fire at about 08:56 New York, half an hour before the open. The advice must be compiled and published by 09:24 New York, with or without every review: an exit review published after the open is worth nothing.
 
 The names are stage E-P's from the previous trading day with panel_pct >= 60 whose print is now out: amc yesterday or bmo this morning. `morning.py pick` decides that; do not add or drop names by hand.
 

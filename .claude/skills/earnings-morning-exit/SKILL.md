@@ -1,6 +1,6 @@
 ---
 name: earnings-morning-exit
-description: Stage M. One hour before the US open, takes every name stage E-P scored at panel_pct 60 or higher on the previous trading day whose earnings are now out (amc yesterday, bmo this morning), and has one morning-reaction-analyst per name judge the release, the public reaction and the pre-market move, estimate the open and the open-to-close move, and recommend one exit for a position on the panel's side - sell at the open, a day limit, or wait until the close. Scores yesterday's advice against the static exit rule first. Writes research/<date>/morning/ and places no orders. Use when asked to run stage M, the morning exit review, or the pre-open earnings advice.
+description: Stage M. Half an hour before the US open, takes every name stage E-P scored at panel_pct 60 or higher on the previous trading day whose earnings are now out (amc yesterday, bmo this morning), and has one morning-reaction-analyst per name judge the release, the public reaction and the pre-market move, estimate the open and the open-to-close move, and recommend one exit for a position on the panel's side - sell at the open, a day limit, or wait until the close. Scores yesterday's advice against the static exit rule first. Writes research/<date>/morning/ and places no orders. Use when asked to run stage M, the morning exit review, or the pre-open earnings advice.
 ---
 
 # Stage M — the morning-after exit review
@@ -9,7 +9,9 @@ Built 2026-10-18 on the operator's instruction: *"a routine that runs one hour b
 the open and, for the names that had a score of 60 or higher the day before (US only),
 judges the earnings release, the public reaction and the stock's move, and from that the
 expected price reaction and the recommended action at the open: sell, limit, or wait
-until the end of the day."*
+until the end of the day."* It fires at **08:56 ET** since the same day (moved from 08:26
+on the operator's instruction, so the 08:00-08:30 bmo releases are out), which leaves the
+analysts about 25 minutes. Launch them the moment the briefs exist.
 
 Read `CLAUDE.md` first. Everything this stage computes is in
 `researcher_us/scripts/morning.py`; its docstring defines the three actions, the
@@ -86,7 +88,7 @@ Writes the tape for every pick and one brief per name in `<D>/morning/briefs/`. 
 Launch one `morning-reaction-analyst` per pick, **all in ONE message**, each given only:
 
 > Stage M review. Brief: `<D>/morning/briefs/<TICKER>.json`. Write your review to the
-> `output_path` in the brief. It is now <HH:MM> New York; the advice is compiled at 09:20.
+> `output_path` in the brief. It is now <HH:MM> New York; the advice is compiled at 09:24.
 
 If the agent type is not found (a definition new on `main` that the harness has not
 loaded), use `general-purpose` with model `opus` and tell it to read
@@ -96,9 +98,9 @@ fallback.
 Do not give an analyst your own view, another analyst's review, or anything about
 yesterday beyond what its brief names.
 
-## 5. Compile by 09:20 ET
+## 5. Compile by 09:24 ET
 
-When every analyst has returned, or at 09:20 ET, whichever is first:
+When every analyst has returned, or at 09:24 ET, whichever is first:
 
 ```bash
 python3 researcher_us/scripts/morning.py compile

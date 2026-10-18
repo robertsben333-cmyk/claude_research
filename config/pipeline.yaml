@@ -282,8 +282,8 @@ edge_panel_intraday:
   places_orders: false
   shadow_ledger: false
 
-# Stage M (2026-10-18, operator's instruction): the morning-after exit review. One hour
-# before the US open, every name stage E-P scored at panel_pct >= 60 on the previous
+# Stage M (2026-10-18, operator's instruction): the morning-after exit review. At 08:56 ET,
+# half an hour before the US open (moved from 08:26 the same day so bmo releases are out), every name stage E-P scored at panel_pct >= 60 on the previous
 # trading day whose print is now out (amc yesterday, bmo this morning) gets one
 # morning-reaction-analyst. It reads the release, the public reaction and the
 # pre-market tape and recommends ONE of three exits for a position on the panel's side
@@ -301,7 +301,7 @@ morning_exit:
   agent: morning-reaction-analyst
   earliest_et: "06:30"         # a fire outside these hours logs and stops
   latest_et: "09:29"
-  advice_deadline_et: "09:20"  # compile and publish by then, with or without every review
+  advice_deadline_et: "09:24"  # compile and publish by then, with or without every review
   static_rule:                 # the control, the scorebord's window (2026-10-13)
     amc: exit_open
     bmo: exit_1300

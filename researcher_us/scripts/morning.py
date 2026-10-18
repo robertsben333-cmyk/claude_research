@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Stage M — the morning-after exit review, one hour before the US open.
+"""Stage M — the morning-after exit review, half an hour before the US open.
 
 Built 2026-10-18 on the operator's instruction: *"a routine that runs one hour before
 the open and, for the names that scored 60 or higher the day before (US only), judges
 the earnings release, the public reaction and the stock's move, and from that the
 expected price reaction and the recommended action at the open: sell, limit, or wait
-until the end of the day."*
+until the end of the day."* Moved the same day to 08:56 ET, so the bmo releases of
+08:00-08:30 are out before it reads them.
 
 WHAT IT READS. Stage E-P's run of the previous trading day,
 `research/<prev>/edge-panel/edge-scores-panel.json`. A name is picked when its
