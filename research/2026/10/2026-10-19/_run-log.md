@@ -40,3 +40,7 @@
 ## Close AMC — 2026-10-19 10:10 UTC
 - Logged at 2026-10-19 10:16 UTC
 - Guard mode --require-exit-tif opg: exit 0 (amc_open, amc->day, matched on placement). verify: 14 legs, none UNFILLED, nothing still held. close --submit: no leg due today, nothing sent, no refusals. Fill check re-read the 14 legs; alpaca-orders.json files rewritten by the fill check only. status printed no output.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-19 12:57 UTC
+- source research/2026/10/2026-10-16/edge-panel, now 08:57 EDT
