@@ -103,3 +103,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-19 18:01 UTC
 - 19/19 hunted (unpriced-searcher, Opus 5.5, agent type ran natively). edge_score 19 rankable, EFX alone clears 2.8 (-2.80). V2 grounded written 18:01 UTC, before the first print. 19 packs, four judges.
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-19 18:15 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5, native), 18 confirmed names shed for budget, CBSH unconfirmed. All four judges 19/19 on pinned ids (opus5, opus55, sonnet55, fable51). Selected (mean pct >= 80): EFX short 90, VICR long 90; AERO 79.9 misses (selected under 3-of-4). Searcher: EFX -2.80 alone clears 2.8. V2 written before the first print. Stage E edge/ absent on main at ~18:20 UTC, so no comparison line. publish.sh failed twice on run-log/merge races and was recovered by hand-merge + push. No orders.
