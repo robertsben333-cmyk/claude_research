@@ -72,3 +72,7 @@
 ## Intraday panel 12:00 — wave 1
 - Logged at 2026-10-19 16:02 UTC
 - Seeded from names.json (frozen by 1000). Same 19 hunt names as 1000 (frozen sweep, same priorities); 18 shed for budget, recorded in intraday.json. 37 baselines sealed 16:01-16:03 UTC. 8 searchers launched (platform cap 8): KARO WASH RBB AERO SFBS HBCP WAL SMBK; RLI and 10 bmo names queued.
+
+## Intraday panel 12:00 — independence breach, VICR
+- Logged at 2026-10-19 16:11 UTC
+- VICR searcher reported it read edge-intraday-1000/hunts/VICR.json before searching (it found it on disk; the brief did not point to it). Hunt moved to edge-intraday-1200/_contaminated/VICR.json, unscored. VICR re-run with an explicit read restriction (20th subagent, inside the cap). Later launches (GPC, MMM, VICR rerun) carry the same restriction; none of the 9 finished hunts names an earlier snapshot path in its file. All 9 amc hunts done by 16:11 UTC. Searchers disagree on whether the Fed hiked on 2026-09-16 (most say yes, HBCP says held since Dec 2025): left as filed, judges see both.
