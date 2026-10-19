@@ -76,3 +76,7 @@
 ## Intraday panel 12:00 — independence breach, VICR
 - Logged at 2026-10-19 16:11 UTC
 - VICR searcher reported it read edge-intraday-1000/hunts/VICR.json before searching (it found it on disk; the brief did not point to it). Hunt moved to edge-intraday-1200/_contaminated/VICR.json, unscored. VICR re-run with an explicit read restriction (20th subagent, inside the cap). Later launches (GPC, MMM, VICR rerun) carry the same restriction; none of the 9 finished hunts names an earlier snapshot path in its file. All 9 amc hunts done by 16:11 UTC. Searchers disagree on whether the Fed hiked on 2026-09-16 (most say yes, HBCP says held since Dec 2025): left as filed, judges see both.
+
+## Intraday panel 12:00 — panel STARTED
+- Logged at 2026-10-19 16:20 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5; VICR re-run after the independence breach). Guard at 16:20 UTC moved nothing. edge_score 19 rankable, 0 clear 2.8. 19 packs, four judges.
