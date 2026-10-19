@@ -110,7 +110,23 @@ def execution_config(cfg):
     ex["benchmark"] = bench
     ex["sizing"] = dict(ex.get("sizing") or {})
     ex["orders"] = dict(ex.get("orders") or {})
+    ex["panel"] = dict(ex.get("panel") or {})
     return ex
+
+
+def book_for(run, book="auto"):
+    """Which book a run directory places: stage E's (`edge/`) or stage E-P's
+    (`edge-panel/`). `auto` decides on the directory name, so stage E's selection
+    can never be applied to the panel's searcher scores by accident. Every other
+    directory (edge-panel-fable, edge-intraday-*, edge-deep) places nothing."""
+    name = Path(run).name
+    if book == "auto":
+        book = "panel" if name == "edge-panel" else "stage-e"
+    if book == "panel" and name != "edge-panel":
+        raise SystemExit(f"--book panel needs an edge-panel/ run directory, not {name}/")
+    if book == "stage-e" and name.startswith("edge-"):
+        raise SystemExit(f"{name}/ places no stage E book")
+    return book
 
 
 # ---------------------------------------------------------------- http
@@ -438,7 +454,119 @@ def select(scores, baselines, bench):
     return taken, rejected
 
 
-def size(taken, equity, sizing):
+def load_panel(run):
+    """Stage E-P's panel rows (edge-scores-panel.json) and the run's own baselines."""
+    run = Path(run)
+    p = run / "edge-scores-panel.json"
+    if not p.exists():
+        raise SystemExit(f"no {p}: the panel has not been scored for this run")
+    panel = json.loads(p.read_text(encoding="utf-8"))
+    _, baselines = load_run(run)
+    return panel, baselines
+
+
+def select_panel(panel, baselines, bench, pcfg, top=None, min_pct=None):
+    """Stage E-P's book (2026-10-19, operator's instruction). Pure, like select().
+
+    A name is bought (long or short, from the panel's side) when |panel_pct| is at
+    least `panel.min_panel_pct` (80: the mean percentile in the top 20%, the
+    panel's own selection) and never below `panel.zero_weight_pct` (60), whatever
+    `--min-pct` says. `--top N` keeps the N highest panel_pct among the names above
+    the zero point instead of the 80 cut; it exists for a deliberate test and is
+    recorded in the plan. The same turnover floor as stage E applies.
+    """
+    zero = float(pcfg.get("zero_weight_pct", 60))
+    floor = float(min_pct if min_pct is not None else pcfg.get("min_panel_pct", 80))
+    if top is not None:
+        floor = zero
+    floor = max(floor, zero)
+    min_dv = float(bench.get("min_dollar_volume_usd") or 0)
+    full = not panel.get("members_missing")
+    taken, rejected = [], []
+    for row in panel.get("ranking", []):
+        t = row.get("ticker")
+        pct = row.get("panel_pct")
+        b = baselines.get(t) or {}
+        tape = b.get("tape") or {}
+        spot, vol = tape.get("spot"), tape.get("avg_volume_20d")
+        dv = (spot * vol) if (spot and vol) else None
+        side = row.get("side")
+        cand = {"ticker": t, "key": "panel_pct",
+                "value": row.get("panel_pct_signed"),
+                "conviction": pct, "side": None,
+                "weight_raw": (round(pct - zero, 3)
+                               if isinstance(pct, (int, float)) else None),
+                "expected_return_pct": row.get("expected_return_pct"),
+                "event_date": b.get("event_date") or panel.get("event_date"),
+                "session": b.get("session"),
+                "spot": spot, "spot_as_of": b.get("as_of_utc"),
+                "avg_volume_20d": vol,
+                "dollar_volume_usd": round(dv) if dv else None,
+                "run_up_20d_pct": tape.get("run_up_20d_pct")}
+
+        def drop(reason):
+            rejected.append({**cand, "reason": reason})
+
+        if not isinstance(pct, (int, float)) or side not in (1, -1):
+            drop("no panel_pct or side on the row")
+        elif pcfg.get("require_full_panel", True) and not full:
+            drop(f"panel incomplete: {', '.join(panel.get('members_missing'))} missing")
+        elif pct <= zero:
+            drop(f"panel_pct {pct:.1f} at or below the {zero:.0f} zero point")
+        elif pct < floor:
+            drop(f"panel_pct {pct:.1f} below the {floor:.0f} entry floor")
+        elif not spot:
+            drop("no spot in the sealed baseline")
+        elif not b.get("session"):
+            drop("no session in the sealed baseline")
+        elif dv is None:
+            drop("no 20-day volume, so capacity is unknown")
+        elif dv < min_dv:
+            drop(f"turnover ${dv/1e6:.2f}m below the ${min_dv/1e6:.1f}m floor")
+        else:
+            cand["side"] = "buy" if side > 0 else "sell"
+            taken.append(cand)
+    taken.sort(key=lambda c: -c["conviction"])
+    if top is not None and len(taken) > int(top):
+        for c in taken[int(top):]:
+            rejected.append({**c, "side": None, "reason": f"outside --top {top}"})
+        taken = taken[:int(top)]
+    return taken, rejected
+
+
+def allocate(budget, caps, weights, redistribute=True):
+    """Split `budget` in proportion to `weights`, no name above its cap.
+
+    With `redistribute`, what a capped name cannot take goes to the uncapped names
+    in proportion to their own weights, and the pass repeats until nothing moves
+    (water-filling); the book then deploys as much as the caps allow and every
+    uncapped pair keeps the ratio of its weights. Without it the excess stays cash.
+    Equal weights reproduce stage E's equal split exactly.
+    """
+    n = len(caps)
+    alloc = [0.0] * n
+    if not redistribute:
+        tot = sum(weights)
+        return [min(caps[i], budget * weights[i] / tot) if tot > 0 else 0.0
+                for i in range(n)]
+    remaining, open_idx = budget, [i for i in range(n) if weights[i] > 0]
+    while open_idx and remaining > 1e-9:
+        tot = sum(weights[i] for i in open_idx)
+        share = {i: remaining * weights[i] / tot for i in open_idx}
+        hit = [i for i in open_idx if caps[i] <= share[i] + 1e-9]
+        if not hit:                     # nobody is capped: this split is final
+            for i in open_idx:
+                alloc[i] = share[i]
+            break
+        for i in hit:
+            alloc[i] = caps[i]
+            remaining -= caps[i]
+        open_idx = [i for i in open_idx if i not in hit]
+    return alloc
+
+
+def size(taken, equity, sizing, weights=None, budget=None, held_usd=None,
+         redistribute=True):
     """Equal weight, capped per name, with the leftover redistributed equally.
 
     Every name gets the same target: the gross budget split N ways. Nothing here
@@ -469,27 +597,21 @@ def size(taken, equity, sizing):
     if not taken:
         return [], []
     gross = equity * float(sizing.get("gross_exposure_pct_of_equity", 20)) / 100.0
+    if budget is not None:
+        gross = min(gross, max(0.0, float(budget)))
     max_eq = equity * float(sizing.get("max_position_pct_of_equity", 4)) / 100.0
     adv_pct = sizing.get("max_position_pct_of_adv")
     min_usd = float(sizing.get("min_position_usd", 200))
+    held_usd = held_usd or {}
 
-    caps = [min(max_eq, (c["dollar_volume_usd"] * float(adv_pct) / 100.0
-                         if adv_pct else float("inf")))
+    # The per-name cap counts what the account already holds in that symbol, so a
+    # name bought again while yesterday's leg is still open stays under the cap.
+    caps = [max(0.0, min(max_eq, (c["dollar_volume_usd"] * float(adv_pct) / 100.0
+                                  if adv_pct else float("inf")))
+                - held_usd.get(c["ticker"], 0.0))
             for c in taken]
-    alloc = [0.0] * len(taken)
-    remaining, open_idx = gross, list(range(len(taken)))
-    while open_idx:
-        share = remaining / len(open_idx)
-        hit = [i for i in open_idx if caps[i] <= share + 1e-9]
-        if not hit:                     # nobody is capped: this split is final
-            for i in open_idx:
-                alloc[i] = share
-            remaining = 0.0
-            break
-        for i in hit:
-            alloc[i] = caps[i]
-            remaining -= caps[i]
-        open_idx = [i for i in open_idx if i not in hit]
+    w = weights if weights is not None else [1.0] * len(taken)
+    alloc = allocate(gross, caps, w, redistribute)
 
     sized, dropped = [], []
     for i, c in enumerate(taken):
@@ -507,7 +629,9 @@ def size(taken, equity, sizing):
                               if c["dollar_volume_usd"] else None),
                "cap_equity_usd": round(max_eq, 2),
                "cap_capacity_usd": (round(cap_adv, 2) if cap_adv else None),
-               "binding_cap": ("equal share" if target < caps[i] - 1e-6 else
+               "weight": round(w[i] / sum(w), 4) if sum(w) else None,
+               "binding_cap": (("equal share" if weights is None else "linear share")
+                               if target < caps[i] - 1e-6 else
                                "capacity" if cap_adv is not None and cap_adv < max_eq
                                else "per-name %")}
         if qty < 1:
@@ -522,10 +646,21 @@ def size(taken, equity, sizing):
 
 # ---------------------------------------------------------------- plan
 
-def build_plan(run, api, ex, equity_override=None):
-    scores, baselines = load_run(run)
-    bench, sizing = ex["benchmark"], ex["sizing"]
-    taken, rejected = select(scores, baselines, bench)
+def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
+               min_pct=None):
+    book = book_for(run, book)
+    bench, sizing, pcfg = ex["benchmark"], ex["sizing"], ex["panel"]
+    if book == "panel":
+        scores, baselines = load_panel(run)
+        taken, rejected = select_panel(scores, baselines, bench, pcfg, top, min_pct)
+        # The panel book has its own exposure limits; everything else in `sizing`
+        # (ADV cap, minimum position) is stage E's and applies unchanged.
+        sizing = {**sizing, **{k: pcfg[k] for k in
+                               ("gross_exposure_pct_of_equity",
+                                "max_position_pct_of_equity") if k in pcfg}}
+    else:
+        scores, baselines = load_run(run)
+        taken, rejected = select(scores, baselines, bench)
 
     equity, equity_src, acct = None, None, None
     if equity_override:
@@ -609,7 +744,26 @@ def build_plan(run, api, ex, equity_override=None):
             c["baseline_drift_pct"] = (round(100 * (r["price"] - c["spot"]) / c["spot"], 3)
                                        if c.get("spot") else None)
 
-    keep, undersized = size(tradable, float(equity), sizing)
+    held_usd, held_gross, budget = {}, 0.0, None
+    if book == "panel":
+        # Never take the account past the gross limit: what is still held from an
+        # earlier book (nothing in this stage sells) comes off the budget first, and
+        # off the per-name cap of the same symbol.
+        if api.usable:
+            pos, _ = api.call("GET", "/v2/positions")
+            for p in (pos if isinstance(pos, list) else []):
+                mv = abs(float(p.get("market_value") or 0))
+                held_usd[p["symbol"]] = mv
+                held_gross += mv
+        gross_pct = float(sizing.get("gross_exposure_pct_of_equity", 100))
+        budget = float(equity) * gross_pct / 100.0 - held_gross
+        zero = float(pcfg.get("zero_weight_pct", 60))
+        keep, undersized = size(tradable, float(equity), sizing,
+                                weights=[c["conviction"] - zero for c in tradable],
+                                budget=budget, held_usd=held_usd,
+                                redistribute=pcfg.get("redistribute_cap_excess", True))
+    else:
+        keep, undersized = size(tradable, float(equity), sizing)
     rejected += undersized
 
     return {"generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -632,6 +786,16 @@ def build_plan(run, api, ex, equity_override=None):
                      "plus a turnover floor and a shortability check. Nothing at this "
                      "floor has been measured; treat it as a lead. This is "
                      "research, not investment advice."),
+            "book": book,
+            **({"panel_rule": {"min_panel_pct": pcfg.get("min_panel_pct", 80),
+                               "zero_weight_pct": pcfg.get("zero_weight_pct", 60),
+                               "top": top, "min_pct_override": min_pct,
+                               "weight": "panel_pct - zero_weight_pct, linear",
+                               "redistribute_cap_excess":
+                                   pcfg.get("redistribute_cap_excess", True),
+                               "held_gross_usd": round(held_gross, 2),
+                               "budget_usd": round(max(budget, 0.0), 2)}}
+               if book == "panel" else {}),
             "positions": keep, "rejected": rejected}
 
 
@@ -1272,7 +1436,7 @@ def send(api, body, cid, submit, reason_blocked):
 # ---------------------------------------------------------------- commands
 
 def cmd_plan(a, api, ex):
-    plan = build_plan(a.run, api, ex, a.equity)
+    plan = build_plan(a.run, api, ex, a.equity, a.book, a.top, a.min_pct)
     out = Path(a.out) if a.out else Path(a.run) / "alpaca-plan.json"
     out.write_text(json.dumps(plan, indent=1) + "\n", encoding="utf-8")
     print_plan(plan)
@@ -1285,6 +1449,14 @@ def print_plan(plan):
     print(f"equity ${plan['equity_usd']:,.0f} ({plan['equity_source']}), "
           f"calendar {plan['calendar_source']}")
     b = plan["benchmark"]
+    if plan.get("book") == "panel":
+        r = plan["panel_rule"]
+        print(f"panel book: panel_pct >= "
+              f"{r['zero_weight_pct'] if r['top'] else r['min_pct_override'] or r['min_panel_pct']}"
+              + (f", top {r['top']}" if r['top'] else "")
+              + f", weight = panel_pct - {r['zero_weight_pct']}, cap "
+              f"{plan['sizing'].get('max_position_pct_of_equity')}% a name, budget "
+              f"${r['budget_usd']:,.0f} (held ${r['held_gross_usd']:,.0f})")
     print(f"benchmark: |{b.get('key')}| >= {b['min_conviction']}, turnover >= "
           f"${float(b.get('min_dollar_volume_usd') or 0)/1e6:.1f}m, "
           f"max {b.get('max_positions')} names\n")
@@ -1368,7 +1540,8 @@ def cmd_open(a, api, ex):
     if today:
         pos, _ = api.call("GET", "/v2/positions")
         held = {p["symbol"] for p in pos} if isinstance(pos, list) else None
-        stale = overdue_legs(today, held=held)
+        stale = [s for pat in ("research/*/*/*/edge", "research/*/*/*/edge-panel")
+                 for s in overdue_legs(today, scan=pat, held=held)]
         if stale and not a.allow_stale:
             for s in stale:
                 print(f"  ! {s['symbol']:8s}{s['side']:5s}due {s['exit_date']}  "
@@ -1392,7 +1565,7 @@ def cmd_open(a, api, ex):
         if flat.get("submitted") and flat.get("positions_after"):
             print(f"  ! still holding {', '.join(flat['positions_after'])}")
 
-    plan = build_plan(a.run, api, ex, a.equity)
+    plan = build_plan(a.run, api, ex, a.equity, a.book, a.top, a.min_pct)
     if flat is not None:
         plan["flatten"] = flat
         same = {p["symbol"] for p in (flat.get("positions_before") or [])} & \
@@ -1448,7 +1621,10 @@ def cmd_open(a, api, ex):
                           "outside the session does not fill at a price this stage "
                           "has measured.")
         body = order_body(c["ticker"], c["qty"], c["side"], ex, moc=entry_moc)
-        cid = client_id(a.run, c["ticker"], "entry")
+        # The panel book gets its own leg name, so its order can never collide
+        # with (or be refused as a duplicate of) stage E's entry in the same name.
+        cid = client_id(a.run, c["ticker"],
+                        "panel-entry" if plan.get("book") == "panel" else "entry")
         rec = send(api, body, cid, a.submit, reason)
         rec.update({"leg": "entry", "entry_date": c["entry_date"],
                     "exit_date": c["exit_date"], "event_date": c["event_date"],
@@ -2042,13 +2218,25 @@ def main():
         p.add_argument("--live-account-i-understand", action="store_true",
                        help="permit a non-paper endpoint")
 
+    def book(p):
+        p.add_argument("--book", choices=("auto", "stage-e", "panel"), default="auto",
+                       help="auto: panel for an edge-panel/ run, stage E for edge/")
+        p.add_argument("--top", type=int,
+                       help="panel book: the N highest panel_pct above the zero "
+                            "point instead of the entry floor (a deliberate test)")
+        p.add_argument("--min-pct", type=float,
+                       help="panel book: override panel.min_panel_pct (never below "
+                            "panel.zero_weight_pct)")
+
     p = sub.add_parser("plan", help="apply the benchmark and write alpaca-plan.json")
     common(p)
+    book(p)
     p.add_argument("--out")
 
     p = sub.add_parser("open", help="flatten, then place the entry orders "
                                     "(run on the entry date)")
     common(p)
+    book(p)
     p.add_argument("--force-date", action="store_true",
                    help="place even when today is not the planned entry date")
     p.add_argument("--allow-market-fallback", action="store_true",

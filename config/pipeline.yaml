@@ -939,6 +939,36 @@ execution:
     # only one that was measured.
     max_positions: null
 
+  # STAGE E-P'S BOOK (2026-10-19, operator's instruction). alpaca_trade.py places it
+  # for an edge-panel/ run (`--book auto`); stage E's benchmark above is never read for
+  # it, except the turnover floor. Selection and size come from the panel's mean
+  # percentile, panel_pct (edge-scores-panel.json), with the side from the panel.
+  #
+  #   entry      panel_pct >= min_panel_pct (80, the panel's own top-20% selection),
+  #              and never at or below zero_weight_pct (60), whatever a flag says.
+  #   weight     panel_pct - 60, linear: 90 / 90 / 75 -> 30 / 30 / 15 -> 40 / 40 / 20.
+  #   cap        50% of equity a name; what a capped name cannot take goes to the
+  #              others in proportion to their weights (water-filling), so ONE name is
+  #              50% and cash, and TWO names are always 50 / 50 whatever their scores:
+  #              the linear rule only shows on a day with three or more names.
+  #   shorts     a name Alpaca will not lend (or will not trade) is dropped BEFORE the
+  #              split, so its share goes to the rest.
+  #   budget     gross 100% of equity MINUS what the account already holds, because
+  #              this stage only buys: nothing sells yesterday's book, and without
+  #              this a second day would stack to 200% gross.
+  #
+  # Nothing here is measured: on the 148 resolved panel names the expected return at a
+  # percentile is weak out of sample (+0.12 correlation), so sizing on it is the
+  # operator's choice, not a finding. The ADV cap and minimum position in `sizing`
+  # below still apply.
+  panel:
+    min_panel_pct: 80
+    zero_weight_pct: 60
+    require_full_panel: true      # all four judges present, as panel_score's own `selected`
+    max_position_pct_of_equity: 50
+    gross_exposure_pct_of_equity: 100
+    redistribute_cap_excess: true
+
   sizing:
     # EQUAL WEIGHT, WHOLE BUDGET. Every name that clears the benchmark gets the same
     # dollars: the gross budget split N ways, capped per name, with whatever a capped
