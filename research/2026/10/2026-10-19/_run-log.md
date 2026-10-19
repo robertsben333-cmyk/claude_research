@@ -68,3 +68,7 @@
 ## Intraday panel 12:00 — STARTED
 - Logged at 2026-10-19 15:59 UTC
 - Stage E-PI snapshot 1200, names frozen by 1000: seed, re-seal, one unpriced-searcher (Opus 5.5) per hunt name, amc first, guard, score, four blind judges, panel_score --dry-run --stage E-PI. No orders.
+
+## Intraday panel 12:00 — wave 1
+- Logged at 2026-10-19 16:02 UTC
+- Seeded from names.json (frozen by 1000). Same 19 hunt names as 1000 (frozen sweep, same priorities); 18 shed for budget, recorded in intraday.json. 37 baselines sealed 16:01-16:03 UTC. 8 searchers launched (platform cap 8): KARO WASH RBB AERO SFBS HBCP WAL SMBK; RLI and 10 bmo names queued.
