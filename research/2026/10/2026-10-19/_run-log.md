@@ -91,3 +91,7 @@
 ## Edge hunt (panel, Fable) — 2026-10-19 amc + 2026-10-20 bmo — STARTED
 - Logged at 2026-10-19 17:11 UTC
 - Stage E-PF. Universe 38 (17 amc 10-19, 21 bmo 10-20), 38 baselines sealed 17:10-17:11 UTC into edge-panel-fable/. Plan: one edge-sweep, up to 19 unpriced-searcher-fable (claude-fable-5-1) searchers by hunt_priority, then four blind judges, panel_score --dry-run --stage E-PF. No orders.
+
+## Edge hunt (panel, Fable) — sweep
+- Logged at 2026-10-19 17:21 UTC
+- Sweep confirmed 36 of 38 (WAL, CBSH unconfirmed, 0 phantoms). Cap 19 hunted by hunt_priority: VICR KARO AERO HAS STLD VMI RBB GPC WASH RLI EFX SMBK CCK SFBS MSCI CCBG ALLY ZION MBWM. Shed for budget (lowest priority): SYF HBCP AGNC GM PEBO HAL WTFC MMM AUB NOC BOKF GE FNB RTX UCB KEY WRB. Searchers: unpriced-searcher-fable, amc first, 8 concurrent. Each brief forbids reading any other stage's directory (after the E-PI VICR breach).
