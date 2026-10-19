@@ -88,3 +88,6 @@
 ## Edge hunt (panel) — 2026-10-19 amc + 2026-10-20 bmo — STARTED
 - Logged at 2026-10-19 17:19 UTC
 - Stage E-P. Universe 38 (17 amc 10-19, 21 bmo 10-20), 38 baselines sealed in edge-panel/baselines before any search. Plan: one edge-sweep, up to 19 unpriced-searcher (Opus 5.5), then four blind judges. No orders.
+## Edge hunt (panel, Fable) — 2026-10-19 amc + 2026-10-20 bmo — STARTED
+- Logged at 2026-10-19 17:11 UTC
+- Stage E-PF. Universe 38 (17 amc 10-19, 21 bmo 10-20), 38 baselines sealed 17:10-17:11 UTC into edge-panel-fable/. Plan: one edge-sweep, up to 19 unpriced-searcher-fable (claude-fable-5-1) searchers by hunt_priority, then four blind judges, panel_score --dry-run --stage E-PF. No orders.
