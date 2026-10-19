@@ -28,5 +28,46 @@
   "id": "us-panel-intraday.v1",
   "label": null,
   "from_utc": "2026-10-14T00:00:00+00:00"
+ },
+ "panel": {
+  "members": {
+   "opus5": {
+    "agent": "panel-judge-opus5",
+    "model_pinned": "claude-opus-5",
+    "model_reported": null,
+    "missing": false,
+    "ids_covered": 19
+   },
+   "opus55": {
+    "agent": "panel-judge-opus55",
+    "model_pinned": "claude-opus-5-5",
+    "model_reported": null,
+    "missing": false,
+    "ids_covered": 19
+   },
+   "sonnet55": {
+    "agent": "panel-judge-sonnet55",
+    "model_pinned": "claude-sonnet-5-5",
+    "model_reported": null,
+    "missing": false,
+    "ids_covered": 19
+   },
+   "fable51": {
+    "agent": "panel-judge-fable51",
+    "model_pinned": "claude-fable-5-1",
+    "model_reported": null,
+    "missing": false,
+    "ids_covered": 19
+   }
+  },
+  "scored_with": "panel_score.py --dry-run --stage E-PI",
+  "history_written": false,
+  "selection": "mean_pct >= 80, all members present"
+ },
+ "searchers": {
+  "agent": "unpriced-searcher",
+  "model": "claude-opus-5-5",
+  "count": 20,
+  "note": "VICR re-run after the first VICR searcher read the 1000 snapshot hunt; first attempt kept in _contaminated/, unscored"
  }
 }

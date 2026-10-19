@@ -80,3 +80,7 @@
 ## Intraday panel 12:00 — panel STARTED
 - Logged at 2026-10-19 16:20 UTC
 - 19/19 hunted (unpriced-searcher, Opus 5.5; VICR re-run after the independence breach). Guard at 16:20 UTC moved nothing. edge_score 19 rankable, 0 clear 2.8. 19 packs, four judges.
+
+## Intraday panel 12:00 — done
+- Logged at 2026-10-19 16:27 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5; VICR re-run after independence breach, first attempt in _contaminated/), guard moved nothing, all four judges 19/19 on pinned ids, panel scored --dry-run --stage E-PI (history untouched). Selected: EFX short (94), AERO short (87). No orders. Timeline rebuilt.
