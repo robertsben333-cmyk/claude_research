@@ -36,3 +36,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-19 01:17 UTC
 - 4/4/4 hunted, all J-REIT amc. impact_sum: 3295 +0.40, 8984 +0.30, 3481 +0.10, 3488 -0.40; none above 2.8. Panel 4 of 4 members, none selected; panel's largest is 3481 short (pct 25). Note: japan/japan-note.md.
+
+## Close AMC — 2026-10-19 10:10 UTC
+- Logged at 2026-10-19 10:16 UTC
+- Guard mode --require-exit-tif opg: exit 0 (amc_open, amc->day, matched on placement). verify: 14 legs, none UNFILLED, nothing still held. close --submit: no leg due today, nothing sent, no refusals. Fill check re-read the 14 legs; alpaca-orders.json files rewritten by the fill check only. status printed no output.
