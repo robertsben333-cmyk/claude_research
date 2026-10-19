@@ -16,3 +16,7 @@
 ## Stage EU — wave 2 done
 - Logged at 2026-10-19 14:18 UTC
 - EXS +0.9, LIME +0.9, UPSALE 0.0, SCST -0.5, BMAX -0.7. Wave 3: EMBLA (dk, unpriced-hunter-nordic).
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-19 14:28 UTC
+- 11 hunts done; 11 ranked, 0 above 2.8 (EXS +0.90, LIME +0.90, DB1 +0.20, ENG +0.20, MUM 0.00, UPSALE 0.00, BPM -0.35, EMBLA -0.40, OVH -0.50, SCST -0.50, BMAX -0.70). 11 packs, four judges (intl).
