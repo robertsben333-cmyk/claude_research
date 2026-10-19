@@ -16,3 +16,7 @@
 - Logged at 2026-10-16 14:06 UTC
 - Event date 2026-10-19. 4 ranked (uk 3, se 1): BKS -0.60, TSTL -0.60, ITM -1.10, AIRA -1.20; 0 above floor 2.8. AIRA and ITM sealed bmo? and both confirmed bmo by the issuer. Yahoo calendar unavailable on all ten markets.
 - Panel: 4/4 members, no fallback; 1 selected: ITM short (k=3, panel_pct 80). AIRA panel_pct 82 at k=2. Note: europe-note.md. Resolve AIRA within ~a week (Nordic feed window; issuer publishes via MFN). Published with EARNINGS_DATA_BRANCH=main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-19 01:05 UTC
+- Fired 01:04 UTC 2026-10-19 (10:04 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp in waves of 5 (cap 25) -> edge_score -> four-model intl panel -> japan-note. Research only, no orders.
