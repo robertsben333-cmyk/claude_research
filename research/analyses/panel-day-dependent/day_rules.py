@@ -267,7 +267,7 @@ def main():
     res = {'rules': [n for n, _ in RULES],
            'backtest_opus5': evaluate(back, 'Backtest (blinde herbeoordeling, Opus 5-hunters, aug-sep)'),
            'oktober_v1': evaluate(v1, 'Oktober live E-P, us-searcher.v1 (10-02 t/m 10-09)'),
-           'oktober_v2': evaluate(v2, 'Oktober live E-P, us-searcher.v2 (10-12, 10-13)')}
+           'oktober_v2': evaluate(v2, 'Oktober live E-P, us-searcher.v2 (vanaf 10-12)')}
     res['portfolio'] = {}
     for key, rows in (('backtest_opus5', back), ('oktober_v1', v1), ('oktober_v2', v2)):
         for cap in (0.5, 0.33):
