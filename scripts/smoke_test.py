@@ -1250,11 +1250,14 @@ def main():
         fm = j.split("---", 2)[1]
         check(f"panel judge {m} is pinned to {mid} with Read and Write only",
               f"\nmodel: {mid}\n" in fm + "\n" and "\ntools: Read, Write\n" in fm + "\n")
-    check("stage E-P writes to edge-panel and places no orders",
-          "<RUN>/edge-panel/" in ep_skill and "No `alpaca_trade.py` call of any kind" in ep_skill)
+    check("stage E-P writes to edge-panel, sells at 3s and buys at 6b on its own run",
+          "<RUN>/edge-panel/" in ep_skill
+          and "flatten --run <RUN>/edge-panel --submit" in ep_skill
+          and "open --run <RUN>/edge-panel --submit --no-flatten" in ep_skill)
     epc = cfg.get("edge_panel") or {}
-    check("stage E-P config carries places_orders: false and an equal live weight",
-          epc.get("places_orders") is False and epc.get("live_weight") == "equal")
+    # Since 2026-10-19 (operator's instruction) stage E-P is the stage that trades.
+    check("stage E-P config carries places_orders: true and an equal live weight",
+          epc.get("places_orders") is True and epc.get("live_weight") == "equal")
     # the aggregator on a synthetic day. Since 2026-10-14 the US selection is the MEAN of
     # the four judges' own percentiles in the top 20%; the 3-of-4 verdict is still
     # written. A name all four size large is selected by both; three large and one
