@@ -84,3 +84,7 @@
 ## Intraday panel 12:00 — done
 - Logged at 2026-10-19 16:27 UTC
 - 19/19 hunted (unpriced-searcher, Opus 5.5; VICR re-run after independence breach, first attempt in _contaminated/), guard moved nothing, all four judges 19/19 on pinned ids, panel scored --dry-run --stage E-PI (history untouched). Selected: EFX short (94), AERO short (87). No orders. Timeline rebuilt.
+
+## Edge hunt (panel) — 2026-10-19 amc + 2026-10-20 bmo — STARTED
+- Logged at 2026-10-19 17:19 UTC
+- Stage E-P. Universe 38 (17 amc 10-19, 21 bmo 10-20), 38 baselines sealed in edge-panel/baselines before any search. Plan: one edge-sweep, up to 19 unpriced-searcher (Opus 5.5), then four blind judges. No orders.
