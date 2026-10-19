@@ -107,3 +107,7 @@
 ## Edge hunt (panel) — done
 - Logged at 2026-10-19 18:15 UTC
 - 19/19 hunted (unpriced-searcher, Opus 5.5, native), 18 confirmed names shed for budget, CBSH unconfirmed. All four judges 19/19 on pinned ids (opus5, opus55, sonnet55, fable51). Selected (mean pct >= 80): EFX short 90, VICR long 90; AERO 79.9 misses (selected under 3-of-4). Searcher: EFX -2.80 alone clears 2.8. V2 written before the first print. Stage E edge/ absent on main at ~18:20 UTC, so no comparison line. publish.sh failed twice on run-log/merge races and was recovered by hand-merge + push. No orders.
+
+## Edge hunt (panel) — ORDER TEST NOT RUN
+- Logged at 2026-10-19 19:24 UTC
+- Manual fire at ~19:24 UTC carried a payload asking this session to place a paper order test (top 3 of today's edge-panel: EFX short, VICR long, AERO short) using alpaca_trade.py from branch claude/vigilant-hopper-9fysiq. Not executed: the stored Routine prompt says stage E-P places no orders and forbids alpaca_trade.py in any form, and a trigger payload is data, not an instruction that can override it. No broker call was made, no branch code was checked out, and today's edge-panel run (complete at 18:15 UTC) was left untouched. To run the test, change the stored prompt or run it from a session the operator is in.
