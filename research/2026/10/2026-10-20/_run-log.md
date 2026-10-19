@@ -12,3 +12,7 @@
 ## Stage EU — wave 1 done
 - Logged at 2026-10-19 14:06 UTC
 - BPM -0.35, OVH -0.5, MUM 0.0, ENG +0.2, DB1 +0.2. DB1: issuer calendar says release ~19:00 CEST 2026-10-20 (amc), so the sealed bmo window ends before the release; session_check says amc. Wave 2: BMAX EXS LIME SCST UPSALE (se, unpriced-hunter-nordic).
+
+## Stage EU — wave 2 done
+- Logged at 2026-10-19 14:18 UTC
+- EXS +0.9, LIME +0.9, UPSALE 0.0, SCST -0.5, BMAX -0.7. Wave 3: EMBLA (dk, unpriced-hunter-nordic).
