@@ -48,3 +48,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-19 13:00 UTC
 - 1 name: CLF exit_close (Wachten tot slot). Pool: no prior morning (first fire, n=0).
+
+## Intraday panel 10:00 — STARTED
+- Logged at 2026-10-19 14:00 UTC
+- Stage E-PI snapshot 1000 (first of day, names not frozen): universe --window, one edge-sweep, freeze, seal, one unpriced-searcher per name, guard, score, four blind judges, panel_score --dry-run --stage E-PI. No orders.
