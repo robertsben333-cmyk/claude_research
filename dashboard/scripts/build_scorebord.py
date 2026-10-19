@@ -31,10 +31,12 @@ what each band of percentiles actually earned (backtest and October). All of it 
 on its own tab, "Panel %".
 
 Resolved outcomes are read, never recomputed, wherever a resolver already wrote one:
-the US ledger's own bars for E, E-P and D on the operator's window (see US_ENTRY_HM),
+the US ledger's own bars for E and E-P on the operator's window (see US_ENTRY_HM),
 frozen once resolved, the market resolvers
 through `markets.json` for EU/JP/AU/CA. Stage R is left out on purpose: it is a
 different event (yesterday's losers, not an earnings print) and does not belong here.
+Stage D (three deep names a day) is left out too, on the operator's instruction of
+2026-10-14.
 Live returns come from Yahoo at build time. Read-only: no order is ever touched.
 
 Run after `build_ledger.py` and `build_markets.py`; `update.sh` does that.
@@ -187,6 +189,38 @@ def _hm_now():
 # us, so a later build cannot move it: on 2026-10-13 PENG's opening print came back as
 # 67.28 on one CI build and 66.00 on the next, which moved the call by two points.
 FROZEN = load(FROZEN_PATH) or {}
+US_PX = {}      # "run_date|ticker" -> (entry, exit) behind every resolved US move
+
+
+def us_px(n):
+    return US_PX.get(f"{n['run_date']}|{n['ticker']}") if n else None
+
+
+# Entry and exit prices of a resolved non-US call, from the market's own resolver file
+# (Japan entry_price/exit_close, Canada entry/exit, Australia from_price/to_price), else
+# re-priced from Yahoo on the same window. A pair is kept only when it reproduces the
+# resolver's move, so the page never shows a price that is not behind the number.
+_resolved_rows = {}
+
+
+def market_px(n, resolved_file, sym, start_is_close_before, end_at_open):
+    run = n["run"]
+    if run not in _resolved_rows:
+        d = load(ROOT / run / resolved_file) or {}
+        rows = d.get("rows") or d.get("ranking") or d.get("names") or []
+        _resolved_rows[run] = {r.get("ticker"): r for r in rows if isinstance(r, dict)}
+    r = _resolved_rows[run].get(n["ticker"]) or {}
+    mv = n.get("realised_move_pct")
+    pairs = [(r.get("entry_price"), r.get("exit_close")), (r.get("entry"), r.get("exit")),
+             (r.get("from_price"), r.get("to_price"))]
+    for a, b in pairs:
+        if a and b and mv is not None and abs((b / a - 1) * 100 - mv) < 0.2:
+            return a, b
+    w = window(sym, n["event_date"], start_is_close_before, end_at_open=end_at_open)
+    if w and w.get("ref") and w.get("last") and mv is not None \
+            and abs((w["last"] / w["ref"] - 1) * 100 - mv) < 0.2:
+        return w["ref"], w["last"]
+    return None
 
 
 def us_move(n):
@@ -197,6 +231,7 @@ def us_move(n):
     missing. Never the close: a call with no 13:30 price is left unresolved."""
     key = f"{n['run_date']}|{n['ticker']}"
     if key in FROZEN:
+        US_PX[key] = (FROZEN[key].get("entry"), FROZEN[key].get("exit"))
         return FROZEN[key]["move"]
     entry = (n.get("enpx") or {}).get("1330")
     px, ed = n.get("px") or {}, n.get("entry_date")
@@ -216,6 +251,7 @@ def us_move(n):
     if not exit_px:
         return None
     move = (exit_px / entry - 1) * 100
+    US_PX[key] = (entry, exit_px)
     if exit_day and exit_day < TODAY.isoformat():
         FROZEN[key] = {"entry": round(entry, 4), "exit": round(exit_px, 4),
                        "move": round(move, 3), "session": n.get("session"),
@@ -421,7 +457,7 @@ for n in ledger["names"]:
         live_row(stage="US · E", ticker=n["ticker"], company=n.get("company"),
                  run_date=n["run_date"], score=n["impact_sum"],
                  why=f"top {100 - n['impact_pctile_all']:.0f}% {n['model_short']}",
-                 side=side, w=w)
+                 side=side, w=w, session=n.get("session"))
 
 
 def us_side_stage(glob_pat, stage, market, picker):
@@ -447,7 +483,7 @@ def us_side_stage(glob_pat, stage, market, picker):
                 w = us_live(r["ticker"], b.get("event_date") or run_date, b.get("session"))
                 live_row(stage=stage, ticker=r["ticker"], company=b.get("company"),
                          run_date=run_date, score=r.get("panel_pct", r.get("impact_sum")),
-                         why=why, side=side, w=w)
+                         why=why, side=side, w=w, session=b.get("session"))
 
 
 def pick_panel(run, f, model):
@@ -470,7 +506,7 @@ def pick_top(run, f, model):
 
 us_side_stage("research/*/*/*/edge-panel/edge-scores-panel.json", "US · E-P panel",
               "US-P", pick_panel)
-us_side_stage("research/*/*/*/edge-deep/edge-scores.json", "US · D", "US-D", pick_top)
+# Stage D is left out on the operator's instruction (Xavier, 2026-10-14).
 
 # Stage R (the reversal researcher) is deliberately absent (operator, 2026-10-12): it
 # predicts a different event with a different model of the market, so its calls are
@@ -506,7 +542,8 @@ for mk, v in markets.items():
                 w = window(sym, n["event_date"], n.get("session") != "amc",
                            end_at_open=mk == "JP")
                 live_row(stage=stage, ticker=n["ticker"], company=n.get("company"),
-                         run_date=n["run_date"], score=score, why=why, side=side, w=w)
+                         run_date=n["run_date"], score=score, why=why, side=side, w=w,
+                         session=n.get("session"))
 
 # ---------------------------------------------------------------- the last week, per ticker
 # Every call, strong or not, with the same sources and exclusions as above. Two views
@@ -526,12 +563,13 @@ def in_week(run_date):
 
 
 def week_row(stage, version, model, ticker, company, run_date, event_date, score,
-             strong, why, move=None, live_w=None, side=None):
+             strong, why, move=None, live_w=None, side=None, session=None, px=None):
     side = sign(score) if side is None else side
     if move is not None:
         state = "opgelost"
     elif live_w and live_w.get("move") is not None:
         move, state = live_w["move"], live_w["state"]
+        px = (live_w.get("ref"), live_w.get("last"))
     else:
         state = live_w["state"] if live_w else \
             "geen koers" if recent(run_date) else "niet opgelost"
@@ -539,7 +577,9 @@ def week_row(stage, version, model, ticker, company, run_date, event_date, score
     calls.append(dict(stage=stage, version=version, model=model, ticker=ticker,
                      company=company, run_date=run_date, event_date=event_date,
                      score=None if score is None else round(score, 2), side=side,
-                     strong=strong, why=why, state=state,
+                     strong=strong, why=why, state=state, session=session,
+                     buy=None if not px or not px[0] else round(px[0], 4),
+                     sell=None if not px or not px[1] else round(px[1], 4),
                      move=None if move is None else round(move, 2),
                      ret=None if ret is None else round(ret, 2),
                      right=None if ret is None else ret > 0))
@@ -554,14 +594,13 @@ for n in ledger["names"]:
              n["run_date"], n.get("event_date"), n.get("impact_sum"),
              bool(n.get("impact_sum")) and (p or 0) >= TOP,
              None if p is None else f"p{p:.0f}",
-             move=mv,
+             move=mv, session=n.get("session"), px=us_px(n) if mv is not None else None,
              live_w=None if mv is not None or not recent(n["run_date"]) else us_live(
                  n["ticker"], n["event_date"], n["session"]))
 
 for glob_pat, stage, market, key in (
         ("research/*/*/*/edge-panel/edge-scores-panel.json", "US · E-P panel", "US-P",
-         "panel_score"),
-        ("research/*/*/*/edge-deep/edge-scores.json", "US · D", "US-D", "impact_sum")):
+         "panel_score"),):
     for f in sorted(glob.glob(str(ROOT / glob_pat))):
         run = str(Path(f).parent.relative_to(ROOT))
         run_date = Path(f).parent.parent.name
@@ -587,7 +626,8 @@ for glob_pat, stage, market, key in (
             week_row(stage, ver, "panel" if key == "panel_score" else mshort, r["ticker"], b.get("company"), run_date,
                      b.get("event_date"), score, strong, why,
                      side=pside if key == "panel_score" else None,
-                     move=mv,
+                     move=mv, session=b.get("session") or (n or {}).get("session"),
+                     px=us_px(n) if mv is not None else None,
                      live_w=None if mv is not None or not recent(run_date) else us_live(
                          r["ticker"], b.get("event_date") or run_date, b.get("session")))
 
@@ -596,14 +636,16 @@ for mk, v in markets.items():
         if n.get("sept_opus55") or not n.get("rankable") or n.get("event_occurred") is False:
             continue
         done = n.get("realised_move_pct") is not None and not n.get("move_pending")
-        w = None
+        w, mpx = None, None
+        b = load(ROOT / n["run"] / "baselines" / f"{n['ticker']}.json") or {}
+        sym = b.get("yahoo_symbol") or n["ticker"] + SUFFIX.get(mk, "")
+        if mk == "CA" and str(b.get("exchange", "")).upper().startswith("TSXV"):
+            sym = n["ticker"] + ".V"
         if not done and recent(n.get("run_date") or ""):
-            b = load(ROOT / n["run"] / "baselines" / f"{n['ticker']}.json") or {}
-            sym = b.get("yahoo_symbol") or n["ticker"] + SUFFIX.get(mk, "")
-            if mk == "CA" and str(b.get("exchange", "")).upper().startswith("TSXV"):
-                sym = n["ticker"] + ".V"
             w = window(sym, n["event_date"], n.get("session") != "amc",
                        end_at_open=mk == "JP")
+        elif done and v.get("resolved_file"):
+            mpx = market_px(n, v["resolved_file"], sym, n.get("session") != "amc", mk == "JP")
         move = n["realised_move_pct"] if done else None
         label = v.get("label", mk)
         p = n.get("impact_pctile_all")
@@ -611,7 +653,8 @@ for mk, v in markets.items():
             week_row(f"{label} · hunter", n.get("prompt_version"), n.get("model_short"),
                      n["ticker"], n.get("company"), n["run_date"], n.get("event_date"),
                      n["impact_sum"], bool(n["impact_sum"]) and (p or 0) >= TOP,
-                     None if p is None else f"p{p:.0f}", move=move, live_w=w)
+                     None if p is None else f"p{p:.0f}", move=move, live_w=w,
+                     session=n.get("session"), px=mpx)
         if n.get("panel_score") is not None:
             pp = panel_pcts(n["run"], mk).get(n["ticker"]) or {}
             signed = pp.get("panel_pct", n["panel_score"])
@@ -619,7 +662,8 @@ for mk, v in markets.items():
             week_row(f"{label} · panel", n.get("prompt_version"), "panel",
                      n["ticker"], n.get("company"), n["run_date"], n.get("event_date"),
                      abs(signed) if "panel_pct" in pp else n["panel_score"], bool(n.get("panel_selected")),
-                     f"panel {n.get('panel_consensus_k')}/4", move=move, live_w=w, side=pside)
+                     f"panel {n.get('panel_consensus_k')}/4", move=move, live_w=w, side=pside,
+                     session=n.get("session"), px=mpx)
 
 calls.sort(key=lambda x: (x["run_date"], x["stage"], -abs(x["score"] or 0)))
 calls.sort(key=lambda x: x["run_date"], reverse=True)
@@ -631,6 +675,68 @@ by_agent = {}
 for c in calls:
     if c["version"] and c["version"] != "onbekend":
         by_agent.setdefault((c["stage"], c["version"], c["model"] or "?"), []).append(c)
+# The second meaning of "strong" (Xavier, 2026-10-14, corrected the same day): a call
+# whose |score| clears that STAGE's fixed top-20% benchmark, measured over all its calls
+# and pooled over prompt versions, never per day and never per version. For the US E-P
+# panel that is the benchmark it was built on, |panel_pct| >= PANEL_TOP with all four
+# judges; for stage E it is the model-wide reference (impact_pctile_all >= TOP). Every
+# other stage (the market panels score lower, so their bar is lower) gets the 80th
+# percentile of its nonzero |scores| over all its calls, per hunter model; it uses later
+# scores but never an outcome, and a stage with fewer than OWN_MIN calls has no bar.
+OWN_MIN = 5
+FIXED_BENCH = {"US · E-P panel": PANEL_TOP}
+# The market panels are already scaled to each judge's own range, so their bar is a
+# fixed percentile too; 70 for now (Xavier, 2026-10-14), not a cut fitted on the day.
+MARKET_PANEL_TOP = 70.0
+for _m in ("Europa", "Japan", "Australië", "Canada"):
+    FIXED_BENCH[f"{_m} · panel"] = MARKET_PANEL_TOP
+REF_BENCH = {"US · E"}
+
+
+def p80(xs):
+    xs = sorted(xs)
+    k = 0.8 * (len(xs) - 1)
+    lo = int(k)
+    return xs[lo] + (xs[min(lo + 1, len(xs) - 1)] - xs[lo]) * (k - lo)
+
+
+def bench_key(c):
+    return (c["stage"], c["model"] or "?")
+
+
+by_bench = {}
+for c in calls:
+    c["own"] = False
+    by_bench.setdefault(bench_key(c), []).append(c)
+bench = {}                                   # (stage, model) -> cut, or "ref"
+for key, rows in by_bench.items():
+    stage = key[0]
+    if stage in REF_BENCH:
+        bench[key] = "ref"
+        for r in rows:
+            r["own"] = bool(r["strong"])
+        continue
+    if stage in FIXED_BENCH:
+        cut = FIXED_BENCH[stage]
+        for r in rows:
+            if stage == "US · E-P panel":
+                r["own"] = bool(r["strong"])     # strong already is full and |panel_pct| >= 80
+            else:
+                r["own"] = bool(r["score"] and r["side"]) and abs(r["score"]) >= cut - 1e-9
+    else:
+        sc = [abs(r["score"]) for r in rows if r["score"] and r["side"]]
+        if len(sc) < OWN_MIN:
+            continue
+        cut = p80(sc)
+        for r in rows:
+            r["own"] = bool(r["score"] and r["side"]) and abs(r["score"]) >= cut - 1e-9
+    bench[key] = round(cut, 2)
+own_cut = {}
+for key in by_agent:
+    b = bench.get((key[0], key[2]))
+    if b is not None:
+        own_cut[key] = b
+
 agents = []
 for (stage, ver, model), rows in by_agent.items():
     done = [r for r in rows if r["state"] == "opgelost" and r["ret"] is not None]
@@ -638,6 +744,8 @@ for (stage, ver, model), rows in by_agent.items():
                        last=rows[0]["run_date"], first=rows[-1]["run_date"],
                        all=summarise([r["ret"] for r in done]),
                        strong=summarise([r["ret"] for r in done if r["strong"]]),
+                       own=summarise([r["ret"] for r in done if r["own"]]),
+                       own_cut=own_cut.get((stage, ver, model)),
                        calls=rows))
 agents.sort(key=lambda a: (a["stage"], a["last"]))
 
@@ -715,9 +823,27 @@ for x in live:
     x["move"] = None if not w or w.get("move") is None else round(w["move"], 2)
     x["ret"] = None if x["move"] is None else round(x["side"] * x["move"], 2)
     x["state"] = (w or {}).get("state", "geen koers")
+    x["buy"] = (w or {}).get("ref")
+    x["sell"] = (w or {}).get("last")
     x["ref_day"] = (w or {}).get("ref_day")
     x["end_day"] = (w or {}).get("end_day")
     x["score"] = None if x["score"] is None else round(x["score"], 2)
+
+# The same three blocks under the agent's own top 20%.
+groups_own = {}
+for c in calls:
+    if c["own"] and c["state"] == "opgelost" and c["ret"] is not None:
+        groups_own.setdefault((c["stage"], c["version"], c["model"] or "?"), []).append(c)
+table_own = []
+for (stage, ver, model), rows in groups_own.items():
+    s = summarise([r["ret"] for r in rows])
+    s.update(stage=stage, version=ver, model=model, last=max(r["run_date"] for r in rows))
+    table_own.append(s)
+table_own.sort(key=lambda s: (s["stage"], s["last"]))
+live_own = [dict(c, why=(c["why"] or "") + " · top 20% benchmark") for c in calls
+            if c["own"] and c["state"] not in ("opgelost", "niet opgelost")]
+live_own.sort(key=lambda x: (x["state"] != "loopt", x["stage"], x["ticker"]))
+n_resolved_own = sum(len(v) for v in groups_own.values())
 
 # ---------------------------------------------------------------- the panel tab
 CAL = PC.load_calibration()
@@ -757,7 +883,9 @@ payload = {
     "live": sorted(live, key=lambda x: (x["state"] != "loopt", x["stage"], x["ticker"])),
     "table": table,
     "n_resolved": len(resolved),
-    "week": week,
+    "own": {"live": live_own, "table": table_own, "n_resolved": n_resolved_own, "min_calls": OWN_MIN,
+            "bench": [dict(stage=k[0], model=k[1], cut=v) for k, v in sorted(bench.items())]},
+    "week": calls,          # every call; the page cuts the period (7 days by default)
     "agents": agents,
     "week_days": WEEK_DAYS,
     "panel_top": panel_top,

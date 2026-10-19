@@ -166,6 +166,16 @@ key is renamed or absent, and neither failure says anything in the run log.
 See `researcher_us/routine-prompts/edge-execute.md` for the preconditions and for the separate
 exit Routine kept there as a fallback.
 
+## Stage M — morning exit review, 08:56 New York, weekdays
+
+`trig_01R5U78urkb5wkcguFhQD1Di`, cron `CRON_TZ=America/New_York 56 8 * * 1-5` (moved from 08:26 on 2026-10-18 so the
+08:00-08:30 bmo releases are out). The cron
+is written in New York time, so unlike stages R, IPO and D it does not have to move on
+2026-11-02. It reads stage E-P's run of the previous trading day (`panel_pct` >= 60) and
+must publish its advice by 09:24 ET. Prompt in
+`researcher_us/routine-prompts/morning-exit.md`, skill `earnings-morning-exit`. Places no
+orders.
+
 ## Stage C — forward capture
 
 Separate from the advice pipeline. Nothing downstream reads it; it builds the Track B

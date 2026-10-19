@@ -1,0 +1,696 @@
+{
+  "market": "EU",
+  "markets": [
+    "uk",
+    "de",
+    "fr",
+    "se",
+    "dk",
+    "no",
+    "fi",
+    "it",
+    "es",
+    "pl"
+  ],
+  "event_date": "2026-10-16",
+  "window": "2026-10-16 close of the PREVIOUS session -> 2026-10-16 close, for a `bmo` name; 2026-10-16 close -> next close for an `amc` one. Europe reports before the open: 339 of 379 measured UK results announcements landed before 08:00 London.",
+  "fx": {
+    "USD": 1.0,
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/<pair>=X",
+    "as_of": "2026-10-15T13:43:06+00:00",
+    "GBP": 1.3254,
+    "EUR": 1.12158,
+    "SEK": 0.10049,
+    "DKK": 0.15001,
+    "NOK": 0.10543,
+    "PLN": 0.25658,
+    "GBp": 0.013254,
+    "GBX": 0.013254
+  },
+  "cap": 20,
+  "min_turnover_usd": 100000,
+  "calendar_source": "THREE sources since 2026-10-06, and every row says which in its own `calendar_source`: TradingView's public scanner (vendor), plus for the UK the issuer's own dated RNS notices and financial calendars (uk_rns_calendar.py), plus Yahoo's FIRM per-symbol dates in all ten markets (eu_yahoo_calendar.py). The vendor's measured UK phantom rate is 2 of 90 rows, but its RECALL was 45 of 126 UK results/trading updates over 2026-09-22 -> 10-05, and it skips Q1/Q3 statements for many continental issuers. Confirmation is eu_resolve.py's job, and whether event_occurred: false is reachable DIFFERS BY MARKET -- see per_market[*].event_occurred_false_reachable. It is false for Germany (EQS has no whole-day query) and for Spain and Poland (no archive reachable at all).",
+  "generated_utc": "2026-10-15T13:43:08+00:00",
+  "validation_only": false,
+  "per_market": {
+    "uk": {
+      "universe_size": 1080,
+      "vendor_total": 1080,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Investegate (RNS mirror)",
+      "short_register": "FCA aggregated net short positions",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "observed",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "rns_calendar": {
+        "state": "read",
+        "rns_dated_for_target": 0,
+        "added": [],
+        "confirmed_vendor": [],
+        "outside_vendor_universe": [],
+        "calendar_file": "researcher_europe/analysis/uk-rns-calendar.json"
+      },
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "de": {
+      "universe_size": 428,
+      "vendor_total": 428,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "EQS-News search (per issuer, paginated, back years)",
+      "short_register": "Bundesanzeiger Netto-Leerverkaufspositionen",
+      "capability": {
+        "archive": "issuer",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "eqs_events": {
+            "state": "read",
+            "dated_for_target": 0,
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 0
+      }
+    },
+    "fr": {
+      "universe_size": 586,
+      "vendor_total": 586,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "AMF regulated-information flux (info-financiere.gouv.fr)",
+      "short_register": "AMF positions courtes nettes (data.gouv.fr, per-holder history since 2012)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": false
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "se": {
+      "universe_size": 664,
+      "vendor_total": 895,
+      "off_primary_exchange_filtered": 231,
+      "scheduled_today": 7,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finansinspektionen aggregerade korta nettopositioner (ODS, snapshot; the date is when the level last changed)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 13,
+            "reaches_to": "2026-10-22",
+            "added": []
+          },
+          "nasdaq_fincal": {
+            "state": "read",
+            "dated_for_target": 0,
+            "added": []
+          }
+        },
+        "joined": 9,
+        "dated_for_target": 13
+      }
+    },
+    "dk": {
+      "universe_size": 135,
+      "vendor_total": 135,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finanstilsynet aggregerede korte nettopositioner (HTML table, 0.1% threshold)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 0,
+            "reaches_to": "2027-08-24",
+            "added": []
+          },
+          "nasdaq_fincal": {
+            "state": "unavailable",
+            "error": "Unterminated string starting at: line 1150 column 22 (char 49369)",
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 0
+      }
+    },
+    "no": {
+      "universe_size": 274,
+      "vendor_total": 274,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Oslo Bors NewsWeb (true day query, ticker-keyed, categorised)",
+      "short_register": "Finanstilsynet SSR register (JSON, dated events per issuer)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "euronext_oslo": {
+            "state": "read",
+            "dated_for_target": 1,
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 1
+      }
+    },
+    "fi": {
+      "universe_size": 183,
+      "vendor_total": 183,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finanssivalvonta net short positions (JSON, per holder)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 0,
+            "reaches_to": "2027-02-02",
+            "added": []
+          },
+          "nasdaq_fincal": {
+            "state": "read",
+            "dated_for_target": 0,
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 0
+      }
+    },
+    "it": {
+      "universe_size": 388,
+      "vendor_total": 388,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "eMarket STORAGE (Borsa Italiana OAM; WAF-intermittent, retried)",
+      "short_register": "CONSOB posizioni nette corte (PncPubbl.xlsx, per holder)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": false
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "es": {
+      "universe_size": 269,
+      "vendor_total": 269,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "none reachable (CNMV OIR returns 403 from this container)",
+      "short_register": "none reachable (CNMV grid is an ASP.NET postback that returns no rows from this container)",
+      "capability": {
+        "archive": null,
+        "register": false,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "pl": {
+      "universe_size": 709,
+      "vendor_total": 709,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "none reachable (GPW and espi.pap.pl both 0 of 8 tries)",
+      "short_register": "none reachable (KNF RssOuterView returns 403)",
+      "capability": {
+        "archive": null,
+        "register": false,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "bankier": {
+            "state": "read",
+            "dated_for_target": 0,
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 0
+      }
+    }
+  },
+  "scheduled_today": 7,
+  "selection": {
+    "method": "all 5 eligible names (at or under the cap)",
+    "seed": "eu-2026-10-16",
+    "eligible": 5,
+    "dropped": 2,
+    "hunted": 5,
+    "by_market": {
+      "uk": 0,
+      "de": 0,
+      "fr": 0,
+      "se": 5,
+      "dk": 0,
+      "no": 0,
+      "fi": 0,
+      "it": 0,
+      "es": 0,
+      "pl": 0
+    },
+    "eligible_by_market": {
+      "uk": 0,
+      "de": 0,
+      "fr": 0,
+      "se": 5,
+      "dk": 0,
+      "no": 0,
+      "fi": 0,
+      "it": 0,
+      "es": 0,
+      "pl": 0
+    },
+    "market_concentration": {
+      "largest_market": "se",
+      "largest_market_share": 1.0,
+      "markets_represented": 1,
+      "basis": "a day whose names are mostly one market is one market's day. The draw is deliberately not stratified; this field is how that shows up in the note and in eu_resolve.py's per_market block."
+    },
+    "basis": "Turnover floor, then a seeded random draw. The floor is $100k/day since 2026-10-01 ($200k from 2026-09-19) -- the bar every non-US stage uses and half the US one, so all ten markets are cut the same way. It is NOT a size-band cut: Phase 1 found coverage runs 5-7 analysts at $1-5m of turnover against 16-19 above $25m, and selecting on that band would bake this stage's own thesis into its universe. Turnover and `anchor_covered` ride in every baseline so the resolver can rank performance by band and by whether the name had a positioning anchor at all."
+  },
+  "eligible_symbols": [
+    "se:AZA",
+    "se:INVE_A",
+    "se:ITECH",
+    "se:NP3",
+    "se:PLAZ_B"
+  ],
+  "names": [
+    {
+      "name": "AZA",
+      "description": "Avanza Bank Holding AB",
+      "close": 373.5,
+      "currency": "SEK",
+      "market_cap_basic": 59404462770,
+      "average_volume_10d_calc": 279594.8,
+      "earnings_release_date": 1783944000,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1792129500,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Finance",
+      "country": "Sweden",
+      "isin": "SE0012454072",
+      "tv_symbol": "OMXSTO:AZA",
+      "scheduled_date": "2026-10-16",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Avanza Bank 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/Avanza-Bank"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "AZA.ST",
+      "tape": {
+        "spot": 370.9,
+        "currency": "SEK",
+        "run_up_20d_pct": -4.92,
+        "run_up_5d_pct": -2.06,
+        "median_turnover_native_20d": 96910406,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 9738526
+    },
+    {
+      "name": "INVE_A",
+      "description": "Investor AB Class A",
+      "close": 405.7,
+      "currency": "SEK",
+      "market_cap_basic": 1269663087733,
+      "average_volume_10d_calc": 361505.7,
+      "earnings_release_date": 1784182500,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1792131300,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Finance",
+      "country": "Sweden",
+      "isin": "SE0015811955",
+      "tv_symbol": "OMXSTO:INVE_A",
+      "scheduled_date": "2026-10-16",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Investor 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/Investor"
+        },
+        {
+          "source": "inderes",
+          "title": "Investor 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/Investor"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "INVE-A.ST",
+      "tape": {
+        "spot": 404.3,
+        "currency": "SEK",
+        "run_up_20d_pct": 0.82,
+        "run_up_5d_pct": 1.53,
+        "median_turnover_native_20d": 133096659,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 13374883
+    },
+    {
+      "name": "ITECH",
+      "description": "I-Tech AB",
+      "close": 73.3,
+      "currency": "SEK",
+      "market_cap_basic": 859040814,
+      "average_volume_10d_calc": 24025,
+      "earnings_release_date": 1787292000,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1792130400,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Process Industries",
+      "country": "Sweden",
+      "isin": "SE0011167725",
+      "tv_symbol": "OMXSTO:ITECH",
+      "scheduled_date": "2026-10-16",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "I-tech 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/I-tech"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "ITECH.ST",
+      "tape": {
+        "spot": 72.8,
+        "currency": "SEK",
+        "run_up_20d_pct": -2.54,
+        "run_up_5d_pct": 6.28,
+        "median_turnover_native_20d": 1032550,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 103760
+    },
+    {
+      "name": "NP3",
+      "description": "NP3 Fastigheter AB",
+      "close": 221,
+      "currency": "SEK",
+      "market_cap_basic": 13806151611,
+      "average_volume_10d_calc": 43778.5,
+      "earnings_release_date": 1783663200,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1792130400,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Finance",
+      "country": "Sweden",
+      "isin": "SE0006342333",
+      "tv_symbol": "OMXSTO:NP3",
+      "scheduled_date": "2026-10-16",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "NP3 Fastigheter 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/NP3-Fastigheter"
+        },
+        {
+          "source": "inderes",
+          "title": "NP3 Fastigheter 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/NP3-Fastigheter"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "NP3.ST",
+      "tape": {
+        "spot": 220.0,
+        "currency": "SEK",
+        "run_up_20d_pct": -9.09,
+        "run_up_5d_pct": 1.15,
+        "median_turnover_native_20d": 9209648,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 925477
+    },
+    {
+      "name": "PLAZ_B",
+      "description": "Platzer Fastigheter Holding AB Class B",
+      "close": 62.2,
+      "currency": "SEK",
+      "market_cap_basic": 7356693799,
+      "average_volume_10d_calc": 242131.5,
+      "earnings_release_date": 1783058400,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1792130400,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Finance",
+      "country": "Sweden",
+      "isin": "SE0004977692",
+      "tv_symbol": "OMXSTO:PLAZ_B",
+      "scheduled_date": "2026-10-16",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Platzer Fastigheter Holding 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/Platzer-Fastigheter-Holding"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "PLAZ-B.ST",
+      "tape": {
+        "spot": 61.9,
+        "currency": "SEK",
+        "run_up_20d_pct": -10.42,
+        "run_up_5d_pct": 1.81,
+        "median_turnover_native_20d": 10242907,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 1029309
+    }
+  ],
+  "dropped": [
+    {
+      "name": "MAVEN",
+      "description": "Maven Wireless Sweden AB",
+      "close": 4.7,
+      "currency": "SEK",
+      "market_cap_basic": 261882258.99999997,
+      "average_volume_10d_calc": 6969.9,
+      "earnings_release_date": 1784700000,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1792130400,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Electronic Technology",
+      "country": "Sweden",
+      "isin": "SE0015961180",
+      "tv_symbol": "OMXSTO:MAVEN",
+      "scheduled_date": "2026-10-16",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Maven Wireless Sweden 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/Maven-Wireless-Sweden"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "MAVEN.ST",
+      "tape": {
+        "spot": 4.7,
+        "currency": "SEK",
+        "run_up_20d_pct": -10.98,
+        "run_up_5d_pct": -1.67,
+        "median_turnover_native_20d": 28884,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 2902,
+      "drop_reason": "below the turnover floor: $2,903 < $100,000 a day"
+    },
+    {
+      "name": "NEXAM",
+      "description": "Nexam Chemical Holding AB",
+      "close": 2.38,
+      "currency": "SEK",
+      "market_cap_basic": 245984043,
+      "average_volume_10d_calc": 137439.7,
+      "earnings_release_date": 1784009880,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1792131480,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Process Industries",
+      "country": "Sweden",
+      "isin": "SE0005101003",
+      "tv_symbol": "OMXSTO:NEXAM",
+      "scheduled_date": "2026-10-16",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Nexam Chemical 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se/companies/Nexam-Chemical"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "NEXAM.ST",
+      "tape": {
+        "spot": 2.4,
+        "currency": "SEK",
+        "run_up_20d_pct": -12.73,
+        "run_up_5d_pct": -1.23,
+        "median_turnover_native_20d": 250479,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 25170,
+      "drop_reason": "below the turnover floor: $25,171 < $100,000 a day"
+    }
+  ]
+}

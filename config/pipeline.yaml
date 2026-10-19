@@ -282,6 +282,33 @@ edge_panel_intraday:
   places_orders: false
   shadow_ledger: false
 
+# Stage M (2026-10-18, operator's instruction): the morning-after exit review. At 08:56 ET,
+# half an hour before the US open (moved from 08:26 the same day so bmo releases are out), every name stage E-P scored at panel_pct >= 60 on the previous
+# trading day whose print is now out (amc yesterday, bmo this morning) gets one
+# morning-reaction-analyst. It reads the release, the public reaction and the
+# pre-market tape and recommends ONE of three exits for a position on the panel's side
+# entered at 13:30 ET: at the open, a day limit, or at the close. Every row also
+# carries the scorebord's static rule (amc out at the open, bmo out at 13:00 ET) and
+# `morning.py resolve` / `pool` score the review against it on the same names.
+# Output in research/<Y>/<M>/<DATE>/morning/, where DATE is the morning itself.
+morning_exit:
+  source_dir: edge-panel       # stage E-P's run of the previous trading day
+  source_stage: E-P
+  min_panel_pct: 60            # operator's threshold; below E-P's own selection (80)
+  min_members: 3               # a name with fewer judges is not read
+  max_names: 10                # ranked by panel_pct; the rest are logged, not reviewed
+  output_dir: morning
+  agent: morning-reaction-analyst
+  earliest_et: "06:30"         # a fire outside these hours logs and stops
+  latest_et: "09:29"
+  advice_deadline_et: "09:24"  # compile and publish by then, with or without every review
+  static_rule:                 # the control, the scorebord's window (2026-10-13)
+    amc: exit_open
+    bmo: exit_1300
+  entry_et: "13:30"            # the position's entry, the scorebord's
+  orchestrator_model: opus
+  places_orders: false
+
 # The four-model panel on the non-US stages (EU, J, AU, CA; 2026-10-08, operator's
 # instruction: "the 4-agent judging method the US one already uses"). Each stage keeps
 # its own hunters and its own impact_sum key; after scoring, scripts/market_panel.py
