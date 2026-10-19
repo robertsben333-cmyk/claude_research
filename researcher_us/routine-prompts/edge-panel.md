@@ -7,7 +7,7 @@ clones the repo itself. **Keep this file and the Routine in step: any re-paste c
 both in the same commit.** The block below is the exact text the Routine holds.
 `edge-hunt-sonnet.md` is the text it held before, kept as history.
 
-**Re-pasted 2026-10-19 (operator's instruction): stage E-P now trades the Alpaca paper
+**Re-pasted 2026-10-19 at 19:42:24 UTC (`updated_at`, read back identical; operator's instruction): stage E-P now trades the Alpaca paper
 account**, renamed "Stage E-P — US edge hunt, Opus 5.5 searchers + four-model panel
 (trades Alpaca paper)". It sells whatever is held once the searchers finish (skill step 3s)
 and buys the panel's book after the panel (step 6b, `execution.panel`). The keys are in
