@@ -44,3 +44,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-10-19 12:57 UTC
 - source research/2026/10/2026-10-16/edge-panel, now 08:57 EDT
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-19 13:00 UTC
+- 1 name: CLF exit_close (Wachten tot slot). Pool: no prior morning (first fire, n=0).
