@@ -60,3 +60,7 @@
 ## Intraday panel 10:00 — panel STARTED
 - Logged at 2026-10-19 14:35 UTC
 - 19/19 hunted (unpriced-searcher, Opus 5.5); guard at 14:35 UTC moved nothing; edge_score 19 rankable, 0 clear 2.8. Packs built, four judges.
+
+## Intraday panel 10:00 — done
+- Logged at 2026-10-19 14:41 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5), guard moved nothing, all four judges 19/19 (opus5, opus55, sonnet55, fable51 on their pinned ids), panel scored --dry-run --stage E-PI (history untouched). Selected: EFX short (90), AERO short (89). 18 confirmed names shed for budget, CBSH unconfirmed. No orders. Timeline at edge-intraday/timeline.md.
