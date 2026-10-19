@@ -24,3 +24,11 @@
 ## Stage J — wave 1 STARTED
 - Logged at 2026-10-19 01:06 UTC
 - 4 scheduled / 4 eligible / 4 hunted (all, under cap 25): 3295 3481 3488 8984, all J-REIT Aug-period results. Baselines sealed, provenance jp.v5. Previous resolved run (2026-10-13) lean_vs_free_control_rho 0.406.
+
+## Stage J — wave 1 done
+- Logged at 2026-10-19 01:14 UTC
+- 4 of 4 hunts returned. Note: hunter 3295 reported a shared scratch-file collision (a y.json overwritten with 3481.T bars); it re-fetched its own data into a per-ticker folder before using it.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-19 01:14 UTC
+- 4 packs, four judges
