@@ -95,3 +95,7 @@
 ## Edge hunt (panel, Fable) — sweep
 - Logged at 2026-10-19 17:21 UTC
 - Sweep confirmed 36 of 38 (WAL, CBSH unconfirmed, 0 phantoms). Cap 19 hunted by hunt_priority: VICR KARO AERO HAS STLD VMI RBB GPC WASH RLI EFX SMBK CCK SFBS MSCI CCBG ALLY ZION MBWM. Shed for budget (lowest priority): SYF HBCP AGNC GM PEBO HAL WTFC MMM AUB NOC BOKF GE FNB RTX UCB KEY WRB. Searchers: unpriced-searcher-fable, amc first, 8 concurrent. Each brief forbids reading any other stage's directory (after the E-PI VICR breach).
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-19 17:36 UTC
+- Sweep: 37 of 38 confirmed (CBSH unconfirmed, no company source). Budget 19 hunted, shed by lowest hunt_priority (strict order, as stage E-PI did today): SYF RLI RTX HBCP RBB CCK PEBO WRB SMBK KEY AUB WTFC STLD MBWM BOKF UCB FNB CCBG (SYF RTX CCK WRB KEY STLD FNB carry live chains and were shed anyway; deviation-free priority order kept). Hunting: VICR HAS EFX KARO AERO WASH GPC MSCI VMI WAL GM SFBS ALLY NOC AGNC HAL GE ZION MMM. Wave 1 (8, amc first + VICR) launched ~17:37 UTC with an explicit read restriction to their own baseline and sweep row.
