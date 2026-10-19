@@ -56,3 +56,7 @@
 ## Intraday panel 10:00 — names frozen
 - Logged at 2026-10-19 14:12 UTC
 - Universe 38 (17 amc 10-19, 21 bmo 10-20); sweep confirmed 37, CBSH unconfirmed (aggregators disagree, no 8-K). Names frozen to edge-intraday/names.json. Budget cap 19 hunted: shed by lowest hunt_priority GE RTX GM NOC STLD WRB HAL KEY CCK AGNC WTFC ZION BOKF FNB AUB UCB PEBO MBWM (recorded in intraday.json 'shed'; their baselines stay so they appear unrankable). Hunting: VICR KARO WASH HAS EFX RBB CCBG AERO SFBS HBCP WAL MSCI SMBK RLI VMI SYF ALLY GPC MMM, amc first.
+
+## Intraday panel 10:00 — panel STARTED
+- Logged at 2026-10-19 14:35 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5); guard at 14:35 UTC moved nothing; edge_score 19 rankable, 0 clear 2.8. Packs built, four judges.
