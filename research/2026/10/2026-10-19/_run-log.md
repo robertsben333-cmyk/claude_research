@@ -20,3 +20,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-19 01:05 UTC
 - Fired 01:04 UTC 2026-10-19 (10:04 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp in waves of 5 (cap 25) -> edge_score -> four-model intl panel -> japan-note. Research only, no orders.
+
+## Stage J — wave 1 STARTED
+- Logged at 2026-10-19 01:06 UTC
+- 4 scheduled / 4 eligible / 4 hunted (all, under cap 25): 3295 3481 3488 8984, all J-REIT Aug-period results. Baselines sealed, provenance jp.v5. Previous resolved run (2026-10-13) lean_vs_free_control_rho 0.406.
