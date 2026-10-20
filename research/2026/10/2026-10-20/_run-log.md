@@ -37,3 +37,7 @@
 ## Stage J — wave 1 launched; prior runs resolved
 - Logged at 2026-10-20 01:07 UTC
 - 4 unpriced-hunter-jp launched (3226, 3466, 5933, 8968). Resolved while waiting: 10-14 rho -0.067 (25 names, lean_vs_free_control_rho 0.789), 10-15 rho +0.085 (25, lean_vs 0.531), 10-16 (2 names, rho withheld); panel-resolved written for each.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-20 01:12 UTC
+- 4 hunts in, scored (impact_sum 5933 +0.70, 8968 +0.45, 3466 +0.40, 3226 0.00; none above floor 2.8). 4 packs, four judges.
