@@ -49,3 +49,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-10-20 12:58 UTC
 - source research/2026/10/2026-10-19/edge-panel, 08:59 ET; 5 picks (EFX, VICR, AERO, HAS, NOC), 5 analysts launched
+
+## Stage M — previous morning scored
+- Logged at 2026-10-20 12:59 UTC
+- 2026-10-19 resolved: CLF exit_close +15.76% vs static exit_1300 +15.72% (review_minus_static +0.04). Pool: 1 name, 1 day, review_minus_static mean +0.04, no t on n=1.
