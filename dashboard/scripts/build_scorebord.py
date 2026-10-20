@@ -160,6 +160,14 @@ def window(sym, start, start_is_close_before, end_at_open=False, end_hm=None):
         return {"ref": ref, "ref_day": ref_day, "last": None, "move": None,
                 "state": "wacht"}
     end_day = after[0]
+    # The window ends on the FIRST session after the reference, printed or not. Yahoo
+    # leaves a European session's close null for a day or two (AIRA.ST and ITM.L on
+    # 2026-10-19, read on 10-20), and skipping that day priced the window to the next
+    # session instead, shown as running. A passed session with no close waits.
+    first = min((d for d in q["bars"] if d > ref_day), default=end_day)
+    if first != end_day and first < TODAY.isoformat() and not end_at_open and end_hm is None:
+        return {"ref": ref, "ref_day": ref_day, "last": None, "move": None,
+                "state": "wacht"}
     o, c = q["bars"][end_day]
     now_et = datetime.now(ET)
     if end_hm is not None and end_day == now_et.date().isoformat() \
@@ -257,6 +265,32 @@ def us_move(n):
                        "move": round(move, 3), "session": n.get("session"),
                        "exit_day": exit_day}
     return move
+
+
+def us_move_any(n, ticker, run_date, event_date, session):
+    """us_move() when the stage E ledger has the name, else the same window priced
+    directly. Since 2026-10-15 stage E has written no run to this repo, so E-P names
+    had no ledger row and stayed "gesloten" for good, then "niet opgelost" once their
+    run left LOOKBACK_DAYS. A window whose exit has happened is a result: it is
+    returned, and frozen once the exit day is behind us, like every other US move."""
+    mv = us_move(n) if n else None
+    if mv is not None:
+        return mv
+    key = f"{run_date}|{ticker}"
+    if key in FROZEN:
+        US_PX[key] = (FROZEN[key].get("entry"), FROZEN[key].get("exit"))
+        return FROZEN[key]["move"]
+    if not event_date or not recent(run_date):
+        return None
+    w = us_live(ticker, event_date, session)
+    if not w or w["state"] != "gesloten" or w.get("move") is None:
+        return None
+    US_PX[key] = (w["ref"], w["last"])
+    if w.get("end_day") and w["end_day"] < TODAY.isoformat():
+        FROZEN[key] = {"entry": round(w["ref"], 4), "exit": round(w["last"], 4),
+                       "move": round(w["move"], 3), "session": session,
+                       "exit_day": w["end_day"]}
+    return w["move"]
 
 
 def us_live(sym, event_date, session):
@@ -472,14 +506,15 @@ def us_side_stage(glob_pat, stage, market, picker):
             continue
         for r, side, why in picker(run, f, model):
             n = by_run_ticker.get((run_date, r["ticker"]))
-            mv = us_move(n) if n else None
+            b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
+            mv = us_move_any(n, r["ticker"], run_date, b.get("event_date"),
+                             b.get("session") or (n or {}).get("session"))
             if mv is not None:
                 resolved.append(dict(stage=stage, version=ver,
                                      model="panel" if key_is_panel else mshort,
                                      ticker=r["ticker"], run_date=run_date,
                                      ret=side * mv, kind=why))
             elif recent(run_date):
-                b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
                 w = us_live(r["ticker"], b.get("event_date") or run_date, b.get("session"))
                 live_row(stage=stage, ticker=r["ticker"], company=b.get("company"),
                          run_date=run_date, score=r.get("panel_pct", r.get("impact_sum")),
@@ -622,12 +657,13 @@ for glob_pat, stage, market, key in (
                 strong, why = (pc or 0) >= TOP, None if pc is None else f"p{pc:.0f}"
             n = by_run_ticker.get((run_date, r["ticker"]))
             b = load(ROOT / run / "baselines" / f"{r['ticker']}.json") or {}
-            mv = us_move(n) if n else None
+            mv = us_move_any(n, r["ticker"], run_date, b.get("event_date"),
+                             b.get("session") or (n or {}).get("session"))
             week_row(stage, ver, "panel" if key == "panel_score" else mshort, r["ticker"], b.get("company"), run_date,
                      b.get("event_date"), score, strong, why,
                      side=pside if key == "panel_score" else None,
                      move=mv, session=b.get("session") or (n or {}).get("session"),
-                     px=us_px(n) if mv is not None else None,
+                     px=US_PX.get(f"{run_date}|{r['ticker']}") if mv is not None else None,
                      live_w=None if mv is not None or not recent(run_date) else us_live(
                          r["ticker"], b.get("event_date") or run_date, b.get("session")))
 
@@ -763,7 +799,9 @@ for f in sorted(glob.glob(str(ROOT / "research/*/*/*/edge-panel/edge-scores-pane
         continue
     for t, p in panel_pcts(run, "US").items():
         n = by_run_ticker.get((run_date, t))
-        mv = us_move(n) if n else None
+        b = load(ROOT / run / "baselines" / f"{t}.json") or {}
+        mv = us_move_any(n, t, run_date, b.get("event_date"),
+                         b.get("session") or (n or {}).get("session"))
         if mv is not None and p["full"]:
             pt_rows.setdefault("US", []).append(dict(run_date=run_date, ticker=t, pct=p["panel_pct"],
                                                     sd=p["sd"], move=mv))
