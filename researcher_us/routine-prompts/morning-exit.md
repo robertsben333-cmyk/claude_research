@@ -23,8 +23,11 @@ changes both in the same commit.** The block below is the exact text the Routine
   first run 2026-10-19 12:26 UTC (moved to 12:56 UTC the same day, see the cron line), no MCP connectors and empty `sources` and `outcomes`.
 - Re-pasted with `update_trigger` at 15:12:27 UTC the same day (cron `56 8`, prompt
   08:56 / 09:24) and read back: next run 2026-10-19 12:56 UTC, model `claude-opus-5-5`.
-- Re-pasted with `update_trigger` on 2026-10-20 (cron `10 9`, prompt 09:10 / 09:24, the
-  opening question): see the block below.
+- Re-pasted with `update_trigger` on 2026-10-20 at 17:51:33 UTC (cron `10 9`, prompt
+  09:10 / 09:24) and read back: prompt identical to the block below, next run
+  2026-10-21 13:10 UTC, model `claude-opus-5-5`, enabled. The 10-20 fire under `56 8`
+  started at 12:57:49 UTC, so expect the session about two minutes after the cron
+  minute.
 - **Must be on `main` before it fires**, or step 0 logs "not on main" and stops.
 
 ---
