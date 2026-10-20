@@ -3,3 +3,7 @@
 ## Stage EU — Europe researcher — STARTED
 - Logged at 2026-10-20 13:38 UTC
 - Fired 13:37 UTC Tue 2026-10-20; sealing for event date 2026-10-21 (Wed, next European session). Plan: eu_universe (cap 20, $100k floor, seeded draw) -> seal baselines -> provenance -> one hunter per name in waves of 5 -> edge_score -> 4-model intl panel -> note. No orders. Publishing to main (EARNINGS_DATA_BRANCH pinned).
+
+## Stage EU — universe and baselines sealed
+- Logged at 2026-10-20 13:48 UTC
+- Event date 2026-10-21. 62 scheduled, 37 eligible, 20 hunted by seeded draw (eu-2026-10-21): se 15, de 2 (FTK, SAP), no 1 (DNB), fi 1 (TTALO), es 1 (IBE). Largest market se 75%, 5 markets. Yahoo calendar unavailable on all ten. Registers: de 2026-10-19, fi 2026-10-16, no 2026-10-19, se 2026-10-20, es none. anchor_covered: ALTRA BULTEN FABG FTK JM MIPS (6 of 20). History observed for DNB only (observed_newsweb). session_unresolved: ALTRA, FTK, KEBNI_B. amc: SAP, BULTEN (window 10-21 close -> next close). Provenance stamped (nordic.v5, de/es v-current, opus-5-5 by alias timeline; get_session unavailable).
