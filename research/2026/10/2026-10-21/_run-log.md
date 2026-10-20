@@ -19,3 +19,7 @@
 ## Stage EU — wave 3 done
 - Logged at 2026-10-20 14:21 UTC
 - HEBA_B +0.50 (12:00 in-session, window holds it), INWI +1.00, JM -1.00, KEBNI_B 0.00, MIPS +2.90 (largest so far; below the 2.8 floor? no — 2.9 clears it). Wave 4 running: NMAN OVZON SALIX SHB_A SKF_A.
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-20 14:30 UTC
+- 20 hunts done; 20 ranked, 1 above 2.8 (MIPS +2.90). Wave 4: NMAN 0.00, OVZON +0.30, SALIX +0.30, SHB_A -0.30, SKF_A +0.05. 20 packs, four intl judges.
