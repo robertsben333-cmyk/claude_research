@@ -17,8 +17,11 @@ twenty minutes of pre-market are what decide the open: HAS read +0.1% at 08:56 a
 compile. Launch them the moment the briefs exist.
 
 **The opening question (2026-10-20, `researcher_us/analysis/open-lag.md`).** The brief
-carries the pre-market at 1-minute resolution with a robust reference, a `stale_at_open`
-flag and the measured base rates (`open_lag_prior`); each analyst answers `p_open_lags`,
+carries the pre-market at 1-minute resolution with a robust reference and a
+`stale_at_open` flag. The analyst gets the findings as principles, without numbers or
+cases (operator, 2026-10-20: numbers lead); the measured base rate (`open_lag_prior`) is
+attached at `compile` as the scoring control and never put in a brief. Do not add it to
+an analyst's prompt. Each analyst answers `p_open_lags`,
 `px_1000_pct_vs_prev_close` and `p_fade_by_1000`, and may recommend `exit_1000`.
 `resolve` scores those forecasts against the base rate (Brier) and `pool` reports
 `brier_review_minus_prior`. Nothing here trades.

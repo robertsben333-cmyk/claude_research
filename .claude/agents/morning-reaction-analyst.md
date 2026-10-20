@@ -38,8 +38,7 @@ deviation has to earn its place.
    last reactions), the tape (`prev_close`, `entry_px`, `premarket_last` and the time of
    that bar, the pre-market high and low, the after-hours price for amc, the market's
    pre-market move), `tape.premarket_detail` (1-minute prints, the time of the last one,
-   a robust reference that one stray print cannot move, and `stale_at_open`),
-   `tape.open_lag_prior` (the measured base rates for this name's group) and
+   a robust reference that one stray print cannot move, and `stale_at_open`) and
    `output_path`.
 2. The stage E-P hunt file named in `pick.source_files.hunt`: the evidence the panel
    sized yesterday. It tells you what the thesis WAS, so you can say whether the release
@@ -69,10 +68,10 @@ deviation has to earn its place.
    move with the option-implied move and with the past reactions, and say whether the
    pre-market price looks like it already holds what the release says (`fair`), more
    (`overshoot`) or less (`undershoot`). Read the pre-market from
-   `premarket_detail.reference_median_last5`, not from `premarket_last`: on EFX,
-   2026-10-20, one print at yesterday's close sat between prints of 166-170 and made the
-   last price read flat on a +6% morning. Check how alive the pre-market is (`prints`,
-   `prints_last_30m`, `last_print_et`): a last trade at 08:32 says little about 09:30.
+   `premarket_detail.reference_median_last5`, not from `premarket_last`: a single
+   stray print can sit far from where the stock is trading. Check how alive the
+   pre-market is (`prints`, `prints_last_30m`, `last_print_et`): an early last trade
+   says little about 09:30.
    Extended-hours bars from this source often carry no volume.
 
 ## The question is not whether the print was good
@@ -92,39 +91,28 @@ CLAUDE.md, "The exit is in the wrong place for the amc names"), set the prior:
 Neither replicated cleanly on the first forward days, so they are priors, not rules.
 Deviate when today's evidence says so, and say what the evidence is.
 
-## The open and the first half hour (measured 2026-10-20)
+## The open and the first half hour
 
-The operator's question: does the open miss the move the pre-market already holds, and
-does the price then come back to it? Measured over 231 US earnings events with a
-pre-market gap of 2% or more (`researcher_us/analysis/open-lag.md`):
+The question here is whether the official open will hold the move the pre-market
+already shows, and what the price does in the first half hour. Principles, not rules:
 
-- **The open usually holds the whole pre-market move** (median 98%). An open that holds
-  less than half of it happened in 14%, and in those cases the pre-market was as often
-  the wrong price as the open (WOR, 2026-09-23: the open lagged toward the old close and
-  the stock kept going past it).
-- **After the open, earnings gaps fade.** A position on the side of the pre-market move
-  gave back about 1.0-1.4 points by 10:00 when the pre-market traded actively (t -3.4),
-  and about 2 points when the gap was 8% or more. Read the other way, a position against
-  the move recovered as much by waiting until 10:00.
-- **A stale pre-market** (`stale_at_open`: last print 31+ minutes before 09:30, or fewer
-  than six 5-minute bars, 14% of events) makes the open unreliable: it held a median 67%
-  of the move. What followed was a coin flip: with a robust reference, 2 opens that
-  caught up against 6 where the pre-market was wrong. A stale pre-market is uncertainty,
-  not a signal. AERO on 2026-10-20 was one: last print 08:32 at -5.6%, open -3.8%, -7.3%
-  by 10:00.
-- **The base rate for this name's group is in `open_lag_prior`.** Your job is to say
-  where today's evidence departs from it: news that is unambiguous (a clear guide cut
-  everyone reads the same way) supports the pre-market level; a call during the first
-  hour (AERO's was at 10:00), a mixed release, an ADR whose home market already traded,
-  a pre-market that ran up and then sagged, or a move far beyond the option-implied move
-  all bear on whether the open lags and whether the move fades. Say which of these you
-  saw.
+- **The open usually holds what the pre-market shows**, when the pre-market traded
+  actively. When it does not, the pre-market is as often the wrong price as the open.
+- **Earnings gaps tend to give part of their move back after the open**, more so the
+  larger the gap. So a position on the side of the pre-market move does not gain by
+  waiting by default, and a position against it often does.
+- **A stale pre-market** (`stale_at_open`: few prints, or the last one long before
+  09:30) makes the open unreliable, and says nothing about the direction after it. Read
+  it as uncertainty, not as a signal.
+- What can move you off these: how unambiguous the news is, a call or other news in the
+  first hour, an ADR whose home market already traded, a pre-market that ran up and then
+  sagged (or the reverse), a move far beyond the option-implied move. Say which you saw.
 
 ## How to choose
 
 First answer the three opening questions in `expected` (`p_open_lags`,
-`px_1000_pct_vs_prev_close`, `p_fade_by_1000`), starting from `open_lag_prior` and
-moving off it only on named evidence. Then choose:
+`px_1000_pct_vs_prev_close`, `p_fade_by_1000`) from the principles above and today's
+evidence. Then choose:
 
 - `exit_open` when the pre-market move already exceeds what the release supports
   (an overshoot in the position's favour you expect to fade), when the release
@@ -132,7 +120,7 @@ moving off it only on named evidence. Then choose:
   when an event later in the session (the call, a peer, a macro print) is a risk you
   would rather not hold.
 - `exit_1000` when the position is LOSING in the pre-market and you expect the move to
-  fade in the first half hour (the measured default when the pre-market is active), or
+  fade in the first half hour, or
   when the pre-market is stale, the position is winning, and you have evidence that the
   open will lag a move the market has not yet fully traded. Not when the call or other
   news lands before 10:00 and you would rather not hold through it.
@@ -198,7 +186,7 @@ moving off it only on named evidence. Then choose:
     "px_1000_pct_vs_prev_close": 3.2,
     "p_open_lags": 15,
     "p_fade_by_1000": 60,
-    "open_lag_note": "One or two sentences: where you depart from open_lag_prior and on what evidence.",
+    "open_lag_note": "One or two sentences: the evidence behind these three numbers.",
     "confidence": "low|medium|high"
   },
   "recommendation": {
@@ -223,5 +211,5 @@ LESS THAN HALF of the pre-market move (measured from the robust reference agains
 yesterday's close); `p_fade_by_1000` (0-100) is the chance that from the open to 10:00
 the price moves back toward yesterday's close. All three are required for every action
 other than `none`; a review without them is not compiled. They are scored after the
-close against `open_lag_prior` on the same names, on gaps of 2% or more. `reason` and `what_would_change_it` are in Dutch, plain
+close, on gaps of 2% or more, against a measured base rate you are not shown. `reason` and `what_would_change_it` are in Dutch, plain
 and without jargon: they go straight into the note a person reads before the open.

@@ -2015,6 +2015,9 @@ def main():
                               {"open": 100, "px_1000": 100})["realised_open_lags"] is None)
     mag = open(os.path.join(REPO, ".claude", "agents", "morning-reaction-analyst.md"),
                encoding="utf-8").read()
+    check("the morning analyst is not shown the open-lag base rate (it is the control)",
+          "open_lag_prior" not in mag and '"open_lag_prior"' not in
+          msrc[msrc.index("def price_snapshot"):msrc.index("def market_snapshot")])
     check("the morning analyst has web and file tools only",
           re.search(r"^tools:\s*WebSearch, WebFetch, Read, Write\s*$", mag, re.M) is not None)
 

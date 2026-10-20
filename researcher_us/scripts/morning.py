@@ -35,9 +35,11 @@ back about 1.0-1.4 points by 10:00 when the pre-market traded actively. When the
 pre-market was stale (last print 31+ minutes before the open, or fewer than six 5m
 bars) the open lagged, and what followed was a coin flip once the pre-market reference
 was made robust. So the brief carries the pre-market at 1-minute resolution, a robust
-reference (the median of the last five 1m prints), the stale flag and those base rates,
-and every review answers three scorable questions: `p_open_lags`, `px_1000_pct` and
-`p_fade_by_1000`. `resolve` scores them against the base rates on the same names.
+reference (the median of the last five 1m prints) and the stale flag, the analyst gets
+the findings as principles without numbers or cases (operator, 2026-10-20: numbers
+lead), and every review answers three scorable questions: `p_open_lags`, `px_1000_pct`
+and `p_fade_by_1000`. `compile` attaches the measured base rate per name and `resolve`
+scores the forecasts against it on the same names; it never reaches a brief.
 
 THE CONTROL. Every advice row also carries what the scorebord's own rule does with no
 morning review at all: amc out at the open, bmo out at 13:00 ET. The review has added
@@ -383,7 +385,6 @@ def price_snapshot(p, now_et):
         "premarket_volume": sum(b["volume"] for b in pm_bars),
         "premarket_pct_vs_prev_close": _pct(pm and pm["close"], prev_close),
         "premarket_detail": detail,
-        "open_lag_prior": open_lag_prior(detail["stale_at_open"]),
         "after_open": reg is not None,
         "last": last,
         "position_return_so_far_pct": (None if _pct(last, entry_px) is None
@@ -513,7 +514,13 @@ def compile_advice(d, C):
                 "reference_pct_vs_prev_close"),
             "premarket_stale_at_compile": (tape_f.get("premarket_detail") or {}).get(
                 "stale_at_open"),
-            "open_lag_prior": tape_f.get("open_lag_prior") or tape.get("open_lag_prior"),
+            # The base rate is the scoring control and is never put in a brief: the
+            # operator's instruction of 2026-10-20 is principles for the analyst, not
+            # numbers or cases, because numbers lead.
+            "open_lag_prior": open_lag_prior(next(
+                (x for x in ((tape_f.get("premarket_detail") or {}).get("stale_at_open"),
+                             (tape.get("premarket_detail") or {}).get("stale_at_open"))
+                 if x is not None), False)),
             "position_return_so_far_pct": next(
                 (x for x in (tape_f.get("position_return_so_far_pct"),
                              tape.get("position_return_so_far_pct")) if x is not None), None),
