@@ -6,7 +6,10 @@ the open and, for the names that scored 60 or higher the day before (US only), j
 the earnings release, the public reaction and the stock's move, and from that the
 expected price reaction and the recommended action at the open: sell, limit, or wait
 until the end of the day."* Moved the same day to 08:56 ET, so the bmo releases of
-08:00-08:30 are out before it reads them.
+08:00-08:30 are out before it reads them, and on 2026-10-20 to 09:10 ET (operator's
+instruction): the whole stage measured about four minutes end to end on its first two
+fires, and the last twenty minutes of pre-market are what decide the open (HAS read
++0.1% at 08:56 and +4.0% at 09:25 on 2026-10-20).
 
 WHAT IT READS. Stage E-P's run of the previous trading day,
 `research/<prev>/edge-panel/edge-scores-panel.json`. A name is picked when its
@@ -16,13 +19,25 @@ window: an amc name that reported after yesterday's close, or a bmo name reporti
 morning. The POSITION is the panel's side, entered at 13:30 ET on the entry day: the
 scorebord's window, which is the operator's.
 
-THE THREE ACTIONS, from the position's point of view (a short's "sell" is a cover):
+THE FOUR ACTIONS, from the position's point of view (a short's "sell" is a cover):
 
     exit_open    sell at the opening print, market order
+    exit_1000    sell at market at 10:00 ET (added 2026-10-20, see below)
     exit_limit   a day limit at a stated price beyond the pre-market price (a sell
                  above it for a long, a cover below it for a short); unfilled at the
                  close, it goes at the close
     exit_close   hold through the session, sell at the close
+
+THE OPENING QUESTION (2026-10-20, `researcher_us/analysis/open-lag.md`). Over 231 US
+earnings events with a pre-market gap of 2% or more, the open held a median 98% of the
+pre-market move, and from there the gap FADED: a position on the side of the move gave
+back about 1.0-1.4 points by 10:00 when the pre-market traded actively. When the
+pre-market was stale (last print 31+ minutes before the open, or fewer than six 5m
+bars) the open lagged, and what followed was a coin flip once the pre-market reference
+was made robust. So the brief carries the pre-market at 1-minute resolution, a robust
+reference (the median of the last five 1m prints), the stale flag and those base rates,
+and every review answers three scorable questions: `p_open_lags`, `px_1000_pct` and
+`p_fade_by_1000`. `resolve` scores them against the base rates on the same names.
 
 THE CONTROL. Every advice row also carries what the scorebord's own rule does with no
 morning review at all: amc out at the open, bmo out at 13:00 ET. The review has added
@@ -55,8 +70,12 @@ import edge_exit as EX                      # noqa: E402  Yahoo plumbing, one pr
 from get_earnings import is_trading_day     # noqa: E402  NYSE calendar, holidays included
 
 ET = ZoneInfo("America/New_York")
-ACTIONS = ("exit_open", "exit_limit", "exit_close")
+ACTIONS = ("exit_open", "exit_1000", "exit_limit", "exit_close")
 TICK = 0.01        # a limit counts as filled only when the tape traded THROUGH it
+MIN_GAP_PCT = 2.0  # below this the open-lag questions are a ratio of two noises
+STALE_MINUTES = 31  # open_lag.py's definition, so the prior and the flag agree
+STALE_BARS = 6
+OPEN_LAG_FILE = REPO / "researcher_us" / "analysis" / "open-lag.json"
 
 
 def cfg():
@@ -244,6 +263,93 @@ def _pct(a, b):
     return None if a is None or not b else round((a / b - 1) * 100, 3)
 
 
+def bars1(ticker):
+    """Today's 1-minute bars with the pre-market, keyed by ET date."""
+    j = EX._get(f"{EX.YQ}/v8/finance/chart/{EX.yahoo_symbol(ticker)}"
+                f"?range=1d&interval=1m&includePrePost=true")
+    res = ((j or {}).get("chart") or {}).get("result")
+    if not res or not res[0].get("timestamp"):
+        return {}
+    r = res[0]
+    q = (r.get("indicators") or {}).get("quote", [{}])[0]
+    out = {}
+    for i, ts in enumerate(r["timestamp"]):
+        c = q.get("close", [None])[i]
+        if c is None:
+            continue
+        t = datetime.fromtimestamp(ts, timezone.utc).astimezone(ET)
+        out.setdefault(t.date().isoformat(), []).append(
+            {"hm": t.hour * 60 + t.minute, "close": c})
+    return out
+
+
+def _hhmm(m):
+    return None if m is None else f"{m // 60:02d}:{m % 60:02d}"
+
+
+def premarket_detail(ticker, today, mins, pm_bars5, prev_close):
+    """How alive the pre-market is, and a reference that one stray print cannot move.
+
+    EFX on 2026-10-20 printed once at yesterday's close at 09:10 between prints of
+    166-170, so the last print alone is not a reference. `stale_at_open` assumes no
+    further print before 09:30, so it can only turn false later, never true."""
+    try:
+        m1 = [b for b in bars1(ticker).get(today, [])
+              if 4 * 60 <= b["hm"] < min(mins + 1, 9 * 60 + 30)]
+    except Exception:
+        m1 = []
+    basis = "1m"
+    prints = m1
+    if not prints:
+        basis = "5m"
+        prints = [{"hm": b["hm"], "close": b["close"]} for b in pm_bars5]
+    last_hm = prints[-1]["hm"] if prints else None
+    ref = st.median(b["close"] for b in prints[-5:]) if prints else None
+    stale = (last_hm is None or 9 * 60 + 30 - last_hm >= STALE_MINUTES
+             or len(pm_bars5) < STALE_BARS)
+    return {
+        "basis": basis,
+        "prints": len(prints),
+        "prints_last_30m": len([b for b in prints if b["hm"] >= mins - 30]),
+        "bars_5m": len(pm_bars5),
+        "last_print_et": _hhmm(last_hm),
+        "minutes_since_last_print": None if last_hm is None else mins - last_hm,
+        "reference_median_last5": ref,
+        "reference_pct_vs_prev_close": _pct(ref, prev_close),
+        "stale_at_open": stale,
+        "stale_rule": f"last print {STALE_MINUTES}+ minutes before 09:30 (assuming no "
+                      f"further print) or fewer than {STALE_BARS} five-minute bars",
+    }
+
+
+def open_lag_prior(stale):
+    """The measured base rates for this name's group, from open_lag.py's report.
+
+    p_open_lags: the open holds less than half of the pre-market move.
+    p_fade_by_1000: from the open to 10:00 the price moves back toward yesterday's
+    close (against the pre-market move). Both on events with |pre-market gap| >= 2%."""
+    rep_ = _load(OPEN_LAG_FILE) or {}
+    g = rep_.get("stale_pm" if stale else "fresh_pm") or {}
+    w = (g.get("wait_minus_open") or {}).get("1000") or {}
+    if not g.get("n_big_gap"):
+        return {"available": False, "source": _rel(OPEN_LAG_FILE)}
+    return {
+        "available": True, "group": "stale" if stale else "fresh",
+        "n_events": g["n_big_gap"],
+        "p_open_lags": round(100 * g["open_short_rate"], 1),
+        "p_fade_by_1000": None if w.get("share_better") is None
+        else round(100 * (1 - w["share_better"]), 1),
+        "median_open_capture": round(g["median_capture_open"], 2),
+        "gapside_1000_minus_open_pp": None if w.get("mean") is None
+        else round(w["mean"], 2),
+        "caveat": ("measured on the last pre-market print; with a robust reference the "
+                   "fresh-group fade holds (-1.39pp, t -3.4) and the stale group is a "
+                   "coin flip (+0.99pp, t 1.45, 2 lags against 6 fades): a stale "
+                   "pre-market is uncertainty, not a signal"),
+        "source": _rel(OPEN_LAG_FILE),
+    }
+
+
 def price_snapshot(p, now_et):
     """What the tape says at decision time. Every number is Yahoo's; none is typed."""
     dd = EX.daily(p["ticker"]) or {}
@@ -263,6 +369,7 @@ def price_snapshot(p, now_et):
     reg = _last(pm_day, 9 * 60 + 30, min(mins, 16 * 60)) if mins >= 9 * 60 + 30 else None
     last = (reg or pm or {}).get("close")
     side = p["side"]
+    detail = premarket_detail(p["ticker"], today, mins, pm_bars, prev_close)
     return {
         "as_of_et": now_et.strftime("%Y-%m-%d %H:%M %Z"),
         "prev_close": prev_close, "prev_close_date": closes[-1] if closes else None,
@@ -275,6 +382,8 @@ def price_snapshot(p, now_et):
         "premarket_low": min((b["low"] for b in pm_bars if b["low"]), default=None),
         "premarket_volume": sum(b["volume"] for b in pm_bars),
         "premarket_pct_vs_prev_close": _pct(pm and pm["close"], prev_close),
+        "premarket_detail": detail,
+        "open_lag_prior": open_lag_prior(detail["stale_at_open"]),
         "after_open": reg is not None,
         "last": last,
         "position_return_so_far_pct": (None if _pct(last, entry_px) is None
@@ -318,10 +427,12 @@ def snapshot(d, C, final=False, now=None):
                 "output_path": _rel(out / "reviews" / f"{p['ticker']}.json"),
                 "actions": {
                     "exit_open": "sell (cover a short) at the opening print, market",
+                    "exit_1000": "sell (cover a short) at market at 10:00 ET",
                     "exit_limit": "day limit beyond the pre-market price; unfilled -> "
                                   "out at the close",
                     "exit_close": "hold through the session, out at the close"},
-                "static_rule": static_rule(p["session"], C)})
+                "static_rule": static_rule(p["session"], C),
+                "compiled_at_et": C.get("advice_deadline_et", "09:24")})
     _write(out / ("snapshot-final.json" if final else "snapshot.json"), snap)
     return snap
 
@@ -356,9 +467,12 @@ def check_review(rv, p, tape):
                          f"position's side, so it is a market order at the open")
     exp = (rv or {}).get("expected") or {}
     if act in ACTIONS:
-        for k in ("open_pct_vs_prev_close", "open_to_close_pct"):
+        for k in ("open_pct_vs_prev_close", "open_to_close_pct", "px_1000_pct_vs_prev_close"):
             if not _num(exp.get(k)):
                 probs.append(f"expected.{k} missing")
+        for k in ("p_open_lags", "p_fade_by_1000"):
+            if not _num(exp.get(k)) or not 0 <= exp[k] <= 100:
+                probs.append(f"expected.{k} missing or outside 0-100")
     rel = (rv or {}).get("release") or {}
     if released and not str(rel.get("source_url", "")).startswith("http"):
         probs.append("release found but no source_url")
@@ -393,6 +507,13 @@ def compile_advice(d, C):
             "premarket_pct_at_review": tape.get("premarket_pct_vs_prev_close"),
             "premarket_at_compile": tape_f.get("premarket_last"),
             "premarket_pct_at_compile": tape_f.get("premarket_pct_vs_prev_close"),
+            "premarket_ref_at_compile": (tape_f.get("premarket_detail") or {}).get(
+                "reference_median_last5"),
+            "premarket_ref_pct_at_compile": (tape_f.get("premarket_detail") or {}).get(
+                "reference_pct_vs_prev_close"),
+            "premarket_stale_at_compile": (tape_f.get("premarket_detail") or {}).get(
+                "stale_at_open"),
+            "open_lag_prior": tape_f.get("open_lag_prior") or tape.get("open_lag_prior"),
             "position_return_so_far_pct": next(
                 (x for x in (tape_f.get("position_return_so_far_pct"),
                              tape.get("position_return_so_far_pct")) if x is not None), None),
@@ -401,6 +522,9 @@ def compile_advice(d, C):
             "expected_open_pct": exp.get("open_pct_vs_prev_close"),
             "expected_open_to_close_pct": exp.get("open_to_close_pct"),
             "p_open_to_close_up": exp.get("p_open_to_close_up"),
+            "expected_1000_pct": exp.get("px_1000_pct_vs_prev_close"),
+            "p_open_lags": exp.get("p_open_lags"),
+            "p_fade_by_1000": exp.get("p_fade_by_1000"),
             "confidence": exp.get("confidence"),
             "action": rec.get("action") if usable else "none",
             "limit_price": rec.get("limit_price") if usable else None,
@@ -423,6 +547,7 @@ def compile_advice(d, C):
 
 ACTION_NL = {"exit_open": "Verkopen bij opening", "exit_limit": "Limietorder",
              "exit_close": "Wachten tot slot", "none": "Geen advies",
+             "exit_1000": "Verkopen om 10:00",
              "exit_1300": "Uit om 13:00 ET"}
 
 
@@ -447,17 +572,21 @@ def render_note(res, C):
               f"{C.get('min_panel_pct', 60)} in het venster van vanochtend.", ""]
     else:
         L += ["| Naam | Sessie | Positie | panel_pct | Premarket vs slot | Positie tot nu "
-              "| Verwacht open | Verwacht open→slot | **Advies** | Limiet | Vaste regel |",
-              "|---|---|---|---|---|---|---|---|---|---|---|"]
+              "| Voorbeurs stil | Verwacht open | Verwacht 10:00 | Verwacht open→slot "
+              "| **Advies** | Limiet | Vaste regel |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
         for r in res["rows"]:
             L.append(
                 f"| {r['ticker']} | {r['session']} | {r['position']} | "
                 f"{_f(r['panel_pct'], 1, False)}{'*' if r['selected_by_panel'] else ''} | "
-                f"{_f(r['premarket_pct_at_compile'] if r['premarket_pct_at_compile'] is not None else r['premarket_pct_at_review'])}% | "
-                f"{_f(r['position_return_so_far_pct'])}% | {_f(r['expected_open_pct'])}% | "
+                f"{_f(next((x for x in (r.get('premarket_ref_pct_at_compile'), r['premarket_pct_at_compile'], r['premarket_pct_at_review']) if x is not None), None))}% | "
+                f"{_f(r['position_return_so_far_pct'])}% | "
+                f"{'ja' if r.get('premarket_stale_at_compile') else 'nee' if r.get('premarket_stale_at_compile') is False else '—'} | "
+                f"{_f(r['expected_open_pct'])}% | {_f(r.get('expected_1000_pct'))}% | "
                 f"{_f(r['expected_open_to_close_pct'])}% | **{ACTION_NL[r['action']]}** | "
                 f"{_f(r['limit_price'], 2, False)} | {ACTION_NL.get(r['static_rule'])} |")
-        L += ["", "`*` = door het panel geselecteerd (top 20%). Rendementen in % vanaf "
+        L += ["", "`*` = door het panel geselecteerd (top 20%). Premarket = de mediaan van de "
+              "laatste vijf voorbeurstransacties om 09:24. Rendementen in % vanaf "
               "de kant van de positie; verwachtingen zijn ten opzichte van het slot van "
               "gisteren.", ""]
         for r in res["rows"]:
@@ -481,6 +610,12 @@ def render_note(res, C):
           "opening, bmo uit om 13:00 ET) op dezelfde namen (`morning.py resolve`, "
           "`pool`). Eén ochtend is een anekdote: pas over veel ochtenden blijkt of de "
           "beoordeling iets toevoegt aan de vaste regel.", "",
+          "*Voorbeurs stil* = de laatste voorbeurstransactie ligt 31 minuten of meer "
+          "voor de opening, of er waren minder dan zes 5-minutenbars. Gemeten over 231 "
+          "earnings-events houdt de opening meestal de hele voorbeursbeweging vast en "
+          "zakt de koers daarna tot 10:00 terug; bij een stille voorbeurs is de "
+          "opening onbetrouwbaar en is de richting daarna onzeker "
+          "(`researcher_us/analysis/open-lag.md`).", "",
           (C.get("disclaimer") or "This is a forecasting exercise over public "
            "information. It is not investment advice."), ""]
     return "\n".join(L)
@@ -500,8 +635,9 @@ def exit_prices_today(ticker, d):
     if d == now.date() and now.hour * 60 + now.minute < 16 * 60 + 10:
         return None
     b13 = _last(reg, 12 * 60 + 55, 12 * 60 + 55) or _last(reg, 9 * 60 + 30, 12 * 60 + 55)
+    b10 = _last(reg, 9 * 60 + 55, 9 * 60 + 55) or _last(reg, 9 * 60 + 30, 9 * 60 + 55)
     return {"open": dd[d.isoformat()]["open"], "close": dd[d.isoformat()]["close"],
-            "px_1300": b13 and b13["close"],
+            "px_1300": b13 and b13["close"], "px_1000": b10 and b10["close"],
             "high": max(b["high"] for b in reg if b["high"]),
             "low": min(b["low"] for b in reg if b["low"]),
             "high_after_open": max((b["high"] for b in reg if b["hm"] >= 9 * 60 + 35
@@ -524,6 +660,36 @@ def limit_exit(side, lp, px):
     return px["close"], "unfilled_out_at_close"
 
 
+def open_lag_outcome(r, px):
+    """Did the open lag the pre-market, and did the price fade back by 10:00?
+
+    The reference is the pre-market at the compile (the robust median when present).
+    Unscored (None) when the gap is under MIN_GAP_PCT or a price is missing. Brier
+    scores sit beside the base rate's, so the review is judged against the prior."""
+    pc = r.get("prev_close")
+    ref = r.get("premarket_ref_at_compile") or r.get("premarket_at_compile") \
+        or r.get("premarket_at_review")
+    out = {"open_lag_reference": ref, "realised_open_lags": None,
+           "realised_fade_by_1000": None}
+    if not (pc and ref and px.get("open")) or abs(ref / pc - 1) * 100 < MIN_GAP_PCT:
+        return out
+    g = ref - pc
+    out["realised_open_lags"] = (px["open"] - pc) / g < 0.5
+    if px.get("px_1000") is not None:
+        out["realised_fade_by_1000"] = (px["px_1000"] - px["open"]) * (1 if g > 0 else -1) < 0
+    prior = r.get("open_lag_prior") or {}
+    for k, real in (("p_open_lags", out["realised_open_lags"]),
+                    ("p_fade_by_1000", out["realised_fade_by_1000"])):
+        if real is None:
+            continue
+        y = 1.0 if real else 0.0
+        if _num(r.get(k)):
+            out[f"brier_{k}"] = round((r[k] / 100 - y) ** 2, 4)
+        if _num(prior.get(k)):
+            out[f"brier_{k}_prior"] = round((prior[k] / 100 - y) ** 2, 4)
+    return out
+
+
 def resolve(d, C):
     _, _, out = paths(d, C)
     adv = _load(out / "morning-advice.json")
@@ -541,7 +707,7 @@ def resolve(d, C):
         def ret(x):
             return None if x is None else round(s * (x / entry - 1) * 100, 3)
         rets = {"exit_open": ret(px["open"]), "exit_close": ret(px["close"]),
-                "exit_1300": ret(px["px_1300"])}
+                "exit_1300": ret(px["px_1300"]), "exit_1000": ret(px.get("px_1000"))}
         fill = None
         if _num(r.get("limit_price")):
             lx, fill = limit_exit(s, r["limit_price"], px)
@@ -557,12 +723,15 @@ def resolve(d, C):
             "review_minus_static": (None if rets.get(rec) is None
                                     or rets.get(r["static_rule"]) is None
                                     else round(rets[rec] - rets[r["static_rule"]], 3)),
-            "best_action": max(("exit_open", "exit_close", "exit_1300"),
+            "best_action": max(("exit_open", "exit_1000", "exit_close", "exit_1300"),
                                key=lambda k: rets[k] if rets[k] is not None else -1e9),
             "expected_open_pct": r.get("expected_open_pct"),
             "realised_open_pct": _pct(px["open"], r.get("prev_close")),
             "expected_open_to_close_pct": r.get("expected_open_to_close_pct"),
             "realised_open_to_close_pct": _pct(px["close"], px["open"]),
+            "expected_1000_pct": r.get("expected_1000_pct"),
+            "realised_1000_pct": _pct(px.get("px_1000"), r.get("prev_close")),
+            **open_lag_outcome(r, px),
         })
     res = {"generated_utc": _now_utc().isoformat(timespec="seconds"),
            "date": d.isoformat(), "rows": rows,
@@ -616,18 +785,28 @@ def pool(C):
            "static_rule": _mean_t([r["static_return"] for r in rows]),
            "review_minus_static": _mean_t([r["review_minus_static"] for r in rows]),
            "always": {k: _mean_t([r["returns"].get(k) for r in rows])
-                      for k in ("exit_open", "exit_1300", "exit_close")},
+                      for k in ("exit_open", "exit_1000", "exit_1300", "exit_close")},
            "by_action": {a: _mean_t([r["review_minus_static"] for r in rows
                                      if r["action"] == a])
                          for a in ACTIONS + ("none",)},
            "rho_expected_vs_realised_open": _rho(
                [r["expected_open_pct"] for r in rows], [r["realised_open_pct"] for r in rows]),
+           "rho_expected_vs_realised_1000": _rho(
+               [r.get("expected_1000_pct") for r in rows],
+               [r.get("realised_1000_pct") for r in rows]),
+           "brier_review_minus_prior": {
+               k: _mean_t([r[f"brier_{k}"] - r[f"brier_{k}_prior"] for r in rows
+                           if r.get(f"brier_{k}") is not None
+                           and r.get(f"brier_{k}_prior") is not None])
+               for k in ("p_open_lags", "p_fade_by_1000")},
            "rho_expected_vs_realised_open_to_close": _rho(
                [r["expected_open_to_close_pct"] for r in rows],
                [r["realised_open_to_close_pct"] for r in rows]),
            "note": "The review adds something only where review_minus_static is "
                    "positive with t >= 2 over many mornings. Names on one morning share "
-                   "a market and are not independent."}
+                   "a market and are not independent. brier_review_minus_prior below "
+                   "zero means the analysts' open-lag probabilities beat the measured "
+                   "base rate."}
     _write(REPO / "researcher_us" / "analysis" / "morning-pool.json", res)
     return res
 

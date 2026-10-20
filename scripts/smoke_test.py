@@ -1991,11 +1991,28 @@ def main():
     good = {"release": {"found": True, "source_url": "https://x"},
             "expected": {"open_pct_vs_prev_close": 1.0, "open_to_close_pct": 0.5},
             "recommendation": {"action": "exit_limit", "limit_price": 11.0}}
+    bad = dict(good, recommendation={"action": "sell"})
+    check("an action outside the three is refused", MX.check_review(bad, pk, {"last": 10}) != [])
+    check("a review without the three opening forecasts is refused (2026-10-20)",
+          any("p_open_lags" in x for x in MX.check_review(good, pk, {"last": 10.5})))
+    good = dict(good, expected=dict(good["expected"], px_1000_pct_vs_prev_close=1.2,
+                                    p_open_lags=10, p_fade_by_1000=60))
     check("a well-formed limit review passes", MX.check_review(good, pk, {"last": 10.5}) == [])
     check("a limit on the wrong side of the pre-market price is refused",
           len(MX.check_review(good, pk, {"last": 11.5})) == 1)
-    bad = dict(good, recommendation={"action": "sell"})
-    check("an action outside the three is refused", MX.check_review(bad, pk, {"last": 10}) != [])
+    check("exit_1000 is an action and scored at the 10:00 price",
+          "exit_1000" in MX.ACTIONS and MX.check_review(
+              dict(good, recommendation={"action": "exit_1000"}), pk, {"last": 10}) == [])
+    ol = MX.open_lag_outcome({"prev_close": 15.89, "premarket_ref_at_compile": 15.0,
+                              "p_open_lags": 60, "p_fade_by_1000": 40,
+                              "open_lag_prior": {"p_open_lags": 40, "p_fade_by_1000": 50}},
+                             {"open": 15.6, "px_1000": 14.7})
+    check("an open holding under half the pre-market move is a lag; 10:00 beyond it is no fade",
+          ol["realised_open_lags"] is True and ol["realised_fade_by_1000"] is False
+          and ol["brier_p_open_lags"] == 0.16 and ol["brier_p_open_lags_prior"] == 0.36)
+    check("a pre-market gap under 2% is not scored for the open lag",
+          MX.open_lag_outcome({"prev_close": 100, "premarket_ref_at_compile": 101},
+                              {"open": 100, "px_1000": 100})["realised_open_lags"] is None)
     mag = open(os.path.join(REPO, ".claude", "agents", "morning-reaction-analyst.md"),
                encoding="utf-8").read()
     check("the morning analyst has web and file tools only",
