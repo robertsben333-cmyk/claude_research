@@ -89,3 +89,7 @@
 ## Intraday panel 12:00 — done
 - Logged at 2026-10-20 16:41 UTC
 - 19/19 hunted (unpriced-searcher, Opus 5.5, native), guard moved nothing, all four judges 19/19 on pinned ids, panel scored --dry-run --stage E-PI (history untouched). Selected: ALK short (82), NP long (81); PEGA short 79 misses. 24 confirmed names shed for budget, ISRG/HCSG unconfirmed. No orders. Timeline at edge-intraday/timeline.md.
+
+## Edge hunt (panel) — 2026-10-20 amc + 2026-10-21 bmo — STARTED
+- Logged at 2026-10-20 17:09 UTC
+- Stage E-P fire 17:06 UTC. Universe 45 names (22 amc 10-20, 23 bmo 10-21), baselines sealed for all 45 in edge-panel/baselines. Next: one edge-sweep, then up to 19 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
