@@ -25,3 +25,7 @@
 - Logged at 2026-10-19 14:36 UTC
 - Event date 2026-10-20. 11 ranked (se 5, de 2, uk/fr/dk/es 1): EXS +0.90, LIME +0.90, DB1 +0.20, ENG +0.20, MUM 0.00, UPSALE 0.00, BPM -0.35, EMBLA -0.40, OVH -0.50, SCST -0.50, BMAX -0.70; 0 above floor 2.8. DB1 is amc per issuer calendar (~19:00 CEST) — sealed bmo window is wrong; check eu_resolve's row. Yahoo calendar unavailable on all ten markets.
 - Panel: 4/4 members, no fallback; 1 selected: BMAX short (k=3, panel_pct 73). OVH widest split (sd 50). Note: europe-note.md. Resolve the 5 SE names + EMBLA within ~a week (Nordic feed window). Published with EARNINGS_DATA_BRANCH=main; panel-history.json and eu-short-cache.json committed by hand (not in publish.sh paths).
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-20 01:05 UTC
+- 01:06 UTC: universe (JPX kessan, turnover floor 15m JPY, seeded draw cap 25), seal baselines, one unpriced-hunter-jp per name in waves of 5, edge_score, four-model panel, note. No orders.
