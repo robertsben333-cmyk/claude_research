@@ -45,3 +45,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-20 01:16 UTC
 - 4/4 hunted and scored; panel 4/4 members, 0 selected. impact_sum: 5933 +0.70, 8968 +0.45, 3466 +0.40, 3226 0.00; none above floor. Note: japan/japan-note.md. No orders.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-20 12:58 UTC
+- source research/2026/10/2026-10-19/edge-panel, 08:59 ET; 5 picks (EFX, VICR, AERO, HAS, NOC), 5 analysts launched
