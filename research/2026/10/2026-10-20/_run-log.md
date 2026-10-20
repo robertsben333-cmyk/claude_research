@@ -109,3 +109,7 @@
 ## Edge hunt (panel) — done
 - Logged at 2026-10-20 17:48 UTC
 - All four judges 19/19 on pinned agents (opus5, opus55, sonnet55, fable51). Selected (mean pct >= 80): NP long 83, WFRD long 81 (both amc); ALK short 75 nearest miss. Searcher: 0 of 19 clear 2.8 (max LRN +1.50). Stage E edge/ absent (Routine stopped), no comparison. Note published; step 6b next.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-10-20 17:48 UTC
+- plan + open --submit --no-flatten at ~17:49 UTC (132 min to close). Sent and FILLED: NP long 183 @ 29.46, WFRD long 68 @ 78.91; gross ~$10,743 = 99.5% of $10,798 equity, 49.8% / 49.6% (weights 23.2 / 20.8, both at the 50% cap). Exits dated 2026-10-21 (amc -> queued DAY at the open). Mean execution cost vs mid +1.27 (WFRD +2.57, NP -0.03). 17 names below the 80 floor, none refused for tradability.
