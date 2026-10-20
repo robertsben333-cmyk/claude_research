@@ -73,3 +73,7 @@
 ## Intraday panel 12:00 — baselines amended
 - Logged at 2026-10-20 16:11 UTC
 - Before any searcher: NP suspect -> fits_cadence (matcher miss, Q2 printed 07-21), IART suspect -> unknown (10-02 row is a guidance cut, not a print); both company-confirmed by the sweep. No downgrades among hunted names. Table in edge_baseline_amend.py rewritten for this run.
+
+## Intraday panel 12:00 — wave 1
+- Logged at 2026-10-20 16:14 UTC
+- 8 unpriced-searcher (Opus 5.5) launched ~16:15 UTC with an explicit read restriction: PEGA LRN NP ALK UAL WFRD NFLX OZK (amc). COF, CB (amc) and 9 bmo queued behind the platform cap of 8.
