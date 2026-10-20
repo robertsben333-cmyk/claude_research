@@ -11,3 +11,7 @@
 ## Stage EU — wave 1 done
 - Logged at 2026-10-20 14:02 UTC
 - IBE +0.35, TTALO -0.10 (profit warning pre-released 10-20 13:45 EEST, before seal), DNB -0.15, SAP +0.70 (amc 22:05 CEST), FTK -1.3. FTK: IR calendar says Q3 at 18:00 CEST 10-21, after the Xetra close (amc); the sealed bmo window contains no release — eu_resolve should score it from session_check / both windows. Wave 2: ALTRA BERG_B BULTEN FABG GETI_B (se, unpriced-hunter-nordic).
+
+## Stage EU — wave 2 done
+- Logged at 2026-10-20 14:11 UTC
+- ALTRA +0.70 (MFN estimates 12:00 in-session; Q1 came 19:40, timing uncertain), BERG_B +0.60, BULTEN +1.90 (issuer invitation: 13:30 CEST in-session, so the sealed amc window is WRONG; session_check says bmo), FABG +0.85, GETI_B -0.20. Wave 3: HEBA_B INWI JM KEBNI_B MIPS (se).
