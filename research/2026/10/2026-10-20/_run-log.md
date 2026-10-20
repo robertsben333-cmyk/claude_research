@@ -85,3 +85,7 @@
 ## Intraday panel 12:00 — panel STARTED
 - Logged at 2026-10-20 16:33 UTC
 - 19/19 hunted (unpriced-searcher, Opus 5.5, native). Guard at 16:33 UTC moved nothing (all amc hunts written before 16:00 ET). edge_score 19 rankable. 19 packs, four judges.
+
+## Intraday panel 12:00 — done
+- Logged at 2026-10-20 16:41 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5, native), guard moved nothing, all four judges 19/19 on pinned ids, panel scored --dry-run --stage E-PI (history untouched). Selected: ALK short (82), NP long (81); PEGA short 79 misses. 24 confirmed names shed for budget, ISRG/HCSG unconfirmed. No orders. Timeline at edge-intraday/timeline.md.
