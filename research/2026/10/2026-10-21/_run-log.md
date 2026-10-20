@@ -7,3 +7,7 @@
 ## Stage EU — universe and baselines sealed
 - Logged at 2026-10-20 13:48 UTC
 - Event date 2026-10-21. 62 scheduled, 37 eligible, 20 hunted by seeded draw (eu-2026-10-21): se 15, de 2 (FTK, SAP), no 1 (DNB), fi 1 (TTALO), es 1 (IBE). Largest market se 75%, 5 markets. Yahoo calendar unavailable on all ten. Registers: de 2026-10-19, fi 2026-10-16, no 2026-10-19, se 2026-10-20, es none. anchor_covered: ALTRA BULTEN FABG FTK JM MIPS (6 of 20). History observed for DNB only (observed_newsweb). session_unresolved: ALTRA, FTK, KEBNI_B. amc: SAP, BULTEN (window 10-21 close -> next close). Provenance stamped (nordic.v5, de/es v-current, opus-5-5 by alias timeline; get_session unavailable).
+
+## Stage EU — wave 1 done
+- Logged at 2026-10-20 14:02 UTC
+- IBE +0.35, TTALO -0.10 (profit warning pre-released 10-20 13:45 EEST, before seal), DNB -0.15, SAP +0.70 (amc 22:05 CEST), FTK -1.3. FTK: IR calendar says Q3 at 18:00 CEST 10-21, after the Xetra close (amc); the sealed bmo window contains no release — eu_resolve should score it from session_check / both windows. Wave 2: ALTRA BERG_B BULTEN FABG GETI_B (se, unpriced-hunter-nordic).
