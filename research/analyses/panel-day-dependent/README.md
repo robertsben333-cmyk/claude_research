@@ -158,6 +158,44 @@ score verlaagt de volatiliteit per dag met ongeveer een derde en halveert de sle
 bij een vergelijkbaar rendement. Na kosten wordt het verschil kleiner, omdat de
 score-gewogen schema's meer namen handelen.
 
+## Vervolg (Xavier, 2026-10-20): presteert het panel beter op dagen met minder namen?
+
+`day_size.py`, uitkomst in `day-size.json`.
+
+**Mechanisme.** Op papier is er één plausibel kanaal en één dat niet bestaat.
+- Niet: de zoekers. Elke naam krijgt een eigen zoeker met hetzelfde budget, in golven van
+  4, tot een cap van 19 namen. Een drukke dag duurt langer, maar geeft een naam niet minder
+  onderzoek.
+- Wel: de rechters. Live leest elke rechter alle namen van de dag in één packbestand, dus
+  op een dag met 16 namen deelt een naam de aandacht met 15 andere. Een rechter kan
+  daarnaast binnen de dag gaan rangschikken in plaats van absoluut te schalen. Dat kanaal
+  kan alleen de live runs raken: in de backtest kregen de rechters packs van ongeveer 50
+  namen, los van de dag.
+- Een derde kanaal is welke namen op dunne dagen landen (buiten het seizoen andere,
+  kleinere bedrijven). De grootte van de beweging hangt niet van het aantal namen af
+  (backtest ρ +0,07, p 0,52), dus daar is geen aanwijzing voor.
+
+**Toets.** Spearman tussen het aantal namen per dag en het rendement op de call, met een
+permutatietoets die hele dagen schudt; daarnaast dunne (≤ mediaan) tegen drukke dagen.
+
+| steekproef | groep | n | ρ | p | dun | druk | t |
+|---|---|---|---|---|---|---|---|
+| backtest, 15 dagen | alles | 115 | −0,01 | 0,85 | +1,4% (70) | +1,2% (45) | 0,09 |
+| | ≥70 | 33 | +0,01 | 0,95 | +5,1% (23) | +3,9% (10) | 0,18 |
+| | ≥80 | 19 | −0,19 | 0,43 | +9,3% (12) | +2,6% (7) | 0,74 |
+| v1, 5 dagen | alles | 24 | +0,08 | 0,80 | +3,4% (8) | +4,0% (16) | −0,16 |
+| | ≥80 | 5 | −0,45 | 0,34 | 1 naam | 4 namen | |
+| v2, 3 dagen | alles | 34 | +0,13 | 0,66 | +0,6% (18) | +0,6% (16) | 0,02 |
+
+**Lezing.** Over alle namen is er niets (ρ rond 0 in alle drie). Bij de hoge scores wijst
+het steeds de verwachte kant op (dunne dagen beter), maar op 19, 5 en 1 naam zegt dat
+niets. Juist de backtest, waar het rechterskanaal niet kan werken, laat de grootste kloof
+zien; dus als die kloof echt is, komt hij niet uit de aandacht van de rechters.
+
+Japan heeft vijf opgeloste paneldagen, maar de trekking is afgetopt op 25 namen, dus het
+aantal per dag varieert vrijwel niet. Europa, Canada en Australië hebben nog geen
+opgeloste paneldag.
+
 ## Europa
 
 Niet doorgerekend. Het EU-panel draait sinds 2026-10-12 en heeft één opgeloste dag; de
