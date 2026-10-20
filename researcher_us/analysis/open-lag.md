@@ -60,6 +60,28 @@ An adaptive rule using only what is visible at 09:25 (pre-market winning or losi
 fresh or stale) beats "always sell at the open" by about +0.2 points on the winning
 side and +1.2 on the losing side. It was chosen on these same events.
 
+## Follow-up checks (same day)
+
+**Stale is not just illiquid.** Stale names are mostly thin: median 20-day turnover is
+$2.7m, against $22.8m for fresh names. But the correlation with the turnover rank is
+only -0.23. Among names under $5m a day, fresh ones fade like everything else (10:00
+minus open -1.68) and stale ones go the other way (+2.56, t 3.1). In an OLS of
+10:00-minus-open on stale and log turnover, turnover carries nothing (t 0.4) and stale
+carries +3.1 (t 2.8). Adding log|gap| shrinks stale to +2.2 (t 1.9), because stale
+pre-markets come with smaller gaps, and a bigger gap fades harder (t -2.5).
+
+**The last pre-market print is a fragile reference.** On EFX, 2026-10-20, one 09:10
+print sat exactly at the old close between 166-170 prints. Re-run with the median of
+the last five pre-market bars as the reference (the reference moves by more than 1% on
+88 of 231 events): the fresh-PM fade holds (-1.39, t -3.4, n 204). The stale effect
+weakens to +0.99 (t 1.45, n 27), with 2 lag events against 6 fades. **The AERO-type
+signal does not survive a better reference; the post-open fade does.**
+
+**Stage M's own estimate, two mornings, six names.** Stage M's `expected_open_pct` sat
+closer to the actual open than the last pre-market print on 3 of 6 names (EFX, AERO,
+NOC), and further away on 3 (CLF, VICR, HAS). It loses where the price moved after its
+09:00 snapshot: HAS read +0.1% at 08:56 and +4.0% at 09:25. Six names is an anecdote.
+
 ## What it does not establish
 
 - **The live book does not exit at the open.** Since 2026-10-19 stage E-P sells
