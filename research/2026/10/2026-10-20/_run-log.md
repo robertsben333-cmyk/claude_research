@@ -93,3 +93,7 @@
 ## Edge hunt (panel) — 2026-10-20 amc + 2026-10-21 bmo — STARTED
 - Logged at 2026-10-20 17:09 UTC
 - Stage E-P fire 17:06 UTC. Universe 45 names (22 amc 10-20, 23 bmo 10-21), baselines sealed for all 45 in edge-panel/baselines. Next: one edge-sweep, then up to 19 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-20 17:15 UTC
+- Sweep: 39 of 45 confirmed, 0 phantoms; unconfirmed ISRG PEGA TDY OFG NPB HCSG (not hunted). Budget 19 by hunt_priority: LRN NP IART WGO ALK UAL NFLX MHO LAD ELV CB WFRD WAB DHR COF MCB OZK ABT PM. Shed (lowest priority, strict order): QCRH TMO BWB SF ORRF EWBC HWC BKU AMX ONB NEE NTRS NLY T CME FCCO ELS MCO ADC UNF. Searchers unpriced-searcher, amc first.
