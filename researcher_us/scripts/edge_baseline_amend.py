@@ -73,29 +73,22 @@ from pathlib import Path
 # is where they can actually affect a number. Rewriting this table to {} rather than
 # leaving the 2026-09-10 entries in place is the point of the staleness guard below.
 AMENDMENTS: dict[str, tuple[str, str, str]] = {
-    "AYTU": ("fits_cadence",
-             "UPGRADE off 'suspect', and it is the only amendment in today's pass. "
-             "It is the CSBR case exactly: a fiscal-calendar false positive, not a "
-             "matcher defect. Aytu has a 30 JUNE year end, so the Q3-to-FY4 gap is "
-             "structurally ~132 days while the Q1/Q2/Q3 gaps are ~70-90, and the "
-             "median of the mixed set (70 days) does not describe the gap being "
-             "tested. The proof is inside the baseline's own history: the previous "
-             "FY print, 2025-09-23, sits exactly 132 days after the 2025-05-14 Q3 "
-             "print -- the identical gap the heuristic is currently calling "
-             "suspect. AYTU is a domestic item-2.02 filer, the seven recorded "
-             "reactions are on exact 8-K acceptance times, and the sweep rates the "
-             "history trustworthy, so there is no history defect to forgive and "
-             "fits_cadence is the honest verdict rather than 'unknown'. Without "
-             "this the name is arithmetically incapable of ranking (rankable=False, "
-             "baseline_quality x0.05) despite a company-confirmed event. NOTE ON "
-             "ORDERING: this pass was run AFTER the hunters rather than before "
-             "them, which is a departure from the skill and is recorded in the run "
-             "log. The evidence it rests on is the sweep's, which was written and "
-             "pushed to main (commit 2f2ab3d) before any hunter launched, and the "
-             "amendment cannot reach the book -- AYTU trades ~$60k/day, below the "
-             "$200k turnover floor, so it is unbuyable either way and this changes "
-             "the research ranking only.",
-             "https://www.biospace.com/press-releases/aytu-biopharma-to-report-fiscal-2026-full-year-and-fourth-quarter-operational-and-financial-results-on-september-22-2026"),
+    # 2026-10-20, stage E-PI 12:00 snapshot (edge-intraday-1200), applied from that
+    # snapshot's sweep BEFORE any searcher launched. Two hunted names read 'suspect'
+    # and both events are company-confirmed.
+    "NP": ("fits_cadence",
+           "UPGRADE off 'suspect'. Matcher miss: the baseline's last earnings filing "
+           "is 2026-04-22, but Neptune reported Q2 on 2026-07-21 (sweep), which is 91 "
+           "days before this print and fits its cadence. The company announced Q3 "
+           "results for after the close on 2026-10-20.",
+           "https://finviz.com/news/400947/neptune-insurance-holdings-to-announce-third-quarter-2026-financial-results"),
+    "IART": ("unknown",
+             "Off 'suspect' to 'unknown', not to fits_cadence. The 2026-10-02 row the "
+             "cadence test measures from is the flood-related guidance cut (-21%), not "
+             "a quarterly print, so 19 days is not a gap between prints; the history "
+             "therefore holds a non-earnings row and has not earned a full verdict. "
+             "The company announced Q3 results before the open on 2026-10-21.",
+             "https://finviz.com/news/399266/integra-lifesciences-to-host-third-quarter-2026-financial-results-conference-call-on-october-21-2026"),
 }
 
 # SYMMETRY, 2026-09-22: one upgrade and no downgrades, which needs stating rather

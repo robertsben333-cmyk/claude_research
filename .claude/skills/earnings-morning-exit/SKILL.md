@@ -1,6 +1,6 @@
 ---
 name: earnings-morning-exit
-description: Stage M. Half an hour before the US open, takes every name stage E-P scored at panel_pct 60 or higher on the previous trading day whose earnings are now out (amc yesterday, bmo this morning), and has one morning-reaction-analyst per name judge the release, the public reaction and the pre-market move, estimate the open and the open-to-close move, and recommend one exit for a position on the panel's side - sell at the open, a day limit, or wait until the close. Scores yesterday's advice against the static exit rule first. Writes research/<date>/morning/ and places no orders. Use when asked to run stage M, the morning exit review, or the pre-open earnings advice.
+description: Stage M. About twenty minutes before the US open, takes every name stage E-P scored at panel_pct 60 or higher on the previous trading day whose earnings are now out (amc yesterday, bmo this morning), and has one morning-reaction-analyst per name judge the release, the public reaction and the pre-market move, estimate the open and the open-to-close move, and recommend one exit for a position on the panel's side - sell at the open, at 10:00, a day limit, or wait until the close - with three scorable forecasts of whether the open lags the pre-market and whether the move fades by 10:00. Scores yesterday's advice against the static exit rule first. Writes research/<date>/morning/ and places no orders. Use when asked to run stage M, the morning exit review, or the pre-open earnings advice.
 ---
 
 # Stage M — the morning-after exit review
@@ -9,9 +9,30 @@ Built 2026-10-18 on the operator's instruction: *"a routine that runs one hour b
 the open and, for the names that had a score of 60 or higher the day before (US only),
 judges the earnings release, the public reaction and the stock's move, and from that the
 expected price reaction and the recommended action at the open: sell, limit, or wait
-until the end of the day."* It fires at **08:56 ET** since the same day (moved from 08:26
-on the operator's instruction, so the 08:00-08:30 bmo releases are out), which leaves the
-analysts about 25 minutes. Launch them the moment the briefs exist.
+until the end of the day."* It fires at **09:10 ET** since 2026-10-21 (08:26 at creation,
+08:56 from 2026-10-18, 09:10 on the operator's instruction of 2026-10-20). The first two
+fires took about four minutes end to end (analysts 1-2 minutes each), and the last
+twenty minutes of pre-market are what decide the open: HAS read +0.1% at 08:56 and
++4.0% at 09:25 on 2026-10-20. That leaves the analysts about 12 minutes before the 09:24
+compile. Launch them the moment the briefs exist.
+
+**The opening question (2026-10-20, `researcher_us/analysis/open-lag.md`).** The brief
+carries the pre-market at 1-minute resolution with a robust reference and a
+`stale_at_open` flag. The analyst gets the findings as principles, without numbers or
+cases (operator, 2026-10-20: numbers lead); the measured base rate (`open_lag_prior`) is
+attached at `compile` as the scoring control and never put in a brief. Do not add it to
+an analyst's prompt. Each analyst answers `p_open_lags`,
+`px_1000_pct_vs_prev_close` and `p_fade_by_1000`, and may recommend `exit_1000`.
+`resolve` scores those forecasts against the base rate (Brier) and `pool` reports
+`brier_review_minus_prior`. Nothing here trades.
+
+**The release read (2026-10-20, operator's instruction).** Each analyst first freezes
+the move the reporting itself justifies, close to close, before it sees any market
+reaction (`release_read`). That is why `snapshot` writes the tape to its own file,
+`briefs/<TICKER>.tape.json`, and the brief only names it: the analyst opens it after
+the freeze. Never paste tape numbers, the pre-market move or the market's move into an
+analyst's prompt. `pool` reports whether the read predicts the close and whether its gap
+to the pre-market predicts what the pre-market had not priced (`release_read`).
 
 Read `CLAUDE.md` first. Everything this stage computes is in
 `researcher_us/scripts/morning.py`; its docstring defines the three actions, the

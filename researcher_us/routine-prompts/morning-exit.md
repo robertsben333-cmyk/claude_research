@@ -6,11 +6,12 @@ reaction and the pre-market move, with one recommended exit each (sell at the op
 limit, or wait until the close). **Keep this file and the Routine in step: any re-paste
 changes both in the same commit.** The block below is the exact text the Routine holds.
 
-- Cron `CRON_TZ=America/New_York 56 8 * * 1-5`: 08:56 New York, about half an hour before
-  the open, in New York time so it survives the 2026-11-02 clock change without an edit.
-  Created at 08:26 and moved half an hour later the same day on the operator's
-  instruction, so the bmo releases of 08:00-08:30 are out before it reads them. That
-  leaves the analysts about 25 minutes: the advice is compiled at 09:24.
+- Cron `CRON_TZ=America/New_York 10 9 * * 1-5`: 09:10 New York, twenty minutes before the
+  open, in New York time so it survives the 2026-11-02 clock change without an edit.
+  Created at 08:26, moved to 08:56 the same day so the bmo releases of 08:00-08:30 are
+  out, and to 09:10 on 2026-10-20 (operator's instruction): the first two fires took
+  about four minutes end to end, and the last twenty minutes of pre-market decide the
+  open. The advice is still compiled at 09:24.
 - Fresh session per fire, model `claude-opus-5-5` for the orchestrating session; the
   analysts are `morning-reaction-analyst` (`model: opus`).
 - Places no orders. Writes to `research/<YYYY>/<MM>/<DATE>/morning/`, DATE being the
@@ -22,6 +23,11 @@ changes both in the same commit.** The block below is the exact text the Routine
   first run 2026-10-19 12:26 UTC (moved to 12:56 UTC the same day, see the cron line), no MCP connectors and empty `sources` and `outcomes`.
 - Re-pasted with `update_trigger` at 15:12:27 UTC the same day (cron `56 8`, prompt
   08:56 / 09:24) and read back: next run 2026-10-19 12:56 UTC, model `claude-opus-5-5`.
+- Re-pasted with `update_trigger` on 2026-10-20 at 17:51:33 UTC (cron `10 9`, prompt
+  09:10 / 09:24) and read back: prompt identical to the block below, next run
+  2026-10-21 13:10 UTC, model `claude-opus-5-5`, enabled. The 10-20 fire under `56 8`
+  started at 12:57:49 UTC, so expect the session about two minutes after the cron
+  minute.
 - **Must be on `main` before it fires**, or step 0 logs "not on main" and stops.
 
 ---
@@ -37,7 +43,7 @@ Run stage M: the morning-after exit review of yesterday's US panel names, before
 
 Read CLAUDE.md, then invoke the skill `earnings-morning-exit` and follow it exactly.
 
-Re-read the clock with `date -u` and in New York. You fire at about 08:56 New York, half an hour before the open. The advice must be compiled and published by 09:24 New York, with or without every review: an exit review published after the open is worth nothing.
+Re-read the clock with `date -u` and in New York. You fire at about 09:10 New York, twenty minutes before the open. The advice must be compiled and published by 09:24 New York, with or without every review: an exit review published after the open is worth nothing. Move fast: launch the analysts the moment the briefs exist.
 
 The names are stage E-P's from the previous trading day with panel_pct >= 60 whose print is now out: amc yesterday or bmo this morning. `morning.py pick` decides that; do not add or drop names by hand.
 

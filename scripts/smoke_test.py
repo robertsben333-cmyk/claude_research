@@ -1250,11 +1250,14 @@ def main():
         fm = j.split("---", 2)[1]
         check(f"panel judge {m} is pinned to {mid} with Read and Write only",
               f"\nmodel: {mid}\n" in fm + "\n" and "\ntools: Read, Write\n" in fm + "\n")
-    check("stage E-P writes to edge-panel and places no orders",
-          "<RUN>/edge-panel/" in ep_skill and "No `alpaca_trade.py` call of any kind" in ep_skill)
+    check("stage E-P writes to edge-panel, sells at 3s and buys at 6b on its own run",
+          "<RUN>/edge-panel/" in ep_skill
+          and "flatten --run <RUN>/edge-panel --submit" in ep_skill
+          and "open --run <RUN>/edge-panel --submit --no-flatten" in ep_skill)
     epc = cfg.get("edge_panel") or {}
-    check("stage E-P config carries places_orders: false and an equal live weight",
-          epc.get("places_orders") is False and epc.get("live_weight") == "equal")
+    # Since 2026-10-19 (operator's instruction) stage E-P is the stage that trades.
+    check("stage E-P config carries places_orders: true and an equal live weight",
+          epc.get("places_orders") is True and epc.get("live_weight") == "equal")
     # the aggregator on a synthetic day. Since 2026-10-14 the US selection is the MEAN of
     # the four judges' own percentiles in the top 20%; the 3-of-4 verdict is still
     # written. A name all four size large is selected by both; three large and one
@@ -1988,13 +1991,39 @@ def main():
     good = {"release": {"found": True, "source_url": "https://x"},
             "expected": {"open_pct_vs_prev_close": 1.0, "open_to_close_pct": 0.5},
             "recommendation": {"action": "exit_limit", "limit_price": 11.0}}
+    bad = dict(good, recommendation={"action": "sell"})
+    check("an action outside the three is refused", MX.check_review(bad, pk, {"last": 10}) != [])
+    check("a review without the three opening forecasts is refused (2026-10-20)",
+          any("p_open_lags" in x for x in MX.check_review(good, pk, {"last": 10.5})))
+    good = dict(good, expected=dict(good["expected"], px_1000_pct_vs_prev_close=1.2,
+                                    p_open_lags=10, p_fade_by_1000=60))
+    check("a review without the frozen release read is refused (2026-10-20)",
+          any("release_read" in x for x in MX.check_review(good, pk, {"last": 10.5})))
+    good = dict(good, release_read={"expected_move_pct": 2.0, "p_up": 65})
+    snap_src = msrc[msrc.index("def snapshot"):msrc.index("def static_rule")]
+    check("the brief names the tape file and does not carry the tape",
+          '"tape_path"' in snap_src and '"pick": p, "tape"' not in snap_src)
     check("a well-formed limit review passes", MX.check_review(good, pk, {"last": 10.5}) == [])
     check("a limit on the wrong side of the pre-market price is refused",
           len(MX.check_review(good, pk, {"last": 11.5})) == 1)
-    bad = dict(good, recommendation={"action": "sell"})
-    check("an action outside the three is refused", MX.check_review(bad, pk, {"last": 10}) != [])
+    check("exit_1000 is an action and scored at the 10:00 price",
+          "exit_1000" in MX.ACTIONS and MX.check_review(
+              dict(good, recommendation={"action": "exit_1000"}), pk, {"last": 10}) == [])
+    ol = MX.open_lag_outcome({"prev_close": 15.89, "premarket_ref_at_compile": 15.0,
+                              "p_open_lags": 60, "p_fade_by_1000": 40,
+                              "open_lag_prior": {"p_open_lags": 40, "p_fade_by_1000": 50}},
+                             {"open": 15.6, "px_1000": 14.7})
+    check("an open holding under half the pre-market move is a lag; 10:00 beyond it is no fade",
+          ol["realised_open_lags"] is True and ol["realised_fade_by_1000"] is False
+          and ol["brier_p_open_lags"] == 0.16 and ol["brier_p_open_lags_prior"] == 0.36)
+    check("a pre-market gap under 2% is not scored for the open lag",
+          MX.open_lag_outcome({"prev_close": 100, "premarket_ref_at_compile": 101},
+                              {"open": 100, "px_1000": 100})["realised_open_lags"] is None)
     mag = open(os.path.join(REPO, ".claude", "agents", "morning-reaction-analyst.md"),
                encoding="utf-8").read()
+    check("the morning analyst is not shown the open-lag base rate (it is the control)",
+          "open_lag_prior" not in mag and '"open_lag_prior"' not in
+          msrc[msrc.index("def price_snapshot"):msrc.index("def market_snapshot")])
     check("the morning analyst has web and file tools only",
           re.search(r"^tools:\s*WebSearch, WebFetch, Read, Write\s*$", mag, re.M) is not None)
 
