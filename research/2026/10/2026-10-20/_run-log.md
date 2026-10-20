@@ -69,3 +69,7 @@
 ## Intraday panel 12:00 — names frozen
 - Logged at 2026-10-20 16:11 UTC
 - Universe 45 (22 amc 10-20, 23 bmo 10-21); sweep confirmed 43, ISRG and HCSG unconfirmed (vendor-only). Names frozen to edge-intraday/names.json. Cap 19: hunting PEGA IART LRN WGO NP ALK LAD MHO UAL WFRD ABT ELV TMO NFLX OZK COF WAB DHR CB; shed by lowest hunt_priority (recorded in intraday.json): NTRS NPB TDY MCB OFG SF BKU EWBC QCRH HWC ORRF ONB AMX BWB MCO NLY NEE CME FCCO T ELS PM ADC UNF. amc first.
+
+## Intraday panel 12:00 — baselines amended
+- Logged at 2026-10-20 16:11 UTC
+- Before any searcher: NP suspect -> fits_cadence (matcher miss, Q2 printed 07-21), IART suspect -> unknown (10-02 row is a guidance cut, not a print); both company-confirmed by the sweep. No downgrades among hunted names. Table in edge_baseline_amend.py rewritten for this run.
