@@ -97,3 +97,11 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-10-20 17:15 UTC
 - Sweep: 39 of 45 confirmed, 0 phantoms; unconfirmed ISRG PEGA TDY OFG NPB HCSG (not hunted). Budget 19 by hunt_priority: LRN NP IART WGO ALK UAL NFLX MHO LAD ELV CB WFRD WAB DHR COF MCB OZK ABT PM. Shed (lowest priority, strict order): QCRH TMO BWB SF ORRF EWBC HWC BKU AMX ONB NEE NTRS NLY T CME FCCO ELS MCO ADC UNF. Searchers unpriced-searcher, amc first.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-20 17:39 UTC
+- 19/19 searchers returned (unpriced-searcher, native). flatten --submit at 17:39 UTC: held EFX -35 (unrealised -10.80%) and VICR +28 (+3.88%), both closed at market; account flat, equity $10,798.16 all cash.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-20 17:39 UTC
+- 19/19 hunted. Baselines for NP and IART amended suspect->fits_cadence/unknown by edge_baseline_amend.py AFTER the hunts (step 1 says before; missed). These are event-existence flags confirmed from company sources by the sweep and both hunters, not priced-in estimates; recorded as a deviation. edge_score 19 rankable, 0 clear 2.8. V2 grounded written ~17:41 UTC before the first print. 19 packs, four judges.
