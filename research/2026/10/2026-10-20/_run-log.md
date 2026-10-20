@@ -61,3 +61,55 @@
 ## Stage M — late edit
 - Logged at 2026-10-20 13:01 UTC
 - HAS analyst rewrote its review after the compile (prose/sources only; action and limit unchanged). Kept for the record; not recompiled, per skill.
+
+## Intraday panel 12:00 — STARTED
+- Logged at 2026-10-20 15:59 UTC
+- First snapshot of the day (names not frozen): universe + sweep, freeze, seal, Opus 5.5 searchers, guard, four judges, panel --dry-run --stage E-PI. No orders.
+
+## Intraday panel 12:00 — names frozen
+- Logged at 2026-10-20 16:11 UTC
+- Universe 45 (22 amc 10-20, 23 bmo 10-21); sweep confirmed 43, ISRG and HCSG unconfirmed (vendor-only). Names frozen to edge-intraday/names.json. Cap 19: hunting PEGA IART LRN WGO NP ALK LAD MHO UAL WFRD ABT ELV TMO NFLX OZK COF WAB DHR CB; shed by lowest hunt_priority (recorded in intraday.json): NTRS NPB TDY MCB OFG SF BKU EWBC QCRH HWC ORRF ONB AMX BWB MCO NLY NEE CME FCCO T ELS PM ADC UNF. amc first.
+
+## Intraday panel 12:00 — baselines amended
+- Logged at 2026-10-20 16:11 UTC
+- Before any searcher: NP suspect -> fits_cadence (matcher miss, Q2 printed 07-21), IART suspect -> unknown (10-02 row is a guidance cut, not a print); both company-confirmed by the sweep. No downgrades among hunted names. Table in edge_baseline_amend.py rewritten for this run.
+
+## Intraday panel 12:00 — wave 1
+- Logged at 2026-10-20 16:14 UTC
+- 8 unpriced-searcher (Opus 5.5) launched ~16:15 UTC with an explicit read restriction: PEGA LRN NP ALK UAL WFRD NFLX OZK (amc). COF, CB (amc) and 9 bmo queued behind the platform cap of 8.
+
+## Intraday panel 12:00 — all searchers launched
+- Logged at 2026-10-20 16:26 UTC
+- All 19 unpriced-searcher (Opus 5.5, native agent) launched by 16:27 UTC; 11 hunts in (all amc but COF, plus IART, MHO). Last launched: DHR.
+
+## Intraday panel 12:00 — panel STARTED
+- Logged at 2026-10-20 16:33 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5, native). Guard at 16:33 UTC moved nothing (all amc hunts written before 16:00 ET). edge_score 19 rankable. 19 packs, four judges.
+
+## Intraday panel 12:00 — done
+- Logged at 2026-10-20 16:41 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5, native), guard moved nothing, all four judges 19/19 on pinned ids, panel scored --dry-run --stage E-PI (history untouched). Selected: ALK short (82), NP long (81); PEGA short 79 misses. 24 confirmed names shed for budget, ISRG/HCSG unconfirmed. No orders. Timeline at edge-intraday/timeline.md.
+
+## Edge hunt (panel) — 2026-10-20 amc + 2026-10-21 bmo — STARTED
+- Logged at 2026-10-20 17:09 UTC
+- Stage E-P fire 17:06 UTC. Universe 45 names (22 amc 10-20, 23 bmo 10-21), baselines sealed for all 45 in edge-panel/baselines. Next: one edge-sweep, then up to 19 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-20 17:15 UTC
+- Sweep: 39 of 45 confirmed, 0 phantoms; unconfirmed ISRG PEGA TDY OFG NPB HCSG (not hunted). Budget 19 by hunt_priority: LRN NP IART WGO ALK UAL NFLX MHO LAD ELV CB WFRD WAB DHR COF MCB OZK ABT PM. Shed (lowest priority, strict order): QCRH TMO BWB SF ORRF EWBC HWC BKU AMX ONB NEE NTRS NLY T CME FCCO ELS MCO ADC UNF. Searchers unpriced-searcher, amc first.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-20 17:39 UTC
+- 19/19 searchers returned (unpriced-searcher, native). flatten --submit at 17:39 UTC: held EFX -35 (unrealised -10.80%) and VICR +28 (+3.88%), both closed at market; account flat, equity $10,798.16 all cash.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-20 17:39 UTC
+- 19/19 hunted. Baselines for NP and IART amended suspect->fits_cadence/unknown by edge_baseline_amend.py AFTER the hunts (step 1 says before; missed). These are event-existence flags confirmed from company sources by the sweep and both hunters, not priced-in estimates; recorded as a deviation. edge_score 19 rankable, 0 clear 2.8. V2 grounded written ~17:41 UTC before the first print. 19 packs, four judges.
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-20 17:48 UTC
+- All four judges 19/19 on pinned agents (opus5, opus55, sonnet55, fable51). Selected (mean pct >= 80): NP long 83, WFRD long 81 (both amc); ALK short 75 nearest miss. Searcher: 0 of 19 clear 2.8 (max LRN +1.50). Stage E edge/ absent (Routine stopped), no comparison. Note published; step 6b next.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-10-20 17:48 UTC
+- plan + open --submit --no-flatten at ~17:49 UTC (132 min to close). Sent and FILLED: NP long 183 @ 29.46, WFRD long 68 @ 78.91; gross ~$10,743 = 99.5% of $10,798 equity, 49.8% / 49.6% (weights 23.2 / 20.8, both at the 50% cap). Exits dated 2026-10-21 (amc -> queued DAY at the open). Mean execution cost vs mid +1.27 (WFRD +2.57, NP -0.03). 17 names below the 80 floor, none refused for tradability.
