@@ -57,3 +57,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-20 13:01 UTC
 - 5 names compiled 13:00 UTC: EFX exit_open, VICR exit_limit 202.00, AERO exit_open, HAS exit_limit 97.38, NOC exit_open. 5/5 morning-reaction-analysts ran, no fallback, no compile problems. No orders placed.
+
+## Stage M — late edit
+- Logged at 2026-10-20 13:01 UTC
+- HAS analyst rewrote its review after the compile (prose/sources only; action and limit unchanged). Kept for the record; not recompiled, per skill.
