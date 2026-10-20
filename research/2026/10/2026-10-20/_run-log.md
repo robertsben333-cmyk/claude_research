@@ -33,3 +33,7 @@
 ## Stage J — universe and baselines
 - Logged at 2026-10-20 01:06 UTC
 - 5 scheduled, 4 eligible (1 dropped on turnover), 4 hunted (all, under cap). Three are J-REITs (3226, 3466, 8968, FY Aug) and 5933 Alinco Q2. Baselines sealed 10:05 JST.
+
+## Stage J — wave 1 launched; prior runs resolved
+- Logged at 2026-10-20 01:07 UTC
+- 4 unpriced-hunter-jp launched (3226, 3466, 5933, 8968). Resolved while waiting: 10-14 rho -0.067 (25 names, lean_vs_free_control_rho 0.789), 10-15 rho +0.085 (25, lean_vs 0.531), 10-16 (2 names, rho withheld); panel-resolved written for each.
