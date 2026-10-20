@@ -45,3 +45,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-20 01:16 UTC
 - 4/4 hunted and scored; panel 4/4 members, 0 selected. impact_sum: 5933 +0.70, 8968 +0.45, 3466 +0.40, 3226 0.00; none above floor. Note: japan/japan-note.md. No orders.
+
+## Close AMC (opg guard) — 2026-10-20
+- Logged at 2026-10-20 10:20 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc_open, amc exit as market DAY queued for open). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no orders sent, no refusals. Account reachable. Note: stage E Routine stopped since 2026-10-19; E-P trades the account.
