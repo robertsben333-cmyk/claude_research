@@ -81,3 +81,7 @@
 ## Intraday panel 12:00 — all searchers launched
 - Logged at 2026-10-20 16:26 UTC
 - All 19 unpriced-searcher (Opus 5.5, native agent) launched by 16:27 UTC; 11 hunts in (all amc but COF, plus IART, MHO). Last launched: DHR.
+
+## Intraday panel 12:00 — panel STARTED
+- Logged at 2026-10-20 16:33 UTC
+- 19/19 hunted (unpriced-searcher, Opus 5.5, native). Guard at 16:33 UTC moved nothing (all amc hunts written before 16:00 ET). edge_score 19 rankable. 19 packs, four judges.
