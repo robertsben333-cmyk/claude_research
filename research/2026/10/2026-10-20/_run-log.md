@@ -53,3 +53,7 @@
 ## Stage M — previous morning scored
 - Logged at 2026-10-20 12:59 UTC
 - 2026-10-19 resolved: CLF exit_close +15.76% vs static exit_1300 +15.72% (review_minus_static +0.04). Pool: 1 name, 1 day, review_minus_static mean +0.04, no t on n=1.
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-20 13:01 UTC
+- 5 names compiled 13:00 UTC: EFX exit_open, VICR exit_limit 202.00, AERO exit_open, HAS exit_limit 97.38, NOC exit_open. 5/5 morning-reaction-analysts ran, no fallback, no compile problems. No orders placed.
