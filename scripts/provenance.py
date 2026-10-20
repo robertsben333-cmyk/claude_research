@@ -424,8 +424,37 @@ def stamp(run, market, orchestrator_model=None, hunter_model=None, force=False):
                      (("lessons", spec["lessons"]), ("skill", spec["skill"]),
                       ("hunter_core", CORE))}}
     doc["stage_version"] = _stage_block(market, doc, reg)
+    cap = hunted_names_cap(market)
+    if cap is not None:
+        doc["budget"] = {"hunted_names_cap": cap}
     out.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     return doc
+
+
+# The config block whose hunted_names caps each US stage. Stage E-P went from 19 to 30 on
+# 2026-10-21 without a prompt change, so the stage version does not move; this field is
+# what tells a run under one cap from a run under the other.
+CAP_BLOCK = {"US": "edge_hunt", "US-S": "edge_hunt", "US-P": "edge_panel",
+             "US-PF": "edge_panel_fable", "US-PI": "edge_panel_intraday"}
+
+
+def hunted_names_cap(market):
+    name = CAP_BLOCK.get(market)
+    if not name:
+        return None
+    try:
+        import yaml
+        c = yaml.safe_load(open(ROOT / "config" / "pipeline.yaml", encoding="utf-8"))
+    except Exception:
+        return None
+    seen = set()
+    while name and name not in seen:
+        seen.add(name)
+        b = c.get(name) or {}
+        if "hunted_names" in b:
+            return int(b["hunted_names"])
+        name = b.get("inherits")
+    return None
 
 
 def backfill_one(run, market, reg, ref="origin/main", force=False):

@@ -56,9 +56,17 @@ the reason in the run log and carry on with the research. If it reports position
 held, say so in the run log; step 6b nets them off the budget. Write one run-log line
 with what was held and what was closed, then publish.
 
-**Budget.** One sweep, up to nineteen searchers in stage E's waves, then four judges in
-one wave. Shed names by `budget.edge_degrade_order` exactly as stage E does; never shed a
-judge to save a searcher. There is no entry deadline, but finish the same day.
+**Budget.** One sweep, up to **thirty** searchers (`edge_panel.hunted_names`; it was
+nineteen, stage E's cap, until 2026-10-21) in stage E's waves, then four judges in one
+wave. Shed names by `budget.edge_degrade_order` exactly as stage E does, cutting at 30
+instead of 19; never shed a judge to save a searcher. A day with 19 confirmed names or
+fewer is hunted exactly as before. In the run log's wave line say how many were confirmed,
+how many hunted and which were shed, and launch the amc names first so a long day cannot
+push one past its release. Relaunch as slots free: the platform runs about 8 at once.
+The buy at step 6b needs an open market. A 19-name day reached it about 45 minutes after
+the fire; a 30-name day should reach it about 70-100 minutes after, near 14:15-14:45 New
+York. If the last searcher returns after 15:15 New York, write that in the run log, since
+step 6b refuses after 16:00.
 
 ## 5p. The panel
 
@@ -72,6 +80,12 @@ so the packs hold exactly the names the stage ranks.
    It writes `<RUN>/edge-panel/panel/packs.json`, the searchers' evidence with every size,
    verdict and final number removed, one field per line. If it reports 0 packs, there is
    nothing to judge: say so in the note and skip to 6.
+
+   **More than 19 packs (`edge_panel.judge_pack_max`) and it also prints `SPLIT`** and
+   writes `packs-p1.json`, `packs-p2.json`: about 20 KB a name, so a whole 30-name day does
+   not fit one judge's context. Then every judge runs once per part, on that part's file,
+   writing `<member>-p1.json`, `<member>-p2.json`; `panel_score.py` merges them. Never
+   hand a judge `packs.json` on a split day.
 
 2. **Heartbeat**, then publish, before spending anything:
    `python3 scripts/run_log.py --heading "Edge hunt (panel) — panel STARTED" --line "<n> packs, four judges"`.
@@ -89,11 +103,15 @@ so the packs hold exactly the names the stage ranks.
    | `sonnet55` | `panel-judge-sonnet55` (`claude-sonnet-5-5`) | `general-purpose`, `model: sonnet`, same |
    | `fable51` | `panel-judge-fable51` (`claude-fable-5-1`) | `general-purpose`, `model: fable`, same |
 
+   On a split day launch all of them in the same message, four judges times the parts
+   (eight for two parts), each with its part's packs file and its part's output path.
+
    **Never give a judge anything beyond the packs file**: not the hunts, not the
    searcher's scores, not another judge's output, not your own view. Their independence
    is the whole point of the panel.
 
-4. **Check coverage.** Every pack `id` must appear in every member's file. Re-launch a
+4. **Check coverage.** Every pack `id` must appear in every member's file (on a split day,
+   in the member's part files together). Re-launch a
    member once for the ids it missed (a second file `<member>-retry.json`, merged by hand
    into `<member>.json` before scoring). A member that fails twice is missing for the day.
 

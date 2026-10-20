@@ -12,6 +12,12 @@ research/analyses/judge-lab/), so the live panel judges what the measurement jud
 Writes <RUN>/panel/packs.json, pretty-printed one field per line so a Read-only judge can
 page through it. Names that edge-scores.json marks not rankable (killed, folded share
 class, no event) are left out, because the panel ranks what the stage ranks.
+
+Above `edge_panel.judge_pack_max` names (19; stage E-P hunts up to 30 since 2026-10-21) a
+judge cannot hold the whole day in one context, so the packs are ALSO written as balanced
+parts, packs-p1.json, packs-p2.json, ... (alphabetical by ticker, so the split carries no
+information). Each judge then runs once per part and writes <member>-pN.json, which
+panel_score.py merges. At or below the limit only packs.json is written, as before.
 """
 import argparse, json, os, re, sys
 from pathlib import Path
@@ -85,14 +91,46 @@ def build(run):
     return packs
 
 
+def pack_max():
+    try:
+        import yaml
+        c = yaml.safe_load(open(Path(__file__).resolve().parents[2] / 'config' / 'pipeline.yaml'))
+        return int((c.get('edge_panel') or {}).get('judge_pack_max', 19))
+    except Exception:
+        return 19
+
+
+def parts(packs, limit):
+    """Balanced contiguous parts of at most `limit` packs each; one part when it fits."""
+    if limit <= 0 or len(packs) <= limit: return [packs]
+    k = -(-len(packs) // limit); q, r = divmod(len(packs), k)
+    out, i = [], 0
+    for j in range(k):
+        n = q + (1 if j < r else 0); out.append(packs[i:i + n]); i += n
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--run', required=True)
+    ap.add_argument('--max-per-file', type=int, default=None,
+                    help='split above this many packs (default edge_panel.judge_pack_max)')
     a = ap.parse_args()
     packs = build(a.run)
     out = Path(a.run) / 'panel'; out.mkdir(exist_ok=True)
     json.dump(packs, open(out / 'packs.json', 'w'), ensure_ascii=False, indent=1)
     lines = (out / 'packs.json').read_text().count('\n')
     print(f"{len(packs)} packs -> {out / 'packs.json'} ({lines} lines)")
+    for old in out.glob('packs-p*.json'): old.unlink()
+    ps = parts(packs, a.max_per_file if a.max_per_file is not None else pack_max())
+    if len(ps) > 1:
+        print(f"SPLIT into {len(ps)} parts: run each judge once per part, "
+              f"writing <member>-pN.json; panel_score.py merges them")
+        for j, p in enumerate(ps, 1):
+            f = out / f'packs-p{j}.json'
+            json.dump(p, open(f, 'w'), ensure_ascii=False, indent=1)
+            print(f"  part {j}: {len(p)} packs -> {f}")
+    else:
+        print("one file: one instance per judge, as before")
 
 
 if __name__ == '__main__':

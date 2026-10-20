@@ -157,9 +157,14 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
     window = int(C.get('history_window', 200)); share_q = C.get('member_top_share', 0.2)
     present, verdicts = [], {}
     for m in MEMBERS:
-        f = run / 'panel' / f'{m}.json'
-        if f.exists():
-            present.append(m); verdicts[m] = {o['id']: o for o in json.load(open(f))}
+        # one file per member, or one per packs part (<m>-p1.json, ...) on a day that
+        # panel_packs.py split because it held more than judge_pack_max names
+        fs = [run / 'panel' / f'{m}.json'] + sorted((run / 'panel').glob(f'{m}-p[0-9]*.json'))
+        fs = [f for f in fs if f.exists()]
+        if fs:
+            present.append(m); verdicts[m] = {}
+            for f in fs:
+                verdicts[m].update({o['id']: o for o in json.load(open(f))})
     if not present: sys.exit('no panel verdicts in ' + str(run / 'panel'))
     ids = sorted(set().union(*[set(v) for v in verdicts.values()]))
     today = set(ids)
