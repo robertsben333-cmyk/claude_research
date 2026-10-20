@@ -29,3 +29,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-20 01:05 UTC
 - 01:06 UTC: universe (JPX kessan, turnover floor 15m JPY, seeded draw cap 25), seal baselines, one unpriced-hunter-jp per name in waves of 5, edge_score, four-model panel, note. No orders.
+
+## Stage J — universe and baselines
+- Logged at 2026-10-20 01:06 UTC
+- 5 scheduled, 4 eligible (1 dropped on turnover), 4 hunted (all, under cap). Three are J-REITs (3226, 3466, 8968, FY Aug) and 5933 Alinco Q2. Baselines sealed 10:05 JST.
