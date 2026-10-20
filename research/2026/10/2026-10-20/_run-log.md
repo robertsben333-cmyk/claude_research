@@ -41,3 +41,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-20 01:12 UTC
 - 4 hunts in, scored (impact_sum 5933 +0.70, 8968 +0.45, 3466 +0.40, 3226 0.00; none above floor 2.8). 4 packs, four judges.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-20 01:16 UTC
+- 4/4 hunted and scored; panel 4/4 members, 0 selected. impact_sum: 5933 +0.70, 8968 +0.45, 3466 +0.40, 3226 0.00; none above floor. Note: japan/japan-note.md. No orders.
