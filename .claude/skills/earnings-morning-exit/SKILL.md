@@ -26,6 +26,14 @@ an analyst's prompt. Each analyst answers `p_open_lags`,
 `resolve` scores those forecasts against the base rate (Brier) and `pool` reports
 `brier_review_minus_prior`. Nothing here trades.
 
+**The release read (2026-10-20, operator's instruction).** Each analyst first freezes
+the move the reporting itself justifies, close to close, before it sees any market
+reaction (`release_read`). That is why `snapshot` writes the tape to its own file,
+`briefs/<TICKER>.tape.json`, and the brief only names it: the analyst opens it after
+the freeze. Never paste tape numbers, the pre-market move or the market's move into an
+analyst's prompt. `pool` reports whether the read predicts the close and whether its gap
+to the pre-market predicts what the pre-market had not priced (`release_read`).
+
 Read `CLAUDE.md` first. Everything this stage computes is in
 `researcher_us/scripts/morning.py`; its docstring defines the three actions, the
 position and the control. Config is `morning_exit` in `config/pipeline.yaml`.

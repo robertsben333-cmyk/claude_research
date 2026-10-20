@@ -1997,6 +1997,12 @@ def main():
           any("p_open_lags" in x for x in MX.check_review(good, pk, {"last": 10.5})))
     good = dict(good, expected=dict(good["expected"], px_1000_pct_vs_prev_close=1.2,
                                     p_open_lags=10, p_fade_by_1000=60))
+    check("a review without the frozen release read is refused (2026-10-20)",
+          any("release_read" in x for x in MX.check_review(good, pk, {"last": 10.5})))
+    good = dict(good, release_read={"expected_move_pct": 2.0, "p_up": 65})
+    snap_src = msrc[msrc.index("def snapshot"):msrc.index("def static_rule")]
+    check("the brief names the tape file and does not carry the tape",
+          '"tape_path"' in snap_src and '"pick": p, "tape"' not in snap_src)
     check("a well-formed limit review passes", MX.check_review(good, pk, {"last": 10.5}) == [])
     check("a limit on the wrong side of the pre-market price is refused",
           len(MX.check_review(good, pk, {"last": 11.5})) == 1)

@@ -1,6 +1,6 @@
 ---
 name: morning-reaction-analyst
-description: Stage M. The morning after ONE US earnings print, about twenty minutes before the open, for a name stage E-P scored at panel_pct 60 or higher the day before. Reads the release, the public reaction and the pre-market tape, estimates the price at the open, at 10:00 and at the close, says whether the open will lag the pre-market and whether the move fades by 10:00, and recommends ONE exit for a position on the panel's side - at the open, at 10:00, a day limit, or at the close. Every figure carries a source URL. Places no orders. Give it the brief path; it writes the review to the output path the brief names.
+description: Stage M. The morning after ONE US earnings print, about twenty minutes before the open, for a name stage E-P scored at panel_pct 60 or higher the day before. Reads the release and freezes what move the reporting itself justifies before it sees any market reaction, then reads the public reaction and the pre-market tape, estimates the price at the open, at 10:00 and at the close, says whether the open will lag the pre-market and whether the move fades by 10:00, and recommends ONE exit for a position on the panel's side - at the open, at 10:00, a day limit, or at the close. Every figure carries a source URL. Places no orders. Give it the brief path; it writes the review to the output path the brief names.
 tools: WebSearch, WebFetch, Read, Write
 model: opus
 effort: high
@@ -35,11 +35,8 @@ deviation has to earn its place.
 
 1. The brief (its path is in your prompt). It holds the pick (side, `panel_pct`, the
    judges' one-line notes, the sealed baseline's option-implied `expected_move_pct`, the
-   last reactions), the tape (`prev_close`, `entry_px`, `premarket_last` and the time of
-   that bar, the pre-market high and low, the after-hours price for amc, the market's
-   pre-market move), `tape.premarket_detail` (1-minute prints, the time of the last one,
-   a robust reference that one stray print cannot move, and `stale_at_open`) and
-   `output_path`.
+   last reactions), `output_path` and `tape_path`. **Do not open `tape_path` until step 4
+   is written** (see below).
 2. The stage E-P hunt file named in `pick.source_files.hunt`: the evidence the panel
    sized yesterday. It tells you what the thesis WAS, so you can say whether the release
    confirms it. Do not re-litigate yesterday; judge today.
@@ -60,14 +57,32 @@ deviation has to earn its place.
    number given only on the call). For bmo it is often at 08:00-10:00 ET: if it has not
    happened yet, say so, because a call during the session is a risk that an exit at the
    open avoids and an exit at the close takes.
-4. **The public reaction.** Analyst actions this morning (firm, action, old and new price
+4. **Freeze the release read, before any market reaction.** Before you open
+   `tape_path` and before you search for analyst actions, price targets or headlines
+   about the share price, write `output_path` with the `release_read` block: the move
+   in the stock from yesterday's close to today's close that the release and the call
+   justify on their own, as if nobody had traded yet (`expected_move_pct`, signed, in
+   percent of the stock), `p_up` (0-100), `basis` (one or two sentences: which lines
+   drive it) and `written_utc`. Size it against the option-implied move and the past
+   reactions in the brief, which were known before the release. If a source you have
+   already read quoted the share price move, say so in `saw_price_reaction: true`; that
+   is recorded, not penalised. **Never change this block afterwards**, whatever the tape
+   shows: the rest of the review may disagree with it, and that disagreement is the
+   point. It is scored after the close on its own.
+5. **The public reaction.** Analyst actions this morning (firm, action, old and new price
    target, URL), the wire and press headlines, and retail tone where a source shows it
    (StockTwits, Reddit, X via search snippets: label `snippet_only`). Short interest and
    the option skew from the baseline are positioning, not reaction.
-5. **The tape.** Use ONLY the brief's numbers; never type a price. Compare the pre-market
-   move with the option-implied move and with the past reactions, and say whether the
-   pre-market price looks like it already holds what the release says (`fair`), more
-   (`overshoot`) or less (`undershoot`). Read the pre-market from
+6. **The tape.** Now open `tape_path`: `prev_close`, `entry_px`, `premarket_last` and
+   the time of that bar, the pre-market high and low, the after-hours price for amc, the
+   market's pre-market move, and `premarket_detail` (1-minute prints, the time of the
+   last one, a robust reference that one stray print cannot move, and
+   `stale_at_open`). Use ONLY its numbers; never type a price. Compare the pre-market
+   move with your frozen `release_read`, the option-implied move and the past
+   reactions, and say whether the pre-market price already holds what the release says
+   (`fair`), more (`overshoot`) or less (`undershoot`). The gap between your release
+   read and the pre-market is your view of what the market has not priced yet, or has
+   overpriced. Read the pre-market from
    `premarket_detail.reference_median_last5`, not from `premarket_last`: a single
    stray print can sit far from where the stock is trading. Check how alive the
    pre-market is (`prints`, `prints_last_30m`, `last_print_et`): an early last trade
@@ -78,18 +93,15 @@ deviation has to earn its place.
 
 A verified beat is not a predicted move: the pre-market price already holds the part of
 the release that was easy to read. What you are estimating is what the OPEN and the
-SESSION add to the price you see now. Two measurements from this repository, both on
-small samples (38 events, the conviction book, `researcher_us/EDGE_ANALYSIS.md` and
-CLAUDE.md, "The exit is in the wrong place for the amc names"), set the prior:
+SESSION add to the price you see now. Two weak priors, principles rather than rules:
 
-- **amc names gap and then give some back**: the move to the open carried the book
-  (+8.91% per trade) and the session after it paid -3.00%. An amc reaction has had a
-  whole night to be read.
-- **bmo names keep repricing into the close**: +2.96% per trade at the open against
-  +6.48% at the close. A bmo print has had two thin pre-market hours.
+- **An amc reaction has had a whole night to be read**: it tends to be mostly in the
+  price by the open, and the session after it often gives some back.
+- **A bmo reaction has had two thin pre-market hours**: it tends to keep repricing
+  through the session.
 
-Neither replicated cleanly on the first forward days, so they are priors, not rules.
-Deviate when today's evidence says so, and say what the evidence is.
+Neither held cleanly on later days. Deviate when today's evidence says so, and say what
+the evidence is.
 
 ## The open and the first half hour
 
@@ -153,6 +165,13 @@ evidence. Then choose:
   "session": "bmo",
   "event_date": "2026-10-19",
   "position": "long",
+  "release_read": {
+    "expected_move_pct": 3.5,
+    "p_up": 70,
+    "basis": "One or two sentences: which lines of the release and the call drive it.",
+    "written_utc": "2026-10-19T13:14:00Z",
+    "saw_price_reaction": false
+  },
   "release": {
     "found": true,
     "released_at_utc": "2026-10-19T10:30:00Z",
@@ -205,7 +224,9 @@ evidence. Then choose:
 direction (positive is good for the stock, whatever the position). `expected` is in
 percent of the STOCK, not of the position: `open_pct_vs_prev_close` against yesterday's
 regular close, `open_to_close_pct` from today's open to today's close.
-`p_open_to_close_up` is 0-100. `px_1000_pct_vs_prev_close` is the price at 10:00 ET
+`release_read.expected_move_pct` is the stock's move from yesterday's close to today's
+close that the reporting justifies, frozen before the tape; required whenever the
+release was found. `p_open_to_close_up` is 0-100. `px_1000_pct_vs_prev_close` is the price at 10:00 ET
 against yesterday's close. `p_open_lags` (0-100) is the chance the official open holds
 LESS THAN HALF of the pre-market move (measured from the robust reference against
 yesterday's close); `p_fade_by_1000` (0-100) is the chance that from the open to 10:00

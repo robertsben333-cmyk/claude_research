@@ -41,6 +41,15 @@ lead), and every review answers three scorable questions: `p_open_lags`, `px_100
 and `p_fade_by_1000`. `compile` attaches the measured base rate per name and `resolve`
 scores the forecasts against it on the same names; it never reaches a brief.
 
+THE RELEASE READ (2026-10-20, operator's instruction). Before it sees any market
+reaction, each analyst freezes the move the reporting itself justifies, close to close
+(`release_read`). The tape is therefore NOT in the brief: it sits in its own file,
+`briefs/<T>.tape.json`, which the analyst opens only after the freeze. `pool` asks two
+things of it: does it predict the day's move, and does its gap to the pre-market predict
+what the pre-market had not priced (realised close minus the pre-market reference). The
+blinding is partial and recorded: a news article can quote the share price, and
+`saw_price_reaction` says so.
+
 THE CONTROL. Every advice row also carries what the scorebord's own rule does with no
 morning review at all: amc out at the open, bmo out at 13:00 ET. The review has added
 something only where it beats that rule on the same names, pooled over many mornings
@@ -422,9 +431,14 @@ def snapshot(d, C, final=False, now=None):
         s = price_snapshot(p, now_et)
         snap["names"][p["ticker"]] = s
         if not final:
+            tape_path = out / "briefs" / f"{p['ticker']}.tape.json"
+            _write(tape_path, {"stage": "M", "date": d.isoformat(),
+                               "ticker": p["ticker"], "tape": s,
+                               "market": snap["market"]})
             _write(out / "briefs" / f"{p['ticker']}.json", {
-                "stage": "M", "date": d.isoformat(), "pick": p, "tape": s,
-                "market": snap["market"],
+                "stage": "M", "date": d.isoformat(), "pick": p,
+                "tape_path": _rel(tape_path),
+                "tape_rule": "open tape_path only after release_read is written",
                 "output_path": _rel(out / "reviews" / f"{p['ticker']}.json"),
                 "actions": {
                     "exit_open": "sell (cover a short) at the opening print, market",
@@ -467,6 +481,12 @@ def check_review(rv, p, tape):
             probs.append(f"limit {lp} is not beyond the pre-market price {ref} on the "
                          f"position's side, so it is a market order at the open")
     exp = (rv or {}).get("expected") or {}
+    rr = (rv or {}).get("release_read") or {}
+    if released and act in ACTIONS:
+        if not _num(rr.get("expected_move_pct")):
+            probs.append("release_read.expected_move_pct missing")
+        if not _num(rr.get("p_up")) or not 0 <= rr["p_up"] <= 100:
+            probs.append("release_read.p_up missing or outside 0-100")
     if act in ACTIONS:
         for k in ("open_pct_vs_prev_close", "open_to_close_pct", "px_1000_pct_vs_prev_close"):
             if not _num(exp.get(k)):
@@ -526,6 +546,11 @@ def compile_advice(d, C):
                              tape.get("position_return_so_far_pct")) if x is not None), None),
             "release_found": ((rv or {}).get("release") or {}).get("found"),
             "thesis": ((rv or {}).get("thesis_check") or {}).get("verdict"),
+            "release_read_move_pct": ((rv or {}).get("release_read") or {}).get(
+                "expected_move_pct"),
+            "release_read_p_up": ((rv or {}).get("release_read") or {}).get("p_up"),
+            "release_read_saw_price": ((rv or {}).get("release_read") or {}).get(
+                "saw_price_reaction"),
             "expected_open_pct": exp.get("open_pct_vs_prev_close"),
             "expected_open_to_close_pct": exp.get("open_to_close_pct"),
             "p_open_to_close_up": exp.get("p_open_to_close_up"),
@@ -578,14 +603,15 @@ def render_note(res, C):
         L += ["Geen namen met panel_pct ≥ "
               f"{C.get('min_panel_pct', 60)} in het venster van vanochtend.", ""]
     else:
-        L += ["| Naam | Sessie | Positie | panel_pct | Premarket vs slot | Positie tot nu "
-              "| Voorbeurs stil | Verwacht open | Verwacht 10:00 | Verwacht open→slot "
+        L += ["| Naam | Sessie | Positie | panel_pct | Cijfers wijzen op | Premarket vs slot "
+              "| Positie tot nu | Voorbeurs stil | Verwacht open | Verwacht 10:00 | Verwacht open→slot "
               "| **Advies** | Limiet | Vaste regel |",
-              "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+              "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
         for r in res["rows"]:
             L.append(
                 f"| {r['ticker']} | {r['session']} | {r['position']} | "
                 f"{_f(r['panel_pct'], 1, False)}{'*' if r['selected_by_panel'] else ''} | "
+                f"{_f(r.get('release_read_move_pct'))}% | "
                 f"{_f(next((x for x in (r.get('premarket_ref_pct_at_compile'), r['premarket_pct_at_compile'], r['premarket_pct_at_review']) if x is not None), None))}% | "
                 f"{_f(r['position_return_so_far_pct'])}% | "
                 f"{'ja' if r.get('premarket_stale_at_compile') else 'nee' if r.get('premarket_stale_at_compile') is False else '—'} | "
@@ -593,7 +619,10 @@ def render_note(res, C):
                 f"{_f(r['expected_open_to_close_pct'])}% | **{ACTION_NL[r['action']]}** | "
                 f"{_f(r['limit_price'], 2, False)} | {ACTION_NL.get(r['static_rule'])} |")
         L += ["", "`*` = door het panel geselecteerd (top 20%). Premarket = de mediaan van de "
-              "laatste vijf voorbeurstransacties om 09:24. Rendementen in % vanaf "
+              "laatste vijf voorbeurstransacties om 09:24. *Cijfers wijzen op* = de "
+              "beweging van slot tot slot die de analist op grond van alleen het "
+              "cijferbericht verwacht, vastgelegd voordat hij de koers zag. "
+              "Rendementen in % vanaf "
               "de kant van de positie; verwachtingen zijn ten opzichte van het slot van "
               "gisteren.", ""]
         for r in res["rows"]:
@@ -738,6 +767,10 @@ def resolve(d, C):
             "realised_open_to_close_pct": _pct(px["close"], px["open"]),
             "expected_1000_pct": r.get("expected_1000_pct"),
             "realised_1000_pct": _pct(px.get("px_1000"), r.get("prev_close")),
+            "release_read_move_pct": r.get("release_read_move_pct"),
+            "release_read_saw_price": r.get("release_read_saw_price"),
+            "premarket_ref_pct": r.get("premarket_ref_pct_at_compile"),
+            "realised_close_pct": _pct(px["close"], r.get("prev_close")),
             **open_lag_outcome(r, px),
         })
     res = {"generated_utc": _now_utc().isoformat(timespec="seconds"),
@@ -778,6 +811,32 @@ def _rho(a, b):
     return round(num / den, 3) if den else None
 
 
+def release_read_pool(rows):
+    """Does the frozen release read know anything the tape did not?
+
+    `vs_close`: the read against the realised close-to-close move, beside the
+    pre-market reference doing the same job. `unpriced`: the read's gap to the
+    pre-market against what happened after it (close minus the pre-market reference);
+    a positive rho there is the only thing that would make the read worth acting on."""
+    def sub(a, b):
+        return a - b if _num(a) and _num(b) else None
+    rr = [r.get("release_read_move_pct") for r in rows]
+    pm = [r.get("premarket_ref_pct") for r in rows]
+    cl = [r.get("realised_close_pct") for r in rows]
+    return {
+        "n": sum(_num(x) for x in rr),
+        "n_blind": sum(1 for r in rows if _num(r.get("release_read_move_pct"))
+                       and r.get("release_read_saw_price") is False),
+        "rho_vs_close": _rho(rr, cl),
+        "rho_premarket_vs_close": _rho(pm, cl),
+        "rho_unpriced": _rho([sub(a, b) for a, b in zip(rr, pm)],
+                             [sub(a, b) for a, b in zip(cl, pm)]),
+        "sign_right_vs_close": _mean_t([
+            (1.0 if (a > 0) == (b > 0) else 0.0) for a, b in zip(rr, cl)
+            if _num(a) and _num(b) and a != 0 and b != 0]),
+    }
+
+
 def pool(C):
     rows = []
     for f in sorted(glob.glob(str(REPO / "research" / "*" / "*" / "*" /
@@ -798,6 +857,7 @@ def pool(C):
                          for a in ACTIONS + ("none",)},
            "rho_expected_vs_realised_open": _rho(
                [r["expected_open_pct"] for r in rows], [r["realised_open_pct"] for r in rows]),
+           "release_read": release_read_pool(rows),
            "rho_expected_vs_realised_1000": _rho(
                [r.get("expected_1000_pct") for r in rows],
                [r.get("realised_1000_pct") for r in rows]),
