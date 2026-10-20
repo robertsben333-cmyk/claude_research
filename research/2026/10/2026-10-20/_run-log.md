@@ -105,3 +105,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-20 17:39 UTC
 - 19/19 hunted. Baselines for NP and IART amended suspect->fits_cadence/unknown by edge_baseline_amend.py AFTER the hunts (step 1 says before; missed). These are event-existence flags confirmed from company sources by the sweep and both hunters, not priced-in estimates; recorded as a deviation. edge_score 19 rankable, 0 clear 2.8. V2 grounded written ~17:41 UTC before the first print. 19 packs, four judges.
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-20 17:48 UTC
+- All four judges 19/19 on pinned agents (opus5, opus55, sonnet55, fable51). Selected (mean pct >= 80): NP long 83, WFRD long 81 (both amc); ALK short 75 nearest miss. Searcher: 0 of 19 clear 2.8 (max LRN +1.50). Stage E edge/ absent (Routine stopped), no comparison. Note published; step 6b next.
