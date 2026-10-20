@@ -15,3 +15,7 @@
 ## Stage EU — wave 2 done
 - Logged at 2026-10-20 14:11 UTC
 - ALTRA +0.70 (MFN estimates 12:00 in-session; Q1 came 19:40, timing uncertain), BERG_B +0.60, BULTEN +1.90 (issuer invitation: 13:30 CEST in-session, so the sealed amc window is WRONG; session_check says bmo), FABG +0.85, GETI_B -0.20. Wave 3: HEBA_B INWI JM KEBNI_B MIPS (se).
+
+## Stage EU — wave 3 done
+- Logged at 2026-10-20 14:21 UTC
+- HEBA_B +0.50 (12:00 in-session, window holds it), INWI +1.00, JM -1.00, KEBNI_B 0.00, MIPS +2.90 (largest so far; below the 2.8 floor? no — 2.9 clears it). Wave 4 running: NMAN OVZON SALIX SHB_A SKF_A.
