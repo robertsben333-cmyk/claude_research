@@ -208,6 +208,23 @@ edge_panel:
   inherits: edge_hunt
   output_dir: edge-panel
   searcher_agent: unpriced-searcher
+  # Up to 30 searchers a day since 2026-10-21 (operator's instruction, "increase maximum
+  # number of searchers to 30 if there are so many stocks"); stage E keeps
+  # edge_hunt.hunted_names at 19. Shed exactly as before (budget.edge_degrade_order), so
+  # a day with 19 confirmed names or fewer hunts the same set it always did, and on a
+  # larger day names 20-30 by hunt_priority are the extra ones. provenance.json records
+  # the cap as budget.hunted_names_cap, so runs under 19 and 30 can be told apart; the
+  # first 19 by hunt_priority are the like-for-like subset. Timing, measured on the two
+  # 19-name days: searchers done 33-55 min after the 17:06 UTC fire, buy at 17:49 on
+  # 10-20; at 8 concurrent, 30 names add about two waves, so the buy lands near
+  # 18:15-18:45 UTC, well before the 20:00 UTC (16:00 ET) close.
+  hunted_names: 30
+  # A judge reads the whole packs file into one context: about 20 KB a name, so 19
+  # names is ~380 KB and 30 would be ~600 KB. Above this many names panel_packs.py
+  # splits the day into balanced parts (packs-p1.json, packs-p2.json, ...), each judge
+  # runs once per part, and panel_score.py merges <member>-pN.json. At or below it the
+  # panel runs exactly as before, one file and one instance per judge.
+  judge_pack_max: 19
   judges:
     opus5: panel-judge-opus5
     opus55: panel-judge-opus55
@@ -250,6 +267,8 @@ edge_panel_fable:
   output_dir: edge-panel-fable
   searcher_agent: unpriced-searcher-fable
   searcher_model: claude-fable-5-1
+  # hunted_names (30) and judge_pack_max are inherited, so stage E-PF hunts the names
+  # stage E-P hunts on the same day.
   writes_panel_history: false
   orchestrator_model: opus
   places_orders: false
@@ -275,6 +294,9 @@ edge_panel_intraday:
   # scored set by `intraday.py guard` before edge_score.py runs.
   amc_last_slot_et: "16:00"
   amc_release_cutoff_et: "16:00"
+  # Stage E-P went to 30 searchers on 2026-10-21; the snapshots stay at 19, because a
+  # snapshot of 30 does not finish inside its two-hour slot reliably.
+  hunted_names: 19
   # The panel history is stage E-P's reference and is never written by a snapshot
   # (panel_score.py --dry-run): four snapshots a day would swamp it with one day's names.
   writes_panel_history: false
@@ -847,6 +869,7 @@ budget:
     deep_dive_batch: 3
     panel: 14
     edge_hunt: 20                 # sweep + hunters + adversaries, whole stage
+    edge_panel: 39                # stage E-P: sweep + 30 searchers + up to 8 judge runs (2 parts)
   degrade_order:
     - reduce_panel_names_to_2
     - reduce_panel_names_to_1
