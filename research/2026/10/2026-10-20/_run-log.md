@@ -77,3 +77,7 @@
 ## Intraday panel 12:00 — wave 1
 - Logged at 2026-10-20 16:14 UTC
 - 8 unpriced-searcher (Opus 5.5) launched ~16:15 UTC with an explicit read restriction: PEGA LRN NP ALK UAL WFRD NFLX OZK (amc). COF, CB (amc) and 9 bmo queued behind the platform cap of 8.
+
+## Intraday panel 12:00 — all searchers launched
+- Logged at 2026-10-20 16:26 UTC
+- All 19 unpriced-searcher (Opus 5.5, native agent) launched by 16:27 UTC; 11 hunts in (all amc but COF, plus IART, MHO). Last launched: DHR.
