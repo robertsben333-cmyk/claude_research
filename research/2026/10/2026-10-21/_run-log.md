@@ -63,3 +63,7 @@
 ## Intraday panel 12:00 — wave 1
 - Logged at 2026-10-21 16:11 UTC
 - Sweep (3 parts merged): 108 of 118 confirmed; unconfirmed FCFS ZGN AMBP NTST OSBC DOW CVBF BMI KRNY NVEC (not hunted). Names frozen in edge-intraday/names.json by this snapshot. Budget 19 by hunt_priority (strict order, no option-chain deviation): MOH MEDP LBRT EGBN SLG CASH ASIC KALU LOB HXL WDFC QS KNX LUV (amc) + THRM ARGX SPOT IIIN CRS (bmo); 89 confirmed names shed on lowest priority. unpriced-searcher (Opus 5.5), amc first.
+
+## Intraday panel 12:00 — searchers launched
+- Logged at 2026-10-21 16:13 UTC
+- ~16:20 UTC: MOH MEDP LBRT EGBN SLG CASH ASIC running (unpriced-searcher native). Queue: KALU LOB HXL WDFC QS KNX LUV, then THRM ARGX SPOT IIIN CRS. THRM baseline amended suspect->unknown (edge_baseline_amend.py table rewritten for this run) before any hunt.
