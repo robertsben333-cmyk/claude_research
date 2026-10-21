@@ -115,3 +115,7 @@
 ## Edge hunt (panel) — judges resumed, no buy
 - Logged at 2026-10-21 20:03 UTC
 - 20:02 UTC: after the 429 reset, 5 of 8 judge files had been written complete (opus5/opus55/sonnet55/fable51 p1, fable51 p2). Relaunched opus5, opus55, sonnet55 on part 2. Step 6b SKIPPED on the operator's instruction: the market closed at 16:00 ET before the panel finished, so no book is bought for 2026-10-21; the account stays in cash ($11,068.23).
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-21 20:11 UTC
+- All four judges 30/30 (pinned agents; part 2 of opus5/opus55/sonnet55 re-run after the 429). Scored ~20:10 UTC, after the close. Selected (panel_pct >= 80): LRCX long 92, TTMI long 90, KALU long 88, CRS long 87, META short 86, ASIC short 84, SPOT short 81, ARGX long 80; nearest misses LBRT 76, IBM 75. Searcher: 0 of 30 clear 2.8 (max CRS +2.20). Stage E edge/ absent. Step 6b skipped (market closed; operator's instruction): no book for 2026-10-21, account in cash $11,068.23.
