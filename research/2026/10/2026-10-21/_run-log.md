@@ -55,3 +55,11 @@
 ## Intraday panel 12:00 — STARTED
 - Logged at 2026-10-21 16:00 UTC
 - Fired 15:59 UTC (11:59 ET). First snapshot of the day (no 10:00 snapshot on disk): build universe + sweep, freeze, seal, Opus 5.5 searchers (cap 19, amc first), guard, edge_score, four judges, panel_score --dry-run. No orders.
+
+## Intraday panel 12:00 — sweep
+- Logged at 2026-10-21 16:04 UTC
+- Universe 118 names (64 amc 10-21, 54 bmo 10-22), 118 baselines sealed 16:03 UTC and published before any agent. Deviation: the sweep ran as THREE edge-sweep agents in parallel over interleaved thirds of the universe (40/39/39), merged into one sweep.json, because one agent over 118 names would eat the amc names' pre-release time. Same agent, same absolute 0-100 hunt_priority scale.
+
+## Intraday panel 12:00 — wave 1
+- Logged at 2026-10-21 16:11 UTC
+- Sweep (3 parts merged): 108 of 118 confirmed; unconfirmed FCFS ZGN AMBP NTST OSBC DOW CVBF BMI KRNY NVEC (not hunted). Names frozen in edge-intraday/names.json by this snapshot. Budget 19 by hunt_priority (strict order, no option-chain deviation): MOH MEDP LBRT EGBN SLG CASH ASIC KALU LOB HXL WDFC QS KNX LUV (amc) + THRM ARGX SPOT IIIN CRS (bmo); 89 confirmed names shed on lowest priority. unpriced-searcher (Opus 5.5), amc first.
