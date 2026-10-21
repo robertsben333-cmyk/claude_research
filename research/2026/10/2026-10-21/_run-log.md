@@ -43,3 +43,7 @@
 ## Close AMC — 2026-10-21 10:11 UTC
 - Logged at 2026-10-21 10:23 UTC
 - mode --require-exit-tif opg exit 0 (amc -> open as market DAY). verify: 14 legs, none held, none UNFILLED. close --submit: no leg due today, nothing sent, no refusals. status: no open positions.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-21 13:14 UTC
+- source research/2026/10/2026-10-20/edge-panel; 09:15 ET; picks NP, WFRD, ALK, MCB (4 analysts launched)
