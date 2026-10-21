@@ -35,3 +35,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-21 01:11 UTC
 - 3 packs, four judges (intl)
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-21 01:14 UTC
+- 5 scheduled / 3 eligible / 3 hunted. impact_sum: 296A +0.50, 8953 +0.35, 3290 +0.25; none above floor. Panel 4/4 members, none selected (296A panel_pct 68, k=1). Note: japan/japan-note.md. No orders.
