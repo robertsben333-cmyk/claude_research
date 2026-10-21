@@ -111,3 +111,7 @@
 ## Edge hunt (panel) — judges rate-limited
 - Logged at 2026-10-21 20:02 UTC
 - All 8 judge instances (4 models x 2 parts) stopped with HTTP 429 'session limit, resets 18:40 UTC' before writing output. Account is flat (cash). Plan: resume the same judges after 18:40 UTC (14:40 ET), then score, note, and step 6b buy before 16:00 ET. If the buy cannot be reached before 16:00 ET, nothing is bought.
+
+## Edge hunt (panel) — judges resumed, no buy
+- Logged at 2026-10-21 20:03 UTC
+- 20:02 UTC: after the 429 reset, 5 of 8 judge files had been written complete (opus5/opus55/sonnet55/fable51 p1, fable51 p2). Relaunched opus5, opus55, sonnet55 on part 2. Step 6b SKIPPED on the operator's instruction: the market closed at 16:00 ET before the panel finished, so no book is bought for 2026-10-21; the account stays in cash ($11,068.23).
