@@ -95,3 +95,7 @@
 ## Edge hunt (panel) — searcher note
 - Logged at 2026-10-21 17:31 UTC
 - LVS searcher reports a search result listing https://s28.q4cdn.com/640198178/files/doc_news/2026/10/LVS-3Q-2026-Press-Release.pdf (a pre-staged IR file URL, possibly tonight's release). It did not open it and used nothing from it; listed in rejected_candidates. Watch for the same leak in other hunts. Hunts in: STC MEDP LVS MOH.
+
+## Edge hunt (panel) — all searchers launched
+- Logged at 2026-10-21 17:45 UTC
+- All 30 unpriced-searchers launched by ~17:47 UTC (native agent, Opus 5.5). LBRT, KALU and EGBN events confirmed amc 10-21 by their searchers from company releases; TTMI/CRS told to settle session (sweep flagged historical amc).
