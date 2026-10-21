@@ -103,3 +103,7 @@
 ## Edge hunt (panel) — step 3s sell
 - Logged at 2026-10-21 17:52 UTC
 - 30/30 searchers returned by ~17:52 UTC (unpriced-searcher, native). flatten --submit at ~17:53 UTC: held NP 183 (unrealised -3.56%) and WFRD 68 (+8.76%), both closed at market; account flat, equity $11,068.23 all cash. NOTE: both were 10-20 amc legs whose exit was dated 10-21 at the open; they were still held at 13:53 ET, so the open exit did not happen (no Routine placed it; stage E/Close AMC side not running for E-P's book). They sold at ~13:53 ET instead.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-21 17:52 UTC
+- 30/30 hunted, edge_score written, V2 grounded written ~17:55 UTC before the first print. 30 packs split into 2 parts of 15; four judges x 2 parts = 8 instances.
