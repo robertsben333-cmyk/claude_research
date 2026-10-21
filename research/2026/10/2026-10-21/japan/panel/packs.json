@@ -1,0 +1,654 @@
+[
+ {
+  "id": "jp/2026-10-21/296A",
+  "hunter_definition": ".claude/agents/unpriced-hunter-jp.md",
+  "lessons_file": "researcher_japan/LESSONS.md",
+  "baseline": {
+   "market": "JP",
+   "ticker": "296A",
+   "yahoo_symbol": "296A.T",
+   "company": "Reiwa Accounting Holdings Co.,Ltd.",
+   "company_ja": "令和アカウンティング・ホールディングス",
+   "industry": "Services",
+   "event_date": "2026-10-21",
+   "session": "amc",
+   "window": "2026-10-21: entry before the release (this sealed spot if it lands before the 15:30 JST close, else the close) -> next session close",
+   "quarter": "第２四半期",
+   "fiscal_year_end": "2027-03-31",
+   "sealed_utc": "2026-10-21T01:06:15+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/296A.T?range=3y&interval=1d",
+    "calendar": "https://www.jpx.co.jp/listing/event-schedules/financial-announcement/index.html"
+   },
+   "tape": {
+    "spot": 1198.0,
+    "currency": "JPY",
+    "run_up_20d_pct": -3.78,
+    "run_up_5d_pct": 3.45,
+    "median_turnover_jpy_20d": 64582500,
+    "realised_vol_20d_pct": 38.91,
+    "realised_vol_60d_pct": 49.48,
+    "bars_3y": 443
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No liquid single-stock option market in Japan for this name. JPX option volume is concentrated in the index, so there is no event-implied move and no skew. Until 2026-09-18 that left priced_lean_pct as -0.05 * run_up_20d_pct, which is ALSO the free control, so the baseline's lean and its own benchmark were the same number. They are no longer: `positioning` and `expected_move` below carry substitutes built from what Tokyo does publish, and this baseline supplies its own `priced_lean_pct` and `anchor_quality`."
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/296A.T?modules=earningsHistory",
+    "quarters": [
+     {
+      "period_end": "2025-12-31",
+      "eps_actual": 7.27,
+      "eps_estimate": null,
+      "surprise_pct": null
+     },
+     {
+      "period_end": "2026-06-30",
+      "eps_actual": 9.68,
+      "eps_estimate": null,
+      "surprise_pct": null
+     }
+    ]
+   },
+   "history": {
+    "n": 7,
+    "basis": "estimated_from_cadence",
+    "lag_days_used": 21,
+    "period_end_this_quarter": "2026-09-30",
+    "median_abs_move_pct": 7.29,
+    "events": [
+     {
+      "move_pct": 4.59,
+      "date_used": "2025-01-20",
+      "date_estimated": "2025-01-21",
+      "days_from_estimate": -1,
+      "period_end": "2024-12-31",
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 8.22,
+      "date_used": "2025-04-17",
+      "date_estimated": "2025-04-21",
+      "days_from_estimate": -4,
+      "period_end": "2025-03-31",
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 12.57,
+      "date_used": "2025-07-22",
+      "date_estimated": "2025-07-21",
+      "days_from_estimate": 1,
+      "period_end": "2025-06-30",
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 2.45,
+      "date_used": "2025-10-22",
+      "date_estimated": "2025-10-21",
+      "days_from_estimate": 1,
+      "period_end": "2025-09-30",
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 3.72,
+      "date_used": "2026-01-19",
+      "date_estimated": "2026-01-21",
+      "days_from_estimate": -2,
+      "period_end": "2025-12-31",
+      "basis": "estimated"
+     },
+     {
+      "move_pct": -7.29,
+      "date_used": "2026-04-22",
+      "date_estimated": "2026-04-21",
+      "days_from_estimate": 1,
+      "period_end": "2026-03-31",
+      "basis": "estimated"
+     },
+     {
+      "move_pct": 19.97,
+      "date_used": "2026-07-21",
+      "date_estimated": "2026-07-21",
+      "days_from_estimate": 0,
+      "period_end": "2026-06-30",
+      "basis": "estimated"
+     }
+    ],
+    "caveat": "Announcement DATES are estimated by applying this quarter's notified lag backwards to prior period ends; the move is the largest within +/-2 trading days of that estimate. This is a cadence prior, not a record that a print happened on that date. Use it as a scale for how much this name moves, never as evidence about a particular past date."
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "issuer-notified date carried by JPX on the 決算発表予定日 sheet",
+    "calendar_as_of": "2026-10-01"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "disclosed_sellers": 0,
+    "covered": true,
+    "basis": "absent from the JPX register, so no disclosed position at or above the 0.5% threshold. A real zero, not missing data -- but the threshold truncates, so 0.4% and 0.0% are both recorded here as 0.0.",
+    "as_of": "20261020",
+    "source": "https://www.jpx.co.jp/markets/public/short-selling/index.html",
+    "margin_ratio": 5.03,
+    "margin_ratio_basis": "信用倍率, margin long balance / margin short balance, scraped from a broker portal rather than published by the exchange. Null is a normal outcome."
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 7.29,
+    "from_realised_vol_1d_pct": 2.45,
+    "from_history_median_pct": 7.29,
+    "basis": "the larger of (a) the median of twelve ESTIMATED prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it, and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "margin_overhang": -0.351,
+    "runup": 0.189
+   },
+   "priced_lean_pct": -0.162,
+   "priced_lean_basis": "Sum of the components above. Read researcher_japan/scripts/jp_priced_in.py, lean_components(): every weight is a PRIOR, none is measured on Japanese data, and jp_resolve.py ranks each component separately so measurement can replace them. What matters today is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_quality": {
+    "magnitude": 0.5,
+    "direction": 0.6,
+    "basis": "magnitude: realised vol plus an estimated-cadence reaction history, capped at 0.5 because neither is an option-implied move. direction: how many of the three positioning components resolved, capped at 0.60 because none of them is 25-delta skew."
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "H1 consolidated OP 1,054m / ordinary 1,051m / sales 2,960m from the company's own 2026-09-14 revision (https://tdnet-pdf.kabutan.jp/20260914/140120260910533968.pdf); full-year plan OP 2,160m / ordinary 2,160m / NP 1,440m held unchanged (https://tdnet-pdf.kabutan.jp/20260721/140120260717595695.pdf). No 四季報/IFIS number could be sourced, so the FY bar the market holds is unsourced and the guidance finding is capped.",
+   "positioning_check": "JPX short register 2026-10-20: no disclosed position >=0.5% (short_ratio 0.0, change 0.0) per baseline (https://www.jpx.co.jp/markets/public/short-selling/index.html). 信用倍率 5.03 (kabutan 2026-10-21 page, matches baseline) = margin longs crowded, which is the setup where a hold-the-plan disappointment still has sellers. No options, no skew. priced_lean_pct -0.162 (margin overhang -0.35, run-up +0.19). Stock 751 -> 1,191 since 2026-07-17 (+59%) on Q1 (+20% on 7/21) and the 中計 (limit-up 8/21).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "296A-h1.json",
+    "text": "The full-year plan (OP 2,160m) was left unchanged when H1 OP was raised 20% to 1,054m on 9/14, so the plan now implies H2 OP of ~1,106m vs 1,168m last year (-5% YoY) after H1 +28.5%; on this company's own H1 share of full-year OP (43.6% FY3/25, 41.2% FY3/26) the year runs to ~2,400-2,560m, and the company twice wrote it will give the full-year number 'when the spillover is clear' — an FY upgrade (with a payout-linked year-end dividend raise, policy 81-90% payout) is a live possibility at this release, though last year it held the plan at H1 and revised only on 2026-03-18.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-21",
+    "source": "https://tdnet-pdf.kabutan.jp/20260914/140120260910533968.pdf",
+    "source_date": "2026-09-14",
+    "reaction_history_on_this_line": "2026-07-21 Q1 beat with a 'progress ahead of plan' notice: +20% day (Yahoo tape 751->901). 2026-09-14 H1 upgrade +20% with FY held: close +1.9% (1,161->1,183). 2026-04-22 FY guide of OP +8.7%: baseline -7.29%. 2025-10-22 H1 with FY held and dividend raised: baseline +2.45%. Upgrades are bought; holds are small.",
+    "why_not_priced": "Whether the FY plan is raised today is undecided and binary; the stock trades at ~31x the unrevised plan EPS of 38.50, which prices some upgrade but not a specific number, and last year's identical setup ended in a hold, so the market cannot treat an upgrade as done. If an upgrade were fully priced the stock would have run into the print rather than sit at 1,191 vs 1,245 on 9/17.",
+    "independence": "Same company's 2026-07-21 Q1 progress notice uses the identical deferral language (https://tdnet-pdf.kabutan.jp/20260721/140120260716595158.pdf); the 2026-03-18 FY revision (https://tdnet-pdf.kabutan.jp/20260318/140120260318584117.pdf) and the FY3/26 短信 (https://tdnet-pdf.kabutan.jp/20260422/140120260421507581.pdf) give the H1-share history. All are company documents.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "296A-h1.json",
+    "text": "Implied Q2 (Jul-Sep) growth decelerated sharply: from the 9/14 revised H1 less Q1 actuals, Q2 sales ~1,437m (+6% YoY vs 1,356m) and OP ~503m (+10% vs 456m), against Q1's +17.3% sales and +51% OP, which weakens the 'effect spills through the year' case for an FY upgrade today.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-21",
+    "source": "https://tdnet-pdf.kabutan.jp/20260721/140120260717595695.pdf",
+    "source_date": "2026-07-21",
+    "reaction_history_on_this_line": "No prior instance of a visible quarterly deceleration at this name in the record; the baseline's only negative reaction (-7.29%, 2026-04-22) came on a conservative new-year guide, not a quarter.",
+    "why_not_priced": "Largely priced: anyone can compute it from two public documents. Kept small because the 短信 will put the Q2 standalone numbers in front of holders who read the 9/14 headline (+20%) rather than the quarter split.",
+    "independence": "Computed from the 9/14 revision (https://tdnet-pdf.kabutan.jp/20260914/140120260910533968.pdf) and last year's H1 短信 (https://tdnet-pdf.kabutan.jp/20251022/140120251021576524.pdf); same issuer's documents, one arithmetic fact.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "296A-h1.json",
+    "text": "The 2026-08-21 中期経営計画 states the company 'will carry out a capital increase' to fund M&A and to improve liquidity toward a Prime move; an offering announced alongside or right after the H1 results would land in the window as a negative.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://tdnet-pdf.kabutan.jp/20260821/140120260821524177.pdf",
+    "source_date": "2026-08-21",
+    "reaction_history_on_this_line": "No prior offering since listing; the company bought back stock via ToSTNeT-3 in July 2025. No reaction history on this line.",
+    "why_not_priced": "The intent is public but undated; the stock rose 16% on the day the plan was published, so holders read the plan as growth, not dilution. Sized as a small probability (~5-8%) of a ~5% offering-day drop. What the money buys: M&A per the plan, which the market may also read positively, hence the small size.",
+    "independence": "none",
+    "i": 2
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "296A-h1.json",
+    "text": "If the FY plan is held today, the same arithmetic (H2 implied -5% YoY) points to a later FY upgrade, as happened on 2026-03-18 last year (+21.9% OP).",
+    "resolves_by": "2027-03-31",
+    "source": "https://tdnet-pdf.kabutan.jp/20260318/140120260318584117.pdf",
+    "i": 3
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "296A-h1.json",
+    "text": "Interim dividend raised 13.0 -> 16.5 yen (annual 33.0 -> 36.5)",
+    "source": "https://tdnet-pdf.kabutan.jp/20260914/140120260910533968.pdf",
+    "first_hunter_reason": "duplicate",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "296A-h1.json",
+    "text": "Margin ratio 5.03 and +59% run since July as a crowded-long negative",
+    "source": "https://kabutan.jp/stock/news?code=296A&b=n202610200951",
+    "first_hunter_reason": "duplicate",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "296A-h1.json",
+    "text": "四季報 / IFIS full-year forecast for 296A: web search returned none; minkabu/四季報 not reachable",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "296A-h1.json",
+    "text": "TDnet/kabutan disclosures between 2026-09-15 and 2026-10-21 10:10 JST: none (https://kabutan.jp/stock/news?code=296A&nmode=3)",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "296A-h1.json",
+    "text": "Any separate FY 業績予想の修正 filed before the print: none",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "296A-h1.json",
+    "text": "Short register: no disclosed position (JPX, 2026-10-20)",
+    "i": 9
+   }
+  ]
+ },
+ {
+  "id": "jp/2026-10-21/3290",
+  "hunter_definition": ".claude/agents/unpriced-hunter-jp.md",
+  "lessons_file": "researcher_japan/LESSONS.md",
+  "baseline": {
+   "market": "JP",
+   "ticker": "3290",
+   "yahoo_symbol": "3290.T",
+   "company": "One REIT,Inc.",
+   "company_ja": "Ｏｎｅリート投資法人",
+   "industry": "REITs",
+   "event_date": "2026-10-21",
+   "session": "amc",
+   "window": "2026-10-21: entry before the release (this sealed spot if it lands before the 15:30 JST close, else the close) -> next session close",
+   "quarter": "-",
+   "fiscal_year_end": "2026-08-31",
+   "sealed_utc": "2026-10-21T01:06:17+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/3290.T?range=3y&interval=1d",
+    "calendar": "https://www.jpx.co.jp/listing/event-schedules/financial-announcement/index.html"
+   },
+   "tape": {
+    "spot": 74400.0,
+    "currency": "JPY",
+    "run_up_20d_pct": -1.59,
+    "run_up_5d_pct": -1.98,
+    "median_turnover_jpy_20d": 201615300,
+    "realised_vol_20d_pct": 13.14,
+    "realised_vol_60d_pct": 15.72,
+    "bars_3y": 730
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No liquid single-stock option market in Japan for this name. JPX option volume is concentrated in the index, so there is no event-implied move and no skew. Until 2026-09-18 that left priced_lean_pct as -0.05 * run_up_20d_pct, which is ALSO the free control, so the baseline's lean and its own benchmark were the same number. They are no longer: `positioning` and `expected_move` below carry substitutes built from what Tokyo does publish, and this baseline supplies its own `priced_lean_pct` and `anchor_quality`."
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/3290.T?modules=earningsHistory",
+    "quarters": []
+   },
+   "history": {
+    "n": 0,
+    "basis": "estimated_from_cadence",
+    "lag_days_used": null,
+    "period_end_this_quarter": null,
+    "median_abs_move_pct": null,
+    "events": [],
+    "caveat": "Announcement DATES are estimated by applying this quarter's notified lag backwards to prior period ends; the move is the largest within +/-2 trading days of that estimate. This is a cadence prior, not a record that a print happened on that date. Use it as a scale for how much this name moves, never as evidence about a particular past date."
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "issuer-notified date carried by JPX on the 決算発表予定日 sheet",
+    "calendar_as_of": "2026-10-01"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "disclosed_sellers": 0,
+    "covered": true,
+    "basis": "absent from the JPX register, so no disclosed position at or above the 0.5% threshold. A real zero, not missing data -- but the threshold truncates, so 0.4% and 0.0% are both recorded here as 0.0.",
+    "as_of": "20261020",
+    "source": "https://www.jpx.co.jp/markets/public/short-selling/index.html",
+    "margin_ratio": 591.0,
+    "margin_ratio_basis": "信用倍率, margin long balance / margin short balance, scraped from a broker portal rather than published by the exchange. Null is a normal outcome."
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 0.83,
+    "from_realised_vol_1d_pct": 0.83,
+    "from_history_median_pct": null,
+    "basis": "the larger of (a) the median of twelve ESTIMATED prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it, and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "margin_overhang": -1.386,
+    "runup": 0.08
+   },
+   "priced_lean_pct": -1.306,
+   "priced_lean_basis": "Sum of the components above. Read researcher_japan/scripts/jp_priced_in.py, lean_components(): every weight is a PRIOR, none is measured on Japanese data, and jp_resolve.py ranks each component separately so measurement can replace them. What matters today is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_quality": {
+    "magnitude": 0.3,
+    "direction": 0.6,
+    "basis": "magnitude: realised vol plus an estimated-cadence reaction history, capped at 0.5 because neither is an option-implied move. direction: how many of the three positioning components resolved, capped at 0.60 because none of them is 25-delta skew."
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "Aug-2026 (26th period) DPU forecast 2,440 yen, net profit 2,376m yen, set 2026-07-22 (https://tdnet-pdf.kabutan.jp/20260722/140120260722597238.pdf) and reaffirmed unchanged on 2026-09-28 after the period closed (https://tdnet-pdf.kabutan.jp/20260928/140120260928541004.pdf). No 四季報/IFIS figure reachable; company guide used.",
+   "positioning_check": "JPX short register 2026-10-20: no disclosed position >=0.5% (0.0%, unchanged). 信用倍率 591 (scraped, baseline), so margin longs dwarf margin shorts: a crowded leveraged-retail long and no squeeze fuel. No option skew in Japan. Run-up -1.59% over 20 days and -1.98% over 5. J-REIT ETF 1343 roughly flat over the same fortnight (1,804 on 10-09, 1,797 on 10-21), so the drift is name-specific but small.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "3290-h1.json",
+    "text": "The actual Aug-2026 DPU lands against a 2,440-yen forecast that was reaffirmed on 2026-09-28, after the period had closed. Last period's DPU beat its forecast by 5.8% (2,386 against 2,255, with a 差異 notice), but that forecast was set 2.5 months before period end. This one was confirmed after it, so the room for a surprise is a few percent at most.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://tdnet-pdf.kabutan.jp/20260414/140120260414504110.pdf",
+    "source_date": "2026-04-14",
+    "reaction_history_on_this_line": "The Feb-2026 DPU beat of +5.8% (短信 2026-04-14 16:30) was followed by -0.74% on 2026-04-15. The Aug-2025 短信 (2025-10-15 16:45, no 差異 notice) was followed by +0.34% on 10-16. DPU beats have not been bought.",
+    "why_not_priced": "Mostly it is priced. The 9-28 reaffirmation after period end makes the 2,440 bar near-certain, and that is why the size is near zero. What is left is the REIT's habit of landing at or above its forecast, which no wire carries for a name this thin.",
+    "independence": "Same company's 9-28 notice (https://tdnet-pdf.kabutan.jp/20260928/140120260928541004.pdf) states that the Aug-2026 forecast is unchanged. That is a second document on the same line, not an independent signal.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "3290-h1.json",
+    "text": "Both forward periods were pre-released on 2026-09-28 with the OKINAWA GRAND MER RESORT acquisition: Feb-2027 DPU raised 1.3% to 2,475 yen, and a first Aug-2027 guide of 2,780 yen, a record carried by gains on sale; ex-gain EPU is 1,322 yen, or 1,543 before one-off renovation costs. The stock moved +0.27% on 2026-09-29. The 短信 will very likely restate those numbers, so no new guide is expected at this print.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://tdnet-pdf.kabutan.jp/20260928/140120260928541004.pdf",
+    "source_date": "2026-09-28",
+    "reaction_history_on_this_line": "The 7-22 forecast revision (+12.4% DPU, released 15:45) was followed by +1.96% on 7-23. The 9-28 revision (+1.3% DPU plus the new Aug-2027 guide, 16:45) was followed by +0.27% on 9-29.",
+    "why_not_priced": "It is priced. The guide was filed three weeks before the print, and the stock has traded on it for 16 sessions. It is filed so that the reader knows the forecast item is pre-released, and it is [sizing note removed].",
+    "independence": "Supplementary deck of the same day (https://tdnet-pdf.kabutan.jp/20260928/140120260928541062.pdf) carries the DPU and EPU bridge. It is the same release batch.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "3290-h1.json",
+    "text": "The 9-28 deck says the manager is running sale processes on about 15% of the portfolio beyond the contracted sales, with offers well above appraisal. This REIT has announced sales and forecast revisions in TDnet batches (7-22, 9-28), so a further sale with a gain could accompany the 短信.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://tdnet-pdf.kabutan.jp/20260928/140120260928541062.pdf",
+    "source_date": "2026-09-28",
+    "reaction_history_on_this_line": "The sale plus DPU raise on 7-22 was followed by +1.96% the next day. The last results batch (2026-04-14) carried no sale, and the stock moved -0.74%.",
+    "why_not_priced": "Timing is unknown, and the 15% programme sits in a supplementary slide, not in any forecast. If the market priced a sale with this print, the stock would not have drifted -2% into it while the J-REIT ETF held flat. This is an inference about timing, so it is sized small.",
+    "independence": "none",
+    "i": 2
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "3290-h1.json",
+    "text": "The Aug-2027 DPU of 2,780 yen depends on the BoJ hiking in Dec-2026 and Mar-2027 (to 1.75%). The manager estimates +7 yen EPU a month for each month the hikes come later. This resolves at BoJ meetings after the window.",
+    "resolves_by": "2026-12-31",
+    "source": "https://tdnet-pdf.kabutan.jp/20260928/140120260928541062.pdf",
+    "i": 3
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "3290-h1.json",
+    "text": "Asset Management One raised its holding (変更報告書 No.52, 2026-09-28) and Sumitomo Mitsui Trust AM cut its holding (2026-09-24)",
+    "source": "https://kabutan.jp/stock/news?code=3290",
+    "first_hunter_reason": "duplicate",
+    "i": 4
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "3290-h1.json",
+    "text": "kabutan disclosure list for 3290 from 2025-07 to 2026-10-21: nothing filed after the 2026-10-02 GRESB notice, so no new 修正 or 差異 notice ahead of the print",
+    "i": 5
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "3290-h1.json",
+    "text": "Aug-2025 period: no 分配金差異 notice was filed with the 2025-10-15 短信, so that DPU landed within 5% of forecast",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "3290-h1.json",
+    "text": "share-buyback / 自己投資口取得 history: none found in the kabutan disclosure list over the last 15 months",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "3290-h1.json",
+    "text": "四季報 / IFIS DPU consensus: not reachable; company forecast used as the bar",
+    "i": 8
+   }
+  ]
+ },
+ {
+  "id": "jp/2026-10-21/8953",
+  "hunter_definition": ".claude/agents/unpriced-hunter-jp.md",
+  "lessons_file": "researcher_japan/LESSONS.md",
+  "baseline": {
+   "market": "JP",
+   "ticker": "8953",
+   "yahoo_symbol": "8953.T",
+   "company": "Japan Metropolitan Fund Investment Corporation",
+   "company_ja": "日本都市ファンド投資法人",
+   "industry": "REITs",
+   "event_date": "2026-10-21",
+   "session": "amc",
+   "window": "2026-10-21: entry before the release (this sealed spot if it lands before the 15:30 JST close, else the close) -> next session close",
+   "quarter": "-",
+   "fiscal_year_end": "2026-08-31",
+   "sealed_utc": "2026-10-21T01:06:19+00:00",
+   "sources": {
+    "tape": "https://query1.finance.yahoo.com/v8/finance/chart/8953.T?range=3y&interval=1d",
+    "calendar": "https://www.jpx.co.jp/listing/event-schedules/financial-announcement/index.html"
+   },
+   "tape": {
+    "spot": 102700.0,
+    "currency": "JPY",
+    "run_up_20d_pct": -7.81,
+    "run_up_5d_pct": -0.58,
+    "median_turnover_jpy_20d": 1672262400,
+    "realised_vol_20d_pct": 12.02,
+    "realised_vol_60d_pct": 15.49,
+    "bars_3y": 730
+   },
+   "options": {
+    "event_implied_move_pct": null,
+    "atm_spread_frac_of_mid": null,
+    "skew_25d_vol_points": null,
+    "reason": "No liquid single-stock option market in Japan for this name. JPX option volume is concentrated in the index, so there is no event-implied move and no skew. Until 2026-09-18 that left priced_lean_pct as -0.05 * run_up_20d_pct, which is ALSO the free control, so the baseline's lean and its own benchmark were the same number. They are no longer: `positioning` and `expected_move` below carry substitutes built from what Tokyo does publish, and this baseline supplies its own `priced_lean_pct` and `anchor_quality`."
+   },
+   "consensus": {
+    "source": "https://query1.finance.yahoo.com/v10/finance/quoteSummary/8953.T?modules=earningsHistory",
+    "quarters": []
+   },
+   "history": {
+    "n": 0,
+    "basis": "estimated_from_cadence",
+    "lag_days_used": null,
+    "period_end_this_quarter": null,
+    "median_abs_move_pct": null,
+    "events": [],
+    "caveat": "Announcement DATES are estimated by applying this quarter's notified lag backwards to prior period ends; the move is the largest within +/-2 trading days of that estimate. This is a cadence prior, not a record that a print happened on that date. Use it as a scale for how much this name moves, never as evidence about a particular past date."
+   },
+   "event_plausibility": {
+    "verdict": "fits_cadence",
+    "basis": "issuer-notified date carried by JPX on the 決算発表予定日 sheet",
+    "calendar_as_of": "2026-10-01"
+   },
+   "positioning": {
+    "short_ratio_pct": 0.0,
+    "short_ratio_prev_pct": 0.0,
+    "short_change_pct_pts": 0.0,
+    "disclosed_sellers": 0,
+    "covered": true,
+    "basis": "absent from the JPX register, so no disclosed position at or above the 0.5% threshold. A real zero, not missing data -- but the threshold truncates, so 0.4% and 0.0% are both recorded here as 0.0.",
+    "as_of": "20261020",
+    "source": "https://www.jpx.co.jp/markets/public/short-selling/index.html",
+    "margin_ratio": 236.0,
+    "margin_ratio_basis": "信用倍率, margin long balance / margin short balance, scraped from a broker portal rather than published by the exchange. Null is a normal outcome."
+   },
+   "expected_move": {
+    "event_move_proxy_pct": 0.76,
+    "from_realised_vol_1d_pct": 0.76,
+    "from_history_median_pct": null,
+    "basis": "the larger of (a) the median of twelve ESTIMATED prior reactions and (b) a one-session move implied by 20-day realised volatility. It is NOT an option-implied move: nothing is paying for it, and it carries no information about what the market expects from THIS print. It is a scale for how far this name travels."
+   },
+   "lean_components": {
+    "short_squeeze": 0.0,
+    "short_building": -0.0,
+    "margin_overhang": -1.186,
+    "runup": 0.391
+   },
+   "priced_lean_pct": -0.795,
+   "priced_lean_basis": "Sum of the components above. Read researcher_japan/scripts/jp_priced_in.py, lean_components(): every weight is a PRIOR, none is measured on Japanese data, and jp_resolve.py ranks each component separately so measurement can replace them. What matters today is only that this is no longer identical to -0.05 * run_up_20d_pct, so the free control is a real rival again.",
+   "anchor_quality": {
+    "magnitude": 0.3,
+    "direction": 0.6,
+    "basis": "magnitude: realised vol plus an estimated-cadence reaction history, capped at 0.5 because neither is an option-implied move. direction: how many of the three positioning components resolved, capped at 0.60 because none of them is 25-delta skew."
+   },
+   "event_occurred": null
+  },
+  "first_hunter_context": {
+   "bar": "Company DPU forecasts: Aug-2026 (49期) 2,981 yen and Feb-2027 (50期) 2,900 yen in the 2026-04-21 決算短信 (https://tdnet-pdf.kabutan.jp/20260421/140120260420507023.pdf), Feb-2027 lifted to an indicated 2,970 yen by the 2026-06-01 Edion Kyobashi disposition (https://tdnet-pdf.kabutan.jp/20260601/140120260531556269.pdf); 2026-09-17 notice confirms 49期/50期 forecasts unchanged and Aug-2027 guide to come with this 短信. No 四季報/IFIS consensus DPU sourced, so findings are capped small.",
+   "positioning_check": "JPX disclosed short register as of 2026-10-20: 0.0% (no position >=0.5%), unchanged, 0 sellers (https://www.jpx.co.jp/markets/public/short-selling/index.html, from the sealed baseline). 信用倍率 236x per the baseline's broker scrape: retail margin long heavily crowded, the one setup in which a disappointment still has sellers. No skew in Japan. Kabutan 2026-10-09 rating log: Nikko kept 強気 but cut target 143,000 -> 138,000 yen (https://kabutan.jp/stock/news?code=8953&b=n202610090951). Tape: -7.81% over 20 sessions, -0.58% over 5, from 124,000 in Dec-2025 to 102,700; drift looks rate-driven rather than name-specific (refinancing notices show fixed 0.44-0.49% 10-year debt rolled into floating TIBOR-linked loans).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "8953-h1.json",
+    "text": "The Life Shimodera land sale (6.1bn yen, 2.5x appraisal, ~4.3bn gain) puts ~2.1bn yen (~290 yen/unit on 7,192,809 units) into the Aug-2027 period whose first DPU guide comes with this 短信, and the company wrote that with 5.5bn of gains secured since the last results plus an LOI-stage sale it expects to keep raising the DPU level -- so the first Aug-27 guide is likely at or above the Feb-27 level of 2,970 yen.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://tdnet-pdf.kabutan.jp/20260917/140120260916537271.pdf",
+    "source_date": "2026-09-17",
+    "reaction_history_on_this_line": "Guidance raised at the last prints moved the stock little: 2025-10-20 短信 (Feb-26 guide 2,820->2,952) -0.34%; 2026-04-21 短信 (Aug-26 guide 2,950->2,981) -0.08%; standalone up-revisions 2025-08-27 -2.26% and 2025-12-19 -1.37% (Yahoo daily closes, https://query1.finance.yahoo.com/v8/finance/chart/8953.T?range=2y&interval=1d).",
+    "why_not_priced": "The gain itself is public since 2026-09-17 (stock 111,400 -> 109,600 the next day, falling with the sector), but the company withheld the Aug-27 DPU number for this release; what the market does not have is the level, i.e. whether the gain plus reserves takes the guide above 2,970/3,000 or merely replaces reserve drawdowns. If it were priced as a step-up, the units would not be at a 10-month low with a 5.8% forward yield on 2,970 yen.",
+    "independence": "The 2026-09-17 supplemental (https://tdnet-pdf.kabutan.jp/20260917/140120260916537274.pdf) shows the same gain schedule (66/51/11/21/21 億円 over 48-52期) -- same company, same day, counts once.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "8953-h1.json",
+    "text": "Since the April guide, JMF has committed ~23bn yen of new income assets -- a 8.79bn yen TK stake in 17 Seiyu land sites at ~4.7% unlevered yield with sales-linked rent from Nov-2026, JMF-Bldg Shin-Yokohama 01 (9.2bn, NOI 4.1%), m-City Toda Koen (4.87bn) and JMF Residence Osaka Awaji -- which feed the Feb-27 and Aug-27 forecasts and were not in the April numbers.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://tdnet-pdf.kabutan.jp/20260930/140120260929542427.pdf",
+    "source_date": "2026-09-30",
+    "reaction_history_on_this_line": "Acquisition announcements: 2026-08-21 TK +1.22% next day; 2026-09-30 Shin-Yokohama 0.00% (Yahoo daily closes).",
+    "why_not_priced": "Each deal was announced but none came with a forecast revision, so the DPU contribution is first quantified in this 短信; at roughly 20-30 yen/unit per half it is small against a 2,970 yen DPU, which is why it is sized small.",
+    "independence": "TK details in the 2026-08-21 supplemental, a separate document: https://tdnet-pdf.kabutan.jp/20260821/140120260819523386.pdf",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "8953-h1.json",
+    "text": "JMF's own record is beat-and-raise: Feb-2026 DPU came in at 3,006 against the 2,952 guided in Oct-2025, the Aug-2026 guide went 2,850 -> 2,950 (Dec-2025 revision) -> 2,981 (Apr-2026), so the Aug-2026 actual most likely prints at or a little above 2,981.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://tdnet-pdf.kabutan.jp/20260421/140120260420507023.pdf",
+    "source_date": "2026-04-21",
+    "reaction_history_on_this_line": "Last four 短信 next-session moves: 2025-04-21 0.00%, 2025-10-20 -0.34%, 2026-04-21 -0.08%, plus 2025-04-17 -0.10% (Yahoo daily closes) -- reported DPU beats have not moved the units.",
+    "why_not_priced": "Largely priced: the pattern is visible in every 短信 and DPU is managed with reserve draws, so the period result lands inside what was guided; kept at near zero for that reason.",
+    "independence": "Oct-2025 短信 (https://tdnet-pdf.kabutan.jp/20251020/140120251020575745.pdf) and Dec-2025 revision (https://tdnet-pdf.kabutan.jp/20251219/140120251219522511.pdf) give the earlier guides.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "8953-h1.json",
+    "text": "Refinancing in Sept-2026 rolled maturing 10-year fixed loans at 0.441-0.494% into floating 1M TIBOR +0.150-0.200% loans, and the Sept-30 new debt is also floating, so interest cost rises into the Aug-27 period and caps core EPU (~2,550 yen per the June supplemental) as policy rates rise.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://tdnet-pdf.kabutan.jp/20260918/140120260917538189.pdf",
+    "source_date": "2026-09-18",
+    "reaction_history_on_this_line": "No observed reaction to borrowing notices (2026-09-18 notice day -1.6% was a sector-wide down day; not attributable).",
+    "why_not_priced": "Mostly priced -- this is the rate story the -7.8% run-down already reflects; what is left is the size of the interest line in the Aug-27 guide assumptions.",
+    "independence": "2026-09-30 new borrowing, all floating TIBOR+0.17-0.20%: https://tdnet-pdf.kabutan.jp/20260930/140120260929542431.pdf",
+    "i": 3
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "8953-h1.json",
+    "text": "Second 50% tranche of the Life Shimodera sale settles 2027-09-30 and the further LOI-stage disposition is not yet contracted; their gains resolve in later periods.",
+    "resolves_by": "2027-09-30",
+    "source": "https://tdnet-pdf.kabutan.jp/20260917/140120260916537271.pdf",
+    "i": 4
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "8953-h1.json",
+    "text": "Nikko target cut 143,000 -> 138,000 yen with 強気 kept (2026-10-09)",
+    "source": "https://kabutan.jp/stock/news?code=8953&b=n202610090951",
+    "first_hunter_reason": "duplicate",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "8953-h1.json",
+    "text": "Edion Kyobashi land sale gain ~1.1bn yen returned in Feb-27 (50期)",
+    "source": "https://tdnet-pdf.kabutan.jp/20260601/140120260531556269.pdf",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "8953-h1.json",
+    "text": "Separate 業績予想の修正 / 分配金予想の修正 filed before this print: none since 2025-12-19 on kabutan's disclosure list (https://kabutan.jp/stock/news?code=8953&nmode=3)",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "8953-h1.json",
+    "text": "自己投資口取得 (buyback) history for 8953: no announcement found (WebSearch; kabutan disclosure list back to Dec-2025)",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "8953-h1.json",
+    "text": "四季報 / IFIS consensus DPU for 49-51期: not reachable; bar is the company forecast",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "8953-h1.json",
+    "text": "2026-07-29 Kumamoto earthquake notice: no operating damage reported at the 7 Kyushu properties (https://tdnet-pdf.kabutan.jp/20260729/140120260729501687.pdf)",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "8953-h1.json",
+    "text": "Sector context for Oct-2026 Tokyo REIT index move via WebSearch: nothing dated 2026 found",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "8953-h1.json",
+    "text": "Company IR site jmf-reit.com not fetched (company IR hosts 403 per the definition); kabutan TDnet mirrors used instead",
+    "i": 12
+   }
+  ]
+ }
+]

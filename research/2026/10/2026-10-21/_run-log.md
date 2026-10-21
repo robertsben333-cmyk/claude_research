@@ -31,3 +31,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-21 01:05 UTC
 - Fired 01:05 UTC (10:05 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp waves of 5 -> edge_score -> four-model panel -> note. No orders.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-21 01:11 UTC
+- 3 packs, four judges (intl)
