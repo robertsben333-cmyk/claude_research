@@ -71,3 +71,7 @@
 ## Intraday panel 12:00 — search budget
 - Logged at 2026-10-21 16:18 UTC
 - Degradation: searchers MOH, ASIC and CASH each report the turn's shared WebSearch budget ran out after 2-4 queries (the three sweep agents spent most of it); they fell back to direct WebFetch of known URLs (EDGAR, Yahoo, NHC, MarketBeat). Later searchers in this snapshot are expected to hunt with little or no WebSearch. Every snapshot's evidence is thinner than E-P's for that reason; compare snapshots with that in mind.
+
+## Intraday panel 12:00 — all searchers launched
+- Logged at 2026-10-21 16:26 UTC
+- 16:26 UTC: 11 hunts in; last wave QS KNX LUV THRM ARGX SPOT IIIN CRS running. LBRT session settled amc by its searcher from the company 10-08 release. HXL's searcher reports one Yahoo weekly-chart fetch returned a quote stamped 2026-10-22 08:21 EDT (a vendor timestamp, not a future price); it disregarded it and used no price from it.
