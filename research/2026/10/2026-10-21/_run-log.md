@@ -87,3 +87,7 @@
 ## Edge hunt (panel) — 2026-10-21 amc + 2026-10-22 bmo — STARTED
 - Logged at 2026-10-21 17:12 UTC
 - Stage E-P fire 17:06 UTC (session 17:08). Universe 118 names (64 amc 10-21, 54 bmo 10-22), baselines sealed for all 118 in edge-panel/baselines. Next: one edge-sweep, then up to 30 unpriced-searchers (cap edge_panel.hunted_names), step 3s flatten, four-judge panel (split packs above 19), step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-21 17:25 UTC
+- Sweep (finished ~17:23 UTC): 23 of 118 company-confirmed, 0 phantoms; 89 left unchecked by the sweep for time (calendar row only, not phantoms), 6 checked and unconfirmed (SAP BCS AMBP NVEC MMLP ZGN). Cap 30: all 23 confirmed (QS COCO MEDP MOH ASIC LUV STC TSCO KNX AAL POOL ARGX FSV NOK SPOT LVS TSLA TXN IBM LRCX META TRST RPT) plus the 7 highest-priority unchecked (HON BFH TTMI LBRT KALU EGBN CRS); searchers told to settle the event and session themselves. Shed: the other 88 by edge_degrade_order (unconfirmed, lowest priority). HON baseline_history_trustworthy=false (perimeter change). Searchers unpriced-searcher, amc first; each gets its sweep row as edge-panel/sweep-rows/<T>.json.
