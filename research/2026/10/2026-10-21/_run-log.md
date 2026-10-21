@@ -79,3 +79,7 @@
 ## Intraday panel 12:00 — panel STARTED
 - Logged at 2026-10-21 16:34 UTC
 - 19/19 searchers returned by 16:34 UTC (unpriced-searcher native, Opus 5.5). Guard 16:34 UTC: nothing moved (every hunt written before 16:00 ET). edge_score: 19 rankable, 0 clear 2.8 (max MOH +2.10). 19 packs, four judges.
+
+## Intraday panel 12:00 — done
+- Logged at 2026-10-21 16:42 UTC
+- All four judges 19/19 on pinned agents (opus5, opus55, sonnet55, fable51). panel_score --dry-run --stage E-PI (panel-history.json md5 unchanged). Selected (panel_pct >= 80): MEDP short 88, LUV short 85, KALU long 83, WDFC short 80; nearest misses CASH long 79, SPOT short 78. Searcher: 0 of 19 clear 2.8. Note edge-intraday-1200/edge-note.md; timeline rebuilt. No orders.
