@@ -19,3 +19,7 @@
 ## Stage EU — wave 3 progress, wave 4 launched
 - Logged at 2026-10-21 14:12 UTC
 - ORY 0 (event NOT confirmed: no issuer date; LSEG/GuruFocus put Q3 on 11-06; past Q3 releases after the Madrid close), REJL_B 0 (PHANTOM: Q3 moved to 2026-11-03 08:30 per issuer 09-07 release and calendar), PRISMA +0.1. LOGI_B and SBRY still running. Wave 4 launched early (overlap of 2): SEB_A SVED_B SWED_A VIMIAN VIS.
+
+## Stage EU — wave 3 done
+- Logged at 2026-10-21 14:13 UTC
+- LOGI_B -0.2, ORY 0 (unconfirmed), PRISMA +0.1, REJL_B 0 (phantom, Q3 on 11-03), SBRY +0.7 (uk, FCA short 6.73% building). Wave 4 running.
