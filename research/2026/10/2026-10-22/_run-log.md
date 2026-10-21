@@ -23,3 +23,11 @@
 ## Stage EU — wave 3 done
 - Logged at 2026-10-21 14:13 UTC
 - LOGI_B -0.2, ORY 0 (unconfirmed), PRISMA +0.1, REJL_B 0 (phantom, Q3 on 11-03), SBRY +0.7 (uk, FCA short 6.73% building). Wave 4 running.
+
+## Stage EU — wave 4 done
+- Logged at 2026-10-21 14:27 UTC
+- SEB_A -0.95, SVED_B -0.7, SWED_A -1.1, VIMIAN +0.5, VIS -0.4 (amc, timing from secondary sources only; CNMV/issuer unreachable). 20 of 20 hunted.
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-21 14:28 UTC
+- 18 ranked, none above floor 2.8 (top LINC +1.20, bottom AXFO -1.50); ORY, REJL_B not ranked (no event). Packs built, four intl judges.
