@@ -27,3 +27,7 @@
 ## Stage EU — Europe ranking — DONE
 - Logged at 2026-10-20 14:38 UTC
 - Event date 2026-10-21. 20 ranked (se 15, de 2, no/fi/es 1), drawn from 37 eligible. 1 above floor 2.8: MIPS +2.90. Bottom FTK -1.30. Panel 4/4, no fallback: selected MIPS long (k=4, panel_pct 92), JM short (k=3, 85), BULTEN long (k=3, 83; marginal, Sonnet exactly at q80). Session corrections: FTK is amc (18:00 CEST), BULTEN in-session 13:30 (sealed amc) — check eu_resolve rows. TTALO pre-released via 10-20 profit warning. Resolve the 15 SE names + TTALO within ~a week. Note: europe-note.md. Published with EARNINGS_DATA_BRANCH=main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-21 01:05 UTC
+- Fired 01:05 UTC (10:05 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp waves of 5 -> edge_score -> four-model panel -> note. No orders.
