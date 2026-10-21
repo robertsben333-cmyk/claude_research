@@ -83,3 +83,7 @@
 ## Intraday panel 12:00 — done
 - Logged at 2026-10-21 16:42 UTC
 - All four judges 19/19 on pinned agents (opus5, opus55, sonnet55, fable51). panel_score --dry-run --stage E-PI (panel-history.json md5 unchanged). Selected (panel_pct >= 80): MEDP short 88, LUV short 85, KALU long 83, WDFC short 80; nearest misses CASH long 79, SPOT short 78. Searcher: 0 of 19 clear 2.8. Note edge-intraday-1200/edge-note.md; timeline rebuilt. No orders.
+
+## Edge hunt (panel) — 2026-10-21 amc + 2026-10-22 bmo — STARTED
+- Logged at 2026-10-21 17:12 UTC
+- Stage E-P fire 17:06 UTC (session 17:08). Universe 118 names (64 amc 10-21, 54 bmo 10-22), baselines sealed for all 118 in edge-panel/baselines. Next: one edge-sweep, then up to 30 unpriced-searchers (cap edge_panel.hunted_names), step 3s flatten, four-judge panel (split packs above 19), step 6b buy.
