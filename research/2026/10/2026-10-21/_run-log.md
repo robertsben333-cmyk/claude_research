@@ -75,3 +75,7 @@
 ## Intraday panel 12:00 — all searchers launched
 - Logged at 2026-10-21 16:26 UTC
 - 16:26 UTC: 11 hunts in; last wave QS KNX LUV THRM ARGX SPOT IIIN CRS running. LBRT session settled amc by its searcher from the company 10-08 release. HXL's searcher reports one Yahoo weekly-chart fetch returned a quote stamped 2026-10-22 08:21 EDT (a vendor timestamp, not a future price); it disregarded it and used no price from it.
+
+## Intraday panel 12:00 — panel STARTED
+- Logged at 2026-10-21 16:34 UTC
+- 19/19 searchers returned by 16:34 UTC (unpriced-searcher native, Opus 5.5). Guard 16:34 UTC: nothing moved (every hunt written before 16:00 ET). edge_score: 19 rankable, 0 clear 2.8 (max MOH +2.10). 19 packs, four judges.
