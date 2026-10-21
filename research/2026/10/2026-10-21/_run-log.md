@@ -91,3 +91,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-10-21 17:25 UTC
 - Sweep (finished ~17:23 UTC): 23 of 118 company-confirmed, 0 phantoms; 89 left unchecked by the sweep for time (calendar row only, not phantoms), 6 checked and unconfirmed (SAP BCS AMBP NVEC MMLP ZGN). Cap 30: all 23 confirmed (QS COCO MEDP MOH ASIC LUV STC TSCO KNX AAL POOL ARGX FSV NOK SPOT LVS TSLA TXN IBM LRCX META TRST RPT) plus the 7 highest-priority unchecked (HON BFH TTMI LBRT KALU EGBN CRS); searchers told to settle the event and session themselves. Shed: the other 88 by edge_degrade_order (unconfirmed, lowest priority). HON baseline_history_trustworthy=false (perimeter change). Searchers unpriced-searcher, amc first; each gets its sweep row as edge-panel/sweep-rows/<T>.json.
+
+## Edge hunt (panel) — searcher note
+- Logged at 2026-10-21 17:31 UTC
+- LVS searcher reports a search result listing https://s28.q4cdn.com/640198178/files/doc_news/2026/10/LVS-3Q-2026-Press-Release.pdf (a pre-staged IR file URL, possibly tonight's release). It did not open it and used nothing from it; listed in rejected_candidates. Watch for the same leak in other hunts. Hunts in: STC MEDP LVS MOH.
