@@ -67,3 +67,7 @@
 ## Intraday panel 12:00 — searchers launched
 - Logged at 2026-10-21 16:13 UTC
 - ~16:20 UTC: MOH MEDP LBRT EGBN SLG CASH ASIC running (unpriced-searcher native). Queue: KALU LOB HXL WDFC QS KNX LUV, then THRM ARGX SPOT IIIN CRS. THRM baseline amended suspect->unknown (edge_baseline_amend.py table rewritten for this run) before any hunt.
+
+## Intraday panel 12:00 — search budget
+- Logged at 2026-10-21 16:18 UTC
+- Degradation: searchers MOH, ASIC and CASH each report the turn's shared WebSearch budget ran out after 2-4 queries (the three sweep agents spent most of it); they fell back to direct WebFetch of known URLs (EDGAR, Yahoo, NHC, MarketBeat). Later searchers in this snapshot are expected to hunt with little or no WebSearch. Every snapshot's evidence is thinner than E-P's for that reason; compare snapshots with that in mind.
