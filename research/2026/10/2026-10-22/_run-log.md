@@ -7,3 +7,7 @@
 ## Stage EU — universe and baselines sealed
 - Logged at 2026-10-21 13:43 UTC
 - Event date 2026-10-22. 128 scheduled, 75 eligible, 20 hunted by seeded draw (eu-2026-10-22): se 15, es 2 (ORY, VIS), uk 1 (SBRY), fr 1 (DIM), no 1 (ATEA). Largest market se 75%, 5 markets. anchor_covered: AXFO COOR SBRY VIMIAN (4 of 20). History observed: SBRY (observed_rns), ATEA (observed_newsweb); other 18 estimated. session_unresolved: LINC, ORY, REJL_B. amc: EAST, VIS. Provenance stamped (nordic.v5, fr.v7, es.v5, uk current; orchestrator claude-opus-5-5 configured, get_session not called). Wave 1: ARJO_B ATEA AXFO BEIJ_B COOR.
+
+## Stage EU — wave 1 done
+- Logged at 2026-10-21 13:54 UTC
+- ARJO_B, ATEA -0.9 (no), AXFO -1.5, BEIJ_B -0.1, COOR +0.2 (all bmo confirmed by issuer notices where checked). Wave 2: DIM (fr) EAST (amc) INTEA_B KJELL LINC.
