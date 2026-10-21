@@ -15,3 +15,7 @@
 ## Stage EU — wave 2 done
 - Logged at 2026-10-21 14:04 UTC
 - DIM +0.1 (fr), EAST -0.3 (issuer notice: 14:00 CET IN-SESSION on 10-22, so the sealed amc window misses the event-day reaction; check eu_resolve both windows), INTEA_B -0.4, KJELL +0.8, LINC +1.2 (bmo 07:00 per all prior MFN releases). Wave 3: LOGI_B ORY (es) PRISMA REJL_B SBRY (uk).
+
+## Stage EU — wave 3 progress, wave 4 launched
+- Logged at 2026-10-21 14:12 UTC
+- ORY 0 (event NOT confirmed: no issuer date; LSEG/GuruFocus put Q3 on 11-06; past Q3 releases after the Madrid close), REJL_B 0 (PHANTOM: Q3 moved to 2026-11-03 08:30 per issuer 09-07 release and calendar), PRISMA +0.1. LOGI_B and SBRY still running. Wave 4 launched early (overlap of 2): SEB_A SVED_B SWED_A VIMIAN VIS.
