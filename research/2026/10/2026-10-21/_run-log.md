@@ -51,3 +51,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-21 13:16 UTC
 - 4 names: NP exit_limit, WFRD exit_open, ALK exit_open, MCB exit_open; pool (prev mornings) 6 names / 2 days, review_minus_static +0.83 t 0.67
+
+## Intraday panel 12:00 — STARTED
+- Logged at 2026-10-21 16:00 UTC
+- Fired 15:59 UTC (11:59 ET). First snapshot of the day (no 10:00 snapshot on disk): build universe + sweep, freeze, seal, Opus 5.5 searchers (cap 19, amc first), guard, edge_score, four judges, panel_score --dry-run. No orders.
