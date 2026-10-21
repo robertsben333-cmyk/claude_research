@@ -73,22 +73,16 @@ from pathlib import Path
 # is where they can actually affect a number. Rewriting this table to {} rather than
 # leaving the 2026-09-10 entries in place is the point of the staleness guard below.
 AMENDMENTS: dict[str, tuple[str, str, str]] = {
-    # 2026-10-20, stage E-PI 12:00 snapshot (edge-intraday-1200), applied from that
-    # snapshot's sweep BEFORE any searcher launched. Two hunted names read 'suspect'
-    # and both events are company-confirmed.
-    "NP": ("fits_cadence",
-           "UPGRADE off 'suspect'. Matcher miss: the baseline's last earnings filing "
-           "is 2026-04-22, but Neptune reported Q2 on 2026-07-21 (sweep), which is 91 "
-           "days before this print and fits its cadence. The company announced Q3 "
-           "results for after the close on 2026-10-20.",
-           "https://finviz.com/news/400947/neptune-insurance-holdings-to-announce-third-quarter-2026-financial-results"),
-    "IART": ("unknown",
-             "Off 'suspect' to 'unknown', not to fits_cadence. The 2026-10-02 row the "
-             "cadence test measures from is the flood-related guidance cut (-21%), not "
-             "a quarterly print, so 19 days is not a gap between prints; the history "
-             "therefore holds a non-earnings row and has not earned a full verdict. "
-             "The company announced Q3 results before the open on 2026-10-21.",
-             "https://finviz.com/news/399266/integra-lifesciences-to-host-third-quarter-2026-financial-results-conference-call-on-october-21-2026"),
+    # 2026-10-21, stage E-PI 12:00 snapshot (edge-intraday-1200), applied from that
+    # snapshot's sweep BEFORE any searcher launched. One hunted name read 'suspect'.
+    "THRM": ("unknown",
+             "Off 'suspect' to 'unknown', not to fits_cadence. The baseline finds no "
+             "earnings filing since 2026-04-23 (182 days against a 91-day cadence); this "
+             "sweep did not establish whether a Q2 filing was missed by the matcher or "
+             "delayed around the Modine SpinCo combination, so the history has not "
+             "earned a full verdict. The company announced Q3 results for 2026-10-22 "
+             "ahead of an 8:00 am ET call.",
+             "https://finviz.com/news/400877/gentherm-announces-date-for-2026-third-quarter-news-release-and-conference-call"),
 }
 
 # SYMMETRY, 2026-09-22: one upgrade and no downgrades, which needs stating rather
