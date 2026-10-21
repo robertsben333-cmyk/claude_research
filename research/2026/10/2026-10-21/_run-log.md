@@ -39,3 +39,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-21 01:14 UTC
 - 5 scheduled / 3 eligible / 3 hunted. impact_sum: 296A +0.50, 8953 +0.35, 3290 +0.25; none above floor. Panel 4/4 members, none selected (296A panel_pct 68, k=1). Note: japan/japan-note.md. No orders.
+
+## Close AMC — 2026-10-21 10:11 UTC
+- Logged at 2026-10-21 10:23 UTC
+- mode --require-exit-tif opg exit 0 (amc -> open as market DAY). verify: 14 legs, none held, none UNFILLED. close --submit: no leg due today, nothing sent, no refusals. status: no open positions.
