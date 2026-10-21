@@ -11,3 +11,7 @@
 ## Stage EU — wave 1 done
 - Logged at 2026-10-21 13:54 UTC
 - ARJO_B, ATEA -0.9 (no), AXFO -1.5, BEIJ_B -0.1, COOR +0.2 (all bmo confirmed by issuer notices where checked). Wave 2: DIM (fr) EAST (amc) INTEA_B KJELL LINC.
+
+## Stage EU — wave 2 done
+- Logged at 2026-10-21 14:04 UTC
+- DIM +0.1 (fr), EAST -0.3 (issuer notice: 14:00 CET IN-SESSION on 10-22, so the sealed amc window misses the event-day reaction; check eu_resolve both windows), INTEA_B -0.4, KJELL +0.8, LINC +1.2 (bmo 07:00 per all prior MFN releases). Wave 3: LOGI_B ORY (es) PRISMA REJL_B SBRY (uk).
