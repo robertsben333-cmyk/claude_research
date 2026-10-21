@@ -47,3 +47,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-10-21 13:14 UTC
 - source research/2026/10/2026-10-20/edge-panel; 09:15 ET; picks NP, WFRD, ALK, MCB (4 analysts launched)
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-21 13:16 UTC
+- 4 names: NP exit_limit, WFRD exit_open, ALK exit_open, MCB exit_open; pool (prev mornings) 6 names / 2 days, review_minus_static +0.83 t 0.67
