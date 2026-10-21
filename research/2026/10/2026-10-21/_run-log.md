@@ -107,3 +107,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-21 17:52 UTC
 - 30/30 hunted, edge_score written, V2 grounded written ~17:55 UTC before the first print. 30 packs split into 2 parts of 15; four judges x 2 parts = 8 instances.
+
+## Edge hunt (panel) — judges rate-limited
+- Logged at 2026-10-21 20:02 UTC
+- All 8 judge instances (4 models x 2 parts) stopped with HTTP 429 'session limit, resets 18:40 UTC' before writing output. Account is flat (cash). Plan: resume the same judges after 18:40 UTC (14:40 ET), then score, note, and step 6b buy before 16:00 ET. If the buy cannot be reached before 16:00 ET, nothing is bought.
