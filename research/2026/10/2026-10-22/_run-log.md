@@ -83,3 +83,7 @@
 ## Edge hunt (panel) — 2026-10-22 amc + 2026-10-23 bmo — STARTED
 - Logged at 2026-10-22 17:14 UTC
 - Stage E-P fire 17:06 UTC. Universe 65 names (48 amc 10-22, 17 bmo 10-23), baselines sealed for all 65 in edge-panel/baselines by 17:14 UTC. Next: one edge-sweep, up to 20 unpriced-searchers (edge_panel.hunted_names), step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — baselines sealed
+- Logged at 2026-10-22 17:15 UTC
+- 65 baselines, universe and provenance (US-P, us-searcher.v2, cap 20) committed before any searcher launches; edge-sweep running since 17:15 UTC.
