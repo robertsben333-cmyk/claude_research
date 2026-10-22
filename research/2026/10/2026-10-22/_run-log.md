@@ -75,3 +75,7 @@
 ## Stage M — prior morning scored
 - Logged at 2026-10-22 13:18 UTC
 - resolve 2026-10-21 done; pool: 10 names / 3 days, review +1.60% vs static +1.38%, review_minus_static +0.22pp (t 0.28). LBRT and IBM analysts refused at launch by the 8-subagent concurrency cap; launched on a freed slot.
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-22 13:21 UTC
+- 10 names compiled 09:21 ET, all 10 reviews valid: exit_1000 LRCX TTMI KALU SPOT ARGX; exit_limit CRS 340.00, ASIC 26.85; exit_open META LBRT IBM. LBRT and IBM launched late, after the 8-subagent cap freed, and returned before the compile. No orders.
