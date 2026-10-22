@@ -67,3 +67,7 @@
 ## Stage EU — INDT banked
 - Logged at 2026-10-22 13:58 UTC
 - INDT +0.3 (bmo ~07:30 CEST per issuer invitation; three-broker bar). Running: LIAB MCAP MSAB_B MTRS.
+
+## Stage EU — LIAB banked
+- Logged at 2026-10-22 13:59 UTC
+- LIAB +0.6 (bmo per prior 07:00 releases + Inderes calendar; short 1.40% covering slightly). Running: MCAP MSAB_B MTRS.
