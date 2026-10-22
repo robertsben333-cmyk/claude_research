@@ -47,3 +47,7 @@
 ## Stage J — resolved 10-19 and 10-20
 - Logged at 2026-10-22 01:06 UTC
 - While hunters run: jp_resolve 10-19 (4/4, rho 0.8 p 0.33, lean_vs_free_control_rho 0.2) and 10-20 (4/4, rho -0.4 p 0.75, lean_vs_free 0.4); panel-resolved written for both. 10-21 window closes today.
+
+## Stage J — 8954 banked
+- Logged at 2026-10-22 01:10 UTC
+- 8954 ORIX JREIT +0.30 (release 15:30 JST). 3091, 6146 still running.
