@@ -31,3 +31,7 @@
 ## Stage EU — SAAB_B banked
 - Logged at 2026-10-22 13:51 UTC
 - SAAB_B +0.9 (bmo 07:30 CET per issuer invitation). EPEN launched.
+
+## Stage EU — ENI, GJF banked
+- Logged at 2026-10-22 13:53 UTC
+- ENI +1.0 (Eni IR lists Q3 23 Oct; bmo per SoldiOnline, exact timestamp not found; extra dividend/guidance raise likely). GJF +0.7 (bmo 07:00 CET per issuer NewsWeb msg 683855; company-published consensus). INDT, KNOW launched. Remaining: LIAB MCAP MSAB_B MTRS.
