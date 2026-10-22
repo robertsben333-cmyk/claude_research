@@ -19,3 +19,7 @@
 ## Stage EU — EQV1V banked
 - Logged at 2026-10-22 13:50 UTC
 - EQV1V -1.30 (bmo ~08:00 EET per issuer notice; bar = single Inderes preview). ALLIGO_B launched.
+
+## Stage EU — MEDI banked
+- Logged at 2026-10-22 13:50 UTC
+- MEDI -0.35 (bmo confirmed by issuer NewsWeb notice, webinar 09:00 Oslo; baseline history counts webinar invitations as prints, real median ~3.4%). BHG launched.
