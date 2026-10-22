@@ -95,3 +95,11 @@
 ## Edge hunt (panel) — all searchers launched
 - Logged at 2026-10-22 17:36 UTC
 - All 20 unpriced-searchers (native agent, Opus 5.5) launched by ~17:43 UTC; 12 returned. Company sources settled the unchecked names: BE, DECK, JAKK, MXL, FIX, SAM, WDC, APPF all amc 2026-10-22.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-22 17:44 UTC
+- 20/20 searchers returned by ~17:43 UTC (unpriced-searcher, native, Opus 5.5). mode: execution enabled. flatten --submit at 17:44 UTC: 0 positions held, nothing to sell (account already flat after 2026-10-21's skipped buy).
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-22 17:44 UTC
+- 20/20 hunted, edge_score written, V2 grounded written ~17:45 UTC before the first print. 20 packs, four judges, one part.
