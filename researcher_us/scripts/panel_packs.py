@@ -13,7 +13,7 @@ Writes <RUN>/panel/packs.json, pretty-printed one field per line so a Read-only 
 page through it. Names that edge-scores.json marks not rankable (killed, folded share
 class, no event) are left out, because the panel ranks what the stage ranks.
 
-Above `edge_panel.judge_pack_max` names (19; stage E-P hunts up to 30 since 2026-10-21) a
+Above `edge_panel.judge_pack_max` names (20, the same as stage E-P's cap since 2026-10-22) a
 judge cannot hold the whole day in one context, so the packs are ALSO written as balanced
 parts, packs-p1.json, packs-p2.json, ... (alphabetical by ticker, so the split carries no
 information). Each judge then runs once per part and writes <member>-pN.json, which
@@ -95,9 +95,9 @@ def pack_max():
     try:
         import yaml
         c = yaml.safe_load(open(Path(__file__).resolve().parents[2] / 'config' / 'pipeline.yaml'))
-        return int((c.get('edge_panel') or {}).get('judge_pack_max', 19))
+        return int((c.get('edge_panel') or {}).get('judge_pack_max', 20))
     except Exception:
-        return 19
+        return 20
 
 
 def parts(packs, limit):

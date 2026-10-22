@@ -56,16 +56,14 @@ the reason in the run log and carry on with the research. If it reports position
 held, say so in the run log; step 6b nets them off the budget. Write one run-log line
 with what was held and what was closed, then publish.
 
-**Budget.** One sweep, up to **thirty** searchers (`edge_panel.hunted_names`; it was
-nineteen, stage E's cap, until 2026-10-21) in stage E's waves, then four judges in one
-wave. Shed names by `budget.edge_degrade_order` exactly as stage E does, cutting at 30
-instead of 19; never shed a judge to save a searcher. A day with 19 confirmed names or
-fewer is hunted exactly as before. In the run log's wave line say how many were confirmed,
+**Budget.** One sweep, up to **twenty** searchers (`edge_panel.hunted_names`; nineteen,
+stage E's cap, until 2026-10-21, thirty on 2026-10-21 only) in stage E's waves, then four
+judges in one wave. Shed names by `budget.edge_degrade_order` exactly as stage E does,
+cutting at 20; never shed a judge to save a searcher. In the run log's wave line say how many were confirmed,
 how many hunted and which were shed, and launch the amc names first so a long day cannot
 push one past its release. Relaunch as slots free: the platform runs about 8 at once.
 The buy at step 6b needs an open market. A 19-name day reached it about 45 minutes after
-the fire; a 30-name day should reach it about 70-100 minutes after, near 14:15-14:45 New
-York. If the last searcher returns after 15:15 New York, write that in the run log, since
+the fire. If the last searcher returns after 15:15 New York, write that in the run log, since
 step 6b refuses after 16:00.
 
 ## 5p. The panel
@@ -81,9 +79,9 @@ so the packs hold exactly the names the stage ranks.
    verdict and final number removed, one field per line. If it reports 0 packs, there is
    nothing to judge: say so in the note and skip to 6.
 
-   **More than 19 packs (`edge_panel.judge_pack_max`) and it also prints `SPLIT`** and
-   writes `packs-p1.json`, `packs-p2.json`: about 20 KB a name, so a whole 30-name day does
-   not fit one judge's context. Then every judge runs once per part, on that part's file,
+   **More than 20 packs (`edge_panel.judge_pack_max`; at the current cap this does not
+   happen) and it also prints `SPLIT`** and writes `packs-p1.json`, `packs-p2.json`: about
+   20 KB a name, so a much larger day does not fit one judge's context. Then every judge runs once per part, on that part's file,
    writing `<member>-p1.json`, `<member>-p2.json`; `panel_score.py` merges them. Never
    hand a judge `packs.json` on a split day.
 

@@ -109,9 +109,8 @@ the snapshot measures. Commit and publish the baselines. Then:
 python3 scripts/provenance.py stamp --run <SNAP> --market US-PI --orchestrator-model "<model>"
 ```
 
-**At most 19 names a snapshot** (`edge_panel_intraday.hunted_names`): stage E-P hunts up
-to 30 since 2026-10-21, the snapshots do not, because 30 do not finish inside a two-hour
-slot reliably. Shed by `budget.edge_degrade_order` at 19.
+**At most 19 names a snapshot** (`edge_panel_intraday.hunted_names`; stage E-P hunts up
+to 20). Shed by `budget.edge_degrade_order` at 19.
 
 Launch one `unpriced-searcher` per name in stage E's waves, each with exactly what stage
 E-P gives it (ticker, company, event date and session, its baseline path, its output path
