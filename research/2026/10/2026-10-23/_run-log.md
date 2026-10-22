@@ -43,3 +43,7 @@
 ## Stage EU — VOLCAR_B banked
 - Logged at 2026-10-22 13:54 UTC
 - VOLCAR_B -0.1 (bmo 07:00 per MFN calendar; Q3 pre-warned 2026-10-02, 'further decisive actions' due in release). MCAP launched. Remaining: MSAB_B MTRS.
+
+## Stage EU — ALLIGO_B banked
+- Logged at 2026-10-22 13:55 UTC
+- ALLIGO_B +1.5 (bmo 08:00 CEST per issuer invitation; single-broker bar). Hunters on ALLIGO_B and MEDI both report the baseline's estimated-date reaction scale understates real report-day moves (7.6% vs 3.17%) — follow-up for eu_priced_in, not touched in this run. MSAB_B launched. Remaining: MTRS.
