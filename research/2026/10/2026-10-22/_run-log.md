@@ -127,3 +127,7 @@
 ## Split panel 2/4 — panel done
 - Logged at 2026-10-22 18:16 UTC
 - 4 of 4 judges on pinned models; 1 selected (WRLD long, panel_pct 100); APPF 79; claim-to-done ~15 min
+
+## Split panel 4/4 — panel done
+- Logged at 2026-10-22 18:19 UTC
+- 4 of 4 judges on pinned models; 1 of 5 selected (MXL long, pct 94); claim-to-done ~15 min
