@@ -79,3 +79,7 @@
 ## Stage EU — MCAP banked
 - Logged at 2026-10-22 14:00 UTC
 - MCAP +0.2 (bmo 06:30 per prior releases + issuer calendar). Running: MTRS (last).
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-22 14:04 UTC
+- MTRS -1.30 banked (bmo 07:30 CEST; short 5.37%). 20/20 hunted; 19 ranked, MGN not ranked (phantom, Q3 on 10-30). None above floor 2.8; top ALLIGO_B +1.50, bottom EQV1V/MTRS -1.30. 19 packs, four intl judges.
