@@ -103,3 +103,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-22 17:44 UTC
 - 20/20 hunted, edge_score written, V2 grounded written ~17:45 UTC before the first print. 20 packs, four judges, one part.
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-22 17:56 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): WRLD long 100, DECK long 90, BE long 86, FIX long 82; nearest misses BAH 74, JAKK 71. Searcher: 1 of 20 clears 2.8 (WRLD +3.70). Stage E edge/ absent. Step 6b at ~17:56 UTC (13:56 ET): plan then open --submit --no-flatten, 4 market buys all filled: WRLD 21 @ 172.20, DECK 32 @ 87.05, BE 11 @ 212.75, FIX 1 @ 1281.39; gross ~$10,010 (90.4% of equity $11,043.92; FIX at one share, the integer-share remainder sits in cash). Mean execution cost vs mid +0.59% (FIX +1.67%). Exits dated 2026-10-23.
