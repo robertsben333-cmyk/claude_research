@@ -59,3 +59,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-22 01:12 UTC
 - 3 packs, four judges (intl). Hunts: 8954 +0.30, 3091 0.00, 6146 0.00; none above floor 2.8.
+
+## Stage J — Japan ranking — DONE
+- Logged at 2026-10-22 01:16 UTC
+- 6 scheduled / 3 eligible / 3 hunted (all eligible, no draw). 8954 +0.30, 3091 0.00, 6146 0.00; none above floor 2.8. Panel 4/4 members, no fallback: 6146 DISCO selected short (k=3, panel_pct 79). Resolved 10-19, 10-20 this session. Note: japan-note.md.
