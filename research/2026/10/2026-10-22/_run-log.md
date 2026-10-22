@@ -71,3 +71,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-10-22 13:17 UTC
 - source research/2026/10/2026-10-21/edge-panel, 09:17 ET, 10 picks (cap)
+
+## Stage M — prior morning scored
+- Logged at 2026-10-22 13:18 UTC
+- resolve 2026-10-21 done; pool: 10 names / 3 days, review +1.60% vs static +1.38%, review_minus_static +0.22pp (t 0.28). LBRT and IBM analysts refused at launch by the 8-subagent concurrency cap; launched on a freed slot.
