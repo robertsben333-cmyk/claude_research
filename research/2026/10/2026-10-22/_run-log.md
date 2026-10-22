@@ -67,3 +67,7 @@
 ## Close AMC — 2026-10-22 10:11 UTC
 - Logged at 2026-10-22 10:17 UTC
 - mode --require-exit-tif opg: exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no order sent, no refusals. status: no open positions.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-22 13:17 UTC
+- source research/2026/10/2026-10-21/edge-panel, 09:17 ET, 10 picks (cap)
