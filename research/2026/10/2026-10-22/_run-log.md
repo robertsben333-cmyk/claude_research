@@ -43,3 +43,7 @@
 ## Stage J — wave 1 launched
 - Logged at 2026-10-22 01:06 UTC
 - 3 of 6 scheduled eligible (3091 Bronco Billy Q3, 6146 DISCO Q2, 8954 ORIX JREIT); 3 microcaps dropped. One wave of 3 unpriced-hunter-jp. Provenance jp.v5.
+
+## Stage J — resolved 10-19 and 10-20
+- Logged at 2026-10-22 01:06 UTC
+- While hunters run: jp_resolve 10-19 (4/4, rho 0.8 p 0.33, lean_vs_free_control_rho 0.2) and 10-20 (4/4, rho -0.4 p 0.75, lean_vs_free 0.4); panel-resolved written for both. 10-21 window closes today.
