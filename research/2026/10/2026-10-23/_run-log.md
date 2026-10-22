@@ -47,3 +47,7 @@
 ## Stage EU — ALLIGO_B banked
 - Logged at 2026-10-22 13:55 UTC
 - ALLIGO_B +1.5 (bmo 08:00 CEST per issuer invitation; single-broker bar). Hunters on ALLIGO_B and MEDI both report the baseline's estimated-date reaction scale understates real report-day moves (7.6% vs 3.17%) — follow-up for eu_priced_in, not touched in this run. MSAB_B launched. Remaining: MTRS.
+
+## Stage EU — BHG banked
+- Logged at 2026-10-22 13:56 UTC
+- BHG -0.2 (bmo 07:00 CEST per prior releases and Q2 calendar; no Q3 consensus found). MTRS launched (last name).
