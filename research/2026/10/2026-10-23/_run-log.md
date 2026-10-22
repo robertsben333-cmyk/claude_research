@@ -15,3 +15,7 @@
 ## Stage EU — EVOK banked
 - Logged at 2026-10-22 13:48 UTC
 - EVOK +0.25 (bmo 07:00 BST confirmed by issuer notice; live Intralot offer, ~19% spread, results ~noise). VOLCAR_B launched.
+
+## Stage EU — EQV1V banked
+- Logged at 2026-10-22 13:50 UTC
+- EQV1V -1.30 (bmo ~08:00 EET per issuer notice; bar = single Inderes preview). ALLIGO_B launched.
