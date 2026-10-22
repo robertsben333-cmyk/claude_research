@@ -27,3 +27,7 @@
 ## Stage EU — TOM banked
 - Logged at 2026-10-22 13:51 UTC
 - TOM +1.1 (bmo 07:00 CEST per issuer NewsWeb msg 684301; PLS P2000 FID 10-16 firms 22-sorter order after consensus). BUFAB launched. Banked: MGN(phantom) EVOK EQV1V MEDI TOM.
+
+## Stage EU — SAAB_B banked
+- Logged at 2026-10-22 13:51 UTC
+- SAAB_B +0.9 (bmo 07:30 CET per issuer invitation). EPEN launched.
