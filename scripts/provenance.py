@@ -432,7 +432,7 @@ def stamp(run, market, orchestrator_model=None, hunter_model=None, force=False):
 
 
 # The config block whose hunted_names caps each US stage. Stage E-P went from 19 to 30 on
-# 2026-10-21 without a prompt change, so the stage version does not move; this field is
+# 2026-10-21 and to 20 on 2026-10-22 without a prompt change, so the stage version does not move; this field is
 # what tells a run under one cap from a run under the other.
 CAP_BLOCK = {"US": "edge_hunt", "US-S": "edge_hunt", "US-P": "edge_panel",
              "US-PF": "edge_panel_fable", "US-PI": "edge_panel_intraday"}

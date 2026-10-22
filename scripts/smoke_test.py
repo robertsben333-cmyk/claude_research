@@ -1310,16 +1310,16 @@ def main():
     # stay at 19. Above judge_pack_max the packs split into parts and panel_score.py
     # merges <member>-pN.json into the same verdicts one file would have given.
     import panel_packs, provenance as _prov
-    check("stage E-P caps at 30 searchers, stage E and E-PI at 19, provenance records it",
-          int(epc.get("hunted_names", 0)) == 30
+    check("stage E-P caps at 20 searchers, stage E and E-PI at 19, provenance records it",
+          int(epc.get("hunted_names", 0)) == 20
           and int((cfg.get("edge_hunt") or {}).get("hunted_names", 0)) == 19
           and int((cfg.get("edge_panel_intraday") or {}).get("hunted_names", 0)) == 19
-          and _prov.hunted_names_cap("US-P") == 30 and _prov.hunted_names_cap("US") == 19
+          and _prov.hunted_names_cap("US-P") == 20 and _prov.hunted_names_cap("US") == 19
           and _prov.hunted_names_cap("US-PI") == 19)
     lim = int(epc.get("judge_pack_max", 19))
     check("panel packs split above judge_pack_max into balanced parts, and not at or below it",
           len(panel_packs.parts(list(range(lim)), lim)) == 1
-          and [len(x) for x in panel_packs.parts(list(range(30)), lim)] == [15, 15]
+          and [len(x) for x in panel_packs.parts(list(range(30)), 19)] == [15, 15]
           and sum(panel_packs.parts(list(range(23)), lim), []) == list(range(23)))
     with _tf.TemporaryDirectory() as td:
         rd = os.path.join(td, "edge-panel"); os.makedirs(os.path.join(rd, "panel"))
