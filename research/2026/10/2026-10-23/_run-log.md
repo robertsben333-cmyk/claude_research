@@ -87,3 +87,7 @@
 ## Stage EU — Europe ranking — DONE
 - Logged at 2026-10-22 14:14 UTC
 - Event date 2026-10-23. 19 ranked (se 12 of 20 drawn) from 63 eligible; MGN not ranked (phantom: issuer NewsWeb puts Q3 on 10-30; vendor-only row). None above floor 2.8; top ALLIGO_B +1.50, bottom EQV1V/MTRS -1.30. Panel 4/4 members, no fallback: selected TOM long (k=4, panel_pct 86) and KNOW long (k=4, 86). Session correction: EPEN releases 13:00 CEST in session (sealed bmo; window still holds it). Pre-released: MSAB_B (10-14), VOLCAR_B (profit warning 10-02). Follow-ups: baseline estimated-date reaction scale understated on several SE names; MEDI observed NewsWeb history counts webinar invitations as prints; Nordic runs 10-13..10-16 at the feed limit, unresolved. Note: europe-note.md. Published with EARNINGS_DATA_BRANCH=main.
+
+## Stage EU — Nordic-window resolves
+- Logged at 2026-10-22 14:15 UTC
+- Resolved EU runs 10-13 (5/6 usable, rho 0.80 p 0.13), 10-14 (6/7, 0.53 p 0.31), 10-15 (13/18, 0.563 p 0.050), 10-16 (5/5, -0.05) before the ~12-day Nasdaq Nordic feed limit; panel-resolved written for each. No event_occurred:false kills. 10-19..10-22 still unresolved.
