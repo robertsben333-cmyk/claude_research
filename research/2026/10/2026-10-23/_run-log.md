@@ -75,3 +75,7 @@
 ## Stage EU — MSAB_B banked
 - Logged at 2026-10-22 14:00 UTC
 - MSAB_B -0.8 (bmo 07:00; Q3 rev/EBIT PRE-RELEASED 2026-10-14 as inside information, stock +20.6% that day). Running: MCAP MTRS.
+
+## Stage EU — MCAP banked
+- Logged at 2026-10-22 14:00 UTC
+- MCAP +0.2 (bmo 06:30 per prior releases + issuer calendar). Running: MTRS (last).
