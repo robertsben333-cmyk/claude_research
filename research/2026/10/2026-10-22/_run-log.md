@@ -83,3 +83,7 @@
 ## Split panel 1/4 — STARTED
 - Logged at 2026-10-22 18:01 UTC
 - BE, BWMX, WDC (amc 10-22), BAH, SLB (bmo 10-23); E-P's sweep and baselines from 2d0221da, edge-panel/hunts: the names stage E-P hunted; claimed 18:01 UTC
+
+## Split panel 2/4 — STARTED
+- Logged at 2026-10-22 18:02 UTC
+- DECK, FIX, APPF (amc 10-22), WRLD, ALV (bmo 10-23); E-P's sweep and baselines from 2d0221da, names basis: edge-panel/hunts; claimed 18:02 UTC
