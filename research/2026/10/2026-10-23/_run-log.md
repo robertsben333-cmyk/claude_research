@@ -55,3 +55,7 @@
 ## Stage EU — BUFAB banked
 - Logged at 2026-10-22 13:56 UTC
 - BUFAB +0.6 (bmo 07:30 CET per issuer invitation; no Q3 consensus reachable). Running: EPEN INDT KNOW LIAB MCAP MSAB_B MTRS.
+
+## Stage EU — EPEN banked
+- Logged at 2026-10-22 13:57 UTC
+- EPEN -0.1. SESSION CORRECTION: issuer invitation sets release 13:00 CEST IN-SESSION on 10-23 (sealed bmo); close(10-22)->close(10-23) window still contains the reaction. Running: INDT KNOW LIAB MCAP MSAB_B MTRS.
