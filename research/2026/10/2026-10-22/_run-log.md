@@ -95,3 +95,7 @@
 ## Split panel 4/4 — STARTED
 - Logged at 2026-10-22 18:04 UTC
 - MXL, SAM, VTMX (amc 10-22), RCI, E (bmo 10-23); E-P's sweep and baselines from 2d0221d, names basis edge-panel/hunts
+
+## Split panel 1/4 — searchers done
+- Logged at 2026-10-22 18:10 UTC
+- 5 of 5 returned by 18:10 UTC; guard moved nothing; no searcher reported its search budget running out
