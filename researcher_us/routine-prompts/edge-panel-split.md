@@ -15,7 +15,17 @@ Routine that fails to fire costs a shard, never a wrong assignment.
 - Code and data on branch `claude/modest-davinci-mjddtu`, never `main`.
 - Places no orders. Writes `research/<Y>/<M>/<DATE>/edge-split-<k>/` and `edge-split/`.
 
-The Routine ids are recorded in `CLAUDE.md`'s stage table.
+Created 2026-10-22 13:47-13:48 UTC and read back at 13:48 UTC: prompt identical to the
+block below, model `claude-opus-5-5` (pinned with `update_trigger`, creation left it
+empty), enabled, no MCP connectors, empty `sources` and `outcomes` (step 0 clones the
+test branch).
+
+| Routine | fires (UTC) |
+| --- | --- |
+| `trig_014cDcoeh22Q9HkB15RhakRT` "Stage E-PS test 1/4" | 2026-10-22 18:00 |
+| `trig_01C8x9mEG9WDmMeSKtoYATKA` "Stage E-PS test 2/4" | 2026-10-22 18:01 |
+| `trig_01QT81ouPyusTDRuB75g5uxL` "Stage E-PS test 3/4" | 2026-10-22 18:02 |
+| `trig_01TFqFSPwXthRFeN3toYUyLs` "Stage E-PS test 4/4" | 2026-10-22 18:03 |
 
 ---
 
