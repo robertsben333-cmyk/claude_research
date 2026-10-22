@@ -79,3 +79,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-22 13:21 UTC
 - 10 names compiled 09:21 ET, all 10 reviews valid: exit_1000 LRCX TTMI KALU SPOT ARGX; exit_limit CRS 340.00, ASIC 26.85; exit_open META LBRT IBM. LBRT and IBM launched late, after the 8-subagent cap freed, and returned before the compile. No orders.
+
+## Edge hunt (panel) — 2026-10-22 amc + 2026-10-23 bmo — STARTED
+- Logged at 2026-10-22 17:14 UTC
+- Stage E-P fire 17:06 UTC. Universe 65 names (48 amc 10-22, 17 bmo 10-23), baselines sealed for all 65 in edge-panel/baselines by 17:14 UTC. Next: one edge-sweep, up to 20 unpriced-searchers (edge_panel.hunted_names), step 3s flatten, four-judge panel, step 6b buy.
