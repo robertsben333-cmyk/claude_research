@@ -2,11 +2,11 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Shards done: 3 of 4. Names scored by both arms: 15 of 20. Spearman rho on signed panel_pct: 0.418. Same side: 9 of 15.
+Shards done: 4 of 4. Names scored by both arms: 20 of 20. Spearman rho on signed panel_pct: 0.358. Same side: 12 of 20.
 
-Selected by E-P: BE, DECK, FIX, WRLD. By the split: BE, FPH, WRLD. Both: BE, WRLD.
+Selected by E-P: BE, DECK, FIX, WRLD. By the split: BE, FPH, MXL, WRLD. Both: BE, WRLD.
 
-Mean findings per name, E-P / split: 7.65 / 7.75. Mean sources: n/a / n/a. Mean panel_pct on names in both: 58.8 / 47.7.
+Mean findings per name, E-P / split: 7.65 / 7.75. Mean sources: n/a / n/a. Mean panel_pct on names in both: 52.6 / 50.7.
 
 | ticker | shard | session | E-P | split | impact_sum E-P / split | findings E-P / split | sources E-P / split |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -25,18 +25,18 @@ Mean findings per name, E-P / split: 7.65 / 7.75. Mean sources: n/a / n/a. Mean 
 | INFY | 3 | bmo | 64S | 8S | 0.0 / -0.0 | 6 / 7 | n/a / n/a |
 | JAKK | 3 | amc | 71L | 32L | 1.2 / 0.7 | 7 / 7 | n/a / n/a |
 | RNG | 3 | amc | 8S | 67L | 0.8 / 0.4 | 9 / 9 | n/a / n/a |
-| E | 4 | bmo | 32L | · | 0.7 / 0.8 | 7 / 3 | n/a / n/a |
-| MXL | 4 | amc | 31S | · | -1.7 / 1.6 | 11 / 6 | n/a / n/a |
-| RCI | 4 | bmo | 17S | · | -0.45 / 0.7 | 9 / 9 | n/a / n/a |
-| SAM | 4 | amc | 52S | · | -1.1 / -0.3 | 9 / 8 | n/a / n/a |
-| VTMX | 4 | amc | 38L | · | 0.8 / 0.6 | 6 / 7 | n/a / n/a |
+| E | 4 | bmo | 32L | 66L | 0.7 / 0.8 | 7 / 3 | n/a / n/a |
+| MXL | 4 | amc | 31S | 94L* | -1.7 / 1.6 | 11 / 6 | n/a / n/a |
+| RCI | 4 | bmo | 17S | 60L | -0.45 / 0.7 | 9 / 9 | n/a / n/a |
+| SAM | 4 | amc | 52S | 61S | -1.1 / -0.3 | 9 / 8 | n/a / n/a |
+| VTMX | 4 | amc | 38L | 19L | 0.8 / 0.6 | 6 / 7 | n/a / n/a |
 
 | shard | status | names | judges | claimed (UTC) | minutes |
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | BE, BWMX, WDC, BAH, SLB | opus5, opus55, sonnet55, fable51 | 18:01 | 13 |
 | 2 | done | DECK, FIX, APPF, WRLD, ALV | opus5, opus55, sonnet55, fable51 | 18:02 | 14 |
 | 3 | done | JAKK, FPH, RNG, INFY, AXP | opus5, opus55, sonnet55, fable51 | 18:03 | 13 |
-| 4 | claimed | MXL, SAM, VTMX, RCI, E | n/a | 18:04 | n/a |
+| 4 | done | MXL, SAM, VTMX, RCI, E | opus5, opus55, sonnet55, fable51 | 18:04 | 15 |
 
 E-P's panel was scored 2026-10-22T17:51:15+00:00 with opus5, opus55, sonnet55, fable51.
 
