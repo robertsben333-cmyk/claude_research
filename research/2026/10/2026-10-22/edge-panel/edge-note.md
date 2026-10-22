@@ -59,11 +59,11 @@ Stage E's Routine is stopped (2026-10-19), and `research/2026/10/2026-10-22/edge
 - `expected_return_pct`, and `expected_edge_pct` on a selected name, is what names at that percentile have earned, with a weak out-of-sample record: a correlation of +0.12 with the realised return over 148 names. It is not a forecast to size on.
 - The panel's certainty (`p_up`) is recorded and decides nothing, because it did not predict on the development names.
 - No adversary pass or second searcher checked the findings, so a factually wrong finding enters at full size. When the stage double-hunted, twelve pairs came back with a median gap of 2.40 points and four of twelve with opposite signs.
-- The searcher's sign balance is 14 positive, 1 zero and 5 negative. Only WRLD (+3.70) clears the 2.8 floor on the searcher's key.
+- The searcher's sign balance is 12 positive, 1 zero and 7 negative. Only WRLD (+3.70) clears the 2.8 floor on the searcher's key.
 - 13 of 20 baselines carry an option-implied move; WRLD, VTMX, BWMX, E, RCI, JAKK and FPH have no usable chain.
 
 ## Context: retail, search and volatility (not used for selection)
 
 These three columns are context only and decide nothing. Retail tilt ≥50: JAKK, BE, RNG, FPH, MXL. Search spike under 1.0x on the last complete Trends day: WRLD, BAH, SLB, APPF, INFY, AXP, WDC. 20-day realised volatility ≥58%: BE (83), WDC (69), MXL (116). The full table is in the closing reply and in `edge-context.json`.
 
-This is a forecasting exercise over public information. It is not investment advice.
+This is research, not financial advice. Earnings reactions are highly uncertain and can be driven by market positioning, guidance, macro conditions, and management commentary rather than reported results alone. This is a forecasting exercise over public information, not investment advice.
