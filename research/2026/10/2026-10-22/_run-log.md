@@ -51,3 +51,7 @@
 ## Stage J — 8954 banked
 - Logged at 2026-10-22 01:10 UTC
 - 8954 ORIX JREIT +0.30 (release 15:30 JST). 3091, 6146 still running.
+
+## Stage J — 6146 banked
+- Logged at 2026-10-22 01:12 UTC
+- 6146 DISCO 0.0 (release 16:00 JST, after close; quarter pre-released 10-06). 3091 still running.
