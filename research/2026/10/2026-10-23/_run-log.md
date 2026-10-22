@@ -91,3 +91,7 @@
 ## Stage EU — Nordic-window resolves
 - Logged at 2026-10-22 14:15 UTC
 - Resolved EU runs 10-13 (5/6 usable, rho 0.80 p 0.13), 10-14 (6/7, 0.53 p 0.31), 10-15 (13/18, 0.563 p 0.050), 10-16 (5/5, -0.05) before the ~12-day Nasdaq Nordic feed limit; panel-resolved written for each. No event_occurred:false kills. 10-19..10-22 still unresolved.
+
+## Stage EU — WRONG KILLS in the 2026-10-15 resolve (do not trust)
+- Logged at 2026-10-22 14:16 UTC
+- eu_resolve.py (run 2026-10-22 ~14:15 UTC) wrote event_occurred:false for NDA_FI and ERIC_A on research/2026/10/2026-10-15/europe. Both DID report on 10-15: eu_archive.day('se','2026-10-15') carries 'Ericsson reports third quarter results 2026' (issuer 'Ericsson, Telefonab. L M') and 'Third-quarter results 2026' (issuer 'Nordea Bank Abp'), and both hunters cited the issuers' own date notices. Causes: (1) same_issuer() does not match 'Ericsson, Telefonab. L M' to the baseline name; (2) NDA_FI is submarket fi but Nordea's releases sit in the se (Stockholm) feed, absent from the fi feed. The 10-15 rho (0.563, 13/18 usable) therefore EXCLUDES two real events. The other five kills (ENSI, DEMANT, AVCT, CAML, WTB) agree with their hunters (no release that day). Fix in eu_archive/eu_resolve on a reviewed branch, then re-resolve 10-15 — the Nordic feed window for that date closes around 10-27.

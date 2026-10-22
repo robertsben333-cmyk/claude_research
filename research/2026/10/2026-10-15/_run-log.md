@@ -69,3 +69,7 @@
 ## Edge hunt (panel) — DONE
 - Logged at 2026-10-15 17:37 UTC
 - 13 in window, 13/13 confirmed, 13 searchers (unpriced-searcher, Opus 5.5), 0 fallbacks. Searcher key: 1 above 2.8 (LOOP -3.00). V2 written pre-print 13/13. Panel 4/4 members on pinned agents (opus5 accepted): selected LOOP short (pct 96, 4/4) and JBHT long (pct 86, 4/4). LOOP ~$45k/day, under the turnover floor. Stage E edge/ absent at ~17:45Z (no dir, no heartbeat): no comparison rho. No orders. Note: edge-panel/edge-note.md.
+
+## Stage EU — WRONG KILLS in the 2026-10-15 resolve (do not trust)
+- Logged at 2026-10-22 14:16 UTC
+- eu_resolve.py (run 2026-10-22 ~14:15 UTC) wrote event_occurred:false for NDA_FI and ERIC_A on research/2026/10/2026-10-15/europe. Both DID report on 10-15: eu_archive.day('se','2026-10-15') carries 'Ericsson reports third quarter results 2026' (issuer 'Ericsson, Telefonab. L M') and 'Third-quarter results 2026' (issuer 'Nordea Bank Abp'), and both hunters cited the issuers' own date notices. Causes: (1) same_issuer() does not match 'Ericsson, Telefonab. L M' to the baseline name; (2) NDA_FI is submarket fi but Nordea's releases sit in the se (Stockholm) feed, absent from the fi feed. The 10-15 rho (0.563, 13/18 usable) therefore EXCLUDES two real events. The other five kills (ENSI, DEMANT, AVCT, CAML, WTB) agree with their hunters (no release that day). Fix in eu_archive/eu_resolve on a reviewed branch, then re-resolve 10-15 — the Nordic feed window for that date closes around 10-27.
