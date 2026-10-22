@@ -115,3 +115,7 @@
 ## Split panel 3/4 — panel STARTED
 - Logged at 2026-10-22 18:13 UTC
 - 5 packs, four judges launched in one message
+
+## Split panel 4/4 — searchers done
+- Logged at 2026-10-22 18:15 UTC
+- 5 of 5 returned by 18:15 UTC (unpriced-searcher, Opus 5.5); guard moved nothing; no searcher reported its search budget running out; all five events confirmed by the searchers (MXL and SAM were UNCHECKED in E-P's sweep)
