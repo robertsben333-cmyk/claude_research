@@ -35,3 +35,7 @@
 ## Stage EU — ENI, GJF banked
 - Logged at 2026-10-22 13:53 UTC
 - ENI +1.0 (Eni IR lists Q3 23 Oct; bmo per SoldiOnline, exact timestamp not found; extra dividend/guidance raise likely). GJF +0.7 (bmo 07:00 CET per issuer NewsWeb msg 683855; company-published consensus). INDT, KNOW launched. Remaining: LIAB MCAP MSAB_B MTRS.
+
+## Stage EU — HIAB banked
+- Logged at 2026-10-22 13:53 UTC
+- HIAB -0.4 (bmo ~08:00 EEST per issuer notice; first Labrie quarter). LIAB launched. Remaining: MCAP MSAB_B MTRS.
