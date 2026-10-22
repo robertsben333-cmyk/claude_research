@@ -1,0 +1,89 @@
+{
+  "ticker": "MGN",
+  "market": "NO",
+  "expected_move_pct": 0.0,
+  "conviction_note": "The vendor date is a phantom: Magnora's own financial calendar (filed 2026-06-09) and its Q3 invitation (filed 2026-10-22 13:00 CEST, before the seal) both put the Q3 2026 report on Friday 30 October 2026. Nothing reports inside the 2026-10-23 window, so there are no findings and the expected move is 0.",
+  "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 2.7,
+  "p_up": 50,
+  "already_public": [
+    {
+      "what": "Financial calendar: Q3 2026 quarterly report scheduled 30.10.2026 (not 23.10)",
+      "date": "2026-06-09",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=675695"
+    },
+    {
+      "what": "Invitation to Q3 2026 presentation: report and webcast on Friday 30 October 2026, 10:00 CET",
+      "date": "2026-10-22",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684598"
+    }
+  ],
+  "new_in_release": [
+    {
+      "line": "reported_quarter",
+      "expect": "no release inside the window; the Q3 report is due 2026-10-30, outside it"
+    }
+  ],
+  "bar": "not applicable: no release in the window. For reference Yahoo carries 3 analysts and EPS estimates of +0.005 NOK for Q1 and Q2 2026 against actuals of -0.070 and -0.044 (https://query1.finance.yahoo.com/v10/finance/quoteSummary/MGN.OL?modules=earningsHistory%2CfinancialData)",
+  "event_confirmed": false,
+  "session_check": "no event in the window: the issuer's invitation (Oslo Bors NewsWeb, 2026-10-22T11:00:26Z) states the Q3 2026 report is released Friday 30 October with a 10:00 CET webcast, so 2026-10-23 carries no results release in either session -- https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684598",
+  "positioning_check": "Finanstilsynet SSR register read 2026-10-21 (https://ssr.finanstilsynet.no/api/v2/instruments): Magnora not named, i.e. no disclosed net short at or above 0.5%; this is the truncation floor, not a measured zero (anchor_covered false). Change 0.0 on Norway's dated event history. priced_lean_pct is therefore essentially the run-up term (-12.91% over 20 days).",
+  "findings": [],
+  "outside_window": [
+    {
+      "finding": "Q3 2026 quarterly report and webcast, the first quarter consolidating the 52%-owned, separately listed Magnora Data Center ASA after its June listing; not sized here because it resolves a week after this window.",
+      "expected_impact_pct": 0.0,
+      "resolves_by": "2026-10-30",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684598"
+    },
+    {
+      "finding": "Extraordinary General Meeting 10 November 2026: board change (Lars Schedin to observer, election of Stephen C. Harris of Anthos Capital, holder of 1,371,452 shares); governance item, no capital measure named in the notice.",
+      "expected_impact_pct": 0.0,
+      "resolves_by": "2026-11-10",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684406"
+    }
+  ],
+  "searched_and_found_nothing": [
+    "Oslo Bors NewsWeb issuer history MGN 2025-09-01 to 2026-10-23 (https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=MGN&fromDate=2025-09-01&toDate=2026-10-23): no resultatvarsel, no inside-information item since the June MDATA placing, and no release dated 2026-10-23; the Q3 report is calendared for 2026-10-30",
+    "Financial calendar notice 2026-06-09 (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=675695): Q3 on 30.10.2026",
+    "Q3 invitation 2026-10-22 (https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684598): report on Friday 30 October",
+    "Norwegian web search 'Magnora aksje kvartalsrapport oktober 2026': only MFN/Inderes/Quartr copies of earlier releases, nothing dated inside the window"
+  ],
+  "rejected_candidates": [
+    {
+      "candidate": "Magnora Data Center ASA (52% owned) acquires a 2 MW operating data center in Oslo, 75/25 with Blix",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684386",
+      "reason": "outside_window",
+      "detail": "published 2026-10-20 and already in the tape at the seal; with no release on 2026-10-23, the next time it can enter numbers or outlook is the Q3 report on 2026-10-30"
+    },
+    {
+      "candidate": "Chair of the EGM holds open proxies for 5.18% of shares (flagging under section 4-2 mechanics)",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684590",
+      "reason": "outside_window",
+      "detail": "procedural proxy flag for the 2026-11-10 EGM; resolves after the window"
+    },
+    {
+      "candidate": "Q3 2026 report content",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684598",
+      "reason": "outside_window",
+      "detail": "released 2026-10-30"
+    }
+  ],
+  "baseline_tension": "Nothing found to set against the lean: with no release in the window the -12.9% 20-day run-up and the near-zero lean are the only directional information, and this hunt adds none.",
+  "language_note": [
+    "nothing the English sources did not already carry: Magnora publishes NewsWeb releases in English only, and the Norwegian search returned only copies of earlier English releases"
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 2.7,
+    "p_up": 50,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": [
+    "nothing changed"
+  ],
+  "sources_used": 6
+}

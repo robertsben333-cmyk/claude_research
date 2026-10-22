@@ -7,3 +7,7 @@
 ## Stage EU — universe and baselines sealed
 - Logged at 2026-10-22 13:41 UTC
 - Event date 2026-10-23 (Fri). 108 scheduled, 63 eligible (se 50, no 5, fi 4, uk/de/fr/it 1 each), 20 hunted by seeded draw (eu-2026-10-23): se 12, no 4, fi 2, uk 1 (EVOK), it 1 (ENI). Largest market se 60%, 5 markets. es/pl 0, de 0. anchor_covered: BHG LIAB MTRS EVOK (4 of 20). History observed: EVOK (rns), GJF MEDI MGN TOM (newsweb); 15 estimated. session_unresolved: EVOK, MEDI. All bmo. Provenance stamped (nordic.v5, it.v5, uk current). Wave 1: EVOK ENI GJF MEDI MGN.
+
+## Stage EU — MGN phantom
+- Logged at 2026-10-22 13:45 UTC
+- MGN: vendor date phantom; issuer NewsWeb calendar (msg 675695) and Q3 invitation (msg 684598, 2026-10-22 13:00 CEST) put Q3 on 2026-10-30. event_confirmed false, no findings. Running: EVOK ENI GJF MEDI TOM EQV1V HIAB SAAB_B.
