@@ -96,6 +96,13 @@ MARKETS = {
     "US-PF": {"dir": "edge-panel-fable", "hunters": ["unpriced-searcher-fable"],
               "lessons": "researcher_us/LESSONS.md",
               "skill": ".claude/skills/earnings-edge-panel-fable/SKILL.md"},
+    # Stage E-PS (2026-10-22, one day's test): stage E-P's names split over four sessions
+    # of at most five, one shard directory each (edge-split-<k>); "dir" names the day
+    # directory. Never pooled with stage E-P.
+    "US-PS": {"dir": "edge-split", "hunters": ["unpriced-searcher"],
+              "since_utc": "2026-10-22T00:00:00+00:00",
+              "lessons": "researcher_us/LESSONS.md",
+              "skill": ".claude/skills/earnings-edge-panel-split/SKILL.md"},
     # Stage D (2026-10-07): three names a day, one deep researcher each, frozen key
     # questions and a frozen quick first read. Research only.
     "US-D": {"dir": "edge-deep", "hunters": ["deep-question-researcher"],
@@ -261,7 +268,7 @@ def build_registry(ref="origin/main"):
     return out
 
 
-STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-PF": "us-panel-fable", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
+STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-PF": "us-panel-fable", "US-PS": "us-panel-split", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
                "CA": "ca", "R": "rev", "IPO": "ipo"}
 
 
@@ -435,7 +442,8 @@ def stamp(run, market, orchestrator_model=None, hunter_model=None, force=False):
 # 2026-10-21 and to 20 on 2026-10-22 without a prompt change, so the stage version does not move; this field is
 # what tells a run under one cap from a run under the other.
 CAP_BLOCK = {"US": "edge_hunt", "US-S": "edge_hunt", "US-P": "edge_panel",
-             "US-PF": "edge_panel_fable", "US-PI": "edge_panel_intraday"}
+             "US-PF": "edge_panel_fable", "US-PI": "edge_panel_intraday",
+             "US-PS": "edge_panel_split"}
 
 
 def hunted_names_cap(market):
