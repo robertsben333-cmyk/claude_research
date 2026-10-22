@@ -51,3 +51,7 @@
 ## Stage EU — BHG banked
 - Logged at 2026-10-22 13:56 UTC
 - BHG -0.2 (bmo 07:00 CEST per prior releases and Q2 calendar; no Q3 consensus found). MTRS launched (last name).
+
+## Stage EU — BUFAB banked
+- Logged at 2026-10-22 13:56 UTC
+- BUFAB +0.6 (bmo 07:30 CET per issuer invitation; no Q3 consensus reachable). Running: EPEN INDT KNOW LIAB MCAP MSAB_B MTRS.
