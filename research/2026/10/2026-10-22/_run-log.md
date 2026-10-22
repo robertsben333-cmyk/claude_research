@@ -35,3 +35,7 @@
 ## Stage EU — Europe ranking — DONE
 - Logged at 2026-10-21 14:37 UTC
 - Event date 2026-10-22. 18 ranked (se 15 of 20 drawn), from 75 eligible; ORY (unconfirmed) and REJL_B (phantom, Q3 moved to 11-03; row added by Yahoo calendar) not ranked. None above floor 2.8; top LINC +1.20, bottom AXFO -1.50. Panel 4/4 members, no fallback: selected AXFO short (k=4, panel_pct 86) and KJELL long (k=4, 82). Session correction: EAST in-session 14:00 CET (sealed amc). Nordic rows of 10-13..10-16 near the ~12-day feed limit: resolve them. Note: europe-note.md. Published with EARNINGS_DATA_BRANCH=main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-22 01:05 UTC
+- Fired 01:05 UTC (10:05 JST). Plan: universe -> seal -> provenance -> unpriced-hunter-jp waves of 5 -> edge_score -> four-model intl panel -> note. No orders.
