@@ -2,11 +2,11 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Shards done: 2 of 4. Names scored by both arms: 10 of 20. Spearman rho on signed panel_pct: 0.515. Same side: 7 of 10.
+Shards done: 3 of 4. Names scored by both arms: 15 of 20. Spearman rho on signed panel_pct: 0.418. Same side: 9 of 15.
 
-Selected by E-P: BE, DECK, FIX, WRLD. By the split: BE, FPH. Both: BE.
+Selected by E-P: BE, DECK, FIX, WRLD. By the split: BE, FPH, WRLD. Both: BE, WRLD.
 
-Mean findings per name, E-P / split: 7.65 / 7.75. Mean sources: n/a / n/a. Mean panel_pct on names in both: 51.8 / 48.4.
+Mean findings per name, E-P / split: 7.65 / 7.75. Mean sources: n/a / n/a. Mean panel_pct on names in both: 58.8 / 47.7.
 
 | ticker | shard | session | E-P | split | impact_sum E-P / split | findings E-P / split | sources E-P / split |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -15,11 +15,11 @@ Mean findings per name, E-P / split: 7.65 / 7.75. Mean sources: n/a / n/a. Mean 
 | BWMX | 1 | amc | 7S | 32L | -1.0 / -0.2 | 7 / 5 | n/a / n/a |
 | SLB | 1 | bmo | 61L | 48L | 1.0 / 0.4 | 7 / 8 | n/a / n/a |
 | WDC | 1 | amc | 58L | 65L | -0.5 / 0.6 | 8 / 12 | n/a / n/a |
-| ALV | 2 | bmo | 27S | · | 0.1 / 0.3 | 8 / 6 | n/a / n/a |
-| APPF | 2 | amc | 64L | · | 0.6 / 1.3 | 6 / 6 | n/a / n/a |
-| DECK | 2 | amc | 90L* | · | 0.9 / 0.5 | 9 / 11 | n/a / n/a |
-| FIX | 2 | amc | 82L* | · | 0.8 / -0.2 | 7 / 12 | n/a / n/a |
-| WRLD | 2 | bmo | 100L* | · | 3.7 / 3.5 | 7 / 8 | n/a / n/a |
+| ALV | 2 | bmo | 27S | 34L | 0.1 / 0.3 | 8 / 6 | n/a / n/a |
+| APPF | 2 | amc | 64L | 79L | 0.6 / 1.3 | 6 / 6 | n/a / n/a |
+| DECK | 2 | amc | 90L* | 7S | 0.9 / 0.5 | 9 / 11 | n/a / n/a |
+| FIX | 2 | amc | 82L* | 12S | 0.8 / -0.2 | 7 / 12 | n/a / n/a |
+| WRLD | 2 | bmo | 100L* | 100L* | 3.7 / 3.5 | 7 / 8 | n/a / n/a |
 | AXP | 3 | bmo | 33S | 38S | -0.05 / -0.1 | 6 / 8 | n/a / n/a |
 | FPH | 3 | amc | 55S | 82S* | -1.1 / -1.9 | 5 / 7 | n/a / n/a |
 | INFY | 3 | bmo | 64S | 8S | 0.0 / -0.0 | 6 / 7 | n/a / n/a |
@@ -34,7 +34,7 @@ Mean findings per name, E-P / split: 7.65 / 7.75. Mean sources: n/a / n/a. Mean 
 | shard | status | names | judges | claimed (UTC) | minutes |
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | BE, BWMX, WDC, BAH, SLB | opus5, opus55, sonnet55, fable51 | 18:01 | 13 |
-| 2 | claimed | DECK, FIX, APPF, WRLD, ALV | n/a | 18:02 | n/a |
+| 2 | done | DECK, FIX, APPF, WRLD, ALV | opus5, opus55, sonnet55, fable51 | 18:02 | 14 |
 | 3 | done | JAKK, FPH, RNG, INFY, AXP | opus5, opus55, sonnet55, fable51 | 18:03 | 13 |
 | 4 | claimed | MXL, SAM, VTMX, RCI, E | n/a | 18:04 | n/a |
 
