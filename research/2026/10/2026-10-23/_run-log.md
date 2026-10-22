@@ -39,3 +39,7 @@
 ## Stage EU — HIAB banked
 - Logged at 2026-10-22 13:53 UTC
 - HIAB -0.4 (bmo ~08:00 EEST per issuer notice; first Labrie quarter). LIAB launched. Remaining: MCAP MSAB_B MTRS.
+
+## Stage EU — VOLCAR_B banked
+- Logged at 2026-10-22 13:54 UTC
+- VOLCAR_B -0.1 (bmo 07:00 per MFN calendar; Q3 pre-warned 2026-10-02, 'further decisive actions' due in release). MCAP launched. Remaining: MSAB_B MTRS.
