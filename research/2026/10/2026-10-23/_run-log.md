@@ -11,3 +11,7 @@
 ## Stage EU — MGN phantom
 - Logged at 2026-10-22 13:45 UTC
 - MGN: vendor date phantom; issuer NewsWeb calendar (msg 675695) and Q3 invitation (msg 684598, 2026-10-22 13:00 CEST) put Q3 on 2026-10-30. event_confirmed false, no findings. Running: EVOK ENI GJF MEDI TOM EQV1V HIAB SAAB_B.
+
+## Stage EU — EVOK banked
+- Logged at 2026-10-22 13:48 UTC
+- EVOK +0.25 (bmo 07:00 BST confirmed by issuer notice; live Intralot offer, ~19% spread, results ~noise). VOLCAR_B launched.
