@@ -39,3 +39,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-22 01:05 UTC
 - Fired 01:05 UTC (10:05 JST). Plan: universe -> seal -> provenance -> unpriced-hunter-jp waves of 5 -> edge_score -> four-model intl panel -> note. No orders.
+
+## Stage J — wave 1 launched
+- Logged at 2026-10-22 01:06 UTC
+- 3 of 6 scheduled eligible (3091 Bronco Billy Q3, 6146 DISCO Q2, 8954 ORIX JREIT); 3 microcaps dropped. One wave of 3 unpriced-hunter-jp. Provenance jp.v5.
