@@ -63,3 +63,7 @@
 ## Stage EU — KNOW banked
 - Logged at 2026-10-22 13:58 UTC
 - KNOW +1.4 (bmo 07:30 CET; Modular Finance consensus EBITA 59.7m below prior-year adj 62.5m). Running: INDT LIAB MCAP MSAB_B MTRS.
+
+## Stage EU — INDT banked
+- Logged at 2026-10-22 13:58 UTC
+- INDT +0.3 (bmo ~07:30 CEST per issuer invitation; three-broker bar). Running: LIAB MCAP MSAB_B MTRS.
