@@ -23,3 +23,7 @@
 ## Stage EU — MEDI banked
 - Logged at 2026-10-22 13:50 UTC
 - MEDI -0.35 (bmo confirmed by issuer NewsWeb notice, webinar 09:00 Oslo; baseline history counts webinar invitations as prints, real median ~3.4%). BHG launched.
+
+## Stage EU — TOM banked
+- Logged at 2026-10-22 13:51 UTC
+- TOM +1.1 (bmo 07:00 CEST per issuer NewsWeb msg 684301; PLS P2000 FID 10-16 firms 22-sorter order after consensus). BUFAB launched. Banked: MGN(phantom) EVOK EQV1V MEDI TOM.
