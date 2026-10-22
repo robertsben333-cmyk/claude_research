@@ -91,3 +91,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-10-22 18:03 UTC
 - JAKK, FPH, RNG (amc 10-22), INFY, AXP (bmo 10-23); E-P's sweep and baselines from 2d0221d, names_basis edge-panel/hunts; claimed 18:03 UTC
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-10-22 18:04 UTC
+- MXL, SAM, VTMX (amc 10-22), RCI, E (bmo 10-23); E-P's sweep and baselines from 2d0221d, names basis edge-panel/hunts
