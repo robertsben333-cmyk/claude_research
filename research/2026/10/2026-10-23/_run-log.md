@@ -71,3 +71,7 @@
 ## Stage EU — LIAB banked
 - Logged at 2026-10-22 13:59 UTC
 - LIAB +0.6 (bmo per prior 07:00 releases + Inderes calendar; short 1.40% covering slightly). Running: MCAP MSAB_B MTRS.
+
+## Stage EU — MSAB_B banked
+- Logged at 2026-10-22 14:00 UTC
+- MSAB_B -0.8 (bmo 07:00; Q3 rev/EBIT PRE-RELEASED 2026-10-14 as inside information, stock +20.6% that day). Running: MCAP MTRS.
