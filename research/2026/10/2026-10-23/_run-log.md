@@ -83,3 +83,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-22 14:04 UTC
 - MTRS -1.30 banked (bmo 07:30 CEST; short 5.37%). 20/20 hunted; 19 ranked, MGN not ranked (phantom, Q3 on 10-30). None above floor 2.8; top ALLIGO_B +1.50, bottom EQV1V/MTRS -1.30. 19 packs, four intl judges.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-22 14:14 UTC
+- Event date 2026-10-23. 19 ranked (se 12 of 20 drawn) from 63 eligible; MGN not ranked (phantom: issuer NewsWeb puts Q3 on 10-30; vendor-only row). None above floor 2.8; top ALLIGO_B +1.50, bottom EQV1V/MTRS -1.30. Panel 4/4 members, no fallback: selected TOM long (k=4, panel_pct 86) and KNOW long (k=4, 86). Session correction: EPEN releases 13:00 CEST in session (sealed bmo; window still holds it). Pre-released: MSAB_B (10-14), VOLCAR_B (profit warning 10-02). Follow-ups: baseline estimated-date reaction scale understated on several SE names; MEDI observed NewsWeb history counts webinar invitations as prints; Nordic runs 10-13..10-16 at the feed limit, unresolved. Note: europe-note.md. Published with EARNINGS_DATA_BRANCH=main.
