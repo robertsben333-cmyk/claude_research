@@ -91,3 +91,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-10-22 17:19 UTC
 - Sweep finished ~17:19 UTC (12-min budget): 11 company-confirmed (AXP SLB ALV BAH INFY RCI E bmo 10-23; VTMX BWMX FPH amc 10-22; WRLD 10-23, hour unsettled), 2 phantoms (BBD, BBDO = same issuer, moved to 2026-11-04), EAF unconfirmed, 51 unchecked (calendar row only, not phantoms). Cap 20: the 10 confirmed non-phantoms plus the 10 highest-priority unchecked (BE DECK JAKK MXL FIX SAM WDC APPF RNG; searchers told to settle event and session themselves). Shed: OMC (58) and the 44 lower-priority/unconfirmed by edge_degrade_order. baseline_history_trustworthy=false for INFY RCI E VTMX BWMX (6-K matches non-earnings). Searchers unpriced-searcher, amc first, 8 concurrent.
+
+## Edge hunt (panel) — all searchers launched
+- Logged at 2026-10-22 17:36 UTC
+- All 20 unpriced-searchers (native agent, Opus 5.5) launched by ~17:43 UTC; 12 returned. Company sources settled the unchecked names: BE, DECK, JAKK, MXL, FIX, SAM, WDC, APPF all amc 2026-10-22.
