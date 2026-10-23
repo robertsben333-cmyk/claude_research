@@ -143,3 +143,7 @@
 ## Edge hunt (panel) — all searchers launched
 - Logged at 2026-10-23 17:22 UTC
 - All 13 unpriced-searchers (native, Opus 5.5) launched by ~17:31 UTC; 7 returned (RCBC ABOS BFST BMRC MED ARLP + pending). ARLP hunt's searched_and_found_nothing[0] text is garbled per its own report; not rewritten.
+
+## Edge hunt (panel) — searcher progress
+- Logged at 2026-10-23 17:27 UTC
+- Correction to the previous entry: the last searchers (VZ, LKFN) launched ~17:22 UTC, not 17:31. 11 of 13 returned by ~17:27 UTC. BOH's searcher saw and rejected a misdated Investing.com line quoting an 'Oct 26' price (contradicted by sealed spot; would be outcome information) — it is in rejected_candidates only, not in any finding.
