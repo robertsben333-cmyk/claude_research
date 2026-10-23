@@ -3,3 +3,7 @@
 ## Split panel 1/4 — STARTED
 - Logged at 2026-10-23 17:15 UTC
 - RCBC (amc 10-23), ARLP, DEA, LKFN (bmo 10-26; LKFN unconfirmed); E-P's sweep and baselines from e55276cd; confirmed names by hunt_priority cut at 20
+
+## Split panel 2/4 — STARTED
+- Logged at 2026-10-23 17:15 UTC
+- MED, BMRC, HBT (all bmo 2026-10-26); E-P's sweep and baselines from e55276cd; confirmed names by hunt_priority, cut at 20
