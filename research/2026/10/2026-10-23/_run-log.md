@@ -95,3 +95,7 @@
 ## Stage EU — WRONG KILLS in the 2026-10-15 resolve (do not trust)
 - Logged at 2026-10-22 14:16 UTC
 - eu_resolve.py (run 2026-10-22 ~14:15 UTC) wrote event_occurred:false for NDA_FI and ERIC_A on research/2026/10/2026-10-15/europe. Both DID report on 10-15: eu_archive.day('se','2026-10-15') carries 'Ericsson reports third quarter results 2026' (issuer 'Ericsson, Telefonab. L M') and 'Third-quarter results 2026' (issuer 'Nordea Bank Abp'), and both hunters cited the issuers' own date notices. Causes: (1) same_issuer() does not match 'Ericsson, Telefonab. L M' to the baseline name; (2) NDA_FI is submarket fi but Nordea's releases sit in the se (Stockholm) feed, absent from the fi feed. The 10-15 rho (0.563, 13/18 usable) therefore EXCLUDES two real events. The other five kills (ENSI, DEMANT, AVCT, CAML, WTB) agree with their hunters (no release that day). Fix in eu_archive/eu_resolve on a reviewed branch, then re-resolve 10-15 — the Nordic feed window for that date closes around 10-27.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-23 01:05 UTC
+- Fired 01:05 UTC (10:05 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp waves of 5 -> edge_score -> four-model intl panel -> note. No orders.
