@@ -1,0 +1,903 @@
+[
+ {
+  "id": "us/2026-10-23/BMRC",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "BMRC",
+   "event_date": "2026-10-26",
+   "session": "bmo",
+   "as_of_utc": "2026-10-23T17:10:01+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-23",
+    "spot": 27.27,
+    "run_up_5d_pct": 3.26,
+    "run_up_20d_pct": -2.29,
+    "pct_from_52w_high": -10.0,
+    "pct_from_52w_low": 16.09,
+    "realised_vol_20d_annualised_pct": 22.4,
+    "avg_volume_20d": 118196
+   },
+   "cik": "0001403475",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-27",
+      "session": "intraday",
+      "move_pct": 5.32
+     },
+     {
+      "event_date": "2026-04-27",
+      "session": "intraday",
+      "move_pct": -2.2
+     },
+     {
+      "event_date": "2026-01-26",
+      "session": "intraday",
+      "move_pct": 3.75
+     },
+     {
+      "event_date": "2025-10-27",
+      "session": "intraday",
+      "move_pct": 4.86
+     },
+     {
+      "event_date": "2025-07-28",
+      "session": "intraday",
+      "move_pct": -0.59
+     },
+     {
+      "event_date": "2025-04-28",
+      "session": "intraday",
+      "move_pct": 0.72
+     },
+     {
+      "event_date": "2025-01-27",
+      "session": "intraday",
+      "move_pct": 5.63
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 3.75,
+    "max_abs_move_pct": 5.63,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91.0,
+    "ratio": 1.0,
+    "last_print": "2026-07-27",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "empty_chain",
+    "expiry": "2026-11-20"
+   },
+   "deadband_pct": 1.88,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.75,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 consensus EPS $0.57-0.58, revenue ~$35.1-35.2M. Both figures come from two Benzinga pages, one updated 2026-10-01 (https://www.benzinga.com/quote/BMRC/earnings-forecasts, via search snippet, page 403 on fetch; and https://kr.benzinga.com/quote/BMRC/earnings-forecasts). That is one vendor, so the bar is not confirmed by two independent sources and every size is capped small. The company gives no formal guidance. The Q2 call gave a 'normalized' NIM starting point of about 3.44-3.45% and said H2 noninterest expense would 'look a lot like the first half on average' (H1 average ~$22.05M) (https://beta.earningswhispers.com/transcript/BMRC). Q2 actual EPS was $0.58 against a $0.52 consensus (https://www.earningswhispers.com/epsdetails/BMRC).",
+   "positioning_check": "No usable option chain (empty_chain), so there is no skew. Short interest: about 848.2K shares and 5.9 days to cover at the 2026-08-14 settlement, and 842.1K shares and 5.3 days at 2026-07-31 (curvedtrading citing FINRA via search snippet: https://curvedtrading.com/stocks/bmrc/short-interest/; equibles summary: https://equibles.com/stocks/bmrc/shortinterest). That is roughly 5% of a ~16M share float. Short interest is elevated for a small bank but not crowded, and I found no October settlement. Tape: spot $27.27, 5-day +3.26%, 20-day -2.29%, 10% below the 52-week high. The CFO's tax-withholding Form 4 was priced at $28 on 2026-09-22. Sell-side: Brean downgraded to Neutral ($33) on 2026-07-28 on valuation, Stephens moved to Equal-Weight ($26) on 2026-05-05, and DA Davidson is at Buy ($34) (https://www.marketbeat.com/instant-alerts/bank-of-marin-bancorp-nasdaqbmrc-downgraded-to-neutral-rating-by-brean-capital-2026-07-28/). On June TBV of $19.92 the stock trades at about 1.37x P/TBV.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "Management's own Q2 call framing points to a higher Q3 NIM. Q2 tax-equivalent NIM was 3.38% and June was 3.48%, inflated by one-way deposit sales. The CFO called about 3.44-3.45% a 'more normalized starting point', gave a June loan-yield exit of 5.18%, and warned that 14 bp a quarter 'is a pretty high bar'. On ~$3.6B of earning assets, 6-7 bp is about +$0.55M of quarterly NII (~$0.025 EPS after tax) against Q2 NII of $30.78M. A flat $0.57-0.58 consensus implies analysts offset this with higher salaries and no repeat of the Q2 $320K provision reversal.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://beta.earningswhispers.com/transcript/BMRC",
+    "source_date": "2026-07-27",
+    "reaction_history_on_this_line": "Q2 2026 printed a 14 bp NIM expansion and a $0.58 vs $0.52 EPS beat, and the stock rose +5.32% on the day (baseline). Q1 2026 printed -2.2%, and the Q4 2025 and Q3 2025 prints rose +3.75% and +4.86%. NIM-led beats have been bought.",
+    "why_not_priced": "This lands inside what management already signalled, and the four covering analysts (KBW, DA Davidson, Piper, Raymond James) heard it, so it is largely in the $0.57-0.58 bar. If the market expected a large beat, consensus would sit above the Q2 actual instead of flat, and the stock would not be 10% off its high.",
+    "independence": "Q2 release NIM detail (https://www.sec.gov/Archives/edgar/data/0001403475/000140347526000035/earningsrelease-ex991q22026.htm). Same company, so not independent of the call.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "Q3 2026 AOCI and tangible-book hit. The 10-year Treasury rose from 4.44% (2026-06-30) to 5.29% (2026-09-30), +85 bp (FRED DGS10). BMRC's securities book is 100% AFS: $1.243B fair value and $1.281B amortized cost at June 30, with a net unrealized loss of $38.6M ($1.20B of it agency MBS, CMBS and CMOs). The only hedges are $6.2M notional on loans, so the securities are unhedged. At an assumed ~4-5 year duration, Q3 marks are roughly -$35-50M pre-tax, or about -$25-35M after tax. That is about -$1.5 to -$2.1 per share against June TBV of $19.92, so TBV per share would print down roughly 6-9% and TCE/TA would fall from 8.52% toward ~7.7-7.9%. Regulatory CET1 is unaffected (AOCI opt-out).",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/1403475/000140347526000037/R35.htm",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "No clean precedent in the baseline. The Q2 2025 securities-repositioning loss quarter printed -0.59%. In Q2 2026, AOCI worsened by $3.4M while TBV still rose $0.15, and the stock rose +5.32%. No quarter in the baseline window carried a TBV drop this large.",
+    "why_not_priced": "The rate move is public and the stock is 10% off its high, so part of this is priced. But no aggregator carries BMRC's estimated September TBV, and the bar is EPS-only. If it were fully priced, the stock would have de-rated toward ~1.37x on a ~$18.0-18.4 TBV, i.e. about $25. It has instead rebounded 3.3% in five days to $27.27, ~1.5x on an estimated September TBV. Duration is my assumption, not a disclosed number, which is why the finding is small.",
+    "independence": "Rates come from FRED (https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10&cosd=2026-06-25&coed=2026-10-22). Derivative scope is in the 10-Q R65 (https://www.sec.gov/Archives/edgar/data/1403475/000140347526000037/R65.htm). The 10-year has since eased to 5.13% (2026-10-21), which shrinks the forward worry but not the September 30 print. This is a proxy transmission and the company has not confirmed it.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "Forward-NIM tailwind from higher reinvestment yields. Management expects about $200M of securities paydowns over 12 months and 'about 20 basis points or so of monthly loan yield benefit a year from now' from repricing (Q2 call). The Fed raised the funds target 25 bp to 3.75-4.00% on 2026-09-16 and signalled another hike by year end, and the 10-year sits near 5.1-5.3%. Both lift reinvestment and new-loan yields, so Q4 NIM commentary on the call is more likely constructive than not. The offset is that the CFO already said deposit rates are 'harder to reduce' now.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "The company gives no formal guide. On the Q2 call, constructive margin commentary went with +5.32% on the day (baseline). Outlook commentary has not been separable from the beat in the baseline history.",
+    "why_not_priced": "Analysts model a flat EPS run-rate ($0.57-0.58) despite the signalled NIM lift, which suggests the forward repricing tailwind sits mostly beyond the modelled quarter. If it were priced, Q4 and 2027 numbers would already have been revised up, and I found no estimate revision after the Q2 beat other than DA Davidson's target raise.",
+    "independence": "Repricing comments come from the Q2 call transcript (https://beta.earningswhispers.com/transcript/BMRC). Westamerica's Q3 earning-asset yield rose to 4.07% from 4.01% (https://finviz.com/news/403197/westamerica-bancorporation-reports-third-quarter-2026-financial-results). This is a proxy transmission and the company has not confirmed it.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "Q2 EPS of $0.58 included a $320K provision reversal (about $0.014 a share after tax), and classified loans rose to $19.9M (0.95% of loans) from 0.85% on six downgrades. A zero or positive Q3 provision is the base case and removes that benefit.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001403475/000140347526000035/earningsrelease-ex991q22026.htm",
+    "source_date": "2026-07-27",
+    "reaction_history_on_this_line": "Credit has not driven a print in the baseline window. The 2025 office-CRE nonaccrual reduction (from $25.4M at year-end to $8.1M) went with rising prints.",
+    "why_not_priced": "It is mostly priced: a consensus flat at $0.57-0.58 despite the NIM lift is consistent with analysts modelling no reversal. It is filed because a new downgrade or a CRE charge would land on this line.",
+    "independence": "Earnings Whispers Q2 summary carries the same classified and special-mention figures (https://www.earningswhispers.com/epsdetails/BMRC). Same underlying document.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "The Head of Retail Banking (EVP Brandi Campbell) left by 'mutual agreement' effective 2026-10-16 (8-K item 5.02). She gets three months' severance and nine months of COBRA, has forfeited 18,069 restricted shares (Form 4), and no successor was named. Retail banking is the deposit franchise, and Q2 deposits fell $58.2M (-1.7%) with management already noting it is harder to cut deposit rates.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/1403475/000140347526000041/bmrc-20261016.htm",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "No precedent in the baseline. The stock is up 3.26% in the five sessions since the 8-K.",
+    "why_not_priced": "It is public and the tape has risen since, so it is mostly looked through. What is not public is whether Q3 deposits held. If the departure is linked to deposit attrition, the Q3 deposit line and call questions would show it, and nothing in the price reflects a deposit problem.",
+    "independence": "Form 4 forfeiture (https://www.sec.gov/Archives/edgar/data/1403475/000180823526000008/form4-10192026_081041.xml). Same event, so not independent.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "NorCal peer read-through. Westamerica (San Rafael, the same Marin County base), reporting on 2026-10-15, had Q3 NIM up 4 bp to 3.81%. Its period-end deposits rose to $4.82B from $4.77B, average deposits were up 0.4% QoQ, and its funding cost rose only 2 bp to 0.26%. This points to stable local deposit behaviour through a quarter in which the Fed hiked and long rates jumped 85 bp.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://finviz.com/news/403197/westamerica-bancorporation-reports-third-quarter-2026-financial-results",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "No measured history of BMRC reacting to a Westamerica print.",
+    "why_not_priced": "It is a weak proxy. Westamerica's deposit base is unusually low-cost (45% noninterest-bearing, 0.26% funding cost) against BMRC's 1.28% cost of deposits, so transmission is partial. The market has had a week to read it.",
+    "independence": "Proxy. Western Alliance also printed NIM +4 bp in Q3 2026 (https://finviz.com/news/404266/western-alliance-bancorporation-reports-third-quarter-2026-financial-results), a different region.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "The bank received a $199K FHLB special cash dividend on 2026-07-29, booked in Q3 noninterest income (10-Q subsequent-event disclosure). That is about $0.009 a share after tax, on top of the regular Class B-1 dividend of about $198K.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/1403475/000140347526000037/R11.htm",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "None. Prior FHLB special dividends also ran through noninterest income.",
+    "why_not_priced": "It is disclosed in the 10-Q, and analysts reading it may already carry it. It is tiny either way.",
+    "independence": "R40 of the same 10-Q (https://www.sec.gov/Archives/edgar/data/1403475/000140347526000037/R40.htm). Same document.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "Valuation and sell-side stance lean negative. Brean downgraded to Neutral on 2026-07-28 citing 'excessive' valuation, Stephens moved to Equal-Weight ($26) in May, and Piper is Neutral ($28). Management said buybacks are not imminent because California regulator approval is needed, and the Q3 AOCI hit lowers TCE further. At ~1.37x June TBV, a quiet print has limited multiple support.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.marketbeat.com/instant-alerts/bank-of-marin-bancorp-nasdaqbmrc-downgraded-to-neutral-rating-by-brean-capital-2026-07-28/",
+    "source_date": "2026-07-28",
+    "reaction_history_on_this_line": "After Brean's valuation downgrade on 2026-07-28 (the day after the Q2 print), the stock had already gained +5.32% on the print. Downgrades have not reversed print-day gains in the baseline.",
+    "why_not_priced": "These are wire facts and are priced as such. They are filed because they define a muted reaction ceiling on an in-line print.",
+    "independence": "Buyback comments come from the Q2 call (https://beta.earningswhispers.com/transcript/BMRC). The capital consequence overlaps finding 2 and is not counted again in that finding's size.",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "A further Fed hike is signalled 'by year end' (most FOMC participants, September minutes). If it happens, the NIM and deposit-beta effect lands in Q4 2026 and beyond, not in this print beyond what the call says.",
+    "resolves_by": "2026-12-16",
+    "source": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260916.htm",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "AAII article saying BMRC 'reported Q3 earnings on 7/27/2026'",
+    "source": "https://www.aaii.com/investingideas/article/520345-what-you-need-to-know-about-bank-of-marin-bancorps-q3-earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "Separate finding for the TCE-ratio decline and the reduced buyback capacity from the AOCI hit",
+    "source": "https://www.sec.gov/Archives/edgar/data/1403475/000140347526000037/R35.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BMRC.json",
+    "text": "10-year roic.ai article 'Treasuries suffer worst quarter since 1994' (10Y 5.29%, +87 bp)",
+    "source": "https://www.roic.ai/news/treasuries-suffer-worst-quarter-since-1994-as-real-yields-surge-09-30-2026",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMRC.json",
+    "text": "Visa Class B-1 or Class C exchange gain (Visa exchange offer April-May 2026, https://investor.visa.com/news/news-details/2026/Visa-Announces-Expiration-and-Results-of-Exchange-Offer-for-Class-B-1-and-Class-B-2-Common-Stock/default.aspx). EDGAR full-text search hits 'Visa' in BMRC 10-Q/10-Ks, but the 10-Q R11, R32, R40 and R58 notes carry no Visa holding. The 'Class B-1' in the 10-Q is FHLB stock. No gain found.",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMRC.json",
+    "text": "Heritage Commerce (HTBK) as a Bay Area peer: it filed a 15-12G on 2026-04-30 (deregistered or acquired), so there is no Q3 2026 print.",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMRC.json",
+    "text": "TriCo, Sierra Bancorp and Five Star Q3 2026 releases: not yet out or not indexed as of 2026-10-23.",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMRC.json",
+    "text": "October 2026 short-interest settlement for BMRC: not found. The latest found is 2026-08-14.",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMRC.json",
+    "text": "Insider buying: the only recent Form 4s are a CFO tax withholding (F, 273 shares at $28, 2026-09-22) and the departing EVP's forfeiture. No open-market purchases.",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMRC.json",
+    "text": "Company guidance: none formal. Expense and NIM framing only from the Q2 call.",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BMRC.json",
+    "text": "Option chain: empty, so there is no implied move or skew.",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-23/HBT",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "HBT",
+   "event_date": "2026-10-26",
+   "session": "bmo",
+   "as_of_utc": "2026-10-23T17:09:57+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-23",
+    "spot": 36.19,
+    "run_up_5d_pct": 1.71,
+    "run_up_20d_pct": -0.17,
+    "pct_from_52w_high": -2.77,
+    "pct_from_52w_low": 58.17,
+    "realised_vol_20d_annualised_pct": 19.3,
+    "avg_volume_20d": 127307
+   },
+   "cik": "0000775215",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-27",
+      "session": "bmo",
+      "move_pct": 3.91
+     },
+     {
+      "event_date": "2026-04-27",
+      "session": "bmo",
+      "move_pct": -1.31
+     },
+     {
+      "event_date": "2026-01-26",
+      "session": "bmo",
+      "move_pct": -2.94
+     },
+     {
+      "event_date": "2025-10-20",
+      "session": "bmo",
+      "move_pct": 4.15
+     },
+     {
+      "event_date": "2025-07-21",
+      "session": "bmo",
+      "move_pct": 4.11
+     },
+     {
+      "event_date": "2025-04-21",
+      "session": "bmo",
+      "move_pct": 1.5
+     },
+     {
+      "event_date": "2025-01-22",
+      "session": "bmo",
+      "move_pct": -0.04
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 2.94,
+    "max_abs_move_pct": 4.15,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91.0,
+    "ratio": 1.0,
+    "last_print": "2026-07-27",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "no_paired_strikes",
+    "expiry": "2026-11-20"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 2.94,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 consensus EPS $0.78 / revenue $82.8M (Benzinga, https://www.benzinga.com/quote/HBT/earnings-forecasts). MarketBeat gives $0.79 / $82.87M (https://www.marketbeat.com/instant-alerts/hbt-financial-nasdaqhbt-posts-earnings-results-beats-estimates-by-005-eps-2026-07-27/). The two sources agree, so the bar counts as sourced. Company frame from the Q2 call per Quartr (https://quartr.com/events/hbt-financial-inc-hbt-q2-2026_Fepv6SgR): NIM flat in Q3, loans flat to slightly down, noninterest expense $41-43M a quarter, noninterest income $11.5-13M a quarter, no material CNB merger costs. AAII's $0.73 'Q3' row is the Q2 estimate, mislabelled. print_vs_bar_pct is my revenue read: Q2 revenue was $80.9M (NII $69.06M plus fees $11.84M, Q2 8-K ex99.1); flat NIM plus one extra day gives roughly $81.5-82.5M, slightly under $82.9M. On EPS I expect about the bar.",
+   "positioning_check": "No usable option chain (baseline options.status no_paired_strikes), so there is no skew. Short interest, from Equibles' FINRA series (https://equibles.com/stocks/hbt/shortinterest, read 2026-10-23): 1,159,079 shares at the 2026-09-30 settlement, 8.0 days to cover, up from 243k on 2026-06-15 and 751k on 2026-07-31. That is about 3.2% of 36.37M shares outstanding. Benzinga's float basis put 243k at 1.39% of float, which implies a float near 17.5M and puts 1.16M near 6.6% of float. Much of the rise after 2026-08-10 fits merger-arbitrage shorting against the Tri-County deal (3.8M HBT shares to be issued). Arb shorts do not cover on an earnings print, so this is not a crowded directional short of the 18-23% kind. It is still enough to shrink negatives modestly. The 2026-10-15 settlement publishes 2026-10-26; Equibles' model estimate of 1.22M is a forecast. Tape: spot $36.19, 2.8% below the 52-week high, 20-day run-up -0.17%, 5-day +1.71%, 20-day realised vol 19.3%.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "The Fed raised rates 25bp in September 2026, and the 10-year rose about 87bp in Q3 to about 5.29%. Management guided flat NIM for Q3 on 2026-07-27, before both moves. Midwest peers that have reported show the tailwind in primary documents: QCR (Moline IL) NIM TEY +3bp to 3.58%, 'exceeded its guidance', and it called the September hike slightly accretive; Old Second (Aurora IL) NIM +4bp to 5.27% with deposit cost up only 2bp. HBT's Q2 NIM rose 12bp on fixed-rate loan and securities repricing, so the hike and higher reinvestment yields point to a Q3 NIM at or slightly above the flat guide and a constructive Q4 NIM comment on the call.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000906465/000110465926117409/qcrh-ex99d1.htm",
+    "source_date": "2026-10-20",
+    "reaction_history_on_this_line": "Q2 2026 (2026-07-27): NIM +12bp and a $0.05 EPS beat, stock +3.91%. Q1 2026: NIM +8bp but GAAP EPS hit by $15.7M of merger costs, stock -1.31%. NIM upside has paid on this name when it shows in EPS.",
+    "why_not_priced": "Consensus EPS of $0.78-0.79 equals the Q2 adjusted $0.78, so the street has modelled the flat-NIM guide and no rate tailwind. If the hike were priced, estimates would sit above the Q2 run-rate. The 20-day run-up of -0.17% shows no pre-print bid.",
+    "independence": "Old Second Q3 2026 release (https://www.sec.gov/Archives/edgar/data/0000357173/000035717326000057/osbc-ex99d1.htm, 2026-10-21): NIM +4bp, deposit cost +2bp. Wintrust NIM 3.49%, in line with its guide (https://www.quiverquant.com/news/Wintrust+Reports+Record+Q3+Net+Income+of+%24239.1+Million). Both are peer proxies, not HBT's own number. HBT's rate-sensitivity table could not be retrieved.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Acquired-loan discount accretion was $2.1M in Q2 against $1.0M in Q1, and management called it 'higher than expected'. That is about 13bp of Q2's 4.32% NIM by my arithmetic on $6.405B of average earning assets. With rates up sharply in Q3, prepayments on the CNB book should slow and accelerated accretion should fall back toward the Q1 pace. That would cost roughly $0.5-1.0M pretax, about $0.01-0.02 of EPS and 3-6bp of NIM, partly offsetting the rate tailwind.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000775215/000077521526000063/hbt-20260630ex991.htm",
+    "source_date": "2026-07-27",
+    "reaction_history_on_this_line": "There is no clean history on accretion alone. Q2's higher-than-expected accretion was part of the beat that drew +3.91%.",
+    "why_not_priced": "A consensus at the Q2 run-rate assumes Q2's accretion repeats. If the street expected it to fall back, Q3 EPS estimates would sit below $0.78.",
+    "independence": "The 10-Q (https://www.sec.gov/Archives/edgar/data/0000775215/000077521526000069/hbt-20260630.htm) shows $4.97M of net accretion for 1H26 and a $10.1M PCD non-credit discount at close. It is the same company and the same subject, so it is not independent of the release. The finding shares the rate premise with finding 1 but works through a different mechanism (prepayment speed, not repricing).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "The revenue bar of $82.8-82.9M is about $2M (2.4%) above Q2's $80.9M. Management's own frame (NIM flat, loans flat to slightly down, fees $11.5-13M) gives roughly $81.5-82.5M including the extra day. Consensus therefore sits at or above the top of what the company guided, while EPS consensus of $0.78-0.79 sits inside it.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.marketbeat.com/instant-alerts/hbt-financial-nasdaqhbt-posts-earnings-results-beats-estimates-by-005-eps-2026-07-27/",
+    "source_date": "2026-07-27",
+    "reaction_history_on_this_line": "Q2 2026 revenue was $80.90M against an $80.36M estimate: a small beat alongside the EPS beat, stock +3.91%. Q4 2025 (2026-01-26): -2.94%. The baseline does not record that print's line.",
+    "why_not_priced": "Small and inside the guided frame. If the street had marked revenue to the guide, the revenue estimate would be near $81.5-82M, not $82.9M. The rate tailwind in finding 1, or a GAAP MSR gain counted as revenue, may close the gap.",
+    "independence": "Guide figures come from the Quartr Q2 call summary (https://quartr.com/events/hbt-financial-inc-hbt-q2-2026_Fepv6SgR). Benzinga's $82.8M agrees with MarketBeat. The finding partly offsets finding 1; both are sized net.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Higher Q3 rates mark HBT's $19.3M fair-value MSR asset up (Q2 was a -$0.75M mark). Old Second booked a +$0.62M MSR gain 'primarily the result of increased rates'. HBT's AFS book will also show a larger unrealised loss: Old Second's AOCI loss widened $11.5M, yet its TBV was flat at $14.75. Expect a GAAP fee-income gain of about $0.5-1.5M that management excludes from adjusted EPS, and roughly flat TBV against Q2's $17.60, because retained earnings offset AOCI.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000357173/000035717326000057/osbc-ex99d1.htm",
+    "source_date": "2026-10-21",
+    "reaction_history_on_this_line": "MSR marks are adjusted out on this name. Q2 carried a -$0.8M mark and the stock still rose +3.91%. The market has looked through this line.",
+    "why_not_priced": "The amount is small and below the adjusted line, so it is a fraction of operating value. A headline GAAP EPS above the adjusted figure could read as a beat in the first wire headline.",
+    "independence": "HBT's MSR balance and Q2 mark are in its Q2 8-K (https://www.sec.gov/Archives/edgar/data/0000775215/000077521526000063/hbt-20260630ex991.htm). The rate premise is shared with finding 1.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Agricultural credit in HBT's footprint weakened through 2026. First Mid (Mattoon IL) reported Q2 agricultural downgrades from special mention to substandard on 'strained cash flows' while expecting no significant losses. The Chicago Fed's August 2026 AgLetter described weaker Q2 ag credit and the largest real fall in farmland values since 2016. After the CNB deal, HBT's agricultural and farmland loans are $594M, 12.5% of loans, double the $272M a year earlier. That raises the risk of criticized-loan migration or a qualitative reserve build in Q3, when HBT's Q2 provision was only $0.7M.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000700565/000117184326004848/exh_991.htm",
+    "source_date": "2026-07-23",
+    "reaction_history_on_this_line": "No HBT print in the baseline turned on credit. NPAs were 0.15% of assets at Q2 with net recoveries, so credit has not been a line this stock traded on.",
+    "why_not_priced": "Consensus assumes a provision near Q2's $0.7M. A $2-3M ag-driven reserve build would cost $0.04-0.06 of EPS and is not in a $0.78-0.79 estimate. It is a proxy, though, and the rest of HBT's book is very clean (NPAs 0.15%), so it is sized small net of that.",
+    "independence": "Chicago Fed AgLetter, August 2026 (https://www.chicagofed.org/publications/agletter/2025-2029/august-2026). This is a proxy for HBT, not its own number. HBT's Q2 release reports a $3.9M increase in qualitative reserves, consistent with caution but not tied to ag.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "HBT signed the Tri-County Financial merger agreement on 2026-08-10 and filed an S-4, an S-4/A and a 424B3 in Q3. Legal, advisory and filing costs will land in Q3 GAAP expense, with management likely to exclude them from adjusted EPS. That is a small GAAP-versus-adjusted gap on top of Q2's $0.3M of residual CNB costs.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000775215/000110465926108951/tm2623547-6_424b3.htm",
+    "source_date": "2026-09-16",
+    "reaction_history_on_this_line": "In Q1 2026, $15.7M of CNB merger costs crushed GAAP EPS to $0.34 against $0.68 adjusted; the stock fell only -1.31%. The market looks through merger costs here.",
+    "why_not_priced": "The amount is unquantified and adjusted out, worth almost nothing to the reaction. It is filed for completeness.",
+    "independence": "The Tri-County 8-K of 2026-08-10 is listed in EDGAR (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000775215&type=&dateb=&owner=include&count=40). It is the same deal.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Short interest rose almost fivefold from 243k shares (2026-06-15) to 1.16M (2026-09-30, 8.0 days to cover, about 6.6% of float on Benzinga's float basis). The rise has run steadily since the July print and the August deal announcement. Part of it is likely merger-arb shorting that will not cover on a print, but 8 days of cover on a thin name (127k shares a day) adds a small squeeze mechanism to any beat.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-27",
+    "source": "https://equibles.com/stocks/hbt/shortinterest",
+    "source_date": "2026-10-23",
+    "reaction_history_on_this_line": "There is no prior HBT print with comparable short interest. Short interest was 0.4-0.5% of shares in early 2026.",
+    "why_not_priced": "FINRA data is public, but the arb composition is unknown. If the short were directional and seen as crowded, the stock would not sit 2.8% below its 52-week high on flat momentum. Sized small for that reason.",
+    "independence": "Benzinga gives 243,367 shares, 1.39% of float, at 2026-06-15 (https://it.benzinga.com/quote/HBT/short-interest). Same FINRA origin.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Capital return: the dividend was raised $0.02 to $0.25 in Q2. Only 15,466 shares were repurchased in Q2, and $14.0M remains under a $30M authorization that expires 2027-01-01. With a stock-for-stock deal pending (Tri-County vote 2026-10-29), buybacks are likely constrained, so no capital-return surprise is expected.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000775215/000077521526000063/hbt-20260630ex991.htm",
+    "source_date": "2026-07-27",
+    "reaction_history_on_this_line": "The Q2 dividend raise came with the +3.91% print, mixed with a beat.",
+    "why_not_priced": "It is priced. No change is expected. Filed so the panel sees the capital line was checked.",
+    "independence": "none",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "The Tri-County Financial shareholder vote is 2026-10-29, and close is expected in Q4 2026 or Q1 2027. Vote approval removes deal-completion risk but falls after the exit window. About 28% of shares are already locked up to vote in favour.",
+    "resolves_by": "2026-10-29",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000775215/000110465926108951/tm2623547-6_424b3.htm",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "AAII lists a $0.73 consensus for the quarter ending 2026-09-30",
+    "source": "https://www.aaii.com/investingideas/article/520363-what-you-need-to-know-about-hbt-financial-incs-q3-earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Equibles' modelled 2026-10-15 short interest of 1.22M shares",
+    "source": "https://equibles.com/stocks/hbt/shortinterest",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Wintrust Q3 2026 NIM 3.49%, in line with its guide; NII up to $621.6M",
+    "source": "https://www.quiverquant.com/news/Wintrust+Reports+Record+Q3+Net+Income+of+%24239.1+Million",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Regions Financial Q3 2026 adjusted EPS $0.73 vs $0.66 expected; stock moved little",
+    "source": "https://www.newsquawk.com/headlines/regions-financial-rf-q3-2026-usd-adj-eps-073-exp-066",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HBT.json",
+    "text": "Old Second's adjusted EPS of $0.55 missed the $0.58 consensus on a $6.8M provision",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000357173/000035717326000057/osbc-ex99d1.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HBT.json",
+    "text": "Insider Form 4s since July 2026: the only one is director Roger Baker's 15,000-share charitable gift on 2026-08-18 (https://www.sec.gov/Archives/edgar/data/0000775215/000191415726000005/wk-form4_1787172854.xml). There were no open-market buys or sells.",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HBT.json",
+    "text": "EDGAR since 2026-07-01: no unscheduled 8-K beyond the Tri-County 1.01/7.01. No 8.01 on credit, departures or a capital raise (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000775215&type=&dateb=&owner=include&count=40).",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HBT.json",
+    "text": "HBT's NII rate-sensitivity table (10-Q Item 3) could not be retrieved; the fetch truncated, and the IR site returned 403.",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HBT.json",
+    "text": "First Mid Q3 2026 (expected 2026-10-22) and First Busey Q3 2026: no release found yet, so no direct central-Illinois Q3 peer read on ag or deposit pricing.",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HBT.json",
+    "text": "No sell-side Q3 preview for HBT with new information was found, and no analyst rating or price-target change was found for October 2026.",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-23/MED",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "MED",
+   "event_date": "2026-10-26",
+   "session": "bmo",
+   "as_of_utc": "2026-10-23T17:10:05+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-23",
+    "spot": 11.79,
+    "run_up_5d_pct": -0.76,
+    "run_up_20d_pct": -3.12,
+    "pct_from_52w_high": -10.34,
+    "pct_from_52w_low": 24.76,
+    "realised_vol_20d_annualised_pct": 24.5,
+    "avg_volume_20d": 106572
+   },
+   "cik": "0000910329",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-08-03",
+      "session": "amc",
+      "move_pct": 34.29
+     },
+     {
+      "event_date": "2026-05-04",
+      "session": "amc",
+      "move_pct": 22.48
+     },
+     {
+      "event_date": "2026-02-17",
+      "session": "amc",
+      "move_pct": -0.83
+     },
+     {
+      "event_date": "2025-11-03",
+      "session": "amc",
+      "move_pct": 0.84
+     },
+     {
+      "event_date": "2025-08-04",
+      "session": "amc",
+      "move_pct": -3.26
+     },
+     {
+      "event_date": "2025-04-28",
+      "session": "amc",
+      "move_pct": -0.64
+     },
+     {
+      "event_date": "2025-02-18",
+      "session": "amc",
+      "move_pct": -11.41
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 3.26,
+    "max_abs_move_pct": 34.29,
+    "up_count": 3,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 84,
+    "median_gap_days": 91.0,
+    "ratio": 0.92,
+    "last_print": "2026-08-03",
+    "verdict": "fits_cadence",
+    "reason": "84 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 28,
+    "atm_strike": 12.5,
+    "atm_iv_pct": 58.6,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.24,
+    "total_open_interest": 8064,
+    "atm_spread_frac_of_mid": 0.857,
+    "warnings": [
+     "ATM bid-ask spread 86% of mid; too wide to mean anything"
+    ]
+   },
+   "deadband_pct": 1.63,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.26,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Company Q3 2026 guide: revenue $60-80m (midpoint $70m), loss per share $0.15-0.65 (midpoint -$0.40), excluding one-time Catalyst costs (Q2 release, https://www.sec.gov/Archives/edgar/data/0000910329/000162828026051845/medq22026earningsrelease.htm). The street estimates disagree: ChartMill -$0.35 / $72.0m (https://www.chartmill.com/stock/quote/MED/estimates, via search snippet; the page returned 403); the Earnings Whispers page -$0.60 / $69.18m, likely stale from before the guide (https://www.earningswhispers.com/epsdetails/MED); an Earnings Whispers snippet -$0.40 / $62.45m; MarketBeat's pre-guide figure -$0.62 / $68m (https://www.marketbeat.com/instant-alerts/medifast-nysemed-updates-q3-2026-earnings-guidance-2026-08-03/). I sized against the company guide midpoint. Because the estimates disagree, findings that depend on the bar are kept small.",
+   "positioning_check": "Short interest is falling. Per Equibles' FINRA settlements: 1,639,608 shares (2026-07-15), 1,484,483 (07-31), 1,824,259 (08-14, 7.4 days to cover), 1,882,921 (08-31, 15.1 dtc), 1,862,070 (09-15, 20.0 dtc), then 1,053,225 on 2026-09-30 (7.3 dtc, about 9.4% of 11.18m shares outstanding) (https://equibles.com/stocks/med/shortinterest). The 10-15 settlement publishes 10-26, the print day. No usable skew: the option chain is unusable (ATM spread 86% of mid, skew null; ATM IV 58.6% on the 11-20 expiry; put/call OI 0.24, call-heavy). Run-up: -3.1% over 20 days, -0.8% over 5. Spot $11.79, 10% off the 52-week high, 25% above the low. Steamboat Capital (director Parsa Kiai) holds about 7%+ and bought in August.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "Q3 has been Medifast's seasonally weakest quarter: revenue fell 15.3% Q2-to-Q3 in 2025 ($105.6m to $89.4m) and 16.8% in 2024 ($168.6m to $140.2m). Active earning coaches fell 16% Q1-to-Q2 2026 (14,000 to 11,700) and management expects further declines. A repeat of the seasonal pattern on Q2's $76.4m gives about $65m, below the $70m guide midpoint but inside the $60-80m range. Against that, 2026 broke seasonality once already: Q2 was flat on Q1 ($76.4m vs $76.0m) because revenue per coach rose about 20% q/q.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/910329/000162828025048251/medq32025earningsrelease.htm",
+    "source_date": "2025-11-03",
+    "reaction_history_on_this_line": "Q2 2026 revenue of $76.4m beat roughly $72.7m consensus, together with a large EPS beat and a raised FY EPS guide; the stock rose +34.3% (baseline). Q1 2026's revenue beat came with +22.5%. The name has paid for beats recently, but on EPS and guidance rather than on revenue alone.",
+    "why_not_priced": "The guide range is $20m wide and the street estimates scatter from $62m to $72m, so nobody holds a precise bar. A seasonal read below the midpoint is inside the guide. If it were priced, consensus would sit near $65m, not $69-72m.",
+    "independence": "The 2026 coach counts and Q2 revenue come from the Q2 2026 release (https://www.sec.gov/Archives/edgar/data/0000910329/000162828026051845/medq22026earningsrelease.htm); Q1 2026 from https://www.sec.gov/Archives/edgar/data/0000910329/000162828026029812/medq12026earningsrelease.htm. This is inference from company history, not a Q3 datapoint.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "On the Q2 call the CFO said Catalyst savings could not yet be quantified ('millions of dollars of savings') and that full detail would come on the Q3 call. Management targets a return to profitability in Q4 2026. The first quantified savings figure and the Q4 path therefore land on this print. Stephens (James Salera), the only analyst on the call, asked about the savings and got no number.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.webull.com/news/15381704353604608",
+    "source_date": "2026-08-03",
+    "reaction_history_on_this_line": "The Q2 2026 FY EPS guide raise (from -$1.55/-$2.75 to -$0.25/-$1.75) drove the +34.3% reaction (baseline; https://stockstory.org/us/stocks/nyse/med/news/earnings/medifast-nysemed-beats-expectations-in-strong-q2-cy2026-stock-jumps-128percent). This stock moves hard on the guidance line.",
+    "why_not_priced": "No dollar figure exists in the public record, and with one analyst no estimate of savings is in consensus EPS. The stock has gone flat at about $12 since August rather than drifting up, which it would have done if a large savings number were expected.",
+    "independence": "The Q2 release confirms Catalyst's purpose (facility rationalization, AI efficiencies) and the Havre de Grace lease cut (https://www.sec.gov/Archives/edgar/data/0000910329/000162828026051845/medq22026earningsrelease.htm). The 10-Q records a $12.5m right-of-use remeasurement on the reduced-footprint lease (https://www.sec.gov/Archives/edgar/data/910329/000162828026051928/med-20260630.htm). Both are company documents.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "Director Parsa Kiai (Steamboat Capital, a 13D filer at 7.1% as of 2026-08-21) bought about 120k shares in the open market at $11.60-12.26, after the Q2 jump: 29.3k and 43.2k shares on 08-19/20, 4.3k on 08-24 and 43.2k on 08-26. Holdings are about 727k shares through the two funds.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/910329/000121390026092479/xslF345X06/ownership.xml",
+    "source_date": "2026-08-21",
+    "reaction_history_on_this_line": "none found",
+    "why_not_priced": "It is public since August and the stock has not moved, so it is largely priced. It is filed because a board member buying after a 34% move, ahead of a quarter he has visibility into, is a modest information signal.",
+    "independence": "13D/A: https://www.sec.gov/Archives/edgar/data/910329/000121390026092590/xslSCHEDULE_13D_X02/primary_doc.xml ; later Form 4s: https://www.sec.gov/Archives/edgar/data/910329/000121390026094862/xslF345X06/ownership.xml (same filer, so not independent).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "Director and former CEO Daniel Chard sold 19,089 shares through a family trust on 2026-09-28/29 at $11.73-11.98 under a Rule 10b5-1 plan. He retains about 336k shares directly and indirectly.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/910329/000162828026064063/xslF345X06/wk-form4_1790813091.xml",
+    "source_date": "2026-09-30",
+    "reaction_history_on_this_line": "none found",
+    "why_not_priced": "It is small, under a pre-arranged plan, and made by a departed CEO whose filing address is now Nu Skin. It carries little information; it is filed only for completeness.",
+    "independence": "none",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "Short interest fell 43% in the second half of September, from 1,862,070 shares (09-15, 20 days to cover) to 1,053,225 (09-30, 7.3 days to cover, about 9.4% of shares). About 800k shares were covered, roughly 8 days of average volume, ahead of an earlier-than-usual print.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://equibles.com/stocks/med/shortinterest",
+    "source_date": "FINRA 2026-09-30 settlement; page read 2026-10-23",
+    "reaction_history_on_this_line": "none found",
+    "why_not_priced": "The figure is published but rarely read on a $130m name. The cut runs both ways. Fewer shorts means less squeeze fuel, which argues for a smaller upside tail than the 20%-short setup the sweep described. It also means shorts no longer press for a downside print.",
+    "independence": "The sweep's 08-14 figure (1.8m, 7.4 dtc, https://curvedtrading.com/stocks/med/short-interest/) matches Equibles' series; the 09-30 figure has one source only.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "Medifast moved the Q3 report earlier and switched session: results come Monday 2026-10-26 before the open, against the Q3 2025 report on 2025-11-03 and the amc Q2 2026 report on 2026-08-03. An earlier date than the prior-year cadence is weakly associated with better news.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://scanx.trade/stock-market-news/companies/medifast-q3fy26-results-earnings-call-set-october-26/53554390",
+    "source_date": "2026-10 (relay of the company's announcement; exact day not readable, the page returns 403)",
+    "reaction_history_on_this_line": "none found",
+    "why_not_priced": "Aggregators still list 11-03 or 11-05 (Earnings Whispers) as the report date, so the schedule change itself is not widely registered. It is a weak proxy at best.",
+    "independence": "Q3 2025 date: https://businesswire.com/news/home/20251103877853/en/Medifast-Announces-Third-Quarter-2025-Financial-Results ; this is a proxy, not company data.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "Cash and investments were $169.8m with no debt at 2026-06-30, against a market cap of about $132m (11.18m shares at $11.79). Working capital is guided above $145m at year-end, so the stock trades below net cash. That limits the downside on a weak operating print unless Catalyst one-time costs prove large.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/910329/000162828026051928/med-20260630.htm",
+    "source_date": "2026-08-03",
+    "reaction_history_on_this_line": "Q4 2025 (-0.8%) and Q3 2025 (+0.8%) were damped reactions with the stock near net cash (baseline).",
+    "why_not_priced": "It is public and largely priced. 'Cheap' is not an edge. It is filed small only because it shapes the asymmetry of the reaction, and Catalyst cash costs that are not yet quantified could erode it.",
+    "independence": "Q2 release, same numbers (https://www.sec.gov/Archives/edgar/data/0000910329/000162828026051845/medq22026earningsrelease.htm); not independent.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "The GLP-1 headwind intensified through 2026. Lilly's oral orforglipron (Foundayo) launched with $149-349 a month cash pricing; Truveta counted 5,723 patients from 04-01 to 07-06, 40% new to GLP-1s. Novo's oral Wegovy has passed 600k US prescriptions. Medifast itself names 'rapid adoption of GLP-1 medications' as the cause of its coach decline.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.truveta.com/blog/research/featured-research/oral-orforglipron-uptake-obesity/",
+    "source_date": "2026 (study window 2026-04-01 to 2026-07-06)",
+    "reaction_history_on_this_line": "none found",
+    "why_not_priced": "It is largely priced: the company guided with this headwind in view. This is macro-to-company transmission with no Q3-specific datapoint, so it is filed small.",
+    "independence": "Company attribution in the Q2 release (https://www.sec.gov/Archives/edgar/data/0000910329/000162828026051845/medq22026earningsrelease.htm); this is a proxy.",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "Three transitions land inside Q3 2026, per the 10-Q: the OPTAVIA brand was replaced by Trilivy (07-17), a new coach compensation plan launched in Q3, and the Reset Fueling product line was rolled out ('fully to market this quarter'). Obsolete-inventory allowance fell from $4.3m to $3.3m in H1 with no explanation. A new product line can pull orders forward, while a comp-plan change in a coach network can disrupt it. I found no public data on coach or client reception.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/910329/000162828026051928/med-20260630.htm",
+    "source_date": "2026-08-03",
+    "reaction_history_on_this_line": "none found",
+    "why_not_priced": "The direction is unknown. No coach forum, app or review data surfaced on Trilivy, so nobody outside has a read. This raises the variance ([sizing note removed].",
+    "independence": "The Trilivy launch release (https://secure.businesswire.com/news/home/20260717813453/en/Medifast-Enters-a-New-Era-Introducing-Trilivy-a-Science-Backed-Metabolic-Health-System) says the same.",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "Stockstory's '+12.8%' size for the Q2 reaction",
+    "source": "https://stockstory.org/us/stocks/nyse/med/news/earnings/medifast-nysemed-beats-expectations-in-strong-q2-cy2026-stock-jumps-128percent",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MED.json",
+    "text": "A separate 'squeeze setup at about 20% short' finding (from the sweep)",
+    "source": "https://equibles.com/stocks/med/shortinterest",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MED.json",
+    "text": "EDGAR filings after 2026-08-03: no 8-K (no Catalyst restructuring, no executive change, no pre-release); only Form 4s, 144s, 13D/A, 13Gs (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000910329)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MED.json",
+    "text": "Maryland WARN notices for Medifast in 2026 (aggregators show nothing after 2023: https://www.warntracker.com/company/medifast)",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MED.json",
+    "text": "Trilivy app-store reviews, Reddit or coach-forum chatter on Trilivy, Reset Fuelings or the new comp plan: nothing indexed",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MED.json",
+    "text": "Peer prints inside the window: USANA reports 11-03 (https://finviz.com/news/401444/usana-schedules-third-quarter-2026-earnings-release-and-conference-call), WW about 11-04; Herbalife and Nu Skin not yet; no read-through available",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MED.json",
+    "text": "Analyst actions after August: none found (Stephens equal-weight, $12 target, from 2026-02-19)",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MED.json",
+    "text": "October 2026 company news beyond the date announcement: none",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MED.json",
+    "text": "Short interest for the 10-15 settlement: not yet published (due 10-26)",
+    "i": 17
+   }
+  ]
+ }
+]
