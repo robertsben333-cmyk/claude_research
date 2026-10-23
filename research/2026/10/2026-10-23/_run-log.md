@@ -119,3 +119,7 @@
 ## Close AMC — 2026-10-23
 - Logged at 2026-10-23 10:18 UTC
 - Guard mode --require-exit-tif opg: exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no exit orders sent, no refusals. Account reachable.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-23 13:12 UTC
+- source research/2026/10/2026-10-22/edge-panel, 09:13 ET, 9 picks (WRLD DECK BE FIX BAH JAKK APPF INFY SLB); SLB analyst deferred by the 8-subagent concurrency cap
