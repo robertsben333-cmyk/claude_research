@@ -135,3 +135,7 @@
 ## Edge hunt (panel) — baselines sealed
 - Logged at 2026-10-23 17:12 UTC
 - 13 baselines, universe and provenance (US-P, us-searcher.v2, claude-opus-5-5) committed before any searcher launches; edge-sweep running since ~17:13 UTC.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-23 17:14 UTC
+- Sweep done ~17:14 UTC: 12 of 13 company-confirmed (RCBC amc 10-23; the rest bmo 10-26; BMRC and DEA dates confirmed, hour not), LKFN unconfirmed (not phantom), 0 phantoms. All 13 hunted (cap 20, nothing shed). baseline_history_trustworthy=false for MMYT, RCBC, CX. Wave 1 ~17:16 UTC: RCBC MED MMYT ABOS ARLP BMRC CX (unpriced-searcher, native); BFST DEA HBT BOH VZ LKFN queued for free slots.
