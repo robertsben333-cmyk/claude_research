@@ -2,7 +2,7 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 3 of 4. Names scored by both arms: 0 of 13. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
+Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 4 of 4. Names scored by both arms: 0 of 13. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
 
 Selected by E-P: none. By the split: CX. Both: none.
 
@@ -14,9 +14,9 @@ Mean findings per name, E-P / split: 6.38 / 6.85. Mean sources: 17.15 / 19.31. M
 | DEA | 1 | bmo | · | 70S | -0.6 / -0.8 | 7 / 6 | 17 / 22 |
 | LKFN | 1 | bmo | · | 70L | 1.3 / 1.3 | 7 / 7 | 14 / 16 |
 | RCBC | 1 | amc | · | 55L | 0.7 / 0.6 | 4 / 3 | 16 / 16 |
-| BMRC | 2 | bmo | · | · | 0.85 / -0.1 | 6 / 8 | 16 / 22 |
-| HBT | 2 | bmo | · | · | 0.3 / -0.15 | 5 / 8 | 14 / 15 |
-| MED | 2 | bmo | · | · | 1.8 / 0.9 | 8 / 9 | 16 / 22 |
+| BMRC | 2 | bmo | · | 9S | 0.85 / -0.1 | 6 / 8 | 16 / 22 |
+| HBT | 2 | bmo | · | 3L | 0.3 / -0.15 | 5 / 8 | 14 / 15 |
+| MED | 2 | bmo | · | 68L | 1.8 / 0.9 | 8 / 9 | 16 / 22 |
 | BOH | 3 | bmo | · | 48L | 0.5 / 0.9 | 5 / 8 | 16 / 18 |
 | CX | 3 | bmo | · | 80L* | -0.1 / 1.2 | 8 / 8 | 22 / 24 |
 | MMYT | 3 | bmo | · | 49S | 0.8 / 0.5 | 7 / 9 | 24 / 22 |
@@ -27,7 +27,7 @@ Mean findings per name, E-P / split: 6.38 / 6.85. Mean sources: 17.15 / 19.31. M
 | shard | status | names | judges | claimed (UTC) | minutes |
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | RCBC, ARLP, DEA, LKFN | opus5, opus55, sonnet55, fable51 | 17:14 | 11 |
-| 2 | claimed | MED, BMRC, HBT | n/a | 17:14 | n/a |
+| 2 | done | MED, BMRC, HBT | opus5, opus55, sonnet55, fable51 | 17:14 | 19 |
 | 3 | done | MMYT, CX, BOH | opus5, opus55, sonnet55, fable51 | 17:15 | 18 |
 | 4 | done | ABOS, BFST, VZ | opus5, opus55, sonnet55, fable51 | 17:15 | 10 |
 
