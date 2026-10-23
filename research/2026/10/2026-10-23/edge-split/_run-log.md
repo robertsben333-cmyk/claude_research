@@ -27,3 +27,7 @@
 ## Split panel 4/4 — panel done
 - Logged at 2026-10-23 17:24 UTC
 - 4 of 4 judges on pinned models; 3 names, 0 selected (ABOS 64S, VZ 36L, BFST 26S); dry-run, history untouched
+
+## Split panel 1/4 — done
+- Logged at 2026-10-23 17:26 UTC
+- 4 names, 0 selected (DEA 70S, LKFN 70L, RCBC 55L, ARLP 38L); all four judges on pinned agents; guard moved nothing; claim 17:14 to done 17:26 UTC; E-P's panel not yet scored when summary ran
