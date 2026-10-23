@@ -139,3 +139,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-10-23 17:14 UTC
 - Sweep done ~17:14 UTC: 12 of 13 company-confirmed (RCBC amc 10-23; the rest bmo 10-26; BMRC and DEA dates confirmed, hour not), LKFN unconfirmed (not phantom), 0 phantoms. All 13 hunted (cap 20, nothing shed). baseline_history_trustworthy=false for MMYT, RCBC, CX. Wave 1 ~17:16 UTC: RCBC MED MMYT ABOS ARLP BMRC CX (unpriced-searcher, native); BFST DEA HBT BOH VZ LKFN queued for free slots.
+
+## Edge hunt (panel) — all searchers launched
+- Logged at 2026-10-23 17:22 UTC
+- All 13 unpriced-searchers (native, Opus 5.5) launched by ~17:31 UTC; 7 returned (RCBC ABOS BFST BMRC MED ARLP + pending). ARLP hunt's searched_and_found_nothing[0] text is garbled per its own report; not rewritten.
