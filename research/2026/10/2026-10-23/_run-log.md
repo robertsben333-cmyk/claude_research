@@ -155,3 +155,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-23 17:30 UTC
 - 13/13 hunted, edge_score written (12 rankable; LKFN not ranked, event unconfirmed by company source), V2 grounded written ~17:31 UTC before the first print. 12 packs, four judges, one part.
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-23 17:36 UTC
+- All four judges 12/12 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): MED long 96.5 (4 of 4 in own top; 3-of-4 rule agrees); nearest misses BMRC 66 L, DEA 64 S. Searcher: 0 of 12 clear 2.8 (MED +1.80 highest); LKFN not ranked (event unconfirmed). Stage E edge/ absent (Routine stopped). Step 6b at ~17:36 UTC (13:36 ET): plan then open --submit --no-flatten: 1 market buy, MED 438 sh filled @ 11.78, notional ~$5,160 (49.9% of equity $10,305; one name takes the 50% cap, the rest stays cash). Execution cost vs mid +0.13% (half-spread 0.13). Exit dated 2026-10-26.
