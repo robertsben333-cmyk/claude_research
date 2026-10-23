@@ -127,3 +127,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-23 13:16 UTC
 - 9 names compiled 09:16 ET: WRLD limit 191.38, DECK exit_1000, BE exit_1000, FIX exit_1000, BAH limit 80.75, JAKK limit 31.05, APPF exit_open, INFY exit_open, SLB exit_close. All 9 reviews valid. SLB analyst launched ~1 min late (8-subagent concurrency cap). Pool (2026-10-22 resolved): 20 names / 4 days, review_minus_static +0.46 (t 0.71).
+
+## Edge hunt (panel) — 2026-10-23 amc + 2026-10-26 bmo — STARTED
+- Logged at 2026-10-23 17:10 UTC
+- Stage E-P fired 17:06 UTC (session start 17:08). Universe 13 names (1 amc Fri, 12 bmo Mon). Baselines sealed in edge-panel/baselines before any agent. Plan: 1 edge-sweep, up to 13 unpriced-searchers, step 3s flatten, four judges, step 6b buy.
