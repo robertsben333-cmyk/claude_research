@@ -15,3 +15,8 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-23 14:05 UTC
 - 7 hunts done; 7 ranked, 0 above 2.8 (ALLEI +1.00, SGF +0.70, AMC +0.60, OPL +0.50, KTY +0.30, BVXP -0.20, KREATE -0.20). 7 packs, four judges (intl).
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-23 14:11 UTC
+- Event date 2026-10-26. 7 ranked (uk 2, pl 2, se 1, fi 1, it 1): ALLEI +1.00, SGF +0.70, AMC +0.60, OPL +0.50, KTY +0.30, BVXP -0.20, KREATE -0.20; 0 above floor 2.8. KTY and SGF sealed bmo? but report amc per issuer timestamps (resolver measures both windows; read the amc one). ALLEI releases 11:30 CET in session. Yahoo calendar unavailable on all ten markets.
+- Panel: 4/4 members, no fallback; 1 selected: BVXP short (k=4, panel_pct 96) against hunter -0.20. Note: europe-note.md. No orders. Published with EARNINGS_DATA_BRANCH=main.
