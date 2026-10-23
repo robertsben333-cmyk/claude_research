@@ -23,3 +23,7 @@
 ## Split panel 1/4 — searchers done
 - Logged at 2026-10-23 17:22 UTC
 - 4 of 4 returned by 17:22 UTC (unpriced-searcher agent); guard moved nothing; no searcher reported its search budget running out
+
+## Split panel 4/4 — panel done
+- Logged at 2026-10-23 17:24 UTC
+- 4 of 4 judges on pinned models; 3 names, 0 selected (ABOS 64S, VZ 36L, BFST 26S); dry-run, history untouched
