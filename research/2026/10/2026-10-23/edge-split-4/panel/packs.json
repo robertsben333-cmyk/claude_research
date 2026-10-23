@@ -1,0 +1,838 @@
+[
+ {
+  "id": "us/2026-10-23/ABOS",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "ABOS",
+   "event_date": "2026-10-26",
+   "session": "bmo",
+   "as_of_utc": "2026-10-23T17:10:03+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-23",
+    "spot": 2.03,
+    "run_up_5d_pct": 20.12,
+    "run_up_20d_pct": -9.38,
+    "pct_from_52w_high": -39.76,
+    "pct_from_52w_low": 30.97,
+    "realised_vol_20d_annualised_pct": 79.7,
+    "avg_volume_20d": 628601
+   },
+   "cik": "0001576885",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-08-12",
+      "session": "bmo",
+      "move_pct": 1.62
+     },
+     {
+      "event_date": "2026-05-12",
+      "session": "bmo",
+      "move_pct": -3.5
+     },
+     {
+      "event_date": "2026-03-26",
+      "session": "bmo",
+      "move_pct": -3.04
+     },
+     {
+      "event_date": "2025-11-12",
+      "session": "bmo",
+      "move_pct": -1.02
+     },
+     {
+      "event_date": "2025-08-12",
+      "session": "bmo",
+      "move_pct": -11.27
+     },
+     {
+      "event_date": "2025-05-13",
+      "session": "bmo",
+      "move_pct": 0.0
+     },
+     {
+      "event_date": "2025-03-27",
+      "session": "bmo",
+      "move_pct": 6.03
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 3.04,
+    "max_abs_move_pct": 11.27,
+    "up_count": 2,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 75,
+    "median_gap_days": 91.5,
+    "ratio": 0.82,
+    "last_print": "2026-08-12",
+    "verdict": "fits_cadence",
+    "reason": "75 days since the last print against a 92-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 28,
+    "atm_strike": 2.5,
+    "atm_iv_pct": null,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.24,
+    "total_open_interest": 149,
+    "atm_spread_frac_of_mid": null,
+    "warnings": [
+     "ATM legs not two-sided; no live bid/ask to price a straddle from"
+    ]
+   },
+   "deadband_pct": 1.52,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.04,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 EPS consensus: -0.39 (Benzinga https://www.benzinga.com/quote/ABOS/earnings-forecasts), -0.41 (Earnings Whispers https://beta.earningswhispers.com/go/x/ABOS), -0.43 (OpenCapital https://www.opencapital.sh/stocks/abos/earnings/q3-2025). The three sources disagree, so every size on the name is capped small. The stock does not trade on EPS. The lines that matter are ALTITUDE-AD topline timing, guided 'late 2026' (company release 2026-10-22, https://www.stocktitan.net/news/ABOS/acumen-pharmaceuticals-to-present-preliminary-baseline-hp5vi1e4200r.html), and runway 'into early 2027' (10-Q, https://www.sec.gov/Archives/edgar/data/0001576885/000162828026056199/abos-20260630.htm).",
+   "positioning_check": "Short interest was 3,079,512 shares at the 2026-09-30 settlement, 4.80 days to cover (2,804,144 and 8.16 DTC at 09-15; 3,367,011 at 07-31), per https://equibles.com/stocks/abos/shortinterest. On 72,317,285 shares outstanding (10-Q cover, 2026-08-07) that is ~4.3% of shares: not crowded, no squeeze mechanism of note. The option chain is unusable (ATM legs not two-sided), so there is no skew and no implied move. The put/call open-interest ratio is 0.24 on total OI of only 149 contracts (baseline): call-leaning, but too small to say anything. Tape: spot $2.03, +20.1% over 5 sessions (from a mid-October low of ~$1.62-1.69 to $2.06 on 2026-10-22, the day of the CTAD poster release), -9.4% over 20 sessions, -39.8% from the 52-week high. The March 2026 PIPE priced at $3.30.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "The Oct 26 print is very unlikely to carry ALTITUDE-AD topline. Enrollment of 542 completed on 2025-03-26 and the double-blind period is 80 weeks (investor-day slide 32). ClinicalTrials.gov NCT06335173 carries an estimated primary completion of 2026-10. On 2026-10-22 the company restated 'topline results are expected in late 2026' and booked only baseline/qualitative posters at CTAD (Nov 16-17). So last-patient-last-visit is around now and data most plausibly lands in Dec 2026. The release should be a reiteration, possibly confirming LPLV or narrowing the month. It arrives after the stock bounced ~20% from ~$1.69 to $2.03 in the week the early report date was announced (Oct 26, against mid-November in prior years).",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://clinicaltrials.gov/api/v2/studies/NCT06335173?fields=protocolSection.statusModule",
+    "source_date": "2025-10-27 (last registry update; primary completion 2026-10 ESTIMATED)",
+    "reaction_history_on_this_line": "No prior print on this name carried a topline-timing change. Its seven 8-K 2.02 reactions were +1.6, -3.5, -3.0, -1.0, -11.3, 0.0, +6.0 (median |3.0|), five of seven flat or down. Q2 2026, a reiteration of 'late 2026', moved +1.6%.",
+    "why_not_priced": "The run-up into the date announcement suggests some holders are positioned for news at the call. Had the market absorbed that the timeline puts topline in December, the stock would not have re-rated 20% on a date notice and a poster release. Upside: the release confirms LPLV and pins a December date. Downside: a bare reiteration, or the window slips toward early 2027, which would collide with the 'into early 2027' runway.",
+    "independence": "Company release 2026-10-22 restating late-2026 topline and baseline-only CTAD posters: https://www.stocktitan.net/news/ABOS/acumen-pharmaceuticals-to-present-preliminary-baseline-hp5vi1e4200r.html ; investor-day deck 2026-09-16 (80-week DB, 'late 2026', partner if successful): https://www.sec.gov/Archives/edgar/data/1576885/000162828026062137/finalinvestordayslides_9.htm ; enrollment completion 2025-03-26: https://www.biospace.com/press-releases/acumen-pharmaceuticals-completes-enrollment-of-altitude-ad-a-phase-2-clinical-trial-of-sabirnetug-acu193-in-early-alzheimers-disease ; price path: https://www.aaii.com/investingideas/article/548032-why-acumen-pharmaceuticals-inc8217s-abos-stock-is-up-690 . The link from run-up to disappointment is inference, not a document.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "The Q3 10-Q will repeat a going-concern paragraph on a shrinking cash pile. Cash was $110.2m at 2026-06-30, H1 operating burn was $42.2m (~$7m/month), and K2 term-loan amortisation takes $10.1m of principal in H2 2026 from 2026-07-01. Sep 30 cash should therefore be roughly $84-88m (estimate), against a ~$147m market cap and runway 'into early 2027'. There were no ATM sales in H1 2026, but a $50m ATM is live, and any post-June ATM use at ~$2 would show in the 10-Q.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001576885/000162828026056199/abos-20260630.htm",
+    "source_date": "2026-08-12",
+    "reaction_history_on_this_line": "Going-concern language first appeared in the Q1 2026 10-Q (2026-05-12, -3.5%) and repeated at Q2 (2026-08-12, +1.6%). BofA cut its target from $10 to $9 on the Q2 cash update.",
+    "why_not_priced": "Mostly priced: runway and going-concern are in the last two 10-Qs, and the cash walk is arithmetic anyone can do. The money buys the readout itself (cash covers past topline), so this is not pre-data distress. It is a negative only if the 10-Q shows ATM use or a shorter runway. If it were unpriced, the stock would not trade at ~1.7x estimated cash.",
+    "independence": "Panabee summary of the Q2 report (going concern, $31.6m loan principal): https://www.panabee.com/news/acumen-pharmaceuticals-earnings-q2-2026-report ; the same 10-Q underlies both, so this is one document.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "Q3 EPS consensus is -$0.39 to -$0.43 across three aggregators, against a Q2 actual of -$0.45 (which missed a -$0.40 estimate). R&D should ease as the trial winds down, so a print near the bar is the base case. This line does not move the stock.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.benzinga.com/quote/ABOS/earnings-forecasts",
+    "source_date": "2026-10-23 (accessed)",
+    "reaction_history_on_this_line": "Q2 2026 missed by $0.05 and the stock rose 1.6%. Q4 2025 beat by $0.09 (MarketBeat 2026-03-26) and the stock fell 3.0%. EPS surprises have not set the sign.",
+    "why_not_priced": "It is priced. Filed at zero for completeness: the bar is disputed and the reaction history shows no link between EPS surprise and move.",
+    "independence": "https://www.rttnews.com/3680639/acumen-s-q2-loss-narrows-topline-phase-2-data-for-alzheimer-s-drug-sabirnetug-in-late-26.aspx (Q2 loss $32.72m, -$0.45, stock +1.59%).",
+    "i": 2
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "ALTITUDE-AD Phase 2 topline (iADRS at 18 months, 542 participants), guided late 2026. This is the event the stock actually trades on, and the timeline points to December 2026.",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.stocktitan.net/news/ABOS/acumen-pharmaceuticals-to-present-preliminary-baseline-hp5vi1e4200r.html",
+    "i": 3
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "CTAD 2026 poster session (Nov 16-17): three ALTITUDE-AD posters on baseline characteristics and participant/care-partner interviews, with no efficacy data.",
+    "resolves_by": "2026-11-16",
+    "source": "https://www.stocktitan.net/news/ABOS/acumen-pharmaceuticals-to-present-preliminary-baseline-hp5vi1e4200r.html",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "ProMIS PMN310, a competing AbetaO antibody: final 12-month PRECISE-AD Phase 1b topline guided for Q4 2026. A read-across event, undated and most likely after the window.",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.biospace.com/press-releases/promis-neurosciences-reports-first-human-evidence-of-amyloid-beta-oligomer-target-engagement-by-pmn310-at-aaic-2026",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "TradingView/AAII mention of a 'late-breaking CTAD presentation Oct 29 - Nov 1' on ALTITUDE-AD screening",
+    "source": "https://www.tradingview.com/chart/ABOS/PtTEb6Ce-ABOS-Long",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "BiopharmaWatch '~13 month runway' estimate",
+    "source": "https://www.biopharmawatch.com/news/ABOS/acumen-pharmaceuticals-q2-2026-results-highlights",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "March 2026 PIPE of 10,833,331 shares at $3.30 ($35.75m gross)",
+    "source": "https://www.sec.gov/Archives/edgar/data/1576885/000162828026017885/0001628280-26-017885-index.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ABOS.json",
+    "text": "UBS note saying cash funds operations through the Phase 2 readout in early 2027",
+    "source": "https://www.tipranks.com/news/the-fly/acumen-price-target-lowered-to-14-from-15-at-ubs",
+    "first_hunter_reason": "no_source",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ABOS.json",
+    "text": "EDGAR since 2026-08-12: only an S-8, the Q2 10-Q and the 2026-09-16 investor-day 8-K (Item 7.01). No new financing, ATM amendment, 8.01 or officer change (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001576885&type=8-K)",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ABOS.json",
+    "text": "ClinicalTrials.gov NCT06335173: no registry edit since 2025-10-27; status ACTIVE_NOT_RECRUITING",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ABOS.json",
+    "text": "Any October 2026 topline, LPLV or database-lock announcement: none found",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ABOS.json",
+    "text": "An analyst upgrade or downgrade in October 2026 behind the run-up: none found (AAII cites one upgrade in the past month, unsourced)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ABOS.json",
+    "text": "Peer oligomer/amyloid read-across inside the window: none dated October 2026",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ABOS.json",
+    "text": "Investor-relations news page (403) and Seeking Alpha (403) were unreachable; covered through EDGAR and wire mirrors",
+    "i": 15
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-23/BFST",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "BFST",
+   "event_date": "2026-10-26",
+   "session": "bmo",
+   "as_of_utc": "2026-10-23T17:10:00+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-23",
+    "spot": 31.91,
+    "run_up_5d_pct": 1.92,
+    "run_up_20d_pct": 3.4,
+    "pct_from_52w_high": -1.15,
+    "pct_from_52w_low": 36.37,
+    "realised_vol_20d_annualised_pct": 15.1,
+    "avg_volume_20d": 184451
+   },
+   "cik": "0001624322",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-23",
+      "session": "amc",
+      "move_pct": 2.26
+     },
+     {
+      "event_date": "2026-04-27",
+      "session": "bmo",
+      "move_pct": -4.42
+     },
+     {
+      "event_date": "2026-01-22",
+      "session": "amc",
+      "move_pct": -3.23
+     },
+     {
+      "event_date": "2025-10-23",
+      "session": "amc",
+      "move_pct": 6.88
+     },
+     {
+      "event_date": "2025-07-28",
+      "session": "bmo",
+      "move_pct": -2.4
+     },
+     {
+      "event_date": "2025-04-24",
+      "session": "amc",
+      "move_pct": -3.85
+     },
+     {
+      "event_date": "2025-01-23",
+      "session": "amc",
+      "move_pct": 8.84
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 3.85,
+    "max_abs_move_pct": 8.84,
+    "up_count": 3,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 95,
+    "median_gap_days": 91.0,
+    "ratio": 1.04,
+    "last_print": "2026-07-23",
+    "verdict": "fits_cadence",
+    "reason": "95 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 28,
+    "atm_strike": 35.0,
+    "atm_iv_pct": null,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 393.0,
+    "total_open_interest": 394,
+    "atm_spread_frac_of_mid": null,
+    "warnings": [
+     "ATM legs not two-sided; no live bid/ask to price a straddle from"
+    ]
+   },
+   "deadband_pct": 1.93,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.85,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 diluted EPS consensus $0.74 from two agreeing sources: Earnings Whispers (https://www.earningswhispers.com/stocks/BFST) and Benzinga (https://www.benzinga.com/quote/BFST/earnings-forecasts, which also gives revenue $93.3M). A third page shows $0.75. Q2 2026 printed $0.70 GAAP and $0.71 core (https://www.sec.gov/Archives/edgar/data/0001624322/000162432226000032/exhibit991_earningsrelease.htm). The company gives no numeric guidance in its release. On the call (Quartr summary, https://quartr.com/events/business-first-bancshares-inc-bfst-q2-2026_oCaybdfZ) management guided to high single-digit annualized loan growth in Q3 and Q4, falling core expenses, no further rate cuts assumed, and a 1.25% ROA exiting Q4 (Q2 core ROAA was 1.05%). A secondary summary puts core opex at about $58M in Q3 and $57M in Q4, against Q2's $58.4M.",
+   "positioning_check": "Short interest 1,236,013 shares, 4.03% of float, 5.7 days to cover, record date 2026-09-30. That is up 11.2% from 1,111,825 (MarketBeat, https://www.marketbeat.com/stocks/NASDAQ/BFST/short-interest/, FINRA publication 2026-10-09). It is a moderate short that is building, not a crowded one, though 5.7 days to cover is meaningful on a thin name (20d average volume about 184k shares). The option chain is unusable: no two-sided ATM quotes, so there is no skew and no implied move. The baseline anchor is the median historical reaction, 3.85%. Tape: spot $31.91, 1.15% below the 52-week high, +3.4% over 20 days, 20-day realised vol 15%. Five analysts, all Buy, targets $34.50-$36 after late-July raises.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Investar, the closest Baton Rouge peer (BFST is also headquartered in Baton Rouge), reported Q3 2026 on 2026-10-22, after BFST last spoke. NIM rose 6 bps to 3.73%; GAAP EPS was $0.74 and core EPS $0.77 against a ~$0.75 consensus. This points to margin still widening for south Louisiana commercial banks through Q3, which is the line BFST's $0.71 to $0.74 consensus step depends on (Q2 NIM was 3.73%, +8 bps).",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001602658/000143774926033291/ex_1008963.htm",
+    "source_date": "2026-10-22",
+    "reaction_history_on_this_line": "In Q2 (2026-07-23, amc) BFST printed NIM +8 bps with core EPS $0.71 roughly in line, and the stock moved +2.26%. Its +6.88% (2025-10-23) and +8.84% (2025-01-23) reactions both followed margin-led quarters, per the baseline history.",
+    "why_not_priced": "It is a peer print from three sessions ago on a different name. BFST's consensus ($0.74) has not visibly moved since and its 5-day run-up is only +1.9%. If the read-through were priced, BFST estimates or the price would have stepped up after 10-22.",
+    "independence": "Hancock Whitney's Q3 NIM was also +5 bps (https://www.sec.gov/Archives/edgar/data/0000750577/000119312526426654/hwc-ex99_1.htm), but 4 bps of that came from acquisition accretion. Different document, partly the same direction. Proxy only: BFST's own Q3 margin is unknown.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Home Bancorp, the Lafayette LA peer that overlaps BFST's Acadiana footprint, missed Q3 2026 on credit (released 2026-10-19). Six relationships totaling $19.5M moved to nonaccrual, nonperforming assets rose to $53.7M (1.49% of assets) from $39.2M, and EPS was $1.28 against a $1.51 consensus. Credit is the line BFST sold off on in April 2026 (-4.42%). BFST's own NPAs fell to $109.2M (1.23% of assets) in Q2, and management guided to further NPL reductions.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://finviz.com/news/404234/home-bancorp-inc-announces-2026-third-quarter-results-and-declares-quarterly-dividend",
+    "source_date": "2026-10-19",
+    "reaction_history_on_this_line": "2026-04-27 (bmo): -4.42%, the quarter with Q1 NPAs at $123.1M. 2026-07-23: +2.26% when NPAs fell to $109.2M on a $21.0M resolution.",
+    "why_not_priced": "BFST trades 1% under its 52-week high with all-Buy coverage, so the market is not pricing a regional credit read-through. If it were, BFST would have lagged after 10-19. Its 5-day run-up of +1.9% says it did not.",
+    "independence": "Earnings Whispers on the miss: https://finviz.com/news/405186/home-bancorp-misses-as-credit-costs-overwhelm-record-net-interest-income-management-bets-npas-are-near-peak (same event). Proxy only. HBCP's nonaccruals were idiosyncratic CRE/C&I relationships, and BFST's own document trend runs the other way. Net of the rest of the company, this is a tail risk, not a base case.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Deposit costs turned up in the Gulf South and Texas in Q3 after the Fed's 25 bp hike on 2026-09-16, its first since 2023. Hancock Whitney's deposit costs rose 12 bps to 1.55%, and it guided Q4 to a similar or larger rise, above its July signal of about 10 bps for the half. Third Coast (Texas) saw interest-bearing deposit costs go from 3.41% to 3.49% and NIM fall 13 bps. Home Bancorp's rose 5 bps. BFST pays a high 2.88% on interest-bearing deposits and its Q2 margin gain leaned on cheaper deposits (from 2.95%). Its call assumed only 'no further rate cuts', not a hike.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://finviz.com/news/405180/hancock-whitney-edges-past-consensus-but-misses-whisper-as-raised-nii-guidance-comes-at-a-capital-cost",
+    "source_date": "2026-10-20",
+    "reaction_history_on_this_line": "BFST's margin commentary has driven its larger moves (+6.88% Oct 2025, +8.84% Jan 2025). No hiking-cycle reaction exists in the 7-print baseline.",
+    "why_not_priced": "BFST's Q3 consensus implies margin and NII growth (revenue $93.3M against Q2's ~$91.3M), and the stock is near highs. If the market expected a deposit-cost squeeze and a softer Q4 margin outlook, estimates would have been trimmed after HWC on 10-20.",
+    "independence": "Third Coast Q3 2026 release: https://www.sec.gov/Archives/edgar/data/0001781730/000119312526427908/tcbx-ex99_1.htm. Fed hike: https://investinglive.com/central-banks/fomc-rate-decision-fed-hikes-for-the-first-time-in-three-years/. Investar's NIM rise (finding 1) cuts against this. BFST's rate sensitivity was not retrievable from the 10-Q, so a hike may be neutral or positive for it. Sized small for that reason.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "The call guidance this print is measured against goes beyond what consensus seems to embed. Management targeted high single-digit annualized loan growth in Q3 and Q4, falling core expenses, and a 1.25% ROA exiting Q4, against 1.05% core ROAA in Q2. On ~$8.9B of assets, 1.25% is roughly $27-28M a quarter, or about $0.80+ diluted EPS before preferred dividends, versus a $0.74 Q3 bar. Whether Monday reaffirms or walks back that trajectory is the guidance line.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://quartr.com/events/business-first-bancshares-inc-bfst-q2-2026_oCaybdfZ",
+    "source_date": "2026-07-23",
+    "reaction_history_on_this_line": "After Q2's guide (2026-07-23) the stock moved +2.26% and three analysts raised targets (Stephens $34 to $36, Hovde $32.50 to $36, DA Davidson $33 to $35; https://www.marketbeat.com/instant-alerts/business-first-bancshares-nasdaqbfst-price-target-raised-to-3500-2026-07-27/).",
+    "why_not_priced": "Partly priced: the July target raises and the run to near 52-week highs reflect it. What is not priced is whether Q3 shows the path, given a Q2 where loans held for investment fell 0.37% and deposits fell 3.1%. The sign is genuinely two-sided, hence the wide band.",
+    "independence": "Q2 release (https://www.sec.gov/Archives/edgar/data/0001624322/000162432226000032/exhibit991_earningsrelease.htm): the CEO says Q2 laid 'the foundation we expected for a strong second half', and $100.3M of low-yield acquired Progressive loans were sold. That is the same company source, not independent.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Philip Jordan, b1BANK's Chief Banking Officer and EVP, resigned voluntarily (8-K Item 5.02, event 2026-09-09, filed 2026-09-11). He had been with the bank since 2008 and leads the unified commercial and retail banking teams, treasury management, mortgage and guaranteed lending. No successor was named. The loss falls on the loan-production engine that the high single-digit growth guide depends on.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/1624322/000143774926030179/bfbi20260911_8k.htm",
+    "source_date": "2026-09-11",
+    "reaction_history_on_this_line": "No prior executive-departure print in the baseline. The stock did not visibly react in September and is near 52-week highs.",
+    "why_not_priced": "Quiet 8-K with no press release and no successor named. The call is the first time management must address coverage of the commercial book and the Houston pipeline without him. If it were priced, it would show as a September drawdown, and there was none.",
+    "independence": "Role description: DEF 14A 2026, https://www.sec.gov/Archives/edgar/data/1624322/000143774926011695/bfbi20260325_def14a.htm. Same company, not independent. The 8-K says the departure was not due to disagreement.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Insiders sold after the Q2 print, all at $31-32 (roughly today's price). Director George Cummings III sold 20,000 shares on 2026-07-30/31, 10,000 on 08-03 and 3,235 on 08-19. Entities tied to director William Hall sold on 08-05. The General Counsel sold 1,000 on 08-05. EDGAR shows a cluster of eight Form 144s and eleven Form 4s from 07-28 to 09-01, with no open-market buys found.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001624322&type=4&dateb=&owner=include&count=40",
+    "source_date": "2026-08-25",
+    "reaction_history_on_this_line": "None in the baseline.",
+    "why_not_priced": "Largely priced: the filings are public and reported by aggregators. It is filed because the sells sit at the current price, and the selling set its own ceiling near $32 while the stock has since ground to its 52-week high.",
+    "independence": "https://www.insidertrades.com/alerts/nasdaq-bfst-insider-buying-and-selling-2026-08-26/ (aggregator of the same Form 4s, not independent).",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Short interest rose 11.2% to 1.24M shares (4.03% of float) at the 2026-09-30 settlement, with 5.7 days to cover on ~204k shares a day. That is a building but not crowded short into a thin-volume print, which gives a small squeeze tail if the release is clean.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.marketbeat.com/stocks/NASDAQ/BFST/short-interest/",
+    "source_date": "2026-10-09",
+    "reaction_history_on_this_line": "None measurable. Earlier settlements: about 567k shares (2026-04-30, Equibles) and about 1.1M (2026-06-30, CurvedTrading), so the short has roughly doubled since spring.",
+    "why_not_priced": "Positioning is the information set, not something to be priced. It is filed as a modest asymmetry because days to cover is high relative to the 15% realised vol.",
+    "independence": "https://equibles.com/stocks/bfst/shortinterest (April 2026 level, shows the trend).",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Red River Bancshares (Shreveport LA peer) reports around 2026-10-29/30 and Origin Bancorp (Ruston LA) on 2026-10-28. Both are after BFST's exit window, so their read-through cannot reach this trade.",
+    "resolves_by": "2026-10-29",
+    "source": "https://finviz.com/news/400934/origin-bancorp-inc-announces-third-quarter-2026-earnings-release-and-conference-call",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Earnings Whispers lists the report as amc 4:05 PM ET while the company says bmo.",
+    "source": "https://www.earningswhispers.com/stocks/BFST",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "An AAII article labels a 2026-07-23 report as 'Q3'.",
+    "source": "https://www.aaii.com/investingideas/article/519389-what-you-need-to-know-about-business-first-bancshares-incs-q3-earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Meta's $40B Northeast Louisiana investment cited by the CEO as a second-half tailwind.",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001624322/000162432226000032/exhibit991_earningsrelease.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BFST.json",
+    "text": "Hancock Whitney's Q3 NIM +5 bps as a positive margin read-through.",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000750577/000119312526426654/hwc-ex99_1.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFST.json",
+    "text": "EDGAR submissions since 2026-07-23 (https://data.sec.gov/submissions/CIK0001624322.json): no 8-K besides the 09-11 Item 5.02. No Q3 pre-announcement, buyback reauthorisation, new M&A or capital raise.",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFST.json",
+    "text": "BFST news Aug-Oct 2026: only the 10-01 date announcement (https://finviz.com/news/398145/business-first-bancshares-inc-schedules-q3-2026-earnings-release-and-conference-call-for-oct-26).",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFST.json",
+    "text": "10-Q for Q2 2026 (https://www.sec.gov/Archives/edgar/data/1624322/000162432226000037/bfst-20260630.htm): the rate-sensitivity table could not be extracted, so BFST's asset/liability sensitivity to the Sept hike is unknown.",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFST.json",
+    "text": "Q2 call transcript: full text unreachable (MarketBeat index page, StockTaper 429, 247wallst 410, Chartmill 403); used the Quartr summary.",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFST.json",
+    "text": "Houston hiring or branch news for b1BANK in 2026: nothing found.",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFST.json",
+    "text": "Where Philip Jordan went after resigning: nothing found.",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFST.json",
+    "text": "Option chain: unusable (baseline), so no skew.",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-23/VZ",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "VZ",
+   "event_date": "2026-10-26",
+   "session": "bmo",
+   "as_of_utc": "2026-10-23T17:09:31+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-23",
+    "spot": 44.56,
+    "run_up_5d_pct": -0.51,
+    "run_up_20d_pct": -5.35,
+    "pct_from_52w_high": -13.39,
+    "pct_from_52w_low": 16.04,
+    "realised_vol_20d_annualised_pct": 42.9,
+    "avg_volume_20d": 26832002
+   },
+   "cik": "0000732712",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-24",
+      "session": "intraday",
+      "move_pct": 5.84
+     },
+     {
+      "event_date": "2026-04-27",
+      "session": "intraday",
+      "move_pct": 1.55
+     },
+     {
+      "event_date": "2026-01-30",
+      "session": "intraday",
+      "move_pct": 11.83
+     },
+     {
+      "event_date": "2025-10-29",
+      "session": "intraday",
+      "move_pct": 2.26
+     },
+     {
+      "event_date": "2025-07-21",
+      "session": "intraday",
+      "move_pct": 4.04
+     },
+     {
+      "event_date": "2025-04-22",
+      "session": "intraday",
+      "move_pct": 0.61
+     },
+     {
+      "event_date": "2025-01-24",
+      "session": "intraday",
+      "move_pct": 0.92
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 2.26,
+    "max_abs_move_pct": 11.83,
+    "up_count": 7,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 94,
+    "median_gap_days": 89.0,
+    "ratio": 1.06,
+    "last_print": "2026-07-24",
+    "verdict": "fits_cadence",
+    "reason": "94 days since the last print against a 89-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-10-30",
+    "days_to_expiry": 7,
+    "atm_strike": 44.5,
+    "atm_iv_pct": 42.6,
+    "straddle_implied_move_pct": 4.75,
+    "event_implied_move_pct": 0.0,
+    "event_implied_move_basis": "4.75% straddle over 7 calendar days less 6.04% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -4.67,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.55,
+    "total_open_interest": 45045,
+    "atm_spread_frac_of_mid": 0.138,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 2.26,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 adj. EPS about $1.27-1.28 and revenue about $34.87bn (sweep row; Hudson Labs preview 2026-10-06, https://www.hudson-labs.com/research/verizon-q3-2026-earnings-preview-vz-guidance-estimates-key). The line the stock trades on is postpaid phone net adds plus mobility and broadband service revenue growth 'approaching 3%' (company Q3 guide). FY26 company guide: postpaid phone net adds in the upper half of 750k-1M, and the CEO said on 2026-09-09 they would be at the TOP end (implies about 761k in H2 after 239k in H1). Adj. EPS $4.99-5.04, FCF $21.9-22.1bn. I could not source a consensus for Q3 phone net adds (no FactSet or Visible Alpha number found), so findings on that line are capped small.",
+   "positioning_check": "Short interest 88.9M shares at the 2026-09-30 settlement, up 5.7% from 84.1M; days to cover 3.72 against a 24-report average of 3.74 (https://www.optionsanalysissuite.com/stocks/vz/short-interest). That is about 2% of float and not crowded. The Aug-20 snapshot read 2.0% of float, per a secondary aggregator. Skew_25d is -4.67 vol points, so upside is paid. Put/call OI is 0.55. Event-implied move is 0.0% after the variance subtraction, because the 7-day straddle (4.75%) is fully explained by elevated 20d realised vol (42.9%). Tape: spot 44.56, -5.35% over 20 days, -13.4% from the 52w high, a bounce of about 7% off the 2026-10-09 close of 41.65. Insiders: 10 open-market sales and 0 buys over 6 months (quiverquant).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "AT&T's Q3 2026 release (8-K, 2026-10-21) beat on adj. EPS ($0.65 vs ~$0.60) and revenue ($32.3bn vs $31.7bn) and raised the 2026 adj. EPS outlook to the '$2.40 range'. Postpaid phone net adds were 379k against ~387k expected and 405k a year earlier, phone churn was 0.92% (flat YoY), and the release says promotional discounts on subscriber additions partly offset pricing. The stock still fell about 5-6% that day and VZ fell 3.2% in sympathy. The peer that printed after VZ last spoke had a beat-and-raise sold, with the market focused on satellite competition, the capex cut and a $2.6bn impairment.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000732717/000073271726000370/t-3q2026exhibit991.htm",
+    "source_date": "2026-10-21",
+    "reaction_history_on_this_line": "VZ's own last 7 prints all reacted positive (median |move| 2.26%, +5.84% on the Q2 2026 beat-and-raise). The peer print shows the current tape selling a telecom beat-and-raise, which is a different reaction function from VZ's own history.",
+    "why_not_priced": "Partly priced: VZ already gave up 3.2% on 2026-10-21 and has since recovered to 44.56. If the market fully expected VZ to be sold the same way, the skew would be put-bid. It is call-bid at -4.67, so the options market leans toward a relief reaction that AT&T did not get.",
+    "independence": "Reaction: https://www.marketbeat.com/instant-alerts/price-att-nyse-t-stock-price-down-63-should-you-sell-2026-10-21/ (T -6.3% midday) and https://finviz.com/news/405566/why-is-att-stock-falling-despite-beating-third-quarter-earnings-estimates. VZ sympathy move: https://www.quiverquant.com/news/Verizon+Falls+as+Telecom+Sentiment+Weakens+Ahead+of+Its+Earnings. These are reports on the same event and not independent evidence for VZ's own quarter.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "At Goldman Sachs Communacopia on 2026-09-09, with about two-thirds of Q3 elapsed, CEO Schulman committed to three things: Q3 would be the first quarter in at least three years with positive phone net accounts; 2026 postpaid phone net adds would land at the TOP end of the 750k-1M guide (about 761k needed in H2 against 184k in Q2); and churn would keep improving YoY with no 'phones on us'. The comparison quarter (Q3 2025) was 44k phone net adds. A CEO giving this specific a promise this late in the quarter implies he could see the numbers. The risk is that the bar is now set at a pace far above Q2.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.tikr.com/blog/verizon-stock-is-8-off-its-september-peak-heres-the-q3-test-its-ceo-set",
+    "source_date": "2026-09-26",
+    "reaction_history_on_this_line": "Q2 2026 (184k phone adds, best Consumer Q2 in five years, guide raised) reacted +5.84%. Q1 2026 reacted +1.55%. The Jan 2026 print with the first Schulman guide reacted +11.83%. Subscriber delivery has been bought every time under this CEO.",
+    "why_not_priced": "Mostly priced. These are public CEO statements and sit inside company guidance. What may not be priced is the visibility they imply about Q3 itself. If the market fully trusted the promise, the stock would not sit 13% off its high with the satellite discount on top. Without a sourced Q3 net-add consensus, I cannot say whether the street's number already reflects the 'top end' pace.",
+    "independence": "Hudson Labs preview (https://www.hudson-labs.com/research/verizon-q3-2026-earnings-preview-vz-guidance-estimates-key, 2026-10-06) carries the same guide and expects significant improvement. Those are the same company statements, so this counts as one source.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "SpaceX agreed on 2026-10-08 to buy Grain Management's nationwide 800 MHz low-band spectrum (about $8bn reported; needs FCC approval) for Starlink Mobile. VZ fell 10.1% on 2026-10-09 to $41.65, of which about $0.71 was the ex-dividend, and sell-side targets were cut (Scotiabank to $50; JPMorgan 49->47 and RBC 46->44 per secondary reports). The Q3 period ended before the deal, so the print cannot show any satellite effect. The 10-26 call is management's first chance to rebut it with October churn and porting data. Schulman already argued on 2026-09-09 that LEO satellite cannot compete where 95-98% of Verizon revenue sits.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.tikr.com/de/blog/verizon-stock-fell-10-in-a-day-after-spacexs-spectrum-deal-heres-what-its-ceo-said-about-starlink-in-september",
+    "source_date": "2026-10-10",
+    "reaction_history_on_this_line": "No prior print has had a satellite overhang. AT&T faced the same overhang on 10-21, reassured nobody and fell. That bounds the upside of a rebuttal.",
+    "why_not_priced": "The derating is priced, at -10% on the day. What is open is whether a lowered bar plus a rebuttal produces relief. The stock has already bounced about 7% off 41.65 and the skew pays upside, which suggests part of the relief is priced too.",
+    "independence": "https://www.tradingkey.com/news/market-movers/262208662-market-movers-vz-20261009 (2026-10-09: open -6.39%, PT cuts, Scotiabank named); https://broadbandbreakfast.com/spacex-acquiring-grain-spectrum-to-support-mobile-ambitions/ (deal terms).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "Verizon's iPhone 18 Pro launch offer (preorders from 2026-09-12) gives up to $1,200 off a $1,199.99 phone with an eligible trade-in and a new line on a qualifying myPlan, or up to $1,020 off for existing customers who upgrade, paid as 36-month credits. That is effectively a free flagship for a switcher, against the CEO's 'no phones on us' line. It supports late-Q3 gross adds and churn but adds promotional cost to Q4 margins and ARPA. AT&T also flagged promotional discounts on additions.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://slickdeals.net/f/20013714-verizon-apple-iphone-18-pro-pro-max-up-to-1-200-off-w-eligible-trade-in-new-line-on-myplan",
+    "source_date": "2026-09-14",
+    "reaction_history_on_this_line": "No VZ-specific history found on promotional-cost surprises. Under the prior CEO, promo-heavy quarters with weak adds were sold (the Q3 2025 44k quarter still reacted +2.26% because of the CEO change).",
+    "why_not_priced": "Launch promos are visible to everyone, and trade-in-based launch offers are industry standard, so this is mostly priced. It would matter only if management quantifies promo cost or guides Q4 ARPA lower. This is a proxy, not a company number.",
+    "independence": "https://www.tomsguide.com/phones/iphones/verizon-is-practically-giving-away-the-iphone-18-pro-heres-how-to-get-it (date not verified); AT&T 8-K cites promotional discounts on additions.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "Insiders made 10 open-market sales and no purchases in the past six months. These include EVP Samantha Hammock (about 73k shares, about $3.5M) and Kyle Malady (9,900 shares, about $476k), and an executive sold at $42.93 on 2026-10-13, after the SpaceX drop. The sizes are small relative to the company and look routine.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-26",
+    "source": "https://www.quiverquant.com/news/Verizon+Falls+as+Telecom+Sentiment+Weakens+Ahead+of+Its+Earnings",
+    "source_date": "2026-10-21",
+    "reaction_history_on_this_line": "None; routine insider sales have not been a visible driver of VZ reactions.",
+    "why_not_priced": "Form 4s are public. The only signal is the absence of any insider buying into a 17.8% drawdown, which is weak.",
+    "independence": "none",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "T-Mobile reports Q3 2026 on 2026-10-28 after the close (release about 16:05 ET), two days after the exit. Its account adds and commentary on switching and satellite would be the next read-through.",
+    "resolves_by": "2026-10-28",
+    "source": "https://secure.businesswire.com/news/home/20260917015300/en/T-Mobile-to-Host-Q3-2026-Earnings-Call-on-October-28-2026",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "FCC approval of SpaceX's purchase of Grain's 800 MHz spectrum is pending and undated. Any ruling or comment cycle falls after the window.",
+    "resolves_by": "2027-01-01",
+    "source": "https://broadbandbreakfast.com/spacex-acquiring-grain-spectrum-to-support-mobile-ambitions/",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "BofA cut its VZ price target to $45 from $49 on Q3 results being 'better than feared'",
+    "source": "https://www.tipranks.com/news/the-fly/verizon-price-target-lowered-to-45-from-49-at-bofa-thefly",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "BNP Paribas Exane downgraded VZ to neutral with a $44 target on Oct 21",
+    "source": "https://www.marketbeat.com/instant-alerts/verizon-communications-nysevz-downgraded-by-bnp-paribas-exane-to-neutral-2025-10-21",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "Analyst PT cuts after the SpaceX deal (JPMorgan 49->47, RBC 46->44, Scotiabank to $50)",
+    "source": "https://www.tradingkey.com/news/market-movers/262208662-market-movers-vz-20261009",
+    "first_hunter_reason": "duplicate",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "VZ.json",
+    "text": "Q3 2025 easy comparison (44k phone net adds)",
+    "source": "https://www.hudson-labs.com/research/verizon-q3-2026-earnings-preview-vz-guidance-estimates-key",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "VZ.json",
+    "text": "Q3 2026 postpaid phone net-add consensus (FactSet, Visible Alpha, Wave7, New Street): no sourced number found; only a July prediction-market page with conflicting thresholds",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "VZ.json",
+    "text": "Third-party porting or switching data for Q3 2026: nothing found",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "VZ.json",
+    "text": "Verizon 8-Ks since the Q2 print: only director election (Charles Phillips, item 5.02, filed 2026-09-29) and earlier routine financing 8.01s; no pre-announcement",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "VZ.json",
+    "text": "Verizon layoffs or price increases in Sep-Oct 2026: nothing new beyond the May 2026 round",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "VZ.json",
+    "text": "Verizon satellite response or partnership news in Oct 2026: nothing found (the AST SpaceMobile deal is Oct 2025)",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "VZ.json",
+    "text": "Cable MVNO (Comcast/Charter) Q3 2026 wireless lines: both report after the window",
+    "i": 16
+   }
+  ]
+ }
+]
