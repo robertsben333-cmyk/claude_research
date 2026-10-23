@@ -35,3 +35,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-10-23 17:29 UTC
 - 3 of 3 returned by 17:29Z (unpriced-searcher, native agent); guard moved nothing (all bmo); no searcher reported its search budget running out
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-10-23 17:31 UTC
+- 3 of 3 returned by 17:31 UTC (unpriced-searcher, named agent); guard moved nothing; no searcher reported its search budget running out
