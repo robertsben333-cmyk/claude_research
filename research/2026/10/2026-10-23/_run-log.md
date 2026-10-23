@@ -111,3 +111,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-23 01:17 UTC
 - 8 ranked names (6629 no event), 0 above floor 2.8; top 6999 +2.20, bottom 8707 -0.10. Packs built, four intl judges.
+
+## Stage J — Japan ranking — DONE
+- Logged at 2026-10-23 01:21 UTC
+- 14 scheduled / 9 eligible / 9 hunted / 8 ranked (6629 moved to 10-30 per TDnet 10-16 notice). None above floor 2.8. Top 6999 +2.20, bottom 8707 -0.10. Panel 4/4 members, no fallback: selected 6999 long (k=4, panel_pct 93). Note: japan/japan-note.md. No orders.
