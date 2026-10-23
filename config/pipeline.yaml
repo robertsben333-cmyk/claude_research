@@ -300,37 +300,6 @@ edge_panel_intraday:
   places_orders: false
   shadow_ledger: false
 
-# Stage E-PS (2026-10-22, one day's test, operator's instruction: "ik heb het gevoel dat
-# bij hoog aantal tickers het systeem het niet goed doet ... 4 test routines ... die ieder
-# max 5 stocks beoordelen, en ... communiceren onderling wie welk doet"). Stage E-P's own
-# names that day, split round-robin over four fresh sessions of at most five, each with
-# E-P's sweep rows and baselines copied in, its own unpriced-searchers and its own four
-# blind judges, scored --dry-run against stage E-P's history. The sessions agree who does
-# which through compare-and-swap commits on data_branch (researcher_us/scripts/
-# panel_split.py). Output research/<Y>/<M>/<DATE>/edge-split-<k>/, the day's plan, claims
-# and comparison in edge-split/. Provenance US-PS, versions us-panel-split.vN: never
-# pooled with stage E-P (project rule 3).
-edge_panel_split:
-  inherits: edge_panel
-  output_prefix: edge-split
-  shards: 4
-  hunted_names: 5              # per shard; 4 x 5 = edge_panel.hunted_names
-  names_from: edge-panel       # stage E-P's own run that day, read from source_branch
-  source_branch: main
-  # Where the shards publish and talk. Never main: the test's code lives on this branch
-  # only, and publish.sh would carry it onto whatever branch it pushes to.
-  data_branch: claude/modest-davinci-mjddtu
-  # Start once stage E-P has reached its buy (alpaca_trade.py plan writes this file), so
-  # four more sessions cannot push the account into the usage limit before E-P's book is
-  # placed, as the 429 did on 2026-10-21. Start anyway at the deadline if E-P's sweep
-  # exists, so five amc names still finish well before the 16:00 ET release.
-  start_when_file: alpaca-plan.json
-  start_deadline_et: "14:30"
-  writes_panel_history: false
-  orchestrator_model: opus
-  places_orders: false
-  shadow_ledger: false
-
 # Stage M (2026-10-18, operator's instruction): the morning-after exit review. At 08:56 ET,
 # half an hour before the US open (moved from 08:26 the same day so bmo releases are out), every name stage E-P scored at panel_pct >= 60 on the previous
 # trading day whose print is now out (amc yesterday, bmo this morning) gets one

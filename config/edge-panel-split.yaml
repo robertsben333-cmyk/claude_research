@@ -1,0 +1,37 @@
+# Stage E-PS (2026-10-22, operator's instruction: "ik heb het gevoel dat bij hoog aantal
+# tickers het systeem het niet goed doet ... 4 test routines ... die ieder max 5 stocks
+# beoordelen, en ... communiceren onderling wie welk doet"; daily since 2026-10-23, "zet die
+# routines voorlopig standaard op", and at the same time as stage E-P, "laat ze gelijktijdig
+# met e-p lopen zodat ze goed te vergelijken zijn").
+#
+# Stage E-P's own names that day, split round-robin over four fresh sessions of at most
+# five, searched and judged WHILE stage E-P runs them, on E-P's sweep rows and sealed
+# baselines, scored --dry-run against E-P's panel history. Read only by
+# researcher_us/scripts/panel_split.py.
+#
+# It lives in its own file, not in config/pipeline.yaml, on purpose: a fired session clones
+# main (so its searcher, judges, scripts and panel history are exactly stage E-P's that
+# day) and lays only the files in `overlay` over it from data_branch. Nothing in this stage
+# may depend on an edit to a file main also has.
+edge_panel_split:
+  inherits: edge_panel          # every scoring rule is stage E-P's, read from main's pipeline.yaml
+  output_prefix: edge-split     # research/<Y>/<M>/<DATE>/edge-split-<k>/ and edge-split/
+  shards: 4
+  hunted_names: 5               # per shard; the plan is capped at edge_panel.hunted_names too
+  names_from: edge-panel        # stage E-P's own run that day, read from source_branch
+  source_branch: main
+  # Where the shards talk and their output lands, by compare-and-swap commits only. Never
+  # main: the session's own checkout IS main, so a plain publish.sh would push there.
+  data_branch: claude/modest-davinci-mjddtu
+  overlay:
+    - .claude/skills/earnings-edge-panel-split/SKILL.md
+    - researcher_us/scripts/panel_split.py
+    - config/edge-panel-split.yaml
+  # Start as soon as stage E-P's sweep is on main, so the shards search and judge in the
+  # same half hour as E-P's own searchers and judges. Stop at the deadline without one.
+  start_when_file: sweep.json
+  start_deadline_et: "14:30"
+  provenance_market: US-PS      # registered at run time by `panel_split.py stamp`
+  writes_panel_history: false
+  places_orders: false
+  shadow_ledger: false

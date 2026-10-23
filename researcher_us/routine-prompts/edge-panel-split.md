@@ -1,47 +1,50 @@
-# Stage E-PS Routine prompt — the split panel, one day's test
+# Stage E-PS Routine prompt — the split panel, beside stage E-P
 
-Four one-shot Routines created 2026-10-22 from a session on the operator's instruction
-("ik wil even 4 test routines aanmaken, die ieder max 5 stocks beoordelen, en op de een of
-andere manier communiceren onderling wie welk doet"). All four hold the SAME prompt, the
-block below: none of them knows its shard until `panel_split.py claim` gives it one, so a
-Routine that fails to fire costs a shard, never a wrong assignment.
+Four Routines, created 2026-10-22 from a session on the operator's instruction ("ik wil
+even 4 test routines aanmaken, die ieder max 5 stocks beoordelen, en op de een of andere
+manier communiceren onderling wie welk doet"), first as one-shots for that day. **On
+2026-10-23 they were made daily ("zet die routines voorlopig standaard op") and moved to
+fire with stage E-P ("laat ze gelijktijdig met e-p lopen zodat ze goed te vergelijken
+zijn").** All four hold the SAME prompt, the block below: none of them knows its shard until
+`panel_split.py claim` gives it one, so a Routine that fails to fire costs a shard, never a
+wrong assignment.
 
-- One-shot (`run_once_at`), 2026-10-22 at 18:00, 18:01, 18:02 and 18:03 UTC (14:00-14:03
-  New York), fresh session per fire, model pinned to `claude-opus-5-5` for the
-  orchestrator. They disable themselves after firing.
-- `claim` holds each session until stage E-P has reached its buy (`alpaca-plan.json`) or
-  14:30 ET, whichever is first, so the test cannot push the account into the usage limit
-  before E-P's book is placed.
-- Code and data on branch `claude/modest-davinci-mjddtu`, never `main`.
+- Cron in UTC like stage E-P's own (`6 17 * * 1-5`), so the five move together when New
+  York leaves daylight time on 2026-11-02: `7 17`, `8 17`, `9 17` and `10 17`, weekdays.
+  Fresh session per fire, model pinned to `claude-opus-5-5` for the orchestrator.
+- `claim` holds each session until stage E-P's `sweep.json` is on main (about fifteen
+  minutes after E-P fires), so the shards search while E-P's searchers do. Without a sweep
+  by 14:30 ET it stops and logs.
+- The session clones **main** and lays only the three overlay files over it from
+  `claude/modest-davinci-mjddtu`, so the searcher, the judges, the scripts and the panel
+  history are E-P's own that day. Output lands on that branch only, never on `main`.
 - Places no orders. Writes `research/<Y>/<M>/<DATE>/edge-split-<k>/` and `edge-split/`.
 
-Created 2026-10-22 13:47-13:48 UTC and read back at 13:48 UTC: prompt identical to the
-block below, model `claude-opus-5-5` (pinned with `update_trigger`, creation left it
-empty), enabled, no MCP connectors, empty `sources` and `outcomes` (step 0 clones the
-test branch).
+Updated 2026-10-23 and read back: see the table below and `CLAUDE.md`'s stage table.
 
-| Routine | fires (UTC) |
+| Routine | fires (UTC, weekdays) |
 | --- | --- |
-| `trig_014cDcoeh22Q9HkB15RhakRT` "Stage E-PS test 1/4" | 2026-10-22 18:00 |
-| `trig_01C8x9mEG9WDmMeSKtoYATKA` "Stage E-PS test 2/4" | 2026-10-22 18:01 |
-| `trig_01QT81ouPyusTDRuB75g5uxL` "Stage E-PS test 3/4" | 2026-10-22 18:02 |
-| `trig_01TFqFSPwXthRFeN3toYUyLs` "Stage E-PS test 4/4" | 2026-10-22 18:03 |
+| `trig_014cDcoeh22Q9HkB15RhakRT` "Stage E-PS 1/4" | 17:07 |
+| `trig_01C8x9mEG9WDmMeSKtoYATKA` "Stage E-PS 2/4" | 17:08 |
+| `trig_01QT81ouPyusTDRuB75g5uxL` "Stage E-PS 3/4" | 17:09 |
+| `trig_01TFqFSPwXthRFeN3toYUyLs` "Stage E-PS 4/4" | 17:10 |
 
 ---
 
 ```text
-Run stage E-PS, one shard of today's split-panel test: stage E-P's own names, at most five in this session, with Opus 5.5 searchers and the blind four-model panel. Three sibling sessions run the other shards at the same time; you agree with them who takes which names through `panel_split.py claim`, never by guessing.
+Run stage E-PS, one shard of today's split panel: stage E-P's own names, at most five in this session, searched and judged while stage E-P runs them, with Opus 5.5 searchers and the blind four-model panel. Three sibling sessions run the other shards; you agree with them who takes which names through `panel_split.py claim`, never by guessing.
 
-0. GET THE TEST BRANCH. The code is on branch claude/modest-davinci-mjddtu, not on main.
-   - If /home/user/claude_research/CLAUDE.md does not exist: add_repo with owner robertsben333-cmyk, repo claude_research, access push; then git clone --depth 1 -b claude/modest-davinci-mjddtu https://github.com/robertsben333-cmyk/claude_research /home/user/claude_research; then register_repo_root on that directory.
-   - If it exists: in /home/user/claude_research run git fetch origin claude/modest-davinci-mjddtu and git checkout -B claude/modest-davinci-mjddtu FETCH_HEAD.
-   Then verify that .claude/skills/earnings-edge-panel-split/SKILL.md, .claude/skills/earnings-edge-panel/SKILL.md, .claude/skills/earnings-edge-hunt/SKILL.md, .claude/agents/unpriced-searcher.md, the four .claude/agents/panel-judge-*.md, researcher_us/scripts/panel_split.py, researcher_us/scripts/panel_packs.py and researcher_us/scripts/panel_score.py all exist. If any is missing, say so in your reply and stop. Do not improvise a substitute.
+0. GET MAIN, THEN LAY THIS STAGE'S FILES OVER IT. Stage E-P runs on main and so do you; only this stage's own three files come from branch claude/modest-davinci-mjddtu, so your searcher, judges, scripts and panel history are exactly stage E-P's today.
+   - If /home/user/claude_research/CLAUDE.md does not exist: add_repo with owner robertsben333-cmyk, repo claude_research, access push; then git clone --depth 1 -b main https://github.com/robertsben333-cmyk/claude_research /home/user/claude_research.
+   - Then, in /home/user/claude_research, run exactly: git fetch -q --depth 1 origin claude/modest-davinci-mjddtu && for f in .claude/skills/earnings-edge-panel-split/SKILL.md researcher_us/scripts/panel_split.py config/edge-panel-split.yaml; do mkdir -p "$(dirname "$f")" && git show FETCH_HEAD:"$f" > "$f"; done
+   - If you cloned in the first step, call register_repo_root on /home/user/claude_research.
+   Then verify that those three files, .claude/skills/earnings-edge-panel/SKILL.md, .claude/skills/earnings-edge-hunt/SKILL.md, .claude/agents/unpriced-searcher.md, the four .claude/agents/panel-judge-*.md, researcher_us/scripts/panel_packs.py, researcher_us/scripts/panel_score.py and researcher_us/scripts/intraday.py all exist. If any is missing, say so in your reply and stop. Do not improvise a substitute.
 
 Read CLAUDE.md, then invoke the skill `earnings-edge-panel-split` and follow it exactly; if the skill is not listed, read .claude/skills/earnings-edge-panel-split/SKILL.md and follow that. It is an overlay on `earnings-edge-panel`, which is an overlay on `earnings-edge-hunt`.
 
-Re-read the clock with `date -u`. You fire around 18:00 UTC, 14:00 New York. Start with `python3 researcher_us/scripts/panel_split.py claim`, with the Bash timeout set to 600000 ms: it waits for stage E-P to reach its buy (or 14:30 New York), then gives you your shard, its names and its directory. Exit 3 means run it again; exit 2 or 4 means log one line with `panel_split.py log` and stop, as the skill says.
+Re-read the clock with `date -u`. You fire at 17:07 to 17:10 UTC, one to four minutes after stage E-P (17:06 UTC). Start with `python3 researcher_us/scripts/panel_split.py claim`, with the Bash timeout set to 600000 ms: it waits until stage E-P's sweep is on main, then gives you your shard, its names and its directory. Exit 3 means run it again; exit 2 or 4 means log one line with `panel_split.py log` and stop, as the skill says.
 
-THIS IS A TEST ON A BRANCH. Never run scripts/publish.sh or scripts/run_log.py directly: use `python3 researcher_us/scripts/panel_split.py publish "<message>"` and `python3 researcher_us/scripts/panel_split.py log --shard <k> --heading "<h>" --line "<l>"`, which write to claude/modest-davinci-mjddtu. Never push to main.
+YOUR CHECKOUT IS MAIN AND YOU NEVER COMMIT TO IT. Never run scripts/publish.sh or scripts/run_log.py: publish.sh would push your shard to main and run_log.py would write into stage E-P's day log. Use `python3 researcher_us/scripts/panel_split.py publish --shard <k> "<message>"`, `python3 researcher_us/scripts/panel_split.py log --shard <k> --heading "<h>" --line "<l>"` and `python3 researcher_us/scripts/panel_split.py stamp --shard <k> --orchestrator-model "<model>"`, which write to claude/modest-davinci-mjddtu only. Never git commit, never git push yourself.
 
 USE STAGE E-P'S NAMES, SWEEP AND BASELINES, NOT YOUR OWN. Do not build a universe, seal baselines or run edge-sweep: `claim` copies them into your shard directory. Never open stage E-P's hunts, packs, judge files or scores; only `panel_split.py summary` reads them, at the end.
 

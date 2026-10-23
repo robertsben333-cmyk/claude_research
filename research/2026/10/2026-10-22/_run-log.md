@@ -80,54 +80,30 @@
 - Logged at 2026-10-22 13:21 UTC
 - 10 names compiled 09:21 ET, all 10 reviews valid: exit_1000 LRCX TTMI KALU SPOT ARGX; exit_limit CRS 340.00, ASIC 26.85; exit_open META LBRT IBM. LBRT and IBM launched late, after the 8-subagent cap freed, and returned before the compile. No orders.
 
-## Split panel 1/4 — STARTED
-- Logged at 2026-10-22 18:01 UTC
-- BE, BWMX, WDC (amc 10-22), BAH, SLB (bmo 10-23); E-P's sweep and baselines from 2d0221da, edge-panel/hunts: the names stage E-P hunted; claimed 18:01 UTC
+## Edge hunt (panel) — 2026-10-22 amc + 2026-10-23 bmo — STARTED
+- Logged at 2026-10-22 17:14 UTC
+- Stage E-P fire 17:06 UTC. Universe 65 names (48 amc 10-22, 17 bmo 10-23), baselines sealed for all 65 in edge-panel/baselines by 17:14 UTC. Next: one edge-sweep, up to 20 unpriced-searchers (edge_panel.hunted_names), step 3s flatten, four-judge panel, step 6b buy.
 
-## Split panel 2/4 — STARTED
-- Logged at 2026-10-22 18:02 UTC
-- DECK, FIX, APPF (amc 10-22), WRLD, ALV (bmo 10-23); E-P's sweep and baselines from 2d0221da, names basis: edge-panel/hunts; claimed 18:02 UTC
+## Edge hunt (panel) — baselines sealed
+- Logged at 2026-10-22 17:15 UTC
+- 65 baselines, universe and provenance (US-P, us-searcher.v2, cap 20) committed before any searcher launches; edge-sweep running since 17:15 UTC.
 
-## Split panel 3/4 — STARTED
-- Logged at 2026-10-22 18:03 UTC
-- JAKK, FPH, RNG (amc 10-22), INFY, AXP (bmo 10-23); E-P's sweep and baselines from 2d0221d, names_basis edge-panel/hunts; claimed 18:03 UTC
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-22 17:19 UTC
+- Sweep finished ~17:19 UTC (12-min budget): 11 company-confirmed (AXP SLB ALV BAH INFY RCI E bmo 10-23; VTMX BWMX FPH amc 10-22; WRLD 10-23, hour unsettled), 2 phantoms (BBD, BBDO = same issuer, moved to 2026-11-04), EAF unconfirmed, 51 unchecked (calendar row only, not phantoms). Cap 20: the 10 confirmed non-phantoms plus the 10 highest-priority unchecked (BE DECK JAKK MXL FIX SAM WDC APPF RNG; searchers told to settle event and session themselves). Shed: OMC (58) and the 44 lower-priority/unconfirmed by edge_degrade_order. baseline_history_trustworthy=false for INFY RCI E VTMX BWMX (6-K matches non-earnings). Searchers unpriced-searcher, amc first, 8 concurrent.
 
-## Split panel 4/4 — STARTED
-- Logged at 2026-10-22 18:04 UTC
-- MXL, SAM, VTMX (amc 10-22), RCI, E (bmo 10-23); E-P's sweep and baselines from 2d0221d, names basis edge-panel/hunts
+## Edge hunt (panel) — all searchers launched
+- Logged at 2026-10-22 17:36 UTC
+- All 20 unpriced-searchers (native agent, Opus 5.5) launched by ~17:43 UTC; 12 returned. Company sources settled the unchecked names: BE, DECK, JAKK, MXL, FIX, SAM, WDC, APPF all amc 2026-10-22.
 
-## Split panel 1/4 — searchers done
-- Logged at 2026-10-22 18:10 UTC
-- 5 of 5 returned by 18:10 UTC; guard moved nothing; no searcher reported its search budget running out
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-22 17:44 UTC
+- 20/20 searchers returned by ~17:43 UTC (unpriced-searcher, native, Opus 5.5). mode: execution enabled. flatten --submit at 17:44 UTC: 0 positions held, nothing to sell (account already flat after 2026-10-21's skipped buy).
 
-## Split panel 2/4 — searchers done
-- Logged at 2026-10-22 18:12 UTC
-- 5 of 5 returned by 18:11 UTC (unpriced-searcher agent, us-searcher.v2); guard moved nothing; no searcher reported its search budget running out
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-22 17:44 UTC
+- 20/20 hunted, edge_score written, V2 grounded written ~17:45 UTC before the first print. 20 packs, four judges, one part.
 
-## Split panel 2/4 — panel STARTED
-- Logged at 2026-10-22 18:12 UTC
-- 5 packs, four judges launched 18:13 UTC
-
-## Split panel 3/4 — searchers done
-- Logged at 2026-10-22 18:12 UTC
-- 5 of 5 returned by 18:12 UTC (unpriced-searcher, pinned Opus 5.5); guard moved nothing; no searcher reported its search budget running out
-
-## Split panel 3/4 — panel STARTED
-- Logged at 2026-10-22 18:13 UTC
-- 5 packs, four judges launched in one message
-
-## Split panel 4/4 — searchers done
-- Logged at 2026-10-22 18:15 UTC
-- 5 of 5 returned by 18:15 UTC (unpriced-searcher, Opus 5.5); guard moved nothing; no searcher reported its search budget running out; all five events confirmed by the searchers (MXL and SAM were UNCHECKED in E-P's sweep)
-
-## Split panel 4/4 — panel STARTED
-- Logged at 2026-10-22 18:15 UTC
-- 5 packs, four judges
-
-## Split panel 2/4 — panel done
-- Logged at 2026-10-22 18:16 UTC
-- 4 of 4 judges on pinned models; 1 selected (WRLD long, panel_pct 100); APPF 79; claim-to-done ~15 min
-
-## Split panel 4/4 — panel done
-- Logged at 2026-10-22 18:19 UTC
-- 4 of 4 judges on pinned models; 1 of 5 selected (MXL long, pct 94); claim-to-done ~15 min
+## Edge hunt (panel) — done
+- Logged at 2026-10-22 17:56 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): WRLD long 100, DECK long 90, BE long 86, FIX long 82; nearest misses BAH 74, JAKK 71. Searcher: 1 of 20 clears 2.8 (WRLD +3.70). Stage E edge/ absent. Step 6b at ~17:56 UTC (13:56 ET): plan then open --submit --no-flatten, 4 market buys all filled: WRLD 21 @ 172.20, DECK 32 @ 87.05, BE 11 @ 212.75, FIX 1 @ 1281.39; gross ~$10,010 (90.4% of equity $11,043.92; FIX at one share, the integer-share remainder sits in cash). Mean execution cost vs mid +0.59% (FIX +1.67%). Exits dated 2026-10-23.
