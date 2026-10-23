@@ -11,3 +11,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-10-23 17:15 UTC
 - MMYT, CX, BOH (all bmo 2026-10-26); E-P's sweep and baselines from e55276cd; names_basis edge-panel/sweep.json confirmed by hunt_priority, cut at 20
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-10-23 17:15 UTC
+- ABOS, BFST, VZ (all bmo 2026-10-26); E-P's sweep and baselines from e55276cd; confirmed names by hunt_priority, cut at 20
