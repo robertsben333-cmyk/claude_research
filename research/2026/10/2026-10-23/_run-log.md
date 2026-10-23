@@ -99,3 +99,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-23 01:05 UTC
 - Fired 01:05 UTC (10:05 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp waves of 5 -> edge_score -> four-model intl panel -> note. No orders.
+
+## Stage J — wave 1 banked
+- Logged at 2026-10-23 01:13 UTC
+- 2804, 3492, 5423, 6629, 6954 hunted. 6629 hunter: H1 results moved to 2026-10-30 (TDnet 2026-10-16 notice https://tdnet-pdf.kabutan.jp/20261016/140120261014550849.pdf); no event in window, empty findings. Wave 2 (6999, 7931, 8707, 8961) running.
