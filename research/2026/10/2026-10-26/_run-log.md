@@ -52,3 +52,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-26 13:19 UTC
 - 3 names: MED exit_close, BMRC exit_limit 28.05, DEA exit_close; compiled 09:19 ET; pool 29 names/5 days review_minus_static +0.073 (t 0.13)
+
+## Edge hunt (panel) — 2026-10-26 amc + 2026-10-27 bmo — STARTED
+- Logged at 2026-10-26 17:15 UTC
+- Stage E-P fire 17:06 UTC (session start 17:07). Universe 105 names (40 amc 10-26, 65 bmo 10-27), baselines sealed for all 105 in edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
