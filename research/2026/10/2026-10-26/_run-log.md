@@ -20,3 +20,7 @@
 - Logged at 2026-10-23 14:11 UTC
 - Event date 2026-10-26. 7 ranked (uk 2, pl 2, se 1, fi 1, it 1): ALLEI +1.00, SGF +0.70, AMC +0.60, OPL +0.50, KTY +0.30, BVXP -0.20, KREATE -0.20; 0 above floor 2.8. KTY and SGF sealed bmo? but report amc per issuer timestamps (resolver measures both windows; read the amc one). ALLEI releases 11:30 CET in session. Yahoo calendar unavailable on all ten markets.
 - Panel: 4/4 members, no fallback; 1 selected: BVXP short (k=4, panel_pct 96) against hunter -0.20. Note: europe-note.md. No orders. Published with EARNINGS_DATA_BRANCH=main.
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-26 01:06 UTC
+- Fired 01:04 UTC 2026-10-26 (10:04 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp in waves of 5 (cap 25) -> edge_score -> four-model intl panel -> note. No orders.
