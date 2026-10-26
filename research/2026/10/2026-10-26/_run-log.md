@@ -64,3 +64,11 @@
 ## Edge hunt (panel) — searcher progress
 - Logged at 2026-10-26 17:34 UTC
 - 11 of 20 searchers returned by 17:35 UTC (CLS WHR RMBS AEYE ZDGE PSMT BLX AMKR AGYS GLXY CBC; AMKR and AGYS settled amc 10-26 from company sources, CBC 10-27 bmo from two copies of the company notice). Running: DQ SNDL SOFI JBLU KNSA CNC PII CVLT; GLW queued for the next free slot.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-26 17:46 UTC
+- 20/20 searchers returned by ~17:45 UTC (unpriced-searcher, native, Opus 5.5; all 20 events company-confirmed, incl. the 9 the sweep left unchecked). mode: execution enabled. flatten --submit at 17:46 UTC: held MED 438 sh (+4.58% unrealised, 2026-10-23 book), closed at market; account flat, equity $10,524.11.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-26 17:46 UTC
+- 20 packs, four judges, one part. edge_score and V2 grounded written ~17:47 UTC, before the first print.
