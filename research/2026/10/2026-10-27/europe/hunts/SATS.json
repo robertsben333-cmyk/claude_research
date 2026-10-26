@@ -1,0 +1,110 @@
+{
+  "ticker": "SATS",
+  "market": "NO",
+  "expected_move_pct": 0.0,
+  "conviction_note": "Nothing found decides this print: no resultatvarsel, no pre-release, no Q3 consensus reachable, so p_up stays 50 and the scaled number is 0; abs_move is set at 6.5 because Q3 numbers are entirely new on a 6-analyst, $1.6m/day name whose last two prints moved -6.3% and +10.5% on small EBITDA surprises against consensus. The three small findings (heavier FX translation drag, a domestic fund selling below 5% two days before the print, a paused buyback whose remaining NOK 50m can restart after the release) roughly offset to -0.2.",
+  "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 6.5,
+  "p_up": 50,
+  "already_public": [
+    {"what": "Nothing of Q3 2026 is pre-released: the NewsWeb feed for SATS from 2026-07-01 carries no resultatvarsel or trading update, only the Q3 invitation, buyback statuses and one flagging", "date": "2026-10-26", "source": "https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=SATS&fromDate=2026-07-01&toDate=2026-10-27"},
+    {"what": "Only standing outlook: mid-term EBITDA before IFRS 16 ambition of NOK 1.1bn 'expected to unfold gradually', 8-12 club openings a year, leverage target at the lower end of 1.5x-2.0x (actual 1.1x), at least 50% of net profit distributed", "date": "2026-08-14", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=679780"},
+    {"what": "Q2 2026 beat: EBITDA before IFRS 16 NOK 313m against 302m expected, EPS 1.00 against 0.93; stock +10.5% on the day", "date": "2026-08-14", "source": "https://www.finansavisen.no/tjenester/2026/08/14/8372352/folk-trener-mer-sats-oker-resultatet"}
+  ],
+  "new_in_release": [
+    {"line": "reported_quarter", "expect": "unknown; Q3 2025 base was EBITDA before IFRS 16 NOK 192m, revenue NOK 1,293m. Trend (Q2 +16% reported, +18% curr-adj) suggests double-digit EBITDA growth, but reported figures carry a ~7% NOK-strength translation drag on about 53% of revenue"},
+    {"line": "other", "expect": "member intake in the seasonally strong Q3 (Q3 2025 added 18k to 756k); member base grew only 1% y/y in Q2, so net adds are a line the stock can trade on; direction unknown"},
+    {"line": "dividend", "expect": "none expected; dividends are semi-annual (H1 paid August, H2 announced with Q4)"},
+    {"line": "other", "expect": "capital return: NOK 50m of the NOK 100m Aug-2026 buyback remains; possible resumption or top-up given leverage 1.1x below target; mild positive if announced, unknown"},
+    {"line": "guidance", "expect": "no formal guide; the mid-term NOK 1.1bn ambition is not expected to change"}
+  ],
+  "bar": "unsourced for Q3 2026: no Q3 consensus found in Finansavisen/TDN, e24, DN or aggregators; full-year 2026 consensus after Q2 was EPS NOK 2.95 and revenue NOK 5.73bn from six analysts (https://www.webull.com/news/15427541500445696, 2026-08-19, snippet-level aggregator). Sizes capped small accordingly.",
+  "event_confirmed": true,
+  "session_check": "bmo: the issuer's invitation (NewsWeb 2026-10-20 08:32 UTC) says the Q3 2026 report will be available at 07:00 CET on 2026-10-27, before the Oslo open, with webcast at 08:30 CET. https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684410",
+  "positioning_check": "Finanstilsynet SSR register read 2026-10-22: no disclosed net short at or above 0.5% (truncated zero, anchor_covered false, so no positioning anchor; priced_lean_pct is the run-up). Separately, a long-side flagging: DNB Asset Management funds sold 125,257 shares on 2026-10-22 and fell from 5.76% (previous notification) to 4.95%. https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684684",
+  "findings": [
+    {
+      "finding": "NOK strengthened further in Q3: average SEK/NOK fell 7.2% y/y (1.060 to 0.984), EUR/NOK 7.3% and DKK/NOK 7.4%, against 5.5-6.2% in Q2 when the translation gap was already 4pp on revenue (3% reported vs 7% curr-adj); with ~53% of revenue outside Norway, reported Q3 growth loses roughly 4pp, slightly more than in Q2.",
+      "expected_impact_pct": -0.3,
+      "impact_low_pct": -1.0,
+      "impact_high_pct": 0.0,
+      "lands_on": "reported_quarter",
+      "reaction_history_on_this_line": "Q2 2026 printed +3% reported / +7% curr-adj revenue and the stock rose 10.5% on an EBITDA beat, so the market has looked through translation when the curr-adj line was strong.",
+      "resolves_by": "2026-10-27",
+      "source": "https://query1.finance.yahoo.com/v8/finance/chart/SEKNOK=X?range=2y&interval=1d",
+      "source_date": "2026-10-26",
+      "source_language": "en",
+      "original_quote": null,
+      "why_not_priced": "Mostly priced: FX is public and six analysts model it. The residual is that reported-number headlines (TDN 'ventet' comparisons) can still read soft if consensus lagged the September NOK move (SEK/NOK 0.96 in September alone).",
+      "independence": "The company's own Q2 report quantifies the translation gap: https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=679780"
+    },
+    {
+      "finding": "DNB Asset Management funds sold 125,257 SATS shares on 22 October, taking their holding below 5% (4.95%, from 5.76% at the previous notice), a domestic long-only seller active in the week before the print.",
+      "expected_impact_pct": -0.2,
+      "impact_low_pct": -0.6,
+      "impact_high_pct": 0.0,
+      "lands_on": "positioning",
+      "reaction_history_on_this_line": "No prior instance of a pre-print flagging to compare; the stock fell 3.0% and 1.6% on 22 and 23 October, so the selling is visible in the tape already.",
+      "resolves_by": "2026-10-27",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684684",
+      "source_date": "2026-10-23",
+      "source_language": "no",
+      "original_quote": "Fond forvaltet av DNB Asset Management AS solgte i går 125 257 aksjer i SATS ASA. Etter dette eier fond forvaltet av DNB Asset Management AS 9 774 762 aksjer i selskapet, noe som utgjør en direkte eierandel på 4,95% (DNB AM funds sold 125,257 SATS shares yesterday, now own 9,774,762 shares, a 4.95% direct stake)",
+      "why_not_priced": "Largely priced: the stock already gave back 4.5% over 22-23 October. What is not priced is whether the seller continues into the print, which an index or flow rebalancing would not signal.",
+      "independence": "none"
+    },
+    {
+      "finding": "The Aug-2026 buyback (up to NOK 100m) had spent NOK 50.0m by 29 September, buying ~80-95k shares a day (roughly 20-25% of daily volume), and no status has been filed since 30 September, consistent with a pre-results pause; the remaining NOK 50m, plus a balance sheet at 1.1x leverage against a 1.5x floor target, can return as a bid from the release day.",
+      "expected_impact_pct": 0.3,
+      "impact_low_pct": 0.0,
+      "impact_high_pct": 1.0,
+      "lands_on": "capital_return",
+      "reaction_history_on_this_line": "The stock fell from 42.30 (30 Sep) to 39.50 (5 Oct) in the first days without buyback statuses; prior programmes were announced with results (Aug 2026 with Q2, Feb 2026 NOK 200m with Q4) and those days rose 10.5% and 6.3%.",
+      "resolves_by": "2026-10-27",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683331",
+      "source_date": "2026-09-30",
+      "source_language": "en",
+      "original_quote": null,
+      "why_not_priced": "The programme is public, but the pause is an inference from the absence of filings and the post-pause bid is not something the tape has reflected; if priced, the early-October dip would not have occurred with no news.",
+      "independence": "Q2 report: leverage 1.1x vs target 'lower end of the 1.5x to 2.0x range' and 'Excess capital will be returned to shareholders' https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=679780"
+    }
+  ],
+  "outside_window": [],
+  "searched_and_found_nothing": [
+    "resultatvarsel / trading update for SATS on Oslo NewsWeb since 2026-07-01: none",
+    "Q3 2026 consensus (TDN 'ventet', Modular Finance/Infront preview) on finansavisen.no, e24.no, dn.no: nothing reachable; Finansavisen articles are paywalled (zephr SSO redirect)",
+    "Norwegian broker previews (DNB Carnegie, Pareto, SB1 Markets, Arctic) for Q3: nothing found",
+    "SATS price changes / Q3 operating commentary in the Q2 call summaries (quartr): nothing on current trading",
+    "Norwegian 2027 state budget (presented 2026-10-07) and fitness-centre VAT: nothing relevant",
+    "Peer read-across: Basic-Fit Q3 2026 trading update not yet published; no Nordic peer reported",
+    "Competition / new-entrant news in Norwegian press: nothing dated in window"
+  ],
+  "rejected_candidates": [
+    {
+      "candidate": "March 2026 cyber incident and updated scope of criminal data breach as a Q3 cost or member-churn risk",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=SATS&fromDate=2025-09-01&toDate=2026-07-01",
+      "reason": "contradicted_by_document",
+      "detail": "Two reports since (Q1 and Q2 2026) printed member growth and margin expansion; Q2 report states no other material events; nothing ties it to Q3."
+    }
+  ],
+  "baseline_tension": "Neutral: the run-up (-0.7% 20d, +1.3% 60d) and the truncated-zero short register give no lean, and the findings net to about -0.2, so nothing here cuts against or agrees with the priced lean in a meaningful way.",
+  "language_note": [
+    "The DNB Asset Management flagging was filed in Norwegian only ('Flaggemelding SATS'); the English feed carries the PDF form but the headline and body are Norwegian.",
+    "Finansavisen's TDN headlines carry the consensus comparison for past prints (e.g. Q1 'EBITDA 526 ... (VENTET 534)'), which is how the stock's sensitivity to the EBITDA bar was established; no Q3 preview was reachable in either language.",
+    "Otherwise nothing the English sources did not already carry: SATS publishes every release in English, with a parallel Norwegian 'Pressemelding'."
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": -0.2,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 5.5,
+    "p_up": 50,
+    "findings_count": 3,
+    "sizes_pct": [-0.3, -0.2, 0.3]
+  },
+  "lessons_applied": [
+    "abs_move_pct raised from 5.5 to 6.5: the period is not pre-released ('numbers new' base ~7%), the name sits in the thin 3-7 analyst band, and the last two prints moved 6.3% and 10.5%; uncertainty about sign stays in p_up, not the size.",
+    "Findings unchanged: the FX finding was already sized as macro-to-company transmission, the flagging as positioning already partly in the tape, and the buyback as an inference; no lesson moved any of them a second time."
+  ],
+  "sources_used": 14
+}
