@@ -32,3 +32,7 @@
 ## Stage J — hunt banked
 - Logged at 2026-10-26 01:12 UTC
 - 2211 hunt returned (impact_sum 0.0); four still running.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-26 01:18 UTC
+- 5 hunts banked and scored (impact_sum 7970 +1.90, 6923 +1.00, 8060 +0.50, 2211 0.00, 3635 -0.50; none above 2.8). 5 packs, four judges.
