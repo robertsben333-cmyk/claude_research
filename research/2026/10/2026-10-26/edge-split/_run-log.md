@@ -23,3 +23,7 @@
 ## Split panel 3/4 — panel STARTED
 - Logged at 2026-10-26 17:29 UTC
 - 5 packs, four judges
+
+## Split panel 1/4 — searchers done
+- Logged at 2026-10-26 17:30 UTC
+- 5 of 5 returned by 17:30 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out; SOFI and CNC events confirmed by searchers as bmo 2026-10-27
