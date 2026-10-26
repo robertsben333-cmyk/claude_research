@@ -27,3 +27,7 @@
 ## Stage EU — KRU session
 - Logged at 2026-10-26 14:15 UTC
 - KRU: sealed bmo (session_unresolved); every KRUK interim report since 3Q25 filed 17:13-17:19 Warsaw (after close) -> amc, window 27 Oct close -> 28 Oct close. Q3 net profit pre-released 16 Oct. Short register read via rksgpw.com mirror: 2.21% building (hunter-sourced, not the baseline).
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-26 14:19 UTC
+- 20 hunts banked and scored (impact_sum range +0.80 VNV to -2.00 VRLA; none above floor 2.8). 20 packs, four intl judges.
