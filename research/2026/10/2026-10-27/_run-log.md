@@ -3,3 +3,7 @@
 ## Stage EU — Europe researcher — STARTED
 - Logged at 2026-10-26 13:47 UTC
 - Fired 13:35 UTC 2026-10-26 (Routine trig_018WGfdq2fUm1ZqJhCGQ1wde), session start 13:45 UTC. Sealing for event date 2026-10-27 (Tue), next European session. Plan: eu_universe (cap 20, $100k floor) -> seal baselines -> provenance -> one hunter per name in waves of 5 -> edge_score -> four-model intl panel -> note. No orders. Local main was a shallow clone unrelated to the force-updated origin/main; working on a local branch cut from origin/main 840103925, publish.sh pushes HEAD:main.
+
+## Stage EU — universe and baselines sealed
+- Logged at 2026-10-26 13:50 UTC
+- Event date 2026-10-27. 57 scheduled, 40 eligible (uk 2, de 3, fr 4, se 10, no 4, fi 8, it 2, es 2, pl 5), 20 drawn (random, seed eu-2026-10-27): fi 5, se 4, de 3, no 2, pl 2, uk/fr/it/es 1 each. Largest market fi 25%, 9 markets. Baselines sealed ~13:50-13:51 UTC at intraday spots (European markets still open). session_unresolved: BEI, VIB3, GOFORE, VRLA, YACHT, BDX, KRU. ENC sealed amc. Registers: es/pl none; all others read. Provenance stamped (orchestrator model not passed; get_session not available). Wave 1 launched: BEI P911 VIB3 ENC FIA1S.
