@@ -15,3 +15,7 @@
 ## Split panel 4/4 — STARTED
 - Logged at 2026-10-26 17:22 UTC
 - AEYE, CBC, KNSA, AGYS, GLW; E-P's sweep and baselines from ec020c77; confirmed names by hunt_priority, cut at 20
+
+## Split panel 3/4 — searchers done
+- Logged at 2026-10-26 17:29 UTC
+- 5 of 5 returned by 17:29 UTC (unpriced-searcher agent, not fallback); guard moved nothing; no searcher reported its search budget running out; 0 of 5 clear the 2.8 floor
