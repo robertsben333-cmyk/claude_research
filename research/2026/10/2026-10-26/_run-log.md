@@ -72,3 +72,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-26 17:46 UTC
 - 20 packs, four judges, one part. edge_score and V2 grounded written ~17:47 UTC, before the first print.
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-26 17:58 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): KNSA long 98, CLS long 95, GLXY long 92, AEYE long 90, CVLT short 90; 3-of-4 rule also picks JBLU (k=3, panel_pct 75). Searcher: 1 of 20 clears 2.8 (KNSA +2.90). Stage E edge/ absent. Step 6b at ~17:59 UTC (13:59 ET): plan then open --submit --no-flatten, 5 market orders all filled: KNSA 33 @ 71.60, CLS 8 @ 271.00, GLXY 134 @ 15.53, AEYE 250 @ 7.64 (long), CVLT 11 short @ 168.07; gross ~$10,346 (98.3% of equity $10,524). Mean execution cost vs mid -0.60% (AEYE +2.48, thin). Exits dated 2026-10-27.
