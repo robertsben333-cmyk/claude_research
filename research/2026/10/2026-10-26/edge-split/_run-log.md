@@ -39,3 +39,7 @@
 ## Split panel 1/4 — panel done
 - Logged at 2026-10-26 17:34 UTC
 - 4 of 4 judges ran on pinned models; 5 packs; selected CLS long (panel_pct 91, 4/4); scored --dry-run at 17:33 UTC
+
+## Split panel 4/4 — done
+- Logged at 2026-10-26 17:34 UTC
+- 5 names, KNSA selected (99L, 4/4 judges), all four judges on pinned models, guard moved nothing, no searcher out of budget; E-P panel not yet scored at summary time
