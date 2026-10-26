@@ -19,3 +19,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-10-26 17:29 UTC
 - 5 of 5 returned by 17:29 UTC (unpriced-searcher agent, not fallback); guard moved nothing; no searcher reported its search budget running out; 0 of 5 clear the 2.8 floor
+
+## Split panel 3/4 — panel STARTED
+- Logged at 2026-10-26 17:29 UTC
+- 5 packs, four judges
