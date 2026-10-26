@@ -23,3 +23,7 @@
 ## Stage EU — BDX session
 - Logged at 2026-10-26 14:13 UTC
 - BDX: sealed bmo (session_unresolved); hunter infers amc from the last two quarterly filings (18:18, 19:33 Warsaw) -> likely window 27 Oct close -> 28 Oct close. Inferred, not observed.
+
+## Stage EU — KRU session
+- Logged at 2026-10-26 14:15 UTC
+- KRU: sealed bmo (session_unresolved); every KRUK interim report since 3Q25 filed 17:13-17:19 Warsaw (after close) -> amc, window 27 Oct close -> 28 Oct close. Q3 net profit pre-released 16 Oct. Short register read via rksgpw.com mirror: 2.21% building (hunter-sourced, not the baseline).
