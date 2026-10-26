@@ -40,3 +40,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-26 01:21 UTC
 - 5 ranked: 7970 +1.90, 6923 +1.00, 8060 +0.50, 2211 0.00, 3635 -0.50; none above floor 2.8. Panel 4/4 members, no fallback, 0 selected (7970 k=2, panel_pct 77). Also resolved 10-21 and 10-22 (3 names each). Note: japan/japan-note.md. No orders.
+
+## Close AMC — 2026-10-26 10:13 UTC
+- Logged at 2026-10-26 10:19 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc_open, amc -> day order queued for open). verify: 14 exit legs, none UNFILLED, nothing held. close --submit: no leg due today, nothing sent, no refusals. Account reachable. Note: stage E-P now trades the account (since 2026-10-19); this scan covers research/*/*/*/edge only, so E-P legs under edge-panel/ are not seen by this Routine.
