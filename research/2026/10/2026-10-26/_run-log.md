@@ -56,3 +56,7 @@
 ## Edge hunt (panel) — 2026-10-26 amc + 2026-10-27 bmo — STARTED
 - Logged at 2026-10-26 17:15 UTC
 - Stage E-P fire 17:06 UTC (session start 17:07). Universe 105 names (40 amc 10-26, 65 bmo 10-27), baselines sealed for all 105 in edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-26 17:20 UTC
+- Sweep finished ~17:20 UTC (12-min budget, 24 of 105 checked): 11 company-confirmed (CLS WHR RMBS AEYE ZDGE PSMT BLX amc 10-26; GLXY DQ CBC SNDL bmo 10-27; CBC via QuiverQuant relay), 0 phantoms proven, 9 checked-unconfirmed likely projections (PHAR VLRS GGB KOF CLW FLXS TZOO INIO NVS), 81 unchecked. Cap 20: the 11 confirmed plus the 9 highest-priority unchecked (AMKR SOFI JBLU KNSA AGYS CNC PII CVLT GLW; searchers told to settle event and session themselves). Shed: the 9 checked-unconfirmed and 72 lower-priority unchecked by edge_degrade_order. baseline_history_trustworthy=false for DQ SNDL CBC. Searchers unpriced-searcher, amc first.
