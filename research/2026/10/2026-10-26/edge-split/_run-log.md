@@ -11,3 +11,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-10-26 17:21 UTC
 - DQ, RMBS, PSMT, JBLU, CVLT; E-P's sweep and baselines from ec020c77; claimed 17:21 UTC; confirmed names by hunt_priority, cut at 20
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-10-26 17:22 UTC
+- AEYE, CBC, KNSA, AGYS, GLW; E-P's sweep and baselines from ec020c77; confirmed names by hunt_priority, cut at 20
