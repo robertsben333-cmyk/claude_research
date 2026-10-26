@@ -15,3 +15,7 @@
 ## Stage EU — wave 1 mostly banked, wave 2 launched
 - Logged at 2026-10-26 14:00 UTC
 - Banked: VIB3 +0.6, FIA1S -0.5, BEI -1.4, ENC -0.9 (ENC confirmed amc by issuer filing: window 27 Oct close -> 28 Oct close). P911 still running. Wave 2 launched early (4/5 of wave 1 banked): GOFORE GRK TIETO TYRES VRLA.
+
+## Stage EU — session corrections from hunters
+- Logged at 2026-10-26 14:11 UTC
+- VRLA: sealed bmo (session_unresolved), issuer calendar says 'communiqué de presse après bourse' 27 Oct -> amc, true window 27 Oct close -> 28 Oct close. ENC: sealed amc, confirmed amc. YACHT and TYRES release intraday (inside the sealed window). Baselines not revised (sealed); eu_resolve.py measures both windows for unresolved sessions.
