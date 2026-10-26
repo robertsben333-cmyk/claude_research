@@ -36,3 +36,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-26 01:18 UTC
 - 5 hunts banked and scored (impact_sum 7970 +1.90, 6923 +1.00, 8060 +0.50, 2211 0.00, 3635 -0.50; none above 2.8). 5 packs, four judges.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-26 01:21 UTC
+- 5 ranked: 7970 +1.90, 6923 +1.00, 8060 +0.50, 2211 0.00, 3635 -0.50; none above floor 2.8. Panel 4/4 members, no fallback, 0 selected (7970 k=2, panel_pct 77). Also resolved 10-21 and 10-22 (3 names each). Note: japan/japan-note.md. No orders.
