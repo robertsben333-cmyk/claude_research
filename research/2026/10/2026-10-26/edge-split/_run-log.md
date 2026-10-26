@@ -1,0 +1,5 @@
+# Run log — 2026-10-26
+
+## Split panel 1/4 — STARTED
+- Logged at 2026-10-26 17:21 UTC
+- CLS, ZDGE, BLX (amc 10-26), SOFI, CNC (bmo 10-27, unconfirmed by sweep); E-P's sweep and baselines from ec020c77; confirmed by hunt_priority then rest, cut at 20
