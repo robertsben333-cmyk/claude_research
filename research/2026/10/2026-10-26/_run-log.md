@@ -48,3 +48,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-10-26 13:17 UTC
 - source research/2026/10/2026-10-23/edge-panel, 09:17 ET, picks MED BMRC DEA
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-26 13:19 UTC
+- 3 names: MED exit_close, BMRC exit_limit 28.05, DEA exit_close; compiled 09:19 ET; pool 29 names/5 days review_minus_static +0.073 (t 0.13)
