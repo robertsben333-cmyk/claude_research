@@ -11,3 +11,7 @@
 ## Stage EU — short-register cache
 - Logged at 2026-10-26 13:50 UTC
 - eu-short-cache.json refreshed by the seal; committed so tomorrow's Nordic/IT short change is computable.
+
+## Stage EU — wave 1 mostly banked, wave 2 launched
+- Logged at 2026-10-26 14:00 UTC
+- Banked: VIB3 +0.6, FIA1S -0.5, BEI -1.4, ENC -0.9 (ENC confirmed amc by issuer filing: window 27 Oct close -> 28 Oct close). P911 still running. Wave 2 launched early (4/5 of wave 1 banked): GOFORE GRK TIETO TYRES VRLA.
