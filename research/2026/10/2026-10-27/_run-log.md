@@ -19,3 +19,7 @@
 ## Stage EU — session corrections from hunters
 - Logged at 2026-10-26 14:11 UTC
 - VRLA: sealed bmo (session_unresolved), issuer calendar says 'communiqué de presse après bourse' 27 Oct -> amc, true window 27 Oct close -> 28 Oct close. ENC: sealed amc, confirmed amc. YACHT and TYRES release intraday (inside the sealed window). Baselines not revised (sealed); eu_resolve.py measures both windows for unresolved sessions.
+
+## Stage EU — BDX session
+- Logged at 2026-10-26 14:13 UTC
+- BDX: sealed bmo (session_unresolved); hunter infers amc from the last two quarterly filings (18:18, 19:33 Warsaw) -> likely window 27 Oct close -> 28 Oct close. Inferred, not observed.
