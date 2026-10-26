@@ -31,3 +31,7 @@
 ## Split panel 4/4 — searchers done
 - Logged at 2026-10-26 17:30 UTC
 - 5 of 5 returned by 17:30Z; guard: see output; no searcher reported its search budget running out (AEYE hit 403/503 on transcripts/aggregators)
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-10-26 17:31 UTC
+- 5 of 5 returned by 17:31 UTC (unpriced-searcher agent, not the fallback); guard moved nothing; no searcher reported its search budget running out; AMKR and PII settled by their searchers (amc 10-26, bmo 10-27); 0 of 5 clear the 2.8 floor
