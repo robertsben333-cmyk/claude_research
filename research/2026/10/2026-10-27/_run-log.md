@@ -31,3 +31,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-26 14:19 UTC
 - 20 hunts banked and scored (impact_sum range +0.80 VNV to -2.00 VRLA; none above floor 2.8). 20 packs, four intl judges.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-26 14:28 UTC
+- 20 ranked: VNV +0.80 ... VRLA -2.00; none above floor 2.8. Panel 4/4 members, no fallback, 1 selected: VRLA short (k=3, panel_pct 79). Sessions: VRLA, KRU, BDX probably amc (sealed bmo?); ENC amc as sealed. anchor_covered 3/20; es/pl 3 names; 9 se/fi names need resolving within ~a week. Note: europe/europe-note.md. No orders. Pushed to main (EARNINGS_DATA_BRANCH=main).
