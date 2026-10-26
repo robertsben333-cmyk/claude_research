@@ -44,3 +44,7 @@
 ## Close AMC — 2026-10-26 10:13 UTC
 - Logged at 2026-10-26 10:19 UTC
 - Guard mode --require-exit-tif opg exit 0 (amc_open, amc -> day order queued for open). verify: 14 exit legs, none UNFILLED, nothing held. close --submit: no leg due today, nothing sent, no refusals. Account reachable. Note: stage E-P now trades the account (since 2026-10-19); this scan covers research/*/*/*/edge only, so E-P legs under edge-panel/ are not seen by this Routine.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-26 13:17 UTC
+- source research/2026/10/2026-10-23/edge-panel, 09:17 ET, picks MED BMRC DEA
