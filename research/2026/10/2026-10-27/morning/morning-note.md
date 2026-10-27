@@ -2,20 +2,20 @@
 
 Bron: `research/2026/10/2026-10-26/edge-panel` (stage E-P). Regel: panel_pct >= 60, >= 3 judges, print in this morning's window (amc 2026-10-26 or bmo 2026-10-27); top 10 by panel_pct. Positie = de kant van het panel, instap 13:30 ET op de instapdag. **Er worden geen orders geplaatst.**
 
-Markt premarket: SPY +0.25%, QQQ +0.38%, IWM +0.46%
+Markt premarket: SPY +0.26%, QQQ +0.40%, IWM +0.46%
 
 | Naam | Sessie | Positie | panel_pct | Cijfers wijzen op | Premarket vs slot | Positie tot nu | Voorbeurs stil | Verwacht open | Verwacht 10:00 | Verwacht open→slot | **Advies** | Limiet | Vaste regel |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | KNSA | bmo | long | 97.5* | +17.00% | +17.84% | +19.65% | nee | +17.50% | +16.00% | +1.50% | **Wachten tot slot** | — | Uit om 13:00 ET |
-| CLS | amc | long | 94.7* | +9.00% | +8.86% | -0.41% | nee | +8.30% | +6.80% | -1.50% | **Verkopen bij opening** | — | Verkopen bij opening |
-| GLXY | bmo | long | 92.5* | +6.50% | +3.95% | +3.87% | nee | +3.50% | +3.00% | +1.00% | **Limietorder** | 16.95 | Uit om 13:00 ET |
+| CLS | amc | long | 94.7* | +9.00% | +8.75% | -1.49% | nee | +8.30% | +6.80% | -1.50% | **Verkopen bij opening** | — | Verkopen bij opening |
+| GLXY | bmo | long | 92.5* | +6.50% | +3.95% | +4.91% | nee | +3.50% | +3.00% | +1.00% | **Limietorder** | 16.95 | Uit om 13:00 ET |
 | AEYE | amc | long | 89.6* | +8.00% | +5.26% | +6.55% | ja | +6.00% | +5.50% | -1.00% | **Limietorder** | 7.95 | Verkopen bij opening |
 | CVLT | bmo | short | 89.5* | -7.00% | -8.42% | +7.74% | ja | -8.50% | -8.00% | -0.50% | **Limietorder** | 148.50 | Uit om 13:00 ET |
 | DQ | bmo | long | 78.5 | -2.50% | +1.88% | +2.18% | ja | +1.00% | -0.50% | -2.00% | **Verkopen bij opening** | — | Uit om 13:00 ET |
-| SOFI | bmo | short | 76.6 | -1.50% | +9.82% | -9.25% | nee | +10.00% | +8.50% | -2.00% | **Verkopen om 10:00** | — | Uit om 13:00 ET |
+| SOFI | bmo | short | 76.6 | -1.50% | +9.96% | -9.39% | nee | +10.00% | +8.50% | -2.00% | **Verkopen om 10:00** | — | Uit om 13:00 ET |
 | PSMT | amc | long | 76.3 | -1.00% | —% | —% | ja | -1.80% | -1.40% | +0.30% | **Verkopen om 10:00** | — | Verkopen bij opening |
-| RMBS | amc | long | 75.6 | +5.00% | +1.14% | +3.02% | nee | +4.00% | +3.50% | -0.50% | **Verkopen bij opening** | — | Verkopen bij opening |
-| JBLU | bmo | long | 75.0 | -2.00% | +15.69% | +18.87% | nee | -2.00% | -2.00% | +0.00% | **Verkopen bij opening** | — | Uit om 13:00 ET |
+| RMBS | amc | long | 75.6 | +5.00% | +1.14% | +3.02% | nee | +1.10% | +0.80% | -0.30% | **Verkopen bij opening** | — | Verkopen bij opening |
+| JBLU | bmo | long | 75.0 | -2.00% | +16.03% | +19.30% | nee | +16.00% | +14.00% | -3.00% | **Verkopen bij opening** | — | Uit om 13:00 ET |
 
 `*` = door het panel geselecteerd (top 20%). Premarket = de mediaan van de laatste vijf voorbeurstransacties om 09:24. *Cijfers wijzen op* = de beweging van slot tot slot die de analist op grond van alleen het cijferbericht verwacht, vastgelegd voordat hij de koers zag. Rendementen in % vanaf de kant van de positie; verwachtingen zijn ten opzichte van het slot van gisteren.
 
@@ -69,15 +69,15 @@ De positie staat licht verlies (nabeurs circa -2%), terwijl de cijfers zelf eerd
 
 ## RMBS — Verkopen bij opening
 
-Voorlopig: de cijfers zijn beter dan de eigen prognose en de vooruitzichten voor Q4 zijn sterk, maar bij een avondpublicatie zit het meeste al in de koers bij de opening. Verkoop bij de opening, zoals de standaardregel.
+De cijfers zijn beter dan de eigen prognose en het vierde kwartaal ziet er sterk uit, maar de markt reageert lauw (ongeveer +1% voorbeurs, nabeurs zelfs licht lager), zoals bij de vorige vier publicaties door de zorg over 2027. De positie staat ongeveer 3% in de plus; neem die bij de opening, zoals de standaardregel. Er is geen nieuw nieuws of analistenactie dat vasthouden rechtvaardigt.
 
-*Wat dit advies verandert:* Een voorbeurskoers die duidelijk lager staat dan gisteren ondanks de goede cijfers.
+*Wat dit advies verandert:* Als de voorbeurskoers voor 09:30 doorloopt naar boven 92,44 (de voorbeurshoogste) of analisten hun koersdoel verhogen, dan vasthouden tot de slotkoers.
 
 ## JBLU — Verkopen bij opening
 
-Voorlopig: de cijfers zijn gemengd en het gesprek met analisten om 10:00 brengt extra risico; verkopen bij de opening.
+De positie staat voorbeurs al ongeveer 19% in de plus, veel meer dan de cijfers zelf rechtvaardigen (verlies per aandeel iets slechter dan verwacht, jaarprognose omlaag). Grote openingssprongen geven vaak een deel terug, en om 10:00 begint het gesprek met analisten, waar vragen over schulden en schuldeisers kunnen opduiken. Verkoop bij de opening en neem de winst.
 
-*Wat dit advies verandert:* Een duidelijke stijging voorbeurs met veel handel.
+*Wat dit advies verandert:* Als de koers voor 09:30 nog duidelijk verder oploopt boven 2,77 met actieve handel en er komen koersdoelverhogingen van analisten binnen, dan is vasthouden tot 13:00 te verdedigen.
 
 ## Niet meegenomen
 

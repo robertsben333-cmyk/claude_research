@@ -75,3 +75,7 @@
 ## Stage M — previous morning scored
 - Logged at 2026-10-27 13:16 UTC
 - resolve 2026-10-26 done; pool: 32 names over 6 days, review -1.70% (t -1.10), static -1.77% (t -1.11), review_minus_static +0.07 (t 0.14); brier_review_minus_prior open_lags -0.009 (t -0.64), fade -0.008 (t -0.54)
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-27 13:19 UTC
+- 10 names compiled 09:19 ET (10/10 analysts, morning-reaction-analyst, no fallback): exit_open CLS DQ RMBS JBLU; exit_1000 SOFI PSMT; exit_limit GLXY 16.95, AEYE 7.95, CVLT 148.50; exit_close KNSA. Concurrent subagent cap of 8 delayed RMBS and JBLU ~2 min. AEYE's what_would_change_it names 7.60, the analyst's own threshold rather than a tape price; left unrepaired per skill.
