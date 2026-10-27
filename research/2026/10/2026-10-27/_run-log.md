@@ -35,3 +35,71 @@
 ## Stage EU — Europe ranking — DONE
 - Logged at 2026-10-26 14:28 UTC
 - 20 ranked: VNV +0.80 ... VRLA -2.00; none above floor 2.8. Panel 4/4 members, no fallback, 1 selected: VRLA short (k=3, panel_pct 79). Sessions: VRLA, KRU, BDX probably amc (sealed bmo?); ENC amc as sealed. anchor_covered 3/20; es/pl 3 names; 9 se/fi names need resolving within ~a week. Note: europe/europe-note.md. No orders. Pushed to main (EARNINGS_DATA_BRANCH=main).
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-27 01:05 UTC
+- Fired 01:05 UTC (10:05 JST) 2026-10-27. Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp in waves of 5 (cap 25) -> edge_score -> four-model panel -> note. No orders.
+
+## Stage J — wave 1 launched
+- Logged at 2026-10-27 01:07 UTC
+- Universe: 29 scheduled, 25 eligible (4 dropped on turnover), 25 hunted, method 'all 25 eligible names (at or under the cap)'. Calendar sheets kessan.xlsx, kessan08_1002 (as_of 10-01), kessan09_1023 (as_of 10-22). Baselines sealed ~01:08 UTC, short register 20261026 (575 codes); provenance jp.v5 / claude-opus-5-5. Five waves of 5. Wave 1: 2212 3911 4063 4479 4519.
+
+## Stage J — resolved 2026-10-23
+- Logged at 2026-10-27 01:07 UTC
+- jp_resolve: 8/9 usable, impact_sum rho 0.335 (p 0.40), free control 0.571, sign right 4/8, lean_vs_free_control_rho -0.071. Panel resolved too. One day is not a result.
+
+## Stage J — wave 1 banked
+- Logged at 2026-10-27 01:16 UTC
+- 5/5 hunts returned: 2212, 3911, 4063, 4479, 4519. Wave 2 running as slots free (4684 4733 4765 4973 5344).
+
+## Stage J — wave 2 banked
+- Logged at 2026-10-27 01:24 UTC
+- 4684 4733 4765 4973(running) 5344 5532 5911: 10/25 hunts banked by 01:24 UTC. Rolling slots of 5.
+
+## Stage J — container restart
+- Logged at 2026-10-27 01:28 UTC
+- Container restarted at ~01:28 UTC; hunters 6337 6988 7102 7175 7309 lost mid-run and re-launched. 12/25 hunts banked.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-27 01:46 UTC
+- 25/25 hunts banked and scored (top 7102 +2.00, 6337 +1.90; bottom 4063 -1.40, 7751 -1.30; none above 2.8). 25 packs, four judges.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-27 01:55 UTC
+- 25 ranked: top 7102 +2.00, 6337 +1.90; bottom 4063 -1.40, 7751 -1.30; none above floor 2.8. Panel 4/4 members, no fallback, 6 selected (7102 L, 6337 L, 3911 S, 5532 S, 4479 S, 7751 S). Resolved 10-23 (lean_vs_free_control_rho -0.071). One container restart, 5 hunters re-run. Note: japan/japan-note.md. No orders.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-27 13:15 UTC
+- source research/2026/10/2026-10-26/edge-panel, 10 picks (KNSA CLS GLXY AEYE CVLT DQ SOFI PSMT RMBS JBLU), 09:16 ET; concurrent subagent cap is 8, RMBS and JBLU queued
+
+## Stage M — previous morning scored
+- Logged at 2026-10-27 13:16 UTC
+- resolve 2026-10-26 done; pool: 32 names over 6 days, review -1.70% (t -1.10), static -1.77% (t -1.11), review_minus_static +0.07 (t 0.14); brier_review_minus_prior open_lags -0.009 (t -0.64), fade -0.008 (t -0.54)
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-27 13:19 UTC
+- 10 names compiled 09:19 ET (10/10 analysts, morning-reaction-analyst, no fallback): exit_open CLS DQ RMBS JBLU; exit_1000 SOFI PSMT; exit_limit GLXY 16.95, AEYE 7.95, CVLT 148.50; exit_close KNSA. Concurrent subagent cap of 8 delayed RMBS and JBLU ~2 min. AEYE's what_would_change_it names 7.60, the analyst's own threshold rather than a tape price; left unrepaired per skill.
+
+## Edge hunt (panel) — 2026-10-27 amc + 2026-10-28 bmo — STARTED
+- Logged at 2026-10-27 17:15 UTC
+- Stage E-P fire 17:06 UTC (session start 17:08). Universe 168 names (82 amc 10-27, 86 bmo 10-28), baselines sealed for all 168 in edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-27 17:22 UTC
+- Sweep finished ~17:22 UTC (27 of 168 checked): 22 company-confirmed, all sessions settled; 0 phantoms proven; 5 checked-unconfirmed (BBAI TP MTLS RCKY ORN); RUSHB folded into RUSHA by the sweep; 141 unchecked. Cap 20: the 20 highest-priority confirmed (amc 10-27: LUNG BOOM KIDS RBBN BBNX ENPH UCTT LU OI INTA FSP SLDE SEVN BRSP; bmo 10-28: REPL OTLY OPFI JMKE AMRN DMC). Shed by hunt_priority: NHTC (62) and CTO (60), confirmed; all unconfirmed/unchecked. baseline_history_trustworthy=false for LU, JMKE. Searchers unpriced-searcher, amc first, 8 at a time.
+
+## Edge hunt (panel) — searcher progress
+- Logged at 2026-10-27 17:33 UTC
+- 13 of 20 searchers returned by 17:33 UTC (all amc except BRSP SLDE still running); all 20 launched (DMC last at ~17:33). Running: SLDE BRSP REPL OTLY OPFI JMKE AMRN DMC.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-27 17:42 UTC
+- 20/20 searchers returned by ~17:41 UTC (unpriced-searcher, native, Opus 5.5; all 20 events company-confirmed). mode: execution enabled. flatten --submit at 17:42 UTC: held AEYE 250 (+30.89%), CLS 8 (+1.22%), CVLT -11 (-2.25%), GLXY 134 (+5.96%), KNSA 33 (+25.30%) from the 2026-10-26 book, closed at market; account flat, equity $11,799.77.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-27 17:42 UTC
+- 20 packs, four judges, one part. edge_score and V2 grounded written ~17:43 UTC, before the first print.
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-27 17:53 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): BOOM long 96, OI short 94, RBBN short 90, ENPH short 86, LUNG short 85, KIDS long 84 (3-of-4 rule picks the same six). Searcher: 0 of 20 clear 2.8 (top OTLY +2.20). Stage E edge/ absent. Step 6b at 17:53 UTC (13:53 ET): plan, then open --submit --no-flatten; 6 market orders, all filled: BOOM 449 @ 5.39 long, OI 361 @ 6.38 short, RBBN 1493 @ 1.37 short (filled in pieces), ENPH 54 @ 31.56 short, LUNG 833 @ 2.02 short, KIDS 66 @ 24.07 long; gross ~$11,756 (99.6% of equity $11,800). Mean execution cost vs mid +1.34%, driven by BOOM +7.48% (thin, 7.5% half-spread). All exits dated 2026-10-28 (amc -> open).
