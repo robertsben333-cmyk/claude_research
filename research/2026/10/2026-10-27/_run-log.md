@@ -43,3 +43,7 @@
 ## Stage J — wave 1 launched
 - Logged at 2026-10-27 01:07 UTC
 - Universe: 29 scheduled, 25 eligible (4 dropped on turnover), 25 hunted, method 'all 25 eligible names (at or under the cap)'. Calendar sheets kessan.xlsx, kessan08_1002 (as_of 10-01), kessan09_1023 (as_of 10-22). Baselines sealed ~01:08 UTC, short register 20261026 (575 codes); provenance jp.v5 / claude-opus-5-5. Five waves of 5. Wave 1: 2212 3911 4063 4479 4519.
+
+## Stage J — resolved 2026-10-23
+- Logged at 2026-10-27 01:07 UTC
+- jp_resolve: 8/9 usable, impact_sum rho 0.335 (p 0.40), free control 0.571, sign right 4/8, lean_vs_free_control_rho -0.071. Panel resolved too. One day is not a result.
