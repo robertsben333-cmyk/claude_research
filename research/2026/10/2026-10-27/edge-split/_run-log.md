@@ -11,3 +11,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-10-27 17:23 UTC
 - KIDS, REPL, UCTT, FSP, AMRN; E-P's sweep and baselines from a0955166, confirmed names by hunt_priority cut at 20; claimed 17:23 UTC
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-10-27 17:23 UTC
+- RBBN, LU, OTLY, SLDE, DMC; E-P's sweep and baselines from a0955166, confirmed names by hunt_priority cut at 20; claimed 17:22 UTC
