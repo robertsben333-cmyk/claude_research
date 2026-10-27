@@ -59,3 +59,7 @@
 ## Stage J — container restart
 - Logged at 2026-10-27 01:28 UTC
 - Container restarted at ~01:28 UTC; hunters 6337 6988 7102 7175 7309 lost mid-run and re-launched. 12/25 hunts banked.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-27 01:46 UTC
+- 25/25 hunts banked and scored (top 7102 +2.00, 6337 +1.90; bottom 4063 -1.40, 7751 -1.30; none above 2.8). 25 packs, four judges.
