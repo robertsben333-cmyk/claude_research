@@ -39,3 +39,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-27 01:05 UTC
 - Fired 01:05 UTC (10:05 JST) 2026-10-27. Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp in waves of 5 (cap 25) -> edge_score -> four-model panel -> note. No orders.
+
+## Stage J — wave 1 launched
+- Logged at 2026-10-27 01:07 UTC
+- Universe: 29 scheduled, 25 eligible (4 dropped on turnover), 25 hunted, method 'all 25 eligible names (at or under the cap)'. Calendar sheets kessan.xlsx, kessan08_1002 (as_of 10-01), kessan09_1023 (as_of 10-22). Baselines sealed ~01:08 UTC, short register 20261026 (575 codes); provenance jp.v5 / claude-opus-5-5. Five waves of 5. Wave 1: 2212 3911 4063 4479 4519.
