@@ -39,3 +39,7 @@
 ## Split panel 4/4 — panel scored
 - Logged at 2026-10-27 17:35 UTC
 - 4 of 4 judges on pinned models, 5/5 coverage; dry-run E-PS; selected RBBN short (87); OTLY 79 just under; claim 17:22 to done 17:36 UTC
+
+## Split panel 3/4 — panel scored
+- Logged at 2026-10-27 17:47 UTC
+- 4 of 4 judges on pinned models; selected AMRN (short, 97) and KIDS (long, 94); --dry-run, history untouched; done 17:48 UTC
