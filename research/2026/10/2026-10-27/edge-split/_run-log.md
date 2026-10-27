@@ -27,3 +27,7 @@
 ## Split panel 4/4 — searchers done
 - Logged at 2026-10-27 17:32 UTC
 - 5 of 5 returned by 17:31 UTC (unpriced-searcher, Opus 5.5); guard moved nothing; no searcher reported its search budget running out
+
+## Split panel 3/4 — searchers done
+- Logged at 2026-10-27 17:35 UTC
+- 5 of 5 returned by 17:31 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out
