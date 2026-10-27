@@ -2,9 +2,9 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 2 of 4. Names scored by both arms: 0 of 20. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
+Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 3 of 4. Names scored by both arms: 0 of 20. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
 
-Selected by E-P: none. By the split: LUNG, SEVN. Both: none.
+Selected by E-P: none. By the split: LUNG, RBBN, SEVN. Both: none.
 
 Mean findings per name, E-P / split: 5.38 / 6.9. Mean sources: 14.31 / 19.5. Mean panel_pct on names in both: n/a / n/a.
 
@@ -25,18 +25,18 @@ Mean findings per name, E-P / split: 5.38 / 6.9. Mean sources: 14.31 / 19.5. Mea
 | KIDS | 3 | amc | · | · | n/a / 2.5 | 6 / 7 | 14 / 22 |
 | REPL | 3 | bmo | · | · | n/a / 0.1 | 5 / 5 | 14 / 14 |
 | UCTT | 3 | amc | · | · | n/a / 2.7 | 3 / 6 | 16 / 22 |
-| DMC | 4 | bmo | · | · | n/a / -0.5 | n/a / 10 | n/a / 24 |
-| LU | 4 | amc | · | · | n/a / -0.5 | 7 / 5 | 14 / 16 |
-| OTLY | 4 | bmo | · | · | n/a / 0.7 | n/a / 5 | n/a / 22 |
-| RBBN | 4 | amc | · | · | n/a / -1.0 | 7 / 6 | 18 / 17 |
-| SLDE | 4 | amc | · | · | n/a / 0.1 | n/a / 5 | n/a / 24 |
+| DMC | 4 | bmo | · | 1L | n/a / -0.5 | n/a / 10 | n/a / 24 |
+| LU | 4 | amc | · | 47S | n/a / -0.5 | 7 / 5 | 14 / 16 |
+| OTLY | 4 | bmo | · | 79L | n/a / 0.7 | n/a / 5 | n/a / 22 |
+| RBBN | 4 | amc | · | 87S* | n/a / -1.0 | 7 / 6 | 18 / 17 |
+| SLDE | 4 | amc | · | 15L | n/a / 0.1 | n/a / 5 | n/a / 24 |
 
 | shard | status | names | judges | claimed (UTC) | minutes |
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | LUNG, BBNX, OI, SEVN, OPFI | opus5, opus55, sonnet55, fable51 | 17:22 | 12 |
 | 2 | done | BOOM, ENPH, INTA, BRSP, JMKE | opus5, opus55, sonnet55, fable51 | 17:22 | 13 |
 | 3 | claimed | KIDS, UCTT, FSP, REPL, AMRN | n/a | 17:23 | n/a |
-| 4 | claimed | RBBN, LU, SLDE, OTLY, DMC | n/a | 17:23 | n/a |
+| 4 | done | RBBN, LU, SLDE, OTLY, DMC | opus5, opus55, sonnet55, fable51 | 17:23 | 13 |
 
 E-P's panel was scored n/a with n/a.
 
