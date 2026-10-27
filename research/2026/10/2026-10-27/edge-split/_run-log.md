@@ -19,3 +19,7 @@
 ## Split panel 1/4 — searchers done
 - Logged at 2026-10-27 17:31 UTC
 - 5 of 5 returned by 17:31 UTC (unpriced-searcher agent); guard moved nothing; no searcher reported its search budget running out
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-10-27 17:31 UTC
+- 5 of 5 returned by 17:31 UTC (unpriced-searcher agent, not the fallback); guard moved nothing; no searcher reported its search budget running out; edge_score 5 of 5 rankable, 0 above 2.8
