@@ -99,3 +99,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-27 17:42 UTC
 - 20 packs, four judges, one part. edge_score and V2 grounded written ~17:43 UTC, before the first print.
+
+## Edge hunt (panel) — done
+- Logged at 2026-10-27 17:53 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): BOOM long 96, OI short 94, RBBN short 90, ENPH short 86, LUNG short 85, KIDS long 84 (3-of-4 rule picks the same six). Searcher: 0 of 20 clear 2.8 (top OTLY +2.20). Stage E edge/ absent. Step 6b at 17:53 UTC (13:53 ET): plan, then open --submit --no-flatten; 6 market orders, all filled: BOOM 449 @ 5.39 long, OI 361 @ 6.38 short, RBBN 1493 @ 1.37 short (filled in pieces), ENPH 54 @ 31.56 short, LUNG 833 @ 2.02 short, KIDS 66 @ 24.07 long; gross ~$11,756 (99.6% of equity $11,800). Mean execution cost vs mid +1.34%, driven by BOOM +7.48% (thin, 7.5% half-spread). All exits dated 2026-10-28 (amc -> open).
