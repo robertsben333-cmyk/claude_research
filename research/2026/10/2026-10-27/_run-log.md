@@ -55,3 +55,7 @@
 ## Stage J — wave 2 banked
 - Logged at 2026-10-27 01:24 UTC
 - 4684 4733 4765 4973(running) 5344 5532 5911: 10/25 hunts banked by 01:24 UTC. Rolling slots of 5.
+
+## Stage J — container restart
+- Logged at 2026-10-27 01:28 UTC
+- Container restarted at ~01:28 UTC; hunters 6337 6988 7102 7175 7309 lost mid-run and re-launched. 12/25 hunts banked.
