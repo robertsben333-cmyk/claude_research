@@ -16,3 +16,7 @@
 ## Stage EU — wave 2 banked
 - Logged at 2026-10-27 14:32 UTC
 - Banked: 8TRA +1.1, CGEO +0.5 (bmo confirmed 07:00 RNS), JYSK 0.0 (Q3 pre-released 12 Oct; bmo by pattern), GSK +0.3, ELE +0.7, LASTIK -0.3, DBV -3.4 (date NOT confirmed by issuer; Earnings Whispers says 11-04 — possible phantom, amc). Running: ORNAV PEAB_B PHO SALME SANOMA.
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-27 14:48 UTC
+- All 20 hunts banked; 19 ranked (SRT: no event). DBV -3.40 the only name above floor 2.8 (date unconfirmed by issuer). Packs built, four -intl- judges.
