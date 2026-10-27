@@ -87,3 +87,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-10-27 17:22 UTC
 - Sweep finished ~17:22 UTC (27 of 168 checked): 22 company-confirmed, all sessions settled; 0 phantoms proven; 5 checked-unconfirmed (BBAI TP MTLS RCKY ORN); RUSHB folded into RUSHA by the sweep; 141 unchecked. Cap 20: the 20 highest-priority confirmed (amc 10-27: LUNG BOOM KIDS RBBN BBNX ENPH UCTT LU OI INTA FSP SLDE SEVN BRSP; bmo 10-28: REPL OTLY OPFI JMKE AMRN DMC). Shed by hunt_priority: NHTC (62) and CTO (60), confirmed; all unconfirmed/unchecked. baseline_history_trustworthy=false for LU, JMKE. Searchers unpriced-searcher, amc first, 8 at a time.
+
+## Edge hunt (panel) — searcher progress
+- Logged at 2026-10-27 17:33 UTC
+- 13 of 20 searchers returned by 17:33 UTC (all amc except BRSP SLDE still running); all 20 launched (DMC last at ~17:33). Running: SLDE BRSP REPL OTLY OPFI JMKE AMRN DMC.
