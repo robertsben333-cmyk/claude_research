@@ -91,3 +91,11 @@
 ## Edge hunt (panel) — searcher progress
 - Logged at 2026-10-27 17:33 UTC
 - 13 of 20 searchers returned by 17:33 UTC (all amc except BRSP SLDE still running); all 20 launched (DMC last at ~17:33). Running: SLDE BRSP REPL OTLY OPFI JMKE AMRN DMC.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-27 17:42 UTC
+- 20/20 searchers returned by ~17:41 UTC (unpriced-searcher, native, Opus 5.5; all 20 events company-confirmed). mode: execution enabled. flatten --submit at 17:42 UTC: held AEYE 250 (+30.89%), CLS 8 (+1.22%), CVLT -11 (-2.25%), GLXY 134 (+5.96%), KNSA 33 (+25.30%) from the 2026-10-26 book, closed at market; account flat, equity $11,799.77.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-27 17:42 UTC
+- 20 packs, four judges, one part. edge_score and V2 grounded written ~17:43 UTC, before the first print.
