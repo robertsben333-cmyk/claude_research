@@ -20,3 +20,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-27 14:48 UTC
 - All 20 hunts banked; 19 ranked (SRT: no event). DBV -3.40 the only name above floor 2.8 (date unconfirmed by issuer). Packs built, four -intl- judges.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-27 14:56 UTC
+- 19 ranked: 8TRA +1.10 ... DBV -3.40 (only floor-clearer; date not confirmed by issuer, possible phantom). SRT not ranked (no event). Panel 4/4 members, no fallback, 3 selected: DBV short (4/4, pct 96), SALME short (4/4, 86), 8TRA long (3/4, 81). anchor_covered 5/20; es 1 name; 9 se/dk/fi names need resolving within ~a week. Note: europe/europe-note.md. No orders. Pushed to main (EARNINGS_DATA_BRANCH=main).
