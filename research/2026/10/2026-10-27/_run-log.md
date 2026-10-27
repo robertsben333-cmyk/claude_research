@@ -47,3 +47,7 @@
 ## Stage J — resolved 2026-10-23
 - Logged at 2026-10-27 01:07 UTC
 - jp_resolve: 8/9 usable, impact_sum rho 0.335 (p 0.40), free control 0.571, sign right 4/8, lean_vs_free_control_rho -0.071. Panel resolved too. One day is not a result.
+
+## Stage J — wave 1 banked
+- Logged at 2026-10-27 01:16 UTC
+- 5/5 hunts returned: 2212, 3911, 4063, 4479, 4519. Wave 2 running as slots free (4684 4733 4765 4973 5344).
