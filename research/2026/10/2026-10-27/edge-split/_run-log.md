@@ -35,3 +35,7 @@
 ## Split panel 2/4 — done
 - Logged at 2026-10-27 17:35 UTC
 - panel scored 17:34 UTC, four of four judges on pinned models, 0 of 5 selected (BOOM/INTA 68S, ENPH 67S, BRSP 42L, JMKE 30L); claim-to-done 13 min; E-P's panel not yet scored when summary ran
+
+## Split panel 4/4 — panel scored
+- Logged at 2026-10-27 17:35 UTC
+- 4 of 4 judges on pinned models, 5/5 coverage; dry-run E-PS; selected RBBN short (87); OTLY 79 just under; claim 17:22 to done 17:36 UTC
