@@ -83,3 +83,7 @@
 ## Edge hunt (panel) — 2026-10-27 amc + 2026-10-28 bmo — STARTED
 - Logged at 2026-10-27 17:15 UTC
 - Stage E-P fire 17:06 UTC (session start 17:08). Universe 168 names (82 amc 10-27, 86 bmo 10-28), baselines sealed for all 168 in edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-27 17:22 UTC
+- Sweep finished ~17:22 UTC (27 of 168 checked): 22 company-confirmed, all sessions settled; 0 phantoms proven; 5 checked-unconfirmed (BBAI TP MTLS RCKY ORN); RUSHB folded into RUSHA by the sweep; 141 unchecked. Cap 20: the 20 highest-priority confirmed (amc 10-27: LUNG BOOM KIDS RBBN BBNX ENPH UCTT LU OI INTA FSP SLDE SEVN BRSP; bmo 10-28: REPL OTLY OPFI JMKE AMRN DMC). Shed by hunt_priority: NHTC (62) and CTO (60), confirmed; all unconfirmed/unchecked. baseline_history_trustworthy=false for LU, JMKE. Searchers unpriced-searcher, amc first, 8 at a time.
