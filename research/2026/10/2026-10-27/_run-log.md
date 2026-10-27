@@ -79,3 +79,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-27 13:19 UTC
 - 10 names compiled 09:19 ET (10/10 analysts, morning-reaction-analyst, no fallback): exit_open CLS DQ RMBS JBLU; exit_1000 SOFI PSMT; exit_limit GLXY 16.95, AEYE 7.95, CVLT 148.50; exit_close KNSA. Concurrent subagent cap of 8 delayed RMBS and JBLU ~2 min. AEYE's what_would_change_it names 7.60, the analyst's own threshold rather than a tape price; left unrepaired per skill.
+
+## Edge hunt (panel) — 2026-10-27 amc + 2026-10-28 bmo — STARTED
+- Logged at 2026-10-27 17:15 UTC
+- Stage E-P fire 17:06 UTC (session start 17:08). Universe 168 names (82 amc 10-27, 86 bmo 10-28), baselines sealed for all 168 in edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
