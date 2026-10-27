@@ -67,3 +67,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-27 01:55 UTC
 - 25 ranked: top 7102 +2.00, 6337 +1.90; bottom 4063 -1.40, 7751 -1.30; none above floor 2.8. Panel 4/4 members, no fallback, 6 selected (7102 L, 6337 L, 3911 S, 5532 S, 4479 S, 7751 S). Resolved 10-23 (lean_vs_free_control_rho -0.071). One container restart, 5 hunters re-run. Note: japan/japan-note.md. No orders.
+
+## Close AMC — 10:11 UTC (06:11 ET) — no exit due
+- Logged at 2026-10-27 10:17 UTC
+- mode --require-exit-tif opg exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no leg due today, no orders sent, no refusals; only refreshed fill status in 12 old alpaca-orders.json. status: no open positions. Account reachable.
