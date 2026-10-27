@@ -31,3 +31,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-10-27 17:35 UTC
 - 5 of 5 returned by 17:31 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out
+
+## Split panel 2/4 — done
+- Logged at 2026-10-27 17:35 UTC
+- panel scored 17:34 UTC, four of four judges on pinned models, 0 of 5 selected (BOOM/INTA 68S, ENPH 67S, BRSP 42L, JMKE 30L); claim-to-done 13 min; E-P's panel not yet scored when summary ran
