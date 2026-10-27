@@ -1,0 +1,1377 @@
+[
+ {
+  "id": "us/2026-10-27/DMC",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "DMC",
+   "event_date": "2026-10-28",
+   "session": "bmo",
+   "as_of_utc": "2026-10-27T17:13:54+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-27",
+    "spot": 28.688,
+    "run_up_5d_pct": -2.22,
+    "run_up_20d_pct": -6.28,
+    "pct_from_52w_high": -33.31,
+    "pct_from_52w_low": 6.65,
+    "realised_vol_20d_annualised_pct": 35.9,
+    "avg_volume_20d": 395766
+   },
+   "cik": "0001047340",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-29",
+      "session": "bmo",
+      "move_pct": 3.79
+     }
+    ],
+    "n": 1,
+    "basis": "8-K item 2.02 acceptance times (exact); 29 earlier print(s) excluded as filed under a former name on this CIK before 2026-06-04",
+    "median_abs_move_pct": 3.79,
+    "max_abs_move_pct": 3.79,
+    "up_count": 1,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "verdict": "unknown",
+    "reason": "fewer than 3 prior prints to infer a cadence from"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 24,
+    "atm_strike": 30.0,
+    "atm_iv_pct": 57.1,
+    "straddle_implied_move_pct": 10.28,
+    "event_implied_move_pct": 7.06,
+    "event_implied_move_basis": "10.28% straddle over 24 calendar days less 9.36% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.76,
+    "total_open_interest": 72,
+    "atm_spread_frac_of_mid": 0.537,
+    "warnings": [
+     "ATM bid-ask spread 54% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 1.9,
+   "deadband_basis": "half the median of 1 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 7.06,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 1,
+    "history_usable": 1,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 adj EPS consensus $0.46 (Benzinga, https://www.benzinga.com/quote/DMC/earnings-forecasts) vs $0.51 (Chartmill, 2 analysts, https://www.chartmill.com/stock/quote/DMC/analyst-ratings): two sources DISAGREE, so bar-dependent findings are capped small. Revenue consensus $1.16B (Benzinga) / $1.173B (Chartmill). Company guide (call 2026-07-29, per MarketBeat/Quartr summaries, not in the press release): FY2026 adjusted net sales growth 13-15%, adjusted EBITDA $230-240M reaffirmed; Del Monte Foods FY sales raised to $625M from $600M and adj EBITDA to $35M from $23M; 2026 external cost pressures cut to $45-55M from $60-70M (https://quartr.com/events/del-monte-corporation-dmc-q2-2026_3PeB6qX5). H1 adj EBITDA $130.1M (https://investorrelations.freshdelmonte.com/news/news-details/2026/Del-Monte-Corporation-Reports-Second-Quarter-Earnings-for-Fiscal-2026/default.aspx), so the guide implies H2 adj EBITDA $100-110M; Q3 2025 adj EBITDA was $58.0M and adj EPS $0.69 (https://www.sec.gov/Archives/edgar/data/1047340/000104734025000131/october292025-earningspr.htm). print_vs_bar_pct is on EPS.",
+   "positioning_check": "Short interest 2.1M shares, 4.6% of float, 5.7 days to cover as of 2026-08-19 (Equibles, https://equibles.com/stocks/DMC); earlier 1.9M / 2.5 DTC at 2026-06-30 (https://curvedtrading.com/stocks/dmc/), borrow fee ~0.4%. Not crowded, but DTC is meaningful on 396k avg daily volume. No October settlement found. Skew: skew_25d_vol_points is null in the baseline (front chain has 72 contracts of open interest, ATM spread 54% of mid), so the option market makes no usable directional statement; put/call OI 0.76. Event-implied move 7.06% is indicative only. Tape: -6.28% over 20d, -2.22% over 5d, 33% below the 52w high and 6.65% above the 52w low, so a good deal of disappointment is already in the price.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Fuel re-escalated after DMC last spoke: CMA CGM's 2026-09-18 notice says Brent has traded above $100/bbl since early September on renewed Hormuz/Bab el-Mandeb escalation and sets a reefer head-haul emergency fuel surcharge of $320/TEU from 2026-10-01. On 2026-07-29 DMC cut its 2026 external cost-pressure assumption to $45-55M from $60-70M, citing lower fuel, fertilizer and diesel. DMC runs its own reefer fleet and its Q2 release already flagged 'elevated commodity and supply chain costs given the uncertainty associated with the conflict in the Middle East'. The risk is that the Q4/FY cost assumption or the $230-240M EBITDA guide is walked back.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.ajot.com/news/cma-cgm-situation-in-the-middle-east-emergency-fuel-surcharge-update",
+    "source_date": "2026-09-18",
+    "reaction_history_on_this_line": "Only one print under the DMC name (Q2 2026, +3.79%, cost guide cut and Foods guide raised). Under the FDP name, Q3 2025 fell 9.78% pre-market on a banana cost squeeze (higher production, procurement and distribution costs) (https://www.itiger.com/news/1176769225).",
+    "why_not_priced": "The stock is -6.3% over 20 days and -33% from its high, so part of this is plausibly in the price. What is not priced is the company's own number: the $45-55M cost assumption stands unrevised, nobody covering the name has published a cut (Chartmill shows no target revisions in 1-3 months), and consensus Q3 EPS of $0.46-0.51 is below Q2's $0.72 for seasonal reasons, not because of a fuel cut. If the market had fully priced a guide cut, the stock would be at or below its 52w low ($26.47), not 6.65% above it.",
+    "independence": "Proxy: macro-to-company transmission that DMC has not confirmed. Dole plc's Q2 release (2026-08-10, after DMC spoke) attributes a 30.9% fall in Fresh Fruit adj EBITDA partly to higher shipping costs, but expects contractual pricing mechanisms to help in H2, which cuts the size (https://www.morningstar.com/news/business-wire/20260810083577/dole-plc-reports-second-quarter-2026-financial-results). Brent >$102 on 2026-10-02 (https://gulfnews.com/business/energy/brent-crude-oil-surges-past-102-amid-hormuz-tensions-us-iran-conflict-1.500695537).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Costa Rican colón strength continued through Q3: the BCCR reference was about ₡445-454/$ in September 2026 against roughly ₡497 at the start of the year. DMC's Q2 release and Dole's Q2 both cite the colón as a gross-profit headwind, because Costa Rica is the main cost base for DMC's bananas and pineapples.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.bgeneral.fi.cr/historico/",
+    "source_date": "2026-09-10",
+    "reaction_history_on_this_line": "No clean isolated reaction. The colón was cited in Q2 2026 (stock +3.79% on an EPS beat), so the market has not punished this line on its own.",
+    "why_not_priced": "Largely priced: the company named it in July and consensus EPS is down roughly 30% y/y ($0.46-0.51 vs $0.69). What may not be in the bar is a further step-up, since the colón kept strengthening after Q2. If fully priced, estimates would have moved after July, and Chartmill shows no revisions.",
+    "independence": "Dole Q2 cites the colón as a Fresh Fruit headwind (https://www.morningstar.com/news/business-wire/20260810083577/dole-plc-reports-second-quarter-2026-financial-results). Tico Times on colón strength (https://ticotimes.net/2026/06/24/costa-rica-dollar-exchange-rate-may-have-hit-bottom).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "The banana segment has an easy comparison and supportive peer pricing. Q3 2025 banana gross profit was only $4.6M (1.3% margin). DMC closed four low-profitability Costa Rican banana farms (a $10.6M Q2 charge). Dole's Q2 (2026-08-10, after DMC spoke) said underlying North American banana pricing was slightly higher and that contractual pricing mechanisms should help in H2. The offset is weak NA banana volumes, which both companies report.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1047340/000104734025000131/october292025-earningspr.htm",
+    "source_date": "2025-10-29",
+    "reaction_history_on_this_line": "The banana margin collapse drove the -9.78% pre-market move on Q3 2025. In Q2 2026, banana GP fell to $8.4M from $30.0M y/y and the stock still rose 3.79% on the EPS beat.",
+    "why_not_priced": "Consensus anchors on Q2's -72% banana GP y/y; the y/y base for Q3 is roughly a fifth of Q2's. A preview that extrapolates the Q2 decline rate would set the banana bar too low. If this were priced, the y/y banana framing in previews would show a flat-to-up comparison.",
+    "independence": "Dole Q2 2026 release (https://www.morningstar.com/news/business-wire/20260810083577/dole-plc-reports-second-quarter-2026-financial-results). Farm closures: Q2 10-Q (https://www.sec.gov/Archives/edgar/data/0001047340/000104734026000042/fdp-20260626.htm).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Avocado selling prices stayed down. Mission Produce, reporting on 2026-09-08 for May-July, saw per-unit avocado prices fall 9% on higher Mexican supply, and guided industry volumes up about 10% y/y for Aug-Oct. DMC already cited lower avocado prices in its Q2 fresh and value-added segment, so the pressure persisted through DMC's Q3. Net of the rest of the company: avocados are part of the $569M F&VA segment, alongside pineapple, fresh-cut and prepared items.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://investors.missionproduce.com/news-releases/news-release-details/mission-producer-announces-fiscal-2026-third-quarter-financial",
+    "source_date": "2026-09-08",
+    "reaction_history_on_this_line": "Q2 2026 revenue missed consensus by about 7.5% ($1.219B vs $1.318B), partly on F&VA, and the stock still rose 3.79%: this name has not been punished for revenue misses when EPS beat.",
+    "why_not_priced": "Mission's print came after DMC's last call. With two analysts, the revenue bar ($1.16-1.17B) may not have been refreshed for avocado pricing. If priced, the revenue consensus would sit nearer Q3 2025 adjusted sales ($960M) plus a Foods run-rate.",
+    "independence": "Peer print (Mission) plus DMC's own Q2 avocado commentary (https://www.freshfruitportal.com/news/2026/07/30/del-monte-q2/). These are one theme from two sources.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "President & COO Mohammed Abbas bought 12,000 shares on the open market on 2026-08-04 at a $29.89 weighted average (about $359k), lifting his direct holding to 71,930 shares. That price is above today's $28.69 spot, and he bought six days after the Q2 print, with knowledge of July trading.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1047340/000166352926000011/xslF345X06/wk-form4_1786050239.xml",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "No prior instance of this line in the record.",
+    "why_not_priced": "The Form 4 is public, but the stock has since fallen below his purchase price, so the market has not treated it as a floor. If priced as a signal, the stock would not trade 4% under an insider's buy price made with the first month of the quarter visible.",
+    "independence": "The only other Form 4 since July is an officer's small PSU-related sale of 245 shares at $32.03 on 2026-09-08 (https://www.sec.gov/Archives/edgar/data/1047340/000176973726000009/xslF345X06/wk-form4_1788988469.xml), a weak opposite signal.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Seneca Foods' fiscal Q1 (April-June 2026), reported in August after DMC spoke, showed net sales up 36.2% to $405.2M, almost entirely on canned and frozen vegetable volume (about +$96.8M). That is consistent with Seneca taking share while Del Monte Foods was in bankruptcy and SKU rationalization. It is a competitive headwind for DMC's prepared foods volume.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.stocktitan.net/sec-filings/SENEA/10-q-seneca-foods-corp-quarterly-earnings-report-4aefd4d566e3.html",
+    "source_date": "2026-08",
+    "reaction_history_on_this_line": "First quarters of the combined Foods business; only one data point (Q2 2026, Foods guide raised, stock +3.79%).",
+    "why_not_priced": "It is mostly priced: Seneca's quarter overlaps DMC's Q2, which DMC reported with a Foods guide raise. What remains is the possibility that share loss deepens through the Q3 pack season. Net of the rest: Foods is guided at $625M of roughly $4.8B group sales, so this lands on a minority segment.",
+    "independence": "Proxy (competitor). Contradicted in direction by DMC's own Foods guide raise of 2026-07-29 (https://quartr.com/events/del-monte-corporation-dmc-q2-2026_3PeB6qX5), hence the small size.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Last quarter's setup favours an EPS beat. Q2 2026 adj EPS was $0.72 against a $0.54 estimate (+34%), with revenue missing by 7.5%. Management then raised the Foods EBITDA guide by $12M (to $35M), cut the external cost assumption by $15M, and reaffirmed FY adj EBITDA of $230-240M. Coverage is two analysts and the Q3 bar is $0.46-0.51. Note that the bar is disputed (two sources disagree), so this finding is capped small.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.chartmill.com/stock/quote/DMC/analyst-ratings",
+    "source_date": "2026-10",
+    "reaction_history_on_this_line": "The Q2 2026 EPS beat of +34% with a revenue miss bought only +3.79%. Beats are bought, but modestly.",
+    "why_not_priced": "With two analysts and no target revisions in 1-3 months, the Q3 estimate may not reflect the July guide raise flowing through. If priced, the estimates would have moved up after the July raise rather than sitting at $0.46-0.51.",
+    "independence": "Q2 numbers are from the company release (https://investorrelations.freshdelmonte.com/news/news-details/2026/Del-Monte-Corporation-Reports-Second-Quarter-Earnings-for-Fiscal-2026/default.aspx). Benzinga carries the $0.46 bar (https://www.benzinga.com/quote/DMC/earnings-forecasts).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "IEEPA tariffs were struck down (Supreme Court, 2026-02-20). On 2026-03-04 the CIT ordered refunds to importers of record, and CBP had processed $22B of Phase 1 refunds by June. DMC (then FDP) disclosed 'tariff-related charges in North America' in its 2025 distribution costs, and no refund recognition appeared in Q1 or Q2 2026. A refund could land in Q3 as a one-off. The amount is undisclosed, and it is not established that DMC has claimed.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://amp.insurancejournal.com/news/national/2026/06/10/873125.htm",
+    "source_date": "2026-06-10",
+    "reaction_history_on_this_line": "None for this name. Across the repo, tariff-refund names split by guidance direction, not by the refund.",
+    "why_not_priced": "Unquantified and not mentioned by the company. It is a one-off with no path to the guide, so it is [sizing note removed].",
+    "independence": "FDP 2025 10-Q mentions tariff-related charges (https://www.sec.gov/Archives/edgar/data/1047340/000104734025000107/fdp-20250627.htm). The CIT order (https://fortune.com/2026/03/04/judge-orders-trump-to-pay-tariff-refunds-to-companies-court-international-trade/).",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Costa Rican pineapple supply tightness should support DMC's pricing (DMC is the largest pineapple marketer, and pineapple pricing drove its 2025 gross-profit increase). An exporter reported on 2026-04-17 that prices stayed more than 20% higher after annual programs closed, and the sector expected a supply gap of about 12 weeks after week 30 (late July-October), which falls inside DMC's Q3. The volume loss partly offsets the price.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.freshplaza.com/europe/article/9830195/costa-rican-pineapple-volumes-recover-in-2026-production-gap-is-expected-mid-year/",
+    "source_date": "2026-04-17",
+    "reaction_history_on_this_line": "FY2025 gross profit rose to $299.4M from $243.3M, mainly on pineapple pricing (FDP 10-K). The stock reaction on that specific line is not isolated.",
+    "why_not_priced": "Trade-press only and dated April, so partly known. A Q3-specific supply gap is not something a two-analyst consensus is likely to model. If priced, the F&VA margin bar would sit above Q2's 11.0%.",
+    "independence": "The +20% pricing comes from a second exporter in a separate article (https://www.freshplaza.com/article/9830170/pineapple-demand-remains-strong-but-high-prices-may-lead-some-consumers-to-look-for-alternatives/). FDP 10-K on pineapple pricing (https://www.sec.gov/Archives/edgar/data/1047340/000104734026000015/fdp-20251226.htm).",
+    "i": 8
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "On 2026-07-15 DMC upsized its revolver to $900M from $750M and removed the 10bp SOFR adjustment. At Q2 it had $413.0M drawn (up from $173.0M at year end, after the $310M Foods acquisition), the leverage covenant was raised to 4.25x for four quarters, and Q2 interest expense was $6.4M vs $3.0M. What the money buys is the seasonal pack-season inventory build of the canned vegetable business in Q3, not distress, so Q3 interest and working capital will be heavier.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1047340/000104734026000033/fdp-20260715.htm",
+    "source_date": "2026-07-21",
+    "reaction_history_on_this_line": "No prior reaction on this line.",
+    "why_not_priced": "Public 8-K and 10-Q, so mostly priced. The residual is the Q3 interest and cash-flow optics of a pack season that this company has never reported before.",
+    "independence": "The Q2 10-Q gives the drawn balance and covenant (https://www.sec.gov/Archives/edgar/data/0001047340/000104734026000042/fdp-20260626.htm). Same issuer; documents are distinct.",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Foreign tax authorities have issued transfer-pricing deficiencies of about $275.9M including interest and penalties for 2012-2021 across three jurisdictions. The company disputes them and has accrued nothing extra. Resolution is not dated and is not expected inside the window.",
+    "resolves_by": "undated, after 2026-10-29",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001047340/000104734026000042/fdp-20260626.htm",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Law360: a proposed class action says Del Monte Foods Inc. stands to gain a tariff-refund windfall",
+    "source": "https://www.law360.com/articles/2490099",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "DMC.json",
+    "text": "Ecuador's 2026 official minimum banana box price of $7.75 (+$0.50)",
+    "source": "https://www.freshplaza.com/article/9793954/ecuador-establishes-the-2026-minimum-support-price-for-a-box-of-bananas-at-7-75",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DMC.json",
+    "text": "Company 8-Ks since 2026-07-29: none (EDGAR lists only the Q2 2.02 and the July credit amendment); no preannouncement, no executive change",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DMC.json",
+    "text": "October 2026 news explaining the -6.3% 20-day drift: none found",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DMC.json",
+    "text": "Analyst price-target changes in Sept-Oct 2026: none found (Chartmill: no revisions in 1-3 months; MarketBeat: one Hold rating)",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DMC.json",
+    "text": "September 2026 US banana import or wholesale price series: not found",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DMC.json",
+    "text": "September 2026 avocado shipping-point prices: not found beyond Mission's guide",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DMC.json",
+    "text": "Q2 2026 full call transcript (earningswhispers, statementdog, longbridge all blocked or empty); guidance figures rest on MarketBeat/Quartr/Longbridge summaries",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "DMC.json",
+    "text": "DMC-specific IEEPA refund claim or receivable: not found",
+    "i": 19
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-27/LU",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "LU",
+   "event_date": "2026-10-27",
+   "session": "amc",
+   "as_of_utc": "2026-10-27T17:12:57+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-27",
+    "spot": 8.31,
+    "run_up_5d_pct": -2.92,
+    "run_up_20d_pct": -32.98,
+    "pct_from_52w_high": -74.89,
+    "pct_from_52w_low": 3.1,
+    "realised_vol_20d_annualised_pct": 63.2,
+    "avg_volume_20d": 206351
+   },
+   "cik": "0001816007",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-10-21",
+      "session": "bmo",
+      "move_pct": -2.8
+     },
+     {
+      "event_date": "2026-10-16",
+      "session": "bmo",
+      "move_pct": -1.81
+     },
+     {
+      "event_date": "2026-10-14",
+      "session": "bmo",
+      "move_pct": -6.2
+     },
+     {
+      "event_date": "2026-10-08",
+      "session": "bmo",
+      "move_pct": -3.47
+     },
+     {
+      "event_date": "2026-10-07",
+      "session": "bmo",
+      "move_pct": -2.87
+     },
+     {
+      "event_date": "2026-10-06",
+      "session": "bmo",
+      "move_pct": -1.94
+     },
+     {
+      "event_date": "2026-09-23",
+      "session": "amc",
+      "move_pct": 10.66
+     },
+     {
+      "event_date": "2026-09-21",
+      "session": "bmo",
+      "move_pct": -1.69
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 2.83,
+    "max_abs_move_pct": 10.66,
+    "up_count": 1,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 6,
+    "median_gap_days": 2,
+    "ratio": 3.0,
+    "last_print": "2026-10-21",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 2 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 24,
+    "atm_strike": 1.5,
+    "atm_iv_pct": null,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 4.92,
+    "total_open_interest": 438,
+    "atm_spread_frac_of_mid": null,
+    "warnings": [
+     "ATM legs not two-sided; no live bid/ask to price a straddle from"
+    ]
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 2.83,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "The company's own pre-announcement: Q3 2026 net loss of RMB1,300m-1,700m (midpoint 1,500m) against an H1 2026 net loss of RMB694m. Profit warning, HKEX announcement filed as Ex. 99.1 to the 6-K of 2026-10-16: https://www.sec.gov/Archives/edgar/data/1816007/000119312526423425/d180390dex991.htm. There is no usable sell-side EPS bar. MarketBeat shows a +$1.08 EPS consensus, which is clearly an error for a pre-announced loss (https://www.marketbeat.com/instant-alerts/upcoming-lufax-lu-set-to-post-earnings-on-tuesday-2026-10-23/). Earnings Whispers says there is no usable EPS consensus (https://www.earningswhispers.com/epsdetails/LU). A HK-dollar average price target was cut 34% to HK$7.72 on 2026-10-22 (via the MarketBeat page), so analysts have moved after the warning. print_vs_bar_pct is 0: I expect the net loss inside the guided range.",
+   "positioning_check": "Short interest 6.51% of float, days to cover 2.59, up 6.43% month on month (MarketBeat LU page, updated 2026-10-27: https://www.marketbeat.com/instant-alerts/lufax-nyselu-stock-price-up-86-after-analyst-upgrade-2026-07-28/). That is not a crowded short. Benzinga shows an older 2.3% short float. No skew: the Yahoo chain is unusable (ATM legs not two-sided, strikes apparently not adjusted for the 1-for-10 ADS ratio change effective about 2026-10-23); put/call OI ratio 4.92 on only 438 contracts total. Tape (split-adjusted Yahoo): $8.31, -32.98% over 20 days, -74.9% from the 52-week high, 3.1% above the 52-week low, 20-day realised vol 63%, about 206k ADS a day (~$1.7m turnover). Ping An owns 73.3% fully diluted (13D/A, 2026-08-28), so the free float is small.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "The 16 Oct profit warning blames Q3's operating loss 'mainly' on higher credit impairment losses. That reverses Q2, when general-unsecured C-M3 flow fell to 1.0% from 1.2% and DPD30+ to 6.1% from 6.4%, and credit impairment was RMB4,141m (about -8% q/q). Q3 asset-quality metrics (flow rate, DPD30+/90+, risk-bearing share at 93.2%) are first disclosed in tonight's release. The net-loss range itself is already public.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1816007/000119312526423425/d180390dex991.htm",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "Q2 2026 results (18 Aug 2026, 6pm ET): -5.2% next session ($15.30 to $14.50 split-adjusted, Yahoo), even though Q2 credit metrics improved. Q3 2025 business update (Oct 2025): -5.13% intraday on DPD30+ rising to 5.1% and the loan balance down 11% (https://www.itiger.com/news/1109112794). Profit warning of 16 Oct 2026: -1.8% ($8.84 to $8.68).",
+    "why_not_priced": "The warning gave a net-loss range and a cause but no credit metrics. The stock fell only 1.8% on it, so the market has not seen how much worse asset quality got. If the deterioration were fully priced, the warning day would not have been the smallest down day of the slide. The stock is far lower than before the warning, though, so part of it is in the price.",
+    "independence": "Q2 metrics come from the Q2 release (https://finviz.com/news/383498/lufax-reports-second-quarter-2026-financial-results). This shares the profit-warning document with finding 2.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "Part of the RMB1.3-1.7bn Q3 loss is two non-cash or one-off tax charges named in the warning: (a) a reduction of deferred tax assets 'based on the company's assessment of its financing guarantee subsidiary', which implies lower expected future taxable profit there; (b) tax on planned dividends from PRC subsidiaries to offshore entities after the An Ke notes were redeemed. The print splits operating loss from tax for the first time, and Liu Jia, appointed CFO effective 16 Oct, takes his first call.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1816007/000119312526423425/d180390dex991.htm",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "No prior tax or DTA surprise found for this name. Management changes have moved it before: +5.14% on a new CRO appointment (Oct 2025, https://www.itiger.com/hant/news/1108052372).",
+    "why_not_priced": "The split between the tax charges and the operating loss is not disclosed. A large tax share would read as a cleared deck; a small one would mean an operating loss of more than RMB1bn. If the market had a view, the warning-day reaction would have been larger in one direction. The DTA write-down also signals a weaker forward outlook for the guarantee subsidiary, so the sign is ambiguous and the size small.",
+    "independence": "Same document as finding 1. The CFO appointment is in the same 6-K (Ex. 99.2), with coverage at https://stock.10jqka.com.cn/20261018/c680805095.shtml.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "Cash is flowing to the parent, not funding growth. Under the 20 Aug 2026 amendment, the An Ke Technology convertible notes (US$468.9m principal, Ping An affiliate) are redeemed in two tranches in October and December 2026. Lufax also pays PAOH US$29.4m to extend its notes (US$976.9m total Ping An notes before the redemption) to 8 Oct 2027. Cash at bank was RMB19.2bn on 30 June, down from RMB22.1bn at year-end.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1816007/000119312526375051/primary_doc.xml",
+    "source_date": "2026-08-28",
+    "reaction_history_on_this_line": "EGM approving the extension (8 Oct 2026): -3.47% that day per the baseline's 6-K list ($9.81 to $9.47).",
+    "why_not_priced": "Mostly priced: the terms have been public since August. What remains is whether the Q3 balance sheet shows the first tranche and offshore cash falling more than expected. I answered the financing question: the money repays the parent and does not fund a ramp, so the sign is negative but tiny.",
+    "independence": "Same terms in the 6-K of 2026-08-20 (https://www.sec.gov/Archives/edgar/data/1816007/000119312526358258/d125181d6k.htm) and the 10jqka summary (https://stock.10jqka.com.cn/20261018/c680805095.shtml). It overlaps the tax item in finding 2 (the dividends upstream exist to pay this), but that finding is about the P&L charge and this one about cash.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "Positioning has been washed out into the print. The ADS is down 33% in 20 days and 72% since January (split-adjusted from about $29 to $8.31). Market cap is about US$0.6bn (1.73bn shares, 20 per ADS) against reported net assets of RMB81.4bn (about US$11.4bn), or about 0.05x book. On 26 Oct the Hong Kong line (6623) jumped from HK$3.69 to HK$4.70 (+27%) on about 6x its recent volume, and the ADS rose 5.2% on about 2x volume. HK then fell back to about HK$3.55 on 27 Oct. I found no announcement explaining the spike.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/6623.HK?range=1mo&interval=1d",
+    "source_date": "2026-10-27",
+    "reaction_history_on_this_line": "HK resumption news (23 Sep amc): +10.66% next day. The sell-off since then has met every piece of company news with further declines.",
+    "why_not_priced": "This is a statement about how much bad news is already in the price, not about the company. A sell-off this deep into a pre-announced loss leaves room for relief if credit metrics are not catastrophic. The unexplained HK spike shows someone was willing to pay up the day before the print. If the market expected a disaster, short interest would be higher than 6.5% and the warning would have moved the stock more. Ping An said in July 2024 it had no intention to take Lufax private, so I have not filed a take-private thesis.",
+    "independence": "ADS tape: https://query1.finance.yahoo.com/v8/finance/chart/LU?range=3mo&interval=1d. Net assets from the Q2 release (https://finviz.com/news/383498/lufax-reports-second-quarter-2026-financial-results). Short interest from the MarketBeat page.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "Ping An Bank's Q3 2026 results (released around 23-24 Oct) show personal loans of RMB1,722.5bn, -0.3% year to date and RMB4.5bn lower in the quarter, with retail credit demand still weak. Lufax's own release had described small-business financing demand as 'staying weak'. This is a weak sector proxy, not Lufax's own number.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://stock.10jqka.com.cn/20261023/c681045236.shtml",
+    "source_date": "2026-10-23",
+    "reaction_history_on_this_line": "Loan-balance declines were cited for the -5.13% intraday move on the Q3 2025 update.",
+    "why_not_priced": "Little: weak Chinese retail credit is a known theme, and this is a proxy from a sister company with no confirmed transmission to Lufax's new-loan volume.",
+    "independence": "Proxy only. Ping An Bank's own Q3 release is summarised at https://static.weeklyonstock.com/26/1024/zbf122740.html.",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "The second tranche of the An Ke note redemption (December 2026) and the PAOH notes' conversion window opening on 30 April 2027.",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.sec.gov/Archives/edgar/data/1816007/000119312526375051/primary_doc.xml",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "Baseline reaction history (8 events, median 2.83%) as the earnings base rate",
+    "source": "/home/user/claude_research/research/2026/10/2026-10-27/edge-split-4/baselines/LU.json",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "Take-private speculation behind the 26 Oct rally (Stocktwits item listed on the finviz page)",
+    "source": "https://finviz.com/news/404380/lufax-to-announce-third-quarter-2026-financial-results-on-october-27-2026",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LU.json",
+    "text": "Quantisnow headline 'NYSE continued listing notice and effectiveness of ADS ratio change'",
+    "source": "https://quantisnow.com/insight/lufax-announces-receipt-of-notice-regarding-nyse-continued-listing-standards-and-effectiveness-of-its-5140924",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LU.json",
+    "text": "a cause for the HK +27% move on 2026-10-26 (English and Chinese news searches, the Stocktwits take-private chatter mentioned on finviz): no announcement or article found",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LU.json",
+    "text": "a usable sell-side EPS consensus for Q3 2026: MarketBeat's +$1.08 is an artefact, Earnings Whispers has none",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LU.json",
+    "text": "Q3 reports from peer Chinese credit-tech names (QFIN, FINV, LX) before 27 Oct: none, they report in November",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LU.json",
+    "text": "HKEX title search for 6623 from 19 to 27 Oct: the query returned nothing usable",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LU.json",
+    "text": "Ping An Group statements on Lufax in October 2026: none found, Ping An Group's Q3 print is not yet out",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LU.json",
+    "text": "the HK interim report (6-K of 2026-09-18) for H2 guidance: no numerical outlook; the Q2 release gives none either",
+    "i": 14
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-27/OTLY",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "OTLY",
+   "event_date": "2026-10-28",
+   "session": "bmo",
+   "as_of_utc": "2026-10-27T17:15:01+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-27",
+    "spot": 11.84,
+    "run_up_5d_pct": -7.36,
+    "run_up_20d_pct": 4.13,
+    "pct_from_52w_high": -25.51,
+    "pct_from_52w_low": 47.45,
+    "realised_vol_20d_annualised_pct": 47.1,
+    "avg_volume_20d": 69913
+   },
+   "cik": "0001843586",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-09-24",
+      "session": "amc",
+      "move_pct": -2.39
+     },
+     {
+      "event_date": "2026-07-22",
+      "session": "bmo",
+      "move_pct": 19.12
+     },
+     {
+      "event_date": "2026-07-22",
+      "session": "bmo",
+      "move_pct": 19.12
+     },
+     {
+      "event_date": "2026-05-20",
+      "session": "intraday",
+      "move_pct": 1.52
+     },
+     {
+      "event_date": "2026-04-29",
+      "session": "bmo",
+      "move_pct": 3.71
+     },
+     {
+      "event_date": "2026-04-29",
+      "session": "bmo",
+      "move_pct": 3.71
+     },
+     {
+      "event_date": "2026-04-27",
+      "session": "amc",
+      "move_pct": -4.21
+     },
+     {
+      "event_date": "2026-04-10",
+      "session": "bmo",
+      "move_pct": 8.75,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 284800,
+       "next_day_volume": 69000,
+       "median_20d_before": 48600,
+       "move_as_tagged_pct": 8.75,
+       "move_if_bmo_pct": 8.75,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 3.96,
+    "max_abs_move_pct": 19.12,
+    "up_count": 6,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 34,
+    "median_gap_days": 17,
+    "ratio": 2.0,
+    "last_print": "2026-09-24",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 17 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 24,
+    "atm_strike": 12.0,
+    "atm_iv_pct": 85.4,
+    "straddle_implied_move_pct": 17.95,
+    "event_implied_move_pct": 15.04,
+    "event_implied_move_basis": "17.95% straddle over 24 calendar days less 12.28% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.12,
+    "total_open_interest": 400,
+    "atm_spread_frac_of_mid": 0.5,
+    "warnings": [
+     "ATM bid-ask spread 50% of mid; implied move is indicative only"
+    ]
+   },
+   "deadband_pct": 1.98,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 15.04,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "unknown",
+    "priced_direction_available": false,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue about $241M (3 analysts, range $241-242M), from one aggregator snippet only (https://pro.stockalarm.io/quote/OTLY/analysts, page behind a login, not verified). Cross-check against the company guide: the FY26 guide is +8-10% constant-currency growth with a 200-250bp FX tailwind (https://www.sec.gov/Archives/edgar/data/0001843586/000184358626000021/otly-ex99_1.htm). Taken against FY25 revenue of $862.5M (197.5+208.4+222.8+233.8) and H1 FY26 actual of $468.4M, that guide implies a Q3 of roughly $235-245M. The $241M sits in the upper half of the guide-implied range. EBITDA bar: FY guide $25-35M 'toward the low end', and H1 delivered $5.4M (Q1 $5.0M + Q2 $0.4M), so H2 needs about $19.6M against $14.1M in H2 2025. No Q3 EBITDA or EPS consensus could be sourced. The revenue bar has a single unverified source, so the reported-quarter sizes are capped small.",
+   "positioning_check": "Short interest 397,081 shares at the 2026-10-15 settlement, 1.27% of 31.23M shares outstanding, 5.77 days to cover, down from 697,565 on 2026-07-15 (https://equibles.com/stocks/otly/short-interest?range=6m, FINRA via aggregator). Not a crowded short, though days to cover are moderate because turnover is thin (about 70k shares/day, roughly $0.8M). Skew is null in the baseline. Put/call OI is 1.12 on only 400 contracts and the ATM spread is 50% of mid, so the options say almost nothing about direction. Sell-side: Barclays cut its target to $13 from $14 on 2026-10-16 and kept Overweight; consensus target $14.39 across 5 analysts (https://www.marketbeat.com/stocks/NASDAQ/OTLY/forecast/). Spot $11.84 is -7.4% over 5 days, +4.1% over 20 days and -25.5% from the 52-week high.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "Revenue momentum is running well above what the raised FY guide implies for H2. Q2 constant-currency growth was +12.7% and H1 about +10.5%. The +8-10% FY guide implies only about +5.8-9.6% in H2, on a Q3 2025 comparison of +3.8% cc. The North America large-foodservice-customer headwind 'has substantially ended' (Q2 call). A second guide raise and a Q3 above the $241M bar (a Q2-pace cc growth rate gives about $249M) are more likely than not.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001843586/000184358626000021/otly-ex99_1.htm",
+    "source_date": "2026-07-22",
+    "reaction_history_on_this_line": "The name pays for this line. Q2 2026 (2026-07-22): revenue $240.1M against $220.05M consensus plus the cc guide raised from 3-5% to 8-10%; the stock rose +19.1% (baseline). Q4 2025 (2026-02-11): revenue $233.8M against about $216M; the stock rose about +11% (https://finviz.com/news/309616/otly-stock-gains-11-despite-reporting-wider-than-expected-loss). Q1 2026: revenue +15.6%, guide only reiterated; the stock rose +3.7% (baseline).",
+    "why_not_priced": "The bar has caught up with the Q2 level ($241M against $240.1M actual), but the guide still implies H2 cc deceleration that Q2's segment volumes (Europe +16.9%) and the end of the NA headwind do not show. If the market had priced a second raise, the stock would not be -7.4% over five days and 25% off its high into the print with only a $13-14 sell-side target band. The name has beaten the revenue consensus by 8-9% on two of the last three prints, which suggests a thinly covered (3-analyst) bar that keeps anchoring on the guide.",
+    "independence": "Q2 call transcript, CFO and Global President on H2 phasing and the NA customer headwind ending: https://www.webull.ca/news-detail/15273923783435264 (2026-07-23). Company's March 2026 capacity release cites European plant-based drink demand +6% and Oatly foodservice +20%+: https://www.itiger.com/news/2617411055 (2026-03-05). Both are company sources, so they are not fully independent of the 6-K.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "The FY26 adjusted EBITDA guide ($25-35M, 'toward the low end') was explicitly conditioned on the Middle East conflict impact not worsening, with Q3/Q4 cost impact expected 'broadly in line with Q2'. In September the conflict re-escalated: Dated Brent rallied to $114.26 on 2026-09-09 (above $100 for the first time since late July) with record tanker freight, and oil freight is reported up sevenfold on 2026-10-22. That raises the risk that the low end is cut or framed as at risk. H1 delivered only $5.4M of the $25M low end.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.spglobal.com/energy/en/news-research/latest-news/crude-oil/090926-factbox-platts-dated-brent-rallies-to-11426b-as-us-iran-war-heats-up",
+    "source_date": "2026-09-09",
+    "reaction_history_on_this_line": "Q4 2025: rose about +11% despite an EPS miss, because revenue led. Q1 2026: the guide was reiterated with Middle East cost caveats and the stock rose +3.7%. The EBITDA line has not yet been the swing factor on a print, so its reaction function is unknown.",
+    "why_not_priced": "Partly priced: the stock is -7.4% over five days and Barclays trimmed its target on 2026-10-16. But no sell-side or company source ties the September escalation to Oatly's EBITDA guide. If it were priced, a target cut citing costs or an EBITDA estimate below $25M would be visible. Q2 Brent peaked at $126 (April 30), so the Q3 average may not exceed Q2's, which is why this is sized as a risk and not a call.",
+    "independence": "Freight surge reported 2026-10-22: https://www.thestar.com.my/business/business-news/2026/10/22/war-triggers-sevenfold-surge-in-oil-freight-rates. The company's own conditioning language is in the Q2 6-K (https://www.sec.gov/Archives/edgar/data/0001843586/000184358626000021/otly-ex99_1.htm). This is a macro-to-company proxy that the company has not confirmed.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "Barclays (Overweight) cut its OTLY price target to $13 from $14 on 2026-10-16, a preview trim 12 days before the print. Its stated reason could not be sourced.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.marketbeat.com/stocks/NASDAQ/OTLY/forecast/",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "Not determinable. Earlier Barclays target moves (cut to $12 from $14 around Q2, then raised to $14) bracket a +19% print.",
+    "why_not_priced": "Largely priced. It is public, and the stock fell below its 50-day average on 2026-10-21 and is -7.4% over five days. Filed so the panel sees the sell-side's pre-print direction.",
+    "independence": "Tickeron reports the same $14 to $13 cut 'mid-October': https://tickeron.com/ticker/OTLY/. It is the same event, not independent.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "Balance sheet at 2026-06-30: $344.4M of interest-bearing debt classified as current (including about $336M of 9.25% PIK convertibles due 2028) against $44.6M cash, negative equity of $23.5M, and FY26 free cash flow guided negative. No new financing or going-concern language was found. Nordic bonds were listed on Nasdaq Stockholm around 2026-09-28, and revolver covenants were reset in the 2025 refinancing until Q3 2027.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001843586/000184358626000022/otly-20260630.htm",
+    "source_date": "2026-07-22",
+    "reaction_history_on_this_line": "None on a print. The 2025 refinancing was not a print-day event.",
+    "why_not_priced": "Mostly priced. The convertible notes were already current at 2025-12-31. Asked what the money buys: inventory and capex for volume growth (CFO), with no covenant pressure visible. So it is near zero, filed only because a convertible-refinancing update or cash burn could surface in the Q3 release.",
+    "independence": "2025 refinancing terms: https://www.panabee.com/news/oatly-refinances-130-million-debt-secures-covenant-relief-with-sek-750-million-credit-fa. Different source, same overhang.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "Raw oat costs eased. Swedish farmgate oat prices were about $0.16/kg in July 2026, down 26.6% year on year (FAOSTAT-based series), and German feed oats were flat at €0.205/kg into October. That is a possible small gross-margin support beside the energy and freight headwind.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.selinawamucii.com/insights/prices/sweden/oats/",
+    "source_date": "2026-07",
+    "reaction_history_on_this_line": "Gross margin expanded +1.9pp in Q1 and +1.4pp in Q2. The reactions were driven by revenue and guidance, not margin.",
+    "why_not_priced": "Nobody covering a 3-analyst name models oat inputs. Oatly contracts oats ahead, so the transmission to Q3 is uncertain and the size is tiny.",
+    "independence": "Oat futures and EU cash prices: https://commodity-board.com/oats-pause-after-september-surge-as-futures-firm-cash-stays-flat. This is a weak, low-quality proxy.",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "Greater China strategic review (Q2 segment adj. EBITDA -$1.5M, plus $0.8M of review costs in the quarter) is due to complete 'prior to the end of the year'. Bloomberg reported in June 2026 that local management is weighing a buyout. A decision could come with Q3 but is dated to year-end, and exiting a loss-making segment would be a mild positive.",
+    "resolves_by": "2026-12-31",
+    "source": "https://vegconomist.com/company-news/oatly-executives-said-weighing-buyout-greater-china-business/",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "Finanztrends article claiming Q3 2026 revenue of $208M (+10.9%)",
+    "source": "https://www.finanztrends.de/oatly-zeigt-staerke-margen-umsatz-steigen-aktie-bleibt-volatil/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "The baseline's 8-event reaction history as an earnings base rate (median 3.96%)",
+    "source": "/home/user/claude_research/research/2026/10/2026-10-27/edge-split-4/baselines/OTLY.json",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "OTLY.json",
+    "text": "Landskrona plant capacity expansion of $16M, from 150 to 200M litres, by March 2027",
+    "source": "https://www.itiger.com/news/2617411055",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "OTLY.json",
+    "text": "Any Oatly press release or 6-K dated October 2026 (only the 2026-09-28 date notice and the Nordic bond prospectus around 2026-09-24)",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "OTLY.json",
+    "text": "Q3 2026 EPS or adjusted EBITDA consensus (no source found)",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "OTLY.json",
+    "text": "Circana/Nielsen/Kantar oat-milk scanner data for 2026 in Europe or the US (none public)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "OTLY.json",
+    "text": "Danone Q3 2026 sales as a peer read (Danone reports 2026-10-28, the same day, so not before the print)",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "OTLY.json",
+    "text": "Any October 2026 news on a Greater China deal (latest is the June Bloomberg report)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "OTLY.json",
+    "text": "Q3 2026 average EUR/USD and SEK/USD (only EUR/SEK found: the SEK weakened to 11.31 on 2026-09-16, which is ambiguous for a USD reporter with SEK costs)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "OTLY.json",
+    "text": "Notes to the H1 interim report (the EDGAR page served only the primary statements, so I could not confirm why the convertibles are classified current)",
+    "i": 15
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-27/RBBN",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "RBBN",
+   "event_date": "2026-10-27",
+   "session": "amc",
+   "as_of_utc": "2026-10-27T17:13:11+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-27",
+    "spot": 1.365,
+    "run_up_5d_pct": -3.19,
+    "run_up_20d_pct": -23.74,
+    "pct_from_52w_high": -60.55,
+    "pct_from_52w_low": 3.41,
+    "realised_vol_20d_annualised_pct": 80.2,
+    "avg_volume_20d": 1400453
+   },
+   "cik": "0001708055",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-28",
+      "session": "amc",
+      "move_pct": 6.83
+     },
+     {
+      "event_date": "2026-04-28",
+      "session": "amc",
+      "move_pct": -8.46
+     },
+     {
+      "event_date": "2026-02-05",
+      "session": "amc",
+      "move_pct": -27.94
+     },
+     {
+      "event_date": "2025-10-22",
+      "session": "amc",
+      "move_pct": -13.75
+     },
+     {
+      "event_date": "2025-07-23",
+      "session": "amc",
+      "move_pct": -8.47
+     },
+     {
+      "event_date": "2025-04-29",
+      "session": "amc",
+      "move_pct": -14.4
+     },
+     {
+      "event_date": "2025-02-12",
+      "session": "amc",
+      "move_pct": 15.47
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 13.75,
+    "max_abs_move_pct": 27.94,
+    "up_count": 2,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 88.0,
+    "ratio": 1.03,
+    "last_print": "2026-07-28",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 88-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 24,
+    "atm_strike": 2.5,
+    "atm_iv_pct": null,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.1,
+    "total_open_interest": 11,
+    "atm_spread_frac_of_mid": null,
+    "warnings": [
+     "ATM legs not two-sided; no live bid/ask to price a straddle from"
+    ]
+   },
+   "deadband_pct": 6.88,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 13.75,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Company Q3 2026 guide: revenue $215-230m (mid $222.5m), non-GAAP GM 51-52%, adj EBITDA $26-31m; FY2026 revenue $810-840m, adj EBITDA $78-88m (https://www.sec.gov/Archives/edgar/data/0001708055/000110465926087534/tm2621444d1_ex99-1.htm, 2026-07-28). Consensus: revenue $221.76m, EPS $0.038 (MarketBeat earnings page, https://www.marketbeat.com/earnings/reports/2026-10-27-ribbon-communications-inc-stock/). The consensus sits at the guide midpoint, so the bar is sourced to the company guide.",
+   "positioning_check": "Short interest 5,204,223 shares = 3.03% of float, 3.4 days to cover as of the 2026-10-15 settlement, up 3.8% from 5.01m on 2026-09-30 (https://www.marketbeat.com/stocks/NASDAQ/RBBN/short-interest/). Not a crowded short. No usable option chain: 11 contracts of open interest and no two-sided ATM quote, so there is no skew. Tape: spot $1.365, -23.7% over 20 days, -60.6% from the 52-week high and 3.4% above the low. Market cap is about $244m against roughly $292m of net debt. Five of the last seven prints fell.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RBBN.json",
+    "text": "Covenant arithmetic from the company's own documents: the amended credit agreement allows max net leverage 4.50x at 2026-09-30 and 4.00x from 2026-12-31. Net leverage was 4.0x at Q2 on trailing adj EBITDA of about $72.6m (Q3'25 $29m + Q4'25 $40m + Q1'26 -$8.3m + Q2'26 $11.9m) against about $292m net debt. Dec-31 trailing EBITDA = Q1 -8.3 + Q2 11.9 + Q3 + Q4. The low end of the FY guide ($78m) gives about 3.8-3.9x at ~$290-300m net debt, so a FY EBITDA guide cut of a few million or more at this print would put the Dec-31 test at or over 4.00x and imply another amendment. The guide line therefore carries covenant consequences on top of the usual guide-cut reaction, on a company that cut FY EBITDA from $105-120m (Feb) to $78-88m (Jul).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.stocktitan.net/sec-filings/RBBN/10-q-ribbon-communications-inc-quarterly-earnings-report-7617ad7d5600.html",
+    "source_date": "2026-07-31",
+    "reaction_history_on_this_line": "Feb 2026 print with a weak FY2026 guide: -27.9%. Jul 2026 print with the FY guide cut to $810-840m / $78-88m but bookings at a record: +6.8%. Apr 2026: -8.5%.",
+    "why_not_priced": "The covenant steps and the 4.0x figure are public, but no note found ties the Dec-31 4.00x test to the size of a possible FY guide cut. Rosenblatt's downgrade speaks only of ~$290m net debt at high rates. If this were priced, the stock would already trade as though an amendment were certain. The equity, at about 0.8x net debt, is partly there already, which is why the size is small.",
+    "independence": "Net leverage 4.0x and $45m cash at Q2 come from the call highlights (https://www.tradingview.com/news/marketbeat:a36b588ce094b:0-ribbon-communications-q2-earnings-call-highlights/). Q3'25 EBITDA of $29m is from https://www.sec.gov/Archives/edgar/data/1708055/000110465925101530/tm2529231d1_ex99-1.htm. Q4'25 EBITDA of $40m and the original FY26 guide of $105-120m are from https://www.telecomtv.com/content/access-evolution/ribbon-communications-inc-reports-fourth-quarter-and-full-year-2025-financial-results-54792/. These are all the company's own numbers, so they are not independent of each other. Caveat: the credit-agreement EBITDA definition may differ from adj EBITDA, but the company's reported 4.0x matches this calculation.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RBBN.json",
+    "text": "Verizon reported on 2026-10-26, after Ribbon last spoke. Its Q3 2026 capex was $3,716m against $4,310m in Q3 2025 (-14% YoY), and 9-month capex was $11.93bn against $12.26bn. Verizon is a >10% Ribbon customer, and its delayed voice-network modernization drove Cloud & Edge's -19% YoY in Q2. The FY capex guide of $16.0-16.5bn is unchanged, which implies Q4 capex of $4.1-4.6bn, up from Q3.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000732712/000073271226000049/a2026q3exhibit99.htm",
+    "source_date": "2026-10-26",
+    "reaction_history_on_this_line": "Q2 2026: Cloud & Edge -19% YoY on lower Verizon sales, and the stock still rose +6.8% because the quarter beat the guide midpoint. Feb 2026: Q4 revenue miss blamed on customer/project delays, -27.9%.",
+    "why_not_priced": "It landed the day before the print, and RBBN previews quote only the company guide and consensus. It is a proxy, because total capex is not voice-switch spend, and the unchanged FY guide pushes spend into Q4. That is why it is filed small.",
+    "independence": "Rosenblatt's 2026-09-14 downgrade cites the delayed Verizon voice-modernization program and says other carriers are waiting on Verizon (https://www.investing.com/news/analyst-ratings/rosenblatt-downgrades-ribbon-communications-stock-rating-on-lack-of-catalysts-93CH-4900604). Q2 call: voice switch upgrades slower than expected (TradingView highlights, above).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RBBN.json",
+    "text": "Rosenblatt downgraded RBBN Buy to Neutral on 2026-09-14 and cut the target from $3.50 to $2.20 (14x a 2027 EPS estimate cut earlier from $0.22 to $0.17). It cited no visibility on sustainable catalysts, two years of slipping telecom and federal projects, ~$290m net debt at high rates, and limited DCI exposure on Cisco-sourced technology. Five analysts cut estimates.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.investing.com/news/analyst-ratings/rosenblatt-downgrades-ribbon-communications-stock-rating-on-lack-of-catalysts-93CH-4900604",
+    "source_date": "2026-09-14",
+    "reaction_history_on_this_line": "No prior print reaction on an analyst view. The stock went from about $2.00 at the downgrade to $1.32 on 2026-10-16.",
+    "why_not_priced": "It is largely priced: the stock fell about 30% after it. It is filed because it is the only sourced sell-side read on why Q3/Q4 Tier-1 timing could slip again, and sized near zero for that reason.",
+    "independence": "Same Verizon-delay thesis as finding 2. The two share a theme but not a document, and this one is [sizing note removed].",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RBBN.json",
+    "text": "IP Optical demand is corroborated after Ribbon last spoke. Ribbon's own Q2 IP Optical book-to-bill was 1.6x, with record bookings, backlog up more than 60% YTD and defense revenue +60% q/q. Nokia's Q3 2026 Optical Networks grew +18% cc YoY (2026-10-22), and Ciena's FQ3 2026 revenue rose +37% with the FY guide raised (2026-09-03). That supports the ~40% of revenue in IP Optical ($82m in Q2) reaching the sequential step-up inside the Q3 guide. Net of the rest: Cloud & Edge ($111m, Verizon-dependent) still has to grow for the total to reach $222.5m, so the peer read covers less than half the bar.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.nokia.com/newsroom/nokia-corporation-interim-report-for-q3-2026/",
+    "source_date": "2026-10-22",
+    "reaction_history_on_this_line": "Q2 2026: IP Optical +30% q/q with record bookings, and the stock rose +6.8% despite a FY guide cut. That is the one recent print where optical strength was rewarded.",
+    "why_not_priced": "RBBN fell about 24% in the 20 sessions spanning both peer prints, so the market is not reading Nokia's or Ciena's optical strength through to RBBN. Rosenblatt argues RBBN's DCI exposure is small, which is why this is sized as a proxy and net of Cloud & Edge.",
+    "independence": "Ciena FQ3 2026 release (https://www.sec.gov/Archives/edgar/data/0000936395/000162828026060245/ex9912026q3earningspressre.htm), a different company and date. RBBN's own Q2 IP Optical bookings and backlog (https://www.tradingview.com/news/marketbeat:a36b588ce094b:0-ribbon-communications-q2-earnings-call-highlights/) are a company-level document. Peer growth is AI/cloud-led, while RBBN's optical is mostly service provider and defense.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RBBN.json",
+    "text": "Positioning into the print: spot $1.365 is -23.7% over 20 sessions and 3.4% above the 52-week low, after the stock fell from $1.80 on 2026-09-28 to $1.32 on 2026-10-16 (-7% that day on 1.63m shares against 0.97m average) with no company filing or 8-K since July. Equity is about $244m against ~$292m net debt, and short interest is only 3.03% of float. A guide that merely holds meets a price that has de-rated sharply since the last print.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.ad-hoc-news.de/boerse/news/nebenwerte/rosenblatt-cuts-target-to-usd-2-20-for-ribbon-communications-stock/70348474",
+    "source_date": "2026-10-17",
+    "reaction_history_on_this_line": "Q2 2026 came after a weak run-in and rose +6.8% on an in-line-to-better quarter. Most other prints fell regardless of the run-in.",
+    "why_not_priced": "This is the price itself. It is filed only because the drawdown is larger than the downgrade explains, and sized near zero because an unexplained microcap drawdown is not evidence of over-reaction.",
+    "independence": "Short interest from https://www.marketbeat.com/stocks/NASDAQ/RBBN/short-interest/ (as of 2026-10-15). The 2026-09-28 price of $1.73-1.80 is from https://www.ad-hoc-news.de/boerse/news/nebenwerte/ribbon-communications-stock-falls-4-16-percent-after-target-cut/70193295.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "RBBN.json",
+    "text": "On the Q2 call management flagged about $2m a quarter of higher product costs (components, logistics) and expected H2 supply constraints on key technologies. That is a risk to the 51-52% non-GAAP GM guide (Q2 actual 49.3%), partly offset by planned price increases. It is already disclosed and inside the guide.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.tradingview.com/news/marketbeat:a36b588ce094b:0-ribbon-communications-q2-earnings-call-highlights/",
+    "source_date": "2026-07-28",
+    "reaction_history_on_this_line": "Q2 2026: EPS of -$0.03 against -$0.01 consensus on margin pressure, yet the stock rose +6.8%. The margin line has not driven the reaction lately.",
+    "why_not_priced": "It is disclosed and inside the guide, so it is near-priced. It is filed because memory and optical component cost inflation has broadened since July, which the guide may not hold.",
+    "independence": "None found from a separate source for RBBN specifically.",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "RBBN.json",
+    "text": "B. Riley upgrade to Buy with a $3.30 target on 2026-07-29, and the $3.30 MarketBeat consensus target",
+    "source": "https://www.marketbeat.com/instant-alerts/consensus-ribbon-communications-inc-nasdaq-rbbn-stock-has-consensus-target-price-of-330-according-to-analysts-2026-10-14/",
+    "first_hunter_reason": "duplicate",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "RBBN.json",
+    "text": "Q4 implied by the FY guide (revenue about $232-262m, EBITDA about $46-56m) as a separate finding on the risk of another FY cut",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001708055/000110465926087534/tm2621444d1_ex99-1.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 7
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RBBN.json",
+    "text": "EDGAR since 2026-07-28: no 8-K and no revolver or credit-agreement amendment after the Q2 10-Q. Only three Form 4s on 2026-10-19, all routine (CFO RSU vest with tax withholding at $1.46, director fees paid in stock, director RSU vest); no open-market buys or sells",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RBBN.json",
+    "text": "Company press releases in October (MTA expansion 2026-10-08, Call Trust deepfake product 2026-10-21, Acumen executive hire 2026-10-22): product and partnership news with no quantified revenue",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RBBN.json",
+    "text": "FY2027 US government shutdown: nothing found for October 2026 affecting federal orders",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RBBN.json",
+    "text": "Recent short-interest trend: no crowding (3.03% of float)",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RBBN.json",
+    "text": "Q2 call transcript (gurufocus, Yahoo) blocked; used MarketBeat/TradingView highlights instead",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "RBBN.json",
+    "text": "Kalkine and Defense World previews: 403",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-27/SLDE",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "SLDE",
+   "event_date": "2026-10-27",
+   "session": "amc",
+   "as_of_utc": "2026-10-27T17:11:59+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-27",
+    "spot": 28.75,
+    "run_up_5d_pct": 5.16,
+    "run_up_20d_pct": 27.78,
+    "pct_from_52w_high": -1.13,
+    "pct_from_52w_low": 86.81,
+    "realised_vol_20d_annualised_pct": 28.9,
+    "avg_volume_20d": 1230727
+   },
+   "cik": "0001886428",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-28",
+      "session": "amc",
+      "move_pct": 3.46
+     },
+     {
+      "event_date": "2026-04-28",
+      "session": "amc",
+      "move_pct": -2.44
+     },
+     {
+      "event_date": "2026-02-24",
+      "session": "amc",
+      "move_pct": 9.68
+     },
+     {
+      "event_date": "2025-11-05",
+      "session": "amc",
+      "move_pct": -1.07
+     },
+     {
+      "event_date": "2025-08-12",
+      "session": "amc",
+      "move_pct": -9.14
+     }
+    ],
+    "n": 5,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 3.46,
+    "max_abs_move_pct": 9.68,
+    "up_count": 2,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 88.0,
+    "ratio": 1.03,
+    "last_print": "2026-07-28",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 88-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 24,
+    "atm_strike": 25.0,
+    "atm_iv_pct": 58.4,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.72,
+    "total_open_interest": 482,
+    "atm_spread_frac_of_mid": 1.6,
+    "warnings": [
+     "ATM bid-ask spread 160% of mid; too wide to mean anything"
+    ]
+   },
+   "deadband_pct": 1.73,
+   "deadband_basis": "half the median of 5 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 3.46,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 5,
+    "history_usable": 5,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 diluted EPS $0.84 (AAII/estimate-revisions page dated 2026-10-27, 5 analysts: https://www.aaii.com/investingideas/article/522576-what-you-need-to-know-about-slide-insurance-holdings-incs-q3-earnings). Consistent with MarketBeat FY2026 consensus EPS $3.84 (https://www.marketbeat.com/stocks/NASDAQ/SLDE/earnings/), which less H1 actual $2.08 leaves $1.76 for H2. Older Benzinga tables show $0.59-0.65 (https://www.benzinga.com/quote/SLDE/earnings-forecasts), predating upward revisions. Company guide: FY2026 net income $455-470M, GWP $1.85-1.95B, reaffirmed 2026-07-28 (https://finviz.com/news/373710/slide-reports-second-quarter-2026-results). print_vs_bar is my estimate of Q3 EPS around $1.10-1.30 against $0.84, an inference from peer and cat data, not a document.",
+   "positioning_check": "Short interest 7,413,569 shares at the 2026-10-15 settlement, 5.91 days to cover, up from 6,445,149 on 2026-08-31 (https://equibles.com/stocks/slde/short-interest). That is 6.3% of 116.8M shares outstanding and roughly 10-11% of float, if Lucas-controlled shares (~46.2M per an April 2026 Form 4 report, https://www.placera.se/telegram/slide-insurance-slide-insurance-holdings-insider-sold-shares-worth-2-307-975-according-to-a-recent-sec-filing-20260423) are excluded. Shorts are moderately sized and were building into the print. Skew: not available, because the chain is unusable (ATM spread 160% of mid, OI 482). Put/call OI is 0.72. Tape: +27.8% over 20 days, +5.2% over 5 days, 1.1% off the 52-week high, spot $28.75, above the ~$24 average analyst target (https://www.benzinga.com/quote/SLDE/sentiment) and near Barclays' $31.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "Q3 2026 was storm-free in Florida. No named storm made Florida landfall July-September (Bertha and Edouard hit LA/TX, and the first hurricane of the season, Isaias, came on Oct 9). It was also the first full quarter of the 2026-27 cat program, which Slide says carries a double-digit risk-adjusted rate cut. Peer Universal (UVE), reporting 2026-10-22, showed Q3 net income +31.8% to $52.5M, net loss ratio -5.6 pts to 64.6% and ceded premium ratio 27.6% vs 32.7%. Slide's Q3 2025 analogue earned $111M at a 48.5% CR with a smaller book; Q2 2026 earned $134.9M (EPS $1.06). A Q3 2026 EPS of about $1.10-1.30 against the $0.84 bar is likely. With $274.4M of H1 net income against a $455-470M FY guide that implies only $181-196M for all of H2, a clean Q3 makes a raise to the FY net-income guide near-mechanical.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.reinsurancene.ws/universals-q326-revenues-rise-9-6-to-439m/",
+    "source_date": "2026-10-23",
+    "reaction_history_on_this_line": "SLDE has beaten EPS consensus 5 of 5 times by $0.16-0.36 (MarketBeat table). Reactions: Q2'25 -9.14%, Q3'25 -1.07% (+$0.30 beat), Q4'25 +9.68% (+$0.36 beat with the first FY2026 guide), Q1'26 -2.44% (+$0.20), Q2'26 +3.46% (+$0.18, guide only reaffirmed). Peer UVE beat ~$1.08 consensus by a wide margin on 2026-10-22 and closed +0.91% on 10-23 (https://stockanalysis.com/stocks/uve/history/). The one large up-move followed a guidance event.",
+    "why_not_priced": "Largely priced. The stock went from $22.31 on Sep 30 to ~$28.75 (+29%) as the season stayed quiet, and rose +2.9% on UVE's print day. What may remain unpriced is the size of a FY guide raise: consensus FY EPS of $3.84 (~$488M) already sits above the $470M guide top, so a raise only to ~$490M would add nothing, while a raise to $520M+ would. If the market had fully priced a large raise, the stock would trade above the $28-31 top analyst targets, and the targets have not moved since early October.",
+    "independence": "Separate sources: Slide's own guide and H1 numbers (https://finviz.com/news/373710/slide-reports-second-quarter-2026-results); its reinsurance renewal, a double-digit risk-adjusted decrease (https://www.artemis.bm/news/slide-renews-5-463bn-of-total-aggregate-reinsurance-limit-first-event-capacity-hits-3-98bn/); and season data showing no Florida landfall in Q3 (https://mynews13.com/fl/orlando/weather/2026/07/24/tropics-so-far-in-2026). The UVE print is a peer proxy, not Slide's own number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "Hurricane Isaias (Cat 2, Destin, 2026-10-09) is a Q4 loss event that management will likely size on the Oct 28 8:30 ET call. Florida OIR puts statewide insured losses at $582M and 46,509 claims as of Oct 15, 79% in Santa Rosa and Escambia. AM Best calls it an 'earnings event'. UVE's CEO said claims were 'less significant than initially anticipated'. Slide does not report to OIR market-intelligence data, so its own count is unknown. Its retention is $166.8M first event, so any loss is fully net and offsets part of a guide raise.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.insurancejournal.com/news/southeast/2026/10/19/889539.htm",
+    "source_date": "2026-10-19",
+    "reaction_history_on_this_line": "No prior post-IPO hurricane disclosure for Slide. The stock moved -0.63% on 2026-10-09, landfall day, and has since risen ~14%.",
+    "why_not_priced": "Mostly priced. The stock barely reacted at landfall, and industry estimates have fallen since (Cotality $2-3bn, below pre-landfall estimates). It is unpriced only if Slide's Panhandle share turns out larger than assumed. A priced worry would show as a post-landfall drawdown, and there was none.",
+    "independence": "Proxy: statewide and peer data, nothing Slide-specific. A different source on industry size: https://beinsure.com/news/hurricane-isaias-triggers-insurance-claims-582mn-in-florida/ (2026-10-19). UVE's 'less than anticipated' comment is in https://www.reinsurancene.ws/universals-q326-revenues-rise-9-6-to-439m/, the same document as finding 1.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "Top-line momentum is fading. Policies in force were flat sequentially (508,928 at Q1 to 509,075 at Q2) as Citizens takeouts slowed to bind reinsurance. Average premium per residential policy fell to $3,614 from $3,964 y/y. Citizens itself had shrunk to ~274k policies by June 2026, so the takeout pool that drove Q4'25 GPW +56.7% is nearly exhausted. Florida's 30-day average homeowners rate request is -4.8%. Q3 GPW is therefore likely flat to down against Q3'25's $463.4M. This lands largely inside the GWP guide of $1.85-1.95B, which against H1's $922.8M implies H2 of $927M-1.03B versus $1.08B in H2'25, down 5-14%. It is a risk for any 2027 growth commentary.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.panabee.com/news/slide-earnings-q2-2026-report",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "Q2'25 (-9.14%) and Q3'25 (-1.07%) both missed revenue estimates ($261.6M vs $271.2M; $265.7M vs $279.4M) while beating EPS. Q2'26 beat revenue ($386.8M vs $370.8M) and rose +3.46%.",
+    "why_not_priced": "Partly priced. The guide already implies an H2 GPW decline, and the coverager piece frames diversification as 'a 2027 story'. What would not be priced is 2027 commentary that confirms Florida shrinkage before the new states contribute. If the market were focused on it, analyst targets would lag the stock less and the multiple would sit below the 7.1x it holds against an industry median of 11.6x.",
+    "independence": "Citizens count from a separate source: https://www.citizensfla.com/es/-/20260623-smaller-citizens-secures-coverage-for-2026-hurricane-season (2026-06-23). Rate requests: https://www.insurancebusinessmag.com/us/news/property/florida-approves-more-home-insurance-rate-cuts-as-doubledigit-requests-pile-up-591320.aspx (2026-09-27). The PIF figures come from the Q1 8-K and the Q2 summaries.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "Positioning runs into the print. The stock is +27.8% over 20 days, 1.1% off its 52-week high and above the ~$24 consensus target. Short interest rose from 6.45M (Aug 31) to 7.41M shares (Oct 15, 5.9 days to cover, ~10-11% of float). Peer UVE's clean beat bought only +0.9%. Sell-the-news risk on a good print is partly offset by squeeze fuel if the guide raise is large.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://equibles.com/stocks/slde/short-interest",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "After a +11.6% run between Q1 and Q2 (per unusualwhales as of Oct 6, for the period since the last print), Q2's beat bought +3.46%. The Q1'26 beat was sold at -2.44%.",
+    "why_not_priced": "This is the price itself, so it is not a missed fact. It is filed so the judges see that the run-up and rising shorts set the bar for the reaction. Had the run-up been viewed as stretched, short interest would have stopped growing or targets would have been cut. Instead both shorts and targets crept up.",
+    "independence": "Prices from https://stockanalysis.com/stocks/slde/history/. The peer reaction is from https://stockanalysis.com/stocks/uve/history/.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "There is capital-return capacity for the call: $114.1M remained on the repurchase program at Q2. H1 buybacks were about $191M, at ~$17.75-17.95 a share, and the initial dividend is $0.07. Debt-to-cap is 2.4%, and a storm-free Q3 adds ~$130-150M of earnings. A new authorization or a dividend step-up is plausible but not announced.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://finviz.com/news/373710/slide-reports-second-quarter-2026-results",
+    "source_date": "2026-07-28",
+    "reaction_history_on_this_line": "The dividend initiation with Q2 coincided with +3.46%. There is no separate history.",
+    "why_not_priced": "It is an inference with no announcement. Buybacks look less accretive at $28.75 than at $18, so the market may not expect an upsized program.",
+    "independence": "Buyback total and debt-to-cap from https://www.panabee.com/news/slide-earnings-q2-2026-report. Inference only.",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "The 2027 reinsurance renewal (June 1, 2027) and geographic diversification (NJ, RI, NY launch, California E&S) are framed by management as a 2027 story. No resolution inside the window beyond call commentary.",
+    "resolves_by": "2027-06-01",
+    "source": "https://coverager.com/slides-diversification-is-a-2027-story/",
+    "i": 5
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "Unusualwhales 'market priced earnings reaction ±8.90% ($2.13)'",
+    "source": "https://unusualwhales.com/stock/SLDE/earnings",
+    "first_hunter_reason": "no_source",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "Benzinga Q3 EPS consensus of $0.59 / $0.65 as the bar",
+    "source": "https://www.benzinga.com/quote/SLDE/earnings-forecasts",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "Barclays target raised to $31, with the stock +5.19% intraday",
+    "source": "https://www.itiger.com/news/1183706430",
+    "first_hunter_reason": "outside_window",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SLDE.json",
+    "text": "Swiss Re's $300bn Miami/Tampa hurricane scenario",
+    "source": "https://www.swissre.com/press-release/100-years-after-the-Great-Miami-Hurricane-Florida-hurricane-could-cause-USD-300-billion-or-more-in-insured-losses-finds-Swiss-Re-Institute/eac93803-92d3-4528-82fa-94833ba4146b",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SLDE.json",
+    "text": "Slide-specific Isaias claim counts: Slide does not report to OIR market-intelligence data (insurancejournal 2026-10-08), so none are available.",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SLDE.json",
+    "text": "Citizens takeout approvals for Slide in fall 2026: none found. The OIR takeout page was not reached by search.",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SLDE.json",
+    "text": "Form 4 insider activity September-October 2026: none found. The latest found was May 2026 (COO's entity sold at ~$19).",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SLDE.json",
+    "text": "Secondary offering or registration in 2026: none found.",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SLDE.json",
+    "text": "A Slide-specific rate filing in 2026: only an undated -0.5% single-family filing (insurance-forums), not used.",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SLDE.json",
+    "text": "A cause for the Oct 1 +5.9% move on 2.4M volume: only the earnings-date PR that day.",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SLDE.json",
+    "text": "Q3 2026 results from HCI or American Integrity: not yet reported or not found.",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SLDE.json",
+    "text": "Usable option skew: the chain is unusable. Unusualwhales quotes an implied ±8.9%, undated and on an older price, so it is not used as the anchor.",
+    "i": 17
+   }
+  ]
+ }
+]
