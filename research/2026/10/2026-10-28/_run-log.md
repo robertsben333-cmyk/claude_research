@@ -12,3 +12,7 @@
 ## Stage EU — wave 1 mostly banked, wave 2 launched
 - Logged at 2026-10-27 14:21 UTC
 - Banked: BNOR +0.3 (merger target of VAR, pinned), ACAST +0.8, AOJ_B +0.5 (amc confirmed), AIR +0.1 (amc confirmed; Dutch issuer, not on AMF flux). 8TRA still running. Launched CGEO, DBV, ELE, GSK.
+
+## Stage EU — wave 2 banked
+- Logged at 2026-10-27 14:32 UTC
+- Banked: 8TRA +1.1, CGEO +0.5 (bmo confirmed 07:00 RNS), JYSK 0.0 (Q3 pre-released 12 Oct; bmo by pattern), GSK +0.3, ELE +0.7, LASTIK -0.3, DBV -3.4 (date NOT confirmed by issuer; Earnings Whispers says 11-04 — possible phantom, amc). Running: ORNAV PEAB_B PHO SALME SANOMA.
