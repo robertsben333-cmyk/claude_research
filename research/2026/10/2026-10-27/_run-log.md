@@ -67,3 +67,11 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-27 01:55 UTC
 - 25 ranked: top 7102 +2.00, 6337 +1.90; bottom 4063 -1.40, 7751 -1.30; none above floor 2.8. Panel 4/4 members, no fallback, 6 selected (7102 L, 6337 L, 3911 S, 5532 S, 4479 S, 7751 S). Resolved 10-23 (lean_vs_free_control_rho -0.071). One container restart, 5 hunters re-run. Note: japan/japan-note.md. No orders.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-27 13:15 UTC
+- source research/2026/10/2026-10-26/edge-panel, 10 picks (KNSA CLS GLXY AEYE CVLT DQ SOFI PSMT RMBS JBLU), 09:16 ET; concurrent subagent cap is 8, RMBS and JBLU queued
+
+## Stage M — previous morning scored
+- Logged at 2026-10-27 13:16 UTC
+- resolve 2026-10-26 done; pool: 32 names over 6 days, review -1.70% (t -1.10), static -1.77% (t -1.11), review_minus_static +0.07 (t 0.14); brier_review_minus_prior open_lags -0.009 (t -0.64), fade -0.008 (t -0.54)
