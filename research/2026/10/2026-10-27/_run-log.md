@@ -63,3 +63,7 @@
 ## Stage J — panel STARTED
 - Logged at 2026-10-27 01:46 UTC
 - 25/25 hunts banked and scored (top 7102 +2.00, 6337 +1.90; bottom 4063 -1.40, 7751 -1.30; none above 2.8). 25 packs, four judges.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-27 01:55 UTC
+- 25 ranked: top 7102 +2.00, 6337 +1.90; bottom 4063 -1.40, 7751 -1.30; none above floor 2.8. Panel 4/4 members, no fallback, 6 selected (7102 L, 6337 L, 3911 S, 5532 S, 4479 S, 7751 S). Resolved 10-23 (lean_vs_free_control_rho -0.071). One container restart, 5 hunters re-run. Note: japan/japan-note.md. No orders.
