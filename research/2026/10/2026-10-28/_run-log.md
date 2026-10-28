@@ -24,3 +24,7 @@
 ## Stage EU — Europe ranking — DONE
 - Logged at 2026-10-27 14:56 UTC
 - 19 ranked: 8TRA +1.10 ... DBV -3.40 (only floor-clearer; date not confirmed by issuer, possible phantom). SRT not ranked (no event). Panel 4/4 members, no fallback, 3 selected: DBV short (4/4, pct 96), SALME short (4/4, 86), 8TRA long (3/4, 81). anchor_covered 5/20; es 1 name; 9 se/dk/fi names need resolving within ~a week. Note: europe/europe-note.md. No orders. Pushed to main (EARNINGS_DATA_BRANCH=main).
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-28 01:06 UTC
+- Fired 01:04 UTC (10:04 JST) 2026-10-28. Plan: jp_universe (cap 25, seeded draw) → seal baselines → provenance → unpriced-hunter-jp in waves of 5 → edge_score → four-model intl panel → note. No orders.
