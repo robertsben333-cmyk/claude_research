@@ -70,3 +70,7 @@
 ## Edge hunt (panel) — 2026-10-28 amc + 2026-10-29 bmo — STARTED
 - Logged at 2026-10-28 17:22 UTC
 - Stage E-P fire 17:06 UTC (session start 17:09). Universe 289 names (134 amc 10-28, 155 bmo 10-29), baselines sealed for all 289 in edge-panel/baselines before any agent (17:22 UTC). Plan: one edge-sweep, up to 20 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-28 17:28 UTC
+- Sweep finished 17:28 UTC (34 of 289 checked): 30 company-confirmed (27 with settled session), 0 phantoms, 255 unchecked. Cap 20: the 20 highest-priority confirmed (amc 10-28: MVIS MDXG CLPT VNDA TDOC PRCH HDSN AWRE VKTX MAX HRTG CYH; bmo 10-29: LENZ BFLY ESTA FVRR NVCR HIPO XRX BAND). Shed by hunt_priority: ASTL RSI PI NEO COHU ALKT CLB (confirmed), PHAT SIMO TSAT (session unsettled), all unchecked. Searchers unpriced-searcher, amc first, 8 at a time.
