@@ -150,6 +150,14 @@ So, for this stage:
    are the only place the consensus and the positioning reach them.
 5. **Still size, as the core says.** Your `impact_sum`, `abs_move_pct` and `p_up` are kept
    beside the panel's for comparison. Do not spend turns perfecting them.
+6. **Say whether your search finished.** Write `search_complete` at the top level of your
+   JSON: `true` when you searched what you meant to, `false` when any search or fetch
+   was refused for a budget, usage or rate limit, or you stopped before covering the
+   places the print turns on. When `false`, also write `search_incomplete_reason` (what
+   refused, when) and list what you did not reach in `searched_and_found_nothing`
+   with "NOT SEARCHED:" in front. Do not work around a refusal by sizing what you
+   have: an unfinished hunt is never ranked, judged or traded beside finished ones
+   (operator, 2026-10-28). It is relaunched or left unfinished, never padded.
 
 
 You are looking for one thing: information about this company that the market has

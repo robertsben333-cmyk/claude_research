@@ -342,10 +342,19 @@ def score_name(ticker, baseline, hunts, verdicts, legacy=False):
     plaus = ((baseline or {}).get("event_plausibility") or {}).get("verdict")
     occurred = (baseline or {}).get("event_occurred")
     confirmed = any((h.get("event_confirmed") is not False) for _, h in hunts) if hunts else True
-    rankable = bool(hunts) and confirmed and plaus != "suspect" and occurred is not False
+    # A hunt whose search was cut off (the WebSearch budget ran out, a usage limit) is
+    # not finished research and never ranks beside the finished ones (operator,
+    # 2026-10-28: two such names were bought that day). The searcher writes
+    # `search_complete: false`, or researcher_us/scripts/hunt_status.py marks it.
+    unfinished = [h for _, h in hunts if h.get("search_complete") is False]
+    rankable = (bool(hunts) and confirmed and plaus != "suspect" and occurred is not False
+                and not unfinished)
     why_not = None
     if not rankable:
         why_not = ("no hunt" if not hunts
+                   else "research unfinished: " + (unfinished[0].get("search_incomplete_reason")
+                                                   or "search cut off")
+                   if unfinished and occurred is not False and confirmed
                    else "no earnings event occurred in this window "
                         "(retrospective, sourced in the baseline)" if occurred is False
                    else "hunter found no event on this date" if not confirmed

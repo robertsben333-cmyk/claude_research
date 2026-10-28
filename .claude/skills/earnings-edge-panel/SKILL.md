@@ -39,6 +39,39 @@ stage E's files except its `edge-scores.json` at the very end, for one compariso
 `general-purpose` with `.claude/agents/unpriced-searcher.md`'s body pasted in) and pass
 `model: opus`. Record which form ran.
 
+## 3u. An unfinished search is not research (operator, 2026-10-28)
+
+A searcher whose WebSearch or WebFetch was refused for a budget, usage or rate limit has
+not finished, whatever it wrote. It must never be scored, judged or traded as if it had.
+On 2026-10-28 five of twenty searchers ran into the search budget shared across the
+session's searchers. Their hunts went through as normal, and two of them (HRTG and CYH)
+were bought.
+
+1. **After every searcher returns**, read its hand-back for a refused or exhausted
+   search, then run
+   ```bash
+   python3 researcher_us/scripts/hunt_status.py check --run <RUN>/edge-panel --apply
+   ```
+   The searcher writes `search_complete: false` itself (`config/searcher-addendum.md`
+   item 6). `--apply` marks a hunt whose own text says the search was cut off. If a
+   hand-back reports a limit the file does not show, mark it by hand:
+   `hunt_status.py mark --run <RUN>/edge-panel --ticker <T> --reason "<what the hand-back said>"`.
+   A `no flag` row is a searcher on the old contract: read its hand-back and decide.
+2. **Relaunch, do not accept.** For each unfinished name run
+   `hunt_status.py retry --run <RUN>/edge-panel --ticker <T>` (the old hunt moves to
+   `hunts/_unfinished/`). Then launch a fresh `unpriced-searcher` on it **in a later
+   turn**: end your turn and relaunch when the next notification wakes you. The budget
+   is per orchestrator turn. On 2026-10-28 every searcher launched after a turn
+   boundary kept WebSearch to the end, while those in the same turn as the exhausted
+   ones did not. Spread launches over turns from the start: do not launch more than
+   eight searchers in one turn.
+3. **A name still unfinished when step 3s is due stays unfinished.** That is when the
+   last searcher has returned, or 15:15 New York, whichever is first. `edge_score.py`
+   marks it not rankable ("research unfinished: ..."), so it is left out of the packs,
+   the panel and the book, and it never enters a judge's history. Write a run-log line
+   naming every unfinished name and whether it was retried. The note lists them under
+   their own heading, never in the ranked table.
+
 ## 3s. Sell what is still held, as soon as the searchers have finished
 
 Once every searcher has returned (or been shed), and BEFORE the panel packs are built:
