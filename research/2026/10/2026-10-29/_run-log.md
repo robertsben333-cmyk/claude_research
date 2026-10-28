@@ -11,3 +11,7 @@
 ## Stage EU — 14 of 20 hunts banked
 - Logged at 2026-10-28 14:26 UTC
 - Banked: BOHUS +1.4, FDR +1.2, IG +0.9, PDX +0.8, DNO +0.7, ENENTO +0.6, NESTE +0.3, AMP +0.2, ENGCON_B +0.1, KOG -0.1, DVD -0.3, AKRBP -0.4, EPR -0.7, AL2SI -4.5. Session corrections by hunters: AL2SI and AMP report amc (issuer pattern / 18:30 CET call), so the sealed bmo window may hold no release; ENENTO and IG release in session (inside the bmo window). Running: IDR NTGY POSTI PPH RDC STMPA (six concurrent for a few minutes, one over max_concurrent 5). Hunters run rolling, not in fixed waves; each banked hunt published on arrival.
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-28 14:34 UTC
+- All 20 hunts banked and scored; 20 ranked. AL2SI -4.50 the only name above floor 2.8. 20 packs, four -intl- judges.
