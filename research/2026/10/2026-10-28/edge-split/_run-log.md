@@ -27,3 +27,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-10-28 18:21 UTC
 - 5 of 5 returned by 18:21 UTC (unpriced-searcher agent, Opus 5.5); guard moved nothing; no searcher reported its search budget running out; edge_score: 5 rankable, 1 above the 2.8 floor (HRTG +4.10)
+
+## Split panel 4/4 — searchers done
+- Logged at 2026-10-28 18:21 UTC
+- 5 of 5 returned by 18:21 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out (several hit 403/503 on IR/Nasdaq/Benzinga pages and used snippets)
