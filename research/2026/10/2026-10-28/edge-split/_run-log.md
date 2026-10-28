@@ -31,3 +31,7 @@
 ## Split panel 4/4 — searchers done
 - Logged at 2026-10-28 18:21 UTC
 - 5 of 5 returned by 18:21 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out (several hit 403/503 on IR/Nasdaq/Benzinga pages and used snippets)
+
+## Split panel 1/4 — panel done
+- Logged at 2026-10-28 18:22 UTC
+- 4 of 4 judges on pinned models, 5/5 coverage; selected NVCR long 98, MVIS short 90; scored --dry-run at 18:22 UTC
