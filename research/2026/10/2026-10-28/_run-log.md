@@ -86,3 +86,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-28 17:52 UTC
 - 20 packs, four judges, one part. edge_score and V2 grounded written ~17:53 UTC, before the first print.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-10-28 18:03 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): BFLY L 100, HRTG L 100, PRCH L 99, VNDA S 97, CLPT S 97, MVIS S 95, NVCR L 91, BAND L 90, CYH L 90 (3-of-4 adds ESTA). Searcher: BFLY +3.70, ESTA +3.60, VNDA -3.70 clear 2.8. Stage E edge/ absent. Note published ~18:06 UTC; step 6b next.
