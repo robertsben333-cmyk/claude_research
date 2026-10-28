@@ -66,3 +66,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-28 13:28 UTC
 - Late fire (13:26 UTC = 09:26 ET, scheduled 09:10 ET): 8 picks (BOOM, OI, RBBN, ENPH, LUNG, KIDS amc; AMRN, JMKE bmo), snapshot taken, NO analysts launched because the 09:24 compile deadline had passed and the open was 3 minutes away; compiled as Geen advies for all 8 (static rule stands). Previous morning 2026-10-27 resolved; pool: 42 names / 7 days, review_minus_static -0.078 (t -0.18).
+
+## Edge hunt (panel) — 2026-10-28 amc + 2026-10-29 bmo — STARTED
+- Logged at 2026-10-28 17:22 UTC
+- Stage E-P fire 17:06 UTC (session start 17:09). Universe 289 names (134 amc 10-28, 155 bmo 10-29), baselines sealed for all 289 in edge-panel/baselines before any agent (17:22 UTC). Plan: one edge-sweep, up to 20 unpriced-searchers, step 3s flatten, four-judge panel, step 6b buy.
