@@ -1,0 +1,2705 @@
+{
+ "generated_utc": "2026-10-28T14:34:23+00:00",
+ "run": "research/2026/10/2026-10-29/europe",
+ "legacy_rescore": false,
+ "names": 20,
+ "rankable": 20,
+ "ranking_key": "impact_sum",
+ "conviction_floor": 2.8,
+ "lessons_control": {
+  "names_with_pre_lessons": 20,
+  "names_moved_by_lessons": 18,
+  "note": "pre_lessons is each hunter's own sum before it read researcher_us/LESSONS.md. edge_resolve.py ranks it against the same realised move as the key, which is the only thing that can tell the guidance file apart from a habit."
+ },
+ "language_control": {
+  "names_with_pre_local": 0,
+  "names_moved_by_local_pass": 0,
+  "note": "RETIRED 2026-09-22: the European and Canadian hunters now run one bilingual pass and emit no freeze, so this is 0/0 on every run sealed after that date. On earlier runs pre_local is each hunter's own sum after the ENGLISH pass and before the local pass; eu_resolve.py ranks it against the same realised move as the key, per market, and does not pool the UK (where the second pass varied source locality) with Germany and France (where it varied language)."
+ },
+ "note": "Ranked on impact_sum: the hunters' signed per-finding sizes, added up, in points of spot. No call and no threshold -- cut wherever you like afterwards, which is what keeps the ranking question answerable at every k. `conviction` (abs of the key) is where the direction skill lives: over all events the sign is a coin flip, above the median conviction it is 74%. conviction_floor is a floor on emphasis in the note, never a filter on this file. Everything under `diagnostics` was measured as neutral or subtractive and decides nothing -- see researcher_us/EDGE_ANALYSIS.md.",
+ "ranking": [
+  {
+   "ticker": "BOHUS",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 1.4,
+   "conviction": 1.4,
+   "priced_lean_pct": -0.947,
+   "hunter_view": {
+    "expected_move_pct": 0.55,
+    "print_vs_bar_pct": 2.0,
+    "bar": "unsourced: no published consensus for Q3 EBIT found (Inderes, Nordnet and stockanalysis carry none; Nordnet hides targets behind login). Three brokers cover it (DNB Carnegie 48, ABG 47, SEB 47 after 9 Oct). Internal reference only: Q3 2025 adj. EBIT 100.7m at 11.4% margin from the company's own management accounts; every finding is capped small for this reason.",
+    "positioning_check": "Finanstilsynet SSR register read 2026-10-26: no disclosed net short at or above 0.5% (0.0, unchanged). This is the truncation floor, not a measurement: anchor_covered is false, so there is no positioning anchor and priced_lean_pct (-0.95) is the 20-day run-up alone. Source https://ssr.finanstilsynet.no/api/v2/instruments",
+    "baseline_tension": "The fundamental read (operating leverage, stale LFL guide, FX tailwind) leans up while the +19% run-up to near broker targets and the negative priced lean argue the good news is largely in, so the evidence cuts mildly against the lean and the net is a small positive with p_up held at 55."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "BOHUS",
+     "key": "BOHUS#0",
+     "finding": "Q3 LFL of +12.2% (accelerating from 10.1% in Q2 and 8.7% in H1) runs at roughly double the company's own reiterated short-term outlook of 'mid single digit' LFL, so the outlook line in tomorrow's report is visibly stale and a lift of the short-term LFL guide is the release's most likely guidance event.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683744",
+     "source_date": "2026-10-08",
+     "expected_impact_pct": 1.0,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "One prior print (Q2, 23 Jul 2026): outlook reiterated with LFL at 10.1% above it, stock +4.49% that day and +7.6% two sessions later; no guidance change has yet been made since the June IPO",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.35,
+     "_legacy_residual_pct": 0.35
+    },
+    {
+     "hunter": "BOHUS",
+     "key": "BOHUS#1",
+     "finding": "Operating leverage on the pre-released revenue: Q2 turned +15.7% revenue into +1.6pp of adj. EBIT margin (13.3% to 14.9%, adj. EBIT +30%); Q3 2025's comparable base is only 11.4% (adj. EBIT 100.7m on 885.4m), so +16.7% revenue with LFL at 12.2% points to adj. EBIT of roughly NOK 120-135m, +20-35% y/y, with IPO costs (24.1m in Q2) no longer in the reported line.",
+     "source": "https://kommunikasjon.ntb.no/ir-files/17849070/19000829/14224/Bohus%20ASA%20Q2%202026%20report.pdf",
+     "source_date": "2026-07-23",
+     "expected_impact_pct": 0.5,
+     "cluster": "kommunikasjon.ntb.no",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 adj. EBIT +32.7m with margin +1.6pp: +4.49% on the day (revenue already pre-released then too)",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    },
+    {
+     "hunter": "BOHUS",
+     "key": "BOHUS#2",
+     "finding": "Gross-margin tailwind from the NOK: the company attributed part of Q2's +1.4pp gross margin to 'currency effects', and in Q3 2026 the krone averaged ~7% stronger against USD (USDNOK ~9.3-9.6 vs ~10.0-10.1) and ~8-10% stronger against EUR (EURNOK ~10.4-10.9 vs ~11.6-11.75) than in Q3 2025, when gross margin was 48.5%.",
+     "source": "https://query1.finance.yahoo.com/v8/finance/chart/EURNOK=X?range=2y&interval=1mo",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": 0.3,
+     "cluster": "query1.finance.yahoo.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 gross margin 48.9% vs 47.5% (currency named among the drivers): +4.49% on the day",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    },
+    {
+     "hunter": "BOHUS",
+     "key": "BOHUS#3",
+     "finding": "The stock has run from NOK 36.50 (7 Oct close) to 43.40-43.65, +19% in 20 sessions, to within 8-10% of all three published broker targets (SEB 47 raised on 9 Oct, ABG 47, DNB Carnegie 48), so a good-but-expected margin print has little valuation headroom on the brokers' own numbers.",
+     "source": "https://www.nordnet.no/aksjer/kurser/bohus-xosl",
+     "source_date": "2026-10-09",
+     "expected_impact_pct": -0.4,
+     "cluster": "nordnet.no",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Only one prior print; it came after a flat run-up and was bought (+4.49%), so there is no observed case of a post-run-up print on this name",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.14,
+     "_legacy_residual_pct": -0.14
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "IPO lock-ups (18 June 2026 listing) for selling shareholders and management expire months after the window; a 6-month lock-up would end around mid-December 2026",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-18",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=676351"
+    },
+    {
+     "finding": "First dividend under the >=80% payout policy is paid in 2027 on the 2026 accounts (Q4 report 18 Feb 2027)",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-02-18",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=676584"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/4",
+    "edge_score_legacy": 2.6,
+    "baseline_quality": 0.279,
+    "quality_parts": {
+     "history": 0.167,
+     "options": 0.5,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 1,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 4,
+    "cluster_names": [
+     "api3.oslo.oslobors.no",
+     "kommunikasjon.ntb.no",
+     "nordnet.no",
+     "query1.finance.yahoo.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 1.2,
+    "lessons_delta": 0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'The move is in the guide' and 'you were too small about the move': abs_move_pct raised 5.0 -> 5.5, since EBIT is new and a short-term LFL guide lift is plausible on a thin ($218k/day) name",
+     "'Positioning is the thing to beat, not to agree with': the run-up/targets finding shrunk -0.7 -> -0.4 because it restates the baseline's run-up lean",
+     "'A narrow proxy loses / macro-to-company is a hypothesis': the FX gross-margin finding trimmed 0.4 -> 0.3",
+     "'A number the market has been told is worth 0': confirmed no finding rests on the pre-released revenue itself; the revenue-beat candidate stays rejected"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 1
+  },
+  {
+   "ticker": "FDR",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 1.2,
+   "conviction": 1.2,
+   "priced_lean_pct": -0.275,
+   "hunter_view": {
+    "expected_move_pct": 0.84,
+    "print_vs_bar_pct": 1.5,
+    "bar": "No sourced Q3 consensus figure. The bar used is the company's FY2026 guide (sales +3% to +7% CFX, adj. EBITDA margin 23.3-24.3%) from the H1 release, https://www.cityam.com/?p=2446824, plus Renta 4's note that consensus needed H2 sales of +5.6% and adj. EBITDA of +10.2% (https://www.r4.com/articulos-y-analisis/valores/fluidra-pre-2t26-retoma-el-crecimiento-tras-dos-trimestres-de-fuerte-impacto-divisa). Because the quarterly bar is unsourced, every finding is capped small.",
+    "positioning_check": "Register not covered for this market: the CNMV short-position grid returns no rows and Consulta-OIR returns 403 from this container, so nothing is known about short interest. That is not a zero. priced_lean_pct (-0.275) is the 20-day run-up (+5.49%), which is also the free control; my main finding agrees with the recent run-up (+4.07% over 5d), so it adds little beyond the control.",
+    "baseline_tension": "Agrees with the lean and the run-up: FDR is +4.07% over 5d and +5.49% over 20d, driven by the same peer prints, so the main finding largely restates what the free control already carries; the 60-day run-up (-7.95%) and the stock's lag against its US peers are the only orthogonal parts."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "FDR",
+     "key": "FDR#0",
+     "finding": "Fluidra's US counterparties and peers reported 22-28 Oct with a healthy channel. Pool Corp (Fluidra's largest US distributor) had sales +4%, accelerating from +2% in Q2, with inventory -3%. Hayward's North America sales rose 9%, it cited 'balanced channel inventories' and 2027 early-buy orders ahead of last year, and it raised its FY guide. Pentair Pool fell 18% but said the channel inventory realignment is complete. Together this points to Fluidra's North American Q3 holding or beating H1's +4% and to positive early-buy commentary, which contradicts the Barclays May thesis of a US like-for-like decline over 2-3 quarters.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001834622/000183462226000054/a2026q3991er.htm",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": 1.0,
+     "cluster": "sec.gov",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q3 prints moved FDR.MC +7.11% (31 Oct 2024) and +9.44% (30 Oct 2025), both on in-line-to-good quarters with the guide confirmed; the H1 2025 print fell 6.47% on a US/FX-driven miss.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.35,
+     "_legacy_residual_pct": 0.35
+    },
+    {
+     "hunter": "FDR",
+     "key": "FDR#1",
+     "finding": "FX turns from headwind to slight tailwind in Q3. Average EUR/USD was 1.1506 in Q3 2026 against 1.1689 in Q3 2025 (USD about +1.6% y/y), after an FX drag of -5% in Q1 and -2% in H1, so reported sales and EBITDA growth should close the gap to constant-FX growth for the first time this year.",
+     "source": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD=X?range=2y&interval=1d",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": 0.3,
+     "cluster": "query1.finance.yahoo.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "FX was blamed for the Q1 2026 profit decline (stock +0.9% on 6 May 2026) and the H1 2025 miss (-6.47%); there is no clean case of an FX tailwind surprising.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    },
+    {
+     "hunter": "FDR",
+     "key": "FDR#2",
+     "finding": "Possible further IEEPA tariff refunds inside Q3 adj. EBITDA. Fluidra booked about EUR5m in Q2, management pointed to refunds as upside to the low-to-mid-end margin guide, and Pentair booked about $8m of IEEPA refunds in its Q3. This is a one-off.",
+     "source": "https://www.r4.com/articulos-y-analisis/valores/fluidra-2t26-espanta-los-temores-en-el-sector",
+     "source_date": "2026-07-30",
+     "expected_impact_pct": 0.1,
+     "cluster": "r4.com",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 2026 included about EUR5m of refunds in an adj. EBITDA beat; the stock rose 2.04% then gave back 1.23% the next day.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    },
+    {
+     "hunter": "FDR",
+     "key": "FDR#3",
+     "finding": "The Middle East is a drag on Rest of World. Hayward's Europe & Rest of World sales fell 6% in Q3 'primarily due to lower volume resulting from geopolitical conflicts in the Middle East'. Fluidra said on its Q1 call that the region is about 3% of group sales and that it expected reduced activity there.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001834622/000183462226000054/a2026q3991er.htm",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": -0.2,
+     "cluster": "sec.gov",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No prior print where the Middle East was the swing line.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.07,
+     "_legacy_residual_pct": -0.07
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Hydrapro acquisition (France, about EUR30m sales) expected to close in early 2027",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-01-31",
+     "source": "https://www.cityam.com/?p=2446824"
+    },
+    {
+     "finding": "Second dividend of EUR0.33 per share scheduled for 10 Dec 2026",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-10",
+     "source": "https://www.bolsamania.com/megabolsa/accion/FLUIDRA"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/4",
+    "edge_score_legacy": 3.9,
+    "baseline_quality": 0.522,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.0,
+     "event_plausibility": 1.0,
+     "history_events": 12,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 3,
+    "cluster_names": [
+     "query1.finance.yahoo.com",
+     "r4.com",
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 1.4,
+    "lessons_delta": -0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'A beat made of a one-off is sold' (H&M tariff refund): the IEEPA refund finding cut from +0.3 to +0.1 and relabelled one_off; p_up 58 to 57.",
+     "'You were right about the number and too small about the move' / numbers not pre-released (median 7.4%): abs_move_pct raised from 5.5 to 6.0 (Fluidra's own observed print reactions run at a median of about 4.6%, with Q3 prints at 7-9%)."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 2
+  },
+  {
+   "ticker": "IG",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.9,
+   "conviction": 0.9,
+   "priced_lean_pct": 0.029,
+   "hunter_view": {
+    "expected_move_pct": 0.27,
+    "print_vs_bar_pct": 2.0,
+    "bar": "Company FY2026 guidance (adj EBITDA 2.10-2.15bn, adj NP 0.74-0.76bn), 5 May 2026 release https://www.emarketstorage.it/sites/default/files/comunicati/2026-05/20260505_183404.pdf, plus 'upper part of the range' (MF 28 Jul) and Equita at the upper end (Teleborsa 28 Jul). No Q3 consensus was found, so the quarter-level bar is unsourced and print_vs_bar is measured against the guided trajectory.",
+    "positioning_check": "CONSOB register, sealed baseline: 0.5% net short, one disclosed seller, position date 2026-09-29, unchanged from the previous read (0.0 pt change). Register as_of 2026-10-26. https://www.consob.it/documents/11973/395154/PncPubbl.xlsx/fbefe0a2-795b-bad3-9369-beccbeb14f27. Not crowded, neither building nor covering.",
+    "baseline_tension": "It agrees mildly. The priced lean is about zero (+0.03) and the 20-day run-up is +5.4%, which is a rates-driven sector rebound in step with Snam rather than a priced guide raise. A modest positive lean does not fight it, and the 60-day run-up (-2.5%) and the de-rating since July leave room."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "IG",
+     "key": "IG#0",
+     "finding": "Italgas's own H1 numbers imply FY2026 adjusted net profit of about 770-795m against a 740-760m guide, and adjusted EBITDA of about 2.14-2.16bn against 2.10-2.15bn. Q2 2026 adj NP was 209.2m against 180.5m in Q2 2025 (+15.9%, full 2i Rete Gas scope both years), and Q2 adj EBITDA 545.5m against 512.6m (+6.4%). H2 2025 adj NP was 361.4m (Q3 181.8 + Q4 179.6), so flat H2 growth already reaches the 760m top. Italgas raised guidance at the 9M stage last year. A raise or a 'top end/above' wording at this 9M release is therefore more likely than a plain reiteration.",
+     "source": "https://www.emarketstorage.it/sites/default/files/comunicati/2026-07/20260727_187265.pdf",
+     "source_date": "2026-07-27",
+     "expected_impact_pct": 0.9,
+     "cluster": "emarketstorage.it",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "9M 2025 (30 Oct 2025, 07:05): guidance raised together with a plan update, stock +4.17% against Snam +0.11%. H1 2026 (27 Jul): guidance confirmed 'upper part', stock -0.15% on the day against MIB +0.49%, then -3.1% and -4.5% the next two sessions (Equita TP cut on rates). Q1 2026 (5 May, first guide): +1.89% against MIB +2.27%. On 2026 release days the stock lagged the index.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.315,
+     "_legacy_residual_pct": 0.315
+    },
+    {
+     "hunter": "IG",
+     "key": "IG#1",
+     "finding": "IG has de-rated about 11 points against Snam since its H1 release (IG 10.04 to 8.884, -11.5%; Snam -0.4%; Terna -6.4%). Two idiosyncratic sessions (28-29 Jul, -3.1% and -4.5% against Snam about -1%) coincided with Equita cutting its TP on rates while keeping its estimates. Since the 7 Oct low the stock has recovered +10.0%, in line with Snam's +11.7%.",
+     "source": "https://query1.finance.yahoo.com/v8/finance/chart/IG.MI?range=2y&interval=1d",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": 0.0,
+     "cluster": "query1.finance.yahoo.com",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No prior instance is measurable. The de-rating was not driven by a results miss: Q2 was 'slightly better than expected' per Equita.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.0,
+     "_legacy_residual_pct": 0.0
+    },
+    {
+     "hunter": "IG",
+     "key": "IG#2",
+     "finding": "Binding agreement (2 Oct 2026) to buy 100% of Meet Europe Natural Gas, which holds 22.5% of Floene (Portugal's main gas distributor, 1.1m users, 14,000 km), at an equity value of about 120m with joint control. The 9M release may carry its first financial detail.",
+     "source": "https://www.milanofinanza.it/news/focus-su-italgas-202610020832177622",
+     "source_date": "2026-10-02",
+     "expected_impact_pct": 0.0,
+     "cluster": "milanofinanza.it",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Announced 2 Oct 07:29. IG closed 8.256 against 8.238 the day before (+0.2%).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.0,
+     "_legacy_residual_pct": 0.0
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "ARERA's check on whether the WACC trigger fires for 2027 (gas distribution WACC 2025-2027 confirmed for 2026 by delibera 476/2025). Summer 2026 rate rises make a trigger more plausible, which would be positive for allowed returns, but the decision comes in Nov-Dec 2026.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://arera.it/fileadmin/allegati/docs/24/513-2024-R-com.pdf"
+    },
+    {
+     "finding": "ATEM tender pipeline: per MF, 3 tenders expected to be finally awarded by year-end and 8 more bids due by end-2026, about 400m potential RAB.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.milanofinanza.it/news/italgas-sfiora-400-milioni-di-utili-target-2026-nella-parte-alta-della-forchetta-2712467"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/3",
+    "edge_score_legacy": 1.5,
+    "baseline_quality": 0.635,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 11,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 3,
+    "cluster_names": [
+     "emarketstorage.it",
+     "milanofinanza.it",
+     "query1.finance.yahoo.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 1.0,
+    "lessons_delta": -0.1,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'The move is in the guide' (median 9.0% on a guidance change): abs_move_pct up from 2.3 to 2.7 for a possible 9M raise. It stays far below the stage median because this is a 20%-vol regulated utility, and that is stated rather than hidden.",
+     "'Size the move on what is new' / 'understatement': the guidance finding goes from +0.8 to +0.9 and its high end widens to +2.5.",
+     "'A drawdown with no cause in the filings is worth 0': the de-rating finding is cut from +0.2 to 0.0.",
+     "'Verified fact is not a predicted reaction' plus this name lagging the index on its 2026 release days: p_up held at 55, not raised.",
+     "'Cash can outweigh a raised guide': H1 net debt (10.71bn) and the Floene size were checked, and nothing flags. No change."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 3
+  },
+  {
+   "ticker": "PDX",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.8,
+   "conviction": 0.8,
+   "priced_lean_pct": 0.533,
+   "hunter_view": {
+    "expected_move_pct": 0.48,
+    "print_vs_bar_pct": 3.0,
+    "bar": "Bloomberg consensus, 8 analysts: Q3 2026 revenue 446 MSEK (LY 395), EBIT 105 MSEK (LY 112), published 2026-10-28 via Finwire/B\u00f6rsv\u00e4rlden: https://borsvarlden.com/artiklar/paradox-vantas-redovisa-105-miljoner-kronor-i-rorelseresultat-bloomberg",
+    "positioning_check": "Finansinspektionen register read 2026-10-27: no disclosed net short at or above 0.5%, so this is the truncation floor and not a measurement (anchor_covered false). Building or covering is not knowable. priced_lean_pct +0.53 is essentially the -10.67% 20-day run-up.",
+    "baseline_tension": "The small positive lean agrees with the baseline's +0.53 run-up lean, which comes from a stock down 10.7% in 20 sessions with no disclosed short. It cuts against this name's habit of falling on reports (5 of the last 6), so p_up is held near 50."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key",
+    "findings split 4 positive / 2 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "PDX",
+     "key": "PDX#0",
+     "finding": "Transport Fever 3, published by Paradox, launched on 29 September 2026, two days before the quarter closed. It peaked at ~48k concurrent Steam players, double Transport Fever 2's ~24k record, after reaching No. 1 on Steam's global bestseller list on pre-orders. Pre-order and launch-day revenue should therefore land in Q3 and push revenue above the 446 MSEK bar.",
+     "source": "https://automaton-media.com/articles/newsjp/20260930-470876/",
+     "source_date": "2026-09-30",
+     "expected_impact_pct": 1.0,
+     "cluster": "automaton-media.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 2026: revenue beat consensus by 2.3% (524 vs 512) but EBIT missed by 7.6%, and the stock fell 7.6%. Revenue beats have not been rewarded here when EBIT lags.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.35,
+     "_legacy_residual_pct": 0.35
+    },
+    {
+     "hunter": "PDX",
+     "key": "PDX#1",
+     "finding": "Steam monthly-average players summed over eight owned franchises (EU5, CK3, HOI4, Stellaris, CS1, CS2, Victoria 3, AoW4) were ~99.5k in Q3 2026: +8.7% YoY on EU5 (not out in Q3 2025) and CS2 (+45%), but -5% QoQ. September was weak: CK3 -16%, EU5 -14%, CS1 -11% and HOI4 -10% month on month. With USD/SEK ~+4% YoY, that supports roughly 440 MSEK from the catalogue, a touch under the 446 MSEK bar before any Transport Fever 3 contribution.",
+     "source": "https://steamcharts.com/app/1158310",
+     "source_date": "2026-10-28 (monthly series read on this date; per-title pages also at /app/3450310, /app/394360, /app/281990, /app/949230, /app/255710, /app/529340, /app/1669000)",
+     "expected_impact_pct": -0.3,
+     "cluster": "steamcharts.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q3 2025: revenue 395 MSEK came in under the 399 bar, EBIT 112 beat the 103 bar, and the stock rose 3.3%. EBIT, not revenue, has decided the sign.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "PDX",
+     "key": "PDX#2",
+     "finding": "Paradox sold Playrion for EUR 2.25m upfront plus a 9% net-revenue earn-out over three years. Closing was expected on 30 September 2026, the last day of Q3, and the acquisition goodwill was already fully amortised at group level. A small disposal gain, perhaps 10-25 MSEK against a 105 MSEK EBIT bar, may therefore sit in Q3 operating profit.",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b33dffcb31eae12dbc83bb2b7314577dd&lang=en&src=listed",
+     "source_date": "2026-09-25",
+     "expected_impact_pct": 0.1,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No prior disposal gain at Paradox to compare with. On the European resolved days, beats made of one-offs were sold (H&M).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    },
+    {
+     "hunter": "PDX",
+     "key": "PDX#3",
+     "finding": "Handelsbanken cut EPS 2026-28 by 4-7% on 7 October, partly on 'higher costs and earnings dilution from new game launches'. The 105 MSEK EBIT bar is below last year's 112 on revenue +13%, a margin of ~23.5% against ~28%. In Q2 EBIT missed the bar by 7.6% on costs. Q3 carried Transport Fever 3 launch marketing and Gamescom (Afterworld reveal), so the cost line is the main risk to the print.",
+     "source": "https://www.placera.se/telegram/paradox-interactive-handelsbanken-sanker-riktkursen-for-paradox-till-160-kronor--upprepar-kop-20261007",
+     "source_date": "2026-10-07",
+     "expected_impact_pct": -0.4,
+     "cluster": "placera.se",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 2026 EBIT miss: -7.6% on the day. Q4 2025: -15.2%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.14,
+     "_legacy_residual_pct": -0.14
+    },
+    {
+     "hunter": "PDX",
+     "key": "PDX#4",
+     "finding": "The SEK 200m buyback finished on 8 October, so the stock has had no buyback bid for three weeks. The previous programme was announced on the evening before the Q2 report (5 August), so a renewal alongside the Q3 report is plausible but not signalled.",
+     "source": "https://view.news.eu.nasdaq.com/view?id=bae465d1b77996e2b886c6a68ba7e6431&lang=en&src=listed",
+     "source_date": "2026-10-12",
+     "expected_impact_pct": 0.2,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "capital_return",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The Q2 report came with a newly announced buyback and still fell 7.6%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    },
+    {
+     "hunter": "PDX",
+     "key": "PDX#5",
+     "finding": "No write-down release has been filed for Q3. Paradox's last two large impairments, Life by You (208 MSEK, June 2024) and Bloodlines 2 (355 MSEK, November 2025), each went out as a separate MAR release before the report, so the left tail from a capitalised-development write-down is thinner than usual.",
+     "source": "https://mfn.se/all/a/paradox-interactive",
+     "source_date": "2026-10-28 (feed read)",
+     "expected_impact_pct": 0.2,
+     "cluster": "mfn.se",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q4 2025 (the Bloodlines 2 write-down quarter): -15.2% on the report day.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Transport Fever 3's October sell-through: Steam players have decayed from ~34k at the 11 October weekend peak to ~15k by 22 October. This is Q4 revenue, scored only at the January 2027 report, except where the CEO quantifies it tomorrow.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-01-28",
+     "source": "https://steamcharts.com/app/3493540"
+    },
+    {
+     "finding": "Stellaris 'Willpower' expansion launches 23 November and a Crusader Kings III expansion is undated: Q4 content.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-23",
+     "source": "https://www.paradoxinteractive.com/media/press-releases?l=en"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/6",
+    "edge_score_legacy": 0.9,
+    "baseline_quality": 0.56,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 13,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 5,
+    "cluster_names": [
+     "automaton-media.com",
+     "mfn.se",
+     "placera.se",
+     "steamcharts.com",
+     "view.news.eu.nasdaq.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 1.0,
+    "lessons_delta": -0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'A beat made of a one-off is sold' (H&M): Playrion disposal-gain finding cut from +0.3 to +0.1",
+     "'Right about the number and too small about the move' (18 of 23 under, median factor ~3): abs_move_pct raised from 5.5 to 6.0, p_up unchanged at 54 because this name sells its reports"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 4
+  },
+  {
+   "ticker": "DNO",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.7,
+   "conviction": 0.7,
+   "priced_lean_pct": -1.355,
+   "hunter_view": {
+    "expected_move_pct": 0.13,
+    "print_vs_bar_pct": 0.0,
+    "bar": "unsourced: the baseline carries no consensus (Yahoo returned no quarters) and no Infront or Modular Finance Q3 consensus was found in search, so every size is capped small",
+    "positioning_check": "Finanstilsynet SSR register read as of 2026-10-26 and does not name DNO: 0.0%, no change. That is the 0.5% truncation floor, not a measured zero, so anchor_covered is false and there is no positioning anchor; priced_lean_pct (-1.36) is in effect the run-up term. https://ssr.finanstilsynet.no/api/v2/instruments",
+    "baseline_tension": "Mild. The findings lean slightly positive against a priced lean of -1.36, which is the 27% 20-day run-up term, and the run-up was earned mostly on the trading update and on Brent, so most of the good news is already in the price."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "1 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "DNO",
+     "key": "DNO#0",
+     "finding": "The pre-released Q3 volumes and prices imply record revenue of about USD 1.0bn, up roughly 30% q/q (Q2: USD 760.5m), with Kurdistan back at 54.9k boepd net from 0.3k.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684039",
+     "source_date": "2026-10-14",
+     "expected_impact_pct": 0.0,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The stock took the trading update itself: up about 5-6% on 2026-10-14 (E24 'Oljeaksjer opp p\u00e5 Oslo B\u00f8rs'; Yahoo close 20.18 -> 21.44). Results days after a trading update moved +0.65% (Q1 2026), +1.99% (Q2 2026) and +2.61% (Q3 2025).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.0,
+     "_legacy_residual_pct": 0.0
+    },
+    {
+     "hunter": "DNO",
+     "key": "DNO#1",
+     "finding": "Q3 cash generation should cut net debt sharply from USD 552.9m. North Sea sales of 94,732 boepd ran ahead of production of 85,364 (about 0.86 MMboe of overlift against a 1.36 MMboe underlift at end-Q2), and USD 48.0m (C\u00f4te d'Ivoire) plus USD 20.3m (V\u00e5r swap) of cash came in, against USD 136.4m of tax and USD 39.2m of dividend paid.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684039",
+     "source_date": "2026-10-14",
+     "expected_impact_pct": 0.3,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 2026 printed USD 289.5m of free cash flow and a USD 237m net debt reduction, and the stock rose 1.99% on the day.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    },
+    {
+     "hunter": "DNO",
+     "key": "DNO#2",
+     "finding": "The quarterly dividend has been held at NOK 0.375 for five quarters while DNO chased Genel and Capricorn. It declared its Capricorn offer final and lost on 28 Sep, so the roughly USD 396m of acquisition cash stays on the balance sheet going into the first dividend decision since.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683114",
+     "source_date": "2026-09-28",
+     "expected_impact_pct": 0.3,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "capital_return",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Dividend raises coincided with +8.80% (2024-08-15, 'Hikes Dividends') and +9.31% (2025-08-21, 'Hikes Dividends'). Prints with the dividend held moved -0.85% to +2.61%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    },
+    {
+     "hunter": "DNO",
+     "key": "DNO#3",
+     "finding": "North Sea net production averaged about 86.3k boepd over Q1-Q3 (88,647 / 84,912 / 85,364) against a 2026 guide of 85,000 boepd, so a modest raise or a firming at the top end is possible.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=679563",
+     "source_date": "2026-08-13",
+     "expected_impact_pct": 0.2,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The 85k raise came with the Q2 2026 print (+1.99%). Q4 only needs about 81.5k to meet the guide, so a raise would be small.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    },
+    {
+     "hunter": "DNO",
+     "key": "DNO#4",
+     "finding": "About 30% of DNO's post-tax gas exposure for H2 2026 is collared with written calls at USD 99/boe, and Q3 realised gas was USD 122.9/boe, so the hedge line should show a settlement and MtM loss.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/attachment?messageId=679563&attachmentId=330916",
+     "source_date": "2026-08-13",
+     "expected_impact_pct": -0.1,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No history. This is the first quarter where realised gas sits well above the call strike.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.035,
+     "_legacy_residual_pct": -0.035
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Genel's competing scheme for Capricorn (Tawke partner) is expected to complete in Q4 2026, subject to Egyptian approval. A change in DNO's Tawke partner is not inside this window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.ajbell.co.uk/news/articles/capricorn-energy-indefinitely-adjourns-dno-takeover-meetings"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/5",
+    "edge_score_legacy": 1.6,
+    "baseline_quality": 0.612,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.5,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 15,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "api3.oslo.oslobors.no"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.9,
+    "lessons_delta": -0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'A finding about a number the market has already been told is worth 0': the pre-released revenue finding moved from +0.2 to 0.0.",
+     "'You were right about the number and too small about the move' (median move 3.1% on pre-released periods): abs_move_pct moved from 3.0 to 3.2. p_up stayed at 52."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 5
+  },
+  {
+   "ticker": "ENENTO",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.6,
+   "conviction": 0.6,
+   "priced_lean_pct": -0.02,
+   "hunter_view": {
+    "expected_move_pct": 0.64,
+    "print_vs_bar_pct": 4.0,
+    "bar": "Disputed. Consensus column on the Inderes preview page: revenue 38.5, adj. EBITDA 14.7, adj. EBIT 11.5 MEUR, EPS 0.27; Inderes' own estimate 38.6 / 15.3 / 12.8 / 0.30 (https://www.inderes.fi/en/analyst-comments/enento-group-q326-preview-earnings-improvement-continues, 2026-10-20). Two sources that disagree by about 11% on adj. EBIT, so every finding that depends on the bar is capped small. print_vs_bar_pct is measured against the consensus column.",
+    "positioning_check": "Finanssivalvonta register read 2026-10-26 (https://www.finanssivalvonta.fi/api/shortselling/datatable/current) does not name Enento: short_ratio 0.0 is the 0.5% truncation floor, not a measurement, and anchor_covered is false, so there is no positioning anchor and priced_lean_pct (-0.02) is effectively the flat run-up (20d +0.4%, 5d -0.26%). Building/covering is unknown. The one visible flow: Long Path Partners went below 5% on 7 Oct (4.88%), an exiting holder.",
+    "baseline_tension": "The lean is flat (-0.02, a run-up of +0.4% and a truncated-zero short register), so the mild positive I found neither agrees with nor fights a priced view; the only cross-current is Long Path's exit, which argues for a capped upside."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key",
+    "findings split 3 positive / 2 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "ENENTO",
+     "key": "ENENTO#0",
+     "finding": "Enento's own Q2 actuals and Q3 seasonality point to Q3 adj. EBITDA of about 15.0-15.3 MEUR (Q2 14.6 at 36.5% margin; Q3'25 margin was 2.5pp above Q2'25; the 36 headcount reductions completed in May give a full quarter of savings in Q3), above the 14.7 / 11.5 MEUR adj. EBITDA / EBIT consensus column and in line with Inderes' 15.3 / 12.8.",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b4585daed600725d7088d89e098efbb80&lang=en&src=listed",
+     "source_date": "2026-07-17",
+     "expected_impact_pct": 0.6,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Profitability beats were bought on all four of the last prints: Q3'25 +2.86% (2025-10-29), FY25 +2.81% (2026-02-13), Q1'26 +5.87% (2026-04-28), Q2'26 +2.21% (2026-07-17, where Inderes said operating profitability beat its forecast). Earlier misses: 2025-07-15 -2.48%. Yahoo daily closes.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.21,
+     "_legacy_residual_pct": 0.21
+    },
+    {
+     "hunter": "ENENTO",
+     "key": "ENENTO#1",
+     "finding": "Finance Finland's bank barometer (published 11 Sep, August survey) says household and corporate credit demand rose clearly in Q3 2026 against last year and beat bank managers' expectations, which supports Finnish consumer and business credit-information volumes, Enento's largest country (Inderes models Finland at only +2%).",
+     "source": "https://www.sttinfo.fi/tiedote/72312261/pankinjohtajien-odotukset-ylittyivat-seka-kotitalouksien-etta-yritysten-luotonkysynta-piristyi-kesalla-selvasti",
+     "source_date": "2026-09-11",
+     "expected_impact_pct": 0.4,
+     "cluster": "sttinfo.fi",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2'26 Finnish growth of 1.7% with flat consumer volumes came in a +2.21% day. No clean history of a Finnish volume surprise on its own.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.14,
+     "_legacy_residual_pct": 0.14
+    },
+    {
+     "hunter": "ENENTO",
+     "key": "ENENTO#2",
+     "finding": "Sweden's consumer-credit licensing cliff hit on 1 August 2026: of about 50 consumer credit institutions only 17 applied for a new licence and 'a clear majority' leave the regulated market. All the large loan brokers (Sambla licensed; Lendo, Zmarta and others pending) may keep operating while FI reviews them. That is a mild drag on UC's Swedish consumer credit-check volumes in Aug-Sep, the first quarter under the regime.",
+     "source": "https://www.realtid.se/bors-finans/bank-fintech/massflykt-pa-lanemarknaden-flera-bolag-lagger-ner/",
+     "source_date": "2026-08-06",
+     "expected_impact_pct": -0.3,
+     "cluster": "realtid.se",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Swedish regulatory risk was the theme of the weak 2025 prints (2025-07-15 -2.48%); since the July 2026 statement that the effect is 'modest' the stock has not reacted to it.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "ENENTO",
+     "key": "ENENTO#3",
+     "finding": "Long Path Partners (previous notification 5.02%) dropped below 5% (4.88%, 1,156,558 shares) on 7 Oct 2026 without any visible block trade, and was not among the three largest holders at 30 Sep. An exiting seller with about 1.16m shares left is supply overhanging a $258k-a-day name.",
+     "source": "https://view.news.eu.nasdaq.com/view?id=bd1dc2ebadafea1b71658aa8ef373d135&lang=en&src=listed",
+     "source_date": "2026-10-08",
+     "expected_impact_pct": -0.2,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The stock rose 0.67% and 0.80% on 8-9 Oct after the flagging and has held 15.0-15.5 since.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.07,
+     "_legacy_residual_pct": -0.07
+    },
+    {
+     "hunter": "ENENTO",
+     "key": "ENENTO#4",
+     "finding": "The AGM authorised the board to pay an additional dividend of up to EUR 0.50 per share, and last year the equivalent decision was released on the Q3 morning (2025-10-29 08:15 CET). With H1 FCF of 19.8 MEUR, leverage of 2.5x and the debt refinanced on 31 Aug, full payment (about 11.8 MEUR) looks funded and is what Inderes models (DPS 1.00).",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b7a8ff404e23e7bcf791c54b471679386&lang=en&src=listed",
+     "source_date": "2026-03-25",
+     "expected_impact_pct": 0.1,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "capital_return",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "2025-10-29: the second-instalment decision went out with the Q3 report and the stock rose +2.86% on the day, so the decision cannot be separated from the print.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Swedish credit-intermediary register law amendments and a new licensing requirement for subsidiary credit intermediaries take effect 20 November 2026; FI decisions on the pending Lendo/Zmarta applications are undated.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-20",
+     "source": "https://www.realtid.se/bors-finans/bank-fintech/massflykt-pa-lanemarknaden-flera-bolag-lagger-ner/"
+    },
+    {
+     "finding": "CIO Annika R\u00e5destr\u00f6m leaves 31 Dec 2026 and a new CTO role is being recruited for AI investment. Operating cost implications land in 2027.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://view.news.eu.nasdaq.com/view?id=b10162257752fad1e57110aa1e1c40ba3&lang=en&src=listed"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/5",
+    "edge_score_legacy": 2.0,
+    "baseline_quality": 0.56,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 10,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 3,
+    "cluster_names": [
+     "realtid.se",
+     "sttinfo.fi",
+     "view.news.eu.nasdaq.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.6,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "abs_move_pct raised from 3.5 to 4.0: the period is not pre-released ('you were right about the number and too small about the move'; the European median is 7.4% when numbers are new and 2.3% when the guide is reiterated, so 4.0 sits between them and above the name's ~2.8% report-day median). This moved expected_move_pct from 0.56 to 0.64.",
+     "session_check rewritten to open with the verdict and the issuer's timestamp (11:00 EET, in session, so the close-to-close window is right).",
+     "positioning_check states that the register zero is the truncation floor and anchor_covered is false, so there is no positioning anchor.",
+     "Findings left at their draft sizes: the bar is disputed, so the core's cap applies, and no lesson argued for moving a finding a second time."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 6
+  },
+  {
+   "ticker": "NESTE",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.3,
+   "conviction": 0.3,
+   "priced_lean_pct": 0.513,
+   "hunter_view": {
+    "expected_move_pct": 0.64,
+    "print_vs_bar_pct": 4.0,
+    "bar": "Vara Research consensus (16 estimates) as printed in the Inderes Q3 preview of 21 Oct 2026: Q3'26 comparable EBITDA 1,195 MEUR (range 803-1,404), revenue 5,810 MEUR, EPS 0.99. Inderes's own figures are 1,202 MEUR, an Oil Products refining margin of 36 $/bbl and an RP sales margin of 1,150 $/t. https://www.inderes.fi/files/b40fa419-914f-47ad-b5a7-36981d8e47f9",
+    "positioning_check": "Finanssivalvonta register read 2026-10-26: no disclosed net short at or above 0.5%, so 0.0 is the truncation floor and anchor_covered is false. No positioning anchor; the priced lean (+0.51) is the run-up term only. Building or covering: unknown (snapshot register). https://www.finanssivalvonta.fi/api/shortselling/datatable/current",
+    "baseline_tension": "The findings lean mildly positive (+0.3) and agree with the small run-up lean (+0.51, mean reversion after -10.3% over 20d). They cut against the tape's recent direction, which the October crack and HVO-spread weakness explains, and the name's habit of selling records pulls p_up toward 50."
+   },
+   "flags": [
+    "2 finding(s) worth -0.70 dated after the exit window, kept out of the key",
+    "findings split 3 positive / 3 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "NESTE",
+     "key": "NESTE#0",
+     "finding": "TotalEnergies' European Refining Margin Marker averaged 33.2 $/bbl in Q3 2026 against 13.5 in Q2. Neste's total refining margin has run 5-12 $/bbl above that marker (Q2'25 10.0 vs 4.7; Q2'26 25.8 vs 13.5), which implies roughly 39-45 $/bbl for Q3 against the ~36 $/bbl in the Inderes and consensus numbers. The Porvoo turnaround caps the refined barrels this applies to.",
+     "source": "https://uk.finance.yahoo.com/news/totalenergies-expects-sharp-rise-q3-090202969.html",
+     "source_date": "2026-10-15",
+     "expected_impact_pct": 0.8,
+     "cluster": "uk.finance.yahoo.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2'26 record Oil Products (25.8 $/bbl) within a record quarter: stock -6.4% on 2026-07-24. Q1'26 beat: +6.3% on 2026-04-29.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.28,
+     "_legacy_residual_pct": 0.28
+    },
+    {
+     "hunter": "NESTE",
+     "key": "NESTE#1",
+     "finding": "Eni's Enilive, Neste's main European HVO/SAF peer, reported Q3 2026 proforma adjusted EBIT of EUR 0.41bn (Q2: EUR 295m, +39% QoQ), 'driven by the biorefining business, which benefited from an improved market scenario'. The consensus has Neste's RP sales margin down about 6% QoQ (1,150 vs 1,223 $/t).",
+     "source": "https://www.energy-pedia.com/news/general/results-for-the-third-quarter-and-nine-months-of-2026-205789",
+     "source_date": "2026-10-23",
+     "expected_impact_pct": 0.8,
+     "cluster": "energy-pedia.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "RP margin is the line this name trades on. The record 1,223 $/t in Q2 was sold (-6.4%); the RP margin upside in Q1'26 and Q1/Q2'25 printed +6.3%, +12.0% and +12.8%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.28,
+     "_legacy_residual_pct": 0.28
+    },
+    {
+     "hunter": "NESTE",
+     "key": "NESTE#2",
+     "finding": "Diamond Green Diesel's (Valero) renewable diesel margin fell from $2.52/gal in Q2 to $1.62/gal in Q3 2026 (-36%). Management blamed mostly DGD-specific items (Q2 one-offs, a storm, lower PTC capture on foreign feedstock) but also feedstock price lag and a D4 RIN drop, both of which touch Neste's 27% North America volumes.",
+     "source": "https://www.sec.gov/Archives/edgar/data/0001035002/000162828026066795/a9302026exh9901earningsrel.htm",
+     "source_date": "2026-10-22",
+     "expected_impact_pct": -0.4,
+     "cluster": "sec.gov",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Same RP-margin line as above.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.14,
+     "_legacy_residual_pct": -0.14
+    },
+    {
+     "hunter": "NESTE",
+     "key": "NESTE#3",
+     "finding": "Neste's own H1 table puts RP sales at 1,900 kt against 4,134 kt for 2025. Holding the 'approximately same level' guide needs roughly 2.0-2.2 Mt in H2, above the record-pace Q2 (1,026 kt), while Rotterdam (8 wks, Q4) and Singapore (11 wks from Dec) are down. Utilisation was 71% in H1, so a trim of the volume guide is a real tail.",
+     "source": "https://attachment.news.eu.nasdaq.com/a68e8f3a2dfc9d2b97b5e0754d23c3bca",
+     "source_date": "2026-07-24",
+     "expected_impact_pct": -1.0,
+     "cluster": "attachment.news.eu.nasdaq.com",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Feb 2025 (Q4'24 with a weak RP outlook): -10.5% on 2025-02-13. A volume-guide cut historically moves this name high single digits.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.35,
+     "_legacy_residual_pct": -0.35
+    },
+    {
+     "hunter": "NESTE",
+     "key": "NESTE#4",
+     "finding": "The Q2 working-capital build of EUR 842m, 'mainly from higher inventory levels and valuations related to the preparation for the upcoming planned maintenance', should unwind through the Q3 Porvoo turnaround. That points to strong Q3 cash flow before financing and lower leverage (29.9% at end-June).",
+     "source": "https://view.news.eu.nasdaq.com/view?id=be6e4a5f4e756f4214792d54e3a2a326c&lang=en&src=listed",
+     "source_date": "2026-07-24",
+     "expected_impact_pct": 0.4,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2'26 cash flow of only EUR 164m on record EBITDA coincided with the -6.4% reaction.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.14,
+     "_legacy_residual_pct": 0.14
+    },
+    {
+     "hunter": "NESTE",
+     "key": "NESTE#5",
+     "finding": "Q4 current trading turned weaker in October: the gasoil crack fell 7% on 27 Oct to $73.90 as Russian refinery runs rose 25%. The forum, citing ICE/Argus, reports the HVO class II vs gasoil spread compressing from ~1,600-1,700 to ~1,000 $/t in mid-October. Against that, HVO rebounded about $300/t and UCO feedstock fell about $50/t by 27 Oct. The release's market commentary is likely cautious on Q4.",
+     "source": "https://rallies.ai/news/europe-distillates-diesel-profit-margins-slide-as-russia-boosts-output-35c9062307d07b08",
+     "source_date": "2026-10-27",
+     "expected_impact_pct": -0.3,
+     "cluster": "rallies.ai",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The stock is -18% from its 24 Sept high (35.82 to 29.32) and -4.6% on 27 Oct alone, so this line is already moving the price.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Rotterdam (8 wks, Q4) and Singapore (11 wks from Dec) turnarounds compress Q4 RP volumes; the results land in the Q4 report in Feb 2027",
+     "expected_impact_pct": -0.5,
+     "resolves_by": "2027-02-10",
+     "source": "https://view.news.eu.nasdaq.com/view?id=be6e4a5f4e756f4214792d54e3a2a326c&lang=en&src=listed"
+    },
+    {
+     "finding": "France begins releasing 10m barrels of strategic diesel reserves on 1 Nov, adding pressure on Q4 diesel cracks",
+     "expected_impact_pct": -0.2,
+     "resolves_by": "2026-11-01",
+     "source": "https://rallies.ai/news/europe-distillates-diesel-profit-margins-slide-as-russia-boosts-output-35c9062307d07b08"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -0.7,
+    "residual_sum": null,
+    "adversary_judged": "0/6",
+    "edge_score_legacy": 0.3,
+    "baseline_quality": 0.56,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 11,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 6,
+    "cluster_names": [
+     "attachment.news.eu.nasdaq.com",
+     "energy-pedia.com",
+     "rallies.ai",
+     "sec.gov",
+     "uk.finance.yahoo.com",
+     "view.news.eu.nasdaq.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.3,
+    "lessons_delta": 0.0,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'You were right about the number and too small about the move' plus 'understatement is the systematic error': abs_move_pct 7.0 -> 8.0, since Neste's confirmed print reactions run 6.3-12.8%",
+     "'A verified fact is not a predicted reaction' (this name sold its record Q2 by -6.4%): p_up 56 -> 54",
+     "'Cash can outweigh a raised guide': checked the working-capital line; kept the cash-flow finding at +0.4 without double-counting",
+     "Finding sizes unchanged; no finding dropped"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 7
+  },
+  {
+   "ticker": "AMP",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.2,
+   "conviction": 0.2,
+   "priced_lean_pct": 0.774,
+   "hunter_view": {
+    "expected_move_pct": 0.26,
+    "print_vs_bar_pct": 2.0,
+    "bar": "Q3 organic growth 4.3% and Q3 adj EBITDA margin 20.2% (consensus quoted by Morgan Stanley via Milano Finanza, 2026-10-10: https://www.milanofinanza.it/news/amplifon-rally-pre-dati-2720315); FY26 adj EBITDA EUR 573.6m / revenue EUR 2,429.1m (company-compiled consensus of 14 analysts, 13 Oct: https://corporate.amplifon.com/it/investors/informazioni-sul-titolo/analisti-e-consensus). Company guide: organic >3%, margin ~+100bps (20260730 release). The quarterly bar has a single source, so the reported-quarter findings are capped small.",
+    "positioning_check": "CONSOB posizioni nette corte: 1.91% across 2 disclosed sellers (position date 2026-10-16, register read 2026-10-26), unchanged from the previous read (change 0.0). Not crowded and not building. Source: https://www.consob.it/documents/11973/395154/PncPubbl.xlsx/fbefe0a2-795b-bad3-9369-beccbeb14f27",
+    "baseline_tension": "The findings roughly agree with the small positive priced lean (+0.77) and the +7.4% 20-day run-up. The one positive counterparty fact was already rewarded on 9 Oct, and the comparison effect cuts against it, so the net view is close to neutral."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "AMP",
+     "key": "AMP#0",
+     "finding": "Demant's 9 Oct MAR pre-release puts the hearing aid market at +6-7% in value in Q3 and 4-5% for 2026, against the ~3% global demand Amplifon's FY26 outlook still assumes; with H1 organic at 3.5% and Q3 consensus at 4.3%, Amplifon's '>3%' organic guide looks conservative and could be firmed or raised in the release.",
+     "source": "https://via.ritzau.dk/ir-files/13560112/15199920/30935/2026-12%20Upgraded%20financial%20outlook%20for%202026%20and%20resumption%20of%20share%20buy-backs.pdf",
+     "source_date": "2026-10-09",
+     "expected_impact_pct": 0.6,
+     "cluster": "via.ritzau.dk",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-30",
+     "reaction_history_on_this_line": "Guide confirmed with a beat: +4.6% after Q1 2026 (6 May) and +8.2% after H1 2026 (31 Jul). A slight cut to the FY25 guide in Oct 2025 gave -3.5%. The market has rewarded firming here this year.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.21,
+     "_legacy_residual_pct": 0.21
+    },
+    {
+     "hunter": "AMP",
+     "key": "AMP#1",
+     "finding": "The Q3 comparison is about two points tougher than Q2's. Q3 2025 was the quarter Amplifon 'returned to organic growth' after a negative Q2 2025, so the 4.3% consensus implies a two-year-stack acceleration. Demant's retail arm (Hearing Care), the closest listed peer, slowed from 8% organic in Q2 to 6% in Q3 on what Demant called 'slightly tougher' comparatives.",
+     "source": "https://hearinghealthmatters.org/hearing-news-watch/2025/amplifon-q3-25/",
+     "source_date": "2025-10-29",
+     "expected_impact_pct": -0.5,
+     "cluster": "hearinghealthmatters.org",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-30",
+     "reaction_history_on_this_line": "An organic miss on Q3 2025 (weak quarter, slight cut to the FY guide) gave -3.5% on 30 Oct 2025; organic beats in Q1 and Q2 2026 gave +4.6% and +8.2%",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.175,
+     "_legacy_residual_pct": -0.175
+    },
+    {
+     "hunter": "AMP",
+     "key": "AMP#2",
+     "finding": "Management said on 30 July that the third quarter had a 'solid start' and that 'positive momentum continues into Q3', which bounds the risk of a large organic miss.",
+     "source": "https://www.emarketstorage.it/sites/default/files/comunicati/2026-07/20260730_187528.pdf",
+     "source_date": "2026-07-30",
+     "expected_impact_pct": 0.1,
+     "cluster": "emarketstorage.it",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-30",
+     "reaction_history_on_this_line": "The two releases after this kind of language in 2026 were bought (+4.6%, +8.2%)",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    },
+    {
+     "hunter": "AMP",
+     "key": "AMP#3",
+     "finding": "The ordinary and extraordinary shareholders' meeting votes on the same day (29 Oct) on the ~56m-share reserved capital increase to GN, the equity part of the GN Hearing consideration (about 17% of capital post-deal). The Holland family controls more than 70% of voting rights, so approval is a formality; the release and call will also update the GN Hearing closing timetable, which is still expected by year-end.",
+     "source": "https://corporate.amplifon.com/it/investors/comunicati-stampa",
+     "source_date": "2026-09-17",
+     "expected_impact_pct": 0.0,
+     "cluster": "corporate.amplifon.com",
+     "lands_on": "other",
+     "resolves_by": "2026-10-30",
+     "reaction_history_on_this_line": "The deal announcement (16 Mar 2026) and the EUR 453m ABB (21-22 May) weighed on the stock; since then GN-related news has been read positively (Equita/Citi/JPM upgrades)",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.0,
+     "_legacy_residual_pct": 0.0
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "GN Hearing closing (regulatory approvals and carve-out) expected by end-2026, which brings the 56m GN shares under a lock-up of up to 15 months; synergy targets of EUR 60-80m EBITDA by 2029",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.milanofinanza.it/news/sentire-la-crescita-2715004"
+    },
+    {
+     "finding": "Demant's full Q3 interim statement (3 Nov) and GN/Sonova reports in November will confirm or revise the Q3 market estimate",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-03",
+     "source": "https://via.ritzau.dk/ir-files/13560112/15199920/30935/2026-12%20Upgraded%20financial%20outlook%20for%202026%20and%20resumption%20of%20share%20buy-backs.pdf"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/4",
+    "edge_score_legacy": 0.3,
+    "baseline_quality": 0.635,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 12,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 4,
+    "cluster_names": [
+     "corporate.amplifon.com",
+     "emarketstorage.it",
+     "hearinghealthmatters.org",
+     "via.ritzau.dk"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.4,
+    "lessons_delta": -0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'Already told is worth 0': the 'solid start to Q3' finding cut from +0.2 to +0.1",
+     "'The move is in the guide' and 'too small about the move': abs_move_pct raised from 6.0 to 6.5 because the guidance line may change and the numbers are new; p_up left at 52",
+     "'A narrow proxy loses': the Demant market-value read (partly wholesale launch ASP) cut from +0.8 to +0.6 and the comparison inference from -0.6 to -0.5",
+     "Session lesson: session_check opens with amc and cites the issuer calendar plus the SDIR timestamp"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 8
+  },
+  {
+   "ticker": "NTGY",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.2,
+   "conviction": 0.2,
+   "priced_lean_pct": -0.185,
+   "hunter_view": {
+    "expected_move_pct": 0.13,
+    "print_vs_bar_pct": 2.0,
+    "bar": "RBC preview (es.benzinga.com, ~20-21 Oct 2026, snippet_only, page 403): 9M26 net income 1,720m EUR (+3.1%) and EBITDA 4,358m EUR (+3.4%), Spanish renewables -19%, thermal up. Only one estimate source, so the bar is partly unsourced and the findings that depend on it are capped small. Company bar: FY26 guide EBITDA >5,500m / NI >2,100m (https://www.naturgy.com/files/Naturgy_Resultados_Informe_ESP_1S26.pdf).",
+    "positioning_check": "register not covered for this market: the CNMV short-position grid returns no rows and Consulta-OIR returns 403 from this container. That is unknown, not zero. priced_lean_pct (-0.185) is the 20-day run-up (+3.71%), which is also the free control; 5-day run-up -1.18%, and today -0.65% on Endesa's print.",
+    "baseline_tension": "Roughly orthogonal to the lean. The run-up (+3.7% over 20 days, -1.2% over 5) is mild, and the findings offset each other: a favourable Q3 price environment against a weak Q3 from the closest peer. Nothing here agrees with or fights the run-up in a way that beats the free control."
+   },
+   "flags": [
+    "1 finding(s) worth -0.30 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "NTGY",
+     "key": "NTGY#0",
+     "finding": "Q3 2026 was an extreme wholesale-price quarter for Naturgy's integrated gas and power book. The OMIE Spanish day-ahead price averaged ~124 EUR/MWh (Jul 107, Aug 121, Sep 144) against ~67 in Q3 2025, and ~161 so far in October. September demand rose 14.5% and wind output fell 17.7%, so CCGTs ran more, with European gas above 70 EUR/MWh (more than double a year earlier). In H1, when prices were lower, Naturgy's Spanish thermal EBITDA was +34% and Supply -17%. This points to a Q3 slightly above a bar that implies flat EBITDA, and gives some chance of a second 2026 guide raise, because the July guide was set on forwards as of 20/07.",
+     "source": "https://www.expansion.com/empresas/energia/2026/10/10/6ac9f04de5fdea742b8b456e.html",
+     "source_date": "2026-10-10",
+     "expected_impact_pct": 0.5,
+     "cluster": "expansion.com",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Observed on actual results days: H1 26 guide raise +3.44%; FY24 + new plan +4.34%; reiterations 9M25 -0.45%, 1H25 -0.94%, 9M24 +0.34%; FY25 (flat 2026 guide) -3.55%; Q1 26 -2.89%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    },
+    {
+     "hunter": "NTGY",
+     "key": "NTGY#1",
+     "finding": "Endesa, the closest Spanish integrated peer, reported 9M26 today (28 Oct). Net income 1,962m (+15%) and EBITDA 4,577m (+8%) against H1's 1,470m and 3,240m (+20%) imply Q3 2026 EBITDA ~1,337m against ~1,524m (-12%) and Q3 net income ~492m against ~668m (-26%). It only confirmed its >2.4bn guide 'even under more demanding market conditions in Q4' and warned of a storm ahead for the sector. The stock fell ~2% on the day. So the same price spike hurt an integrated Spanish book in Q3.",
+     "source": "https://www.expansion.com/empresas/energia/2026/10/28/endesa-enfila-2-400-millones-ganancias-ano-prepara-nuevo-plan-febrero-2027.html",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": -0.3,
+     "cluster": "expansion.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No observed Naturgy reaction to an Endesa read-through. Naturgy fell 0.65% on 28 Oct, the day Endesa printed, which is inside the entry close.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "NTGY",
+     "key": "NTGY#2",
+     "finding": "Moeve has launched aggressive fuel discounts tied to cross-selling Naturgy power and gas, answering Repsol's EUR 1,000 new-customer offer and Iberdrola's campaigns. This marks a Spanish retail price war during a wholesale spike and points to more pressure on supply margins and higher acquisition costs in Q4 commentary.",
+     "source": "https://www.expansion.com/empresas/energia/2026/10/21/6ad7bfbd468aeb60108b4590.html",
+     "source_date": "2026-10-21",
+     "expected_impact_pct": 0.0,
+     "cluster": "expansion.com",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "None observed.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.0,
+     "_legacy_residual_pct": 0.0
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "EU Advocate General Rantos backed the 2022-23 windfall solidarity levy as legitimate (22 Oct). This strengthens the political path to a renewed energy windfall tax, which Spain has pushed in Brussels since April 2026. The CJEU ruling and any new levy fall after the window.",
+     "expected_impact_pct": -0.3,
+     "resolves_by": "2027-06-30",
+     "source": "https://www.expansion.com/empresas/energia/2026/10/22/6ad9cb9b468aebb12e8b45b6.html"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": -0.3,
+    "residual_sum": null,
+    "adversary_judged": "0/3",
+    "edge_score_legacy": 2.4,
+    "baseline_quality": 0.522,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.0,
+     "event_plausibility": 1.0,
+     "history_events": 11,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "expansion.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.4,
+    "lessons_delta": -0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "Macro-to-company transmission is a hypothesis until the company says it: finding 1 cut from +0.8 to +0.5, and p_up from 53 to 52.",
+     "The move is in the guide, and understatement is systematic: abs_move_pct raised from 2.8 to 3.2 because a guide change is live, not pulled toward the ~1.9% median reaction.",
+     "Proxy with no number: the price-war finding cut from -0.1 to 0.0.",
+     "Positioning: 'register not readable' stated rather than a zero."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 9
+  },
+  {
+   "ticker": "STMPA",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.2,
+   "conviction": 0.2,
+   "priced_lean_pct": 0.362,
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 1.0,
+    "bar": "Q3 revenue $3.70bn (company guide midpoint, https://www.generation-nt.com/communiques-presse/stmicroelectronics-reports-q2-2026-financial-results-2079020), consensus $3.71-3.73bn, EPS $0.40-0.41 (Benzinga https://www.benzinga.com/quote/STM/earnings-forecasts and Earnings Whispers https://www.earningswhispers.com/stocks/STM, snippet_only). Q4 consensus about $4.09bn revenue and $0.55 EPS (Benzinga, snippet_only, one source). The Q3 bar rests on a company statement. The Q4 bar comes from one estimate source, so the guidance-line findings are capped small.",
+    "positioning_check": "AMF register read (covered: true, as of 2026-10-26, https://www.data.gouv.fr/api/1/datasets/r/c2539d1c-8531-4937-9cba-3bd8e9786cc5). No disclosed net short at or above 0.5%, and no change over ten days. That is the truncation floor, not a measurement (anchor_covered false), so there is no positioning anchor and no visible crowded short to fuel a squeeze. The company itself is buying back routinely: 444,659 shares at EUR 40.52 between 19 and 23 Oct (https://www.sec.gov/Archives/edgar/data/932787/000093278726000083/c3418c-october262026xdiscl.htm).",
+    "baseline_tension": "The baseline lean is +0.36, from the run-up term (20d -7.2%, 5d +3.5%), with no short anchor. The peer read-through agrees mildly with a positive lean and the reaction history cuts against it, so the net is roughly neutral and the evidence neither confirms nor fights the lean."
+   },
+   "flags": [
+    "1 finding(s) worth +0.00 dated after the exit window, kept out of the key",
+    "findings split 2 positive / 2 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "STMPA",
+     "key": "STMPA#0",
+     "finding": "NXP, ST's closest direct peer in auto and industrial MCUs, reported Q3 revenue of $3.786bn after the US close on 27 Oct (+8% q/q). Automotive was +13% y/y and Industrial & IoT +39%, channel inventory was flat at 11 weeks, and it guided Q4 to $3.85bn at the midpoint (+2% q/q), above its usual Q4 seasonality. TI (21 Oct) guided Q4 $5.8-6.3bn, flat at the midpoint against Q3's $6.06bn. Both support ST printing a Q4 guide at or above the ~$4.09bn consensus.",
+     "source": "https://www.sec.gov/Archives/edgar/data/1413447/000141344726000057/nxp3q26exhibit991.htm",
+     "source_date": "2026-10-27 (8-K accepted 16:23 ET)",
+     "expected_impact_pct": 0.8,
+     "cluster": "sec.gov",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "ST's guide decides its prints. The Q2 2026 Q3 guide came in about 2.6% below the $3.80bn consensus and the stock fell 17.7% (23 Jul 2026). The Q1 2026 print with an upbeat Q2 guide rose 14.4% (23 Apr 2026). The Q3 2025 print fell 14.1% (23 Oct 2025).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.28,
+     "_legacy_residual_pct": 0.28
+    },
+    {
+     "hunter": "STMPA",
+     "key": "STMPA#1",
+     "finding": "ST's own results-day reactions, confirmed against its EDGAR results 6-K dates, are lopsided and large. Recent prints: -10.7% (30 Jan 2025), +5.3% (24 Apr 2025), -16.6% (24 Jul 2025), -14.1% (23 Oct 2025), -5.75% (29 Jan 2026), +14.4% (23 Apr 2026), -17.7% (23 Jul 2026). Over the last nine prints, 7 of 9 fell, including two Q2 prints (2024 and 2025) where revenue beat and the guide disappointed.",
+     "source": "https://query1.finance.yahoo.com/v8/finance/chart/STMPA.PA?range=3y&interval=1d",
+     "source_date": "2026-10-28 (tape read); results dates checked against https://data.sec.gov/submissions/CIK0000932787.json",
+     "expected_impact_pct": -0.8,
+     "cluster": "query1.finance.yahoo.com",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "This is the reaction history itself. Seven of nine results days were negative and the median absolute move is about 13%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.28,
+     "_legacy_residual_pct": -0.28
+    },
+    {
+     "hunter": "STMPA",
+     "key": "STMPA#2",
+     "finding": "On 13 Oct ST's Supervisory Board asked CEO Jean-Marc Chery to stay for one additional year only, to be proposed at the 2027 AGM. That leaves succession open but nothing about it lands in this release.",
+     "source": "https://www.sec.gov/Archives/edgar/data/932787/000093278726000078/c3416c-october132026xsttop.htm",
+     "source_date": "2026-10-13",
+     "expected_impact_pct": 0.0,
+     "cluster": "sec.gov",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The stock fell 3.8% on 13 Oct in a weak sector tape. The two cannot be separated.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.0,
+     "_legacy_residual_pct": 0.0
+    },
+    {
+     "hunter": "STMPA",
+     "key": "STMPA#3",
+     "finding": "Equita (Italian broker, 17 Sep) reports that after the CFO's presentation at the Citi TMT conference (9 Sep) and a contact with the company, revenue momentum remains positive, with good visibility into 2027 on AI and LEO.",
+     "source": "https://www.borsaitaliana.it/borsa/notizie/teleborsa/finanza/stm-equita-abbassa-target-price-per-effetto-tassi-e-conferma-buy-prima-dei-conti-87_2026-09-17_TLB.html?lang=it",
+     "source_date": "2026-09-17",
+     "expected_impact_pct": 0.3,
+     "cluster": "borsaitaliana.it",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No signal was given ahead of the July guide and the stock fell 17.7%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    },
+    {
+     "hunter": "STMPA",
+     "key": "STMPA#4",
+     "finding": "Mercedes-Benz reported Q3 revenue -4.5% and adjusted EBIT -15% on 28 Oct. This is a weak end-demand datapoint for automotive, ST's largest end market.",
+     "source": "https://www.borsaitaliana.it/borsa/notizie/teleborsa/finanza/stm-equita-abbassa-target-price-per-effetto-tassi-e-conferma-buy-prima-dei-conti-87_2026-09-17_TLB.html?lang=it",
+     "source_date": "2026-10-28 14:07 (Teleborsa headline in the Borsa Italiana news list served on that page)",
+     "expected_impact_pct": -0.1,
+     "cluster": "borsaitaliana.it",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "None specific.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.035,
+     "_legacy_residual_pct": -0.035
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Crolles fab-expansion decision for silicon photonics, which the CEO said would come by end-2026. It may or may not be announced with the results, and it is a capex item rather than a print line.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://www.stockopedia.com/share-prices/st-microelectronics-nv-BIT:STMMI/news/st-micro-weighs-crolles-fab-expansion-as-ai-optics-demand-rises-ceo-says-019e87b9-5450-7df9-9bda-f51541fd2f3d/"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/5",
+    "edge_score_legacy": 0.5,
+    "baseline_quality": 0.56,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 11,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 3,
+    "cluster_names": [
+     "borsaitaliana.it",
+     "query1.finance.yahoo.com",
+     "sec.gov"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.1,
+    "lessons_delta": 0.3,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'Let the reaction history move p_up, not abs_move_pct': the reaction-history finding went from -1.0 to -0.8 because its main weight belongs in p_up, and abs_move_pct stays at 10 rather than being capped",
+     "'A narrow proxy loses to a broad series / macro-to-company is a hypothesis': the Mercedes finding went from -0.2 to -0.1 because NXP's auto line, a direct counterparty, contradicts it",
+     "'The move is in the guide': confirmed that the Q4 guide line carries abs_move_pct at about the 9-10% guidance-event scale. No number changed"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 10
+  },
+  {
+   "ticker": "ENGCON_B",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.1,
+   "conviction": 0.1,
+   "priced_lean_pct": -0.27,
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": -3.0,
+    "bar": "Q3 2026 consensus net sales 469 MSEK, EBIT 85.6 MSEK, EPS 0.46 (https://uk.marketscreener.com/quote/stock/ENGCON-AB-144036889/calendar/). It roughly agrees with the consensus implied by SHB's note (sales +19.7% = 6% over consensus gives about 469; EBIT +38% = 9% over gives about 89) (https://www.placera.se/telegram/engcon-shb-upprepar-kop-for-engcon-ser-attraktiv-vardering-20261009). Two agreeing sources on sales and EBIT; there is no sourced consensus for orders.",
+    "positioning_check": "Finansinspektionen register read on 2026-10-27: no disclosed net short of 0.5% or more (short_ratio_pct 0.0, the truncation floor, anchor_covered false). So there is no positioning anchor, and priced_lean_pct (-0.27) is in effect the run-up. Capital Group's 2026-10-21 flagging notice ('Return of Lent Shares') shows about 88,800 lent B shares coming back. That is tiny, and suggests only that stock borrowing is small and not building.",
+    "baseline_tension": "Roughly neutral against a lean of -0.27 (run-up only, no short anchor). The positive European read-across agrees with the +5.4% 20-day run-up; the demanding EBIT bar and SHB's above-consensus whisper cut against it. Nothing found beats the lean."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key",
+    "findings split 2 positive / 2 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "ENGCON_B",
+     "key": "ENGCON_B#0",
+     "finding": "Volvo Group's Q3 report (23 Oct) raised Volvo CE's 2026 European construction-equipment market forecast to +5% to +15% from 0% to +10%. It says the European market grew 'in almost all countries', with Volvo-brand European orders +5% and deliveries +3% in units. This is a positive read-across for engcon's orders: Europe is 36% and the Nordics 51% of its order intake, and Volvo CE is an OEM partner. Germany is still weak.",
+     "source": "https://mb.cision.com/Main/39/4414202/4335540.pdf",
+     "source_date": "2026-10-23",
+     "expected_impact_pct": 0.7,
+     "cluster": "mb.cision.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Orders are the line engcon trades on. Q3 2025: orders +31% organic and the stock rose 1.2% on the day while EBIT fell 23%. Q2 2025: weak orders and margin, stock -13.0%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.245,
+     "_legacy_residual_pct": 0.245
+    },
+    {
+     "hunter": "ENGCON_B",
+     "key": "ENGCON_B#1",
+     "finding": "Seasonal arithmetic from engcon's own quarterly table puts Q3 EBIT at about 81-85 MSEK, a few percent below the 86-89 consensus. Q3 2025 opex was about 0.88 of Q2 opex, and the Q3/Q2 sales ratio was 0.78, giving sales of about 463. To reach consensus, gross margin must recover to 40% or more from 38.4% in Q2. A plausible route exists: NOKSEK averaged +7.8% y/y in Q3 against +5.8% in Q2, and USDSEK +1.5% against -3.1%, so currency turns from headwind toward tailwind. Net: slightly negative.",
+     "source": "https://attachment.news.eu.nasdaq.com/a1e5e76bd0ec6dc22a96dc8b0e3d6c061",
+     "source_date": "2026-07-17",
+     "expected_impact_pct": -0.4,
+     "cluster": "attachment.news.eu.nasdaq.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Margin misses have been punished: Q4 2025 (EBIT 72, 14.5% margin) -9.8%; Q2 2025 -13.0%. The margin recovery in Q1 and Q2 2026 brought +9.8% and +7.4%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.14,
+     "_legacy_residual_pct": -0.14
+    },
+    {
+     "hunter": "ENGCON_B",
+     "key": "ENGCON_B#2",
+     "finding": "Handelsbanken (9 Oct, Finwire) models Q3 sales +19.7% and EBIT +38%, 6% and 9% above consensus, and raised 2026-28 EBITA forecasts by 1-4%. The effective bar for the stock is therefore above the published consensus going into the print.",
+     "source": "https://www.placera.se/telegram/engcon-shb-upprepar-kop-for-engcon-ser-attraktiv-vardering-20261009",
+     "source_date": "2026-10-09",
+     "expected_impact_pct": -0.3,
+     "cluster": "placera.se",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No record of how the stock reacted to a broker sitting above consensus.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "ENGCON_B",
+     "key": "ENGCON_B#3",
+     "finding": "Capital Group (5.03% of capital) filed a flagging notice on 2026-10-21 for crossing 5% because of a 'Return of Lent Shares' (+88,817 shares). Lent stock is being recalled or returned before the print, so borrowed or short supply is small and not building.",
+     "source": "https://www.inderes.se/releases/finansinspektionen-flaggningsmeddelande-i-engcon-ab-7",
+     "source_date": "2026-10-21",
+     "expected_impact_pct": 0.1,
+     "cluster": "inderes.se",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "none",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Rototilt v engcon patent appeal: a decision from the Patent and Market Court of Appeal is pending on the post-2025-03-27 damages claim. No date announced.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "unknown, after 2026-10-29",
+     "source": "https://attachment.news.eu.nasdaq.com/a1e5e76bd0ec6dc22a96dc8b0e3d6c061"
+    },
+    {
+     "finding": "Str\u00f6msund production expansion and the Poland logistics property are due in operation in Q4 2026; capacity costs could weigh on the Q4/Q1 margin.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-02-16",
+     "source": "https://view.news.eu.nasdaq.com/view?id=bbd74f9487195f7ab3a6810fffe316d25&lang=en&src=listed"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/4",
+    "edge_score_legacy": 0.2,
+    "baseline_quality": 0.56,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 10,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 4,
+    "cluster_names": [
+     "attachment.news.eu.nasdaq.com",
+     "inderes.se",
+     "mb.cision.com",
+     "placera.se"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.2,
+    "lessons_delta": -0.1,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'A narrow proxy loses... macro-to-company transmission is a hypothesis': Volvo CE read-across cut from +0.8 to +0.7.",
+     "'A verified fact is not a predicted reaction' plus a balanced set: p_up moved from 51 to 50, so expected_move_pct goes from 0.15 to 0.",
+     "'You were right about the number and too small about the move' / understatement: abs_move_pct held at 7.5 (numbers not pre-released; six confirmed report days at a median 8.6%) and not shrunk for sign uncertainty.",
+     "Checked 'a finding about a number already told is worth 0': no trading update or vinstvarning, so no finding rests on a pre-released number."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 11
+  },
+  {
+   "ticker": "IDR",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.1,
+   "conviction": 0.1,
+   "priced_lean_pct": -0.445,
+   "hunter_view": {
+    "expected_move_pct": 0.2,
+    "print_vs_bar_pct": 3.0,
+    "bar": "unsourced for Q3 2026: no Q3 consensus found in Renta 4, Bankinter, Bolsaman\u00eda, Expansi\u00f3n or wire previews. The only sourced bar is the company's FY26 guide (>7bn revenue, >700m EBIT, >375m FCF; https://www.indragroup.com/cms-content/2026/07/260723-PR-Indra-Group-Results-2Q2026.pdf), so every finding is capped small",
+    "positioning_check": "Register not covered for this market: the CNMV short-position grid returns no rows from this container. Nothing is known about short interest, and that is not a zero. Vozp\u00f3puli (2026-10-28) reports CNMV holdings of Goldman Sachs 7.6% and ING 5.6%, mostly through financial instruments, which the company excludes from its long-term holders. That is derivative and hedge exposure of unknown direction, not a short reading. The buyback ended mid-October (CapitalMadrid headline 2026-10-14, via Google News; not fetched), so no issuer bid sits under the print. priced_lean_pct is the 20-day run-up (+8.9%), which is also the free control.",
+    "baseline_tension": "Roughly neutral to the lean: the +8.9% 20-day run-up toward the 65-66 EUR resistance already carries the 'guide is conservative' story, my only positive finding, and the negatives are small and mostly public, so nothing here is orthogonal to the run-up in a way the free control would miss."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "3 finding(s) worth +0.50 dated after the exit window, kept out of the key",
+    "findings split 2 positive / 3 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "IDR",
+     "key": "IDR#0",
+     "finding": "The 2026 guide (EBIT >700m) was held in July after H1 EBIT of 316m and a Q2 EBIT of 198m that beat consensus by 14%. Only ~384m is needed in H2, below two quarters at the Q2 run-rate. Renta 4 says management held the guide only because the new team wanted to wait, which leaves room for a raise, 'upper end' language or a firm-up at Q3.",
+     "source": "https://www.r4.com/articulos-y-analisis/valores/indra-resultados-2t26-superan-ampliamente-las-previsiones-mantienen-guia-2026e-esperamos-impacto-positivo",
+     "source_date": "2026-07-23",
+     "expected_impact_pct": 0.5,
+     "cluster": "r4.com",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "FY25 results with the 2026 guide (26 Feb 2026): +21.3% close-to-close. Q2 2026, a big EBIT beat with the guide held: +7.1% (23 Jul 2026). Q1 2026, a miss vs consensus with the guide held: -0.7%. Q3 2025, short of operating forecasts with the guide held: -1.5%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    },
+    {
+     "hunter": "IDR",
+     "key": "IDR#1",
+     "finding": "The 1.97bn VAC tracked-vehicle contract, awarded in Feb 2026 to TESS Defence (51.01% Indra), has been frozen for months because TESS's offer was about four times the expected price. The CEO said on 26 Oct it 'should be signed before year-end' on a September re-proposal. The government has given no date. This raises questions on the call about backlog quality and TESS margins (TESS already dilutes group EBITDA margin by ~0.9pp in H1).",
+     "source": "https://cincodias.elpais.com/companias/2026-10-26/indra-confia-en-desatascar-el-contrato-del-vac-de-casi-2000-millones-antes-de-final-de-ano.html",
+     "source_date": "2026-10-26",
+     "expected_impact_pct": -0.3,
+     "cluster": "cincodias.elpais.com",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No clean prior on backlog-quality news at a print. The day El Pa\u00eds broke the price dispute (21 Oct) the stock closed +1.3%. The 23 Oct -3.5% day carried the Telef\u00f3nica cloud-JV story and sector moves, so it cannot be attributed.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "IDR",
+     "key": "IDR#2",
+     "finding": "On 29 Sep the new chairman dismissed five senior executives and merged Defence and Space into a new operating model. Severance and restructuring costs probably land in Q3 'other operating income and expenses', which carried -17m of restructuring in H1, below the operating margin line.",
+     "source": "https://www.indragroup.com/es/noticias/indra-group-reorganiza-su-comite-de-direccion-para-adaptarlo-a-su-nuevo-modelo-operativo",
+     "source_date": "2026-09-29",
+     "expected_impact_pct": -0.1,
+     "cluster": "indragroup.com",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Restructuring has been a recurring line (-17m H1 2026, -20m H1 2025) and has never been the story of a print.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.035,
+     "_legacy_residual_pct": -0.035
+    },
+    {
+     "hunter": "IDR",
+     "key": "IDR#3",
+     "finding": "On 27 Oct the Council of Ministers lifted spending limits so that Industry can lend Hisdesat (consolidated by Indra via Hispasat) 492.2m for SpainSat NG-III over 2026-2032, 106m of it in 2026. This is state funding for the replacement satellite, which supports the cash and backlog story for Space.",
+     "source": "https://www.lamoncloa.gob.es/consejodeministros/referencias/paginas/2026/20261027-referencia-rueda-de-prensa-ministros.aspx",
+     "source_date": "2026-10-27",
+     "expected_impact_pct": 0.1,
+     "cluster": "lamoncloa.gob.es",
+     "lands_on": "financing",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Prior state-loan approvals for PEMs (Oct 2025) moved the stock +5% on the day. This one is far smaller and arrived two days before the print, with the stock flat (27 Oct +1.3%, 28 Oct flat).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    },
+    {
+     "hunter": "IDR",
+     "key": "IDR#4",
+     "finding": "Telef\u00f3nica and Indra are in exploratory talks (Bloomberg via Expansi\u00f3n, 23 Oct) on a joint venture for sovereign cloud in Europe. Indra calls them 'conversaciones exploratorias'. Building competitive data centres would cost billions, which raises a capital-allocation question for the call.",
+     "source": "https://www.expansion.com/empresas/telecomunicaciones/2026/10/23/6adb797f468aebc56f8b4571.html",
+     "source_date": "2026-10-23",
+     "expected_impact_pct": -0.1,
+     "cluster": "expansion.com",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The stock fell 3.5% on 23 Oct, the day the story ran, and recovered +4.1% on 26 Oct on a European defence-sector move.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.035,
+     "_legacy_residual_pct": -0.035
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "New strategic plan / Capital Markets Day on 25 Nov 2026 with new multi-year targets. This is where any guide reset most likely lands; sign unknown.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-25",
+     "source": "https://www.vozpopuli.com/economia/banca/indra-desnuda-su-base-de-accionistas-y-se-presenta-ante-los-inversores-como-el-campeon-nacional-antes-del-29-n.html"
+    },
+    {
+     "finding": "Spanish snap general election on 29 Nov 2026. SEPI holds 28%, and a change of government could alter Indra's role as the national defence champion and the EM&E question.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-29",
+     "source": "https://www.vozpopuli.com/economia/banca/indra-desnuda-su-base-de-accionistas-y-se-presenta-ante-los-inversores-como-el-campeon-nacional-antes-del-29-n.html"
+    },
+    {
+     "finding": "VAC contract (1.97bn) signature, which the CEO expects 'before year-end'.",
+     "expected_impact_pct": 0.5,
+     "resolves_by": "2026-12-31",
+     "source": "https://cincodias.elpais.com/companias/2026-10-26/indra-confia-en-desatascar-el-contrato-del-vac-de-casi-2000-millones-antes-de-final-de-ano.html"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.5,
+    "residual_sum": null,
+    "adversary_judged": "0/5",
+    "edge_score_legacy": 0.2,
+    "baseline_quality": 0.522,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.0,
+     "event_plausibility": 1.0,
+     "history_events": 11,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 5,
+    "cluster_names": [
+     "cincodias.elpais.com",
+     "expansion.com",
+     "indragroup.com",
+     "lamoncloa.gob.es",
+     "r4.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.2,
+    "lessons_delta": -0.1,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'You were right about the number and too small about the move' / 'size the move on what is new': abs_move_pct raised from 4.0 to 5.0. Q3 numbers are new (not pre-released), offset by a probable guide reiteration on a well-covered large cap",
+     "'Cash can outweigh a raised guide': Q2 FCF missed (43m vs 88m R4e) and Q3 cash is unseen, so p_up moved from 53 to 52",
+     "'Proxy / inference made smaller': the guidance finding is an inference from H1 arithmetic plus a broker's reading of management intent, so it went from +0.6 to +0.5",
+     "'Keep findings inside the exit window': CMD 25 Nov, election 29 Nov and VAC signature confirmed in outside_window. No change"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 12
+  },
+  {
+   "ticker": "PPH",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": 0.05,
+   "conviction": 0.05,
+   "priced_lean_pct": 0.473,
+   "hunter_view": {
+    "expected_move_pct": -0.3,
+    "print_vs_bar_pct": 0.5,
+    "bar": "FY26 company-compiled analyst consensus: revenue \u00a3475.0-483.0m, EBITDA \u00a3140.0-147.0m as at 26 August 2026 (footnote 1 of the interim results, https://www.investegate.co.uk/announcement/rns/pphe-hotel-group-ltd--pph/interim-results/9742113). No Q3-specific consensus is published; the low end of the EBITDA range was \u00a3143.8m on 29 April 2026 (https://www.investegate.co.uk/announcement/rns/pphe-hotel-group-ltd--pph/q1-trading-update/9543169), so the bar has already been lowered once.",
+    "positioning_check": "FCA aggregated register (as of 2026-10-27, position dated 2026-09-09): 0.2% net short, down from 0.41% -- covering, not building; not crowded. https://www.fca.org.uk/publication/documents/aggregated-current-net-short-positions.csv",
+    "baseline_tension": "Mild agreement: the baseline lean (+0.47, mostly short covering) and the flat 20-day run-up (+1.34%) sit beside a near-zero findings sum; the only directional pull is this name's own habit of falling on print days, which cuts slightly against the positive lean."
+   },
+   "flags": [
+    "hunter expects the number and the stock to go opposite ways (print +0.5% vs bar, stock -0.3%): read conviction_note",
+    "hunter's own expected_move_pct (-0.30) has the opposite sign to the sum of its findings (+0.05)"
+   ],
+   "findings": [
+    {
+     "hunter": "PPH",
+     "key": "PPH#0",
+     "finding": "UK peer read-through for Q3 is positive-to-in-line: Whitbread reported London ARR +2.7% and occupancy +1.2pp for the 26 weeks to 27 Aug 2026 'supported by a healthy events calendar', and UK&I RevPAR +3.2% in the first five weeks of H2 (Sept-early Oct); IHG's Q3 2026 update put UK RevPAR at +2.8% -- so PPHE's UK estate (~61% of H1 revenue) most likely grew through a tough Oasis-concert Q3 2025 comparative, consistent with its August 'continue to perform strongly'.",
+     "source": "https://www.investegate.co.uk/announcement/rns/whitbread--wtb/whitbread-interim-results/9819127",
+     "source_date": "2026-10-13 07:00",
+     "expected_impact_pct": 0.25,
+     "cluster": "investegate.co.uk",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q3 2025 trading update with UK 'solid performance' and FY reiterated: +0.28%; Q1 2026 update with London-led +8% revenue: -7.86%; H1 2026 with UK RevPAR +5.2%: -6.95%. Good UK numbers have not been rewarded on print days.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.087,
+     "_legacy_residual_pct": 0.087
+    },
+    {
+     "hunter": "PPH",
+     "key": "PPH#1",
+     "finding": "Croatian national tourism volumes were flat through the peak season -- eVisitor Jan-Aug 2026 overnights +1%, August overnights +0.5%, Adriatic overnights +0.5%, with the minister citing shorter trips and careful travel budgets -- which gives no support to PPHE's August expectation that the 'gradual improvement in momentum' in Croatia (Arena, whose year is concentrated in Q3) would continue through the summer.",
+     "source": "https://www.croatiaweek.com/croatia-tourism-record-august-2026/",
+     "source_date": "2026-09-10",
+     "expected_impact_pct": -0.3,
+     "cluster": "croatiaweek.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q3 2025: Croatia 'performed well during the peak months, with good rate growth more than offsetting a slight reduction in occupancy' despite poor August weather; the stock moved +0.28% that day.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "PPH",
+     "key": "PPH#2",
+     "finding": "Arena Hospitality Group, PPHE's Zagreb-listed controlled subsidiary, has been buying back its own shares through the quarter and into the print window (ZSE own-share purchase notices on 7, 12, 15, 19, 23 and 28 October 2026, plus August-September).",
+     "source": "https://eho.zse.hr/en/issuer-announcements/search?tx_issuerpublicationmanager_publicnewslisting%5Bfilter%5D=ticker&tx_issuerpublicationmanager_publicnewslisting%5Bquery%5D=ARNT",
+     "source_date": "2026-10-28 08:58",
+     "expected_impact_pct": 0.1,
+     "cluster": "eho.zse.hr",
+     "lands_on": "capital_return",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No observed reaction on PPH to Arena buyback notices.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    }
+   ],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/3",
+    "edge_score_legacy": 0.1,
+    "baseline_quality": 0.421,
+    "quality_parts": {
+     "history": 0.333,
+     "options": 0.5,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 2,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 3,
+    "cluster_names": [
+     "croatiaweek.com",
+     "eho.zse.hr",
+     "investegate.co.uk"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.1,
+    "lessons_delta": -0.05,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'Size the move on what is new; let the reaction history move p_up, not abs_move_pct': the Q3 numbers are not pre-released, so abs_move_pct went from 4.5 to 5.0 (between the 2.3% reiterated-guide and 7.4% new-numbers medians, thin $0.49m/day turnover); the habit of selling prints stays in p_up at 47 only",
+     "'A finding about a number the market has already been told is worth 0' / inside-guidance rule: the UK peer read-through mostly confirms the company's own August statement, so it went from +0.4 to +0.25",
+     "'A narrow proxy loses ... macro-to-company transmission is a hypothesis': the Croatian national-volume finding went from -0.4 to -0.3"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 13
+  },
+  {
+   "ticker": "KOG",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.1,
+   "conviction": 0.1,
+   "priced_lean_pct": 0.117,
+   "hunter_view": {
+    "expected_move_pct": -0.39,
+    "print_vs_bar_pct": 0.0,
+    "bar": "unsourced as a single agreed number: KONGSBERG publishes a company-collected consensus on its IR page (stated in the 2026-10-21 invitation, https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684486) but the page is behind Cloudflare to both curl and WebFetch; aggregators disagree (ChartMill EPS NOK 1.79 / revenue NOK 10.716bn, https://www.chartmill.com/stock/quote/KOG.OL/earnings; TipRanks EPS NOK 1.66). Findings capped small.",
+    "positioning_check": "Finanstilsynet SSR register read 2026-10-26: no disclosed net short >= 0.5% (short_ratio 0.0, change 0.0) -- a truncated zero, not a measurement; anchor_covered false, so no positioning anchor and priced_lean_pct (+0.12) is essentially the run-up. https://ssr.finanstilsynet.no/api/v2/instruments",
+    "baseline_tension": "Lean (+0.12) and run-up (20d -2.3%, 5d +1.2%) are flat; the evidence is also balanced, so nothing cuts hard against them -- the slight negative tilt comes from the name's habit of selling results days, not from a sourced unseen number."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "1 finding(s) worth +0.50 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "KOG",
+     "key": "KOG#0",
+     "finding": "Q3 order intake will carry at least NOK 11.5bn of disclosed air-defence contracts (Belgium NASAMS NOK 10bn, Netherlands CITADEL ~NOK 1.5bn, both signed 29 Sept) and possibly the ~USD 400m Kuwait NASAMS subcontract the Q2 report said would be booked once formalised, so book-to-bill should rebound from Q2's 1.64 that Morgan Stanley flagged as a slowdown.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683272",
+     "source_date": "2026-09-29T17:04Z",
+     "expected_impact_pct": 0.3,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 2026: order intake +53% y/y but book-to-bill down from 2.9 to 1.64, cited as part of the -6.8% day; Q1 2026: NOK 27bn intake, +5.1% day; the Belgium order itself moved the stock +4.8% on 2026-09-30.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.105,
+     "_legacy_residual_pct": 0.105
+    },
+    {
+     "hunter": "KOG",
+     "key": "KOG#1",
+     "finding": "Pareto removed Kongsberg Gruppen from its Norwegian model portfolio for October (swapping into Kongsberg Maritime), with E24 headlining the analyst's reason as 'Kan skuffe' (may disappoint), on top of Q2's margin miss whose stated causes (Ukraine donation mix in Defence Systems, Zone 5 US ramp, Discovery relocation) the company did not say were over.",
+     "source": "https://e24.no/boers-og-finans/i/0BjbKB/pareto-bytter-kongsberg-aksjer-kan-skuffe",
+     "source_date": "2026-10-04T14:04:43Z",
+     "expected_impact_pct": -0.6,
+     "cluster": "e24.no",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Margin is the line this stock trades on: Q2 2026 EBIT margin 16.1% vs ~17% consensus -> -6.8%; Q3 2025 weaker quarter (with spin-off announcement) -> -18.3%; Q2 2025 -> -12.1%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.21,
+     "_legacy_residual_pct": -0.21
+    },
+    {
+     "hunter": "KOG",
+     "key": "KOG#2",
+     "finding": "Closest listed peer Saab reported Q3 on 23 Oct with order bookings of SEK 65.8bn against ~56bn expected and the CEO saying demand shows no levelling off; Saab rose 1.8% that day while KOG slipped 0.2%.",
+     "source": "https://www.inderes.se/releases/saab-q3-results-2026-positioned-to-capture-growing-demand",
+     "source_date": "2026-10-23",
+     "expected_impact_pct": 0.2,
+     "cluster": "inderes.se",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No measured history of KOG reacting to Saab's print; on 2026-10-23 it did not react.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.07,
+     "_legacy_residual_pct": 0.07
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Denmark JSM contract: scope and value to be negotiated; KONGSBERG will update the market after signing -- an order, if signed, is after this window unless announced in the release",
+     "expected_impact_pct": 0.5,
+     "resolves_by": "2026-12-31",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684651"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.5,
+    "residual_sum": null,
+    "adversary_judged": "0/3",
+    "edge_score_legacy": -0.2,
+    "baseline_quality": 0.412,
+    "quality_parts": {
+     "history": 0.5,
+     "options": 0.5,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 3,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 3,
+    "cluster_names": [
+     "api3.oslo.oslobors.no",
+     "e24.no",
+     "inderes.se"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.0,
+    "lessons_delta": -0.1,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'Finding about a number the market has already been told is worth ~0': orders finding cut +0.5 -> +0.3 since Belgium was an inside-information release the stock already reacted to.",
+     "'Bar unsourced -> cap findings small' and 'a proxy is a hypothesis': Pareto finding (headline-only analyst view) cut -0.8 -> -0.6; Saab peer read cut +0.3 -> +0.2.",
+     "'Size the move on what is new; reaction history moves p_up, not abs': abs_move_pct raised 6.0 -> 6.5 (new numbers base ~7%, no guidance change expected, own results-day median 6.8%); p_up left at 47."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 14
+  },
+  {
+   "ticker": "RDC",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.2,
+   "conviction": 0.2,
+   "priced_lean_pct": 2.254,
+   "hunter_view": {
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "bar": "The company's own FY2026 guide and the 28 Sep pre-release (https://www.eqs-news.com/news/corporate/redcare-pharmacy-raises-full-year-2026-revenue-guidance-again-driven-by-strong-rx-momentum-in-germany/1ed5c44d-9182-480e-bc2c-a0e03c44f64c_en). The Q3 consensus is unsourced: the baseline's Yahoo consensus returned no quarters, and no free source printed a Q3 revenue or EBITDA consensus, so the findings that depend on a sell-side bar are capped small.",
+    "positioning_check": "Bundesanzeiger Netto-Leerverkaufspositionen: 4.28% disclosed net short across 4 sellers, position date 2026-10-21, read 2026-10-27. Unchanged against the previous read (0.0 pts), so neither building nor covering. That is a meaningful short into a +33% run-up since 25 Sep (60.50 to 78.00 on the Yahoo tape) and +21.8% over 60 days, so a raise would hit a short base.",
+    "baseline_tension": "Mixed. The sealed lean is +2.25 (mostly the short-squeeze component on a 4.28% disclosed short), and the conservative-guide finding agrees with it. The non-Rx, CEO and cash findings cut against it, and the 20d (+6.3%) and 60d (+21.8%) run-ups plus this name's habit of fading results-day gaps argue that a confirm-only release is sold. So the findings sum to about 0 and p_up stays at 50."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "RDC",
+     "key": "RDC#0",
+     "finding": "The company's own numbers make the FY2026 guide look conservative. Rx Germany 9M is about EUR 545m (H1 348 + Q3 about 197 at +56% on Q3'25's 126). Against EUR 730-760m that implies Q4 Rx Germany of EUR 185-215m, +19% to +39% on Q4'25's 155m, while September ran at +51% against the bonus-introduction base. Likewise 16-18% group growth implies Q4 growth of only about 7-14% after about 20% in 9M. The 29 Oct release carries October data and a new CEO, so a third raise or an upper-end steer is a live guidance event.",
+     "source": "https://www.eqs-news.com/news/corporate/redcare-pharmacy-raises-full-year-2026-revenue-guidance-again-driven-by-strong-rx-momentum-in-germany/1ed5c44d-9182-480e-bc2c-a0e03c44f64c_en",
+     "source_date": "2026-09-28",
+     "expected_impact_pct": 1.0,
+     "cluster": "eqs-news.com",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Guidance raises by ad-hoc moved the stock hard: 15 Jun 2026 +17.4% and 28 Sep 2026 +12.7%. When the raise was already out, the results day faded: Q2'26 'upgraded guidance confirmed' gapped +5.2% and closed +2.1%, then fell -6.6% the next day. The first FY26 guide on 4 Mar 2026 brought -21.0%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.35,
+     "_legacy_residual_pct": 0.35
+    },
+    {
+     "hunter": "RDC",
+     "key": "RDC#1",
+     "finding": "German non-Rx (OTC and beauty) was soft in Q3. Redcare itself flagged a 'softer July'. The closest peer, DocMorris, printed German non-Rx +5.5% and OTC only +3.5% for the same quarter, against Redcare's Q2 DACH non-Rx +12% and a FY group non-Rx guide of 10-12%. The release will carry the first Q3 non-Rx number, on the higher-margin ~57% of revenue, and it likely slows.",
+     "source": "https://www.boerse-online.de/dpa-afx/roundup-docmorris-waechst-dank-e-rezepten-kraeftig-und-erhoeht-jahresprognose-558541.html",
+     "source_date": "2026-10-15",
+     "expected_impact_pct": -0.6,
+     "cluster": "boerse-online.de",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Non-Rx slowing to 9.3% in Q4'25 was part of the FY25 release that fell -21.0% on 4 Mar 2026. The June 2026 raise, which leaned on a non-Rx re-acceleration (Germany 12% in April, 16% in May), brought +17.4%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.21,
+     "_legacy_residual_pct": -0.21
+    },
+    {
+     "hunter": "RDC",
+     "key": "RDC#2",
+     "finding": "This is the first quarterly report and call under CEO Peter Schmid von Linstow, appointed 14 Oct 2026. He is a platform and marketplace executive (Visable/Alibaba, Parship, eBay, AutoScout24), was on the supervisory board only since April, and has framed his agenda around AI and 'sustained, profitable growth'. A first call is where new priorities, investment or a re-based mid-term ambition (the company's standing target is an adj. EBITDA margin above 8%) would surface.",
+     "source": "https://www.eqs-news.com/news/corporate/peter-schmid-von-linstow-appointed-as-new-member-of-the-managing-board-and-ceo/039e7607-9a32-443f-9811-0a113bd350d2_en",
+     "source_date": "2026-10-14",
+     "expected_impact_pct": -0.3,
+     "cluster": "eqs-news.com",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The CEO-change announcement on 28 Aug 2026 brought -5.9% that day (gap +6.5% the day before was reversed).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "RDC",
+     "key": "RDC#3",
+     "finding": "2025 and 2026 are the company's declared 'peak investment years' (capex EUR 118.6m in 2025, on automation and capacity), and FY25 operating cash flow of EUR 31m came 'despite higher working capital requirements'. With Rx Germany growing about 56%, the 9M cash and working-capital line in the Q3 statement is a line the pre-release did not touch.",
+     "source": "https://www.eqs-news.com/news/corporate/redcare-pharmacy-strong-growth-in-2025-surpassing-eur-1bn-in-rx-revenue-adj-ebitda-up-72-yoy/4d756ba7-ebd1-4b54-8610-bcb06263b44d_en",
+     "source_date": "2026-03-04",
+     "expected_impact_pct": -0.3,
+     "cluster": "eqs-news.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No clean instance on this name. The FY25 release that carried the peak-capex statement fell -21.0%, but on the guide.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Investor roadshows and conferences after the print (Baader NDR 2 Nov, MPCM 11 Nov, Jefferies 18 Nov, BofA 19 Nov), where the new CEO's messaging would spread further",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-19",
+     "source": "https://www.eqs-news.com/news/ad-hoc/redcare-pharmacy-raises-again-full-year-2026-revenue-guidance-driven-by-strong-rx-momentum-in-germany/750b3fed-5832-4e23-a440-68d9e25cce15_en"
+    },
+    {
+     "finding": "Rx fixed fee rising from EUR 9.00 to 9.50 per pack in early 2027 (it went from 8.35 to 9.00 on 1 Jul 2026), a 2027 tailwind",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-01-01",
+     "source": "https://goldesel.de/aktien/news/redcare-pharmacy-aktie-springt-deutsche-bank-sieht-einstiegschance-q3-im-fokus"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/4",
+    "edge_score_legacy": 0.8,
+    "baseline_quality": 0.635,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.35,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 11,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 2,
+    "cluster_names": [
+     "boerse-online.de",
+     "eqs-news.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": 0.1,
+    "lessons_delta": -0.3,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'The move is in the guide' and 'you were too small about the move': abs_move_pct raised from 5.5 to 6.5, because a guidance change (a third raise, or a new-CEO reframing) is a live possibility on a 59%-vol name.",
+     "'Cash can outweigh a raised guide' (Luceco): added a small -0.3 cash/working-capital finding from the declared peak-capex years, a document already found in the hunt and not filed in the draft.",
+     "'A finding about a number the market has already been told is worth 0': confirmed that the pre-released Rx Germany and margin lines stay in rejected_candidates as duplicates and not as findings.",
+     "'A verified fact is not a predicted reaction' plus this name's record of fading gaps: kept p_up at 50 and did not enlarge the guidance finding beyond +1.0."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 15
+  },
+  {
+   "ticker": "DVD",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.3,
+   "conviction": 0.3,
+   "priced_lean_pct": 4.726,
+   "hunter_view": {
+    "expected_move_pct": -0.6,
+    "print_vs_bar_pct": 0.0,
+    "bar": "No sell-side bar (analyst_count null). The only bar is the company's own estimate of retained cash, NOK 0.80-1.00/share plus inventory of unknown value: https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=682898 (2026-09-23). Every size is capped small because no estimate exists.",
+    "positioning_check": "0.79% of shares short on 2026-10-22 (0.68% on 10-21, 0.75% on 10-15, 0.56% on 10-14), all held by one holder, CITADEL SECURITIES (EUROPE) LIMITED. That is a market maker's inventory, not a directional short, so neither building nor covering means anything here. Source: https://ssr.finanstilsynet.no/api/v2/instruments, read 2026-10-28. Separately, JPMorgan (J.P. Morgan Securities PLC) crossed 5% on 22 Oct (5.004%) and dropped back to 4.45% on 23 Oct, most likely prime-brokerage flow: https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684741 and messageId=684880.",
+    "baseline_tension": "The sealed lean (+4.7, almost all of it the run-up component at +4.33) rests on run_up_20d_pct -86.6% and realised vol 352%. Both are the NOK 20.60 ex-dividend gap on 2026-10-08, not a price fall: the stub is +39% from its ex-date close and +11% over 5 days. My slight negative cuts against the lean but agrees with the 5-day free control, and the 22% event_move_proxy is likewise dividend-inflated, so I sized off the post-ex tape instead."
+   },
+   "flags": [
+    "1 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "DVD",
+     "key": "DVD#0",
+     "finding": "This is the first report since the payout. The stock at NOK 2.84 (market cap about NOK 266m on 93.5m shares) is roughly 3x the company's own estimate of retained cash, NOK 0.80-1.00/share (NOK 75-94m), plus inventory booked at USD 0.8m (about NOK 0.08/share) and 10% board warrants struck at NOK 1.00. The report will show that NAV in hard numbers after a +39% rebound from the 2.05 ex-date close and +11% in five sessions.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=682898",
+     "source_date": "2026-09-23",
+     "expected_impact_pct": -0.8,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "None. The name has never reported as a cash shell; its 12 prior results days as a drillship owner moved a median 1.29% and do not apply. Since ex-date the stub has moved a median ~4% a day, with +28% (10-12), +15% (10-26) and -7.8% (10-27).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.28,
+     "_legacy_residual_pct": -0.28
+    },
+    {
+     "hunter": "DVD",
+     "key": "DVD#1",
+     "finding": "The board, paid only in 9.35m warrants struck at NOK 1.00, says it has 'received indications of interest within the marine industry' and is evaluating strategic alternatives and an active sale of the remaining inventory. The Q3 report is the first scheduled place an update can appear.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=682898",
+     "source_date": "2026-09-23",
+     "expected_impact_pct": 0.5,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "other",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "None. No strategic update has been issued since 23 Sep. The +28% day on 2026-10-12 and the +15% on 10-26 came with no company news, so the stub reprices on speculation alone.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.175,
+     "_legacy_residual_pct": 0.175
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Board warrants (10% of shares, NOK 1.00 strike) become exercisable from 2027-10-16. That dilution overhang falls well outside the window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-10-16",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684245"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/2",
+    "edge_score_legacy": -4.5,
+    "baseline_quality": 0.688,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.5,
+     "priced_direction": 0.45,
+     "event_plausibility": 1.0,
+     "history_events": 12,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "api3.oslo.oslobors.no"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -1.0,
+    "lessons_delta": 0.7,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'A finding about a number the market has already been told is worth 0' and the core's 'lands inside what the company already guided': cut finding 1 (NAV restatement) from -1.5 to -0.8. The residual is the sell-the-news reminder against a +11% 5-day run, not the number itself.",
+     "'The move is in the guide' and 'understatement is the systematic error': kept abs_move_pct at 6.0, above the 3% pre-released base, because this stub's own post-ex daily range is that large and a strategic update is the guide-equivalent tail. p_up left at 45, inside the 45-55 band for a pre-released period."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 16
+  },
+  {
+   "ticker": "AKRBP",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.4,
+   "conviction": 0.4,
+   "priced_lean_pct": -0.654,
+   "hunter_view": {
+    "expected_move_pct": -0.2,
+    "print_vs_bar_pct": 8.0,
+    "bar": "Aker BP's own compiled sell-side consensus (12 brokers, updated 21 Oct 2026): Q3 EBITDA 3,416, EBIT 2,848, net profit 614 USDm, impairments (15), DPS 0.66, FY26 production 386 mboepd, at https://akerbp.com/en/investor/analyst/",
+    "positioning_check": "Finanstilsynet SSR register read 2026-10-26 (https://ssr.finanstilsynet.no/api/v2/instruments): no disclosed net short at or above 0.5%, unchanged. This is the truncation floor, not evidence that nobody is short; anchor_covered is false, so priced_lean_pct (-0.65) is just the 13.1% 20-day run-up.",
+    "baseline_tension": "It agrees with the lean (priced_lean -0.65 from a 13% run-up) and adds little to it: the quarter is pre-released, so the only unpriced lines are a one-off reversal that is likely sold and a guide that can only narrow."
+   },
+   "flags": [
+    "hunter expects the number and the stock to go opposite ways (print +8.0% vs bar, stock -0.2%): read conviction_note",
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "AKRBP",
+     "key": "AKRBP#0",
+     "finding": "The Q2 impairment test priced H2-2026 oil at USD 73.9 and 2027 at 71.1 and booked a USD 625m impairment of Valhall intangibles, which are reversible. Brent traded around USD 100-107 at the end of Q3, so the Q3 test likely reverses part of that against a consensus impairment line of (15), producing a headline EBIT and net-profit beat.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/attachment?messageId=678184&attachmentId=329685",
+     "source_date": "2026-07-15",
+     "expected_impact_pct": 0.1,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q1 2026 carried a USD 522m reversal and EBIT of 2.65bn against a 1.956bn Bloomberg consensus; the stock fell 3.91% that day (baseline history, 2026-05-07). Q2's 625m impairment day was -0.65%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    },
+    {
+     "hunter": "AKRBP",
+     "key": "AKRBP#1",
+     "finding": "Year-to-date production is about 385.4 mboepd (Q1 398.4, Q2 383.6, Q3 374.3) against a 380-400 range, so the FY guide can only narrow toward the lower half. Peer V\u00e5r Energi took its FY output to the low end of its range on 21 Oct.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684040",
+     "source_date": "2026-10-14",
+     "expected_impact_pct": -0.3,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 2026 narrowed the range up (370-400 to 380-400) and raised capex; stock -0.65%. Feb 2025 strategy update with a lower output outlook: -3.3%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "AKRBP",
+     "key": "AKRBP#2",
+     "finding": "The stock ran from 338.4 (2 Oct) to 384.8 (+13% in 20 sessions), above the last sourced broker targets (DNB NOK 370 in July; average about NOK 329 in mid-August), into a release whose quarter is fully pre-released. Peer V\u00e5r Energi's strong Q3 with a dividend raise moved -0.11%.",
+     "source": "https://query1.finance.yahoo.com/v8/finance/chart/AKRBP.OL?range=1mo&interval=1d",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": -0.2,
+     "cluster": "query1.finance.yahoo.com",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Last two results days after up-moves were -3.91% (May 2026) and -0.65% (Jul 2026); the Oct 2025 and Feb 2026 results days were +3.3% and +4.44%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.07,
+     "_legacy_residual_pct": -0.07
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Supreme Court (grand chamber) ruling on the validity of the Yggdrasil/Tyrving/Breidablikk PDO approvals, heard August 2026, still pending. The date is unknown and is not tied to this print.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "unknown, after 2026-10-29 unless issued that day",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/attachment?messageId=678184&attachmentId=329685"
+    },
+    {
+     "finding": "New executive team and operating model effective 1 Jan 2027; FY27 guidance and dividend policy come with the Q4/strategy update in February 2027.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2027-02",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=683484"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/3",
+    "edge_score_legacy": -1.0,
+    "baseline_quality": 0.612,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.5,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 26,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 2,
+    "cluster_names": [
+     "api3.oslo.oslobors.no",
+     "query1.finance.yahoo.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.2,
+    "lessons_delta": -0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'A beat made of a one-off is sold' (H&M): impairment-reversal finding cut from +0.3 to +0.1",
+     "'The move is in the guide': abs_move_pct raised from 3.2 to 3.3 because a range narrowing is likely, though not a cut or raise; p_up unchanged at 47",
+     "'A finding about a number already told is worth 0': confirmed the revenue/volume candidate is rejected; no change to the filed set"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 17
+  },
+  {
+   "ticker": "EPR",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.7,
+   "conviction": 0.7,
+   "priced_lean_pct": -0.232,
+   "hunter_view": {
+    "expected_move_pct": -0.96,
+    "print_vs_bar_pct": -2.0,
+    "bar": "unsourced. No published Q3 2026 consensus was found; the DNB Carnegie morning preview that carried consensus for Q1 2026 and Q3 2025 appears only on report day. Context: Q3 2025 actuals were sales 3,528m and EBITDA 521m against a 526m consensus (https://www.dnb.no/dnbnyheter/no/bors-og-marked/dnb-carnegies-anbefaling-pa-europris-og-hoeegh-autoliners). An undated aggregator snippet puts FY2026 revenue at 15.4bn from five analysts. Every finding is capped small.",
+    "positioning_check": "Finanstilsynet SSR register read as of 2026-10-26: no disclosed net short at or above 0.5%, change 0.0 (https://ssr.finanstilsynet.no/api/v2/instruments). anchor_covered is false, so this zero is the truncation floor rather than evidence that nobody is short, and the positioning anchor is effectively just the run-up (+4.63% over 20 days). The only holder change found: FMR LLC fell from 8.14% to 8.10% of shares on 2026-10-13.",
+    "baseline_tension": "The findings lean mildly negative, against a +4.6% 20-day run-up into the print and a priced lean of -0.23 that is only the run-up; there is no positioning anchor. They therefore lean with the free control (fade the run-up) rather than against it, which is part of why p_up is held at 42 and not lower."
+   },
+   "flags": [
+    "bar unsourced: sizes should have been capped",
+    "findings split 2 positive / 2 negative: the sum nets opposing theses rather than resolving them"
+   ],
+   "findings": [
+    {
+     "hunter": "EPR",
+     "key": "EPR#0",
+     "finding": "SSB's store-sales value index for NACE 47.19 (Norwegian non-food general stores, Europris's category) reads -0.3% yoy for Q3 2026 (Jul +0.3%, Aug -2.0%, Sep +0.7%) after +9.5% in Q3 2025. Over five quarters the series has tracked the Europris chain closely (Q2 26: -0.9% vs chain -0.5%; Q3 25: +9.5% vs LFL +10.7% and segment Norway +11.6%; Q3 24: +2.7% vs LFL +2.9%). That implies roughly flat Norwegian chain sales against the toughest comp of the year and operating deleverage in segment Norway, whose Q3 2025 EBIT was 293m (+37.8%).",
+     "source": "https://data.ssb.no/api/v0/no/table/07129",
+     "source_date": "2026-10-28 (table updated 07:00 UTC; Jul and Aug values published earlier)",
+     "expected_impact_pct": -1.0,
+     "cluster": "data.ssb.no",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 2026 (sales -2.8%, EBITDA 661 vs about 692 expected): -4.27%. Q3 2025 (sales beat, EBITDA 521 vs 526 consensus, after an 18% run-up): -12.35%. Q2 2025 solid: +6.94%. The name has fallen on 9 of 12 results days since 2023.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.35,
+     "_legacy_residual_pct": -0.35
+    },
+    {
+     "hunter": "EPR",
+     "key": "EPR#1",
+     "finding": "The NOK strengthened sharply year on year through Q3 (USD/NOK about 9.3-9.6 vs about 10.0-10.06; EUR/NOK about 10.4-10.9 vs about 11.6-11.75). That cuts the NOK cost of Europris's USD/EUR-sourced imports, extending the gross-margin gain already visible in Q2 (+1.8pp; +1.6pp excluding unrealised FX) and adding to Q3 2025's +1.0pp.",
+     "source": "https://query1.finance.yahoo.com/v8/finance/chart/NOK=X?range=2y&interval=1mo",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": 0.4,
+     "cluster": "query1.finance.yahoo.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Q2 2026 gross margin beat consensus (42.4% vs 41.2% per the Swedish wire) but EBITDA still missed on opex and the stock fell 4.27%. Margin beats have not carried this name by themselves.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.14,
+     "_legacy_residual_pct": 0.14
+    },
+    {
+     "hunter": "EPR",
+     "key": "EPR#2",
+     "finding": "Norwegian non-food peers reported healthy recent demand: Clas Ohlson Norway September 2026 organic +8% (Sweden +11%, group +12%), and Rusta Norway May-Jul 2026 LFL +3.2%. This is mild evidence against a weak Norwegian consumer, though both are narrower than the SSB category series.",
+     "source": "https://www.inderes.se/releases/clas-ohlsons-forsaljning-okade-i-september-jamfort-med-foregaende-ar-4",
+     "source_date": "2026-10-07",
+     "expected_impact_pct": 0.1,
+     "cluster": "inderes.se",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "no read-across history for this name",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    },
+    {
+     "hunter": "EPR",
+     "key": "EPR#3",
+     "finding": "Segment Sweden (\u00d6oB) in Q3 carries 10 more store remodels with temporary closures and a campaign shift away from low-margin consumables, and its sales translate into NOK about 10% lower (SEK/NOK about 0.94-0.97 vs about 1.06). Reported group sales will therefore fall yoy even with a flat Norway, though the company guided to this weight.",
+     "source": "https://s21.q4cdn.com/815767348/files/doc_financials/2026/q2/Europris-ASA-Q2-2026-report.pdf",
+     "source_date": "2026-07-09",
+     "expected_impact_pct": -0.2,
+     "cluster": "s21.q4cdn.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The Sweden EBIT loss was flat in Q2 2026 (-34 vs -34) and the stock fell 4.27% that day on the group EBITDA miss.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.07,
+     "_legacy_residual_pct": -0.07
+    },
+    {
+     "hunter": "EPR",
+     "key": "EPR#4",
+     "finding": "FMR LLC reported a voting-rights threshold change on 2026-10-13: shares 8.10% (previous notification 8.14%), voting rights 7.77%. This is a marginal trim by a top holder two weeks before the print.",
+     "source": "https://api3.oslo.oslobors.no/v1/newsreader/attachment?messageId=684099&attachmentId=334510",
+     "source_date": "2026-10-14",
+     "expected_impact_pct": 0.0,
+     "cluster": "api3.oslo.oslobors.no",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "none",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.0,
+     "_legacy_residual_pct": 0.0
+    }
+   ],
+   "outside_window": [],
+   "diagnostics": {
+    "outside_window_sum_pct": 0,
+    "residual_sum": null,
+    "adversary_judged": "0/5",
+    "edge_score_legacy": -0.9,
+    "baseline_quality": 0.612,
+    "quality_parts": {
+     "history": 1.0,
+     "options": 0.5,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 15,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 5,
+    "cluster_names": [
+     "api3.oslo.oslobors.no",
+     "data.ssb.no",
+     "inderes.se",
+     "query1.finance.yahoo.com",
+     "s21.q4cdn.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.5,
+    "lessons_delta": -0.2,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'A narrow proxy loses to a broad series': the Clas Ohlson / Rusta peer read-across was cut from +0.3 to +0.1, because the broader SSB 47.19 category series, which tracks Europris directly, points the other way",
+     "'You were right about the number and too small about the move': abs_move_pct raised from 5.0 to 6.0, since the Q3 numbers are new with no pre-release. The name's own sold-beat history was left in p_up (42) rather than used to shrink the size",
+     "Bar unsourced: the SSB finding was kept capped at -1.0 rather than enlarged, as the core requires"
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 18
+  },
+  {
+   "ticker": "POSTI",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -0.8,
+   "conviction": 0.8,
+   "priced_lean_pct": 0.128,
+   "hunter_view": {
+    "expected_move_pct": -0.33,
+    "print_vs_bar_pct": -3.0,
+    "bar": "Q3 2026 adj. EBIT 19.1 MEUR, net sales 352.4 MEUR (Vara Research consensus as of 2026-10-28, 4 estimates: https://vara-services.com/posti-group/consensus-estimates/?cluster=1), corroborated by Inderes' quoted consensus of 19 / 350 (https://www.inderes.fi/analyst-comments/posti-group-q326-ennakko-pakettijakelun-reipas-tuloskasvu-jatkunut). Company guide FY adj. EBIT 63-79.",
+    "positioning_check": "Finanssivalvonta register read 2026-10-26: no disclosed net short at or above 0.5% for Posti (truncated zero, anchor_covered false), so there is no positioning anchor and priced_lean_pct (+0.13) is just the run-up. Change is unknown below the threshold. The company's own buyback runs through Nordea at 18-21k shares/week (week 43: 21,000 shares at avg EUR 12.846), roughly 10% of daily turnover.",
+    "baseline_tension": "Lean is +0.13 (run-up only, no short anchor) and 60-day run-up is +26.9%. The slight negative lean here cuts mildly against the 60-day momentum and agrees with the flat-to-down 5- and 20-day tape. Both are small."
+   },
+   "flags": [
+    "1 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "POSTI",
+     "key": "POSTI#0",
+     "finding": "The Q3 bar asks for an acceleration that the best-informed house does not forecast: consensus adj. EBIT 19.1 MEUR (range 18.1-20.0) needs +2.0m y/y on Q3'25's 17.1m, against Q2's +0.8m, and Inderes, the closest follower of the name, is at 18 MEUR, below consensus. Its sales estimate (356) is above consensus (352), so the gap is margin: a full quarter of the April 2026 digital-government-mail law hitting letters, and a still loss-making warehousing segment.",
+     "source": "https://www.inderes.fi/analyst-comments/posti-group-q326-ennakko-pakettijakelun-reipas-tuloskasvu-jatkunut",
+     "source_date": "2026-10-26",
+     "expected_impact_pct": -0.5,
+     "cluster": "inderes.fi",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Observed print days (Yahoo closes): Q3'25 -4.6% (2025-10-29), Q4'25 +7.9% (2026-02-13), Q1'26 -2.3% on a miss (2026-04-29), Q2'26 +7.4% on a beat vs Inderes and consensus (2026-08-14). The stock has followed the sign of the EBIT surprise each time.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.175,
+     "_legacy_residual_pct": -0.175
+    },
+    {
+     "hunter": "POSTI",
+     "key": "POSTI#1",
+     "finding": "Sell-side valuation ceiling: Nordea Markets refreshed Posti on 2026-10-19 at Hold with a EUR 12 target, the TP consensus fell to 12.88 from 13.07, and the stock at 12.94-13.02 trades at or above every target except Danske's 13.5. So an in-line print has little valuation room after the stock rose from 8.25 (Feb) to ~13.",
+     "source": "https://vara-services.com/posti-group/",
+     "source_date": "2026-10-28",
+     "expected_impact_pct": -0.3,
+     "cluster": "vara-services.com",
+     "lands_on": "positioning",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "No observed case on this name of a print reacting to target-price saturation. The two beats (Feb, Aug 2026) rose 7-8% while the stock was trading well below the targets of the time.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.105,
+     "_legacy_residual_pct": -0.105
+    },
+    {
+     "hunter": "POSTI",
+     "key": "POSTI#2",
+     "finding": "Second change negotiations in six months (announced August 2026: 637 workers in Helsinki sorting and day delivery, up to ~50 roles) triggered a walkout at the Pasila postal centre on 19-20 Aug that delayed letters and small parcels for about two days. The likely Q3 effect is restructuring special items below adj. EBIT plus a minor operational cost.",
+     "source": "https://yle.fi/a/74-20241948",
+     "source_date": "2026-08-19",
+     "expected_impact_pct": -0.1,
+     "cluster": "yle.fi",
+     "lands_on": "one_off",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "Special items have been excluded from the bar every quarter (Q2'26 2.8m, Q3'25 5.1m), with no visible reaction to them.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.035,
+     "_legacy_residual_pct": -0.035
+    },
+    {
+     "hunter": "POSTI",
+     "key": "POSTI#3",
+     "finding": "The company's own buyback continues through Nordea at 18-21k shares a week (week 43: 21,000 shares, avg EUR 12.846, EUR 270k; 247,000 held), about 10% of the ~EUR 0.5m daily turnover. That is mild bid support in the window.",
+     "source": "https://view.news.eu.nasdaq.com/view?id=bf1e04e0791d723856be23536d242802f&lang=en&src=listed",
+     "source_date": "2026-10-26",
+     "expected_impact_pct": 0.1,
+     "cluster": "view.news.eu.nasdaq.com",
+     "lands_on": "capital_return",
+     "resolves_by": "2026-10-29",
+     "reaction_history_on_this_line": "The buyback was launched with the Q2 report (2026-08-14, +7.4% that day, mixed with the beat). No separate reaction is measurable.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.035,
+     "_legacy_residual_pct": 0.035
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "Estonia's public tender for 100% of Omniva (starting price EUR 52m, bids due end-November 2026); Inderes expects Posti to bid, and Posti has not announced participation. Management may comment on the call, but the decision resolves after the window.",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-11-30",
+     "source": "https://www.inderes.fi/analyst-comments/posti-group-odotamme-postin-osallistuvan-kilpailija-omnivan-tarjouskilpailuun"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/4",
+    "edge_score_legacy": -1.9,
+    "baseline_quality": 0.493,
+    "quality_parts": {
+     "history": 0.833,
+     "options": 0.35,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 5,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 4,
+    "cluster_names": [
+     "inderes.fi",
+     "vara-services.com",
+     "view.news.eu.nasdaq.com",
+     "yle.fi"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -0.9,
+    "lessons_delta": 0.1,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'You were right about the number and too small about the move' / numbers not pre-released: abs_move_pct raised from 5.0 to 5.5. The quarter is new and this name's four observed print reactions run 2.3-7.9%; it stays below the 7% base because a reiterated guide is the likely outcome (median 2.3% in that bucket).",
+     "'A narrow proxy loses / a verified fact is not a predicted reaction': the valuation-ceiling finding (an inference about the reaction, not a company number) cut from -0.4 to -0.3.",
+     "Checked 'a finding about a number already told is worth 0': there is no trading update or profit warning for Q3, so the reported_quarter finding stands.",
+     "Checked 'a truncated zero is not a measurement': positioning_check now says anchor_covered is false and the lean is only the run-up."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 19
+  },
+  {
+   "ticker": "AL2SI",
+   "rankable": true,
+   "not_rankable_because": null,
+   "impact_sum": -4.5,
+   "conviction": 4.5,
+   "priced_lean_pct": 0.1,
+   "hunter_view": {
+    "expected_move_pct": -1.3,
+    "print_vs_bar_pct": -28.0,
+    "bar": "The company's own FY25/26 guide: revenue that could exceed EUR400m (met at 416.2) and EBITDA above EUR36m, in the H1 release of 26 Mar 2026, https://fr.ftp.opendatasoft.com/datadila/INFOFI/EQS/2026/03/FCEQS008141_20260326.pdf. No sell-side EBITDA consensus could be sourced (Portzamparc's buy rating and EUR63.8 target are public, its estimate is not), so the company guide is the bar.",
+    "positioning_check": "AMF register read on 2026-10-26 (covered: true). It shows no disclosed net short position at or above 0.5% and no change over ten days. anchor_covered is false, so this is the truncation floor and not proof that nobody is short. Grizzly Research's own position, if it holds one, is not disclosed above the threshold. No positioning anchor, and priced_lean_pct (+0.1) is essentially the run-up.",
+    "baseline_tension": "The lean (+0.1) and run-up (-2% over 20 days, flat over 60) carry no information here. My findings lean mildly negative on the reported year and the guide. The dominant item, the investigation's conclusions, has no sourced sign, so p_up sits only slightly below 50 while abs_move is large."
+   },
+   "flags": [
+    "2 finding(s) worth +0.00 dated after the exit window, kept out of the key"
+   ],
+   "findings": [
+    {
+     "hunter": "AL2SI",
+     "key": "AL2SI#0",
+     "finding": "FY25/26 EBITDA is likely to land well below the company's own 'EBITDA superieur a 36 M EUR' guide. Hitting it needs H2 EBITDA of EUR26.4m+ on H2 revenue of about EUR211.5m (a 12.5% margin), against 4.7% in H1 (EUR9.6m on EUR204.7m), equipment at about 94% of sales, and a July revenue release that confirmed the revenue beat but said nothing on EBITDA.",
+     "source": "https://fr.ftp.opendatasoft.com/datadila/INFOFI/EQS/2026/03/FCEQS008141_20260326.pdf",
+     "source_date": "2026-03-26",
+     "expected_impact_pct": -3.0,
+     "cluster": "fr.ftp.opendatasoft.com",
+     "lands_on": "reported_quarter",
+     "resolves_by": "2026-10-30",
+     "reaction_history_on_this_line": "FY24/25 results (EBITDA EUR5.6m after an exceptional customer discount, against a 12% margin ambition): -23.8% the next session (31 Oct 2025). H1 FY25/26 (EBITDA EUR9.6m 'conforme aux attentes', guide raised): +10.1% (27 Mar 2026).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -1.05,
+     "_legacy_residual_pct": -1.05
+    },
+    {
+     "hunter": "AL2SI",
+     "key": "AL2SI#1",
+     "finding": "The release must carry the independent investigator's conclusions on the remaining Grizzly allegations. The scope covers three fiscal years, the USD610m contract's dependence, non-materialisation and counterparty risk, the 21 named third parties and their beneficial owners, and related-party identification. The first, single-contract instalment came back clean.",
+     "source": "https://fr.ftp.opendatasoft.com/datadila/INFOFI/EQS/2026/09/FCEQS008710_20260915.pdf",
+     "source_date": "2026-09-15",
+     "expected_impact_pct": 1.0,
+     "cluster": "fr.ftp.opendatasoft.com",
+     "lands_on": "other",
+     "resolves_by": "2026-10-30",
+     "reaction_history_on_this_line": "Grizzly report: -43% (18 Jun 2026), then -13.4% on resumption. First investigator conclusions released after the close on 15 Sep: +9.2% the next session (16 Sep 2026).",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": 0.35,
+     "_legacy_residual_pct": 0.35
+    },
+    {
+     "hunter": "AL2SI",
+     "key": "AL2SI#2",
+     "finding": "The EUR1bn FY26/27 revenue ambition rests increasingly on AETHER, a vehicle 100% owned by the CEO's holding (Holding Alain Wilmouth), and on a NYGC order that had produced no revenue by 30 June. The company's own 12 Oct release pre-hedged it: permit or component delays could push deliveries past the June 2027 year-end. That makes a softened or caveated guide at the results more likely than a raise.",
+     "source": "https://fr.ftp.opendatasoft.com/datadila/INFOFI/EQS/2026/10/FCEQS008809_20261012.pdf",
+     "source_date": "2026-10-12",
+     "expected_impact_pct": -2.5,
+     "cluster": "fr.ftp.opendatasoft.com",
+     "lands_on": "guidance",
+     "resolves_by": "2026-10-30",
+     "reaction_history_on_this_line": "12 Oct AETHER release (EUR1bn+ potential): +17.7% that day, fully given back over the next two weeks (EUR29.18 to EUR27.58). Guide raises at H1: +10.1%.",
+     "priced_in_pct": 65.0,
+     "priced_in_basis": "unjudged; defaulted",
+     "residual_pct": -0.875,
+     "_legacy_residual_pct": -0.875
+    }
+   ],
+   "outside_window": [
+    {
+     "finding": "AETHER FR-SXB2 definitive deed of sale targeted by 31 Dec 2026, a precondition for the AI Factory deliveries behind the EUR1bn ambition",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-31",
+     "source": "https://fr.ftp.opendatasoft.com/datadila/INFOFI/EQS/2026/08/FCEQS008628_20260805.pdf"
+    },
+    {
+     "finding": "Annual General Meeting 17 Dec 2026, where regulated related-party agreements (AETHER) would be voted",
+     "expected_impact_pct": 0.0,
+     "resolves_by": "2026-12-17",
+     "source": "https://investors.2crsi.com/en/financial-calendar"
+    }
+   ],
+   "diagnostics": {
+    "outside_window_sum_pct": 0.0,
+    "residual_sum": null,
+    "adversary_judged": "0/3",
+    "edge_score_legacy": -14.0,
+    "baseline_quality": 0.493,
+    "quality_parts": {
+     "history": 0.833,
+     "options": 0.35,
+     "priced_direction": 0.15,
+     "event_plausibility": 1.0,
+     "history_events": 5,
+     "atm_spread_frac": null
+    },
+    "independent_clusters": 1,
+    "cluster_names": [
+     "fr.ftp.opendatasoft.com"
+    ],
+    "hunter_dispersion_pct": 0.0,
+    "hunters": 1,
+    "impact_sum_pre_lessons": -4.0,
+    "lessons_delta": -0.5,
+    "hunts_with_pre_lessons": "1/1",
+    "lessons_applied": [
+     "'The move is in the guide': the guidance finding (EUR1bn FY26/27) was moved from -2.0 to -2.5 and sized on the guidance scale. abs_move kept at 13, above the 9% guidance-change base, because of the investigation tail and 91% realised vol.",
+     "'Your own session check ... open with the verdict': session_check now opens with amc and cites the issuer's prior results timestamps.",
+     "'A finding about a number already told is worth 0': checked. Revenue and cash are pre-released and excluded; EBITDA was never pre-released, so finding 1 stays at -3.0."
+    ],
+    "impact_sum_pre_local": null,
+    "local_delta": null,
+    "pre_local_variable": null,
+    "hunts_with_pre_local": "0/1",
+    "note": "diagnostics only. None of these enters the ranking key -- researcher_us/EDGE_ANALYSIS.md measured every one of them as neutral or subtractive against the realised move."
+   },
+   "rank": 20
+  }
+ ]
+}

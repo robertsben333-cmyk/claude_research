@@ -24,3 +24,45 @@
 ## Stage EU — Europe ranking — DONE
 - Logged at 2026-10-27 14:56 UTC
 - 19 ranked: 8TRA +1.10 ... DBV -3.40 (only floor-clearer; date not confirmed by issuer, possible phantom). SRT not ranked (no event). Panel 4/4 members, no fallback, 3 selected: DBV short (4/4, pct 96), SALME short (4/4, 86), 8TRA long (3/4, 81). anchor_covered 5/20; es 1 name; 9 se/dk/fi names need resolving within ~a week. Note: europe/europe-note.md. No orders. Pushed to main (EARNINGS_DATA_BRANCH=main).
+
+## Stage J — Japan researcher — STARTED
+- Logged at 2026-10-28 01:06 UTC
+- Fired 01:04 UTC (10:04 JST) 2026-10-28. Plan: jp_universe (cap 25, seeded draw) → seal baselines → provenance → unpriced-hunter-jp in waves of 5 → edge_score → four-model intl panel → note. No orders.
+
+## Stage J — wave 1 launched
+- Logged at 2026-10-28 01:07 UTC
+- Universe: 46 scheduled, 39 eligible (7 dropped on turnover), 25 hunted, method "random sample of 39 eligible, seed 'jp-2026-10-28'". calendar_as_of 2026-10-01. Short register 20261027 (626 codes). provenance jp.v5 / claude-opus-5-5. Five waves of 5. Wave 1: 1930 2002 2664 2760 3003.
+
+## Stage J — resolved 2026-10-26
+- Logged at 2026-10-28 01:08 UTC
+- jp_resolve: 5/5 usable, impact_sum rho 0.0 (p 1.0), free control 0.4, sign right 1/5, lean_vs_free_control_rho 0.70 (5 names; short_squeeze/short_building unresolvable, no register positions). Panel resolved too. One day is not a result.
+
+## Stage J — wave 1 banking
+- Logged at 2026-10-28 01:13 UTC
+- Banked 1930 3003 (+2760 file written). Rolling slots: 3771 3778 3850 launched.
+
+## Stage J — wave 2 banking
+- Logged at 2026-10-28 01:19 UTC
+- Wave 1 banked 5/5 (1930 2002 2664 2760 3003). 3771 3850 banked; 3778 4373 4832 4956 6023 running (rolling slots of 5). Push conflict at 01:16 (dirty short-positions cache blocked publish.sh rebase) fixed by committing the cache and rebasing.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-28 01:42 UTC
+- 25/25 hunts banked and scored (top 2664 +1.70, 7276 +1.60; bottom 6023 -1.00, 6807/8871 -0.50; none above 2.8). 25 packs, four judges.
+
+## Stage J — Japan researcher — DONE
+- Logged at 2026-10-28 01:51 UTC
+- 25 ranked: top 2664 +1.70, 7276 +1.60; bottom 6023 -1.00, 6807/8871 -0.50; none above floor 2.8. Signs 17+/2 zero/6-. Panel 4/4 members, no fallback, 2 selected (6807 S 4/4, 4832 S 3/4). 13 names release in-session. Resolved 10-26 (lean_vs_free_control_rho 0.70 on 5). Note: japan/japan-note.md. No orders.
+
+## Close AMC (stage X) — 2026-10-28
+- Logged at 2026-10-28 11:15 UTC
+- Guard mode --require-exit-tif opg: exit 0 (amc_open, amc exit as market DAY order).
+- verify: 14 exit legs, all ok, nothing held, no UNFILLED legs.
+- close --submit: no exit legs due today, nothing sent, no refusals. Last positions (MANU, WOR) flat since 09-23. Run files rewritten with refreshed fill status only.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-28 13:27 UTC
+- Routine fired late: 13:26 UTC = 09:26 ET (scheduled 09:10 ET), past the 09:24 compile deadline. Source research/2026/10/2026-10-27/edge-panel. Picking + compiling without analysts; no time for reviews before the 09:30 open.
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-28 13:28 UTC
+- Late fire (13:26 UTC = 09:26 ET, scheduled 09:10 ET): 8 picks (BOOM, OI, RBBN, ENPH, LUNG, KIDS amc; AMRN, JMKE bmo), snapshot taken, NO analysts launched because the 09:24 compile deadline had passed and the open was 3 minutes away; compiled as Geen advies for all 8 (static rule stands). Previous morning 2026-10-27 resolved; pool: 42 names / 7 days, review_minus_static -0.078 (t -0.18).
