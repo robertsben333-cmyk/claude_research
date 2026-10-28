@@ -71,6 +71,11 @@ def move(run_date, t, event_date, session):
     if not e or not after:
         return None, "pending"
     x = bars[after[0]][0] if session == "amc" else at(t, after[0], BMO_EXIT_HM)
+    if not x and session == "bmo" and after[0] == datetime.now(ET).date().isoformat():
+        r = _i.get(t)   # bmo exit is later today: price the latest 5-minute bar, preliminary
+        last = [c for c in (r or {}).get("indicators", {}).get("quote", [{}])[0].get("close", []) if c]
+        if last:
+            return (last[-1] / e - 1) * 100, "prelim"
     if not x:
         return None, "no exit"
     return (x / e - 1) * 100, "priced"

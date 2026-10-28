@@ -1,4 +1,4 @@
-# Split panels, busy days and agreement between runs (2026-10-26, updated 2026-10-27)
+# Split panels, busy days and agreement between runs (2026-10-26, updated 2026-10-28)
 
 **Questions (Xavier, 2026-10-26).**
 
@@ -6,15 +6,24 @@
 2. Is there any sign that on busy days we should be stricter and only take the top?
 3. Now that several names were scored more than once on the same day (intraday snapshots, a Fable searcher, the split re-run), how much does agreement between those runs matter? And inside one panel, how much does agreement between the four judges matter?
 
-**Short answers.**
+**Short answers.** These are the 2026-10-26 answers. The update of 2026-10-28 below changes two of them: the busy-day effect and the disagreement warning both disappeared once 10-26 and 10-27 were in. Section 1 is rewritten on the latest data; sections 2 and 3 keep the 10-26 tables.
 
 1. No evidence either way. Two resolved days, 31 names. Both arms lost on their selected names (E-P 1 of 5 right, mean −3.7%; split 2 of 5, mean −1.1%). The more useful finding is that the two runs barely reproduce each other: ρ +0.49 between their scores, opposite sides on 10 of 31 names, and only 2 of the 8 selected names were picked by both.
 2. Busy days did much worse, but taking only the top would not have helped. On the four days with 19 or more names, the ≥80 calls went 4 of 16, mean −6.2% (t −2.56, p 0.02), against 6 of 6 and +11.2% on days with 10 names or fewer. The top-1 per busy day went 0 of 4 and ≥90 went 1 of 5. So the problem was the days, not the threshold. All four busy days fall in one week (19 to 22 Oct), so a market regime explains this just as well as day size, and the August-September backtest showed no day-size effect.
 3. Disagreement is a warning sign, agreement is not a buy signal. Names where another run took the other side did worse (−2.1% against −0.5%, n 31 and 60, difference t 1.44, p 0.15). Averaging the runs ranked no better than E-P alone. Inside one panel, a 2-2 split between judges was the worst group (4 of 16 right, −3.4%), but those names never reach 80 anyway. Nothing here clears a multiple-testing correction.
 
+## Update 2026-10-28: 10-27 added, partly preliminary
+
+10-27 (20 names) is now in every number. Its amc names closed at this morning's open and are final. Its six bmo names exit at 13:00 ET today, so they are priced off the latest 5-minute bar at about 10:40 ET and will move: AMRN, JMKE, DMC, OPFI, OTLY, REPL. Of the selected names only AMRN (split, short) is preliminary. Today's own run fires at about 13:06 ET and has no returns yet.
+
+* **Split against full, four days, 71 names.** Selected names: E-P 8 of 16 right, +3.4% (t 1.08, p 0.30); split 6 of 15, +0.3% (t 0.12). On 10-27 alone E-P made +5.7% on six names and the split −5.5% on five. Neither arm ranks the day (within-day ρ +0.01 for both).
+* **10-27 is a case against trusting agreement.** The three names both arms selected (KIDS long +3.5%, LUNG short −17.6%, RBBN short −7.3%) lost on average. The two biggest E-P winners were names the split did not back: BOOM, 96 long in E-P and 68 short in the split, rose 23.9%; OI, 94 short in E-P and flat in the split, fell 7.1%. Over four days, names selected by both arms: 3 of 9 right, −0.2%; E-P only 5 of 7, +8.1%; split only 3 of 6, +1.1%.
+* **The disagreement warning from earlier runs is gone.** A name where another same-day run took the other side: −1.2% (n 43) against +0.1% (n 88), t 1.22, p 0.23; at panel_pct ≥ 70 the gap is +1.7 points, t 0.39.
+* **The busy-day effect is gone too.** With 10-26 and 10-27 (both 20 names) in, busy-day calls read 11 of 27, −1.0% (t −0.39), and the top pick per busy day 2 of 6, +3.8%. The four bad days of 19 to 22 October look like that week, not like day size.
+
 ## Update 2026-10-27: 10-26 resolved, 10-27 scored
 
-The short answers above and the tables in sections 2 and 3 are the 2026-10-26 version; section 1 is rewritten on the new data. What changed elsewhere is listed here.
+Kept as written on 10-27; the 10-28 update above supersedes its numbers.
 
 The 10-26 split run (20 names) has resolved and is now in every table below. The 10-27 run (20 names) is scored but none of it has resolved yet: its amc names exit at tomorrow's open and its bmo names at 13:00 ET on the 28th.
 
@@ -31,7 +40,7 @@ The 10-26 split run (20 names) has resolved and is now in every table below. The
 | arm | days resolved | names | prompt / stage |
 |---|---|---|---|
 | E-P live | 15 (10-05 to 10-23) | 173 | us-panel v1/v2 (same searcher file, see the 10-21 post-mortem) |
-| E-PS split, 4 shards of ≤5 | 3 (10-22, 10-23, 10-26), plus 10-27 scored | 51 | us-panel-split.v1, branch `claude/modest-davinci-mjddtu` |
+| E-PS split, 4 shards of ≤5 | 4 (10-22, 10-23, 10-26, 10-27; six 10-27 bmo names preliminary) | 71 | us-panel-split.v1, branch `claude/modest-davinci-mjddtu` |
 | E-PI 10:00 snapshot | 2 (10-14, 10-19) | 29 matched | us-panel-intraday.v1 |
 | E-PI 12:00 snapshot | 5 (10-14 to 10-21) | 51 matched | us-panel-intraday.v1 |
 | E-PF Fable searcher | 2 (10-14, 10-16) | 11 | us-panel-fable.v1 |
@@ -42,27 +51,27 @@ The arms are compared name by name and never pooled into one sample. Each arm's 
 
 ## 1. Split panels against the full panel
 
-Same 51 names on 10-22, 10-23 and 10-26, each arm with its own Opus 5.5 searchers and its own four judges. (The first version of this report had 31 names on two days.)
+Same 71 names on 10-22, 10-23, 10-26 and 10-27, each arm with its own Opus 5.5 searchers and its own four judges. Six 10-27 bmo names are preliminary (see the 10-28 update).
 
 | | E-P (one session) | E-PS (four sessions of ≤5) |
 |---|---|---|
-| within-day ρ against the move | −0.01 (p 0.97) | +0.11 (p 0.47) |
-| selected (≥80) | 10: 4 right, +2.0% (t 0.64, p 0.54) | 10: 5 right, +3.2% (t 1.10, p 0.30) |
-| panel_pct ≥ 60 | 26: 14 right, +2.3% (t 1.36) | 21: 10 right, +2.3% (t 1.37) |
-| panel_pct ≥ 70 | 18: 10 right, +3.0% (t 1.26) | 14: 7 right, +3.0% (t 1.36) |
-| top 3 per day | 9: 4 right, +1.8% | 9: 3 right, +1.3% |
-| findings per name | 7.6 | 7.5 |
+| within-day ρ against the move | +0.01 (p 0.95) | +0.01 (p 0.94) |
+| selected (≥80) | 16: 8 right, +3.4% (t 1.08, p 0.30) | 15: 6 right, +0.3% (t 0.12, p 0.91) |
+| panel_pct ≥ 60 | 34: 19 right, +2.7% (t 1.57) | 31: 14 right, +0.4% (t 0.21) |
+| panel_pct ≥ 70 | 25: 14 right, +3.3% (t 1.43) | 21: 9 right, −0.3% (t −0.14) |
+| top 3 per day | 12: 6 right, +3.3% | 12: 4 right, −0.7% |
+| findings per name | 7.1 | 7.3 |
 
 | day | names | ρ between arms | same side | E-P selected | split selected | both |
 |---|---|---|---|---|---|---|
 | 10-22 | 20 | +0.36 | 12 | BE, DECK, FIX, WRLD (−5.7%) | BE, FPH, MXL, WRLD (−1.9%) | BE, WRLD |
 | 10-23 | 12 | +0.72 | 10 | MED (+4.3%) | CX (+2.1%) | none |
 | 10-26 | 20 | +0.78 | 14 | AEYE, CLS, CVLT, GLXY, KNSA (+7.8%) | CLS, CVLT, DQ, GLXY, KNSA (+7.4%) | CLS, CVLT, GLXY, KNSA |
-| 10-27 | 20 | +0.49 | 14 | BOOM, ENPH, KIDS, LUNG, OI, RBBN (open) | AMRN, KIDS, LUNG, RBBN, SEVN (open) | KIDS, LUNG, RBBN |
+| 10-27 | 20 | +0.49 | 14 | BOOM, ENPH, KIDS, LUNG, OI, RBBN (+5.7%) | AMRN*, KIDS, LUNG, RBBN, SEVN (−5.5%) | KIDS, LUNG, RBBN |
 
-Selected by both arms on the same side: 6 names, 2 right, +3.2%. E-P only: 4, 2 right, +0.3%. Split only: 4, 3 right, +3.2%.
+\* preliminary. Selected by both arms on the same side: 9 names, 3 right, −0.2%. E-P only: 7, 5 right, +8.1%. Split only: 6, 3 right, +1.1%.
 
-**Reading.** Over three resolved days the split is not better on the high scorers in any way that can be told from noise: ten names against ten, six of them shared. What the comparison does show is how much a full re-run moves the score. Over the four days the two arms' signed panel_pct correlate at ρ +0.36 to +0.78, and on 10-22 and 10-27 a third or more of the selected names were picked by one arm only. DECK on 10-22 was 90 long in E-P and 7 short in the split; BOOM on 10-27 was 96 long and 68 short. That is run-to-run noise in the searcher's evidence, and it is as large as most of the effects we try to measure. A fair answer to question 1 needs about ten resolved split days.
+**Reading.** Over four days the split is not better on the high scorers; if anything E-P is ahead (+3.4% against +0.3% on the selected names), but the gap is one day's worth of noise. What the comparison does show is how much a full re-run moves the score: the two arms' signed panel_pct correlate at ρ +0.36 to +0.78 by day, and on 10-22 and 10-27 a third or more of the selected names were picked by one arm only. Agreement between the two arms did not pick better names: the names both selected did worst. A fair answer to question 1 still needs about ten resolved split days.
 
 ## 2. Busy days
 
