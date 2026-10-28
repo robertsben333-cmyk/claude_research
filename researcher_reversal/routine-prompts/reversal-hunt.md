@@ -15,7 +15,7 @@ BEFORE THE US CLOSE.** Moved there on 2026-09-22 on the operator's instruction, 
 after the close cannot be acted on until the next morning, and phase 0 measured the next
 open at +0.93% — the worst moment of the window to put on a short.
 
-**It must move to `0 20 * * 1-5` on or after 2026-11-02.** CET and US Eastern change on
+**Since 2026-10-28 the cron is `CRON_TZ=America/New_York 0 15 * * 1-5`, so it follows US daylight time by itself and needs no move.** Why it used to: CET and US Eastern change on
 different weekends: 19:00 UTC is 15:00 ET until 1 November and 14:00 ET after it, which
 is two hours before the close and outside the hour this was measured on. The one-week gap
 (26 Oct – 1 Nov) leaves ET right and Amsterdam an hour early, which is the harmless half.

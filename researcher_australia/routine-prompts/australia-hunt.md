@@ -1,7 +1,7 @@
 # The Routine prompt for stage AU
 
-Cron `30 6 * * 0-4` — **06:30 UTC**, which is **16:30 Sydney on AEST and 17:30 on
-AEDT**, after the 16:00 close either way.
+Cron `CRON_TZ=Australia/Sydney 30 17 * * 0-4` since 2026-10-28, **17:30 Sydney all year** (was `30 6 * * 0-4` — **06:30 UTC**, which is **16:30 Sydney on AEST and 17:30 on
+AEDT**), after the 16:00 close either way.
 
 ## Why Sunday to Thursday, and not Monday to Friday
 

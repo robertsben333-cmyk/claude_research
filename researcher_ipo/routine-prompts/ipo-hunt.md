@@ -1,7 +1,7 @@
 # Stage IPO Routine prompt — the IPO researcher
 
 Proposed cron `35 12 * * 1-5` — **12:35 UTC = 08:35 New York = 14:35 Amsterdam**, until
-2026-11-01. **Move it to `35 13 * * 1-5` on or after 2026-11-02**, when New York leaves
+2026-11-01. **Since 2026-10-28 the cron is `CRON_TZ=America/New_York 35 8 * * 1-5`, so this move is no longer needed.** Before that it had to move to `35 13 * * 1-5` on or after 2026-11-02, when New York leaves
 daylight saving; left alone it fires at 07:35 ET, which is harmless (an hour more
 pre-market), not wrong.
 

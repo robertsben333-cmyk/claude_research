@@ -11,6 +11,12 @@ Five Routines run the pipeline. Each fires a **fresh session** in a cloud enviro
 which clones this repo, reads `CLAUDE.md`, invokes one stage skill, and pushes its
 output back before dying.
 
+> **Since 2026-10-28 every Routine on this account fires in its market's own time zone**
+> (`CRON_TZ=` prefix), so none needs moving at a daylight-saving change. The UTC crons in
+> the tables below are history; the current table is in `CLAUDE.md`, "EVERY ROUTINE ON THIS
+> ACCOUNT FIRES IN ITS OWN MARKET'S TIME ZONE". Stage D (made in the UI) and the two
+> Routines on the other account still need a person to paste their line.
+
 ## Schedule
 
 All wall-clock times are Europe/Amsterdam. Weekdays only — US markets are closed at the
