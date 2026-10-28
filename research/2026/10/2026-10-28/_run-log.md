@@ -36,3 +36,7 @@
 ## Stage J — resolved 2026-10-26
 - Logged at 2026-10-28 01:08 UTC
 - jp_resolve: 5/5 usable, impact_sum rho 0.0 (p 1.0), free control 0.4, sign right 1/5, lean_vs_free_control_rho 0.70 (5 names; short_squeeze/short_building unresolvable, no register positions). Panel resolved too. One day is not a result.
+
+## Stage J — wave 1 banking
+- Logged at 2026-10-28 01:13 UTC
+- Banked 1930 3003 (+2760 file written). Rolling slots: 3771 3778 3850 launched.
