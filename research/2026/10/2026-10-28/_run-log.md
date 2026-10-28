@@ -94,3 +94,7 @@
 ## Edge hunt (panel) — step 6b buy
 - Logged at 2026-10-28 18:07 UTC
 - 18:07 UTC (14:07 ET): plan, then open --submit --no-flatten. 8 market orders, all filled: BFLY 228 @ 7.75 L, HRTG 50 @ 35.11 L, PRCH 98 @ 17.51 L, VNDA 430 @ 3.89 S, CLPT 156 @ 10.47 S, NVCR 97 @ 14.13 L, BAND 27 @ 50.14 L, CYH 487 @ 2.80 L; gross ~$12,640 (99.5% of equity), net +$6,006. MVIS (selected, short 95) not shortable at Alpaca, dropped before the split. Mean execution cost vs mid -0.58% (BAND -6.6%, HRTG -0.9% filled inside wide spreads). Exits dated 2026-10-29 (amc -> open, bmo -> market on the run).
+
+## Edge hunt (panel) — five unfinished names withdrawn
+- Logged at 2026-10-28 21:37 UTC
+- Operator's instruction (thread 'Onvolledig onderzochte panelnamen verwijderen'). VKTX CYH LENZ HRTG MAX hit the shared WebSearch budget; marked search_complete false with hunt_status.py check --apply, edge_score.py rerun (15 rankable), panel_score.py rerun --dry-run with the five dropped (listed under excluded), their 20 sizes removed from panel-history.json, grounded rows set not rankable. Other 15 names: panel_pct and selection unchanged. HRTG and CYH were bought at 6b and stay in alpaca-orders.json; no order placed or cancelled. EU 10-28/10-29 and JP 10-28 checked: no unfinished hunts, all panels 4/4.

@@ -166,6 +166,20 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
             for f in fs:
                 verdicts[m].update({o['id']: o for o in json.load(open(f))})
     if not present: sys.exit('no panel verdicts in ' + str(run / 'panel'))
+    # A name whose search was cut off is not finished research (operator, 2026-10-28):
+    # edge_score.py marks it not rankable, and the judges' verdicts on it are dropped
+    # here, so it never ranks, selects or enters a judge's history. The packs leave such
+    # names out going forward; this catches a run judged before the hunt was marked.
+    es = run / 'edge-scores.json'
+    unfinished = {}
+    if es.exists():
+        for r in json.load(open(es)).get('ranking') or []:
+            why = r.get('not_rankable_because') or ''
+            if r.get('rankable') is False and why.startswith('research unfinished'):
+                unfinished[r['ticker']] = why
+    excluded = sorted({i for v in verdicts.values() for i in v if i.split('/')[-1] in unfinished})
+    for v in verdicts.values():
+        for i in excluded: v.pop(i, None)
     ids = sorted(set().union(*[set(v) for v in verdicts.values()]))
     today = set(ids)
     stats = {}
@@ -263,6 +277,8 @@ def score(run, C, dry_run=False, history=None, stage='E-P'):
                     'on the panel\'s side; that, not sign agreement, is what selected well on the '
                     'development names. Certainty (p_up) is recorded and decides nothing. '
                     'expected_edge_pct is a shrunk in-sample prior, not a forecast. Research only.'),
+           'excluded': [{'id': i, 'ticker': i.split('/')[-1], 'reason': unfinished[i.split('/')[-1]]}
+                        for i in excluded],
            'ranking': rows}
     # ticker-keyed copy for edge_resolve.py, which ranks this beside the key
     out['ranking_by_ticker'] = [{'ticker': r['ticker'], 'panel_score': r['panel_score'], 'panel_pct': r['panel_pct'],
