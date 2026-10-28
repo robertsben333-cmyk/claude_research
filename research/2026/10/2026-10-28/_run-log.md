@@ -90,3 +90,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-10-28 18:03 UTC
 - All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): BFLY L 100, HRTG L 100, PRCH L 99, VNDA S 97, CLPT S 97, MVIS S 95, NVCR L 91, BAND L 90, CYH L 90 (3-of-4 adds ESTA). Searcher: BFLY +3.70, ESTA +3.60, VNDA -3.70 clear 2.8. Stage E edge/ absent. Note published ~18:06 UTC; step 6b next.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-10-28 18:07 UTC
+- 18:07 UTC (14:07 ET): plan, then open --submit --no-flatten. 8 market orders, all filled: BFLY 228 @ 7.75 L, HRTG 50 @ 35.11 L, PRCH 98 @ 17.51 L, VNDA 430 @ 3.89 S, CLPT 156 @ 10.47 S, NVCR 97 @ 14.13 L, BAND 27 @ 50.14 L, CYH 487 @ 2.80 L; gross ~$12,640 (99.5% of equity), net +$6,006. MVIS (selected, short 95) not shortable at Alpaca, dropped before the split. Mean execution cost vs mid -0.58% (BAND -6.6%, HRTG -0.9% filled inside wide spreads). Exits dated 2026-10-29 (amc -> open, bmo -> market on the run).
