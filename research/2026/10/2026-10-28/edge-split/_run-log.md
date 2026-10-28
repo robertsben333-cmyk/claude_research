@@ -19,3 +19,7 @@
 ## Split panel 4/4 — STARTED
 - Logged at 2026-10-28 18:13 UTC
 - VNDA, FVRR, AWRE, CYH, BAND; E-P's sweep and baselines from 9f2b3de6; edge-panel/hunts: the names stage E-P hunted. Fired late: claim at ~18:11 UTC (14:11 ET), not 17:07-17:10.
+
+## Split panel 1/4 — searchers done
+- Logged at 2026-10-28 18:18 UTC
+- 5 of 5 returned by 18:17 UTC (unpriced-searcher agent, not fallback); guard moved nothing; no searcher reported its search budget running out; TDOC searcher notes one rejected_candidate (Dimensional 13G) mislabelled contradicted_by_document, left as written
