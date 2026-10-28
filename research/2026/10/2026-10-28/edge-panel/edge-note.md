@@ -58,6 +58,20 @@ Universe: 289 names (134 amc 10-28, 155 bmo 10-29). The sweep checked 34; 30 wer
 
 Stage E's `<RUN>/edge/` does not exist: its Routine is stopped since 2026-10-19. No overlap and no Spearman ρ.
 
+## Withdrawn after publication: five names whose research was unfinished (2026-10-28 21:37 UTC)
+
+Added after the note was published, on the operator's instruction. The searchers for these five names ran into the WebSearch budget shared across the session's searchers and handed back hunts with parts of the search not done, each saying so in its own text. They are now marked `search_complete: false` (`hunt_status.py check --apply`), `edge_score.py` makes them not rankable ("research unfinished"), `panel_score.py` drops the judges' verdicts on them (listed under `excluded` in `edge-scores-panel.json`) and their sizes are taken out of `panel-history.json`. The other 15 names keep the same panel_pct and selection; only their rank numbers moved up. The sections above still mention them as originally written.
+
+| Ticker | Session | Panel as published | What the hunt itself says was not searched |
+| --- | --- | --- | --- |
+| HRTG | amc | long, 100, selected, **bought** | Florida OIR rate filings and the Q1 call transcript ("web search budget exhausted mid-hunt") |
+| CYH | amc | long, 90, selected, **bought** | options skew and any CYH-specific Q3 preview ("web search budget was exhausted mid-hunt") |
+| LENZ | bmo | short, 59 | competitor presbyopia drops (Vuity, Qlosi, Brimochol) |
+| MAX | amc | short, 47 | the search was "cut short by an exhausted shared search budget" |
+| VKTX | amc | long, 13 | peer and LLY coverage ("Web search budget ran out partway") |
+
+HRTG (50 shares at $35.11) and CYH (487 at $2.80) were bought at step 6b and stay in `alpaca-orders.json`, because the trades happened; their exits are scheduled for the 2026-10-29 open like the rest of the book. They count on the account level and in no research statistic.
+
 ## What the numbers are not
 
 `expected_return_pct` (and `expected_edge_pct`) is what names at that percentile have earned, from a curve fitted on 148 resolved panel names. Its out-of-sample record is weak (correlation +0.12 with the realised return). It is not a forecast to size on. The weights here are research; the book in step 6b uses `execution.panel` (weight panel_pct − 60, cap 50% a name). `p_up` is recorded and decides nothing. Nothing was checked for factual error after the searchers, since there is no adversary pass.
