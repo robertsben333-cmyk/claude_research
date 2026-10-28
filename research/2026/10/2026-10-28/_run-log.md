@@ -44,3 +44,7 @@
 ## Stage J — wave 2 banking
 - Logged at 2026-10-28 01:19 UTC
 - Wave 1 banked 5/5 (1930 2002 2664 2760 3003). 3771 3850 banked; 3778 4373 4832 4956 6023 running (rolling slots of 5). Push conflict at 01:16 (dirty short-positions cache blocked publish.sh rebase) fixed by committing the cache and rebasing.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-28 01:42 UTC
+- 25/25 hunts banked and scored (top 2664 +1.70, 7276 +1.60; bottom 6023 -1.00, 6807/8871 -0.50; none above 2.8). 25 packs, four judges.
