@@ -74,3 +74,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-10-28 17:28 UTC
 - Sweep finished 17:28 UTC (34 of 289 checked): 30 company-confirmed (27 with settled session), 0 phantoms, 255 unchecked. Cap 20: the 20 highest-priority confirmed (amc 10-28: MVIS MDXG CLPT VNDA TDOC PRCH HDSN AWRE VKTX MAX HRTG CYH; bmo 10-29: LENZ BFLY ESTA FVRR NVCR HIPO XRX BAND). Shed by hunt_priority: ASTL RSI PI NEO COHU ALKT CLB (confirmed), PHAT SIMO TSAT (session unsettled), all unchecked. Searchers unpriced-searcher, amc first, 8 at a time.
+
+## Edge hunt (panel) — searcher progress
+- Logged at 2026-10-28 17:39 UTC
+- 17:39 UTC: 11 of 20 searchers returned (VNDA MDXG MVIS AWRE CLPT TDOC PRCH HDSN VKTX + files). VKTX searcher reported a shared 200-call WebSearch limit exhausted mid-hunt; later searchers told to fall back to WebFetch on primary sources.
