@@ -1,0 +1,1548 @@
+[
+ {
+  "id": "us/2026-10-28/BFLY",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "BFLY",
+   "event_date": "2026-10-29",
+   "session": "bmo",
+   "as_of_utc": "2026-10-28T17:20:45+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-28",
+    "spot": 7.735,
+    "run_up_5d_pct": 8.94,
+    "run_up_20d_pct": -13.67,
+    "pct_from_52w_high": -22.1,
+    "pct_from_52w_low": 292.64,
+    "realised_vol_20d_annualised_pct": 78.2,
+    "avg_volume_20d": 4797555
+   },
+   "cik": "0001804176",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-30",
+      "session": "bmo",
+      "move_pct": 15.07
+     },
+     {
+      "event_date": "2026-04-30",
+      "session": "bmo",
+      "move_pct": -2.64
+     },
+     {
+      "event_date": "2026-02-26",
+      "session": "bmo",
+      "move_pct": 50.65,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 64628700,
+       "next_day_volume": 14771000,
+       "median_20d_before": 4490600,
+       "move_as_tagged_pct": 50.65,
+       "move_if_bmo_pct": 50.65,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2026-01-12",
+      "session": "bmo",
+      "move_pct": 5.69
+     },
+     {
+      "event_date": "2025-10-31",
+      "session": "bmo",
+      "move_pct": 31.86
+     },
+     {
+      "event_date": "2025-08-01",
+      "session": "bmo",
+      "move_pct": -18.13
+     },
+     {
+      "event_date": "2025-05-02",
+      "session": "bmo",
+      "move_pct": -0.43
+     },
+     {
+      "event_date": "2025-02-28",
+      "session": "bmo",
+      "move_pct": -2.95
+     }
+    ],
+    "n": 8,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 10.38,
+    "max_abs_move_pct": 50.65,
+    "up_count": 4,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 73,
+    "ratio": 1.25,
+    "last_print": "2026-07-30",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 73-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 23,
+    "atm_strike": 7.5,
+    "atm_iv_pct": 108.7,
+    "straddle_implied_move_pct": 21.98,
+    "event_implied_move_pct": 15.14,
+    "event_implied_move_basis": "21.98% straddle over 23 calendar days less 19.97% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -1.92,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.16,
+    "total_open_interest": 16467,
+    "atm_spread_frac_of_mid": 0.133,
+    "warnings": [],
+    "priced_direction_lean": "balanced"
+   },
+   "deadband_pct": 5.19,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 15.14,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue: company guide $26-30M (midpoint $28M) from the Q2 release 8-K exhibit https://www.sec.gov/Archives/edgar/data/0001804176/000180417626000025/bfly-20260730xexx991.htm ; estimates $28.8M (Benzinga, https://kr.benzinga.com/quote/BFLY/earnings-forecasts) and $29.9M (Earnings Whispers, https://www.earningswhispers.com/epsdetails/BFLY), EPS -$0.04/-$0.05. Sized against ~$29M. FY guide $119-123M with H1 = $59.1M, so implied H2 $59.9-63.9M and implied Q4 ~$30-38M.",
+   "positioning_check": "Short interest 33.59M shares, 16.2% of float, 6.2 days to cover, settlement 2026-10-15 (published 2026-10-26), up 6.2% from 31.64M on 2026-09-30 (https://www.marketbeat.com/stocks/NYSE/BFLY/short-interest/). Baseline: 25d skew -1.92 vol pts (calls slightly bid), put/call OI 0.16 (very call-heavy), event-implied move 15.14%, run-up 5d +8.9% / 20d -13.7%, 22% off the 52w high. Crowded and building short into a name that pays for beats.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Merge Labs signed a multiyear exclusive license for Butterfly's Poseidon ultrasound-on-chip on ~2026-09-01 (inside Q3) with upfront and milestone licensing payments, hardware purchase commitments and technology-access fees; the Q3 guide ($26-30M, embedded guided at ~$7-8M/quarter) was set on 2026-07-30 before it, and the last comparable signing quarter (Midjourney, Q4 2025) recognised $6.8M in the quarter of signing, so Q3 embedded can land above the $7-8M run-rate and lift total revenue above the ~$29M consensus.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.webull.com/news/15506145393107968",
+    "source_date": "2026-09-02",
+    "reaction_history_on_this_line": "Embedded-driven revenue beats were bought on the print day: Q2 2026 (revenue $32.6M vs ~$28.4-29.2M consensus, embedded $10.8M) +15.07%; Q4 2025 (Midjourney $6.8M in signing quarter) +50.65%.",
+    "why_not_priced": "No 8-K disclosed the deal value (no Item 1.01), so no estimate can carry it; consensus at $28.8-29.9M sits at or below the top of a guide written before the deal. If priced, consensus would sit above $30M and the stock would not have fallen ~23% from $10.02 (CEO 10b5-1 sale price 2026-10-06) to $7.74 into the print. Revenue is recognised over time by input method (10-Q), which caps how much lands in one quarter.",
+    "independence": "Midjourney precedent in Q4 2025 call coverage (https://www.marketbeat.com/instant-alerts/butterfly-network-q2-earnings-call-highlights-2026-07-30/ and Q4 2025 transcript https://www.fool.com/earnings/call-transcripts/2026/02/26/butterfly-bfly-q4-2025-earnings-call-transcript/); embedded run-rate $7-8M +/- $1-2M from the Q2 call (https://www.fool.com/earnings/call-transcripts/2026/07/30/butterfly-bfly-q2-2026-earnings-call-transcript/). Inference on timing, not a disclosed number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Butterfly has beaten revenue consensus four straight quarters (by 1.7% to 21.8%) and beat the top of its own Q2 guide ($27-31M) by $1.6M with $32.6M, raising FY twice (117-121 to 119-123); the Q3 guide of $26-30M is below Q2's actual, a conservative pattern that points to a print above the ~$29M bar.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://kr.benzinga.com/quote/BFLY/earnings-forecasts",
+    "source_date": "2026-10-28 (accessed)",
+    "reaction_history_on_this_line": "Beat-and-raise prints: +15.07% (2026-07-30), +50.65% (2026-02-26), +31.86% (2025-10-31); a small beat with reaffirmed guide on 2026-04-30 went -2.64%.",
+    "why_not_priced": "Partly priced: a habitual beater's consensus usually drifts above the guide midpoint, and here it has ($28.8-29.9M vs $28M). It is not fully priced if consensus still sits inside the guide while the last quarter cleared the top end.",
+    "independence": "Q1 2026 8-K (https://www.sec.gov/Archives/edgar/data/0001804176/000180417626000014/bfly-20260430xexx991.htm) shows $26.5M vs $26.1M consensus and the earlier FY guide $117-121M; Q2 8-K shows the raise. Same company documents.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "International revenue fell 14% y/y to $5.0M in Q2, which management attributed in part to orders that slipped into Q3, a timing tailwind to Q3 core revenue on top of a core business that grew only 2% in Q2.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.fool.com/earnings/call-transcripts/2026/07/30/butterfly-bfly-q2-2026-earnings-call-transcript/",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "International was a secondary line on prior prints; no print in the baseline turned on it alone.",
+    "why_not_priced": "It was said on the call, so it is in the guide; it only adds if the slipped orders are not already inside the $26-30M range. Small for that reason.",
+    "independence": "10-Q disaggregation shows international $5.02M vs $5.84M (https://www.sec.gov/Archives/edgar/data/1804176/000180417626000027/bfly-20260630.htm). Same company, different document.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Since the 2026-07-30 FY guide ($119-123M) the company announced further embedded and enterprise deals that are not in it: Merge Labs (2026-09-01, ongoing licence fees and hardware purchases), Mendaera Focalist compatibility (2026-10-01, Needham values it at ~$25M over time, launching later this year), Bridge Neurotech BCI partnership with early-access and milestone payments (2026-10-06), and a long-term VCOM education alliance (2026-10-13); these support a third FY raise or a firm Q4 rather than a cut.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://ca.marketscreener.com/quote/stock/BUTTERFLY-NETWORK-INC-119073390/news/",
+    "source_date": "2026-10-27 (news list covering 2026-08-04 to 2026-10-27)",
+    "reaction_history_on_this_line": "The two FY raises in 2026 came with +50.65% (Feb, first guide plus Midjourney) and +15.07% (July raise); the April reaffirm went -2.64%.",
+    "why_not_priced": "None of these deals carried a disclosed dollar value, so no consensus model can add them; the stock fell from ~$10 (2026-10-06) to $7.74 after they were announced, which is not what a priced FY raise looks like. The Merge Labs announcement itself drew a -9.5% session.",
+    "independence": "Needham initiation coverage (2026-09-22) with the Mendaera ~$25M and Midjourney $300M-by-2030 estimates: https://www.webull.com/news/15622887246988288 . Shares the Merge Labs fact with finding 1 for Q3; this finding counts only its effect on Q4/FY.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Management promised FedRAMP certification 'in the third quarter of 2026' in the Q2 release; no certification announcement was found by 2026-10-28, so the release may report a slip on a VA/federal channel the company has been building.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001804176/000180417626000025/bfly-20260730xexx991.htm",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "No prior print turned on a government certification.",
+    "why_not_priced": "It may simply be announced in the release; absence of a press release is weak evidence, hence the small size and wide band.",
+    "independence": "GovRAMP/TX-RAMP release (2026-02-10) set the 2026 FedRAMP expectation: https://www.businesswire.com/news/home/20260210884103/en/Butterfly-Network-Achieves-GovRAMP-and-TX-RAMP-Information-Security-Cer . No independent confirmation of a slip.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Q3 adjusted EBITDA was guided to a $6-9M loss against $1.4M in Q2, and the guide names AI-driven supply-chain (memory) shortages and tariffs; GE HealthCare, a direct ultrasound competitor, carries ~$100M of 2026 memory-chip inflation, so the record 71% gross margin may step back and the quality of the print can disappoint even on a revenue beat.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.gurufocus.com/news/8987609/ge-healthcare-technologies-inc-gehc-q2-2026-earnings-call-highlights-strong-orders-growth-and-record-backlog-amid-challenges",
+    "source_date": "2026-07 (GEHC Q2 2026 call)",
+    "reaction_history_on_this_line": "Margin durability was the stated reason for the -8.5% day after the Q2 beat (outside that window); Q1 2026 (-2.64%) and earlier prints sold off on persistent losses despite revenue beats.",
+    "why_not_priced": "The EBITDA step-down is guided and therefore largely priced; the memory-cost transmission to Butterfly is a peer proxy the company called 'minor' so far. Filed small for both reasons.",
+    "independence": "Butterfly's own Q2 release names 'AI-driven supply chain shortages' as a risk and the 10-Q notes 'increased prices of certain inventory components' (https://www.sec.gov/Archives/edgar/data/1804176/000180417626000027/bfly-20260630.htm).",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Short interest rose 6.2% to 33.6M shares (16.2% of float, 6.2 days to cover) at the 2026-10-15 settlement while option open interest is 86% calls (put/call 0.16) and 25d skew is -1.92 (calls bid): a crowded, building short into a name whose last three beats produced +15% to +51% print-day moves.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.marketbeat.com/stocks/NYSE/BFLY/short-interest/",
+    "source_date": "2026-10-26 (FINRA publication of 2026-10-15 settlement)",
+    "reaction_history_on_this_line": "Print-day moves of +31.86%, +50.65% and +15.07% on the last three beats with raised outlooks; short interest was ~14.5% of float at the time of the July print.",
+    "why_not_priced": "Positioning is the price, not a fact against it; it adds only convexity to a beat. If shorts were not building, SI would be flat or falling into the print.",
+    "independence": "Baseline options block (put/call OI 0.16, skew -1.92, sealed 2026-10-28); June settlement 28.7M / 14.5% per Benzinga (https://benzinga.com/quote/BFLY/short-interest).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "The core (non-embedded) business grew only 2% y/y in Q2 ($21.85M vs $21.39M) after +10% in Q1, product revenue fell to $15.7M from $16.6M, ASP fell 12% and international fell 14%; if Q3 core is flat again the print rests on lumpy licence revenue, which the market has sold before.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.sec.gov/Archives/edgar/data/1804176/000180417626000027/bfly-20260630.htm",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "The Q2 beat (+15.07% on the day) was given back -8.5% the next session on durability doubts; Q1 2026 core +10% with a small beat went -2.64%.",
+    "why_not_priced": "The deceleration is in the 10-Q, but consensus and the wire track total revenue and embedded growth; a second flat core quarter would be read as the trend rather than a blip.",
+    "independence": "Q2 call summary on ASP -12% and VCOM pricing subsidy (https://www.fool.com/earnings/call-transcripts/2026/07/30/butterfly-bfly-q2-2026-earnings-call-transcript/). Same company, different document.",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Next-generation probe launch guided for early 2027 and Mendaera Focalist commercial ramp; chip-sale revenue would show in 2027 prints.",
+    "resolves_by": "2027-03-01",
+    "source": "https://247wallst.com/cards/butterfly-network-inc-q2-2026-earnings-bfly-01kys9nrr68tjf83knbxhr77b6",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Company presents at the UBS Global Healthcare Conference on 2026-11-10, after the exit window.",
+    "resolves_by": "2026-11-10",
+    "source": "https://ca.marketscreener.com/quote/stock/BUTTERFLY-NETWORK-INC-119073390/news/",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "CEO Joseph DeVivo 10b5-1 sales (35,790 sh at $10.02 on 2026-10-06; 5,980 sh ~$10.01 on 2026-09-22/23) and a run of Form 144s and a 2026-08-17 13D/A from a large holder converting Class B shares on sale",
+    "source": "https://www.sec.gov/Archives/edgar/data/1258790/000206483226000329/xslF345X06/form4.xml",
+    "first_hunter_reason": "outside_window",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Board appointment of semiconductor executive Mike Noonen (8-K 2026-10-05)",
+    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001804176&type=&dateb=&owner=include&count=40",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "BFLY.json",
+    "text": "Deferred revenue current fell from $26.9M to $15.5M in H1 with $22.2M recognised from the opening balance; RPO $85.8M, ~60% within 12 months",
+    "source": "https://www.sec.gov/Archives/edgar/data/1804176/000180417626000027/bfly-20260630.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFLY.json",
+    "text": "Cause of the ~23% slide from $10.02 (2026-10-06) to ~$7.1 and back to $7.74: no company news, 8-K or analyst downgrade found (MarketBeat/AAII/news lists); left unfiled as an unexplained drawdown",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFLY.json",
+    "text": "Q3 2026 peer prints (GE HealthCare Q3 2026 not yet indexed) for point-of-care ultrasound demand",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFLY.json",
+    "text": "Morgan Stanley 2026-09-15 fireside chat transcript: not indexed",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFLY.json",
+    "text": "Canaccord 2026-10-12 initiation note detail: only headline (Buy, $10) found",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFLY.json",
+    "text": "Any 8-K Item 1.01 for Merge Labs or Bridge Neurotech: none in EDGAR filing list through 2026-10-15",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "BFLY.json",
+    "text": "FedRAMP certification announcement: none found",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-28/HIPO",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "HIPO",
+   "event_date": "2026-10-29",
+   "session": "bmo",
+   "as_of_utc": "2026-10-28T17:21:18+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-28",
+    "spot": 37.91,
+    "run_up_5d_pct": -1.25,
+    "run_up_20d_pct": 23.2,
+    "pct_from_52w_high": -1.74,
+    "pct_from_52w_low": 57.37,
+    "realised_vol_20d_annualised_pct": 28.6,
+    "avg_volume_20d": 237256
+   },
+   "cik": "0001828105",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-29",
+      "session": "amc",
+      "move_pct": 6.87
+     },
+     {
+      "event_date": "2026-04-29",
+      "session": "amc",
+      "move_pct": -6.7
+     },
+     {
+      "event_date": "2026-02-24",
+      "session": "amc",
+      "move_pct": -4.89
+     },
+     {
+      "event_date": "2025-11-04",
+      "session": "amc",
+      "move_pct": 5.46
+     },
+     {
+      "event_date": "2025-08-05",
+      "session": "amc",
+      "move_pct": 14.03
+     },
+     {
+      "event_date": "2025-05-07",
+      "session": "amc",
+      "move_pct": -15.9
+     },
+     {
+      "event_date": "2025-03-05",
+      "session": "amc",
+      "move_pct": 2.33
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 6.7,
+    "max_abs_move_pct": 15.9,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 92,
+    "median_gap_days": 90.5,
+    "ratio": 1.02,
+    "last_print": "2026-07-29",
+    "verdict": "fits_cadence",
+    "reason": "92 days since the last print against a 90-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 23,
+    "atm_strike": 35.0,
+    "atm_iv_pct": 71.9,
+    "straddle_implied_move_pct": 15.43,
+    "event_implied_move_pct": 14.29,
+    "event_implied_move_basis": "15.43% straddle over 23 calendar days less 7.3% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 35.13,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.54,
+    "total_open_interest": 319,
+    "atm_spread_frac_of_mid": 0.366,
+    "warnings": [
+     "ATM bid-ask spread 37% of mid; implied move is indicative only"
+    ],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 3.35,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 14.29,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Primary bar: company FY2026 guidance from the Q2 release of 2026-07-30 (GWP $1.65-1.70B, NWP $565-580M, revenue $580-585M, net combined ratio 99-101% incl. 10% cat loss ratio, adjusted net income $62-70M) https://www.sec.gov/Archives/edgar/data/0001828105/000182810526000041/q226earningsreleasefinal.htm . Q3 street consensus is single-source and disputed: Benzinga lists Q3'26 non-GAAP EPS $0.27, revenue $153.6M (https://www.benzinga.com/quote/HIPO/earnings-forecasts, 403 on fetch, snippet only); GuruFocus quoted a GAAP-basis Q2 consensus of -$0.17 and FY EPS $0.33 already exceeded by H1 GAAP EPS of $0.65 (https://www.gurufocus.com/news/8986400/earnings-to-watch-hippo-holdings-inc-hipo-q2-2026-gf-value-sees-44-upside). Street EPS bar therefore treated as unresolved and every size capped small; print_vs_bar_pct is revenue against the $153.6M single-source figure.",
+   "positioning_check": "FINRA short interest 937.4K shares at the 2026-09-30 settlement, 4.3 days to cover (871.3K, 5.7 DTC on 2026-09-15), about 3% of float per equibles (https://equibles.com/stocks/hipo/shortinterest; aggregated via search, snippet only). Not a crowded short. Baseline skew_25d +35.1 vol points (downside paid), but the chain is near-untradeable: total OI 319, ATM spread 37% of mid, so the skew and the 14.3% event-implied move are indicative only. Run-up +23.2% over 20 days, -1.7% from the 52-week high; spot $37.91 vs MarketBeat consensus PT $38.25 (1 Strong Buy, 1 Buy, 3 Hold; Zacks cut to Hold 2026-10-02) https://www.marketbeat.com/instant-alerts/price-hippo-nyse-hipo-sets-new-52-week-high-whats-next-2026-10-22/",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Hippo's own FY2026 guide leaves a large cat cushion for H2: the 10% FY cat loss ratio on roughly $480M of NEP is ~$48M, against H1 cat of $4.3M (Q1) + $8.0M (Q2, 6.7% of NEP) = $12.3M, so ~$36M (~15% cat ratio per quarter) is loaded into Q3+Q4; likewise the $62-70M adj. net income guide implies only $24-32M for H2 against $38.2M in H1 ($17.2M + $21.0M). If Q3 cat comes in at or below ~$18M, Q3 adj. NI lands near the Q1-Q2 run-rate (~$0.50+ per share) and a second FY raise is likely; the market expects at least a reaffirmation.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001828105/000182810526000041/q226earningsreleasefinal.htm",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "Q2 2026 (2026-07-29 baseline row): beat plus a raise across every guided line, +6.87%. Q1 2026: large adjusted beat with combined-ratio guide held, -6.70%. Q4 2025: -4.89%. The stock has paid for raises, not for beats.",
+    "why_not_priced": "The H2 implied cat and NI arithmetic is not printed anywhere; previews quote the FY range, not the H1 vs H2 split. If the market had priced a raise, the street Q3 EPS figure would sit near the H1 run-rate rather than at $0.27 (Benzinga), which is the bottom of the guide spread across Q3 and Q4 ($0.27 + $0.64). Partly priced by the +23% run-up.",
+    "independence": "Q1 2026 cat $4.3M and the 13%-cat-load original guide from the Q1 release https://app.edgar.tools/filing/1828105/0001828105-26-000023/q126earningsreleasefinal.htm ; the June 2026 reinsurance renewal cut net PMLs 31-36% https://www.reinsurancene.ws/hippo-hails-2026-reinsurance-overhaul-as-structural-evolution-in-move-to-enterprise-wide-cat-program/ . Shares the Q2 release with no other finding.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Q3 2026 was a heavy personal-lines cat quarter in the US: Allstate booked $1.65B pre-tax cat in Q3 2026 (July $682M, August $748M, September $220M) against $558M in Q3 2025, and Travelers' Q3 cat rose to $538M from $302M on wind and hail, driven largely by late-July SCS and the 9-12 August derecho across Iowa, Illinois, Indiana, Ohio and Kentucky; Illinois is among the states Hippo's 10-K lists in its GWP breakdown, and Hippo's own Q3 2025 cat was -$0.3M, so the y/y loss-ratio comparison deteriorates. Sized small because Hippo's exposure is mostly ceded and the H2 cat load (finding 1) is ~15% per quarter.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.artemis.bm/news/allstate-reports-220m-september-pre-tax-cat-losses-taking-aggregate-year-to-3-37bn/",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "Q1 2025 (LA wildfires, $53.4M cat, 105.9% net loss ratio) printed 2025-05-07: -15.90%. Q3 2024 cat $16.1M; Q3 2025 cat ~$0 printed 2025-11-04: +5.46%. Cat surprises are the line this stock has moved most on.",
+    "why_not_priced": "Macro-to-company transmission that Hippo has not confirmed; no Hippo cat pre-announcement. If the market had priced a heavy Q3 cat hit the stock would not have run +23% into the print to a 52-week high. Counterweight: global 9M26 cat is the lowest since 2019 (Gallagher Re), and Moody's RMS says Texas hail reports were down ~70% in H1 2026, so Hippo's TX/CA-heavy homeowners book may have missed the Midwest events.",
+    "independence": "Travelers Q3 2026: cat $538M vs $302M, wind and hail https://www.reinsurancene.ws/travelers-q326-net-income-rises-despite-higher-cat-losses-but-9m-cat-toll-down-considerably/ ; derecho geography https://www.insurancebusinessmag.com/us/news/catastrophe/midwest-derecho-pushes-2026-us-storm-losses-past-35-billion-brokers-say-586429.aspx ; Hippo Q3 2025 cat -$0.3M https://www.sec.gov/Archives/edgar/data/1828105/000182810525000066/quarterlyinvestorupdatet.htm . Proxy only: no Hippo number.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Into the print the stock has run +23.2% in 20 days to $37.91, 1.7% below a 52-week high of $39.39 set 2026-10-22, at the $38.25 consensus target (3 of 5 ratings Hold, Zacks cut to Hold 2026-10-02), with no company news since the 2026-08-27 state-expansion release; a reaffirm or modest raise is already in the price, and the 25-delta skew of +35 vol points pays for downside.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.marketbeat.com/instant-alerts/price-hippo-nyse-hipo-sets-new-52-week-high-whats-next-2026-10-22/",
+    "source_date": "2026-10-22",
+    "reaction_history_on_this_line": "Q1 2026 beat sold -6.70% and Q4 2025 -4.89%; Q2 2026 raise bought +6.87%. A large adjusted beat without a raise has been sold.",
+    "why_not_priced": "This is the price itself; the finding is that expectations are elevated, not that they are missed. Shrunk because short interest is low (4.3 DTC, not a crowd to squeeze or to exit) and the options chain is too thin (OI 319, 37% spread) for the skew to be a strong statement.",
+    "independence": "Baseline tape: run_up_20d +23.2%, pct_from_52w_high -1.74, skew +35.13 (sealed baseline). Swingtradebot 'new uptrend' 2026-10-16 https://swingtradebot.com/equities/HIPO .",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Accelerant, which Hippo's management said would bring more than $500M of premium to Hippo next year, grew third-party direct written premium to 47% of its $1.32B Q2 2026 exchange written premium from 27% a year earlier (~+115% y/y, ~$621M vs ~$290M), reported after Hippo last spoke; supports Hippo's guided H2 GWP acceleration in the fronting platform. Accelerant is being taken private by Thoma Bravo, which could change that partner relationship later.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001997350/000119312526347925/d286225dex991.htm",
+    "source_date": "2026-08 (Q2 2026 release; call had been set for 2026-08-13)",
+    "reaction_history_on_this_line": "GWP raises have come with the cat-led profit raises (Q2 2026 +6.87%); no isolated GWP surprise in the history.",
+    "why_not_priced": "A counterparty's number most Hippo previews will not read; but Hippo already raised FY GWP to $1.65-1.70B and named the Accelerant volume on the Q2 call, so most of it sits inside the guide.",
+    "independence": "Hippo Q2 call: 'Accelerant premium in excess of $500 million next year' https://stockanalysis.com/stocks/hipo/transcripts/657846-q2-2026/ . Proxy for Hippo's GWP, not a Hippo number.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Hurricane Isaias made landfall near Destin, Florida on 2026-10-09 as a Category 2 with $1-3B of industry insured loss (Verisk $1-2B, KCC $3B); Florida is among the states in Hippo's 10-K GWP breakdown, so management may quantify a Q4 cat event on the 8:00am call and temper any Q4 or FY guide raise. Likely small: Florida business is largely fronted and reinsured, and the FY 10% cat load already carries room.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.insurancejournal.com/news/southeast/2026/10/15/889051.htm",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "No prior Q4 hurricane commentary in the baseline window; Q1 2025 wildfire cat was the -15.9% print.",
+    "why_not_priced": "A Q4 event that falls after the quarter being reported; previews will key on Q3. If priced, the stock would not have set a 52-week high on 2026-10-22, after landfall.",
+    "independence": "Verisk $1-2B estimate https://www.verisk.com/company/newsroom/verisk-estimates-insured-losses-for-hurricane-isaias-could-reach-usd-2-billion/ . Proxy only.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "On the Q2 call management said 'the homeowners market is absolutely softening right now', expected renewal rate trend (mid-to-high single digits in Q2) to moderate, and was pulling back in E&S as competition rises; a Q3 update on rate, retention and E&S volume could trim the growth story the stock has re-rated on.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://stockanalysis.com/stocks/hipo/transcripts/657846-q2-2026/",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "No isolated pricing-commentary reaction in the history.",
+    "why_not_priced": "Mostly priced: it is the company's own public statement from the last call. Filed small because a softer market is the first thing analysts will probe on the call.",
+    "independence": "Shares the Q2 call transcript with finding 4's independence note; none else.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Hippo's 1 June 2026 reinsurance renewal moved to a group catastrophe structure with its first whole-account quota share, $513M first-event and $777M aggregate limit, 15-20% risk-adjusted rate decreases and a 31-36% reduction in net PML; Q3 2026 is the first full quarter under it, lowering ceded cost and capping net cat from the Q3 SCS events.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.reinsurancene.ws/hippo-hails-2026-reinsurance-overhaul-as-structural-evolution-in-move-to-enterprise-wide-cat-program/",
+    "source_date": "2026-06-16",
+    "reaction_history_on_this_line": "Q2 2026 (first month under the program) beat with combined ratio 95.8%: +6.87%.",
+    "why_not_priced": "Public since June and folded into the July guide raise (cat load [sizing note removed]; the residual is how much it cut Q3 net cat from the Midwest events, which only the print shows. CEO said the quota share cession is 'very small'.",
+    "independence": "Q2 call: quota share 'very small', does not meaningfully change economics https://stockanalysis.com/stocks/hipo/transcripts/657846-q2-2026/ (cuts the size, not the sign).",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Homeowners program expansion from 8 to 22 states via national distribution partners begins in Q4 2026; premium contribution lands in 2027.",
+    "resolves_by": "2027-02-28",
+    "source": "https://www.reinsurancene.ws/hippo-expands-homeowners-coverage-to-22-states/",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Accelerant's going-private deal with Thoma Bravo could change the fronting relationship that is guided to bring Hippo more than $500M of premium in 2027.",
+    "resolves_by": "2027-06-30",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001997350/000119312526347925/d286225dex991.htm",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "MarketBeat reports a CEO sale of 1,169 shares at $35.03 on 2026-10-15 (Form 4 filed 2026-10-16) and 19,007 insider shares sold in 90 days (~$623K)",
+    "source": "https://www.marketbeat.com/instant-alerts/price-hippo-nyse-hipo-sets-new-52-week-high-whats-next-2026-10-22/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Session change from amc (every prior print) to bmo with an 8:00am ET call",
+    "source": "https://finviz.com/news/402245/hippo-to-report-third-quarter-financial-results-on-october-29-2026",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "HIPO.json",
+    "text": "Progressive Q3 2026 combined ratio 88.7 vs 89.5, a benign read for personal lines",
+    "source": "https://capital.com/en-int/news/progressive-reports-september-2026-results",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIPO.json",
+    "text": "Hippo-specific Q3 2026 cat pre-announcement or 8-K: EDGAR submissions show no 8-K between 2026-07-30 and 2026-10-16, only Form 4/144 filings",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIPO.json",
+    "text": "Texas hail events in Q3 2026: no reported large Texas SCS loss in July-September 2026; Moody's RMS reports Texas hail down ~70% in H1 2026",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIPO.json",
+    "text": "California wildfire insured losses in Q3 2026 or October 2026: none found",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIPO.json",
+    "text": "Hippo Q3 2026 street EPS consensus from a second source (Zacks, TipRanks, MarketBeat): not found; only Benzinga $0.27",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIPO.json",
+    "text": "Hippo state-level GWP percentages from the FY2025 10-K: XBRL tags list CA, FL, TX, NY, IL, GA, MA, CO, NC, SC but amounts not readable via fetch",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIPO.json",
+    "text": "October 2026 analyst rating or price-target changes: none besides the Zacks downgrade to Hold on 2026-10-02",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "HIPO.json",
+    "text": "Cause of the October run-up: no company or sector catalyst found",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-28/MAX",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "MAX",
+   "event_date": "2026-10-28",
+   "session": "amc",
+   "as_of_utc": "2026-10-28T17:17:19+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-28",
+    "spot": 11.73,
+    "run_up_5d_pct": 1.82,
+    "run_up_20d_pct": 22.57,
+    "pct_from_52w_high": -17.8,
+    "pct_from_52w_low": 63.6,
+    "realised_vol_20d_annualised_pct": 65.4,
+    "avg_volume_20d": 945744
+   },
+   "cik": "0001818383",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-29",
+      "session": "amc",
+      "move_pct": -1.88
+     },
+     {
+      "event_date": "2026-04-29",
+      "session": "amc",
+      "move_pct": -14.9
+     },
+     {
+      "event_date": "2026-02-23",
+      "session": "amc",
+      "move_pct": 15.44
+     },
+     {
+      "event_date": "2025-10-29",
+      "session": "amc",
+      "move_pct": 9.98
+     },
+     {
+      "event_date": "2025-08-06",
+      "session": "amc",
+      "move_pct": 10.05
+     },
+     {
+      "event_date": "2025-04-30",
+      "session": "amc",
+      "move_pct": 14.17
+     },
+     {
+      "event_date": "2025-02-24",
+      "session": "amc",
+      "move_pct": -18.49
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 14.17,
+    "max_abs_move_pct": 18.49,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 87.5,
+    "ratio": 1.04,
+    "last_print": "2026-07-29",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 88-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 23,
+    "atm_strike": 12.5,
+    "atm_iv_pct": 76.9,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": -10.16,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.41,
+    "total_open_interest": 3155,
+    "atm_spread_frac_of_mid": 0.957,
+    "warnings": [
+     "ATM bid-ask spread 96% of mid; too wide to mean anything"
+    ],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 7.08,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 14.17,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue at or above $355.0m, contribution $54.5m and adj. EBITDA $35.0m, the top of the 2026-07-29 guide, which the company said on 2026-09-03 it would meet or beat (https://www.sec.gov/Archives/edgar/data/1818383/000181838326000229/exhibit991pressrelease.htm). Sell-side Q3 revenue estimates disagree: $353.8m with EPS $0.36 (Benzinga, seen as a search snippet only) and a stale $341.7m (https://www.earningswhispers.com/epsdetails/MAX). Q4 consensus is about $334m revenue (Benzinga, snippet) and $0.39 EPS from 3 analysts (https://www.aaii.com/investingideas/article/523427-what-you-need-to-know-about-mediaalpha-incs-q3-earnings, dated 2026-10-28; that page mislabels Q2 figures as Q3). The Q3 bar rests on the company's own guide. The Q4 bar comes from estimate sources only, so findings on the guide are kept small.",
+   "positioning_check": "Short interest is 3,219,791 shares at the 2026-10-15 settlement, 5.3% of 61.26m shares outstanding, with 2.78 days to cover (it was 2,831,462 on 09-30). Source: https://equibles.com/stocks/max/short-interest?range=3m. Not crowded. Baseline 25-delta skew is -10.16 vol points (calls bid over puts, 'upside paid'), put/call open interest 0.41, front-expiry ATM IV 76.9%. The ATM spread is 96% of mid, so the chain is barely usable and the skew is a weak statement. The 20-day run-up is +22.57%. The sector moved together: from 2026-09-23 to 10-22 MAX went 9.39 to 12.41, EverQuote 17.63 to 23.59 and QuinStreet 14.28 to 16.88 (Yahoo chart v8). Positioning leans long into the print.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "On 2026-09-03 MediaAlpha told the market Q3 revenue, contribution and adj. EBITDA would be at or above the top of the guide ($355.0m / $54.5m / $35.0m). The Benzinga Q3 revenue consensus of $353.8m still sits just below that floor. In Q2 revenue beat the top of the guide by 2.2% ($316.9m vs $310m), so a print of about $360-365m is plausible: a beat against consensus that the company already flagged.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1818383/000181838326000229/exhibit991pressrelease.htm",
+    "source_date": "2026-09-03",
+    "reaction_history_on_this_line": "In Q2 2026 revenue beat the top of the guide ($316.9m vs $290-310m) and EPS was $0.65 vs about $0.21 consensus, yet the stock fell 1.88% (baseline 2026-07-29). In Q1 2026, a record quarter (revenue +17%), it fell 14.9%. This name does not pay for reported-quarter beats.",
+    "why_not_priced": "Mostly priced. The update is public, and the stock fell from about $12.2 (2026-09-02, per director Form 144 sale prices) to $9.2 by 09-28 despite it. The only unpriced part is the gap between the lagging consensus ($353.8m) and the company's own floor, plus any beat above the top end. If the market had fully priced a $360m+ quarter, consensus would sit above $355m. It does not.",
+    "independence": "Q2 2026 investor supplement, a different document from the same issuer: Q2 cleared the top of its guide by $6.9m (https://www.sec.gov/Archives/edgar/data/0001818383/000181838326000198/maxq22026-investorsuppleme.htm).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "Progressive, very likely one of MediaAlpha's three customers above 10% of revenue (together 57% of Q2 revenue per the 10-Q), is adding auto policies much more slowly. Direct auto policies in force rose 127k in Q3 2026 (16,721k at 06-30 to 16,848k at 09-30) against 374k in Q3 2025 (15,245k to 15,619k). Agency auto rose 136k against 207k a year earlier. Total policies in force were flat from August to September (40,492k to 40,489k), and Personal Lines net premiums written grew 1% in September. Profitability is still strong: Q3 combined ratio 88.7 vs 89.5.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/80661/000008066126000367/pgr202609ex99earningsrelea.htm",
+    "source_date": "2026-10-14",
+    "reaction_history_on_this_line": "The Q4 guide decides the reaction. Q4 2025's guide of $280-300m came in 1.3% below consensus (tipranks/thefly), yet the stock rose 15.4% on 2026-02-23 on buyback and earnings. Q2 2026's Q3 guide of $330-355m sat above a ~$338m consensus and the stock still fell 1.9%. The record on this line is mixed.",
+    "why_not_priced": "Progressive released this on 2026-10-14, after MediaAlpha last spoke on 09-03, and nobody has turned policy counts into a MediaAlpha Q4 number. MAX rose 9.8% on 10-15, the day after, which is not what the price would do if the market read it as a pullback signal. If it were priced, MAX would have lagged its peers in October. It ran with them. Caveat: slower policy growth does not mean lower ad spend. Progressive's Q2 10-Q (search snippet, https://www.sec.gov/Archives/edgar/data/0000080661/000008066126000308/pgr-20260630.htm) shows advertising up 16% with new applications up only 1%, so spend can stay high while it converts less. Progressive says it spends while it stays efficient and meets its profit target, and an 88.7 combined ratio leaves room for that. The size here is net of that counterweight.",
+    "independence": "Proxy: this is a counterparty number, not MediaAlpha's own. The customer-concentration figures come from MediaAlpha's own 10-Q (https://www.sec.gov/Archives/edgar/data/1818383/000181838326000200/max-20260630.htm). June policy counts confirmed via https://collisionweek.com/2026/07/16/progressive-reports-personal-auto-policies-force-8-8-june-compared-2025/. Net of the rest: the other two large customers and the long tail would need to keep growing their budgets, and EverQuote's August commentary (finding below) says carriers broadly were.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "The 20-day run-up of +22.6% is a sector rebound, not MediaAlpha-specific news. On 2026-09-22/23 EverQuote fell 14.6% and 9.8%, QuinStreet 11.5% and 6.5%, and MAX 7.5% and 5.9%; Tickeron tied the selloff to analyst actions, insider sales and risk-off, not a carrier event. Since 09-23 MAX is up 25% to its 10-22 peak, EverQuote 34% and QuinStreet 18%. EverQuote (2026-11-02) and QuinStreet (2026-11-04) report after this window, so MAX is the first read on Q3 carrier spend in the group, and the stock goes in with options leaning long.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://tickeron.com/blogs/why-is-everquote-ever-stock-down-17-13-today-16932/",
+    "source_date": "2026-09-22",
+    "reaction_history_on_this_line": "Baseline: of 7 prints, 4 rose and 3 fell, median absolute move 14.2%. After the July print, which followed a rally into it, the stock fell 1.9% on a beat-and-raise.",
+    "why_not_priced": "The run-up itself is in the price. What is not obvious is that it is peer beta rather than company news: no MediaAlpha filing or analyst action in October explains it. If the rally carried MAX-specific information, MAX would have outrun EverQuote, and it did not. The skew (-10 vol points, calls bid) points the other way. This finding is kept small because the chain is too wide (96% spread) to be a strong counter-signal.",
+    "independence": "Daily closes from Yahoo chart v8 for MAX, EVER and QNST (https://query1.finance.yahoo.com/v8/finance/chart/EVER?range=2mo&interval=1d). Peer report dates: https://finviz.com/news/401749/everquote-to-announce-third-quarter-2026-financial-results-on-november-2-2026 and https://finviz.com/news/402057/quinstreet-sets-date-to-announce-fiscal-first-quarter-2027-financial-results.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "Peers described broad and growing carrier demand after MediaAlpha's last full print. EverQuote's Q2 2026 release (2026-08-03): revenue +25%, auto +23%, a major carrier back on the marketplace, carriers 'profitable and hungry for growth', and a Q3 guide of $198-208m. QuinStreet guided its September quarter to $370-380m against about $355m consensus, after auto insurance grew 37% the quarter before.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001640428/000119312526330540/ever-ex99_1.htm",
+    "source_date": "2026-08-03",
+    "reaction_history_on_this_line": "There is no clean record of MAX reacting to peer prints. Peer read-through is in the price by the time MAX reports.",
+    "why_not_priced": "Largely priced: it is August information, before MediaAlpha's own 09-03 update. It is filed because it is the broadest public evidence that carrier spend is broadening beyond Progressive, which bears on the Q4 guide. If the market doubted it, MAX would trade at a bigger discount to peers after the September selloff, and it does not.",
+    "independence": "QuinStreet fiscal Q4 2026 call, a separate company: https://www.benzinga.com/node/62315122 (QuinStreet's own results release not fetched).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "Consumer shopping for auto insurance is slowing. The LexisNexis Insurance Demand Meter for Q2 2026 put year-over-year shopping growth at 1.4%, down from 3.2% in Q1 and 6.4% in Q3 2025. New-policy growth was 3.3%, and 36% of rate changes were decreases, a sign of a softening market.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://risk.lexisnexis.com/about-us/press-room/press-release/20260817-q3-demand-meter",
+    "source_date": "2026-08-17",
+    "reaction_history_on_this_line": "None specific to this series.",
+    "why_not_priced": "It is an industry series, public since August, and MediaAlpha's own September statement that Q3 would land at or above the top end came after it, so for Q3 it is superseded. For Q4 it still matters: in a softening market carriers bid more per shopper for fewer shoppers, which helps price and hurts volume. Sign uncertain, so sized small.",
+    "independence": "Proxy. It shares the softening-market point with the Progressive finding but uses different data (industry shopping counts vs one carrier's policy counts).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "On 2026-09-09 MediaAlpha bought out PLX's share of the tax receivable agreement (TRA) for $12.0m cash against a $22.7m liability, 47% below its estimated value. That should book a gain of about $10.7m below operating income in Q3 GAAP net income (Q2 had a $37.7m gain of the same kind) and cuts the remaining TRA liability to about $32m.",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1818383/000181838326000231/0001818383-26-000231.txt",
+    "source_date": "2026-09-09",
+    "reaction_history_on_this_line": "Q2 2026 carried a $37.7m gain of the same kind and the stock fell 1.9%: this line is not paid for.",
+    "why_not_priced": "Disclosed in an 8-K, so the value (about $0.17 a share, roughly 1.5% of market cap) is public. It may inflate headline GAAP EPS against a $0.36 adjusted consensus and catch an automated headline read for a moment. It has no path to the guide.",
+    "independence": "none",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "The CFO is changing. Pat Thompson stepped down effective 2026-10-01 and leaves 10-30. Tigran Sinanyan (CFO 2015-2021) took over and promises 'disciplined growth'. This is his first quarter setting the Q4 guide.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1818383/000181838326000229/exhibit991pressrelease.htm",
+    "source_date": "2026-09-03",
+    "reaction_history_on_this_line": "No precedent for this name.",
+    "why_not_priced": "The change is public. The inference that a new CFO guides conservatively is not company-confirmed, which is why it is sized small. It came in the same release that firmed up Q3, so the handover does not look forced.",
+    "independence": "Same document as finding 1 (the 2026-09-03 release). Counts once for the document, but the two lines are different.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "Insiders sold steadily under Rule 10b5-1 plans into the print. Director Eugene Nonko sold 332,300 shares between 2026-07-27 and 10-21 in 32 sales, with a further 31,335 noticed on 10-26 (plan adopted 2026-03-03). CRO Keith Cramer sold 12,000 at $11.39 on 10-19 under a plan to cover RSU taxes.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1818383/000192109426001119/primary_doc.xml",
+    "source_date": "2026-10-26",
+    "reaction_history_on_this_line": "None.",
+    "why_not_priced": "The sales were pre-scheduled, evenly sized, and paused only in the quiet weeks around the 09-03 update. They carry little information, which is why this is sized near zero.",
+    "independence": "Cramer Form 4: https://www.sec.gov/Archives/edgar/data/1818383/000181838326000258/wk-form4_1792633269.xml (2026-10-21).",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "EverQuote's Q3 2026 results and Q4 guide on 2026-11-02 will be the next read on carrier spend.",
+    "resolves_by": "2026-11-02",
+    "source": "https://finviz.com/news/401749/everquote-to-announce-third-quarter-2026-financial-results-on-november-2-2026",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "QuinStreet's fiscal Q1 2027 results (Sept quarter) are due 2026-11-04.",
+    "resolves_by": "2026-11-04",
+    "source": "https://finviz.com/news/402057/quinstreet-sets-date-to-announce-fiscal-first-quarter-2027-financial-results",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "Allstate's Q3 2026 results are due 2026-11-04 after the close; its advertising commentary bears on carrier spend.",
+    "resolves_by": "2026-11-04",
+    "source": "https://finviz.com/news/398730/allstate-to-hold-q3-2026-earnings-call-nov-5-2026",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "An AI-generated aggregator headline about MediaAlpha's 2026 revenue forecast (rallies.ai), seen only in search listings",
+    "source": "https://rallies.ai/news/mediaalpha-cuts-2026-revenue-forecast-to-121b-q4-revenue-expected-2977m",
+    "first_hunter_reason": "no_source",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "AAII 'What you need to know about MediaAlpha's Q3 earnings' showing EPS $0.28 vs $0.30 and revenue $317m",
+    "source": "https://www.aaii.com/investingideas/article/523427-what-you-need-to-know-about-mediaalpha-incs-q3-earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "Progressive Q2 10-Q: advertising $1.4bn (+16% y/y), new personal-vehicle applications +1%",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000080661/000008066126000308/pgr-20260630.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 13
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "Customer concentration: 3 customers held 57% of Q2 revenue; 4 customers held 68% of receivables at 06-30",
+    "source": "https://www.sec.gov/Archives/edgar/data/1818383/000181838326000200/max-20260630.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 14
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MAX.json",
+    "text": "Progressive's Q3 combined ratio of 88.7 (vs 89.5) shows strong profitability and capacity to keep advertising",
+    "source": "https://finviz.com/news/402384/progressive-reports-september-2026-results",
+    "first_hunter_reason": "duplicate",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MAX.json",
+    "text": "Progressive's Q3 2026 advertising expense: not yet disclosed (no 10-Q in EDGAR through 2026-10-26; the monthly release says 'no additional commentary')",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MAX.json",
+    "text": "A specific cause for the 2026-10-08 (+10.4% on 2x volume) and 10-15 (+9.8%) moves in MAX: no company or analyst item found; peers moved the same way on both days",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MAX.json",
+    "text": "October 2026 analyst price-target changes or Q3 previews for MAX: none found",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MAX.json",
+    "text": "A Q3 2026 LexisNexis or TransUnion shopping series: not yet published",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MAX.json",
+    "text": "New legal or FTC developments after the October 2025 consent order: none in the Q2 10-Q or later 8-Ks",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MAX.json",
+    "text": "MAX 8-Ks after 2026-09-09: none through 2026-10-26 (only Forms 3, 4 and 144)",
+    "i": 21
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-28/MDXG",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "MDXG",
+   "event_date": "2026-10-28",
+   "session": "amc",
+   "as_of_utc": "2026-10-28T17:17:26+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-28",
+    "spot": 3.95,
+    "run_up_5d_pct": 5.61,
+    "run_up_20d_pct": -15.24,
+    "pct_from_52w_high": -50.38,
+    "pct_from_52w_low": 27.83,
+    "realised_vol_20d_annualised_pct": 52.9,
+    "avg_volume_20d": 1365681
+   },
+   "cik": "0001376339",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-29",
+      "session": "amc",
+      "move_pct": 0.95
+     },
+     {
+      "event_date": "2026-04-29",
+      "session": "amc",
+      "move_pct": 8.74
+     },
+     {
+      "event_date": "2026-02-25",
+      "session": "amc",
+      "move_pct": -6.44
+     },
+     {
+      "event_date": "2025-10-29",
+      "session": "amc",
+      "move_pct": 2.92
+     },
+     {
+      "event_date": "2025-07-30",
+      "session": "amc",
+      "move_pct": 10.28
+     },
+     {
+      "event_date": "2025-04-30",
+      "session": "amc",
+      "move_pct": -8.14
+     },
+     {
+      "event_date": "2025-02-26",
+      "session": "amc",
+      "move_pct": 1.62
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 6.44,
+    "max_abs_move_pct": 10.28,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91.0,
+    "ratio": 1.0,
+    "last_print": "2026-07-29",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "unusable_chain",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 23,
+    "atm_strike": 5.0,
+    "atm_iv_pct": null,
+    "straddle_implied_move_pct": null,
+    "event_implied_move_pct": null,
+    "event_implied_move_basis": "straddle taken as-is (no vol anchor to net off)",
+    "skew_25d_vol_points": null,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.7,
+    "total_open_interest": 34,
+    "atm_spread_frac_of_mid": null,
+    "warnings": [
+     "ATM legs not two-sided; no live bid/ask to price a straddle from"
+    ]
+   },
+   "deadband_pct": 3.22,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 6.44,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue consensus $68.56m and EPS $0.00 (MarketBeat, https://www.marketbeat.com/stocks/NASDAQ/MDXG/earnings/), $69.92m and EPS -$0.01 from 5 analysts (FXEmpire, https://www.fxempire.com/stocks/mdxg/earnings); two sources agreeing within 2%. Company guide: FY2026 net sales $260-290m standalone, adj. EBITDA approaching breakeven (Q2 release, https://www.biospace.com/press-releases/mimedx-announces-second-quarter-2026-operating-financial-results). H1 = $59m + $64.4m = $123.4m, so the guide implies H2 $136.6-166.6m (Q3+Q4 ~$68-83m each).",
+   "positioning_check": "Short interest 9,264,529 shares, 6.52% of float, 9.1 days to cover at the 2026-10-15 record date (published by FINRA 2026-10-26), vs 9,362,899 / 6.6% / 7.35 days at 2026-09-30 (https://www.marketbeat.com/stocks/NASDAQ/MDXG/short-interest/). Elevated days-to-cover on thin turnover but not a crowded float; part of it is plausibly merger-arb hedging of the 0.4735 MDXG shares per Sanara share. No usable option chain (34 contracts of open interest, ATM legs not two-sided), so no skew; put/call OI 0.7. Tape: spot $3.95, -15.2% over 20 days, +5.6% over 5 days, -50% from 52-week high.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "Management disclosed on the Q2 call that June 2026 net sales were $24m and that the June rate alone puts the year 'already within range'; three months at that rate is ~$72m for Q3, about 3-5% above the $68.6-69.9m consensus, with Wound volume +22% sequentially in Q2 and Surgical +15% y/y, and management also guiding gross margin to the 'mid-70s beginning in the third quarter' (from 69% GAAP / 73.7% adjusted in Q2) and no further significant bad-debt charges in H2.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.fool.com/earnings/call-transcripts/2026/08/07/mimedx-mdxg-q2-2026-earnings-call-transcript/",
+    "source_date": "2026-07-29 (call; transcript posted 2026-08-07)",
+    "reaction_history_on_this_line": "Q2 2026: revenue $64.36m beat a $63.46m consensus by 1.4% while EPS missed; stock gapped down 5.7% intraday and closed +0.95% (baseline). Q1 2026: revenue missed and FY guide was cut from $340-360m to $260-290m, yet the stock closed +8.74%. Q4 2025 print: -6.44%. Revenue beats on this name have not been paid much.",
+    "why_not_priced": "The June figure is in the call transcript, not the release, and a $72m run-rate sits above both published consensus figures ($68.56m, $69.92m); if the street had anchored on it, consensus would be at or above $72m rather than at a ~5% sequential step from Q2. Against that, the stock fell 15% over 20 days, so the market is not pricing an upside quarter.",
+    "independence": "Smith+Nephew's Q2 2026 report (2026-08-04) described sequential improvement in skin substitutes 'driven by hospitals', the channel MiMedx said grew fastest (https://prod-we-cm.smith-nephew.com/en/news/2026/08/04/second-quarter-2026-results). The margin and bad-debt statements share the same transcript and are merged here, not filed separately.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "The standalone FY2026 guide of $260-290m is only reached at its low end by the disclosed June run-rate ($123.4m H1 + ~$144m H2 at $24m/month = ~$267m); the midpoint ($275m) needs H2 of ~$152m, so the call is more likely to narrow toward the low half or hold the range than to raise it.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.biospace.com/press-releases/mimedx-announces-second-quarter-2026-operating-financial-results",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "Q1 2026: guide cut by ~$75m at the midpoint and the stock closed +8.74% (relief); Q2 2026: guide reiterated, close +0.95%. This name has not punished guide cuts that clear uncertainty.",
+    "why_not_priced": "Arithmetic from public numbers; consensus revenue of ~$69m for Q3 already sits near the low half of the guide, so a narrowing to the low half is largely in the bar. If the market expected a raise, the stock would not be -50% from its high and -15% over 20 days.",
+    "independence": "Shares the June $24m figure with finding 1 (same transcript) but lands on a different line (the forward range, not the quarter); the June arithmetic is the only common input. No independent source for a full-year consensus was found.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "On 2026-10-15 MiMedx and Sanara each received an FTC Second Request on the $350m Sanara merger, extending the HSR waiting period to 30 days after substantial compliance; management had said on the Q2 call the deal would close by year-end and that the 2027 combined outlook (>$400m revenue, >20% adj. EBITDA margin) assumes a 2026 close, so the call must now restate the timeline and probably the 2027 framing.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1376339/000121390026110041/ea0308833-8k425_mimedx.htm",
+    "source_date": "2026-10-16",
+    "reaction_history_on_this_line": "On the 2026-10-16 disclosure MDXG fell about 2.8% and SMTI 5.5% (https://stocktwits.com/news-articles/Markets/Equity/mi-medx-sanara-merger-faces-fresh-regulatory-obstacle-smti-stock-falls-below-this-key-support-level-for-the-first-time-in-4-months/cZxKJ0GRBsM). On the deal announcement day (Q2 print) the stock closed +0.95%.",
+    "why_not_priced": "The Second Request itself is public and was sold on the day; what is not yet known is management's revised close date and whether the 2027 >$400m outlook is withdrawn or re-based. Financing question answered: the $300m Hayfin term loan (SOFR+6.25%) buys Sanara, which its own forecasts put at $121m 2026E revenue and $21.5m adj. EBITDA (DEFM14A), i.e. an accretive surgical ramp, so a delay defers profit rather than relieving distress; MiMedx owes a $22.5m reverse fee only on a failure to close when required, and the outside date is 2027-07-29 extendable to 2028-01-29.",
+    "independence": "Sanara's DEFM14A (https://www.sec.gov/Archives/edgar/data/0000714256/000121390026097669/ea0304447-01.htm) for the Sanara forecasts, outside date and fee; the timeline statement is from the Q2 call transcript (shared document with finding 1).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "Integra LifeSciences' Q3 2026 release (2026-10-21) showed Wound Reconstruction revenue $81.5m, -2.9%, with declines in MicroMatrix (particulate) and Integra Skin offsetting growth in PriMatrix and DuraSorb, and called Tissue Reconstruction 'softer-than-expected'; a peer that reported after MiMedx last spoke shows soft hospital/surgical wound demand, though MicroMatrix weakness is also consistent with share loss to particulate competitors like MiMedx (domestic particulate +21% in Q2).",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000917520/000091752026000073/ex991-q32026earningsrelease.htm",
+    "source_date": "2026-10-21",
+    "reaction_history_on_this_line": "No record of MDXG reacting to Integra prints; proxy only.",
+    "why_not_priced": "Integra's wound business is mostly surgical/burn and not Medicare office-based skin substitutes, so few would read it across; its sign for MiMedx is ambiguous (category softness vs share shift), which is why it is sized small and near zero.",
+    "independence": "Proxy, not confirmed by MiMedx or a direct counterparty. No other Q3 wound peer (Organogenesis 2026-11-05, Smith+Nephew early November) has reported inside the window.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "Short interest was 9.26m shares, 6.5% of float, 9.1 days to cover at 2026-10-15, up from 7.35 days at 2026-09-30 as volume fell, into a stock that is -15% over 20 days and +5.6% over the last 5; a clean beat on thin turnover has a covering mechanism behind it.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.marketbeat.com/stocks/NASDAQ/MDXG/short-interest/",
+    "source_date": "2026-10-26 (FINRA publication of the 2026-10-15 record date)",
+    "reaction_history_on_this_line": "Q1 2026 (+8.74% on a guide cut) is the one print where relief overwhelmed the fundamentals; whether covering drove it is not documented.",
+    "why_not_priced": "Positioning is not a fundamental the price absorbs ahead of the print; 6.5% of float is not crowded, and part is plausibly merger-arb hedge that does not cover on earnings, so this is small.",
+    "independence": "none",
+    "i": 4
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "CMS CY2027 Physician Fee Schedule final rule, expected around 2026-10-31 to mid-November (the CY2026 rule came 2025-10-31); the proposed rule kept the ~$127/cm2 flat skin-substitute rate and moved non-sheet products to national pricing, and the CEO said CMS shows 'little interest in course correcting'. A final rule inside 2026-10-29 is possible but not expected.",
+    "resolves_by": "2026-11-06",
+    "source": "https://www.hmpgloballearningnetwork.com/site/wounds/news/cms-cy-2027-physician-fee-schedule-proposed-rule-5-wound-care-highlights-watch",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "Organogenesis, the largest pure-play skin-substitute peer, reports Q3 2026 on 2026-11-05 after the close (Q2 net product revenue $42.8m vs $100.8m a year earlier); its read-through lands after the exit window.",
+    "resolves_by": "2026-11-05",
+    "source": "https://finviz.com/news/401391/organogenesis-holdings-inc-to-report-third-quarter-of-fiscal-year-2026-financial-results-on-november-5-2026",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "Claim that Integra's MicroMatrix is losing share to powder-form entrants amid sales-force turnover",
+    "source": "https://finsee.ai/earnings/iart/2026/q3/en/",
+    "first_hunter_reason": "no_source",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "MDXG.json",
+    "text": "Q2 buyback of ~3.5m shares at $3.67 ($13m) was stopped before the Sanara announcement",
+    "source": "https://www.fool.com/earnings/call-transcripts/2026/08/07/mimedx-mdxg-q2-2026-earnings-call-transcript/",
+    "first_hunter_reason": "duplicate",
+    "i": 8
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MDXG.json",
+    "text": "MiMedx intra-quarter update or September investor-conference commentary (Cantor 9/9, Lake Street 9/10): only the meeting notice found, no reported remarks (https://mimedx.gcs-web.com/node/19121)",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MDXG.json",
+    "text": "EDGAR filings since 2026-07-29: no Form 4 insider activity after 2026-07-07, no 8-K other than the 2026-10-16 Second Request; 8-K/A of 2026-08-11 amends the merger 8-K (https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001376339&type=&dateb=&owner=include&count=40)",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MDXG.json",
+    "text": "CMS WISeR prior-authorization corrective action in Q3 2026: nothing found",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MDXG.json",
+    "text": "Q3 2026 trading updates from Smith+Nephew and Convatec: not yet published inside the window",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "MDXG.json",
+    "text": "MiMedx standalone management projections in Sanara's DEFM14A: only Sanara forecasts tabulated in the part read",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-28/PRCH",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "PRCH",
+   "event_date": "2026-10-28",
+   "session": "amc",
+   "as_of_utc": "2026-10-28T17:16:40+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-28",
+    "spot": 17.59,
+    "run_up_5d_pct": -5.38,
+    "run_up_20d_pct": 5.58,
+    "pct_from_52w_high": -5.38,
+    "pct_from_52w_low": 174.84,
+    "realised_vol_20d_annualised_pct": 39.5,
+    "avg_volume_20d": 1507710
+   },
+   "cik": "0001784535",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-29",
+      "session": "amc",
+      "move_pct": 16.02
+     },
+     {
+      "event_date": "2026-04-28",
+      "session": "amc",
+      "move_pct": 17.93
+     },
+     {
+      "event_date": "2026-02-11",
+      "session": "amc",
+      "move_pct": 12.52
+     },
+     {
+      "event_date": "2025-11-05",
+      "session": "amc",
+      "move_pct": -33.4
+     },
+     {
+      "event_date": "2025-08-05",
+      "session": "amc",
+      "move_pct": 21.88
+     },
+     {
+      "event_date": "2025-05-06",
+      "session": "amc",
+      "move_pct": 67.98
+     },
+     {
+      "event_date": "2025-02-25",
+      "session": "amc",
+      "move_pct": 74.14
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 21.88,
+    "max_abs_move_pct": 74.14,
+    "up_count": 6,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91.5,
+    "ratio": 0.99,
+    "last_print": "2026-07-29",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 92-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 23,
+    "atm_strike": 17.5,
+    "atm_iv_pct": 99.8,
+    "straddle_implied_move_pct": 20.32,
+    "event_implied_move_pct": 18.66,
+    "event_implied_move_basis": "20.32% straddle over 23 calendar days less 10.09% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -6.29,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.69,
+    "total_open_interest": 15703,
+    "atm_spread_frac_of_mid": 0.216,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 10.94,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 18.66,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue $133.4M (range $129.5-138.0M, 6 analysts) and EPS $0.02, Walnut Invest (https://walnutinvest.com/stocks/prch/forecast, updated Oct 2026); Benzinga agrees at $133.2M / $0.02 (https://www.benzinga.com/quote/PRCH/earnings-forecasts). FY consensus $514.1M sits inside the company guide of $506-517M (Porch-owned segments, https://www.sec.gov/Archives/edgar/data/0001784535/000178453526000046/prch-20260729xexx991.htm), so consensus is on the Porch-owned (ex-Reciprocal) basis. Two agreeing sources, so the bar is sourced. Caveat: Benzinga's Q2 'estimate' was $122.6M against $131.8M Porch-owned / $140.9M consolidated, so the aggregators' basis has been loose.",
+   "positioning_check": "Short interest 16,481,840 shares = 14.52% of shares outstanding, 9.32 days to cover, settlement 2026-09-30 (down 4.9% from 17.33M / 12.9 DTC on 2026-09-15), per https://altindex.com/ticker/prch/short-interest. As a share of float it is higher (other sources show 19.8-21.8% of float). A large part is plausibly convert-arbitrage hedging: $134.0M 9% 2030 notes convert at $15.72, in the money at a $17.59 spot (~8.5M shares), and $333.3M 6.75% 2028 notes convert at $25.00 (~13.3M shares), per https://www.sec.gov/Archives/edgar/data/0001784535/000178453526000046/prch-20260729xexx991.htm and the 2025 notes release. Skew: 25d put minus call is -6.29 vol points, so upside is paid. Put/call OI 0.69. Event-implied move 18.66%. The stock is +42% since the close before the Q2 print ($12.36 on 2026-07-29 to $17.59) and -5.4% from its 52-week high; the average analyst target is ~$18.42 (MarketBeat 2026-08-02).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "Q3 consensus of $133.4M Porch-owned revenue (Walnut, 6 analysts; Benzinga $133.2M) implies only ~16% y/y growth on Q3 2025's $115.1M Porch Shareholder Interest revenue, against 23% y/y in Q2 2026 ($131.8M) and 29% in Q1 2026 ($109.4M). Last year Q3 Porch-owned revenue was 7% above Q2. Holding Q2's 23% growth gives ~$141.6M, about 6% above the bar.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001784535/000178453526000046/prch-20260729xexx991.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "Beats have been bought on 6 of the last 7 prints: Q2 2026 +16.0% (revenue $140.9M vs $122.6M estimate), Q1 2026 +17.9%, Q4 2025 +12.5%. The exception is Q3 2025: revenue $115.1M against $111.2M and EBITDA $20.6M against $16.7M (both beats), net loss -$10.9M, stock -33.4% (https://www.itiger.com/news/1103112742).",
+    "why_not_priced": "The bar itself shows sell-side has not extrapolated H1 growth: $133.4M is only 1.2% above Q2's $131.8M. If the street had priced Q2's trend, the consensus would sit near $140M and the estimate range ($129.5-138.0M) would not lie entirely below a 23%-growth outcome. The 42% run-up and upside skew show a beat is partly expected anyway, so this is sized well below the implied move.",
+    "independence": "The consensus comes from https://walnutinvest.com/stocks/prch/forecast and Benzinga. Q3 2025 base: https://www.businesswire.com/news/home/20251105000353/en/Porch-Group-Reports-Third-Quarter-2025-Results. Q1 2026: https://www.sec.gov/Archives/edgar/data/0001784535/000178453526000028/prch-20260428xexx991.htm. Shares the Q2 exhibit with the guidance finding.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "The FY2026 guide implies a conservative H2 that the company has already raised past twice. Guide: Porch-owned revenue $506-517M, adj. EBITDA $119-125M, raised from $495-507M / $103-109M in April and $475-490M / $98-105M in February. H1 actuals were revenue $241.2M ($109.4M + $131.8M) and EBITDA $58.8M ($19.7M + $39.1M). That leaves H2 at $265-276M revenue, about Q2 x2, and $60-66M EBITDA, below Q2 x2 = $78M. In 2025, Q3 EBITDA ($20.6M) was above Q2's (~$15.6M).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001784535/000178453526000046/prch-20260729xexx991.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "The guide was raised at the Q1 and Q2 2026 prints, with +17.9% and +16.0% reactions, and at Q3 2025 (gross profit and EBITDA raised), which fell 33.4% after a large run.",
+    "why_not_priced": "FY revenue consensus of $514.1M sits inside the guide, below the top, so the street models H2 at the guide and not at the H1 run-rate. A priced raise would show consensus above $517M and EBITDA above $125M. The shares' 42% rise since July is consistent with a raise being partly expected, so the size is kept below a third of the implied move.",
+    "independence": "Q1 exhibit for the prior guides: https://www.sec.gov/Archives/edgar/data/0001784535/000178453526000028/prch-20260428xexx991.htm. On the Q2 call (https://www.webull.com/news/15364638842037248) management said it was 'ahead of schedule' on medium-term targets. Shares the Q2 exhibit with the reported-quarter finding, but rests on a different line: the full-year range against the run-rate.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "On the Q2 call the CFO said the company expects $345M of Reciprocal Written Premium in H2 to reach the $600M FY target. H2 2025 RWP was $263.2M (Q3 $137.5M + Q4 $125.7M), so $345M needs +31% y/y. H1 2026 grew +17% ($254.3M) and Q2 only +16%, while RWP per policy fell 16% and competitors priced aggressively from May. Q3 is the first test. Policies would need to rise from 58.7k toward ~65k at roughly $2,600 per policy to put Q3 near $170M; a Q3 of ~$155-165M would leave Q4 needing +45% and put the $600M target in doubt.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.webull.com/news/15364638842037248",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "RWP decelerated in Q2 (+16%) and the stock still rose 16% on the revenue beat and raise, so this line has been looked through while EBITDA beats. It has not yet been tested against an explicit H2 RWP number the company put on record.",
+    "why_not_priced": "Previews and the aggregators carry revenue and EPS but no RWP estimate. The H2 $345M figure comes from the call, not the release, and the +31% arithmetic against H2 2025 needs Q3 and Q4 2025 RWP from two older releases. If priced, the July-October rally would have stalled on RWP and the skew would not pay upside. Net of the rest of the company: Insurance Services revenue grew 38% in Q2 on 16% RWP growth, and the revenue/EBITDA guide does not depend on hitting $600M, so this is sized below the beat findings.",
+    "independence": "FY2025 RWP $480.9M and Q4 $125.7M: https://www.businesswire.com/news/home/20260211650821/en/Porch-Group-Reports-Fourth-Quarter-2025-Results. Q3 2025 RWP $137.5M: https://www.businesswire.com/news/home/20251105000353/en/Porch-Group-Reports-Third-Quarter-2025-Results. Competitive pricing in May and the target's dependence on pricing and agent incentives: https://www.nasdaq.com/articles/porch-group-q2-earnings-call-highlights (summary of the same call, so not independent of the source).",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "The Reciprocal's Q3 should print strong capital. Q3 2026 was a benign catastrophe quarter: Texas hail reports were down ~70% in H1 2026 against the 2023-25 average (Moody's), global insured cat losses for 9M 2026 were 29% below the 10-year average, the Atlantic season was quiet through Q3, and the first hurricane landfall was 9 Oct in Florida. The Reciprocal is Texas-heavy. Q2's gross loss ratio was 38% with Q2 the 'highest weather' quarter. The Reciprocal also holds ~16.2M PRCH shares, up from ~$12.6 (late July) to $16.66 at 30 Sept, which lifts the 'surplus plus non-admitted assets' headline by roughly $60-70M.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.moodys.com/web/en/us/insights/insurance/united-states-severe-convective-storm-losses-quieter-and-less-costly-during-first-half-2026.html",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "Management leads with Reciprocal surplus: it cited $412M of surplus plus non-admitted assets at Q3 2025, which fell 33% on other lines. No clean history of a surplus surprise moving the stock on its own.",
+    "why_not_priced": "Partly priced: benign weather is public, and Porch-owned EBITDA is largely insulated from Reciprocal losses since the legacy captive contract ended. The value is in the surplus headline and growth capacity before the Allied Trust closing, which is said to be surplus-neutral. This is macro-to-company transmission not confirmed by Porch for Q3, so it is sized small.",
+    "independence": "Proxy. Q3 cat data from Gallagher Re via https://www.claimsjournal.com/news/national/2026/10/21/340831.htm (2026-10-21). Reciprocal's 16.2M PRCH holding is in the Q2 exhibit, https://www.sec.gov/Archives/edgar/data/0001784535/000178453526000046/prch-20260729xexx991.htm. Prices from Yahoo daily bars.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "On 13 Oct 2026 Porch agreed to buy Allied Trust's Texas carrier, MGA and captive reinsurer for $200M. Porch-owned HoldCo pays $95M ($75M cash + up to $20M stock) for the MGA and captive. Management guides ~$200M of added RWP and ~$25M of adj. EBITDA (ex-Reciprocal) at under 4x. Closing is not before 1 Jan 2027. The call is the first chance for a 2027 framework that includes it.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.sec.gov/Archives/edgar/data/1784535/000178453526000054/prch-20261013.htm",
+    "source_date": "2026-10-13",
+    "reaction_history_on_this_line": "On announcement the stock went $17.69 to $17.22 (13 Oct) and $16.44 (14 Oct, -7.1% over two days), then recovered to $17.57 on 15 Oct and $18.59 on 21 Oct. The deal was digested at roughly flat.",
+    "why_not_priced": "Mostly priced: public for two weeks and the stock round-tripped. What is unpriced is any 2027 outlook combining organic growth with the $25M of deal EBITDA (FY26 guide midpoint $122M). Financing question answered: the $75M cash buys a ~4x-EBITDA earnings stream, not distress, so the sign is non-negative.",
+    "independence": "Terms and the $25M EBITDA / $200M RWP figures: https://www.reinsurancene.ws/porch-group-to-acquire-allied-trusts-insurance-carrier-and-mga/ (reporting the company's own release, same underlying document).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "Expectations are high into the print. PRCH is +42% from the $12.36 close before the Q2 print to $17.59, -5% from its 52-week high, and near the ~$18.42 average analyst target. Q3 2025 was the same setup, with the stock up 68% and 22% on the two prior prints: a revenue and EBITDA beat with a raised guide fell 33.4% when the market focused on the net loss.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-29",
+    "source": "https://www.itiger.com/news/1103112742",
+    "source_date": "2025-11-06",
+    "reaction_history_on_this_line": "Q3 2025 -33.4% on a beat after a large run. Q2 2026 +16.0% from a much lower base ($12.36, after a weak spring).",
+    "why_not_priced": "The options market does not price this: skew is -6.3 vol points (upside paid) and put/call OI is 0.69, so the crowd is leaning long into the print. Short interest is 14.5% of shares outstanding with 9.3 days to cover, which can drive a squeeze. Much of it is likely convert-hedge, but it is still a reason to keep this negative small. Management has guided to positive FY net income, so last year's specific trigger (a net loss) is less likely.",
+    "independence": "Prices from Yahoo daily bars (query1.finance.yahoo.com chart v8, read 2026-10-28). Analyst target: https://www.marketbeat.com/instant-alerts/porch-group-inc-nasdaqprch-given-average-rating-of-moderate-buy-by-brokerages-2026-08-02/. Short interest: https://altindex.com/ticker/prch/short-interest.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "Insider selling into the print was small and routine. CRO/insurance head Matthew Neagle sold 31,250 shares at $18.01 on 20 Oct under a 10b5-1 plan adopted 15 June 2026 (holds 1.79M after). CFO Shawn Tabak sold 9,436 shares on 5-6 Oct as issuer-mandated sell-to-cover on RSU vesting.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-10-22",
+    "source": "https://www.sec.gov/Archives/edgar/data/1784535/000183733626000050/xslF345X06/wk-form4_1792705123.xml",
+    "source_date": "2026-10-22",
+    "reaction_history_on_this_line": "No history of Form 4 sales moving this stock.",
+    "why_not_priced": "Public on EDGAR and not informative: pre-planned and sell-to-cover. Filed for completeness at near zero.",
+    "independence": "CFO Form 4: https://www.sec.gov/Archives/edgar/data/1784535/000195432726000051/xslF345X06/wk-form4_1791410431.xml",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "Hurricane Isaias made a Cat-2 landfall in the Florida Panhandle on 9 Oct 2026 (~47,000 claims, ~$582M insured, Gallagher Re). It is a Q4 event and could appear as a comment in the Q4 outlook if HOA/Reciprocal has Panhandle exposure. Exposure is unverified; the Reciprocal is Texas-led and HOA writes in 22 states.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-10-28",
+    "source": "https://www.claimsjournal.com/news/national/2026/10/21/340831.htm",
+    "source_date": "2026-10-21",
+    "reaction_history_on_this_line": "Q3 2024 hurricane claims of ~$37M net (Beryl, Helene) were discussed on that call; no clean reaction attributable to them.",
+    "why_not_priced": "The storm is public. What is unknown is Porch's Florida exposure, which is likely small, hence near-zero size.",
+    "independence": "None. A proxy with no company confirmation.",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "The 9.00% convertible notes due 2030 ($134.0M, conversion price $15.72) become callable from 20 Nov 2026 if PRCH trades at or above 120% of conversion (~$18.86) on 20 of 30 trading days. A forced conversion would retire high-coupon debt. Any call is after the exit window, though the call could flag intent.",
+    "resolves_by": "2026-11-20",
+    "source": "https://www.businesswire.com/news/home/20250527445928/en/Porch-Group-Announces-Closing-of-Transaction-Retiring-Majority-of-2026-Unsecured-Notes-and-Plans-to-Retire-Additional-Debt-With-Limited-Anticipated-Dilution-to-Stockholders/",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "Allied Trust closing (Texas DOI approval required, not before 1 Jan 2027, outside date 1 Apr 2027).",
+    "resolves_by": "2027-03-31",
+    "source": "https://www.sec.gov/Archives/edgar/data/1784535/000178453526000054/prch-20261013.htm",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "Debut $100M Harbor Crest Re 2026-1 cat bond, priced at the low end of reduced guidance (July 2026)",
+    "source": "https://www.artemis.bm/news/porch-secures-debut-100m-harbor-crest-re-2026-1-catastrophe-bond-at-lower-pricing/",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "HOA launched in Michigan, its 22nd state (20 May 2026)",
+    "source": "https://www.businesswire.com/news/home/20260520147631/en/",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "beinsure claim that the 2026 Atlantic season passed with no US hurricane landfall",
+    "source": "https://beinsure.com/2025-atlantic-hurricane-season-shows-intensity-risk-despite-no-us-landfalls/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "iTiger preview showing Q3 revenue ~$123.9M and EPS -$0.04",
+    "source": "https://www.itiger.com/news/1198459934",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 13
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "PRCH.json",
+    "text": "Earnings calendars listing the Q3 report for 4 or 9 November 2026",
+    "source": "https://unusualwhales.com/stock/PRCH/earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PRCH.json",
+    "text": "Any Porch press release or 8-K between the Q2 print and 13 Oct, and between 13 Oct and the print (EDGAR submissions show only Form 4/144s besides the Allied 8-K)",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PRCH.json",
+    "text": "September 2026 investor-conference commentary on RWP or Q3 trends (none found)",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PRCH.json",
+    "text": "Q3 2026 Texas-specific hail or hurricane loss events (none found; no 2026 Texas landfall)",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PRCH.json",
+    "text": "Peer prints after 29 July with Texas homeowners commentary: Goosehead reports 9 Nov, after the window; Travelers/Allstate Q3 2026 results were not retrievable",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PRCH.json",
+    "text": "Q3 2026 price-target changes or previews (none dated after early August)",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "PRCH.json",
+    "text": "Short interest after the 30 Sept settlement (Nasdaq API unavailable)",
+    "i": 20
+   }
+  ]
+ }
+]
