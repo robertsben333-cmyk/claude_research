@@ -15,3 +15,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-10-28 14:34 UTC
 - All 20 hunts banked and scored; 20 ranked. AL2SI -4.50 the only name above floor 2.8. 20 packs, four -intl- judges.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-10-28 14:42 UTC
+- 20 ranked: BOHUS +1.40 top ... AL2SI -4.50 (only floor-clearer; hunter dates release amc, so sealed bmo window likely holds no release). Panel 4/4 members, no fallback, 4 selected: FDR long (4/4, pct 83), AL2SI short (3/4, 93), EPR short (3/4, 81), NESTE long (3/4, 80). anchor_covered 5/20; es 3 names, pl 0; 5 se/fi names need resolving within ~a week. AMP also amc per hunter. Note: europe/europe-note.md. No orders. Published to main (EARNINGS_DATA_BRANCH=main) from a fresh branch off origin/main, because local main had diverged.
