@@ -39,3 +39,7 @@
 ## Split panel 4/4 — done
 - Logged at 2026-10-28 18:25 UTC
 - panel 4/4 judges; selected BAND (98L), VNDA (91S), CYH (91S). CYH is selected on the OPPOSITE side to stage E-P (90L*). Claim-to-done ~12 min; fired ~1h late (claim 18:13 UTC).
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-10-28 18:27 UTC
+- 5 of 5 returned by 18:21 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out; edge_score: 5 rankable, 1 (BFLY +3.20) above the 2.8 floor
