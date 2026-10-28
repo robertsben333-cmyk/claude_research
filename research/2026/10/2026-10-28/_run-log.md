@@ -78,3 +78,11 @@
 ## Edge hunt (panel) — searcher progress
 - Logged at 2026-10-28 17:39 UTC
 - 17:39 UTC: 11 of 20 searchers returned (VNDA MDXG MVIS AWRE CLPT TDOC PRCH HDSN VKTX + files). VKTX searcher reported a shared 200-call WebSearch limit exhausted mid-hunt; later searchers told to fall back to WebFetch on primary sources.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-28 17:52 UTC
+- 20/20 searchers returned by ~17:51 UTC (unpriced-searcher, native, Opus 5.5; all 20 events company-confirmed). Several (VKTX, CYH, LENZ, HRTG, MAX) reported the WebSearch budget running out mid-hunt and fell back to WebFetch. mode: execution enabled. flatten --submit at 17:52 UTC: 0 positions held (the 10-27 book had already exited), nothing to sell.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-28 17:52 UTC
+- 20 packs, four judges, one part. edge_score and V2 grounded written ~17:53 UTC, before the first print.
