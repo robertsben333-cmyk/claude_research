@@ -14,7 +14,7 @@ at 11:36:59 UTC: prompt identical to the block below, model `claude-opus-5-5` (p
 2026-10-14 17:08 UTC, no MCP connectors, empty `sources` and `outcomes` (step 0 clones the
 repo; the prompt's `EARNINGS_DATA_BRANCH=main` decides where the data lands).
 
-- Cron `8 17 * * 1-5` = 17:08 UTC, two minutes after stage E-P (`6 17`) and four after
+- Cron `CRON_TZ=America/New_York 8 13 * * 1-5` since 2026-10-28 (was `8 17 * * 1-5` = 17:08 UTC), two minutes after stage E-P (`6 17`) and four after
   stage E, so all three seal their baselines on the same afternoon quotes.
 - Fresh session per fire, model `claude-opus-5-5` for the orchestrating session, as
   stage E-P. Searchers `unpriced-searcher-fable` (`claude-fable-5-1`), sweep `edge-sweep`,

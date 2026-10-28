@@ -1,7 +1,7 @@
 # The Routine prompt for stage EU
 
 **The Routine exists: `trig_018WGfdq2fUm1ZqJhCGQ1wde`, "Stage EU — Europe researcher (10
-markets)", cron `30 13 * * 1-5`, enabled, created 2026-09-19 at 08:24 UTC, prompt
+markets)", cron `CRON_TZ=Europe/Amsterdam 30 15 * * 1-5` since 2026-10-28 (15:30 Amsterdam all year; was `30 13 * * 1-5`), enabled, created 2026-09-19 at 08:24 UTC, prompt
 re-pasted from this file by a session at 13:25 UTC when the stage went from three markets
 to ten.** Check it against `list_triggers` rather than against this line.
 

@@ -20,7 +20,7 @@ model `claude-opus-5-5`, cron `6 17 * * 1-5`, enabled, next run 2026-10-02 17:06
 populated repository source and an `outcomes` branch of `claude/upbeat-hopper` (which the
 prompt's `EARNINGS_DATA_BRANCH=main` overrides for the data).
 
-- Cron `6 17 * * 1-5` = 17:06 UTC, two minutes after stage E, so both seal their baselines
+- Cron `CRON_TZ=America/New_York 6 13 * * 1-5` since 2026-10-28 (was `6 17 * * 1-5` = 17:06 UTC), two minutes after stage E, so both seal their baselines
   on the same afternoon quotes.
 - Fresh session per fire. Searchers `unpriced-searcher` (Opus 5.5), sweep `edge-sweep`,
   judges `panel-judge-opus5/-opus55/-sonnet55/-fable51`, each pinned to a full model ID.

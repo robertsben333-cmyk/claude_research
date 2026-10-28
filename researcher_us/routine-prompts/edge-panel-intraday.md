@@ -22,7 +22,7 @@ One Routine, "US - Intraday panel":
 - **Environment: "full env"**, the one every research Routine on this account uses.
 - **Fresh session per fire.** Repository `robertsben333-cmyk/claude_research`, branch
   `main`. No connectors needed.
-- The cron must move an hour on or after 2026-11-02, when New York leaves daylight time.
+- The Routines were made as `CRON_TZ=America/New_York 57 9` and `57 11 * * 1-5`, so they follow New York daylight time by themselves and need no move on 2026-11-02.
   The prompt reads the clock in New York itself, so a fire an hour off is labelled with
   its own time rather than filed under the wrong slot.
 

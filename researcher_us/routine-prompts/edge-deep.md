@@ -9,7 +9,7 @@ default: its first fire (2026-10-07 17:35 UTC, `cse_01SN11L8UQ6HcAj9zo9VuDxY`) r
 orchestrating session on **`claude-sonnet-5-5`**. The researchers are pinned to Opus 5.5 in
 their own definition, so the research itself is unaffected; the orchestrator is not. A
 session did not change it, because a Routine's model moves only on the operator's word.
-**The UTC cron must move to `35 18 * * 1-5` on or after 2026-11-02.**
+**The UTC cron must move to `35 18 * * 1-5` on or after 2026-11-02, or better be set to `CRON_TZ=America/New_York 35 13 * * 1-5` in the Routines UI (a session cannot edit this Routine; refused 2026-10-28).**
 
 - **Schedule: weekdays at 13:30 America/New_York.** In the UI pick that time zone, so it
   follows US daylight saving by itself. In a UTC cron it is `30 17 * * 1-5`, and **that

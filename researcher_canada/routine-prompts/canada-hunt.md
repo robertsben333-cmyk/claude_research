@@ -1,6 +1,6 @@
 # Stage CA Routine prompt — the Canada researcher
 
-Proposed cron `30 18 * * 1-5` — **18:30 UTC = 14:30 Toronto = 20:30 Amsterdam.**
+Cron `CRON_TZ=America/Toronto 30 14 * * 1-5` since 2026-10-28 — **14:30 Toronto all year** (was `30 18 * * 1-5`, 18:30 UTC, right only in Toronto summer time).
 
 **THE HOUR IS LOAD-BEARING AND IT IS NOT NEGOTIABLE THE WAY THE OTHER STAGES' ARE.**
 Toronto trades 09:30–16:00 ET. Outside that window the Montreal Exchange's option chain

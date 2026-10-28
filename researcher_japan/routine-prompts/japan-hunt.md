@@ -1,6 +1,6 @@
 # Stage J Routine prompt — the Japan researcher
 
-Cron `4 1 * * 1-5` — **01:04 UTC = 10:04 JST = 03:04 Amsterdam.**
+Cron `CRON_TZ=Asia/Tokyo 4 10 * * 1-5` since 2026-10-28 (was `4 1 * * 1-5`, the same instant: Japan has no daylight time) — **10:04 JST.**
 
 **Tokyo closes more often than you think, and the Routine fires anyway.** Next week is
 the worked example: 2026-09-21, 09-22 and 09-23 are 敬老の日, a 国民の休日 and 秋分の日,
