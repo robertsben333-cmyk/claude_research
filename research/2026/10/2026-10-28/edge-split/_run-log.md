@@ -35,3 +35,7 @@
 ## Split panel 1/4 — panel done
 - Logged at 2026-10-28 18:22 UTC
 - 4 of 4 judges on pinned models, 5/5 coverage; selected NVCR long 98, MVIS short 90; scored --dry-run at 18:22 UTC
+
+## Split panel 4/4 — done
+- Logged at 2026-10-28 18:25 UTC
+- panel 4/4 judges; selected BAND (98L), VNDA (91S), CYH (91S). CYH is selected on the OPPOSITE side to stage E-P (90L*). Claim-to-done ~12 min; fired ~1h late (claim 18:13 UTC).
