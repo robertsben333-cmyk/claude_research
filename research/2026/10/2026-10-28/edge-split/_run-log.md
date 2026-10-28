@@ -7,3 +7,7 @@
 ## Split panel 2/4 — STARTED
 - Logged at 2026-10-28 18:12 UTC
 - MDXG, PRCH, MAX (amc 10-28), BFLY, HIPO (bmo 10-29); E-P's sweep and baselines from 9f2b3de6, edge-panel/hunts: the names stage E-P hunted; claimed 18:12 UTC
+
+## Split panel 3/4 — STARTED
+- Logged at 2026-10-28 18:12 UTC
+- CLPT, HDSN, HRTG (amc 10-28), ESTA, XRX (bmo 10-29); E-P's sweep and baselines from 9f2b3de6, names_basis edge-panel/hunts; claimed 18:13 UTC, an hour after the scheduled fire
