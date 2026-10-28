@@ -32,3 +32,7 @@
 ## Stage J — wave 1 launched
 - Logged at 2026-10-28 01:07 UTC
 - Universe: 46 scheduled, 39 eligible (7 dropped on turnover), 25 hunted, method "random sample of 39 eligible, seed 'jp-2026-10-28'". calendar_as_of 2026-10-01. Short register 20261027 (626 codes). provenance jp.v5 / claude-opus-5-5. Five waves of 5. Wave 1: 1930 2002 2664 2760 3003.
+
+## Stage J — resolved 2026-10-26
+- Logged at 2026-10-28 01:08 UTC
+- jp_resolve: 5/5 usable, impact_sum rho 0.0 (p 1.0), free control 0.4, sign right 1/5, lean_vs_free_control_rho 0.70 (5 names; short_squeeze/short_building unresolvable, no register positions). Panel resolved too. One day is not a result.
