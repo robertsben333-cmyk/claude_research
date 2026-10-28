@@ -58,3 +58,11 @@
 - Guard mode --require-exit-tif opg: exit 0 (amc_open, amc exit as market DAY order).
 - verify: 14 exit legs, all ok, nothing held, no UNFILLED legs.
 - close --submit: no exit legs due today, nothing sent, no refusals. Last positions (MANU, WOR) flat since 09-23. Run files rewritten with refreshed fill status only.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-10-28 13:27 UTC
+- Routine fired late: 13:26 UTC = 09:26 ET (scheduled 09:10 ET), past the 09:24 compile deadline. Source research/2026/10/2026-10-27/edge-panel. Picking + compiling without analysts; no time for reviews before the 09:30 open.
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-28 13:28 UTC
+- Late fire (13:26 UTC = 09:26 ET, scheduled 09:10 ET): 8 picks (BOOM, OI, RBBN, ENPH, LUNG, KIDS amc; AMRN, JMKE bmo), snapshot taken, NO analysts launched because the 09:24 compile deadline had passed and the open was 3 minutes away; compiled as Geen advies for all 8 (static rule stands). Previous morning 2026-10-27 resolved; pool: 42 names / 7 days, review_minus_static -0.078 (t -0.18).
