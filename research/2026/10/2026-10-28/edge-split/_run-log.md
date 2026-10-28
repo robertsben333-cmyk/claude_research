@@ -23,3 +23,7 @@
 ## Split panel 1/4 — searchers done
 - Logged at 2026-10-28 18:18 UTC
 - 5 of 5 returned by 18:17 UTC (unpriced-searcher agent, not fallback); guard moved nothing; no searcher reported its search budget running out; TDOC searcher notes one rejected_candidate (Dimensional 13G) mislabelled contradicted_by_document, left as written
+
+## Split panel 3/4 — searchers done
+- Logged at 2026-10-28 18:21 UTC
+- 5 of 5 returned by 18:21 UTC (unpriced-searcher agent, Opus 5.5); guard moved nothing; no searcher reported its search budget running out; edge_score: 5 rankable, 1 above the 2.8 floor (HRTG +4.10)
