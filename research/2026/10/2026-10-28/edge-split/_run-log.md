@@ -15,3 +15,7 @@
 ## Split panel 2/4 — searchers launched
 - Logged at 2026-10-28 18:12 UTC
 - 5 unpriced-searcher (agent form) launched in one message at 18:12 UTC, amc first: MDXG, PRCH, MAX, BFLY, HIPO
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-10-28 18:13 UTC
+- VNDA, FVRR, AWRE, CYH, BAND; E-P's sweep and baselines from 9f2b3de6; edge-panel/hunts: the names stage E-P hunted. Fired late: claim at ~18:11 UTC (14:11 ET), not 17:07-17:10.
