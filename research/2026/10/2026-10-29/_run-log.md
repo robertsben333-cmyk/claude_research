@@ -75,3 +75,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-10-29 17:20 UTC
 - Sweep finished ~17:21 UTC (24 of 167 checked): 14 company-confirmed with session settled (amc 10-29: ALHC CDNA MIAX PTCT ATEC COLM SPSC SUPN FND OSPN INTC AMZN; bmo 10-30: CPRI CRI), 10 unconfirmed, 0 phantoms, 143 unchecked. Cap 20 not reached by confirmed names, so the 6 highest-priority unconfirmed are hunted too (REAL AXTI COUR STOK PINS GDYN; each searcher checks the event itself, a non-event goes unrankable). Shed: CVCO RDDT MSTR STRZ (unconfirmed, lower priority) and all unchecked. Searchers unpriced-searcher, amc first, at most 8 per turn.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-29 17:45 UTC
+- 20/20 searchers returned by 17:45 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20, no searcher reported a refused search. All 20 events confirmed by the searchers (the 6 sweep-unconfirmed REAL AXTI COUR STOK PINS GDYN confirmed amc 10-29; PINS from options expiry + 3rd-party + CFO 8-K, no company notice). AMZN and INTC baselines sealed empty (bars_failed: HTTPError); their searchers sourced spot/implied move from press. mode: execution enabled, amc_open. flatten --submit at 17:46 UTC: 3 positions held (BAND 27 +2.70%, BFLY 228 -1.61%, NVCR 97 -3.68%, unrealised), all closed; account flat.
