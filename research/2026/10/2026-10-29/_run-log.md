@@ -27,3 +27,7 @@
 ## Stage J — wave 1 launched
 - Logged at 2026-10-29 01:07 UTC
 - Universe: 127 scheduled, 106 eligible (21 dropped on turnover), 25 hunted, random sample seed 'jp-2026-10-29'. calendar_as_of 2026-10-01. provenance jp.v5 / claude-opus-5-5. Wave 1: 1946 2594 3116 3199 4347.
+
+## Stage J — resolved 2026-10-27
+- Logged at 2026-10-29 01:07 UTC
+- jp_resolve: 25/25 usable, impact_sum rho -0.313 (p 0.125), free control 0.055, lean_vs_free_control_rho 0.435. Panel: rho panel_pct -0.483 (p 0.01), selected 6 names 1 right, mean signed -6.22%. One day is not a result.
