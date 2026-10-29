@@ -23,3 +23,7 @@
 ## Split panel 4/4 — searchers launched
 - Logged at 2026-10-29 18:16 UTC
 - 5 unpriced-searcher (agent form) in one message at 18:16Z: PTCT SPSC OSPN GDYN (amc) then CRI (bmo); GDYN told to settle its own event (sweep unconfirmed)
+
+## Split panel 1/4 — searchers done
+- Logged at 2026-10-29 18:19 UTC
+- 5 of 5 returned by 18:19 UTC (unpriced-searcher agent, not fallback); guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished of 5). INTC's sealed baseline had bars_failed: HTTPError, searcher used third-party implied move.
