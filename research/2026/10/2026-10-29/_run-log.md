@@ -67,3 +67,7 @@
 ## Stage EU — Europe researcher — DONE
 - Logged at 2026-10-29 15:44 UTC
 - Sealed for 2026-10-30 (Fri). 61 scheduled, 33 eligible, 20 hunted (es 6, no 5, de 2, fr 2, uk/se/dk/fi/pl 1). 18 ranked: top EBP +1.10, SAN +0.95; bottom ACX -1.20, GXI/TRIFOR -0.90; none above floor 2.8. GSJ and SCYR phantom dates (SCYR reports 2026-11-03 amc). Panel 4/4 members, no fallback, 2 selected: ACX short (4/4, pct 90), GXI short (3/4, 79). anchor_covered 4/20; es+pl 7 names. scripts/hunt_status.py absent from main (backstop not run; all 20 hunts search_complete true). No European run after 2026-10-16 is resolved; Nordic names from 10-19 on are near their ~12-day archive window. Note: europe/europe-note.md. No orders. Pushing to main (EARNINGS_DATA_BRANCH=main).
+
+## Edge hunt (panel) — 2026-10-29 amc + 2026-10-30 bmo — STARTED
+- Logged at 2026-10-29 17:16 UTC
+- Stage E-P fire 17:06 UTC (session start 17:09). Universe 167 names (117 amc 10-29, 50 bmo 10-30), baselines sealed for all 167 in edge-panel/baselines before any agent (17:16 UTC). Plan: one edge-sweep, up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
