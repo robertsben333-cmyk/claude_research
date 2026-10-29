@@ -43,3 +43,7 @@
 ## Stage J — wave 3 banking
 - Logged at 2026-10-29 01:27 UTC
 - Banked 13/25: 1946 2594 3116 3199 4347 4366 4502 5482 6345 6349 6419 6471 6822. Running: 6810 6902 7259 7962 8706. Hunters now told to use per-name scratch subfolders after one reported a shared-scratchpad filename collision.
+
+## Stage J — panel STARTED
+- Logged at 2026-10-29 01:47 UTC
+- 25/25 hunts banked and scored (top 1946 +1.70, 5482 +1.20; bottom 3116/9202 -1.00; none above 2.8). 25 packs, four judges.
