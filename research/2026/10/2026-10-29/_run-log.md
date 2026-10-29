@@ -51,3 +51,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-29 01:56 UTC
 - 25 ranked: top 1946 +1.70, 5482 +1.20; bottom 3116/9202 -1.00; none above floor 2.8. Signs 13+/1 zero/11-. Panel 4/4 members, no fallback, 3 selected (1946 L 4/4, 3116 S 3/4, 6471 L 3/4). 9 names release in-session, 4366 unknown. Resolved 10-27 (lean_vs_free_control_rho 0.435). Judge-definition sizing rule conflicts with hunter-core (reported by opus55 judge), recorded in note. Note: japan/japan-note.md. No orders.
+
+## Close AMC — 2026-10-29
+- Logged at 2026-10-29 11:24 UTC
+- 11:18 UTC. Guard mode --require-exit-tif opg exit 0 (amc_open, amc→day order queued for the open). verify: 14 legs, none held, none UNFILLED. close --submit: no leg due today, no exit orders sent, no refusals. status: nothing open. Stage E's Routine is stopped; stage E-P trades the account.
