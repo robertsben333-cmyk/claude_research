@@ -1,0 +1,2205 @@
+<!doctype html>
+
+
+<html lang="nb">
+<head>
+
+    <meta charset="utf-8"/>
+    
+        <script>
+            try{!function(){var e="Expected a function",t=NaN,n="[object Symbol]",r=/^\s+|\s+$/g,i=/^[-+]0x[0-9a-f]+$/i,o=/^0b[01]+$/i,a=/^0o[0-7]+$/i,c=parseInt,u="object"==typeof global&&global&&global.Object===Object&&global,s="object"==typeof self&&self&&self.Object===Object&&self,f=u||s||Function("return this")(),l=Object.prototype.toString,p=Math.max,v=Math.min,g=function(){return f.Date.now()};function m(t,n,r){var i,o,a,c,u,s,f=0,l=!1,m=!1,b=!0;if("function"!=typeof t)throw new TypeError(e);function O(e){var n=i,r=o;return i=o=void 0,f=e,c=t.apply(r,n)}function y(e){var t=e-s;return void 0===s||t>=n||t<0||m&&e-f>=a}function N(){var e,t,r=g();if(y(r))return w(r);u=setTimeout(N,(t=n-((e=r)-s),m?v(t,a-(e-f)):t))}function w(e){return u=void 0,b&&i?O(e):(i=o=void 0,c)}function x(){var e,t=g(),r=y(t);if(i=arguments,o=this,s=t,r){if(void 0===u)return f=e=s,u=setTimeout(N,n),l?O(e):c;if(m)return u=setTimeout(N,n),O(s)}return void 0===u&&(u=setTimeout(N,n)),c}return n=d(n)||0,h(r)&&(l=!!r.leading,a=(m="maxWait"in r)?p(d(r.maxWait)||0,n):a,b="trailing"in r?!!r.trailing:b),x.cancel=function(){void 0!==u&&clearTimeout(u),f=0,i=s=o=u=void 0},x.flush=function(){return void 0===u?c:w(g())},x}function h(e){var t=typeof e;return!!e&&("object"==t||"function"==t)}function d(e){if("number"==typeof e)return e;if("symbol"==typeof(u=e)||(s=u)&&"object"==typeof s&&l.call(u)==n)return t;var u,s;if(h(e)){var f="function"==typeof e.valueOf?e.valueOf():e;e=h(f)?f+"":f}if("string"!=typeof e)return 0===e?e:+e;e=e.replace(r,"");var p=o.test(e);return p||a.test(e)?c(e.slice(2),p?2:8):i.test(e)?t:+e}var b,O,y,N,w=(b=function(){function e(e){return!isNaN(parseFloat(e))&&isFinite(e)}function t(e){return e.charAt(0).toUpperCase()+e.substring(1)}function n(e){return function(){return this[e]}}var r=["isConstructor","isEval","isNative","isToplevel"],i=["columnNumber","lineNumber"],o=["fileName","functionName","source"],a=r.concat(i,o,["args"]);function c(e){if(e instanceof Object)for(var n=0;n<a.length;n++)e.hasOwnProperty(a[n])&&void 0!==e[a[n]]&&this["set"+t(a[n])](e[a[n]])}c.prototype={getArgs:function(){return this.args},setArgs:function(e){if("[object Array]"!==Object.prototype.toString.call(e))throw new TypeError("Args must be an Array");this.args=e},getEvalOrigin:function(){return this.evalOrigin},setEvalOrigin:function(e){if(e instanceof c)this.evalOrigin=e;else{if(!(e instanceof Object))throw new TypeError("Eval Origin must be an Object or StackFrame");this.evalOrigin=new c(e)}},toString:function(){return(this.getFunctionName()||"{anonymous}")+"("+(this.getArgs()||[]).join(",")+")"+(this.getFileName()?"@"+this.getFileName():"")+(e(this.getLineNumber())?":"+this.getLineNumber():"")+(e(this.getColumnNumber())?":"+this.getColumnNumber():"")}};for(var u=0;u<r.length;u++)c.prototype["get"+t(r[u])]=n(r[u]),c.prototype["set"+t(r[u])]=function(e){return function(t){this[e]=Boolean(t)}}(r[u]);for(var s=0;s<i.length;s++)c.prototype["get"+t(i[s])]=n(i[s]),c.prototype["set"+t(i[s])]=function(t){return function(n){if(!e(n))throw new TypeError(t+" must be a Number");this[t]=Number(n)}}(i[s]);for(var f=0;f<o.length;f++)c.prototype["get"+t(o[f])]=n(o[f]),c.prototype["set"+t(o[f])]=function(e){return function(t){this[e]=String(t)}}(o[f]);return c}(),O=/(^|@)\S+\:\d+/,y=/^\s*at .*(\S+\:\d+|\(native\))/m,N=/^(eval@)?(\[native code\])?$/,{parse:function(e){if(void 0!==e.stacktrace||void 0!==e["opera#sourceloc"])return this.parseOpera(e);if(e.stack&&e.stack.match(y))return this.parseV8OrIE(e);if(e.stack)return this.parseFFOrSafari(e);throw new Error("Cannot parse given Error object")},extractLocation:function(e){if(-1===e.indexOf(":"))return[e];var t=/(.+?)(?:\:(\d+))?(?:\:(\d+))?$/.exec(e.replace(/[\(\)]/g,""));return[t[1],t[2]||void 0,t[3]||void 0]},parseV8OrIE:function(e){return e.stack.split("\n").filter(function(e){return!!e.match(y)},this).map(function(e){e.indexOf("(eval ")>-1&&(e=e.replace(/eval code/g,"eval").replace(/(\(eval at [^\()]*)|(\)\,.*$)/g,""));var t=e.replace(/^\s+/,"").replace(/\(eval code/g,"(").split(/\s+/).slice(1),n=this.extractLocation(t.pop()),r=t.join(" ")||void 0,i=["eval","<anonymous>"].indexOf(n[0])>-1?void 0:n[0];return new b({functionName:r,fileName:i,lineNumber:n[1],columnNumber:n[2],source:e})},this)},parseFFOrSafari:function(e){return e.stack.split("\n").filter(function(e){return!e.match(N)},this).map(function(e){if(e.indexOf(" > eval")>-1&&(e=e.replace(/ line (\d+)(?: > eval line \d+)* > eval\:\d+\:\d+/g,":$1")),-1===e.indexOf("@")&&-1===e.indexOf(":"))return new b({functionName:e});var t=/((.*".+"[^@]*)?[^@]*)(?:@)/,n=e.match(t),r=n&&n[1]?n[1]:void 0,i=this.extractLocation(e.replace(t,""));return new b({functionName:r,fileName:i[0],lineNumber:i[1],columnNumber:i[2],source:e})},this)},parseOpera:function(e){return!e.stacktrace||e.message.indexOf("\n")>-1&&e.message.split("\n").length>e.stacktrace.split("\n").length?this.parseOpera9(e):e.stack?this.parseOpera11(e):this.parseOpera10(e)},parseOpera9:function(e){for(var t=/Line (\d+).*script (?:in )?(\S+)/i,n=e.message.split("\n"),r=[],i=2,o=n.length;i<o;i+=2){var a=t.exec(n[i]);a&&r.push(new b({fileName:a[2],lineNumber:a[1],source:n[i]}))}return r},parseOpera10:function(e){for(var t=/Line (\d+).*script (?:in )?(\S+)(?:: In function (\S+))?$/i,n=e.stacktrace.split("\n"),r=[],i=0,o=n.length;i<o;i+=2){var a=t.exec(n[i]);a&&r.push(new b({functionName:a[3]||void 0,fileName:a[2],lineNumber:a[1],source:n[i]}))}return r},parseOpera11:function(e){return e.stack.split("\n").filter(function(e){return!!e.match(O)&&!e.match(/^Error created at/)},this).map(function(e){var t,n=e.split("@"),r=this.extractLocation(n.pop()),i=n.shift()||"",o=i.replace(/<anonymous function(: (\w+))?>/,"$2").replace(/\([^\)]*\)/g,"")||void 0;i.match(/\(([^\)]*)\)/)&&(t=i.replace(/^[^\(]+\(([^\)]*)\)$/,"$1"));var a=void 0===t||"[arguments not available]"===t?void 0:t.split(",");return new b({functionName:o,args:a,fileName:r[0],lineNumber:r[1],columnNumber:r[2],source:e})},this)}});window.onerror=function(t,n,r){var i=!0,o=!0;if("function"!=typeof t)throw new TypeError(e);return h(r)&&(i="leading"in r?!!r.leading:i,o="trailing"in r?!!r.trailing:o),m(t,n,{leading:i,maxWait:n,trailing:o})}(function(e,t,n,r,i){var o,a;i&&(o=w.parse(i)),window.location&&window.location.href&&(a=window.location.href),function(e){try{var t=new XMLHttpRequest;t.open("POST","/LogServlet",!0),t.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8"),t.send("javascriptError="+encodeURI(e))}catch(e){}}(JSON.stringify({userAgent:navigator.userAgent,url:a,logger:"apne_nettsider",message:e,source:t,lineno:n,colno:r,stacktrace:o}))},200)}()}catch(e){}
+        </script>
+    
+
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=yes"/>
+    
+    
+    
+
+    
+        <meta itemprop="category"/>
+    
+
+    
+
+    <meta property="og:url" content="https://www.sparebank1.no/nb/nord-norge/om-oss/investor.html"/>
+    <meta property="og:title" content="Investor"/>
+    <meta property="og:description"/>
+    <meta property="og:image" content="https://www.sparebank1.no/content/dam/SB1/ikoner/GUI-ikoner/logo-snn.svg.thumb.1280.1280.jpg"/>
+    <meta property="og:type" content="article"/>
+
+    <meta property="article:published_time" content="2026-08-13T07:28:24+02:00"/>
+    <meta property="article:modified_time" content="2026-08-13T07:28:24+02:00"/>
+
+    <meta name="twitter:title" content="Investor"/>
+    <meta name="twitter:description"/>
+    <meta name="twitter:image:src" content="https://www.sparebank1.no/content/dam/SB1/ikoner/GUI-ikoner/logo-snn.svg.thumb.768.768.jpg"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+
+    
+    
+    
+
+    <link rel="preconnect" href="https://edge.adobedc.net" crossorigin/>
+
+    
+    <link rel="preload" as="font" href="/etc.clientlibs/settings/wcm/designs/sb1/nettsider/clientlib_base/resources/fonts/SpareBank1-Medium-Web.woff2" type="font/woff2" crossorigin/>
+    <link rel="preload" as="font" href="/etc.clientlibs/settings/wcm/designs/sb1/nettsider/clientlib_base/resources/fonts/SpareBank1-Regular-Web.woff2" type="font/woff2" crossorigin/>
+    <link rel="preload" as="font" href="/etc.clientlibs/settings/wcm/designs/sb1/nettsider/clientlib_base/resources/fonts/SpareBank1-Title-Medium-Web.woff2" type="font/woff2" crossorigin/>
+
+    <link rel="shortcut icon" type="image/png" href="/etc.clientlibs/settings/wcm/designs/sb1/nettsider/clientlib_base/resources/favicon.png"/>
+    <link rel="apple-touch-icon" href="/etc.clientlibs/settings/wcm/designs/sb1/nettsider/clientlib_base/resources/apple-touch-icon.png"/>
+    <link rel="canonical" href="https://www.sparebank1.no/nb/bank/om-oss/investor.html"/>
+    <link rel="stylesheet" href="/etc.clientlibs/settings/wcm/designs/sb1/nettsider/clientlib_base.1156936341.css" type="text/css"/>
+    <title>Investor | SpareBank 1 Nord-Norge</title>
+    
+    <!-- aem01-01 - 5.172.0 -->
+    
+
+    <!-- Google search console for Anders J -->
+    <meta name="google-site-verification" content="lZC2_0YpuR-ECnf-LmqcJ6bvDuB3KeUl_JzlkK-h7Qo"/>
+
+    <script type="text/javascript">
+        var _satellite = {
+            track: function() {}
+        }
+    </script>
+
+    
+
+    
+</head>
+
+
+
+<body class="ffe-body-text">
+    
+    
+    
+    
+        
+
+<script>
+    window.SB1 = {
+        config: {
+            app: {
+                logServlet: '/LogServlet',
+                param1: "",
+                param2: "all",
+                param3: '',
+                sendToBank: "",
+                sendToBankList: "",
+                sendToBankClose: "",
+                sendToBankDelay: "",
+                loggedInRedirectEnabled: "true",
+                urlList: "LogServlet,/bin/logservlet,/bin,/content/dam,/dynres,/restportal,static,/innhold,services.cicero.no,/kjopsprosess,/api/common/banking/skjema,/nettmote,.boost.ai/,https://publish.ne.cision.com/Subscription/Subscribe,sparebank1.d3.sc.omtrdc.net,/solr,/sb1-dialoghub,/openapi,edge.adobedc.net,/api/tracking/webbehavior,/pm-boliglan/,/api/personal/",
+                loginRedirectTimeout: "300000",
+                isLoginIframeCheckEnabled: "true",
+                chatDefaultOpen: "",
+                enableWebTracker: "true",
+                enableAdobeTargetCurrentPage: "",
+                enableSendConsent: "false", // To be removed when we have streamed the consents for a period of time
+                adobeEdgeIdBank: "382b4b72-cbb3-4efa-8fb6-3b4307211ddd",
+                version: "5.172.0",
+            },
+            user: {
+                language: "nb",
+            },
+            global: {
+                logAjax: false,
+            },
+            urls: {
+                marketPage: "/content/sites/sb1/nb/nord-norge/om-oss.html",
+                gotoNettbank: '',
+            },
+            server: {},
+            sites: {},
+            page: {
+                tagVariables: "",
+                pageType: "Om oss",
+                market: "Om oss",
+                marketName: "om-oss",
+                brand: "sb1",
+                products: [
+                    {
+                        name: "",
+                        category: "",
+                    },
+                ],
+                is404Page: "false",
+            },
+            bank: {
+                bankSemanticUrl: "nord-norge",
+                bankShortName: "nord-norge",
+                bankName: "SpareBank 1 Nord-Norge",
+                defaultLanguage: "nb",
+                financialInstitutionId: "fid-nord-norge"
+            },
+        },
+    };
+</script>
+
+        
+<script>
+    digitalData = {
+        content: {
+            BU: "SpareBank 1",
+            subBrand: "nord\u002Dnorge",
+            language: "nb",
+            page: "sb1|nb|nord\u002Dnorge|om\u002Doss|investor",
+            section1: "om\u002Doss",
+            section2: "om\u002Doss|investor",
+            section3: "om\u002Doss|investor",
+            section4: "om\u002Doss|investor",
+            errorpages: "Nei",
+            pagetype: "Om oss",
+            tags: "",
+            application: "sb1-nettsider"
+        }
+    };
+</script>
+   
+        <noscript>
+            <div>For at du skal kunne se innhold på SpareBank 1s nettsider optimalt, må du aktivere javascript i din nettleser.</div>
+        </noscript>
+
+        <div id="outer-main-wrap" class="main-wrap">
+            
+            
+            <nav class="page-nav">
+    <a href="#main-menu" class="visually-hidden focusable">Til hovedmeny</a>
+
+    <a href="#main-content" class="visually-hidden focusable">Til hovedinnhold</a>
+</nav>
+            
+
+
+    <aside aria-label="Melding" role="complementary">
+        <div class="global-message">
+            <div class="li-information-message-blue js-ie-message-item hide" role="alert" aria-live="assertive" data-id="ie-no-longer-supported" data-button="Lukk">
+                
+            </div>
+            
+        </div>
+    </aside>
+
+
+<header class="header">
+    
+    
+    
+    
+    
+    <div class="header__wrap">
+        <div class="header__content  aem-main-container">
+            <div class="header__top-wrap ">
+                <a class="header__search-mobile search-toggle" href="?search=" aria-label="Søk" title="Søk">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+    <path aria-hidden="true" fill="currentColor" d="M378.67-326q-108.44 0-183.56-75.17Q120-476.33 120-583.33t75.17-182.17q75.16-75.17 182.5-75.17 107.33 0 182.16 75.17 74.84 75.17 74.84 182.27 0 43.23-14 82.9-14 39.66-40.67 73l236 234.66q9.67 9.37 9.67 23.86 0 14.48-9.67 24.14-9.67 9.67-24.15 9.67-14.48 0-23.85-9.67L532.67-380q-30 25.33-69.64 39.67Q423.39-326 378.67-326Zm-.67-66.67q79.17 0 134.58-55.83Q568-504.33 568-583.33q0-79-55.42-134.84Q457.17-774 378-774q-79.72 0-135.53 55.83-55.8 55.84-55.8 134.84t55.8 134.83q55.81 55.83 135.53 55.83Z"/>
+</svg>
+                    
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="header__search-icon header__search-icon--close">
+        <path fill="currentColor" d="M480-433.33 274.67-228q-9.67 9.67-23.34 9.67-13.66 0-23.33-9.67-9.67-9.67-9.67-23.33 0-13.67 9.67-23.34L433.33-480 228-685.33q-9.67-9.67-9.67-23.34 0-13.66 9.67-23.33 9.67-9.67 23.33-9.67 13.67 0 23.34 9.67L480-526.67 685.33-732q9.67-9.67 23.34-9.67 13.66 0 23.33 9.67 9.67 9.67 9.67 23.33 0 13.67-9.67 23.34L526.67-480 732-274.67q9.67 9.67 9.67 23.34 0 13.66-9.67 23.33-9.67 9.67-23.33 9.67-13.67 0-23.34-9.67L480-433.33Z"/>
+    </svg>
+
+                </a>
+                
+                <div class="header__logo">
+<a href="/nb/nord-norge/privat.html">
+    
+    
+    
+
+    
+        
+    
+        
+
+    <picture>
+        <img aria-hidden="false" width="180" height="50" src="/content/dam/SB1/ikoner/GUI-ikoner/logo-snn.svg" alt="Tilbake til forsiden for om oss - SpareBank 1 Nord-Norge" class="inline-svg responsive  "/>
+    </picture>
+    <link rel="image_src" itemprop="image" href="/content/dam/SB1/ikoner/GUI-ikoner/logo-snn.svg.thumb.1280.1280.jpg"/>
+
+        
+    
+    
+
+        
+    
+    
+    
+    
+
+</a></div>
+
+                <button href="#" class="hamburger-wrapper" aria-hidden="false" aria-expanded="false" aria-label="Meny">
+                    <div class="inner-wrapper">
+                        <div class="hamburger"></div>
+                    </div>
+                </button>
+
+                <div class="header__top-nav">
+                    <ul>
+                        <li data-title="Privat">
+                            <a class="js-nav-link " href="/nb/nord-norge/privat.html">Privat</a>
+                        </li>
+                    
+                        <li data-title="Bedrift">
+                            <a class="js-nav-link " href="/nb/nord-norge/bedrift.html">Bedrift</a>
+                        </li>
+                    
+                        <li data-title="Om oss">
+                            <a class="js-nav-link active" href="/nb/nord-norge/om-oss.html">Om oss</a>
+                        </li>
+                    
+                        
+                    </ul>
+                    
+                </div>
+            </div>
+
+            <div class="header__user-content">
+                
+                    <div class="language-wrap hide-desktop-only">
+                        
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="language-icon language-icon--mobile">
+        <path fill="currentColor" d="M480-100q-78.15 0-147.5-29.96t-120.96-81.58q-51.62-51.61-81.58-120.96T100-480q0-78.77 29.96-147.81t81.58-120.65q51.61-51.62 120.96-81.58T480-860q78.77 0 147.81 29.96t120.65 81.58q51.62 51.61 81.58 120.65T860-480q0 78.15-29.96 147.5t-81.58 120.96q-51.61 51.62-120.65 81.58T480-100Zm0-60.85q30.62-40.61 51.54-81.92 20.92-41.31 34.08-90.31H394.38q13.93 50.54 34.47 91.85 20.53 41.31 51.15 80.38Zm-77.46-11q-23-33-41.31-75.03-18.31-42.04-28.46-86.2H197.08q31.69 62.31 85 104.7 53.31 42.38 120.46 56.53Zm154.92 0q67.15-14.15 120.46-56.53 53.31-42.39 85-104.7H627.23q-12.08 44.54-30.39 86.58-18.3 42.04-39.38 74.65ZM171.92-393.08h148.7q-3.77-22.3-5.47-43.73-1.69-21.42-1.69-43.19 0-21.77 1.69-43.19 1.7-21.43 5.47-43.73h-148.7q-5.77 20.38-8.84 42.38-3.08 22-3.08 44.54t3.08 44.54q3.07 22 8.84 42.38Zm208.69 0h198.78q3.76-22.3 5.46-43.34 1.69-21.04 1.69-43.58t-1.69-43.58q-1.7-21.04-5.46-43.34H380.61q-3.76 22.3-5.46 43.34-1.69 21.04-1.69 43.58t1.69 43.58q1.7 21.04 5.46 43.34Zm258.77 0h148.7q5.77-20.38 8.84-42.38 3.08-22 3.08-44.54t-3.08-44.54q-3.07-22-8.84-42.38h-148.7q3.77 22.3 5.47 43.73 1.69 21.42 1.69 43.19 0 21.77-1.69 43.19-1.7 21.43-5.47 43.73Zm-12.15-233.84h135.69Q730.85-690 678.5-731.62q-52.35-41.61-121.04-56.92 23 34.92 40.92 76.39 17.93 41.46 28.85 85.23Zm-232.85 0h171.24q-13.93-50.16-35.04-92.43-21.12-42.27-50.58-79.8-29.46 37.53-50.58 79.8-21.11 42.27-35.04 92.43Zm-197.3 0h135.69q10.92-43.77 28.85-85.23 17.92-41.47 40.92-76.39-69.08 15.31-121.23 57.12-52.16 41.8-84.23 104.5Z"/>
+    </svg>
+
+                        <label for="language-selection" class="visually-hidden">Språk</label>
+                        <select id="language-selection" class="language-selection">
+                            <option disabled selected value="">Language</option>
+                            <option value="/content/sites/sb1/en/nord-norge/about-us.html" data-locale="en">English</option>
+                            <option value="/content/sites/sb1/nb/nord-norge/om-oss.html" data-locale="no_NO">Norsk</option>
+                            
+                        </select>
+                    </div>
+                    <div class="language hide-phone-tablet language--1024">
+                        <button id="js-language-btn" class="language-btn" aria-controls="js-language-list" aria-expanded="false">
+                            <span class="ffe-button__label">
+                                 
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path fill="currentColor" d="M480-100q-78.15 0-147.5-29.96t-120.96-81.58q-51.62-51.61-81.58-120.96T100-480q0-78.77 29.96-147.81t81.58-120.65q51.61-51.62 120.96-81.58T480-860q78.77 0 147.81 29.96t120.65 81.58q51.62 51.61 81.58 120.65T860-480q0 78.15-29.96 147.5t-81.58 120.96q-51.61 51.62-120.65 81.58T480-100Zm0-60.85q30.62-40.61 51.54-81.92 20.92-41.31 34.08-90.31H394.38q13.93 50.54 34.47 91.85 20.53 41.31 51.15 80.38Zm-77.46-11q-23-33-41.31-75.03-18.31-42.04-28.46-86.2H197.08q31.69 62.31 85 104.7 53.31 42.38 120.46 56.53Zm154.92 0q67.15-14.15 120.46-56.53 53.31-42.39 85-104.7H627.23q-12.08 44.54-30.39 86.58-18.3 42.04-39.38 74.65ZM171.92-393.08h148.7q-3.77-22.3-5.47-43.73-1.69-21.42-1.69-43.19 0-21.77 1.69-43.19 1.7-21.43 5.47-43.73h-148.7q-5.77 20.38-8.84 42.38-3.08 22-3.08 44.54t3.08 44.54q3.07 22 8.84 42.38Zm208.69 0h198.78q3.76-22.3 5.46-43.34 1.69-21.04 1.69-43.58t-1.69-43.58q-1.7-21.04-5.46-43.34H380.61q-3.76 22.3-5.46 43.34-1.69 21.04-1.69 43.58t1.69 43.58q1.7 21.04 5.46 43.34Zm258.77 0h148.7q5.77-20.38 8.84-42.38 3.08-22 3.08-44.54t-3.08-44.54q-3.07-22-8.84-42.38h-148.7q3.77 22.3 5.47 43.73 1.69 21.42 1.69 43.19 0 21.77-1.69 43.19-1.7 21.43-5.47 43.73Zm-12.15-233.84h135.69Q730.85-690 678.5-731.62q-52.35-41.61-121.04-56.92 23 34.92 40.92 76.39 17.93 41.46 28.85 85.23Zm-232.85 0h171.24q-13.93-50.16-35.04-92.43-21.12-42.27-50.58-79.8-29.46 37.53-50.58 79.8-21.11 42.27-35.04 92.43Zm-197.3 0h135.69q10.92-43.77 28.85-85.23 17.92-41.47 40.92-76.39-69.08 15.31-121.23 57.12-52.16 41.8-84.23 104.5Z"/>
+    </svg>
+
+                            </span>
+                            <label class="visually-hidden">Language</label>
+                        </button>
+                        <ul id="js-language-list" class="language-list hide">
+                            <li>
+                                <a class="js-language-list__item" href="/en/nord-norge/about-us.html" id="lang-en" data-locale="en">English</a>
+                            </li>
+                            <li>
+                                <a class="js-language-list__item" href="/nb/nord-norge/om-oss.html" id="lang-nb" data-locale="no_NO">Norsk</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                
+
+                <button aria-controls="search-area" class="header__search-desktop search-toggle " aria-label="Søk">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+    <path aria-hidden="true" fill="currentColor" d="M378.67-326q-108.44 0-183.56-75.17Q120-476.33 120-583.33t75.17-182.17q75.16-75.17 182.5-75.17 107.33 0 182.16 75.17 74.84 75.17 74.84 182.27 0 43.23-14 82.9-14 39.66-40.67 73l236 234.66q9.67 9.37 9.67 23.86 0 14.48-9.67 24.14-9.67 9.67-24.15 9.67-14.48 0-23.85-9.67L532.67-380q-30 25.33-69.64 39.67Q423.39-326 378.67-326Zm-.67-66.67q79.17 0 134.58-55.83Q568-504.33 568-583.33q0-79-55.42-134.84Q457.17-774 378-774q-79.72 0-135.53 55.83-55.8 55.84-55.8 134.84t55.8 134.83q55.81 55.83 135.53 55.83Z"/>
+</svg>
+                    <span>Søk</span>
+                </button>
+
+                <div class=" menu-actions">
+                    
+                    
+                    
+
+                    <div id="header-bli-kunde" class="button">
+                        <div class="button-wrapper">
+                            
+                            
+                                <a onclick="" href="/nb/nord-norge/privat/kundeservice/bestill/bli-kunde.html" class="ffe-button ffe-button--action btn-bli-kunde ">Bli kunde</a>
+                            
+                        </div>
+                        
+                    </div>
+
+                    
+
+
+
+
+
+<div id="login" class="user-buttons todo-handle" data-gotourl="https://www.sparebank1.no/nord-norge/nettbank-privat/avtale/velg-avtale">
+            
+            <div id="login-button-app" data-editmode="false" data-app-text="Åpne mobilbank-app" data-bankid-text="Logg inn med BankID" data-uten-bankid-text="Logg inn uten BankID" data-login-error-heading="Noe er feil" data-login-error-msg="Vi får ikke vist knappene for innlogging akkurat nå. Prøv igjen senere, eller bruk mobilbanken." data-login-so-me-warning-heading="Kommer du fra en SoMe-post og skal logge inn?" data-login-so-me-warning-msg="For din egen sikkerhet kan du ikke logge inn i banken via de innebygde nettleserne i Facebook, Instagram eller andre SoMe-apper.&lt;br>&lt;br>Du logger inn ved å:&lt;ul>&lt;li>åpne SpareBank 1 mobil-app, eller&lt;/li>&lt;li>åpne siden i nettleseren du bruker til vanlig. Trykk på de tre prikkene øverst i høyre hjørne og velg &lt;strong>Åpne i ekstern nettleser&lt;/strong> som Safari, Chrome, Edge eller andre.&lt;/li>&lt;/ul>" data-fin-inst="" data-lang="nb" data-app="nettbank-pm" data-bank="nord-norge" data-login-text="Logg inn" data-close-text="Lukk" data-on-cancel="/content/sites/sb1/nb/nord-norge/om-oss/investor.html" data-login-url="https://www.sparebank1.no/login/" data-gotourl="https%3A%2F%2Fwww.sparebank1.no%2Fnord-norge%2Fnettbank-privat%2Favtale%2Fvelg-avtale">
+                <a id="login-button" class="login-button--expand login-btn login" href="/nb/nord-norge/privat/innlogging.html" aria-expanded="false" aria-controls="login-choices">
+                    <span id="login-button__text">Logg inn</span>
+                    <span id="login-button__text--close" aria-hidden="true" class="hide">Lukk<span class="visually-hidden"> Logg inn</span></span>
+                </a>
+            </div>
+        
+    
+
+    
+
+    <a id="nettbank-button" class="goto-btn to-bank-button login-buttons" href="#/">
+        <span>Til nettbank</span>
+    </a>
+
+    <a id="forsikring-button" class="goto-btn to-forsikring login-buttons" href="https://kundeforsikring.sparebank1.no">
+        <span>Til forsikring</span>
+    </a>
+
+    <button id="logout-button" class="logout-btn login-buttons" data-logout-url="/content/sites/sb1/nb/nord-norge/privat/innlogging/logget-ut.html">
+        <span>Logg ut</span>
+    </button>
+</div>
+
+<script type="text/javascript">
+    (function () {
+
+        try {
+            var loginSection = document.getElementById('login');
+            var nettBankButton = document.getElementsByClassName('to-bank-button')[0];
+            var loginButton = document.getElementById('login-button');
+            var bank = window.SB1 ? window.SB1.config.bank.bankShortName : '';
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open('GET', '/openapi/nettsider/ressurser/' + bank + '/user', true);
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        var result = JSON.parse(this.responseText);
+
+                        if (result.authenticated) {
+                            loginSection.dataset['authenticated'] = 'true';
+                            showButton(document.getElementById('logout-button'));
+                            addClass(loginSection, 'mobile-border');
+
+                            var realms = result.realms;
+                            if (realms.length > -1) {
+                                
+                                //Skjuler login knapp
+                                loginButton.style.display = 'none';
+                                var loginButtonApp = document.getElementById('login-button-app');
+                                if (loginButtonApp) {
+                                    loginButtonApp.style.display = 'none';
+                                    loginButtonApp.setAttribute('aria-hidden', true);
+                                }
+
+                                //Bli kunde button
+                                var bliKundeBtn = document.getElementById('header-bli-kunde');
+                                if (bliKundeBtn) {
+                                    bliKundeBtn.style.display = 'none';
+                                }
+
+                                //Viser kun en knapp denne runden
+                                //tilrettelegger for flere knapper i neste runde
+                            
+                                // NETTBANK-PM og finsieringsselskap-pm
+                                if (realms.includes('nettbank-pm') || realms.includes('finansieringsselskap-pm')) {
+                                    //finansieringsselskap-pm skal ikke knyttes til en spesifikk bank                                   
+                                    var toNettbank = '/bank/nettbank-privat/oversikt';
+                                    nettBankButton.href = toNettbank;
+                                    setGotoNettbankConf(toNettbank);
+
+                                    //DIG-116242 Skjule "Til nettbank" for SB1 forvaltning
+                                    if (window.location.href && window.location.href.indexOf('sb1-forvaltning') == -1) {
+                                        showButton(nettBankButton);
+                                    }
+                                }else if (realms.includes('nettbank-bm')){
+                                //NETTBANK-BM
+                                    var nettbankUrl = '/' + result.bank + '/nettbank-bedrift/forside';
+                                    var isMobilBank = nettBankButton.id === 'mobilbank-button';
+                                    if (isMobilBank) {
+                                        nettbankUrl = nettBankButton.href;
+                                    } else {
+                                        nettBankButton.href = nettbankUrl;
+                                    }
+                                    setGotoNettbankConf(nettbankUrl);
+                                    showButton(nettBankButton);
+                                }else if (realms.includes('forsikring-pm')) {
+                                //FORSIKRING-PM
+                                    showButton(document.getElementById('forsikring-button'));
+                                }                              
+                            }
+                            window.SB1.config.user.authenticated = true;
+                        } else {
+                            setGotoNettbankConf(loginButton.href);
+                            window.SB1.config.user.authenticated = false;
+                        }
+                    } else {
+                        setGotoNettbankConf(loginButton.href);
+                        window.SB1.config.user.authenticated = false;
+                    }
+                }
+            };
+            xhttp.send();
+
+            function showButton(btn) {
+                addClass(btn, 'login-buttons__show');
+            }
+
+            function setGotoNettbankConf(sUrl) {
+                window.SB1.config.urls.gotoNettbank = sUrl;
+            }
+
+            function addClass(obj, name) {
+                var arr;
+                arr = obj.className.split(' ');
+                if (arr.indexOf(name) == -1) {
+                    obj.className += ' ' + name;
+                }
+            }
+        } catch (exception) {
+            document.getElementById('login-button').style.display = 'flex';
+        }
+    })();
+</script>
+
+                    
+                </div>
+            </div>
+
+            <nav id="main-menu" class="header__main-nav " aria-label="Hovedmeny" tabindex="-1">
+                <ul>
+                    <li>
+                        <a class=" js-nav-link" href="/nb/nord-norge/om-oss/om-banken.html">Om banken</a>
+                    </li>
+                
+                    <li>
+                        <a class=" js-nav-link" href="/nb/nord-norge/om-oss/presse.html">Presse</a>
+                    </li>
+                
+                    <li>
+                        <a class="active js-nav-link" href="/nb/nord-norge/om-oss/investor.html">Investor</a>
+                    </li>
+                
+                    <li>
+                        <a class=" js-nav-link" href="/nb/nord-norge/om-oss/jobb-og-karriere.html">Jobb og karriere</a>
+                    </li>
+                
+                    
+                
+                    <li>
+                        <a class=" js-nav-link" href="/nb/nord-norge/om-oss/baerekraft.html">Bærekraft</a>
+                    </li>
+                
+                    <li>
+                        <a class=" js-nav-link" href="/nb/nord-norge/om-oss/nyheter.html">Nyheter</a>
+                    </li>
+                
+                    
+                
+                    <li>
+                        <a class=" js-nav-link" href="/nb/nord-norge/om-oss/samfunnsutbytte.html">Samfunnsutbytte</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</header>
+
+
+    
+    <div id="search-area" class="search-overlay hide " aria-expanded="false" aria-live="polite" role="search">
+        <div class="full-width-wrap">
+            <div class="aem-main-container search-overlay__close">
+                <button tabindex="0" class="search-overlay__close-btn js-search-close">
+                    <span class="ffe-strong-text">Lukk</span>
+                    
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path fill="currentColor" d="M480-433.33 274.67-228q-9.67 9.67-23.34 9.67-13.66 0-23.33-9.67-9.67-9.67-9.67-23.33 0-13.67 9.67-23.34L433.33-480 228-685.33q-9.67-9.67-9.67-23.34 0-13.66 9.67-23.33 9.67-9.67 23.33-9.67 13.67 0 23.34 9.67L480-526.67 685.33-732q9.67-9.67 23.34-9.67 13.66 0 23.33 9.67 9.67 9.67 9.67 23.33 0 13.67-9.67 23.34L526.67-480 732-274.67q9.67 9.67 9.67 23.34 0 13.66-9.67 23.33-9.67 9.67-23.33 9.67-13.67 0-23.34-9.67L480-433.33Z"/>
+    </svg>
+
+                </button>
+            </div>
+        </div>  
+        
+        <div id="search-app" data-no-personal-info="Ikke skriv personlig informasjon i søkefeltet." data-no-result-text="Ingen treff på" data-facet-label="Vis resultater fra" data-try-again-text="Fant du ikke svar? Prøv igjen" data-searching-text="Søker" data-search-title="Hva lurer du på?" data-customer-service-text="Eller prøv kundeservice" data-market="Om oss"></div>
+    </div>
+
+
+
+            <main id="main-content" class="main" tabindex="-1">
+    
+    
+
+
+
+    
+    
+    
+    <div class="text">
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+</div>
+
+
+    
+    
+    
+    <div class="banner-top-quicklinks parbase">
+
+
+
+
+
+
+
+<div class="banner-top-quicklinks__media background">
+    
+    
+    
+
+    
+    
+    
+        
+                    
+
+    <div class="image-wrapper">
+        
+        
+            <picture>
+                <source srcset="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/bm-forsidebilder/snn-toppbilde-bm-adobe.jpg.thumb.1280.2276.jpg" media="(min-width: 769px)"/>
+                <source srcset="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/bm-forsidebilder/snn-toppbilde-bm-adobe.jpg.thumb.768.768.jpg" media="(max-width: 768px)"/>
+                <img aria-hidden="true" src="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/bm-forsidebilder/snn-toppbilde-bm-adobe.jpg.thumb.1280.2276.jpg" class="responsive "/>
+            </picture>
+        
+    </div>
+
+    
+    
+
+</div>
+
+<div class="ffe-grid ffe-grid--no-top-padding banner-top-quicklinks__wrap clearfix">
+    <div class="ffe-grid__row">
+        <div class="ffe-grid__col--sm-12 ffe-grid__col--md-7 ffe-grid__col--lg-6 ffe-grid__col--lg-offset-1">
+            <div class="banner-top-quicklinks__teaser">
+                <div class="banner-top-quicklinks__teaser-text">
+                    <div class="text">
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    <h2>Investor </h2>
+<p>SpareBank 1 Nord-Norge er det ledende finanshuset i Nord-Norge. Vi er en del av SpareBank 1-alliansen, som består av 12 selvstendige sparebanker over hele landet.</p>
+
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+</div>              
+                </div>                    
+                <div class="banner-top-quicklinks__teaser-button button">
+
+<div class="aem-component-container">
+    
+        
+    
+
+    
+</div>
+</div>
+            </div>
+        </div>
+        <div class="ffe-grid__col--sm-12 ffe-grid__col--md-5 ffe-grid__col--lg-4">
+            <div class="banner-top-quicklinks__links ">
+                
+
+    <h2 class="ffe-h4">Her finner du: </h2>
+    
+        
+
+
+
+<ul class="link-list-style">
+    
+
+    
+        <li>
+            <a href="/nb/nord-norge/om-oss/investor/finansiell-info.html">Finansiell informasjon</a>
+        </li>
+    
+        <li>
+            <a href="/nb/nord-norge/om-oss/investor/finansiell-info/rapporter-og-presentasjoner.html">Rapporter og presentasjoner</a>
+        </li>
+    
+        <li>
+            <a href="/nb/nord-norge/om-oss/investor/finanskalender.html">Finanskalender</a>
+        </li>
+    
+        <li>
+            <a href="/nb/nord-norge/om-oss/investor/finansiell-info/borsmeldinger.html">Børsmeldinger</a>
+        </li>
+    
+        <li>
+            <a href="/nb/nord-norge/om-oss/investor/finansiell-info/rating.html">Rating</a>
+        </li>
+    
+</ul>
+
+    
+
+
+    
+    
+
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="hr parbase"><div class="aem-component-container">
+    
+        
+        <hr class="aem-hr  extra-margin-top " id="hr_1546855912"/>
+    
+</div></div>
+
+
+    
+    
+    
+    <div class="iframe parbase">
+<div class="aem-component-container">
+    
+    <div class="iframe-container ">
+        <style type="text/css">
+            .iframe-content-f67ea2f6-70f2-48f0-8572-017b64a39151 {
+                height: 500px;
+            }
+            @media (min-width: 768px) {
+                .iframe-content-f67ea2f6-70f2-48f0-8572-017b64a39151 {
+                    height: 500px;
+                }
+            }
+            @media (min-width: 1024px) {
+                .iframe-content-f67ea2f6-70f2-48f0-8572-017b64a39151 {
+                    height: 500px;
+                }
+            }
+        </style>
+
+        
+        
+
+        <iframe title="Investorpresentasjon Q1 2026" data-iframeresize="true" class="iframe-content iframe-content-f67ea2f6-70f2-48f0-8572-017b64a39151 center" id="componentFrame-f67ea2f6-70f2-48f0-8572-017b64a39151" frameborder="0" scrolling="no" style="max-width: " src="https://vimeo.com/event/5903119/embed/30c8218060" allowfullscreen>
+            Please wait....
+        </iframe>
+        
+    </div>
+    
+</div>
+</div>
+
+
+    
+    
+    
+    <div class="text">
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    <h4 style="	text-align: center;
+">Investorpresentasjon Q1 2026</h4>
+
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+</div>
+
+
+    
+    
+    
+    <div class="columns-grid parbase color-fillable">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="columns-grid__wrap " style="background-color: #FDF8F5">
+    <div class="ffe-grid ffe-grid--gap-none columns-grid--width  ">
+        
+        <div class="ffe-grid__row columns-grid__row columns-grid__row--col-10 ">
+            <div class="columns-grid__column ffe-grid__col--sm-12 ffe-grid__col--md-6 ffe-grid__col--lg-5 ffe-grid__col--lg-offset-0 columns-grid__column--first">
+                <div class="columns-grid__content columns-grid__content--middle ">
+                    
+                    
+    
+    
+    
+    <div class="image parbase">
+
+<div class="aem-component-container image--all-rounded-small">
+      
+            
+    
+    
+
+    
+        
+        
+    
+    
+                    
+
+    
+    
+
+    
+        
+        <div class="image-center image-ratio" style="max-width:500px;; aspect-ratio: auto 1495.0/935.0">
+            <div class="image-wrapper" style="padding-top:calc(0.6254180602006689*100%);">
+                
+                
+                    <picture>
+                        <source srcset="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/lofoten-hamnoy.JPG.thumb.1280.1280.jpg" media="(min-width: 769px)"/>
+                        <source srcset="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/lofoten-hamnoy.JPG.thumb.768.768.jpg" media="(max-width: 768px)"/>
+                        <img aria-hidden="false" width="1495.0" height="935.0" alt="lofoten-hamnoy.JPG" class="responsive  " fetchpriority="high" src="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/lofoten-hamnoy.JPG.thumb.1280.1280.jpg"/>
+                    </picture>
+                
+            </div>
+        </div>
+    
+
+    
+    
+    
+    
+
+      
+</div></div>
+
+
+                </div>
+            </div>
+            <div class="columns-grid__column ffe-grid__col--sm-12 ffe-grid__col--md-6 ffe-grid__col--lg-5 ">
+                <div class="columns-grid__content columns-grid__content--middle ">
+                    
+                    
+    
+    
+    
+    <div class="text">
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    <h2>Kvartalsrapport Q2 2026<br />
+</h2>
+<ul><li>Resultat før skatt: 1 986 MNOK (2 178)</li><li>Egenkapitalavkastning: 16,1 % (19,0 %)</li><li>Ren kjernekapital eks. andel resultat: 16,9 % (16,2 %)</li><li>Kostnadsprosent: 33,8 % (31,7 %)</li><li>Tap: 39 MNOK (27)</li></ul>
+
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+</div>
+
+
+    
+    
+    
+    <div class="text">
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    <p><b>Q2</b></p>
+<p><a href="/content/dam/SB1/bank/nord-norge/OmOss/investor/rapporter/2026/snn-kvartalsrapport-2Q26.pdf" target="_self" rel="noopener noreferrer">Kvartalsrapport Q2 2026 (pdf)</a><br />
+<a href="/content/dam/SB1/bank/nord-norge/OmOss/investor/presentasjoner/2026/snn-kvartalspresentasjon-2Q26.pdf" target="_self" rel="noopener noreferrer">Kvartalspresentasjon Q2 2026 (pdf)</a><br />
+<a href="/content/dam/SB1/bank/nord-norge/OmOss/investor/rapporter/2026/apm-2Q26-no.pdf" target="_self" rel="noopener noreferrer">APM – Alternative Performance Measures (pdf)</a><br />
+</p>
+
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+</div>
+
+
+                </div>
+            </div>
+            
+            
+        </div>
+
+        
+    </div>
+</div></div>
+
+
+    
+    
+    
+    <div class="columns-grid parbase color-fillable">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="columns-grid__wrap " style="background-color: #FFFFFF">
+    <div class="ffe-grid ffe-grid--gap-none columns-grid--width  ">
+        
+        <div class="ffe-grid__row columns-grid__row columns-grid__row--col-9 ">
+            <div class="columns-grid__column ffe-grid__col--sm-12 ffe-grid__col--md-6 ffe-grid__col--lg-5 ffe-grid__col--lg-offset-0 columns-grid__column--first">
+                <div class="columns-grid__content columns-grid__content--start ">
+                    
+                    
+    
+    
+    
+    <div class="text">
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    <h2>Årsrapport 2025<br />
+</h2>
+<ul><li>Årsresultat: 3 457 mill. kroner</li><li>Egenkapitalavkastning: 18,1 %</li><li>Kostnadsprosent (kostnader/inntekt): 32,5 %</li><li>Resultat per egenkapitalbevis: 15,29 kroner</li><li>Netto inntekter på finansielle eiendeler: 971 mill. kroner</li><li>Ren kjernekapitaldekning: 16,2 %</li><li>Avsatt utbytte: 8,50 kroner</li></ul>
+
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+</div>
+
+
+    
+    
+    
+    <div class="button parbase">
+
+<div class="aem-component-container">
+    
+        
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    <div class="button-wrapper left">
+        <a onclick="" class="action-btn ffe-button ffe-button--action     id-518346791 " href="/content/dam/SB1/bank/nord-norge/OmOss/investor/rapporter/2025/Arsrapport2025_SpareBank1Nord-Norge.pdf" rel="">
+            
+            <span class="ffe-button__label">Last ned årsrapporten 2025
+                
+            </span>
+        </a>
+        
+    </div>
+
+    
+    
+    
+        
+
+        
+    
+    
+
+
+
+    
+
+    
+</div>
+</div>
+
+
+                </div>
+            </div>
+            <div class="columns-grid__column ffe-grid__col--sm-12 ffe-grid__col--md-6 ffe-grid__col--lg-4 ">
+                <div class="columns-grid__content columns-grid__content--start ">
+                    
+                    
+    
+    
+    
+    <div class="image parbase">
+
+<div class="aem-component-container image--all-rounded-small">
+      
+            
+    
+    
+
+    
+        
+        
+    
+    
+                    
+
+    
+    
+
+    
+        
+        <div class=" image-ratio" style="; aspect-ratio: auto 1118.0/746.0">
+            <div class="image-wrapper" style="padding-top:calc(0.667262969588551*100%);">
+                <noscript class="lazyload lazyload--image">
+                    <img aria-hidden="false" src="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/kveldssol-snn.jpg.thumb.1280.1280.jpg" width="1118.0" height="746.0" alt="kveldssol-snn.jpg" class="responsive  " data-lazy-smallsrc="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/kveldssol-snn.jpg.thumb.768.768.jpg" data-lazy-largesrc="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/kveldssol-snn.jpg.thumb.1280.1280.jpg" data-lazy-breakpoint="768px"/>    
+                </noscript>
+                
+            </div>
+        </div>
+    
+
+    
+    
+    
+    
+
+      
+</div></div>
+
+
+                </div>
+            </div>
+            
+            
+        </div>
+
+        
+    </div>
+</div></div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="hr parbase"><div class="aem-component-container">
+    
+        
+        <hr class="aem-hr   " id="hr_1941698975"/>
+    
+</div></div>
+
+
+    
+    
+    
+    <div class="tip parbase">
+
+
+
+
+<div class="ffe-grid ffe-grid--gap-none">
+    
+    
+    
+
+    <div class="ffe-grid__row text-container">
+        <div class="ffe-grid__col--sm-12 ffe-grid__col--md-8 ffe-grid__col--md-offset-2 ffe-grid__col--lg-6 ffe-grid__col--lg-offset-3 tip-small">
+            <div class="ffe-message-box ffe-message-box--info tip-small__box">
+                <span class="ffe-message-box__icon">
+                    
+                        
+                        
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path fill="currentColor" d="M479.88-386.67q-14.21 0-23.71-9.58t-9.5-23.75v-306.67q0-14.16 9.61-23.75 9.62-9.58 23.84-9.58 14.21 0 23.71 9.58 9.5 9.59 9.5 23.75V-420q0 14.17-9.61 23.75-9.62 9.58-23.84 9.58Zm0 186.67q-14.21 0-23.71-9.62-9.5-9.61-9.5-23.83 0-14.22 9.61-23.72 9.62-9.5 23.84-9.5 14.21 0 23.71 9.62t9.5 23.83q0 14.22-9.61 23.72-9.62 9.5-23.84 9.5Z"/>
+    </svg>
+
+                        
+                        
+                    
+                </span>
+                <div class="ffe-message-box__box tip-content ">
+                    <div class="text-wrapper" data-rte-editelement><h4>Viktige dokumenter<a href="/content/dam/SB1/bank/nord-norge/Dokumenter/260218_CBDDQ_sign.pdf"></a></h4>
+<ul><li><a href="/content/dam/SB1/bank/nord-norge/OmOss/investor/representantskapet/investor-vedtekter-2024.pdf" target="_blank" rel="noopener noreferrer">Vedtekter (pdf)</a></li><li><a href="/content/dam/SB1/bank/nord-norge/OmOss/investor/viktigedokumenter/patriot-act2025SNN-sign.pdf" target="_blank" rel="noopener noreferrer">Patriot Act (pdf)</a></li><li><a href="/content/dam/SB1/bank/nord-norge/Dokumenter/W-8BEN-E-20211220.pdf" target="_blank" rel="noopener noreferrer">W-8BEN-E (pdf)</a></li><li><a href="/content/dam/SB1/bank/nord-norge/Dokumenter/260218_CBDDQ_sign.pdf">Wolfsberg CBDDQ (pdf)</a></li><li><a target="_blank"></a><a href="/content/dam/SB1/bank/nord-norge/Dokumenter/lisens-2016.pdf">Lisens (pdf)</a></li><li><a href="/content/dam/SB1/bank/nord-norge/Dokumenter/snn-standard-settlement-instructions-ssi.pdf" target="_blank" rel="noopener noreferrer">Standard Settlement Instructions (pdf)</a></li></ul>
+</div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+</div>
+
+
+    
+    
+    
+    <div class="hr parbase"><div class="aem-component-container">
+    
+        
+        <hr class="aem-hr  extra-margin-top extra-margin-bottom" id="hr_1737400542"/>
+    
+</div></div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="ghost">
+
+</div>
+
+
+    
+    
+    
+    <div class="hr parbase"><div class="aem-component-container">
+    
+        
+        <hr class="aem-hr   " id="hr"/>
+    
+</div></div>
+
+
+    
+    
+    
+    <div class="adviser-list parbase">
+
+
+<div class="adviser-list__header">    
+    <h2>Kontaktpersoner</h2>
+    
+</div>
+
+<div class="adviser-list__list ">        
+                
+        
+        <div class="adviser">
+
+<span class="adviser-image circle-image">
+    
+    
+
+    
+        
+        
+    
+    
+                    
+
+    
+        <noscript class="lazyload lazyload--image">
+            
+            
+                <img aria-hidden="true" src="/content/dam/SB1/bank/nord-norge/foto/konsernledelse/snn-konsernledelse-bengt-olsen-2021-square.jpg.thumb.1280.1280.jpg" class="responsive  " data-lazy-smallsrc="/content/dam/SB1/bank/nord-norge/foto/konsernledelse/snn-konsernledelse-bengt-olsen-2021-square.jpg.thumb.768.768.jpg" data-lazy-largesrc="/content/dam/SB1/bank/nord-norge/foto/konsernledelse/snn-konsernledelse-bengt-olsen-2021-square.jpg.thumb.1280.1280.jpg" data-lazy-breakpoint="768px"/>
+            
+        </noscript>
+    
+    
+
+    
+
+    
+    
+    
+    
+</span>
+<div class="adviser-name">Bengt Olsen</div>
+<div class="adviser-subtext ffe-paragraph">Konserndirektør økonomi og finans</div>
+<div class="adviser-subtext adviser-phone ffe-paragraph">+47 975 89 560</div>
+
+</div>
+                
+        
+        <div class="adviser">
+
+<span class="adviser-image circle-image">
+    
+    
+
+    
+        
+        
+    
+    
+                    
+
+    
+        <noscript class="lazyload lazyload--image">
+            
+            
+                <img aria-hidden="true" src="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/snn-terje-karlstad-kvadrat.jpg.thumb.1280.1280.jpg" class="responsive  " data-lazy-smallsrc="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/snn-terje-karlstad-kvadrat.jpg.thumb.768.768.jpg" data-lazy-largesrc="/content/dam/SB1/bank/nord-norge/foto/illustrasjoner-bilder/snn-terje-karlstad-kvadrat.jpg.thumb.1280.1280.jpg" data-lazy-breakpoint="768px"/>
+            
+        </noscript>
+    
+    
+
+    
+
+    
+    
+    
+    
+</span>
+<div class="adviser-name">Terje Karlstad</div>
+<div class="adviser-subtext ffe-paragraph">Investorkontakt</div>
+<div class="adviser-subtext adviser-phone ffe-paragraph">+47 411 22 220</div>
+<div class="adviser-subtext">
+     <a class="adviser-email" title="terje.karlstad@snn.no" href="mailto:terje.karlstad@snn.no">e-post</a>
+</div>
+</div>
+    
+
+    
+
+    
+</div>
+
+</div>
+
+
+</main>
+
+
+    
+    
+        <script type="text/javascript">
+            let hasOpenCookie = false;
+            const matchOpen = document.cookie.match(new RegExp(`sb1-optin-v3=(.*?)`));
+            hasOpenCookie = (matchOpen) ? true : false;
+                       
+            if (!hasOpenCookie) {                 
+                // js fil
+                const scriptEle = document.createElement("script");
+                const JS_URL = "/sb1-nettsider-optin/bank/static/opt-in.js";
+                scriptEle.setAttribute("src", JS_URL);
+                scriptEle.setAttribute("type", "text/javascript");
+                scriptEle.setAttribute("async", true);
+                scriptEle.setAttribute("onerror", "optinScriptError=true;");
+
+                //css fil
+                const CSS_URL = "/sb1-nettsider-optin/bank/static/opt-in.css";
+                const cssEle = document.createElement('link');                
+                cssEle.setAttribute('rel', 'stylesheet');
+                cssEle.setAttribute('onerror', 'optinScriptError=true;');
+                cssEle.setAttribute('property', 'stylesheet');
+                cssEle.setAttribute('media', 'screen,print');
+                cssEle.setAttribute('type', 'text/css');
+                cssEle.setAttribute('href', CSS_URL);
+
+                // div element
+                const divEle = document.createElement('div');
+                divEle.setAttribute('id', 'opt-in');
+                divEle.setAttribute('data-trigger-modal', 'true');
+
+                document.body.appendChild(divEle);
+                document.body.appendChild(cssEle);
+                document.body.appendChild(scriptEle);
+            }
+        </script>
+        
+    
+
+
+            
+
+<footer class="footer-wrapper">
+    <div class="footer-top container-fluid">
+        <div id="contact-us">
+<div class="contact-section ">
+
+    <h2>Kontakt oss</h2>
+    
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    <p style="	text-align: center;
+"><a href="/nb/nord-norge/privat/kundeservice.html">Gå til kundeservice</a>        <a href="/nb/nord-norge/privat/kundeservice/bestill/bestill-mote-med-radgiver.html">Bestill møte med rådgiver</a></p>
+
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+
+    <div class="customer-action-wrap clearfix ">
+        <ul class="customer-action__list" role="tablist">
+
+            
+                
+<li class="customer-action__list-item" id="contact-tab1" data-menu-section="contact-call-template" aria-controls="panel1" role="tab">
+    <a href="#/" class="cs-action tab-section">
+        <div class="icon-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M800-480q-16 0-28.5-11.5T757-520q-13-93-78.5-158.5T520-757q-17-2-28.5-14T480-800q0-17 12-28.5t28-9.5q126 14 215 103t103 215q2 16-9.5 28T800-480Zm-167 0q-13 0-23-9t-15-24q-8-29-30.5-51.5T513-595q-15-5-24-15t-9-24q0-20 14-32.5t31-8.5q56 13 96.5 53.5T675-525q4 17-9 31t-33 14Zm165 360q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12ZM241-600l66-66-17-94h-89q5 41 14 81t26 79Zm358 358q39 17 79.5 27t81.5 13v-88l-94-19-67 67ZM241-600Zm358 358Z"/></svg>
+        </div>
+        <span class="btn-name">Ring oss</span>
+        <span class="sub-info">Alle dager 7-22 (10-18)</span>
+    </a>
+    <div class="icon">
+        
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="arrow-down">
+        <path fill="currentColor" d="M480-357.67q-6.67 0-12.33-2.16-5.67-2.17-11-7.5L263.33-560.67q-9.66-9.66-9.33-23.66.33-14 10-23.67 9.67-9.67 23.67-9.67 14 0 23.66 9.67L480-438.67 649.33-608q9.67-9.67 23.34-9.33 13.66.33 23.33 10 9.67 9.66 9.67 23.66T696-560L503.33-367.33q-5.33 5.33-11 7.5-5.66 2.16-12.33 2.16Z"/>
+    </svg>
+
+    </div>
+</li>
+
+
+            
+
+            
+                
+
+
+
+            
+
+            
+                
+
+
+
+
+
+            
+
+            
+                
+<li class="customer-action__list-item" id="contact-tab4" data-menu-section="find-us-template" aria-controls="panel4" role="tab">
+    <a href="https://www.sparebank1.no/nb/nord-norge/privat/kundeservice/kontakt.html" class="cs-action ">
+        <div class="icon-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/></svg>
+        </div>
+        <span class="btn-name">Finn kontor</span>
+        <span class="sub-info">eller en rådgiver</span>
+    </a>
+    <div class="icon">
+       
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="arrow-down">
+        <path fill="currentColor" d="M480-357.67q-6.67 0-12.33-2.16-5.67-2.17-11-7.5L263.33-560.67q-9.66-9.66-9.33-23.66.33-14 10-23.67 9.67-9.67 23.67-9.67 14 0 23.66 9.67L480-438.67 649.33-608q9.67-9.67 23.34-9.33 13.66.33 23.33 10 9.67 9.66 9.67 23.66T696-560L503.33-367.33q-5.33 5.33-11 7.5-5.66 2.16-12.33 2.16Z"/>
+    </svg>
+
+    </div>
+</li>
+
+
+            
+
+            
+                
+<li class="customer-action__list-item" id="contact-tab5" data-menu-section="contact-chat-template" aria-controls="panel5" role="tab">
+    <a id="contact-chat" href="#/" class="cs-action tab-section">
+        <div class="icon-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg>
+        </div>
+        <span class="btn-name">Chat</span>
+        <span class="sub-info">Alle dager, hele døgnet</span>
+    </a>
+    <div class="icon">
+        
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="arrow-down">
+        <path fill="currentColor" d="M480-357.67q-6.67 0-12.33-2.16-5.67-2.17-11-7.5L263.33-560.67q-9.66-9.66-9.33-23.66.33-14 10-23.67 9.67-9.67 23.67-9.67 14 0 23.66 9.67L480-438.67 649.33-608q9.67-9.67 23.34-9.33 13.66.33 23.33 10 9.67 9.66 9.67 23.66T696-560L503.33-367.33q-5.33 5.33-11 7.5-5.66 2.16-12.33 2.16Z"/>
+    </svg>
+
+    </div>
+</li>
+
+
+            
+
+        </ul>
+
+        
+
+
+
+        
+        
+    
+    <div aria-hidden="true" id="contact-call-template" class="hide">
+        <div id="panel1" class="contact-info-section" aria-labelledby="contact-tab1" role="tabpanel">
+            <div class="call-section">
+                <div class="call-banks">
+
+
+
+</div>
+                <div class="contact-box call-section">
+                    
+                    <ul class="call-section__list">                        
+                        
+    
+    
+    
+    <li class="call-option__list-item">
+
+
+
+<h3 class="ffe-h4">Ring oss på:</h3>
+<div class="call-option__main-number ffe-h1">
+    <a class="call-option__number-link" href="tel:91502244">915 02244</a>
+</div>
+<div class="call-option__sub-info">
+    <div class="call-option__sub-text ffe-h">
+        <span>Ring fra utland</span>
+        <a href="tel:+4791502244" class="call-option__sub-number">+47 915 02244</a>
+    </div>
+    
+        <span class="call-option__sub-text">Alle dager 07 - 24</span>
+    
+</div>
+</li>
+
+
+    
+    
+    
+    <li class="ghost">
+
+</li>
+
+
+    
+    
+    
+    <li class="ghost">
+
+</li>
+
+
+    
+    
+    
+    <li class="call-option__list-item">
+
+
+
+<h3 class="ffe-h4">Melde skade</h3>
+<div class="call-option__main-number ffe-h1">
+    <a class="call-option__number-link" href="tel:(+47)91502300">(+47) 915 02300</a>
+</div>
+<div class="call-option__sub-info">
+    <div class="call-option__sub-text ffe-h">
+        <span>Meld skade hos Fremtind Forsikring</span>
+        
+    </div>
+    
+        <span class="call-option__sub-text">Hverdager 08-16</span>
+    
+</div>
+</li>
+
+
+                    </ul>
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        
+        
+
+
+
+        
+        
+
+
+
+
+
+
+
+        
+        
+
+
+<div aria-hidden="true" id="find-us-template" class="hide ">
+    <div id="panel4" class="contact-info-section find-us" aria-labelledby="contact-tab4" role="tabpanel">
+        <section class="contact-box find-us-section">
+            <h3 class="find-us__header ffe-h4">Søk etter et kontor</h3>
+
+            <div class="search-field-wrap">
+                <label class="visually-hidden" aria-hidden="true">Søk</label>
+                <input class="aem-input search-field" aria-label="Søk
+" name="search" type="search"/>
+
+                <button class="search-button" aria-label="Søk">                    
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+    <path aria-hidden="true" fill="currentColor" d="M378.67-326q-108.44 0-183.56-75.17Q120-476.33 120-583.33t75.17-182.17q75.16-75.17 182.5-75.17 107.33 0 182.16 75.17 74.84 75.17 74.84 182.27 0 43.23-14 82.9-14 39.66-40.67 73l236 234.66q9.67 9.37 9.67 23.86 0 14.48-9.67 24.14-9.67 9.67-24.15 9.67-14.48 0-23.85-9.67L532.67-380q-30 25.33-69.64 39.67Q423.39-326 378.67-326Zm-.67-66.67q79.17 0 134.58-55.83Q568-504.33 568-583.33q0-79-55.42-134.84Q457.17-774 378-774q-79.72 0-135.53 55.83-55.8 55.84-55.8 134.84t55.8 134.83q55.81 55.83 135.53 55.83Z"/>
+</svg>
+                </button>
+                <button class="search-clear-button hide" aria-label="Fjern søketekst">
+                    
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="icon-search-clear">
+        <path fill="currentColor" d="M480-433.33 274.67-228q-9.67 9.67-23.34 9.67-13.66 0-23.33-9.67-9.67-9.67-9.67-23.33 0-13.67 9.67-23.34L433.33-480 228-685.33q-9.67-9.67-9.67-23.34 0-13.66 9.67-23.33 9.67-9.67 23.33-9.67 13.67 0 23.34 9.67L480-526.67 685.33-732q9.67-9.67 23.34-9.67 13.66 0 23.33 9.67 9.67 9.67 9.67 23.33 0 13.67-9.67 23.34L526.67-480 732-274.67q9.67 9.67 9.67 23.34 0 13.66-9.67 23.33-9.67 9.67-23.33 9.67-13.67 0-23.34-9.67L480-433.33Z"/>
+    </svg>
+
+                </button>
+            </div>
+
+            <div class="find-us__filter-buttons">
+                <button aria-expanded="false" class="see-all-offices ffe-button ffe-button--expand">
+                    <span class="ffe-button__label">Alle kontorer</span>
+                    <svg focusable="false" class="ffe-button__icon hide" viewBox="0 0 200 200" width="150" height="150" x="1200" y="1200" xmlns="http://www.w3.org/2000/svg"><path d="M18.77 0c-3.562 0-7.125 1.347-9.834 4.044L4.507 8.483c-5.381 5.394-5.381 14.25 0 19.68l71.19 71.83-71.66 71.83c-5.381 5.394-5.381 14.25 0 19.68l4.429 4.439c5.381 5.394 14.22 5.394 19.64 0l71.66-71.83 71.65 71.83c5.381 5.394 14.23 5.394 19.65 0l4.429-4.439c5.381-5.394 5.381-14.25 0-19.68l-71.19-71.83 71.66-71.83c5.381-4.914 5.381-13.78 0-19.21l-4.429-4.423c-5.381-5.394-14.22-5.394-19.64 0l-72.13 71.34-71.17-71.83c-2.691-2.697-6.257-4.044-9.819-4.044z"></path></svg>
+                </button>
+            </div>
+
+            <div class="search-results-wrap find-us__wrap hide">
+                
+                <div class="category-facets-wrap"></div>
+                
+                <ul class="search-results"></ul>
+            </div>
+
+            <div class="search-messages-wrap hide" role="alert">
+                <div class="error-state hide">
+                    
+                    
+    
+    
+    
+    <div class="text">
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    <p style="	text-align: center;
+"><span class="h5">Det oppstod en uventet feil. Vennligst prøv på nytt.</span></p>
+
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+</div>
+
+
+
+                </div>
+                <div class="no-results-state hide">
+                    
+                    
+    
+    
+    
+    <div class="text">
+
+
+
+
+<div class="aem-component-container text-container">
+    
+    
+        
+        
+        
+            <div class="text-wrapper  ">
+                
+                    <p style="	text-align: center;
+"><span class="h5">Søket ditt ga ingen treff. Vennligst prøv på nytt.</span></p>
+
+                
+            </div>
+        
+
+        
+
+        
+    
+</div>
+</div>
+
+
+                    
+
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>
+
+
+        
+        
+
+<div aria-hidden="true" id="contact-chat-template" class="hide">
+    <div id="panel5" class="contact-info-section" aria-labelledby="contact-tab5" role="tabpanel">
+        <section class="contact-box chat-section ">
+
+            <h3 class="ffe-h4">Chat med oss</h3>
+
+            <div class="chat-section__text">
+                Vår chatrobot er alltid tilgjengelig og gir deg svar på mange spørsmål. Du kan også chatte med en rådgiver mellom 7-22 (10-18). Chatten finner du alltid nede i høyre hjørne.
+            </div>
+            
+            
+            
+            
+    <div class="chat-section__button">
+        <div class="dialoghubButton chat-section__button-item">            
+            
+
+
+    
+    
+    
+
+    
+
+    <div class="dialoghub-button__wrap">
+        <div class="dialoghub-button">
+            <div class="button-wrapper ">
+
+                <button id="1971624039" class="js-start-dialoghub primary-btn ffe-button ffe-button--primary r">
+                    <span class="ffe-button__label">Start chat
+                        </span>
+                        
+                    </span>
+                </button>
+
+            </div>
+        </div>
+
+        <div class="dialoghub-button__msgbox hide" aria-live="assertive">
+            Noe gikk galt. Vennligst prøv igjen senere!
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+
+            
+        </section>
+    </div>
+</div>
+
+
+    </div>
+
+</div>
+
+
+
+</div>
+        <a href="#/" class="to-top" tabindex="-1" aria-hidden="true">
+    <span class="visually-hidden">Til toppen</span>
+    <span class="icon-holder">
+        
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="arrow-up">
+        <path fill="currentColor" d="M480-357.67q-6.67 0-12.33-2.16-5.67-2.17-11-7.5L263.33-560.67q-9.66-9.66-9.33-23.66.33-14 10-23.67 9.67-9.67 23.67-9.67 14 0 23.66 9.67L480-438.67 649.33-608q9.67-9.67 23.34-9.33 13.66.33 23.33 10 9.67 9.66 9.67 23.66T696-560L503.33-367.33q-5.33 5.33-11 7.5-5.66 2.16-12.33 2.16Z"/>
+    </svg>
+
+    </span>
+</a>
+
+    </div>
+    <div class="footer-bottom">
+        <div class="bottom-content container-fluid">
+            
+
+
+
+
+
+
+
+
+
+
+    <div class="footer-bottom__columns ">
+
+        <div class="footer-bottom__column">
+            <div class="footer-bottom__column-links">
+                <h2 class="ffe-h4">Privat</h2>
+                
+                <ul>
+                    <li><a class="js-nav-link" href="/nb/nord-norge/privat/kundeservice/bestill/bli-kunde.html">Bli kunde</a></li>
+                
+                    <li><a class="js-nav-link" href="/nb/nord-norge/privat/kundeservice/verktoy/sperre-kort.html">Sperre kort</a></li>
+                
+                    <li><a class="js-nav-link" href="/nb/nord-norge/privat/forsikring/meld-skade.html">Meld skade</a></li>
+                
+                    <li><a class="js-nav-link" href="/nb/nord-norge/privat/kundeservice/bestill/prisliste.html">Prisliste</a></li>
+                
+                    <li><a class="js-nav-link" href="/nb/nord-norge/privat/kundeservice.html">Kundeservice</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-bottom__column-links">
+                <h2 class="ffe-h4">Logg inn</h2>
+                <ul>
+                    <li><a class="js-nav-link" href="/nord-norge/nettbank-privat/oversikt">Nettbank privat</a></li>
+                
+                    <li><a class="js-nav-link" href="/nb/nord-norge/bedrift/innlogging.html">Nettbank bedrift</a></li>
+                
+                    <li><a class="js-nav-link" href="https://kundeforsikring.sparebank1.no">Forsikring</a></li>
+                
+                    <li><a class="js-nav-link" href="https://kundeforsikring.sparebank1.no/privat/sparing">Pensjon</a></li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+        <div class="footer-bottom__column footer-bottom__column-right">
+            <div class="footer-bottom__column-links footer-bottom__social-links">
+                <h2 class="ffe-h4">Sosiale medier</h2>
+                <ul>
+                    <li>
+                        <a class="social-logo" href="https://www.facebook.com/sb1snn?ref=ts" target="_blank" rel="noopener" title="Facebook">
+                            
+
+<div class="aem-component-container ">
+      
+            
+    
+    
+
+    
+        
+    
+    
+        
+    <div class="image-wrapper">
+        <noscript class="lazyload lazyload--image">
+            <img aria-hidden="true" src="/content/dam/SB1/ikoner/SoMe/facebook-hvit.svg" class="inline-svg responsive  " style="width:100%;" data-lazy-smallsrc="/content/dam/SB1/ikoner/SoMe/facebook-hvit.svg" data-lazy-largesrc="/content/dam/SB1/ikoner/SoMe/facebook-hvit.svg" data-lazy-breakpoint="768px"/>
+        </noscript>
+    </div>
+    <link rel="image_src" itemprop="image" href="/content/dam/SB1/ikoner/SoMe/facebook-hvit.svg.thumb.1280.1280.jpg"/>
+
+        
+    
+
+        
+    
+    
+    
+    
+
+      
+</div>
+                            <span class="visually-hidden">Facebook</span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="social-logo" href="https://twitter.com/snn_" target="_blank" rel="noopener" title="Twitter">
+                            
+
+<div class="aem-component-container ">
+      
+            
+    
+    
+
+    
+        
+    
+    
+        
+    <div class="image-wrapper">
+        <noscript class="lazyload lazyload--image">
+            <img aria-hidden="true" src="/content/dam/SB1/ikoner/SoMe/twitter-hvit.svg" class="inline-svg responsive  " style="width:100%;" data-lazy-smallsrc="/content/dam/SB1/ikoner/SoMe/twitter-hvit.svg" data-lazy-largesrc="/content/dam/SB1/ikoner/SoMe/twitter-hvit.svg" data-lazy-breakpoint="768px"/>
+        </noscript>
+    </div>
+    <link rel="image_src" itemprop="image" href="/content/dam/SB1/ikoner/SoMe/twitter-hvit.svg.thumb.1280.1280.jpg"/>
+
+        
+    
+
+        
+    
+    
+    
+    
+
+      
+</div>
+                            <span class="visually-hidden">Twitter</span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="social-logo" href="https://www.instagram.com/sparebank1nordnorge/" target="_blank" rel="noopener" title="Instagram">
+                            
+
+<div class="aem-component-container ">
+      
+            
+    
+    
+
+    
+        
+    
+    
+        
+    <div class="image-wrapper">
+        <noscript class="lazyload lazyload--image">
+            <img aria-hidden="true" src="/content/dam/SB1/ikoner/SoMe/instagram-hvit.svg" class="inline-svg responsive  " style="width:100%;" data-lazy-smallsrc="/content/dam/SB1/ikoner/SoMe/instagram-hvit.svg" data-lazy-largesrc="/content/dam/SB1/ikoner/SoMe/instagram-hvit.svg" data-lazy-breakpoint="768px"/>
+        </noscript>
+    </div>
+    <link rel="image_src" itemprop="image" href="/content/dam/SB1/ikoner/SoMe/instagram-hvit.svg.thumb.1280.1280.jpg"/>
+
+        
+    
+
+        
+    
+    
+    
+    
+
+      
+</div>
+                            <span class="visually-hidden">Instagram</span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="social-logo" href="https://www.sparebank1.no/nb/nord-norge/om-oss/nyheter.html" target="_blank" rel="noopener" title="Nyhetssenter">
+                            
+
+<div class="aem-component-container ">
+      
+            <div class="Left">
+    
+    
+
+    
+        
+    
+    
+        
+    <div class="image-wrapper">
+        <noscript class="lazyload lazyload--image">
+            <img aria-hidden="true" src="/content/dam/SB1/ikoner/SoMe/blogg-hvit.svg" class="inline-svg responsive  " style="width:100%;" data-lazy-smallsrc="/content/dam/SB1/ikoner/SoMe/blogg-hvit.svg" data-lazy-largesrc="/content/dam/SB1/ikoner/SoMe/blogg-hvit.svg" data-lazy-breakpoint="768px"/>
+        </noscript>
+    </div>
+    <link rel="image_src" itemprop="image" href="/content/dam/SB1/ikoner/SoMe/blogg-hvit.svg.thumb.1280.1280.jpg"/>
+
+        
+    
+
+        
+    
+    
+    
+    
+</div>
+      
+</div>
+                            <span class="visually-hidden">Nyhetssenter</span>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="social-logo" href="https://www.linkedin.com/company/43281/" target="_blank" rel="noopener" title="Linkedin">
+                            
+
+<div class="aem-component-container ">
+      
+            <div class="Left">
+    
+    
+
+    
+        
+    
+    
+        
+    <div class="image-wrapper">
+        <noscript class="lazyload lazyload--image">
+            <img aria-hidden="true" src="/content/dam/SB1/ikoner/SoMe/linkedin-hvit.svg" class="inline-svg responsive  " style="width:100%;" data-lazy-smallsrc="/content/dam/SB1/ikoner/SoMe/linkedin-hvit.svg" data-lazy-largesrc="/content/dam/SB1/ikoner/SoMe/linkedin-hvit.svg" data-lazy-breakpoint="768px"/>
+        </noscript>
+    </div>
+    <link rel="image_src" itemprop="image" href="/content/dam/SB1/ikoner/SoMe/linkedin-hvit.svg.thumb.1280.1280.jpg"/>
+
+        
+    
+
+        
+    
+    
+    
+    
+</div>
+      
+</div>
+                            <span class="visually-hidden">Linkedin</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+    </div>
+
+    <div class="footer-bottom__column-links footer-bottom__small-links ">
+        <ul>
+            <li><a class="ffe-link-text" href="/nb/nord-norge/om-oss/om-banken/selskapsinformasjon.html">Om SpareBank 1 Nord-Norge</a></li>
+        
+            <li><a class="ffe-link-text" href="/nb/nord-norge/om-oss/personvern/generelle-vilkar.html">Vilkår for bruk av nettsiden</a></li>
+        
+            <li><a class="ffe-link-text" href="/nb/nord-norge/om-oss/personvern.html">Personvern</a></li>
+        
+            <li><a class="ffe-link-text" href="https://www.sparebank1.no/nb/nord-norge/om-oss/personvern.html#analyseverktoy-og-statistikk-gjor-oss-bedre">Informasjonskapsler</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-bottom__address">
+        <p>SpareBank 1 Nord-Norge, Storgata 65, Tromsø</p>
+        
+    </div>
+
+        </div>
+    </div>
+</footer>
+        </div>
+
+        <div class="hide" id="translated-text">
+
+	{
+		"EMAIL_FIELD_ERROR": "Skriv inn en gyldig e-postadresse.",
+		"CHECKBOX_ERROR": "",
+		"CHECKBOX_GROUP_ERROR": "Velg minst et av alternativene",
+		"DROPDOWN_ERROR": "Gjør et valg i nedtrekkslisten.",
+		"DATE_TO_FROM_ERROR": "Ugyldig dato (eksempel på gyldig dato 31.12.2016).",
+		"RADIO_ERROR": "Velg et alternativ.",
+		"POSTAL_CODE_ERROR": "Skriv inn et gyldig postnummer (4 siffer).",
+		"TEXT_FIELD_ERROR": "Feltet må fylles ut.",
+		"TEXT_FIELD_CONTENTS_ERROR": "Ugyldig verdi.",
+		"ACCOUNT_FIELD_ERROR": "Skriv inn et gyldig kontonummer (11 siffer).",
+		"ORGANISATION_FIELD_ERROR": "Skriv inn et gyldig organisasjonsnummer (9 siffer).",
+		"SSN_ERROR": "Skriv inn et gyldig fødselsnummer (11 siffer).",
+		"PHONE_ERROR": "Skriv inn et gyldig telefonnummer (8 siffer).",
+		"MOBILE_PHONE_NO_ERROR": "Skriv inn et gyldig norsk mobilnummer (8 siffer)",
+		"SEARCH_ALLE": "Alle",
+		"MORE_INFO": "Vis mer informasjon",
+		"RESULT_TYPE_BANK": "Bankkontor",
+		"RESULT_TYPE_ADVISOR": "Rådgiver",
+		"VIEW_IN_MAP": "Vis i kart",
+		"BEFORE_COUNT_TEXT": "Du har",
+		"AFTER_COUNT_TEXT": "oppgave som venter på deg",
+		"AFTER_COUNT_TEXT_PLURAL": "oppgaver som venter på deg",
+		"MINE_OPPGAVER_LINK_TEXT": "Relevant for deg",
+		"MINE_OPPGAVER_CLOSE_TEXT": "Ikke nå",
+        "MINE_OPPGAVER_COUNT_TEXT": "en",
+		"FORM_ERROR_LABEL":"Feil i skjema
+",
+		"FORM_SUCCESS_LABEL":"Takk for din henvendelse",
+		"TEXT_FIELD_LENGTH_ERROR":"TEXT_FIELD_LENGTH_ERROR",
+		"TEXTAREA_FIELD_LENGTH_ERROR":"Maks 2000 tegn",
+		"NUMBER_ERROR": "Du kan kun skrive inn tall.",
+		"SEC_BLOCKER_DROPDOWN_DEFAULT": "Velg land",
+		"GLOBAL_SEARCH_NO_RESULT_TEXT": "Ingen treff på",
+		"GLOBAL_SEARCH_FACET_LABEL": "Vis resultater fra",
+		"MODAL_CLOSE": "Lukk",
+		"SEND_TO_BANK_BEFORE_INFO_TEXT": "Vil du komme rett til",
+		"SEND_TO_BANK_AFTER_INFO_TEXT": "neste gang?",
+		"SEND_TO_BANK_NEXT_BUTTON_TEXT": "Ja, husk banken min",
+		"SEND_TO_BANK_CANCEL_BUTTON_TEXT": "Nei, ikke nå",
+		"SEND_TO_BANK_NEXT_DISCLAMER_TEXT": "For at du skal slippe å velge bank hver gang, bruker vi funksjonelle informasjonskapsler som lagrer hvordan du bruker nettsidene og hvilke innstillinger du har gjort."      
+	}
+
+</div>
+
+        
+
+<script type="text/javascript" src="/etc.clientlibs/settings/wcm/designs/sb1/nettsider/vendors_bundle.1156936341.js"></script>
+<script type="text/javascript" src="/etc.clientlibs/settings/wcm/designs/sb1/nettsider/clientlib_base.1156936341.js"></script>
+
+
+        <script>
+            try {
+                [].slice.call(document.getElementsByClassName('ghost')).forEach(function (element) {
+                    element.parentNode.removeChild(element);
+                });
+            } catch (e) {}
+        </script>
+        
+
+        
+            
+                <script defer="true" type="text/javascript" src="/bank/dialoghub/static/integration.js?fid=fid-nord-norge"></script>
+            
+        
+
+        <!-- Remove header and footer inside Mobilbank app, Remove data-sly-test config when tested ok in mobile app in prod -->
+        <script>
+            (function () { // Wrap in IIFE to avoid leaking variables to global scope
+                // Detect Mobilbank user agent
+                const isMobilbank = /mobilbank\//i.test(navigator.userAgent);
+                if (!isMobilbank) return;
+
+                document.documentElement.classList.add('in-mobilbank');
+                try {
+                    if (!document.getElementById('in-mobilbank-style')) {
+                        const style = document.createElement('style');
+                        style.id = 'in-mobilbank-style';
+                        style.textContent = `
+                            html.in-mobilbank .footer-wrapper,
+                            html.in-mobilbank #outer-main-wrap header.header,
+                            html.in-mobilbank #outer-main-wrap .market-nav,
+                            html.in-mobilbank #outer-main-wrap .global-message,
+                            html.in-mobilbank #outer-main-wrap > .main > .to-parent,
+                            html.in-mobilbank #dialoghub-iframe {
+                              display: none !important;
+                            }
+                        `;
+                        (document.head || document.documentElement).appendChild(style);
+                    }
+                } catch (e) {
+                    console.error('Failed to remove Nettsider header for User Agent Mobilbank: ', e);
+                }
+            })();
+        </script>
+    
+</body>
+
+</html>
