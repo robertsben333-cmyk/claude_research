@@ -23,3 +23,7 @@
 ## Stage J — Japan researcher — STARTED
 - Logged at 2026-10-29 01:05 UTC
 - Routine fire 01:05 UTC 2026-10-29 (10:05 JST). Plan: jp_universe -> seal baselines -> provenance -> unpriced-hunter-jp in waves of 5 (cap 25) -> edge_score -> four-model intl panel -> note. No orders.
+
+## Stage J — wave 1 launched
+- Logged at 2026-10-29 01:07 UTC
+- Universe: 127 scheduled, 106 eligible (21 dropped on turnover), 25 hunted, random sample seed 'jp-2026-10-29'. calendar_as_of 2026-10-01. provenance jp.v5 / claude-opus-5-5. Wave 1: 1946 2594 3116 3199 4347.
