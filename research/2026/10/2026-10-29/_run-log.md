@@ -59,3 +59,7 @@
 ## Stage EU — Europe researcher — STARTED
 - Logged at 2026-10-29 14:44 UTC
 - Fired 14:43 UTC (scheduled 14:36). Sealing for event date 2026-10-30 (Fri, next European session). RUN research/2026/10/2026-10-30/europe/. Plan: universe -> baselines -> provenance -> hunters in waves of 5 -> score -> 4-judge panel -> note. No orders.
+
+## Stage EU — panel STARTED
+- Logged at 2026-10-29 15:34 UTC
+- 20/20 hunts banked (all search_complete true; scripts/hunt_status.py is absent from main, so the backstop check could not run). 18 ranked, GSJ and SCYR phantom dates (SCYR reports 2026-11-03 amc). None above floor 2.8. 18 packs, four judges.
