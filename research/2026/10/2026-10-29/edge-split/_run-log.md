@@ -43,3 +43,7 @@
 ## Split panel 4/4 — searchers done
 - Logged at 2026-10-29 18:23 UTC
 - 5 of 5 returned by 18:23 UTC; guard moved nothing; no searcher reported its search budget running out (site-side 403/429/503 on stocktaper, benzinga, nasdaq only); 5 of 5 rankable, 0 clear 2.8
+
+## Split panel 4/4 — panel STARTED
+- Logged at 2026-10-29 18:24 UTC
+- 5 packs, four judges launched in one message at 18:24Z
