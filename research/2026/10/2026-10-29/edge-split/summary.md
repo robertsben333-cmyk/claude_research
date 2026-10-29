@@ -2,11 +2,11 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Names from edge-panel/hunts: the names stage E-P hunted. Shards done: 2 of 4. Names scored by both arms: 10 of 20. Spearman rho on signed panel_pct: 0.758. Same side: 8 of 10.
+Names from edge-panel/hunts: the names stage E-P hunted. Shards done: 3 of 4. Names scored by both arms: 15 of 20. Spearman rho on signed panel_pct: 0.757. Same side: 13 of 15.
 
-Selected by E-P: AXTI. By the split: AXTI, CDNA. Both: AXTI.
+Selected by E-P: AXTI. By the split: AXTI, CDNA, REAL. Both: AXTI.
 
-Mean findings per name, E-P / split: 7.85 / 7.9. Mean sources: 19.7 / 18.9. Mean panel_pct on names in both: 44.9 / 60.6.
+Mean findings per name, E-P / split: 7.85 / 7.9. Mean sources: 19.7 / 18.9. Mean panel_pct on names in both: 43.4 / 58.0.
 
 | ticker | shard | session | E-P | split | impact_sum E-P / split | findings E-P / split | sources E-P / split |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -20,11 +20,11 @@ Mean findings per name, E-P / split: 7.85 / 7.9. Mean sources: 19.7 / 18.9. Mean
 | COLM | 2 | amc | 21L | 31S | 0.3 / -0.2 | 7 / 9 | 16 / 18 |
 | STOK | 2 | amc | 13L | 58L | 0.2 / 0.8 | 8 / 8 | 22 / 18 |
 | SUPN | 2 | amc | 7L | 15L | 0.35 / 0.3 | 4 / 4 | 14 / 16 |
-| CPRI | 3 | bmo | 18L | · | 0.9 / -0.0 | 6 / 9 | 16 / 22 |
-| FND | 3 | amc | 15L | · | -0.7 / 0.7 | 10 / 13 | 22 / 20 |
-| MIAX | 3 | amc | 50S | · | -0.2 / 0.4 | 8 / 7 | 16 / 16 |
-| PINS | 3 | amc | 68L | · | 1.0 / 1.5 | 10 / 10 | 27 / 22 |
-| REAL | 3 | amc | 53S | · | -0.5 / 0.4 | 8 / 9 | 24 / 22 |
+| CPRI | 3 | bmo | 18L | 3L | 0.9 / -0.0 | 6 / 9 | 16 / 22 |
+| FND | 3 | amc | 15L | 47L | -0.7 / 0.7 | 10 / 13 | 22 / 20 |
+| MIAX | 3 | amc | 50S | 75S | -0.2 / 0.4 | 8 / 7 | 16 / 16 |
+| PINS | 3 | amc | 68L | 52L | 1.0 / 1.5 | 10 / 10 | 27 / 22 |
+| REAL | 3 | amc | 53S | 86S* | -0.5 / 0.4 | 8 / 9 | 24 / 22 |
 | CRI | 4 | bmo | 77L | · | 2.8 / 1.5 | 8 / 8 | 22 / 16 |
 | GDYN | 4 | amc | 31S | · | -0.4 / -1.1 | 10 / 8 | 17 / 22 |
 | OSPN | 4 | amc | 13S | · | 0.2 / 0.45 | 9 / 8 | 19 / 15 |
@@ -35,7 +35,7 @@ Mean findings per name, E-P / split: 7.85 / 7.9. Mean sources: 19.7 / 18.9. Mean
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | ALHC, ATEC, AXTI, COUR, INTC | opus5, opus55, sonnet55, fable51 | 18:09 | 14 |
 | 2 | done | CDNA, COLM, SUPN, STOK, AMZN | opus5, opus55, sonnet55, fable51 | 18:12 | 12 |
-| 3 | claimed | MIAX, REAL, FND, PINS, CPRI | n/a | 18:12 | n/a |
+| 3 | done | MIAX, REAL, FND, PINS, CPRI | opus5, opus55, sonnet55, fable51 | 18:12 | 13 |
 | 4 | claimed | PTCT, SPSC, OSPN, GDYN, CRI | n/a | 18:15 | n/a |
 
 E-P's panel was scored 2026-10-29T17:53:48+00:00 with opus5, opus55, sonnet55, fable51.
