@@ -2,11 +2,11 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Names from edge-panel/hunts: the names stage E-P hunted. Shards done: 3 of 4. Names scored by both arms: 15 of 20. Spearman rho on signed panel_pct: 0.757. Same side: 13 of 15.
+Names from edge-panel/hunts: the names stage E-P hunted. Shards done: 4 of 4. Names scored by both arms: 20 of 20. Spearman rho on signed panel_pct: 0.789. Same side: 17 of 20.
 
 Selected by E-P: AXTI. By the split: AXTI, CDNA, REAL. Both: AXTI.
 
-Mean findings per name, E-P / split: 7.85 / 7.9. Mean sources: 19.7 / 18.9. Mean panel_pct on names in both: 43.4 / 58.0.
+Mean findings per name, E-P / split: 7.85 / 7.9. Mean sources: 19.7 / 18.9. Mean panel_pct on names in both: 45.0 / 55.0.
 
 | ticker | shard | session | E-P | split | impact_sum E-P / split | findings E-P / split | sources E-P / split |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -25,18 +25,18 @@ Mean findings per name, E-P / split: 7.85 / 7.9. Mean sources: 19.7 / 18.9. Mean
 | MIAX | 3 | amc | 50S | 75S | -0.2 / 0.4 | 8 / 7 | 16 / 16 |
 | PINS | 3 | amc | 68L | 52L | 1.0 / 1.5 | 10 / 10 | 27 / 22 |
 | REAL | 3 | amc | 53S | 86S* | -0.5 / 0.4 | 8 / 9 | 24 / 22 |
-| CRI | 4 | bmo | 77L | · | 2.8 / 1.5 | 8 / 8 | 22 / 16 |
-| GDYN | 4 | amc | 31S | · | -0.4 / -1.1 | 10 / 8 | 17 / 22 |
-| OSPN | 4 | amc | 13S | · | 0.2 / 0.45 | 9 / 8 | 19 / 15 |
-| PTCT | 4 | amc | 71L | · | 1.2 / 0.8 | 9 / 7 | 22 / 14 |
-| SPSC | 4 | amc | 57S | · | -0.5 / -1.2 | 5 / 4 | 16 / 15 |
+| CRI | 4 | bmo | 77L | 34L | 2.8 / 1.5 | 8 / 8 | 22 / 16 |
+| GDYN | 4 | amc | 31S | 65S | -0.4 / -1.1 | 10 / 8 | 17 / 22 |
+| OSPN | 4 | amc | 13S | 13L | 0.2 / 0.45 | 9 / 8 | 19 / 15 |
+| PTCT | 4 | amc | 71L | 72L | 1.2 / 0.8 | 9 / 7 | 22 / 14 |
+| SPSC | 4 | amc | 57S | 46S | -0.5 / -1.2 | 5 / 4 | 16 / 15 |
 
 | shard | status | names | judges | claimed (UTC) | minutes |
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | ALHC, ATEC, AXTI, COUR, INTC | opus5, opus55, sonnet55, fable51 | 18:09 | 14 |
 | 2 | done | CDNA, COLM, SUPN, STOK, AMZN | opus5, opus55, sonnet55, fable51 | 18:12 | 12 |
 | 3 | done | MIAX, REAL, FND, PINS, CPRI | opus5, opus55, sonnet55, fable51 | 18:12 | 13 |
-| 4 | claimed | PTCT, SPSC, OSPN, GDYN, CRI | n/a | 18:15 | n/a |
+| 4 | done | PTCT, SPSC, OSPN, GDYN, CRI | opus5, opus55, sonnet55, fable51 | 18:15 | 12 |
 
 E-P's panel was scored 2026-10-29T17:53:48+00:00 with opus5, opus55, sonnet55, fable51.
 
