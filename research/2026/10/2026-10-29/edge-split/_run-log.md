@@ -35,3 +35,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-10-29 18:21 UTC
 - 5 of 5 returned by 18:20 UTC (unpriced-searcher agent, Opus 5.5); guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished of 5); site-side 403/429 only (tickflow, Stock Taper, Benzinga, Chartmill)
+
+## Split panel 1/4 — panel scored
+- Logged at 2026-10-29 18:22 UTC
+- 4 of 4 judges on pinned agents (opus5, opus55, sonnet55, fable51); dry-run, history untouched; 1 selected: AXTI long panel_pct 90.9; ATEC 79.9 short, ALHC 77.6 short, COUR 65.5 long, INTC 12.4 short
