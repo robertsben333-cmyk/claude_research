@@ -83,3 +83,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-29 17:45 UTC
 - 20 packs, four judges, one part. edge_score and V2 grounded written ~17:48 UTC, before the first print.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-10-29 17:54 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): AXTI L 97 only (3-of-4 rule: same). Next CRI 77, CDNA 74, PTCT 71, PINS 68. Searcher above 2.8: AXTI +4.50, CDNA +3.40, CRI +2.80. Stage E edge/ absent. Note published ~18:03 UTC; step 6b next.
