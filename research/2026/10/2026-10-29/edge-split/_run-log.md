@@ -47,3 +47,7 @@
 ## Split panel 4/4 — panel STARTED
 - Logged at 2026-10-29 18:24 UTC
 - 5 packs, four judges launched in one message at 18:24Z
+
+## Split panel 3/4 — done
+- Logged at 2026-10-29 18:26 UTC
+- 5 names, 4 of 4 judges on pinned models, REAL selected (86 short); claim 18:12 to done 18:26 UTC; panel history untouched (--dry-run); summary rebuilt with 3 of 4 shards
