@@ -1,0 +1,47 @@
+{
+  "ticker": "SCYR",
+  "market": "ES",
+  "expected_move_pct": 0.0,
+  "conviction_note": "The event is not real for this window: Sacyr's own convocation notice (dated 21/10/2026) schedules the 9M 2026 release for Tuesday 3 November 2026 after the market close, with the presentation on 4 November at 12:00 CET, so the 2026-10-29 close -> 2026-10-30 close window holds no print and the answer is 0.",
+  "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 1.5,
+  "p_up": 50,
+  "search_complete": true,
+  "already_public": [
+    {"what": "H1 2026 results: net profit EUR78m (+157%), operating cash flow EUR631m (+18%); the last period reported before 9M", "date": "2026-07-29", "source": "https://sacyr.com/en/-/sacyr-publica-resultados-primer-semestre-2026"},
+    {"what": "9M 2026 release date announced: 3 November 2026 after market close, presentation 4 November 2026 12:00 CET", "date": "2026-10-21", "source": "https://sacyr.com/-/anuncio-convocatoria-resultados-9m-2026"}
+  ],
+  "new_in_release": [
+    {"line": "reported_quarter", "expect": "not in this window: the 9M release lands 2026-11-03 after the close, outside the scored window"}
+  ],
+  "bar": "not sized: no release in the window. No consensus quarters in the baseline (Yahoo quoteSummary returned none).",
+  "event_confirmed": false,
+  "session_check": "amc, and on 2026-11-03, not 2026-10-30: the issuer's notice reads 'La publicación de los resultados será el martes día 3 de noviembre de 2026 tras el cierre de mercado en CNMV y en nuestra página web' (https://sacyr.com/-/anuncio-convocatoria-resultados-9m-2026, dated 21/10/2026; English version https://sacyr.com/en/-/anuncio-convocatoria-resultados-9m-2026). The IR landing page agrees: 'La Presentación de Resultados se celebrará el día 4 de noviembre de 2026 a las 12:00h CET' (https://sacyr.com/accionistas-e-inversores). The vendor's 2026-10-30 date is a phantom for this window.",
+  "positioning_check": "register not covered for this market: the CNMV short-position grid returns no rows from this container and Consulta-OIR returns 403, so nothing is known about short interest in SCYR (covered: false is not a zero); priced_lean_pct (-0.242) is the 20-day run-up alone, i.e. the free control.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Sacyr's 9M 2026 results are scheduled for 2026-11-03 after the close (presentation 2026-11-04); any finding on that print resolves outside this window and was not hunted.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-04", "source": "https://sacyr.com/-/anuncio-convocatoria-resultados-9m-2026"}
+  ],
+  "searched_and_found_nothing": [
+    "Sacyr IR calendar paths https://sacyr.com/accionistas-e-inversores/calendario-del-inversor and https://sacyr.com/en/shareholders-and-investors/investor-calendar returned 404; the IR landing page https://sacyr.com/accionistas-e-inversores answered and named 4 November 2026",
+    "WebSearch 'Sacyr resultados tercer trimestre 2026 fecha 30 octubre' and 'Sacyr calendario financiero 2026 resultados 9M': no source placing a release on 2026-10-30",
+    "WebSearch 'Sacyr \"4 de noviembre\" resultados 2026': no independent wire copy of the date; the issuer's own notice is the source",
+    "No further hunt run: with no release in the window, the stage contract sets expected_move_pct to 0"
+  ],
+  "rejected_candidates": [],
+  "baseline_tension": "Not applicable: no event in the window, so nothing to set against the -0.24 run-up lean.",
+  "language_note": [
+    "The Spanish convocation notice carried the exact dates ('martes día 3 de noviembre de 2026 tras el cierre de mercado'); the English version of the same page, as served, carried the weekdays and 'after market close' but the date strings did not survive extraction, so the Spanish page was the load-bearing confirmation."
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 1.5,
+    "p_up": 50,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 4
+}
