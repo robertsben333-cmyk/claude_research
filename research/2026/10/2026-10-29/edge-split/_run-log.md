@@ -19,3 +19,7 @@
 ## Split panel 4/4 — STARTED
 - Logged at 2026-10-29 18:15 UTC
 - PTCT CRI SPSC OSPN GDYN; E-P's sweep and baselines from a633993a; edge-panel/hunts: the names stage E-P hunted; claimed 18:15 UTC (fire 18:14, scheduled 18:09)
+
+## Split panel 4/4 — searchers launched
+- Logged at 2026-10-29 18:16 UTC
+- 5 unpriced-searcher (agent form) in one message at 18:16Z: PTCT SPSC OSPN GDYN (amc) then CRI (bmo); GDYN told to settle its own event (sweep unconfirmed)
