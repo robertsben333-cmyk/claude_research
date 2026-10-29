@@ -15,3 +15,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-10-29 18:12 UTC
 - MIAX CPRI REAL FND PINS, E-P's sweep and baselines from a633993a, edge-panel/hunts: the names stage E-P hunted; claimed 18:12Z
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-10-29 18:15 UTC
+- PTCT CRI SPSC OSPN GDYN; E-P's sweep and baselines from a633993a; edge-panel/hunts: the names stage E-P hunted; claimed 18:15 UTC (fire 18:14, scheduled 18:09)
