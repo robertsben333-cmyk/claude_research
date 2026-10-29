@@ -79,3 +79,7 @@
 ## Edge hunt (panel) — step 3s sell
 - Logged at 2026-10-29 17:45 UTC
 - 20/20 searchers returned by 17:45 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20, no searcher reported a refused search. All 20 events confirmed by the searchers (the 6 sweep-unconfirmed REAL AXTI COUR STOK PINS GDYN confirmed amc 10-29; PINS from options expiry + 3rd-party + CFO 8-K, no company notice). AMZN and INTC baselines sealed empty (bars_failed: HTTPError); their searchers sourced spot/implied move from press. mode: execution enabled, amc_open. flatten --submit at 17:46 UTC: 3 positions held (BAND 27 +2.70%, BFLY 228 -1.61%, NVCR 97 -3.68%, unrealised), all closed; account flat.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-29 17:45 UTC
+- 20 packs, four judges, one part. edge_score and V2 grounded written ~17:48 UTC, before the first print.
