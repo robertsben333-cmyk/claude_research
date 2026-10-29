@@ -51,3 +51,7 @@
 ## Stage J — Japan researcher — DONE
 - Logged at 2026-10-29 01:56 UTC
 - 25 ranked: top 1946 +1.70, 5482 +1.20; bottom 3116/9202 -1.00; none above floor 2.8. Signs 13+/1 zero/11-. Panel 4/4 members, no fallback, 3 selected (1946 L 4/4, 3116 S 3/4, 6471 L 3/4). 9 names release in-session, 4366 unknown. Resolved 10-27 (lean_vs_free_control_rho 0.435). Judge-definition sizing rule conflicts with hunter-core (reported by opus55 judge), recorded in note. Note: japan/japan-note.md. No orders.
+
+## Stage M — morning exit review — SKIPPED (fired after the open)
+- Logged at 2026-10-29 13:47 UTC
+- Routine scheduled 13:10 UTC (09:10 ET) fired at 13:46:56 UTC = 09:46 ET, 17 minutes after the open; slot reports inside_hours false. Per the skill no review was run and no advice compiled for 2026-10-29 (source run research/2026/10/2026-10-28/edge-panel exists). No orders placed.
