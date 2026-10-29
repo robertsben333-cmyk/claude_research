@@ -51,3 +51,7 @@
 ## Split panel 3/4 — done
 - Logged at 2026-10-29 18:26 UTC
 - 5 names, 4 of 4 judges on pinned models, REAL selected (86 short); claim 18:12 to done 18:26 UTC; panel history untouched (--dry-run); summary rebuilt with 3 of 4 shards
+
+## Split panel 4/4 — panel done
+- Logged at 2026-10-29 18:27 UTC
+- 4 of 4 judges on pinned models, full coverage; 0 selected (PTCT 72 long top, 3 of 4 in own top 20%); scored --dry-run --stage E-PS at 18:27 UTC
