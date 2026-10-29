@@ -1,0 +1,2009 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+<title>Grupo SANJOSE | Información financiera</title>
+<meta name="title" content="Grupo SANJOSE | Información financiera"/>
+<meta name="keywords" content="grupo san jose, grupo sanjose, grupo san jose s.a, constructora sanjose, constructora san jose"/>
+<meta name="description" content="SANJOSE es un Grupo empresarial cotizado, sólido y diversificado. Desarrolla su actividad en diversos países de Europa, América, África y Asia a través de sus principales unidades de negocio" />	
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+
+
+<link rel="canonical" href="http://www.grupo-sanjose.com//informacion.php" />
+<link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel="stylesheet" type="text/css" href="css/reset.css" />
+<link rel="stylesheet" href="css/_base.css" />
+<link rel="stylesheet" type="text/css" href="css/text.css" />
+<link rel="stylesheet" type="text/css" href="css/general.css" />
+<link rel="stylesheet" type="text/css" href="css/menu.css" />
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src = "js/jPanelMenu.js"></script>
+<script type="text/javascript" src = "js/jRespond.min.js"></script>
+<script type="text/javascript" src="js/jquery-scrolltofixed.js"></script>
+
+<script>
+var ADAPT_CONFIG = {
+    path: 'css/',
+    dynamic: true,
+    range: [
+      '0 to 650px = _mobile.css',
+	  '650 to 960px = _tablet.css',
+      '960px = _desktop.css'
+    ]
+  };
+</script>
+<script src="js/adapt.js"></script>
+
+
+<script>
+  jQuery.noConflict();
+  jQuery(document).ready(function(){	
+		
+		jQuery.noConflict();
+		if(jQuery('.default')){
+			jQuery('.default').each(function(index, element) {
+			  var $element = jQuery(element);
+			  var defaultValue = $element.val();
+			  $element.focus(function() {
+				  var actualValue = $element.val();
+				  if (actualValue == defaultValue) {
+					  $element.val('');
+					  if(actualValue=="*Contraseña"){
+						  $element.get(0).type = 'password';
+					  }
+					  $element.css('color', '#666666');
+				  }
+			  });
+			  $element.blur(function() {
+				  var actualValue = $element.val();
+				  if (!actualValue) {
+					  $element.val(defaultValue);
+					  if(defaultValue=="*Contraseña"){
+					  	$element.get(0).type = 'text';
+					  }
+					  $element.css('color', '#666666');
+				  }
+			  });
+			});
+		}
+		
+		
+		if(jQuery('#FiltrosBuscador')){
+			jQuery('#FiltrosBuscador > li').click(function() {
+					jQuery('#FiltrosBuscador li').removeClass('busc_on').addClass('busc_off');
+					jQuery(this).closest('li').addClass('busc_on');
+					
+					jQuery("#cont-lineas-negocio").css({'display':'none'});
+					jQuery("#cont-continentes").css({'display':'none'});
+					jQuery("#cont-nombre").css({'display':'none'});
+					jQuery("#cont-tipoobra").css({'display':'none'});
+		
+					var divContent = "#cont-"+jQuery(this).attr("id");
+					jQuery(divContent).css({'display':'block'});
+			});
+		}
+		
+		if(jQuery('#submenu_level3')){
+			jQuery(".sinEnlace2").click(function() {
+				jQuery("#submenu_level3").toggle('slow');
+			});
+		}
+		
+		if(jQuery(window).width()>960 && jQuery.isScrollToFixed('#menu_web')==false){
+			jQuery('#menu_web').scrollToFixed({
+			postFixed: function() { 
+				jQuery(this).css({"background": "none", "border-bottom":"none","padding":"0px" });
+			},
+			preFixed: function() { 
+				jQuery(this).css({"background-image": "none","background-color":"#FFF", "border-bottom":"1px solid #dddddd","padding":"25px 0 10px"}); 
+			}
+			});
+		 }
+		
+		
+		var jRes = jRespond([
+			{
+				label: 'mobile',
+				enter: 0,
+				exit: 960
+			},
+			{
+				label: 'pc',
+				enter: 960,
+				exit: 10000
+			}
+	    ]);
+		
+		jRes.addFunc({
+			breakpoint: 'mobile',
+			enter: function() {
+				jPanelMenu.on();
+				
+				if(jQuery('.despliega')){
+					 jQuery(".despliega").click(function() {
+						jQuery(this).nextUntil(".despliega").toggle('slow');
+					 });
+				}
+				
+				if(jQuery('.sinEnlace')){
+					jQuery(".sinEnlace").click(function() {
+						jQuery(this).nextUntil("ul.despliega").toggle('slow');
+					});
+				}
+			},
+			exit: function() {
+				jPanelMenu.off();
+			}
+		});
+  });
+  
+  jQuery(window).load(topImg);
+  jQuery(window).resize(topImg);
+	
+  function topImg(){
+	  
+	  if(jQuery(window).width()>960 && jQuery('.proyectoScroll')){
+		  jQuery('.proyectoScroll').hover(function(){
+			  jQuery(".mas_info", this).stop().animate({opacity:1},{queue:false,duration:500});
+		  },function() {
+			  jQuery(".mas_info", this).stop().animate({opacity:0},{queue:false,duration:500});
+		  });
+	  }
+  }
+</script>
+
+
+
+<script type="text/javascript">
+  jQuery.noConflict();
+
+  jQuery(document).ready(function() {
+       jQuery('.acurriculum').click(function() {
+        jQuery("#info_"+jQuery(this).attr("id")).toggle('slow');
+       });
+       jQuery('.cerrar_gris').click(function() {
+        var btn=jQuery(this).attr("id");
+        var res = btn.split("_"); 
+        jQuery("#info_"+res[1]).toggle('slow');
+       });
+       
+       
+       jQuery('.pointer').click(function() {
+        jQuery("#listado_"+jQuery(this).attr("id")).toggle('slow',function() {
+            var btn=jQuery(this).attr("id");
+            var res = btn.split("_"); 
+            if(jQuery(this).is(":hidden")) {
+              jQuery("#cerrar_"+res[1]).attr("src", "img/varios/btn_abrir_gris.png");  
+            }else{
+              jQuery("#cerrar_"+res[1]).attr("src", "img/varios/btn_cerrar_gris.png");  
+            }
+           });
+      });
+       
+  }); 
+  
+  function despliega() {
+  	document.getElementById("oculta").style.display = "block";
+  	document.getElementById("anteriores").style.display = "none";
+  }
+  function despliega2() {
+  	document.getElementById("oculta2").style.display = "block";
+  	document.getElementById("anteriores2").style.display = "none";
+  }
+  function despliega3() {
+  	document.getElementById("oculta3").style.display = "block";
+  	document.getElementById("anteriores3").style.display = "none";
+  }
+  function despliega4() {
+    document.getElementById("oculta4").style.display = "block";
+    document.getElementById("anteriores4").style.display = "none";
+  }
+</script>
+</head>
+<body>
+
+<!-- Modal HTML -->
+        	<div class="modal-fondo"></div>
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog modal-login">
+                <div class="modal-content">
+                        <div class="logo-modal"><img src="https://gruposanjose.biz/img/varios/logotipo.jpg" /></div>
+
+                        <h3 class="modal-h3">Preferencias de privacidad</h4>
+                        <p class="modal-p">Utilizamos cookies en nuestro sitio web. Algunas de ellas son esenciales, mientras que otras nos ayudan a mejorar este sitio web y su experiencia.</p>
+                    
+                        <form action="https://gruposanjose.biz/controlador-cookies.php" name="form_edit" method="post">
+                            <input type="hidden" value="" name="cookiesgsj" id="cookiesgsj" />
+                            <center><input id="essential" type="checkbox" name="essential" checked="checked" disabled=""> Esencial&nbsp;&nbsp;&nbsp;
+                                <input id="marketingsj" type="checkbox"   name="marketingsj"> Marketing&nbsp;&nbsp;&nbsp;
+                                <input id="externosgsj" type="checkbox"  name="externosgsj"> Medios externos
+                            </center>
+                            <div class="modal-acepto"><input type="submit" class="input-modal-acepto" value="Aceptar todo" onClick="send(0);" /></div>
+                            <div class="modal-guarda"><input type="submit" class="input-modal" value="Guardar" onClick="send(1);" /></div>
+                            <div class="modal-rechazo"><input type="submit" class="input-modal-rechazo" value="Rechazar todo" onClick="send(2);" /></div>
+                            <p class="modal-politica"><a href="cookies.php">Cookies</a></p>
+                    
+                        </form>
+                </div>
+            </div>
+        </div>
+    
+    <script type="text/javascript" language="javascript">
+        function send(accion){
+            if (accion == 0) { 
+                document.getElementById("cookiesgsj").value=1;
+            }
+            if (accion == 1) { 
+                document.getElementById("cookiesgsj").value=2;
+            }   
+            if (accion == 2) { 
+                document.getElementById("cookiesgsj").value=3;
+            }   
+
+        }
+    </script>
+<div id="cabecera">
+<div id="header_azul">
+	<div class="grid-container">
+		<div class="grid-60 tablet-grid-45 mobile-grid-100"><a href="cotizaciones.php" class="f12">29/10 15:18 ULT:7,11 VAR:-1,11% ANT:7,19 APE:7,30 MAX:7,30 MIN:7,08 VOL:14722 </a></div>
+                
+                <div class="grid-40 tablet-grid-55 hide-on-mobile alignRight"><p><a href="rrhh.php">&Uacutenete a SANJOSE</a> &nbsp;&nbsp;| &nbsp;&nbsp;<a href="contactar.php ">Contacto</a> &nbsp;&nbsp;| &nbsp;&nbsp;<a href="construccion.php"><img src="img/varios/icono_negocio_1.png" alt="" /></a> <a href="energia.php"><img src="img/varios/icono_negocio_2.png" alt="" /></a> <a href="concesiones.php"><img src="img/varios/icono_negocio_3.png" alt="" /></a> <a href="gsj-solutions.php"><img src="img/varios/icono_negocio_4.png" alt="" /></a> <a href="https://sanjoseinnovation.com" target="_blank"><img src="img/varios/icono_negocio_5.png" alt="" /></a></p></div>
+                <div class="grid-40 tablet-grid-55 hide-on-desktop hide-on-tablet alignRight"><p><a href="construccion.php"><img src="img/varios/icono_negocio_1.png" alt="" /></a> <a href="energia.php"><img src="img/varios/icono_negocio_2.png" alt="" /></a> <a href="concesiones.php"><img src="img/varios/icono_negocio_3.png" alt="" /></a> <a href="gsj-solutions.php"><img src="img/varios/icono_negocio_4.png" alt="" /></a> <a href="https://sanjoseinnovation.com" target="_blank"><img src="img/varios/icono_negocio_5.png" alt="" /></a></p></div>
+    
+    </div>
+</div>
+
+<div class="grid-container">
+	
+    <div class="clear"></div><br />
+    
+    <div class="mobile-grid-50 tablet-grid-50 hide-on-desktop">
+    	<a href='#menu' id='butonmenu' class='menu-trigger' ><img src='img/varios/icono_menu.jpg' alt='' /> <b>MEN&Uacute</b></a>
+    </div>
+    
+    <div class="grid-50 tablet-grid-50 mobile-grid-50 reescalar" id="Logotipo">
+    	<a href="index.php"><img src="img/varios/GRUPOSANJOSE.webp" alt="Grupo SANJOSE"></a>
+    </div>
+    
+    <div class="hide-on-desktop"><div class="clear"></div><br /></div>
+    
+    <div class="grid-50 tablet-grid-100 mobile-grid-100" id="idiomas">
+        <span class="color_azul bold">ES</span>&nbsp;<img src="img/varios/separador_idioma.jpg" />&nbsp;
+        <a href="english/informacion.php">EN</a>&nbsp;<img src="img/varios/separador_idioma.jpg" />&nbsp;
+        <a href="fr/informacion.php">FR</a>&nbsp;<img src="img/varios/separador_idioma.jpg" />&nbsp;
+        <a href="pt/informacion.php">PT</a>
+    </div>
+	
+    <div class="hide-on-mobile hide-on-tablet">
+    	<div class="clear"></div><br />
+	    <div class="grid-100 tablet-grid-100 mobile-grid-100">
+			<div id="menu_web"><header class='main'><nav><ul id='menu'>			<li class="boton_off  Clase0" id="casita">
+           
+                        
+			<a href="index.php" title="INICIO">INICIO</a>
+            
+						</li>
+			<li class="boton_off  Clase1" >
+           
+                        
+			<a href="perfil.php" title="PRESENTACIÓN">PRESENTACIÓN</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='perfil.php' title='Perfil de la Compañía'>Perfil de la Compañía</a></li><li class=''><a href='historia.php' title='Historia'>Historia</a></li><li class=''><a href='organo.php' title='ÓRGANO DE GOBIERNO'>ÓRGANO DE GOBIERNO</a></li><li class=''><a href='premios_reconocimientos.php' title='Premios y Reconocimientos'>Premios y Reconocimientos</a></li></ul>			</li>
+			<li class="boton_off  Clase2" >
+           
+                        
+			<a href="construccion.php" title="LÍNEAS DE NEGOCIO">LÍNEAS DE NEGOCIO</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='construccion.php' title='Constructora'>Constructora</a></li><li class=''><a href='energia.php' title='Energía y Medio Ambiente'>Energía y Medio Ambiente</a></li><li class=''><a href='concesiones.php' title='Concesiones y Servicios'>Concesiones y Servicios</a></li><li class=''><a href='gsj-solutions.php' title='GSJ Solutions'>GSJ Solutions</a></li><li class=''><a href='distrito_castellana_norte.php' title='MADRID NUEVO NORTE'>MADRID NUEVO NORTE</a></li><li class=''><a href='carlos_casado.php' title='CARLOS CASADO'>CARLOS CASADO</a></li><li class=''><a href='facopremo.php' title='FCPM'>FCPM</a></li><li class=''><a href='comercial_udra.php' title='COMERCIAL UDRA'>COMERCIAL UDRA</a></li></ul>			</li>
+			<li class="boton_off  Clase3" >
+           
+                        
+			<a href="empresa_global.php" title="GSJ EN EL MUNDO">GSJ EN EL MUNDO</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='gsj_Espana_1' title='España'>España</a></li><li class=''><a href='gsj_Italia_30' title='Italia'>Italia</a></li><li class=''><a href='gsj_Malta_26' title='Malta'>Malta</a></li><li class=''><a href='gsj_Portugal_4' title='Portugal'>Portugal</a></li><li class=''><a href='gsj_Reino-Unido_31' title='Reino Unido'>Reino Unido</a></li><li class=''><a href='gsj_Argentina_6' title='Argentina'>Argentina</a></li><li class=''><a href='gsj_Chile_7' title='Chile'>Chile</a></li><li class=''><a href='gsj_Estados-Unidos_9' title='Estados Unidos'>Estados Unidos</a></li><li class=''><a href='gsj_Mexico_10' title='México'>México</a></li><li class=''><a href='gsj_Paraguay_22' title='Paraguay'>Paraguay</a></li><li class=''><a href='gsj_Peru_12' title='Perú'>Perú</a></li><li class=''><a href='gsj_Emiratos-Arabes-Unidos_18' title='Emiratos Árabes Unidos'>Emiratos Árabes Unidos</a></li><li class=''><a href='gsj_India_19' title='India'>India</a></li><li class=''><a href='gsj_Cabo-Verde_15' title='Cabo Verde'>Cabo Verde</a></li></ul>			</li>
+			<li class="boton_off  Clase4" >
+           
+                        
+			<a href="proyectos.php" title="PROYECTOS">PROYECTOS</a>
+            
+						</li>
+			<li class="boton_on  Clase5" >
+           
+                        
+			<a href="cauces.php" title="ACCIONISTAS E INVERSORES">ACCIONISTAS E INVERSORES</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='cauces.php' title='Cauces de comunicación con la sociedad'>Cauces de comunicación con la sociedad</a></li><li class=''><a href='accion.php' title='Acción y capital social'>Acción y capital social</a></li><li class=''><a href='informacion.php' title='Información financiera'>Información financiera</a></li><li class=''><a href='gobierno.php' title='Gobierno corporativo'>Gobierno corporativo</a></li><li class=''><a href='agenda.php' title='Agenda del inversor'>Agenda del inversor</a></li><li class=''><a href='hechos.php' title='Hechos relevantes'>Hechos relevantes</a></li><li class=''><a href='presentaciones.php' title='Presentaciones corporativas'>Presentaciones corporativas</a></li><li class=''><a href='juntas.php' title='Junta general de accionistas'>Junta general de accionistas</a></li><li class=''><a href='informes.php' title='Informes de analistas'>Informes de analistas</a></li></ul>			</li>
+			<li class="boton_off  Clase6" >
+           
+                        
+			<a href="innovacion.php" title="INNOVACIÓN">INNOVACIÓN</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='innovacion.php' title='INNOVACIÓN'>INNOVACIÓN</a></li><li class=''><a href='bim.php' title='BIM'>BIM</a></li></ul>			</li>
+			<li class="boton_off  Clase7" >
+           
+                        
+			<a href="principios.php" title="RSC">RSC</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='principios.php' title='Principios'>Principios</a></li><li class=''><a href='gerencia.php' title='Gerencia de riesgos y seguros'>Gerencia de riesgos y seguros</a></li><li class=''><a href='clientes.php' title='Grupos de interés'>Grupos de interés</a></li><li class=''><a href='entorno.php' title='Entorno, calidad y medio ambiente'>Entorno, calidad y medio ambiente</a></li><li class=''><a href='gestion_energetica.php' title='Gestión Energética'>Gestión Energética</a></li><li class=''><a href='seguridad_informacion.php' title='Seguridad de la información'>Seguridad de la información</a></li></ul>			</li>
+			<li class="boton_off  Clase8" >
+           
+                        
+			<a href="rrhh.php" title="RRHH">RRHH</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='rrhh.php' title='Únete a SANJOSE'>Únete a SANJOSE</a></li><li class=''><a href='https://login.microsoftonline.com/cefe2b6b-9b0e-47cd-a163-29a1bbd61837/saml2?SAMLRequest=jZJNb9swDIbvA%2FYfDN3lDyVxEiFOkTUoFqDbgibdYZdBlplEg016otx2%2B%2FVzkgboDi0q6CKKBJ%2BXL2dXT00dPYBnR1iILE5FBGipcrgvxP32Rk7E1XzGpqlbvejCAe%2Fgdwccor4OWZ8%2BCtF51GTYsUbTAOtg9Wbx5VarONWtp0CWanEueTvZMIMPPYuIVstC%2FKxUpQYVDLIKJrtJVZaQp8pkaTm1o2wKg7GCobE5GCWi7xcV6qhixdzBCjkYDH0oVSOZ9jffpmM9Gup08kNE62e0Tw7Pgt9CK89JrD9vt2u5%2FrbZimhxwb0m5K4BvwH%2F4Czc390W4hBCyzpJmBpiNviLGA7UQLz3XUvPgbh0fxMRLfuROjThxH8prGnvMG6c9cS0C4S1Q4gtNYmFHagyL%2BW0TEEOx7aSJssHUk1NVpZVnk0G4%2BTojRJn8%2FRpHP6Fa%2B%2F1Yf5%2BGY%2BttIQBMCRt3fXsnDQOHXmDe5DHplKlkvsh1v3T7VESJrPkBd9l0772QKvlmmpn%2F0SLuqbHaw8mQCGC70BEN%2BQbE16XkMXZKeIquTul6g65Bet2Dirx8UP0yknmZ5z%2Fd33%2BDw%3D%3D&amp;RelayState=%2F' title='SOMOS SANJOSE'>SOMOS SANJOSE</a></li></ul>			</li>
+			<li class="boton_off  Clase9" >
+           
+                        
+			<a href="noticias.php" title="PRENSA">PRENSA</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='noticias.php' title='NOTICIAS'>NOTICIAS</a></li><li class=''><a href='videoteca.php' title='VIDEOTECA'>VIDEOTECA</a></li><li class=''><a href='contacto.php' title='SOLICITUD INFORMACIÓN'>SOLICITUD INFORMACIÓN</a></li></ul>			</li>
+			<li class="boton_off hide-on-desktop Clase10" id="sinSeparador">
+           
+                        
+			<a href="contactar.php" title="CONTACTO">CONTACTO</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='contactar.php' title='Formulario de contacto'>Formulario de contacto</a></li><li class=''><a href='directorio.php' title='Directorio'>Directorio</a></li></ul>			</li>
+			<li class="boton_off  Clase11" >
+           
+                        
+			<a href="sistema-interno.php" title="SISTEMA INTERNO DE INFORMACIÓN">SISTEMA INTERNO DE INFORMACIÓN</a>
+            
+						</li>
+</ul></nav></header></div>
+    	</div>
+    </div>
+    
+    <div class="clear"></div><br />
+    
+</div>
+
+
+
+
+
+
+
+
+</div>
+ 
+
+<div class="grid-container">
+    
+    <div class="clear"></div>
+    
+    <div class="grid-100 tablet-grid-100 mobile-grid-100 relative reescalar">
+        <div class="tituloAzul">
+        	<span class="color_azul2">ACCIONISTAS E INVERSORES</span>&nbsp;&gt;&nbsp;INFORMACIÓN FINANCIERA
+        </div>
+    </div> 
+    
+    <div class="clear"></div><br /><br />
+    
+    <div id="column_izq" class="hide-on-mobile">
+	        <div id="submenu">
+            <ul>
+                               							<li >
+                            
+                                                        
+                                <a href='cauces.php' title='Cauces de comunicación con la sociedad'>
+                                                                Cauces de comunicación con la sociedad</a>
+                            
+                                                        
+							                            </li>
+											<li >
+                            
+                                                        
+                                <a href='accion.php' title='Acción y capital social'>
+                                                                Acción y capital social</a>
+                            
+                                                        
+							                            </li>
+											<li class="on" >
+                            
+                                                        
+                                <a href='informacion.php' title='Información financiera'>
+                                                                <img src="img/varios/flecha_menu_lateral.jpg" /> 
+                                                                Información financiera</a>
+                            
+                                                        
+							                            </li>
+											<li >
+                            
+                                                        
+                                <a href='gobierno.php' title='Gobierno corporativo'>
+                                                                Gobierno corporativo</a>
+                            
+                                                        
+							                            </li>
+											<li >
+                            
+                                                        
+                                <a href='agenda.php' title='Agenda del inversor'>
+                                                                Agenda del inversor</a>
+                            
+                                                        
+							                            </li>
+											<li >
+                            
+                                                        
+                                <a href='hechos.php' title='Hechos relevantes'>
+                                                                Hechos relevantes</a>
+                            
+                                                        
+							                            </li>
+											<li >
+                            
+                                                        
+                                <a href='presentaciones.php' title='Presentaciones corporativas'>
+                                                                Presentaciones corporativas</a>
+                            
+                                                        
+							                            </li>
+											<li >
+                            
+                                                        
+                                <a href='juntas.php' title='Junta general de accionistas'>
+                                                                Junta general de accionistas</a>
+                            
+                                                        
+							                            </li>
+											<li >
+                            
+                                                        
+                                <a href='informes.php' title='Informes de analistas'>
+                                                                Informes de analistas</a>
+                            
+                                                        
+							                            </li>
+				            </ul>
+        </div>
+        <br /><br />
+</div>        
+    <div id="column_der">
+    	
+        <div class="grid-100 tablet-grid-100 mobile-grid-100">
+        	<div class="titulo_con_fondo">
+            	<h2>INFORMACIÓN PÚBLICA PERIÓDICA</h2>
+            </div>
+        </div>
+        <div class="clear"></div><br /><br />		
+		       <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF1">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2026</p>
+                <img src="img/varios/btn_cerrar_gris.png" class="cerrar_gris2" id="cerrar_PDF1" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF1" >
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1785430765_5016_NP_SANJOSE_RESULTADOS_2T2026.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1785430765_5016_NP_SANJOSE_RESULTADOS_2T2026.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2026</b></a>
+                        <br />                <a href="data/pdf/1785430765_6333_Informe_Resultados_2T-2026.pdf" target="_blank"><b>Informe Resultados 1 semestre 2026</b></a>
+                                                |
+                <a href="data/pdf/1785430765_6877_Inf.audit-EEFFs-Notas_Expl-Inf.Gest_-_GESJ_1S2026.pdf" target="_blank">Estados Financieros 1 semestre 2026</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1779443809_1560353909.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1779443809_1560353909.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2026</b></a>
+                        |                <a href="data/pdf/1779381041_1267434653.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2026</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF2">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2025</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF2" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF2" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1772141854_1029218989.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1772141854_1029218989.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2025</b></a>
+                        |                <a href="data/pdf/1772142779_2139900790.pdf" target="_blank"><b>Informe Resultados Ejercicio 2025</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1763661896_1207527059.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1763661896_1207527059.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2025</b></a>
+                        |                <a href="data/pdf/1763661896_485123533.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2025</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1753894344_612575545.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1753894344_612575545.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2025</b></a>
+                        <br />                <a href="data/pdf/1753894344_384502961.pdf" target="_blank"><b>Informe Resultados 1 semestre 2025</b></a>
+                                                |
+                <a href="data/pdf/1753894344_1829100135.pdf" target="_blank">Estados Financieros 1 semestre 2025</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1747934602_1545382984.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1747934602_1545382984.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2025</b></a>
+                        |                <a href="data/pdf/1747934602_851555876.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2025</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF3">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2024</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF3" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF3" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1740690027_976247458.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1740690027_976247458.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2024</b></a>
+                        |                <a href="data/pdf/1740690027_1211196061.pdf" target="_blank"><b>Informe Resultados Ejercicio 2024</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1732214093_1545776332.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1732214093_1545776332.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2024</b></a>
+                        |                <a href="data/pdf/1732214093_613920028.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2024</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1721842614_1638374883.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1721842614_1638374883.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2024</b></a>
+                        <br />                <a href="data/pdf/1721842614_1603781951.pdf" target="_blank"><b>Informe Resultados 1 semestre 2024</b></a>
+                                                |
+                <a href="data/pdf/1721842614_98474910.pdf" target="_blank">Estados Financieros 1 semestre 2024</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1716488358_1823173692.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1716488358_1823173692.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2024</b></a>
+                        |                <a href="data/pdf/1716488358_705869212.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2024</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF4">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2023</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF4" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF4" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1709238909_601972906.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1709238909_601972906.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2023</b></a>
+                        |                <a href="data/pdf/1709238909_2077613783.pdf" target="_blank"><b>Informe Resultados Ejercicio 2023</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1700156673_663254338.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1700156673_663254338.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2023</b></a>
+                        |                <a href="data/pdf/1700156673_765626359.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2023</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1690479179_1590930230.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1690479179_1590930230.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2023</b></a>
+                        <br />                <a href="data/pdf/1690479179_307513905.pdf" target="_blank"><b>Informe Resultados 1 semestre 2023</b></a>
+                                                |
+                <a href="data/pdf/1690479179_1087305640.pdf" target="_blank">Estados Financieros 1 semestre 2023</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1684431818_1473011392.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1684431818_1473011392.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2023</b></a>
+                        |                <a href="data/pdf/1684431818_1454023582.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2023</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+       <p id='anteriores' onclick='despliega()' style='cursor: pointer; text-align: left; padding: 10px 20px;' class='color_azul'>&gt; Ver anteriores</p><div id='oculta' style='display: none'>       <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF5">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2022</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF5" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF5" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1677623520_1422087010.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1677623520_1422087010.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2022</b></a>
+                        |                <a href="data/pdf/1677623520_337050875.pdf" target="_blank"><b>Informe Resultados Ejercicio 2022</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1668103573_731377209.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1668103573_731377209.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2022</b></a>
+                        |                <a href="data/pdf/1668103573_325578892.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2022</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1659030681_911791851.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1659030681_911791851.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2022</b></a>
+                        <br />                <a href="data/pdf/1659030681_448466033.pdf" target="_blank"><b>Informe Resultados 1 semestre 2022</b></a>
+                                                |
+                <a href="data/pdf/1659030681_2052427265.pdf" target="_blank">Estados Financieros 1 semestre 2022</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1652376146_1797984223.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1652376146_1797984223.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2022</b></a>
+                        |                <a href="data/pdf/1652376146_1246023055.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2022</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF6">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2021</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF6" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF6" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1645742611_371492910.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1645742611_371492910.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2021</b></a>
+                        |                <a href="data/pdf/1645742890_1549905282.pdf" target="_blank"><b>Informe Resultados Ejercicio 2021</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1637257391_1412548227.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1637257391_1412548227.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2021</b></a>
+                        |                <a href="data/pdf/1637257391_1195939501.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2021</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1627496901_1840995472.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1627496901_1840995472.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2021</b></a>
+                        <br />                <a href="data/pdf/1627496901_877613573.pdf" target="_blank"><b>Informe Resultados 1 semestre 2021</b></a>
+                                                |
+                <a href="data/pdf/1627496901_266279736.pdf" target="_blank">Estados Financieros 1 semestre 2021</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1621358425_860069687.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1621358425_860069687.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2021</b></a>
+                        |                <a href="data/pdf/1621358425_1717031060.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2021</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF7">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2020</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF7" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF7" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1614203035_1432071061.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1614203035_1432071061.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2020</b></a>
+                        |                <a href="data/pdf/1646310535_433031027.pdf" target="_blank"><b>Informe Resultados Ejercicio 2020</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1604603824_985114855.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1604603824_985114855.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2020</b></a>
+                        |                <a href="data/pdf/1604603824_378593743.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2020</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1596039552_908302453.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1596039552_908302453.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2020</b></a>
+                        <br />                <a href="data/pdf/1596039552_1602724980.pdf" target="_blank"><b>Informe Resultados 1 semestre 2020</b></a>
+                                                |
+                <a href="data/pdf/1596039552_1170709486.pdf" target="_blank">Estados Financieros 1 semestre 2020</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1588961068_1324322782.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1588961068_1324322782.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2020</b></a>
+                        |                <a href="data/pdf/1588961068_235574679.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2020</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF8">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2019</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF8" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF8" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1582834539_1298460068.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1582834539_1298460068.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2019</b></a>
+                        |                <a href="data/pdf/1582834539_520983236.pdf" target="_blank"><b>Informe Resultados Ejercicio 2019</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1573155317_2047439611.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1573155317_2047439611.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2019</b></a>
+                        |                <a href="data/pdf/1573155317_1943323110.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2019</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1564508269_1026737835.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1564508269_1026737835.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2019</b></a>
+                        <br />                <a href="data/pdf/1564508269_1130107276.pdf" target="_blank"><b>Informe Resultados 1 semestre 2019</b></a>
+                                                |
+                <a href="data/pdf/1564508269_1433233475.pdf" target="_blank">Estados Financieros 1 semestre 2019</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1557427621_571939981.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1557427621_571939981.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2019</b></a>
+                        |                <a href="data/pdf/1557427621_1386347704.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2019</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF9">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2018</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF9" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF9" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1551389548_1287302698.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1551389548_1287302698.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2018</b></a>
+                        |                <a href="data/pdf/1551389548_1069752704.pdf" target="_blank"><b>Informe Resultados Ejercicio 2018</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1541704691_1932866341.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1541704691_1932866341.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2018</b></a>
+                        |                <a href="data/pdf/1541703091_226484225.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2018</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1532626459_1676069629.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1532626459_1676069629.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2018</b></a>
+                        <br />                <a href="data/pdf/1532626459_755053979.pdf" target="_blank"><b>Resumen Informe Resultados 1 semestre 2018</b></a>
+                                                |
+                <a href="data/pdf/1532626459_2098081467.pdf" target="_blank">Estados Financieros 1 semestre 2018</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1525977782_1632603196.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1525977782_1632603196.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2018 </b></a>
+                        |                <a href="data/pdf/1525977782_1688540523.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2018 </b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF10">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2017</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF10" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF10" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1519850528_611455083.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1519850528_611455083.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2017</b></a>
+                        |                <a href="data/pdf/1519850528_1798667333.pdf" target="_blank"><b>Informe Resultados Ejercicio 2017</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1510127200_1796582060.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1510127200_1796582060.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2017</b></a>
+                        |                <a href="data/pdf/1510127200_1759321333.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2017</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1501178315_1138548230.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1501178315_1138548230.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2017</b></a>
+                        <br />                <a href="data/pdf/1501178315_1160437599.pdf" target="_blank"><b>Informe Resultados 1 semestre 2017</b></a>
+                                                |
+                <a href="data/pdf/1501178315_921532865.pdf" target="_blank">Estados Financieros 1 semestre 2017</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1493321459_739762645.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1493321459_739762645.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2017</b></a>
+                        |                <a href="data/pdf/1493321459_84054311.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2017</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF11">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2016</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF11" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF11" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1488312693_969954700.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1488312693_969954700.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2016</b></a>
+                        |                <a href="data/pdf/1488312693_102466182.pdf" target="_blank"><b>Informe Resultados Ejercicio 2016</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1478810244_1389575289.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1478810244_1389575289.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 3 trimestre 2016</b></a>
+                        |                <a href="data/pdf/1478809178_1850823133.pdf" target="_blank"><b>Informe Resultados 3 trimestre 2016</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1469729629_1910621045.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1469729629_1910621045.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2016</b></a>
+                        <br />                <a href="data/pdf/1469729629_1556742496.pdf" target="_blank"><b>Informe Resultados 1 semestre 2016</b></a>
+                                                |
+                <a href="data/pdf/1469730079_570167196.pdf" target="_blank">Estados Financieros 1 semestre 2016</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1463121838_256069928.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1463121838_256069928.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2016</b></a>
+                        |                <a href="data/pdf/1463121838_1372629658.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2016</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF12">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2015</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF12" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF12" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1456780920_1906827101.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1456780920_1906827101.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados Ejercicio 2015</b></a>
+                        |                <a href="data/pdf/1456780920_1467292874.pdf" target="_blank"><b>Informe Resultados Ejercicio 2015</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1447408168_1759819741.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1447408168_1759819741.pdf" target="_blank" class="color_azul"><b>Informe Resultados 3 trimestre 2015</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1438153164_727127947.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1438153164_727127947.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 semestre 2015</b></a>
+                        <br />                <a href="data/pdf/1438153164_1758376639.pdf" target="_blank"><b>Informe Resultados 1 semestre 2015</b></a>
+                                                |
+                <a href="data/pdf/1438153164_1854794113.pdf" target="_blank">Estados Financieros 1 semestre 2015</a>
+                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436778233_687157706.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436778233_687157706.pdf" target="_blank" class="color_azul"><b>Resumen Informe Resultados 1 trimestre 2015</b></a>
+                        |                <a href="data/pdf/1436778233_816657438.pdf" target="_blank"><b>Informe Resultados 1 trimestre 2015</b></a>
+                                                </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF13">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2014</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF13" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF13" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436778088_1917715340.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436778088_1917715340.pdf" target="_blank" class="color_azul"><b>Informe Resultados Ejercicio 2014</b></a>
+                        |                <a href="data/pdf/1436778088_196157154.pdf" target="_blank"><b>Estados Financieros 2 semestre 2014</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436777931_1583233379.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436777931_1583233379.pdf" target="_blank" class="color_azul"><b>Informe Resultados 3 trimestre 2014</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436777830_922371083.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436777830_922371083.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 semestre 2014</b></a>
+                        |                <a href="data/pdf/1436777830_806578915.pdf" target="_blank"><b>Estados Financieros 1 semestre 2014</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436777610_1442739288.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436777610_1442739288.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 trimestre 2014</b></a>
+                                        </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF14">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2013</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF14" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF14" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436777450_2134045617.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436777450_2134045617.pdf" target="_blank" class="color_azul"><b>Informe Resultados Ejercicio 2013</b></a>
+                        |                <a href="data/pdf/1436777450_768895046.pdf" target="_blank"><b>Estados Financieros 2 semestre 2013</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436777280_662292471.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436777280_662292471.pdf" target="_blank" class="color_azul"><b>Informe Resultados 3 trimestre 2013</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436777160_777625663.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436777160_777625663.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 semestre 2013</b></a>
+                        |                <a href="data/pdf/1436777160_588616480.pdf" target="_blank"><b>Estados Financieros 1 semestre 2013</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436777006_223119226.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436777006_223119226.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 trimestre 2013</b></a>
+                                        </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF15">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2012</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF15" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF15" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436776873_355536437.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436776873_355536437.pdf" target="_blank" class="color_azul"><b>Informe Resultados Ejercicio 2012</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436776785_917268133.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436776785_917268133.pdf" target="_blank" class="color_azul"><b>Informe Resultados 3 trimestre 2012</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436776683_660608696.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436776683_660608696.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 semestre 2012</b></a>
+                        |                <a href="data/pdf/1436776683_514993089.pdf" target="_blank"><b>Estados Financieros 1 semestre 2012</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436776476_761688571.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436776476_761688571.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 trimestre 2012</b></a>
+                                        </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF16">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2011</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF16" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF16" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436776094_1141911443.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436776094_1141911443.pdf" target="_blank" class="color_azul"><b>Informe Resultados Ejercicio 2011</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436775860_788075753.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436775860_788075753.pdf" target="_blank" class="color_azul"><b>Informe Resultados 3 trimestre 2011</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436775655_1171928768.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436775655_1171928768.pdf" target="_blank" class="color_azul"><b>	Informe Resultados 1 semestre 2011</b></a>
+                        |                <a href="data/pdf/1436775655_809185581.pdf" target="_blank"><b>Estados Financieros 1 semestre 2011</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436775483_610420995.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436775483_610420995.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 trimestre 2011</b></a>
+                                        </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF17">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2010</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF17" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF17" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436775358_1061001568.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436775358_1061001568.pdf" target="_blank" class="color_azul"><b>Informe Resultados Ejercicio 2010</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436775188_1540493877.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436775188_1540493877.pdf" target="_blank" class="color_azul"><b>Informe Resultados 3 trimestre 2010</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436775061_709274293.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436775061_709274293.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 semestre 2010</b></a>
+                        |                <a href="data/pdf/1436775061_1450729848.pdf" target="_blank"><b>Estados Financieros 1 semestre 2010</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436774788_1135426252.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436774788_1135426252.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 trimestre 2010</b></a>
+                                        </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+              <div class="grid-100 tablet-grid-100 mobile-grid-100">
+          <div class="titulo_azul_claro pointer" id="PDF18">
+              <p>Informaci&oacute;n P&uacute;blica Peri&oacute;dica 2009</p>
+                <img src="img/varios/btn_abrir_gris.png" class="cerrar_gris2" id="cerrar_PDF18" />
+            </div>
+       </div>
+       <div class="clear"></div><br />
+               <div id="listado_PDF18" style="display:none;">
+                     <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436774652_1673238515.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436774652_1673238515.pdf" target="_blank" class="color_azul"><b>Informe Resultados Ejercicio 2009</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436774495_975061462.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436774495_975061462.pdf" target="_blank" class="color_azul"><b>Informaci&oacute;n 3 trimestre 2009</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436774205_792494357.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436774205_792494357.pdf" target="_blank" class="color_azul"><b>Informe Resultados 1 semestre 2009</b></a>
+                        |                <a href="data/pdf/1436774205_462584419.pdf" target="_blank"><b>Estados Financieros 1 semestre 2009</b></a>
+                                                </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436773916_1975093980.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436773916_1975093980.pdf" target="_blank" class="color_azul"><b>Informaci&oacute;n 1 semestre 2009</b></a>
+                                        </p>
+           </div>
+                      <div class="clear"></div><br />  
+           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436773734_627771355.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+              <p>     
+                <a href="data/pdf/1436773734_627771355.pdf" target="_blank" class="color_azul"><b>Informaci&oacute;n 1 trimestre 2009 </b></a>
+                                        </p>
+           </div>
+                      
+            <br/>
+           <div class="clear"></div><br />
+       </div>
+       <br />
+       </div>       <div class="clear"></div><br /> 	
+			
+		<div class="grid-100 tablet-grid-100 mobile-grid-100">
+        	<div class="titulo_con_fondo">
+            	<h2>INFORMES ANUALES</h2>
+            </div>
+        </div>
+        <div class="clear"></div><br /><br /> 	
+			
+       <div class="grid-100 tablet-grid-100 mobile-grid-100">
+        	<div class="titulo_azul_claro">
+            	<p>Cuentas Anuales</p>
+            </div>
+       </div>
+       <div class="clear"></div><br /><br />
+	   
+		           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1772142741_1436394875.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1772142741_1436394875.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2025</b></a>
+				                |
+                <a href="data/pdf/1772142741_1921668937.pdf" target="_blank">Cuentas Anuales Individuales 2025</a>
+                                                <br />                <a href="data/pdf/1772444515_258946743.pdf" target="_blank">Informe Comit&eacute; de Auditor&iacute;a sobre la Independencia de los Auditores Externos</a>
+                <br />
+                <a href="https://www.cnmv.es/portal/Consultas/IFA/ListadoIFA.aspx?id=0&nif=A-36046993" target="_blank" class="color_azul" style="font-size: 10px; font-weight: bold;">La información consolidada regulada oficial es la remitida a la CNMV en formato FEUE, pudiéndose acceder a ella a través de este enlace.</a>
+                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1740692116_1098788230.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1740692116_1098788230.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2024</b></a>
+				                |
+                <a href="data/pdf/1740692116_127012299.pdf" target="_blank">Cuentas Anuales Individuales 2024</a>
+                                                <br />                <a href="data/pdf/1740692117_1100252188.pdf" target="_blank">Informe Comit&eacute; de Auditor&iacute;a sobre la Independencia de los Auditores Externos</a>
+                <br />
+                <a href="https://www.cnmv.es/portal/Consultas/IFA/ListadoIFA.aspx?id=0&nif=A-36046993" target="_blank" class="color_azul" style="font-size: 10px; font-weight: bold;">La información consolidada regulada oficial es la remitida a la CNMV en formato FEUE, pudiéndose acceder a ella a través de este enlace.</a>
+                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1709239520_79722252.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1709239520_79722252.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2023</b></a>
+				                |
+                <a href="data/pdf/1709239520_1754716492.pdf" target="_blank">Cuentas Anuales Individuales 2023</a>
+                                                <br />                <a href="data/pdf/1709288588_793987217.pdf" target="_blank">Informe Comit&eacute; de Auditor&iacute;a sobre la Independencia de los Auditores Externos</a>
+                <br />
+                <a href="https://www.cnmv.es/portal/Consultas/IFA/ListadoIFA.aspx?id=0&nif=A-36046993" target="_blank" class="color_azul" style="font-size: 10px; font-weight: bold;">La información consolidada regulada oficial es la remitida a la CNMV en formato FEUE, pudiéndose acceder a ella a través de este enlace.</a>
+                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1677623863_1416736959.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1677623863_1416736959.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2022</b></a>
+				                |
+                <a href="data/pdf/1677623863_439804709.pdf" target="_blank">Cuentas Anuales Individuales 2022</a>
+                                                <br />                <a href="data/pdf/1709288605_264099723.pdf" target="_blank">Informe Comit&eacute; de Auditor&iacute;a sobre la Independencia de los Auditores Externos</a>
+                                </p>
+           </div>
+           <div class="clear"></div><br />
+      <p id='anteriores2' onclick='despliega2()' style='cursor: pointer;  text-align: left; padding: 10px 20px;' class='color_azul'>&gt; Ver anteriores</p><div id='oculta2' style='display: none'>           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1645785885_298964523.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1645785885_298964523.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2021</b></a>
+				                |
+                <a href="data/pdf/1645785885_1045276610.pdf" target="_blank">Cuentas Anuales Individuales 2021</a>
+                                                <br />                <a href="data/pdf/1709288630_483295375.pdf" target="_blank">Informe Comit&eacute; de Auditor&iacute;a sobre la Independencia de los Auditores Externos</a>
+                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1614203470_642138143.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1614203470_642138143.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2020</b></a>
+				                |
+                <a href="data/pdf/1614203470_237795193.pdf" target="_blank">Cuentas Anuales Individuales 2020</a>
+                                                <br />                <a href="data/pdf/1709288617_1350968478.pdf" target="_blank">Informe Comit&eacute; de Auditor&iacute;a sobre la Independencia de los Auditores Externos</a>
+                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1582834995_2007387293.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1582834995_2007387293.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2019</b></a>
+				                |
+                <a href="data/pdf/1582834995_1978768588.pdf" target="_blank">Cuentas Anuales Individuales 2019</a>
+                                                <br />                <a href="data/pdf/1582835773_640594992.pdf" target="_blank">Informe Comit&eacute; de Auditor&iacute;a sobre la Independencia de los Auditores Externos</a>
+                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1551387319_1658774058.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1551387319_1658774058.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2018</b></a>
+				                |
+                <a href="data/pdf/1551387319_1960899849.pdf" target="_blank">Cuentas Anuales Individuales 2018</a>
+                                                <br />                <a href="data/pdf/1551869501_1855018286.pdf" target="_blank">Informe Comit&eacute; de Auditor&iacute;a sobre la Independencia de los Auditores Externos</a>
+                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1519894447_806852271.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1519894447_806852271.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2017</b></a>
+				                |
+                <a href="data/pdf/1519894447_893268370.pdf" target="_blank">Cuentas Anuales Individuales 2017</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1488313017_1086689630.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1488313017_1086689630.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2016</b></a>
+				                |
+                <a href="data/pdf/1488313017_1860797193.pdf" target="_blank">Cuentas Anuales Individuales 2016</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1456781347_1705403360.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1456781347_1705403360.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2015</b></a>
+				                |
+                <a href="data/pdf/1456781347_148986880.pdf" target="_blank">Cuentas Anuales Individuales 2015</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436782073_1542357024.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1436782073_1542357024.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2014</b></a>
+				                |
+                <a href="data/pdf/1436782073_540243227.pdf" target="_blank">Cuentas Anuales Individuales 2014</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436781912_702502582.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1436781912_702502582.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2013</b></a>
+				                |
+                <a href="data/pdf/1436781912_1968070512.pdf" target="_blank">Cuentas Anuales Individuales 2013</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436781681_805297332.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1436781681_805297332.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2012</b></a>
+				                |
+                <a href="data/pdf/1436781681_250316895.pdf" target="_blank">Cuentas Anuales Individuales 2012</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1438156848_592126910.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1438156848_592126910.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2011</b></a>
+				                |
+                <a href="data/pdf/1436781403_30654756.pdf" target="_blank">Cuentas Anuales Individuales 2011</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436781224_1599214852.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1436781224_1599214852.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2010</b></a>
+				                |
+                <a href="data/pdf/1436781224_1728628359.pdf" target="_blank">Cuentas Anuales Individuales 2010</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436780930_1541637796.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1436780930_1541637796.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2009</b></a>
+				                |
+                <a href="data/pdf/1436780930_382319400.pdf" target="_blank">Cuentas Anuales Individuales 2009 </a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436780045_2093916904.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1436780045_2093916904.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2008 </b></a>
+				                |
+                <a href="data/pdf/1436780045_314043755.pdf" target="_blank">Cuentas Anuales Individuales 2008 </a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1438157012_682199469.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1438157012_682199469.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2007</b></a>
+				                |
+                <a href="data/pdf/1436779833_281613963.pdf" target="_blank">Cuentas Anuales Individuales 2007</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1436779539_499670666.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">
+           		<p>     
+                <a href="data/pdf/1436779539_499670666.pdf" target="_blank" class="color_azul"><b>Cuentas Anuales Consolidadas 2006</b></a>
+				                |
+                <a href="data/pdf/1436779539_1214522374.pdf" target="_blank">Cuentas Anuales Individuales 2006</a>
+                                                </p>
+           </div>
+           <div class="clear"></div><br />
+      </div>       <div class="clear"></div><br />
+	   
+	   	   
+       <div class="grid-100 tablet-grid-100 mobile-grid-100">
+        	<div class="titulo_azul_claro">
+            	<p>Informe de Actividades</p>
+            </div>
+       </div>
+       <div class="clear"></div><br /><br />
+	   
+		           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1789567388_7655_2313432434.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/1789567388_7655_2313432434.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2025</b></a> - <a href="informe_actividades.php">Versión Online</a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1752053978_1628560300.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/1752053978_1628560300.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2024</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1744124391_1730769849.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/1744124391_1730769849.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2023</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1694682968_1061320226.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/1694682968_1061320226.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2022</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+      <p id='anteriores3' onclick='despliega3()' style='cursor: pointer; text-align: left; padding: 10px 20px;' class='color_azul'>&gt; Ver anteriores</p><div id='oculta3' style='display: none'>           <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1663326181_447575653.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/1663326181_447575653.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2021</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1617185109_1230535684.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/1617185109_1230535684.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2020</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_DE_ACTIVIDADES_19.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_DE_ACTIVIDADES_19.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2019</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2018.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2018.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2018</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2017.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2017.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2017</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2016.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2016.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2016</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2015.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2015.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2015</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2014.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2014.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2014</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2013.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2013.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2013</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2012.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2012.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2012</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2011.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2011.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2011</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2010.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2010.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2010</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2009.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2009.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2009</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2008.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2008.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2008</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2007.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2007.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2007</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_06.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_06.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2006 </b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+                 <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/INFORME_ACTIVIDADES_2005.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+           		<p>   
+                <a href="data/pdf/INFORME_ACTIVIDADES_2005.pdf" target="_blank" class="color_azul"><b>Informe de Actividades 2005</b></a>				                                </p>
+           </div>
+           <div class="clear"></div><br />
+      </div>
+
+       <div class="clear"></div><br />
+       
+           
+       <div class="grid-100 tablet-grid-100 mobile-grid-100">
+            <div class="titulo_azul_claro">
+                <p>Informe Fiscal País por País</p>
+            </div>
+       </div>
+       <div class="clear"></div><br /><br />
+       
+                   <div class="grid-5 tablet-grid-5 mobile-grid-10">
+                <a href="data/pdf/1694682968_1061399999.pdf" target="_blank"><img src="img/varios/icono_pdf.png" alt="" /></a>
+           </div>
+           <div class="grid-90 tablet-grid-85 mobile-grid-90 grid-parent padding10">  
+                <p>   
+                <a href="data/pdf/1694682968_1061399999.pdf" target="_blank" class="color_azul"><b>Informe Fiscal Pa&iacute;s por Pa&iacute;s 2025</b></a>                                                </p>
+           </div>
+           <div class="clear"></div><br />
+            <div class="clear"></div><br /> 	
+
+        <div class="grid-100 tablet-grid-100 mobile-grid-100">
+                <div class="titulo_con_fondo">
+                <h2>PERÍODO MEDIO DE PAGO A PROVEEDORES</h2>
+            </div>
+        </div>
+        <div class="clear"></div><br /><br />		
+        <div class="grid-100 tablet-grid-100 mobile-grid-100 grid-parent padding10">  
+            <div class="padding10" style="text-align:justify;">
+            <p>   
+                En relación a la información requerida por la Disposición adicional tercera de la Ley 15/2010, de 5 de julio, modificada por el artículo 9-dos de la Ley 18/2022, 
+                de 28 de septiembre, de creación y crecimiento de empresas, el período medio de pago ponderado a proveedores de las sociedades españolas que integran el Grupo es 
+                de 23 y 31 días en los ejercicios 2025 y 2024, respectivamente.
+            </p>
+            <br/>
+            <p>
+                El plazo máximo legal de pago aplicable en España, según lo establecido en la Ley 15/2010, de 5 de julio, de modificación de la Ley 3/2004, de 29 de diciembre, 
+                modificada a su vez por la Ley 11/2013, de 26 de julio, por la que se establecen medidas de lucha contra la morosidad en las operaciones comerciales, es de 30 días, 
+                ampliados a 60 días en aquellos casos en los que se haya acordado contractualmente entre las partes.
+            </p>
+            <br/>
+            <p>
+               Durante el ejercicio 2025 y 2024, el número total e importe que representan las facturas pagadas a proveedores por las sociedades del Grupo españolas, detallando las que se han pagado en un periodo inferior al máximo establecido en la legislación en vigor, es el siguiente:
+            </p>
+            <br/><br/>
+            <p>
+                <table cellpadding="0" width="100%" style="border: #b2b2b2 0px solid" cellspacing="0">
+                  <tr>
+                    <th style="border: black 0px solid; width: 50%; padding: 5px 10px">&nbsp;</th>
+                    <th style="border: black 0px solid; padding: 5px 10px; text-align: center;">Ejercicio 2025</th>
+                    <th style="border: black 0px solid; padding: 5px 10px; text-align: center;">Ejercicio 2024</th>
+                  </tr>
+                  <tr>
+                    <td style="border: black 1px solid; width: 50%; padding: 5px 10px">Periodo medio de pago a proveedores (días)</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">23</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">31</td>
+                  </tr>
+                  <tr>
+                    <td style="border: black 1px solid; width: 50%; padding: 5px 10px">Ratio de operaciones pagadas (días)</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">21</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">32</td>
+                  </tr>
+                  <tr>
+                    <td style="border: black 1px solid; width: 50%; padding: 5px 10px">Ratio de operaciones pendientes de pago (días)</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">29</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">27</td>
+                  </tr>
+                  <tr>
+                    <td style="border: black 0px solid; width: 50%; padding: 5px 10px">&nbsp;</td>
+                    <td style="border: black 0px solid; padding: 5px 10px">&nbsp;</td>
+                    <td style="border: black 0px solid; padding: 5px 10px">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td style="border: black 1px solid; width: 50%; padding: 5px 10px">Total pagos realizados (en miles de euros)</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">1.236.057</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">1.269.619</td>
+                  </tr>
+                  <tr>
+                    <td style="border: black 1px solid; width: 50%; padding: 5px 10px">Total pagos pendientes (en miles de euros)</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">448.681</td>
+                    <td style="border: black 1px solid; padding: 5px 10px; text-align: center;">456.871</td>
+                  </tr>
+
+                </table>
+            </p>
+            <br/><br/>
+            <p>
+                El pago de facturas fuera del plazo máximo se debe, principalmente, a la existencia de incidencias en la entrega del producto o ejecución del servicio contratado. Los posibles pagos puntuales a acreedores comerciales que pudieran exceder los plazos legales establecidos responden por lo general a prácticas habituales del sector, pudiendo considerarse una razón objetiva y no de carácter abusivo conforme a lo dispuesto a la normativa anteriormente mencionada.
+            </p>
+            <br/>
+            </div>
+        </div>
+        <div class="clear"></div><br />
+</div>
+
+
+<div id="pie_web"><div class="grid-container"><div class="grid-100 tablet-grid-100 mobile-grid-100">
+    <div class="lineaSeparacion"></div>
+</div>
+
+<div class="clear"></div><br /><br />
+
+<div class="grid-33 tablet-grid-100 mobile-grid-100 reescalar" id="logoPie">
+    <img src="img/varios/GRUPOSANJOSE.webp" alt="Grupo SANJOSE" />
+</div>
+
+<div class="hide-on-desktop"><div class="clear"></div><br /></div>
+
+<div class="grid-33 tablet-grid-100 mobile-grid-100 alignCenter">
+    <select name="redir" id="selectRedir" onchange="if(this.value!=''){ cambia_web(this.value);}">
+        <option value="">WEBS GRUPO SANJOSE</option>
+        <option value="https://www.constructorasanjose.com/">SANJOSE Constructora</option>
+        <option value="http://www.construtoraudra.pt/">Construtora Udra</option>
+        <option value="http://www.cartuja.com">Cartuja I.</option>
+        <option value="http://www.ebasl.com">EBA</option>
+        <option value="https://www.tecnocontrol.es/">Tecnocontrol Servicios</option>
+        <option value="http://www.sjtconcesiones.com/">SJT Concesionaria Chile</option>
+        <option value="https://altavistacondominio.com.pe/">Altavista Condominio</option>
+        <option value="http://nuevavista.com.pe/">Nuevavista Condominio</option>
+        <option value="https://www.carloscasadosa.com/">Carlos Casado</option>
+        <option value="https://facopremo.com/">FCPM</option>
+        <option value="https://www.comercialudra.es/">Comercial Udra</option>
+    </select>
+</div>
+    
+<div class="hide-on-desktop"><div class="clear"></div><br /></div>   
+
+
+<div class="grid-33 tablet-grid-100 mobile-grid-100" id="enlacesPie">
+    <a href="contactar.php">Contactar</a> | <a href="aviso_legal.php">Aviso legal</a> | <a href="cookies.php">Cookies</a>
+</div>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="js/floatbox/floatbox.css"/>
+<script type="text/javascript" src="js/floatbox/floatbox.js"></script>
+<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+<script type="text/javascript" src="js/funciones.js"></script>
+
+
+<div class="clear"></div><br />
+<script type="text/javascript">
+    function cambia_web(url) {
+        if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+            location.href=url;
+        }
+        else {
+            window.open(url);
+        }
+    }
+</script>
+</div></div>
+
+</body>
+</html>

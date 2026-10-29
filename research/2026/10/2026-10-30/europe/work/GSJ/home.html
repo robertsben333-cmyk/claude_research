@@ -1,0 +1,1100 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+
+<title>Grupo SANJOSE | Inicio</title>
+<meta name="title" content="Grupo SANJOSE | Inicio"/>
+<meta name="keywords" content="grupo san jose, grupo sanjose, grupo san jose s.a, constructora sanjose, constructora san jose"/>
+<meta name="description" content="SANJOSE es un Grupo empresarial cotizado, s&oacute;lido y diversificado. Desarrolla su actividad en diversos pa&iacute;ses de Europa, Am&eacute;rica, &Aacute;frica y Asia a trav&eacute;s de sus principales unidades de negocio" />	
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" type="text/css" href="css/index.css?20170616" />
+
+
+<link rel="canonical" href="http://www.grupo-sanjose.com//" />
+<link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel="stylesheet" type="text/css" href="css/reset.css" />
+<link rel="stylesheet" href="css/_base.css" />
+<link rel="stylesheet" type="text/css" href="css/text.css" />
+<link rel="stylesheet" type="text/css" href="css/general.css" />
+<link rel="stylesheet" type="text/css" href="css/menu.css" />
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src = "js/jPanelMenu.js"></script>
+<script type="text/javascript" src = "js/jRespond.min.js"></script>
+<script type="text/javascript" src="js/jquery-scrolltofixed.js"></script>
+
+<script>
+var ADAPT_CONFIG = {
+    path: 'css/',
+    dynamic: true,
+    range: [
+      '0 to 650px = _mobile.css',
+	  '650 to 960px = _tablet.css',
+      '960px = _desktop.css'
+    ]
+  };
+</script>
+<script src="js/adapt.js"></script>
+
+
+<script>
+  jQuery.noConflict();
+  jQuery(document).ready(function(){	
+		
+		jQuery.noConflict();
+		if(jQuery('.default')){
+			jQuery('.default').each(function(index, element) {
+			  var $element = jQuery(element);
+			  var defaultValue = $element.val();
+			  $element.focus(function() {
+				  var actualValue = $element.val();
+				  if (actualValue == defaultValue) {
+					  $element.val('');
+					  if(actualValue=="*Contraseña"){
+						  $element.get(0).type = 'password';
+					  }
+					  $element.css('color', '#666666');
+				  }
+			  });
+			  $element.blur(function() {
+				  var actualValue = $element.val();
+				  if (!actualValue) {
+					  $element.val(defaultValue);
+					  if(defaultValue=="*Contraseña"){
+					  	$element.get(0).type = 'text';
+					  }
+					  $element.css('color', '#666666');
+				  }
+			  });
+			});
+		}
+		
+		
+		if(jQuery('#FiltrosBuscador')){
+			jQuery('#FiltrosBuscador > li').click(function() {
+					jQuery('#FiltrosBuscador li').removeClass('busc_on').addClass('busc_off');
+					jQuery(this).closest('li').addClass('busc_on');
+					
+					jQuery("#cont-lineas-negocio").css({'display':'none'});
+					jQuery("#cont-continentes").css({'display':'none'});
+					jQuery("#cont-nombre").css({'display':'none'});
+					jQuery("#cont-tipoobra").css({'display':'none'});
+		
+					var divContent = "#cont-"+jQuery(this).attr("id");
+					jQuery(divContent).css({'display':'block'});
+			});
+		}
+		
+		if(jQuery('#submenu_level3')){
+			jQuery(".sinEnlace2").click(function() {
+				jQuery("#submenu_level3").toggle('slow');
+			});
+		}
+		
+		if(jQuery(window).width()>960 && jQuery.isScrollToFixed('#menu_web')==false){
+			jQuery('#menu_web').scrollToFixed({
+			postFixed: function() { 
+				jQuery(this).css({"background": "none", "border-bottom":"none","padding":"0px" });
+			},
+			preFixed: function() { 
+				jQuery(this).css({"background-image": "none","background-color":"#FFF", "border-bottom":"1px solid #dddddd","padding":"25px 0 10px"}); 
+			}
+			});
+		 }
+		
+		
+		var jRes = jRespond([
+			{
+				label: 'mobile',
+				enter: 0,
+				exit: 960
+			},
+			{
+				label: 'pc',
+				enter: 960,
+				exit: 10000
+			}
+	    ]);
+		
+		jRes.addFunc({
+			breakpoint: 'mobile',
+			enter: function() {
+				jPanelMenu.on();
+				
+				if(jQuery('.despliega')){
+					 jQuery(".despliega").click(function() {
+						jQuery(this).nextUntil(".despliega").toggle('slow');
+					 });
+				}
+				
+				if(jQuery('.sinEnlace')){
+					jQuery(".sinEnlace").click(function() {
+						jQuery(this).nextUntil("ul.despliega").toggle('slow');
+					});
+				}
+			},
+			exit: function() {
+				jPanelMenu.off();
+			}
+		});
+  });
+  
+  jQuery(window).load(topImg);
+  jQuery(window).resize(topImg);
+	
+  function topImg(){
+	  
+	  if(jQuery(window).width()>960 && jQuery('.proyectoScroll')){
+		  jQuery('.proyectoScroll').hover(function(){
+			  jQuery(".mas_info", this).stop().animate({opacity:1},{queue:false,duration:500});
+		  },function() {
+			  jQuery(".mas_info", this).stop().animate({opacity:0},{queue:false,duration:500});
+		  });
+	  }
+  }
+</script>
+
+
+
+<link rel="stylesheet" type="text/css" href="js/jquery.mThumbnailScroller.css" />
+<script type="text/javascript">
+jQuery(document).ready(function() {
+		jQuery('.iosSlider').bxSlider({
+            startAuto: true,
+            infiniteLoop:true,
+            auto: true,
+			controls:false,
+			autoControls:false,
+			pause:10000
+		});
+});  
+</script>
+</head>
+<body>
+
+<div id="header_azul">
+	<div class="grid-container">
+		<div class="grid-60 tablet-grid-45 mobile-grid-100"><a href="cotizaciones.php" class="f12">29/10 15:18 ULT:7,11 VAR:-1,11% ANT:7,19 APE:7,30 MAX:7,30 MIN:7,08 VOL:14722 </a></div>
+                
+                <div class="grid-40 tablet-grid-55 hide-on-mobile alignRight"><p><a href="rrhh.php">&Uacutenete a SANJOSE</a> &nbsp;&nbsp;| &nbsp;&nbsp;<a href="contactar.php ">Contacto</a> &nbsp;&nbsp;| &nbsp;&nbsp;<a href="construccion.php"><img src="img/varios/icono_negocio_1.png" alt="" /></a> <a href="energia.php"><img src="img/varios/icono_negocio_2.png" alt="" /></a> <a href="concesiones.php"><img src="img/varios/icono_negocio_3.png" alt="" /></a> <a href="gsj-solutions.php"><img src="img/varios/icono_negocio_4.png" alt="" /></a> <a href="https://sanjoseinnovation.com" target="_blank"><img src="img/varios/icono_negocio_5.png" alt="" /></a></p></div>
+                <div class="grid-40 tablet-grid-55 hide-on-desktop hide-on-tablet alignRight"><p><a href="construccion.php"><img src="img/varios/icono_negocio_1.png" alt="" /></a> <a href="energia.php"><img src="img/varios/icono_negocio_2.png" alt="" /></a> <a href="concesiones.php"><img src="img/varios/icono_negocio_3.png" alt="" /></a> <a href="gsj-solutions.php"><img src="img/varios/icono_negocio_4.png" alt="" /></a> <a href="https://sanjoseinnovation.com" target="_blank"><img src="img/varios/icono_negocio_5.png" alt="" /></a></p></div>
+    
+    </div>
+</div>
+
+<div class="grid-container">
+	
+    <div class="clear"></div><br />
+    
+    <div class="mobile-grid-50 tablet-grid-50 hide-on-desktop">
+    	<a href='#menu' id='butonmenu' class='menu-trigger' ><img src='img/varios/icono_menu.jpg' alt='' /> <b>MEN&Uacute</b></a>
+    </div>
+    
+    <div class="grid-50 tablet-grid-50 mobile-grid-50 reescalar" id="Logotipo">
+    	<a href="index.php"><img src="img/varios/GRUPOSANJOSE.webp" alt="Grupo SANJOSE"></a>
+    </div>
+    
+    <div class="hide-on-desktop"><div class="clear"></div><br /></div>
+    
+    <div class="grid-50 tablet-grid-100 mobile-grid-100" id="idiomas">
+        <span class="color_azul bold">ES</span>&nbsp;<img src="img/varios/separador_idioma.jpg" />&nbsp;
+        <a href="english/">EN</a>&nbsp;<img src="img/varios/separador_idioma.jpg" />&nbsp;
+        <a href="fr/">FR</a>&nbsp;<img src="img/varios/separador_idioma.jpg" />&nbsp;
+        <a href="pt/">PT</a>
+    </div>
+	
+    <div class="hide-on-mobile hide-on-tablet">
+    	<div class="clear"></div><br />
+	    <div class="grid-100 tablet-grid-100 mobile-grid-100">
+			<div id="menu_web"><header class='main'><nav><ul id='menu'>			<li class="boton_on  Clase0" id="casita">
+           
+                        
+			<a href="index.php" title="INICIO">INICIO</a>
+            
+						</li>
+			<li class="boton_off  Clase1" >
+           
+                        
+			<a href="perfil.php" title="PRESENTACIÓN">PRESENTACIÓN</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='perfil.php' title='Perfil de la Compañía'>Perfil de la Compañía</a></li><li class=''><a href='historia.php' title='Historia'>Historia</a></li><li class=''><a href='organo.php' title='ÓRGANO DE GOBIERNO'>ÓRGANO DE GOBIERNO</a></li><li class=''><a href='premios_reconocimientos.php' title='Premios y Reconocimientos'>Premios y Reconocimientos</a></li></ul>			</li>
+			<li class="boton_off  Clase2" >
+           
+                        
+			<a href="construccion.php" title="LÍNEAS DE NEGOCIO">LÍNEAS DE NEGOCIO</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='construccion.php' title='Constructora'>Constructora</a></li><li class=''><a href='energia.php' title='Energía y Medio Ambiente'>Energía y Medio Ambiente</a></li><li class=''><a href='concesiones.php' title='Concesiones y Servicios'>Concesiones y Servicios</a></li><li class=''><a href='gsj-solutions.php' title='GSJ Solutions'>GSJ Solutions</a></li><li class=''><a href='distrito_castellana_norte.php' title='MADRID NUEVO NORTE'>MADRID NUEVO NORTE</a></li><li class=''><a href='carlos_casado.php' title='CARLOS CASADO'>CARLOS CASADO</a></li><li class=''><a href='facopremo.php' title='FCPM'>FCPM</a></li><li class=''><a href='comercial_udra.php' title='COMERCIAL UDRA'>COMERCIAL UDRA</a></li></ul>			</li>
+			<li class="boton_off  Clase3" >
+           
+                        
+			<a href="empresa_global.php" title="GSJ EN EL MUNDO">GSJ EN EL MUNDO</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='gsj_Espana_1' title='España'>España</a></li><li class=''><a href='gsj_Italia_30' title='Italia'>Italia</a></li><li class=''><a href='gsj_Malta_26' title='Malta'>Malta</a></li><li class=''><a href='gsj_Portugal_4' title='Portugal'>Portugal</a></li><li class=''><a href='gsj_Reino-Unido_31' title='Reino Unido'>Reino Unido</a></li><li class=''><a href='gsj_Argentina_6' title='Argentina'>Argentina</a></li><li class=''><a href='gsj_Chile_7' title='Chile'>Chile</a></li><li class=''><a href='gsj_Estados-Unidos_9' title='Estados Unidos'>Estados Unidos</a></li><li class=''><a href='gsj_Mexico_10' title='México'>México</a></li><li class=''><a href='gsj_Paraguay_22' title='Paraguay'>Paraguay</a></li><li class=''><a href='gsj_Peru_12' title='Perú'>Perú</a></li><li class=''><a href='gsj_Emiratos-Arabes-Unidos_18' title='Emiratos Árabes Unidos'>Emiratos Árabes Unidos</a></li><li class=''><a href='gsj_India_19' title='India'>India</a></li><li class=''><a href='gsj_Cabo-Verde_15' title='Cabo Verde'>Cabo Verde</a></li></ul>			</li>
+			<li class="boton_off  Clase4" >
+           
+                        
+			<a href="proyectos.php" title="PROYECTOS">PROYECTOS</a>
+            
+						</li>
+			<li class="boton_off  Clase5" >
+           
+                        
+			<a href="cauces.php" title="ACCIONISTAS E INVERSORES">ACCIONISTAS E INVERSORES</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='cauces.php' title='Cauces de comunicación con la sociedad'>Cauces de comunicación con la sociedad</a></li><li class=''><a href='accion.php' title='Acción y capital social'>Acción y capital social</a></li><li class=''><a href='informacion.php' title='Información financiera'>Información financiera</a></li><li class=''><a href='gobierno.php' title='Gobierno corporativo'>Gobierno corporativo</a></li><li class=''><a href='agenda.php' title='Agenda del inversor'>Agenda del inversor</a></li><li class=''><a href='hechos.php' title='Hechos relevantes'>Hechos relevantes</a></li><li class=''><a href='presentaciones.php' title='Presentaciones corporativas'>Presentaciones corporativas</a></li><li class=''><a href='juntas.php' title='Junta general de accionistas'>Junta general de accionistas</a></li><li class=''><a href='informes.php' title='Informes de analistas'>Informes de analistas</a></li></ul>			</li>
+			<li class="boton_off  Clase6" >
+           
+                        
+			<a href="innovacion.php" title="INNOVACIÓN">INNOVACIÓN</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='innovacion.php' title='INNOVACIÓN'>INNOVACIÓN</a></li><li class=''><a href='bim.php' title='BIM'>BIM</a></li></ul>			</li>
+			<li class="boton_off  Clase7" >
+           
+                        
+			<a href="principios.php" title="RSC">RSC</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='principios.php' title='Principios'>Principios</a></li><li class=''><a href='gerencia.php' title='Gerencia de riesgos y seguros'>Gerencia de riesgos y seguros</a></li><li class=''><a href='clientes.php' title='Grupos de interés'>Grupos de interés</a></li><li class=''><a href='entorno.php' title='Entorno, calidad y medio ambiente'>Entorno, calidad y medio ambiente</a></li><li class=''><a href='gestion_energetica.php' title='Gestión Energética'>Gestión Energética</a></li><li class=''><a href='seguridad_informacion.php' title='Seguridad de la información'>Seguridad de la información</a></li></ul>			</li>
+			<li class="boton_off  Clase8" >
+           
+                        
+			<a href="rrhh.php" title="RRHH">RRHH</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='rrhh.php' title='Únete a SANJOSE'>Únete a SANJOSE</a></li><li class=''><a href='https://login.microsoftonline.com/cefe2b6b-9b0e-47cd-a163-29a1bbd61837/saml2?SAMLRequest=jZJNb9swDIbvA%2FYfDN3lDyVxEiFOkTUoFqDbgibdYZdBlplEg016otx2%2B%2FVzkgboDi0q6CKKBJ%2BXL2dXT00dPYBnR1iILE5FBGipcrgvxP32Rk7E1XzGpqlbvejCAe%2Fgdwccor4OWZ8%2BCtF51GTYsUbTAOtg9Wbx5VarONWtp0CWanEueTvZMIMPPYuIVstC%2FKxUpQYVDLIKJrtJVZaQp8pkaTm1o2wKg7GCobE5GCWi7xcV6qhixdzBCjkYDH0oVSOZ9jffpmM9Gup08kNE62e0Tw7Pgt9CK89JrD9vt2u5%2FrbZimhxwb0m5K4BvwH%2F4Czc390W4hBCyzpJmBpiNviLGA7UQLz3XUvPgbh0fxMRLfuROjThxH8prGnvMG6c9cS0C4S1Q4gtNYmFHagyL%2BW0TEEOx7aSJssHUk1NVpZVnk0G4%2BTojRJn8%2FRpHP6Fa%2B%2F1Yf5%2BGY%2BttIQBMCRt3fXsnDQOHXmDe5DHplKlkvsh1v3T7VESJrPkBd9l0772QKvlmmpn%2F0SLuqbHaw8mQCGC70BEN%2BQbE16XkMXZKeIquTul6g65Bet2Dirx8UP0yknmZ5z%2Fd33%2BDw%3D%3D&amp;RelayState=%2F' title='SOMOS SANJOSE'>SOMOS SANJOSE</a></li></ul>			</li>
+			<li class="boton_off  Clase9" >
+           
+                        
+			<a href="noticias.php" title="PRENSA">PRENSA</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='noticias.php' title='NOTICIAS'>NOTICIAS</a></li><li class=''><a href='videoteca.php' title='VIDEOTECA'>VIDEOTECA</a></li><li class=''><a href='contacto.php' title='SOLICITUD INFORMACIÓN'>SOLICITUD INFORMACIÓN</a></li></ul>			</li>
+			<li class="boton_off hide-on-desktop Clase10" id="sinSeparador">
+           
+                        
+			<a href="contactar.php" title="CONTACTO">CONTACTO</a>
+            
+			<span style='background:url(img/varios/flecha_blanca_abajo.png) center center no-repeat' class='hide-on-desktop despliega'></span><ul ><li class=''><a href='contactar.php' title='Formulario de contacto'>Formulario de contacto</a></li><li class=''><a href='directorio.php' title='Directorio'>Directorio</a></li></ul>			</li>
+			<li class="boton_off  Clase11" >
+           
+                        
+			<a href="sistema-interno.php" title="SISTEMA INTERNO DE INFORMACIÓN">SISTEMA INTERNO DE INFORMACIÓN</a>
+            
+						</li>
+</ul></nav></header></div>
+    	</div>
+    </div>
+    
+    <div class="clear"></div><br />
+    
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Modal HTML -->
+        	<div class="modal-fondo"></div>
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog modal-login">
+                <div class="modal-content">
+                        <div class="logo-modal"><img src="https://gruposanjose.biz/img/varios/logotipo.jpg" /></div>
+
+                        <h3 class="modal-h3">Preferencias de privacidad</h4>
+                        <p class="modal-p">Utilizamos cookies en nuestro sitio web. Algunas de ellas son esenciales, mientras que otras nos ayudan a mejorar este sitio web y su experiencia.</p>
+                    
+                        <form action="https://gruposanjose.biz/controlador-cookies.php" name="form_edit" method="post">
+                            <input type="hidden" value="" name="cookiesgsj" id="cookiesgsj" />
+                            <center><input id="essential" type="checkbox" name="essential" checked="checked" disabled=""> Esencial&nbsp;&nbsp;&nbsp;
+                                <input id="marketingsj" type="checkbox"   name="marketingsj"> Marketing&nbsp;&nbsp;&nbsp;
+                                <input id="externosgsj" type="checkbox"  name="externosgsj"> Medios externos
+                            </center>
+                            <div class="modal-acepto"><input type="submit" class="input-modal-acepto" value="Aceptar todo" onClick="send(0);" /></div>
+                            <div class="modal-guarda"><input type="submit" class="input-modal" value="Guardar" onClick="send(1);" /></div>
+                            <div class="modal-rechazo"><input type="submit" class="input-modal-rechazo" value="Rechazar todo" onClick="send(2);" /></div>
+                            <p class="modal-politica"><a href="cookies.php">Cookies</a></p>
+                    
+                        </form>
+                </div>
+            </div>
+        </div>
+    
+    <script type="text/javascript" language="javascript">
+        function send(accion){
+            if (accion == 0) { 
+                document.getElementById("cookiesgsj").value=1;
+            }
+            if (accion == 1) { 
+                document.getElementById("cookiesgsj").value=2;
+            }   
+            if (accion == 2) { 
+                document.getElementById("cookiesgsj").value=3;
+            }   
+
+        }
+    </script>
+<div id="cabecera"></div>
+
+<div id="banner">
+
+    <div class="grid-container relative">
+
+        <ul class="iosSlider">
+
+            
+                    <li class="relative">
+
+                                            
+                            
+                        <img src="data/foto/gran_1655818647_2003039418.jpg" class="hide-on-mobile" alt="" title="" />
+
+                        
+                        <img src="data/foto/med_1655818647_2003039418.jpg" class="hide-on-desktop hide-on-tablet" alt="" title="" />
+                        
+                        
+                        
+                        <div class="txtBanner">
+
+                            
+                            
+                            <a href="#video_1" id="enlaceVideo_1" rel="floatbox" rev="width:600px;height:425px;" style="padding:17px 30px 1px; margin-top: 30px;" class="btn center btnsVideos">VER V&Iacute;DEO</a>
+
+                            
+                        </div>
+
+                                                <div class="mobile-grid-100 ContVideos" id="video_1" style="display:none">
+                                                                        <a href="?muestra_modal=1">
+                                            <img src="img/varios/bannerCookiesVideo4.jpg" style="max-width:100%" alt="" />
+                                        </a><br /><br />
+                                                            </div>
+                        
+                        
+                    </li>
+                    
+                
+                    <li class="relative">
+
+                                            
+                            
+                        <img src="data/foto/gran_1510400784_529231382.jpg" class="hide-on-mobile" alt="" title="" />
+
+                        
+                        <img src="data/foto/med_1510400784_529231382.jpg" class="hide-on-desktop hide-on-tablet" alt="" title="" />
+                        
+                        
+                        
+                        <div class="txtBanner">
+
+                            
+                                
+                            <h2>CONSTRUYENDO EL FUTURO</h2>
+                            <br />
+
+                                
+                            
+                            <a href="#video_2" id="enlaceVideo_2" rel="floatbox" rev="width:600px;height:425px;" style="padding:17px 30px 1px;" class="btn center btnsVideos">V&Iacute;DEO CORPORATIVO</a>
+
+                            
+                        </div>
+
+                        
+                        <div class="mobile-grid-100 ContVideos" id="video_2" style="display:none">
+                                                                        <a href="?muestra_modal=1">
+                                            <img src="img/varios/bannerCookiesVideo4.jpg" style="max-width:100%" alt="" />
+                                        </a><br /><br />
+                                                            </div>
+                        
+                        
+                    </li>
+                    
+                
+                    <li class="relative">
+
+                        
+                        <a href="p_MUSEO-LOUVRE-ABU-DHABI_5">
+                        
+                        
+                        <img src="data/foto/gran_1510326746_420675654.jpg" class="hide-on-mobile" alt="" title="" />
+
+                        
+                        <img src="data/foto/med_1510326746_420675654.jpg" class="hide-on-desktop hide-on-tablet" alt="" title="" />
+                        
+                        
+                                                
+                        </a>
+
+                        
+                        <div class="txtBanner">
+
+                            
+                                
+                            <h2>DESARROLLANDO PROYECTOS DE ALTA  CAPACITACI&Oacute;N TECNOL&Oacute;GICA POR TODO EL MUNDO</h2>
+                            <br />
+
+                                
+                            
+                            <a href="p_MUSEO-LOUVRE-ABU-DHABI_5" class="btn center">PROYECTOS GSJ</a>
+
+                            
+                        </div>
+
+                        
+                    </li>
+                    
+                
+                    <li class="relative">
+
+                        
+                        <a href="p_HOSPITAL-AL-AIN-ABU-DHABI_2">
+                        
+                        
+                        <img src="data/foto/gran_1561656634_995231050.jpg" class="hide-on-mobile" alt="" title="" />
+
+                        
+                        <img src="data/foto/med_1561656634_995231050.jpg" class="hide-on-desktop hide-on-tablet" alt="" title="" />
+                        
+                        
+                                                
+                        </a>
+
+                        
+                        <div class="txtBanner">
+
+                            
+                                
+                            <h2>CREANDO VALOR </h2>
+                            <br />
+
+                                
+                            
+                            <a href="p_HOSPITAL-AL-AIN-ABU-DHABI_2" class="btn center">PROYECTOS GSJ</a>
+
+                            
+                        </div>
+
+                        
+                    </li>
+                    
+                
+                    <li class="relative">
+
+                        
+                        <a href="p_HOTEL-RITZ-5-ESTRELLAS-GRAN-LUJO-MADRID_217">
+                        
+                        
+                        <img src="data/foto/gran_1532700277_1714165921.jpg" class="hide-on-mobile" alt="" title="" />
+
+                        
+                        <img src="data/foto/med_1532700277_1714165921.jpg" class="hide-on-desktop hide-on-tablet" alt="" title="" />
+                        
+                        
+                                                
+                        </a>
+
+                        
+                        <div class="txtBanner">
+
+                            
+                                
+                            <h2>COMPROMISO CON LA EXCELENCIA</h2>
+                            <br />
+
+                                
+                            
+                            <a href="p_HOTEL-RITZ-5-ESTRELLAS-GRAN-LUJO-MADRID_217" class="btn center">PROYECTOS GSJ</a>
+
+                            
+                        </div>
+
+                        
+                    </li>
+                    
+                
+                    <li class="relative">
+
+                        
+                        <a href="p_HOSPITAL-EL-CARMEN-DR.-LUIS-VALENTIN-FERRADA-DE-MAIPU-SANTIAGO-DE-CHILE_6 ">
+                        
+                        
+                        <img src="data/foto/gran_1498825076_203237425.jpg" class="hide-on-mobile" alt="" title="" />
+
+                        
+                        <img src="data/foto/med_1498825076_203237425.jpg" class="hide-on-desktop hide-on-tablet" alt="" title="" />
+                        
+                        
+                                                
+                        </a>
+
+                        
+                        <div class="txtBanner">
+
+                            
+                                
+                            <h2>EL VALOR DE LA CALIDAD</h2>
+                            <br />
+
+                                
+                            
+                            <a href="p_HOSPITAL-EL-CARMEN-DR.-LUIS-VALENTIN-FERRADA-DE-MAIPU-SANTIAGO-DE-CHILE_6 " class="btn center">PROYECTOS GSJ</a>
+
+                            
+                        </div>
+
+                        
+                    </li>
+                    
+                
+                    <li class="relative">
+
+                        
+                        <a href="p_TRAMO-EMBALSE-DE-CONTRERAS---VILLAGORDO-DEL-CABRIEL.-AVE-MADRID---VALENCIA_3">
+                        
+                        
+                        <img src="data/foto/gran_1441625967_1137081067.jpg" class="hide-on-mobile" alt="" title="" />
+
+                        
+                        <img src="data/foto/med_1441625967_1137081067.jpg" class="hide-on-desktop hide-on-tablet" alt="" title="" />
+                        
+                        
+                                                
+                        </a>
+
+                        
+                        <div class="txtBanner">
+
+                            
+                                
+                            <h2>RESPETO POR EL MEDIO AMBIENTE Y LA SOSTENIBILIDAD</h2>
+                            <br />
+
+                                
+                            
+                            <a href="p_TRAMO-EMBALSE-DE-CONTRERAS---VILLAGORDO-DEL-CABRIEL.-AVE-MADRID---VALENCIA_3" class="btn center">PROYECTOS GSJ</a>
+
+                            
+                        </div>
+
+                        
+                    </li>
+                    
+                
+                    <li class="relative">
+
+                        
+                        <a href="https://gruposanjose.biz/bim.php">
+                        
+                        
+                        <img src="data/foto/gran_1677671295_2058115409.jpg" class="hide-on-mobile" alt="" title="" />
+
+                        
+                        <img src="data/foto/med_1677671295_2058115409.jpg" class="hide-on-desktop hide-on-tablet" alt="" title="" />
+                        
+                        
+                                                
+                        </a>
+
+                        
+                        <div class="txtBanner">
+
+                            
+                                
+                            <h2>SISTEMA DE GESTI&Oacute;N DE LA INFORMACI&Oacute;N BIM</h2>
+                            <br />
+
+                                
+                            
+                            <a href="https://gruposanjose.biz/bim.php" class="btn center">BIM</a>
+
+                            
+                        </div>
+
+                        
+                    </li>
+                    
+                
+        </ul>
+
+    </div>
+
+</div>
+
+<div class="grid-container">
+    
+    <div class="clear"></div><br /><br />
+    
+    <div class="grid-25 tablet-grid-50 mobile-grid-100 reescalar">
+    	<div class="fondoLogo"><a href="construccion.php"><img src="img/varios/logotipo_constructora.png" alt=""/></a></div>
+        <a href="construccion.php"><img class="hide-on-mobile" src="img/varios/imagen_constructora.jpg" alt="" /></a>
+        <div class="fondoConstructoras">
+        	> <a href="construccion.php">Constructora</a>
+        </div>
+    </div>
+    <div class="hide-on-desktop hide-on-tablet"><div class="clear"></div><br /><br /></div>
+    
+    <div class="grid-25 tablet-grid-50 mobile-grid-100 reescalar">
+    	<div class="fondoLogo"><a href="energia.php"><img src="img/varios/logotipo_medio_ambiente.png" alt=""/></a></div>
+        <a href="energia.php"><img src="img/varios/imagen_medio_ambiente.jpg" class="hide-on-mobile" alt="" /></a>
+        <div class="fondoAmbiente">
+        	> <a href="energia.php">Energ&iacute;a y Medio Ambiente</a>
+        </div>
+    </div>
+    <div class="hide-on-desktop"><div class="clear"></div><br /><br /></div>
+    
+    <div class="grid-25 tablet-grid-50 mobile-grid-100 reescalar">
+    	<div class="fondoLogo"><a href="concesiones.php"><img src="img/varios/logotipo_concesiones.png" alt=""/></a></div>
+        <a href="concesiones.php"><img class="hide-on-mobile" src="img/varios/imagen_concesiones.jpg" alt="" /></a>
+        <div class="fondoConcesiones">
+        	> <a href="concesiones.php">Concesiones y Servicios</a>
+        </div>
+    </div>
+    <div class="hide-on-desktop hide-on-tablet"><div class="clear"></div><br /><br /></div>
+    
+    <div class="grid-25 tablet-grid-50 mobile-grid-100 reescalar">
+    	<div class="fondoLogo"><a href="gsj-solutions.php"><img src="img/varios/logotipo_solutions.png" alt=""/></a></div>
+        <a href="gsj-solutions.php"><img class="hide-on-mobile" src="img/varios/gsj-solutions.jpg" alt="" /></a>
+        <div class="fondoSolutions">
+        	> <a href="gsj-solutions.php">GSJ Solutions</a>
+        </div>
+    </div>
+    <div class="clear"></div><br /><br />
+    <!--
+    <div id="duch" class="grid-100 tablet-grid-100 mobile-grid-100 reescalar">
+                <div class="youtube-cover">
+            <iframe id="castellana-video" width="1160" height="652" src="https://www.youtube.com/embed/v140z8Djy0Y?rel=0&hl=es" frameborder="0" allowfullscreen></iframe>
+            <div class="cover"></div>
+            <svg id="youtube-play" height="100%" version="1.1" viewBox="0 0 68 48" width="100%">
+                <path class="ytp-large-play-button-bg" d="m .66,37.62 c 0,0 .66,4.70 2.70,6.77 2.58,2.71 5.98,2.63 7.49,2.91 5.43,.52 23.10,.68 23.12,.68 .00,-1.3e-5 14.29,-0.02 23.81,-0.71 1.32,-0.15 4.22,-0.17 6.81,-2.89 2.03,-2.07 2.70,-6.77 2.70,-6.77 0,0 .67,-5.52 .67,-11.04 l 0,-5.17 c 0,-5.52 -0.67,-11.04 -0.67,-11.04 0,0 -0.66,-4.70 -2.70,-6.77 C 62.03,.86 59.13,.84 57.80,.69 48.28,0 34.00,0 34.00,0 33.97,0 19.69,0 10.18,.69 8.85,.84 5.95,.86 3.36,3.58 1.32,5.65 .66,10.35 .66,10.35 c 0,0 -0.55,4.50 -0.66,9.45 l 0,8.36 c .10,4.94 .66,9.45 .66,9.45 z"></path>
+                <path d="m 26.96,13.67 18.37,9.62 -18.37,9.55 -0.00,-19.17 z" fill="#fff"></path>
+                <path d="M 45.02,23.46 45.32,23.28 26.96,13.67 43.32,24.34 45.02,23.46 z" fill="#ccc"></path>
+            </svg>
+        </div>
+
+        <script>
+            jQuery( '.youtube-cover .cover, #youtube-play' ).click( function( event ) {
+                jQuery( '.youtube-cover .cover' ).css( 'opacity', '0' );
+                jQuery( '#youtube-play' ).css( 'display', 'none' );
+                jQuery( '.youtube-cover .cover' ).css( 'pointer-events', 'none' );
+                jQuery("#castellana-video")[0].src += "&autoplay=1";
+                event.preventDefault();
+            });
+        </script>
+
+    </div>
+    
+  <div class="clear"></div><br /><br />
+    -->
+    
+    <div class="grid-100 tablet-grid-100 mobile-grid-100 reescalar">
+    	<div class="tituloAzul alignCenter">
+        	<h2 class="f24">PROYECTOS DESTACADOS</h2>
+        </div>
+        
+        <div id="listadoProyectos" class="fondoGris mThumbnailScroller" data-mts-axis="x">
+        	 <ul>
+            	                  <li class="proyectoScroll" onClick="location.href='p_HOTEL-MANDARIN-ORIENTAL-RITZ-MADRID-5--ESTRELLAS-GRAN-LUJO_217'">
+                 	<img src="data/foto/med_1618996642_1936567397.jpg" alt="HOTEL MANDARIN ORIENTAL RITZ MADRID 5  ESTRELLAS GRAN LUJO" />
+                    <div class="mas_info">
+                    	<p>HOTEL MANDARIN ORIENTAL RITZ MADRID 5  ESTRELLAS GRAN LUJO</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_HOTEL---RESORT-HILTON-ABU-DHABI-YAS-ISLAND-5-ESTRELLAS-Y-ZONAS-DE-OCIO_246'">
+                 	<img src="data/foto/med_1645697449_1787050719.jpg" alt="HOTEL - RESORT HILTON ABU DHABI YAS ISLAND 5 ESTRELLAS Y ZONAS DE OCIO" />
+                    <div class="mas_info">
+                    	<p>HOTEL - RESORT HILTON ABU DHABI YAS ISLAND 5 ESTRELLAS Y ZONAS DE OCIO</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_CENTRO-COMERCIAL-VIALIA-ESTACION-DE-VIGO_248'">
+                 	<img src="data/foto/med_1649775458_2025579716.jpg" alt="CENTRO COMERCIAL VIALIA ESTACI&Oacute;N DE VIGO" />
+                    <div class="mas_info">
+                    	<p>CENTRO COMERCIAL VIALIA ESTACI&Oacute;N DE VIGO</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_CENTRO-COMERCIAL-PLAZA-RIO-2-MADRID_189'">
+                 	<img src="data/foto/med_1686313294_1664822088.jpg" alt="CENTRO COMERCIAL PLAZA R&Iacute;O 2, MADRID" />
+                    <div class="mas_info">
+                    	<p>CENTRO COMERCIAL PLAZA R&Iacute;O 2, MADRID</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_HOSPITAL-SAN-JOSE-DE-MELIPILLA_255'">
+                 	<img src="data/foto/med_1768308028_1926657910.jpg" alt="HOSPITAL SAN JOS&Eacute; DE MELIPILLA" />
+                    <div class="mas_info">
+                    	<p>HOSPITAL SAN JOS&Eacute; DE MELIPILLA</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_OAKMOND-MARBELLA-WELLNESS-CLINIC-RESORT-5-ESTRELLAS_630'">
+                 	<img src="data/foto/med_1791879005_1768736576.jpg" alt="OAKMOND MARBELLA WELLNESS CLINIC RESORT 5 ESTRELLAS" />
+                    <div class="mas_info">
+                    	<p>OAKMOND MARBELLA WELLNESS CLINIC RESORT 5 ESTRELLAS</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_COMPLEJO-ENTRECAMPOS-LISBOA_601'">
+                 	<img src="data/foto/med_1780396578_1033844915.jpg" alt="COMPLEJO ENTRECAMPOS, LISBOA" />
+                    <div class="mas_info">
+                    	<p>COMPLEJO ENTRECAMPOS, LISBOA</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_GEMSWELL-SURF-MADRID_574'">
+                 	<img src="data/foto/med_1791379605_821186004.jpg" alt="GEMSWELL SURF MADRID" />
+                    <div class="mas_info">
+                    	<p>GEMSWELL SURF MADRID</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_EDIFICIO-JRC--JOINT-RESEARCH-CENTRE---CENTRO-COMUN-DE-INVESTIGACION--DE-LA-COMISION-EUROPEA-SEVILLA_573'">
+                 	<img src="data/foto/med_1752736737_842801079.jpg" alt="EDIFICIO JRC (JOINT RESEARCH CENTRE - CENTRO COM&Uacute;N DE INVESTIGACI&Oacute;N) DE LA COMISI&Oacute;N EUROPEA, SEVILLA" />
+                    <div class="mas_info">
+                    	<p>EDIFICIO JRC (JOINT RESEARCH CENTRE - CENTRO COM&Uacute;N DE INVESTIGACI&Oacute;N) DE LA COMISI&Oacute;N EUROPEA, SEVILLA</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_MUSEO-LOUVRE-ABU-DHABI_5'">
+                 	<img src="data/foto/med_1511258077_402287053.jpg" alt="MUSEO LOUVRE ABU DHABI" />
+                    <div class="mas_info">
+                    	<p>MUSEO LOUVRE ABU DHABI</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_RESIDENCIAL-MAMSHA-AL-SAADIYAT-ABU-DHABI_191'">
+                 	<img src="data/foto/med_1739959131_1955794758.jpg" alt="RESIDENCIAL MAMSHA AL SAADIYAT, ABU DHABI" />
+                    <div class="mas_info">
+                    	<p>RESIDENCIAL MAMSHA AL SAADIYAT, ABU DHABI</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_SHEIKH-TAHNOUN-BIN-MOHAMMED-MEDICAL-CITY-EN-AL-AIN-ABU-DHABI_2'">
+                 	<img src="data/foto/med_1713944805_830376810.jpg" alt="SHEIKH TAHNOUN BIN MOHAMMED MEDICAL CITY EN AL AIN, ABU DHABI" />
+                    <div class="mas_info">
+                    	<p>SHEIKH TAHNOUN BIN MOHAMMED MEDICAL CITY EN AL AIN, ABU DHABI</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_TRAMO-EMBALSE-DE-CONTRERAS---VILLARGORDO-DEL-CABRIEL.-AVE-MADRID---VALENCIA_3'">
+                 	<img src="data/foto/med_1437057577_2122452068.jpg" alt="TRAMO EMBALSE DE CONTRERAS - VILLARGORDO DEL CABRIEL. AVE MADRID - VALENCIA" />
+                    <div class="mas_info">
+                    	<p>TRAMO EMBALSE DE CONTRERAS - VILLARGORDO DEL CABRIEL. AVE MADRID - VALENCIA</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_PARQUES-EOLICOS-EN-EL-DISTRITO-DE-MALDONADO_4'">
+                 	<img src="data/foto/med_1436979046_1696419009.jpg" alt="PARQUES E&Oacute;LICOS EN EL DISTRITO DE MALDONADO" />
+                    <div class="mas_info">
+                    	<p>PARQUES E&Oacute;LICOS EN EL DISTRITO DE MALDONADO</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_CLINICA-DELGADO-LIMA_19'">
+                 	<img src="data/foto/med_1437060335_589327201.jpg" alt="CL&Iacute;NICA DELGADO, LIMA" />
+                    <div class="mas_info">
+                    	<p>CL&Iacute;NICA DELGADO, LIMA</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_TRAMO-MIAMAN---PONTE-AMBIA-ORENSE.-AVE-MADRID---GALICIA_62'">
+                 	<img src="data/foto/med_1645700144_391452109.jpg" alt="TRAMO MIAM&Aacute;N - PONTE AMB&Iacute;A, ORENSE. AVE MADRID - GALICIA" />
+                    <div class="mas_info">
+                    	<p>TRAMO MIAM&Aacute;N - PONTE AMB&Iacute;A, ORENSE. AVE MADRID - GALICIA</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_ESTACION-INTERMODAL-DE-OURENSE_514'">
+                 	<img src="data/foto/med_1712048670_1961902453.jpg" alt="ESTACION INTERMODAL DE OURENSE" />
+                    <div class="mas_info">
+                    	<p>ESTACION INTERMODAL DE OURENSE</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_ESTACION-PASANTE-DE-MADRID---PUERTA-DE-ATOCHA---ALMUDENA-GRANDES_509'">
+                 	<img src="data/foto/med_1709718689_1115572451.jpg" alt="ESTACI&Oacute;N PASANTE DE MADRID - PUERTA DE ATOCHA - ALMUDENA GRANDES" />
+                    <div class="mas_info">
+                    	<p>ESTACI&Oacute;N PASANTE DE MADRID - PUERTA DE ATOCHA - ALMUDENA GRANDES</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_PARQUE-FOTOVOLTAICO-DE-20-MW-EN-EL-ALTO-DE-LA-ALIANZA-TACNA--DESIERTO-DEL-SUR-DE-PERU-_13'">
+                 	<img src="data/foto/med_1437128704_1088612221.jpg" alt="PARQUE FOTOVOLTAICO DE 20 MW EN EL ALTO DE LA ALIANZA, TACNA (DESIERTO DEL SUR DE PER&Uacute;)" />
+                    <div class="mas_info">
+                    	<p>PARQUE FOTOVOLTAICO DE 20 MW EN EL ALTO DE LA ALIANZA, TACNA (DESIERTO DEL SUR DE PER&Uacute;)</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_PLAN-VIVE-DE-LA-COMUNIDAD-DE-MADRID_481'">
+                 	<img src="data/foto/med_1739353489_1379079009.jpg" alt="PLAN VIVE DE LA COMUNIDAD DE MADRID" />
+                    <div class="mas_info">
+                    	<p>PLAN VIVE DE LA COMUNIDAD DE MADRID</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_HOSPITAL-EL-CARMEN-DR.-LUIS-VALENTIN-FERRADA-DE-MAIPU-SANTIAGO-DE-CHILE_6'">
+                 	<img src="data/foto/med_1486054523_1765878645.jpg" alt="HOSPITAL EL CARMEN DR. LUIS VALENT&Iacute;N FERRADA DE MAIP&Uacute;, SANTIAGO DE CHILE" />
+                    <div class="mas_info">
+                    	<p>HOSPITAL EL CARMEN DR. LUIS VALENT&Iacute;N FERRADA DE MAIP&Uacute;, SANTIAGO DE CHILE</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_CAMPO-NOVO-LISBOA_471'">
+                 	<img src="data/foto/med_1790672927_454698644.jpg" alt="CAMPO NOVO, LISBOA" />
+                    <div class="mas_info">
+                    	<p>CAMPO NOVO, LISBOA</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_COMPLEJO-MARTINHAL-LISBOA_470'">
+                 	<img src="data/foto/med_1682072295_818087426.jpg" alt="COMPLEJO MARTINHAL, LISBOA" />
+                    <div class="mas_info">
+                    	<p>COMPLEJO MARTINHAL, LISBOA</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_HOTEL-PESTANA-COLLECTION-PLAZA-MAYOR-4-ESTRELLAS-MADRID_242'">
+                 	<img src="data/foto/med_1565253722_2098003896.jpg" alt="HOTEL PESTANA COLLECTION PLAZA MAYOR 4 ESTRELLAS, MADRID" />
+                    <div class="mas_info">
+                    	<p>HOTEL PESTANA COLLECTION PLAZA MAYOR 4 ESTRELLAS, MADRID</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_HOTEL-SIX-SENSES-IBIZA-5-ESTRELLAS-GRAN-LUJO_371'">
+                 	<img src="data/foto/med_1628157430_1513234950.jpg" alt="HOTEL SIX SENSES IBIZA 5 ESTRELLAS GRAN LUJO" />
+                    <div class="mas_info">
+                    	<p>HOTEL SIX SENSES IBIZA 5 ESTRELLAS GRAN LUJO</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_PLANTA-SOLAR-DEL-AEROPUERTO-INTERNACIONAL-ADOLFO-SUAREZ-MADRID---BARAJAS--14242-MW-_434'">
+                 	<img src="data/foto/med_1777289523_195179485.jpg" alt="PLANTA SOLAR DEL AEROPUERTO INTERNACIONAL ADOLFO SU&Aacute;REZ MADRID - BARAJAS (142,42 MW)" />
+                    <div class="mas_info">
+                    	<p>PLANTA SOLAR DEL AEROPUERTO INTERNACIONAL ADOLFO SU&Aacute;REZ MADRID - BARAJAS (142,42 MW)</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_ESTACION-FERROVIARIA-MADRID-CHAMARTIN-CLARA-CAMPOAMOR-MADRID_414'">
+                 	<img src="data/foto/med_1780406566_5379435.jpg" alt="ESTACI&Oacute;N FERROVIARIA MADRID-CHAMART&Iacute;N-CLARA CAMPOAMOR, MADRID" />
+                    <div class="mas_info">
+                    	<p>ESTACI&Oacute;N FERROVIARIA MADRID-CHAMART&Iacute;N-CLARA CAMPOAMOR, MADRID</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_EDIFICIO-DE-OFICINAS-GENERALI-ORENSE-4-MADRID_400'">
+                 	<img src="data/foto/med_1673349060_1761696730.jpg" alt="EDIFICIO DE OFICINAS GENERALI ORENSE 4, MADRID" />
+                    <div class="mas_info">
+                    	<p>EDIFICIO DE OFICINAS GENERALI ORENSE 4, MADRID</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_EDIFICIO-DE-OFICINAS-RUIZ-PICASSO-11-AZCA---MADRID_385'">
+                 	<img src="data/foto/med_1743074360_936300029.jpg" alt="EDIFICIO DE OFICINAS RUIZ PICASSO 11, AZCA - MADRID" />
+                    <div class="mas_info">
+                    	<p>EDIFICIO DE OFICINAS RUIZ PICASSO 11, AZCA - MADRID</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_DUNAS-BEACH-RESORT---SPA-5-ESTRELLAS-ISLA-DE-LA-SAL_45'">
+                 	<img src="data/foto/med_1437382881_1867829694.jpg" alt="DUNAS BEACH RESORT &amp; SPA 5 ESTRELLAS, ISLA DE LA SAL" />
+                    <div class="mas_info">
+                    	<p>DUNAS BEACH RESORT &amp; SPA 5 ESTRELLAS, ISLA DE LA SAL</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_AMPLIACION-MUSEO-NACIONAL-DEL-PRADO-MADRID_35'">
+                 	<img src="data/foto/med_1437133278_1579046767.jpg" alt="AMPLIACI&Oacute;N MUSEO NACIONAL DEL PRADO, MADRID" />
+                    <div class="mas_info">
+                    	<p>AMPLIACI&Oacute;N MUSEO NACIONAL DEL PRADO, MADRID</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_CIUDAD-DE-LA-JUSTICIA-DE-VIGO_224'">
+                 	<img src="data/foto/med_1643378393_224323143.jpg" alt="CIUDAD DE LA JUSTICIA DE VIGO" />
+                    <div class="mas_info">
+                    	<p>CIUDAD DE LA JUSTICIA DE VIGO</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_COMPLEJO-AUDIOVISUAL-MADRID-CONTENT-CITY_204'">
+                 	<img src="data/foto/med_1682075618_164963058.jpg" alt="COMPLEJO AUDIOVISUAL MADRID CONTENT CITY" />
+                    <div class="mas_info">
+                    	<p>COMPLEJO AUDIOVISUAL MADRID CONTENT CITY</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_REHABILITACION-Y-PUESTA-EN-VALOR-DEL-TEATRO-COLON-BUENOS-AIRES_20'">
+                 	<img src="data/foto/med_1437057664_576181830.jpg" alt="REHABILITACI&Oacute;N Y PUESTA EN VALOR DEL TEATRO COL&Oacute;N, BUENOS AIRES" />
+                    <div class="mas_info">
+                    	<p>REHABILITACI&Oacute;N Y PUESTA EN VALOR DEL TEATRO COL&Oacute;N, BUENOS AIRES</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_RESIDENCIA-DEL-PRIMER-EQUIPO-DEL-REAL-MADRID-EN-LA-CIUDAD-DEPORTIVA-DE-VALDEBEBAS_42'">
+                 	<img src="data/foto/med_1437138553_171899490.jpg" alt="RESIDENCIA DEL PRIMER EQUIPO DEL REAL MADRID EN LA CIUDAD DEPORTIVA DE VALDEBEBAS" />
+                    <div class="mas_info">
+                    	<p>RESIDENCIA DEL PRIMER EQUIPO DEL REAL MADRID EN LA CIUDAD DEPORTIVA DE VALDEBEBAS</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_TRANSFORMACION-URBANA-LA-TABLADA-BUENOS-AIRES_8'">
+                 	<img src="data/foto/med_1713782449_201028839.jpg" alt="TRANSFORMACI&Oacute;N URBANA LA TABLADA, BUENOS AIRES" />
+                    <div class="mas_info">
+                    	<p>TRANSFORMACI&Oacute;N URBANA LA TABLADA, BUENOS AIRES</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_PISTA-18L-36R-DEL-AEROPUERTO-INTERNACIONAL-ADOLFO-SUAREZ-MADRID---BARAJAS_81'">
+                 	<img src="data/foto/med_1437567144_54230441.jpg" alt="PISTA 18L-36R DEL AEROPUERTO INTERNACIONAL ADOLFO SU&Aacute;REZ MADRID - BARAJAS" />
+                    <div class="mas_info">
+                    	<p>PISTA 18L-36R DEL AEROPUERTO INTERNACIONAL ADOLFO SU&Aacute;REZ MADRID - BARAJAS</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_TRAMO-ALTO-DE-SANTO-DOMINGO-ENLACE-CEA-A-52.AG-53-ORENSE_79'">
+                 	<img src="data/foto/med_1437565157_1331039109.jpg" alt="TRAMO ALTO DE SANTO DOMINGO ENLACE CEA A-52.AG-53 ORENSE" />
+                    <div class="mas_info">
+                    	<p>TRAMO ALTO DE SANTO DOMINGO ENLACE CEA A-52.AG-53 ORENSE</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_AUTOVIA-VARIANTE-SUROESTE-DE-TOLEDO_78'">
+                 	<img src="data/foto/med_1437563958_192513138.jpg" alt="AUTOV&Iacute;A VARIANTE SUROESTE DE TOLEDO" />
+                    <div class="mas_info">
+                    	<p>AUTOV&Iacute;A VARIANTE SUROESTE DE TOLEDO</p>
+                    </div>
+                 </li>
+                                  <li class="proyectoScroll" onClick="location.href='p_TORRE-BURGO-OPORTO_52'">
+                 	<img src="data/foto/med_1437393550_840931888.jpg" alt="TORRE BURGO, OPORTO" />
+                    <div class="mas_info">
+                    	<p>TORRE BURGO, OPORTO</p>
+                    </div>
+                 </li>
+                             </ul>
+        </div>
+        
+    </div>
+    <div class="clear"></div><br /><br />
+    
+    
+    <div class="grid-33 tablet-grid-100 mobile-grid-100 alignCenter">
+    	<div class="tituloAzul">
+        	<p>ACCIONISTAS E INVERSORES</p>
+        </div>
+        <div class="accesosInicio">
+        	<br /><br />
+        	<a href="accion.php" class="color_azul">Acci&oacute;n y Capital Social</a>   &nbsp;&nbsp;<img src="img/varios/separador_azul.jpg" />   &nbsp;&nbsp;<a href="informacion.php" class="color_azul">Informaci&oacute;n Financiera</a>   &nbsp;&nbsp;<img src="img/varios/separador_azul.jpg" />   &nbsp;&nbsp;<a href="gobierno.php" class="color_azul">Gobierno Corporativo</a>
+        </div>
+    </div>
+    <div class="hide-on-desktop"><div class="clear"></div><br /><br /></div>
+    <!--
+    <div class="grid-33 tablet-grid-50 mobile-grid-100 alignCenter">
+    	<div class="tituloAzul">
+        	<p>INFORME DE PROYECTOS</p>
+        </div>
+        <div class="accesosInicio color_azul">
+        	<br />
+        	<a href="pdf/GSJ_INFORME_DE_PROYECTOS_2022.pdf" target="_blank" class="color_azul"><img src="img/varios/informe-proyectos2022.jpg" alt="" /></a>  &nbsp;> <a href="pdf/GSJ_INFORME_DE_PROYECTOS_2022.pdf" target="_blank" class="color_azul">Descargar informe</a>
+        </div>
+    </div>
+-->
+    <div class="grid-33 tablet-grid-50 mobile-grid-100 alignCenter">
+        <div class="tituloAzul">
+            <p>INFORME DE PROYECTOS</p>
+        </div>
+        <div class="accesosInicio color_azul">
+            <br />
+            <a href="pdf/GSJ-INFORME_PROYECTOS-2025.pdf" target="_blank" style="float: left; padding-left: 20px; width: 150px;" class="color_azul"><img src="img/varios/informe-proyectos-26.png" alt="" /></a>
+            <a href="pdf/GSJ-INFORME_PROYECTOS-2025.pdf" target="_blank" class="color_azul" style="float: left; margin-top: 30px; text-decoration: none;"> <img src="img/varios/DESCARGA-PDF.webp" alt="Descargar Informe" width="20px" title="Descargar Informe" /> Descargar Informe</a>
+        </div>
+    </div>
+    <div class="hide-on-desktop hide-on-tablet"><div class="clear"></div><br /><br /></div>
+    
+    <div class="grid-33 tablet-grid-50 mobile-grid-100 alignCenter">
+    	<div class="tituloAzul">
+        	<p>INFORME DE ACTIVIDADES 2025</p>
+        </div>
+        <div class="accesosInicio color_azul">
+        	<br />
+            
+
+
+            <p style="float: left; padding-left: 20px; width: 150px;"><img src="img/varios/portada-act-25-eng.jpg" alt="" height="76" /></p> 
+            <a href="data/pdf/1789567388_7655_2313432434.pdf" style="float: left; margin-top: 15px; text-decoration: none;" target="_blank" class="color_azul"> <img src="img/varios/DESCARGA-PDF.webp" alt="Descargar Informe" width="20px" title="Descargar Informe" /> Descargar Informe</a>
+            <a href="informe_actividades.php" class="color_azul" style="float: left; margin-top: 10px; text-decoration: none;"> <img src="img/varios/INFORME-ONLINE.webp" alt="Version Online" width="20px" title="Version Online" /> Version Online</a>
+        </div>
+    </div>
+    <div class="clear"></div><br /><br />
+    
+    <div class="grid-100 tablet-grid-100 mobile-grid-100 reescalar">
+        <a href='rrhh.php' title='Â¿Quieres trabajar? &Uacute;nete a SANJOSE'>
+            <img class='hide-on-mobile' src='img/banners/bannerInferior_esp.jpg' alt='Â¿Quieres trabajar? &Uacute;nete a SANJOSE' />
+            <img class='hide-on-desktop hide-on-tablet' src='img/banners/bannerRRHH.jpg' alt='Â¿Quieres trabajar? &Uacute;nete a SANJOSE' />
+        </a>
+    </div>
+    
+    <div class="clear"></div><br /><br />
+
+</div>
+
+
+<div id="pie_web"><div class="grid-container"><div class="grid-100 tablet-grid-100 mobile-grid-100">
+    <div class="lineaSeparacion"></div>
+</div>
+
+<div class="clear"></div><br /><br />
+
+<div class="grid-33 tablet-grid-100 mobile-grid-100 reescalar" id="logoPie">
+    <img src="img/varios/GRUPOSANJOSE.webp" alt="Grupo SANJOSE" />
+</div>
+
+<div class="hide-on-desktop"><div class="clear"></div><br /></div>
+
+<div class="grid-33 tablet-grid-100 mobile-grid-100 alignCenter">
+    <select name="redir" id="selectRedir" onchange="if(this.value!=''){ cambia_web(this.value);}">
+        <option value="">WEBS GRUPO SANJOSE</option>
+        <option value="https://www.constructorasanjose.com/">SANJOSE Constructora</option>
+        <option value="http://www.construtoraudra.pt/">Construtora Udra</option>
+        <option value="http://www.cartuja.com">Cartuja I.</option>
+        <option value="http://www.ebasl.com">EBA</option>
+        <option value="https://www.tecnocontrol.es/">Tecnocontrol Servicios</option>
+        <option value="http://www.sjtconcesiones.com/">SJT Concesionaria Chile</option>
+        <option value="https://altavistacondominio.com.pe/">Altavista Condominio</option>
+        <option value="http://nuevavista.com.pe/">Nuevavista Condominio</option>
+        <option value="https://www.carloscasadosa.com/">Carlos Casado</option>
+        <option value="https://facopremo.com/">FCPM</option>
+        <option value="https://www.comercialudra.es/">Comercial Udra</option>
+    </select>
+</div>
+    
+<div class="hide-on-desktop"><div class="clear"></div><br /></div>   
+
+
+<div class="grid-33 tablet-grid-100 mobile-grid-100" id="enlacesPie">
+    <a href="contactar.php">Contactar</a> | <a href="aviso_legal.php">Aviso legal</a> | <a href="cookies.php">Cookies</a>
+</div>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="js/floatbox/floatbox.css"/>
+<script type="text/javascript" src="js/floatbox/floatbox.js"></script>
+<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+<script type="text/javascript" src="js/funciones.js"></script>
+
+
+<div class="clear"></div><br />
+<script type="text/javascript">
+    function cambia_web(url) {
+        if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+            location.href=url;
+        }
+        else {
+            window.open(url);
+        }
+    }
+</script>
+</div></div>
+
+
+<script type="text/javascript" src = "js/slider.js"></script>
+<script src="js/jquery.mThumbnailScroller.js"></script>
+<script>
+	//http://www.jqueryrain.com/?L_dwB4rN
+	//http://manos.malihu.gr/jquery-custom-content-scroller
+	var sg_coche=2000;
+	(function($){
+		jQuery(window).ready(function(){
+			
+			var NumElements=jQuery('#listadoProyectos ul li').length;
+			var loopDuration=sg_coche*NumElements;
+			
+			jQuery("#listadoProyectos").mThumbnailScroller({
+				axis:"x",
+				theme:"my-theme",
+				advanced:{autoExpandHorizontalScroll:true},
+				callbacks:{
+					onInit:function(){
+						jQuery("#listadoProyectos").mThumbnailScroller("scrollTo","right",{duration:loopDuration,easing:"linear"});
+					},
+					onTotalScroll:function(){
+						jQuery("#listadoProyectos").mThumbnailScroller("scrollTo","left",{duration:loopDuration,easing:"linear"});
+					}
+				}
+			});
+			
+			
+		});
+	})(jQuery);
+</script>
+
+
+</body>
+</html>
