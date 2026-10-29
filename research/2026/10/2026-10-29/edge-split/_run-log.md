@@ -11,3 +11,7 @@
 ## Split panel 2/4 — STARTED
 - Logged at 2026-10-29 18:12 UTC
 - CDNA COLM SUPN STOK AMZN (all amc 2026-10-29), E-P's sweep and baselines from a633993a, names_basis: edge-panel/hunts; claimed 18:12 UTC (late: fired ~1h after E-P)
+
+## Split panel 3/4 — STARTED
+- Logged at 2026-10-29 18:12 UTC
+- MIAX CPRI REAL FND PINS, E-P's sweep and baselines from a633993a, edge-panel/hunts: the names stage E-P hunted; claimed 18:12Z
