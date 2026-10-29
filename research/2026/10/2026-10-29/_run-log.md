@@ -87,3 +87,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-10-29 17:54 UTC
 - All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): AXTI L 97 only (3-of-4 rule: same). Next CRI 77, CDNA 74, PTCT 71, PINS 68. Searcher above 2.8: AXTI +4.50, CDNA +3.40, CRI +2.80. Stage E edge/ absent. Note published ~18:03 UTC; step 6b next.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-10-29 17:56 UTC
+- 17:57 UTC (13:57 ET): plan, then open --submit --no-flatten. 1 market order: AXTI 102 long, filled 102 @ 61.64 (+0.052 vs mid, half-spread 0.065); gross ~$6,287, 49.7% of equity (50% cap, one name, rest cash). Equity $12,658 before the buy. Exit dated 2026-10-30 (amc -> open).
