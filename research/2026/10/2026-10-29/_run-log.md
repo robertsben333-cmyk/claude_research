@@ -55,3 +55,7 @@
 ## Stage M — morning exit review — SKIPPED (fired after the open)
 - Logged at 2026-10-29 13:47 UTC
 - Routine scheduled 13:10 UTC (09:10 ET) fired at 13:46:56 UTC = 09:46 ET, 17 minutes after the open; slot reports inside_hours false. Per the skill no review was run and no advice compiled for 2026-10-29 (source run research/2026/10/2026-10-28/edge-panel exists). No orders placed.
+
+## Stage EU — Europe researcher — STARTED
+- Logged at 2026-10-29 14:44 UTC
+- Fired 14:43 UTC (scheduled 14:36). Sealing for event date 2026-10-30 (Fri, next European session). RUN research/2026/10/2026-10-30/europe/. Plan: universe -> baselines -> provenance -> hunters in waves of 5 -> score -> 4-judge panel -> note. No orders.
