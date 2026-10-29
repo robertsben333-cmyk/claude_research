@@ -27,3 +27,7 @@
 ## Split panel 1/4 — searchers done
 - Logged at 2026-10-29 18:19 UTC
 - 5 of 5 returned by 18:19 UTC (unpriced-searcher agent, not fallback); guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished of 5). INTC's sealed baseline had bars_failed: HTTPError, searcher used third-party implied move.
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-10-29 18:20 UTC
+- 5 of 5 returned by 18:20 UTC; guard moved nothing; no searcher reported its search budget running out (site-level 403/429/503 only); AMZN baseline had bars_failed, searcher rebuilt price inputs itself
