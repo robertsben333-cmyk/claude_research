@@ -15,3 +15,7 @@
 ## Stage M — note
 - Logged at 2026-10-30 13:21 UTC
 - CRI's analyst rewrote reviews/CRI.json AFTER the 09:21 compile (first version had no tape read; revision reads premarket -3.1% and expects open -2.5%). Per the skill the late version is NOT in morning-advice.json; the compiled CRI advice rests on the pre-tape version. File committed for the record.
+
+## Edge hunt (panel) — 2026-10-30 amc + 2026-11-02 bmo — STARTED
+- Logged at 2026-10-30 17:09 UTC
+- Fired 17:06 UTC, session started 17:07 UTC (13:07 ET). Window: 2026-10-30 amc + 2026-11-02 bmo; universe 25 rows, all 2026-11-02 bmo (no amc row cleared the gates). FOX folded into FOXA by hand: share_class.py did not fold the pair (share_classes_folded empty). 24 baselines sealed in edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searcher (Opus 5.5), then four blind judges; step 3s flatten after searchers, step 6b buy after the note.
