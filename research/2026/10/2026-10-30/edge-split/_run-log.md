@@ -31,3 +31,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-10-30 18:22 UTC
 - 5 of 5 returned by 18:22 UTC, all search_complete: true; guard moved nothing; no searcher reported its search budget running out (TEM saw tempus.com 429 and CHKP third-party 403/429, both site-side)
+
+## Split panel 4/4 — done
+- Logged at 2026-10-30 18:24 UTC
+- panel scored 18:23 UTC with all four judges on their pinned models; 0 selected; summary run (2 of 4 shards done at that time); claim-to-done 12 min. Note: shard fired ~18:11 UTC, about an hour after E-P (17:06 UTC), and E-P's panel was already scored at 17:44 UTC, so this was not concurrent with E-P
