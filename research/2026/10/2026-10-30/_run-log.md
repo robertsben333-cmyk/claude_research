@@ -35,3 +35,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-10-30 17:45 UTC
 - All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): TSEM L 85 only (3-of-4 rule: same). Next CHH 77, KRYS 62S, NSSC 54S. Searcher: 0 of 20 above 2.8 (CIFR +2.10, CHH +2.00). Stage E edge/ absent. Note written ~17:50 UTC; step 6b next.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-10-30 17:45 UTC
+- 17:46 UTC (13:46 ET): plan, then open --submit --no-flatten. 1 market order: TSEM 37 long, filled 37 @ 164.09 (-5.825 vs mid at submission; the quoted half-spread was 6.12, a wide quote); gross ~$6,051, 49.8% of equity (50% cap, one name, rest cash). Equity $12,144 before the buy, nothing held. Exit dated 2026-11-02 (bmo -> market on that day's session run).
