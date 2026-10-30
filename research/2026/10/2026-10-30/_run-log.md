@@ -11,3 +11,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-10-30 13:21 UTC
 - 6 names, compiled 09:21 ET: AXTI exit_1000, CRI exit_close, CDNA exit_open, PTCT exit_1000, PINS exit_open, ATEC exit_open. 2026-10-29 had no stage M advice (that fire skipped after the open); 2026-10-28 resolved this fire. Pool: 50 names / 8 days, review_minus_static -0.065 (t -0.18). Analysts: 6 of 6 morning-reaction-analyst, no fallback.
+
+## Stage M — note
+- Logged at 2026-10-30 13:21 UTC
+- CRI's analyst rewrote reviews/CRI.json AFTER the 09:21 compile (first version had no tape read; revision reads premarket -3.1% and expects open -2.5%). Per the skill the late version is NOT in morning-advice.json; the compiled CRI advice rests on the pre-tape version. File committed for the record.
