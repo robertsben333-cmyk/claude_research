@@ -1,0 +1,169 @@
+<html>
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		
+        <script  src="//code.jquery.com/jquery-3.3.1.min.js"  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+        <script type="text/javascript" src="/tools/common/eurolandiframeautoheight/eurolandtoolsintegrationobject.js"></script>
+		<!-- ADD THIS --><script type="text/javascript" src="/tools/common/eurolandiframeautoheight/EurolandToolAutoSizeObject.js"></script>
+		
+		<title>EE</title>
+		
+	    <style type="text/css">
+		
+          /**********font-import******/
+
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+
+
+            body,
+            .tabItem {
+                font-family: 'Montserrat', sans-serif;
+                color: #212529;	
+				
+            }
+            .tabItem{
+                font-size: 16px;;
+            }
+            body {
+                margin:0;
+            }
+            div {
+                display: block;
+            }
+            iframe {
+				padding: 0;	
+				margin: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+            .tabs {
+	            text-align: center;	
+	            border-bottom: 0px;
+	            font-size: 0px !important;
+                padding:0;
+                margin-top: 25px;
+                max-width: 1200px;
+                margin: 0 auto;
+                background: #004e87;
+            }
+
+            .tabs li {
+	            float: none;
+	            display: inline-block;	
+	            margin: 0px;
+            }
+
+            .tabItem {
+	                height: auto;
+	                line-height: normal;	
+	                padding-top: 1em !important;
+	                padding-bottom: 1em !important;
+                    padding-right: 1em !important;
+	                padding-left: 1em !important;
+	                /* margin-left: 1.0em;
+	                margin-right: 1.0em; */
+	                text-decoration: none;
+	                font-weight:bold;
+	                font-style: normal;
+	                text-transform: uppercase;
+	                border: 0em solid #fff;
+                    font-family: 'Montserrat', sans-serif;
+	                               
+                    display: inline-block;
+                    background: #004e87;
+                    color: #fff;
+                    letter-spacing: 0.25px;
+            }
+            .tab-content {
+                padding-top: 35px;
+            }
+            .tabItem:hover,
+            .tabItem:active {
+	            background: #fff;	
+	            text-decoration: none;
+	            font-weight: bold;
+	            font-style: normal;	
+	            color: #2c2a29;				
+            }
+
+            .tab-active,
+            .tab-active:hover {
+	            background: #fff;
+	            position: relative;
+	            top: 0px;
+                left: 0px;
+                color: #2c2a29;
+            }
+            /* .tab-active:before {
+	
+	            content: "";
+	            width: 0; 
+	            height: 0;
+
+	            position: absolute;
+	            top: 100%;
+	            left: 50%;
+	            margin-left: -1.0em;
+	
+	            border-left: 1.0em solid transparent; 
+	            border-right: 1.0em solid transparent; 
+	            border-top: 1.0em solid #DBDBDB;
+            } */
+		
+	    </style>
+        <script type="text/javascript">
+            $(document).ready(function () {
+			/* add this */ EurolandToolAutoSizeObject.load(document.getElementById('main'));
+            /* add this */ EurolandToolIntegrationObject.set("EuroID", null, true);
+                // Tab setup
+                $('.tabs a').click(function (e) {
+                    e.preventDefault();
+                    var $this = $(this),
+                    role = $this.attr('role');
+
+                    if ($this.hasClass('.tab-active')) {
+                        return;
+                    }
+                    $this.parent().siblings().children('a.tab-active').removeClass('tab-active');
+
+                    $this.addClass('tab-active');
+                    
+                    if (role == 'tab1') {
+						$('#EuroID').attr('src', '/tools/ee/?companycode=es-ozt&lang=en');						                     
+                    }
+                    if (role == 'tab2') {
+                        $('#EuroID').attr('src', '/tools/ee/?companycode=es-oztclsb&lang=en');   
+                    }
+                    if (role == 'tab3') {
+                        $('#EuroID').attr('src', '/tools/ee/?pid=5&companycode=es-ozt&lang=en');
+                    }
+                    if (role == 'tab4') {
+                        $('#EuroID').attr('src', '/tools/ee/?pid=2&companycode=es-ozt&lang=en');
+                    }
+                    return false;
+                })
+            });
+        </script>
+    </head>
+    <body>
+        <!-- ADD THIS --> <div id="main">
+			<div class="tabs-control">
+					<ul class="tabs">
+						<li><a href="#" role="tab1" class="tabItem second-heading tab-active ">Analysts (Class&nbsp;A)</a></li>
+                        <li><a href="#" role="tab2" class="tabItem second-heading ">Analysts (Class&nbsp;B)</a></li>
+                        <li><a href="#" role="tab3" class="tabItem second-heading ">Recommendation overview</a></li>
+                        <li><a href="#" role="tab4" class="tabItem second-heading ">Consensus estimates</a></li>
+					</ul>
+					<div class="clear-both"></div>
+			</div>
+			<div class="tabs-content-wrapper">
+					<div class="tab-content">
+						<iframe id="EuroID" scrolling="auto" src="/tools/ee/?companycode=es-ozt&lang=en" />
+					</div>
+			</div>
+<!-- AAAAAND THIS --> </div>
+    </body>
+</html>
