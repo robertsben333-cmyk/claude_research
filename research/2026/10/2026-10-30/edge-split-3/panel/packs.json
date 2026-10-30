@@ -1,0 +1,1532 @@
+[
+ {
+  "id": "us/2026-10-30/AKR",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "AKR",
+   "event_date": "2026-11-02",
+   "session": "bmo",
+   "as_of_utc": "2026-10-30T17:09:11+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-30",
+    "spot": 19.085,
+    "run_up_5d_pct": 1.62,
+    "run_up_20d_pct": 2.44,
+    "pct_from_52w_high": -16.0,
+    "pct_from_52w_low": 5.56,
+    "realised_vol_20d_annualised_pct": 21.2,
+    "avg_volume_20d": 1140073
+   },
+   "cik": "0000899629",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-28",
+      "session": "amc",
+      "move_pct": 2.21
+     },
+     {
+      "event_date": "2026-05-13",
+      "session": "amc",
+      "move_pct": 0.09
+     },
+     {
+      "event_date": "2026-04-28",
+      "session": "amc",
+      "move_pct": 2.12
+     },
+     {
+      "event_date": "2026-02-10",
+      "session": "amc",
+      "move_pct": -4.15
+     },
+     {
+      "event_date": "2025-10-28",
+      "session": "amc",
+      "move_pct": -0.16
+     },
+     {
+      "event_date": "2025-04-29",
+      "session": "amc",
+      "move_pct": -2.25
+     },
+     {
+      "event_date": "2025-02-11",
+      "session": "amc",
+      "move_pct": 1.39
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 2.12,
+    "max_abs_move_pct": 4.15,
+    "up_count": 4,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 97,
+    "median_gap_days": 77.0,
+    "ratio": 1.26,
+    "last_print": "2026-07-28",
+    "verdict": "fits_cadence",
+    "reason": "97 days since the last print against a 77-day cadence"
+   },
+   "options": {
+    "status": "no_paired_strikes",
+    "expiry": "2026-11-20"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 2.12,
+   "expected_move_basis": "median historical reaction (no usable option chain)",
+   "baseline_quality": {
+    "options_usable": false,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": false,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 FFO As Adjusted around $0.31/share. Sources: KeyCorp forecast $0.31 (https://www.marketbeat.com/instant-alerts/what-is-keycorps-forecast-for-akr-q3-earnings-2026-08-19/, 2026-08-19; the page itself only rendered unrelated headlines when fetched, so this rests on the search snippet) and Benzinga's table $0.31 with revenue $98.8M (https://kr.benzinga.com/quote/AKR/earnings-forecasts). FY2026 consensus is $1.24 per snippet. The company guide is FY2026 FFO As Adjusted $1.24-$1.26 (8-K ex99.1, 2026-07-28, https://www.sec.gov/Archives/edgar/data/0000899629/000119312526321040/akr-ex99_1.htm). With H1 at $0.61 ($0.30 Q1 + $0.31 Q2), that implies H2 of $0.63-0.65, or about $0.315-0.325 a quarter. Consensus therefore sits at the bottom of the guide-implied range. The bar comes from the company guide plus two agreeing estimate sources, so it is not capped.",
+   "positioning_check": "Short interest was 13,361,699 shares at the 2026-10-15 settlement, about 9.7% of 137.3M shares outstanding, with 10.42 days to cover. It is down from a 21.59M peak on 2026-06-15 and was 14.05M on 9-30 (https://equibles.com/stocks/akr/shortinterest). No usable option chain (baseline options status no_paired_strikes), so there is no skew. An Unusual Whales snippet quoting a ±10.4% implied move is not credible against a 21% realised vol and the absent chain, and is ignored. Run-up: +1.6% over 5 days, +2.4% over 20 days, 16% below the 52-week high. That follows a 22.47 (July) to 18.74 (September) slide during a sector-wide rate selloff.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "Acadia has lifted its 2026 FFO As Adjusted guide at every print this year: $1.21-1.25 originally, then $1.22-1.26 on 4/28, then $1.24-1.26 on 7/28. H1 was $0.61 (Q1 $0.30, Q2 $0.31 against $0.30 consensus). The guide implies H2 of $0.63-0.65, while Q3 consensus is $0.31 and FY consensus $1.24, the low end. So a Q3 of $0.31-0.32 plus a guide narrowed toward $1.25-1.26 is the likeliest release.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000899629/000119312526321040/akr-ex99_1.htm",
+    "source_date": "2026-07-28",
+    "reaction_history_on_this_line": "The guide raise with a beat on 2026-07-28 drew +2.21%; the guide raise on 2026-04-28 drew +2.12%. The FY2025 Q4 print on 2026-02-10, an EPS miss per secondary sources, drew -4.15%. The Q3 2025 print (2025-10-28) drew -0.16%. Seven-print median |move| is 2.12%.",
+    "why_not_priced": "Consensus has not moved off the low end of the guide ($1.24 FY), so the street is not modelling another narrowing toward the top. If it were, FY consensus would sit at $1.25-1.26 and Q3 at $0.32. The stock is also 16% off its July high despite the guide raise, which fits a rate-driven discount rather than an expectation of further raises. Caveat built into the size: Q3 itself lands inside the guided range, so only an upward narrowing adds anything.",
+    "independence": "Q1 guide and result: 8-K ex99.1 2026-04-28 (https://www.sec.gov/Archives/edgar/data/0000899629/000119312526187104/akr-ex99_1.htm). The consensus figure comes from different sources (Benzinga, KeyCorp via MarketBeat).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "The 2026-09-14 intra-quarter update reported $119M of Q3 REIT street-retail acquisitions (Greene St $60M, Bleecker $20M, Greenwich Ave $10M, Melrose $29M) and $742M YTD across the REIT and investment management. It also reported 12 new Q3 leases worth $4.8M ABR at share ($3.8M street retail), double-digit cash spreads, and 129 Fifth Ave leased within 30 days above underwriting at a yield on cost above 9%. No new equity was issued and about $352M of forward proceeds remain. Q3 operations were tracking the plan.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://earningswhispers.com/article/AKR/2609143342",
+    "source_date": "2026-09-14",
+    "reaction_history_on_this_line": "Leasing spreads and same-property NOI (+8.7% in Q2, street retail +15.6%) were the headline of the July print, which drew +2.21%.",
+    "why_not_priced": "It is public, so mostly priced. What is not priced is how the leases and the $16.5M signed-not-open pipeline (Q2 release) convert into Q4 run-rate and 2027 commentary. The stock fell through September despite this update, during a sector rate selloff, which suggests the market treated company news as secondary to the 10-year yield.",
+    "independence": "Commercial Observer on the Greene St purchase (https://commercialobserver.com/2026/09/acadia-buys-soho-69-71-greene-street/). Same company as finding 1 but a different document.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "Shopping-center peers that reported in the week before the print raised their outlooks. Kimco (10-29) raised its 2026 outlook on record 96.6% occupancy and Q3 FFO of $0.47 vs $0.44. Federal Realty (10-30) raised and tightened Core FFO to $7.54-7.58 from $7.48-7.56, with 14% cash leasing spreads and its leased rate up 40bp. Retail tenant demand was healthy into Q3.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000034903/000003490326000054/frt-9302026xex991.htm",
+    "source_date": "2026-10-30",
+    "reaction_history_on_this_line": "No baseline record of AKR moving on peer prints. AKR's street-retail mix (Q2 SP NOI +15.6% street) is more levered to luxury and urban tenants than KIM or FRT.",
+    "why_not_priced": "Largely priced: both prints were out before AKR's 10-30 close. It is filed as a sector proxy confirming no tenant-credit surprise. If the market had worried about AKR-specific demand, AKR would have lagged peers after their prints. Instead its 5-day run-up is +1.6%.",
+    "independence": "Kimco Q3 2026 8-K ex99.1 (https://www.sec.gov/Archives/edgar/data/0000879101/000119312526436941/kim-ex99_1.htm), 2026-10-29. A proxy, not AKR's own number.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "Short interest was 13.36M shares on 2026-10-15, about 9.7% of 137.3M shares outstanding, with 10.4 days to cover on a stock trading about 1.1M shares a day. A clean print with a guide narrowed upward meets a short base that needs ten sessions to cover.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://equibles.com/stocks/akr/shortinterest",
+    "source_date": "2026-10-15 settlement",
+    "reaction_history_on_this_line": "Short interest fell from 21.6M (June) to 12.0M (August) around the July beat-and-raise, which drew +2.21%.",
+    "why_not_priced": "Days to cover above 10 is an amplifier rather than a direction. It matters only if the print is clean, and the baseline (no option chain) carries no positioning statement at all.",
+    "independence": "none",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "AKR's drawdown from $22.47 (July) to $18.74 (September) coincided with the 10-year Treasury yield reaching 5.27% at the end of September, its highest in about 25 years, and REITs falling 5.7% in September. It is a sector rate move, not a company-specific cause. Rates over the window are a two-sided risk the print cannot settle.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.credaily.com/briefs/reits-fall-5-7-in-september-as-10-year-yield-hits-5-27/?.tsrc=rss",
+    "source_date": "2026-10 (September month-end commentary)",
+    "reaction_history_on_this_line": "None on file.",
+    "why_not_priced": "It is priced: this explains the drawdown and does not predict the print. It is filed so the judges can see the drawdown has a non-company cause.",
+    "independence": "Price path from https://www.digrin.com/stocks/detail/AKR/price (monthly closes).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "About $352M of unsettled forward equity remains (17.8M shares / $369M at 6/30 per the Q2 release; $352M at 9/14). It funds the REIT acquisition pipeline and the Henderson Ave development, 'fully funded, on a forward basis'. The money buys street-retail assets leasing at double-digit spreads and a yield on cost above 9%, so this is funding a visible ramp, not distress. Settlement dilution is a 2027 per-share question rather than a Q3 one.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000899629/000119312526321040/akr-ex99_1.htm",
+    "source_date": "2026-07-28",
+    "reaction_history_on_this_line": "The Q2 $200M forward offering came in the same quarter as the guide raise; the stock rose +2.21% on that print.",
+    "why_not_priced": "Known and disclosed. Answering what the money buys (accretive street retail with corroborating leasing) signs this at zero.",
+    "independence": "The 9/14 update (https://earningswhispers.com/article/AKR/2609143342) confirms no new equity in Q3 and $352M remaining. That shares a company with findings 1 and 2.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "The Q3 2026 release moves to before the open on 11-02 with an 11:00 ET call the same day; all seven prior prints were after the close. This shortens the window in which the release is digested before the scored close.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://finviz.com/news/401728/acadia-realty-trust-to-announce-third-quarter-2026-earnings-on-november-2-2026",
+    "source_date": "2026-10-13",
+    "reaction_history_on_this_line": "No prior bmo prints in the baseline history.",
+    "why_not_priced": "Not directional. It means the full call is inside the scored session, so the reaction should be more complete than after a pre-market-only digestion.",
+    "independence": "none",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "Vanguard Capital Management filed a Schedule 13G on 2026-10-30 reporting 7,209,906 shares (5.24%), event date 2026-09-30. On 2026-10-19 the board added Tamara Fischer, former Executive Chair of National Storage Affiliates, as trustee (8-K items 5.02/7.01); her Form 4 shows only LTIP grants for trustee fees. Both are passive or governance items.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/899629/000210011926001538/primary_doc.xml",
+    "source_date": "2026-10-30",
+    "reaction_history_on_this_line": "None.",
+    "why_not_priced": "Immaterial. Filed only so the judges see that the quiet 8-K and Form 4 before the print were checked and carry no operating content.",
+    "independence": "8-K 2026-10-19: https://www.sec.gov/Archives/edgar/data/0000899629/000119312526425260/akr-20261019.htm",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "Unusual Whales quotes a ±10.40% market-implied move and an earnings date of 2026-10-27",
+    "source": "https://unusualwhales.com/stock/AKR/earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "AKR.json",
+    "text": "Quantisnow item 'Acadia Realty Trust announces offering of 4,500,000 common shares'",
+    "source": "https://quantisnow.com/insight/acadia-realty-trust-announces-offering-of-4500000-common-shares-5708491",
+    "first_hunter_reason": "outside_window",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AKR.json",
+    "text": "Analyst rating or price-target changes in September-October 2026: none found (latest dated items: Truist PT $24 on 2026-06-09, Ladenburg upgrade on 2026-04-30)",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AKR.json",
+    "text": "Company-specific cause for the August-September drawdown: none in EDGAR or news; the price path matches the sector rate selloff",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AKR.json",
+    "text": "Q2 2026 call commentary on Q3 cadence, promote or investment-management gains: the Quartr summary carries none",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AKR.json",
+    "text": "Tenant bankruptcy or street-retail tenant distress in Q3 2026: nothing found; FRT reports none",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AKR.json",
+    "text": "Insider open-market buys or sells: only a new trustee's LTIP grants (Form 3/4, 2026-10-20)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "AKR.json",
+    "text": "Regency and Brixmor Q3 2026 releases: not found or not yet indexed",
+    "i": 15
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-30/CHKP",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "CHKP",
+   "event_date": "2026-11-02",
+   "session": "bmo",
+   "as_of_utc": "2026-10-30T17:08:53+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-30",
+    "spot": 148.4,
+    "run_up_5d_pct": -6.68,
+    "run_up_20d_pct": 13.85,
+    "pct_from_52w_high": -27.39,
+    "pct_from_52w_low": 31.95,
+    "realised_vol_20d_annualised_pct": 37.0,
+    "avg_volume_20d": 1304162
+   },
+   "cik": "0001015922",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-09-14",
+      "session": "intraday",
+      "move_pct": 5.21
+     },
+     {
+      "event_date": "2026-09-02",
+      "session": "amc",
+      "move_pct": 2.63
+     },
+     {
+      "event_date": "2026-07-30",
+      "session": "bmo",
+      "move_pct": -8.19
+     },
+     {
+      "event_date": "2026-07-22",
+      "session": "amc",
+      "move_pct": -1.49
+     },
+     {
+      "event_date": "2026-07-09",
+      "session": "amc",
+      "move_pct": -4.68
+     },
+     {
+      "event_date": "2026-06-08",
+      "session": "bmo",
+      "move_pct": -4.82
+     },
+     {
+      "event_date": "2026-05-11",
+      "session": "bmo",
+      "move_pct": 0.43
+     },
+     {
+      "event_date": "2026-04-30",
+      "session": "bmo",
+      "move_pct": -19.64,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 8489500,
+       "next_day_volume": 3189100,
+       "median_20d_before": 1085850,
+       "move_as_tagged_pct": -19.64,
+       "move_if_bmo_pct": -19.64,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 4.75,
+    "max_abs_move_pct": 19.64,
+    "up_count": 3,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 49,
+    "median_gap_days": 13,
+    "ratio": 3.77,
+    "last_print": "2026-09-14",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 13 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 21,
+    "atm_strike": 150.0,
+    "atm_iv_pct": 58.7,
+    "straddle_implied_move_pct": 11.59,
+    "event_implied_move_pct": 9.08,
+    "event_implied_move_basis": "11.59% straddle over 21 calendar days less 9.03% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -3.39,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.53,
+    "total_open_interest": 18328,
+    "atm_spread_frac_of_mid": 0.105,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 2.38,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 9.08,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "unknown",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Company Q3 2026 guide from the 2026-07-30 call (transcript): revenue $665-685M, subscription $332-343M, non-GAAP EPS $2.43-2.53, adj. FCF $235-265M (https://www.webull.com/news/15364638754350080). FY2026 revenue $2.77-2.85B after the Q1 cut (https://www.marketbeat.com/instant-alerts/check-point-software-technologies-q1-earnings-call-highlights-2026-04-30/), with FY non-GAAP EPS $10.05-10.85 reaffirmed. Consensus non-GAAP EPS is $2.49 (Benzinga, https://es.benzinga.com/quote/CHKP/earnings-forecasts). Revenue consensus sources conflict: $672M at Benzinga, against stale pre-guide figures of $695-697M at MarketBeat and goldesel. The calendar's $1.99 EPS (EarningsWhispers) matches neither the non-GAAP nor the implied GAAP guide (~$1.73-1.83) and is disowned. The bar used is the company guide midpoint, $675M / $2.48. The operative bar is the implied Q4: FY midpoint $2.81B less H1 $1,342M (668+674) less Q3 mid $675M = ~$793M, +6.5% on Q4-25's $745M. The CFO confirmed ~ $800M on the Q2 call.",
+   "positioning_check": "Short interest ~5.8M shares, 4.9 days to cover at the 2026-09-30 FINRA settlement (down from 6.2M / 5.5d at 09-15), per https://curvedtrading.com/stocks/chkp/short-interest/. Swingtradebot shows ~8.1% of float and 5.97 DTC around 2026-10-21 (https://swingtradebot.com/equities/CHKP). Moderate, not crowded. Baseline skew_25d is -3.39 vol points (25d calls bid over puts, 'upside paid'), put/call OI 0.53, event-implied move 9.08%, ATM IV 58.7%. Tape (Yahoo chart): 137.87 on Oct-16, then +15% in three sessions Oct 21-23 to 159.03 on a sector rally; 159.84 on Oct-27; -2.9% Oct-28; opened -4.5% Oct-29 on the FTNT print and closed -1.1% at 153.50; ~149 intraday Oct-30. 20d run-up +13.85%, 5d -6.68%, 27% below the 52-week high.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "Two direct hardware-security peers reported the September quarter this week, beat, and fell ~20% each on forward commentary. F5 (Oct-27 amc): systems revenue +29% and revenue $917M above its $870-890M guide, but FY27 growth was guided to 8-9% with gross margin pressured by memory and component costs; the stock went 459.36 to 365.53 (-20.4%) and was ~335 intraday Oct-30. Fortinet (Oct-28 amc): product +37%, billings +29%, guide raised; but management said H1 product benefited from on-hand inventory that normalized in Q3, product gross margin is under cost pressure, and pricing was ~10pp of billings growth; FTNT went 174.08 to 139.10 (-20.1%). Check Point has its own memory-cost headwind (~1pt GM in 2026, mostly H2) and 300 sales hires for 2027, so its call will be read for the same Q4 and 2027 margin questions. So far it has absorbed only ~-7% off its Oct-27 high.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.investing.com/news/transcripts/earnings-call-transcript-fortinet-beats-q3-2026-estimates-but-shares-plunge-93CH-4981034",
+    "source_date": "2026-10-28",
+    "reaction_history_on_this_line": "CHKP's last three prints all moved on the forward revenue guide, not the EPS beat: Feb-12-2026 -6.8% (176.47 to 164.47), Apr-30-2026 -19.6% (139.96 to 112.47, FY revenue cut), Jul-30-2026 -8.2% (139.67 to 128.23, Q3 guide below consensus despite EPS $2.55 vs $2.45). Prices from Yahoo chart v8.",
+    "why_not_priced": "On Oct-29 CHKP opened -4.5% on the FTNT read and closed only -1.1%. It remains +8% above where it started the Oct-21 sector rally. Calls are still bid over puts (skew -3.39). If the market had carried the peers' de-rating into CHKP, it would be back near ~138 with put skew positive.",
+    "independence": "F5 is a separate document pointing the same way: FY27 growth decel and memory-driven gross-margin compression, -20.4% on a beat (https://www.sec.gov/Archives/edgar/data/0001048695/000104869526000074/ex991-q426earningsreleasef.htm and https://www.quiverquant.com/news/F5+Slides+as+2027+Margin+Outlook+and+Growth+Pace+Temper+Strong+Q4+Results). CHKP's own memory GM headwind: https://www.theregister.com/2026/01/12/no_fire_sale_on_firewalls/. This is a proxy, macro-to-company transmission that CHKP has not confirmed for 2027.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "The same peer prints show strong September-quarter appliance demand: Fortinet product +37% with $1M+ deals up 51% and 'no slowdown in demand'; F5 systems +29%. Check Point guided its Q3 product line to trend like Q2's -14% and assumed large appliance deals slip from Q3 to Q4. That is a deliberately conservative assumption in a strong market, which raises the odds that Q3 revenue lands at or above the $675M guide midpoint.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.fool.com/earnings/call-transcripts/2026/10/29/fortinet-ftnt-q3-2026-earnings-call-transcript/",
+    "source_date": "2026-10-29",
+    "reaction_history_on_this_line": "CHKP beat Q2 revenue ($674M vs ~$675M consensus/at-guide) and EPS ($2.55 vs $2.45) and fell 8.2% on the guide. A reported-quarter beat has not been paid on any of the last three prints.",
+    "why_not_priced": "Consensus EPS of ~$2.49 and revenue of ~$672M sit at the CHKP guide midpoint and were set before either peer reported. Peer-informed upward revisions would show as revenue consensus at the top of the guide; none has been found.",
+    "independence": "F5 8-K systems +29% (https://www.sec.gov/Archives/edgar/data/0001048695/000104869526000074/ex991-q426earningsreleasef.htm). Caveat already netted into the size: a channel analyst cited in German press says CHKP is not benefiting from firewall demand at the same pace as competitors, and CHKP's issue has been its own go-to-market disruption (https://goldesel.de/aktien/news/check-point-verlagert-deals-in-q4-und-halt-fy26-guidance-q3-eps-soll-uber-konsens-liegen). This shares the Fortinet documents with finding 1 but reads a different line (Q3 demand, not forward margin).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "The held FY2026 revenue range of $2.77-2.85B implies Q4 of ~$753-833M, ~$793M at the midpoint (+6.5% on Q4-25's $745M). The CFO confirmed ~ $800M on the Q2 call, resting on appliance deals pushed from Q3 to Q4 and product returning to growth, with the CEO saying 'the optimism comes from what we see already in Q4'. The Nov-2 Q4 guide either confirms that ramp or trims the FY midpoint for the second time this year.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.webull.com/news/15364638754350080",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "FY revenue cut on Apr-30-2026: -19.6%. Q3 guide below consensus on Jul-30-2026: -8.2%. On Oct-28-2025, an in-line Q3 with the guide intact: +6.2% (191.72 to 203.56).",
+    "why_not_priced": "Partly priced: the stock is 27% off its high and roughly 13x FY EPS. If the market believed the $800M Q4, it would trade back toward the pre-April $140-176 range rather than ~149. If it fully expected a trim, puts would be bid, and the 25d skew is negative, with calls bid.",
+    "independence": "FY range of $2.77-2.85B from the Q1 call summary (https://www.marketbeat.com/instant-alerts/check-point-software-technologies-q1-earnings-call-highlights-2026-04-30/). Q2 results $674M from the company release (https://www.checkpoint.com/press-releases/check-point-software-reports-2026-second-quarter-financial-results/). The Q4 implication is arithmetic on these company documents.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "The +13.85% 20-day run-up is a sector move with no company news: +15% in three sessions (Oct 21-23, 140.85 to 159.03 on 2.4-2.6M shares vs ~1.3M average) on a Morgan Stanley enterprise-security-spending note, PHP vulnerability headlines and UBS/Mizuho target raises to $145, which is still below spot. About half of it has already been given back.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.investing.com/news/stock-market-news/why-is-check-point-software-stock-rallying-today-93CH-4970130",
+    "source_date": "2026-10-23",
+    "reaction_history_on_this_line": "No clean history on run-up into prints. Before Oct-25 (+6.2%) the stock had been falling; before Apr-26 (-19.6%) it was ~flat.",
+    "why_not_priced": "The UBS and Mizuho targets of $145 sit below the 149 spot, and the rally was sector-wide rather than CHKP-specific. If the rally were fully unwound, the stock would sit near 140, not 149.",
+    "independence": "https://www.quiverquant.com/news/Check+Point+Software+rises+as+cybersecurity+shares+gain+on+stronger+spending+outlook (2026-10-23, attributes the move to sector rotation and PHP vulns). Short interest is not crowded at 4.9 DTC, so there is no squeeze mechanism against this.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "Check Point bought back ~2.5M shares for ~$325M in Q2 2026 (company release) under a $2B program. Continued Q3 repurchase lowers the share count and supports a non-GAAP EPS print at or above the $2.53 top of the guide.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.checkpoint.com/press-releases/check-point-software-reports-2026-second-quarter-financial-results/",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "EPS beats were sold on all of the last three prints (Q2: $2.55 vs $2.45, -8.2%).",
+    "why_not_priced": "Mostly priced: CHKP routinely beats EPS. It is listed so the judges see the EPS line is likely a beat that does not drive the stock.",
+    "independence": "none",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "The shekel has traded near 30-year highs against the dollar through 2026 (~2.9 NIS/$ in May 2026), raising Check Point's Israeli-shekel cost base in dollars against the year-ago quarter. This is a small operating-margin headwind, mostly inside the Q3 EPS guide set on Jul-30.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://en.globes.co.il/en/article-1001539854",
+    "source_date": "2026 (Globes article id range ~May 2026; exact date not confirmed on page)",
+    "reaction_history_on_this_line": "No observed reaction to FX on this name.",
+    "why_not_priced": "Inside the guide, so it is largely priced. It is filed as a proxy only.",
+    "independence": "https://tradingeconomics.com/israel/currency/news/553476 (shekel 33-year high). This is a proxy; the company has not quantified the Q3 effect.",
+    "i": 5
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "FY2027 guidance (CHKP gives its annual guide in February) will carry the 300-seller hiring ramp and the full-year memory-cost effect. Management said the sales impact lands in Q1-Q2 2027.",
+    "resolves_by": "2027-02-15",
+    "source": "https://www.webull.com/news/15364638754350080",
+    "i": 6
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "EarningsWhispers consensus EPS $1.99 as the bar",
+    "source": "https://www.earningswhispers.com/stocks/chkp",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "Q3 revenue consensus $696.5M (MarketBeat) implying a miss is priced",
+    "source": "https://www.marketbeat.com/instant-alerts/check-point-software-technologies-nasdaqchkp-issues-q3-2026-earnings-guidance-2026-07-30/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CHKP.json",
+    "text": "Baseline reaction history (8 dates incl. 2026-09-14 +5.21%, 2026-09-02, 2026-07-22, 2026-07-09, 2026-06-08, 2026-05-11)",
+    "source": "/home/user/claude_research/research/2026/10/2026-10-30/edge-split-3/baselines/CHKP.json",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CHKP.json",
+    "text": "Oct-2026 company-specific CHKP news (acquisitions, exec departures, 6-K) beyond the Nov-2 date release: nothing found after the May-2026 Deepchecks deal",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CHKP.json",
+    "text": "Named-broker Q3 previews (Jefferies, Barclays, Wells Fargo) for Oct-2026: none found",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CHKP.json",
+    "text": "The Morgan Stanley Oct-22 note itself: only secondary mentions",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CHKP.json",
+    "text": "Shekel Q3 2026 average rate from a primary source: not found; Sept figures conflict",
+    "i": 13
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-30/ETR",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "ETR",
+   "event_date": "2026-11-02",
+   "session": "bmo",
+   "as_of_utc": "2026-10-30T17:08:26+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-30",
+    "spot": 110.28,
+    "run_up_5d_pct": 2.74,
+    "run_up_20d_pct": 9.29,
+    "pct_from_52w_high": -6.47,
+    "pct_from_52w_low": 20.93,
+    "realised_vol_20d_annualised_pct": 15.7,
+    "avg_volume_20d": 2440142
+   },
+   "cik": "0000065984",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-29",
+      "session": "bmo",
+      "move_pct": -4.03
+     },
+     {
+      "event_date": "2026-04-29",
+      "session": "bmo",
+      "move_pct": 1.33
+     },
+     {
+      "event_date": "2026-02-12",
+      "session": "bmo",
+      "move_pct": 1.76
+     },
+     {
+      "event_date": "2025-10-29",
+      "session": "bmo",
+      "move_pct": 0.46
+     },
+     {
+      "event_date": "2025-07-30",
+      "session": "bmo",
+      "move_pct": 1.19
+     },
+     {
+      "event_date": "2025-04-29",
+      "session": "bmo",
+      "move_pct": -1.83
+     },
+     {
+      "event_date": "2025-02-18",
+      "session": "bmo",
+      "move_pct": 5.95
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 1.76,
+    "max_abs_move_pct": 5.95,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 96,
+    "median_gap_days": 91.0,
+    "ratio": 1.05,
+    "last_print": "2026-07-29",
+    "verdict": "fits_cadence",
+    "reason": "96 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 21,
+    "atm_strike": 110.0,
+    "atm_iv_pct": 30.6,
+    "straddle_implied_move_pct": 5.33,
+    "event_implied_move_pct": 4.37,
+    "event_implied_move_basis": "5.33% straddle over 21 calendar days less 3.83% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 2.75,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.35,
+    "total_open_interest": 7225,
+    "atm_spread_frac_of_mid": 0.256,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 4.37,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 adjusted EPS of about $1.72: chartmill $1.72 (https://www.chartmill.com/stock/quote/ETR/estimates) and MarketBeat $1.73 (https://www.marketbeat.com/instant-alerts/entergy-nyseetr-releases-fy-2026-earnings-guidance-2026-07-29/) agree. Benzinga shows $1.68 and KeyCorp $1.86 (single broker). Year-ago Q3 2025 adjusted EPS was $1.53 (https://www.sec.gov/Archives/edgar/data/65984/000006598425000126/earningsrelease3q25_ex991.htm). Company FY2026 guide is $4.25-4.45, affirmed 2026-07-29; YTD adjusted EPS is $1.90; FY consensus is about $4.40, the upper half of the guide (https://www.sec.gov/Archives/edgar/data/65984/000006598426000279/earningsrelease2q26_ex991.htm).",
+   "positioning_check": "About 17.85M shares short, 5.5 days to cover as of the 2026-09-30 settlement (https://massive.com/quote/etr); Equibles on 2026-08-20 had 20.3M, 4.4% of float, 6.7 days, falling (https://equibles.com/stocks/etr/shortinterest). Not crowded. Sealed baseline: 25d skew +2.75 vol pts (mild downside paid), put/call OI 0.35 (call-heavy), event-implied move 4.37%. The ATM spread is 25.6% of mid and ATM IV of 30.6 sits against 15.7 realised, so the implied number is noisy; the name's own median reaction is 1.76%. Run-up: +9.3% over 20 days, +2.7% over 5 days, -6.5% from the 52-week high.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Q3 2026 cooling demand in Entergy's census regions ran well above normal and above last year. AGA cooling degree days (weighted to AC customers) to 2026-09-26: West South Central cumulative 2,512 vs 2,241 last year (+12.1%) and normal 2,093 (+20%); about 528 CDD in September alone vs about 344 normal. East South Central cumulative +11.1% YoY. National August +22.3% YoY. Entergy booked +$0.06/share of weather vs normal in Q3 2025 and -$0.02 YTD through Q2 2026, so Q3 2026 weather plausibly adds several cents vs a normal-weather consensus of about $1.72.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.aga.org/wp-content/uploads/2026/09/Current-Cooling-Degree-Day-Data_Paul-Pierson-84.pdf",
+    "source_date": "2026-09-28",
+    "reaction_history_on_this_line": "Q3 2025 had a +$0.06 weather benefit and a narrowed guide; the stock moved +0.46%. Last seven reactions have a median |move| of 1.76%, with 5 of 7 up. Utility weather beats are usually treated as low quality.",
+    "why_not_priced": "Sell-side quarterly estimates are usually built on normal weather. If the market had priced the hot August and September, Q3 estimates would have risen over the quarter. Instead chartmill reports Entergy's next-quarter revenue estimate cut 4.2% over three months, and consensus EPS of about $1.72 is +12% on the year ago, in line with the guided growth rate and not above it.",
+    "independence": "Company YTD weather figures from the Q2 2026 release (https://www.sec.gov/Archives/edgar/data/65984/000006598426000279/earningsrelease2q26_ex991.htm) give the comparison base. CenterPoint (Houston, same WSC region) booked +$0.03 of favourable weather and usage in its Q3 2026 (https://www.sec.gov/Archives/edgar/data/0001130310/000110465926118963/tm2628051d1_ex99-1.htm). This is a proxy: a regional series, not Entergy's own number.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Three regulated peers that reported after Entergy last spoke beat and lifted outlooks. AEP (2026-10-28): operating EPS $2.23 vs about $2.04 consensus, 2026 guided at or above the top of $6.25-6.55, new 2027/2028 guides, $100B capex plan. CenterPoint (2026-10-27): $0.53 vs about $0.50, raised 2026 guide and a $70.7B plan, with Houston industrial throughput +11% YTD. FirstEnergy beat at $0.98 vs $0.90 and reaffirmed. This sets a sector bar of a beat plus an outlook lift on data-center load.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000004904/000000490426000069/a3q20268kpressreleaseex991.htm",
+    "source_date": "2026-10-28",
+    "reaction_history_on_this_line": "Q1 2026 raised the longer-term outlook: +1.33%. Q2 2026 affirmed only (with a $2.175B equity raise in the quarter): -4.03%. Q3 2025 narrowed and extended outlooks: +0.46%.",
+    "why_not_priced": "Partly priced. ETR is up 9.3% in 20 days, from about $104-106 around 10-21 to $110.28, which is consistent with the sector re-rating on these prints. What would still be unpriced is ETR-specific: a raised 2026 guide or capex lift. If the market expected that, ETR would be at its 52-week high ($118); it is 6.5% below it. The flip side: having watched AEP and CNP raise, the market may now penalise an affirm-only result, as in Q2 (-4.03%).",
+    "independence": "CenterPoint 8-K (https://www.sec.gov/Archives/edgar/data/0001130310/000110465926118963/tm2628051d1_ex99-1.htm) and the FirstEnergy summary (https://247wallst.com/cards/firstenergy-q3-2026-earnings-fe-01m5zha84d051svv1yr0f969wk) are separate companies' documents. All three are read-across and not Entergy's own number.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Guidance arithmetic: YTD adjusted EPS is $1.90 against a $4.25-4.45 guide. A Q3 at the $1.72 consensus leaves $0.73 for Q4 to reach the $4.40 FY consensus, already in the upper half of the range. A weather-aided Q3 makes narrowing to the upper half ($4.35-4.45) feasible, which would merely match consensus. Narrowing around the midpoint would read as a soft cut. Entergy narrowed at Q3 in 2025 (to $3.85-3.95).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/65984/000006598426000279/earningsrelease2q26_ex991.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "Q3 2025 narrowed the guide and extended outlooks: +0.46%. Q2 2026 affirmed with no lift: -4.03%.",
+    "why_not_priced": "The consensus of $4.40 sits above the guide midpoint of $4.35, so the street already leans to the upper half. The unpriced part is only the direction of the narrowing. If the market expected a top-of-range guide, FY consensus would sit near $4.45; it does not.",
+    "independence": "Q3 2025 narrowing precedent: https://www.barchart.com/story/news/35753953/entergy-reports-third-quarter-2025-financial-results. Shares a document with finding 6 (the Q2 release) but rests on different numbers.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Regulatory friction in Arkansas. In early September 2026 the APSC denied Entergy Arkansas's request to buy power from the 440 MW Big Island solar plant, finding that costs and savings were not shown. It has opened docket 26-009-U on Entergy's treatment of production tax credits. The first base rate case in ten years (26-001-U, filed 2026-02-27) is pending. The 2026-10-19 Google phase-two package re-submits the Big Island PPA for approval.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://mgrid.org/2026/10/20/google-takes-on-the-big-island-solar-ppa-arkansas-regulators-rejected-in-a-600-million-second-phase-with-entergy/",
+    "source_date": "2026-10-20",
+    "reaction_history_on_this_line": "No prior print turned visibly on Arkansas regulation in the baseline history.",
+    "why_not_priced": "Mostly priced: the denial is public since September and is small relative to the system. It could reach the stock on the call if management quantifies Arkansas rate-case risk, for example a settlement below the ask. If priced as a material risk, analysts would have cut 2027 estimates; the visible October cuts are price-target cuts (JPM, Barclays) without stated reasons.",
+    "independence": "Arkansas Advanced Energy tracker for 26-001-U and 26-009-U: https://www.arkansasadvancedenergy.com/entergy-arkansas-rate-case-2026. Mild positive skew points the same way.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "October sell-side target moves are mixed to down: JPMorgan cut to $130 from $137 (Oct 13, overweight), Barclays cut to $115 from $128 (overweight), Truist set $119 (buy), Morgan Stanley raised to $101 from $98 (equal weight, Oct 21). The consensus target is about $120.78 (17 buy, 2 hold) against $110.28 spot.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.marketbeat.com/instant-alerts/analyst-entergy-nyse-etr-price-target-raised-to-10100-2026-10-21/",
+    "source_date": "2026-10-21",
+    "reaction_history_on_this_line": "n/a",
+    "why_not_priced": "Largely priced: the stock has rallied about 4% since these notes. They are filed because they show buy-side expectations are not euphoric going into the print.",
+    "independence": "none",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Dilution runs into the quarter. Q2 diluted shares were 466.3M vs 445.7M a year earlier (+4.6%), and $3,056M of forward equity was still unsettled at 2026-06-30. Asked what the money buys: it funds a capex ramp corroborated by weather-adjusted industrial sales +12.3% YTD and retail +5.9% YTD, so it is not distress. Per-share drag is in consensus.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/65984/000006598426000279/earningsrelease2q26_ex991.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "Q2 2026 (quarter of the $2.175B forward offering): -4.03%.",
+    "why_not_priced": "It is priced: the share count and forwards are disclosed and modelled. Filed at zero because the financing question was answered as 'funds visible demand'.",
+    "independence": "Offering terms: https://rallies.ai/news/entergy-announces-2175-billion-stock-offering-with-32625-million-option-via-forward-sales; 8-K of 2026-09-02 on forward settlements: https://www.sec.gov/Archives/edgar/data/0000065984/000006598426000312/etr-20260902.htm",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Entergy Arkansas announced phase two of its Google West Memphis partnership on 2026-10-19. Google funds about $600M of grid infrastructure (two batteries totalling 1,400 MWh, substation, two 230 kV lines) plus a 440 MW solar PPA, with $500M+ of claimed customer savings from 2028. The Q3 call gives management a fresh data-center talking point, but the EPS path is unclear because the funding comes from Google.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://talkbusiness.net/2026/10/entergy-google-announce-second-phase-partnership/",
+    "source_date": "2026-10-19",
+    "reaction_history_on_this_line": "A data-center contract re-rating day in March 2026 saw shares +7.7% (https://rallies.ai/news/entergy-surges-as-data-center-contract-economics-and-regulatory-risk-outlook-re-rate); no print reaction tied to this line.",
+    "why_not_priced": "Public for 11 days and small. The only unpriced part is whether the call attaches rate base or load (GW) to it; the release gave neither.",
+    "independence": "https://mgrid.org/2026/10/20/google-takes-on-the-big-island-solar-ppa-arkansas-regulators-rejected-in-a-600-million-second-phase-with-entergy/ (same event, skeptical read). Shares the event with finding 4.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Volume momentum into Q3: weather-adjusted industrial sales were +9.9% in Q2 and +12.3% YTD, and retail +5.7% in Q2 and +5.9% YTD, against Q3 2025's +7.3% industrial and +4.4% retail.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/65984/000006598426000279/earningsrelease2q26_ex991.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "Q1 2026 industrial-led growth: +1.33%.",
+    "why_not_priced": "It is largely priced: it is inside the growth the company guided to and is in consensus. A deceleration would be the surprise.",
+    "independence": "CenterPoint Houston industrial throughput +11% YTD (same Gulf Coast industrial base): https://www.sec.gov/Archives/edgar/data/0001130310/000110465926118963/tm2628051d1_ex99-1.htm. Shares a document with findings 3 and 6.",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "LPSC final vote on the Entergy Louisiana-Meta expansion (seven gas plants, 20-year ESA, docket U-37882) expected by December 2026. It was fast-tracked 4-1 in April 2026.",
+    "resolves_by": "2026-12-31",
+    "source": "https://content.wbrz.com/news/state-regulators-weigh-in-on-entergy-meta-deal-promising-to-save-rate-payers-billions",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Entergy Arkansas base rate case 26-001-U (filed 2026-02-27) decision, likely around year-end under the Arkansas statutory clock.",
+    "resolves_by": "2026-12-31",
+    "source": "https://www.arkansasadvancedenergy.com/entergy-arkansas-rate-case-2026",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Simply Wall St 'strong Q3 beat, 11.9% adjusted EPS rise' for Southern Co as a peer read-across",
+    "source": "https://simplywall.st/stocks/us/utilities/nyse-so/southern/news/the-bull-case-for-southern-so-could-change-following-strong/amp",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "TipRanks headline list: $1.3B debenture sale and a leadership transition at Entergy",
+    "source": "https://www.tipranks.com/stocks/etr/stock-news",
+    "first_hunter_reason": "no_source",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "ETR.json",
+    "text": "Portland General cut its 2026 guide on unfavourable Q3 weather, as a sector weather read-across",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000784977/000119312526437091/por-ex99_2.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ETR.json",
+    "text": "Entergy 8-Ks since 2026-09-02 (EDGAR browse): none, so no pre-release, guidance change or executive change since the September forward settlement",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ETR.json",
+    "text": "2026 hurricane landfall or storm-cost event in Entergy territory in Q3: none found (only TS Arthur in June and Winter Storm Fern in January)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ETR.json",
+    "text": "Entergy Texas base rate case 2026: none found; only rider updates (DCRF, TCRF, GCRR)",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ETR.json",
+    "text": "New Entergy Mississippi or New Orleans data-center ESAs in September-October 2026: none found",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ETR.json",
+    "text": "Dedicated Q3 2026 sell-side preview with an explicit weather assumption: none found",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "ETR.json",
+    "text": "Southern Co Q3 2026: reports 2026-11-05, outside the window",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-30/TEM",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "TEM",
+   "event_date": "2026-11-02",
+   "session": "bmo",
+   "as_of_utc": "2026-10-30T17:09:02+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-30",
+    "spot": 71.725,
+    "run_up_5d_pct": 6.08,
+    "run_up_20d_pct": -6.4,
+    "pct_from_52w_high": -20.17,
+    "pct_from_52w_low": 72.62,
+    "realised_vol_20d_annualised_pct": 90.2,
+    "avg_volume_20d": 6116686
+   },
+   "cik": "0001717115",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-30",
+      "session": "amc",
+      "move_pct": -0.95
+     },
+     {
+      "event_date": "2026-05-05",
+      "session": "amc",
+      "move_pct": -1.05
+     },
+     {
+      "event_date": "2026-02-24",
+      "session": "amc",
+      "move_pct": -7.32
+     },
+     {
+      "event_date": "2026-01-12",
+      "session": "bmo",
+      "move_pct": 4.51
+     },
+     {
+      "event_date": "2025-11-04",
+      "session": "amc",
+      "move_pct": -2.64
+     },
+     {
+      "event_date": "2025-08-08",
+      "session": "bmo",
+      "move_pct": 3.63
+     },
+     {
+      "event_date": "2025-05-06",
+      "session": "amc",
+      "move_pct": 12.59
+     },
+     {
+      "event_date": "2025-02-24",
+      "session": "amc",
+      "move_pct": -15.05
+     }
+    ],
+    "n": 8,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 4.07,
+    "max_abs_move_pct": 15.05,
+    "up_count": 3,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 95,
+    "median_gap_days": 71,
+    "ratio": 1.34,
+    "last_print": "2026-07-30",
+    "verdict": "fits_cadence",
+    "reason": "95 days since the last print against a 71-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-06",
+    "days_to_expiry": 7,
+    "atm_strike": 72.0,
+    "atm_iv_pct": 102.9,
+    "straddle_implied_move_pct": 12.16,
+    "event_implied_move_pct": 6.72,
+    "event_implied_move_basis": "12.16% straddle over 7 calendar days less 12.71% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -7.03,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.44,
+    "total_open_interest": 10546,
+    "atm_spread_frac_of_mid": 0.147,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 2.04,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 6.72,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue of about $412-414M. Three estimate sources agree within 0.6%: Earnings Whispers $411.7M (https://www.earningswhispers.com/article/TEM/21357, 2026-10-26), Chartmill $413.9M (https://www.chartmill.com/stock/quote/TEM/estimates) and Benzinga $413.8M (https://www.benzinga.com/quote/TEM/earnings-forecasts). EPS: non-GAAP consensus -$0.07 to -$0.13 with a whisper of -$0.01. Q2 printed positive GAAP EPS against a -$0.15 consensus and the stock still fell, so EPS is not the line the stock trades on. The company guide is FY2026 revenue $1.595-1.605B with adj. EBITDA ~$65M (https://www.businesswire.com/news/home/20260730328545/en/Tempus-Reports-Second-Quarter-2026-Results). That implies H2 revenue of $864-874M against H1's $730.6M, so the bar sits inside the guide.",
+   "positioning_check": "Short interest: 18.57% of float, 3.55 days to cover (MarketBeat snapshot 2026-10-30, https://www.marketbeat.com/instant-alerts/tempus-ai-nasdaqtem-stock-price-down-74-should-you-sell-2026-08-24/). A FINRA-based figure shows 25.1M shares short and 3.2 days at the 2026-09-30 settlement, per a search snippet. The 25-delta skew is -7.03 vol pts (calls bid over puts), put/call OI is 0.44, the event-implied move is 6.72% and the 7-day straddle 12.16%, all from the baseline. The stock ran from ~$49 at the Q2 print to an ~$89-90 high, sat at $77.84 on 10-29, and fell ~8% intraday on 10-30 to ~$71.7. The only 10-30 headline found is a 10b5-1 CEO sale. Short interest is fairly crowded and the options market leans up.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "On the Q2 call (2026-07-30) management said core oncology volume growth accelerated to 31%, June was one of the strongest months to date, MRD volume reached ~9,000 (+38% q/q), hereditary growth should reach mid-teens by year-end, and data bookings were ~$200M with Insights +36%. That supports Q3 revenue at or slightly above the ~$412-414M consensus (+23% y/y vs Q2's +22%). Q3 sits inside the FY guide, which requires H2 of $864-874M.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.marketbeat.com/earnings/reports/2026-7-30-tempus-ai-inc-stock/",
+    "source_date": "2026-07-30",
+    "reaction_history_on_this_line": "Revenue beats with a raised FY guide drew -1.05% (2026-05-05) and -0.95% (2026-07-30). The Q4 2025 print, where guidance underwhelmed, drew -7.32% (2026-02-24). Beats are typically sold on the day.",
+    "why_not_priced": "Mostly priced: the consensus already sits at guide-consistent ~+23%. Only the momentum detail (June strength, the volume acceleration, the MRD ramp) argues for a modest beat over that. If the market had priced a bigger beat, the consensus would sit above the guide-implied run-rate, and it does not.",
+    "independence": "Q2 release on BusinessWire (same company, same quarter): https://www.businesswire.com/news/home/20260730328545/en/Tempus-Reports-Second-Quarter-2026-Results. Peer NeoGenomics' NGS volume +17% in Q3 is a separate finding below.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "Earnings Whispers (2026-10-26) puts FY2026 revenue consensus at ~$1.59B, just below the low end of the $1.595-1.605B guide. If that holds, a reiterated guide is itself a small beat against FY consensus and a raise (Tempus has raised every quarter in 2026) a larger one. TIKR says the FY consensus matches the guide, so the gap is disputed.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.earningswhispers.com/article/TEM/21357",
+    "source_date": "2026-10-26",
+    "reaction_history_on_this_line": "FY revenue guide raised at Q1 and Q2 2026, with reactions of -1.05% and -0.95%. A raise has not paid on the day.",
+    "why_not_priced": "If the Street fully underwrote the guide, FY consensus would sit at or above $1.595B. One source says it does not, and a second says it does, so the gap is real but small and contested.",
+    "independence": "Contradicting source: TIKR says '2026 consensus matches company guidance of about $1.6 billion', https://www.tikr.com/blog/tempus-ai-gains-6-as-bristol-myers-squibb-licenses-oncology-data. Capped small because the two sources disagree.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "On 2026-10-23 Tempus disclosed in an 8-K multi-year agreements worth $192.5M over about five years: a $137.5M BMS oncology data/Lens SOW through 2031 and a $55M Pathos neuro data order. That is roughly $38M a year of incremental data revenue against a Data & Applications run-rate of ~$373M a year. These are Q4 bookings that support the FY/Q4 guide and the data-growth narrative on the call; they do not change Q3 revenue.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.autobound.ai/companies/tempus-ai/8-k/tempus-ai-signs-192-5-million-multi-year-agreements-with-bms-f8aab9cc",
+    "source_date": "2026-10-23",
+    "reaction_history_on_this_line": "The stock rose ~6% on 2026-10-23 and ~8.4% on 2026-10-27, mostly giving it back by 10-30. On the print day, data bookings (~$200M in Q2) came with a -0.95% reaction.",
+    "why_not_priced": "Largely priced: the stock already reacted. What remains is that management can now cite Q4-to-date bookings and possibly firm the H2 guide on the call. A full pricing would show in consensus Q4 data revenue, and that change is not visible yet.",
+    "independence": "Value figures confirmed by a German report citing company disclosure: https://trading-treff.de/aktien/tempus-ai-aktie-eu-zertifizierung-fuer-xr-tumortest (2026-10-27). Deal described in the TIKR article (2026-10-23). All three rest on the same disclosure.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "Peer NeoGenomics reported Q3 2026 on 2026-10-28, after Tempus last spoke. It showed NGS revenue +29%, NGS test volume +17% and revenue per clinical test +11%, and raised its FY revenue and EBITDA guide, while total clinical volume grew only ~2%. Oncology NGS demand held up in the quarter.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001077183/000107718326000078/a99-109302026earningsrelea.htm",
+    "source_date": "2026-10-28",
+    "reaction_history_on_this_line": "No baseline record of TEM reacting to peer prints. TEM's own oncology volume growth (+31% in Q2) runs well ahead of NEO's.",
+    "why_not_priced": "Proxy only. NEO is a heme- and pathology-heavy lab with a different mix, and its +2% total clinical volume cuts the other way. TEM's reaction to NEO's print can't be separated from the 10-28/10-30 swings.",
+    "independence": "Proxy for the industry, not confirmed by Tempus. Guardant (Nov 5) and Caris report after the window.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "CMS's preliminary CY2027 Clinical Laboratory Fee Schedule (2026-09-21) aligns Medicare lab rates with private-payer rates, about $1B a year in savings with cuts capped at 15% a year through 2029, final in November. Any 2027 commentary on the call could carry a reimbursement headwind for the Diagnostics book outside the ADLT-priced tests. ADLTs are not mentioned.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.cms.gov/newsroom/press-releases/cms-announces-new-preliminary-medicare-payment-rates-laboratory-services-saving-taxpayers-estimated",
+    "source_date": "2026-09-21",
+    "reaction_history_on_this_line": "No prior print in the baseline turned on CLFS. Tempus usually gives next-year color at JPM in January (2026-01-12 bmo +4.51%), not on the Q3 call.",
+    "why_not_priced": "This is macro-to-company transmission: Tempus has not quantified any exposure, and its main tissue tests migrate to ADLT pricing, with a ~$200 ASP uplift from 2027 per management. If the market saw a material hit, lab peers would have de-rated in late September. Nothing found shows that.",
+    "independence": "None. Proxy, not confirmed by the company.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "The Personalis merger proxy/prospectus (424B3 dated 2026-10-21) discloses Tempus management's June 2026 projections for Personalis as a Tempus subsidiary: revenue $79M/$115M/$172M and adj. EBITDA -$95M/-$86M/-$73M for 2026/2027/2028. That is a drag larger than Tempus's entire 2026 adj. EBITDA guide (~$65M), and Tempus may pay up to 50% in cash, debt-funded. Any 2027 framing that includes Personalis would show a lower EBITDA path than standalone.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001717115/000119312526427866/d864810d424b3.htm",
+    "source_date": "2026-10-21",
+    "reaction_history_on_this_line": "The deal announcement on 2026-07-20 preceded the Q2 print (-0.95%). Management said on the Q2 call that EBITDA and FCF improve in 2027 'even with Personalis'.",
+    "why_not_priced": "These numbers sit deep in a 540k-character proxy, in the 'Unaudited Prospective Financial Information - Tempus' section, and no preview found quotes them. The Earnings Whispers preview only frames Personalis as a 'financing and timing' question. If the market had absorbed a ~$86M 2027 EBITDA drag, 2027 EBITDA estimates and the 'durable profitability' framing would show it. On the money side, it buys an MRD platform that Tempus says is ramping (9k tests in Q2), so this is a near-term earnings question and not distress.",
+    "independence": "The Q2 call (MarketBeat transcript) says Tempus will debt-fund much of the cash portion and that 2027 EBITDA improves anyway, which partly offsets this. Different document, opposite lean.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "Positioning into the print: the stock rose ~46% after Q2 to an ~$89-90 high, then fell back. It closed $77.84 on 10-29 and dropped ~8% intraday on 10-30 to ~$71.7 with no company news beyond a 10b5-1 CEO sale. Short interest is 18.57% of float (3.55 days), the 25-delta skew is -7 vol pts (calls bid) and put/call OI is 0.44, all leaning up into a bmo print.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.marketbeat.com/stocks/NASDAQ/TEM/news/",
+    "source_date": "2026-10-30",
+    "reaction_history_on_this_line": "The bmo prints in the baseline were both up (+4.51% 2026-01-12, +3.63% 2025-08-08). The amc prints went down 5 of 6.",
+    "why_not_priced": "The pre-print de-risking on 10-30 lowered the entry and the run-in. A crowded short against a beat-and-hold is a squeeze mechanism. But the skew already shows upside paid for, so most of this is in the option price.",
+    "independence": "Short interest from the MarketBeat snapshot (https://www.marketbeat.com/instant-alerts/tempus-ai-nasdaqtem-stock-price-down-74-should-you-sell-2026-08-24/); skew and P/C from the sealed baseline.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "CEO Eric Lefkofsky sold 250,000 shares on 2026-10-27 at $67.36-72.31 under a 10b5-1 plan adopted 2026-03-08 (Form 4 filed 10-29), after similar plan sales on 9-17 and 9-22. He keeps ~8.5M via Gray Media, ~14.7M via Blue Media and ~10M in GRATs plus direct holdings.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-10-30",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001717115/000111435726000042/form4-10292026_041001.xml",
+    "source_date": "2026-10-29",
+    "reaction_history_on_this_line": "None on the print line. The sale headline ran on the morning of 10-30, the day of the ~8% drop.",
+    "why_not_priced": "Scheduled plan sales carry no information about the quarter, and the headline is already in the 10-30 price. Filed for completeness.",
+    "independence": "Earlier 10b5-1 Form 4s, e.g. https://www.sec.gov/Archives/edgar/data/0001717115/000111435726000038/form4-09182026_090908.xml",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "Personalis shareholder vote on the Tempus merger is set for 2026-11-30 (record date 10-15). HSR expired 2026-10-02. Tempus's cash/stock election comes later, and the stock floor of $48.42 is far below spot.",
+    "resolves_by": "2026-11-30",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001527753/000119312526427872/d141436ddefm14a.htm",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "Final CY2027 CLFS rates from CMS are due in November 2026, probably after 11-02.",
+    "resolves_by": "2026-11-30",
+    "source": "https://www.cms.gov/newsroom/press-releases/cms-announces-new-preliminary-medicare-payment-rates-laboratory-services-saving-taxpayers-estimated",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "A rallies.ai item saying Tempus's platform will be integrated into a Bristol-Myers Squibb-Anthropic AI initiative",
+    "source": "https://rallies.ai/news/tempus-ai-secures-bristol-myers-squibbanthropic-ai-deal-while-shares-slip-04",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "Guardant Health Q3 2026 oncology volume as a read-through",
+    "source": "https://finviz.com/news/400623/guardant-health-to-report-third-quarter-2026-financial-results-on-november-5-2026",
+    "first_hunter_reason": "outside_window",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "TEM.json",
+    "text": "TIKR's statement that 2026 consensus matches guidance (~$1.6B)",
+    "source": "https://www.tikr.com/blog/tempus-ai-gains-6-as-bristol-myers-squibb-licenses-oncology-data",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TEM.json",
+    "text": "Cause of the ~8% intraday drop on 2026-10-30: no company news, analyst downgrade or peer print found beyond the 10b5-1 CEO sale headline; market-wide recap for 10-30 not indexed",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TEM.json",
+    "text": "October 2026 analyst price-target or rating changes ahead of Q3: none found (latest Piper upgrade 2026-09-01, Cantor initiation 2026-09-02 per Fintel snippets)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TEM.json",
+    "text": "Tempus management projections for Tempus itself in the Personalis 424B3: none; only the Personalis-as-subsidiary projections and TD Cowen's note that TEM traded at 6.57x CY26 / 5.33x CY27 revenue on 2026-07-17",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TEM.json",
+    "text": "MolDX / Medicare coverage decisions for Tempus assays in Aug-Oct 2026: none found; xT CDx tumor-only FDA approval was 2026-05-29 and is already in guidance",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TEM.json",
+    "text": "Direct oncology-CGP peers Guardant (reports 2026-11-05), Caris and Natera: no Q3 2026 results before the window",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TEM.json",
+    "text": "Hereditary peer Myriad Genetics: reports 2026-11-04, after the window",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TEM.json",
+    "text": "Spruce Point short report: dated 2025-05-28, stale, no new activist report found in 2026",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TEM.json",
+    "text": "Recursion extension and new RNA-model license (Tempus PR, ~2026-09-21): the page returned 429, terms not retrieved",
+    "i": 20
+   }
+  ]
+ },
+ {
+  "id": "us/2026-10-30/TSEM",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "TSEM",
+   "event_date": "2026-11-02",
+   "session": "bmo",
+   "as_of_utc": "2026-10-30T17:08:44+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-10-30",
+    "spot": 163.0,
+    "run_up_5d_pct": -2.72,
+    "run_up_20d_pct": -32.33,
+    "pct_from_52w_high": -48.56,
+    "pct_from_52w_low": 97.7,
+    "realised_vol_20d_annualised_pct": 89.8,
+    "avg_volume_20d": 2367095
+   },
+   "cik": "0000928876",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-10-13",
+      "session": "amc",
+      "move_pct": -5.87
+     },
+     {
+      "event_date": "2026-10-13",
+      "session": "bmo",
+      "move_pct": 2.63
+     },
+     {
+      "event_date": "2026-10-13",
+      "session": "bmo",
+      "move_pct": 2.63
+     },
+     {
+      "event_date": "2026-09-23",
+      "session": "bmo",
+      "move_pct": -2.58
+     },
+     {
+      "event_date": "2026-09-17",
+      "session": "bmo",
+      "move_pct": 8.43
+     },
+     {
+      "event_date": "2026-09-15",
+      "session": "bmo",
+      "move_pct": 2.09
+     },
+     {
+      "event_date": "2026-08-17",
+      "session": "bmo",
+      "move_pct": -0.66
+     },
+     {
+      "event_date": "2026-08-12",
+      "session": "bmo",
+      "move_pct": 4.3
+     }
+    ],
+    "n": 8,
+    "basis": "6-K exhibit text matched results language (8 filings opened). Heuristic, not an item code: a 6-K carrying results language is very likely an earnings release but this is weaker than the 8-K item 2.02 path",
+    "median_abs_move_pct": 2.63,
+    "max_abs_move_pct": 8.43,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 20,
+    "median_gap_days": 5,
+    "ratio": 4.0,
+    "last_print": "2026-10-13",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 5 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-06",
+    "days_to_expiry": 7,
+    "atm_strike": 175.0,
+    "atm_iv_pct": 116.3,
+    "straddle_implied_move_pct": 15.43,
+    "event_implied_move_pct": 11.67,
+    "event_implied_move_basis": "15.43% straddle over 7 calendar days less 12.65% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 20.68,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.57,
+    "total_open_interest": 3945,
+    "atm_spread_frac_of_mid": 0.254,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 1.5,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 11.67,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "unknown",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue: company guide $520M +/-5% (Q2 6-K https://www.sec.gov/Archives/edgar/data/0000928876/000117891326003776/exhibit_99-1.htm). Consensus $521.83M and EPS $1.07 per MarketBeat (https://www.marketbeat.com/instant-alerts/upcoming-tower-semiconductor-tsem-set-to-release-earnings-on-monday-2026-10-26/); 24/7 Wall St has $522.06M and normalized EPS $1.0663 (https://247wallst.com/investing/2026/10/27/tower-semiconductors-1-2b-profit-roadmap-faces-its-biggest-test-yet-in-q3-earnings/). The two estimate sources agree, so the bar is sourced. Q4 bar (the line the stock trades on): Benzinga Q4'26E revenue $577.1M, EPS $1.26 (https://www.benzinga.com/quote/TSEM/earnings-forecasts, snippet only). That matches the Q4 implied by 24/7's FY2026 consensus of $1.975B less Q1 $414M, Q2 $460M and Q3 $522M, about $579M. Release before the open on 2026-11-02 (MarketBeat, 24/7, GuruFocus); call at 10:00 ET per the company notice (https://mfn.se/all/a/tower-semiconductor/tower-semiconductor-announces-third-quarter-2026-financial-results-and-conference-call-3714efd1).",
+   "positioning_check": "Short interest is about 2.5M shares, 2.2% of float, 1.6 days to cover, as of the 2026-08-19 settlement (https://equibles.com/stocks/tsem/shortinterest); it was 2.3% of float and 1.4 days in July. No October settlement was found: the Nasdaq short-interest API returned 503. This is not a crowded short. The skew is +20.68 vol points (25d put IV minus call IV), put/call OI is 1.57, and the baseline reads 'downside paid'. Event-implied move is 11.67%, straddle 15.43% to the 2026-11-06 expiry, with a wide ATM spread (25% of mid). Tape: -32.3% over 20 days, -48.6% from the 52-week high. On 2026-10-30 the stock closed at 161.36, -14.1%, on a sector shock with no company news (Benzinga, 24/7 Wall St). Sell-side: 10 analysts, Moderate Buy, $316 average target. Wedbush Hold with a $300 target on 2026-10-26. No October target cuts found. The CEO sold $25.9M on 2026-08-11.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "Tower's own documents put Q4 2026 at roughly the ~$577-579M consensus. Its Q2 6-K says it plans to cross a $1B SiPho annual run rate in Q4 2026, i.e. at least about $250M of SiPho in the quarter, against $170M a quarter in Q2 ($680M run rate). The SiPho/SiGe wafer-start expansion completes in Q4 2026. The Q3 guide was $520M, +13% QoQ. A guide around $575-600M would meet or modestly clear the bar. The open risk is a slip in the SiPho checkpoint.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000928876/000117891326003776/exhibit_99-1.htm",
+    "source_date": "2026-08-04",
+    "reaction_history_on_this_line": "Guide-led prints have moved this stock hard. Print-day close-to-close per Yahoo daily bars: 2025-11-10 +16.7% and 2026-05-13 +22.6%, both on record guides; 2026-02-11 -1.6%; 2026-08-04 +2.2%, then -11.9% the next session despite a beat and a raised 2028 model.",
+    "why_not_priced": "The target is public, so whether Q4 lands at or above $577M is the open question. The 37% drawdown since 2026-10-06 coincides with peer de-rating (COHR, LITE, AAOI, CRDO, ALAB), not with any Tower-specific cut. Sell-side targets average $316 with no October cuts. A market that had priced a Q4 shortfall would show estimate cuts, which do not exist.",
+    "independence": "This shares the bar with the InnoLight finding but rests on a different document (Tower's own 6-K versus a customer's quarterly report). The 24/7 preview (https://247wallst.com/investing/2026/10/27/tower-semiconductors-1-2b-profit-roadmap-faces-its-biggest-test-yet-in-q3-earnings/) also cites $1.3B of signed 2027 SiPho revenue and $290M of customer prepayments.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "InnoLight, a named Tower SiPho production partner, reported on 2026-10-29. Q3 revenue was RMB 27.77B, +24.6% QoQ and +171.8% YoY; gross margin was 46.6% versus 46.4%. Management said major overseas clients' 2027 demand is covered by binding orders. Citi kept Buy and said operating profit was in line; the net-profit miss came from FX and fair-value losses.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://404kresearch.substack.com/p/zhongji-innolight-q3-deep-dive-operating",
+    "source_date": "2026-10-29",
+    "reaction_history_on_this_line": "No direct history of Tower reacting to InnoLight prints. InnoLight's own A-shares fell about 3% on its strong print, the sector selling good numbers (SCMP headline 'fears of slower AI growth trump upbeat earnings').",
+    "why_not_priced": "It landed one day before Tower closed -14.1% on 2026-10-30 alongside the US optics names, so the US tape did not reward it. Tower's Q4 guide and 2027 commentary are the first company-level place this demand can show. This is a proxy: Tower is capacity-limited, so customer demand above Tower's wafer starts adds to 2027 commentary more than to Q4 revenue. Net of the rest of the company: SiPho is roughly 35-40% of revenue, and the rest (RF, power, sensors) is covered by the ST finding.",
+    "independence": "Separate document from Tower's 6-K. Tower names InnoLight as a production partner (https://www.nasdaq.com/press-release/tower-semiconductor-and-innolight-partner-to-develop-multi-generation-silicon). Q3 numbers also on AASTOCKS (https://www.aastocks.com/en/stocks/news/aafn-con/now.1552011/latest-news).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "On 2026-10-13 Semtech expanded its multi-year SiGe agreement with Tower and is investing in dedicated SiGe capacity at Tower's fabs for AI data-center optical-interconnect parts. This is further prepaid or committed demand behind the SiGe ramp.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.semiconductor-today.com/news_items/2026/oct/tower-semtech-141026.shtml",
+    "source_date": "2026-10-14",
+    "reaction_history_on_this_line": "The stock closed +2.6% on 2026-10-13 (216.50 to 222.20) and fell the next day (209.16). Capacity deals have not held as catalysts in this tape.",
+    "why_not_priced": "The deal is public, but its dollar size and its effect on customer advances and the 2027 SiGe ramp will first appear in the Q3 balance sheet and on the call. If priced, the stock would not have fallen 27% since the announcement.",
+    "independence": "Separate from the InnoLight and 6-K findings. The GlobeNewswire original (https://www.globenewswire.com/news-release/2026/10/13/3379474/0/en/tower-semiconductor-and-semtech-expand-sige-partnership-to-scale-power-efficient-analog-connectivity-for-data-centers.html) returned 403.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "Q3 EPS: Q2 gross margin was about 29.9% (Q1 26.8%, Q2 2025 21.5%) and operating margin about 19.6% (Q1 15.6%), with the tax rate already at about 14.7%. Adding $60M of revenue at roughly 50% incremental operating margin gives about $1.08-1.12 adjusted EPS against the $1.05-1.07 consensus. That is a small beat, extending a five-quarter beat streak.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000928876/000117891326003776/exhibit_99-1.htm",
+    "source_date": "2026-08-04",
+    "reaction_history_on_this_line": "Q2 2026: EPS $0.88 versus $0.76 consensus and revenue $460.1M versus $454.7M. The stock closed +2.2% on 2026-08-04 after trading as low as $206.40 intraday, then fell 11.9% on 08-05. This name has sold its last beat.",
+    "why_not_priced": "Consensus EPS has already risen from $0.892 to $1.066 over 90 days (24/7), so most of the leverage is in the bar. What remains is a few cents, on a line this stock has not paid for.",
+    "independence": "Same 6-K as the guidance finding, but a different line (reported-quarter margin versus the Q4 guide). The estimate revision trend is from 24/7 (https://247wallst.com/investing/2026/10/27/tower-semiconductors-1-2b-profit-roadmap-faces-its-biggest-test-yet-in-q3-earnings/).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "A sector shock hit the AI-optics names on 2026-10-29/30. Alphabet reported Q3 free cash flow of -$9.1B against -$3.5B expected, though 2026 capex was unchanged at $195-205B. Intel guided Q4 to $15-16B against $17B expected and fell about 30%. COHR -13%, LITE -10%, AAOI -15%, and TSEM -14.1% to 161.36 with no company news. The print opens on Monday into this momentum.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://247wallst.com/investing/2026/10/30/applied-optoelectronics-plunges-15-coherent-tumbles-13-as-hyperscaler-spending-fears-hit-ai-optics-stocks-lumentum-and-marvell-sink-10/",
+    "source_date": "2026-10-30",
+    "reaction_history_on_this_line": "In the 2026-05-13 print the stock went from a sector-driven dip into +22.6%. On 2026-08-04/05 a broader tech pullback swamped a beat (-11.9% the next day).",
+    "why_not_priced": "The Friday close already holds the shock (spot 161.36). What is left is whether de-risking continues into Monday's open, which the +20.7 put skew says the market expects. This is macro-to-company transmission; no Tower customer has cut. Alphabet kept 2026 capex unchanged and expects 2027 capex to rise significantly, so the demand line itself was not cut.",
+    "independence": "Alphabet capex unchanged and 2027 to rise significantly (https://fourweekmba.com/ai-google-cloud-revenue-doubles-to-30-7b-as-capex-hits-51-4b/), which cuts against reading this as a demand cut. Intel guide: https://qz.com/intel-stock-falls-revenue-forecast-pc-demand-102926.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "CEO Russell Ellwanger sold 104,226 shares at $248.34 (about $25.9M, 16.5% of his holding) on 2026-08-11. Insiders sold about $45.6M over the quarter with no purchases.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.marketbeat.com/instant-alerts/price-tower-semiconductor-nasdaq-tsem-stock-falls-97-should-you-sell-2026-10-30/",
+    "source_date": "2026-10-30",
+    "reaction_history_on_this_line": "None measurable. The sale came a week after the Q2 print, at a price 54% above today's.",
+    "why_not_priced": "Public since August and widely republished, so largely priced. It matters only as context for how the CEO frames the Q4 guide.",
+    "independence": "none",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "Capex is running ahead of operating cash: Q2 net capex was $187M against $177M operating cash flow, with the $920M SiPho/SiGe program about 50% paid. The balance sheet funds it: about $1.48B of cash and deposits against $142M of debt, plus $321M of customer advances. Answer to the financing question: the money buys customer-prepaid capacity, so this is close to zero.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000928876/000117891326003776/exhibit_99-1.htm",
+    "source_date": "2026-08-04",
+    "reaction_history_on_this_line": "No history of this line moving the stock.",
+    "why_not_priced": "Q3 cash flow is unseen. If free cash flow turned clearly negative, it would echo the Alphabet free-cash-flow fear in a nervous tape, but net cash of $1.34B and prepayments make that a minor line.",
+    "independence": "Same 6-K as the guidance and EPS findings; a different line (cash flow).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "The Intel New Mexico capacity agreement is in dispute resolution. Intel stated in February 2026 that it does not intend to perform, and the Q2 6-K still lists the dispute as a risk without quantifying it. Tower invested up to $300M in equipment at that site under the 2023 deal. A settlement or impairment could be disclosed with Q3, now that Intel is under fresh pressure (Q4 guide miss, Fab 28 outage).",
+    "lands_on": "one_off",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/928876/000117891326000404/exhibit_99-1.htm",
+    "source_date": "2026-02-11",
+    "reaction_history_on_this_line": "2026-02-11, when the Intel non-performance was disclosed with Q4 2025 results: -1.6% close-to-close.",
+    "why_not_priced": "The outcome is unknown and either sign is possible: cash compensation, or a write-down of the New Mexico equipment. It is below operating income, and the volumes were rerouted to Fab 7 Japan, so there is no path to the guide. [sizing note removed].",
+    "independence": "TrendForce on the rerouting to Japan (https://www.trendforce.com/news/2026/02/13/news-intel-reportedly-backs-out-of-300mm-wafer-deal-with-tower-production-could-move-to-japan/).",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "Bloomberg (via secondary reports, 2026-10-28) reports Marvell is in advanced all-stock talks to acquire Lumentum. Marvell is a named Tower SiPho partner; Lumentum is a laser/optics peer with its own photonics. Effect on Tower's customer mix is ambiguous.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.newsquawk.com/headlines/marvell-mrvl-is-said-to-be-in-talks-to-buy-lumentum-holdings-lite",
+    "source_date": "2026-10-28",
+    "reaction_history_on_this_line": "None.",
+    "why_not_priced": "Unconfirmed and could be announced the same week. Nothing ties it to Tower's Q4 volumes. Filed for completeness at zero.",
+    "independence": "none",
+    "i": 8
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "STMicroelectronics, a specialty-analog peer and SiPho competitor, guided Q4 2026 revenue to $4.15B (+10.5% QoQ) with gross margin of 39.0%, versus Q3's 37.3%, on 2026-10-29. That points to recovery in the industrial/auto/power lines that make up most of Tower's non-SiPho revenue.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-02",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000932787/000093278726000086/c3419c-q326earningspressre.htm",
+    "source_date": "2026-10-29",
+    "reaction_history_on_this_line": "No direct history of Tower reacting to ST guides.",
+    "why_not_priced": "It was swamped by the 10-30 sector selloff. It is a proxy for the roughly 60% of Tower revenue outside SiPho (the net-of-rest check for the SiPho findings). ST also competes in SiPho with PIC100, which is a mild offset.",
+    "independence": "Separate document from all Tower and InnoLight sources.",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "Lumentum (reported 2026-11-05) and Coherent report after the window; their SiPho/transceiver commentary will reprice the optics group, Tower included.",
+    "resolves_by": "2026-11-05",
+    "source": "https://www.rootdata.com/news/806163",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "Israel's Pillar Two raising Tower's tax rate from 7.5% to 15% as a new EPS headwind (24/7 Wall St preview)",
+    "source": "https://247wallst.com/investing/2026/10/27/tower-semiconductors-1-2b-profit-roadmap-faces-its-biggest-test-yet-in-q3-earnings/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "The baseline's 8-event reaction history (median 2.63%)",
+    "source": "/home/user/claude_research/research/2026/10/2026-10-30/edge-split-3/baselines/TSEM.json",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "TSEM.json",
+    "text": "Intel Fab 28 explosion (Kiryat Gat, 2026-10-14) as an Israeli-operations risk to Tower",
+    "source": "https://www.datacenterdynamics.com/en/news/two-workers-killed-third-injured-in-explosion-at-intels-kiryat-gat-fab-in-israel/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSEM.json",
+    "text": "Company-specific negative news for the 2026-10-08, 10-20, 10-22 and 10-30 drops: none found. MarketBeat, TradingKey and AAII all give no cause beyond profit-taking or the sector.",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSEM.json",
+    "text": "October 2026 analyst target cuts: none found. Only a Wedbush maintenance ($300, Hold) on 10-26 and the Mizuho initiation ($300) on 09-25.",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSEM.json",
+    "text": "Short interest for October settlements: the Nasdaq API returned 503 and the aggregators carry August as the latest.",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSEM.json",
+    "text": "Eoptolink Q3 2026 results: not found.",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSEM.json",
+    "text": "STMicro Q3 call commentary on SiPho specifically: not found.",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSEM.json",
+    "text": "The release hour: no company statement of the hour. Three secondary previews say before the open, and the call is at 10:00 ET as in prior quarters.",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "TSEM.json",
+    "text": "Benzinga article on the 'Intel shock' (403); covered via 24/7 Wall St and Quartz instead.",
+    "i": 20
+   }
+  ]
+ }
+]
