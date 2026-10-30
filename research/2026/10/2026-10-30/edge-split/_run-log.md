@@ -15,3 +15,7 @@
 ## Split panel 4/4 — STARTED
 - Logged at 2026-10-30 18:12 UTC
 - NSSC KOS FOXA LTBR PEG (all bmo 2026-11-02), E-P's sweep and baselines from 05d32b44, edge-panel/hunts: the names stage E-P hunted; claimed 18:12 UTC (late fire)
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-10-30 18:18 UTC
+- 5 of 5 returned by 18:18 UTC (unpriced-searcher, Opus 5.5); guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished of 5)
