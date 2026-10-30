@@ -35,3 +35,7 @@
 ## Split panel 4/4 — done
 - Logged at 2026-10-30 18:24 UTC
 - panel scored 18:23 UTC with all four judges on their pinned models; 0 selected; summary run (2 of 4 shards done at that time); claim-to-done 12 min. Note: shard fired ~18:11 UTC, about an hour after E-P (17:06 UTC), and E-P's panel was already scored at 17:44 UTC, so this was not concurrent with E-P
+
+## Split panel 1/4 — panel done
+- Logged at 2026-10-30 18:25 UTC
+- 4 of 4 judges on pinned models, 5/5 coverage; 0 selected (CIFR 74 long, highest; 3-of-4 consensus yes); claim-to-done ~16 min
