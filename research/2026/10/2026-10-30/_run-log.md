@@ -7,3 +7,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-10-30 13:20 UTC
 - source research/2026/10/2026-10-29/edge-panel; fired late, 09:19 ET; 6 picks (AXTI ATEC CDNA CRI PINS PTCT), analysts launched 09:20 ET
+
+## Stage M — morning exit review — done
+- Logged at 2026-10-30 13:21 UTC
+- 6 names, compiled 09:21 ET: AXTI exit_1000, CRI exit_close, CDNA exit_open, PTCT exit_1000, PINS exit_open, ATEC exit_open. 2026-10-29 had no stage M advice (that fire skipped after the open); 2026-10-28 resolved this fire. Pool: 50 names / 8 days, review_minus_static -0.065 (t -0.18). Analysts: 6 of 6 morning-reaction-analyst, no fallback.
