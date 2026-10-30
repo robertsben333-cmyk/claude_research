@@ -2,11 +2,11 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Names from edge-panel/hunts: the names stage E-P hunted. Shards done: 1 of 4. Names scored by both arms: 5 of 20. Spearman rho on signed panel_pct: 0.5. Same side: 3 of 5.
+Names from edge-panel/hunts: the names stage E-P hunted. Shards done: 2 of 4. Names scored by both arms: 10 of 20. Spearman rho on signed panel_pct: 0.382. Same side: 6 of 10.
 
 Selected by E-P: TSEM. By the split: none. Both: none.
 
-Mean findings per name, E-P / split: 6.9 / 7.7. Mean sources: 18.0 / 19.2. Mean panel_pct on names in both: 33.7 / 32.5.
+Mean findings per name, E-P / split: 6.9 / 7.7. Mean sources: 18.0 / 19.2. Mean panel_pct on names in both: 30.4 / 38.4.
 
 | ticker | shard | session | E-P | split | impact_sum E-P / split | findings E-P / split | sources E-P / split |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -25,18 +25,18 @@ Mean findings per name, E-P / split: 6.9 / 7.7. Mean sources: 18.0 / 19.2. Mean 
 | ETR | 3 | bmo | 27L | · | 0.3 / 0.75 | 6 / 8 | 22 / 16 |
 | TEM | 3 | bmo | 44S | · | -0.5 / 0.85 | 7 / 8 | 22 / 22 |
 | TSEM | 3 | bmo | 85L* | · | 1.4 / 0.9 | 7 / 10 | 22 / 24 |
-| FOXA | 4 | bmo | 38L | · | -0.0 / 1.1 | 8 / 7 | 22 / 15 |
-| KOS | 4 | bmo | 26S | · | -0.5 / 1.0 | 7 / 9 | 16 / 16 |
-| LTBR | 4 | bmo | 15L | · | 1.1 / 0.8 | 6 / 7 | 14 / 16 |
-| NSSC | 4 | bmo | 54S | · | 0.1 / 1.0 | 10 / 8 | 21 / 16 |
-| PEG | 4 | bmo | 3L | · | -0.15 / 0.5 | 4 / 8 | 14 / 22 |
+| FOXA | 4 | bmo | 38L | 71L | -0.0 / 1.1 | 8 / 7 | 22 / 15 |
+| KOS | 4 | bmo | 26S | 39L | -0.5 / 1.0 | 7 / 9 | 16 / 16 |
+| LTBR | 4 | bmo | 15L | 26L | 1.1 / 0.8 | 6 / 7 | 14 / 16 |
+| NSSC | 4 | bmo | 54S | 71L | 0.1 / 1.0 | 10 / 8 | 21 / 16 |
+| PEG | 4 | bmo | 3L | 14L | -0.15 / 0.5 | 4 / 8 | 14 / 22 |
 
 | shard | status | names | judges | claimed (UTC) | minutes |
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | claimed | AXSM, TATT, CIFR, CHH, CNA | n/a | 18:10 | n/a |
 | 2 | done | KRYS, EL, IDXX, MAR, L | opus5, opus55, sonnet55, fable51 | 18:11 | 12 |
 | 3 | claimed | TEM, TSEM, CHKP, AKR, ETR | n/a | 18:11 | n/a |
-| 4 | claimed | NSSC, KOS, FOXA, LTBR, PEG | n/a | 18:12 | n/a |
+| 4 | done | NSSC, KOS, FOXA, LTBR, PEG | opus5, opus55, sonnet55, fable51 | 18:12 | 12 |
 
 E-P's panel was scored 2026-10-30T17:44:07+00:00 with opus5, opus55, sonnet55, fable51.
 
