@@ -19,3 +19,7 @@
 ## Edge hunt (panel) — 2026-10-30 amc + 2026-11-02 bmo — STARTED
 - Logged at 2026-10-30 17:09 UTC
 - Fired 17:06 UTC, session started 17:07 UTC (13:07 ET). Window: 2026-10-30 amc + 2026-11-02 bmo; universe 25 rows, all 2026-11-02 bmo (no amc row cleared the gates). FOX folded into FOXA by hand: share_class.py did not fold the pair (share_classes_folded empty). 24 baselines sealed in edge-panel/baselines before any agent. Plan: one edge-sweep, up to 20 unpriced-searcher (Opus 5.5), then four blind judges; step 3s flatten after searchers, step 6b buy after the note.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-10-30 17:14 UTC
+- Sweep done ~17:13 UTC: 19 confirmed for 2026-11-02 (15 with session bmo company-sourced; NSSC TSEM L PEG date confirmed, hour unsettled), 4 unconfirmed (CIFR RYAAY III ALX), 1 phantom (XFLT, closed-end fund). Hunting 20: the 19 confirmed + CIFR (highest-priority unconfirmed). Shed: RYAAY, III, ALX (unconfirmed, lower hunt_priority), XFLT (phantom). Searchers unpriced-searcher, all bmo, at most 8 per turn.
