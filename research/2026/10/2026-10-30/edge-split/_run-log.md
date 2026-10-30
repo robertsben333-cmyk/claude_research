@@ -27,3 +27,7 @@
 ## Split panel 1/4 — searchers done
 - Logged at 2026-10-30 18:21 UTC
 - 5 of 5 returned by 18:21 UTC (unpriced-searcher agent, Opus 5.5); guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished of 5); CIFR event settled by searcher from company release (2026-11-02 bmo)
+
+## Split panel 3/4 — searchers done
+- Logged at 2026-10-30 18:22 UTC
+- 5 of 5 returned by 18:22 UTC, all search_complete: true; guard moved nothing; no searcher reported its search budget running out (TEM saw tempus.com 429 and CHKP third-party 403/429, both site-side)
