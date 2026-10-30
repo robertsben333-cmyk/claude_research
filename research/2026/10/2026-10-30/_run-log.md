@@ -23,3 +23,11 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-10-30 17:14 UTC
 - Sweep done ~17:13 UTC: 19 confirmed for 2026-11-02 (15 with session bmo company-sourced; NSSC TSEM L PEG date confirmed, hour unsettled), 4 unconfirmed (CIFR RYAAY III ALX), 1 phantom (XFLT, closed-end fund). Hunting 20: the 19 confirmed + CIFR (highest-priority unconfirmed). Shed: RYAAY, III, ALX (unconfirmed, lower hunt_priority), XFLT (phantom). Searchers unpriced-searcher, all bmo, at most 8 per turn.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-10-30 17:37 UTC
+- 20/20 searchers returned by 17:37 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20; no searcher reported a refused search (site-level 403/429s only). All 20 events confirmed by the searchers, incl. CIFR (company release via GlobeNewswire syndication) and the four session-unsettled names settled bmo (NSSC company PR; TSEM 6-K timing + press; L via CNA co-release + 8-K times; PEG preview + 8-K times). mode: execution enabled, amc_open. flatten --submit at 17:38 UTC: 0 positions held, nothing to close; account flat.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-10-30 17:37 UTC
+- 20 packs, four judges, one part. edge_score and V2 grounded written ~17:39 UTC, before the first print. 0 of 20 clear the 2.8 floor.
