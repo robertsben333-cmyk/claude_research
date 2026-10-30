@@ -39,3 +39,7 @@
 ## Split panel 1/4 — panel done
 - Logged at 2026-10-30 18:25 UTC
 - 4 of 4 judges on pinned models, 5/5 coverage; 0 selected (CIFR 74 long, highest; 3-of-4 consensus yes); claim-to-done ~16 min
+
+## Split panel 3/4 — panel done
+- Logged at 2026-10-30 18:25 UTC
+- 4 of 4 judges on pinned models, full coverage; selected CHKP short (86), TSEM long (84); done ~18:26 UTC, claim-to-done ~14 min
