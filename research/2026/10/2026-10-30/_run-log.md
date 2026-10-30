@@ -31,3 +31,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-10-30 17:37 UTC
 - 20 packs, four judges, one part. edge_score and V2 grounded written ~17:39 UTC, before the first print. 0 of 20 clear the 2.8 floor.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-10-30 17:45 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback). Selected (panel_pct >= 80): TSEM L 85 only (3-of-4 rule: same). Next CHH 77, KRYS 62S, NSSC 54S. Searcher: 0 of 20 above 2.8 (CIFR +2.10, CHH +2.00). Stage E edge/ absent. Note written ~17:50 UTC; step 6b next.
