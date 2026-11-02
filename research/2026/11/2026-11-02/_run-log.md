@@ -27,3 +27,7 @@
 ## Edge hunt (panel) — 2026-11-02 amc + 2026-11-03 bmo — STARTED
 - Logged at 2026-11-02 18:15 UTC
 - Stage E-P fire 18:06 UTC (13:06 ET, EST since 11-01; CRON_TZ NY). Universe 199 names (103 amc 11-02, 96 bmo 11-03), baselines sealed for all 199 in edge-panel/baselines before any agent (18:15 UTC). share_classes_folded empty although CRD.A/CRD.B and LBTYA/B/K are on the calendar; edge_score.py's fold applies. Plan: one edge-sweep, up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-11-02 18:19 UTC
+- Sweep finished 18:18 UTC (20 of 199 checked): 16 company-confirmed with session settled (amc 11-02: AEHR ICHR LIFE INSP HNGE MTCH IBTA VRTX AAPL ROKU; bmo 11-03: VITL BETA UPST CHGG DOCN SHOP), 4 unconfirmed (EBS HLF BRCC PLTR), 0 phantoms, 179 unchecked. Cap 20 = all 20 checked hunted; 179 unchecked shed. Sweep wrote a stray 'SHOP-checked' into unchecked_names, removed. Searchers unpriced-searcher, amc first, at most 8 per turn. Wave 1: AEHR ICHR LIFE INSP HNGE MTCH IBTA VRTX.
