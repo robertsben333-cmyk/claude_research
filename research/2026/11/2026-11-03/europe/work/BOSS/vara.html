@@ -1,0 +1,859 @@
+﻿
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title></title>
+        <meta name="description" content="Vara Consensus Estimates">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://vara-services.com/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://vara-services.com/assets/DataTables/datatables.min.css"/>
+
+        <script type='text/javascript' src="https://vara-services.com/assets/js/modernizr.min.js"></script>
+        <script type='text/javascript' src="https://vara-services.com/assets/js/css3-mediaqueries.js"></script>   
+
+        
+      <meta name='robots' content='max-image-preview:large' />
+<script type="text/javascript">
+/* <![CDATA[ */
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"wpemoji":"https:\/\/vara-services.com\/hugo-boss\/wp-includes\/js\/wp-emoji.js?ver=6.5.5","twemoji":"https:\/\/vara-services.com\/hugo-boss\/wp-includes\/js\/twemoji.js?ver=6.5.5"}};
+/**
+ * @output wp-includes/js/wp-emoji-loader.js
+ */
+
+/**
+ * Emoji Settings as exported in PHP via _print_emoji_detection_script().
+ * @typedef WPEmojiSettings
+ * @type {object}
+ * @property {?object} source
+ * @property {?string} source.concatemoji
+ * @property {?string} source.twemoji
+ * @property {?string} source.wpemoji
+ * @property {?boolean} DOMReady
+ * @property {?Function} readyCallback
+ */
+
+/**
+ * Support tests.
+ * @typedef SupportTests
+ * @type {object}
+ * @property {?boolean} flag
+ * @property {?boolean} emoji
+ */
+
+/**
+ * IIFE to detect emoji support and load Twemoji if needed.
+ *
+ * @param {Window} window
+ * @param {Document} document
+ * @param {WPEmojiSettings} settings
+ */
+( function wpEmojiLoader( window, document, settings ) {
+	if ( typeof Promise === 'undefined' ) {
+		return;
+	}
+
+	var sessionStorageKey = 'wpEmojiSettingsSupports';
+	var tests = [ 'flag', 'emoji' ];
+
+	/**
+	 * Checks whether the browser supports offloading to a Worker.
+	 *
+	 * @since 6.3.0
+	 *
+	 * @private
+	 *
+	 * @returns {boolean}
+	 */
+	function supportsWorkerOffloading() {
+		return (
+			typeof Worker !== 'undefined' &&
+			typeof OffscreenCanvas !== 'undefined' &&
+			typeof URL !== 'undefined' &&
+			URL.createObjectURL &&
+			typeof Blob !== 'undefined'
+		);
+	}
+
+	/**
+	 * @typedef SessionSupportTests
+	 * @type {object}
+	 * @property {number} timestamp
+	 * @property {SupportTests} supportTests
+	 */
+
+	/**
+	 * Get support tests from session.
+	 *
+	 * @since 6.3.0
+	 *
+	 * @private
+	 *
+	 * @returns {?SupportTests} Support tests, or null if not set or older than 1 week.
+	 */
+	function getSessionSupportTests() {
+		try {
+			/** @type {SessionSupportTests} */
+			var item = JSON.parse(
+				sessionStorage.getItem( sessionStorageKey )
+			);
+			if (
+				typeof item === 'object' &&
+				typeof item.timestamp === 'number' &&
+				new Date().valueOf() < item.timestamp + 604800 && // Note: Number is a week in seconds.
+				typeof item.supportTests === 'object'
+			) {
+				return item.supportTests;
+			}
+		} catch ( e ) {}
+		return null;
+	}
+
+	/**
+	 * Persist the supports in session storage.
+	 *
+	 * @since 6.3.0
+	 *
+	 * @private
+	 *
+	 * @param {SupportTests} supportTests Support tests.
+	 */
+	function setSessionSupportTests( supportTests ) {
+		try {
+			/** @type {SessionSupportTests} */
+			var item = {
+				supportTests: supportTests,
+				timestamp: new Date().valueOf()
+			};
+
+			sessionStorage.setItem(
+				sessionStorageKey,
+				JSON.stringify( item )
+			);
+		} catch ( e ) {}
+	}
+
+	/**
+	 * Checks if two sets of Emoji characters render the same visually.
+	 *
+	 * This function may be serialized to run in a Worker. Therefore, it cannot refer to variables from the containing
+	 * scope. Everything must be passed by parameters.
+	 *
+	 * @since 4.9.0
+	 *
+	 * @private
+	 *
+	 * @param {CanvasRenderingContext2D} context 2D Context.
+	 * @param {string} set1 Set of Emoji to test.
+	 * @param {string} set2 Set of Emoji to test.
+	 *
+	 * @return {boolean} True if the two sets render the same.
+	 */
+	function emojiSetsRenderIdentically( context, set1, set2 ) {
+		// Cleanup from previous test.
+		context.clearRect( 0, 0, context.canvas.width, context.canvas.height );
+		context.fillText( set1, 0, 0 );
+		var rendered1 = new Uint32Array(
+			context.getImageData(
+				0,
+				0,
+				context.canvas.width,
+				context.canvas.height
+			).data
+		);
+
+		// Cleanup from previous test.
+		context.clearRect( 0, 0, context.canvas.width, context.canvas.height );
+		context.fillText( set2, 0, 0 );
+		var rendered2 = new Uint32Array(
+			context.getImageData(
+				0,
+				0,
+				context.canvas.width,
+				context.canvas.height
+			).data
+		);
+
+		return rendered1.every( function ( rendered2Data, index ) {
+			return rendered2Data === rendered2[ index ];
+		} );
+	}
+
+	/**
+	 * Determines if the browser properly renders Emoji that Twemoji can supplement.
+	 *
+	 * This function may be serialized to run in a Worker. Therefore, it cannot refer to variables from the containing
+	 * scope. Everything must be passed by parameters.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @private
+	 *
+	 * @param {CanvasRenderingContext2D} context 2D Context.
+	 * @param {string} type Whether to test for support of "flag" or "emoji".
+	 * @param {Function} emojiSetsRenderIdentically Reference to emojiSetsRenderIdentically function, needed due to minification.
+	 *
+	 * @return {boolean} True if the browser can render emoji, false if it cannot.
+	 */
+	function browserSupportsEmoji( context, type, emojiSetsRenderIdentically ) {
+		var isIdentical;
+
+		switch ( type ) {
+			case 'flag':
+				/*
+				 * Test for Transgender flag compatibility. Added in Unicode 13.
+				 *
+				 * To test for support, we try to render it, and compare the rendering to how it would look if
+				 * the browser doesn't render it correctly (white flag emoji + transgender symbol).
+				 */
+				isIdentical = emojiSetsRenderIdentically(
+					context,
+					'\uD83C\uDFF3\uFE0F\u200D\u26A7\uFE0F', // as a zero-width joiner sequence
+					'\uD83C\uDFF3\uFE0F\u200B\u26A7\uFE0F' // separated by a zero-width space
+				);
+
+				if ( isIdentical ) {
+					return false;
+				}
+
+				/*
+				 * Test for UN flag compatibility. This is the least supported of the letter locale flags,
+				 * so gives us an easy test for full support.
+				 *
+				 * To test for support, we try to render it, and compare the rendering to how it would look if
+				 * the browser doesn't render it correctly ([U] + [N]).
+				 */
+				isIdentical = emojiSetsRenderIdentically(
+					context,
+					'\uD83C\uDDFA\uD83C\uDDF3', // as the sequence of two code points
+					'\uD83C\uDDFA\u200B\uD83C\uDDF3' // as the two code points separated by a zero-width space
+				);
+
+				if ( isIdentical ) {
+					return false;
+				}
+
+				/*
+				 * Test for English flag compatibility. England is a country in the United Kingdom, it
+				 * does not have a two letter locale code but rather a five letter sub-division code.
+				 *
+				 * To test for support, we try to render it, and compare the rendering to how it would look if
+				 * the browser doesn't render it correctly (black flag emoji + [G] + [B] + [E] + [N] + [G]).
+				 */
+				isIdentical = emojiSetsRenderIdentically(
+					context,
+					// as the flag sequence
+					'\uD83C\uDFF4\uDB40\uDC67\uDB40\uDC62\uDB40\uDC65\uDB40\uDC6E\uDB40\uDC67\uDB40\uDC7F',
+					// with each code point separated by a zero-width space
+					'\uD83C\uDFF4\u200B\uDB40\uDC67\u200B\uDB40\uDC62\u200B\uDB40\uDC65\u200B\uDB40\uDC6E\u200B\uDB40\uDC67\u200B\uDB40\uDC7F'
+				);
+
+				return ! isIdentical;
+			case 'emoji':
+				/*
+				 * Four and twenty blackbirds baked in a pie.
+				 *
+				 * To test for Emoji 15.0 support, try to render a new emoji: Blackbird.
+				 *
+				 * The Blackbird is a ZWJ sequence combining 🐦 Bird and ⬛ large black square.,
+				 *
+				 * 0x1F426 (\uD83D\uDC26) == Bird
+				 * 0x200D == Zero-Width Joiner (ZWJ) that links the code points for the new emoji or
+				 * 0x200B == Zero-Width Space (ZWS) that is rendered for clients not supporting the new emoji.
+				 * 0x2B1B == Large Black Square
+				 *
+				 * When updating this test for future Emoji releases, ensure that individual emoji that make up the
+				 * sequence come from older emoji standards.
+				 */
+				isIdentical = emojiSetsRenderIdentically(
+					context,
+					'\uD83D\uDC26\u200D\u2B1B', // as the zero-width joiner sequence
+					'\uD83D\uDC26\u200B\u2B1B' // separated by a zero-width space
+				);
+
+				return ! isIdentical;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Checks emoji support tests.
+	 *
+	 * This function may be serialized to run in a Worker. Therefore, it cannot refer to variables from the containing
+	 * scope. Everything must be passed by parameters.
+	 *
+	 * @since 6.3.0
+	 *
+	 * @private
+	 *
+	 * @param {string[]} tests Tests.
+	 * @param {Function} browserSupportsEmoji Reference to browserSupportsEmoji function, needed due to minification.
+	 * @param {Function} emojiSetsRenderIdentically Reference to emojiSetsRenderIdentically function, needed due to minification.
+	 *
+	 * @return {SupportTests} Support tests.
+	 */
+	function testEmojiSupports( tests, browserSupportsEmoji, emojiSetsRenderIdentically ) {
+		var canvas;
+		if (
+			typeof WorkerGlobalScope !== 'undefined' &&
+			self instanceof WorkerGlobalScope
+		) {
+			canvas = new OffscreenCanvas( 300, 150 ); // Dimensions are default for HTMLCanvasElement.
+		} else {
+			canvas = document.createElement( 'canvas' );
+		}
+
+		var context = canvas.getContext( '2d', { willReadFrequently: true } );
+
+		/*
+		 * Chrome on OS X added native emoji rendering in M41. Unfortunately,
+		 * it doesn't work when the font is bolder than 500 weight. So, we
+		 * check for bold rendering support to avoid invisible emoji in Chrome.
+		 */
+		context.textBaseline = 'top';
+		context.font = '600 32px Arial';
+
+		var supports = {};
+		tests.forEach( function ( test ) {
+			supports[ test ] = browserSupportsEmoji( context, test, emojiSetsRenderIdentically );
+		} );
+		return supports;
+	}
+
+	/**
+	 * Adds a script to the head of the document.
+	 *
+	 * @ignore
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param {string} src The url where the script is located.
+	 *
+	 * @return {void}
+	 */
+	function addScript( src ) {
+		var script = document.createElement( 'script' );
+		script.src = src;
+		script.defer = true;
+		document.head.appendChild( script );
+	}
+
+	settings.supports = {
+		everything: true,
+		everythingExceptFlag: true
+	};
+
+	// Create a promise for DOMContentLoaded since the worker logic may finish after the event has fired.
+	var domReadyPromise = new Promise( function ( resolve ) {
+		document.addEventListener( 'DOMContentLoaded', resolve, {
+			once: true
+		} );
+	} );
+
+	// Obtain the emoji support from the browser, asynchronously when possible.
+	new Promise( function ( resolve ) {
+		var supportTests = getSessionSupportTests();
+		if ( supportTests ) {
+			resolve( supportTests );
+			return;
+		}
+
+		if ( supportsWorkerOffloading() ) {
+			try {
+				// Note that the functions are being passed as arguments due to minification.
+				var workerScript =
+					'postMessage(' +
+					testEmojiSupports.toString() +
+					'(' +
+					[
+						JSON.stringify( tests ),
+						browserSupportsEmoji.toString(),
+						emojiSetsRenderIdentically.toString()
+					].join( ',' ) +
+					'));';
+				var blob = new Blob( [ workerScript ], {
+					type: 'text/javascript'
+				} );
+				var worker = new Worker( URL.createObjectURL( blob ), { name: 'wpTestEmojiSupports' } );
+				worker.onmessage = function ( event ) {
+					supportTests = event.data;
+					setSessionSupportTests( supportTests );
+					worker.terminate();
+					resolve( supportTests );
+				};
+				return;
+			} catch ( e ) {}
+		}
+
+		supportTests = testEmojiSupports( tests, browserSupportsEmoji, emojiSetsRenderIdentically );
+		setSessionSupportTests( supportTests );
+		resolve( supportTests );
+	} )
+		// Once the browser emoji support has been obtained from the session, finalize the settings.
+		.then( function ( supportTests ) {
+			/*
+			 * Tests the browser support for flag emojis and other emojis, and adjusts the
+			 * support settings accordingly.
+			 */
+			for ( var test in supportTests ) {
+				settings.supports[ test ] = supportTests[ test ];
+
+				settings.supports.everything =
+					settings.supports.everything && settings.supports[ test ];
+
+				if ( 'flag' !== test ) {
+					settings.supports.everythingExceptFlag =
+						settings.supports.everythingExceptFlag &&
+						settings.supports[ test ];
+				}
+			}
+
+			settings.supports.everythingExceptFlag =
+				settings.supports.everythingExceptFlag &&
+				! settings.supports.flag;
+
+			// Sets DOMReady to false and assigns a ready function to settings.
+			settings.DOMReady = false;
+			settings.readyCallback = function () {
+				settings.DOMReady = true;
+			};
+		} )
+		.then( function () {
+			return domReadyPromise;
+		} )
+		.then( function () {
+			// When the browser can not render everything we need to load a polyfill.
+			if ( ! settings.supports.everything ) {
+				settings.readyCallback();
+
+				var src = settings.source || {};
+
+				if ( src.concatemoji ) {
+					addScript( src.concatemoji );
+				} else if ( src.wpemoji && src.twemoji ) {
+					addScript( src.twemoji );
+					addScript( src.wpemoji );
+				}
+			}
+		} );
+} )( window, document, window._wpemojiSettings );
+
+/* ]]> */
+</script>
+<style id='wp-emoji-styles-inline-css' type='text/css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel='stylesheet' id='wp-block-library-css' href='https://vara-services.com/hugo-boss/wp-includes/css/dist/block-library/style.css?ver=6.5.5' type='text/css' media='all' />
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/**
+ * These rules are needed for backwards compatibility.
+ * They should match the button element rules in the base theme.json file.
+ */
+.wp-block-button__link {
+	color: #ffffff;
+	background-color: #32373c;
+	border-radius: 9999px; /* 100% causes an oval, but any explicit but really high value retains the pill shape. */
+
+	/* This needs a low specificity so it won't override the rules from the button element if defined in theme.json. */
+	box-shadow: none;
+	text-decoration: none;
+
+	/* The extra 2px are added to size solids the same as the outline versions.*/
+	padding: calc(0.667em + 2px) calc(1.333em + 2px);
+
+	font-size: 1.125em;
+}
+
+.wp-block-file__button {
+	background: #32373c;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel='stylesheet' id='bootstrapcss-css' href='https://vara-services.com/assets/css/bootstrap.min.css?ver=6.5.5' type='text/css' media='all' />
+<link rel='stylesheet' id='theme-slug-stylesheet-css' href='https://vara-services.com/hugo-boss/wp-content/themes/varaconsensus-hugobossiframe/style.css?ver=0.1' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css' href='https://vara-services.com/hugo-boss/wp-includes/css/dashicons.css?ver=6.5.5' type='text/css' media='all' />
+<link rel='stylesheet' id='admin-bar-css' href='https://vara-services.com/hugo-boss/wp-includes/css/admin-bar.css?ver=6.5.5' type='text/css' media='all' />
+<style id='admin-bar-inline-css' type='text/css'>
+#wp-admin-bar-my-sites-search { height: 2.2em; }
+      #wp-admin-bar-my-sites-search.hide-if-no-js { display: none; }
+      #wp-admin-bar-my-sites-search label[for="my-sites-search-text"] { clip: rect(1px, 1px, 1px, 1px); position: absolute !important; height: 1px; width: 1px; overflow: hidden; }
+      #wp-admin-bar-my-sites-search .ab-item { height: 34px; }
+      #wp-admin-bar-my-sites-search input { background-color: transparent; border: 1px solid rgba(255,255,255,0.6); color: rgba(255,255,255,0.7); padding: 2px 5px; width: 95%; width: calc( 100% - 14px); height: 1.7em; }
+      #wp-admin-bar-my-sites-search input::-webkit-input-placeholder { color: rgba(255,255,255,0.4); }
+      #wp-admin-bar-my-sites-search input::-moz-placeholder { color: rgba(255,255,255,0.4); }
+      #wp-admin-bar-my-sites-search input:-ms-input-placeholder { color: rgba(255,255,255,0.4); }
+      #wp-admin-bar-my-sites-search input::placeholder { color: rgba(255,255,255,0.4); }
+</style>
+<script type="text/javascript" src="https://vara-services.com/hugo-boss/wp-includes/js/jquery/jquery.js?ver=3.7.1" id="jquery-core-js"></script>
+<script type="text/javascript" id="jquery-core-js-after">
+/* <![CDATA[ */
+jQuery(document).ready( function($) {
+      $( '#wp-admin-bar-my-sites-search.hide-if-no-js' ).show();
+      $( '#wp-admin-bar-my-sites-search input' ).on( 'input', function( ) {
+        var searchValRegex = new RegExp( $(this).val(), 'i');
+        $( '#wp-admin-bar-my-sites-list > li.menupop' ).hide().filter( function() {
+          return searchValRegex.test( $(this).find( '> a' ).text() );
+        }).show();
+    	});
+    });
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://vara-services.com/hugo-boss/wp-includes/js/jquery/jquery-migrate.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://vara-services.com/hugo-boss/wp-json/" /><link rel="alternate" type="application/json" href="https://vara-services.com/hugo-boss/wp-json/wp/v2/pages/5" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://vara-services.com/hugo-boss/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.5.5" />
+<link rel="canonical" href="https://vara-services.com/hugo-boss/" />
+<link rel='shortlink' href='https://vara-services.com/hugo-boss/' />
+<link rel="alternate" type="application/json+oembed" href="https://vara-services.com/hugo-boss/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fvara-services.com%2Fhugo-boss%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://vara-services.com/hugo-boss/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fvara-services.com%2Fhugo-boss%2F&#038;format=xml" />
+       
+    </head>
+  <body>
+ 
+
+ <div class="container-fluid header">
+      <div class="table-title">
+        <span>
+        Detailed Consensus        </span>
+      </div>
+      <div class="update">
+        <span class="text-muted">Last Update: 2026-10-05</span>
+      </div>
+      </div><!--container-fluid--> 
+ 
+<div class="container-fluid">
+  <div class="col-12">
+    <select class="form-control" id="mySelect">
+      <option value="">Show all</option>
+      <option value="Number of Estimates">Number of Estimates</option><option value="Highest">Highest</option><option value="Consensus">Consensus</option><option value="Lowest">Lowest</option>    </select>
+    <br/><table id='consensus_main' class='table'><thead><tr><th class="first-col second-head">KPI</th><th class="first-col second-head" data-priority="0">in EUR million</th><th class="second-head" data-priority="6">Q3 2025</th><th class="second-head" data-priority="5">FY 2025</th><th class="second-head" data-priority="4">Q3 2026 E</th><th class="second-head" data-priority="3">FY 2026 E</th><th class="second-head" data-priority="2">FY 2027 E</th><th class="second-head" data-priority="1">FY 2028 E</th></tr></thead><tbody><tr><td class='first-col odd_overwrite '>Net sales</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>9</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Net sales</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>938</td><td class='even_overwrite '>3,933</td><td class='even_overwrite '>4,040</td><td class='even_overwrite '>4,195</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Net sales</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>989</td><td class='odd_overwrite '>4,270</td><td class='odd_overwrite '>919</td><td class='odd_overwrite '>3,890</td><td class='odd_overwrite '>3,966</td><td class='odd_overwrite '>4,097</td></tr><tr><td class='first-col even_overwrite '>Net sales</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>894</td><td class='even_overwrite '>3,852</td><td class='even_overwrite '>3,909</td><td class='even_overwrite '>3,994</td></tr><tr><td class='first-col odd_overwrite '>Gross profit </td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>8</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Gross profit </td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>583</td><td class='even_overwrite '>2,475</td><td class='even_overwrite '>2,560</td><td class='even_overwrite '>2,671</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Gross profit </td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>605</td><td class='odd_overwrite '>2,626</td><td class='odd_overwrite '>572</td><td class='odd_overwrite '>2,447</td><td class='odd_overwrite '>2,500</td><td class='odd_overwrite '>2,593</td></tr><tr><td class='first-col even_overwrite '>Gross profit </td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>559</td><td class='even_overwrite '>2,421</td><td class='even_overwrite '>2,456</td><td class='even_overwrite '>2,520</td></tr><tr><td class='first-col odd_overwrite td-italic'>Gross profit in % of sales</td><td class='first-col odd_overwrite td-italic'>Number of Estimates</td><td class='odd_overwrite td-italic'></td><td class='odd_overwrite td-italic'></td><td class='odd_overwrite td-italic'>8</td><td class='odd_overwrite td-italic'>10</td><td class='odd_overwrite td-italic'>10</td><td class='odd_overwrite td-italic'>10</td></tr><tr><td class='first-col even_overwrite td-italic'>Gross profit in % of sales</td><td class='first-col even_overwrite td-italic'>Highest</td><td class='even_overwrite td-italic'></td><td class='even_overwrite td-italic'></td><td class='even_overwrite td-italic'>62.6</td><td class='even_overwrite td-italic'>63.1</td><td class='even_overwrite td-italic'>63.4</td><td class='even_overwrite td-italic'>63.7</td></tr><tr class='highlight'><td class='first-col odd_overwrite td-italic'>Gross profit in % of sales</td><td class='first-col odd_overwrite td-italic'>Consensus</td><td class='odd_overwrite td-italic'>61.2</td><td class='odd_overwrite td-italic'>61.5</td><td class='odd_overwrite td-italic'>62.3</td><td class='odd_overwrite td-italic'>62.9</td><td class='odd_overwrite td-italic'>63.0</td><td class='odd_overwrite td-italic'>63.3</td></tr><tr><td class='first-col even_overwrite td-italic'>Gross profit in % of sales</td><td class='first-col even_overwrite td-italic'>Lowest</td><td class='even_overwrite td-italic'></td><td class='even_overwrite td-italic'></td><td class='even_overwrite td-italic'>61.6</td><td class='even_overwrite td-italic'>62.6</td><td class='even_overwrite td-italic'>62.0</td><td class='even_overwrite td-italic'>62.3</td></tr><tr><td class='first-col odd_overwrite '>EBIT reported</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>9</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>EBIT reported</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>93</td><td class='even_overwrite '>314</td><td class='even_overwrite '>372</td><td class='even_overwrite '>421</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>EBIT reported</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>95</td><td class='odd_overwrite '>391</td><td class='odd_overwrite '>81</td><td class='odd_overwrite '>306</td><td class='odd_overwrite '>343</td><td class='odd_overwrite '>378</td></tr><tr><td class='first-col even_overwrite '>EBIT reported</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>75</td><td class='even_overwrite '>288</td><td class='even_overwrite '>318</td><td class='even_overwrite '>350</td></tr><tr><td class='first-col odd_overwrite td-italic'>EBIT reported in % of sales</td><td class='first-col odd_overwrite td-italic'>Number of Estimates</td><td class='odd_overwrite td-italic'></td><td class='odd_overwrite td-italic'></td><td class='odd_overwrite td-italic'>9</td><td class='odd_overwrite td-italic'>10</td><td class='odd_overwrite td-italic'>10</td><td class='odd_overwrite td-italic'>10</td></tr><tr><td class='first-col even_overwrite td-italic'>EBIT reported in % of sales</td><td class='first-col even_overwrite td-italic'>Highest</td><td class='even_overwrite td-italic'></td><td class='even_overwrite td-italic'></td><td class='even_overwrite td-italic'>9.9</td><td class='even_overwrite td-italic'>8.1</td><td class='even_overwrite td-italic'>9.2</td><td class='even_overwrite td-italic'>10.1</td></tr><tr class='highlight'><td class='first-col odd_overwrite td-italic'>EBIT reported in % of sales</td><td class='first-col odd_overwrite td-italic'>Consensus</td><td class='odd_overwrite td-italic'>9.6</td><td class='odd_overwrite td-italic'>9.2</td><td class='odd_overwrite td-italic'>8.8</td><td class='odd_overwrite td-italic'>7.9</td><td class='odd_overwrite td-italic'>8.6</td><td class='odd_overwrite td-italic'>9.2</td></tr><tr><td class='first-col even_overwrite td-italic'>EBIT reported in % of sales</td><td class='first-col even_overwrite td-italic'>Lowest</td><td class='even_overwrite td-italic'></td><td class='even_overwrite td-italic'></td><td class='even_overwrite td-italic'>8.1</td><td class='even_overwrite td-italic'>7.4</td><td class='even_overwrite td-italic'>8.0</td><td class='even_overwrite td-italic'>8.5</td></tr><tr><td class='first-col odd_overwrite '>Financial result</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>7</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Financial result</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>-10</td><td class='even_overwrite '>-41</td><td class='even_overwrite '>-41</td><td class='even_overwrite '>-40</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Financial result</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>-12</td><td class='odd_overwrite '>-46</td><td class='odd_overwrite '>-12</td><td class='odd_overwrite '>-47</td><td class='odd_overwrite '>-46</td><td class='odd_overwrite '>-46</td></tr><tr><td class='first-col even_overwrite '>Financial result</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>-15</td><td class='even_overwrite '>-59</td><td class='even_overwrite '>-60</td><td class='even_overwrite '>-62</td></tr><tr><td class='first-col odd_overwrite '>Earnings before taxes</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>7</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Earnings before taxes</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>81</td><td class='even_overwrite '>270</td><td class='even_overwrite '>327</td><td class='even_overwrite '>376</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Earnings before taxes</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>83</td><td class='odd_overwrite '>345</td><td class='odd_overwrite '>70</td><td class='odd_overwrite '>259</td><td class='odd_overwrite '>296</td><td class='odd_overwrite '>332</td></tr><tr><td class='first-col even_overwrite '>Earnings before taxes</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>60</td><td class='even_overwrite '>241</td><td class='even_overwrite '>258</td><td class='even_overwrite '>288</td></tr><tr><td class='first-col odd_overwrite '>Income taxes</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>7</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Income taxes</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>-16</td><td class='even_overwrite '>-64</td><td class='even_overwrite '>-70</td><td class='even_overwrite '>-78</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Income taxes</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>-23</td><td class='odd_overwrite '>-86</td><td class='odd_overwrite '>-19</td><td class='odd_overwrite '>-70</td><td class='odd_overwrite '>-79</td><td class='odd_overwrite '>-88</td></tr><tr><td class='first-col even_overwrite '>Income taxes</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>-22</td><td class='even_overwrite '>-76</td><td class='even_overwrite '>-82</td><td class='even_overwrite '>-94</td></tr><tr><td class='first-col odd_overwrite '>Net income</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>7</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Net income</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>59</td><td class='even_overwrite '>200</td><td class='even_overwrite '>245</td><td class='even_overwrite '>282</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Net income</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>60</td><td class='odd_overwrite '>259</td><td class='odd_overwrite '>51</td><td class='odd_overwrite '>189</td><td class='odd_overwrite '>218</td><td class='odd_overwrite '>244</td></tr><tr><td class='first-col even_overwrite '>Net income</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>44</td><td class='even_overwrite '>176</td><td class='even_overwrite '>188</td><td class='even_overwrite '>210</td></tr><tr><td class='first-col odd_overwrite '>Net income attributable to shareholders</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>8</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Net income attributable to shareholders</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>58</td><td class='even_overwrite '>191</td><td class='even_overwrite '>235</td><td class='even_overwrite '>272</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Net income attributable to shareholders</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>59</td><td class='odd_overwrite '>249</td><td class='odd_overwrite '>48</td><td class='odd_overwrite '>181</td><td class='odd_overwrite '>209</td><td class='odd_overwrite '>235</td></tr><tr><td class='first-col even_overwrite '>Net income attributable to shareholders</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>43</td><td class='even_overwrite '>168</td><td class='even_overwrite '>180</td><td class='even_overwrite '>201</td></tr><tr><td class='first-col odd_overwrite '>Earnings per share (in Euro)</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>8</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Earnings per share (in Euro)</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>0.84</td><td class='even_overwrite '>2.77</td><td class='even_overwrite '>3.40</td><td class='even_overwrite '>3.93</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Earnings per share (in Euro)</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>0.85</td><td class='odd_overwrite '>3.61</td><td class='odd_overwrite '>0.70</td><td class='odd_overwrite '>2.65</td><td class='odd_overwrite '>3.09</td><td class='odd_overwrite '>3.51</td></tr><tr><td class='first-col even_overwrite '>Earnings per share (in Euro)</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>0.62</td><td class='even_overwrite '>2.49</td><td class='even_overwrite '>2.83</td><td class='even_overwrite '>3.15</td></tr><tr><td class='first-col odd_overwrite '>Dividend per share (in Euro)</td><td class='first-col odd_overwrite '>Number of Estimates</td><td class='odd_overwrite '></td><td class='odd_overwrite '></td><td class='odd_overwrite '>-</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td><td class='odd_overwrite '>10</td></tr><tr><td class='first-col even_overwrite '>Dividend per share (in Euro)</td><td class='first-col even_overwrite '>Highest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>-</td><td class='even_overwrite '>0.05</td><td class='even_overwrite '>1.61</td><td class='even_overwrite '>1.65</td></tr><tr class='highlight'><td class='first-col odd_overwrite '>Dividend per share (in Euro)</td><td class='first-col odd_overwrite '>Consensus</td><td class='odd_overwrite '>-</td><td class='odd_overwrite '>0.04</td><td class='odd_overwrite '>-</td><td class='odd_overwrite '>0.04</td><td class='odd_overwrite '>0.68</td><td class='odd_overwrite '>0.80</td></tr><tr><td class='first-col even_overwrite '>Dividend per share (in Euro)</td><td class='first-col even_overwrite '>Lowest</td><td class='even_overwrite '></td><td class='even_overwrite '></td><td class='even_overwrite '>-</td><td class='even_overwrite '>0.03</td><td class='even_overwrite '>0.03</td><td class='even_overwrite '>0.04</td></tr></tbody></table>  </div>  
+</div>
+
+
+<!--Note-->
+<div class="container-fluid">
+  <div class="col-12">
+    <span class="text-muted note">
+      <br/>
+      <strong>Provided by</strong>
+      <br>
+      <br>
+      <span><img src="https://files-vara-services.fra1.cdn.digitaloceanspaces.com/varamain/logo/vara-ct-blue-sm.png" alt="Vara Research"></span>
+      <br/><br/>
+        </span>
+  </div>
+</div>
+
+<!--Main DataTable-->
+<script>
+var colspan = 7;
+var eheadlines = [];
+var nf_dec = ".";
+var nf_th = ",";
+var pdf_title = "Detailed Consensus";
+var pdf_disclaimer = "This document has been issued by Vara Research GmbH for information purposes only and is not intended to constitute investment advice. It is based on estimates and forecasts of various analysts regarding revenues, earnings and business developments of the relevant company. The company did not participate in the compilation of the estimates and it does not endorse them. Such estimates and forecasts cannot be independently verified by reason of the subjective character. Vara Research GmbH gives no guarantee, representation or warranty and is not responsible or liable as to its accuracy and completeness.";
+var pdf_date = "Last Update: 2026-10-05";
+// var pdf_notes = "";
+var pdf_analysts = ": ";
+jQuery(document).ready(function($) {
+  var buttonCommon = {
+          exportOptions: {
+              format: {
+                  body: function ( data, row, column, node ) {
+                      data_edit = data.replace( nf_th, '' );
+                      data_edit = data_edit.replace( nf_dec, '.' );
+                      return column > 1 ?
+                          data_edit :                      
+                          data;
+                  }
+              }
+          }
+      };
+  $.extend( 
+    $.fn.dataTable.defaults, {
+      "paging": false,
+        "ordering": false,
+        "responsive": true,
+        "LengthChange": false,
+        "info": false,
+        "autoWidth": false,
+        "bFilter": true,
+        rowGroup: {
+            dataSrc: 0
+        },
+        fixedHeader: {
+              headerOffset: 0
+          },
+        "columnDefs": [
+          {
+              "targets": 1,
+              "visible": true,
+              "searchable": true
+          },
+          {
+              "targets": 0,
+              "visible": false,
+              "searchable": true
+          }
+      ],
+      dom: 'Bfrtip',
+      "language":{
+        "decimal": nf_dec,
+        "thousands": nf_th
+      }
+    } 
+  );
+  $.fn.dataTable.ext.buttons.consensusexcel = {
+    className: 'excel-icon-lg',
+    action: function ( e, dt, node, config ) {
+        createConsensusExcel(dt);
+    }
+  };
+  $.fn.dataTable.ext.buttons.consensuspdf = {
+    className: 'pdf-icon-lg',
+    action: function ( e, dt, node, config ) {
+        createConsensusPdf(dt);
+    }
+  };
+
+  var table = $('#consensus_main').DataTable({
+   drawCallback: function ( settings ) {
+				  var api = this.api();
+				  
+				  var tableRows = api.rows( {page:'current'} ).data();
+				  var lastGroup = null;
+				  var lastSub = null;   
+				  var mySubGroup = null;
+          var lastKpi = null;
+          var rowCount = 0;
+				  $(tableRows).each( function () {
+            for(var i = 0; i < eheadlines.length; i++){
+              if(this[0] === eheadlines[i]['ref_char'] && this[0] !== lastKpi){
+                foundHdl = true;
+               // api.row.add('<tr class="new-group"><td colspan="' + colspan + '">' + eheadlines[i]['setting_char'] + '</td></tr>').draw();
+               //table.row.add([1, 1, 1, 1 ,1 ,1]).draw();
+               //console.log(this[0],lastKpi);
+                rowCount++;
+              }
+            }
+            lastKpi = this[0];
+            rowCount++;
+
+					//groupName = this.cells[0].innerHTML;
+					//mySubGroup = this.cells[1].innerHTML;
+					//if ( lastGroup !== groupName ) {
+					//	$(this ).before('<tr class="group"><td colspan="' + colspan + '">'+ groupName +'</td></tr>');
+					//	lastGroup = groupName;
+					// }
+					//if (lastSub !== mySubGroup) {
+					//   $(this).before('<tr class="subgroup"><td colspan="' + colspan + '">'+ mySubGroup +'</td></tr>');          
+					//	lastSub = mySubGroup;  
+					//}
+				} );
+			}, 
+    buttons: [ 
+    //      $.extend( true, {}, buttonCommon, {
+    //              extend: 'excel',
+    //              text:      '<div class="excel-icon-lg"></div>',
+    //              titleAttr: 'Excel',
+    //          className: 'btn',
+    //          title: 'Detailed Consensus'
+    //        } ),
+          
+          {
+              extend: 'consensusexcel',
+              title: 'Excel',
+              text:   '<div class="excel-icon-lg"></div>',
+          },           
+          {
+              extend: 'consensuspdf',
+              title: 'PDF',
+              text:   '<div class="pdf-icon-lg"></div>',
+          },           
+        {
+            extend: 'print',
+            text:   '<div class="print-icon-lg"></div>',
+            titleAttr: 'Print',
+            className: 'btn'
+        }
+            ]
+  });
+
+  //Add headlines
+  for(var i = 0; i < eheadlines.length; i++){
+    var addCols = [];
+    addCols.push(eheadlines[i]['setting_char']);
+    for(var a = 0; a < colspan; a++){
+      addCols.push("");
+    }
+    var row = table.row.add(addCols);
+    var insertedRow = table.row(row.index()).data();
+    var rowNode = row.node();
+    var cells = rowNode.cells;
+    
+    var tableData = table.data();
+    for(var d = 0; d < tableData.length; d++){
+      if(eheadlines[i]['ref_char'] === tableData[d][0]){ //found target position
+        for(var l = tableData.length -1; l > d; l--){ //shift kpi headline one row ahead for each loop until target position reached
+          var tempRow = table.row(l-1).data();
+          table.row(l).data(tempRow);
+          table.row(l-1).data(insertedRow);
+          if(hasClass(table.row(l-1).node(),'highlight')){
+            removeClass(table.row(l-1).node(),'highlight');
+            addClass(table.row(l).node(),'highlight');
+          }
+          //table.row(d).node().innerHTML = '';
+        }
+        $(table.row(d).node()).css('display','none');
+        $(table.cell(tableData.length -1,0).node()).addClass('first-col');  
+        $(table.cell(tableData.length -1,1).node()).addClass('first-col');  
+        break;
+      }
+    }
+    //table.row(table.data().length - 1).remove();
+    table.page(table.page()).draw(false);
+  }
+
+  //Format headlines
+  
+  formatHeadlines();
+  function formatHeadlines(){
+    var cellClass = '';
+    var rowCount = 0;
+    var htmlTable = document.getElementById("consensus_main");
+    for (var i = 1; i < htmlTable.rows.length; i++) {
+      var row = htmlTable.rows[i];
+      if(!row.cells[1]){
+        rowCount = 1;
+      }else if(row.cells[1]){
+        cellClass = (rowCount % 2 == 1 ? 'odd_overwrite' : 'even_overwrite');
+        for(var c = 0; c < row.cells.length; c++){
+          removeClass(row.cells[c],'odd_overwrite');
+          removeClass(row.cells[c],'even_overwrite');
+          addClass(row.cells[c],cellClass);
+        }
+        rowCount++;
+      }
+      
+      if(htmlTable.rows[i+1] && htmlTable.rows[i+1].style.display === 'none'){
+        var cell = row.cells[0];
+        //cell.innerHTML = '<div>&nbsp;</div>' + cell.innerHTML;
+        //cell.style.borderCollapse = 'separate';
+        //cell.style.borderLeft = '3px solid #373737';
+        cell.style.color = '#373737';
+        //cell.style.textDecoration = 'underline';
+        cell.style.fontSize = '1.1em';
+        cell.style.paddingTop = '45px';
+      }
+    }
+  }
+  
+	function addClass(element,name) {
+    var arr;
+    arr = element.className.split(" ");
+    if (arr.indexOf(name) == -1) {
+        element.className += " " + name;
+    }
+	}
+
+	function removeClass(element,name) {
+    element.className = element.className.replace( new RegExp("\\b" + name + "\\b" , "g"), "");
+	}
+
+  function hasClass(element, name) {
+    return (' ' + element.className + ' ').indexOf(' ' + name + ' ') > -1;
+  }
+
+  $("#mySelect").change(function(){         
+    table
+        .columns(1)
+        .search(this.value)
+        .draw();
+    //overwrite background color
+    var oddNodes = document.getElementsByClassName("odd_overwrite");
+    var evenNodes = document.getElementsByClassName("even_overwrite");
+    if(this.value){
+      for(var i = 0; i < oddNodes.length; i++){
+        oddNodes[i].style.backgroundColor = "#fff";
+        oddNodes[i].style.fontWeight = "normal";
+      }
+      for(var i = 0; i < evenNodes.length; i++){
+        evenNodes[i].style.backgroundColor = "#fff";
+        evenNodes[i].style.fontWeight = "normal";
+      }
+    }else{
+      for(var i = 0; i < oddNodes.length; i++){
+          oddNodes[i].removeAttribute("style");
+      }
+      for(var i = 0; i < evenNodes.length; i++){
+          evenNodes[i].removeAttribute("style");
+      }
+    }
+    formatHeadlines();
+  });
+});
+
+</script>
+
+<!--Consensus PDF Maker-->
+<script type="text/javascript" src="https://vara-services.com/hugo-boss/wp-content/themes/varaconsensus-hugobossiframe/js/consensus-pdf.js"></script> 
+
+<!--Consensus Excel  Maker-->
+<script type="text/javascript" src="https://vara-services.com/hugo-boss/wp-content/themes/varaconsensus-hugobossiframe/js/consensus-excel.js"></script> 
+<script type="text/javascript" src="https://vara-services.com/assets/js/xlsx-populate.js"></script> 
+
+<div class="container-fluid disclaimer">
+      <span class="text-muted"><strong>Disclaimer</strong></span>
+      <p class="text-muted">
+        This document has been issued by Vara Research GmbH for information purposes only and is not intended to constitute investment advice. It is based on estimates and forecasts of various analysts regarding revenues, earnings and business developments of the relevant company. The company did not participate in the compilation of the estimates and it does not endorse them. Such estimates and forecasts cannot be independently verified by reason of the subjective character. Vara Research GmbH gives no guarantee, representation or warranty and is not responsible or liable as to its accuracy and completeness.      </p>
+</div>
+    <style id='core-block-supports-inline-css' type='text/css'>
+/**
+ * Core styles: block-supports
+ */
+
+</style>
+<script type="text/javascript" src="https://vara-services.com/assets/js/bootstrap.bundle.min.js?ver=4.0" id="bootstrapjs-js"></script>
+
+   <!--Datatables-->
+    <script type="text/javascript" src="https://vara-services.com/assets/DataTables/datatables.min.js"></script>
+
+    <!--Consensus PDF Maker-->
+    <script type="text/javascript" src="https://vara-services.com/hugo-boss/wp-content/themes/varaconsensus-hugobossiframe/js/consensus-pdf.js"></script> 
+
+  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5443ef2797b1e0d',t:'MTc5MzYzNDExMg=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5443ef2797b1e0d',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
+<script type="text/javascript">
+
+function toggleMenu(){
+  if(document.getElementsByClassName("nav")[0].classList.contains('nav-collapsed')){
+    document.getElementsByClassName("nav")[0].classList.remove("nav-collapsed");
+  }else if(window.innerWidth < 992){
+    document.getElementsByClassName("nav")[0].classList.add("nav-collapsed");
+  }
+}
+
+
+</script>
