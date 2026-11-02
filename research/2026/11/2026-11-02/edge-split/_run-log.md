@@ -27,3 +27,7 @@
 ## Split panel 2/4 — searchers done
 - Logged at 2026-11-02 18:28 UTC
 - 5 of 5 returned by 18:27 UTC; guard moved nothing; no searcher reported its search budget running out (site-side 403/429s only); 0 of 5 clear the 2.8 floor
+
+## Split panel 1/4 — panel STARTED
+- Logged at 2026-11-02 18:28 UTC
+- 5 packs, four judges (opus5, opus55, sonnet55, fable51) in one message at 18:28Z
