@@ -35,3 +35,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-11-02 18:29 UTC
 - 5 of 5 returned by 18:29Z; all search_complete true, no searcher reported its search budget running out (third-party 429/403/503 only); HLF date confirmed by company release (2026-11-02 amc)
+
+## Split panel 4/4 — searchers done
+- Logged at 2026-11-02 18:29 UTC
+- 5 of 5 returned by 18:29Z; guard moved nothing; no searcher reported its search budget running out (INSP saw 403/503 site blocks only); BRCC event confirmed by company PR 2026-10-13 (amc 11-02)
