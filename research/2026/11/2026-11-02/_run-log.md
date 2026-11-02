@@ -39,3 +39,7 @@
 ## Edge hunt (panel) — waves 2-3
 - Logged at 2026-11-02 18:33 UTC
 - All 20 names launched by 18:34 UTC (relaunched as slots freed, 8 concurrent). Returned and finished so far: AEHR HNGE ICHR INSP LIFE MTCH VRTX ROKU IBTA(relaunch) AAPL EBS HLF. EBS and HLF confirmed amc 11-02 by company notices the sweep missed. Out: BRCC PLTR VITL BETA UPST CHGG DOCN SHOP.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-02 18:38 UTC
+- 20/20 searchers returned by 18:38 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20 (IBTA's first hunt hit the per-turn WebSearch budget, was retried and the relaunch finished). Sweep-unconfirmed EBS HLF BRCC PLTR all confirmed amc 11-02 by company releases. mode: execution enabled, amc_open. flatten --submit at 18:38 UTC: 1 position held (TSEM 37, -4.41% unrealised), closed; account flat.
