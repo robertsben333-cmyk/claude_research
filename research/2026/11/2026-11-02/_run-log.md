@@ -35,3 +35,7 @@
 ## Edge hunt (panel) — step 3u
 - Logged at 2026-11-02 18:27 UTC
 - IBTA searcher hit the per-turn WebSearch budget (~19:00 UTC per its hand-back); hunt_status check --apply marked it UNFINISHED, retry moved it to hunts/_unfinished/, fresh searcher relaunched in a later turn. All other returned hunts finished (AEHR HNGE ICHR INSP LIFE MTCH VRTX).
+
+## Edge hunt (panel) — waves 2-3
+- Logged at 2026-11-02 18:33 UTC
+- All 20 names launched by 18:34 UTC (relaunched as slots freed, 8 concurrent). Returned and finished so far: AEHR HNGE ICHR INSP LIFE MTCH VRTX ROKU IBTA(relaunch) AAPL EBS HLF. EBS and HLF confirmed amc 11-02 by company notices the sweep missed. Out: BRCC PLTR VITL BETA UPST CHGG DOCN SHOP.
