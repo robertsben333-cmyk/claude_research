@@ -31,3 +31,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-11-02 18:19 UTC
 - Sweep finished 18:18 UTC (20 of 199 checked): 16 company-confirmed with session settled (amc 11-02: AEHR ICHR LIFE INSP HNGE MTCH IBTA VRTX AAPL ROKU; bmo 11-03: VITL BETA UPST CHGG DOCN SHOP), 4 unconfirmed (EBS HLF BRCC PLTR), 0 phantoms, 179 unchecked. Cap 20 = all 20 checked hunted; 179 unchecked shed. Sweep wrote a stray 'SHOP-checked' into unchecked_names, removed. Searchers unpriced-searcher, amc first, at most 8 per turn. Wave 1: AEHR ICHR LIFE INSP HNGE MTCH IBTA VRTX.
+
+## Edge hunt (panel) — step 3u
+- Logged at 2026-11-02 18:27 UTC
+- IBTA searcher hit the per-turn WebSearch budget (~19:00 UTC per its hand-back); hunt_status check --apply marked it UNFINISHED, retry moved it to hunts/_unfinished/, fresh searcher relaunched in a later turn. All other returned hunts finished (AEHR HNGE ICHR INSP LIFE MTCH VRTX).
