@@ -23,3 +23,7 @@
 ## Split panel 1/4 — searchers done
 - Logged at 2026-11-02 18:27 UTC
 - 5 of 5 returned by 18:27 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out (all search_complete: true; stocktaper.com returned its own HTTP 429 to two searchers, a third-party limit); PLTR event confirmed by searcher from Palantir's 2026-10-12 Business Wire release (amc 11-02)
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-11-02 18:28 UTC
+- 5 of 5 returned by 18:27 UTC; guard moved nothing; no searcher reported its search budget running out (site-side 403/429s only); 0 of 5 clear the 2.8 floor
