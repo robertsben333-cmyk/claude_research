@@ -15,3 +15,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-11-02 18:20 UTC
 - LIFE, IBTA, HLF (amc 11-02), VITL, DOCN (bmo 11-03); E-P's sweep and baselines from 550315c5, confirmed names by hunt_priority cut at 20; claimed 18:13 UTC
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-11-02 18:21 UTC
+- BETA INSP SHOP VRTX BRCC, E-P's sweep and baselines from 550315c5, confirmed names by hunt_priority then the rest, cut at 20; claimed at 18:21Z
