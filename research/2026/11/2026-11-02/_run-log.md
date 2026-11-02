@@ -23,3 +23,7 @@
 ## Stage M — morning exit review — SKIPPED (after open)
 - Logged at 2026-11-02 14:57 UTC
 - Fired 2026-11-02 14:56 UTC = 09:56 ET, 46 min after its 09:10 ET schedule (14:10 UTC) and 27 min after the open; morning.py slot inside_hours=false. No picks, no analysts, no advice. Source run research/2026/10/2026-10-30/edge-panel exists. Previous morning not scored on this fire.
+
+## Edge hunt (panel) — 2026-11-02 amc + 2026-11-03 bmo — STARTED
+- Logged at 2026-11-02 18:15 UTC
+- Stage E-P fire 18:06 UTC (13:06 ET, EST since 11-01; CRON_TZ NY). Universe 199 names (103 amc 11-02, 96 bmo 11-03), baselines sealed for all 199 in edge-panel/baselines before any agent (18:15 UTC). share_classes_folded empty although CRD.A/CRD.B and LBTYA/B/K are on the calendar; edge_score.py's fold applies. Plan: one edge-sweep, up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
