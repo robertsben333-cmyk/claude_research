@@ -1,0 +1,2220 @@
+{
+  "market": "EU",
+  "markets": [
+    "uk",
+    "de",
+    "fr",
+    "se",
+    "dk",
+    "no",
+    "fi",
+    "it",
+    "es",
+    "pl"
+  ],
+  "event_date": "2026-11-03",
+  "window": "2026-11-03 close of the PREVIOUS session -> 2026-11-03 close, for a `bmo` name; 2026-11-03 close -> next close for an `amc` one. Europe reports before the open: 339 of 379 measured UK results announcements landed before 08:00 London.",
+  "fx": {
+    "USD": 1.0,
+    "source": "https://query1.finance.yahoo.com/v8/finance/chart/<pair>=X",
+    "as_of": "2026-11-02T15:28:14+00:00",
+    "GBP": 1.34225,
+    "EUR": 1.12082,
+    "SEK": 0.10234,
+    "DKK": 0.14993,
+    "NOK": 0.10763,
+    "PLN": 0.25351,
+    "GBp": 0.0134225,
+    "GBX": 0.0134225
+  },
+  "cap": 20,
+  "min_turnover_usd": 100000,
+  "calendar_source": "THREE sources since 2026-10-06, and every row says which in its own `calendar_source`: TradingView's public scanner (vendor), plus for the UK the issuer's own dated RNS notices and financial calendars (uk_rns_calendar.py), plus Yahoo's FIRM per-symbol dates in all ten markets (eu_yahoo_calendar.py). The vendor's measured UK phantom rate is 2 of 90 rows, but its RECALL was 45 of 126 UK results/trading updates over 2026-09-22 -> 10-05, and it skips Q1/Q3 statements for many continental issuers. Confirmation is eu_resolve.py's job, and whether event_occurred: false is reachable DIFFERS BY MARKET -- see per_market[*].event_occurred_false_reachable. It is false for Germany (EQS has no whole-day query) and for Spain and Poland (no archive reachable at all).",
+  "generated_utc": "2026-11-02T15:28:16+00:00",
+  "validation_only": false,
+  "per_market": {
+    "uk": {
+      "universe_size": 1072,
+      "vendor_total": 1072,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 5,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Investegate (RNS mirror)",
+      "short_register": "FCA aggregated net short positions",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "observed",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "rns_calendar": {
+        "state": "read",
+        "rns_dated_for_target": 9,
+        "added": [
+          "DOTD",
+          "CPX"
+        ],
+        "confirmed_vendor": [
+          "GATC",
+          "TUNE",
+          "ABF"
+        ],
+        "outside_vendor_universe": [
+          "0A3M",
+          "IBT",
+          "0QXN",
+          "CCEP"
+        ],
+        "calendar_file": "researcher_europe/analysis/uk-rns-calendar.json"
+      },
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "de": {
+      "universe_size": 452,
+      "vendor_total": 452,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 12,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "EQS-News search (per issuer, paginated, back years)",
+      "short_register": "Bundesanzeiger Netto-Leerverkaufspositionen",
+      "capability": {
+        "archive": "issuer",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "eqs_events": {
+            "state": "read",
+            "dated_for_target": 10,
+            "added": [
+              "ADV",
+              "EVK"
+            ]
+          }
+        },
+        "joined": 10,
+        "dated_for_target": 10
+      }
+    },
+    "fr": {
+      "universe_size": 585,
+      "vendor_total": 585,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 2,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "AMF regulated-information flux (info-financiere.gouv.fr)",
+      "short_register": "AMF positions courtes nettes (data.gouv.fr, per-holder history since 2012)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": false
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "se": {
+      "universe_size": 662,
+      "vendor_total": 762,
+      "off_primary_exchange_filtered": 100,
+      "scheduled_today": 28,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finansinspektionen aggregerade korta nettopositioner (ODS, snapshot; the date is when the level last changed)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 29,
+            "reaches_to": "2026-11-06",
+            "added": [
+              "TRUE_B",
+              "ATIN",
+              "FLAT_B",
+              "SERT",
+              "KABE_B",
+              "DURC_B",
+              "BUY",
+              "LEVEL"
+            ]
+          },
+          "nasdaq_fincal": {
+            "state": "read",
+            "dated_for_target": 1,
+            "added": []
+          }
+        },
+        "joined": 28,
+        "dated_for_target": 30
+      }
+    },
+    "dk": {
+      "universe_size": 135,
+      "vendor_total": 135,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 4,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finanstilsynet aggregerede korte nettopositioner (HTML table, 0.1% threshold)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 4,
+            "reaches_to": "2027-08-17",
+            "added": [
+              "BIOMAR"
+            ]
+          },
+          "nasdaq_fincal": {
+            "state": "read",
+            "dated_for_target": 4,
+            "added": [
+              "DEMANT"
+            ]
+          }
+        },
+        "joined": 7,
+        "dated_for_target": 8
+      }
+    },
+    "no": {
+      "universe_size": 273,
+      "vendor_total": 273,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 11,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Oslo Bors NewsWeb (true day query, ticker-keyed, categorised)",
+      "short_register": "Finanstilsynet SSR register (JSON, dated events per issuer)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "euronext_oslo": {
+            "state": "read",
+            "dated_for_target": 11,
+            "added": [
+              "ISLAX",
+              "ODF"
+            ]
+          }
+        },
+        "joined": 8,
+        "dated_for_target": 11
+      }
+    },
+    "fi": {
+      "universe_size": 184,
+      "vendor_total": 184,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 3,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "Nasdaq Nordic disclosure feed (issuer's own category; paged back ~12 days, no date query)",
+      "short_register": "Finanssivalvonta net short positions (JSON, per holder)",
+      "capability": {
+        "archive": "paged",
+        "register": true,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": true,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "inderes": {
+            "state": "read",
+            "dated_for_target": 3,
+            "reaches_to": "2027-03-23",
+            "added": [
+              "NETUM"
+            ]
+          },
+          "nasdaq_fincal": {
+            "state": "read",
+            "dated_for_target": 3,
+            "added": []
+          }
+        },
+        "joined": 4,
+        "dated_for_target": 6
+      }
+    },
+    "it": {
+      "universe_size": 388,
+      "vendor_total": 390,
+      "off_primary_exchange_filtered": 2,
+      "scheduled_today": 1,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "eMarket STORAGE (Borsa Italiana OAM; WAF-intermittent, retried)",
+      "short_register": "CONSOB posizioni nette corte (PncPubbl.xlsx, per holder)",
+      "capability": {
+        "archive": "day",
+        "register": true,
+        "history": "estimated",
+        "universal": false
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "es": {
+      "universe_size": 272,
+      "vendor_total": 272,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "none reachable (CNMV OIR returns 403 from this container)",
+      "short_register": "none reachable (CNMV grid is an ASP.NET postback that returns no rows from this container)",
+      "capability": {
+        "archive": null,
+        "register": false,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      }
+    },
+    "pl": {
+      "universe_size": 712,
+      "vendor_total": 712,
+      "off_primary_exchange_filtered": 0,
+      "scheduled_today": 0,
+      "market_closed": null,
+      "half_session": null,
+      "confirmation_source": "none reachable (GPW and espi.pap.pl both 0 of 8 tries)",
+      "short_register": "none reachable (KNF RssOuterView returns 403)",
+      "capability": {
+        "archive": null,
+        "register": false,
+        "history": "estimated",
+        "universal": true
+      },
+      "event_occurred_false_reachable": false,
+      "yahoo_calendar": {
+        "state": "unavailable",
+        "error": "Yahoo quote endpoint failed on every batch"
+      },
+      "issuer_calendars": {
+        "state": "read",
+        "sources": {
+          "bankier": {
+            "state": "unavailable",
+            "error": "HTTP 403 from https://www.bankier.pl/gielda/kalendarium/?eventType=10&navigation_type=week&navigation_start=1793620800",
+            "added": []
+          }
+        },
+        "joined": 0,
+        "dated_for_target": 0
+      }
+    }
+  },
+  "scheduled_today": 66,
+  "selection": {
+    "method": "random sample of 43 eligible, seed 'eu-2026-11-03'",
+    "seed": "eu-2026-11-03",
+    "eligible": 43,
+    "dropped": 23,
+    "hunted": 20,
+    "by_market": {
+      "uk": 2,
+      "de": 7,
+      "fr": 1,
+      "se": 6,
+      "dk": 1,
+      "no": 3,
+      "fi": 0,
+      "it": 0,
+      "es": 0,
+      "pl": 0
+    },
+    "eligible_by_market": {
+      "uk": 3,
+      "de": 11,
+      "fr": 2,
+      "se": 13,
+      "dk": 4,
+      "no": 8,
+      "fi": 1,
+      "it": 1,
+      "es": 0,
+      "pl": 0
+    },
+    "market_concentration": {
+      "largest_market": "de",
+      "largest_market_share": 0.35,
+      "markets_represented": 6,
+      "basis": "a day whose names are mostly one market is one market's day. The draw is deliberately not stratified; this field is how that shows up in the note and in eu_resolve.py's per_market block."
+    },
+    "basis": "Turnover floor, then a seeded random draw. The floor is $100k/day since 2026-10-01 ($200k from 2026-09-19) -- the bar every non-US stage uses and half the US one, so all ten markets are cut the same way. It is NOT a size-band cut: Phase 1 found coverage runs 5-7 analysts at $1-5m of turnover against 16-19 above $25m, and selecting on that band would bake this stage's own thesis into its universe. Turnover and `anchor_covered` ride in every baseline so the resolver can rank performance by band and by whether the name had a positioning anchor at all."
+  },
+  "eligible_symbols": [
+    "de:ADV",
+    "de:BAYN",
+    "de:BOSS",
+    "de:EVK",
+    "de:FME",
+    "de:LHA",
+    "de:NOEJ",
+    "de:SHA0",
+    "de:TMV",
+    "de:WSU",
+    "de:ZAL",
+    "dk:BIOMAR",
+    "dk:COLO_B",
+    "dk:DEMANT",
+    "dk:SOLAR_B",
+    "fi:REMEDY",
+    "fr:COFA",
+    "fr:VIRI",
+    "it:RACE",
+    "no:MULTI",
+    "no:NOM",
+    "no:NORCO",
+    "no:ODF",
+    "no:ODL",
+    "no:OKEA",
+    "no:OTL",
+    "no:SALM",
+    "se:BOOZT",
+    "se:FLAT_B",
+    "se:HACK",
+    "se:IPCO",
+    "se:ITAB",
+    "se:LATO_B",
+    "se:NCC_A",
+    "se:NOBA",
+    "se:RAY_B",
+    "se:REJL_B",
+    "se:SYNACT",
+    "se:TRUE_B",
+    "se:VSURE",
+    "uk:ABF",
+    "uk:DOTD",
+    "uk:TUNE"
+  ],
+  "names": [
+    {
+      "name": "ADV",
+      "description": "Adtran Networks SE",
+      "close": 21.9,
+      "currency": "EUR",
+      "market_cap_basic": 1143294299,
+      "average_volume_10d_calc": 12795.9,
+      "earnings_release_date": 1785844800,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": null,
+      "earnings_release_next_time": null,
+      "exchange": "XETR",
+      "sector": "Electronic Technology",
+      "country": "Germany",
+      "isin": "DE0005103006",
+      "tv_symbol": "XETR:ADV",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by eqs_events, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "eqs_events",
+      "issuer_calendar": [
+        {
+          "source": "eqs_events",
+          "title": "Publication Quarterly Financial Report (call-date Q3)",
+          "kind": "Publication quarterly financial report (call-date Q3)",
+          "source_url": "https://www.eqs-news.com/search-results/?searchtype=events"
+        }
+      ],
+      "_market": "de",
+      "yahoo_symbol": "ADV.DE",
+      "tape": {
+        "spot": 21.9,
+        "currency": "EUR",
+        "run_up_20d_pct": 0.0,
+        "run_up_5d_pct": 0.92,
+        "median_turnover_native_20d": 200933,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 225209
+    },
+    {
+      "name": "BOSS",
+      "description": "HUGO BOSS AG",
+      "close": 38.68,
+      "currency": "EUR",
+      "market_cap_basic": 2603076501,
+      "average_volume_10d_calc": 306892,
+      "earnings_release_date": 1785821400,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793687400,
+      "earnings_release_next_time": -1,
+      "exchange": "XETR",
+      "sector": "Consumer Non-Durables",
+      "country": "Germany",
+      "isin": "DE000A1PHFF7",
+      "tv_symbol": "XETR:BOSS",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+eqs_events",
+      "issuer_calendar": [
+        {
+          "source": "eqs_events",
+          "title": "Publication Quarterly Statement (call-date Q3)",
+          "kind": "Publication quarterly statement (call-date Q3)",
+          "source_url": "https://www.eqs-news.com/search-results/?searchtype=events"
+        }
+      ],
+      "_market": "de",
+      "yahoo_symbol": "BOSS.DE",
+      "tape": {
+        "spot": 38.71,
+        "currency": "EUR",
+        "run_up_20d_pct": 2.27,
+        "run_up_5d_pct": -0.36,
+        "median_turnover_native_20d": 11353070,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 12724747
+    },
+    {
+      "name": "FME",
+      "description": "Fresenius Medical Care AG",
+      "close": 40.49,
+      "currency": "EUR",
+      "market_cap_basic": 10734960232,
+      "average_volume_10d_calc": 696648.9,
+      "earnings_release_date": 1785781200,
+      "earnings_release_time": 1,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "XETR",
+      "sector": "Health Services",
+      "country": "Germany",
+      "isin": "DE0005785802",
+      "tv_symbol": "XETR:FME",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+eqs_events",
+      "issuer_calendar": [
+        {
+          "source": "eqs_events",
+          "title": "Publication Quarterly Financial Report (call-date Q3)",
+          "kind": "Publication quarterly financial report (call-date Q3)",
+          "source_url": "https://www.eqs-news.com/search-results/?searchtype=events"
+        }
+      ],
+      "_market": "de",
+      "yahoo_symbol": "FME.DE",
+      "tape": {
+        "spot": 40.5,
+        "currency": "EUR",
+        "run_up_20d_pct": 0.62,
+        "run_up_5d_pct": -0.61,
+        "median_turnover_native_20d": 34092031,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 38211030
+    },
+    {
+      "name": "NOEJ",
+      "description": "NORMA Group SE",
+      "close": 15.38,
+      "currency": "EUR",
+      "market_cap_basic": 341051068,
+      "average_volume_10d_calc": 51303.4,
+      "earnings_release_date": 1786424460,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "XETR",
+      "sector": "Producer Manufacturing",
+      "country": "Germany",
+      "isin": "DE000A1H8BV3",
+      "tv_symbol": "XETR:NOEJ",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+eqs_events",
+      "issuer_calendar": [
+        {
+          "source": "eqs_events",
+          "title": "On November 3, 2026, NORMA Group will publish the Q3 2026 Quarterly Statement. The statement will be available on the Investor Relations website at https://www.normagroup.com/global/en/investor-relations/publications-and-events/financial-reports .",
+          "kind": "Publication quarterly statement (call-date Q3)",
+          "source_url": "https://www.eqs-news.com/search-results/?searchtype=events"
+        }
+      ],
+      "_market": "de",
+      "yahoo_symbol": "NOEJ.DE",
+      "tape": {
+        "spot": 15.38,
+        "currency": "EUR",
+        "run_up_20d_pct": -10.37,
+        "run_up_5d_pct": 1.32,
+        "median_turnover_native_20d": 822495,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 921868
+    },
+    {
+      "name": "SHA0",
+      "description": "Schaeffler AG",
+      "close": 6.03,
+      "currency": "EUR",
+      "market_cap_basic": 5489779725,
+      "average_volume_10d_calc": 783511.4,
+      "earnings_release_date": 1785914100,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793689200,
+      "earnings_release_next_time": -1,
+      "exchange": "XETR",
+      "sector": "Producer Manufacturing",
+      "country": "Germany",
+      "isin": "DE000SHA0100",
+      "tv_symbol": "XETR:SHA0",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+eqs_events",
+      "issuer_calendar": [
+        {
+          "source": "eqs_events",
+          "title": "Nine months 2026 results",
+          "kind": "Publication quarterly statement (call-date Q3)",
+          "source_url": "https://www.eqs-news.com/search-results/?searchtype=events"
+        }
+      ],
+      "_market": "de",
+      "yahoo_symbol": "SHA0.DE",
+      "tape": {
+        "spot": 6.03,
+        "currency": "EUR",
+        "run_up_20d_pct": -3.37,
+        "run_up_5d_pct": 5.98,
+        "median_turnover_native_20d": 5217355,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 5847715
+    },
+    {
+      "name": "TMV",
+      "description": "TeamViewer SE",
+      "close": 7.11,
+      "currency": "EUR",
+      "market_cap_basic": 1153478416,
+      "average_volume_10d_calc": 566112,
+      "earnings_release_date": 1785214800,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793685600,
+      "earnings_release_next_time": -1,
+      "exchange": "XETR",
+      "sector": "Technology Services",
+      "country": "Germany",
+      "isin": "DE000A2YN900",
+      "tv_symbol": "XETR:TMV",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor",
+      "_market": "de",
+      "yahoo_symbol": "TMV.DE",
+      "tape": {
+        "spot": 7.1,
+        "currency": "EUR",
+        "run_up_20d_pct": 6.85,
+        "run_up_5d_pct": -7.01,
+        "median_turnover_native_20d": 3723426,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 4173290
+    },
+    {
+      "name": "ZAL",
+      "description": "Zalando SE",
+      "close": 26.93,
+      "currency": "EUR",
+      "market_cap_basic": 6564899077,
+      "average_volume_10d_calc": 918361.6,
+      "earnings_release_date": 1785823860,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "XETR",
+      "sector": "Retail Trade",
+      "country": "Germany",
+      "isin": "DE000ZAL1111",
+      "tv_symbol": "XETR:ZAL",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+eqs_events",
+      "issuer_calendar": [
+        {
+          "source": "eqs_events",
+          "title": "Publication of the third quarter results 2026",
+          "kind": "Publication quarterly financial report (call-date Q3)",
+          "source_url": "https://www.eqs-news.com/search-results/?searchtype=events"
+        }
+      ],
+      "_market": "de",
+      "yahoo_symbol": "ZAL.DE",
+      "tape": {
+        "spot": 26.9,
+        "currency": "EUR",
+        "run_up_20d_pct": 21.06,
+        "run_up_5d_pct": 0.64,
+        "median_turnover_native_20d": 26786420,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 30022755
+    },
+    {
+      "name": "SOLAR_B",
+      "description": "Solar A/S Class B",
+      "close": 202.5,
+      "currency": "DKK",
+      "market_cap_basic": 1601761217,
+      "average_volume_10d_calc": 14660.9,
+      "earnings_release_date": 1786600680,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXCOP",
+      "sector": "Industrial Services",
+      "country": "Denmark",
+      "isin": "DK0010274844",
+      "tv_symbol": "OMXCOP:SOLAR_B",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+inderes+nasdaq_fincal",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Solar 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.dk"
+        },
+        {
+          "source": "nasdaq_fincal",
+          "title": "Quarterly Report Q2 2026 3 November",
+          "kind": "results",
+          "source_url": "https://view.news.eu.nasdaq.com/view?id=b5686dc88b6819e5109fcd9c295be9570&lang=en&src=listed"
+        }
+      ],
+      "_market": "dk",
+      "yahoo_symbol": "SOLAR-B.CO",
+      "tape": {
+        "spot": 200.5,
+        "currency": "DKK",
+        "run_up_20d_pct": 6.2,
+        "run_up_5d_pct": 3.67,
+        "median_turnover_native_20d": 2255568,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 338177
+    },
+    {
+      "name": "COFA",
+      "description": "Coface SA",
+      "close": 15.79,
+      "currency": "EUR",
+      "market_cap_basic": 2324514791,
+      "average_volume_10d_calc": 120427.3,
+      "earnings_release_date": 1785412800,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "EURONEXT",
+      "sector": "Finance",
+      "country": "France",
+      "isin": "FR0010667147",
+      "tv_symbol": "EURONEXT:COFA",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor",
+      "_market": "fr",
+      "yahoo_symbol": "COFA.PA",
+      "tape": {
+        "spot": 15.79,
+        "currency": "EUR",
+        "run_up_20d_pct": 0.57,
+        "run_up_5d_pct": 2.33,
+        "median_turnover_native_20d": 2255973,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 2528539
+    },
+    {
+      "name": "MULTI",
+      "description": "Multiconsult ASA",
+      "close": 138.4,
+      "currency": "NOK",
+      "market_cap_basic": 3756082237,
+      "average_volume_10d_calc": 11463.9,
+      "earnings_release_date": 1787030700,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793685600,
+      "earnings_release_next_time": -1,
+      "exchange": "OSL",
+      "sector": "Industrial Services",
+      "country": "Norway",
+      "isin": "NO0010734338",
+      "tv_symbol": "OSL:MULTI",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+euronext_oslo",
+      "issuer_calendar": [
+        {
+          "source": "euronext_oslo",
+          "title": "Quarterly Report - Q3",
+          "kind": "Quarterly Report - Q3",
+          "source_url": "https://newsweb.oslobors.no/message/676622"
+        }
+      ],
+      "_market": "no",
+      "yahoo_symbol": "MULTI.OL",
+      "tape": {
+        "spot": 138.4,
+        "currency": "NOK",
+        "run_up_20d_pct": -1.14,
+        "run_up_5d_pct": 2.52,
+        "median_turnover_native_20d": 1490774,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 160452
+    },
+    {
+      "name": "ODL",
+      "description": "Odfjell Drilling Ltd.",
+      "close": 109.2,
+      "currency": "NOK",
+      "market_cap_basic": 26138973724,
+      "average_volume_10d_calc": 268699.1,
+      "earnings_release_date": 1787064600,
+      "earnings_release_time": 1,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OSL",
+      "sector": "Industrial Services",
+      "country": "United Kingdom",
+      "isin": "BMG671801022",
+      "tv_symbol": "OSL:ODL",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+euronext_oslo",
+      "issuer_calendar": [
+        {
+          "source": "euronext_oslo",
+          "title": "Quarterly Report - Q3",
+          "kind": "Quarterly Report - Q3",
+          "source_url": "https://newsweb.oslobors.no/message/661663"
+        }
+      ],
+      "_market": "no",
+      "yahoo_symbol": "ODL.OL",
+      "tape": {
+        "spot": 109.4,
+        "currency": "NOK",
+        "run_up_20d_pct": 10.51,
+        "run_up_5d_pct": 0.37,
+        "median_turnover_native_20d": 28258524,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 3041464
+    },
+    {
+      "name": "OKEA",
+      "description": "OKEA ASA",
+      "close": 46.8,
+      "currency": "NOK",
+      "market_cap_basic": 5185126854,
+      "average_volume_10d_calc": 300515.2,
+      "earnings_release_date": 1784174400,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793682000,
+      "earnings_release_next_time": -1,
+      "exchange": "OSL",
+      "sector": "Energy Minerals",
+      "country": "Norway",
+      "isin": "NO0010816895",
+      "tv_symbol": "OSL:OKEA",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+euronext_oslo",
+      "issuer_calendar": [
+        {
+          "source": "euronext_oslo",
+          "title": "Quarterly Report - Q3",
+          "kind": "Quarterly Report - Q3",
+          "source_url": "https://newsweb.oslobors.no/message/666186"
+        }
+      ],
+      "_market": "no",
+      "yahoo_symbol": "OKEA.OL",
+      "tape": {
+        "spot": 46.75,
+        "currency": "NOK",
+        "run_up_20d_pct": 16.44,
+        "run_up_5d_pct": -0.53,
+        "median_turnover_native_20d": 13882783,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 1494203
+    },
+    {
+      "name": "BOOZT",
+      "description": "Boozt AB",
+      "close": 156.7,
+      "currency": "SEK",
+      "market_cap_basic": 9306256176,
+      "average_volume_10d_calc": 156123.7,
+      "earnings_release_date": 1786687200,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793689200,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Retail Trade",
+      "country": "Denmark",
+      "isin": "SE0009888738",
+      "tv_symbol": "OMXSTO:BOOZT",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Boozt 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se",
+          "time_utc": "2026-11-03T08:30:00.000Z"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "BOOZT.ST",
+      "tape": {
+        "spot": 158.4,
+        "currency": "SEK",
+        "run_up_20d_pct": 10.0,
+        "run_up_5d_pct": -0.5,
+        "median_turnover_native_20d": 11471437,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 1173986
+    },
+    {
+      "name": "HACK",
+      "description": "Hacksaw AB",
+      "close": 57.85,
+      "currency": "SEK",
+      "market_cap_basic": 16079297960,
+      "average_volume_10d_calc": 914280.6,
+      "earnings_release_date": 1784611800,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793687400,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Technology Services",
+      "country": "Sweden",
+      "isin": "SE0025138357",
+      "tv_symbol": "OMXSTO:HACK",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Hacksaw 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se",
+          "time_utc": "2026-11-03T08:30:00.000Z"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "HACK.ST",
+      "tape": {
+        "spot": 57.6,
+        "currency": "SEK",
+        "run_up_20d_pct": -30.31,
+        "run_up_5d_pct": 6.57,
+        "median_turnover_native_20d": 65051025,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 6657321
+    },
+    {
+      "name": "NOBA",
+      "description": "Noba Bank Group AB",
+      "close": 91.3,
+      "currency": "SEK",
+      "market_cap_basic": 45358662140,
+      "average_volume_10d_calc": 319754,
+      "earnings_release_date": 1787031000,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793687400,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Finance",
+      "country": "Sweden",
+      "isin": "SE0023135298",
+      "tv_symbol": "OMXSTO:NOBA",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "NOBA Bank 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "NOBA.ST",
+      "tape": {
+        "spot": 92.1,
+        "currency": "SEK",
+        "run_up_20d_pct": 6.47,
+        "run_up_5d_pct": 3.95,
+        "median_turnover_native_20d": 27586084,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 2823159
+    },
+    {
+      "name": "REJL_B",
+      "description": "Rejlers AB Class B",
+      "close": 151,
+      "currency": "SEK",
+      "market_cap_basic": 3402499492,
+      "average_volume_10d_calc": 20448.5,
+      "earnings_release_date": 1784109600,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793687400,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Commercial Services",
+      "country": "Sweden",
+      "isin": "SE0000123671",
+      "tv_symbol": "OMXSTO:REJL_B",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Rejlers 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "REJL-B.ST",
+      "tape": {
+        "spot": 152.0,
+        "currency": "SEK",
+        "run_up_20d_pct": 10.63,
+        "run_up_5d_pct": 3.26,
+        "median_turnover_native_20d": 3738425,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 382590
+    },
+    {
+      "name": "SYNACT",
+      "description": "SynAct Pharma AB",
+      "close": 16.04,
+      "currency": "SEK",
+      "market_cap_basic": 911790558,
+      "average_volume_10d_calc": 111581.3,
+      "earnings_release_date": 1771416000,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXSTO",
+      "sector": "Health Technology",
+      "country": "Sweden",
+      "isin": "SE0008241491",
+      "tv_symbol": "OMXSTO:SYNACT",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "SynAct Pharma 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "SYNACT.ST",
+      "tape": {
+        "spot": 16.0,
+        "currency": "SEK",
+        "run_up_20d_pct": -6.54,
+        "run_up_5d_pct": -10.41,
+        "median_turnover_native_20d": 1164190,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 119143
+    },
+    {
+      "name": "VSURE",
+      "description": "Verisure Plc",
+      "close": 10.37,
+      "currency": "EUR",
+      "market_cap_basic": 123561674486.43604,
+      "average_volume_10d_calc": 1849274.3,
+      "earnings_release_date": 1785391800,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXSTO",
+      "sector": "Commercial Services",
+      "country": "United Kingdom",
+      "isin": "GB00BVMN1558",
+      "tv_symbol": "OMXSTO:VSURE",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Verisure 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "VSURE.ST",
+      "tape": {
+        "spot": 10.445,
+        "currency": "EUR",
+        "run_up_20d_pct": 27.72,
+        "run_up_5d_pct": 3.67,
+        "median_turnover_native_20d": 13049527,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 14626170
+    },
+    {
+      "name": "DOTD",
+      "description": "DotDigital Group PLC",
+      "close": 53.09,
+      "currency": "GBX",
+      "market_cap_basic": 156307195,
+      "average_volume_10d_calc": 686364.2,
+      "earnings_release_date": 1793689200,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1804075200,
+      "earnings_release_next_time": 0,
+      "exchange": "LSE",
+      "sector": "Technology Services",
+      "country": "United Kingdom",
+      "isin": "GB00B3W40C23",
+      "tv_symbol": "LSE:DOTD",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "RNS-dated, time not stated; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "rns",
+      "rns_dated": {
+        "event_date": "2026-11-03",
+        "kind": "results",
+        "basis": "notice",
+        "quote": "full year results for the year ended 30 June 2026 on Tuesday 3 November 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/dotdigital-group--dotd/notice-of-results-and-investor-presentations/9835283",
+        "source_headline": "Notice of Results and Investor Presentations",
+        "source_ts_london": "2026-10-22T07:00"
+      },
+      "event_kind": "results",
+      "_market": "uk",
+      "yahoo_symbol": "DOTD.L",
+      "tape": {
+        "spot": 52.3,
+        "currency": "GBp",
+        "run_up_20d_pct": -2.79,
+        "run_up_5d_pct": -4.91,
+        "median_turnover_native_20d": 39430820,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 529260
+    },
+    {
+      "name": "TUNE",
+      "description": "Focusrite PLC",
+      "close": 219.95,
+      "currency": "GBX",
+      "market_cap_basic": 131903152,
+      "average_volume_10d_calc": 31410.6,
+      "earnings_release_date": 1745906400,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793689200,
+      "earnings_release_next_time": -1,
+      "exchange": "LSE",
+      "sector": "Electronic Technology",
+      "country": "United Kingdom",
+      "isin": "GB00BSBMW716",
+      "tv_symbol": "LSE:TUNE",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+rns",
+      "rns_dated": {
+        "event_date": "2026-11-03",
+        "kind": "results",
+        "basis": "notice",
+        "quote": "Interim Results for the six months ended 31 August 2026 on Tuesday, 3 November 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/focusrite--tune/notice-of-interim-results/9822697",
+        "source_headline": "Notice of Interim Results",
+        "source_ts_london": "2026-10-14T10:32"
+      },
+      "_market": "uk",
+      "yahoo_symbol": "TUNE.L",
+      "tape": {
+        "spot": 220.0,
+        "currency": "GBp",
+        "run_up_20d_pct": -3.3,
+        "run_up_5d_pct": -3.3,
+        "median_turnover_native_20d": 13128885,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 176222
+    }
+  ],
+  "dropped": [
+    {
+      "name": "GATC",
+      "description": "Gattaca plc",
+      "close": 134.15,
+      "currency": "GBX",
+      "market_cap_basic": 43357444,
+      "average_volume_10d_calc": 17808.1,
+      "earnings_release_date": 1774335600,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793689200,
+      "earnings_release_next_time": -1,
+      "exchange": "LSE",
+      "sector": "Commercial Services",
+      "country": "United Kingdom",
+      "isin": "GB00B1FMDQ43",
+      "tv_symbol": "LSE:GATC",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+rns",
+      "rns_dated": {
+        "event_date": "2026-11-03",
+        "kind": "results",
+        "basis": "notice",
+        "quote": "financial results for the year ended 31 July 2026 on 3 November 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/gattaca--gatc/notice-of-results-and-investor-presentation/9816829",
+        "source_headline": "Notice of Results and Investor Presentation",
+        "source_ts_london": "2026-10-12T07:00"
+      },
+      "_market": "uk",
+      "yahoo_symbol": "GATC.L",
+      "tape": {
+        "spot": 134.15,
+        "currency": "GBp",
+        "run_up_20d_pct": -10.57,
+        "run_up_5d_pct": -2.44,
+        "median_turnover_native_20d": 2127697,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 28559,
+      "drop_reason": "below the turnover floor: $28,559 < $100,000 a day"
+    },
+    {
+      "name": "CPX",
+      "description": "CAP-XX Limited",
+      "close": 0.105,
+      "currency": "GBX",
+      "market_cap_basic": 8092152,
+      "average_volume_10d_calc": 20429492.5,
+      "earnings_release_date": 1739775600,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1803470400,
+      "earnings_release_next_time": 0,
+      "exchange": "LSE",
+      "sector": "Electronic Technology",
+      "country": "Australia",
+      "isin": "AU0000XINAS1",
+      "tv_symbol": "LSE:CPX",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "RNS-dated, time not stated; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "rns",
+      "rns_dated": {
+        "event_date": "2026-11-03",
+        "kind": "results",
+        "basis": "financial_calendar",
+        "quote": "results via the Investor Meet Company platform on 3 November 2026",
+        "source_url": "https://www.investegate.co.uk/announcement/rns/cap-xx-limited--cpx/audited-results-for-the-year-ended-30-june-2026/9851752",
+        "source_headline": "Audited Results for the Year Ended 30 June 2026",
+        "source_ts_london": "2026-11-02T07:00"
+      },
+      "event_kind": "results",
+      "_market": "uk",
+      "yahoo_symbol": "CPX.L",
+      "tape": {
+        "spot": 0.11,
+        "currency": "GBp",
+        "run_up_20d_pct": -14.06,
+        "run_up_5d_pct": -4.35,
+        "median_turnover_native_20d": 1868372,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 25078,
+      "drop_reason": "below the turnover floor: $25,078 < $100,000 a day"
+    },
+    {
+      "name": "O4B",
+      "description": "OVB Holding AG",
+      "close": 18.8,
+      "currency": "EUR",
+      "market_cap_basic": 267924695,
+      "average_volume_10d_calc": 79.5,
+      "earnings_release_date": 1786622400,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "XETR",
+      "sector": "Finance",
+      "country": "Germany",
+      "isin": "DE0006286560",
+      "tv_symbol": "XETR:O4B",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor",
+      "_market": "de",
+      "yahoo_symbol": "O4B.DE",
+      "tape": {
+        "spot": 18.8,
+        "currency": "EUR",
+        "run_up_20d_pct": -0.53,
+        "run_up_5d_pct": 0.53,
+        "median_turnover_native_20d": 0,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 0,
+      "drop_reason": "below the turnover floor: $0 < $100,000 a day"
+    },
+    {
+      "name": "ABSO",
+      "description": "Absolent Air Care Group AB",
+      "close": 186.5,
+      "currency": "SEK",
+      "market_cap_basic": 2032113698,
+      "average_volume_10d_calc": 3343.1,
+      "earnings_release_date": 1784289600,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXSTO",
+      "sector": "Producer Manufacturing",
+      "country": "Sweden",
+      "isin": "SE0006256558",
+      "tv_symbol": "OMXSTO:ABSO",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Absolent Air Care Group 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "ABSO.ST",
+      "tape": {
+        "spot": 186.5,
+        "currency": "SEK",
+        "run_up_20d_pct": -6.05,
+        "run_up_5d_pct": 1.36,
+        "median_turnover_native_20d": 243320,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 24901,
+      "drop_reason": "below the turnover floor: $24,901 < $100,000 a day"
+    },
+    {
+      "name": "BERNER_B",
+      "description": "Berner Industrier AB Class B",
+      "close": 75.4,
+      "currency": "SEK",
+      "market_cap_basic": 1479785324,
+      "average_volume_10d_calc": 17979.5,
+      "earnings_release_date": 1784289600,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793689200,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Distribution Services",
+      "country": "Sweden",
+      "isin": "SE0006143129",
+      "tv_symbol": "OMXSTO:BERNER_B",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Berner Industrier 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "BERNER-B.ST",
+      "tape": {
+        "spot": 75.0,
+        "currency": "SEK",
+        "run_up_20d_pct": -6.48,
+        "run_up_5d_pct": 1.35,
+        "median_turnover_native_20d": 952117,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 97439,
+      "drop_reason": "below the turnover floor: $97,440 < $100,000 a day"
+    },
+    {
+      "name": "DVYSR",
+      "description": "Devyser Diagnostics AB",
+      "close": 61,
+      "currency": "SEK",
+      "market_cap_basic": 928939371,
+      "average_volume_10d_calc": 27217.6,
+      "earnings_release_date": 1784525400,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793687400,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Health Technology",
+      "country": "Sweden",
+      "isin": "SE0016588867",
+      "tv_symbol": "OMXSTO:DVYSR",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Devyser Diagnostics 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "DVYSR.ST",
+      "tape": {
+        "spot": 61.5,
+        "currency": "SEK",
+        "run_up_20d_pct": 13.89,
+        "run_up_5d_pct": 22.02,
+        "median_turnover_native_20d": 841719,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 86141,
+      "drop_reason": "below the turnover floor: $86,142 < $100,000 a day"
+    },
+    {
+      "name": "EMBELL",
+      "description": "Embellence Group AB",
+      "close": 32.7,
+      "currency": "SEK",
+      "market_cap_basic": 767362271,
+      "average_volume_10d_calc": 21325.7,
+      "earnings_release_date": 1784613600,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793689200,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Process Industries",
+      "country": "Sweden",
+      "isin": "SE0013888831",
+      "tv_symbol": "OMXSTO:EMBELL",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Embellence Group 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se",
+          "time_utc": "2026-11-03T09:00:00.000Z"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "EMBELL.ST",
+      "tape": {
+        "spot": 32.7,
+        "currency": "SEK",
+        "run_up_20d_pct": -0.91,
+        "run_up_5d_pct": 5.83,
+        "median_turnover_native_20d": 187501,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 19188,
+      "drop_reason": "below the turnover floor: $19,189 < $100,000 a day"
+    },
+    {
+      "name": "FREEM",
+      "description": "Freemelt Holding AB",
+      "close": 1.75,
+      "currency": "SEK",
+      "market_cap_basic": 402572652,
+      "average_volume_10d_calc": 325931.4,
+      "earnings_release_date": 1786449600,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXSTO",
+      "sector": "Producer Manufacturing",
+      "country": "Sweden",
+      "isin": "SE0011167170",
+      "tv_symbol": "OMXSTO:FREEM",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor",
+      "_market": "se",
+      "yahoo_symbol": "FREEM.ST",
+      "tape": {
+        "spot": 1.726,
+        "currency": "SEK",
+        "run_up_20d_pct": -2.49,
+        "run_up_5d_pct": -5.79,
+        "median_turnover_native_20d": 461366,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 47216,
+      "drop_reason": "below the turnover floor: $47,216 < $100,000 a day"
+    },
+    {
+      "name": "OSSD",
+      "description": "OssDsign AB",
+      "close": 3.475,
+      "currency": "SEK",
+      "market_cap_basic": 373362465,
+      "average_volume_10d_calc": 140153.39999999973,
+      "earnings_release_date": 1787029200,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXSTO",
+      "sector": "Health Technology",
+      "country": "Sweden",
+      "isin": "SE0012570448",
+      "tv_symbol": "OMXSTO:OSSD",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "OssDsign 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "OSSD.ST",
+      "tape": {
+        "spot": 3.435,
+        "currency": "SEK",
+        "run_up_20d_pct": -1.43,
+        "run_up_5d_pct": 2.69,
+        "median_turnover_native_20d": 441198,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 45152,
+      "drop_reason": "below the turnover floor: $45,152 < $100,000 a day"
+    },
+    {
+      "name": "NYOR",
+      "description": "Nyorda AB",
+      "close": 6.34,
+      "currency": "SEK",
+      "market_cap_basic": 353003909,
+      "average_volume_10d_calc": 26223.5,
+      "earnings_release_date": 1783944000,
+      "earnings_release_time": 1,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXSTO",
+      "sector": "Commercial Services",
+      "country": "Sweden",
+      "isin": "SE0001552357",
+      "tv_symbol": "OMXSTO:NYOR",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Nyorda 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "NYOR.ST",
+      "tape": {
+        "spot": 6.34,
+        "currency": "SEK",
+        "run_up_20d_pct": -0.94,
+        "run_up_5d_pct": 1.28,
+        "median_turnover_native_20d": 122802,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 12567,
+      "drop_reason": "below the turnover floor: $12,568 < $100,000 a day"
+    },
+    {
+      "name": "4C",
+      "description": "4C Group AB",
+      "close": 6.59,
+      "currency": "SEK",
+      "market_cap_basic": 321995119,
+      "average_volume_10d_calc": 131003.7,
+      "earnings_release_date": 1783598400,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793688600,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Commercial Services",
+      "country": "Sweden",
+      "isin": "SE0017936891",
+      "tv_symbol": "OMXSTO:4C",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "4C Group 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "4C.ST",
+      "tape": {
+        "spot": 6.46,
+        "currency": "SEK",
+        "run_up_20d_pct": -2.86,
+        "run_up_5d_pct": 2.54,
+        "median_turnover_native_20d": 535277,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 54780,
+      "drop_reason": "below the turnover floor: $54,780 < $100,000 a day"
+    },
+    {
+      "name": "IZAFE_B",
+      "description": "iZafe Group AB",
+      "close": 0.264,
+      "currency": "SEK",
+      "market_cap_basic": 123914742,
+      "average_volume_10d_calc": 349533.6,
+      "earnings_release_date": 1683892800,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXSTO",
+      "sector": "Commercial Services",
+      "country": "Sweden",
+      "isin": "SE0003656834",
+      "tv_symbol": "OMXSTO:IZAFE_B",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Izafe Group 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "IZAFE-B.ST",
+      "tape": {
+        "spot": 0.28,
+        "currency": "SEK",
+        "run_up_20d_pct": -9.68,
+        "run_up_5d_pct": -3.78,
+        "median_turnover_native_20d": 84735,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 8671,
+      "drop_reason": "below the turnover floor: $8,672 < $100,000 a day"
+    },
+    {
+      "name": "ATIN",
+      "description": "Athanase Innovation AB",
+      "close": 18,
+      "currency": "SEK",
+      "market_cap_basic": 347357517,
+      "average_volume_10d_calc": 186.2,
+      "earnings_release_date": null,
+      "earnings_release_time": null,
+      "earnings_release_next_date": null,
+      "earnings_release_next_time": null,
+      "exchange": "OMXSTO",
+      "sector": "Consumer Non-Durables",
+      "country": "Sweden",
+      "isin": "SE0018014060",
+      "tv_symbol": "OMXSTO:ATIN",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Athanase Innovation 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "ATIN.ST",
+      "tape": {
+        "spot": 18.0,
+        "currency": "SEK",
+        "run_up_20d_pct": -10.0,
+        "run_up_5d_pct": -10.0,
+        "median_turnover_native_20d": 0,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 0,
+      "drop_reason": "below the turnover floor: $0 < $100,000 a day"
+    },
+    {
+      "name": "SERT",
+      "description": "Serstech AB",
+      "close": 0.488,
+      "currency": "SEK",
+      "market_cap_basic": 123090418,
+      "average_volume_10d_calc": 182579.00000000148,
+      "earnings_release_date": 1772193600,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1794312000,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXSTO",
+      "sector": "Electronic Technology",
+      "country": "Sweden",
+      "isin": "SE0005365095",
+      "tv_symbol": "OMXSTO:SERT",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Serstech 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "SERT.ST",
+      "tape": {
+        "spot": 0.488,
+        "currency": "SEK",
+        "run_up_20d_pct": -12.23,
+        "run_up_5d_pct": 1.67,
+        "median_turnover_native_20d": 84612,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 8659,
+      "drop_reason": "below the turnover floor: $8,659 < $100,000 a day"
+    },
+    {
+      "name": "KABE_B",
+      "description": "KABE Group AB Class B",
+      "close": 248,
+      "currency": "SEK",
+      "market_cap_basic": 2222999906,
+      "average_volume_10d_calc": 2227,
+      "earnings_release_date": null,
+      "earnings_release_time": null,
+      "earnings_release_next_date": null,
+      "earnings_release_next_time": null,
+      "exchange": "OMXSTO",
+      "sector": "Consumer Durables",
+      "country": "Sweden",
+      "isin": "SE0000107724",
+      "tv_symbol": "OMXSTO:KABE_B",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "KABE Group 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "KABE-B.ST",
+      "tape": {
+        "spot": 250.0,
+        "currency": "SEK",
+        "run_up_20d_pct": 5.04,
+        "run_up_5d_pct": 4.17,
+        "median_turnover_native_20d": 520749,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 53293,
+      "drop_reason": "below the turnover floor: $53,293 < $100,000 a day"
+    },
+    {
+      "name": "DURC_B",
+      "description": "Duroc AB Class B",
+      "close": 17.75,
+      "currency": "SEK",
+      "market_cap_basic": 684449986,
+      "average_volume_10d_calc": 5385.6,
+      "earnings_release_date": null,
+      "earnings_release_time": null,
+      "earnings_release_next_date": null,
+      "earnings_release_next_time": null,
+      "exchange": "OMXSTO",
+      "sector": "Process Industries",
+      "country": "Sweden",
+      "isin": "SE0000331266",
+      "tv_symbol": "OMXSTO:DURC_B",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Duroc 2027-Q1 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "DURC-B.ST",
+      "tape": {
+        "spot": 17.75,
+        "currency": "SEK",
+        "run_up_20d_pct": -3.01,
+        "run_up_5d_pct": 1.43,
+        "median_turnover_native_20d": 104958,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 10741,
+      "drop_reason": "below the turnover floor: $10,741 < $100,000 a day"
+    },
+    {
+      "name": "BUY",
+      "description": "Sweden BuyersClub AB",
+      "close": 6.5,
+      "currency": "SEK",
+      "market_cap_basic": 138481729,
+      "average_volume_10d_calc": 6635.399999999982,
+      "earnings_release_date": null,
+      "earnings_release_time": null,
+      "earnings_release_next_date": null,
+      "earnings_release_next_time": null,
+      "exchange": "OMXSTO",
+      "sector": "Retail Trade",
+      "country": "Sweden",
+      "isin": "SE0015660287",
+      "tv_symbol": "OMXSTO:BUY",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Sweden Buyersclub 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "BUY.ST",
+      "tape": {
+        "spot": 6.2,
+        "currency": "SEK",
+        "run_up_20d_pct": -10.14,
+        "run_up_5d_pct": -3.13,
+        "median_turnover_native_20d": 36015,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 3685,
+      "drop_reason": "below the turnover floor: $3,686 < $100,000 a day"
+    },
+    {
+      "name": "LEVEL",
+      "description": "Nordic LEVEL Group AB Class B",
+      "close": 0.308,
+      "currency": "SEK",
+      "market_cap_basic": 111566397,
+      "average_volume_10d_calc": 153231.7,
+      "earnings_release_date": 1787207400,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1794295800,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXSTO",
+      "sector": "Consumer Services",
+      "country": "Sweden",
+      "isin": "SE0012313302",
+      "tv_symbol": "OMXSTO:LEVEL",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Nordic LEVEL Group 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.se"
+        }
+      ],
+      "_market": "se",
+      "yahoo_symbol": "LEVEL.ST",
+      "tape": {
+        "spot": 0.308,
+        "currency": "SEK",
+        "run_up_20d_pct": 8.83,
+        "run_up_5d_pct": 3.01,
+        "median_turnover_native_20d": 40339,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 4128,
+      "drop_reason": "below the turnover floor: $4,128 < $100,000 a day"
+    },
+    {
+      "name": "SOAG",
+      "description": "SpareBank 1 Ostfold Akershus",
+      "close": 442.05,
+      "currency": "NOK",
+      "market_cap_basic": 5524795992,
+      "average_volume_10d_calc": 1444.0999999999942,
+      "earnings_release_date": 1786708800,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OSL",
+      "sector": "Finance",
+      "country": "Norway",
+      "isin": "NO0010285562",
+      "tv_symbol": "OSL:SOAG",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor",
+      "_market": "no",
+      "yahoo_symbol": "SOAG.OL",
+      "tape": {
+        "spot": 442.05,
+        "currency": "NOK",
+        "run_up_20d_pct": 0.42,
+        "run_up_5d_pct": 0.92,
+        "median_turnover_native_20d": 78765,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 8477,
+      "drop_reason": "below the turnover floor: $8,477 < $100,000 a day"
+    },
+    {
+      "name": "HSPG",
+      "description": "Holand og Setskog Sparebank",
+      "close": 130,
+      "currency": "NOK",
+      "market_cap_basic": 89427001,
+      "average_volume_10d_calc": 375.8,
+      "earnings_release_date": 1786708800,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1793707200,
+      "earnings_release_next_time": 0,
+      "exchange": "OSL",
+      "sector": "Finance",
+      "country": "Norway",
+      "isin": "NO0010012636",
+      "tv_symbol": "OSL:HSPG",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "vendor says unknown; defaulted to bmo because 339 of 379 measured UK results announcements landed before 08:00 -- the resolver measures BOTH windows for this row",
+      "calendar_source": "vendor",
+      "_market": "no",
+      "yahoo_symbol": "HSPG.OL",
+      "tape": {
+        "spot": 130.0,
+        "currency": "NOK",
+        "run_up_20d_pct": 11.11,
+        "run_up_5d_pct": 3.17,
+        "median_turnover_native_20d": 0,
+        "bars": 39
+      },
+      "median_turnover_usd_20d": 0,
+      "drop_reason": "below the turnover floor: $0 < $100,000 a day"
+    },
+    {
+      "name": "ISLAX",
+      "description": "Icelandic Salmon AS",
+      "close": 52.5,
+      "currency": "NOK",
+      "market_cap_basic": 1625497985,
+      "average_volume_10d_calc": 289.7,
+      "earnings_release_date": 1787659200,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1802952000,
+      "earnings_release_next_time": 0,
+      "exchange": "OSL",
+      "sector": "Process Industries",
+      "country": "Iceland",
+      "isin": "NO0010724701",
+      "tv_symbol": "OSL:ISLAX",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by euronext_oslo, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "euronext_oslo",
+      "issuer_calendar": [
+        {
+          "source": "euronext_oslo",
+          "title": "Quarterly Report - Q3",
+          "kind": "Quarterly Report - Q3",
+          "source_url": "https://newsweb.oslobors.no/message/661485"
+        }
+      ],
+      "_market": "no",
+      "yahoo_symbol": "ISLAX.OL",
+      "tape": {
+        "spot": 52.5,
+        "currency": "NOK",
+        "run_up_20d_pct": -7.08,
+        "run_up_5d_pct": -4.55,
+        "median_turnover_native_20d": 1253,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 134,
+      "drop_reason": "below the turnover floor: $135 < $100,000 a day"
+    },
+    {
+      "name": "NOHO",
+      "description": "NoHo Partners Plc",
+      "close": 7.58,
+      "currency": "EUR",
+      "market_cap_basic": 153624160,
+      "average_volume_10d_calc": 4582.9,
+      "earnings_release_date": 1785819600,
+      "earnings_release_time": -1,
+      "earnings_release_next_date": 1793685600,
+      "earnings_release_next_time": -1,
+      "exchange": "OMXHEX",
+      "sector": "Consumer Services",
+      "country": "Finland",
+      "isin": "FI4000064332",
+      "tv_symbol": "OMXHEX:NOHO",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": false,
+      "session_basis": "vendor flag -1",
+      "calendar_source": "vendor+inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "NoHo Partners 2026-Q3 INTERIM_REPORT",
+          "kind": "interim_report",
+          "source_url": "https://www.inderes.fi",
+          "time_utc": "2026-11-03T08:00:00.000Z"
+        }
+      ],
+      "_market": "fi",
+      "yahoo_symbol": "NOHO.HE",
+      "tape": {
+        "spot": 7.55,
+        "currency": "EUR",
+        "run_up_20d_pct": 1.62,
+        "run_up_5d_pct": 3.42,
+        "median_turnover_native_20d": 42550,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 47690,
+      "drop_reason": "below the turnover floor: $47,691 < $100,000 a day"
+    },
+    {
+      "name": "NETUM",
+      "description": "Netum Group Oyj",
+      "close": 0.684,
+      "currency": "EUR",
+      "market_cap_basic": 10893970,
+      "average_volume_10d_calc": 6232.3,
+      "earnings_release_date": 1787054400,
+      "earnings_release_time": 0,
+      "earnings_release_next_date": 1805198400,
+      "earnings_release_next_time": 0,
+      "exchange": "OMXHEX",
+      "sector": "Technology Services",
+      "country": "Finland",
+      "isin": "FI4000390943",
+      "tv_symbol": "OMXHEX:NETUM",
+      "scheduled_date": "2026-11-03",
+      "session": "bmo",
+      "session_unresolved": true,
+      "session_basis": "dated by inderes, which gives no release time; defaulted to bmo because Europe reports before the open -- the resolver measures BOTH windows for this row",
+      "calendar_source": "inderes",
+      "issuer_calendar": [
+        {
+          "source": "inderes",
+          "title": "Netum Group 2026-Q3 BUSINESS_REVIEW",
+          "kind": "business_review",
+          "source_url": "https://www.inderes.fi"
+        }
+      ],
+      "_market": "fi",
+      "yahoo_symbol": "NETUM.HE",
+      "tape": {
+        "spot": 0.684,
+        "currency": "EUR",
+        "run_up_20d_pct": -1.44,
+        "run_up_5d_pct": -7.82,
+        "median_turnover_native_20d": 1034,
+        "bars": 40
+      },
+      "median_turnover_usd_20d": 1158,
+      "drop_reason": "below the turnover floor: $1,159 < $100,000 a day"
+    }
+  ]
+}
