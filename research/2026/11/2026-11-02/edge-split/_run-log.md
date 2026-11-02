@@ -47,3 +47,7 @@
 ## Split panel 1/4 — panel done
 - Logged at 2026-11-02 18:31 UTC
 - 4 of 4 judges ran on pinned models, full coverage; panel_score --dry-run --stage E-PS: 1 selected (AEHR pct 99 long); claim 18:13 -> done 18:31 UTC
+
+## Split panel 3/4 — panel done
+- Logged at 2026-11-02 18:33 UTC
+- 4 of 4 judges on pinned models; selected VITL (short, 94), DOCN (long, 90), IBTA (long, 82); scored 18:33 UTC, ~21 min after claim
