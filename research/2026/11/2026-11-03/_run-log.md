@@ -12,3 +12,7 @@
 ## Stage EU — wave 1 banked
 - Logged at 2026-11-02 15:48 UTC
 - ADV 0.0, BOOZT -0.5, BOSS +0.2, DOTD 0.0, FME -1.4 (impact_sum). All search_complete. Wave 2: HACK MULTI NOBA NOEJ ODL.
+
+## Stage EU — wave 2 banked
+- Logged at 2026-11-02 15:55 UTC
+- HACK +0.3, MULTI +0.4, NOBA +0.7, NOEJ -0.3, ODL 0.0. All search_complete true. MULTI is a fixed-ratio merger target of REJL_B (0.9725 Rejlers B per share), so MULTI and REJL_B (wave 3) are one correlated exposure. Wave 3: OKEA REJL_B SHA0 SOLAR_B SYNACT.
