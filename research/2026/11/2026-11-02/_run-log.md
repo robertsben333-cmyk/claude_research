@@ -19,3 +19,7 @@
 ## Close AMC — 2026-11-02
 - Logged at 2026-11-02 11:18 UTC
 - 11:15 UTC (06:15 ET). Guard mode --require-exit-tif opg exit 0 (amc_open, placement matched, tif day). verify: 14 legs, none held, no UNFILLED. close --submit: no leg due today, nothing sent, windows {} (the close process then lingered past 5 min and was killed). No refusals; account reachable.
+
+## Stage M — morning exit review — SKIPPED (after open)
+- Logged at 2026-11-02 14:57 UTC
+- Fired 2026-11-02 14:56 UTC = 09:56 ET, 46 min after its 09:10 ET schedule (14:10 UTC) and 27 min after the open; morning.py slot inside_hours=false. No picks, no analysts, no advice. Source run research/2026/10/2026-10-30/edge-panel exists. Previous morning not scored on this fire.
