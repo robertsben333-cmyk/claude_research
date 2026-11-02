@@ -47,3 +47,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-02 18:38 UTC
 - 20 packs, four judges, one part. edge_score and V2 grounded written ~18:40 UTC, before the first print.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-11-02 18:45 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback, no retry). Selected (panel_pct >= 80, all four present): LIFE L 97, ICHR L 96, DOCN L 94, CHGG S 92, UPST S 90, IBTA S 88, VITL S 88, INSP L 86, HLF S 81 (9 names; 3-of-4 rule picks the first 8, HLF is 2 of 4). Next AEHR 77, PLTR 67. Stage E edge/ absent.
