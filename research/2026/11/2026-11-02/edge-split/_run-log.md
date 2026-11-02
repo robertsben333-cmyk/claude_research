@@ -43,3 +43,7 @@
 ## Split panel 3/4 — panel STARTED
 - Logged at 2026-11-02 18:29 UTC
 - 5 packs, four judges
+
+## Split panel 1/4 — panel done
+- Logged at 2026-11-02 18:31 UTC
+- 4 of 4 judges ran on pinned models, full coverage; panel_score --dry-run --stage E-PS: 1 selected (AEHR pct 99 long); claim 18:13 -> done 18:31 UTC
