@@ -7,3 +7,7 @@
 ## Split panel 1/4 — searchers launched
 - Logged at 2026-11-02 18:20 UTC
 - 5 unpriced-searcher (agent form) in one message at 18:20Z: AEHR HNGE AAPL PLTR (amc) then UPST (bmo); PLTR unconfirmed by E-P's sweep, told to settle the event itself
+
+## Split panel 2/4 — STARTED
+- Logged at 2026-11-02 18:20 UTC
+- ICHR CHGG MTCH ROKU EBS; E-P's sweep and baselines from 550315c5, confirmed names by hunt_priority cut at 20; five unpriced-searchers in one message
