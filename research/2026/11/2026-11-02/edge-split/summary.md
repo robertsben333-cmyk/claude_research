@@ -2,11 +2,11 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 3 of 4. Names scored by both arms: 0 of 20. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
+Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 4 of 4. Names scored by both arms: 0 of 20. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
 
-Selected by E-P: none. By the split: AEHR, CHGG, ICHR, INSP. Both: none.
+Selected by E-P: none. By the split: AEHR, CHGG, DOCN, IBTA, ICHR, INSP, VITL. Both: none.
 
-Mean findings per name, E-P / split: 7.58 / 8.05. Mean sources: 18.58 / 19.05. Mean panel_pct on names in both: n/a / n/a.
+Mean findings per name, E-P / split: 7.46 / 8.05. Mean sources: 18.08 / 19.05. Mean panel_pct on names in both: n/a / n/a.
 
 | ticker | shard | session | E-P | split | impact_sum E-P / split | findings E-P / split | sources E-P / split |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -20,12 +20,12 @@ Mean findings per name, E-P / split: 7.58 / 8.05. Mean sources: 18.58 / 19.05. M
 | ICHR | 2 | amc | · | 95L* | n/a / 1.5 | 7 / 10 | 22 / 20 |
 | MTCH | 2 | amc | · | 21S | n/a / -0.5 | 6 / 8 | 16 / 14 |
 | ROKU | 2 | amc | · | 0L | n/a / 0.1 | 4 / 3 | 10 / 10 |
-| DOCN | 3 | bmo | · | · | n/a / 1.55 | n/a / 9 | n/a / 22 |
-| HLF | 3 | amc | · | · | n/a / -1.0 | 8 / 6 | 16 / 15 |
-| IBTA | 3 | amc | · | · | n/a / 2.7 | 5 / 11 | 13 / 22 |
-| LIFE | 3 | amc | · | · | n/a / 0.2 | 11 / 7 | 22 / 19 |
-| VITL | 3 | bmo | · | · | n/a / -1.2 | n/a / 10 | n/a / 22 |
-| BETA | 4 | bmo | · | 25S | n/a / -0.1 | n/a / 7 | n/a / 16 |
+| DOCN | 3 | bmo | · | 90L* | n/a / 1.55 | n/a / 9 | n/a / 22 |
+| HLF | 3 | amc | · | 67S | n/a / -1.0 | 8 / 6 | 16 / 15 |
+| IBTA | 3 | amc | · | 82L* | n/a / 2.7 | 5 / 11 | 13 / 22 |
+| LIFE | 3 | amc | · | 72L | n/a / 0.2 | 11 / 7 | 22 / 19 |
+| VITL | 3 | bmo | · | 94S* | n/a / -1.2 | n/a / 10 | n/a / 22 |
+| BETA | 4 | bmo | · | 25S | n/a / -0.1 | 6 / 7 | 12 / 16 |
 | BRCC | 4 | amc | · | 42L | n/a / 1.4 | n/a / 6 | n/a / 19 |
 | INSP | 4 | amc | · | 97L* | n/a / 3.2 | 7 / 9 | 16 / 22 |
 | SHOP | 4 | bmo | · | 54S | n/a / 0.1 | n/a / 7 | n/a / 22 |
@@ -35,7 +35,7 @@ Mean findings per name, E-P / split: 7.58 / 8.05. Mean sources: 18.58 / 19.05. M
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | AEHR, HNGE, AAPL, PLTR, UPST | opus5, opus55, sonnet55, fable51 | 18:19 | 12 |
 | 2 | done | ICHR, MTCH, EBS, ROKU, CHGG | opus5, opus55, sonnet55, fable51 | 18:20 | 11 |
-| 3 | claimed | LIFE, IBTA, HLF, VITL, DOCN | n/a | 18:20 | n/a |
+| 3 | done | LIFE, IBTA, HLF, VITL, DOCN | opus5, opus55, sonnet55, fable51 | 18:20 | 13 |
 | 4 | done | INSP, VRTX, BRCC, BETA, SHOP | opus5, opus55, sonnet55, fable51 | 18:21 | 12 |
 
 E-P's panel was scored n/a with n/a.
