@@ -20,3 +20,7 @@
 ## Stage EU — wave 3 banked
 - Logged at 2026-11-02 16:02 UTC
 - OKEA +0.6, REJL_B -0.6, SHA0 0.0, SOLAR_B +0.3, SYNACT -0.5. All search_complete true. MULTI (+0.4) and REJL_B (-0.6) are merger-linked and lean opposite ways on what is effectively one combined share. Wave 4 launched: TMV TUNE VSURE ZAL.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-02 16:11 UTC
+- 19/19 hunts banked, all search_complete. Scored: top NOBA +0.70, OKEA +0.60; bottom FME -1.40, REJL_B -0.60; none above floor 2.8. COFA not ranked (shed, duplicate). 19 packs, four -intl- judges.
