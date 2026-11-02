@@ -31,3 +31,7 @@
 ## Split panel 1/4 — panel STARTED
 - Logged at 2026-11-02 18:28 UTC
 - 5 packs, four judges (opus5, opus55, sonnet55, fable51) in one message at 18:28Z
+
+## Split panel 3/4 — searchers done
+- Logged at 2026-11-02 18:29 UTC
+- 5 of 5 returned by 18:29Z; all search_complete true, no searcher reported its search budget running out (third-party 429/403/503 only); HLF date confirmed by company release (2026-11-02 amc)
