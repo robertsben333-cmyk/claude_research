@@ -51,3 +51,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-02 18:45 UTC
 - All four judges 20/20 (pinned agents, one part, no fallback, no retry). Selected (panel_pct >= 80, all four present): LIFE L 97, ICHR L 96, DOCN L 94, CHGG S 92, UPST S 90, IBTA S 88, VITL S 88, INSP L 86, HLF S 81 (9 names; 3-of-4 rule picks the first 8, HLF is 2 of 4). Next AEHR 77, PLTR 67. Stage E edge/ absent.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-02 18:50 UTC
+- 18:51 UTC (13:51 ET): plan, then open --submit --no-flatten. 8 market orders, all filled (VITL 155 after a partial): longs LIFE 42 @42.29, ICHR 46 @37.78, DOCN 18 @89.84, INSP 19 @67.00; shorts UPST 70 @21.29, IBTA 28 @49.13, VITL 155 @8.83, HLF 79 @13.23. Gross ~$11,691, 98.5% of $11,865 equity, net ~+$1,119. CHGG (selected, short 92) not shortable at Alpaca, dropped before the split. Mean execution cost vs mid -0.034; LIFE, ICHR and IBTA quoted wide half-spreads at submission. Exits dated 2026-11-03 (amc -> open, bmo -> market on the next run).
