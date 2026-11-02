@@ -6,7 +6,7 @@ Stage E-PS, shard 3 of four, run beside stage E-P with Opus 5.5 searchers (`unpr
 - HLF: the sweep left it unconfirmed; its searcher confirmed 2026-11-02 amc from Herbalife's own release (https://ir.herbalife.com/news-events/press-releases/detail/958/herbalife-to-announce-third-quarter-2026-results-on).
 - Judges: all four ran on their pinned agents: opus5 (claude-opus-5), opus55 (claude-opus-5-5), sonnet55 (claude-sonnet-5-5), fable51 (claude-fable-5-1). No fallback was used.
 - Guard (`intraday.py guard`, 18:29 UTC = 13:29 ET): moved nothing.
-- Claim 18:13 UTC → panel scored 18:33 UTC: about 21 minutes.
+- Claim 18:20 UTC (split.json) → done 18:33 UTC: 13 minutes. (The STARTED log line says 18:13; that was the time the claim call was sent, not the time it returned.)
 - Scored `--dry-run --stage E-PS`, so 0 sizes were added to the panel history.
 
 ## Panel (as `panel_score.py` printed it)
