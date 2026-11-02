@@ -19,3 +19,7 @@
 ## Split panel 4/4 — STARTED
 - Logged at 2026-11-02 18:21 UTC
 - BETA INSP SHOP VRTX BRCC, E-P's sweep and baselines from 550315c5, confirmed names by hunt_priority then the rest, cut at 20; claimed at 18:21Z
+
+## Split panel 1/4 — searchers done
+- Logged at 2026-11-02 18:27 UTC
+- 5 of 5 returned by 18:27 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out (all search_complete: true; stocktaper.com returned its own HTTP 429 to two searchers, a third-party limit); PLTR event confirmed by searcher from Palantir's 2026-10-12 Business Wire release (amc 11-02)
