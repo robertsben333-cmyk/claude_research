@@ -16,3 +16,7 @@
 ## Stage EU — wave 2 banked
 - Logged at 2026-11-02 15:55 UTC
 - HACK +0.3, MULTI +0.4, NOBA +0.7, NOEJ -0.3, ODL 0.0. All search_complete true. MULTI is a fixed-ratio merger target of REJL_B (0.9725 Rejlers B per share), so MULTI and REJL_B (wave 3) are one correlated exposure. Wave 3: OKEA REJL_B SHA0 SOLAR_B SYNACT.
+
+## Stage EU — wave 3 banked
+- Logged at 2026-11-02 16:02 UTC
+- OKEA +0.6, REJL_B -0.6, SHA0 0.0, SOLAR_B +0.3, SYNACT -0.5. All search_complete true. MULTI (+0.4) and REJL_B (-0.6) are merger-linked and lean opposite ways on what is effectively one combined share. Wave 4 launched: TMV TUNE VSURE ZAL.
