@@ -27,3 +27,7 @@
 ## Split panel 2/4 — searchers done
 - Logged at 2026-11-03 18:40 UTC
 - 5 of 5 returned by 18:37 UTC; guard moved nothing; no searcher reported its search budget running out (site-level 403/429 only on TARS and W); 4 of 5 rankable, SMCI not ranked by edge_score.py (event date does not fit the filing cadence)
+
+## Split panel 3/4 — done
+- Logged at 2026-11-03 18:45 UTC
+- 5 names, 0 selected (top panel_pct 72 NVTS short); all four judges on pinned models; guard moved nothing; no search budget exhaustion; claim-to-done ~16 min; E-P had not scored yet when summary ran
