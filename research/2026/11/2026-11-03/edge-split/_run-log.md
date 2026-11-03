@@ -31,3 +31,7 @@
 ## Split panel 3/4 — done
 - Logged at 2026-11-03 18:45 UTC
 - 5 names, 0 selected (top panel_pct 72 NVTS short); all four judges on pinned models; guard moved nothing; no search budget exhaustion; claim-to-done ~16 min; E-P had not scored yet when summary ran
+
+## Split panel 4/4 — searchers done
+- Logged at 2026-11-03 18:45 UTC
+- 5 of 5 returned by 18:45 UTC; guard moved nothing; no searcher reported its search budget running out (all search_complete: true; OUST saw a site-side 429 from Stock Taper, not a tool budget)
