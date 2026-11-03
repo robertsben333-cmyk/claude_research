@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="d86cd656769a489fb560e4246d39c4ed-1bdda4e66e9d4a89-1"/><meta name="baggage" content="sentry-trace_id=d86cd656769a489fb560e4246d39c4ed,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=722ef825ad62b4fc085cd94cd6478277c1463e0a,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.795036"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "722ef825ad62b4fc085cd94cd6478277c1463e0a",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from Lancashire Holdings Limited - Third Quarter 2025 Results" />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "Lancashire Holdings Limited - Third Quarter 2025 Results | Company Announcement | Investegate",
+            "description":"Investegate announcements from Lancashire Holdings Limited - Third Quarter 2025 Results",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2025-11-05 07:03:09",
+            "dateModified": "2025-11-05 07:04:08",
+            "url": "https://www.investegate.co.uk/announcement/prn/lancashire-holdings-limited--lre/lancashire-holdings-limited-third-quarter-2-/9213032"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='Lancashire Holdings Limited - Third Quarter 2025 Results | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/prn/lancashire-holdings-limited--lre/lancashire-holdings-limited-third-quarter-2-/9213032' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>Lancashire Holdings Limited - Third Quarter 2025 Results | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">Lancashire Holdings Limited - Third Quarter 2025 Results</h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Lancashire Holdings Limited reported a strong trading statement for the nine months ended 30 September 2025, with gross premiums written increasing 7.4% year-on-year to $1.8 billion and insurance revenue rising 7.8% to $1.4 billion. The Group maintained a Renewal Price Index of 96% and achieved a robust total investment return of 5.6% year-to-date. Reflecting its strong capital position and positive operating performance, the Board declared a special dividend of 75 cents per common share, totaling approximately $182 million. Furthermore, the company completed the minority buy-out of Syndicate 2010, enhancing strategic flexibility.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                    
+                                                        <div class="prn-announcement" >
+                                <html>
+<head>
+
+</head>
+<body>
+<div><p style="margin-bottom:0pt;margin-top:12px; text-align:center"><span style="font-family:times new roman,times; font-size:14pt"><strong>LANCASHIRE HOLDINGS LIMITED</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:center"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:center"><span style="font-family:times new roman,times; font-size:11pt">5 November 2025 </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:center"><span style="font-family:times new roman,times; font-size:11pt">Hamilton, Bermuda</span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:center"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-right:9pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">Lancashire Holdings Limited (“Lancashire” or “the Group”) today announces its trading statement for the nine months ended 30 September 2025.</span></p><p style="margin-bottom:0pt; margin-right:9pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-right:9pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong>Trading statement highlights </strong></span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-left:36pt; margin-top:0pt; text-indent:-18pt"><span style="font-family:times new roman,times; font-size:11pt">•</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; font:7pt 'Times New Roman'; width:14.15pt">          </span><span style="font-family:times new roman,times; font-size:11pt">Strong third quarter with continued growth and disciplined and selective underwriting.</span></p><p style="margin-bottom:0pt; margin-left:36pt; margin-top:0pt; text-indent:-18pt"><span style="font-family:times new roman,times; font-size:11pt">•</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; font:7pt 'Times New Roman'; width:14.15pt">          </span><span style="font-family:times new roman,times; font-size:11pt">Gross premiums written increased by 7.4% year-on-year to $1.8 billion, insurance revenue increased by 7.8% year-on-year to $1.4 billion, with a Group Renewal Price Index (RPI) of 96%.</span></p><p style="margin-bottom:0pt; margin-left:36pt; margin-top:0pt; text-indent:-18pt"><span style="font-family:times new roman,times; font-size:11pt">•</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; font:7pt 'Times New Roman'; width:14.15pt">          </span><span style="font-family:times new roman,times; font-size:11pt">Total investment return of 5.6%, including unrealised gains and losses, year-to-date.</span></p><p style="margin-bottom:0pt; margin-left:36pt; margin-top:0pt; text-indent:-18pt"><span style="font-family:times new roman,times; font-size:11pt">•</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; font:7pt 'Times New Roman'; width:14.15pt">          </span><span style="font-family:times new roman,times; font-size:11pt">Minority buy-out of Syndicate 2010 achieved. </span></p><p style="margin-bottom:0pt; margin-left:36pt; margin-top:0pt; text-indent:-18pt"><span style="font-family:arial,helvetica,sans-serif; font-size:12pt">•</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; font:7pt 'Times New Roman'; width:13.8pt">         </span><span style="font-family:times new roman,times; font-size:11pt">Special dividend of 75 cents per common share, or $182 million, reflecting robust capital position and positive operating performance.</span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p><span style="font-family:times new roman,times; font-size:11pt"><strong>Alex Maloney, Group Chief Executive Officer, commented: </strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">“Lancashire delivered a strong third quarter, continuing to grow in line with market opportunities while maintaining a disciplined and selective approach to underwriting.</span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">Gross premiums written rose 7.4% year-on-year to $1.8</span><span style="font-family:times new roman,times; font-size:10pt"> b</span><span style="font-family:times new roman,times; font-size:11pt">illion and insurance revenue increased by 7.8% to </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">$1.4 billion.</span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><br/><span style="font-family:times new roman,times; font-size:11pt">Our performance over the first nine months of the year - particularly in light of the California wildfires early on - demonstrates the strength and resilience of our business model. It highlights the value of our strategy, our capacity to navigate volatility, and the advantages of our diversified portfolio across both product lines and geographies. </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><br/><span style="font-family:times new roman,times; font-size:11pt">Market dynamics remain robust and, while certain classes have seen the start of some softening from recent highs, overall pricing remains healthy across most of the book. Our results were also supported by strong investment returns, achieving 5.6% for the year to date. </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><br/><span style="font-family:times new roman,times; font-size:11pt">Reflecting Lancashire’s earnings in the first nine months of the year, the Board has approved a special dividend of 75 cents per common share, resulting in an aggregate distribution of approximately $182 million.</span><br/><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt">During the quarter, we received approval from Lloyd’s of London to complete the minority buy-out of the remaining capacity on Syndicate 2010 for the 2026 underwriting year. This is a significant milestone for the business, offering new opportunities and strategic flexibility.</span><br/><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt">Our capital position remains exceptionally strong. We are returning capital to shareholders, investing in our syndicate platform, and continuing to pursue attractive underwriting opportunities through the remainder of the year and beyond.</span><br/><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">Finally, our people remain at the heart of our success. In September, we conducted our 2025 all-employee engagement survey, and I’m pleased to report another round of highly positive feedback. I’m especially proud that our culture continues to be valued by our colleagues. This reinforces my confidence in the dedication and commitment of our team, who are driving Lancashire forward with energy and purpose. My sincere thanks go to them - and to all our stakeholders - for their continued support.”</span></p><p style="font-family:times new roman,times; margin-bottom:0pt; margin-top:0pt"><span style="font-family:arial,helvetica,sans-serif; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"><strong>Business update</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"><strong> </strong></span></p><p style="margin-bottom:6pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"><strong>Gross premiums written and insurance revenue</strong></span></p><table cellpadding="0" cellspacing="0" style="border-collapse:collapse; width:513pt">	<tbody>		<tr>			<td style="height:15pt; vertical-align:bottom; width:134.25pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td colspan="4" style="border-bottom:1pt solid #b6b6b6; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:middle; width:297.7pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid; text-align:center"><span style="font-family:times new roman,times; font-size:11pt"><strong>Nine months ended</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>		</tr>		<tr>			<td style="height:24.75pt; vertical-align:bottom; width:134.25pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="height:24.75pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:10pt"><strong>30 September 2025</strong></span></p>			</td>			<td style="border-top:1pt solid #b6b6b6; height:24.75pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:10pt"><strong>30 September 2024</strong></span></p>			</td>			<td style="border-top:1pt solid #b6b6b6; height:24.75pt; padding-right:2.65pt; vertical-align:top; width:73.1pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>Change</strong></span></p>			</td>			<td style="border-top:1pt solid #b6b6b6; height:24.75pt; padding-right:2.65pt; vertical-align:top; width:73.1pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>Change</strong></span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:24.75pt; padding-right:2.65pt; vertical-align:top; width:73.1pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>RPI</strong></span></p>			</td>		</tr>		<tr>			<td style="border-bottom:1pt solid #b6b6b6; height:15pt; vertical-align:bottom; width:134.25pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:top; width:73.1pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>$m</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:top; width:73.1pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>$m</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:top; width:73.1pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>$m</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:top; width:73.1pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>%</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:top; width:73.1pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>%</strong></span></p>			</td>		</tr>		<tr>			<td style="border-top:1pt solid #b6b6b6; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:middle; width:128.95pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Reinsurance</span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:35.8pt"> </span><span style="font-family:times new roman,times; font-size:11pt">1,031.1</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">941.2</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:49.55pt"> </span><span style="font-family:times new roman,times; font-size:11pt">89.9</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">9.6%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:5.44pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:2.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">97%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:5.44pt"> </span></p>			</td>		</tr>		<tr>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:middle; width:128.95pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Insurance</span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">794.3</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">758.8</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:49.55pt"> </span><span style="font-family:times new roman,times; font-size:11pt">35.5</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">4.7%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:5.44pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">96%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:5.44pt"> </span></p>			</td>		</tr>		<tr>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:middle; width:128.95pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt"><strong>Gross premiums written</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:35.8pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>1,825.4</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:35.8pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>1,700.0</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>125.4</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>7.4%</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.6pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>96%</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.6pt"> </span></p>			</td>		</tr>		<tr>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; vertical-align:bottom; width:134.25pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>		</tr>		<tr>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:middle; width:128.95pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Reinsurance</span></p>			</td>			<td style="height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">671.7</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">629.3</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:49.55pt"> </span><span style="font-family:times new roman,times; font-size:11pt">42.4</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">6.7%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:5.44pt"> </span></p>			</td>			<td style="height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>		</tr>		<tr>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:middle; width:128.95pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Insurance</span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">728.1</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">668.7</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:49.55pt"> </span><span style="font-family:times new roman,times; font-size:11pt">59.4</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">8.9%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:5.44pt"> </span></p>			</td>			<td style="height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>		</tr>		<tr>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:middle; width:128.95pt">			<p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"><strong>Insurance revenue</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:35.8pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>1,399.8</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:35.8pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>1,298.0</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:44.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>101.8</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.55pt"> </span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:75pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt"><strong>7.8%</strong></span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.6pt"> </span></p>			</td>			<td style="height:15pt; vertical-align:bottom; width:75.75pt">			<p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>		</tr>	</tbody></table><p style="margin-bottom:1pt; margin-top:1pt"><span style="font-family:times new roman,times; font-size:10pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong>Gross premiums written</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong> </strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">Gross premiums written increased by $125.4 million, or 7.4%, in the first nine months of 2025, compared to the same period in 2024. Excluding the impact of reinstatement premiums, underlying growth in gross premiums written was 4.8%. In the reinsurance segment there has been measured growth across most lines, including planned growth in areas of specialty reinsurance such as aviation, marine and energy treaty. In the insurance segment the continued build-out of the Lancashire US franchise has seen classes such as energy liability and property insurance grow, as well as premium growth in marine hull and war and political risk lines of business via our London platforms. The overall RPI for the Group was 96%.</span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong> </strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="background-color:#ffffff; font-family:times new roman,times; font-size:11pt"><strong>Insurance revenue</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong> </strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">Insurance revenue increased by $101.8 million, or 7.8%, in the first nine months of 2025 compared to the same period in 2024. Gross premiums earned, the key driver of insurance revenue, as a percentage of gross premiums written, was 91.6% for the first nine months of 2025, compared to 88.2% for the equivalent period in 2024.</span><span style="font-family:times new roman,times; font-size:11pt">  </span><span style="font-family:times new roman,times; font-size:11pt">Insurance revenue continues to increase at a faster rate than gross premiums written, reflecting premium earnings from prior underwriting years where the business saw substantial growth. </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong> </strong></span></p><p><span style="font-family:times new roman,times; font-size:11pt"><strong>Loss environment</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">The third quarter loss environment was relatively benign for natural catastrophe losses. The environment for large single risks losses remains active, consistent with trends seen earlier in the year. </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p><span style="font-family:times new roman,times; font-size:11pt"><strong>Investments</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt"><strong> </strong></span></p><table cellpadding="0" cellspacing="0" style="border-collapse:collapse; width:512.25pt">	<tbody>		<tr>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:bottom; width:296.95pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt"><strong>As at</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:bottom; width:102.35pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>30 September 2025</strong></span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:bottom; width:102.35pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt"><strong>30 September 2024</strong></span></p>			</td>		</tr>		<tr>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:bottom; width:296.95pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Duration</span></p>			</td>			<td style="border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:bottom; width:102.35pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt">2.1 years</span></p>			</td>			<td style="background-color:#ffffff; border-top-style:solid; border-top-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:bottom; width:102.35pt">			<p style="margin-bottom:1.5pt; margin-top:3.5pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt">1.9 years</span></p>			</td>		</tr>		<tr>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:bottom; width:296.95pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Credit quality</span></p>			</td>			<td style="height:15pt; padding-right:2.65pt; vertical-align:bottom; width:102.35pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt">A+</span></p>			</td>			<td style="background-color:#ffffff; height:15pt; padding-right:2.65pt; vertical-align:bottom; width:102.35pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="font-family:times new roman,times; font-size:11pt">AA-</span></p>			</td>		</tr>		<tr>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:bottom; width:296.95pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Book yield</span></p>			</td>			<td style="height:15pt; padding-right:0.75pt; vertical-align:bottom; width:104.25pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">4.8%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.59pt"> </span></p>			</td>			<td style="background-color:#ffffff; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:104.25pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">4.8%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.59pt"> </span></p>			</td>		</tr>		<tr>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:bottom; width:296.95pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Market yield</span></p>			</td>			<td style="height:15pt; padding-right:0.75pt; vertical-align:bottom; width:104.25pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">4.5%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.59pt"> </span></p>			</td>			<td style="background-color:#ffffff; height:15pt; padding-right:0.75pt; vertical-align:bottom; width:104.25pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid; text-align:right"><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:0.05pt"> </span><span style="font-family:times new roman,times; font-size:11pt">4.7%</span><span style="display:inline-block; font-family:times new roman,times; font-size:11pt; width:3.59pt"> </span></p>			</td>		</tr>		<tr>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:bottom; width:296.95pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt"><span style="font-family:times new roman,times; font-size:11pt">Managed investments ($m)</span></p>			</td>			<td style="border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:bottom; width:102.35pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; text-align:right"><span style="font-family:times new roman,times; font-size:11pt">$3,316.5</span></p>			</td>			<td style="background-color:#ffffff; border-bottom-style:solid; border-bottom-width:0.75pt; height:15pt; padding-right:2.65pt; vertical-align:bottom; width:102.35pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; text-align:right"><span style="font-family:times new roman,times; font-size:11pt">$3,207.2</span></p>			</td>		</tr>	</tbody></table><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">The Group’s investment portfolio, including unrealised gains and losses, delivered a 5.6% return over the first nine months of 2025. Performance was supported by falling yields, amid rising expectations of rate cuts, which lifted prices. Additionally, modest tightening in investment-grade credit spreads and a foreign exchange gain of 50 bps for non-US dollar portfolios, held for hedging purposes, further contributed to returns. Private investment funds also generated strong performance during the period. </span></p><p style="font-family:times new roman,times; margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:arial,helvetica,sans-serif; font-size:8pt"><strong> </strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong>Dividends</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid; text-align:justify"><br/><span style="font-family:times new roman,times; font-size:11pt">Lancashire’s Board of Directors has declared a special dividend of 75 cents per common share (approximately 57 pence per common share at the current exchange rate), which will result in an aggregate payment of approximately $182 million. The dividend will be paid in Pounds Sterling on 12 December 2025 (the “Dividend Payment Date”) to shareholders of record on 14 November 2025 (the “Record Date”) using the £ / $ spot market exchange rate at 12 noon London time on the Record Date. Shareholders interested in participating in the dividend reinvestment plan (“DRIP”), or other services including international payment, are encouraged to contact the Group’s registrars, MUFG Corporate Markets, for more details.</span></p><p><span style="background-color:#ffffff; font-family:times new roman,times; font-size:11pt"><strong>Analyst and Investor Conference Call</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">There will be an analyst and investor conference call on the trading statement at 10am UK time / 6am Bermuda time / 5am EDT on Wednesday 5 November 2025. The conference call will be hosted by Lancashire management and a presentation will be made available on the Group’s website prior to the call. </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong>Participant Access</strong></span><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"><strong> </strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">Please note that conference call participants are required to register in advance to access either the audio conference call or webcast, the full registration and access details are set out below. </span><br/><span style="font-family:times new roman,times; font-size:11pt"> </span></p><table cellpadding="0" cellspacing="0" style="border-collapse:collapse; width:479.25pt">	<tbody>		<tr>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:77.95pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt"><span style="font-family:times new roman,times; font-size:11pt"><strong>Audio access:</strong></span></p>			</td>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:390.7pt">			<p style="font-family:times new roman,times; font-size:12pt; margin-bottom:1.5pt; margin-top:3.75pt"><a href="https://emportal.ink/3IdQ7Oz" style="text-decoration:none"><span style="color:#0000ff; font-family:times new roman,times; font-size:11pt"><u>https://emportal.ink/3IdQ7Oz</u></span></a></p>			</td>		</tr>		<tr>			<td style="height:15pt; vertical-align:bottom; width:83.25pt">			<p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:390.7pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt"><span style="font-family:times new roman,times; font-size:11pt">Please register to obtain your personal audio conference pin and call details.</span></p>			</td>		</tr>		<tr>			<td style="height:15pt; vertical-align:bottom; width:83.25pt">			<p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="height:15pt; vertical-align:bottom; width:396pt">			<p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>		</tr>		<tr>			<td style="height:29.25pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:77.95pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt"><span style="font-family:times new roman,times; font-size:11pt"><strong>Webcast access:</strong></span></p>			</td>			<td style="height:29.25pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:390.7pt">			<p style="font-family:times new roman,times; font-size:12pt; margin-bottom:0pt; margin-top:3.75pt"><a href="https://onlinexperiences.com/Launch/QReg/ShowUUID=F9F23CB6-A7E8-4DCB-B57C-EB1D8188A755" style="text-decoration:none"><span style="color:#0000ff; font-family:times new roman,times; font-size:11pt"><u>https://onlinexperiences.com/Launch/QReg/ShowUUID=F9F23CB6-A7E8-4DCB-B57C-EB1D8188A755</u></span></a></p>			<p style="font-family:times new roman,times; margin-bottom:1.5pt; margin-top:0pt"><span style="font-family:arial,helvetica,sans-serif; font-size:12pt"> </span></p>			</td>		</tr>		<tr>			<td style="height:15pt; vertical-align:bottom; width:83.25pt">			<p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:390.7pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt"><span style="font-family:times new roman,times; font-size:11pt">Please use this link to register and access the call via webcast.</span></p>			</td>		</tr>	</tbody></table><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="font-size:12pt; margin-bottom:1pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt">A webcast replay facility will be available for 12 months and accessible at: </span><a href="https://www.lancashiregroup.com/en/investors/results-reports-and-presentations.html" style="text-decoration:none"><span style="color:#0000ff; font-family:times new roman,times; font-size:11pt"><u>https://www.lancashiregroup.com/en/investors/results-reports-and-presentations.html</u></span></a></p><p style="margin-bottom:1pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p><span style="font-family:times new roman,times; font-size:11pt"><strong>Contact information </strong></span><span style="font-family:times new roman,times; font-size:11pt"> </span></p><table cellpadding="0" cellspacing="0" style="border-collapse:collapse; width:459pt">	<tbody>		<tr>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:223.45pt">			<p style="margin-bottom:1.5pt; margin-right:4.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt"><strong>Lancashire Holdings Limited</strong></span></p>			</td>			<td style="height:15pt; vertical-align:bottom; width:230.25pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>		</tr>		<tr>			<td style="height:15.75pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:223.45pt">			<p style="margin-bottom:1.5pt; margin-right:4.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Christopher Head</span></p>			</td>			<td style="height:15.75pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:224.95pt">			<p style="font-family:times new roman,times; font-size:12pt; margin-bottom:1.5pt; margin-left:9pt; margin-right:4.5pt; margin-top:3.75pt; page-break-after:avoid"><a href="mailto:chris.head%40lancashiregroup.com" style="text-decoration:none"><span style="color:#0000ff; font-family:times new roman,times; font-size:11pt"><u>chris.head@lancashiregroup.com</u></span></a></p>			</td>		</tr>		<tr>			<td style="height:15.75pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:223.45pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Jelena Bjelanovic </span></p>			</td>			<td style="height:15.75pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:224.95pt">			<p style="margin-bottom:1.5pt; margin-left:9pt; margin-right:4.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="color:#0000ff; font-family:times new roman,times; font-size:11pt"><u>jelena.bjelanovic@lancashiregroup.com</u></span></p>			</td>		</tr>		<tr>			<td style="height:9.75pt; vertical-align:bottom; width:228.75pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="height:9.75pt; vertical-align:bottom; width:230.25pt">			<p style="margin-bottom:0pt; margin-top:0pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>		</tr>		<tr>			<td style="height:15.75pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:223.45pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt"><strong>FTI Consulting</strong></span></p>			</td>			<td style="height:15.75pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:bottom; width:224.95pt">			<p style="margin-bottom:1.5pt; margin-right:4.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt"> </span></p>			</td>		</tr>		<tr>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:223.45pt">			<p style="margin-bottom:0pt; margin-top:3.75pt; page-break-after:avoid"><span style="font-family:times new roman,times; font-size:11pt">Edward Berry</span></p>			<p style="margin-bottom:1.5pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:12pt"> </span></p>			</td>			<td style="height:15pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:224.95pt">			<p style="margin-bottom:1.5pt; margin-left:9pt; margin-right:4.5pt; margin-top:3.75pt; page-break-after:avoid"><span style="color:#0000ff; font-family:times new roman,times; font-size:11pt"><u>Edward.Berry@FTIConsulting.com</u></span></p>			</td>		</tr>		<tr>			<td style="height:15.75pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:223.45pt">			<p style="margin-bottom:1.5pt; margin-top:3.75pt"><span style="font-family:times new roman,times; font-size:11pt">Tom Blackwell</span></p>			</td>			<td style="height:15.75pt; padding-left:2.65pt; padding-right:2.65pt; vertical-align:top; width:224.95pt">			<p style="margin-bottom:1.5pt; margin-left:9pt; margin-right:4.5pt; margin-top:3.75pt"><span style="color:#0000ff; font-family:times new roman,times; font-size:11pt"><u>Tom.Blackwell@FTIConsulting.com</u></span></p>			</td>		</tr>	</tbody></table><p style="margin-bottom:1pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:1pt"> </span></p><p><span style="font-family:times new roman,times; font-size:11pt"><strong>About Lancashire</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">Lancashire, through its operating subsidiaries, is a provider of global specialty insurance and reinsurance products.</span><br/><br/><span style="font-family:times new roman,times; font-size:11pt">Lancashire common shares trade in the equity shares (commercial companies) category of the Main Market of the London Stock Exchange under the ticker symbol LRE. Lancashire has its head office and registered office at Power House, 7 Par-la-Ville Road, Hamilton HM 11, Bermuda.</span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">The Bermuda Monetary Authority is the Group Supervisor of the Lancashire Group.</span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="font-size:12pt; margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">For more information, please visit Lancashire’s website at </span><a href="http://www.lancashiregroup.com" style="text-decoration:none"><span style="color:#0000ff; font-family:times new roman,times; font-size:11pt"><u>www.lancashiregroup.com</u></span></a><span style="font-family:times new roman,times; font-size:11pt">.</span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt">This release contains information, which may be of a price sensitive nature that Lancashire is making public in a manner consistent with the UK Market Abuse Regulation and other regulatory obligations. The information was submitted for publication, through the agency of the contact persons set out above, at 07:00 UK time on 5 November 2025.</span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:11pt"> </span></p><p><span style="font-family:times new roman,times; font-size:8pt"><strong>NOTE REGARDING RPI METHODOLOGY:</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:8pt">THE RENEWAL PRICE INDEX (“RPI”) IS AN INTERNAL METHODOLOGY THAT MANAGEMENT USES TO TRACK TRENDS IN PREMIUM RATES OF A PORTFOLIO OF INSURANCE AND REINSURANCE CONTRACTS. THE RPI WRITTEN IN THE RESPECTIVE SEGMENTS IS CALCULATED ON A PER CONTRACT BASIS AND REFLECTS MANAGEMENT’S ASSESSMENT OF RELATIVE CHANGES IN PRICE, TERMS, CONDITIONS AND LIMITS AND IS WEIGHTED BY PREMIUM VOLUME. THE RPI DOES NOT INCLUDE NEW BUSINESS, TO OFFER A CONSISTENT BASIS FOR ANALYSIS. THE CALCULATION INVOLVES A DEGREE OF JUDGEMENT IN RELATION TO COMPARABILITY OF CONTRACTS AND THE ASSESSMENT NOTED ABOVE. TO ENHANCE THE RPI METHODOLOGY, MANAGEMENT MAY REVISE THE METHODOLOGY AND ASSUMPTIONS UNDERLYING THE RPI, SO THE TRENDS IN PREMIUM RATES REFLECTED IN THE RPI MAY NOT BE COMPARABLE OVER TIME. CONSIDERATION IS ONLY GIVEN TO RENEWALS OF A COMPARABLE NATURE SO IT DOES NOT REFLECT EVERY CONTRACT IN THE PORTFOLIO OF CONTRACTS. THE FUTURE PROFITABILITY OF THE PORTFOLIO OF CONTRACTS WITHIN THE RPI IS DEPENDENT UPON MANY FACTORS BESIDES THE TRENDS IN PREMIUM RATES.</span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:10pt"> </span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:8pt"><strong>NOTE REGARDING ALTERNATIVE PERFORMANCE MEASURES:</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:8pt">THE GROUP USES ALTERNATIVE PERFORMANCE MEASURES TO HELP EXPLAIN BUSINESS PERFORMANCE AND FINANCIAL POSITION. THESE MEASURES HAVE BEEN CALCULATED CONSISTENTLY WITH THOSE AS DISCLOSED IN THE GROUP’S ANNOUNCEMENT OF ITS RESULTS FOR THE YEAR ENDED 31 DECEMBER 2024 AND THE UNAUDITED CONDENSED INTERIM CONSOLIDATED FINANCIAL STATEMENTS FOR THE SIX MONTHS ENDED 30 JUNE 2025. </span></p><p style="margin-bottom:0pt; margin-top:0pt"><span style="font-family:times new roman,times; font-size:8pt"> </span></p><p><span style="font-family:times new roman,times; font-size:8pt"><strong>NOTE REGARDING FORWARD-LOOKING STATEMENTS:</strong></span></p><p style="margin-bottom:0pt; margin-top:0pt; text-align:justify"><span style="font-family:times new roman,times; font-size:8pt">CERTAIN STATEMENTS AND INDICATIVE PROJECTIONS (WHICH MAY INCLUDE MODELLED LOSS SCENARIOS) MADE IN THIS RELEASE OR OTHERWISE THAT ARE NOT BASED ON CURRENT OR HISTORICAL FACTS ARE FORWARD-LOOKING IN NATURE INCLUDING, WITHOUT LIMITATION, STATEMENTS CONTAINING THE WORDS “BELIEVES”, “AIMS”, “ANTICIPATES”, “PLANS”, “PROJECTS”, “FORECASTS”, “GUIDANCE”, “INTENDS”, “EXPECTS”, “ESTIMATES”, “PREDICTS”, “MAY”, “CAN”, “LIKELY”, “WILL”, “SEEKS”, “SHOULD”, OR, IN EACH CASE, THEIR NEGATIVE OR COMPARABLE TERMINOLOGY. SUCH FORWARD-LOOKING STATEMENTS INVOLVE KNOWN AND UNKNOWN RISKS, UNCERTAINTIES AND OTHER IMPORTANT FACTORS THAT COULD CAUSE THE ACTUAL RESULTS, PERFORMANCE OR ACHIEVEMENTS OF THE GROUP TO BE MATERIALLY DIFFERENT FROM FUTURE RESULTS, PERFORMANCE OR ACHIEVEMENTS EXPRESSED OR IMPLIED BY SUCH FORWARD-LOOKING STATEMENTS. FOR A DESCRIPTION OF SOME OF THESE FACTORS, SEE THE GROUP’S ANNUAL REPORT AND ACCOUNTS FOR THE YEAR ENDED 31 DECEMBER 2024 AND THE UNAUDITED CONDENSED INTERIM CONSOLIDATED FINANCIAL STATEMENTS FOR THE SIX MONTHS ENDED 30 JUNE 2025. ALL FORWARD-LOOKING STATEMENTS IN THIS RELEASE OR OTHERWISE SPEAK ONLY AS AT THE DATE OF PUBLICATION. LANCASHIRE EXPRESSLY DISCLAIMS ANY OBLIGATION OR UNDERTAKING (SAVE AS REQUIRED TO COMPLY WITH ANY LEGAL OR REGULATORY OBLIGATIONS INCLUDING THE RULES OF THE LONDON STOCK EXCHANGE) TO DISSEMINATE ANY UPDATES OR REVISIONS TO ANY FORWARD-LOOKING STATEMENT TO REFLECT ANY CHANGES IN THE GROUP’S EXPECTATIONS OR CIRCUMSTANCES ON WHICH ANY SUCH STATEMENT IS BASED. ALL SUBSEQUENT WRITTEN AND ORAL FORWARD-LOOKING STATEMENTS ATTRIBUTABLE TO THE GROUP OR INDIVIDUALS ACTING ON BEHALF OF THE GROUP ARE EXPRESSLY QUALIFIED IN THEIR ENTIRETY BY THIS NOTE. PROSPECTIVE INVESTORS SHOULD SPECIFICALLY CONSIDER THE FACTORS IDENTIFIED IN THIS RELEASE AND THE REPORT AND ACCOUNTS NOTED ABOVE WHICH COULD CAUSE ACTUAL RESULTS TO DIFFER BEFORE MAKING AN INVESTMENT DECISION.</span></p></div>
+<br/><hr size="1"/>
+<hr size="1"/>
+
+</body>
+</html>
+                            </div>
+
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/LRE" style="font-size:14px;">Lancashire Holdings Limited
+                    (LRE)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>14 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/old-mutual-limited-npv-di---omu/dealings-in-securities-on-behalf-of-share-trusts-/9856491">Old Mutual Limited NPV (DI)</a>
+            </li>
+                        <li>
+                <span>15 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/mortgage-advice-bureau-holdings---mab1/director-pdmr-shareholding/9856478">Mortgage Advice Bureau (Holdings)</a>
+            </li>
+                        <li>
+                <span>26 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/cohort--chrt/director-pdmr-shareholding/9856469">Cohort</a>
+            </li>
+                        <li>
+                <span>34 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/lowland-investment-co--lwi/director-pdmr-shareholding/9856459">Lowland Investment Co</a>
+            </li>
+                        <li>
+                <span>38 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/prn/capital-for-colleagues-plc--cfcp/director-pdmr-shareholdings/9856457">Capital for Colleagues plc</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>
