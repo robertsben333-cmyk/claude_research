@@ -39,3 +39,7 @@
 ## Stage EU — wave 4 partial
 - Logged at 2026-11-03 15:20 UTC
 - SNWS -1.4, TRN -1.9, BUR +1.3. BUR session corrected by hunter: release 4 Nov 13:00 GMT (RNS 26 Oct), inside the London session, so session_check opens bmo; sealed baseline said amc (close 11-04 -> 11-05). Baseline not revised; eu_resolve reads the hunter's session_check.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-03 15:20 UTC
+- 19/19 hunts banked, all search_complete. LRE +0.1. 15 ranked, none above floor 2.8; top BUR/SOFF +1.30, bottom TRN -1.90. Not ranked: EVK BPE TEN TIT (no event in window), SOLAR_B (shed). 15 packs, four -intl- judges.
