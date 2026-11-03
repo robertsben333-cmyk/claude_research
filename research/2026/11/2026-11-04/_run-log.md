@@ -31,3 +31,7 @@
 ## Stage EU — wave 2 banked
 - Logged at 2026-11-03 15:05 UTC
 - SAMPO +0.45, AKER +0.55, BPE/TEN/TIT event_confirmed false (not rankable). All search_complete true. Wave 3 launched: BOUV ODF SOFF CHEF BTRW.
+
+## Stage EU — wave 3 banked
+- Logged at 2026-11-03 15:13 UTC
+- BOUV +1.2, ODF +0.6, SOFF +1.3, CHEF -0.5, BTRW -1.2. All event_confirmed, all search_complete. Wave 4 launched: BUR LRE SNWS TRN.
