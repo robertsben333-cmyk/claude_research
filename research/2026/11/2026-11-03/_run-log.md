@@ -33,3 +33,7 @@
 ## Close AMC — 2026-11-03 11:11 UTC
 - Logged at 2026-11-03 11:16 UTC
 - Guard mode --require-exit-tif opg: exit 0 (amc open as day). verify: 14 legs, nothing held, no UNFILLED leg. close --submit: no leg due today, nothing sent, no refusals (market closed at 06:11 ET; account reachable). status: no open position.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-11-03 14:12 UTC
+- source research/2026/11/2026-11-02/edge-panel, 09:12 ET
