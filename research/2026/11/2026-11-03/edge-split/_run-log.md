@@ -23,3 +23,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-11-03 18:38 UTC
 - 5 of 5 returned by 18:38 UTC (launched ~18:30); guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished of 5)
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-11-03 18:40 UTC
+- 5 of 5 returned by 18:37 UTC; guard moved nothing; no searcher reported its search budget running out (site-level 403/429 only on TARS and W); 4 of 5 rankable, SMCI not ranked by edge_score.py (event date does not fit the filing cadence)
