@@ -49,3 +49,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-11-03 18:25 UTC
 - Sweep finished 18:25 UTC (22 of 265 checked): 21 company-confirmed (amc 11-03: SMCI DUOL NVTS OUST TREE TARS RVLV CRCT MQ FRSH TOST ALAB CAR LIME; bmo 11-04: W HUT RIOT SEDG XPEL DIN CRCL), VRNS unconfirmed, 0 phantoms, 243 unchecked. Sessions unsettled: OUST LIME DIN CRCL. Cap 20: CRCL shed (lowest priority 34, session unsettled), VRNS shed (unconfirmed), 243 unchecked shed. Searchers unpriced-searcher, amc first, at most 8 per turn. Wave 1: SMCI DUOL NVTS OUST TREE TARS RVLV CRCT.
+
+## Edge hunt (panel) — waves 2-3
+- Logged at 2026-11-03 18:37 UTC
+- Finished, search_complete true per hand-backs: TARS NVTS DUOL CRCT OUST TREE SMCI RVLV. OUST settled amc from the company's own release. Running: MQ FRSH TOST ALAB CAR LIME W HUT (launched 18:40-18:51 UTC). To launch as slots free: RIOT SEDG XPEL DIN. SMCI's searcher left a stray placeholder file at the repo root; removed before publishing.
