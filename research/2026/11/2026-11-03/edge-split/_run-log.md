@@ -7,3 +7,7 @@
 ## Split panel 2/4 — STARTED
 - Logged at 2026-11-03 18:29 UTC
 - SMCI TARS W CAR ALAB; E-P's sweep and baselines from d441df9; confirmed names by hunt_priority, cut at 20
+
+## Split panel 3/4 — STARTED
+- Logged at 2026-11-03 18:31 UTC
+- NVTS RVLV HUT FRSH RIOT; E-P's sweep and baselines from d441df90; confirmed names by hunt_priority cut at 20; claimed 18:28 UTC (fired 18:11 UTC, an hour later than the prompt's 17:07)
