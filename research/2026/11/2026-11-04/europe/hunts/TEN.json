@@ -1,0 +1,52 @@
+{
+  "ticker": "TEN",
+  "market": "IT",
+  "expected_move_pct": 0.0,
+  "conviction_note": "The Q3 2026 release lands after the market close on 2026-11-04, so the sealed bmo window (close 2026-11-03 -> close 2026-11-04) contains no Tenaris print: event_confirmed false, no findings, 0 signed, and abs_move_pct is an ordinary session's move (20-day realised vol, 1-day equivalent 2.15%) at p_up 50.",
+  "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 2.15,
+  "p_up": 50,
+  "search_complete": true,
+  "already_public": [
+    {"what": "Release date and timing: Q3 2026 press release to be issued after market close on Wednesday 4 November 2026; conference call Thursday 5 November 2026 at 08:00 a.m. Eastern Time", "date": "2026-11-03", "source": "https://ir.tenaris.com/static-files/42340848-821f-469b-ac73-682e365afd5e"},
+    {"what": "Q2 2026 results released 2026-08-05 with the call the next day (2026-08-06); Q1 2026 released 2026-05-06 with the reaction session 2026-05-07 -- the same after-close pattern", "date": "2026-08-06", "source": "https://www.sec.gov/Archives/edgar/data/0001190723/000117184326005396/f6k_081026.htm"}
+  ],
+  "new_in_release": [
+    {"line": "reported_quarter", "expect": "unknown -- not researched for sizing because the release falls outside the scored window"},
+    {"line": "guidance", "expect": "unknown -- Q4 outlook and any buyback news arrive with the after-close release on 2026-11-04, priced on 2026-11-05, outside the window"}
+  ],
+  "bar": "unsourced -- not needed: no print lands inside the window",
+  "event_confirmed": false,
+  "session_check": "amc -- the issuer's own conference-call invitation says 'the press release will be issued after market close on Wednesday, November 4th, 2026', with the call on Thursday 5 November at 08:00 a.m. ET; the IR events page lists '2026 Q3 Results 11/04/26 at 6:00 PM EST'. The Milan close on 2026-11-04 is 17:30 CET, so the release lands after the window (close 2026-11-03 -> close 2026-11-04) has closed and the reaction falls on 2026-11-05. The sealed bmo flag (vendor flag -1) is wrong. Sources: https://ir.tenaris.com/static-files/42340848-821f-469b-ac73-682e365afd5e , https://ir.tenaris.com/events-and-presentations",
+  "positioning_check": "CONSOB posizioni nette corte register read 2026-10-30 (https://www.consob.it/documents/11973/395154/PncPubbl.xlsx/fbefe0a2-795b-bad3-9369-beccbeb14f27): Tenaris not named, so 0.0 is the 0.5% truncation floor and not a measurement; anchor_covered false, no positioning anchor; building/covering not observable. Not load-bearing because no print is in the window.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Tenaris Q3 2026 results, issued after the market close on 2026-11-04 with the call before the Milan open on 2026-11-05; the reaction session is 2026-11-05, outside this window. Not researched for direction or sized, because it cannot score here.", "expected_impact_pct": 0.0, "resolves_by": "2026-11-05", "source": "https://ir.tenaris.com/static-files/42340848-821f-469b-ac73-682e365afd5e"}
+  ],
+  "searched_and_found_nothing": [
+    "ir.tenaris.com/events-and-presentations, /news-releases, /financial-calendar: curl returned 403 on all three; WebFetch read the events page (Q3 Results 11/04/26 6:00 PM EST; call 11/05/26 8:00 AM EST) and the invitation PDF, read with pdftotext",
+    "EDGAR submissions and atom for CIK 1190723: the most recent 6-K is from 2026-08-10, and no Q3 date notice has been furnished there yet",
+    "orafinanza.it Tenaris calendario finanziario 2026: Q3 on 4 novembre with the call 'il giorno seguente prima dell'apertura di Piazza Affari', which agrees with the after-close release",
+    "The direction hunt (peers, OCTG pricing, rig counts, buyback) was deliberately not run once the release was confirmed outside the window"
+  ],
+  "rejected_candidates": [
+    {"candidate": "The Q3 2026 print itself (quarter results, Q4 outlook)", "source": "https://ir.tenaris.com/static-files/42340848-821f-469b-ac73-682e365afd5e", "reason": "outside_window", "detail": "release after market close 2026-11-04; the reaction session is 2026-11-05"}
+  ],
+  "baseline_tension": "None to resolve: the baseline's lean (-0.10, all run-up) and its 5-day run-up (-3.8%) are the only inputs left for this window, and nothing found cuts for or against them.",
+  "language_note": [
+    "The Italian calendar (orafinanza.it) carried the 4 novembre date with the call 'il giorno seguente prima dell'apertura di Piazza Affari', which implies an after-close release. The English IR invitation stated it outright and was the deciding source, so the Italian source corroborated and added nothing the English one did not."
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 2.15,
+    "p_up": 50,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": [
+    "Nothing changed. The LESSONS rule on session checks (Adocia/Philogen/VIGO: sealed bmo, released after the close) matches this case and only confirmed that session_check should open with the verdict and the issuer's timestamp, which the draft already did."
+  ],
+  "sources_used": 5
+}
