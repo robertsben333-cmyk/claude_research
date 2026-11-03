@@ -37,3 +37,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-11-03 14:12 UTC
 - source research/2026/11/2026-11-02/edge-panel, 09:12 ET
+
+## Stage M — morning exit review — done
+- Logged at 2026-11-03 14:15 UTC
+- 10 names (source 2026-11-02 edge-panel): LIFE limit 51.00, ICHR open, DOCN close, CHGG limit 0.65, UPST close, IBTA 10:00, VITL limit 8.35, INSP open, HLF 10:00, AEHR open. Previous morning 2026-11-02 has no morning-advice.json, nothing resolved. Pool: 50 names/8 days, review_minus_static -0.065 (t -0.18). HLF and AEHR launched late (8-subagent cap), all 10 in before compile at 09:15 ET.
