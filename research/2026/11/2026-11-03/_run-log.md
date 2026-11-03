@@ -69,3 +69,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-03 19:01 UTC
 - All four judges 20/20 (pinned agents, one part, no fallback, no retry). Selected (panel_pct >= 80, all four present): TREE L 95, SEDG S 87, CRCT L 86, DUOL S 81 (3-of-4 rule picks TREE SEDG CRCT; DUOL is 2 of 4). Next ALAB 78. Stage E edge/ absent. Note written.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-03 19:04 UTC
+- 19:03 UTC (14:03 ET): plan, then open --submit --no-flatten. 4 market orders, all filled: longs TREE 124 @28.28 (125 planned, partial reported), CRCT 439 @6.04; shorts SEDG 85 @31.85, DUOL 16 @132.98. Gross ~$11,010 planned, 99.6% of $11,054 equity, net ~+$1,335. Mean execution cost vs mid +0.246 (TREE and SEDG ~0.33 half-spreads). Exits dated 2026-11-04 (amc -> open, bmo -> market on the next run).
