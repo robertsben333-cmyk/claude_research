@@ -4327,6 +4327,349 @@
   ]
  },
  {
+  "id": "us/2026-11-03/SMCI",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "SMCI",
+   "event_date": "2026-11-03",
+   "session": "amc",
+   "as_of_utc": "2026-11-03T18:11:02+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-03",
+    "spot": 31.7747,
+    "run_up_5d_pct": -9.45,
+    "run_up_20d_pct": -26.89,
+    "pct_from_52w_high": -37.39,
+    "pct_from_52w_low": 54.77,
+    "realised_vol_20d_annualised_pct": 78.7,
+    "avg_volume_20d": 35565259
+   },
+   "cik": "0001375365",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-10-20",
+      "session": "amc",
+      "move_pct": 9.55
+     },
+     {
+      "event_date": "2026-08-11",
+      "session": "amc",
+      "move_pct": 19.02
+     },
+     {
+      "event_date": "2026-07-21",
+      "session": "amc",
+      "move_pct": 19.84
+     },
+     {
+      "event_date": "2026-05-05",
+      "session": "amc",
+      "move_pct": 24.54
+     },
+     {
+      "event_date": "2026-02-03",
+      "session": "amc",
+      "move_pct": 13.78
+     },
+     {
+      "event_date": "2025-11-04",
+      "session": "amc",
+      "move_pct": -11.33
+     },
+     {
+      "event_date": "2025-10-23",
+      "session": "bmo",
+      "move_pct": -8.72
+     },
+     {
+      "event_date": "2025-08-05",
+      "session": "amc",
+      "move_pct": -18.29
+     }
+    ],
+    "n": 8,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 16.04,
+    "max_abs_move_pct": 24.54,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 14,
+    "median_gap_days": 77,
+    "ratio": 0.18,
+    "last_print": "2026-10-20",
+    "verdict": "unknown",
+    "reason": "Off 'suspect' to 'unknown', not to fits_cadence. The 'last print' the matcher found on 2026-10-20 is the 8-K pre-announcing preliminary FQ1 revenue and margin, not the results release; the company's own 8-K of that day sets FQ1 FY2027 results for 2026-11-03 after the close (call 5:00 pm ET).",
+    "amended_from": {
+     "verdict": "suspect",
+     "reason": "an event 14 days after the last print does not fit a 77-day cadence; the calendar row may be stale"
+    },
+    "amended_utc": "2026-11-03T18:48:51+00:00",
+    "amended_by": "edge sweep, company-sourced; before any hunter launched",
+    "amended_source": "https://www.sec.gov/Archives/edgar/data/0001375365/000137536526000025/smcifirstquarterfy2027busi.htm"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-06",
+    "days_to_expiry": 3,
+    "atm_strike": 32.0,
+    "atm_iv_pct": 177.9,
+    "straddle_implied_move_pct": 14.9,
+    "event_implied_move_pct": 13.73,
+    "event_implied_move_basis": "14.9% straddle over 3 calendar days less 7.26% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 16.69,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.23,
+    "total_open_interest": 288264,
+    "atm_spread_frac_of_mid": 0.016,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 8.02,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 13.73,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 0,
+    "event_plausibility": "suspect",
+    "priced_direction_available": true,
+    "tier": "partial",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline.",
+    "history_discount_note": "reaction history is present but not counted toward the tier: the event date does not fit this company's own filing cadence, so the history may describe a reporting regime it no longer follows"
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Revenue: the company's own preliminary range of $18.5-19.5bn (midpoint $19.0bn) and GM of 12.0-12.5%, from the 8-K/press release of 2026-10-20 (https://www.sec.gov/Archives/edgar/data/0001375365/000137536526000025/smcifirstquarterfy2027busi.htm). Sell-side consensus is stale and disputed: revenue $14.94bn (24/7 Wall St., 2026-11-02), $15.8bn (Zacks, 2026-10-30), $17.53bn (TipRanks, 2026-11-03); non-GAAP EPS $1.04 / $1.24 / $1.23 against the company's original Q1 EPS guide of $1.01-1.10. My own arithmetic puts Q1 non-GAAP EPS near $1.8-2.0 ($19bn x 12.25% GM = ~$2.33bn gross profit less ~$0.65bn opex+interest implied by the original guide, ~18% tax, ~730m diluted shares), which is inference, not a source. FY27 bar: company guide $65-72bn (2026-08-11) against FY consensus ~$67.1bn (24/7 Wall St.). The EPS bar is capped small because no two sources agree on it.",
+   "positioning_check": "Short interest 80.1m shares, 14.53% of float, 2.6 days to cover, record date 2026-10-15, down 8.3% from 87.4m in the prior report (MarketBeat, FINRA data published 2026-10-26: https://www.marketbeat.com/stocks/NASDAQ/SMCI/short-interest/). Baseline: 25-delta skew +16.69 vol points (downside paid), put/call open-interest ratio 0.23 (call-heavy open interest), ATM IV 177.9%, event-implied move 13.73%. Run-up -9.45% over 5 days and -26.89% over 20, -37% from the 52-week high. So the skew leans down while the open interest leans long. A 14.5% short is moderately crowded, so negatives are shrunk a little.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "The Q1 FY27 numbers are already public: the company pre-announced revenue of $18.5-19.5bn against its own $14.5-15.5bn guide and GM of 12.0-12.5% against 10.4-10.8%. That implies non-GAAP EPS near $1.8-2.0 (my arithmetic), well above the stale published consensus of $1.04-1.24 and the original EPS guide of $1.01-1.10. The fundamental content is priced. What is not priced is the headline 'EPS beat by ~50-80%' that data feeds will print against stale estimates.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-03",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001375365/000137536526000025/smcifirstquarterfy2027busi.htm",
+    "source_date": "2026-10-20",
+    "reaction_history_on_this_line": "The prelim itself moved the stock +9.55% (baseline, 2026-10-20) and +12% on 2026-10-21 per 24/7 Wall St. All of that was given back by 2026-11-02. Last cycle, the July prelim (+19.84%) was followed by a second large move on the 2026-08-11 print (+19.02%), when the EPS was $1.70 against ~$0.96 expected.",
+    "why_not_priced": "The revenue and margin are priced, so the size is near zero. Only the EPS headline against stale consensus remains: Zacks $1.24 on 2026-10-30, TipRanks $1.23 on 2026-11-03, 24/7 $1.04 on 2026-11-02. Had the Street updated, consensus would sit near $1.8-2.0 and revenue near $19bn. Instead it ranges from $14.94bn to $17.53bn.",
+    "independence": "Consensus figures come from https://finance.yahoo.com/markets/stocks/articles/buy-sell-hold-smci-stock-144900383.html (Zacks, 2026-10-30) and https://www.tipranks.com/news/super-micro-q1-earnings-today-heres-what-analysts-expect-from-smci-stock (2026-11-03). The EPS estimate is my inference from the 8-K.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "The FY27 guide of $65-72bn (given 2026-08-11, FY consensus ~$67.1bn) now has to cover a Q1 of ~$19bn. A reaffirmation implies Q2-Q4 averaging only $15.3-17.7bn a quarter, below Q1, which would read as pull-forward from a lumpy large customer (BofA attributes part of the Q1 upside to SpaceX). Management has a record of guiding above the Street: the Q1 guide of $14.5-15.5bn against ~$11.7bn consensus, and the FY27 guide against ~$52.5bn. It then beat its own Q1 guide by 27%. That makes a raise more likely than a cut, but the bar is a raise, not a reaffirmation.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.fool.com/investing/2026/08/12/super-micro-guided-fiscal-2027-revenue-16-billion/",
+    "source_date": "2026-08-12",
+    "reaction_history_on_this_line": "2026-08-11: the FY27 guide came in ~$16bn above consensus and the Q1 guide above the Street. Stock +8.5% after hours, ~+19% next session (Fool, LongYield), baseline +19.02%. Earlier guides that disappointed (2025-08-05, -18.29%; 2025-11-04, -11.33%) were sold hard.",
+    "why_not_priced": "The stock is 27% below where it stood 20 sessions ago and has erased the whole prelim pop. If the market expected a raise to ~$75bn+, the stock would not have round-tripped the prelim. The call-heavy open interest (P/C 0.23) points the other way, which keeps the size small and the range wide.",
+    "independence": "The guide-above-Street pattern also appears in https://longyield.substack.com/p/super-micro-the-margin-that-blinked (2026-08-12). The SpaceX demand attribution is from BofA via https://www.tipranks.com/news/super-micro-q1-earnings-today-heres-what-analysts-expect-from-smci-stock. The implied-cadence arithmetic is mine.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Gross margin is compressing on mix and memory. Q1 prelim GM of 12.0-12.5% compares with 17.5% GAAP in Q4 FY26. The company's own risk language says a larger-customer focus 'could... lower margins'. Memory cost inflation is industry-wide: Intel's 2026-10-30 forecast blamed memory shortages, Dell called it 'DRAM, DRAM, DRAM', and Micron sees the squeeze lasting through 2028. That points to a Q2 GM guide at or below ~11%, which is the margin line bears watch.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://247wallst.com/investing/2026/11/02/super-micro-drops-5-ahead-of-earnings-as-ai-server-selloff-extends-dell-falls-4-hpe-slides-3/",
+    "source_date": "2026-11-02",
+    "reaction_history_on_this_line": "The Q1 guide of 10.4-10.8% GM, about seven points below Q4, was given 2026-08-11 alongside the big revenue guide, and the stock still rose 19%. So this name has looked through margin guides when revenue guides were strong.",
+    "why_not_priced": "Partly priced: the sector sold off 10-30 and 11-02 on exactly this, and the put skew agrees. That makes it a sign with the skew, sized small. The unpriced part is whether SMCI guides Q2 GM below the Q1 level. No company number on Q2 GM exists yet.",
+    "independence": "The company's risk language is in the 2026-10-20 8-K (https://www.sec.gov/Archives/edgar/data/0001375365/000137536526000025/smcifirstquarterfy2027busi.htm). Memory-cycle context is at https://computerworld.com/article/4229635/memory-squeeze-set-to-tighten-through-2028-micron-says-3.html. Both are proxies for SMCI's Q2 GM.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "The CFO changed in the middle of the Q1 close. David Weigand left as CFO on 2026-10-14 and Mark Long (ex-Western Digital CFO, 2016-2019) was appointed effective immediately, per the 8-K Item 5.02. Long's first call is this print. A new CFO three weeks in tends to guide conservatively and may reframe cash and working-capital disclosure. The change also closes a special-committee recommendation from 2024.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.sec.gov/Archives/edgar/data/1375365/000137536526000024/smci-20261014.htm",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "No print under a new CFO exists in this name's history. The stock fell ~5% on 2026-10-15, but that day was attributed to Barclays' cut of Dell and HPE (24/7 Wall St.).",
+    "why_not_priced": "The change itself is public and was covered (CFO Dive, Business Wire). Its effect on how the guide is framed is not priced and cannot be, until the call. If the market expected a conservative reset, the skew would be even more negative, but it is already +16.7.",
+    "independence": "https://www.cfodive.com/news/super-micros-cfo-out-change-accounting-leadership-ai/833213/ (2026-10-16) on the 2024 committee's call for a new CFO and on the internal-control remediation entering a second year.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Positioning into the print. The stock is -26.9% over 20 days and -37% from its 52-week high, and has fully erased the +12% prelim reaction. Short interest is 14.5% of float (2.6 days to cover, 2026-10-15). Option open interest is call-heavy (P/C 0.23) while the 25-delta skew is +16.7 vol points to puts. The last five print reactions were all positive (+9.6% to +24.5%), after three negative reactions in 2025.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.marketbeat.com/stocks/NASDAQ/SMCI/short-interest/",
+    "source_date": "2026-10-26",
+    "reaction_history_on_this_line": "Baseline: 2026-02-03 +13.78, 2026-05-05 +24.54, 2026-07-21 +19.84, 2026-08-11 +19.02, 2026-10-20 +9.55. Earlier: 2025-08-05 -18.29, 2025-10-23 -8.72, 2025-11-04 -11.33.",
+    "why_not_priced": "This sign goes against the put skew. Why the option market may be wrong for this print: the skew and the 20-day drawdown track a sector rout (Intel 10-30, Dell -11%, HPE -7% the same day) and a known governance overhang, not a change in SMCI's own numbers, which moved up on 10-20. That argument is weak, so the size is small. If shorts had covered into the print, short interest would have fallen more than 8% and the skew would be flatter.",
+    "independence": "Sector rout dating: https://247wallst.com/investing/2026/11/02/super-micro-drops-5-ahead-of-earnings-as-ai-server-selloff-extends-dell-falls-4-hpe-slides-3/. Skew, P/C ratio and history come from the sealed baseline.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Funding and working capital: FY26 operating cash flow was -$6.8bn, there were $34.2bn of non-cancelable purchase commitments at June 30, 2026, ~$8.7bn of debt, and a $1.25bn ATM program in place since the June 2026 $5bn common-plus-mandatory-convertible raise at $27.50. A $19bn quarter likely consumed more working capital, and a further raise or ATM use could be disclosed with the print. What the money buys is visible demand: revenue 27% above guide, a record backlog and $60bn+ of FY26 orders. That makes this financing a ramp, not distress.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001375365/000137536526000022/smci-20260630.htm",
+    "source_date": "2026-08-31",
+    "reaction_history_on_this_line": "June 2025 convertible: stock fell on dilution concerns (Benzinga). The June 2026 raise priced at $27.50, about 13% below today's spot. No in-window raise has followed a print in the baseline history.",
+    "why_not_priced": "The cash burn is a known bear point (24/7 Wall St., 11-02). Whether Q1 cash conversion improved, as the old CFO said tighter backlog terms would, or worsened is unseen until the release. [sizing note removed]. The downside tail is a fresh equity raise at a depressed price.",
+    "independence": "Raise terms: https://www.panabee.com/news/supermicro-secures-5-billion-in-underwritten-financing-to-fund-39-billion-ai-backlog (2026-06-12, an AI-generated summary). Cash-flow figure confirmed at https://247wallst.com/investing/2026/11/03/super-micro-climbs-4-ahead-of-earnings-as-ai-server-stocks-bounce-hewlett-packard-enterprise-rallies-6-dell-gains-5/.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Legal and controls overhang. The FY26 10-K (2026-08-31) says the board's independent export-control investigation (Munger Tolles and AlixPartners) found no evidence that current senior management knew of the alleged diversion scheme. SEC, DOJ grand-jury and BIS inquiries remain open and the company says it has not been told it is a target. One IT-general-controls material weakness remains, so ICFR was not effective as of 2026-06-30. Any update on the call or in the 10-Q could move the stock either way.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001375365/000137536526000022/smci-20260630.htm",
+    "source_date": "2026-08-31",
+    "reaction_history_on_this_line": "The co-founder indictment in March 2026 sent shares sharply lower (HL, CNN 2026-03-19). Since the 10-K's findings were published, the reaction to governance items has not been isolated.",
+    "why_not_priced": "Mostly priced. Bears cite the review (24/7, 11-02/11-03) and the stock trades at 0.28x forward sales (Zacks). Only a new development in the 10-Q would be unpriced, and none is known.",
+    "independence": "https://www.cfodive.com/news/super-micros-cfo-out-change-accounting-leadership-ai/833213/ on the controls remediation. The investigation findings come from the same 10-K, so this shares a document with the financing finding (different sections).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Demand read from the largest buyers, reported after SMCI last spoke on 10-20: Alphabet lifted its 2026 capex range to $180-190bn from $175-185bn, Meta narrowed its range upward to $135-145bn and signalled aggressive investment beyond 2026, and Amazon said it will spend 'meaningfully more in 2027'. This supports a FY27 revenue raise rather than a cut.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://know.creditsights.com/insights/tech-raising-hyperscaler-capex-2026-estimates/",
+    "source_date": "2026-10 (search-snippet figures; exact dates not verified from the page)",
+    "reaction_history_on_this_line": "No isolated reaction is on record. The AI-server group traded off this mid-October, then sold off on Intel's 10-30 memory warning anyway.",
+    "why_not_priced": "Largely priced into the sector. This is macro-to-company transmission: SMCI's largest customers are reportedly xAI/SpaceX and neoclouds, not these four, so it is a proxy and sized small.",
+    "independence": "Proxy only. The capex figures come from search snippets aggregating several sources (https://www.hl.co.uk/news/ai-hyperscalers-are-expected-to-finish-the-year-spending-a-whopping-828-billion-on-capex), with conflicting numbers for Microsoft and Amazon.",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Dell's late-November report is the next counterparty read on AI-server demand and memory-driven margins, and it falls after this window.",
+    "resolves_by": "2026-11-25",
+    "source": "https://247wallst.com/investing/2026/11/03/super-micro-climbs-4-ahead-of-earnings-as-ai-server-stocks-bounce-hewlett-packard-enterprise-rallies-6-dell-gains-5/",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Taiwan ODMs (Quanta, Wiwynn, Wistron) publish October monthly revenue in the first ten days of November. These are AI-server read-throughs and probably arrive after the exit.",
+    "resolves_by": "2026-11-10",
+    "source": "https://digitimes.com/tag/quanta/001803.html",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "A 24/7 Wall St. line saying the stock 'plummeted 27% in Friday morning trading after federal prosecutors charged three company associates'",
+    "source": "https://247wallst.com/investing/2026/11/02/amd-arista-supermicro-earnings-previews-can-ai-infrastructure-shake-off-fridays-rout/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Yahoo story 'Supermicro stock plummets as Q1 earnings, revenue fall short'",
+    "source": "https://finance.yahoo.com/news/supermicro-stock-plummets-as-q1-earnings-revenue-fall-short-of-wall-street-estimates-211659694.html",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "Board refresh: Judy Lin retired, Shesha Krishnapura (ex-Intel IT CTO) appointed independent director, 2026-10-08",
+    "source": "https://www.sec.gov/Archives/edgar/data/1375365/000137536526000023/smci-20261007.htm",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SMCI.json",
+    "text": "SambaNova inference-rack collaboration",
+    "source": "https://247wallst.com/investing/2026/11/03/super-micro-climbs-4-ahead-of-earnings-as-ai-server-stocks-bounce-hewlett-packard-enterprise-rallies-6-dell-gains-5/",
+    "first_hunter_reason": "duplicate",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SMCI.json",
+    "text": "Q2 FY27 consensus revenue/EPS: no source found",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SMCI.json",
+    "text": "Charles Liang interviews or customer-specific shipment commentary after 2026-10-20: none found",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SMCI.json",
+    "text": "Taiwan ODM October 2026 monthly sales: not yet published",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SMCI.json",
+    "text": "Customer-concentration percentages in the FY26 10-K: the tagged customers One-Four have no values in the readable text",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SMCI.json",
+    "text": "Q4 FY26 call transcript for FY27 quarterly cadence: nasdaq.com returned 503; no secondary source gave the phasing",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SMCI.json",
+    "text": "Form 4 cluster on 2026-10-29 (six filers): reporting owners and transaction codes not read; same filers as the regular Aug/Sep cadence, likely routine director/officer filings",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SMCI.json",
+    "text": "Schaeffer's 2026-10-29 options/bear-signal note: 503",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SMCI.json",
+    "text": "Benzinga 'Super Micro Stock Slips' (Nov 2026): 403",
+    "i": 21
+   }
+  ]
+ },
+ {
   "id": "us/2026-11-03/TARS",
   "hunter_definition": ".claude/agents/unpriced-hunter.md",
   "lessons_file": "researcher_us/LESSONS.md",
