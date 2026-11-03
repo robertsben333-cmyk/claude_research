@@ -23,3 +23,7 @@
 - Logged at 2026-11-03 15:00 UTC
 - TIT: event_confirmed false — TIM moved its Q3 board to 2026-11-10 (Teleborsa/Borsa Italiana 2026-10-06); vendor date stale.
 - TEN: event_confirmed false for the sealed bmo window — Tenaris releases after the close on 11-04 (ir.tenaris.com invitation), reaction 11-05. Baseline is sealed and not revised; the real print is outside this run's window and is in no sample.
+
+## Stage EU — wave 2 partial
+- Logged at 2026-11-03 15:03 UTC
+- BPE: event_confirmed false — BPER board 11-04, release 11-05 ~07:00 CET (emarketstorage calendar 2026-08-06, call invite 2026-10-27). Not rankable; scorer drops event_confirmed false.
