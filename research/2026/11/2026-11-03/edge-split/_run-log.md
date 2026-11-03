@@ -19,3 +19,7 @@
 ## Split panel 4/4 — STARTED
 - Logged at 2026-11-03 18:37 UTC
 - OUST CRCT SEDG LIME DIN, E-P's sweep and baselines from d441df90, confirmed names by hunt_priority cut at 20; claimed 18:35:50 UTC
+
+## Split panel 3/4 — searchers done
+- Logged at 2026-11-03 18:38 UTC
+- 5 of 5 returned by 18:38 UTC (launched ~18:30); guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished of 5)
