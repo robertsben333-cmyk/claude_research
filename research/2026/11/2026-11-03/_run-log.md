@@ -65,3 +65,7 @@
 ## Edge hunt (panel) — SMCI baseline amended
 - Logged at 2026-11-03 18:49 UTC
 - edge_score first marked SMCI not rankable (event_plausibility suspect: the 2026-10-20 'last print' is its FQ1 pre-announcement 8-K, not the results release). Amended suspect -> unknown with edge_baseline_amend.py from the company's 8-K, AFTER the searchers had run (the skill asks for before; the sweep confirmation came in the same pass but the amend step was missed). No other hunted name was suspect. Rescored; packs rebuilt with 20 names, judges launched 18:49 UTC.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-11-03 19:01 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback, no retry). Selected (panel_pct >= 80, all four present): TREE L 95, SEDG S 87, CRCT L 86, DUOL S 81 (3-of-4 rule picks TREE SEDG CRCT; DUOL is 2 of 4). Next ALAB 78. Stage E edge/ absent. Note written.
