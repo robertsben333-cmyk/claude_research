@@ -6,7 +6,7 @@ Stage E-PS runs beside stage E-P on E-P's own names, sweep and sealed baselines 
 - **Guard:** it moved nothing. Every hunt was written before 16:00 ET.
 - **Search budget:** no searcher reported running out (search_complete true on 5 of 5). TARS and W hit site-level 403/429 refusals only.
 - **SMCI:** `edge_score.py` did not rank it ("event date does not fit the filing cadence"), so it was neither packed nor judged.
-- **Timing:** claimed 18:17 UTC, scored 18:40 UTC.
+- **Timing:** claimed 18:27 UTC, done about 18:42 UTC (15 minutes).
 
 ## Panel (as `panel_score.py --dry-run --stage E-PS` printed it)
 
