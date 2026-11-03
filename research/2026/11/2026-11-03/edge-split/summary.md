@@ -2,7 +2,7 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 2 of 4. Names scored by both arms: 0 of 20. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
+Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 3 of 4. Names scored by both arms: 0 of 20. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
 
 Selected by E-P: none. By the split: TREE. Both: none.
 
@@ -35,7 +35,7 @@ Mean findings per name, E-P / split: 7.88 / 7.93. Mean sources: 18.88 / 16.8. Me
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | DUOL, TREE, MQ, TOST, XPEL | opus5, opus55, sonnet55, fable51 | 18:27 | 14 |
 | 2 | done | SMCI, TARS, CAR, ALAB, W | opus5, opus55, sonnet55, fable51 | 18:27 | 15 |
-| 3 | claimed | NVTS, RVLV, FRSH, HUT, RIOT | opus5, opus55, sonnet55, fable51 | 18:28 | n/a |
+| 3 | done | NVTS, RVLV, FRSH, HUT, RIOT | opus5, opus55, sonnet55, fable51 | 18:28 | 16 |
 | 4 | claimed | OUST, CRCT, LIME, SEDG, DIN | n/a | 18:33 | n/a |
 
 E-P's panel was scored n/a with n/a.
