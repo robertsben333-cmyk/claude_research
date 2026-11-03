@@ -29,3 +29,7 @@
 - Logged at 2026-11-02 16:20 UTC
 - Sealed for 2026-11-03 (Tue) at ~15:50 UTC Mon (intraday spots). 66 scheduled, 43 eligible, 20 drawn; COFA shed as duplicate of 11-02's Coface hunt; 19 hunted, all search_complete, 19 ranked. Top NOBA +0.70, OKEA +0.60; bottom FME -1.40, REJL_B -0.60; none above floor 2.8. All bmo (hunters confirmed from issuer notices; BOSS date-only). anchor_covered 9/19; es+pl 0; de 7. MULTI/REJL_B merger-linked (one exposure). Panel 4/4 members, no fallback (sonnet55 did not open the market hunter defs): 1 selected, FME short (3/4, pct 81). Note: europe/europe-note.md. No orders.
 - FLAG: no EU run resolved since 2026-10-16; Nordic rows of 10-19..10-23 are past the ~12-day feed window. Resolve this run by ~2026-11-12. Pushing to main (EARNINGS_DATA_BRANCH=main).
+
+## Close AMC — 2026-11-03 11:11 UTC
+- Logged at 2026-11-03 11:16 UTC
+- Guard mode --require-exit-tif opg: exit 0 (amc open as day). verify: 14 legs, nothing held, no UNFILLED leg. close --submit: no leg due today, nothing sent, no refusals (market closed at 06:11 ET; account reachable). status: no open position.
