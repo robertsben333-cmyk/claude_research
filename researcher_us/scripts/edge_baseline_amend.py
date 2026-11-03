@@ -73,16 +73,15 @@ from pathlib import Path
 # is where they can actually affect a number. Rewriting this table to {} rather than
 # leaving the 2026-09-10 entries in place is the point of the staleness guard below.
 AMENDMENTS: dict[str, tuple[str, str, str]] = {
-    # 2026-10-21, stage E-PI 12:00 snapshot (edge-intraday-1200), applied from that
-    # snapshot's sweep BEFORE any searcher launched. One hunted name read 'suspect'.
-    "THRM": ("unknown",
-             "Off 'suspect' to 'unknown', not to fits_cadence. The baseline finds no "
-             "earnings filing since 2026-04-23 (182 days against a 91-day cadence); this "
-             "sweep did not establish whether a Q2 filing was missed by the matcher or "
-             "delayed around the Modine SpinCo combination, so the history has not "
-             "earned a full verdict. The company announced Q3 results for 2026-10-22 "
-             "ahead of an 8:00 am ET call.",
-             "https://finviz.com/news/400877/gentherm-announces-date-for-2026-third-quarter-news-release-and-conference-call"),
+    # 2026-11-03, stage E-P (edge-panel). Applied AFTER the searchers had run, which
+    # the skill asks to avoid; recorded in the run log. One hunted name read 'suspect'.
+    # Symmetry: no other hunted name carries suspect or cadence_implausible.
+    "SMCI": ("unknown",
+             "Off 'suspect' to 'unknown', not to fits_cadence. The 'last print' the "
+             "matcher found on 2026-10-20 is the 8-K pre-announcing preliminary FQ1 "
+             "revenue and margin, not the results release; the company's own 8-K of that "
+             "day sets FQ1 FY2027 results for 2026-11-03 after the close (call 5:00 pm ET).",
+             "https://www.sec.gov/Archives/edgar/data/0001375365/000137536526000025/smcifirstquarterfy2027busi.htm"),
 }
 
 # SYMMETRY, 2026-09-22: one upgrade and no downgrades, which needs stating rather
