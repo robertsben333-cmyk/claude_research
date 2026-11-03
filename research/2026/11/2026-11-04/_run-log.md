@@ -43,3 +43,9 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-03 15:20 UTC
 - 19/19 hunts banked, all search_complete. LRE +0.1. 15 ranked, none above floor 2.8; top BUR/SOFF +1.30, bottom TRN -1.90. Not ranked: EVK BPE TEN TIT (no event in window), SOLAR_B (shed). 15 packs, four -intl- judges.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-11-03 15:28 UTC
+- Sealed for 2026-11-04 (Wed) at ~14:45 UTC Tue (intraday spots). 102 scheduled, 64 eligible, 20 drawn; SOLAR_B shed (duplicate of 11-03); 19 hunted, all search_complete; 15 ranked; EVK BPE TEN TIT not ranked (no release in window: stale/wrong vendor dates). Top BUR/SOFF +1.30, bottom TRN -1.90; none above floor 2.8.
+- Panel: 4/4 members, 15/15 each, no fallback (sonnet55 reported it skipped the hunter definitions). Selected BUR long (4/4, pct 85) and BSL short (3/4, pct 85). BUR's session corrected to in-session (13:00 GMT) by its hunter; baseline sealed amc, not revised.
+- anchor_covered 7/20 sealed (6/15 ranked) — corrects the '8/20' in the seal entry. es+pl 0. Resolve by ~2026-11-12 (Nordic window). Pushing to main (EARNINGS_DATA_BRANCH=main).
