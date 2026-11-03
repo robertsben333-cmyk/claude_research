@@ -27,3 +27,7 @@
 ## Stage EU — wave 2 partial
 - Logged at 2026-11-03 15:03 UTC
 - BPE: event_confirmed false — BPER board 11-04, release 11-05 ~07:00 CET (emarketstorage calendar 2026-08-06, call invite 2026-10-27). Not rankable; scorer drops event_confirmed false.
+
+## Stage EU — wave 2 banked
+- Logged at 2026-11-03 15:05 UTC
+- SAMPO +0.45, AKER +0.55, BPE/TEN/TIT event_confirmed false (not rankable). All search_complete true. Wave 3 launched: BOUV ODF SOFF CHEF BTRW.
