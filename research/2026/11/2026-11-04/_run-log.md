@@ -35,3 +35,7 @@
 ## Stage EU — wave 3 banked
 - Logged at 2026-11-03 15:13 UTC
 - BOUV +1.2, ODF +0.6, SOFF +1.3, CHEF -0.5, BTRW -1.2. All event_confirmed, all search_complete. Wave 4 launched: BUR LRE SNWS TRN.
+
+## Stage EU — wave 4 partial
+- Logged at 2026-11-03 15:20 UTC
+- SNWS -1.4, TRN -1.9, BUR +1.3. BUR session corrected by hunter: release 4 Nov 13:00 GMT (RNS 26 Oct), inside the London session, so session_check opens bmo; sealed baseline said amc (close 11-04 -> 11-05). Baseline not revised; eu_resolve reads the hunter's session_check.
