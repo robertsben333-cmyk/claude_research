@@ -53,3 +53,11 @@
 ## Edge hunt (panel) — waves 2-3
 - Logged at 2026-11-03 18:37 UTC
 - Finished, search_complete true per hand-backs: TARS NVTS DUOL CRCT OUST TREE SMCI RVLV. OUST settled amc from the company's own release. Running: MQ FRSH TOST ALAB CAR LIME W HUT (launched 18:40-18:51 UTC). To launch as slots free: RIOT SEDG XPEL DIN. SMCI's searcher left a stray placeholder file at the repo root; removed before publishing.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-03 18:48 UTC
+- 20/20 searchers returned by 18:47 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20. Sessions settled from company releases: OUST amc, LIME amc, DIN bmo. mode: execution enabled, amc_open. flatten --submit at 18:48 UTC (13:48 ET): 8 positions held from 2026-11-02's book (DOCN 18, HLF -79, IBTA -28, ICHR 46, INSP 19, LIFE 42, UPST -70, VITL -155), all closed; flatten reported 'closed'. Note: those legs were dated to exit 11-03 (amc at the open) but were still held at 13:48 ET.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-03 18:48 UTC
+- 20 packs, four judges, one part. Account flat after 3s (equity $11,054.21). edge_score and V2 grounded written ~18:50 UTC, before the first print.
