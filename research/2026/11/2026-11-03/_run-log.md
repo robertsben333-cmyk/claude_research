@@ -45,3 +45,7 @@
 ## Edge hunt (panel) — 2026-11-03 amc + 2026-11-04 bmo — STARTED
 - Logged at 2026-11-03 18:21 UTC
 - Stage E-P fire; session began 18:08 UTC (13:08 ET). Universe 265 names (135 amc 11-03, 130 bmo 11-04; GEF.B and HVT.A folded), baselines sealed for all 265 in edge-panel/baselines by 18:21 UTC before any agent. Plan: one edge-sweep, up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-11-03 18:25 UTC
+- Sweep finished 18:25 UTC (22 of 265 checked): 21 company-confirmed (amc 11-03: SMCI DUOL NVTS OUST TREE TARS RVLV CRCT MQ FRSH TOST ALAB CAR LIME; bmo 11-04: W HUT RIOT SEDG XPEL DIN CRCL), VRNS unconfirmed, 0 phantoms, 243 unchecked. Sessions unsettled: OUST LIME DIN CRCL. Cap 20: CRCL shed (lowest priority 34, session unsettled), VRNS shed (unconfirmed), 243 unchecked shed. Searchers unpriced-searcher, amc first, at most 8 per turn. Wave 1: SMCI DUOL NVTS OUST TREE TARS RVLV CRCT.
