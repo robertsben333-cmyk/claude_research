@@ -15,3 +15,7 @@
 ## Stage EU — wave 2 partial
 - Logged at 2026-11-04 14:57 UTC
 - AUTO +0.8, FBK +0.35 (event confirmed from issuer calendar). Running: DIS DEZ ORSTED ENX. Wave 3 launched early: HFG CAPMAN LR ZV (NRC next).
+
+## Stage EU — progress
+- Logged at 2026-11-04 14:59 UTC
+- DIS +2.5 (release mid-session ~12:00 CET, inside bmo window), ORSTED +0.1. ORSTED hunter: second DK register join miss (Ørsted A/S 0.54% listed, baseline 0.0) — systematic for Danish names; baselines not revised. SFQ launched.
