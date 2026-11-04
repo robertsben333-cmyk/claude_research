@@ -85,3 +85,11 @@
 ## Edge hunt (panel) — waves 2-3
 - Logged at 2026-11-04 18:23 UTC
 - 18:23 UTC. Finished, search_complete true per hand-backs: CHYM LEU FSLY ROOT BYND RUN. Running: SEZL WOLF FIG ELF JOBY CAVA LMND OSCR. To launch: NVAX PTON CELH CORZ EOSE U.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-04 18:39 UTC
+- 20/20 searchers returned by 18:39 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20. FIG settled amc from the company release. mode: execution enabled, amc_open. flatten --submit at 18:39 UTC: 4 positions held from 2026-11-03's book (CRCT 439, DUOL -16, SEDG -85, TREE 125; unrealised +48.3% / -30.0% / +3.4% / +35.7% as printed), all closed; flatten reported 'closed'. These legs were dated to exit 11-04 (amc at the open) but were still held at 13:4x ET.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-04 18:39 UTC
+- edge_score and V2 grounded written 18:39 UTC, before the first print. Packs built; four judges, one part. Account flat after 3s.
