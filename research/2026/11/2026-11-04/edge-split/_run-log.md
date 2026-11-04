@@ -11,3 +11,7 @@
 ## Split panel 1/4 — STARTED
 - Logged at 2026-11-04 18:16 UTC
 - SEZL LMND WOLF FIG CELH, E-P's sweep and baselines from 124be23d, confirmed names by hunt_priority cut at 20; claimed 18:12 UTC
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-11-04 18:16 UTC
+- ROOT RUN PTON CAVA U, E-P's sweep and baselines from 124be23d, confirmed names by hunt_priority cut at 20
