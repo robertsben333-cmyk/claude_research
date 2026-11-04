@@ -97,3 +97,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-04 18:51 UTC
 - All four judges 20/20 (pinned agents, one part, no fallback, no retry). Selected (panel_pct >= 80, all four present): U L 93, CAVA S 85, BYND S 82 (3-of-4 rule picks the same three). Next ROOT 79. Stage E edge/ absent. Note written 18:51 UTC.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-04 18:52 UTC
+- 18:52 UTC (13:52 ET): plan, then open --submit --no-flatten. 2 market orders, both filled: long U 154 @ 42.11, short CAVA 100 @ 64.50 (filled in two parts). BYND (selected, short 82) dropped: not shortable at Alpaca; its share went to the other two. Gross ~$12,950 planned, 99.4% of $13,024 equity, net ~+$16. Mean execution cost vs mid +0.286 (CAVA 0.52 against a 0.82 half-spread). Exits dated 2026-11-05 (CAVA amc -> open, U bmo -> market on the next run).
