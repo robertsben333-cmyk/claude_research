@@ -23,3 +23,7 @@
 ## Stage EU — progress
 - Logged at 2026-11-04 15:03 UTC
 - ENX +1.7 (17:45 CET release, amc confirmed), DEZ -1.0, HFG -0.1, CAPMAN -0.4. 13/20 banked. All 20 launched; running LR ZV NRC SFQ SMHN PKO INISS_B SKA_B.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-04 15:11 UTC
+- 20/20 hunts banked, all search_complete, all event_confirmed; 20 ranked, none above floor 2.8. Top ASC/DIS +2.50, bottom ZV -1.60. 20 packs, four -intl- judges.
