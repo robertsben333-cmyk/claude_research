@@ -81,3 +81,7 @@
 ## Edge hunt (panel) — correction
 - Logged at 2026-11-04 18:15 UTC
 - The wave-1 line says the sweep finished ~18:30 UTC; it finished ~18:13 UTC and wave 1 launched 18:16 UTC. Remaining 12 (FIG ELF JOBY CAVA, then bmo LMND OSCR NVAX PTON CELH CORZ EOSE U) launch in later turns as slots free.
+
+## Edge hunt (panel) — waves 2-3
+- Logged at 2026-11-04 18:23 UTC
+- 18:23 UTC. Finished, search_complete true per hand-backs: CHYM LEU FSLY ROOT BYND RUN. Running: SEZL WOLF FIG ELF JOBY CAVA LMND OSCR. To launch: NVAX PTON CELH CORZ EOSE U.
