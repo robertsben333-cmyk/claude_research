@@ -77,3 +77,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-11-04 18:15 UTC
 - Sweep finished ~18:30 UTC (26 of 504 checked): 22 company-confirmed, 4 unconfirmed (DAVE WRBY HUBS SNAP), 0 phantoms, 478 unchecked. FIG session unsettled (prior calls 5pm ET; searcher told to settle). Cap 20: unconfirmed 4 shed, SHAK (46) and TRIP (48) shed on lowest hunt_priority, 478 unchecked shed. No hunted baseline suspect; SEZL and EOSE cadence_implausible (history not an earnings base rate, searchers told). Searchers unpriced-searcher, amc first, at most 8 per turn. Wave 1: SEZL BYND LEU ROOT WOLF FSLY CHYM RUN.
+
+## Edge hunt (panel) — correction
+- Logged at 2026-11-04 18:15 UTC
+- The wave-1 line says the sweep finished ~18:30 UTC; it finished ~18:13 UTC and wave 1 launched 18:16 UTC. Remaining 12 (FIG ELF JOBY CAVA, then bmo LMND OSCR NVAX PTON CELH CORZ EOSE U) launch in later turns as slots free.
