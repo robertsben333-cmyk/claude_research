@@ -93,3 +93,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-04 18:39 UTC
 - edge_score and V2 grounded written 18:39 UTC, before the first print. Packs built; four judges, one part. Account flat after 3s.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-11-04 18:51 UTC
+- All four judges 20/20 (pinned agents, one part, no fallback, no retry). Selected (panel_pct >= 80, all four present): U L 93, CAVA S 85, BYND S 82 (3-of-4 rule picks the same three). Next ROOT 79. Stage E edge/ absent. Note written 18:51 UTC.
