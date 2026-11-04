@@ -57,3 +57,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-11-04 14:15 UTC
 - source research/2026/11/2026-11-03/edge-panel, 09:15 ET, 9 picks (ALAB CRCT DUOL FRSH MQ SEDG TARS TREE XPEL); 8 analysts launched, XPEL waiting on concurrency limit (8)
+
+## Stage M — scored 2026-11-03
+- Logged at 2026-11-04 14:16 UTC
+- pool: 60 names / 9 days; review mean -0.17% (t -0.12), static +0.43% (t 0.31), review_minus_static -0.60 (t -1.22)
