@@ -19,3 +19,7 @@
 ## Stage EU — progress
 - Logged at 2026-11-04 14:59 UTC
 - DIS +2.5 (release mid-session ~12:00 CET, inside bmo window), ORSTED +0.1. ORSTED hunter: second DK register join miss (Ørsted A/S 0.54% listed, baseline 0.0) — systematic for Danish names; baselines not revised. SFQ launched.
+
+## Stage EU — progress
+- Logged at 2026-11-04 15:03 UTC
+- ENX +1.7 (17:45 CET release, amc confirmed), DEZ -1.0, HFG -0.1, CAPMAN -0.4. 13/20 banked. All 20 launched; running LR ZV NRC SFQ SMHN PKO INISS_B SKA_B.
