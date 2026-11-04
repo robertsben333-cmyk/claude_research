@@ -31,3 +31,7 @@
 ## Split panel 2/4 — searchers done
 - Logged at 2026-11-04 18:25 UTC
 - 5 of 5 returned by 18:24 UTC; guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished). Note: CORZ searcher describes a 2026-11-04 'close' of $12.78 (-10.25%) while the session was still open at 13:24 ET - read as an intraday quote.
+
+## Split panel 1/4 — panel done
+- Logged at 2026-11-04 18:28 UTC
+- 4 of 4 judges on pinned agents; 5 names, 1 selected (WOLF 81 long); scored --dry-run at 18:27 UTC
