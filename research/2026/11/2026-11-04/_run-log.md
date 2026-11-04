@@ -53,3 +53,7 @@
 ## Close AMC — 2026-11-04
 - Logged at 2026-11-04 11:17 UTC
 - Guard mode --require-exit-tif opg exit 0 (amc_open, exit as market DAY). verify: 14 legs, none UNFILLED, nothing held. close --submit: no legs due today, nothing sent, no refusals. Account reachable.
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-11-04 14:15 UTC
+- source research/2026/11/2026-11-03/edge-panel, 09:15 ET, 9 picks (ALAB CRCT DUOL FRSH MQ SEDG TARS TREE XPEL); 8 analysts launched, XPEL waiting on concurrency limit (8)
