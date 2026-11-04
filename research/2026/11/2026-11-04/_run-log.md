@@ -49,3 +49,7 @@
 - Sealed for 2026-11-04 (Wed) at ~14:45 UTC Tue (intraday spots). 102 scheduled, 64 eligible, 20 drawn; SOLAR_B shed (duplicate of 11-03); 19 hunted, all search_complete; 15 ranked; EVK BPE TEN TIT not ranked (no release in window: stale/wrong vendor dates). Top BUR/SOFF +1.30, bottom TRN -1.90; none above floor 2.8.
 - Panel: 4/4 members, 15/15 each, no fallback (sonnet55 reported it skipped the hunter definitions). Selected BUR long (4/4, pct 85) and BSL short (3/4, pct 85). BUR's session corrected to in-session (13:00 GMT) by its hunter; baseline sealed amc, not revised.
 - anchor_covered 7/20 sealed (6/15 ranked) — corrects the '8/20' in the seal entry. es+pl 0. Resolve by ~2026-11-12 (Nordic window). Pushing to main (EARNINGS_DATA_BRANCH=main).
+
+## Close AMC — 2026-11-04
+- Logged at 2026-11-04 11:17 UTC
+- Guard mode --require-exit-tif opg exit 0 (amc_open, exit as market DAY). verify: 14 legs, none UNFILLED, nothing held. close --submit: no legs due today, nothing sent, no refusals. Account reachable.
