@@ -61,3 +61,7 @@
 ## Stage M — scored 2026-11-03
 - Logged at 2026-11-04 14:16 UTC
 - pool: 60 names / 9 days; review mean -0.17% (t -0.12), static +0.43% (t 0.31), review_minus_static -0.60 (t -1.22)
+
+## Stage M — morning exit review — done
+- Logged at 2026-11-04 14:18 UTC
+- 9 names: TREE/FRSH/TARS/XPEL/MQ exit_open, SEDG limit 27.80, CRCT limit 7.05, DUOL/ALAB exit_1000; 9 morning-reaction-analysts ran (XPEL launched late on the 8-agent concurrency cap); compiled 09:18 ET
