@@ -73,3 +73,7 @@
 ## Edge hunt (panel) — baselines sealed
 - Logged at 2026-11-04 18:13 UTC
 - 504 of 504 baselines sealed by 18:13 UTC, before any searcher. 20 names failed first time on Yahoo HTTPError (parallel burst) and were re-sealed serially; see MET line in the note if it stayed failed.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-11-04 18:15 UTC
+- Sweep finished ~18:30 UTC (26 of 504 checked): 22 company-confirmed, 4 unconfirmed (DAVE WRBY HUBS SNAP), 0 phantoms, 478 unchecked. FIG session unsettled (prior calls 5pm ET; searcher told to settle). Cap 20: unconfirmed 4 shed, SHAK (46) and TRIP (48) shed on lowest hunt_priority, 478 unchecked shed. No hunted baseline suspect; SEZL and EOSE cadence_implausible (history not an earnings base rate, searchers told). Searchers unpriced-searcher, amc first, at most 8 per turn. Wave 1: SEZL BYND LEU ROOT WOLF FSLY CHYM RUN.
