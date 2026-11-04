@@ -65,3 +65,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-11-04 14:18 UTC
 - 9 names: TREE/FRSH/TARS/XPEL/MQ exit_open, SEDG limit 27.80, CRCT limit 7.05, DUOL/ALAB exit_1000; 9 morning-reaction-analysts ran (XPEL launched late on the 8-agent concurrency cap); compiled 09:18 ET
+
+## Edge hunt (panel) — 2026-11-04 amc + 2026-11-05 bmo — STARTED
+- Logged at 2026-11-04 18:09 UTC
+- Stage E-P fire; session began 18:07 UTC (13:07 ET). Universe 504 names (277 amc 11-04, 227 bmo 11-05; UHAL.B, BIO.B, TAP.A folded). Baselines being sealed by code into edge-panel/baselines (10 parallel priced_in processes per session after a serial start was too slow); one edge-sweep launched 18:18 UTC in parallel with sealing (it writes no baseline). Plan: up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
