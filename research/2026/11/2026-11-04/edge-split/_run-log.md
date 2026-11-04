@@ -27,3 +27,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-11-04 18:24 UTC
 - 5 of 5 returned by 18:24 UTC (unpriced-searcher agent ran); guard moved nothing; no searcher reported its search budget running out (all search_complete: true); hunt_status 0 unfinished
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-11-04 18:25 UTC
+- 5 of 5 returned by 18:24 UTC; guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished). Note: CORZ searcher describes a 2026-11-04 'close' of $12.78 (-10.25%) while the session was still open at 13:24 ET - read as an intraday quote.
