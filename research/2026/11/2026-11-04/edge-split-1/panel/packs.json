@@ -1,0 +1,1633 @@
+[
+ {
+  "id": "us/2026-11-04/CELH",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "CELH",
+   "event_date": "2026-11-05",
+   "session": "bmo",
+   "as_of_utc": "2026-11-04T18:09:24+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-04",
+    "spot": 31.27,
+    "run_up_5d_pct": 11.76,
+    "run_up_20d_pct": 16.16,
+    "pct_from_52w_high": -47.81,
+    "pct_from_52w_low": 31.55,
+    "realised_vol_20d_annualised_pct": 41.1,
+    "avg_volume_20d": 5051836
+   },
+   "cik": "0001341766",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-08-06",
+      "session": "bmo",
+      "move_pct": -18.46
+     },
+     {
+      "event_date": "2026-05-07",
+      "session": "bmo",
+      "move_pct": 4.45
+     },
+     {
+      "event_date": "2026-02-26",
+      "session": "bmo",
+      "move_pct": 6.94
+     },
+     {
+      "event_date": "2025-11-06",
+      "session": "bmo",
+      "move_pct": -24.8
+     },
+     {
+      "event_date": "2025-08-07",
+      "session": "bmo",
+      "move_pct": 17.27,
+      "session_conflict": {
+       "tagged_session": "bmo",
+       "volume_says": "bmo",
+       "event_day_volume": 23737600,
+       "next_day_volume": 11862400,
+       "median_20d_before": 4518700,
+       "move_as_tagged_pct": 17.27,
+       "move_if_bmo_pct": 17.27,
+       "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+      }
+     },
+     {
+      "event_date": "2025-05-06",
+      "session": "bmo",
+      "move_pct": 4.81
+     },
+     {
+      "event_date": "2025-02-20",
+      "session": "amc",
+      "move_pct": 27.77
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 17.27,
+    "max_abs_move_pct": 27.77,
+    "up_count": 5,
+    "session_conflicts": 1
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 91.0,
+    "ratio": 1.0,
+    "last_print": "2026-08-06",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-06",
+    "days_to_expiry": 2,
+    "atm_strike": 31.5,
+    "atm_iv_pct": 154.1,
+    "straddle_implied_move_pct": 11.19,
+    "event_implied_move_pct": 10.91,
+    "event_implied_move_basis": "11.19% straddle over 2 calendar days less 3.09% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -2.15,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.42,
+    "total_open_interest": 25485,
+    "atm_spread_frac_of_mid": 0.156,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 8.63,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 10.91,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue about $800-816M and adjusted EPS $0.35-0.36. Chartmill has $815.94M / $0.36 (https://www.chartmill.com/stock/quote/CELH/estimates) and FXEmpire $815.74M / $0.35 from 20 analysts (https://www.fxempire.com/stocks/celh/earnings). Benzinga has $802.6M / $0.35 (https://www.benzinga.com/quote/CELH/earnings-forecasts), and B. Riley's 2026-11-02 preview cites consensus at $800.6M (https://ca.investing.com/news/stock-market-news/briley-reiterates-buy-on-celsius-stock-ahead-of-q3-results-93CH-4921046). So two source pairs agree internally, about $15M apart; EPS agrees across sources. Revenue-dependent findings are capped small for that reason. There is no numeric company guidance, only a qualitative pre-guide: Q3 CELSIUS brand 'a lot like the second quarter', gross margin 'consistent with the second ... high 40s' at Aug 6 diesel and aluminum levels (https://s203.q4cdn.com/427437840/files/doc_financials/2026/q2/Celsius-Holdings-Second-Quarter-2026-Earnings-Conference-Call-Transcript.pdf). B. Riley models $817.6M revenue and $172.9M adjusted EBITDA (21.1% margin).",
+   "positioning_check": "Short interest was 30.11M shares at the 2026-10-15 settlement, 5.5 days to cover on 5.51M average volume, about 11.9% of 253.04M shares outstanding (https://massive.com/quote/celh, read 2026-11-04). It was 30.96M at 4.5 days on 2026-09-30, so roughly flat. As a share of float it is higher, since PepsiCo and the Alani Nu founders hold blocks; float % is not sourced. That is moderately crowded but not the 18-23% float zone. Skew_25d is -2.15 vol points (upside paid, mild), put/call OI 0.42, event-implied move 10.91%. The tape is +11.76% over 5 days and +16.16% over 20 days into the print, yet still -47.8% from the 52-week high. The market leans mildly up into the print.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "The reported quarter was pre-guided and the bar has come down. On 2026-08-06 the CFO said Q3 CELSIUS brand should 'look a lot like the second' (Q2: -11.7% y/y to about $387M) and gross margin should stay in the high 40s. Since then Chartmill shows the Q3 revenue estimate cut 7.57% in three months, and JPMorgan, UBS and TD Cowen cut targets. Bottom-up arithmetic (CELSIUS about -12% on Q3 2025's ~$393M, plus Alani Nu about +20% on $332.0M, plus Rockstar about $66M) gives roughly $810M, inside the $800-816M bar.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://s203.q4cdn.com/427437840/files/doc_financials/2026/q2/Celsius-Holdings-Second-Quarter-2026-Earnings-Conference-Call-Transcript.pdf",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "Q2 2026 revenue missed $870-886M consensus by about 6% and the stock fell 18.46%. Q3 2025 beat revenue ($725.1M vs $715.7M) and EPS ($0.42 vs $0.27) and still fell 24.8% on the Q4 'noise' warning. This name has not paid for the reported quarter when the forward read is soft.",
+    "why_not_priced": "Mostly priced. The pre-guide is public and the bar has been cut to it, which is why this is sized near zero. If the market expected a further CELSIUS miss, the bar would sit below $795M and the skew would be put-bid; instead it is $800-816M and upside is paid.",
+    "independence": "Consensus revision: https://www.chartmill.com/stock/quote/CELH/estimates. Q3 2025 brand dollars: https://ir.celsiusholdingsinc.com/news/news-details/2025/Celsius-Holdings-Reports-Third-Quarter-2025-Financial-Results/default.aspx. Target cuts: https://stockanalysis.com/stocks/celh/. Shares the Q2 transcript with the diesel finding (different passages).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "Alani Nu consumption ran ahead into Q3. Management said Alani scans were about +50% after the Witch's Brew launch (Barclays, 2026-09-08; Witch's Brew billed on Aug 6 as 'the largest limited-time offer in the brand's history'). PepsiCo's Q3 prepared remarks (2026-10-08, 12 weeks to Sept 5) say 'the partnership with Celsius Holdings gained value share and holds nearly 20 percent share of the category'. Q2 Alani reported net sales grew +21% against +56% scans. If the Q3 gross-to-net gap narrows now the Pepsi DSD transition is complete, Alani could print above the roughly +20% (about $400M) implied in the bar.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://investors.pepsico.com/docs/pepsico-5v9wci20/media/Files/investors/q3-2026-prepared-management-remarks.pdf",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "Q2 2026: Alani +21% reported was not enough to offset CELSIUS -12%, and the stock fell 18.46%. Q1 2026 (+4.45%) and Q4 2025 (+6.94%) were Alani-led beats bought modestly. On this name Alani strength buys single digits; CELSIUS weakness costs double digits.",
+    "why_not_priced": "Partly priced. The +50% scan figure was public on Sept 8, and the stock fell 6.5% that day on the CELSIUS read, not on Alani. PepsiCo's share statement came after Celsius last spoke, and the consensus cut of 7.6% over three months suggests models did not lift Alani. If it were priced, estimates would have risen since August, not fallen. Capped small because the revenue bar is disputed by about $15M and 'nearly 20 percent' is flat against Q2's 20.1%.",
+    "independence": "Barclays scan figures via B. Riley's preview: https://ca.investing.com/news/stock-market-news/briley-reiterates-buy-on-celsius-stock-ahead-of-q3-results-93CH-4921046. Q2 Alani +56% scans and the Witch's Brew LTO: https://www.marketbeat.com/instant-alerts/celsius-q2-earnings-call-highlights-2026-08-06/. Net of the rest: CELSIUS (about 45% of sales) is guided down about 12%, so Alani has to carry the print.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "CELSIUS brand consumption got worse after the Q2 call. At Barclays on 2026-09-08 management put CELSIUS scans at -5% to -10% (IRI), against -2% tracked retail sales in Q2 that the CFO had called 'the consumer'. That undercuts the Aug 6 claim that the brand 'exit[s] the year back into growth', which matters for Q4/2027 commentary on the call.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.tikr.com/blog/celsius-stock-slid-nearly-7-after-barclays-and-the-real-payoff-it-described-waits-until-2027",
+    "source_date": "2026-09-11",
+    "reaction_history_on_this_line": "The forward read on CELSIUS drove the last two big moves: -24.8% on 2025-11-06 (Q4 noise warning) and -18.46% on 2026-08-06 (brand -12%, 'went too deep' on rationalization). The stock also fell 6.5% on 2026-09-09, the day after these scan figures.",
+    "why_not_priced": "Partly priced: the stock fell 6.5% on it in September. But the stock is now up 13% from the Sept 9 close of $27.64, so the rebound has run ahead of any evidence that scans have turned. If the market still held the September read, the stock would not have rallied 11.8% in five sessions into the print with upside skew.",
+    "independence": "The same Barclays figure is cited independently in B. Riley's 2026-11-02 preview: https://ca.investing.com/news/stock-market-news/briley-reiterates-buy-on-celsius-stock-ahead-of-q3-results-93CH-4921046. That is one event in two write-ups, so it counts once. Shrunk for 5.5 days to cover of short interest.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "Diesel rose well above the level the margin guide was set at. The Aug 6 high-40s gross margin guide was explicitly 'at current diesel and aluminum levels', with improvement only 'if fuel or aluminum moderates'. EIA on-highway diesel was $5.348 the week of Aug 3, $5.652 on Aug 24 and $5.967 on Sept 7 (+11.6% from the guide date), with secondary reports of a record about $6.53 the week of Sept 21. B. Riley's preview notes fuel costs rose in August and September. That pressures Q3 gross margin below Q2's 48.1% and the Q4 margin commentary.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://casterhq.com/blogs/industrial-insights/eia-puts-us-on-highway-diesel-at-5-967-for-the-week-of-sept-7-2026",
+    "source_date": "2026-09-09",
+    "reaction_history_on_this_line": "Gross margin compression was part of the Q2 miss (48.1% vs 51.5%, adjusted EBITDA -12%), and the stock fell 18.46%. Q3 2025 at 51.3% margin was overshadowed by the Q4 warning.",
+    "why_not_priced": "Partly priced. B. Riley models a 21.1% EBITDA margin against 22.5% in Q2, and a Morgan Stanley H2 EBITDA cut on fuel is listed in late September on stockanalysis. If fully priced, EPS consensus would sit below Q2's $0.36; it is $0.35-0.36. The transmission from diesel to COGS is a proxy: outbound freight is a mid-single-digit share of sales, so this is likely tens of basis points. Sized small.",
+    "independence": "Aug 3 baseline: https://www.agrinews-pubs.com/community-contributed/2026/08/04/fuel-gauge-for-week-ending-aug-3/. Fuel costs flagged in B. Riley's preview: https://ca.investing.com/news/stock-market-news/briley-reiterates-buy-on-celsius-stock-ahead-of-q3-results-93CH-4921046. The guide's diesel condition is in the Q2 transcript, page 7 (same document as finding 1).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "New forward information is promised for this call. On Aug 6 management said it would give more detail on 2027 innovation load-in timing 'after third-quarter results', and that a new 16-ounce CELSIUS offering launches 'in a meaningful way in '27'. The CFO at Barclays called the payoff 'a '27 and '28 play'. A first concrete 2027 calendar lands in this window.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.marketbeat.com/instant-alerts/celsius-q2-earnings-call-highlights-2026-08-06/",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "Forward commentary has moved this stock the most: -24.8% (Q4 noise, Nov 2025), +6.94% (Feb 2026, the 2026 setup), -18.46% (Aug 2026, Q3 'like Q2').",
+    "why_not_priced": "The content is unknown until the call, so only its existence is priced, mainly through the implied move. Positive lean because retailers were said to be 'leaning in on 2027 planning earlier than they ever had' and the company controls what it discloses.",
+    "independence": "Q2 transcript page 8 (16-ounce offering in '27): https://s203.q4cdn.com/427437840/files/doc_financials/2026/q2/Celsius-Holdings-Second-Quarter-2026-Earnings-Conference-Call-Transcript.pdf. Barclays 'a 27 and 28 play': https://www.tikr.com/blog/celsius-stock-slid-nearly-7-after-barclays-and-the-real-payoff-it-described-waits-until-2027",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "Insiders bought at about $27. The CEO bought 18,000 shares on 2026-09-10 at a $27.44 weighted average (about $494k), after 8,475 shares at $29.36 in May. Directors DeSantis and Kravitz each bought about $1.0M. Four insiders bought about $2.7M in total over twelve months, with one small sale.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001341766/000162828026061406/wk-form4_1789074204.xml",
+    "source_date": "2026-09-10",
+    "reaction_history_on_this_line": "The stock rose about 2% after the CEO purchase was reported in September. There is no print-day history on this line.",
+    "why_not_priced": "Public Form 4s, so largely priced. Kept small as evidence that management did not see a Q3 problem worse than the pre-guide when it bought inside the quarter.",
+    "independence": "https://massive.com/quote/celh (insider totals); https://finviz.com/news/391245/celsius-holdings-shares-rise-2-after-ceo-buys-18000-shares",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "The stock ran up into the print with no identified catalyst: +11.76% over 5 sessions and +16.16% over 20 to $31.27, up 4.4% on 2026-11-04 alone. Coverage attributes the move to pre-earnings buying and technicals. Upside is paid in the options (skew -2.15, put/call OI 0.42), which raises the bar for a pre-guided quarter. Against that, 30.1M shares are short (5.5 days to cover).",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://tradersunion.com/news/stocks/show/4096735-celsius-surges-3-84percent-today-to/",
+    "source_date": "2026-11-04",
+    "reaction_history_on_this_line": "Q3 2025 came after a 73% YTD run and fell 24.8% on a beat. Q2 2026 came off lows and still fell 18.46%. The last two prints with heavy expectations were sold.",
+    "why_not_priced": "This is the price itself; the question is how the run-up reacts to a quarter that only meets the pre-guide. If the run-up already reflected fear, puts would be bid; instead calls are bid.",
+    "independence": "Short interest: https://massive.com/quote/celh. Tape and skew: the sealed baseline.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "The buyback is still running. The company repurchased $100.4M in Q2 ($124.5M in H1) and said it 'intend[s] to continue utilizing the $300 million authorization this year', which leaves up to about $175M for H2. Q3 traded at $24-29, so a large Q3 repurchase is likely to be reported.",
+    "lands_on": "capital_return",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001341766/000134176626000047/ex9912q2026.htm",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "Q2's $100M buyback did not stop an 18.46% fall.",
+    "why_not_priced": "The intent is public. The Q3 amount and any new authorization are not; a new authorization would be read as a signal at about 2.5x sales.",
+    "independence": "Q2 transcript page 7 (same management statement), so not independent.",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "New litigation in October 2026. Two proposed consumer class actions (W.D. Wash. and Illinois, filed around Oct 26-29) challenge the 'Burns Body Fat' and 'Accelerates Metabolism' front labels, and investor class action notices were issued on Nov 3. A prior labeling case settled for $7.8M.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.classaction.org/blog/celsius-lawsuit-alleges-energy-drinks-cannot-burn-fat-on-their-own-as-advertised",
+    "source_date": "2026-10",
+    "reaction_history_on_this_line": "No measurable prior print reaction to litigation.",
+    "why_not_priced": "Immaterial in dollars. It matters only if management addresses labeling changes on the call.",
+    "independence": "https://stockanalysis.com/stocks/celh/ (Oct 29 lawsuit headline); https://massive.com/quote/celh (Nov 3 class action notices)",
+    "i": 8
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "The Q4 comparison is hard. Management flagged on Aug 6 that Q4 comparisons are affected by the prior-year inventory build tied to Alani Nu's Pepsi distribution transition, so the Q4 outlook on the call will likely show weak year-over-year optics. B. Riley instead argues Q4 compares favorably because Q4 2025 revenue fell 7.7% after Q3 2025's +44%.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.marketbeat.com/instant-alerts/celsius-q2-earnings-call-highlights-2026-08-06/",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "Q4 commentary on the Q3 2025 call ('noise' from the Alani load-in) coincided with a 24.8% fall.",
+    "why_not_priced": "Disclosed in August, so mostly priced. Sized small because a sell-side preview reads the comparison the other way.",
+    "independence": "The counter-view: https://ca.investing.com/news/stock-market-news/briley-reiterates-buy-on-celsius-stock-ahead-of-q3-results-93CH-4921046",
+    "i": 9
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "The distributor is under pressure in the period. PepsiCo said on 2026-10-08 that North America 'performed below our expectations', that PBNA organic revenue declined slightly on lower volume, and that structural cost reductions are coming. Celsius sells mostly through Pepsi's DSD system, so a cost-cutting distributor could keep CELSIUS inventory lean (the 'rebalancing' already seen) into Q4.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://investors.pepsico.com/docs/pepsico-5v9wci20/media/Files/investors/q3-2026-prepared-management-remarks.pdf",
+    "source_date": "2026-10-08",
+    "reaction_history_on_this_line": "Pepsi inventory reductions drove the Q3 2024 collapse ($100-120M destock) and the 2026 'rebalancing' gap: about half of Q2's 10-point gap between scans and net sales.",
+    "why_not_priced": "This is a proxy: Pepsi did not say it would cut Celsius inventory, and the same document says energy gained share. Sized small for that reason.",
+    "independence": "Same PepsiCo document as the Alani finding, read for a different line. Q2 rebalancing commentary is in the Q2 transcript page 6.",
+    "i": 10
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "England plans to restrict sales of drinks above 150mg/L caffeine to under-16s, targeted for April 2027 and still needing parliamentary approval. Celsius is caught by the threshold; international was about 4.5% of Q1 sales.",
+    "resolves_by": "2027-04-01",
+    "source": "https://www.tikr.com/de/blog/celsius-fell-to-a-2026-low-as-england-moved-to-restrict-energy-drinks-and-six-brokers-cut-targets",
+    "i": 11
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "A second North Carolina manufacturing line starts in H2 2026 with full benefit in 2027, and permanent CELSIUS innovation returns to shelves in 1H27. The margin and brand recovery are dated after the window; only the call's description of them is inside it (filed as a finding).",
+    "resolves_by": "2027-06-30",
+    "source": "https://www.tikr.com/blog/celsius-stock-slid-nearly-7-after-barclays-and-the-real-payoff-it-described-waits-until-2027",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "CFO warns of Q4 'noise' amid the Alani Nu Pepsi rollout (listed by the sweep as already in the wire)",
+    "source": "https://stocktwits.com/news-articles/markets/equity/celsius-cfo-warns-of-q4-noise-amid-alani-nu-pepsi-rollout-but-retail-goes-contrarian/cL2twoqRERY",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 13
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "TipRanks pre-earnings piece: revenue and EPS expected to fall in Q3, Pepsi destocked $100-120M",
+    "source": "https://tipranks.com/news/celsius-celh-pre-earnings-revenue-and-eps-are-expected-to-fall-in-q3",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 14
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "Morgan Stanley cut its H2 EBITDA estimate for fuel and freight costs (late Sept headline)",
+    "source": "https://stockanalysis.com/stocks/celh/",
+    "first_hunter_reason": "duplicate",
+    "i": 15
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "Deutsche Bank downgrade to Hold (target $30 to $35); JPMorgan cut to $48 on Oct 26, UBS to $38, TD Cowen to $35",
+    "source": "https://stockanalysis.com/stocks/celh/",
+    "first_hunter_reason": "duplicate",
+    "i": 16
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "CELH.json",
+    "text": "Rockstar founder Russ Savage took a ~4.7% stake (Aug 2026); COO Eric Hanson departed Aug 10",
+    "source": "https://massive.com/quote/celh",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CELH.json",
+    "text": "Circana/Nielsen scanner reads for Celsius/Alani Nu covering Sept-Oct 2026: none found beyond management's Sept 8 Barclays figures",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CELH.json",
+    "text": "PepsiCo Q3 2026 call Q&A on Celsius/Alani inventory: the Benzinga transcript returned 403; only the prepared remarks were read",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CELH.json",
+    "text": "Monster Beverage Q3 2026 results: not yet out (its usual date falls after this window)",
+    "i": 20
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CELH.json",
+    "text": "Specific catalyst for the +11.8% five-day run-up: only pre-earnings momentum coverage found",
+    "i": 21
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CELH.json",
+    "text": "Celsius exposure to IEEPA tariff refunds (PepsiCo booked $178M): nothing found",
+    "i": 22
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CELH.json",
+    "text": "October 2026 EIA diesel and Midwest aluminum premium levels: not found; latest sourced diesel is September",
+    "i": 23
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "CELH.json",
+    "text": "Q3 2026 previews from Jefferies, JPMorgan, UBS or TD Cowen beyond headline target cuts",
+    "i": 24
+   }
+  ]
+ },
+ {
+  "id": "us/2026-11-04/FIG",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "FIG",
+   "event_date": "2026-11-04",
+   "session": "amc",
+   "as_of_utc": "2026-11-04T18:09:12+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-04",
+    "spot": 22.14,
+    "run_up_5d_pct": -4.61,
+    "run_up_20d_pct": 2.41,
+    "pct_from_52w_high": -51.85,
+    "pct_from_52w_low": 31.47,
+    "realised_vol_20d_annualised_pct": 60.9,
+    "avg_volume_20d": 10322934
+   },
+   "cik": "0001579878",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-08-05",
+      "session": "amc",
+      "move_pct": -14.85
+     },
+     {
+      "event_date": "2026-05-14",
+      "session": "amc",
+      "move_pct": 13.24
+     },
+     {
+      "event_date": "2026-02-18",
+      "session": "amc",
+      "move_pct": 6.9
+     },
+     {
+      "event_date": "2025-11-05",
+      "session": "amc",
+      "move_pct": 4.48
+     },
+     {
+      "event_date": "2025-09-03",
+      "session": "amc",
+      "move_pct": -19.92
+     }
+    ],
+    "n": 5,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 13.24,
+    "max_abs_move_pct": 19.92,
+    "up_count": 3,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 91,
+    "median_gap_days": 84.0,
+    "ratio": 1.08,
+    "last_print": "2026-08-05",
+    "verdict": "fits_cadence",
+    "reason": "91 days since the last print against a 84-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-06",
+    "days_to_expiry": 2,
+    "atm_strike": 22.0,
+    "atm_iv_pct": 181.6,
+    "straddle_implied_move_pct": 13.1,
+    "event_implied_move_pct": 12.58,
+    "event_implied_move_basis": "13.1% straddle over 2 calendar days less 4.59% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 11.76,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.58,
+    "total_open_interest": 43147,
+    "atm_spread_frac_of_mid": 0.159,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 6.62,
+   "deadband_basis": "half the median of 5 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 12.58,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 5,
+    "history_usable": 5,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 revenue. Company guide is $373.0-375.0M (midpoint $374M; 8-K https://www.sec.gov/Archives/edgar/data/0001579878/000162828026053331/q226pressrelease.htm). Consensus is $376.56M from Yahoo (14 analysts, range $372.88-394.8M; https://finance.yahoo.com/quote/FIG/analysis/), $379.73M from FXEmpire (https://www.fxempire.com/stocks/fig/earnings) and $376.4M from Benzinga (https://www.benzinga.com/quote/FIG/earnings). Stale/low figures of $361.9-362.4M appear on EarningsWhispers and another Benzinga page. Bar used: about $377M. On EPS the sources disagree (non-GAAP about $0.05 vs GAAP -$0.22), so revenue is the bar.",
+   "positioning_check": "Short interest was 37.14M shares on the 2026-10-15 settlement: 12.05% of float, 3.85 days to cover, down 9.2% from 40.9M (13.3%) on 09-30 (MarketBeat/FINRA, published 2026-10-26, https://www.marketbeat.com/stocks/NYSE/FIG/short-interest/). It is meaningful but not crowded, and was being covered into the print. Baseline: 25-delta skew +11.76 vol points (downside paid), put/call OI 0.58, event-implied move 12.58%, ATM IV 181.6%. Spot $22.14 is 51.9% below the 52-week high; 20-day run-up +2.4%, 5-day -4.6%. Sell-side cut targets into the print: Wells Fargo 34->30 (10-12), Stifel 25->22 Hold (10-14), Citi 37->35 Buy (10-28). Telsey (Hold) and Redburn (Neutral, $23) initiated 11-02. Consensus rating is Hold, 4 Buy / 11 Hold / 1 Sell (https://www.marketbeat.com/stocks/NYSE/FIG/forecast/).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "Figma has beaten the midpoint of its own revenue guide by about 5.5-6% in each of the last two quarters. Q1 2026 came in at $333.4M against a $315-317M guide (+5.5%), Q2 at $370.1M against $348-350M (+6.0%), and Q4 2025 at $303.8M was above its range. The Q3 guide of $373-375M implies only about 1% sequential growth, against 11% from Q1 to Q2. On the call the CFO called it a 'snapshot' that excludes beta products, which he labelled upside. Repeating the pattern would give about $390-397M, 3-5% above the about $377M consensus, which sits only about 1% above the guide.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001579878/000162828026053331/q226pressrelease.htm",
+    "source_date": "2026-08-05",
+    "reaction_history_on_this_line": "Q1 2026, a 5.5% beat over the guide midpoint plus a $55M FY raise, closed +13.24% (2026-05-14). Q2 2026, a 6.0% beat plus a $40M FY raise, closed -14.85% (2026-08-05) on AI cost of revenue (+117%) and the soft Q3 sequential guide. A revenue beat by itself has not set the sign on this name.",
+    "why_not_priced": "Consensus at $376.6-379.7M sits only 0.7-1.5% above the guide midpoint, while the last two quarters beat by about 6%. If the sell-side had priced the pattern, consensus would be near $390M. The buy side probably expects a beat, which is why this is sized small and not at the implied move.",
+    "independence": "Q1 actual vs guide from a different document: Q4 2025 release (Q1 guide $315-317M, https://www.sec.gov/Archives/edgar/data/1579878/000162828026009024/fy25pressrelease.htm) and Q1 release (https://www.sec.gov/Archives/edgar/data/0001579878/000162828026035087/q126pressrelease.htm). CFO's 'beta excluded = upside' comment from the Q2 call transcript (https://www.webull.com/news/15392832623961088).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "On 2026-08-25, partway through Q3, Figma gave 2x more AI credits on Professional and 1.6x on Organization/Enterprise add-ons at an unchanged price. The pay-as-you-go spending cap also stayed the same, so it now buys more usage. That is an effective per-credit price cut of about 50% and 37.5%. The CFO had said on 08-05 that most AI revenue comes through coterminous add-ons and warned a shift to pay-as-you-go would add variability. This lowers the AI-credit expansion and overage revenue per unit of usage for 5 weeks of Q3 and all of the Q4 guide.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://help.figma.com/hc/en-us/articles/42614902212887",
+    "source_date": "2026-08-25",
+    "reaction_history_on_this_line": "AI monetization has moved the stock before: March 2026 credit-limit enforcement drew a selloff on churn/monetization fears (https://rallies.ai/news/figma-tumbles-as-march-ai-credit-enforcement-revives-churn-and-monetization-concerns). No earnings print has yet isolated AI-credit revenue as a line.",
+    "why_not_priced": "The change was posted on a help-centre page and a pricing tracker (https://usagepricing.com/blueprint/activity/figma-2026-08-25-packaging), not in a press release or an 8-K, and no analyst note I found quantifies it. If it were priced, previews would discuss lower AI add-on revenue in the Q4 guide; the Oct PT cuts cite gross margin, not this. Offsetting: it may lift usage and is probably partly in the Aug 5 guide if it was planned.",
+    "independence": "Same Figma help page as the agent-GA finding; the pricing tracker reads it as a price cut. Any revenue effect is my inference; the company has not quantified one.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "The Figma agent in Design and Weave moved from open beta to general availability on 2026-10-06 and now consumes paid AI credits. The CFO said on 08-05 that beta and early-access products (agent, Make on local code, Motion and others) are excluded from guidance and would be upside once monetized. The Q4 guide given tonight is the first that can include a paid agent.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://help.figma.com/hc/en-us/articles/42614902212887",
+    "source_date": "2026-10-06",
+    "reaction_history_on_this_line": "Guidance raises were bought in May (+13.24%) and sold in August (-14.85%). In August the sequential Q3 guide was the line cited as a deceleration worry.",
+    "why_not_priced": "The GA date appears on a support page, not in a press release, and no preview I found mentions it. If priced, Q4 consensus would sit above a run-rate extension of the Q3 guide. The guidance philosophy ('wait for sustained trends') means management may still keep it out of the Q4 guide, which caps this finding.",
+    "independence": "The CFO's statement that beta is excluded from guidance comes from the Q2 call transcript (https://www.webull.com/news/15392832623961088). The GA date shares a document with the credit-price-cut finding.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "The guide already embeds deep H2 operating-margin compression. FY2026 non-GAAP operating income is guided at $125-135M and was maintained on 08-05. H1 delivered about $89M (Q1 about 16% of $333.4M, about $53M; Q2 $36.1M), so H2 is guided at about $41M on about $762M of revenue, roughly a 5% margin against about 13% in H1. A revenue beat at Figma's usual 85% gross margin clears that bar easily.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001579878/000162828026053331/q226pressrelease.htm",
+    "source_date": "2026-08-05",
+    "reaction_history_on_this_line": "Q2's -14.85% was attributed to profit reversal and AI cost (https://www.webull.com/news/15358948900545536). That is the line this name has traded on most recently, so a profit beat matters.",
+    "why_not_priced": "The implied H2 figure is arithmetic on the release and is not stated by the company. Q3 consensus EPS of about $0.05 non-GAAP (FXEmpire) is roughly consistent with the compressed guide, so a beat is not in the estimates. Preview commentary (Stifel's cut) focuses on GM falling from 90%+ to mid-80s, not on how low the operating-income bar sits.",
+    "independence": "Q1 non-GAAP margin of 16% from a separate summary of the Q1 release (https://finance.yahoo.com/markets/stocks/articles/figma-q1-2026-earnings-beat-110945684.html). Offset by the next finding (beta inference cost).",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "Q3 carried the full inference cost of the Figma agent and other beta features with no revenue, because the agent was free until GA on 10-06. The CFO said Figma 'bears the cost of inference' on beta and that gross margin 'will vary from quarter to quarter in the near term'. Q2 non-GAAP gross margin of 85% had risen 2.5 points q/q, so a Q3 step back is the risk on the line that sank the August print.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.webull.com/news/15392832623961088",
+    "source_date": "2026-08-05",
+    "reaction_history_on_this_line": "August 2026: cost of revenue +117% and AI costs were cited for -14.85% (https://bingx.com/en/news/post/why-is-figma-fig-stock-price-down-today-august-rising-ai-costs-and-slower-growth-outlook-trigger-a-selloff).",
+    "why_not_priced": "Partly priced: Stifel's 10-14 cut cites gross margin falling to the mid-80s (https://www.itiger.com/news/1185028608), and the put skew pays for downside. Not priced is the specific point that the agent was unmonetized through the whole quarter while in open beta. Sized small because the operating-income bar above already absorbs much of it.",
+    "independence": "Help page dating the agent's GA to 10-06 (https://help.figma.com/hc/en-us/articles/42614902212887). Offsets the H2 margin-bar finding; both can be true.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "The sell-side bar was cut in the three weeks before the print. Wells Fargo cut its target 34->30 (10-12), Stifel 25->22 Hold (10-14) and Citi 37->35 (10-28), and two new Hold/Neutral initiations came on 11-02 (Telsey; Redburn at $23, roughly spot). Consensus is 11 Hold of 16.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.marketbeat.com/stocks/NYSE/FIG/forecast/",
+    "source_date": "2026-11-02",
+    "reaction_history_on_this_line": "After the Q4 2025 and Q1 2026 prints analysts cut targets after a beat; the stock went +6.9% and +13.24% on those prints.",
+    "why_not_priced": "These are public and therefore priced in level; the finding is that sentiment going in is reset low (Hold-heavy, target cuts), not complacent. If the market expected a blow-up, the cuts would be downgrades, not trims with ratings held.",
+    "independence": "Stifel cut confirmed by Tiger Brokers, dated 2026-10-30 (https://www.itiger.com/news/1185028608).",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "Short interest was 12.05% of float with 3.85 days to cover on 2026-10-15, down 9.2% from 13.3% on 09-30. The short is meaningful but not crowded, and was being covered into the print, against a +11.76-point put skew.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.marketbeat.com/stocks/NYSE/FIG/short-interest/",
+    "source_date": "2026-10-26",
+    "reaction_history_on_this_line": "Ahead of May 2026 the stock rose on 'heavy short positioning' and then gained +13.24% on the print (https://rallies.ai/news/figma-jumps-as-oversold-bounce-meets-heavy-short-positioning-before-may-14-earnings).",
+    "why_not_priced": "Positioning is not an informational edge. It is a squeeze mechanism that amplifies a positive surprise; at 3.85 days to cover it is modest, so the size is small.",
+    "independence": "Massive.com, 40.9M short at 09-30 (https://massive.com/quote/fig).",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "Expansion signals softened in Q2. Net dollar retention fell to 136% from 139% in Q1. The CFO said customers are hiring below original plans because of AI productivity, while about two-thirds of $10K+ customers still added seats at renewal. He also flagged tougher Q3/Q4 comps from lapping the March 2025 pricing change. A further NDR decline is the seat-compression read the AI-disruption bears want.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.webull.com/news/15392832623961088",
+    "source_date": "2026-08-05",
+    "reaction_history_on_this_line": "NDR rose to 139% with the +13.24% May print and fell to 136% with the -14.85% August print; on this name it has gone with the reaction both times.",
+    "why_not_priced": "This is public since August, so the level is priced. The question is whether NDR keeps sliding. Peer read-through runs the other way: Atlassian reported no seat compression and broad seat expansion in August (https://parameter.io/atlassian-team-stock-rockets-30-following-record-breaking-quarterly-performance/). Hence small.",
+    "independence": "NDR 139% in Q1 from the Q1 release summary (https://marketchameleon.com/articles/b/2026/5/15/figma-accelerating-revenue-growth-ai-adoption-q1-2026).",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "Canva, Figma's largest design-platform competitor, cut its 2026 revenue-growth forecast from 30% to 20%. Q2 2026 revenue was $921.9M (+25.2%), and the CEO chose to slow AI rollouts to fix unit economics.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://cryptobriefing.com/canva-cuts-revenue-forecast-ai-costs/",
+    "source_date": "2026-08-07",
+    "reaction_history_on_this_line": "none: no Figma print has turned on a Canva data point.",
+    "why_not_priced": "Canva is private, so its numbers sit outside the sell-side models. The sign is ambiguous: it could mean less competitive AI pressure on Figma, or a category-wide AI cost squeeze. It is a proxy, so it is sized near zero.",
+    "independence": "none",
+    "i": 8
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "Adobe's Q3 FY2026 (reported 2026-09-10) showed Creative & Marketing Professionals subscription revenue of $4.65B, up 13%. BofA called the quarter 'somewhat mixed, though healthy' and the Q4 revenue guide came in slightly below consensus. This is an incumbent design read-through with no deterioration signal.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000796343/000079634326000147/adbeex991q326.htm",
+    "source_date": "2026-09-10",
+    "reaction_history_on_this_line": "none",
+    "why_not_priced": "It is public and broad. It is filed for completeness as the only incumbent counterparty print since Figma last spoke, and it carries no Figma-specific information.",
+    "independence": "https://www.tipranks.com/news/the-fly/adobe-q3-results-and-outlook-somewhat-mixed-though-healthy-says-bofa",
+    "i": 9
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "Atlassian reports fiscal Q1 2027 after the close on 2026-11-05, the closest seat-based read-through for design and dev collaboration. It lands after the first full session following Figma's print closes.",
+    "resolves_by": "2026-11-05",
+    "source": "https://finviz.com/news/398890/atlassian-announces-date-for-first-quarter-of-fiscal-year-2027-financial-results",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "A scanx piece titled 'Figma Q3 Results: Sales guidance beats estimates' flagged by the sweep",
+    "source": "https://scanx.trade/stock-market-news/companies/figma-q3-results-sales-guidance-beats-estimates/47509338",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "Gross margin 'fell to 86% in Q3 from 90%' per an aggregator snippet",
+    "source": "https://stockanalysis.com/stocks/FIG/",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 12
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "FIG.json",
+    "text": "A Figma user forum post claiming Pro cost rose to about $55/month after Config 2026 because AI credits became default",
+    "source": "https://forum.figma.com/share-your-feedback-26/allow-users-to-opt-out-of-ai-credits-or-offer-a-professional-plan-without-ai-55686",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FIG.json",
+    "text": "Form 4 insider selling by the CEO in Sep-Oct 2026: last Field sale on the tracker is 2026-06-02; the August Form 4 was a gift (https://www.sec.gov/Archives/edgar/data/0001579878/000207358626000014/form4-08312026_080802.xml). Other insiders (GC Mulligan, 10-07) are routine, not filed.",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FIG.json",
+    "text": "New AI-design competitor launches in Sep-Oct 2026 (Claude Design, Google Stitch, OpenAI): nothing dated after July 2026 found.",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FIG.json",
+    "text": "Independent traffic series (Similarweb figma.com monthly visits): behind login; no Sep-Oct data reachable.",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FIG.json",
+    "text": "Hiring page / layoffs / reorganisation at Figma in 2026: nothing found.",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FIG.json",
+    "text": "Figma-specific news in October 2026 beyond the analyst actions and a 10-22 software-wide rebound (+~6%): nothing company-specific.",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "FIG.json",
+    "text": "Figma Q3 date release confirmed the 5 p.m. ET call (amc); no pre-announcement or guidance update since 08-05 found.",
+    "i": 19
+   }
+  ]
+ },
+ {
+  "id": "us/2026-11-04/LMND",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "LMND",
+   "event_date": "2026-11-05",
+   "session": "bmo",
+   "as_of_utc": "2026-11-04T18:09:34+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-04",
+    "spot": 44.8,
+    "run_up_5d_pct": -1.23,
+    "run_up_20d_pct": -4.33,
+    "pct_from_52w_high": -53.61,
+    "pct_from_52w_low": 8.76,
+    "realised_vol_20d_annualised_pct": 52.2,
+    "avg_volume_20d": 1129682
+   },
+   "cik": "0001691421",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-07-28",
+      "session": "amc",
+      "move_pct": -23.72
+     },
+     {
+      "event_date": "2026-04-28",
+      "session": "amc",
+      "move_pct": -14.85
+     },
+     {
+      "event_date": "2026-02-18",
+      "session": "amc",
+      "move_pct": -6.18
+     },
+     {
+      "event_date": "2025-11-04",
+      "session": "amc",
+      "move_pct": 34.21
+     },
+     {
+      "event_date": "2025-08-04",
+      "session": "amc",
+      "move_pct": 29.54
+     },
+     {
+      "event_date": "2025-05-05",
+      "session": "amc",
+      "move_pct": 1.03
+     },
+     {
+      "event_date": "2025-02-25",
+      "session": "amc",
+      "move_pct": -1.59
+     }
+    ],
+    "n": 7,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 14.85,
+    "max_abs_move_pct": 34.21,
+    "up_count": 3,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 100,
+    "median_gap_days": 91.0,
+    "ratio": 1.1,
+    "last_print": "2026-07-28",
+    "verdict": "fits_cadence",
+    "reason": "100 days since the last print against a 91-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-06",
+    "days_to_expiry": 2,
+    "atm_strike": 45.0,
+    "atm_iv_pct": 188.8,
+    "straddle_implied_move_pct": 13.67,
+    "event_implied_move_pct": 13.31,
+    "event_implied_move_basis": "13.67% straddle over 2 calendar days less 3.93% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 10.61,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.68,
+    "total_open_interest": 11144,
+    "atm_spread_frac_of_mid": 0.157,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 7.42,
+   "deadband_basis": "half the median of 7 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 13.31,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 7,
+    "history_usable": 7,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "The company's own Q3 2026 guide from the Q2 letter (2026-07-29): in-force premium $1,537-1,540M, gross earned premium $356-359M, revenue $323-326M, adjusted EBITDA -$23M to -$20M, stock comp $24M. FY2026 guide: in-force premium $1,632-1,639M, revenue $1,214-1,220M, adjusted EBITDA -$51M to -$47M, implying about +$8M adjusted EBITDA in Q4. Source: https://www.sec.gov/Archives/edgar/data/0001691421/000169142126000047/lmndshareholderletterq22.htm. Street consensus: revenue $322.4M (Benzinga, https://www.benzinga.com/quote/LMND/earnings-forecasts, seen only as a search snippet) and EPS -$0.60 across 6 analysts (therighttrader https://therighttrader.com/earnings-calendar/lmnd and Benzinga agree). The bar is sourced to the company guide and to two agreeing estimate sources. Gross loss ratio is not guided; the Q2 call said it will be 'more of an output than an input'.",
+   "positioning_check": "Short interest at the 2026-10-15 settlement was 11,625,163 shares, 17.11% of float, 9.65 days to cover, up 2.1% from 11,383,738 on 2026-09-30. It has risen from 9,984,175 on 2026-08-14 (MarketBeat from FINRA, published 2026-10-26: https://www.marketbeat.com/stocks/NYSE/LMND/short-interest/; series on Equibles: https://equibles.com/stocks/lmnd/short-interest). This is a crowded short. The baseline has 25-delta skew at +10.61 vol points (downside paid), put/call open interest 0.68, an event-implied move of 13.31%, spot $44.80, 53.6% below the 52-week high and 8.8% above the low, with a 20-day run-up of -4.3%. Reactions to the last three prints were -6.2%, -14.9% and -23.7%; the November 2025 print was +34.2%.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Short interest is crowded and rising into the print: 11.63M shares (17.1% of float, 9.65 days to cover) at 2026-10-15, up from 9.98M on 2026-08-14. The stock is $44.80, 53.6% below its 52-week high and about 18% below the $54.45-54.63 at which an insider's 10b5-1 sales filled on 2026-09-03/04. Any print that does not damage the Q4 positive-EBITDA target has a squeeze mechanism behind it.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.marketbeat.com/stocks/NYSE/LMND/short-interest/",
+    "source_date": "2026-10-26",
+    "reaction_history_on_this_line": "With a double-digit short, the November 2025 print went +34.2% and August 2025 +29.5% (baseline). The last three prints went -6.2%, -14.9% and -23.7%, so the short has been paid on recent prints rather than squeezed.",
+    "why_not_priced": "The skew is +10.6 vol points to the downside and the stock sits near its 52-week low, so options price continuation, not a squeeze. If the squeeze were priced, the calls would carry the premium and short interest would be falling into the print, not rising.",
+    "independence": "Equibles shows the same FINRA series rising since August (https://equibles.com/stocks/lmnd/short-interest). The September insider sale prices come from the Form 4 at https://www.sec.gov/Archives/edgar/data/1691421/000181629926000023/xslF345X06/wk-form4_1788903193.xml (CIO John Peters, 10b5-1 and tax-withholding sales of 3,108 shares, not a signal in itself).",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "The Q2 2026 gross loss ratio of 60% included 7 points of favourable prior-period development. Excluding CAT and PPD, the attritional ratio rose to 59% from 54% in Q1 2026. Management called the gross loss ratio an 'output' it will let move to buy growth, and named vet-cost inflation in Pet. If PPD does not recur, the Q3 gross loss ratio can print in the low-to-mid 60s against 62% in Q3 2025: the first year-on-year deterioration headline in years, on a stock whose story is 'AI lowers the loss ratio'.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001691421/000169142126000047/lmndshareholderletterq22.htm",
+    "source_date": "2026-07-29",
+    "reaction_history_on_this_line": "Q2 2026 (-23.7%) and Q1 2026 (-14.9%) both sold off on profitability and expense worries despite revenue beats (https://www.nasdaq.com/articles/why-lemonade-stock-crashing-today). On loss-ratio improvement prints in 2025, the stock rose about 30% twice (baseline).",
+    "why_not_priced": "The headline 60% and the 7-point improvement year on year went out on the wire; the 59% attritional figure net of PPD sits in the body of the letter. Every 'loss ratio improved 11 points' headline from Q3 2025 sets the year-on-year comparison at 62%. Partly priced: the stock has fallen 24% since. Consensus is shaped on revenue and EPS, not the loss ratio.",
+    "independence": "Same document family as finding 3 (both bear on the loss ratio) but a different driver. The 'output not input' and vet-inflation remarks come from the Q2 call transcript (https://www.mitrade.com/insights/news/live-news/article-8-1978055-20260808). Trupanion's Q3 preview says vet inflation is still in double digits (https://finviz.com/news/411055/trupanions-pet-growth-faces-a-test-as-guidance-points-to-slower-profit-gains).",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Q3 2026 was a much heavier personal-lines catastrophe quarter than Q3 2025. Allstate reported $1.65bn of Q3 cat losses, nearly three times last year's $558M. Hippo's Q3 CAT loss ratio was 6.5% against about 0 a year earlier, and its net loss ratio was 56.7% against 47.6%. Gallagher Re puts US severe convective storm losses at no less than $43bn. Lemonade's Q3 2025 CAT was about 4 points; the new 1 July reinsurance program adds up to $40M of CAT recovery per event.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000899051/000089905126000150/exhibit99newsrelease101526.htm",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "No clean history of CAT-driven misses at Lemonade in the baseline. Renters, pet and car are most of its in-force premium, so home CAT exposure is smaller than Hippo's.",
+    "why_not_priced": "These are peer and industry numbers released after Lemonade last spoke (2026-07-29), and Lemonade does not guide its loss ratio. If they were priced, previews would cite a CAT headwind; none found mention it.",
+    "independence": "Hippo Q3 8-K (https://www.sec.gov/Archives/edgar/data/0001828105/000182810526000048/q326earningsreleasefinal.htm, 2026-10-29). Gallagher Re via Artemis (https://www.artemis.bm/news/gallagher-re-estimates-global-insured-cat-losses-at-92bn-for-9m26-lowest-since-2019/, 2026-10-21) calls 9M global insured losses the lowest since 2019, which cuts against the size. Proxy: Lemonade has confirmed nothing.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Lemonade has met or beaten its own revenue guide reliably: Q2 revenue was $294.4M against a $290.0M estimate, and EPS beat in 6 of the last 8 quarters. Q3 revenue therefore likely lands at or above the $323-326M guide and the $322.4M consensus. On the Q2 call the company reiterated positive adjusted EBITDA in Q4 2026 (about +$8M) and for FY2027.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.mitrade.com/insights/news/live-news/article-8-1978055-20260808",
+    "source_date": "2026-08-08",
+    "reaction_history_on_this_line": "Revenue beats were sold three times running: Q2 2026 beat and -23.7%, Q1 2026 -14.9%, Q4 2025 -6.2% (https://www.webull.com/news/15310748522521600). This name has not paid for revenue beats lately.",
+    "why_not_priced": "Mostly priced: a beat inside the guided range is expected. What is left is whether the Q4 positive-EBITDA line is reiterated or moved, which is a guidance item the market cannot see before the print.",
+    "independence": "Beat history from therighttrader (https://therighttrader.com/earnings-calendar/lmnd). Same company guide as the bar.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Distribution expanded through Q3 and into Q4: Car and Autonomous Car launched in Missouri on 2026-09-02, and Renters went to Kansas, Kentucky, Alaska, Hawaii, Alabama and Idaho, then Minnesota, 'completing nationwide availability'. Tesla FSD V14 Lite/HW3 support for Autonomous Car came on 2026-10-08. This supports the FY in-force premium guide and the cross-sell story.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://finviz.com/news/404121/lemonade-to-announce-third-quarter-2026-financial-results",
+    "source_date": "2026-10-19",
+    "reaction_history_on_this_line": "In July the stock fell on a full-year in-force premium guide seen as slightly light (https://startupmap.iamsterdam.com/news/feed/lemonade-s-stock-drops-despite-79-revenue-surge-to-294m-as-full-year-premium-outlook-slightly-misses-estimates), so this is the line it trades on.",
+    "why_not_priced": "These are small press releases nobody aggregates into an in-force premium estimate. The renters expansions are marginal in dollars, so the size is small.",
+    "independence": "CFO Dive, 2026-09-14: about half of new auto comes from existing customers (https://www.cfodive.com/news/lemonade-cfo-eyes-self-driving-car-insurance-cross-selling-growth/830342/).",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Direct-channel auto is in a price war. Root's Q3 preview says competitors 'outspent Root on direct marketing while cutting price', and Root's average premium fell about 8% year on year. Root reports after the close on 2026-11-04, inside this window and before Lemonade's bmo print, so its car growth, acquisition cost and loss ratio will set the read-through for Lemonade Car's growth spend.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://finviz.com/news/409623/roots-q3-test-can-margins-hold-as-rate-cuts-and-a-direct-channel-price-war-bite",
+    "source_date": "2026-10-27",
+    "reaction_history_on_this_line": "None measured for Root read-through to Lemonade.",
+    "why_not_priced": "Root's print is not out at the seal time. The price war could push Lemonade's Q3 growth spend above plan, and the Q3 EBITDA guide already assumes higher spend.",
+    "independence": "On the Q2 call Lemonade said it prices Car 'more aggressively than our competitors' (mitrade transcript). The sign of Root's print is unknown; proxy.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "The CFO transition was finalised on terms that read as orderly. The 8-K/A of 2026-10-15 says Tim Bixby moves to the board on 2027-01-01 with 'no severance', his awards keep vesting, and successor Nick Stead (an internal hire) gets 80,000 RSUs. This takes some of the sting out of the July succession news, which coverage tied to the -23.7% reaction.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.sec.gov/Archives/edgar/data/1691421/000169142126000061/lmnd-20260727.htm",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "The July announcement coincided with the -23.7% reaction (https://stocktwits.com/discussions/lemonade-lmnd-is-down-sharply-following-q2-earnings-with-the-market-reacting-to-a-cfo-succession-announcement-alongside-the-results-are-you-buying-the-dip/660323472).",
+    "why_not_priced": "It is a quiet amendment with no wire coverage found. The effect is tiny.",
+    "independence": "Original 8-K: https://www.sec.gov/Archives/edgar/data/1691421/000169142126000050/lmnd-20260727.htm",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Hurricane Isaias made landfall on 2026-10-09 in the Florida Panhandle as a Category 2, with a $2-4.5bn insured loss estimate. It falls in Q4, so it touches Q4 loss ratio commentary and the +$8M Q4 EBITDA target, which only resolves with the Q4 print (some of it may be referenced on the 11-05 call). Lemonade's Florida home exposure was not established.",
+    "resolves_by": "2027-02-28",
+    "source": "https://www.artemis.bm/news/gallagher-re-estimates-global-insured-cat-losses-at-92bn-for-9m26-lowest-since-2019/",
+    "i": 7
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Defiance LMNX 2x long ETF launch, a possible source of levered flow",
+    "source": "https://quantisnow.com/insight/defiance-launches-lmnx-the-first-2x-long-etf-for-lemonade-6235089",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Rallies.ai report of analyst target cuts (one firm 60 to 55) and a -6.5% day",
+    "source": "https://rallies.ai/news/lemonade-stock-drops-65-on-91-volume-collapse-with-piper-sandler-pt-cut",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "LMND.json",
+    "text": "Zacks/TipRanks in-force premium consensus of $878.55M and the 'Q3 revenue 183-186M' guide",
+    "source": "https://www.tipranks.com/news/the-fly/lemonade-sees-q3-revenue-183m-186m-consensus-195-76m-thefly",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LMND.json",
+    "text": "EDGAR filings since 2026-07-29: only the 10-Q, Form 4/144 (10b5-1, tax withholding and gifts) and the CFO 8-K/A; no item 8.01 or 2.02 pre-release",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LMND.json",
+    "text": "Analyst rating or target changes dated Oct-Nov 2026: none found",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LMND.json",
+    "text": "A cause for the September-October drawdown from about $54 to $44.80: none found in news",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LMND.json",
+    "text": "Hippo's own stock reaction to its 2026-10-29 print: sources conflict (iTiger '+21-22%' of uncertain date vs MarketBeat midday -$0.16); not used",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LMND.json",
+    "text": "Trupanion Q3 2026 actual results: not yet published",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LMND.json",
+    "text": "Root Q3 2026 actual results: report due after the close on 2026-11-04, not out at search time",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LMND.json",
+    "text": "App-store or web-traffic data for Lemonade in Q3 2026: not searched in depth, nothing surfaced",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "LMND.json",
+    "text": "Earnings Whispers 2026-10-28 'Breakeven Countdown' preview: listed on finviz, text not retrievable",
+    "i": 18
+   }
+  ]
+ },
+ {
+  "id": "us/2026-11-04/SEZL",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "SEZL",
+   "event_date": "2026-11-04",
+   "session": "amc",
+   "as_of_utc": "2026-11-04T18:09:22+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-04",
+    "spot": 138.695,
+    "run_up_5d_pct": 6.67,
+    "run_up_20d_pct": 21.82,
+    "pct_from_52w_high": -26.44,
+    "pct_from_52w_low": 172.11,
+    "realised_vol_20d_annualised_pct": 77.9,
+    "avg_volume_20d": 494022
+   },
+   "cik": "0001662991",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-10-08",
+      "session": "amc",
+      "move_pct": 9.74
+     },
+     {
+      "event_date": "2026-08-06",
+      "session": "amc",
+      "move_pct": -33.89
+     },
+     {
+      "event_date": "2026-07-14",
+      "session": "amc",
+      "move_pct": 3.38
+     },
+     {
+      "event_date": "2026-05-06",
+      "session": "amc",
+      "move_pct": 16.04
+     },
+     {
+      "event_date": "2026-04-15",
+      "session": "amc",
+      "move_pct": 4.97
+     },
+     {
+      "event_date": "2026-02-25",
+      "session": "amc",
+      "move_pct": 35.26
+     },
+     {
+      "event_date": "2026-02-02",
+      "session": "amc",
+      "move_pct": -1.21
+     },
+     {
+      "event_date": "2025-11-05",
+      "session": "amc",
+      "move_pct": -12.47
+     }
+    ],
+    "n": 8,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 11.11,
+    "max_abs_move_pct": 35.26,
+    "up_count": 5,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 27,
+    "median_gap_days": 49,
+    "ratio": 0.55,
+    "last_print": "2026-10-08",
+    "verdict": "unknown",
+    "cadence_implausible": true,
+    "reason": "inferred cadence of 49 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 8 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-20",
+    "days_to_expiry": 16,
+    "atm_strike": 140.0,
+    "atm_iv_pct": 120.1,
+    "straddle_implied_move_pct": 20.73,
+    "event_implied_move_pct": 15.95,
+    "event_implied_move_basis": "20.73% straddle over 16 calendar days less 16.59% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": 34.97,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 1.09,
+    "total_open_interest": 10510,
+    "atm_spread_frac_of_mid": 0.184,
+    "warnings": [],
+    "priced_direction_lean": "downside paid"
+   },
+   "deadband_pct": 5.55,
+   "deadband_basis": "half the median of 8 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 15.95,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 8,
+    "history_usable": 8,
+    "event_plausibility": "unknown",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Q3 2026 consensus revenue about $154.0M (about +32% y/y) and adjusted EPS $1.28 from 4 estimates (Earnings Whispers preview 2026-10-27, https://finviz.com/news/409647/sezzles-third-guidance-raise-faces-a-credit-and-marketing-test-in-the-third-quarter). Benzinga carries EPS $1.26 (https://www.benzinga.com/quote/SEZL/earnings-forecasts), so the EPS sources agree within $0.02. The revenue bar matches the company's own guide: FY2026 total revenue growth 35%, adjusted net income $185.0M, adjusted EPS $5.25, with H2 growth of 'around 30%' (Q2 release table https://www.stocktitan.net/news/SEZL/sezzle-reports-second-quarter-2026-d27npa8w3sq7.html and https://stocktwits.com/news-articles/markets/equity/sezl-stock-eyes-worst-day-in-a-year-on-mixed-analyst-actions-cautious-h2-guidance/cZofiXgRJ9u). Street FY2026 is $5.10 EPS and $592.6M revenue, below the company's $5.25 and about $607.9M, so the Street sits under the guide. The real bar is the Q4/FY2027 outlook and credit (provisions), not the Q3 revenue line. Real earnings prints rebuilt from EDGAR 8-K item 2.02s: 2025-11-05 -12.47%, 2026-02-25 +35.26%, 2026-05-06 +16.04%, 2026-08-06 -33.89%. The 2026-10-08, 2026-07-14, 2026-04-15 and 2026-02-02 item 2.02s are date announcements; 2026-10-08 is confirmed to contain no results or guidance (https://finviz.com/news/400584/sezzle-to-announce-third-quarter-2026-results-and-participate-in-upcoming-investor-conferences).",
+   "positioning_check": "Short interest 4.43M shares, 9.2 days to cover, as of the 2026-10-15 settlement (https://massive.com/quote/sezl, read 2026-11-04). That is about 13% of the 33.76M shares outstanding. Youakim alone holds 39.6% (13D/A 2026-09-14), so the float is roughly 16-17M shares and short interest is about 25% of float (Chartmill puts float short at 25.75%: https://www.chartmill.com/stock/quote/SEZL/ownership). This is a crowded short. The 25-delta skew is +34.97 vol points (puts bid hard); put/call OI 1.09; event-implied move 15.95%; straddle 20.73% to 2026-11-20. Run-up: +21.8% over 20 days and +6.7% over 5 days, nearly all of it +13.4% today (122.43 to ~138.8) on a fintech sympathy rally: AFRM 71.97 to 76.96, UPST 21.37 to 23.75 after Upstart's Q3 print (Yahoo chart). That came after a -9% two-day slide on 1.5-1.7x average volume on Nov 2-3. Earnings Whispers bearish sentiment is 15.7%, down from 22.7% before the August print.",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "Sezzle has beaten revenue consensus by about 11-12% in each recent quarter: Q3 2025 $116.8M vs $104.7M (+11.5%), Q2 2026 $149.7M vs about $133-135M (+11-12%). Q3 2026 consensus of about $154M (+32% y/y) sits exactly on management's 'around 30%' H2 growth guide, so a beat of mid-single digits or more on the reported quarter is the base case. But the stock fell -12.5% (Nov 2025) and -33.9% (Aug 2026) on the last two beats of that kind.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.stocktitan.net/news/SEZL/sezzle-reports-second-quarter-2026-d27npa8w3sq7.html",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "Revenue beats of about 11% came with -12.47% (2025-11-05, beat plus GMV slowdown and credit worries) and -33.89% (2026-08-06, beat plus a raise, sold on 'around 30%' H2 growth and yield normalising), and with +35.26% (2026-02-25) and +16.04% (2026-05-06) when the guide was raised sharply. The beat by itself has not set the sign.",
+    "why_not_priced": "Partly priced. A habitual beater is expected to beat, and the Street's FY revenue of $592.6M is still below the company's own about $607.9M, which leaves a mechanical Q3/Q4 beat. If a full beat were priced, the Street would have moved its numbers to the company guide; it has not.",
+    "independence": "Q3 2025 beat size from https://business.mammothtimes.com/mammothtimes/article/stockstory-2025-11-6-sezl-q3-deep-dive-subscription-pivot-and-ai-drive-growth-amid-margin-compression; Q2 2026 beat from https://goldesel.de/aktien/news/sezzle-aktie-steigt-nach-upgrade-td-cowen-stuft-von-hold-auf-buy. Street-below-guide from the Earnings Whispers preview (finviz 409647). Different sources from the release.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "On the Q2 call management pre-warned three things for Q3: provisions could exceed 3% of GMV in Q3 (the FY framework is 2.5-3%; Q2 was 2.4%), revenue yield would decline sequentially as Pagaya and SezzleCash dilute the take rate, and marketing (Q2 $19.4M, 'not a run rate') would come down. A Q3 provision above 3% of GMV and a lower yield therefore land inside what the company guided.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://finviz.com/news/409647/sezzles-third-guidance-raise-faces-a-credit-and-marketing-test-in-the-third-quarter",
+    "source_date": "2026-10-27",
+    "reaction_history_on_this_line": "Credit worries were cited in the -12.47% reaction of 2025-11-05; yield normalisation was the stated reason for the -33.89% reaction of 2026-08-06.",
+    "why_not_priced": "The pre-warning is public, so a provision above 3% of GMV that stays within guidance should be largely priced. The risk sits only in a provision well beyond the warning. If the market feared that, the put skew would be extreme, and it is (+35 vol points), so this is in the price.",
+    "independence": "Q2 provision of 2.4% of GMV and yield of 11.7% from the company release (stocktitan link in finding 1). H2 yield normalising to about 11.4% from https://stocktwits.com/news-articles/markets/equity/sezl-stock-eyes-worst-day-in-a-year-on-mixed-analyst-actions-cautious-h2-guidance/cZofiXgRJ9u.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "A first FY2027 outlook is likely at this print: with the Q3 2025 print on 2025-11-05 Sezzle issued its first FY2026 adjusted EPS guide ($4.35), which it then raised to $4.70, $5.10 and $5.25. So this release probably carries a new-year guide, and the street has no company anchor for 2027. The sign is unknown.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.stocktitan.net/news/SEZL/sezzle-reports-second-quarter-2026-d27npa8w3sq7.html",
+    "source_date": "2026-08-06",
+    "reaction_history_on_this_line": "Guidance has set the sign on every real print. First FY2026 guide on 2025-11-05: -12.47%. Raises in Feb and May 2026: +35.26% and +16.04%. Raise with an H2 deceleration in Aug 2026: -33.89%.",
+    "why_not_priced": "The guide's level is unknown to everyone. What is priced is its variance: a 15.95% event-implied move and a +35 put skew say the market fears a disappointment like August's. This finding raises [sizing note removed]; it adds nothing to direction.",
+    "independence": "The guidance history table in the Q2 release lists 'Nov 2025: Adjusted EPS $4.35'. The same document as finding 1, a different line.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "SEZL rose about +13.4% on 2026-11-04 (122.43 to ~138.8) into the print, on a fintech sympathy move with Upstart +11% and Affirm +7%. Upstart's Q3 print (2026-11-03) had originations +44% y/y, but CEO Paul Gu said 'macro is putting pressure on our near-term outlook', and its FY guide implies Q4 revenue of about $307M against Q3's $371M. The entry is at a higher price and a higher bar, on a peer whose own release flagged consumer-credit macro pressure.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001647639/000164763926000083/upst991prq32026.htm",
+    "source_date": "2026-11-03",
+    "reaction_history_on_this_line": "In the baseline, the August print came after a strong run (stock near $178) and fell -33.89%. The 2026-10-08 date-announcement day saw +9.74% with no news. The stock often runs into the print on sentiment.",
+    "why_not_priced": "The rally is the price; the question is whether it overshoots. A sympathy bid on a peer's volume beat, ignoring the peer's own macro warning, leaves SEZL's entry about 13% higher with nothing company-specific behind it. If the market had weighed Upstart's warning, SEZL would not have outrun Upstart on the day.",
+    "independence": "Price data from https://query1.finance.yahoo.com/v8/finance/chart/SEZL?range=1mo&interval=1d and https://query1.finance.yahoo.com/v8/finance/chart/UPST?range=10d&interval=1d. Proxy, not a Sezzle fact.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "PayPal reported Pay Later growth of +25% in Q3 2026 against +26% TPV growth in Q2 2026. US BNPL demand held steady through the quarter Sezzle is reporting.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.thestockobserver.com/?p=8967647",
+    "source_date": "2026-10 (PayPal Q3 2026 call, late October)",
+    "reaction_history_on_this_line": "None for peer read-throughs on this name; Sezzle's GMV line has not set the reaction.",
+    "why_not_priced": "This is a public peer series, largely priced, and only a proxy. A drop in PayPal's Pay Later growth would have been a visible negative for BNPL names; it did not come.",
+    "independence": "Proxy only. The metric (TPV or otherwise) is not confirmed in the source. Q2 2026 +26% per the same search; no independent confirmation.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "Pagaya, which since May 2026 embeds its underwriting in Sezzle for longer-term point-of-sale loans, reported Q3 2026 network volume of about $3.6B (+29% y/y) on 2026-10-29, near the top of its $3.43-3.63B guide. Its referral channels, Sezzle among them, grew in the quarter.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://finviz.com/news/411281/pagaya-reports-third-quarter-2026-results",
+    "source_date": "2026-10-29",
+    "reaction_history_on_this_line": "None. Sezzle management names Pagaya volume as a take-rate dilutor, so it adds GMV and lowers yield, which is a mixed line.",
+    "why_not_priced": "Sezzle's share of Pagaya volume is not disclosed, so the market cannot map it. This is weak evidence.",
+    "independence": "https://grafa.com/en/news/united-states/pagaya-q3-2026-revenue-rises-12-percent for the volume figure; partnership from https://stocks.observer-reporter.com/observerreporter/article/bizwire-2026-5-5-pagaya-announces-new-point-of-sale-partnership-with-sezzle-to-expand-consumers-options-for-sezzle-customers. Proxy.",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "FY2026 guidance excludes any material contribution from SezzleCash (live to all eligible Sezzle Anywhere subscribers by end of Q2; about 10% of eligible new subscribers used it as their first transaction) and Sezzle Send (August launch, 100k+ waitlist). On 2026-08-12 Sezzle amended its WebBank program so WebBank holds these new-product loans to maturity (retention threshold $30M, expandable to $150M; tangible net worth covenant raised from $12M to $100M). The financing buys a balance-sheet-light ramp of products the guide does not count, which gives the guide upside room.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.sec.gov/Archives/edgar/data/1662991/000166299126000144/sezl-20260812.htm",
+    "source_date": "2026-08-12",
+    "reaction_history_on_this_line": "Guide raises bought +35% and +16% in Feb and May 2026; a raise with deceleration sold -34% in August.",
+    "why_not_priced": "The amendment's terms sit in an 8-K that no preview cites; the Earnings Whispers preview mentions only that guidance 'assumes little' from SezzleCash. If the market expected an increase from new products, the Street's FY would sit at or above the company's $5.25, not at $5.10.",
+    "independence": "SezzleCash usage and the guidance exclusion from https://www.marketbeat.com/instant-alerts/sezzle-q2-earnings-call-highlights-2026-08-07/. A different document from the 8-K.",
+    "i": 6
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "Crowded short into a print the options market has priced for downside: 4.43M shares short, 9.2 days to cover (2026-10-15), about 25% of float. A beat with a firm guide meets about nine days of covering demand; the put skew of +35 vol points means downside is already bought.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://massive.com/quote/sezl",
+    "source_date": "2026-10-15 settlement, page read 2026-11-04",
+    "reaction_history_on_this_line": "The +35.26% move of 2026-02-25 came on a raise into a heavily shorted name; the -33.89% of August shows the short is not always squeezed.",
+    "why_not_priced": "The skew prices the downside; it does not price the covering flow on good news. If the market expected a squeeze, the skew would be flat or call-side, and short interest would have fallen into the print. It rose from about 4.0-4.35M in August to 4.43M.",
+    "independence": "August short interest of about 4.0-4.35M from https://altindex.com/ticker/sezl/short-interest and https://equibles.com/stocks/sezl/short-interest; float denominator from the 13D/A https://www.sec.gov/Archives/edgar/data/1662991/000166299126000155/xslSCHEDULE_13D_X01/primary_doc.xml.",
+    "i": 7
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "Insiders kept selling. President and Director Paul Paradis sold about $16.3M (10b5-1) through July 2026, the CFO about $6.1M, and five insiders $25.4M over 12 months against $114k of buying. Two Form 144 notices were filed on 2026-10-09, a day after the Q3 date announcement.",
+    "lands_on": "other",
+    "leg": null,
+    "resolves_by": "2026-11-04",
+    "source": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001662991&type=&dateb=&owner=include&count=40",
+    "source_date": "2026-10-09",
+    "reaction_history_on_this_line": "None measurable; the sales are mostly scheduled 10b5-1 plans.",
+    "why_not_priced": "The sales are public and largely scheduled, so this is a weak signal. Who filed the October 144s was not established.",
+    "independence": "Totals from https://massive.com/quote/sezl (insider section). It shares a source with finding 8 for a different dataset.",
+    "i": 8
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "Management presents at BMO (Nov 9-10), Citi (Nov 10), KBW (Nov 11) and TD Cowen (Nov 17), and the annual meeting is Nov 19. Any follow-up colour on the guide lands after the exit window.",
+    "resolves_by": "2026-11-09",
+    "source": "https://finviz.com/news/400584/sezzle-to-announce-third-quarter-2026-results-and-participate-in-upcoming-investor-conferences",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "TD Cowen upgrade to Buy (PT $165) on 2026-08-10 and another firm raising Q3 EPS to $1.31 from $1.24",
+    "source": "https://goldesel.de/aktien/news/sezzle-aktie-steigt-nach-upgrade-td-cowen-stuft-von-hold-auf-buy",
+    "first_hunter_reason": "duplicate",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "Baseline reaction history (8 moves, median 11.11%) as an earnings base rate",
+    "source": "/home/user/claude_research/research/2026/11/2026-11-04/edge-split-1/baselines/SEZL.json",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 11
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "SEZL.json",
+    "text": "Earnings Whispers 'post-earnings range about $105-$141' and bearish sentiment falling to 15.7% from 22.7%",
+    "source": "https://finviz.com/news/409647/sezzles-third-guidance-raise-faces-a-credit-and-marketing-test-in-the-third-quarter",
+    "first_hunter_reason": "duplicate",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SEZL.json",
+    "text": "What the 2026-10-08, 2026-07-14 and 2026-04-15 8-K item 2.02 filings were: date announcements, not results or pre-releases (2026-10-08 confirmed via the finviz reprint of the release)",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SEZL.json",
+    "text": "Sezzle-specific news in Sep-Oct 2026 (merchant wins, product launch confirmation for Sezzle Send): nothing dated in the window",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SEZL.json",
+    "text": "App download or ranking data (Sensor Tower, Appfigures): nothing public for 2026",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SEZL.json",
+    "text": "Company-specific cause of the -9% slide on Nov 2-3 on 1.5-1.7x volume: none found",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SEZL.json",
+    "text": "Klarna Q3 2026 results: not found in search",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SEZL.json",
+    "text": "Affirm fiscal Q1 2027 results: not yet reported (only its guide of $13.7-14.0B GMV)",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SEZL.json",
+    "text": "8-K item 8.01 of 2026-08-28: annual meeting date only, nothing financial",
+    "i": 19
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "SEZL.json",
+    "text": "13D/A of 2026-09-14: Youakim's divorce-related loss of power over 1.51M trust shares, no open-market sales",
+    "i": 20
+   }
+  ]
+ },
+ {
+  "id": "us/2026-11-04/WOLF",
+  "hunter_definition": ".claude/agents/unpriced-hunter.md",
+  "lessons_file": "researcher_us/LESSONS.md",
+  "baseline": {
+   "ticker": "WOLF",
+   "event_date": "2026-11-04",
+   "session": "amc",
+   "as_of_utc": "2026-11-04T18:10:04+00:00",
+   "options_as_of_valid": true,
+   "sources": [
+    "yahoo chart v8 daily bars",
+    "yahoo options v7 front expiry (cookie+crumb)",
+    "sec edgar submissions api, 8-K item 2.02 acceptance times"
+   ],
+   "tape": {
+    "last_close_date": "2026-11-04",
+    "spot": 21.485,
+    "run_up_5d_pct": -19.35,
+    "run_up_20d_pct": -31.51,
+    "pct_from_52w_high": -70.77,
+    "pct_from_52w_low": 45.17,
+    "realised_vol_20d_annualised_pct": 103.4,
+    "avg_volume_20d": 4417121
+   },
+   "cik": "0000895419",
+   "history": {
+    "moves": [
+     {
+      "event_date": "2026-08-19",
+      "session": "amc",
+      "move_pct": -9.42
+     },
+     {
+      "event_date": "2026-05-05",
+      "session": "amc",
+      "move_pct": 17.61
+     },
+     {
+      "event_date": "2026-02-04",
+      "session": "amc",
+      "move_pct": -9.71
+     },
+     {
+      "event_date": "2025-10-29",
+      "session": "amc",
+      "move_pct": -18.22
+     }
+    ],
+    "n": 4,
+    "basis": "8-K item 2.02 acceptance times (exact)",
+    "median_abs_move_pct": 13.66,
+    "max_abs_move_pct": 18.22,
+    "up_count": 1,
+    "session_conflicts": 0
+   },
+   "event_plausibility": {
+    "days_since_last_print": 77,
+    "median_gap_days": 98,
+    "ratio": 0.79,
+    "last_print": "2026-08-19",
+    "verdict": "fits_cadence",
+    "reason": "77 days since the last print against a 98-day cadence"
+   },
+   "options": {
+    "status": "ok",
+    "expiry": "2026-11-06",
+    "days_to_expiry": 2,
+    "atm_strike": 21.5,
+    "atm_iv_pct": 183.9,
+    "straddle_implied_move_pct": 13.29,
+    "event_implied_move_pct": 11.75,
+    "event_implied_move_basis": "13.29% straddle over 2 calendar days less 7.79% of ordinary 20d-realised movement, subtracted in variance",
+    "skew_25d_vol_points": -5.88,
+    "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+    "put_call_open_interest_ratio": 0.86,
+    "total_open_interest": 6771,
+    "atm_spread_frac_of_mid": 0.222,
+    "warnings": [],
+    "priced_direction_lean": "upside paid"
+   },
+   "deadband_pct": 6.83,
+   "deadband_basis": "half the median of 4 prior reactions, floored at 1.5%",
+   "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+   "expected_move_pct": 11.75,
+   "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+   "baseline_quality": {
+    "options_usable": true,
+    "history_events": 4,
+    "history_usable": 4,
+    "event_plausibility": "fits_cadence",
+    "priced_direction_available": true,
+    "tier": "full",
+    "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+   },
+   "status": "ok"
+  },
+  "first_hunter_context": {
+   "bar": "Company guide for fiscal Q1 2027: revenue $140-160M (midpoint $150M), non-GAAP gross margin negative, non-GAAP opex $62-66M (8-K ex.99.1, 2026-08-19, https://www.sec.gov/Archives/edgar/data/0000895419/000089541926000049/ex991q4-26.htm). Consensus revenue $150.0M (Benzinga, https://www.benzinga.com/quote/WOLF/earnings-forecasts) and $153.2M (FXEmpire, https://www.fxempire.com/stocks/wolf/earnings); non-GAAP EPS consensus -$2.02 on both, -$1.76 on TipRanks from 2 analysts (https://www.tipranks.com/stocks/DE:CR6/earnings). Revenue bar is sourced to a company guide with two agreeing estimate sources; the EPS bar is disputed (-2.02 vs -1.76). The real bar tonight is the first fiscal Q2 2027 revenue guide, for which no consensus was found.",
+   "positioning_check": "Short interest 27,376,417 shares at the 2026-10-15 settlement = 51.7% of 52.99M shares outstanding (as of 2026-08-13, S-3ASR), days to cover 4.25; up from 24.64M (08-31), 26.10M (09-15), 26.85M (09-30, DTC 11.4) (https://equibles.com/stocks/wolf/short-interest, read 2026-11-04; massive.com quote page confirms 27.38M / 4.3 days as of 2026-10-15). Part of it is very probably convert-arbitrage hedging: the selling-stockholder table of the 2026-09-16 S-3ASR is dominated by convertible-note funds (LMR, Whitebox, Sculptor, HBK, CSS, Slate Path) and Renesas holds 2L converts, so the 'crowded short' is partly hedge, not all directional. Skew: 25d put minus call IV = -5.88 vol points, i.e. upside paid; put/call OI 0.86. Run-up -19.35% 5d, -31.51% 20d, -70.8% from 52w high; spot $21.49 sits just below the $23.33 average analyst target (MarketBeat, 1 Buy / 3 Hold / 1 Sell).",
+   "already_public": null,
+   "new_in_release": null,
+   "session_check": null
+  },
+  "evidence": [
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Short interest is 27.4M shares, 51.7% of the 53.0M shares outstanding, at the 2026-10-15 settlement (days to cover 4.25), and it has risen at every settlement since August (24.6M on 08-31, 26.1M on 09-15, 26.9M on 09-30); with the stock -31.5% over 20 days into a print where the option market already pays more for calls than puts (skew -5.9 vol points), a release that is merely in line removes the reason for the short and a squeeze is a mechanism of its own.",
+    "lands_on": "positioning",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://equibles.com/stocks/wolf/short-interest",
+    "source_date": "2026-10-15 (settlement date; page read 2026-11-04)",
+    "reaction_history_on_this_line": "No squeeze reaction in the four post-emergence prints in the baseline: -18.2% (2025-10-29), -9.7% (2026-02-04), +17.6% (2026-05-05), -9.4% (2026-08-19); the one up move came with a short interest of a similar order (Schaeffer's flagged WOLF as a squeeze candidate on 2026-05-13).",
+    "why_not_priced": "Short interest is public, but the skew shows only part of it: if the market treated the short as a squeeze setup the call wing would be bid well beyond -5.9 points and the stock would not have fallen 19% in the five sessions before the print. Much of the short is convert-arb hedging (see positioning_check), which caps how much of it is forced to cover, so this is sized small.",
+    "independence": "massive.com quote page, 27.38M shares short, 4.3 days to cover as of 2026-10-15 (https://massive.com/quote/wolf); Tickeron, about 51.8% of the public float short (https://tickeron.com/blogs/wolfspeed-wolf-drops-19-6-in-30-days-despite-1-5-billion-financing-news-24294/). Same FINRA data underneath, so not independent evidence.",
+    "i": 0
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Power-semiconductor peers that reported after Wolfspeed last spoke (2026-08-19) guided up: STMicro (2026-10-29) printed Q3 revenue +17.9% y/y, Power and Discrete +11.3% y/y, and guided Q4 to $4.15B, +10.5% sequential and +24.7% y/y; onsemi (2026-11-02) printed Q3 revenue +11% y/y ($1.722B) and guided Q4 to $1.715-1.815B, citing accelerating AI data-center and industrial power demand. Wolfspeed's own Q1 guide ($140-160M) is flat on Q4's $149.6M, so a peer-consistent Q2 guide would sit above flat.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://finviz.com/news/411093/stmicroelectronics-reports-q3-2026-financial-results",
+    "source_date": "2026-10-29",
+    "reaction_history_on_this_line": "The guide has driven every recent reaction: 2026-08-19 flat Q1 guide (midpoint at consensus) -9.4%; 2025-10-29 weak outlook -18.2%; 2026-05-05 +17.6%. The name has not paid for an in-line guide.",
+    "why_not_priced": "WOLF fell 19% in the five sessions after ST's report and through onsemi's, so the stock has not traded with its peers' guides; if this were priced the stock would not be at a fresh 20-day low into the print. It is a proxy: neither peer quantified silicon carbide or automotive SiC, and Wolfspeed's own call said auto mix is unpredictable, so it is sized small.",
+    "independence": "onsemi Q3 2026 8-K ex.99.1, 2026-11-02 (https://www.sec.gov/Archives/edgar/data/0001097864/000114036126041580/ef20084671_ex99-1.htm) - a different company and document from ST's release. Neither one isolates SiC.",
+    "i": 1
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Two named supply contracts were announced after the Q4 call: Infineon moves its long-term Wolfspeed SiC substrate supply from 150mm to 200mm wafers in a new multi-year agreement (2026-10-15), and BorgWarner signed a multi-year supply deal for Wolfspeed 1200V SiC devices on its next 800V inverter platform (2026-10-29). Materials revenue was the weak line in Q4 ($43.3M against $78.4M a year earlier, with customers in the 150-to-200mm transition), so the Infineon move lands on that line.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://evertiq.com/design/2026-10-15-infineon-secures-200mm-sic-wafer-supply-from-wolfspeed",
+    "source_date": "2026-10-15",
+    "reaction_history_on_this_line": "No baseline print was decided by a contract announcement; the Q4 release's partnership news (LITEON, Toyota OBC, a European Tier 1 award) did not stop a -9.4% reaction.",
+    "why_not_priced": "Neither contract carries a value or volume, so no estimate can include it; management can quantify either tonight in the Q2 guide or materials commentary. The stock fell after both announcements, which is what it looks like when the contracts are not in the price. Small, because the timing of revenue is multi-year and undisclosed.",
+    "independence": "BorgWarner deal: https://evertiq.com/design/2026-10-30-wolfspeed-announces-sic-device-supply-deal-with-borgwarner (a different counterparty and document). Q4 materials figures: https://www.sec.gov/Archives/edgar/data/0000895419/000089541926000049/ex991q4-26.htm.",
+    "i": 2
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "On 2026-10-07 Wolfspeed announced a conditional Department of War (Office of Strategic Capital) commitment for up to $1.5B: a senior secured, 30-year delayed-draw term loan at Treasury plus a provisional 1.25-1.75%, with interest capitalisable for five years and the first $600M refinancing the secured notes due 2030, in exchange for warrants up to 7.5% of fully diluted equity and a $750M minimum contribution that may include equity or excess cash. The call is the first chance to update definitive-agreement progress and say how the $750M will be met; the company held $1.09B of cash at 2026-06-28.",
+    "lands_on": "financing",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000895419/000119312526416987/d122407dex991.htm",
+    "source_date": "2026-10-07",
+    "reaction_history_on_this_line": "The stock rose about 6% on the announcement (TIKR) and then gave it all back and more by 2026-10-30 on dilution worry (Tickeron). No earlier print turned on financing in the post-emergence history.",
+    "why_not_priced": "What the money buys is a cheaper, longer refinance of the 2030 secured notes plus capex for GaN/SiC/rad-hard programmes, not a demand ramp (revenue guide is flat), so per [sizing note removed]. The open question is the $750M contribution: if management says it can be met from existing cash, the dilution discount the stock took after 2026-10-07 unwinds; if it signals an equity raise, it deepens. The press release does not say which, which is why the range is wide and the point is near zero.",
+    "independence": "Runtimewire on the 8-K terms ($750M minimum contribution including equity or excess cash; first $600M refinances 2030 notes): https://runtimewire.com/article/wolfspeed-conditional-defense-loan-refinance-2030-notes. Tickeron, 2026-10-30, on the give-back and dilution concern: https://tickeron.com/blogs/wolfspeed-wolf-drops-19-6-in-30-days-despite-1-5-billion-financing-news-24294/.",
+    "i": 3
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "The Q4 FY26 operating cash flow of -$54M included a $41M benefit from lower inventory, so the underlying burn was about -$95M a quarter with non-GAAP gross margin at -20% and management putting gross-margin breakeven near an $800M annual revenue run rate, against a guided ~$600M run rate; Q1 guides gross margin still negative, so a repeat inventory release is unlikely to flatter Q1 cash flow.",
+    "lands_on": "reported_quarter",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://www.mitrade.com/insights/news/live-news/article-0-2015039-20260820",
+    "source_date": "2026-08-20",
+    "reaction_history_on_this_line": "Margin and cash were cited in the 2026-08-19 sell-off (-9.4%) and the 2026-02-04 one (-9.7%); the stock sells negative gross margin prints.",
+    "why_not_priced": "The headline OCF (-$54M) is what screens and previews carry; the $41M inventory benefit sits in the call commentary. If the market priced the -$95M underlying run rate, the conditional loan's equity contribution would not be the open question it is. Largely inside what the company already guided (negative GM), and the crowded short shrinks a negative, so it is small.",
+    "independence": "Q4 8-K ex.99.1 confirms OCF -$54.1M, FCF -$60.9M, non-GAAP GM -20%, cash $1,088.6M (https://www.sec.gov/Archives/edgar/data/0000895419/000089541926000049/ex991q4-26.htm). The inventory figure itself rests on the TradingKey/Mitrade summary of the call.",
+    "i": 4
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Reports at the Q4 print said the broad rollout of 800V DC data-center power architecture is delayed beyond 2028, which pushes out the timing of revenue from Wolfspeed's 800V products, the segment management presented as its growth line (AI data-center revenue +20% sequential in Q4).",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://goldesel.de/aktien/news/wolfspeed-schlagt-bereinigtes-eps-trotz-verlust-und-gibt-q1-umsatzspanne-von-140160-mio-usd",
+    "source_date": "2026-08-20",
+    "reaction_history_on_this_line": "Raised in the August coverage of the -9.4% reaction; no separate reaction on this line.",
+    "why_not_priced": "Largely priced: it was public at the last print. It remains filed because the Q2 guide and AI data-center commentary tonight will show whether the delay has hit near-term data-center orders; the source is an AI-generated summary, so it is sized near zero.",
+    "independence": "onsemi (2026-11-02) cites accelerating AI data-center power demand, which points the other way for near-term demand: https://www.sec.gov/Archives/edgar/data/0001097864/000114036126041580/ef20084671_ex99-1.htm",
+    "i": 5
+   },
+   {
+    "kind": "filed_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Digitimes reported on 2026-09-03 that Chinese 6-inch SiC substrate supply is tightening and prices are expected to rise, after an oversupply price war took large-order channel prices to about $200-300 a wafer by late Q2 2026. That would ease the price pressure on Wolfspeed's materials business, which fell 45% y/y in Q4.",
+    "lands_on": "guidance",
+    "leg": null,
+    "resolves_by": "2026-11-05",
+    "source": "https://apps.digitimes.com/news/a20260903PD235.html",
+    "source_date": "2026-09-03 (from URL path; headline and metadata only, body paywalled, snippet_only)",
+    "reaction_history_on_this_line": "Materials weakness was part of the 2026-08-19 -9.4% reaction; there is no history of this line being a positive surprise.",
+    "why_not_priced": "Paywalled trade press that the US coverage does not cite. It is a narrow proxy: 6-inch Chinese pricing, while Wolfspeed sells mostly 200mm substrates into a customer transition. So it is sized minimal.",
+    "independence": "Digitimes Chinese-language piece (date not confirmed from URL) on Chinese 6-inch prices bottoming and recovering: https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=761681 - same publisher, so not independent.",
+    "i": 6
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Definitive agreements, the first $600M tranche and warrant issuance under the Department of War conditional loan have no date; whatever is not updated on the call resolves after the window.",
+    "resolves_by": "undated, after 2026-11-05",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000895419/000119312526416987/d122407dex991.htm",
+    "i": 7
+   },
+   {
+    "kind": "put_outside_window_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Resale shelf (S-3ASR, 2026-09-16) registers up to 58.1M shares for selling stockholders, including Renesas's 32.9M (shares plus 2L-convert conversions plus a $23.95 warrant), more than the 53.0M shares outstanding; an overhang that bites on any rally, with no dated sale found.",
+    "resolves_by": "undated",
+    "source": "https://www.sec.gov/Archives/edgar/data/0000895419/000119312526393324/d106994ds3asr.htm",
+    "i": 8
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Q4 FY26 revenue of $149.6M 'missed' a $223.6M consensus (goldesel/finviz)",
+    "source": "https://finviz.com/news/383966/wolfspeed-shares-tumble-after-q4-earnings-miss-and-cautious-outlook",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 9
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "TipRanks shows the fiscal Q1 report date as 2026-10-28 after close (confirmed)",
+    "source": "https://www.tipranks.com/stocks/DE:CR6/earnings",
+    "first_hunter_reason": "contradicted_by_document",
+    "i": 10
+   },
+   {
+    "kind": "rejected_by_first_hunter",
+    "hunt": "WOLF.json",
+    "text": "Short interest 117% of float (Barchart squeeze article)",
+    "source": "https://www.barchart.com/story/news/2216231/a-giant-short-squeeze-could-be-brewing-in-wolfspeed-stock",
+    "first_hunter_reason": "duplicate",
+    "i": 11
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WOLF.json",
+    "text": "2026 WARN notices for Wolfspeed (Siler City, Mohawk Valley, Durham): none found after the 2025 Siler City notice",
+    "i": 12
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WOLF.json",
+    "text": "Renesas block sale or Form 144 in October 2026: none found",
+    "i": 13
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WOLF.json",
+    "text": "Fiscal Q1 2027 sell-side previews and any Q2 FY27 revenue consensus: none found beyond Susquehanna's PT cut to $25 on 2026-10-21 (no text)",
+    "i": 14
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WOLF.json",
+    "text": "Specific cause of the 2026-10-30 -12.5% gap down: MarketBeat names none; Tickeron attributes it to dilution worry and giving back the loan rally",
+    "i": 15
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WOLF.json",
+    "text": "New Section 48D cash refunds in fiscal Q1 2027: none found (the $698.6M refund was December 2025)",
+    "i": 16
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WOLF.json",
+    "text": "Aehr Test fiscal Q1 2027 SiC commentary: not found (only fiscal Q4 2026, July 2026)",
+    "i": 17
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WOLF.json",
+    "text": "TrendForce Q3 2026 SiC power-device data: not found",
+    "i": 18
+   },
+   {
+    "kind": "listed_as_searched_and_found_nothing",
+    "hunt": "WOLF.json",
+    "text": "Pomerantz investor-investigation releases (2026-09-08 and 09-22): litigation solicitation, no bearing on the print",
+    "i": 19
+   }
+  ]
+ }
+]
