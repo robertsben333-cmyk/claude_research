@@ -11,3 +11,7 @@
 ## Stage EU — wave 1 banked (4 of 5)
 - Logged at 2026-11-04 14:51 UTC
 - AMV0 -0.7, AKE +1.2, AMBU_B +0.9, ASC +2.5; all search_complete, all event_confirmed bmo. DIS still running. AMBU_B hunter: baseline short_ratio 0.0 is a register JOIN MISS — Finanstilsynet lists AMBU A/S 6.08% (03-11-2026), cache key 'AMBU A S'; baseline not revised (sealed), anchor_covered understated. Wave 2 launched: DEZ ORSTED ENX FBK AUTO. publish.sh rebase was blocked by a dirty eu-short-cache.json; committed and rebased by hand.
+
+## Stage EU — wave 2 partial
+- Logged at 2026-11-04 14:57 UTC
+- AUTO +0.8, FBK +0.35 (event confirmed from issuer calendar). Running: DIS DEZ ORSTED ENX. Wave 3 launched early: HFG CAPMAN LR ZV (NRC next).
