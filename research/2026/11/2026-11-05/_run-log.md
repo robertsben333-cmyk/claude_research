@@ -37,3 +37,7 @@
 ## Close AMC — 2026-11-05
 - Logged at 2026-11-05 11:20 UTC
 - Fired 11:13 UTC (06:13 ET). Guard mode --require-exit-tif opg exit 0 (amc_open, amc->open as DAY). verify: 14 legs, all ok, nothing held. close --submit: no leg due today, no exit orders sent, no refusals. Account reachable. (Stage E legs end 2026-09-25; E-P now trades.)
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-11-05 14:17 UTC
+- source research/2026/11/2026-11-04/edge-panel; fired 09:16 ET; 7 picks (U CAVA BYND ROOT FSLY ELF CORZ); analysts launched 09:17 ET
