@@ -47,3 +47,7 @@
 ## Split panel 3/4 — panel done
 - Logged at 2026-11-05 18:28 UTC
 - 4 of 4 judges (opus5, opus55, sonnet55, fable51 as pinned agents), 5 of 5 coverage; selected CRSR long (panel_pct 90); scored --dry-run at 18:28 UTC
+
+## Split panel 1/4 — panel done
+- Logged at 2026-11-05 18:29 UTC
+- 4 of 4 judges on pinned models, 5 of 5 covered; selected FNKO (pct 97 long); SOUN 80 not selected
