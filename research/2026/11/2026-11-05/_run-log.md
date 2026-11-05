@@ -45,3 +45,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-11-05 14:19 UTC
 - 7 names compiled 09:18 ET, all 7 analysts returned, 0 unusable: U limit 53.00, CAVA open, BYND limit 6.70, ROOT open, FSLY 10:00, ELF open, CORZ limit 13.30. Pool (2026-11-04 scored): 69 names / 10 days, review_minus_static -0.59 (t -1.32). Note: an earlier provisional compile at 09:17 caught 4 provisional reviews; superseded.
+
+## Edge hunt (panel) — 2026-11-05 amc + 2026-11-06 bmo — STARTED
+- Logged at 2026-11-05 18:09 UTC
+- Stage E-P fire; session began 18:07 UTC (13:07 ET). Universe 314 names (257 amc 11-05, 57 bmo 11-06; GTN.A folded). Baselines being sealed by code into edge-panel/baselines in parallel; one edge-sweep launched alongside sealing. Plan: up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
