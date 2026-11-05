@@ -77,3 +77,7 @@
 ## Edge hunt (panel) — panel done, step 6b buy
 - Logged at 2026-11-05 20:45 UTC
 - opus55 resumed and finished 20/20 at 20:45 UTC; all four judges pinned agents, one part, no fallback, no retry. panel_score at 20:45 UTC. Selected (panel_pct >= 80, all four present): ETON L 92, OMDA L 92, FNKO L 87, HNST L 83 (3-of-4 rule: ETON OMDA FNKO). Next AAOI 73. ORDER CHANGED ON PURPOSE: with 15 minutes to the close, the buy went BEFORE the note (skill says note first) so the book would not be lost to the 16:00 ET deadline. 20:45:29 UTC (15:45 ET): plan, then open --submit --no-flatten. 4 market orders, all filled: ETON 87 @ 47.48, OMDA 220 @ 18.71, FNKO 573 @ 6.10, HNST 684 @ 4.42; gross ~$14,740 planned, 99.7% of $14,769 equity. Mean execution cost vs mid +0.185 (ETON +0.625 against a 14.3 half-spread). Exits dated 2026-11-06 (all amc -> open). Note: a second 'plan' call after the fills overwrote alpaca-plan.json with a post-fill budget ($2,215 with $12,553 held); the orders actually sent are in alpaca-orders.json.
+
+## Edge hunt (panel) — done
+- Logged at 2026-11-05 20:50 UTC
+- Note published. edge_context written. Stage E edge/ absent (Routine stopped), so no stage E comparison. V2 grounded written before the first print. Judges interrupted by the 5-hour usage limit; book still placed at 15:45 ET.
