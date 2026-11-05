@@ -62,7 +62,7 @@ The case against, set out in the pre-registration, fits the data: for bmo names 
 
 ## What would change this
 
-- **Strong calls only.** Rule A on strong v2 calls (+0.49, t 1.67) is the only cell that leans the right way where it matters. To show a 0.5 point edge at t 2 at this spread takes roughly 60 to 80 strong bmo calls of one prompt version. At about 3 a week that is five to six months. The cheapest forward test is to log the trend score at 10:30 in stage M's bmo rows, and leave the exit alone.
+- **Strong calls only.** Rule A on strong v2 calls (+0.49, t 1.67) is the only cell that leans the right way where it matters. To show a 0.5 point edge at t 2 at the spread seen here (per-call sd 1.1 to 1.7) takes roughly 20 to 50 strong bmo calls of one prompt version. At about 4 a week that is two to three months. The cheapest forward test is to log the trend score at 10:30 in stage M's bmo rows, and leave the exit alone.
 - **Costs.** Rule A adds a second market order at 10:30 in names with wide spreads. Any edge below about 0.3 points would not survive it.
 
 ## Data and caveats
