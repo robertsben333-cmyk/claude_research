@@ -11,3 +11,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-11-05 18:16 UTC
 - TMDX TNDM OKLO GRND CRSR, E-P's sweep and baselines from 096f231f, confirmed names by hunt_priority cut at 20; claimed 18:13 UTC (late fire, 13:13 ET)
+
+## Split panel 1/4 — searchers launched
+- Logged at 2026-11-05 18:16 UTC
+- 5 unpriced-searcher (agent form) launched in one message at 18:16 UTC: AAOI SG SOUN OMDA FNKO, all amc; OMDA told cadence_implausible
