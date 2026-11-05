@@ -2,17 +2,17 @@
 
 Bron: `research/2026/11/2026-11-04/edge-panel` (stage E-P). Regel: panel_pct >= 60, >= 3 judges, print in this morning's window (amc 2026-11-04 or bmo 2026-11-05); top 10 by panel_pct. Positie = de kant van het panel, instap 13:30 ET op de instapdag. **Er worden geen orders geplaatst.**
 
-Markt premarket: SPY -0.06%, QQQ -1.14%, IWM +0.15%
+Markt premarket: SPY -0.13%, QQQ -1.19%, IWM +0.08%
 
 | Naam | Sessie | Positie | panel_pct | Cijfers wijzen op | Premarket vs slot | Positie tot nu | Voorbeurs stil | Verwacht open | Verwacht 10:00 | Verwacht open→slot | **Advies** | Limiet | Vaste regel |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| U | bmo | long | 93.4* | +20.00% | +18.44% | +19.81% | nee | +18.00% | +16.50% | +1.50% | **Limietorder** | 53.00 | Uit om 13:00 ET |
-| CAVA | amc | short | 85.4* | -6.00% | -10.37% | +12.09% | nee | -10.00% | -9.00% | +1.50% | **Verkopen bij opening** | — | Verkopen bij opening |
-| BYND | amc | short | 81.6* | -6.00% | -4.34% | +8.21% | nee | -4.50% | -4.50% | -1.00% | **Limietorder** | 6.70 | Verkopen bij opening |
+| U | bmo | long | 93.4* | +20.00% | +17.45% | +18.52% | nee | +18.00% | +16.50% | +1.50% | **Limietorder** | 53.00 | Uit om 13:00 ET |
+| CAVA | amc | short | 85.4* | -6.00% | -9.97% | +12.64% | nee | -10.00% | -9.00% | +1.50% | **Verkopen bij opening** | — | Verkopen bij opening |
+| BYND | amc | short | 81.6* | -6.00% | -4.34% | +7.19% | nee | -4.50% | -4.50% | -1.00% | **Limietorder** | 6.70 | Verkopen bij opening |
 | ROOT | amc | short | 79.4 | -3.00% | -13.72% | +10.64% | ja | -12.00% | -11.00% | +1.50% | **Verkopen bij opening** | — | Verkopen bij opening |
-| FSLY | amc | long | 77.2 | +9.00% | -16.80% | -17.02% | nee | -16.00% | -15.00% | +0.50% | **Verkopen om 10:00** | — | Verkopen bij opening |
-| ELF | amc | short | 72.8 | +6.00% | +4.00% | +0.24% | ja | +4.00% | +3.30% | +0.00% | **Verkopen bij opening** | — | Verkopen bij opening |
-| CORZ | bmo | long | 65.0 | +5.00% | +0.31% | +1.64% | nee | +0.50% | +1.00% | +1.00% | **Limietorder** | 13.30 | Uit om 13:00 ET |
+| FSLY | amc | long | 77.2 | +9.00% | -16.71% | -15.45% | nee | -16.00% | -15.00% | +0.50% | **Verkopen om 10:00** | — | Verkopen bij opening |
+| ELF | amc | short | 72.8 | +6.00% | +3.86% | +1.69% | nee | +4.00% | +3.30% | +0.00% | **Verkopen bij opening** | — | Verkopen bij opening |
+| CORZ | bmo | long | 65.0 | +5.00% | +1.03% | +1.56% | nee | +0.50% | +1.00% | +1.00% | **Limietorder** | 13.30 | Uit om 13:00 ET |
 
 `*` = door het panel geselecteerd (top 20%). Premarket = de mediaan van de laatste vijf voorbeurstransacties om 09:24. *Cijfers wijzen op* = de beweging van slot tot slot die de analist op grond van alleen het cijferbericht verwacht, vastgelegd voordat hij de koers zag. Rendementen in % vanaf de kant van de positie; verwachtingen zijn ten opzichte van het slot van gisteren.
 
