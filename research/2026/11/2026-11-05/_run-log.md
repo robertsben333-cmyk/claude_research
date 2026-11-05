@@ -61,3 +61,11 @@
 ## Edge hunt (panel) — waves 2-3
 - Logged at 2026-11-05 18:29 UTC
 - 18:29 UTC. All 20 searchers launched (UAA last). Finished, search_complete true per hand-backs: TNDM TMDX SG AAOI INOD UMAC KRUS CELC SOUN ETON GRND OMDA TRUP. Running: CARG CRSR HNST FNKO WULF OKLO UAA.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-05 18:38 UTC
+- 20/20 searchers returned by 18:38 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20; none retried. mode: execution enabled, amc_open. flatten --submit at 18:38 UTC: 2 positions held from 2026-11-04's book (CAVA -100, U 154; unrealised +12.39% / +14.94% as printed), both closed; flatten reported 'closed'. These legs were dated to exit 11-05 (CAVA amc at the open, U bmo at market) but were still held at 13:3x ET.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-05 18:38 UTC
+- edge_score and V2 grounded written 18:38 UTC, before the first print. Packs built; four judges, one part. Account flat after 3s.
