@@ -57,6 +57,7 @@ HUNTERS = {
     "unpriced-searcher": "us-searcher",
     "unpriced-searcher-fable": "us-searcher-fable",
     "deep-question-researcher": "us-deep",
+    "holistic-researcher": "us-holistic",
     "unpriced-hunter-jp": "jp",
     "unpriced-hunter-uk": "uk",
     "unpriced-hunter-de": "de",
@@ -101,6 +102,12 @@ MARKETS = {
     "US-D": {"dir": "edge-deep", "hunters": ["deep-question-researcher"],
              "lessons": "researcher_us/LESSONS.md",
              "skill": ".claude/skills/earnings-deep-research/SKILL.md"},
+    # Stage H (2026-11-05): one holistic researcher per name, searcher and judge in one
+    # loop, under a self-revising playbook. The "lessons" slot records the playbook's
+    # blob; pick.json records its version (hp.vN). Never pooled with any other stage.
+    "US-H": {"dir": "edge-holistic", "hunters": ["holistic-researcher"],
+             "lessons": "researcher_holistic/playbook/current.md",
+             "skill": ".claude/skills/earnings-holistic-research/SKILL.md"},
     "JP": {"dir": "japan", "hunters": ["unpriced-hunter-jp"],
            "lessons": "researcher_japan/LESSONS.md",
            "skill": ".claude/skills/researcher-japan-hunt/SKILL.md"},
@@ -261,7 +268,7 @@ def build_registry(ref="origin/main"):
     return out
 
 
-STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-PF": "us-panel-fable", "US-D": "us-deep", "JP": "jp", "EU": "eu", "AU": "au",
+STAGE_SHORT = {"US": "us", "US-S": "us-sonnet", "US-P": "us-panel", "US-PI": "us-panel-intraday", "US-PF": "us-panel-fable", "US-D": "us-deep", "US-H": "us-holistic", "JP": "jp", "EU": "eu", "AU": "au",
                "CA": "ca", "R": "rev", "IPO": "ipo"}
 
 

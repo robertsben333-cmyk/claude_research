@@ -388,6 +388,49 @@ edge_deep:
   places_orders: false
   shadow_ledger: false
 
+edge_holistic:
+  # Stage H (2026-11-05, operator's idea, thread "Build self-evolving holistic researcher
+  # routine"). One holistic-researcher per name searches and judges in one loop and
+  # returns one view (p_up, an optional long/short recommendation), with no per-finding
+  # point sizes. Its approach is a versioned playbook the stage revises itself from its
+  # own resolved days (holistic-reflector proposes, holistic.py revise applies under the
+  # gates below). A frozen copy of the first playbook runs beside it on a random third
+  # of the names as the control. Research only, no orders.
+  output_dir: edge-holistic
+  agent: holistic-researcher
+  reflector: holistic-reflector
+  names_from: edge-panel          # stage E-P's sweep and sealed baselines, same day
+  max_names: 12                   # evolving arm; sweep-confirmed, by hunt_priority (12 + ~4 control = 16 researchers, two waves of 8 before 15:35 ET)
+  fire_et: "14:15"                # cron CRON_TZ=America/New_York 15 14 * * 1-5: after stage E-P (fires 13:06, panel done about 13:50-14:05 ET)
+  control_share: 0.34             # date-seeded random share of the names that ALSO get the control
+  max_in_flight: 8
+  max_launch_per_turn: 8
+  research_deadline_et: "15:35"
+  collect_deadline_et: "15:45"
+  too_late_et: "15:00"            # fire later than this: no research, only the learning step
+  places_orders: false
+  window:
+    entry: run_day_close          # 16:00 ET on the run day (MOC is still open at 15:45)
+    exit_amc: next_open
+    exit_bmo_et: "13:00"          # on the report day
+  playbook:
+    current: researcher_holistic/playbook/current.md
+    control: researcher_holistic/playbook/control.md
+    control_sha256: 97f0f5ae8f8a69783dbf56a5fed825a1d4d0357ee5a85ec1000dbe12eefdc9b4
+    max_chars: 16000
+  gates:
+    # A revision needs this much resolved evidence on the CURRENT version (evolving arm).
+    min_resolved_names: 30
+    min_run_days: 3
+    max_ops: 3
+    min_evidence_names_per_op: 3
+    # Drift alarm: over the last paired names (same name, both arms), the evolving arm's
+    # Brier is worse than the frozen control's with t >= this. Then only revert_to.
+    drift_window_pairs: 60
+    drift_min_pairs: 20
+    drift_t: 2.0
+  recommend_cut_fixed: 65         # a fixed-threshold view reported for every version, whatever the playbook says
+
 japan_hunt:
   # Stage J. The same question as `edge_hunt`, asked of the Tokyo market, and
   # deliberately scored by the SAME scorer (researcher_us/scripts/edge_score.py) so
