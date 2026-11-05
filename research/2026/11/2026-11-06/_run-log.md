@@ -19,3 +19,7 @@
 ## Stage EU — progress
 - Logged at 2026-11-05 15:06 UTC
 - Banked 16/20: +REC +0.1, PIA +0.05 (releases in-session ~12:35 CET), OUT1V -1.1, ORK +0.85, TRUE_B 0 (PHANTOM: vendor date wrong — Q3 released 2026-11-03, next print 2027-02-17; event_confirmed false). Running SCHO SEA1 TBCG TES.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-05 15:11 UTC
+- 20/20 hunts banked, all search_complete. 18 ranked, 2 not ranked (EGTX release moved to 11-05 with ANI bid; TRUE_B phantom, printed 11-03). None above floor 2.8. Top ORK +0.85, bottom HAYPP -1.50. 18 packs, four -intl- judges.
