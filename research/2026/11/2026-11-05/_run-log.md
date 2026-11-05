@@ -69,3 +69,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-05 18:38 UTC
 - edge_score and V2 grounded written 18:38 UTC, before the first print. Packs built; four judges, one part. Account flat after 3s.
+
+## Edge hunt (panel) — judges rate-limited
+- Logged at 2026-11-05 20:43 UTC
+- All four judges launched ~18:42 UTC were cut off by the account's 5-hour usage limit (HTTP 429, reset 19:10 UTC); the session's worker was restarted and resumed at 20:43 UTC (15:43 ET). opus5, sonnet55 and fable51 had already written complete files (20/20 each). opus55 wrote nothing; resumed by message at 20:43 UTC. Step 6b needs all four judges and an open market before 16:00 ET.
