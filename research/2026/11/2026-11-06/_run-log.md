@@ -11,3 +11,7 @@
 ## Stage EU — progress
 - Logged at 2026-11-05 14:49 UTC
 - Banked 5/20: BMPS +0.15 (Intesa exchange offer pins it), DTG -0.6, ATT +0.2, AMS -1.1, EGTX 0 (event_confirmed false: Q3 released early 2026-11-05 07:30 CET with ANI SEK 11.25 recommended cash bid — a release that moved OUT of the window, not a phantom). ATT hunter: one curl to a consensus widget refused by auto-mode permission check (not a budget limit). Running CLNX GUBRA HAYPP HEX IAG.
+
+## Stage EU — progress
+- Logged at 2026-11-05 14:58 UTC
+- Banked 11/20: +CLNX -0.4 (releases amc 11-05, sealed window still correct), GUBRA -0.8, HEX +0.1, HAYPP -1.5, LOG +0.4, IAG +0.1. DEFECT: UK register join missed IAG ('INTERNATIONAL CONSOLIDATED AIRLINES GROUP, S.A.' 1.36% on FCA 02/11) — sealed as 0.0; likely an issuer-name join bug on ', S.A.' suffixes in eu_positioning.py. Baselines not revised. Running ORK OUT1V PIA REC SCHO.
