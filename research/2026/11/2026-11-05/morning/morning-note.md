@@ -2,37 +2,37 @@
 
 Bron: `research/2026/11/2026-11-04/edge-panel` (stage E-P). Regel: panel_pct >= 60, >= 3 judges, print in this morning's window (amc 2026-11-04 or bmo 2026-11-05); top 10 by panel_pct. Positie = de kant van het panel, instap 13:30 ET op de instapdag. **Er worden geen orders geplaatst.**
 
-Markt premarket: SPY -0.06%, QQQ -1.14%, IWM +0.14%
+Markt premarket: SPY -0.06%, QQQ -1.14%, IWM +0.15%
 
 | Naam | Sessie | Positie | panel_pct | Cijfers wijzen op | Premarket vs slot | Positie tot nu | Voorbeurs stil | Verwacht open | Verwacht 10:00 | Verwacht open→slot | **Advies** | Limiet | Vaste regel |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| U | bmo | long | 93.4* | +20.00% | +18.36% | +19.81% | nee | +18.00% | +17.00% | +1.00% | **Wachten tot slot** | — | Uit om 13:00 ET |
-| CAVA | amc | short | 85.4* | -6.00% | -10.37% | +12.09% | nee | —% | —% | —% | **Geen advies** | — | Verkopen bij opening |
-| BYND | amc | short | 81.6* | -6.00% | -4.34% | +8.21% | nee | —% | —% | —% | **Geen advies** | — | Verkopen bij opening |
+| U | bmo | long | 93.4* | +20.00% | +18.44% | +19.81% | nee | +18.00% | +16.50% | +1.50% | **Limietorder** | 53.00 | Uit om 13:00 ET |
+| CAVA | amc | short | 85.4* | -6.00% | -10.37% | +12.09% | nee | -10.00% | -9.00% | +1.50% | **Verkopen bij opening** | — | Verkopen bij opening |
+| BYND | amc | short | 81.6* | -6.00% | -4.34% | +8.21% | nee | -4.50% | -4.50% | -1.00% | **Limietorder** | 6.70 | Verkopen bij opening |
 | ROOT | amc | short | 79.4 | -3.00% | -13.72% | +10.64% | ja | -12.00% | -11.00% | +1.50% | **Verkopen bij opening** | — | Verkopen bij opening |
-| FSLY | amc | long | 77.2 | +9.00% | -15.86% | -16.74% | nee | —% | —% | —% | **Geen advies** | — | Verkopen bij opening |
-| ELF | amc | short | 72.8 | +6.00% | +4.00% | +0.24% | ja | —% | —% | —% | **Geen advies** | — | Verkopen bij opening |
+| FSLY | amc | long | 77.2 | +9.00% | -16.80% | -17.02% | nee | -16.00% | -15.00% | +0.50% | **Verkopen om 10:00** | — | Verkopen bij opening |
+| ELF | amc | short | 72.8 | +6.00% | +4.00% | +0.24% | ja | +4.00% | +3.30% | +0.00% | **Verkopen bij opening** | — | Verkopen bij opening |
 | CORZ | bmo | long | 65.0 | +5.00% | +0.31% | +1.64% | nee | +0.50% | +1.00% | +1.00% | **Limietorder** | 13.30 | Uit om 13:00 ET |
 
 `*` = door het panel geselecteerd (top 20%). Premarket = de mediaan van de laatste vijf voorbeurstransacties om 09:24. *Cijfers wijzen op* = de beweging van slot tot slot die de analist op grond van alleen het cijferbericht verwacht, vastgelegd voordat hij de koers zag. Rendementen in % vanaf de kant van de positie; verwachtingen zijn ten opzichte van het slot van gisteren.
 
-## U — Wachten tot slot
+## U — Limietorder
 
-Voorlopig: de cijfers bevestigen de these ruim; houden tot het slot.
+De cijfers bevestigen de these ruim: Vector groeide 40% in een kwartaal en de vooruitzichten voor Q4 liggen ver boven de verwachtingen. De voorbeurskoers (+18%) houdt dat ongeveer in, maar nog niet helemaal. Zet een verkooplimiet op 53,00. Wordt die niet geraakt, dan gaat de positie bij het slot, zodat de koers de hele dag de tijd heeft om de cijfers verder te verwerken.
 
-*Wat dit advies verandert:* Een voorbeurskoers die al ver boven de 20% stijging staat.
+*Wat dit advies verandert:* Zakt de voorbeurskoers voor 09:30 terug onder ongeveer 47 (+11%), dan verkopen bij de opening in plaats van wachten.
 
-## CAVA — Geen advies
+## CAVA — Verkopen bij opening
 
-Voorlopig: statische regel (amc op de opening).
+De short staat ongeveer 12% in de plus en de koers zakt voorbeurs meer (-10%) dan de cijfers volgens ons rechtvaardigen (ongeveer -6%): het kwartaal was licht zwak, maar de jaarprognose is wel verhoogd. Grote dalingen na cijfers geven vaak een deel terug na de opening, zeker met veel shortposities, dus dek in op de opening, zoals de standaardregel.
 
-*Wat dit advies verandert:* Nog niet beoordeeld.
+*Wat dit advies verandert:* Als de voorbeurskoers voor 09:30 verder wegzakt onder de 54,24 (het voorbeurslaagste) op levendige handel, kan vasthouden tot 10:00 overwogen worden.
 
-Niet bruikbaar: expected.open_pct_vs_prev_close missing; expected.open_to_close_pct missing; expected.px_1000_pct_vs_prev_close missing; expected.p_open_lags missing or outside 0-100; expected.p_fade_by_1000 missing or outside 0-100
+## BYND — Limietorder
 
-## BYND — Geen advies
+De short staat al ruim 7% in de plus, maar de koers daalt pas ruim 4% terwijl de cijfers (zwakke Q4-prognose, krimpende VS-verkoop) en de vorige acht kwartalen eerder op een grotere daling wijzen. Leg een kooporder (dekking) met limiet op $6,70; wordt die niet geraakt, dan gaat de positie bij het slot dicht.
 
-Niet bruikbaar: action None is not one of ('exit_open', 'exit_1000', 'exit_limit', 'exit_close', 'none')
+*Wat dit advies verandert:* Als de koers vóór 09:30 boven $7,00 terugveert (de shorts gaan dekken), dan liever bij de opening sluiten.
 
 ## ROOT — Verkopen bij opening
 
@@ -40,17 +40,17 @@ De short staat voorbeurs al ruim 10% in de plus: het aandeel noteert rond 13,7% 
 
 *Wat dit advies verandert:* Als de voorbeurs vlak voor 09:30 actief verder zakt onder 49 dollar met meerdere nieuwe transacties, of er komen koersdoelverlagingen binnen, dan is vasthouden tot 10:00 te verdedigen.
 
-## FSLY — Geen advies
+## FSLY — Verkopen om 10:00
 
-Voorlopig: amc-naam, standaardregel (verkopen bij de opening).
+De positie staat voorbeurs ongeveer 16% verlies, terwijl de cijfers zelf goed zijn (winst ver boven de eigen prognose, jaarprognose verhoogd). Grote openingsgaten geven in het eerste half uur vaak een deel terug, en een positie tegen de gap in wint daar meestal bij; daarom om 10:00 verkopen in plaats van bij de opening. Het vertrouwen is laag: we kennen de inhoud van de call niet, en in mei liep een vergelijkbare daling na de opening juist verder door.
 
-*Wat dit advies verandert:* Nog niet beoordeeld.
+*Wat dit advies verandert:* Als de koers voor 09:30 onder het voorbeurslaagste punt van $17,30 zakt of er een analistenverlaging met een negatieve call-toelichting (bijv. verlies van een grote klant) verschijnt, dan gewoon bij de opening verkopen.
 
-Niet bruikbaar: expected.open_pct_vs_prev_close missing; expected.open_to_close_pct missing; expected.px_1000_pct_vs_prev_close missing; expected.p_open_lags missing or outside 0-100; expected.p_fade_by_1000 missing or outside 0-100
+## ELF — Verkopen bij opening
 
-## ELF — Geen advies
+De cijfers waren sterk (omzet +51%, jaarprognose verhoogd) en spreken de short-these grotendeels tegen; de koers staat voorbeurs ongeveer op de instapprijs, dus de positie is nu vrijwel vlak. Wachten op een terugval na de opening is een gok tegen een verhoogde prognose, en vasthouden tot het slot riskeert dat de markt het goede nieuws verder inprijst. Dek de short bij de opening, zoals de standaardregel voor amc.
 
-Niet bruikbaar: action None is not one of ('exit_open', 'exit_1000', 'exit_limit', 'exit_close', 'none')
+*Wat dit advies verandert:* Als de voorbeurskoers voor 09:30 actief terugzakt richting 115 of lager (de opleving van +8% verdwijnt verder), is een limiet-dekking rond 116 te overwegen in plaats van de opening.
 
 ## CORZ — Limietorder
 

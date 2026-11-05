@@ -41,3 +41,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-11-05 14:17 UTC
 - source research/2026/11/2026-11-04/edge-panel; fired 09:16 ET; 7 picks (U CAVA BYND ROOT FSLY ELF CORZ); analysts launched 09:17 ET
+
+## Stage M — morning exit review — done
+- Logged at 2026-11-05 14:19 UTC
+- 7 names compiled 09:18 ET, all 7 analysts returned, 0 unusable: U limit 53.00, CAVA open, BYND limit 6.70, ROOT open, FSLY 10:00, ELF open, CORZ limit 13.30. Pool (2026-11-04 scored): 69 names / 10 days, review_minus_static -0.59 (t -1.32). Note: an earlier provisional compile at 09:17 caught 4 provisional reviews; superseded.
