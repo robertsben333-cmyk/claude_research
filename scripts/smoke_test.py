@@ -1527,6 +1527,39 @@ def main():
           qs["questions_scored"] == 2 and qs["line_questions_answered_right"] == 1
           and qs["names_where_a_frozen_question_was_the_line"] == 1, str(qs))
 
+    # STAGE H (2026-11-05): the self-revising holistic researcher. What may move is the
+    # playbook; what may not is the window, the metrics, the gates and the frozen control.
+    import hashlib as _hl
+    import importlib.util as _ilu
+    hc = cfg.get("edge_holistic") or {}
+    h_agent = open(os.path.join(REPO, ".claude", "agents", "holistic-researcher.md"), encoding="utf-8").read()
+    h_refl = open(os.path.join(REPO, ".claude", "agents", "holistic-reflector.md"), encoding="utf-8").read()
+    h_skill = open(os.path.join(REPO, ".claude", "skills", "earnings-holistic-research", "SKILL.md"), encoding="utf-8").read()
+    ctl = os.path.join(REPO, "researcher_holistic", "playbook", "control.md")
+    check("stage H config places no orders and pins the frozen control's hash",
+          hc.get("places_orders") is False and hc.get("output_dir") == "edge-holistic"
+          and _hl.sha256(open(ctl, "rb").read()).hexdigest() == (hc.get("playbook") or {}).get("control_sha256"))
+    check("stage H control is the first playbook, unchanged",
+          open(ctl, "rb").read() == open(os.path.join(REPO, "researcher_holistic", "playbook", "versions", "hp.v1.md"), "rb").read())
+    check("stage H researcher and reflector are pinned to Opus 5.5, the researcher keeps the fixed rules",
+          "\nmodel: claude-opus-5-5\n" in h_agent.split("---", 2)[1] + "\n"
+          and "\nmodel: claude-opus-5-5\n" in h_refl.split("---", 2)[1] + "\n"
+          and "No point decomposition" in h_agent and "Never fabricate a number" in h_agent
+          and '"search_complete"' in h_agent and "13:00 New York" in h_agent
+          and "HUNTER-CORE" not in h_agent)
+    check("stage H reflector cannot edit the playbook itself and may not name tickers",
+          "never edits the playbook itself" in h_refl and "Never write a company name or ticker" in h_refl
+          and "Edit" not in h_refl.split("---", 2)[1])
+    check("stage H skill: own directory, no broker, US-H provenance, revise only through holistic.py",
+          "<RUN>/edge-holistic/" in h_skill and "No `alpaca_trade.py` call of any kind" in h_skill
+          and "--market US-H" in h_skill and "holistic.py revise" in h_skill
+          and "Never edit `researcher_holistic/playbook/*.md`" in h_skill)
+    _spec = _ilu.spec_from_file_location("holistic", os.path.join(REPO, "researcher_holistic", "scripts", "holistic.py"))
+    _hol = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_hol)
+    for _label, _ok, _detail in _hol.selftest():
+        check("stage H " + _label, _ok, str(_detail)[:300])
+
     # The stage places no orders, and the skill and hunter must not acquire one.
     au_skill = open(os.path.join(REPO, ".claude", "skills",
                               "researcher-australia-hunt", "SKILL.md"),
