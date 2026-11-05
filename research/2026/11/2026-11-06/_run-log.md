@@ -15,3 +15,7 @@
 ## Stage EU — progress
 - Logged at 2026-11-05 14:58 UTC
 - Banked 11/20: +CLNX -0.4 (releases amc 11-05, sealed window still correct), GUBRA -0.8, HEX +0.1, HAYPP -1.5, LOG +0.4, IAG +0.1. DEFECT: UK register join missed IAG ('INTERNATIONAL CONSOLIDATED AIRLINES GROUP, S.A.' 1.36% on FCA 02/11) — sealed as 0.0; likely an issuer-name join bug on ', S.A.' suffixes in eu_positioning.py. Baselines not revised. Running ORK OUT1V PIA REC SCHO.
+
+## Stage EU — progress
+- Logged at 2026-11-05 15:06 UTC
+- Banked 16/20: +REC +0.1, PIA +0.05 (releases in-session ~12:35 CET), OUT1V -1.1, ORK +0.85, TRUE_B 0 (PHANTOM: vendor date wrong — Q3 released 2026-11-03, next print 2027-02-17; event_confirmed false). Running SCHO SEA1 TBCG TES.
