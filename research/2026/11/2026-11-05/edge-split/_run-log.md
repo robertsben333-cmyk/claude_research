@@ -31,3 +31,7 @@
 ## Split panel 1/4 — searchers done
 - Logged at 2026-11-05 18:24 UTC
 - 5 of 5 returned by 18:24 UTC, all search_complete true; guard moved nothing; no searcher reported its search budget running out (SG, SOUN saw site-side 403/429/503 only)
+
+## Split panel 1/4 — panel STARTED
+- Logged at 2026-11-05 18:24 UTC
+- 5 packs, four judges (opus5, opus55, sonnet55, fable51) launched in one message at 18:24 UTC
