@@ -53,3 +53,7 @@
 ## Edge hunt (panel) — baselines sealed
 - Logged at 2026-11-05 18:11 UTC
 - 314 of 314 baselines sealed by 18:11 UTC, before any searcher (10 parallel priced_in processes). 8 failed first time on Yahoo HTTPError (TEAM SPG NET MTD MNST LYV EOG AEE) and were re-sealed serially, all ok. Provenance stamped US-P (us-searcher.v3, claude-opus-5-5).
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-11-05 18:15 UTC
+- Sweep: 35 of 314 checked, 25 company-confirmed, 9 unconfirmed (OPEN MNKD SRPT YELP PLSE TBCH XPOF FIGS SERV), 0 phantoms, 1 duplicate share class (UA, folded into UAA by the sweep), 279 unchecked. Cap 20: unconfirmed 9 shed, lowest hunt_priority shed: ARLO (32) NRDS (30) BLMN (28) IRTC (26) CGC (22); 279 unchecked shed. OMDA and WULF cadence_implausible, OKLO <3 prior prints: history not an earnings base rate, searchers told. Searchers unpriced-searcher, amc first, at most 8 per turn. Wave 1: AAOI INOD TMDX UMAC SG KRUS TNDM CELC.
