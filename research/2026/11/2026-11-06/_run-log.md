@@ -23,3 +23,9 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-05 15:11 UTC
 - 20/20 hunts banked, all search_complete. 18 ranked, 2 not ranked (EGTX release moved to 11-05 with ANI bid; TRUE_B phantom, printed 11-03). None above floor 2.8. Top ORK +0.85, bottom HAYPP -1.50. 18 packs, four -intl- judges.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-11-05 15:19 UTC
+- Sealed for 2026-11-06 (Fri) at ~14:40 UTC Thu (intraday spots). 66 scheduled, 27 eligible, 20 drawn (se 4 largest, 20%), 20 hunted, all search_complete; 18 ranked, EGTX (release moved to 11-05 with ANI bid) and TRUE_B (phantom, printed 11-03) not ranked. Top ORK +0.85, bottom HAYPP -1.50; none above floor 2.8.
+- Panel: 4/4 members, 18/18 each, no fallback (sonnet55 skipped hunter definitions). Selected TBCG, OUT1V, HAYPP — all short, 4/4 (pct 98/91/91).
+- Defects: UK FCA join miss on IAG (', S.A.' name, 1.36% sealed as 0.0); one ATT curl refused by auto-mode permission check. anchor_covered 1/20; es 3, pl 0, de 1. Resolve by ~2026-11-13. Pushing to main (EARNINGS_DATA_BRANCH=main).
