@@ -33,3 +33,7 @@
 - Sealed for 2026-11-05 (Thu) at ~14:45 UTC Wed (intraday spots). 195 scheduled, 109 eligible, 20 drawn, 20 hunted, all search_complete, all event_confirmed, 20 ranked. Top ASC/DIS +2.50, bottom ZV -1.60; none above floor 2.8.
 - Panel: 4/4 members, 20/20 each, no fallback (sonnet55 skipped the hunter definitions; opus5 read only fr). Selected ZV short (4/4, pct 89), AUTO long (3/4, 91), INISS_B long (3/4, 86), NRC short (3/4, 85).
 - Defects: Danish register join miss (AMBU A/S 6.08%, Ørsted 0.54% sealed as 0.0); publish.sh rebase blocked by dirty eu-short-cache.json, pushed by hand. anchor_covered 9/20; es+pl 1 (PKO). DIS and ZV release in-session. Resolve by ~2026-11-13 (Nordic window). Pushing to main (EARNINGS_DATA_BRANCH=main).
+
+## Close AMC — 2026-11-05
+- Logged at 2026-11-05 11:20 UTC
+- Fired 11:13 UTC (06:13 ET). Guard mode --require-exit-tif opg exit 0 (amc_open, amc->open as DAY). verify: 14 legs, all ok, nothing held. close --submit: no leg due today, no exit orders sent, no refusals. Account reachable. (Stage E legs end 2026-09-25; E-P now trades.)
