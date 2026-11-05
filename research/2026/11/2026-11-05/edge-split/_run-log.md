@@ -39,3 +39,7 @@
 ## Split panel 2/4 — searchers done
 - Logged at 2026-11-05 18:25 UTC
 - 5 of 5 returned by 18:25 UTC; all search_complete true, no searcher reported its search budget running out; guard moved nothing; 5 of 5 rankable, 0 above floor 2.8
+
+## Split panel 2/4 — panel STARTED
+- Logged at 2026-11-05 18:25 UTC
+- 5 packs, four judges
