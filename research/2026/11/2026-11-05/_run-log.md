@@ -49,3 +49,7 @@
 ## Edge hunt (panel) — 2026-11-05 amc + 2026-11-06 bmo — STARTED
 - Logged at 2026-11-05 18:09 UTC
 - Stage E-P fire; session began 18:07 UTC (13:07 ET). Universe 314 names (257 amc 11-05, 57 bmo 11-06; GTN.A folded). Baselines being sealed by code into edge-panel/baselines in parallel; one edge-sweep launched alongside sealing. Plan: up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — baselines sealed
+- Logged at 2026-11-05 18:11 UTC
+- 314 of 314 baselines sealed by 18:11 UTC, before any searcher (10 parallel priced_in processes). 8 failed first time on Yahoo HTTPError (TEAM SPG NET MTD MNST LYV EOG AEE) and were re-sealed serially, all ok. Provenance stamped US-P (us-searcher.v3, claude-opus-5-5).
