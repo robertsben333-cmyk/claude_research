@@ -19,3 +19,9 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-06 15:02 UTC
 - 16/16 hunts banked, all search_complete. 13 ranked; ALCLS/EGLA/REC not ranked (no event in window: ALCLS no Q3 date announced, EGLA board 11-16, REC printed 11-06). None above floor 2.8. Top IOT +2.10, bottom TEN -0.90. Hunters re-read session as amc for PAT NTG DOV PHN NWL. 13 packs, four -intl- judges.
+
+## Stage EU — Europe ranking — DONE
+- Logged at 2026-11-06 15:09 UTC
+- Sealed for 2026-11-09 (Mon) at ~14:45 UTC Fri 11-06 (intraday spots). 22 scheduled, 16 eligible, all 16 hunted (no draw; it 6 largest, 37.5%), all search_complete. 13 ranked; ALCLS (no Q3 date), EGLA (phantom, board 11-16), REC (duplicate of 11-06 interims) not ranked. Top IOT +2.10, bottom TEN -0.90; none above floor 2.8.
+- Panel: 4/4 members, 13/13 each, no fallback. Selected IOT long 3/4 (panel_pct 88).
+- Six names re-sessioned amc by hunters (PAT NTG DOV PHN NWL[10-11 08:05] TEN); resolve after 11-10. anchor_covered 4/16; es 1, pl 1, de 4. publish.sh's own push failed non-fast-forward twice (CI moving main); recovered with pull --rebase. Pushing to main (EARNINGS_DATA_BRANCH=main).
