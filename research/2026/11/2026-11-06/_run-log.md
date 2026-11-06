@@ -45,3 +45,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-11-06 18:21 UTC
 - 18:22 UTC. Sweep: 65 checked, 48 confirmed, 15 unconfirmed (incl. HE amc, CEG AMG WTTR LDI SEAT DOLE BCAX OFIX TLS AIOT CTEV ADCT ISPR MDCX), 2 no event in window (VRTS printed 10-30, MUX ~11-09 amc). Cap 20: unconfirmed shed first, then lowest hunt_priority among confirmed: SBET(48) IONS CEVA SGC TH OPAL NESR KMDA UNIT RDNT KGS IMVT SGI SOHU FERG RBA ROIV NRG KSPI GCMG CNH CGEN B KKR GSL IX TKC WHF shed. Hunted (20): TOMZ (amc today) + FRVO SOC HRTX DCTH QTRX LFMD VFF TNXP HAIN VIA OCUL TPB PRAX MPAA MNDY NRXS EVGO TGTX LINC. MPAA release hour unsettled (call 13:00 ET Mon). Wave 1 (8): TOMZ FRVO SOC HRTX DCTH QTRX LFMD VFF.
+
+## Edge hunt (panel) — waves 2-3
+- Logged at 2026-11-06 18:33 UTC
+- 18:34 UTC. All 20 searchers launched (LINC last). Returned, search_complete true per hand-backs: TOMZ (no event: company moved Q3 to 2026-11-12 in a 10:30 ET release today) DCTH VFF QTRX FRVO SOC LFMD HRTX HAIN TNXP VIA TPB. Running: OCUL PRAX MPAA MNDY NRXS EVGO TGTX LINC. One launch (MNDY) refused at the 8-concurrent cap and relaunched.
