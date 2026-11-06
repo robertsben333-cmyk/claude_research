@@ -7,3 +7,7 @@
 ## Stage EU — progress
 - Logged at 2026-11-06 14:40 UTC
 - Universe: 22 scheduled, 16 eligible, all 16 hunted (at/under cap 20). by_market uk2 de4 fr1 dk1 it6 es1 pl1; largest it 37.5%. Baselines sealed 16/16 (intraday spots Fri 14:4x UTC). Provenance stamped. Wave 1 launched: G1A HNR1 HYQ PAT NTG.
+
+## Stage EU — progress
+- Logged at 2026-11-06 14:49 UTC
+- Wave 1 banked 5/5, all search_complete: G1A 0.0, HNR1 +1.0, HYQ -0.6, PAT +1.8 (session amc per issuer timestamps), NTG +0.55 (session amc per issuer). Wave 2 launched: ALM ALCLS DOV EGLA IOT. Note: publish.sh push was refused non-fast-forward while CI moved main (shallow clone); recovered with pull --rebase + push.
