@@ -11,3 +11,7 @@
 ## Stage EU — progress
 - Logged at 2026-11-06 14:49 UTC
 - Wave 1 banked 5/5, all search_complete: G1A 0.0, HNR1 +1.0, HYQ -0.6, PAT +1.8 (session amc per issuer timestamps), NTG +0.55 (session amc per issuer). Wave 2 launched: ALM ALCLS DOV EGLA IOT. Note: publish.sh push was refused non-fast-forward while CI moved main (shallow clone); recovered with pull --rebase + push.
+
+## Stage EU — progress
+- Logged at 2026-11-06 14:54 UTC
+- Wave 2: ALM -0.7, ALCLS 0 (no release in window, event_confirmed false; Cellectis releases amc and has not announced a Q3 date), DOV -0.1 (session amc per issuer timestamps), EGLA 0 (PHANTOM: board 2026-11-16 per issuer calendar). IOT running. Rolling into wave 3 at 5 concurrent: NWL PHN UCG TEN launched; KNOS REC queued.
