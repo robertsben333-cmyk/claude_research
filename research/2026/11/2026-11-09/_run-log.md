@@ -15,3 +15,7 @@
 ## Stage EU — progress
 - Logged at 2026-11-06 14:54 UTC
 - Wave 2: ALM -0.7, ALCLS 0 (no release in window, event_confirmed false; Cellectis releases amc and has not announced a Q3 date), DOV -0.1 (session amc per issuer timestamps), EGLA 0 (PHANTOM: board 2026-11-16 per issuer calendar). IOT running. Rolling into wave 3 at 5 concurrent: NWL PHN UCG TEN launched; KNOS REC queued.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-06 15:02 UTC
+- 16/16 hunts banked, all search_complete. 13 ranked; ALCLS/EGLA/REC not ranked (no event in window: ALCLS no Q3 date announced, EGLA board 11-16, REC printed 11-06). None above floor 2.8. Top IOT +2.10, bottom TEN -0.90. Hunters re-read session as amc for PAT NTG DOV PHN NWL. 13 packs, four -intl- judges.
