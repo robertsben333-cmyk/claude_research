@@ -11,3 +11,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-11-06 18:22 UTC
 - HRTX VFF OCUL MNDY LINC (all bmo 2026-11-09), E-P's sweep and baselines from 51aef710, confirmed names by hunt_priority cut at 20; claimed 18:21 UTC
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-11-06 18:22 UTC
+- DCTH TNXP TPB NRXS SBET (all bmo 2026-11-09), E-P's sweep and baselines from 51aef710, confirmed names by hunt_priority cut at 20; claimed 18:12 UTC
