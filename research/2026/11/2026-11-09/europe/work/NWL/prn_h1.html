@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="c82b427af2ba446a9bff03ea8c94af6c-ddbf44c6683640aa-1"/><meta name="baggage" content="sentry-trace_id=c82b427af2ba446a9bff03ea8c94af6c,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=fd675ce0efe8521fd858023a9a6d1cce1de82c6d,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.03913"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "fd675ce0efe8521fd858023a9a6d1cce1de82c6d",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from Interim Results for the six months ended 30 June" />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "Interim Results for the six months ended 30 June | Company Announcement | Investegate",
+            "description":"Investegate announcements from Interim Results for the six months ended 30 June",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2026-09-15 06:01:22",
+            "dateModified": "2026-09-15 06:02:14",
+            "url": "https://www.investegate.co.uk/announcement/rns/princes-group-plc--prn/interim-results-for-the-six-months-ended-30-june/9771573"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='Interim Results for the six months ended 30 June | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/princes-group-plc--prn/interim-results-for-the-six-months-ended-30-june/9771573' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>Interim Results for the six months ended 30 June | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">Interim Results for the six months ended 30 June</h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Princes Group plc reported interim results for the six months ended 30 June 2026, with revenue increasing by 7% to £999.4 million and adjusted EBITDA rising by 7.5% to £79.3 million, maintaining a 7.9% margin. Profit before taxation saw a significant 62% increase to £39.2 million, supported by underlying free cash flow generation of £90.1 million, a 20% increase. The company's net cash position strengthened to £374 million. Strategic highlights include successful integration of the Plasmon acquisition, leading to a 30% reduction in Cost of Goods Sold for specific products, and ongoing efforts to identify approximately £2 million in additional operational efficiencies. The company remains on track with its synergy program and is actively evaluating potential acquisitions.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<style type="text/css">
+/*<![CDATA[*/
+/**/
+/**/
+/**/
+/**/
+h1{margin-top:18.0pt;margin-right:0cm;margin-bottom:4.0pt;margin-left:0cm;line-height:115%;font-size:20.0pt;font-family:"Aptos Display","sans-serif";color:#0F4761;font-weight:normal;}h2{margin-top:8.0pt;margin-right:0cm;margin-bottom:4.0pt;margin-left:0cm;line-height:115%;font-size:16.0pt;font-family:"Aptos Display","sans-serif";color:#0F4761;font-weight:normal;}h3{margin-top:8.0pt;margin-right:0cm;margin-bottom:4.0pt;margin-left:0cm;line-height:115%;font-size:14.0pt;font-family:"Aptos","sans-serif";color:#0F4761;font-weight:normal;}h4{margin-top:4.0pt;margin-right:0cm;margin-bottom:2.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";color:#0F4761;font-weight:normal;font-style:italic;}h5{margin-top:4.0pt;margin-right:0cm;margin-bottom:2.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";color:#0F4761;font-weight:normal;}h6{margin-top:2.0pt;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;margin-bottom:.0001pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";color:#595959;font-weight:normal;font-style:italic;}ol{margin-bottom:0cm;}ul{margin-bottom:0cm;}link{ color: blue }visited{ color: #96607D }
+
+.bn{size:595.3pt 841.9pt;margin:2.0cm 2.0cm 2.0cm 2.0cm;}div.bn{}p.ib{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";text-align:justify;text-justify:inter-ideograph}span.hz{font-family:"Arial","sans-serif"}p.a,li.a,div.a{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";}p.ic{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";text-align:center}table.id{width:468.25pt;margin-left:-5.4pt;border-collapse:collapse}td.hw{width:113.7pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.hv{width:101.9pt;border:none;border-bottom:solid windowtext 1.0pt; padding:0cm 5.4pt 0cm 5.4pt}td.hu{width:107.55pt;border:none;border-bottom: solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt}
+td.ht{width:113.7pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.hs{width:101.9pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.hr{width:107.55pt;border:none;padding:0cm 5.4pt 0cm 5.4pt}td.hq{width:113.7pt;padding:0cm 5.4pt 0cm 5.4pt}td.hp{width:101.9pt;padding:0cm 5.4pt 0cm 5.4pt}td.ho{width:107.55pt;padding:0cm 5.4pt 0cm 5.4pt}p.ie{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:36.0pt;text-indent:-18.0pt}span.hm{font-family:Symbol}p.if{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:72.0pt;text-indent:-18.0pt}span.hk{font-family:"Courier New"}
+p.ig{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";text-indent:-18.0pt}p.ih{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";text-indent:-18.0pt}p.ii{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:36.0pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";text-indent:-18.0pt}span.hh{font-family: "Arial","sans-serif"}table.ij{margin-left:-10.8pt;border-collapse:collapse}tr.hd{height:15.0pt}td.hg{width:283.1pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.0pt}td.he{width:118.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.0pt}span.hf{font-family:"Arial","sans-serif";color:windowtext}tr.gz{height:28.1pt}
+td.hc{width:283.1pt;padding:0cm 5.4pt 0cm 5.4pt; height:28.1pt}td.ha{width:118.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:28.1pt}span.hb{font-family: "Arial","sans-serif";color:windowtext}tr.gw{height:35.6pt}td.gy{width:283.1pt;padding:0cm 5.4pt 0cm 5.4pt;height:35.6pt}td.gx{width:118.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:35.6pt}span.gu{font-size:14.0pt;line-height: 115%;font-family:"Arial","sans-serif"}table.ik{width:420.4pt;margin-left:-10.8pt;border-collapse:collapse}tr.gq{height:14.5pt}td.gt{width:294.0pt;padding:0cm 5.4pt 0cm 5.4pt; height:14.5pt}
+td.gs{width:89.4pt;padding:0cm 5.4pt 0cm 5.4pt; height:14.5pt}td.gr{border:none;padding:0cm 0cm 0cm 0cm}tr.gm{height:18.5pt}td.gp{width:75.6pt;padding:0cm 5.4pt 0cm 5.4pt; height:18.5pt}td.go{width:107.4pt;padding:0cm 5.4pt 0cm 5.4pt; height:18.5pt}td.gn{width:89.4pt;padding:0cm 5.4pt 0cm 5.4pt; height:18.5pt}tr.gc{height:31.0pt}td.gj{width:103.6pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}p.il{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-bottom:0cm;margin-bottom:.0001pt;line-height: normal}span.gl{font-family:"Times New Roman","serif"}
+td.gf{width:105.35pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}p.im{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-bottom:0cm;margin-bottom:.0001pt; text-align:center;line-height:normal}.gh{font-style: italic}span.gi{font-family:"Arial","sans-serif";color:black}td.ge{width:100.9pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}td.gd{width:88.95pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}tr.fx{height:15.5pt}td.gb{width:103.6pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}td.ga{width:105.35pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}td.fz{width:100.9pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}
+td.fy{width:88.95pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}tr.fr{height:7.5pt}td.fw{width:103.6pt;padding: 0cm 5.4pt 0cm 5.4pt;height:7.5pt}td.fu{width:105.35pt; padding:0cm 5.4pt 0cm 5.4pt;height:7.5pt}span.fv{font-size:10.0pt;font-family:"Times New Roman","serif"}td.ft{width:100.9pt;padding: 0cm 5.4pt 0cm 5.4pt;height:7.5pt}td.fs{width:88.95pt;padding: 0cm 5.4pt 0cm 5.4pt;height:7.5pt}td.fq{width:103.6pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.5pt}td.fo{width:105.35pt; padding:0cm 5.4pt 0cm 5.4pt;height:15.5pt}span.fp{font-family: "Arial","sans-serif";color:black}
+td.fn{width:100.9pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.5pt}td.fm{width:88.95pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.5pt}tr.fg{height:16.0pt}td.fk{width:103.6pt;padding: 0cm 5.4pt 0cm 5.4pt;height:16.0pt}span.fl{font-family:"Arial","sans-serif"; color:black}td.fj{width:105.35pt; border-top:solid windowtext 1.0pt;border-left:none;border-bottom:double windowtext 2.25pt; border-right:none;padding:0cm 5.4pt 0cm 5.4pt;height:16.0pt}td.fi{width:100.9pt;border-top: solid windowtext 1.0pt;border-left:none;border-bottom:double windowtext 2.25pt; border-right:none;padding:0cm 5.4pt 0cm 5.4pt;height:16.0pt}td.fh{width:88.95pt;border-top: solid windowtext 1.0pt;border-left:none;border-bottom:double windowtext 2.25pt; border-right:none;padding:0cm 5.4pt 0cm 5.4pt;height:16.0pt}td.ff{width:103.6pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.0pt}td.fe{width:105.35pt; padding:0cm 5.4pt 0cm 5.4pt;height:15.0pt}
+td.fd{width:100.9pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.0pt}td.fc{width:88.95pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.0pt}td.fb{border:none}table.in{width:405.0pt;margin-left:-10.8pt;border-collapse:collapse}td.ez{width:193.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:14.5pt}table.io{width:418.2pt;margin-left:-5.4pt;border-collapse:collapse}td.ex{width:95.55pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}td.ew{width:72.85pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}td.ev{width:91.2pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}td.eu{width:95.55pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}
+td.et{width:72.85pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}td.es{width:91.2pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}tr.en{height:5.5pt}td.er{width:95.55pt;padding:0cm 5.4pt 0cm 5.4pt; height:5.5pt}td.ep{width:72.85pt;padding:0cm 5.4pt 0cm 5.4pt; height:5.5pt}span.eq{font-size:10.0pt; font-family:"Times New Roman","serif"}td.eo{width:91.2pt;padding:0cm 5.4pt 0cm 5.4pt; height:5.5pt}td.em{width:72.85pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.5pt}td.el{width:91.2pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.5pt}td.ek{width:95.55pt;padding:0cm 5.4pt 0cm 5.4pt; height:16.0pt}
+td.ej{width:72.85pt;border-top: solid windowtext 1.0pt;border-left:none;border-bottom:double windowtext 2.25pt; border-right:none;padding:0cm 5.4pt 0cm 5.4pt;height:16.0pt}td.ei{width:91.2pt;border-top: solid windowtext 1.0pt;border-left:none;border-bottom:double windowtext 2.25pt; border-right:none;padding:0cm 5.4pt 0cm 5.4pt;height:16.0pt}td.eh{width:116.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}td.eg{width:95.5pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}td.ef{width:67.2pt;padding:0cm 5.4pt 0cm 5.4pt; height:31.0pt}table.ip{width:15.0cm;margin-left:-10.8pt;border-collapse:collapse}td.ed{width:378.0pt;padding:0cm 5.4pt 0cm 5.4pt; height:14.5pt}td.ec{width:7.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:14.5pt}td.eb{width:7.05pt;padding:0cm 5.4pt 0cm 5.4pt; height:14.5pt}table.iq{width:415.0pt;margin-left:-5.4pt;border-collapse:collapse}
+tr.dv{height:30.0pt}td.dz{width:116.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:30.0pt}td.dy{width:102.6pt;padding:0cm 5.4pt 0cm 5.4pt; height:30.0pt}td.dx{width:95.5pt;padding:0cm 5.4pt 0cm 5.4pt; height:30.0pt}td.dw{width:56.9pt;padding:0cm 5.4pt 0cm 5.4pt; height:30.0pt}td.du{width:116.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}td.dt{width:102.6pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}td.ds{width:95.5pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}td.dr{width:56.9pt;padding:0cm 5.4pt 0cm 5.4pt; height:15.5pt}tr.dm{height:12.0pt}
+td.dq{width:116.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:12.0pt}td.dp{width:102.6pt;padding: 0cm 5.4pt 0cm 5.4pt;height:12.0pt}td.do{width:95.5pt;padding: 0cm 5.4pt 0cm 5.4pt;height:12.0pt}td.dn{width:56.9pt;padding:0cm 5.4pt 0cm 5.4pt; height:12.0pt}td.dl{width:102.6pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.5pt}td.dk{width:95.5pt;padding: 0cm 5.4pt 0cm 5.4pt;height:15.5pt}td.dj{width:116.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:16.0pt}td.di{width:102.6pt;border-top: solid windowtext 1.0pt;border-left:none;border-bottom:double windowtext 2.25pt; border-right:none;padding:0cm 5.4pt 0cm 5.4pt;height:16.0pt}td.dh{width:95.5pt;border-top: solid windowtext 1.0pt;border-left:none;border-bottom:double windowtext 2.25pt; border-right:none;padding:0cm 5.4pt 0cm 5.4pt;height:16.0pt}td.dg{width:56.9pt;border-top: solid windowtext 1.0pt;border-left:none;border-bottom:double windowtext 2.25pt; border-right:none;padding:0cm 5.4pt 0cm 5.4pt;height:16.0pt}
+td.df{width:336.8pt;padding:0cm 5.4pt 0cm 5.4pt; height:14.5pt}td.de{padding:0cm 0cm 0cm 0cm;height:14.5pt}td.dd{padding:0cm 0cm 0cm 0cm}.db{text-decoration: underline}span.cz{font-size:14.0pt;line-height:115%;font-family:"Arial","sans-serif"}br.da{page-break-before:always}p.s,li.s,div.s{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";}p.t,li.t,div.t{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:36.0pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";}p.ay,li.ay,div.ay{margin-top:22.0pt;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:120%;font-size:18.0pt;font-family:"Georgia","serif";font-weight:bold;}span.cy{font-size:11.0pt;line-height:120%; font-family:"Arial","sans-serif"}
+span.cx{font-size:11.0pt;line-height:120%;font-family:"Arial","sans-serif"}span.cw{font-size:11.0pt;line-height:120%;font-family: "Arial","sans-serif"}p.ir{margin-top:8.0pt;margin-right:0cm;margin-bottom:4.0pt;margin-left:0cm;line-height:120%;font-size:14.0pt;font-family:"Arial","sans-serif";font-weight:bold;text-align:justify;text-justify:inter-ideograph}span.cv{font-size:11.0pt;line-height:120%}p.is{margin-top:0cm;margin-right:0cm;margin-bottom:15.0pt;margin-left:0cm;line-height:150%;font-size:10.0pt;font-family:"Georgia","serif";color:black;text-align:justify;text-justify:inter-ideograph}span.cu{font-size:11.0pt;line-height:150%;font-family:"Arial","sans-serif"}p.it{margin:0cm;margin-bottom:.0001pt;line-height:150%;font-size:10.0pt;font-family:"Georgia","serif";color:black;text-align:justify;text-justify:inter-ideograph}p.iu{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:18.45pt;margin-bottom:.0001pt;text-indent:-18.45pt;line-height:150%;font-size:10.0pt;font-family:"Georgia","serif";color:black;text-align:justify;text-justify:inter-ideograph}p.iv{margin-top:15.0pt;margin-right:0cm;margin-bottom:15.0pt;margin-left:0cm;line-height:150%;font-size:10.0pt;font-family:"Georgia","serif";color:black;text-align:justify;text-justify:inter-ideograph}p.ba,li.ba,div.ba{margin-top:0cm;margin-right:0cm;margin-bottom:15.0pt;margin-left:0cm;line-height:150%;font-size:10.0pt;font-family:"Georgia","serif";color:black;}
+p.bb,li.bb,div.bb{margin-top:8.0pt;margin-right:0cm;margin-bottom:4.0pt;margin-left:0cm;line-height:120%;font-size:14.0pt;font-family:"Arial","sans-serif";font-weight:bold;}span.ct{font-size:11.0pt;line-height:150%; font-family:"Arial","sans-serif"}p.iw{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Georgia","serif";color:black;text-align:justify;text-justify:inter-ideograph}span.cs{font-size:11.0pt;font-family:"Arial","sans-serif"}p.ix{margin:0cm;margin-bottom:.0001pt;font-size:10.0pt;font-family:"Georgia","serif";color:black;text-align:justify;text-justify:inter-ideograph}span.cr{font-size:12.0pt;line-height:115%;font-family:"Arial","sans-serif"}.bo{size:595.3pt 841.9pt;margin:72.0pt 2.0cm 72.0pt 72.0pt;}div.bo{}p.iy{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-bottom:12.0pt}span.cp{font-size:12.0pt;line-height:115%;font-family:"Times New Roman","serif"}
+.bp{size:595.3pt 841.9pt;margin:72.0pt 72.0pt 72.0pt 72.0pt;}div.bp{}.bq{size:595.3pt 841.9pt;margin:72.0pt 72.0pt 72.0pt 72.0pt;}div.bq{}span.co{font-size:10.0pt;line-height:115%; font-family:"Times New Roman","serif"}span.cn{font-size:10.0pt;line-height:115%;font-family:"Times New Roman","serif"}.br{size:595.3pt 841.9pt;margin:72.0pt 72.0pt 72.0pt 72.0pt;}div.br{}p.iz{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:-42.5pt}p.ja{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:-45.35pt}
+.bs{size:595.3pt 841.9pt;margin:72.0pt 72.0pt 1.0cm 72.0pt;}div.bs{}span.ck{font-size:10.0pt;line-height: 115%;font-family:"Times New Roman","serif"}.bt{size:595.3pt 841.9pt;margin:72.0pt 72.0pt 72.0pt 72.0pt;}div.bt{}p.jb{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:36.0pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:18.0pt;text-indent:-18.0pt}p.jc{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";line-height:normal}span.ch{font-size:10.0pt;font-family:"Arial","sans-serif"}.bu{size:595.3pt 841.9pt;margin:72.0pt 72.0pt 72.0pt 72.0pt;}div.bu{}
+p.jd{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:-11.35pt}p.je{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:24.65pt;text-indent:-36.0pt; line-height:normal}p.jf{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:24.65pt;line-height: normal}p.jg{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:36.0pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:24.65pt;text-indent:-36.0pt; line-height:normal}p.jh{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:18.0pt;line-height:normal}p.r,li.r,div.r{margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:36.0pt;margin-bottom:.0001pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";}p.ji{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:36.0pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:18.0pt;text-indent:-18.0pt}span.cc{font-size:11.0pt;line-height:115%;font-family:"Arial","sans-serif"}p.jj{margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:36.0pt;line-height:115%;font-size:12.0pt;font-family:"Aptos","sans-serif";margin-left:18.0pt;text-indent:-18.0pt; line-height:normal}table.jk{margin-left:-5.4pt;border-collapse:collapse}
+td.ca{width:78.55pt;padding:0cm 5.4pt 0cm 5.4pt}td.bz{width:232.75pt;padding:0cm 5.4pt 0cm 5.4pt}td.by{width:109.65pt;padding:0cm 5.4pt 0cm 5.4pt}.bv{size:595.3pt 841.9pt;margin:72.0pt 72.0pt 72.0pt 72.0pt;}div.bv{}.bw{size:595.3pt 841.9pt;margin:72.0pt 72.0pt 72.0pt 72.0pt;}div.bw{} .fr-view-element{font-family: sans-serif;font-size: 12pt;line-height: 140%;padding: 20px;box-sizing: border-box;overflow-x: auto;min-height: 60px;text-align: left;margin-bottom: 10px;width: 837px;} .fr-view-element img{padding: 0 1px;} .fr-view-element .bn{margin: 63.8pt 1.6cm 62.35pt 1.6cm;} .fr-view-element p{font-size: 10pt;}
+/**/
+/**/
+/**/
+/**/
+/*]]>*/
+</style>
+<title></title>
+</head>
+<body><img src="https://tracker.live.rns-distribution.com/track.live-rns/6294668_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>Princes Group PLC</div>  <div>15 September 2026</div>  <div>&#160;</div></div>
+<div class="fr-view-element displayHScroll">
+<div class="bn">
+<p class="ib"><span style="font-weight: bold;"><span class="hz">NOT FOR RELEASE, PUBLICATION OR DISTRIBUTION, IN WHOLE OR PART, DIRECTLY OR INDIRECTLY, IN OR INTO OR FROM ANY JURISDICTION WHERE SUCH DISTRIBUTION WOULD BE UNLAWFUL.</span></span></p>
+<p class="a"><span class="hz">15 September 2026</span></p>
+<p class="ic" style="text-align:center;"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="ic" style="text-align:center;"><span style="font-weight: bold;"><span class="hz">PRINCES GROUP PLC</span></span></p>
+<p class="ic" style="text-align:center;"><span class="hz">("<span style="font-weight: bold;">Princes Group</span>", the "<span style="font-weight: bold;">Group</span>" or the "<span style="font-weight: bold;">Company</span>")</span></p>
+<p class="ic" style="text-align:center;"><span style="font-weight: bold;"><span class="hz">Interim results for the six months ended 30 June 2026</span></span></p>
+<p class="ic" style="text-align:center;"><span class="hz">&#160;</span></p>
+<p class="a"><span class="hz">Princes Group plc (LSE: PRN), a leading international platform in the United Kingdom and European food and beverage sector, today announces its interim results for the six months ended 30 June 2026.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Financial summary:</span></span></p>
+<table style="width: 624;" class="id" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 152;" valign="top" class="hw">
+<p class="a"><span class="hz">KPI</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hv">
+<p class="a"><span class="hz">H1 2026</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hv">
+<p class="a"><span class="hz">H1 2025</span></p>
+</td>
+<td style="width: 143;" valign="top" class="hu">
+<p class="a"><span class="hz">Change (%)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152;" valign="top" class="ht">
+<p class="a"><span class="hz">Revenue</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hs">
+<p class="a"><span class="hz">&#163;999.4 million</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hs">
+<p class="a"><span class="hz">&#163;933.3 million</span></p>
+</td>
+<td style="width: 143;" valign="top" class="hr">
+<p class="a"><span class="hz">+7%</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152;" valign="top" class="hq">
+<p class="a"><span class="hz">Adjusted EBITDA</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">&#163;79.3 million</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">&#163;73.8 million</span></p>
+</td>
+<td style="width: 143;" valign="top" class="ho">
+<p class="a"><span class="hz">+7%</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152;" valign="top" class="hq">
+<p class="a"><span class="hz">Adjusted EBITDA margin</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">7.9%</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">7.9%</span></p>
+</td>
+<td style="width: 143;" valign="top" class="ho">
+<p class="a"><span class="hz">Unchanged</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152;" valign="top" class="hq">
+<p class="a"><span class="hz">Profit before taxation</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">&#163;39.2 million</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">&#163;24.2 million</span></p>
+</td>
+<td style="width: 143;" valign="top" class="ho">
+<p class="a"><span class="hz">+62%</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152;" valign="top" class="hq">
+<p class="a"><span class="hz">Underlying Free Cash Flow</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">&#163;90.1 million</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">&#163;75.3 million</span></p>
+</td>
+<td style="width: 143;" valign="top" class="ho">
+<p class="a"><span class="hz">+20%</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152;" valign="top" class="hq">
+<p class="a"><span class="hz">Free Cash Flow Conversion</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">115.3%</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">105.5%</span></p>
+</td>
+<td style="width: 143;" valign="top" class="ho">
+<p class="a"><span class="hz">+9.8%<br />
+(absolute terms)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152;" valign="top" class="hq">
+<p class="a"><span class="hz">ROCE</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">12.2%</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">11.6%</span></p>
+</td>
+<td style="width: 143;" valign="top" class="ho">
+<p class="a"><span class="hz">+60bps</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 152;" valign="top" class="hq">
+<p class="a"><span class="hz">Net cash</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">&#163;374 million<br />
+(&#163;481 million excl. IFRS 16)</span></p>
+</td>
+<td style="width: 136;" valign="top" class="hp">
+<p class="a"><span class="hz">&#163;311 million<br />
+(&#163;395 million excl. IFRS 16) at 31 December 2025</span></p>
+</td>
+<td style="width: 143;" valign="top" class="ho">
+<p class="a"><span class="hz">+20%</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="a">&#160;</p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Financial highlights</span></span></p>
+<p class="ie"><span class="hm">&#183;&#160;&#160;&#160;</span> <span class="hz">Revenue growth of 7%</span></p>
+<p class="if"><span class="hk">o</span> <span class="hz">Reflecting contribution from recent acquisition</span></p>
+<p class="if"><span class="hk">o</span> <span class="hz">Strong double digit percentage revenue growth in Italian and Oils business units, along with moderate growth achieved in Foods</span></p>
+<p class="ie"><span class="hm">&#183;&#160;&#160;&#160;</span> <span class="hz">Adjusted EBITDA margins were resilient, unchanged at 7.9%</span></p>
+<p class="ie"><span class="hm">&#183;&#160;&#160;&#160;</span> <span class="hz">Free cash flow conversion of 115.3%, reflecting improved strong generation of &#163;90.1m</span></p>
+<p class="ie"><span class="hm">&#183;&#160;&#160;&#160;</span> <span class="hz">ROCE remained strong at 12.2%</span></p>
+<p class="ie"><span class="hm">&#183;&#160;&#160;&#160;</span> <span class="hz">Net cash position grew to &#163;374m, driven by the company's strong FCF generation</span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Strategic &amp; Operational highlights</span></span></p>
+<p class="ig"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Commercial momentum remained strong</span></span> <span class="hz">during the first half, with the Group securing new customer wins and expanding distribution across a number of key markets and categories.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Continued investment in brands and innovation pipeline</span></span><span class="hz">, while increasingly leveraging its broader commercial and manufacturing platform to unlock new growth opportunities.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Immediate integration benefits from Plasmon acquisition</span></span> <span class="hz">- successfully insourced baby and medical pasta production at Ozzano, which will deliver a <span style="font-weight: bold;">30% reduction in Cost of Goods Sold and over &#8364;1.5 million of fixed-cost absorption</span>, with further insourcing initiatives planned for H2.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Leveraging the Group's expanded route-to-market</span></span><span class="hz">, with 11 Princes Tuna SKUs launched across the Carrefour Italia retail network</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Further international customer wins and distribution expansion</span></span><span class="hz">, including a doubling of customer own-brand tuna business with Carrefour France, a new Princes branded listing with Lidl Netherlands and new tomato business with Rewe Poland</span></p>
+<p class="ii"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hh">Identified c.&#163;2 million of additional operational efficiencies</span></span><span class="hz">, with implementation underway. Delivery of the synergy programme remains on track.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Giuseppe Mastrolia, Interim CEO of Princes Group, commented:</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="hz">"I am pleased with the performance delivered by Princes Group during the first half of the year. Against a challenging macroeconomic backdrop and significant inflationary pressures across a number of our key input costs, we have demonstrated the resilience of our business model and, importantly, our ability to protect profitability through disciplined commercial management and continued focus on operational efficiency.</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="hz">Since taking on the role of Interim CEO in July 2026, I have been working closely with the leadership team to identify opportunities to further strengthen performance across the Group. Our focus is on faster execution, greater accountability and commercial ownership, alongside improving the efficiency of our manufacturing network and disciplined allocation of capital and resources. Our objective is clear: to translate Princes' considerable capabilities into stronger growth, profitability and cash generation.</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="hz">At the same time, M&amp;A remains a fundamental pillar of our growth strategy. Our strong balance sheet, extensive manufacturing footprint and proven ability to integrate businesses position Princes exceptionally well to participate in the consolidation of the European food and beverage sector. We continue to actively evaluate a strong pipeline of opportunities and will remain disciplined in our approach, while being prepared to move decisively where we see the right strategic and financial fit.</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="hz">We enter the second half with a clear plan and a strong sense of urgency. There is considerably more value to unlock across Princes and I am confident in our ability to deliver it. Our priority is not simply to set ambitious targets, but to achieve them - through disciplined execution, faster decision-making and an unwavering focus on delivering tangible results for our customers and shareholders."</span></span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">M&amp;A and<span style="font-style: italic;">&#160;C</span>apital allocation</span></span></p>
+<p class="a"><span class="hz">The Group continues to actively assess a broad and expanding range of M&amp;A opportunities, applying a disciplined approach focused on strategic fit and value creation. The Group has made significant progress on a number of opportunities within its pipeline and is currently in advanced negotiations in relation to two potential acquisitions. Based on the current pipeline, Management anticipates completing at least one transaction over the coming months, subject to the successful conclusion of negotiations, execution of definitive agreements and any required approvals. With a strong balance sheet and net cash position, the Group is well positioned to fund attractive acquisition opportunities from existing resources while maintaining financial flexibility</span><span style="font-style: italic;"><span class="hz">.</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Outlook</span></span></p>
+<p class="a"><span class="hz">Trading momentum strengthened during the second quarter, with performance ahead of Q1. Fish continues to deliver positive volume momentum, although revenues were impacted by lower raw tuna prices. The drinks segment was impacted by a focus on maintenance and reorganisation activities. The Group continued to demonstrate strong margin resilience despite ongoing inflationary pressures, alongside good cash generation.</span></p>
+<p class="a"><span class="hz">The first half was impacted by the timing of CPI pass-through, with the majority of agreed price increases effective from 1 July and the resulting benefit expected to be reflected in Q3 and Q4. The increased flexibility embedded across the business over the past year has enabled the Group to manage the timing lag without a significant impact on margins. Princes remains well positioned for the remainder of the year and continues to trade in line with Management's expectations for FY26. The Group benefits from a strong financial position, a diversified portfolio of leading brands and customer own-brand products, and long-standing relationships with major customers across its markets.</span></p>
+<p class="a"><span class="hz">Looking ahead, Management remains firmly focused on delivering tangible results through disciplined execution of its strategic priorities, while continuing to pursue opportunities for organic growth and actively evaluating value-accretive M&amp;A opportunities.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Results presentation live webcast - today, 15 September at 8:30 a.m. BST</span></span></p>
+<p class="a"><span class="hz">A live webcast of the presentation including Q&amp;A will be held today at 8:30am BST for investors and analysts and will be available via our website at</span> <span class="hz"><a href="https://www.princesgroupinvestors.com/">https://www.princesgroupinvestors.com/</a></span> <span class="hz">or on</span> <a href="https://brrmedia.news/PRN_HY26">https://brrmedia.news/PRN_HY26</a><span class="hz">. This will be available for playback after the event.</span></p>
+<p class="a"><span class="hz">The supporting presentation will be made available on the Group's website ahead of the webcast.</span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="ib"><span style="font-weight: bold;"><span class="hz">Enquiries</span></span></p>
+<p class="ib"><span class="hz">For further information, please contact:</span></p>
+<table class="ij" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="hd">
+<td style="width: 377;" valign="top" class="hg">
+<p class="ib"><span class="hz">&#160;</span></p>
+<p class="ib"><span class="hz">Princes Group plc</span></p>
+</td>
+<td style="width: 158;" valign="top" class="he">
+<p class="ib"><span class="hz">&#160;</span></p>
+<p class="ib"><span class="hf"><a href="mailto:investors@princesgroup.com">investors@princesgroup.com</a></span></p>
+</td>
+</tr>
+<tr class="hd">
+<td style="width: 377;" valign="top" class="hg">
+<p class="ib"><span class="hz">Benedetta Mastrolia, Investor Relations Director</span></p>
+</td>
+<td style="width: 158;" valign="top" class="he">
+<p class="ib"><span class="hz"><br /></span></p>
+</td>
+</tr>
+<tr class="hd">
+<td style="width: 377;" valign="top" class="hg">
+<p class="ib"><span class="hz"><br /></span></p>
+</td>
+<td style="width: 158;" valign="top" class="he">
+<p class="ib"><span class="hz"><br /></span></p>
+</td>
+</tr>
+<tr class="gz">
+<td style="width: 377;" valign="top" class="hc">
+<p class="ib"><span class="hz">Barabino and Partners UK</span></p>
+<p class="ib"><span class="hz">(Financial PR communications)</span></p>
+</td>
+<td style="width: 158;" valign="top" class="ha">
+<p class="ib"><span class="hb"><a href="mailto:princes@barabino.co.uk">princes@barabino.co.uk</a></span></p>
+<p class="ib"><span class="hz">+44 (0) 7542846844</span></p>
+</td>
+</tr>
+<tr class="gw">
+<td style="width: 377;" class="gy">
+<p class="ib"><span class="hz">Georgia Colkin / Caroline Merrell</span></p>
+</td>
+<td style="width: 158;" valign="top" class="gx">
+<p class="ib"><span class="hz">+44 (0)7852 210329</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="ib"><span style="font-weight: bold;"><span class="hz">Princes Group plc</span></span></p>
+<p class="ib"><span class="hz">Princes Group is a leading international platform in the United Kingdom and European food and beverage sector. The Group operates across five business units: Foods, Fish, Italian, Oils, and Drinks and holds leading positions in both branded and customer own brand products.</span></p>
+<p class="ib"><span class="hz">The Group's branded portfolio includes well-known, trusted brands such as Princes, Napolina, Branston, Batchelors, Flora, Crisp 'N Dry, Delverde, Plasmon, Naked Noodle, and Vier Diamanten.</span></p>
+<p class="ib"><span class="hz">By combining industrial expertise with long-standing supply partnerships, Princes Group is a trusted partner to a diverse range of blue-chip customers, including major food retailers, B2B partners, and the foodservice industry, reaching over 8,000 clients globally and exporting to more than 60 countries.</span></p>
+<p class="ib"><span class="hz">Headquartered in Liverpool, UK, Princes Group generated &#163;1.92 bn pro forma revenues in the year ended 31 December 2025, employs approximately 7,800 people and operates 24 production facilities across the United Kingdom, continental Europe, and Mauritius, supported by 21 warehouses and distribution centres and three offices in the UK, Poland, and the Netherlands.</span></p>
+<p class="ib"><span class="hz">With a strong production network, the Group is well-positioned for future growth, consistently delivering quality, innovation, and reliable supply across multiple categories, while upholding its commitment to excellence and long-term customer relationships.</span></p>
+<p class="ib"><span class="hz">For more information, visit&#160;</span><span class="hf"><a href="http://www.princesgroup.com/">www.princesgroup.com</a></span><span class="hz">.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">Financial Review</span></span></p>
+<p class="a"><span class="hz">The Group continued to execute its strategy focusing on&#160;<span style="font-weight: bold;">margin-accretive growth</span>, <span style="font-weight: bold;">operational discipline and cash generation.</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Reported revenue&#160;increased</span></span><span class="hz">&#160;<span style="font-weight: bold;">7%</span>&#160;versus H1 2025 to&#160;<span style="font-weight: bold;">&#163;999.4 million</span>, reflecting the contribution from recent acquisitions, including Princes France S.A.S., Newlat GmbH and Plasmon.</span></p>
+<p class="a"><span class="hz">The Group's H1 topline performance reflected the normal seasonal profile of the food and beverage sector, with softer volumes in the early part of the year following the festive period, alongside typical retailer inventory optimisation dynamics.</span></p>
+<p class="a"><span class="hz">The Group delivered&#160;<span style="font-weight: bold;">resilient trading</span>&#160;across the majority of its core categories during the period, with positive momentum in Oils and particularly strong growth in Italian Products, supported by the integration of additional businesses, including Plasmon. &#160;Fish continues to deliver positive volume momentum, although revenues were impacted by lower raw tuna prices. The drinks segment was impacted by a focus on maintenance and reorganisation activities.</span></p>
+<p class="a"><span class="hz">Performance in Foods has been impacted by reduced trading across some of the product categories but we continue to review the portfolio to ensure commercial, operational and procurement initiatives improve the long term profitability of this segment.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Adj. EBITDA increased 7.5%</span></span><span class="hz">&#160;to&#160;<span style="font-weight: bold;">&#163;79.3 million against H1 2025</span>,&#160;driven by improved operational leverage, synergy delivery and continued cost discipline.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Adj. EBITDA margin</span></span> <span class="hz">remained at&#160;<span style="font-weight: bold;">7.9%</span>, in line with H1 2025. The underlying expansion was largely driven by the&#160;<span style="font-weight: bold;">Italian</span>&#160;segment, reflecting continued operational discipline as well as the contribution of recent acquisitions.&#160;This improvement was primarily offset by the phasing impact of the timing of inflationary cost movements and volume phasing to deliver a static margin compared to H1 2025.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Underlying Free Cash Flow</span></span><span class="hz">&#160;generation remained strong at&#160;<span style="font-weight: bold;">&#163;90.1 million</span>, implying an&#160;outstanding <span style="font-weight: bold;">FCF conversion</span>&#160;of&#160;<span style="font-weight: bold;">115.3%</span>&#160;and&#160;reflecting sustained working capital discipline, procurement optimisation and continued focus on cash conversion across the Group.</span></p>
+<p class="a"><span class="hz">The Group further strengthened its balance sheet and liquidity profile during the quarter, reporting a&#160;<span style="font-weight: bold;">Net cash position</span>&#160;of&#160;<span style="font-weight: bold;">&#163;374m</span>&#160;(<span style="font-weight: bold;">&#163;481m</span>&#160;excluding IFRS 16 liabilities), compared with net cash of &#163;311m on 31 December 2025 (&#163;395m excluding IFRS 16 liabilities).&#160;The continued increase in net cash reflects the Group's highly cash generative operating model, disciplined capital allocation and resilient underlying trading performance.</span></p>
+<p class="a">&#160;</p>
+<p class="a">&#160;</p>
+<table style="width: 561;" class="ik" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="gq">
+<td style="width: 392;" colspan="5" valign="bottom" class="gt">
+<p class="a"><span style="font-weight: bold;"><span class="hz">6M 2026 Revenue by Business Unit&#160;</span></span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="top" class="gs">
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+</td>
+<td class="gr" style="width: 21;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="gm">
+<td style="width: 101;" valign="bottom" class="gp">
+<p class="a"><br /></p>
+</td>
+<td style="width: 143;" colspan="2" valign="bottom" class="go">
+<p class="a"><br /></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="gn">
+<p class="a"><br /></p>
+</td>
+<td style="width: 119;" colspan="2" valign="top" class="gn">
+<p class="a"><br /></p>
+</td>
+<td class="gr" style="width: 21;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="gc">
+<td style="width: 138;" colspan="2" class="gj">
+<p class="il"><span class="gl"><br /></span></p>
+</td>
+<td style="width: 140;" colspan="2" class="gf">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">6 months ended 30 June 2026</span></span></p>
+</td>
+<td style="width: 135;" colspan="2" class="ge">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">6 months ended 30 June 2025</span></span></p>
+</td>
+<td style="width: 119;" colspan="2" class="gd">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">YoY change (%)</span></span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 138;" colspan="2" class="gb">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+<td style="width: 140;" colspan="2" class="ga">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+<td style="width: 135;" colspan="2" class="fz">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+<td style="width: 119;" colspan="2" class="fy">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+</tr>
+<tr class="fr">
+<td style="width: 138;" colspan="2" valign="bottom" class="fw">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+<td style="width: 140;" colspan="2" valign="bottom" class="fu">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+<td style="width: 135;" colspan="2" valign="bottom" class="ft">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="fs">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 138;" colspan="2" valign="bottom" class="fq">
+<p class="il"><span class="gi">Foods</span></p>
+</td>
+<td style="width: 140;" colspan="2" valign="bottom" class="fo">
+<p class="im" style="text-align:center;"><span class="fp">305,074</span></p>
+</td>
+<td style="width: 135;" colspan="2" valign="bottom" class="fn">
+<p class="im" style="text-align:center;"><span class="fp">303,249</span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="fm">
+<p class="im" style="text-align:center;"><span style="font-style: italic;"><span class="fp">0.6%</span></span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 138;" colspan="2" valign="bottom" class="fq">
+<p class="il"><span class="gi">Drinks</span></p>
+</td>
+<td style="width: 140;" colspan="2" valign="bottom" class="fo">
+<p class="im" style="text-align:center;"><span class="fp">142,997</span></p>
+</td>
+<td style="width: 135;" colspan="2" valign="bottom" class="fn">
+<p class="im" style="text-align:center;"><span class="fp">157,178</span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="fm">
+<p class="im" style="text-align:center;"><span style="font-style: italic;"><span class="fp">-9.0%</span></span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 138;" colspan="2" valign="bottom" class="fq">
+<p class="il"><span class="gi">Fish</span></p>
+</td>
+<td style="width: 140;" colspan="2" valign="bottom" class="fo">
+<p class="im" style="text-align:center;"><span class="fp">178,346</span></p>
+</td>
+<td style="width: 135;" colspan="2" valign="bottom" class="fn">
+<p class="im" style="text-align:center;"><span class="fp">183,511</span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="fm">
+<p class="im" style="text-align:center;"><span style="font-style: italic;"><span class="fp">-2.8%</span></span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 138;" colspan="2" valign="bottom" class="fq">
+<p class="il"><span class="gi">Italian Products</span></p>
+</td>
+<td style="width: 140;" colspan="2" valign="bottom" class="fo">
+<p class="im" style="text-align:center;"><span class="fp">227,304</span></p>
+</td>
+<td style="width: 135;" colspan="2" valign="bottom" class="fn">
+<p class="im" style="text-align:center;"><span class="fp">153,498</span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="fm">
+<p class="im" style="text-align:center;"><span style="font-style: italic;"><span class="fp">48.1%</span></span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 138;" colspan="2" valign="bottom" class="fq">
+<p class="il"><span class="gi">Oils</span></p>
+</td>
+<td style="width: 140;" colspan="2" valign="bottom" class="fo">
+<p class="im" style="text-align:center;"><span class="fp">145,701</span></p>
+</td>
+<td style="width: 135;" colspan="2" valign="bottom" class="fn">
+<p class="im" style="text-align:center;"><span class="fp">135,912</span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="fm">
+<p class="im" style="text-align:center;"><span style="font-style: italic;"><span class="fp">7.2%</span></span></p>
+</td>
+</tr>
+<tr class="fg">
+<td style="width: 138;" colspan="2" valign="bottom" class="fk">
+<p class="il"><span style="font-weight: bold;"><span class="fl">Group total</span></span></p>
+</td>
+<td style="width: 140;" colspan="2" valign="bottom" class="fj">
+<p class="im" style="text-align:center;"><span class="fp">999,422</span></p>
+</td>
+<td style="width: 135;" colspan="2" valign="bottom" class="fi">
+<p class="im" style="text-align:center;"><span class="fp">933,348</span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="fh">
+<p class="im" style="text-align:center;"><span style="font-style: italic;"><span class="fp">7.1%</span></span></p>
+</td>
+</tr>
+<tr class="hd">
+<td style="width: 138;" colspan="2" valign="bottom" class="ff">
+<p class="im" style="text-align:center;"><span style="font-style: italic;"><span class="fp">&#160;</span></span></p>
+</td>
+<td style="width: 140;" colspan="2" valign="bottom" class="fe">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+<td style="width: 135;" colspan="2" valign="bottom" class="fd">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+<td style="width: 119;" colspan="2" valign="bottom" class="fc">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+</tr>
+<tr style="height: 0;">
+<td style="width: 106;" class="fb"><br /></td>
+<td style="width: 39;" class="fb"><br /></td>
+<td style="width: 112;" class="fb"><br /></td>
+<td style="width: 36;" class="fb"><br /></td>
+<td style="width: 120;" class="fb"><br /></td>
+<td style="width: 22;" class="fb"><br /></td>
+<td style="width: 103;" class="fb"><br /></td>
+<td style="width: 22;" class="fb"><br /></td>
+</tr>
+</tbody>
+</table>
+<p class="a">&#160;</p>
+<table style="width: 540;" class="in" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="gq">
+<td style="width: 258;" valign="bottom" class="ez">
+<p class="a"><span style="font-weight: bold;"><span class="hz">6M 2026 Revenue by Country</span></span></p>
+</td>
+<td style="width: 119;" valign="bottom" class="gs">
+<p class="a"><span style="font-weight: bold;">&#160;</span></p>
+</td>
+<td style="width: 119;" valign="top" class="gs">
+<p class="a"><span style="font-weight: bold;">&#160;</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="a">&#160;<span style="font-weight: bold;">&#160;</span></p>
+<table style="width: 558;" class="io" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="gc">
+<td style="width: 127;" class="ex">
+<p class="il"><span class="gl"><br /></span></p>
+</td>
+<td style="width: 97;" colspan="2" class="ew">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">6 months ended 30 June 2026</span></span></p>
+</td>
+<td style="width: 122;" colspan="2" class="ev">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">6 months ended 30 June 2025</span></span></p>
+</td>
+<td style="width: 122;" colspan="2" class="ev">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">YoY change (%)</span></span></p>
+</td>
+<td class="gr" style="width: 32;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 127;" class="eu">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+<td style="width: 97;" colspan="2" class="et">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+<td style="width: 122;" colspan="2" class="es">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+<td style="width: 122;" colspan="2" class="es">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+<td class="gr" style="width: 32;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="en">
+<td style="width: 127;" class="er">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+<td style="width: 97;" colspan="2" class="ep">
+<p class="im" style="text-align:center;"><span class="eq"><br /></span></p>
+</td>
+<td style="width: 122;" colspan="2" class="eo">
+<p class="im" style="text-align:center;"><span class="eq"><br /></span></p>
+</td>
+<td style="width: 122;" colspan="2" class="eo">
+<p class="im" style="text-align:center;"><span class="eq"><br /></span></p>
+</td>
+<td class="gr" style="width: 32;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 127;" valign="bottom" class="eu">
+<p class="il"><span class="gi">UK</span></p>
+</td>
+<td style="width: 97;" colspan="2" valign="bottom" class="em">
+<p class="im" style="text-align:center;"><span class="fp">665,718</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="el">
+<p class="im" style="text-align:center;"><span class="fp">681,126</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="el">
+<p class="im" style="text-align:center;"><span class="fp">-2.3%</span></p>
+</td>
+<td class="gr" style="width: 32;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 127;" valign="bottom" class="eu">
+<p class="il"><span class="gi">Italy</span></p>
+</td>
+<td style="width: 97;" colspan="2" valign="bottom" class="em">
+<p class="im" style="text-align:center;"><span class="fp">103,432</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="el">
+<p class="im" style="text-align:center;"><span class="fp">50,618</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="el">
+<p class="im" style="text-align:center;"><span class="fp">104.3%</span></p>
+</td>
+<td class="gr" style="width: 32;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 127;" valign="bottom" class="eu">
+<p class="il"><span class="gi">Germany</span></p>
+</td>
+<td style="width: 97;" colspan="2" valign="bottom" class="em">
+<p class="im" style="text-align:center;"><span class="fp">59,928</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="el">
+<p class="im" style="text-align:center;"><span class="fp">39,475</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="el">
+<p class="im" style="text-align:center;"><span class="fp">51.8%</span></p>
+</td>
+<td class="gr" style="width: 32;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 127;" valign="bottom" class="eu">
+<p class="il"><span class="gi">Other countries</span></p>
+</td>
+<td style="width: 97;" colspan="2" valign="bottom" class="em">
+<p class="im" style="text-align:center;"><span class="fp">170,344</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="el">
+<p class="im" style="text-align:center;"><span class="fp">162,129</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="el">
+<p class="im" style="text-align:center;"><span class="fp">5.1%</span></p>
+</td>
+<td class="gr" style="width: 32;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="fg">
+<td style="width: 127;" valign="bottom" class="ek">
+<p class="im" style="text-align:center;"><span class="eq"><br /></span></p>
+</td>
+<td style="width: 97;" colspan="2" valign="bottom" class="ej">
+<p class="im" style="text-align:center;"><span class="fp">999,422</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="ei">
+<p class="im" style="text-align:center;"><span class="fp">933,348</span></p>
+</td>
+<td style="width: 122;" colspan="2" valign="bottom" class="ei">
+<p class="im" style="text-align:center;"><span class="fp">7.1%</span></p>
+</td>
+<td class="gr" style="width: 32;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr class="gc">
+<td style="width: 156;" colspan="2" class="eh">
+<p class="il"><span class="gl"><br /></span></p>
+</td>
+<td style="width: 127;" colspan="2" class="eg">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+<td style="width: 127;" colspan="2" class="eg">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+<td style="width: 90;" colspan="2" class="ef">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+</tr>
+<tr style="height: 0;">
+<td style="width: 142;" class="fb"><br /></td>
+<td style="width: 32;" class="fb"><br /></td>
+<td style="width: 77;" class="fb"><br /></td>
+<td style="width: 65;" class="fb"><br /></td>
+<td style="width: 70;" class="fb"><br /></td>
+<td style="width: 72;" class="fb"><br /></td>
+<td style="width: 64;" class="fb"><br /></td>
+<td style="width: 36;" class="fb"><br /></td>
+</tr>
+</tbody>
+</table>
+<p class="a">&#160;</p>
+<table style="width: 567;" class="ip" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="gq">
+<td style="width: 504;" valign="bottom" class="ed">
+<p class="a"><span style="font-weight: bold;"><span class="hz">6M 2026 Revenue by Channel</span></span></p>
+</td>
+<td style="width: 10;" valign="bottom" class="ec">
+<p class="a"><span style="font-weight: bold;">&#160;</span></p>
+</td>
+<td style="width: 9;" valign="top" class="eb">
+<p class="a"><span style="font-weight: bold;">&#160;</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="a">&#160;</p>
+<table style="width: 553;" class="iq" cellspacing="0" cellpadding="0">
+<tbody>
+<tr class="dv">
+<td style="width: 156;" valign="bottom" class="dz">
+<p class="il"><span class="gl"><br /></span></p>
+</td>
+<td style="width: 137;" colspan="2" class="dy">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">6 months ended 30 June 2026</span></span></p>
+</td>
+<td style="width: 127;" colspan="2" class="dx">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">6 months ended 30 June 2025</span></span></p>
+</td>
+<td style="width: 76;" colspan="3" class="dw">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">YoY change (%)</span></span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 156;" class="du">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+<td style="width: 137;" colspan="2" class="dt">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+<td style="width: 127;" colspan="2" class="ds">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+<td style="width: 76;" colspan="3" class="dr">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#163;'000</span></span></p>
+</td>
+</tr>
+<tr class="dm">
+<td style="width: 156;" valign="bottom" class="dq">
+<p class="im" style="text-align:center;"><span style="font-weight: bold;" class="gh"><span class="gi">&#160;</span></span></p>
+</td>
+<td style="width: 137;" colspan="2" valign="bottom" class="dp">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+<td style="width: 127;" colspan="2" valign="bottom" class="do">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+<td style="width: 76;" colspan="3" valign="bottom" class="dn">
+<p class="il"><span class="fv"><br /></span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 156;" valign="bottom" class="du">
+<p class="il"><span class="gi">Large food retailers</span></p>
+</td>
+<td style="width: 137;" colspan="2" valign="bottom" class="dl">
+<p class="im" style="text-align:center;"><span class="fp">809,983</span></p>
+</td>
+<td style="width: 127;" colspan="2" valign="bottom" class="dk">
+<p class="im" style="text-align:center;"><span class="fp">754,855</span></p>
+</td>
+<td style="width: 76;" colspan="3" valign="bottom" class="dr">
+<p class="im" style="text-align:center;"><span class="fp">7.3%</span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 156;" valign="bottom" class="du">
+<p class="il"><span class="gi">B2B partners</span></p>
+</td>
+<td style="width: 137;" colspan="2" valign="bottom" class="dl">
+<p class="im" style="text-align:center;"><span class="fp">119,567</span></p>
+</td>
+<td style="width: 127;" colspan="2" valign="bottom" class="dk">
+<p class="im" style="text-align:center;"><span class="fp">111,805</span></p>
+</td>
+<td style="width: 76;" colspan="3" valign="bottom" class="dr">
+<p class="im" style="text-align:center;"><span class="fp">6.9%</span></p>
+</td>
+</tr>
+<tr class="fx">
+<td style="width: 156;" valign="bottom" class="du">
+<p class="il"><span class="gi">Food services</span></p>
+</td>
+<td style="width: 137;" colspan="2" valign="bottom" class="dl">
+<p class="im" style="text-align:center;"><span class="fp">69,872</span></p>
+</td>
+<td style="width: 127;" colspan="2" valign="bottom" class="dk">
+<p class="im" style="text-align:center;"><span class="fp">66,688</span></p>
+</td>
+<td style="width: 76;" colspan="3" valign="bottom" class="dr">
+<p class="im" style="text-align:center;"><span class="fp">4.8%</span></p>
+</td>
+</tr>
+<tr class="fg">
+<td style="width: 156;" valign="bottom" class="dj">
+<p class="im" style="text-align:center;"><span class="eq"><br /></span></p>
+</td>
+<td style="width: 137;" colspan="2" valign="bottom" class="di">
+<p class="im" style="text-align:center;"><span class="fp">999,422</span></p>
+</td>
+<td style="width: 127;" colspan="2" valign="bottom" class="dh">
+<p class="im" style="text-align:center;"><span class="fp">933,348</span></p>
+</td>
+<td style="width: 76;" colspan="3" valign="bottom" class="dg">
+<p class="im" style="text-align:center;"><span class="fp">7.1%</span></p>
+</td>
+</tr>
+<tr class="gq">
+<td style="width: 449;" colspan="6" valign="bottom" class="df">
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">6M 2026 Adj. EBITDA and Adj. EBITDA margin by Business Unit</span>&#160;</span></p>
+</td>
+<td colspan="2" class="de">
+<p class="a"><br /></p>
+</td>
+<td class="gr" style="width: 12;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr>
+<td class="dd">
+<p class="a"><br /></p>
+</td>
+<td class="dd">
+<p class="a"><br /></p>
+</td>
+<td class="dd">
+<p class="a"><br /></p>
+</td>
+<td class="dd">
+<p class="a"><br /></p>
+</td>
+<td class="dd">
+<p class="a"><br /></p>
+</td>
+<td class="dd">
+<p class="a"><br /></p>
+</td>
+<td class="dd">
+<p class="a"><br /></p>
+</td>
+<td class="dd">
+<p class="a"><br /></p>
+</td>
+<td class="gr" style="width: 12;">
+<p class="a">&#160;</p>
+</td>
+</tr>
+<tr style="height: 0;">
+<td style="width: 0;" class="fb"><br /></td>
+<td style="width: 166;" class="fb"><br /></td>
+<td style="width: 80;" class="fb"><br /></td>
+<td style="width: 80;" class="fb"><br /></td>
+<td style="width: 75;" class="fb"><br /></td>
+<td style="width: 75;" class="fb"><br /></td>
+<td style="width: 5;" class="fb"><br /></td>
+<td style="width: 5;" class="fb"><br /></td>
+<td style="width: 67;" class="fb"><br /></td>
+</tr>
+</tbody>
+</table>
+<p class="a"><img border="0" style="width: 582px; height: 195.686px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/846118f4-8092-4e52-bd98-6142a7de1cf8.png" />&#160;</p>
+<p class="a"><span class="hz">In line with the parent company reporting, Adjusted EBITDA has been updated in H1 2026 to align by including non-controlling interests.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;" class="db"><span class="hz">Foods</span></span></p>
+<p class="a"><span class="hz">Revenue has increased year on year by 0.6% to &#163;305 million, driven by the inclusion of perimeter acquisitions. Adjusted EBITDA decreased by 14.8% to &#163;26.9 million and EBITDA percentage reduced by 160 bps. This is due to lower trading in core UK categories, along with increased input costs, that had not been fully passed onto customers in the period.</span></p>
+<p class="a"><span style="font-weight: bold;" class="db"><span class="hz">Drinks</span></span></p>
+<p class="a"><span class="hz">Revenue has decreased year on year by 9.0% which reflects deflationary price fluctuation on key commodities. Adjusted EBITDA however year on year is broadly flat, reporting a 3.4% decrease due to input costs, that had not been fully passed onto customers in the period.</span></p>
+<p class="a"><span style="font-weight: bold;" class="db"><span class="hz">Fish</span></span></p>
+<p class="a"><span class="hz">Revenue has decreased year on year by 2.8% driven by a phasing variation for Frozen fish sales. Adjusted EBITDA increased by 20.0% delivered mainly through factory operational optimisation year on year.</span></p>
+<p class="a"><span style="font-weight: bold;" class="db"><span class="hz">Italian Products</span></span></p>
+<p class="a"><span class="hz">Revenue has increased year on year by 48.1%, driven by the inclusion of perimeter acquisition sales. This has also resulted in a 39.5% increase in Adjusted EBITDA. On a like-for-like basis, revenue reflected lower raw material costs, particularly durum wheat, which resulted in lower average selling prices for pasta.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;" class="db"><span class="hz">Oils</span></span></p>
+<p class="a"><span class="hz">Revenue has increased year on year by 7.2% driven by improved sales in the Polish market. Adjusted EBITDA has increased by 6.2% year on year, due to the improved sales. On a like-for-like basis, revenue reflected lower oil costs and the resulting reduction in average selling prices.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">Operating Review</span></span></p>
+<p class="a"><span class="hz">Recent and upcoming commercial and&#160;<span style="font-weight: bold;">new</span>&#160;<span style="font-weight: bold;">product development initiatives</span> launched in H1 include:</span></p>
+<p class="ig"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Continued commercial momentum across the UK portfolio</span></span><span class="hz">, with new distribution gains for Princes fruit and meat across Tesco and Asda, Branston across Sainsbury's, and Princes Jack Mackerel across Morrisons and Asda. Princes also launched its new <span style="font-weight: bold;">Ocean Select</span> tuna range in Tesco, alongside the transition of Princes branded tuna to 100% MSC-certified products.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Successful relaunch of the Mug Shot sachet range</span></span><span class="hz">, supported by new positioning, refreshed packaging, product optimisation and a high-impact consumer campaign reaching approximately 4 million consumers. Early performance has been encouraging, with an average <span style="font-weight: bold;">9% uplift in rate of sale across key lines</span> and purchase intent of 83%.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Continued investment behind Napolina</span></span><span class="hz">, including the launch of flavoured oils, increased promotional support for the oils portfolio and new listings for Napolina sauces in Tesco and pasta in Asda. The innovation pipeline includes new flavour boosters, Polpa and black beans, alongside further launches across pasta and sauces.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Strong innovation pipeline for H2</span></span><span class="hz">, including a major relaunch of the Naked core range following extensive product development and consumer testing. The improved range features enhanced recipes, longer noodles and new flavour sachets, with testing showing significant improvements across purchase intent, taste and consumer appeal.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Good progress in Baby and Medical Food</span></span><span class="hz">, with Plasmon regaining category leadership against its main competitor and a new promotional strategy driving market share gains across wet baby food and biscuits. The Group also successfully insourced baby and medical pasta production at Ozzano, which will deliver a <span style="font-weight: bold;">30% reduction in COGS and over &#8364;1.5 million of fixed-cost absorption</span>, with further insourcing initiatives planned for H2.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Leveraging the Group's expanded route-to-market</span></span><span class="hz">, with 11 Princes Tuna SKUs launched across the Carrefour Italia retail network in Italy from the end of June, supported by dedicated retail media. Further activity is planned to support the development of Princes within the Italian market.</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hz">Continued innovation across the Italian bakery portfolio</span></span><span class="hz">, with Princes bread substitutes delivering strong performance and the relaunch of Delverde Crostino Dorato supported by advertising and promotional investment. Growth in rusks was supported by the launch of Granfetta Benefit, with further distribution expansion and six new Delverde snack SKUs planned for H2.</span></p>
+<p class="ii"><span class="hm">&#183;&#160;&#160;&#160;</span> <span style="font-weight: bold;"><span class="hh">Further international customer wins and distribution expansion</span></span><span class="hz">, including a doubling of customer own-brand tuna business with a major French retailer, a new Princes branded listing with Lidl Netherlands and new tomato business in Poland. The H2 pipeline includes successful customer own-brand tuna tenders with a major retailer in the Netherlands and in Poland, as well as further tomato wins with several German retailers and discounters.</span></p>
+<p class="a"><span class="hz">From an operations standpoint, the Group has identified c.&#163;2 million of additional operational efficiencies, with implementation underway. Delivery of the synergy programme remains on track, although benefits achieved during the period were</span> <span class="hz">partially offset by commodity price volatility and higher transportation costs.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">Our Principal Risks and Uncertainties</span></span></p>
+<p class="a"><span class="hz">The delivery of our strategic objectives is dependent on effective risk management.&#160; Details of the principal risks facing the Group at an operational level were included on pages 50 to 55 of the Group's Annual Report and Accounts for the year ended 31 December 2025, as part of the Strategic Report.</span></p>
+<p class="a"><span class="hz">We have reassessed our principal risks for the remaining 6 months of the financial year as the world continues to face political and economic turmoil.</span></p>
+<p class="a"><span class="hz">Volatile commodity prices continue to create financial pressure and operational complexity across our portfolio. In response, the Group have strengthened risk monitoring and maintained robust procurement strategies.</span></p>
+<p class="a"><span class="hz">Cyber-attack threats have also increased amid geopolitical tensions, and the Group remain alert to the heightened risk of IT security breaches and cyber-based attacks.</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">Going Concern</span></span></p>
+<p class="a"><span class="hz">After making enquiries, the directors have a reasonable expectation that the Group has adequate resources to continue in operational existence to the end of the 2027 financial year. For this reason, they continue to adopt the going concern basis in preparing the Condensed Consolidated Interim Financial Statements.</span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<span style="font-weight: bold;"><span class="cz"><br class="da" />
+<br class="da" /></span></span>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">Statement of directors' responsibilities</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu"><br /></span></span> <span class="hz">The half year results announcement complies with the Disclosure and Transparency Rules ('the DTR') and the UK's Financial Conduct Authority in respect of the requirement to produce a half yearly financial report.</span></p>
+<p class="a"><span class="hz">The directors confirm that to the best of their knowledge:</span></p>
+<p class="ig"><span class="hm">&#183;&#160;&#160;&#160;</span> <span class="hz">this financial information has been prepared in accordance with UK adopted International Accounting Standard 34 'Interim Financial Reporting';</span></p>
+<p class="s"><span class="hz">&#160;</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span class="hz">the Half Year Results Announcement includes a fair review of the important events that have occurred during the 6 months to 30 June 2026 and their impact on the financial information, and a description of the principal risks and uncertainties for the remaining 6 month period of the financial year as required by DTR4.2.7;</span></p>
+<p class="s"><span class="hz">&#160;</span></p>
+<p class="ih"><span class="hm">&#183;&#160;&#160;&#160;</span> <span class="hz">the Half Year Results Announcement includes a fair review of material related party transactions and changes therein since the last annual report as required by DTR4.2.8.</span></p>
+<p class="t"><span class="hz">&#160;</span></p>
+<p class="a"><span class="hz">On behalf of the Board</span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Fabio Fazzari<br /></span></span> <span class="hz">Chief Financial Officer</span></p>
+<p class="a"><span class="hz">14 September 2026</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gl">&#160;</span></span></p>
+<span style="font-weight: bold;"><span class="cz"><br class="da" />
+<br class="da" /></span></span>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">Independent Review Report to Princes Group Plc</span></span></p>
+<p class="ay"><span class="cy">Report on the</span> <span class="cx">condensed</span> <span class="cw">consolidated</span> <span class="cx">interim financial statements</span></p>
+<p class="ir"><span class="cv">Our</span> <span class="cv">conclusion</span></p>
+<p class="is"><span class="cu">We have reviewed Princes Group Plc's condensed consolidated interim financial statements (the "interim financial statements") in the Half Year Results Announcement of Princes Group Plc for the 6 month period ended 30&#160;June&#160;2026 (the "period").</span></p>
+<p class="is"><span class="cu">Based on our review, nothing has come to our attention that causes us to believe that the interim financial statements are not prepared, in all material respects, in accordance with UK adopted International Accounting Standard 34, 'Interim Financial Reporting' and the Disclosure Guidance and Transparency Rules sourcebook of the United Kingdom's Financial Conduct Authority.</span></p>
+<p class="it"><span class="cu">The interim financial statements comprise:</span></p>
+<p class="iu"><span class="cu">&#9679;&#160;&#160;&#160; the Condensed Consolidated Statement of Financial Position as at 30&#160;June&#160;2026;</span></p>
+<p class="iu"><span class="cu">&#9679;&#160;&#160;&#160; the Condensed Consolidated Income Statement for the period then ended;</span></p>
+<p class="iu"><span class="cu">&#9679;&#160;&#160;&#160; the Condensed Consolidated Statement of Comprehensive Income for the period then ended;</span></p>
+<p class="iu"><span class="cu">&#9679;&#160;&#160;&#160; the Condensed Consolidated Cash Flow Statement for the period then ended;</span></p>
+<p class="iu"><span class="cu">&#9679;&#160;&#160;&#160; the Condensed Consolidated Statement of Changes in Equity for the period then ended; and</span></p>
+<p class="iu"><span class="cu">&#9679;&#160;&#160;&#160; the explanatory notes to the interim financial statements.</span></p>
+<p class="iv"><span class="cu">The interim financial statements included in the Half Year Results Announcement of Princes Group Plc have been prepared in accordance with UK adopted International Accounting Standard 34, 'Interim Financial Reporting' and the Disclosure Guidance and Transparency Rules sourcebook of the United Kingdom's Financial Conduct Authority.</span></p>
+<p class="ba">&#160;</p>
+<p class="ir"><span class="cv">Basis for conclusion</span></p>
+<p class="is"><span class="cu">We conducted our review in accordance with International Standard on Review Engagements (UK) 2410, 'Review of Interim Financial Information Performed by the Independent Auditor of the Entity' issued by the Financial Reporting Council for use in the United Kingdom ("ISRE (UK) 2410"). A review of interim financial information consists of making enquiries, primarily of persons responsible for financial and accounting matters, and applying analytical and other review procedures.</span></p>
+<p class="is"><span class="cu">A review is substantially less in scope than an audit conducted in accordance with International Standards on Auditing (UK) and, consequently, does not enable us to obtain assurance that we would become aware of all significant matters that might be identified in an audit. Accordingly, we do not express an audit opinion.</span></p>
+<p class="is"><span class="cu">We have read the other information contained in the Half Year Results Announcement and considered whether it contains any apparent misstatements or material inconsistencies with the information in the interim financial statements.</span></p>
+<p class="bb"><span class="cv">Conclusions relating to going concern</span></p>
+<p class="ba"><span class="ct">Based on our review procedures, which are less extensive than those performed in an audit as described in the Basis for conclusion section of this report, nothing has come to our attention to suggest that the directors have inappropriately adopted the going concern basis of accounting or that the directors have identified material uncertainties relating to going concern that are not appropriately disclosed. This conclusion is based on the review procedures performed in accordance with ISRE (UK) 2410. However, future events or conditions may cause the group to cease to continue as a going concern.</span></p>
+<p class="ba"><span class="ct">&#160;</span></p>
+<p class="ay"><span class="cy">Responsibilities for the interim financial statements and the review</span></p>
+<p class="bb"><span class="cv">Our responsibilities and those of the directors</span></p>
+<p class="is"><span class="cu">The Half Year Results Announcement, including the interim financial statements, is the responsibility of, and has been approved by the directors. The directors are responsible for preparing the Half Year Results Announcement in accordance with the Disclosure Guidance and Transparency Rules sourcebook of the United Kingdom's Financial Conduct Authority. In preparing the Half Year Results Announcement, including the interim financial statements, the directors are responsible for assessing the group's ability to continue as a going concern, disclosing, as applicable, matters related to going concern and using the going concern basis of accounting unless the directors either intend to liquidate the group or to cease operations, or have no realistic alternative but to do so.</span></p>
+<p class="ba"><span class="ct">Our responsibility is to express a conclusion on the interim financial statements in the Half Year Results Announcement based on our review. Our conclusion, including our Conclusions relating to going concern, is based on procedures that are less extensive than audit procedures, as described in the Basis for conclusion paragraph of this report.</span></p>
+<p class="ba"><span class="ct">&#160;</span></p>
+<p class="ba"><span class="ct">&#160;</span></p>
+<p class="ba"><span class="ct">&#160;</span></p>
+<p class="ba"><span class="ct">&#160;</span></p>
+<p class="ba"><span class="ct">&#160;</span></p>
+<p class="bb"><span class="cv">Use of this report</span></p>
+<p class="is"><span class="cu">This report, including the conclusion, has been prepared for and only for the company for the purpose of complying with the Disclosure Guidance and Transparency Rules sourcebook of the United Kingdom's Financial Conduct Authority and for no other purpose. We do not, in giving this conclusion, accept or assume responsibility for any other purpose or to any other person to whom this report is shown or into whose hands it may come save where expressly agreed by our prior consent in writing.</span></p>
+<p class="is"><span class="cu">&#160;</span></p>
+<p class="is"><span class="cu">&#160;PricewaterhouseCoopers LLP</span></p>
+<p class="iw"><span class="cs">Chartered Accountants</span></p>
+<p class="ix"><span class="cs">Manchester</span></p>
+<p class="ba"><span class="ct">14&#160;September&#160;2026</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gl">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gl">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gl">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gl">&#160;</span></span></p>
+<span style="font-weight: bold;"><span class="cr"><br class="da" /></span></span></div>
+<div class="bo">
+<p class="a"><span style="font-weight: bold;"><span class="gu">Condensed Consolidated Income Statement</span></span></p>
+<p class="iy"><span class="hz">For the six-month period ended 30 June 2026</span></p>
+<p class="iy"><img border="0" style="width: 622px; height: 603px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/27f2a7e0-4430-48c5-a5d3-3eccbc62798e.png" /></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gl">&#160;</span></span></p>
+</div>
+<p><span style="font-weight: bold;"><span class="cp"><br class="da" /></span></span></p>
+<div class="bp">
+<p class="a"><span style="font-weight: bold;"><span class="gu">Condensed Consolidated Statement of Comprehensive Income&#160;&#160;</span></span></p>
+<p class="a"><img border="0" style="width: 602px; height: 636px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/3f9c281f-7311-459d-9e57-a8e863511b11.png" /></p>
+<p class="a"><span style="font-style: italic;"><span class="gl">&#160;</span></span></p>
+</div>
+<p><span style="font-style: italic;"><span class="cp"><br class="da" /></span></span></p>
+<div class="bq">
+<p class="a"><span style="font-weight: bold;"><span class="gu">Condensed Consolidated Statement of Financial Position<br />
+<br /></span></span> <img border="0" style="width: 602px; height: 747px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/57e5650b-1f98-45b1-bc4e-21d0fb30471f.png" /></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">Condensed Consolidated Statement of Financial Position (continued)</span></span></p>
+<p class="a"><img border="0" style="width: 602px; height: 316px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/f76cdb22-a2bd-4a8e-8859-387c29f189de.png" /></p>
+<p class="a"><span class="co">&#160;</span></p>
+</div>
+<p><span class="cn"><br class="da" /></span></p>
+<div class="br">
+<p class="a"><span style="font-weight: bold;"><span class="gu">Condensed Consolidated Statement of Changes in Equity</span></span></p>
+<p class="iz"><img border="0" style="width: 730px; height: 548px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/74508f0c-2d64-46aa-875a-eec03a021ba6.png" /></p>
+<p class="iz"><span style="font-style: italic;"><span class="gl">&#160;</span></span></p>
+<p class="ja"><span style="font-style: italic;"><span class="gl">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="gl">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="gl">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="gl">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="gl">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="gl">&#160;</span></span></p>
+</div>
+<p><span style="font-style: italic;"><span class="cp"><br class="da" /></span></span></p>
+<div class="bs">
+<p class="a"><span style="font-weight: bold;"><span class="gu">Condensed Consolidated Cash Flow Statement</span></span><span style="font-style: italic;"><span class="ck">.</span></span></p>
+<p class="a"><img border="0" style="width: 602px; height: 530px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/e4497043-fe0b-4d92-a87a-4985cd6f2d7b.png" /></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-style: italic;"><span class="ck">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="gu">Condensed Consolidated Cash Flow Statement (continued)</span></span></p>
+<p class="a"><img border="0" style="width: 602px; height: 594px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/2b967306-caa2-4f06-8192-7e522c1fc27b.png" /></p>
+</div>
+<p><span style="font-style: italic;"><span class="cn"><br class="da" /></span></span></p>
+<div class="bt">
+<p class="a"><span style="font-weight: bold;"><span class="gu">Notes to the half-year condensed financial statements</span></span></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">1.&#160;&#160; Basis of preparation and accounting policies</span></span></p>
+<p class="jc"><span class="hz">Princes Group plc (the "Company") is a public company limited by shares, incorporated and domiciled in the United Kingdom and registered in England and Wales under the Companies Act 2006 as company number 02328824.&#160;&#160;The address of the registered office is Royal Liver Building, Pier Head, Liverpool, L3 1NX.</span></p>
+<p class="jc"><span class="hz">The condensed consolidated half year financial report for the six months ended 30 June 2026 have been prepared in accordance with UK-adopted International Accounting Standard 34 - Interim Financial reporting.&#160; They do not include all of the information required for full annual financial statements and should be read in conjunction with the Annual Report for the year ended 31 December 2025, which have been prepared in accordance with UK adopted international accounting standards. The Annual Report was approved by the Board of Directors on 24 April 2026 and has since been delivered to the Registrar of Companies.&#160; The audit report was unqualified, did not draw attention to any matters by way of emphasis and did not include a statement under Section 498(2) or 498(3) of the Companies Act 2006.</span></p>
+<p class="jc"><span class="hz">The condensed financial statements are unaudited and were approved by the Board of Directors on 14 September 2026. The condensed financial statements have been reviewed by the auditors and independent review report is set out above. There was no interim dividend declared for the six months ended 30 June 2026.</span></p>
+<p class="jc"><span style="font-weight: bold;"><span class="ch"><br /></span></span> <span style="font-weight: bold;"><span class="hz">Going concern assumption</span></span></p>
+<p class="jc"><span class="hz">After making enquiries, the directors have a reasonable expectation that the Group has adequate resources to continue in operational existence to the end of the 2027 financial year. For this reason, they continue to adopt the going concern basis in preparing the&#160;consolidated&#160;half year financial statements.</span></p>
+<p class="jc"><span class="hz">The directors have reviewed the cash flow forecast, together with the availability of the committed borrowing facilities, to the end of the 2027 financial year. The Directors have also considered the headroom against covenants under the Group's borrowing facilities.&#160;&#160;</span></p>
+<p class="jc"><span class="hz"><br />
+<span style="font-weight: bold;">Accounting policies</span></span></p>
+<p class="jc"><span class="hz">The accounting policies applied by the Group in these condensed consolidated half year financial statements are the same as those applied by the Group in its Annual Report for the year ended 31 December 2025.</span></p>
+<p class="jc"><span class="hz">There have been no changes in economic conditions, since the signing of the financial statements in the most recent annual report, that the directors deem to have had a material impact on the fair value of financial assets or liabilities in the accounts.</span></p>
+<p class="jc"><span style="font-weight: bold;"><span class="hz"><br />
+<br /></span></span></p>
+<span style="font-weight: bold;"><span class="cr"><br class="da" />
+<br class="da" /></span></span>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="jc"><span style="font-weight: bold;"><span class="hz">Accounting</span></span> <span style="font-weight: bold;"><span class="hz">estimates and judgements</span></span></p>
+<p class="jc"><span class="hz">The preparation of condensed half-year financial statements requires management to make judgments, estimates and assumptions that affect the application of accounting policies and the reported amounts of assets, liabilities, income and expenses.&#160; Actual results may differ from these estimates.</span></p>
+<p class="jc"><span class="hz">In preparing the condensed half-year financial statements, the significant judgements made by management in applying the Group's accounting policies and the key areas of estimation uncertainty are consistent with those applied in the Princes Group plc annual report for the year ended 31 December 2025 except for the basis of calculating pension costs on the defined benefits schemes owned by group.</span></p>
+<p class="jc"><span class="hz">The measurement of the defined benefit pension scheme requires the estimation of future changes in salaries, inflation, longevity of current and deferred members and the&#160;selection&#160;of a suitable discount rate. For the financial statements for the year ended 31 December 2025, management engaged Mercer Limited (a global professional services company whose specialisms include actuarial advice) to support in the process of establishing reasonable bases for all these estimates. Pension costs for the half-year period are calculated on a year&#8209;to&#8209;date basis by using the actuarially determined pension cost rate at the end of the prior financial year, in accordance with IAS 34 paragraph B9. Management deem this approach appropriate given the absence of any significant events that would materially impact relevant assumptions during the half-year period.</span></p>
+<p class="jc"><span style="font-weight: bold;"><span class="hz"><br />
+Seasonality of operations</span></span></p>
+<p class="jc"><span class="hz">Within the individual operating segments there is some seasonality within the trading results.&#160; However, seasonality within operating segments is largely offset, meaning for the Group as a whole there is no significant seasonality within the half year results presented.</span></p>
+<p class="a"><span class="gl">&#160;</span></p>
+</div>
+<p><span class="cp"><br class="da" /></span></p>
+<div class="bu">
+<p class="jb"><span style="font-weight: bold;"><span class="hz">2.&#160;&#160; Operating segments</span></span></p>
+<p class="jc"><span class="hz">The operating segment&#160;is a part of the group that undertakes business activities that generate revenue and costs, whose operating results are periodically reviewed by the Chairman,&#160;in his role as&#160;Chief&#160;Operating Decision Maker (CODM), for the purpose of taking decisions&#160;on the resources to be allocated&#160;to the segment and evaluating results, and for&#160;which financial information is available.&#160;</span></p>
+<p class="jc"><span class="hz">For the purposes of IFRS8, the Group's activity is identifiable in the following business segments: Foods, Fish, Italian, Oils, and Drinks.</span></p>
+<p class="jc"><span class="hz">Food: The Group supplies a large variety of foods such as baked beans, soups, ready meals, peas and pulses through the large food retailer and foodservice sales channels, which are predominantly manufactured in UK.</span></p>
+<p class="jc"><span class="hz">Fish: The Group supplies ambient tuna, mackerel, salmon and other fish in the UK and the EEA. The business unit is primarily served through the two production facilities in Mauritius.</span></p>
+<p class="jc"><span class="hz">Italian Products: The Group supplies canned and other tomato products, pasta, pulses,oil and other speciality products, through the large food retailer channel, which are primarily manufactured in Italy. Following the acquisition of Plasmon, baby food is also included in this segment.</span></p>
+<p class="jc"><span class="hz">Oil: The Group's oils business unit consists of a joint arrangement with Archer Daniels Midland (UK) Limited called Edible Oils Limited, established in 2005. The oils business unit predominantly operates out of the Group's production facilities located in UK, along with a facility in Poland. Products supplied are seed olive and speciality oils and compound fats.</span></p>
+<p class="jc"><span class="hz">Drinks: The Group's drinks business unit supplies a range of customer own brand juices, squash and carbonates, operating out of three production facilities in the UK.</span></p>
+<p class="jc"><span class="hz">The Chairman uses a measure of earnings before interest, tax, depreciation and amortisation to assess the performance of the operating segments.</span></p>
+<p class="iz"><span style="font-weight: bold;"><span class="gl">&#160;</span></span></p>
+<p class="iz"><img border="0" style="width: 706px;height: 292px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/67bde3b2-c831-4426-b6b8-eacba305fc6e.png" /></p>
+<p class="iz"><img border="0" style="width: 723px;height: 284px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/f80d90d6-7a1d-4075-b509-8f421b5655bd.png" /></p>
+<p class="iz"><img border="0" style="width: 723px; height: 302px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/22b18d01-82e3-4adf-bdcb-215e937675a8.png" /></p>
+<p class="jc"><span class="hz">The following table provides a breakdown of revenue from continuing operations in the geographical area as&#160;monitored&#160;by management:&#160;</span></p>
+<p class="a"><img border="0" style="width: 602px;height: 221px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/c92d0714-edaf-49e9-aa9f-67840cf0c970.png" /><span class="hz"><br />
+<br /></span></p>
+<p class="jc"><span class="hz">The following table provides a breakdown of revenue from continuing operations by distribution channel as&#160;monitored&#160;by management:&#160;</span></p>
+<p class="jc"><img border="0" style="width: 602px;height: 172px;" id="Picture 19" src="https://dw6uz0omxro53.cloudfront.net/3820856/09b347ca-5c32-4de6-9850-7c70e42c9844.png" name="Picture 19" /></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">3.&#160;&#160; Income tax expense</span></span></p>
+<p class="jc"><span class="hz">Income tax expense within the half-year figures is recognised based on management's estimate of the weighted average effective annual income tax rate expected for the full financial year. Taxation for other jurisdictions is calculated at the rates prevailing in the respective jurisdiction. The estimated average annual tax rate used for the six months ended 30 June 2026 is 26.1% (30 June 2025: 25.5%). The Group's Annual report includes detail on the income tax calculation for 31 December 2025.</span></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">4.&#160;&#160; Earnings per share</span></span></p>
+<p class="jc"><span class="hz">The calculation of&#160;earnings&#160;per ordinary share is based on earnings after tax attributable to equity shareholders of the Company and the weighted average number of ordinary shares in issue during&#160;the year.</span></p>
+<p class="jc"><span class="hz">The calculation of the basic and diluted earnings per share is based on the following data:</span></p>
+<p class="jc"><img border="0" style="width: 602px;height: 258px;" id="Picture 2" src="https://dw6uz0omxro53.cloudfront.net/3820856/dd796275-d113-4db8-be93-7bd7565e9869.png" name="Picture 2" /><span class="hz"><br />
+<br />
+There are no potential ordinary shares that could be dilutive or anti-dilutive to the earnings per share measure. The weighted average number of shares used to calculate the earnings per share for the six-months ended 30 June 2025 has been adjusted retrospectively, in line with IAS 33, for the sub-division of shares that reduced the nominal value of share capital from &#163;1 to &#163;0.10 on 21 October 2025.</span></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">5.&#160;&#160; Cash and cash equivalents</span></span></p>
+<p class="jc"><span class="hz">Cash and cash equivalents presented in the statement of cashflows includes overdrafts of &#163;11.7m (31 December 2025: &#163;18.9m, 30 June 2025: &#163;12.1m).&#160; These amounts are presented within borrowings in the statement of financial position.</span></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">6.&#160;&#160;</span></span> <span style="font-weight: bold;"><span class="hz">Borrowings</span></span></p>
+<p class="jd"><img border="0" style="width: 601px;height: 204px;" id="Picture 9" src="https://dw6uz0omxro53.cloudfront.net/3820856/1fc02dd6-5bff-4904-984b-4aff08236680.png" name="Picture 9" /></p>
+<p class="jd"><img border="0" style="width: 601px; height: 221px;" id="Picture 6" src="https://dw6uz0omxro53.cloudfront.net/3820856/1f8958fe-1e45-416f-b35c-a924fc9f6d03.png" name="Picture 6" /></p>
+<p class="jd"><img border="0" style="width: 601px; height: 215px;" src="https://dw6uz0omxro53.cloudfront.net/3820856/9587fb88-52c0-42d4-8449-d39b2bfaca79.png" /></p>
+<p class="je"><span class="cs">(i)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; The cashflows make up the net amount of proceeds from borrowings and repayments of borrowings in the statement of cashflows.&#160; Note, bank overdrafts are included within cash and cash equivalents in the cashflow statement.</span></p>
+<p class="jf"><span class="cs">&#160;</span></p>
+<p class="jg"><span class="cs">(ii)&#160;&#160;&#160;&#160;&#160;&#160;&#160; Other changes include lease modifications and lease terminations and any cash movements due to investing/operating activities.</span></p>
+<p class="jh"><span class="cs">&#160;</span></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">7.&#160;&#160; Financial instruments</span></span></p>
+<p class="jc"><span class="hz">The following table shows the carrying amounts of the Group's financial assets and financial liabilities. Fair value is the price that would be received to sell an asset or paid to transfer a liability through an arms-length transaction between average market participants.</span></p>
+<p class="jc"><img border="0" style="width: 602px;height: 472px;" id="Picture 10" src="https://dw6uz0omxro53.cloudfront.net/3820856/2342031a-9fa9-4936-b5c2-1a9759262a2b.png" name="Picture 10" /></p>
+<p class="a"><img border="0" style="width: 602px;height: 492px;" id="Picture 5" src="https://dw6uz0omxro53.cloudfront.net/3820856/709647f6-caea-4592-ad8d-2f53cc330d2c.png" name="Picture 5" /></p>
+<p class="r"><span class="hz">&#160;</span></p>
+<p class="ji"><span class="hz">8.&#160;&#160;</span> <span style="font-weight: bold;"><span class="cc">Commitments</span></span></p>
+<p class="a"><img border="0" style="width: 602px;height: 154px;" id="Picture 4" src="https://dw6uz0omxro53.cloudfront.net/3820856/1cf609e2-e38d-4180-950c-07a04284ba44.png" name="Picture 4" /></p>
+<p class="a"><span class="hz">All capital commitments relate to the acquisition of property, plant and equipment.</span></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">9.&#160;&#160; Contingent liabilities</span></span></p>
+<p class="jc"><span class="hz">The Group may from time to time, and in the normal course of business, be subject to claims from customers and counterparties. The Group regularly reviews&#160;all&#160;these claims to&#160;determine&#160;any possible&#160;financial loss&#160;to the Group. No provision was considered necessary in the&#160;financial Information.&#160;&#160;</span></p>
+<p class="jc"><span class="hz">The Group have issued general indemnities in the normal course of business; however, none are considered material for&#160;disclosure in the financial statements.&#160;&#160;</span></p>
+<p class="jc"><span class="hz">&#160;</span></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">10. Related party transactions</span></span></p>
+<p class="jc"><span class="hz">The Group's related party transactions and relationships for the year ended 31 December 2025 were disclosed in the Group's Annual Report.&#160; Other than as per the business combination as disclosed below, there have been no material changes in these relationships in the six months ended 30 June 2026 or up to the date of this report.&#160;</span></p>
+<p class="jc"><span class="hz">&#160;</span></p>
+<p class="jj"><span style="font-weight: bold;"><span class="hz">11. Business combinations</span></span></p>
+<p class="jc"><span class="hz">On&#160;1 January&#160;2026 the Group entered into an agreement with&#160;NewPrinces&#160;S.p.A subsidiary Plasmon Srl which gave the Group the right to conduct and&#160;operate&#160;the Plasmon business for a three-year term.&#8239; Plasmon specialises in the production and sale of baby food, infant formula and speciality nutritional products. The agreement gives the Group the right to use Plasmon's contractual and employment relationships as well as the tangible and intangible assets which are&#160;required&#160;to carry out the business.</span></p>
+<p class="a"><span class="hz">The accounting for the agreement is reflected in the group's accounts as a business combination under common control using predecessor accounting with assets and liabilities recognised at their existing carrying values from&#8239;NewPrinces&#8239;S.p.A accounts.&#8239; &#160;This includes goodwill totalling &#163;5.2m. &#8239;&#8239;</span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="jj"><span style="font-weight: bold;"><span class="hz">12. Subsequent events</span></span></p>
+<p class="jc"><span class="hz">On 29 May 2026 the Group approved a share buy-back programme to purchase up to 6,200,000 of its own ordinary shares. The purpose of the Share Buyback Programme is to fulfil several corporate purposes, including, but not limited to, the satisfaction of its Employee SAYE scheme which will be rolled out later this year.</span></p>
+<p class="jc"><span class="hz">On 22 July 2026 the Group entered into a loan agreement with Lloyds Bank plc for a principal amount of EUR 60m. The loan carries an interest rate of 4.39% and has a final maturity date of 22 July 2031.</span></p>
+<p class="jc"><span class="hz">&#160;</span></p>
+<p class="jb"><span style="font-weight: bold;"><span class="hz">13. Alternative performance measures</span></span></p>
+<p class="jc"><span class="hz">When reporting financial information, the board uses various Alternative Performance Measures (APM's) which it believes provide useful additional information for understanding the financial performance of the group.</span></p>
+<p class="jc"><span class="hz">The APMs should be considered in addition to IFRS measures and are not intended to be a substitute for them. Since IFRS does not define APMs, they may not be directly comparable to similar measures used by other companies.</span></p>
+<p class="jc"><span class="hz">The board uses selected Key Performance Indicators (KPIs), which are a mixture of IFRS measures and APMs, for performance analysis, planning and reporting. The table below defines any non-IFRS measures and reconciles them to their closest IFRS equivalent.</span></p>
+<p class="jc"><span class="hz">&#160;</span></p>
+<table style="width: 604;" class="jk" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span style="font-style: italic;"><span class="hz">Performance measure</span></span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span style="font-style: italic;"><span class="hz">Definition</span></span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span style="font-style: italic;"><span class="hz">Reconciliation</span></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">EBITDA</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">&#160;IFRS earnings before interest, tax, depreciation and amortisation</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table A</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">EBITDA margin</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">EBITDA (as defined above) divided by Total revenues calculated as a percentage.</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table A</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Adjusted EBITDA</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">EBITDA (as defined above) adjusted to exclude non-recurring items, i.e unusual, infrequent, one-off transactions (eg. asset disposal gains/losses, litigation settlements, restructuring costs, impairment charges) that distort underlying operational performance.&#160;</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table A</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Adjusted EBITDA margin</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">Adjusted EBITDA (as defined above) divided by Total Revenues calculated as a percentage.</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table A</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Underlying free cash flow</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">EBITDA adjusted for changes in working capital, capex, lease liabilities, tax and financing cashflows.</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table B</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Free cash flow conversion rate</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">This measure represents the efficiency of the business in translating earnings into actual cash. It is calculated as Underlying free cash flow (as defined above) divided by EBITDA (as defined above) shown as a percentage.</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table B</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Net cash/debt position</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">Cash &amp; cash equivalents (including cash-pooling), less current and non-current borrowings.</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table C</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Net cash/debt excluding IFRS 16 lease liabilities</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">Cash &amp; cash equivalents (including cash-pooling), less current and non-current borrowings. Excludes current and non-current lease liabilities (IFRS 16).</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table C</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Equity ratio</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">Total equity divided by total assets</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table D</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Debt to assets</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">Total liabilities divided by total assets</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table D</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Current ratio</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">Current assets divided by current liabilities</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table D</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 105;" valign="top" class="ca">
+<p class="a"><span class="hz">Quick ratio</span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span class="hz">ROCE</span></p>
+</td>
+<td style="width: 310;" valign="top" class="bz">
+<p class="a"><span class="hz">Cash &amp; cash equivalents less inventories divided by current liabilities.</span></p>
+<p class="a"><span class="hz">Return on capital employed. It is calculated using 12 month rolling operating profit divided by total capital employed. Total capital employed is calculated as Total shareholder equity minus Net cash (excluding IFRS16 lease liabilities).</span></p>
+</td>
+<td style="width: 146;" valign="top" class="by">
+<p class="a"><span class="hz">Table D</span></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span class="hz">Table E</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+</div>
+<p><span style="font-weight: bold;"><span class="cr"><br class="da" /></span></span></p>
+<div class="bv">
+<p class="a"><span style="font-weight: bold;"><span class="hz">Table A</span></span></p>
+<p class="a"><img border="0" style="width: 602px;height: 329px;" id="Picture 16" src="https://dw6uz0omxro53.cloudfront.net/3820856/b32e80e4-a6db-435b-9962-64d3dcf5fb13.png" name="Picture 16" /></p>
+<p class="a"><span class="hz">&#160;</span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Table B</span></span></p>
+<p class="a"><img border="0" style="width: 602px;height: 273px;" id="Picture 3" src="https://dw6uz0omxro53.cloudfront.net/3820856/c29abdd0-47a0-4055-b87d-5d46f1873ec4.png" name="Picture 3" /></p>
+<p class="a"><span class="hz">&#160;</span></p>
+</div>
+<p><span style="font-weight: bold;"><span class="cr"><br class="da" /></span></span></p>
+<div class="bw">
+<p class="a"><span style="font-weight: bold;"><span class="hz">Table C</span></span></p>
+<p class="a"><img border="0" style="width: 602px;height: 302px;" id="Picture 7" src="https://dw6uz0omxro53.cloudfront.net/3820856/11e8db2a-e9e4-4fb5-8241-37fe537fceb4.png" name="Picture 7" /></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Table D</span></span></p>
+<p class="a"><img border="0" style="width: 602px;height: 367px;" id="Picture 8" src="https://dw6uz0omxro53.cloudfront.net/3820856/63f5d2ba-5b6c-42c1-930d-433c35ace28f.png" name="Picture 8" /></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">&#160;</span></span></p>
+<p class="a"><span style="font-weight: bold;"><span class="hz">Table E</span></span></p>
+<p class="a"><img border="0" style="width: 602px;height: 245px;" id="Picture 12" src="https://dw6uz0omxro53.cloudfront.net/3820856/58512904-18ee-4fdd-9ad9-762374c82c09.png" name="Picture 12" /></p>
+<p class="a"><span style="font-family: Arial, Helvetica, sans-serif;">The 12-month pro-forma rolling operating profit is the latest 12 month consolidated operating profit adjusted for exceptional items (defined table A) and proforma adjustments consistent with those presented in the IPO prospectus dated 22 October 2025.&#160;&#160;</span></p>
+<p class="a"><br /></p>
+<p class="a"><span style="font-family: Arial, Helvetica, sans-serif;"><strong>END</strong></span></p>
+</div>
+</div>
+
+
+<div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/PRN" style="font-size:14px;">Princes Group PLC
+                    (PRN)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>30 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/prudential--pru/director-pdmr-shareholding/9863401">Prudential</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/cc-japan-income-growth-trust--ccji/director-pdmr-shareholding/9863304">CC Japan Income &amp; Growth Trust</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/prn/blackrock-frontiers-investment-trust--brfi/director-pdmr-shareholding/9863273">Blackrock Frontiers Investment Trust</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/sunda-energy--snda/director-pdmr-shareholding/9863270">Sunda Energy</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/avon-technologies-plc--avon/director-pdmr-shareholding/9863247">Avon Technologies plc</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>

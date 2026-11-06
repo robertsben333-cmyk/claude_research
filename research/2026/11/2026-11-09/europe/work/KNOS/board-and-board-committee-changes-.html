@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="sentry-trace" content="a00c697acfc2413990c75cf07088e886-81afb3e62aa04e17-1"/><meta name="baggage" content="sentry-trace_id=a00c697acfc2413990c75cf07088e886,sentry-sample_rate=1,sentry-transaction=%2Fannouncement%2F%7Bsource%7D%2F%7Bcompany%7D%2F%7Bheadline%7D%2F%7Bid%7D,sentry-public_key=2b457eead75d1b8f2d35beeef1394aea,sentry-org_id=4507072679510016,sentry-release=fd675ce0efe8521fd858023a9a6d1cce1de82c6d,sentry-environment=production,sentry-sampled=true,sentry-sample_rand=0.999562"/>
+    <script>
+        window.sentryOnLoad = function () {
+            Sentry.init({
+                environment: "production",
+                release: "fd675ce0efe8521fd858023a9a6d1cce1de82c6d",
+                tracesSampleRate: 1,
+                // OneTrust returns a plain-text "Blocked: ..." body to crawlers, which its SDK then fails to JSON.parse
+                // "Script error." is a cross-origin script failing with its details hidden by the browser; it can't be traced
+                // Also matches the "Event `ErrorEvent` captured as exception with message `Script error.`" wording
+                ignoreErrors: [/"Blocked: C"/, /(^|`)Script error\.?(`|$)/],
+                // Browser extensions inject their own scripts into the page, and reCAPTCHA's and TradingView's loaders break under old/bot browsers; none is ours to fix
+                denyUrls: [/onetrust\.com/i, /cookielaw\.org/i, /^(chrome|moz|safari(-web)?|ms-browser)-extension:\/\//i, /^webkit-masked-url:\/\//i, /\/recaptcha\/releases\//i, /tradingview\.com\/external-embedding\//i],
+                beforeSend: function (event) {
+                    if (/bot|crawler|spider|crawling|webindexer|facebookexternalhit|headless/i.test(navigator.userAgent)) {
+                        return null;
+                    }
+                    // Pre-2021 browsers (no Array.prototype.at, e.g. Chrome < 92) crash inside Sentry's own bundled web-vitals; mostly scanners
+                    if (!Array.prototype.at) {
+                        return null;
+                    }
+                    // jQuery never loaded (local copy and CDN fallback both failed, or scripts blocked); not actionable
+                    var message = event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value;
+                    if (!window.jQuery && /^(\$|jQuery) is not defined/.test(message || '')) {
+                        return null;
+                    }
+                    // Highcharts parses fine as served, so a SyntaxError inside it means the browser got a truncated or rewritten copy
+                    var exception = event.exception && event.exception.values && event.exception.values[0];
+                    var frames = (exception && exception.stacktrace && exception.stacktrace.frames) || [];
+                    if (exception && exception.type === 'SyntaxError' && frames.some(function (frame) { return /highcharts|highstock/i.test(frame.filename || ''); })) {
+                        return null;
+                    }
+                    return event;
+                },
+            });
+        };
+    </script>
+    <script src="https://js-de.sentry-cdn.com/2b457eead75d1b8f2d35beeef1394aea.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                <meta name="pageType" content="Announcement" />
+    <meta name="keywords"
+        content="announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news" />
+    <meta name="description"
+        content="Investegate announcements from Board and Board Committee Changes " />
+    <script type="application/ld+json">
+        {
+            "@context":"http:\/\/schema.org\/",
+            "@type":"WebPage",
+            "name": "Board and Board Committee Changes  | Company Announcement | Investegate",
+            "description":"Investegate announcements from Board and Board Committee Changes ",
+            "keywords":"announcements, investegate alerts, uk wire, uk news, news alerts, email news alerts, ftse news alerts, ftse email alerts, techMARK announcements, FTSE, regulatory news, rns announcements, ftse, equities, equity news, equity announcements, company news, shares,  corporate news, corporate financial news, corporate news releases, corporate finance news, company news, business news",
+            "dateCreated": "2026-09-16 13:09:08",
+            "dateModified": "2026-09-16 13:10:07",
+            "url": "https://www.investegate.co.uk/announcement/rns/kainos-group--knos/board-and-board-committee-changes-/9775775"
+        }
+    </script>
+    
+    <meta name="author" content="Investegate">
+    <meta property='og:title'
+        content='Board and Board Committee Changes  | Company Announcement | Investegate' />
+    <meta property='og:image' content='https://assets.investegate.co.uk/public/assets/images/linkedin-investegate-logo.jpg' />
+    <meta property='og:description'
+        content='Comprehensive details of regulatory and non regulatory announcements from FTSE 100, 250, AIM and techMARK quoted companies' />
+    <meta property='og:url' content='https://www.investegate.co.uk/announcement/rns/kainos-group--knos/board-and-board-committee-changes-/9775775' />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/all.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/datatables.min.css">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="https://assets.investegate.co.uk/public/assets/css/custom-style.css?v=4.3">
+    
+    <title>Board and Board Committee Changes  | Company Announcement | Investegate</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+<link rel="icon" type="image/x-icon" href="https://assets.investegate.co.uk/public/favicon.ico?v=3">
+    
+            <script src="https://www.google.com/recaptcha/api.js?hl=&render=6LdU30QrAAAAAHIiXrGcsLpqK5Jw5vMy2HdzDeUe"></script>
+    
+    <!-- Default consent options for Cookies -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        ad_storage: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "denied",
+        personalization_storage: "denied",
+        security_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        'wait_for_update': 500
+    });
+</script>
+
+<!-- OneTrust Cookies Consent Notice start for investegate.co.uk -->
+<script type="text/javascript"
+    src="https://cdn-ukwest.onetrust.com/consent/ee45a8b7-c18c-40ca-be40-292beb071965/OtAutoBlock.js"></script>
+<script src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
+    data-domain-script="ee45a8b7-c18c-40ca-be40-292beb071965"></script>
+<!-- OneTrust Cookies Consent Notice end for investegate.co.uk -->
+<script type="text/javascript">
+    function OptanonWrapper() { }
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-TJ735P5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Alphix Tag - Alphix Solutions (deferred: it reads document.body, which doesn't exist yet if it runs mid-parse) -->
+<script defer src="https://fml-x.com/load/7aebdd23-ec75-4fd3-9513-670dc872f79b"></script>
+
+<!-- ShareThis -->
+<script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=65cb29271eabb90019a547e3&product=inline-share-buttons'
+    async='async'></script>
+<!-- ShareThis End -->
+
+    <!-- Investegate GAM -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+    window.googletag = window.googletag || {
+        cmd: []
+    };
+    googletag.cmd.push(function() {
+
+        var topBottom =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([780, 0], [[728, 90]])
+                .addSize([994, 0], [[970, 90], [970, 250], [978, 250]])
+                .build();
+
+        var side =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50], [300, 250]])
+                .addSize([994, 0], [[300, 250], [300, 600]])
+                .build();
+
+
+        var rns =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[300, 50]])
+                .addSize([994, 0], [[835, 90]])
+                .build();
+                
+        var acrossTheMarketsSide =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                .addSize([400, 0], [[399, 78]])
+                //.addSize([780, 0], [[350, 68]])
+                //.addSize([994, 0], [[399, 78]])
+                .addSize([767, 0], [[290, 57]])
+                .addSize([991, 0], [[290, 57]])
+                .addSize([1199, 0], [[350, 68]])
+                .addSize([1440, 0], [[399, 78]])
+                .build();
+                
+        var acrossTheMarketsLarge =
+                googletag.sizeMapping()
+                .addSize([0, 0], [[350, 68]])
+                //.addSize([400, 0], [[]])
+                .addSize([767, 0], [[450, 69]])
+                .addSize([991, 0], [[610, 93]])
+                .addSize([1199, 0], [[730, 111]])
+                .addSize([1440, 0], [[836, 126]])
+
+                .build();
+
+        googletag.defineSlot('/22903178295/Investegate/Header', [[320, 100], [300, 250],[728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581319355-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit1', [[300, 600],[300, 250]], 'div-gpt-ad-1682581421104-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/SideUnit2', [[300, 600],[300, 250]], 'div-gpt-ad-1682581469288-0').defineSizeMapping(side).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATMS', [[350, 68], 'fluid', [290, 57], [399, 78]], 'div-gpt-ad-1759841513795-0').defineSizeMapping(acrossTheMarketsSide).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/ATML', [[450, 69], [836, 126], 'fluid', [730, 111], [399, 78], [350, 68], [610, 93]], 'div-gpt-ad-1759916941007-0').defineSizeMapping(acrossTheMarketsLarge).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/Footer', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1682581501421-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/RNSBottom', [[300, 90], [835, 90]], 'div-gpt-ad-1722421295934-0').defineSizeMapping(rns).addService(googletag.pubads());
+        //googletag.defineSlot('/22903178295/Investegate/mid', [[320, 100], [300, 250], [728, 90],[970, 90],[970, 250],[978, 250]], 'div-gpt-ad-1732280773082-0').defineSizeMapping(topBottom).addService(googletag.pubads());
+        googletag.defineSlot('/22903178295/Investegate/mid', [[728, 90], [835, 90]], 'div-gpt-ad-1732534749707-0').addService(googletag.pubads());
+
+        
+                    // Announcement page only targetting
+            googletag.setConfig({ targeting: { "Announcement-Pages": "announcement" } });
+        
+        
+        
+        
+        
+        // Commented so we can use lazy loading for ads, as this setting prevents from working
+        //googletag.pubads().enableSingleRequest();
+
+        googletag.setConfig({
+            lazyLoad: {
+                // Fetch slots within 0.3 viewports.
+                fetchMarginPercent: 30,
+                // Render slots within 0.3 viewports.
+                renderMarginPercent: 30,
+                // Double the above values on mobile.
+                mobileScaling: 2.0,
+            },
+            // Collapse ad divs that come back empty (replaces the deprecated pubads().collapseEmptyDivs())
+            collapseDiv: 'ON_NO_FILL',
+        });
+
+        /* Register event handlers to observe lazy loading behavior, use to see when ads fetched and load
+        googletag.pubads().addEventListener("slotRequested", (event) => {
+            console.log("Ad fetched: " + event.slot.getSlotElementId());
+        });
+
+        googletag.pubads().addEventListener("slotOnload", (event) => {
+            console.log("Ad rendered: " + event.slot.getSlotElementId());
+        });
+        */
+        
+        googletag.enableServices();
+    });
+</script>
+<!-- Investegate END GAM -->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJ735P5" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <header>
+    <nav class="navbar navbar-expand-lg sub-menu">
+        <div class="container justify-content-end px-0">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <i class="fal fa-bars"></i>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto" id="submenu-list">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/welcome">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/content">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/about-us">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/contact-us">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.investegate.co.uk/help">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="log-area mb-4">
+        <div class="container mt-4">
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 340px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo.png"></a></div>
+        </div>
+    </div>
+</header>        <div class="main-header">
+    <div class="main-header-links d-flex align-items-center justify-content-between flex-wrap">
+        <ul class="menu-list d-flex align-items-center" id="menu-list">
+            <li id="home-tab">
+                <a href="https://www.investegate.co.uk">Home</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/search-company">Companies</a>
+            </li>
+            <li id="advanced-search-tab">
+                <a href="https://www.investegate.co.uk/advanced-search">Advanced search</a>
+            </li>
+            <li id="announcement-archive-tab">
+                <a href="https://www.investegate.co.uk/announcement-archive">Archive</a>
+            </li>
+            <!--li id="short-positions-tab">
+                <a href="https://www.investegate.co.uk/short-positions">UK Short Positions</a>
+            </li-->
+            
+            <li id="meetings-tab">
+                <a  href="https://www.investegate.co.uk/meetings">Meetings</a>
+            </li>
+            <li id="ukn-tab">
+                <a href="https://www.uknewswire.co.uk/" target="_blank">UK Newswire<sup style="color:red">New</sup></a>
+            </li>
+        </ul>
+        <ul class="menu-list d-flex align-items-center">
+                        <li>
+                <a href="https://www.investegate.co.uk/login" id="login-option">Login</a>
+            </li>
+            <li>
+                <a href="https://www.investegate.co.uk/register" id="login-option">Register</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+        <div class="text-center mt-2 google-ad-common google-ad-header">
+    <div id='div-gpt-ad-1682581319355-0' style='min-width: 728px; min-height: 90px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581319355-0');
+            });
+        </script>
+    </div>
+</div>        <div class="row small-gutter mt-2">
+            <div class="col-md-8">
+                                                    <!-- Headline display -->
+    <div class="art-board py-3">
+        <h1 id="main-title">Board and Board Committee Changes </h1>
+    </div>
+
+    <!-- ShareThis BEGIN -->
+    <div class="sharethis-inline-share-buttons"></div>
+    <!-- ShareThis END -->
+
+            <div class="art-board py-3" id="ai-summary">
+            <div class="accordion" id="accordionSummary">
+                <h2 id="summary-header">Summary by AI <sup style="color:red">BETA</sup><span class="ai-summary-toggle">Close
+                        X</span></h2>
+
+                <div id="collapseSummary" class="collapse show" data-parent="#accordionSummary">
+                    Kainos Group plc announced changes to its Board and Board Committees, with Shruthi Chindalur appointed interim Chair of the Remuneration Committee effective after the AGM on September 22, 2026, while the search for a permanent replacement continues. This follows the previously announced departure of Katie Davis from the Board at the conclusion of the same AGM.
+                    <p id="summary-disclaimer"><a href="#" id="summary-disclaimer-link" data-toggle="modal"
+                            data-target="#modal-ai-summary-disclaimer"><small>Disclaimer*</small></a></p>
+                </div>
+            </div>
+        </div>
+    
+    <!-- New RNS Ad Block -->
+    <div id="ad-rns-content"></div>
+
+    <div class="art-board py-3 news-window">
+        
+            <div class="announcement-shadow-wrapper">
+                <template shadowrootmode="open">
+                    <style>
+    :host {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-family: inherit;
+        color: inherit;
+        line-height: inherit;
+    }
+    a {
+        color: #009da5;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    table {
+        max-width: 100%;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .fr-view-element {
+        width: unset !important;
+        max-width: 100%;
+    }
+    .fr-view-element table {
+        width: unset !important;
+    }
+    .eqs-announcement table,
+    .prn-announcement table,
+    .gnw-announcement table,
+    .bzw-announcement table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+    .fnw-announcement img {
+        max-width: 100%;
+    }
+    @media screen and (max-width: 767px) {
+        .fr-view-element {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .fr-view-element > * {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        .fr-view-element table {
+            margin-left: 0 !important;
+            max-width: 100%;
+        }
+    }
+</style>
+
+                    
+                                                                                                            <html xmlns="http://www.w3.org/1999/xhtml"><head><style type="text/css">
+			@page Section_1 { size: 595.3pt 841.9pt margin-top: 72pt margin-right: 72pt margin-bottom: 72pt margin-left: 72pt -aw-footer-distance: 35.45pt -aw-header-distance: 35.45pt }
+			.aspose-root div.Section_1 { margin: 72pt; page: Section_1 }
+			.aspose-root { line-height: 115%; font-family: "Times New Roman"; font-size: 12pt; max-width: 600.3pt; width: 600.3pt; margin: 1pt auto; position: relative; display: block }
+			.aspose-root h1, .aspose-root h2, .aspose-root h3, .aspose-root h4, .aspose-root h5, .aspose-root h6, .aspose-root p { margin: 0 }
+			.aspose-root li { margin-top: 0; margin-bottom: 0 }
+			.aspose-root h1 { margin-top: 12pt; margin-right: -2pt; margin-bottom: 12pt; page-break-inside: auto; page-break-after: auto; line-height: normal; font-family: Calibri; font-size: 14pt; font-weight: bold; color: rgba(0, 0, 0, 1) }
+			.aspose-root h2 { margin-top: 12pt; margin-right: -2pt; margin-bottom: 12pt; page-break-inside: auto; page-break-after: auto; line-height: normal; font-family: Calibri; font-size: 12pt; font-weight: bold; color: rgba(0, 0, 0, 1); -aw-style-parent: heading1 }
+			.aspose-root h3 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Calibri Light"; font-size: 12pt; font-weight: normal; color: rgba(31, 77, 120, 1) }
+			.aspose-root h4 { margin-left: 177.95pt; margin-bottom: 12pt; text-indent: -22.7pt; text-align: justify; page-break-inside: auto; page-break-after: auto; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; font-weight: normal; font-style: normal; color: rgba(0, 0, 0, 1) }
+			.aspose-root h5 { margin-top: 2pt; margin-bottom: 0; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Calibri Light"; font-size: 12pt; font-weight: normal; color: rgba(46, 116, 181, 1) }
+			.aspose-root h6 { margin-left: 276.6pt; margin-bottom: 12pt; text-indent: -22.7pt; text-align: justify; page-break-inside: auto; page-break-after: auto; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; font-weight: normal; color: rgba(0, 0, 0, 1) }
+			.aspose-root .Heading7 { margin-left: 325.95pt; margin-bottom: 12pt; text-indent: -22.7pt; text-align: justify; page-break-inside: auto; page-break-after: auto; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; font-weight: normal; font-style: normal; color: rgba(0, 0, 0, 1); -aw-style-name: heading7 }
+			.aspose-root .Heading8 { margin-left: 375.25pt; margin-bottom: 12pt; text-indent: -22.7pt; text-align: justify; page-break-inside: auto; page-break-after: auto; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; font-weight: normal; color: rgba(0, 0, 0, 1); -aw-style-name: heading8 }
+			.aspose-root .Heading9 { margin-left: 424.6pt; margin-bottom: 12pt; text-indent: -22.7pt; text-align: justify; page-break-inside: auto; page-break-after: auto; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; font-weight: normal; font-style: normal; color: rgba(0, 0, 0, 1); -aw-style-name: heading9 }
+			.aspose-root .\31  { margin-bottom: 8pt; line-height: 12pt; font-family: Verdana; font-size: 10pt; -aw-style-name: '1' }
+			.aspose-root .\32  { margin-bottom: 0; text-align: justify; line-height: 115%; font-family: Arial; font-size: 10pt; -aw-style-name: '2' }
+			.aspose-root .\32 Document { margin-bottom: 0; text-align: justify; line-height: normal; widows: 0; orphans: 0; font-family: "CG Times"; font-size: 12pt; -aw-style-name: '2Document' }
+			.aspose-root .\39  { margin-right: -0.3pt; margin-bottom: 0; text-align: justify; line-height: 115%; font-family: Arial; font-size: 9pt; -aw-style-name: '9' }
+			.aspose-root .ACText { margin-top: 6.5pt; margin-bottom: 0; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'AC Text' }
+			.aspose-root .AODocTxt { margin-top: 12pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 13pt; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .AODocTxtL1 { margin-top: 12pt; margin-left: 36pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 13pt; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .AODocTxtL2 { margin-top: 12pt; margin-left: 72pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 13pt; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .AODocTxtL3 { margin-top: 12pt; margin-left: 108pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 13pt; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .AODocTxtL5 { margin-top: 12pt; margin-left: 180pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 13pt; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .AODocTxtL6 { margin-top: 12pt; margin-left: 216pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 13pt; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .AODocTxtL7 { margin-top: 12pt; margin-left: 252pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 13pt; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .AODocTxtL8 { margin-top: 12pt; margin-left: 288pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 13pt; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .Accountstext { margin-bottom: 0; line-height: 115%; font-family: Times; font-size: 11pt; -aw-style-name: 'Accounts text' }
+			.aspose-root .Address { margin-bottom: 0; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .Advisers { margin-top: 9pt; margin-bottom: 6pt; line-height: 115%; font-family: "Times New Roman Bold"; font-size: 10pt; font-weight: bold }
+			.aspose-root .AppHead { margin-left: 0; margin-bottom: 12pt; text-indent: 0; text-align: center; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; text-transform: uppercase; -aw-outline-level: 1 }
+			.aspose-root .AppPart { margin-left: 0; margin-bottom: 12pt; text-indent: 0; text-align: center; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-outline-level: 2 }
+			.aspose-root .Auditreport-1 { margin-bottom: 0; text-align: justify; line-height: normal; widows: 0; orphans: 0; font-family: "Times New Roman"; font-size: 11pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Audit report - 1' }
+			.aspose-root .Auditreport-2 { margin-bottom: 0; text-align: justify; line-height: normal; widows: 0; orphans: 0; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; color: rgba(0, 0, 0, 1); -aw-style-name: 'Audit report - 2' }
+			.aspose-root .B0 { margin-bottom: 5.65pt; line-height: 2.85pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .B1 { margin: 0 -2pt 6pt 56.7pt; text-indent: -28.35pt; line-height: normal; font-family: "Times New Roman"; font-size: 10pt; font-weight: normal }
+			.aspose-root .BalloonText { margin-bottom: 0; line-height: normal; font-family: "Segoe UI"; font-size: 9pt; -aw-style-name: balloon-text }
+			.aspose-root .Bibliography { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: bibliography }
+			.aspose-root .BlockText { margin-right: 72pt; margin-left: 72pt; margin-bottom: 6pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; font-style: normal; color: rgba(0, 0, 0, 1); -aw-style-name: block-text }
+			.aspose-root .Body1 { margin-bottom: 0; line-height: 12.5pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Body 1' }
+			.aspose-root .Body2 { margin-bottom: 0; text-indent: 5.65pt; line-height: 12pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Body 2' }
+			.aspose-root .BodyText { margin-left: 5.65pt; margin-bottom: 0; line-height: 115%; widows: 0; orphans: 0; font-family: "Century Gothic"; font-size: 9pt; -aw-style-name: body-text }
+			.aspose-root .BodyText2 { margin-bottom: 6pt; text-align: justify; line-height: 200%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: body-text2 }
+			.aspose-root .BodyText3 { margin-bottom: 6pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 8pt; -aw-style-name: body-text3 }
+			.aspose-root .BodyTextFirstIndent { margin-left: 0; margin-bottom: 6pt; text-indent: 10.5pt; text-align: justify; line-height: 150%; widows: 2; orphans: 2; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: body-text-first-indent; -aw-style-parent: body-text }
+			.aspose-root .BodyTextFirstIndent2 { margin-left: 14.15pt; margin-bottom: 6pt; text-indent: 10.5pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: body-text-first-indent2; -aw-style-parent: body-text-indent }
+			.aspose-root .BodyTextIndent { margin-left: 14.15pt; margin-bottom: 6pt; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: body-text-indent }
+			.aspose-root .BodyTextIndent2 { margin-left: 14.15pt; margin-bottom: 6pt; line-height: 200%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: body-text-indent2 }
+			.aspose-root .BodyTextIndent3 { margin-left: 14.15pt; margin-bottom: 6pt; line-height: 115%; font-family: "Times New Roman"; font-size: 8pt; -aw-style-name: body-text-indent3 }
+			.aspose-root .BodyTextIndent4 { margin-left: 144pt; margin-bottom: 12pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Body Text Indent 4' }
+			.aspose-root .BodyTextIndent5 { margin-left: 180pt; margin-bottom: 12pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Body Text Indent 5' }
+			.aspose-root .BodyTextIndent6 { margin-left: 216pt; margin-bottom: 12pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Body Text Indent 6' }
+			.aspose-root .BodyTextIndent7 { margin-left: 252pt; margin-bottom: 12pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Body Text Indent 7' }
+			.aspose-root .Bodycopy { margin-top: 1pt; margin-bottom: 0; line-height: 10.5pt; font-family: Arial; font-size: 8.5pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Body copy' }
+			.aspose-root .Bodycopybullet { margin-top: 1pt; margin-left: 56.7pt; margin-bottom: 0; text-indent: -28.35pt; line-height: 10.5pt; font-family: Arial; font-size: 8.5pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Body copy bullet' }
+			.aspose-root .Bodycopyhanging { margin-top: 1pt; margin-left: 25.5pt; margin-bottom: 0; text-indent: -25.5pt; line-height: 10.5pt; font-family: Arial; font-size: 8.5pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Body copy hanging' }
+			.aspose-root .Bodycopyheader1 { margin-top: 1pt; margin-bottom: 0; line-height: 10.5pt; font-family: Arial; font-size: 8.5pt; font-weight: bold; color: rgba(0, 0, 0, 1); -aw-style-name: 'Body copy header 1' }
+			.aspose-root .Bodycopyindentbullet { margin-top: 1pt; margin-left: 51.05pt; margin-bottom: 0; text-indent: -25.55pt; line-height: 10.5pt; font-family: Arial; font-size: 8.5pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Body copy indent bullet' }
+			.aspose-root .Bodycopyindenthanging { margin-top: 1pt; margin-left: 51pt; margin-bottom: 0; text-indent: -25.5pt; line-height: 10.5pt; font-family: Arial; font-size: 8.5pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Body copy indent hanging' }
+			.aspose-root .Bodycopyrightindent { margin-top: 1pt; margin-bottom: 0; text-align: right; line-height: 10.5pt; font-family: Arial; font-size: 8.5pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Body copy right indent' }
+			.aspose-root .Boxbulletheadline { margin-bottom: 0; text-align: justify; line-height: 12pt; border-left: 1.5pt solid rgba(255, 102, 0, 1); padding-left: 4pt; font-family: Arial; font-size: 10pt; font-weight: bold; color: rgba(0, 0, 0, 1); -aw-style-name: 'Box bullet headline' }
+			.aspose-root .Bullet { margin-left: 14.2pt; margin-bottom: 6.5pt; text-indent: -14.2pt; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .Bullet1 { margin-left: 14.2pt; margin-bottom: 0; text-indent: -14.2pt; line-height: 12.5pt; font-family: Arial; font-size: 10pt }
+			.aspose-root .Bullet2 { margin-left: 28.35pt; margin-bottom: 0; text-indent: -14.15pt; line-height: 12.5pt; font-family: Arial; font-size: 10pt }
+			.aspose-root .BulletL1 { margin-left: 54.7pt; margin-bottom: 6pt; text-indent: -27.35pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'bl1' }
+			.aspose-root .BulletL1Last { margin-left: 54.7pt; margin-bottom: 10pt; text-indent: -27.35pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'bl1l' }
+			.aspose-root .BulletL2 { margin-left: 56.15pt; margin-bottom: 6pt; text-indent: 26.65pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'bl2' }
+			.aspose-root .BulletL2Last { margin-left: 0; margin-bottom: 10pt; text-indent: 0; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'bl2l' }
+			.aspose-root .BulletL3 { margin-left: 109.45pt; margin-bottom: 6pt; text-indent: -27.35pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'bl3' }
+			.aspose-root .BulletL3Last { margin-left: 109.45pt; margin-bottom: 10pt; text-indent: -27.35pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'bl3l' }
+			.aspose-root .BulletL4 { margin-left: 136.8pt; margin-bottom: 6pt; text-indent: -27.35pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'bl4' }
+			.aspose-root .BulletL4Last { margin-left: 136.8pt; margin-bottom: 10pt; text-indent: -27.35pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'bl4l' }
+			.aspose-root .CM2 { margin-bottom: 0; line-height: 13.3pt; widows: 0; orphans: 0; font-family: Arial; font-size: 12pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .CM26 { margin-bottom: 11.75pt; line-height: 115%; widows: 0; orphans: 0; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .CM5 { margin-bottom: 13.25pt; line-height: normal; widows: 0; orphans: 0; font-family: Arial; font-size: 12pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .Caption { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 10pt; font-weight: bold; font-style: normal; color: rgba(0, 0, 0, 1); -aw-style-name: caption }
+			.aspose-root .Centered { margin-bottom: 12pt; text-align: center; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; font-weight: bold; -aw-style-aliases: 'Normal + Gill Sans MT' '11 pt' 'Right:  0.63 cm' 'Line spacing:  At le...' }
+			.aspose-root .Closing { margin-left: 212.6pt; margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: closing }
+			.aspose-root .ColumnHeading { margin-bottom: 0; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-aliases: 'ch'; -aw-style-name: 'Column Heading' }
+			.aspose-root .CommentSubject { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; font-weight: bold; -aw-style-name: comment-subject; -aw-style-parent: comment-text }
+			.aspose-root .CommentText { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: comment-text }
+			.aspose-root .Companyname { margin-bottom: 0; line-height: 115%; font-family: Times; font-size: 18pt; -aw-style-name: 'Company name' }
+			.aspose-root .CoverBody { margin-bottom: 4pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 8pt; -aw-style-name: 'Cover Body' }
+			.aspose-root .CoverLevel11 { margin-top: 237pt; margin-bottom: 0; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 14pt; font-weight: bold; text-transform: uppercase; -aw-style-aliases: 'cl1.1' 'cl11'; -aw-style-name: 'Cover Level 1.1' }
+			.aspose-root .CoverLevel12 { margin-bottom: 0; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 14pt; -aw-style-aliases: 'cl1.2' 'cl12'; -aw-style-name: 'Cover Level 1.2' }
+			.aspose-root .CoverLevel13 { margin-top: 0; margin-bottom: 0; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 14pt; font-weight: bold; text-transform: uppercase; -aw-style-aliases: 'cl1.3'; -aw-style-name: 'Cover Level 1.3' }
+			.aspose-root .CoverLevel2 { margin-top: 12pt; margin-bottom: 0; text-align: center; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 14pt; -aw-style-aliases: 'cl2'; -aw-style-name: 'Cover Level 2' }
+			.aspose-root .D11 { margin-right: 5.65pt; margin-left: 2.85pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .D3 { margin-right: 5.65pt; margin-left: 36.85pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .D5 { margin-right: 5.65pt; margin-left: 28.35pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .D7 { margin-right: 5.65pt; margin-left: 17pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .D9 { margin-right: 5.65pt; margin-left: 8.5pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Date { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: date }
+			.aspose-root .Default { margin-bottom: 0; line-height: normal; widows: 0; orphans: 0; font-family: Arial; font-size: 12pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root .DefaultText { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'Default Text' }
+			.aspose-root .Definition { margin-top: 15pt; margin-left: 28.35pt; margin-bottom: 0; text-align: justify; page-break-after: avoid; line-height: 14pt; font-family: Arial; font-size: 10pt; font-weight: bold }
+			.aspose-root .DefinitionNumbering1 { margin-left: 108pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 1; -aw-style-name: 'Definition Numbering 1' }
+			.aspose-root .DefinitionNumbering2 { margin-left: 144pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 2; -aw-style-name: 'Definition Numbering 2' }
+			.aspose-root .DefinitionNumbering3 { margin-left: 180pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 3; -aw-style-name: 'Definition Numbering 3' }
+			.aspose-root .DefinitionNumbering4 { margin-left: 216pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 4; -aw-style-name: 'Definition Numbering 4' }
+			.aspose-root .DefinitionNumbering5 { margin-left: 252pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 5; -aw-style-name: 'Definition Numbering 5' }
+			.aspose-root .DefinitionNumbering6 { margin-left: 288pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 6; -aw-style-name: 'Definition Numbering 6' }
+			.aspose-root .DefinitionNumbering7 { margin-left: 324pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 7; -aw-style-name: 'Definition Numbering 7' }
+			.aspose-root .DefinitionNumbering8 { margin-left: 288pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 8; -aw-style-name: 'Definition Numbering 8' }
+			.aspose-root .DefinitionNumbering9 { margin-left: 324pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 9; -aw-style-name: 'Definition Numbering 9' }
+			.aspose-root .DefinitionSubClause { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-align: justify; page-break-inside: auto; page-break-after: auto; line-height: 14pt; font-family: Arial; font-size: 10pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Definition Sub Clause'; -aw-style-parent: heading5 }
+			.aspose-root .DefinitionSubSubClause { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-indent: 0; text-align: justify; page-break-inside: auto; page-break-after: auto; line-height: 14pt; font-family: Arial; font-size: 10pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Definition SubSub Clause' }
+			.aspose-root .DefinitionSubSubSubClause { margin-top: 4pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 6; -aw-style-name: 'Definition SubSubSub Clause'; -aw-style-parent: heading6 }
+			.aspose-root .DefinitionText { margin-top: 3pt; margin-left: 85.05pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Definition Text' }
+			.aspose-root .Dividerline { margin-bottom: 0; line-height: 115%; font-family: Arial; font-size: 7.5pt; -aw-style-name: 'Divider line' }
+			.aspose-root .DocumentID { margin-top: 12pt; margin-bottom: 0; text-align: center; line-height: 115%; font-family: "Times New Roman"; font-size: 14pt; -aw-style-aliases: 'did'; -aw-style-name: 'Document ID' }
+			.aspose-root .DocumentMap { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: Tahoma; font-size: 8pt; -aw-style-name: document-map }
+			.aspose-root .DocumentSubhead { margin-top: 28pt; margin-right: -2pt; margin-bottom: 12pt; text-align: justify; line-height: normal; font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; -aw-style-name: 'Document Subhead'; -aw-style-parent: heading1 }
+			.aspose-root .DocumentTitle { margin-top: 28pt; margin-right: -2pt; margin-bottom: 24pt; text-align: center; line-height: normal; font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; -aw-style-name: 'Document Title'; -aw-style-parent: heading1 }
+			.aspose-root .Dollar { margin-bottom: 0; text-align: center; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'd' }
+			.aspose-root .Double { margin-bottom: 6.5pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 9pt; text-decoration: underline }
+			.aspose-root .E-mailSignature { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: email-signature }
+			.aspose-root .EmbeddedNotes { margin-top: 10pt; margin-bottom: 0; text-align: justify; line-height: 125%; font-family: Arial; font-size: 10pt; text-transform: uppercase; color: rgba(0, 0, 255, 1); -aw-style-name: 'Embedded Notes' }
+			.aspose-root .EndnoteText { margin-left: 36pt; margin-bottom: 6pt; text-indent: -36pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 9pt; -aw-style-name: endnote-text }
+			.aspose-root .EntryL1 { margin-left: 12.95pt; margin-bottom: 0; text-indent: -12.95pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'el1' 'e1' }
+			.aspose-root .EntryL2 { margin-left: 22.3pt; margin-bottom: 0; text-indent: -9.35pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'el2' 'e2' }
+			.aspose-root .EntryL3 { margin-left: 31pt; margin-bottom: 0; text-indent: -9pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'el3' 'e3' }
+			.aspose-root .EntryL4 { margin-left: 40pt; margin-bottom: 0; text-indent: -9pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'el4' 'e4' }
+			.aspose-root .EntryL5 { margin-left: 49pt; margin-bottom: 0; text-indent: -9pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'el5' 'e5' }
+			.aspose-root .EntryLTotal { margin-left: 63.35pt; margin-bottom: 0; text-indent: -9.35pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'elt' 'et' }
+			.aspose-root .EnvelopeAddress { margin-left: 144pt; margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: Cambria; font-size: 12pt; -aw-style-name: envelope-address }
+			.aspose-root .EnvelopeReturn { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: Cambria; font-size: 10pt; -aw-style-name: envelope-return }
+			.aspose-root .Expressed { margin-top: 12pt; margin-bottom: 12pt; line-height: 115%; border-top: 2.25pt solid rgba(0, 0, 0, 1); padding-top: 4pt; font-family: Optima; font-size: 9pt; font-style: italic }
+			.aspose-root .Footer { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-aliases: 'Footer line 1'; -aw-style-name: footer }
+			.aspose-root .FootnoteText { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-aliases: 'ARM footnote Text' 'Footnote Text Char2' 'Footnote Text Char11' 'Footnote Text Char3' 'Footnote Text Char4' 'Footnote Text Char5' 'Footnote Text Char6' 'Footnote Text Char12' 'Footnote Text Char21' 'Footnote Text Char31' 'Footnote New' ' Ch' 'Ch'; -aw-style-name: footnote-text }
+			.aspose-root .HTMLAddress { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; font-style: italic; -aw-style-name: html-address }
+			.aspose-root .HTMLPreformatted { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Courier New"; font-size: 10pt; -aw-style-name: html-preformatted }
+			.aspose-root .HangingIndent { margin-left: 35.45pt; margin-bottom: 6pt; text-indent: -35.45pt; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'Hanging Indent' }
+			.aspose-root .HeadBreak { margin-bottom: 0; text-align: center; page-break-before: always; line-height: 115%; font-family: Optima; font-size: 13pt; font-weight: bold; -aw-style-name: 'Head /Break' }
+			.aspose-root .Header { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: header }
+			.aspose-root .HeaderBreak { margin-bottom: 0; text-align: center; page-break-before: always; line-height: 115%; font-family: Optima; font-size: 13pt; font-weight: bold; -aw-style-name: 'Header /Break' }
+			.aspose-root .Header2 { margin-bottom: 0; text-align: right; line-height: 115%; font-family: Arial; font-size: 8.5pt; color: rgba(0, 51, 153, 1); -aw-style-parent: header }
+			.aspose-root .Heading { margin-bottom: 12pt; text-align: center; page-break-after: avoid; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; text-transform: uppercase }
+			.aspose-root .HeadingLevel1 { margin-left: 27.35pt; margin-bottom: 7pt; text-indent: -27.35pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-aliases: 'hl1'; -aw-style-name: 'Heading Level 1' }
+			.aspose-root .HeadingLevel2 { margin-left: 54.7pt; margin-bottom: 7pt; text-indent: -27.35pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; font-style: italic; -aw-style-aliases: 'hl2'; -aw-style-name: 'Heading Level 2' }
+			.aspose-root .HeadingLevel3 { margin-left: 81.35pt; margin-bottom: 7pt; text-indent: -27.35pt; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-aliases: 'hl3'; -aw-style-name: 'Heading Level 3' }
+			.aspose-root .HeadingParagraph1 { margin-top: 10pt; margin-left: 28.4pt; margin-bottom: 0; text-indent: -28.35pt; text-align: justify; line-height: 15pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 1; -aw-style-name: 'Heading Paragraph 1' }
+			.aspose-root .HeadingParagraph2 { margin-top: 10pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 2; -aw-style-name: 'Heading Paragraph 2' }
+			.aspose-root .HeadingParagraph3 { margin-top: 7pt; margin-left: 56.7pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 3; -aw-style-name: 'Heading Paragraph 3' }
+			.aspose-root .HeadingParagraph4 { margin-top: 4pt; margin-left: 85.05pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 4; -aw-style-name: 'Heading Paragraph 4' }
+			.aspose-root .HeadingParagraph5 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-indent: -28.35pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 5; -aw-style-name: 'Heading Paragraph 5' }
+			.aspose-root .HeadingParagraph6 { margin-top: 4pt; margin-left: 141.75pt; margin-bottom: 0; text-indent: -28.35pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 6; -aw-style-name: 'Heading Paragraph 6' }
+			.aspose-root .HeadingParagraph7 { margin-top: 4pt; margin-left: 170.1pt; margin-bottom: 0; text-indent: -28.35pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 7; -aw-style-name: 'Heading Paragraph 7' }
+			.aspose-root .HeadingParagraph8 { margin-top: 4pt; margin-left: 198.45pt; margin-bottom: 0; text-indent: -28.35pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 8; -aw-style-name: 'Heading Paragraph 8' }
+			.aspose-root .HeadingParagraph9 { margin-top: 4pt; margin-left: 226.8pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 9; -aw-style-name: 'Heading Paragraph 9' }
+			.aspose-root .Headline { margin-bottom: 48pt; line-height: normal; font-family: Arial; font-size: 16pt }
+			.aspose-root .HouseStyleBase { margin-bottom: 12pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'House Style Base' }
+			.aspose-root .HouseStyleBaseCentred { margin-bottom: 12pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'House Style Base Centred' }
+			.aspose-root .IndentOne { margin-left: 28.35pt; margin-bottom: 6pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'Indent One' }
+			.aspose-root .Index1 { margin-left: 11pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index1 }
+			.aspose-root .Index2 { margin-left: 22pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index2 }
+			.aspose-root .Index3 { margin-left: 33pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index3 }
+			.aspose-root .Index4 { margin-left: 44pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index4 }
+			.aspose-root .Index5 { margin-left: 55pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index5 }
+			.aspose-root .Index6 { margin-left: 66pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index6 }
+			.aspose-root .Index7 { margin-left: 77pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index7 }
+			.aspose-root .Index8 { margin-left: 88pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index8 }
+			.aspose-root .Index9 { margin-left: 99pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: index9 }
+			.aspose-root .IndexHeading { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: Cambria; font-size: 11pt; font-weight: bold; -aw-style-name: index-heading }
+			.aspose-root .IntenseQuote { margin: 10pt 46.8pt 14pt; text-align: justify; line-height: 150%; border-bottom: 0.75pt solid rgba(79, 129, 189, 1); padding-bottom: 4pt; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; font-style: italic; color: rgba(79, 129, 189, 1); -aw-border-bottom: 0.5pt single #4f81bd; -aw-style-name: intense-quote }
+			.aspose-root .Lev1Text { margin-bottom: 11pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .Level1 { margin-top: 12pt; margin-left: 36pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; page-break-after: avoid; line-height: 115%; font-family: Calibri; font-size: 11pt; font-weight: bold; -aw-outline-level: 1; -aw-style-name: 'Level 1' }
+			.aspose-root .Level2 { margin-left: 42.55pt; margin-bottom: 12pt; text-indent: -42.55pt; text-align: justify; line-height: 130%; font-family: Verdana; font-size: 10pt; -aw-outline-level: 2; -aw-style-name: 'Level 2' }
+			.aspose-root .Level3 { margin-left: 92.15pt; margin-bottom: 12pt; text-indent: -49.6pt; text-align: justify; line-height: 130%; font-family: Verdana; font-size: 10pt; -aw-outline-level: 3; -aw-style-name: 'Level 3' }
+			.aspose-root .Level4 { margin-left: 155.95pt; margin-bottom: 12pt; text-indent: -63.8pt; text-align: justify; line-height: 130%; font-family: Verdana; font-size: 10pt; -aw-outline-level: 4; -aw-style-name: 'Level 4' }
+			.aspose-root .Level4Bullet { margin-top: 0; margin-left: 106.3pt; margin-bottom: 0; text-indent: -35.45pt; text-align: justify; page-break-inside: auto; page-break-after: auto; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'Level 4 Bullet'; -aw-style-parent: heading3 }
+			.aspose-root .Level5 { margin-left: 155.95pt; margin-bottom: 12pt; text-indent: -63.8pt; text-align: justify; line-height: 130%; font-family: Verdana; font-size: 10pt; -aw-outline-level: 5; -aw-style-name: 'Level 5' }
+			.aspose-root .Level5Bullet { margin-left: 106.3pt; margin-bottom: 0; text-indent: -35.45pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Level 5 Bullet' }
+			.aspose-root .List { margin-left: 14.15pt; margin-bottom: 12pt; text-indent: -14.15pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list }
+			.aspose-root .List0-05 { margin-bottom: 0; line-height: normal; widows: 0; orphans: 0; font-family: Arial; font-size: 12pt; -aw-style-name: 'List 0 - 0.5' }
+			.aspose-root .List2 { margin-left: 28.3pt; margin-bottom: 12pt; text-indent: -14.15pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list2 }
+			.aspose-root .List3 { margin-left: 42.45pt; margin-bottom: 12pt; text-indent: -14.15pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list3 }
+			.aspose-root .List4 { margin-left: 56.6pt; margin-bottom: 12pt; text-indent: -14.15pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list4 }
+			.aspose-root .List5 { margin-left: 70.75pt; margin-bottom: 12pt; text-indent: -14.15pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list5 }
+			.aspose-root .ListBullet { margin-left: 36pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-bullet }
+			.aspose-root .ListBullet1 { margin-left: 36pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'List Bullet 1' }
+			.aspose-root .ListBullet2 { margin-left: 72pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-bullet2 }
+			.aspose-root .ListBullet3 { margin-left: 108pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-bullet3 }
+			.aspose-root .ListBullet4 { margin-left: 108pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-bullet4 }
+			.aspose-root .ListBullet5 { margin-left: 126pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-bullet5 }
+			.aspose-root .ListBullet6 { margin-left: 144pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'List Bullet 6' }
+			.aspose-root .ListBullet7 { margin-left: 144pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'List Bullet 7' }
+			.aspose-root .ListBullet8 { margin-left: 288pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'List Bullet 8' }
+			.aspose-root .ListBullet9 { margin-left: 324pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'List Bullet 9' }
+			.aspose-root .ListContinue { margin-left: 14.15pt; margin-bottom: 6pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-continue }
+			.aspose-root .ListContinue2 { margin-left: 28.3pt; margin-bottom: 6pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-continue2 }
+			.aspose-root .ListContinue3 { margin-left: 42.45pt; margin-bottom: 6pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-continue3 }
+			.aspose-root .ListContinue4 { margin-left: 56.6pt; margin-bottom: 6pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-continue4 }
+			.aspose-root .ListContinue5 { margin-left: 70.75pt; margin-bottom: 6pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-continue5 }
+			.aspose-root .ListNumber { margin-left: 18pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-number }
+			.aspose-root .ListNumber2 { margin-left: 32.15pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-number2 }
+			.aspose-root .ListNumber3 { margin-left: 46.3pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-number3 }
+			.aspose-root .ListNumber4 { margin-left: 60.45pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-number4 }
+			.aspose-root .ListNumber5 { margin-left: 74.6pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: list-number5 }
+			.aspose-root .ListParagraph { margin-left: 36pt; margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: list-paragraph }
+			.aspose-root .MFNumLev1 { margin-left: 36pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .MFNumLev2 { margin-left: 36pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .MFNumLev3 { margin-left: 72pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .MFNumLev4 { margin-left: 108pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .MFNumLev5 { margin-left: 144pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .MFNumLev6 { margin-left: 180pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .MacroText { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Courier New"; font-size: 10pt; -aw-style-name: macro }
+			.aspose-root .Margin8font { margin-top: 6pt; margin-bottom: 6pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 8pt; -aw-style-name: 'Margin 8 font' }
+			.aspose-root .MarginText { margin-bottom: 12pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Margin Text' }
+			.aspose-root .MessageHeader { margin-left: 56.7pt; margin-bottom: 12pt; text-indent: -56.7pt; text-align: justify; line-height: 150%; border: 0.75pt solid rgba(0, 0, 0, 1); padding: 1pt; font-family: Cambria; font-size: 12pt; background-color: rgba(204, 204, 204, 1); -aw-style-name: message-header }
+			.aspose-root .NA-LEVEL1 { margin-left: 36pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'NA - LEVEL 1' }
+			.aspose-root .NA-LEVEL2 { margin-left: 72pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'NA - LEVEL 2' }
+			.aspose-root .NA-LEVEL3 { margin-left: 108pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'NA - LEVEL 3' }
+			.aspose-root .NA-LEVEL4 { margin-bottom: 12pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'NA - LEVEL 4' }
+			.aspose-root .NA-LEVEL5 { margin-left: 180pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'NA - LEVEL 5' }
+			.aspose-root .NoSpace { margin-bottom: 0; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'No Space' }
+			.aspose-root .NoSpacing { margin-bottom: 0; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: no-spacing }
+			.aspose-root .NoDecAlign { margin-bottom: 0; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 9pt }
+			.aspose-root .NormalWeb { margin-top: 5pt; margin-bottom: 5pt; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: normal-web }
+			.aspose-root .NormalHeading1 { margin-bottom: 7pt; text-align: justify; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-aliases: 'nh1'; -aw-style-name: 'Normal Heading 1' }
+			.aspose-root .NormalHeading2 { margin-left: 27.35pt; margin-bottom: 7pt; text-align: justify; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; font-style: italic; -aw-style-aliases: 'nh2'; -aw-style-name: 'Normal Heading 2' }
+			.aspose-root .NormalIndent { margin-left: 36pt; margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: normal-indent }
+			.aspose-root .NormalKeepWithNext { margin-bottom: 10pt; text-align: justify; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nkwn'; -aw-style-name: 'Normal Keep With Next' }
+			.aspose-root .NoteHeading { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: note-heading }
+			.aspose-root .NoteText { margin-left: 27pt; margin-bottom: 10pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nt' 'Note text'; -aw-style-name: 'Note Text' }
+			.aspose-root .NoteText2 { margin-left: 54pt; margin-bottom: 10pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nt2'; -aw-style-name: 'Note Text 2' }
+			.aspose-root .NoteText3 { margin-left: 81.35pt; margin-bottom: 10pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nt3'; -aw-style-name: 'Note Text 3' }
+			.aspose-root .NoteTextKeepWithNext { margin-left: 27pt; margin-bottom: 10pt; text-align: justify; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'ntkwn'; -aw-style-name: 'Note Text Keep With Next' }
+			.aspose-root .NoteText2KeepWithNext { margin-left: 54pt; margin-bottom: 10pt; text-align: justify; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nt2kwn'; -aw-style-name: 'Note Text2 Keep With Next' }
+			.aspose-root .NoteText3KeepWithNext { margin-left: 81.35pt; margin-bottom: 10pt; text-align: justify; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nt3kwn'; -aw-style-name: 'Note Text3 Keep With Next' }
+			.aspose-root .Notes { margin-bottom: 6pt; text-align: justify; line-height: 12pt; font-family: Optima; font-size: 11pt }
+			.aspose-root .NotesChar { margin-bottom: 6pt; text-align: justify; line-height: 12pt; font-family: Optima; font-size: 11pt; -aw-style-name: 'Notes Char' }
+			.aspose-root .Notes4Col { margin-top: 0; margin-bottom: 0; line-height: 15pt; font-family: Optima; font-size: 9pt }
+			.aspose-root .NumbersNormal { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nn'; -aw-style-name: 'Numbers Normal' }
+			.aspose-root .NumbersPerSmall1 { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nps1'; -aw-style-name: 'Numbers PerSmall1' }
+			.aspose-root .NumbersPerSmall2 { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nps2'; -aw-style-name: 'Numbers PerSmall2' }
+			.aspose-root .NumbersPerSmall3 { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nps3'; -aw-style-name: 'Numbers PerSmall3' }
+			.aspose-root .NumbersPercentNormal { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'npn'; -aw-style-name: 'Numbers Percent Normal' }
+			.aspose-root .NumbersPercentSmall { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'nps'; -aw-style-name: 'Numbers Percent Small' }
+			.aspose-root .NumbersPercent1 { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'np1'; -aw-style-name: 'Numbers Percent1' }
+			.aspose-root .NumbersPercent2 { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'np2'; -aw-style-name: 'Numbers Percent2' }
+			.aspose-root .NumbersPercent3 { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'np3'; -aw-style-name: 'Numbers Percent3' }
+			.aspose-root .NumbersSmall { margin-bottom: 0; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'ns'; -aw-style-name: 'Numbers Small' }
+			.aspose-root .OpinionDate { margin-top: 72pt; margin-bottom: 10pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'od'; -aw-style-name: 'Opinion Date' }
+			.aspose-root .OpinionHeading { margin-top: 90pt; margin-bottom: 30pt; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-aliases: 'oh'; -aw-style-name: 'Opinion Heading' }
+			.aspose-root .PH { margin-bottom: 0; line-height: 15.05pt; font-family: Arial; font-size: 12pt; -aw-style-parent: header }
+			.aspose-root .PH1 { margin-bottom: 0; line-height: 15.05pt; font-family: Arial; font-size: 9.5pt }
+			.aspose-root .PageHead { margin-bottom: 0; text-align: center; page-break-before: always; line-height: 115%; font-family: "Arial Black"; font-size: 14pt }
+			.aspose-root .Parties { margin-top: 10pt; margin-left: 36pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt }
+			.aspose-root .Plain { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .PlainText { margin-bottom: 0; line-height: 115%; font-family: Calibri; font-size: 11pt; -aw-style-name: plain-text }
+			.aspose-root .Quote { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; font-style: italic; color: rgba(0, 0, 0, 1); -aw-style-name: quote }
+			.aspose-root .RJ { margin-right: 4.3pt; margin-bottom: 0; text-align: right; page-break-after: avoid; line-height: 115%; font-family: Arial; font-size: 9pt; font-weight: normal }
+			.aspose-root .RecitalNumbering { margin-left: 36pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 1; -aw-style-name: 'Recital Numbering' }
+			.aspose-root .RecitalNumbering2 { margin-left: 72pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Recital Numbering 2' }
+			.aspose-root .RecitalNumbering3 { margin-left: 108pt; margin-bottom: 12pt; text-indent: -18pt; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Recital Numbering 3' }
+			.aspose-root .Recitals { margin-top: 10pt; margin-left: 36pt; margin-bottom: 0; text-indent: -36pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt }
+			.aspose-root .Recitalssub { margin-top: 7pt; margin-left: 56.7pt; margin-bottom: 0; text-indent: -28.35pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Recitals sub' }
+			.aspose-root .ReduceDouble { margin-bottom: 3pt; line-height: 3pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'Reduce Double' }
+			.aspose-root .ReduceLine { margin-bottom: 3pt; line-height: 3pt; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'Reduce Line' }
+			.aspose-root .ReduceSingle { margin-bottom: 3pt; line-height: 3pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'Reduce Single' }
+			.aspose-root .ReportTitle { margin-bottom: 0; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 14pt; -aw-style-name: 'Report Title' }
+			.aspose-root .Revision { margin-bottom: 0; line-height: normal; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: revision }
+			.aspose-root .Rheading { margin-top: 9pt; margin-left: 7.1pt; margin-bottom: 6pt; text-indent: -7.1pt; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman Bold"; font-size: 10pt; font-weight: bold }
+			.aspose-root .S11 { margin-right: 5.65pt; margin-left: 2.85pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .S3 { margin-right: 5.65pt; margin-left: 36.85pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .S5 { margin-right: 5.65pt; margin-left: 28.35pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .S7 { margin-right: 5.65pt; margin-left: 17pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .S9 { margin-right: 5.65pt; margin-left: 8.5pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Salutation { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: salutation }
+			.aspose-root .Salutation1 { margin-bottom: 18pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'sa' }
+			.aspose-root .SchHead { margin-left: 36pt; margin-bottom: 12pt; text-indent: 0; text-align: center; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; text-transform: uppercase; -aw-outline-level: 1 }
+			.aspose-root .SchHeadDes { margin-left: 0; margin-bottom: 12pt; text-indent: 0; text-align: center; page-break-after: auto; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; text-transform: none }
+			.aspose-root .SchPart { margin-left: 36pt; margin-bottom: 12pt; text-indent: 0; text-align: center; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-outline-level: 2 }
+			.aspose-root .SchSection { margin-left: 36pt; margin-bottom: 12pt; text-indent: 0; text-align: center; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-outline-level: 3 }
+			.aspose-root .ScheduleHead { margin-top: 12pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: center; line-height: 14pt; font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; -aw-style-name: 'Schedule Head' }
+			.aspose-root .ScheduleL1 { margin-left: 36pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-outline-level: 1; -aw-style-name: 'Schedule L1' }
+			.aspose-root .ScheduleL2 { margin-left: 36pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 2; -aw-style-name: 'Schedule L2' }
+			.aspose-root .ScheduleL3 { margin-left: 90pt; margin-bottom: 12pt; text-indent: -54pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 3; -aw-style-name: 'Schedule L3' }
+			.aspose-root .ScheduleL4 { margin-left: 144pt; margin-bottom: 12pt; text-indent: -54pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 4; -aw-style-name: 'Schedule L4' }
+			.aspose-root .ScheduleL5 { margin-left: 180pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 5; -aw-style-name: 'Schedule L5' }
+			.aspose-root .ScheduleL6 { margin-left: 216pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 6; -aw-style-name: 'Schedule L6' }
+			.aspose-root .ScheduleL7 { margin-left: 252pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 7; -aw-style-name: 'Schedule L7' }
+			.aspose-root .ScheduleL8 { margin-left: 252pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 8; -aw-style-name: 'Schedule L8' }
+			.aspose-root .ScheduleL9 { margin-left: 252pt; margin-bottom: 12pt; text-indent: -36pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-outline-level: 9; -aw-style-name: 'Schedule L9' }
+			.aspose-root .ScheduleStyle1 { margin-top: 28pt; margin-left: 28.35pt; margin-bottom: 0; text-indent: -28.35pt; text-align: justify; page-break-after: avoid; line-height: 115%; font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; -aw-outline-level: 1; -aw-style-name: 'Schedule Style 1' }
+			.aspose-root .ScheduleStyle2 { margin-top: 10pt; margin-left: 18pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 2; -aw-style-name: 'Schedule Style 2' }
+			.aspose-root .ScheduleStyle3 { margin-top: 7pt; margin-left: 18pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 3; -aw-style-name: 'Schedule Style 3' }
+			.aspose-root .ScheduleStyle4 { margin-top: 4pt; margin-left: 18pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 4; -aw-style-name: 'Schedule Style 4' }
+			.aspose-root .ScheduleStyle5 { margin-top: 4pt; margin-left: 18pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 5; -aw-style-name: 'Schedule Style 5' }
+			.aspose-root .ScheduleStyle6 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 6; -aw-style-name: 'Schedule Style 6' }
+			.aspose-root .ScheduleStyle7 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 7; -aw-style-name: 'Schedule Style 7' }
+			.aspose-root .ScheduleStyle8 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 8; -aw-style-name: 'Schedule Style 8' }
+			.aspose-root .ScheduleStyle9 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-outline-level: 9; -aw-style-name: 'Schedule Style 9' }
+			.aspose-root .ScheduleStyleHead { margin-top: 12pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: center; line-height: 14pt; font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; -aw-style-name: 'Schedule Style Head' }
+			.aspose-root .ScheduleStyleSubhead { margin-top: 12pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: center; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Schedule Style Subhead' }
+			.aspose-root .ScheduleStyleTitle { margin-top: 10pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Schedule Style Title' }
+			.aspose-root .ScheduleSubhead { margin-top: 12pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: center; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Schedule Subhead' }
+			.aspose-root .Sheading { margin: 9pt -2pt 6pt 35.45pt; text-indent: -35.45pt; line-height: normal; font-family: "Times New Roman"; font-size: 10pt; font-weight: bold; text-transform: uppercase; -aw-style-parent: heading1 }
+			.aspose-root .Signature { margin-left: 212.6pt; margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: signature }
+			.aspose-root .Single { margin-top: 12pt; margin-bottom: 0; text-indent: 36pt; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .StandardHead { margin-top: 12pt; margin-bottom: 0; text-align: center; line-height: 115%; font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; -aw-style-name: 'Standard Head' }
+			.aspose-root .StandardNumbering { margin-top: 10pt; margin-left: 28.35pt; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard Numbering' }
+			.aspose-root .StandardSubhead { margin-top: 12pt; margin-bottom: 0; text-align: center; line-height: 115%; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard Subhead' }
+			.aspose-root .StandardText { margin-top: 10pt; margin-left: 0; margin-bottom: 0; text-indent: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard Text' }
+			.aspose-root .Standardlevel1 { margin-top: 10pt; margin-left: 34pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 1' }
+			.aspose-root .Standardlevel2 { margin-top: 10pt; margin-left: 68pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 2' }
+			.aspose-root .Standardlevel3 { margin-top: 7pt; margin-left: 102.05pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 3' }
+			.aspose-root .Standardlevel4 { margin-top: 4pt; margin-left: 136.05pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 115%; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 4' }
+			.aspose-root .Standardlevel5 { margin-top: 4pt; margin-left: 170.1pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 115%; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 5' }
+			.aspose-root .Standardlevel6 { margin-top: 4pt; margin-left: 170.1pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 115%; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 6' }
+			.aspose-root .Standardlevel7 { margin-top: 4pt; margin-left: 170.1pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 115%; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 7' }
+			.aspose-root .Standardlevel8 { margin-top: 4pt; margin-left: 170.1pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 115%; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 8' }
+			.aspose-root .Standardlevel9 { margin-top: 4pt; margin-left: 170.1pt; margin-bottom: 0; text-indent: -34pt; text-align: justify; line-height: 115%; font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 9' }
+			.aspose-root .Stmt2Col { margin-top: 6pt; margin-bottom: 0; line-height: 12pt; font-family: Optima; font-size: 11pt; -aw-style-name: 'Stmt 2Col' }
+			.aspose-root .StmtNetAssets { margin-top: 4pt; margin-bottom: 0; line-height: 12pt; font-family: Optima; font-size: 11pt }
+			.aspose-root .StmtNetAssetsSubH { margin-top: 4pt; margin-bottom: 0; line-height: 12pt; font-family: Optima; font-size: 11pt; font-weight: bold }
+			.aspose-root .Style16 { margin: 10.8pt 3.6pt 0 21.6pt; line-height: 110%; widows: 0; orphans: 0; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'Style 16' }
+			.aspose-root .StyleTheadLatinArialComplexArial { margin-right: 4.3pt; margin-bottom: 0; text-align: right; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman Bold"; font-size: 10pt; font-weight: bold; -aw-style-name: 'Style Thead + (Latin) Arial (Complex) Arial' }
+			.aspose-root .Style1 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt }
+			.aspose-root .Style10 { margin-right: 5.65pt; margin-left: 8.5pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Style2 { margin: 0 -2pt 12pt 22.1pt; text-indent: -22.1pt; text-align: justify; line-height: normal; font-family: "Trebuchet MS"; font-size: 10pt; font-weight: bold; -aw-outline-level: 1; -aw-style-parent: heading1 }
+			.aspose-root .Style3 { margin-right: 5.65pt; margin-left: 8.5pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Style4 { margin-right: -0.3pt; margin-bottom: 0; text-align: justify; line-height: 115%; font-family: Arial; font-size: 9pt }
+			.aspose-root .Style5 { margin-right: -0.3pt; margin-bottom: 0; text-align: justify; line-height: 115%; font-family: Arial; font-size: 9pt }
+			.aspose-root .Style6 { margin-right: 5.65pt; margin-left: 8.5pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Style7 { margin-right: 5.65pt; margin-left: 8.5pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Style8 { margin-right: 5.65pt; margin-left: 8.5pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Style9 { margin-right: 5.65pt; margin-left: 8.5pt; margin-bottom: 5.65pt; line-height: 2.85pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .SubHeading { margin-bottom: 6pt; line-height: 115%; font-family: Arial; font-size: 10pt; font-weight: bold }
+			.aspose-root .Subhead { margin-bottom: 0; page-break-after: avoid; line-height: 12.5pt; font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: uppercase; color: rgba(152, 30, 50, 1) }
+			.aspose-root .Subhead1 { margin-bottom: 0; page-break-after: avoid; line-height: 12.5pt; font-family: Arial; font-size: 10pt; font-weight: bold; text-transform: none; color: rgba(0, 0, 0, 1); -aw-style-name: 'Subhead 1' }
+			.aspose-root .Subhead2 { margin-bottom: 0; page-break-after: avoid; line-height: 12.5pt; font-family: Arial; font-size: 10pt; font-weight: normal; font-style: italic; text-transform: none; color: rgba(0, 0, 0, 1); -aw-style-name: 'Subhead 2' }
+			.aspose-root .Subtitle { margin-bottom: 3pt; text-align: center; line-height: 150%; font-family: Cambria; font-size: 12pt; letter-spacing: 0; color: rgba(0, 0, 0, 1); -aw-outline-level: 2; -aw-style-name: subtitle }
+			.aspose-root .T0 { margin-right: -0.3pt; margin-bottom: 0; text-align: left; line-height: 115%; font-family: Arial; font-size: 9pt; -aw-style-name: 'T%' }
+			.aspose-root .T1 { margin-top: 0; margin-right: -2pt; margin-bottom: 15.05pt; line-height: 15.05pt; font-family: Arial; font-size: 9.5pt; font-weight: normal; -aw-style-parent: heading1 }
+			.aspose-root .TH { margin-bottom: 0; page-break-after: avoid; line-height: 12pt; font-family: Arial; font-size: 9.5pt; -aw-outline-level: 1 }
+			.aspose-root .THU { margin-bottom: 0; text-align: center; page-break-after: avoid; line-height: 12pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: Arial; font-size: 9.5pt; -aw-outline-level: 1; -aw-style-name: 'THU' }
+			.aspose-root .TOAHeading { margin-top: 6pt; margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-name: toa-heading }
+			.aspose-root .TOC1 { margin-left: 36pt; margin-bottom: 6pt; text-indent: -36pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; text-transform: uppercase; -aw-style-name: toc1 }
+			.aspose-root .TOC2 { margin-left: 72pt; margin-bottom: 6pt; text-indent: -36pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: toc2 }
+			.aspose-root .TOC3 { margin-left: 108pt; margin-bottom: 6pt; text-indent: -36pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: toc3 }
+			.aspose-root .TOC4 { margin-left: 144pt; margin-bottom: 6pt; text-indent: -36pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: toc4 }
+			.aspose-root .TOC5 { margin-left: 180pt; margin-bottom: 6pt; text-indent: -36pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: toc5 }
+			.aspose-root .TOC6 { margin-left: 216pt; margin-bottom: 6pt; text-indent: -36pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: toc6 }
+			.aspose-root .TOC7 { margin-left: 252pt; margin-bottom: 6pt; text-indent: -36pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: toc7 }
+			.aspose-root .TOC8 { margin-bottom: 6pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; text-transform: uppercase; -aw-style-name: toc8 }
+			.aspose-root .TOC9 { margin-left: 36pt; margin-bottom: 6pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: toc9 }
+			.aspose-root .TOCHeading { margin-top: 12pt; margin-right: -2pt; margin-bottom: 3pt; text-align: justify; line-height: 150%; font-family: Cambria; font-size: 16pt; font-weight: normal; text-transform: uppercase; -aw-style-name: toc-heading; -aw-style-parent: heading1 }
+			.aspose-root .TT { margin-bottom: 0; page-break-after: avoid; line-height: 15.05pt; font-family: Arial; font-size: 9.5pt; -aw-outline-level: 1 }
+			.aspose-root .TTH { margin-top: 6pt; margin-bottom: 0; page-break-after: avoid; line-height: 15.05pt; font-family: Arial; font-size: 9.5pt; -aw-outline-level: 1; -aw-style-name: 'TTH' }
+			.aspose-root .Table-Text { margin-top: 6pt; margin-bottom: 6pt; text-align: left; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Table - Text' }
+			.aspose-root .Table-followingparagraph { margin-bottom: 0; text-align: justify; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Table - following paragraph' }
+			.aspose-root .TableDouble { margin-bottom: 6pt; line-height: 6pt; border-bottom: 2.25pt double rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'Table Double' }
+			.aspose-root .TableHeading { margin-bottom: 0; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-name: 'Table Heading' }
+			.aspose-root .TableParagraph { margin-bottom: 0; line-height: 115%; widows: 0; orphans: 0; font-family: Calibri; font-size: 11pt; -aw-style-name: 'Table Paragraph' }
+			.aspose-root .TableSingle { margin-bottom: 6pt; line-height: 6pt; border-bottom: 0.75pt solid rgba(0, 0, 0, 1); padding-bottom: 1pt; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'Table Single' }
+			.aspose-root .TableofAuthorities { margin-left: 11pt; margin-bottom: 12pt; text-indent: -11pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: table-of-authorities }
+			.aspose-root .TableofFigures { margin-bottom: 12pt; text-align: justify; line-height: 150%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: table-of-figures }
+			.aspose-root .TableText0 { margin-top: 2pt; margin-bottom: 2pt; line-height: normal; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'TableText' }
+			.aspose-root .TableText08 { margin-top: 3pt; margin-bottom: 3pt; line-height: normal; font-family: "Times New Roman"; font-size: 8pt }
+			.aspose-root .Tabletext { margin-left: 7.65pt; margin-bottom: 0; text-indent: -7.65pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 9pt }
+			.aspose-root .Tdec { margin-right: -0.3pt; margin-bottom: 0; text-align: justify; line-height: 115%; font-family: Arial; font-size: 9pt }
+			.aspose-root .Text { margin-top: 13pt; margin-bottom: 13pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 't' 'z' 'Letter Body' 'b' 'Memo Body' 'Body text' 'z + Italic + Black' 'Left:  1.27 cm' }
+			.aspose-root .TextLevel1 { margin-top: 10pt; margin-left: 28.35pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 1' }
+			.aspose-root .TextLevel2 { margin-top: 10pt; margin-left: 42.55pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 2' }
+			.aspose-root .TextLevel3 { margin-top: 7pt; margin-left: 56.7pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 3' }
+			.aspose-root .TextLevel4 { margin-top: 4pt; margin-left: 85.05pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 4' }
+			.aspose-root .TextLevel5 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 5' }
+			.aspose-root .TextLevel6 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 6' }
+			.aspose-root .TextLevel7 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 7' }
+			.aspose-root .TextLevel8 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 8' }
+			.aspose-root .TextLevel9 { margin-top: 4pt; margin-left: 113.4pt; margin-bottom: 0; text-align: justify; line-height: 14pt; font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 9' }
+			.aspose-root .Textbody { margin-left: 28.35pt; margin-bottom: 10pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-name: 'Text body' }
+			.aspose-root .Texto1 { margin-left: 28.1pt; margin-bottom: 10pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .Texto2 { margin-left: 49.7pt; margin-bottom: 10pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt }
+			.aspose-root .Thead { margin-right: 4.3pt; margin-bottom: 0; text-align: right; page-break-after: avoid; line-height: 115%; font-family: Arial; font-size: 9pt; font-weight: bold }
+			.aspose-root .Thick { margin-bottom: 0; page-break-after: avoid; line-height: 5pt; font-family: Arial; font-size: 9.5pt; font-weight: bold; text-decoration: underline; vertical-align: 2pt }
+			.aspose-root .Thin { margin-bottom: 0; page-break-after: avoid; line-height: 5pt; font-family: Arial; font-size: 9.5pt; vertical-align: 2pt }
+			.aspose-root .Tindent { margin-left: 35.45pt; margin-bottom: 0; text-indent: -7.1pt; text-align: left; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Title { margin-bottom: 0; line-height: 115%; font-family: "Calibri Light"; font-size: 28pt; letter-spacing: -0.5pt; -aw-style-name: title }
+			.aspose-root .TitleLevel11 { margin-bottom: 6pt; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; text-transform: uppercase; -aw-style-aliases: 'tl1.1' 'tl11'; -aw-style-name: 'Title Level 1.1' }
+			.aspose-root .TitleLevel12 { margin-bottom: 0; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; text-transform: uppercase; -aw-style-aliases: 'tl1.2' 'tl12'; -aw-style-name: 'Title Level 1.2' }
+			.aspose-root .TitleLevel2 { margin-bottom: 6pt; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'tl2'; -aw-style-name: 'Title Level 2' }
+			.aspose-root .TitleLevel22 { margin-bottom: 0; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'tl2.2'; -aw-style-name: 'Title Level 2.2' }
+			.aspose-root .TitleLevel3 { margin-bottom: 36pt; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'tl3'; -aw-style-name: 'Title Level 3' }
+			.aspose-root .Tnormal { margin-left: 7.1pt; margin-bottom: 0; text-indent: -7.1pt; text-align: left; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .Tnote { margin-right: 4.3pt; margin-bottom: 0; text-align: right; line-height: 115%; font-family: Arial; font-size: 9pt }
+			.aspose-root .Toc { margin-top: 24pt; margin-bottom: 36pt; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-aliases: 'Index' }
+			.aspose-root .TocPage { margin-left: 454.3pt; margin-bottom: 10pt; text-align: center; page-break-inside: avoid; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; font-weight: bold; -aw-style-aliases: 'Toc Schedule' 'tp' 'ts'; -aw-style-name: 'Toc Page' }
+			.aspose-root .Tot { margin-bottom: 0; page-break-after: avoid; line-height: 17pt; font-family: Arial; font-size: 9.5pt; -aw-outline-level: 1 }
+			.aspose-root .WW-NormalWeb { margin-top: 14pt; margin-bottom: 14pt; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'WW-Normal (Web)' }
+			.aspose-root .Zspace { margin-bottom: 5.65pt; line-height: 0.3pt; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .alphabullet { margin-top: 6pt; margin-left: 108pt; margin-bottom: 6pt; text-indent: -36pt; line-height: 115%; font-family: "Univers 45 Light"; font-size: 10pt; color: rgba(0, 0, 0, 1); -aw-style-name: '_alpha bullet' }
+			.aspose-root .indentbodytext { margin-top: 6pt; margin-left: 21.6pt; margin-bottom: 6pt; line-height: 115%; font-family: "Univers 45 Light"; font-size: 10pt; color: rgba(0, 0, 0, 1); -aw-style-name: '_indent body text' }
+			.aspose-root .a { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .abgbodytext { margin-top: 3pt; margin-bottom: 6pt; line-height: 115%; widows: 0; orphans: 0; font-family: "Book Antiqua"; font-size: 11pt; -aw-style-name: 'abg_body_text' }
+			.aspose-root .abgbulletedlist { margin-left: 42.55pt; margin-bottom: 6pt; text-indent: 11.45pt; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'abg_bulleted_list' }
+			.aspose-root .ae { margin-top: 5pt; margin-bottom: 5pt; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .am { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .an { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .ao { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .az { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .ba { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .bodycopyindent { margin-top: 1pt; margin-left: 25.5pt; margin-bottom: 0; line-height: 10.5pt; font-family: Arial; font-size: 8.5pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'body copy indent' }
+			.aspose-root .bw { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .bx { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .by { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .bz { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .ca { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .cb { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .cd { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .ce { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .cf { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .cg { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .ci { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .cj { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .ck { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .cl { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .cn { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .i { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: Calibri; font-size: 11pt }
+			.aspose-root .igbcparagraph { margin-top: 7pt; margin-left: 35pt; margin-bottom: 7pt; text-indent: -33pt; line-height: 115%; font-family: Arial; font-size: 10pt }
+			.aspose-root .indent10 { margin-top: 5pt; margin-bottom: 5pt; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .indent12 { margin-left: 35.45pt; margin-bottom: 0; text-indent: -35.45pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .margintext0 { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt; -aw-style-name: 'margintext' }
+			.aspose-root .n1 { margin-top: 12pt; margin-right: -0.3pt; margin-bottom: 12pt; text-align: left; line-height: 115%; font-family: Arial; font-size: 14pt; font-weight: bold }
+			.aspose-root .paragraph { margin-top: 7pt; margin-left: 25pt; margin-bottom: 7pt; text-indent: -22pt; line-height: 115%; font-family: Arial; font-size: 10pt }
+			.aspose-root .s { margin-bottom: 10pt; text-align: justify; line-height: 115%; font-family: Calibri; font-size: 11pt }
+			.aspose-root .scale { margin-left: 28.35pt; margin-bottom: 0; text-indent: 0; text-align: left; page-break-after: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .single0 { margin-bottom: 0; text-align: justify; line-height: normal; font-family: Arial; font-size: 11pt; -aw-style-name: 'single' }
+			.aspose-root .sourceref { margin-top: 2pt; margin-bottom: 0; line-height: 9.5pt; font-family: Arial; font-size: 7.5pt; color: rgba(0, 51, 153, 1); -aw-style-name: 'source ref' }
+			.aspose-root .td1 { margin-right: 4.3pt; margin-bottom: 0; text-align: justify; line-height: 115%; font-family: Arial; font-size: 9pt }
+			.aspose-root .tdc { margin-right: -0.3pt; margin-bottom: 0; text-align: justify; line-height: 115%; font-family: Arial; font-size: 9pt }
+			.aspose-root .tdwe { margin-right: 4.3pt; margin-bottom: 0; text-align: justify; page-break-after: avoid; line-height: 115%; font-family: Arial; font-size: 9pt; font-weight: normal }
+			.aspose-root .tocd1 { margin-right: 72pt; margin-left: 18pt; margin-bottom: 10pt; text-indent: -18pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'toc d1' }
+			.aspose-root .tocd2 { margin-right: 72pt; margin-left: 31pt; margin-bottom: 10pt; text-indent: -13pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'toc d2' }
+			.aspose-root .tocd3 { margin-right: 72pt; margin-left: 45pt; margin-bottom: 10pt; text-indent: -14pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'toc d3' }
+			.aspose-root .tocd4 { margin-right: 72pt; margin-left: 58pt; margin-bottom: 10pt; text-indent: -13pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'toc d4' }
+			.aspose-root .tocs1 { margin-right: 72pt; margin-left: 18pt; margin-bottom: 0; text-indent: -18pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'toc s1' }
+			.aspose-root .tocs2 { margin-right: 72pt; margin-left: 31pt; margin-bottom: 0; text-indent: -13pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'toc s2' }
+			.aspose-root .tocs3 { margin-right: 72pt; margin-left: 45pt; margin-bottom: 0; text-indent: -14pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'toc s3' }
+			.aspose-root .tocs4 { margin-right: 72pt; margin-left: 58pt; margin-bottom: 0; text-indent: -13pt; page-break-inside: avoid; line-height: 115%; font-family: "Times New Roman"; font-size: 11pt; -aw-style-aliases: 'toc s4' }
+			.aspose-root .tp0 { margin-bottom: 6pt; text-align: justify; line-height: 115%; font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root .v { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .vj { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .vk { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .xn { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root .y { margin-top: 5pt; margin-bottom: 5pt; line-height: normal; font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root span.A5 { font-size: 5.5pt; color: rgba(0, 0, 0, 1) }
+			.aspose-root span.ACTextChar { font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'AC Text Char' }
+			.aspose-root span.BalloonTextChar { font-family: "Segoe UI"; font-size: 9pt }
+			.aspose-root span.BodyText2Char { font-family: "Times New Roman" }
+			.aspose-root span.BodyText3Char { font-family: "Times New Roman"; font-size: 8pt }
+			.aspose-root span.BodyTextChar { font-family: "Century Gothic"; font-size: 9pt }
+			.aspose-root span.BodyTextFirstIndent2Char { font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root span.BodyTextFirstIndentChar { font-family: "Times New Roman"; font-size: 9pt }
+			.aspose-root span.BodyTextIndent2Char { font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root span.BodyTextIndent3Char { font-family: "Times New Roman"; font-size: 8pt }
+			.aspose-root span.BodyTextIndentChar { font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root span.Bodycopyheader1Char { font-family: Arial; font-size: 8.5pt; font-weight: bold; color: rgba(0, 0, 0, 1); -aw-style-name: 'Body copy header 1 Char' }
+			.aspose-root span.Bold { font-weight: bold }
+			.aspose-root span.BoldCaps { font-family: Arial; font-size: 10pt; font-weight: bold; text-decoration: none; text-transform: uppercase; vertical-align: baseline; color: rgba(0, 0, 0, 1); -aw-style-name: 'Bold Caps' }
+			.aspose-root span.BookTitle { font-weight: bold; font-style: normal; font-variant: small-caps; letter-spacing: 0.25pt; -aw-style-name: book-title }
+			.aspose-root span.Caps { font-family: Arial; font-size: 10pt; text-decoration: none; text-transform: uppercase; vertical-align: baseline; color: rgba(0, 0, 0, 1) }
+			.aspose-root span.CenteredChar { font-family: "Times New Roman"; font-size: 10pt; font-weight: bold; -aw-style-name: 'Centered Char' }
+			.aspose-root span.ClosingChar { font-family: "Times New Roman" }
+			.aspose-root span.CommentReference { font-size: 8pt; -aw-style-name: comment-reference }
+			.aspose-root span.CommentSubjectChar { font-family: "Times New Roman"; font-size: 10pt; font-weight: bold }
+			.aspose-root span.CommentTextChar { font-family: "Times New Roman"; font-size: 10pt }
+			.aspose-root span.CoverBodyChar { font-family: "Times New Roman"; font-size: 8pt; -aw-style-name: 'Cover Body Char' }
+			.aspose-root span.D9Char { font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'D9 Char' }
+			.aspose-root span.DateChar { font-family: "Times New Roman" }
+			.aspose-root span.DeltaViewDeletion { text-decoration: line-through; color: rgba(255, 0, 0, 1); -aw-style-name: 'DeltaView Deletion' }
+			.aspose-root span.DeltaViewInsertion { text-decoration: underline; letter-spacing: 0; color: rgba(0, 0, 255, 1); -aw-style-name: 'DeltaView Insertion' }
+			.aspose-root span.DeltaViewMoveDestination { text-decoration: underline; color: rgba(0, 192, 0, 1); -aw-style-name: 'DeltaView Move Destination' }
+			.aspose-root span.Document7 { -aw-style-name: 'Document 7' }
+			.aspose-root span.Document8 { -aw-style-name: 'Document 8' }
+			.aspose-root span.DocumentMapChar { font-family: Tahoma; font-size: 8pt }
+			.aspose-root span.E-mailSignatureChar { font-family: "Times New Roman" }
+			.aspose-root span.Emphasis { font-style: italic; -aw-style-name: emphasis }
+			.aspose-root span.EndnoteReference { font-family: "Times New Roman"; font-size: 7.33pt; font-weight: normal; font-style: normal; font-variant: normal; text-decoration: none; text-transform: none; vertical-align: super; color: rgba(0, 0, 0, 1); -aw-style-name: endnote-reference }
+			.aspose-root span.EndnoteTextChar { font-family: "Times New Roman"; font-size: 9pt }
+			.aspose-root span.FollowedHyperlink { text-decoration: underline; color: rgba(128, 0, 128, 1); -aw-style-name: followed-hyperlink }
+			.aspose-root span.FooterChar { font-family: "Times New Roman"; font-size: 12pt; -aw-style-aliases: 'Footer line 1 Char' }
+			.aspose-root span.FootnoteReference { vertical-align: super; -aw-style-name: footnote-reference }
+			.aspose-root span.FootnoteTextChar { font-family: "Times New Roman"; font-size: 12pt; -aw-style-aliases: 'ARM footnote Text Char1' 'Footnote Text Char2 Char1' 'Footnote Text Char11 Char1' 'Footnote Text Char3 Char1' 'Footnote Text Char4 Char1' 'Footnote Text Char5 Char1' 'Footnote Text Char6 Char1' 'Footnote Text Char12 Char1' 'Footnote Text Char21 Char' }
+			.aspose-root span.FootnoteTextChar1 { font-family: "Times New Roman"; font-size: 10pt; -aw-style-aliases: 'Footnote Text Char Char' 'ARM footnote Text Char' 'Footnote Text Char2 Char' 'Footnote Text Char11 Char' 'Footnote Text Char3 Char' 'Footnote Text Char4 Char' 'Footnote Text Char5 Char' 'Footnote Text Char6 Char' 'Footnote Text Char12 Char' ' Ch Char'; -aw-style-name: 'Footnote Text Char1' }
+			.aspose-root span.HTMLAcronym { -aw-style-name: html-acronym }
+			.aspose-root span.HTMLAddressChar { font-family: "Times New Roman"; font-style: italic }
+			.aspose-root span.HTMLCite { font-style: italic; -aw-style-name: html-cite }
+			.aspose-root span.HTMLCode { font-family: "Courier New"; font-size: 10pt; -aw-style-name: html-code }
+			.aspose-root span.HTMLDefinition { font-style: italic; -aw-style-name: html-definition }
+			.aspose-root span.HTMLKeyboard { font-family: "Courier New"; font-size: 10pt; -aw-style-name: html-keyboard }
+			.aspose-root span.HTMLPreformattedChar { font-family: "Courier New"; font-size: 10pt }
+			.aspose-root span.HTMLSample { font-family: "Courier New"; font-size: 11pt; -aw-style-name: html-sample }
+			.aspose-root span.HTMLTypewriter { font-family: "Courier New"; font-size: 10pt; -aw-style-name: html-typewriter }
+			.aspose-root span.HTMLVariable { font-style: italic; -aw-style-name: html-variable }
+			.aspose-root span.HeaderChar { font-family: "Times New Roman"; font-size: 12pt }
+			.aspose-root span.Heading1Char { font-size: 14pt; font-weight: bold }
+			.aspose-root span.Heading2Char { font-size: 12pt; font-weight: bold }
+			.aspose-root span.Heading3Char { font-family: "Calibri Light"; font-size: 12pt; color: rgba(31, 77, 120, 1) }
+			.aspose-root span.Heading4Char { font-family: "Times New Roman" }
+			.aspose-root span.Heading5Char { font-family: "Calibri Light"; font-size: 12pt; color: rgba(46, 116, 181, 1) }
+			.aspose-root span.Heading6Char { font-family: "Times New Roman" }
+			.aspose-root span.Heading7Char { font-family: "Times New Roman" }
+			.aspose-root span.Heading8Char { font-family: "Times New Roman" }
+			.aspose-root span.Heading9Char { font-family: "Times New Roman" }
+			.aspose-root span.HouseStyleBaseChar { font-family: "Times New Roman"; -aw-style-name: 'House Style Base Char' }
+			.aspose-root span.Hyperlink { text-decoration: underline; color: rgba(0, 0, 255, 1); -aw-style-name: hyperlink }
+			.aspose-root span.IntenseEmphasis { font-weight: bold; font-style: italic; color: rgba(79, 129, 189, 1); -aw-style-name: intense-emphasis }
+			.aspose-root span.IntenseQuoteChar { font-family: "Times New Roman"; font-weight: bold; font-style: italic; color: rgba(79, 129, 189, 1) }
+			.aspose-root span.IntenseReference { font-weight: bold; font-variant: small-caps; text-decoration: underline; letter-spacing: 0.25pt; color: rgba(192, 80, 77, 1); -aw-style-name: intense-reference }
+			.aspose-root span.LineNumber { -aw-style-name: line-number }
+			.aspose-root span.LogoForHiding { font-family: Arial; font-size: 20pt }
+			.aspose-root span.MacroTextChar { font-family: "Courier New"; font-size: 10pt }
+			.aspose-root span.Margin8fontChar { font-family: "Times New Roman"; font-size: 8pt; -aw-style-name: 'Margin 8 font Char' }
+			.aspose-root span.MarginTextChar { font-family: "Times New Roman"; -aw-style-name: 'Margin Text Char' }
+			.aspose-root span.Mention { color: rgba(43, 87, 154, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: mention }
+			.aspose-root span.MessageHeaderChar { font-family: Cambria; font-size: 12pt; background-color: rgba(204, 204, 204, 1) }
+			.aspose-root span.NoSpacingChar { font-family: "Times New Roman" }
+			.aspose-root span.NormalIndentChar { font-family: "Times New Roman" }
+			.aspose-root span.NoteHeadingChar { font-family: "Times New Roman" }
+			.aspose-root span.NotesCharChar { font-family: Optima; font-size: 11pt; -aw-style-name: 'Notes Char Char' }
+			.aspose-root span.NotesChar1 { font-family: Optima; -aw-style-name: 'Notes Char1' }
+			.aspose-root span.PageNumber { font-size: 11pt; -aw-style-name: page-number }
+			.aspose-root span.PlaceholderText { color: rgba(128, 128, 128, 1); -aw-style-name: placeholder-text }
+			.aspose-root span.PlainTextChar { font-family: Calibri }
+			.aspose-root span.QuoteChar { font-family: "Times New Roman"; font-style: italic; color: rgba(0, 0, 0, 1) }
+			.aspose-root span.S9Char { font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'S9 Char' }
+			.aspose-root span.SalutationChar { font-family: "Times New Roman" }
+			.aspose-root span.SignatureChar { font-family: "Times New Roman" }
+			.aspose-root span.StandardTextChar { font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard Text Char' }
+			.aspose-root span.Standardlevel1Char { font-family: Arial; font-size: 10pt; -aw-style-name: 'Standard level 1 Char' }
+			.aspose-root span.Strong { font-weight: bold; -aw-style-name: strong }
+			.aspose-root span.StyleTheadLatinArialComplexArialChar { font-family: "Times New Roman Bold"; font-size: 10pt; font-weight: bold; -aw-style-name: 'Style Thead + (Latin) Arial (Complex) Arial Char' }
+			.aspose-root span.Style2Char { font-family: "Trebuchet MS"; font-size: 10pt; font-weight: bold; -aw-style-name: 'Style2 Char' }
+			.aspose-root span.SubtitleChar { font-family: Cambria; font-size: 12pt }
+			.aspose-root span.SubtleEmphasis { font-style: italic; color: rgba(128, 128, 128, 1); -aw-style-name: subtle-emphasis }
+			.aspose-root span.SubtleReference { font-variant: small-caps; text-decoration: underline; color: rgba(192, 80, 77, 1); -aw-style-name: subtle-reference }
+			.aspose-root span.TdecChar { font-family: Arial; font-size: 9pt; -aw-style-name: 'Tdec Char' }
+			.aspose-root span.TextChar { font-family: "Times New Roman"; -aw-style-aliases: 't Char' 'z Char'; -aw-style-name: 'Text Char' }
+			.aspose-root span.TextLevel1Char { font-family: Arial; font-size: 10pt; -aw-style-name: 'Text Level 1 Char' }
+			.aspose-root span.TheadChar { font-family: Arial; font-size: 9pt; font-weight: bold; -aw-style-name: 'Thead Char' }
+			.aspose-root span.TindentChar { font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'Tindent Char' }
+			.aspose-root span.TitleChar { font-family: "Calibri Light"; font-size: 28pt; letter-spacing: -0.5pt }
+			.aspose-root span.TnormalChar { font-family: "Times New Roman"; font-size: 10pt; -aw-style-name: 'Tnormal Char' }
+			.aspose-root span.UnresolvedMention { color: rgba(96, 94, 92, 1); background-color: rgba(225, 223, 221, 1); -aw-style-name: unresolved-mention }
+			.aspose-root span.UnresolvedMention1 { color: rgba(128, 128, 128, 1); background-color: rgba(230, 230, 230, 1); -aw-style-name: 'Unresolved Mention1' }
+			.aspose-root span.abgitalic { font-style: italic; -aw-style-name: 'abg_italic' }
+			.aspose-root span.block1 { font-family: Tahoma; font-size: 1.5pt }
+			.aspose-root span.bodycopyindentChar { font-family: Arial; font-size: 8.5pt; color: rgba(0, 0, 0, 1); -aw-style-name: 'body copy indent Char' }
+			.aspose-root span.igbcparagraph1 { font-family: Arial; font-size: 10pt }
+			.aspose-root .\31 11111 { margin-left: 36pt; text-indent: -18pt }
+			.aspose-root .\31 111111 { margin-left: 36pt; text-indent: -36pt; -aw-style-name: '1 / 1.1 / 1.1.11' }
+			.aspose-root .NoList1 { -aw-style-name: 'No List1' }
+			.aspose-root .NoList10 { -aw-style-name: 'No List10' }
+			.aspose-root .NoList2 { -aw-style-name: 'No List2' }
+			.aspose-root .NoList3 { -aw-style-name: 'No List3' }
+			.aspose-root .NoList4 { -aw-style-name: 'No List4' }
+			.aspose-root .NoList5 { -aw-style-name: 'No List5' }
+			.aspose-root .NoList6 { -aw-style-name: 'No List6' }
+			.aspose-root .NoList7 { -aw-style-name: 'No List7' }
+			.aspose-root .NoList8 { -aw-style-name: 'No List8' }
+			.aspose-root .NoList9 { -aw-style-name: 'No List9' }
+			.aspose-root .ColorfulGrid { }
+			.aspose-root .ColorfulGrid-Accent11 { }
+			.aspose-root .ColorfulGrid-Accent21 { }
+			.aspose-root .ColorfulGrid-Accent31 { }
+			.aspose-root .ColorfulGrid-Accent41 { }
+			.aspose-root .ColorfulGrid-Accent51 { }
+			.aspose-root .ColorfulGrid-Accent61 { }
+			.aspose-root .ColorfulGridAccent1 { }
+			.aspose-root .ColorfulGridAccent2 { }
+			.aspose-root .ColorfulGridAccent3 { }
+			.aspose-root .ColorfulGridAccent4 { }
+			.aspose-root .ColorfulGridAccent5 { }
+			.aspose-root .ColorfulGridAccent6 { }
+			.aspose-root .ColorfulGrid1 { }
+			.aspose-root .ColorfulList { }
+			.aspose-root .ColorfulList-Accent11 { }
+			.aspose-root .ColorfulList-Accent21 { }
+			.aspose-root .ColorfulList-Accent31 { }
+			.aspose-root .ColorfulList-Accent41 { }
+			.aspose-root .ColorfulList-Accent51 { }
+			.aspose-root .ColorfulList-Accent61 { }
+			.aspose-root .ColorfulListAccent1 { }
+			.aspose-root .ColorfulListAccent2 { }
+			.aspose-root .ColorfulListAccent3 { }
+			.aspose-root .ColorfulListAccent4 { }
+			.aspose-root .ColorfulListAccent5 { }
+			.aspose-root .ColorfulListAccent6 { }
+			.aspose-root .ColorfulList1 { }
+			.aspose-root .ColorfulShading { }
+			.aspose-root .ColorfulShading-Accent11 { }
+			.aspose-root .ColorfulShading-Accent21 { }
+			.aspose-root .ColorfulShading-Accent31 { }
+			.aspose-root .ColorfulShading-Accent41 { }
+			.aspose-root .ColorfulShading-Accent51 { }
+			.aspose-root .ColorfulShading-Accent61 { }
+			.aspose-root .ColorfulShadingAccent1 { }
+			.aspose-root .ColorfulShadingAccent2 { }
+			.aspose-root .ColorfulShadingAccent3 { }
+			.aspose-root .ColorfulShadingAccent4 { }
+			.aspose-root .ColorfulShadingAccent5 { }
+			.aspose-root .ColorfulShadingAccent6 { }
+			.aspose-root .ColorfulShading1 { }
+			.aspose-root .DarkList { }
+			.aspose-root .DarkList-Accent11 { }
+			.aspose-root .DarkList-Accent21 { }
+			.aspose-root .DarkList-Accent31 { }
+			.aspose-root .DarkList-Accent41 { }
+			.aspose-root .DarkList-Accent51 { }
+			.aspose-root .DarkList-Accent61 { }
+			.aspose-root .DarkListAccent1 { }
+			.aspose-root .DarkListAccent2 { }
+			.aspose-root .DarkListAccent3 { }
+			.aspose-root .DarkListAccent4 { }
+			.aspose-root .DarkListAccent5 { }
+			.aspose-root .DarkListAccent6 { }
+			.aspose-root .DarkList1 { }
+			.aspose-root .GridTable1Light1 { }
+			.aspose-root .LightGrid { }
+			.aspose-root .LightGrid-Accent11 { }
+			.aspose-root .LightGrid-Accent21 { }
+			.aspose-root .LightGrid-Accent31 { }
+			.aspose-root .LightGrid-Accent41 { }
+			.aspose-root .LightGrid-Accent51 { }
+			.aspose-root .LightGrid-Accent61 { }
+			.aspose-root .LightGridAccent1 { }
+			.aspose-root .LightGridAccent2 { }
+			.aspose-root .LightGridAccent3 { }
+			.aspose-root .LightGridAccent4 { }
+			.aspose-root .LightGridAccent5 { }
+			.aspose-root .LightGridAccent6 { }
+			.aspose-root .LightGrid1 { }
+			.aspose-root .LightList { }
+			.aspose-root .LightList-Accent11 { }
+			.aspose-root .LightList-Accent21 { }
+			.aspose-root .LightList-Accent31 { }
+			.aspose-root .LightList-Accent41 { }
+			.aspose-root .LightList-Accent51 { }
+			.aspose-root .LightList-Accent61 { }
+			.aspose-root .LightListAccent1 { }
+			.aspose-root .LightListAccent2 { }
+			.aspose-root .LightListAccent3 { }
+			.aspose-root .LightListAccent4 { }
+			.aspose-root .LightListAccent5 { }
+			.aspose-root .LightListAccent6 { }
+			.aspose-root .LightList1 { }
+			.aspose-root .LightShading { }
+			.aspose-root .LightShading-Accent11 { }
+			.aspose-root .LightShading-Accent21 { }
+			.aspose-root .LightShading-Accent31 { }
+			.aspose-root .LightShading-Accent41 { }
+			.aspose-root .LightShading-Accent51 { }
+			.aspose-root .LightShading-Accent61 { }
+			.aspose-root .LightShadingAccent1 { }
+			.aspose-root .LightShadingAccent2 { }
+			.aspose-root .LightShadingAccent3 { }
+			.aspose-root .LightShadingAccent4 { }
+			.aspose-root .LightShadingAccent5 { }
+			.aspose-root .LightShadingAccent6 { }
+			.aspose-root .LightShading1 { }
+			.aspose-root .MediumGrid1 { }
+			.aspose-root .MediumGrid1Accent1 { }
+			.aspose-root .MediumGrid1Accent2 { }
+			.aspose-root .MediumGrid1Accent3 { }
+			.aspose-root .MediumGrid1Accent4 { }
+			.aspose-root .MediumGrid1Accent5 { }
+			.aspose-root .MediumGrid1Accent6 { }
+			.aspose-root .MediumGrid2 { }
+			.aspose-root .MediumGrid2-Accent11 { }
+			.aspose-root .MediumGrid2-Accent21 { }
+			.aspose-root .MediumGrid2-Accent31 { }
+			.aspose-root .MediumGrid2-Accent41 { }
+			.aspose-root .MediumGrid2-Accent51 { }
+			.aspose-root .MediumGrid2-Accent61 { }
+			.aspose-root .MediumGrid2Accent1 { }
+			.aspose-root .MediumGrid2Accent2 { }
+			.aspose-root .MediumGrid2Accent3 { }
+			.aspose-root .MediumGrid2Accent4 { }
+			.aspose-root .MediumGrid2Accent5 { }
+			.aspose-root .MediumGrid2Accent6 { }
+			.aspose-root .MediumGrid21 { }
+			.aspose-root .MediumGrid3 { }
+			.aspose-root .MediumGrid3-Accent11 { }
+			.aspose-root .MediumGrid3-Accent21 { }
+			.aspose-root .MediumGrid3-Accent31 { }
+			.aspose-root .MediumGrid3-Accent41 { }
+			.aspose-root .MediumGrid3-Accent51 { }
+			.aspose-root .MediumGrid3-Accent61 { }
+			.aspose-root .MediumGrid3Accent1 { }
+			.aspose-root .MediumGrid3Accent2 { }
+			.aspose-root .MediumGrid3Accent3 { }
+			.aspose-root .MediumGrid3Accent4 { }
+			.aspose-root .MediumGrid3Accent5 { }
+			.aspose-root .MediumGrid3Accent6 { }
+			.aspose-root .MediumGrid31 { }
+			.aspose-root .MediumList1 { }
+			.aspose-root .MediumList1-Accent11 { }
+			.aspose-root .MediumList1-Accent21 { }
+			.aspose-root .MediumList1-Accent31 { }
+			.aspose-root .MediumList1-Accent41 { }
+			.aspose-root .MediumList1-Accent51 { }
+			.aspose-root .MediumList1-Accent61 { }
+			.aspose-root .MediumList1Accent1 { }
+			.aspose-root .MediumList1Accent2 { }
+			.aspose-root .MediumList1Accent3 { }
+			.aspose-root .MediumList1Accent4 { }
+			.aspose-root .MediumList1Accent5 { }
+			.aspose-root .MediumList1Accent6 { }
+			.aspose-root .MediumList11 { }
+			.aspose-root .MediumList2 { }
+			.aspose-root .MediumList2-Accent11 { }
+			.aspose-root .MediumList2-Accent21 { }
+			.aspose-root .MediumList2-Accent31 { }
+			.aspose-root .MediumList2-Accent41 { }
+			.aspose-root .MediumList2-Accent51 { }
+			.aspose-root .MediumList2-Accent61 { }
+			.aspose-root .MediumList2Accent1 { }
+			.aspose-root .MediumList2Accent2 { }
+			.aspose-root .MediumList2Accent3 { }
+			.aspose-root .MediumList2Accent4 { }
+			.aspose-root .MediumList2Accent5 { }
+			.aspose-root .MediumList2Accent6 { }
+			.aspose-root .MediumList21 { }
+			.aspose-root .MediumShading1 { }
+			.aspose-root .MediumShading1-Accent11 { }
+			.aspose-root .MediumShading1-Accent21 { }
+			.aspose-root .MediumShading1-Accent31 { }
+			.aspose-root .MediumShading1-Accent41 { }
+			.aspose-root .MediumShading1-Accent51 { }
+			.aspose-root .MediumShading1-Accent61 { }
+			.aspose-root .MediumShading1Accent1 { }
+			.aspose-root .MediumShading1Accent2 { }
+			.aspose-root .MediumShading1Accent3 { }
+			.aspose-root .MediumShading1Accent4 { }
+			.aspose-root .MediumShading1Accent5 { }
+			.aspose-root .MediumShading1Accent6 { }
+			.aspose-root .MediumShading11 { }
+			.aspose-root .MediumShading2 { }
+			.aspose-root .MediumShading2-Accent11 { }
+			.aspose-root .MediumShading2-Accent21 { }
+			.aspose-root .MediumShading2-Accent31 { }
+			.aspose-root .MediumShading2-Accent41 { }
+			.aspose-root .MediumShading2-Accent51 { }
+			.aspose-root .MediumShading2-Accent61 { }
+			.aspose-root .MediumShading2Accent1 { }
+			.aspose-root .MediumShading2Accent2 { }
+			.aspose-root .MediumShading2Accent3 { }
+			.aspose-root .MediumShading2Accent4 { }
+			.aspose-root .MediumShading2Accent5 { }
+			.aspose-root .MediumShading2Accent6 { }
+			.aspose-root .MediumShading21 { }
+			.aspose-root .Table3Deffects1 { }
+			.aspose-root .Table3Deffects11 { }
+			.aspose-root .Table3Deffects2 { }
+			.aspose-root .Table3Deffects3 { }
+			.aspose-root .Table3Deffects31 { }
+			.aspose-root .TableClassic1 { }
+			.aspose-root .TableClassic11 { }
+			.aspose-root .TableClassic2 { }
+			.aspose-root .TableClassic21 { }
+			.aspose-root .TableClassic3 { }
+			.aspose-root .TableClassic31 { }
+			.aspose-root .TableClassic4 { }
+			.aspose-root .TableClassic41 { }
+			.aspose-root .TableColorful1 { }
+			.aspose-root .TableColorful2 { }
+			.aspose-root .TableColorful21 { }
+			.aspose-root .TableColorful3 { }
+			.aspose-root .TableColorful31 { }
+			.aspose-root .TableColumns1 { }
+			.aspose-root .TableColumns11 { }
+			.aspose-root .TableColumns2 { }
+			.aspose-root .TableColumns21 { }
+			.aspose-root .TableColumns3 { }
+			.aspose-root .TableColumns31 { }
+			.aspose-root .TableColumns4 { }
+			.aspose-root .TableColumns41 { }
+			.aspose-root .TableColumns5 { }
+			.aspose-root .TableColumns51 { }
+			.aspose-root .TableContemporary { }
+			.aspose-root .TableContemporary1 { }
+			.aspose-root .TableElegant { }
+			.aspose-root .TableElegant1 { }
+			.aspose-root .TableGrid { }
+			.aspose-root .TableGrid1 { }
+			.aspose-root .TableGrid2 { }
+			.aspose-root .TableGrid3 { }
+			.aspose-root .TableGrid4 { }
+			.aspose-root .TableGrid41 { }
+			.aspose-root .TableGrid5 { }
+			.aspose-root .TableGrid6 { }
+			.aspose-root .TableGrid61 { }
+			.aspose-root .TableGrid7 { }
+			.aspose-root .TableGrid8 { }
+			.aspose-root .TableGrid81 { }
+			.aspose-root .TableGrid10 { }
+			.aspose-root .TableGrid100 { }
+			.aspose-root .TableGrid11 { }
+			.aspose-root .TableGrid20 { }
+			.aspose-root .TableGrid30 { }
+			.aspose-root .TableGrid40 { }
+			.aspose-root .TableGrid50 { }
+			.aspose-root .TableGrid60 { }
+			.aspose-root .TableGrid70 { }
+			.aspose-root .TableGrid80 { }
+			.aspose-root .TableGrid9 { }
+			.aspose-root .TableList1 { }
+			.aspose-root .TableList11 { }
+			.aspose-root .TableList2 { }
+			.aspose-root .TableList21 { }
+			.aspose-root .TableList3 { }
+			.aspose-root .TableList31 { }
+			.aspose-root .TableList4 { }
+			.aspose-root .TableList41 { }
+			.aspose-root .TableList5 { }
+			.aspose-root .TableList6 { }
+			.aspose-root .TableList7 { }
+			.aspose-root .TableList71 { }
+			.aspose-root .TableList8 { }
+			.aspose-root .TableList81 { }
+			.aspose-root .TableProfessional { }
+			.aspose-root .TableProfessional1 { }
+			.aspose-root .TableSimple1 { }
+			.aspose-root .TableSimple2 { }
+			.aspose-root .TableSimple21 { }
+			.aspose-root .TableSimple3 { }
+			.aspose-root .TableSimple31 { }
+			.aspose-root .TableSubtle1 { }
+			.aspose-root .TableSubtle2 { }
+			.aspose-root .TableTheme { }
+			.aspose-root .TableWeb1 { }
+			.aspose-root .TableWeb11 { }
+			.aspose-root .TableWeb2 { }
+			.aspose-root .TableWeb21 { }
+			.aspose-root .TableWeb3 { }
+			.aspose-root .TableWeb31 { }
+		</style><style>
+			.aspose-root .rn-1.bv { font-family: "Century Gothic"; font-weight: bold }
+			.aspose-root .rn-2 { font-family: "Century Gothic"; font-weight: bold }
+			.aspose-root .rn-3 { font-family: "Century Gothic" }
+			.aspose-root .rn-4 { font-family: "Century Gothic"; font-weight: bold; -aw-import: ignore }
+			.aspose-root .rn-5 { text-align: center; line-height: 125%; font-size: 10pt }
+			.aspose-root .rn-6 { line-height: 125%; font-size: 10pt }
+			.aspose-root .rn-7 { text-align: justify }
+			.aspose-root .rn-8 { font-family: "Century Gothic"; font-size: 10pt }
+			.aspose-root .rn-9 { font-family: "Century Gothic"; font-size: 10pt; -aw-import: ignore }
+			.aspose-root .rn-10 { font-family: "Century Gothic"; -aw-import: ignore }
+			.aspose-root .rn-11.NormalWeb { margin-top: 14pt; margin-bottom: 14pt; line-height: 115%; font-size: 10pt }
+			.aspose-root .rn-12.NormalWeb { margin-top: 0; margin-bottom: 0; line-height: 115%; font-size: 10pt }
+			.aspose-root .rn-13 { line-height: 115%; font-family: "Century Gothic"; font-size: 10pt }
+		</style></head><body><img src="https://tracker.live.rns-distribution.com/track.live-rns/6298180_d9353a075fe0b610698e373da828b7e4.png" width="1" height="1" /><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;">  <div>Kainos Group plc</div>  <div>16 September 2026</div>  <div>&#160;</div></div><div class="aspose-root">
+<div class="Section_1">
+<p class="bx" style="margin-top:0pt; margin-bottom:0pt; line-height:125%; font-size:10pt;">
+<span class="bv rn-1">16 September 2026</span>
+</p>
+<h1 style="margin-top:0pt; margin-right:0pt; margin-bottom:0pt; text-align:center; line-height:125%; font-size:10pt;">
+<span class="rn-3">Kainos Group plc</span>
+</h1>
+<p class="by" style="margin-top:0pt; margin-bottom:0pt; text-align:center; line-height:125%; font-size:10pt;">
+<span class="bv rn-1">("Kainos" or the "Company")</span><span class="br" style="font-family:'Century Gothic';">&#160;</span>
+</p>
+<p style="text-align:justify; line-height:125%; font-size:10pt;">
+<span class="rn-4">&#160;</span>
+</p>
+<p class="rn-5">
+<span class="rn-2">Board and Board Committee Changes </span>
+</p>
+<p class="rn-6">
+<span class="rn-4">&#160;</span>
+</p>
+<p class="rn-7">
+<span class="rn-8">Kainos Group plc (KNOS), a UK-headquartered IT provider with expertise across three divisions, Digital Services, Workday Services, and Workday Products, today announces that Shruthi Chindalur, independent Non-Executive Director, has been appointed interim Chair of the Remuneration Committee with effect from the conclusion of the Company&#8217;s Annual General Meeting (AGM) on 22 September 2026. The Board is continuing its succession process and will announce a permanent appointment in due course.</span>
+</p>
+<p class="rn-7">
+<span class="rn-9">&#160;</span>
+</p>
+<p class="rn-7">
+<span class="rn-8">As announced on 28 April 2026, Katie Davis, independent Non-Executive Director, steps down from the Board at the conclusion of the AGM. </span><span style="font-family:'Century Gothic'; font-size:10pt; -aw-import:spaces;">&#160;</span>
+</p>
+<p class="rn-7">
+<span class="rn-9">&#160;</span>
+</p>
+<p class="rn-6">
+<span class="rn-3">This notification is made pursuant to UKLR 6.4.6R</span><span style="font-family:Arial;">.</span>
+</p>
+<p class="rn-6">
+<span style="font-family:Arial; -aw-import:ignore;">&#160;</span>
+</p>
+<p class="rn-6">
+<span class="rn-3">Kainos Group plc Legal Entity Identifier:</span><span class="rn-3">&#160;</span><span class="rn-3">213800H2PQMIF3OVZY47</span><span class="rn-3">&#160;</span>
+</p>
+<p class="rn-6">
+<span class="rn-10">&#160;</span>
+</p>
+<p class="rn-5">
+<span class="rn-2">Ends</span>
+</p>
+<p style="line-height:115%; font-size:10pt;">
+<span class="rn-2">For further information, please contact:</span>
+</p>
+<p class="NormalWeb rn-11">
+<span class="rn-2">Kainos</span><span class="rn-2">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">via FTI Consulting LLP</span><br /><span class="rn-3">Brendan Mooney, Chief Executive Officer</span><br /><span class="rn-3">Richard McCann, Chief Financial Officer</span>
+</p>
+<p class="NormalWeb rn-11">
+<span class="rn-2">Investec Bank plc</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3"> +44 20 7597 5970</span><br /><span class="rn-3">Patrick Robb / Nick Prowting / Arnav Kapoor</span>
+</p>
+<p class="NormalWeb rn-11">
+<span class="rn-2">FTI Consulting LLP</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span class="rn-3">&#160;</span><span style="font-family:'Century Gothic'; -aw-import:spaces;">&#160; </span><span class="rn-3">+44 20 3727 1000</span><br /><span class="rn-3">Dwight Burden / Kwaku Aning</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-2">About Kainos Group plc</span><br /><span class="rn-3">Kainos Group plc is a UK-headquartered provider of sophisticated IT services to major public sector, commercial and healthcare customers and a developer of software applications. </span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-10">&#160;</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-3">Our shares are listed on the London Stock Exchange (LSE: KNOS). </span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-10">&#160;</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-3">Our expertise spans three divisions:</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-4">&#160;</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-2">Digital Services</span><span class="rn-3"> develops and supports custom digital service platforms, which help customers solve key business problems such as the need to improve their service, reduce costs and increase productivity.</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-4">&#160;</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-2">Workday Services</span><span class="rn-3"> is a respected Workday partner, providing a comprehensive range of services to support customers deploying Workday's Finance, HR and Planning products. </span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-4">&#160;</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-2">Workday Products </span><span class="rn-3">develops proprietary software products that complement Workday, by enhancing our customers' system security and compliance and improving their document generation and storage.</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-4">&#160;</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-2">Our purpose</span>
+</p>
+<p class="NormalWeb rn-12" style="text-align: justify;">
+<span class="rn-3">Our purpose is to help our customers with their most challenging projects and, together with our partners, help them build the capability to succeed in the digital age.</span>
+</p>
+<p class="NormalWeb rn-12">
+<span class="rn-4">&#160;</span>
+</p>
+<p class="NormalWeb" style="margin-top:0pt; margin-bottom:0pt;">
+<span style="line-height:115%; font-family:'Century Gothic'; font-size:10pt; font-weight:bold;">Find out more</span><br /><span class="rn-13">You can discover more about us at </span><a href="http://www.kainos.com" style="text-decoration:none;"><span class="Hyperlink" style="line-height:115%; font-family:'Century Gothic'; font-size:10pt;">www.kainos.com</span></a><span class="rn-13"> </span><span style="line-height:115%; font-family:'Century Gothic'; font-size:10pt; -aw-import:spaces;">&#160;</span>
+</p>
+<p class="rn-6">
+<span class="rn-4">&#160;</span>
+</p>
+</div>
+
+</div><div style="text-align:left;font-family:Arial, Helvetica, sans-serif; font-size: 10pt;"><div>This information is provided by RNS, the news service of the London Stock Exchange. RNS is approved by the Financial Conduct Authority to act as a Primary Information Provider in the United Kingdom. Terms and conditions relating to the use and distribution of this information may apply. For further information, please contact <a href="mailto:rns@lseg.com">rns@lseg.com</a> or visit <a href="http://www.rns.com/">www.rns.com</a>.<br/><br/>RNS may use your IP address to confirm compliance with the terms and conditions, to analyse how you engage with the information contained in this communication, and to share such analysis on an anonymised basis with others as part of our commercial services. For further information about how RNS and the London Stock Exchange use the personal data you provide us, please see our <a href="https://www.lseg.com/privacy-and-cookie-policy">Privacy Policy</a>.</div><div>&#160;</div>  END</div><div>&#160;</div><div>&#160;</div></body></html>
+                            
+                                    </template>
+            </div>
+            <script>
+                if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+                    document.querySelectorAll('template[shadowrootmode]').forEach(function (template) {
+                        var shadowRoot = template.parentElement.attachShadow({ mode: template.getAttribute('shadowrootmode') || 'open' });
+                        shadowRoot.appendChild(template.content);
+                        template.remove();
+                    });
+                }
+            </script>
+            </div>
+
+    <div class="modal fade investegate-common-modal ai-summary-disclaimer-modal" id="modal-ai-summary-disclaimer"
+    data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center justify-content-between"
+                style="padding: 12px 16px !important; background: #002060;">
+                <h5 class="modal-title mb-0" id="staticBackdropLabel"
+                    style="color: #ffffff; font-size: 18px; font-weight: 600; line-height: 1.2; font-family: 'Montserrat', sans-serif;">
+                    AI Summary Disclaimer <span class="badge badge-warning"
+                        style="font-size: 11px; vertical-align: middle; margin-left: 6px; font-weight: 700; padding: 3px 6px;">BETA</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #ffffff; opacity: 1; margin: 0; padding: 0 4px; font-size: 24px; line-height: 1; text-shadow: none;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px;">The content you are viewing has been generated or assisted by artificial
+                    intelligence (AI). While efforts are made to ensure accuracy and clarity, AI-generated text may
+                    contain inaccuracies, outdated information, or subjective interpretations. This content is intended
+                    for general informational purposes only and should not be considered professional advice or factual
+                    confirmation.</p>
+
+                <p style="font-size: 14px;">We encourage you to independently verify any information provided,
+                    especially if it will be relied upon for making decisions or taking action. Any reliance you place
+                    on this material is strictly at your own risk. The AI system that produced this content cannot
+                    assess the specifics of individual circumstances, and results may vary based on context and
+                    individual needs.</p>
+                <!--
+                <div class="modal-footer common-button-group">
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /22903178295/Investegate/RNSBottom -->
+    <div class="text-center google-ad-common rns-ad">
+        <div id='div-gpt-ad-1722421295934-0'>
+            <script>
+                googletag.cmd.push(function () {
+                    googletag.display('div-gpt-ad-1722421295934-0');
+                });
+            </script>
+        </div>
+    </div>
+
+            </div>
+            <div class="col-md-4">
+                        <div class="art-board mb-2">
+            <h2 style="margin-bottom:10px;">Companies</h2>
+                            <a href="https://www.investegate.co.uk/company/KNOS" style="font-size:14px;">Kainos Group
+                    (KNOS)</a><br />
+                    </div>
+                    <!-- FTSE price chart from Trading View -->
+<div class="art-board" style="margin-top:0px !important;">
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+<h6 align="center"><b>UK 100</b></h6>
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">FTSE quotes</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "symbols": [
+    [
+      "SPREADEX:FTSE|1D|GBP"
+    ]
+  ],
+  "chartOnly": true,
+  "width": "100%",
+  "height": "100%",
+  "locale": "en",
+  "colorTheme": "light",
+  "autosize": true,
+  "showVolume": false,
+  "showMA": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": true,
+  "hideSymbolLogo": true,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "fontSize": "10",
+  "noTimeScale": false,
+  "valuesTracking": "1",
+  "changeMode": "no-values",
+  "chartType": "line",
+  "lineWidth": 3,
+  "lineType": 0,
+  "dateRanges": [
+    "1d|3",
+    "1m|30",
+    "3m|60",
+    "12m|1D",
+    "60m|1W",
+    "all|1M"
+  ]
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+<style>
+    .tradingview-widget-container {
+        max-height: 310px;
+        overflow-y: auto;
+    }
+
+    .tradingview-widget-container iframe {
+        height: 250px !important;
+    }
+</style></div>
+
+<!-- IMC Static ad -->
+<div id="imc-meetings-widget" style="margin-top:20px;overflow:hidden;margin-bottom:20px;">
+    <a href="https://www.investegate.co.uk/meetings?utm_source=imc-ad&amp;utm_medium=website&amp;utm_campaign=imc-landing-page&amp;utm_id=imc-landing-page&amp;utm_content=imc-ad&quot; title=&quot;Investor Meet Company View Meetings">
+        <img alt="Investor Meet Company View Meetings" class="img-responsive" src="/assets/images/imc/imc-view-meetings@1x.gif" srcset="/assets/images/imc/imc-view-meetings@1x.gif 1x, /assets/images/imc/imc-view-meetings@2x.gif 2x, /assets/images/imc/imc-view-meetings@3x.gif 3x" style="width:100%;height:auto;">
+    </a>
+</div>
+
+
+
+<!-- Ad block 1 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581469288-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581469288-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- IMC upcoming meetings Widget -->
+<div id="imc-meetings-widget" style="margin-top:0px;overflow:hidden;margin-bottom:20px;">
+    <div ref="imcContainer" class="imc-widget-container">
+        <div class="imc-container-widget"></div>
+        <script type="text/javascript" src="https://widgets.investormeetcompany.com/imc-embed-widget.js" async>
+        {
+            "width": "100%",
+            "height": "370",
+            "locale": "en",
+            "autosize": true,
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": 10,
+            "widgetPadding" : 0,
+            "buttonColor": "#132346",
+            "borderColor": "#CBD5E1",
+            "roundedBorders": true,
+            "buttonColor":  0,
+            "viewMeetingsUrl":  "https://www.investormeetcompany.com/upcoming-meetings?utm_source=imc-widget&utm_medium=website&utm_campaign=imc-landing-page&utm_id=imc-landing-page&utm_content=imc-widget"
+        }
+        </script>
+    </div>
+</div>
+
+<!-- Ad block 2 -->
+<div class="add-block text-center">
+    <div id='div-gpt-ad-1682581421104-0' style='min-width: 300px; min-height: 250px;margin-bottom:20px;'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581421104-0');
+            });
+        </script>
+    </div>
+</div>
+
+<!-- Director Dealings -->
+<div class="art-board">
+    <div class="head-area mb-3">
+        <h2 style="margin-bottom:10px;">Latest directors dealings</h2>
+    </div>
+    <div class="directors-list">
+        <ul>
+                        <li>
+                <span>28 minutes ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/prudential--pru/director-pdmr-shareholding/9863401">Prudential</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/cc-japan-income-growth-trust--ccji/director-pdmr-shareholding/9863304">CC Japan Income &amp; Growth Trust</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/prn/blackrock-frontiers-investment-trust--brfi/director-pdmr-shareholding/9863273">Blackrock Frontiers Investment Trust</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/sunda-energy--snda/director-pdmr-shareholding/9863270">Sunda Energy</a>
+            </li>
+                        <li>
+                <span>1 hour ago</span>
+                <a href="https://www.investegate.co.uk/announcement/rns/avon-technologies-plc--avon/director-pdmr-shareholding/9863247">Avon Technologies plc</a>
+            </li>
+                    </ul>
+        <div class="directors-list-footer mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <a href="/category/directors-dealings">All directors dealings today</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+                <div class="text-center google-ad-common">
+    <div id='div-gpt-ad-1682581501421-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.display('div-gpt-ad-1682581501421-0');
+            });
+        </script>
+    </div>
+</div>        <footer class="mt-2">
+    <p>
+        All intraday prices are subject to a delay of fifteen (15) minutes.
+    </p>
+    <p>
+        Investegate takes no responsibility for the accuracy of the information within this site.
+    </p>
+    <p>
+        The announcements are supplied by the denoted source. Queries about the content of an announcement should be directed to the source. Investegate reserves the right to publish a filtered set of announcements. NAV, EMM/EPT, Rule 8 and FRN Variable Rate Fix announcements are filtered from this site.
+    </p>
+    <div class="footer-bottom d-flex align-items-center flex-wrap justify-content-between">
+        <div>
+            <div class="logo"><a href="https://www.investegate.co.uk"><img style="width: 300px;" alt="Investegate logo" src="https://assets.investegate.co.uk/public/assets/images/logo-white.png"></a></div>
+        </div>
+        <div>
+            <span class="copywrite text-center">
+                © 2026 Investor Meet Company Ltd
+            </span>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a>
+                <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>
+                <a href="https://www.investegate.co.uk/acceptable-use-policy">Acceptable Use Policy</a>
+            </span>
+            <br/>
+            <span class="link">
+                <a href="https://www.investegate.co.uk/advertise">Advertise with Us</a>
+            </span>
+        </div>
+        <div>
+            <span class="link text-center d-block" style="color:white">
+                Our other sites
+            </span>
+            <div class="footer-links">
+                <ul class="d-flex">
+                    <li><a href="https://www.investormeetcompany.com" target="_blank">Investor Meet Company</a></li>
+                    <li><a href="https://www.bookbuild.live/" target="_blank">Bookbuild</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>    </div>
+
+    <!-- scripts -->
+    <script src="https://assets.investegate.co.uk/public/assets/js/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"><\/script>');
+</script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/popper.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/bootstrap.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/datatables.min.js"></script>
+    <script src="https://assets.investegate.co.uk/public/assets/js/custom.js"></script>
+        <div class="modal fade investegate-common-modal private-investor-modal" id="modal-ownership" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This website is for Private Investors*</h5>
+            </div>
+            <div class="modal-body">
+                <div class="common-button-group text-center">
+                    <button type="button" class="btn btn-primary" id="private-investor" onclick="javascript:NonLoginPrivateUser();" >I am a Private Investor</button>
+                </div>
+                <br/>
+                <p>*A <strong>Private Investor</strong> is a recipient of the information who meets all of the conditions set out below, the recipient:</p>
+                <ol>
+                    <li>Obtains access to the information in a personal capacity;</li>
+                    <li>Is not required to be regulated or supervised by a body concerned with the regulation or supervision of investment or financial services;</li>
+                    <li>Is not currently registered or qualified as a professional securities trader or investment adviser with any national or state exchange, regulatory authority, professional association or recognised professional body;</li>
+                    <li>Does not currently act in any capacity as an investment adviser, whether or not they have at some time been qualified to do so;</li>
+                    <li>Uses the information solely in relation to the management of their personal funds and not as a trader to the public or for the investment of corporate funds;</li>
+                    <li>Does not distribute, republish or otherwise provide any information or derived works to any third party in any manner or use or process information or derived works for any commercial purposes.</li>
+                </ol>
+                <p>Please note, this site uses cookies. Some of the cookies are essential for parts of the site to operate and have already been set. You may delete and block all cookies from this site, but if you do, parts of the site may not work. To find out more about the cookies used on Investegate and how you can manage them, see our Privacy and Cookie Policy</p>
+                <p>To continue using Investegate, please confirm that you are a private investor as well as agreeing to our <a href="https://www.investegate.co.uk/privacy-policy">Privacy and Cookie Policy</a> & <a href="https://www.investegate.co.uk/terms-of-use">Terms</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Cookie Setting
+    function SetCookie( name, value, expires, path, domain, secure ){
+        var today = new Date();
+        today.setTime( today.getTime() );
+    
+        /*
+        if the expires variable is set, make the correct 
+        expires time, the current script below will set 
+        it for x number of days, to make it for hours, 
+        delete * 24, for minutes, delete * 60 * 24
+        */
+        if ( expires )
+        {
+        expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+    
+        document.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + 
+        ( ( path ) ? ";path=" + path : ";path=/" ) + 
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" );
+    }
+
+    /// To Get specified Cookie value
+    function GetCookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+    
+    function NonLoginPrivateUser() {
+        // 90 day cookie to stop popup
+        SetCookie('utype', 'PI', 90);
+        $("#modal-ownership").modal("hide");
+    }   
+
+    /// To Get specified Cookie value
+    function GetPICookie(name) 
+    {
+        var start = document.cookie.indexOf(name+"=");
+        var len = start+name.length+1;
+        if ((!start) && (name != document.cookie.substring(0,name.length))) return '';
+        if (start == -1) return '';
+        var end = document.cookie.indexOf(";",len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len,end));
+    }
+
+    $(document).ready(function () { 
+        if(GetPICookie("utype") != 'PI'){
+            $("#modal-ownership").modal("show");
+        }
+    });
+</script>        <div class="modal fade investegate-common-modal announcement-limit-modal" id="modal-announcement-limit" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Create an Account
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Create your FREE account to receive personalised announcements, watchlists, market updates, investment insights and new features.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/register" class="btn btn-primary">
+                    Sign Up
+                </a>
+
+                <a href="https://www.investegate.co.uk/login" class="btn btn-outline-secondary">
+                    Log In
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>    <div class="modal fade investegate-common-modal announcement-limit-signed-in-modal" id="modal-announcement-limit-signed-in" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticAnnouncementSignedInLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">
+                    Personalise your experience
+                </h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 16px; font-family: 'Montserrat';">
+                    Tell us a little about yourself to receive personalised content, announcements and relevant investment opportunities.
+                </p>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center;">
+                <a href="https://www.investegate.co.uk/my-account#profile" class="btn btn-primary">
+                    Complete Profile
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        // Turning off datatables errors and instead putting them in the console
+        if ($.fn.dataTable !== undefined) {
+            $.fn.dataTable.ext.errMode = 'none';
+            $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+                // Need to add some kind of error message alert here to explain what has happened or why data is not showing
+                //$('#DataTables_Table_0 tbody').html('Something went wrong.');
+                //console.log(message);
+            };
+        }
+        var urlPath = window.location.href;
+        var urlOrigin = window.location.origin;
+
+        $('#menu-list').find('a').each(function () {
+            if ($(this).attr('href') == urlPath) {
+                $(this).closest('li').addClass('active')
+            }
+
+            if (urlOrigin + '/' == urlPath && $(this).attr('href') == urlOrigin) {
+                $(this).closest('li').addClass('active')
+            }
+        });
+
+        if (($('#menu-list form').attr('action')) == urlPath) {
+            $('#menu-list form').find('li').addClass('active')
+        }
+    </script>
+    <!-- Pubmatic Pixel -->
+<script>
+    var gaudsrc = function () {
+        var c, d, p = "1689863862771", a = "https://image6.pubmatic.com/AdServer/UCookieSetPug?",
+            b = a + "rd=https%3A//aud.pubmatic.com/AdServer/Artemis%3Fdpid%3D686%26addseg%3D" + p;
+        return "undefined" != typeof window.top.__tcfapi && (window.top.__tcfapi("getTCData", 2, (a, b) => {
+            b && (c = a.tcString, d = a.gdprApplies ? "1" : "0")
+        }, [1, 2, 3]), b = b.replace(a, a + "" + ["gdpr=", d, "&gdpr_consent=", c].join("") + "&")), b
+    },
+        pix = document.createElement("img");
+    pix.src = gaudsrc();
+</script>
+            <script>
+        $('#summary-header').click(function () {
+            if ($('#collapseSummary').hasClass('show')) {
+                $('.ai-summary-toggle').html('');
+            } else {
+                $('.ai-summary-toggle').html('Close X');
+            }
+            $('#collapseSummary').collapse('toggle');
+        });
+
+        // Load RNS Ad
+        $(document).ready(function () {
+            $.get('https://www.investegate.co.uk/ad/rns/get', function (response) {
+                if (response && response !== 'NO_AD') {
+                    $('#ad-rns-content').html(response);
+                }
+            });
+        });
+
+                    // Signup modal logic for non-logged in users
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const storageKey = 'announcements_viewed';
+
+                let announcementsViewed = localStorage.getItem(storageKey);
+
+                //console.log(announcementsViewed);
+                //console.log(isNaN(announcementsViewed));
+                if (!announcementsViewed || isNaN(announcementsViewed)) {
+                    console.log('Setting announcements_viewed to 0');
+                    localStorage.setItem(storageKey, 0);
+                    announcementsViewed = 0;
+                    //console.log(localStorage.getItem('announcements_viewed', 0));
+                }
+
+                let shouldShowModal = false;
+
+                // If viewed 3 announcements already, show modal
+                if (parseInt(announcementsViewed) > 3) {
+                    shouldShowModal = true;
+                    //console.log(shouldShowModal);
+                } else {
+                    localStorage.setItem(storageKey, parseInt(announcementsViewed) + 1);
+                }
+
+                //console.log('Announcements viewed:', parseInt(announcementsViewed));
+
+                if (shouldShowModal) {
+                                            //$('#modal-announcement-limit').modal("show");
+                                    }
+
+            });
+            </script>
+</body>
+
+</html>
