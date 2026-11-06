@@ -49,3 +49,11 @@
 ## Edge hunt (panel) — waves 2-3
 - Logged at 2026-11-06 18:33 UTC
 - 18:34 UTC. All 20 searchers launched (LINC last). Returned, search_complete true per hand-backs: TOMZ (no event: company moved Q3 to 2026-11-12 in a 10:30 ET release today) DCTH VFF QTRX FRVO SOC LFMD HRTX HAIN TNXP VIA TPB. Running: OCUL PRAX MPAA MNDY NRXS EVGO TGTX LINC. One launch (MNDY) refused at the 8-concurrent cap and relaunched.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-06 18:42 UTC
+- 20/20 searchers returned by 18:42 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20; none retried. mode: execution enabled, amc_open. flatten --submit at 18:42 UTC: 4 positions still held from 2026-11-05's book (ETON 87 +17.12%, FNKO 573 +2.30%, HNST 684 +8.03%, OMDA 220 -17.08% unrealised as printed), all closed; flatten reported 'closed'. These amc legs were dated to exit at today's open but were still held at 13:42 ET.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-06 18:42 UTC
+- edge_score and V2 grounded written 18:43 UTC, before the first print. 19 rankable (TOMZ no event). Packs built; four judges, one part. Account flat after 3s.
