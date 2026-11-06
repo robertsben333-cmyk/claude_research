@@ -29,3 +29,7 @@
 - Sealed for 2026-11-06 (Fri) at ~14:40 UTC Thu (intraday spots). 66 scheduled, 27 eligible, 20 drawn (se 4 largest, 20%), 20 hunted, all search_complete; 18 ranked, EGTX (release moved to 11-05 with ANI bid) and TRUE_B (phantom, printed 11-03) not ranked. Top ORK +0.85, bottom HAYPP -1.50; none above floor 2.8.
 - Panel: 4/4 members, 18/18 each, no fallback (sonnet55 skipped hunter definitions). Selected TBCG, OUT1V, HAYPP — all short, 4/4 (pct 98/91/91).
 - Defects: UK FCA join miss on IAG (', S.A.' name, 1.36% sealed as 0.0); one ATT curl refused by auto-mode permission check. anchor_covered 1/20; es 3, pl 0, de 1. Resolve by ~2026-11-13. Pushing to main (EARNINGS_DATA_BRANCH=main).
+
+## Close AMC — 2026-11-06
+- Logged at 2026-11-06 11:16 UTC
+- 11:11 UTC (06:11 ET). Guard mode --require-exit-tif opg exit 0 (amc_open, amc->day). verify: 14 legs, none held, no UNFILLED. close --submit: no leg due today, nothing sent, no refusals. Account reachable. Note: stage E Routine is stopped; E-P trades the account.
