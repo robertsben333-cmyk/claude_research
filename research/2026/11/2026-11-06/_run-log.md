@@ -33,3 +33,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-11-06 14:20 UTC
 - source research/2026/11/2026-11-05/edge-panel, 09:20 EST, 8 picks (AAOI ETON FNKO GRND HNST OMDA SOUN TMDX), fired 09:17 EST (7 min late)
+
+## Stage M — morning exit review — done
+- Logged at 2026-11-06 14:21 UTC
+- 8 names, compiled 09:21 EST: exit_open ETON AAOI SOUN GRND; exit_1000 OMDA FNKO; exit_limit HNST 4.87, TMDX 80.00. Prev morning (2026-11-05) resolved; pool 76 names/11 days review_minus_static -0.551 (t -1.34).
