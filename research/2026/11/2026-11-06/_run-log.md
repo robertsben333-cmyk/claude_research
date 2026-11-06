@@ -61,3 +61,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-06 18:49 UTC
 - 18:48 UTC: all four judges on pinned agents, 19/19 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) HAIN S 99, DCTH L 90, VFF L 90 (3-of-4 rule: HAIN DCTH; VFF 3 of 4 also). Next QTRX S 78. Note written; stage E edge/ absent.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-06 18:50 UTC
+- 18:50 UTC (13:50 ET), after the note: plan, then open --submit --no-flatten. 2 market orders: DCTH long 504 planned (487 filled @ 14.94 at status, partially_filled), VFF long 2601 @ 2.91 filled; gross ~5,050 planned, 99.9% of $15,065 equity. HAIN (selected, short 99) dropped: not shortable at Alpaca. Mean execution cost vs mid +0.153. Exits dated 2026-11-09 (bmo -> market on that day's run). edge_context written.
