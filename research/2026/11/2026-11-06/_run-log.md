@@ -41,3 +41,7 @@
 ## Edge hunt (panel) — 2026-11-06 amc + 2026-11-09 bmo — STARTED
 - Logged at 2026-11-06 18:12 UTC
 - fired 18:06 UTC (13:08 ET, session started late by ~2 min). Universe 65 names (2 amc 11-06, 63 bmo 11-09), 65 baselines sealed 18:13 UTC. Plan: 1 edge-sweep, up to 20 unpriced-searcher, 4 judges; step 3s flatten, step 6b buy.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-11-06 18:21 UTC
+- 18:22 UTC. Sweep: 65 checked, 48 confirmed, 15 unconfirmed (incl. HE amc, CEG AMG WTTR LDI SEAT DOLE BCAX OFIX TLS AIOT CTEV ADCT ISPR MDCX), 2 no event in window (VRTS printed 10-30, MUX ~11-09 amc). Cap 20: unconfirmed shed first, then lowest hunt_priority among confirmed: SBET(48) IONS CEVA SGC TH OPAL NESR KMDA UNIT RDNT KGS IMVT SGI SOHU FERG RBA ROIV NRG KSPI GCMG CNH CGEN B KKR GSL IX TKC WHF shed. Hunted (20): TOMZ (amc today) + FRVO SOC HRTX DCTH QTRX LFMD VFF TNXP HAIN VIA OCUL TPB PRAX MPAA MNDY NRXS EVGO TGTX LINC. MPAA release hour unsettled (call 13:00 ET Mon). Wave 1 (8): TOMZ FRVO SOC HRTX DCTH QTRX LFMD VFF.
