@@ -37,3 +37,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-11-06 14:21 UTC
 - 8 names, compiled 09:21 EST: exit_open ETON AAOI SOUN GRND; exit_1000 OMDA FNKO; exit_limit HNST 4.87, TMDX 80.00. Prev morning (2026-11-05) resolved; pool 76 names/11 days review_minus_static -0.551 (t -1.34).
+
+## Edge hunt (panel) — 2026-11-06 amc + 2026-11-09 bmo — STARTED
+- Logged at 2026-11-06 18:12 UTC
+- fired 18:06 UTC (13:08 ET, session started late by ~2 min). Universe 65 names (2 amc 11-06, 63 bmo 11-09), 65 baselines sealed 18:13 UTC. Plan: 1 edge-sweep, up to 20 unpriced-searcher, 4 judges; step 3s flatten, step 6b buy.
