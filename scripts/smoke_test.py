@@ -919,6 +919,24 @@ def main():
           repr(_sc["p_up"]))
     check("two different companies sharing one word do not match",
           not earch.same_issuer("NORDIC SEMICONDUCTOR ASA", "NORDIC BANK ASA"))
+    # 2026-10-15: ERIC_A and NDA_FI were killed although both reported. Ericsson is
+    # spelled `Ericsson, Telefonab. L M` on the Nasdaq feed, and Nordea (a Helsinki name)
+    # filed under the Stockholm label.
+    check("the Nordic feed's inverted, abbreviated spelling matches its issuer",
+          earch.same_issuer_abbrev(earch.norm("Telefonaktiebolaget LM Ericsson Class A"),
+                                   earch.norm("Ericsson, Telefonab. L M"))
+          and not earch.same_issuer_abbrev(earch.norm("Nordea Bank Abp"),
+                                           earch.norm("Nordea Hypotek AB"))
+          and not earch.same_issuer_abbrev(earch.norm("Svenska Handelsbanken AB Class A"),
+                                           earch.norm("Svenska Cellulosa AB SCA")))
+    check("a Nordic day keeps every Nordic market label (dual listings file under one)",
+          "Main Market, Stockholm" in earch.NASDAQ_NORDIC_LABELS
+          and "Main Market, Helsinki" in earch.NASDAQ_NORDIC_LABELS
+          and not any("Tallinn" in l or "Iceland" in l for l in earch.NASDAQ_NORDIC_LABELS))
+    _ca = [{"issuer": "Nordea Hypotek AB", "issuer_norm": earch.norm("Nordea Hypotek AB"),
+            "ticker_hint": None, "is_results": False, "headline": "Board change"}]
+    check("a near-namesake on the day stops a kill",
+          earch.confirm("se", "2026-10-15", "Nordea Bank Abp", archive=_ca)[0] is None)
     # ITALY IS THE EXCEPTION AND IT WAS MEASURED, not assumed. This assertion used to
     # include "it", on the belief that a day archive implies a kill is reachable. On
     # 2026-09-22 PHILOGEN was found absent from eMarket STORAGE's issuer dropdown and

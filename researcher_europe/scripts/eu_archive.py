@@ -278,6 +278,96 @@ def same_issuer(a, b):
     return len(small) >= 2 and (ta <= tb or tb <= ta)
 
 
+# Words too common in issuer names to identify one: legal forms the normaliser keeps,
+# share-class markers, and sector words two different companies share.
+_GENERIC = {"AB", "ABP", "AS", "ASA", "A S", "OYJ", "PUBL", "CLASS", "SERIES", "SER",
+            "BANK", "BANKEN", "FASTIGHETS", "FASTIGHETSBOLAGET", "FASTIGHETER",
+            "INTERNATIONAL", "NORDIC", "SWEDISH", "INVEST", "INVESTMENT", "CAPITAL",
+            "PROPERTY", "PROPERTIES", "ENERGY", "INDUSTRIES", "TECHNOLOGIES"}
+
+
+def _issuer_tokens(normed):
+    """Tokens of a normalised name with share-class letters, legal forms and runs of
+    single letters folded: `L M` becomes `LM`, `CLASS A` disappears."""
+    toks = (normed or "").split()
+    out, run = [], ""
+    for t in toks:
+        if len(t) == 1:
+            run += t
+            continue
+        if run:
+            out.append(run)
+            run = ""
+        out.append(t)
+    if run and len(run) > 1:
+        out.append(run)
+    res = []
+    for t in out:
+        if t in ("CLASS", "SERIES", "SER"):
+            continue
+        if t in ("AB", "ABP", "ASA", "OYJ", "PUBL", "AS"):
+            continue
+        res.append(t)
+    return res
+
+
+_FOLD = str.maketrans({"Ø": "O", "ø": "o", "Æ": "AE", "æ": "ae", "Å": "A", "å": "a",
+                       "ß": "ss", "Ł": "L", "ł": "l", "Đ": "D", "đ": "d"})
+
+
+def fold(s):
+    """Accents off BEFORE `norm`, which turns every non-ASCII letter into a space.
+    MEASURED 2026-11-05: `Industrivärden, AB` normalised to `INDUSTRIV RDEN`, so the
+    resolver killed Industrivärden's 2026-10-07 interim report."""
+    import unicodedata
+    s = (s or "").translate(_FOLD)
+    return "".join(c for c in unicodedata.normalize("NFKD", s)
+                   if not unicodedata.combining(c))
+
+
+def same_issuer_abbrev(a, b):
+    """`same_issuer` plus the Nasdaq Nordic feed's own spelling of a name.
+
+    MEASURED 2026-11-05. The feed writes Ericsson as `Ericsson, Telefonab. L M` and
+    Volvo as `Volvo, AB`, inverted around a comma and abbreviated. Against the vendor's
+    `Telefonaktiebolaget LM Ericsson Class A` neither a prefix nor a word subset matches,
+    so on 2026-10-15 the resolver wrote `event_occurred: false` on Ericsson's Q3 report.
+    Here every word of the shorter name must match a word of the longer one exactly or
+    by a shared stem of six letters or more (`TELEFONAB` / `TELEFONAKTIEBOLAGET`), after
+    single letters are joined (`L M` -> `LM`) and share-class markers dropped, and the
+    shorter name must keep at least two words. Used by `confirm()` only.
+    """
+    if same_issuer(a, b):
+        return True
+    ta, tb = _issuer_tokens(a), _issuer_tokens(b)
+    if not ta or not tb:
+        return False
+    small, big = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+    if len(small) < 2:
+        return bool(small) and small == big
+    def common(t, u):
+        k = 0
+        while k < min(len(t), len(u)) and t[k] == u[k]:
+            k += 1
+        return k
+
+    def hit(t):
+        # Equal, or an abbreviation: a shared stem of six letters or more covering most
+        # of the shorter word (`TELEFONAB` is `TELEFON` + `AB`, not a strict prefix).
+        return any(t == u or (min(len(t), len(u)) >= 5
+                              and common(t, u) >= max(6, int(0.75 * min(len(t), len(u)))))
+                   for u in big)
+    return all(hit(t) for t in small)
+
+
+def shares_distinctive_word(a, b):
+    """One identifying word in common (five letters or more, not generic). Never a match
+    by itself: it only stops `confirm()` from KILLING a name whose spelling differs."""
+    ta = {t for t in _issuer_tokens(a) if len(t) >= 5 and t not in _GENERIC}
+    tb = {t for t in _issuer_tokens(b) if len(t) >= 5 and t not in _GENERIC}
+    return bool(ta & tb)
+
+
 def _row(market, issuer, isin, ts, headline, category, is_results, how, url,
          ticker_hint=None):
     return {"market": market, "issuer": issuer, "issuer_norm": norm(issuer),
@@ -474,6 +564,14 @@ NASDAQ_MARKETS = {
     "dk": ("Main Market, Copenhagen", "First North Denmark"),
     "fi": ("Main Market, Helsinki", "First North Finland"),
 }
+# A DUAL-LISTED ISSUER FILES UNDER ONE MARKET LABEL ONLY (measured 2026-11-05). Nordea
+# Bank Abp is in this stage's universe as a Helsinki name, and its Q3 report of
+# 2026-10-15 sits in the feed under "Main Market, Stockholm". Filtering the rows on the
+# listing country therefore read the day, found no Nordea row and wrote
+# `event_occurred: false` on a bank that reported that morning. The three Nordic
+# countries are one feed and an issuer is the same company whichever label it filed
+# under, so a Nordic day keeps every Nordic row; the Baltics and Iceland stay out.
+NASDAQ_NORDIC_LABELS = tuple(l for v in NASDAQ_MARKETS.values() for l in v)
 # The issuer's own disclosure category, where it is a periodic results filing. Matched
 # case-insensitively because the feed writes the same category both ways -- `Half Year
 # financial report` and `Half year financial report` both occur in one week's rows.
@@ -546,7 +644,7 @@ def nasdaq_day(d, market, max_pages=None):
     stage may never confuse.
     """
     max_pages = max_pages or NASDAQ_MAX_PAGES
-    want = set(NASDAQ_MARKETS.get(market, ()))
+    want = set(NASDAQ_NORDIC_LABELS) if market in NASDAQ_MARKETS else set()
     out, reached = [], False
     for page in range(max_pages):
         try:
@@ -703,12 +801,26 @@ def confirm(market, d, issuer_name, ticker=None, archive=None, issuer_query=None
         # every retry. None of them is evidence that nothing was published.
         return None, ("source unavailable: " + (MARKETS.get(market, {})
                                                 .get("confirm_name") or "no archive"))
-    key = norm(issuer_name)
+    key = norm(fold(issuer_name))
+
+    def rkey(r):
+        return norm(fold(r.get("issuer"))) if r.get("issuer") else r["issuer_norm"]
+
     mine = [r for r in archive
             if (ticker and r.get("ticker_hint") and
                 r["ticker_hint"].upper() == str(ticker).upper())
-            or same_issuer(key, r["issuer_norm"])]
+            or same_issuer_abbrev(key, rkey(r)) or same_issuer(norm(issuer_name), r["issuer_norm"])]
     if not mine:
+        near = [r for r in archive if shares_distinctive_word(key, rkey(r))]
+        if near:
+            # The day carries an issuer that shares an identifying word with this one.
+            # That is not a confirmation (Nordea Hypotek is not Nordea Bank), and it is
+            # certainly not silence: a kill here is the ERIC_A / NDA_FI mistake of
+            # 2026-10-15. A human call.
+            return None, ("no exact issuer match, but the day carries a near-namesake, "
+                          "so this is NOT a kill. Read it: "
+                          + " | ".join(f"{r['issuer']}: {r['headline'][:60]}"
+                                       for r in near[:3]))
         if market == "de":
             # EQS is searched per issuer, so "not found" can mean the search term
             # missed rather than that nothing was published. That is not a kill.

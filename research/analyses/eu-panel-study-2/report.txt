@@ -1,0 +1,402 @@
+SAMPLE
+  panel-scored live names: 268; usable: 244; days: 19
+  dropped no panel side: 4  ['2026-10-16 INVE_A', '2026-10-28 JYSK', '2026-11-03 ADV', '2026-11-03 SHA0']
+  dropped no event (resolver): 1  ['2026-11-05 INISS_B']
+  dropped not priced/pending: 19  ["2026-11-05 ENX {'pending': True}", "2026-11-06 TBCG {'pending': True}", "2026-11-06 OUT1V {'pending': True}", "2026-11-06 HAYPP {'pending': True}", "2026-11-06 ATT {'pending': True}", "2026-11-06 AMS {'pending': True}", "2026-11-06 GUBRA {'pending': True}", "2026-11-06 DTG {'pending': True}", "2026-11-06 LOG {'pending': True}", "2026-11-06 SCHO {'pending': True}", "2026-11-06 REC {'pending': True}", "2026-11-06 CLNX {'pending': True}"]
+  hunter versions: [('de.v7', 'es.v5', 'fr.v7', 'it.v5', 'nordic.v5', 'pl.v5', 'uk.v7')]
+  sessions: {'amc': 21, 'bmo': 223}
+
+1. RANKING, close(R-1) -> close(R)
+  within-day rho panel_pct_signed       +0.204  perm p 0.003  n 243
+  within-day rho hunter impact_sum      +0.198  perm p 0.004  n 243
+  within-day rho control -run_up_20d    -0.043  perm p 0.527  n 243
+  within-day rho control -run_up_5d     -0.088  perm p 0.190  n 243
+  within-day rho judge opus5      +0.155  perm p 0.016  n 243
+  within-day rho judge opus55     +0.212  perm p 0.002  n 243
+  within-day rho judge sonnet55   +0.213  perm p 0.003  n 243
+  within-day rho judge fable51    +0.203  perm p 0.002  n 243
+  pooled rho |panel_pct| vs signed return +0.098 (does a higher score mean a better-signed trade)
+  pooled rho |panel_pct| vs |move|        +0.146 (does a higher score find bigger movers)
+
+2. SCORE BANDS (signed, gross)
+  control: all long                  n 244  mean  -0.07  med  +0.35  hit  52%  t -0.17  p 0.869
+  all names, panel side              n 244  mean  +1.22  med  +1.31  hit  59%  t +2.99  p 0.003
+  panel_pct 0-30                     n 100  mean  +0.58  med  +0.83  hit  56%  t +0.89  p 0.376  med|move| 3.1
+  panel_pct 30-50                    n  41  mean  +1.90  med  +2.36  hit  63%  t +2.59  p 0.013  med|move| 2.9
+  panel_pct 50-60                    n  33  mean  +0.52  med  +0.45  hit  52%  t +0.52  p 0.607  med|move| 3.6
+  panel_pct 60-70                    n  26  mean  +0.47  med  +0.79  hit  58%  t +0.49  p 0.630  med|move| 3.4
+  panel_pct 70-80                    n  18  mean  +1.43  med  +2.02  hit  56%  t +0.67  p 0.509  med|move| 5.8
+  panel_pct 80-101                   n  26  mean  +4.13  med  +3.15  hit  73%  t +2.71  p 0.012  med|move| 4.5
+  >= 50                              n 103  mean  +1.58  med  +1.50  hit  59%  t +2.34  p 0.021
+  >= 50 vs STOXX                     n 103  mean  +1.40  med  +1.81  hit  60%  t +2.06  p 0.042
+  >= 60                              n  70  mean  +2.08  med  +1.62  hit  63%  t +2.38  p 0.020
+  >= 60 vs STOXX                     n  70  mean  +1.90  med  +2.07  hit  64%  t +2.18  p 0.033
+  >= 70                              n  44  mean  +3.03  med  +2.50  hit  66%  t +2.41  p 0.020
+  >= 70 vs STOXX                     n  44  mean  +2.88  med  +2.70  hit  68%  t +2.28  p 0.028
+  >= 80                              n  26  mean  +4.13  med  +3.15  hit  73%  t +2.71  p 0.012
+  >= 80 vs STOXX                     n  26  mean  +4.02  med  +3.25  hit  73%  t +2.60  p 0.016
+  >= 0 day-clustered: 19 days, mean of day means +0.82, t +1.81, p 0.086, days positive 11/19
+  >= 60 day-clustered: 17 days, mean of day means +2.10, t +1.73, p 0.104, days positive 13/17
+  >= 70 day-clustered: 15 days, mean of day means +2.41, t +1.73, p 0.105, days positive 12/15
+  >= 80 day-clustered: 13 days, mean of day means +4.87, t +3.25, p 0.007, days positive 12/13
+  distribution of panel_pct: {'0-30': 100, '30-50': 41, '50-60': 33, '60-70': 26, '70-80': 18, '80-101': 26}
+  distribution of signed return >=70 (sorted): [-15.1, -13.0, -11.6, -10.1, -7.2, -5.2, -4.2, -3.9, -3.2, -2.1, -2.0, -1.3, -0.4, -0.4, -0.0, 0.2, 0.6, 1.1, 1.2, 1.5, 1.7, 2.3, 2.7, 3.3, 3.6, 4.1, 4.5, 4.5, 5.5, 6.4, 6.6, 6.7, 7.4, 7.5, 7.8, 8.5, 9.2, 9.9, 12.6, 16.5, 18.2, 18.4, 20.0, 20.6]
+
+3. CUTS, ALL NAMES (signed, gross, close->close)
+  -- country
+    se                                 n  80  mean  +1.23  med  +0.97  hit  60%  t +1.51  p 0.134
+    no                                 n  35  mean  +0.61  med  +0.16  hit  51%  t +0.74  p 0.465
+    uk                                 n  34  mean  +0.63  med  +1.34  hit  53%  t +0.65  p 0.519
+    de                                 n  26  mean  +2.30  med  +2.39  hit  62%  t +1.61  p 0.119
+    fi                                 n  22  mean  +2.73  med  +3.39  hit  64%  t +1.83  p 0.081
+    es                                 n  13  mean  +0.86  med  +1.00  hit  54%  t +1.36  p 0.199
+    fr                                 n  12  mean  +1.47  med  +2.11  hit  67%  t +0.64  p 0.538
+    it                                 n   9  mean  -0.61  med  +0.83  hit  56%  t -0.29  p 0.777
+    dk                                 n   7  mean  +0.13  med  +3.00  hit  57%  t +0.06  p 0.958
+    pl                                 n   6  mean  +2.22  med  +2.30  hit  83%  t +1.32  p 0.243
+  -- sector
+    Finance                            n  48  mean  +0.76  med  +0.61  hit  52%  t +1.27  p 0.211
+    Technology Services                n  26  mean  +1.64  med  +2.20  hit  62%  t +0.96  p 0.344
+    Producer Manufacturing             n  23  mean  +0.78  med  +0.55  hit  52%  t +0.60  p 0.554
+    Health Technology                  n  16  mean  +2.18  med  +3.53  hit  69%  t +2.00  p 0.064
+    Consumer Durables                  n  15  mean  +1.76  med  +1.46  hit  60%  t +0.89  p 0.386
+    Retail Trade                       n  14  mean  +0.46  med  +0.68  hit  50%  t +0.19  p 0.851
+    Commercial Services                n  13  mean  +3.85  med  +3.28  hit  85%  t +1.72  p 0.110
+    Electronic Technology              n  11  mean  -0.66  med  +0.21  hit  55%  t -0.26  p 0.801
+    Distribution Services              n  10  mean  +2.04  med  +5.07  hit  60%  t +0.68  p 0.512
+    Process Industries                 n  10  mean  +0.67  med  +0.86  hit  50%  t +0.43  p 0.676
+    Industrial Services                n  10  mean  +3.94  med  +3.79  hit  80%  t +1.72  p 0.120
+    Utilities                          n   8  mean  +1.58  med  +0.26  hit  50%  t +0.78  p 0.458
+    Consumer Services                  n   8  mean  +2.11  med  +1.01  hit  62%  t +1.42  p 0.198
+    Consumer Non-Durables              n   7  mean  -1.44  med  -1.13  hit  43%  t -0.73  p 0.492
+    Transportation                     n   7  mean  +0.74  med  +0.95  hit  57%  t +0.56  p 0.599
+    Non-Energy Minerals                n   6  mean  -1.03  med  +0.48  hit  67%  t -0.39  p 0.711
+    Energy Minerals                    n   6  mean  +0.85  med  +0.04  hit  50%  t +0.64  p 0.551
+    Communications                     n   3  mean  -1.28  med  -1.80  hit  33%  t -0.46  p 0.689
+    Health Services                    n   2  mean  +1.96  med  +1.96  hit 100%  t +1.19  p 0.445
+  -- side
+    long                               n 124  mean  +1.14  med  +1.45  hit  61%  t +2.24  p 0.027
+    short                              n 120  mean  +1.31  med  +1.22  hit  56%  t +2.03  p 0.045
+  -- session
+    bmo                                n 223  mean  +1.13  med  +1.25  hit  58%  t +2.63  p 0.009
+    amc                                n  21  mean  +2.18  med  +2.30  hit  67%  t +1.69  p 0.106
+  -- turnover
+    <$1m                               n  97  mean  +1.58  med  +0.95  hit  58%  t +2.35  p 0.021
+    $1-5m                              n  61  mean  +1.20  med  +1.44  hit  62%  t +1.24  p 0.219
+    $5-25m                             n  48  mean  +0.61  med  +0.49  hit  52%  t +0.75  p 0.459
+    >$25m                              n  38  mean  +1.12  med  +2.09  hit  63%  t +1.52  p 0.137
+  -- anchor (short register names it)
+    False                              n 174  mean  +1.60  med  +1.31  hit  61%  t +3.42  p 0.001
+    True                               n  70  mean  +0.28  med  +1.31  hit  53%  t +0.35  p 0.730
+  -- analysts
+    unknown                            n 145  mean  +1.66  med  +2.25  hit  64%  t +3.18  p 0.002
+    3-7                                n  45  mean  +0.86  med  +0.67  hit  58%  t +0.83  p 0.409
+    8+                                 n  36  mean  +0.65  med  -0.30  hit  44%  t +0.63  p 0.533
+    0-2                                n  18  mean  -0.23  med  -0.38  hit  44%  t -0.15  p 0.886
+  -- 20d vol
+    <25%                               n 103  mean  +1.02  med  +0.87  hit  55%  t +2.09  p 0.039
+    25-40%                             n 100  mean  +0.65  med  +0.89  hit  56%  t +0.90  p 0.369
+    >=40%                              n  40  mean  +3.14  med  +2.71  hit  72%  t +2.75  p 0.009
+  -- judges agree on sign
+    4 of 4                             n 189  mean  +1.25  med  +1.07  hit  59%  t +2.88  p 0.004
+    3 of 4                             n  33  mean  +1.19  med  +1.83  hit  58%  t +0.91  p 0.368
+    2 of 4                             n  19  mean  +1.98  med  +2.30  hit  58%  t +1.08  p 0.294
+    1 of 4                             n   3  mean  -5.21  med  -5.82  hit  33%  t -1.32  p 0.316
+  -- judge spread
+    low (sd<12)                        n 139  mean  +1.42  med  +0.95  hit  58%  t +2.95  p 0.004
+    high                               n 105  mean  +0.96  med  +2.30  hit  59%  t +1.36  p 0.178
+  -- hunter agrees with panel side
+    True                               n 206  mean  +1.29  med  +1.13  hit  57%  t +2.89  p 0.004
+    False                              n  38  mean  +0.84  med  +1.89  hit  66%  t +0.82  p 0.419
+  -- day size
+    18+                                n 151  mean  +1.29  med  +0.88  hit  55%  t +2.51  p 0.013
+    10-17                              n  58  mean  +1.63  med  +2.75  hit  69%  t +1.76  p 0.083
+    1-9                                n  35  mean  +0.27  med  +0.83  hit  57%  t +0.28  p 0.780
+  -- period
+    B 10-26..11-05                     n 141  mean  +1.84  med  +2.03  hit  64%  t +3.61  p 0.000
+    A 10-12..10-23                     n 103  mean  +0.37  med  +0.31  hit  51%  t +0.56  p 0.575
+
+3. CUTS, STRONG >= 70 (signed, gross, close->close)
+  -- country
+    se                                 n  14  mean  +2.46  med  +5.47  hit  57%  t +0.76  p 0.458
+    no                                 n   7  mean  +2.60  med  +2.70  hit  71%  t +1.09  p 0.319
+    de                                 n   7  mean  +1.34  med  +0.61  hit  71%  t +1.51  p 0.181
+    fr                                 n   4  mean  +6.69  med  +3.41  hit 100%  t +1.72  p 0.184
+    fi                                 n   4  mean  +6.84  med  +6.09  hit  50%  t +1.33  p 0.276
+    uk                                 n   3  mean  +5.94  med  +6.69  hit 100%  t +2.36  p 0.142
+    es                                 n   3  mean  +2.18  med  +1.07  hit  67%  t +1.30  p 0.323
+    it                                 n   2  mean  -3.67  med  -3.67  hit   0%  t -2.34  p 0.257
+  -- sector
+    Process Industries                 n   6  mean  +1.49  med  +0.86  hit  50%  t +1.10  p 0.321
+    Retail Trade                       n   5  mean  -1.77  med  -1.33  hit  40%  t -0.32  p 0.768
+    Finance                            n   4  mean  +3.47  med  +7.07  hit  75%  t +0.76  p 0.504
+    Producer Manufacturing             n   4  mean  +4.73  med  +5.37  hit 100%  t +3.85  p 0.031
+    Technology Services                n   4  mean  +3.51  med  +0.34  hit  50%  t +0.57  p 0.611
+    Consumer Durables                  n   3  mean  -1.73  med  -2.02  hit  33%  t -1.12  p 0.378
+    Commercial Services                n   3  mean +11.07  med +12.60  hit 100%  t +1.96  p 0.189
+    Health Technology                  n   3  mean  +1.78  med  +1.25  hit  67%  t +1.23  p 0.344
+    Industrial Services                n   3  mean +12.02  med  +9.24  hit 100%  t +3.78  p 0.063
+    Non-Energy Minerals                n   2  mean  -3.79  med  -3.79  hit  50%  t -0.41  p 0.753
+    Electronic Technology              n   2  mean  +9.21  med  +9.21  hit 100%  t +1.02  p 0.493
+    Distribution Services              n   1  mean  +7.50  med  +7.50  hit 100%  t  +nan  p nan
+    Consumer Non-Durables              n   1  mean  +3.30  med  +3.30  hit 100%  t  +nan  p nan
+    Energy Minerals                    n   1  mean  -3.17  med  -3.17  hit   0%  t  +nan  p nan
+    Health Services                    n   1  mean  +3.60  med  +3.60  hit 100%  t  +nan  p nan
+    Transportation                     n   1  mean  -5.23  med  -5.23  hit   0%  t  +nan  p nan
+  -- side
+    short                              n  25  mean  +2.63  med  +3.30  hit  68%  t +1.73  p 0.097
+    long                               n  19  mean  +3.55  med  +1.50  hit  63%  t +1.66  p 0.115
+  -- session
+    bmo                                n  39  mean  +2.76  med  +2.70  hit  64%  t +2.04  p 0.049
+    amc                                n   5  mean  +5.13  med  +2.31  hit  80%  t +1.52  p 0.202
+  -- turnover
+    <$1m                               n  20  mean  +4.14  med  +3.43  hit  70%  t +1.96  p 0.065
+    $1-5m                              n  12  mean  +2.96  med  +3.60  hit  67%  t +1.03  p 0.324
+    $5-25m                             n   8  mean  +0.59  med  +0.32  hit  50%  t +0.53  p 0.611
+    >$25m                              n   4  mean  +2.53  med  +3.45  hit  75%  t +1.25  p 0.300
+  -- anchor (short register names it)
+    False                              n  27  mean  +5.57  med  +2.70  hit  78%  t +3.70  p 0.001
+    True                               n  17  mean  -1.00  med  -0.44  hit  47%  t -0.54  p 0.595
+  -- analysts
+    unknown                            n  28  mean  +3.59  med  +3.00  hit  68%  t +2.55  p 0.017
+    3-7                                n   8  mean  +1.96  med  +2.56  hit  62%  t +0.46  p 0.657
+    8+                                 n   5  mean  +2.18  med  +1.50  hit  60%  t +1.33  p 0.253
+    0-2                                n   3  mean  +2.05  med  +1.25  hit  67%  t +0.25  p 0.824
+  -- 20d vol
+    25-40%                             n  21  mean  +2.73  med  +2.31  hit  62%  t +1.42  p 0.171
+    >=40%                              n  12  mean  +5.89  med  +4.53  hit  83%  t +3.13  p 0.010
+    <25%                               n  11  mean  +0.46  med  +1.07  hit  55%  t +0.18  p 0.864
+  -- judges agree on sign
+    4 of 4                             n  44  mean  +3.03  med  +2.50  hit  66%  t +2.41  p 0.020
+  -- judge spread
+    low (sd<12)                        n  32  mean  +4.09  med  +3.00  hit  75%  t +2.81  p 0.008
+    high                               n  12  mean  +0.20  med  -0.21  hit  42%  t +0.09  p 0.933
+  -- hunter agrees with panel side
+    True                               n  44  mean  +3.03  med  +2.50  hit  66%  t +2.41  p 0.020
+  -- day size
+    18+                                n  32  mean  +3.69  med  +2.50  hit  62%  t +2.48  p 0.019
+    1-9                                n   7  mean  +2.92  med  +4.55  hit  86%  t +0.95  p 0.380
+    10-17                              n   5  mean  -1.02  med  +0.21  hit  60%  t -0.27  p 0.802
+  -- period
+    B 10-26..11-05                     n  30  mean  +3.27  med  +2.02  hit  67%  t +2.39  p 0.024
+    A 10-12..10-23                     n  14  mean  +2.51  med  +5.47  hit  64%  t +0.93  p 0.371
+
+3. CUTS, >= 60 (signed, gross, close->close)
+  -- country
+    se                                 n  25  mean  +1.00  med  +0.92  hit  60%  t +0.53  p 0.598
+    de                                 n  10  mean  +1.19  med  +1.95  hit  70%  t +0.78  p 0.455
+    no                                 n   9  mean  +3.25  med  +4.34  hit  78%  t +1.72  p 0.124
+    fi                                 n   8  mean  +4.96  med  +4.92  hit  62%  t +1.76  p 0.122
+    uk                                 n   6  mean  +3.37  med  +3.13  hit  67%  t +1.80  p 0.132
+    fr                                 n   5  mean  +5.33  med  +2.31  hit  80%  t +1.61  p 0.182
+    es                                 n   4  mean  +1.11  med  +0.53  hit  50%  t +0.70  p 0.536
+    it                                 n   2  mean  -3.67  med  -3.67  hit   0%  t -2.34  p 0.257
+    pl                                 n   1  mean  -4.51  med  -4.51  hit   0%  t  +nan  p nan
+  -- sector
+    Producer Manufacturing             n   8  mean  +2.39  med  +5.37  hit  75%  t +1.07  p 0.319
+    Technology Services                n   7  mean  +2.73  med  +0.92  hit  57%  t +0.80  p 0.453
+    Finance                            n   7  mean  +1.77  med  +6.17  hit  57%  t +0.62  p 0.560
+    Retail Trade                       n   7  mean  -0.62  med  -1.33  hit  43%  t -0.15  p 0.883
+    Commercial Services                n   7  mean  +5.93  med  +3.48  hit  86%  t +1.91  p 0.105
+    Process Industries                 n   6  mean  +1.49  med  +0.86  hit  50%  t +1.10  p 0.321
+    Health Technology                  n   5  mean  +1.20  med  +1.25  hit  60%  t +1.03  p 0.360
+    Industrial Services                n   5  mean  +7.62  med  +8.45  hit 100%  t +2.37  p 0.077
+    Electronic Technology              n   4  mean  +5.03  med  +1.02  hit  75%  t +1.14  p 0.337
+    Consumer Durables                  n   3  mean  -1.73  med  -2.02  hit  33%  t -1.12  p 0.378
+    Distribution Services              n   3  mean  -1.95  med  -2.93  hit  33%  t -0.38  p 0.744
+    Non-Energy Minerals                n   3  mean  -2.47  med  +0.16  hit  67%  t -0.45  p 0.697
+    Transportation                     n   2  mean  -0.45  med  -0.45  hit  50%  t -0.09  p 0.941
+    Consumer Non-Durables              n   1  mean  +3.30  med  +3.30  hit 100%  t  +nan  p nan
+    Energy Minerals                    n   1  mean  -3.17  med  -3.17  hit   0%  t  +nan  p nan
+    Health Services                    n   1  mean  +3.60  med  +3.60  hit 100%  t  +nan  p nan
+  -- side
+    short                              n  39  mean  +2.32  med  +2.73  hit  69%  t +2.24  p 0.031
+    long                               n  31  mean  +1.78  med  +0.61  hit  55%  t +1.18  p 0.246
+  -- session
+    bmo                                n  63  mean  +1.84  med  +1.50  hit  62%  t +1.98  p 0.052
+    amc                                n   7  mean  +4.25  med  +2.31  hit  71%  t +1.66  p 0.147
+  -- turnover
+    <$1m                               n  30  mean  +2.93  med  +2.52  hit  67%  t +1.91  p 0.066
+    $1-5m                              n  17  mean  +2.16  med  +1.50  hit  65%  t +1.05  p 0.310
+    $5-25m                             n  16  mean  +0.17  med  +0.32  hit  50%  t +0.14  p 0.887
+    >$25m                              n   7  mean  +2.59  med  +3.30  hit  71%  t +1.99  p 0.093
+  -- anchor (short register names it)
+    False                              n  44  mean  +3.51  med  +1.62  hit  70%  t +3.23  p 0.002
+    True                               n  26  mean  -0.36  med  +1.30  hit  50%  t -0.26  p 0.794
+  -- analysts
+    unknown                            n  44  mean  +2.97  med  +3.00  hit  68%  t +3.02  p 0.004
+    3-7                                n  13  mean  +0.42  med  +0.61  hit  54%  t +0.15  p 0.883
+    8+                                 n   9  mean  +0.23  med  -0.44  hit  44%  t +0.18  p 0.862
+    0-2                                n   4  mean  +1.77  med  +1.08  hit  75%  t +0.31  p 0.778
+  -- 20d vol
+    25-40%                             n  34  mean  +1.54  med  +1.06  hit  53%  t +1.18  p 0.247
+    <25%                               n  19  mean  +0.88  med  +1.07  hit  63%  t +0.54  p 0.597
+    >=40%                              n  17  mean  +4.49  med  +4.51  hit  82%  t +2.76  p 0.014
+  -- judges agree on sign
+    4 of 4                             n  70  mean  +2.08  med  +1.62  hit  63%  t +2.38  p 0.020
+  -- judge spread
+    low (sd<12)                        n  46  mean  +3.01  med  +2.07  hit  67%  t +2.71  p 0.009
+    high                               n  24  mean  +0.28  med  +0.41  hit  54%  t +0.21  p 0.835
+  -- hunter agrees with panel side
+    True                               n  69  mean  +2.06  med  +1.50  hit  62%  t +2.32  p 0.023
+    False                              n   1  mean  +3.48  med  +3.48  hit 100%  t  +nan  p nan
+  -- day size
+    18+                                n  50  mean  +2.09  med  +1.22  hit  58%  t +1.94  p 0.059
+    1-9                                n  10  mean  +2.25  med  +2.90  hit  70%  t +1.02  p 0.334
+    10-17                              n  10  mean  +1.84  med  +3.54  hit  80%  t +0.89  p 0.397
+  -- period
+    B 10-26..11-05                     n  46  mean  +2.34  med  +1.55  hit  63%  t +2.35  p 0.023
+    A 10-12..10-23                     n  24  mean  +1.57  med  +1.67  hit  62%  t +0.92  p 0.368
+
+3b. LEADS FROM THE FIRST STUDY (written 2026-10-21 on event days 10-12..10-20), on the 198 names of event days 10-21..11-05 only
+  20d vol >= 40%                     n  34  mean  +2.78  med  +2.55  hit  71%  t +2.16  p 0.038
+  20d vol < 40%                      n 164  mean  +1.27  med  +1.00  hit  58%  t +2.68  p 0.008
+  low judge spread (sd<12)           n 112  mean  +1.52  med  +0.89  hit  58%  t +2.76  p 0.007
+  high judge spread                  n  86  mean  +1.54  med  +2.50  hit  63%  t +2.04  p 0.045
+  4 of 4 agree                       n 153  mean  +1.42  med  +1.07  hit  60%  t +2.87  p 0.005
+  3 or fewer agree                   n  45  mean  +1.89  med  +1.89  hit  60%  t +1.79  p 0.081
+  anchor covered                     n  56  mean  +0.65  med  +1.31  hit  54%  t +0.70  p 0.485
+  no anchor                          n 142  mean  +1.87  med  +1.41  hit  63%  t +3.67  p 0.000
+  0-2 analysts                       n  12  mean  +1.94  med  +0.90  hit  58%  t +1.07  p 0.306
+  >= 70                              n  40  mean  +3.15  med  +2.02  hit  65%  t +2.38  p 0.022
+  < 70                               n 158  mean  +1.12  med  +1.10  hit  59%  t +2.47  p 0.014
+  all                                n 198  mean  +1.53  med  +1.40  hit  60%  t +3.39  p 0.001
+  within-day rho panel on these days +0.207, perm p 0.006, n 198
+  overlap: share of no-anchor names among vol>=40%: 21/40 ; no-anchor by country: {'de': '11/26', 'dk': '6/7', 'es': '13/13', 'fi': '21/22', 'fr': '10/12', 'it': '6/9', 'no': '31/35', 'pl': '6/6', 'se': '56/80', 'uk': '14/34'}
+  all days no anchor & vol<40                 n 153  mean  +1.19  med  +0.95  hit  59%  t +2.58  p 0.011
+  all days anchor & vol<40                    n  51  mean  -0.18  med  +0.00  hit  47%  t -0.18  p 0.860
+  all days no anchor & vol>=40                n  21  mean  +4.60  med  +3.54  hit  76%  t +2.46  p 0.023
+  all days anchor & vol>=40                   n  19  mean  +1.54  med  +2.51  hit  68%  t +1.29  p 0.212
+
+3c. LEGS BY SESSION (all names, entry close R-1)
+  bmo gap                                n 223  mean  +0.59  med  +0.16  hit  52%  t +2.28  p 0.024
+  bmo open -> close R                    n 223  mean  +0.57  med  +0.66  hit  57%  t +1.89  p 0.059
+  bmo close R -> R+1                     n 205  mean  -0.20  med  +0.00  hit  50%  t -0.94  p 0.350
+  amc gap                                n  21  mean  +1.65  med  +0.28  hit  62%  t +1.08  p 0.293
+  amc open -> close R                    n  21  mean  +0.28  med  +0.79  hit  57%  t +0.26  p 0.796
+  amc close R -> R+1                     n  20  mean  +3.15  med  +1.29  hit  70%  t +1.61  p 0.124
+
+4. ENTRY x EXIT, ALL: mean signed gross %, intraday columns on the 221 of 244 names with a full 5m tape; R+k columns on names with that close
+  entry \ exit        open R      +15m      +30m       +1h       +2h       +4h       +6h   close R close R+1 close R+2 close R+5
+  panel time D-1       +0.59     +0.77     +0.82     +0.92     +0.96     +1.01     +1.02     +1.11     +1.54     +1.43     +1.21
+  last 60m D-1         +0.61     +0.79     +0.84     +0.94     +0.98     +1.03     +1.04     +1.12     +1.56     +1.45     +1.23
+  last 30m D-1         +0.63     +0.82     +0.87     +0.97     +1.01     +1.06     +1.07     +1.15     +1.55     +1.45     +1.23
+  close D-1            +0.62     +0.81     +0.86     +0.96     +1.00     +1.05     +1.06     +1.14     +1.50     +1.39     +1.16
+  close R-1            +0.56     +0.75     +0.80     +0.90     +0.94     +0.99     +1.00     +1.09     +1.44     +1.33     +1.14
+  open R                   -     +0.20     +0.23     +0.32     +0.36     +0.42     +0.42     +0.51     +0.81     +0.63     +0.64
+  paired close R minus open R exit: +0.54 pt, n 244, t +1.90, p 0.058
+  paired entry at panel time minus at close R-1: +0.04 pt, n 244, t +0.61, p 0.541
+  gap  close R-1 -> open R           n 244  mean  +0.68  med  +0.16  hit  53%  t +2.52  p 0.012
+  session open R -> close R          n 244  mean  +0.54  med  +0.71  hit  57%  t +1.88  p 0.061
+  first hour open -> +1h             n 222  mean  +0.32  med  +0.23  hit  56%  t +1.29  p 0.197
+  +1h -> close R                     n 222  mean  +0.18  med  +0.00  hit  48%  t +0.78  p 0.439
+  day 2 close R -> close R+1         n 225  mean  +0.10  med  +0.09  hit  52%  t +0.36  p 0.719
+  close R -> close R+5               n 166  mean  +0.06  med  +0.40  hit  52%  t +0.13  p 0.898
+
+4. ENTRY x EXIT, >=60: mean signed gross %, intraday columns on the 62 of 70 names with a full 5m tape; R+k columns on names with that close
+  entry \ exit        open R      +15m      +30m       +1h       +2h       +4h       +6h   close R close R+1 close R+2 close R+5
+  panel time D-1       +1.02     +1.09     +1.17     +1.34     +1.34     +1.32     +1.31     +1.67     +3.27     +3.70     +3.58
+  last 60m D-1         +1.05     +1.11     +1.19     +1.36     +1.36     +1.34     +1.33     +1.70     +3.29     +3.73     +3.55
+  last 30m D-1         +1.11     +1.17     +1.25     +1.43     +1.43     +1.40     +1.39     +1.75     +3.28     +3.75     +3.60
+  close D-1            +1.04     +1.11     +1.19     +1.36     +1.37     +1.33     +1.32     +1.69     +3.21     +3.69     +3.51
+  close R-1            +1.06     +1.13     +1.20     +1.37     +1.38     +1.35     +1.34     +1.70     +3.23     +3.71     +3.64
+  open R                   -     +0.05     +0.05     +0.18     +0.21     +0.18     +0.14     +0.52     +1.94     +2.17     +2.62
+  paired close R minus open R exit: +0.71 pt, n 70, t +1.08, p 0.286
+  paired entry at panel time minus at close R-1: -0.04 pt, n 70, t -0.30, p 0.765
+  gap  close R-1 -> open R           n  70  mean  +1.37  med  +0.21  hit  57%  t +2.09  p 0.040
+  session open R -> close R          n  70  mean  +0.62  med  +0.81  hit  56%  t +0.93  p 0.355
+  first hour open -> +1h             n  62  mean  +0.18  med  +0.12  hit  53%  t +0.30  p 0.765
+  +1h -> close R                     n  62  mean  +0.33  med  +0.89  hit  53%  t +0.52  p 0.608
+  day 2 close R -> close R+1         n  60  mean  +0.82  med  +0.10  hit  52%  t +1.09  p 0.280
+  close R -> close R+5               n  45  mean  +1.53  med  +1.18  hit  62%  t +1.71  p 0.095
+
+4. ENTRY x EXIT, >=70: mean signed gross %, intraday columns on the 40 of 44 names with a full 5m tape; R+k columns on names with that close
+  entry \ exit        open R      +15m      +30m       +1h       +2h       +4h       +6h   close R close R+1 close R+2 close R+5
+  panel time D-1       +2.02     +1.93     +2.13     +2.10     +2.28     +2.20     +2.33     +2.82     +5.04     +6.18     +5.19
+  last 60m D-1         +2.02     +1.92     +2.12     +2.09     +2.27     +2.20     +2.32     +2.81     +5.02     +6.17     +5.13
+  last 30m D-1         +1.97     +1.88     +2.07     +2.05     +2.22     +2.15     +2.28     +2.76     +4.98     +6.17     +5.16
+  close D-1            +1.85     +1.77     +1.97     +1.94     +2.12     +2.04     +2.17     +2.66     +4.83     +6.03     +5.04
+  close R-1            +1.85     +1.76     +1.95     +1.92     +2.10     +2.02     +2.15     +2.65     +4.83     +6.00     +5.18
+  open R                   -     -0.10     -0.03     -0.12     +0.10     +0.05     +0.12     +0.64     +2.71     +3.29     +3.26
+  paired close R minus open R exit: +0.78 pt, n 44, t +0.82, p 0.414
+  paired entry at panel time minus at close R-1: +0.17 pt, n 44, t +1.06, p 0.294
+  gap  close R-1 -> open R           n  44  mean  +2.25  med  +0.36  hit  59%  t +2.42  p 0.020
+  session open R -> close R          n  44  mean  +0.66  med  +0.90  hit  57%  t +0.69  p 0.495
+  first hour open -> +1h             n  40  mean  -0.12  med  -0.06  hit  48%  t -0.14  p 0.891
+  +1h -> close R                     n  40  mean  +0.71  med  +2.02  hit  55%  t +0.80  p 0.430
+  day 2 close R -> close R+1         n  38  mean  +1.65  med  +0.21  hit  53%  t +1.47  p 0.149
+  close R -> close R+5               n  29  mean  +2.33  med  +1.20  hit  59%  t +1.80  p 0.083
+
+4. ENTRY x EXIT, >=80: mean signed gross %, intraday columns on the 25 of 26 names with a full 5m tape; R+k columns on names with that close
+  entry \ exit        open R      +15m      +30m       +1h       +2h       +4h       +6h   close R close R+1 close R+2 close R+5
+  panel time D-1       +2.87     +3.02     +3.52     +3.33     +3.57     +3.59     +3.47     +4.01     +7.44     +9.07     +9.04
+  last 60m D-1         +2.92     +3.07     +3.57     +3.39     +3.62     +3.65     +3.52     +4.06     +7.50     +9.15     +9.09
+  last 30m D-1         +2.82     +2.98     +3.48     +3.30     +3.54     +3.55     +3.44     +3.97     +7.43     +9.15     +9.12
+  close D-1            +2.49     +2.65     +3.15     +2.97     +3.21     +3.22     +3.10     +3.64     +7.04     +8.73     +8.70
+  close R-1            +2.42     +2.58     +3.06     +2.87     +3.12     +3.13     +3.02     +3.56     +6.97     +8.62     +8.87
+  open R                   -     +0.11     +0.42     +0.14     +0.46     +0.50     +0.31     +0.90     +4.87     +5.50     +6.87
+  paired close R minus open R exit: +1.46 pt, n 26, t +1.13, p 0.268
+  paired entry at panel time minus at close R-1: +0.42 pt, n 26, t +1.83, p 0.080
+  gap  close R-1 -> open R           n  26  mean  +2.68  med  +0.81  hit  58%  t +1.99  p 0.058
+  session open R -> close R          n  26  mean  +1.25  med  +0.03  hit  50%  t +0.93  p 0.360
+  first hour open -> +1h             n  25  mean  +0.14  med  +0.15  hit  60%  t +0.11  p 0.917
+  +1h -> close R                     n  25  mean  +0.70  med  +2.66  hit  52%  t +0.65  p 0.521
+  day 2 close R -> close R+1         n  23  mean  +2.84  med  +1.56  hit  57%  t +1.60  p 0.124
+  close R -> close R+5               n  16  mean  +4.47  med  +3.57  hit  81%  t +2.71  p 0.016
+
+5. COSTS
+  Corwin-Schultz full spread (round trip), median 0.64%, by turnover band:
+    <$1m     n  97 median 0.74%  mean 0.98%
+    $1-5m    n  61 median 0.66%  mean 0.77%
+    $5-25m   n  48 median 0.51%  mean 0.57%
+    >$25m    n  38 median 0.44%  mean 0.45%
+  all gross                          n 244  mean  +1.22  med  +1.31  hit  59%  t +2.99  p 0.003
+  all net CS+0.10                    n 244  mean  +0.36  med  +0.43  hit  54%  t +0.88  p 0.381
+  all net CS+0.10+UK stamp           n 244  mean  +0.32  med  +0.43  hit  53%  t +0.79  p 0.429
+  all net flat 0.40                  n 244  mean  +0.82  med  +0.91  hit  57%  t +2.01  p 0.045
+  >=60 gross                         n  70  mean  +2.08  med  +1.62  hit  63%  t +2.38  p 0.020
+  >=60 net CS+0.10                   n  70  mean  +1.14  med  +0.96  hit  56%  t +1.32  p 0.192
+  >=60 net CS+0.10+UK stamp          n  70  mean  +1.13  med  +0.96  hit  56%  t +1.30  p 0.198
+  >=60 net flat 0.40                 n  70  mean  +1.68  med  +1.22  hit  60%  t +1.92  p 0.059
+  >=70 gross                         n  44  mean  +3.03  med  +2.50  hit  66%  t +2.41  p 0.020
+  >=70 net CS+0.10                   n  44  mean  +2.00  med  +1.44  hit  59%  t +1.61  p 0.115
+  >=70 net CS+0.10+UK stamp          n  44  mean  +1.98  med  +1.44  hit  59%  t +1.60  p 0.117
+  >=70 net flat 0.40                 n  44  mean  +2.63  med  +2.10  hit  64%  t +2.10  p 0.042
+  >=80 gross                         n  26  mean  +4.13  med  +3.15  hit  73%  t +2.71  p 0.012
+  >=80 net CS+0.10                   n  26  mean  +2.98  med  +1.79  hit  62%  t +1.98  p 0.059
+  >=80 net CS+0.10+UK stamp          n  26  mean  +2.96  med  +1.79  hit  62%  t +1.97  p 0.060
+  >=80 net flat 0.40                 n  26  mean  +3.73  med  +2.75  hit  69%  t +2.44  p 0.022
+
+6. STRATEGY: chosen on period A (10-12..10-23), tested on period B (10-26..11-05)
+  A: 103 names over 10 days; B: 141 names over 9 days
+  135 candidates (threshold x filter x exit), net of CS spread + 0.10. Top 12 by t in A:
+   >=70 long only      close R+1     A n   7  +7.24 t +3.04 | B n   9  +1.65 hit  44% t +0.41 p 0.694
+   >=70 long only      close R       A n   7  +6.90 t +2.24 | B n  12  +0.15 hit  42% t +0.05 p 0.957
+   >=80 long only      close R+1     A n   5  +7.44 t +2.21 | B n   5  -0.17 hit  40% t -0.06 p 0.953
+   >=70 low spread     close R+1     A n  10  +4.70 t +2.15 | B n  19  +5.23 hit  58% t +1.63 p 0.121
+   >=70 long only      +1h           A n   7  +5.06 t +2.00 | B n  10  +0.05 hit  40% t +0.02 p 0.981
+   >=80 none           close R+1     A n   9  +4.22 t +1.77 | B n  14  +6.74 hit  57% t +1.79 p 0.097
+   >=80 4 of 4 agree   close R+1     A n   9  +4.22 t +1.77 | B n  14  +6.74 hit  57% t +1.79 p 0.097
+   >=80 low spread     close R+1     A n   9  +4.22 t +1.77 | B n  14  +6.74 hit  57% t +1.79 p 0.097
+   >=80 hunter agrees  close R+1     A n   9  +4.22 t +1.77 | B n  14  +6.74 hit  57% t +1.79 p 0.097
+   >=70 long only      open R        A n   7  +2.62 t +1.73 | B n  12  +1.43 hit  42% t +0.87 p 0.403
+   >=80 long only      close R       A n   5  +7.00 t +1.57 | B n   6  -1.09 hit  33% t -0.48 p 0.652
+   >=80 long only      +1h           A n   5  +5.50 t +1.51 | B n   6  -1.55 hit  17% t -0.57 p 0.590
+  rank correlation of candidate means A vs B over 135 candidates: -0.065  (near zero = in-sample choice does not carry)
+  mean B return of A's top 10: +3.53; of all candidates: +1.50
+
+  The standing rule (>=70, entry close R-1, exit close R), net of CS+0.10, per half:
+   A >=70 net                         n  14  mean  +1.35  med  +2.76  hit  64%  t +0.51  p 0.620
+   A >=70 gross                       n  14  mean  +2.51  med  +5.47  hit  64%  t +0.93  p 0.371
+   B >=70 net                         n  30  mean  +2.30  med  +1.24  hit  57%  t +1.68  p 0.103
+   B >=70 gross                       n  30  mean  +3.27  med  +2.02  hit  67%  t +2.39  p 0.024
+   all >=70 net                       n  44  mean  +2.00  med  +1.44  hit  59%  t +1.61  p 0.115
+   all >=70 gross                     n  44  mean  +3.03  med  +2.50  hit  66%  t +2.41  p 0.020
+
+7. DAY-LEVEL BOOK (equal weight within day, net CS+0.10, close R-1 -> close R)
+  >=60 exit close R : 17 days with a call, mean/day +1.08, days up 12/17, t +0.86, p 0.401, compounded fully invested +17.4%
+  >=60 exit open R  : 17 days with a call, mean/day -0.15, days up 10/17, t -0.18, p 0.863, compounded fully invested -3.4%
+  >=70 exit close R : 15 days with a call, mean/day +1.32, days up 10/15, t +0.93, p 0.370, compounded fully invested +19.1%
+  >=70 exit open R  : 15 days with a call, mean/day +0.61, days up 9/15, t +0.59, p 0.563, compounded fully invested +8.4%
+  >=80 exit close R : 13 days with a call, mean/day +3.64, days up 9/13, t +2.33, p 0.038, compounded fully invested +56.5%
+  >=80 exit open R  : 13 days with a call, mean/day +1.59, days up 8/13, t +1.18, p 0.260, compounded fully invested +21.1%
