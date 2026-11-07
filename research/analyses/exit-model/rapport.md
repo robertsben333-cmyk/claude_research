@@ -126,3 +126,18 @@ Scripts in `scripts/` (ook op branch `claude/project-thread-k81smj`, `research/a
 - Goyal & Saretto, via [RePEc](https://ideas.repec.org/a/eee/empfin/v40y2017icp220-235.html) (overschatting van volatiliteit na earnings)
 - Michels, [Retail investor trade and the pricing of earnings](https://link.springer.com/article/10.1007/s11142-024-09825-9), Review of Accounting Studies; Friedman & Zeng, [Retail Investor Trading and Market Reactions to Earnings Announcements](https://scholarspace.manoa.hawaii.edu/items/ac246f3a-13bf-43f8-b5c0-55a302f690e9)
 - Zhang (2008), [Analyst responsiveness and post-earnings-announcement drift](https://business.columbia.edu/sites/default/files-efs/pubfiles/3737/zhang.pdf), JAE
+
+## Vervolg (7 november): amc verkopen op de opening of 1 tot 2 minuten later
+
+Script `scripts/amc_minutes.py`, uitvoer `amc-minutes.txt`. Koers om 09:31 = slot van de minuutbar van 09:30, enzovoort. Verschil met verkopen op de opening, in punten aan de kant van de positie (positief = later is beter).
+
+| Groep | n | 09:31 | 09:32 | 09:33 | 09:35 |
+|---|---|---|---|---|---|
+| Markt, amc-gaps ≥2%, kant van de gap, t/m 27 okt | 153 (27 dagen) | −0,28 (t −1,5) | −0,16 | −0,42 | −0,58 |
+| Markt, idem, 28 okt t/m 6 nov | 569 (7 dagen) | **−0,66 (t over dagen −3,0)** | **−0,56 (t over dagen −2,4)** | −0,50 | −0,42 |
+| E-P v2, alle | 68 | +0,10 | −0,30 | −0,40 | −0,37 |
+| E-P v2, sterk | 22 | +1,21 (t 1,6) | +0,63 | +0,30 | +0,46 |
+| E-P v3, alle | 69 | −0,44 | +0,12 | −0,13 | −0,52 |
+| E-P v3, sterk | 14 | −0,45 | +1,26 | +1,56 | +1,81 |
+
+Op de hele markt is de opening de beste prijs voor wie aan de kant van de gap zit. Al in de eerste minuten geeft de koers gemiddeld een halve punt terug, en in de nieuwe periode is dat duidelijk significant. Op onze calls is het ruis: de tekens wisselen tussen v2 en v3 en tussen 09:31 en 09:32, en geen cel haalt t 2. Bij v2 deed 09:32 het slechter bij posities die op de opening verlies stonden (−0,76, n 35, t −1,9). Bij v3 was dat juist beter. Conclusie: een of twee minuten wachten levert niets op, en op de markt als geheel kost het geld. Een kanttekening: een order die in de pre-market klaarstaat, wordt in de praktijk rond 09:30 tot 09:31 gevuld, dus de echte "opening" ligt al iets later dan de openingsprint.
