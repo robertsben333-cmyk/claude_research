@@ -1,0 +1,83 @@
+# Exit model, pre-registered analysis
+
+market sample |gap|>=2: train 221 events / 32 days, holdout 1472 / 13 days
+M-B dropped (wrong sign in training): ['F1', 'F2', 'F5', 'F6', 'F7', 'F10']
+M-B coefficients: {'const': np.float64(-0.9), 'F3': np.float64(-0.019), 'F4': np.float64(-0.097), 'F8': np.float64(1.064), 'F9': np.float64(0.154)}
+
+## Test 1: market-wide, holdout (primary = M-A vs Y1)
+MA Y1 train: {'n': 221, 'days': 32, 'rho': 0.007, 'p': 0.2727}
+MA Y1 holdout: {'n': 1472, 'days': 13, 'rho': -0.019, 'p': 0.6927}
+MA Y2 train: {'n': 221, 'days': 32, 'rho': 0.117, 'p': 0.085}
+MA Y2 holdout: {'n': 1472, 'days': 13, 'rho': -0.053, 'p': 0.9828}
+MA Y3 train: {'n': 221, 'days': 32, 'rho': 0.01, 'p': 0.8138}
+MA Y3 holdout: {'n': 1472, 'days': 13, 'rho': 0.012, 'p': 0.195}
+  MA Y1 holdout amc: {'n': 833, 'days': 11, 'rho': 0.034, 'p': 0.1146}
+  MA Y1 holdout bmo: {'n': 639, 'days': 13, 'rho': -0.085, 'p': 0.982}
+MB Y1 train: {'n': 221, 'days': 32, 'rho': 0.134, 'p': 0.0094}
+MB Y1 holdout: {'n': 1472, 'days': 13, 'rho': 0.048, 'p': 0.0202}
+MB Y2 train: {'n': 221, 'days': 32, 'rho': 0.144, 'p': 0.006}
+MB Y2 holdout: {'n': 1472, 'days': 13, 'rho': -0.061, 'p': 0.9902}
+MB Y3 train: {'n': 221, 'days': 32, 'rho': -0.073, 'p': 0.8482}
+MB Y3 holdout: {'n': 1472, 'days': 13, 'rho': -0.025, 'p': 0.8114}
+  MB Y1 holdout amc: {'n': 833, 'days': 11, 'rho': 0.052, 'p': 0.0488}
+  MB Y1 holdout bmo: {'n': 639, 'days': 13, 'rho': 0.039, 'p': 0.1424}
+MA-pre Y0 (amc pm->open) train: {'n': 106, 'days': 23, 'rho': 0.001, 'p': 0.3465}
+MA-pre Y0 (amc pm->open) holdout: {'n': 625, 'days': 11, 'rho': -0.05, 'p': 0.7163}
+
+## Per factor (signed by theory, so + means the theory holds), Y1
+F1 -1 train rho 0.06 p 0.4413 n 130 | holdout rho -0.008 p 0.8346 n 809
+F2 1 train rho -0.054 p 1.0 n 221 | holdout rho -0.012 p 1.0 n 1472
+F3 -1 train rho -0.016 p 0.7936 n 221 | holdout rho -0.059 p 0.026 n 1472
+F4 1 train rho 0.039 p 0.5272 n 221 | holdout rho -0.008 p 0.7631 n 1472
+F5 -1 train rho -0.018 p 0.8096 n 221 | holdout rho -0.064 p 0.023 n 1472
+F6 -1 train rho -0.026 p 0.6837 n 218 | holdout rho 0.037 p 0.1784 n 1279
+F7 1 train rho 0.029 p 0.7091 n 218 | holdout rho 0.056 p 0.051 n 1279
+F8 1 train rho 0.169 p 0.013 n 221 | holdout rho 0.056 p 0.0325 n 1472
+F9 1 train rho -0.012 p 0.8331 n 221 | holdout rho -0.005 p 0.8286 n 1472
+F10 -1 train rho -0.156 p 0.0065 n 221 | holdout rho -0.037 p 0.1194 n 1472
+
+## Test 2: rule on our calls (|M-A| > 3.20, the training 67th percentile)
+us-panel.v2 all (holdout): n 131 mean +0.02 t 0.09 p 0.929 | days 7 t_days -0.14 pos_days 5; acted on 41, mean when acted +0.08
+    amc: n 67 mean -0.57 t -1.76 p 0.079 | days 6 t_days -1.91 pos_days 1
+    bmo: n 64 mean +0.65 t 1.58 p 0.115 | days 7 t_days 1.23 pos_days 4
+    rank: a*M-A vs a*Y1 {'n': 131, 'days': 7, 'rho': -0.043, 'p': 0.6947}
+us-panel.v2 strong (holdout): n 33 mean +0.50 t 0.99 p 0.321 | days 7 t_days 1.11 pos_days 3; acted on 7, mean when acted +2.36
+    amc: n 21 mean +0.61 t 1.65 p 0.1 | days 6 t_days 2.23 pos_days 3
+    bmo: n 12 mean +0.30 t 0.24 p 0.811 | days 5 t_days 0.06 pos_days 1
+    rank: a*M-A vs a*Y1 {'n': 33, 'days': 7, 'rho': -0.021, 'p': 0.8226}
+us-panel.v3 all (holdout): n 120 mean +0.03 t 0.09 p 0.925 | days 6 t_days 0.07 pos_days 3; acted on 34, mean when acted +0.11
+    amc: n 75 mean -0.15 t -0.31 p 0.756 | days 5 t_days -0.13 pos_days 3
+    bmo: n 45 mean +0.34 t 0.86 p 0.391 | days 6 t_days 0.73 pos_days 4
+    rank: a*M-A vs a*Y1 {'n': 120, 'days': 6, 'rho': -0.033, 'p': 0.6637}
+us-panel.v3 strong (holdout): n 22 mean +0.07 t 1.3 p 0.193 | days 6 t_days 1.24 pos_days 2; acted on 3, mean when acted +0.51
+    amc: n 15 mean +0.05 t 0.84 p 0.403 | days 5 t_days 0.93 pos_days 1
+    bmo: n 7 mean +0.10 t 1.0 p 0.317 | days 4 t_days 1.0 pos_days 1
+    rank: a*M-A vs a*Y1 {'n': 22, 'days': 6, 'rho': 0.03, 'p': 0.5697}
+us-panel.v2 all (train): n 49 mean -0.15 t -0.51 p 0.607 | days 4 t_days -1.09 pos_days 1; acted on 17, mean when acted -0.44
+    amc: n 18 mean -0.40 t -0.65 p 0.516 | days 3 t_days -0.86 pos_days 1
+    bmo: n 31 mean -0.01 t -0.04 p 0.969 | days 4 t_days -0.69 pos_days 1
+    rank: a*M-A vs a*Y1 {'n': 49, 'days': 4, 'rho': -0.058, 'p': 0.5327}
+us-panel.v2 strong (train): n 6 mean -0.52 t -0.28 p 0.778 | days 4 t_days -0.59 pos_days 1; acted on 2, mean when acted -1.56
+    amc: n 3 mean -2.86 t -1.0 p 0.317 | days 2 t_days None pos_days 0
+    bmo: n 3 mean +1.82 t 1.0 p 0.317 | days 2 t_days None pos_days 1
+    rank: a*M-A vs a*Y1 {'n': 6}
+backtest all (train): n 110 mean +0.33 t 1.24 p 0.213 | days 15 t_days -0.63 pos_days 7; acted on 16, mean when acted +2.26
+    amc: n 59 mean +0.67 t 1.52 p 0.127 | days 13 t_days -0.03 pos_days 6
+    bmo: n 51 mean -0.07 t -0.3 p 0.766 | days 13 t_days -0.65 pos_days 4
+    rank: a*M-A vs a*Y1 {'n': 110, 'days': 15, 'rho': -0.007, 'p': 0.1454}
+backtest strong (train): n 19 mean +1.01 t 1.05 p 0.292 | days 11 t_days 1.05 pos_days 2; acted on 3, mean when acted +6.42
+    amc: n 10 mean +1.62 t 0.89 p 0.374 | days 7 t_days 0.94 pos_days 1
+    bmo: n 9 mean +0.34 t 1.0 p 0.317 | days 8 t_days 1.0 pos_days 1
+    rank: a*M-A vs a*Y1 {'n': 19, 'days': 11, 'rho': 0.068, 'p': 0.6067}
+
+## Test 3: stage M add-on (analyst prompt v2, reviews from 21 Oct)
+n 76 names, 10 mornings
+S1 vs open->13:00 {'n': 76, 'days': 10, 'rho': -0.216, 'p': 0.952} | vs 13:00->close {'n': 76, 'days': 10, 'rho': 0.092, 'p': 0.077}
+S2 vs open->13:00 {'n': 76, 'days': 10, 'rho': -0.274, 'p': 0.9835} | vs 13:00->close {'n': 76, 'days': 10, 'rho': 0.08, 'p': 0.1229}
+S3 vs open->13:00 {'n': 76, 'days': 10, 'rho': -0.328, 'p': 0.9955} | vs 13:00->close {'n': 76, 'days': 10, 'rho': 0.118, 'p': 0.1104}
+S4 vs open->13:00 {'n': 76, 'days': 10, 'rho': 0.016, 'p': 0.4988} | vs 13:00->close {'n': 76, 'days': 10, 'rho': -0.058, 'p': 0.8351}
+S composite vs open->13:00 {'n': 76, 'days': 10, 'rho': -0.219, 'p': 0.9538} | vs 13:00->close {'n': 76, 'days': 10, 'rho': 0.079, 'p': 0.1654}
+  amc: S vs open->13:00 {'n': 50, 'days': 9, 'rho': -0.139, 'p': 0.8181}
+  bmo: S vs open->13:00 {'n': 26, 'days': 8, 'rho': -0.391, 'p': 0.995}
+M-A (position-signed) on the same names vs open->13:00 {'n': 76, 'days': 10, 'rho': 0.086, 'p': 0.3485}
+M-A + S vs open->13:00 {'n': 76, 'days': 10, 'rho': -0.084, 'p': 0.8272}
