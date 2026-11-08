@@ -361,7 +361,9 @@ class Ibkr:
                 v = row.get(k)
                 if v in (None, ""):
                     return None
-                s = str(v).lstrip("CH").replace(",", "")
+                # prefixes: C = prior close, H = halted, D = delayed (no market-data
+                # subscription: IBKR then serves its free 15-minute delayed quote)
+                s = str(v).lstrip("CHD").replace(",", "")
                 try:
                     return float(s)
                 except ValueError:
