@@ -260,7 +260,7 @@ def within_limits(sized, held_base, ex):
 
 # ------------------------------------------------------------------ the clock
 
-def session_state(submarket, now=None, buffer_min=10):
+def session_state(submarket, now=None, buffer_min=0):
     """'open' only if the exchange is trading now and closes more than buffer_min
     from now; otherwise a reason."""
     m = eu_market.MARKETS[submarket]
@@ -280,8 +280,9 @@ def session_state(submarket, now=None, buffer_min=10):
     c = now.replace(hour=ch, minute=cm, second=0, microsecond=0)
     if now < o:
         return f"not open until {OPEN_LOCAL.get(submarket, '09:00')} local"
-    if now > c - timedelta(minutes=buffer_min):
-        return f"within {buffer_min} min of the {close} local close, or past it"
+    if now >= c - timedelta(minutes=buffer_min):
+        return (f"past the {close} local close" if not buffer_min
+                else f"within {buffer_min} min of the {close} local close, or past it")
     return "open"
 
 
@@ -628,7 +629,7 @@ def cmd_open(a, ex):
         return 2
     api, acct = connect(ex)
     p = plan(a, ex, api, acct)
-    buffer_min = int(ex["orders"].get("close_buffer_min", 10))
+    buffer_min = int(ex["orders"].get("close_buffer_min", 0))
     collar = float(ex["orders"].get("entry_collar_pct", 1.0))
     priced, skipped = [], []
     for r in p["taken"][: int(ex["limits"].get("max_names", 6))]:

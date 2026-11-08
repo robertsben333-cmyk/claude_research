@@ -1297,7 +1297,7 @@ execution_eu:
     type: limit                # limit (marketable, collared) | market
     entry_collar_pct: 1.0      # buy limit = price x 1.01, sell limit = price x 0.99
     exit_collar_pct: 2.0
-    close_buffer_min: 10       # no entry within 10 min of a market's close
+    close_buffer_min: 0        # skip a name only when its market is closed (operator, 2026-11-08)
     fill_wait_seconds: 120
   exchanges: {}                # override IBKR exchange codes per market, e.g. dk: [CPH]
   conid_overrides: {}          # ticker -> IBKR conid when the symbol lookup is ambiguous

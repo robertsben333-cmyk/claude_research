@@ -18,7 +18,7 @@ to find out, with money at risk, not the use of a finding.
 | ~15:35 | 0s `flatten` | cancel working orders, sell/cover every position (collared DAY limits), wait 2 min, log what is still held |
 | 15:35-16:20 | 1-6 | universe, baselines, hunters, panel, note, publish (measured: 40-45 min on 2026-11-03 to 11-06) |
 | ~16:20 | 6b `open` | buy/short names with `panel_pct` >= 70 and four judges, collared DAY limits |
-| 16:25-17:35 | | markets close; Oslo at 16:25 local, so Oslo names are usually skipped |
+| 16:25-17:35 | | markets close; an Oslo name is skipped only if the run reaches 6b after 16:25 |
 
 So a position is held from about an hour before the close of D-1 to about two hours
 before the close of D. The scored window is close(D-1) to close(D); the trade carries the
@@ -28,7 +28,8 @@ the weekend.
 ## The rule (`execution_eu` in `config/pipeline.yaml`)
 
 - **Entry**: `panel_pct` >= 70 with all four judges; side from the panel; turnover at
-  least $200k a day; market open for more than 10 more minutes.
+  least $200k a day; the name's market still open (no buffer before the close,
+  operator, 2026-11-08).
 - **Weight**: `panel_pct` - 60, linear, at most 50% of equity a name; what a capped name
   cannot take goes to the others (`alpaca_trade.allocate`, the same code as stage E-P).
 - **Budget**: 100% of net liquidation minus anything still held.

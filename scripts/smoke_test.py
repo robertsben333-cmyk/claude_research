@@ -2202,10 +2202,13 @@ def main():
           len(refused_rows) == 1 and "max_name_base" in refused_rows[0]["reason"])
     check("the final check counts what is still held against max_gross_base",
           len(it.within_limits(sized, float(lim["max_gross_base"]), ex)[0]) == 0)
-    check("entry is refused 5 minutes before the Xetra close",
-          it.session_state("de", _dt(2026, 11, 10, 16, 25, tzinfo=_tz.utc)) != "open")
+    check("entry is allowed 5 minutes before the Xetra close (only a shut market is skipped)",
+          it.session_state("de", _dt(2026, 11, 10, 16, 25, tzinfo=_tz.utc)) == "open")
+    check("entry is refused after the Xetra close",
+          it.session_state("de", _dt(2026, 11, 10, 16, 31, tzinfo=_tz.utc)) != "open")
     check("Xetra is open at 15:20 UTC on a Tuesday", it.session_state("de", _dt(2026, 11, 10, 15, 20, tzinfo=_tz.utc)) == "open")
-    check("Oslo is shut for entries by 16:20 CET", it.session_state("no", _dt(2026, 11, 10, 15, 20, tzinfo=_tz.utc)) != "open")
+    check("Oslo still takes entries at 16:20 CET", it.session_state("no", _dt(2026, 11, 10, 15, 20, tzinfo=_tz.utc)) == "open")
+    check("Oslo is shut at 16:30 CET", it.session_state("no", _dt(2026, 11, 10, 15, 30, tzinfo=_tz.utc)) != "open")
     check("no entry on Christmas", it.session_state("uk", _dt(2026, 12, 25, 12, 0, tzinfo=_tz.utc)) != "open")
     check("paper is DU, live is U", it.account_prefix_ok("DU123", "paper") and not it.account_prefix_ok("DU123", "live")
           and it.account_prefix_ok("U123", "live") and not it.account_prefix_ok("U123", "paper"))
