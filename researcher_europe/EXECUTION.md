@@ -144,7 +144,11 @@ it should).
   correct it.
 - Whether IBKR quotes London in pence or pounds through this API; the code detects it
   from the ratio to the sealed spot and refuses a London name when it cannot tell.
-- Whether IBKR's snapshot returns prices without European market-data subscriptions;
-  without one the code falls back to Yahoo (about 15 minutes delayed) for non-UK names.
+- Whether IBKR's snapshot returns prices without European market-data subscriptions.
+  The operator chose no subscriptions (2026-11-08); IBKR then serves its free delayed
+  quote (about 15 minutes), which the code reads (prefix `D`). If IBKR returns nothing
+  the code falls back to Yahoo, also delayed, and skips a London name, because pence or
+  pounds cannot then be told apart. With a delayed price a 1% collar can miss a name
+  that moved more than 1% in the last 15 minutes; the order then works until the close.
 
 This is research, not investment advice.
