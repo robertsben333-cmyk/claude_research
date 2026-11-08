@@ -2230,9 +2230,102 @@ def main():
     o2 = it.build_order("DU1", 5, "SELL", 10, 25.0, 0.01, 1.0, ex, 0.5, "eu-y")
     check("a London limit goes out in pence when IBKR quotes pence", o2["price"] == 2475.0)
     skill = open(os.path.join(REPO, ".claude/skills/researcher-europe-hunt/SKILL.md"), encoding="utf-8").read()
-    check("the EU skill sells at step 0s and buys at step 6b",
-          "ibkr_trade.py flatten" in skill and "ibkr_trade.py open" in skill
-          and skill.index("ibkr_trade.py flatten") < skill.index("scripts/eu_universe.py --date <EVENT-DATE>"))
+    check("execution_eu trades through the executor's gateway (auth tws), IBKR's OAuth being institutional-only",
+          ex.get("auth") == "tws" and (ex.get("tws") or {}).get("port", {}).get("paper") == 4002)
+    check("the EU skill hands the book over at step 6b and places no order from the cloud",
+          "ibkr_trade.py handoff --run <RUN>" in skill
+          and "flatten --run <RUN> --submit`" in skill            # only as the oauth fallback note
+          and "\npython3 researcher_europe/scripts/ibkr_trade.py flatten" not in skill
+          and "\npython3 researcher_europe/scripts/ibkr_trade.py open" not in skill
+          and skill.index("ibkr_trade.py handoff --run <RUN>") > skill.index("scripts/eu_universe.py --date <EVENT-DATE>"))
+    # the cloud's handoff, on a synthetic run
+    import tempfile as _tf, types as _types
+    from pathlib import Path as _P
+    _run = _P(_tf.mkdtemp()) / "research" / "2026" / "11" / "2026-11-10" / "europe"
+    (_run / "baselines").mkdir(parents=True)
+    for _t, _b in bls.items():
+        (_run / "baselines" / f"{_t}.json").write_text(json.dumps(_b))
+    (_run / "edge-scores-panel.json").write_text(json.dumps(panel))
+    (_run / "universe.json").write_text(json.dumps({"fx": fx}))
+    import contextlib as _cl, io as _io
+    with _cl.redirect_stdout(_io.StringIO()):
+        rc = it.main(["handoff", "--run", str(_run)])
+    _h = json.loads((_run / "ibkr-handoff.json").read_text())
+    check("handoff writes today's date and the names at or above the rule, no broker call",
+          rc == 0 and _h["date_utc"] == _dt.now(_tz.utc).date().isoformat()
+          and [n["ticker"] for n in _h["names"]] == ["A", "B", "C"])
+    # the executor's choice of runs
+    sys.path.insert(0, os.path.join(REPO, "researcher_europe", "executor"))
+    import eu_executor as ee                                     # noqa: E402
+    _root = _run.parents[4]
+    (_root / "research" / "2026" / "11" / "2026-11-09" / "europe").mkdir(parents=True)
+    check("the executor sells against the newest run for a session on or before today",
+          ee.run_to_flatten(_root, "2026-11-09").parent.name == "2026-11-09"
+          and ee.run_to_flatten(_root, "2026-11-10").parent.name == "2026-11-10")
+    check("the executor buys only on a handoff written today",
+          ee.todays_handoff(_root, _h["date_utc"]) == _run and ee.todays_handoff(_root, "2000-01-01") is None)
+    # the TWS backend against a fake ib_async
+    _fake = _types.ModuleType("ib_async")
+    class _C:
+        def __init__(self, **k):
+            self.__dict__.update(dict(conId=0, symbol="", exchange="", primaryExchange="", currency="", secType="STK"))
+            self.__dict__.update(k)
+    class _O:
+        def __init__(self, action, qty, *a, **k):
+            self.action, self.totalQuantity, self.lmtPrice = action, qty, (a[0] if a else None)
+            self.orderId, self.permId = 0, 0
+            self.__dict__.update(k)
+    _fake.Contract, _fake.LimitOrder, _fake.MarketOrder = _C, _O, _O
+    sys.modules["ib_async"] = _fake
+    NS = _types.SimpleNamespace
+    class _FakeIB:
+        def __init__(self):
+            self.placed, self.cancelled_all = [], False
+            self.details = {101: NS(contract=_C(conId=101, symbol="SAP", primaryExchange="IBIS", exchange="SMART", currency="EUR"),
+                                    longName="SAP SE", minTick=0.01)}
+        def isConnected(self): return True
+        def sleep(self, s): pass
+        def managedAccounts(self): return ["DU999"]
+        def accountSummary(self, a):
+            return [NS(tag="NetLiquidation", value="10000", currency="EUR"),
+                    NS(tag="GrossPositionValue", value="2500", currency="EUR")]
+        def portfolio(self, a): return [NS(contract=_C(conId=101), marketPrice=200.0)]
+        def positions(self, a): return [NS(contract=self.details[101].contract, position=10.0)]
+        def reqAllOpenOrders(self): return []
+        def trades(self): return [NS(order=NS(orderId=o.orderId, permId=0, action=o.action, account="DU999", orderRef=o.orderRef),
+                                     contract=NS(symbol="SAP"),
+                                     orderStatus=NS(status="Submitted", filled=0, remaining=o.totalQuantity, avgFillPrice=0.0))
+                                  for o in self.placed]
+        def reqGlobalCancel(self): self.cancelled_all = True
+        def reqContractDetails(self, c):
+            return [self.details[101]] if getattr(c, "symbol", "") == "SAP" or getattr(c, "conId", 0) == 101 else []
+        def reqMktData(self, c, g, snap, reg): return NS(bid=199.0, ask=201.0, last=float("nan"), close=198.0)
+        def placeOrder(self, c, o):
+            o.orderId = 7 + len(self.placed); self.placed.append(o)
+            return NS(order=o, orderStatus=NS(status="PreSubmitted"), log=[])
+    import ibkr_tws as itw                                       # noqa: E402
+    _ib = _FakeIB()
+    api = itw.TwsApi(environment="paper", account="DU999", ib=_ib)
+    check("TWS: paper goes to port 4002, live to 4001",
+          api.port == int(os.environ.get("IBKR_TWS_PORT") or 4002) and itw.TwsApi(environment="live", ib=_ib).port == int(os.environ.get("IBKR_TWS_PORT") or 4001))
+    eq_ = it.equity_of(api, "DU999")
+    check("TWS: equity and gross come back in the REST client's shape", eq_ == (10000.0, "EUR", 2500.0))
+    pos = api.positions("DU999")
+    check("TWS: positions carry conid, size and price", pos[0]["conid"] == 101 and pos[0]["position"] == 10.0 and pos[0]["mktPrice"] == 200.0)
+    c_ = it.resolve_contract(api, {"ticker": "SAP", "submarket": "de", "tv_symbol": "XETR:SAP"}, ex)
+    check("TWS: an Xetra name resolves through its primary exchange", c_["conid"] == 101 and c_["currency"] == "EUR")
+    check("TWS: the tick comes from the contract's minTick", it.tick_increment(api, 101, True) == 0.01)
+    q_ = api.snapshot([101])[101]
+    check("TWS: a delayed snapshot gives bid and ask, NaN last falls back to the close",
+          q_["bid"] == 199.0 and q_["ask"] == 201.0 and q_["last"] == 198.0)
+    res = api.place("DU999", it.build_order("DU999", 101, "BUY", 5, 200.0, 1.0, 1.0, ex, 0.01, "eu-test"))
+    check("TWS: a collared limit is placed on the account with its client id as orderRef",
+          res["order_id"] == "7" and _ib.placed[0].lmtPrice == 202.0 and _ib.placed[0].account == "DU999"
+          and _ib.placed[0].orderRef == "eu-test")
+    check("TWS: placed orders are visible to the fill check", api.live_orders()[0]["orderId"] == "7")
+    api.cancel_all()
+    check("TWS: flatten cancels every working order with one global cancel", _ib.cancelled_all)
+    sys.modules.pop("ib_async", None)
     settings = open(os.path.join(REPO, ".claude/settings.json"), encoding="utf-8").read()
     if "researcher_europe/scripts/ibkr_trade.py" in settings:
         print("  ok    the IBKR script has its own allow rule")

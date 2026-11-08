@@ -51,6 +51,13 @@ Commands:
     flatten --run <RUN> [--submit]
     open --run <RUN> [--submit]
     status --run <RUN>
+    handoff --run <RUN>          cloud side of the executor route: write the book
+                                 request the server's eu_executor.py waits for
+
+Two ways to reach IBKR (`execution_eu.auth`): `tws` (since 2026-11-08 the live route:
+IB Gateway + IBC on the operator's own server, driven by eu_executor.py there, because
+IBKR gives OAuth to institutional clients only) and `oauth` / `gateway` over the Client
+Portal REST API (ibkr_client.py, kept for a future OAuth for individuals).
 
 Every command that touches orders writes `<RUN>/ibkr-orders.json`.
 """
@@ -308,10 +315,17 @@ def account_prefix_ok(acct, environment):
 
 
 def connect(ex):
-    from ibkr_client import Ibkr
-    api = Ibkr(mode=ex.get("auth", "oauth"), gateway_url=ex.get("gateway_url"))
-    api.connect()
     acct = os.environ.get("IBKR_ACCOUNT_ID") or ""
+    if ex.get("auth") == "tws":
+        from ibkr_tws import TwsApi
+        t = ex.get("tws") or {}
+        api = TwsApi(host=t.get("host"), port=(t.get("port") or {}).get(ex["environment"]) if isinstance(t.get("port"), dict) else t.get("port"),
+                     client_id=t.get("client_id"), environment=ex["environment"], account=acct,
+                     market_data_type=int(t.get("market_data_type", 3)), route=t.get("route", "SMART"))
+    else:
+        from ibkr_client import Ibkr
+        api = Ibkr(mode=ex.get("auth", "oauth"), gateway_url=ex.get("gateway_url"))
+    api.connect()
     seen = api.accounts()
     if acct not in seen:
         raise SystemExit(f"IBKR_ACCOUNT_ID {acct!r} is not among the accounts this login sees ({len(seen)} account(s))")
@@ -386,6 +400,8 @@ def resolve_contract(api, b, ex):
 
 
 def tick_increment(api, conid, is_buy):
+    if hasattr(api, "min_tick"):
+        return api.min_tick(conid)
     try:
         r = api.get(f"/iserver/contract/{conid}/info-and-rules", {"isBuy": "true" if is_buy else "false"}) or {}
         inc = (r.get("rules") or {}).get("increment")
@@ -483,7 +499,9 @@ def cmd_mode(a, ex):
                      indent=2))
     print(f"IBKR_ENVIRONMENT={os.environ.get('IBKR_ENVIRONMENT')!r}  "
           f"IBKR_ACCOUNT_ID={'set' if os.environ.get('IBKR_ACCOUNT_ID') else 'missing'}  "
-          f"credentials={'present' if os.environ.get('IBKR_OAUTH_CONSUMER_KEY') or os.environ.get('IBKR_GATEWAY_URL') else 'missing'}")
+          + ("broker=IB Gateway on the executor's server (execution_eu.auth tws); "
+             "the cloud Routine only hands the book over (step 6b handoff)" if ex.get("auth") == "tws" else
+             f"credentials={'present' if os.environ.get('IBKR_OAUTH_CONSUMER_KEY') or os.environ.get('IBKR_GATEWAY_URL') else 'missing'}"))
     why = guard(ex, True)
     print("ready to submit" if not why else f"would refuse: {why}")
     return 0 if not why else 1
@@ -573,6 +591,9 @@ def cmd_flatten(a, ex):
         for p in positions:
             print(f"  would sell {p.get('contractDesc')} {p.get('position')}")
         return 0
+    if working and hasattr(api, "cancel_all"):
+        api.cancel_all()
+        working = []
     for o in working:
         try:
             api.cancel(acct, o.get("orderId"))
@@ -692,6 +713,31 @@ def cmd_open(a, ex):
     return 0
 
 
+def handoff_path(run):
+    return Path(run) / "ibkr-handoff.json"
+
+
+def cmd_handoff(a, ex):
+    """Cloud side of the executor route (execution_eu.auth tws): write the day's book
+    request for the server, which waits for this file before it runs `open`. Offline:
+    no broker call. The server prices and sizes it against the real account itself."""
+    panel, baselines, _ = load_run(a.run)
+    p = plan(argparse.Namespace(run=a.run, equity=a.equity, base=a.base), ex)
+    now = datetime.now(timezone.utc)
+    doc = {"run": str(Path(a.run)), "written_utc": now.isoformat(timespec="seconds"),
+           "date_utc": now.date().isoformat(),
+           "sealed_utc": sorted({str(b.get("sealed_utc", ""))[:10] for b in baselines.values()}),
+           "rule": p["panel_rule"],
+           "names": [{"ticker": r["ticker"], "submarket": r["submarket"], "side": r["side"],
+                      "panel_pct": r["panel_pct"]} for r in p["taken"]],
+           "note": "the executor's server runs `ibkr_trade.py open --run <run> --submit` on this; "
+                   "the sizes it sends depend on the account, not on this file"}
+    handoff_path(a.run).write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"handoff written: {len(doc['names'])} name(s) at or above the rule -> {handoff_path(a.run)}")
+    print_plan(p)
+    return 0
+
+
 def cmd_status(a, ex):
     p = orders_path(a.run)
     if p.exists():
@@ -714,14 +760,14 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("mode")
     sub.add_parser("check")
-    for name in ("contracts", "plan", "flatten", "open", "status"):
+    for name in ("contracts", "plan", "flatten", "open", "status", "handoff"):
         s = sub.add_parser(name)
         s.add_argument("--run", required=True)
         if name in ("flatten", "open"):
             s.add_argument("--submit", action="store_true")
         if name in ("plan", "status"):
             s.add_argument("--offline", action="store_true")
-        if name == "plan":
+        if name in ("plan", "handoff"):
             s.add_argument("--equity", type=float, default=10000.0)
             s.add_argument("--base", default="EUR")
     a = ap.parse_args(argv)
@@ -729,7 +775,8 @@ def main(argv=None):
     from ibkr_client import IbkrError
     try:
         return {"mode": cmd_mode, "check": cmd_check, "contracts": cmd_contracts, "plan": cmd_plan,
-            "flatten": cmd_flatten, "open": cmd_open, "status": cmd_status}[a.cmd](a, ex)
+            "flatten": cmd_flatten, "open": cmd_open, "status": cmd_status,
+            "handoff": cmd_handoff}[a.cmd](a, ex)
     except IbkrError as e:
         print(f"IBKR error: {e}")
         if getattr(a, "run", None) and a.cmd in ("flatten", "open"):

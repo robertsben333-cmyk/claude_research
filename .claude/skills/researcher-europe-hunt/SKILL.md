@@ -11,10 +11,13 @@ and Japanese stages, which is the point: if three regions are scored the same wa
 European result means something next to the other two.
 
 **Since 2026-11-08 this stage can trade at Interactive Brokers (operator's instruction),
-and nothing else in it changed.** Step 0s sells everything the dedicated IBKR account
-holds at the very start of the run; step 6b buys the panel's book at the very end. Both
-go through `researcher_europe/scripts/ibkr_trade.py` and nothing else, and both refuse
-(and say so) while `execution_eu.enabled` is false, which is how it is committed. There
+and nothing else in it changed.** The orders are placed by the operator's own server,
+not by this session: IBKR gives API logins without a gateway to institutional clients
+only, so IB Gateway runs on that server and `researcher_europe/executor/eu_executor.py`
+there sells the account flat at 15:35 Amsterdam and buys the book once this run hands it
+over. This session's whole part is step 6b: `ibkr_trade.py handoff`, which writes
+`<RUN>/ibkr-handoff.json` and makes no broker call, then publish. Nothing is sent while
+`execution_eu.enabled` is false, which is how it is committed. There
 is still no `alpaca_trade.py` step and there must not be one: Alpaca carries none of these
 venues. The research, the hunters, the scorer and the panel do not read the broker and
 must not. **The EU panel has no measured edge yet** (2026-10-21: rho +0.22, p 0.19 on 45
@@ -131,31 +134,19 @@ scripts/publish.sh "stage EU: started for <YYYY-MM-DD>"
 One cheap commit, and the only thing that distinguishes a Routine that never fired from
 a session killed on its first subagent.
 
-**0s. Sell yesterday's book, before anything else is spent (since 2026-11-08).**
-Yesterday's names reported this morning, so their window is over. `<RUN>` is today's run
-directory (step 1 below); the sell is recorded in it.
+**0s. Broker check (since 2026-11-08; no broker call from here since the executor route).**
 
 ```bash
 python3 researcher_europe/scripts/ibkr_trade.py mode
-python3 researcher_europe/scripts/ibkr_trade.py check        # read-only; skip if mode says credentials missing
-python3 researcher_europe/scripts/ibkr_trade.py flatten --run <RUN> --submit
 ```
 
-`check` only reads (login, account, equity, positions, working orders). It runs while
-trading is still switched off so every fire proves the connection; put its first line,
-or its error, in the run-log line.
-
-`flatten` cancels every working order and closes every position in the account with a
-collared DAY limit (`execution_eu.orders.exit_collar_pct`), waits up to
-`fill_wait_seconds`, and reports what is still held. It sells everything, not only
-yesterday's names: the account is dedicated to this stage. It REFUSES and sends nothing
-when `execution_eu.enabled` is false, when `IBKR_ENVIRONMENT` disagrees with the config,
-or when the credentials or `IBKR_ACCOUNT_ID` are missing; that is a normal outcome, not a
-failure. Write one run-log line (heading `Stage EU — IBKR flatten`) with what it said,
-then carry on with the research whatever it said. **Never retry with other flags, never
-call the IBKR API any other way, and never let a broker error stop the research.** A
-position a closed market could not sell (a holiday in that country) is still held;
-step 6b nets it off the budget and tomorrow's flatten tries again.
+Since `execution_eu.auth` is `tws`, the sell of yesterday's book happens on the
+operator's server at 15:35 Amsterdam, whatever this session does; `mode` only prints the
+settings. Put its last line in the run log (heading `Stage EU — IBKR`) and carry on.
+**Never call `flatten`, `open` or `check` from this session, and never call the IBKR API
+any other way:** there is no gateway here, and the server is the only thing that trades.
+(If a future config sets `auth: oauth`, the old cloud steps apply again: `check`, then
+`flatten --run <RUN> --submit`; see `researcher_europe/EXECUTION.md`.)
 
 **1. Universe.** `<RUN>` is `research/<YYYY>/<MM>/<DATE>/europe/`.
 
@@ -345,33 +336,26 @@ python3 scripts/update_index.py
 scripts/publish.sh "stage EU: Europe ranking for <YYYY-MM-DD>"
 ```
 
-**6b. Buy the panel's book, after the note is published (since 2026-11-08).**
+**6b. Hand the panel's book to the executor, after the note is published (since 2026-11-08).**
 
 ```bash
-python3 researcher_europe/scripts/ibkr_trade.py plan --run <RUN>
-python3 researcher_europe/scripts/ibkr_trade.py open --run <RUN> --submit
-python3 researcher_europe/scripts/ibkr_trade.py status --run <RUN>
-```
-
-The rule is `execution_eu` in `config/pipeline.yaml`, E-P's shape on the EU panel:
-`panel_pct` >= 70 with all four judges, side from the panel, weight `panel_pct` - 60,
-at most 50% of equity a name, the budget net of anything still held, and HARD LIMITS on
-top (`max_gross_base`, `max_name_base`, `max_names`) that are checked again just before
-each order. A name is skipped, with the reason recorded, only when its market is already
-closed or shut for a holiday (operator, 2026-11-08: no buffer before the close; Oslo
-closes 16:25 local, so an Oslo name misses a run that ends after that), when no IBKR contract in the market's currency is found, or when
-IBKR's price is more than 20% from the sealed spot. Orders are collared DAY limits; an
-unfilled remainder works until that market's close and then expires.
-
-`open` refuses a run that was not sealed today and refuses everything `flatten` refuses.
-Run it once. Never pass other flags on a scheduled run. Write one run-log line (heading
-`Stage EU — IBKR book`) with what was sent and filled, put the plan table in the closing
-reply, then publish again:
-
-```bash
+python3 researcher_europe/scripts/ibkr_trade.py handoff --run <RUN>
 python3 scripts/update_index.py
-scripts/publish.sh "stage EU: IBKR book for <YYYY-MM-DD>"
+scripts/publish.sh "stage EU: IBKR handoff for <YYYY-MM-DD>"
 ```
+
+`handoff` makes no broker call. It writes `<RUN>/ibkr-handoff.json` (today's date, the
+rule, the names at or above it) and prints an offline plan. The operator's server polls
+`main` from 16:00 Amsterdam, and as soon as this file is there for today it runs
+`ibkr_trade.py open --run <RUN> --submit` against the real account, with every rule and
+hard limit in `execution_eu`: `panel_pct` >= 70 with all four judges, side from the
+panel, weight `panel_pct` - 60, at most 50% of equity a name, budget net of anything
+still held, a name skipped only when its market is closed. So **publish as soon as the
+handoff is written**: every minute here is a minute the book is not bought, and Oslo
+closes 16:25 local. Write it even on a day with no name at or above 70 (the server then
+buys nothing and says so). Write one run-log line (heading `Stage EU — IBKR handoff`)
+with the names, and put the offline plan table in the closing reply. What the server
+sent and what filled is on the branch `eu-ibkr-log`, not in this run.
 
 ## Resolving, the next session
 
