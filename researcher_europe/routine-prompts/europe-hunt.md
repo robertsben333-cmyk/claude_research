@@ -81,7 +81,7 @@ date was sealed for. A stage-2 session in this repo once concluded the platform 
 
 ## The prompt, as pasted
 
-The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-10-01, re-pasted from this file by a session** when the turnover floor went to $100k (earlier pastes: 2026-09-19 for ten markets, 2026-09-22 for the bilingual pass). It is quoted verbatim, so keep the two in step; nothing else will.
+The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-11-08, re-pasted from this file by a session when the IBKR steps were added (earlier: 2026-10-01)** when the turnover floor went to $100k (earlier pastes: 2026-09-19 for ten markets, 2026-09-22 for the bilingual pass). It is quoted verbatim, so keep the two in step; nothing else will.
 
 > You are running **stage EU**, the European researcher, for the next European session.
 >
@@ -95,7 +95,7 @@ The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-10-0
 >   git clone https://github.com/robertsben333-cmyk/claude_research /home/user/claude_research
 > fi
 > cd /home/user/claude_research && git fetch origin && git checkout main && git pull --ff-only origin main
-> ls researcher_europe/scripts/eu_universe.py researcher_europe/scripts/eu_priced_in.py researcher_europe/scripts/eu_resolve.py researcher_europe/scripts/eu_market.py
+> ls researcher_europe/scripts/eu_universe.py researcher_europe/scripts/eu_priced_in.py researcher_europe/scripts/eu_resolve.py researcher_europe/scripts/eu_market.py researcher_europe/scripts/ibkr_trade.py
 > python3 scripts/run_paths.py --json
 > ```
 >
@@ -117,7 +117,7 @@ The text below is what `trig_018WGfdq2fUm1ZqJhCGQ1wde` carries as of **2026-10-0
 >
 > Things this stage gets wrong if nobody says them:
 >
-> - **It places no orders and reads no broker.** There is no `alpaca_trade.py` step here and there must not be one. Alpaca carries none of these ten venues.
+> - **It trades at Interactive Brokers since 2026-11-08, and only through the skill's steps 0s and 6b.** Step 0s (`ibkr_trade.py flatten`) sells everything the dedicated IBKR account holds right after the heartbeat; step 6b (`ibkr_trade.py open`) buys the panel's book after the note is published. Both refuse and send nothing while `execution_eu.enabled` is false or the IBKR variables are missing; log the refusal and carry on. Never call the IBKR API any other way, never retry with other flags, and never let a broker error stop the research. There is no `alpaca_trade.py` step here and there must not be one.
 > - The ranking key is whatever `edge-scores.json` reports in its own `ranking_key` field. Read it; do not carry a remembered contract into the run.
 > - **TEN MARKETS SINCE 2026-09-19**: uk, de, fr, se, dk, no, fi, it, es, pl. The cap is **20** names. Read `config/pipeline.yaml`'s `europe_hunt` block rather than this line.
 > - **Spawn one isolated subagent per name**, dispatched on each baseline's `submarket` field. The mapping is `MARKETS[<submarket>]["hunter"]` in `researcher_europe/scripts/eu_market.py`, so read it rather than recalling it: `unpriced-hunter-uk`, `-de`, `-fr`, `-it`, `-es`, `-pl`, and **`unpriced-hunter-nordic` for se/dk/no/fi — that one agent covers four markets, so tell it which of the four it is hunting.** Give each only its own ticker, its own window and the path to its own baseline. Running several names in one context destroys both controls the stage exists to measure and leaves names unhunted.
