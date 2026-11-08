@@ -1257,6 +1257,51 @@ execution:
     fill_check_fix: true
     allow_shorts: true           # a short leg also needs Alpaca to call it shortable
 
+# Stage EU's book at Interactive Brokers (2026-11-08, operator's instruction): the EU
+# Routine sells everything at its start (skill step 0s) and buys the panel's names at
+# its end (step 6b). researcher_europe/scripts/ibkr_trade.py is the only reader; see
+# researcher_europe/EXECUTION.md. The EU panel has NO measured edge yet (2026-10-21:
+# rho +0.22, p 0.19 on 45 names, four at or above 70), so the limits start small.
+#
+# Nothing is sent unless enabled is true AND --submit is given AND the Routine's
+# environment carries IBKR_ENVIRONMENT equal to `environment` below AND
+# IBKR_ACCOUNT_ID names a DU... (paper) or U... (live) account the login can see.
+execution_eu:
+  enabled: false
+  broker: ibkr
+  environment: paper           # paper | live; must equal the IBKR_ENVIRONMENT variable
+  auth: oauth                  # oauth (first-party OAuth 1.0a, no gateway) | gateway
+  gateway_url: null            # gateway mode only; IBKR_GATEWAY_URL overrides
+  allow_multi_account_login: false   # refuse a login that can see more than one account
+  selection:
+    # E-P's shape at the scorebord's EU "strong" level: E-P buys at 80, but the EU
+    # panels were set at 70 (2026-10-14) and 80 would trade on very few days.
+    min_panel_pct: 70
+    zero_weight_pct: 60        # weight = panel_pct - 60, never a name at or below 60
+    require_full_panel: true   # all four judges present
+    min_turnover_usd: 200000   # the US floor; the EU research floor is $100k
+    sides: [long, short]       # shorts need a margin account and an IBKR borrow
+    markets: [uk, de, fr, se, dk, "no", fi, it, es, pl]   # "no" quoted: bare no is YAML false
+  sizing:
+    gross_pct_of_equity: 100
+    max_name_pct_of_equity: 50
+    max_pct_of_turnover: 1.0   # at most 1% of the name's median daily turnover
+    min_position_base: 200     # in the account's base currency
+  limits:                      # hard, checked again just before every order
+    max_gross_base: 10000      # the whole book, base currency (EUR); raise deliberately
+    max_name_base: 5000
+    max_names: 6
+    max_orders_per_run: 20
+    max_price_gap_pct: 20      # live price vs sealed spot; beyond it the lookup is wrong
+  orders:
+    type: limit                # limit (marketable, collared) | market
+    entry_collar_pct: 1.0      # buy limit = price x 1.01, sell limit = price x 0.99
+    exit_collar_pct: 2.0
+    close_buffer_min: 0        # skip a name only when its market is closed (operator, 2026-11-08)
+    fill_wait_seconds: 120
+  exchanges: {}                # override IBKR exchange codes per market, e.g. dk: [CPH]
+  conid_overrides: {}          # ticker -> IBKR conid when the symbol lookup is ambiguous
+
 reversal_hunt:
   # Stage R. The same machinery as `edge_hunt`, `japan_hunt` and `europe_hunt`, asked of
   # a different event: not "what has the market not priced into tonight's print" but

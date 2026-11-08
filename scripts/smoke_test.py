@@ -2094,6 +2094,152 @@ def main():
     check("the morning analyst has web and file tools only",
           re.search(r"^tools:\s*WebSearch, WebFetch, Read, Write\s*$", mag, re.M) is not None)
 
+    print("\nStage EU orders at IBKR (researcher_europe/scripts/ibkr_*.py, no network, no orders)")
+    sys.path.insert(0, os.path.join(REPO, "researcher_europe", "scripts"))
+    import base64 as _b64, hashlib as _hl, hmac as _hm, secrets as _sec
+    from urllib.parse import unquote_plus as _uq
+    from datetime import datetime as _dt, timezone as _tz
+    import ibkr_client as ic                                     # noqa: E402
+    import ibkr_trade as it                                      # noqa: E402
+    from cryptography.hazmat.primitives import serialization as _ser, hashes as _h
+    from cryptography.hazmat.primitives.asymmetric import rsa as _rsa, dh as _dh, padding as _pad
+    def _pk(k):
+        return k.private_bytes(_ser.Encoding.PEM, _ser.PrivateFormat.PKCS8, _ser.NoEncryption())
+    enc, sig = (_rsa.generate_private_key(public_exponent=65537, key_size=2048) for _ in range(2))
+    import warnings as _w
+    _w.filterwarnings("ignore", message=".*Diffie-Hellman.*")
+    dhp = _dh.generate_parameters(generator=2, key_size=512)
+    dh_pem = dhp.parameter_bytes(_ser.Encoding.PEM, _ser.ParameterFormat.PKCS3)
+    secret = _sec.token_bytes(32)
+    ats = _b64.b64encode(enc.public_key().encrypt(secret, _pad.PKCS1v15())).decode()
+    env = {"IBKR_OAUTH_CONSUMER_KEY": "TESTCONSK", "IBKR_OAUTH_ACCESS_TOKEN": "tok123",
+           "IBKR_OAUTH_ACCESS_TOKEN_SECRET": ats,
+           "IBKR_OAUTH_ENCRYPTION_KEY": _pk(enc).decode().replace("\n", "\\n"),   # escaped newlines
+           "IBKR_OAUTH_SIGNATURE_KEY": _b64.b64encode(_pk(sig)).decode(),          # base64 of the PEM
+           "IBKR_OAUTH_DH_PARAM": dh_pem.decode()}
+    oa = ic.OAuth1a.from_env(env)
+    check("the access-token secret decrypts to the prepend", oa.prepend == secret.hex())
+    url = ic.OAUTH_BASE + "/oauth/live_session_token"
+    hdr, a_rand = oa.lst_request(url)
+    hp = dict(re.findall(r'(\w+)="([^"]*)"', hdr["Authorization"]))
+    sig_b = _b64.b64decode(_uq(hp.pop("oauth_signature")))
+    realm = hp.pop("realm")
+    bs = secret.hex() + "POST&" + ic.quote_plus(url) + "&" + ic.quote("&".join(f"{k}={v}" for k, v in sorted(hp.items())))
+    try:
+        sig.public_key().verify(sig_b, bs.encode(), _pad.PKCS1v15(), _h.SHA256()); rsa_ok = True
+    except Exception:
+        rsa_ok = False
+    check("the live-session-token request is RSA-SHA256 signed over the prepended base string",
+          rsa_ok and realm == "limited_poa" and hp["oauth_signature_method"] == "RSA-SHA256")
+    pn = dhp.parameter_numbers()
+    b_rand = _sec.randbits(256)
+    K = pow(int(hp["diffie_hellman_challenge"], 16), b_rand, pn.p)
+    kb = K.to_bytes((K.bit_length() + 7) // 8, "big")
+    kb = (b"\x00" + kb) if K.bit_length() % 8 == 0 else kb
+    srv_lst = _b64.b64encode(_hm.new(kb, secret, _hl.sha1).digest()).decode()
+    resp = {"diffie_hellman_response": format(pow(2, b_rand, pn.p), "x"),
+            "live_session_token_signature": _hm.new(_b64.b64decode(srv_lst), b"TESTCONSK", _hl.sha1).hexdigest(),
+            "live_session_token_expiration": 1}
+    check("both sides of the Diffie-Hellman exchange reach the same live session token",
+          oa.accept_lst(resp, a_rand) == srv_lst)
+    bad = dict(resp, live_session_token_signature="00")
+    try:
+        ic.OAuth1a.from_env(env).accept_lst(bad, a_rand); refused = False
+    except ic.IbkrError:
+        refused = True
+    check("a token that does not validate is refused", refused)
+    check("K with its top bit set gets a leading zero byte",
+          ic.to_byte_array(0x80) == b"\x00\x80" and ic.to_byte_array(0x7f) == b"\x7f")
+    h2 = oa.sign("GET", ic.OAUTH_BASE + "/portfolio/U1/summary", {"x": "1"})
+    p2 = dict(re.findall(r'(\w+)="([^"]*)"', h2["Authorization"]))
+    s2 = _uq(p2.pop("oauth_signature")); p2.pop("realm"); p2["x"] = "1"
+    bs2 = "GET&" + ic.quote_plus(ic.OAUTH_BASE + "/portfolio/U1/summary") + "&" + ic.quote("&".join(f"{k}={v}" for k, v in sorted(p2.items())))
+    check("every later request is HMAC-SHA256 signed with the token, query included",
+          s2 == _b64.b64encode(_hm.new(_b64.b64decode(srv_lst), bs2.encode(), _hl.sha256).digest()).decode())
+    try:
+        ic.OAuth1a.from_env({}); missing = False
+    except ic.IbkrError:
+        missing = True
+    check("no credentials, no client", missing)
+
+    ex = it.eu_config()
+    check("execution_eu is committed switched off, on paper",
+          ex["enabled"] is False and ex["environment"] == "paper")
+    check("execution_eu markets include Norway as the string 'no', not YAML false",
+          "no" in ex["selection"]["markets"] and False not in ex["selection"]["markets"])
+    def _bl(t, sub, spot, ccy="EUR", dv=5e6):
+        return {"ticker": t, "submarket": sub, "company": t, "event_date": "2026-11-10", "session": "bmo",
+                "tv_symbol": f"X:{t}", "sealed_utc": "2026-11-09T14:40:00+00:00",
+                "tape": {"spot": spot, "currency": ccy, "median_turnover_usd_20d": dv}}
+    bls = {"A": _bl("A", "de", 50.0), "B": _bl("B", "uk", 2500.0, "GBp"), "C": _bl("C", "se", 100.0, "SEK"),
+           "D": _bl("D", "fr", 20.0), "E": _bl("E", "it", 10.0, dv=50e3), "F": _bl("F", "es", 5.0)}
+    def _row(t, pct, side, n=4):
+        return {"ticker": t, "panel_pct": pct, "side": side, "n_members": n}
+    panel = {"members_missing": [], "ranking": [_row("A", 95, 1), _row("B", 90, -1), _row("C", 75, 1),
+                                               _row("D", 65, 1), _row("E", 99, 1), _row("F", 85, -1, 3)]}
+    taken, rej = it.select(panel, bls, ex)
+    rr = {r["ticker"]: r["reason"] for r in rej}
+    check("EU entry takes panel_pct >= 70 with four judges, side from the panel",
+          [c["ticker"] for c in taken] == ["A", "B", "C"] and taken[1]["side"] == "SELL")
+    check("EU entry refuses below 70, a thin name and a three-judge panel",
+          "entry floor" in rr["D"] and "turnover" in rr["E"] and "incomplete" in rr["F"])
+    check("a London spot quoted in pence is traded in pounds", taken[1]["spot_local"] == 25.0 and taken[1]["currency"] == "GBP")
+    fx = {"USD": 1.0, "EUR": 1.10, "GBP": 1.30, "SEK": 0.10}
+    sized, dropped, meta = it.size(taken, 100000.0, 0.0, "EUR", fx, ex)
+    lim = ex["limits"]
+    check("the hard gross limit binds over the percentage budget",
+          meta["budget_base"] == float(lim["max_gross_base"]) and
+          sum(r["notional_base"] for r in sized) <= lim["max_gross_base"] + 1e-6)
+    check("no EU name above max_name_base", all(r["notional_base"] <= lim["max_name_base"] + 1e-6 for r in sized))
+    check("weights follow panel_pct - 60 when nothing is capped",
+          (lambda s: abs(s["A"]["target_base"] / s["C"]["target_base"] - 35 / 15) < 0.01)
+          ({r["ticker"]: r for r in it.size(taken, 6000.0, 0.0, "EUR", fx, ex)[0]}))
+    s_held, _, m_held = it.size(taken, 100000.0, 4000.0, "EUR", fx, ex)
+    check("anything still held comes off the budget", m_held["budget_base"] == lim["max_gross_base"] - 4000.0)
+    over = [dict(sized[0], notional_base=lim["max_name_base"] + 1)] + sized[1:]
+    ok_rows, refused_rows = it.within_limits(over, 0.0, ex)
+    check("the final check refuses an order above max_name_base whatever the plan said",
+          len(refused_rows) == 1 and "max_name_base" in refused_rows[0]["reason"])
+    check("the final check counts what is still held against max_gross_base",
+          len(it.within_limits(sized, float(lim["max_gross_base"]), ex)[0]) == 0)
+    check("entry is allowed 5 minutes before the Xetra close (only a shut market is skipped)",
+          it.session_state("de", _dt(2026, 11, 10, 16, 25, tzinfo=_tz.utc)) == "open")
+    check("entry is refused after the Xetra close",
+          it.session_state("de", _dt(2026, 11, 10, 16, 31, tzinfo=_tz.utc)) != "open")
+    check("Xetra is open at 15:20 UTC on a Tuesday", it.session_state("de", _dt(2026, 11, 10, 15, 20, tzinfo=_tz.utc)) == "open")
+    check("Oslo still takes entries at 16:20 CET", it.session_state("no", _dt(2026, 11, 10, 15, 20, tzinfo=_tz.utc)) == "open")
+    check("Oslo is shut at 16:30 CET", it.session_state("no", _dt(2026, 11, 10, 15, 30, tzinfo=_tz.utc)) != "open")
+    check("no entry on Christmas", it.session_state("uk", _dt(2026, 12, 25, 12, 0, tzinfo=_tz.utc)) != "open")
+    check("paper is DU, live is U", it.account_prefix_ok("DU123", "paper") and not it.account_prefix_ok("DU123", "live")
+          and it.account_prefix_ok("U123", "live") and not it.account_prefix_ok("U123", "paper"))
+    _saved = {k: os.environ.pop(k, None) for k in ("IBKR_ENVIRONMENT", "IBKR_ACCOUNT_ID")}
+    check("no --submit is a dry run", it.guard(dict(ex, enabled=True), False) == "dry run (no --submit)")
+    check("disabled refuses", "enabled is false" in it.guard(ex, True))
+    os.environ["IBKR_ENVIRONMENT"] = "live"
+    check("config and IBKR_ENVIRONMENT must agree", "must say the same" in it.guard(dict(ex, enabled=True), True))
+    os.environ["IBKR_ENVIRONMENT"] = "paper"
+    check("no account id refuses", "IBKR_ACCOUNT_ID" in it.guard(dict(ex, enabled=True), True))
+    for k, v in _saved.items():
+        os.environ.pop(k, None)
+        if v is not None:
+            os.environ[k] = v
+    check("a buy limit rounds up to the tick, a sell limit down",
+          it.round_to(10.003, 0.01, True) == 10.01 and it.round_to(10.007, 0.01, False) == 10.0)
+    o = it.build_order("DU1", 5, "BUY", 10, 100.0, 1.0, 1.0, ex, 0.05, "eu-x")
+    check("an EU entry is a collared DAY limit", o["orderType"] == "LMT" and o["tif"] == "DAY" and o["price"] == 101.0)
+    o2 = it.build_order("DU1", 5, "SELL", 10, 25.0, 0.01, 1.0, ex, 0.5, "eu-y")
+    check("a London limit goes out in pence when IBKR quotes pence", o2["price"] == 2475.0)
+    skill = open(os.path.join(REPO, ".claude/skills/researcher-europe-hunt/SKILL.md"), encoding="utf-8").read()
+    check("the EU skill sells at step 0s and buys at step 6b",
+          "ibkr_trade.py flatten" in skill and "ibkr_trade.py open" in skill
+          and skill.index("ibkr_trade.py flatten") < skill.index("scripts/eu_universe.py --date <EVENT-DATE>"))
+    settings = open(os.path.join(REPO, ".claude/settings.json"), encoding="utf-8").read()
+    if "researcher_europe/scripts/ibkr_trade.py" in settings:
+        print("  ok    the IBKR script has its own allow rule")
+    else:
+        print("  WARN  .claude/settings.json has no allow rule for researcher_europe/scripts/ibkr_trade.py;")
+        print("        in auto mode the classifier may refuse the broker calls (stage E lost 10 days to this)")
+
     print("\nData fetch")
     ok, out = run(["scripts/get_earnings.py", "--probe"])
     if ok:

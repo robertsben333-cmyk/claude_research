@@ -3,8 +3,10 @@
 The unpriced-information hunt, run over **ten European markets pooled** — the UK,
 France, Germany, Sweden, Denmark, Norway, Finland, Italy, Spain and Poland. One signed
 number per company (`impact_sum`, points of spot, unbounded) so the day's names can be
-**ranked**. No call, no threshold, no direction label. Research only: **this stage places
-no orders and reads no broker.**
+**ranked**. No call, no threshold, no direction label. **Since 2026-11-08 the Routine can
+trade the panel's book at Interactive Brokers** (sell all at the start, buy at the end),
+behind `execution_eu.enabled`, committed off; see `EXECUTION.md`. The research itself
+reads no broker.
 
 It exists to ask whether the result the US stage is chasing is a property of the method
 or a property of the US market — the same question stage J asks of Tokyo, now asked of a
