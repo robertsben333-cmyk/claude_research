@@ -1,0 +1,81 @@
+settle threshold 0.2; obs 14056 (dev 2217), events 2556; z TR 0.17/0.71 VW 1.57/4.99
+
+== DEV ==
+ H1 unsettled:
+  all: n 1547 days 32 | rho(D,F13) +0.005 p 0.8186 | mean F13 -0.10 t -0.71 t_days 0.38
+ H2 settled:
+  all: n 670 days 32 | rho(D,F13) -0.056 p 0.1339 | mean F13 -0.43 t -1.5 t_days -0.27
+  gap |rho_u|-|rho_s| day-bootstrap 95%: (-0.161, 0.083)
+ [exploratory] amc:
+  unsettled: n 691 days 27 | rho(D,F13) +0.072 p None | mean F13 -0.13 t -0.64 t_days -1.11
+  settled: n 428 days 27 | rho(D,F13) -0.071 p None | mean F13 -0.48 t -1.19 t_days -1.02
+ [exploratory] bmo:
+  unsettled: n 856 days 29 | rho(D,F13) -0.057 p None | mean F13 -0.07 t -0.37 t_days 0.06
+  settled: n 242 days 28 | rho(D,F13) -0.013 p None | mean F13 -0.35 t -0.99 t_days -0.44
+ [exploratory] F1 (to next checkpoint):
+  unsettled F1: n 1547 days 32 | rho(D,F1) +0.045 p None | mean F1 -0.09 t -1.11 t_days 0.28
+  settled F1: n 670 days 32 | rho(D,F1) -0.111 p None | mean F1 -0.31 t -2.73 t_days -2.41
+ [exploratory] by checkpoint (unsettled+settled), rho(D,F13), share settled:
+   t  -390 n   93 settled 0.59 rho +0.048 meanF13 -0.63
+   t  -300 n   80 settled 0.82 rho +0.004 meanF13 -0.29
+   t   420 n  103 settled 0.67 rho +0.156 meanF13 -0.35
+   t   510 n  171 settled 0.65 rho +0.030 meanF13 -1.14
+   t   565 n  193 settled 0.74 rho -0.121 meanF13 -1.68
+   t   575 n  205 settled 0.00 rho +0.068 meanF13 -0.16
+   t   585 n  204 settled 0.00 rho +0.057 meanF13 +0.28
+   t   600 n  212 settled 0.03 rho +0.007 meanF13 +0.32
+   t   630 n  237 settled 0.11 rho -0.059 meanF13 +0.53
+   t   660 n  240 settled 0.18 rho -0.111 meanF13 -0.00
+   t   720 n  239 settled 0.28 rho -0.036 meanF13 -0.05
+   t   750 n  240 settled 0.33 rho +0.003 meanF13 -0.03
+
+== HOLDOUT ==
+ H1 unsettled:
+  all: n 9083 days 13 | rho(D,F13) +0.043 p 0.001 | mean F13 +0.32 t 6.95 t_days 1.78
+ H2 settled:
+  all: n 2756 days 13 | rho(D,F13) -0.005 p 0.8056 | mean F13 +0.39 t 2.93 t_days 0.29
+  gap |rho_u|-|rho_s| day-bootstrap 95%: (-0.03, 0.05)
+ [exploratory] amc:
+  unsettled: n 5027 days 12 | rho(D,F13) +0.058 p None | mean F13 +0.37 t 5.86 t_days 2.51
+  settled: n 1888 days 11 | rho(D,F13) -0.033 p None | mean F13 +0.58 t 3.34 t_days 0.6
+ [exploratory] bmo:
+  unsettled: n 4056 days 13 | rho(D,F13) +0.023 p None | mean F13 +0.25 t 3.83 t_days 0.91
+  settled: n 868 days 13 | rho(D,F13) +0.036 p None | mean F13 -0.04 t -0.21 t_days -0.45
+ [exploratory] F1 (to next checkpoint):
+  unsettled F1: n 9083 days 13 | rho(D,F1) +0.031 p None | mean F1 +0.08 t 3.6 t_days 1.03
+  settled F1: n 2756 days 13 | rho(D,F1) -0.060 p None | mean F1 -0.08 t -1.38 t_days -2.23
+ [exploratory] by checkpoint (unsettled+settled), rho(D,F13), share settled:
+   t  -390 n  362 settled 0.50 rho -0.107 meanF13 +0.44
+   t  -300 n  298 settled 0.81 rho -0.107 meanF13 +0.06
+   t   420 n  283 settled 0.69 rho +0.017 meanF13 +0.75
+   t   510 n  591 settled 0.67 rho +0.076 meanF13 +0.60
+   t   565 n  714 settled 0.79 rho +0.016 meanF13 +0.60
+   t   575 n  920 settled 0.00 rho -0.000 meanF13 +0.65
+   t   585 n 1034 settled 0.00 rho +0.031 meanF13 +0.69
+   t   600 n 1192 settled 0.02 rho +0.069 meanF13 +0.60
+   t   630 n 1563 settled 0.08 rho +0.027 meanF13 +0.29
+   t   660 n 1610 settled 0.13 rho +0.026 meanF13 +0.07
+   t   720 n 1634 settled 0.21 rho +0.082 meanF13 +0.09
+   t   750 n 1638 settled 0.29 rho +0.026 meanF13 +0.01
+
+== H3 dynamic exit (rule follows continuation) ==
+-- DEV
+  market amc: {'n': 89, 'mean': -0.05, 't': -0.25, 'p': 0.803, 'days': 23, 'mean_of_days': -0.04, 't_days': -0.44, 'pos_days': 5}
+  market bmo: {'n': 125, 'mean': -0.23, 't': -0.81, 'p': 0.418, 'days': 28, 'mean_of_days': -0.15, 't_days': -0.65, 'pos_days': 13}
+  market all: {'n': 214, 'mean': -0.15, 't': -0.84, 'p': 0.401, 'days': 31, 'mean_of_days': -0.11, 't_days': -0.74, 'pos_days': 15}
+  calls us-panel.v2: {'n': 50, 'mean': 0.09, 't': 0.21, 'p': 0.834, 'days': 4, 'mean_of_days': -0.5, 't_days': -0.63, 'pos_days': 3}
+  calls us-panel.v2 strong: {'n': 6, 'mean': -1.32, 't': -1.05, 'p': 0.294, 'days': 4, 'mean_of_days': -1.92, 't_days': -1.03, 'pos_days': 1}
+  calls backtest: {'n': 115, 'mean': -0.26, 't': -0.76, 'p': 0.447, 'days': 15, 'mean_of_days': -0.38, 't_days': -1.87, 'pos_days': 4}
+  calls backtest strong: {'n': 19, 'mean': -2.67, 't': -2.09, 'p': 0.037, 'days': 11, 'mean_of_days': -2.62, 't_days': -2.32, 'pos_days': 2}
+-- HOLDOUT
+  market amc: {'n': 446, 'mean': -0.06, 't': -0.89, 'p': 0.373, 'days': 11, 'mean_of_days': -0.06, 't_days': -0.8, 'pos_days': 5}
+  market bmo: {'n': 659, 'mean': 0.08, 't': 1.23, 'p': 0.219, 'days': 13, 'mean_of_days': 0.03, 't_days': 0.38, 'pos_days': 5}
+  market all: {'n': 1105, 'mean': 0.02, 't': 0.5, 'p': 0.617, 'days': 13, 'mean_of_days': 0.0, 't_days': 0.04, 'pos_days': 6}
+  calls us-panel.v2: {'n': 134, 'mean': 0.2, 't': 0.69, 'p': 0.49, 'days': 7, 'mean_of_days': 0.16, 't_days': 0.63, 'pos_days': 4}
+  calls us-panel.v2 strong: {'n': 33, 'mean': 0.83, 't': 0.97, 'p': 0.332, 'days': 7, 'mean_of_days': 1.02, 't_days': 1.92, 'pos_days': 5}
+  calls us-panel.v3: {'n': 120, 'mean': -0.27, 't': -1.01, 'p': 0.312, 'days': 6, 'mean_of_days': -0.27, 't_days': -0.68, 'pos_days': 3}
+  calls us-panel.v3 strong: {'n': 22, 'mean': -0.52, 't': -0.77, 'p': 0.441, 'days': 6, 'mean_of_days': -0.33, 't_days': -1.99, 'pos_days': 0}
+
+== [exploratory] share of the reaction-day close move already present (|close move| >= 4%) ==
+ amc (n events 769): -450:0.48[0.05,0.81] n293 | -390:0.51[0.12,0.87] n381 | -300:0.51[0.12,0.90] n340 | 420:0.54[0.28,1.02] n255 | 510:0.61[0.26,0.97] n391 | 565:0.62[0.30,0.95] n425 | 575:0.70[0.38,0.97] n600 | 600:0.78[0.54,0.99] n758 | 660:0.87[0.66,1.06] n766 | 780:0.94[0.79,1.07] n769 | 930:0.98[0.90,1.04] n769
+ bmo (n events 630): 420:0.34[-0.05,0.72] n156 | 510:0.56[0.20,0.93] n325 | 565:0.60[0.30,0.92] n362 | 575:0.66[0.36,0.93] n448 | 600:0.72[0.47,0.94] n616 | 660:0.84[0.59,1.07] n626 | 780:0.90[0.75,1.08] n630 | 930:0.98[0.90,1.04] n629
