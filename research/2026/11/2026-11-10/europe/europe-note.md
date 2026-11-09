@@ -107,6 +107,10 @@ Both were vendor-calendar dates (`time` assumed bmo); 2 of 20 is this day's phan
 - **SNTIA** (no), **SHOT** (se), **EG7** (se), **BEAMMW_B** (se): bilingual issuers; the local-language sources added nothing on the filings, as expected for the Nordics.
 - **ELG** (de): the confirmed date came only from the German Finanzkalender; one German aggregator carried a wrong 9 Nov date.
 
+## IBKR handoff (step 6b)
+
+`ibkr-handoff.json` written after the note; no broker call from this session, and `execution_eu.enabled` is false, so the executor places nothing. Offline plan under the rule panel_pct >= 70 with all four judges: **BUY BFF** (74.4, 2,520 @ 1.984 EUR, 50%), **SELL A2A** (72.0, 2,057 @ 2.43 EUR, 50%). DIA, the panel's one selection, is not taken: turnover $0.14m is below the executor's $0.20m floor. BFF's release is after the close (see Sessions), so a position entered on 11-09 would hold through 11-10 before the print.
+
 ## Housekeeping
 
 - A hunter reported that `eu_archive.day('it', d)` raises `fromisoformat: argument must be str` when given a `datetime.date`; it works with an ISO string. Not fixed in this run.
