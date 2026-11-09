@@ -53,3 +53,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-11-09 18:17 UTC
 - 18:17 UTC. Sweep: 28 of 168 checked, 22 company-confirmed, 6 unconfirmed (ONTO ZETA SE HRB JBS WIX), 0 phantoms, 140 unchecked. ASTS and VOD session unsettled. Cap 20: unconfirmed 6 shed, lowest hunt_priority confirmed shed: TDG (27) VOD (17); 140 unchecked shed. PLUG baseline amended suspect->unknown before any searcher (matcher took the 15 Oct preliminary 8-K as a print; company release sets 11-09 amc, call 16:30 ET); no other hunted name suspect. ASTS LCID BAP LEGN HSAI ONON VG cadence_implausible and/or history untrustworthy (SKYD too): searchers told. Hunted (20): amc ASTS HIMS RKLB TTD ACHR PLUG LCID SANM QLYS SKYD TTWO BAP OXY; bmo SRRK LQDA QBTS LEGN HSAI ONON VG. Wave 1 (8): ASTS HIMS RKLB TTD ACHR PLUG LCID SANM.
+
+## Edge hunt (panel) — waves 2-3
+- Logged at 2026-11-09 18:24 UTC
+- 18:24 UTC. Returned, search_complete true per hand-backs: RKLB ASTS LCID. Launched in later turns: QLYS SKYD TTWO. Running: HIMS TTD ACHR PLUG SANM QLYS SKYD TTWO. To launch: BAP OXY, then bmo SRRK LQDA QBTS LEGN HSAI ONON VG.
