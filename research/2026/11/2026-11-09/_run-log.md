@@ -61,3 +61,11 @@
 ## Edge hunt (panel) — OXY baseline
 - Logged at 2026-11-09 18:32 UTC
 - OXY's sealed baseline is bars_failed (HTTPError) from the first, serial priced_in process that was stopped and replaced by parallel ones; my failure grep read only the parallel logs, so it was not re-sealed before its searcher ran. Not re-sealed now: a baseline written after a finding exists is contaminated. The OXY searcher took implied move and reactions from OptionSlam instead. Recorded, not hidden.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-09 18:40 UTC
+- 20/20 searchers returned by 18:39 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20; none retried. mode: execution enabled, amc_open. flatten --submit at 18:40 UTC: 2 positions still held from 2026-11-06's book (DCTH 504 +28.25%, VFF 2601 +1.03% unrealised as printed), both closed; flatten reported 'closed'.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-09 18:40 UTC
+- edge_score and V2 grounded written 18:40 UTC, before the first print. 20 rankable. 20 packs built; four judges, one part. Account flat after 3s.
