@@ -85,3 +85,7 @@
 ## Holistic research — 2026-11-09 — STARTED
 - Logged at 2026-11-09 19:16 UTC
 - 19:17 UTC (14:17 ET). Stage H fire: pick up to 12 from E-P's sweep, two arms where drawn, collect before 15:45 ET, then learning step. Playbook hp.v1, gate closed at start.
+
+## Holistic research — wave 1
+- Logged at 2026-11-09 19:17 UTC
+- 19:17 UTC. 12 names (shed 10), control on SRRK LQDA TTD HSAI. Wave 1 (8, native holistic-researcher): ASTS HIMS RKLB TTD(a+b) ACHR PLUG LCID. Wave 2 next turn: SRRK(a+b) LQDA(a+b) QBTS LEGN HSAI(a+b).
