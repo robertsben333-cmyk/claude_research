@@ -37,3 +37,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-11-09 14:20 UTC
 - 8 names: exit_open HAIN VFF QTRX SOC TGTX; exit_limit DCTH 18.89; exit_close NRXS; none LFMD (release not found). Fired 09:18 ET (8 min late); compiled ~09:21 ET; HAIN review provisional at compile
+
+## Stage M — recompiled
+- Logged at 2026-11-09 14:21 UTC
+- HAIN final review in; recompiled before 09:24 ET

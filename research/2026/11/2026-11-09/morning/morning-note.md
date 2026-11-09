@@ -2,15 +2,15 @@
 
 Bron: `research/2026/11/2026-11-06/edge-panel` (stage E-P). Regel: panel_pct >= 60, >= 3 judges, print in this morning's window (amc 2026-11-06 or bmo 2026-11-09); top 10 by panel_pct. Positie = de kant van het panel, instap 13:30 ET op de instapdag. **Er worden geen orders geplaatst.**
 
-Markt premarket: SPY +0.89%, QQQ +0.90%, IWM +1.52%
+Markt premarket: SPY +0.88%, QQQ +0.89%, IWM +1.52%
 
 | Naam | Sessie | Positie | panel_pct | Cijfers wijzen op | Premarket vs slot | Positie tot nu | Voorbeurs stil | Verwacht open | Verwacht 10:00 | Verwacht open→slot | **Advies** | Limiet | Vaste regel |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| HAIN | bmo | short | 99.4* | -10.00% | -13.33% | +7.41% | ja | -10.00% | -9.00% | -1.00% | **Verkopen bij opening** | — | Uit om 13:00 ET |
+| HAIN | bmo | short | 99.4* | -10.00% | -13.33% | +7.41% | ja | -12.00% | -11.00% | +1.00% | **Verkopen bij opening** | — | Uit om 13:00 ET |
 | DCTH | bmo | long | 90.1* | +24.00% | +23.68% | +22.13% | nee | +23.00% | +21.50% | +0.50% | **Limietorder** | 18.89 | Uit om 13:00 ET |
 | VFF | bmo | long | 89.5* | +3.00% | +6.06% | +5.12% | nee | +5.50% | +4.30% | -1.50% | **Verkopen bij opening** | — | Uit om 13:00 ET |
 | QTRX | bmo | short | 77.8 | +5.00% | —% | —% | ja | +4.00% | +4.50% | +1.00% | **Verkopen bij opening** | — | Uit om 13:00 ET |
-| SOC | bmo | short | 74.1 | -8.00% | -68.68% | +67.80% | nee | -68.00% | -65.00% | +8.00% | **Verkopen bij opening** | — | Uit om 13:00 ET |
+| SOC | bmo | short | 74.1 | -8.00% | -69.17% | +70.35% | nee | -68.00% | -65.00% | +8.00% | **Verkopen bij opening** | — | Uit om 13:00 ET |
 | TGTX | bmo | short | 73.8 | +3.00% | -2.21% | +4.06% | nee | -1.00% | -0.50% | +0.80% | **Verkopen bij opening** | — | Uit om 13:00 ET |
 | NRXS | bmo | short | 72.5 | -7.00% | -1.44% | +1.91% | ja | -3.50% | -4.50% | -2.50% | **Wachten tot slot** | — | Uit om 13:00 ET |
 | LFMD | bmo | short | 69.5 | —% | -2.11% | +1.92% | ja | —% | —% | —% | **Geen advies** | — | Uit om 13:00 ET |
@@ -19,9 +19,9 @@ Markt premarket: SPY +0.89%, QQQ +0.90%, IWM +1.52%
 
 ## HAIN — Verkopen bij opening
 
-Voorlopig: dek de short bij de opening.
+De short staat al ruim in de winst (ongeveer 13% daling voorbeurs) en die daling is iets groter dan wat de cijfers zelf rechtvaardigen: slechte omzet en meer schuld, maar geen faillissement of herstructureringsakkoord vandaag. Grote koersgaten na cijfers lopen vaak deels terug en de beurs is vandaag positief, dus neem de winst bij de opening in plaats van tot 13:00 te wachten.
 
-*Wat dit advies verandert:* Een voorbeurskoers die al ver boven gisteren staat.
+*Wat dit advies verandert:* Als er voor 09:30 nieuws komt over een herstructureringsakkoord, Chapter 11 of een mislukte Aurelius-verkoop, of de voorbeurskoers zakt verder onder 0,126, dan liever aanhouden tot de slotkoers.
 
 ## DCTH — Limietorder
 
