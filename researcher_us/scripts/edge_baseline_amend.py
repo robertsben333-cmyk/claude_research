@@ -73,15 +73,15 @@ from pathlib import Path
 # is where they can actually affect a number. Rewriting this table to {} rather than
 # leaving the 2026-09-10 entries in place is the point of the staleness guard below.
 AMENDMENTS: dict[str, tuple[str, str, str]] = {
-    # 2026-11-03, stage E-P (edge-panel). Applied AFTER the searchers had run, which
-    # the skill asks to avoid; recorded in the run log. One hunted name read 'suspect'.
-    # Symmetry: no other hunted name carries suspect or cadence_implausible.
-    "SMCI": ("unknown",
+    # 2026-11-09, stage E-P (edge-panel). Applied BEFORE any searcher launched.
+    # Symmetry: of the 20 hunted names only PLUG reads 'suspect'; ASTS and BAP carry
+    # cadence_implausible with verdict 'unknown' and are left alone (searchers told).
+    "PLUG": ("unknown",
              "Off 'suspect' to 'unknown', not to fits_cadence. The 'last print' the "
-             "matcher found on 2026-10-20 is the 8-K pre-announcing preliminary FQ1 "
-             "revenue and margin, not the results release; the company's own 8-K of that "
-             "day sets FQ1 FY2027 results for 2026-11-03 after the close (call 5:00 pm ET).",
-             "https://www.sec.gov/Archives/edgar/data/0001375365/000137536526000025/smcifirstquarterfy2027busi.htm"),
+             "matcher found on 2026-10-15 is the 8-K pre-announcing preliminary Q3 "
+             "revenue and cash use, not the results release; the company's own release "
+             "sets Q3 2026 results for 2026-11-09 with a 16:30 ET call.",
+             "https://finviz.com/news/402855/plug-power-reports-continued-business-progress-sets-dates-for-third-quarter-2026-earnings-call-and-global-plug-symposium"),
 }
 
 # SYMMETRY, 2026-09-22: one upgrade and no downgrades, which needs stating rather

@@ -49,3 +49,7 @@
 ## Edge hunt (panel) — baselines sealed
 - Logged at 2026-11-09 18:12 UTC
 - 168 of 168 baselines sealed by 18:12 UTC, before any searcher. BAP and LINE failed first time on Yahoo HTTPError (parallel burst) and were re-sealed serially, both ok. provenance stamped US-P: unpriced-searcher us-searcher.v3 on claude-opus-5-5.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-11-09 18:17 UTC
+- 18:17 UTC. Sweep: 28 of 168 checked, 22 company-confirmed, 6 unconfirmed (ONTO ZETA SE HRB JBS WIX), 0 phantoms, 140 unchecked. ASTS and VOD session unsettled. Cap 20: unconfirmed 6 shed, lowest hunt_priority confirmed shed: TDG (27) VOD (17); 140 unchecked shed. PLUG baseline amended suspect->unknown before any searcher (matcher took the 15 Oct preliminary 8-K as a print; company release sets 11-09 amc, call 16:30 ET); no other hunted name suspect. ASTS LCID BAP LEGN HSAI ONON VG cadence_implausible and/or history untrustworthy (SKYD too): searchers told. Hunted (20): amc ASTS HIMS RKLB TTD ACHR PLUG LCID SANM QLYS SKYD TTWO BAP OXY; bmo SRRK LQDA QBTS LEGN HSAI ONON VG. Wave 1 (8): ASTS HIMS RKLB TTD ACHR PLUG LCID SANM.
