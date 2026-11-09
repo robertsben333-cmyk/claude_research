@@ -27,3 +27,7 @@
 ## Split panel 1/4 — searchers done
 - Logged at 2026-11-09 18:25 UTC
 - 5 of 5 returned by 18:25 UTC, all search_complete true; guard moved nothing; no searcher ran out of search budget (OXY: one third-party site 429 on stocktaper, content recovered from OXY's own slides; OXY baseline sealed with bars_failed: HTTPError, searcher used third-party price data)
+
+## Split panel 3/4 — searchers done
+- Logged at 2026-11-09 18:26 UTC
+- 5 of 5 returned by 18:25 UTC; guard moved nothing; no searcher reported its search budget running out (site-level 403/429s only); 5 of 5 rankable
