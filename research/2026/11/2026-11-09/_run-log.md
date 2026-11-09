@@ -29,3 +29,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-11-09 14:19 UTC
 - source research/2026/11/2026-11-06/edge-panel; fired late, now 09:19 ET (scheduled 09:10)
+
+## Stage M — previous morning scored
+- Logged at 2026-11-09 14:19 UTC
+- 2026-11-06 resolved. Pool: 84 names / 12 days, review mean +0.829% (t 0.68), review_minus_static -0.274pp (t -0.65); Brier review-minus-prior p_open_lags -0.021 (t -1.73), p_fade_by_1000 -0.013 (t -1.06)
