@@ -31,3 +31,7 @@
 ## Split panel 3/4 — searchers done
 - Logged at 2026-11-09 18:26 UTC
 - 5 of 5 returned by 18:25 UTC; guard moved nothing; no searcher reported its search budget running out (site-level 403/429s only); 5 of 5 rankable
+
+## Split panel 4/4 — searchers done
+- Logged at 2026-11-09 18:27 UTC
+- 5 of 5 returned by 18:26 UTC; guard moved nothing; no searcher reported its search budget running out (all search_complete: true); hunt_status 0 unfinished
