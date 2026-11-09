@@ -83,3 +83,34 @@ No cut by liquidity changes the direction result. Every |ρ| is at most 0.03 in 
 Version 1 used bars and volume. Version 2 used real quotes and trades, at the right moments, with one row per event. Both fail on direction, in the same way, on the same holdout. So within this data, "priced in" can be measured as "how much is still left to move", roughly. Which way that remainder goes cannot be predicted from the tape.
 
 *Research, not investment advice.*
+
+---
+
+# Version 3 (2026-11-09 evening): targets (B), options (C) and a combined model
+
+*Pre-registration: `PREREG-v3.md`, written before any options data or target ratio was computed. Option trade bars from Alpaca (15 minutes). I built the contract symbols myself, because Alpaca's contract list leaves out many names, PH for example. The remaining straddle is available on 1,174 rows. Development to 20 Oct, holdout 21 Oct to 6 Nov (13 days). Output: `results3.txt`.*
+
+## Short answer
+
+**Direction stays unpredictable, from every source and from all of them combined.** The options market does help a little with how much the price will still move. Our own targets don't say when the move is done either.
+
+| Test | Holdout | Verdict |
+| --- | --- | --- |
+| C1 size: remaining ATM straddle at 09:45/12:55 predicts the remaining move | ρ +0.087, p 0.018 (n 646). Allowing for the move so far: +0.13 | **Just misses** the pre-set ρ ≥ 0.10. Real, but small |
+| C2 direction: call minus put volume in the 15 min before the decision | ρ −0.015, p 0.70 (n 665). Development +0.066 | **Fails** |
+| B3: move so far against the option-implied move (overshoot fades) | ρ +0.003, p 0.92 (n 1,877) | **Fails**. This was the best lead of 28 Oct, and it has gone |
+| B1: our calls, move so far against the panel's own expected move | v2 ρ +0.05, p 0.40 (n 229); v3 +0.01, p 0.92 (n 147). The prediction was negative | **Fails** |
+| B2: stage M read minus pre-market (contrarian) | ρ −0.26, p 0.06 (n 56, 9 days) | Same sign as the exit-model study, but **largely the same mornings**, so it is not new evidence. No new mornings yet |
+| Combined direction score (options flow + order imbalance + overshoot) | ρ −0.000, p 1.00 (n 2,237) | **Fails** |
+| Combined exit rule | Market-wide amc −0.02, bmo 09:45 +0.07, bmo 12:55 +0.06 (all t over days < 1.4). Our calls mixed: v2 bmo at 09:45 +0.71 (n 64, p 0.06), v2 amc −0.61 (n 70), v3 amc −0.66 (n 75) | **Fails** |
+| Combined size score (spread decay + remaining straddle + move so far) | ρ +0.217, p 0.0005 (n 2,237), against +0.185 for the move so far alone | Adds a little over the move so far |
+
+## One post-hoc pattern, to log and not to act on
+
+For E-P v2 calls, positions that had **not yet reached the panel's expected move** at the decision kept losing afterwards: −0.89 a call (n 137, t −2.4, p 0.017). Those that had reached it were flat (−0.07, n 92). On v3 the sign is the same but weaker (−0.56, n 79, p 0.48). This is "a call that isn't working keeps not working". It was not pre-registered, and an earlier rule built on the same idea ("losing at the open → wait") failed out of sample on 28 Oct. Log it, don't trade on it.
+
+## Conclusion across all three versions
+
+On 13 holdout days, nothing in price, volume, quotes, trades, option prices, option volume or our own targets predicts which way the rest of the move goes after the decision, alone or combined. What is measurable is **how much** is left: the move so far, spread decay and the remaining straddle each add a little. "Priced in" can therefore be estimated as "little left to move", but that changes risk, not the expected return of the exit. My advice: keep the static exits. If anything is built on this, make it a size or risk rule (a smaller position, or an earlier exit, when much is still left to move), and test it forward first.
+
+*Research, not investment advice.*

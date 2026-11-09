@@ -1,0 +1,109 @@
+rows 5236 Counter({'amc@0945': 1397, 'bmo@0945': 1150, 'bmo@1255': 1150, 'amc@0925': 778, 'bmo@0925': 761})
+with remaining straddle 1174 C2 1145
+
+== DEV ==
+ C1 size: remaining straddle % vs remaining |move|/sigma (09:45 and 12:55 rows)
+   pooled: n 164 days 30 rho(remain,size) +0.077 p 0.1554 | partial|Msz +0.105
+   amc@0945: n 35 days 17 rho(remain,size) +0.223 p None | partial|Msz +0.235
+   bmo@0945: n 65 days 23 rho(remain,size) +0.045 p None | partial|Msz +0.081
+   bmo@1255: n 64 days 21 rho(remain,size) +0.026 p None | partial|Msz +0.016
+   [expl] crush ratio: n 143 days 30 rho(crush,size) +0.184 p None | partial|Msz +0.172
+ C2 direction: call-put volume imbalance vs F
+   pooled: n 180 days 30 rho(C2,F) +0.066 p 0.3308
+   amc@0945: n 58 days 19 rho(C2,F) +0.252 p None
+   bmo@0945: n 76 days 25 rho(C2,F) -0.071 p None
+   bmo@1255: n 46 days 21 rho(C2,F) +0.056 p None
+ B3 market: |move| / implied vs F (sign predicted negative)
+   pooled all sets: n 309 days 31 rho(B3,F) -0.058 p 0.2429
+   amc@0925: n 54 days 18 rho(B3,F) -0.050 p None
+   bmo@0925: n 66 days 25 rho(B3,F) -0.042 p None
+   amc@0945: n 50 days 20 rho(B3,F) +0.036 p None
+   bmo@0945: n 66 days 24 rho(B3,F) -0.125 p None
+   bmo@1255: n 73 days 24 rho(B3,F) -0.112 p None
+   [for sign] OI 09:45/12:55 rows: n 269 days 31 rho(OI,F) -0.014 p None
+
+== HOLDOUT ==
+ C1 size: remaining straddle % vs remaining |move|/sigma (09:45 and 12:55 rows)
+   pooled: n 646 days 13 rho(remain,size) +0.087 p 0.0175 | partial|Msz +0.132
+   amc@0945: n 203 days 11 rho(remain,size) +0.117 p None | partial|Msz +0.156
+   bmo@0945: n 213 days 13 rho(remain,size) +0.075 p None | partial|Msz +0.118
+   bmo@1255: n 230 days 13 rho(remain,size) +0.023 p None | partial|Msz +0.091
+   [expl] crush ratio: n 472 days 13 rho(crush,size) +0.058 p None | partial|Msz +0.076
+ C2 direction: call-put volume imbalance vs F
+   pooled: n 665 days 13 rho(C2,F) -0.015 p 0.7011
+   amc@0945: n 305 days 11 rho(C2,F) -0.054 p None
+   bmo@0945: n 263 days 13 rho(C2,F) -0.017 p None
+   bmo@1255: n 97 days 13 rho(C2,F) +0.154 p None
+ B3 market: |move| / implied vs F (sign predicted negative)
+   pooled all sets: n 1877 days 13 rho(B3,F) +0.003 p 0.92
+   amc@0925: n 328 days 11 rho(B3,F) -0.058 p None
+   bmo@0925: n 295 days 13 rho(B3,F) +0.017 p None
+   amc@0945: n 458 days 11 rho(B3,F) +0.044 p None
+   bmo@0945: n 381 days 13 rho(B3,F) +0.107 p None
+   bmo@1255: n 415 days 13 rho(B3,F) -0.101 p None
+   [for sign] OI 09:45/12:55 rows: n 1351 days 13 rho(OI,F) -0.010 p None
+
+== Combined (signs from dev: {'C2': 1, 'OI': -1} ) ==
+ -- DEV
+   direction score vs F: n 352 days 32 rho(dirs,F) +0.059 p 0.2179
+   amc@0945: n 102 days 25 rho(dirs,F) +0.011 p None
+   bmo@0945: n 122 days 28 rho(dirs,F) +0.187 p None
+   bmo@1255: n 128 days 27 rho(dirs,F) -0.029 p None
+   size score vs |F|/sigma: n 352 days 32 rho(sizes,size) +0.178 p 0.0005
+   [ref] Msz alone vs |F|/sigma: n 352 days 32 rho(Msz,size) +0.206 p None
+ -- HOLDOUT
+   direction score vs F: n 2237 days 13 rho(dirs,F) -0.000 p 0.999
+   amc@0945: n 870 days 11 rho(dirs,F) -0.020 p None
+   bmo@0945: n 656 days 13 rho(dirs,F) +0.003 p None
+   bmo@1255: n 711 days 13 rho(dirs,F) +0.031 p None
+   size score vs |F|/sigma: n 2237 days 13 rho(sizes,size) +0.217 p 0.0005
+   [ref] Msz alone vs |F|/sigma: n 2237 days 13 rho(Msz,size) +0.185 p None
+
+== Combined exit rule vs static (amc open, bmo 13:00) ==
+ -- DEV
+   market amc@0945: {'n': 102, 'mean': 0.06, 't': 0.29, 'p': 0.772, 'days': 25, 'mean_of_days': 0.12, 't_days': 0.48, 'pos_days': 10}
+   market bmo@0945: {'n': 122, 'mean': 0.33, 't': 1.42, 'p': 0.156, 'days': 28, 'mean_of_days': 0.29, 't_days': 0.95, 'pos_days': 17}
+   market bmo@1255: {'n': 128, 'mean': -0.08, 't': -0.8, 'p': 0.424, 'days': 27, 'mean_of_days': -0.08, 't_days': -0.87, 'pos_days': 12}
+   calls us-panel.v2 amc@0945: {'n': 18, 'mean': 1.29, 't': 1.4, 'p': 0.162, 'days': 3, 'mean_of_days': 1.68, 't_days': 1.43, 'pos_days': 3}
+   calls us-panel.v2 bmo@0945: {'n': 32, 'mean': -0.02, 't': -0.07, 'p': 0.944, 'days': 4, 'mean_of_days': -0.27, 't_days': -0.49, 'pos_days': 3}
+   calls us-panel.v2 bmo@1255: {'n': 32, 'mean': 0.14, 't': 0.87, 'p': 0.384, 'days': 4, 'mean_of_days': 0.03, 't_days': 0.13, 'pos_days': 3}
+   calls backtest amc@0945: {'n': 58, 'mean': 0.1, 't': 0.12, 'p': 0.904, 'days': 13, 'mean_of_days': -0.21, 't_days': -0.23, 'pos_days': 7}
+   calls backtest bmo@0945: {'n': 53, 'mean': 0.05, 't': 0.1, 'p': 0.92, 'days': 13, 'mean_of_days': -0.1, 't_days': -0.19, 'pos_days': 4}
+   calls backtest bmo@1255: {'n': 53, 'mean': 0.12, 't': 0.4, 'p': 0.689, 'days': 13, 'mean_of_days': 0.28, 't_days': 0.85, 'pos_days': 6}
+   calls backtest strong amc@0945: {'n': 9, 'mean': -5.48, 't': -1.89, 'p': 0.059, 'days': 6, 'mean_of_days': -4.68, 't_days': -1.79, 'pos_days': 1}
+   calls backtest strong bmo@0945: {'n': 9, 'mean': -2.22, 't': -1.07, 'p': 0.285, 'days': 8, 'mean_of_days': -2.5, 't_days': -1.07, 'pos_days': 2}
+   calls backtest strong bmo@1255: {'n': 9, 'mean': 0.34, 't': 0.4, 'p': 0.689, 'days': 8, 'mean_of_days': 0.38, 't_days': 0.4, 'pos_days': 2}
+ -- HOLDOUT
+   market amc@0945: {'n': 870, 'mean': -0.02, 't': -0.33, 'p': 0.741, 'days': 11, 'mean_of_days': 0.01, 't_days': 0.17, 'pos_days': 5}
+   market bmo@0945: {'n': 656, 'mean': 0.07, 't': 0.81, 'p': 0.418, 'days': 13, 'mean_of_days': 0.1, 't_days': 1.19, 'pos_days': 8}
+   market bmo@1255: {'n': 711, 'mean': 0.06, 't': 1.12, 'p': 0.263, 'days': 13, 'mean_of_days': 0.1, 't_days': 1.33, 'pos_days': 8}
+   calls us-panel.v2 amc@0945: {'n': 70, 'mean': -0.61, 't': -1.11, 'p': 0.267, 'days': 7, 'mean_of_days': -0.43, 't_days': -1.86, 'pos_days': 2}
+   calls us-panel.v2 bmo@0945: {'n': 64, 'mean': 0.71, 't': 1.92, 'p': 0.055, 'days': 7, 'mean_of_days': 0.9, 't_days': 1.99, 'pos_days': 6}
+   calls us-panel.v2 bmo@1255: {'n': 64, 'mean': -0.01, 't': -0.06, 'p': 0.952, 'days': 7, 'mean_of_days': -0.04, 't_days': -0.22, 'pos_days': 3}
+   calls us-panel.v2 strong amc@0945: {'n': 21, 'mean': 0.79, 't': 0.57, 'p': 0.569, 'days': 6, 'mean_of_days': 1.77, 't_days': 0.93, 'pos_days': 3}
+   calls us-panel.v2 strong bmo@0945: {'n': 12, 'mean': 0.32, 't': 0.5, 'p': 0.617, 'days': 5, 'mean_of_days': 0.18, 't_days': 0.65, 'pos_days': 1}
+   calls us-panel.v2 strong bmo@1255: {'n': 12, 'mean': 0.21, 't': 0.86, 'p': 0.39, 'days': 5, 'mean_of_days': 0.29, 't_days': 1.38, 'pos_days': 2}
+   calls us-panel.v3 amc@0945: {'n': 75, 'mean': -0.66, 't': -0.72, 'p': 0.472, 'days': 5, 'mean_of_days': -0.63, 't_days': -1.61, 'pos_days': 2}
+   calls us-panel.v3 bmo@0945: {'n': 45, 'mean': -0.04, 't': -0.07, 'p': 0.944, 'days': 6, 'mean_of_days': 0.11, 't_days': 0.21, 'pos_days': 3}
+   calls us-panel.v3 bmo@1255: {'n': 45, 'mean': 0.3, 't': 0.99, 'p': 0.322, 'days': 6, 'mean_of_days': -0.01, 't_days': -0.03, 'pos_days': 3}
+   calls us-panel.v3 strong amc@0945: {'n': 15, 'mean': 1.58, 't': 0.57, 'p': 0.569, 'days': 5, 'mean_of_days': 2.64, 't_days': 0.99, 'pos_days': 4}
+   calls us-panel.v3 strong bmo@0945: {'n': 7, 'mean': -0.14, 't': -0.07, 'p': 0.944, 'days': 4, 'mean_of_days': -0.54, 't_days': -0.8, 'pos_days': 1}
+   calls us-panel.v3 strong bmo@1255: {'n': 7, 'mean': 0.34, 't': 0.79, 'p': 0.43, 'days': 4, 'mean_of_days': 0.84, 't_days': 1.4, 'pos_days': 2}
+
+== B1 our calls: progress = move so far / panel expected move (sign predicted negative) ==
+  us-panel.v2 amc@0925: n 59 rho +0.013 p None | progress>=1: {'n': 23, 'mean': 0.92, 't': 0.74, 'p': 0.459} | <1: {'n': 36, 'mean': -1.85, 't': -1.92, 'p': 0.055}
+  us-panel.v2 bmo@0925: n 74 rho +0.021 p None | progress>=1: {'n': 33, 'mean': -1.04, 't': -1.35, 'p': 0.177} | <1: {'n': 41, 'mean': -0.5, 't': -0.61, 'p': 0.542}
+  us-panel.v2 amc@0945: n 88 rho +0.154 p None | progress>=1: {'n': 37, 'mean': 2.19, 't': 3.01, 'p': 0.003} | <1: {'n': 51, 'mean': -1.08, 't': -2.01, 'p': 0.044}
+  us-panel.v2 bmo@0945: n 96 rho +0.027 p None | progress>=1: {'n': 34, 'mean': -0.42, 't': -0.72, 'p': 0.472} | <1: {'n': 62, 'mean': -0.44, 't': -0.89, 'p': 0.373}
+  us-panel.v2 bmo@1255: n 96 rho +0.092 p None | progress>=1: {'n': 36, 'mean': 0.18, 't': 0.62, 'p': 0.535} | <1: {'n': 60, 'mean': -0.58, 't': -1.94, 'p': 0.052}
+  us-panel.v2 all: n 229 rho +0.052 p 0.4033 | progress>=1: {'n': 92, 'mean': -0.07, 't': -0.17, 'p': 0.865} | <1: {'n': 137, 'mean': -0.89, 't': -2.38, 'p': 0.017}
+  us-panel.v3 amc@0925: n 66 rho +0.006 p None | progress>=1: {'n': 32, 'mean': 0.67, 't': 0.41, 'p': 0.682} | <1: {'n': 34, 'mean': -0.83, 't': -0.5, 'p': 0.617}
+  us-panel.v3 bmo@0925: n 36 rho +0.046 p None | progress>=1: {'n': 18, 'mean': -1.17, 't': -0.75, 'p': 0.453} | <1: {'n': 18, 'mean': -0.9, 't': -0.63, 'p': 0.529}
+  us-panel.v3 amc@0945: n 75 rho +0.071 p None | progress>=1: {'n': 30, 'mean': 0.67, 't': 0.61, 'p': 0.542} | <1: {'n': 45, 'mean': -0.6, 't': -0.84, 'p': 0.401}
+  us-panel.v3 bmo@0945: n 45 rho +0.047 p None | progress>=1: {'n': 19, 'mean': 0.08, 't': 0.08, 'p': 0.936} | <1: {'n': 26, 'mean': -1.01, 't': -1.2, 'p': 0.23}
+  us-panel.v3 bmo@1255: n 45 rho +0.014 p None | progress>=1: {'n': 18, 'mean': 0.48, 't': 0.85, 'p': 0.395} | <1: {'n': 27, 'mean': -0.0, 't': -0.0, 'p': 1.0}
+  us-panel.v3 all: n 147 rho +0.009 p 0.9165 | progress>=1: {'n': 68, 'mean': 0.13, 't': 0.15, 'p': 0.881} | <1: {'n': 79, 'mean': -0.56, 't': -0.7, 'p': 0.484}
+
+== B2 stage M: side x (release read - pre-market) vs our-side open->13:00 (sign fixed negative) ==
+  all mornings: n 56 days 9 rho -0.260 p 0.061
+  after 6 Nov: n 0
