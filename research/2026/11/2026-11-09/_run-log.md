@@ -97,3 +97,7 @@
 ## Holistic research — all launched
 - Logged at 2026-11-09 19:24 UTC
 - 19:24 UTC. All 16 launched (native holistic-researcher). Returned: ASTS LCID RKLB PLUG HIMS ACHR TTD(a) TTD(b). Running: SRRK(a,b) LQDA(a,b) QBTS LEGN HSAI(a,b).
+
+## Holistic research — learning step
+- Logged at 2026-11-09 19:32 UTC
+- 19:32 UTC. 16 researchers native, all returned by 19:31 UTC; collect 15 of 16 ok (LEGN evolving contaminated: saw an undated 'Q3 revenue slightly misses' headline, not scored), 0 recommendations. resolve: 0 new, 15 pending, 0 in outcomes. gate closed: 0/30 names, 0/3 days on hp.v1; drift alarm no; reflector not launched. Tomorrow: hp.v1.
