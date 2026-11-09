@@ -81,3 +81,7 @@
 ## Edge hunt (panel) — done
 - Logged at 2026-11-09 18:52 UTC
 - 18:52 UTC: HSAI entry now filled 317 @ 14.22 (all three filled). edge_context written (step 6d). Run complete.
+
+## Holistic research — 2026-11-09 — STARTED
+- Logged at 2026-11-09 19:16 UTC
+- 19:17 UTC (14:17 ET). Stage H fire: pick up to 12 from E-P's sweep, two arms where drawn, collect before 15:45 ET, then learning step. Playbook hp.v1, gate closed at start.
