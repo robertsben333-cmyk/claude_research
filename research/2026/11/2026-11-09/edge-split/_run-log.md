@@ -39,3 +39,7 @@
 ## Split panel 2/4 — panel done
 - Logged at 2026-11-09 18:28 UTC
 - 4 of 4 judges on pinned models; 0 selected (QLYS 75 L, PLUG 74 S closest); dry-run, history untouched
+
+## Split panel 3/4 — panel done
+- Logged at 2026-11-09 18:29 UTC
+- 4 of 4 judges on pinned models, full coverage; scored --dry-run --stage E-PS at 18:29 UTC; selected LCID (87 short); LQDA 78 short just below
