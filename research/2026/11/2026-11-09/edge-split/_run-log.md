@@ -35,3 +35,7 @@
 ## Split panel 4/4 — searchers done
 - Logged at 2026-11-09 18:27 UTC
 - 5 of 5 returned by 18:26 UTC; guard moved nothing; no searcher reported its search budget running out (all search_complete: true); hunt_status 0 unfinished
+
+## Split panel 2/4 — panel done
+- Logged at 2026-11-09 18:28 UTC
+- 4 of 4 judges on pinned models; 0 selected (QLYS 75 L, PLUG 74 S closest); dry-run, history untouched
