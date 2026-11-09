@@ -57,3 +57,7 @@
 ## Edge hunt (panel) — waves 2-3
 - Logged at 2026-11-09 18:24 UTC
 - 18:24 UTC. Returned, search_complete true per hand-backs: RKLB ASTS LCID. Launched in later turns: QLYS SKYD TTWO. Running: HIMS TTD ACHR PLUG SANM QLYS SKYD TTWO. To launch: BAP OXY, then bmo SRRK LQDA QBTS LEGN HSAI ONON VG.
+
+## Edge hunt (panel) — OXY baseline
+- Logged at 2026-11-09 18:32 UTC
+- OXY's sealed baseline is bars_failed (HTTPError) from the first, serial priced_in process that was stopped and replaced by parallel ones; my failure grep read only the parallel logs, so it was not re-sealed before its searcher ran. Not re-sealed now: a baseline written after a finding exists is contaminated. The OXY searcher took implied move and reactions from OptionSlam instead. Recorded, not hidden.
