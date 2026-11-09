@@ -86,3 +86,20 @@ The live rule on the same names, panel 80 or more with four judges: v3 n 25, +1.
 3. A cheaper and more telling test first: run Fable 5.2 a second time on these same ten days. If the two passes agree at only 0.6, the judge model matters less than the noise in a single pass, and the next step is averaging passes, not choosing models.
 
 Files: `results.txt` (all tables), `rows.json` (one row per name with every judge's score and the move), `judgements/` (Fable 5.2's raw output per day), `scripts/`.
+
+## Addendum: each judge's own top 20% and top 30% (same 194 names, 10 days)
+
+Side from each judge's sign, gross, t per name. "Own top" means that judge's largest |impact_sum| over this sample (the live panel uses its percentile). Choosing the cut on the same sample is in-sample for every row.
+
+| Judge | Top 20% n | Mean | Right | t | Top 30% n | Mean | Right | t |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Fable 5.2 | 40 | +2.40% | 48% | 1.01 | 58 | +2.02% | 50% | 1.02 |
+| Fable 5.1 | 38 | +2.71% | 53% | 1.22 | 57 | +3.39% | 56% | 1.91 |
+| Opus 5.5 | 38 | +5.42% | 55% | 2.32 | 57 | +3.86% | 53% | 2.26 |
+| Opus 5 | 41 | +3.22% | 59% | 1.91 | 59 | +3.79% | 61% | 2.23 |
+| Sonnet 5.5 | 37 | +4.62% | 54% | 1.93 | 56 | +2.50% | 52% | 1.38 |
+| Live panel pct | 39 | +2.76% | 49% | 1.40 | 59 | +3.16% | 54% | 1.80 |
+
+Long side only: Fable 5.2 top 20% +3.32% (n 28, 54% right), top 30% +3.13% (n 40). The others, top 20% / top 30%: Fable 5.1 +7.15% (n 19) / +6.89% (n 31), Opus 5.5 +6.51% (n 25) / +5.00% (n 37), Opus 5 +5.91% / +5.08%, Sonnet 5.5 +5.22% / +2.59%, live panel +5.80% / +5.10%.
+
+Fable 5.2 is the weakest of the six in both cuts. Fable 5.2's top 20% by side: longs +3.32% (n 28), shorts +0.25% (n 12, 33% right). In its top 20% the worst call was MPAA (−25.7%) and the best was a short that rose 53.8% (SOC), so single names move these means a lot. None of the gaps between judges is established: they share the same 194 names and the same ten days.
