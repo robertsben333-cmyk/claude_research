@@ -7,3 +7,7 @@
 ## Split panel 2/4 — STARTED
 - Logged at 2026-11-09 18:17 UTC
 - SRRK HIMS PLUG HSAI QLYS; E-P's sweep and baselines from 856d4f8e; confirmed names by hunt_priority, cut at 20
+
+## Split panel 3/4 — STARTED
+- Logged at 2026-11-09 18:18 UTC
+- LQDA RKLB LCID TTWO ONON; E-P's sweep and baselines from 856d4f8; confirmed names by hunt_priority cut at 20
