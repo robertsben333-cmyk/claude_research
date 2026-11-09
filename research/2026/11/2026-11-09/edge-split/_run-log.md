@@ -19,3 +19,7 @@
 ## Split panel 4/4 — searchers launched
 - Logged at 2026-11-09 18:18 UTC
 - 5 unpriced-searcher in one message at 18:18 UTC: TTD SANM BAP (amc) QBTS VG (bmo); BAP told baseline_history_trustworthy false
+
+## Split panel 2/4 — searchers done
+- Logged at 2026-11-09 18:25 UTC
+- 5 of 5 returned by 18:25 UTC (unpriced-searcher agent form); guard moved nothing; no searcher reported its search budget running out (hunt_status: 0 unfinished of 5)
