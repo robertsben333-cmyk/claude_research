@@ -89,3 +89,7 @@
 ## Holistic research — wave 1
 - Logged at 2026-11-09 19:17 UTC
 - 19:17 UTC. 12 names (shed 10), control on SRRK LQDA TTD HSAI. Wave 1 (8, native holistic-researcher): ASTS HIMS RKLB TTD(a+b) ACHR PLUG LCID. Wave 2 next turn: SRRK(a+b) LQDA(a+b) QBTS LEGN HSAI(a+b).
+
+## Holistic research — wave 2
+- Logged at 2026-11-09 19:21 UTC
+- 19:21 UTC. ASTS(a) returned 19:20 UTC. Harness caps concurrent subagents at 8, so wave 2 launches one per freed slot: SRRK(a) launched; queue SRRK(b) first, then LQDA(a+b), QBTS, LEGN, HSAI(a+b). SRRK's two arms therefore start minutes apart, not in the same wave.
