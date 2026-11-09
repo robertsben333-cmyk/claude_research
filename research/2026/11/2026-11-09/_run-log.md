@@ -69,3 +69,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-09 18:40 UTC
 - edge_score and V2 grounded written 18:40 UTC, before the first print. 20 rankable. 20 packs built; four judges, one part. Account flat after 3s.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-11-09 18:49 UTC
+- 18:49 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) QBTS S 90, ASTS S 88, HSAI S 81 (3-of-4 rule: QBTS ASTS; HSAI 2 of 4). Next SRRK L 77. Note written; stage E edge/ absent.
