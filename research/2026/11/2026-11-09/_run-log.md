@@ -33,3 +33,7 @@
 ## Stage M — previous morning scored
 - Logged at 2026-11-09 14:19 UTC
 - 2026-11-06 resolved. Pool: 84 names / 12 days, review mean +0.829% (t 0.68), review_minus_static -0.274pp (t -0.65); Brier review-minus-prior p_open_lags -0.021 (t -1.73), p_fade_by_1000 -0.013 (t -1.06)
+
+## Stage M — morning exit review — done
+- Logged at 2026-11-09 14:20 UTC
+- 8 names: exit_open HAIN VFF QTRX SOC TGTX; exit_limit DCTH 18.89; exit_close NRXS; none LFMD (release not found). Fired 09:18 ET (8 min late); compiled ~09:21 ET; HAIN review provisional at compile
