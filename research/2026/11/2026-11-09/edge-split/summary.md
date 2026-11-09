@@ -2,11 +2,11 @@
 
 Stage E-P's own names, five to a session over four sessions, beside stage E-P's single session. A cell is `panel_pct` (0-100) with the side, L or S; `*` = selected (80 or more, all four judges); `·` = not scored in that arm. Findings and sources are counted in each arm's own hunt file.
 
-Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 3 of 4. Names scored by both arms: 0 of 20. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
+Names from edge-panel/sweep.json: confirmed names by hunt_priority, then the rest by hunt_priority, cut at 20 as budget.edge_degrade_order sheds. Shards done: 4 of 4. Names scored by both arms: 0 of 20. Spearman rho on signed panel_pct: n/a. Same side: 0 of 0.
 
-Selected by E-P: none. By the split: ASTS, LCID. Both: none.
+Selected by E-P: none. By the split: ASTS, LCID, QBTS, SANM. Both: none.
 
-Mean findings per name, E-P / split: 9.12 / 7.9. Mean sources: 21.75 / 18.25. Mean panel_pct on names in both: n/a / n/a.
+Mean findings per name, E-P / split: 9.1 / 7.9. Mean sources: 21.3 / 18.25. Mean panel_pct on names in both: n/a / n/a.
 
 | ticker | shard | session | E-P | split | impact_sum E-P / split | findings E-P / split | sources E-P / split |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
@@ -18,25 +18,25 @@ Mean findings per name, E-P / split: 9.12 / 7.9. Mean sources: 21.75 / 18.25. Me
 | HIMS | 2 | amc | · | 61S | n/a / -0.4 | 10 / 9 | 24 / 18 |
 | HSAI | 2 | bmo | · | 50S | n/a / -1.7 | n/a / 4 | n/a / 22 |
 | PLUG | 2 | amc | · | 74S | n/a / -3.1 | 10 / 9 | 22 / 22 |
-| QLYS | 2 | amc | · | 75L | n/a / 1.9 | n/a / 10 | n/a / 16 |
+| QLYS | 2 | amc | · | 75L | n/a / 1.9 | 11 / 10 | 22 / 16 |
 | SRRK | 2 | bmo | · | 55L | n/a / 1.35 | n/a / 9 | n/a / 18 |
 | LCID | 3 | amc | · | 87S* | n/a / -0.6 | 6 / 8 | 22 / 16 |
 | LQDA | 3 | bmo | · | 78S | n/a / -0.3 | n/a / 7 | n/a / 15 |
 | ONON | 3 | bmo | · | 6S | n/a / -0.7 | n/a / 10 | n/a / 16 |
 | RKLB | 3 | amc | · | 49L | n/a / 0.5 | 8 / 9 | 22 / 24 |
-| TTWO | 3 | amc | · | 42S | n/a / -0.5 | n/a / 7 | n/a / 16 |
-| BAP | 4 | amc | · | · | n/a / 0.25 | n/a / 6 | n/a / 16 |
-| QBTS | 4 | bmo | · | · | n/a / -1.5 | n/a / 8 | n/a / 17 |
-| SANM | 4 | amc | · | · | n/a / 3.0 | 8 / 6 | 18 / 17 |
-| TTD | 4 | amc | · | · | n/a / -0.3 | 13 / 11 | 22 / 22 |
-| VG | 4 | bmo | · | · | n/a / 2.6 | n/a / 3 | n/a / 16 |
+| TTWO | 3 | amc | · | 42S | n/a / -0.5 | 7 / 7 | 17 / 16 |
+| BAP | 4 | amc | · | 1L | n/a / 0.25 | n/a / 6 | n/a / 16 |
+| QBTS | 4 | bmo | · | 90S* | n/a / -1.5 | n/a / 8 | n/a / 17 |
+| SANM | 4 | amc | · | 93L* | n/a / 3.0 | 8 / 6 | 18 / 17 |
+| TTD | 4 | amc | · | 42S | n/a / -0.3 | 13 / 11 | 22 / 22 |
+| VG | 4 | bmo | · | 78L | n/a / 2.6 | n/a / 3 | n/a / 16 |
 
 | shard | status | names | judges | claimed (UTC) | minutes |
 | ---: | --- | --- | --- | --- | ---: |
 | 1 | done | ASTS, ACHR, SKYD, OXY, LEGN | opus5, opus55, sonnet55, fable51 | 18:17 | 13 |
 | 2 | done | HIMS, PLUG, QLYS, SRRK, HSAI | opus5, opus55, sonnet55, fable51 | 18:17 | 11 |
 | 3 | done | RKLB, LCID, TTWO, LQDA, ONON | opus5, opus55, sonnet55, fable51 | 18:17 | 12 |
-| 4 | claimed | TTD, SANM, BAP, QBTS, VG | n/a | 18:18 | n/a |
+| 4 | done | TTD, SANM, BAP, QBTS, VG | opus5, opus55, sonnet55, fable51 | 18:18 | 13 |
 
 E-P's panel was scored n/a with n/a.
 
