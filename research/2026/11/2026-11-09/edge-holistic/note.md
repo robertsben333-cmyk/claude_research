@@ -34,3 +34,25 @@ None today: no name cleared the playbook's bar.
 - LEGN (evolving): contaminated; Possible, not used. A WebSearch result list (query on Q3 2026 previews, about 19:27 UTC) contained an UNDATED headline on itiger.com, 'Legend Biotech Q3 revenue slightly misses estimates' (news id 2582755023). I did not open it. I could not tell whether it is about Q3 2025 (reported November 2025) or this print, and it says nothing about the price reaction. I stopped researching as soon as I saw it. My revenue view (collaboration revenue of about $352m against a $358.6m consensus) was already worked out from Legend's 6-K and J&J's 10-Q before the headline appeared, and p_up and the action below are what I had before seeing it. If the caller treats this as exposure, discard this name.
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P (read after the recommendations were published)
+
+| ticker | H p_up (evolving) | H action | H p_up (control) | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- | --- |
+| SRRK | 51 | none | 56 | 77.2 | False |
+| LQDA | 46 | none | 46 | -67.1 | False |
+| ASTS | 46 | none | — | -88.4 | True |
+| HIMS | 53 | none | — | -61.2 | False |
+| QBTS | 43 | none | — | -90.1 | True |
+| RKLB | 56 | none | — | -21.9 | False |
+| TTD | 45 | none | 42 | -32.6 | False |
+| LEGN | 46 (contaminated, not scored) | none | — | -55.2 | False |
+| ACHR | 42 | none | — | -58.4 | False |
+| PLUG | 45 | none | — | -66.4 | False |
+| LCID | 45 | none | — | -69.2 | False |
+| HSAI | 38 | none | 41 | -80.8 | True |
+
+Sign disagreements (H p_up against 50, E-P signed percentile):
+- HIMS: H leans up (p_up 53), E-P leans down (-61.2).
+- RKLB: H leans up (p_up 56), E-P leans down (-21.9).
+
