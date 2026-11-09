@@ -11,3 +11,7 @@
 ## Split panel 3/4 — STARTED
 - Logged at 2026-11-09 18:18 UTC
 - LQDA RKLB LCID TTWO ONON; E-P's sweep and baselines from 856d4f8; confirmed names by hunt_priority cut at 20
+
+## Split panel 4/4 — STARTED
+- Logged at 2026-11-09 18:18 UTC
+- QBTS TTD SANM VG BAP; E-P's sweep and baselines from 856d4f8; confirmed names by hunt_priority cut at 20; claimed 18:10 UTC
