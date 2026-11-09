@@ -73,3 +73,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-09 18:49 UTC
 - 18:49 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) QBTS S 90, ASTS S 88, HSAI S 81 (3-of-4 rule: QBTS ASTS; HSAI 2 of 4). Next SRRK L 77. Note written; stage E edge/ absent.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-09 18:50 UTC
+- 18:50 UTC (13:50 ET), after the note: plan, then open --submit --no-flatten. 3 market short orders: QBTS 570 filled @ 11.47, ASTS 167 filled @ 36.75, HSAI 317 planned (232 filled @ 14.22 at status, partially_filled; position shows -317); gross ~$17,185 planned, 99.7% of $17,225 equity, weights 30/28.4/20.8 -> 37.9/35.6/26.2%. Mean execution cost vs mid +0.056. Exits dated 2026-11-10. All three are shorts on crowded books.
