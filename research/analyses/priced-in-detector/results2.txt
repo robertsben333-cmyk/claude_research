@@ -1,0 +1,85 @@
+rows 2199 Counter({'bmo@1255': 1129, 'bmo@0925': 560, 'amc@0925': 510})
+
+== DEV (|move| >= 2%: 289 rows) ==
+ HA size: abnormal spread vs |F|/sigma
+   pooled: n 175 days 30 rho(abn,size) -0.173 p 0.042 | partial|Msz -0.181
+   amc@0925: n 30 days 13 rho(abn,size) +0.078 p None | partial|Msz +0.049
+   bmo@0925: n 33 days 19 rho(abn,size) -0.164 p None | partial|Msz -0.038
+   bmo@1255: n 112 days 26 rho(abn,size) +0.032 p None | partial|Msz -0.000
+ [exploratory] size: spread decay, move so far
+   decay pooled: n 265 days 30 rho(decay,size) +0.124 p None | partial|Msz +0.134
+   Msz pooled: n 289 days 31 rho(Msz,size) +0.256 p None
+ HB direction
+   OI pooled: n 281 days 30 rho(OI,F) +0.071 p 0.1909
+   OI amc@0925: n 67 days 18 rho(OI,F) +0.081 p None
+   OI bmo@0925: n 93 days 27 rho(OI,F) +0.037 p None
+   OI bmo@1255: n 121 days 26 rho(OI,F) +0.160 p None
+   RI pooled: n 252 days 30 rho(RI,F) +0.022 p 0.7476
+   RI amc@0925: n 58 days 16 rho(RI,F) +0.125 p None
+   RI bmo@0925: n 80 days 27 rho(RI,F) -0.020 p None
+   RI bmo@1255: n 114 days 26 rho(RI,F) +0.038 p None
+ [exploratory] direction by liquidity (above/below median $vol)
+   OI liquid: n 142 days 26 rho(OI,F) +0.068 p None
+   OI illiquid: n 139 days 24 rho(OI,F) +0.076 p None
+   RI liquid: n 136 days 26 rho(RI,F) +0.087 p None
+   RI illiquid: n 116 days 23 rho(RI,F) -0.022 p None
+ [exploratory] mean F by set: {'amc@0925': {'n': 72, 'mean': -1.89, 't': -1.74, 'p': 0.082, 'days': 20, 'mean_of_days': -1.56, 't_days': -1.92, 'pos_days': 4}, 'bmo@0925': {'n': 96, 'mean': -0.99, 't': -1.35, 'p': 0.177, 'days': 27, 'mean_of_days': -0.96, 't_days': -1.02, 'pos_days': 13}, 'bmo@1255': {'n': 121, 'mean': 0.17, 't': 0.77, 'p': 0.441, 'days': 26, 'mean_of_days': -0.15, 't_days': -0.53, 'pos_days': 15}}
+
+== HOLDOUT (|move| >= 2%: 1348 rows) ==
+ HA size: abnormal spread vs |F|/sigma
+   pooled: n 978 days 13 rho(abn,size) -0.115 p 0.001 | partial|Msz -0.112
+   amc@0925: n 152 days 11 rho(abn,size) -0.077 p None | partial|Msz -0.005
+   bmo@0925: n 134 days 13 rho(abn,size) -0.289 p None | partial|Msz -0.279
+   bmo@1255: n 692 days 13 rho(abn,size) +0.030 p None | partial|Msz +0.036
+ [exploratory] size: spread decay, move so far
+   decay pooled: n 1135 days 13 rho(decay,size) +0.182 p None | partial|Msz +0.187
+   Msz pooled: n 1348 days 13 rho(Msz,size) +0.179 p None
+ HB direction
+   OI pooled: n 1316 days 13 rho(OI,F) +0.006 p 0.8426
+   OI amc@0925: n 312 days 11 rho(OI,F) -0.056 p None
+   OI bmo@0925: n 306 days 13 rho(OI,F) +0.034 p None
+   OI bmo@1255: n 698 days 13 rho(OI,F) +0.026 p None
+   RI pooled: n 1052 days 13 rho(RI,F) +0.002 p 0.9545
+   RI amc@0925: n 192 days 11 rho(RI,F) -0.049 p None
+   RI bmo@0925: n 182 days 13 rho(RI,F) -0.001 p None
+   RI bmo@1255: n 678 days 13 rho(RI,F) +0.056 p None
+ [exploratory] direction by liquidity (above/below median $vol)
+   OI liquid: n 667 days 13 rho(OI,F) -0.007 p None
+   OI illiquid: n 649 days 13 rho(OI,F) +0.007 p None
+   RI liquid: n 540 days 13 rho(RI,F) -0.033 p None
+   RI illiquid: n 512 days 13 rho(RI,F) +0.029 p None
+ [exploratory] mean F by set: {'amc@0925': {'n': 330, 'mean': 0.74, 't': 1.77, 'p': 0.077, 'days': 11, 'mean_of_days': 0.47, 't_days': 1.1, 'pos_days': 7}, 'bmo@0925': {'n': 318, 'mean': 0.14, 't': 0.37, 'p': 0.711, 'days': 13, 'mean_of_days': -0.11, 't_days': -0.26, 'pos_days': 6}, 'bmo@1255': {'n': 700, 'mean': 0.18, 't': 1.76, 'p': 0.078, 'days': 13, 'mean_of_days': 0.35, 't_days': 2.53, 'pos_days': 11}}
+
+== HC exit rule (signals oriented by development sign: {'OI': 1, 'RI': 1} ) ==
+ -- OI DEV
+   market amc@0925: {'n': 67, 'mean': -0.34, 't': -0.58, 'p': 0.562, 'days': 18, 'mean_of_days': -0.28, 't_days': -0.67, 'pos_days': 9}
+   market bmo@0925: {'n': 93, 'mean': 0.06, 't': 0.17, 'p': 0.865, 'days': 27, 'mean_of_days': 0.05, 't_days': 0.11, 'pos_days': 13}
+   market bmo@1255: {'n': 121, 'mean': 0.2, 't': 1.85, 'p': 0.064, 'days': 26, 'mean_of_days': 0.21, 't_days': 1.3, 'pos_days': 17}
+   calls us-panel.v2 (all sets): {'n': 61, 'mean': -0.0, 't': -0.01, 'p': 0.992, 'days': 4, 'mean_of_days': -0.07, 't_days': -0.45, 'pos_days': 2}
+   calls us-panel.v2 strong (all sets): {'n': 7, 'mean': 0.76, 't': 0.97, 'p': 0.332, 'days': 3, 'mean_of_days': 0.41, 't_days': 0.86, 'pos_days': 1}
+   calls backtest (all sets): {'n': 132, 'mean': -0.21, 't': -0.67, 'p': 0.503, 'days': 15, 'mean_of_days': -0.46, 't_days': -1.53, 'pos_days': 5}
+   calls backtest strong (all sets): {'n': 23, 'mean': 0.24, 't': 0.47, 'p': 0.638, 'days': 10, 'mean_of_days': 0.01, 't_days': 0.03, 'pos_days': 2}
+ -- OI HOLDOUT
+   market amc@0925: {'n': 312, 'mean': -0.11, 't': -0.53, 'p': 0.596, 'days': 11, 'mean_of_days': -0.08, 't_days': -0.42, 'pos_days': 6}
+   market bmo@0925: {'n': 306, 'mean': 0.01, 't': 0.07, 'p': 0.944, 'days': 13, 'mean_of_days': 0.06, 't_days': 0.25, 'pos_days': 8}
+   market bmo@1255: {'n': 698, 'mean': 0.02, 't': 0.38, 'p': 0.704, 'days': 13, 'mean_of_days': -0.08, 't_days': -1.2, 'pos_days': 5}
+   calls us-panel.v2 (all sets): {'n': 140, 'mean': -0.17, 't': -0.68, 'p': 0.497, 'days': 7, 'mean_of_days': -0.11, 't_days': -0.43, 'pos_days': 3}
+   calls us-panel.v2 strong (all sets): {'n': 38, 'mean': 0.61, 't': 0.86, 'p': 0.39, 'days': 6, 'mean_of_days': 1.21, 't_days': 1.55, 'pos_days': 4}
+   calls us-panel.v3 (all sets): {'n': 129, 'mean': -0.04, 't': -0.11, 'p': 0.912, 'days': 6, 'mean_of_days': -0.23, 't_days': -0.56, 'pos_days': 3}
+   calls us-panel.v3 strong (all sets): {'n': 20, 'mean': -1.16, 't': -1.21, 'p': 0.226, 'days': 6, 'mean_of_days': -1.51, 't_days': -1.05, 'pos_days': 3}
+ -- RI DEV
+   market amc@0925: {'n': 58, 'mean': -0.02, 't': -0.03, 'p': 0.976, 'days': 16, 'mean_of_days': 0.21, 't_days': 0.39, 'pos_days': 8}
+   market bmo@0925: {'n': 80, 'mean': 0.05, 't': 0.15, 'p': 0.881, 'days': 27, 'mean_of_days': 0.23, 't_days': 0.66, 'pos_days': 14}
+   market bmo@1255: {'n': 114, 'mean': 0.06, 't': 0.56, 'p': 0.575, 'days': 26, 'mean_of_days': -0.13, 't_days': -1.27, 'pos_days': 11}
+   calls us-panel.v2 (all sets): {'n': 61, 'mean': -0.03, 't': -0.42, 'p': 0.674, 'days': 4, 'mean_of_days': -0.15, 't_days': -0.81, 'pos_days': 2}
+   calls us-panel.v2 strong (all sets): {'n': 7, 'mean': 0.11, 't': 0.35, 'p': 0.726, 'days': 3, 'mean_of_days': 0.14, 't_days': 0.91, 'pos_days': 1}
+   calls backtest (all sets): {'n': 132, 'mean': -0.3, 't': -1.09, 'p': 0.276, 'days': 15, 'mean_of_days': -0.47, 't_days': -2.34, 'pos_days': 6}
+   calls backtest strong (all sets): {'n': 23, 'mean': -1.44, 't': -1.37, 'p': 0.171, 'days': 10, 'mean_of_days': -1.5, 't_days': -3.01, 'pos_days': 1}
+ -- RI HOLDOUT
+   market amc@0925: {'n': 192, 'mean': -0.42, 't': -1.56, 'p': 0.119, 'days': 11, 'mean_of_days': -0.55, 't_days': -2.92, 'pos_days': 2}
+   market bmo@0925: {'n': 182, 'mean': -0.12, 't': -0.49, 'p': 0.624, 'days': 13, 'mean_of_days': -0.07, 't_days': -0.48, 'pos_days': 4}
+   market bmo@1255: {'n': 678, 'mean': 0.07, 't': 1.32, 'p': 0.187, 'days': 13, 'mean_of_days': 0.04, 't_days': 0.45, 'pos_days': 9}
+   calls us-panel.v2 (all sets): {'n': 140, 'mean': -0.09, 't': -0.48, 'p': 0.631, 'days': 7, 'mean_of_days': -0.17, 't_days': -1.07, 'pos_days': 2}
+   calls us-panel.v2 strong (all sets): {'n': 38, 'mean': 0.42, 't': 0.99, 'p': 0.322, 'days': 6, 'mean_of_days': 0.24, 't_days': 0.83, 'pos_days': 3}
+   calls us-panel.v3 (all sets): {'n': 129, 'mean': 0.08, 't': 0.26, 'p': 0.795, 'days': 6, 'mean_of_days': 0.01, 't_days': 0.03, 'pos_days': 3}
+   calls us-panel.v3 strong (all sets): {'n': 20, 'mean': -0.71, 't': -1.26, 'p': 0.208, 'days': 6, 'mean_of_days': -0.71, 't_days': -1.02, 'pos_days': 2}

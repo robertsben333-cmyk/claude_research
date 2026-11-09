@@ -53,3 +53,33 @@ Keep the static exits (amc at the open, bmo at 13:00). I would stop looking for 
 `scripts/fetch.py ev.json cache` (event list from `exit-model/scripts/events.py`), `scripts/build.py ev.json cache rows.json`, `scripts/analyse.py rows.json [threshold]`. Outputs: `results.txt`, `results_0.2.txt`, `results_0.5.txt`.
 
 *Research, not investment advice.*
+
+---
+
+# Version 2 (2026-11-09 evening): spreads and order flow from quotes and trades
+
+*Pre-registration: `PREREG-v2.md`, written before any quote or trade was fetched. Alpaca SIP quotes and trades in 5-minute windows. One row per event per decision moment: amc at 09:25, bmo at 09:25 and bmo at 12:55. Market-wide rows need a move of at least 2% at the decision. Development: 289 rows (31 Aug to 20 Oct). Holdout: 1,348 rows (21 Oct to 6 Nov, 13 days). Output: `results2.txt`.*
+
+## Short answer
+
+**Still no.** The quotes and trades do not tell which way the rest of the move goes, and an exit rule built on them earns nothing. One measure says something about how much the price will still move, but not in the direction I wrote down in advance.
+
+| Hypothesis | Holdout | Verdict |
+| --- | --- | --- |
+| HA: a wider spread than normal means more move to come | ρ −0.115, p 0.001 (n 978). **Opposite sign** to the prediction. Mostly bmo at 09:25 (−0.29) | **Fails as written.** The likely reason: pre-market spreads on a normal day are wide because hardly anyone trades. On an earnings morning, heavy trading narrows them, so a "narrow" spread just means a busy stock |
+| HB: order imbalance (buyer- vs seller-initiated volume) predicts direction | ρ +0.006, p 0.84 (n 1,316). Development +0.071 | **Fails** |
+| HB: retail imbalance (sub-penny off-exchange trades, Boehmer et al.) predicts direction | ρ +0.002, p 0.95 (n 1,052) | **Fails** |
+| HC: exit rule on order imbalance | Market-wide: amc −0.11, bmo 09:25 +0.01, bmo 12:55 +0.02 (all \|t\| < 0.6). Calls: E-P v2 −0.17 (n 140, p 0.50), v3 −0.04 (n 129, p 0.91) | **Fails** |
+| HC: exit rule on retail imbalance | amc −0.42 (n 192, t over days −2.9: it **costs** money); calls v2 −0.09, v3 +0.08 | **Fails** |
+
+No cut by liquidity changes the direction result. Every |ρ| is at most 0.03 in both halves.
+
+## The one lead, and it is about size
+
+**Spread decay**, the spread at the decision divided by the spread earlier the same day, does predict how much the price still moves. That holds in development (ρ +0.12, n 265) and in the holdout (ρ +0.18, n 1,135), and still holds after allowing for the size of the move so far (partial ρ +0.13 and +0.19). Put simply: if the spread has not narrowed since the morning, more movement is coming. It is exploratory, because I pre-registered the abnormal-spread measure, not this one. And it says nothing about direction, so it cannot improve the exit on average. Its use would be risk: holding a smaller position, or exiting earlier, on names that have not settled. That is a sizing question, not a return question.
+
+## What this adds to version 1
+
+Version 1 used bars and volume. Version 2 used real quotes and trades, at the right moments, with one row per event. Both fail on direction, in the same way, on the same holdout. So within this data, "priced in" can be measured as "how much is still left to move", roughly. Which way that remainder goes cannot be predicted from the tape.
+
+*Research, not investment advice.*
