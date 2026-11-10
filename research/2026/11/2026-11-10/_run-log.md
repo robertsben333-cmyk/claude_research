@@ -63,3 +63,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-10 18:35 UTC
 - 18:35 UTC. edge_score and V2 grounded written before the first print. 20 rankable. Packs built; four judges, one part. Account flat after 3s.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-11-10 18:43 UTC
+- 18:43 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) NRGV L 89 (4 of 4). Next AMPX L 79, STUB S 74. Note written; stage E edge/ absent.
