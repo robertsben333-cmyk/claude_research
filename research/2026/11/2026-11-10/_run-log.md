@@ -55,3 +55,11 @@
 ## Edge hunt (panel) — all 20 launched
 - Logged at 2026-11-10 18:28 UTC
 - 18:28 UTC. All 20 searchers launched (NYAX last). Returned, search_complete true per hand-backs: NN CRWV CAPR LPTH FLY FRNM STUB SONO KURA ATEX REZI RGTI FOSL. Running: MRCY NRGV AMPX EVLV ODD RSKD NYAX.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-10 18:35 UTC
+- 20/20 searchers returned by 18:35 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20; none retried. mode: execution enabled, amc_open. flatten --submit at 18:35 UTC: 3 positions still held from 2026-11-09's book (ASTS -167 +12.73%, HSAI -317 +1.27%, QBTS -570 +10.16% unrealised as printed), all closed; flatten reported 'closed'.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-10 18:35 UTC
+- 18:35 UTC. edge_score and V2 grounded written before the first print. 20 rankable. Packs built; four judges, one part. Account flat after 3s.
