@@ -47,3 +47,7 @@
 ## Edge hunt (panel) — wave 1
 - Logged at 2026-11-10 18:15 UTC
 - 18:15 UTC. Sweep: 43 of 107 checked, 35 company-confirmed, 7 unconfirmed (VIV RUM AADX BV AYA BRCB GO), 1 phantom (EC: 6-K of 11-09 moved results to 11-12 amc), 64 unchecked. Session unsettled: ALC AMPX EVLV. Cap 20: unconfirmed 7 + phantom shed; confirmed below priority 51 shed (ATRO SKYH KOPN AZTA SATL AEBI BGSI AII INMD ANGX PBR ALC GIB ICL FLNG); 64 unchecked shed. No hunted baseline is suspect; no amendment. Sweep's PBR baseline_history_trustworthy:false self-reported as a mislabel; PBR not hunted. Hunted (20): amc STUB LPTH NN FRNM FLY CAPR CRWV SONO RGTI ATEX KURA MRCY FOSL REZI NRGV AMPX(session unsettled) EVLV(unsettled); bmo ODD RSKD NYAX. Wave 1 (8): STUB LPTH NN FRNM FLY CAPR CRWV SONO.
+
+## Edge hunt (panel) — wave 2
+- Logged at 2026-11-10 18:22 UTC
+- 18:22 UTC. Returned, search_complete true per hand-backs: NN CRWV CAPR LPTH FLY. Launched in later turns: RGTI ATEX KURA MRCY FOSL. Running: STUB FRNM SONO RGTI ATEX KURA MRCY FOSL. To launch: REZI NRGV AMPX EVLV, then bmo ODD RSKD NYAX.
