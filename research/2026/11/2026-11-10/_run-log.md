@@ -27,3 +27,7 @@
 ## Close AMC — 2026-11-10
 - Logged at 2026-11-10 11:19 UTC
 - Guard mode --require-exit-tif opg: exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no legs due today, nothing sent, no refusals. Account reachable. (Run fired 11:12 UTC, 06:12 ET.)
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-11-10 14:17 UTC
+- source research/2026/11/2026-11-09/edge-panel, 09:18 ET, 10 picks; 8 analysts launched, SRRK and VG held by the 8-subagent concurrency limit
