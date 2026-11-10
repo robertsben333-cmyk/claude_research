@@ -39,3 +39,7 @@
 ## Edge hunt (panel) — 2026-11-10 amc + 2026-11-11 bmo — STARTED
 - Logged at 2026-11-10 18:09 UTC
 - Stage E-P fire; session began 18:08 UTC (13:08 ET). Universe 107 names (84 amc 11-10, 23 bmo 11-11; 1 share class folded). edge_universe.py's urllib fetch got HTTP 403 from api.nasdaq.com three times while curl with a full browser UA got 200; the universe was built by the same script with fetch() swapped for curl from a scratch wrapper (no repo code changed). Baselines being sealed by code (9 parallel priced_in processes); one edge-sweep in parallel. Plan: up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
+
+## Edge hunt (panel) — baselines sealed
+- Logged at 2026-11-10 18:12 UTC
+- 107 of 107 baselines sealed by 18:12 UTC, before any searcher. RDCM failed first on Yahoo HTTPError (parallel burst) and was re-sealed serially, ok. provenance stamped US-P: unpriced-searcher us-searcher.v3 on claude-opus-5-5.
