@@ -25,3 +25,7 @@
 ## Stage EU — ranking
 - Logged at 2026-11-10 15:20 UTC
 - 19 ranked, OKEA phantom (Q3 out 2026-11-03). No name above the 2.8 floor; top FNM +1.90, bottom V1NC/PRT -1.40. Panel (4 of 4 members, no fallback) selects FNM long (100) and EIN short (88). Session corrections from hunters: PRT, RBREW, PST release after the 11-11 close (PST on 12-11 morning); RWAY in-session.
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-10 15:20 UTC
+- Handoff written (no broker call): 3 names at panel_pct >= 70 with four judges — SELL EIN (88.5), SELL V1NC (85.5), SELL PRT (78.6). FNM (100) not taken: turnover $0.12m below the $0.20m floor. execution_eu.enabled is false per mode at 0s. Note: PRT's hunter puts its release after the 11-11 close, so a short entered today holds no print until 12-11.
