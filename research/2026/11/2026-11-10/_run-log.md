@@ -35,3 +35,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-11-10 14:21 UTC
 - 10 names, compiled 09:20 ET: exit_open QBTS ASTS LCID PLUG SANM HIMS; exit_limit HSAI SRRK VG; exit_1000 LQDA. Pool (prev morning resolved): 92 names/13 days, review_minus_static +0.06 (t 0.14). SRRK/VG launched ~2 min late (8-subagent concurrency cap); all 10 reviewed in time.
+
+## Edge hunt (panel) — 2026-11-10 amc + 2026-11-11 bmo — STARTED
+- Logged at 2026-11-10 18:09 UTC
+- Stage E-P fire; session began 18:08 UTC (13:08 ET). Universe 107 names (84 amc 11-10, 23 bmo 11-11; 1 share class folded). edge_universe.py's urllib fetch got HTTP 403 from api.nasdaq.com three times while curl with a full browser UA got 200; the universe was built by the same script with fetch() swapped for curl from a scratch wrapper (no repo code changed). Baselines being sealed by code (9 parallel priced_in processes); one edge-sweep in parallel. Plan: up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
