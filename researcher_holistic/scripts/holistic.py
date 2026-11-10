@@ -445,12 +445,16 @@ def ep_view(run_root, ticker):
     p = load(Path(run_root) / "edge-panel" / "edge-scores-panel.json")
     if not p:
         return None
-    r = (p.get("ranking_by_ticker") or {}).get(ticker)
+    bt = p.get("ranking_by_ticker") or {}
+    if isinstance(bt, list):  # panel_score.py writes a list of rows
+        r = next((x for x in bt if x.get("ticker") == ticker), None)
+    else:
+        r = bt.get(ticker)
     if r is None:
         r = next((x for x in p.get("ranking", []) if x.get("ticker") == ticker), None)
     if not r:
         return None
-    return {"panel_pct_signed": r.get("panel_pct_signed"), "selected": bool(r.get("selected")),
+    return {"panel_pct_signed": r.get("panel_pct_signed"), "selected": bool(r.get("selected", r.get("panel_selected"))),
             "n_members": r.get("n_members")}
 
 
