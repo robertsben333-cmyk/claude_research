@@ -30,3 +30,28 @@ None today: no name cleared the playbook's bar.
 | RSKD | evolving | ok | 57.0 | none | 57.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P (read after the recommendations were published)
+
+| ticker | H p_up evolving | H p_up control | H action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- | --- |
+| STUB | 46 | 47 | none | -74.0 | no |
+| LPTH | 55 | – | none | 69.4 | no |
+| NN | 52 | 50 | none | 18.1 | no |
+| FRNM | 57 | – | none | -21.6 | no |
+| FLY | 45 | 50 | none | -20.8 | no |
+| ODD | 56 | – | none | 57.0 | no |
+| CAPR | 47 | – | none | 23.5 | no |
+| AMPX | 52 | – | none | 78.8 | no |
+| CRWV | 47 | – | none | 70.9 | no |
+| EVLV | 44 | – | none | -37.9 | no |
+| SONO | 50 | 47 | none | -28.1 | no |
+| RSKD | 57 | – | none | 59.1 | no |
+
+Sign disagreements (H evolving vs E-P):
+
+- FRNM: H leans up (p_up 57), E-P signed -21.6.
+- CAPR: H leans down (p_up 47), E-P signed 23.5.
+- CRWV: H leans down (p_up 47), E-P signed 70.9.
+
+E-P selected today: NRGV; of these, in H's set: none.
