@@ -1,0 +1,61 @@
+{
+  "ticker": "OKEA",
+  "market": "NO",
+  "expected_move_pct": 0.0,
+  "conviction_note": "The vendor's 2026-11-11 event is a phantom: OKEA's Q3 2026 results were published on Oslo Bors NewsWeb on 2026-11-03 05:00 UTC (matching the company's own financial calendar), and NewsWeb carries no OKEA release scheduled or published for 2026-11-10/11, so there is no print in the window and the number is 0 by rule.",
+  "print_vs_bar_pct": 0.0,
+  "abs_move_pct": 2.7,
+  "p_up": 50,
+  "already_public": [
+    {"what": "Q3 2026 financial results (the period the vendor row refers to)", "date": "2026-11-03", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685404"},
+    {"what": "Q3 2026 trading update (production/volumes pre-released)", "date": "2026-10-27", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=684854"},
+    {"what": "Resumption of quarterly dividends: NOK 2.00/share, ex-date 2026-12-02 (outside window)", "date": "2026-11-03", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685403"},
+    {"what": "PDMR purchase: SVP Strategy N. Lyngo bought 20,000 shares at NOK 48.048 on 2026-11-03", "date": "2026-11-04", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685567"}
+  ],
+  "new_in_release": [
+    {"line": "other", "expect": "no release is scheduled in the window; the Q3 release was 2026-11-03"}
+  ],
+  "bar": "unsourced -- no event in the window, so no bar applies; Yahoo consensus returned no quarters (baseline consensus.quarters empty)",
+  "event_confirmed": false,
+  "session_check": "baseline, not checked -- moot: no OKEA release exists for 2026-11-11 on Oslo Bors NewsWeb (https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=OKEA&fromDate=2026-09-01&toDate=2026-11-11); the actual Q3 release went out 2026-11-03 05:00 UTC (06:00 CET, pre-open)",
+  "positioning_check": "Finanstilsynet SSR register read 2026-11-09 (https://ssr.finanstilsynet.no/api/v2/instruments): no disclosed net short position at or above 0.5%, change 0.0. anchor_covered false -- a truncated zero, not evidence nobody is short; priced_lean_pct (+0.20) is effectively the run-up term.",
+  "findings": [],
+  "outside_window": [
+    {"finding": "Ex-dividend date for the NOK 2.00 Q4 2026 dividend (~4.5% of the 44.15 spot) is 2026-12-02; a mechanical drop on that date, not in this window", "expected_impact_pct": -4.5, "resolves_by": "2026-12-02", "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685403"}
+  ],
+  "searched_and_found_nothing": [
+    "Oslo Bors NewsWeb issuer=OKEA 2026-09-01 -> 2026-11-11: last releases are 2026-11-03 Q3 results/dividend and 2026-11-04 PDMR trade; nothing dated or scheduled for 2026-11-10/11 (https://api3.oslo.oslobors.no/v1/newsreader/list?issuer=OKEA&fromDate=2026-09-01&toDate=2026-11-11)",
+    "OKEA financial calendar lists 03.11.2026 Quarterly Report Q3 2026 as the last 2026 date, nothing on 11.11.2026 (https://www.okea.no/investor/financial-calendar/)",
+    "English web search 'OKEA financial calendar 2026 11 November': only the 3 November Q3 date (https://mfn.se/all/a/okea)",
+    "Norwegian web search 'OKEA aksje november 2026': nothing dated November 2026 (https://www.nordnet.no/market/stocks/17069504-okea)"
+  ],
+  "rejected_candidates": [
+    {
+      "candidate": "PDMR share purchase by SVP Strategy on 2026-11-03 at NOK 48.05",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685567",
+      "reason": "contradicted_by_document",
+      "detail": "Not a finding for a print that does not exist: the company's own NewsWeb record and financial calendar contradict the 2026-11-11 event, so nothing bears on a print in this window; public since 2026-11-04 in any case."
+    },
+    {
+      "candidate": "Resumption of quarterly dividend, NOK 2.00/share",
+      "source": "https://api3.oslo.oslobors.no/v1/newsreader/message?messageId=685402",
+      "reason": "outside_window",
+      "detail": "Announced 2026-11-03 (priced); ex-date 2026-12-02 is after the window -- filed in outside_window."
+    }
+  ],
+  "baseline_tension": "Nothing found to agree or disagree with: the 5-day run-up of -8.6% after the 2026-11-03 results is an unexplained drawdown on a non-event day and is worth 0.",
+  "language_note": [
+    "nothing the English sources did not already carry -- OKEA publishes on NewsWeb in English only (category labels are bilingual), and the one Norwegian search returned nothing dated November 2026"
+  ],
+  "pre_lessons": {
+    "impact_sum_pct": 0.0,
+    "expected_move_pct": 0.0,
+    "print_vs_bar_pct": 0.0,
+    "abs_move_pct": 2.7,
+    "p_up": 50,
+    "findings_count": 0,
+    "sizes_pct": []
+  },
+  "lessons_applied": ["nothing changed"],
+  "sources_used": 7
+}
