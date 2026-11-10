@@ -13,3 +13,7 @@
 - Logged at 2026-11-10 14:48 UTC
 - 71 scheduled, 40 eligible above $100k, 20 drawn (random, seed eu-2026-11-11): de 7, se 3, dk 3, it 3, uk 2, no 1, es 1, fr 0, fi 0, pl 0 (Warsaw shut: exchange holiday). Largest market de at 35%.
 - 20 baselines sealed at ~14:46-14:47 UTC (intraday spots, not closes). Provenance stamped: uk.v7, de.v7, nordic.v5, it.v5, es.v5, all claude-opus-5-5 (alias timeline). Hunters: 4 waves of 5.
+
+## Stage EU — hunts in progress
+- Logged at 2026-11-10 14:50 UTC
+- Waves overlapped on purpose: the handoff has to reach main before the 17:30 CET close for the executor to buy, so names are launched as subagent slots free (session cap 8 concurrent) rather than strictly 5 at a time. Running: ADN1 ALZCUR BEAMMW_B BNR CRE DFDS DIGIS EIN. Queued: FNM FNTN GYC ICG KWS OKEA PRT PST RBREW RWAY V1NC VWS.
