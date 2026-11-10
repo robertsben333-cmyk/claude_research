@@ -75,3 +75,7 @@
 ## Edge hunt (panel) — done
 - Logged at 2026-11-10 18:50 UTC
 - 18:50 UTC: edge_context written with search (step 6d). Run complete. Note: edge_universe.py's urllib fetch is 403'd by api.nasdaq.com while curl with a full browser UA works; the fetch needs a fix before the next fire.
+
+## Holistic research — 2026-11-10 — STARTED
+- Logged at 2026-11-10 19:17 UTC
+- 14:18 ET fire; E-P sweep on main; pick up to 12 names, evolving hp.v1 + control on a seeded third, collect before 15:45 ET; no orders
