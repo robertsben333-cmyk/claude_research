@@ -51,3 +51,7 @@
 ## Edge hunt (panel) — wave 2
 - Logged at 2026-11-10 18:22 UTC
 - 18:22 UTC. Returned, search_complete true per hand-backs: NN CRWV CAPR LPTH FLY. Launched in later turns: RGTI ATEX KURA MRCY FOSL. Running: STUB FRNM SONO RGTI ATEX KURA MRCY FOSL. To launch: REZI NRGV AMPX EVLV, then bmo ODD RSKD NYAX.
+
+## Edge hunt (panel) — all 20 launched
+- Logged at 2026-11-10 18:28 UTC
+- 18:28 UTC. All 20 searchers launched (NYAX last). Returned, search_complete true per hand-backs: NN CRWV CAPR LPTH FLY FRNM STUB SONO KURA ATEX REZI RGTI FOSL. Running: MRCY NRGV AMPX EVLV ODD RSKD NYAX.
