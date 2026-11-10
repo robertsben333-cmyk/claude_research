@@ -17,3 +17,7 @@
 ## Stage EU — hunts in progress
 - Logged at 2026-11-10 14:50 UTC
 - Waves overlapped on purpose: the handoff has to reach main before the 17:30 CET close for the executor to buy, so names are launched as subagent slots free (session cap 8 concurrent) rather than strictly 5 at a time. Running: ADN1 ALZCUR BEAMMW_B BNR CRE DFDS DIGIS EIN. Queued: FNM FNTN GYC ICG KWS OKEA PRT PST RBREW RWAY V1NC VWS.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-10 15:12 UTC
+- 19 rankable names scored (OKEA not ranked: hunter found no event; Q3 was out 2026-11-03). Four judges launched.
