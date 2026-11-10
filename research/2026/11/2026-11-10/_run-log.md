@@ -23,3 +23,7 @@
 ## Stage EU — Europe ranking — DONE
 - Logged at 2026-11-09 15:25 UTC
 - Sealed for 2026-11-10 (Tue) ~14:47 UTC Mon 11-09 (intraday spots). 68 scheduled, 42 eligible, 20 drawn (it 6, de 5, se 5, uk 2, dk 1, no 1). 20/20 hunts, all search_complete. 18 ranked; BAHN_B (Q3 11-17) and BEAMMW_B (Q3 11-11) not ranked. None above floor 2.8; top DIA +1.60, bottom ABDP -0.80. Panel 4/4 members, 18/18 each, no fallback; selected DIA long 4/4 (panel_pct 90). BFF and INW are amc per hunters. anchor_covered 4/20; es/pl 0; de 5. Pushed to main (EARNINGS_DATA_BRANCH=main).
+
+## Close AMC — 2026-11-10
+- Logged at 2026-11-10 11:19 UTC
+- Guard mode --require-exit-tif opg: exit 0 (amc open as day). verify: 14 legs, none UNFILLED, nothing held. close --submit: no legs due today, nothing sent, no refusals. Account reachable. (Run fired 11:12 UTC, 06:12 ET.)
