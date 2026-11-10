@@ -67,6 +67,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-10 18:43 UTC
 - 18:43 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) NRGV L 89 (4 of 4). Next AMPX L 79, STUB S 74. Note written; stage E edge/ absent.
+<<<<<<< HEAD
 
 ## Edge hunt (panel) — step 6b buy
 - Logged at 2026-11-10 18:46 UTC
@@ -75,3 +76,5 @@
 ## Edge hunt (panel) — done
 - Logged at 2026-11-10 18:50 UTC
 - 18:50 UTC: edge_context written with search (step 6d). Run complete. Note: edge_universe.py's urllib fetch is 403'd by api.nasdaq.com while curl with a full browser UA works; the fetch needs a fix before the next fire.
+=======
+>>>>>>> 07b919d1a03daac8bb9b9d4770cf76773055cb89
