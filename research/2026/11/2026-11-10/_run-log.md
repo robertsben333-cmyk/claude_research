@@ -31,3 +31,7 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-11-10 14:17 UTC
 - source research/2026/11/2026-11-09/edge-panel, 09:18 ET, 10 picks; 8 analysts launched, SRRK and VG held by the 8-subagent concurrency limit
+
+## Stage M — morning exit review — done
+- Logged at 2026-11-10 14:21 UTC
+- 10 names, compiled 09:20 ET: exit_open QBTS ASTS LCID PLUG SANM HIMS; exit_limit HSAI SRRK VG; exit_1000 LQDA. Pool (prev morning resolved): 92 names/13 days, review_minus_static +0.06 (t 0.14). SRRK/VG launched ~2 min late (8-subagent concurrency cap); all 10 reviewed in time.
