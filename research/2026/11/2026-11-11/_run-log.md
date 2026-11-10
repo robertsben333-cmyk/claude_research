@@ -21,3 +21,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-10 15:12 UTC
 - 19 rankable names scored (OKEA not ranked: hunter found no event; Q3 was out 2026-11-03). Four judges launched.
+
+## Stage EU — ranking
+- Logged at 2026-11-10 15:20 UTC
+- 19 ranked, OKEA phantom (Q3 out 2026-11-03). No name above the 2.8 floor; top FNM +1.90, bottom V1NC/PRT -1.40. Panel (4 of 4 members, no fallback) selects FNM long (100) and EIN short (88). Session corrections from hunters: PRT, RBREW, PST release after the 11-11 close (PST on 12-11 morning); RWAY in-session.
