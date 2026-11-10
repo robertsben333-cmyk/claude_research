@@ -67,3 +67,11 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-10 18:43 UTC
 - 18:43 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) NRGV L 89 (4 of 4). Next AMPX L 79, STUB S 74. Note written; stage E edge/ absent.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-10 18:46 UTC
+- 18:46 UTC (13:46 ET), after the note: plan, then open --submit --no-flatten. 1 market long order: NRGV 2753 filled @ 3.40, notional ~$9,360 = 50.0% of $18,724 equity (one name hits the 50% cap; the rest stays cash). Execution cost vs mid +0.147. Exit dated 2026-11-11. Nothing else at panel_pct >= 80.
+
+## Edge hunt (panel) — done
+- Logged at 2026-11-10 18:50 UTC
+- 18:50 UTC: edge_context written with search (step 6d). Run complete. Note: edge_universe.py's urllib fetch is 403'd by api.nasdaq.com while curl with a full browser UA works; the fetch needs a fix before the next fire.
