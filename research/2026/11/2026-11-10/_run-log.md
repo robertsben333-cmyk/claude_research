@@ -79,3 +79,7 @@
 ## Holistic research — 2026-11-10 — STARTED
 - Logged at 2026-11-10 19:17 UTC
 - 14:18 ET fire; E-P sweep on main; pick up to 12 names, evolving hp.v1 + control on a seeded third, collect before 15:45 ET; no orders
+
+## Holistic research — learning step
+- Logged at 2026-11-10 19:35 UTC
+- 16/16 hunts ok, 0 recommendations (evolving hp.v1 on 12, control on STUB NN FLY SONO). resolve: 15 name-arms newly resolved (11-09 run). gate closed: 11/30 names, 1/3 days on hp.v1; drift alarm off; reflector not launched; tomorrow runs hp.v1. DEFECTS for the operator: (1) holistic.py ep_view crashed on edge-scores-panel.json's list-shaped ranking_by_ticker; minimal read-side fix committed on branch claude/peaceful-sagan-o11p3e only, NOT on main, so tomorrow's resolve will crash again until it is merged. (2) scripts/publish.sh does not stage researcher_holistic/, so outcomes.json / evaluation / any playbook revision never reach main; today's are on the same branch, and evaluation.md is copied into edge-holistic/reflection/.
