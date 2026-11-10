@@ -1682,6 +1682,7 @@ def cmd_close(a, api, ex):
 
     for run in runs:
         state = load_orders(run)
+        touched = False
         for e in state["entries"]:
             if a.submit and not e.get("submitted"):
                 continue                    # in a dry run, show them all instead
@@ -1726,7 +1727,16 @@ def cmd_close(a, api, ex):
             # anything here measured.
             xd = e.get("exit_date")
             overdue = bool(today and xd and xd < today)
-            due = a.all or overdue or (today and xd == today)
+            if getattr(a, "today_only", False):
+                # The pre-market amc exit for stage E-P (2026-11-10). E-P's own flatten
+                # at step 3s sells everything and records no exit leg, so every older
+                # edge-panel leg reads "overdue" forever. Acting on one would send an
+                # order for whatever the account holds under that ticker now, which
+                # may be a NEWER position on the other side. Only legs due today.
+                overdue = False
+                due = bool(today and xd == today)
+            else:
+                due = a.all or overdue or (today and xd == today)
             if not due:
                 continue
             reason = blocked
@@ -1736,6 +1746,13 @@ def cmd_close(a, api, ex):
                 if pos:
                     held = float(pos.get("qty", 0))
                     qty = abs(int(float(pos["qty"])))
+                    # A long entry must be held long and a short one short. If not,
+                    # this ticker's position belongs to something else, and the exit
+                    # side below would ADD to it instead of closing it.
+                    if (not reason and held
+                            and (held > 0) != (e["side"] == "buy")):
+                        reason = (f"position is {held:g} but this leg was a "
+                                  f"{e['side']}; not this leg's position, left alone")
                 elif not reason:
                     reason = f"no open position at Alpaca ({err})"
             if qty is None and not reason:
@@ -1784,6 +1801,7 @@ def cmd_close(a, api, ex):
                         # which is the whole of what changed on 2026-09-18.
                         "placement": place or "market"})
             upsert(state["exits"], rec)
+            touched = True
             rec["time_in_force"] = body["time_in_force"]
             print(f"  {run} {e['symbol']:8s}{(e.get('session') or '?'):4s}"
                   f"{body['time_in_force']:4s}"
@@ -1791,6 +1809,8 @@ def cmd_close(a, api, ex):
                   f"  {rec.get('order_id') or rec.get('reason')}")
         if blocked:
             continue                        # a dry run records nothing
+        if getattr(a, "today_only", False) and not touched:
+            continue                        # scanning every E-P run: leave old files be
         state["log"].append({"utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                              "action": "close", "all": bool(a.all), "moc": moc_note,
                              "exit_mode": mode,
@@ -2258,6 +2278,10 @@ def main():
                    help="close every open leg regardless of its exit date")
     p.add_argument("--now", action="store_true",
                    help="market order immediately instead of market-on-close")
+    p.add_argument("--today-only", action="store_true",
+                   help="only legs whose exit date is today; never act on an overdue "
+                        "leg (the stage E-P pre-market amc exit, whose older legs were "
+                        "closed by a flatten that records no exit)")
     p.add_argument("--verify-after", type=int, metavar="SECONDS",
                    help="seconds to wait before re-reading the exits at the broker "
                         "(default orders.fill_check_seconds, 300)")

@@ -16,13 +16,16 @@ synthesis maths is self-consistent, and the conviction gate actually fires.
 Exit 0 = the chain is intact.
 """
 
+import contextlib
 import glob
+import io
 import json
 import os
 import re
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = sys.executable
@@ -726,6 +729,67 @@ def main():
           not at.defer_to_session_run("market", overdue=False, session_open=True))
     check("an unreadable clock never becomes a reason a leg goes unsold",
           not at.defer_to_session_run("market", overdue=False, session_open=None))
+
+    # THE STAGE E-P PRE-MARKET AMC EXIT (2026-11-10). A 09:00 ET Routine runs
+    # `close --scan 'research/*/*/*/edge-panel' --today-only --submit`. E-P's own
+    # flatten records no exit leg, so every older edge-panel leg reads overdue; with
+    # --today-only none of them may act, a reused ticker held on the other side must
+    # not be added to, the amc leg due today goes as a DAY order queued for the open,
+    # and the bmo leg due today is left for the session run.
+    import argparse as _ap
+    with tempfile.TemporaryDirectory() as _tmp:
+        _old, _new = Path(_tmp) / "old" / "edge-panel", Path(_tmp) / "new" / "edge-panel"
+        for _d in (_old, _new):
+            _d.mkdir(parents=True)
+        def _leg(run, sym, side, sess, xd):
+            return {"symbol": sym, "side": side, "session": sess, "exit_date": xd,
+                    "qty": 10, "submitted": True,
+                    "client_order_id": f"edge-{run}-{sym}-panel-entry"}
+        (_old / "alpaca-orders.json").write_text(json.dumps({"entries": [
+            _leg("old", "CAVA", "buy", "amc", "2026-11-05")], "exits": [], "log": []}))
+        (_new / "alpaca-orders.json").write_text(json.dumps({"entries": [
+            _leg("new", "CAVA", "sell", "amc", "2026-11-10"),
+            _leg("new", "QBTS", "sell", "bmo", "2026-11-10"),
+            _leg("new", "HSAI", "buy", "amc", "2026-11-10")], "exits": [], "log": []}))
+        _old_bytes = (_old / "alpaca-orders.json").read_text()
+
+        class _PreMarket:
+            usable = True
+            sent = []
+            held = {"CAVA": "-10", "QBTS": "-10", "HSAI": "-5"}
+            def clock(self):
+                return {"timestamp": "2026-11-10T09:00:00-05:00", "is_open": False}, None
+            def position(self, sym):
+                q = self.held.get(sym)
+                return ({"symbol": sym, "qty": q} if q else None), "no position"
+            def submit(self, body):
+                self.sent.append(body)
+                return {"id": f"o{len(self.sent)}", "status": "accepted"}, None
+        _api = _PreMarket()
+        _g = at.guard
+        at.guard = lambda *a, **k: None
+        try:
+            _buf = io.StringIO()
+            with contextlib.redirect_stdout(_buf):
+                at.cmd_close(_ap.Namespace(
+                    run=None, scan=[str(Path(_tmp) / "*" / "edge-panel")],
+                    submit=True, live_account_i_understand=False, all=False,
+                    now=False, today_only=True, verify_after=-1), _api, ex)
+        finally:
+            at.guard = _g
+        _sent = [(b["symbol"], b["side"], b["time_in_force"]) for b in _api.sent]
+        check("pre-market E-P exit: only today's amc leg is sent, as a day order "
+              "covering the short", _sent == [("CAVA", "buy", "day")], str(_sent))
+        check("pre-market E-P exit: an older overdue leg leaves its file untouched",
+              (_old / "alpaca-orders.json").read_text() == _old_bytes)
+        _ex = {x["symbol"]: x for x in json.loads(
+            (_new / "alpaca-orders.json").read_text())["exits"]}
+        check("pre-market E-P exit: the bmo leg is left to the session run",
+              "market is closed" in (_ex.get("QBTS", {}).get("reason") or ""),
+              str(_ex.get("QBTS")))
+        check("pre-market E-P exit: a position held on the other side is left alone",
+              "left alone" in (_ex.get("HSAI", {}).get("reason") or ""),
+              str(_ex.get("HSAI")))
 
     check("both opening modes are reachable by the opg guard, auction orders or not",
           all(at.exit_placement("amc", _auc(m, on)) == "open"
