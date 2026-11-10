@@ -81,6 +81,11 @@ python3 researcher_us/scripts/alpaca_trade.py mode
 python3 researcher_us/scripts/alpaca_trade.py flatten --run <RUN>/edge-panel --submit
 ```
 
+Since 2026-11-10 the amc legs due today are normally gone already: a 09:00 ET Routine
+(`researcher_us/routine-prompts/edge-panel-amc-exit.md`) sends them as market orders for
+the open. The flatten is the safety net for anything it missed; name in the run log any
+amc leg that was still held here.
+
 `flatten` cancels every open order and closes every position at market, then waits until
 the account is flat and says if anything is still held. It sells everything, not only
 stage E-P's own book: this stage is the only one connected to the account. It refuses
