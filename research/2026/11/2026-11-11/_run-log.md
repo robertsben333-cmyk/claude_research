@@ -57,3 +57,7 @@
 ## Stage EU — universe and seal
 - Logged at 2026-11-11 14:41 UTC
 - Event date 2026-11-12. 190 scheduled, 116 eligible, 20 hunted by date-seeded random draw: de 8, it 4, no 3, uk 2, se 2, pl 1 (fr/dk/fi/es 0). 20 baselines sealed at ~14:43 UTC (intraday spots, not closes). Provenance stamped. Hunters launching as slots free (up to 8 concurrent) so the handoff reaches main before the close.
+
+## Stage EU — hunts in progress
+- Logged at 2026-11-11 14:42 UTC
+- 14:47 UTC: running SIE COK OHB BKHT SMWH BRBY XPLRA KAR (session cap 8 concurrent). Queued: REY CAR SYNSAM ENDUR GENO 1U1 GLJ VBK VH2 DIB MN TFIN.
