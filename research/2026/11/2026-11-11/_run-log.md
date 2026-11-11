@@ -65,3 +65,7 @@
 ## Stage EU — hunts in progress
 - Logged at 2026-11-11 14:55 UTC
 - Banked 12: COK OHB XPLRA KAR SMWH BKHT BRBY SIE CAR REY ENDUR GENO. CAR: vendor date phantom (Q3 is 2026-11-17 amc per RB 2/2026). XPLRA/ENDUR hunters found register positions the baseline missed on spelling (2.48% / 0.51%); baselines untouched. Running 8: SYNSAM 1U1 GLJ VBK VH2 DIB MN TFIN.
+
+## Stage EU — panel STARTED
+- Logged at 2026-11-11 15:02 UTC
+- 20 of 20 hunted; 19 ranked, CAR not ranked (no event on 2026-11-12; Q3 report is 2026-11-17). No name above the 2.8 floor; top SMWH +1.00, bottom SIE -2.20. DIB hunter puts the release after the 11-12 close (amc). 19 packs, four judges.
