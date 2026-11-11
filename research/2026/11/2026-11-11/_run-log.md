@@ -125,3 +125,7 @@
 ## Holistic research — 2026-11-11 — STARTED
 - Logged at 2026-11-11 19:16 UTC
 - 19:17 UTC (14:17 ET). Stage H: pick from E-P's sweep, researchers in waves of 8, collect before 15:45 ET, then learning step (gate open 35/30, 3/3 on hp.v1).
+
+## Holistic research — wave 1
+- Logged at 2026-11-11 19:17 UTC
+- 19:17 UTC: 8 holistic-researcher (native) launched: AVEX, ALVO, CINT, VYLR, both arms each. Wave 2 (ACOG XNDU CURI AGBK DDI LUNR NBIS ASND, evolving only) follows in the next turn.
