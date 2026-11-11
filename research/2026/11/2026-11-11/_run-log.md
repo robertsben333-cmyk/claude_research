@@ -109,3 +109,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-11 18:38 UTC
 - 18:38 UTC. edge_score and V2 grounded written before the first print. 20 rankable. Packs built (20, one part); four judges. Account flat after 3s.
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-11-11 18:45 UTC
+- 18:45 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) CURI S 94 (k3), CTVA S 87 (k4). Next CAE S 74. Two strong names, so no top-up. Note written; stage E edge/ absent.
