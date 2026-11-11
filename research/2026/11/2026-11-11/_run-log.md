@@ -129,3 +129,7 @@
 ## Holistic research — wave 1
 - Logged at 2026-11-11 19:17 UTC
 - 19:17 UTC: 8 holistic-researcher (native) launched: AVEX, ALVO, CINT, VYLR, both arms each. Wave 2 (ACOG XNDU CURI AGBK DDI LUNR NBIS ASND, evolving only) follows in the next turn.
+
+## Holistic research — wave 2
+- Logged at 2026-11-11 19:24 UTC
+- 19:24 UTC: all 16 launches made (native holistic-researcher); concurrency cap 8 meant wave 2 went out as slots freed. Back: AVEX a/b, ALVO a/b, CINT a/b, VYLR a, ACOG.
