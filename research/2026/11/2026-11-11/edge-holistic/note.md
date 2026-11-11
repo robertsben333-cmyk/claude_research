@@ -30,3 +30,31 @@ None today: no name cleared the playbook's bar.
 | VYLR | control | ok | 50.0 | none | 50.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Stage H against stage E-P on the same names (read after the recommendations were published)
+
+| ticker | H p_up (evolving) | H p_up (control) | H action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- | --- |
+| ACOG | 52 | - | none | -0.2 | False |
+| AVEX | 47 | 45 | none | 31.1 | False |
+| XNDU | 44 | - | none | -14.4 | False |
+| CURI | 44 | - | none | -93.6 | True |
+| ALVO | 45 | 51 | none | 26.0 | False |
+| AGBK | 46 | - | none | 10.6 | False |
+| DDI | 50 | - | none | 4.8 | False |
+| LUNR | 45 | - | none | -36.5 | False |
+| NBIS | 46 | - | none | 52.6 | False |
+| CINT | 52 | 55 | none | 37.8 | False |
+| ASND | 48 | - | none | -13.2 | False |
+| VYLR | 47 | 50 | none | 4.5 | False |
+
+Sign disagreements (evolving arm; p_up 50 counts as no lean):
+
+- ACOG: H leans up (p_up 52), E-P leans down (-0.2).
+- AVEX: H leans down (p_up 47), E-P leans up (31.1).
+- ALVO: H leans down (p_up 45), E-P leans up (26.0).
+- AGBK: H leans down (p_up 46), E-P leans up (10.6).
+- NBIS: H leans down (p_up 46), E-P leans up (52.6).
+- VYLR: H leans down (p_up 47), E-P leans up (4.5).
+
+CURI is the one name stage E-P selected (short, panel_pct 93.6; E-P's Alpaca book is short it). Stage H read the same Q2 one-off licence and cash drain, judged it public since 2026-08-13 and stayed out at p_up 44: same lean, different conviction. Every H lean today is within 6 points of 50, so the sign disagreements above are mostly noise against noise.
