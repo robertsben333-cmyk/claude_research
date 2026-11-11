@@ -37,3 +37,7 @@
 ## Close AMC (stage E amc exit) — 2026-11-11
 - Logged at 2026-11-11 11:24 UTC
 - Fired 11:17 UTC (06:17 ET, pre-market). Guard mode --require-exit-tif opg: exit 0 (amc_open, amc -> open as market DAY order). verify over research/*/*/*/edge: 14 exit legs, all ok, none UNFILLED, nothing still held. close --submit: no stage E leg due today or overdue, so no order sent and no refusal. Stage E's Routine is stopped since 2026-10-19; stage E-P's amc legs are not in this scan (that is stage E-PX's job, whose Routine is not yet created).
+
+## Stage M — morning exit review — STARTED
+- Logged at 2026-11-11 14:15 UTC
+- source research/2026/11/2026-11-10/edge-panel, 09:16 ET (fired 09:15, late)
