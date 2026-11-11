@@ -588,7 +588,21 @@ def score(rows, cut):
     fx = [r for r in rows if abs(r["p_up"] - 50) >= cut - 50]
     fr = [(1 if r["p_up"] > 50 else -1) * r["move_pct"] for r in fx]
     out[f"fixed_cut_{cut}"] = dict(mean_t(fr), hits=sum(1 for v in fr if v > 0))
+    # The stage's claim is that SOME events can be called with some certainty, not that
+    # the average view beats a coin (operator, 2026-11-11). So the views are also scored
+    # by how far they lean: each rung keeps only views at least that far from 50 and
+    # prices them on the lean's side. Read the rungs, not only the Brier.
+    lad = {}
+    for k in LEAN_RUNGS:
+        sub = [r for r in rows if abs(r["p_up"] - 50) >= k and r["move_pct"] != 0]
+        sv = [(1 if r["p_up"] > 50 else -1) * r["move_pct"] for r in sub]
+        h = sum(1 for v in sv if v > 0)
+        lad[f">={k}"] = dict(mean_t(sv), hits=h, hit_p=round(binom_p(h, len(sv)), 3) if sv else None)
+    out["leaning"] = lad
     return out
+
+
+LEAN_RUNGS = (5, 10, 15)
 
 
 def cmd_evaluate(write=True, quiet=False):
@@ -657,13 +671,19 @@ def _fmt(s):
     d, r = s["direction"], s["recommended"]
     rec = (f"{r['n']} recs, {r['hits']} right, mean {r.get('mean')}% (t {r.get('t')}, p {r.get('p')})"
            if r.get("n") else "0 recs")
+    lean = "; ".join(f"|p_up-50| {k}: {v['hits']}/{v['n']} right, {v.get('mean')}% on the lean's side"
+                     f" (t {v.get('t')}, p {v.get('hit_p')})" for k, v in (s.get("leaning") or {}).items() if v.get("n"))
     return (f"{s['names']} names / {s['run_days']} days; Brier {s['brier']} (skill {s['brier_skill_vs_coin']}); "
-            f"direction {d['hits']}/{d['n']} (p {d['p']}); {rec}")
+            f"direction {d['hits']}/{d['n']} (p {d['p']}); {rec}"
+            + (f"; leaning views: {lean}" if lean else "; no view leans 5 or more"))
 
 
 def eval_md(ev):
     L = ["# Stage H evaluation", "", f"Generated {ev['generated_utc']}. Window: {ev['window']}.", "",
-         ev["small_sample_warning"], "", "## Per playbook version (evolving arm)", ""]
+         ev["small_sample_warning"], "",
+         "Read the leaning views first: the claim under test is that some events can be called with "
+         "some certainty, so a version is judged on the views it leans on and on its recommendations, "
+         "not on its average Brier alone.", "", "## Per playbook version (evolving arm)", ""]
     for v, s in ev["by_version"].items():
         L.append(f"- **{v}**: {_fmt(s)}; vs control on the same names: "
                  f"{ev['paired_vs_control_by_version'][v].get('n', 0)} pairs, Brier diff "
@@ -835,7 +855,9 @@ def selftest():
     try:
         (tmp / "researcher_holistic" / "playbook" / "versions").mkdir(parents=True)
         for f in ("current.md", "control.md", "versions/hp.v1.md"):
-            shutil.copyfile(saved["pb"] / f if f != "versions/hp.v1.md" else saved["versions"] / "hp.v1.md",
+            # The fixture starts a fresh lineage at hp.v1 whatever the live playbook has
+            # reached: copying the live current.md broke this test once hp.v2 shipped.
+            shutil.copyfile(saved["pb"] / f if f == "control.md" else saved["versions"] / "hp.v1.md",
                             tmp / "researcher_holistic" / "playbook" / f)
         configure(tmp)
         sink = io.StringIO()
