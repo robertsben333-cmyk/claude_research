@@ -14,8 +14,8 @@ The block below is the exact text the Routine holds.
   routes at the open (`opg` needs the Elite Smart Router and is refused 09:28-19:00 ET,
   which is also why the exit cannot be placed by E-P itself at entry). A fire that
   starts late, after 09:30, still works: the same order then fills at once.
-- Fresh session per fire, model `claude-opus-5-5`, environment "full env" (the Alpaca
-  keys are there). No subagents, a few minutes end to end.
+- Fresh session per fire, model `claude-opus-5-5`, environment "with alpaca" (the Alpaca
+  keys are there; "full env" has none). No subagents, a few minutes end to end.
 - The bmo legs are NOT this Routine's: `close` defers a `market` placement while the
   market is closed, so they stay for E-P's own run.
 - **Safety net:** E-P's step 3s flatten still sells everything held, so a missed fire
@@ -24,8 +24,12 @@ The block below is the exact text the Routine holds.
   `python3 researcher_us/scripts/alpaca_trade.py ...`, the form the allow rule in
   `.claude/settings.json` covers. Any other form (absolute path, `python`, an env-var
   prefix) is classified again and may be refused.
-- **Routine: not yet created.** The operator creates it in the Routines UI; record its
-  id here and in CLAUDE.md's stage table once it exists.
+- **Routine: `trig_01EVjSnebMCTM29YxaYo4HER`**, created from a session on 2026-11-10 at
+  20:59 UTC, model pinned and read back as `claude-opus-5-5`, prompt read back identical
+  to the block below. It was created on "full env", which holds NO Alpaca keys (no
+  environment variables at all); the keys are in "with alpaca"
+  (`env_015eAPLAkj3rueawDnePMzAR`). A session cannot change a Routine's environment, so
+  the operator moves it to "with alpaca" in the Routines UI.
 - **Must be on `main` before it fires**, or step 0 logs "not on main" and stops.
 
 ---
