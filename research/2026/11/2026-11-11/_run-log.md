@@ -137,3 +137,7 @@
 ## Holistic research — note
 - Logged at 2026-11-11 19:28 UTC
 - CURI researcher reports its sweep.json snippet also printed parts of the neighbouring ALVO row and the row before it; it says it did not use them. Sweep rows are pre-hunt first reads, not E-P scores; recorded, not scored as contamination.
+
+## Holistic research — learning step
+- Logged at 2026-11-11 19:37 UTC
+- Collected 16/16 ok, 0 recommendations. resolve: 0 new (16 pending), 47 in outcomes. Gate OPEN on hp.v1 (35/30 names, 3/3 days), no drift alarm (12 pairs, diff -0.004, t -0.45). Reflector (native) proposed 2 ops (P6 run-in decomposition + positioning sets size not sign; P7 mechanism must show one side more likely than priced, bar 65 kept). revise: APPLIED hp.v1 -> hp.v2; next run uses hp.v2, gate resets to 0/30.

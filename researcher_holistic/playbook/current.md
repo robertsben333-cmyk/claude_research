@@ -1,4 +1,4 @@
-<!-- playbook: hp.v1 | parent: none | written: 2026-11-05 | by: seed (operator's design, thread "Build self-evolving holistic researcher routine") -->
+<!-- playbook: hp.v2 | parent: hp.v1 | written: 2026-11-11 | by: holistic-reflector -->
 # The approach (playbook)
 
 This is your working approach for one company that reports earnings in the next window.
@@ -86,22 +86,21 @@ information: never contact anyone, never log in or get past a paywall.
 
 ## [P6] How the reaction is decided
 
-A stock trades on the line it trades on: often the guide, the one segment, the one
-metric the last reactions turned on, not the headline EPS. Find that line first. Read
-the last reactions and what caused them. Positioning sets the size: a crowded short
-or a big run-up makes a good print move less and a bad one more, and the reverse.
-Remember the window you are scored on (your definition states it): a reaction that
-needs weeks to play out does not count.
+A stock trades on the line it trades on: often the guide, the one segment, the one metric the last reactions turned on, not the headline EPS. Find that line first. Read the last reactions and what caused them.
+
+Then take the run-in apart before you read it. Over the last five to twenty sessions, set this stock's move beside its closest peers, its sector basket and the index, and ask which part came with this company's own news and which came with peers' prints or the tape. A move that came with a peer's results or with the market is not evidence about this company. It shifts the bar this release has to clear without saying whether the release clears it. So ask whether this company's own evidence supports the level the peers or the tape took it to. Where it does not, the price is ahead of the evidence, which is as real a gap as a stale estimate; where it does, the move is not a reason to fade it. For a high-beta name, say how large an ordinary overnight or morning move is on market noise alone, and keep p_up about what the release does to the price, not about the tape.
+
+Positioning sets the size more than the direction: a crowded short makes a good print move more and a bad one less; a big run-up makes a good print move less and a bad one more. Put a possible squeeze into `abs_move_pct`, not into a pull toward 50. Remember the window you are scored on (your definition states it): a reaction that needs weeks to play out does not count.
 
 ## [P7] Calibration and when to recommend
 
-`p_up` is your honest probability that the stock is higher at the end of the window.
-50 means you cannot tell. Move away from 50 only as far as the evidence takes you.
+`p_up` is your honest probability that the stock is higher at the end of the window. 50 means you cannot tell. Move away from 50 only as far as the evidence takes you.
+
+The line a print turns on (the next-period guide, the margin, bookings) is almost never visible before the release. That is the normal case and not, by itself, a reason to stay at 50. What you can see are its inputs: the company's record of guiding against what it then reported, counterparties' and peers' disclosures since it last spoke, your own arithmetic of what the line needs, and what consensus and the price assume about it. Estimate which way the line is likely to land against what the price holds, and let that estimate set p_up. Not being able to see the line is not the same as having shown that the price holds it (P8).
 
 Recommend (`action` long or short) only when all three hold:
 - your probability that the direction is right is 65 or more;
-- you can name the mechanism: the dated evidence, the reason the price does not hold it,
-  and why this release will reveal it inside the window;
+- you can name the mechanism: the dated evidence that makes one side of the deciding line more likely than the price assumes, the reason the price does not hold it, and why this release will show it inside the window;
 - your strongest case against it (`self_critique`) does not change your mind.
 
 There is no quota. Zero recommendations on a day is fine; so are several.

@@ -1,6 +1,6 @@
 # Stage H evaluation
 
-Generated 2026-11-11T19:33:16+00:00. Window: entry run-day close; amc exit next open; bmo exit 13:00 ET report day.
+Generated 2026-11-11T19:37:34+00:00. Window: entry run-day close; amc exit next open; bmo exit 13:00 ET report day.
 
 Below about 30 names a version's numbers are noise; below 20 recommendations a hit rate tells almost nothing.
 
