@@ -69,3 +69,11 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-11 15:02 UTC
 - 20 of 20 hunted; 19 ranked, CAR not ranked (no event on 2026-11-12; Q3 report is 2026-11-17). No name above the 2.8 floor; top SMWH +1.00, bottom SIE -2.20. DIB hunter puts the release after the 11-12 close (amc). 19 packs, four judges.
+
+## Stage EU — ranking
+- Logged at 2026-11-11 15:12 UTC
+- 19 ranked, CAR phantom (Q3 is 2026-11-17). No name above the 2.8 floor; top SMWH +1.00, bottom SIE -2.20. Panel (4 of 4 members, no fallback) selects SYNSAM short (92, 4/4), SIE short (87, 3/4), XPLRA short (83, 3/4). DIB releases after the 11-12 close (amc).
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-11 15:12 UTC
+- Handoff written (no broker call): 4 names at panel_pct >= 70 with four judges — SELL SYNSAM (92.2), SELL SIE (86.6), SELL XPLRA (83.0), BUY VBK (72.1). execution_eu.enabled is false per mode at 0s, so the executor should send nothing.
