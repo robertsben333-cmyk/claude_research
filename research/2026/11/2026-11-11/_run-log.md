@@ -117,3 +117,7 @@
 ## Edge hunt (panel) — step 6b buy
 - Logged at 2026-11-11 18:46 UTC
 - 18:46 UTC (13:47 ET), after the note: plan, then open --submit --no-flatten. 2 market short orders, both filled: CURI -4303 @ 2.34 (~$10.1k, 50.0%) and CTVA -839 @ 12.02 (~$10.1k, 50.0%) on $20,183 equity; both at the 50% cap. Top-up not applied (two strong names). Execution cost vs mid +0.128 mean. Exits dated 2026-11-12.
+
+## Edge hunt (panel) — done
+- Logged at 2026-11-11 18:50 UTC
+- 18:50 UTC: edge_context written (step 6d; search column hit its budget on later names). Run complete. Note: edge_universe.py needed 'pip install requests' in this container; publish.sh did not stage researcher_us/analysis/panel-history.json, committed separately.
