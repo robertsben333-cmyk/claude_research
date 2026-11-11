@@ -77,3 +77,7 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-11 15:12 UTC
 - Handoff written (no broker call): 4 names at panel_pct >= 70 with four judges — SELL SYNSAM (92.2), SELL SIE (86.6), SELL XPLRA (83.0), BUY VBK (72.1). execution_eu.enabled is false per mode at 0s, so the executor should send nothing.
+
+## Stage EU — published
+- Logged at 2026-11-11 15:13 UTC
+- All output pushed to main (EARNINGS_DATA_BRANCH=main); origin/main head 314171364 'stage EU: IBKR handoff for 2026-11-12' confirmed, ibkr-handoff.json present on main.
