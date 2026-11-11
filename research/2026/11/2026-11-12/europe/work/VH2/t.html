@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<base href="/" />
+	
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'granted',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'wait_for_update': 500
+    });
+</script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K374T4D');</script>
+    <!-- End Google Tag Manager -->
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3HG2MQ3QW2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        var configOptions = { anonymize_ip: true };
+
+        gtag('js', new Date());
+        gtag('config', 'G-3HG2MQ3QW2', configOptions);
+    </script>
+    <!-- End GA4 -->
+
+<script>
+    window.googlefc = window.googlefc || {};
+    window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+
+    (function () {
+        var REVOCATION_TEXT = ['Einstellungen für Datenschutz und Cookies', 'Privacy and cookie settings', 'Von Google verwaltet', 'CMP-ID: 300', 'IAB-TCF'];
+
+        function isInteractiveModal(node) {
+            try {
+                if (!node || node.nodeType !== 1) return false;
+                if (node.querySelector && node.querySelector('button, input[type=button], input[type=submit]')) return true;
+            } catch (e) { /* noop */ }
+            return false;
+        }
+
+        function looksLikeRevocationContainer(node) {
+            if (!node || node.nodeType !== 1) return false;
+            try {
+                if (node.className && typeof node.className === 'string' && /\bjpr-/i.test(node.className)) return true;
+                if (node.tagName === 'IFRAME') {
+                    var iname = (node.getAttribute('name') || '') + ' ' + (node.getAttribute('id') || '') + ' ' + (node.getAttribute('src') || '');
+                    if (/revocation/i.test(iname)) return true;
+                }
+                var label = node.getAttribute && (node.getAttribute('aria-label') || '');
+                if (label && /Datenschutz und Cookies|Privacy and cookie settings/i.test(label)) return true;
+                if (node.id && /revocation/i.test(node.id)) return true;
+                if (node.shadowRoot) {
+                    try {
+                        var hostText = node.shadowRoot.textContent || '';
+                        if (hostText) {
+                            var sMatches = 0;
+                            for (var s = 0; s < REVOCATION_TEXT.length; s++)
+                                if (hostText.indexOf(REVOCATION_TEXT[s]) !== -1) sMatches++;
+                            if (sMatches >= 2) return true;
+                        }
+                    } catch (e) { /* noop */ }
+                }
+                var text = node.innerText || node.textContent || '';
+                if (!text) return false;
+                var matches = 0;
+                for (var i = 0; i < REVOCATION_TEXT.length; i++)
+                    if (text.indexOf(REVOCATION_TEXT[i]) !== -1) matches++;
+                if (matches >= 2 && !isInteractiveModal(node)) return true;
+            } catch (e) { /* noop */ }
+            return false;
+        }
+
+        function markHidden(el) {
+            if (!el || !el.classList) return;
+            el.classList.add('goldesel-hide-google-revocation');
+            el.setAttribute('aria-hidden', 'true');
+            try { el.style.setProperty('display', 'none', 'important'); } catch (e) { /* noop */ }
+        }
+
+        function looksLikeIsolatedGoogleWrapper(node) {
+            if (!node || node.nodeType !== 1 || node.tagName !== 'DIV') return false;
+            if (node.id) return false;
+            if (node.className && String(node.className).trim()) return false;
+            if (node.parentElement !== document.body) return false;
+            var style = node.getAttribute && node.getAttribute('style');
+            if (!style) return false;
+            if (style.indexOf('initial !important') === -1) return false;
+            var resetMatches = style.match(/initial !important/g);
+            if (!resetMatches || resetMatches.length < 15) return false;
+            return true;
+        }
+
+        function isFundingChoicesIframe(iframe) {
+            if (!iframe || iframe.tagName !== 'IFRAME') return false;
+            var src = iframe.getAttribute && iframe.getAttribute('src');
+            if (!src) return false;
+            return src.indexOf('fundingchoicesmessages.google.com') !== -1
+                || src.indexOf('googletagservices.com/funding') !== -1;
+        }
+
+        function tryGetShadow(host) {
+            if (!host) return null;
+            if (host.shadowRoot) return host.shadowRoot;
+            try { if (host.openOrClosedShadowRoot) return host.openOrClosedShadowRoot; } catch (e) { /* noop */ }
+            return null;
+        }
+
+        function hideFundingChoicesAnchor(root) {
+            try {
+                var scope = root || document;
+                var iframes = scope.querySelectorAll(
+                    'iframe[src*="fundingchoicesmessages.google.com"], ' +
+                    'iframe[src*="googletagservices.com/funding"]'
+                );
+                for (var i = 0; i < iframes.length; i++) {
+                    var node = iframes[i];
+                    for (var depth = 0; depth < 6 && node && node !== document.body; depth++) {
+                        markHidden(node);
+                        node = node.parentElement;
+                    }
+                }
+                var hosts = scope.querySelectorAll('div');
+                for (var h = 0; h < hosts.length; h++) {
+                    var shadow = tryGetShadow(hosts[h]);
+                    if (!shadow) continue;
+                    var shadowIframes = shadow.querySelectorAll && shadow.querySelectorAll('iframe');
+                    if (!shadowIframes) continue;
+                    for (var s = 0; s < shadowIframes.length; s++) {
+                        if (isFundingChoicesIframe(shadowIframes[s])) {
+                            markHidden(hosts[h]);
+                            break;
+                        }
+                    }
+                }
+            } catch (e) { /* noop */ }
+        }
+
+        function hideRevocation(root) {
+            try {
+                var candidates = (root || document).querySelectorAll(
+                    '.jpr-container, [class*="jpr-container"], [class*="jpr-revocation"], ' +
+                    '#google-fc-revocation-link, .fc-revocation-link, #googlefcPresent, ' +
+                    '.fc-cfa-bar, .fc-revocation-banner, .fc-revocation-bar, ' +
+                    'iframe[name*="revocation" i], iframe[id*="revocation" i], ' +
+                    'iframe[src*="revocation" i]'
+                );
+                for (var i = 0; i < candidates.length; i++) markHidden(candidates[i]);
+
+                hideFundingChoicesAnchor(root);
+
+                var divs = (root || document).querySelectorAll('div, span, section, aside, header, footer');
+                for (var j = 0; j < divs.length; j++) {
+                    if (divs[j].dataset && divs[j].dataset.goldeselRevocationChecked === '1') continue;
+                    if (looksLikeRevocationContainer(divs[j]) || looksLikeIsolatedGoogleWrapper(divs[j])) {
+                        if (divs[j].dataset) divs[j].dataset.goldeselRevocationChecked = '1';
+                        markHidden(divs[j]);
+                    }
+                }
+            } catch (e) { /* noop */ }
+        }
+
+        function startRevocationCleanup() {
+            hideRevocation();
+            try {
+                var observer = new MutationObserver(function (mutations) {
+                    for (var i = 0; i < mutations.length; i++) {
+                        var m = mutations[i];
+                        if (m.addedNodes && m.addedNodes.length) {
+                            for (var k = 0; k < m.addedNodes.length; k++) {
+                                var n = m.addedNodes[k];
+                                if (n.nodeType === 1) {
+                                    if (looksLikeRevocationContainer(n)) markHidden(n);
+                                    hideRevocation(n);
+                                }
+                            }
+                        }
+                    }
+                });
+                observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'src'] });
+            } catch (e) { /* noop */ }
+
+            setTimeout(hideRevocation, 800);
+            setTimeout(hideRevocation, 2000);
+            setTimeout(hideRevocation, 4500);
+            setTimeout(hideRevocation, 9000);
+
+            var scrollCleanupPending = false;
+            function scheduleScrollCleanup() {
+                if (scrollCleanupPending) return;
+                scrollCleanupPending = true;
+                var run = function () {
+                    scrollCleanupPending = false;
+                    hideRevocation();
+                };
+                if ('requestAnimationFrame' in window) {
+                    window.requestAnimationFrame(run);
+                } else {
+                    window.setTimeout(run, 50);
+                }
+            }
+            window.addEventListener('scroll', scheduleScrollCleanup, { passive: true, capture: true });
+            window.addEventListener('resize', scheduleScrollCleanup, { passive: true });
+            window.addEventListener('focus', scheduleScrollCleanup);
+            document.addEventListener('visibilitychange', scheduleScrollCleanup);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startRevocationCleanup, { once: true });
+        } else {
+            startRevocationCleanup();
+        }
+    })();
+
+    window.goldeselOpenCookieSettings = function (e) {
+        if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
+        try {
+            window.googlefc = window.googlefc || {};
+            window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+            window.googlefc.callbackQueue.push(function () {
+                if (typeof window.googlefc.showRevocationMessage === 'function') {
+                    window.googlefc.showRevocationMessage();
+                }
+            });
+            window.googlefc.callbackQueue.push({
+                'CONSENT_API_READY': function () {
+                    if (typeof window.googlefc.showRevocationMessage === 'function') {
+                        window.googlefc.showRevocationMessage();
+                    }
+                }
+            });
+        } catch (err) {
+            console.error('[Goldesel] Cookie-Einstellungen Klick fehlgeschlagen:', err);
+        }
+        return false;
+    };
+
+    (function () {
+        function matchesCookieLink(target) {
+            return target && target.closest && target.closest('[data-action="cookie-settings"], .cookie-settings-link, #cookie-settings-link');
+        }
+        function handle(event) {
+            if (!matchesCookieLink(event.target)) return;
+            window.goldeselOpenCookieSettings(event);
+        }
+        document.addEventListener('click', handle, true);
+        document.addEventListener('touchend', handle, { capture: true, passive: false });
+    })();
+</script>
+    <script>
+        window.googlefc = window.googlefc || {};
+        window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+        window.googlefc.ccpa = window.googlefc.ccpa || {};
+        window.googlefc.callbackQueue.push({
+            'CONSENT_API_READY': function () {
+                document.documentElement.classList.add('gfc-ready');
+            }
+        });
+        window.googlefc.callbackQueue.push({
+            'CONSENT_DATA_READY': function () {
+                document.documentElement.classList.add('gfc-consented');
+            }
+        });
+
+        (function () {
+            // Without ?client=, Auto Ads do not init; manual <ins data-ad-client> slots still work.
+            // Used on /artikel/… (blog) where two in-content slots already exist.
+            var disableAutoAds = false;
+            function loadAds() {
+                if (window.__goldeselAdsLoaded) return;
+                window.__goldeselAdsLoaded = true;
+                var s = document.createElement('script');
+                s.async = true;
+                s.crossOrigin = 'anonymous';
+                s.src = disableAutoAds
+                    ? 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+                    : 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5839180716874921';
+                document.head.appendChild(s);
+            }
+            function schedule() {
+                if ('requestIdleCallback' in window) {
+                    window.requestIdleCallback(loadAds, { timeout: 2500 });
+                } else {
+                    setTimeout(loadAds, 800);
+                }
+            }
+            if (document.readyState === 'complete') {
+                schedule();
+            } else {
+                window.addEventListener('load', schedule, { once: true });
+            }
+        })();
+    </script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="facebook-domain-verification" content="po9l4yw967p7gt4o38c2m1m01f4thn" />
+<meta name="apple-itunes-app" content="app-id=6456453238">
+<meta name="theme-color" content="rgb(39 35 70 / 80%) " />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="rgb(39 35 70 / 80%) " />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="rgb(39 35 70 / 80%) " />
+
+
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+	<link rel="canonical" href="https://goldesel.de/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro" />
+	<meta name="google-site-verification" content="2dtL9A6WZXB3IVdG4oJ9fkt_Mecp298eKqVXrbDb4qs" />
+	<meta property="og:locale" content="de_DE" />
+	<meta property="og:title" content="FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro" />
+	<meta property="og:url" content="https://goldesel.de/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro" />
+	<meta property="og:site_name" content="Goldesel.de" />
+	<meta name="twitter:title" content="FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro" />
+		<meta name="description" content="Kurz&#xFC;berblickFriedrich Vorwerk erwartet 2026 nun ein EBITDA von 220 bis 230 Millionen Euro und einen Umsatz von 760 bis 790 Millionen Euro.Im dritten...">
+		<meta property="og:description" content="Kurz&#xFC;berblickFriedrich Vorwerk erwartet 2026 nun ein EBITDA von 220 bis 230 Millionen Euro und einen Umsatz von 760 bis 790 Millionen Euro.Im dritten..." />
+		<meta name="twitter:description" content="Kurz&#xFC;berblickFriedrich Vorwerk erwartet 2026 nun ein EBITDA von 220 bis 230 Millionen Euro und einen Umsatz von 760 bis 790 Millionen Euro.Im dritten..." />
+		<meta property="og:type" content="website" />
+		<meta property="og:updated_time" content="2026-10-21T11:25:57Z" />
+			<meta property="og:image" content="https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png" />
+			<meta property="og:image:secure_url" content="https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png" />
+			<meta property="og:image:alt" content="FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro" />
+			<meta property="og:image:type" content="image/png" />
+			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:image" content="https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png" />
+<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "Organization",
+	  "@id": "https://goldesel.de/#organization",
+	  "name": "Goldesel.de",
+	  "url": "https://goldesel.de/",
+	  "logo": "https://goldesel.de/img/favicon/android-chrome-192x192.png",
+	  "sameAs": [
+		"https://instagram.com/goldeselinvesting","https://www.youtube.com/channel/UCpRyzNBsMId8wmodyGNr4iw/"
+	  ]
+	}
+</script>
+
+
+
+		<link rel="stylesheet" href="/css/vendor/fontawesome-custom/fontawesome-custom.css?v=Bl_hofUUNdlovURhNEZaW6VXKg5spGo1-zMShjn2-Yc" />
+	<link id="vendorsbundle" rel="stylesheet preload" as="style" media="screen, print" crossorigin="anonymous" href="/css/vendors.bundle.css?v=0awFeIMNoRI_8umPrmVUTx9Hxy1Jtfi5fV5WKTqHRCE">
+	<link id="appbundle" rel="stylesheet" media="screen, print" href="/css/app.bundle.css?v=XTcjU6hop-CbJH3p3MMoOUCvpx97alq-H3UHt7sdmQE">
+	<link id="myskin" rel="stylesheet" media="screen, print" href="/css/skins/skin-master.css?v=G6cRPfRhYDhfQVk-x5D2_fZttNqHhZ6ukxX8KmLSIDk">
+	<link rel="stylesheet" media="screen, print" href="/css/site.css?v=Gmqzs0nOGk3oLZCFYCquMK88mSwSFzhBHXKUDJvRxaI">
+		<link rel="stylesheet" media="screen, print" href="/css/local-fonts.css?v=P13Hzd2EwTs44uScmlSiWgwsCX12dIiHrgww_N3rtUc" />
+<link rel="icon" type="image/png" sizes="192x192" href="/img/favicon/android-chrome-192x192.png?v=M2u4AaWLklgPfU5cU15NPLIB_b-6zp3ebq8Jg9ovxbw">
+<link rel="icon" type="image/png" sizes="48x48" href="/img/favicon/favicon-48x48.png?v=h6dhxDjzV2nRr3G66cTtsF83HtnJ_alNrGgXVFK0FcY">
+<link rel="icon" href="/img/favicon/favicon.svg?v=f3re53lDoD0jFImyruH0POcQhhE33OEpPvpLW_0YyD8" type="image/svg+xml">
+<link rel="shortcut icon" href="/favicon.ico?v=lmFBVo03r5LPHdBFbwvbeZfKXp1bIPLl5Lqi2ogzjHk">
+<link rel="manifest" href="/img/favicon/site.webmanifest?v=1TAFiH1giuYqk9sHCTSDJc8qNuhHlaj9pYxjA7WgNsw">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=vkH4hlFSILz3RnBkhu6ZJfEdaiUzzXRl9cMWqaiiuvA">
+<link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+	<link href="/css/custom.css?v=__-9769I7ZMXS3kWITL_wFPocFgorV-m6SW-YcsFjzs" rel="stylesheet" />
+
+	<style>
+		/*nextgen icons*/
+		@font-face {
+			font-family: nextgen-icons;
+			src: url(/webfonts/nextgen-icons.woff2) format("woff2"),url(/webfonts/nextgen-icons.woff) format("woff"),url(/webfonts/nextgen-icons.ttf) format("truetype");
+			font-weight: 400;
+			font-style: normal;
+			font-display: swap;
+		}
+	</style>
+
+	<!--<link rel="stylesheet" media="screen, print" href="~/css/notifications/toastr/toastr.css">-->
+<link rel="stylesheet" href="/css/notifications/toastr/toastr.css" media="print" onload="this.media='all'; this.onload = null">
+<link rel="stylesheet" href="/css/alertify/alertify.css" media="print" onload="this.media='all'; this.onload = null">
+<link rel="stylesheet" href="/css/alertify/themes/default.css?v=1" media="print" onload="this.media='all'; this.onload = null">
+		<link rel="stylesheet" href="/css/auth-modals.css?v=JCajlEbbYAZBRHhyArhnZdPeUonppGN4j-MI1i_ZnYA" />
+			<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+	
+    <link href="/css/blogNew2.css?v=iN8kfXB7b5bPGbJEyWPSq5-tduvol_ZwnJ7w8uYPwpo" rel="stylesheet" />
+    <link href="/css/ki-news-detail.css?v=3u0UPaag1Czb9nf2ZQKYQNIQUI1RCOs0Q97BKLqK1Js" rel="stylesheet" />
+    <link href="/css/editorial-article.css?v=0bxMqvw4Y-PRD0kq5ejGiN5QDkYuMxK5XDawDeuMWyQ" rel="stylesheet" />
+    <link href="/css/editorial-article-footer.css?v=g2uDsOP0JUh5OO9Cyd82cjFGkWG2_8oteDSy7DeS_lg" rel="stylesheet" />
+    <link href="/css/ki-news-editorial.css?v=ZzkN7oAQE8bbiRtzbNLkm1i752Pp-BDIf2DGA7QalZM" rel="stylesheet" />
+        <link href="/css/ki-news-signup-gate.css?v=3q3xlL02GFlQA9rTc0fwY8DP50rlz_7q_nMusAobXPY" rel="stylesheet" />
+    <link rel="author" href="https://goldesel.de/aktien/autor/goldesel-research-team" />
+    <link rel="alternate" type="application/rss+xml" title="Goldesel Aktien News" href="https://goldesel.de/aktien/news/feed.xml" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro",
+      "datePublished": "2026-10-21T11:25:57Z",
+      "dateModified": "2026-10-21T11:25:57Z",
+"about": [
+{
+            "@type": "Organization",
+            "name": "Friedrich Vorwerk Group SE",
+            "tickerSymbol": "FDVWF",
+            "sameAs": [
+"https://de.finance.yahoo.com/quote/FDVWF",
+                    "https://www.boerse-frankfurt.de/aktie/DE000A255F11"
+                                ]
+          }
+                ],
+            "author": {
+        "@type": "Person",
+        "name": "Goldesel Research Team",
+        "url": "https://goldesel.de/aktien/autor/goldesel-research-team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Goldesel.de",
+        "url": "https://goldesel.de/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://goldesel.de/App-Icon-1024x1024@1x.png"
+        }
+      },
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png"
+        }
+      ],
+      "articleBody": "KurzüberblickFriedrich Vorwerk erwartet 2026 nun ein EBITDA von 220 bis 230 Millionen Euro und einen Umsatz von 760 bis 790 Millionen Euro.Im dritten Quartal stieg der Umsatz vorläufig um 13 Prozent auf 228,3 Millionen Euro, das EBITDA um 58 Prozent auf knapp 81 Millionen Euro.Die Aktie notierte am 21. Oktober um 13:40 Uhr bei 73,45 Euro und lag 10,87 Prozent im Plus.Analysten würdigen die starke Profitabilität, verweisen aber auf sinkenden Auftragseingang und Auftragsbestand.Marktanalyse \u0026amp; DetailsErneute Prognoseanhebung nach starkem QuartalDer Pipeline- und Anlagenbauer hat seine Jahresziele zum zweiten Mal im laufenden Jahr angehoben. Für 2026 stellt das Unternehmen nun einen Umsatz von 760 bis 790 Millionen Euro in Aussicht; zuvor lag die Spanne bei 730 bis 780 Millionen Euro. Das EBITDA soll 220 bis 230 Millionen Euro erreichen, nachdem die Prognose im Juli bereits auf 180 bis 200 Millionen Euro erhöht worden war.Die vorläufigen Quartalszahlen zeigen, dass das Ergebnis deutlich schneller wuchs als der Umsatz: Der Erlös legte im dritten Quartal gegenüber dem Vorjahr um 13 Prozent auf 228,3 Millionen Euro zu, das EBITDA um 58 Prozent auf knapp 81 Millionen Euro. Als einen Treiber nannte das Unternehmen deutlich niedrigere Materialaufwendungen. Zugleich profitiert Vorwerk von Investitionen in Netze und Energiewende-Infrastruktur.Aktienreaktion und unterschiedliche AnalystensignaleDie Aktie erreichte im Handelsverlauf ihr höchstes Niveau seit Anfang September und überschritt die 200-Tage-Linie. Zum angegebenen Kurszeitpunkt kostete sie 73,45 Euro. Trotz des Tagesgewinns von 10,87 Prozent lag die Jahresperformance weiterhin bei minus 10,21 Prozent.Die Einschätzungen zur weiteren Entwicklung fallen unterschiedlich aus. Ein Analyst hält an einer Kaufempfehlung fest und sieht mit einem Kursziel von 120 Euro mehr als 60 Prozent Spielraum gegenüber dem genannten Kurs. Ein anderer erhöhte sein Kursziel von 70 auf 73 Euro, blieb aber bei Hold.Analysten-Einordnung: Die erneute Prognoseanhebung und das überproportionale EBITDA-Wachstum sprechen für eine starke operative Umsetzung und einen derzeit vorteilhaften Projektmix. Für Anleger bedeutet diese Entwicklung jedoch nicht automatisch, dass sich das hohe Ergebniswachstum fortsetzt: Der Auftragseingang liegt mit knapp 130 Millionen Euro mehr als ein Drittel unter dem Vorjahreswert, auch der Auftragsbestand ist zurückgegangen. Damit steigt die Bedeutung künftiger Neuaufträge, wenn Vorwerk Profitabilität und Wachstum auf dem aktuellen Niveau halten will.Fazit \u0026amp; AusblickDie angehobenen Jahresziele stützen die positive Kursreaktion, während die schwächere Auftragslage ein wesentliches Risiko für die Zeit nach 2026 bleibt. Die endgültigen Zahlen zum dritten Quartal will Friedrich Vorwerk am 12. November vorlegen. Dann dürften neben der Bestätigung der vorläufigen Ergebnisse insbesondere Auftragsbestand und Auftragseingang im Mittelpunkt stehen.",
+      "url": "https://goldesel.de/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://goldesel.de/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+      },
+      "articleSection": "Aktien News"
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Startseite",
+          "item": "https://goldesel.de/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Aktien News",
+          "item": "https://goldesel.de/aktien/news"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Friedrich Vorwerk Group SE",
+          "item": "https://goldesel.de/aktie/friedrich-vorwerk-group-se"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro",
+          "item": "https://goldesel.de/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+        }
+      ]
+    }
+    </script>
+
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png" />
+    <meta property="og:image:secure_url" content="https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png" />
+    <meta property="og:image:alt" content="FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="article:published_time" content="2026-10-21T11:25:57Z" />
+    <meta property="article:modified_time" content="2026-10-21T11:25:57Z" />
+    <meta property="article:author" content="https://goldesel.de/aktien/autor/goldesel-research-team" />
+        <meta property="article:tag" content="Friedrich Vorwerk Group SE" />
+    <meta property="article:section" content="Aktien News" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png" />
+    <meta name="twitter:image:alt" content="FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro" />
+
+	
+</head>
+
+<body class="mod-skin-dark mod-bg-1 mod-nav-link nav-function-fixed header-function-fixed nav-function-top nav-function-fixed   ">
+
+
+	    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K374T4D"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+	<input type="hidden" id="userId" value="0" />
+	<script>
+    'use strict';
+    var classHolder = document.getElementsByTagName("BODY")[0],
+        themeSettings = {},
+        themeURL = themeSettings.themeURL || '',
+        themeOptions = themeSettings.themeOptions || '';
+
+    if (themeSettings.themeOptions) {
+        classHolder.className = themeSettings.themeOptions;
+    }
+    if (themeSettings.themeURL && !document.getElementById('mytheme')) {
+        var cssfile = document.createElement('link');
+        cssfile.id = 'mytheme';
+        cssfile.rel = 'stylesheet';
+        cssfile.href = themeURL;
+        document.getElementsByTagName('head')[0].appendChild(cssfile);
+
+    } else if (themeSettings.themeURL && document.getElementById('mytheme')) {
+        document.getElementById('mytheme').href = themeSettings.themeURL;
+    }
+    var saveSettings = function() {
+        themeSettings.themeOptions = String(classHolder.className).split(/[^\w-]+/).filter(function(item) {
+            return /^(nav|header|footer|mod|display)-/i.test(item);
+        }).join(' ');
+        if (document.getElementById('mytheme')) {
+            themeSettings.themeURL = document.getElementById('mytheme').getAttribute("href");
+        };
+        localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
+    }
+    var resetSettings = function() {
+        localStorage.setItem("themeSettings", "");
+    }
+</script>
+
+	<div class="page-wrapper">
+		<div class="page-inner">
+			<div class="indications-top-header">
+    <div class="marquee marquee--hover-pause">
+        <div class="marquee__content" id="marquee1">
+        </div>
+        <div aria-hidden="true" class="marquee__content" id="marquee2">
+        </div>
+    </div>
+</div>
+
+
+				
+<link href="/custom/pages/startpage/new-header.css?v=K1mersUcht4GMmftTDYDsHLJpS4FtTnDCo7dTS34c6I" rel="stylesheet" />
+
+<header class="header-new-container fixed-top w-100">
+    <div class="header-new-content d-flex align-items-center justify-content-between  h-100 mx-auto">
+        <!-- Left: Logo -->
+        <div class="d-flex align-items-center mr-5 header-logo-container">
+         <a href="/" class="d-flex align-items-center text-decoration-none" data-cta-type="home" data-cta-position="header_logo">
+             <img src="/img/goldesel-logo-2.svg" alt="Goldesel" width="133" style="height: 38px; width: 133px;">
+         </a>
+    </div>
+
+    <!-- Center: Navigation -->
+    <div class="d-none d-lg-flex align-items-center flex-grow-1">
+        <nav class="header-nav">
+             <ul class="d-flex list-unstyled mb-0 align-items-center">
+                 <li >
+                    <a href="/daily" class="header-new-nav-link d-flex align-items-center ">
+                        <i class="fal fa-home mr-7"></i> <span>Goldesel Daily</span>
+                    </a>
+                 </li>
+                 <li>
+                    <a href="/tradetracker-v2" class="header-new-nav-link d-flex align-items-center ">
+                        <i class="fal fa-chart-line mr-7"></i> <span>Trade Tracker</span>
+                    </a>
+                 </li>
+                 <li class="header-nav-item-with-submenu">
+                    <a href="/kursuebersicht" class="header-new-nav-link d-flex align-items-center ">
+                        <i class="fal fa-chart-bar mr-7"></i> <span>Kurse</span>
+                    </a>
+                    <ul class="header-submenu">
+                        <li>
+                            <a href="/heatmap" class="header-submenu-link">Heatmap</a>
+                        </li>
+                        <li>
+                            <a href="https://aktienradar.goldesel.de/" class="header-submenu-link" target="_blank" rel="noopener">Aktienradar <i class="fas fa-crown premium-crown-icon" title="Premium Feature"></i></a>
+                        </li>
+                    </ul>
+                 </li>
+                <li class="header-nav-item-with-submenu">
+                    <a href="/aktien/news" class="header-new-nav-link header-new-nav-link--news-hub d-flex align-items-center active">
+                       <svg class="mr-7 academy-icon" width="19" height="17" viewBox="0 0 25 24" fill="none">
+                            <path d="M10.3603 11.0732C9.89509 11.0732 9.5166 11.4557 9.5166 11.9278C9.5166 12.4 9.89513 12.7827 10.3603 12.7827C10.826 12.7827 11.2045 12.4 11.2045 11.9278C11.2045 11.4557 10.826 11.0732 10.3603 11.0732Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                            <path d="M14.6328 11.0674C14.1632 11.0674 13.7822 11.453 13.7822 11.9287C13.7822 12.4044 14.1632 12.79 14.6328 12.79C15.1019 12.79 15.4829 12.4044 15.4829 11.9287C15.4829 11.453 15.1019 11.0674 14.6328 11.0674Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                            <path d="M11.0173 18.0479C10.6158 18.0479 10.2891 18.378 10.2891 18.7856C10.2891 19.1931 10.6158 19.5235 11.0173 19.5235C11.4194 19.5235 11.7461 19.1931 11.7461 18.7856C11.7461 18.378 11.4194 18.0479 11.0173 18.0479Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                            <path d="M13.9765 18.042C13.571 18.042 13.2422 18.3748 13.2422 18.7854C13.2422 19.196 13.571 19.5289 13.9765 19.5289C14.3814 19.5289 14.7103 19.196 14.7103 18.7854C14.7103 18.3748 14.3814 18.042 13.9765 18.042Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                            <path d="M21.1031 1.50847L20.9985 1.09229L20.574 1.02929C20.4998 1.0183 18.7403 0.772982 17.2613 1.92162C16.3848 2.60219 15.8035 3.6083 15.5263 4.91892C14.6791 4.58004 13.6681 4.40905 12.4998 4.40905C11.3315 4.40905 10.3205 4.58009 9.47319 4.91896C9.19609 3.6083 8.61469 2.60223 7.73832 1.92162C6.25917 0.772982 4.49965 1.01825 4.42549 1.02929L4.00098 1.09229L3.89635 1.50847C3.884 1.55761 3.59669 2.72782 3.83905 4.14298C4.05081 5.37927 4.7119 7.02355 6.61966 8.09557C6.36401 8.99816 6.29998 10.0537 6.43029 11.2552C6.60239 12.842 6.97723 13.7868 7.41126 14.8808C7.57995 15.306 7.75439 15.7457 7.9315 16.2606C8.03383 16.5581 8.04929 17.4101 8.0276 17.9198L8.02698 17.9475C8.02698 19.8769 8.97965 20.8513 9.7788 21.329C10.7066 21.8836 11.7706 22 12.4997 22C13.2289 22 14.2929 21.8836 15.2207 21.329C16.0198 20.8513 16.9725 19.8769 16.9725 17.9475L16.9719 17.9198C16.9506 17.4253 16.9664 16.556 17.068 16.2606C17.2451 15.7456 17.4195 15.3059 17.5882 14.8807C18.0222 13.7868 18.3971 12.842 18.5692 11.2552C18.6995 10.0537 18.6354 8.99816 18.3798 8.09557C20.2875 7.02359 20.9486 5.37927 21.1603 4.14302C21.4028 2.72782 21.1155 1.55761 21.1031 1.50847ZM7.12111 6.90075C6.01948 6.23847 5.34498 5.25434 5.11369 3.96776C4.99335 3.29831 5.02181 2.68664 5.06734 2.2892C5.54128 2.3086 6.30388 2.4303 6.96119 2.94623C7.66313 3.49715 8.10741 4.38399 8.28591 5.58337C8.05865 5.75617 7.85012 5.94763 7.66117 6.1582C7.45703 6.38559 7.27722 6.63341 7.12111 6.90075ZM14.561 20.2254C13.8494 20.6508 12.9641 20.7142 12.4998 20.7142C12.0354 20.7142 11.1501 20.6508 10.4385 20.2254C9.68405 19.7745 9.31577 19.0335 9.31278 17.9606C9.31495 17.907 9.31811 17.8176 9.3202 17.7043C10.0428 17.0354 11.2346 16.627 12.4998 16.627C13.765 16.627 14.9567 17.0354 15.6793 17.7043C15.6814 17.8176 15.6846 17.9069 15.6868 17.9606C15.6838 19.0335 15.3154 19.7744 14.561 20.2254ZM17.291 11.1165C17.1377 12.5299 16.8091 13.3581 16.3932 14.4065C16.2191 14.8454 16.039 15.2993 15.8522 15.8425C15.8181 15.9416 15.7904 16.0562 15.768 16.1797C14.8632 15.6437 13.7151 15.3413 12.4997 15.3413C11.2844 15.3413 10.1363 15.6437 9.23144 16.1797C9.20897 16.0561 9.18137 15.9415 9.14728 15.8425C8.96046 15.2993 8.78036 14.8454 8.60629 14.4066C8.19031 13.3581 7.86173 12.53 7.70846 11.1165C7.51027 9.28953 7.81637 7.91018 8.61806 7.01686C9.40531 6.13958 10.7113 5.69477 12.4997 5.69477C14.2882 5.69477 15.5941 6.13958 16.3814 7.01686C17.1831 7.91018 17.4892 9.28949 17.291 11.1165ZM19.8931 3.92593C19.6692 5.23301 18.9924 6.23125 17.8784 6.90075C17.7223 6.63341 17.5425 6.38559 17.3383 6.15812C17.1494 5.94754 16.9409 5.75612 16.7135 5.58324C16.892 4.38391 17.3363 3.49707 18.0383 2.94615C18.6959 2.42993 19.4588 2.30844 19.9319 2.289C19.9765 2.67881 20.0048 3.27419 19.8931 3.92593Z" fill="currentColor" stroke="currentColor" stroke-width="0.3" />
+                        </svg>
+                        <span>News-Hub</span>
+                    </a>
+                    <ul class="header-submenu">
+                        <li>
+                            <a href="/aktien/news" class="header-submenu-link">News-Hub</a>
+                        </li>
+                        <li>
+                            <a href="/wissen" class="header-submenu-link">Seminare</a>
+                        </li>
+                        <li>
+                            <a href="/guides" class="header-submenu-link">Guides</a>
+                        </li>
+                        <li>
+                            <a href="/akademie" class="header-submenu-link">Akademie</a>
+                        </li>
+                        <li>
+                            <a href="/news" class="header-submenu-link">Artikel</a>
+                        </li>
+                    </ul>
+                </li>
+                 <li  class="header-nav-item-with-submenu">
+                    <a href="/tradingdepot" class="header-new-nav-link d-flex align-items-center ">
+                        <i class="fal fa-chart-pie mr-7"></i> <span>Depots</span>
+                    </a>
+                      <ul class="header-submenu">
+                        <li>
+                            <a href="/tradingdepot" class="header-submenu-link">Premium Trading Depot <i class="fas fa-crown premium-crown-icon" title="Premium Feature"></i></a>
+                        </li>
+                        <li>
+                            <a href="/tradingdepot/Goldesel%20High%20Conviction%20Depot" class="header-submenu-link">High Conviction Depot <i class="fas fa-crown premium-crown-icon" title="Premium Feature"></i></a>
+                        </li>
+                        <li>
+                            <a href="/investieren" class="header-submenu-link">Premium Langfrist Depot <i class="fas fa-crown premium-crown-icon" title="Premium Feature"></i></a>
+                        </li>
+                    </ul>
+                 </li>
+                 <li >
+                    <a href="/vergleich/depot" class="header-new-nav-link header-new-nav-link--depotvergleich d-flex align-items-center ">
+                        <i class="fal fa-star mr-7"></i> <span>Depotvergleich</span>
+                    </a>
+                 </li>
+             </ul>
+        </nav>
+    </div>
+
+    <div class="d-flex align-items-center">
+            <div class="position-relative mr-4 stocksearchInputContainer stocksearchField d-none d-md-block">
+                <input class="stocksearchInput form-control rounded-pill border-0 search-input-custom" type="search"
+                        placeholder="Suche nach Aktien, Artikel" id="stockSearchHeaderInput"
+                        aria-label="Suche nach Aktien und Artikeln"
+                        style="background-color:#353256; color: #fff; padding-left: 36px; height: 36px;  font-size: 14px;">
+                <i class="fas fa-search position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%); color: #A7A7B8;"></i>
+            </div>
+
+        <div class="d-none d-lg-flex align-items-center">
+
+            <div class="user-navigation">
+                    <a href="/login" class="btn btn-sm btn-primary rounded-pill px-4" data-cta-type="login" data-cta-position="header_auth">Login</a>
+            </div>
+        </div>
+
+        <!-- Mobile Hamburger Button (Visible only on < 1024px) -->
+        <button class="mobile-menu-btn d-lg-none" onclick="toggleMobileMenu()" type="button" aria-label="Navigationsmenü öffnen" aria-controls="mobileMenuOverlay" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- Mobile Search Button (Visible only on < 768px) -->
+             <button class="mobile-menu-btn d-md-none mr-2 toggleSearch" type="button" aria-label="Suche nach Aktien und Artikeln öffnen">
+                <i class="fas fa-search"></i>
+            </button>
+    </div>
+    </div>
+</header>
+
+    <div class="stocksearchInputContainerMobil">
+        <div class="stocksearchInputContainer">
+            <input class="stocksearchInput form-control typeahead searchfiled"
+                   type="search"
+                   placeholder="&#xF002; Suche nach Aktien, Artikel"
+                   id="stockSearchHeaderInputMobil"
+                   aria-label="Suche nach Aktien und Artikeln"
+                   style="font-family:Roboto, FontAwesome, 'Font Awesome 6 Sharp';  font-size: 12px;" />
+        </div>
+    </div>
+
+
+<!-- Mobile Fullscreen Menu Overlay -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-menu-header">
+        <a href="/" class="d-flex align-items-center text-decoration-none" data-cta-type="home" data-cta-position="header_logo_mobile">
+             <img src="/img/goldesel-logo-2.svg" alt="Goldesel" width="133" style="height: 38px; width: 133px;">
+        </a>
+        <div class="d-flex align-items-center">
+            <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="mobile-menu-content">
+             <button class="btn-subscribe-mobile" onclick="window.location.href='/mitglied-werden'">
+                Jetzt abonnieren
+            </button>
+
+        <a href="/daily" class="mobile-nav-item ">
+            <i class="fal fa-home mr-6"></i> Goldesel Daily
+        </a>
+        <a href="/tradetracker-v2" class="mobile-nav-item ">
+            <i class="fal fa-chart-line mr-6"></i> Trade Tracker
+        </a>
+        <button type="button"
+                class="mobile-nav-item mobile-nav-item-toggle "
+                data-target="mobileKurseSubmenu">
+            <i class="fal fa-chart-bar mr-6"></i>
+            <span class="flex-grow-1">Kurse</span>
+            <i class="fas fa-chevron-down ml-auto mobile-submenu-chevron"></i>
+        </button>
+        <div class="mobile-submenu" id="mobileKurseSubmenu">
+            <a href="/kursuebersicht" class="mobile-submenu-item">
+                Kursübersicht
+            </a>
+            <a href="/heatmap" class="mobile-submenu-item">
+                Heatmap
+            </a>
+            <a href="https://aktienradar.goldesel.de/" class="mobile-submenu-item" target="_blank" rel="noopener">
+                Aktienradar <i class="fas fa-crown premium-crown-icon" title="Premium Feature"></i>
+            </a>
+ 
+            
+        </div>
+        <button type="button"
+                class="mobile-nav-item mobile-nav-item-toggle mobile-nav-item--news-hub active"
+                data-target="mobileNewsHubSubmenu">
+            <svg class="mr-6 news-hub-menu-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 12.5V11.5L12.5 7L20 10.5V13.5L12.5 17L4 12.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <circle cx="8" cy="12" r="1.2" fill="currentColor"/>
+                <circle cx="12" cy="10" r="1.2" fill="currentColor"/>
+                <circle cx="16" cy="12" r="1.2" fill="currentColor"/>
+            </svg>
+            <span class="flex-grow-1">News-Hub</span>
+            <i class="fas fa-chevron-down ml-auto mobile-submenu-chevron"></i>
+        </button>
+        <div class="mobile-submenu" id="mobileNewsHubSubmenu">
+            <a href="/aktien/news" class="mobile-submenu-item">
+                News-Hub
+            </a>
+            <a href="/wissen" class="mobile-submenu-item">
+                Seminare
+            </a>
+            <a href="/guides" class="mobile-submenu-item">
+                Guides
+            </a>
+            <a href="/akademie" class="mobile-submenu-item">
+                Akademie
+            </a>
+            <a href="/news" class="mobile-submenu-item">
+                Artikel
+            </a>
+        </div>
+        <button type="button"
+                class="mobile-nav-item mobile-nav-item-toggle "
+                data-target="mobileDepotsSubmenu">
+            <i class="fal fa-chart-pie mr-6"></i>
+            <span class="flex-grow-1">Depots</span>
+            <i class="fas fa-chevron-down ml-auto mobile-submenu-chevron"></i>
+        </button>
+        <div class="mobile-submenu" id="mobileDepotsSubmenu">
+            <a href="/tradingdepot" class="mobile-submenu-item">
+                Premium Trading Depot <i class="fas fa-crown premium-crown-icon" title="Premium Feature"></i>
+            </a>
+            <a href="/tradingdepot/Goldesel%20High%20Conviction%20Depot" class="mobile-submenu-item">
+                High Conviction Depot <i class="fas fa-crown premium-crown-icon" title="Premium Feature"></i>
+            </a>
+            <a href="/investieren" class="mobile-submenu-item">
+                Premium Langfrist Depot <i class="fas fa-crown premium-crown-icon" title="Premium Feature"></i>
+            </a>
+        </div>
+        <a href="/vergleich/depot" class="mobile-nav-item mobile-nav-item--depotvergleich ">
+            <i class="fal fa-star mr-6"></i> Depotvergleich
+        </a>
+        
+        
+             <a href="/login" class="mobile-nav-item" data-cta-type="login" data-cta-position="header_auth_mobile">
+                 <i class="fal fa-sign-in mr-6"></i> Login
+             </a>
+    </div>
+</div>
+
+<script>
+    function toggleMobileMenu() {
+        var overlay = document.getElementById('mobileMenuOverlay');
+        var toggleButton = document.querySelector('.mobile-menu-btn.d-lg-none');
+        if (overlay.classList.contains('open')) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            if (toggleButton) toggleButton.setAttribute('aria-expanded', 'false');
+        } else {
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            if (toggleButton) toggleButton.setAttribute('aria-expanded', 'true');
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        // Toggle mobile submenus (e.g. Admin)
+        var toggles = document.querySelectorAll('#mobileMenuOverlay .mobile-nav-item-toggle');
+        Array.prototype.forEach.call(toggles, function (toggle) {
+            toggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                var targetId = this.getAttribute('data-target');
+                if (!targetId) return;
+                var submenu = document.getElementById(targetId);
+                if (!submenu) return;
+                var isOpen = submenu.classList.contains('open');
+                submenu.classList.toggle('open', !isOpen);
+                this.classList.toggle('open', !isOpen);
+            });
+        });
+
+        // Close mobile menu when clicking a navigation link (but not toggles)
+        var closeSelectors = '#mobileMenuOverlay a.mobile-nav-item, #mobileMenuOverlay .mobile-submenu-item, #mobileProfileMenu a';
+        var links = document.querySelectorAll(closeSelectors);
+        Array.prototype.forEach.call(links, function (link) {
+            link.addEventListener('click', function () {
+                var overlay = document.getElementById('mobileMenuOverlay');
+                if (!overlay) return;
+                if (overlay.classList.contains('open')) {
+                    overlay.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Toggle mobile profile menu
+        var profileToggle = document.getElementById('mobileProfileToggle');
+        if (profileToggle) {
+            profileToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                var menu = document.getElementById('mobileProfileMenu');
+                if (!menu) return;
+                menu.classList.toggle('open');
+            });
+        }
+    });
+</script>
+
+			<!--      <partial name="~/Views/Shared/Site/Sidebar/_DesktopHeaderBar.cshtml" /> -->
+
+
+			<div class="page-content-wrapper">
+				<div class="fixedHeaderFix"></div>
+				<main id="js-page-content" role="main" class="page-content ">
+				
+					
+
+
+
+<div id="scroll-progress-bar" class="scroll-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Lesefortschritt"></div>
+<div class="newsarticle2-page ki-news-detail-page editorial-article-page">
+    <nav class="editorial-article-breadcrumb ki-news-detail-breadcrumb" aria-label="Breadcrumb">
+        <a href="/aktien/news">Aktien News</a>
+        <i class="fal fa-sm fa-chevron-right" aria-hidden="true"></i>
+        <span aria-current="page">FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro</span>
+    </nav>
+    <div class="editorial-article-layout">
+        <article class="editorial-article-card">
+            <header class="editorial-article-header">
+    <div class="editorial-article-category">
+        <a href="/aktien/news" class="editorial-article-category__badge">KI-News</a>
+            <span class="editorial-article-category__sub">Energiewende</span>
+    </div>
+    <h1 class="editorial-article-title ki-news-detail-headline">FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro</h1>
+    <div class="editorial-article-meta">
+        <a class="editorial-article-author ki-news-detail-author-row" href="/aktien/autor/goldesel-research-team" rel="author">
+            <span class="editorial-article-avatar">
+                <img src="/img/Goldesel-Research-Team.png" alt="Goldesel Research Team" width="44" height="44" />
+            </span>
+            <span class="ki-news-detail-author-meta">
+                <span class="editorial-article-author__name ki-news-detail-author-name">Goldesel Research Team</span>
+                <time class="ki-news-detail-date" datetime="2026-10-21T11:25:57Z">21.10.2026 um 13:25 Uhr</time>
+            </span>
+        </a>
+        <span class="editorial-article-reading-time"><i class="fa-regular fa-clock" aria-hidden="true"></i> 3 Min. Lesezeit</span>
+    </div>
+        <figure class="editorial-article-hero eu-ai-label-wrap eu-ai-label-wrap--detail">
+            <img src="https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png" alt="FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro" class="ki-news-detail-image" fetchpriority="high" decoding="async" />
+                <img class="eu-ai-label-badge is-visible" alt="AI Generated" src="https://goldesel.azureedge.net/upload-public/img/eu-label/LABEL_AI%20GENERATED_black%20transparent.png" />
+        </figure>
+    <div class="editorial-article-tools">
+                <input type="hidden" id="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlc0ZsYWciOiIwIiwiZXhwIjoxNzk0NDk1MjY4LCJpc3MiOiJnb2xkZXNlbCIsImF1ZCI6ImdvbGRlc2VsIn0.DHO13uoBcaHMoGnR89q_F-bFrMiesS02EFX2IrSEafY" />
+            <section class="editorial-article-stocks" aria-labelledby="ki-news-stocks-title">
+                <h2 id="ki-news-stocks-title">Aktien im Artikel</h2>
+                <ul class="ki-news-instrument-info editorial-stock-list" id="ki-news-instruments" data-isins="DE000A255F11">
+                    <li>
+                    <a href="/aktie/friedrich-vorwerk-group-se" class="ki-news-instrument-badge instrument_DE000A255F11" data-isin="DE000A255F11" data-cta-type="related_stock" data-cta-position="stock_module" style="text-decoration: none; display: inline-flex;">
+                        <span class="ki-news-instrument-logo-wrap">
+                                <img src="https://services.goldesel.de/media/logos/797.DE000A255F11.png" alt="Friedrich Vorwerk Group SE" class="ki-news-instrument-logo" loading="lazy" />
+                        </span>
+                        <span class="ki-news-instrument-meta">
+                            <span class="ki-news-instrument-name">Friedrich Vorwerk Group SE</span>
+                                <span class="ki-news-instrument-price">74.55€</span>
+                                    <span class="ki-news-instrument-perf" style="color: var(--article-accent);">
+                                        &#x2B;3.9%
+                                    </span>
+                        </span>
+                    </a>
+                    </li>
+                </ul>
+            </section>
+        <div class="editorial-article-actions" aria-label="Artikelaktionen">
+            
+<a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="share-content-dropdown" class=" btn btn-simple  waves-effect waves-themed util-round19 dropdown-toggle-split fixed-mr-8">
+    <i class="fa-regular fa-share-nodes"></i>
+</a>
+
+<div class="dropdown-menu">
+    <a href="https://twitter.com/intent/tweet?url=https://goldesel.de/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro" target="_blank" targetIdToClose="#share-content-dropdown" class="closeOnClick dropdown-item text-decoration-none href-unstyled" style="text-decoration: none !important;"><i class="mr-2 fab fa-twitter" style="color: #2196f3;"></i> Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgoldesel.de%2faktien%2fnews%2ffrvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro" target="_blank" targetIdToClose="#share-content-dropdown" class="closeOnClick dropdown-item text-decoration-none" style="text-decoration: none !important;"><i class="mr-2 fab fa-facebook" style="color: #3b5998;"></i> Facebook</a>
+    <a href="javascript:void(Master.CopyToClipboard('https://goldesel.de/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro', 'Der Link'))" targetIdToClose="#share-content-dropdown" class="closeOnClick dropdown-item text-decoration-none"><i class="mr-2 fal fa-copy color-grey-dark5"></i> Link kopieren</a>
+</div>
+
+            <a href="https://www.google.com/preferences/source?q=goldesel.de"
+   class="ge-google-preferred"
+   target="_blank"
+   rel="noopener noreferrer"
+   title="Goldesel bei Google als bevorzugte Quelle festlegen">
+    <img src="/img/static/icons/google.svg?v=Ii2AkPwHbadJ4J3TyRZIhNYVVPXPtxoNTgngnA2WuB8" alt="" class="ge-google-preferred__icon" width="18" height="18" aria-hidden="true" />
+    <span class="ge-google-preferred__label">Bei Google bevorzugen</span>
+</a>
+
+        </div>
+    </div>
+</header>
+<div class="editorial-mobile-toc-slot"></div>
+
+            <div class="card-content ki-news-detail">
+
+                    <div class="ki-news-detail-body" data-article-body
+                         id="ki-news-detail-body"
+                         data-instruments='[{"isin":"DE000A255F11","name":"Friedrich Vorwerk Group SE","symbol":"FDVWF","symbolDE":"VH2","instrumentId":"194052110","wkn":"A255F1","lusId":"328644918","log":"https://services.goldesel.de/media/logos/797.DE000A255F11.png","logo":"https://services.goldesel.de/media/logos/797.DE000A255F11.png","logoBig":"https://goldesel.azureedge.net/stock-imgs/industrielle-szene-mit-blauem-logo-friedrich-vorwerk-aktie.png","performnaceDay":0.0390243902439024,"stockUrl":"/aktie/friedrich-vorwerk-group-se"}]'
+                         data-suggested-widgets='[{"component":"profit-widget"}]'>
+<div class="goldesel-kompakt"><p data-ki-news-heading-order="1" class="goldesel-kompakt-title">Goldesel Kompakt</p><p class="goldesel-kompakt-subtitle">Das Wichtigste in Kürze</p><ol class="goldesel-kompakt-list"><li class="goldesel-kompakt-item"><span class="goldesel-kompakt-num" aria-hidden="true">01</span><div class="goldesel-kompakt-body">Friedrich Vorwerk erwartet 2026 nun ein EBITDA von 220 bis 230 Millionen Euro und einen Umsatz von 760 bis 790 Millionen Euro.</div></li><li class="goldesel-kompakt-item"><span class="goldesel-kompakt-num" aria-hidden="true">02</span><div class="goldesel-kompakt-body">Im dritten Quartal stieg der Umsatz vorläufig um 13 Prozent auf 228,3 Millionen Euro, das EBITDA um 58 Prozent auf knapp 81 Millionen Euro.</div></li><li class="goldesel-kompakt-item"><span class="goldesel-kompakt-num" aria-hidden="true">03</span><div class="goldesel-kompakt-body">Die Aktie notierte am 21. Oktober um 13:40 Uhr bei 73,45 Euro und lag 10,87 Prozent im Plus.</div></li><li class="goldesel-kompakt-item"><span class="goldesel-kompakt-num" aria-hidden="true">04</span><div class="goldesel-kompakt-body">Analysten würdigen die starke Profitabilität, verweisen aber auf sinkenden Auftragseingang und Auftragsbestand.</div></li></ol></div>                        <h2 data-ki-news-heading-order="2">Marktanalyse &amp; Details</h2>
+    <div class="ad-slot">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5839180716874921"
+             data-ad-slot="1046080201"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+                        <h3>Erneute Prognoseanhebung nach starkem Quartal</h3><p>Der Pipeline- und Anlagenbauer hat seine Jahresziele zum zweiten Mal im laufenden Jahr angehoben. Für 2026 stellt das Unternehmen nun einen Umsatz von 760 bis 790 Millionen Euro in Aussicht; zuvor lag die Spanne bei 730 bis 780 Millionen Euro. Das EBITDA soll 220 bis 230 Millionen Euro erreichen, nachdem die Prognose im Juli bereits auf 180 bis 200 Millionen Euro erhöht worden war.</p><p>Die vorläufigen <a href="https://goldesel.de/akademie/fortgeschritten/quartalszahlen-trading" target="_blank" rel="noopener noreferrer">Quartalszahlen</a> zeigen, dass das Ergebnis deutlich schneller wuchs als der Umsatz: Der Erlös legte im dritten Quartal gegenüber dem Vorjahr um 13 Prozent auf 228,3 Millionen Euro zu, das EBITDA um 58 Prozent auf knapp 81 Millionen Euro. Als einen Treiber nannte das Unternehmen deutlich niedrigere Materialaufwendungen. Zugleich profitiert Vorwerk von Investitionen in Netze und Energiewende-Infrastruktur.</p>
+    <div class="ad-slot">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5839180716874921"
+             data-ad-slot="7376784919"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+                        <h3>Aktienreaktion und unterschiedliche Analystensignale</h3><p>Die Aktie erreichte im Handelsverlauf ihr höchstes Niveau seit Anfang September und überschritt die 200-Tage-Linie. Zum angegebenen Kurszeitpunkt kostete sie 73,45 Euro. Trotz des Tagesgewinns von 10,87 Prozent lag die Jahresperformance weiterhin bei minus 10,21 Prozent.</p><p>Die Einschätzungen zur weiteren Entwicklung fallen unterschiedlich aus. Ein Analyst hält an einer Kaufempfehlung fest und sieht mit einem Kursziel von 120 Euro mehr als 60 Prozent Spielraum gegenüber dem genannten Kurs. Ein anderer erhöhte sein Kursziel von 70 auf 73 Euro, blieb aber bei Hold.</p><p><strong>Analysten-Einordnung:</strong> Die erneute Prognoseanhebung und das überproportionale EBITDA-Wachstum sprechen für eine starke operative Umsetzung und einen derzeit vorteilhaften Projektmix. Für Anleger bedeutet diese Entwicklung jedoch nicht automatisch, dass sich das hohe Ergebniswachstum fortsetzt: Der Auftragseingang liegt mit knapp 130 Millionen Euro mehr als ein Drittel unter dem Vorjahreswert, auch der Auftragsbestand ist zurückgegangen. Damit steigt die Bedeutung künftiger Neuaufträge, wenn Vorwerk Profitabilität und Wachstum auf dem aktuellen Niveau halten will.</p><h2 data-ki-news-heading-order="3">Fazit &amp; Ausblick</h2><p>Die angehobenen Jahresziele stützen die positive Kursreaktion, während die schwächere Auftragslage ein wesentliches Risiko für die Zeit nach 2026 bleibt. Die endgültigen Zahlen zum dritten Quartal will Friedrich Vorwerk am 12. November vorlegen. Dann dürften neben der Bestätigung der vorläufigen Ergebnisse insbesondere Auftragsbestand und Auftragseingang im Mittelpunkt stehen.</p>
+                    </div>
+
+
+                <div id="scroll-progress-bar-end" aria-hidden="true"></div>
+                <footer class="editorial-author-footer" aria-label="Autor dieses Artikels">
+    <a href="/aktien/autor/goldesel-research-team" rel="author" class="editorial-author-footer-avatar" tabindex="-1" aria-hidden="true">
+        <img src="/img/Goldesel-Research-Team.png" alt="" width="52" height="52" loading="lazy" decoding="async" />
+    </a>
+    <div class="editorial-author-footer-content">
+        <a href="/aktien/autor/goldesel-research-team" rel="author" class="editorial-author-footer-name">Goldesel Research Team</a>
+        <p>Autor dieses Artikels</p>
+        <a href="/aktien/autor/goldesel-research-team" rel="author" class="editorial-author-footer-profile">Zum Autorenprofil <span aria-hidden="true">→</span></a>
+    </div>
+</footer>
+
+
+
+        <div class="ki-note-container">
+            <h5 class="h6 mb-2 ml-0 ki-note-heading">
+                Hinweise zu diesem Inhalt
+                <img class="ki-note-eu-label"
+                     src="https://goldesel.azureedge.net/upload-public/img/eu-label/LABEL_AI%20MODIFIED_white.png"
+                     alt="AI Modified — Inhalt mit Unterstützung von KI erstellt"
+                     loading="lazy" />
+            </h5>
+            <p class="mb-2">
+                Diese Inhalte wurden ganz oder teilweise automatisiert unter Einsatz künstlicher Intelligenz erstellt und können Fehler, Ungenauigkeiten oder unvollständige Informationen enthalten. Trotz sorgfältiger Prüfung übernehmen wir keine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der bereitgestellten Informationen.</p>
+            <p class="mb-2">Die Inhalte dienen ausschließlich Informationszwecken und stellen weder eine Anlageberatung noch eine Empfehlung oder Aufforderung zum Kauf oder Verkauf von Finanzinstrumenten dar. Sie ersetzen keine individuelle, fachkundige Beratung.</p>
+            <p class="mb-6">Eine Haftung für Vermögensschäden oder sonstige Schäden, die aus der Nutzung der Inhalte entstehen, ist – soweit gesetzlich zulässig – ausgeschlossen.
+            </p>
+            <button type="button" class="btn btn-sm btn-outline-primary mt-12" data-toggle="modal" data-target="#kiNewsFeedbackModal">
+                Fehler melden / Feedback geben
+            </button>
+        </div>
+
+                <div class="editorial-mobile-aside-slot"></div>
+            </div>
+        </article>
+        <aside class="editorial-article-sidebar" aria-label="Zum Artikel">
+    <div class="editorial-sidebar-inner">
+        <details class="editorial-toc editorial-sidebar-card" open hidden>
+    <summary>In diesem Artikel <span class="editorial-toc-chevron" aria-hidden="true">⌄</span></summary>
+    <nav aria-label="Inhaltsverzeichnis"><ol class="editorial-toc-list"></ol></nav>
+    <div class="editorial-reading-progress"><i class="fa-regular fa-clock" aria-hidden="true"></i> <span data-article-progress>0</span> % gelesen</div>
+</details>
+
+        <div class="editorial-sidebar-extras">
+            
+                <section class="editorial-sidebar-card editorial-top-deal" aria-labelledby="editorial-top-deal-title">
+                <h2 id="editorial-top-deal-title">Aktueller Top-Deal</h2>
+                <div class="newsarticle2-top-deal">
+                        <div class="newsarticle2-top-deal__description"><p>Wir haben aktuell eine Special Aktion mit tradegate.direct</p></div>
+                        <div class="newsarticle2-top-deal__action-text"><p>Hier kommst du zur Aktion:</p></div>
+
+                    <div class="newsarticle2-top-deal__banner">
+                            <div class="newsarticle2-top-deal__icon">
+                                <img src="https://sulu.hosting223568.ae9ab.netcup.net/media/138/download/TDG%20logo.png?v=1" alt="TDG logo" loading="lazy" />
+                            </div>
+                        <div class="newsarticle2-top-deal__content">
+                                <div class="newsarticle2-top-deal__sub"><p>tradegate.direct</p></div>
+                                <div class="newsarticle2-top-deal__title"><p>Für 0 Euro am beliebtesten Handelsplatz für Privatanleger handeln
+</p></div>
+                                <div class="newsarticle2-top-deal__cta"><p><a target="_blank" href="https://www.financeads.net/tc.php?t=65402C5092119264T"><u>Zur Depoteröffnung →</u></a></p ></div>
+                        </div>
+                    </div>
+                </div>
+                </section>
+
+
+                <div class="editorial-sidebar-signup">
+                    <div class="signupbox-banner" data-vue-isolated="true" v-pre>
+    <div class="signupbox-banner__image-wrap">
+        <img src="/img/tradetracker/banner_neu_bei_goldesel_person.png" alt="" class="signupbox-banner__image" onerror="this.onerror=null; this.src='/img/static/pages/home/michael.jpg';" />
+    </div>
+
+    <div class="signupbox-banner__content">
+        <h2 class="signupbox-banner__title">
+            Jetzt <span>kostenlos</span> der Goldesel Community beitreten
+        </h2>
+        <ul class="signupbox-banner__benefits">
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Sichere dir kostenlosen Zugang zu täglichen Börseninfos</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Deutschlands beste Trading-Community - Sei ein Teil von uns</li>
+        </ul>
+        <div class="signupbox-banner__actions">
+            <button type="button"
+                    class="signupbox-banner__btn signupbox-banner__btn--primary"
+                    data-ge-open-register="true"
+                    data-return-url="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+                    data-cta-type="register"
+                    data-cta-position="signup_box_banner">
+                Kostenlos registrieren
+            </button>
+            <button type="button"
+                    class="signupbox-banner__btn signupbox-banner__btn--secondary"
+                    data-ge-open-login="true"
+                    data-return-url="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+                    data-cta-type="login"
+                    data-cta-position="signup_box_banner">
+                Einloggen
+            </button>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <div class="newsarticle2-side-card__ad">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-5839180716874921"
+                         data-ad-slot="1627803241"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+            <div class="newsarticle2-app-banner">
+                <div class="newsarticle2-app-banner__visual"></div>
+                <div class="newsarticle2-app-banner__body">
+                    <div class="newsarticle2-app-banner__logo-wrap">
+                        <img src="/img/favicon/favicon.svg" alt="Goldesel Logo" loading="lazy" class="newsarticle2-app-banner__logo" />
+                    </div>
+                    <div class="newsarticle2-app-banner__title">
+                        Lad dir gratis die <span>Goldesel App</span><br />im Appstore runter
+                    </div>
+                    <div class="newsarticle2-app-banner__stores">
+                        <a href="https://apps.apple.com/de/app/goldesel/id6456453238" target="_blank" rel="noopener noreferrer" data-cta-type="app_download" data-cta-position="sidebar_bottom">
+                            <img src="/img/static/icons/appstore_apple_badge.svg" width="100" height="30" alt="Bei Apple downloaden" loading="lazy" />
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.patchstar.GoldeselApp" target="_blank" rel="noopener noreferrer" data-cta-type="app_download" data-cta-position="sidebar_bottom">
+                            <img src="/img/static/icons/appstore_google_badge.svg" width="100" height="30" alt="Jetzt bei Google Play" loading="lazy" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+            <div class="editorial-recommendations editorial-article-footer">
+            <section class="editorial-footer-related" aria-labelledby="ki-news-related-heading">
+                <h2 id="ki-news-related-heading" class="editorial-footer-heading">Weiterlesen bei Goldesel</h2>
+                <div class="editorial-footer-related-grid">
+                        <a href="/aktien/news/rheinmetall-aktie-csg-gewinnwarnung-belastet-den-rustungssektor-erneut" class="editorial-footer-related-card" data-slug="rheinmetall-aktie-csg-gewinnwarnung-belastet-den-rustungssektor-erneut" data-cta-type="related_article" data-cta-position="related_section">
+                                <img class="editorial-footer-related-image" src="https://goldesel.azureedge.net/stock-imgs/abstraktes-3d-logo-in-blau-rheinmetall-aktie.png" alt="Rheinmetall Aktie: CSG-Gewinnwarnung belastet den R&#xFC;stungssektor erneut" loading="lazy" decoding="async" width="76" height="76" />
+                            <div class="editorial-footer-related-content">
+                                <div class="editorial-footer-related-labels"><span class="editorial-footer-related-category">KI-News</span></div>
+                                <h3 class="editorial-footer-related-title">Rheinmetall Aktie: CSG-Gewinnwarnung belastet den Rüstungssektor erneut</h3>
+                                <time datetime="2026-11-11T09:26:30.0000000&#x2B;00:00">10:26, 11 Nov. 2026</time>
+                            </div>
+                        </a>
+                        <a href="/aktien/news/siemens-energy-aktie-rekordzahlen-und-2027-ausblick-treiben-den-kurs" class="editorial-footer-related-card" data-slug="siemens-energy-aktie-rekordzahlen-und-2027-ausblick-treiben-den-kurs" data-cta-type="related_article" data-cta-position="related_section">
+                                <img class="editorial-footer-related-image" src="https://goldesel.azureedge.net/stock-imgs/siemens-energy-ag-aktie-202610271403.jpg" alt="Siemens Energy Aktie: Rekordzahlen und 2027-Ausblick treiben den Kurs" loading="lazy" decoding="async" width="76" height="76" />
+                            <div class="editorial-footer-related-content">
+                                <div class="editorial-footer-related-labels"><span class="editorial-footer-related-category">KI-News</span></div>
+                                <h3 class="editorial-footer-related-title">Siemens Energy Aktie: Rekordzahlen und 2027-Ausblick treiben den Kurs</h3>
+                                <time datetime="2026-11-11T13:24:22.0000000&#x2B;00:00">14:24, 11 Nov. 2026</time>
+                            </div>
+                        </a>
+                        <a href="/aktien/news/deutsche-rohstoff-aktie-konzern-fordert-60-millionen-euro-von-almonty" class="editorial-footer-related-card" data-slug="deutsche-rohstoff-aktie-konzern-fordert-60-millionen-euro-von-almonty" data-cta-type="related_article" data-cta-position="related_section">
+                                <img class="editorial-footer-related-image" src="https://goldesel.azureedge.net/stock-imgs/moderne-lobby-mit-industrieblick-deutsche-rohstoff-aktie.png" alt="Deutsche Rohstoff Aktie: Konzern fordert 60 Millionen Euro von Almonty" loading="lazy" decoding="async" width="76" height="76" />
+                            <div class="editorial-footer-related-content">
+                                <div class="editorial-footer-related-labels"><span class="editorial-footer-related-category">KI-News</span></div>
+                                <h3 class="editorial-footer-related-title">Deutsche Rohstoff Aktie: Konzern fordert 60 Millionen Euro von Almonty</h3>
+                                <time datetime="2026-11-11T06:33:02.0000000&#x2B;00:00">07:33, 11 Nov. 2026</time>
+                            </div>
+                        </a>
+                </div>
+            </section>
+            <section class="editorial-footer-top-stories" aria-labelledby="ki-news-top-stories-heading">
+                <h2 id="ki-news-top-stories-heading" class="editorial-footer-top-stories-heading">Weitere Top-Storys</h2>
+                <ul class="editorial-footer-top-stories-list">
+                        <li>
+                            <a href="/artikel/ki-blase-midterm-crash" data-cta-type="related_article" data-cta-position="related_section">
+                                <span>KI-Blase: Was der Midterm-Crash für deine Aktien bedeutet</span>
+                                    <span class="editorial-footer-access">Free</span>
+                                <span class="editorial-footer-arrow" aria-hidden="true">→</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/artikel/stocks-on-fire-china-tech-aktien-xpeng-xiaomi-lenovo" data-cta-type="related_article" data-cta-position="related_section">
+                                <span>Stocks on Fire: Xpeng, Xiaomi & Lenovo – China-Tech vor den Zahlen</span>
+                                    <span class="editorial-footer-access">Free</span>
+                                <span class="editorial-footer-arrow" aria-hidden="true">→</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/artikel/halbleiter-aktien-crash-chancen" data-cta-type="related_article" data-cta-position="related_section">
+                                <span>Chip-Aktien nach dem Crash: Wo sich jetzt Chancen bieten</span>
+                                    <span class="editorial-footer-access">Free</span>
+                                <span class="editorial-footer-arrow" aria-hidden="true">→</span>
+                            </a>
+                        </li>
+                </ul>
+            </section>
+    </div>
+
+    </div>
+
+    <div class="modal fade" id="kiNewsFeedbackModal" tabindex="-1" role="dialog" aria-labelledby="kiNewsFeedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="kiNewsFeedbackModalLabel">Feedback zur KI-News senden</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="kiNewsFeedbackForm" autocomplete="on">
+                        <div class="d-none" aria-hidden="true">
+                            <label for="kiNewsFeedbackWebsite">Website</label>
+                            <input type="text" id="kiNewsFeedbackWebsite" name="website" tabindex="-1" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label>Artikel</label>
+                            <p class="form-control-plaintext mb-0">
+                                <a href="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro" target="_blank" rel="noopener noreferrer">FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro</a>
+                                    <span class="text-muted d-block small mt-1">Friedrich Vorwerk Group SE</span>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="kiNewsFeedbackEmail">Deine E-Mail-Adresse</label>
+                            <input type="email" class="form-control" id="kiNewsFeedbackEmail" maxlength="254" required autocomplete="email" value="" placeholder="name@example.com" />
+                            <small class="form-text text-muted">Pflichtfeld, damit wir dir auf dein Feedback antworten koennen.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="kiNewsFeedbackText">Dein Hinweis</label>
+                            <textarea class="form-control" id="kiNewsFeedbackText" rows="5" maxlength="5000" required placeholder="Bitte beschreibe den Fehler oder dein Feedback moeglichst konkret."></textarea>
+                        </div>
+                        <div class="form-group mb-0">
+                            <div class="g-recaptcha" data-sitekey="6LeNadsbAAAAAKdRITjtPN8rKh5LpHcez7GtSXlb"></div>
+                            <div id="kiNewsFeedbackRecaptchaError" class="text-danger font-weight-bold mt-2" style="display: none;">Bitte bestätige, dass du kein Roboter bist.</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="button" class="btn btn-primary" id="submitKiNewsFeedback">Absenden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var submitBtn = document.getElementById('submitKiNewsFeedback');
+            if (!submitBtn) return;
+
+            var emailPrefill = "";
+            var form = document.getElementById('kiNewsFeedbackForm');
+            var recaptchaError = document.getElementById('kiNewsFeedbackRecaptchaError');
+
+            function getFeedbackRecaptchaWidgetId() {
+                if (!form) return null;
+                var widgets = document.querySelectorAll('.g-recaptcha');
+                for (var i = 0; i < widgets.length; i++) {
+                    if (form.contains(widgets[i])) return i;
+                }
+                return null;
+            }
+
+            function getRecaptchaToken() {
+                if (!form) return '';
+                var field = form.querySelector('textarea[name="g-recaptcha-response"]');
+                if (field && field.value) return field.value;
+                if (typeof window.grecaptcha !== 'undefined' && typeof window.grecaptcha.getResponse === 'function') {
+                    try {
+                        var widgetId = getFeedbackRecaptchaWidgetId();
+                        return (widgetId !== null ? window.grecaptcha.getResponse(widgetId) : window.grecaptcha.getResponse()) || '';
+                    } catch (e) { return ''; }
+                }
+                return '';
+            }
+
+            function resetRecaptcha() {
+                if (typeof window.grecaptcha !== 'undefined' && typeof window.grecaptcha.reset === 'function') {
+                    try {
+                        var widgetId = getFeedbackRecaptchaWidgetId();
+                        if (widgetId !== null) window.grecaptcha.reset(widgetId);
+                        else window.grecaptcha.reset();
+                    } catch (e) { /* ignore */ }
+                }
+            }
+
+            submitBtn.addEventListener('click', function () {
+                var feedbackEmail = document.getElementById('kiNewsFeedbackEmail');
+                var feedbackText = document.getElementById('kiNewsFeedbackText');
+                var honeypot = document.getElementById('kiNewsFeedbackWebsite');
+                var email = (feedbackEmail && feedbackEmail.value ? feedbackEmail.value : '').trim();
+                if (!email) {
+                    if (window.toastr) toastr.error('Bitte gib deine E-Mail-Adresse ein.');
+                    feedbackEmail && feedbackEmail.focus();
+                    return;
+                }
+
+                var text = (feedbackText && feedbackText.value ? feedbackText.value : '').trim();
+                if (!text) {
+                    if (window.toastr) toastr.error('Bitte gib dein Feedback ein.');
+                    feedbackText && feedbackText.focus();
+                    return;
+                }
+
+                var captchaToken = getRecaptchaToken();
+                if (!captchaToken) {
+                    if (recaptchaError) recaptchaError.style.display = 'block';
+                    if (window.toastr) toastr.error('Bitte bestätige, dass du kein Roboter bist.');
+                    return;
+                }
+                if (recaptchaError) recaptchaError.style.display = 'none';
+
+                submitBtn.disabled = true;
+
+                var payload = {
+                    stock: "Friedrich Vorwerk Group SE \u2014 FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro",
+                    text: text,
+                    contactEmail: email,
+                    userId: 0,
+                    isin: 'DE000A255F11',
+                    instrumentId: '194052110',
+                    articleUrl: "/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro",
+                    googleReCaptchaResponse: captchaToken,
+                    website: honeypot && honeypot.value ? honeypot.value : ''
+                };
+
+                fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                    .then(function (response) {
+                        if (response.status === 429) {
+                            throw new Error('Zu viele Anfragen. Bitte warte ein paar Minuten und versuche es erneut.');
+                        }
+                        if (!response.ok) {
+                            return response.text().then(function (msg) {
+                                throw new Error(msg || ('HTTP ' + response.status));
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(function () {
+                        if (window.toastr) toastr.success('Vielen Dank fuer dein Feedback!');
+                        if (window.jQuery && window.jQuery('#kiNewsFeedbackModal').modal) {
+                            window.jQuery('#kiNewsFeedbackModal').modal('hide');
+                        }
+                        if (feedbackText) feedbackText.value = '';
+                        if (feedbackEmail) feedbackEmail.value = emailPrefill;
+                        if (honeypot) honeypot.value = '';
+                        resetRecaptcha();
+                    })
+                    .catch(function (err) {
+                        resetRecaptcha();
+                        if (window.toastr) toastr.error('Es ist ein Fehler aufgetreten. ' + (err && err.message ? err.message : ''));
+                        else alert('Feedback konnte nicht gesendet werden.');
+                    })
+                    .finally(function () {
+                        submitBtn.disabled = false;
+                    });
+            });
+        })();
+    </script>
+
+    
+        <div class="newsarticle2-guest-banner">
+            <div class="newsarticle2-guest-banner__visual">
+                <img src="/img/static/pages/blog/newsarticle/guest-banner-michael-esel.png" alt="Goldesel Community" loading="lazy" />
+            </div>
+            <div class="newsarticle2-guest-banner__content">
+                <h3>Jetzt <span>kostenlos</span> der Goldesel Community beitreten</h3>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Sichere dir kostenlosen Zugang zu täglichen Börseninfos</li>
+                    <li><i class="fa-solid fa-check"></i> Deutschlands beste Trading-Community - Sei ein Teil von uns</li>
+                </ul>
+                <div class="newsarticle2-guest-banner__actions">
+                    <button type="button"
+        class="btn btn-info waves-effect waves-themed"
+        data-ge-open-register="true"
+        data-return-url="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+        data-cta-type="register"
+        data-cta-position="inline">
+    Kostenlos registrieren
+</button>
+<button type="button"
+        class="btn btn-outline-info waves-effect waves-themed"
+        data-ge-open-login="true"
+        data-return-url="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+        data-cta-type="login"
+        data-cta-position="inline">
+    Einloggen
+</button>
+
+                </div>
+            </div>
+        </div>
+
+</div>
+
+    
+<div id="ki-news-signup-gate-config"
+     data-content-id="frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+     data-return-url="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+     hidden></div>
+
+<div id="ki-news-signup-gate"
+     class="ki-news-signup-gate"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="ki-news-signup-gate-title"
+     aria-hidden="true"
+     hidden>
+    <div class="ki-news-signup-gate__backdrop" data-ki-news-signup-gate-dismiss tabindex="-1"></div>
+    <div class="ki-news-signup-gate__panel">
+        <button type="button"
+                class="ki-news-signup-gate__close"
+                data-ki-news-signup-gate-dismiss
+                aria-label="Schließen">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+
+        <p class="ki-news-signup-gate__tagline">WERDE AUCH DU EIN GOLDESEL</p>
+        <h2 id="ki-news-signup-gate-title" class="ki-news-signup-gate__title">Weiterlesen mit kostenlosem Account</h2>
+
+        <ul class="ki-news-signup-gate__benefits">
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Mehr kostenlose Artikel lesen</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Eigene Watchlist erstellen</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> News zu deinen Aktien verfolgen</li>
+        </ul>
+
+        <button type="button"
+                class="ki-news-signup-gate__btn ki-news-signup-gate__btn--primary"
+                data-ki-news-signup-gate-register
+                data-cta-type="register"
+                data-cta-position="ki_news_signup_gate">
+            Kostenlos registrieren
+        </button>
+
+        <div class="ki-news-signup-gate__divider" aria-hidden="true">
+            <span>ODER</span>
+        </div>
+
+        <button type="button"
+                class="ki-news-signup-gate__btn ki-news-signup-gate__btn--secondary"
+                data-ki-news-signup-gate-login
+                data-return-url="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+                data-cta-type="login"
+                data-cta-position="ki_news_signup_gate">
+            Jetzt einloggen
+        </button>
+
+        <div class="ki-news-signup-gate__oauth">
+            <form action="/Identity/Account/ExternalLogin" method="post" class="ki-news-signup-gate__oauth-form" data-goldesel-signup-oauth="true">
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Cv5BtAWW1lDrTjegl9viQ2d0lz1tDDL98eVuE7Cn4kQlX9H67xoEehuUKE7lCt4terPNkPGU7-dZczh8uXDmqkg1YyB3AKssC2ZzCxC-PYM7TPtbbVWHs1vnvwgsNpIGxPmoaEdIOUW68dSxtxxsPg" />
+                <input type="hidden" name="returnUrl" value="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro" />
+                <button type="submit"
+                        class="ki-news-signup-gate__btn ki-news-signup-gate__btn--oauth"
+                        name="provider"
+                        value="Apple"
+                        title="Apple Account nutzen"
+                        data-cta-type="register"
+                        data-cta-position="ki_news_signup_gate_oauth">
+                    <i class="fab fa-apple" aria-hidden="true"></i>
+                    <span>Apple Login</span>
+                </button>
+            </form>
+            <form action="/Identity/Account/ExternalLogin" method="post" class="ki-news-signup-gate__oauth-form" data-goldesel-signup-oauth="true">
+                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Cv5BtAWW1lDrTjegl9viQ2d0lz1tDDL98eVuE7Cn4kQlX9H67xoEehuUKE7lCt4terPNkPGU7-dZczh8uXDmqkg1YyB3AKssC2ZzCxC-PYM7TPtbbVWHs1vnvwgsNpIGxPmoaEdIOUW68dSxtxxsPg" />
+                <input type="hidden" name="returnUrl" value="/aktien/news/frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro" />
+                <button type="submit"
+                        class="ki-news-signup-gate__btn ki-news-signup-gate__btn--oauth"
+                        name="provider"
+                        value="Google"
+                        title="Google Account nutzen"
+                        data-cta-type="register"
+                        data-cta-position="ki_news_signup_gate_oauth">
+                    <img src="/img/static/icons/google.svg" alt="" width="18" height="18" />
+                    <span>Google Login</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="ki-news-tracking-context"
+     data-content-type="ai_news"
+     data-content-id="frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro"
+     data-page-type="article"
+     data-user-state="anonymous"
+     data-platform="web"></div>
+
+    <script src="/custom/pages/stocks/ki-news-signup-gate.js?v=GD-3zcmHQ621LMN9VZA-LHjXtfN0Jj_F8uu6zshnhcA"></script>
+<script src="/custom/pages/stocks/eu-ai-label-overlay.js?v=GjuCD10A0sC9H0EStVruCxTXF1yOB-emJ5MH057f8nA"></script>
+<script src="/custom/pages/stocks/ki-news-tracking.js?v=ycHM3-pjbhMEO9YTSavMFwY215hAI2RMdyszl6v9ab8"></script>
+<script src="/custom/pages/article/editorial-article.js?v=Tgh0qsuY-Oaw3Dntq-NSMptENbT3XXwBXxHrsC1lSqY"></script>
+<script src="/custom/pages/article/article-tts.js?v=eHUpVoQ1CdsGvnd-V11jWsJ7ndZxwCDQWaDOPMcaEEU"></script>
+<script>
+(function () {
+    if (window.__gePreferredSourceInit) return;
+    window.__gePreferredSourceInit = true;
+
+    function bindButtons(preferredSource) {
+        document.querySelectorAll('a.ge-google-preferred').forEach(function (el) {
+            if (el.dataset.gePreferredBound === '1') return;
+            el.dataset.gePreferredBound = '1';
+            el.addEventListener('click', function (ev) {
+                try {
+                    if (preferredSource && typeof preferredSource.addPreferredSource === 'function') {
+                        ev.preventDefault();
+                        preferredSource.addPreferredSource();
+                    }
+                } catch (e) {
+                    /* keep deeplink navigation */
+                }
+            });
+        });
+    }
+
+    (self.PREFERRED_SOURCE = self.PREFERRED_SOURCE || []).push(function (preferredSource) {
+        preferredSource.init({ theme: 'light', lang: 'de' });
+        bindButtons(preferredSource);
+    });
+
+    if (!document.querySelector('script[data-ge-preferred-source-sdk]')) {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://news.google.com/swg/js/v1/publisher.js';
+        s.setAttribute('preferred-sources-control', 'manual');
+        s.setAttribute('data-ge-preferred-source-sdk', '1');
+        document.head.appendChild(s);
+    }
+})();
+</script>
+
+
+
+
+				</main>
+				<div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
+				<footer class="page-footer" role="contentinfo">
+    <div class="hidden-md-down d-flex align-items-center flex-1 text-muted">
+        <span class=" fw-400">2026 &copy; Goldesel.de</span>
+    </div>
+    <a href="https://terminal.stock3.com/#c/so_funktionierts" target="_blank" class="font-size-14 fw-400">Terminal stock3</a>
+    <a href="/app" class="font-size-14 fw-400">App</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd9xADYptZFgnNUFrzRDU5w7zFPMwbrRPe3VP2pknhpT6KGRQ/viewform?usp=sf_link" target="_blank" class="font-size-14 fw-400">Inhalt melden</a>
+    <a href="/agb" class="font-size-14 fw-400">AGB</a>
+    <a href="/datenschutz" class="font-size-14 fw-400">Datenschutz</a>
+    <a href="javascript:void(0)" data-action="cookie-settings" class="font-size-14 fw-400 cookie-settings-link" id="cookie-settings-link" role="button" onclick="return window.goldeselOpenCookieSettings &amp;&amp; window.goldeselOpenCookieSettings(event);" ontouchend="return window.goldeselOpenCookieSettings &amp;&amp; window.goldeselOpenCookieSettings(event);">Cookie-Einstellungen</a>
+    <a href="/impressum" class="font-size-14 fw-400">Impressum</a>
+	<a href="/einstellungen#abos" class="font-size-14 fw-400">Vertrag kündigen</a>
+    <a class="font-size-14 fw-400" href="/hilfe"><i class="fal fa-question-circle" aria-hidden="true"></i> Hilfe</a>
+
+</footer>
+				
+				<p id="js-color-profile" class="d-none">
+	<span class="color-primary-50"></span>
+	<span class="color-primary-100"></span>
+	<span class="color-primary-200"></span>
+	<span class="color-primary-300"></span>
+	<span class="color-primary-400"></span>
+	<span class="color-primary-500"></span>
+	<span class="color-primary-600"></span>
+	<span class="color-primary-700"></span>
+	<span class="color-primary-800"></span>
+	<span class="color-primary-900"></span>
+	<span class="color-info-50"></span>
+	<span class="color-info-100"></span>
+	<span class="color-info-200"></span>
+	<span class="color-info-300"></span>
+	<span class="color-info-400"></span>
+	<span class="color-info-500"></span>
+	<span class="color-info-600"></span>
+	<span class="color-info-700"></span>
+	<span class="color-info-800"></span>
+	<span class="color-info-900"></span>
+	<span class="color-danger-50"></span>
+	<span class="color-danger-100"></span>
+	<span class="color-danger-200"></span>
+	<span class="color-danger-300"></span>
+	<span class="color-danger-400"></span>
+	<span class="color-danger-500"></span>
+	<span class="color-danger-600"></span>
+	<span class="color-danger-700"></span>
+	<span class="color-danger-800"></span>
+	<span class="color-danger-900"></span>
+	<span class="color-warning-50"></span>
+	<span class="color-warning-100"></span>
+	<span class="color-warning-200"></span>
+	<span class="color-warning-300"></span>
+	<span class="color-warning-400"></span>
+	<span class="color-warning-500"></span>
+	<span class="color-warning-600"></span>
+	<span class="color-warning-700"></span>
+	<span class="color-warning-800"></span>
+	<span class="color-warning-900"></span>	
+	<span class="color-success-50"></span>
+	<span class="color-success-100"></span>
+	<span class="color-success-200"></span>
+	<span class="color-success-300"></span>
+	<span class="color-success-400"></span>
+	<span class="color-success-500"></span>
+	<span class="color-success-600"></span>
+	<span class="color-success-700"></span>
+	<span class="color-success-800"></span>
+	<span class="color-success-900"></span>
+	<span class="color-fusion-50"></span>
+	<span class="color-fusion-100"></span>
+	<span class="color-fusion-200"></span>
+	<span class="color-fusion-300"></span>
+	<span class="color-fusion-400"></span>
+	<span class="color-fusion-500"></span>
+	<span class="color-fusion-600"></span>
+	<span class="color-fusion-700"></span>
+	<span class="color-fusion-800"></span>
+	<span class="color-fusion-900"></span>	
+</p>
+
+			</div>
+		</div>
+	</div>
+
+<div class="modal fade ge-auth-modal" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="ge-auth-modal__header">
+                <button type="button" class="ge-auth-modal__back" id="registerWizardBack" aria-label="Zurück">
+                    <i class="fal fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <p class="ge-auth-modal__label" id="registerModalTitle">REGISTRIEREN</p>
+                <button type="button" class="ge-auth-modal__close" data-dismiss="modal" aria-label="Schließen">
+                    <i class="fal fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body ge-auth-modal__body">
+                <form id="registerExternalLogin" action="/Identity/Account/ExternalLogin" method="post" class="d-none" data-goldesel-signup-oauth="true" aria-hidden="true">
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Cv5BtAWW1lDrTjegl9viQ2d0lz1tDDL98eVuE7Cn4kQlX9H67xoEehuUKE7lCt4terPNkPGU7-dZczh8uXDmqkg1YyB3AKssC2ZzCxC-PYM7TPtbbVWHs1vnvwgsNpIGxPmoaEdIOUW68dSxtxxsPg" />
+                    <input type="hidden" id="returnUrlMethodSso" name="returnUrl" value="/" />
+                </form>
+
+                <form id="js-register" action="/Identity/Account/Register" method="post" novalidate>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Cv5BtAWW1lDrTjegl9viQ2d0lz1tDDL98eVuE7Cn4kQlX9H67xoEehuUKE7lCt4terPNkPGU7-dZczh8uXDmqkg1YyB3AKssC2ZzCxC-PYM7TPtbbVWHs1vnvwgsNpIGxPmoaEdIOUW68dSxtxxsPg" />
+                    <input type="hidden" name="returnUrl" value="/" />
+                    <input type="hidden" name="fromModal" value="true" />
+                    <input type="hidden" id="registerWizardStepField" name="wizardStep" value="1" />
+
+                    <div id="server-registration-error" class="ge-auth-register-errors" role="alert" hidden></div>
+
+                    <div class="ge-auth-step is-active" data-register-step="1">
+                        <h2 class="ge-auth-hero-title">
+                            Werde ein<br />
+                            <span class="ge-auth-hero-title__accent">besserer Trader.</span>
+                        </h2>
+                        <p class="ge-auth-hero-subtitle">
+                            Deutschlands beste Börsencommunity – Hole mehr aus deinen Investments raus! Für Anfänger &amp; Fortgeschrittene.
+                        </p>
+                        <div id="RegisterButtons" class="ge-auth-oauth-row">
+                            <button type="submit" form="registerExternalLogin" class="btn ge-auth-method-btn" name="provider" value="Apple" title="Apple Account nutzen" data-cta-type="register" data-cta-position="register_modal_oauth">
+                                <i class="fab fa-apple ge-auth-oauth-icon mr-2" aria-hidden="true"></i> Mit Apple anmelden
+                            </button>
+                            <button type="submit" form="registerExternalLogin" class="btn ge-auth-method-btn" name="provider" value="Google" title="Google Account nutzen" data-cta-type="register" data-cta-position="register_modal_oauth">
+                                <img src="/img/static/icons/google.svg" class="ge-auth-oauth-icon mr-2" alt="" />
+                                Mit Google anmelden
+                            </button>
+                            <button type="button" class="btn ge-auth-method-btn" id="registerWizardEmailMethod" data-cta-type="register" data-cta-position="register_modal_email_method">
+                                Mit E-Mail registrieren
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ge-auth-step" data-register-step="2">
+                        <h2 class="ge-auth-modal__title">Wie lautet deine E-Mail-Adresse?</h2>
+                        <div class="form-group ge-auth-field-group">
+                            <div class="input-icon-container">
+                                <img src="/img/static/icons/auth/icon-mail.png" class="ge-auth-input-icon" alt="" aria-hidden="true" />
+                                <input type="email" class="form-control with-icon" placeholder="E-Mail-Adresse" id="emailInput" autocomplete="email" data-val="true" data-val-email="Ung&#xFC;ltige E-Mail Adresse" data-val-required="Keine E-Mail Adresse angegeben" name="Input.Email" value="" />
+                            </div>
+                            <span class="invalid-feedback field-validation-valid" id="emailError" data-valmsg-for="Input.Email" data-valmsg-replace="true"></span>
+                            <div class="help-block" id="emailHelpBlock"></div>
+                        </div>
+                    </div>
+
+                    <div class="ge-auth-step" data-register-step="3">
+                        <h2 class="ge-auth-modal__title">Wie heißt du?</h2>
+                        <div class="form-group ge-auth-field-group">
+                            <div class="input-icon-container">
+                                <img src="/img/static/icons/auth/icon-profile.png" class="ge-auth-input-icon" alt="" aria-hidden="true" />
+                                <input type="text" class="form-control with-icon" placeholder="Vorname" id="firstNameInput" autocomplete="given-name" data-val="true" data-val-maxlength="Der Vorname darf max. 100 Zeichen haben" data-val-maxlength-max="100" maxlength="100" name="Input.FirstName" value="" />
+                            </div>
+                        </div>
+                        <div class="form-group ge-auth-field-group">
+                            <div class="input-icon-container">
+                                <img src="/img/static/icons/auth/icon-profile.png" class="ge-auth-input-icon" alt="" aria-hidden="true" />
+                                <input type="text" class="form-control with-icon" placeholder="Benutzername" maxlength="24" id="usernameInput" autocomplete="username" data-val="true" data-val-maxlength="Dein Benutzername darf max. 24 Zeichen haben" data-val-maxlength-max="24" data-val-minlength="Dein Benutzername muss mindestens 2 Zeichen haben" data-val-minlength-min="2" data-val-regex="Benutzername: Es sind nur Buchstaben, Zahlen und _ erlaubt" data-val-regex-pattern="([a-zA-Z0-9_&#xE4;&#xC4;&#xF6;&#xD6;&#xFC;&#xDC;&#xDF;&#xE1;&#xC1;&#xE0;&#xC0;_-]&#x2B;)" name="Input.Username" value="" />
+                            </div>
+                            <span class="invalid-feedback field-validation-valid" id="usernameError" data-valmsg-for="Input.Username" data-valmsg-replace="true"></span>
+                            <div class="help-block" id="usernameHelpBlock"></div>
+                        </div>
+                        <div class="form-group ge-auth-checkbox-group">
+                            <label class="ge-auth-checkbox" for="agreeTermsInput">
+                                <input type="checkbox" class="ge-auth-checkbox__input" id="agreeTermsInput" data-val="true" data-val-required="The I agree to terms &amp; conditions field is required." name="Input.AgreeToTerms" value="true" />
+                                <span class="ge-auth-checkbox__indicator" aria-hidden="true">
+                                    <svg class="ge-auth-checkbox__check" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.5 6L5 8.5L9.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                                <span class="ge-auth-checkbox__text">Ich akzeptiere die&nbsp;<a href="/agb" target="_blank" rel="noopener">AGBs</a></span>
+                            </label>
+                            <label class="ge-auth-checkbox" for="newsletterInput">
+                                <input type="checkbox" class="ge-auth-checkbox__input" id="newsletterInput" checked="checked" data-val="true" data-val-required="The Sign up for newsletters field is required." name="Input.NewsletterSignup" value="true" />
+                                <span class="ge-auth-checkbox__indicator" aria-hidden="true">
+                                    <svg class="ge-auth-checkbox__check" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.5 6L5 8.5L9.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                                <span class="ge-auth-checkbox__text">Newsletter abonnieren</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="ge-auth-step ge-auth-step--password" data-register-step="4">
+                        <h2 class="ge-auth-modal__title">Passwort erstellen</h2>
+                        <p class="ge-auth-modal__hint">Dein Passwort muss mindestens 6 Zeichen lang sein und eine Zahl enthalten.</p>
+                        <div class="form-group ge-auth-field-group">
+                            <div class="input-icon-container">
+                                <img src="/img/static/icons/auth/icon-lock.png" class="ge-auth-input-icon" alt="" aria-hidden="true" />
+                                <input type="password" class="form-control with-icon" placeholder="Passwort" maxlength="100" autocomplete="new-password" id="passwordInput" data-val="true" data-val-length="Das Passwort muss aus mindestens 6 Zeichen bestehen" data-val-length-max="100" data-val-length-min="6" data-val-required="The Password field is required." name="Input.Password" />
+                                <i class="fa-solid fa-eye-slash toggle-password" aria-hidden="true"></i>
+                            </div>
+                            <span class="invalid-feedback field-validation-valid" id="passwordError" data-valmsg-for="Input.Password" data-valmsg-replace="true"></span>
+                            <div class="help-block" id="passwordHelpBlock"></div>
+                        </div>
+                        <div class="form-group ge-auth-field-group">
+                            <div class="input-icon-container">
+                                <img src="/img/static/icons/auth/icon-lock.png" class="ge-auth-input-icon" alt="" aria-hidden="true" />
+                                <input type="password" class="form-control with-icon" placeholder="Passwort wiederholen" maxlength="100" autocomplete="new-password" id="confirmPasswordInput" data-val="true" data-val-equalto="Das Passwort und die Passwortbest&#xE4;tigung stimmen nicht &#xFC;berein" data-val-equalto-other="*.Password" name="Input.ConfirmPassword" />
+                                <i class="fa-solid fa-eye-slash toggle-confirm-password" aria-hidden="true"></i>
+                            </div>
+                            <div class="help-block" id="confirmPasswordHelpBlock"></div>
+                        </div>
+                        <div class="ge-auth-recaptcha-group">
+                            <div class="g-recaptcha" data-sitekey="6LeNadsbAAAAAKdRITjtPN8rKh5LpHcez7GtSXlb" data-callback="goldeselRegisterRecaptchaCallback" data-expired-callback="goldeselRegisterRecaptchaExpiredCallback"></div>
+                            <div id="g-recaptcha-clientside-resp" class="ge-auth-recaptcha-error" style="display: none;">Bitte bestätige, dass du kein Roboter bist.</div>
+                        </div>
+                        <input id="InputRecaptcha" type="hidden" name="Input.GoogleReCaptchaResponse" value="" />
+                    </div>
+
+                    <button type="button" id="registerWizardNext" class="ge-auth-cta d-none">Weiter</button>
+                    <button type="submit" id="js-register-btn" class="ge-auth-cta d-none" data-cta-type="register" data-cta-position="register_modal" disabled>Account erstellen</button>
+                <input name="Input.AgreeToTerms" type="hidden" value="false" /><input name="Input.NewsletterSignup" type="hidden" value="false" /></form>
+
+                <p class="ge-auth-footer-link ge-auth-footer-link--step1 is-visible" id="registerModalFooterLogin">
+                    Du hast schon einen Account?<br />
+                    <a href="#" id="registerModalOpenLogin">Jetzt einloggen</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade ge-auth-modal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="ge-auth-modal__header">
+                <span aria-hidden="true" style="width:40px"></span>
+                <p class="ge-auth-modal__label" id="loginModalTitle">LOGIN</p>
+                <button type="button" class="ge-auth-modal__close" data-dismiss="modal" aria-label="Schließen">
+                    <i class="fal fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body ge-auth-modal__body">
+                <h2 class="ge-auth-modal__title">Hi Trader! Willkommen zurück.</h2>
+
+                <form id="LoginButtons" action="/Identity/Account/ExternalLogin" method="post" class="ge-auth-oauth-row ge-auth-oauth-row--login" data-goldesel-signup-oauth="true">
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Cv5BtAWW1lDrTjegl9viQ2d0lz1tDDL98eVuE7Cn4kQlX9H67xoEehuUKE7lCt4terPNkPGU7-dZczh8uXDmqkg1YyB3AKssC2ZzCxC-PYM7TPtbbVWHs1vnvwgsNpIGxPmoaEdIOUW68dSxtxxsPg" />
+                    <input type="hidden" name="returnUrl" value="/" />
+                    <button type="submit" class="btn ge-auth-method-btn" name="provider" value="Google" title="Google Login">
+                        <img src="/img/static/icons/google.svg" class="ge-auth-oauth-icon mr-2" alt="" />
+                        Google Login
+                    </button>
+                    <button type="submit" class="btn ge-auth-method-btn" name="provider" value="Apple" title="Apple Login">
+                        <i class="fab fa-apple ge-auth-oauth-icon mr-2" aria-hidden="true"></i> Apple Login
+                    </button>
+                </form>
+
+                <form id="js-login-modal" class="ge-auth-login-form" method="post" action="/Identity/Account/Login" novalidate>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Cv5BtAWW1lDrTjegl9viQ2d0lz1tDDL98eVuE7Cn4kQlX9H67xoEehuUKE7lCt4terPNkPGU7-dZczh8uXDmqkg1YyB3AKssC2ZzCxC-PYM7TPtbbVWHs1vnvwgsNpIGxPmoaEdIOUW68dSxtxxsPg" />
+                    <input type="hidden" name="fromModal" value="true" />
+                    <input type="hidden" name="Input.RememberMe" value="true" />
+                    <input type="hidden" name="returnUrl" value="/" />
+
+                    <div id="server-login-error" class="ge-auth-register-errors" role="alert" hidden></div>
+
+                    <div class="form-group ge-auth-field-group mb-0">
+                        <div class="input-icon-container">
+                            <img src="/img/static/icons/auth/icon-mail.png" class="ge-auth-input-icon" alt="" aria-hidden="true" />
+                            <input type="text" name="Input.Username" class="form-control with-icon" placeholder="E-Mail-Adresse" required autocomplete="username" />
+                        </div>
+                    </div>
+                    <div class="form-group ge-auth-field-group mb-0">
+                        <div class="input-icon-container">
+                            <img src="/img/static/icons/auth/icon-lock.png" class="ge-auth-input-icon" alt="" aria-hidden="true" />
+                            <input type="password" name="Input.Password" class="form-control with-icon ge-auth-password-input" placeholder="Passwort" required autocomplete="current-password" id="loginModalPassword" />
+                        </div>
+                    </div>
+
+                    <p class="ge-auth-forgot-link">
+                        <a href="#" id="loginModalOpenForgot">Passwort vergessen?</a>
+                    </p>
+
+                    <button type="submit" id="js-login-modal-btn" class="ge-auth-cta ge-auth-cta--login">Einloggen</button>
+
+                    <p class="ge-auth-footer-link ge-auth-footer-link--login is-visible">
+                        Du bist neu hier?<br />
+                        <a href="#" id="loginModalOpenRegister">Jetzt registrieren</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade ge-auth-modal" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="ge-auth-modal__header">
+                <button type="button" class="ge-auth-modal__back" id="forgotPasswordBack" aria-label="Zurück">
+                    <i class="fal fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <p class="ge-auth-modal__label" id="forgotPasswordModalTitle">PASSWORT</p>
+                <button type="button" class="ge-auth-modal__close" data-dismiss="modal" aria-label="Schließen">
+                    <i class="fal fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body ge-auth-modal__body">
+                <div class="ge-auth-forgot-step is-active" data-forgot-step="form">
+                    <h2 class="ge-auth-modal__title">Passwort vergessen?</h2>
+                    <p class="ge-auth-modal__hint ge-auth-forgot-intro">
+                        Kein Problem! Gib' unten deine E-Mail-Adresse an um dein Passwort zurückzusetzen
+                    </p>
+
+                    <form id="js-forgot-password-modal" class="ge-auth-forgot-form" method="post" action="/Identity/Account/ForgotPassword" novalidate>
+                        <input type="hidden" name="fromModal" value="true" />
+
+                        <div id="server-forgot-password-error" class="ge-auth-register-errors" role="alert" hidden></div>
+
+                        <div class="form-group ge-auth-field-group mb-0">
+                            <label class="ge-auth-field-label" for="forgotPasswordEmailInput">Deine E-Mail-Adresse</label>
+                            <div class="input-icon-container">
+                                <img src="/img/static/icons/auth/icon-mail.png" class="ge-auth-input-icon" alt="" aria-hidden="true" />
+                                <input type="email" name="Input.Email" class="form-control with-icon" placeholder="E-Mail Adresse" required autocomplete="email" id="forgotPasswordEmailInput" />
+                            </div>
+                            <p class="ge-auth-field-help">Du bekommst eine E-Mail mit einem Link zugeschickt um dein Passwort zurückzusetzen</p>
+                        </div>
+
+                        <div class="ge-auth-recaptcha-group mt-3">
+                            <div class="g-recaptcha" id="forgotPasswordRecaptcha" data-sitekey="6LeNadsbAAAAAKdRITjtPN8rKh5LpHcez7GtSXlb"></div>
+                            <div id="forgot-password-recaptcha-error" class="ge-auth-recaptcha-error" style="display: none;">Bitte bestätige, dass du kein Roboter bist.</div>
+                        </div>
+
+                        <div class="ge-auth-forgot-actions">
+                            <div class="ge-auth-forgot-help">
+                                <a href="javascript:void($('#helptext').fadeIn())"><i class="fal fa-question-circle"></i> Hilfe</a>
+<div id="helptext" class="dp-none mt-2">
+    Hast du Probleme mit deinem Account?<br/>
+    Bitte schreibe uns eine E-Mail an <b><a href="mailto:support@goldesel.de">support@goldesel.de</a></b> damit wir dir helfen können.
+</div>
+                            </div>
+                            <button type="submit" id="js-forgot-password-btn" class="ge-auth-cta ge-auth-cta--forgot">Absenden</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="ge-auth-forgot-step" data-forgot-step="success" hidden>
+                    <h2 class="ge-auth-modal__title ge-auth-forgot-success__title">
+                        <i class="fal fa-shield-check ge-auth-forgot-success__icon" aria-hidden="true"></i>
+                        E-Mail verschickt
+                    </h2>
+                    <p class="ge-auth-modal__hint ge-auth-forgot-success__text">
+                        In Kürze bekommst du eine E-Mail an die Adresse
+                        <span class="ge-auth-forgot-success__email" id="forgotPasswordSuccessEmail"></span>
+                        mit einem Link um dein Passwort zurückzusetzen.<br />
+                        Bitte überprüfe auch deinen Spam-Ordner!
+                    </p>
+
+                    <p class="ge-auth-forgot-success__dev-link" id="forgotPasswordDevLinkWrap" hidden>
+                        Da der E-Mailversender nicht aktiviert ist, hier der <strong>Link</strong>, der per Mail verschickt wird:
+                        <a href="#" id="forgotPasswordDevLink" target="_blank" rel="noopener"></a>
+                    </p>
+
+                    <div class="ge-auth-forgot-success__help">
+                        <a href="javascript:void($('#helptext').fadeIn())"><i class="fal fa-question-circle"></i> Hilfe</a>
+<div id="helptext" class="dp-none mt-2">
+    Hast du Probleme mit deinem Account?<br/>
+    Bitte schreibe uns eine E-Mail an <b><a href="mailto:support@goldesel.de">support@goldesel.de</a></b> damit wir dir helfen können.
+</div>
+                    </div>
+
+                    <button type="button" class="ge-auth-cta ge-auth-cta--forgot" id="forgotPasswordSuccessBack">Zurück zum Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+	
+
+
+	    <script src="/js/vendors.bundle.js?v=A9IOq_ZFHgnSs2sP6v3ilDPG3KurSBGEfdWNqPnz7d0"></script>
+    <script src="/js/app.bundle.js"></script>
+    <script>
+        // this call is required to remap WebSocket as this is overridden by Pace.js plugin ! :-(
+        Object.defineProperty(WebSocket, 'OPEN', { value: 1 });
+    </script>
+    <script src="/js/site.js?v=8o8-ZslB-Cfvs2G6ayLOirZl05zAHj2Icn5_A_0L0gE"></script>
+
+	    <script src="/js/notifications/toastr/toastr.min.js"></script>
+    <script src="/js/alertify/alertify.min.js"></script>
+    <script src="/js/Master.js?v=OOYVD38E-6aoqR-gXECRNiL8KkB4ggRKmXKAiXK1-ws"></script>
+    <script src="/js/typeahead/typahead.bundle.min.js"></script>
+
+
+			
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js" crossorigin="anonymous" integrity="sha384-rZfj/ogBloos6wzLGpPkkOr/gpkBNLZ6b6yLy4o+ok+t/SAKlL5mvXLr0OXNi1Hp">
+    </script>
+<script>(window.jQuery && window.jQuery.validator||document.write("\u003Cscript src=\u0022/Identity/lib/jquery-validation/dist/jquery.validate.min.js\u0022 crossorigin=\u0022anonymous\u0022 integrity=\u0022sha384-rZfj/ogBloos6wzLGpPkkOr/gpkBNLZ6b6yLy4o\u002Bok\u002Bt/SAKlL5mvXLr0OXNi1Hp\u0022\u003E\u003C/script\u003E"));</script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.9/jquery.validate.unobtrusive.min.js" crossorigin="anonymous" integrity="sha384-ifv0TYDWxBHzvAk2Z0n8R434FL1Rlv/Av18DXE43N/1rvHyOG4izKst0f2iSLdds">
+    </script>
+<script>(window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive||document.write("\u003Cscript src=\u0022/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js\u0022 crossorigin=\u0022anonymous\u0022 integrity=\u0022sha384-ifv0TYDWxBHzvAk2Z0n8R434FL1Rlv/Av18DXE43N/1rvHyOG4izKst0f2iSLdds\u0022\u003E\u003C/script\u003E"));</script>
+
+
+			<script src="/custom/features/register-recaptcha-submit.js?v=E-mZDIGPhVWlXu5e26rt4oXRoHBOK_IVIiILITZi90o"></script>
+			<script src="/custom/features/registerformvalidation.js?v=K6oEZ00VV7uMIdKItQG18A520VG2hu7LgOc4RFANwVo"></script>
+		<script src="/custom/pages/identity/register-signup-tracking.js?v=zZBMBHCXPmHJJWXndfL5uQ64GOegOc6GAlLvc02454k"></script>
+		<script src="/custom/pages/identity/register-wizard.js?v=y8C6YPjNxgxuWt3yC0RRxAJ8LqJrjptAazh3zgUR3-A"></script>
+		<script src="/custom/pages/identity/login-modal.js?v=fNAv1mqNIngSjF7PCIrphUY_m0Ch6PZVxDni6ZsCFBg"></script>
+
+
+		
+		
+		
+	
+	
+
+	
+	
+    
+        <script>
+            (function () {
+                var isinsAttr = document.getElementById('ki-news-instruments')?.getAttribute('data-isins');
+                var isins = (isinsAttr && isinsAttr.length) ? isinsAttr.split(',').filter(Boolean) : [];
+                if (isins.length === 0 || typeof signalR === 'undefined') return;
+
+                var tokenEl = document.getElementById('token');
+                var token = tokenEl ? (tokenEl.value || '') : '';
+                var chatHubUrl = 'https://services2.goldesel.de/chatHub';
+                var instrumentDataByIsin = {};
+                var connection = new signalR.HubConnectionBuilder()
+                    .withUrl(chatHubUrl + (token ? '?access_token=' + encodeURIComponent(token) : ''))
+                    .configureLogging(signalR.LogLevel.None)
+                    .withAutomaticReconnect([0, 2000, 10000, 30000, 60000, 180000, 240000, 300000, 360000])
+                    .build();
+
+
+
+                function fetchMiniChartData() {
+                    var headers = { 'Content-Type': 'application/json' };
+                    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                    return fetch('https://services2.goldesel.de/api/Search/InstrumentPricesByInstrumentIsinList?withInterDayPrices=true', {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(isins)
+                    })
+                        .then(function (response) {
+                            if (!response.ok) throw new Error('MiniChart data request failed');
+                            return response.json();
+                        })
+                        .then(function (data) {
+                            if (!Array.isArray(data)) return;
+                            data.forEach(function (item) {
+                                if (!item || !item.isin) return;
+                                instrumentDataByIsin[item.isin] = item;
+       
+                            });
+                        })
+                        .catch(function (err) {
+                            window.console && console.warn('KINews MiniChart fetch failed', err);
+                        });
+                }
+
+                function applyPriceUpdate(data) {
+
+                    if (!data || !data.isin || !data.latest) return;
+
+                    var el = document.querySelector('.instrument_' + data.isin);
+                    if (!el) return;
+                    var priceEl = el.querySelector('.ki-news-instrument-price');
+                    var perfEl = el.querySelector('.ki-news-instrument-perf');
+                    if (priceEl && data.latest.price != null) {
+                        priceEl.textContent = Number(data.latest.price).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€';
+                    }
+                    if (perfEl && data.latest.performance && data.latest.performance.intraday != null) {
+                        var rel = data.latest.performance.intraday.relative;
+                        var pct = (typeof rel === 'number') ? rel * 100 : rel;
+                        perfEl.textContent = (pct >= 0 ? '+' : '') + Number(pct).toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+                        perfEl.style.color = pct >= 0 ? 'var(--article-accent)' : '#db3344';
+                    }
+
+                    // SignalR liefert hier meist nur latest-Daten ohne intraday bars.
+                    var cached = instrumentDataByIsin[data.isin];
+                    if (cached) {
+                        if (data.latest.price != null) {
+                            cached.price = data.latest.price;
+                        }
+                        if (data.latest.performance && data.latest.performance.intraday != null) {
+                            cached.performnaceDay = data.latest.performance.intraday.relative;
+                        }
+                    }
+             
+                }
+
+                connection.on('ReceivePriceUpdates', function (response) {
+                    try {
+                        var list = typeof response === 'string' ? JSON.parse(response) : response;
+                        if (Array.isArray(list)) {
+                            for (var i = 0; i < list.length; i++) { applyPriceUpdate(list[i]); }
+                        } else if (list && list.isin) {
+                            applyPriceUpdate(list);
+                        }
+                    } catch (e) { window.console && console.warn('KINews ReceivePriceUpdates', e); }
+                });
+                connection.on('ReceivePriceUpdate', function (response) {
+                    try {
+                        var data = typeof response === 'string' ? JSON.parse(response) : response;
+                        applyPriceUpdate(data);
+                    } catch (e) { window.console && console.warn('KINews ReceivePriceUpdate', e); }
+                });
+
+                fetchMiniChartData();
+
+                connection.start()
+                    .then(function () {
+                        if (isins.length > 0)
+                            connection.send('AddToGroupsComplete', isins);
+                    })
+                    .catch(function (err) { window.console && console.warn('KINews SignalR start', err); });
+            })();
+        </script>
+
+        <script>
+            (function () {
+                function showQueueToast(message, isError) {
+                    if (!message) return;
+                    if (window.toastr) {
+                        if (isError) window.toastr.error(message);
+                        else window.toastr.success(message);
+                        return;
+                    }
+                    var toastId = 'kiNewsQueueToast';
+                    var el = document.getElementById(toastId);
+                    if (!el) {
+                        el = document.createElement('div');
+                        el.id = toastId;
+                        el.style.position = 'fixed';
+                        el.style.right = '16px';
+                        el.style.bottom = '16px';
+                        el.style.zIndex = '9999';
+                        el.style.padding = '10px 14px';
+                        el.style.borderRadius = '8px';
+                        el.style.color = '#fff';
+                        el.style.fontSize = '14px';
+                        el.style.boxShadow = '0 4px 14px rgba(0,0,0,0.25)';
+                        el.style.maxWidth = '380px';
+                        document.body.appendChild(el);
+                    }
+                    el.style.background = isError ? '#dc3545' : '#198754';
+                    el.textContent = message;
+                    el.style.display = 'block';
+                    clearTimeout(el._hideTimer);
+                    el._hideTimer = setTimeout(function () { el.style.display = 'none'; }, 2600);
+                }
+
+                function getAdminAuthHeaders() {
+                    var headers = { 'X-Requested-With': 'XMLHttpRequest' };
+                    var tokenEl = document.getElementById('token');
+                    var tok = tokenEl ? (tokenEl.value || '').trim() : '';
+                    if (tok) headers['Authorization'] = 'Bearer ' + tok;
+                    return headers;
+                }
+
+                function escapeKiSourceHtml(text) {
+                    if (text == null) return '';
+                    return String(text)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;');
+                }
+
+                function stripKiSourceHtml(html) {
+                    if (!html) return '';
+                    return String(html).replace(/<[^>]*>/g, '');
+                }
+
+                function formatKiSourceDateTime(isoOrDate) {
+                    if (!isoOrDate) return '—';
+                    var d = isoOrDate instanceof Date ? isoOrDate : new Date(isoOrDate);
+                    if (isNaN(d.getTime())) return '—';
+                    return d.toLocaleString('de-DE', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    });
+                }
+
+                function buildKiSourceNewsHtml(items) {
+                    if (!items || !items.length) {
+                        return '<div class="admin-ki-sources-empty small text-muted py-1">Keine gespeicherten Quell-News.</div>';
+                    }
+                    var html = '<div class="admin-ki-sources-summary small text-muted mb-2">' + items.length + ' Quell-News an die KI übergeben</div>';
+                    html += '<div class="admin-ki-sources-list">';
+                    items.forEach(function (item, idx) {
+                        var headline = escapeKiSourceHtml((item && item.headline) ? item.headline : 'Ohne Titel');
+                        var time = escapeKiSourceHtml(formatKiSourceDateTime(item && item.time));
+                        var source = escapeKiSourceHtml((item && item.distributor && item.distributor.name) ? item.distributor.name : '—');
+                        var bodyText = escapeKiSourceHtml(stripKiSourceHtml(item && item.body));
+                        html += '<div class="admin-ki-sources-row" data-index="' + idx + '">';
+                        html += '<div class="admin-ki-sources-row-header" role="button" tabindex="0">';
+                        html += '<div class="admin-ki-sources-headline">' + headline + '</div>';
+                        html += '<div class="admin-ki-sources-meta">' + time + ' · ' + source + '</div>';
+                        html += '</div>';
+                        html += '<div class="admin-ki-sources-body d-none">';
+                        if (bodyText) {
+                            html += '<div class="admin-ki-sources-body-text">' + bodyText + '</div>';
+                        } else {
+                            html += '<div class="admin-ki-sources-body-text text-muted">Kein Body vorhanden.</div>';
+                        }
+                        html += '</div></div>';
+                    });
+                    html += '</div>';
+                    return html;
+                }
+
+                function loadKiSourceNews(btn, panel) {
+                    var code = (btn.getAttribute('data-news-code') || '').trim();
+                    if (!code) {
+                        panel.innerHTML = '<div class="text-danger small py-1">News-Code fehlt.</div>';
+                        return;
+                    }
+                    panel.classList.remove('d-none');
+                    panel.innerHTML = '<div class="text-muted small py-1">Lade Quell-News …</div>';
+                    btn.disabled = true;
+                    var url = 'https://services.goldesel.de/api/Search/KiNewsSourceCodes?code=' + encodeURIComponent(code);
+                    fetch(url, { method: 'GET', headers: getAdminAuthHeaders() })
+                        .then(function (r) {
+                            return r.text().then(function (t) {
+                                if (!r.ok) throw new Error(t || ('HTTP ' + r.status));
+                                try { return JSON.parse(t); } catch (ex2) { return {}; }
+                            });
+                        })
+                        .then(function (data) {
+                            panel.innerHTML = buildKiSourceNewsHtml(data && data.items ? data.items : []);
+                            panel.setAttribute('data-loaded', '1');
+                        })
+                        .catch(function (err) {
+                            panel.innerHTML = '<div class="text-danger small py-1">' + escapeKiSourceHtml(err.message || 'Quell-News konnten nicht geladen werden.') + '</div>';
+                        })
+                        .finally(function () { btn.disabled = false; });
+                }
+
+                document.addEventListener('click', function (e) {
+                    var sourcesBtn = e.target.closest('.admin-ki-sources-btn');
+                    if (sourcesBtn) {
+                        e.preventDefault();
+                        var panel = sourcesBtn.closest('.admin-btn-container');
+                        panel = panel ? panel.querySelector('.admin-ki-sources-panel') : null;
+                        if (!panel) return;
+                        var isHidden = panel.classList.contains('d-none');
+                        if (!isHidden) {
+                            panel.classList.add('d-none');
+                            return;
+                        }
+                        if (panel.getAttribute('data-loaded') === '1' && panel.innerHTML.trim()) {
+                            panel.classList.remove('d-none');
+                            return;
+                        }
+                        loadKiSourceNews(sourcesBtn, panel);
+                        return;
+                    }
+
+                    var rowHeader = e.target.closest('.admin-ki-sources-row-header');
+                    if (rowHeader) {
+                        e.preventDefault();
+                        var row = rowHeader.closest('.admin-ki-sources-row');
+                        if (!row) return;
+                        row.classList.toggle('admin-ki-sources-row-expanded');
+                        var body = row.querySelector('.admin-ki-sources-body');
+                        if (body) body.classList.toggle('d-none');
+                        return;
+                    }
+
+                    var btn = e.target.closest('.admin-delayed-queue-btn');
+                    if (!btn) return;
+                    e.preventDefault();
+                    var isin = btn.getAttribute('data-isin');
+                    var iid = btn.getAttribute('data-instrument-id');
+                    if (!isin) return;
+                    var url = 'https://services.goldesel.de/api/Search/DelayedInstrumentQueue?isin=' + encodeURIComponent(isin);
+                    if (iid) url += '&instrumentId=' + encodeURIComponent(iid);
+                    var headers = getAdminAuthHeaders();
+                    btn.disabled = true;
+                    fetch(url, { method: 'POST', headers: headers })
+                        .then(function (r) {
+                            return r.text().then(function (t) {
+                                if (!r.ok) throw new Error(t || ('HTTP ' + r.status));
+                                try { return JSON.parse(t); } catch (ex2) { return { message: t }; }
+                            });
+                        })
+                        .then(function (data) {
+                            var msg = (data && data.message) ? data.message : 'Instrument wurde zur KI-Queue hinzugefügt.';
+                            showQueueToast(msg, false);
+                        })
+                        .catch(function (err) {
+                            showQueueToast(err.message || 'Instrument konnte nicht zur Queue hinzugefügt werden.', true);
+                        })
+                        .finally(function () { btn.disabled = false; });
+                });
+            })();
+        </script>
+
+            <script src="/js/moment/moment-with-locales.min.js?v=5_An8aFQ4yf_mg2m9An7Pdqto3NCkjvhSJvq-o0ZJcU"></script>
+            <script src="/js/vue/vue.global.prod.js?v=YWvfLVRQHx4Q1LLBm3zoF3-qCWoEfZOQxH79FErJOwE"></script>
+            <script src="/js/axios/axios.min.js?v=i4SeP1lS2vLHQE9hFA7UsnXB4_AdnL5oOdJ2oKHx_5Q"></script>
+            <script src="/js/chartjs/chart.js?v=EGt1YjGP5KEHGA1B2N051bVZOIdFUq9Etj68pDNgk4w"></script>
+            <script src="/js/chartjs/chartjs-chart-sankey.min.js?v=8EWunsVwIk7A7hiSlpNF87orJikzK1Z0bpYt8W4hJek"></script>
+            <script src="/js/chartjs/chartjs-chart-financial.js?v=fnJ4cvPk-5OvrNHKlKuhmhP0r8SkX7MJs046LkdAu1M"></script>
+            <script src="/js/chartjs/chartjs-plugin-annotation.js?v=cUgymtpsAnAzVYn7wnGFD1n3vnghWi1q5gEkiouBChk"></script>
+            <script src="/js/chartjs/luxon.js?v=UA_r5Oi3pNGYgJlnmZuqXkeXYQRLqyHxFGrFuUDZUXA"></script>
+            <script src="/js/chartjs/chartjs-adapter-luxon.js?v=0WlSWoRLjL5KbxwijC8Og9IZM_E6_qrQmdQzzCWQoBo"></script>
+            <script src="/custom/features/ChartJSHelper.js?v=imBq5pdxUgGeahRWbCMznQNlLixgpo1VCm8Y7Sr5fYw"></script>
+                <script src="/custom/widgets/profile-widget.js?v=iYzn_jhkKAjgJIuLN7ILYYYYyK-OjBQfBaHmK7j8B7I"></script>
+                <script src="/custom/widgets/dates-widget.js?v=8GiuM-omzIIygMV68HM7bh6VhKyOKQsuy6BMiVW9bUI"></script>
+                <script src="/custom/widgets/profit-widget.js?v=PVkoeWVaIfoKTx-3vcdM5VOFnSCDKUCgGESoNQ-28EY"></script>
+            <script src="/custom/pages/stocks/ki-news-detail-instrument-blocks.js?v=t8MxWmtl2BgGqFQEJYaqcKc0wGN5fD5nIOyBqTXVNss"></script>
+
+            <script>
+                (function () {
+                    // Click/view tracking beacon: fires once per real page view in the browser,
+                    // independent of whether this HTML came from the output cache (see
+                    // KiNewsDetailCachePolicy + KINewsRegisterClick). Do not restore server-side
+                    // counting in the KINewsDetail action - it would undercount cached views.
+                    var payload = JSON.stringify({
+                        slug: "frvorwerk-grp-se-inh-on-aktie-prognose-hebt-ebitda-ziel-auf-bis-zu-230-millionen-euro",
+                        headline: "FR.VORWERK GRP SE INH ON Aktie: Prognose hebt EBITDA-Ziel auf bis zu 230 Millionen Euro",
+                        code: "ai-processed-194052110-6f4f68c3"
+                    });
+                    var url = '/aktien/news/register-click';
+                    if (navigator.sendBeacon) {
+                        var blob = new Blob([payload], { type: 'application/json' });
+                        navigator.sendBeacon(url, blob);
+                    } else {
+                        fetch(url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: payload,
+                            keepalive: true
+                        }).catch(function () { /* best-effort, ignore failures */ });
+                    }
+                })();
+            </script>
+    
+</body>
+
+</html>
