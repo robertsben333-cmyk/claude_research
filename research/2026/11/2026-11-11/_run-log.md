@@ -49,3 +49,11 @@
 ## Stage EU — Europe researcher — STARTED
 - Logged at 2026-11-11 14:38 UTC
 - Fired 14:36 UTC (15:36 Amsterdam, markets open). Sealing for event date 2026-11-12 (Thu), RUN research/2026/11/2026-11-12/europe. Plan: universe (cap 20), seal, provenance, one hunter per name in waves, edge_score, four-model panel, note, IBKR handoff. Local main was a stale shallow checkout diverged from origin; kept as branch local-main-backup-20261111 and main re-pointed at origin/main f3cdaaa62.
+
+## Stage EU — IBKR
+- Logged at 2026-11-11 14:38 UTC
+- mode: would refuse: execution_eu.enabled is false (auth tws; executor server trades, this session makes no broker call).
+
+## Stage EU — universe and seal
+- Logged at 2026-11-11 14:41 UTC
+- Event date 2026-11-12. 190 scheduled, 116 eligible, 20 hunted by date-seeded random draw: de 8, it 4, no 3, uk 2, se 2, pl 1 (fr/dk/fi/es 0). 20 baselines sealed at ~14:43 UTC (intraday spots, not closes). Provenance stamped. Hunters launching as slots free (up to 8 concurrent) so the handoff reaches main before the close.
