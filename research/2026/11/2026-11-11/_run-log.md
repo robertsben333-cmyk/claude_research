@@ -97,3 +97,7 @@
 ## Edge hunt (panel) — wave 2
 - Logged at 2026-11-11 18:22 UTC
 - 18:22 UTC. Returned, search_complete true per hand-backs: DDI ALVO CINT CURI XNDU AVEX. Launched as slots freed: VYLR CTVA ENS EZPW ITRG CAE. Running: ACOG AGBK + those six. To launch: DGII TTEK, then bmo LUNR NBIS ASND YETI.
+
+## Edge hunt (panel) — all 20 launched
+- Logged at 2026-11-11 18:28 UTC
+- 18:28 UTC. All 20 searchers launched (YETI last). Returned, search_complete true per hand-backs: DDI ALVO CINT CURI XNDU AVEX ACOG AGBK ITRG EZPW VYLR ENS. Running: CTVA CAE DGII TTEK LUNR NBIS ASND YETI.
