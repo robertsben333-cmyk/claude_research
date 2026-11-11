@@ -429,6 +429,54 @@ def main():
           else (cfg["execution"]["benchmark"].get("min_conviction") is not None),
           f"key={_bk} floor={ex['benchmark']['min_conviction']}")
 
+    # -- stage E-P's top-up (added 2026-11-11, operator's instruction): with exactly
+    # one strong name the rest of the budget goes to the 70-79 names, at most 25% each;
+    # with two strong names the book is unchanged and the candidates are rejected.
+    _pc = {**ex["panel"], "top_up": {"enabled": True, "min_panel_pct": 70,
+                                     "max_position_pct_of_equity": 25}}
+    _sz = {**ex["sizing"], "gross_exposure_pct_of_equity": 100,
+           "max_position_pct_of_equity": 50, "max_position_pct_of_adv": None,
+           "min_position_usd": 1}
+    def _c(t, pct, fill=False):
+        return {"ticker": t, "conviction": pct, "spot": 10.0, "ref_price": 10.0,
+                "dollar_volume_usd": 1e9, "side": "buy",
+                **({"top_up": True} if fill else {})}
+    _k, _u, _i = at.panel_book([_c("S", 85), _c("F1", 75, True), _c("F2", 72, True)],
+                               10000.0, _sz, _pc, 10000.0, {})
+    _w = {r["ticker"]: r["pct_of_equity"] for r in _k}
+    check("top-up: one strong name keeps 50%, the 70-79 names fill the rest at 25% each",
+          _w == {"S": 50.0, "F1": 25.0, "F2": 25.0} and _i["applied"], f"{_w}")
+    _k, _u, _i = at.panel_book([_c("S", 85), _c("F1", 75, True)],
+                               10000.0, _sz, _pc, 10000.0, {})
+    _w = {r["ticker"]: r["pct_of_equity"] for r in _k}
+    check("top-up: one fill name is capped at 25%, never as heavy as the strong one",
+          _w == {"S": 50.0, "F1": 25.0}, f"{_w}")
+    _k, _u, _i = at.panel_book([_c("S", 85), _c("T", 90), _c("F1", 75, True)],
+                               10000.0, _sz, _pc, 10000.0, {})
+    _w = {r["ticker"]: r["pct_of_equity"] for r in _k}
+    check("top-up: two strong names stay 50 / 50 and the candidate is rejected",
+          _w == {"S": 50.0, "T": 50.0} and not _i["applied"]
+          and [r["ticker"] for r in _u] == ["F1"], f"{_w}")
+    _sel, _rej = at.select_panel(
+        {"ranking": [{"ticker": "A", "panel_pct": 85, "side": 1},
+                     {"ticker": "B", "panel_pct": 75, "side": -1},
+                     {"ticker": "C", "panel_pct": 65, "side": 1}]},
+        {t: {"tape": {"spot": 10, "avg_volume_20d": 1e6}, "session": "amc",
+             "event_date": "2026-11-11"} for t in "ABC"},
+        {"min_dollar_volume_usd": 0}, _pc)
+    check("top-up: select_panel marks 70-79 as candidates and drops below 70",
+          [(c["ticker"], bool(c.get("top_up"))) for c in _sel] == [("A", False), ("B", True)]
+          and [r["ticker"] for r in _rej] == ["C"])
+    _sel, _ = at.select_panel(
+        {"ranking": [{"ticker": "B", "panel_pct": 75, "side": 1}]},
+        {"B": {"tape": {"spot": 10, "avg_volume_20d": 1e6}, "session": "amc"}},
+        {"min_dollar_volume_usd": 0}, _pc, min_pct=80)
+    check("top-up: off under --min-pct", _sel == [])
+    check("top-up is configured as the operator chose (70, 25% a name)",
+          (ex["panel"].get("top_up") or {}).get("enabled") is True
+          and ex["panel"]["top_up"].get("min_panel_pct") == 70
+          and ex["panel"]["top_up"].get("max_position_pct_of_equity") == 25)
+
     # -- the price the budget is divided by (added 2026-09-10)
     #
     # Sizing used to divide by the sealed baseline spot, which is captured when the

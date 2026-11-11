@@ -1012,7 +1012,8 @@ execution:
   #   weight     panel_pct - 60, linear: 90 / 90 / 75 -> 30 / 30 / 15 -> 40 / 40 / 20.
   #   cap        50% of equity a name; what a capped name cannot take goes to the
   #              others in proportion to their weights (water-filling), so ONE name is
-  #              50% and cash, and TWO names are always 50 / 50 whatever their scores:
+  #              50% and cash (since 2026-11-11 topped up, see `top_up`), and TWO names
+  #              are always 50 / 50 whatever their scores:
   #              the linear rule only shows on a day with three or more names.
   #   shorts     a name Alpaca will not lend (or will not trade) is dropped BEFORE the
   #              split, so its share goes to the rest.
@@ -1031,6 +1032,20 @@ execution:
     max_position_pct_of_equity: 50
     gross_exposure_pct_of_equity: 100
     redistribute_cap_excess: true
+    # TOP-UP (2026-11-11, operator's instruction, thread "Test E-PF top-up to 100%
+    # with 70+ names"). On a day with exactly ONE strong name (>= min_panel_pct) in
+    # the book, the budget it leaves goes to the names at 70 <= panel_pct < 80 (all
+    # four judges, same turnover and borrow checks), equal weight, at most 25% of
+    # equity each, so a weaker name never weighs as much as the strong one. Days with
+    # two or more strong names, or none, are unchanged. Measured before it shipped
+    # (/mnt/project-files/topup-70/report.md, gross, no costs): backtest +0.03 pp a
+    # day (t 0.38), live us-searcher.v2 -0.35 (t -1.00), v3 +0.89 (t 1.45). Noise
+    # either way: it puts idle cash to work, it is not a finding. Off under --top
+    # and --min-pct. alpaca_trade.panel_book() is the whole rule.
+    top_up:
+      enabled: true
+      min_panel_pct: 70
+      max_position_pct_of_equity: 25
 
   sizing:
     # EQUAL WEIGHT, WHOLE BUDGET. Every name that clears the benchmark gets the same

@@ -1,6 +1,6 @@
 ---
 name: earnings-edge-panel
-description: Stage E-P. The US earnings edge hunt run as stage E runs it, except that the Opus 5.5 hunter works as a SEARCHER and a blind panel of four different models (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) judges its evidence; panel_score.py reports each judge as a percentile of its own range and combines them into a ranking, a selection (the mean percentile in the top 20%), and a weight. Writes to its own edge-panel/ directory. Since 2026-10-19 it is the stage that trades the Alpaca paper account. It sells whatever is still held once its searchers finish, and buys the panel's book (panel_pct 80 or more, linear weights, 50% cap a name) after the panel. Use when asked to run stage E-P, the panel edge hunt, or the four-model judging panel.
+description: Stage E-P. The US earnings edge hunt run as stage E runs it, except that the Opus 5.5 hunter works as a SEARCHER and a blind panel of four different models (Opus 5, Opus 5.5, Sonnet 5.5, Fable 5.1) judges its evidence; panel_score.py reports each judge as a percentile of its own range and combines them into a ranking, a selection (the mean percentile in the top 20%), and a weight. Writes to its own edge-panel/ directory. Since 2026-10-19 it is the stage that trades the Alpaca paper account. It sells whatever is still held once its searchers finish, and buys the panel's book (panel_pct 80 or more, linear weights, 50% cap a name, topped up with 70-79 names at most 25% each on a one-name day) after the panel. Use when asked to run stage E-P, the panel edge hunt, or the four-model judging panel.
 ---
 
 # Stage E-P — the searcher and the four-model panel
@@ -220,13 +220,18 @@ python3 researcher_us/scripts/alpaca_trade.py status --run <RUN>/edge-panel
 ```
 
 The rule is `execution.panel` in `config/pipeline.yaml` (operator's instruction,
-2026-10-19), applied by `select_panel()` and `size()` in `alpaca_trade.py`:
+2026-10-19), applied by `select_panel()` and `panel_book()` in `alpaca_trade.py`:
 
 - **Entry**: `panel_pct` >= 80 with all four judges present; never at or below 60. Side
   from the panel. The same $200k turnover floor as stage E.
 - **Weight**: `panel_pct` - 60, linear (90 / 90 / 75 -> 40 / 40 / 20).
 - **Cap**: 50% of equity a name; what a capped name cannot take goes to the others in
-  proportion to their weights, so one name is 50% and cash, two names are 50 / 50.
+  proportion to their weights, so one name is 50%, two names are 50 / 50.
+- **Top-up** (`execution.panel.top_up`, operator's instruction 2026-11-11): on a day with
+  exactly ONE strong name in the book, the other 50% goes to the names at 70 to 79 (all
+  four judges, same checks), equal weight, at most 25% of equity each; with none such the
+  rest stays cash. Days with two or more strong names are unchanged. The plan's
+  `panel_rule.top_up` records whether it applied.
 - **Cannot trade or short**: dropped before the split, so its share goes to the rest.
 - **Budget**: 100% of equity minus anything still held after step 3s.
 
