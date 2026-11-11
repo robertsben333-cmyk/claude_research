@@ -480,6 +480,13 @@ def select_panel(panel, baselines, bench, pcfg, top=None, min_pct=None):
     if top is not None:
         floor = zero
     floor = max(floor, zero)
+    # Top-up candidates (2026-11-11, operator's instruction): names between
+    # `top_up.min_panel_pct` (70) and the entry floor pass the same checks and come
+    # back marked `top_up`; panel_book() buys them only on a day with exactly one
+    # strong name. Off under --top or --min-pct, which are deliberate tests.
+    tu = pcfg.get("top_up") or {}
+    fill_floor = (max(float(tu.get("min_panel_pct", 70)), zero)
+                  if tu.get("enabled") and top is None and min_pct is None else None)
     min_dv = float(bench.get("min_dollar_volume_usd") or 0)
     full = not panel.get("members_missing")
     taken, rejected = [], []
@@ -513,7 +520,7 @@ def select_panel(panel, baselines, bench, pcfg, top=None, min_pct=None):
             drop(f"panel incomplete: {', '.join(panel.get('members_missing'))} missing")
         elif pct <= zero:
             drop(f"panel_pct {pct:.1f} at or below the {zero:.0f} zero point")
-        elif pct < floor:
+        elif pct < floor and not (fill_floor is not None and pct >= fill_floor):
             drop(f"panel_pct {pct:.1f} below the {floor:.0f} entry floor")
         elif not spot:
             drop("no spot in the sealed baseline")
@@ -525,6 +532,8 @@ def select_panel(panel, baselines, bench, pcfg, top=None, min_pct=None):
             drop(f"turnover ${dv/1e6:.2f}m below the ${min_dv/1e6:.1f}m floor")
         else:
             cand["side"] = "buy" if side > 0 else "sell"
+            if pct < floor:
+                cand["top_up"] = True
             taken.append(cand)
     taken.sort(key=lambda c: -c["conviction"])
     if top is not None and len(taken) > int(top):
@@ -532,6 +541,47 @@ def select_panel(panel, baselines, bench, pcfg, top=None, min_pct=None):
             rejected.append({**c, "side": None, "reason": f"outside --top {top}"})
         taken = taken[:int(top)]
     return taken, rejected
+
+
+def panel_book(tradable, equity, sizing, pcfg, budget, held_usd):
+    """Stage E-P's sizing, with the top-up (2026-11-11, operator's instruction).
+
+    The strong names (panel_pct >= min_panel_pct) are sized as before: weight
+    panel_pct - zero_weight_pct, cap max_position_pct_of_equity, water-filled. When
+    exactly ONE strong name is tradable and top-up candidates exist, whatever budget
+    the strong name leaves goes to the candidates (70 <= panel_pct < 80), equal
+    weight, each capped at top_up.max_position_pct_of_equity (25), so a weaker name
+    never weighs as much as the strong one. On any other day the candidates are
+    rejected and the book is exactly the old one. Measured before it shipped
+    (/mnt/project-files/topup-70/): backtest +0.03 pp a day (t 0.38), live v2
+    -0.35 (t -1.00), v3 +0.89 (t 1.45), gross. It is a choice about idle cash, not
+    a finding. Returns (keep, undersized, info).
+    """
+    zero = float(pcfg.get("zero_weight_pct", 60))
+    redist = pcfg.get("redistribute_cap_excess", True)
+    strong = [c for c in tradable if not c.get("top_up")]
+    fills = [c for c in tradable if c.get("top_up")]
+    tu = pcfg.get("top_up") or {}
+    keep, undersized = size(strong, equity, sizing,
+                            weights=[c["conviction"] - zero for c in strong],
+                            budget=budget, held_usd=held_usd, redistribute=redist)
+    info = {"enabled": bool(tu.get("enabled")), "strong_tradable": len(strong),
+            "candidates": [c["ticker"] for c in fills], "applied": False}
+    if not fills:
+        return keep, undersized, info
+    if len(strong) != 1 or not keep:
+        why = (f"top-up only on a day with exactly one strong name in the book "
+               f"({len(keep)} sized of {len(strong)} tradable)")
+        undersized += [{**c, "reason": why} for c in fills]
+        return keep, undersized, info
+    used = sum(r.get("notional_usd") or 0 for r in keep)
+    left = max(0.0, float(budget) - used)
+    fsz = {**sizing, "max_position_pct_of_equity":
+           float(tu.get("max_position_pct_of_equity", 25))}
+    fk, fu = size(fills, equity, fsz, budget=left, held_usd=held_usd,
+                  redistribute=redist)
+    info.update(applied=bool(fk), budget_usd=round(left, 2))
+    return keep + fk, undersized + fu, info
 
 
 def allocate(budget, caps, weights, redistribute=True):
@@ -744,7 +794,7 @@ def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
             c["baseline_drift_pct"] = (round(100 * (r["price"] - c["spot"]) / c["spot"], 3)
                                        if c.get("spot") else None)
 
-    held_usd, held_gross, budget = {}, 0.0, None
+    held_usd, held_gross, budget, top_up = {}, 0.0, None, None
     if book == "panel":
         # Never take the account past the gross limit: what is still held from an
         # earlier book (nothing in this stage sells) comes off the budget first, and
@@ -757,11 +807,8 @@ def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
                 held_gross += mv
         gross_pct = float(sizing.get("gross_exposure_pct_of_equity", 100))
         budget = float(equity) * gross_pct / 100.0 - held_gross
-        zero = float(pcfg.get("zero_weight_pct", 60))
-        keep, undersized = size(tradable, float(equity), sizing,
-                                weights=[c["conviction"] - zero for c in tradable],
-                                budget=budget, held_usd=held_usd,
-                                redistribute=pcfg.get("redistribute_cap_excess", True))
+        keep, undersized, top_up = panel_book(tradable, float(equity), sizing, pcfg,
+                                              budget, held_usd)
     else:
         keep, undersized = size(tradable, float(equity), sizing)
     rejected += undersized
@@ -793,6 +840,7 @@ def build_plan(run, api, ex, equity_override=None, book="auto", top=None,
                                "weight": "panel_pct - zero_weight_pct, linear",
                                "redistribute_cap_excess":
                                    pcfg.get("redistribute_cap_excess", True),
+                               "top_up": top_up,
                                "held_gross_usd": round(held_gross, 2),
                                "budget_usd": round(max(budget, 0.0), 2)}}
                if book == "panel" else {}),
@@ -1457,6 +1505,11 @@ def print_plan(plan):
               + f", weight = panel_pct - {r['zero_weight_pct']}, cap "
               f"{plan['sizing'].get('max_position_pct_of_equity')}% a name, budget "
               f"${r['budget_usd']:,.0f} (held ${r['held_gross_usd']:,.0f})")
+        tu = r.get("top_up") or {}
+        if tu.get("candidates"):
+            print(f"top-up: {'APPLIED' if tu.get('applied') else 'not applied'}, "
+                  f"{tu['strong_tradable']} strong tradable, candidates "
+                  f"{', '.join(tu['candidates'])}")
     print(f"benchmark: |{b.get('key')}| >= {b['min_conviction']}, turnover >= "
           f"${float(b.get('min_dollar_volume_usd') or 0)/1e6:.1f}m, "
           f"max {b.get('max_positions')} names\n")
