@@ -1,0 +1,106 @@
+{
+ "ticker": "CDNL",
+ "event_date": "2026-11-12",
+ "session": "bmo",
+ "as_of_utc": "2026-11-11T18:08:58+00:00",
+ "options_as_of_valid": true,
+ "sources": [
+  "yahoo chart v8 daily bars",
+  "yahoo options v7 front expiry (cookie+crumb)",
+  "sec edgar submissions api, 8-K item 2.02 acceptance times"
+ ],
+ "tape": {
+  "last_close_date": "2026-11-11",
+  "spot": 14.83,
+  "run_up_5d_pct": -0.67,
+  "run_up_20d_pct": -9.9,
+  "pct_from_52w_high": -84.28,
+  "pct_from_52w_low": 17.84,
+  "realised_vol_20d_annualised_pct": 103.7,
+  "avg_volume_20d": 1063145
+ },
+ "cik": "0002079999",
+ "history": {
+  "moves": [
+   {
+    "event_date": "2026-08-11",
+    "session": "bmo",
+    "move_pct": -36.22,
+    "session_conflict": {
+     "tagged_session": "bmo",
+     "volume_says": "bmo",
+     "event_day_volume": 3665600,
+     "next_day_volume": 1831200,
+     "median_20d_before": 440500,
+     "move_as_tagged_pct": -36.22,
+     "move_if_bmo_pct": -36.22,
+     "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+    }
+   },
+   {
+    "event_date": "2026-05-12",
+    "session": "bmo",
+    "move_pct": -5.43
+   },
+   {
+    "event_date": "2026-03-19",
+    "session": "bmo",
+    "move_pct": 1.41
+   },
+   {
+    "event_date": "2026-02-18",
+    "session": "amc",
+    "move_pct": 31.31
+   }
+  ],
+  "n": 4,
+  "basis": "8-K item 2.02 acceptance times (exact)",
+  "median_abs_move_pct": 18.37,
+  "max_abs_move_pct": 36.22,
+  "up_count": 2,
+  "session_conflicts": 1
+ },
+ "event_plausibility": {
+  "days_since_last_print": 93,
+  "median_gap_days": 54,
+  "ratio": 1.72,
+  "last_print": "2026-08-11",
+  "verdict": "unknown",
+  "cadence_implausible": true,
+  "reason": "inferred cadence of 54 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 4 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+ },
+ "options": {
+  "status": "ok",
+  "expiry": "2026-11-20",
+  "days_to_expiry": 9,
+  "atm_strike": 15.0,
+  "atm_iv_pct": 173.0,
+  "straddle_implied_move_pct": 22.93,
+  "event_implied_move_pct": 18.74,
+  "event_implied_move_basis": "22.93% straddle over 9 calendar days less 16.56% of ordinary 20d-realised movement, subtracted in variance",
+  "skew_25d_vol_points": null,
+  "skew_note": "IV(25d put) - IV(25d call). Positive = the market is paying more for downside protection than for upside.",
+  "put_call_open_interest_ratio": 0.25,
+  "total_open_interest": 2469,
+  "atm_spread_frac_of_mid": 0.523,
+  "warnings": [
+   "ATM bid-ask spread 52% of mid; implied move is indicative only",
+   "25-delta skew -49.84 vol points is outside any plausible range; rejected"
+  ]
+ },
+ "deadband_pct": 9.19,
+ "deadband_basis": "half the median of 4 prior reactions, floored at 1.5%",
+ "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+ "expected_move_pct": 18.74,
+ "expected_move_basis": "option straddle net of ordinary vol, front expiry",
+ "baseline_quality": {
+  "options_usable": true,
+  "history_events": 4,
+  "history_usable": 4,
+  "event_plausibility": "unknown",
+  "priced_direction_available": false,
+  "tier": "full",
+  "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+ },
+ "status": "ok"
+}

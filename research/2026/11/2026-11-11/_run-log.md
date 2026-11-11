@@ -81,3 +81,7 @@
 ## Stage EU — published
 - Logged at 2026-11-11 15:13 UTC
 - All output pushed to main (EARNINGS_DATA_BRANCH=main); origin/main head 314171364 'stage EU: IBKR handoff for 2026-11-12' confirmed, ibkr-handoff.json present on main.
+
+## Edge hunt (panel) — 2026-11-11 amc + 2026-11-12 bmo — STARTED
+- Logged at 2026-11-11 18:08 UTC
+- Stage E-P fire; session began 18:07 UTC (13:07 ET). Universe 124 names (34 amc 11-11, 90 bmo 11-12). edge_universe.py ran directly (needed pip install requests in the container). Baselines being sealed by code (13 parallel priced_in processes); one edge-sweep in parallel. Plan: up to 20 unpriced-searchers (max 8 per turn), step 3s flatten, four-judge panel, step 6b buy.
