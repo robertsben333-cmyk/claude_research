@@ -45,3 +45,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-11-11 14:17 UTC
 - 7 names (NRGV AMPX STUB FOSL CRWV LPTH MRCY): exit_open x4 (NRGV STUB FOSL CRWV), exit_limit x2 (AMPX 9.85, MRCY 87.00), exit_1000 x1 (LPTH). Compiled 09:17 ET. Pool over 102 names/14 days: review_minus_static +0.001 (t 0.00).
+
+## Stage EU — Europe researcher — STARTED
+- Logged at 2026-11-11 14:38 UTC
+- Fired 14:36 UTC (15:36 Amsterdam, markets open). Sealing for event date 2026-11-12 (Thu), RUN research/2026/11/2026-11-12/europe. Plan: universe (cap 20), seal, provenance, one hunter per name in waves, edge_score, four-model panel, note, IBKR handoff. Local main was a stale shallow checkout diverged from origin; kept as branch local-main-backup-20261111 and main re-pointed at origin/main f3cdaaa62.
