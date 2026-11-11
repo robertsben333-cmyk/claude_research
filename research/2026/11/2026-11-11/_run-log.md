@@ -113,3 +113,7 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-11 18:45 UTC
 - 18:45 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) CURI S 94 (k3), CTVA S 87 (k4). Next CAE S 74. Two strong names, so no top-up. Note written; stage E edge/ absent.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-11 18:46 UTC
+- 18:46 UTC (13:47 ET), after the note: plan, then open --submit --no-flatten. 2 market short orders, both filled: CURI -4303 @ 2.34 (~$10.1k, 50.0%) and CTVA -839 @ 12.02 (~$10.1k, 50.0%) on $20,183 equity; both at the 50% cap. Top-up not applied (two strong names). Execution cost vs mid +0.128 mean. Exits dated 2026-11-12.
