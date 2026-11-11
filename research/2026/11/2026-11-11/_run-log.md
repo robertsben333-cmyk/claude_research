@@ -133,3 +133,7 @@
 ## Holistic research — wave 2
 - Logged at 2026-11-11 19:24 UTC
 - 19:24 UTC: all 16 launches made (native holistic-researcher); concurrency cap 8 meant wave 2 went out as slots freed. Back: AVEX a/b, ALVO a/b, CINT a/b, VYLR a, ACOG.
+
+## Holistic research — note
+- Logged at 2026-11-11 19:28 UTC
+- CURI researcher reports its sweep.json snippet also printed parts of the neighbouring ALVO row and the row before it; it says it did not use them. Sweep rows are pre-hunt first reads, not E-P scores; recorded, not scored as contamination.
