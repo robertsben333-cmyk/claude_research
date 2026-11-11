@@ -602,7 +602,7 @@ def score(rows, cut):
     return out
 
 
-LEAN_RUNGS = (5, 10, 15)
+LEAN_RUNGS = (5, 7, 10)
 
 
 def cmd_evaluate(write=True, quiet=False):
