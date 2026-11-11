@@ -1,14 +1,16 @@
 # Stage H evaluation
 
-Generated 2026-11-11T19:37:34+00:00. Window: entry run-day close; amc exit next open; bmo exit 13:00 ET report day.
+Generated 2026-11-11T19:40:11+00:00. Window: entry run-day close; amc exit next open; bmo exit 13:00 ET report day.
 
 Below about 30 names a version's numbers are noise; below 20 recommendations a hit rate tells almost nothing.
 
+Read the leaning views first: the claim under test is that some events can be called with some certainty, so a version is judged on the views it leans on and on its recommendations, not on its average Brier alone.
+
 ## Per playbook version (evolving arm)
 
-- **hp.v1**: 35 names / 3 days; Brier 0.2492 (skill 0.003); direction 16/32 (p 1.0); 0 recs; vs control on the same names: 12 pairs, Brier diff -0.004 (t -0.45)
+- **hp.v1**: 35 names / 3 days; Brier 0.2492 (skill 0.003); direction 16/32 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 11/20 right, 3.376% on the lean's side (t 0.91, p 0.824); |p_up-50| >=10: 1/3 right, -1.572% on the lean's side (t -0.72, p 1.0); vs control on the same names: 12 pairs, Brier diff -0.004 (t -0.45)
 
-- **control (frozen hp.v1)**: 12 names / 3 days; Brier 0.2416 (skill 0.034); direction 5/10 (p 1.0); 0 recs
+- **control (frozen hp.v1)**: 12 names / 3 days; Brier 0.2416 (skill 0.034); direction 5/10 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 4/4 right, 17.875% on the lean's side (t 1.47, p 0.125)
 
 ## The process: every evolving version against the frozen control, same names
 
@@ -20,11 +22,11 @@ Below about 30 names a version's numbers are noise; below 20 recommendations a h
 
 ## Last five run days
 
-- evolving: 35 names / 3 days; Brier 0.2492 (skill 0.003); direction 16/32 (p 1.0); 0 recs
-- control: 12 names / 3 days; Brier 0.2416 (skill 0.034); direction 5/10 (p 1.0); 0 recs
+- evolving: 35 names / 3 days; Brier 0.2492 (skill 0.003); direction 16/32 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 11/20 right, 3.376% on the lean's side (t 0.91, p 0.824); |p_up-50| >=10: 1/3 right, -1.572% on the lean's side (t -0.72, p 1.0)
+- control: 12 names / 3 days; Brier 0.2416 (skill 0.034); direction 5/10 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 4/4 right, 17.875% on the lean's side (t 1.47, p 0.125)
 
 ## Gate
 
-Current version hp.v1: 35 resolved names over 3 run days (needs 30 over 3). Gate OPEN. Drift alarm: no (12 recent pairs, diff -0.004, t -0.45).
+Current version hp.v2: 0 resolved names over 0 run days (needs 30 over 3). Gate closed. Drift alarm: no (12 recent pairs, diff -0.004, t -0.45).
 
 revise only with >= 30 resolved names over >= 3 run days on the current version; at most 3 ops, each citing >= 3 resolved names; on a drift alarm only revert_to
