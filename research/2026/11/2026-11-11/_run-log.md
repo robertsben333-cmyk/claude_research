@@ -101,3 +101,11 @@
 ## Edge hunt (panel) — all 20 launched
 - Logged at 2026-11-11 18:28 UTC
 - 18:28 UTC. All 20 searchers launched (YETI last). Returned, search_complete true per hand-backs: DDI ALVO CINT CURI XNDU AVEX ACOG AGBK ITRG EZPW VYLR ENS. Running: CTVA CAE DGII TTEK LUNR NBIS ASND YETI.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-11 18:38 UTC
+- 20/20 searchers returned by 18:37 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20; none retried. mode: execution enabled, amc_open. flatten --submit at 18:38 UTC: 1 position still held, NRGV 2753 (the 2026-11-10 amc leg, +15.73% unrealised as printed) - it was still held because the 09:00 ET amc-exit Routine (stage E-PX) is not created yet; closed; flatten reported 'closed'.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-11 18:38 UTC
+- 18:38 UTC. edge_score and V2 grounded written before the first print. 20 rankable. Packs built (20, one part); four judges. Account flat after 3s.
