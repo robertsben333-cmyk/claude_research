@@ -50,7 +50,22 @@ def money(s):
 
 
 def fetch(d):
+    """Nasdaq's raw calendar rows for one date.
+
+    Since 2026-11-10 api.nasdaq.com answers a urllib request with HTTP 403 whatever
+    headers it carries, while `requests` with get_earnings' browser headers gets 200
+    on the same URL (checked 2026-11-11). So `requests` goes first and urllib is only
+    the fallback for a container without it.
+    """
     u = f"https://api.nasdaq.com/api/calendar/earnings?date={d}"
+    try:
+        import requests
+        from get_earnings import _UA
+        r = requests.get(u, headers=_UA, timeout=30)
+        r.raise_for_status()
+        return ((r.json() or {}).get("data") or {}).get("rows") or []
+    except ImportError:
+        pass
     r = urllib.request.urlopen(urllib.request.Request(
         u, headers={"User-Agent": UA, "Accept": "application/json"}), timeout=30)
     return ((json.loads(r.read()).get("data") or {}).get("rows") or [])

@@ -107,6 +107,12 @@ paths=()
 # ...and the continental calendars' caches (eu_calendars.py): the Nasdaq Nordic
 # Financial Calendar table and bankier's symbol -> ISIN map.
 [[ -d researcher_europe/analysis/calendars ]] && paths+=(researcher_europe/analysis/calendars)
+# Stage H's learning state (holistic.py resolve / evaluate / revise): the resolved
+# outcomes, the per-version evaluation, and the playbook with its versions and change
+# log. Not staged until 2026-11-11, so every Routine fire's resolve and any playbook
+# revision stayed in the container and the revision gate could never fill.
+[[ -d researcher_holistic/analysis ]] && paths+=(researcher_holistic/analysis)
+[[ -d researcher_holistic/playbook ]] && paths+=(researcher_holistic/playbook)
 for f in "${GENERATED[@]}"; do
   [[ -e "$f" ]] && paths+=("$f")
 done
