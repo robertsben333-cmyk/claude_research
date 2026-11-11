@@ -1,6 +1,6 @@
 # Stage H evaluation
 
-Generated 2026-11-11T19:40:11+00:00. Window: entry run-day close; amc exit next open; bmo exit 13:00 ET report day.
+Generated 2026-11-11T19:49:09+00:00. Window: entry run-day close; amc exit next open; bmo exit 13:00 ET report day.
 
 Below about 30 names a version's numbers are noise; below 20 recommendations a hit rate tells almost nothing.
 
@@ -8,9 +8,9 @@ Read the leaning views first: the claim under test is that some events can be ca
 
 ## Per playbook version (evolving arm)
 
-- **hp.v1**: 35 names / 3 days; Brier 0.2492 (skill 0.003); direction 16/32 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 11/20 right, 3.376% on the lean's side (t 0.91, p 0.824); |p_up-50| >=10: 1/3 right, -1.572% on the lean's side (t -0.72, p 1.0); vs control on the same names: 12 pairs, Brier diff -0.004 (t -0.45)
+- **hp.v1**: 35 names / 3 days; Brier 0.2492 (skill 0.003); direction 16/32 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 11/20 right, 3.376% on the lean's side (t 0.91, p 0.824); |p_up-50| >=7: 7/9 right, 6.688% on the lean's side (t 1.92, p 0.18); |p_up-50| >=10: 1/3 right, -1.572% on the lean's side (t -0.72, p 1.0); vs control on the same names: 12 pairs, Brier diff -0.004 (t -0.45)
 
-- **control (frozen hp.v1)**: 12 names / 3 days; Brier 0.2416 (skill 0.034); direction 5/10 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 4/4 right, 17.875% on the lean's side (t 1.47, p 0.125)
+- **control (frozen hp.v1)**: 12 names / 3 days; Brier 0.2416 (skill 0.034); direction 5/10 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 4/4 right, 17.875% on the lean's side (t 1.47, p 0.125); |p_up-50| >=7: 2/2 right, 1.993% on the lean's side (t 9.45, p 0.5)
 
 ## The process: every evolving version against the frozen control, same names
 
@@ -22,8 +22,8 @@ Read the leaning views first: the claim under test is that some events can be ca
 
 ## Last five run days
 
-- evolving: 35 names / 3 days; Brier 0.2492 (skill 0.003); direction 16/32 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 11/20 right, 3.376% on the lean's side (t 0.91, p 0.824); |p_up-50| >=10: 1/3 right, -1.572% on the lean's side (t -0.72, p 1.0)
-- control: 12 names / 3 days; Brier 0.2416 (skill 0.034); direction 5/10 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 4/4 right, 17.875% on the lean's side (t 1.47, p 0.125)
+- evolving: 35 names / 3 days; Brier 0.2492 (skill 0.003); direction 16/32 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 11/20 right, 3.376% on the lean's side (t 0.91, p 0.824); |p_up-50| >=7: 7/9 right, 6.688% on the lean's side (t 1.92, p 0.18); |p_up-50| >=10: 1/3 right, -1.572% on the lean's side (t -0.72, p 1.0)
+- control: 12 names / 3 days; Brier 0.2416 (skill 0.034); direction 5/10 (p 1.0); 0 recs; leaning views: |p_up-50| >=5: 4/4 right, 17.875% on the lean's side (t 1.47, p 0.125); |p_up-50| >=7: 2/2 right, 1.993% on the lean's side (t 9.45, p 0.5)
 
 ## Gate
 
