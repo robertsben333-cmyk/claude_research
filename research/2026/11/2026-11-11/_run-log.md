@@ -89,3 +89,7 @@
 ## Edge hunt (panel) — baselines sealed
 - Logged at 2026-11-11 18:11 UTC
 - 124 of 124 baselines sealed by 18:11 UTC, before any searcher. provenance stamped US-P: unpriced-searcher us-searcher.v3 on claude-opus-5-5.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-11-11 18:15 UTC
+- 18:15 UTC. Sweep: 33 of 124 checked, 29 company-confirmed, 4 unconfirmed (OPRX TWST PLGO AGRO), 0 phantom, 91 unchecked (8 small amc + 83 bmo). Session unsettled among confirmed: DGII TNK TK (+others). Cap 20, hunted by hunt_priority: amc ACOG AVEX XNDU CURI ALVO AGBK DDI CINT VYLR CTVA ENS EZPW ITRG CAE DGII(session unsettled) TTEK; bmo LUNR NBIS ASND YETI. Shed: confirmed below priority 42 (TNK ECO CEPU FNV HBM OR TK BSRT BN), unconfirmed 4, unchecked 91. No hunted baseline is suspect; no amendment. Sweep flag: ITRG may have released 11-10 — searcher told to check. Wave 1 (8 amc): ACOG AVEX XNDU CURI ALVO AGBK DDI CINT.
