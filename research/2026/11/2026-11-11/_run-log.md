@@ -61,3 +61,7 @@
 ## Stage EU — hunts in progress
 - Logged at 2026-11-11 14:42 UTC
 - 14:47 UTC: running SIE COK OHB BKHT SMWH BRBY XPLRA KAR (session cap 8 concurrent). Queued: REY CAR SYNSAM ENDUR GENO 1U1 GLJ VBK VH2 DIB MN TFIN.
+
+## Stage EU — hunts in progress
+- Logged at 2026-11-11 14:55 UTC
+- Banked 12: COK OHB XPLRA KAR SMWH BKHT BRBY SIE CAR REY ENDUR GENO. CAR: vendor date phantom (Q3 is 2026-11-17 amc per RB 2/2026). XPLRA/ENDUR hunters found register positions the baseline missed on spelling (2.48% / 0.51%); baselines untouched. Running 8: SYNSAM 1U1 GLJ VBK VH2 DIB MN TFIN.
