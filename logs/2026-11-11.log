@@ -1,0 +1,58 @@
+2026-11-11T14:35:04+00:00 flatten at 2026-11-11 15:35 Amsterdam, main at f3cdaaa6
+2026-11-11T14:35:04+00:00 $ /home/ubuntu/eu-executor/claude_research/researcher_europe/scripts/ibkr_trade.py mode
+2026-11-11T14:35:04+00:00   {
+2026-11-11T14:35:04+00:00     "enabled": false,
+2026-11-11T14:35:04+00:00     "environment": "paper",
+2026-11-11T14:35:04+00:00     "auth": "tws",
+2026-11-11T14:35:04+00:00     "selection": {
+2026-11-11T14:35:04+00:00       "min_panel_pct": 70,
+2026-11-11T14:35:04+00:00       "zero_weight_pct": 60,
+2026-11-11T14:35:04+00:00       "require_full_panel": true,
+2026-11-11T14:35:04+00:00       "min_turnover_usd": 200000,
+2026-11-11T14:35:04+00:00       "sides": [
+2026-11-11T14:35:04+00:00         "long",
+2026-11-11T14:35:04+00:00         "short"
+2026-11-11T14:35:04+00:00       ],
+2026-11-11T14:35:04+00:00       "markets": [
+2026-11-11T14:35:04+00:00         "uk",
+2026-11-11T14:35:04+00:00         "de",
+2026-11-11T14:35:04+00:00         "fr",
+2026-11-11T14:35:04+00:00         "se",
+2026-11-11T14:35:04+00:00         "dk",
+2026-11-11T14:35:04+00:00         "no",
+2026-11-11T14:35:04+00:00         "fi",
+2026-11-11T14:35:04+00:00         "it",
+2026-11-11T14:35:04+00:00         "es",
+2026-11-11T14:35:04+00:00         "pl"
+2026-11-11T14:35:04+00:00       ]
+2026-11-11T14:35:04+00:00     },
+2026-11-11T14:35:04+00:00     "sizing": {
+2026-11-11T14:35:04+00:00       "gross_pct_of_equity": 100,
+2026-11-11T14:35:04+00:00       "max_name_pct_of_equity": 50,
+2026-11-11T14:35:04+00:00       "max_pct_of_turnover": 1.0,
+2026-11-11T14:35:04+00:00       "min_position_base": 200
+2026-11-11T14:35:04+00:00     },
+2026-11-11T14:35:04+00:00     "limits": {
+2026-11-11T14:35:04+00:00       "max_gross_base": 10000,
+2026-11-11T14:35:04+00:00       "max_name_base": 5000,
+2026-11-11T14:35:04+00:00       "max_names": 6,
+2026-11-11T14:35:04+00:00       "max_orders_per_run": 20,
+2026-11-11T14:35:04+00:00       "max_price_gap_pct": 20
+2026-11-11T14:35:04+00:00     },
+2026-11-11T14:35:04+00:00     "orders": {
+2026-11-11T14:35:04+00:00       "type": "limit",
+2026-11-11T14:35:04+00:00       "entry_collar_pct": 1.0,
+2026-11-11T14:35:04+00:00       "exit_collar_pct": 2.0,
+2026-11-11T14:35:04+00:00       "close_buffer_min": 0,
+2026-11-11T14:35:04+00:00       "fill_wait_seconds": 120
+2026-11-11T14:35:04+00:00     }
+2026-11-11T14:35:04+00:00   }
+2026-11-11T14:35:04+00:00   IBKR_ENVIRONMENT='live'  IBKR_ACCOUNT_ID=set  broker=IB Gateway on the executor's server (execution_eu.auth tws); the cloud Routine only hands the book over (step 6b handoff)
+2026-11-11T14:35:04+00:00   would refuse: execution_eu.enabled is false
+2026-11-11T14:35:04+00:00   exit 1
+2026-11-11T14:35:04+00:00 $ /home/ubuntu/eu-executor/claude_research/researcher_europe/scripts/ibkr_trade.py check
+2026-11-11T14:35:05+00:00   IBKR error: cannot reach IB Gateway at 127.0.0.1:4002: [Errno 111] Connect call failed ('127.0.0.1', 4002). Is the gateway running and logged in?
+2026-11-11T14:35:05+00:00   API connection failed: ConnectionRefusedError(111, "Connect call failed ('127.0.0.1', 4002)")
+2026-11-11T14:35:05+00:00   Make sure API port on TWS/IBG is open
+2026-11-11T14:35:05+00:00   exit 4
+2026-11-11T14:35:05+00:00 check failed: not flattening (the gateway is not reachable or not logged in)
