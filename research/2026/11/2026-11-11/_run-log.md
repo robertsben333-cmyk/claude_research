@@ -33,3 +33,7 @@
 ## Stage EU — published
 - Logged at 2026-11-10 15:20 UTC
 - All output pushed to main (EARNINGS_DATA_BRANCH=main); origin/main head eccc5d594 'stage EU: IBKR handoff for 2026-11-11' confirmed at 15:20 UTC.
+
+## Close AMC (stage E amc exit) — 2026-11-11
+- Logged at 2026-11-11 11:24 UTC
+- Fired 11:17 UTC (06:17 ET, pre-market). Guard mode --require-exit-tif opg: exit 0 (amc_open, amc -> open as market DAY order). verify over research/*/*/*/edge: 14 exit legs, all ok, none UNFILLED, nothing still held. close --submit: no stage E leg due today or overdue, so no order sent and no refusal. Stage E's Routine is stopped since 2026-10-19; stage E-P's amc legs are not in this scan (that is stage E-PX's job, whose Routine is not yet created).
