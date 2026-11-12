@@ -39,3 +39,7 @@
 ## Stage EU — panel STARTED
 - Logged at 2026-11-12 14:54 UTC
 - 20 of 20 hunted; 19 ranked, DIA not ranked (no event: H1 out 2026-11-10). No name above the 2.8 floor; top MRL +1.40, bottom TRE -1.30. Hunters put COG, ELN, ETH, TIP after the 11-13 close (amc); ERG, MARR, IP in-session on 11-13. 19 packs, four judges.
+
+## Stage EU — IBKR handoff
+- Logged at 2026-11-12 15:02 UTC
+- Handoff written (no broker call): 2 names at panel_pct >= 70 with four judges — SELL TRE (71.8, es), SELL MARR (71.5, it). Offline plan sized on a 10,000 EUR placeholder equity at the sealed spots; the executor sizes on the real account. Caveat: MARR releases in-session ~15:30-16:15 CET on 11-13, so part of its reaction may land 11-16. execution_eu.enabled true, environment live.
