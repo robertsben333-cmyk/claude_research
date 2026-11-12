@@ -19,3 +19,7 @@
 ## Stage M — morning exit review — done
 - Logged at 2026-11-12 14:17 UTC
 - 3 names: CURI exit_1000, CTVA exit_open, CAE exit_open; compiled 09:17 ET; all 3 analysts ran (morning-reaction-analyst)
+
+## Stage EU — Europe researcher — STARTED
+- Logged at 2026-11-12 14:37 UTC
+- Fired 14:36 UTC (15:36 Amsterdam, markets open). Sealing for event date 2026-11-13 (Fri), RUN research/2026/11/2026-11-13/europe. Plan: universe (cap 20), seal, provenance, one hunter per name (up to 8 concurrent), edge_score, four-model panel, note, IBKR handoff. Local main was a stale shallow checkout diverged from a force-updated origin; main re-pointed at origin/main 95ec29fb0.
