@@ -52,3 +52,7 @@
 ## Edge hunt (panel) — 2026-11-12 amc + 2026-11-13 bmo — STARTED
 - Logged at 2026-11-12 18:09 UTC
 - Stage E-P fire; session began 18:08 UTC (13:08 ET). Universe 148 names (124 amc 11-12, 24 bmo 11-13). edge_universe.py ran directly (needed pip install requests). Baselines sealing by code (14 parallel priced_in processes); one edge-sweep in parallel. Plan: up to 20 unpriced-searchers (max 8 per turn), step 3s flatten live then paper, four-judge panel, step 6b buy live then paper.
+
+## Edge hunt (panel) — baselines sealed
+- Logged at 2026-11-12 18:11 UTC
+- 148 of 148 baselines sealed by 18:11 UTC, before any searcher (ACCV: only 28 usable bars, spot None). provenance stamped US-P: unpriced-searcher us-searcher.v3 on claude-opus-5-5.

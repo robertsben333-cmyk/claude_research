@@ -1,0 +1,90 @@
+{
+ "ticker": "KSCP",
+ "event_date": "2026-11-12",
+ "session": "amc",
+ "as_of_utc": "2026-11-12T18:09:52+00:00",
+ "options_as_of_valid": true,
+ "sources": [
+  "yahoo chart v8 daily bars",
+  "yahoo options v7 front expiry (cookie+crumb)",
+  "sec edgar submissions api, 8-K item 2.02 acceptance times"
+ ],
+ "tape": {
+  "last_close_date": "2026-11-12",
+  "spot": 0.4336,
+  "run_up_5d_pct": 4.48,
+  "run_up_20d_pct": -23.93,
+  "pct_from_52w_high": -92.16,
+  "pct_from_52w_low": 11.18,
+  "realised_vol_20d_annualised_pct": 95.8,
+  "avg_volume_20d": 973631
+ },
+ "cik": "0001600983",
+ "history": {
+  "moves": [
+   {
+    "event_date": "2026-10-20",
+    "session": "intraday",
+    "move_pct": 2.02
+   },
+   {
+    "event_date": "2026-08-12",
+    "session": "amc",
+    "move_pct": 9.46
+   },
+   {
+    "event_date": "2026-07-20",
+    "session": "bmo",
+    "move_pct": -4.76,
+    "session_conflict": {
+     "tagged_session": "bmo",
+     "volume_says": "bmo",
+     "event_day_volume": 4715600,
+     "next_day_volume": 1353100,
+     "median_20d_before": 496600,
+     "move_as_tagged_pct": -4.76,
+     "move_if_bmo_pct": -4.76,
+     "note": "the event date carries the volume spike, so the market reacted on that date and the print was bmo. If tagged amc, the recorded move is the day-after give-back and may carry the wrong sign."
+    }
+   },
+   {
+    "event_date": "2025-03-12",
+    "session": "bmo",
+    "move_pct": -4.35
+   }
+  ],
+  "n": 4,
+  "basis": "8-K item 2.02 acceptance times (exact)",
+  "median_abs_move_pct": 4.55,
+  "max_abs_move_pct": 9.46,
+  "up_count": 2,
+  "session_conflicts": 1
+ },
+ "event_plausibility": {
+  "days_since_last_print": 23,
+  "median_gap_days": 69,
+  "ratio": 0.33,
+  "last_print": "2026-10-20",
+  "verdict": "unknown",
+  "cadence_implausible": true,
+  "reason": "inferred cadence of 69 days is too short to be an earnings cadence (quarterly is ~91, semi-annual ~182), so the 4 matched filings are not earnings -- most likely monthly operational updates caught by the 6-K text matcher. No cadence verdict is possible and the reaction history above should not be used as an earnings base rate. Confirm the date from a company source instead."
+ },
+ "options": {
+  "status": "no_options_market"
+ },
+ "deadband_pct": 2.27,
+ "deadband_basis": "half the median of 4 prior reactions, floored at 1.5%",
+ "deadband_note": "A realised move inside this band is scored as no-direction rather than as a miss.",
+ "expected_move_pct": 4.55,
+ "expected_move_basis": "median historical reaction (no usable option chain)",
+ "baseline_quality": {
+  "options_usable": false,
+  "history_events": 4,
+  "history_usable": 4,
+  "event_plausibility": "unknown",
+  "priced_direction_available": false,
+  "tier": "partial",
+  "note": "thin means there is no reliable statement of what the market priced, so a confident call on this name cannot be justified by the baseline."
+ },
+ "status": "ok"
+}
