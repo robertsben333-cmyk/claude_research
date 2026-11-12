@@ -43,3 +43,8 @@
 ## Stage EU — IBKR handoff
 - Logged at 2026-11-12 15:02 UTC
 - Handoff written (no broker call): 2 names at panel_pct >= 70 with four judges — SELL TRE (71.8, es), SELL MARR (71.5, it). Offline plan sized on a 10,000 EUR placeholder equity at the sealed spots; the executor sizes on the real account. Caveat: MARR releases in-session ~15:30-16:15 CET on 11-13, so part of its reaction may land 11-16. execution_eu.enabled true, environment live.
+
+## Stage EU — ranking
+- Logged at 2026-11-12 15:02 UTC
+- 19 ranked, DIA phantom (H1 out 2026-11-10). No name above the 2.8 floor; top MRL +1.40, bottom TRE -1.30. Panel (4 of 4 members, no fallback) selects none under 3-of-4; highest panel_pct MARR and TRE short at 72. Italy 35% of the day.
+- Published to main (EARNINGS_DATA_BRANCH=main): origin/main head d1ae494c9 'stage EU: IBKR handoff for 2026-11-13' confirmed at 15:02 UTC.
