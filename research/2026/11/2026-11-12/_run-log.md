@@ -88,3 +88,7 @@
 ## Holistic research — 2026-11-12 — STARTED
 - Logged at 2026-11-12 19:17 UTC
 - 19:18 UTC (14:18 ET). Stage H fire: pick from E-P sweep, up to 12 names x (evolving + control third), playbook hp.v2, no orders.
+
+## Holistic research — wave 1
+- Logged at 2026-11-12 19:18 UTC
+- 19:18 UTC: 8 launched on native holistic-researcher: CBRS ACCV BLTE ANDG LFTO(a+b) HAWK ARWR. Wave 2 pending: DLO(a+b) NKTR HTFL AMAT(a+b) STNE(a+b).
