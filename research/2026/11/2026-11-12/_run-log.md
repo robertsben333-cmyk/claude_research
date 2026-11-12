@@ -96,3 +96,7 @@
 ## Holistic research — all 16 launched
 - Logged at 2026-11-12 19:24 UTC
 - 19:24 UTC: all 16 launched (native holistic-researcher). Returned: BLTE ARWR ACCV ANDG LFTO(a) LFTO(b) HAWK NKTR. HAWK reported a site-side 429 (stocktaper) and 403/503 on two sites, covered elsewhere; kept search_complete true (site response, not a tool budget refusal), not relaunched. Running: CBRS HTFL DLO(a+b) AMAT(a+b) STNE(a+b).
+
+## Holistic research — learning step
+- Logged at 2026-11-12 19:30 UTC
+- 19:30 UTC: 16/16 hunts ok, 0 recommendations, published 19:29 UTC (14:29 ET). resolve: 16 new name-arms, 16 pending, 63 in outcomes. Gate closed: 0/30 names, 0/3 days on hp.v2; drift alarm off (16 pairs, Brier diff -0.012, t -1.53). Reflector not launched. Tomorrow: hp.v2.
