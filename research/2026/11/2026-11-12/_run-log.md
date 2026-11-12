@@ -64,3 +64,11 @@
 ## Edge hunt (panel) — all 20 launched
 - Logged at 2026-11-12 18:25 UTC
 - 18:25 UTC. All 20 searchers launched (MFG last). Returned, search_complete true per hand-backs: BLTE ARWR ANDG LFTO HAWK CBRS DLO ACCV CSCO NKTR HTFL AMAT. DLO session settled amc from the company's release. Running: STNE FLO NU STN XXI INTR SMFG MFG.
+
+## Edge hunt (panel) — step 3s sell
+- Logged at 2026-11-12 18:32 UTC
+- 20/20 searchers returned by 18:32 UTC (unpriced-searcher, native, Opus 5.5). hunt_status check --apply: 0 unfinished of 20; none retried. LIVE: mode shows live credentials MISSING (ALPACA_LIVE_API_SECRET_KEY absent from this Routine's environment; only the key id is set); flatten --account live refused: 'no ALPACA_LIVE_API_KEY_ID / ALPACA_LIVE_API_SECRET_KEY in the environment', nothing sold or checked on the live account. PAPER: execution enabled, amc_open; flatten --submit at 18:33 UTC: 0 positions held, account already flat (no amc leg from 2026-11-11 still held), 'closed'.
+
+## Edge hunt (panel) — panel STARTED
+- Logged at 2026-11-12 18:32 UTC
+- 18:32 UTC. edge_score and V2 grounded written before the first print. 20 rankable. Packs built (20, one part); four judges. Paper account flat after 3s; live account unreachable (secret missing).
