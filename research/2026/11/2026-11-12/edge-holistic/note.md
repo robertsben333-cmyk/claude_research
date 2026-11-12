@@ -30,3 +30,25 @@ None today: no name cleared the playbook's bar.
 | STNE | control | ok | 45.0 | none | 55.0 |
 
 This is a forecasting exercise over public information, not investment advice.
+
+## Comparison with stage E-P (read after the publish)
+
+| ticker | H p_up evolving | H p_up control | H action | E-P panel_pct_signed | E-P selected |
+| --- | --- | --- | --- | --- | --- |
+| HTFL | 50 |  | none | -93.0 | True |
+| LFTO | 56 | 56 | none | 87.8 | True |
+| STNE | 45 | 45 | none | -84.4 | True |
+| CBRS | 48 |  | none | -77.6 | False |
+| DLO | 47 | 46 | none | -67.0 | False |
+| ACCV | 58 |  | none | 66.2 | False |
+| ANDG | 55 |  | none | 51.6 | False |
+| HAWK | 56 |  | none | 44.4 | False |
+| ARWR | 54 |  | none | 41.6 | False |
+| NKTR | 52 |  | none | 11.6 | False |
+| AMAT | 48 | 55 | none | 9.5 | False |
+| BLTE | 51 |  | none | -3.9 | False |
+
+Sign disagreements (H p_up vs 50 against E-P signed percentile):
+
+- AMAT: H p_up 48 vs E-P 9.5
+- BLTE: H p_up 51 vs E-P -3.9
