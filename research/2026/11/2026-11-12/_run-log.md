@@ -92,3 +92,7 @@
 ## Holistic research — wave 1
 - Logged at 2026-11-12 19:18 UTC
 - 19:18 UTC: 8 launched on native holistic-researcher: CBRS ACCV BLTE ANDG LFTO(a+b) HAWK ARWR. Wave 2 pending: DLO(a+b) NKTR HTFL AMAT(a+b) STNE(a+b).
+
+## Holistic research — all 16 launched
+- Logged at 2026-11-12 19:24 UTC
+- 19:24 UTC: all 16 launched (native holistic-researcher). Returned: BLTE ARWR ACCV ANDG LFTO(a) LFTO(b) HAWK NKTR. HAWK reported a site-side 429 (stocktaper) and 403/503 on two sites, covered elsewhere; kept search_complete true (site response, not a tool budget refusal), not relaunched. Running: CBRS HTFL DLO(a+b) AMAT(a+b) STNE(a+b).
