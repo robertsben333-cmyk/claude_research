@@ -33,7 +33,7 @@ The block below is the exact text the Routine holds.
 ---
 
 ```text
-Sell stage E-P's amc positions at today's US open, on TWO Alpaca accounts: LIVE FIRST, then paper. You place orders on those accounts; nothing else. The live account takes `--account live --live-account-i-understand` on every call below (keys ALPACA_LIVE_*); the paper account takes neither. A refusal or error on one account goes in the run log and never stops the other.
+Sell stage E-P's amc positions at today's US open, on TWO Alpaca accounts: LIVE FIRST, then paper. You place orders on those accounts; nothing else. The live account takes `--account live` on every call below and `--live-account-i-understand` on every verify and close (keys ALPACA_LIVE_*); the paper account takes neither. A refusal or error on one account goes in the run log and never stops the other.
 
 0. GET THE REPO. If /home/user/claude_research/CLAUDE.md does not exist:
    - add_repo with owner robertsben333-cmyk, repo claude_research, access push
