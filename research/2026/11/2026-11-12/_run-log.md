@@ -76,3 +76,11 @@
 ## Edge hunt (panel) — panel done
 - Logged at 2026-11-12 18:39 UTC
 - 18:39 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) HTFL S 93 (k4), LFTO L 88 (k4), STNE S 84 (k3). Next CBRS S 78. Three strong names, so no top-up. Note written; stage E edge/ absent.
+
+## Edge hunt (panel) — step 6b buy
+- Logged at 2026-11-12 18:40 UTC
+- 18:40 UTC (13:41 ET), after the note. LIVE: plan sized on assumed equity $100,000 off the sealed baseline spot (no live credentials) HTFL S 648 / LFTO L 1736 / STNE S 3659; open --account live --submit refused 'no ALPACA_LIVE_API_KEY_ID / ALPACA_LIVE_API_SECRET_KEY in the environment' - nothing sent, alpaca-orders-live.json not written; status --account live also refused. The live secret must be added to this Routine's environment. PAPER: equity $20,086; 3 market orders, all filled: HTFL -131 @ 59.08 (38.7%), LFTO +349 @ 18.79 (32.6%), STNE -735 @ 7.82 (28.6%), gross $20,060. Top-up not applied (three strong names). Execution cost vs mid: HTFL +0.144, STNE +0.064, LFTO -6.167 against a 6.667 half-spread at submission (a wide or stale quote on LFTO; fill was at 18.79). orders.entry printed 'market'. Exits dated 2026-11-13.
+
+## Edge hunt (panel) — done
+- Logged at 2026-11-12 18:40 UTC
+- 18:40 UTC: edge_context written (step 6d). Run complete. edge_universe.py needed 'pip install requests' in this container; panel-history.json committed separately.
