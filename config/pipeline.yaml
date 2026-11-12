@@ -1261,6 +1261,14 @@ execution:
     # only after `verify` shows an auction leg filling in FULL.
     auction_orders: false
     time_in_force: day           # market entries, and the plain-market fallback
+    # MARKETABLE LIMIT ENTRIES (2026-11-12, operator's request "kunnen we limietorders
+    # toevoegen?"). A plain-market entry becomes a DAY limit this many percent through
+    # the live price the plan sized on (buy: above, short: below), so a thin name's
+    # empty book cannot fill it far away. Unfilled at the close, it expires and the
+    # name is not held. Both accounts, so paper stays like-for-like with live. Exits
+    # stay at market: an exit has to happen, and verify --fix rescues a dead one.
+    # null = plain market entry, as before. Not measured: how many entries it costs.
+    entry_limit_pct: 1.0
     # AFTER the exits go in, wait this many seconds and re-read every one of them at
     # the broker. A submitted sell is not a sold position, and until 2026-09-15
     # nothing here ever looked: `send` stored the status Alpaca returns at

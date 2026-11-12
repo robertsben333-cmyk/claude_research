@@ -1485,9 +1485,33 @@ def flatten(api, submit, reason_blocked, timeout=60):
     return rec
 
 
-def order_body(ticker, qty, side, ex, moc=True, tif=None):
+def limit_price(ref, side, pct):
+    """A marketable limit: `pct` percent through the reference price, on the side
+    that pays. Alpaca takes whole cents at $1 and above and 1/100 of a cent below."""
+    px = float(ref) * (1 + pct / 100.0 if side == "buy" else 1 - pct / 100.0)
+    if px >= 1.0:
+        px = math.floor(px * 100) / 100 if side == "buy" else math.ceil(px * 100) / 100
+    else:
+        px = math.floor(px * 10000) / 10000 if side == "buy" else math.ceil(px * 10000) / 10000
+    return px
+
+
+def entry_limit_pct(ex):
+    """orders.entry_limit_pct, or None for a plain market entry."""
+    v = ex["orders"].get("entry_limit_pct")
+    return float(v) if v is not None else None
+
+
+def order_body(ticker, qty, side, ex, moc=True, tif=None, limit=None):
     o = {"symbol": ticker, "qty": str(int(qty)), "side": side,
          "type": "market", "extended_hours": False}
+    if limit is not None:
+        # A DAY limit inside the regular session. Unfilled by the close, it expires
+        # and the name is simply not held; the next run's flatten and `open`'s stale
+        # check treat that like any other position that is not there.
+        o.update({"type": "limit", "limit_price": f"{limit:.4f}".rstrip("0").rstrip("."),
+                  "time_in_force": "day"})
+        return o
     if tif:
         o["time_in_force"] = tif                   # cls, opg, or day, chosen by caller
     elif moc:
@@ -1501,6 +1525,7 @@ def send(api, body, cid, submit, reason_blocked):
     """One order. Returns a record, submitted or not, always with a stated reason."""
     rec = {"client_order_id": cid, **{k: body[k] for k in
            ("symbol", "qty", "side", "type", "time_in_force")},
+           **({"limit_price": body["limit_price"]} if body.get("limit_price") else {}),
            "utc": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     if reason_blocked:
         return {**rec, "submitted": False, "reason": reason_blocked}
@@ -1707,7 +1732,14 @@ def cmd_open(a, api, ex):
                 reason = (f"cannot send a market order: {open_note}. A market order "
                           "outside the session does not fill at a price this stage "
                           "has measured.")
-        body = order_body(c["ticker"], c["qty"], c["side"], ex, moc=entry_moc)
+        lim_pct = entry_limit_pct(ex)
+        ref = c.get("price_used_usd") or c.get("ref_price") or c.get("spot")
+        # Only off a live price: a limit 1% through a four-hour-old sealed spot is
+        # a guess, so a name sized off the baseline keeps the market entry.
+        fresh = (c.get("price_source") or "sealed baseline spot") != "sealed baseline spot"
+        lim = (limit_price(ref, c["side"], lim_pct)
+               if (lim_pct is not None and not entry_moc and ref and fresh) else None)
+        body = order_body(c["ticker"], c["qty"], c["side"], ex, moc=entry_moc, limit=lim)
         # The panel book gets its own leg name, so its order can never collide
         # with (or be refused as a duplicate of) stage E's entry in the same name.
         cid = client_id(a.run, c["ticker"],
@@ -1730,7 +1762,9 @@ def cmd_open(a, api, ex):
         return
     state["log"].append({"utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                          "action": "open", "window": open_note,
-                         "entry": ("market_on_close" if use_moc else "market"),
+                         "entry": ("market_on_close" if use_moc else
+                                   f"limit {entry_limit_pct(ex)}% through the price"
+                                   if entry_limit_pct(ex) is not None else "market"),
                          "positions": len(plan["positions"])})
     save_orders(a.run, state)
     print(f"\nwrote {orders_path(a.run)}")
