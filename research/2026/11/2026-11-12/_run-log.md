@@ -72,3 +72,7 @@
 ## Edge hunt (panel) — panel STARTED
 - Logged at 2026-11-12 18:32 UTC
 - 18:32 UTC. edge_score and V2 grounded written before the first print. 20 rankable. Packs built (20, one part); four judges. Paper account flat after 3s; live account unreachable (secret missing).
+
+## Edge hunt (panel) — panel done
+- Logged at 2026-11-12 18:39 UTC
+- 18:39 UTC: all four judges on pinned agents, 20/20 each, one part, no fallback, no retry. panel_score: selected (panel_pct >= 80, 4 present) HTFL S 93 (k4), LFTO L 88 (k4), STNE S 84 (k3). Next CBRS S 78. Three strong names, so no top-up. Note written; stage E edge/ absent.
