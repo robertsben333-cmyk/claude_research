@@ -27,3 +27,7 @@
 ## Stage EU — universe and seal
 - Logged at 2026-11-12 14:40 UTC
 - Event date 2026-11-13. 66 scheduled, 23 eligible above $100k, 20 hunted by date-seeded random draw (seed eu-2026-11-13): it 7, de 4, uk 2, se 2, es 2, dk 1, no 1, pl 1 (fr/fi 0). Largest market it at 35%. 20 baselines sealed ~14:45 UTC (intraday spots, not closes). Provenance stamped (uk.v7, de.v7, nordic.v5, it.v5, es.v5, pl.v5). IBKR mode: execution_eu.enabled true, environment live (since 2026-11-12, executor server trades); this session has no IBKR env and makes no broker call, handoff file only.
+
+## Stage EU — hunts in progress
+- Logged at 2026-11-12 14:40 UTC
+- 14:40 UTC: running AEIN AFG ASMDEE_B BAVA BC8 COG DIA ELN (8 concurrent). Queued: ERG ETH FAA G IP IRLAB_A LAND MARR MRL NA9 TIP TRE.
