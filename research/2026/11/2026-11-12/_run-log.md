@@ -56,3 +56,7 @@
 ## Edge hunt (panel) — baselines sealed
 - Logged at 2026-11-12 18:11 UTC
 - 148 of 148 baselines sealed by 18:11 UTC, before any searcher (ACCV: only 28 usable bars, spot None). provenance stamped US-P: unpriced-searcher us-searcher.v3 on claude-opus-5-5.
+
+## Edge hunt (panel) — wave 1
+- Logged at 2026-11-12 18:12 UTC
+- 18:12 UTC. Sweep (time-boxed): 29 of 148 checked, 15 company-confirmed, 7 unconfirmed (NU STN INTR SMFG MFG ELPC CIG), 0 phantom, ~119 unchecked. Session unsettled: DLO XXI. Cap 20: hunted the 15 confirmed + unconfirmed by hunt_priority NU STN INTR SMFG MFG. Shed: ELPC CIG (unconfirmed, lowest priority), all unchecked. baseline_history_trustworthy false: XXI ACCV SMFG MFG. Wave 1 (8 amc): CBRS ACCV BLTE ANDG LFTO HAWK ARWR DLO.
