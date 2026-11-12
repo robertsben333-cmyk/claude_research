@@ -254,7 +254,7 @@ The rule is `execution.panel` in `config/pipeline.yaml` (operator's instruction,
 - **Cannot trade or short**: dropped before the split, so its share goes to the rest.
 - **Budget**: 100% of equity minus anything still held after step 3s.
 
-Market orders, so the session must still be open: `open` refuses a closed market rather
+Entries are marketable DAY limits `orders.entry_limit_pct` (1%) through the live price since 2026-11-12, on both accounts; an unfilled one expires at the close and the name is not held, so name every unfilled entry in the run log. The session must still be open: `open` refuses a closed market rather
 than queue an order, and a run that finishes after 16:00 ET buys nothing; say so. Never
 pass `--top`, `--min-pct` or `--allow-stale` on a scheduled run; they exist for a
 deliberate test. Write one run-log line with what was sent and filled, publish, and put

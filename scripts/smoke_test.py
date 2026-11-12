@@ -475,6 +475,20 @@ def main():
             del os.environ[k]
         os.environ.update(_env)
 
+    # -- marketable limit entries (2026-11-12)
+    check("limit entry: a buy is 1% above, rounded down to the cent",
+          at.limit_price(10.0, "buy", 1.0) == 10.1 and at.limit_price(12.345, "buy", 1.0) == 12.46)
+    check("limit entry: a short is 1% below, rounded up to the cent",
+          at.limit_price(10.0, "sell", 1.0) == 9.9)
+    check("limit entry: sub-dollar prices keep four decimals",
+          at.limit_price(0.5, "buy", 1.0) == 0.505)
+    _lb = at.order_body("X", 3, "buy", ex, moc=False, limit=10.1)
+    check("limit entry: a DAY limit order inside the session",
+          _lb["type"] == "limit" and _lb["limit_price"] == "10.1"
+          and _lb["time_in_force"] == "day" and _lb["extended_hours"] is False)
+    check("limit entry: no limit keeps the market body",
+          at.order_body("X", 3, "buy", ex, moc=False)["type"] == "market")
+
     # -- stage E-P's top-up (added 2026-11-11, operator's instruction): with exactly
     # one strong name the rest of the budget goes to the 70-79 names, at most 25% each;
     # with two strong names the book is unchanged and the candidates are rejected.
