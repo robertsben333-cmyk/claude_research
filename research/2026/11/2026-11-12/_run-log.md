@@ -11,3 +11,11 @@
 ## Stage M — morning exit review — STARTED
 - Logged at 2026-11-12 14:15 UTC
 - source research/2026/11/2026-11-11/edge-panel, 09:15 ET, 3 picks (CURI, CAE, CTVA), analysts launched
+
+## Stage M — previous morning scored
+- Logged at 2026-11-12 14:15 UTC
+- pool: 109 names over 15 days; review +2.40% (t 2.01) vs static +2.42% (t 2.17); review_minus_static −0.02pp (t −0.04); Brier review−prior p_open_lags −0.016 (t −1.32), p_fade −0.007 (t −0.76)
+
+## Stage M — morning exit review — done
+- Logged at 2026-11-12 14:17 UTC
+- 3 names: CURI exit_1000, CTVA exit_open, CAE exit_open; compiled 09:17 ET; all 3 analysts ran (morning-reaction-analyst)
