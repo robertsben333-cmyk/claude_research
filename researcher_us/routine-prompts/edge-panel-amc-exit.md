@@ -24,6 +24,8 @@ The block below is the exact text the Routine holds.
   `python3 researcher_us/scripts/alpaca_trade.py ...`, the form the allow rule in
   `.claude/settings.json` covers. Any other form (absolute path, `python`, an env-var
   prefix) is classified again and may be refused.
+- **2026-11-12 (operator's instruction): live account first, then paper**, the live
+  keys `ALPACA_LIVE_*` in this Routine's environment.
 - **Routine: not yet created.** The operator creates it in the Routines UI; record its
   id here and in CLAUDE.md's stage table once it exists.
 - **Must be on `main` before it fires**, or step 0 logs "not on main" and stops.
@@ -31,23 +33,23 @@ The block below is the exact text the Routine holds.
 ---
 
 ```text
-Sell stage E-P's amc positions at today's US open. You place orders on the Alpaca account; nothing else.
+Sell stage E-P's amc positions at today's US open, on TWO Alpaca accounts: LIVE FIRST, then paper. You place orders on those accounts; nothing else. The live account takes `--account live --live-account-i-understand` on every call below (keys ALPACA_LIVE_*); the paper account takes neither. A refusal or error on one account goes in the run log and never stops the other.
 
 0. GET THE REPO. If /home/user/claude_research/CLAUDE.md does not exist:
    - add_repo with owner robertsben333-cmyk, repo claude_research, access push
    - git clone --depth 1 -b main https://github.com/robertsben333-cmyk/claude_research /home/user/claude_research
    - register_repo_root on that directory
-   Then verify that researcher_us/scripts/alpaca_trade.py and researcher_us/routine-prompts/edge-panel-amc-exit.md exist and that `python3 researcher_us/scripts/alpaca_trade.py close --help` lists --today-only. If not, the work is not on main yet: append one line saying so to today's run log, publish, and stop. Do not improvise a substitute.
+   Then verify that researcher_us/scripts/alpaca_trade.py and researcher_us/routine-prompts/edge-panel-amc-exit.md exist and that `python3 researcher_us/scripts/alpaca_trade.py close --help` lists --today-only and --account. If not, the work is not on main yet: append one line saying so to today's run log, publish, and stop. Do not improvise a substitute.
 
 Re-read the clock with `date -u` and in New York. You fire at about 09:00 New York, before the 09:30 open. Work in the repo directory and write every alpaca_trade.py call exactly as below: `python3 researcher_us/scripts/alpaca_trade.py ...`, no absolute path, no env-var prefix.
 
-1. GUARD: `python3 researcher_us/scripts/alpaca_trade.py mode --require-exit-tif opg`
-   It exits 0 only when execution is enabled and the amc exit is aimed at the open. "matched on placement, not on the literal tif" is expected. On a non-zero exit do nothing further: paste its output into the run log, publish, stop.
+1. GUARD, once per account, live first: `python3 researcher_us/scripts/alpaca_trade.py mode --account live --require-exit-tif opg`, then `python3 researcher_us/scripts/alpaca_trade.py mode --require-exit-tif opg`. Skip steps 2 and 3 for an account whose guard fails.
+   It exits 0 only when execution is enabled and the amc exit is aimed at the open. "matched on placement, not on the literal tif" is expected. On a non-zero exit do nothing further for that account: paste its output into the run log; if both fail, publish and stop.
 
-2. `python3 researcher_us/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge-panel' --fix --submit`
+2. Live: `python3 researcher_us/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge-panel' --account live --fix --submit --live-account-i-understand`, then paper: `python3 researcher_us/scripts/alpaca_trade.py verify --scan 'research/*/*/*/edge-panel' --fix --submit`
    Re-reads earlier exits; re-sends at market any leg still held behind a dead order. Name every UNFILLED leg and every rescue.
 
-3. `python3 researcher_us/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge-panel' --today-only --submit --no-verify`
+3. Live: `python3 researcher_us/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge-panel' --account live --today-only --submit --no-verify --live-account-i-understand`, then paper: `python3 researcher_us/scripts/alpaca_trade.py close --scan 'research/*/*/*/edge-panel' --today-only --submit --no-verify`
    Sends each amc leg whose exit date is today as a market DAY order, queued for the open, sized to what Alpaca holds. It refuses the bmo legs with "market placement, and the market is closed": that is correct, they belong to stage E-P's own run. It never touches an older leg (--today-only). Never drop --today-only and never pass --all or --now.
 
 4. Append to today's run log with `python3 scripts/run_log.py --heading "Stage E-P amc exit — <YYYY-MM-DD>" --line "<what was sent, with tif and order id, and every refusal with its reason>"`, then `python3 scripts/update_index.py` and `scripts/publish.sh "stage E-P amc exit: <what> for <YYYY-MM-DD>"`. Publish even when nothing was due or the account was unreachable: a fire that publishes nothing looks exactly like a Routine that never fired.
