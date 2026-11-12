@@ -84,3 +84,7 @@
 ## Edge hunt (panel) — done
 - Logged at 2026-11-12 18:40 UTC
 - 18:40 UTC: edge_context written (step 6d). Run complete. edge_universe.py needed 'pip install requests' in this container; panel-history.json committed separately.
+
+## Holistic research — 2026-11-12 — STARTED
+- Logged at 2026-11-12 19:17 UTC
+- 19:18 UTC (14:18 ET). Stage H fire: pick from E-P sweep, up to 12 names x (evolving + control third), playbook hp.v2, no orders.
